@@ -11,15 +11,27 @@ import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import net.masterthought.dlanguage.psi.*;
 
-public class DLanguagePropertyImpl extends ASTWrapperPsiElement implements DLanguageProperty {
+public class DLanguagePackageNameImpl extends ASTWrapperPsiElement implements DLanguagePackageName {
 
-  public DLanguagePropertyImpl(ASTNode node) {
+  public DLanguagePackageNameImpl(ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitProperty(this);
+    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitPackageName(this);
     else super.accept(visitor);
+  }
+
+  @Override
+  @NotNull
+  public DLanguageIdentifier getIdentifier() {
+    return findNotNullChildByClass(DLanguageIdentifier.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguagePackageName getPackageName() {
+    return findChildByClass(DLanguagePackageName.class);
   }
 
 }

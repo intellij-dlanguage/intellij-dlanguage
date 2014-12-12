@@ -12,10 +12,108 @@
   elementTypeHolderClass="net.masterthought.dlanguage.psi.DLanguageTypes"
   elementTypeClass="net.masterthought.dlanguage.psi.DLanguageElementType"
   tokenTypeClass="net.masterthought.dlanguage.psi.DLanguageTokenType"
+
 }
 
 dFile ::= item_*
 
-private item_ ::= (property|COMMENT|CRLF)
+private item_ ::= (
+                   identifier|
+                   modifier|
+                   package_name|
+                   class_name|
+                   interface_name|
+                   class_declaration|
+                   doc_comment|
+                   type|
+                   type_specifier|
+                   parameter|
+                   parameter_list|
+                   statement|
+                   statement_block|
+                   method_declaration|
+                   field_declaration|
+                   COMMENT|
+                   CRLF)
 
-property ::= (KEY? SEPARATOR VALUE?) | KEY
+identifier
+      ::= "a..z,$,_" { "a..z,$,_,0..9,unicode character over 00C0" }
+
+modifier
+      ::=
+      "public"
+      | "private"
+      | "protected"
+      | "static"
+      | "final"
+      | "native"
+      | "synchronized"
+      | "abstract"
+      | "threadsafe"
+      | "transient"
+
+package_name
+      ::=
+      identifier
+      | ( package_name "." identifier )
+
+class_name
+      ::=
+      identifier
+      | ( package_name "." identifier )
+
+interface_name
+      ::=
+      identifier
+      | ( package_name "." identifier )
+
+class_declaration
+      ::=
+      { modifier } "class" identifier
+      [ "extends" class_name ]
+      [ "implements" interface_name { "," interface_name } ]
+      "{" { field_declaration } "}"
+
+doc_comment
+      ::= "/**" "... text ..." "*/"
+
+type
+      ::=
+      type_specifier { "[" "]" }
+
+type_specifier
+      ::=
+      "boolean"
+      | "byte"
+      | "char"
+      | "short"
+      | "int"
+      | "float"
+      | "long"
+      | "double"
+      | class_name
+      | interface_name
+
+parameter
+      ::=
+      type identifier { "[" "]" }
+
+parameter_list
+      ::=
+      parameter { "," parameter }
+
+statement
+      ::= "statement";
+
+
+statement_block
+      ::= "{" { statement } "}"
+
+method_declaration
+      ::=
+      { modifier } type identifier
+      "(" [ parameter_list ] ")" { "[" "]" }
+      ( statement_block | ";" )
+
+field_declaration
+      ::= "final"

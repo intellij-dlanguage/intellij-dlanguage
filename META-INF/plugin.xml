@@ -27,9 +27,9 @@
   <extensions defaultExtensionNs="com.intellij">
     <!-- Add your extensions here -->
     <fileTypeFactory implementation="net.masterthought.dlanguage.DLanguageFileTypeFactory"/>
-    <lang.parserDefinition language="D" implementationClass="net.masterthought.dlanguage.DLanguageParserDefinition"/>
-    <lang.syntaxHighlighterFactory key="D" implementationClass="net.masterthought.dlanguage.DLanguageHighlighterFactory"/>
-    <colorSettingsPage implementation="net.masterthought.dlanguage.DLanguageColorSettingsPage"/>
+    <!--<lang.parserDefinition language="D" implementationClass="net.masterthought.dlanguage.DLanguageParserDefinition"/>-->
+    <!--<lang.syntaxHighlighterFactory key="D" implementationClass="net.masterthought.dlanguage.DLanguageHighlighterFactory"/>-->
+    <!--<colorSettingsPage implementation="net.masterthought.dlanguage.DLanguageColorSettingsPage"/>-->
   </extensions>
 
   <application-components>
