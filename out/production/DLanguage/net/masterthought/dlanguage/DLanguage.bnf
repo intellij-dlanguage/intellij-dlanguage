@@ -1,0 +1,21 @@
+
+{
+  parserClass="net.masterthought.dlanguage.parser.DLanguageParser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="DLanguage"
+  psiImplClassSuffix="Impl"
+  psiPackage="net.masterthought.dlanguage.psi"
+  psiImplPackage="net.masterthought.dlanguage.psi.impl"
+
+  elementTypeHolderClass="net.masterthought.dlanguage.psi.DLanguageTypes"
+  elementTypeClass="net.masterthought.dlanguage.psi.DLanguageElementType"
+  tokenTypeClass="net.masterthought.dlanguage.psi.DLanguageTokenType"
+}
+
+dFile ::= item_*
+
+private item_ ::= (property|COMMENT|CRLF)
+
+property ::= (KEY? SEPARATOR VALUE?) | KEY
