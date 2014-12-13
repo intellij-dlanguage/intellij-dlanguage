@@ -7,4 +7,19 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageFieldDeclaration extends PsiElement {
 
+  @Nullable
+  DLanguageConstructorDeclaration getConstructorDeclaration();
+
+  @Nullable
+  DLanguageDocComment getDocComment();
+
+  @Nullable
+  DLanguageMethodDeclaration getMethodDeclaration();
+
+  @Nullable
+  DLanguageStaticInitializer getStaticInitializer();
+
+  @Nullable
+  DLanguageVariableDeclaration getVariableDeclaration();
+
 }

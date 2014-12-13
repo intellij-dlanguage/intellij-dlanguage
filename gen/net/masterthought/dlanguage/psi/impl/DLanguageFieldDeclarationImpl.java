@@ -22,4 +22,34 @@ public class DLanguageFieldDeclarationImpl extends ASTWrapperPsiElement implemen
     else super.accept(visitor);
   }
 
+  @Override
+  @Nullable
+  public DLanguageConstructorDeclaration getConstructorDeclaration() {
+    return findChildByClass(DLanguageConstructorDeclaration.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageDocComment getDocComment() {
+    return findChildByClass(DLanguageDocComment.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageMethodDeclaration getMethodDeclaration() {
+    return findChildByClass(DLanguageMethodDeclaration.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageStaticInitializer getStaticInitializer() {
+    return findChildByClass(DLanguageStaticInitializer.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageVariableDeclaration getVariableDeclaration() {
+    return findChildByClass(DLanguageVariableDeclaration.class);
+  }
+
 }

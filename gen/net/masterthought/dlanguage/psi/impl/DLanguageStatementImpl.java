@@ -22,4 +22,70 @@ public class DLanguageStatementImpl extends ASTWrapperPsiElement implements DLan
     else super.accept(visitor);
   }
 
+  @Override
+  @Nullable
+  public DLanguageDoStatement getDoStatement() {
+    return findChildByClass(DLanguageDoStatement.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageExpression getExpression() {
+    return findChildByClass(DLanguageExpression.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageForStatement getForStatement() {
+    return findChildByClass(DLanguageForStatement.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageIdentifier getIdentifier() {
+    return findChildByClass(DLanguageIdentifier.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageIfStatement getIfStatement() {
+    return findChildByClass(DLanguageIfStatement.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageStatement getStatement() {
+    return findChildByClass(DLanguageStatement.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageStatementBlock getStatementBlock() {
+    return findChildByClass(DLanguageStatementBlock.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageSwitchStatement getSwitchStatement() {
+    return findChildByClass(DLanguageSwitchStatement.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageTryStatement getTryStatement() {
+    return findChildByClass(DLanguageTryStatement.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageVariableDeclaration getVariableDeclaration() {
+    return findChildByClass(DLanguageVariableDeclaration.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageWhileStatement getWhileStatement() {
+    return findChildByClass(DLanguageWhileStatement.class);
+  }
+
 }
