@@ -22,4 +22,22 @@ public class DLanguageModifierImpl extends ASTWrapperPsiElement implements DLang
     else super.accept(visitor);
   }
 
+  @Override
+  @Nullable
+  public PsiElement getPrivate() {
+    return findChildByType(PRIVATE);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getPublic() {
+    return findChildByType(PUBLIC);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getTransient() {
+    return findChildByType(TRANSIENT);
+  }
+
 }

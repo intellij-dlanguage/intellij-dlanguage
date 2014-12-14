@@ -7,4 +7,13 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageModifier extends PsiElement {
 
+  @Nullable
+  PsiElement getPrivate();
+
+  @Nullable
+  PsiElement getPublic();
+
+  @Nullable
+  PsiElement getTransient();
+
 }
