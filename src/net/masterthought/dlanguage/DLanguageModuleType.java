@@ -27,7 +27,7 @@ public class DLanguageModuleType extends ModuleType<DLanguageModuleBuilder> {
     @NotNull
     @Override
     public String getName() {
-        return "DLanguage Module";
+        return "D Language Module";
     }
 
     @NotNull

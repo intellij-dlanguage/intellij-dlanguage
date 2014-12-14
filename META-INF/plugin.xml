@@ -1,70 +1,76 @@
 <idea-plugin version="2">
-  <id>com.yourcompany.unique.plugin.id</id>
-  <name>Plugin display name here</name>
-  <version>1.0</version>
-  <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+    <id>net.masterthought.dlanguage</id>
+    <name>D Language</name>
+    <version>1.0</version>
+    <vendor email="kingsley.hendrickse@gmail.com" url="http://www.masterthought.net">MasterThought</vendor>
 
-  <description><![CDATA[
-      Enter short description for your plugin here.<br>
-      <em>most HTML tags may be used</em>
+    <description><![CDATA[
+     Support for the D Language
     ]]></description>
 
-  <change-notes><![CDATA[
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>
+    <change-notes><![CDATA[
+      First Attempt
     ]]>
-  </change-notes>
+    </change-notes>
 
-  <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
-  <idea-version since-build="131"/>
+    <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
+    <idea-version since-build="131"/>
 
-  <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
-       on how to target different products -->
-  <!-- uncomment to enable plugin in all products
-  <depends>com.intellij.modules.lang</depends>
-  -->
+    <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
+         on how to target different products -->
+    <!-- uncomment to enable plugin in all products
+    <depends>com.intellij.modules.lang</depends>
+    -->
 
-  <extensions defaultExtensionNs="com.intellij">
-    <!-- Add your extensions here -->
-    <fileTypeFactory implementation="net.masterthought.dlanguage.DLanguageFileTypeFactory"/>
-    <lang.parserDefinition language="D" implementationClass="net.masterthought.dlanguage.DLanguageParserDefinition"/>
-    <!--<lang.syntaxHighlighterFactory key="D" implementationClass="net.masterthought.dlanguage.DLanguageHighlighterFactory"/>-->
-    <!--<colorSettingsPage implementation="net.masterthought.dlanguage.DLanguageColorSettingsPage"/>-->
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+        <fileTypeFactory implementation="net.masterthought.dlanguage.DLanguageFileTypeFactory"/>
+        <lang.parserDefinition language="D"
+                               implementationClass="net.masterthought.dlanguage.DLanguageParserDefinition"/>
+        <!--<lang.syntaxHighlighterFactory key="D" implementationClass="net.masterthought.dlanguage.DLanguageHighlighterFactory"/>-->
+        <!--<colorSettingsPage implementation="net.masterthought.dlanguage.DLanguageColorSettingsPage"/>-->
 
 
-    <!-- D Language support -->
-    <internalFileTemplate name="DLanguage Module"/>
-    <moduleType id="DLANGUAGE_MODULE" implementationClass="net.masterthought.dlanguage.DLanguageModuleType"/>
-    <sdkType implementation="net.masterthought.dlanguage.DLanguageSdkType"/>
-    <configurationType implementation="net.masterthought.dlanguage.run.DLanguageApplicationConfigurationType"/>
-    <programRunner implementation="net.masterthought.dlanguage.run.DLanguageRunner"/>
+        <!-- D Language support -->
+        <internalFileTemplate name="D Language Module"/>
+        <moduleType id="DLANGUAGE_MODULE" implementationClass="net.masterthought.dlanguage.DLanguageModuleType"/>
+        <sdkType implementation="net.masterthought.dlanguage.DLanguageSdkType"/>
+        <configurationType implementation="net.masterthought.dlanguage.run.DLanguageApplicationConfigurationType"/>
+        <programRunner implementation="net.masterthought.dlanguage.run.DLanguageRunner"/>
 
-    <!-- Project settings -->
+        <!-- Project settings -->
 
-    <!-- Tab under compiler in IntelliJ -> Preferences -->
-    <!--<projectConfigurable instance="net.masterthought.dlanguage.DLanguageCompilerConfigurable"-->
-                         <!--parentId="project.propCompiler" id="DMD compiler"-->
-                         <!--displayName="DMD Compiler"/>-->
-    <!-- Persistent data + build server communication for compiler settings -->
-    <projectService serviceImplementation="net.masterthought.dlanguage.settings.DLanguageBuildSettings" />
-    <!-- Tab in IntelliJ -> Preferences -->
-    <!--<projectConfigurable instance="net.masterthought.dlanguage.settings.DLanguageToolsConfigurable"/>-->
-    <!-- File -> Project Structure dialogue. -->
-    <!--<moduleConfigurationEditorProvider implementation="net.masterthought.dlanguage.settings.DLanguageModuleConfigurationEditor" order="first"/>-->
-    <!-- Tab in IntelliJ -> Preferences -->
+        <!-- Tab under compiler in IntelliJ -> Preferences -->
+        <!--<projectConfigurable instance="net.masterthought.dlanguage.DLanguageCompilerConfigurable"-->
+        <!--parentId="project.propCompiler" id="DMD compiler"-->
+        <!--displayName="DMD Compiler"/>-->
+        <!-- Persistent data + build server communication for compiler settings -->
+        <projectService serviceImplementation="net.masterthought.dlanguage.settings.DLanguageBuildSettings"/>
+        <!-- Tab in IntelliJ -> Preferences -->
+        <!--<projectConfigurable instance="net.masterthought.dlanguage.settings.DLanguageToolsConfigurable"/>-->
+        <!-- File -> Project Structure dialogue. -->
+        <!--<moduleConfigurationEditorProvider implementation="net.masterthought.dlanguage.settings.DLanguageModuleConfigurationEditor" order="first"/>-->
+        <!-- Tab in IntelliJ -> Preferences -->
 
-  </extensions>
+    </extensions>
 
-  <application-components>
-    <!-- Add your application components here -->
-  </application-components>
+    <application-components>
+        <!-- Add your application components here -->
+    </application-components>
 
-  <project-components>
-    <!-- Add your project components here -->
-  </project-components>
+    <actions>
+        <action id="DLanguage.NewDLanguageFile" class="net.masterthought.dlanguage.actions.CreateDLanguageFileAction"
+                text="D File" description="Create new D file">
+            <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFile"/>
+        </action>
+    </actions>
 
-  <actions>
-    <!-- Add your actions here -->
-  </actions>
+    <project-components>
+        <!-- Add your project components here -->
+    </project-components>
+
+    <actions>
+        <!-- Add your actions here -->
+    </actions>
 
 </idea-plugin>
