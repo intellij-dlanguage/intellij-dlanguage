@@ -2,22 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="62d9ac08-d8e0-4ce8-ba4a-ee00dbaa175d" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/net/masterthought/dlanguage/run/DLanguageApplicationCommandLineState.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/net/masterthought/dlanguage/run/DLanguageApplicationConfigurationFactory.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/net/masterthought/dlanguage/run/DLanguageApplicationConfigurationType.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/net/masterthought/dlanguage/run/DLanguageApplicationRunConfiguration.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/net/masterthought/dlanguage/run/DLanguageApplicationRunConfigurationEditorForm.form" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/net/masterthought/dlanguage/run/DLanguageApplicationRunConfigurationEditorForm.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/net/masterthought/dlanguage/run/DLanguageBuildSettings.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/net/masterthought/dlanguage/run/DLanguageRunConfigurationBase.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/net/masterthought/dlanguage/run/DLanguageRunner.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/net/masterthought/dlanguage/DSdkUtil.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/DLanguage/net/masterthought/dlanguage/DLanguage.bnf" afterPath="$PROJECT_DIR$/out/production/DLanguage/net/masterthought/dlanguage/DLanguage.bnf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DLanguage.iml" afterPath="$PROJECT_DIR$/DLanguage.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/net/masterthought/dlanguage/DLanguageModuleType.java" afterPath="$PROJECT_DIR$/src/net/masterthought/dlanguage/DLanguageModuleType.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/net/masterthought/dlanguage/DLanguageSdkType.java" afterPath="$PROJECT_DIR$/src/net/masterthought/dlanguage/DLanguageSdkType.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/net/masterthought/dlanguage/jps/model/JpsDLanguageModelSerializerExtension.java" afterPath="$PROJECT_DIR$/src/net/masterthought/dlanguage/jps/model/JpsDLanguageModelSerializerExtension.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/META-INF/plugin.xml" afterPath="$PROJECT_DIR$/META-INF/plugin.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="DLanguage.iws" />
@@ -658,12 +644,19 @@
       <workItem from="1418577483966" duration="4799000" />
       <workItem from="1418586036757" duration="742000" />
       <workItem from="1418586817067" duration="24000" />
-      <workItem from="1418586867757" duration="1884000" />
+      <workItem from="1418586867757" duration="1922000" />
     </task>
+    <task id="LOCAL-00001" summary="updated but module broken">
+      <created>1418588831404</created>
+      <option name="number" value="00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1418588831404</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="41785000" />
+    <option name="totallyTimeSpent" value="41823000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="292" y="78" width="1722" height="1225" extended-state="0" />
@@ -736,6 +729,8 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
+    <MESSAGE value="updated but module broken" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated but module broken" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
