@@ -6,6 +6,7 @@ import com.intellij.execution.configurations.ConfigurationFactory;
 import com.intellij.execution.configurations.RuntimeConfigurationError;
 import com.intellij.execution.configurations.RuntimeConfigurationException;
 import com.intellij.openapi.project.Project;
+import net.masterthought.dlanguage.settings.DLanguageBuildSettings;
 
 public abstract class DLanguageRunConfigurationBase extends AbstractRunConfiguration {
     public DLanguageRunConfigurationBase(Project project, ConfigurationFactory factory) {

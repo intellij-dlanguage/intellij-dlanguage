@@ -1,4 +1,4 @@
-package net.masterthought.dlanguage.run;
+package net.masterthought.dlanguage.settings;
 
 import com.intellij.openapi.components.*;
 import com.intellij.openapi.project.Project;
