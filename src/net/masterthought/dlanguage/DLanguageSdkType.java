@@ -1,12 +1,11 @@
 package net.masterthought.dlanguage;
 
-
-import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.projectRoots.*;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.util.SystemInfo;
+import com.intellij.openapi.util.io.FileUtil;
 import net.masterthought.dlanguage.jps.model.JpsDLanguageModelSerializerExtension;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
@@ -67,23 +66,13 @@ public class DLanguageSdkType extends SdkType {
      */
     @Override
     public boolean isValidSdkHome(String path) {
-        // TODO: Validate SdkHome a bit more than just running ghc --version.
-        if (path.endsWith("bin")) {
-            LOG.info("The SDK home is the base directory of GHC.");
-            LOG.info("Selected SDK home is: " + path);
-            LOG.info("Aborting since there is no " + path + "/bin/ghc");
-            return false;
-        }
-        String version = getVersionString(path);
-        if (version == null) {
-            // Error logging is performed by ExecUtil.
-            return false;
-        }
-        if (!(version.startsWith("7.") || version.startsWith("8."))) {
-            LOG.warn("Unexpected GHC version: " + version);
-            LOG.warn("Accepting, but HaskForce might not work..");
-        }
-        return true;
+        File dmd = getCompilerExecutable(path);
+        return dmd.canExecute();
+    }
+
+    @NotNull
+    public static File getCompilerExecutable(@NotNull String sdkHome) {
+        return new File(FileUtil.join(new File(sdkHome, "bin").getAbsolutePath(), "dmd"));
     }
 
     /**
@@ -100,15 +89,8 @@ public class DLanguageSdkType extends SdkType {
      */
     @Nullable
     @Override
-    public String getVersionString(final String sdkHome) {
-        if (sdkHome == null) {
-            return null;
-        }
-        File ghc = getExecutable(sdkHome);
-        if (ghc.canExecute()) {
-            return ExecUtil.readCommandLine(new GeneralCommandLine(ghc.getPath(), "--numeric-version"));
-        }
-        return null;
+    public String getVersionString(@NotNull String sdkHome) {
+        return DSdkUtil.getSdkVersion(sdkHome);
     }
 
     /**
@@ -120,15 +102,13 @@ public class DLanguageSdkType extends SdkType {
         if (SystemInfo.isWindows) {
             // TODO: Windows SDK support
             return null;
-        }
-        else if (SystemInfo.isMac) {
+        } else if (SystemInfo.isMac) {
             File homebrewRoot = new File("/usr/local/opt/dmd");
             if (homebrewRoot.exists()) {
                 return homebrewRoot.getPath();
             }
             return null;
-        }
-        else if (SystemInfo.isLinux) {
+        } else if (SystemInfo.isLinux) {
             // TODO: Linux SDK support
             return null;
         }

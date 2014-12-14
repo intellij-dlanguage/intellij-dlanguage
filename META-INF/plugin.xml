@@ -33,11 +33,11 @@
 
 
     <!-- D Language support -->
-    <internalFileTemplate name="Haskell Module"/>
-    <moduleType id="DLANGUAGE_MODULE" implementationClass="net.masterthought.dlanguage.DLanguageModuleType"/>
-    <sdkType implementation="net.masterthought.dlanguage.DLanguageSdkType"/>
-    <configurationType implementation="net.masterthought.dlanguage.DLanguageApplicationConfigurationType"/>
-    <programRunner implementation="net.masterthought.dlanguage.DLanguageRunner"/>
+    <!--<internalFileTemplate name="DLanguage Module"/>-->
+    <!--<moduleType id="DLANGUAGE_MODULE" implementationClass="net.masterthought.dlanguage.DLanguageModuleType"/>-->
+    <!--<sdkType implementation="net.masterthought.dlanguage.DLanguageSdkType"/>-->
+    <!--<configurationType implementation="net.masterthought.dlanguage.run.DLanguageApplicationConfigurationType"/>-->
+    <!--<programRunner implementation="net.masterthought.dlanguage.run.DLanguageRunner"/>-->
 
 
   </extensions>

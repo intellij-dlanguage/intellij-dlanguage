@@ -30,13 +30,13 @@ public class JpsDLanguageModelSerializerExtension extends JpsModelSerializerExte
     @NotNull
     @Override
     public List<? extends JpsModuleSourceRootPropertiesSerializer<?>> getModuleSourceRootPropertiesSerializers() {
-        return Collections.singletonList(new JpsModuleSourceRootDummyPropertiesSerializer(DLanguageIncludeSourceRootType.INSTANCE, "haskell-include"));
+        return Collections.singletonList(new JpsModuleSourceRootDummyPropertiesSerializer(DLanguageIncludeSourceRootType.INSTANCE, "dlanguage-include"));
     }
 
     @NotNull
     @Override
     public List<? extends JpsModulePropertiesSerializer<?>> getModulePropertiesSerializers() {
-        return Collections.singletonList(new JpsModulePropertiesSerializer<JpsDummyElement>(JpsDLanguageModuleType.INSTANCE, "HASKELL_MODULE", null) {
+        return Collections.singletonList(new JpsModulePropertiesSerializer<JpsDummyElement>(JpsDLanguageModuleType.INSTANCE, "DLANGUAGE_MODULE", null) {
             @Override
             public JpsDummyElement loadProperties(@Nullable Element componentElement) {
                 return JpsElementFactory.getInstance().createDummyElement();
