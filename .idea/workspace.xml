@@ -742,7 +742,7 @@
       <workItem from="1418586867757" duration="1922000" />
       <workItem from="1418589341909" duration="7285000" />
       <workItem from="1418627911634" duration="284000" />
-      <workItem from="1418628222375" duration="6703000" />
+      <workItem from="1418628222375" duration="6714000" />
     </task>
     <task id="LOCAL-00001" summary="updated but module broken">
       <created>1418588831404</created>
@@ -762,11 +762,17 @@
       <option name="project" value="LOCAL" />
       <updated>1418644390013</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="updated module working">
+      <created>1418648713365</created>
+      <option name="number" value="00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1418648713365</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="56095000" />
+    <option name="totallyTimeSpent" value="56106000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="461" y="72" width="1974" height="1243" extended-state="0" />

@@ -39,7 +39,7 @@ public class DLanguageApplicationRunConfiguration extends DLanguageRunConfigurat
     }
 
     /**
-     * If the user is not using cabal 1.18 or higher, an error is displayed in the run configuration dialog.
+     * If the user is not using dmd, an error is displayed in the run configuration dialog.
      */
     @Override
     public void checkConfiguration() throws RuntimeConfigurationException {

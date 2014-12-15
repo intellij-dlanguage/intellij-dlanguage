@@ -17,7 +17,7 @@ public abstract class DLanguageRunConfigurationBase extends AbstractRunConfigura
         final DLanguageBuildSettings buildSettings = DLanguageBuildSettings.getInstance(getProject());
         final String dmdPath = buildSettings.getDmdPath();
         if (dmdPath.isEmpty()) {
-            throw new RuntimeConfigurationError("Path to cabal is not set.");
+            throw new RuntimeConfigurationError("Path to dmd is not set.");
         }
     }
 
