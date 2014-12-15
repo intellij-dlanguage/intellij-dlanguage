@@ -12,9 +12,6 @@ import java.nio.charset.Charset;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by Lander Brandt on 10/24/14.
- */
 public class DSdkUtil {
 
     public static boolean sdkPathIsValid(File root) {

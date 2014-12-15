@@ -85,7 +85,7 @@ public class DLanguageSdkType extends SdkType {
     }
 
     /**
-     * Returns the output of ghc --numeric-version for the given path.
+     * Returns the d version.
      */
     @Nullable
     @Override
@@ -94,7 +94,7 @@ public class DLanguageSdkType extends SdkType {
     }
 
     /**
-     * Suggests a home path two levels up from GHC's reported libdir.
+     * Suggests a home path.
      */
     @Nullable
     @Override

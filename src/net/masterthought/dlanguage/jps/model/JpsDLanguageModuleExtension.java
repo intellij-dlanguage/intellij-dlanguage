@@ -12,7 +12,7 @@ import java.util.List;
 
 
 public class JpsDLanguageModuleExtension extends JpsCompositeElementBase<JpsDLanguageModuleExtension> {
-    public static final JpsElementChildRole<JpsDLanguageModuleExtension> ROLE = JpsElementChildRoleBase.create("Haskell");
+    public static final JpsElementChildRole<JpsDLanguageModuleExtension> ROLE = JpsElementChildRoleBase.create("DLanguage");
 
     private final DLanguageModuleExtensionProperties myProperties;
 

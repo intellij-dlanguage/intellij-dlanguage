@@ -18,8 +18,8 @@ public class JpsDLanguageSdkType extends JpsSdkType<JpsDummyElement> implements 
     }
 
     @NotNull
-    public static File getGhcExecutable(@NotNull final String sdkHome) {
-        return getExecutable(new File(sdkHome, "bin").getAbsolutePath(), "ghc");
+    public static File getDmdExecutable(@NotNull final String sdkHome) {
+        return getExecutable(new File(sdkHome, "bin").getAbsolutePath(), "dmd");
     }
 
     @NotNull
