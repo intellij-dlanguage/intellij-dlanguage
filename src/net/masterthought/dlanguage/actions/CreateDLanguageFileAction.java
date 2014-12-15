@@ -39,7 +39,7 @@ public class CreateDLanguageFileAction extends CreateFileFromTemplateAction impl
     @Override
     protected void buildDialog(Project project, PsiDirectory directory, CreateFileFromTemplateDialog.Builder builder) {
         builder.setTitle(NEW_D_FILE)
-                .addKind("Empty module", DLanguageIcons.FILE, "D Module")
+                .addKind("Empty module", DLanguageIcons.FILE, "D Language Module")
                 .setValidator(new InputValidatorEx() {
                     @Nullable
                     @Override
