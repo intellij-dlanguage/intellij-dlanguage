@@ -142,14 +142,14 @@ public class DLanguageSdkType extends SdkType {
 
     @Nullable
     public static File getExecutable(@NotNull final Project project) {
-        final String sdkPath = getHaskellSdkPath(project);
+        final String sdkPath = getDSdkPath(project);
         return sdkPath == null ? null : getExecutable(sdkPath);
     }
 
     /**
      * Gets the D Language SDK path for a project.
      */
-    public static String getHaskellSdkPath(@NotNull Project project) {
+    public static String getDSdkPath(@NotNull Project project) {
         Sdk sdk = ProjectRootManager.getInstance(project).getProjectSdk();
         // This sdk is not an instanceof DLanguageSdkType. Compare with name instead.
         if (sdk == null || !sdk.getSdkType().toString().equals(JpsDLanguageModelSerializerExtension.DLANGUAGE_SDK_TYPE_ID)) {

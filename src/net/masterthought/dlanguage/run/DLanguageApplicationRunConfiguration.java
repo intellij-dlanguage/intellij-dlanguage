@@ -13,6 +13,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.JDOMExternalizerUtil;
 import com.intellij.openapi.util.WriteExternalException;
+import com.intellij.util.PathUtil;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -23,10 +24,15 @@ import java.util.Collection;
 public class DLanguageApplicationRunConfiguration extends DLanguageRunConfigurationBase {
 
     // Element keys for readExternal and writeExternal to save configuration.
-    public static final String PROGRAM_ARGUMENTS = "PROGRAM_ARGUMENTS";
+//    public static final String PROGRAM_ARGUMENTS = "PROGRAM_ARGUMENTS";
 
     // Local configuration variables.
-    public String programArguments;
+    private @NotNull DLanguageCommandLineRunnerParameters myRunnerParameters = new DLanguageCommandLineRunnerParameters();
+
+    @NotNull
+     public DLanguageCommandLineRunnerParameters getRunnerParameters() {
+       return myRunnerParameters;
+     }
 
     protected DLanguageApplicationRunConfiguration(@NotNull Project project, @NotNull ConfigurationFactory factory) {
         super(project, factory);
@@ -35,7 +41,7 @@ public class DLanguageApplicationRunConfiguration extends DLanguageRunConfigurat
     @NotNull
     @Override
     public DLanguageApplicationRunConfigurationEditorForm getConfigurationEditor() {
-        return new DLanguageApplicationRunConfigurationEditorForm();
+        return new DLanguageApplicationRunConfigurationEditorForm(getProject());
     }
 
     /**
@@ -58,17 +64,29 @@ public class DLanguageApplicationRunConfiguration extends DLanguageRunConfigurat
         return null;
     }
 
-    @Override
-    public void readExternal(Element element) throws InvalidDataException {
-        PathMacroManager.getInstance(getProject()).expandPaths(element);
-        super.readExternal(element);
-        programArguments = JDOMExternalizerUtil.readField(element, PROGRAM_ARGUMENTS);
-    }
+//    @Override
+//    public void readExternal(Element element) throws InvalidDataException {
+//        PathMacroManager.getInstance(getProject()).expandPaths(element);
+//        super.readExternal(element);
+//        programArguments = JDOMExternalizerUtil.readField(element, PROGRAM_ARGUMENTS);
+//    }
+//
+//    @Override
+//    public void writeExternal(Element element) throws WriteExternalException {
+//        super.writeExternal(element);
+//        JDOMExternalizerUtil.writeField(element, PROGRAM_ARGUMENTS, programArguments);
+//        PathMacroManager.getInstance(getProject()).collapsePathsRecursively(element);
+//    }
 
-    @Override
-    public void writeExternal(Element element) throws WriteExternalException {
-        super.writeExternal(element);
-        JDOMExternalizerUtil.writeField(element, PROGRAM_ARGUMENTS, programArguments);
-        PathMacroManager.getInstance(getProject()).collapsePathsRecursively(element);
-    }
+    @Nullable
+     public String suggestedName() {
+       final String filePath = myRunnerParameters.getFilePath();
+       return filePath == null ? null : PathUtil.getFileName(filePath);
+     }
+
+     public DLanguageApplicationRunConfiguration clone() {
+       final DLanguageApplicationRunConfiguration clone = (DLanguageApplicationRunConfiguration)super.clone();
+       clone.myRunnerParameters = myRunnerParameters.clone();
+       return clone;
+     }
 }

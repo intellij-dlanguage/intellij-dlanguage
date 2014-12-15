@@ -36,6 +36,8 @@
         <moduleType id="DLANGUAGE_MODULE" implementationClass="net.masterthought.dlanguage.DLanguageModuleType"/>
         <sdkType implementation="net.masterthought.dlanguage.DLanguageSdkType"/>
         <configurationType implementation="net.masterthought.dlanguage.run.DLanguageApplicationConfigurationType"/>
+        <runConfigurationProducer implementation="net.masterthought.dlanguage.run.DLanguageApplicationRunConfigurationProducer"/>
+
         <programRunner implementation="net.masterthought.dlanguage.run.DLanguageRunner"/>
 
         <!-- Project settings -->

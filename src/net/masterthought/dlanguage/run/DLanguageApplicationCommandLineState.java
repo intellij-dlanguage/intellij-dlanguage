@@ -33,8 +33,18 @@ public class DLanguageApplicationCommandLineState extends CommandLineState {
         final String dmdPath = DLanguageBuildSettings.getInstance(myConfig.getProject()).getDmdPath();
         commandLine.setExePath(dmdPath);
         ParametersList parametersList = commandLine.getParametersList();
-        parametersList.add("-run");
-        parametersList.addParametersString(myConfig.programArguments);
+
+        String args = myConfig.getRunnerParameters().getArguments();
+        if (args != null && !args.isEmpty()) {
+            parametersList.add(args);
+        }
+
+        Boolean withRun = myConfig.getRunnerParameters().isRunDmdMode();
+        if(withRun){
+            parametersList.add("-run");
+        }
+
+        parametersList.addParametersString(myConfig.getRunnerParameters().getFilePath());
         return new OSProcessHandler(commandLine.createProcess());
     }
 }
