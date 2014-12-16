@@ -98,6 +98,8 @@ public class CreateDLanguageFileAction extends CreateFileFromTemplateAction impl
         // letter.
         final String modulePrefix = pathItems == null || invalidPathItems(pathItems) ? "" : StringUtil.join(pathItems, ".");
 
+
+
         // Adapted from super definition.
         CreateFileAction.MkDirs mkdirs = new CreateFileAction.MkDirs(name, dir);
         name = mkdirs.newName;
@@ -137,11 +139,11 @@ public class CreateDLanguageFileAction extends CreateFileFromTemplateAction impl
     }
 
     /**
-     * Returns true if any directory name starts with a lower case letter.
+     * Returns true if any directory name is empty
      */
     private static boolean invalidPathItems(List<String> pathItems) {
         for (String s : pathItems) {
-            if (s.isEmpty() || !StringUtil.isCapitalized(s.substring(0,1))) return true;
+            return s.isEmpty();
         }
         return false;
     }
