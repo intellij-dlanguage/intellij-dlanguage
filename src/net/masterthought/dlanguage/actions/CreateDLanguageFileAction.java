@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
 
 public class CreateDLanguageFileAction extends CreateFileFromTemplateAction implements DumbAware {
     private static final String NEW_D_FILE = "New D File";
-    private static final Pattern VALID_MODULE_NAME_REGEX = Pattern.compile("^([A-Z][A-Za-z0-9]*)(\\.[A-Z][A-Za-z0-9]*)*(.d)?$");
+    private static final Pattern VALID_MODULE_NAME_REGEX = Pattern.compile("^([A-Za-z0-9]*)(\\.[A-Za-z0-9]*)*(.d)?$");
 
     public CreateDLanguageFileAction() {
         super(NEW_D_FILE, "", DLanguageIcons.FILE);
