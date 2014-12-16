@@ -34,10 +34,18 @@ public class DLanguageBuildSettings implements PersistentStateComponent<DLanguag
         return myBuildOptions.myDmdPath;
     }
 
+    @NotNull
+    public String getrDmdPath() {
+        return myBuildOptions.myrDmdPath;
+    }
+
     public void setDmdPath(@NotNull String path) {
         myBuildOptions.myDmdPath = path;
     }
 
+    public void setrDmdPath(@NotNull String path) {
+        myBuildOptions.myrDmdPath = path;
+    }
 
     @NotNull
     public static DLanguageBuildSettings getInstance(@NotNull Project project) {

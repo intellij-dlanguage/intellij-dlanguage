@@ -30,8 +30,11 @@ public class DLanguageApplicationCommandLineState extends CommandLineState {
         GeneralCommandLine commandLine = new GeneralCommandLine();
         commandLine.setWorkDirectory(env.getProject().getBasePath());
         // TODO: This should probably be a bit more generic than relying on `dmd -run`.
+
         final String dmdPath = DLanguageBuildSettings.getInstance(myConfig.getProject()).getDmdPath();
-        commandLine.setExePath(dmdPath);
+        final String rdmdPath = DLanguageBuildSettings.getInstance(myConfig.getProject()).getrDmdPath();
+
+
         ParametersList parametersList = commandLine.getParametersList();
 
         String args = myConfig.getRunnerParameters().getArguments();
@@ -41,7 +44,9 @@ public class DLanguageApplicationCommandLineState extends CommandLineState {
 
         Boolean withRun = myConfig.getRunnerParameters().isRunDmdMode();
         if(withRun){
-            parametersList.add("-run");
+            commandLine.setExePath(rdmdPath);
+        } else {
+            commandLine.setExePath(dmdPath);
         }
 
         parametersList.addParametersString(myConfig.getRunnerParameters().getFilePath());
