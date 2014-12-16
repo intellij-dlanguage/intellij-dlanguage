@@ -73,6 +73,26 @@ D file editor:
 ![d file editor]
 (https://github.com/kingsleyh/DLanguage/raw/master/.README/d_file_editor.png)
 
+Run Configuration menus:
+
+![run configuration menus]
+(https://github.com/kingsleyh/DLanguage/raw/master/.README/run_configuration_menus.png)
+
+Run Configuration create box:
+
+![run configuration create box]
+(https://github.com/kingsleyh/DLanguage/raw/master/.README/run_configuration_create_box.png)
+
+Run Configuration edit:
+
+![run configuration edit]
+(https://github.com/kingsleyh/DLanguage/raw/master/.README/run_configuration_edit.png)
+
+Run Configuration running:
+
+![run configuration running]
+(https://github.com/kingsleyh/DLanguage/raw/master/.README/run_configuration_running.png)
+
 ## Develop
 
 Interested in contributing to this D plugin please contact me at kingsley at masterthought dot net.

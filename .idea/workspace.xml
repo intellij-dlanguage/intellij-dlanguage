@@ -2,17 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="62d9ac08-d8e0-4ce8-ba4a-ee00dbaa175d" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/net/masterthought/dlanguage/run/DLanguageApplicationRunConfigurationProducer.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/net/masterthought/dlanguage/DLanguageBundle.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/net/masterthought/dlanguage/DLanguageBundle.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/net/masterthought/dlanguage/run/DLanguageCommandLineRunnerParameters.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/net/masterthought/dlanguage/DLanguageWritingAccessProvider.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/net/masterthought/dlanguage/run/DLanguageApplicationCommandLineState.java" afterPath="$PROJECT_DIR$/src/net/masterthought/dlanguage/run/DLanguageApplicationCommandLineState.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/net/masterthought/dlanguage/run/DLanguageApplicationRunConfiguration.java" afterPath="$PROJECT_DIR$/src/net/masterthought/dlanguage/run/DLanguageApplicationRunConfiguration.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/net/masterthought/dlanguage/run/DLanguageApplicationRunConfigurationEditorForm.form" afterPath="$PROJECT_DIR$/src/net/masterthought/dlanguage/run/DLanguageApplicationRunConfigurationEditorForm.form" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/net/masterthought/dlanguage/run/DLanguageApplicationRunConfigurationEditorForm.java" afterPath="$PROJECT_DIR$/src/net/masterthought/dlanguage/run/DLanguageApplicationRunConfigurationEditorForm.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/net/masterthought/dlanguage/DLanguageSdkType.java" afterPath="$PROJECT_DIR$/src/net/masterthought/dlanguage/DLanguageSdkType.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/META-INF/plugin.xml" afterPath="$PROJECT_DIR$/META-INF/plugin.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.README/run_configuration_create_box.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.README/run_configuration_edit.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.README/run_configuration_menus.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.README/run_configuration_running.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="DLanguage.iws" />
@@ -42,8 +36,8 @@
       <file leaf-file-name="plugin.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/META-INF/plugin.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1245">
-              <caret line="39" column="63" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="585" max-vertical-offset="1245">
+              <caret line="39" column="0" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -52,11 +46,9 @@
       <file leaf-file-name="DLanguageApplicationRunConfigurationProducer.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/net/masterthought/dlanguage/run/DLanguageApplicationRunConfigurationProducer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1170">
+            <state vertical-scroll-proportion="0.0" vertical-offset="975" max-vertical-offset="1170">
               <caret line="65" column="0" selection-start-line="65" selection-start-column="0" selection-end-line="65" selection-end-column="0" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -71,23 +63,39 @@
       <file leaf-file-name="DLanguageApplicationRunConfiguration.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/net/masterthought/dlanguage/run/DLanguageApplicationRunConfiguration.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1170">
-              <caret line="22" column="73" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
-              <folding />
+            <state vertical-scroll-proportion="0.0" vertical-offset="60" max-vertical-offset="1170">
+              <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="false" />
+                <element signature="e#1439#1440#0" expanded="false" />
+                <element signature="e#1480#1481#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DLanguageApplicationRunConfigurationEditorForm.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="DLanguageApplicationRunConfigurationEditorForm.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/net/masterthought/dlanguage/run/DLanguageApplicationRunConfigurationEditorForm.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.1017402" vertical-offset="332" max-vertical-offset="1455">
-              <caret line="103" column="41" selection-start-line="103" selection-start-column="41" selection-end-line="103" selection-end-column="41" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="332" max-vertical-offset="1455">
+              <caret line="55" column="56" selection-start-line="55" selection-start-column="56" selection-end-line="55" selection-end-column="56" />
               <folding>
-                <element signature="e#1903#1962#0" expanded="true" />
-                <element signature="e#3482#3761#0" expanded="true" />
-                <element signature="e#3760#3761#0" expanded="true" />
+                <element signature="e#2718#4239#0" expanded="true" />
+                <element signature="e#4238#4239#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider editor-type-id="MarkdownPreviewEditor">
+            <state />
+          </provider>
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.45746166" vertical-offset="467" max-vertical-offset="1560">
+              <caret line="53" column="41" selection-start-line="53" selection-start-column="41" selection-end-line="53" selection-end-column="41" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -95,11 +103,16 @@
       <file leaf-file-name="DLanguageBuildSettings.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/net/masterthought/dlanguage/settings/DLanguageBuildSettings.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="615">
+            <state vertical-scroll-proportion="0.0" vertical-offset="195" max-vertical-offset="615">
               <caret line="18" column="25" selection-start-line="18" selection-start-column="25" selection-end-line="18" selection-end-column="25" />
               <folding>
-                <element signature="e#1161#1162#0" expanded="true" />
-                <element signature="e#1208#1209#0" expanded="true" />
+                <element signature="imports" expanded="false" />
+                <element signature="e#967#968#0" expanded="false" />
+                <element signature="e#1004#1005#0" expanded="false" />
+                <element signature="e#1076#1077#0" expanded="false" />
+                <element signature="e#1114#1115#0" expanded="false" />
+                <element signature="e#1260#1261#0" expanded="false" />
+                <element signature="e#1307#1308#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -109,8 +122,22 @@
         <entry file="file://$PROJECT_DIR$/src/net/masterthought/dlanguage/DLanguageSdkType.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0" vertical-offset="885" max-vertical-offset="2145">
-              <caret line="143" column="84" selection-start-line="143" selection-start-column="70" selection-end-line="143" selection-end-column="70" />
-              <folding />
+              <caret line="143" column="70" selection-start-line="143" selection-start-column="70" selection-end-line="143" selection-end-column="70" />
+              <folding>
+                <element signature="imports" expanded="false" />
+                <element signature="e#919#920#0" expanded="false" />
+                <element signature="e#1000#1001#0" expanded="false" />
+                <element signature="e#1116#1117#0" expanded="false" />
+                <element signature="e#1183#1184#0" expanded="false" />
+                <element signature="e#1308#1309#0" expanded="false" />
+                <element signature="e#1350#1351#0" expanded="false" />
+                <element signature="e#1656#1657#0" expanded="false" />
+                <element signature="e#1737#1738#0" expanded="false" />
+                <element signature="e#2509#2510#0" expanded="false" />
+                <element signature="e#2537#2538#0" expanded="false" />
+                <element signature="e#2674#2675#0" expanded="false" />
+                <element signature="e#2728#2729#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -118,9 +145,11 @@
       <file leaf-file-name="DLanguageApplicationCommandLineState.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/net/masterthought/dlanguage/run/DLanguageApplicationCommandLineState.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="675">
+            <state vertical-scroll-proportion="0.0" vertical-offset="450" max-vertical-offset="675">
               <caret line="41" column="71" selection-start-line="41" selection-start-column="71" selection-end-line="41" selection-end-column="71" />
-              <folding />
+              <folding>
+                <element signature="imports" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -128,13 +157,33 @@
       <file leaf-file-name="DLanguageCommandLineRunnerParameters.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/net/masterthought/dlanguage/run/DLanguageCommandLineRunnerParameters.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1710">
-              <caret line="28" column="84" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="13" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="420" max-vertical-offset="1710">
+              <caret line="28" column="13" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="13" />
               <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#1031#1047#0" expanded="true" />
-                <element signature="e#1506#1507#0" expanded="true" />
-                <element signature="e#1541#1542#0" expanded="true" />
+                <element signature="e#1146#1147#0" expanded="false" />
+                <element signature="e#1179#1180#0" expanded="false" />
+                <element signature="e#1243#1244#0" expanded="false" />
+                <element signature="e#1280#1281#0" expanded="false" />
+                <element signature="e#1330#1331#0" expanded="false" />
+                <element signature="e#1364#1365#0" expanded="false" />
+                <element signature="e#1430#1431#0" expanded="false" />
+                <element signature="e#1469#1470#0" expanded="false" />
+                <element signature="e#1600#1601#0" expanded="false" />
+                <element signature="e#1641#1642#0" expanded="false" />
+                <element signature="e#1691#1692#0" expanded="false" />
+                <element signature="e#1725#1726#0" expanded="false" />
+                <element signature="e#1791#1792#0" expanded="false" />
+                <element signature="e#1830#1831#0" expanded="false" />
+                <element signature="e#1887#1888#0" expanded="false" />
+                <element signature="e#1928#1929#0" expanded="false" />
+                <element signature="e#2008#2009#0" expanded="false" />
+                <element signature="e#2061#2062#0" expanded="false" />
+                <element signature="e#2220#2221#0" expanded="false" />
+                <element signature="e#2249#2250#0" expanded="false" />
+                <element signature="e#2517#2518#0" expanded="false" />
+                <element signature="e#2559#2560#0" expanded="false" />
+                <element signature="e#2632#2633#0" expanded="false" />
+                <element signature="e#2687#2688#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -148,7 +197,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/net/masterthought/dlanguage/psi/DLanguageTokenType.java" />
         <option value="$PROJECT_DIR$/src/net/masterthought/dlanguage/DLanguage.flex" />
         <option value="$PROJECT_DIR$/src/net/masterthought/dlanguage/_DLanguageLexer.flex" />
         <option value="$PROJECT_DIR$/src/net/masterthought/dlanguage/DLanguageLexer.java" />
@@ -199,6 +247,7 @@
         <option value="$PROJECT_DIR$/src/net/masterthought/dlanguage/run/DLanguageCommandLineRunnerParameters.java" />
         <option value="$PROJECT_DIR$/src/net/masterthought/dlanguage/run/DLanguageApplicationCommandLineState.java" />
         <option value="$PROJECT_DIR$/src/net/masterthought/dlanguage/run/DLanguageApplicationRunConfigurationEditorForm.java" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -234,7 +283,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -292,54 +340,6 @@
               <option name="myItemId" value="run" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DLanguageApplicationRunConfigurationEditorForm" />
-              <option name="myItemType" value="com.intellij.uiDesigner.projectView.FormNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DLanguage" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DLanguage" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dlanguage" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="run" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DLanguage" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DLanguage" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dlanguage" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="actions" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -355,8 +355,23 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DLanguage" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DLanguage" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value=".README" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -704,22 +719,6 @@
       <envs />
       <method />
     </configuration>
-    <configuration default="true" type="ScalaTestRunConfiguration" factoryName="ScalaTest">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <extension name="scalaCoverage" />
-      <module name="" />
-      <setting name="path" value="" />
-      <setting name="package" value="" />
-      <setting name="vmparams" value="" />
-      <setting name="params" value="" />
-      <setting name="workingDirectory" value="$PROJECT_DIR$" />
-      <setting name="searchForTest" value="Across module dependencies" />
-      <setting name="testName" value="" />
-      <setting name="testKind" value="Class" />
-      <setting name="showProgressMessages" value="true" />
-      <envs />
-      <method />
-    </configuration>
     <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android Application">
       <module name="" />
       <option name="ACTIVITY_CLASS" value="" />
@@ -740,6 +739,22 @@
       <option name="FILTER_LOGCAT_AUTOMATICALLY" value="true" />
       <method />
     </configuration>
+    <configuration default="true" type="ScalaTestRunConfiguration" factoryName="ScalaTest">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <extension name="scalaCoverage" />
+      <module name="" />
+      <setting name="path" value="" />
+      <setting name="package" value="" />
+      <setting name="vmparams" value="" />
+      <setting name="params" value="" />
+      <setting name="workingDirectory" value="$PROJECT_DIR$" />
+      <setting name="searchForTest" value="Across module dependencies" />
+      <setting name="testName" value="" />
+      <setting name="testKind" value="Class" />
+      <setting name="showProgressMessages" value="true" />
+      <envs />
+      <method />
+    </configuration>
     <configuration default="false" name="Plugin" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
       <module name="DLanguage" />
       <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
@@ -754,19 +769,13 @@
       <item index="1" class="java.lang.String" itemvalue="Ruby.b" />
     </list>
   </component>
-  <component name="ShelveChangesManager" show_recycled="false">
-    <recycled_changelist date="1418644389374">
-      <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/updated_module_working.patch" />
-      <option name="DESCRIPTION" value="updated module working" />
-    </recycled_changelist>
-  </component>
+  <component name="ShelveChangesManager" show_recycled="false" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="62d9ac08-d8e0-4ce8-ba4a-ee00dbaa175d" name="Default" comment="" />
-      <changelist id="" name="updated module working" comment="" />
       <created>1418379162675</created>
       <option name="number" value="Default" />
       <updated>1418379162675</updated>
@@ -782,7 +791,8 @@
       <workItem from="1418586867757" duration="1922000" />
       <workItem from="1418589341909" duration="7285000" />
       <workItem from="1418627911634" duration="284000" />
-      <workItem from="1418628222375" duration="14684000" />
+      <workItem from="1418628222375" duration="15308000" />
+      <workItem from="1418688165988" duration="695000" />
     </task>
     <task id="LOCAL-00001" summary="updated but module broken">
       <created>1418588831404</created>
@@ -820,11 +830,17 @@
       <option name="project" value="LOCAL" />
       <updated>1418648745702</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="got context menu run as / build configurations working">
+      <created>1418686513052</created>
+      <option name="number" value="00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1418686513052</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="64076000" />
+    <option name="totallyTimeSpent" value="65395000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="461" y="72" width="1974" height="1243" extended-state="0" />
@@ -836,24 +852,24 @@
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3292789" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32580364" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32406604" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23809524" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23979148" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="PsiViewer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32580364" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32406604" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23979148" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -874,8 +890,8 @@
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32614556" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3297568" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32479784" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -899,7 +915,8 @@
     </option>
     <MESSAGE value="updated but module broken" />
     <MESSAGE value="updated module working" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated module working" />
+    <MESSAGE value="got context menu run as / build configurations working" />
+    <option name="LAST_COMMIT_MESSAGE" value="got context menu run as / build configurations working" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -910,13 +927,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/gen/net/masterthought/dlanguage/parser/DLanguageParser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="323" max-vertical-offset="8100">
-          <caret line="39" column="17" selection-start-line="39" selection-start-column="17" selection-end-line="39" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/net/masterthought/dlanguage/DLanguageLexerAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="270">
@@ -1019,7 +1029,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-1.3013699" vertical-offset="705" max-vertical-offset="2625">
           <caret line="36" column="13" selection-start-line="36" selection-start-column="13" selection-end-line="36" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1047,9 +1056,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="195" max-vertical-offset="2280">
           <caret line="41" column="74" selection-start-line="41" selection-start-column="74" selection-end-line="41" selection-end-column="74" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1057,7 +1063,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-1.875" vertical-offset="0" max-vertical-offset="150">
           <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1065,7 +1070,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="270">
           <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1073,7 +1077,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="570">
           <caret line="14" column="121" selection-start-line="14" selection-start-column="121" selection-end-line="14" selection-end-column="121" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1081,7 +1084,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="12" max-vertical-offset="1170">
           <caret line="77" column="67" selection-start-line="77" selection-start-column="67" selection-end-line="77" selection-end-column="67" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1089,7 +1091,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="405">
           <caret line="17" column="28" selection-start-line="17" selection-start-column="28" selection-end-line="17" selection-end-column="28" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1097,7 +1098,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="645">
           <caret line="11" column="20" selection-start-line="11" selection-start-column="20" selection-end-line="11" selection-end-column="20" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1105,7 +1105,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="345">
           <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1113,7 +1112,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="240">
           <caret line="9" column="42" selection-start-line="9" selection-start-column="42" selection-end-line="9" selection-end-column="42" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1121,7 +1119,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="225">
           <caret line="4" column="48" selection-start-line="4" selection-start-column="48" selection-end-line="4" selection-end-column="48" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1137,7 +1134,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.30120483" vertical-offset="0" max-vertical-offset="19140">
           <caret line="15" column="46" selection-start-line="15" selection-start-column="46" selection-end-line="15" selection-end-column="46" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1145,10 +1141,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="435">
           <caret line="27" column="72" selection-start-line="27" selection-start-column="68" selection-end-line="27" selection-end-column="68" />
-          <folding>
-            <element signature="e#1051#1052#0" expanded="true" />
-            <element signature="e#1126#1127#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1156,9 +1148,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1125">
           <caret line="33" column="40" selection-start-line="33" selection-start-column="40" selection-end-line="33" selection-end-column="40" />
-          <folding>
-            <element signature="e#1572#1573#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1174,7 +1163,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.3328877" vertical-offset="126" max-vertical-offset="4785">
           <caret line="65" column="9" selection-start-line="65" selection-start-column="9" selection-end-line="65" selection-end-column="9" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1183,9 +1171,9 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="390">
           <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#440#441#0" expanded="true" />
-            <element signature="e#482#483#0" expanded="true" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#440#441#0" expanded="false" />
+            <element signature="e#482#483#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1202,10 +1190,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="290" max-vertical-offset="4080">
           <caret line="64" column="22" selection-start-line="64" selection-start-column="22" selection-end-line="64" selection-end-column="22" />
-          <folding>
-            <element signature="e#3198#3199#0" expanded="false" />
-            <element signature="e#3230#3231#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1213,7 +1197,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33293977" vertical-offset="198" max-vertical-offset="3630">
           <caret line="46" column="9" selection-start-line="46" selection-start-column="9" selection-end-line="46" selection-end-column="9" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1238,7 +1221,7 @@
         <state vertical-scroll-proportion="0.5312869" vertical-offset="0" max-vertical-offset="847">
           <caret line="30" column="75" selection-start-line="30" selection-start-column="5" selection-end-line="30" selection-end-column="5" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1248,16 +1231,20 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="158" max-vertical-offset="1005">
           <caret line="50" column="42" selection-start-line="50" selection-start-column="17" selection-end-line="50" selection-end-column="17" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/net/masterthought/dlanguage/run/DLanguageApplicationRunConfiguration.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1170">
-          <caret line="22" column="73" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
-          <folding />
+        <state vertical-scroll-proportion="0.0" vertical-offset="60" max-vertical-offset="1170">
+          <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#1439#1440#0" expanded="false" />
+            <element signature="e#1480#1481#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1270,16 +1257,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1170">
           <caret line="65" column="0" selection-start-line="65" selection-start-column="0" selection-end-line="65" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/META-INF/plugin.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1245">
-          <caret line="39" column="63" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="585" max-vertical-offset="1245">
+          <caret line="39" column="0" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1288,15 +1273,28 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.12396694" vertical-offset="0" max-vertical-offset="847">
           <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/net/masterthought/dlanguage/DLanguageSdkType.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="885" max-vertical-offset="2145">
-          <caret line="143" column="84" selection-start-line="143" selection-start-column="70" selection-end-line="143" selection-end-column="70" />
-          <folding />
+          <caret line="143" column="70" selection-start-line="143" selection-start-column="70" selection-end-line="143" selection-end-column="70" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#919#920#0" expanded="false" />
+            <element signature="e#1000#1001#0" expanded="false" />
+            <element signature="e#1116#1117#0" expanded="false" />
+            <element signature="e#1183#1184#0" expanded="false" />
+            <element signature="e#1308#1309#0" expanded="false" />
+            <element signature="e#1350#1351#0" expanded="false" />
+            <element signature="e#1656#1657#0" expanded="false" />
+            <element signature="e#1737#1738#0" expanded="false" />
+            <element signature="e#2509#2510#0" expanded="false" />
+            <element signature="e#2537#2538#0" expanded="false" />
+            <element signature="e#2674#2675#0" expanded="false" />
+            <element signature="e#2728#2729#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1305,21 +1303,46 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="615">
           <caret line="18" column="25" selection-start-line="18" selection-start-column="25" selection-end-line="18" selection-end-column="25" />
           <folding>
-            <element signature="e#1161#1162#0" expanded="true" />
-            <element signature="e#1208#1209#0" expanded="true" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#967#968#0" expanded="false" />
+            <element signature="e#1004#1005#0" expanded="false" />
+            <element signature="e#1076#1077#0" expanded="false" />
+            <element signature="e#1114#1115#0" expanded="false" />
+            <element signature="e#1260#1261#0" expanded="false" />
+            <element signature="e#1307#1308#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/net/masterthought/dlanguage/run/DLanguageCommandLineRunnerParameters.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1710">
-          <caret line="28" column="84" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="13" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="420" max-vertical-offset="1710">
+          <caret line="28" column="13" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="13" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1031#1047#0" expanded="true" />
-            <element signature="e#1506#1507#0" expanded="true" />
-            <element signature="e#1541#1542#0" expanded="true" />
+            <element signature="e#1146#1147#0" expanded="false" />
+            <element signature="e#1179#1180#0" expanded="false" />
+            <element signature="e#1243#1244#0" expanded="false" />
+            <element signature="e#1280#1281#0" expanded="false" />
+            <element signature="e#1330#1331#0" expanded="false" />
+            <element signature="e#1364#1365#0" expanded="false" />
+            <element signature="e#1430#1431#0" expanded="false" />
+            <element signature="e#1469#1470#0" expanded="false" />
+            <element signature="e#1600#1601#0" expanded="false" />
+            <element signature="e#1641#1642#0" expanded="false" />
+            <element signature="e#1691#1692#0" expanded="false" />
+            <element signature="e#1725#1726#0" expanded="false" />
+            <element signature="e#1791#1792#0" expanded="false" />
+            <element signature="e#1830#1831#0" expanded="false" />
+            <element signature="e#1887#1888#0" expanded="false" />
+            <element signature="e#1928#1929#0" expanded="false" />
+            <element signature="e#2008#2009#0" expanded="false" />
+            <element signature="e#2061#2062#0" expanded="false" />
+            <element signature="e#2220#2221#0" expanded="false" />
+            <element signature="e#2249#2250#0" expanded="false" />
+            <element signature="e#2517#2518#0" expanded="false" />
+            <element signature="e#2559#2560#0" expanded="false" />
+            <element signature="e#2632#2633#0" expanded="false" />
+            <element signature="e#2687#2688#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1328,19 +1351,31 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="675">
           <caret line="41" column="71" selection-start-line="41" selection-start-column="71" selection-end-line="41" selection-end-column="71" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/net/masterthought/dlanguage/run/DLanguageApplicationRunConfigurationEditorForm.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.1017402" vertical-offset="332" max-vertical-offset="1455">
-          <caret line="103" column="41" selection-start-line="103" selection-start-column="41" selection-end-line="103" selection-end-column="41" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="332" max-vertical-offset="1455">
+          <caret line="55" column="56" selection-start-line="55" selection-start-column="56" selection-end-line="55" selection-end-column="56" />
           <folding>
-            <element signature="e#1903#1962#0" expanded="true" />
-            <element signature="e#3482#3761#0" expanded="true" />
-            <element signature="e#3760#3761#0" expanded="true" />
+            <element signature="e#2718#4239#0" expanded="true" />
+            <element signature="e#4238#4239#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider editor-type-id="MarkdownPreviewEditor">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.45746166" vertical-offset="467" max-vertical-offset="1560">
+          <caret line="53" column="41" selection-start-line="53" selection-start-column="41" selection-end-line="53" selection-end-column="41" />
+          <folding />
         </state>
       </provider>
     </entry>
