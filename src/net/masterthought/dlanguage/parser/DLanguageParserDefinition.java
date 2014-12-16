@@ -11,11 +11,9 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.tree.IFileElementType;
 import com.intellij.psi.tree.IStubFileElementType;
 import com.intellij.psi.tree.TokenSet;
-
-
 import net.masterthought.dlanguage.DLanguage;
 import net.masterthought.dlanguage.lexer.DLexer;
-import net.masterthought.dlanguage.lexer.DTokenType;
+import net.masterthought.dlanguage.psi.DLanguageTokenType;
 import org.jetbrains.annotations.NotNull;
 
 public class DLanguageParserDefinition implements ParserDefinition {
@@ -41,19 +39,19 @@ public class DLanguageParserDefinition implements ParserDefinition {
     @NotNull
     @Override
     public TokenSet getWhitespaceTokens() {
-        return DTokenType.WHITESPACES;
+        return DLanguageTokenType.WHITESPACES;
     }
 
     @NotNull
     @Override
     public TokenSet getCommentTokens() {
-        return DTokenType.COMMENTS;
+        return DLanguageTokenType.COMMENTS;
     }
 
     @NotNull
     @Override
     public TokenSet getStringLiteralElements() {
-        return DTokenType.STRING_LITERALS;
+        return DLanguageTokenType.STRING_LITERALS;
     }
 
     @NotNull

@@ -8,7 +8,10 @@ import javax.swing.*;
 
 public class DLanguageFileType extends LanguageFileType {
 
-    public static final DLanguageFileType INSTANCE = new DLanguageFileType();
+    public static final LanguageFileType INSTANCE = new DLanguageFileType();
+
+    public static final String SOURCE_EXTENSION = "d";
+    public static final String HEADER_EXTENSION = "di";
 
     private DLanguageFileType() {
         super(DLanguage.INSTANCE);
@@ -17,25 +20,29 @@ public class DLanguageFileType extends LanguageFileType {
     @NotNull
     @Override
     public String getName() {
-        return "D file";
+        return "D";
     }
 
     @NotNull
     @Override
     public String getDescription() {
-        return "D language file";
+        return "D files";
     }
 
     @NotNull
     @Override
     public String getDefaultExtension() {
-        return "d";
+        return SOURCE_EXTENSION;
     }
+
+    public String getHeaderExtension() { return HEADER_EXTENSION;}
 
     @Nullable
     @Override
     public Icon getIcon() {
         return DLanguageIcons.FILE;
     }
-
 }
+
+
+

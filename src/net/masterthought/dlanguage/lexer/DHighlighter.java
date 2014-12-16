@@ -6,6 +6,7 @@ import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
+import net.masterthought.dlanguage.psi.DLanguageTokenType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -30,7 +31,7 @@ public class DHighlighter extends SyntaxHighlighterBase {
     @Override
     public TextAttributesKey[] getTokenHighlights(final IElementType tokenType) {
 
-        TokenSet set = DTokenType.findSet(tokenType);
+        TokenSet set = DLanguageTokenType.findSet(tokenType);
         if (set == null) {
             return EMPTY;
         }
@@ -103,13 +104,13 @@ public class DHighlighter extends SyntaxHighlighterBase {
         keys.put(DTokenType.DOC_LINE_COMMENT, DOC_COMMENT);
 */
 
-        keys.put(DTokenType.COMMENTS, COMMENTS);
-        keys.put(DTokenType.PARENS, pack(PARENS));
-        keys.put(DTokenType.BRACE, pack(BRACES));
-        keys.put(DTokenType.BRACKET, pack(BRACKETS));
-        keys.put(DTokenType.OPERATOR, pack(OPERATOR));
-        keys.put(DTokenType.KEYWORD, pack(KEYWORD));
-        keys.put(DTokenType.STRING_LITERALS, pack(STRING_LITERAL));
+        keys.put(DLanguageTokenType.COMMENTS, COMMENTS);
+        keys.put(DLanguageTokenType.PARENS, pack(PARENS));
+        keys.put(DLanguageTokenType.BRACE, pack(BRACES));
+        keys.put(DLanguageTokenType.BRACKET, pack(BRACKETS));
+        keys.put(DLanguageTokenType.OPERATOR, pack(OPERATOR));
+        keys.put(DLanguageTokenType.KEYWORD, pack(KEYWORD));
+        keys.put(DLanguageTokenType.STRING_LITERALS, pack(STRING_LITERAL));
 
 /*
         keys.put(DTokenType.STRING_LITERAL, STRING_LITERAL);

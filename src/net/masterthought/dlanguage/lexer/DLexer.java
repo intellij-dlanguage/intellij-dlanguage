@@ -5,6 +5,7 @@ import com.intellij.lexer.LexerPosition;
 import com.intellij.psi.tree.IElementType;
 import ddt.dtool.parser.DeeLexer;
 import ddt.dtool.parser.common.Token;
+import net.masterthought.dlanguage.psi.DLanguageTokenType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -49,7 +50,7 @@ public class DLexer extends Lexer {
             return null;
         }
 
-        return DTokenType.valueOf(token.getType());
+        return DLanguageTokenType.valueOf(token.getType());
     }
 
     @Override

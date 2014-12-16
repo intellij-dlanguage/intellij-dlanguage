@@ -4,6 +4,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiParser;
 import com.intellij.psi.tree.IElementType;
+import ddt.dtool.parser.DeeParser;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -26,6 +27,10 @@ public class DParser implements PsiParser {
 
         // Now convert Descent AST tree into IntelliJ types
         // TODO
-        return null;
+//        return null;
+
+        DeeParser deeParser = new DeeParser(builder.getOriginalText().toString());
+
+        return (ASTNode) deeParser.parseRefModule();
     }
 }
