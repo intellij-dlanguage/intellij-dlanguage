@@ -40,7 +40,7 @@ public class DLanguageApplicationRunConfigurationProducer extends RunConfigurati
         final PsiFile psiFile = psiLocation == null ? null : psiLocation.getContainingFile();
         final VirtualFile virtualFile = getRealVirtualFile(psiFile);
 
-        if (isDLanguageFile(psiFile) &&
+        if ((psiFile instanceof DLanguageFile) &&
                 virtualFile != null &&
                 ProjectRootManager.getInstance(context.getProject()).getFileIndex().isInContent(virtualFile) &&
                 !DLanguageWritingAccessProvider.isInDLanguageSdkOrDLanguagePackagesFolder(psiFile.getProject(), virtualFile)) {
@@ -48,14 +48,6 @@ public class DLanguageApplicationRunConfigurationProducer extends RunConfigurati
         }
 
         return null;
-    }
-
-    private static boolean isDLanguageFile(PsiFile psiFile) {
-        try {
-            return psiFile.getFileType() instanceof DLanguageFileType;
-        } catch (Exception e) {
-            return false;
-        }
     }
 
     @Override

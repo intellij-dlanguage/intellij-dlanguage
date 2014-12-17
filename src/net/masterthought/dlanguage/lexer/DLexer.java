@@ -6,7 +6,6 @@ import com.intellij.psi.tree.IElementType;
 import ddt.dtool.parser.DeeLexer;
 import ddt.dtool.parser.common.Token;
 import net.masterthought.dlanguage.psi.DLanguageTokenType;
-import net.masterthought.dlanguage.psi.ElementTypes;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

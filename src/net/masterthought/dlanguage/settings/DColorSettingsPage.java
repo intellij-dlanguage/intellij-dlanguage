@@ -1,14 +1,16 @@
-package net.masterthought.dlanguage;
+package net.masterthought.dlanguage.settings;
 
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighter;
 import com.intellij.openapi.options.colors.AttributesDescriptor;
 import com.intellij.openapi.options.colors.ColorDescriptor;
 import com.intellij.openapi.options.colors.ColorSettingsPage;
+import net.masterthought.dlanguage.DLanguageFileType;
+import net.masterthought.dlanguage.DLanguageIcons;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import net.masterthought.dlanguage.lexer.DHighlighter;
+import net.masterthought.dlanguage.highlighting.DHighlighter;
 
 import javax.swing.Icon;
 import java.util.Map;

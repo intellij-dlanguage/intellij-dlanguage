@@ -25,6 +25,8 @@ public abstract class DLanguageTokenType implements com.intellij.psi.TokenType {
     // Some explicit tokens
 //    public static final IElementType UNKNOWN = valueOf("Unknown");
 
+    public static final DLanguageElementType KW_MODULE = valueOf(DeeTokens.KW_MODULE);
+
     public static final DLanguageElementType LINE_COMMENT = valueOf(DeeTokens.COMMENT_LINE);
     public static final DLanguageElementType DOC_LINE_COMMENT = valueOf(DeeTokens.DOCCOMMENT_LINE);
     public static final DLanguageElementType BLOCK_COMMENT = valueOf(DeeTokens.COMMENT_MULTI);
@@ -37,6 +39,15 @@ public abstract class DLanguageTokenType implements com.intellij.psi.TokenType {
     public static final DLanguageElementType STRING_LITERAL = valueOf(DeeTokens.STRING_DQ);
     public static final DLanguageElementType WSTR_LITERAL = valueOf(DeeTokens.KW_DCHAR);
     public static final DLanguageElementType DSTR_LITERAL = valueOf(DeeTokens.KW_WCHAR);
+
+
+    public static final DLanguageElementType OPEN_PARENS = valueOf(DeeTokens.OPEN_PARENS);
+    public static final DLanguageElementType CLOSE_PARENS = valueOf(DeeTokens.CLOSE_PARENS);
+    public static final DLanguageElementType OPEN_BRACE = valueOf(DeeTokens.OPEN_BRACE);
+    public static final DLanguageElementType CLOSE_BRACE = valueOf(DeeTokens.CLOSE_BRACE);
+    public static final DLanguageElementType OPEN_BRACKET = valueOf(DeeTokens.OPEN_BRACKET);
+    public static final DLanguageElementType CLOSE_BRACKET = valueOf(DeeTokens.CLOSE_BRACKET);
+
 
     public static final DLanguageElementType IDENTIFIER = valueOf(DeeTokens.IDENTIFIER);
 
@@ -66,12 +77,9 @@ public abstract class DLanguageTokenType implements com.intellij.psi.TokenType {
     public static final TokenSet FLOAT_LITERALS = TokenSet.create(valueOf(DeeTokens.FLOAT_DECIMAL),
             valueOf(DeeTokens.FLOAT_HEX));
 
-    public static final TokenSet PARENS = TokenSet.create(valueOf(DeeTokens.OPEN_PARENS),
-            valueOf(DeeTokens.CLOSE_PARENS));
-    public static final TokenSet BRACE = TokenSet.create(valueOf(DeeTokens.OPEN_BRACE),
-            valueOf(DeeTokens.CLOSE_BRACE));
-    public static final TokenSet BRACKET = TokenSet.create(valueOf(DeeTokens.OPEN_BRACKET),
-            valueOf(DeeTokens.CLOSE_BRACKET));
+    public static final TokenSet PARENS = TokenSet.create(OPEN_PARENS,CLOSE_PARENS);
+    public static final TokenSet BRACE = TokenSet.create(OPEN_BRACE,CLOSE_BRACE);
+    public static final TokenSet BRACKET = TokenSet.create(OPEN_BRACKET,CLOSE_BRACKET);
 
     public static final TokenSet KEYWORD;
     public static final TokenSet OPERATOR;
@@ -136,7 +144,7 @@ public abstract class DLanguageTokenType implements com.intellij.psi.TokenType {
                 valueOf(DeeTokens.KW_LONG),
                 valueOf(DeeTokens.KW_MACRO),
                 valueOf(DeeTokens.KW_MIXIN),
-                valueOf(DeeTokens.KW_MODULE),
+                KW_MODULE,
                 valueOf(DeeTokens.KW_NEW),
                 valueOf(DeeTokens.KW_NOTHROW),
                 valueOf(DeeTokens.KW_NULL),

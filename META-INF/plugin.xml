@@ -27,8 +27,9 @@
         <fileTypeFactory implementation="net.masterthought.dlanguage.DLanguageFileTypeFactory"/>
         <lang.parserDefinition language="D"
                                implementationClass="net.masterthought.dlanguage.parser.DLanguageParserDefinition"/>
-        <lang.syntaxHighlighterFactory key="D" implementationClass="net.masterthought.dlanguage.DHighlighterFactory"/>
-        <colorSettingsPage implementation="net.masterthought.dlanguage.DColorSettingsPage"/>
+        <lang.syntaxHighlighterFactory key="D"
+                                       implementationClass="net.masterthought.dlanguage.highlighting.DHighlighterFactory"/>
+        <colorSettingsPage implementation="net.masterthought.dlanguage.settings.DColorSettingsPage"/>
 
 
         <!-- D Language support -->
@@ -36,7 +37,8 @@
         <moduleType id="DLANGUAGE_MODULE" implementationClass="net.masterthought.dlanguage.DLanguageModuleType"/>
         <sdkType implementation="net.masterthought.dlanguage.DLanguageSdkType"/>
         <configurationType implementation="net.masterthought.dlanguage.run.DLanguageApplicationConfigurationType"/>
-        <runConfigurationProducer implementation="net.masterthought.dlanguage.run.DLanguageApplicationRunConfigurationProducer"/>
+        <runConfigurationProducer
+                implementation="net.masterthought.dlanguage.run.DLanguageApplicationRunConfigurationProducer"/>
 
         <programRunner implementation="net.masterthought.dlanguage.run.DLanguageRunner"/>
 
@@ -53,6 +55,20 @@
         <!-- File -> Project Structure dialogue. -->
         <!--<moduleConfigurationEditorProvider implementation="net.masterthought.dlanguage.settings.DLanguageModuleConfigurationEditor" order="first"/>-->
         <!-- Tab in IntelliJ -> Preferences -->
+
+        <!-- References/navigation -->
+        <!--<codeInsight.lineMarkerProvider language="Haskell"-->
+        <!--implementationClass="com.haskforce.codeInsight.HaskellLineMarkerProvider"/>-->
+        <!--<psi.referenceContributor implementation="com.haskforce.psi.references.HaskellReferenceContributor"/>-->
+        <!--<lang.findUsagesProvider language="D"-->
+        <!--implementationClass="net.masterthought.dlanguage.codeinsight.DFindUsagesProvider"/>-->
+        <!--<gotoSymbolContributor implementation="com.haskforce.features.HaskellChooseByNameContributor"/>-->
+
+        <lang.foldingBuilder language="D" implementationClass="net.masterthought.dlanguage.features.DFoldingBuilder"/>
+
+        <!-- Editing utils -->
+        <lang.braceMatcher language="D" implementationClass="net.masterthought.dlanguage.features.DBraceMatcher"/>
+
 
     </extensions>
 

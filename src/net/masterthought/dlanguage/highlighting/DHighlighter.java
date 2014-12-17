@@ -1,4 +1,4 @@
-package net.masterthought.dlanguage.lexer;
+package net.masterthought.dlanguage.highlighting;
 
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;

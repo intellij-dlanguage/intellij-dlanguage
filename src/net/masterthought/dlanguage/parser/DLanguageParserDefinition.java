@@ -12,9 +12,9 @@ import com.intellij.psi.tree.IFileElementType;
 import com.intellij.psi.tree.TokenSet;
 import net.masterthought.dlanguage.DLanguage;
 import net.masterthought.dlanguage.lexer.DLexer;
+import net.masterthought.dlanguage.psi.DLanguageFile;
 import net.masterthought.dlanguage.psi.DLanguageTokenType;
 import net.masterthought.dlanguage.psi.ElementTypes;
-import net.masterthought.dlanguage.psi.FileImpl;
 import org.jetbrains.annotations.NotNull;
 
 public class DLanguageParserDefinition implements ParserDefinition {
@@ -64,7 +64,7 @@ public class DLanguageParserDefinition implements ParserDefinition {
 
     @Override
     public PsiFile createFile(final FileViewProvider viewProvider) {
-        return new FileImpl(viewProvider);
+        return new DLanguageFile(viewProvider);
     }
 
     @Override

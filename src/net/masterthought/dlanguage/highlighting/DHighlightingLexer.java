@@ -1,6 +1,7 @@
-package net.masterthought.dlanguage.lexer;
+package net.masterthought.dlanguage.highlighting;
 
 import com.intellij.lexer.LayeredLexer;
+import net.masterthought.dlanguage.lexer.DLexer;
 
 /**
  *
