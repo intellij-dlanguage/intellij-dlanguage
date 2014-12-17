@@ -20,7 +20,7 @@ public class DLanguageFileType extends LanguageFileType {
     @NotNull
     @Override
     public String getName() {
-        return "D";
+        return "D file";
     }
 
     @NotNull

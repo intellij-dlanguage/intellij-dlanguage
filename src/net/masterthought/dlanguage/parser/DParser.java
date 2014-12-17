@@ -26,7 +26,7 @@ public class DParser implements PsiParser {
 
         rootMarker.done(root);
         ASTNode ret = builder.getTreeBuilt();
-        System.out.println(ret);
+//        System.out.println(ret);
         return ret;
     }
 
@@ -45,9 +45,9 @@ public class DParser implements PsiParser {
 
             item = builder.mark();
 
-            System.out.println(tokenType);
-            System.out.println(builder.getTokenText());
-            System.out.println(builder.getCurrentOffset());
+//            System.out.println(tokenType);
+//            System.out.println(builder.getTokenText());
+//            System.out.println(builder.getCurrentOffset());
 
             //builder.advanceLexer();
             builder.advanceLexer();
