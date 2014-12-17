@@ -6,12 +6,13 @@ import com.intellij.psi.tree.IElementType;
 import ddt.dtool.parser.DeeLexer;
 import ddt.dtool.parser.common.Token;
 import net.masterthought.dlanguage.psi.DLanguageTokenType;
+import net.masterthought.dlanguage.psi.ElementTypes;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * IntelliJ Lexer for D, wrapper for the ParseD lexer.
- */
+* IntelliJ Lexer for D, wrapper for the ParseD lexer.
+*/
 public class DLexer extends Lexer {
     private CharSequence buffer;
 
@@ -49,6 +50,7 @@ public class DLexer extends Lexer {
         if (token == null) {
             return null;
         }
+
 
         return DLanguageTokenType.valueOf(token.getType());
     }

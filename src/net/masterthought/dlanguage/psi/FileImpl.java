@@ -9,9 +9,8 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
-public class DLanguageFile extends PsiFileBase {
-
-    public DLanguageFile(@NotNull FileViewProvider viewProvider) {
+public class FileImpl extends PsiFileBase {
+    public FileImpl(@NotNull FileViewProvider viewProvider) {
         super(viewProvider, DLanguage.INSTANCE);
     }
 
@@ -30,5 +29,4 @@ public class DLanguageFile extends PsiFileBase {
     public Icon getIcon(int flags) {
         return super.getIcon(flags);
     }
-
 }

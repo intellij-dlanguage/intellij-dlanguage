@@ -9,16 +9,17 @@ import com.intellij.psi.FileViewProvider;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.tree.IFileElementType;
-import com.intellij.psi.tree.IStubFileElementType;
 import com.intellij.psi.tree.TokenSet;
 import net.masterthought.dlanguage.DLanguage;
 import net.masterthought.dlanguage.lexer.DLexer;
 import net.masterthought.dlanguage.psi.DLanguageTokenType;
+import net.masterthought.dlanguage.psi.ElementTypes;
+import net.masterthought.dlanguage.psi.FileImpl;
 import org.jetbrains.annotations.NotNull;
 
 public class DLanguageParserDefinition implements ParserDefinition {
 
-    private static final IFileElementType FILE_ELEMENT_TYPE = new IStubFileElementType(DLanguage.INSTANCE);
+    public static final IFileElementType FILE_ELEMENT_TYPE = new IFileElementType(DLanguage.INSTANCE);
 
     @NotNull
     @Override
@@ -57,12 +58,13 @@ public class DLanguageParserDefinition implements ParserDefinition {
     @NotNull
     @Override
     public PsiElement createElement(final ASTNode node) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        PsiElement ret = ElementTypes.Factory.createElement(node);
+        return ret;
     }
 
     @Override
     public PsiFile createFile(final FileViewProvider viewProvider) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return new FileImpl(viewProvider);
     }
 
     @Override

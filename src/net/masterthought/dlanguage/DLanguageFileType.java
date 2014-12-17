@@ -26,7 +26,7 @@ public class DLanguageFileType extends LanguageFileType {
     @NotNull
     @Override
     public String getDescription() {
-        return "D files";
+        return "D file";
     }
 
     @NotNull

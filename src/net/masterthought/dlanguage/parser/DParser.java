@@ -3,8 +3,8 @@ package net.masterthought.dlanguage.parser;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiParser;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.psi.tree.IElementType;
-import ddt.dtool.parser.DeeParser;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -12,25 +12,49 @@ import org.jetbrains.annotations.NotNull;
  */
 public class DParser implements PsiParser {
 
-    public DParser() { }
+    public DParser() {
+    }
 
 
     @NotNull
     @Override
     public ASTNode parse(final IElementType root, final PsiBuilder builder) {
-/*
-        // Create a Descent parser, and parse into AST tree
-        // Doesn't actually use previous lexation
-        Parser parser = new Parser(Parser.D2, builder.getOriginalText().toString());
-        Module module = parser.parseModuleObj();
-*/
+        builder.setDebugMode(ApplicationManager.getApplication().isUnitTestMode());
+        PsiBuilder.Marker rootMarker = builder.mark();
 
-        // Now convert Descent AST tree into IntelliJ types
-        // TODO
-//        return null;
+        parseItem(builder);
 
-        DeeParser deeParser = new DeeParser(builder.getOriginalText().toString());
+        rootMarker.done(root);
+        ASTNode ret = builder.getTreeBuilt();
+        System.out.println(ret);
+        return ret;
+    }
 
-        return (ASTNode) deeParser.parseRefModule();
+    private void parseItem(PsiBuilder builder) {
+        //PsiBuilder.Marker section = builder.mark();
+        PsiBuilder.Marker item;
+        IElementType tokenType = null;
+
+        while (!builder.eof()) {
+            tokenType = builder.getTokenType();
+
+            if (tokenType == null) {
+                //item.drop();
+                break;
+            }
+
+            item = builder.mark();
+
+            System.out.println(tokenType);
+            System.out.println(builder.getTokenText());
+            System.out.println(builder.getCurrentOffset());
+
+            //builder.advanceLexer();
+            builder.advanceLexer();
+            item.collapse(tokenType);
+            //builder.advanceLexer();
+        }
+
+        //section.done(ElementTypes.UNKNOWN);
     }
 }
