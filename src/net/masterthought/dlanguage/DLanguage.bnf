@@ -105,7 +105,7 @@
   Void =  "void"
   Wchar =  "wchar"
   Align =  "align"
-  Deprecated =  "deprecated"
+  TDeprecated =  "deprecated"
   Extern =  "extern"
   Pragma =  "pragma"
   Export =  "export"
@@ -131,7 +131,7 @@
   Break =  "break"
   Case =  "case"
   Cast =  "cast"
-  Catch =  "catch"
+  TCatch =  "catch"
   Class =  "class"
   Continue =  "continue"
   Debug =  "debug"
@@ -142,7 +142,7 @@
   Else =  "else"
   Enum =  "enum"
   False =  "false"
-  Finally =  "finally"
+  TFinally =  "finally"
   Foreach =  "foreach"
   Foreach_reverse =  "foreach_reverse"
   For =  "for"
@@ -151,12 +151,12 @@
   Import =  "import"
   In =  "in"
   Interface =  "interface"
-  Invariant =  "invariant"
+  TInvariant =  "invariant"
   Is =  "is"
   Lazy =  "lazy"
   Macro =  "macro"
   Mixin =  "mixin"
-  Module =  "module"
+  TModule =  "module"
   New =  "new"
   Nothrow =  "nothrow"
   Null =  "null"
@@ -177,7 +177,7 @@
   Typeid =  "typeid"
   Typeof =  "typeof"
   Union =  "union"
-  Unittest =  "unittest"
+  TUnittest =  "unittest"
   Version =  "version"
   Volatile =  "volatile"
   While =  "while"
@@ -194,76 +194,8 @@
   SpecialFunction = "__FUNCTION__"
   SpecialPrettyFunction = "__PRETTY_FUNCTION__"
   Traits = "__traits"
-  Parameters = "__parameters"
-  Vector = "__vector"
-  Whitespace = "regexp:[\u0020\u0009\u000b\u000c\u000a\u000d]+"
-  Space = "[\u0020\u0009\u000B\u000C]"
-  EndOfLine = "regexp:(\u000d|\u000a|\u000d\u000a|\u2028|\u2029)"
-  Character =  "regexp:[\u0001-\uffff]"
-  HexDigit = "regexp:[a-fA-F0-9]"
-  OctalDigit = "regexp:[0-7]"
-  BinDigit = "regexp:[01]"
-  DecimalDigit = "regexp:[0-9]"
-  BlockComment = "regexp:\/*.*? *\/"
-  Identifier = "regexp:([a-zA-Z_])([a-zA-Z0-9_])*"
-  LineComment = "regexp://(~[\u000D\u000A\u2028\u2029])* (\u000d|\u000a|\u000d\u000a|\u2028|\u2029)"
-
-//fragment WysiwygString : 'r"' .*? '"' StringPostfix?;
-//fragment AlternativeWysiwygString : '`' .*? '`' StringPostfix?;
-//fragment EscapeSequence : '\\\''
-//    | '\\"'
-//    | '\\\\'
-//    | '\\?'
-//    | '\\0'
-//    | '\\a'
-//    | '\\b'
-//    | '\\f'
-//    | '\\n'
-//    | '\\r'
-//    | '\\t'
-//    | '\\v'
-//    | '\\x' HexDigit HexDigit
-//    | '\\' OctalDigit OctalDigit? OctalDigit?
-//    | '\\u' HexDigit HexDigit HexDigit HexDigit
-//    | '\\U' HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit
-//    | '\\&' Identifier ';';
-//fragment HexStringChar : [0-9a-fA-F] | Whitespace | EndOfLine;
-//fragment StringPostfix : [dwc];
-//fragment DoubleQuotedCharacter : EscapeSequence | ~('"' | '\\' );
-//fragment DoubleQuotedString : '"' DoubleQuotedCharacter* '"'  StringPostfix?;
-//fragment HexString: 'x"' HexStringChar* '"' StringPostfix?;
-//// fragment DelimitedString: 'q"' Delimiter WysiwygCharacter+ MatchingDelimiter '"';
-//// fragment TokenString: 'q{' Token* '}';
-//fragment StringFragment : WysiwygString | AlternativeWysiwygString | DoubleQuotedString | HexString /*| DelimitedString | TokenString*/;
-//StringLiteral : StringFragment (Whitespace? StringFragment)*;
-//
-//CharacterLiteral: '\'' ( EscapeSequence | ~[\\'] )*? '\'';
-//
-//IntegerLiteral: Integer IntegerSuffix?;
-//fragment Integer: BinaryInteger | DecimalInteger | HexadecimalInteger;
-//fragment IntegerSuffix: ('L' | 'u' | 'U' | 'Lu' | 'LU' | 'uL' | 'UL');
-//fragment DecimalInteger: DecimalDigit (DecimalDigit | '_')*;
-//fragment BinaryInteger: ('0b' | '0B') BinDigit (BinDigit | '_')*;
-//fragment HexadecimalInteger: ('0x' | '0X') HexDigit (HexDigit | '_')*;
-//
-//FloatLiteral: (FloatOption (FloatSuffix | RealSuffix)?) | (Integer (FloatSuffix | RealSuffix)? ImaginarySuffix);
-//fragment FloatOption: DecimalFloat | HexFloat;
-//fragment DecimalFloat
-//    : DecimalInteger '.' (DecimalDigit (DecimalDigit | '_')* DecimalExponent?)?  // BUG: can't lex a[0..1] properly
-//    | '.' DecimalInteger DecimalExponent?
-//    | DecimalInteger DecimalExponent
-//    ;
-//fragment DecimalExponent: ('e' | 'E' | 'e+' | 'E+' | 'e-' | 'E-') DecimalInteger;
-//fragment FloatSuffix: 'F' | 'f';
-//fragment RealSuffix: 'L';
-//fragment ImaginarySuffix: 'i';
-//fragment HexFloat: ('0x' | '0X') ((HexDigit (HexDigit | '_')* '.' HexDigit (HexDigit | '_')*) | ('.' HexDigit (HexDigit | '_')*) | (HexDigit (HexDigit | '_')*)) HexExponent;
-//fragment HexExponent: ('p' | 'P' | 'p+' | 'P+' | 'p-' | 'P-') DecimalDigit (DecimalDigit | '_')*;
-//
-//SpecialTokenSequence: '#line' Space+ IntegerLiteral Space* ('"' .*? '"' Space*)? (EndOfLine | EOF) -> skip;
-//fragment Space: [\u0020\u0009\u000B\u000C];
-
-
+  TParameters = "__parameters"
+  TVector = "__vector"
   ]
 }
 
@@ -474,24 +406,76 @@ private item_ ::= (module
 | xorExpression
 )
 
+  private Whitespace ::= "regexp:[\\u0020\\u0009\\u000b\\u000c\\u000a\\u000d]+"
+  private EndOfLine ::= "regexp:(\\u000d|\\u000a|\\u000d\\u000a|\\u2028|\\u2029)"
 
-WysiwygCharacter ::= Character | Whitespace
+  private Character ::=  "regexp:[\u0001-\uffff]"
+  private WysiwygCharacter ::= (Character | Whitespace)
+  private HexDigit ::= "regexp:[a-fA-F0-9]"
+  private OctalDigit ::= "regexp:[0-7]"
+  private BinDigit ::= "regexp:[01]"
+  private DecimalDigit ::= "regexp:[0-9]"
 
-//Identifier ::= identifier
+  private BlockComment ::= "regexp:\/*.*? *\/"
+  private LineComment ::= '//' ("regexp:~[\\u000D\\u000A\\u2028\\u2029]")* (EndOfLine | EOF)
+  private NestingBlockComment ::= '/+' (NestingBlockComment | "regexp:.")* '+/'
+  Comment ::= (BlockComment | LineComment | NestingBlockComment)+
 
-//Whitespace: [\u0020\u0009\u000b\u000c\u000a\u000d]+ -> skip;
-//fragment EndOfLine : '\u000d' | '\u000a' | '\u000d' '\u000a' | '\u2028' | '\u2029';
+  private Identifier ::= "regexp:([a-zA-Z_])([a-zA-Z0-9_])"*
 
-//fragment Character: [\u0001-\uffff];
-//fragment WysiwygCharacter: Character | Whitespace;
-//fragment HexDigit: [a-fA-F0-9];
-//fragment OctalDigit: [0-7];
-//fragment BinDigit: [01];
-//fragment DecimalDigit: [0-9];
+  private WysiwygString ::= 'r"' "regexp:.*?" '"' StringPostfix?
+  private AlternativeWysiwygString ::= '`' "regexp:.*?" '`' StringPostfix?
 
-//fragment BlockComment: '/*' .*? '*/';
+  private EscapeSequence ::= "\\\'"
+      | '\\"'
+      | '\\\\'
+      | '\\?'
+      | '\\0'
+      | '\\a'
+      | '\\b'
+      | '\\f'
+      | '\\n'
+      | '\\r'
+      | '\\t'
+      | '\\v'
+      | '\\x' HexDigit HexDigit
+      | '\\' OctalDigit OctalDigit? OctalDigit?
+      | '\\u' HexDigit HexDigit HexDigit HexDigit
+      | '\\U' HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit
+      | '\\&' Identifier ';';
+  private HexStringChar ::= "regexp:[0-9a-fA-F]" | Whitespace | EndOfLine
+  private StringPostfix ::= "regexp:[dwc]"
+  private DoubleQuotedCharacter ::= EscapeSequence | "regexp:~('\"' | '\\' )"
+  private DoubleQuotedString ::= '"' DoubleQuotedCharacter* '"'  StringPostfix?
+  private HexString ::= 'x"' HexStringChar* '"' StringPostfix?
+  private StringFragment ::= WysiwygString | AlternativeWysiwygString | DoubleQuotedString | HexString
+  private StringLiteral ::= StringFragment (Whitespace? StringFragment)*
 
+//  CharacterLiteral ::= '\'' ( EscapeSequence | ~[\\'] )*? '\'';
 
+  IntegerLiteral ::= Integer IntegerSuffix?
+  private Integer ::= BinaryInteger | DecimalInteger | HexadecimalInteger
+  private IntegerSuffix ::= ('L' | 'u' | 'U' | 'Lu' | 'LU' | 'uL' | 'UL')
+  private DecimalInteger ::= DecimalDigit (DecimalDigit | '_')*
+  private BinaryInteger ::= ('0b' | '0B') BinDigit (BinDigit | '_')*
+  private HexadecimalInteger ::= ('0x' | '0X') HexDigit (HexDigit | '_')*
+
+  FloatLiteral ::= (FloatOption (FloatSuffix | RealSuffix)?) | (Integer (FloatSuffix | RealSuffix)? ImaginarySuffix)
+  private FloatOption ::= DecimalFloat | HexFloat
+  private DecimalFloat
+      ::= DecimalInteger '.' (DecimalDigit (DecimalDigit | '_')* DecimalExponent?)?  // BUG: can't lex a[0..1] properly
+      | '.' DecimalInteger DecimalExponent?
+      | DecimalInteger DecimalExponent
+      ;
+  private DecimalExponent ::= ('e' | 'E' | 'e+' | 'E+' | 'e-' | 'E-') DecimalInteger
+  private FloatSuffix ::= 'F' | 'f'
+  private RealSuffix ::= 'L'
+  private ImaginarySuffix ::= 'i'
+  private HexFloat ::= ('0x' | '0X') ((HexDigit (HexDigit | '_')* '.' HexDigit (HexDigit | '_')*) | ('.' HexDigit (HexDigit | '_')*) | (HexDigit (HexDigit | '_')*)) HexExponent
+  private HexExponent ::= ('p' | 'P' | 'p+' | 'P+' | 'p-' | 'P-') DecimalDigit (DecimalDigit | '_')*
+
+  SpecialTokenSequence ::= '#line' Space+ IntegerLiteral Space* ('"' "regexp:.*?" '"' Space*)? (EndOfLine | EOF)+
+  private Space ::= "regexp:[\u0020\u0009\u000B\u000C]"
 
 module ::=
      moduleDeclaration? declaration*
