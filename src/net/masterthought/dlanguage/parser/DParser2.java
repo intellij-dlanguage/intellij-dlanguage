@@ -23,7 +23,7 @@ public class DParser2 implements PsiParser {
         builder.setDebugMode(true);
         PsiBuilder.Marker rootMarker = builder.mark();
 
-        parseModuleDeclaration(builder);
+        parse(builder);
 
         rootMarker.done(root);
         ASTNode ret = builder.getTreeBuilt();
@@ -31,31 +31,50 @@ public class DParser2 implements PsiParser {
         return ret;
 
 
-
     }
 
-    private void parseModuleDeclaration(PsiBuilder builder) {
-        PsiBuilder.Marker marker = null;
+    private void parse(PsiBuilder builder) {
+        PsiBuilder.Marker moduleMarker = null;
+        PsiBuilder.Marker importMarker = null;
         IElementType tokenType;
         while (!builder.eof()) {
             tokenType = builder.getTokenType();
 
             if (tokenType == null) {
-                //item.drop();
                 break;
             }
 
-            if (tokenType == DLanguageTokenType.KW_MODULE) {
-                marker = builder.mark();
-            }
-            if (tokenType == DLanguageTokenType.LINE_END) {
-                if (marker != null) {
-                    marker.done(DElementTypes2.MODULE);
-                    marker = null;
-                }
-            }
+            moduleMarker = parseModuleDeclarations(builder, moduleMarker, tokenType);
+            importMarker = parseImportDeclarations(builder, importMarker, tokenType);
+
             builder.advanceLexer();
         }
+    }
+
+    private PsiBuilder.Marker parseImportDeclarations(PsiBuilder builder, PsiBuilder.Marker importMarker, IElementType tokenType) {
+        if (tokenType == DLanguageTokenType.KW_IMPORT) {
+            importMarker = builder.mark();
+        }
+        if (tokenType == DLanguageTokenType.LINE_END) {
+            if (importMarker != null) {
+                importMarker.done(DElementTypes2.IMPORT);
+                importMarker = null;
+            }
+        }
+        return importMarker;
+    }
+
+    private PsiBuilder.Marker parseModuleDeclarations(PsiBuilder builder, PsiBuilder.Marker moduleMarker, IElementType tokenType) {
+        if (tokenType == DLanguageTokenType.KW_MODULE) {
+            moduleMarker = builder.mark();
+        }
+        if (tokenType == DLanguageTokenType.LINE_END) {
+            if (moduleMarker != null) {
+                moduleMarker.done(DElementTypes2.MODULE);
+                moduleMarker = null;
+            }
+        }
+        return moduleMarker;
     }
 
 //    private static ASTNode chewEverything(PsiBuilder.Marker marker, IElementType e, PsiBuilder builder) {
