@@ -8,8 +8,8 @@ import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Parser for D source, wrapper for Descent parser.
- */
+* Parser for D source, wrapper for Descent parser.
+*/
 public class DParser implements PsiParser {
 
     public DParser() {

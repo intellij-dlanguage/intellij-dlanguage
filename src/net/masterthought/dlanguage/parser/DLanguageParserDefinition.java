@@ -15,6 +15,7 @@ import net.masterthought.dlanguage.lexer.DLexer;
 import net.masterthought.dlanguage.psi.DLanguageFile;
 import net.masterthought.dlanguage.psi.DLanguageTokenType;
 import net.masterthought.dlanguage.psi.ElementTypes;
+import net.masterthought.dlanguage.psi.interfaces.DElementTypes2;
 import org.jetbrains.annotations.NotNull;
 
 public class DLanguageParserDefinition implements ParserDefinition {
@@ -29,7 +30,7 @@ public class DLanguageParserDefinition implements ParserDefinition {
 
     @Override
     public PsiParser createParser(final Project project) {
-        return new DParser();
+        return new DParser2();
     }
 
     @Override
@@ -58,8 +59,9 @@ public class DLanguageParserDefinition implements ParserDefinition {
     @NotNull
     @Override
     public PsiElement createElement(final ASTNode node) {
-        PsiElement ret = ElementTypes.Factory.createElement(node);
-        return ret;
+//        PsiElement ret = ElementTypes.Factory.createElement(node);
+//        return ret;
+        return DElementTypes2.Factory.createElement(node);
     }
 
     @Override

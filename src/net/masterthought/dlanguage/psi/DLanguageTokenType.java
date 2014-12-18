@@ -26,6 +26,8 @@ public abstract class DLanguageTokenType implements com.intellij.psi.TokenType {
 //    public static final IElementType UNKNOWN = valueOf("Unknown");
 
     public static final DLanguageElementType KW_MODULE = valueOf(DeeTokens.KW_MODULE);
+    public static final DLanguageElementType LINE_END = valueOf(DeeTokens.LINE_END);
+    public static final DLanguageElementType SEMICOLON = valueOf(DeeTokens.SEMICOLON);
 
     public static final DLanguageElementType LINE_COMMENT = valueOf(DeeTokens.COMMENT_LINE);
     public static final DLanguageElementType DOC_LINE_COMMENT = valueOf(DeeTokens.DOCCOMMENT_LINE);
