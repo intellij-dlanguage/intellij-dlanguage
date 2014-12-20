@@ -9,6 +9,8 @@ import com.intellij.psi.FileViewProvider;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.tree.IFileElementType;
+import com.intellij.psi.tree.ILightStubFileElementType;
+import com.intellij.psi.tree.IStubFileElementType;
 import com.intellij.psi.tree.TokenSet;
 import net.masterthought.dlanguage.DLanguage;
 import net.masterthought.dlanguage.lexer.DLexer;
@@ -20,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class DLanguageParserDefinition implements ParserDefinition {
 
-    public static final IFileElementType FILE_ELEMENT_TYPE = new IFileElementType(DLanguage.INSTANCE);
+    public static final IStubFileElementType FILE_ELEMENT_TYPE = new IStubFileElementType(DLanguage.INSTANCE);
 
     @NotNull
     @Override
@@ -30,7 +32,8 @@ public class DLanguageParserDefinition implements ParserDefinition {
 
     @Override
     public PsiParser createParser(final Project project) {
-        return new DParser2();
+//        return new DParser2();
+        return new DParser4();
     }
 
     @Override
