@@ -9,7 +9,7 @@ import net.masterthought.dlanguage.psi.DElementType;
 import net.masterthought.dlanguage.psi.impl.DImportDeclarationImpl;
 import net.masterthought.dlanguage.psi.impl.DModuleDeclarationImpl;
 
-public interface DElementTypes2 {
+public interface DElementTypes {
 
 //    IElementType MODULE = new DElementType("MODULE");
     IElementType IMPORT = new DElementType("IMPORT");
