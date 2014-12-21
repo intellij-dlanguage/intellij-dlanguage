@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class DTokenType extends IElementType {
     public DTokenType(@NotNull @NonNls String debugName) {
-        super( DeeTokens.valueOf(debugName).getSourceValue(), DLanguage.INSTANCE);
+        super(debugName, DLanguage.INSTANCE);
     }
 
     @Override

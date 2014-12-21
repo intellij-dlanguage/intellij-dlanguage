@@ -53,7 +53,7 @@ public class DLanguageParserDefinition implements ParserDefinition {
     @NotNull
     @Override
     public TokenSet getStringLiteralElements() {
-        return DTokenSets.LITERALS;
+        return DTokenSets.STRING_LITERALS;
     }
 
     @NotNull

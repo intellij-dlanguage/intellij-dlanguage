@@ -7,7 +7,10 @@ import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiParser;
 import com.intellij.psi.tree.IElementType;
 import ddt.dtool.parser.DeeParser;
+import ddt.melnorme.utilbox.tree.IElement;
 import net.masterthought.dlanguage.DLanguage;
+import net.masterthought.dlanguage.lexer.DeeElementTypeCache;
+import net.masterthought.dlanguage.lexer.DeeTokenLookUp;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Paths;
@@ -21,34 +24,35 @@ public class DParser implements PsiParser {
     public DParser() {
     }
 
-
     @NotNull
     @Override
     public ASTNode parse(final IElementType root, final PsiBuilder builder) {
         builder.setDebugMode(true);
         PsiBuilder.Marker rootMarker = builder.mark();
 
-        parseContent(builder);
-
-        rootMarker.done(root);
-        ASTNode ret = builder.getTreeBuilt();
-//        System.out.println(ret);
-        return ret;
-
-
+        try {
+            parseContent(builder);
+        } catch (Exception e1) {
+            rootMarker.rollbackTo();
+            PsiBuilder.Marker newRoot = builder.mark();
+            final PsiBuilder.Marker errorMark = builder.mark();
+            while (!builder.eof()) {
+                builder.advanceLexer();
+            }
+            errorMark.error(e1.getMessage());
+            newRoot.done(root);
+            return builder.getTreeBuilt();
+        }
+        return chewEverything(rootMarker, root, builder);
     }
 
-//    deeNode.getModuleNode().getStartPos()
-//    deeNode.getModuleNode().getEndPos()
-//    deeNode.hasChildren()
-//    deeNode.getChildren()
-
-// use for all instead of above
-//    deeNode.getChildren()[1].getStartPos()
-
-// ((Module) deeNode).getChildren()[3].getNodeType().name   e.g. DEFINITION_CLASS
-
-// builder.getCurrentOffset()
+    private static ASTNode chewEverything(PsiBuilder.Marker marker, IElementType e, PsiBuilder builder) {
+        while (!builder.eof()) {
+            builder.advanceLexer();
+        }
+        marker.done(e);
+        return builder.getTreeBuilt();
+    }
 
     class DMarker {
 
@@ -109,7 +113,6 @@ public class DParser implements PsiParser {
     }
 
 
-
     private List<DMarker> buildDMarkerStructure(ddt.melnorme.lang.tooling.ast_actual.ASTNode deeNode) {
         List<DMarker> dMarkers = Lists.newArrayList();
         DMarkerparseDeeStructure(dMarkers, deeNode);
@@ -118,7 +121,7 @@ public class DParser implements PsiParser {
 
     private DMarker DMarkerparseDeeStructure(List<DMarker> dMarkers, ddt.melnorme.lang.tooling.ast_actual.ASTNode deeNode) {
 
-        IElementType elementType = new IElementType(deeNode.getNodeType().name(), DLanguage.INSTANCE);
+        IElementType elementType = DeeElementTypeCache.valueOf(deeNode.getNodeType().name());
         int startOffSet = deeNode.getStartPos();
         int endOffSet = deeNode.getEndPos();
         String content = deeNode.toStringAsCode();
@@ -229,9 +232,8 @@ public class DParser implements PsiParser {
         int counter = 0;
         int next_position;
         while (!builder.eof()) {
-
             for (Integer position : sortedStructure) {
-                if(counter+1 < sortedStructure.size()) {
+                if (counter + 1 < sortedStructure.size()) {
                     next_position = sortedStructure.get(counter + 1);
                 } else {
                     next_position = builder.getOriginalText().toString().length();
@@ -267,11 +269,6 @@ public class DParser implements PsiParser {
             }
             builder.advanceLexer();
         }
-
-        Boolean started = allStarted(modifiedMarkers);
-        Boolean done = allDone(modifiedMarkers);
-
-        System.out.println("yay!");
 
     }
 }

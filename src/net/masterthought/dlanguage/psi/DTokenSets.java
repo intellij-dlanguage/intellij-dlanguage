@@ -7,11 +7,11 @@ import net.masterthought.dlanguage.psi.interfaces.DElementTypes;
 public class DTokenSets {
 
     public static final TokenSet WHITESPACES = TokenSet.create(TokenType.WHITE_SPACE);
-    public static final TokenSet COMMENTS = TokenSet.create(DElementTypes.GROUP_COMMENT, DElementTypes.COMMENT_MULTI,
+    public static final TokenSet COMMENTS = TokenSet.create(DElementTypes.COMMENT_MULTI,
             DElementTypes.COMMENT_NESTED, DElementTypes.COMMENT_LINE,
             DElementTypes.DOCCOMMENT_MULTI, DElementTypes.DOCCOMMENT_NESTED,
             DElementTypes.DOCCOMMENT_LINE);
-    public static final TokenSet LITERALS = TokenSet.create(DElementTypes.STRING_WYSIWYG, DElementTypes.STRING_DELIM,
+    public static final TokenSet STRING_LITERALS = TokenSet.create(DElementTypes.STRING_WYSIWYG, DElementTypes.STRING_DELIM,
             DElementTypes.KW_CHAR,
             DElementTypes.KW_DCHAR,
             DElementTypes.KW_WCHAR,
