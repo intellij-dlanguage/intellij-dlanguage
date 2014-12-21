@@ -7,6 +7,7 @@ import com.intellij.openapi.util.Ref;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
+import net.masterthought.dlanguage.DLanguageFileType;
 import net.masterthought.dlanguage.DLanguageWritingAccessProvider;
 import net.masterthought.dlanguage.psi.DLanguageFile;
 import org.jetbrains.annotations.NotNull;
@@ -21,10 +22,10 @@ public class DLanguageApplicationRunConfigurationProducer extends RunConfigurati
 
     @Override
     protected boolean setupConfigurationFromContext(DLanguageApplicationRunConfiguration configuration, ConfigurationContext context, Ref<PsiElement> sourceElement) {
-        final VirtualFile dartFile = getRunnableDFileFromContext(context);
-        if (dartFile != null) {
-            configuration.getRunnerParameters().setFilePath(dartFile.getPath());
-            configuration.getRunnerParameters().setWorkingDirectory(dartFile.getParent().getPath());
+        final VirtualFile dFile = getRunnableDFileFromContext(context);
+        if (dFile != null) {
+            configuration.getRunnerParameters().setFilePath(dFile.getPath());
+            configuration.getRunnerParameters().setWorkingDirectory(dFile.getParent().getPath());
             configuration.setGeneratedName();
 
             sourceElement.set(sourceElement.isNull() ? null : sourceElement.get().getContainingFile());
@@ -39,7 +40,7 @@ public class DLanguageApplicationRunConfigurationProducer extends RunConfigurati
         final PsiFile psiFile = psiLocation == null ? null : psiLocation.getContainingFile();
         final VirtualFile virtualFile = getRealVirtualFile(psiFile);
 
-        if (psiFile instanceof DLanguageFile &&
+        if ((psiFile instanceof DLanguageFile) &&
                 virtualFile != null &&
                 ProjectRootManager.getInstance(context.getProject()).getFileIndex().isInContent(virtualFile) &&
                 !DLanguageWritingAccessProvider.isInDLanguageSdkOrDLanguagePackagesFolder(psiFile.getProject(), virtualFile)) {
