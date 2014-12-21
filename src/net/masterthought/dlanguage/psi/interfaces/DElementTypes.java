@@ -6,13 +6,11 @@ import com.intellij.psi.tree.IElementType;
 import net.masterthought.dlanguage.lexer.PropertyImpl;
 import net.masterthought.dlanguage.parser.DLanguageParserDefinition;
 import net.masterthought.dlanguage.psi.DElementType;
+import net.masterthought.dlanguage.psi.DTokenType;
 import net.masterthought.dlanguage.psi.impl.DImportDeclarationImpl;
 import net.masterthought.dlanguage.psi.impl.DModuleDeclarationImpl;
 
 public interface DElementTypes {
-
-//    IElementType MODULE = new DElementType("MODULE");
-    IElementType IMPORT = new DElementType("IMPORT");
 
     IElementType NULL = new DElementType("NULL");
     IElementType SYMBOL = new DElementType("SYMBOL");
@@ -176,17 +174,232 @@ public interface DElementTypes {
     IElementType TRY_CATCH_CLAUSE = new DElementType("TRY_CATCH_CLAUSE");
     IElementType SIMPLE_VARIABLE_DEF = new DElementType("SIMPLE_VARIABLE_DEF");
 
+    // Token Types
+    IElementType EOF = new DTokenType("EOF");
+    IElementType INVALID_TOKEN = new DTokenType("INVALID_TOKEN");
+    IElementType LINE_END = new DTokenType("LINE_END");
+    IElementType WHITESPACE = new DTokenType("WHITESPACE");
+    IElementType GROUP_COMMENT = new DTokenType("GROUP_COMMENT");
+    IElementType COMMENT_MULTI = new DTokenType("COMMENT_MULTI");
+    IElementType COMMENT_NESTED = new DTokenType("COMMENT_NESTED");
+    IElementType COMMENT_LINE = new DTokenType("COMMENT_LINE");
+    IElementType DOCCOMMENT_MULTI = new DTokenType("DOCCOMMENT_MULTI");
+    IElementType DOCCOMMENT_NESTED = new DTokenType("DOCCOMMENT_NESTED");
+    IElementType DOCCOMMENT_LINE = new DTokenType("DOCCOMMENT_LINE");
+    IElementType SCRIPT_LINE_INTRO = new DTokenType("SCRIPT_LINE_INTRO");
+    IElementType SPECIAL_TOKEN_LINE = new DTokenType("SPECIAL_TOKEN_LINE");
+    IElementType IDENTIFIER = new DTokenType("IDENTIFIER");
+    IElementType GROUP_STRING = new DTokenType("GROUP_STRING");
+    IElementType STRING_WYSIWYG = new DTokenType("STRING_WYSIWYG");
+    IElementType STRING_DQ = new DTokenType("STRING_DQ");
+    IElementType STRING_HEX = new DTokenType("STRING_HEX");
+    IElementType STRING_DELIM = new DTokenType("STRING_DELIM");
+    IElementType STRING_TOKENS = new DTokenType("STRING_TOKENS");
+    IElementType CHARACTER = new DTokenType("CHARACTER");
+    IElementType GROUP_INTEGER = new DTokenType("GROUP_INTEGER");
+    IElementType INTEGER_DECIMAL = new DTokenType("INTEGER_DECIMAL");
+    IElementType INTEGER_BINARY = new DTokenType("INTEGER_BINARY");
+    IElementType INTEGER_OCTAL = new DTokenType("INTEGER_OCTAL");
+    IElementType INTEGER_HEX = new DTokenType("INTEGER_HEX");
+    IElementType GROUP_FLOAT = new DTokenType("GROUP_FLOAT");
+    IElementType FLOAT_DECIMAL = new DTokenType("FLOAT_DECIMAL");
+    IElementType FLOAT_HEX = new DTokenType("FLOAT_HEX");
+    IElementType OPEN_PARENS = new DTokenType("OPEN_PARENS");
+    IElementType CLOSE_PARENS = new DTokenType("CLOSE_PARENS");
+    IElementType OPEN_BRACE = new DTokenType("OPEN_BRACE");
+    IElementType CLOSE_BRACE = new DTokenType("CLOSE_BRACE");
+    IElementType OPEN_BRACKET = new DTokenType("OPEN_BRACKET");
+    IElementType CLOSE_BRACKET = new DTokenType("CLOSE_BRACKET");
+    IElementType SEMICOLON = new DTokenType("SEMICOLON");
+    IElementType COLON = new DTokenType("COLON");
+    IElementType QUESTION = new DTokenType("QUESTION");
+    IElementType COMMA = new DTokenType("COMMA");
+    IElementType DOLLAR = new DTokenType("DOLLAR");
+    IElementType AT = new DTokenType("AT");
+    IElementType DOT = new DTokenType("DOT");
+    IElementType DOUBLE_DOT = new DTokenType("DOUBLE_DOT");
+    IElementType TRIPLE_DOT = new DTokenType("TRIPLE_DOT");
+    IElementType DECREMENT = new DTokenType("DECREMENT");
+    IElementType INCREMENT = new DTokenType("INCREMENT");
+    IElementType MINUS = new DTokenType("MINUS");
+    IElementType MINUS_ASSIGN = new DTokenType("MINUS_ASSIGN");
+    IElementType PLUS = new DTokenType("PLUS");
+    IElementType PLUS_ASSIGN = new DTokenType("PLUS_ASSIGN");
+    IElementType DIV = new DTokenType("DIV");
+    IElementType DIV_ASSIGN = new DTokenType("DIV_ASSIGN");
+    IElementType STAR = new DTokenType("STAR");
+    IElementType MULT_ASSIGN = new DTokenType("MULT_ASSIGN");
+    IElementType MOD = new DTokenType("MOD");
+    IElementType MOD_ASSIGN = new DTokenType("MOD_ASSIGN");
+    IElementType POW = new DTokenType("POW");
+    IElementType POW_ASSIGN = new DTokenType("POW_ASSIGN");
+    IElementType AND = new DTokenType("AND");
+    IElementType AND_ASSIGN = new DTokenType("AND_ASSIGN");
+    IElementType OR = new DTokenType("OR");
+    IElementType OR_ASSIGN = new DTokenType("OR_ASSIGN");
+    IElementType XOR = new DTokenType("XOR");
+    IElementType XOR_ASSIGN = new DTokenType("XOR_ASSIGN");
+    IElementType CONCAT = new DTokenType("CONCAT");
+    IElementType CONCAT_ASSIGN = new DTokenType("CONCAT_ASSIGN");
+    IElementType LOGICAL_AND = new DTokenType("LOGICAL_AND");
+    IElementType LOGICAL_OR = new DTokenType("LOGICAL_OR");
+    IElementType LAMBDA = new DTokenType("LAMBDA");
+    IElementType ASSIGN = new DTokenType("ASSIGN");
+    IElementType EQUALS = new DTokenType("EQUALS");
+    IElementType NOT = new DTokenType("NOT");
+    IElementType NOT_EQUAL = new DTokenType("NOT_EQUAL");
+    IElementType LESS_THAN = new DTokenType("LESS_THAN");
+    IElementType LESS_EQUAL = new DTokenType("LESS_EQUAL");
+    IElementType GREATER_THAN = new DTokenType("GREATER_THAN");
+    IElementType GREATER_EQUAL = new DTokenType("GREATER_EQUAL");
+    IElementType LESS_GREATER = new DTokenType("LESS_GREATER");
+    IElementType LESS_GREATER_EQUAL = new DTokenType("LESS_GREATER_EQUAL");
+    IElementType UNORDERED_E = new DTokenType("UNORDERED_E");
+    IElementType UNORDERED = new DTokenType("UNORDERED");
+    IElementType UNORDERED_GE = new DTokenType("UNORDERED_GE");
+    IElementType UNORDERED_G = new DTokenType("UNORDERED_G");
+    IElementType UNORDERED_LE = new DTokenType("UNORDERED_LE");
+    IElementType UNORDERED_L = new DTokenType("UNORDERED_L");
+    IElementType LEFT_SHIFT = new DTokenType("LEFT_SHIFT");
+    IElementType LEFT_SHIFT_ASSIGN = new DTokenType("LEFT_SHIFT_ASSIGN");
+    IElementType RIGHT_SHIFT = new DTokenType("RIGHT_SHIFT");
+    IElementType RIGHT_SHIFT_ASSIGN = new DTokenType("RIGHT_SHIFT_ASSIGN");
+    IElementType TRIPLE_RSHIFT = new DTokenType("TRIPLE_RSHIFT");
+    IElementType TRIPLE_RSHIFT_ASSIGN = new DTokenType("TRIPLE_RSHIFT_ASSIGN");
+    IElementType GROUP_PRIMITIVE_KW = new DTokenType("GROUP_PRIMITIVE_KW");
+    IElementType KW_BOOL = new DTokenType("KW_BOOL");
+    IElementType KW_VOID = new DTokenType("KW_VOID");
+    IElementType KW_BYTE = new DTokenType("KW_BYTE");
+    IElementType KW_UBYTE = new DTokenType("KW_UBYTE");
+    IElementType KW_SHORT = new DTokenType("KW_SHORT");
+    IElementType KW_USHORT = new DTokenType("KW_USHORT");
+    IElementType KW_INT = new DTokenType("KW_INT");
+    IElementType KW_UINT = new DTokenType("KW_UINT");
+    IElementType KW_LONG = new DTokenType("KW_LONG");
+    IElementType KW_ULONG = new DTokenType("KW_ULONG");
+    IElementType KW_CENT = new DTokenType("KW_CENT");
+    IElementType KW_UCENT = new DTokenType("KW_UCENT");
+    IElementType KW_CHAR = new DTokenType("KW_CHAR");
+    IElementType KW_WCHAR = new DTokenType("KW_WCHAR");
+    IElementType KW_DCHAR = new DTokenType("KW_DCHAR");
+    IElementType KW_FLOAT = new DTokenType("KW_FLOAT");
+    IElementType KW_DOUBLE = new DTokenType("KW_DOUBLE");
+    IElementType KW_REAL = new DTokenType("KW_REAL");
+    IElementType KW_IFLOAT = new DTokenType("KW_IFLOAT");
+    IElementType KW_IDOUBLE = new DTokenType("KW_IDOUBLE");
+    IElementType KW_IREAL = new DTokenType("KW_IREAL");
+    IElementType KW_CFLOAT = new DTokenType("KW_CFLOAT");
+    IElementType KW_CDOUBLE = new DTokenType("KW_CDOUBLE");
+    IElementType KW_CREAL = new DTokenType("KW_CREAL");
+    IElementType GROUP_PROTECTION_KW = new DTokenType("GROUP_PROTECTION_KW");
+    IElementType KW_PRIVATE = new DTokenType("KW_PRIVATE");
+    IElementType KW_PACKAGE = new DTokenType("KW_PACKAGE");
+    IElementType KW_PROTECTED = new DTokenType("KW_PROTECTED");
+    IElementType KW_PUBLIC = new DTokenType("KW_PUBLIC");
+    IElementType KW_EXPORT = new DTokenType("KW_EXPORT");
+    IElementType GROUP_ATTRIBUTE_KW = new DTokenType("GROUP_ATTRIBUTE_KW");
+    IElementType KW_ABSTRACT = new DTokenType("KW_ABSTRACT");
+    IElementType KW_DEPRECATED = new DTokenType("KW_DEPRECATED");
+    IElementType KW_FINAL = new DTokenType("KW_FINAL");
+    IElementType KW_NOTHROW = new DTokenType("KW_NOTHROW");
+    IElementType KW_OVERRIDE = new DTokenType("KW_OVERRIDE");
+    IElementType KW_PURE = new DTokenType("KW_PURE");
+    IElementType KW_SCOPE = new DTokenType("KW_SCOPE");
+    IElementType KW_STATIC = new DTokenType("KW_STATIC");
+    IElementType KW_SYNCHRONIZED = new DTokenType("KW_SYNCHRONIZED");
+    IElementType KW_REF = new DTokenType("KW_REF");
+    IElementType KW_CONST = new DTokenType("KW_CONST");
+    IElementType KW_IMMUTABLE = new DTokenType("KW_IMMUTABLE");
+    IElementType KW_INOUT = new DTokenType("KW_INOUT");
+    IElementType KW_SHARED = new DTokenType("KW_SHARED");
+    IElementType KW_AUTO = new DTokenType("KW_AUTO");
+    IElementType KW_ALIAS = new DTokenType("KW_ALIAS");
+    IElementType KW_ALIGN = new DTokenType("KW_ALIGN");
+    IElementType KW_ASM = new DTokenType("KW_ASM");
+    IElementType KW_ASSERT = new DTokenType("KW_ASSERT");
+    IElementType KW_BODY = new DTokenType("KW_BODY");
+    IElementType KW_BREAK = new DTokenType("KW_BREAK");
+    IElementType KW_CASE = new DTokenType("KW_CASE");
+    IElementType KW_CAST = new DTokenType("KW_CAST");
+    IElementType KW_CATCH = new DTokenType("KW_CATCH");
+    IElementType KW_CLASS = new DTokenType("KW_CLASS");
+    IElementType KW_CONTINUE = new DTokenType("KW_CONTINUE");
+    IElementType KW_DEBUG = new DTokenType("KW_DEBUG");
+    IElementType KW_DEFAULT = new DTokenType("KW_DEFAULT");
+    IElementType KW_DELEGATE = new DTokenType("KW_DELEGATE");
+    IElementType KW_DELETE = new DTokenType("KW_DELETE");
+    IElementType KW_DO = new DTokenType("KW_DO");
+    IElementType KW_ELSE = new DTokenType("KW_ELSE");
+    IElementType KW_ENUM = new DTokenType("KW_ENUM");
+    IElementType KW_EXTERN = new DTokenType("KW_EXTERN");
+    IElementType KW_FALSE = new DTokenType("KW_FALSE");
+    IElementType KW_FINALLY = new DTokenType("KW_FINALLY");
+    IElementType KW_FOR = new DTokenType("KW_FOR");
+    IElementType KW_FOREACH = new DTokenType("KW_FOREACH");
+    IElementType KW_FOREACH_REVERSE = new DTokenType("KW_FOREACH_REVERSE");
+    IElementType KW_FUNCTION = new DTokenType("KW_FUNCTION");
+    IElementType KW_GOTO = new DTokenType("KW_GOTO");
+    IElementType KW_IF = new DTokenType("KW_IF");
+    IElementType KW_IMPORT = new DTokenType("KW_IMPORT");
+    IElementType KW_IN = new DTokenType("KW_IN");
+    IElementType KW_INTERFACE = new DTokenType("KW_INTERFACE");
+    IElementType KW_INVARIANT = new DTokenType("KW_INVARIANT");
+    IElementType KW_IS = new DTokenType("KW_IS");
+    IElementType KW_LAZY = new DTokenType("KW_LAZY");
+    IElementType KW_MACRO = new DTokenType("KW_MACRO");
+    IElementType KW_MIXIN = new DTokenType("KW_MIXIN");
+    IElementType KW_MODULE = new DTokenType("KW_MODULE");
+    IElementType KW_NEW = new DTokenType("KW_NEW");
+    IElementType KW_NULL = new DTokenType("KW_NULL");
+    IElementType KW_OUT = new DTokenType("KW_OUT");
+    IElementType KW_PRAGMA = new DTokenType("KW_PRAGMA");
+    IElementType KW_RETURN = new DTokenType("KW_RETURN");
+    IElementType KW_STRUCT = new DTokenType("KW_STRUCT");
+    IElementType KW_SUPER = new DTokenType("KW_SUPER");
+    IElementType KW_SWITCH = new DTokenType("KW_SWITCH");
+    IElementType KW_TEMPLATE = new DTokenType("KW_TEMPLATE");
+    IElementType KW_THIS = new DTokenType("KW_THIS");
+    IElementType KW_THROW = new DTokenType("KW_THROW");
+    IElementType KW_TRUE = new DTokenType("KW_TRUE");
+    IElementType KW_TRY = new DTokenType("KW_TRY");
+    IElementType KW_TYPEDEF = new DTokenType("KW_TYPEDEF");
+    IElementType KW_TYPEID = new DTokenType("KW_TYPEID");
+    IElementType KW_TYPEOF = new DTokenType("KW_TYPEOF");
+    IElementType KW_UNION = new DTokenType("KW_UNION");
+    IElementType KW_UNITTEST = new DTokenType("KW_UNITTEST");
+    IElementType KW_VERSION = new DTokenType("KW_VERSION");
+    IElementType KW_VOLATILE = new DTokenType("KW_VOLATILE");
+    IElementType KW_WHILE = new DTokenType("KW_WHILE");
+    IElementType KW_WITH = new DTokenType("KW_WITH");
+    IElementType KW___TRAITS = new DTokenType("KW___TRAITS");
+    IElementType KW___GSHARED = new DTokenType("KW___GSHARED");
+    IElementType KW___THREAD = new DTokenType("KW___THREAD");
+    IElementType KW___VECTOR = new DTokenType("KW___VECTOR");
+    IElementType KW___FILE__ = new DTokenType("KW___FILE__");
+    IElementType KW___LINE__ = new DTokenType("KW___LINE__");
+    IElementType KW___MODULE__ = new DTokenType("KW___MODULE__");
+    IElementType KW___FUNCTION__ = new DTokenType("KW___FUNCTION__");
+    IElementType KW___PRETTY_FUNCTION__ = new DTokenType("KW___PRETTY_FUNCTION__");
+    IElementType KW___DATE__ = new DTokenType("KW___DATE__");
+    IElementType KW___TIME__ = new DTokenType("KW___TIME__");
+    IElementType KW___TIMESTAMP__ = new DTokenType("KW___TIMESTAMP__");
+    IElementType KW___VENDOR__ = new DTokenType("KW___VENDOR__");
+    IElementType KW___VERSION__ = new DTokenType("KW___VERSION__");
+
+
     class Factory {
         public static PsiElement createElement(ASTNode node) {
             IElementType type = node.getElementType();
-            if (type == MODULE) {
-                return new DModuleDeclarationImpl(node);
-            } else if (type == IMPORT) {
-                return new DImportDeclarationImpl(node);
-            } else {
-                return new DCompositeElementType(node) {
-                };
-            }
+            return new DCompositeElementType(node);
+
+//            if (type == MODULE) {
+//                return new DModuleDeclarationImpl(node);
+//            } else if (type == IMPORT) {
+//                return new DImportDeclarationImpl(node);
+//            } else {
+//                return new DCompositeElementType(node) {
+//                };
+//            }
 
         }
     }

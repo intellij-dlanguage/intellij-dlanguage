@@ -5,12 +5,9 @@ import com.google.common.collect.Maps;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiParser;
-import com.intellij.lang.parser.GeneratedParserUtilBase;
 import com.intellij.psi.tree.IElementType;
 import ddt.dtool.parser.DeeParser;
 import net.masterthought.dlanguage.DLanguage;
-import net.masterthought.dlanguage.psi.DLanguageTokenType;
-import net.masterthought.dlanguage.psi.interfaces.DElementTypes2;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Paths;
