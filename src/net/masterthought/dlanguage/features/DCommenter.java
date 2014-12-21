@@ -3,7 +3,7 @@ package net.masterthought.dlanguage.features;
 import com.intellij.lang.CodeDocumentationAwareCommenter;
 import com.intellij.psi.PsiComment;
 import com.intellij.psi.tree.IElementType;
-import net.masterthought.dlanguage.psi.DLanguageTokenType;
+import net.masterthought.dlanguage.psi.interfaces.DElementTypes;
 import org.jetbrains.annotations.Nullable;
 
 
@@ -30,12 +30,12 @@ public class DCommenter implements CodeDocumentationAwareCommenter {
 
     @Nullable
     public IElementType getLineCommentTokenType() {
-        return DLanguageTokenType.LINE_COMMENT;
+        return DElementTypes.COMMENT_LINE;
     }
 
     @Nullable
     public IElementType getBlockCommentTokenType() {
-        return DLanguageTokenType.BLOCK_COMMENT;
+        return DElementTypes.COMMENT_MULTI;
     }
 
     public String getDocumentationCommentPrefix() {
@@ -51,13 +51,13 @@ public class DCommenter implements CodeDocumentationAwareCommenter {
     }
 
     public boolean isDocumentationComment(final PsiComment element) {
-        return element.getTokenType() == DLanguageTokenType.DOC_LINE_COMMENT ||
-                element.getTokenType() == DLanguageTokenType.DOC_COMMENT_NEST ||
-                element.getTokenType() == DLanguageTokenType.DOC_COMMENT;
+        return element.getTokenType() == DElementTypes.DOCCOMMENT_LINE ||
+                element.getTokenType() == DElementTypes.DOCCOMMENT_MULTI ||
+                element.getTokenType() == DElementTypes.DOCCOMMENT_NESTED;
     }
 
     @Nullable
     public IElementType getDocumentationCommentTokenType() {
-        return DLanguageTokenType.DOC_LINE_COMMENT;
+        return DElementTypes.DOCCOMMENT_LINE;
     }
 }

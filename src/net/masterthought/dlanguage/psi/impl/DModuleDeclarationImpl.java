@@ -4,8 +4,8 @@ import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import net.masterthought.dlanguage.psi.DLanguageTokenType;
 import net.masterthought.dlanguage.psi.DVisitor;
+import net.masterthought.dlanguage.psi.interfaces.DElementTypes;
 import net.masterthought.dlanguage.psi.interfaces.DModuleDeclaration;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,7 +24,7 @@ public class DModuleDeclarationImpl extends ASTWrapperPsiElement implements DMod
     @Override
     @NotNull
     public PsiElement getModule() {
-        return findNotNullChildByType(DLanguageTokenType.KW_MODULE);
+        return findNotNullChildByType(DElementTypes.DECLARATION_MODULE);
     }
 
 }

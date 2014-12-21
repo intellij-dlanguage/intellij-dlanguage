@@ -6,17 +6,13 @@ import com.intellij.lang.findUsages.FindUsagesProvider;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.ElementDescriptionUtil;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiNamedElement;
-import com.intellij.psi.impl.source.tree.LeafPsiElement;
 import com.intellij.psi.tree.TokenSet;
 import com.intellij.usageView.UsageViewLongNameLocation;
 import com.intellij.usageView.UsageViewNodeTextLocation;
 import com.intellij.usageView.UsageViewTypeLocation;
-import ddt.dtool.parser.DeeLexer;
-import net.masterthought.dlanguage.highlighting.DHighlightingLexer;
 import net.masterthought.dlanguage.lexer.DLexer;
-import net.masterthought.dlanguage.psi.DLanguageElementType;
-import net.masterthought.dlanguage.psi.DLanguageTokenType;
+import net.masterthought.dlanguage.psi.DTokenSets;
+import net.masterthought.dlanguage.psi.interfaces.DElementTypes;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,8 +22,8 @@ public class DFindUsagesProvider implements FindUsagesProvider {
     // Second parameter is nodes that are PsiNamedElements in practice.
     private final static WordsScanner SCANNER =
             new DefaultWordsScanner(new DLexer(),
-                    TokenSet.create(DLanguageTokenType.IDENTIFIER),
-                    DLanguageTokenType.COMMENTS, DLanguageTokenType.STRING_LITERALS);
+                    TokenSet.create(DElementTypes.IDENTIFIER),
+                    DTokenSets.COMMENTS, DTokenSets.STRING_LITERALS);
     @Nullable
     @Override
     public WordsScanner getWordsScanner() {
