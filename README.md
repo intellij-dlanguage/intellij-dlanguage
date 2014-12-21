@@ -93,6 +93,12 @@ Run Configuration running:
 ![run configuration running]
 (https://github.com/kingsleyh/DLanguage/raw/master/.README/run_configuration_running.png)
 
+PSI Tree and Highlighting:
+
+![psi tree and highlighting]
+(https://github.com/kingsleyh/DLanguage/raw/master/.README/psi_structure.png)
+
+
 ## Develop
 
 Interested in contributing to this D plugin please contact me at kingsley at masterthought dot net.
