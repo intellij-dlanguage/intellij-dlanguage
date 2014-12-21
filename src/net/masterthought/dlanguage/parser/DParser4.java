@@ -31,7 +31,7 @@ public class DParser4 implements PsiParser {
         builder.setDebugMode(true);
         PsiBuilder.Marker rootMarker = builder.mark();
 
-        parseContent(builder, rootMarker);
+        parseContent(builder);
 
         rootMarker.done(root);
         ASTNode ret = builder.getTreeBuilt();
@@ -111,21 +111,7 @@ public class DParser4 implements PsiParser {
         }
     }
 
-    private HashMap<Integer, DMarker> createStartMap(List<DMarker> dMarkers) {
-        HashMap<Integer, DMarker> startMap = Maps.newHashMap();
-        for (DMarker d : dMarkers) {
-            startMap.put(d.start(), d);
-        }
-        return startMap;
-    }
 
-    private HashMap<Integer, DMarker> createEndMap(List<DMarker> dMarkers) {
-        HashMap<Integer, DMarker> startMap = Maps.newHashMap();
-        for (DMarker d : dMarkers) {
-            startMap.put(d.finish(), d);
-        }
-        return startMap;
-    }
 
     private List<DMarker> buildDMarkerStructure(ddt.melnorme.lang.tooling.ast_actual.ASTNode deeNode) {
         List<DMarker> dMarkers = Lists.newArrayList();
@@ -149,21 +135,30 @@ public class DParser4 implements PsiParser {
         return dMarker;
     }
 
-    public class IntegerComparator implements Comparator<Integer> {
+    public class DMarkerComparator implements Comparator<DMarker> {
 
-        public int compare(Integer obj1, Integer obj2) {
-            return (obj1 - obj2);
+        public int compare(DMarker obj1, DMarker obj2) {
+            return obj1.start() - obj2.start();
         }
 
     }
 
-    public class DMarkerComparator implements Comparator<DMarker> {
+    public class EndersComparator implements Comparator<DMarker> {
 
-           public int compare(DMarker obj1, DMarker obj2) {
-               return obj1.start().compareTo(obj2);
-           }
+        public int compare(DMarker obj1, DMarker obj2) {
+            return obj1.start() - obj2.start();
+        }
 
-       }
+    }
+
+    public class StartersComparator implements Comparator<DMarker> {
+
+        public int compare(DMarker obj1, DMarker obj2) {
+            return obj1.finish() - obj2.finish();
+        }
+
+    }
+
 
     private Boolean allStarted(List<DMarker> markers) {
         List<Boolean> results = Lists.newArrayList();
@@ -174,270 +169,112 @@ public class DParser4 implements PsiParser {
     }
 
     private Boolean allDone(List<DMarker> markers) {
-          List<Boolean> results = Lists.newArrayList();
-          for (DMarker m : markers) {
-              results.add(m.isDone());
-          }
-          return !results.contains(false);
-      }
+        List<Boolean> results = Lists.newArrayList();
+        for (DMarker m : markers) {
+            results.add(m.isDone());
+        }
+        return !results.contains(false);
+    }
 
-    private void parseContent(PsiBuilder builder, PsiBuilder.Marker rootMarker) {
+
+    private void parseContent(PsiBuilder builder) {
         String basePath = builder.getProject().getBasePath();
         ddt.melnorme.lang.tooling.ast_actual.ASTNode deeNode = DeeParser.parseSource(builder.getOriginalText().toString(), Paths.get(basePath)).node;
 
         List<DMarker> dMarkers = buildDMarkerStructure(deeNode);
 
 
-        Map<Integer, List<Integer>> startItems = Maps.newHashMap();
-        Map<Integer, List<Integer>> endItems = Maps.newHashMap();
-        for (int x = 1; x <= dMarkers.size(); x = x + 1) {
-            DMarker marker = dMarkers.get(x - 1);
-            List<Integer> itemList = startItems.get(marker.start());
-            if (itemList == null) {
-                itemList = Lists.newArrayList();
+        List<String> seen = Lists.newArrayList();
+        List<DMarker> modifiedMarkers = Lists.newArrayList();
+        for (DMarker m : dMarkers) {
+            String val = String.valueOf(m.start()) + String.valueOf(m.finish());
+            if (!seen.contains(val)) {
+                seen.add(val);
+                modifiedMarkers.add(m);
             }
-            itemList.add(x - 1);
-            startItems.put(marker.start(), itemList);
-
-            // end items
-            List<Integer> eitemList = endItems.get(marker.finish());
-            if (eitemList == null) {
-                eitemList = Lists.newArrayList();
-            }
-            eitemList.add(x - 1);
-            endItems.put(marker.finish(), eitemList);
-
         }
 
-//        List sortedKeys=new ArrayList(structure.keySet());
-//        Collections.sort(sortedKeys);
+        Collections.sort(modifiedMarkers, new DMarkerComparator());
 
-        IntegerComparator comparator = new IntegerComparator();
+        Map<Integer, Map<String, List<DMarker>>> structure = Maps.newHashMap();
+        // start
+        for (DMarker marker : modifiedMarkers) {
+            Map<String, List<DMarker>> item = structure.get(marker.start());
+            if (item == null) {
+                item = Maps.newHashMap();
+            }
+            List<DMarker> startList = item.get("start");
+            if (startList == null) {
+                startList = Lists.newArrayList();
+            }
+            startList.add(marker);
+            item.put("start", startList);
+            structure.put(marker.start(), item);
+        }
+        // end
+        for (DMarker marker : modifiedMarkers) {
+            Map<String, List<DMarker>> item = structure.get(marker.finish());
+            if (item == null) {
+                item = Maps.newHashMap();
+            }
+            List<DMarker> endList = item.get("finish");
+            if (endList == null) {
+                endList = Lists.newArrayList();
+            }
+            endList.add(marker);
+            item.put("finish", endList);
+            structure.put(marker.finish(), item);
+        }
 
-        Collections.sort(dMarkers,comparator);
+        List<Integer> sortedStructure = new ArrayList(structure.keySet());
+        Collections.sort(sortedStructure);
 
+        int counter = 0;
+        int next_position;
         while (!builder.eof()) {
 
+            for (Integer position : sortedStructure) {
+                if(counter+1 < sortedStructure.size()) {
+                    next_position = sortedStructure.get(counter + 1);
+                } else {
+                    next_position = builder.getOriginalText().toString().length();
+                }
+                if (position >= builder.getCurrentOffset() && builder.getCurrentOffset() < next_position) {
+                    Map<String, List<DMarker>> s = structure.get(position);
 
-            for(DMarker marker : dMarkers){
+                    // ends
+                    List<DMarker> enders = s.get("finish");
+                    if (enders != null) {
+                        Collections.sort(enders, Collections.reverseOrder(new EndersComparator()));
+                        for (DMarker m : enders) {
+                            if (!m.isDone()) {
+                                m.marker().done(m.elementType());
+                                m.setDoneStatus(true);
+                            }
+                        }
+                    }
 
+                    // starts
+                    List<DMarker> starters = s.get("start");
+                    if (starters != null) {
+                        Collections.sort(starters, Collections.reverseOrder(new StartersComparator()));
+                        for (DMarker m : starters) {
+                            if (!m.isStarted()) {
+                                m.marker(builder.mark());
+                                m.setStartedStatus(true);
+                            }
+                        }
+                    }
+                }
+                counter++;
             }
-
-
-            // close
-//            int curr = builder.getCurrentOffset();
-//
-//            for (Integer key : startItems.keySet()) {
-//                List<Integer> startItemList = startItems.get(key);
-//                if(startItemList != null) {
-//                    Collections.sort(startItemList,comparator);
-//                    for (Integer m : startItemList) {
-//                        DMarker marker = dMarkers.get(m);
-//                        if (!marker.isStarted()) {
-//                            if (builder.getCurrentOffset() + 1 >= marker.start()) {
-//                                marker.marker(builder.mark());
-//                                marker.setStartedStatus(true);
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//
-//            for (Integer key : endItems.keySet()) {
-//                List<Integer> endItemList = endItems.get(key);
-//                if(endItemList != null) {
-//                    Collections.sort(endItemList,Collections.reverseOrder(comparator));
-//                    for (Integer m : endItemList) {
-//                        DMarker marker = dMarkers.get(m);
-//                        if (!marker.isDone()) {
-//                            if (builder.getCurrentOffset() + 1 >= marker.finish()) {
-//                                marker.marker().done(marker.elementType());
-//                                marker.setDoneStatus(true);
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//
-//            builder.advanceLexer();
-
+            builder.advanceLexer();
         }
 
-        Boolean started = allStarted(dMarkers);
-        Boolean done = allDone(dMarkers);
+        Boolean started = allStarted(modifiedMarkers);
+        Boolean done = allDone(modifiedMarkers);
 
         System.out.println("yay!");
-
-//        DMarkerComparator comparator = new DMarkerComparator();
-//        Collections.sort(dMarkers, comparator);
-
-//        int totalSize = dMarkers.size();
-//        List<Integer> indexList = Lists.newArrayList();
-//
-//        for (int x = 1; x <= totalSize; x = x + 1) {
-//            indexList.add(x);
-//        }
-//        for (int x = totalSize; x >= 1; x = x - 1) {
-//            indexList.add(x);
-//        }
-//
-//        while (!builder.eof()) {
-//            for(DMarker marker : dMarkers){
-//
-//            }
-//
-//
-////          builder.advanceLexer();
-//
-//        }
-
-//            for (int x = 1; x <= builder.getOriginalText().length(); x = x + 1) {
-//               for(DMarker marker : dMarkers){
-//                  if(x == marker.start()){
-//                      marker.marker(builder.mark());
-//                  }
-//                   builder.advanceLexer();
-//               }
-//            }
-
-
-//            for (int x = 1; x <= totalSize; x = x + 1) {
-//                DMarker startMarker = dMarkers.get(x-1);
-//                DMarker endMarker = dMarkers.get(totalSize-1);
-//                if (builder.getCurrentOffset() == startMarker.start()) {
-//                    startMarker.marker(builder.mark());
-//                }
-//
-//                int fromEnd = builder.getOriginalText().length() - builder.getCurrentOffset();
-//                if (fromEnd == endMarker.finish()) {
-//                    endMarker.marker().done(endMarker.elementType());
-//                }
-//            }
-
-//            builder.advanceLexer();
-//        }
-
-//
-//        for (int x = 1; x <= totalSize; x = x + 1) {
-//            DMarker startMarker = dMarkers.get(x-1);
-//            DMarker endMarkeer = dMarkers.get(totalSize-1);
-//            while (!builder.eof()) {
-//                if (builder.getCurrentOffset() == startMarker.start()) {
-//                    startMarker.marker(builder.mark());
-//                    startMarker.setStartedStatus(true);
-////                    rootMarker.rollbackTo();
-////                    break;
-//                }
-//                if (builder.getCurrentOffset() == endMarkeer.finish()) {
-//                    endMarkeer.marker().done(endMarkeer.elementType());
-//                    endMarkeer.setDoneStatus(true);
-////                    rootMarker.rollbackTo();
-////                    break;
-//                }
-//                builder.advanceLexer();
-//            }
-//
-//        }
-
-
-//        while (!builder.eof()) {
-//
-//            for (DMarker marker : dMarkers) {
-//
-//                if(!marker.isDone()) {
-//                    if (builder.getCurrentOffset() == marker.start()) {
-//                        marker.marker(builder.mark());
-//                        marker.setStartedStatus(true);
-//                        rootMarker.rollbackTo();
-//                        break;
-//                    }
-//                }
-//                builder.advanceLexer();
-//            }
-//
-//            if (allStarted(dMarkers)) {
-//                Collections.sort(dMarkers, Collections.reverseOrder(comparator));
-//
-//                for (DMarker marker : dMarkers) {
-//                    if (builder.getCurrentOffset() == marker.finish()) {
-//                        marker.marker().done(marker.elementType());
-//                        marker.setDoneStatus(true);
-//                        rootMarker.rollbackTo();
-//                        break;
-//                    }
-//                    builder.advanceLexer();
-//                }
-//            }
-//
-//        }
-
-//        Collections.sort(dMarkers, Collections.reverseOrder(comparator));
-//
-//        for (DMarker marker : dMarkers) {
-//
-//              while (!builder.eof()) {
-//
-//                  if (builder.getCurrentOffset() == marker.finish()) {
-//                      marker.marker().done(marker.elementType());
-//                      marker.setDoneStatus(true);
-//                      rootMarker.rollbackTo();
-//                      break;
-//                  }
-//                  builder.advanceLexer();
-//              }
-//
-//          }
-
-
-//        while (!builder.eof()) {
-//            for (DMarker marker : dMarkers) {
-//                if (builder.getCurrentOffset() == marker.start() || builder.getCurrentOffset() == marker.finish()) {
-//                    if(!marker.isStarted()) {
-//                        marker.marker(builder.mark());
-//                        marker.setStartedStatus(true);
-//                    } else {
-//                        if(!marker.isDone()) {
-//                            marker.marker().done(marker.elementType());
-//                            marker.setDoneStatus(true);
-//                        }
-//                    }
-//                }
-//            }
-//            builder.advanceLexer();
-//        }
-
-
-//        DMarker lastMatchedMarker = null;
-
-//        while (!builder.eof()) {
-//
-//            for (DMarker marker : dMarkers) {
-//
-//                if (!marker.isStarted()) {
-//
-//                    if (builder.getCurrentOffset() == marker.start()) {
-//                        if (lastMatchedMarker != null && lastMatchedMarker.start() != marker.start()) {
-//                            builder.advanceLexer();
-//                        }
-//                        marker.marker(builder.mark());
-//                        marker.setStartedStatus(true);
-//                        lastMatchedMarker = marker;
-//                    }
-//                } else {
-//                    if (builder.getCurrentOffset() == marker.finish()) {
-//                        if (lastMatchedMarker != null && lastMatchedMarker.finish() != marker.finish()) {
-//                            builder.advanceLexer();
-//                        }
-//                        marker.marker().done(marker.elementType());
-//                        marker.setDoneStatus(true);
-//                        lastMatchedMarker = marker;
-//                    }
-//                }
-//                builder.advanceLexer();
-//            }
-//
-//        }
-
 
     }
 }
