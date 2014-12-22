@@ -7,14 +7,16 @@ import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiParser;
 import com.intellij.psi.tree.IElementType;
 import ddt.dtool.parser.DeeParser;
-import ddt.melnorme.utilbox.tree.IElement;
-import net.masterthought.dlanguage.DLanguage;
+import ddt.dtool.parser.DeeParserResult;
+import ddt.dtool.parser.common.LexElement;
 import net.masterthought.dlanguage.lexer.DeeElementTypeCache;
-import net.masterthought.dlanguage.lexer.DeeTokenLookUp;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Parser for D source, wrapper for Descent parser.
@@ -113,21 +115,26 @@ public class DParser implements PsiParser {
     }
 
 
-    private List<DMarker> buildDMarkerStructure(ddt.melnorme.lang.tooling.ast_actual.ASTNode deeNode) {
+    private List<DMarker> buildDMarkerStructure(ddt.melnorme.lang.tooling.ast_actual.ASTNode deeNode, int endPosition) {
         List<DMarker> dMarkers = Lists.newArrayList();
-        DMarkerparseDeeStructure(dMarkers, deeNode);
+        DMarkerparseDeeStructure(dMarkers, deeNode, endPosition);
         return dMarkers;
     }
 
-    private DMarker DMarkerparseDeeStructure(List<DMarker> dMarkers, ddt.melnorme.lang.tooling.ast_actual.ASTNode deeNode) {
+    private DMarker DMarkerparseDeeStructure(List<DMarker> dMarkers, ddt.melnorme.lang.tooling.ast_actual.ASTNode deeNode, int endPosition) {
 
         IElementType elementType = DeeElementTypeCache.valueOf(deeNode.getNodeType().name());
         int startOffSet = deeNode.getStartPos();
         int endOffSet = deeNode.getEndPos();
         String content = deeNode.toStringAsCode();
 
+        if (endOffSet >= endPosition) {
+            endOffSet = endOffSet - 1;
+        }
+
+
         for (ddt.melnorme.lang.tooling.ast_actual.ASTNode child : deeNode.getChildren()) {
-            DMarkerparseDeeStructure(dMarkers, child);
+            DMarkerparseDeeStructure(dMarkers, child, endPosition);
         }
 
         DMarker dMarker = new DMarker(elementType, startOffSet, endOffSet, content);
@@ -159,37 +166,30 @@ public class DParser implements PsiParser {
 
     }
 
-
-    private Boolean allStarted(List<DMarker> markers) {
-        List<Boolean> results = Lists.newArrayList();
-        for (DMarker m : markers) {
-            results.add(m.isStarted());
-        }
-        return !results.contains(false);
-    }
-
-    private Boolean allDone(List<DMarker> markers) {
-        List<Boolean> results = Lists.newArrayList();
-        for (DMarker m : markers) {
-            results.add(m.isDone());
-        }
-        return !results.contains(false);
-    }
-
-
     private void parseContent(PsiBuilder builder) {
         String basePath = builder.getProject().getBasePath();
-        ddt.melnorme.lang.tooling.ast_actual.ASTNode deeNode = DeeParser.parseSource(builder.getOriginalText().toString(), Paths.get(basePath)).node;
+        DeeParserResult.ParsedModule parsedModule = DeeParser.parseSource(builder.getOriginalText().toString(), Paths.get(basePath));
+        int tokenListSize = parsedModule.tokenList.size();
+        LexElement lastElement = parsedModule.tokenList.get(tokenListSize - 1);
+        int endPosition = lastElement.getEndPos();
+        ddt.melnorme.lang.tooling.ast_actual.ASTNode deeNode = parsedModule.node;
 
-        List<DMarker> dMarkers = buildDMarkerStructure(deeNode);
+        List<DMarker> dMarkers = buildDMarkerStructure(deeNode, endPosition);
 
 
         List<String> seen = Lists.newArrayList();
-        List<DMarker> modifiedMarkers = Lists.newArrayList();
+        List<DMarker> dupes = Lists.newArrayList();
         for (DMarker m : dMarkers) {
             String val = String.valueOf(m.start()) + String.valueOf(m.finish());
             if (!seen.contains(val)) {
                 seen.add(val);
+                dupes.add(m);
+            }
+        }
+
+        List<DMarker> modifiedMarkers = Lists.newArrayList();
+        for (DMarker m : dupes) {
+            if (!m.elementType().toString().equals("MODULE")) {
                 modifiedMarkers.add(m);
             }
         }
@@ -226,47 +226,41 @@ public class DParser implements PsiParser {
             structure.put(marker.finish(), item);
         }
 
-        List<Integer> sortedStructure = new ArrayList(structure.keySet());
-        Collections.sort(sortedStructure);
 
-        int counter = 0;
-        int next_position;
         while (!builder.eof()) {
-            for (Integer position : sortedStructure) {
-                if (counter + 1 < sortedStructure.size()) {
-                    next_position = sortedStructure.get(counter + 1);
-                } else {
-                    next_position = builder.getOriginalText().toString().length();
-                }
-                if (position >= builder.getCurrentOffset() && builder.getCurrentOffset() < next_position) {
-                    Map<String, List<DMarker>> s = structure.get(position);
 
-                    // ends
-                    List<DMarker> enders = s.get("finish");
-                    if (enders != null) {
-                        Collections.sort(enders, Collections.reverseOrder(new EndersComparator()));
-                        for (DMarker m : enders) {
-                            if (!m.isDone()) {
-                                m.marker().done(m.elementType());
-                                m.setDoneStatus(true);
-                            }
-                        }
-                    }
+            int currentPosition = builder.getCurrentOffset();
 
-                    // starts
-                    List<DMarker> starters = s.get("start");
-                    if (starters != null) {
-                        Collections.sort(starters, Collections.reverseOrder(new StartersComparator()));
-                        for (DMarker m : starters) {
-                            if (!m.isStarted()) {
-                                m.marker(builder.mark());
-                                m.setStartedStatus(true);
-                            }
+            Map<String, List<DMarker>> s = structure.get(currentPosition);
+            if (s != null) {
+
+                // ends
+                List<DMarker> enders = s.get("finish");
+                if (enders != null) {
+                    Collections.sort(enders, Collections.reverseOrder(new EndersComparator()));
+                    for (DMarker m : enders) {
+                        if (!m.isDone()) {
+                            m.marker().done(m.elementType());
+                            m.setDoneStatus(true);
                         }
                     }
                 }
-                counter++;
+
+                // starts
+                List<DMarker> starters = s.get("start");
+                if (starters != null) {
+                    Collections.sort(starters, Collections.reverseOrder(new StartersComparator()));
+                    for (DMarker m : starters) {
+                        if (!m.isStarted()) {
+                            m.marker(builder.mark());
+                            m.setStartedStatus(true);
+                        }
+                    }
+                }
+
+
             }
+
             builder.advanceLexer();
         }
 
