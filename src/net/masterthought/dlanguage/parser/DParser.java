@@ -20,6 +20,16 @@ import java.util.Map;
 
 /**
  * Parser for D source, wrapper for Descent parser.
+ *
+ * This is a wrapper for the eclipse DDT parser instead of writing another D parser from scratch
+ * The approach taken was to use the DDT parser to build up a AST hierarchy and grab the start and end positions
+ * for each node. Then use the intellij PsiBuilder to mark and complete tokens at the specific points determined
+ * by the DDT parser.
+ *
+ * This approach may seem crazy - but after several days of research I could not find a way to create the Psi structure
+ * without going through the Psi Builder loop. This approach seems to work but I'm very open to suggestion for a better
+ * way. (I'm working on a BNF grammar to use the grammar kit to generate the parser - but that is a big task for me and
+ * something I will maybe get around to in the future.
  */
 public class DParser implements PsiParser {
 
@@ -30,10 +40,14 @@ public class DParser implements PsiParser {
     @Override
     public ASTNode parse(final IElementType root, final PsiBuilder builder) {
         builder.setDebugMode(true);
-        PsiBuilder.Marker rootMarker = builder.mark();
 
+        // In error cases intellij creates less tokens than the DeeParser
+        // This ensures that we can limit the end position of nodes to the max intellij offset
+        Integer maxIdeaOffset = maxIdeaTokenOffset(builder);
+
+        PsiBuilder.Marker rootMarker = builder.mark();
         try {
-            parseContent(builder);
+            parseContent(builder, maxIdeaOffset);
         } catch (Exception e1) {
             rootMarker.rollbackTo();
             PsiBuilder.Marker newRoot = builder.mark();
@@ -48,6 +62,18 @@ public class DParser implements PsiParser {
         return chewEverything(rootMarker, root, builder);
     }
 
+    private Integer maxIdeaTokenOffset(PsiBuilder builder){
+        Integer max = 0;
+        PsiBuilder.Marker collectorMarker = builder.mark();
+        while(!builder.eof()){
+          max = builder.getCurrentOffset();
+          builder.advanceLexer();
+        }
+        collectorMarker.rollbackTo();
+
+        return max;
+    }
+
     private static ASTNode chewEverything(PsiBuilder.Marker marker, IElementType e, PsiBuilder builder) {
         while (!builder.eof()) {
             builder.advanceLexer();
@@ -56,6 +82,7 @@ public class DParser implements PsiParser {
         return builder.getTreeBuilt();
     }
 
+    // Data container to hold the data about each DeeParser node - e.g. the start and end positions and the Psi Marker.
     class DMarker {
 
         private IElementType elementType;
@@ -114,13 +141,14 @@ public class DParser implements PsiParser {
         }
     }
 
-
+    // Create a list of nodes with sart and end positions so that we can iteratie it and mark and complete with PsiBuilder
     private List<DMarker> buildDMarkerStructure(ddt.melnorme.lang.tooling.ast_actual.ASTNode deeNode, int endPosition) {
         List<DMarker> dMarkers = Lists.newArrayList();
         DMarkerparseDeeStructure(dMarkers, deeNode, endPosition);
         return dMarkers;
     }
 
+    // Recursive method that builds the start and end positions for each node based on the DeeParser result
     private DMarker DMarkerparseDeeStructure(List<DMarker> dMarkers, ddt.melnorme.lang.tooling.ast_actual.ASTNode deeNode, int endPosition) {
 
         IElementType elementType = DeeElementTypeCache.valueOf(deeNode.getNodeType().name());
@@ -128,10 +156,15 @@ public class DParser implements PsiParser {
         int endOffSet = deeNode.getEndPos();
         String content = deeNode.toStringAsCode();
 
+        // dont set an end position greater than what intellij thinks is the last position
+        if(endOffSet >= endPosition){
+          endOffSet = endPosition;
+        }
+
+        // items at the end of the file get lost so this allows us to parse up till just before the eof
         if (endOffSet >= endPosition) {
             endOffSet = endOffSet - 1;
         }
-
 
         for (ddt.melnorme.lang.tooling.ast_actual.ASTNode child : deeNode.getChildren()) {
             DMarkerparseDeeStructure(dMarkers, child, endPosition);
@@ -142,6 +175,7 @@ public class DParser implements PsiParser {
         return dMarker;
     }
 
+    // Comparators used for sorting by order
     public class DMarkerComparator implements Comparator<DMarker> {
 
         public int compare(DMarker obj1, DMarker obj2) {
@@ -166,7 +200,8 @@ public class DParser implements PsiParser {
 
     }
 
-    private void parseContent(PsiBuilder builder) {
+    // Do all the complicated stuff to matchup the DeeParse with the PsiBuilder
+    private void parseContent(PsiBuilder builder, Integer maxIdeaOffset) {
         String basePath = builder.getProject().getBasePath();
         DeeParserResult.ParsedModule parsedModule = DeeParser.parseSource(builder.getOriginalText().toString(), Paths.get(basePath));
         int tokenListSize = parsedModule.tokenList.size();
@@ -174,9 +209,14 @@ public class DParser implements PsiParser {
         int endPosition = lastElement.getEndPos();
         ddt.melnorme.lang.tooling.ast_actual.ASTNode deeNode = parsedModule.node;
 
+        // if the DeeParser end position exceeds what intellij thinks is the end position use the intellij one instead
+        if(endPosition > maxIdeaOffset){
+            endPosition = maxIdeaOffset;
+        }
+
         List<DMarker> dMarkers = buildDMarkerStructure(deeNode, endPosition);
 
-
+        // remove duplicates in terms of exactly the same start and end positions.
         List<String> seen = Lists.newArrayList();
         List<DMarker> dupes = Lists.newArrayList();
         for (DMarker m : dMarkers) {
@@ -187,6 +227,7 @@ public class DParser implements PsiParser {
             }
         }
 
+        // remove the top level MODULE - DeeParser creates a top level module containing everything in the file
         List<DMarker> modifiedMarkers = Lists.newArrayList();
         for (DMarker m : dupes) {
             if (!m.elementType().toString().equals("MODULE")) {
@@ -196,6 +237,9 @@ public class DParser implements PsiParser {
 
         Collections.sort(modifiedMarkers, new DMarkerComparator());
 
+        // Build a map that contains each position where there is either a drop marker or a complete marker.
+        // This allows us to grab the actions we need to complete at each offset - a list of either
+        // start: drop markers or finish: complete previously dropped markers.
         Map<Integer, Map<String, List<DMarker>>> structure = Maps.newHashMap();
         // start
         for (DMarker marker : modifiedMarkers) {
@@ -226,15 +270,16 @@ public class DParser implements PsiParser {
             structure.put(marker.finish(), item);
         }
 
-
+        // Loop until eof reached
         while (!builder.eof()) {
 
             int currentPosition = builder.getCurrentOffset();
 
+            // Find the actions to do at the current offset
             Map<String, List<DMarker>> s = structure.get(currentPosition);
             if (s != null) {
 
-                // ends
+                // ends - do these first in order of the highest start offset
                 List<DMarker> enders = s.get("finish");
                 if (enders != null) {
                     Collections.sort(enders, Collections.reverseOrder(new EndersComparator()));
@@ -246,7 +291,7 @@ public class DParser implements PsiParser {
                     }
                 }
 
-                // starts
+                // starts - do these after the ends are done and in order of the lowest end offset
                 List<DMarker> starters = s.get("start");
                 if (starters != null) {
                     Collections.sort(starters, Collections.reverseOrder(new StartersComparator()));
