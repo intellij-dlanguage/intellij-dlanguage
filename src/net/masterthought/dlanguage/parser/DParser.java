@@ -20,12 +20,12 @@ import java.util.Map;
 
 /**
  * Parser for D source, wrapper for Descent parser.
- *
+ * <p/>
  * This is a wrapper for the eclipse DDT parser instead of writing another D parser from scratch
  * The approach taken was to use the DDT parser to build up a AST hierarchy and grab the start and end positions
  * for each node. Then use the intellij PsiBuilder to mark and complete tokens at the specific points determined
  * by the DDT parser.
- *
+ * <p/>
  * This approach may seem crazy - but after several days of research I could not find a way to create the Psi structure
  * without going through the Psi Builder loop. This approach seems to work but I'm very open to suggestion for a better
  * way. (I'm working on a BNF grammar to use the grammar kit to generate the parser - but that is a big task for me and
@@ -62,12 +62,12 @@ public class DParser implements PsiParser {
         return chewEverything(rootMarker, root, builder);
     }
 
-    private Integer maxIdeaTokenOffset(PsiBuilder builder){
+    private Integer maxIdeaTokenOffset(PsiBuilder builder) {
         Integer max = 0;
         PsiBuilder.Marker collectorMarker = builder.mark();
-        while(!builder.eof()){
-          max = builder.getCurrentOffset();
-          builder.advanceLexer();
+        while (!builder.eof()) {
+            max = builder.getCurrentOffset();
+            builder.advanceLexer();
         }
         collectorMarker.rollbackTo();
 
@@ -157,8 +157,8 @@ public class DParser implements PsiParser {
         String content = deeNode.toStringAsCode();
 
         // dont set an end position greater than what intellij thinks is the last position
-        if(endOffSet >= endPosition){
-          endOffSet = endPosition;
+        if (endOffSet >= endPosition) {
+            endOffSet = endPosition;
         }
 
         // items at the end of the file get lost so this allows us to parse up till just before the eof
@@ -210,7 +210,7 @@ public class DParser implements PsiParser {
         ddt.melnorme.lang.tooling.ast_actual.ASTNode deeNode = parsedModule.node;
 
         // if the DeeParser end position exceeds what intellij thinks is the end position use the intellij one instead
-        if(endPosition > maxIdeaOffset){
+        if (endPosition > maxIdeaOffset) {
             endPosition = maxIdeaOffset;
         }
 
@@ -308,6 +308,26 @@ public class DParser implements PsiParser {
 
             builder.advanceLexer();
         }
+
+        //        // This is helpful for debugging issues with the DeeParser to PSi Builder integration
+        //        List<Map<String,Integer>> deeTokens = Lists.newArrayList();
+        //               for(LexElement e : parsedModule.tokenList){
+        //                   Map map = Maps.newHashMap();
+        //                   map.put(e.toString(), e.getStartPos());
+        //                   deeTokens.add(map);
+        //               }
+        //               List<Map<String,Integer>> ideaTokens = Lists.newArrayList();
+        //
+        //               while(!builder.eof()){
+        //                   String ideaContent = builder.getTokenText();
+        //                   int position = builder.getCurrentOffset();
+        //                   Map map = Maps.newHashMap();
+        //                   map.put(ideaContent,position);
+        //                   ideaTokens.add(map);
+        //                   builder.advanceLexer();
+        //               }
+        //
+        //               System.out.println("done");
 
     }
 }
