@@ -13,10 +13,7 @@ import net.masterthought.dlanguage.lexer.DeeElementTypeCache;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Paths;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Parser for D source, wrapper for Descent parser.
@@ -43,11 +40,11 @@ public class DParser implements PsiParser {
 
         // In error cases intellij creates less tokens than the DeeParser
         // This ensures that we can limit the end position of nodes to the max intellij offset
-        Integer maxIdeaOffset = maxIdeaTokenOffset(builder);
+        List<Map<String,Integer>> ideaTokens = getIdeaTokens(builder);
 
         PsiBuilder.Marker rootMarker = builder.mark();
         try {
-            parseContent(builder, maxIdeaOffset);
+            parseContent(builder, ideaTokens);
         } catch (Exception e1) {
             rootMarker.rollbackTo();
             PsiBuilder.Marker newRoot = builder.mark();
@@ -62,16 +59,26 @@ public class DParser implements PsiParser {
         return chewEverything(rootMarker, root, builder);
     }
 
-    private Integer maxIdeaTokenOffset(PsiBuilder builder) {
-        Integer max = 0;
+    private List<Map<String,Integer>> getIdeaTokens(PsiBuilder builder){
+        List<Map<String,Integer>> tokens = Lists.newArrayList();
         PsiBuilder.Marker collectorMarker = builder.mark();
         while (!builder.eof()) {
-            max = builder.getCurrentOffset();
+            int position = builder.getCurrentOffset();
+            String text = builder.getTokenText();
+            Map<String,Integer> map = Maps.newHashMap();
+            map.put(text,position);
+            tokens.add(map);
             builder.advanceLexer();
         }
         collectorMarker.rollbackTo();
 
-        return max;
+        return tokens;
+    }
+
+    private Integer maxIdeaTokenOffset(List<Map<String,Integer>> tokens) {
+        int max = tokens.size();
+        Iterator it = tokens.get(max-1).values().iterator();
+        return it.hasNext() ? (Integer) it.next() : 0;
     }
 
     private static ASTNode chewEverything(PsiBuilder.Marker marker, IElementType e, PsiBuilder builder) {
@@ -162,8 +169,12 @@ public class DParser implements PsiParser {
         }
 
         // items at the end of the file get lost so this allows us to parse up till just before the eof
-        if (endOffSet >= endPosition) {
-            endOffSet = endOffSet - 1;
+//        if (endOffSet >= endPosition) {
+//            endOffSet = endOffSet - 1;
+//        }
+
+        if(startOffSet >= endPosition){
+            startOffSet = endPosition -1;
         }
 
         for (ddt.melnorme.lang.tooling.ast_actual.ASTNode child : deeNode.getChildren()) {
@@ -201,7 +212,7 @@ public class DParser implements PsiParser {
     }
 
     // Do all the complicated stuff to matchup the DeeParse with the PsiBuilder
-    private void parseContent(PsiBuilder builder, Integer maxIdeaOffset) {
+    private void parseContent(PsiBuilder builder, List<Map<String,Integer>> ideaTokens) {
         String basePath = builder.getProject().getBasePath();
         DeeParserResult.ParsedModule parsedModule = DeeParser.parseSource(builder.getOriginalText().toString(), Paths.get(basePath));
         int tokenListSize = parsedModule.tokenList.size();
@@ -210,6 +221,7 @@ public class DParser implements PsiParser {
         ddt.melnorme.lang.tooling.ast_actual.ASTNode deeNode = parsedModule.node;
 
         // if the DeeParser end position exceeds what intellij thinks is the end position use the intellij one instead
+        int maxIdeaOffset = maxIdeaTokenOffset(ideaTokens);
         if (endPosition > maxIdeaOffset) {
             endPosition = maxIdeaOffset;
         }
@@ -284,7 +296,7 @@ public class DParser implements PsiParser {
                 if (enders != null) {
                     Collections.sort(enders, Collections.reverseOrder(new EndersComparator()));
                     for (DMarker m : enders) {
-                        if (!m.isDone()) {
+                        if (m.isStarted() && !m.isDone()) {
                             m.marker().done(m.elementType());
                             m.setDoneStatus(true);
                         }
@@ -296,7 +308,7 @@ public class DParser implements PsiParser {
                 if (starters != null) {
                     Collections.sort(starters, Collections.reverseOrder(new StartersComparator()));
                     for (DMarker m : starters) {
-                        if (!m.isStarted()) {
+                        if (!m.isStarted() && !m.isDone()) {
                             m.marker(builder.mark());
                             m.setStartedStatus(true);
                         }
