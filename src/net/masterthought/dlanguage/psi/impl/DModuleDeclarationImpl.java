@@ -9,7 +9,7 @@ import net.masterthought.dlanguage.psi.interfaces.DElementTypes;
 import net.masterthought.dlanguage.psi.interfaces.DModuleDeclaration;
 import org.jetbrains.annotations.NotNull;
 
-public class DModuleDeclarationImpl extends ASTWrapperPsiElement implements DModuleDeclaration {
+public class DModuleDeclarationImpl extends DCompositeElementImpl implements DModuleDeclaration {
 
     public DModuleDeclarationImpl(ASTNode node) {
         super(node);

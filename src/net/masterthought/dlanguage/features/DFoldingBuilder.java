@@ -11,6 +11,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.containers.ContainerUtil;
 import net.masterthought.dlanguage.psi.DLanguageFile;
 import net.masterthought.dlanguage.psi.DTokenSets;
+import net.masterthought.dlanguage.psi.interfaces.DFunctionDeclaration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -27,7 +28,9 @@ public class DFoldingBuilder extends FoldingBuilderEx implements DumbAware {
 
         final List<FoldingDescriptor> result = ContainerUtil.newArrayList();
 
-
+        for (DFunctionDeclaration function :  file.findChildrenByClass(DFunctionDeclaration.class)) {
+            result.add(new FoldingDescriptor(function, function.getTextRange()));
+        }
 
         if (!quick) {
             PsiTreeUtil.processElements(file, new PsiElementProcessor() {

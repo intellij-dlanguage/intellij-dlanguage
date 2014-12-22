@@ -4,16 +4,20 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
 import ddt.dtool.parser.DeeTokens;
+import net.masterthought.dlanguage.lexer.DeeElementTypeCache;
 import net.masterthought.dlanguage.lexer.DeeTokenLookUp;
 import net.masterthought.dlanguage.psi.DElementType;
+import net.masterthought.dlanguage.psi.impl.DImportDeclarationImpl;
+import net.masterthought.dlanguage.psi.impl.DModuleDeclarationImpl;
+import net.masterthought.dlanguage.psi.impl.DfunctionDeclarationImpl;
 
 public interface DElementTypes {
 
     IElementType NULL = new DElementType("NULL");
     IElementType SYMBOL = new DElementType("SYMBOL");
     IElementType MODULE = new DElementType("MODULE");
-    IElementType DECLARATION_MODULE = new DElementType("DECLARATION_MODULE");
-    IElementType DECLARATION_IMPORT = new DElementType("DECLARATION_IMPORT");
+    IElementType DECLARATION_MODULE = DeeElementTypeCache.valueOf("DECLARATION_MODULE");
+    IElementType DECLARATION_IMPORT = DeeElementTypeCache.valueOf("DECLARATION_IMPORT");
     IElementType IMPORT_CONTENT = new DElementType("IMPORT_CONTENT");
     IElementType IMPORT_ALIAS = new DElementType("IMPORT_ALIAS");
     IElementType IMPORT_SELECTIVE = new DElementType("IMPORT_SELECTIVE");
@@ -105,7 +109,7 @@ public interface DElementTypes {
     IElementType ARRAY_INIT_ENTRY = new DElementType("ARRAY_INIT_ENTRY");
     IElementType INITIALIZER_STRUCT = new DElementType("INITIALIZER_STRUCT");
     IElementType STRUCT_INIT_ENTRY = new DElementType("STRUCT_INIT_ENTRY");
-    IElementType DEFINITION_FUNCTION = new DElementType("DEFINITION_FUNCTION");
+    IElementType DEFINITION_FUNCTION = DeeElementTypeCache.valueOf("DEFINITION_FUNCTION");
     IElementType FUNCTION_PARAMETER = new DElementType("FUNCTION_PARAMETER");
     IElementType NAMELESS_PARAMETER = new DElementType("NAMELESS_PARAMETER");
     IElementType VAR_ARGS_PARAMETER = new DElementType("VAR_ARGS_PARAMETER");
@@ -387,16 +391,16 @@ public interface DElementTypes {
     class Factory {
         public static PsiElement createElement(ASTNode node) {
             IElementType type = node.getElementType();
-            return new DCompositeElementType(node);
 
-//            if (type == MODULE) {
-//                return new DModuleDeclarationImpl(node);
-//            } else if (type == IMPORT) {
-//                return new DImportDeclarationImpl(node);
-//            } else {
-//                return new DCompositeElementType(node) {
-//                };
-//            }
+            if (type == DECLARATION_MODULE) {
+                return new DModuleDeclarationImpl(node);
+            } else if (type == DECLARATION_IMPORT) {
+                return new DImportDeclarationImpl(node);
+            } else if (type == DEFINITION_FUNCTION) {
+                return new DfunctionDeclarationImpl(node);
+            } else {
+                return new DCompositeElementType(node);
+            }
 
         }
     }
