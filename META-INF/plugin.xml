@@ -42,6 +42,9 @@
 
         <programRunner implementation="net.masterthought.dlanguage.run.DLanguageRunner"/>
 
+        <!-- Indexes -->
+        <fileBasedIndex implementation="net.masterthought.dlanguage.index.DModuleIndex"/>
+        <stubIndex implementation="net.masterthought.dlanguage.stubs.index.DAllNameIndex"/>
 
         <!-- Project settings -->
 
