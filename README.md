@@ -2,6 +2,13 @@
 
 This plugin brings D Language support to the Intellij IDE
 
+## MeetUp Group
+
+Come Along to the London D Meetup!
+
+![meet up group]
+(https://github.com/kingsleyh/DLanguage/raw/master/.README/london_d_programmers.png)
+
 ## Background
 
 I've just started learning the D programming language. I love the intellij IDE and wanted to have D support in my favourite IDE. This is the first
