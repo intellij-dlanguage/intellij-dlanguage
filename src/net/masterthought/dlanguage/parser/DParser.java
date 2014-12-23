@@ -168,11 +168,7 @@ public class DParser implements PsiParser {
             endOffSet = endPosition;
         }
 
-        // items at the end of the file get lost so this allows us to parse up till just before the eof
-//        if (endOffSet >= endPosition) {
-//            endOffSet = endOffSet - 1;
-//        }
-
+        // dont set a start position greater than what intellij thinks is the last position (minus 1 to prevent errors at eof)
         if(startOffSet >= endPosition){
             startOffSet = endPosition -1;
         }
