@@ -40,7 +40,7 @@ public class DParser implements PsiParser {
 
         // In error cases intellij creates less tokens than the DeeParser
         // This ensures that we can limit the end position of nodes to the max intellij offset
-        List<Map<String,Integer>> ideaTokens = getIdeaTokens(builder);
+        List<Map<String, Integer>> ideaTokens = getIdeaTokens(builder);
 
         PsiBuilder.Marker rootMarker = builder.mark();
         try {
@@ -59,14 +59,14 @@ public class DParser implements PsiParser {
         return chewEverything(rootMarker, root, builder);
     }
 
-    private List<Map<String,Integer>> getIdeaTokens(PsiBuilder builder){
-        List<Map<String,Integer>> tokens = Lists.newArrayList();
+    private List<Map<String, Integer>> getIdeaTokens(PsiBuilder builder) {
+        List<Map<String, Integer>> tokens = Lists.newArrayList();
         PsiBuilder.Marker collectorMarker = builder.mark();
         while (!builder.eof()) {
             int position = builder.getCurrentOffset();
             String text = builder.getTokenText();
-            Map<String,Integer> map = Maps.newHashMap();
-            map.put(text,position);
+            Map<String, Integer> map = Maps.newHashMap();
+            map.put(text, position);
             tokens.add(map);
             builder.advanceLexer();
         }
@@ -75,9 +75,9 @@ public class DParser implements PsiParser {
         return tokens;
     }
 
-    private Integer maxIdeaTokenOffset(List<Map<String,Integer>> tokens) {
+    private Integer maxIdeaTokenOffset(List<Map<String, Integer>> tokens) {
         int max = tokens.size();
-        Iterator it = tokens.get(max-1).values().iterator();
+        Iterator it = tokens.get(max - 1).values().iterator();
         return it.hasNext() ? (Integer) it.next() : 0;
     }
 
@@ -169,8 +169,8 @@ public class DParser implements PsiParser {
         }
 
         // dont set a start position greater than what intellij thinks is the last position (minus 1 to prevent errors at eof)
-        if(startOffSet >= endPosition){
-            startOffSet = endPosition -1;
+        if (startOffSet >= endPosition) {
+            startOffSet = endPosition - 1;
         }
 
         for (ddt.melnorme.lang.tooling.ast_actual.ASTNode child : deeNode.getChildren()) {
@@ -178,7 +178,9 @@ public class DParser implements PsiParser {
         }
 
         DMarker dMarker = new DMarker(elementType, startOffSet, endOffSet, content);
-        dMarkers.add(dMarker);
+        if (!content.isEmpty()) {
+            dMarkers.add(dMarker);
+        }
         return dMarker;
     }
 
@@ -208,7 +210,7 @@ public class DParser implements PsiParser {
     }
 
     // Do all the complicated stuff to matchup the DeeParse with the PsiBuilder
-    private void parseContent(PsiBuilder builder, List<Map<String,Integer>> ideaTokens) {
+    private void parseContent(PsiBuilder builder, List<Map<String, Integer>> ideaTokens) {
         String basePath = builder.getProject().getBasePath();
         DeeParserResult.ParsedModule parsedModule = DeeParser.parseSource(builder.getOriginalText().toString(), Paths.get(basePath));
         int tokenListSize = parsedModule.tokenList.size();
@@ -249,33 +251,47 @@ public class DParser implements PsiParser {
         // This allows us to grab the actions we need to complete at each offset - a list of either
         // start: drop markers or finish: complete previously dropped markers.
         Map<Integer, Map<String, List<DMarker>>> structure = Maps.newHashMap();
-        // start
+
         for (DMarker marker : modifiedMarkers) {
-            Map<String, List<DMarker>> item = structure.get(marker.start());
-            if (item == null) {
-                item = Maps.newHashMap();
+            Map<String, List<DMarker>> startItem = structure.get(marker.start());
+            Map<String, List<DMarker>> endItem = structure.get(marker.finish());
+
+            // start actions
+            if (startItem == null) {
+                startItem = Maps.newHashMap();
             }
-            List<DMarker> startList = item.get("start");
+            List<DMarker> startList = startItem.get("start");
             if (startList == null) {
                 startList = Lists.newArrayList();
             }
-            startList.add(marker);
-            item.put("start", startList);
-            structure.put(marker.start(), item);
-        }
-        // end
-        for (DMarker marker : modifiedMarkers) {
-            Map<String, List<DMarker>> item = structure.get(marker.finish());
-            if (item == null) {
-                item = Maps.newHashMap();
+
+            // end actions
+            if (endItem == null) {
+                endItem = Maps.newHashMap();
             }
-            List<DMarker> endList = item.get("finish");
+            List<DMarker> endList = endItem.get("finish");
             if (endList == null) {
                 endList = Lists.newArrayList();
             }
-            endList.add(marker);
-            item.put("finish", endList);
-            structure.put(marker.finish(), item);
+
+            // dont add the marker if it has a start and end at exactly the same points
+            // the logic lower down will apply the end positions first so in the case
+            // when start and end are identical (due to some invalid syntax) then it will throw an exception
+            // for a marker that will never get to done state.
+            int beginPosition = marker.start();
+            int finishPosition = marker.finish();
+            if(beginPosition != finishPosition) {
+
+                startList.add(marker);
+                startItem.put("start", startList);
+
+                endList.add(marker);
+                endItem.put("finish", endList);
+            }
+
+            // add to structure
+            structure.put(marker.start(), startItem);
+            structure.put(marker.finish(), endItem);
         }
 
         // Loop until eof reached
