@@ -132,3 +132,18 @@ PSI Tree and Highlighting:
 
 Interested in contributing to this D plugin please contact me at kingsley at masterthought dot net.
 Contributions are accepted via fork and pull request but please co-ordinate with me so we don't duplicate effort.
+
+## Instructions for Developers
+
+read this document: [developing custom language plugins for intellij](https://confluence.jetbrains.com/display/IDEADEV/Developing+Custom+Language+Plugins+for+IntelliJ+IDEA)
+
+also see this document for getting the environment setup: [plugin development](https://confluence.jetbrains.com/display/IDEADEV/PluginDevelopment)
+
+this one is also helpful: [make a pluing in less than 30 mins](http://bjorn.tipling.com/how-to-make-an-intellij-idea-plugin-in-30-minutes)
+### Setup
+
+1. Download and install the community edition of intellij - [here](https://www.jetbrains.com/idea/download/)
+2. Download the intellij community edition source code - git clone --depth 1 https://github.com/JetBrains/intellij-community.git (use depth 1 to reduce history otherwise it will take a long time)
+3. Open this plugin project in intellij
+4. In the module setting (F4) set the SDK to the path of the community edition source code JDK under the intellij platform plugin SDK
+
