@@ -11,7 +11,8 @@ import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.containers.ContainerUtil;
 import net.masterthought.dlanguage.psi.DLanguageFile;
 import net.masterthought.dlanguage.psi.DTokenSets;
-import net.masterthought.dlanguage.psi.interfaces.DFunctionDeclaration;
+import net.masterthought.dlanguage.psi.interfaces.DDefinitionClass;
+import net.masterthought.dlanguage.psi.interfaces.DDefinitionFunction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,7 +21,6 @@ import java.util.List;
 public class DFoldingBuilder extends FoldingBuilderEx implements DumbAware {
     @NotNull
 
-
     @Override
     public FoldingDescriptor[] buildFoldRegions(@NotNull PsiElement root, @NotNull Document document, boolean quick) {
         if (!(root instanceof DLanguageFile)) return FoldingDescriptor.EMPTY;
@@ -28,15 +28,23 @@ public class DFoldingBuilder extends FoldingBuilderEx implements DumbAware {
 
         final List<FoldingDescriptor> result = ContainerUtil.newArrayList();
 
-        for (DFunctionDeclaration function :  file.findChildrenByClass(DFunctionDeclaration.class)) {
+        // TODO - find a way to discover all things that need to be folder in the tree
+
+        // add top level functions
+        for (DDefinitionFunction function :  file.findChildrenByClass(DDefinitionFunction.class)) {
             result.add(new FoldingDescriptor(function, function.getTextRange()));
         }
+
+        // add top level classes
+        for (DDefinitionClass function :  file.findChildrenByClass(DDefinitionClass.class)) {
+                   result.add(new FoldingDescriptor(function, function.getTextRange()));
+               }
 
         if (!quick) {
             PsiTreeUtil.processElements(file, new PsiElementProcessor() {
                 @Override
                 public boolean execute(@NotNull PsiElement element) {
-                    if (DTokenSets.COMMENTS.contains(element.getNode().getElementType()) && element.getTextRange().getLength() > 2) {
+                    if (DTokenSets.MULTI_LINE_COMMENTS.contains(element.getNode().getElementType()) && element.getTextRange().getLength() > 2) {
                         result.add(new FoldingDescriptor(element, element.getTextRange()));
                     }
                     return true;
@@ -47,17 +55,9 @@ public class DFoldingBuilder extends FoldingBuilderEx implements DumbAware {
         return result.toArray(new FoldingDescriptor[result.size()]);
     }
 
-
     @Nullable
     @Override
     public String getPlaceholderText(@NotNull ASTNode node) {
-        PsiElement psi = node.getPsi();
-//        if (psi instanceof ErlangFunction) return ErlangPsiImplUtil.createFunctionPresentation((ErlangFunction) psi) + " -> ...";
-//        IElementType type = node.getElementType();
-//        if (ErlangParserDefinition.ERL_COMMENT == type) return "% ...";
-//        if (ErlangParserDefinition.ERL_FUNCTION_DOC_COMMENT == type) return "%% ...";
-//        if (ErlangParserDefinition.ERL_MODULE_DOC_COMMENT == type) return "%%% ...";
-//        return null;
         return "...";
     }
 

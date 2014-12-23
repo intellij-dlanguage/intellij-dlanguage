@@ -14,9 +14,4 @@ public class DCompositeElementImpl extends ASTWrapperPsiElement implements DComp
         return getNode().getElementType().toString();
     }
 
-    @Override
-    public String getText(){
-        return getNode().getText();
-    }
-
 }

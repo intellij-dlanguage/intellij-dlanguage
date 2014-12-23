@@ -11,6 +11,9 @@ public class DTokenSets {
             DElementTypes.COMMENT_NESTED, DElementTypes.COMMENT_LINE,
             DElementTypes.DOCCOMMENT_MULTI, DElementTypes.DOCCOMMENT_NESTED,
             DElementTypes.DOCCOMMENT_LINE);
+    public static final TokenSet MULTI_LINE_COMMENTS = TokenSet.create(DElementTypes.COMMENT_MULTI,
+                DElementTypes.COMMENT_NESTED,
+                DElementTypes.DOCCOMMENT_MULTI, DElementTypes.DOCCOMMENT_NESTED);
     public static final TokenSet STRING_LITERALS = TokenSet.create(DElementTypes.STRING_WYSIWYG, DElementTypes.STRING_DELIM,
             DElementTypes.KW_CHAR,
             DElementTypes.KW_DCHAR,

@@ -6,176 +6,174 @@ import com.intellij.psi.tree.IElementType;
 import ddt.dtool.parser.DeeTokens;
 import net.masterthought.dlanguage.lexer.DeeElementTypeCache;
 import net.masterthought.dlanguage.lexer.DeeTokenLookUp;
-import net.masterthought.dlanguage.psi.DElementType;
-import net.masterthought.dlanguage.psi.impl.DImportDeclarationImpl;
-import net.masterthought.dlanguage.psi.impl.DModuleDeclarationImpl;
-import net.masterthought.dlanguage.psi.impl.DfunctionDeclarationImpl;
+import net.masterthought.dlanguage.psi.impl.*;
 
 public interface DElementTypes {
 
-    IElementType NULL = new DElementType("NULL");
-    IElementType SYMBOL = new DElementType("SYMBOL");
-    IElementType MODULE = new DElementType("MODULE");
+    // element types supported by DeeParser
+    IElementType NULL = DeeElementTypeCache.valueOf("NULL");
+    IElementType SYMBOL = DeeElementTypeCache.valueOf("SYMBOL");
+    IElementType MODULE = DeeElementTypeCache.valueOf("MODULE");
     IElementType DECLARATION_MODULE = DeeElementTypeCache.valueOf("DECLARATION_MODULE");
     IElementType DECLARATION_IMPORT = DeeElementTypeCache.valueOf("DECLARATION_IMPORT");
-    IElementType IMPORT_CONTENT = new DElementType("IMPORT_CONTENT");
-    IElementType IMPORT_ALIAS = new DElementType("IMPORT_ALIAS");
-    IElementType IMPORT_SELECTIVE = new DElementType("IMPORT_SELECTIVE");
-    IElementType IMPORT_SELECTIVE_ALIAS = new DElementType("IMPORT_SELECTIVE_ALIAS");
-    IElementType DECL_LIST = new DElementType("DECL_LIST");
-    IElementType DECL_BLOCK = new DElementType("DECL_BLOCK");
-    IElementType DECLARATION_EMTPY = new DElementType("DECLARATION_EMTPY");
-    IElementType MISSING_DECLARATION = new DElementType("MISSING_DECLARATION");
-    IElementType INVALID_SYNTAX = new DElementType("INVALID_SYNTAX");
-    IElementType INCOMPLETE_DECLARATOR = new DElementType("INCOMPLETE_DECLARATOR");
-    IElementType REF_IMPORT_SELECTION = new DElementType("REF_IMPORT_SELECTION");
-    IElementType REF_MODULE = new DElementType("REF_MODULE");
-    IElementType REF_IDENTIFIER = new DElementType("REF_IDENTIFIER");
-    IElementType REF_QUALIFIED = new DElementType("REF_QUALIFIED");
-    IElementType REF_MODULE_QUALIFIED = new DElementType("REF_MODULE_QUALIFIED");
-    IElementType REF_PRIMITIVE = new DElementType("REF_PRIMITIVE");
-    IElementType REF_TYPE_DYN_ARRAY = new DElementType("REF_TYPE_DYN_ARRAY");
-    IElementType REF_TYPE_POINTER = new DElementType("REF_TYPE_POINTER");
-    IElementType REF_INDEXING = new DElementType("REF_INDEXING");
-    IElementType REF_SLICE = new DElementType("REF_SLICE");
-    IElementType REF_TYPE_FUNCTION = new DElementType("REF_TYPE_FUNCTION");
-    IElementType REF_TEMPLATE_INSTANCE = new DElementType("REF_TEMPLATE_INSTANCE");
-    IElementType REF_TYPEOF = new DElementType("REF_TYPEOF");
-    IElementType REF_MODIFIER = new DElementType("REF_MODIFIER");
-    IElementType REF_AUTO = new DElementType("REF_AUTO");
-    IElementType MISSING_EXPRESSION = new DElementType("MISSING_EXPRESSION");
-    IElementType EXP_REF_RETURN = new DElementType("EXP_REF_RETURN");
-    IElementType EXP_THIS = new DElementType("EXP_THIS");
-    IElementType EXP_SUPER = new DElementType("EXP_SUPER");
-    IElementType EXP_NULL = new DElementType("EXP_NULL");
-    IElementType EXP_ARRAY_LENGTH = new DElementType("EXP_ARRAY_LENGTH");
-    IElementType EXP_LITERAL_BOOL = new DElementType("EXP_LITERAL_BOOL");
-    IElementType EXP_LITERAL_INTEGER = new DElementType("EXP_LITERAL_INTEGER");
-    IElementType EXP_LITERAL_STRING = new DElementType("EXP_LITERAL_STRING");
-    IElementType EXP_LITERAL_CHAR = new DElementType("EXP_LITERAL_CHAR");
-    IElementType EXP_LITERAL_FLOAT = new DElementType("EXP_LITERAL_FLOAT");
-    IElementType EXP_LITERAL_ARRAY = new DElementType("EXP_LITERAL_ARRAY");
-    IElementType EXP_LITERAL_MAPARRAY = new DElementType("EXP_LITERAL_MAPARRAY");
-    IElementType MAPARRAY_ENTRY = new DElementType("MAPARRAY_ENTRY");
-    IElementType EXP_FUNCTION_LITERAL = new DElementType("EXP_FUNCTION_LITERAL");
-    IElementType EXP_SIMPLE_LAMBDA = new DElementType("EXP_SIMPLE_LAMBDA");
-    IElementType SIMPLE_LAMBDA_DEFUNIT = new DElementType("SIMPLE_LAMBDA_DEFUNIT");
-    IElementType EXP_REFERENCE = new DElementType("EXP_REFERENCE");
-    IElementType EXP_PARENTHESES = new DElementType("EXP_PARENTHESES");
-    IElementType EXP_ASSERT = new DElementType("EXP_ASSERT");
-    IElementType EXP_MIXIN_STRING = new DElementType("EXP_MIXIN_STRING");
-    IElementType EXP_IMPORT_STRING = new DElementType("EXP_IMPORT_STRING");
-    IElementType EXP_TYPEID = new DElementType("EXP_TYPEID");
-    IElementType EXP_INDEX = new DElementType("EXP_INDEX");
-    IElementType EXP_CALL = new DElementType("EXP_CALL");
-    IElementType EXP_PREFIX = new DElementType("EXP_PREFIX");
-    IElementType EXP_NEW = new DElementType("EXP_NEW");
-    IElementType EXP_NEW_ANON_CLASS = new DElementType("EXP_NEW_ANON_CLASS");
-    IElementType EXP_CAST = new DElementType("EXP_CAST");
-    IElementType EXP_CAST_QUAL = new DElementType("EXP_CAST_QUAL");
-    IElementType EXP_POSTFIX_OP = new DElementType("EXP_POSTFIX_OP");
-    IElementType EXP_INFIX = new DElementType("EXP_INFIX");
-    IElementType EXP_CONDITIONAL = new DElementType("EXP_CONDITIONAL");
-    IElementType EXP_IS = new DElementType("EXP_IS");
-    IElementType STATIC_IF_EXP_IS = new DElementType("STATIC_IF_EXP_IS");
-    IElementType STATIC_IF_EXP_IS_DEF_UNIT = new DElementType("STATIC_IF_EXP_IS_DEF_UNIT");
-    IElementType EXP_TRAITS = new DElementType("EXP_TRAITS");
-    IElementType DECLARATION_ATTRIB = new DElementType("DECLARATION_ATTRIB");
-    IElementType ATTRIB_LINKAGE = new DElementType("ATTRIB_LINKAGE");
-    IElementType ATTRIB_CPP_LINKAGE = new DElementType("ATTRIB_CPP_LINKAGE");
-    IElementType ATTRIB_ALIGN = new DElementType("ATTRIB_ALIGN");
-    IElementType ATTRIB_PRAGMA = new DElementType("ATTRIB_PRAGMA");
-    IElementType ATTRIB_PROTECTION = new DElementType("ATTRIB_PROTECTION");
-    IElementType ATTRIB_BASIC = new DElementType("ATTRIB_BASIC");
-    IElementType ATTRIB_AT_KEYWORD = new DElementType("ATTRIB_AT_KEYWORD");
-    IElementType ATTRIB_CUSTOM = new DElementType("ATTRIB_CUSTOM");
-    IElementType DECLARATION_MIXIN_STRING = new DElementType("DECLARATION_MIXIN_STRING");
-    IElementType DECLARATION_MIXIN = new DElementType("DECLARATION_MIXIN");
-    IElementType DECLARATION_ALIAS_THIS = new DElementType("DECLARATION_ALIAS_THIS");
-    IElementType DECLARATION_INVARIANT = new DElementType("DECLARATION_INVARIANT");
-    IElementType DECLARATION_UNITEST = new DElementType("DECLARATION_UNITEST");
-    IElementType DECLARATION_ALLOCATOR_FUNCTION = new DElementType("DECLARATION_ALLOCATOR_FUNCTION");
-    IElementType DECLARATION_SPECIAL_FUNCTION = new DElementType("DECLARATION_SPECIAL_FUNCTION");
-    IElementType DECLARATION_DEBUG_VERSION_SPEC = new DElementType("DECLARATION_DEBUG_VERSION_SPEC");
-    IElementType DECLARATION_DEBUG_VERSION = new DElementType("DECLARATION_DEBUG_VERSION");
-    IElementType DECLARATION_STATIC_IF = new DElementType("DECLARATION_STATIC_IF");
-    IElementType DECLARATION_STATIC_ASSERT = new DElementType("DECLARATION_STATIC_ASSERT");
-    IElementType DEFINITION_VARIABLE = new DElementType("DEFINITION_VARIABLE");
-    IElementType DEFINITION_VAR_FRAGMENT = new DElementType("DEFINITION_VAR_FRAGMENT");
-    IElementType DEFINITION_AUTO_VARIABLE = new DElementType("DEFINITION_AUTO_VARIABLE");
-    IElementType CSTYLE_ROOT_REF = new DElementType("CSTYLE_ROOT_REF");
-    IElementType INITIALIZER_VOID = new DElementType("INITIALIZER_VOID");
-    IElementType INITIALIZER_ARRAY = new DElementType("INITIALIZER_ARRAY");
-    IElementType ARRAY_INIT_ENTRY = new DElementType("ARRAY_INIT_ENTRY");
-    IElementType INITIALIZER_STRUCT = new DElementType("INITIALIZER_STRUCT");
-    IElementType STRUCT_INIT_ENTRY = new DElementType("STRUCT_INIT_ENTRY");
+    IElementType IMPORT_CONTENT = DeeElementTypeCache.valueOf("IMPORT_CONTENT");
+    IElementType IMPORT_ALIAS = DeeElementTypeCache.valueOf("IMPORT_ALIAS");
+    IElementType IMPORT_SELECTIVE = DeeElementTypeCache.valueOf("IMPORT_SELECTIVE");
+    IElementType IMPORT_SELECTIVE_ALIAS = DeeElementTypeCache.valueOf("IMPORT_SELECTIVE_ALIAS");
+    IElementType DECL_LIST = DeeElementTypeCache.valueOf("DECL_LIST");
+    IElementType DECL_BLOCK = DeeElementTypeCache.valueOf("DECL_BLOCK");
+    IElementType DECLARATION_EMTPY = DeeElementTypeCache.valueOf("DECLARATION_EMTPY");
+    IElementType MISSING_DECLARATION = DeeElementTypeCache.valueOf("MISSING_DECLARATION");
+    IElementType INVALID_SYNTAX = DeeElementTypeCache.valueOf("INVALID_SYNTAX");
+    IElementType INCOMPLETE_DECLARATOR = DeeElementTypeCache.valueOf("INCOMPLETE_DECLARATOR");
+    IElementType REF_IMPORT_SELECTION = DeeElementTypeCache.valueOf("REF_IMPORT_SELECTION");
+    IElementType REF_MODULE = DeeElementTypeCache.valueOf("REF_MODULE");
+    IElementType REF_IDENTIFIER = DeeElementTypeCache.valueOf("REF_IDENTIFIER");
+    IElementType REF_QUALIFIED = DeeElementTypeCache.valueOf("REF_QUALIFIED");
+    IElementType REF_MODULE_QUALIFIED = DeeElementTypeCache.valueOf("REF_MODULE_QUALIFIED");
+    IElementType REF_PRIMITIVE = DeeElementTypeCache.valueOf("REF_PRIMITIVE");
+    IElementType REF_TYPE_DYN_ARRAY = DeeElementTypeCache.valueOf("REF_TYPE_DYN_ARRAY");
+    IElementType REF_TYPE_POINTER = DeeElementTypeCache.valueOf("REF_TYPE_POINTER");
+    IElementType REF_INDEXING = DeeElementTypeCache.valueOf("REF_INDEXING");
+    IElementType REF_SLICE = DeeElementTypeCache.valueOf("REF_SLICE");
+    IElementType REF_TYPE_FUNCTION = DeeElementTypeCache.valueOf("REF_TYPE_FUNCTION");
+    IElementType REF_TEMPLATE_INSTANCE = DeeElementTypeCache.valueOf("REF_TEMPLATE_INSTANCE");
+    IElementType REF_TYPEOF = DeeElementTypeCache.valueOf("REF_TYPEOF");
+    IElementType REF_MODIFIER = DeeElementTypeCache.valueOf("REF_MODIFIER");
+    IElementType REF_AUTO = DeeElementTypeCache.valueOf("REF_AUTO");
+    IElementType MISSING_EXPRESSION = DeeElementTypeCache.valueOf("MISSING_EXPRESSION");
+    IElementType EXP_REF_RETURN = DeeElementTypeCache.valueOf("EXP_REF_RETURN");
+    IElementType EXP_THIS = DeeElementTypeCache.valueOf("EXP_THIS");
+    IElementType EXP_SUPER = DeeElementTypeCache.valueOf("EXP_SUPER");
+    IElementType EXP_NULL = DeeElementTypeCache.valueOf("EXP_NULL");
+    IElementType EXP_ARRAY_LENGTH = DeeElementTypeCache.valueOf("EXP_ARRAY_LENGTH");
+    IElementType EXP_LITERAL_BOOL = DeeElementTypeCache.valueOf("EXP_LITERAL_BOOL");
+    IElementType EXP_LITERAL_INTEGER = DeeElementTypeCache.valueOf("EXP_LITERAL_INTEGER");
+    IElementType EXP_LITERAL_STRING = DeeElementTypeCache.valueOf("EXP_LITERAL_STRING");
+    IElementType EXP_LITERAL_CHAR = DeeElementTypeCache.valueOf("EXP_LITERAL_CHAR");
+    IElementType EXP_LITERAL_FLOAT = DeeElementTypeCache.valueOf("EXP_LITERAL_FLOAT");
+    IElementType EXP_LITERAL_ARRAY = DeeElementTypeCache.valueOf("EXP_LITERAL_ARRAY");
+    IElementType EXP_LITERAL_MAPARRAY = DeeElementTypeCache.valueOf("EXP_LITERAL_MAPARRAY");
+    IElementType MAPARRAY_ENTRY = DeeElementTypeCache.valueOf("MAPARRAY_ENTRY");
+    IElementType EXP_FUNCTION_LITERAL = DeeElementTypeCache.valueOf("EXP_FUNCTION_LITERAL");
+    IElementType EXP_SIMPLE_LAMBDA = DeeElementTypeCache.valueOf("EXP_SIMPLE_LAMBDA");
+    IElementType SIMPLE_LAMBDA_DEFUNIT = DeeElementTypeCache.valueOf("SIMPLE_LAMBDA_DEFUNIT");
+    IElementType EXP_REFERENCE = DeeElementTypeCache.valueOf("EXP_REFERENCE");
+    IElementType EXP_PARENTHESES = DeeElementTypeCache.valueOf("EXP_PARENTHESES");
+    IElementType EXP_ASSERT = DeeElementTypeCache.valueOf("EXP_ASSERT");
+    IElementType EXP_MIXIN_STRING = DeeElementTypeCache.valueOf("EXP_MIXIN_STRING");
+    IElementType EXP_IMPORT_STRING = DeeElementTypeCache.valueOf("EXP_IMPORT_STRING");
+    IElementType EXP_TYPEID = DeeElementTypeCache.valueOf("EXP_TYPEID");
+    IElementType EXP_INDEX = DeeElementTypeCache.valueOf("EXP_INDEX");
+    IElementType EXP_CALL = DeeElementTypeCache.valueOf("EXP_CALL");
+    IElementType EXP_PREFIX = DeeElementTypeCache.valueOf("EXP_PREFIX");
+    IElementType EXP_NEW = DeeElementTypeCache.valueOf("EXP_NEW");
+    IElementType EXP_NEW_ANON_CLASS = DeeElementTypeCache.valueOf("EXP_NEW_ANON_CLASS");
+    IElementType EXP_CAST = DeeElementTypeCache.valueOf("EXP_CAST");
+    IElementType EXP_CAST_QUAL = DeeElementTypeCache.valueOf("EXP_CAST_QUAL");
+    IElementType EXP_POSTFIX_OP = DeeElementTypeCache.valueOf("EXP_POSTFIX_OP");
+    IElementType EXP_INFIX = DeeElementTypeCache.valueOf("EXP_INFIX");
+    IElementType EXP_CONDITIONAL = DeeElementTypeCache.valueOf("EXP_CONDITIONAL");
+    IElementType EXP_IS = DeeElementTypeCache.valueOf("EXP_IS");
+    IElementType STATIC_IF_EXP_IS = DeeElementTypeCache.valueOf("STATIC_IF_EXP_IS");
+    IElementType STATIC_IF_EXP_IS_DEF_UNIT = DeeElementTypeCache.valueOf("STATIC_IF_EXP_IS_DEF_UNIT");
+    IElementType EXP_TRAITS = DeeElementTypeCache.valueOf("EXP_TRAITS");
+    IElementType DECLARATION_ATTRIB = DeeElementTypeCache.valueOf("DECLARATION_ATTRIB");
+    IElementType ATTRIB_LINKAGE = DeeElementTypeCache.valueOf("ATTRIB_LINKAGE");
+    IElementType ATTRIB_CPP_LINKAGE = DeeElementTypeCache.valueOf("ATTRIB_CPP_LINKAGE");
+    IElementType ATTRIB_ALIGN = DeeElementTypeCache.valueOf("ATTRIB_ALIGN");
+    IElementType ATTRIB_PRAGMA = DeeElementTypeCache.valueOf("ATTRIB_PRAGMA");
+    IElementType ATTRIB_PROTECTION = DeeElementTypeCache.valueOf("ATTRIB_PROTECTION");
+    IElementType ATTRIB_BASIC = DeeElementTypeCache.valueOf("ATTRIB_BASIC");
+    IElementType ATTRIB_AT_KEYWORD = DeeElementTypeCache.valueOf("ATTRIB_AT_KEYWORD");
+    IElementType ATTRIB_CUSTOM = DeeElementTypeCache.valueOf("ATTRIB_CUSTOM");
+    IElementType DECLARATION_MIXIN_STRING = DeeElementTypeCache.valueOf("DECLARATION_MIXIN_STRING");
+    IElementType DECLARATION_MIXIN = DeeElementTypeCache.valueOf("DECLARATION_MIXIN");
+    IElementType DECLARATION_ALIAS_THIS = DeeElementTypeCache.valueOf("DECLARATION_ALIAS_THIS");
+    IElementType DECLARATION_INVARIANT = DeeElementTypeCache.valueOf("DECLARATION_INVARIANT");
+    IElementType DECLARATION_UNITEST = DeeElementTypeCache.valueOf("DECLARATION_UNITEST");
+    IElementType DECLARATION_ALLOCATOR_FUNCTION = DeeElementTypeCache.valueOf("DECLARATION_ALLOCATOR_FUNCTION");
+    IElementType DECLARATION_SPECIAL_FUNCTION = DeeElementTypeCache.valueOf("DECLARATION_SPECIAL_FUNCTION");
+    IElementType DECLARATION_DEBUG_VERSION_SPEC = DeeElementTypeCache.valueOf("DECLARATION_DEBUG_VERSION_SPEC");
+    IElementType DECLARATION_DEBUG_VERSION = DeeElementTypeCache.valueOf("DECLARATION_DEBUG_VERSION");
+    IElementType DECLARATION_STATIC_IF = DeeElementTypeCache.valueOf("DECLARATION_STATIC_IF");
+    IElementType DECLARATION_STATIC_ASSERT = DeeElementTypeCache.valueOf("DECLARATION_STATIC_ASSERT");
+    IElementType DEFINITION_VARIABLE = DeeElementTypeCache.valueOf("DEFINITION_VARIABLE");
+    IElementType DEFINITION_VAR_FRAGMENT = DeeElementTypeCache.valueOf("DEFINITION_VAR_FRAGMENT");
+    IElementType DEFINITION_AUTO_VARIABLE = DeeElementTypeCache.valueOf("DEFINITION_AUTO_VARIABLE");
+    IElementType CSTYLE_ROOT_REF = DeeElementTypeCache.valueOf("CSTYLE_ROOT_REF");
+    IElementType INITIALIZER_VOID = DeeElementTypeCache.valueOf("INITIALIZER_VOID");
+    IElementType INITIALIZER_ARRAY = DeeElementTypeCache.valueOf("INITIALIZER_ARRAY");
+    IElementType ARRAY_INIT_ENTRY = DeeElementTypeCache.valueOf("ARRAY_INIT_ENTRY");
+    IElementType INITIALIZER_STRUCT = DeeElementTypeCache.valueOf("INITIALIZER_STRUCT");
+    IElementType STRUCT_INIT_ENTRY = DeeElementTypeCache.valueOf("STRUCT_INIT_ENTRY");
     IElementType DEFINITION_FUNCTION = DeeElementTypeCache.valueOf("DEFINITION_FUNCTION");
-    IElementType FUNCTION_PARAMETER = new DElementType("FUNCTION_PARAMETER");
-    IElementType NAMELESS_PARAMETER = new DElementType("NAMELESS_PARAMETER");
-    IElementType VAR_ARGS_PARAMETER = new DElementType("VAR_ARGS_PARAMETER");
-    IElementType FUNCTION_BODY = new DElementType("FUNCTION_BODY");
-    IElementType IN_OUT_FUNCTION_BODY = new DElementType("IN_OUT_FUNCTION_BODY");
-    IElementType FUNCTION_BODY_OUT_BLOCK = new DElementType("FUNCTION_BODY_OUT_BLOCK");
-    IElementType DEFINITION_CONSTRUCTOR = new DElementType("DEFINITION_CONSTRUCTOR");
-    IElementType DEFINITION_STRUCT = new DElementType("DEFINITION_STRUCT");
-    IElementType DEFINITION_UNION = new DElementType("DEFINITION_UNION");
-    IElementType DEFINITION_CLASS = new DElementType("DEFINITION_CLASS");
-    IElementType DEFINITION_INTERFACE = new DElementType("DEFINITION_INTERFACE");
-    IElementType DEFINITION_TEMPLATE = new DElementType("DEFINITION_TEMPLATE");
-    IElementType TEMPLATE_TYPE_PARAM = new DElementType("TEMPLATE_TYPE_PARAM");
-    IElementType TEMPLATE_VALUE_PARAM = new DElementType("TEMPLATE_VALUE_PARAM");
-    IElementType TEMPLATE_ALIAS_PARAM = new DElementType("TEMPLATE_ALIAS_PARAM");
-    IElementType TEMPLATE_TUPLE_PARAM = new DElementType("TEMPLATE_TUPLE_PARAM");
-    IElementType TEMPLATE_THIS_PARAM = new DElementType("TEMPLATE_THIS_PARAM");
-    IElementType DEFINITION_MIXIN_INSTANCE = new DElementType("DEFINITION_MIXIN_INSTANCE");
-    IElementType DEFINITION_ENUM = new DElementType("DEFINITION_ENUM");
-    IElementType DECLARATION_ENUM = new DElementType("DECLARATION_ENUM");
-    IElementType ENUM_BODY = new DElementType("ENUM_BODY");
-    IElementType ENUM_MEMBER = new DElementType("ENUM_MEMBER");
-    IElementType DEFINITION_ENUM_VAR = new DElementType("DEFINITION_ENUM_VAR");
-    IElementType DEFINITION_ENUM_VAR_FRAGMENT = new DElementType("DEFINITION_ENUM_VAR_FRAGMENT");
-    IElementType DEFINITION_ALIAS = new DElementType("DEFINITION_ALIAS");
-    IElementType DEFINITION_ALIAS_FRAGMENT = new DElementType("DEFINITION_ALIAS_FRAGMENT");
-    IElementType DEFINITION_ALIAS_VAR_DECL = new DElementType("DEFINITION_ALIAS_VAR_DECL");
-    IElementType DEFINITION_ALIAS_FUNCTION_DECL = new DElementType("DEFINITION_ALIAS_FUNCTION_DECL");
-    IElementType ALIAS_VAR_DECL_FRAGMENT = new DElementType("ALIAS_VAR_DECL_FRAGMENT");
-    IElementType TEMPLATE_TYPE_PARAM__INSTANCE = new DElementType("TEMPLATE_TYPE_PARAM__INSTANCE");
-    IElementType TEMPLATE_VALUE_PARAM__INSTANCE = new DElementType("TEMPLATE_VALUE_PARAM__INSTANCE");
-    IElementType TEMPLATE_ALIAS_PARAM__INSTANCE = new DElementType("TEMPLATE_ALIAS_PARAM__INSTANCE");
-    IElementType BLOCK_STATEMENT = new DElementType("BLOCK_STATEMENT");
-    IElementType BLOCK_STATEMENT_UNSCOPED = new DElementType("BLOCK_STATEMENT_UNSCOPED");
-    IElementType EMPTY_STATEMENT = new DElementType("EMPTY_STATEMENT");
-    IElementType SCOPED_STATEMENT_LIST = new DElementType("SCOPED_STATEMENT_LIST");
-    IElementType STATEMENT_EXPRESSION = new DElementType("STATEMENT_EXPRESSION");
-    IElementType STATEMENT_LABEL = new DElementType("STATEMENT_LABEL");
-    IElementType STATEMENT_IF = new DElementType("STATEMENT_IF");
-    IElementType STATEMENT_IF_VAR = new DElementType("STATEMENT_IF_VAR");
-    IElementType VARIABLE_DEF_WITH_INIT = new DElementType("VARIABLE_DEF_WITH_INIT");
-    IElementType STATEMENT_WHILE = new DElementType("STATEMENT_WHILE");
-    IElementType STATEMENT_DO_WHILE = new DElementType("STATEMENT_DO_WHILE");
-    IElementType STATEMENT_FOR = new DElementType("STATEMENT_FOR");
-    IElementType STATEMENT_FOREACH = new DElementType("STATEMENT_FOREACH");
-    IElementType FOREACH_VARIABLE_DEF = new DElementType("FOREACH_VARIABLE_DEF");
-    IElementType STATEMENT_SWITCH = new DElementType("STATEMENT_SWITCH");
-    IElementType STATEMENT_CASE = new DElementType("STATEMENT_CASE");
-    IElementType STATEMENT_CASE_RANGE = new DElementType("STATEMENT_CASE_RANGE");
-    IElementType STATEMENT_DEFAULT = new DElementType("STATEMENT_DEFAULT");
-    IElementType STATEMENT_CONTINUE = new DElementType("STATEMENT_CONTINUE");
-    IElementType STATEMENT_BREAK = new DElementType("STATEMENT_BREAK");
-    IElementType STATEMENT_RETURN = new DElementType("STATEMENT_RETURN");
-    IElementType STATEMENT_GOTO = new DElementType("STATEMENT_GOTO");
-    IElementType STATEMENT_GOTO_DEFAULT = new DElementType("STATEMENT_GOTO_DEFAULT");
-    IElementType STATEMENT_GOTO_CASE = new DElementType("STATEMENT_GOTO_CASE");
-    IElementType STATEMENT_THROW = new DElementType("STATEMENT_THROW");
-    IElementType STATEMENT_SYNCHRONIZED = new DElementType("STATEMENT_SYNCHRONIZED");
-    IElementType STATEMENT_WITH = new DElementType("STATEMENT_WITH");
-    IElementType STATEMENT_ASM = new DElementType("STATEMENT_ASM");
-    IElementType STATEMENT_SCOPE = new DElementType("STATEMENT_SCOPE");
-    IElementType STATEMENT_TRY = new DElementType("STATEMENT_TRY");
-    IElementType TRY_CATCH_CLAUSE = new DElementType("TRY_CATCH_CLAUSE");
-    IElementType SIMPLE_VARIABLE_DEF = new DElementType("SIMPLE_VARIABLE_DEF");
+    IElementType FUNCTION_PARAMETER = DeeElementTypeCache.valueOf("FUNCTION_PARAMETER");
+    IElementType NAMELESS_PARAMETER = DeeElementTypeCache.valueOf("NAMELESS_PARAMETER");
+    IElementType VAR_ARGS_PARAMETER = DeeElementTypeCache.valueOf("VAR_ARGS_PARAMETER");
+    IElementType FUNCTION_BODY = DeeElementTypeCache.valueOf("FUNCTION_BODY");
+    IElementType IN_OUT_FUNCTION_BODY = DeeElementTypeCache.valueOf("IN_OUT_FUNCTION_BODY");
+    IElementType FUNCTION_BODY_OUT_BLOCK = DeeElementTypeCache.valueOf("FUNCTION_BODY_OUT_BLOCK");
+    IElementType DEFINITION_CONSTRUCTOR = DeeElementTypeCache.valueOf("DEFINITION_CONSTRUCTOR");
+    IElementType DEFINITION_STRUCT = DeeElementTypeCache.valueOf("DEFINITION_STRUCT");
+    IElementType DEFINITION_UNION = DeeElementTypeCache.valueOf("DEFINITION_UNION");
+    IElementType DEFINITION_CLASS = DeeElementTypeCache.valueOf("DEFINITION_CLASS");
+    IElementType DEFINITION_INTERFACE = DeeElementTypeCache.valueOf("DEFINITION_INTERFACE");
+    IElementType DEFINITION_TEMPLATE = DeeElementTypeCache.valueOf("DEFINITION_TEMPLATE");
+    IElementType TEMPLATE_TYPE_PARAM = DeeElementTypeCache.valueOf("TEMPLATE_TYPE_PARAM");
+    IElementType TEMPLATE_VALUE_PARAM = DeeElementTypeCache.valueOf("TEMPLATE_VALUE_PARAM");
+    IElementType TEMPLATE_ALIAS_PARAM = DeeElementTypeCache.valueOf("TEMPLATE_ALIAS_PARAM");
+    IElementType TEMPLATE_TUPLE_PARAM = DeeElementTypeCache.valueOf("TEMPLATE_TUPLE_PARAM");
+    IElementType TEMPLATE_THIS_PARAM = DeeElementTypeCache.valueOf("TEMPLATE_THIS_PARAM");
+    IElementType DEFINITION_MIXIN_INSTANCE = DeeElementTypeCache.valueOf("DEFINITION_MIXIN_INSTANCE");
+    IElementType DEFINITION_ENUM = DeeElementTypeCache.valueOf("DEFINITION_ENUM");
+    IElementType DECLARATION_ENUM = DeeElementTypeCache.valueOf("DECLARATION_ENUM");
+    IElementType ENUM_BODY = DeeElementTypeCache.valueOf("ENUM_BODY");
+    IElementType ENUM_MEMBER = DeeElementTypeCache.valueOf("ENUM_MEMBER");
+    IElementType DEFINITION_ENUM_VAR = DeeElementTypeCache.valueOf("DEFINITION_ENUM_VAR");
+    IElementType DEFINITION_ENUM_VAR_FRAGMENT = DeeElementTypeCache.valueOf("DEFINITION_ENUM_VAR_FRAGMENT");
+    IElementType DEFINITION_ALIAS = DeeElementTypeCache.valueOf("DEFINITION_ALIAS");
+    IElementType DEFINITION_ALIAS_FRAGMENT = DeeElementTypeCache.valueOf("DEFINITION_ALIAS_FRAGMENT");
+    IElementType DEFINITION_ALIAS_VAR_DECL = DeeElementTypeCache.valueOf("DEFINITION_ALIAS_VAR_DECL");
+    IElementType DEFINITION_ALIAS_FUNCTION_DECL = DeeElementTypeCache.valueOf("DEFINITION_ALIAS_FUNCTION_DECL");
+    IElementType ALIAS_VAR_DECL_FRAGMENT = DeeElementTypeCache.valueOf("ALIAS_VAR_DECL_FRAGMENT");
+    IElementType TEMPLATE_TYPE_PARAM__INSTANCE = DeeElementTypeCache.valueOf("TEMPLATE_TYPE_PARAM__INSTANCE");
+    IElementType TEMPLATE_VALUE_PARAM__INSTANCE = DeeElementTypeCache.valueOf("TEMPLATE_VALUE_PARAM__INSTANCE");
+    IElementType TEMPLATE_ALIAS_PARAM__INSTANCE = DeeElementTypeCache.valueOf("TEMPLATE_ALIAS_PARAM__INSTANCE");
+    IElementType BLOCK_STATEMENT = DeeElementTypeCache.valueOf("BLOCK_STATEMENT");
+    IElementType BLOCK_STATEMENT_UNSCOPED = DeeElementTypeCache.valueOf("BLOCK_STATEMENT_UNSCOPED");
+    IElementType EMPTY_STATEMENT = DeeElementTypeCache.valueOf("EMPTY_STATEMENT");
+    IElementType SCOPED_STATEMENT_LIST = DeeElementTypeCache.valueOf("SCOPED_STATEMENT_LIST");
+    IElementType STATEMENT_EXPRESSION = DeeElementTypeCache.valueOf("STATEMENT_EXPRESSION");
+    IElementType STATEMENT_LABEL = DeeElementTypeCache.valueOf("STATEMENT_LABEL");
+    IElementType STATEMENT_IF = DeeElementTypeCache.valueOf("STATEMENT_IF");
+    IElementType STATEMENT_IF_VAR = DeeElementTypeCache.valueOf("STATEMENT_IF_VAR");
+    IElementType VARIABLE_DEF_WITH_INIT = DeeElementTypeCache.valueOf("VARIABLE_DEF_WITH_INIT");
+    IElementType STATEMENT_WHILE = DeeElementTypeCache.valueOf("STATEMENT_WHILE");
+    IElementType STATEMENT_DO_WHILE = DeeElementTypeCache.valueOf("STATEMENT_DO_WHILE");
+    IElementType STATEMENT_FOR = DeeElementTypeCache.valueOf("STATEMENT_FOR");
+    IElementType STATEMENT_FOREACH = DeeElementTypeCache.valueOf("STATEMENT_FOREACH");
+    IElementType FOREACH_VARIABLE_DEF = DeeElementTypeCache.valueOf("FOREACH_VARIABLE_DEF");
+    IElementType STATEMENT_SWITCH = DeeElementTypeCache.valueOf("STATEMENT_SWITCH");
+    IElementType STATEMENT_CASE = DeeElementTypeCache.valueOf("STATEMENT_CASE");
+    IElementType STATEMENT_CASE_RANGE = DeeElementTypeCache.valueOf("STATEMENT_CASE_RANGE");
+    IElementType STATEMENT_DEFAULT = DeeElementTypeCache.valueOf("STATEMENT_DEFAULT");
+    IElementType STATEMENT_CONTINUE = DeeElementTypeCache.valueOf("STATEMENT_CONTINUE");
+    IElementType STATEMENT_BREAK = DeeElementTypeCache.valueOf("STATEMENT_BREAK");
+    IElementType STATEMENT_RETURN = DeeElementTypeCache.valueOf("STATEMENT_RETURN");
+    IElementType STATEMENT_GOTO = DeeElementTypeCache.valueOf("STATEMENT_GOTO");
+    IElementType STATEMENT_GOTO_DEFAULT = DeeElementTypeCache.valueOf("STATEMENT_GOTO_DEFAULT");
+    IElementType STATEMENT_GOTO_CASE = DeeElementTypeCache.valueOf("STATEMENT_GOTO_CASE");
+    IElementType STATEMENT_THROW = DeeElementTypeCache.valueOf("STATEMENT_THROW");
+    IElementType STATEMENT_SYNCHRONIZED = DeeElementTypeCache.valueOf("STATEMENT_SYNCHRONIZED");
+    IElementType STATEMENT_WITH = DeeElementTypeCache.valueOf("STATEMENT_WITH");
+    IElementType STATEMENT_ASM = DeeElementTypeCache.valueOf("STATEMENT_ASM");
+    IElementType STATEMENT_SCOPE = DeeElementTypeCache.valueOf("STATEMENT_SCOPE");
+    IElementType STATEMENT_TRY = DeeElementTypeCache.valueOf("STATEMENT_TRY");
+    IElementType TRY_CATCH_CLAUSE = DeeElementTypeCache.valueOf("TRY_CATCH_CLAUSE");
+    IElementType SIMPLE_VARIABLE_DEF = DeeElementTypeCache.valueOf("SIMPLE_VARIABLE_DEF");
 
-    // Token Types
+    // Token Types supported by DeeLexer
     IElementType EOF = DeeTokenLookUp.valueOf(DeeTokens.EOF);
     IElementType INVALID_TOKEN = DeeTokenLookUp.valueOf(DeeTokens.INVALID_TOKEN);
     IElementType LINE_END = DeeTokenLookUp.valueOf(DeeTokens.LINE_END);
@@ -393,11 +391,327 @@ public interface DElementTypes {
             IElementType type = node.getElementType();
 
             if (type == DECLARATION_MODULE) {
-                return new DModuleDeclarationImpl(node);
+                return new DDeclarationModuleImpl(node);
+            } else if (type == NULL) {
+                return new DNullImpl(node);
+            } else if (type == SYMBOL) {
+                return new DSymbolImpl(node);
+            } else if (type == MODULE) {
+                return new DModuleImpl(node);
             } else if (type == DECLARATION_IMPORT) {
-                return new DImportDeclarationImpl(node);
+                return new DDeclarationImportImpl(node);
+            } else if (type == IMPORT_CONTENT) {
+                return new DImportContentImpl(node);
+            } else if (type == IMPORT_ALIAS) {
+                return new DImportAliasImpl(node);
+            } else if (type == IMPORT_SELECTIVE) {
+                return new DImportSelectiveImpl(node);
+            } else if (type == IMPORT_SELECTIVE_ALIAS) {
+                return new DImportSelectiveAliasImpl(node);
+            } else if (type == DECL_LIST) {
+                return new DDeclListImpl(node);
+            } else if (type == DECL_BLOCK) {
+                return new DDeclBlockImpl(node);
+            } else if (type == DECLARATION_EMTPY) {
+                return new DDeclarationEmtpyImpl(node);
+            } else if (type == MISSING_DECLARATION) {
+                return new DMissingDeclarationImpl(node);
+            } else if (type == INVALID_SYNTAX) {
+                return new DInvalidSyntaxImpl(node);
+            } else if (type == INCOMPLETE_DECLARATOR) {
+                return new DIncompleteDeclaratorImpl(node);
+            } else if (type == REF_IMPORT_SELECTION) {
+                return new DRefImportSelectionImpl(node);
+            } else if (type == REF_MODULE) {
+                return new DRefModuleImpl(node);
+            } else if (type == REF_IDENTIFIER) {
+                return new DRefIdentifierImpl(node);
+            } else if (type == REF_QUALIFIED) {
+                return new DRefQualifiedImpl(node);
+            } else if (type == REF_MODULE_QUALIFIED) {
+                return new DRefModuleQualifiedImpl(node);
+            } else if (type == REF_PRIMITIVE) {
+                return new DRefPrimitiveImpl(node);
+            } else if (type == REF_TYPE_DYN_ARRAY) {
+                return new DRefTypeDynArrayImpl(node);
+            } else if (type == REF_TYPE_POINTER) {
+                return new DRefTypePointerImpl(node);
+            } else if (type == REF_INDEXING) {
+                return new DRefIndexingImpl(node);
+            } else if (type == REF_SLICE) {
+                return new DRefSliceImpl(node);
+            } else if (type == REF_TYPE_FUNCTION) {
+                return new DRefTypeFunctionImpl(node);
+            } else if (type == REF_TEMPLATE_INSTANCE) {
+                return new DRefTemplateInstanceImpl(node);
+            } else if (type == REF_TYPEOF) {
+                return new DRefTypeofImpl(node);
+            } else if (type == REF_MODIFIER) {
+                return new DRefModifierImpl(node);
+            } else if (type == REF_AUTO) {
+                return new DRefAutoImpl(node);
+            } else if (type == MISSING_EXPRESSION) {
+                return new DMissingExpressionImpl(node);
+            } else if (type == EXP_REF_RETURN) {
+                return new DExpRefReturnImpl(node);
+            } else if (type == EXP_THIS) {
+                return new DExpThisImpl(node);
+            } else if (type == EXP_SUPER) {
+                return new DExpSuperImpl(node);
+            } else if (type == EXP_NULL) {
+                return new DExpNullImpl(node);
+            } else if (type == EXP_ARRAY_LENGTH) {
+                return new DExpArrayLengthImpl(node);
+            } else if (type == EXP_LITERAL_BOOL) {
+                return new DExpLiteralBoolImpl(node);
+            } else if (type == EXP_LITERAL_INTEGER) {
+                return new DExpLiteralIntegerImpl(node);
+            } else if (type == EXP_LITERAL_STRING) {
+                return new DExpLiteralStringImpl(node);
+            } else if (type == EXP_LITERAL_CHAR) {
+                return new DExpLiteralCharImpl(node);
+            } else if (type == EXP_LITERAL_FLOAT) {
+                return new DExpLiteralFloatImpl(node);
+            } else if (type == EXP_LITERAL_ARRAY) {
+                return new DExpLiteralArrayImpl(node);
+            } else if (type == EXP_LITERAL_MAPARRAY) {
+                return new DExpLiteralMaparrayImpl(node);
+            } else if (type == MAPARRAY_ENTRY) {
+                return new DMaparrayEntryImpl(node);
+            } else if (type == EXP_FUNCTION_LITERAL) {
+                return new DExpFunctionLiteralImpl(node);
+            } else if (type == EXP_SIMPLE_LAMBDA) {
+                return new DExpSimpleLambdaImpl(node);
+            } else if (type == SIMPLE_LAMBDA_DEFUNIT) {
+                return new DSimpleLambdaDefunitImpl(node);
+            } else if (type == EXP_REFERENCE) {
+                return new DExpReferenceImpl(node);
+            } else if (type == EXP_PARENTHESES) {
+                return new DExpParenthesesImpl(node);
+            } else if (type == EXP_ASSERT) {
+                return new DExpAssertImpl(node);
+            } else if (type == EXP_MIXIN_STRING) {
+                return new DExpMixinStringImpl(node);
+            } else if (type == EXP_IMPORT_STRING) {
+                return new DExpImportStringImpl(node);
+            } else if (type == EXP_TYPEID) {
+                return new DExpTypeidImpl(node);
+            } else if (type == EXP_INDEX) {
+                return new DExpIndexImpl(node);
+            } else if (type == EXP_CALL) {
+                return new DExpCallImpl(node);
+            } else if (type == EXP_PREFIX) {
+                return new DExpPrefixImpl(node);
+            } else if (type == EXP_NEW) {
+                return new DExpNewImpl(node);
+            } else if (type == EXP_NEW_ANON_CLASS) {
+                return new DExpNewAnonClassImpl(node);
+            } else if (type == EXP_CAST) {
+                return new DExpCastImpl(node);
+            } else if (type == EXP_CAST_QUAL) {
+                return new DExpCastQualImpl(node);
+            } else if (type == EXP_POSTFIX_OP) {
+                return new DExpPostfixOpImpl(node);
+            } else if (type == EXP_INFIX) {
+                return new DExpInfixImpl(node);
+            } else if (type == EXP_CONDITIONAL) {
+                return new DExpConditionalImpl(node);
+            } else if (type == EXP_IS) {
+                return new DExpIsImpl(node);
+            } else if (type == STATIC_IF_EXP_IS) {
+                return new DStaticIfExpIsImpl(node);
+            } else if (type == STATIC_IF_EXP_IS_DEF_UNIT) {
+                return new DStaticIfExpIsDefUnitImpl(node);
+            } else if (type == EXP_TRAITS) {
+                return new DExpTraitsImpl(node);
+            } else if (type == DECLARATION_ATTRIB) {
+                return new DDeclarationAttribImpl(node);
+            } else if (type == ATTRIB_LINKAGE) {
+                return new DAttribLinkageImpl(node);
+            } else if (type == ATTRIB_CPP_LINKAGE) {
+                return new DAttribCppLinkageImpl(node);
+            } else if (type == ATTRIB_ALIGN) {
+                return new DAttribAlignImpl(node);
+            } else if (type == ATTRIB_PRAGMA) {
+                return new DAttribPragmaImpl(node);
+            } else if (type == ATTRIB_PROTECTION) {
+                return new DAttribProtectionImpl(node);
+            } else if (type == ATTRIB_BASIC) {
+                return new DAttribBasicImpl(node);
+            } else if (type == ATTRIB_AT_KEYWORD) {
+                return new DAttribAtKeywordImpl(node);
+            } else if (type == ATTRIB_CUSTOM) {
+                return new DAttribCustomImpl(node);
+            } else if (type == DECLARATION_MIXIN_STRING) {
+                return new DDeclarationMixinStringImpl(node);
+            } else if (type == DECLARATION_MIXIN) {
+                return new DDeclarationMixinImpl(node);
+            } else if (type == DECLARATION_ALIAS_THIS) {
+                return new DDeclarationAliasThisImpl(node);
+            } else if (type == DECLARATION_INVARIANT) {
+                return new DDeclarationInvariantImpl(node);
+            } else if (type == DECLARATION_UNITEST) {
+                return new DDeclarationUnitestImpl(node);
+            } else if (type == DECLARATION_ALLOCATOR_FUNCTION) {
+                return new DDeclarationAllocatorFunctionImpl(node);
+            } else if (type == DECLARATION_SPECIAL_FUNCTION) {
+                return new DDeclarationSpecialFunctionImpl(node);
+            } else if (type == DECLARATION_DEBUG_VERSION_SPEC) {
+                return new DDeclarationDebugVersionSpecImpl(node);
+            } else if (type == DECLARATION_DEBUG_VERSION) {
+                return new DDeclarationDebugVersionImpl(node);
+            } else if (type == DECLARATION_STATIC_IF) {
+                return new DDeclarationStaticIfImpl(node);
+            } else if (type == DECLARATION_STATIC_ASSERT) {
+                return new DDeclarationStaticAssertImpl(node);
+            } else if (type == DEFINITION_VARIABLE) {
+                return new DDefinitionVariableImpl(node);
+            } else if (type == DEFINITION_VAR_FRAGMENT) {
+                return new DDefinitionVarFragmentImpl(node);
+            } else if (type == DEFINITION_AUTO_VARIABLE) {
+                return new DDefinitionAutoVariableImpl(node);
+            } else if (type == CSTYLE_ROOT_REF) {
+                return new DCstyleRootRefImpl(node);
+            } else if (type == INITIALIZER_VOID) {
+                return new DInitializerVoidImpl(node);
+            } else if (type == INITIALIZER_ARRAY) {
+                return new DInitializerArrayImpl(node);
+            } else if (type == ARRAY_INIT_ENTRY) {
+                return new DArrayInitEntryImpl(node);
+            } else if (type == INITIALIZER_STRUCT) {
+                return new DInitializerStructImpl(node);
+            } else if (type == STRUCT_INIT_ENTRY) {
+                return new DStructInitEntryImpl(node);
             } else if (type == DEFINITION_FUNCTION) {
-                return new DfunctionDeclarationImpl(node);
+                return new DDefinitionFunctionImpl(node);
+            } else if (type == FUNCTION_PARAMETER) {
+                return new DFunctionParameterImpl(node);
+            } else if (type == NAMELESS_PARAMETER) {
+                return new DNamelessParameterImpl(node);
+            } else if (type == VAR_ARGS_PARAMETER) {
+                return new DVarArgsParameterImpl(node);
+            } else if (type == FUNCTION_BODY) {
+                return new DFunctionBodyImpl(node);
+            } else if (type == IN_OUT_FUNCTION_BODY) {
+                return new DInOutFunctionBodyImpl(node);
+            } else if (type == FUNCTION_BODY_OUT_BLOCK) {
+                return new DFunctionBodyOutBlockImpl(node);
+            } else if (type == DEFINITION_CONSTRUCTOR) {
+                return new DDefinitionConstructorImpl(node);
+            } else if (type == DEFINITION_STRUCT) {
+                return new DDefinitionStructImpl(node);
+            } else if (type == DEFINITION_UNION) {
+                return new DDefinitionUnionImpl(node);
+            } else if (type == DEFINITION_CLASS) {
+                return new DDefinitionClassImpl(node);
+            } else if (type == DEFINITION_INTERFACE) {
+                return new DDefinitionInterfaceImpl(node);
+            } else if (type == DEFINITION_TEMPLATE) {
+                return new DDefinitionTemplateImpl(node);
+            } else if (type == TEMPLATE_TYPE_PARAM) {
+                return new DTemplateTypeParamImpl(node);
+            } else if (type == TEMPLATE_VALUE_PARAM) {
+                return new DTemplateValueParamImpl(node);
+            } else if (type == TEMPLATE_ALIAS_PARAM) {
+                return new DTemplateAliasParamImpl(node);
+            } else if (type == TEMPLATE_TUPLE_PARAM) {
+                return new DTemplateTupleParamImpl(node);
+            } else if (type == TEMPLATE_THIS_PARAM) {
+                return new DTemplateThisParamImpl(node);
+            } else if (type == DEFINITION_MIXIN_INSTANCE) {
+                return new DDefinitionMixinInstanceImpl(node);
+            } else if (type == DEFINITION_ENUM) {
+                return new DDefinitionEnumImpl(node);
+            } else if (type == DECLARATION_ENUM) {
+                return new DDeclarationEnumImpl(node);
+            } else if (type == ENUM_BODY) {
+                return new DEnumBodyImpl(node);
+            } else if (type == ENUM_MEMBER) {
+                return new DEnumMemberImpl(node);
+            } else if (type == DEFINITION_ENUM_VAR) {
+                return new DDefinitionEnumVarImpl(node);
+            } else if (type == DEFINITION_ENUM_VAR_FRAGMENT) {
+                return new DDefinitionEnumVarFragmentImpl(node);
+            } else if (type == DEFINITION_ALIAS) {
+                return new DDefinitionAliasImpl(node);
+            } else if (type == DEFINITION_ALIAS_FRAGMENT) {
+                return new DDefinitionAliasFragmentImpl(node);
+            } else if (type == DEFINITION_ALIAS_VAR_DECL) {
+                return new DDefinitionAliasVarDeclImpl(node);
+            } else if (type == DEFINITION_ALIAS_FUNCTION_DECL) {
+                return new DDefinitionAliasFunctionDeclImpl(node);
+            } else if (type == ALIAS_VAR_DECL_FRAGMENT) {
+                return new DAliasVarDeclFragmentImpl(node);
+            } else if (type == TEMPLATE_TYPE_PARAM__INSTANCE) {
+                return new DTemplateTypeParamInstanceImpl(node);
+            } else if (type == TEMPLATE_VALUE_PARAM__INSTANCE) {
+                return new DTemplateValueParamInstanceImpl(node);
+            } else if (type == TEMPLATE_ALIAS_PARAM__INSTANCE) {
+                return new DTemplateAliasParamInstanceImpl(node);
+            } else if (type == BLOCK_STATEMENT) {
+                return new DBlockStatementImpl(node);
+            } else if (type == BLOCK_STATEMENT_UNSCOPED) {
+                return new DBlockStatementUnscopedImpl(node);
+            } else if (type == EMPTY_STATEMENT) {
+                return new DEmptyStatementImpl(node);
+            } else if (type == SCOPED_STATEMENT_LIST) {
+                return new DScopedStatementListImpl(node);
+            } else if (type == STATEMENT_EXPRESSION) {
+                return new DStatementExpressionImpl(node);
+            } else if (type == STATEMENT_LABEL) {
+                return new DStatementLabelImpl(node);
+            } else if (type == STATEMENT_IF) {
+                return new DStatementIfImpl(node);
+            } else if (type == STATEMENT_IF_VAR) {
+                return new DStatementIfVarImpl(node);
+            } else if (type == VARIABLE_DEF_WITH_INIT) {
+                return new DVariableDefWithInitImpl(node);
+            } else if (type == STATEMENT_WHILE) {
+                return new DStatementWhileImpl(node);
+            } else if (type == STATEMENT_DO_WHILE) {
+                return new DStatementDoWhileImpl(node);
+            } else if (type == STATEMENT_FOR) {
+                return new DStatementForImpl(node);
+            } else if (type == STATEMENT_FOREACH) {
+                return new DStatementForeachImpl(node);
+            } else if (type == FOREACH_VARIABLE_DEF) {
+                return new DForeachVariableDefImpl(node);
+            } else if (type == STATEMENT_SWITCH) {
+                return new DStatementSwitchImpl(node);
+            } else if (type == STATEMENT_CASE) {
+                return new DStatementCaseImpl(node);
+            } else if (type == STATEMENT_CASE_RANGE) {
+                return new DStatementCaseRangeImpl(node);
+            } else if (type == STATEMENT_DEFAULT) {
+                return new DStatementDefaultImpl(node);
+            } else if (type == STATEMENT_CONTINUE) {
+                return new DStatementContinueImpl(node);
+            } else if (type == STATEMENT_BREAK) {
+                return new DStatementBreakImpl(node);
+            } else if (type == STATEMENT_RETURN) {
+                return new DStatementReturnImpl(node);
+            } else if (type == STATEMENT_GOTO) {
+                return new DStatementGotoImpl(node);
+            } else if (type == STATEMENT_GOTO_DEFAULT) {
+                return new DStatementGotoDefaultImpl(node);
+            } else if (type == STATEMENT_GOTO_CASE) {
+                return new DStatementGotoCaseImpl(node);
+            } else if (type == STATEMENT_THROW) {
+                return new DStatementThrowImpl(node);
+            } else if (type == STATEMENT_SYNCHRONIZED) {
+                return new DStatementSynchronizedImpl(node);
+            } else if (type == STATEMENT_WITH) {
+                return new DStatementWithImpl(node);
+            } else if (type == STATEMENT_ASM) {
+                return new DStatementAsmImpl(node);
+            } else if (type == STATEMENT_SCOPE) {
+                return new DStatementScopeImpl(node);
+            } else if (type == STATEMENT_TRY) {
+                return new DStatementTryImpl(node);
+            } else if (type == TRY_CATCH_CLAUSE) {
+                return new DTryCatchClauseImpl(node);
+            } else if (type == SIMPLE_VARIABLE_DEF) {
+                return new DSimpleVariableDefImpl(node);
             } else {
                 return new DCompositeElementType(node);
             }
