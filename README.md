@@ -11,26 +11,46 @@ Intellij plugin I've written and is still a work in progress to get the full sup
 
 I intend to complete the following items over the next 3 weeks:
 
+#### Working
+
 1. New D Project - working
 2. New D File - working
-3. Module Settings - Add SDK - working for OSX
-4. Run Configuration - working but need more attention (e.g. Test runner)
-5. BNF Grammar - in progress
-6. JFlex Lexer - in progress
-7. Syntax highlighting - todo
-8. Annotations - todo
-9. Help and QuickFixes - todo
-10. Indexing - todo
+3. Module Settings - working
+4. Run Configurations for Code - working
+5. DDT Lexer integration - working
+6. DDT Parser integration - working
+7. Syntax highlighting - working
+
+#### In Progress
+8. Indexes and References - in progress
+
+#### To Do
+9. Run Configurations for Tests - todo
+10. Annotations - todo
+11. Help and QuickFixes - todo
 11. Debugger - todo
+
+## Things I might do in the future
+
+1. BNF Grammar
+2. JFlex Lexer
+3. Re-write DDT lexer/parser in intellij framework
 
 ## Notes
 
 I have seen a few other attempts at an intellij plugin for D. But none are complete yet. If another D plugin project advances
 further than this one - I will probably switch my efforts to that one and drop this one.
 
-The other projects I have seen try to re-use an existing parser/lexer taken from other D plugins e.g. DDT for eclipse. However as a learning
-opportunity I am writing the BNF Grammar from scratch using the intellij Grammar-Kit and then I will also write the JFlex lexer by hand.
-(I've never written either a grammar or a lexer before so will probably get some help in this area)
+In the immediate future I have decided to re-use the eclipse DDT D Lexer and Parser and integrate it with my intellij plugin. I have
+done some research into creating grammars and parsers and at the current point in time I have neither the time or the skills to
+write a lexer/parser or BNF Grammar for the D Language.
+
+When I find some time and as a learning opportunity I will try to write the BNF Grammar from scratch using the intellij Grammar-Kit
+and then I will also write the JFlex lexer by hand.
+(I've never written either a grammar or a lexer before so will probably get some help in this area and it probably will take a long time)
+
+I may also decide to re-write the eclipse DDT D lexer/parser within the intellij framework to better customize it for intellij - Again this
+may or may not happen in this amazing future where I actually have time for things like this.
 
 ## Release
 
@@ -47,6 +67,15 @@ That is:
 ## Screenshots
 
 Here are some screenshots of my progress so far:
+
+## Recent Screenshots
+
+Syntax Highlighting and PSI Structure:
+
+![highlighting and psi structure]
+(https://github.com/kingsleyh/DLanguage/raw/master/.README/highlighting_and_psi_structure.png)
+
+## Older Screenshots
 
 Create a new D project:
 
