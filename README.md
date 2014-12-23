@@ -4,7 +4,7 @@ This plugin brings D Language support to the Intellij IDE
 
 ## MeetUp Group
 
-Come Along to the London D Meetup!
+Come Along to the [London D Meetup!](http://www.meetup.com/London-D-Programmers/)
 
 ![meet up group]
 (https://github.com/kingsleyh/DLanguage/raw/master/.README/london_d_programmers.png)
