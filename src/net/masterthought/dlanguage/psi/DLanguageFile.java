@@ -38,13 +38,23 @@ public class DLanguageFile extends PsiFileBase {
     }
 
     /**
-        * Returns the module name defined in the file or null if it doesn't exist.
-        */
-       @Nullable
-       public String getModuleName() {
-           final DDeclarationModule module = findChildByClass(DDeclarationModule.class);
-           if(module == null){ return null;}
-           return module.getText().split(" ")[1].replaceAll(";","");
-       }
+     * Returns the module name defined in the file or null if it doesn't exist.
+     */
+    @Nullable
+    public String getModuleName() {
+        final DDeclarationModule module = findChildByClass(DDeclarationModule.class);
+        if (module == null) {
+            return null;
+        }
+        return module.getText().split(" ")[1].replaceAll(";", "");
+    }
 
+    /**
+     * Returns the module name if it exists, otherwise returns the file name.
+     */
+    @NotNull
+    public String getModuleOrFileName() {
+        final String moduleName = getModuleName();
+        return moduleName == null ? getName() : moduleName;
+    }
 }
