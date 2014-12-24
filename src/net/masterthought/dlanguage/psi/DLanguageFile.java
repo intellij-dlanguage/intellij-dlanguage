@@ -10,6 +10,7 @@ import net.masterthought.dlanguage.DLanguage;
 import net.masterthought.dlanguage.DLanguageFileType;
 import net.masterthought.dlanguage.lexer.PropertyImpl;
 import net.masterthought.dlanguage.psi.interfaces.DDeclarationModule;
+import net.masterthought.dlanguage.stubs.DLanguageFileStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -56,5 +57,16 @@ public class DLanguageFile extends PsiFileBase {
     public String getModuleOrFileName() {
         final String moduleName = getModuleName();
         return moduleName == null ? getName() : moduleName;
+    }
+
+    /**
+     * Generates a stub for the current file, particularly so we can index names.
+     */
+    @Nullable
+    @Override
+    public DLanguageFileStub getStub() {
+        final StubElement stub = super.getStub();
+        if (stub == null) return null;
+        return (DLanguageFileStub)stub;
     }
 }

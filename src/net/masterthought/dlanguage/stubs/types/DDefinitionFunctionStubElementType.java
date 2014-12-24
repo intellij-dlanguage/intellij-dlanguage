@@ -24,7 +24,7 @@ public class DDefinitionFunctionStubElementType extends DNamedStubElementType<DD
     @Override
     public boolean shouldCreateStub(ASTNode node) {
 //        return HaskellUtil.definitionNode(node);
-        return false;
+        return true;
     }
 
     @Override

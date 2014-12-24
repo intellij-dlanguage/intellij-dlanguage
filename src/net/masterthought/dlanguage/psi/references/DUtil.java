@@ -26,28 +26,29 @@ public class DUtil {
      */
     @NotNull
     public static List<PsiNamedElement> findDefinitionNode(@NotNull Project project, @Nullable String name, @Nullable PsiNamedElement e) {
-        // Guess where the name could be defined by lookup up potential modules.
-        final Set<String> potentialModules =
-                e == null ? Collections.EMPTY_SET
-                        : getPotentialDefinitionModuleNames(e, DPsiUtil.parseImports(e.getContainingFile()));
-        List<PsiNamedElement> result = ContainerUtil.newArrayList();
-        final String qPrefix = e == null ? null : getQualifiedPrefix(e);
-        final PsiFile psiFile = e == null ? null : e.getContainingFile().getOriginalFile();
-        if (psiFile instanceof DLanguageFile) {
-            findDefinitionNode((DLanguageFile)psiFile, name, e, result);
-        }
-        for (String potentialModule : potentialModules) {
-            List<DLanguageFile> files = DModuleIndex.getFilesByModuleName(project, potentialModule, GlobalSearchScope.allScope(project));
-            for (DLanguageFile f : files) {
-                final boolean returnAllReferences = name == null;
-                final boolean inLocalModule = f != null && qPrefix == null && f.equals(psiFile);
-                final boolean inImportedModule = f != null && potentialModules.contains(f.getModuleName());
-                if (returnAllReferences || inLocalModule || inImportedModule) {
-                    findDefinitionNode(f, name, e, result);
-                }
-            }
-        }
-        return result;
+//        // Guess where the name could be defined by lookup up potential modules.
+//        final Set<String> potentialModules =
+//                e == null ? Collections.EMPTY_SET
+//                        : getPotentialDefinitionModuleNames(e, DPsiUtil.parseImports(e.getContainingFile()));
+//        List<PsiNamedElement> result = ContainerUtil.newArrayList();
+//        final String qPrefix = e == null ? null : getQualifiedPrefix(e);
+//        final PsiFile psiFile = e == null ? null : e.getContainingFile().getOriginalFile();
+//        if (psiFile instanceof DLanguageFile) {
+//            findDefinitionNode((DLanguageFile)psiFile, name, e, result);
+//        }
+//        for (String potentialModule : potentialModules) {
+//            List<DLanguageFile> files = DModuleIndex.getFilesByModuleName(project, potentialModule, GlobalSearchScope.allScope(project));
+//            for (DLanguageFile f : files) {
+//                final boolean returnAllReferences = name == null;
+//                final boolean inLocalModule = f != null && qPrefix == null && f.equals(psiFile);
+//                final boolean inImportedModule = f != null && potentialModules.contains(f.getModuleName());
+//                if (returnAllReferences || inLocalModule || inImportedModule) {
+//                    findDefinitionNode(f, name, e, result);
+//                }
+//            }
+//        }
+//        return result;
+        return null;
     }
 
     /**
@@ -115,16 +116,7 @@ public class DUtil {
     }
 
     public static boolean definitionNode(@NotNull DDefinitionFunction e) {
-        final HaskellConstr constr = PsiTreeUtil.getParentOfType(e, HaskellConstr.class);
-        final DDefinitionFunction con;
-        if (constr != null) {
-            con = constr.getCon();
-        } else {
-            final HaskellNewconstr newconstr = PsiTreeUtil.getParentOfType(e, HaskellNewconstr.class);
-            con = newconstr == null ? null : newconstr.getCon();
-        }
-        final DDefinitionFunction conid = con == null ? null : con.getConid();
-        return e.equals(conid);
+       return true;
     }
 
 
@@ -139,7 +131,7 @@ public class DUtil {
 
     @Nullable
     public static String getQualifiedPrefix(@NotNull PsiElement e) {
-        final PsiElement q = PsiTreeUtil.getParentOfType(e, HaskellQcon.class, HaskellQvar.class);
+        final PsiElement q = PsiTreeUtil.getParentOfType(e, DDefinitionFunction.class);
         if (q == null) { return null; }
         final String qText = q.getText();
         final int lastDotPos = qText.lastIndexOf('.');
@@ -147,17 +139,17 @@ public class DUtil {
         return qText.substring(0, lastDotPos);
     }
 
-    @NotNull
-    public static Set<String> getPotentialDefinitionModuleNames(@NotNull PsiElement e, @NotNull List<DPsiUtil.Import> imports) {
-        final String qPrefix = getQualifiedPrefix(e);
-        if (qPrefix == null) { return DPsiUtil.getImportModuleNames(imports); }
-        Set<String> result = new HashSet<String>(2);
-        for (DPsiUtil.Import anImport : imports) {
-            if (qPrefix.equals(anImport.module) || qPrefix.equals(anImport.alias)) {
-                result.add(anImport.module);
-            }
-        }
-        return result;
-    }
+//    @NotNull
+//    public static Set<String> getPotentialDefinitionModuleNames(@NotNull PsiElement e, @NotNull List<DPsiUtil.Import> imports) {
+//        final String qPrefix = getQualifiedPrefix(e);
+//        if (qPrefix == null) { return DPsiUtil.getImportModuleNames(imports); }
+//        Set<String> result = new HashSet<String>(2);
+//        for (DPsiUtil.Import anImport : imports) {
+//            if (qPrefix.equals(anImport.module) || qPrefix.equals(anImport.alias)) {
+//                result.add(anImport.module);
+//            }
+//        }
+//        return result;
+//    }
 }
 
