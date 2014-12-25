@@ -2,11 +2,13 @@ package net.masterthought.dlanguage.highlighting;
 
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
+import com.intellij.openapi.editor.colors.CodeInsightColors;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IElementType;
 import net.masterthought.dlanguage.psi.DTokenSets;
+import net.masterthought.dlanguage.psi.interfaces.DElementTypes;
 import org.jetbrains.annotations.NotNull;
 
 import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributesKey;
@@ -18,6 +20,7 @@ import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAtt
  */
 public class DHighlighter extends SyntaxHighlighterBase {
 
+    // Token based highlighting
     public static final TextAttributesKey ILLEGAL = createTextAttributesKey("D_ILLEGAL", DefaultLanguageHighlighterColors.INVALID_STRING_ESCAPE);
     public static final TextAttributesKey COMMENT = createTextAttributesKey("D_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
     public static final TextAttributesKey STRING = createTextAttributesKey("D_STRING", DefaultLanguageHighlighterColors.STRING);
@@ -26,16 +29,12 @@ public class DHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey PARENTHESES = createTextAttributesKey("D_PARENTHESES", DefaultLanguageHighlighterColors.PARENTHESES);
     public static final TextAttributesKey BRACES = createTextAttributesKey("D_BRACES", DefaultLanguageHighlighterColors.BRACES);
     public static final TextAttributesKey BRACKETS = createTextAttributesKey("D_BRACKETS", DefaultLanguageHighlighterColors.BRACKETS);
-    //    public static final TextAttributesKey VARIABLES = createTextAttributesKey("D_VARIABLES", DefaultLanguageHighlighterColors.GLOBAL_VARIABLE);
     public static final TextAttributesKey OP_SIGN = createTextAttributesKey("D_OP_SIGN", DefaultLanguageHighlighterColors.OPERATION_SIGN);
-//    public static final TextAttributesKey DOC_TAG = createTextAttributesKey("D_DOC_TAG", DefaultLanguageHighlighterColors.DOC_COMMENT_TAG);
-    //    public static final TextAttributesKey FUNCTION = createTextAttributesKey("D_FUNCTION", CodeInsightColors.METHOD_DECLARATION_ATTRIBUTES);
-//    public static final TextAttributesKey TYPE = createTextAttributesKey("D_TYPE", CodeInsightColors.ANNOTATION_ATTRIBUTE_NAME_ATTRIBUTES);
-//    public static final TextAttributesKey BUILT_IN_TYPE = createTextAttributesKey("D_BUILT_IN_TYPE", CodeInsightColors.ANNOTATION_ATTRIBUTE_NAME_ATTRIBUTES);
-//    public static final TextAttributesKey ATTRIBUTE = createTextAttributesKey("D_ATTRIBUTE", CodeInsightColors.ANNOTATION_NAME_ATTRIBUTES);
-//    public static final TextAttributesKey FUNCTION_CALL = createTextAttributesKey("D_FUNCTION_CALL", CodeInsightColors.METHOD_CALL_ATTRIBUTES);
-//    public static final TextAttributesKey CALLBACK = createTextAttributesKey("D_CALLBACK", CodeInsightColors.METHOD_CALL_ATTRIBUTES);
-//    public static final TextAttributesKey MODULE_REF = createTextAttributesKey("D_MODULE_REF", DefaultLanguageHighlighterColors.CLASS_NAME);
+
+    // Annotation based highlighting
+    public static final TextAttributesKey FUNCTION_DEFINITION = createTextAttributesKey("D_SYMBOL", DefaultLanguageHighlighterColors.INSTANCE_METHOD);
+    public static final TextAttributesKey REF_MODULE = createTextAttributesKey("D_REF_MODULE", DefaultLanguageHighlighterColors.NUMBER);
+    public static final TextAttributesKey VARIABLE = createTextAttributesKey("D_VARIABLE", DefaultLanguageHighlighterColors.INSTANCE_FIELD);
 
     @NotNull
     @Override
