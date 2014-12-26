@@ -14,6 +14,18 @@ Come Along to the [London D Meetup!](http://www.meetup.com/London-D-Programmers/
 I've just started learning the D programming language. I love the intellij IDE and wanted to have D support in my favourite IDE. This is the first
 Intellij plugin I've written and is still a work in progress to get the full support working.
 
+## Supported JDK
+
+I personally use a 1.8 JDK but the majority of users should be on a 1.7 JDK so I have written this plugin at the 1.7 language level. It will not work with a 1.7 JDK because
+it uses features of 1.7. If you are an OSX user like me - then you will need to Run intellij using 1.7 or 1.8 to use this plugin by doing the following:
+
+To force running under JDK 1.7 edit /Applications/<Product>.app/Contents/Info.plist file, change JVMVersion from 1.6* to 1.7* :
+
+```xml
+<key>JVMVersion</key>
+<string>1.7*</string>
+```
+
 ## Progress
 
 I intend to complete the following items over the next 3 weeks:
@@ -76,6 +88,11 @@ That is:
 Here are some screenshots of my progress so far:
 
 ## Recent Screenshots
+
+Improved Syntax Highlighting with Annotator:
+
+![improved highlighting]
+(https://github.com/kingsleyh/DLanguage/raw/master/.README/improved_syntax_highlighting.png)
 
 Syntax Highlighting and PSI Structure:
 
