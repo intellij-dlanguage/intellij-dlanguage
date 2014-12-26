@@ -5,10 +5,12 @@ import com.intellij.lang.annotation.Annotator;
 import com.intellij.openapi.editor.colors.EditorColorsManager;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.util.PsiUtil;
 import net.masterthought.dlanguage.highlighting.DHighlighter;
 import net.masterthought.dlanguage.psi.DVisitor;
-import net.masterthought.dlanguage.psi.interfaces.*;
+import net.masterthought.dlanguage.psi.interfaces.DDeclarationModule;
+import net.masterthought.dlanguage.psi.interfaces.DDefinitionFunction;
+import net.masterthought.dlanguage.psi.interfaces.DDefinitionVariable;
+import net.masterthought.dlanguage.psi.interfaces.DRefModule;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -18,7 +20,6 @@ import org.jetbrains.annotations.NotNull;
  * 2) Registers quickfixes on broken nodes.
  */
 public class DAnnotator implements Annotator {
-    private static final String MSG = "File and module name differs";
 
     @Override
     public void annotate(@NotNull final PsiElement element, @NotNull final AnnotationHolder holder) {
@@ -47,23 +48,6 @@ public class DAnnotator implements Annotator {
                 setHighlighting(o.getSymbol(), holder, DHighlighter.FUNCTION_DEFINITION);
             }
 
-//            @Override
-//            public void visitQvarid(@NotNull HaskellQvarid o) {
-//                super.visitQvarid(o);
-//                setHighlighting(o, holder, HaskellSyntaxHighlighter.VARID);
-//            }
-//
-//            @Override
-//            public void visitQvarsym(@NotNull HaskellQvarsym o) {
-//                super.visitQvarsym(o);
-//                setHighlighting(o, holder, HaskellSyntaxHighlighter.VARSYM);
-//            }
-//
-//            @Override
-//            public void visitQconsym(@NotNull HaskellQconsym o) {
-//                super.visitQconsym(o);
-//                setHighlighting(o, holder, HaskellSyntaxHighlighter.CONSYM);
-//            }
 //
 //            @Override
 //            public void visitQcon(@NotNull HaskellQcon o) {
