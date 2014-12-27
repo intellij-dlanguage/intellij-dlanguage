@@ -47,7 +47,9 @@ public class DColorSettingsPage implements ColorSettingsPage {
             new AttributesDescriptor("Parenthesis", PARENTHESES),
             new AttributesDescriptor("Braces", BRACES),
             new AttributesDescriptor("Brackets", BRACKETS),
-            new AttributesDescriptor("Operation sign", OP_SIGN)
+            new AttributesDescriptor("Operation sign", OP_SIGN),
+            new AttributesDescriptor("Variables", VARIABLE),
+            new AttributesDescriptor("Function definition", FUNCTION_DEFINITION)
     };
 
     private static Map<String, TextAttributesKey> ATTRIBUTES_KEY_MAP = ContainerUtil.newHashMap();
