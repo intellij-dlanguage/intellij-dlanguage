@@ -23,6 +23,7 @@ import javax.swing.*;
  */
 public class DPsiImplUtil {
 
+    // ------------- Definition function ------------------ //
     @NotNull
     public static String getName(@NotNull DDefinitionFunction o) {
         DDefinitionFunctionStub stub = o.getStub();
@@ -75,5 +76,6 @@ public class DPsiImplUtil {
             }
         };
     }
+    // ------------- Definition function ------------------ //
 }
 

@@ -34,8 +34,8 @@ public class DReference extends PsiReferenceBase<PsiNamedElement> implements Psi
     @NotNull
     @Override
     public ResolveResult[] multiResolve(boolean incompleteCode) {
-//        // We should only be resolving varids or conids.
-//        if (!(myElement instanceof HaskellVarid || myElement instanceof HaskellConid)) {
+//        // We should only be resolving ddfunction_definition.
+//        if (!(myElement instanceof DDefinitionFunction)) {
 //            return EMPTY_RESOLVE_RESULT;
 //        }
 //        // Make sure that we only complete the last conid in a qualified expression.
