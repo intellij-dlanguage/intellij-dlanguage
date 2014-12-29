@@ -1,5 +1,8 @@
 # Intellij Plugin to provide support for the [D Programming Language](http://dlang.org/)
 
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/kingsleyh/DLanguage?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![HuBoard badge](http://img.shields.io/badge/Hu-Board-7965cc.svg)](https://huboard.com/kingsleyh/DLanguage#/)
+
 This plugin brings D Language support to the Intellij IDE
 
 ## MeetUp Group
@@ -28,26 +31,28 @@ To force running under JDK 1.7 edit /Applications/<Product>.app/Contents/Info.pl
 
 ## Progress
 
-I intend to complete the following items over the next 3 weeks:
+Please see the development status on
+[DLanguage HuBoard](https://huboard.com/kingsleyh/DLanguage#/)
 
-#### Working
+#### Alpha Release (end of Jan 2015)
 
-1. New D Project - working
-2. New D File - working
-3. Module Settings - working
-4. Run Configurations for Code - working
-5. DDT Lexer integration - working
-6. DDT Parser integration - working
-7. Syntax highlighting - working
+1. New D Project
+2. New D File
+3. Module Settings
+4. Run Configurations for Code
+5. DDT Lexer integration
+6. DDT Parser integration
+7. Syntax highlighting
+8. Indexes and References
+9. Run Configurations for Tests
+10. Annotations
+11. Code Completion
+12. DUB Support
+13. Help and QuickFixes
 
-#### In Progress
-8. Indexes and References - in progress
+#### Beta Release (end of Feb 2015)
 
-#### To Do
-9. Run Configurations for Tests - todo
-10. Annotations - todo
-11. Help and QuickFixes - todo
-11. Debugger - todo
+14. Debugger
 
 ## Things I might do in the future
 
@@ -73,15 +78,8 @@ may or may not happen in this amazing future where I actually have time for thin
 
 ## Release
 
-The first official release will be published on the Jetbrains plugin site when I feel like the plugin offers the minimum viable functionality.
-That is:
-
-1. Grammar/Lexer
-2. Syntax Highlighting
-4. Add D project
-5. New D file
-6. SDK
-7. Run Configuration
+The first official release will be published on the Jetbrains plugin site when I feel like the plugin offers the minimum viable functionality as
+contained in the Alpha Release milestone detailed above.
 
 ## Screenshots
 
