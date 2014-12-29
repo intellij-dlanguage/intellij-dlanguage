@@ -31,28 +31,28 @@ To force running under JDK 1.7 edit /Applications/<Product>.app/Contents/Info.pl
 
 ## Progress
 
-I intend to complete the following items by end of January 2015:
+Please see the development status on
+[DLanguage HuBoard](https://huboard.com/kingsleyh/DLanguage#/)
 
-#### Working
+#### Alpha Release (end of Jan 2015)
 
-1. New D Project - working
-2. New D File - working
-3. Module Settings - working
-4. Run Configurations for Code - working
-5. DDT Lexer integration - working
-6. DDT Parser integration - working
-7. Syntax highlighting - working
-
-#### In Progress
-8. Indexes and References - in progress
-
-#### To Do
-9. Run Configurations for Tests - todo
-10. Annotations - todo
+1. New D Project
+2. New D File
+3. Module Settings
+4. Run Configurations for Code
+5. DDT Lexer integration
+6. DDT Parser integration
+7. Syntax highlighting
+8. Indexes and References
+9. Run Configurations for Tests
+10. Annotations
 11. Code Completion
 12. DUB Support
-13. Help and QuickFixes - todo
-14. Debugger - todo
+13. Help and QuickFixes
+
+#### Beta Release (end of Feb 2015)
+
+14. Debugger
 
 ## Things I might do in the future
 
@@ -78,15 +78,8 @@ may or may not happen in this amazing future where I actually have time for thin
 
 ## Release
 
-The first official release will be published on the Jetbrains plugin site when I feel like the plugin offers the minimum viable functionality.
-That is:
-
-1. Grammar/Lexer
-2. Syntax Highlighting
-4. Add D project
-5. New D file
-6. SDK
-7. Run Configuration
+The first official release will be published on the Jetbrains plugin site when I feel like the plugin offers the minimum viable functionality as
+contained in the Alpha Release milestone detailed above.
 
 ## Screenshots
 
