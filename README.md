@@ -1,5 +1,7 @@
 # Intellij Plugin to provide support for the [D Programming Language](http://dlang.org/)
 
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/kingsleyh/DLanguage?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 This plugin brings D Language support to the Intellij IDE
 
 ## MeetUp Group
