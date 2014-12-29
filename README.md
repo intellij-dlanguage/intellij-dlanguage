@@ -30,7 +30,7 @@ To force running under JDK 1.7 edit /Applications/<Product>.app/Contents/Info.pl
 
 ## Progress
 
-I intend to complete the following items over the next 3 weeks:
+I intend to complete the following items by end of January 2015:
 
 #### Working
 
@@ -48,8 +48,10 @@ I intend to complete the following items over the next 3 weeks:
 #### To Do
 9. Run Configurations for Tests - todo
 10. Annotations - todo
-11. Help and QuickFixes - todo
-11. Debugger - todo
+11. Code Completion
+12. DUB Support
+13. Help and QuickFixes - todo
+14. Debugger - todo
 
 ## Things I might do in the future
 
