@@ -6,6 +6,7 @@ import com.intellij.psi.stubs.StubInputStream;
 import com.intellij.psi.stubs.StubOutputStream;
 import net.masterthought.dlanguage.psi.impl.DDefinitionFunctionImpl;
 import net.masterthought.dlanguage.psi.interfaces.DDefinitionFunction;
+import net.masterthought.dlanguage.psi.references.DUtil;
 import net.masterthought.dlanguage.stubs.DDefinitionFunctionStub;
 import org.jetbrains.annotations.NotNull;
 
@@ -23,8 +24,7 @@ public class DDefinitionFunctionStubElementType extends DNamedStubElementType<DD
 
     @Override
     public boolean shouldCreateStub(ASTNode node) {
-//        return HaskellUtil.definitionNode(node);
-        return true;
+        return DUtil.definitionNode(node);
     }
 
     @Override

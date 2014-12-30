@@ -83,7 +83,7 @@ public class DPsiImplUtil {
     public static String getName(@NotNull DDefinitionFunction o) {
         DDefinitionFunctionStub stub = o.getStub();
         if (stub != null) return StringUtil.notNullize(stub.getName());
-        return o.getText();
+        return o.getSymbol().getText();
     }
 
     @Nullable
