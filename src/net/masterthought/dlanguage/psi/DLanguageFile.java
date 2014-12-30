@@ -44,7 +44,7 @@ public class DLanguageFile extends PsiFileBase {
         if (module == null) {
             return null;
         }
-        return module.getText().split(" ")[1].replaceAll(";", "");
+        return module.getText().replaceAll(";","").replaceAll("^module\\s+","");
     }
 
     /**
