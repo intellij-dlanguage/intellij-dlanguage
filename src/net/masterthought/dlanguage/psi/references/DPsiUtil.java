@@ -1,11 +1,14 @@
 package net.masterthought.dlanguage.psi.references;
 
+import com.google.common.collect.Lists;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.Function;
 import com.intellij.util.containers.ContainerUtil;
+import net.masterthought.dlanguage.psi.interfaces.DDeclarationImport;
+import net.masterthought.dlanguage.psi.interfaces.DRefModule;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -29,11 +32,24 @@ public class DPsiUtil {
         }
         return result;
     }
-//
-//    /**
-//     * Returns a map of module -> alias for each imported module.  If a module is imported but not qualified, alias
-//     * will be null.
-//     */
+
+    /**
+     * Returns a map of module -> alias for each imported module.  If a module is imported but not qualified, alias
+     * will be null.
+     */
+
+    @NotNull
+    public static List<String> parseImports(@NotNull final PsiFile file){
+        List<String> imports = Lists.newArrayList();
+        for(PsiElement declaration : PsiTreeUtil.getChildrenOfTypeAsList(file,DDeclarationImport.class)){
+            List<DRefModule> refs = PsiTreeUtil.getChildrenOfTypeAsList(declaration, DRefModule.class);
+            for(DRefModule ref : refs){
+                imports.add(ref.getText());
+            }
+        }
+        return imports;
+    }
+
 //    @NotNull
 //    public static List<Import> parseImports(@NotNull final PsiFile file) {
 //        final Import prelude = Import.global("Prelude", false, null);
