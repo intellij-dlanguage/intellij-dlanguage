@@ -24,7 +24,7 @@ public class DFindUsagesProvider implements FindUsagesProvider {
     // Second parameter is nodes that are PsiNamedElements in practice.
     private final static WordsScanner SCANNER =
             new DefaultWordsScanner(new DLexer(),
-                    TokenSet.create(DElementTypes.DEFINITION_FUNCTION),
+                    TokenSet.create(DElementTypes.IDENTIFIER),
                     DTokenSets.COMMENTS, DTokenSets.STRING_LITERALS);
     @Nullable
     @Override

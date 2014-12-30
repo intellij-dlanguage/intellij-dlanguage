@@ -18,8 +18,8 @@ public class DTokenSets {
             DElementTypes.KW_CHAR,
             DElementTypes.KW_DCHAR,
             DElementTypes.KW_WCHAR,
-            DElementTypes.STRING_DQ,
-            DElementTypes.GROUP_STRING);
+            DElementTypes.STRING_DQ
+           );
 
     public static final TokenSet INTEGER_LITERALS = TokenSet.create(
             DElementTypes.INTEGER_DECIMAL,

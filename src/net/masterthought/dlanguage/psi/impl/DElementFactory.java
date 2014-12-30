@@ -6,6 +6,7 @@ import com.intellij.psi.PsiFileFactory;
 import net.masterthought.dlanguage.DLanguage;
 import net.masterthought.dlanguage.psi.DLanguageFile;
 import net.masterthought.dlanguage.psi.interfaces.DDefinitionFunction;
+import net.masterthought.dlanguage.psi.interfaces.DRefIdentifier;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,6 +23,15 @@ public class DElementFactory {
         PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
         if (e instanceof DDefinitionFunction) return (DDefinitionFunction) e;
         return null;
+    }
+
+    public static DRefIdentifier createDRefIdentifierFromText(@NotNull Project project, @NotNull String name) {
+//        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
+//        if (e instanceof DRefIdentifier) return (DRefIdentifier) e;
+//        return null;
+
+        return ((DRefIdentifier) (createExpressionFromText(project, name + "uniq = " + name)).getFirstChild());
+
     }
 
 //    /**
@@ -73,5 +83,6 @@ public class DElementFactory {
     public static DLanguageFile createFileFromText(@NotNull Project project, @NotNull String text) {
         return (DLanguageFile) PsiFileFactory.getInstance(project).createFileFromText("A.hs", DLanguage.INSTANCE, text);
     }
+
 }
 
