@@ -7,6 +7,7 @@ import net.masterthought.dlanguage.DLanguage;
 import net.masterthought.dlanguage.psi.DLanguageFile;
 import net.masterthought.dlanguage.psi.interfaces.DDefinitionFunction;
 import net.masterthought.dlanguage.psi.interfaces.DRefIdentifier;
+import net.masterthought.dlanguage.psi.interfaces.DSymbol;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,13 +27,14 @@ public class DElementFactory {
     }
 
     public static DRefIdentifier createDRefIdentifierFromText(@NotNull Project project, @NotNull String name) {
-//        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
-//        if (e instanceof DRefIdentifier) return (DRefIdentifier) e;
-//        return null;
-
         return ((DRefIdentifier) (createExpressionFromText(project, name + "uniq = " + name)).getFirstChild());
-
     }
+
+    public static DSymbol createDSymbolFromText(@NotNull Project project, @NotNull String name) {
+           return ((DSymbol) (createExpressionFromText(project, name + "uniq = " + name)).getFirstChild());
+       }
+
+
 
 //    /**
 //     * Takes a name and returns a Psi node of that name, or null.

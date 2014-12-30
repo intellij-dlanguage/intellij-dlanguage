@@ -11,6 +11,7 @@ import net.masterthought.dlanguage.DLanguageIcons;
 import net.masterthought.dlanguage.psi.DLanguageFile;
 import net.masterthought.dlanguage.psi.interfaces.DDefinitionFunction;
 import net.masterthought.dlanguage.psi.interfaces.DRefIdentifier;
+import net.masterthought.dlanguage.psi.interfaces.DSymbol;
 import net.masterthought.dlanguage.psi.references.DReference;
 import net.masterthought.dlanguage.stubs.DDefinitionFunctionStub;
 import org.jetbrains.annotations.NotNull;
@@ -23,6 +24,60 @@ import javax.swing.*;
  * Source of the methods pointed out in Haskell.bnf.
  */
 public class DPsiImplUtil {
+
+      // ------------- Symbol  ------------------ //
+    @NotNull
+    public static String getName(@NotNull DSymbol o) {
+        return o.getText();
+    }
+
+    @Nullable
+    public static PsiElement getNameIdentifier(@NotNull DSymbol o) {
+        ASTNode keyNode = o.getNode();
+        return keyNode != null ? keyNode.getPsi() : null;
+    }
+
+    @Nullable
+    public static PsiElement setName(@NotNull DSymbol o, @NotNull String newName) {
+        PsiElement e = DElementFactory.createDSymbolFromText(o.getProject(), newName);
+        if (e == null) return null;
+        o.replace(e);
+        return o;
+    }
+
+    @NotNull
+    public static PsiReference getReference(@NotNull DSymbol o) {
+        return new DReference(o, TextRange.from(0, getName(o).length()));
+    }
+
+    @NotNull
+    public static ItemPresentation getPresentation(final DSymbol o) {
+        return new ItemPresentation() {
+            @Nullable
+            @Override
+            public String getPresentableText() {
+                return o.getName();
+            }
+
+            /**
+             * This is needed to decipher between files when resolving multiple references.
+             */
+            @Nullable
+            @Override
+            public String getLocationString() {
+                final PsiFile psiFile = o.getContainingFile();
+                return psiFile instanceof DLanguageFile ? ((DLanguageFile) psiFile).getModuleOrFileName() : null;
+            }
+
+            @Nullable
+            @Override
+            public Icon getIcon(boolean unused) {
+                return DLanguageIcons.FILE;
+            }
+        };
+    }
+    // ------------- Symbol ------------------ //
+
 
      // ------------- Ref Identifier ------------------ //
     @NotNull

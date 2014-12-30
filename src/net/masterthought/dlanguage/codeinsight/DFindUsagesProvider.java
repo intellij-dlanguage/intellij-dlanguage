@@ -15,6 +15,7 @@ import net.masterthought.dlanguage.lexer.DLexer;
 import net.masterthought.dlanguage.psi.DTokenSets;
 import net.masterthought.dlanguage.psi.interfaces.DDefinitionFunction;
 import net.masterthought.dlanguage.psi.interfaces.DElementTypes;
+import net.masterthought.dlanguage.psi.interfaces.DSymbol;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,6 +27,7 @@ public class DFindUsagesProvider implements FindUsagesProvider {
             new DefaultWordsScanner(new DLexer(),
                     TokenSet.create(DElementTypes.IDENTIFIER),
                     DTokenSets.COMMENTS, DTokenSets.STRING_LITERALS);
+
     @Nullable
     @Override
     public WordsScanner getWordsScanner() {
@@ -51,10 +53,12 @@ public class DFindUsagesProvider implements FindUsagesProvider {
 //        return "woops";
 
         if (element instanceof DDefinitionFunction) {
-                   return "Function";
-               } else {
-                   return "";
-               }
+            return "Function";
+        } else if (element instanceof DSymbol) {
+            return "Symbol";
+        } else {
+            return "";
+        }
 
     }
 

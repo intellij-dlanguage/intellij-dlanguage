@@ -39,8 +39,8 @@ public class DRefIdentifierImpl extends DNamedElementImpl implements DRefIdentif
     }
 
     @NotNull
-         public ItemPresentation getPresentation() {
-           return DPsiImplUtil.getPresentation(this);
-         }
+    public ItemPresentation getPresentation() {
+        return DPsiImplUtil.getPresentation(this);
+    }
 
 }

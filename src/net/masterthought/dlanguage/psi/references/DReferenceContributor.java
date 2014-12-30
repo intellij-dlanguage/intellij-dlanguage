@@ -8,13 +8,14 @@ import com.intellij.psi.PsiReferenceRegistrar;
 import net.masterthought.dlanguage.DLanguage;
 import net.masterthought.dlanguage.psi.interfaces.DDefinitionFunction;
 import net.masterthought.dlanguage.psi.interfaces.DRefIdentifier;
+import net.masterthought.dlanguage.psi.interfaces.DSymbol;
 
 
 public class DReferenceContributor extends PsiReferenceContributor {
     @Override
     public void registerReferenceProviders(PsiReferenceRegistrar registrar) {
         PsiElementPattern.Capture<PsiNamedElement> variableCapture =
-                PlatformPatterns.psiElement(PsiNamedElement.class).withParent(DRefIdentifier.class).withParent(DDefinitionFunction.class).withLanguage(DLanguage.INSTANCE);
+                PlatformPatterns.psiElement(PsiNamedElement.class).withParent(DSymbol.class).withParent(DDefinitionFunction.class).withLanguage(DLanguage.INSTANCE);
         registrar.registerReferenceProvider(variableCapture,
                 new DReferenceProvider());
     }
