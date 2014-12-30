@@ -31,14 +31,14 @@ public class DFoldingBuilder extends FoldingBuilderEx implements DumbAware {
         // TODO - find a way to discover all things that need to be folder in the tree
 
         // add top level functions
-        for (DDefinitionFunction function :  file.findChildrenByClass(DDefinitionFunction.class)) {
+        for (DDefinitionFunction function : file.findChildrenByClass(DDefinitionFunction.class)) {
             result.add(new FoldingDescriptor(function, function.getTextRange()));
         }
 
         // add top level classes
-        for (DDefinitionClass function :  file.findChildrenByClass(DDefinitionClass.class)) {
-                   result.add(new FoldingDescriptor(function, function.getTextRange()));
-               }
+        for (DDefinitionClass function : file.findChildrenByClass(DDefinitionClass.class)) {
+            result.add(new FoldingDescriptor(function, function.getTextRange()));
+        }
 
         if (!quick) {
             PsiTreeUtil.processElements(file, new PsiElementProcessor() {
