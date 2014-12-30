@@ -1,6 +1,7 @@
 package net.masterthought.dlanguage.psi.references;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.tree.IElementType;
@@ -39,8 +40,8 @@ public class DPsiUtil {
      */
 
     @NotNull
-    public static List<String> parseImports(@NotNull final PsiFile file){
-        List<String> imports = Lists.newArrayList();
+    public static Set<String> parseImports(@NotNull final PsiFile file){
+        Set<String> imports = Sets.newHashSet();
         for(PsiElement declaration : PsiTreeUtil.getChildrenOfTypeAsList(file,DDeclarationImport.class)){
             List<DRefModule> refs = PsiTreeUtil.getChildrenOfTypeAsList(declaration, DRefModule.class);
             for(DRefModule ref : refs){

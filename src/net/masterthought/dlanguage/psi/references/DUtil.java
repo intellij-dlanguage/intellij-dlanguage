@@ -5,17 +5,16 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiNamedElement;
+import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.containers.ContainerUtil;
+import net.masterthought.dlanguage.index.DModuleIndex;
 import net.masterthought.dlanguage.psi.DLanguageFile;
 import net.masterthought.dlanguage.psi.interfaces.DDefinitionFunction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * General util class. Provides methods for finding named nodes in the Psi tree.
@@ -28,37 +27,28 @@ public class DUtil {
     @NotNull
     public static List<PsiNamedElement> findDefinitionNode(@NotNull Project project, @Nullable String name, @Nullable PsiNamedElement e) {
         // Guess where the name could be defined by lookup up potential modules.
-        if(e != null){
-            importedModules = DPsiUtil.parseImports(e.getContainingFile());
-            // Add current module to the list
-            importedModules.add(getCurrentModuleName(e.getContainingFile()));
-        }
-
+        final Set<String> potentialModules =
+                       e == null ? Collections.EMPTY_SET
+                                 : DPsiUtil.parseImports(e.getContainingFile());
 
         List<PsiNamedElement> result = ContainerUtil.newArrayList();
-//        final String qPrefix = e == null ? null : getQualifiedPrefix(e);
-//        final PsiFile psiFile = e == null ? null : e.getContainingFile().getOriginalFile();
-//        if (psiFile instanceof DLanguageFile) {
-//            findDefinitionNode((DLanguageFile)psiFile, name, e, result);
-//        }
-//        for (String potentialModule : potentialModules) {
-//            List<DLanguageFile> files = DModuleIndex.getFilesByModuleName(project, potentialModule, GlobalSearchScope.allScope(project));
-//            for (DLanguageFile f : files) {
-//                final boolean returnAllReferences = name == null;
-//                final boolean inLocalModule = f != null && qPrefix == null && f.equals(psiFile);
-//                final boolean inImportedModule = f != null && potentialModules.contains(f.getModuleName());
-//                if (returnAllReferences || inLocalModule || inImportedModule) {
-//                    findDefinitionNode(f, name, e, result);
-//                }
-//            }
-//        }
-//        return result;
-        return null;
-    }
+        final PsiFile psiFile = e == null ? null : e.getContainingFile().getOriginalFile();
+        if (psiFile instanceof DLanguageFile) {
+            findDefinitionNode((DLanguageFile)psiFile, name, e, result);
+        }
+        for (String potentialModule : potentialModules) {
+            List<DLanguageFile> files = DModuleIndex.getFilesByModuleName(project, potentialModule, GlobalSearchScope.allScope(project));
+            for (DLanguageFile f : files) {
+                final boolean returnAllReferences = name == null;
+                final boolean inLocalModule = f != null && f.equals(psiFile);
+                final boolean inImportedModule = f != null && potentialModules.contains(f.getModuleName());
+                if (returnAllReferences || inLocalModule || inImportedModule) {
+                    findDefinitionNode(f, name, e, result);
+                }
+            }
+        }
+        return result;
 
-    public static String getCurrentModuleName(PsiFile file) {
-        DLanguageFile dFile = (DLanguageFile) file;
-        return dFile.getModuleOrFileName();
     }
 
     /**
@@ -153,10 +143,10 @@ public class DUtil {
     }
 
 //    @NotNull
-//    public static Set<String> getPotentialDefinitionModuleNames(@NotNull PsiElement e, @NotNull List<DPsiUtil.Import> imports) {
+//    public static Set<String> getPotentialDefinitionModuleNames(@NotNull PsiElement e, @NotNull List<String> imports) {
 //        final String qPrefix = getQualifiedPrefix(e);
 //        if (qPrefix == null) { return DPsiUtil.getImportModuleNames(imports); }
-//        Set<String> result = new HashSet<String>(2);
+//        Set<String> result = new HashSet<String>();
 //        for (DPsiUtil.Import anImport : imports) {
 //            if (qPrefix.equals(anImport.module) || qPrefix.equals(anImport.alias)) {
 //                result.add(anImport.module);
