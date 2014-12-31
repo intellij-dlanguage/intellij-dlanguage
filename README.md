@@ -2,6 +2,7 @@
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/kingsleyh/DLanguage?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![HuBoard badge](http://img.shields.io/badge/Hu-Board-7965cc.svg)](https://huboard.com/kingsleyh/DLanguage#/)
+[![Build Status](https://travis-ci.org/kingsleyh/DLanguage.svg?branch=master)](https://travis-ci.org/kingsleyh/DLanguage)
 
 This plugin brings D Language support to the Intellij IDE
 
