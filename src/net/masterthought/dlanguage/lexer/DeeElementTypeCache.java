@@ -1,16 +1,18 @@
 package net.masterthought.dlanguage.lexer;
 
-import ddt.dtool.parser.DeeTokens;
+import com.intellij.psi.tree.IElementType;
 import net.masterthought.dlanguage.psi.DElementType;
+import net.masterthought.dlanguage.psi.interfaces.DElementTypes;
+import net.masterthought.dlanguage.stubs.types.DDefinitionFunctionStubElementType;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class DeeElementTypeCache {
 
-    private static Map<String, DElementType> elements;
+    private static Map<String, IElementType> elements;
 
-    public static synchronized DElementType valueOf(String type) {
+    public static synchronized IElementType valueOf(String type) {
         if (type == null) {
             return null;
         }
@@ -19,11 +21,18 @@ public class DeeElementTypeCache {
         }
 
         // Check the cache map for a matching token
-        DElementType tokenType = elements.get(type);
+        IElementType tokenType = elements.get(type);
 
         // If not in the map yet, create one and shove it in
         if (tokenType == null) {
-            tokenType = new DElementType(type);
+
+
+            if(tokenType == DElementTypes.DEFINITION_FUNCTION){
+                tokenType = new DDefinitionFunctionStubElementType(type);
+            } else {
+                tokenType = new DElementType(type);
+            }
+
             elements.put(type, tokenType);
         }
 

@@ -16,11 +16,12 @@ import net.masterthought.dlanguage.lexer.DLexer;
 import net.masterthought.dlanguage.psi.DLanguageFile;
 import net.masterthought.dlanguage.psi.DTokenSets;
 import net.masterthought.dlanguage.psi.interfaces.DElementTypes;
+import net.masterthought.dlanguage.stubs.types.DFileStubElementType;
 import org.jetbrains.annotations.NotNull;
 
 public class DLanguageParserDefinition implements ParserDefinition {
 
-    public static final IStubFileElementType FILE_ELEMENT_TYPE = new IStubFileElementType(DLanguage.INSTANCE);
+    public static final IStubFileElementType FILE_ELEMENT_TYPE = DFileStubElementType.INSTANCE;
 
     @NotNull
     @Override

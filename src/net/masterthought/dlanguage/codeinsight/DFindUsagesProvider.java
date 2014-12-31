@@ -6,13 +6,16 @@ import com.intellij.lang.findUsages.FindUsagesProvider;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.ElementDescriptionUtil;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.tree.TokenSet;
 import com.intellij.usageView.UsageViewLongNameLocation;
 import com.intellij.usageView.UsageViewNodeTextLocation;
 import com.intellij.usageView.UsageViewTypeLocation;
 import net.masterthought.dlanguage.lexer.DLexer;
 import net.masterthought.dlanguage.psi.DTokenSets;
+import net.masterthought.dlanguage.psi.interfaces.DDefinitionFunction;
 import net.masterthought.dlanguage.psi.interfaces.DElementTypes;
+import net.masterthought.dlanguage.psi.interfaces.DSymbol;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,6 +27,7 @@ public class DFindUsagesProvider implements FindUsagesProvider {
             new DefaultWordsScanner(new DLexer(),
                     TokenSet.create(DElementTypes.IDENTIFIER),
                     DTokenSets.COMMENTS, DTokenSets.STRING_LITERALS);
+
     @Nullable
     @Override
     public WordsScanner getWordsScanner() {
@@ -32,8 +36,7 @@ public class DFindUsagesProvider implements FindUsagesProvider {
 
     @Override
     public boolean canFindUsagesFor(@NotNull PsiElement psiElement) {
-//        return psiElement instanceof PsiNamedElement;
-        return true;
+        return psiElement instanceof PsiNamedElement;
     }
 
     @Nullable
@@ -46,13 +49,24 @@ public class DFindUsagesProvider implements FindUsagesProvider {
     @NotNull
     @Override
     public String getType(@NotNull PsiElement element) {
-        return ElementDescriptionUtil.getElementDescription(element, UsageViewTypeLocation.INSTANCE);
+//        return ElementDescriptionUtil.getElementDescription(element, UsageViewTypeLocation.INSTANCE);
+//        return "woops";
+
+        if (element instanceof DDefinitionFunction) {
+            return "Function";
+        } else if (element instanceof DSymbol) {
+            return "Symbol";
+        } else {
+            return "";
+        }
+
     }
 
     @NotNull
     @Override
     public String getDescriptiveName(@NotNull PsiElement element) {
-        return ElementDescriptionUtil.getElementDescription(element, UsageViewLongNameLocation.INSTANCE);
+//        return ElementDescriptionUtil.getElementDescription(element, UsageViewLongNameLocation.INSTANCE);
+        return "Totally rocks!";
     }
 
     @NotNull

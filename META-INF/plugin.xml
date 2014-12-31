@@ -62,11 +62,12 @@
         <!-- Tab in IntelliJ -> Preferences -->
 
         <!-- References/navigation -->
+        <psi.referenceContributor implementation="net.masterthought.dlanguage.psi.references.DReferenceContributor"/>
         <!--<codeInsight.lineMarkerProvider language="Haskell"-->
         <!--implementationClass="com.haskforce.codeInsight.HaskellLineMarkerProvider"/>-->
         <!--<psi.referenceContributor implementation="com.haskforce.psi.references.HaskellReferenceContributor"/>-->
-        <!--<lang.findUsagesProvider language="D"-->
-        <!--implementationClass="net.masterthought.dlanguage.codeinsight.DFindUsagesProvider"/>-->
+        <lang.findUsagesProvider language="D"
+        implementationClass="net.masterthought.dlanguage.codeinsight.DFindUsagesProvider"/>
         <!--<gotoSymbolContributor implementation="com.haskforce.features.HaskellChooseByNameContributor"/>-->
 
         <lang.foldingBuilder language="D" implementationClass="net.masterthought.dlanguage.features.DFoldingBuilder"/>
