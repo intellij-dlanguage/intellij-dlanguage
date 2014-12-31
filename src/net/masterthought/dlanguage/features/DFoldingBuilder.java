@@ -9,10 +9,8 @@ import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.search.PsiElementProcessor;
-import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.containers.ContainerUtil;
-import ddt.melnorme.utilbox.collections.ArrayList2;
 import net.masterthought.dlanguage.psi.DLanguageFile;
 import net.masterthought.dlanguage.psi.DTokenSets;
 import net.masterthought.dlanguage.psi.interfaces.DDeclarationImport;
@@ -23,8 +21,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class DFoldingBuilder extends FoldingBuilderEx implements DumbAware {
@@ -53,7 +49,20 @@ public class DFoldingBuilder extends FoldingBuilderEx implements DumbAware {
         }
 
         // add import group
-        List<DDeclarationImport> imports = new ArrayList(PsiTreeUtil.findChildrenOfType(file, DDeclarationImport.class));
+        List<DDeclarationImport> imports = Lists.newArrayList();
+        int count = 0;
+        for (DDeclarationImport importer : PsiTreeUtil.findChildrenOfType(file, DDeclarationImport.class)) {
+            // add the first one
+            if (count == 0) {
+                imports.add(importer);
+            } else {
+                // only add the next one if the previous one was also an import
+                if (importer.getPrevSibling().getPrevSibling() instanceof DDeclarationImport) {
+                    imports.add(importer);
+                }
+            }
+            count++;
+        }
         int first = imports.get(0).getTextRange().getStartOffset();
         int last = imports.get(imports.size() - 1).getTextRange().getEndOffset();
         result.add(new FoldingDescriptor(imports.get(0), new TextRange(first, last)));
@@ -81,6 +90,9 @@ public class DFoldingBuilder extends FoldingBuilderEx implements DumbAware {
         if (psi instanceof DDefinitionFunction) {
             return ((DDefinitionFunction) psi).getName() + " (Function) ...";
         }
+        if (psi instanceof DDeclarationImport) {
+            return "import ...";
+        }
         //TODO - add stubs for classes and structs
 //        if (psi instanceof DDefinitionClass) {
 //            return ((DDefinitionClass) psi).getName() + " (Class) ...";
@@ -93,6 +105,7 @@ public class DFoldingBuilder extends FoldingBuilderEx implements DumbAware {
 
     @Override
     public boolean isCollapsedByDefault(@NotNull ASTNode node) {
-        return false;
+        PsiElement psi = node.getPsi();
+        return psi instanceof DDeclarationImport;
     }
 }
