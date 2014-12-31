@@ -1,1 +1,1 @@
-pragma
+pragma(1);

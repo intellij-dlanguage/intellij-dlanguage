@@ -1,1 +1,4 @@
 deprecated
+{
+    void oldFoo();
+}

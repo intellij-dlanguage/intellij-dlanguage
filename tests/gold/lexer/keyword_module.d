@@ -1,1 +1,1 @@
-module
+module net.masterthought.dlanguage;

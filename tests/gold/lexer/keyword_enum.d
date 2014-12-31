@@ -1,1 +1,1 @@
-enum
+enum E : byte { Emember }
