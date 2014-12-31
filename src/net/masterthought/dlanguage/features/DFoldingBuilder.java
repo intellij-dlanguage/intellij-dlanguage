@@ -1,21 +1,30 @@
 package net.masterthought.dlanguage.features;
 
+import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.folding.FoldingBuilderEx;
 import com.intellij.lang.folding.FoldingDescriptor;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.project.DumbAware;
+import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.search.PsiElementProcessor;
+import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.containers.ContainerUtil;
+import ddt.melnorme.utilbox.collections.ArrayList2;
 import net.masterthought.dlanguage.psi.DLanguageFile;
 import net.masterthought.dlanguage.psi.DTokenSets;
+import net.masterthought.dlanguage.psi.interfaces.DDeclarationImport;
 import net.masterthought.dlanguage.psi.interfaces.DDefinitionClass;
 import net.masterthought.dlanguage.psi.interfaces.DDefinitionFunction;
+import net.masterthought.dlanguage.psi.interfaces.DDefinitionStruct;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class DFoldingBuilder extends FoldingBuilderEx implements DumbAware {
@@ -28,17 +37,26 @@ public class DFoldingBuilder extends FoldingBuilderEx implements DumbAware {
 
         final List<FoldingDescriptor> result = ContainerUtil.newArrayList();
 
-        // TODO - find a way to discover all things that need to be folder in the tree
-
-        // add top level functions
-        for (DDefinitionFunction function : file.findChildrenByClass(DDefinitionFunction.class)) {
+        // add all functions
+        for (DDefinitionFunction function : PsiTreeUtil.findChildrenOfType(file, DDefinitionFunction.class)) {
             result.add(new FoldingDescriptor(function, function.getTextRange()));
         }
 
-        // add top level classes
-        for (DDefinitionClass function : file.findChildrenByClass(DDefinitionClass.class)) {
-            result.add(new FoldingDescriptor(function, function.getTextRange()));
+        // add all classes
+        for (DDefinitionClass classDefinition : PsiTreeUtil.findChildrenOfType(file, DDefinitionClass.class)) {
+            result.add(new FoldingDescriptor(classDefinition, classDefinition.getTextRange()));
         }
+
+        // add all structs
+        for (DDefinitionStruct struct : PsiTreeUtil.findChildrenOfType(file, DDefinitionStruct.class)) {
+            result.add(new FoldingDescriptor(struct, struct.getTextRange()));
+        }
+
+        // add import group
+        List<DDeclarationImport> imports = new ArrayList(PsiTreeUtil.findChildrenOfType(file, DDeclarationImport.class));
+        int first = imports.get(0).getTextRange().getStartOffset();
+        int last = imports.get(imports.size() - 1).getTextRange().getEndOffset();
+        result.add(new FoldingDescriptor(imports.get(0), new TextRange(first, last)));
 
         if (!quick) {
             PsiTreeUtil.processElements(file, new PsiElementProcessor() {
@@ -58,6 +76,18 @@ public class DFoldingBuilder extends FoldingBuilderEx implements DumbAware {
     @Nullable
     @Override
     public String getPlaceholderText(@NotNull ASTNode node) {
+        PsiElement psi = node.getPsi();
+
+        if (psi instanceof DDefinitionFunction) {
+            return ((DDefinitionFunction) psi).getName() + " (Function) ...";
+        }
+        //TODO - add stubs for classes and structs
+//        if (psi instanceof DDefinitionClass) {
+//            return ((DDefinitionClass) psi).getName() + " (Class) ...";
+//        }
+//        if (psi instanceof DDefinitionStruct) {
+//            return ((DDefinitionStruct) psi).getName() + " (Struct) ...";
+//        }
         return "...";
     }
 
