@@ -4,6 +4,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import net.masterthought.dlanguage.lexer.DLexerTest;
 import net.masterthought.dlanguage.parser.DParserTest;
+import net.masterthought.dlanguage.resolve.DResolveTest;
 
 /**
  * Main testsuite driver. Specifies which components that should be tested.
@@ -20,6 +21,7 @@ public class DTestCase extends TestCase {
 //        suite.addTestSuite(HaskellTypedHandlerTest.class);
         suite.addTestSuite(DLexerTest.class);
         suite.addTestSuite(DParserTest.class);
+        suite.addTestSuite(DResolveTest.class);
 //        suite.addTestSuite(HaskellParsingLexerTest.class);
 //        suite.addTestSuite(HaskellParserTest.class);
 //        suite.addTestSuite(HaskellFeaturesTest.class);
