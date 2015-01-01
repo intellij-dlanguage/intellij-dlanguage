@@ -13,6 +13,7 @@ import com.intellij.usageView.UsageViewNodeTextLocation;
 import com.intellij.usageView.UsageViewTypeLocation;
 import net.masterthought.dlanguage.lexer.DLexer;
 import net.masterthought.dlanguage.psi.DTokenSets;
+import net.masterthought.dlanguage.psi.interfaces.DDefinitionClass;
 import net.masterthought.dlanguage.psi.interfaces.DDefinitionFunction;
 import net.masterthought.dlanguage.psi.interfaces.DElementTypes;
 import net.masterthought.dlanguage.psi.interfaces.DSymbol;
@@ -56,6 +57,8 @@ public class DFindUsagesProvider implements FindUsagesProvider {
             return "Function";
         } else if (element instanceof DSymbol) {
             return "Symbol";
+        } else if (element instanceof DDefinitionClass) {
+            return "Class";
         } else {
             return "";
         }

@@ -5,6 +5,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFileFactory;
 import net.masterthought.dlanguage.DLanguage;
 import net.masterthought.dlanguage.psi.DLanguageFile;
+import net.masterthought.dlanguage.psi.interfaces.DDefinitionClass;
 import net.masterthought.dlanguage.psi.interfaces.DDefinitionFunction;
 import net.masterthought.dlanguage.psi.interfaces.DRefIdentifier;
 import net.masterthought.dlanguage.psi.interfaces.DSymbol;
@@ -24,6 +25,10 @@ public class DElementFactory {
         PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
         if (e instanceof DDefinitionFunction) return (DDefinitionFunction) e;
         return null;
+    }
+
+    public static DDefinitionClass createDDefinitionClassFromText(@NotNull Project project, @NotNull String name) {
+        return ((DDefinitionClass) (createExpressionFromText(project, name + "uniq = " + name)).getFirstChild());
     }
 
     public static DRefIdentifier createDRefIdentifierFromText(@NotNull Project project, @NotNull String name) {

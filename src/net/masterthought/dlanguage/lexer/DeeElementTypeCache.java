@@ -3,6 +3,7 @@ package net.masterthought.dlanguage.lexer;
 import com.intellij.psi.tree.IElementType;
 import net.masterthought.dlanguage.psi.DElementType;
 import net.masterthought.dlanguage.psi.interfaces.DElementTypes;
+import net.masterthought.dlanguage.stubs.types.DDefinitionClassStubElementType;
 import net.masterthought.dlanguage.stubs.types.DDefinitionFunctionStubElementType;
 
 import java.util.HashMap;
@@ -26,9 +27,10 @@ public class DeeElementTypeCache {
         // If not in the map yet, create one and shove it in
         if (tokenType == null) {
 
-
-            if(tokenType == DElementTypes.DEFINITION_FUNCTION){
+            if (tokenType == DElementTypes.DEFINITION_FUNCTION) {
                 tokenType = new DDefinitionFunctionStubElementType(type);
+            } else if (tokenType == DElementTypes.DEFINITION_CLASS) {
+                tokenType = new DDefinitionClassStubElementType(type);
             } else {
                 tokenType = new DElementType(type);
             }

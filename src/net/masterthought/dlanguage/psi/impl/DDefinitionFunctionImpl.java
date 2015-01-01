@@ -38,11 +38,6 @@ public class DDefinitionFunctionImpl extends DNamedStubbedPsiElementBase<DDefini
     public PsiElement setName(String newName) {
         return DPsiImplUtil.setName(this, newName);
     }
-//
-//    @NotNull
-//    public PsiReference getReference() {
-//        return DPsiImplUtil.getReference(this);
-//    }
 
     // for annotator to apply syntax highlighting
     public void accept(@NotNull PsiElementVisitor visitor) {

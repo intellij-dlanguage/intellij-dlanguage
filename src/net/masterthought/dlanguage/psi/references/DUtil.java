@@ -10,6 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.containers.ContainerUtil;
 import net.masterthought.dlanguage.index.DModuleIndex;
 import net.masterthought.dlanguage.psi.DLanguageFile;
+import net.masterthought.dlanguage.psi.interfaces.DDefinitionClass;
 import net.masterthought.dlanguage.psi.interfaces.DDefinitionFunction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -112,10 +113,15 @@ public class DUtil {
     public static boolean definitionNode(@NotNull PsiNamedElement e) {
 //        if (e instanceof HaskellVarid) return definitionNode((HaskellVarid)e);
         if (e instanceof DDefinitionFunction) return definitionNode((DDefinitionFunction) e);
+        if (e instanceof DDefinitionClass) return definitionNode((DDefinitionClass) e);
         return false;
     }
 
     public static boolean definitionNode(@NotNull DDefinitionFunction e) {
+        return true;
+    }
+
+    public static boolean definitionNode(@NotNull DDefinitionClass e) {
         return true;
     }
 

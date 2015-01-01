@@ -20,9 +20,6 @@ public interface DDefinitionFunction extends DNamedElement, StubBasedPsiElement<
     @Nullable
     PsiElement getNameIdentifier();
 
-//    @NotNull
-//    PsiReference getReference();
-
     @Nullable
     PsiElement setName(String newName);
 
