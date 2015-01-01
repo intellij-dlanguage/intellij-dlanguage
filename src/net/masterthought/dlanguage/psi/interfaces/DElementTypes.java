@@ -13,7 +13,7 @@ public interface DElementTypes {
     // element types supported by DeeParser
     IElementType NULL = DeeElementTypeCache.valueOf("NULL");
     IElementType SYMBOL = DeeElementTypeCache.valueOf("SYMBOL");
-    IElementType MODULE = DeeElementTypeCache.valueOf("MODULE");
+    IElementType MODULE = DeeElementTypeCache.valueOf("MODULE"); // not used as IFileElement is top level in DParser
     IElementType DECLARATION_MODULE = DeeElementTypeCache.valueOf("DECLARATION_MODULE");
     IElementType DECLARATION_IMPORT = DeeElementTypeCache.valueOf("DECLARATION_IMPORT");
     IElementType IMPORT_CONTENT = DeeElementTypeCache.valueOf("IMPORT_CONTENT");

@@ -1,3 +1,1 @@
-import std.stdio;
-void main(){
-}
+module net.masterthought.dlanguage.symbol;

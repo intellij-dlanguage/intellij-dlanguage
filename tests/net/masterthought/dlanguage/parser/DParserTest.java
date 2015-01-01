@@ -7,22 +7,21 @@ public class DParserTest extends DParserTestBase {
     }
 
 //    public void testnull() { doTest(true, true); }
-//    public void testsymbol() { doTest(true, true); }
-    public void testmodule() { doTest(true, true); }
-//    public void testdeclaration_module() { doTest(true, true); }
-//    public void testdeclaration_import() { doTest(true, true); }
+    public void testsymbol() { doTest(true, true); }
+    public void testdeclaration_module() { doTest(true, true); }
+    public void testdeclaration_import() { doTest(true, true); }
 //    public void testimport_content() { doTest(true, true); }
-//    public void testimport_alias() { doTest(true, true); }
-//    public void testimport_selective() { doTest(true, true); }
-//    public void testimport_selective_alias() { doTest(true, true); }
+    public void testimport_alias() { doTest(true, true); }
+    public void testimport_selective() { doTest(true, true); }
+    public void testimport_selective_alias() { doTest(true, true); }
 //    public void testdecl_list() { doTest(true, true); }
 //    public void testdecl_block() { doTest(true, true); }
 //    public void testdeclaration_emtpy() { doTest(true, true); }
 //    public void testmissing_declaration() { doTest(true, true); }
 //    public void testinvalid_syntax() { doTest(true, true); }
 //    public void testincomplete_declarator() { doTest(true, true); }
-//    public void testref_import_selection() { doTest(true, true); }
-//    public void testref_module() { doTest(true, true); }
+    public void testref_import_selection() { doTest(true, true); }
+    public void testref_module() { doTest(true, true); }
 //    public void testref_identifier() { doTest(true, true); }
 //    public void testref_qualified() { doTest(true, true); }
 //    public void testref_module_qualified() { doTest(true, true); }
