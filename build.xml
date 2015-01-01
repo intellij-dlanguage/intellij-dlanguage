@@ -7,16 +7,16 @@
   <!--<property name="jflex.jar" value="JFlex.jar"/>-->
   <!--<property name="jflex.skeleton" value="idea-flex.skeleton"/>-->
   <!--&lt;!&ndash; TODO: Consider using ant-contrib to generalize this pattern into a loop (task generate.sources) &ndash;&gt;-->
-  <!--<property name="jflex.haskellHighlight.target.base" value="src/com/haskforce/highlighting/_HaskellSyntaxHighlightingLexer"/>-->
+  <!--<property name="jflex.haskellHighlight.target.base" value="src/com/dlanguage/highlighting/_HaskellSyntaxHighlightingLexer"/>-->
   <!--<property name="jflex.haskellHighlight.input.file" value="${jflex.haskellHighlight.target.base}.flex"/>-->
   <!--<property name="jflex.haskellHighlight.output.file" value="${jflex.haskellHighlight.target.base}.java"/>-->
-  <!--<property name="jflex.haskellParsing.target.base" value="src/com/haskforce/parsing/_HaskellParsingLexer"/>-->
+  <!--<property name="jflex.haskellParsing.target.base" value="src/com/dlanguage/parsing/_HaskellParsingLexer"/>-->
   <!--<property name="jflex.haskellParsing.input.file" value="${jflex.haskellParsing.target.base}.flex"/>-->
   <!--<property name="jflex.haskellParsing.output.file" value="${jflex.haskellParsing.target.base}.java"/>-->
-  <!--<property name="jflex.cabalHighlight.target.base" value="src/com/haskforce/cabal/highlighting/_CabalSyntaxHighlightingLexer"/>-->
+  <!--<property name="jflex.cabalHighlight.target.base" value="src/com/dlanguage/cabal/highlighting/_CabalSyntaxHighlightingLexer"/>-->
   <!--<property name="jflex.cabalHighlight.input.file" value="${jflex.cabalHighlight.target.base}.flex"/>-->
   <!--<property name="jflex.cabalHighlight.output.file" value="${jflex.cabalHighlight.target.base}.java"/>-->
-  <!--<property name="jflex.hamletHighlight.target.base" value="src/com/haskforce/yesod/shakespeare/hamlet/highlighting/_HamletSyntaxHighlightingLexer"/>-->
+  <!--<property name="jflex.hamletHighlight.target.base" value="src/com/dlanguage/yesod/shakespeare/hamlet/highlighting/_HamletSyntaxHighlightingLexer"/>-->
   <!--<property name="jflex.hamletHighlight.input.file" value="${jflex.hamletHighlight.target.base}.flex"/>-->
   <!--<property name="jflex.hamletHighlight.output.file" value="${jflex.hamletHighlight.target.base}.java"/>-->
 
@@ -203,7 +203,7 @@
 
   <target name="compile.module.jps-shared.production" depends="register.custom.compilers" description="Compile module jps-shared; production classes">
     <mkdir dir="${jps-shared.output.dir}"/>
-    <javac2 source="1.6" target="1.6" destdir="${jps-shared.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.jps-shared}/javac">
+    <javac2 source="1.7" target="1.7" destdir="${jps-shared.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.jps-shared}/javac">
       <compilerarg line="${compiler.args.jps-shared}"/>
       <bootclasspath refid="jps-shared.module.bootclasspath"/>
       <classpath refid="jps-shared.module.production.classpath"/>
@@ -230,127 +230,127 @@
     <delete dir="${jps-shared.testoutput.dir}"/>
   </target>
 
-  <!-- Module HaskForce -->
+  <!-- Module DLanguage -->
 
-  <property name="module.jdk.home.haskforce" value="${project.jdk.home}"/>
-  <property name="module.jdk.bin.haskforce" value="${project.jdk.bin}"/>
-  <property name="module.jdk.classpath.haskforce" value="${project.jdk.classpath}"/>
+  <property name="module.jdk.home.dlanguage" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.dlanguage" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.dlanguage" value="${project.jdk.classpath}"/>
 
-  <property name="compiler.args.haskforce" value="-encoding UTF-8 ${compiler.args}"/>
+  <property name="compiler.args.dlanguage" value="-encoding UTF-8 ${compiler.args}"/>
 
-  <property name="haskforce.output.dir" value="${module.haskforce.basedir}/out/production/HaskForce"/>
-  <property name="haskforce.testoutput.dir" value="${module.haskforce.basedir}/out/test/HaskForce"/>
+  <property name="dlanguage.output.dir" value="${module.dlanguage.basedir}/out/production/DLanguage"/>
+  <property name="dlanguage.testoutput.dir" value="${module.dlanguage.basedir}/out/test/DLanguage"/>
 
-  <path id="haskforce.module.bootclasspath">
+  <path id="dlanguage.module.bootclasspath">
     <!-- Paths to be included in compilation bootclasspath -->
   </path>
 
-  <path id="haskforce.module.production.classpath">
-    <path refid="${module.jdk.classpath.haskforce}"/>
+  <path id="dlanguage.module.production.classpath">
+    <path refid="${module.jdk.classpath.dlanguage}"/>
     <pathelement path="${jps-shared.output.dir}"/>
   </path>
 
-  <path id="haskforce.runtime.production.module.classpath">
-    <pathelement location="${haskforce.output.dir}"/>
+  <path id="dlanguage.runtime.production.module.classpath">
+    <pathelement location="${dlanguage.output.dir}"/>
   </path>
 
-  <path id="haskforce.module.classpath">
-    <path refid="${module.jdk.classpath.haskforce}"/>
-    <pathelement location="${haskforce.output.dir}"/>
+  <path id="dlanguage.module.classpath">
+    <path refid="${module.jdk.classpath.dlanguage}"/>
+    <pathelement location="${dlanguage.output.dir}"/>
   </path>
 
-  <path id="haskforce.runtime.module.classpath">
-    <pathelement location="${haskforce.testoutput.dir}"/>
-    <pathelement location="${haskforce.output.dir}"/>
+  <path id="dlanguage.runtime.module.classpath">
+    <pathelement location="${dlanguage.testoutput.dir}"/>
+    <pathelement location="${dlanguage.output.dir}"/>
   </path>
 
 
-  <patternset id="excluded.from.module.haskforce">
+  <patternset id="excluded.from.module.dlanguage">
     <patternset refid="ignored.files"/>
   </patternset>
 
-  <patternset id="excluded.from.compilation.haskforce">
-    <patternset refid="excluded.from.module.haskforce"/>
+  <patternset id="excluded.from.compilation.dlanguage">
+    <patternset refid="excluded.from.module.dlanguage"/>
   </patternset>
 
-  <path id="haskforce.module.sourcepath">
-    <dirset dir="${module.haskforce.basedir}">
+  <path id="dlanguage.module.sourcepath">
+    <dirset dir="${module.dlanguage.basedir}">
       <include name="src"/>
-      <include name="gen"/>
+      <!--<include name="gen"/>-->
       <include name="resources"/>
     </dirset>
   </path>
 
-  <path id="haskforce.module.test.sourcepath">
-    <dirset dir="${module.haskforce.basedir}">
+  <path id="dlanguage.module.test.sourcepath">
+    <dirset dir="${module.dlanguage.basedir}">
       <include name="tests"/>
     </dirset>
   </path>
 
 
-  <target name="compile.module.haskforce" depends="compile.module.haskforce.production,compile.module.haskforce.tests" description="Compile module HaskForce"/>
+  <target name="compile.module.dlanguage" depends="compile.module.dlanguage.production,compile.module.dlanguage.tests" description="Compile module DLanguage"/>
 
-  <target name="compile.module.haskforce.production" depends="register.custom.compilers" description="Compile module HaskForce; production classes">
-    <mkdir dir="${haskforce.output.dir}"/>
-    <javac2 source="1.6" target="1.6" destdir="${haskforce.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.haskforce}/javac">
-      <compilerarg line="${compiler.args.haskforce}"/>
-      <bootclasspath refid="haskforce.module.bootclasspath"/>
-      <classpath refid="haskforce.module.production.classpath"/>
-      <src refid="haskforce.module.sourcepath"/>
-      <patternset refid="excluded.from.compilation.haskforce"/>
+  <target name="compile.module.dlanguage.production" depends="register.custom.compilers" description="Compile module DLanguage; production classes">
+    <mkdir dir="${dlanguage.output.dir}"/>
+    <javac2 source="1.7" target="1.7" destdir="${dlanguage.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.dlanguage}/javac">
+      <compilerarg line="${compiler.args.dlanguage}"/>
+      <bootclasspath refid="dlanguage.module.bootclasspath"/>
+      <classpath refid="dlanguage.module.production.classpath"/>
+      <src refid="dlanguage.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.dlanguage"/>
     </javac2>
 
-    <copy todir="${haskforce.output.dir}">
-      <fileset dir="${module.haskforce.basedir}/src">
+    <copy todir="${dlanguage.output.dir}">
+      <fileset dir="${module.dlanguage.basedir}/src">
         <patternset refid="compiler.resources"/>
         <type type="file"/>
       </fileset>
-      <fileset dir="${module.haskforce.basedir}/gen">
-        <patternset refid="compiler.resources"/>
-        <type type="file"/>
-      </fileset>
-      <fileset dir="${module.haskforce.basedir}/resources">
+      <!--<fileset dir="${module.dlanguage.basedir}/gen">-->
+        <!--<patternset refid="compiler.resources"/>-->
+        <!--<type type="file"/>-->
+      <!--</fileset>-->
+      <fileset dir="${module.dlanguage.basedir}/resources">
         <patternset refid="compiler.resources"/>
         <type type="file"/>
       </fileset>
     </copy>
   </target>
 
-  <path id="haskforce.module.tests.classpath">
+  <path id="dlanguage.module.tests.classpath">
     <fileset dir="${plugin.zip.path}">
       <include name="**/*.jar"/>
     </fileset>
   </path>
 
-  <target name="compile.module.haskforce.tests" depends="register.custom.compilers,compile.module.haskforce.production,plugin.build.jar.jps-shared" description="compile module HaskForce; test classes" unless="skip.tests">
-    <mkdir dir="${haskforce.testoutput.dir}"/>
-    <javac2 source="1.6" target="1.6" destdir="${haskforce.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.haskforce}/javac">
-      <compilerarg line="${compiler.args.haskforce}"/>
-      <bootclasspath refid="haskforce.module.bootclasspath"/>
-      <classpath refid="haskforce.module.classpath"/>
-      <classpath refid="haskforce.module.tests.classpath"/>
-      <src refid="haskforce.module.test.sourcepath"/>
-      <patternset refid="excluded.from.compilation.haskforce"/>
+  <target name="compile.module.dlanguage.tests" depends="register.custom.compilers,compile.module.dlanguage.production,plugin.build.jar.jps-shared" description="compile module DLanguage; test classes" unless="skip.tests">
+    <mkdir dir="${dlanguage.testoutput.dir}"/>
+    <javac2 source="1.7" target="1.7" destdir="${dlanguage.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.dlanguage}/javac">
+      <compilerarg line="${compiler.args.dlanguage}"/>
+      <bootclasspath refid="dlanguage.module.bootclasspath"/>
+      <classpath refid="dlanguage.module.classpath"/>
+      <classpath refid="dlanguage.module.tests.classpath"/>
+      <src refid="dlanguage.module.test.sourcepath"/>
+      <patternset refid="excluded.from.compilation.dlanguage"/>
     </javac2>
 
-    <copy todir="${haskforce.testoutput.dir}">
-      <fileset dir="${module.haskforce.basedir}/tests">
+    <copy todir="${dlanguage.testoutput.dir}">
+      <fileset dir="${module.dlanguage.basedir}/tests">
         <patternset refid="compiler.resources"/>
         <type type="file"/>
       </fileset>
     </copy>
   </target>
 
-  <target name="clean.module.haskforce" description="cleanup module">
-    <delete dir="${haskforce.output.dir}"/>
-    <delete dir="${haskforce.testoutput.dir}"/>
+  <target name="clean.module.dlanguage" description="cleanup module">
+    <delete dir="${dlanguage.output.dir}"/>
+    <delete dir="${dlanguage.testoutput.dir}"/>
   </target>
 
-  <!-- Build archive for plugin 'HaskForce' -->
-  <target name="plugin.build.jar.haskforce" depends="compile.module.haskforce" description="Build plugin archive for module &#39;HaskForce&#39;">
-    <jar destfile="${haskforce.plugin.path.jar}" duplicate="preserve">
-      <zipfileset dir="${module.haskforce.basedir}/out/production/HaskForce"/>
-      <zipfileset file="${module.haskforce.basedir}/META-INF/plugin.xml" prefix="META-INF"/>
+  <!-- Build archive for plugin 'DLanguage' -->
+  <target name="plugin.build.jar.dlanguage" depends="compile.module.dlanguage" description="Build plugin archive for module &#39;DLanguage&#39;">
+    <jar destfile="${dlanguage.plugin.path.jar}" duplicate="preserve">
+      <zipfileset dir="${module.dlanguage.basedir}/out/production/DLanguage"/>
+      <zipfileset file="${module.dlanguage.basedir}/META-INF/plugin.xml" prefix="META-INF"/>
       <manifest>
         <attribute name="Created-By" value="IntelliJ IDEA"/>
         <attribute name="Manifest-Version" value="1.0"/>
@@ -381,7 +381,7 @@
   </target>
 
   <!-- Build the plugin zip archive -->
-  <target name="build.zip" depends="plugin.build.jar.jps-plugin, plugin.build.jar.jps-shared, plugin.build.jar.haskforce">
+  <target name="build.zip" depends="plugin.build.jar.jps-plugin, plugin.build.jar.jps-shared, plugin.build.jar.dlanguage">
     <zip basedir="${plugin.zip.path}" destfile="${plugin.zip.path.output}"/>
   </target>
 
@@ -442,7 +442,7 @@
 
   <target name="compile.module.jps-plugin.production" depends="register.custom.compilers" description="Compile module jps-plugin; production classes">
     <mkdir dir="${jps-plugin.output.dir}"/>
-    <javac2 source="1.6" target="1.6" destdir="${jps-plugin.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.jps-plugin}/javac">
+    <javac2 source="1.7" target="1.7" destdir="${jps-plugin.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.jps-plugin}/javac">
       <compilerarg line="${compiler.args.jps-plugin}"/>
       <bootclasspath refid="jps-plugin.module.bootclasspath"/>
       <classpath refid="jps-plugin.module.production.classpath"/>
@@ -474,80 +474,7 @@
     <echo message="Using JDK home: ${jdk.home}"/>
   </target>
 
-  <!-- TODO: Consider using ant-contrib to generalize this pattern into a loop -->
-  <target name="generate.sources"
-          depends="check.jflex, generate.jflex.haskellHighlight, generate.jflex.haskellParsing,
-                   generate.jflex.cabalHighlight, generate.jflex.hamletHighlight"/>
 
-  <target name="check.jflex">
-    <condition property="jflex.haskellHighlight.notRequired">
-      <and>
-        <available file="${jflex.haskellHighlight.output.file}"/>
-        <uptodate srcfile="${jflex.haskellHighlight.input.file}" targetfile="${jflex.haskellHighlight.output.file}"/>
-      </and>
-    </condition>
-
-    <condition property="jflex.haskellParsing.notRequired">
-        <and>
-            <available file="${jflex.haskellParsing.output.file}"/>
-            <uptodate srcfile="${jflex.haskellParsing.input.file}" targetfile="${jflex.haskellParsing.output.file}"/>
-        </and>
-    </condition>
-
-    <condition property="jflex.cabalHighlight.notRequired">
-      <and>
-        <available file="${jflex.cabalHighlight.output.file}"/>
-        <uptodate srcfile="${jflex.cabalHighlight.input.file}" targetfile="${jflex.cabalHighlight.output.file}"/>
-      </and>
-    </condition>
-
-    <condition property="jflex.hamletHighlight.notRequired">
-      <and>
-        <available file="${jflex.hamletHighlight.output.file}"/>
-        <uptodate srcfile="${jflex.hamletHighlight.input.file}" targetfile="${jflex.hamletHighlight.output.file}"/>
-      </and>
-    </condition>
-  </target>
-
-  <target name="generate.jflex.haskellHighlight" unless="jflex.haskellHighlight.notRequired">
-    <java jar="${jflex.jar}" fork="true">
-      <arg value="--skel"/>
-      <arg value="${jflex.skeleton}"/>
-      <arg value="--charat"/>
-      <arg value="--nobak"/>
-      <arg value="${jflex.haskellHighlight.input.file}"/>
-    </java>
-  </target>
-
-  <target name="generate.jflex.haskellParsing" unless="jflex.haskellParsing.notRequired">
-    <java jar="${jflex.jar}" fork="true">
-      <arg value="--skel"/>
-      <arg value="${jflex.skeleton}"/>
-      <arg value="--charat"/>
-      <arg value="--nobak"/>
-      <arg value="${jflex.haskellParsing.input.file}"/>
-    </java>
-  </target>
-
-  <target name="generate.jflex.cabalHighlight" unless="jflex.cabalHighlight.notRequired">
-    <java jar="${jflex.jar}" fork="true">
-      <arg value="--skel"/>
-      <arg value="${jflex.skeleton}"/>
-      <arg value="--charat"/>
-      <arg value="--nobak"/>
-      <arg value="${jflex.cabalHighlight.input.file}"/>
-    </java>
-  </target>
-
-  <target name="generate.jflex.hamletHighlight" unless="jflex.hamletHighlight.notRequired">
-    <java jar="${jflex.jar}" fork="true">
-      <arg value="--skel"/>
-      <arg value="${jflex.skeleton}"/>
-      <arg value="--charat"/>
-      <arg value="--nobak"/>
-      <arg value="${jflex.hamletHighlight.input.file}"/>
-    </java>
-  </target>
 
   <target name="test" depends="build.modules">
     <property name="suspend" value="n"/>
@@ -566,12 +493,12 @@
           <exclude name="lib/ant/lib/*"/>
         </fileset>
         <fileset dir="${java.home}/../lib" includes="**/*.jar" />
-        <path refid="haskforce.module.classpath"/>
-        <path refid="haskforce.module.tests.classpath"/>
-        <pathelement location="${haskforce.testoutput.dir}"/>
+        <path refid="dlanguage.module.classpath"/>
+        <path refid="dlanguage.module.tests.classpath"/>
+        <pathelement location="${dlanguage.testoutput.dir}"/>
       </classpath>
       <formatter type="brief" usefile="false"/>
-      <test name="com.haskforce.HaskellTestCase"/>
+      <test name="net.masterthought.dlanguage.DTestCase"/>
     </junit>
   </target>
 
@@ -579,9 +506,9 @@
     <fail message="Test failure."/>
   </target>
 
-  <target name="clean" depends="clean.module.haskforce, clean.module.jps-plugin, clean.module.jps-shared" description="cleanup all"/>
+  <target name="clean" depends="clean.module.dlanguage, clean.module.jps-plugin, clean.module.jps-shared" description="cleanup all"/>
 
-  <target name="build.modules" depends="init, generate.sources, clean, compile.module.jps-shared, compile.module.jps-plugin, build.zip" description="build all modules"/>
+  <target name="build.modules" depends="init, clean, compile.module.jps-shared, compile.module.jps-plugin, build.zip" description="build all modules"/>
 
   <target name="all" depends="check.test" description="build all"/>
 </project>
