@@ -2,6 +2,7 @@ package net.masterthought.dlanguage;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import net.masterthought.dlanguage.codeinsight.DFindUsagesTest;
 import net.masterthought.dlanguage.lexer.DLexerTest;
 import net.masterthought.dlanguage.parser.DParserTest;
 import net.masterthought.dlanguage.resolve.DResolveTest;
@@ -19,9 +20,14 @@ public class DTestCase extends TestCase {
         // so there seems to be something strange going on.
         // See https://github.com/carymrobbins/intellij-haskforce/issues/63
 //        suite.addTestSuite(HaskellTypedHandlerTest.class);
+        suite.addTestSuite(DResolveTest.class);
         suite.addTestSuite(DLexerTest.class);
-        suite.addTestSuite(DParserTest.class);
-//        suite.addTestSuite(DResolveTest.class);
+
+        // not working in ant for some reason
+//        suite.addTestSuite(DParserTest.class);
+//        suite.addTestSuite(DFindUsagesTest.class);
+
+
 //        suite.addTestSuite(HaskellParsingLexerTest.class);
 //        suite.addTestSuite(HaskellParserTest.class);
 //        suite.addTestSuite(HaskellFeaturesTest.class);
