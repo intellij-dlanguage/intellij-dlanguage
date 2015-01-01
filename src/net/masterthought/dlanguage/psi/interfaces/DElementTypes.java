@@ -107,11 +107,7 @@ public interface DElementTypes {
     IElementType ARRAY_INIT_ENTRY = DeeElementTypeCache.valueOf("ARRAY_INIT_ENTRY");
     IElementType INITIALIZER_STRUCT = DeeElementTypeCache.valueOf("INITIALIZER_STRUCT");
     IElementType STRUCT_INIT_ENTRY = DeeElementTypeCache.valueOf("STRUCT_INIT_ENTRY");
-
     IElementType DEFINITION_FUNCTION = DeeElementTypeCache.valueOf("DEFINITION_FUNCTION");
-//    IElementType DEFINITION_FUNCTION = DElementTypeFactory.factory("DEFINITION_FUNCTION");
-
-
     IElementType FUNCTION_PARAMETER = DeeElementTypeCache.valueOf("FUNCTION_PARAMETER");
     IElementType NAMELESS_PARAMETER = DeeElementTypeCache.valueOf("NAMELESS_PARAMETER");
     IElementType VAR_ARGS_PARAMETER = DeeElementTypeCache.valueOf("VAR_ARGS_PARAMETER");

@@ -1,0 +1,68 @@
+package net.masterthought.dlanguage.parser;
+
+import com.intellij.lang.ParserDefinition;
+import com.intellij.psi.PsiFile;
+import com.intellij.testFramework.ParsingTestCase;
+import com.intellij.testFramework.TestDataFile;
+import org.jetbrains.annotations.NonNls;
+
+import java.io.File;
+import java.io.IOException;
+
+
+public abstract class DParserTestBase extends ParsingTestCase {
+
+    public DParserTestBase(String dataPath, String fileExt, ParserDefinition... definitions) {
+        super(dataPath, fileExt, definitions);
+    }
+
+    @Override
+    protected String getTestDataPath() {
+        return "tests" + File.separator + "gold";
+    }
+
+    @Override
+    protected boolean skipSpaces() {
+        return true;
+    }
+
+    /**
+     * Perform a test. Add tests that should work but does not work yet with
+     * doTest(false, false).
+     */
+    protected void doTest(boolean checkResult, boolean shouldPass) {
+        doTest(true);
+        if (shouldPass) {
+            assertFalse(
+                    "PsiFile contains error elements",
+                    toParseTreeText(myFile, skipSpaces(), includeRanges()).contains("PsiErrorElement")
+            );
+        }
+    }
+
+
+    @Override
+    protected void checkResult(@NonNls @TestDataFile String targetDataName,
+                               final PsiFile file) throws IOException {
+        doCheckResult(myFullDataPath, file, checkAllPsiRoots(),
+                "expected" + File.separator + targetDataName, skipSpaces(),
+                includeRanges());
+/* TODO: Re-enable if we return to parser-helper.
+        String phPath = ExecUtil.locateExecutableByGuessing("parser-helper");
+        if (phPath != null && !phPath.isEmpty()) {
+            String expectedFile = myFullDataPath + File.separator +
+                    "expectedJson" + File.separator + targetDataName + ".txt";
+            assertSameLinesWithFile(expectedFile,
+                    jsonParser.getJson(file.getText(), phPath));
+        } else {
+            assertEquals(true, false); // Always false.
+        }
+*/
+    }
+
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+    }
+
+}
