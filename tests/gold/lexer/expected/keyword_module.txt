@@ -1,1 +1,8 @@
-
+KW_MODULE ('module')
+WHITESPACE (' ')
+IDENTIFIER ('net')
+DOT ('.')
+IDENTIFIER ('masterthought')
+DOT ('.')
+IDENTIFIER ('dlanguage')
+SEMICOLON (';')

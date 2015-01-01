@@ -1,1 +1,2 @@
-
+KW_MACRO ('macro')
+EOF ('')

@@ -1,1 +1,2 @@
-
+KW___THREAD ('__thread')
+EOF ('')

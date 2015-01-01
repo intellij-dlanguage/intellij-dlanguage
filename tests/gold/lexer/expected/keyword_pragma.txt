@@ -1,1 +1,5 @@
-
+KW_PRAGMA ('pragma')
+OPEN_PARENS ('(')
+INTEGER_DECIMAL ('1')
+CLOSE_PARENS (')')
+SEMICOLON (';')

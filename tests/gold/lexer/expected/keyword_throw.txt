@@ -1,1 +1,9 @@
-
+KW_THROW ('throw')
+WHITESPACE (' ')
+KW_NEW ('new')
+WHITESPACE (' ')
+IDENTIFIER ('Exception')
+OPEN_PARENS ('(')
+STRING_DQ ('"message"')
+CLOSE_PARENS (')')
+SEMICOLON (';')

@@ -1,1 +1,6 @@
-
+KW_SHARED ('shared')
+WHITESPACE (' ')
+KW_INT ('int')
+WHITESPACE (' ')
+IDENTIFIER ('flag')
+SEMICOLON (';')
