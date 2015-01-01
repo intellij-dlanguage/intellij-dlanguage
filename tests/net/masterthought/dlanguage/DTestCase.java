@@ -20,11 +20,12 @@ public class DTestCase extends TestCase {
         // so there seems to be something strange going on.
         // See https://github.com/carymrobbins/intellij-haskforce/issues/63
 //        suite.addTestSuite(HaskellTypedHandlerTest.class);
-        suite.addTestSuite(DResolveTest.class);
+
         suite.addTestSuite(DLexerTest.class);
+        suite.addTestSuite(DParserTest.class);
 
         // not working in ant for some reason
-//        suite.addTestSuite(DParserTest.class);
+//        suite.addTestSuite(DResolveTest.class);
 //        suite.addTestSuite(DFindUsagesTest.class);
 
 
