@@ -1,6 +1,10 @@
 package net.masterthought.dlanguage.parser;
 
 import com.intellij.lang.ParserDefinition;
+import com.intellij.mock.MockProjectEx;
+import com.intellij.mock.MockVirtualFile;
+import com.intellij.openapi.vfs.VfsUtil;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.testFramework.ParsingTestCase;
 import com.intellij.testFramework.TestDataFile;
@@ -63,6 +67,8 @@ public abstract class DParserTestBase extends ParsingTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+        VirtualFile m = new MockVirtualFile(true,myFullDataPath);
+        myProject.setBaseDir(m);
     }
 
 }

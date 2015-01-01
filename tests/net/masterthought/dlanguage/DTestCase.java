@@ -3,6 +3,7 @@ package net.masterthought.dlanguage;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import net.masterthought.dlanguage.lexer.DLexerTest;
+import net.masterthought.dlanguage.parser.DParserTest;
 
 /**
  * Main testsuite driver. Specifies which components that should be tested.
@@ -18,6 +19,7 @@ public class DTestCase extends TestCase {
         // See https://github.com/carymrobbins/intellij-haskforce/issues/63
 //        suite.addTestSuite(HaskellTypedHandlerTest.class);
         suite.addTestSuite(DLexerTest.class);
+        suite.addTestSuite(DParserTest.class);
 //        suite.addTestSuite(HaskellParsingLexerTest.class);
 //        suite.addTestSuite(HaskellParserTest.class);
 //        suite.addTestSuite(HaskellFeaturesTest.class);

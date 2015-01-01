@@ -211,8 +211,8 @@ public class DParser implements PsiParser {
 
     // Do all the complicated stuff to matchup the DeeParse with the PsiBuilder
     private void parseContent(PsiBuilder builder, List<Map<String, Integer>> ideaTokens) {
-        String basePath = builder.getProject().getBasePath();
-        DeeParserResult.ParsedModule parsedModule = DeeParser.parseSource(builder.getOriginalText().toString(), Paths.get(basePath));
+        String baseDir = builder.getProject().getBaseDir().getPath();
+        DeeParserResult.ParsedModule parsedModule = DeeParser.parseSource(builder.getOriginalText().toString(), Paths.get(baseDir));
         int tokenListSize = parsedModule.tokenList.size();
         LexElement lastElement = parsedModule.tokenList.get(tokenListSize - 1);
         int endPosition = lastElement.getEndPos();

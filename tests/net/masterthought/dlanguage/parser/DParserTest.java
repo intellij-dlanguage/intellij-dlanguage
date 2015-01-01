@@ -8,7 +8,7 @@ public class DParserTest extends DParserTestBase {
 
 //    public void testnull() { doTest(true, true); }
 //    public void testsymbol() { doTest(true, true); }
-//    public void testmodule() { doTest(true, true); }
+    public void testmodule() { doTest(true, true); }
 //    public void testdeclaration_module() { doTest(true, true); }
 //    public void testdeclaration_import() { doTest(true, true); }
 //    public void testimport_content() { doTest(true, true); }
