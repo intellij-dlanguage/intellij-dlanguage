@@ -1,0 +1,2 @@
+COMMENT_LINE ('// a comment line')
+EOF ('')

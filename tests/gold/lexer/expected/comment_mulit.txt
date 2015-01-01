@@ -1,0 +1,2 @@
+COMMENT_MULTI ('/*\n multiline comment\n is here\n */')
+EOF ('')

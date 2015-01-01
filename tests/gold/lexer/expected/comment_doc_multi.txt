@@ -1,0 +1,2 @@
+DOCCOMMENT_MULTI ('/** So is this. */')
+EOF ('')

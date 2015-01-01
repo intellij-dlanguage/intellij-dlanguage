@@ -1,0 +1,2 @@
+COMMENT_NESTED ('/+\n hello\n +/')
+EOF ('')
