@@ -12,6 +12,7 @@ import net.masterthought.dlanguage.index.DModuleIndex;
 import net.masterthought.dlanguage.psi.DLanguageFile;
 import net.masterthought.dlanguage.psi.interfaces.DDefinitionClass;
 import net.masterthought.dlanguage.psi.interfaces.DDefinitionFunction;
+import net.masterthought.dlanguage.psi.interfaces.DRefIdentifier;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -60,13 +61,13 @@ public class DUtil {
         if (file == null) return;
         // We only want to look for classes that match the element we are resolving (e.g. varid, conid, etc.)
         final Class<? extends PsiNamedElement> elementClass;
-//        if (e instanceof HaskellVarid) {
-//            elementClass = HaskellVarid.class;
+        if (e instanceof DDefinitionFunction) {
+            elementClass = DDefinitionFunction.class;
 //        } else if (e instanceof HaskellConid) {
 //            elementClass = HaskellConid.class;
-//        } else {
+        } else {
         elementClass = PsiNamedElement.class;
-//        }
+        }
         Collection<PsiNamedElement> namedElements = PsiTreeUtil.findChildrenOfType(file, elementClass);
         for (PsiNamedElement namedElement : namedElements) {
             if ((name == null || name.equals(namedElement.getName())) && definitionNode(namedElement)) {
@@ -111,7 +112,6 @@ public class DUtil {
      * Precondition: Element is in a Haskell file.
      */
     public static boolean definitionNode(@NotNull PsiNamedElement e) {
-//        if (e instanceof HaskellVarid) return definitionNode((HaskellVarid)e);
         if (e instanceof DDefinitionFunction) return definitionNode((DDefinitionFunction) e);
         if (e instanceof DDefinitionClass) return definitionNode((DDefinitionClass) e);
         return false;

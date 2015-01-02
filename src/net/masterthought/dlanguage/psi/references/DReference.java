@@ -1,11 +1,8 @@
 package net.masterthought.dlanguage.psi.references;
 
-import com.google.common.collect.Iterables;
-import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
-import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
 import net.masterthought.dlanguage.psi.impl.DPsiImplUtil;
 import net.masterthought.dlanguage.psi.interfaces.DDefinitionFunction;
