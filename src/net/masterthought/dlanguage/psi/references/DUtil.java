@@ -74,14 +74,18 @@ public class DUtil {
             } else if (e.getParent() instanceof DRefQualified){
                 namedElements = PsiTreeUtil.findChildrenOfType(file, (Class<? extends PsiNamedElement>) DDefinitionFunction.class);
             }
-//        } else if(e instanceof DSymbol){
-          // not sure what to do here.
+        } else if(e instanceof DSymbol){
+            if(e.getParent() instanceof DDefinitionFunction) {
+                namedElements = PsiTreeUtil.findChildrenOfType(file, (Class<? extends PsiNamedElement>) DDefinitionFunction.class);
+            } else if(e.getParent() instanceof DDefinitionClass){
+                namedElements = PsiTreeUtil.findChildrenOfType(file, (Class<? extends PsiNamedElement>) DDefinitionClass.class);
+            }
         }
 
         // check the list of potential named elements for a match on name
         for (PsiNamedElement namedElement : namedElements) {
             if ((name == null || name.equals(namedElement.getName())) && definitionNode(namedElement)) {
-                result.add(namedElement);
+                    result.add(namedElement);
             }
         }
     }
