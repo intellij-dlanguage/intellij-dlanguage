@@ -1,9 +1,12 @@
 package net.masterthought.dlanguage.psi.references;
 
+import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
+import net.masterthought.dlanguage.psi.DLanguageFile;
 import net.masterthought.dlanguage.psi.impl.DPsiImplUtil;
 import net.masterthought.dlanguage.psi.interfaces.DDefinitionFunction;
 import org.jetbrains.annotations.NotNull;
@@ -80,30 +83,16 @@ public class DReference extends PsiReferenceBase<PsiNamedElement> implements Psi
 //        if (qId != null && qId.textContains('.')) {
 //            return new Object[]{};
 //        }
-//        final PsiFile containingFile = myElement.getContainingFile();
-//        if (!(containingFile instanceof HaskellFile)) {
-//            return new Object[]{};
-//        }
-//        List<PsiNamedElement> namedNodes = HaskellUtil.findDefinitionNodes((HaskellFile)containingFile);
-//        List<LookupElement> variants = new ArrayList<LookupElement>(20);
-//        for (final PsiNamedElement namedElement : namedNodes) {
-//            final PsiElement genDecl = PsiTreeUtil.getParentOfType(namedElement, HaskellGendecl.class);
-//            final PsiFile psiFile = namedElement.getContainingFile();
-//            if (!(psiFile instanceof HaskellFile)) { continue; }
-//            final String module = ((HaskellFile) psiFile).getModuleOrFileName();
-//            final String name = namedElement.getName();
-//            if (name == null) { continue; }
-//            final String type;
-//            if (genDecl != null) {
-//                final PsiElement cType = PsiTreeUtil.getChildOfType(genDecl, HaskellCtype.class);
-//                type = cType == null ? "" : cType.getText();
-//            } else {
-//                type = "";
-//            }
-//            variants.add(HaskellCompletionContributor.createLookupElement(name, module, type));
-//        }
-//        return variants.toArray();
-        return new Object[0];
+        final PsiFile containingFile = myElement.getContainingFile();
+        if (!(containingFile instanceof DLanguageFile)) {
+            return new Object[]{};
+        }
+        List<PsiNamedElement> namedNodes = DUtil.findDefinitionNodes((DLanguageFile)containingFile);
+        List<String> variants = new ArrayList<String>(20);
+        for (final PsiNamedElement namedElement : namedNodes) {
+            variants.add(namedElement.getName());
+        }
+        return variants.toArray();
     }
 
     @Override
