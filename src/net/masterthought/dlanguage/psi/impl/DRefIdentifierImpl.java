@@ -43,4 +43,8 @@ public class DRefIdentifierImpl extends DNamedElementImpl implements DRefIdentif
         return DPsiImplUtil.getPresentation(this);
     }
 
+    public void accept(@NotNull PsiElementVisitor visitor) {
+        if (visitor instanceof DVisitor) ((DVisitor) visitor).visitDRefIdentifier(this);
+        else super.accept(visitor);
+    }
 }

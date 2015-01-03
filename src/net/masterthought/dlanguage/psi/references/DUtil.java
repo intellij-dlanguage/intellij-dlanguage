@@ -10,13 +10,14 @@ import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.containers.ContainerUtil;
 import net.masterthought.dlanguage.index.DModuleIndex;
 import net.masterthought.dlanguage.psi.DLanguageFile;
-import net.masterthought.dlanguage.psi.interfaces.DDefinitionClass;
-import net.masterthought.dlanguage.psi.interfaces.DDefinitionFunction;
-import net.masterthought.dlanguage.psi.interfaces.DRefIdentifier;
+import net.masterthought.dlanguage.psi.interfaces.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 /**
  * General util class. Provides methods for finding named nodes in the Psi tree.
@@ -30,14 +31,16 @@ public class DUtil {
     public static List<PsiNamedElement> findDefinitionNode(@NotNull Project project, @Nullable String name, @Nullable PsiNamedElement e) {
         // Guess where the name could be defined by lookup up potential modules.
         final Set<String> potentialModules =
-                       e == null ? Collections.EMPTY_SET
-                                 : DPsiUtil.parseImports(e.getContainingFile());
+                e == null ? Collections.EMPTY_SET
+                        : DPsiUtil.parseImports(e.getContainingFile());
 
         List<PsiNamedElement> result = ContainerUtil.newArrayList();
         final PsiFile psiFile = e == null ? null : e.getContainingFile().getOriginalFile();
+        // find definition in current file
         if (psiFile instanceof DLanguageFile) {
-            findDefinitionNode((DLanguageFile)psiFile, name, e, result);
+            findDefinitionNode((DLanguageFile) psiFile, name, e, result);
         }
+        // find definition in imported files
         for (String potentialModule : potentialModules) {
             List<DLanguageFile> files = DModuleIndex.getFilesByModuleName(project, potentialModule, GlobalSearchScope.allScope(project));
             for (DLanguageFile f : files) {
@@ -50,25 +53,32 @@ public class DUtil {
             }
         }
         return result;
-
     }
 
     /**
-     * Finds a name definition inside a Haskell file. All definitions are found when name
+     * Finds a name definition inside a D file. All definitions are found when name
      * is null.
      */
     public static void findDefinitionNode(@Nullable DLanguageFile file, @Nullable String name, @Nullable PsiNamedElement e, @NotNull List<PsiNamedElement> result) {
         if (file == null) return;
-        // We only want to look for classes that match the element we are resolving (e.g. varid, conid, etc.)
-        final Class<? extends PsiNamedElement> elementClass;
-        if (e instanceof DDefinitionFunction) {
-            elementClass = DDefinitionFunction.class;
-//        } else if (e instanceof HaskellConid) {
-//            elementClass = HaskellConid.class;
-        } else {
-        elementClass = PsiNamedElement.class;
+        // start with empty list of potential named elements
+        Collection<PsiNamedElement> namedElements = Collections.EMPTY_LIST;
+
+        if (e instanceof DRefIdentifier) {
+            if (e.getParent() instanceof DExpCall) {
+                namedElements = PsiTreeUtil.findChildrenOfType(file, (Class<? extends PsiNamedElement>) DDefinitionFunction.class);
+            } else if (e.getParent() instanceof DExpNew) {
+                namedElements = PsiTreeUtil.findChildrenOfType(file, (Class<? extends PsiNamedElement>) DDefinitionClass.class);
+            } else if (e.getParent() instanceof DDefinitionVariable) {
+                namedElements = PsiTreeUtil.findChildrenOfType(file, (Class<? extends PsiNamedElement>) DDefinitionClass.class);
+            } else if (e.getParent() instanceof DRefQualified){
+                namedElements = PsiTreeUtil.findChildrenOfType(file, (Class<? extends PsiNamedElement>) DDefinitionFunction.class);
+            }
+//        } else if(e instanceof DSymbol){
+          // not sure what to do here.
         }
-        Collection<PsiNamedElement> namedElements = PsiTreeUtil.findChildrenOfType(file, elementClass);
+
+        // check the list of potential named elements for a match on name
         for (PsiNamedElement namedElement : namedElements) {
             if ((name == null || name.equals(namedElement.getName())) && definitionNode(namedElement)) {
                 result.add(namedElement);

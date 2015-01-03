@@ -23,6 +23,10 @@ public class DVisitor extends PsiElementVisitor {
         visitCompositeElement(o);
     }
 
+    public void visitDRefIdentifier(DRefIdentifier o) {
+        visitCompositeElement(o);
+    }
+
     public void visitDDefinitionFunction(DDefinitionFunction o) {
         visitCompositeElement(o);
     }
