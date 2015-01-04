@@ -92,7 +92,7 @@
         </constraints>
         <properties>
           <margin top="2" left="0" bottom="2" right="3"/>
-          <text value="&amp;Dmd Run Mode"/>
+          <text value="&amp;Run with Dub"/>
         </properties>
       </component>
     </children>

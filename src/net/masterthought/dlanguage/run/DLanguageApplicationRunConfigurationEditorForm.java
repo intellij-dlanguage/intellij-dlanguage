@@ -88,7 +88,7 @@ public class DLanguageApplicationRunConfigurationEditorForm extends SettingsEdit
         myFileField.setText(FileUtil.toSystemDependentName(StringUtil.notNullize(parameters.getFilePath())));
         myArguments.setText(StringUtil.notNullize(parameters.getArguments()));
         myVMOptions.setText(StringUtil.notNullize(parameters.getVMOptions()));
-        myRunDmdModeCheckBox.setSelected(parameters.isRunDmdMode());
+        myRunDmdModeCheckBox.setSelected(parameters.isRunDubMode());
         myWorkingDirectory.setText(FileUtil.toSystemDependentName(StringUtil.notNullize(parameters.getWorkingDirectory())));
         myEnvironmentVariables.setEnvs(parameters.getEnvs());
         myEnvironmentVariables.setPassParentEnvs(parameters.isIncludeParentEnvs());
@@ -101,7 +101,7 @@ public class DLanguageApplicationRunConfigurationEditorForm extends SettingsEdit
         parameters.setFilePath(StringUtil.nullize(FileUtil.toSystemIndependentName(myFileField.getText().trim()), true));
         parameters.setArguments(StringUtil.nullize(myArguments.getText(), true));
         parameters.setVMOptions(StringUtil.nullize(myVMOptions.getText(), true));
-        parameters.setRunDmdMode(myRunDmdModeCheckBox.isSelected());
+        parameters.setRunDubMode(myRunDmdModeCheckBox.isSelected());
         parameters.setWorkingDirectory(StringUtil.nullize(FileUtil.toSystemIndependentName(myWorkingDirectory.getText().trim()), true));
         parameters.setEnvs(myEnvironmentVariables.getEnvs());
         parameters.setIncludeParentEnvs(myEnvironmentVariables.isPassParentEnvs());

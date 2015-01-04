@@ -6,12 +6,8 @@ import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.configurations.ParametersList;
 import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.execution.runners.ExecutionEnvironment;
-import com.intellij.openapi.util.text.StringUtil;
 import net.masterthought.dlanguage.settings.DLanguageBuildSettings;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 
 public class DLanguageApplicationCommandLineState extends CommandLineState {
@@ -29,11 +25,9 @@ public class DLanguageApplicationCommandLineState extends CommandLineState {
         ExecutionEnvironment env = getEnvironment();
         GeneralCommandLine commandLine = new GeneralCommandLine();
         commandLine.setWorkDirectory(env.getProject().getBasePath());
-        // TODO: This should probably be a bit more generic than relying on `dmd -run`.
 
         final String dmdPath = DLanguageBuildSettings.getInstance(myConfig.getProject()).getDmdPath();
-        final String rdmdPath = DLanguageBuildSettings.getInstance(myConfig.getProject()).getrDmdPath();
-
+        final String dubPath = DLanguageBuildSettings.getInstance(myConfig.getProject()).getDubPath();
 
         ParametersList parametersList = commandLine.getParametersList();
 
@@ -42,14 +36,15 @@ public class DLanguageApplicationCommandLineState extends CommandLineState {
             parametersList.add(args);
         }
 
-        Boolean withRun = myConfig.getRunnerParameters().isRunDmdMode();
+        Boolean withRun = myConfig.getRunnerParameters().isRunDubMode();
         if(withRun){
-            commandLine.setExePath(rdmdPath);
+            commandLine.setExePath(dubPath);
         } else {
             commandLine.setExePath(dmdPath);
+            parametersList.addParametersString(myConfig.getRunnerParameters().getFilePath());
         }
 
-        parametersList.addParametersString(myConfig.getRunnerParameters().getFilePath());
+
         return new OSProcessHandler(commandLine.createProcess());
     }
 }

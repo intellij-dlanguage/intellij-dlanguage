@@ -21,7 +21,7 @@ public class DLanguageCommandLineRunnerParameters implements Cloneable {
     private
     @Nullable
     String myVMOptions = null;
-    private boolean myRunDmdMode = true;
+    private boolean myRunDubMode = true;
     private
     @Nullable
     String myArguments = null;
@@ -51,12 +51,12 @@ public class DLanguageCommandLineRunnerParameters implements Cloneable {
         myVMOptions = vmOptions;
     }
 
-    public boolean isRunDmdMode() {
-        return myRunDmdMode;
+    public boolean isRunDubMode() {
+        return myRunDubMode;
     }
 
-    public void setRunDmdMode(final boolean runDmdMode) {
-        myRunDmdMode = runDmdMode;
+    public void setRunDubMode(final boolean runDubMode) {
+        myRunDubMode = runDubMode;
     }
 
     @Nullable
