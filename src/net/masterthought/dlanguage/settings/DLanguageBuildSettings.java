@@ -35,6 +35,16 @@ public class DLanguageBuildSettings implements PersistentStateComponent<DLanguag
     }
 
     @NotNull
+    public String getDubPath() {
+        return myBuildOptions.myDubPath;
+    }
+
+    public void setDubPath(@NotNull String path) {
+        myBuildOptions.myDubPath = path;
+    }
+
+
+    @NotNull
     public String getrDmdPath() {
         return myBuildOptions.myrDmdPath;
     }
