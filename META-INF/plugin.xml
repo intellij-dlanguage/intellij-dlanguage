@@ -42,6 +42,7 @@
 
         <programRunner implementation="net.masterthought.dlanguage.run.DLanguageRunner"/>
         <annotator language="D" implementationClass="net.masterthought.dlanguage.highlighting.annotation.DAnnotator" />
+        <externalAnnotator language="D" implementationClass="net.masterthought.dlanguage.highlighting.annotation.external.DExternalAnnotator"/>
 
         <!-- Indexes -->
         <fileBasedIndex implementation="net.masterthought.dlanguage.index.DModuleIndex"/>
