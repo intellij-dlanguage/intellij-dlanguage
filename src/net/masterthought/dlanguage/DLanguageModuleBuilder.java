@@ -1,5 +1,10 @@
 package net.masterthought.dlanguage;
 
+import com.intellij.execution.ExecutionException;
+import com.intellij.execution.configurations.GeneralCommandLine;
+import com.intellij.execution.configurations.ParametersList;
+import com.intellij.execution.process.OSProcessHandler;
+import com.intellij.execution.util.ExecUtil;
 import com.intellij.ide.util.projectWizard.*;
 import com.intellij.openapi.fileTypes.FileTypeManager;
 import com.intellij.openapi.module.Module;
@@ -8,11 +13,13 @@ import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.projectRoots.SdkTypeId;
 import com.intellij.openapi.roots.ModifiableRootModel;
 import com.intellij.openapi.util.text.StringUtil;
+import net.masterthought.dlanguage.run.DLanguageApplicationRunConfiguration;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class DLanguageModuleBuilder extends JavaModuleBuilder implements SourcePathsBuilder, ModuleBuilderListener {
+
     @Override
     public void setupRootModel(ModifiableRootModel rootModel) throws ConfigurationException {
         addListener(this);
@@ -42,6 +49,8 @@ public class DLanguageModuleBuilder extends JavaModuleBuilder implements SourceP
     public void moduleCreated(@NotNull Module module) {
         // TODO - We should probably do some project initialization here as well...
 
+        createDub(module.getProject().getBaseDir().getCanonicalPath());
+
         // Update the ignored files and folders to avoid file search showing compiled files.
         FileTypeManager fileTypeManager = FileTypeManager.getInstance();
         StringBuilder builder = new StringBuilder(fileTypeManager.getIgnoredFilesList());
@@ -56,6 +65,8 @@ public class DLanguageModuleBuilder extends JavaModuleBuilder implements SourceP
         }
         fileTypeManager.setIgnoredFilesList(builder.toString());
     }
+
+
 
     /**
      * Hook into the new project creation and set dist to the compiler output
@@ -72,6 +83,20 @@ public class DLanguageModuleBuilder extends JavaModuleBuilder implements SourceP
             c.setCompilerOutputDirectory(out);
         }
         return super.modifySettingsStep(settingsStep);
+    }
+
+
+    private void createDub(String workingDirectory) {
+        GeneralCommandLine commandLine = new GeneralCommandLine();
+                commandLine.setWorkDirectory(workingDirectory);
+                commandLine.setExePath("dub");
+                ParametersList parametersList = commandLine.getParametersList();
+                parametersList.addParametersString("init");
+        try {
+            new OSProcessHandler(commandLine.createProcess());
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
