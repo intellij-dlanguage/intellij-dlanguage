@@ -23,7 +23,8 @@ import java.util.regex.Pattern;
 
 public class DScanner {
 
-    private String DSCANNER_PATH = "/Users/kings/development/tools/Dscanner/bin/dscanner";
+//    private String DSCANNER_PATH = "/Users/kings/development/tools/Dscanner/bin/dscanner";
+    private String DSCANNER_PATH = "/home/kings/development/projects/dlang/Dscanner/bin/dscanner";
 
     public Problems checkFileSyntax(@NotNull PsiFile file) {
         String result = processFile(file);

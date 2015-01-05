@@ -6,9 +6,11 @@ import com.intellij.execution.configurations.ParametersList;
 import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.execution.process.ProcessAdapter;
 import com.intellij.execution.process.ProcessEvent;
+import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.containers.ContainerUtil;
 import net.masterthought.dlanguage.highlighting.annotation.DAnnotationHolder;
@@ -34,10 +36,10 @@ public class CompileCheck {
 
         GeneralCommandLine commandLine = new GeneralCommandLine();
         commandLine.setWorkDirectory(workingDirectory);
-        commandLine.setExePath("dmd");
+        commandLine.setExePath("dub");
         ParametersList parametersList = commandLine.getParametersList();
-        parametersList.addParametersString("-w");
-        parametersList.addParametersString(filePath);
+        parametersList.addParametersString("-q");
+
         final StringBuilder builder = new StringBuilder();
         try {
             OSProcessHandler process = new OSProcessHandler(commandLine.createProcess());
@@ -69,25 +71,46 @@ public class CompileCheck {
         return problems;
     }
 
-    public static int getOffsetStart(final String fileText, int startLine, int startColumn) {
-        return StringUtil.lineColToOffset(fileText, startLine - 1, startColumn - 1);
+    public static int getOffsetStart(final PsiFile file, int line) {
+        Document document = PsiDocumentManager.getInstance(file.getProject()).getDocument(file);
+        line = line - 1;
+        if(line <= 0){
+            line = 1;
+        } else if(line >= document.getLineCount()){
+            line = document.getLineCount()-1;
+        }
+        int startOffset = document.getLineStartOffset(line);
+        return startOffset;
     }
 
-    public static int getOffsetEnd(String fileText, int offsetStart) {
-        int width = 0;
-        while (offsetStart + width < fileText.length()) {
-            final char c = fileText.charAt(offsetStart + width);
-            if (StringUtil.isLineBreak(c)) {
-                break;
-            }
-            ++width;
+    public static int getOffsetEnd(final PsiFile file, int line) {
+        Document document = PsiDocumentManager.getInstance(file.getProject()).getDocument(file);
+        line = line - 1;
+        if(line <= 0){
+            line = 1;
+        } else if(line >= document.getLineCount()){
+            line = document.getLineCount()-1;
         }
-        return offsetStart + width;
+        int endOffset = document.getLineEndOffset(line);
+        return endOffset;
     }
+
+
+//    public static int getOffsetEnd(String fileText, int offsetStart) {
+//        int width = 0;
+//        while (offsetStart + width < fileText.length()) {
+//            final char c = fileText.charAt(offsetStart + width);
+//            if (StringUtil.isLineBreak(c)) {
+//                break;
+//            }
+//            ++width;
+//        }
+//        return offsetStart + width;
+//    }
 
     private static TextRange calculateTextRange(PsiFile file, int line) {
-        final int startOffset = getOffsetStart(file.getText(), line, 1);
-        final int endOffset = getOffsetEnd(file.getText(), startOffset);
+        final int startOffset = getOffsetStart(file, line);
+        final int endOffset = getOffsetEnd(file, line);
 
 
         return new TextRange(startOffset, endOffset);
@@ -96,22 +119,28 @@ public class CompileCheck {
     // hello.d(3): Error: only one main allowed
     @Nullable
     public static Problem parseProblem(String lint, PsiFile file) {
-        Pattern p = Pattern.compile("\\w+\\.d\\((\\d+)\\):\\s(\\w+):(.+)");
+        Pattern p = Pattern.compile("(\\w+\\.d)\\((\\d+)\\):\\s(\\w+):(.+)");
         Matcher m = p.matcher(lint);
 
+        String sourceFile = "";
         String message = "";
         int line = 0;
         String severity = "";
 
         while (m.find()) {
-            line = Integer.valueOf(m.group(1));
-            severity = m.group(2);
-            message = m.group(3);
+            sourceFile = m.group(1);
+            line = Integer.valueOf(m.group(2));
+            severity = m.group(3);
+            message = m.group(4);
         }
 
         TextRange range = calculateTextRange(file, line);
 
-        return new Problem(range, message, severity);
+        if (sourceFile.equals(file.getName())) {
+            return new Problem(range, message, severity);
+        } else {
+            return null;
+        }
     }
 
     public static class Problem extends DProblem {
