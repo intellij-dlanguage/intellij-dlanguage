@@ -56,8 +56,9 @@
         <!--displayName="DMD Compiler"/>-->
         <!-- Persistent data + build server communication for compiler settings -->
         <projectService serviceImplementation="net.masterthought.dlanguage.settings.DLanguageBuildSettings"/>
+
         <!-- Tab in IntelliJ -> Preferences -->
-        <!--<projectConfigurable instance="net.masterthought.dlanguage.settings.DLanguageToolsConfigurable"/>-->
+        <projectConfigurable groupId="tools" instance="net.masterthought.dlanguage.settings.DLanguageToolsConfigurable"/>
         <!-- File -> Project Structure dialogue. -->
         <!--<moduleConfigurationEditorProvider implementation="net.masterthought.dlanguage.settings.DLanguageModuleConfigurationEditor" order="first"/>-->
         <!-- Tab in IntelliJ -> Preferences -->

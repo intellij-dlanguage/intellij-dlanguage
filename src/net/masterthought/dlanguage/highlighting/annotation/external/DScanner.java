@@ -16,6 +16,7 @@ import com.intellij.util.containers.ContainerUtil;
 import net.masterthought.dlanguage.highlighting.annotation.DAnnotationHolder;
 import net.masterthought.dlanguage.highlighting.annotation.DProblem;
 import net.masterthought.dlanguage.highlighting.annotation.Problems;
+import net.masterthought.dlanguage.settings.ToolKey;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -25,21 +26,21 @@ import java.util.regex.Pattern;
 
 public class DScanner {
 
-    private String DSCANNER_PATH = "/Users/kings/development/tools/Dscanner/bin/dscanner";
-//    private String DSCANNER_PATH = "/home/kings/development/projects/dlang/Dscanner/bin/dscanner";
-
     public Problems checkFileSyntax(@NotNull PsiFile file) {
-        String result = processFile(file);
+        final String dscannerPath = ToolKey.DSCANNER_KEY.getPath(file.getProject());
+        if (dscannerPath == null) return new Problems();
+
+        String result = processFile(file, dscannerPath);
         return findProblems(result, file);
     }
 
-    private String processFile(PsiFile file) {
+    private String processFile(PsiFile file, String dscannerPath) {
         final String filePath = file.getVirtualFile().getCanonicalPath();
         final String workingDirectory = file.getProject().getBasePath();
 
         GeneralCommandLine commandLine = new GeneralCommandLine();
         commandLine.setWorkDirectory(workingDirectory);
-        commandLine.setExePath(DSCANNER_PATH);
+        commandLine.setExePath(dscannerPath);
         ParametersList parametersList = commandLine.getParametersList();
         parametersList.addParametersString("-S");
         parametersList.addParametersString(filePath);
