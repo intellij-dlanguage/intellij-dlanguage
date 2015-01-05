@@ -71,48 +71,57 @@ public class CompileCheck {
         return problems;
     }
 
+    private static int getDocumentLineCount(Document document) {
+        try {
+            int lineCount = document.getLineCount();
+            return lineCount == 0 ? 1 : lineCount;
+        } catch (NullPointerException e) {
+            return 1;
+        }
+    }
+
+    private static int getLineStartOffset(Document document, int line) {
+        try {
+            return document.getLineStartOffset(line);
+        } catch (NullPointerException e) {
+            return 1;
+        }
+    }
+
+    private static int getLineEndOffset(Document document, int line) {
+        try {
+            return document.getLineEndOffset(line);
+        } catch (NullPointerException e) {
+            return 1;
+        }
+    }
+
+    private static int getValidLineNumber(int line, Document document){
+        int lineCount = getDocumentLineCount(document);
+        line = line - 1;
+        if (line <= 0) {
+            line = 1;
+        } else if (line >= lineCount) {
+            line = lineCount - 1;
+        }
+        return line;
+    }
+
     public static int getOffsetStart(final PsiFile file, int line) {
         Document document = PsiDocumentManager.getInstance(file.getProject()).getDocument(file);
-        line = line - 1;
-        if(line <= 0){
-            line = 1;
-        } else if(line >= document.getLineCount()){
-            line = document.getLineCount()-1;
-        }
-        int startOffset = document.getLineStartOffset(line);
-        return startOffset;
+        line = getValidLineNumber(line, document);
+        return getLineStartOffset(document, line);
     }
 
     public static int getOffsetEnd(final PsiFile file, int line) {
         Document document = PsiDocumentManager.getInstance(file.getProject()).getDocument(file);
-        line = line - 1;
-        if(line <= 0){
-            line = 1;
-        } else if(line >= document.getLineCount()){
-            line = document.getLineCount()-1;
-        }
-        int endOffset = document.getLineEndOffset(line);
-        return endOffset;
+        line = getValidLineNumber(line, document);
+        return getLineEndOffset(document, line);
     }
-
-
-//    public static int getOffsetEnd(String fileText, int offsetStart) {
-//        int width = 0;
-//        while (offsetStart + width < fileText.length()) {
-//            final char c = fileText.charAt(offsetStart + width);
-//            if (StringUtil.isLineBreak(c)) {
-//                break;
-//            }
-//            ++width;
-//        }
-//        return offsetStart + width;
-//    }
 
     private static TextRange calculateTextRange(PsiFile file, int line) {
         final int startOffset = getOffsetStart(file, line);
         final int endOffset = getOffsetEnd(file, line);
-
-
         return new TextRange(startOffset, endOffset);
     }
 

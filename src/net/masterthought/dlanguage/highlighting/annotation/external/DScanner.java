@@ -6,9 +6,12 @@ import com.intellij.execution.configurations.ParametersList;
 import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.execution.process.ProcessAdapter;
 import com.intellij.execution.process.ProcessEvent;
+import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.psi.PsiDocumentManager;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.containers.ContainerUtil;
 import net.masterthought.dlanguage.highlighting.annotation.DAnnotationHolder;
@@ -23,8 +26,8 @@ import java.util.regex.Pattern;
 
 public class DScanner {
 
-//    private String DSCANNER_PATH = "/Users/kings/development/tools/Dscanner/bin/dscanner";
-    private String DSCANNER_PATH = "/home/kings/development/projects/dlang/Dscanner/bin/dscanner";
+    private String DSCANNER_PATH = "/Users/kings/development/tools/Dscanner/bin/dscanner";
+//    private String DSCANNER_PATH = "/home/kings/development/projects/dlang/Dscanner/bin/dscanner";
 
     public Problems checkFileSyntax(@NotNull PsiFile file) {
         String result = processFile(file);
@@ -76,21 +79,67 @@ public class DScanner {
         return StringUtil.lineColToOffset(fileText, startLine - 1, startColumn - 1);
     }
 
-    public static int getOffsetEnd(String fileText, int offsetStart) {
-        int width = 0;
-        while (offsetStart + width < fileText.length()) {
-            final char c = fileText.charAt(offsetStart + width);
-            if (StringUtil.isLineBreak(c)) {
-                break;
-            }
-            ++width;
+    private static int getLineEndOffset(Document document, int line) {
+        try {
+            return document.getLineEndOffset(line);
+        } catch (NullPointerException e) {
+            return 1;
         }
-        return offsetStart + width;
     }
+
+    private static int getDocumentLineCount(Document document) {
+        try {
+            int lineCount = document.getLineCount();
+            return lineCount == 0 ? 1 : lineCount;
+        } catch (NullPointerException e) {
+            return 1;
+        }
+    }
+
+    private static int getValidLineNumber(int line, Document document){
+        int lineCount = getDocumentLineCount(document);
+        line = line - 1;
+        if (line <= 0) {
+            line = 1;
+        } else if (line >= lineCount) {
+            line = lineCount - 1;
+        }
+        return line;
+    }
+
+    public static int getOffsetEndFallback(final PsiFile file, int line) {
+        Document document = PsiDocumentManager.getInstance(file.getProject()).getDocument(file);
+        line = getValidLineNumber(line, document);
+        return getLineEndOffset(document, line);
+    }
+
+    public static int getOffsetEnd(PsiFile file, int offsetStart, int line) {
+        try {
+            String fileText = file.getText();
+            int width = 0;
+            while (offsetStart + width < fileText.length()) {
+                final char c = fileText.charAt(offsetStart + width);
+                if (StringUtil.isLineBreak(c)) {
+                    break;
+                }
+                ++width;
+            }
+            return offsetStart + width;
+        } catch(Exception e){
+           return getOffsetEndFallback(file, line);
+        }
+    }
+
+//    public static int getOffsetEnd(PsiFile file, int offsetStart) {
+//        Document document = PsiDocumentManager.getInstance(file.getProject()).getDocument(file);
+//        document.g
+//        PsiElement element = file.getViewProvider().findElementAt(offsetStart);
+//        return element.getTextOffset();
+//    }
 
     private static TextRange calculateTextRange(PsiFile file, int line, int column) {
         final int startOffset = getOffsetStart(file.getText(), line, column);
-        final int endOffset = getOffsetEnd(file.getText(), startOffset);
+        final int endOffset = getOffsetEnd(file, startOffset, line);
         return new TextRange(startOffset, endOffset);
     }
 
