@@ -11,7 +11,6 @@ import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiDocumentManager;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.containers.ContainerUtil;
 import net.masterthought.dlanguage.highlighting.annotation.DAnnotationHolder;
@@ -96,7 +95,7 @@ public class DScanner {
         }
     }
 
-    private static int getValidLineNumber(int line, Document document){
+    private static int getValidLineNumber(int line, Document document) {
         int lineCount = getDocumentLineCount(document);
         line = line - 1;
         if (line <= 0) {
@@ -125,8 +124,8 @@ public class DScanner {
                 ++width;
             }
             return offsetStart + width;
-        } catch(Exception e){
-           return getOffsetEndFallback(file, line);
+        } catch (Exception e) {
+            return getOffsetEndFallback(file, line);
         }
     }
 
