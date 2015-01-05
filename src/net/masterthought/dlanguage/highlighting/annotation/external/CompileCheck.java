@@ -16,6 +16,7 @@ import com.intellij.util.containers.ContainerUtil;
 import net.masterthought.dlanguage.highlighting.annotation.DAnnotationHolder;
 import net.masterthought.dlanguage.highlighting.annotation.DProblem;
 import net.masterthought.dlanguage.highlighting.annotation.Problems;
+import net.masterthought.dlanguage.settings.ToolKey;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,17 +27,19 @@ import java.util.regex.Pattern;
 public class CompileCheck {
 
     public Problems checkFileSyntax(@NotNull PsiFile file) {
-        String result = processFile(file);
+        final String dubPath = ToolKey.DUB_KEY.getPath(file.getProject());
+               if (dubPath == null) return new Problems();
+
+        String result = processFile(file, dubPath);
         return findProblems(result, file);
     }
 
-    private String processFile(PsiFile file) {
-        final String filePath = file.getVirtualFile().getCanonicalPath();
+    private String processFile(PsiFile file, String dubPath) {
         final String workingDirectory = file.getProject().getBasePath();
 
         GeneralCommandLine commandLine = new GeneralCommandLine();
         commandLine.setWorkDirectory(workingDirectory);
-        commandLine.setExePath("dub");
+        commandLine.setExePath(dubPath);
         ParametersList parametersList = commandLine.getParametersList();
         parametersList.addParametersString("-q");
 
