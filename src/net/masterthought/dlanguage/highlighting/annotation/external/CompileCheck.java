@@ -41,6 +41,8 @@ public class CompileCheck {
         commandLine.setWorkDirectory(workingDirectory);
         commandLine.setExePath(dubPath);
         ParametersList parametersList = commandLine.getParametersList();
+        parametersList.addParametersString("build");
+        parametersList.addParametersString("--combined");
         parametersList.addParametersString("-q");
 
         final StringBuilder builder = new StringBuilder();
@@ -86,7 +88,7 @@ public class CompileCheck {
     private static int getLineStartOffset(Document document, int line) {
         try {
             return document.getLineStartOffset(line);
-        } catch (NullPointerException e) {
+        } catch (Exception e) {
             return 1;
         }
     }
@@ -94,7 +96,7 @@ public class CompileCheck {
     private static int getLineEndOffset(Document document, int line) {
         try {
             return document.getLineEndOffset(line);
-        } catch (NullPointerException e) {
+        } catch (Exception e) {
             return 1;
         }
     }
@@ -145,10 +147,8 @@ public class CompileCheck {
             severity = m.group(3);
             message = m.group(4);
         }
-
-        TextRange range = calculateTextRange(file, line);
-
         if (sourceFile.equals(file.getName())) {
+            TextRange range = calculateTextRange(file, line);
             return new Problem(range, message, severity);
         } else {
             return null;

@@ -78,13 +78,14 @@ public class DScanner {
     public static int getOffsetStart(final PsiFile file, int startLine, int startColumn) {
         Document document = PsiDocumentManager.getInstance(file.getProject()).getDocument(file);
         int line = getValidLineNumber(startLine, document);
-        return StringUtil.lineColToOffset(file.getText(), line, startColumn - 1);
+        int offset = StringUtil.lineColToOffset(file.getText(), line, startColumn - 1);
+        return offset <= 1 ? 1 : offset;
     }
 
     private static int getLineEndOffset(Document document, int line) {
         try {
             return document.getLineEndOffset(line);
-        } catch (NullPointerException e) {
+        } catch (Exception e) {
             return 1;
         }
     }
@@ -93,7 +94,7 @@ public class DScanner {
         try {
             int lineCount = document.getLineCount();
             return lineCount == 0 ? 1 : lineCount;
-        } catch (NullPointerException e) {
+        } catch (Exception e) {
             return 1;
         }
     }
@@ -131,13 +132,6 @@ public class DScanner {
             return getOffsetEndFallback(file, line);
         }
     }
-
-//    public static int getOffsetEnd(PsiFile file, int offsetStart) {
-//        Document document = PsiDocumentManager.getInstance(file.getProject()).getDocument(file);
-//        document.g
-//        PsiElement element = file.getViewProvider().findElementAt(offsetStart);
-//        return element.getTextOffset();
-//    }
 
     private static TextRange calculateTextRange(PsiFile file, int line, int column) {
         final int startOffset = getOffsetStart(file, line, column);
