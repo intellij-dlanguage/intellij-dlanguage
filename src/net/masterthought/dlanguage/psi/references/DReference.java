@@ -83,14 +83,14 @@ public class DReference extends PsiReferenceBase<PsiNamedElement> implements Psi
 //            return new Object[]{};
 //        }
 
-        final PsiFile containingFile = myElement.getContainingFile();
-               if (!(containingFile instanceof DLanguageFile)) {
-                   return new Object[]{};
-               }
-        int offset = myElement.getTextOffset();
-
-        DCDCompletion dcdCompletion = new DCDCompletion();
-        return dcdCompletion.autoComplete(offset,containingFile).toArray();
+//        final PsiFile containingFile = myElement.getContainingFile();
+//               if (!(containingFile instanceof DLanguageFile)) {
+//                   return new Object[]{};
+//               }
+//        int offset = myElement.getTextOffset();
+//
+//        DCDCompletion dcdCompletion = new DCDCompletion();
+//        return dcdCompletion.autoComplete(offset,containingFile).toArray();
 
 //        final PsiFile containingFile = myElement.getContainingFile();
 //        if (!(containingFile instanceof DLanguageFile)) {
@@ -102,6 +102,7 @@ public class DReference extends PsiReferenceBase<PsiNamedElement> implements Psi
 //            variants.add(namedElement.getName());
 //        }
 //        return variants.toArray();
+        return new Object[]{};
     }
 
     @Override

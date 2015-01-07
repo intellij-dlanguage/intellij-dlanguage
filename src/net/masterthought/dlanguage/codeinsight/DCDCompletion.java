@@ -9,6 +9,7 @@ import com.intellij.execution.process.ProcessAdapter;
 import com.intellij.execution.process.ProcessEvent;
 import com.intellij.openapi.util.Key;
 import com.intellij.psi.PsiFile;
+import net.masterthought.dlanguage.utils.ExecUtil;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class DCDCompletion {
   public List<String> autoComplete(int position, PsiFile file){
       System.out.println("position: " + String.valueOf(position));
       final String filePath = file.getOriginalFile().getVirtualFile().getCanonicalPath();
+      System.out.println(filePath);
          final String workingDirectory = file.getProject().getBasePath();
 
          final GeneralCommandLine commandLine = new GeneralCommandLine();
@@ -31,23 +33,31 @@ public class DCDCompletion {
          parametersList.addParametersString(filePath);
 
          final List<String> completions = Lists.newArrayList();
+         ExecUtil.readCommandLine(commandLine,file.getText());
 
-         try {
-             OSProcessHandler process = new OSProcessHandler(commandLine.createProcess());
-             process.addProcessListener(new ProcessAdapter() {
-                 @Override
-                 public void onTextAvailable(ProcessEvent event, Key outputType) {
-                     completions.add(event.getText());
-                 }
-             });
-
-             process.startNotify();
-             process.waitFor();
-
-         } catch (ExecutionException e) {
-             e.printStackTrace();
-         }
+//         try {
+//             OSProcessHandler process = new OSProcessHandler(commandLine.createProcess());
+//             process.addProcessListener(new ProcessAdapter() {
+//                 @Override
+//                 public void onTextAvailable(ProcessEvent event, Key outputType) {
+//                     completions.add(event.getText());
+//                     System.out.println(event.getText());
+//                 }
+//             });
+//
+//             process.startNotify();
+//             process.waitFor();
+//
+//         } catch (ExecutionException e) {
+//             e.printStackTrace();
+//         }
          return completions;
   }
+
+    class CompletionItem {
+        public CompletionItem(){
+
+        }
+    }
 
 }

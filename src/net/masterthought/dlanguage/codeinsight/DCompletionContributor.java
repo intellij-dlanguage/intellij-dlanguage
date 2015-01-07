@@ -1,68 +1,63 @@
-//package net.masterthought.dlanguage.codeinsight;
-//
-//import com.google.common.base.Predicate;
-//import com.google.common.collect.Iterables;
-//import com.intellij.codeInsight.completion.*;
-//import com.intellij.codeInsight.lookup.LookupElement;
-//import com.intellij.codeInsight.lookup.LookupElementBuilder;
-//import com.intellij.openapi.application.ApplicationManager;
-//import com.intellij.openapi.diagnostic.Logger;
-//import com.intellij.openapi.editor.Editor;
-//import com.intellij.openapi.module.Module;
-//import com.intellij.openapi.module.ModuleUtilCore;
-//import com.intellij.openapi.project.Project;
-//import com.intellij.openapi.util.Key;
-//import com.intellij.openapi.util.UserDataHolder;
-//import com.intellij.patterns.PlatformPatterns;
-//import com.intellij.psi.PsiComment;
-//import com.intellij.psi.PsiElement;
-//import com.intellij.psi.PsiFile;
-//import com.intellij.psi.PsiWhiteSpace;
-//import com.intellij.psi.util.PsiTreeUtil;
-//import com.intellij.util.ArrayUtil;
-//import com.intellij.util.Function;
-//import com.intellij.util.ProcessingContext;
-//import com.intellij.util.containers.ContainerUtil;
-//import net.masterthought.dlanguage.DLanguage;
-//import net.masterthought.dlanguage.psi.interfaces.DDeclarationImport;
-//import net.masterthought.dlanguage.psi.references.DPsiUtil;
-//import org.jetbrains.annotations.NotNull;
-//import org.jetbrains.annotations.Nullable;
-//
-//import java.util.*;
-//import java.util.concurrent.Future;
-//
-//public class DCompletionContributor extends CompletionContributor {
-//    @SuppressWarnings("UnusedDeclaration")
-//    private static final Logger LOG = Logger.getInstance(DCompletionContributor.class);
-//
+package net.masterthought.dlanguage.codeinsight;
+
+import com.intellij.codeInsight.completion.*;
+import com.intellij.codeInsight.lookup.LookupElement;
+import com.intellij.codeInsight.lookup.LookupElementBuilder;
+import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.editor.Editor;
+import com.intellij.patterns.PlatformPatterns;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
+import com.intellij.util.Function;
+import com.intellij.util.ProcessingContext;
+import net.masterthought.dlanguage.DLanguage;
+import net.masterthought.dlanguage.DLanguageIcons;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+
+public class DCompletionContributor extends CompletionContributor {
+    @SuppressWarnings("UnusedDeclaration")
+    private static final Logger LOG = Logger.getInstance(DCompletionContributor.class);
+
+    private final DCDCompletion dcdCompletion = new DCDCompletion();
+
 //    public static final Key<String[]> MODULE_CACHE_KEY = new Key("MODULE_CACHE");
 //    public static final Key<List<LookupElement>> LANGUAGE_CACHE_KEY = new Key("LANGUAGE_CACHE");
 //    public static final Key<String[]> FLAG_CACHE_KEY = new Key("FLAG_CACHE");
 //    public static final Key<Map<String, List<LookupElement>>> BROWSE_CACHE_KEY = new Key("BROWSE_CACHE");
+
+//    private static String[] PRAGMA_TYPES = new String[]{
+//            "LANGUAGE ", "OPTIONS_GHC ", "WARNING ", "DEPRECATED ", "INLINE ", "NOINLINE ", "INLINABLE ", "CONLIKE ",
+//            "RULES ", "ANN ", "LINE ", "SPECIALIZE ", "UNPACK ", "SOURCE "};
 //
-////    private static String[] PRAGMA_TYPES = new String[]{
-////            "LANGUAGE ", "OPTIONS_GHC ", "WARNING ", "DEPRECATED ", "INLINE ", "NOINLINE ", "INLINABLE ", "CONLIKE ",
-////            "RULES ", "ANN ", "LINE ", "SPECIALIZE ", "UNPACK ", "SOURCE "};
-////
-////    public static String[] getPragmaTypes() {
-////        return PRAGMA_TYPES.clone();
-////    }
-//
-//    public DCompletionContributor() {
-//        extend(CompletionType.BASIC,
-//                PlatformPatterns.psiElement().withLanguage(DLanguage.INSTANCE),
-//                new CompletionProvider<CompletionParameters>() {
-//                    public void addCompletions(@NotNull CompletionParameters parameters,
-//                                               ProcessingContext context,
-//                                               @NotNull CompletionResultSet result) {
-//                        PsiElement position = parameters.getPosition();
-//                        PsiFile file = parameters.getOriginalFile();
+//    public static String[] getPragmaTypes() {
+//        return PRAGMA_TYPES.clone();
+//    }
+
+    public DCompletionContributor() {
+        extend(CompletionType.BASIC,
+                PlatformPatterns.psiElement().withLanguage(DLanguage.INSTANCE),
+                new CompletionProvider<CompletionParameters>() {
+                    public void addCompletions(@NotNull CompletionParameters parameters,
+                                               ProcessingContext context,
+                                               @NotNull CompletionResultSet result) {
+                        PsiElement position = parameters.getPosition();
+                        PsiFile file = parameters.getOriginalFile();
+
+                        List<String> completions = dcdCompletion.autoComplete(position.getTextOffset(),file);
+                        for(String completion : completions) {
+                            result.addElement(stringToLookupElement.fun(completion));
+                        }
+
 //                        Set<String> imports = DPsiUtil.parseImports(file);
 //                        UserDataHolder cacheHolder = getCacheHolder(file);
-//                        // Completion methods should return either void or boolean.  If boolean, then it should indicate
-//                        // whether or not we were in the appropriate context.  This is useful to determine if following
-//                        // completions should be added.
+                        // Completion methods should return either void or boolean.  If boolean, then it should indicate
+                        // whether or not we were in the appropriate context.  This is useful to determine if following
+                        // completions should be added.
+//                        completeImport(position,result);
+
 //                        completeKeywordImport(position, result);
 //                        completeKeywordQualified(position, result);
 ////                        if (completePragma(position, cacheHolder, result)) return;
@@ -70,11 +65,16 @@
 //                        if (completeQualifiedNames(position, imports, cacheHolder, result)) return;
 //                        if (completeNameImport(position, cacheHolder, result)) return;
 //                        completeLocalNames(position, imports, cacheHolder, result);
-//                    }
-//                }
-//        );
-//    }
+                    }
+                }
+        );
+    }
 //
+//    public static void completeImport(@NotNull final PsiElement position, @NotNull final CompletionResultSet result) {
+//
+//        result.addElement(stringToLookupElement.fun("import "));
+//    }
+
 //    public static void completeKeywordImport(@NotNull final PsiElement position, @NotNull final CompletionResultSet result) {
 //        PsiElement el = position;
 //        while (el != null) {
@@ -106,64 +106,64 @@
 //            result.addElement(stringToLookupElement.fun("qualified "));
 //        }
 //    }
+
+//    public static boolean completePragma(@NotNull final PsiElement position,
+//                                         @NotNull final UserDataHolder cacheHolder,
+//                                         @NotNull final CompletionResultSet result) {
+//        final PsiElement prevSibling = getPrevSiblingWhere(new Function<PsiElement, Boolean>() {
+//            @Override
+//            public Boolean fun(PsiElement psiElement) {
+//                return !(psiElement instanceof PsiWhiteSpace);
+//            }
+//        }, position);
 //
-////    public static boolean completePragma(@NotNull final PsiElement position,
-////                                         @NotNull final UserDataHolder cacheHolder,
-////                                         @NotNull final CompletionResultSet result) {
-////        final PsiElement prevSibling = getPrevSiblingWhere(new Function<PsiElement, Boolean>() {
-////            @Override
-////            public Boolean fun(PsiElement psiElement) {
-////                return !(psiElement instanceof PsiWhiteSpace);
-////            }
-////        }, position);
-////
-////        // Pragma types.
-////        if (prevSibling != null && "{-#".equals(prevSibling.getText())) {
-////            addAllElements(result, ContainerUtil.map(PRAGMA_TYPES, stringToLookupElement));
-////        }
-////
-////        final PsiElement openPragma = getPrevSiblingWhere(new Function<PsiElement, Boolean>() {
-////            @Override
-////            public Boolean fun(PsiElement psiElement) {
-////                return psiElement.getText().equals("{-#");
-////            }
-////        }, position);
-////
-////        final PsiElement pragmaTypeElement = getNextSiblingWhere(new Function<PsiElement, Boolean>() {
-////            @Override
-////            public Boolean fun(PsiElement psiElement) {
-////                return !(psiElement instanceof PsiWhiteSpace);
-////            }
-////        }, openPragma);
-////
-////        if (pragmaTypeElement == null) {
-////            return false;
-////        }
-////
-////        final String pragmaType = pragmaTypeElement.getText();
-////
-////        if ("LANGUAGE".equals(pragmaType)) {
-////            addAllElements(result, cacheHolder.getUserData(LANGUAGE_CACHE_KEY));
-////        } else if ("OPTIONS_GHC".equals(pragmaType)) {
-////            // TODO: Workaround since completion autocompletes after the "-", so without this
-////            // we may end up completing -foo with --foo (inserting a "-").
-////            final String[] flags = cacheHolder.getUserData(FLAG_CACHE_KEY);
-////            if (flags != null) {
-////                if (position.getText().startsWith("-")) {
-////                    addAllElements(result, ContainerUtil.map(flags, new Function<String, LookupElement>() {
-////                        @Override
-////                        public LookupElement fun(String s) {
-////                            return stringToLookupElement.fun(s.startsWith("-") ? s.substring(1) : s);
-////                        }
-////                    }));
-////                } else {
-////                    addAllElements(result, ContainerUtil.map(flags, stringToLookupElement));
-////                }
-////            }
-////        }
-////        return true;
-////    }
+//        // Pragma types.
+//        if (prevSibling != null && "{-#".equals(prevSibling.getText())) {
+//            addAllElements(result, ContainerUtil.map(PRAGMA_TYPES, stringToLookupElement));
+//        }
 //
+//        final PsiElement openPragma = getPrevSiblingWhere(new Function<PsiElement, Boolean>() {
+//            @Override
+//            public Boolean fun(PsiElement psiElement) {
+//                return psiElement.getText().equals("{-#");
+//            }
+//        }, position);
+//
+//        final PsiElement pragmaTypeElement = getNextSiblingWhere(new Function<PsiElement, Boolean>() {
+//            @Override
+//            public Boolean fun(PsiElement psiElement) {
+//                return !(psiElement instanceof PsiWhiteSpace);
+//            }
+//        }, openPragma);
+//
+//        if (pragmaTypeElement == null) {
+//            return false;
+//        }
+//
+//        final String pragmaType = pragmaTypeElement.getText();
+//
+//        if ("LANGUAGE".equals(pragmaType)) {
+//            addAllElements(result, cacheHolder.getUserData(LANGUAGE_CACHE_KEY));
+//        } else if ("OPTIONS_GHC".equals(pragmaType)) {
+//            // TODO: Workaround since completion autocompletes after the "-", so without this
+//            // we may end up completing -foo with --foo (inserting a "-").
+//            final String[] flags = cacheHolder.getUserData(FLAG_CACHE_KEY);
+//            if (flags != null) {
+//                if (position.getText().startsWith("-")) {
+//                    addAllElements(result, ContainerUtil.map(flags, new Function<String, LookupElement>() {
+//                        @Override
+//                        public LookupElement fun(String s) {
+//                            return stringToLookupElement.fun(s.startsWith("-") ? s.substring(1) : s);
+//                        }
+//                    }));
+//                } else {
+//                    addAllElements(result, ContainerUtil.map(flags, stringToLookupElement));
+//                }
+//            }
+//        }
+//        return true;
+//    }
+
 //    public static boolean completeModuleImport(@NotNull final PsiElement position,
 //                                               @NotNull final UserDataHolder cacheHolder,
 //                                               @NotNull final CompletionResultSet result) {
@@ -404,33 +404,33 @@
 //            }
 //        }, f, e);
 //    }
-//
-//    /**
-//     * Adjust the error message when no lookup is found.
-//     */
-//    @Nullable
-//    @Override
-//    public String handleEmptyLookup(@NotNull CompletionParameters parameters, final Editor editor) {
-//        return "HaskForce: no completion found.";
-//    }
-//
-//    public static LookupElement createLookupElement(@NotNull String name, @NotNull String module, @NotNull String type) {
-//        return LookupElementBuilder.create(name).withIcon(HaskellIcons.FILE)
-//                .withTailText(" (" + module + ')', true)
-//                .withTypeText(type);
-//    }
-//
-//    public static final Function<String, LookupElement> stringToLookupElement = new Function<String, LookupElement>() {
-//        @Override
-//        public LookupElement fun(String s) {
-//            return LookupElementBuilder.create(s).withIcon(HaskellIcons.FILE);
-//        }
-//    };
-//
+
+    /**
+     * Adjust the error message when no lookup is found.
+     */
+    @Nullable
+    @Override
+    public String handleEmptyLookup(@NotNull CompletionParameters parameters, final Editor editor) {
+        return "DLanguage: no completion found.";
+    }
+
+    public static LookupElement createLookupElement(@NotNull String name, @NotNull String module, @NotNull String type) {
+        return LookupElementBuilder.create(name).withIcon(DLanguageIcons.FILE)
+                .withTailText(" (" + module + ')', true)
+                .withTypeText(type);
+    }
+
+    public static final Function<String, LookupElement> stringToLookupElement = new Function<String, LookupElement>() {
+        @Override
+        public LookupElement fun(String s) {
+            return LookupElementBuilder.create(s).withIcon(DLanguageIcons.FILE);
+        }
+    };
+
 //    public static final Function<GhcModi.BrowseItem, LookupElement> browseItemToLookupElement = new Function<GhcModi.BrowseItem, LookupElement>() {
 //        @Override
 //        public LookupElement fun(GhcModi.BrowseItem x) {
 //            return createLookupElement(x.name, x.module, x.type);
 //        }
 //    };
-//}
+}
