@@ -43,7 +43,6 @@ public class DCDCompletion {
 
              process.startNotify();
              process.waitFor();
-             process.
 
          } catch (ExecutionException e) {
              e.printStackTrace();
