@@ -42,6 +42,7 @@
 
         <programRunner implementation="net.masterthought.dlanguage.run.DLanguageRunner"/>
         <annotator language="D" implementationClass="net.masterthought.dlanguage.highlighting.annotation.DAnnotator" />
+        <externalAnnotator language="D" implementationClass="net.masterthought.dlanguage.highlighting.annotation.external.DExternalAnnotator"/>
 
         <!-- Indexes -->
         <fileBasedIndex implementation="net.masterthought.dlanguage.index.DModuleIndex"/>
@@ -55,8 +56,9 @@
         <!--displayName="DMD Compiler"/>-->
         <!-- Persistent data + build server communication for compiler settings -->
         <projectService serviceImplementation="net.masterthought.dlanguage.settings.DLanguageBuildSettings"/>
+
         <!-- Tab in IntelliJ -> Preferences -->
-        <!--<projectConfigurable instance="net.masterthought.dlanguage.settings.DLanguageToolsConfigurable"/>-->
+        <projectConfigurable groupId="tools" instance="net.masterthought.dlanguage.settings.DLanguageToolsConfigurable"/>
         <!-- File -> Project Structure dialogue. -->
         <!--<moduleConfigurationEditorProvider implementation="net.masterthought.dlanguage.settings.DLanguageModuleConfigurationEditor" order="first"/>-->
         <!-- Tab in IntelliJ -> Preferences -->
@@ -75,13 +77,9 @@
         <!-- Editing utils -->
         <lang.braceMatcher language="D" implementationClass="net.masterthought.dlanguage.features.DBraceMatcher"/>
         <lang.commenter language="D" implementationClass="net.masterthought.dlanguage.features.DCommenter"/>
-        <!--<completion.contributor language="D" implementationClass="net.masterthought.dlanguage.codeinsight.DCompletionContributor"/>-->
+        <completion.contributor language="D" implementationClass="net.masterthought.dlanguage.codeinsight.DCompletionContributor"/>
 
     </extensions>
-
-    <application-components>
-        <!-- Add your application components here -->
-    </application-components>
 
     <actions>
         <action id="DLanguage.NewDLanguageFile" class="net.masterthought.dlanguage.actions.CreateDLanguageFileAction"
@@ -90,12 +88,11 @@
         </action>
     </actions>
 
-    <project-components>
-        <!-- Add your project components here -->
-    </project-components>
-
-    <actions>
-        <!-- Add your actions here -->
-    </actions>
+    <module-components>
+        <component>
+            <implementation-class>net.masterthought.dlanguage.codeinsight.dcd.DCDCompletionServer</implementation-class>
+            <interface-class>net.masterthought.dlanguage.codeinsight.dcd.DCDCompletionServer</interface-class>
+        </component>
+    </module-components>
 
 </idea-plugin>

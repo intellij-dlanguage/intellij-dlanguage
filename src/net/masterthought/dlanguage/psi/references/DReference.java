@@ -1,12 +1,9 @@
 package net.masterthought.dlanguage.psi.references;
 
-import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
-import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
-import net.masterthought.dlanguage.psi.DLanguageFile;
 import net.masterthought.dlanguage.psi.impl.DPsiImplUtil;
 import net.masterthought.dlanguage.psi.interfaces.DDefinitionFunction;
 import org.jetbrains.annotations.NotNull;
@@ -83,16 +80,27 @@ public class DReference extends PsiReferenceBase<PsiNamedElement> implements Psi
 //        if (qId != null && qId.textContains('.')) {
 //            return new Object[]{};
 //        }
-        final PsiFile containingFile = myElement.getContainingFile();
-        if (!(containingFile instanceof DLanguageFile)) {
-            return new Object[]{};
-        }
-        List<PsiNamedElement> namedNodes = DUtil.findDefinitionNodes((DLanguageFile)containingFile);
-        List<String> variants = new ArrayList<String>(20);
-        for (final PsiNamedElement namedElement : namedNodes) {
-            variants.add(namedElement.getName());
-        }
-        return variants.toArray();
+
+//        final PsiFile containingFile = myElement.getContainingFile();
+//               if (!(containingFile instanceof DLanguageFile)) {
+//                   return new Object[]{};
+//               }
+//        int offset = myElement.getTextOffset();
+//
+//        DCDCompletion dcdCompletion = new DCDCompletion();
+//        return dcdCompletion.autoComplete(offset,containingFile).toArray();
+
+//        final PsiFile containingFile = myElement.getContainingFile();
+//        if (!(containingFile instanceof DLanguageFile)) {
+//            return new Object[]{};
+//        }
+//        List<PsiNamedElement> namedNodes = DUtil.findDefinitionNodes((DLanguageFile)containingFile);
+//        List<String> variants = new ArrayList<String>(20);
+//        for (final PsiNamedElement namedElement : namedNodes) {
+//            variants.add(namedElement.getName());
+//        }
+//        return variants.toArray();
+        return new Object[]{};
     }
 
     @Override

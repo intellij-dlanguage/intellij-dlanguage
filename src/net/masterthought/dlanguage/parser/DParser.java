@@ -209,6 +209,15 @@ public class DParser implements PsiParser {
 
     }
 
+    private List<Integer> ideaTokenPositions(List<Map<String,Integer>> tokenMap){
+       List<Integer> positions = Lists.newArrayList();
+       for(Map<String,Integer> map : tokenMap){
+         Integer value = (Integer) map.values().toArray()[0];
+         positions.add(value);
+       }
+        return positions;
+    }
+
     // Do all the complicated stuff to matchup the DeeParse with the PsiBuilder
     private void parseContent(PsiBuilder builder, List<Map<String, Integer>> ideaTokens) {
         String baseDir = builder.getProject().getBaseDir().getPath();
@@ -282,11 +291,17 @@ public class DParser implements PsiParser {
             int finishPosition = marker.finish();
             if(beginPosition != finishPosition) {
 
-                startList.add(marker);
-                startItem.put("start", startList);
 
-                endList.add(marker);
-                endItem.put("finish", endList);
+                // dont add the marker if the positions are not in the intellij tokens list
+                // This helps to make the plugin more robust
+                List<Integer> positions = ideaTokenPositions(ideaTokens);
+                if(positions.contains(beginPosition) && positions.contains(finishPosition)) {
+                    startList.add(marker);
+                    startItem.put("start", startList);
+
+                    endList.add(marker);
+                    endItem.put("finish", endList);
+                }
             }
 
             // add to structure
