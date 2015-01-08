@@ -60,7 +60,7 @@ public class DCompletionContributor extends CompletionContributor {
 
     public static LookupElement createLookupElement(@NotNull String name, @NotNull String module, @NotNull String type) {
         return LookupElementBuilder.create(name).withIcon(DLanguageIcons.FILE)
-                .withTailText(" (" + module + ')', true)
+//                .withTailText(" (" + module + ')', true)
                 .withTypeText(type);
     }
 
