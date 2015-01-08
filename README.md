@@ -170,5 +170,6 @@ this one is also helpful: [make a pluing in less than 30 mins](http://bjorn.tipl
 1. Download and install the community edition of intellij - [here](https://www.jetbrains.com/idea/download/)
 2. Download the intellij community edition source code - git clone --depth 1 https://github.com/JetBrains/intellij-community.git (use depth 1 to reduce history otherwise it will take a long time)
 3. Open this plugin project in intellij
-4. In the module setting (F4) set the SDK to the path of the community edition source code JDK under the intellij platform plugin SDK
+4. In the module setting (F4) set the SDK to the path of the community edition JDK under the intellij platform plugin SDK
+5. Optionally add the community edition source to the source code paths in the module settings to allow access to the core code while debugging etc
 
