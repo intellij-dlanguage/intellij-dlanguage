@@ -1,4 +1,4 @@
-package net.masterthought.dlanguage.codeinsight.completions;
+package net.masterthought.dlanguage.codeinsight.dcd.completions;
 
 public interface Completion {
 

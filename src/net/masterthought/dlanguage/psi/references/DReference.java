@@ -4,8 +4,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.util.IncorrectOperationException;
-import net.masterthought.dlanguage.codeinsight.DCDCompletion;
-import net.masterthought.dlanguage.psi.DLanguageFile;
 import net.masterthought.dlanguage.psi.impl.DPsiImplUtil;
 import net.masterthought.dlanguage.psi.interfaces.DDefinitionFunction;
 import org.jetbrains.annotations.NotNull;

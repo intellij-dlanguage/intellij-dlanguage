@@ -3,16 +3,16 @@ package net.masterthought.dlanguage.codeinsight;
 import com.intellij.codeInsight.completion.*;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.patterns.PlatformPatterns;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.Function;
 import com.intellij.util.ProcessingContext;
 import net.masterthought.dlanguage.DLanguage;
 import net.masterthought.dlanguage.DLanguageIcons;
-import net.masterthought.dlanguage.codeinsight.completions.Completion;
+import net.masterthought.dlanguage.codeinsight.dcd.DCDCompletionClient;
+import net.masterthought.dlanguage.codeinsight.dcd.DCDCompletionServer;
+import net.masterthought.dlanguage.codeinsight.dcd.completions.Completion;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,7 +20,7 @@ import java.util.List;
 
 public class DCompletionContributor extends CompletionContributor {
 
-    private final DCDCompletion dcdCompletion = new DCDCompletion();
+    private final DCDCompletionClient dcdCompletionClient = new DCDCompletionClient();
 
     public DCompletionContributor() {
         extend(CompletionType.BASIC,
@@ -33,7 +33,12 @@ public class DCompletionContributor extends CompletionContributor {
 //                        PsiElement position = parameters.getPosition();
                         PsiFile file = parameters.getOriginalFile();
 
-                        List<Completion> completions = dcdCompletion.autoComplete(position, file);
+                        List<Completion> completions = null;
+                        try {
+                            completions = dcdCompletionClient.autoComplete(position, file);
+                        } catch (DCDCompletionServer.DCDError dcdError) {
+                            dcdError.printStackTrace();
+                        }
                         for (Completion completion : completions) {
                             result.addElement(createLookupElement(completion.completionText(),"std.kings",completion.completionType()));
                         }

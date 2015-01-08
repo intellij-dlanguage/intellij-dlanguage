@@ -81,10 +81,6 @@
 
     </extensions>
 
-    <application-components>
-        <!-- Add your application components here -->
-    </application-components>
-
     <actions>
         <action id="DLanguage.NewDLanguageFile" class="net.masterthought.dlanguage.actions.CreateDLanguageFileAction"
                 text="D File" description="Create new D file">
@@ -92,12 +88,11 @@
         </action>
     </actions>
 
-    <project-components>
-        <!-- Add your project components here -->
-    </project-components>
-
-    <actions>
-        <!-- Add your actions here -->
-    </actions>
+    <module-components>
+        <component>
+            <implementation-class>net.masterthought.dlanguage.codeinsight.dcd.DCDCompletionServer</implementation-class>
+            <interface-class>net.masterthought.dlanguage.codeinsight.dcd.DCDCompletionServer</interface-class>
+        </component>
+    </module-components>
 
 </idea-plugin>
