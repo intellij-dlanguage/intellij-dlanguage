@@ -37,19 +37,21 @@ Please see the development status on
 
 #### Alpha Release (end of Jan 2015)
 
-1. New D Project
-2. New D File
-3. Module Settings
-4. Run Configurations for Code
-5. DDT Lexer integration
-6. DDT Parser integration
-7. Syntax highlighting
-8. Indexes and References
-9. Run Configurations for Tests
-10. Annotations
-11. Code Completion
-12. DUB Support
-13. Help and QuickFixes
+1. New D Project (done)
+2. New D File (done)
+3. Module Settings (done)
+4. Run Configurations for Code (done)
+5. DDT Lexer integration (done)
+6. DDT Parser integration (done)
+7. Syntax highlighting (done)
+8. Indexes and References (done)
+9. Run Configurations for Tests (pending)
+10. Annotations (done)
+11. Code Completion (done)
+12. DUB Support (done)
+13. Help and QuickFixes (pending)
+
+There are another several items to add to the list but those above are the major ones.
 
 #### Beta Release (end of Feb 2015)
 
