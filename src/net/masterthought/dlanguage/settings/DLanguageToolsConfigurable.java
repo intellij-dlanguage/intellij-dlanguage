@@ -7,6 +7,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.ui.RawCommandLineEditor;
 import com.intellij.ui.TextAccessor;
+import com.intellij.util.messages.Topic;
 import net.masterthought.dlanguage.utils.ExecUtil;
 import net.masterthought.dlanguage.utils.GuiUtil;
 import org.jetbrains.annotations.Nls;
@@ -35,6 +36,14 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
     private RawCommandLineEditor dscannerFlags;
     private JButton dscannerAutoFind;
     private JTextField dscannerVersion;
+    private TextFieldWithBrowseButton dcdPath;
+    private RawCommandLineEditor dcdFlags;
+    private JButton dcdAutoFind;
+    private JTextField dcdVersion;
+    private TextFieldWithBrowseButton dcdClientPath;
+    private RawCommandLineEditor dcdClientFlags;
+    private JButton dcdClientAutoFind;
+    private JTextField dcdClientVersion;
 
     private List<Tool> properties;
 
@@ -44,7 +53,11 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
                 new Tool(project, "dub", ToolKey.DUB_KEY, dubPath, dubFlags,
                         dubAutoFind, dubVersion),
                 new Tool(project, "dscanner", ToolKey.DSCANNER_KEY, dscannerPath, dscannerFlags,
-                        dscannerAutoFind, dscannerVersion)
+                        dscannerAutoFind, dscannerVersion),
+                new Tool(project, "dcd-server", ToolKey.DCD_SERVER_KEY, dcdPath, dcdFlags,
+                        dcdAutoFind, dcdVersion),
+                new Tool(project, "dcd-client", ToolKey.DCD_CLIENT_KEY, dcdClientPath, dcdClientFlags,
+                        dcdClientAutoFind, dcdClientVersion)
         );
     }
 
@@ -105,6 +118,12 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
         public final String versionParam;
         public final JButton autoFindButton;
         public final List<PropertyField> propertyFields;
+        public final
+        @Nullable
+        Topic<SettingsChangeNotifier> topic;
+        private final
+        @Nullable
+        SettingsChangeNotifier publisher;
 
         Tool(Project project, String command, ToolKey key, TextFieldWithBrowseButton pathField,
              RawCommandLineEditor flagsField, JButton autoFindButton, JTextField versionField) {
@@ -113,6 +132,12 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
 
         Tool(Project project, String command, ToolKey key, TextFieldWithBrowseButton pathField,
              RawCommandLineEditor flagsField, JButton autoFindButton, JTextField versionField, String versionParam) {
+            this(project, command, key, pathField, flagsField, autoFindButton, versionField, versionParam, null);
+        }
+
+        Tool(Project project, String command, ToolKey key, TextFieldWithBrowseButton pathField,
+             RawCommandLineEditor flagsField, JButton autoFindButton, JTextField versionField, String versionParam,
+             @Nullable Topic<SettingsChangeNotifier> topic) {
             this.project = project;
             this.command = command;
             this.key = key;
@@ -121,6 +146,8 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
             this.versionField = versionField;
             this.versionParam = versionParam;
             this.autoFindButton = autoFindButton;
+            this.topic = topic;
+            this.publisher = topic == null ? null : project.getMessageBus().syncPublisher(topic);
 
             this.propertyFields = Arrays.asList(
                     new PropertyField(key.pathKey, pathField),
@@ -150,6 +177,9 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
         }
 
         public void saveState() {
+            if (isModified() && publisher != null) {
+                publisher.onSettingsChanged(new ToolSettings(pathField.getText(), flagsField.getText()));
+            }
             for (PropertyField propertyField : propertyFields) {
                 propertyField.saveState();
             }

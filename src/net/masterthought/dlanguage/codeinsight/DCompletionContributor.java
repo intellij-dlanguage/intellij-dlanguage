@@ -40,7 +40,7 @@ public class DCompletionContributor extends CompletionContributor {
                             dcdError.printStackTrace();
                         }
                         for (Completion completion : completions) {
-                            result.addElement(createLookupElement(completion.completionText(),"std.kings",completion.completionType()));
+                            result.addElement(createLookupElement(completion.completionText(),"",completion.completionType()));
                         }
 
                     }

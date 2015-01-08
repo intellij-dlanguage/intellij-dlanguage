@@ -12,6 +12,8 @@ import org.jetbrains.annotations.Nullable;
 public class ToolKey {
     public static final ToolKey DUB_KEY = new ToolKey("dub");
     public static final ToolKey DSCANNER_KEY = new ToolKey("dscanner");
+    public static final ToolKey DCD_SERVER_KEY = new ToolKey("dcd-server");
+    public static final ToolKey DCD_CLIENT_KEY = new ToolKey("dcd-client");
 
     public final String pathKey;
     public final String flagsKey;
