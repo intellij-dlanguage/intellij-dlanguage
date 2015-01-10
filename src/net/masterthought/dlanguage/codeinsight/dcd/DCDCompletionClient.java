@@ -26,39 +26,42 @@ public class DCDCompletionClient {
         final Module module = ModuleUtilCore.findModuleForPsiElement(file);
         if (module != null) {
             String path = lookupPath(module);
-            DCDCompletionServer dcdCompletionServer = module.getComponent(DCDCompletionServer.class);
-            dcdCompletionServer.exec();
-            System.out.println("position: " + String.valueOf(position));
-            final String filePath = file.getOriginalFile().getVirtualFile().getCanonicalPath();
-            System.out.println(filePath);
-            final String workingDirectory = file.getProject().getBasePath();
+            if (path != null) {
+                DCDCompletionServer dcdCompletionServer = module.getComponent(DCDCompletionServer.class);
+                dcdCompletionServer.exec();
+                System.out.println("position: " + String.valueOf(position));
+                final String filePath = file.getOriginalFile().getVirtualFile().getCanonicalPath();
+                System.out.println(filePath);
+                final String workingDirectory = file.getProject().getBasePath();
 
-            final GeneralCommandLine commandLine = new GeneralCommandLine();
-            commandLine.setWorkDirectory(workingDirectory);
-            commandLine.setExePath(path);
-            ParametersList parametersList = commandLine.getParametersList();
-            parametersList.addParametersString("-c");
-            parametersList.addParametersString(String.valueOf(position));
-            parametersList.addParametersString(filePath);
+                final GeneralCommandLine commandLine = new GeneralCommandLine();
+                commandLine.setWorkDirectory(workingDirectory);
+                commandLine.setExePath(path);
+                ParametersList parametersList = commandLine.getParametersList();
+                parametersList.addParametersString("-c");
+                parametersList.addParametersString(String.valueOf(position));
+                parametersList.addParametersString(filePath);
 
-            String result = ExecUtil.readCommandLine(commandLine, file.getText());
+                String result = ExecUtil.readCommandLine(commandLine, file.getText());
 
-            if (result != null && !result.isEmpty()) {
-                List<String> tokens = Arrays.asList(result.split("\\n"));
-                String firstLine = tokens.get(0);
-                if (firstLine.contains("identifiers")) {
-                    for (String token : tokens) {
-                        if (!token.contains("identifiers")) {
-                            List<String> parts = Arrays.asList(token.split("\\s"));
-                            String completionType = getCompletionType(parts);
-                            String completionText = getCompletionText(parts);
-                            Completion completion = new TextCompletion(completionType, completionText);
-                            completions.add(completion);
+                if (result != null && !result.isEmpty()) {
+                    List<String> tokens = Arrays.asList(result.split("\\n"));
+                    String firstLine = tokens.get(0);
+                    if (firstLine.contains("identifiers")) {
+                        for (String token : tokens) {
+                            if (!token.contains("identifiers")) {
+                                List<String> parts = Arrays.asList(token.split("\\s"));
+                                String completionType = getCompletionType(parts);
+                                String completionText = getCompletionText(parts);
+                                Completion completion = new TextCompletion(completionType, completionText);
+                                completions.add(completion);
+                                System.out.println(completion);
+                            }
                         }
+                    } else if (firstLine.contains("calltips")) {
+                        //TODO - this goes in a Parameter Info handler (ctrl+p) instead of here - see: ShowParameterInfoHandler.register
+                        System.out.println(tokens);
                     }
-                } else if (firstLine.contains("calltips")) {
-                    //TODO - this goes in a Parameter Info handler (ctrl+p) instead of here - see: ShowParameterInfoHandler.register
-                    System.out.println(tokens);
                 }
             }
         }

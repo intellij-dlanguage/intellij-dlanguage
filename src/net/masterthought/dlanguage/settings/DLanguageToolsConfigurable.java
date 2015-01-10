@@ -55,7 +55,7 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
                 new Tool(project, "dscanner", ToolKey.DSCANNER_KEY, dscannerPath, dscannerFlags,
                         dscannerAutoFind, dscannerVersion),
                 new Tool(project, "dcd-server", ToolKey.DCD_SERVER_KEY, dcdPath, dcdFlags,
-                        dcdAutoFind, dcdVersion),
+                        dcdAutoFind, dcdVersion, "--version",SettingsChangeNotifier.DCD_TOPIC),
                 new Tool(project, "dcd-client", ToolKey.DCD_CLIENT_KEY, dcdClientPath, dcdClientFlags,
                         dcdClientAutoFind, dcdClientVersion)
         );
