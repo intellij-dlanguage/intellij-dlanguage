@@ -35,7 +35,12 @@ To force running under JDK 1.7 edit /Applications/<Product>.app/Contents/Info.pl
 Please see the development status on
 [DLanguage HuBoard](https://huboard.com/kingsleyh/DLanguage#/)
 
-#### Alpha Release (end of Jan 2015)
+#### Latest Updates
+
+*  5th Feb 2015 - I've had some other demands on my time so had to push back the alpha release until end of Feb 2015. On the plus side I've discovered
+the major peformance issue that was holding me back - so I've started work on fixing it. Once I'm happy with the performance work will resume on more features.
+
+#### Alpha Release (end of Feb 2015)
 
 1. New D Project (done)
 2. New D File (done)
@@ -53,7 +58,7 @@ Please see the development status on
 
 There are another several items to add to the list but those above are the major ones.
 
-#### Beta Release (end of Feb 2015)
+#### Beta Release (end of April 2015)
 
 14. Debugger
 
