@@ -15,9 +15,6 @@ import java.util.regex.Pattern;
 
 public class DSdkUtil {
 
-    public static final File DEFAULT_SDK_PATH_WINDOWS = new File("c:/D/DMD2/windows/");
-    public static final File DEFAULT_SDK_PATH_OSX = new File("/usr/local/opt/dmd");
-
     private static  final String[] SDK_EXPECTED_SUBDIRS = {"bin", "include", "lib"};
 
     public static boolean sdkPathIsValid(File root) {

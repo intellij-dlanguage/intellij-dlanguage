@@ -21,6 +21,10 @@ public class DLanguageSdkType extends SdkType {
     // Messages go to the log available in Help -> Show log in finder.
     private final static Logger LOG = Logger.getInstance(DLanguageSdkType.class);
 
+    public static final File DEFAULT_SDK_PATH_WINDOWS = new File("c:/D/DMD2/windows/");
+    public static final File DEFAULT_SDK_PATH_OSX = new File("/usr/local/opt/dmd");
+    public static final File DEFAULT_SDK_PATH_LINUX = new File("/usr/bin/");
+
     public DLanguageSdkType() {
         super(JpsDLanguageModelSerializerExtension.DLANGUAGE_SDK_TYPE_ID);
     }
@@ -94,17 +98,17 @@ public class DLanguageSdkType extends SdkType {
     @Override
     public String suggestHomePath() {
         if (SystemInfo.isWindows) {
-            if (DSdkUtil.DEFAULT_SDK_PATH_WINDOWS.exists()) {
-                return DSdkUtil.DEFAULT_SDK_PATH_WINDOWS.getAbsolutePath();
+            if (DEFAULT_SDK_PATH_WINDOWS.exists()) {
+                return DEFAULT_SDK_PATH_WINDOWS.getAbsolutePath();
             }
         } else if (SystemInfo.isMac) {
-            if (DSdkUtil.DEFAULT_SDK_PATH_OSX.exists()) {
-                return DSdkUtil.DEFAULT_SDK_PATH_OSX.getAbsolutePath();
+            if (DEFAULT_SDK_PATH_OSX.exists()) {
+                return DEFAULT_SDK_PATH_OSX.getAbsolutePath();
             }
-            return null;
         } else if (SystemInfo.isLinux) {
-            // TODO: Linux SDK support
-            return null;
+            if (DEFAULT_SDK_PATH_LINUX.exists()) {
+                return DEFAULT_SDK_PATH_LINUX.getAbsolutePath();
+            }
         }
         return null;
     }
