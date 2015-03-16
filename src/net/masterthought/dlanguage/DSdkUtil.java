@@ -4,6 +4,7 @@ import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.process.CapturingProcessHandler;
 import com.intellij.execution.process.ProcessOutput;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.util.io.FileUtil;
 import org.jetbrains.annotations.NotNull;
@@ -15,7 +16,9 @@ import java.util.regex.Pattern;
 
 public class DSdkUtil {
 
-    private static  final String[] SDK_EXPECTED_SUBDIRS = {"bin", "include", "lib"};
+    private static final Logger LOG = Logger.getInstance(DSdkUtil.class);
+
+    private static final String[] SDK_EXPECTED_SUBDIRS = {"bin", "include", "lib"};
 
     public static boolean sdkPathIsValid(File root) {
         if (!root.exists()) {
@@ -48,39 +51,53 @@ public class DSdkUtil {
 
         GeneralCommandLine command = new GeneralCommandLine();
         command.setExePath(compilerBinary.getAbsolutePath());
+        String output = runCompiler(command);
 
+        if (output != null) {
+            Matcher m = pattern.matcher(output);
+            if (m.find()) {
+                return m.group();
+            }
+        }
 
+        return null;
+    }
+
+    private static String runCompiler(GeneralCommandLine command) {
         try {
             ProcessOutput output = new CapturingProcessHandler(command.createProcess(),
                     Charset.defaultCharset(),
                     command.getCommandLineString()).runProcess();
 
             if (output.getExitCode() != 0) {
-                Matcher m = pattern.matcher(output.getStdout());
-
-                if (m.find()) {
-                    return m.group();
-                }
-
-                return null;
+                return output.getStdout();
             } else {
-                // TODO: Log exit code
+                LOG.warn("compiler returned exit code " + output.getExitCode());
             }
 
         } catch(ExecutionException e) {
-            // TODO: Log error
-            return null;
+            LOG.warn("compiler execution failed. " +e.getMessage());
         }
-
         return null;
     }
 
+    /**
+     * Gets a file reference to compiler executable
+     *
+     * @param SDKPath path to SDK
+     * @return File reference to compiler executable
+     */
     public static File getCompilerExecutable(@NotNull String SDKPath) {
         File SDKfolder = new File(SDKPath);
         File binaryFolder = new File(SDKfolder, "bin");
         return new File(binaryFolder, getCompilerExecutableFileName());
     }
 
+    /**
+     * Gets the filename for compiler executable (result is OS specific)
+     *
+     * @return  Compiler executable filename
+     */
     public static String getCompilerExecutableFileName() {
         return SystemInfo.isWindows ? "dmd.exe" : "dmd";
     }
