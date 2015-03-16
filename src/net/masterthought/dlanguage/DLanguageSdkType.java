@@ -72,7 +72,7 @@ public class DLanguageSdkType extends SdkType {
 
     @NotNull
     public static File getCompilerExecutable(@NotNull String sdkHome) {
-        return new File(FileUtil.join(new File(sdkHome, "bin").getAbsolutePath(), "dmd"));
+        return new File(FileUtil.join(new File(sdkHome, "bin").getAbsolutePath(), SystemInfo.isWindows ? "dmd.exe" : "dmd"));
     }
 
     /**
