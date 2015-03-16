@@ -5,7 +5,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.projectRoots.*;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.util.SystemInfo;
-import com.intellij.openapi.util.io.FileUtil;
 import net.masterthought.dlanguage.jps.model.JpsDLanguageModelSerializerExtension;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
@@ -66,13 +65,8 @@ public class DLanguageSdkType extends SdkType {
      */
     @Override
     public boolean isValidSdkHome(String path) {
-        File dmd = getCompilerExecutable(path);
+        File dmd = DSdkUtil.getCompilerExecutable(path);
         return dmd.canExecute();
-    }
-
-    @NotNull
-    public static File getCompilerExecutable(@NotNull String sdkHome) {
-        return new File(FileUtil.join(new File(sdkHome, "bin").getAbsolutePath(), SystemInfo.isWindows ? "dmd.exe" : "dmd"));
     }
 
     /**
@@ -100,12 +94,12 @@ public class DLanguageSdkType extends SdkType {
     @Override
     public String suggestHomePath() {
         if (SystemInfo.isWindows) {
-            // TODO: Windows SDK support
-            return null;
+            if (DSdkUtil.DEFAULT_SDK_PATH_WINDOWS.exists()) {
+                return DSdkUtil.DEFAULT_SDK_PATH_WINDOWS.getAbsolutePath();
+            }
         } else if (SystemInfo.isMac) {
-            File homebrewRoot = new File("/usr/local/opt/dmd");
-            if (homebrewRoot.exists()) {
-                return homebrewRoot.getPath();
+            if (DSdkUtil.DEFAULT_SDK_PATH_OSX.exists()) {
+                return DSdkUtil.DEFAULT_SDK_PATH_OSX.getAbsolutePath();
             }
             return null;
         } else if (SystemInfo.isLinux) {
@@ -137,7 +131,7 @@ public class DLanguageSdkType extends SdkType {
         // We might get called with /usr/local/bin, or the true SDK
         // path. The goal is to run ghc at this stage, so adapt to whatever.
         String extra = path.endsWith("bin") ? "" : File.separator + "bin";
-        return new File(path + extra, SystemInfo.isWindows ? "dmd.exe" : "dmd");
+        return new File(path + extra, DSdkUtil.getCompilerExecutableFileName());
     }
 
     @Nullable

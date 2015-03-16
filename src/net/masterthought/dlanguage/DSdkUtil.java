@@ -6,6 +6,7 @@ import com.intellij.execution.process.CapturingProcessHandler;
 import com.intellij.execution.process.ProcessOutput;
 import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.util.io.FileUtil;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.nio.charset.Charset;
@@ -14,14 +15,18 @@ import java.util.regex.Pattern;
 
 public class DSdkUtil {
 
+    public static final File DEFAULT_SDK_PATH_WINDOWS = new File("c:/D/DMD2/windows/");
+    public static final File DEFAULT_SDK_PATH_OSX = new File("/usr/local/opt/dmd");
+
+    private static  final String[] SDK_EXPECTED_SUBDIRS = {"bin", "include", "lib"};
+
     public static boolean sdkPathIsValid(File root) {
         if (!root.exists()) {
             return false;
         }
 
         // Check for the following directories as subdirectories of root
-        String[] subDirs = {"bin", "include", "lib"};
-        for (String dirName : subDirs) {
+        for (String dirName : SDK_EXPECTED_SUBDIRS) {
             File subDirectory = new File(FileUtil.join(root.getPath(), dirName));
             if (!subDirectory.exists()) {
                 return false;
@@ -37,10 +42,7 @@ public class DSdkUtil {
         Pattern pattern = Pattern.compile("Compiler v(\\d+\\.\\d*)");
 
         // TODO: Support GDMD and other crap
-        String compilerBinaryPath = "bin/dmd";
-        if (SystemInfo.isWindows) {
-            compilerBinaryPath += ".exe";
-        }
+        String compilerBinaryPath = "bin/" + getCompilerExecutableFileName();
 
         File compilerBinary = new File(FileUtil.join(homePath, compilerBinaryPath));
         if (!compilerBinary.exists()) {
@@ -74,5 +76,15 @@ public class DSdkUtil {
         }
 
         return null;
+    }
+
+    public static File getCompilerExecutable(@NotNull String SDKPath) {
+        File SDKfolder = new File(SDKPath);
+        File binaryFolder = new File(SDKfolder, "bin");
+        return new File(binaryFolder, getCompilerExecutableFileName());
+    }
+
+    public static String getCompilerExecutableFileName() {
+        return SystemInfo.isWindows ? "dmd.exe" : "dmd";
     }
 }
