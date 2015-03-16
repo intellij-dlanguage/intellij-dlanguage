@@ -23,7 +23,7 @@ public class DLanguageSdkType extends SdkType {
 
     public static final File DEFAULT_SDK_PATH_WINDOWS = new File("c:/D/DMD2/windows/");
     public static final File DEFAULT_SDK_PATH_OSX = new File("/usr/local/opt/dmd");
-    public static final File DEFAULT_SDK_PATH_LINUX = new File("/usr/bin/");
+    public static final File DEFAULT_SDK_PATH_LINUX = new File("/usr/");
 
     public DLanguageSdkType() {
         super(JpsDLanguageModelSerializerExtension.DLANGUAGE_SDK_TYPE_ID);
