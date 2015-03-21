@@ -5,7 +5,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.projectRoots.*;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.util.SystemInfo;
-import com.intellij.openapi.util.io.FileUtil;
 import net.masterthought.dlanguage.jps.model.JpsDLanguageModelSerializerExtension;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
@@ -21,6 +20,10 @@ import java.io.File;
 public class DLanguageSdkType extends SdkType {
     // Messages go to the log available in Help -> Show log in finder.
     private final static Logger LOG = Logger.getInstance(DLanguageSdkType.class);
+
+    public static final File DEFAULT_SDK_PATH_WINDOWS = new File("c:/D/DMD2/windows/");
+    public static final File DEFAULT_SDK_PATH_OSX = new File("/usr/local/opt/dmd");
+    public static final File DEFAULT_SDK_PATH_LINUX = new File("/usr/");
 
     public DLanguageSdkType() {
         super(JpsDLanguageModelSerializerExtension.DLANGUAGE_SDK_TYPE_ID);
@@ -66,13 +69,8 @@ public class DLanguageSdkType extends SdkType {
      */
     @Override
     public boolean isValidSdkHome(String path) {
-        File dmd = getCompilerExecutable(path);
+        File dmd = DSdkUtil.getCompilerExecutable(path);
         return dmd.canExecute();
-    }
-
-    @NotNull
-    public static File getCompilerExecutable(@NotNull String sdkHome) {
-        return new File(FileUtil.join(new File(sdkHome, "bin").getAbsolutePath(), "dmd"));
     }
 
     /**
@@ -100,17 +98,17 @@ public class DLanguageSdkType extends SdkType {
     @Override
     public String suggestHomePath() {
         if (SystemInfo.isWindows) {
-            // TODO: Windows SDK support
-            return null;
-        } else if (SystemInfo.isMac) {
-            File homebrewRoot = new File("/usr/local/opt/dmd");
-            if (homebrewRoot.exists()) {
-                return homebrewRoot.getPath();
+            if (DEFAULT_SDK_PATH_WINDOWS.exists()) {
+                return DEFAULT_SDK_PATH_WINDOWS.getAbsolutePath();
             }
-            return null;
+        } else if (SystemInfo.isMac) {
+            if (DEFAULT_SDK_PATH_OSX.exists()) {
+                return DEFAULT_SDK_PATH_OSX.getAbsolutePath();
+            }
         } else if (SystemInfo.isLinux) {
-            // TODO: Linux SDK support
-            return null;
+            if (DEFAULT_SDK_PATH_LINUX.exists()) {
+                return DEFAULT_SDK_PATH_LINUX.getAbsolutePath();
+            }
         }
         return null;
     }
@@ -137,7 +135,7 @@ public class DLanguageSdkType extends SdkType {
         // We might get called with /usr/local/bin, or the true SDK
         // path. The goal is to run ghc at this stage, so adapt to whatever.
         String extra = path.endsWith("bin") ? "" : File.separator + "bin";
-        return new File(path + extra, SystemInfo.isWindows ? "dmd.exe" : "dmd");
+        return new File(path + extra, DSdkUtil.getCompilerExecutableFileName());
     }
 
     @Nullable
