@@ -37,10 +37,11 @@ Please see the development status on
 
 #### Latest Updates
 
-*  5th Feb 2015 - I've had some other demands on my time so had to push back the alpha release until end of Feb 2015. On the plus side I've discovered
+* 29th MArch 2015 - I've not managed to fix the performance issue. The problem is that the integration of the DDT parser/lexer with intellij has to jump through many hoops to work correctly as intellij don't make it easy to use external parsers directly. I think the only option is to go back to writing the BNF grammer and JFlex lexer - which I have started working on - however I think this will take a few months of effort. So I'm pushing back the alpha release to after the summer.
+*  5th Feb 2015 - I've had some other demands on my time so had to push back the alpha release until end of March 2015. On the plus side I've discovered
 the major peformance issue that was holding me back - so I've started work on fixing it. Once I'm happy with the performance work will resume on more features.
 
-#### Alpha Release (end of Feb 2015)
+#### Alpha Release (end of September 2015)
 
 1. New D Project (done)
 2. New D File (done)
@@ -58,15 +59,9 @@ the major peformance issue that was holding me back - so I've started work on fi
 
 There are another several items to add to the list but those above are the major ones.
 
-#### Beta Release (end of April 2015)
+#### Beta Release (end of December 2015)
 
 14. Debugger
-
-## Things I might do in the future
-
-1. BNF Grammar
-2. JFlex Lexer
-3. Re-write DDT lexer/parser in intellij framework
 
 ## Notes
 
