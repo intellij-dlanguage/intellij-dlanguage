@@ -2,14 +2,14 @@
 {
 
 tokens = [
-  Assign =  "="
+  Assign = "="
   At =  "@"
   BitAnd =  "&"
   BitAndEqual =  "&="
   BitOr =  "|"
   BitOrEqual =  "|="
   CatEqual =  "~="
-  Colon =  " ="
+  Colon =  ":"
   Comma =  ","
   Decrement =  "--"
   Div =  "/"
@@ -185,6 +185,7 @@ tokens = [
 
   Identifier = "regexp:\w+"
   space='regexp:\s+'
+//  string_literal='regexp:"\w+"'
   string="regexp:('([^'\\]|\\.)*'|\"([^\"\\]|\\\"|\\\'|\\)*\")"
   number="regexp:\d+"
   line_comment="regexp://.*"
@@ -196,18 +197,6 @@ tokens = [
 dFile ::= item_*
 
 private item_ ::= ( moduleDeclaration | declaration )
-
-
-
-// TODO 30
-//addExpression ::=
-//       mulExpression
-//     | addExpression ('+' | '-' | '~') mulExpression
-
-addExpression ::= mulExpression | addExpression2
-addExpression2 ::= ('+' | '-' | '~') mulExpression |
-
-
 
  aliasDeclaration ::=
        'alias' aliasInitializer (',' aliasInitializer)* ';'
@@ -224,23 +213,6 @@ addExpression2 ::= ('+' | '-' | '~') mulExpression |
 //     'align' ('(' IntegerLiteral ')')?
      'align' ('(' Identifier ')')?
 
-// TODO 28
-// andAndExpression ::=
-//       orExpression
-////     | andAndExpression '&&' orExpression
-
-// andAndExpression ::= orExpression | andAndExpression '&&' orExpression
- andAndExpression ::= orExpression | andAndExpression2
- andAndExpression2 ::= '&&' orExpression |
-
-// TODO 27
-// andExpression ::=
-//       cmpExpression
-////     | andExpression '&' cmpExpression
-
- andExpression ::= cmpExpression | andExpression2
- andExpression2 ::= '&' cmpExpression |
-
  argumentList ::=
      assignExpression (',' assignExpression?)*
 
@@ -256,28 +228,6 @@ addExpression2 ::= ('+' | '-' | '~') mulExpression |
 
  arrayMemberInitialization ::=
      (assignExpression ':')? nonVoidInitializer
-
-
-// TODO 26
-// asmAddExp ::=
-//       asmMulExp
-////     | asmAddExp ('+' | '-') asmMulExp
-
- asmAddExp ::= asmMulExp | asmAddExp2
- asmAddExp2 ::= ('+' | '-') asmMulExp |
-
-
- asmAndExp ::=
-     asmEqualExp ('&' asmEqualExp)?
-
-// TODO 25
-// asmBrExp ::=
-//       asmUnaExp
-//     | asmBrExp '[' asmExp ']'
-
- asmBrExp ::= asmUnaExp | asmBrExp2
- asmBrExp2 ::= '[' asmExp ']' |
-
 
  asmEqualExp ::=
      asmRelExp (('==' | '!=') asmRelExp)?
@@ -745,14 +695,6 @@ ifCondition ::=
  moduleDeclaration ::=
      'module' identifierChain ';'
 
-// TODO 17
-// mulExpression ::=
-//       powExpression
-//     | mulExpression ('*' | '/' | '%') powExpression
-
- mulExpression ::= powExpression | mulExpression2
- mulExpression2 ::= ('*' | '/' | '%') powExpression |
-
  newAnonClassExpression ::=
      'new' arguments? 'class' arguments? baseClassList? structBody
 
@@ -795,28 +737,16 @@ ifCondition ::=
  operands ::=
      asmExp+
 
-// TODO 16
-// orExpression ::=
-//       xorExpression
-//     | orExpression '|' xorExpression
-
-orExpression ::= xorExpression | orExpression2
-orExpression2 ::= '|' xorExpression |
-
-// TODO 15
-// orOrExpression ::=
-//       andAndExpression
-//     | orOrExpression '||' andAndExpression
-
-orOrExpression ::= andAndExpression | orOrExpression2
-orOrExpression2 ::= '||' andAndExpression |
-
-
  outStatement ::=
      'out' ('(' Identifier ')')? blockStatement
 
- parameter ::=
+parameter ::=
      parameterAttribute* type (Identifier? '...' | (Identifier? ('=' assignExpression)?))?
+
+// parameter ::=
+//     parameterAttribute* type
+//     parameterAttribute* type Identifier? '...'
+//     parameterAttribute* type Identifier? ('=' assignExpression)?
 
  parameterAttribute ::=
        typeConstructor
@@ -843,13 +773,7 @@ orOrExpression2 ::= '||' andAndExpression |
 //     unaryExpression ('++' | '--')
 //     ;
 
-// TODO 12
-// powExpression ::=
-//       unaryExpression
-//     | powExpression '^^' unaryExpression
 
- powExpression ::= unaryExpression | powExpression2
- powExpression2 ::= '^^' unaryExpression |
 
  pragmaDeclaration ::=
      pragmaExpression ';'
@@ -905,13 +829,7 @@ orOrExpression2 ::= '||' andAndExpression |
      Identifier
 //     | Identifier '(' IntegerLiteral ')'
 
-//TODO 8
-// relExpression ::=
-//       shiftExpression
-//     | relExpression relOperator shiftExpression
 
- relExpression ::= shiftExpression | relExpression2
- relExpression2 ::= relOperator shiftExpression |
 
  relOperator ::=
        '<'
@@ -944,13 +862,7 @@ orOrExpression2 ::= '||' andAndExpression |
      'shared' 'static' '~' 'this' '(' ')' functionBody
 
 
-//TODO 7
-// shiftExpression ::=
-//       addExpression
-//     | shiftExpression ('<<' | '>>' | '>>>') addExpression
 
- shiftExpression ::= addExpression | shiftExpression2
- shiftExpression2 ::= ('<<' | '>>' | '>>>') addExpression |
 
  singleImport ::=
      (Identifier '=')? identifierChain
@@ -1042,7 +954,7 @@ orOrExpression2 ::= '||' andAndExpression |
 
 
  templateAliasParameter ::=
-     'alias' type? Identifier (' ::=' (type | assignExpression))? ('=' (type | assignExpression))?
+      'alias' type? Identifier (':' (type | assignExpression))? ('=' (type | assignExpression))?
 
 
  templateArgument ::=
@@ -1274,10 +1186,104 @@ unaryExpression ::=
      'with' '(' expression ')' statementNoCaseNoDefault
 
 
-// TODO 1
-// xorExpression ::=
-//       andExpression
-//     | xorExpression '^' andExpression
 
- xorExpression ::= andExpression | xorExpression2
- xorExpression2 ::= '^' andExpression |
+  asmAndExp ::=
+      asmEqualExp ('&' asmEqualExp)?
+
+ // left recursion rules
+
+ // TODO 30
+ //addExpression ::=
+ //       mulExpression
+ //     | addExpression ('+' | '-' | '~') mulExpression
+
+ addExpression ::= mulExpression addExpression2
+ private addExpression2 ::= ('+' | '-' | '~') addExpression |
+
+ // TODO 28
+ // andAndExpression ::=
+ //       orExpression
+ ////     | andAndExpression '&&' orExpression
+
+  andAndExpression ::= orExpression andAndExpression2
+  private andAndExpression2 ::= '&&' andAndExpression |
+
+ // TODO 27
+ // andExpression ::=
+ //       cmpExpression
+ ////     | andExpression '&' cmpExpression
+
+  andExpression ::= cmpExpression andExpression2
+  private andExpression2 ::= '&' andExpression |
+
+ // TODO 26
+ // asmAddExp ::=
+ //       asmMulExp
+ ////     | asmAddExp ('+' | '-') asmMulExp
+
+  asmAddExp ::= asmMulExp asmAddExp2
+  private asmAddExp2 ::= ('+' | '-') asmAddExp |
+
+ // TODO 25
+ // asmBrExp ::=
+ //       asmUnaExp
+ //     | asmBrExp '[' asmExp ']'
+
+  asmBrExp ::= asmUnaExp asmBrExp2
+  private asmBrExp2 ::= '[' asmExp ']' asmBrExp |
+
+ // TODO 17
+ // mulExpression ::=
+ //       powExpression
+ //     | mulExpression ('*' | '/' | '%') powExpression
+
+  mulExpression ::= powExpression mulExpression2
+  private mulExpression2 ::= ('*' | '/' | '%') mulExpression |
+
+ // TODO 16
+ // orExpression ::=
+ //       xorExpression
+ //     | orExpression '|' xorExpression
+
+ orExpression ::= xorExpression orExpression2
+ private orExpression2 ::= '|' orExpression |
+
+ // TODO 15
+ // orOrExpression ::=
+ //       andAndExpression
+ //     | orOrExpression '||' andAndExpression
+
+ orOrExpression ::= andAndExpression orOrExpression2
+ private orOrExpression2 ::= '||' orOrExpression |
+
+ // TODO 12
+ // powExpression ::=
+ //       unaryExpression
+ //     | powExpression '^^' unaryExpression
+
+  powExpression ::= unaryExpression powExpression2
+  private powExpression2 ::= '^^' powExpression |
+
+ //TODO 8
+ // relExpression ::=
+ //       shiftExpression
+ //     | relExpression relOperator shiftExpression
+
+  relExpression ::= shiftExpression relExpression2
+  private relExpression2 ::= relOperator relExpression |
+
+ //TODO 7
+ // shiftExpression ::=
+ //       addExpression
+ //     | shiftExpression ('<<' | '>>' | '>>>') addExpression
+
+  shiftExpression ::= addExpression shiftExpression2
+  private shiftExpression2 ::= ('<<' | '>>' | '>>>') shiftExpression |
+
+ // TODO 1
+ // xorExpression ::=
+ //       andExpression
+ //     | xorExpression '^' andExpression
+
+  xorExpression ::= andExpression xorExpression2
+  private xorExpression2 ::= '^' xorExpression |
