@@ -186,17 +186,20 @@ tokens = [
   Identifier = "regexp:\w+"
   space='regexp:\s+'
 //  string_literal='regexp:"\w+"'
-  string="regexp:('([^'\\]|\\.)*'|\"([^\"\\]|\\\"|\\\'|\\)*\")"
+//  string="regexp:('([^'\\]|\\.)*'|\"([^\"\\]|\\\"|\\\'|\\)*\")"
   number="regexp:\d+"
   line_comment="regexp://.*"
   block_comment="regexp:/\*(.|\n)*\*/"
 ]
+
 
 }
 
 dFile ::= item_*
 
 private item_ ::= ( moduleDeclaration | declaration )
+
+  StringLiteral ::= 'regexp:"\w*"'
 
  aliasDeclaration ::=
        'alias' aliasInitializer (',' aliasInitializer)* ';'
@@ -506,16 +509,12 @@ declaration2 ::=
  doStatement ::=
      'do' statementNoCaseNoDefault 'while' '(' expression ')' ';'
 
- enumBody ::=
-       ';'
-     | '{' enumMember (',' enumMember?)* '}'
+ enumBody ::= ';' | '{' enumMember (',' enumMember?)* '}'
 
  enumDeclaration ::=
      'enum' Identifier? (':' type)? enumBody
 
- enumMember ::=
-       Identifier
-     | (Identifier | type) '=' assignExpression
+ enumMember ::= Identifier | (Identifier | type) '=' assignExpression
 
  equalExpression ::=
      shiftExpression ('==' | '!=') shiftExpression
