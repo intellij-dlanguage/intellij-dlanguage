@@ -1,21 +1,7 @@
-// http://cui.unige.ch/db-research/Enseignement/analyseinfo/JAVA/BNFindex.html
+
 {
-  parserClass="net.masterthought.dlanguage.parser.DLanguageParser"
 
-  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
-
-  psiClassPrefix="DLanguage"
-  psiImplClassSuffix="Impl"
-  psiPackage="net.masterthought.dlanguage.psi"
-  psiImplPackage="net.masterthought.dlanguage.psi.impl"
-
-  elementTypeHolderClass="net.masterthought.dlanguage.psi.DLanguageTypes"
-  elementTypeClass="net.masterthought.dlanguage.psi.DLanguageElementType"
-  tokenTypeClass="net.masterthought.dlanguage.psi.DLanguageTokenType"
-
-  generateTokenAccessors=true
-
-  tokens =  [
+tokens = [
   Assign =  "="
   At =  "@"
   BitAnd =  "&"
@@ -196,410 +182,127 @@
   Traits = "__traits"
   TParameters = "__parameters"
   TVector = "__vector"
-  ]
+
+  Identifier = "regexp:\w+"
+  space='regexp:\s+'
+  string="regexp:('([^'\\]|\\.)*'|\"([^\"\\]|\\\"|\\\'|\\)*\")"
+  number="regexp:\d+"
+  line_comment="regexp://.*"
+  block_comment="regexp:/\*(.|\n)*\*/"
+]
+
 }
 
 dFile ::= item_*
 
-private item_ ::= (module
-| addExpression
-| aliasDeclaration
-| aliasInitializer
-| aliasThisDeclaration
-| alignAttribute
-| andAndExpression
-| andExpression
-| argumentList
-| arguments
-| arrayInitializer
-| arrayLiteral
-| arrayMemberInitialization
-| asmAddExp
-| asmAndExp
-| asmBrExp
-| asmEqualExp
-| asmExp
-| asmInstruction
-| asmLogAndExp
-| asmLogOrExp
-| asmMulExp
-| asmOrExp
-| asmPrimaryExp
-| asmRelExp
-| asmShiftExp
-| asmStatement
-| asmTypePrefix
-| asmUnaExp
-| asmXorExp
-| assertExpression
-| assignExpression
-| assignOperator
-| assocArrayLiteral
-| atAttribute
-| attribute
-| attributeDeclaration
-| autoDeclaration
-| blockStatement
-| bodyStatement
-| breakStatement
-| baseClass
-| baseClassList
-| builtinType
-| caseRangeStatement
-| caseStatement
-| castExpression
-| castQualifier
-| catch_
-| catches
-| classDeclaration
-| cmpExpression
-| compileCondition
-| conditionalDeclaration
-| conditionalStatement
-| constraint
-| constructor
-| continueStatement
-| debugCondition
-| debugSpecification
-| declaration
-| declaration2
-| declarationsAndStatements
-| declarationOrStatement
-| declarator
-| defaultStatement
-| deleteExpression
-| deprecated
-| destructor
-| doStatement
-| enumBody
-| enumDeclaration
-| enumMember
-| equalExpression
-| expression
-| expressionStatement
-| finalSwitchStatement
-| finally_
-| forStatement
-| foreachStatement
-| foreachType
-| foreachTypeList
-| functionAttribute
-| functionBody
-| functionCallExpression
-| functionCallStatement
-| functionDeclaration
-| functionLiteralExpression
-| gotoStatement
-| identifierChain
-| identifierList
-| identifierOrTemplateChain
-| identifierOrTemplateInstance
-| identityExpression
-| ifStatement
-| ifCondition
-| importBind
-| importBindings
-| importDeclaration
-| importExpression
-| indexExpression
-| inExpression
-| inStatement
-| initialize
-| initializer
-| interfaceDeclaration
-| invariant
-| isExpression
-| keyValuePair
-| keyValuePairs
-| labeledStatement
-| lambdaExpression
-| lastCatch
-| linkageAttribute
-| memberFunctionAttribute
-| mixinDeclaration
-| mixinExpression
-| mixinTemplateDeclaration
-| mixinTemplateName
-| moduleDeclaration
-| mulExpression
-| newAnonClassExpression
-| newExpression
-| statementNoCaseNoDefault
-| nonVoidInitializer
-| operands
-| orExpression
-| orOrExpression
-| outStatement
-| parameter
-| parameterAttribute
-| parameters
-| postblit
-| postIncDecExpression
-| powExpression
-| pragmaDeclaration
-| pragmaExpression
-| preIncDecExpression
-| primaryExpression
-| register
-| relExpression
-| relOperator
-| returnStatement
-| scopeGuardStatement
-| sharedStaticConstructor
-| sharedStaticDestructor
-| shiftExpression
-| singleImport
-| sliceExpression
-| statement
-| staticAssertDeclaration
-| staticAssertStatement
-| staticConstructor
-| staticDestructor
-| staticIfCondition
-| storageClass
-| structBody
-| structDeclaration
-| structInitializer
-| structMemberInitializer
-| structMemberInitializers
-| switchStatement
-| symbol
-| synchronizedStatement
-| templateAliasParameter
-| templateArgument
-| templateArgumentList
-| templateArguments
-| templateDeclaration
-| eponymousTemplateDeclaration
-| templateInstance
-| templateMixinExpression
-| templateParameter
-| templateParameterList
-| templateParameters
-| templateSingleArgument
-| templateThisParameter
-| templateTupleParameter
-| templateTypeParameter
-| templateValueParameter
-| templateValueParameterDefault
-| ternaryExpression
-| throwStatement
-| traitsExpression
-| tryStatement
-| type
-| type2
-| typeConstructor
-| typeConstructors
-| typeSpecialization
-| typeSuffix
-| typeidExpression
-| typeofExpression
-| unaryExpression
-| unionDeclaration
-| unittest
-| variableDeclaration
-| vector
-| versionCondition
-| versionSpecification
-| whileStatement
-| withStatement
-| xorExpression
-)
+private item_ ::= ( moduleDeclaration | declaration )
 
-  private Whitespace ::= "regexp:[\\u0020\\u0009\\u000b\\u000c\\u000a\\u000d]+"
-  private EndOfLine ::= "regexp:(\\u000d|\\u000a|\\u000d\\u000a|\\u2028|\\u2029)"
 
-  private Character ::=  "regexp:[\u0001-\uffff]"
-  private WysiwygCharacter ::= (Character | Whitespace)
-  private HexDigit ::= "regexp:[a-fA-F0-9]"
-  private OctalDigit ::= "regexp:[0-7]"
-  private BinDigit ::= "regexp:[01]"
-  private DecimalDigit ::= "regexp:[0-9]"
 
-  private BlockComment ::= "regexp:\/*.*? *\/"
-  private LineComment ::= '//' ("regexp:~[\\u000D\\u000A\\u2028\\u2029]")* (EndOfLine | EOF)
-  private NestingBlockComment ::= '/+' (NestingBlockComment | "regexp:.")* '+/'
-  Comment ::= (BlockComment | LineComment | NestingBlockComment)+
-
-  private Identifier ::= "regexp:([a-zA-Z_])([a-zA-Z0-9_])"*
-
-  private WysiwygString ::= 'r"' "regexp:.*?" '"' StringPostfix?
-  private AlternativeWysiwygString ::= '`' "regexp:.*?" '`' StringPostfix?
-
-  private EscapeSequence ::= "\\\'"
-      | '\\"'
-      | '\\\\'
-      | '\\?'
-      | '\\0'
-      | '\\a'
-      | '\\b'
-      | '\\f'
-      | '\\n'
-      | '\\r'
-      | '\\t'
-      | '\\v'
-      | '\\x' HexDigit HexDigit
-      | '\\' OctalDigit OctalDigit? OctalDigit?
-      | '\\u' HexDigit HexDigit HexDigit HexDigit
-      | '\\U' HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit
-      | '\\&' Identifier ';';
-  private HexStringChar ::= "regexp:[0-9a-fA-F]" | Whitespace | EndOfLine
-  private StringPostfix ::= "regexp:[dwc]"
-  private DoubleQuotedCharacter ::= EscapeSequence | "regexp:~('\"' | '\\' )"
-  private DoubleQuotedString ::= '"' DoubleQuotedCharacter* '"'  StringPostfix?
-  private HexString ::= 'x"' HexStringChar* '"' StringPostfix?
-  private StringFragment ::= WysiwygString | AlternativeWysiwygString | DoubleQuotedString | HexString
-  private StringLiteral ::= StringFragment (Whitespace? StringFragment)*
-
-//  CharacterLiteral ::= '\'' ( EscapeSequence | ~[\\'] )*? '\'';
-
-  IntegerLiteral ::= Integer IntegerSuffix?
-  private Integer ::= BinaryInteger | DecimalInteger | HexadecimalInteger
-  private IntegerSuffix ::= ('L' | 'u' | 'U' | 'Lu' | 'LU' | 'uL' | 'UL')
-  private DecimalInteger ::= DecimalDigit (DecimalDigit | '_')*
-  private BinaryInteger ::= ('0b' | '0B') BinDigit (BinDigit | '_')*
-  private HexadecimalInteger ::= ('0x' | '0X') HexDigit (HexDigit | '_')*
-
-  FloatLiteral ::= (FloatOption (FloatSuffix | RealSuffix)?) | (Integer (FloatSuffix | RealSuffix)? ImaginarySuffix)
-  private FloatOption ::= DecimalFloat | HexFloat
-  private DecimalFloat
-      ::= DecimalInteger '.' (DecimalDigit (DecimalDigit | '_')* DecimalExponent?)?  // BUG: can't lex a[0..1] properly
-      | '.' DecimalInteger DecimalExponent?
-      | DecimalInteger DecimalExponent
-      ;
-  private DecimalExponent ::= ('e' | 'E' | 'e+' | 'E+' | 'e-' | 'E-') DecimalInteger
-  private FloatSuffix ::= 'F' | 'f'
-  private RealSuffix ::= 'L'
-  private ImaginarySuffix ::= 'i'
-  private HexFloat ::= ('0x' | '0X') ((HexDigit (HexDigit | '_')* '.' HexDigit (HexDigit | '_')*) | ('.' HexDigit (HexDigit | '_')*) | (HexDigit (HexDigit | '_')*)) HexExponent
-  private HexExponent ::= ('p' | 'P' | 'p+' | 'P+' | 'p-' | 'P-') DecimalDigit (DecimalDigit | '_')*
-
-  SpecialTokenSequence ::= '#line' Space+ IntegerLiteral Space* ('"' "regexp:.*?" '"' Space*)? (EndOfLine | EOF)+
-  private Space ::= "regexp:[\u0020\u0009\u000B\u000C]"
-
-module ::=
-     moduleDeclaration? declaration*
-     ;
-
+// TODO 30
  addExpression ::=
        mulExpression
      | addExpression ('+' | '-' | '~') mulExpression
-     ;
 
  aliasDeclaration ::=
        'alias' aliasInitializer (',' aliasInitializer)* ';'
      | 'alias' linkageAttribute? type Identifier ';'
-     ;
 
  aliasInitializer ::=
      Identifier '=' type
-     ;
 
  aliasThisDeclaration ::=
      'alias' Identifier 'this' ';'
-     ;
 
+// TODO 29
  alignAttribute ::=
-     'align' ('(' IntegerLiteral ')')?
-     ;
+//     'align' ('(' IntegerLiteral ')')?
+     'align' ('(' Identifier ')')?
 
+// TODO 28
  andAndExpression ::=
        orExpression
-     | andAndExpression '&&' orExpression
-     ;
+//     | andAndExpression '&&' orExpression
 
+// TODO 27
  andExpression ::=
        cmpExpression
-     | andExpression '&' cmpExpression
-     ;
+//     | andExpression '&' cmpExpression
 
  argumentList ::=
      assignExpression (',' assignExpression?)*
-     ;
 
  arguments ::=
      '(' argumentList? ')'
-     ;
 
  arrayInitializer ::=
        '[' ']'
      | '[' arrayMemberInitialization (',' arrayMemberInitialization?)* ']'
-     ;
 
  arrayLiteral ::=
      '[' argumentList? ']'
-     ;
 
  arrayMemberInitialization ::=
      (assignExpression ':')? nonVoidInitializer
-     ;
 
+
+// TODO 26
  asmAddExp ::=
        asmMulExp
-     | asmAddExp ('+' | '-') asmMulExp
-     ;
+//     | asmAddExp ('+' | '-') asmMulExp
 
  asmAndExp ::=
      asmEqualExp ('&' asmEqualExp)?
-     ;
 
+// TODO 25
  asmBrExp ::=
        asmUnaExp
-     | asmBrExp '[' asmExp ']'
-     ;
+//     | asmBrExp '[' asmExp ']'
 
  asmEqualExp ::=
      asmRelExp (('==' | '!=') asmRelExp)?
-     ;
 
  asmExp ::=
      asmLogOrExp ('?' asmExp ':' asmExp)?
-     ;
 
+// TODO 24
  asmInstruction ::=
      Identifier
-     | 'align' IntegerLiteral
+//     | 'align' IntegerLiteral
      | 'align' Identifier
      | Identifier ':' asmInstruction
      | Identifier asmExp
      | Identifier operands
-     ;
 
  asmLogAndExp ::=
      asmOrExp ('&&' asmOrExp)?
-     ;
 
  asmLogOrExp ::=
      asmLogAndExp ('||' asmLogAndExp)?
-     ;
 
  asmMulExp ::=
      asmBrExp (('*' | '/' | '%') asmBrExp)?
-     ;
 
  asmOrExp ::=
      asmXorExp ('|' asmXorExp)?
-     ;
 
+// TODO 23
  asmPrimaryExp ::=
-       IntegerLiteral
-     | FloatLiteral
-     | register
+//       IntegerLiteral
+//     | FloatLiteral
+      register
      | identifierChain
      | '$'
-     ;
 
  asmRelExp ::=
      asmShiftExp (('<' | '<=' | '>' | '>=') asmShiftExp)?
-     ;
+
 
  asmShiftExp ::=
      asmAddExp (('<<' | '>>' | '>>>') asmAddExp)?
-     ;
 
  asmStatement ::=
      'asm' '{' asmInstruction+ '}'
-     ;
 
  asmTypePrefix ::=
        Identifier Identifier
@@ -609,7 +312,6 @@ module ::=
      | 'float' Identifier
      | 'double' Identifier
      | 'real' Identifier
-     ;
 
  asmUnaExp ::=
        asmTypePrefix asmExp
@@ -619,19 +321,16 @@ module ::=
      | '!' asmUnaExp
      | '~' asmUnaExp
      | asmPrimaryExp
-     ;
 
  asmXorExp ::=
      asmAndExp ('^' asmAndExp)?
-     ;
 
  assertExpression ::=
      'assert' '(' assignExpression (',' assignExpression)? ')'
-     ;
 
  assignExpression ::=
      ternaryExpression (assignOperator assignExpression)?
-     ;
+
  assignOperator ::=
        '='
      | '>>>='
@@ -647,15 +346,12 @@ module ::=
      | '^^='
      | '^='
      | '~='
-     ;
 
  assocArrayLiteral ::=
      '[' keyValuePairs ']'
-     ;
 
  atAttribute ::=
      '@' (Identifier | '(' argumentList ')' | functionCallExpression)
-     ;
 
  attribute ::=
        alignAttribute
@@ -667,35 +363,27 @@ module ::=
      | 'private'
      | 'protected'
      | 'public'
-     ;
 
  attributeDeclaration ::=
      attribute ':'
-     ;
 
  autoDeclaration ::=
      storageClass Identifier '=' initializer (',' Identifier '=' initializer)* ';'
-     ;
 
  blockStatement ::=
      '{' declarationsAndStatements? '}'
-     ;
 
  bodyStatement ::=
      'body' blockStatement
-     ;
 
  breakStatement ::=
      'break' Identifier? ';'
-     ;
 
  baseClass ::=
      (typeofExpression '.')? identifierOrTemplateChain
-     ;
 
  baseClassList ::=
      baseClass (',' baseClass)*
-     ;
 
  builtinType ::=
       'bool'
@@ -720,19 +408,15 @@ module ::=
     | 'cdouble'
     | 'creal'
     | 'void'
-    ;
 
  caseRangeStatement ::=
      'case' assignExpression ':' '...' 'case' assignExpression ':' declarationsAndStatements
-     ;
 
  caseStatement ::=
      'case' argumentList ':' declarationsAndStatements
-     ;
 
  castExpression ::=
      'cast' '(' (type | castQualifier)? ')' unaryExpression
-     ;
 
  castQualifier ::=
       'const'
@@ -743,23 +427,19 @@ module ::=
     | 'shared'
     | 'shared' 'const'
     | 'shared' 'inout'
-    ;
 
  catch_ ::=
      'catch' '(' type Identifier? ')' declarationOrStatement
-     ;
 
  catches ::=
        catch_+
      | catch_* lastCatch
-     ;
 
  classDeclaration ::=
        'class' Identifier (':' baseClassList)? ';'
      | 'class' Identifier (':' baseClassList)? structBody
      | 'class' Identifier templateParameters constraint? (':' baseClassList)? structBody
      | 'class' Identifier templateParameters (':' baseClassList)? constraint? structBody
-     ;
 
  cmpExpression ::=
        shiftExpression
@@ -767,47 +447,42 @@ module ::=
      | identityExpression
      | relExpression
      | inExpression
-     ;
 
  compileCondition ::=
        versionCondition
      | debugCondition
      | staticIfCondition
-     ;
 
  conditionalDeclaration ::=
        compileCondition declaration
      | compileCondition ':' declaration+
      | compileCondition declaration ('else' declaration)?
-     ;
 
  conditionalStatement ::=
      compileCondition declarationOrStatement ('else' declarationOrStatement)?
-     ;
 
  constraint ::=
      'if' '(' expression ')'
-     ;
 
  constructor ::=
        'this' templateParameters parameters memberFunctionAttribute* constraint? (functionBody | ';')
-     ;
 
  continueStatement ::=
      'continue' Identifier? ';'
-     ;
 
+// TODO 23
  debugCondition ::=
-     'debug' ('(' (IntegerLiteral | Identifier) ')')?
-     ;
+//     'debug' ('(' (IntegerLiteral | Identifier) ')')?
+     'debug' ('(' Identifier ')')?
 
+// TODO 22
  debugSpecification ::=
-     'debug' '=' (Identifier | IntegerLiteral) ';'
-     ;
+//     'debug' '=' (Identifier | IntegerLiteral) ';'
+     'debug' '=' Identifier ';'
 
 declaration ::=
      attribute* declaration2
-     ;
+
 declaration2 ::=
      aliasDeclaration
    | aliasThisDeclaration
@@ -835,232 +510,187 @@ declaration2 ::=
    | attributeDeclaration
    | invariant
    | '{' declaration+ '}'
-   ;
 
  declarationsAndStatements ::=
      declarationOrStatement+
-     ;
 
  declarationOrStatement ::=
        declaration
      | statement
-     ;
 
  declarator ::=
      Identifier ('=' initializer)?
-     ;
 
  defaultStatement ::=
      'default' ' ::=' declarationsAndStatements
-     ;
 
  deleteExpression ::=
      'delete' unaryExpression
-     ;
 
  deprecated ::=
      'deprecated' ('(' assignExpression ')')?
-     ;
 
  destructor ::=
      '~' 'this' '(' ')' memberFunctionAttribute* (functionBody | ';')
-     ;
 
  doStatement ::=
      'do' statementNoCaseNoDefault 'while' '(' expression ')' ';'
-     ;
 
  enumBody ::=
        ';'
      | '{' enumMember (',' enumMember?)* '}'
-     ;
 
  enumDeclaration ::=
      'enum' Identifier? (':' type)? enumBody
-     ;
 
  enumMember ::=
        Identifier
      | (Identifier | type) '=' assignExpression
-     ;
 
  equalExpression ::=
      shiftExpression ('==' | '!=') shiftExpression
-     ;
 
  expression ::=
      assignExpression (',' assignExpression)*
-     ;
 
  expressionStatement ::=
      expression ';'
-     ;
 
  finalSwitchStatement ::=
      'final' switchStatement
-     ;
 
  finally_ ::=
      'finally' declarationOrStatement
-     ;
 
  forStatement ::=
      'for' '(' declarationOrStatement expression? ';' expression? ')' declarationOrStatement
-     ;
 
  foreachStatement ::=
        ('foreach' | 'foreach_reverse') '(' foreachTypeList ';' expression ')' declarationOrStatement
      | ('foreach' | 'foreach_reverse') '(' foreachType ';' expression '..' expression ')' declarationOrStatement
-     ;
 
  foreachType ::=
      typeConstructors? type? Identifier
-     ;
 
  foreachTypeList ::=
      foreachType (',' foreachType)*
-     ;
 
  functionAttribute ::=
        atAttribute
      | 'pure'
      | 'nothrow'
-     ;
 
  functionBody ::=
        blockStatement
      | (inStatement | outStatement | outStatement inStatement | inStatement outStatement)? bodyStatement
-     ;
 
  functionCallExpression ::=
        unaryExpression templateArguments? arguments
      | type arguments
-     ;
 
- functionCallStatement ::=
-     functionCallExpression ';'
-     ;
+//TODO 21
+// functionCallStatement ::=
+//     functionCallExpression ';'
+//     ;
 
  functionDeclaration ::=
-       (storageClass | type) Identifier templateParameters? parameters memberFunctionAttribute* constraint? (functionBody | ';')
-     ;
+       (storageClass | type) Identifier templateParameters? parameters? memberFunctionAttribute* constraint? (functionBody | ';')
 
  functionLiteralExpression ::=
      (('function' | 'delegate') type?)? (parameters functionAttribute*)? functionBody
-     ;
 
  gotoStatement ::=
      'goto' (Identifier | 'default' | 'case' expression?) ';'
-     ;
 
  identifierChain ::=
      Identifier ('.' Identifier)*
-     ;
 
- identifierList ::=
-     Identifier (',' Identifier)*
-     ;
+//TODO 20
+// identifierList ::=
+//     Identifier (',' Identifier)*
+//     ;
 
  identifierOrTemplateChain ::=
      identifierOrTemplateInstance ('.' identifierOrTemplateInstance)*
-     ;
 
  identifierOrTemplateInstance ::=
        Identifier
      | templateInstance
-     ;
 
  identityExpression ::=
      shiftExpression ('is' | '!' 'is') shiftExpression
-     ;
 
  ifStatement ::=
      'if' '(' ifCondition ')' declarationOrStatement ('else' declarationOrStatement)?
-    ;
 
 ifCondition ::=
        'auto' Identifier '=' expression
      | type Identifier '=' expression
      | expression
-     ;
 
  importBind ::=
      Identifier ('=' Identifier)?
-     ;
 
  importBindings ::=
      singleImport ':' importBind (',' importBind)*
-     ;
 
  importDeclaration ::=
        'import' singleImport (',' singleImport)* (',' importBindings)? ';'
      | 'import' importBindings ';'
-     ;
 
  importExpression ::=
      'import' '(' assignExpression ')'
-     ;
 
- indexExpression ::=
-     unaryExpression '[' argumentList ']'
-     ;
+// TODO 19
+// indexExpression ::=
+//     unaryExpression '[' argumentList ']'
+//     ;
 
  inExpression ::=
      shiftExpression ('in' | '!' 'in') shiftExpression
-     ;
 
  inStatement ::=
      'in' blockStatement
-     ;
 
- initialize ::=
-       ';'
-     | statementNoCaseNoDefault
-     ;
+// TODO 18
+// initialize ::=
+//       ';'
+//     | statementNoCaseNoDefault
+//     ;
 
  initializer ::=
        'void'
      | nonVoidInitializer
-     ;
 
  interfaceDeclaration ::=
      'interface' Identifier (';' | (templateParameters constraint?)? (':' baseClassList)? structBody)
-     ;
 
  invariant ::=
      'invariant' ('(' ')')? blockStatement
-     ;
 
  isExpression ::=
      'is' '(' type Identifier? ((':' | '==') typeSpecialization (',' templateParameterList)?)? ')'
-     ;
 
  keyValuePair ::=
      assignExpression ':' assignExpression
-     ;
 
  keyValuePairs ::=
      keyValuePair (',' keyValuePair)* ','?
-     ;
 
  labeledStatement ::=
      Identifier ':' declarationOrStatement
-     ;
 
  lambdaExpression ::=
        Identifier '=>' assignExpression
      | 'function' parameters functionAttribute* '=>' assignExpression
      | 'delegate' parameters functionAttribute* '=>' assignExpression
      | parameters functionAttribute* '=>' assignExpression
-     ;
 
  lastCatch ::=
      'catch' statementNoCaseNoDefault
-     ;
 
  linkageAttribute ::=
      'extern' '(' Identifier ('++' (',' identifierChain)?)? ')'
-     ;
 
  memberFunctionAttribute ::=
        functionAttribute
@@ -1068,44 +698,36 @@ ifCondition ::=
      | 'inout'
      | 'shared'
      | 'const'
-     ;
 
  mixinDeclaration ::=
        mixinExpression ';'
      | templateMixinExpression ';'
-     ;
 
  mixinExpression ::=
      'mixin' '(' assignExpression ')'
-     ;
 
  mixinTemplateDeclaration ::=
      'mixin' templateDeclaration
-     ;
 
  mixinTemplateName ::=
        symbol
      | typeofExpression '.' identifierOrTemplateChain
-     ;
 
 
  moduleDeclaration ::=
      'module' identifierChain ';'
-     ;
 
+// TODO 17
  mulExpression ::=
        powExpression
-     | mulExpression ('*' | '/' | '%') powExpression
-     ;
+//     | mulExpression ('*' | '/' | '%') powExpression
 
  newAnonClassExpression ::=
      'new' arguments? 'class' arguments? baseClassList? structBody
-     ;
 
  newExpression ::=
        'new' type ('[' assignExpression ']' | arguments)?
      | newAnonClassExpression
-     ;
 
  statementNoCaseNoDefault ::=
        labeledStatement
@@ -1132,36 +754,31 @@ ifCondition ::=
      | versionSpecification
      | debugSpecification
      | expressionStatement
-     ;
 
  nonVoidInitializer ::=
        assignExpression
      | arrayInitializer
      | structInitializer
      | functionBody
-     ;
 
  operands ::=
      asmExp+
-     ;
 
+// TODO 16
  orExpression ::=
        xorExpression
-     | orExpression '|' xorExpression
-     ;
+//     | orExpression '|' xorExpression
 
+// TODO 15
  orOrExpression ::=
        andAndExpression
-     | orOrExpression '||' andAndExpression
-     ;
+//     | orOrExpression '||' andAndExpression
 
  outStatement ::=
      'out' ('(' Identifier ')')? blockStatement
-     ;
 
  parameter ::=
      parameterAttribute* type (Identifier? '...' | (Identifier? ('=' assignExpression)?))?
-     ;
 
  parameterAttribute ::=
        typeConstructor
@@ -1172,39 +789,39 @@ ifCondition ::=
      | 'ref'
      | 'scope'
      | 'auto'
-     ;
 
  parameters ::=
        '(' parameter (',' parameter)* (',' '...')? ')'
      | '(' '...' ')'
      | '(' ')'
-     ;
 
- postblit ::=
-     'this' '(' 'this' ')' memberFunctionAttribute* (functionBody | ';')
-     ;
+// TODO 14
+// postblit ::=
+//     'this' '(' 'this' ')' memberFunctionAttribute* (functionBody | ';')
+//     ;
 
- postIncDecExpression ::=
-     unaryExpression ('++' | '--')
-     ;
+//TODO 13
+// postIncDecExpression ::=
+//     unaryExpression ('++' | '--')
+//     ;
 
+// TODO 12
  powExpression ::=
        unaryExpression
-     | powExpression '^^' unaryExpression
-     ;
+//     | powExpression '^^' unaryExpression
 
  pragmaDeclaration ::=
      pragmaExpression ';'
-     ;
 
  pragmaExpression ::=
      'pragma' '(' Identifier (',' argumentList)? ')'
-     ;
 
- preIncDecExpression ::=
-     ('++' | '--') unaryExpression
-     ;
+// TODO 11
+// preIncDecExpression ::=
+//     ('++' | '--') unaryExpression
+//     ;
 
+// TODO 10
  primaryExpression ::=
        identifierOrTemplateInstance
      | '.' identifierOrTemplateInstance
@@ -1237,21 +854,21 @@ ifCondition ::=
      | '__MODULE__'
      | '__FUNCTION__'
      | '__PRETTY_FUNCTION__'
-     | IntegerLiteral
-     | FloatLiteral
+  //   | IntegerLiteral
+  //   | FloatLiteral
      | StringLiteral+
-     | CharacterLiteral
-     ;
+  //   | CharacterLiteral
 
+// TODO 9
  register ::=
      Identifier
-     | Identifier '(' IntegerLiteral ')'
-     ;
+//     | Identifier '(' IntegerLiteral ')'
 
+//TODO 8
  relExpression ::=
        shiftExpression
-     | relExpression relOperator shiftExpression
-     ;
+//     | relExpression relOperator shiftExpression
+
  relOperator ::=
        '<'
      | '<='
@@ -1269,60 +886,63 @@ ifCondition ::=
 
  returnStatement ::=
      'return' expression? ';'
-     ;
+
 
  scopeGuardStatement ::=
      'scope' '(' Identifier ')' statementNoCaseNoDefault
-     ;
+
 
  sharedStaticConstructor ::=
      'shared' 'static' 'this' '(' ')' functionBody
-     ;
+
 
  sharedStaticDestructor ::=
      'shared' 'static' '~' 'this' '(' ')' functionBody
-     ;
 
+
+//TODO 7
  shiftExpression ::=
        addExpression
-     | shiftExpression ('<<' | '>>' | '>>>') addExpression
-     ;
+//     | shiftExpression ('<<' | '>>' | '>>>') addExpression
+
 
  singleImport ::=
      (Identifier '=')? identifierChain
-     ;
 
- sliceExpression ::=
-       unaryExpression '[' assignExpression '..' assignExpression ']'
-     | unaryExpression '[' ']'
-     ;
+
+
+// TODO 6
+// sliceExpression ::=
+//       unaryExpression '[' assignExpression '..' assignExpression ']'
+//     | unaryExpression '[' ']'
+//     ;
 
  statement ::=
        statementNoCaseNoDefault
      | caseStatement
      | caseRangeStatement
      | defaultStatement
-     ;
+
 
  staticAssertDeclaration ::=
      staticAssertStatement
-     ;
+
 
  staticAssertStatement ::=
      'static' assertExpression ';'
-     ;
+
 
  staticConstructor ::=
      'static' 'this' '(' ')' functionBody
-     ;
+
 
  staticDestructor ::=
      'static' '~' 'this' '(' ')' functionBody
-     ;
+
 
  staticIfCondition ::=
      'static' 'if' '(' assignExpression ')'
-     ;
+
 
  storageClass ::=
        atAttribute
@@ -1341,73 +961,73 @@ ifCondition ::=
      | 'scope'
      | 'static'
      | 'synchronized'
-     ;
+
 
  structBody ::=
      '{' declaration* '}'
-     ;
+
 
  structDeclaration ::=
      'struct' Identifier? (templateParameters constraint? structBody | (structBody | ';'))
-     ;
+
 
  structInitializer ::=
      '{' structMemberInitializers? '}'
-     ;
+
 
  structMemberInitializer ::=
      (Identifier ':')? nonVoidInitializer
-     ;
+
 
  structMemberInitializers ::=
      structMemberInitializer (',' structMemberInitializer?)*
-     ;
+
 
  switchStatement ::=
      'switch' '(' expression ')' statement
-     ;
+
 
  symbol ::=
      '.'? identifierOrTemplateChain
-     ;
+
 
  synchronizedStatement ::=
      'synchronized' ('(' expression ')')? statementNoCaseNoDefault
-     ;
+
 
  templateAliasParameter ::=
      'alias' type? Identifier (' ::=' (type | assignExpression))? ('=' (type | assignExpression))?
-     ;
+
 
  templateArgument ::=
        type
      | assignExpression
-     ;
+
 
  templateArgumentList ::=
      templateArgument (',' templateArgument?)*
-     ;
+
 
  templateArguments ::=
      '!' ('(' templateArgumentList? ')' | templateSingleArgument)
-     ;
+
 
  templateDeclaration ::=
        'template' Identifier templateParameters constraint? '{' declaration* '}'
      | eponymousTemplateDeclaration
-     ;
+
 
  eponymousTemplateDeclaration ::=
      'enum' Identifier templateParameters '=' assignExpression ';'
-     ;
+
 
  templateInstance ::=
      Identifier templateArguments
-     ;
+
 
  templateMixinExpression ::=
      'mixin' mixinTemplateName templateArguments? Identifier?
-     ;
+
 
  templateParameter ::=
        templateTypeParameter
@@ -1415,23 +1035,24 @@ ifCondition ::=
      | templateAliasParameter
      | templateTupleParameter
      | templateThisParameter
-     ;
+
 
  templateParameterList ::=
      templateParameter (',' templateParameter?)*
-     ;
+
 
  templateParameters ::=
      '(' templateParameterList? ')'
-     ;
 
+
+// TODO 5
  templateSingleArgument ::=
        builtinType
      | Identifier
-     | CharacterLiteral
+//     | CharacterLiteral
      | StringLiteral
-     | IntegerLiteral
-     | FloatLiteral
+//     | IntegerLiteral
+//     | FloatLiteral
      | 'true'
      | 'false'
      | 'null'
@@ -1446,54 +1067,54 @@ ifCondition ::=
      | '__MODULE__'
      | '__FUNCTION__'
      | '__PRETTY_FUNCTION__'
-     ;
+
 
  templateThisParameter ::=
      'this' templateTypeParameter
-     ;
+
 
  templateTupleParameter ::=
      Identifier '...'
-     ;
+
 
  templateTypeParameter ::=
      Identifier (':' type)? ('=' type)?
-     ;
+
 
  templateValueParameter ::=
      type Identifier (':' expression)? templateValueParameterDefault?
-     ;
+
 
  templateValueParameterDefault ::=
      '=' ('__FILE__' | '__MODULE__' | '__LINE__' | '__FUNCTION__' | '__PRETTY_FUNCTION__' | assignExpression)
-     ;
+
 
  ternaryExpression ::=
      orOrExpression ('?' expression ':' ternaryExpression)?
-     ;
+
 
  throwStatement ::=
      'throw' expression ';'
-     ;
+
 
  traitsExpression ::=
-     '__traits' '(' Identifier ',' TemplateArgumentList ')'
-     ;
+     '__traits' '(' Identifier ',' templateArgumentList ')'
+
 
  tryStatement ::=
      'try' declarationOrStatement ((catches finally_?) | finally_)
-     ;
+
 
  type ::=
      attribute? type2 typeSuffix*
-     ;
+
 
  type2 ::=
        builtinType
      | symbol
      | typeofExpression ('.' identifierOrTemplateChain)?
      | typeConstructor '(' type ')'
-     ;
+
 
  typeConstructor ::=
        'const'
@@ -1501,11 +1122,11 @@ ifCondition ::=
      | 'inout'
      | 'shared'
      | 'scope'
-     ;
+
 
  typeConstructors ::=
      typeConstructor+
-     ;
+
 
  typeSpecialization ::=
        type
@@ -1524,7 +1145,7 @@ ifCondition ::=
      | 'return'
      | 'typedef'
      | '__parameters'
-     ;
+
 
  typeSuffix ::=
        '*'
@@ -1532,16 +1153,17 @@ ifCondition ::=
      | '[' assignExpression ']'
      | '[' assignExpression '..'  assignExpression ']'
      | ('delegate' | 'function') parameters memberFunctionAttribute*
-     ;
+
 
  typeidExpression ::=
      'typeid' '(' (type | expression) ')'
-     ;
+
 
  typeofExpression ::=
      'typeof' '(' (expression | 'return') ')'
-     ;
 
+
+// TODO 4
 unaryExpression ::=
       primaryExpression
     | '&' unaryExpression
@@ -1552,62 +1174,62 @@ unaryExpression ::=
     | '~' unaryExpression
     | '++' unaryExpression
     | '--' unaryExpression
-    | unaryExpression templateArguments? arguments
-    | unaryExpression '[' assignExpression '..' assignExpression ']'
-    | unaryExpression '[' ']'
-    | unaryExpression '[' argumentList ']'
+//    | unaryExpression templateArguments? arguments
+//    | unaryExpression '[' assignExpression '..' assignExpression ']'
+//    | unaryExpression '[' ']'
+//    | unaryExpression '[' argumentList ']'
     | newExpression
     | deleteExpression
     | castExpression
     | assertExpression
     | '(' type ')' '.' identifierOrTemplateInstance
-    | unaryExpression '.' identifierOrTemplateInstance
-    | unaryExpression '--'
-    | unaryExpression '++'
-    ;
+//    | unaryExpression '.' identifierOrTemplateInstance
+//    | unaryExpression '--'
+//    | unaryExpression '++'
+
 
  unionDeclaration ::=
        'union' Identifier templateParameters constraint? structBody
      | 'union' Identifier (structBody | ';')
      | 'union' structBody
-     ;
+
 
  unittest ::=
      'unittest' blockStatement
-     ;
+
 
  variableDeclaration ::=
        type declarator (',' declarator)* ';'
      | type declarator '=' functionBody
      | autoDeclaration
-     ;
+
 
  vector ::=
      '__vector' '(' type ')'
-     ;
 
+
+// TODO 3
  versionCondition ::=
-     'version' '(' (IntegerLiteral | Identifier | 'unittest' | 'assert') ')'
-     ;
+//     'version' '(' (IntegerLiteral | Identifier | 'unittest' | 'assert') ')'
+     'version' '(' (Identifier | 'unittest' | 'assert') ')'
 
+
+// TODO 2
  versionSpecification ::=
-     'version' '=' (Identifier | IntegerLiteral) ';'
-     ;
+//     'version' '=' (Identifier | IntegerLiteral) ';'
+     'version' '=' Identifier ';'
+
 
  whileStatement ::=
      'while' '(' expression ')' declarationOrStatement
-     ;
+
 
  withStatement ::=
      'with' '(' expression ')' statementNoCaseNoDefault
-     ;
 
+
+// TODO 1
  xorExpression ::=
        andExpression
-     | xorExpression '^' andExpression
-     ;
-
-
-
-
+//     | xorExpression '^' andExpression
 
