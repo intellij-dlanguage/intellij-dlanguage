@@ -1,5 +1,19 @@
-
 {
+
+  parserClass="net.masterthought.dlanguage.parser.DLanguageParser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="DLanguage"
+  psiImplClassSuffix="Impl"
+  psiPackage="net.masterthought.dlanguage.psi"
+  psiImplPackage="net.masterthought.dlanguage.psi.impl"
+
+  elementTypeHolderClass="net.masterthought.dlanguage.psi.DLanguageTypes"
+  elementTypeClass="net.masterthought.dlanguage.psi.DLanguageElementType"
+  tokenTypeClass="net.masterthought.dlanguage.psi.DLanguageTokenType"
+
+  generateTokenAccessors=true
 
 tokens = [
   Assign = "="
@@ -183,12 +197,37 @@ tokens = [
   TParameters = "__parameters"
   TVector = "__vector"
 
-  Identifier = "regexp:\w+"
-  space='regexp:\s+'
-//  string_literal='regexp:"\w+"'
-//  string="regexp:('([^'\\]|\\.)*'|\"([^\"\\]|\\\"|\\\'|\\)*\")"
-//  integer="regexp:\d+"
-//  float="regexp:[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?"
+
+  Identifier="regexp:([a-zA-Z_])([a-zA-Z0-9_])*"
+
+  Whitespace = "regexp:[\ \t\f]"
+  NewLine = "regexp:[\n\r]+"
+  EOL = "regexp:[\Z]"
+
+  Character = "regexp:[^\r\n]"
+  Letter = "regexp:[\w]"
+  Digit = "regexp:[\d]"
+  HexDigit = "regexp:[0-9abcdefABCDEF_]"
+  OctalDigit = "regexp:[0-7]"
+  NamedCharacterEntity = "regexp:&([a-zA-Z_])([a-zA-Z0-9_])*;"
+
+  WYSIWYG_STRING = "regexp:r\"[^\"]*\"[cwd]*"
+  AlternateWysiwygString = "regexp:`[^`]*`[cwd]*"
+//  EscapeSequence = "regexp:((\\'|\\\"|\\\?|\\\|\\0|\\a|\\b|\\f|\\n|\\r|\\t|\\v)|(\\x[0-9abcdefABCDEF_]{2})|(\\[0-7])|(\\[0-7]{2})|(\\[0-7]{3})|(\\u[0-9abcdefABCDEF_]{4})|(\\U[0-9abcdefABCDEF_]{8})|(\\&([a-zA-Z_])([a-zA-Z0-9_])*;))"
+
+  DoubleQuotedString = 'regexp:\"([^\\"]|((\\"|\\\?|\\\|\\0|\\a|\\b|\\f|\\n|\\r|\\t|\\v)|(\\x[0-9abcdefABCDEF_]{2})|(\\[0-7])|(\\[0-7]{2})|(\\[0-7]{3})|(\\u[0-9abcdefABCDEF_]{4})|(\\U[0-9abcdefABCDEF_]{8})|(\\&([a-zA-Z_])([a-zA-Z0-9_])*;)))*\"[cwd]*'
+  HexString = 'regexp:x\"([0-9a-fA-F][0-9a-fA-F]|[\r\n\s])*\"[cwd]*'
+
+// TODO - delimited String
+//  DELIMITED_STRING_SQ_BR =         q\"\[ ([^\]] | \][^\"])* \]\"
+//  DELIMITED_STRING_PARENTH =       q\"\( ([^\)] | \)[^\"])* \)\"
+//  DELIMITED_STRING_ANGLE_PARENTH = q\"\< ([^\>] | \>[^\"])* \>\"
+//  DELIMITED_STRING_BRACE =         q\"\{ ([^}]  |  }[^\"])* }\"
+//  DELIMITED_STRING = ({DELIMITED_STRING_SQ_BR} | {DELIMITED_STRING_PARENTH}
+//                    | {DELIMITED_STRING_ANGLE_PARENTH} | {DELIMITED_STRING_BRACE}) {STRING_POSTFIX}?
+
+
+
   line_comment="regexp://.*"
   block_comment="regexp:/\*(.|\n)*\*/"
 ]
@@ -197,7 +236,6 @@ tokens = [
 }
 
 dFile ::= item_*
-
 
 // ------------------ strings and numbers -------------------
 
@@ -274,9 +312,10 @@ dFile ::= item_*
 
 private item_ ::= ( moduleDeclaration | declaration | statement)
 
-  StringLiteral  ::= 'regexp:"\w*"'
+//  StringLiteral  ::= 'regexp:"\w*"'
+  StringLiteral  ::= (WYSIWYG_STRING | AlternateWysiwygString | DoubleQuotedString | HexString)
   IntegerLiteral ::= 'regexp:\d+?'
-  FloatLiteral ::= 'regexp:[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?'
+  FloatLiteral ::= 'regexp:\d+?'
 
  aliasDeclaration ::=
        'alias' aliasInitializer (',' aliasInitializer)* ';'
