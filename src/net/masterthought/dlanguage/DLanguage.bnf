@@ -187,9 +187,10 @@ tokens = [
   space='regexp:\s+'
 //  string_literal='regexp:"\w+"'
 //  string="regexp:('([^'\\]|\\.)*'|\"([^\"\\]|\\\"|\\\'|\\)*\")"
-  number="regexp:\d+"
-//  line_comment="regexp://.*"
-//  block_comment="regexp:/\*(.|\n)*\*/"
+//  integer="regexp:\d+"
+//  float="regexp:[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?"
+  line_comment="regexp://.*"
+  block_comment="regexp:/\*(.|\n)*\*/"
 ]
 
 
@@ -197,9 +198,85 @@ tokens = [
 
 dFile ::= item_*
 
-private item_ ::= ( moduleDeclaration | declaration )
 
-  StringLiteral ::= 'regexp:"\w*"'
+// ------------------ strings and numbers -------------------
+
+//  private Character ::=  "regexp:[\u0001-\uffff]"
+//  private WysiwygCharacter ::= (Character | Whitespace)
+//  private HexDigit ::= "regexp:[a-fA-F0-9]"
+//  private OctalDigit ::= "regexp:[0-7]"
+//  private BinDigit ::= "regexp:[01]"
+//  private DecimalDigit ::= "regexp:[0-9]"
+//
+//  private BlockComment ::= "regexp:\/*.*? *\/"
+//  private LineComment ::= '//' ("regexp:~[\\u000D\\u000A\\u2028\\u2029]")*
+//  private NestingBlockComment ::= '/+' (NestingBlockComment | "regexp:.")* '+/'
+//  Comment ::= (BlockComment | LineComment | NestingBlockComment)+
+//
+////  private Identifier ::= "regexp:([a-zA-Z_])([a-zA-Z0-9_])"*
+//
+//  private WysiwygString ::= 'r"' "regexp:.*?" '"' StringPostfix?
+//  private AlternativeWysiwygString ::= '`' "regexp:.*?" '`' StringPostfix?
+//
+//  private EscapeSequence ::= "\\\'"
+//      | '\\"'
+//      | '\\\\'
+//      | '\\?'
+//      | '\\0'
+//      | '\\a'
+//      | '\\b'
+//      | '\\f'
+//      | '\\n'
+//      | '\\r'
+//      | '\\t'
+//      | '\\v'
+//      | '\\x' HexDigit HexDigit
+//      | '\\' OctalDigit OctalDigit? OctalDigit?
+//      | '\\u' HexDigit HexDigit HexDigit HexDigit
+//      | '\\U' HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit
+//      | '\\&' Identifier ';';
+//  private HexStringChar ::= "regexp:[0-9a-fA-F]" | Whitespace | EndOfLine
+//  private StringPostfix ::= "regexp:[dwc]"
+//  private DoubleQuotedCharacter ::= EscapeSequence | "regexp:~('\"' | '\\' )"
+//  private DoubleQuotedString ::= '"' DoubleQuotedCharacter* '"'  StringPostfix?
+//  private HexString ::= 'x"' HexStringChar* '"' StringPostfix?
+//  private StringFragment ::= WysiwygString | AlternativeWysiwygString | DoubleQuotedString | HexString
+//  private StringLiteral ::= StringFragment (Whitespace? StringFragment)*
+//
+////  CharacterLiteral ::= '\'' ( EscapeSequence | ~[\\'] )*? '\'';
+//
+//  IntegerLiteral ::= Integer IntegerSuffix?
+//  private Integer ::= BinaryInteger | DecimalInteger | HexadecimalInteger
+//  private IntegerSuffix ::= ('L' | 'u' | 'U' | 'Lu' | 'LU' | 'uL' | 'UL')
+//  private DecimalInteger ::= DecimalDigit (DecimalDigit | '_')*
+//  private BinaryInteger ::= ('0b' | '0B') BinDigit (BinDigit | '_')*
+//  private HexadecimalInteger ::= ('0x' | '0X') HexDigit (HexDigit | '_')*
+//
+//  FloatLiteral ::= (FloatOption (FloatSuffix | RealSuffix)?) | (Integer (FloatSuffix | RealSuffix)? ImaginarySuffix)
+//  private FloatOption ::= DecimalFloat | HexFloat
+//  private DecimalFloat
+//      ::= DecimalInteger '.' (DecimalDigit (DecimalDigit | '_')* DecimalExponent?)?  // BUG: can't lex a[0..1] properly
+//      | '.' DecimalInteger DecimalExponent?
+//      | DecimalInteger DecimalExponent
+//      ;
+//  private DecimalExponent ::= ('e' | 'E' | 'e+' | 'E+' | 'e-' | 'E-') DecimalInteger
+//  private FloatSuffix ::= 'F' | 'f'
+//  private RealSuffix ::= 'L'
+//  private ImaginarySuffix ::= 'i'
+//  private HexFloat ::= ('0x' | '0X') ((HexDigit (HexDigit | '_')* '.' HexDigit (HexDigit | '_')*) | ('.' HexDigit (HexDigit | '_')*) | (HexDigit (HexDigit | '_')*)) HexExponent
+//  private HexExponent ::= ('p' | 'P' | 'p+' | 'P+' | 'p-' | 'P-') DecimalDigit (DecimalDigit | '_')*
+//
+//  SpecialTokenSequence ::= '#line' Space+ IntegerLiteral Space* ('"' "regexp:.*?" '"' Space*)? (EndOfLine | EOF)+
+//  private Space ::= "regexp:[\u0020\u0009\u000B\u000C]"
+
+// ----------------------------------------------------------
+
+
+private item_ ::= ( moduleDeclaration | declaration | statement)
+
+  StringLiteral  ::= 'regexp:"\w*"'
+  IntegerLiteral ::= 'regexp:\d+?'
+  FloatLiteral ::= 'regexp:[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?'
 
  aliasDeclaration ::=
        'alias' aliasInitializer (',' aliasInitializer)* ';'
@@ -213,8 +290,7 @@ private item_ ::= ( moduleDeclaration | declaration )
 
 // TODO 29
  alignAttribute ::=
-//     'align' ('(' IntegerLiteral ')')?
-     'align' ('(' Identifier ')')?
+     'align' ('(' IntegerLiteral ')')?
 
  argumentList ::=
      assignExpression (',' assignExpression?)*
@@ -241,7 +317,7 @@ private item_ ::= ( moduleDeclaration | declaration )
 // TODO 24
  asmInstruction ::=
      Identifier
-//     | 'align' IntegerLiteral
+     | 'align' IntegerLiteral
      | 'align' Identifier
      | Identifier ':' asmInstruction
      | Identifier asmExp
@@ -261,9 +337,9 @@ private item_ ::= ( moduleDeclaration | declaration )
 
 // TODO 23
  asmPrimaryExp ::=
-//       IntegerLiteral
-//     | FloatLiteral
-      register
+       IntegerLiteral
+     | FloatLiteral
+     | register
      | identifierChain
      | '$'
 
@@ -445,13 +521,11 @@ private item_ ::= ( moduleDeclaration | declaration )
 
 // TODO 23
  debugCondition ::=
-//     'debug' ('(' (IntegerLiteral | Identifier) ')')?
-     'debug' ('(' Identifier ')')?
+     'debug' ('(' (IntegerLiteral | Identifier) ')')?
 
 // TODO 22
  debugSpecification ::=
-//     'debug' '=' (Identifier | IntegerLiteral) ';'
-     'debug' '=' Identifier ';'
+     'debug' '=' (Identifier | IntegerLiteral) ';'
 
 declaration ::=
      attribute* declaration2
@@ -509,12 +583,64 @@ declaration2 ::=
  doStatement ::=
      'do' statementNoCaseNoDefault 'while' '(' expression ')' ';'
 
- enumBody ::= ';' | '{' enumMember (',' enumMember?)* '}'
+//enumBody ::= ';' | '{' enumMember (',' enumMember?)* '}'
+//
+//
+//enumDeclaration ::=
+//     'enum' Identifier? (':' type)? enumBody
+//
+//enumMember ::= Identifier | (Identifier | type) '=' assignExpression
 
- enumDeclaration ::=
-     'enum' Identifier? (':' type)? enumBody
+// ------ Enums -----
 
- enumMember ::= Identifier | (Identifier | type) '=' assignExpression
+enumDeclaration ::=
+    'enum' Identifier (':' type)? enumBody |
+    'enum' Identifier enumBody |
+    anonymousEnumDeclaration
+
+enumBody ::=
+    ';' | '{' enumMembers '}'
+
+
+//enumMembers ::=
+//    enumMember |
+//    enumMember ',' |
+//    enumMember ',' enumMembers
+
+enumMembers ::=
+    enumMember (',' enumMember?)* enumMembers?
+
+//enumMember ::=
+//    Identifier  |
+//    Identifier '=' assignExpression
+
+enumMember ::=
+    Identifier ('=' assignExpression)?
+
+anonymousEnumDeclaration ::=
+    'enum' ':' type '{' enumMembers '}' |
+    'enum' '{' enumMembers '}'          |
+    'enum' '{' anonymousEnumMembers '}' |
+    'enum' anonymousEnumMembers ';'
+
+//anonymousEnumMembers ::=
+//    anonymousEnumMember |
+//    anonymousEnumMember ',' |
+//    anonymousEnumMember ',' anonymousEnumMembers
+
+anonymousEnumMembers ::=
+    anonymousEnumMember (',' anonymousEnumMember?)* anonymousEnumMembers?
+
+anonymousEnumMember ::=
+    enumMember | type Identifier ('=' assignExpression)?
+
+//anonymousEnumMember ::=
+//    enumMember |
+//    type Identifier '=' assignExpression
+
+// ------------------
+
+
 
  equalExpression ::=
      shiftExpression ('==' | '!=') shiftExpression
@@ -557,16 +683,9 @@ declaration2 ::=
        unaryExpression templateArguments? arguments
      | type arguments
 
-//TODO 21
 functionCallStatement ::=
      functionCallExpression ';'
      ;
-
-
-//TODO 31
-//functionDeclaration ::=
-//       (storageClass | type) Identifier templateParameters? parameters? memberFunctionAttribute* constraint? (functionBody | ';')
-
 
 functionDeclaration ::=
        (storageClass+ | type) Identifier parameters memberFunctionAttribute* (functionBody | ';')
@@ -726,6 +845,7 @@ ifCondition ::=
      | versionSpecification
      | debugSpecification
      | expressionStatement
+     | functionCallStatement
 
  nonVoidInitializer ::=
        assignExpression
@@ -741,11 +861,6 @@ ifCondition ::=
 
 parameter ::=
      parameterAttribute* type (Identifier? '...' | (Identifier? ('=' assignExpression)?))?
-
-// parameter ::=
-//     parameterAttribute* type
-//     parameterAttribute* type Identifier? '...'
-//     parameterAttribute* type Identifier? ('=' assignExpression)?
 
  parameterAttribute ::=
        typeConstructor
@@ -818,17 +933,14 @@ parameter ::=
      | '__MODULE__'
      | '__FUNCTION__'
      | '__PRETTY_FUNCTION__'
-  //   | IntegerLiteral
-  //   | FloatLiteral
+     | IntegerLiteral
+     | FloatLiteral
      | StringLiteral+
   //   | CharacterLiteral
 
-// TODO 9
  register ::=
      Identifier
-//     | Identifier '(' IntegerLiteral ')'
-
-
+     | Identifier '(' IntegerLiteral ')'
 
  relOperator ::=
        '<'
@@ -879,8 +991,6 @@ parameter ::=
      | caseStatement
      | caseRangeStatement
      | defaultStatement
-     | functionCallStatement
-
 
  staticAssertDeclaration ::=
      staticAssertStatement
@@ -908,7 +1018,7 @@ parameter ::=
      | deprecated
      | 'abstract'
      | 'auto'
-     | 'enum'
+//     | 'enum'
      | 'extern'
      | 'final'
      | 'nothrow'
@@ -975,7 +1085,7 @@ parameter ::=
      | eponymousTemplateDeclaration
 
 
- eponymousTemplateDeclaration ::=
+eponymousTemplateDeclaration ::=
      'enum' Identifier templateParameters '=' assignExpression ';'
 
 
@@ -1009,8 +1119,8 @@ parameter ::=
      | Identifier
 //     | CharacterLiteral
      | StringLiteral
-//     | IntegerLiteral
-//     | FloatLiteral
+     | IntegerLiteral
+     | FloatLiteral
      | 'true'
      | 'false'
      | 'null'
@@ -1168,14 +1278,12 @@ unaryExpression ::=
 
 // TODO 3
  versionCondition ::=
-//     'version' '(' (IntegerLiteral | Identifier | 'unittest' | 'assert') ')'
-     'version' '(' (Identifier | 'unittest' | 'assert') ')'
+     'version' '(' (IntegerLiteral | Identifier | 'unittest' | 'assert') ')'
 
 
 // TODO 2
  versionSpecification ::=
-//     'version' '=' (Identifier | IntegerLiteral) ';'
-     'version' '=' Identifier ';'
+     'version' '=' (Identifier | IntegerLiteral) ';'
 
 
  whileStatement ::=
@@ -1190,9 +1298,8 @@ unaryExpression ::=
   asmAndExp ::=
       asmEqualExp ('&' asmEqualExp)?
 
- // left recursion rules
+ // left recursion rules adjustment
 
- // TODO 30
  //addExpression ::=
  //       mulExpression
  //     | addExpression ('+' | '-' | '~') mulExpression
@@ -1200,7 +1307,7 @@ unaryExpression ::=
  addExpression ::= mulExpression addExpression2
  private addExpression2 ::= ('+' | '-' | '~') addExpression |
 
- // TODO 28
+
  // andAndExpression ::=
  //       orExpression
  ////     | andAndExpression '&&' orExpression
@@ -1208,7 +1315,7 @@ unaryExpression ::=
   andAndExpression ::= orExpression andAndExpression2
   private andAndExpression2 ::= '&&' andAndExpression |
 
- // TODO 27
+
  // andExpression ::=
  //       cmpExpression
  ////     | andExpression '&' cmpExpression
@@ -1216,7 +1323,7 @@ unaryExpression ::=
   andExpression ::= cmpExpression andExpression2
   private andExpression2 ::= '&' andExpression |
 
- // TODO 26
+
  // asmAddExp ::=
  //       asmMulExp
  ////     | asmAddExp ('+' | '-') asmMulExp
@@ -1224,7 +1331,7 @@ unaryExpression ::=
   asmAddExp ::= asmMulExp asmAddExp2
   private asmAddExp2 ::= ('+' | '-') asmAddExp |
 
- // TODO 25
+
  // asmBrExp ::=
  //       asmUnaExp
  //     | asmBrExp '[' asmExp ']'
@@ -1232,7 +1339,7 @@ unaryExpression ::=
   asmBrExp ::= asmUnaExp asmBrExp2
   private asmBrExp2 ::= '[' asmExp ']' asmBrExp |
 
- // TODO 17
+
  // mulExpression ::=
  //       powExpression
  //     | mulExpression ('*' | '/' | '%') powExpression
@@ -1240,7 +1347,7 @@ unaryExpression ::=
   mulExpression ::= powExpression mulExpression2
   private mulExpression2 ::= ('*' | '/' | '%') mulExpression |
 
- // TODO 16
+
  // orExpression ::=
  //       xorExpression
  //     | orExpression '|' xorExpression
@@ -1248,7 +1355,7 @@ unaryExpression ::=
  orExpression ::= xorExpression orExpression2
  private orExpression2 ::= '|' orExpression |
 
- // TODO 15
+
  // orOrExpression ::=
  //       andAndExpression
  //     | orOrExpression '||' andAndExpression
@@ -1256,7 +1363,7 @@ unaryExpression ::=
  orOrExpression ::= andAndExpression orOrExpression2
  private orOrExpression2 ::= '||' orOrExpression |
 
- // TODO 12
+
  // powExpression ::=
  //       unaryExpression
  //     | powExpression '^^' unaryExpression
@@ -1264,7 +1371,7 @@ unaryExpression ::=
   powExpression ::= unaryExpression powExpression2
   private powExpression2 ::= '^^' powExpression |
 
- //TODO 8
+
  // relExpression ::=
  //       shiftExpression
  //     | relExpression relOperator shiftExpression
@@ -1272,7 +1379,7 @@ unaryExpression ::=
   relExpression ::= shiftExpression relExpression2
   private relExpression2 ::= relOperator relExpression |
 
- //TODO 7
+
  // shiftExpression ::=
  //       addExpression
  //     | shiftExpression ('<<' | '>>' | '>>>') addExpression
@@ -1280,7 +1387,7 @@ unaryExpression ::=
   shiftExpression ::= addExpression shiftExpression2
   private shiftExpression2 ::= ('<<' | '>>' | '>>>') shiftExpression |
 
- // TODO 1
+
  // xorExpression ::=
  //       andExpression
  //     | xorExpression '^' andExpression
