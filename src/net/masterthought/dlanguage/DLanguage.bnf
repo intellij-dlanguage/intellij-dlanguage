@@ -188,8 +188,8 @@ tokens = [
 //  string_literal='regexp:"\w+"'
 //  string="regexp:('([^'\\]|\\.)*'|\"([^\"\\]|\\\"|\\\'|\\)*\")"
   number="regexp:\d+"
-  line_comment="regexp://.*"
-  block_comment="regexp:/\*(.|\n)*\*/"
+//  line_comment="regexp://.*"
+//  block_comment="regexp:/\*(.|\n)*\*/"
 ]
 
 
@@ -558,9 +558,9 @@ declaration2 ::=
      | type arguments
 
 //TODO 21
-// functionCallStatement ::=
-//     functionCallExpression ';'
-//     ;
+functionCallStatement ::=
+     functionCallExpression ';'
+     ;
 
 
 //TODO 31
@@ -879,6 +879,7 @@ parameter ::=
      | caseStatement
      | caseRangeStatement
      | defaultStatement
+     | functionCallStatement
 
 
  staticAssertDeclaration ::=
