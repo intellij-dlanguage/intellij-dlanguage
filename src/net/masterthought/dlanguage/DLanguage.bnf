@@ -132,7 +132,7 @@ tokens = [
   Case =  "case"
   Cast =  "cast"
   TCatch =  "catch"
-  Class =  "class"
+  DClass =  "class"
   Continue =  "continue"
   Debug =  "debug"
   Default =  "default"
@@ -200,23 +200,21 @@ tokens = [
 
   Identifier="regexp:([a-zA-Z_])([a-zA-Z0-9_])*"
 
-  Whitespace = "regexp:[\ \t\f]"
-  NewLine = "regexp:[\n\r]+"
-  EOL = "regexp:[\Z]"
+WHITE_SPACE="regexp:([\r|\n|\r\n]|[\ \t\f])+"
 
-  Character = "regexp:[^\r\n]"
+
   Letter = "regexp:[\w]"
   Digit = "regexp:[\d]"
   HexDigit = "regexp:[0-9abcdefABCDEF_]"
   OctalDigit = "regexp:[0-7]"
   NamedCharacterEntity = "regexp:&([a-zA-Z_])([a-zA-Z0-9_])*;"
 
-  WYSIWYG_STRING = "regexp:r\"[^\"]*\"[cwd]*"
-  AlternateWysiwygString = "regexp:`[^`]*`[cwd]*"
+//  WYSIWYG_STRING = "regexp:r\"[^\"]*\"[cwd]*"
+//  AlternateWysiwygString = "regexp:`[^`]*`[cwd]*"
 //  EscapeSequence = "regexp:((\\'|\\\"|\\\?|\\\|\\0|\\a|\\b|\\f|\\n|\\r|\\t|\\v)|(\\x[0-9abcdefABCDEF_]{2})|(\\[0-7])|(\\[0-7]{2})|(\\[0-7]{3})|(\\u[0-9abcdefABCDEF_]{4})|(\\U[0-9abcdefABCDEF_]{8})|(\\&([a-zA-Z_])([a-zA-Z0-9_])*;))"
 
   DoubleQuotedString = 'regexp:\"([^\\"]|((\\"|\\\?|\\\|\\0|\\a|\\b|\\f|\\n|\\r|\\t|\\v)|(\\x[0-9abcdefABCDEF_]{2})|(\\[0-7])|(\\[0-7]{2})|(\\[0-7]{3})|(\\u[0-9abcdefABCDEF_]{4})|(\\U[0-9abcdefABCDEF_]{8})|(\\&([a-zA-Z_])([a-zA-Z0-9_])*;)))*\"[cwd]*'
-  HexString = 'regexp:x\"([0-9a-fA-F][0-9a-fA-F]|[\r\n\s])*\"[cwd]*'
+//  HexString = 'regexp:x\"([0-9a-fA-F][0-9a-fA-F]|[\r\n\s])*\"[cwd]*'
 
 // TODO - delimited String
 //  DELIMITED_STRING_SQ_BR =         q\"\[ ([^\]] | \][^\"])* \]\"
@@ -281,16 +279,16 @@ dFile ::= item_*
 //  private StringFragment ::= WysiwygString | AlternativeWysiwygString | DoubleQuotedString | HexString
 //  private StringLiteral ::= StringFragment (Whitespace? StringFragment)*
 //
-////  CharacterLiteral ::= '\'' ( EscapeSequence | ~[\\'] )*? '\'';
+////  CHARACTER_LITERAL ::= '\'' ( EscapeSequence | ~[\\'] )*? '\'';
 //
-//  IntegerLiteral ::= Integer IntegerSuffix?
+//  INTEGER_LITERAL ::= Integer IntegerSuffix?
 //  private Integer ::= BinaryInteger | DecimalInteger | HexadecimalInteger
 //  private IntegerSuffix ::= ('L' | 'u' | 'U' | 'Lu' | 'LU' | 'uL' | 'UL')
 //  private DecimalInteger ::= DecimalDigit (DecimalDigit | '_')*
 //  private BinaryInteger ::= ('0b' | '0B') BinDigit (BinDigit | '_')*
 //  private HexadecimalInteger ::= ('0x' | '0X') HexDigit (HexDigit | '_')*
 //
-//  FloatLiteral ::= (FloatOption (FloatSuffix | RealSuffix)?) | (Integer (FloatSuffix | RealSuffix)? ImaginarySuffix)
+//  FLOAT_LITERAL ::= (FloatOption (FloatSuffix | RealSuffix)?) | (Integer (FloatSuffix | RealSuffix)? ImaginarySuffix)
 //  private FloatOption ::= DecimalFloat | HexFloat
 //  private DecimalFloat
 //      ::= DecimalInteger '.' (DecimalDigit (DecimalDigit | '_')* DecimalExponent?)?  // BUG: can't lex a[0..1] properly
@@ -304,7 +302,7 @@ dFile ::= item_*
 //  private HexFloat ::= ('0x' | '0X') ((HexDigit (HexDigit | '_')* '.' HexDigit (HexDigit | '_')*) | ('.' HexDigit (HexDigit | '_')*) | (HexDigit (HexDigit | '_')*)) HexExponent
 //  private HexExponent ::= ('p' | 'P' | 'p+' | 'P+' | 'p-' | 'P-') DecimalDigit (DecimalDigit | '_')*
 //
-//  SpecialTokenSequence ::= '#line' Space+ IntegerLiteral Space* ('"' "regexp:.*?" '"' Space*)? (EndOfLine | EOF)+
+//  SpecialTokenSequence ::= '#line' Space+ INTEGER_LITERAL Space* ('"' "regexp:.*?" '"' Space*)? (EndOfLine | EOF)+
 //  private Space ::= "regexp:[\u0020\u0009\u000B\u000C]"
 
 // ----------------------------------------------------------
@@ -313,9 +311,10 @@ dFile ::= item_*
 private item_ ::= ( moduleDeclaration | declaration | statement)
 
 //  StringLiteral  ::= 'regexp:"\w*"'
-  StringLiteral  ::= (WYSIWYG_STRING | AlternateWysiwygString | DoubleQuotedString | HexString)
-  IntegerLiteral ::= 'regexp:\d+?'
-  FloatLiteral ::= 'regexp:\d+?'
+  StringLiteral  ::= (WYSIWYG_STRING | ALTERNATEWYSIWYGSTRING | DOUBLEQUOTEDSTRING | HEXSTRING)
+//  INTEGER_LITERAL ::= INTEGER_LITERAL
+//  FLOAT_LITERAL ::= FLOAT_LITERAL
+//  CHARACTER_LITERAL ::= CHARACTER_LITERAL
 
  aliasDeclaration ::=
        'alias' aliasInitializer (',' aliasInitializer)* ';'
@@ -329,7 +328,7 @@ private item_ ::= ( moduleDeclaration | declaration | statement)
 
 // TODO 29
  alignAttribute ::=
-     'align' ('(' IntegerLiteral ')')?
+     'align' ('(' INTEGER_LITERAL ')')?
 
  argumentList ::=
      assignExpression (',' assignExpression?)*
@@ -356,7 +355,7 @@ private item_ ::= ( moduleDeclaration | declaration | statement)
 // TODO 24
  asmInstruction ::=
      Identifier
-     | 'align' IntegerLiteral
+     | 'align' INTEGER_LITERAL
      | 'align' Identifier
      | Identifier ':' asmInstruction
      | Identifier asmExp
@@ -376,8 +375,8 @@ private item_ ::= ( moduleDeclaration | declaration | statement)
 
 // TODO 23
  asmPrimaryExp ::=
-       IntegerLiteral
-     | FloatLiteral
+       INTEGER_LITERAL
+     | FLOAT_LITERAL
      | register
      | identifierChain
      | '$'
@@ -560,11 +559,11 @@ private item_ ::= ( moduleDeclaration | declaration | statement)
 
 // TODO 23
  debugCondition ::=
-     'debug' ('(' (IntegerLiteral | Identifier) ')')?
+     'debug' ('(' (INTEGER_LITERAL | Identifier) ')')?
 
 // TODO 22
  debugSpecification ::=
-     'debug' '=' (Identifier | IntegerLiteral) ';'
+     'debug' '=' (Identifier | INTEGER_LITERAL) ';'
 
 declaration ::=
      attribute* declaration2
@@ -972,14 +971,14 @@ parameter ::=
      | '__MODULE__'
      | '__FUNCTION__'
      | '__PRETTY_FUNCTION__'
-     | IntegerLiteral
-     | FloatLiteral
+     | INTEGER_LITERAL
+     | FLOAT_LITERAL
      | StringLiteral+
-  //   | CharacterLiteral
+     | CHARACTER_LITERAL
 
  register ::=
      Identifier
-     | Identifier '(' IntegerLiteral ')'
+     | Identifier '(' INTEGER_LITERAL ')'
 
  relOperator ::=
        '<'
@@ -1156,10 +1155,10 @@ eponymousTemplateDeclaration ::=
  templateSingleArgument ::=
        builtinType
      | Identifier
-//     | CharacterLiteral
+     | CHARACTER_LITERAL
      | StringLiteral
-     | IntegerLiteral
-     | FloatLiteral
+     | INTEGER_LITERAL
+     | FLOAT_LITERAL
      | 'true'
      | 'false'
      | 'null'
@@ -1317,12 +1316,12 @@ unaryExpression ::=
 
 // TODO 3
  versionCondition ::=
-     'version' '(' (IntegerLiteral | Identifier | 'unittest' | 'assert') ')'
+     'version' '(' (INTEGER_LITERAL | Identifier | 'unittest' | 'assert') ')'
 
 
 // TODO 2
  versionSpecification ::=
-     'version' '=' (Identifier | IntegerLiteral) ';'
+     'version' '=' (Identifier | INTEGER_LITERAL) ';'
 
 
  whileStatement ::=
@@ -1407,7 +1406,7 @@ unaryExpression ::=
  //       unaryExpression
  //     | powExpression '^^' unaryExpression
 
-  powExpression ::= unaryExpression powExpression2
+  private powExpression ::= unaryExpression powExpression2
   private powExpression2 ::= '^^' powExpression |
 
 

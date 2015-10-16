@@ -7,6 +7,6 @@ import java.io.Reader;
 public class DLanguageLexerAdapter extends FlexAdapter {
 
     public DLanguageLexerAdapter() {
-        super(new DLanguageLexer((Reader) null));
+        super(new _DLanguageLexer((Reader) null));
     }
 }
