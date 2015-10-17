@@ -16,218 +16,195 @@
   generateTokenAccessors=true
 
 tokens = [
-  Assign = "="
-  At =  "@"
-  BitAnd =  "&"
-  BitAndEqual =  "&="
-  BitOr =  "|"
-  BitOrEqual =  "|="
-  CatEqual =  "~="
-  Colon =  ":"
-  Comma =  ","
-  Decrement =  "--"
-  Div =  "/"
-  DivEqual =  "/="
-  Dollar =  "$"
-  Dot =  "."
-  Equal =  "=="
-  GoesTo =  "=>"
-  Greater =  ">"
-  GreaterEqual =  ">="
-  Hash =  "#"
-  Increment =  "++"
-  LBrace =  "{"
-  LBracket =  "["
-  Less =  "<"
-  LessEqual =  "<="
-  LessEqualGreater =  "<>="
-  LessOrGreater =  "<>"
-  LogicAnd =  "&&"
-  LogicOr =  "||"
-  LParen =  "("
-  Minus =  "-"
-  MinusEqual =  "-="
-  Mod =  "%"
-  ModEqual =  "%="
-  MulEqual =  "*="
-  Not =  "!"
-  NotEqual =  "!="
-  NotGreater =  "!>"
-  NotGreaterEqual =  "!>="
-  NotLess =  "!<"
-  NotLessEqual =  "!<="
-  NotLessEqualGreater =  "!<>"
-  Plus =  "+"
-  PlusEqual =  "+="
-  Pow =  "^^"
-  PowEqual =  "^^="
-  RBrace =  "}"
-  RBracket =  "]"
-  RParen =  ")"
-  Semicolon =  ""
-  ShiftLeft =  "<<"
-  ShiftLeftEqual =  "<<="
-  ShiftRight =  ">>"
-  ShiftRightEqual =  ">>="
-  Slice =  ".."
-  Star =  "*"
-  Ternary =  "?"
-  Tilde =  "~"
-  Unordered =  "!<>="
-  UnsignedShiftRight =  ">>>"
-  UnsignedShiftRightEqual =  ">>>="
-  Vararg =  "..."
-  Xor =  "^"
-  XorEqual =  "^="
-  Bool =  "bool"
-  Byte =  "byte"
-  Cdouble =  "cdouble"
-  Cent =  "cent"
-  Cfloat =  "cfloat"
-  Char =  "char"
-  Creal =  "creal"
-  Dchar =  "dchar"
-  Double =  "double"
-  Float =  "float"
-  Function =  "function"
-  Idouble =  "idouble"
-  Ifloat =  "ifloat"
-  Int =  "int"
-  Ireal =  "ireal"
-  Long =  "long"
-  Real =  "real"
-  Short =  "short"
-  Ubyte =  "ubyte"
-  Ucent =  "ucent"
-  Uint =  "uint"
-  Ulong =  "ulong"
-  Ushort =  "ushort"
-  Void =  "void"
-  Wchar =  "wchar"
-  Align =  "align"
-  TDeprecated =  "deprecated"
-  Extern =  "extern"
-  Pragma =  "pragma"
-  Export =  "export"
-  Package =  "package"
-  Private =  "private"
-  Protected =  "protected"
-  Public =  "public"
-  Abstract =  "abstract"
-  Auto =  "auto"
-  Const =  "const"
-  Final =  "final"
-  Gshared =  "__gshared"
-  Immutable =  "immutable"
-  Inout =  "inout"
-  Scope =  "scope"
-  Shared =  "shared"
-  Static =  "static"
-  Synchronized =  "synchronized"
-  Alias =  "alias"
-  Asm =  "asm"
-  Assert =  "assert"
-  Body =  "body"
-  Break =  "break"
-  Case =  "case"
-  Cast =  "cast"
-  TCatch =  "catch"
-  DClass =  "class"
-  Continue =  "continue"
-  Debug =  "debug"
-  Default =  "default"
-  Delegate =  "delegate"
-  Delete =  "delete"
-  Do =  "do"
-  Else =  "else"
-  Enum =  "enum"
-  False =  "false"
-  TFinally =  "finally"
-  Foreach =  "foreach"
-  Foreach_reverse =  "foreach_reverse"
-  For =  "for"
-  Goto =  "goto"
-  If =  "if"
-  Import =  "import"
-  In =  "in"
-  Interface =  "interface"
-  TInvariant =  "invariant"
-  Is =  "is"
-  Lazy =  "lazy"
-  Macro =  "macro"
-  Mixin =  "mixin"
-  TModule =  "module"
-  New =  "new"
-  Nothrow =  "nothrow"
-  Null =  "null"
-  Out =  "out"
-  Override =  "override"
-  Pure =  "pure"
-  Ref =  "ref"
-  Return =  "return"
-  Struct =  "struct"
-  Super =  "super"
-  Switch =  "switch"
-  Template =  "template"
-  This =  "this"
-  Throw =  "throw"
-  True =  "true"
-  Try =  "try"
-  Typedef =  "typedef"
-  Typeid =  "typeid"
-  Typeof =  "typeof"
-  Union =  "union"
-  TUnittest =  "unittest"
-  Version =  "version"
-  Volatile =  "volatile"
-  While =  "while"
-  With =  "with"
-  SpecialDate = "__DATE__"
-  SpecialEof = "__EOF__"
-  SpecialTime = "__TIME__"
-  Specialimestamp = "__TIMESTAMP__"
-  SpecialVendor = "__VENDOR__"
-  SpecialVersion = "__VERSION__"
-  SpecialFile = "__FILE__"
-  SpecialLine = "__LINE__"
-  SpecialModule = "__MODULE__"
-  SpecialFunction = "__FUNCTION__"
-  SpecialPrettyFunction = "__PRETTY_FUNCTION__"
-  Traits = "__traits"
-  TParameters = "__parameters"
-  TVector = "__vector"
+ KW_MODULE = "module"
+ KW_IMPORT = "import"
+ KW_STATIC = "static"
+ KW_BOOL = "bool"
+ KW_BYTE = "byte"
+ KW_UBYTE = "ubyte"
+ KW_SHORT = "short"
+ KW_USHORT = "ushort"
+ KW_INT = "int"
+ KW_UINT = "uint"
+ KW_LONG = "long"
+ KW_ULONG = "ulong"
+ KW_CHAR = "char"
+ KW_WCHAR = "wchar"
+ KW_DCHAR = "dchar"
+ KW_FLOAT = "float"
+ KW_DOUBLE = "double"
+ KW_REAL = "real"
+ KW_IFLOAT = "ifloat"
+ KW_IDOUBLE = "idouble"
+ KW_IREAL = "ireal"
+ KW_CFLOAT = "cfloat"
+ KW_CDOUBLE = "cdouble"
+ KW_CREAL = "creal"
+ KW_VOID = "void"
+ KW_TYPEOF = "typeof"
+ KW_CONST = "const"
+ KW_IMMUTABLE = "immutable"
+ KW_SHARED = "shared"
+ KW_INOUT = "inout"
+ KW_DELEGATE = "delegate"
+ KW_FUNCTION = "function"
+ KW_NOTHROW = "nothrow"
+ KW_PURE = "pure"
+ KW_THIS = "this"
+ KW___FILE__ = "__FILE__"
+ KW___MODULE__ = "__MODULE__"
+ KW___LINE__ = "__LINE__"
+ KW___FUNCTION__ = "__FUNCTION__"
+ KW___PRETTY_FUNCTION__ = "__PRETTY_FUNCTION__"
+ KW_ABSTRACT = "abstract"
+ KW_ALIAS = "alias"
+ KW_AUTO = "auto"
+ KW_DEPRECATED = "deprecated"
+ KW_ENUM = "enum"
+ KW_EXTERN = "extern"
+ KW_FINAL = "final"
+ KW_OVERRIDE = "override"
+ KW___GSHARED = "__gshared"
+ KW_SCOPE = "scope"
+ KW_SYNCHRONIZED = "synchronized"
+ KW_RETURN = "return"
+ KW_SUPER = "super"
+ KW_ALIGN = "align"
+ KW_PRAGMA = "pragma"
+ KW_PACKAGE = "package"
+ KW_PRIVATE = "private"
+ KW_PROTECTED = "protected"
+ KW_PUBLIC = "public"
+ KW_EXPORT = "export"
+ KW_PROPERTY = "property"
+ KW_SAFE = "safe"
+ KW_TRUSTED = "trusted"
+ KW_SYSTEM = "system"
+ KW_DISABLE = "disable"
+ KW_DELETE = "delete"
+ KW_NULL = "null"
+ KW_TRUE = "true"
+ KW_FALSE = "false"
+ KW_NEW = "new"
+ KW_TYPEID = "typeid"
+ KW_IS = "is"
+ KW_STRUCT = "struct"
+ KW_UNION = "union"
+ KW_CLASS = "class"
+ KW_INTERFACE = "interface"
+ KW___PARAMETERS = "__parameters"
+ KW_IN = "in"
+ KW_ASM = "asm"
+ KW_ASSERT = "assert"
+ KW_CASE = "case"
+ KW_CAST = "cast"
+ KW_REF = "ref"
+ KW_BREAK = "break"
+ KW_CONTINUE = "continue"
+ KW_DO = "do"
+ KW_ELSE = "else"
+ KW_FOR = "for"
+ KW_FOREACH = "foreach"
+ KW_FOREACH_REVERSE = "foreach_reverse"
+ KW_GOTO = "goto"
+ KW_IF = "if"
+ KW_CATCH = "catch"
+ KW_FINALLY = "finally"
+ KW_SWITCH = "switch"
+ KW_THROW = "throw"
+ KW_TRY = "try"
+ KW_DEFAULT = "default"
+ KW_WHILE = "while"
+ KW_WITH = "with"
+ KW_VERSION = "version"
+ KW_DEBUG = "debug"
+ KW_MIXIN = "mixin"
+ KW_INVARIANT = "invariant"
+ KW_BODY = "body"
+ KW_TEMPLATE = "template"
+ KW_LAZY = "lazy"
+ KW_OUT = "out"
+ KW_NOGC = "nogc"
+ KW___TRAITS = "__traits"
+ KW_UNITTEST = "unittest"
+ OP_SCOLON = ";"
+ OP_COLON = ":"
+ OP_EQ = "="
+ OP_COMMA = ","
+ OP_PAR_LEFT = "("
+ OP_PAR_RIGHT = ")"
+ OP_BRACKET_LEFT = "["
+ OP_BRACKET_RIGHT = "]"
+ OP_BRACES_LEFT = "{"
+ OP_BRACES_RIGHT = "}"
+ OP_ASTERISK = "*"
+ OP_DDOT = ".."
+ OP_TRIPLEDOT = "..."
+ OP_AT = "@"
+ OP_PLUS_EQ = "+="
+ OP_MINUS_EQ = "-="
+ OP_MUL_EQ = "*="
+ OP_DIV_EQ = "/="
+ OP_MOD_EQ = "%="
+ OP_AND_EQ = "&="
+ OP_OR_EQ = "|="
+ OP_XOR_EQ = "^="
+ OP_TILDA_EQ = "~="
+ OP_SH_LEFT_EQ = "<<="
+ OP_SH_RIGHT_EQ = ">>="
+ OP_USH_RIGHT_EQ = ">>>="
+ OP_POW_EQ = "^^="
+ OP_QUEST = "?"
+ OP_BOOL_OR = "||"
+ OP_BOOL_AND = "&&"
+ OP_OR = "|"
+ OP_XOR = "^"
+ OP_SH_LEFT = "<<"
+ OP_SH_RIGHT = ">>"
+ OP_USH_RIGHT = ">>>"
+ OP_PLUS = "+"
+ OP_MINUS = "-"
+ OP_TILDA = "~"
+ OP_DIV = "/"
+ OP_MOD = "%"
+ OP_AND = "&"
+ OP_PLUS_PLUS = "++"
+ OP_MINUS_MINUS = "--"
+ OP_NOT = "!"
+ OP_POW = "^^"
+ OP_DOLLAR = "$"
+ OP_EQ_EQ = "=="
+ OP_NOT_EQ = "!="
+ OP_LESS = "<"
+ OP_LESS_EQ = "<="
+ OP_GT = ">"
+ OP_GT_EQ = ">="
+ OP_UNORD = "!<>="
+ OP_UNORD_EQ = "!<>"
+ OP_LESS_GR = "<>"
+ OP_LESS_GR_EQ = "<>="
+ OP_NOT_GR = "!>"
+ OP_NOT_GR_EQ = "!>="
+ OP_NOT_LESS = "!<"
+ OP_NOT_LESS_EQ = "!<="
+ OP_LAMBDA_ARROW = "=>"
+ OP_DOT = "."
 
+ID = "regexp:\w+"
 
-  Identifier="regexp:([a-zA-Z_])([a-zA-Z0-9_])*"
+  space='regexp:\s+'
 
-WHITE_SPACE="regexp:([\r|\n|\r\n]|[\ \t\f])+"
-
-
-  Letter = "regexp:[\w]"
-  Digit = "regexp:[\d]"
-  HexDigit = "regexp:[0-9abcdefABCDEF_]"
-  OctalDigit = "regexp:[0-7]"
-  NamedCharacterEntity = "regexp:&([a-zA-Z_])([a-zA-Z0-9_])*;"
-
-//  WYSIWYG_STRING = "regexp:r\"[^\"]*\"[cwd]*"
-//  AlternateWysiwygString = "regexp:`[^`]*`[cwd]*"
-//  EscapeSequence = "regexp:((\\'|\\\"|\\\?|\\\|\\0|\\a|\\b|\\f|\\n|\\r|\\t|\\v)|(\\x[0-9abcdefABCDEF_]{2})|(\\[0-7])|(\\[0-7]{2})|(\\[0-7]{3})|(\\u[0-9abcdefABCDEF_]{4})|(\\U[0-9abcdefABCDEF_]{8})|(\\&([a-zA-Z_])([a-zA-Z0-9_])*;))"
-
-  DoubleQuotedString = 'regexp:\"([^\\"]|((\\"|\\\?|\\\|\\0|\\a|\\b|\\f|\\n|\\r|\\t|\\v)|(\\x[0-9abcdefABCDEF_]{2})|(\\[0-7])|(\\[0-7]{2})|(\\[0-7]{3})|(\\u[0-9abcdefABCDEF_]{4})|(\\U[0-9abcdefABCDEF_]{8})|(\\&([a-zA-Z_])([a-zA-Z0-9_])*;)))*\"[cwd]*'
-//  HexString = 'regexp:x\"([0-9a-fA-F][0-9a-fA-F]|[\r\n\s])*\"[cwd]*'
-
-// TODO - delimited String
-//  DELIMITED_STRING_SQ_BR =         q\"\[ ([^\]] | \][^\"])* \]\"
-//  DELIMITED_STRING_PARENTH =       q\"\( ([^\)] | \)[^\"])* \)\"
-//  DELIMITED_STRING_ANGLE_PARENTH = q\"\< ([^\>] | \>[^\"])* \>\"
-//  DELIMITED_STRING_BRACE =         q\"\{ ([^}]  |  }[^\"])* }\"
-//  DELIMITED_STRING = ({DELIMITED_STRING_SQ_BR} | {DELIMITED_STRING_PARENTH}
-//                    | {DELIMITED_STRING_ANGLE_PARENTH} | {DELIMITED_STRING_BRACE}) {STRING_POSTFIX}?
-
-
-
+//  string_literal='regexp:"\w+"'
+//  string="regexp:('([^'\\]|\\.)*'|\"([^\"\\]|\\\"|\\\'|\\)*\")"
+//  number="regexp:\d+"
+//  float="regexp:[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?"
   line_comment="regexp://.*"
   block_comment="regexp:/\*(.|\n)*\*/"
+
+//   DoubleQuotedString = 'regexp:\"([^\\"]|((\\"|\\\?|\\\|\\0|\\a|\\b|\\f|\\n|\\r|\\t|\\v)|(\\x[0-9abcdefABCDEF_]{2})|(\\[0-7])|(\\[0-7]{2})|(\\[0-7]{3})|(\\u[0-9abcdefABCDEF_]{4})|(\\U[0-9abcdefABCDEF_]{8})|(\\&([a-zA-Z_])([a-zA-Z0-9_])*;)))*\"[cwd]*'
+  //  HexString = 'regexp:x\"([0-9a-fA-F][0-9a-fA-F]|[\r\n\s])*\"[cwd]*'
+
+
 ]
 
 
@@ -235,86 +212,13 @@ WHITE_SPACE="regexp:([\r|\n|\r\n]|[\ \t\f])+"
 
 dFile ::= item_*
 
-// ------------------ strings and numbers -------------------
-
-//  private Character ::=  "regexp:[\u0001-\uffff]"
-//  private WysiwygCharacter ::= (Character | Whitespace)
-//  private HexDigit ::= "regexp:[a-fA-F0-9]"
-//  private OctalDigit ::= "regexp:[0-7]"
-//  private BinDigit ::= "regexp:[01]"
-//  private DecimalDigit ::= "regexp:[0-9]"
-//
-//  private BlockComment ::= "regexp:\/*.*? *\/"
-//  private LineComment ::= '//' ("regexp:~[\\u000D\\u000A\\u2028\\u2029]")*
-//  private NestingBlockComment ::= '/+' (NestingBlockComment | "regexp:.")* '+/'
-//  Comment ::= (BlockComment | LineComment | NestingBlockComment)+
-//
-////  private Identifier ::= "regexp:([a-zA-Z_])([a-zA-Z0-9_])"*
-//
-//  private WysiwygString ::= 'r"' "regexp:.*?" '"' StringPostfix?
-//  private AlternativeWysiwygString ::= '`' "regexp:.*?" '`' StringPostfix?
-//
-//  private EscapeSequence ::= "\\\'"
-//      | '\\"'
-//      | '\\\\'
-//      | '\\?'
-//      | '\\0'
-//      | '\\a'
-//      | '\\b'
-//      | '\\f'
-//      | '\\n'
-//      | '\\r'
-//      | '\\t'
-//      | '\\v'
-//      | '\\x' HexDigit HexDigit
-//      | '\\' OctalDigit OctalDigit? OctalDigit?
-//      | '\\u' HexDigit HexDigit HexDigit HexDigit
-//      | '\\U' HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit
-//      | '\\&' Identifier ';';
-//  private HexStringChar ::= "regexp:[0-9a-fA-F]" | Whitespace | EndOfLine
-//  private StringPostfix ::= "regexp:[dwc]"
-//  private DoubleQuotedCharacter ::= EscapeSequence | "regexp:~('\"' | '\\' )"
-//  private DoubleQuotedString ::= '"' DoubleQuotedCharacter* '"'  StringPostfix?
-//  private HexString ::= 'x"' HexStringChar* '"' StringPostfix?
-//  private StringFragment ::= WysiwygString | AlternativeWysiwygString | DoubleQuotedString | HexString
-//  private StringLiteral ::= StringFragment (Whitespace? StringFragment)*
-//
-////  CHARACTER_LITERAL ::= '\'' ( EscapeSequence | ~[\\'] )*? '\'';
-//
-//  INTEGER_LITERAL ::= Integer IntegerSuffix?
-//  private Integer ::= BinaryInteger | DecimalInteger | HexadecimalInteger
-//  private IntegerSuffix ::= ('L' | 'u' | 'U' | 'Lu' | 'LU' | 'uL' | 'UL')
-//  private DecimalInteger ::= DecimalDigit (DecimalDigit | '_')*
-//  private BinaryInteger ::= ('0b' | '0B') BinDigit (BinDigit | '_')*
-//  private HexadecimalInteger ::= ('0x' | '0X') HexDigit (HexDigit | '_')*
-//
-//  FLOAT_LITERAL ::= (FloatOption (FloatSuffix | RealSuffix)?) | (Integer (FloatSuffix | RealSuffix)? ImaginarySuffix)
-//  private FloatOption ::= DecimalFloat | HexFloat
-//  private DecimalFloat
-//      ::= DecimalInteger '.' (DecimalDigit (DecimalDigit | '_')* DecimalExponent?)?  // BUG: can't lex a[0..1] properly
-//      | '.' DecimalInteger DecimalExponent?
-//      | DecimalInteger DecimalExponent
-//      ;
-//  private DecimalExponent ::= ('e' | 'E' | 'e+' | 'E+' | 'e-' | 'E-') DecimalInteger
-//  private FloatSuffix ::= 'F' | 'f'
-//  private RealSuffix ::= 'L'
-//  private ImaginarySuffix ::= 'i'
-//  private HexFloat ::= ('0x' | '0X') ((HexDigit (HexDigit | '_')* '.' HexDigit (HexDigit | '_')*) | ('.' HexDigit (HexDigit | '_')*) | (HexDigit (HexDigit | '_')*)) HexExponent
-//  private HexExponent ::= ('p' | 'P' | 'p+' | 'P+' | 'p-' | 'P-') DecimalDigit (DecimalDigit | '_')*
-//
-//  SpecialTokenSequence ::= '#line' Space+ INTEGER_LITERAL Space* ('"' "regexp:.*?" '"' Space*)? (EndOfLine | EOF)+
-//  private Space ::= "regexp:[\u0020\u0009\u000B\u000C]"
-
 // ----------------------------------------------------------
 
 
-private item_ ::= ( moduleDeclaration | declaration | statement)
+private item_ ::= ( moduleDeclaration | declaration | statement )
 
-//  StringLiteral  ::= 'regexp:"\w*"'
-  StringLiteral  ::= (WYSIWYG_STRING | ALTERNATEWYSIWYGSTRING | DOUBLEQUOTEDSTRING | HEXSTRING)
-//  INTEGER_LITERAL ::= INTEGER_LITERAL
-//  FLOAT_LITERAL ::= FLOAT_LITERAL
-//  CHARACTER_LITERAL ::= CHARACTER_LITERAL
+  Identifier ::= ID
+  StringLiteral  ::= (WYSIWYG_STRING|ALTERNATE_WYSIWYG_STRING|DOUBLE_QUOTED_STRING|HEX_STRING|DELIMITED_STRING)
 
  aliasDeclaration ::=
        'alias' aliasInitializer (',' aliasInitializer)* ';'
@@ -557,11 +461,9 @@ private item_ ::= ( moduleDeclaration | declaration | statement)
  continueStatement ::=
      'continue' Identifier? ';'
 
-// TODO 23
  debugCondition ::=
      'debug' ('(' (INTEGER_LITERAL | Identifier) ')')?
 
-// TODO 22
  debugSpecification ::=
      'debug' '=' (Identifier | INTEGER_LITERAL) ';'
 
@@ -1406,7 +1308,7 @@ unaryExpression ::=
  //       unaryExpression
  //     | powExpression '^^' unaryExpression
 
-  private powExpression ::= unaryExpression powExpression2
+  powExpression ::= unaryExpression powExpression2
   private powExpression2 ::= '^^' powExpression |
 
 
