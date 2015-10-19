@@ -675,19 +675,11 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // ('+' | '-' | '~') addExpression |
-  //  // andAndExpression ::=
-  //  //       orExpression
-  //  ////     | andAndExpression '&&' orExpression
-  //   
+  // [('+' | '-' | '~') addExpression]
   static boolean addExpression2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "addExpression2")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = addExpression2_0(b, l + 1);
-    if (!r) r = consumeToken(b, ADDEXPRESSION2_1_0);
-    exit_section_(b, m, null, r);
-    return r;
+    addExpression2_0(b, l + 1);
+    return true;
   }
 
   // ('+' | '-' | '~') addExpression
@@ -858,19 +850,11 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // '&&' andAndExpression |
-  //  // andExpression ::=
-  //  //       cmpExpression
-  //  ////     | andExpression '&' cmpExpression
-  //   
+  // ['&&' andAndExpression]
   static boolean andAndExpression2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "andAndExpression2")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = andAndExpression2_0(b, l + 1);
-    if (!r) r = consumeToken(b, ANDANDEXPRESSION2_1_0);
-    exit_section_(b, m, null, r);
-    return r;
+    andAndExpression2_0(b, l + 1);
+    return true;
   }
 
   // '&&' andAndExpression
@@ -897,19 +881,11 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // '&' andExpression |
-  //  // asmAddExp ::=
-  //  //       asmMulExp
-  //  ////     | asmAddExp ('+' | '-') asmMulExp
-  //   
+  // ['&' andExpression]
   static boolean andExpression2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "andExpression2")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = andExpression2_0(b, l + 1);
-    if (!r) r = consumeToken(b, ANDEXPRESSION2_1_0);
-    exit_section_(b, m, null, r);
-    return r;
+    andExpression2_0(b, l + 1);
+    return true;
   }
 
   // '&' andExpression
@@ -1281,19 +1257,11 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // ('+' | '-') asmAddExp |
-  //  // asmBrExp ::=
-  //  //       asmUnaExp
-  //  //     | asmBrExp '[' asmExp ']'
-  //   
+  // [('+' | '-') asmAddExp]
   static boolean asmAddExp2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "asmAddExp2")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = asmAddExp2_0(b, l + 1);
-    if (!r) r = consumeToken(b, ASMADDEXP2_1_0);
-    exit_section_(b, m, null, r);
-    return r;
+    asmAddExp2_0(b, l + 1);
+    return true;
   }
 
   // ('+' | '-') asmAddExp
@@ -1361,19 +1329,11 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // '[' asmExp ']' asmBrExp |
-  //  // mulExpression ::=
-  //  //       powExpression
-  //  //     | mulExpression ('*' | '/' | '%') powExpression
-  //   
+  // ['[' asmExp ']' asmBrExp]
   static boolean asmBrExp2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "asmBrExp2")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = asmBrExp2_0(b, l + 1);
-    if (!r) r = consumeToken(b, ASMBREXP2_1_0);
-    exit_section_(b, m, null, r);
-    return r;
+    asmBrExp2_0(b, l + 1);
+    return true;
   }
 
   // '[' asmExp ']' asmBrExp
@@ -4874,7 +4834,7 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // moduleDeclaration | declaration | statement | WHITE_SPACE_CHAR
+  // moduleDeclaration | declaration | statement
   static boolean item_(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "item_")) return false;
     boolean r;
@@ -4882,7 +4842,6 @@ public class DLanguageParser implements PsiParser {
     r = moduleDeclaration(b, l + 1);
     if (!r) r = declaration(b, l + 1);
     if (!r) r = statement(b, l + 1);
-    if (!r) r = consumeToken(b, WHITE_SPACE_CHAR);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -5263,19 +5222,11 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // ('*' | '/' | '%') mulExpression |
-  //  // orExpression ::=
-  //  //       xorExpression
-  //  //     | orExpression '|' xorExpression
-  //  
+  // [('*' | '/' | '%') mulExpression]
   static boolean mulExpression2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "mulExpression2")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = mulExpression2_0(b, l + 1);
-    if (!r) r = consumeToken(b, MULEXPRESSION2_1_0);
-    exit_section_(b, m, null, r);
-    return r;
+    mulExpression2_0(b, l + 1);
+    return true;
   }
 
   // ('*' | '/' | '%') mulExpression
@@ -5442,19 +5393,11 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // '|' orExpression |
-  //  // orOrExpression ::=
-  //  //       andAndExpression
-  //  //     | orOrExpression '||' andAndExpression
-  //  
+  // ['|' orExpression]
   static boolean orExpression2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "orExpression2")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = orExpression2_0(b, l + 1);
-    if (!r) r = consumeToken(b, OREXPRESSION2_1_0);
-    exit_section_(b, m, null, r);
-    return r;
+    orExpression2_0(b, l + 1);
+    return true;
   }
 
   // '|' orExpression
@@ -5481,19 +5424,11 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // '||' orOrExpression |
-  //  // powExpression ::=
-  //  //       unaryExpression
-  //  //     | powExpression '^^' unaryExpression
-  //   
+  // ['||' orOrExpression]
   static boolean orOrExpression2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "orOrExpression2")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = orOrExpression2_0(b, l + 1);
-    if (!r) r = consumeToken(b, OROREXPRESSION2_1_0);
-    exit_section_(b, m, null, r);
-    return r;
+    orOrExpression2_0(b, l + 1);
+    return true;
   }
 
   // '||' orOrExpression
@@ -5757,36 +5692,27 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // unaryExpression powExpression2
+  // unaryExpression ['^^' powExpression]
   public static boolean powExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "powExpression")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<pow expression>");
     r = unaryExpression(b, l + 1);
-    r = r && powExpression2(b, l + 1);
+    r = r && powExpression_1(b, l + 1);
     exit_section_(b, l, m, POW_EXPRESSION, r, false, null);
     return r;
   }
 
-  /* ********************************************************** */
-  // '^^' powExpression |
-  //  // relExpression ::=
-  //  //       shiftExpression
-  //  //     | relExpression relOperator shiftExpression
-  //   
-  static boolean powExpression2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "powExpression2")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = powExpression2_0(b, l + 1);
-    if (!r) r = consumeToken(b, POWEXPRESSION2_1_0);
-    exit_section_(b, m, null, r);
-    return r;
+  // ['^^' powExpression]
+  private static boolean powExpression_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "powExpression_1")) return false;
+    powExpression_1_0(b, l + 1);
+    return true;
   }
 
   // '^^' powExpression
-  private static boolean powExpression2_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "powExpression2_0")) return false;
+  private static boolean powExpression_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "powExpression_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, OP_POW);
@@ -6000,36 +5926,27 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // shiftExpression relExpression2
+  // shiftExpression [relOperator relExpression]
   public static boolean relExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "relExpression")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<rel expression>");
     r = shiftExpression(b, l + 1);
-    r = r && relExpression2(b, l + 1);
+    r = r && relExpression_1(b, l + 1);
     exit_section_(b, l, m, REL_EXPRESSION, r, false, null);
     return r;
   }
 
-  /* ********************************************************** */
-  // relOperator relExpression |
-  //  // shiftExpression ::=
-  //  //       addExpression
-  //  //     | shiftExpression ('<<' | '>>' | '>>>') addExpression
-  //   
-  static boolean relExpression2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "relExpression2")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = relExpression2_0(b, l + 1);
-    if (!r) r = consumeToken(b, RELEXPRESSION2_1_0);
-    exit_section_(b, m, null, r);
-    return r;
+  // [relOperator relExpression]
+  private static boolean relExpression_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "relExpression_1")) return false;
+    relExpression_1_0(b, l + 1);
+    return true;
   }
 
   // relOperator relExpression
-  private static boolean relExpression2_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "relExpression2_0")) return false;
+  private static boolean relExpression_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "relExpression_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = relOperator(b, l + 1);
@@ -6144,47 +6061,38 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // addExpression shiftExpression2
+  // addExpression [('<<' | '>>' | '>>>') shiftExpression]
   public static boolean shiftExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "shiftExpression")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<shift expression>");
     r = addExpression(b, l + 1);
-    r = r && shiftExpression2(b, l + 1);
+    r = r && shiftExpression_1(b, l + 1);
     exit_section_(b, l, m, SHIFT_EXPRESSION, r, false, null);
     return r;
   }
 
-  /* ********************************************************** */
-  // ('<<' | '>>' | '>>>') shiftExpression |
-  //  // xorExpression ::=
-  //  //       andExpression
-  //  //     | xorExpression '^' andExpression
-  //   
-  static boolean shiftExpression2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "shiftExpression2")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = shiftExpression2_0(b, l + 1);
-    if (!r) r = consumeToken(b, SHIFTEXPRESSION2_1_0);
-    exit_section_(b, m, null, r);
-    return r;
+  // [('<<' | '>>' | '>>>') shiftExpression]
+  private static boolean shiftExpression_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "shiftExpression_1")) return false;
+    shiftExpression_1_0(b, l + 1);
+    return true;
   }
 
   // ('<<' | '>>' | '>>>') shiftExpression
-  private static boolean shiftExpression2_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "shiftExpression2_0")) return false;
+  private static boolean shiftExpression_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "shiftExpression_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = shiftExpression2_0_0(b, l + 1);
+    r = shiftExpression_1_0_0(b, l + 1);
     r = r && shiftExpression(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // '<<' | '>>' | '>>>'
-  private static boolean shiftExpression2_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "shiftExpression2_0_0")) return false;
+  private static boolean shiftExpression_1_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "shiftExpression_1_0_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, OP_SH_LEFT);
@@ -8027,32 +7935,27 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // andExpression xorExpression2
+  // andExpression ['^' xorExpression]
   public static boolean xorExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "xorExpression")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<xor expression>");
     r = andExpression(b, l + 1);
-    r = r && xorExpression2(b, l + 1);
+    r = r && xorExpression_1(b, l + 1);
     exit_section_(b, l, m, XOR_EXPRESSION, r, false, null);
     return r;
   }
 
-  /* ********************************************************** */
-  // '^' xorExpression |
-  static boolean xorExpression2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "xorExpression2")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = xorExpression2_0(b, l + 1);
-    if (!r) r = consumeToken(b, XOREXPRESSION2_1_0);
-    exit_section_(b, m, null, r);
-    return r;
+  // ['^' xorExpression]
+  private static boolean xorExpression_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "xorExpression_1")) return false;
+    xorExpression_1_0(b, l + 1);
+    return true;
   }
 
   // '^' xorExpression
-  private static boolean xorExpression2_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "xorExpression2_0")) return false;
+  private static boolean xorExpression_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "xorExpression_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, OP_XOR);

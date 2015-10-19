@@ -210,12 +210,7 @@ public interface DLanguageTypes {
   IElementType WITH_STATEMENT = new DLanguageElementType("WITH_STATEMENT");
   IElementType XOR_EXPRESSION = new DLanguageElementType("XOR_EXPRESSION");
 
-  IElementType ADDEXPRESSION2_1_0 = new DLanguageTokenType("addExpression2_1_0");
   IElementType ALTERNATE_WYSIWYG_STRING = new DLanguageTokenType("ALTERNATE_WYSIWYG_STRING");
-  IElementType ANDANDEXPRESSION2_1_0 = new DLanguageTokenType("andAndExpression2_1_0");
-  IElementType ANDEXPRESSION2_1_0 = new DLanguageTokenType("andExpression2_1_0");
-  IElementType ASMADDEXP2_1_0 = new DLanguageTokenType("asmAddExp2_1_0");
-  IElementType ASMBREXP2_1_0 = new DLanguageTokenType("asmBrExp2_1_0");
   IElementType BLOCK_COMMENT = new DLanguageTokenType("block_comment");
   IElementType CHARACTER_LITERAL = new DLanguageTokenType("CHARACTER_LITERAL");
   IElementType DELIMITED_STRING = new DLanguageTokenType("DELIMITED_STRING");
@@ -336,7 +331,6 @@ public interface DLanguageTypes {
   IElementType KW___PRETTY_FUNCTION__ = new DLanguageTokenType("__PRETTY_FUNCTION__");
   IElementType KW___TRAITS = new DLanguageTokenType("__traits");
   IElementType LINE_COMMENT = new DLanguageTokenType("line_comment");
-  IElementType MULEXPRESSION2_1_0 = new DLanguageTokenType("mulExpression2_1_0");
   IElementType OP_AND = new DLanguageTokenType("&");
   IElementType OP_AND_EQ = new DLanguageTokenType("&=");
   IElementType OP_ASTERISK = new DLanguageTokenType("*");
@@ -399,14 +393,7 @@ public interface DLanguageTypes {
   IElementType OP_USH_RIGHT_EQ = new DLanguageTokenType(">>>=");
   IElementType OP_XOR = new DLanguageTokenType("^");
   IElementType OP_XOR_EQ = new DLanguageTokenType("^=");
-  IElementType OREXPRESSION2_1_0 = new DLanguageTokenType("orExpression2_1_0");
-  IElementType OROREXPRESSION2_1_0 = new DLanguageTokenType("orOrExpression2_1_0");
-  IElementType POWEXPRESSION2_1_0 = new DLanguageTokenType("powExpression2_1_0");
-  IElementType RELEXPRESSION2_1_0 = new DLanguageTokenType("relExpression2_1_0");
-  IElementType SHIFTEXPRESSION2_1_0 = new DLanguageTokenType("shiftExpression2_1_0");
-  IElementType WHITE_SPACE_CHAR = new DLanguageTokenType("WHITE_SPACE_CHAR");
   IElementType WYSIWYG_STRING = new DLanguageTokenType("WYSIWYG_STRING");
-  IElementType XOREXPRESSION2_1_0 = new DLanguageTokenType("xorExpression2_1_0");
 
   class Factory {
     public static PsiElement createElement(ASTNode node) {

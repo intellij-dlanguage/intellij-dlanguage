@@ -215,10 +215,28 @@ dFile ::= item_*
 // ----------------------------------------------------------
 
 
-private item_ ::= ( moduleDeclaration | declaration | statement )
+private item_ ::= ( moduleDeclaration | declaration | statement)
 
   Identifier ::= ID
   StringLiteral  ::= (WYSIWYG_STRING|ALTERNATE_WYSIWYG_STRING|DOUBLE_QUOTED_STRING|HEX_STRING|DELIMITED_STRING)
+
+
+// investigate ::= 'investigate' ('+' | '-' | '/' | '*' | '&' | '&&' | '|' | '||' | '^' | '^^' | '%')
+
+//  investigateExpression ::= investigate investigate
+
+//  investigateExpression ::=
+//        [investigateExpression 'and'] investigate
+
+//  investigateExpression ::= investigate investigate2
+//  private investigate2 ::= ['and' investigateExpression]
+
+ // orOrExpression ::=
+ //       andAndExpression
+ //     | orOrExpression '||' andAndExpression
+
+// orOrExpression ::= andAndExpression orOrExpression2
+// private orOrExpression2 ::= '||' orOrExpression |
 
  aliasDeclaration ::=
        'alias' aliasInitializer (',' aliasInitializer)* ';'
@@ -1244,93 +1262,81 @@ unaryExpression ::=
  //       mulExpression
  //     | addExpression ('+' | '-' | '~') mulExpression
 
- addExpression ::= mulExpression addExpression2
- private addExpression2 ::= ('+' | '-' | '~') addExpression |
+ addExpression ::= mulExpression [('+' | '-' | '~') addExpression]
 
 
  // andAndExpression ::=
  //       orExpression
  ////     | andAndExpression '&&' orExpression
 
-  andAndExpression ::= orExpression andAndExpression2
-  private andAndExpression2 ::= '&&' andAndExpression |
+  andAndExpression ::= orExpression ['&&' andAndExpression]
 
 
  // andExpression ::=
  //       cmpExpression
  ////     | andExpression '&' cmpExpression
 
-  andExpression ::= cmpExpression andExpression2
-  private andExpression2 ::= '&' andExpression |
+  andExpression ::= cmpExpression ['&' andExpression]
 
 
  // asmAddExp ::=
  //       asmMulExp
  ////     | asmAddExp ('+' | '-') asmMulExp
 
-  asmAddExp ::= asmMulExp asmAddExp2
-  private asmAddExp2 ::= ('+' | '-') asmAddExp |
+  asmAddExp ::= asmMulExp [('+' | '-') asmAddExp]
 
 
  // asmBrExp ::=
  //       asmUnaExp
  //     | asmBrExp '[' asmExp ']'
 
-  asmBrExp ::= asmUnaExp asmBrExp2
-  private asmBrExp2 ::= '[' asmExp ']' asmBrExp |
+  asmBrExp ::= asmUnaExp ['[' asmExp ']' asmBrExp]
 
 
  // mulExpression ::=
  //       powExpression
  //     | mulExpression ('*' | '/' | '%') powExpression
 
-  mulExpression ::= powExpression mulExpression2
-  private mulExpression2 ::= ('*' | '/' | '%') mulExpression |
+  mulExpression ::= powExpression [('*' | '/' | '%') mulExpression]
 
 
  // orExpression ::=
  //       xorExpression
  //     | orExpression '|' xorExpression
 
- orExpression ::= xorExpression orExpression2
- private orExpression2 ::= '|' orExpression |
+ orExpression ::= xorExpression ['|' orExpression]
 
 
  // orOrExpression ::=
  //       andAndExpression
  //     | orOrExpression '||' andAndExpression
 
- orOrExpression ::= andAndExpression orOrExpression2
- private orOrExpression2 ::= '||' orOrExpression |
+ orOrExpression ::= andAndExpression ['||' orOrExpression]
 
 
  // powExpression ::=
  //       unaryExpression
  //     | powExpression '^^' unaryExpression
 
-  powExpression ::= unaryExpression powExpression2
-  private powExpression2 ::= '^^' powExpression |
+  powExpression ::= unaryExpression ['^^' powExpression]
 
 
  // relExpression ::=
  //       shiftExpression
  //     | relExpression relOperator shiftExpression
 
-  relExpression ::= shiftExpression relExpression2
-  private relExpression2 ::= relOperator relExpression |
+  relExpression ::= shiftExpression [relOperator relExpression]
 
 
  // shiftExpression ::=
  //       addExpression
  //     | shiftExpression ('<<' | '>>' | '>>>') addExpression
 
-  shiftExpression ::= addExpression shiftExpression2
-  private shiftExpression2 ::= ('<<' | '>>' | '>>>') shiftExpression |
+  shiftExpression ::= addExpression [('<<' | '>>' | '>>>') shiftExpression]
 
 
  // xorExpression ::=
  //       andExpression
  //     | xorExpression '^' andExpression
 
-  xorExpression ::= andExpression xorExpression2
-  private xorExpression2 ::= '^' xorExpression |
+  xorExpression ::= andExpression ['^' xorExpression]
