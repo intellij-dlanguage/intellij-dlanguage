@@ -1,7 +1,7 @@
 # Intellij Plugin to provide support for the [D Programming Language](http://dlang.org/)
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/kingsleyh/DLanguage?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![HuBoard badge](http://img.shields.io/badge/Hu-Board-7965cc.svg)](https://huboard.com/kingsleyh/DLanguage#/)
+[![ZenHub] (https://raw.githubusercontent.com/ZenHubIO/support/master/zenhub-badge.png)] (https://zenhub.io)
 [![Build Status](https://travis-ci.org/kingsleyh/DLanguage.svg?branch=master)](https://travis-ci.org/kingsleyh/DLanguage)
 
 This plugin brings D Language support to the Intellij IDE
