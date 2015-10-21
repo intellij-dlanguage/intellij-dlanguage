@@ -33,36 +33,15 @@ JVMVersion=1.7*
 ## Progress
 
 Please see the development status on
-[DLanguage HuBoard](https://huboard.com/kingsleyh/DLanguage#/)
+[DLanguage ZenBoard](https://github.com/kingsleyh/DLanguage#boards)
 
 #### Latest Updates
 
+* 21st October 2015 - Work has begun to re-organize and track the upcoming work as well an initial work on the BNF grammar
 * 7th October 2015 - I have finally figured out several aspects of the BNF grammar and feel like I know enough now to begin a complete re-write of the parser using the grammarkit plugin for intellij. This will overcome the terrible performance issues caused by the integration of the DDT parser and will enable a longer term view of complete language support and lots of cool features that are just not possible to add in any other way.
 * 29th March 2015 - I've not managed to fix the performance issue. The problem is that the integration of the DDT parser/lexer with intellij has to jump through many hoops to work correctly as intellij don't make it easy to use external parsers directly. I think the only option is to go back to writing the BNF grammer and JFlex lexer - which I have started working on - however I think this will take a few months of effort. So I'm pushing back the alpha release to after the summer.
 *  5th Feb 2015 - I've had some other demands on my time so had to push back the alpha release until end of March 2015. On the plus side I've discovered
 the major peformance issue that was holding me back - so I've started work on fixing it. Once I'm happy with the performance work will resume on more features.
-
-#### Alpha Release (end of September 2015)
-
-1. New D Project (done)
-2. New D File (done)
-3. Module Settings (done)
-4. Run Configurations for Code (done)
-5. DDT Lexer integration (done)
-6. DDT Parser integration (done)
-7. Syntax highlighting (done)
-8. Indexes and References (done)
-9. Run Configurations for Tests (pending)
-10. Annotations (done)
-11. Code Completion (done)
-12. DUB Support (done)
-13. Help and QuickFixes (pending)
-
-There are another several items to add to the list but those above are the major ones.
-
-#### Beta Release (end of December 2015)
-
-14. Debugger
 
 ## Notes
 
@@ -84,6 +63,14 @@ may or may not happen in this amazing future where I actually have time for thin
 
 The first official release will be published on the Jetbrains plugin site when I feel like the plugin offers the minimum viable functionality as
 contained in the Alpha Release milestone detailed above.
+
+#### Release Schedule
+
+|Release|Date|Content Overview|
+| ------------- |:-------------:| -----:|
+|Alpha| 31 Jan 2016| Create D files, Dub, Syntax highlighting, Run Configs, Annotations, Indexes and References|
+|Beta| 31 Jul 2016| Improved features plus quick fixes|
+|Gamma|31 Dec 2016| Debugger support|
 
 ## Screenshots
 
