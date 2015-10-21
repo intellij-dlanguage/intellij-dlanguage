@@ -237,15 +237,15 @@ operands ::= asmExp | asmExp ',' operands
 
 //sliceExpression ::= unaryExpression '[' assignExpression '..' assignExpression ']' | unaryExpression '[' ']'
 
-unaryExpression ::= primaryExpression
+unaryExpression ::= primaryExpression+
 | '&' unaryExpression
 | '!' unaryExpression
 | '*' unaryExpression
 | '+' unaryExpression
 | '-' unaryExpression
 | '~' unaryExpression
-| '++' unaryExpression
-| '--' unaryExpression
+| '++' unaryExpression+
+| '--' unaryExpression+
 | newExpression
 | deleteExpression
 | castExpression
@@ -264,7 +264,7 @@ unaryExpression ::= primaryExpression
 //postblit ::= 'this' '(' 'this' ')' memberFunctionAttribute* ( functionBody | ';' )
 
 // ---------------------------------------------------------
-private item_ ::= ( moduleDeclaration | declaration | statement)
+private item_ ::= ( moduleDeclaration | declaration | statement )
 
   Identifier ::= ID
   StringLiteral  ::= (WYSIWYG_STRING|ALTERNATE_WYSIWYG_STRING|DOUBLE_QUOTED_STRING|HEX_STRING|DELIMITED_STRING)
@@ -334,7 +334,7 @@ asmLogAndExp ::= asmOrExp asmLogAndExp '&&' asmOrExp
 
  deleteExpression ::= 'delete' unaryExpression
 
- functionCallExpression ::= symbol arguments unaryExpression arguments | type arguments
+functionCallExpression ::= symbol arguments unaryExpression arguments | type arguments
 
 asmPrimaryExp ::= INTEGER_LITERAL | FLOAT_LITERAL | StringLiteral | register | identifierChain | '$'
 
@@ -436,8 +436,8 @@ catches ::= catch | catch* lastCatch
 classDeclaration ::= 'class' Identifier ';' | 'class' Identifier ( ':' baseClassList )? structBody | 'class' Identifier templateParameters constraint? ( structBody | ';' ) | 'class' Identifier templateParameters constraint? ( ':' baseClassList )? structBody | 'class' Identifier templateParameters ( ':' baseClassList )? constraint? structBody
 
 cmpExpression ::= 
-shiftExpression 
-| equalExpression 
+shiftExpression
+| equalExpression
 | identityExpression 
 | relExpression 
 | inExpression
@@ -492,7 +492,7 @@ declaration2 ::= aliasDeclaration
 | '{' declaration '}'
 
 
-declarationsAndStatements ::= declarationOrStatement
+declarationsAndStatements ::= declarationOrStatement+
 
 declarationOrStatement ::= declaration | statement
 
@@ -563,7 +563,9 @@ identityExpression ::= shiftExpression ( 'is' | ( '!' 'is' ) ) shiftExpression
 
 ifStatement ::= 'if' '(' ifCondition ')' declarationOrStatement ( 'else' declarationOrStatement )?
 
-ifCondition ::= 'auto' Identifier '=' expression | type Identifier '=' expression | expression
+ifCondition ::= 'auto' Identifier '=' expression
+  | type Identifier '=' expression
+  | expression
 
 
 
@@ -704,7 +706,38 @@ shiftExpression ::= addExpression [('<<' | '>>' | '>>>') shiftExpression]
 
 statement ::= statementNoCaseNoDefault | caseStatement | caseRangeStatement | defaultStatement
 
-statementNoCaseNoDefault ::= labeledStatement | blockStatement | ifStatement | whileStatement | doStatement | forStatement | foreachStatement | switchStatement | finalSwitchStatement | continueStatement | breakStatement | returnStatement | gotoStatement | withStatement | synchronizedStatement | tryStatement | throwStatement | scopeGuardStatement | asmStatement | conditionalStatement | staticAssertStatement | versionSpecification | debugSpecification | expressionStatement
+statementNoCaseNoDefault ::= labeledStatement
+| blockStatement
+| ifStatement
+| whileStatement
+| doStatement
+| forStatement
+| foreachStatement
+| switchStatement
+| finalSwitchStatement
+| continueStatement
+| breakStatement
+| returnStatement
+| gotoStatement
+| withStatement
+| synchronizedStatement
+| tryStatement
+| throwStatement
+| scopeGuardStatement
+| asmStatement
+| conditionalStatement
+| staticAssertStatement
+| versionSpecification
+| debugSpecification
+| expressionStatement
+| functionCallStatement
+
+
+
+
+functionCallStatement ::=
+     functionCallExpression ';'
+
 
 staticAssertDeclaration ::= staticAssertStatement
 
@@ -796,7 +829,10 @@ unionDeclaration ::= 'union' Identifier templateParameters constraint? structBod
 
 unittest ::= 'unittest' blockStatement
 
-variableDeclaration ::= storageClass* type declarator ( ',' declarator )* ';' | storageClass* type Identifier '=' functionBody ';' | autoDeclaration
+variableDeclaration ::=
+   storageClass* type declarator ( ',' declarator )* ';'
+   | storageClass* type Identifier '=' functionBody ';'
+   | autoDeclaration
 
 
 vector ::= '__vector' '(' type ')'
