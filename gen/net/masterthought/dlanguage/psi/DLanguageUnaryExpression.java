@@ -8,7 +8,13 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageUnaryExpression extends PsiElement {
 
   @Nullable
+  DLanguageArgumentList getArgumentList();
+
+  @Nullable
   DLanguageAssertExpression getAssertExpression();
+
+  @NotNull
+  List<DLanguageAssignExpression> getAssignExpressionList();
 
   @Nullable
   DLanguageCastExpression getCastExpression();
@@ -25,8 +31,8 @@ public interface DLanguageUnaryExpression extends PsiElement {
   @Nullable
   DLanguageNewExpression getNewExpression();
 
-  @NotNull
-  List<DLanguagePrimaryExpression> getPrimaryExpressionList();
+  @Nullable
+  DLanguagePrimaryExpression getPrimaryExpression();
 
   @Nullable
   DLanguageType getType();
@@ -39,6 +45,15 @@ public interface DLanguageUnaryExpression extends PsiElement {
 
   @Nullable
   PsiElement getOpAsterisk();
+
+  @Nullable
+  PsiElement getOpBracketLeft();
+
+  @Nullable
+  PsiElement getOpBracketRight();
+
+  @Nullable
+  PsiElement getOpDdot();
 
   @Nullable
   PsiElement getOpDot();

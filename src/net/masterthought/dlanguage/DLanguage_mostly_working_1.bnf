@@ -214,54 +214,41 @@ dFile ::= item_*
 
 // ----------------------------------------------------------
 
-
-
-
-
  // orOrExpression ::=
  //       andAndExpression
  //     | orOrExpression '||' andAndExpression
 
 // orOrExpression ::= andAndExpression ['||' orOrExpression]
 
-
-asmBrExp ::= asmUnaExp | asmBrExp? '[' asmExp ']'
-
-asmOrExp ::= asmXorExp | asmOrExp '|' asmXorExp
-
-asmXorExp ::= asmAndExp | asmXorExp '^' asmAndExp
-
-//indexExpression ::= unaryExpression '[' argumentList ']'
-
-operands ::= asmExp | asmExp ',' operands
-
-//sliceExpression ::= unaryExpression '[' assignExpression '..' assignExpression ']' | unaryExpression '[' ']'
-
-unaryExpression ::= primaryExpression+
+unaryExpression ::= primaryExpression
 | '&' unaryExpression
 | '!' unaryExpression
 | '*' unaryExpression
 | '+' unaryExpression
 | '-' unaryExpression
 | '~' unaryExpression
-| '++' unaryExpression+
-| '--' unaryExpression+
+| '++' unaryExpression
+| '--' unaryExpression
 | newExpression
 | deleteExpression
 | castExpression
 | assertExpression
 | functionCallExpression
-//| sliceExpression
-//| indexExpression
 | '(' type ')' '.' identifierOrTemplateInstance
-//| unaryExpression '.' identifierOrTemplateInstance
-//| unaryExpression '--'
-//| unaryExpression '++'
+| [
+    '++' unaryExpression
+  | '--' unaryExpression
+  | '.' identifierOrTemplateInstance unaryExpression
+  | '[' argumentList ']' unaryExpression
+  | '[' assignExpression '..' assignExpression ']' unaryExpression
+  | '[' ']' unaryExpression
+  ]
+
 
 
 // unused --------------
 
-//postblit ::= 'this' '(' 'this' ')' memberFunctionAttribute* ( functionBody | ';' )
+postblit ::= 'this' '(' 'this' ')' memberFunctionAttribute* ( functionBody | ';' )
 
 // ---------------------------------------------------------
 private item_ ::= ( moduleDeclaration | declaration | statement )
@@ -276,6 +263,14 @@ private item_ ::= ( moduleDeclaration | declaration | statement )
   identifierChain ::= Identifier ( '.' Identifier )*
 
    asmMulExp ::= asmBrExp [( '*' | '/' | '%' ) asmMulExp]
+
+operands ::= asmExp | asmExp ',' operands
+
+asmBrExp ::= asmUnaExp [ '[' asmExp ']' asmBrExp?]
+
+asmOrExp ::= asmXorExp ['|' asmXorExp]
+
+asmXorExp ::= asmAndExp ['^' asmXorExp]
 
  importBind ::= Identifier ( '=' Identifier )?
 
@@ -436,11 +431,11 @@ catches ::= catch_+ | catch_* lastCatch
 classDeclaration ::= 'class' Identifier ';' | 'class' Identifier ( ':' baseClassList )? structBody | 'class' Identifier templateParameters constraint? ( structBody | ';' ) | 'class' Identifier templateParameters constraint? ( ':' baseClassList )? structBody | 'class' Identifier templateParameters ( ':' baseClassList )? constraint? structBody
 
 cmpExpression ::= 
-shiftExpression
-| equalExpression
+//shiftExpression
+ equalExpression
 | identityExpression 
-| relExpression 
 | inExpression
+| relExpression
 
 compileCondition ::= versionCondition | debugCondition | staticIfCondition
 
@@ -450,7 +445,8 @@ conditionalStatement ::= compileCondition declarationOrStatement ( 'else' declar
 
 constraint ::= 'if' '(' expression ')'
 
-constructor ::= 'this' templateParameters? parameters memberFunctionAttribute* constraint? ( functionBody | ';' )
+constructor ::= 'this' parameters memberFunctionAttribute* constraint? ( functionBody | ';' )
+            | 'this' templateParameters? parameters memberFunctionAttribute* constraint? ( functionBody | ';' )
 
 continueStatement ::= 'continue' Identifier? ';'
 

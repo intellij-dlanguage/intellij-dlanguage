@@ -23,15 +23,9 @@ public class DLanguageAsmOrExpImpl extends ASTWrapperPsiElement implements DLang
   }
 
   @Override
-  @Nullable
-  public DLanguageAsmOrExp getAsmOrExp() {
-    return findChildByClass(DLanguageAsmOrExp.class);
-  }
-
-  @Override
   @NotNull
-  public DLanguageAsmXorExp getAsmXorExp() {
-    return findNotNullChildByClass(DLanguageAsmXorExp.class);
+  public List<DLanguageAsmXorExp> getAsmXorExpList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageAsmXorExp.class);
   }
 
   @Override
