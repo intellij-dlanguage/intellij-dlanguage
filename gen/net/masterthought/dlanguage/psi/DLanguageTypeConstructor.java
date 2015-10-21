@@ -17,9 +17,6 @@ public interface DLanguageTypeConstructor extends PsiElement {
   PsiElement getKwInout();
 
   @Nullable
-  PsiElement getKwScope();
-
-  @Nullable
   PsiElement getKwShared();
 
 }

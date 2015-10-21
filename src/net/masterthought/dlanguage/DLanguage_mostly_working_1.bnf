@@ -429,9 +429,9 @@ caseStatement ::= 'case' argumentList ':' declarationsAndStatements
 
 castQualifier ::= 'const' | 'const' 'shared' | 'immutable' | 'inout' | 'inout' 'shared' | 'shared' | 'shared' 'const' | 'shared' 'inout'
 
-catch ::= 'catch' '(' type Identifier? ')' declarationOrStatement
+catch_ ::= 'catch' '(' type Identifier? ')' declarationOrStatement
 
-catches ::= catch | catch* lastCatch
+catches ::= catch_+ | catch_* lastCatch
 
 classDeclaration ::= 'class' Identifier ';' | 'class' Identifier ( ':' baseClassList )? structBody | 'class' Identifier templateParameters constraint? ( structBody | ';' ) | 'class' Identifier templateParameters constraint? ( ':' baseClassList )? structBody | 'class' Identifier templateParameters ( ':' baseClassList )? constraint? structBody
 
@@ -528,7 +528,7 @@ expressionStatement ::= expression ';'
 
 finalSwitchStatement ::= 'final' switchStatement
 
-finally ::= 'finally' declarationOrStatement
+finally_ ::= 'finally' declarationOrStatement
 
 forStatement ::= 'for' '(' ( declaration | statementNoCaseNoDefault ) expression? ';' expression? ')' declarationOrStatement
 
@@ -805,7 +805,7 @@ throwStatement ::= 'throw' expression ';'
 
 traitsExpression ::= '__traits' '(' Identifier ',' templateArgumentList ')'
 
-tryStatement ::= 'try' declarationOrStatement ( catches | catches finally | finally )
+tryStatement ::= 'try' declarationOrStatement ( catches | catches finally_ | finally_ )
 
 type ::= typeConstructors? type2 typeSuffix*
 

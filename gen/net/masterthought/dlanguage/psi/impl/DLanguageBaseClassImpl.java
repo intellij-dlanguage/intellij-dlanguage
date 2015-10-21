@@ -24,20 +24,8 @@ public class DLanguageBaseClassImpl extends ASTWrapperPsiElement implements DLan
 
   @Override
   @NotNull
-  public DLanguageIdentifierOrTemplateChain getIdentifierOrTemplateChain() {
-    return findNotNullChildByClass(DLanguageIdentifierOrTemplateChain.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageTypeofExpression getTypeofExpression() {
-    return findChildByClass(DLanguageTypeofExpression.class);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpDot() {
-    return findChildByType(OP_DOT);
+  public DLanguageType2 getType2() {
+    return findNotNullChildByClass(DLanguageType2.class);
   }
 
 }

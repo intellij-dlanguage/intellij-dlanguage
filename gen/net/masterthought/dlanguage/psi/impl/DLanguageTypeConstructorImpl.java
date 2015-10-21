@@ -42,12 +42,6 @@ public class DLanguageTypeConstructorImpl extends ASTWrapperPsiElement implement
 
   @Override
   @Nullable
-  public PsiElement getKwScope() {
-    return findChildByType(KW_SCOPE);
-  }
-
-  @Override
-  @Nullable
   public PsiElement getKwShared() {
     return findChildByType(KW_SHARED);
   }

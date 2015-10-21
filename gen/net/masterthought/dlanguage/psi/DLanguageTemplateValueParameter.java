@@ -11,7 +11,7 @@ public interface DLanguageTemplateValueParameter extends PsiElement {
   DLanguageIdentifier getIdentifier();
 
   @Nullable
-  DLanguageExpression getExpression();
+  DLanguageAssignExpression getAssignExpression();
 
   @Nullable
   DLanguageTemplateValueParameterDefault getTemplateValueParameterDefault();

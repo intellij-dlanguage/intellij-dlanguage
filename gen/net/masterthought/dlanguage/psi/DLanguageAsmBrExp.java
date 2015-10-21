@@ -13,7 +13,7 @@ public interface DLanguageAsmBrExp extends PsiElement {
   @Nullable
   DLanguageAsmExp getAsmExp();
 
-  @NotNull
+  @Nullable
   DLanguageAsmUnaExp getAsmUnaExp();
 
   @Nullable

@@ -20,6 +20,9 @@ public interface DLanguageLambdaExpression extends PsiElement {
   DLanguageParameters getParameters();
 
   @Nullable
+  DLanguageType getType();
+
+  @Nullable
   PsiElement getKwDelegate();
 
   @Nullable

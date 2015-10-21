@@ -8,6 +8,12 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageOperands extends PsiElement {
 
   @NotNull
-  List<DLanguageAsmExp> getAsmExpList();
+  DLanguageAsmExp getAsmExp();
+
+  @Nullable
+  DLanguageOperands getOperands();
+
+  @Nullable
+  PsiElement getOpComma();
 
 }

@@ -11,9 +11,6 @@ public interface DLanguageAsmInstruction extends PsiElement {
   DLanguageIdentifier getIdentifier();
 
   @Nullable
-  DLanguageAsmExp getAsmExp();
-
-  @Nullable
   DLanguageAsmInstruction getAsmInstruction();
 
   @Nullable
@@ -24,6 +21,15 @@ public interface DLanguageAsmInstruction extends PsiElement {
 
   @Nullable
   PsiElement getKwAlign();
+
+  @Nullable
+  PsiElement getKwIn();
+
+  @Nullable
+  PsiElement getKwInt();
+
+  @Nullable
+  PsiElement getKwOut();
 
   @Nullable
   PsiElement getOpColon();

@@ -11,16 +11,46 @@ public interface DLanguageAttribute extends PsiElement {
   DLanguageAlignAttribute getAlignAttribute();
 
   @Nullable
+  DLanguageAtAttribute getAtAttribute();
+
+  @Nullable
+  DLanguageDeprecated getDeprecated();
+
+  @Nullable
   DLanguageLinkageAttribute getLinkageAttribute();
 
   @Nullable
   DLanguagePragmaExpression getPragmaExpression();
 
   @Nullable
-  DLanguageStorageClass getStorageClass();
+  PsiElement getKwAbstract();
+
+  @Nullable
+  PsiElement getKwAuto();
+
+  @Nullable
+  PsiElement getKwConst();
 
   @Nullable
   PsiElement getKwExport();
+
+  @Nullable
+  PsiElement getKwExtern();
+
+  @Nullable
+  PsiElement getKwFinal();
+
+  @Nullable
+  PsiElement getKwImmutable();
+
+  @Nullable
+  PsiElement getKwInout();
+
+  @Nullable
+  PsiElement getKwNothrow();
+
+  @Nullable
+  PsiElement getKwOverride();
 
   @Nullable
   PsiElement getKwPackage();
@@ -33,5 +63,23 @@ public interface DLanguageAttribute extends PsiElement {
 
   @Nullable
   PsiElement getKwPublic();
+
+  @Nullable
+  PsiElement getKwPure();
+
+  @Nullable
+  PsiElement getKwRef();
+
+  @Nullable
+  PsiElement getKwScope();
+
+  @Nullable
+  PsiElement getKwShared();
+
+  @Nullable
+  PsiElement getKwStatic();
+
+  @Nullable
+  PsiElement getKwSynchronized();
 
 }

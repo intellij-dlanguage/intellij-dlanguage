@@ -26,6 +26,9 @@ public interface DLanguageType2 extends PsiElement {
   DLanguageTypeofExpression getTypeofExpression();
 
   @Nullable
+  DLanguageVector getVector();
+
+  @Nullable
   PsiElement getOpDot();
 
   @Nullable

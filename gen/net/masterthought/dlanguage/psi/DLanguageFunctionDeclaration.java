@@ -22,8 +22,8 @@ public interface DLanguageFunctionDeclaration extends PsiElement {
   @NotNull
   DLanguageParameters getParameters();
 
-  @NotNull
-  List<DLanguageStorageClass> getStorageClassList();
+  @Nullable
+  DLanguageStorageClass getStorageClass();
 
   @Nullable
   DLanguageTemplateParameters getTemplateParameters();

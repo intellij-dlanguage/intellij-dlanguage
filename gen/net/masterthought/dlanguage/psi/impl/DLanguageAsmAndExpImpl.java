@@ -23,9 +23,15 @@ public class DLanguageAsmAndExpImpl extends ASTWrapperPsiElement implements DLan
   }
 
   @Override
+  @Nullable
+  public DLanguageAsmAndExp getAsmAndExp() {
+    return findChildByClass(DLanguageAsmAndExp.class);
+  }
+
+  @Override
   @NotNull
-  public List<DLanguageAsmEqualExp> getAsmEqualExpList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageAsmEqualExp.class);
+  public DLanguageAsmEqualExp getAsmEqualExp() {
+    return findNotNullChildByClass(DLanguageAsmEqualExp.class);
   }
 
   @Override

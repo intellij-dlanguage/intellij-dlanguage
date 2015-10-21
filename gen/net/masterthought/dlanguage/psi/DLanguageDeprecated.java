@@ -8,7 +8,7 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageDeprecated extends PsiElement {
 
   @Nullable
-  DLanguageAssignExpression getAssignExpression();
+  DLanguageStringLiteral getStringLiteral();
 
   @NotNull
   PsiElement getKwDeprecated();

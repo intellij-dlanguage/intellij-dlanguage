@@ -8,9 +8,12 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageAsmLogAndExp extends PsiElement {
 
   @NotNull
+  DLanguageAsmLogAndExp getAsmLogAndExp();
+
+  @NotNull
   List<DLanguageAsmOrExp> getAsmOrExpList();
 
-  @Nullable
+  @NotNull
   PsiElement getOpBoolAnd();
 
 }

@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageTemplateDeclaration extends PsiElement {
 
-  @Nullable
+  @NotNull
   DLanguageIdentifier getIdentifier();
 
   @Nullable
@@ -16,19 +16,16 @@ public interface DLanguageTemplateDeclaration extends PsiElement {
   @NotNull
   List<DLanguageDeclaration> getDeclarationList();
 
-  @Nullable
-  DLanguageEponymousTemplateDeclaration getEponymousTemplateDeclaration();
-
-  @Nullable
+  @NotNull
   DLanguageTemplateParameters getTemplateParameters();
 
-  @Nullable
+  @NotNull
   PsiElement getKwTemplate();
 
-  @Nullable
+  @NotNull
   PsiElement getOpBracesLeft();
 
-  @Nullable
+  @NotNull
   PsiElement getOpBracesRight();
 
 }

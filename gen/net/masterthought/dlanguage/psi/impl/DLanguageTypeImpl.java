@@ -23,15 +23,15 @@ public class DLanguageTypeImpl extends ASTWrapperPsiElement implements DLanguage
   }
 
   @Override
-  @Nullable
-  public DLanguageAttribute getAttribute() {
-    return findChildByClass(DLanguageAttribute.class);
-  }
-
-  @Override
   @NotNull
   public DLanguageType2 getType2() {
     return findNotNullChildByClass(DLanguageType2.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageTypeConstructors getTypeConstructors() {
+    return findChildByClass(DLanguageTypeConstructors.class);
   }
 
   @Override

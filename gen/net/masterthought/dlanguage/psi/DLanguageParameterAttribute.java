@@ -29,6 +29,9 @@ public interface DLanguageParameterAttribute extends PsiElement {
   PsiElement getKwRef();
 
   @Nullable
+  PsiElement getKwReturn();
+
+  @Nullable
   PsiElement getKwScope();
 
 }

@@ -40,4 +40,10 @@ public class DLanguageForeachTypeImpl extends ASTWrapperPsiElement implements DL
     return findChildByClass(DLanguageTypeConstructors.class);
   }
 
+  @Override
+  @Nullable
+  public PsiElement getKwRef() {
+    return findChildByType(KW_REF);
+  }
+
 }

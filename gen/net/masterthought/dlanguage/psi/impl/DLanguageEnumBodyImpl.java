@@ -23,27 +23,21 @@ public class DLanguageEnumBodyImpl extends ASTWrapperPsiElement implements DLang
   }
 
   @Override
-  @Nullable
-  public DLanguageEnumMembers getEnumMembers() {
-    return findChildByClass(DLanguageEnumMembers.class);
+  @NotNull
+  public List<DLanguageEnumMember> getEnumMemberList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageEnumMember.class);
   }
 
   @Override
-  @Nullable
+  @NotNull
   public PsiElement getOpBracesLeft() {
-    return findChildByType(OP_BRACES_LEFT);
+    return findNotNullChildByType(OP_BRACES_LEFT);
   }
 
   @Override
-  @Nullable
+  @NotNull
   public PsiElement getOpBracesRight() {
-    return findChildByType(OP_BRACES_RIGHT);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpScolon() {
-    return findChildByType(OP_SCOLON);
+    return findNotNullChildByType(OP_BRACES_RIGHT);
   }
 
 }

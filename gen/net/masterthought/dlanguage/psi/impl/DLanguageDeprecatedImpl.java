@@ -24,8 +24,8 @@ public class DLanguageDeprecatedImpl extends ASTWrapperPsiElement implements DLa
 
   @Override
   @Nullable
-  public DLanguageAssignExpression getAssignExpression() {
-    return findChildByClass(DLanguageAssignExpression.class);
+  public DLanguageStringLiteral getStringLiteral() {
+    return findChildByClass(DLanguageStringLiteral.class);
   }
 
   @Override

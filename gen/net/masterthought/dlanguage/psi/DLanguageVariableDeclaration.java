@@ -8,6 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageVariableDeclaration extends PsiElement {
 
   @Nullable
+  DLanguageIdentifier getIdentifier();
+
+  @Nullable
   DLanguageAutoDeclaration getAutoDeclaration();
 
   @NotNull
@@ -15,6 +18,9 @@ public interface DLanguageVariableDeclaration extends PsiElement {
 
   @Nullable
   DLanguageFunctionBody getFunctionBody();
+
+  @NotNull
+  List<DLanguageStorageClass> getStorageClassList();
 
   @Nullable
   DLanguageType getType();

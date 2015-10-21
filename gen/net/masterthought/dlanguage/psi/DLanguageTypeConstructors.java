@@ -8,6 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageTypeConstructors extends PsiElement {
 
   @NotNull
-  List<DLanguageTypeConstructor> getTypeConstructorList();
+  DLanguageTypeConstructor getTypeConstructor();
 
 }

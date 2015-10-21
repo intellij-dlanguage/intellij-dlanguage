@@ -8,7 +8,10 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageAsmXorExp extends PsiElement {
 
   @NotNull
-  List<DLanguageAsmAndExp> getAsmAndExpList();
+  DLanguageAsmAndExp getAsmAndExp();
+
+  @Nullable
+  DLanguageAsmXorExp getAsmXorExp();
 
   @Nullable
   PsiElement getOpXor();

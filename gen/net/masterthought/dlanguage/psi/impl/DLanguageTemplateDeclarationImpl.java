@@ -23,9 +23,9 @@ public class DLanguageTemplateDeclarationImpl extends ASTWrapperPsiElement imple
   }
 
   @Override
-  @Nullable
+  @NotNull
   public DLanguageIdentifier getIdentifier() {
-    return findChildByClass(DLanguageIdentifier.class);
+    return findNotNullChildByClass(DLanguageIdentifier.class);
   }
 
   @Override
@@ -41,33 +41,27 @@ public class DLanguageTemplateDeclarationImpl extends ASTWrapperPsiElement imple
   }
 
   @Override
-  @Nullable
-  public DLanguageEponymousTemplateDeclaration getEponymousTemplateDeclaration() {
-    return findChildByClass(DLanguageEponymousTemplateDeclaration.class);
-  }
-
-  @Override
-  @Nullable
+  @NotNull
   public DLanguageTemplateParameters getTemplateParameters() {
-    return findChildByClass(DLanguageTemplateParameters.class);
+    return findNotNullChildByClass(DLanguageTemplateParameters.class);
   }
 
   @Override
-  @Nullable
+  @NotNull
   public PsiElement getKwTemplate() {
-    return findChildByType(KW_TEMPLATE);
+    return findNotNullChildByType(KW_TEMPLATE);
   }
 
   @Override
-  @Nullable
+  @NotNull
   public PsiElement getOpBracesLeft() {
-    return findChildByType(OP_BRACES_LEFT);
+    return findNotNullChildByType(OP_BRACES_LEFT);
   }
 
   @Override
-  @Nullable
+  @NotNull
   public PsiElement getOpBracesRight() {
-    return findChildByType(OP_BRACES_RIGHT);
+    return findNotNullChildByType(OP_BRACES_RIGHT);
   }
 
 }

@@ -8,6 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageAsmPrimaryExp extends PsiElement {
 
   @Nullable
+  DLanguageStringLiteral getStringLiteral();
+
+  @Nullable
   DLanguageIdentifierChain getIdentifierChain();
 
   @Nullable

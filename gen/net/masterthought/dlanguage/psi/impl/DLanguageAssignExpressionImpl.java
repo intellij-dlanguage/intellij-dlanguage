@@ -24,14 +24,14 @@ public class DLanguageAssignExpressionImpl extends ASTWrapperPsiElement implemen
 
   @Override
   @Nullable
-  public DLanguageAssignExpression getAssignExpression() {
-    return findChildByClass(DLanguageAssignExpression.class);
+  public DLanguageAssignOperator getAssignOperator() {
+    return findChildByClass(DLanguageAssignOperator.class);
   }
 
   @Override
   @Nullable
-  public DLanguageAssignOperator getAssignOperator() {
-    return findChildByClass(DLanguageAssignOperator.class);
+  public DLanguageExpression getExpression() {
+    return findChildByClass(DLanguageExpression.class);
   }
 
   @Override

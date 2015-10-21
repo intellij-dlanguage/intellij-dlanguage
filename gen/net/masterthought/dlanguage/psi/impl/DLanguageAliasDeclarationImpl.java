@@ -23,12 +23,6 @@ public class DLanguageAliasDeclarationImpl extends ASTWrapperPsiElement implemen
   }
 
   @Override
-  @Nullable
-  public DLanguageIdentifier getIdentifier() {
-    return findChildByClass(DLanguageIdentifier.class);
-  }
-
-  @Override
   @NotNull
   public List<DLanguageAliasInitializer> getAliasInitializerList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageAliasInitializer.class);
@@ -36,8 +30,14 @@ public class DLanguageAliasDeclarationImpl extends ASTWrapperPsiElement implemen
 
   @Override
   @Nullable
-  public DLanguageLinkageAttribute getLinkageAttribute() {
-    return findChildByClass(DLanguageLinkageAttribute.class);
+  public DLanguageIdentifierList getIdentifierList() {
+    return findChildByClass(DLanguageIdentifierList.class);
+  }
+
+  @Override
+  @NotNull
+  public List<DLanguageStorageClass> getStorageClassList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageStorageClass.class);
   }
 
   @Override

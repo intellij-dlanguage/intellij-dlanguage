@@ -19,7 +19,7 @@ public interface DLanguageConstructor extends PsiElement {
   @NotNull
   DLanguageParameters getParameters();
 
-  @NotNull
+  @Nullable
   DLanguageTemplateParameters getTemplateParameters();
 
   @NotNull

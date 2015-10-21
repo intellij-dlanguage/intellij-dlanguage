@@ -24,8 +24,14 @@ public class DLanguageAsmLogOrExpImpl extends ASTWrapperPsiElement implements DL
 
   @Override
   @NotNull
-  public List<DLanguageAsmLogAndExp> getAsmLogAndExpList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageAsmLogAndExp.class);
+  public DLanguageAsmLogAndExp getAsmLogAndExp() {
+    return findNotNullChildByClass(DLanguageAsmLogAndExp.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageAsmLogOrExp getAsmLogOrExp() {
+    return findChildByClass(DLanguageAsmLogOrExp.class);
   }
 
   @Override

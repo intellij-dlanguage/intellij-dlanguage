@@ -36,12 +36,6 @@ public class DLanguageNonVoidInitializerImpl extends ASTWrapperPsiElement implem
 
   @Override
   @Nullable
-  public DLanguageFunctionBody getFunctionBody() {
-    return findChildByClass(DLanguageFunctionBody.class);
-  }
-
-  @Override
-  @Nullable
   public DLanguageStructInitializer getStructInitializer() {
     return findChildByClass(DLanguageStructInitializer.class);
   }

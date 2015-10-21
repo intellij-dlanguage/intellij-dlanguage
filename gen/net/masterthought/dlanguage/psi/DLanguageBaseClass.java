@@ -8,12 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageBaseClass extends PsiElement {
 
   @NotNull
-  DLanguageIdentifierOrTemplateChain getIdentifierOrTemplateChain();
-
-  @Nullable
-  DLanguageTypeofExpression getTypeofExpression();
-
-  @Nullable
-  PsiElement getOpDot();
+  DLanguageType2 getType2();
 
 }

@@ -13,9 +13,6 @@ public interface DLanguageAtAttribute extends PsiElement {
   @Nullable
   DLanguageArgumentList getArgumentList();
 
-  @Nullable
-  DLanguageFunctionCallExpression getFunctionCallExpression();
-
   @NotNull
   PsiElement getOpAt();
 

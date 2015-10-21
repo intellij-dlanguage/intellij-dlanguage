@@ -24,8 +24,8 @@ public class DLanguageAsmEqualExpImpl extends ASTWrapperPsiElement implements DL
 
   @Override
   @NotNull
-  public List<DLanguageAsmRelExp> getAsmRelExpList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageAsmRelExp.class);
+  public DLanguageAsmRelExp getAsmRelExp() {
+    return findNotNullChildByClass(DLanguageAsmRelExp.class);
   }
 
   @Override

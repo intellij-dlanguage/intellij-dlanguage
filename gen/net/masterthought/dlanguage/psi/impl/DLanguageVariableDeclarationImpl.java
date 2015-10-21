@@ -24,6 +24,12 @@ public class DLanguageVariableDeclarationImpl extends ASTWrapperPsiElement imple
 
   @Override
   @Nullable
+  public DLanguageIdentifier getIdentifier() {
+    return findChildByClass(DLanguageIdentifier.class);
+  }
+
+  @Override
+  @Nullable
   public DLanguageAutoDeclaration getAutoDeclaration() {
     return findChildByClass(DLanguageAutoDeclaration.class);
   }
@@ -38,6 +44,12 @@ public class DLanguageVariableDeclarationImpl extends ASTWrapperPsiElement imple
   @Nullable
   public DLanguageFunctionBody getFunctionBody() {
     return findChildByClass(DLanguageFunctionBody.class);
+  }
+
+  @Override
+  @NotNull
+  public List<DLanguageStorageClass> getStorageClassList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageStorageClass.class);
   }
 
   @Override

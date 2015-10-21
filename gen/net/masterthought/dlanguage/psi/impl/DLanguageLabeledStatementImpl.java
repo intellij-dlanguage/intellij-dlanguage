@@ -29,9 +29,9 @@ public class DLanguageLabeledStatementImpl extends ASTWrapperPsiElement implemen
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageDeclarationOrStatement getDeclarationOrStatement() {
-    return findNotNullChildByClass(DLanguageDeclarationOrStatement.class);
+    return findChildByClass(DLanguageDeclarationOrStatement.class);
   }
 
   @Override

@@ -8,10 +8,10 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageAssignExpression extends PsiElement {
 
   @Nullable
-  DLanguageAssignExpression getAssignExpression();
+  DLanguageAssignOperator getAssignOperator();
 
   @Nullable
-  DLanguageAssignOperator getAssignOperator();
+  DLanguageExpression getExpression();
 
   @NotNull
   DLanguageTernaryExpression getTernaryExpression();

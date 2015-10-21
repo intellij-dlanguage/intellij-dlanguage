@@ -10,7 +10,7 @@ public interface DLanguageLabeledStatement extends PsiElement {
   @NotNull
   DLanguageIdentifier getIdentifier();
 
-  @NotNull
+  @Nullable
   DLanguageDeclarationOrStatement getDeclarationOrStatement();
 
   @NotNull

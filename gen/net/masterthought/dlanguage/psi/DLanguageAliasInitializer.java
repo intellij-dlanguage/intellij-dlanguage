@@ -11,6 +11,12 @@ public interface DLanguageAliasInitializer extends PsiElement {
   DLanguageIdentifier getIdentifier();
 
   @NotNull
+  List<DLanguageStorageClass> getStorageClassList();
+
+  @Nullable
+  DLanguageTemplateParameters getTemplateParameters();
+
+  @NotNull
   DLanguageType getType();
 
   @NotNull

@@ -7,14 +7,14 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageAliasDeclaration extends PsiElement {
 
-  @Nullable
-  DLanguageIdentifier getIdentifier();
-
   @NotNull
   List<DLanguageAliasInitializer> getAliasInitializerList();
 
   @Nullable
-  DLanguageLinkageAttribute getLinkageAttribute();
+  DLanguageIdentifierList getIdentifierList();
+
+  @NotNull
+  List<DLanguageStorageClass> getStorageClassList();
 
   @Nullable
   DLanguageType getType();

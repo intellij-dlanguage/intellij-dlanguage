@@ -13,7 +13,7 @@ public interface DLanguageTemplateArguments extends PsiElement {
   @Nullable
   DLanguageTemplateSingleArgument getTemplateSingleArgument();
 
-  @NotNull
+  @Nullable
   PsiElement getOpNot();
 
   @Nullable

@@ -8,10 +8,10 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageFunctionCallExpression extends PsiElement {
 
   @NotNull
-  DLanguageArguments getArguments();
+  List<DLanguageArguments> getArgumentsList();
 
   @Nullable
-  DLanguageTemplateArguments getTemplateArguments();
+  DLanguageSymbol getSymbol();
 
   @Nullable
   DLanguageType getType();

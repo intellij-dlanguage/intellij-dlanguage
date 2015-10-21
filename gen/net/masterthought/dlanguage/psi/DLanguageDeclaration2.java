@@ -14,6 +14,9 @@ public interface DLanguageDeclaration2 extends PsiElement {
   DLanguageAliasThisDeclaration getAliasThisDeclaration();
 
   @Nullable
+  DLanguageAnonymousEnumDeclaration getAnonymousEnumDeclaration();
+
+  @Nullable
   DLanguageAttributeDeclaration getAttributeDeclaration();
 
   @Nullable
@@ -25,14 +28,20 @@ public interface DLanguageDeclaration2 extends PsiElement {
   @Nullable
   DLanguageConstructor getConstructor();
 
-  @NotNull
-  List<DLanguageDeclaration> getDeclarationList();
+  @Nullable
+  DLanguageDebugSpecification getDebugSpecification();
+
+  @Nullable
+  DLanguageDeclaration getDeclaration();
 
   @Nullable
   DLanguageDestructor getDestructor();
 
   @Nullable
   DLanguageEnumDeclaration getEnumDeclaration();
+
+  @Nullable
+  DLanguageEponymousTemplateDeclaration getEponymousTemplateDeclaration();
 
   @Nullable
   DLanguageFunctionDeclaration getFunctionDeclaration();
@@ -84,6 +93,9 @@ public interface DLanguageDeclaration2 extends PsiElement {
 
   @Nullable
   DLanguageVariableDeclaration getVariableDeclaration();
+
+  @Nullable
+  DLanguageVersionSpecification getVersionSpecification();
 
   @Nullable
   PsiElement getOpBracesLeft();

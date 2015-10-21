@@ -17,7 +17,6 @@ public interface DLanguageTypes {
   IElementType AND_EXPRESSION = new DLanguageElementType("AND_EXPRESSION");
   IElementType ANONYMOUS_ENUM_DECLARATION = new DLanguageElementType("ANONYMOUS_ENUM_DECLARATION");
   IElementType ANONYMOUS_ENUM_MEMBER = new DLanguageElementType("ANONYMOUS_ENUM_MEMBER");
-  IElementType ANONYMOUS_ENUM_MEMBERS = new DLanguageElementType("ANONYMOUS_ENUM_MEMBERS");
   IElementType ARGUMENTS = new DLanguageElementType("ARGUMENTS");
   IElementType ARGUMENT_LIST = new DLanguageElementType("ARGUMENT_LIST");
   IElementType ARRAY_INITIALIZER = new DLanguageElementType("ARRAY_INITIALIZER");
@@ -83,7 +82,6 @@ public interface DLanguageTypes {
   IElementType ENUM_BODY = new DLanguageElementType("ENUM_BODY");
   IElementType ENUM_DECLARATION = new DLanguageElementType("ENUM_DECLARATION");
   IElementType ENUM_MEMBER = new DLanguageElementType("ENUM_MEMBER");
-  IElementType ENUM_MEMBERS = new DLanguageElementType("ENUM_MEMBERS");
   IElementType EPONYMOUS_TEMPLATE_DECLARATION = new DLanguageElementType("EPONYMOUS_TEMPLATE_DECLARATION");
   IElementType EQUAL_EXPRESSION = new DLanguageElementType("EQUAL_EXPRESSION");
   IElementType EXPRESSION = new DLanguageElementType("EXPRESSION");
@@ -103,6 +101,7 @@ public interface DLanguageTypes {
   IElementType GOTO_STATEMENT = new DLanguageElementType("GOTO_STATEMENT");
   IElementType IDENTIFIER = new DLanguageElementType("IDENTIFIER");
   IElementType IDENTIFIER_CHAIN = new DLanguageElementType("IDENTIFIER_CHAIN");
+  IElementType IDENTIFIER_LIST = new DLanguageElementType("IDENTIFIER_LIST");
   IElementType IDENTIFIER_OR_TEMPLATE_CHAIN = new DLanguageElementType("IDENTIFIER_OR_TEMPLATE_CHAIN");
   IElementType IDENTIFIER_OR_TEMPLATE_INSTANCE = new DLanguageElementType("IDENTIFIER_OR_TEMPLATE_INSTANCE");
   IElementType IDENTITY_EXPRESSION = new DLanguageElementType("IDENTITY_EXPRESSION");
@@ -425,9 +424,6 @@ public interface DLanguageTypes {
       else if (type == ANONYMOUS_ENUM_MEMBER) {
         return new DLanguageAnonymousEnumMemberImpl(node);
       }
-      else if (type == ANONYMOUS_ENUM_MEMBERS) {
-        return new DLanguageAnonymousEnumMembersImpl(node);
-      }
       else if (type == ARGUMENTS) {
         return new DLanguageArgumentsImpl(node);
       }
@@ -623,9 +619,6 @@ public interface DLanguageTypes {
       else if (type == ENUM_MEMBER) {
         return new DLanguageEnumMemberImpl(node);
       }
-      else if (type == ENUM_MEMBERS) {
-        return new DLanguageEnumMembersImpl(node);
-      }
       else if (type == EPONYMOUS_TEMPLATE_DECLARATION) {
         return new DLanguageEponymousTemplateDeclarationImpl(node);
       }
@@ -682,6 +675,9 @@ public interface DLanguageTypes {
       }
       else if (type == IDENTIFIER_CHAIN) {
         return new DLanguageIdentifierChainImpl(node);
+      }
+      else if (type == IDENTIFIER_LIST) {
+        return new DLanguageIdentifierListImpl(node);
       }
       else if (type == IDENTIFIER_OR_TEMPLATE_CHAIN) {
         return new DLanguageIdentifierOrTemplateChainImpl(node);

@@ -8,7 +8,10 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageAsmMulExp extends PsiElement {
 
   @NotNull
-  List<DLanguageAsmBrExp> getAsmBrExpList();
+  DLanguageAsmBrExp getAsmBrExp();
+
+  @Nullable
+  DLanguageAsmMulExp getAsmMulExp();
 
   @Nullable
   PsiElement getOpAsterisk();

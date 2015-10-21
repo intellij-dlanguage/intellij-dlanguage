@@ -7,8 +7,11 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageAsmAndExp extends PsiElement {
 
+  @Nullable
+  DLanguageAsmAndExp getAsmAndExp();
+
   @NotNull
-  List<DLanguageAsmEqualExp> getAsmEqualExpList();
+  DLanguageAsmEqualExp getAsmEqualExp();
 
   @Nullable
   PsiElement getOpAnd();

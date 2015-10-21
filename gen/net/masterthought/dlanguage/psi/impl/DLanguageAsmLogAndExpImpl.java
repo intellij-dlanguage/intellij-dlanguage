@@ -24,14 +24,20 @@ public class DLanguageAsmLogAndExpImpl extends ASTWrapperPsiElement implements D
 
   @Override
   @NotNull
+  public DLanguageAsmLogAndExp getAsmLogAndExp() {
+    return findNotNullChildByClass(DLanguageAsmLogAndExp.class);
+  }
+
+  @Override
+  @NotNull
   public List<DLanguageAsmOrExp> getAsmOrExpList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageAsmOrExp.class);
   }
 
   @Override
-  @Nullable
+  @NotNull
   public PsiElement getOpBoolAnd() {
-    return findChildByType(OP_BOOL_AND);
+    return findNotNullChildByType(OP_BOOL_AND);
   }
 
 }

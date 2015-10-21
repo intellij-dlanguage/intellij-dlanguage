@@ -51,10 +51,6 @@ public class DLanguageVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitAnonymousEnumMembers(@NotNull DLanguageAnonymousEnumMembers o) {
-    visitPsiElement(o);
-  }
-
   public void visitArgumentList(@NotNull DLanguageArgumentList o) {
     visitPsiElement(o);
   }
@@ -315,10 +311,6 @@ public class DLanguageVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitEnumMembers(@NotNull DLanguageEnumMembers o) {
-    visitPsiElement(o);
-  }
-
   public void visitEponymousTemplateDeclaration(@NotNull DLanguageEponymousTemplateDeclaration o) {
     visitPsiElement(o);
   }
@@ -388,6 +380,10 @@ public class DLanguageVisitor extends PsiElementVisitor {
   }
 
   public void visitIdentifierChain(@NotNull DLanguageIdentifierChain o) {
+    visitPsiElement(o);
+  }
+
+  public void visitIdentifierList(@NotNull DLanguageIdentifierList o) {
     visitPsiElement(o);
   }
 

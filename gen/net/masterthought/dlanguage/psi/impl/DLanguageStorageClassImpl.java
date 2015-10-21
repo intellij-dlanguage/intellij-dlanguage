@@ -24,6 +24,12 @@ public class DLanguageStorageClassImpl extends ASTWrapperPsiElement implements D
 
   @Override
   @Nullable
+  public DLanguageAlignAttribute getAlignAttribute() {
+    return findChildByClass(DLanguageAlignAttribute.class);
+  }
+
+  @Override
+  @Nullable
   public DLanguageAtAttribute getAtAttribute() {
     return findChildByClass(DLanguageAtAttribute.class);
   }
@@ -32,6 +38,12 @@ public class DLanguageStorageClassImpl extends ASTWrapperPsiElement implements D
   @Nullable
   public DLanguageDeprecated getDeprecated() {
     return findChildByClass(DLanguageDeprecated.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageLinkageAttribute getLinkageAttribute() {
+    return findChildByClass(DLanguageLinkageAttribute.class);
   }
 
   @Override
@@ -50,6 +62,12 @@ public class DLanguageStorageClassImpl extends ASTWrapperPsiElement implements D
   @Nullable
   public PsiElement getKwAuto() {
     return findChildByType(KW_AUTO);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getKwEnum() {
+    return findChildByType(KW_ENUM);
   }
 
   @Override

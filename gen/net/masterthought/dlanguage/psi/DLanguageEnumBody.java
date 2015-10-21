@@ -7,16 +7,13 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageEnumBody extends PsiElement {
 
-  @Nullable
-  DLanguageEnumMembers getEnumMembers();
+  @NotNull
+  List<DLanguageEnumMember> getEnumMemberList();
 
-  @Nullable
+  @NotNull
   PsiElement getOpBracesLeft();
 
-  @Nullable
+  @NotNull
   PsiElement getOpBracesRight();
-
-  @Nullable
-  PsiElement getOpScolon();
 
 }

@@ -7,11 +7,11 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageType extends PsiElement {
 
-  @Nullable
-  DLanguageAttribute getAttribute();
-
   @NotNull
   DLanguageType2 getType2();
+
+  @Nullable
+  DLanguageTypeConstructors getTypeConstructors();
 
   @NotNull
   List<DLanguageTypeSuffix> getTypeSuffixList();

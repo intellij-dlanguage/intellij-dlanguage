@@ -36,6 +36,12 @@ public class DLanguageDeclaration2Impl extends ASTWrapperPsiElement implements D
 
   @Override
   @Nullable
+  public DLanguageAnonymousEnumDeclaration getAnonymousEnumDeclaration() {
+    return findChildByClass(DLanguageAnonymousEnumDeclaration.class);
+  }
+
+  @Override
+  @Nullable
   public DLanguageAttributeDeclaration getAttributeDeclaration() {
     return findChildByClass(DLanguageAttributeDeclaration.class);
   }
@@ -59,9 +65,15 @@ public class DLanguageDeclaration2Impl extends ASTWrapperPsiElement implements D
   }
 
   @Override
-  @NotNull
-  public List<DLanguageDeclaration> getDeclarationList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageDeclaration.class);
+  @Nullable
+  public DLanguageDebugSpecification getDebugSpecification() {
+    return findChildByClass(DLanguageDebugSpecification.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageDeclaration getDeclaration() {
+    return findChildByClass(DLanguageDeclaration.class);
   }
 
   @Override
@@ -74,6 +86,12 @@ public class DLanguageDeclaration2Impl extends ASTWrapperPsiElement implements D
   @Nullable
   public DLanguageEnumDeclaration getEnumDeclaration() {
     return findChildByClass(DLanguageEnumDeclaration.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageEponymousTemplateDeclaration getEponymousTemplateDeclaration() {
+    return findChildByClass(DLanguageEponymousTemplateDeclaration.class);
   }
 
   @Override
@@ -176,6 +194,12 @@ public class DLanguageDeclaration2Impl extends ASTWrapperPsiElement implements D
   @Nullable
   public DLanguageVariableDeclaration getVariableDeclaration() {
     return findChildByClass(DLanguageVariableDeclaration.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageVersionSpecification getVersionSpecification() {
+    return findChildByClass(DLanguageVersionSpecification.class);
   }
 
   @Override

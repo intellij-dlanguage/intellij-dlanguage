@@ -30,8 +30,8 @@ public class DLanguageTemplateValueParameterImpl extends ASTWrapperPsiElement im
 
   @Override
   @Nullable
-  public DLanguageExpression getExpression() {
-    return findChildByClass(DLanguageExpression.class);
+  public DLanguageAssignExpression getAssignExpression() {
+    return findChildByClass(DLanguageAssignExpression.class);
   }
 
   @Override

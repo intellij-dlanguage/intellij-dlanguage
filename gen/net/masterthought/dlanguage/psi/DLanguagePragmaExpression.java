@@ -13,9 +13,6 @@ public interface DLanguagePragmaExpression extends PsiElement {
   @Nullable
   DLanguageArgumentList getArgumentList();
 
-  @NotNull
-  PsiElement getKwPragma();
-
   @Nullable
   PsiElement getOpComma();
 

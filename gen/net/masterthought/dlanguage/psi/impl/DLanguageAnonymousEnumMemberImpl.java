@@ -23,21 +23,15 @@ public class DLanguageAnonymousEnumMemberImpl extends ASTWrapperPsiElement imple
   }
 
   @Override
-  @Nullable
+  @NotNull
   public DLanguageIdentifier getIdentifier() {
-    return findChildByClass(DLanguageIdentifier.class);
+    return findNotNullChildByClass(DLanguageIdentifier.class);
   }
 
   @Override
   @Nullable
   public DLanguageAssignExpression getAssignExpression() {
     return findChildByClass(DLanguageAssignExpression.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageEnumMember getEnumMember() {
-    return findChildByClass(DLanguageEnumMember.class);
   }
 
   @Override

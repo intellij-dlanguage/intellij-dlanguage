@@ -30,6 +30,18 @@ public class DLanguageAliasInitializerImpl extends ASTWrapperPsiElement implemen
 
   @Override
   @NotNull
+  public List<DLanguageStorageClass> getStorageClassList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageStorageClass.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageTemplateParameters getTemplateParameters() {
+    return findChildByClass(DLanguageTemplateParameters.class);
+  }
+
+  @Override
+  @NotNull
   public DLanguageType getType() {
     return findNotNullChildByClass(DLanguageType.class);
   }

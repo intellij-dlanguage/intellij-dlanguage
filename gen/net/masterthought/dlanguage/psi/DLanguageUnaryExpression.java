@@ -17,13 +17,16 @@ public interface DLanguageUnaryExpression extends PsiElement {
   DLanguageDeleteExpression getDeleteExpression();
 
   @Nullable
+  DLanguageFunctionCallExpression getFunctionCallExpression();
+
+  @Nullable
   DLanguageIdentifierOrTemplateInstance getIdentifierOrTemplateInstance();
 
   @Nullable
   DLanguageNewExpression getNewExpression();
 
-  @Nullable
-  DLanguagePrimaryExpression getPrimaryExpression();
+  @NotNull
+  List<DLanguagePrimaryExpression> getPrimaryExpressionList();
 
   @Nullable
   DLanguageType getType();

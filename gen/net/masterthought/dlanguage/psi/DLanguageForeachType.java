@@ -16,4 +16,7 @@ public interface DLanguageForeachType extends PsiElement {
   @Nullable
   DLanguageTypeConstructors getTypeConstructors();
 
+  @Nullable
+  PsiElement getKwRef();
+
 }

@@ -8,7 +8,7 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageAsmEqualExp extends PsiElement {
 
   @NotNull
-  List<DLanguageAsmRelExp> getAsmRelExpList();
+  DLanguageAsmRelExp getAsmRelExp();
 
   @Nullable
   PsiElement getOpEqEq();

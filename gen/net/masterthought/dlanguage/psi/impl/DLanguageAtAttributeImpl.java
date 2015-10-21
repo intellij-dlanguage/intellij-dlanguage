@@ -35,12 +35,6 @@ public class DLanguageAtAttributeImpl extends ASTWrapperPsiElement implements DL
   }
 
   @Override
-  @Nullable
-  public DLanguageFunctionCallExpression getFunctionCallExpression() {
-    return findChildByClass(DLanguageFunctionCallExpression.class);
-  }
-
-  @Override
   @NotNull
   public PsiElement getOpAt() {
     return findNotNullChildByType(OP_AT);

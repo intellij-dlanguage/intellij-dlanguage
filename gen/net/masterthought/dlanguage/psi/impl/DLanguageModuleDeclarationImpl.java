@@ -23,6 +23,12 @@ public class DLanguageModuleDeclarationImpl extends ASTWrapperPsiElement impleme
   }
 
   @Override
+  @Nullable
+  public DLanguageDeprecated getDeprecated() {
+    return findChildByClass(DLanguageDeprecated.class);
+  }
+
+  @Override
   @NotNull
   public DLanguageIdentifierChain getIdentifierChain() {
     return findNotNullChildByClass(DLanguageIdentifierChain.class);

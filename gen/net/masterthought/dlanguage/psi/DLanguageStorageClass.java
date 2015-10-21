@@ -8,10 +8,16 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageStorageClass extends PsiElement {
 
   @Nullable
+  DLanguageAlignAttribute getAlignAttribute();
+
+  @Nullable
   DLanguageAtAttribute getAtAttribute();
 
   @Nullable
   DLanguageDeprecated getDeprecated();
+
+  @Nullable
+  DLanguageLinkageAttribute getLinkageAttribute();
 
   @Nullable
   DLanguageTypeConstructor getTypeConstructor();
@@ -21,6 +27,9 @@ public interface DLanguageStorageClass extends PsiElement {
 
   @Nullable
   PsiElement getKwAuto();
+
+  @Nullable
+  PsiElement getKwEnum();
 
   @Nullable
   PsiElement getKwExtern();

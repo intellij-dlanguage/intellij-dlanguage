@@ -53,9 +53,9 @@ public class DLanguageFunctionDeclarationImpl extends ASTWrapperPsiElement imple
   }
 
   @Override
-  @NotNull
-  public List<DLanguageStorageClass> getStorageClassList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageStorageClass.class);
+  @Nullable
+  public DLanguageStorageClass getStorageClass() {
+    return findChildByClass(DLanguageStorageClass.class);
   }
 
   @Override

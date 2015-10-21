@@ -24,14 +24,14 @@ public class DLanguageFunctionCallExpressionImpl extends ASTWrapperPsiElement im
 
   @Override
   @NotNull
-  public DLanguageArguments getArguments() {
-    return findNotNullChildByClass(DLanguageArguments.class);
+  public List<DLanguageArguments> getArgumentsList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageArguments.class);
   }
 
   @Override
   @Nullable
-  public DLanguageTemplateArguments getTemplateArguments() {
-    return findChildByClass(DLanguageTemplateArguments.class);
+  public DLanguageSymbol getSymbol() {
+    return findChildByClass(DLanguageSymbol.class);
   }
 
   @Override

@@ -48,6 +48,12 @@ public class DLanguageLambdaExpressionImpl extends ASTWrapperPsiElement implemen
 
   @Override
   @Nullable
+  public DLanguageType getType() {
+    return findChildByClass(DLanguageType.class);
+  }
+
+  @Override
+  @Nullable
   public PsiElement getKwDelegate() {
     return findChildByType(KW_DELEGATE);
   }

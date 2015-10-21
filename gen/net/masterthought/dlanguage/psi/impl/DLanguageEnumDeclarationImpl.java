@@ -23,15 +23,9 @@ public class DLanguageEnumDeclarationImpl extends ASTWrapperPsiElement implement
   }
 
   @Override
-  @Nullable
+  @NotNull
   public DLanguageIdentifier getIdentifier() {
-    return findChildByClass(DLanguageIdentifier.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageAnonymousEnumDeclaration getAnonymousEnumDeclaration() {
-    return findChildByClass(DLanguageAnonymousEnumDeclaration.class);
+    return findNotNullChildByClass(DLanguageIdentifier.class);
   }
 
   @Override
@@ -47,15 +41,21 @@ public class DLanguageEnumDeclarationImpl extends ASTWrapperPsiElement implement
   }
 
   @Override
-  @Nullable
+  @NotNull
   public PsiElement getKwEnum() {
-    return findChildByType(KW_ENUM);
+    return findNotNullChildByType(KW_ENUM);
   }
 
   @Override
   @Nullable
   public PsiElement getOpColon() {
     return findChildByType(OP_COLON);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpScolon() {
+    return findChildByType(OP_SCOLON);
   }
 
 }

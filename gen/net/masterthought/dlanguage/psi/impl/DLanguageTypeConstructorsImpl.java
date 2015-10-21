@@ -24,8 +24,8 @@ public class DLanguageTypeConstructorsImpl extends ASTWrapperPsiElement implemen
 
   @Override
   @NotNull
-  public List<DLanguageTypeConstructor> getTypeConstructorList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageTypeConstructor.class);
+  public DLanguageTypeConstructor getTypeConstructor() {
+    return findNotNullChildByClass(DLanguageTypeConstructor.class);
   }
 
 }

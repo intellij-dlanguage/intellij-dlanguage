@@ -7,34 +7,16 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageIsExpression extends PsiElement {
 
-  @Nullable
-  DLanguageIdentifier getIdentifier();
-
-  @Nullable
-  DLanguageTemplateParameterList getTemplateParameterList();
+  @NotNull
+  List<DLanguageIdentifier> getIdentifierList();
 
   @NotNull
-  DLanguageType getType();
-
-  @Nullable
-  DLanguageTypeSpecialization getTypeSpecialization();
+  List<DLanguageTemplateParameterList> getTemplateParameterListList();
 
   @NotNull
-  PsiElement getKwIs();
-
-  @Nullable
-  PsiElement getOpColon();
-
-  @Nullable
-  PsiElement getOpComma();
-
-  @Nullable
-  PsiElement getOpEqEq();
+  List<DLanguageType> getTypeList();
 
   @NotNull
-  PsiElement getOpParLeft();
-
-  @NotNull
-  PsiElement getOpParRight();
+  List<DLanguageTypeSpecialization> getTypeSpecializationList();
 
 }

@@ -24,6 +24,12 @@ public class DLanguageAsmPrimaryExpImpl extends ASTWrapperPsiElement implements 
 
   @Override
   @Nullable
+  public DLanguageStringLiteral getStringLiteral() {
+    return findChildByClass(DLanguageStringLiteral.class);
+  }
+
+  @Override
+  @Nullable
   public DLanguageIdentifierChain getIdentifierChain() {
     return findChildByClass(DLanguageIdentifierChain.class);
   }

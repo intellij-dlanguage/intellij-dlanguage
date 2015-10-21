@@ -30,12 +30,6 @@ public class DLanguageAsmInstructionImpl extends ASTWrapperPsiElement implements
 
   @Override
   @Nullable
-  public DLanguageAsmExp getAsmExp() {
-    return findChildByClass(DLanguageAsmExp.class);
-  }
-
-  @Override
-  @Nullable
   public DLanguageAsmInstruction getAsmInstruction() {
     return findChildByClass(DLanguageAsmInstruction.class);
   }
@@ -56,6 +50,24 @@ public class DLanguageAsmInstructionImpl extends ASTWrapperPsiElement implements
   @Nullable
   public PsiElement getKwAlign() {
     return findChildByType(KW_ALIGN);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getKwIn() {
+    return findChildByType(KW_IN);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getKwInt() {
+    return findChildByType(KW_INT);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getKwOut() {
+    return findChildByType(KW_OUT);
   }
 
   @Override

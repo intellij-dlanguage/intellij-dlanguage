@@ -35,9 +35,9 @@ public class DLanguageTemplateArgumentsImpl extends ASTWrapperPsiElement impleme
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getOpNot() {
-    return findNotNullChildByType(OP_NOT);
+    return findChildByType(OP_NOT);
   }
 
   @Override

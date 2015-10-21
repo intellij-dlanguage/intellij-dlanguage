@@ -47,9 +47,9 @@ public class DLanguageConstructorImpl extends ASTWrapperPsiElement implements DL
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageTemplateParameters getTemplateParameters() {
-    return findNotNullChildByClass(DLanguageTemplateParameters.class);
+    return findChildByClass(DLanguageTemplateParameters.class);
   }
 
   @Override

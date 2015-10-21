@@ -60,6 +60,12 @@ public class DLanguageType2Impl extends ASTWrapperPsiElement implements DLanguag
 
   @Override
   @Nullable
+  public DLanguageVector getVector() {
+    return findChildByClass(DLanguageVector.class);
+  }
+
+  @Override
+  @Nullable
   public PsiElement getOpDot() {
     return findChildByType(OP_DOT);
   }

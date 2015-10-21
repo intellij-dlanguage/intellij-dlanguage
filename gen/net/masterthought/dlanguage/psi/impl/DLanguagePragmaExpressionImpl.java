@@ -35,12 +35,6 @@ public class DLanguagePragmaExpressionImpl extends ASTWrapperPsiElement implemen
   }
 
   @Override
-  @NotNull
-  public PsiElement getKwPragma() {
-    return findNotNullChildByType(KW_PRAGMA);
-  }
-
-  @Override
   @Nullable
   public PsiElement getOpComma() {
     return findChildByType(OP_COMMA);

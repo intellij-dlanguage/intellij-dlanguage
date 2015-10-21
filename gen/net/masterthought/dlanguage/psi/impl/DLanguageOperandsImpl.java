@@ -24,8 +24,20 @@ public class DLanguageOperandsImpl extends ASTWrapperPsiElement implements DLang
 
   @Override
   @NotNull
-  public List<DLanguageAsmExp> getAsmExpList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageAsmExp.class);
+  public DLanguageAsmExp getAsmExp() {
+    return findNotNullChildByClass(DLanguageAsmExp.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageOperands getOperands() {
+    return findChildByClass(DLanguageOperands.class);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpComma() {
+    return findChildByType(OP_COMMA);
   }
 
 }

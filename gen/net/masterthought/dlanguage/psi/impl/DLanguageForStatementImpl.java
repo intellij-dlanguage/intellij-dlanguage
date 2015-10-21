@@ -23,15 +23,27 @@ public class DLanguageForStatementImpl extends ASTWrapperPsiElement implements D
   }
 
   @Override
+  @Nullable
+  public DLanguageDeclaration getDeclaration() {
+    return findChildByClass(DLanguageDeclaration.class);
+  }
+
+  @Override
   @NotNull
-  public List<DLanguageDeclarationOrStatement> getDeclarationOrStatementList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageDeclarationOrStatement.class);
+  public DLanguageDeclarationOrStatement getDeclarationOrStatement() {
+    return findNotNullChildByClass(DLanguageDeclarationOrStatement.class);
   }
 
   @Override
   @NotNull
   public List<DLanguageExpression> getExpressionList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageExpression.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageStatementNoCaseNoDefault getStatementNoCaseNoDefault() {
+    return findChildByClass(DLanguageStatementNoCaseNoDefault.class);
   }
 
   @Override
