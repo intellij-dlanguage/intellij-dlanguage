@@ -214,12 +214,6 @@ dFile ::= item_*
 
 // ----------------------------------------------------------
 
- // orOrExpression ::=
- //       andAndExpression
- //     | orOrExpression '||' andAndExpression
-
-// orOrExpression ::= andAndExpression ['||' orOrExpression]
-
 unaryExpression ::= primaryExpression
 | '&' unaryExpression
 | '!' unaryExpression
@@ -248,7 +242,7 @@ unaryExpression ::= primaryExpression
 
 // unused --------------
 
-postblit ::= 'this' '(' 'this' ')' memberFunctionAttribute* ( functionBody | ';' )
+//postblit ::= 'this' '(' 'this' ')' memberFunctionAttribute* ( functionBody | ';' )
 
 // ---------------------------------------------------------
 private item_ ::= ( moduleDeclaration | declaration | statement )
@@ -608,7 +602,7 @@ newAnonClassExpression ::= 'new' arguments? 'class' arguments? baseClassList? st
 
 newExpression ::= 'new' type ( ( '[' assignExpression ']' ) | arguments )? | newAnonClassExpression
 
-nonVoidInitializer ::= assignExpression | arrayInitializer | structInitializer
+nonVoidInitializer ::=  arrayInitializer | structInitializer | assignExpression
 
 
 
@@ -817,7 +811,7 @@ typeSuffix ::= '*' | '[' type? ']' | '[' assignExpression ']' | '[' assignExpres
 
 typeidExpression ::= 'typeid' '(' ( type | expression ) ')'
 
-typeofExpression ::= 'typeof' '(' ( expression | 'return' ) ')'
+typeofExpression ::= 'typeof' '(' ( 'return' | expression ) ')'
 
 
 
