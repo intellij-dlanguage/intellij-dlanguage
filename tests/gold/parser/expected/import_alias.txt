@@ -1,0 +1,15 @@
+D file
+  DECLARATION_IMPORT
+    PsiElement(KW_IMPORT)('import')
+    PsiElement(WHITESPACE)(' ')
+    IMPORT_ALIAS
+      SYMBOL
+        PsiElement(IDENTIFIER)('cool')
+      PsiElement(WHITESPACE)(' ')
+      PsiElement(ASSIGN)('=')
+      PsiElement(WHITESPACE)(' ')
+      REF_MODULE
+        PsiElement(IDENTIFIER)('std')
+        PsiElement(DOT)('.')
+        PsiElement(IDENTIFIER)('stdio')
+  PsiElement(SEMICOLON)(';')

@@ -13,12 +13,11 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IFileElementType;
 import com.intellij.psi.tree.TokenSet;
+import net.masterthought.dlanguage.lexer.DLanguageLexer;
 import net.masterthought.dlanguage.parser.DLanguageParser;
 import net.masterthought.dlanguage.psi.DLanguageFile;
 import net.masterthought.dlanguage.psi.DLanguageTypes;
 import org.jetbrains.annotations.NotNull;
-
-import java.io.Reader;
 
 public class DLanguageParserDefinition implements ParserDefinition {
 
@@ -30,7 +29,7 @@ public class DLanguageParserDefinition implements ParserDefinition {
     @NotNull
     @Override
     public Lexer createLexer(Project project) {
-        return new FlexAdapter(new _DLanguageLexer((Reader) null));
+        return new FlexAdapter(new DLanguageLexer(null));
     }
 
     @NotNull

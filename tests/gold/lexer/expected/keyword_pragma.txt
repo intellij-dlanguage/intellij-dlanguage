@@ -1,0 +1,5 @@
+DLanguageTokenType.pragma ('pragma')
+DLanguageTokenType.( ('(')
+DLanguageTokenType.INTEGER_LITERAL ('1')
+DLanguageTokenType.) (')')
+DLanguageTokenType.; (';')

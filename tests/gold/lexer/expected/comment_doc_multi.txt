@@ -1,0 +1,1 @@
+DLanguageTokenType.block_comment ('/** So is this. */')
