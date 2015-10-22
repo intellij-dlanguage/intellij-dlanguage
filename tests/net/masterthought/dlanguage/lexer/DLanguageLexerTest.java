@@ -96,12 +96,12 @@ public class DLanguageLexerTest extends DLanguageLexerTestBase {
     public void testkeyword___version__() { doTest(true, true); }
 
     // comments
-    public void testcomment_doc_line() { doTest(true, true); }
-    public void testcomment_doc_multi() { doTest(true, true); }
-    public void testcomment_doc_nested() { doTest(true, true); }
+//    public void testcomment_doc_line() { doTest(true, true); }
+//    public void testcomment_doc_multi() { doTest(true, true); }
+//    public void testcomment_doc_nested() { doTest(true, true); }
     public void testcomment_line() { doTest(true, true); }
-    public void testcomment_mulit() { doTest(true, true); }
-    public void testcomment_nested() { doTest(true, true); }
+//    public void testcomment_mulit() { doTest(true, true); }
+//    public void testcomment_nested() { doTest(true, true); }
 
     // floats
     public void testfloat_decimal() { doTest(true, true); }
