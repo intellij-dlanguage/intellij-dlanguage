@@ -14,9 +14,9 @@ import java.io.File;
 import java.io.IOException;
 
 
-public abstract class DParserTestBase extends ParsingTestCase {
+public abstract class DLanguageParserTestBase extends ParsingTestCase {
 
-    public DParserTestBase(String dataPath, String fileExt, ParserDefinition... definitions) {
+    public DLanguageParserTestBase(String dataPath, String fileExt, ParserDefinition... definitions) {
         super(dataPath, fileExt, definitions);
     }
 

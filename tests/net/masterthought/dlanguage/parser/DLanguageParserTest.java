@@ -2,9 +2,9 @@ package net.masterthought.dlanguage.parser;
 
 import net.masterthought.dlanguage.DLanguageParserDefinition;
 
-public class DParserTest extends DParserTestBase {
+public class DLanguageParserTest extends DLanguageParserTestBase {
 
-    public DParserTest() {
+    public DLanguageParserTest() {
         super("parser", "d", new DLanguageParserDefinition());
     }
 
@@ -23,7 +23,7 @@ public class DParserTest extends DParserTestBase {
 //    public void testinvalid_syntax() { doTest(true, true); }
 //    public void testincomplete_declarator() { doTest(true, true); }
 //    public void testref_import_selection() { doTest(true, true); }
-//    public void testref_module() { doTest(true, true); }
+    public void testref_module() { doTest(true, true); }
 //    public void testref_identifier() { doTest(true, true); }
 //    public void testref_qualified() { doTest(true, true); }
 //    public void testref_module_qualified() { doTest(true, true); }
