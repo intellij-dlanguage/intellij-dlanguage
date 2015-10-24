@@ -539,10 +539,6 @@ public class DLanguageVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitPostblit(@NotNull DLanguagePostblit o) {
-    visitPsiElement(o);
-  }
-
   public void visitPowExpression(@NotNull DLanguagePowExpression o) {
     visitPsiElement(o);
   }

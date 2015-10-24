@@ -59,9 +59,9 @@ public class DLanguageUnaryExpressionImpl extends ASTWrapperPsiElement implement
   }
 
   @Override
-  @Nullable
-  public DLanguageIdentifierOrTemplateInstance getIdentifierOrTemplateInstance() {
-    return findChildByClass(DLanguageIdentifierOrTemplateInstance.class);
+  @NotNull
+  public List<DLanguageIdentifierOrTemplateInstance> getIdentifierOrTemplateInstanceList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageIdentifierOrTemplateInstance.class);
   }
 
   @Override
@@ -83,9 +83,9 @@ public class DLanguageUnaryExpressionImpl extends ASTWrapperPsiElement implement
   }
 
   @Override
-  @Nullable
-  public DLanguageUnaryExpression getUnaryExpression() {
-    return findChildByClass(DLanguageUnaryExpression.class);
+  @NotNull
+  public List<DLanguageUnaryExpression> getUnaryExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageUnaryExpression.class);
   }
 
   @Override
@@ -120,20 +120,8 @@ public class DLanguageUnaryExpressionImpl extends ASTWrapperPsiElement implement
 
   @Override
   @Nullable
-  public PsiElement getOpDot() {
-    return findChildByType(OP_DOT);
-  }
-
-  @Override
-  @Nullable
   public PsiElement getOpMinus() {
     return findChildByType(OP_MINUS);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpMinusMinus() {
-    return findChildByType(OP_MINUS_MINUS);
   }
 
   @Override
@@ -158,12 +146,6 @@ public class DLanguageUnaryExpressionImpl extends ASTWrapperPsiElement implement
   @Nullable
   public PsiElement getOpPlus() {
     return findChildByType(OP_PLUS);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpPlusPlus() {
-    return findChildByType(OP_PLUS_PLUS);
   }
 
   @Override

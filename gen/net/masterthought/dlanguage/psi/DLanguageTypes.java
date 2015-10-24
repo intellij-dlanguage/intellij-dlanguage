@@ -140,7 +140,6 @@ public interface DLanguageTypes {
   IElementType PARAMETER = new DLanguageElementType("PARAMETER");
   IElementType PARAMETERS = new DLanguageElementType("PARAMETERS");
   IElementType PARAMETER_ATTRIBUTE = new DLanguageElementType("PARAMETER_ATTRIBUTE");
-  IElementType POSTBLIT = new DLanguageElementType("POSTBLIT");
   IElementType POW_EXPRESSION = new DLanguageElementType("POW_EXPRESSION");
   IElementType PRAGMA_DECLARATION = new DLanguageElementType("PRAGMA_DECLARATION");
   IElementType PRAGMA_EXPRESSION = new DLanguageElementType("PRAGMA_EXPRESSION");
@@ -793,9 +792,6 @@ public interface DLanguageTypes {
       }
       else if (type == PARAMETER_ATTRIBUTE) {
         return new DLanguageParameterAttributeImpl(node);
-      }
-      else if (type == POSTBLIT) {
-        return new DLanguagePostblitImpl(node);
       }
       else if (type == POW_EXPRESSION) {
         return new DLanguagePowExpressionImpl(node);

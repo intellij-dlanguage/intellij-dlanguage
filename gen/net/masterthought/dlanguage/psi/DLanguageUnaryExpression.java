@@ -25,8 +25,8 @@ public interface DLanguageUnaryExpression extends PsiElement {
   @Nullable
   DLanguageFunctionCallExpression getFunctionCallExpression();
 
-  @Nullable
-  DLanguageIdentifierOrTemplateInstance getIdentifierOrTemplateInstance();
+  @NotNull
+  List<DLanguageIdentifierOrTemplateInstance> getIdentifierOrTemplateInstanceList();
 
   @Nullable
   DLanguageNewExpression getNewExpression();
@@ -37,8 +37,8 @@ public interface DLanguageUnaryExpression extends PsiElement {
   @Nullable
   DLanguageType getType();
 
-  @Nullable
-  DLanguageUnaryExpression getUnaryExpression();
+  @NotNull
+  List<DLanguageUnaryExpression> getUnaryExpressionList();
 
   @Nullable
   PsiElement getOpAnd();
@@ -56,13 +56,7 @@ public interface DLanguageUnaryExpression extends PsiElement {
   PsiElement getOpDdot();
 
   @Nullable
-  PsiElement getOpDot();
-
-  @Nullable
   PsiElement getOpMinus();
-
-  @Nullable
-  PsiElement getOpMinusMinus();
 
   @Nullable
   PsiElement getOpNot();
@@ -75,9 +69,6 @@ public interface DLanguageUnaryExpression extends PsiElement {
 
   @Nullable
   PsiElement getOpPlus();
-
-  @Nullable
-  PsiElement getOpPlusPlus();
 
   @Nullable
   PsiElement getOpTilda();
