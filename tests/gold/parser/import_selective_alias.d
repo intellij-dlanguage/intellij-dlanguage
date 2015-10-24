@@ -1,1 +1,0 @@
-import io = std.stdio : foo = writeln;

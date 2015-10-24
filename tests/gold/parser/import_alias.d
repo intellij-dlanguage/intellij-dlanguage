@@ -1,1 +1,0 @@
-import cool = std.stdio;

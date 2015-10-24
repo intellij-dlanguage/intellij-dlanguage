@@ -1,0 +1,1 @@
+alias myint = abc.Foo.bar;

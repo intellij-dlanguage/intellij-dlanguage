@@ -1,0 +1,1 @@
+int (*fp)(int);  // fp is pointer to a function

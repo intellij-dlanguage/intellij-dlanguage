@@ -1,0 +1,10 @@
+D Language File
+  DLanguageModuleDeclarationImpl(MODULE_DECLARATION)
+    PsiElement(DLanguageTokenType.module)('module')
+    DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)
+      DLanguageIdentifierImpl(IDENTIFIER)
+        PsiElement(DLanguageTokenType.ID)('c')
+      PsiElement(DLanguageTokenType..)('.')
+      DLanguageIdentifierImpl(IDENTIFIER)
+        PsiElement(DLanguageTokenType.ID)('stdio')
+    PsiElement(DLanguageTokenType.;)(';')

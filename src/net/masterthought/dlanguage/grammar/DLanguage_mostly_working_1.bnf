@@ -214,7 +214,19 @@ dFile ::= item_*
 
 // ----------------------------------------------------------
 
-unaryExpression ::= primaryExpression
+
+
+// unused --------------
+
+//postblit ::= 'this' '(' 'this' ')' memberFunctionAttribute* ( functionBody | ';' )
+
+// ---------------------------------------------------------
+private item_ ::= ( moduleDeclaration | declaration | statement | templateInstance)
+
+  Identifier ::= ID
+  StringLiteral  ::= (WYSIWYG_STRING|ALTERNATE_WYSIWYG_STRING|DOUBLE_QUOTED_STRING|HEX_STRING|DELIMITED_STRING)
+
+unaryExpression ::= (primaryExpression
 | '&' unaryExpression
 | '!' unaryExpression
 | '*' unaryExpression
@@ -223,32 +235,19 @@ unaryExpression ::= primaryExpression
 | '~' unaryExpression
 | '++' unaryExpression
 | '--' unaryExpression
+
 | newExpression
 | deleteExpression
 | castExpression
 | assertExpression
 | functionCallExpression
-| '(' type ')' '.' identifierOrTemplateInstance
-| [
-    '++' unaryExpression
-  | '--' unaryExpression
-  | '.' identifierOrTemplateInstance unaryExpression
-  | '[' argumentList ']' unaryExpression
-  | '[' assignExpression '..' assignExpression ']' unaryExpression
-  | '[' ']' unaryExpression
-  ]
-
-
-
-// unused --------------
-
-//postblit ::= 'this' '(' 'this' ')' memberFunctionAttribute* ( functionBody | ';' )
-
-// ---------------------------------------------------------
-private item_ ::= ( moduleDeclaration | declaration | statement )
-
-  Identifier ::= ID
-  StringLiteral  ::= (WYSIWYG_STRING|ALTERNATE_WYSIWYG_STRING|DOUBLE_QUOTED_STRING|HEX_STRING|DELIMITED_STRING)
+| '(' type ')' '.' identifierOrTemplateInstance)
+[ '++'
+  | '--'
+  | ('.' identifierOrTemplateInstance)
+  | ('[' argumentList ']')
+  | ('[' assignExpression '..' assignExpression ']' | '[' ']')
+  unaryExpression ]
 
  moduleDeclaration ::= deprecated? 'module' identifierChain ';'
  

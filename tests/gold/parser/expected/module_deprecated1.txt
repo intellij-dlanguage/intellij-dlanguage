@@ -1,0 +1,9 @@
+D Language File
+  DLanguageModuleDeclarationImpl(MODULE_DECLARATION)
+    DLanguageDeprecatedImpl(DEPRECATED)
+      PsiElement(DLanguageTokenType.deprecated)('deprecated')
+    PsiElement(DLanguageTokenType.module)('module')
+    DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)
+      DLanguageIdentifierImpl(IDENTIFIER)
+        PsiElement(DLanguageTokenType.ID)('foo')
+    PsiElement(DLanguageTokenType.;)(';')
