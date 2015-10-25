@@ -1,0 +1,1 @@
+auto i = 6.8;   // declare i as a double
