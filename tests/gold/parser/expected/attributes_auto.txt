@@ -1,0 +1,8 @@
+D Language File
+  PsiElement(DLanguageTokenType.auto)('auto')
+  PsiElement(DLanguageTokenType.ID)('i')
+  PsiElement(DLanguageTokenType.=)('=')
+  PsiErrorElement:'6.8' unexpected
+    PsiElement(DLanguageTokenType.FLOAT_LITERAL)('6.8')
+  PsiElement(DLanguageTokenType.;)(';')
+  PsiComment(DLanguageTokenType.line_comment)('// declare i as a double')
