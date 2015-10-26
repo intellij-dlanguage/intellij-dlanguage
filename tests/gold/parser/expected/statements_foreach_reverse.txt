@@ -1,0 +1,10 @@
+D Language File
+  PsiElement(DLanguageTokenType.foreach_reverse)('foreach_reverse')
+  PsiElement(DLanguageTokenType.()('(')
+  PsiElement(DLanguageTokenType.ID)('e')
+  PsiErrorElement:<type suffix>, DLanguageTokenType.. or DLanguageTokenType.ID expected, got ';'
+    PsiElement(DLanguageTokenType.;)(';')
+  PsiElement(DLanguageTokenType.ID)('range')
+  PsiElement(DLanguageTokenType.))(')')
+  PsiElement(DLanguageTokenType.{)('{')
+  PsiElement(DLanguageTokenType.})('}')

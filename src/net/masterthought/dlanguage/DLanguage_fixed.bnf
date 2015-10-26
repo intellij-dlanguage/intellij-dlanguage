@@ -1,0 +1,44 @@
+
+
+
+
+//addExpression ::=
+//       mulExpression
+//     | addExpression ('+' | '-' | '~') mulExpression
+//     ;
+
+//addExpression ::=
+//       '1'
+//     | addExpression ('+' | '-' | '~') '1'
+//     ;
+
+//addExpression ::=
+//     '1' addExpression2
+//     ;
+// addExpression2 ::=
+//      ('+' | '-' | '~') addExpression
+//      |
+//      ;
+
+
+
+assignment ::=
+    "x=" addExpression ';';
+
+addExpression ::=
+    mulExpression addExpression2
+     ;
+
+addExpression2 ::=
+    ('+' | '-' | '~') addExpression
+    |
+    ;
+
+mulExpression ::=
+    ('1' | '2') mulExpression2
+    ;
+    
+mulExpression2 ::=
+    ('*' | '/') mulExpression
+    |
+    ;

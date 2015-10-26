@@ -1,0 +1,18 @@
+D Language File
+  PsiElement(DLanguageTokenType.int)('int')
+  PsiElement(DLanguageTokenType.ID)('gethardware')
+  PsiElement(DLanguageTokenType.()('(')
+  PsiElement(DLanguageTokenType.))(')')
+  PsiElement(DLanguageTokenType.{)('{')
+  PsiElement(DLanguageTokenType.asm)('asm')
+  PsiElement(DLanguageTokenType.{)('{')
+  PsiElement(DLanguageTokenType.ID)('mov')
+  PsiElement(DLanguageTokenType.ID)('EAX')
+  PsiErrorElement:<asm instruction> or DLanguageTokenType.} expected, got ','
+    PsiElement(DLanguageTokenType.,)(',')
+  PsiElement(DLanguageTokenType.ID)('dword')
+  PsiElement(DLanguageTokenType.ID)('ptr')
+  PsiElement(DLanguageTokenType.INTEGER_LITERAL)('0x1234')
+  PsiElement(DLanguageTokenType.;)(';')
+  PsiElement(DLanguageTokenType.})('}')
+  PsiElement(DLanguageTokenType.})('}')
