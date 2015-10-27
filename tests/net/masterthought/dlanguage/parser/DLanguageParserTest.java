@@ -136,4 +136,8 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
     public void teststatements_throw() { doTest(true, true); }
     public void teststatements_while() { doTest(true, true); }
     public void teststatements_with() { doTest(true, true); }
+
+    // arrays
+    public void testarrays() { doTest(true, true); }
+
 }
