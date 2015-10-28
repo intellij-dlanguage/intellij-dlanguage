@@ -20,7 +20,7 @@ public class DTestCase extends TestCase {
 //        suite.addTestSuite(HaskellTypedHandlerTest.class);
 
         suite.addTestSuite(DLanguageLexerTest.class);
-//        suite.addTestSuite(DLanguageParserTest.class);
+        suite.addTestSuite(DLanguageParserTest.class);
 
         // not working in ant for some reason
 //        suite.addTestSuite(DResolveTest.class);
