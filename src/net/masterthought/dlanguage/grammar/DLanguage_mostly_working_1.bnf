@@ -221,7 +221,7 @@ dFile ::= item_*
 //postblit ::= 'this' '(' 'this' ')' memberFunctionAttribute* ( functionBody | ';' )
 
 // ---------------------------------------------------------
-private item_ ::= ( moduleDeclaration | declaration | statement | templateInstance)
+private item_ ::= ( moduleDeclaration | declaration | statement)
 
   Identifier ::= ID
   StringLiteral  ::= (WYSIWYG_STRING|ALTERNATE_WYSIWYG_STRING|DOUBLE_QUOTED_STRING|HEX_STRING|DELIMITED_STRING)
@@ -545,7 +545,7 @@ identifierList ::= Identifier ( ',' Identifier )*
 
 identifierOrTemplateChain ::= identifierOrTemplateInstance ( '.' identifierOrTemplateInstance )*
 
-identifierOrTemplateInstance ::= Identifier | templateInstance
+identifierOrTemplateInstance ::= Identifier templateArguments?
 
 identityExpression ::= shiftExpression ( 'is' | ( '!' 'is' ) ) shiftExpression
 
@@ -761,11 +761,9 @@ templateArgument ::= type | assignExpression
 
 templateArgumentList ::= templateArgument ( ',' templateArgument? )*
 
-templateArguments ::= '!' ( '(' templateArgumentList? ')' ) | templateSingleArgument
+templateArguments ::= '!' (( '(' templateArgumentList? ')' ) | templateSingleArgument)
 
 templateDeclaration ::= 'template' Identifier templateParameters constraint? '{' declaration* '}'
-
-templateInstance ::= Identifier templateArguments
 
 templateMixinExpression ::= 'mixin' mixinTemplateName templateArguments? Identifier?
 

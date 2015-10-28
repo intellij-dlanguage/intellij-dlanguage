@@ -4328,16 +4328,23 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // Identifier | templateInstance
+  // Identifier templateArguments?
   public static boolean identifierOrTemplateInstance(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "identifierOrTemplateInstance")) return false;
     if (!nextTokenIs(b, ID)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = Identifier(b, l + 1);
-    if (!r) r = templateInstance(b, l + 1);
+    r = r && identifierOrTemplateInstance_1(b, l + 1);
     exit_section_(b, m, IDENTIFIER_OR_TEMPLATE_INSTANCE, r);
     return r;
+  }
+
+  // templateArguments?
+  private static boolean identifierOrTemplateInstance_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "identifierOrTemplateInstance_1")) return false;
+    templateArguments(b, l + 1);
+    return true;
   }
 
   /* ********************************************************** */
@@ -6804,43 +6811,44 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // '!' ( '(' templateArgumentList? ')' ) | templateSingleArgument
+  // '!' (( '(' templateArgumentList? ')' ) | templateSingleArgument)
   public static boolean templateArguments(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "templateArguments")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, "<template arguments>");
-    r = templateArguments_0(b, l + 1);
-    if (!r) r = templateSingleArgument(b, l + 1);
-    exit_section_(b, l, m, TEMPLATE_ARGUMENTS, r, false, null);
-    return r;
-  }
-
-  // '!' ( '(' templateArgumentList? ')' )
-  private static boolean templateArguments_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "templateArguments_0")) return false;
+    if (!nextTokenIs(b, OP_NOT)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, OP_NOT);
-    r = r && templateArguments_0_1(b, l + 1);
+    r = r && templateArguments_1(b, l + 1);
+    exit_section_(b, m, TEMPLATE_ARGUMENTS, r);
+    return r;
+  }
+
+  // ( '(' templateArgumentList? ')' ) | templateSingleArgument
+  private static boolean templateArguments_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "templateArguments_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = templateArguments_1_0(b, l + 1);
+    if (!r) r = templateSingleArgument(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // '(' templateArgumentList? ')'
-  private static boolean templateArguments_0_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "templateArguments_0_1")) return false;
+  private static boolean templateArguments_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "templateArguments_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, OP_PAR_LEFT);
-    r = r && templateArguments_0_1_1(b, l + 1);
+    r = r && templateArguments_1_0_1(b, l + 1);
     r = r && consumeToken(b, OP_PAR_RIGHT);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // templateArgumentList?
-  private static boolean templateArguments_0_1_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "templateArguments_0_1_1")) return false;
+  private static boolean templateArguments_1_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "templateArguments_1_0_1")) return false;
     templateArgumentList(b, l + 1);
     return true;
   }

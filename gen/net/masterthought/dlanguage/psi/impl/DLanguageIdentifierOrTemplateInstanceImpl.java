@@ -23,15 +23,15 @@ public class DLanguageIdentifierOrTemplateInstanceImpl extends ASTWrapperPsiElem
   }
 
   @Override
-  @Nullable
+  @NotNull
   public DLanguageIdentifier getIdentifier() {
-    return findChildByClass(DLanguageIdentifier.class);
+    return findNotNullChildByClass(DLanguageIdentifier.class);
   }
 
   @Override
   @Nullable
-  public DLanguageTemplateInstance getTemplateInstance() {
-    return findChildByClass(DLanguageTemplateInstance.class);
+  public DLanguageTemplateArguments getTemplateArguments() {
+    return findChildByClass(DLanguageTemplateArguments.class);
   }
 
 }
