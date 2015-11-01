@@ -221,14 +221,14 @@ dFile ::= item_*
 //postblit ::= 'this' '(' 'this' ')' memberFunctionAttribute* ( functionBody | ';' )
 
 // ---------------------------------------------------------
-private item_ ::= (Module)
+private item_ ::= (ModuleDeclaration | DeclDefs )
 
 Identifier ::= ID
 StringLiteral  ::= (WYSIWYG_STRING|ALTERNATE_WYSIWYG_STRING|DOUBLE_QUOTED_STRING|HEX_STRING|DELIMITED_STRING)
 
 // Module
 
-Module ::= ModuleDeclaration DeclDefs?
+//Module ::= ModuleDeclaration DeclDefs?
 
 ModuleDeclaration ::=
     'module' ModuleFullyQualifiedName ';'
@@ -338,8 +338,8 @@ BasicType2X ::=
     | '[' AssignExpression ']'
     | '[' AssignExpression '..' AssignExpression ']'
     | '[' Type ']'
-    | delegate Parameters MemberFunctionAttributes?
-    | function Parameters FunctionAttributes?
+    | 'delegate' Parameters MemberFunctionAttributes?
+    | 'function' Parameters FunctionAttributes?
 
 IdentifierList ::=
     Identifier
@@ -349,8 +349,8 @@ IdentifierList ::=
     | Identifier '[' AssignExpression ']' '.' IdentifierList
 
 Typeof ::=
-    typeof '(' Expression ')'
-    | typeof '(' return ')'
+    'typeof' '(' Expression ')'
+    | 'typeof' '(' 'return' ')'
 
 TypeVector ::=
     '__vector' '(' Type ')'
@@ -363,25 +363,23 @@ CommaExpression ::=
     | AssignExpression ',' CommaExpression
 
 AssignExpression ::=
-    ConditionalExpression
-    ( '='
-    | '+='
-    | '-='
-    | '*='
-    | '/='
-    | '%='
-    | '&='
-    | '|='
-    | '^='
-    | '~='
-    | '<<='
-    | '>>='
-    | '>>>='
-    | '^^=') AssignExpression
+   ConditionalExpression [ ( '='
+                              | '+='
+                              | '-='
+                              | '*='
+                              | '/='
+                              | '%='
+                              | '&='
+                              | '|='
+                              | '^='
+                              | '~='
+                              | '<<='
+                              | '>>='
+                              | '>>>='
+                              | '^^=') AssignExpression]
 
 ConditionalExpression ::=
-    OrOrExpression
-    | OrOrExpression '?' Expression ':' ConditionalExpression
+   OrOrExpression ['?' Expression ':' ConditionalExpression]
 
 OrOrExpression ::= AndAndExpression [ '||' OrOrExpression]
 
@@ -434,11 +432,7 @@ ShiftExpression ::= AddExpression [('<<' | '>>' | '>>>') ShiftExpression]
 AddExpression ::=
     MulExpression [ ('+' | '-' | '~') AddExpression]
 
-MulExpression ::=
-    UnaryExpression
-    MulExpression '*' UnaryExpression
-    MulExpression '/' UnaryExpression
-    MulExpression '%' UnaryExpression
+MulExpression ::= UnaryExpression [ ('*' | '/' | '%') MulExpression]
 
 UnaryExpression ::=
      '&' UnaryExpression
@@ -491,15 +485,15 @@ PowExpression ::= PostfixExpression ['^^' UnaryExpression PowExpression]
 
 PostfixExpression ::=
     PrimaryExpression
-    | PostfixExpression '.' Identifier
-    | PostfixExpression '.' TemplateInstance
-    | PostfixExpression '.' NewExpression
-    | PostfixExpression '++'
-    | PostfixExpression '--'
-    | PostfixExpression '(' ArgumentList? ')'
-    | TypeCtors? BasicType '(' ArgumentList? ')'
-    | IndexExpression
-    | SliceExpression
+//    | PostfixExpression '.' Identifier
+//    | PostfixExpression '.' TemplateInstance
+//    | PostfixExpression '.' NewExpression
+//    | PostfixExpression '++'
+//    | PostfixExpression '--'
+//    | PostfixExpression '(' ArgumentList? ')'
+//    | TypeCtors? BasicType '(' ArgumentList? ')'
+//    | IndexExpression
+//    | SliceExpression
 
 IndexExpression ::=
     PostfixExpression '[' ArgumentList ']'
@@ -510,37 +504,35 @@ SliceExpression ::=
 
 PrimaryExpression ::=
     Identifier
-    | '.' Identifier
-    | TemplateInstance
-    | '.' TemplateInstance
-    | 'this'
-    | 'super'
-    | 'null'
-    | 'true'
-    | 'false'
-    | '$'
-    | INTEGER_LITERAL
-    | FLOAT_LITERAL
-    | CHARACTER_LITERAL
-    | StringLiterals
-    | ArrayLiteral
-    | AssocArrayLiteral
-    | FunctionLiteral
-    | AssertExpression
-    | MixinExpression
-    | ImportExpression
-    | NewExpressionWithArgs
-    | BasicTypeX '.' Identifier
-    | Typeof
-    | TypeidExpression
-    | IsExpression
-    | '(' Expression ')'
-    | TraitsExpression
-    | SpecialKeyword
+//    | '.' Identifier
+//    | TemplateInstance
+//    | '.' TemplateInstance
+//    | 'this'
+//    | 'super'
+//    | 'null'
+//    | 'true'
+//    | 'false'
+//    | '$'
+//    | INTEGER_LITERAL
+//    | FLOAT_LITERAL
+//    | CHARACTER_LITERAL
+//    | StringLiterals
+//    | ArrayLiteral
+//    | AssocArrayLiteral
+//    | FunctionLiteral
+//    | AssertExpression
+//    | MixinExpression
+//    | ImportExpression
+//    | NewExpressionWithArgs
+//    | BasicTypeX '.' Identifier
+//    | Typeof
+//    | TypeidExpression
+//    | IsExpression
+//    | '(' Expression ')'
+//    | TraitsExpression
+//    | SpecialKeyword
 
-StringLiterals ::=
-    StringLiteral
-    | StringLiterals StringLiteral
+StringLiterals ::= StringLiteral [StringLiterals]
 
 ArrayLiteral ::=
     '[' ArgumentList? ']'
@@ -598,153 +590,158 @@ TypeidExpression ::=
     'typeid' '(' Type ')'
     | 'typeid' '(' Expression ')'
 
-//IsExpression:
-//    is ( Type )
-//    is ( Type : TypeSpecialization )
-//    is ( Type == TypeSpecialization )
-//    is ( Type : TypeSpecialization , TemplateParameterList )
-//    is ( Type == TypeSpecialization , TemplateParameterList )
-//    is ( Type Identifier )
-//    is ( Type Identifier : TypeSpecialization )
-//    is ( Type Identifier == TypeSpecialization )
-//    is ( Type Identifier : TypeSpecialization , TemplateParameterList )
-//    is ( Type Identifier == TypeSpecialization , TemplateParameterList )
-//
-//TypeSpecialization:
-//    Type
-//    struct
-//    union
-//    class
-//    interface
-//    enum
-//    function
-//    delegate
-//    super
-//    const
-//    immutable
-//    inout
-//    shared
-//    return
-//    __parameters
-//TraitsExpression:
-//    __traits ( TraitsKeyword , TraitsArguments )
-//
-//TraitsKeyword:
-//    isAbstractClass
-//    isArithmetic
-//    isAssociativeArray
-//    isFinalClass
-//    isPOD
-//    isNested
-//    isFloating
-//    isIntegral
-//    isScalar
-//    isStaticArray
-//    isUnsigned
-//    isVirtualFunction
-//    isVirtualMethod
-//    isAbstractFunction
-//    isFinalFunction
-//    isStaticFunction
-//    isOverrideFunction
-//    isRef
-//    isOut
-//    isLazy
-//    hasMember
-//    identifier
-//    getAliasThis
-//    getAttributes
-//    getFunctionAttributes
-//    getMember
-//    getOverloads
-//    getPointerBitmap
-//    getProtection
-//    getVirtualFunctions
-//    getVirtualMethods
-//    getUnitTests
-//    parent
-//    classInstanceSize
-//    getVirtualIndex
-//    allMembers
-//    derivedMembers
-//    isSame
-//    compiles
-//
-//TraitsArguments:
-//    TraitsArgument
-//    TraitsArgument , TraitsArguments
-//
-//TraitsArgument:
-//    AssignExpression
-//    Type
-//SpecialKeyword:
-//    __FILE__
-//    __MODULE__
-//    __LINE__
-//    __FUNCTION__
-//    __PRETTY_FUNCTION__
-//Statement
-//Statement:
-//    ;
-//    NonEmptyStatement
-//    ScopeBlockStatement
-//
-//NoScopeNonEmptyStatement:
-//    NonEmptyStatement
-//    BlockStatement
-//
-//NoScopeStatement:
-//    ;
-//    NonEmptyStatement
-//    BlockStatement
-//
-//NonEmptyOrScopeBlockStatement:
-//    NonEmptyStatement
-//    ScopeBlockStatement
-//
-//NonEmptyStatement:
-//    NonEmptyStatementNoCaseNoDefault
-//    CaseStatement
-//    CaseRangeStatement
-//    DefaultStatement
-//
-//NonEmptyStatementNoCaseNoDefault:
-//    LabeledStatement
-//    ExpressionStatement
-//    DeclarationStatement
-//    IfStatement
-//    WhileStatement
-//    DoStatement
-//    ForStatement
-//    ForeachStatement
-//    SwitchStatement
-//    FinalSwitchStatement
-//    ContinueStatement
-//    BreakStatement
-//    ReturnStatement
-//    GotoStatement
-//    WithStatement
-//    SynchronizedStatement
-//    TryStatement
-//    ScopeGuardStatement
-//    ThrowStatement
-//    AsmStatement
-//    PragmaStatement
-//    MixinStatement
-//    ForeachRangeStatement
-//    ConditionalStatement
-//    StaticAssert
-//    TemplateMixin
-//    ImportDeclaration
-//ScopeStatement:
-//    NonEmptyStatement
-//    BlockStatement
-//ScopeBlockStatement:
-//    BlockStatement
-//LabeledStatement:
-//    Identifier :
-//    Identifier : NoScopeStatement
-//    Identifier : Statement
+IsExpression ::=
+     'is' '(' Type ')'
+    | 'is' '(' Type ':' TypeSpecialization ')'
+    | 'is' '(' Type '==' TypeSpecialization ')'
+    | 'is' '(' Type ':' TypeSpecialization ',' TemplateParameterList ')'
+    | 'is' '(' Type '==' TypeSpecialization ',' TemplateParameterList ')'
+    | 'is' '(' Type Identifier ')'
+    | 'is' '(' Type Identifier ':' TypeSpecialization ')'
+    | 'is' '(' Type Identifier '==' TypeSpecialization ')'
+    | 'is' '(' Type Identifier ':' TypeSpecialization ',' TemplateParameterList ')'
+    | 'is' '(' Type Identifier '==' TypeSpecialization ',' TemplateParameterList ')'
+
+TypeSpecialization ::=
+    Type
+    | 'struct'
+    | 'union'
+    | 'class'
+    | 'interface'
+    | 'enum'
+    | 'function'
+    | 'delegate'
+    | 'super'
+    | 'const'
+    | 'immutable'
+    | 'inout'
+    | 'shared'
+    | 'return'
+    | '__parameters'
+
+TraitsExpression ::=
+    '__traits' '(' TraitsKeyword ',' TraitsArguments ')'
+
+TraitsKeyword ::=
+    'isAbstractClass'
+    | 'isArithmetic'
+    | 'isAssociativeArray'
+    | 'isFinalClass'
+    | 'isPOD'
+    | 'isNested'
+    | 'isFloating'
+    | 'isIntegral'
+    | 'isScalar'
+    | 'isStaticArray'
+    | 'isUnsigned'
+    | 'isVirtualFunction'
+    | 'isVirtualMethod'
+    | 'isAbstractFunction'
+    | 'isFinalFunction'
+    | 'isStaticFunction'
+    | 'isOverrideFunction'
+    | 'isRef'
+    | 'isOut'
+    | 'isLazy'
+    | 'hasMember'
+    | 'identifier'
+    | 'getAliasThis'
+    | 'getAttributes'
+    | 'getFunctionAttributes'
+    | 'getMember'
+    | 'getOverloads'
+    | 'getPointerBitmap'
+    | 'getProtection'
+    | 'getVirtualFunctions'
+    | 'getVirtualMethods'
+    | 'getUnitTests'
+    | 'parent'
+    | 'classInstanceSize'
+    | 'getVirtualIndex'
+    | 'allMembers'
+    | 'derivedMembers'
+    | 'isSame'
+    | 'compiles'
+
+TraitsArguments ::=
+    TraitsArgument
+    | TraitsArgument ',' TraitsArguments
+
+TraitsArgument ::=
+    AssignExpression
+    | Type
+
+SpecialKeyword ::=
+     '__FILE__'
+    | '__MODULE__'
+    | '__LINE__'
+    | '__FUNCTION__'
+    | '__PRETTY_FUNCTION__'
+
+// Statement
+
+Statement ::=
+    NonEmptyStatement
+    | ScopeBlockStatement
+
+NoScopeNonEmptyStatement ::=
+    NonEmptyStatement
+    | BlockStatement
+
+NoScopeStatement ::=
+    NonEmptyStatement
+    | BlockStatement
+
+NonEmptyOrScopeBlockStatement ::=
+    NonEmptyStatement
+    | ScopeBlockStatement
+
+NonEmptyStatement ::=
+    NonEmptyStatementNoCaseNoDefault
+    | CaseStatement
+    | CaseRangeStatement
+    | DefaultStatement
+
+NonEmptyStatementNoCaseNoDefault ::=
+    LabeledStatement
+    | ExpressionStatement
+    | DeclarationStatement
+    | IfStatement
+    | WhileStatement
+    | DoStatement
+    | ForStatement
+    | ForeachStatement
+    | SwitchStatement
+    | FinalSwitchStatement
+    | ContinueStatement
+    | BreakStatement
+    | ReturnStatement
+    | GotoStatement
+    | WithStatement
+    | SynchronizedStatement
+    | TryStatement
+    | ScopeGuardStatement
+    | ThrowStatement
+    | AsmStatement
+    | PragmaStatement
+    | MixinStatement
+    | ForeachRangeStatement
+    | ConditionalStatement
+    | StaticAssert
+    | TemplateMixin
+    | ImportDeclaration
+
+ScopeStatement ::=
+    NonEmptyStatement
+    | BlockStatement
+
+ScopeBlockStatement ::=
+    BlockStatement
+
+LabeledStatement ::=
+    Identifier ':'
+    | Identifier ':' NoScopeStatement
+    | Identifier ':' Statement
 
 BlockStatement ::=
     '{' '}'
@@ -753,160 +750,180 @@ BlockStatement ::=
 StatementList ::=
     Statement
     | Statement StatementList
-//ExpressionStatement:
-//    Expression ;
-//DeclarationStatement:
-//    StorageClassesopt Declaration
-//IfStatement:
-//    if ( IfCondition ) ThenStatement
-//    if ( IfCondition ) ThenStatement else ElseStatement
-//
-//IfCondition:
-//    Expression
-//    auto Identifier = Expression
-//    TypeCtors Identifier = Expression
-//    TypeCtorsopt BasicType Declarator = Expression
-//
-//ThenStatement:
-//    ScopeStatement
-//
-//ElseStatement:
-//    ScopeStatement
-//WhileStatement:
-//    while ( Expression ) ScopeStatement
-//DoStatement:
-//    do ScopeStatement  while ( Expression ) ;
-//ForStatement:
-//    for ( Initialize Testopt ; Incrementopt ) ScopeStatement
-//
-//Initialize:
-//    ;
-//    NoScopeNonEmptyStatement
-//
-//Test:
-//    Expression
-//
-//Increment:
-//    Expression
-//ForeachStatement:
-//    Foreach ( ForeachTypeList ; ForeachAggregate ) NoScopeNonEmptyStatement
-//
-//Foreach:
-//    foreach
-//    foreach_reverse
-//
-//ForeachTypeList:
-//    ForeachType
-//    ForeachType , ForeachTypeList
-//
-//ForeachType:
-//    ForeachTypeAttributesopt BasicType Declarator
-//    ForeachTypeAttributesopt Identifier
-//
-//ForeachTypeAttributes
-//    ForeachTypeAttribute
-//    ForeachTypeAttribute ForeachTypeAttributesopt
-//
-//ForeachTypeAttribute:
-//    ref
-//    TypeCtor
-//
-//ForeachAggregate:
-//    Expression
-//ForeachRangeStatement:
-//    Foreach ( ForeachType ; LwrExpression .. UprExpression ) ScopeStatement
-//
-//LwrExpression:
-//    Expression
-//
-//UprExpression:
-//    Expression
-//SwitchStatement:
-//    switch ( Expression ) ScopeStatement
-//
-//CaseStatement:
-//    case ArgumentList : ScopeStatementList
-//
-//CaseRangeStatement:
-//    case FirstExp : .. case LastExp : ScopeStatementList
-//
-//FirstExp:
-//    AssignExpression
-//
-//LastExp:
-//    AssignExpression
-//
-//DefaultStatement:
-//    default : ScopeStatementList
-//
-//ScopeStatementList:
-//    StatementListNoCaseNoDefault
-//
-//StatementListNoCaseNoDefault:
-//    StatementNoCaseNoDefault
-//    StatementNoCaseNoDefault StatementListNoCaseNoDefault
-//
-//StatementNoCaseNoDefault:
-//    ;
-//    NonEmptyStatementNoCaseNoDefault
-//    ScopeBlockStatement
-//FinalSwitchStatement:
-//    final switch ( Expression ) ScopeStatement
-//ContinueStatement:
-//    continue Identifieropt ;
-//BreakStatement:
-//    break Identifieropt ;
-//ReturnStatement:
-//    return Expressionopt ;
-//GotoStatement:
-//    goto Identifier ;
-//    goto default ;
-//    goto case ;
-//    goto case Expression ;
-//WithStatement:
-//    with ( Expression ) ScopeStatement
-//    with ( Symbol ) ScopeStatement
-//    with ( TemplateInstance ) ScopeStatement
-//SynchronizedStatement:
-//    synchronized ScopeStatement
-//    synchronized ( Expression ) ScopeStatement
-//TryStatement:
-//    try ScopeStatement Catches
-//    try ScopeStatement Catches FinallyStatement
-//    try ScopeStatement FinallyStatement
-//
-//Catches:
-//    LastCatch
-//    Catch
-//    Catch Catches
-//
-//LastCatch:
-//    catch NoScopeNonEmptyStatement
-//
-//Catch:
-//    catch ( CatchParameter ) NoScopeNonEmptyStatement
-//
-//CatchParameter:
-//    BasicType Identifier
-//
-//FinallyStatement:
-//    finally NoScopeNonEmptyStatement
-//ThrowStatement:
-//    throw Expression ;
-//ScopeGuardStatement:
-//    scope(exit) NonEmptyOrScopeBlockStatement
-//    scope(success) NonEmptyOrScopeBlockStatement
-//    scope(failure) NonEmptyOrScopeBlockStatement
+
+ExpressionStatement ::=
+    Expression ';'
+
+DeclarationStatement ::=
+    StorageClasses? Declaration
+
+IfStatement ::=
+    'if' '(' IfCondition ')' ThenStatement
+    | 'if' '(' IfCondition ')' ThenStatement 'else' ElseStatement
+
+IfCondition ::=
+    Expression
+    | 'auto' Identifier '=' Expression
+    | TypeCtors Identifier '=' Expression
+    | TypeCtors? BasicType Declarator '=' Expression
+
+ThenStatement ::=
+    ScopeStatement
+
+ElseStatement ::=
+    ScopeStatement
+
+WhileStatement ::=
+    'while' '(' Expression ')' ScopeStatement
+
+DoStatement ::=
+    'do' ScopeStatement 'while' '(' Expression ')' ';'
+
+ForStatement ::=
+    'for' '(' Initialize Test? ';' Increment? ')' ScopeStatement
+
+Initialize ::=
+    NoScopeNonEmptyStatement
+
+Test ::=
+    Expression
+
+Increment ::=
+    Expression
+
+ForeachStatement ::=
+    Foreach '(' ForeachTypeList ';' ForeachAggregate ')' NoScopeNonEmptyStatement
+
+Foreach ::=
+    'foreach'
+    | 'foreach_reverse'
+
+ForeachTypeList ::=
+    ForeachType
+    | ForeachType ',' ForeachTypeList
+
+ForeachType ::=
+    ForeachTypeAttributes? BasicType Declarator
+    ForeachTypeAttributes? Identifier
+
+ForeachTypeAttributes ::=
+    ForeachTypeAttribute
+    | ForeachTypeAttribute ForeachTypeAttributes?
+
+ForeachTypeAttribute ::=
+    'ref'
+    | TypeCtor
+
+ForeachAggregate ::=
+    Expression
+
+ForeachRangeStatement ::=
+    Foreach '(' ForeachType ';' LwrExpression '..' UprExpression ')' ScopeStatement
+
+LwrExpression ::=
+    Expression
+
+UprExpression ::=
+    Expression
+
+SwitchStatement ::=
+    'switch' '(' Expression ')' ScopeStatement
+
+CaseStatement ::=
+    'case' ArgumentList ':' ScopeStatementList
+
+CaseRangeStatement ::=
+    'case' FirstExp ':' '..' 'case' LastExp ':' ScopeStatementList
+
+FirstExp ::=
+    AssignExpression
+
+LastExp ::=
+    AssignExpression
+
+DefaultStatement ::=
+    'default' ':' ScopeStatementList
+
+ScopeStatementList ::=
+    StatementListNoCaseNoDefault
+
+StatementListNoCaseNoDefault ::=
+    StatementNoCaseNoDefault
+    | StatementNoCaseNoDefault StatementListNoCaseNoDefault
+
+StatementNoCaseNoDefault ::=
+    NonEmptyStatementNoCaseNoDefault
+    | ScopeBlockStatement
+
+FinalSwitchStatement ::=
+    'final' 'switch' '(' Expression ')' ScopeStatement
+
+ContinueStatement ::=
+    'continue' Identifier? ';'
+
+BreakStatement ::=
+    'break' Identifier? ';'
+
+ReturnStatement ::=
+    'return' Expression? ';'
+
+GotoStatement ::=
+    'goto' Identifier ';'
+    | 'goto' 'default' ';'
+    | 'goto' 'case' ';'
+    | 'goto' 'case' Expression ';'
+
+WithStatement ::=
+    'with' '(' Expression ')' ScopeStatement
+    | 'with' '(' Symbol ')' ScopeStatement
+    | 'with' '(' TemplateInstance ')' ScopeStatement
+
+SynchronizedStatement ::=
+    'synchronized' ScopeStatement
+    | 'synchronized' '(' Expression ')' ScopeStatement
+
+TryStatement ::=
+    'try' ScopeStatement Catches
+    | 'try' ScopeStatement Catches FinallyStatement
+    | 'try' ScopeStatement FinallyStatement
+
+Catches ::=
+    LastCatch
+    | Catch
+    | Catch Catches
+
+LastCatch ::=
+    'catch' NoScopeNonEmptyStatement
+
+Catch ::=
+    'catch' '(' CatchParameter ')' NoScopeNonEmptyStatement
+
+CatchParameter ::=
+    BasicType Identifier
+
+FinallyStatement ::=
+    'finally' NoScopeNonEmptyStatement
+
+ThrowStatement ::=
+    'throw' Expression ';'
+
+ScopeGuardStatement ::=
+    'scope' '(' 'exit' ')' NonEmptyOrScopeBlockStatement
+    | 'scope' '(' 'success' ')' NonEmptyOrScopeBlockStatement
+    | 'scope' '(' 'failure' ')' NonEmptyOrScopeBlockStatement
+
+PragmaStatement ::=
+    Pragma NoScopeStatement
+
+MixinStatement ::=
+    'mixin' '(' AssignExpression ')' ';'
+
 //AsmStatement:
 //    asm FunctionAttributesopt { AsmInstructionListopt }
 //
 //AsmInstructionList:
 //    AsmInstruction ;
 //    AsmInstruction ; AsmInstructionList
-//PragmaStatement:
-//    Pragma NoScopeStatement
-//MixinStatement:
-//    mixin ( AssignExpression ) ;
 //Iasm
 //AsmInstruction:
 //    Identifier : AsmInstruction
@@ -1064,61 +1081,57 @@ StatementList ::=
 //Declaration
 
 Declaration ::=
-//    FuncDeclaration
-//   | VarDeclarations
-//   | AliasDeclaration
-//   | AggregateDeclaration
-//   | EnumDeclaration
-    ImportDeclaration
-    | VarDeclarations
+    FuncDeclaration
+   | AliasDeclaration
+   | AggregateDeclaration
+   | EnumDeclaration
+   | ImportDeclaration
+   | VarDeclarations
 
-//AliasDeclaration:
-//    alias StorageClassesopt BasicType Declarator ;
-//    alias StorageClassesopt BasicType FuncDeclarator ;
-//    alias AliasDeclarationX ;
-//
-//AliasDeclarationX:
-//    Identifier TemplateParametersopt = StorageClassesopt Type
-//    AliasDeclarationX , Identifier TemplateParametersopt = StorageClassesopt Type
+AliasDeclaration ::=
+    'alias' StorageClasses? BasicType Declarator ';'
+    | 'alias' StorageClasses? BasicType FuncDeclarator ';'
+    | 'alias' AliasDeclarationX ';'
+
+AliasDeclarationX ::=
+    Identifier TemplateParameters? '=' StorageClasses? Type
+    | AliasDeclarationX ',' Identifier TemplateParameters? '=' StorageClasses? Type
 
 AutoDeclaration ::=
     StorageClasses AutoDeclarationX ';'
 
 AutoDeclarationX ::=
     Identifier TemplateParameters? '=' Initializer
-    AutoDeclarationX ',' Identifier TemplateParameters? '=' Initializer
+    | AutoDeclarationX ',' Identifier TemplateParameters? '=' Initializer
 
 VarDeclarations ::=
-    StorageClasses* BasicType Declarators ';'
+    StorageClasses? BasicType Declarators ';'
     | AutoDeclaration
 
 Declarators ::=
     DeclaratorInitializer (',' DeclaratorIdentifierList)?
 
 DeclaratorInitializer ::=
-    VarDeclarator
-    | VarDeclarator TemplateParameters? '=' Initializer
-    | AltDeclarator
-    | AltDeclarator '=' Initializer
+    VarDeclarator (TemplateParameters? '=' Initializer)?
+    | AltDeclarator ('=' Initializer)?
 
-//DeclaratorIdentifierList:
-//    DeclaratorIdentifier
-//    DeclaratorIdentifier , DeclaratorIdentifierList
-//
-//DeclaratorIdentifier:
-//    VarDeclaratorIdentifier
-//    AltDeclaratorIdentifier
-//
-//VarDeclaratorIdentifier:
-//    Identifier
-//    Identifier TemplateParametersopt = Initializer
-//
-//AltDeclaratorIdentifier:
-//    BasicType2 Identifier AltDeclaratorSuffixesopt
-//    BasicType2 Identifier AltDeclaratorSuffixesopt = Initializer
-//    BasicType2opt Identifier AltDeclaratorSuffixes
-//    BasicType2opt Identifier AltDeclaratorSuffixes = Initializer
-//
+DeclaratorIdentifierList ::=
+    DeclaratorIdentifier
+    | DeclaratorIdentifier ',' DeclaratorIdentifierList
+
+DeclaratorIdentifier ::=
+    VarDeclaratorIdentifier
+    | AltDeclaratorIdentifier
+
+VarDeclaratorIdentifier ::=
+    Identifier TemplateParameters? '=' Initializer
+
+AltDeclaratorIdentifier ::=
+    BasicType2 Identifier AltDeclaratorSuffixes?
+    | BasicType2 Identifier AltDeclaratorSuffixes? '=' Initializer
+    | BasicType2? Identifier AltDeclaratorSuffixes
+    | BasicType2? Identifier AltDeclaratorSuffixes '=' Initializer
+
 Declarator ::=
     VarDeclarator
     | AltDeclarator
@@ -1215,19 +1228,21 @@ StructMemberInitializer ::=
     | Identifier ':' NonVoidInitializer
 
 //Function
-//FuncDeclaration:
-//    StorageClassesopt BasicType FuncDeclarator FunctionBody
-//    AutoFuncDeclaration
-//
-//AutoFuncDeclaration:
-//    StorageClasses Identifier FuncDeclaratorSuffix FunctionBody
-//
-//FuncDeclarator:
-//    BasicType2opt Identifier FuncDeclaratorSuffix
-//
-//FuncDeclaratorSuffix:
-//    Parameters MemberFunctionAttributesopt
-//    TemplateParameters Parameters MemberFunctionAttributesopt Constraintopt
+
+FuncDeclaration ::=
+    StorageClasses? BasicType FuncDeclarator FunctionBody
+    | AutoFuncDeclaration
+
+AutoFuncDeclaration ::=
+    StorageClasses Identifier FuncDeclaratorSuffix FunctionBody
+
+FuncDeclarator ::=
+    BasicType2? Identifier FuncDeclaratorSuffix
+
+FuncDeclaratorSuffix ::=
+    Parameters MemberFunctionAttributes?
+    | TemplateParameters Parameters MemberFunctionAttributes? Constraint?
+
 Parameters ::=
     '(' ParameterList? ')'
 
@@ -1275,71 +1290,75 @@ MemberFunctionAttribute ::=
     | 'shared'
     | FunctionAttribute
 
-//FunctionBody:
-//    BlockStatement
-//    FunctionContractsopt BodyStatement
-//    FunctionContracts
-//
-//FunctionContracts:
-//    InStatement OutStatementopt
-//    OutStatement InStatementopt
-//
-//InStatement:
-//    in BlockStatement
-//
-//OutStatement:
-//    out BlockStatement
-//    out ( Identifier ) BlockStatement
-//
-//BodyStatement:
-//    body BlockStatement
-//Constructor:
-//    this Parameters MemberFunctionAttributesopt ;
-//    this Parameters MemberFunctionAttributesopt FunctionBody
-//    ConstructorTemplate
-//
-//ConstructorTemplate:
-//    this TemplateParameters Parameters MemberFunctionAttributesopt Constraintopt ;
-//    this TemplateParameters Parameters MemberFunctionAttributesopt Constraintopt FunctionBody
-//
-//Destructor:
-//    ~ this ( ) MemberFunctionAttributesopt ;
-//    ~ this ( ) MemberFunctionAttributesopt FunctionBody
-//
-//Postblit:
-//    this ( this ) MemberFunctionAttributesopt ;
-//    this ( this ) MemberFunctionAttributesopt FunctionBody
-//
-//Allocator:
-//    new Parameters ;
-//    new Parameters FunctionBody
-//
-//Deallocator:
-//    delete Parameters ;
-//    delete Parameters FunctionBody
-//
-//Invariant:
-//    invariant ( ) BlockStatement
-//    invariant BlockStatement
-//
-//UnitTest:
-//    unittest BlockStatement
-//StaticConstructor:
-//    static this ( ) ;
-//    static this ( ) FunctionBody
-//
-//StaticDestructor:
-//    static ~ this ( ) MemberFunctionAttributesopt ;
-//    static ~ this ( ) MemberFunctionAttributesopt FunctionBody
-//
-//SharedStaticConstructor:
-//    shared static this ( ) ;
-//    shared static this ( ) FunctionBody
-//
-//SharedStaticDestructor:
-//    shared static ~ this ( ) MemberFunctionAttributesopt ;
-//    shared static ~ this ( ) MemberFunctionAttributesopt FunctionBody
-//Aggregate
+FunctionBody ::=
+    BlockStatement
+    | FunctionContractsopt BodyStatement
+    | FunctionContracts
+
+FunctionContracts ::=
+    InStatement OutStatementopt
+    | OutStatement InStatementopt
+
+InStatement ::=
+    'in' BlockStatement
+
+OutStatement ::=
+    'out' BlockStatement
+    | 'out' '(' Identifier ')' BlockStatement
+
+BodyStatement ::=
+    'body' BlockStatement
+
+Constructor ::=
+    'this' Parameters MemberFunctionAttributes? ';'
+    | 'this' Parameters MemberFunctionAttributes? FunctionBody
+    | ConstructorTemplate
+
+ConstructorTemplate ::=
+    'this' TemplateParameters Parameters MemberFunctionAttributes? Constraint? ';'
+    | 'this' TemplateParameters Parameters MemberFunctionAttributes? Constraint? FunctionBody
+
+Destructor ::=
+    '~' 'this' '(' ')' MemberFunctionAttributes? ';'
+    | '~' 'this' '(' ')' MemberFunctionAttributes? FunctionBody
+
+Postblit ::=
+    'this' '(' 'this' ')' MemberFunctionAttributes? ';'
+    | 'this' '(' 'this' ')' MemberFunctionAttributes? FunctionBody
+
+Allocator ::=
+    'new' Parameters ';'
+    | 'new' Parameters FunctionBody
+
+Deallocator ::=
+    'delete' Parameters ';'
+    | 'delete' Parameters FunctionBody
+
+Invariant ::=
+    'invariant' '(' ')' BlockStatement
+    | 'invariant' BlockStatement
+
+UnitTest ::=
+    'unittest' BlockStatement
+
+StaticConstructor ::=
+    'static' 'this' '(' ')' ';'
+    | 'static' 'this' '(' ')' FunctionBody
+
+StaticDestructor ::=
+    'static' '~' 'this' '(' ')' MemberFunctionAttributes? ';'
+    | 'static' '~' 'this' '(' ')' MemberFunctionAttributes? FunctionBody
+
+SharedStaticConstructor ::=
+    'shared' 'static' 'this' '(' ')' ';'
+    | 'shared' 'static' 'this' '(' ')' FunctionBody
+
+SharedStaticDestructor ::=
+    'shared' 'static' '~' 'this' '(' ')' MemberFunctionAttributes? ';'
+    | 'shared' 'static' '~' 'this' '(' ')' MemberFunctionAttributes? FunctionBody
+
+// Aggregate
+
 //AggregateDeclaration:
 //    ClassDeclaration
 //    InterfaceDeclaration
