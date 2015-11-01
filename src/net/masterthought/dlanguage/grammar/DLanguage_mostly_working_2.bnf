@@ -190,48 +190,30 @@ tokens = [
  OP_LAMBDA_ARROW = "=>"
  OP_DOT = "."
 
-ID = "regexp:\w+"
+ ID = "regexp:\w+"
+ space='regexp:\s+'
+ line_comment="regexp://.*"
+ block_comment="regexp:/\*(.|\n)*\*/"
 
-  space='regexp:\s+'
+  DOUBLE_QUOTED_STRING = 'regexp:\"([^\\"]|((\\"|\\\?|\\\|\\0|\\a|\\b|\\f|\\n|\\r|\\t|\\v)|(\\x[0-9abcdefABCDEF_]{2})|(\\[0-7])|(\\[0-7]{2})|(\\[0-7]{3})|(\\u[0-9abcdefABCDEF_]{4})|(\\U[0-9abcdefABCDEF_]{8})|(\\&([a-zA-Z_])([a-zA-Z0-9_])*;)))*\"[cwd]*'
 
-//  string_literal='regexp:"\w+"'
-//  string="regexp:('([^'\\]|\\.)*'|\"([^\"\\]|\\\"|\\\'|\\)*\")"
-//  number="regexp:\d+"
-//  float="regexp:[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?"
-  line_comment="regexp://.*"
-  block_comment="regexp:/\*(.|\n)*\*/"
-
-//   DoubleQuotedString = 'regexp:\"([^\\"]|((\\"|\\\?|\\\|\\0|\\a|\\b|\\f|\\n|\\r|\\t|\\v)|(\\x[0-9abcdefABCDEF_]{2})|(\\[0-7])|(\\[0-7]{2})|(\\[0-7]{3})|(\\u[0-9abcdefABCDEF_]{4})|(\\U[0-9abcdefABCDEF_]{8})|(\\&([a-zA-Z_])([a-zA-Z0-9_])*;)))*\"[cwd]*'
-  //  HexString = 'regexp:x\"([0-9a-fA-F][0-9a-fA-F]|[\r\n\s])*\"[cwd]*'
-
-
-]
-
+ ]
 
 }
 
 dFile ::= item_*
 
-// ----------------------------------------------------------
-
-
-
-// unused --------------
-
-//postblit ::= 'this' '(' 'this' ')' memberFunctionAttribute* ( functionBody | ';' )
-
-// ---------------------------------------------------------
-private item_ ::= (ModuleDeclaration | DeclDefs )
+private item_ ::= (ModuleDeclaration | DeclDefs)
 
 Identifier ::= ID
 StringLiteral  ::= (WYSIWYG_STRING|ALTERNATE_WYSIWYG_STRING|DOUBLE_QUOTED_STRING|HEX_STRING|DELIMITED_STRING)
 
 // Module
 
-//Module ::= ModuleDeclaration DeclDefs?
+//Module ::=  ModuleDeclaration? DeclDefs?
 
 ModuleDeclaration ::=
-    'module' ModuleFullyQualifiedName ';'
+    Attribute? 'module' ModuleFullyQualifiedName ';'
 
 ModuleFullyQualifiedName ::=
     Identifier ['.' ModuleFullyQualifiedName]
@@ -485,52 +467,36 @@ PowExpression ::= PostfixExpression ['^^' UnaryExpression PowExpression]
 
 PostfixExpression ::=
     PrimaryExpression
-//    | PostfixExpression '.' Identifier
-//    | PostfixExpression '.' TemplateInstance
-//    | PostfixExpression '.' NewExpression
-//    | PostfixExpression '++'
-//    | PostfixExpression '--'
-//    | PostfixExpression '(' ArgumentList? ')'
-//    | TypeCtors? BasicType '(' ArgumentList? ')'
-//    | IndexExpression
-//    | SliceExpression
-
-IndexExpression ::=
-    PostfixExpression '[' ArgumentList ']'
-
-SliceExpression ::=
-    PostfixExpression '[' ']'
-    | PostfixExpression '[' AssignExpression '..' AssignExpression ']'
+    | TypeCtors? BasicType '(' ArgumentList? ')'
+    [('.' Identifier | '.' TemplateInstance | '.' NewExpression | '++' | '--' | '(' ArgumentList? ')' | '[' ArgumentList? ']' | '[' AssignExpression '..' AssignExpression ']') PostfixExpression]
 
 PrimaryExpression ::=
-    Identifier
-//    | '.' Identifier
-//    | TemplateInstance
-//    | '.' TemplateInstance
-//    | 'this'
-//    | 'super'
-//    | 'null'
-//    | 'true'
-//    | 'false'
-//    | '$'
-//    | INTEGER_LITERAL
-//    | FLOAT_LITERAL
-//    | CHARACTER_LITERAL
-//    | StringLiterals
-//    | ArrayLiteral
-//    | AssocArrayLiteral
-//    | FunctionLiteral
-//    | AssertExpression
-//    | MixinExpression
-//    | ImportExpression
-//    | NewExpressionWithArgs
-//    | BasicTypeX '.' Identifier
-//    | Typeof
-//    | TypeidExpression
-//    | IsExpression
-//    | '(' Expression ')'
-//    | TraitsExpression
-//    | SpecialKeyword
+     ('.')? Identifier
+    | ('.')? TemplateInstance
+    | 'this'
+    | 'super'
+    | 'null'
+    | 'true'
+    | 'false'
+    | '$'
+    | INTEGER_LITERAL
+    | FLOAT_LITERAL
+    | CHARACTER_LITERAL
+    | StringLiterals
+    | ArrayLiteral
+    | AssocArrayLiteral
+    | FunctionLiteral
+    | AssertExpression
+    | MixinExpression
+    | ImportExpression
+    | NewExpressionWithArgs
+    | BasicTypeX '.' Identifier
+    | Typeof
+    | TypeidExpression
+    | IsExpression
+    | '(' Expression ')'
+    | TraitsExpression
+    | SpecialKeyword
 
 StringLiterals ::= StringLiteral [StringLiterals]
 
@@ -554,8 +520,8 @@ ValueExpression ::=
     AssignExpression
 
 FunctionLiteral ::=
-    'function' Typeopt ParameterAttributes? FunctionLiteralBody
-    | 'delegate' Typeopt ParameterMemberAttributes? FunctionLiteralBody
+    'function' Type? ParameterAttributes? FunctionLiteralBody
+    | 'delegate' Type? ParameterMemberAttributes? FunctionLiteralBody
     | ParameterMemberAttributes FunctionLiteralBody
     | FunctionLiteralBody
     | Lambda
@@ -722,7 +688,7 @@ NonEmptyStatementNoCaseNoDefault ::=
     | TryStatement
     | ScopeGuardStatement
     | ThrowStatement
-    | AsmStatement
+//    | AsmStatement
     | PragmaStatement
     | MixinStatement
     | ForeachRangeStatement
@@ -744,12 +710,10 @@ LabeledStatement ::=
     | Identifier ':' Statement
 
 BlockStatement ::=
-    '{' '}'
-    | '{' StatementList '}'
+ '{' StatementList? '}'
 
 StatementList ::=
-    Statement
-    | Statement StatementList
+    Statement StatementList?
 
 ExpressionStatement ::=
     Expression ';'
@@ -758,8 +722,7 @@ DeclarationStatement ::=
     StorageClasses? Declaration
 
 IfStatement ::=
-    'if' '(' IfCondition ')' ThenStatement
-    | 'if' '(' IfCondition ')' ThenStatement 'else' ElseStatement
+    'if' '(' IfCondition ')' ThenStatement ('else' ElseStatement)?
 
 IfCondition ::=
     Expression
@@ -1095,14 +1058,14 @@ AliasDeclaration ::=
 
 AliasDeclarationX ::=
     Identifier TemplateParameters? '=' StorageClasses? Type
-    | AliasDeclarationX ',' Identifier TemplateParameters? '=' StorageClasses? Type
+    [',' Identifier TemplateParameters? '=' StorageClasses? Type AliasDeclarationX]
 
 AutoDeclaration ::=
     StorageClasses AutoDeclarationX ';'
 
 AutoDeclarationX ::=
     Identifier TemplateParameters? '=' Initializer
-    | AutoDeclarationX ',' Identifier TemplateParameters? '=' Initializer
+    [',' Identifier TemplateParameters? '=' Initializer AutoDeclarationX]
 
 VarDeclarations ::=
     StorageClasses? BasicType Declarators ';'
@@ -1292,12 +1255,12 @@ MemberFunctionAttribute ::=
 
 FunctionBody ::=
     BlockStatement
-    | FunctionContractsopt BodyStatement
+    | FunctionContracts? BodyStatement
     | FunctionContracts
 
 FunctionContracts ::=
-    InStatement OutStatementopt
-    | OutStatement InStatementopt
+    InStatement OutStatement?
+    | OutStatement InStatement?
 
 InStatement ::=
     'in' BlockStatement
@@ -1359,224 +1322,212 @@ SharedStaticDestructor ::=
 
 // Aggregate
 
-//AggregateDeclaration:
-//    ClassDeclaration
-//    InterfaceDeclaration
-//    StructDeclaration
-//    UnionDeclaration
-//
-//ClassDeclaration:
-//    class Identifier ;
-//    class Identifier BaseClassListopt AggregateBody
-//    ClassTemplateDeclaration
-//
-//ClassTemplateDeclaration:
-//    class Identifier TemplateParameters Constraintopt BaseClassListopt AggregateBody
-//    class Identifier TemplateParameters BaseClassList Constraint AggregateBody
-//
-//InterfaceDeclaration:
-//    interface Identifier ;
-//    interface Identifier BaseInterfaceListopt AggregateBody
-//    InterfaceTemplateDeclaration
-//
-//InterfaceTemplateDeclaration:
-//    interface Identifier TemplateParameters Constraintopt BaseInterfaceListopt AggregateBody
-//    interface Identifier TemplateParameters BaseInterfaceList Constraint AggregateBody
-//
-//StructDeclaration:
-//    struct Identifier ;
-//    struct Identifier AggregateBody
-//    StructTemplateDeclaration
-//    AnonStructDeclaration
-//
-//StructTemplateDeclaration:
-//    struct Identifier TemplateParameters Constraintopt AggregateBody
-//
-//AnonStructDeclaration:
-//    struct AggregateBody
-//
-//UnionDeclaration:
-//    union Identifier ;
-//    union Identifier AggregateBody
-//    UnionTemplateDeclaration
-//    AnonUnionDeclaration
-//
-//UnionTemplateDeclaration:
-//    union Identifier TemplateParameters Constraintopt AggregateBody
-//
-//AnonUnionDeclaration:
-//    union AggregateBody
-//
-//AggregateBody:
-//    { DeclDefsopt }
-//BaseClassList:
-//    : SuperClass
-//    : SuperClass , Interfaces
-//    : Interfaces
-//
-//BaseInterfaceList:
-//    : Interfaces
-//
-//SuperClass:
-//    BasicType
-//
-//Interfaces:
-//    Interface
-//    Interface , Interfaces
-//
-//Interface:
-//    BasicType
-//AliasThis:
-//    alias Identifier this ;
-//Enum
-//EnumDeclaration:
-//    enum Identifier EnumBody
-//    enum Identifier : EnumBaseType EnumBody
-//    AnonymousEnumDeclaration
-//
-//EnumBaseType:
-//    Type
-//
-//EnumBody:
-//    { EnumMembers }
-//    ;
-//
-//EnumMembers:
-//    EnumMember
-//    EnumMember ,
-//    EnumMember , EnumMembers
-//
-//EnumMember:
-//    Identifier
-//    Identifier = AssignExpression
-//
-//AnonymousEnumDeclaration:
-//    enum : EnumBaseType { EnumMembers }
-//    enum { EnumMembers }
-//    enum { AnonymousEnumMembers }
-//
-//AnonymousEnumMembers:
-//    AnonymousEnumMember
-//    AnonymousEnumMember ,
-//    AnonymousEnumMember , AnonymousEnumMembers
-//
-//AnonymousEnumMember:
-//    EnumMember
-//    Type Identifier = AssignExpression
-//Template
-//TemplateDeclaration:
-//    template Identifier TemplateParameters Constraintopt { DeclDefsopt }
-//
-//TemplateParameters:
-//    ( TemplateParameterListopt )
-//
-//TemplateParameterList:
-//    TemplateParameter
-//    TemplateParameter ,
-//    TemplateParameter , TemplateParameterList
-//
-//TemplateParameter:
-//    TemplateTypeParameter
-//    TemplateValueParameter
-//    TemplateAliasParameter
-//    TemplateTupleParameter
-//    TemplateThisParameter
-//
-//Constraint:
-//    if ( Expression )
-//TemplateInstance:
-//    Identifier TemplateArguments
-//
-//TemplateArguments:
-//    ! ( TemplateArgumentListopt )
-//    ! TemplateSingleArgument
-//
-//TemplateArgumentList:
-//    TemplateArgument
-//    TemplateArgument ,
-//    TemplateArgument , TemplateArgumentList
-//
-//TemplateArgument:
-//    Type
-//    AssignExpression
-//    Symbol
-//
-//Symbol:
-//    SymbolTail
-//    . SymbolTail
-//
-//SymbolTail:
-//    Identifier
-//    Identifier . SymbolTail
-//    TemplateInstance
-//    TemplateInstance . SymbolTail
-//
-//TemplateSingleArgument:
-//    Identifier
-//    BasicTypeX
-//    CharacterLiteral
-//    StringLiteral
-//    IntegerLiteral
-//    FloatLiteral
-//    true
-//    false
-//    null
-//    this
-//    SpecialKeyword
-//TemplateTypeParameter:
-//    Identifier
-//    Identifier TemplateTypeParameterSpecialization
-//    Identifier TemplateTypeParameterDefault
-//    Identifier TemplateTypeParameterSpecialization TemplateTypeParameterDefault
-//
-//TemplateTypeParameterSpecialization:
-//    : Type
-//
-//TemplateTypeParameterDefault:
-//    = Type
-//TemplateThisParameter:
-//    this TemplateTypeParameter
-//TemplateValueParameter:
-//    BasicType Declarator
-//    BasicType Declarator TemplateValueParameterSpecialization
-//    BasicType Declarator TemplateValueParameterDefault
-//    BasicType Declarator TemplateValueParameterSpecialization TemplateValueParameterDefault
-//
-//TemplateValueParameterSpecialization:
-//    : ConditionalExpression
-//
-//TemplateValueParameterDefault:
-//    = AssignExpression
-//    = SpecialKeyword
-//TemplateAliasParameter:
-//    alias Identifier TemplateAliasParameterSpecializationopt TemplateAliasParameterDefaultopt
-//    alias BasicType Declarator TemplateAliasParameterSpecializationopt TemplateAliasParameterDefaultopt
-//
-//TemplateAliasParameterSpecialization:
-//    : Type
-//    : ConditionalExpression
-//
-//TemplateAliasParameterDefault:
-//    = Type
-//    = ConditionalExpression
-//TemplateTupleParameter:
-//    Identifier ...
-//TemplateMixinDeclaration:
-//    mixin template Identifier TemplateParameters Constraintopt { DeclDefsopt }
-//
-//TemplateMixin:
-//    mixin MixinTemplateName TemplateArgumentsopt Identifieropt ;
-//
-//MixinTemplateName:
-//    . QualifiedIdentifierList
-//    QualifiedIdentifierList
-//    Typeof . QualifiedIdentifierList
-//
-//QualifiedIdentifierList:
-//    Identifier
-//    Identifier . QualifiedIdentifierList
-//    TemplateInstance . QualifiedIdentifierList
+AggregateDeclaration ::=
+    ClassDeclaration
+    | InterfaceDeclaration
+    | StructDeclaration
+    | UnionDeclaration
 
+ClassDeclaration ::=
+    'class' Identifier ';'
+    | 'class' Identifier BaseClassList? AggregateBody
+    | ClassTemplateDeclaration
+
+ClassTemplateDeclaration ::=
+    'class' Identifier TemplateParameters Constraint? BaseClassList? AggregateBody
+    | 'class' Identifier TemplateParameters BaseClassList Constraint AggregateBody
+
+InterfaceDeclaration ::=
+    'interface' Identifier ';'
+    | 'interface' Identifier BaseInterfaceList? AggregateBody
+    | InterfaceTemplateDeclaration
+
+InterfaceTemplateDeclaration ::=
+    'interface' Identifier TemplateParameters Constraint? BaseInterfaceList? AggregateBody
+    'interface' Identifier TemplateParameters BaseInterfaceList Constraint AggregateBody
+
+StructDeclaration ::=
+    'struct' Identifier ';'
+    | 'struct' Identifier AggregateBody
+    | StructTemplateDeclaration
+    | AnonStructDeclaration
+
+StructTemplateDeclaration ::=
+    'struct' Identifier TemplateParameters Constraint? AggregateBody
+
+AnonStructDeclaration ::=
+    'struct' AggregateBody
+
+UnionDeclaration ::=
+    'union' Identifier ';'
+    | 'union' Identifier AggregateBody
+    | UnionTemplateDeclaration
+    | AnonUnionDeclaration
+
+UnionTemplateDeclaration ::=
+    'union' Identifier TemplateParameters Constraint? AggregateBody
+
+AnonUnionDeclaration ::=
+    'union' AggregateBody
+
+AggregateBody ::=
+    '{' DeclDefs? '}'
+
+BaseClassList ::=
+    ':' SuperClass (',' Interfaces)?
+    | ':' Interfaces
+
+BaseInterfaceList ::=
+    ':' Interfaces
+
+SuperClass ::=
+    BasicType
+
+Interfaces ::=
+    Interface (',' Interfaces)?
+
+Interface ::=
+    BasicType
+
+AliasThis ::=
+    'alias' Identifier 'this' ';'
+
+// Enum
+
+EnumDeclaration ::=
+    'enum' Identifier EnumBody
+    | 'enum' Identifier ':' EnumBaseType EnumBody
+    | AnonymousEnumDeclaration
+
+EnumBaseType ::=
+    Type
+
+EnumBody ::=
+    '{' EnumMembers '}'
+
+EnumMembers ::=
+    EnumMember (',' EnumMembers?)?
+
+EnumMember ::=
+    Identifier ('=' AssignExpression)?
+
+AnonymousEnumDeclaration ::=
+    'enum' ':' EnumBaseType { EnumMembers }
+    | 'enum' '{' EnumMembers '}'
+    | 'enum' '{' AnonymousEnumMembers '}'
+
+AnonymousEnumMembers ::=
+    AnonymousEnumMember (',' AnonymousEnumMembers?)?
+
+AnonymousEnumMember ::=
+    EnumMember
+    | Type Identifier '=' AssignExpression
+
+//Template
+
+TemplateDeclaration ::=
+    'template' Identifier TemplateParameters Constraint? '{' DeclDefs? '}'
+
+TemplateParameters ::=
+    '(' TemplateParameterList? ')'
+
+TemplateParameterList ::=
+    TemplateParameter (',' TemplateParameterList?)?
+
+TemplateParameter ::=
+    TemplateTypeParameter
+   | TemplateValueParameter
+   | TemplateAliasParameter
+   | TemplateTupleParameter
+   | TemplateThisParameter
+
+Constraint ::=
+    'if' '(' Expression ')'
+
+TemplateInstance ::=
+    Identifier TemplateArguments
+
+TemplateArguments ::=
+    '!' '(' TemplateArgumentList? ')'
+    | '!' TemplateSingleArgument
+
+TemplateArgumentList ::=
+    TemplateArgument (',' TemplateArgumentList?)?
+
+TemplateArgument ::=
+    Type
+    | AssignExpression
+    | Symbol
+
+Symbol ::=
+    '.'? SymbolTail
+
+SymbolTail ::=
+    Identifier ('.' SymbolTail)?
+    | TemplateInstance ('.' SymbolTail)?
+
+TemplateSingleArgument ::=
+    Identifier
+    | BasicTypeX
+    | CHARACTER_LITERAL
+    | StringLiteral
+    | INTEGER_LITERAL
+    | FLOAT_LITERAL
+    | 'true'
+    | 'false'
+    | 'null'
+    | 'this'
+    | SpecialKeyword
+
+TemplateTypeParameter ::=
+    Identifier TemplateTypeParameterSpecialization? TemplateTypeParameterDefault?
+
+TemplateTypeParameterSpecialization ::=
+    ':' Type
+
+TemplateTypeParameterDefault ::=
+    '=' Type
+
+TemplateThisParameter ::=
+    'this' TemplateTypeParameter
+
+TemplateValueParameter ::=
+    BasicType Declarator TemplateValueParameterSpecialization? TemplateValueParameterDefault?
+
+TemplateValueParameterSpecialization ::=
+    ':' ConditionalExpression
+
+TemplateValueParameterDefault ::=
+    '=' AssignExpression
+    | '=' SpecialKeyword
+
+TemplateAliasParameter ::=
+    'alias' Identifier TemplateAliasParameterSpecialization? TemplateAliasParameterDefault?
+    | 'alias' BasicType Declarator TemplateAliasParameterSpecialization? TemplateAliasParameterDefault?
+
+TemplateAliasParameterSpecialization ::=
+    ':' Type
+    | ':' ConditionalExpression
+
+TemplateAliasParameterDefault ::=
+    '=' Type
+    | '=' ConditionalExpression
+
+TemplateTupleParameter ::=
+    Identifier '...'
+
+TemplateMixinDeclaration ::=
+    'mixin' 'template' Identifier TemplateParameters Constraint? '{' DeclDefs? '}'
+
+TemplateMixin ::=
+    'mixin' MixinTemplateName TemplateArguments? Identifier? ';'
+
+MixinTemplateName ::=
+    Typeof? '.' QualifiedIdentifierList?
+
+QualifiedIdentifierList ::=
+    Identifier ('.' QualifiedIdentifierList)?
+    TemplateInstance '.' QualifiedIdentifierList
 
 //Attribute
 AttributeSpecifier ::=
@@ -1649,12 +1600,10 @@ PropertyIdentifier ::=
     | 'disable'
     | 'nogc'
 
-//UserDefinedAttribute:
-//    @ ( ArgumentList )
-//    @ Identifier
-//    @ Identifier ( ArgumentListopt )
-//    @ TemplateInstance
-//    @ TemplateInstance ( ArgumentListopt )
+UserDefinedAttribute ::=
+      '@' '(' ArgumentList ')'
+    | '@' Identifier ('(' ArgumentList? ')')?
+    | '@' TemplateInstance ('(' ArgumentList? ')')?
 
 Pragma ::=
     'pragma' '(' Identifier ')'
@@ -1662,41 +1611,34 @@ Pragma ::=
 
 //Conditional
 
-//ConditionalDeclaration:
-//    Condition DeclarationBlock
-//    Condition DeclarationBlock else DeclarationBlock
-//    Condition : DeclDefsopt
-//    Condition DeclarationBlock else : DeclDefsopt
-//
-//ConditionalStatement:
-//    Condition NoScopeNonEmptyStatement
-//    Condition NoScopeNonEmptyStatement else NoScopeNonEmptyStatement
-//Condition:
-//    VersionCondition
-//    DebugCondition
-//    StaticIfCondition
-//
-//VersionCondition:
-//    version ( IntegerLiteral )
-//    version ( Identifier )
-//    version ( unittest )
-//    version ( assert )
-//
-//DebugCondition:
-//    debug
-//    debug ( IntegerLiteral )
-//    debug ( Identifier )
-//
-//StaticIfCondition:
-//    static if ( AssignExpression )
-//VersionSpecification:
-//    version = Identifier ;
-//    version = IntegerLiteral ;
-//
-//DebugSpecification:
-//    debug = Identifier ;
-//    debug = IntegerLiteral ;
-//StaticAssert:
-//    static assert ( AssignExpression );
-//    static assert ( AssignExpression , AssignExpression );
+ConditionalDeclaration ::=
+    Condition DeclarationBlock ('else' DeclarationBlock)?
+    | Condition ':' DeclDefs?
+    | Condition DeclarationBlock 'else' ':' DeclDefs?
+
+ConditionalStatement ::=
+    Condition NoScopeNonEmptyStatement ('else' NoScopeNonEmptyStatement)?
+
+Condition ::=
+    VersionCondition
+    | DebugCondition
+    | StaticIfCondition
+
+VersionCondition ::=
+    'version' '(' (INTEGER_LITERAL | Identifier | 'unittest' | 'assert') ')'
+
+DebugCondition ::=
+    'debug' ('(' (INTEGER_LITERAL | Identifier) ')')?
+
+StaticIfCondition ::=
+    'static' 'if' '(' AssignExpression ')'
+
+VersionSpecification ::=
+    'version' '=' (Identifier | INTEGER_LITERAL) ';'
+
+DebugSpecification ::=
+   'debug' '=' (Identifier | INTEGER_LITERAL) ';'
+
+StaticAssert ::=
+    'static' 'assert' '(' AssignExpression (',' AssignExpression)? ')' ';'
 
