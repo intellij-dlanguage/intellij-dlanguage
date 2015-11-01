@@ -228,7 +228,7 @@ StringLiteral  ::= (WYSIWYG_STRING|ALTERNATE_WYSIWYG_STRING|DOUBLE_QUOTED_STRING
 
 // Module
 
-Module ::= ModuleDeclaration | ImportDeclaration
+Module ::= ModuleDeclaration DeclDefs?
 
 ModuleDeclaration ::=
     'module' ModuleFullyQualifiedName ';'
@@ -246,7 +246,6 @@ ImportList ::=
     Import (':' ImportBindList | ',' ImportList)?
 
 Import ::=
-//    ModuleFullyQualifiedName
     (Identifier '=')? ModuleFullyQualifiedName
 
 ImportBindList ::=
@@ -255,368 +254,350 @@ ImportBindList ::=
 ImportBind ::=
     Identifier ('=' Identifier)?
 
+DeclDefs ::= DeclDef (DeclDefs)?
 
+DeclDef ::=
+    (AttributeSpecifier
+    | Declaration
+    | Constructor
+    | Destructor
+    | Postblit
+    | Allocator
+    | Deallocator
+    | Invariant
+    | UnitTest
+    | AliasThis
+    | StaticConstructor
+    | StaticDestructor
+    | SharedStaticConstructor
+    | SharedStaticDestructor
+    | ConditionalDeclaration
+    | DebugSpecification
+    | VersionSpecification
+    | StaticAssert
+    | TemplateDeclaration
+    | TemplateMixinDeclaration
+    | TemplateMixin
+    | MixinDeclaration)
 
-//DeclDefs ::=
-//    DeclDef
-//    | DeclDef DeclDefs
-//
-//DeclDef ::=
-//    (AttributeSpecifier
-//    | Declaration
-//    | Constructor
-//    | Destructor
-//    | Postblit
-//    | Allocator
-//    | Deallocator
-//    | Invariant
-//    | UnitTest
-//    | AliasThis
-//    | StaticConstructor
-//    | StaticDestructor
-//    | SharedStaticConstructor
-//    | SharedStaticDestructor
-//    | ConditionalDeclaration
-//    | DebugSpecification
-//    | VersionSpecification
-//    | StaticAssert
-//    | TemplateDeclaration
-//    | TemplateMixinDeclaration
-//    | TemplateMixin
-//    | MixinDeclaration) ';'
+MixinDeclaration ::=
+    'mixin' '(' AssignExpression ')' ';'
 
+Type ::=
+    TypeCtors? BasicType BasicType2?
 
-//  orExpression ::= xorExpression ['|' orExpression]
+TypeCtors ::=
+    TypeCtor
+    | TypeCtor TypeCtors
 
-//  orExpression:
-//          xorExpression
-//        | orExpression '|' xorExpression
-//        ;
+TypeCtor ::=
+    'const'
+    | 'immutable'
+    | 'inout'
+    | 'shared'
 
+BasicType ::=
+    BasicTypeX
+    | '.' IdentifierList
+    | IdentifierList
+    | Typeof
+    | Typeof '.' IdentifierList
+    | TypeCtor '(' Type ')'
+    | TypeVector
 
+BasicTypeX ::=
+     'bool'
+    | 'byte'
+    | 'ubyte'
+    | 'short'
+    | 'ushort'
+    | 'int'
+    | 'uint'
+    | 'long'
+    | 'ulong'
+    | 'char'
+    | 'wchar'
+    | 'dchar'
+    | 'float'
+    | 'double'
+    | 'real'
+    | 'ifloat'
+    | 'idouble'
+    | 'ireal'
+    | 'cfloat'
+    | 'cdouble'
+    | 'creal'
+    | 'void'
 
+BasicType2 ::=
+    BasicType2X BasicType2?
 
+BasicType2X ::=
+    '*'
+    | '[' ']'
+    | '[' AssignExpression ']'
+    | '[' AssignExpression '..' AssignExpression ']'
+    | '[' Type ']'
+    | delegate Parameters MemberFunctionAttributes?
+    | function Parameters FunctionAttributes?
 
-//ModuleAliasIdentifier ::=
-//    Identifier
+IdentifierList ::=
+    Identifier
+    | Identifier '.' IdentifierList
+    | TemplateInstance
+    | TemplateInstance '.' IdentifierList
+    | Identifier '[' AssignExpression ']' '.' IdentifierList
 
-//MixinDeclaration ::=
-//    'mixin' '(' AssignExpression ')' ';'
+Typeof ::=
+    typeof '(' Expression ')'
+    | typeof '(' return ')'
 
-//Type ::=
-//    TypeCtors? BasicType BasicType2?
-//
-//TypeCtors ::=
-//    TypeCtor
-//    | TypeCtor TypeCtors
-//
-//TypeCtor ::=
-//    'const'
-//    | 'immutable'
-//    | 'inout'
-//    | 'shared'
-//
-//BasicType ::=
-//    BasicTypeX
-//    | '.' IdentifierList
-//    | IdentifierList
-//    | Typeof
-//    | Typeof '.' IdentifierList
-//    | TypeCtor '(' Type ')'
-//    | TypeVector
-//
-//BasicTypeX ::=
-//     'bool'
-//    | 'byte'
-//    | 'ubyte'
-//    | 'short'
-//    | 'ushort'
-//    | 'int'
-//    | 'uint'
-//    | 'long'
-//    | 'ulong'
-//    | 'char'
-//    | 'wchar'
-//    | 'dchar'
-//    | 'float'
-//    | 'double'
-//    | 'real'
-//    | 'ifloat'
-//    | 'idouble'
-//    | 'ireal'
-//    | 'cfloat'
-//    | 'cdouble'
-//    | 'creal'
-//    | 'void'
-//
-//BasicType2 ::=
-//    BasicType2X BasicType2?
-//
-//BasicType2X ::=
-//    '*'
-//    | '[' ']'
-//    | '[' AssignExpression ']'
-//    | '[' AssignExpression '..' AssignExpression ']'
-//    | '[' Type ']'
-//    | delegate Parameters MemberFunctionAttributes?
-//    | function Parameters FunctionAttributes?
-//
-//IdentifierList ::=
-//    Identifier
-//    | Identifier '.' IdentifierList
-//    | TemplateInstance
-//    | TemplateInstance '.' IdentifierList
-//    | Identifier '[' AssignExpression ']' '.' IdentifierList
-//
-//Typeof ::=
-//    typeof '(' Expression ')'
-//    | typeof '(' return ')'
-//
-//TypeVector ::=
-//    '__vector' '(' Type ')'
-//
-//Expression ::=
-//    CommaExpression
-//
-//CommaExpression ::=
-//    AssignExpression
-//    | AssignExpression ',' CommaExpression
-//
-//AssignExpression ::=
-//    ConditionalExpression
-//    | ConditionalExpression '=' AssignExpression
-//    | ConditionalExpression '+=' AssignExpression
-//    | ConditionalExpression '-=' AssignExpression
-//    | ConditionalExpression '*=' AssignExpression
-//    | ConditionalExpression '/=' AssignExpression
-//    | ConditionalExpression '%=' AssignExpression
-//    | ConditionalExpression '&=' AssignExpression
-//    | ConditionalExpression '|=' AssignExpression
-//    | ConditionalExpression '^=' AssignExpression
-//    | ConditionalExpression '~=' AssignExpression
-//    | ConditionalExpression '<<=' AssignExpression
-//    | ConditionalExpression '>>=' AssignExpression
-//    | ConditionalExpression '>>>=' AssignExpression
-//    | ConditionalExpression '^^=' AssignExpression
-//
-//ConditionalExpression ::=
-//    OrOrExpression
-//    | OrOrExpression '?' Expression ':' ConditionalExpression
-//
-//OrOrExpression ::=
-//    AndAndExpression
-//    | OrOrExpression '||' AndAndExpression
-//
-//AndAndExpression ::=
-//    OrExpression
-//    | AndAndExpression '&&' OrExpression
-//    | CmpExpression
-//    | AndAndExpression '&&' CmpExpression
-//
-//OrExpression ::=
-//    XorExpression
-//    | (OrExpression | XorExpression)
-//
-//XorExpression ::=
-//    AndExpression
-//    | XorExpression '^' AndExpression
-//
-//AndExpression ::=
-//    ShiftExpression
-//    | AndExpression '&' ShiftExpression
-//
-//CmpExpression ::=
-//    ShiftExpression
-//    | EqualExpression
-//    | IdentityExpression
-//    | RelExpression
-//    | InExpression
-//
-//EqualExpression ::=
-//    ShiftExpression '==' ShiftExpression
-//    | ShiftExpression '!=' ShiftExpression
-//
-//IdentityExpression ::=
-//    ShiftExpression 'is' ShiftExpression
-//    | ShiftExpression '!is' ShiftExpression
-//
-//RelExpression ::=
-//    ShiftExpression '<' ShiftExpression
-//    | ShiftExpression '<=' ShiftExpression
-//    | ShiftExpression '>' ShiftExpression
-//    | ShiftExpression '>=' ShiftExpression
-//    | ShiftExpression '!<>=' ShiftExpression
-//    | ShiftExpression '!<>' ShiftExpression
-//    | ShiftExpression '<>' ShiftExpression
-//    | ShiftExpression '<>=' ShiftExpression
-//    | ShiftExpression '!>' ShiftExpression
-//    | ShiftExpression '!>=' ShiftExpression
-//    | ShiftExpression '!<' ShiftExpression
-//    | ShiftExpression '!<=' ShiftExpression
-//
-//InExpression ::=
-//    ShiftExpression 'in' ShiftExpression
-//    | ShiftExpression '!in' ShiftExpression
-//
-//ShiftExpression ::=
-//    AddExpression
-//    | ShiftExpression '<<' AddExpression
-//    | ShiftExpression '>>' AddExpression
-//    | ShiftExpression '>>>' AddExpression
-//
-//AddExpression:
-//    MulExpression
-//    AddExpression + MulExpression
-//    AddExpression - MulExpression
-//    CatExpression
-//CatExpression:
-//    AddExpression ~ MulExpression
-//MulExpression:
-//    UnaryExpression
-//    MulExpression * UnaryExpression
-//    MulExpression / UnaryExpression
-//    MulExpression % UnaryExpression
-//UnaryExpression:
-//    & UnaryExpression
-//    ++ UnaryExpression
-//    -- UnaryExpression
-//    * UnaryExpression
-//    - UnaryExpression
-//    + UnaryExpression
-//    ! UnaryExpression
-//    ComplementExpression
-//    ( Type ) . Identifier
-//    ( Type ) . TemplateInstance
-//    DeleteExpression
-//    CastExpression
-//    PowExpression
-//ComplementExpression:
-//    ~ UnaryExpression
-//NewExpression:
-//    new AllocatorArgumentsopt Type
-//    NewExpressionWithArgs
-//
-//NewExpressionWithArgs:
-//    new AllocatorArgumentsopt Type [ AssignExpression ]
-//    new AllocatorArgumentsopt Type ( ArgumentListopt )
-//    NewAnonClassExpression
-//
-//AllocatorArguments:
-//    ( ArgumentListopt )
-//
-//ArgumentList:
-//    AssignExpression
-//    AssignExpression ,
-//    AssignExpression , ArgumentList
-//NewAnonClassExpression:
-//    new AllocatorArgumentsopt class ClassArgumentsopt SuperClassopt Interfacesopt AggregateBody
-//
-//ClassArguments:
-//    ( ArgumentListopt )
-//DeleteExpression:
-//    delete UnaryExpression
-//CastExpression:
-//    cast ( Type ) UnaryExpression
-//    cast ( TypeCtorsopt ) UnaryExpression
-//PowExpression:
-//    PostfixExpression
-//    PostfixExpression ^^ UnaryExpression
-//PostfixExpression:
-//    PrimaryExpression
-//    PostfixExpression . Identifier
-//    PostfixExpression . TemplateInstance
-//    PostfixExpression . NewExpression
-//    PostfixExpression ++
-//    PostfixExpression --
-//    PostfixExpression ( ArgumentListopt )
-//    TypeCtorsopt BasicType ( ArgumentListopt )
-//    IndexExpression
-//    SliceExpression
-//IndexExpression:
-//    PostfixExpression [ ArgumentList ]
-//SliceExpression:
-//    PostfixExpression [ ]
-//    PostfixExpression [ AssignExpression .. AssignExpression ]
-//PrimaryExpression:
-//    Identifier
-//    . Identifier
-//    TemplateInstance
-//    . TemplateInstance
-//    this
-//    super
-//    null
-//    true
-//    false
-//    $
-//    IntegerLiteral
-//    FloatLiteral
-//    CharacterLiteral
-//    StringLiterals
-//    ArrayLiteral
-//    AssocArrayLiteral
-//    FunctionLiteral
-//    AssertExpression
-//    MixinExpression
-//    ImportExpression
-//    NewExpressionWithArgs
-//    BasicTypeX . Identifier
-//    Typeof
-//    TypeidExpression
-//    IsExpression
-//    ( Expression )
-//    TraitsExpression
-//    SpecialKeyword
-//StringLiterals:
-//    StringLiteral
-//    StringLiterals StringLiteral
-//ArrayLiteral:
-//    [ ArgumentListopt ]
-//AssocArrayLiteral:
-//    [ KeyValuePairs ]
-//
-//KeyValuePairs:
-//    KeyValuePair
-//    KeyValuePair , KeyValuePairs
-//
-//KeyValuePair:
-//    KeyExpression : ValueExpression
-//
-//KeyExpression:
-//    AssignExpression
-//
-//ValueExpression:
-//    AssignExpression
-//FunctionLiteral:
-//    function Typeopt ParameterAttributes opt FunctionLiteralBody
-//    delegate Typeopt ParameterMemberAttributes opt FunctionLiteralBody
-//    ParameterMemberAttributes FunctionLiteralBody
-//    FunctionLiteralBody
-//    Lambda
-//ParameterAttributes:
-//    Parameters FunctionAttributesopt
-//
-//ParameterMemberAttributes:
-//    Parameters MemberFunctionAttributesopt
-//
-//FunctionLiteralBody:
-//    BlockStatement
-//    FunctionContractsopt BodyStatement
-//
-//Lambda:
-//    function Typeopt ParameterAttributes => AssignExpression
-//    delegate Typeopt ParameterMemberAttributes => AssignExpression
-//    ParameterMemberAttributes => AssignExpression
-//    Identifier => AssignExpression
-//AssertExpression:
-//    assert ( AssignExpression )
-//    assert ( AssignExpression , AssignExpression )
-//MixinExpression:
-//    mixin ( AssignExpression )
-//ImportExpression:
-//    import ( AssignExpression )
-//TypeidExpression:
-//    typeid ( Type )
-//    typeid ( Expression )
+TypeVector ::=
+    '__vector' '(' Type ')'
+
+Expression ::=
+    CommaExpression
+
+CommaExpression ::=
+    AssignExpression
+    | AssignExpression ',' CommaExpression
+
+AssignExpression ::=
+    ConditionalExpression
+    ( '='
+    | '+='
+    | '-='
+    | '*='
+    | '/='
+    | '%='
+    | '&='
+    | '|='
+    | '^='
+    | '~='
+    | '<<='
+    | '>>='
+    | '>>>='
+    | '^^=') AssignExpression
+
+ConditionalExpression ::=
+    OrOrExpression
+    | OrOrExpression '?' Expression ':' ConditionalExpression
+
+OrOrExpression ::= AndAndExpression [ '||' OrOrExpression]
+
+AndAndExpression ::=
+    OrExpression
+    | CmpExpression
+    [ '&&' ( OrExpression | CmpExpression ) AndAndExpression ]
+
+OrExpression ::=
+    XorExpression [OrExpression]
+
+XorExpression ::= AndExpression [ '^' XorExpression ]
+
+AndExpression ::= ShiftExpression [ '&' AndExpression ]
+
+CmpExpression ::=
+    ShiftExpression
+    | EqualExpression
+    | IdentityExpression
+    | RelExpression
+    | InExpression
+
+EqualExpression ::=
+    ShiftExpression ('==' | '!=') ShiftExpression
+
+IdentityExpression ::=
+    ShiftExpression ('is'|'!is') ShiftExpression
+
+RelExpression ::=
+    ShiftExpression
+    ('<'
+    | '<='
+    | '>'
+    | '>='
+    | '!<>='
+    | '!<>'
+    | '<>'
+    | '<>='
+    | '!>'
+    | '!>='
+    | '!<'
+    | '!<=') ShiftExpression
+
+InExpression ::=
+    ShiftExpression 'in' ShiftExpression
+    | ShiftExpression '!in' ShiftExpression
+
+ShiftExpression ::= AddExpression [('<<' | '>>' | '>>>') ShiftExpression]
+
+AddExpression ::=
+    MulExpression [ ('+' | '-' | '~') AddExpression]
+
+MulExpression ::=
+    UnaryExpression
+    MulExpression '*' UnaryExpression
+    MulExpression '/' UnaryExpression
+    MulExpression '%' UnaryExpression
+
+UnaryExpression ::=
+     '&' UnaryExpression
+    | '++' UnaryExpression
+    | '--' UnaryExpression
+    | '*' UnaryExpression
+    | '-' UnaryExpression
+    | '+' UnaryExpression
+    | '!' UnaryExpression
+    | ComplementExpression
+    | '(' Type ')' '.' Identifier
+    | '(' Type ')' '.' TemplateInstance
+    | DeleteExpression
+    | CastExpression
+    | PowExpression
+
+ComplementExpression ::=
+    '~' UnaryExpression
+
+NewExpression ::=
+    'new' AllocatorArguments? Type
+    | NewExpressionWithArgs
+
+NewExpressionWithArgs ::=
+    'new' AllocatorArguments? Type '[' AssignExpression ']'
+    | 'new' AllocatorArguments? Type '(' ArgumentList? ')'
+    | NewAnonClassExpression
+
+AllocatorArguments ::=
+    '(' ArgumentList? ')'
+
+ArgumentList ::=
+    AssignExpression ','
+   | AssignExpression [','  ArgumentList]
+
+NewAnonClassExpression ::=
+    'new' AllocatorArguments? 'class' ClassArguments? SuperClass? Interfaces? AggregateBody
+
+ClassArguments ::=
+    '(' ArgumentList? ')'
+
+DeleteExpression ::=
+    'delete' UnaryExpression
+
+CastExpression ::=
+    'cast' '(' Type ')' UnaryExpression
+    'cast' '(' TypeCtors? ')' UnaryExpression
+
+PowExpression ::= PostfixExpression ['^^' UnaryExpression PowExpression]
+
+PostfixExpression ::=
+    PrimaryExpression
+    | PostfixExpression '.' Identifier
+    | PostfixExpression '.' TemplateInstance
+    | PostfixExpression '.' NewExpression
+    | PostfixExpression '++'
+    | PostfixExpression '--'
+    | PostfixExpression '(' ArgumentList? ')'
+    | TypeCtors? BasicType '(' ArgumentList? ')'
+    | IndexExpression
+    | SliceExpression
+
+IndexExpression ::=
+    PostfixExpression '[' ArgumentList ']'
+
+SliceExpression ::=
+    PostfixExpression '[' ']'
+    | PostfixExpression '[' AssignExpression '..' AssignExpression ']'
+
+PrimaryExpression ::=
+    Identifier
+    | '.' Identifier
+    | TemplateInstance
+    | '.' TemplateInstance
+    | 'this'
+    | 'super'
+    | 'null'
+    | 'true'
+    | 'false'
+    | '$'
+    | INTEGER_LITERAL
+    | FLOAT_LITERAL
+    | CHARACTER_LITERAL
+    | StringLiterals
+    | ArrayLiteral
+    | AssocArrayLiteral
+    | FunctionLiteral
+    | AssertExpression
+    | MixinExpression
+    | ImportExpression
+    | NewExpressionWithArgs
+    | BasicTypeX '.' Identifier
+    | Typeof
+    | TypeidExpression
+    | IsExpression
+    | '(' Expression ')'
+    | TraitsExpression
+    | SpecialKeyword
+
+StringLiterals ::=
+    StringLiteral
+    | StringLiterals StringLiteral
+
+ArrayLiteral ::=
+    '[' ArgumentList? ']'
+
+AssocArrayLiteral ::=
+    '[' KeyValuePairs ']'
+
+KeyValuePairs ::=
+    KeyValuePair
+    | KeyValuePair ',' KeyValuePairs
+
+KeyValuePair ::=
+    KeyExpression ':' ValueExpression
+
+KeyExpression ::=
+    AssignExpression
+
+ValueExpression ::=
+    AssignExpression
+
+FunctionLiteral ::=
+    'function' Typeopt ParameterAttributes? FunctionLiteralBody
+    | 'delegate' Typeopt ParameterMemberAttributes? FunctionLiteralBody
+    | ParameterMemberAttributes FunctionLiteralBody
+    | FunctionLiteralBody
+    | Lambda
+
+ParameterAttributes ::=
+    Parameters FunctionAttributes?
+
+ParameterMemberAttributes ::=
+    Parameters MemberFunctionAttributes?
+
+FunctionLiteralBody ::=
+    BlockStatement
+    | FunctionContracts? BodyStatement
+
+Lambda ::=
+    'function' Type? ParameterAttributes '=>' AssignExpression
+    | 'delegate' Type? ParameterMemberAttributes '=>' AssignExpression
+    | ParameterMemberAttributes '=>' AssignExpression
+    | Identifier '=>' AssignExpression
+
+AssertExpression ::=
+    'assert' '(' AssignExpression ')'
+    'assert' '(' AssignExpression ',' AssignExpression ')'
+
+MixinExpression ::=
+    'mixin' '(' AssignExpression ')'
+
+ImportExpression ::=
+    'import' '(' AssignExpression ')'
+
+TypeidExpression ::=
+    'typeid' '(' Type ')'
+    | 'typeid' '(' Expression ')'
+
 //IsExpression:
 //    is ( Type )
 //    is ( Type : TypeSpecialization )
@@ -764,13 +745,14 @@ ImportBind ::=
 //    Identifier :
 //    Identifier : NoScopeStatement
 //    Identifier : Statement
-//BlockStatement:
-//    { }
-//    { StatementList }
-//
-//StatementList:
-//    Statement
-//    Statement StatementList
+
+BlockStatement ::=
+    '{' '}'
+    | '{' StatementList '}'
+
+StatementList ::=
+    Statement
+    | Statement StatementList
 //ExpressionStatement:
 //    Expression ;
 //DeclarationStatement:
@@ -1078,14 +1060,18 @@ ImportBind ::=
 //    float ptr
 //    double ptr
 //    real ptr
+
 //Declaration
-//Declaration:
+
+Declaration ::=
 //    FuncDeclaration
-//    VarDeclarations
-//    AliasDeclaration
-//    AggregateDeclaration
-//    EnumDeclaration
-//    ImportDeclaration
+//   | VarDeclarations
+//   | AliasDeclaration
+//   | AggregateDeclaration
+//   | EnumDeclaration
+    ImportDeclaration
+    | VarDeclarations
+
 //AliasDeclaration:
 //    alias StorageClassesopt BasicType Declarator ;
 //    alias StorageClassesopt BasicType FuncDeclarator ;
@@ -1094,26 +1080,27 @@ ImportBind ::=
 //AliasDeclarationX:
 //    Identifier TemplateParametersopt = StorageClassesopt Type
 //    AliasDeclarationX , Identifier TemplateParametersopt = StorageClassesopt Type
-//AutoDeclaration:
-//    StorageClasses AutoDeclarationX ;
-//
-//AutoDeclarationX:
-//    Identifier TemplateParametersopt = Initializer
-//    AutoDeclarationX , Identifier TemplateParametersopt = Initializer
-//VarDeclarations:
-//    StorageClassesopt BasicType Declarators ;
-//    AutoDeclaration
-//
-//Declarators:
-//    DeclaratorInitializer
-//    DeclaratorInitializer , DeclaratorIdentifierList
-//
-//DeclaratorInitializer:
-//    VarDeclarator
-//    VarDeclarator TemplateParametersopt = Initializer
-//    AltDeclarator
-//    AltDeclarator = Initializer
-//
+
+AutoDeclaration ::=
+    StorageClasses AutoDeclarationX ';'
+
+AutoDeclarationX ::=
+    Identifier TemplateParameters? '=' Initializer
+    AutoDeclarationX ',' Identifier TemplateParameters? '=' Initializer
+
+VarDeclarations ::=
+    StorageClasses* BasicType Declarators ';'
+    | AutoDeclaration
+
+Declarators ::=
+    DeclaratorInitializer (',' DeclaratorIdentifierList)?
+
+DeclaratorInitializer ::=
+    VarDeclarator
+    | VarDeclarator TemplateParameters? '=' Initializer
+    | AltDeclarator
+    | AltDeclarator '=' Initializer
+
 //DeclaratorIdentifierList:
 //    DeclaratorIdentifier
 //    DeclaratorIdentifier , DeclaratorIdentifierList
@@ -1132,99 +1119,101 @@ ImportBind ::=
 //    BasicType2opt Identifier AltDeclaratorSuffixes
 //    BasicType2opt Identifier AltDeclaratorSuffixes = Initializer
 //
-//Declarator:
-//    VarDeclarator
-//    AltDeclarator
-//
-//VarDeclarator:
-//    BasicType2opt Identifier
-//
-//AltDeclarator:
-//    BasicType2opt Identifier AltDeclaratorSuffixes
-//    BasicType2opt ( AltDeclaratorX )
-//    BasicType2opt ( AltDeclaratorX ) AltFuncDeclaratorSuffix
-//    BasicType2opt ( AltDeclaratorX ) AltDeclaratorSuffixes
-//
-//AltDeclaratorX:
-//    BasicType2opt Identifier
-//    BasicType2opt Identifier AltFuncDeclaratorSuffix
-//    AltDeclarator
-//
-//AltDeclaratorSuffixes:
-//    AltDeclaratorSuffix
-//    AltDeclaratorSuffix AltDeclaratorSuffixes
-//
-//AltDeclaratorSuffix:
-//    [ ]
-//    [ AssignExpression ]
-//    [ Type ]
-//
-//AltFuncDeclaratorSuffix:
-//    Parameters MemberFunctionAttributesopt
-//StorageClasses:
-//    StorageClass
-//    StorageClass StorageClasses
-//
-//StorageClass:
-//    LinkageAttribute
-//    AlignAttribute
-//    deprecated
-//    enum
-//    static
-//    extern
-//    abstract
-//    final
-//    override
-//    synchronized
-//    auto
-//    scope
-//    const
-//    immutable
-//    inout
-//    shared
-//    __gshared
-//    Property
-//    nothrow
-//    pure
-//    ref
-//Initializer:
-//    VoidInitializer
-//    NonVoidInitializer
-//
-//VoidInitializer:
-//    void
-//
-//NonVoidInitializer:
-//    ExpInitializer:
-//    ArrayInitializer
-//    StructInitializer
-//
-//ExpInitializer:
-//    AssignExpression
-//
-//ArrayInitializer:
-//    [ ArrayMemberInitializationsopt ]
-//
-//ArrayMemberInitializations:
-//    ArrayMemberInitialization
-//    ArrayMemberInitialization ,
-//    ArrayMemberInitialization , ArrayMemberInitializations
-//
-//ArrayMemberInitialization:
-//    NonVoidInitializer
-//    AssignExpression : NonVoidInitializer
-//
-//StructInitializer:
-//    { StructMemberInitializersopt }
-//
-//StructMemberInitializers:
-//    StructMemberInitializer
-//    StructMemberInitializer ,
-//    StructMemberInitializer , StructMemberInitializers
-//
-//StructMemberInitializer:
-//    NonVoidInitializer
-//    Identifier : NonVoidInitializer
+Declarator ::=
+    VarDeclarator
+    | AltDeclarator
+
+VarDeclarator ::=
+    BasicType2? Identifier
+
+AltDeclarator ::=
+    BasicType2? Identifier AltDeclaratorSuffixes
+    | BasicType2? '(' AltDeclaratorX ')'
+    | BasicType2? '(' AltDeclaratorX ')' AltFuncDeclaratorSuffix
+    | BasicType2? '(' AltDeclaratorX ')' AltDeclaratorSuffixes
+
+AltDeclaratorX ::=
+    BasicType2? Identifier
+    | BasicType2? Identifier AltFuncDeclaratorSuffix
+    | AltDeclarator
+
+AltDeclaratorSuffixes ::=
+    AltDeclaratorSuffix
+    | AltDeclaratorSuffix AltDeclaratorSuffixes
+
+AltDeclaratorSuffix ::=
+    '[' ']'
+    | '[' AssignExpression ']'
+    | '[' Type ']'
+
+AltFuncDeclaratorSuffix ::=
+    Parameters MemberFunctionAttributes?
+
+StorageClasses ::=
+    StorageClass StorageClasses?
+
+StorageClass ::=
+    LinkageAttribute
+    AlignAttribute
+    | 'deprecated'
+    | 'enum'
+    | 'static'
+    | 'extern'
+    | 'abstract'
+    | 'final'
+    | 'override'
+    | 'synchronized'
+    | 'auto'
+    | 'scope'
+    | 'const'
+    | 'immutable'
+    | 'inout'
+    | 'shared'
+    | '__gshared'
+    | Property
+    | 'nothrow'
+    | 'pure'
+    | 'ref'
+
+Initializer ::=
+    VoidInitializer
+    | NonVoidInitializer
+
+VoidInitializer ::=
+    'void'
+
+NonVoidInitializer ::=
+    ExpInitializer
+    | ArrayInitializer
+    | StructInitializer
+
+ExpInitializer ::=
+    AssignExpression
+
+ArrayInitializer ::=
+    '[' ArrayMemberInitializations? ']'
+
+ArrayMemberInitializations ::=
+    ArrayMemberInitialization
+    | ArrayMemberInitialization ','
+    | ArrayMemberInitialization ',' ArrayMemberInitializations
+
+ArrayMemberInitialization ::=
+    NonVoidInitializer
+    | AssignExpression ':' NonVoidInitializer
+
+StructInitializer ::=
+    '{' StructMemberInitializers? '}'
+
+StructMemberInitializers ::=
+    StructMemberInitializer
+    | StructMemberInitializer ','
+    | StructMemberInitializer ',' StructMemberInitializers
+
+StructMemberInitializer ::=
+    NonVoidInitializer
+    | Identifier ':' NonVoidInitializer
+
 //Function
 //FuncDeclaration:
 //    StorageClassesopt BasicType FuncDeclarator FunctionBody
@@ -1239,54 +1228,53 @@ ImportBind ::=
 //FuncDeclaratorSuffix:
 //    Parameters MemberFunctionAttributesopt
 //    TemplateParameters Parameters MemberFunctionAttributesopt Constraintopt
-//Parameters:
-//    ( ParameterListopt )
-//
-//ParameterList:
-//    Parameter
-//    Parameter , ParameterList
-//    ...
-//
-//Parameter:
-//    InOutopt BasicType Declarator
-//    InOutopt BasicType Declarator ...
-//    InOutopt BasicType Declarator = AssignExpression
-//    InOutopt Type
-//    InOutopt Type ...
-//
-//InOut:
-//    InOutX
-//    InOut InOutX
-//
-//InOutX:
-//    auto
-//    TypeCtor
-//    final
-//    in
-//    lazy
-//    out
-//    ref
-//    scope
-//
-//FunctionAttributes:
-//    FunctionAttribute
-//    FunctionAttribute FunctionAttributes
-//
-//FunctionAttribute:
-//    nothrow
-//    pure
-//    Property
-//
-//MemberFunctionAttributes:
-//    MemberFunctionAttribute
-//    MemberFunctionAttribute MemberFunctionAttributes
-//
-//MemberFunctionAttribute:
-//    const
-//    immutable
-//    inout
-//    shared
-//    FunctionAttribute
+Parameters ::=
+    '(' ParameterList? ')'
+
+ParameterList ::=
+    Parameter (',' ParameterList)?
+    | '...'
+
+Parameter ::=
+    InOut? BasicType Declarator
+    | InOut? BasicType Declarator '...'
+    | InOut? BasicType Declarator '=' AssignExpression
+    | InOut? Type
+    | InOut? Type '...'
+
+InOut ::=
+    InOutX
+    InOut InOutX
+
+InOutX ::=
+    'auto'
+    | TypeCtor
+    | 'final'
+    | 'in'
+    | 'lazy'
+    | 'out'
+    | 'ref'
+    | 'scope'
+
+FunctionAttributes ::=
+    FunctionAttribute FunctionAttributes?
+
+FunctionAttribute ::=
+    'nothrow'
+    | 'pure'
+    | Property
+
+MemberFunctionAttributes ::=
+    MemberFunctionAttribute
+    | MemberFunctionAttribute MemberFunctionAttributes
+
+MemberFunctionAttribute ::=
+    'const'
+    | 'immutable'
+    | 'inout'
+    | 'shared'
+    | FunctionAttribute
+
 //FunctionBody:
 //    BlockStatement
 //    FunctionContractsopt BodyStatement
@@ -1569,85 +1557,92 @@ ImportBind ::=
 //    Identifier
 //    Identifier . QualifiedIdentifierList
 //    TemplateInstance . QualifiedIdentifierList
+
+
 //Attribute
-//AttributeSpecifier:
-//    Attribute :
-//    Attribute DeclarationBlock
-//
-//Attribute:
-//    LinkageAttribute
-//    AlignAttribute
-//    DeprecatedAttribute
-//    ProtectionAttribute
-//    Pragma
-//    static
-//    extern
-//    abstract
-//    final
-//    override
-//    synchronized
-//    auto
-//    scope
-//    const
-//    immutable
-//    inout
-//    shared
-//    __gshared
-//    Property
-//    nothrow
-//    pure
-//    ref
-//
-//DeclarationBlock:
-//    DeclDef
-//    { DeclDefsopt }
-//LinkageAttribute:
-//    extern ( LinkageType )
-//    extern ( C++, IdentifierList )
-//
-//LinkageType:
-//    C
-//    C++
-//    D
-//    Windows
-//    Pascal
-//    System
-//    Objective-C
-//AlignAttribute:
-//    align
-//    align ( IntegerLiteral )
-//DeprecatedAttribute:
-//    deprecated
-//    deprecated ( StringLiteral )
-//ProtectionAttribute:
-//    private
-//    package
-//    package ( IdentifierList )
-//    protected
-//    public
-//    export
-//Property:
-//    @ PropertyIdentifier
-//    UserDefinedAttribute
-//
-//PropertyIdentifier:
-//    property
-//    safe
-//    trusted
-//    system
-//    disable
-//    nogc
-//
+AttributeSpecifier ::=
+    Attribute (':' | DeclarationBlock)
+
+Attribute ::=
+    LinkageAttribute
+    | AlignAttribute
+    | DeprecatedAttribute
+    | ProtectionAttribute
+    | Pragma
+    | 'static'
+    | 'extern'
+    | 'abstract'
+    | 'final'
+    | 'override'
+    | 'synchronized'
+    | 'auto'
+    | 'scope'
+    | 'const'
+    | 'immutable'
+    | 'inout'
+    | 'shared'
+    | '__gshared'
+    | Property
+    | 'nothrow'
+    | 'pure'
+    | 'ref'
+
+DeclarationBlock ::=
+    DeclDef
+    | '{' DeclDefs? '}'
+
+LinkageAttribute ::=
+    'extern' '(' LinkageType ')'
+    | 'extern' '(' 'C++' ',' IdentifierList ')'
+
+LinkageType ::=
+     'C'
+    | 'C++'
+    | 'D'
+    | 'Windows'
+    | 'Pascal'
+    | 'System'
+    | 'Objective-C'
+
+AlignAttribute ::=
+    'align' ('(' INTEGER_LITERAL ')')?
+
+DeprecatedAttribute ::=
+    'deprecated' ('(' StringLiteral ')')?
+
+ProtectionAttribute ::=
+     'private'
+    | 'package'
+    | 'package' '(' IdentifierList ')'
+    | 'protected'
+    | 'public'
+    | 'export'
+
+Property ::=
+    '@' PropertyIdentifier
+    | UserDefinedAttribute
+
+PropertyIdentifier ::=
+     'property'
+    | 'safe'
+    | 'trusted'
+    | 'system'
+    | 'disable'
+    | 'nogc'
+
 //UserDefinedAttribute:
 //    @ ( ArgumentList )
 //    @ Identifier
 //    @ Identifier ( ArgumentListopt )
 //    @ TemplateInstance
 //    @ TemplateInstance ( ArgumentListopt )
-//Pragma:
-//    pragma ( Identifier )
-//    pragma ( Identifier , ArgumentList )
+
+Pragma ::=
+    'pragma' '(' Identifier ')'
+    | 'pragma' '(' Identifier ',' ArgumentList ')'
+
 //Conditional
+
 //ConditionalDeclaration:
 //    Condition DeclarationBlock
 //    Condition DeclarationBlock else DeclarationBlock
