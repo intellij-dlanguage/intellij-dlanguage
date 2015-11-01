@@ -23,9 +23,9 @@ public class DLanguageArrayInitializerImpl extends ASTWrapperPsiElement implemen
   }
 
   @Override
-  @NotNull
-  public List<DLanguageArrayMemberInitialization> getArrayMemberInitializationList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageArrayMemberInitialization.class);
+  @Nullable
+  public DLanguageArrayMemberInitializations getArrayMemberInitializations() {
+    return findChildByClass(DLanguageArrayMemberInitializations.class);
   }
 
   @Override

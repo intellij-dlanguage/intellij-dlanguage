@@ -8,18 +8,18 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageUnionDeclaration extends PsiElement {
 
   @Nullable
+  DLanguageAggregateBody getAggregateBody();
+
+  @Nullable
+  DLanguageAnonUnionDeclaration getAnonUnionDeclaration();
+
+  @Nullable
   DLanguageIdentifier getIdentifier();
 
   @Nullable
-  DLanguageConstraint getConstraint();
+  DLanguageUnionTemplateDeclaration getUnionTemplateDeclaration();
 
   @Nullable
-  DLanguageStructBody getStructBody();
-
-  @Nullable
-  DLanguageTemplateParameters getTemplateParameters();
-
-  @NotNull
   PsiElement getKwUnion();
 
   @Nullable

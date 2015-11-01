@@ -8,15 +8,18 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageParameter extends PsiElement {
 
   @Nullable
-  DLanguageIdentifier getIdentifier();
-
-  @Nullable
   DLanguageAssignExpression getAssignExpression();
 
-  @NotNull
-  List<DLanguageParameterAttribute> getParameterAttributeList();
+  @Nullable
+  DLanguageBasicType getBasicType();
 
-  @NotNull
+  @Nullable
+  DLanguageDeclarator getDeclarator();
+
+  @Nullable
+  DLanguageInOut getInOut();
+
+  @Nullable
   DLanguageType getType();
 
   @Nullable

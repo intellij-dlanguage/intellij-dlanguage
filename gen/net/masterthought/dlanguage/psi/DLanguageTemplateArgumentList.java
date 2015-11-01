@@ -8,6 +8,12 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageTemplateArgumentList extends PsiElement {
 
   @NotNull
-  List<DLanguageTemplateArgument> getTemplateArgumentList();
+  DLanguageTemplateArgument getTemplateArgument();
+
+  @Nullable
+  DLanguageTemplateArgumentList getTemplateArgumentList();
+
+  @Nullable
+  PsiElement getOpComma();
 
 }

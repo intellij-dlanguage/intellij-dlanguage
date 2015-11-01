@@ -7,14 +7,14 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageTemplateDeclaration extends PsiElement {
 
-  @NotNull
-  DLanguageIdentifier getIdentifier();
-
   @Nullable
   DLanguageConstraint getConstraint();
 
+  @Nullable
+  DLanguageDeclDefs getDeclDefs();
+
   @NotNull
-  List<DLanguageDeclaration> getDeclarationList();
+  DLanguageIdentifier getIdentifier();
 
   @NotNull
   DLanguageTemplateParameters getTemplateParameters();

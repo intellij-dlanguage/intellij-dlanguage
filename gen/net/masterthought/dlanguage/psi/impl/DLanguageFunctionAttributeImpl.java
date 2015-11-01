@@ -24,8 +24,8 @@ public class DLanguageFunctionAttributeImpl extends ASTWrapperPsiElement impleme
 
   @Override
   @Nullable
-  public DLanguageAtAttribute getAtAttribute() {
-    return findChildByClass(DLanguageAtAttribute.class);
+  public DLanguageProperty getProperty() {
+    return findChildByClass(DLanguageProperty.class);
   }
 
   @Override

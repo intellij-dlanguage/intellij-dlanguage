@@ -8,15 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageStatement extends PsiElement {
 
   @Nullable
-  DLanguageCaseRangeStatement getCaseRangeStatement();
+  DLanguageNonEmptyStatement getNonEmptyStatement();
 
   @Nullable
-  DLanguageCaseStatement getCaseStatement();
-
-  @Nullable
-  DLanguageDefaultStatement getDefaultStatement();
-
-  @Nullable
-  DLanguageStatementNoCaseNoDefault getStatementNoCaseNoDefault();
+  DLanguageScopeBlockStatement getScopeBlockStatement();
 
 }

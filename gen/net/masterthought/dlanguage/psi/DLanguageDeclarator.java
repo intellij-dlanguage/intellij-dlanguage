@@ -7,13 +7,10 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageDeclarator extends PsiElement {
 
-  @NotNull
-  DLanguageIdentifier getIdentifier();
+  @Nullable
+  DLanguageAltDeclarator getAltDeclarator();
 
   @Nullable
-  DLanguageInitializer getInitializer();
-
-  @Nullable
-  PsiElement getOpEq();
+  DLanguageVarDeclarator getVarDeclarator();
 
 }

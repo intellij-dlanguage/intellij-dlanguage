@@ -11,7 +11,7 @@ public interface DLanguageSwitchStatement extends PsiElement {
   DLanguageExpression getExpression();
 
   @NotNull
-  DLanguageStatement getStatement();
+  DLanguageScopeStatement getScopeStatement();
 
   @NotNull
   PsiElement getKwSwitch();

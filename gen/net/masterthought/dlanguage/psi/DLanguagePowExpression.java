@@ -7,10 +7,13 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguagePowExpression extends PsiElement {
 
+  @NotNull
+  DLanguagePostfixExpression getPostfixExpression();
+
   @Nullable
   DLanguagePowExpression getPowExpression();
 
-  @NotNull
+  @Nullable
   DLanguageUnaryExpression getUnaryExpression();
 
   @Nullable

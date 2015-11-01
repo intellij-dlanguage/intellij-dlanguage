@@ -23,21 +23,21 @@ public class DLanguageTemplateDeclarationImpl extends ASTWrapperPsiElement imple
   }
 
   @Override
-  @NotNull
-  public DLanguageIdentifier getIdentifier() {
-    return findNotNullChildByClass(DLanguageIdentifier.class);
-  }
-
-  @Override
   @Nullable
   public DLanguageConstraint getConstraint() {
     return findChildByClass(DLanguageConstraint.class);
   }
 
   @Override
+  @Nullable
+  public DLanguageDeclDefs getDeclDefs() {
+    return findChildByClass(DLanguageDeclDefs.class);
+  }
+
+  @Override
   @NotNull
-  public List<DLanguageDeclaration> getDeclarationList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageDeclaration.class);
+  public DLanguageIdentifier getIdentifier() {
+    return findNotNullChildByClass(DLanguageIdentifier.class);
   }
 
   @Override

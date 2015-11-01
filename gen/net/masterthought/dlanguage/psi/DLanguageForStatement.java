@@ -8,16 +8,16 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageForStatement extends PsiElement {
 
   @Nullable
-  DLanguageDeclaration getDeclaration();
+  DLanguageIncrement getIncrement();
 
   @NotNull
-  DLanguageDeclarationOrStatement getDeclarationOrStatement();
+  DLanguageInitialize getInitialize();
 
   @NotNull
-  List<DLanguageExpression> getExpressionList();
+  DLanguageScopeStatement getScopeStatement();
 
   @Nullable
-  DLanguageStatementNoCaseNoDefault getStatementNoCaseNoDefault();
+  DLanguageTest getTest();
 
   @NotNull
   PsiElement getKwFor();

@@ -24,26 +24,20 @@ public class DLanguageMixinTemplateNameImpl extends ASTWrapperPsiElement impleme
 
   @Override
   @Nullable
-  public DLanguageIdentifierOrTemplateChain getIdentifierOrTemplateChain() {
-    return findChildByClass(DLanguageIdentifierOrTemplateChain.class);
+  public DLanguageQualifiedIdentifierList getQualifiedIdentifierList() {
+    return findChildByClass(DLanguageQualifiedIdentifierList.class);
   }
 
   @Override
   @Nullable
-  public DLanguageSymbol getSymbol() {
-    return findChildByClass(DLanguageSymbol.class);
+  public DLanguageTypeof getTypeof() {
+    return findChildByClass(DLanguageTypeof.class);
   }
 
   @Override
-  @Nullable
-  public DLanguageTypeofExpression getTypeofExpression() {
-    return findChildByClass(DLanguageTypeofExpression.class);
-  }
-
-  @Override
-  @Nullable
+  @NotNull
   public PsiElement getOpDot() {
-    return findChildByType(OP_DOT);
+    return findNotNullChildByType(OP_DOT);
   }
 
 }

@@ -30,26 +30,14 @@ public class DLanguageStorageClassImpl extends ASTWrapperPsiElement implements D
 
   @Override
   @Nullable
-  public DLanguageAtAttribute getAtAttribute() {
-    return findChildByClass(DLanguageAtAttribute.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageDeprecated getDeprecated() {
-    return findChildByClass(DLanguageDeprecated.class);
-  }
-
-  @Override
-  @Nullable
   public DLanguageLinkageAttribute getLinkageAttribute() {
     return findChildByClass(DLanguageLinkageAttribute.class);
   }
 
   @Override
   @Nullable
-  public DLanguageTypeConstructor getTypeConstructor() {
-    return findChildByClass(DLanguageTypeConstructor.class);
+  public DLanguageProperty getProperty() {
+    return findChildByClass(DLanguageProperty.class);
   }
 
   @Override
@@ -62,6 +50,18 @@ public class DLanguageStorageClassImpl extends ASTWrapperPsiElement implements D
   @Nullable
   public PsiElement getKwAuto() {
     return findChildByType(KW_AUTO);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getKwConst() {
+    return findChildByType(KW_CONST);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getKwDeprecated() {
+    return findChildByType(KW_DEPRECATED);
   }
 
   @Override
@@ -80,6 +80,18 @@ public class DLanguageStorageClassImpl extends ASTWrapperPsiElement implements D
   @Nullable
   public PsiElement getKwFinal() {
     return findChildByType(KW_FINAL);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getKwImmutable() {
+    return findChildByType(KW_IMMUTABLE);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getKwInout() {
+    return findChildByType(KW_INOUT);
   }
 
   @Override
@@ -110,6 +122,12 @@ public class DLanguageStorageClassImpl extends ASTWrapperPsiElement implements D
   @Nullable
   public PsiElement getKwScope() {
     return findChildByType(KW_SCOPE);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getKwShared() {
+    return findChildByType(KW_SHARED);
   }
 
   @Override

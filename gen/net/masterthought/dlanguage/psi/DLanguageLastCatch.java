@@ -8,7 +8,7 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageLastCatch extends PsiElement {
 
   @NotNull
-  DLanguageStatementNoCaseNoDefault getStatementNoCaseNoDefault();
+  DLanguageNoScopeNonEmptyStatement getNoScopeNonEmptyStatement();
 
   @NotNull
   PsiElement getKwCatch();

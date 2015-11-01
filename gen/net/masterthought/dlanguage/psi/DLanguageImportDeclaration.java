@@ -7,14 +7,14 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageImportDeclaration extends PsiElement {
 
-  @Nullable
-  DLanguageImportBindings getImportBindings();
-
   @NotNull
-  List<DLanguageSingleImport> getSingleImportList();
+  DLanguageImportList getImportList();
 
   @NotNull
   PsiElement getKwImport();
+
+  @Nullable
+  PsiElement getKwStatic();
 
   @NotNull
   PsiElement getOpScolon();

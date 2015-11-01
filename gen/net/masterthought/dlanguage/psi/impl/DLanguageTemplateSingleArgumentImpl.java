@@ -24,20 +24,26 @@ public class DLanguageTemplateSingleArgumentImpl extends ASTWrapperPsiElement im
 
   @Override
   @Nullable
+  public DLanguageBasicTypeX getBasicTypeX() {
+    return findChildByClass(DLanguageBasicTypeX.class);
+  }
+
+  @Override
+  @Nullable
   public DLanguageIdentifier getIdentifier() {
     return findChildByClass(DLanguageIdentifier.class);
   }
 
   @Override
   @Nullable
-  public DLanguageStringLiteral getStringLiteral() {
-    return findChildByClass(DLanguageStringLiteral.class);
+  public DLanguageSpecialKeyword getSpecialKeyword() {
+    return findChildByClass(DLanguageSpecialKeyword.class);
   }
 
   @Override
   @Nullable
-  public DLanguageBuiltinType getBuiltinType() {
-    return findChildByClass(DLanguageBuiltinType.class);
+  public DLanguageStringLiteral getStringLiteral() {
+    return findChildByClass(DLanguageStringLiteral.class);
   }
 
   @Override
@@ -80,36 +86,6 @@ public class DLanguageTemplateSingleArgumentImpl extends ASTWrapperPsiElement im
   @Nullable
   public PsiElement getKwTrue() {
     return findChildByType(KW_TRUE);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwFile() {
-    return findChildByType(KW___FILE__);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwFunction() {
-    return findChildByType(KW___FUNCTION__);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwLine() {
-    return findChildByType(KW___LINE__);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwModule() {
-    return findChildByType(KW___MODULE__);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwPrettyFunction() {
-    return findChildByType(KW___PRETTY_FUNCTION__);
   }
 
 }

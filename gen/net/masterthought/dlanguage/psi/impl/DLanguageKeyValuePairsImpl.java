@@ -24,8 +24,20 @@ public class DLanguageKeyValuePairsImpl extends ASTWrapperPsiElement implements 
 
   @Override
   @NotNull
-  public List<DLanguageKeyValuePair> getKeyValuePairList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageKeyValuePair.class);
+  public DLanguageKeyValuePair getKeyValuePair() {
+    return findNotNullChildByClass(DLanguageKeyValuePair.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageKeyValuePairs getKeyValuePairs() {
+    return findChildByClass(DLanguageKeyValuePairs.class);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpComma() {
+    return findChildByType(OP_COMMA);
   }
 
 }

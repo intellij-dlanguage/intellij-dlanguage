@@ -8,24 +8,15 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageNewExpression extends PsiElement {
 
   @Nullable
-  DLanguageArguments getArguments();
+  DLanguageAllocatorArguments getAllocatorArguments();
 
   @Nullable
-  DLanguageAssignExpression getAssignExpression();
-
-  @Nullable
-  DLanguageNewAnonClassExpression getNewAnonClassExpression();
+  DLanguageNewExpressionWithArgs getNewExpressionWithArgs();
 
   @Nullable
   DLanguageType getType();
 
   @Nullable
   PsiElement getKwNew();
-
-  @Nullable
-  PsiElement getOpBracketLeft();
-
-  @Nullable
-  PsiElement getOpBracketRight();
 
 }

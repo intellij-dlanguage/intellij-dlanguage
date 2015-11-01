@@ -23,15 +23,15 @@ public class DLanguageOutStatementImpl extends ASTWrapperPsiElement implements D
   }
 
   @Override
-  @Nullable
-  public DLanguageIdentifier getIdentifier() {
-    return findChildByClass(DLanguageIdentifier.class);
-  }
-
-  @Override
   @NotNull
   public DLanguageBlockStatement getBlockStatement() {
     return findNotNullChildByClass(DLanguageBlockStatement.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageIdentifier getIdentifier() {
+    return findChildByClass(DLanguageIdentifier.class);
   }
 
   @Override

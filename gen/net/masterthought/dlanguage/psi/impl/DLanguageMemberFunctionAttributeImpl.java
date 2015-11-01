@@ -48,12 +48,6 @@ public class DLanguageMemberFunctionAttributeImpl extends ASTWrapperPsiElement i
 
   @Override
   @Nullable
-  public PsiElement getKwReturn() {
-    return findChildByType(KW_RETURN);
-  }
-
-  @Override
-  @Nullable
   public PsiElement getKwShared() {
     return findChildByType(KW_SHARED);
   }

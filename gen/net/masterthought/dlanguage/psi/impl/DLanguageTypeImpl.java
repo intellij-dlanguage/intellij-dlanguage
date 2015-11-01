@@ -24,20 +24,20 @@ public class DLanguageTypeImpl extends ASTWrapperPsiElement implements DLanguage
 
   @Override
   @NotNull
-  public DLanguageType2 getType2() {
-    return findNotNullChildByClass(DLanguageType2.class);
+  public DLanguageBasicType getBasicType() {
+    return findNotNullChildByClass(DLanguageBasicType.class);
   }
 
   @Override
   @Nullable
-  public DLanguageTypeConstructors getTypeConstructors() {
-    return findChildByClass(DLanguageTypeConstructors.class);
+  public DLanguageBasicType2 getBasicType2() {
+    return findChildByClass(DLanguageBasicType2.class);
   }
 
   @Override
-  @NotNull
-  public List<DLanguageTypeSuffix> getTypeSuffixList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageTypeSuffix.class);
+  @Nullable
+  public DLanguageTypeCtors getTypeCtors() {
+    return findChildByClass(DLanguageTypeCtors.class);
   }
 
 }

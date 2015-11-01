@@ -8,12 +8,12 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageType extends PsiElement {
 
   @NotNull
-  DLanguageType2 getType2();
+  DLanguageBasicType getBasicType();
 
   @Nullable
-  DLanguageTypeConstructors getTypeConstructors();
+  DLanguageBasicType2 getBasicType2();
 
-  @NotNull
-  List<DLanguageTypeSuffix> getTypeSuffixList();
+  @Nullable
+  DLanguageTypeCtors getTypeCtors();
 
 }

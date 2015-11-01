@@ -14,9 +14,6 @@ public interface DLanguageFunctionBody extends PsiElement {
   DLanguageBodyStatement getBodyStatement();
 
   @Nullable
-  DLanguageInStatement getInStatement();
-
-  @Nullable
-  DLanguageOutStatement getOutStatement();
+  DLanguageFunctionContracts getFunctionContracts();
 
 }

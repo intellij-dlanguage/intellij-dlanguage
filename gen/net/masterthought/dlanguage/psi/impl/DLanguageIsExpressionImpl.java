@@ -23,27 +23,63 @@ public class DLanguageIsExpressionImpl extends ASTWrapperPsiElement implements D
   }
 
   @Override
-  @NotNull
-  public List<DLanguageIdentifier> getIdentifierList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageIdentifier.class);
+  @Nullable
+  public DLanguageIdentifier getIdentifier() {
+    return findChildByClass(DLanguageIdentifier.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageTemplateParameterList getTemplateParameterList() {
+    return findChildByClass(DLanguageTemplateParameterList.class);
   }
 
   @Override
   @NotNull
-  public List<DLanguageTemplateParameterList> getTemplateParameterListList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageTemplateParameterList.class);
+  public DLanguageType getType() {
+    return findNotNullChildByClass(DLanguageType.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageTypeSpecialization getTypeSpecialization() {
+    return findChildByClass(DLanguageTypeSpecialization.class);
   }
 
   @Override
   @NotNull
-  public List<DLanguageType> getTypeList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageType.class);
+  public PsiElement getKwIs() {
+    return findNotNullChildByType(KW_IS);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpColon() {
+    return findChildByType(OP_COLON);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpComma() {
+    return findChildByType(OP_COMMA);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpEqEq() {
+    return findChildByType(OP_EQ_EQ);
   }
 
   @Override
   @NotNull
-  public List<DLanguageTypeSpecialization> getTypeSpecializationList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageTypeSpecialization.class);
+  public PsiElement getOpParLeft() {
+    return findNotNullChildByType(OP_PAR_LEFT);
+  }
+
+  @Override
+  @NotNull
+  public PsiElement getOpParRight() {
+    return findNotNullChildByType(OP_PAR_RIGHT);
   }
 
 }

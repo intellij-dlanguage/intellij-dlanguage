@@ -8,28 +8,25 @@ import com.intellij.psi.PsiElement;
 public interface DLanguagePrimaryExpression extends PsiElement {
 
   @Nullable
-  DLanguageIdentifier getIdentifier();
-
-  @NotNull
-  List<DLanguageStringLiteral> getStringLiteralList();
+  DLanguageArrayLiteral getArrayLiteral();
 
   @Nullable
-  DLanguageArrayLiteral getArrayLiteral();
+  DLanguageAssertExpression getAssertExpression();
 
   @Nullable
   DLanguageAssocArrayLiteral getAssocArrayLiteral();
 
   @Nullable
-  DLanguageBuiltinType getBuiltinType();
+  DLanguageBasicTypeX getBasicTypeX();
 
   @Nullable
   DLanguageExpression getExpression();
 
   @Nullable
-  DLanguageFunctionLiteralExpression getFunctionLiteralExpression();
+  DLanguageFunctionLiteral getFunctionLiteral();
 
   @Nullable
-  DLanguageIdentifierOrTemplateInstance getIdentifierOrTemplateInstance();
+  DLanguageIdentifier getIdentifier();
 
   @Nullable
   DLanguageImportExpression getImportExpression();
@@ -38,10 +35,19 @@ public interface DLanguagePrimaryExpression extends PsiElement {
   DLanguageIsExpression getIsExpression();
 
   @Nullable
-  DLanguageLambdaExpression getLambdaExpression();
+  DLanguageMixinExpression getMixinExpression();
 
   @Nullable
-  DLanguageMixinExpression getMixinExpression();
+  DLanguageNewExpressionWithArgs getNewExpressionWithArgs();
+
+  @Nullable
+  DLanguageSpecialKeyword getSpecialKeyword();
+
+  @Nullable
+  DLanguageStringLiterals getStringLiterals();
+
+  @Nullable
+  DLanguageTemplateInstance getTemplateInstance();
 
   @Nullable
   DLanguageTraitsExpression getTraitsExpression();
@@ -50,10 +56,7 @@ public interface DLanguagePrimaryExpression extends PsiElement {
   DLanguageTypeidExpression getTypeidExpression();
 
   @Nullable
-  DLanguageTypeofExpression getTypeofExpression();
-
-  @Nullable
-  DLanguageVector getVector();
+  DLanguageTypeof getTypeof();
 
   @Nullable
   PsiElement getCharacterLiteral();
@@ -78,21 +81,6 @@ public interface DLanguagePrimaryExpression extends PsiElement {
 
   @Nullable
   PsiElement getKwTrue();
-
-  @Nullable
-  PsiElement getKwFile();
-
-  @Nullable
-  PsiElement getKwFunction();
-
-  @Nullable
-  PsiElement getKwLine();
-
-  @Nullable
-  PsiElement getKwModule();
-
-  @Nullable
-  PsiElement getKwPrettyFunction();
 
   @Nullable
   PsiElement getOpDollar();

@@ -24,32 +24,32 @@ public class DLanguageUnionDeclarationImpl extends ASTWrapperPsiElement implemen
 
   @Override
   @Nullable
+  public DLanguageAggregateBody getAggregateBody() {
+    return findChildByClass(DLanguageAggregateBody.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageAnonUnionDeclaration getAnonUnionDeclaration() {
+    return findChildByClass(DLanguageAnonUnionDeclaration.class);
+  }
+
+  @Override
+  @Nullable
   public DLanguageIdentifier getIdentifier() {
     return findChildByClass(DLanguageIdentifier.class);
   }
 
   @Override
   @Nullable
-  public DLanguageConstraint getConstraint() {
-    return findChildByClass(DLanguageConstraint.class);
+  public DLanguageUnionTemplateDeclaration getUnionTemplateDeclaration() {
+    return findChildByClass(DLanguageUnionTemplateDeclaration.class);
   }
 
   @Override
   @Nullable
-  public DLanguageStructBody getStructBody() {
-    return findChildByClass(DLanguageStructBody.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageTemplateParameters getTemplateParameters() {
-    return findChildByClass(DLanguageTemplateParameters.class);
-  }
-
-  @Override
-  @NotNull
   public PsiElement getKwUnion() {
-    return findNotNullChildByType(KW_UNION);
+    return findChildByType(KW_UNION);
   }
 
   @Override

@@ -23,21 +23,15 @@ public class DLanguageCatchImpl extends ASTWrapperPsiElement implements DLanguag
   }
 
   @Override
-  @Nullable
-  public DLanguageIdentifier getIdentifier() {
-    return findChildByClass(DLanguageIdentifier.class);
+  @NotNull
+  public DLanguageCatchParameter getCatchParameter() {
+    return findNotNullChildByClass(DLanguageCatchParameter.class);
   }
 
   @Override
   @NotNull
-  public DLanguageDeclarationOrStatement getDeclarationOrStatement() {
-    return findNotNullChildByClass(DLanguageDeclarationOrStatement.class);
-  }
-
-  @Override
-  @NotNull
-  public DLanguageType getType() {
-    return findNotNullChildByClass(DLanguageType.class);
+  public DLanguageNoScopeNonEmptyStatement getNoScopeNonEmptyStatement() {
+    return findNotNullChildByClass(DLanguageNoScopeNonEmptyStatement.class);
   }
 
   @Override

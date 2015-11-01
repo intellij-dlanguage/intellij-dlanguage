@@ -8,13 +8,10 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageAutoDeclaration extends PsiElement {
 
   @NotNull
-  List<DLanguageIdentifier> getIdentifierList();
+  DLanguageAutoDeclarationX getAutoDeclarationX();
 
   @NotNull
-  List<DLanguageInitializer> getInitializerList();
-
-  @NotNull
-  DLanguageStorageClass getStorageClass();
+  DLanguageStorageClasses getStorageClasses();
 
   @NotNull
   PsiElement getOpScolon();

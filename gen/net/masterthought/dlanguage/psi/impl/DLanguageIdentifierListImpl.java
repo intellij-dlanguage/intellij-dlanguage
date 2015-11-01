@@ -23,9 +23,45 @@ public class DLanguageIdentifierListImpl extends ASTWrapperPsiElement implements
   }
 
   @Override
-  @NotNull
-  public List<DLanguageIdentifier> getIdentifierList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageIdentifier.class);
+  @Nullable
+  public DLanguageAssignExpression getAssignExpression() {
+    return findChildByClass(DLanguageAssignExpression.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageIdentifier getIdentifier() {
+    return findChildByClass(DLanguageIdentifier.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageIdentifierList getIdentifierList() {
+    return findChildByClass(DLanguageIdentifierList.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageTemplateInstance getTemplateInstance() {
+    return findChildByClass(DLanguageTemplateInstance.class);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpBracketLeft() {
+    return findChildByType(OP_BRACKET_LEFT);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpBracketRight() {
+    return findChildByType(OP_BRACKET_RIGHT);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpDot() {
+    return findChildByType(OP_DOT);
   }
 
 }

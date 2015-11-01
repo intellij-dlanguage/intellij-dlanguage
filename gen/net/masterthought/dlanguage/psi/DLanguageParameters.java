@@ -7,16 +7,13 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageParameters extends PsiElement {
 
-  @NotNull
-  List<DLanguageParameter> getParameterList();
+  @Nullable
+  DLanguageParameterList getParameterList();
 
   @NotNull
   PsiElement getOpParLeft();
 
   @NotNull
   PsiElement getOpParRight();
-
-  @Nullable
-  PsiElement getOpTripledot();
 
 }

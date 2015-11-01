@@ -34,10 +34,4 @@ public class DLanguageOrExpressionImpl extends ASTWrapperPsiElement implements D
     return findNotNullChildByClass(DLanguageXorExpression.class);
   }
 
-  @Override
-  @Nullable
-  public PsiElement getOpOr() {
-    return findChildByType(OP_OR);
-  }
-
 }

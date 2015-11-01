@@ -19,4 +19,7 @@ public interface DLanguageCmpExpression extends PsiElement {
   @Nullable
   DLanguageRelExpression getRelExpression();
 
+  @Nullable
+  DLanguageShiftExpression getShiftExpression();
+
 }

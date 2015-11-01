@@ -13,7 +13,4 @@ public interface DLanguageOrExpression extends PsiElement {
   @NotNull
   DLanguageXorExpression getXorExpression();
 
-  @Nullable
-  PsiElement getOpOr();
-
 }

@@ -8,7 +8,7 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageSymbol extends PsiElement {
 
   @NotNull
-  DLanguageIdentifierOrTemplateChain getIdentifierOrTemplateChain();
+  DLanguageSymbolTail getSymbolTail();
 
   @Nullable
   PsiElement getOpDot();

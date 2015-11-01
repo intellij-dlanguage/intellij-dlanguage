@@ -24,14 +24,14 @@ public class DLanguageConditionalStatementImpl extends ASTWrapperPsiElement impl
 
   @Override
   @NotNull
-  public DLanguageCompileCondition getCompileCondition() {
-    return findNotNullChildByClass(DLanguageCompileCondition.class);
+  public DLanguageCondition getCondition() {
+    return findNotNullChildByClass(DLanguageCondition.class);
   }
 
   @Override
   @NotNull
-  public List<DLanguageDeclarationOrStatement> getDeclarationOrStatementList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageDeclarationOrStatement.class);
+  public List<DLanguageNoScopeNonEmptyStatement> getNoScopeNonEmptyStatementList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageNoScopeNonEmptyStatement.class);
   }
 
   @Override

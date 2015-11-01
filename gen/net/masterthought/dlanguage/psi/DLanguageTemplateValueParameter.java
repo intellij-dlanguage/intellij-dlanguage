@@ -8,18 +8,15 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageTemplateValueParameter extends PsiElement {
 
   @NotNull
-  DLanguageIdentifier getIdentifier();
+  DLanguageBasicType getBasicType();
 
-  @Nullable
-  DLanguageAssignExpression getAssignExpression();
+  @NotNull
+  DLanguageDeclarator getDeclarator();
 
   @Nullable
   DLanguageTemplateValueParameterDefault getTemplateValueParameterDefault();
 
-  @NotNull
-  DLanguageType getType();
-
   @Nullable
-  PsiElement getOpColon();
+  DLanguageTemplateValueParameterSpecialization getTemplateValueParameterSpecialization();
 
 }

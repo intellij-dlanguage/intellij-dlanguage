@@ -24,20 +24,26 @@ public class DLanguageCaseRangeStatementImpl extends ASTWrapperPsiElement implem
 
   @Override
   @NotNull
-  public List<DLanguageAssignExpression> getAssignExpressionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageAssignExpression.class);
+  public DLanguageFirstExp getFirstExp() {
+    return findNotNullChildByClass(DLanguageFirstExp.class);
   }
 
   @Override
   @NotNull
-  public DLanguageDeclarationsAndStatements getDeclarationsAndStatements() {
-    return findNotNullChildByClass(DLanguageDeclarationsAndStatements.class);
+  public DLanguageLastExp getLastExp() {
+    return findNotNullChildByClass(DLanguageLastExp.class);
   }
 
   @Override
   @NotNull
-  public PsiElement getOpTripledot() {
-    return findNotNullChildByType(OP_TRIPLEDOT);
+  public DLanguageScopeStatementList getScopeStatementList() {
+    return findNotNullChildByClass(DLanguageScopeStatementList.class);
+  }
+
+  @Override
+  @NotNull
+  public PsiElement getOpDdot() {
+    return findNotNullChildByType(OP_DDOT);
   }
 
 }

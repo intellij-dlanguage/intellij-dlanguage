@@ -24,8 +24,8 @@ public class DLanguageSymbolImpl extends ASTWrapperPsiElement implements DLangua
 
   @Override
   @NotNull
-  public DLanguageIdentifierOrTemplateChain getIdentifierOrTemplateChain() {
-    return findNotNullChildByClass(DLanguageIdentifierOrTemplateChain.class);
+  public DLanguageSymbolTail getSymbolTail() {
+    return findNotNullChildByClass(DLanguageSymbolTail.class);
   }
 
   @Override

@@ -24,8 +24,20 @@ public class DLanguageForeachTypeListImpl extends ASTWrapperPsiElement implement
 
   @Override
   @NotNull
-  public List<DLanguageForeachType> getForeachTypeList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageForeachType.class);
+  public DLanguageForeachType getForeachType() {
+    return findNotNullChildByClass(DLanguageForeachType.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageForeachTypeList getForeachTypeList() {
+    return findChildByClass(DLanguageForeachTypeList.class);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpComma() {
+    return findChildByType(OP_COMMA);
   }
 
 }

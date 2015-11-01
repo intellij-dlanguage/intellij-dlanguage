@@ -24,8 +24,8 @@ public class DLanguageLastCatchImpl extends ASTWrapperPsiElement implements DLan
 
   @Override
   @NotNull
-  public DLanguageStatementNoCaseNoDefault getStatementNoCaseNoDefault() {
-    return findNotNullChildByClass(DLanguageStatementNoCaseNoDefault.class);
+  public DLanguageNoScopeNonEmptyStatement getNoScopeNonEmptyStatement() {
+    return findNotNullChildByClass(DLanguageNoScopeNonEmptyStatement.class);
   }
 
   @Override

@@ -7,17 +7,20 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageAliasDeclaration extends PsiElement {
 
-  @NotNull
-  List<DLanguageAliasInitializer> getAliasInitializerList();
+  @Nullable
+  DLanguageAliasDeclarationX getAliasDeclarationX();
 
   @Nullable
-  DLanguageIdentifierList getIdentifierList();
-
-  @NotNull
-  List<DLanguageStorageClass> getStorageClassList();
+  DLanguageBasicType getBasicType();
 
   @Nullable
-  DLanguageType getType();
+  DLanguageDeclarator getDeclarator();
+
+  @Nullable
+  DLanguageFuncDeclarator getFuncDeclarator();
+
+  @Nullable
+  DLanguageStorageClasses getStorageClasses();
 
   @NotNull
   PsiElement getKwAlias();

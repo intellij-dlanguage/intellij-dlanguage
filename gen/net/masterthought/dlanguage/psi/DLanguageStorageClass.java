@@ -11,22 +11,22 @@ public interface DLanguageStorageClass extends PsiElement {
   DLanguageAlignAttribute getAlignAttribute();
 
   @Nullable
-  DLanguageAtAttribute getAtAttribute();
-
-  @Nullable
-  DLanguageDeprecated getDeprecated();
-
-  @Nullable
   DLanguageLinkageAttribute getLinkageAttribute();
 
   @Nullable
-  DLanguageTypeConstructor getTypeConstructor();
+  DLanguageProperty getProperty();
 
   @Nullable
   PsiElement getKwAbstract();
 
   @Nullable
   PsiElement getKwAuto();
+
+  @Nullable
+  PsiElement getKwConst();
+
+  @Nullable
+  PsiElement getKwDeprecated();
 
   @Nullable
   PsiElement getKwEnum();
@@ -36,6 +36,12 @@ public interface DLanguageStorageClass extends PsiElement {
 
   @Nullable
   PsiElement getKwFinal();
+
+  @Nullable
+  PsiElement getKwImmutable();
+
+  @Nullable
+  PsiElement getKwInout();
 
   @Nullable
   PsiElement getKwNothrow();
@@ -51,6 +57,9 @@ public interface DLanguageStorageClass extends PsiElement {
 
   @Nullable
   PsiElement getKwScope();
+
+  @Nullable
+  PsiElement getKwShared();
 
   @Nullable
   PsiElement getKwStatic();

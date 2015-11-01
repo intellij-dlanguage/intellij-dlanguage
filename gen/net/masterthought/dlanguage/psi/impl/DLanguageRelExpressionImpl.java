@@ -23,21 +23,81 @@ public class DLanguageRelExpressionImpl extends ASTWrapperPsiElement implements 
   }
 
   @Override
-  @Nullable
-  public DLanguageRelExpression getRelExpression() {
-    return findChildByClass(DLanguageRelExpression.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageRelOperator getRelOperator() {
-    return findChildByClass(DLanguageRelOperator.class);
-  }
-
-  @Override
   @NotNull
-  public DLanguageShiftExpression getShiftExpression() {
-    return findNotNullChildByClass(DLanguageShiftExpression.class);
+  public List<DLanguageShiftExpression> getShiftExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageShiftExpression.class);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpGt() {
+    return findChildByType(OP_GT);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpGtEq() {
+    return findChildByType(OP_GT_EQ);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpLess() {
+    return findChildByType(OP_LESS);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpLessEq() {
+    return findChildByType(OP_LESS_EQ);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpLessGr() {
+    return findChildByType(OP_LESS_GR);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpLessGrEq() {
+    return findChildByType(OP_LESS_GR_EQ);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpNotGr() {
+    return findChildByType(OP_NOT_GR);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpNotGrEq() {
+    return findChildByType(OP_NOT_GR_EQ);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpNotLess() {
+    return findChildByType(OP_NOT_LESS);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpNotLessEq() {
+    return findChildByType(OP_NOT_LESS_EQ);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpUnord() {
+    return findChildByType(OP_UNORD);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpUnordEq() {
+    return findChildByType(OP_UNORD_EQ);
   }
 
 }

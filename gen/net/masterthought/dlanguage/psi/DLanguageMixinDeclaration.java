@@ -7,11 +7,17 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageMixinDeclaration extends PsiElement {
 
-  @Nullable
-  DLanguageMixinExpression getMixinExpression();
+  @NotNull
+  DLanguageAssignExpression getAssignExpression();
 
-  @Nullable
-  DLanguageTemplateMixinExpression getTemplateMixinExpression();
+  @NotNull
+  PsiElement getKwMixin();
+
+  @NotNull
+  PsiElement getOpParLeft();
+
+  @NotNull
+  PsiElement getOpParRight();
 
   @NotNull
   PsiElement getOpScolon();

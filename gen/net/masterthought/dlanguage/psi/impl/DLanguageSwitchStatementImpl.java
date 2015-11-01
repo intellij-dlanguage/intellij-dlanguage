@@ -30,8 +30,8 @@ public class DLanguageSwitchStatementImpl extends ASTWrapperPsiElement implement
 
   @Override
   @NotNull
-  public DLanguageStatement getStatement() {
-    return findNotNullChildByClass(DLanguageStatement.class);
+  public DLanguageScopeStatement getScopeStatement() {
+    return findNotNullChildByClass(DLanguageScopeStatement.class);
   }
 
   @Override

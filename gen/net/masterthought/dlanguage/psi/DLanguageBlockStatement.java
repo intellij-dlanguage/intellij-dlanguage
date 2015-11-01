@@ -8,7 +8,7 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageBlockStatement extends PsiElement {
 
   @Nullable
-  DLanguageDeclarationsAndStatements getDeclarationsAndStatements();
+  DLanguageStatementList getStatementList();
 
   @NotNull
   PsiElement getOpBracesLeft();

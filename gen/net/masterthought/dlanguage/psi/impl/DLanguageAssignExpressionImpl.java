@@ -24,20 +24,98 @@ public class DLanguageAssignExpressionImpl extends ASTWrapperPsiElement implemen
 
   @Override
   @Nullable
-  public DLanguageAssignOperator getAssignOperator() {
-    return findChildByClass(DLanguageAssignOperator.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageExpression getExpression() {
-    return findChildByClass(DLanguageExpression.class);
+  public DLanguageAssignExpression getAssignExpression() {
+    return findChildByClass(DLanguageAssignExpression.class);
   }
 
   @Override
   @NotNull
-  public DLanguageTernaryExpression getTernaryExpression() {
-    return findNotNullChildByClass(DLanguageTernaryExpression.class);
+  public DLanguageConditionalExpression getConditionalExpression() {
+    return findNotNullChildByClass(DLanguageConditionalExpression.class);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpAndEq() {
+    return findChildByType(OP_AND_EQ);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpDivEq() {
+    return findChildByType(OP_DIV_EQ);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpEq() {
+    return findChildByType(OP_EQ);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpMinusEq() {
+    return findChildByType(OP_MINUS_EQ);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpModEq() {
+    return findChildByType(OP_MOD_EQ);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpMulEq() {
+    return findChildByType(OP_MUL_EQ);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpOrEq() {
+    return findChildByType(OP_OR_EQ);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpPlusEq() {
+    return findChildByType(OP_PLUS_EQ);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpPowEq() {
+    return findChildByType(OP_POW_EQ);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpShLeftEq() {
+    return findChildByType(OP_SH_LEFT_EQ);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpShRightEq() {
+    return findChildByType(OP_SH_RIGHT_EQ);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpTildaEq() {
+    return findChildByType(OP_TILDA_EQ);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpUshRightEq() {
+    return findChildByType(OP_USH_RIGHT_EQ);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpXorEq() {
+    return findChildByType(OP_XOR_EQ);
   }
 
 }

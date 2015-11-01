@@ -7,7 +7,13 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageArgumentList extends PsiElement {
 
+  @Nullable
+  DLanguageArgumentList getArgumentList();
+
   @NotNull
-  List<DLanguageAssignExpression> getAssignExpressionList();
+  DLanguageAssignExpression getAssignExpression();
+
+  @Nullable
+  PsiElement getOpComma();
 
 }

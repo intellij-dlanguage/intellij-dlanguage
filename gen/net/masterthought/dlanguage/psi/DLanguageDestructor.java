@@ -10,8 +10,8 @@ public interface DLanguageDestructor extends PsiElement {
   @Nullable
   DLanguageFunctionBody getFunctionBody();
 
-  @NotNull
-  List<DLanguageMemberFunctionAttribute> getMemberFunctionAttributeList();
+  @Nullable
+  DLanguageMemberFunctionAttributes getMemberFunctionAttributes();
 
   @NotNull
   PsiElement getKwThis();

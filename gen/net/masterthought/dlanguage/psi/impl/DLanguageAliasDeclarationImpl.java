@@ -23,27 +23,33 @@ public class DLanguageAliasDeclarationImpl extends ASTWrapperPsiElement implemen
   }
 
   @Override
-  @NotNull
-  public List<DLanguageAliasInitializer> getAliasInitializerList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageAliasInitializer.class);
+  @Nullable
+  public DLanguageAliasDeclarationX getAliasDeclarationX() {
+    return findChildByClass(DLanguageAliasDeclarationX.class);
   }
 
   @Override
   @Nullable
-  public DLanguageIdentifierList getIdentifierList() {
-    return findChildByClass(DLanguageIdentifierList.class);
-  }
-
-  @Override
-  @NotNull
-  public List<DLanguageStorageClass> getStorageClassList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageStorageClass.class);
+  public DLanguageBasicType getBasicType() {
+    return findChildByClass(DLanguageBasicType.class);
   }
 
   @Override
   @Nullable
-  public DLanguageType getType() {
-    return findChildByClass(DLanguageType.class);
+  public DLanguageDeclarator getDeclarator() {
+    return findChildByClass(DLanguageDeclarator.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageFuncDeclarator getFuncDeclarator() {
+    return findChildByClass(DLanguageFuncDeclarator.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageStorageClasses getStorageClasses() {
+    return findChildByClass(DLanguageStorageClasses.class);
   }
 
   @Override

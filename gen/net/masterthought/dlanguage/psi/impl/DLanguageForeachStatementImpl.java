@@ -24,44 +24,26 @@ public class DLanguageForeachStatementImpl extends ASTWrapperPsiElement implemen
 
   @Override
   @NotNull
-  public DLanguageDeclarationOrStatement getDeclarationOrStatement() {
-    return findNotNullChildByClass(DLanguageDeclarationOrStatement.class);
+  public DLanguageForeach getForeach() {
+    return findNotNullChildByClass(DLanguageForeach.class);
   }
 
   @Override
   @NotNull
-  public List<DLanguageExpression> getExpressionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageExpression.class);
+  public DLanguageForeachAggregate getForeachAggregate() {
+    return findNotNullChildByClass(DLanguageForeachAggregate.class);
   }
 
   @Override
-  @Nullable
-  public DLanguageForeachType getForeachType() {
-    return findChildByClass(DLanguageForeachType.class);
-  }
-
-  @Override
-  @Nullable
+  @NotNull
   public DLanguageForeachTypeList getForeachTypeList() {
-    return findChildByClass(DLanguageForeachTypeList.class);
+    return findNotNullChildByClass(DLanguageForeachTypeList.class);
   }
 
   @Override
-  @Nullable
-  public PsiElement getKwForeach() {
-    return findChildByType(KW_FOREACH);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwForeachReverse() {
-    return findChildByType(KW_FOREACH_REVERSE);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpDdot() {
-    return findChildByType(OP_DDOT);
+  @NotNull
+  public DLanguageNoScopeNonEmptyStatement getNoScopeNonEmptyStatement() {
+    return findNotNullChildByClass(DLanguageNoScopeNonEmptyStatement.class);
   }
 
   @Override

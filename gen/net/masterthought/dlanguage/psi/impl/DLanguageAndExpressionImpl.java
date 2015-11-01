@@ -30,8 +30,8 @@ public class DLanguageAndExpressionImpl extends ASTWrapperPsiElement implements 
 
   @Override
   @NotNull
-  public DLanguageCmpExpression getCmpExpression() {
-    return findNotNullChildByClass(DLanguageCmpExpression.class);
+  public DLanguageShiftExpression getShiftExpression() {
+    return findNotNullChildByClass(DLanguageShiftExpression.class);
   }
 
   @Override

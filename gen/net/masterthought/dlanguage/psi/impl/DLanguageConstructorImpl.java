@@ -24,8 +24,8 @@ public class DLanguageConstructorImpl extends ASTWrapperPsiElement implements DL
 
   @Override
   @Nullable
-  public DLanguageConstraint getConstraint() {
-    return findChildByClass(DLanguageConstraint.class);
+  public DLanguageConstructorTemplate getConstructorTemplate() {
+    return findChildByClass(DLanguageConstructorTemplate.class);
   }
 
   @Override
@@ -35,27 +35,21 @@ public class DLanguageConstructorImpl extends ASTWrapperPsiElement implements DL
   }
 
   @Override
-  @NotNull
-  public List<DLanguageMemberFunctionAttribute> getMemberFunctionAttributeList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageMemberFunctionAttribute.class);
-  }
-
-  @Override
-  @NotNull
-  public DLanguageParameters getParameters() {
-    return findNotNullChildByClass(DLanguageParameters.class);
+  @Nullable
+  public DLanguageMemberFunctionAttributes getMemberFunctionAttributes() {
+    return findChildByClass(DLanguageMemberFunctionAttributes.class);
   }
 
   @Override
   @Nullable
-  public DLanguageTemplateParameters getTemplateParameters() {
-    return findChildByClass(DLanguageTemplateParameters.class);
+  public DLanguageParameters getParameters() {
+    return findChildByClass(DLanguageParameters.class);
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getKwThis() {
-    return findNotNullChildByType(KW_THIS);
+    return findChildByType(KW_THIS);
   }
 
   @Override

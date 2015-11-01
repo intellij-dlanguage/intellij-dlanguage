@@ -29,9 +29,9 @@ public class DLanguageDestructorImpl extends ASTWrapperPsiElement implements DLa
   }
 
   @Override
-  @NotNull
-  public List<DLanguageMemberFunctionAttribute> getMemberFunctionAttributeList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageMemberFunctionAttribute.class);
+  @Nullable
+  public DLanguageMemberFunctionAttributes getMemberFunctionAttributes() {
+    return findChildByClass(DLanguageMemberFunctionAttributes.class);
   }
 
   @Override

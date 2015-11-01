@@ -30,8 +30,8 @@ public class DLanguageDoStatementImpl extends ASTWrapperPsiElement implements DL
 
   @Override
   @NotNull
-  public DLanguageStatementNoCaseNoDefault getStatementNoCaseNoDefault() {
-    return findNotNullChildByClass(DLanguageStatementNoCaseNoDefault.class);
+  public DLanguageScopeStatement getScopeStatement() {
+    return findNotNullChildByClass(DLanguageScopeStatement.class);
   }
 
   @Override

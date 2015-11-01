@@ -24,8 +24,14 @@ public class DLanguageIfConditionImpl extends ASTWrapperPsiElement implements DL
 
   @Override
   @Nullable
-  public DLanguageIdentifier getIdentifier() {
-    return findChildByClass(DLanguageIdentifier.class);
+  public DLanguageBasicType getBasicType() {
+    return findChildByClass(DLanguageBasicType.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageDeclarator getDeclarator() {
+    return findChildByClass(DLanguageDeclarator.class);
   }
 
   @Override
@@ -36,8 +42,14 @@ public class DLanguageIfConditionImpl extends ASTWrapperPsiElement implements DL
 
   @Override
   @Nullable
-  public DLanguageType getType() {
-    return findChildByClass(DLanguageType.class);
+  public DLanguageIdentifier getIdentifier() {
+    return findChildByClass(DLanguageIdentifier.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageTypeCtors getTypeCtors() {
+    return findChildByClass(DLanguageTypeCtors.class);
   }
 
   @Override

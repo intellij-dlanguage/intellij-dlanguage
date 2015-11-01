@@ -23,9 +23,9 @@ public class DLanguageClassDeclarationImpl extends ASTWrapperPsiElement implemen
   }
 
   @Override
-  @NotNull
-  public DLanguageIdentifier getIdentifier() {
-    return findNotNullChildByClass(DLanguageIdentifier.class);
+  @Nullable
+  public DLanguageAggregateBody getAggregateBody() {
+    return findChildByClass(DLanguageAggregateBody.class);
   }
 
   @Override
@@ -36,32 +36,20 @@ public class DLanguageClassDeclarationImpl extends ASTWrapperPsiElement implemen
 
   @Override
   @Nullable
-  public DLanguageConstraint getConstraint() {
-    return findChildByClass(DLanguageConstraint.class);
+  public DLanguageClassTemplateDeclaration getClassTemplateDeclaration() {
+    return findChildByClass(DLanguageClassTemplateDeclaration.class);
   }
 
   @Override
   @Nullable
-  public DLanguageStructBody getStructBody() {
-    return findChildByClass(DLanguageStructBody.class);
+  public DLanguageIdentifier getIdentifier() {
+    return findChildByClass(DLanguageIdentifier.class);
   }
 
   @Override
   @Nullable
-  public DLanguageTemplateParameters getTemplateParameters() {
-    return findChildByClass(DLanguageTemplateParameters.class);
-  }
-
-  @Override
-  @NotNull
   public PsiElement getKwClass() {
-    return findNotNullChildByType(KW_CLASS);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpColon() {
-    return findChildByType(OP_COLON);
+    return findChildByType(KW_CLASS);
   }
 
   @Override

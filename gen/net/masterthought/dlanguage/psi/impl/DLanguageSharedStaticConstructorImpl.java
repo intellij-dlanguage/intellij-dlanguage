@@ -23,9 +23,9 @@ public class DLanguageSharedStaticConstructorImpl extends ASTWrapperPsiElement i
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageFunctionBody getFunctionBody() {
-    return findNotNullChildByClass(DLanguageFunctionBody.class);
+    return findChildByClass(DLanguageFunctionBody.class);
   }
 
   @Override
@@ -56,6 +56,12 @@ public class DLanguageSharedStaticConstructorImpl extends ASTWrapperPsiElement i
   @NotNull
   public PsiElement getOpParRight() {
     return findNotNullChildByType(OP_PAR_RIGHT);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpScolon() {
+    return findChildByType(OP_SCOLON);
   }
 
 }

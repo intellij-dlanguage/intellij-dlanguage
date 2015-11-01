@@ -7,8 +7,11 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageStaticDestructor extends PsiElement {
 
-  @NotNull
+  @Nullable
   DLanguageFunctionBody getFunctionBody();
+
+  @Nullable
+  DLanguageMemberFunctionAttributes getMemberFunctionAttributes();
 
   @NotNull
   PsiElement getKwStatic();
@@ -21,6 +24,9 @@ public interface DLanguageStaticDestructor extends PsiElement {
 
   @NotNull
   PsiElement getOpParRight();
+
+  @Nullable
+  PsiElement getOpScolon();
 
   @NotNull
   PsiElement getOpTilda();

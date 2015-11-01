@@ -30,8 +30,8 @@ public class DLanguageSynchronizedStatementImpl extends ASTWrapperPsiElement imp
 
   @Override
   @NotNull
-  public DLanguageStatementNoCaseNoDefault getStatementNoCaseNoDefault() {
-    return findNotNullChildByClass(DLanguageStatementNoCaseNoDefault.class);
+  public DLanguageScopeStatement getScopeStatement() {
+    return findNotNullChildByClass(DLanguageScopeStatement.class);
   }
 
   @Override

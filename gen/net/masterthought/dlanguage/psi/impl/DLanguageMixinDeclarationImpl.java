@@ -23,15 +23,27 @@ public class DLanguageMixinDeclarationImpl extends ASTWrapperPsiElement implemen
   }
 
   @Override
-  @Nullable
-  public DLanguageMixinExpression getMixinExpression() {
-    return findChildByClass(DLanguageMixinExpression.class);
+  @NotNull
+  public DLanguageAssignExpression getAssignExpression() {
+    return findNotNullChildByClass(DLanguageAssignExpression.class);
   }
 
   @Override
-  @Nullable
-  public DLanguageTemplateMixinExpression getTemplateMixinExpression() {
-    return findChildByClass(DLanguageTemplateMixinExpression.class);
+  @NotNull
+  public PsiElement getKwMixin() {
+    return findNotNullChildByType(KW_MIXIN);
+  }
+
+  @Override
+  @NotNull
+  public PsiElement getOpParLeft() {
+    return findNotNullChildByType(OP_PAR_LEFT);
+  }
+
+  @Override
+  @NotNull
+  public PsiElement getOpParRight() {
+    return findNotNullChildByType(OP_PAR_RIGHT);
   }
 
   @Override

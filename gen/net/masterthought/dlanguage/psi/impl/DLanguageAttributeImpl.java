@@ -30,14 +30,8 @@ public class DLanguageAttributeImpl extends ASTWrapperPsiElement implements DLan
 
   @Override
   @Nullable
-  public DLanguageAtAttribute getAtAttribute() {
-    return findChildByClass(DLanguageAtAttribute.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageDeprecated getDeprecated() {
-    return findChildByClass(DLanguageDeprecated.class);
+  public DLanguageDeprecatedAttribute getDeprecatedAttribute() {
+    return findChildByClass(DLanguageDeprecatedAttribute.class);
   }
 
   @Override
@@ -48,8 +42,20 @@ public class DLanguageAttributeImpl extends ASTWrapperPsiElement implements DLan
 
   @Override
   @Nullable
-  public DLanguagePragmaExpression getPragmaExpression() {
-    return findChildByClass(DLanguagePragmaExpression.class);
+  public DLanguagePragma getPragma() {
+    return findChildByClass(DLanguagePragma.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageProperty getProperty() {
+    return findChildByClass(DLanguageProperty.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageProtectionAttribute getProtectionAttribute() {
+    return findChildByClass(DLanguageProtectionAttribute.class);
   }
 
   @Override
@@ -68,12 +74,6 @@ public class DLanguageAttributeImpl extends ASTWrapperPsiElement implements DLan
   @Nullable
   public PsiElement getKwConst() {
     return findChildByType(KW_CONST);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwExport() {
-    return findChildByType(KW_EXPORT);
   }
 
   @Override
@@ -114,30 +114,6 @@ public class DLanguageAttributeImpl extends ASTWrapperPsiElement implements DLan
 
   @Override
   @Nullable
-  public PsiElement getKwPackage() {
-    return findChildByType(KW_PACKAGE);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwPrivate() {
-    return findChildByType(KW_PRIVATE);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwProtected() {
-    return findChildByType(KW_PROTECTED);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwPublic() {
-    return findChildByType(KW_PUBLIC);
-  }
-
-  @Override
-  @Nullable
   public PsiElement getKwPure() {
     return findChildByType(KW_PURE);
   }
@@ -170,6 +146,12 @@ public class DLanguageAttributeImpl extends ASTWrapperPsiElement implements DLan
   @Nullable
   public PsiElement getKwSynchronized() {
     return findChildByType(KW_SYNCHRONIZED);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getKwGshared() {
+    return findChildByType(KW___GSHARED);
   }
 
 }

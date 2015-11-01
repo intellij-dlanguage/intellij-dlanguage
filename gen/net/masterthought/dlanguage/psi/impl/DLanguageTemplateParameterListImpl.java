@@ -24,8 +24,20 @@ public class DLanguageTemplateParameterListImpl extends ASTWrapperPsiElement imp
 
   @Override
   @NotNull
-  public List<DLanguageTemplateParameter> getTemplateParameterList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageTemplateParameter.class);
+  public DLanguageTemplateParameter getTemplateParameter() {
+    return findNotNullChildByClass(DLanguageTemplateParameter.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageTemplateParameterList getTemplateParameterList() {
+    return findChildByClass(DLanguageTemplateParameterList.class);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpComma() {
+    return findChildByType(OP_COMMA);
   }
 
 }

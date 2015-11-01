@@ -24,20 +24,14 @@ public class DLanguageNewExpressionImpl extends ASTWrapperPsiElement implements 
 
   @Override
   @Nullable
-  public DLanguageArguments getArguments() {
-    return findChildByClass(DLanguageArguments.class);
+  public DLanguageAllocatorArguments getAllocatorArguments() {
+    return findChildByClass(DLanguageAllocatorArguments.class);
   }
 
   @Override
   @Nullable
-  public DLanguageAssignExpression getAssignExpression() {
-    return findChildByClass(DLanguageAssignExpression.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageNewAnonClassExpression getNewAnonClassExpression() {
-    return findChildByClass(DLanguageNewAnonClassExpression.class);
+  public DLanguageNewExpressionWithArgs getNewExpressionWithArgs() {
+    return findChildByClass(DLanguageNewExpressionWithArgs.class);
   }
 
   @Override
@@ -50,18 +44,6 @@ public class DLanguageNewExpressionImpl extends ASTWrapperPsiElement implements 
   @Nullable
   public PsiElement getKwNew() {
     return findChildByType(KW_NEW);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpBracketLeft() {
-    return findChildByType(OP_BRACKET_LEFT);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpBracketRight() {
-    return findChildByType(OP_BRACKET_RIGHT);
   }
 
 }

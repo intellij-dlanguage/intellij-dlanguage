@@ -24,26 +24,32 @@ public class DLanguageParameterImpl extends ASTWrapperPsiElement implements DLan
 
   @Override
   @Nullable
-  public DLanguageIdentifier getIdentifier() {
-    return findChildByClass(DLanguageIdentifier.class);
-  }
-
-  @Override
-  @Nullable
   public DLanguageAssignExpression getAssignExpression() {
     return findChildByClass(DLanguageAssignExpression.class);
   }
 
   @Override
-  @NotNull
-  public List<DLanguageParameterAttribute> getParameterAttributeList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageParameterAttribute.class);
+  @Nullable
+  public DLanguageBasicType getBasicType() {
+    return findChildByClass(DLanguageBasicType.class);
   }
 
   @Override
-  @NotNull
+  @Nullable
+  public DLanguageDeclarator getDeclarator() {
+    return findChildByClass(DLanguageDeclarator.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageInOut getInOut() {
+    return findChildByClass(DLanguageInOut.class);
+  }
+
+  @Override
+  @Nullable
   public DLanguageType getType() {
-    return findNotNullChildByClass(DLanguageType.class);
+    return findChildByClass(DLanguageType.class);
   }
 
   @Override

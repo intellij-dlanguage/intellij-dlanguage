@@ -24,8 +24,20 @@ public class DLanguageStructMemberInitializersImpl extends ASTWrapperPsiElement 
 
   @Override
   @NotNull
-  public List<DLanguageStructMemberInitializer> getStructMemberInitializerList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageStructMemberInitializer.class);
+  public DLanguageStructMemberInitializer getStructMemberInitializer() {
+    return findNotNullChildByClass(DLanguageStructMemberInitializer.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageStructMemberInitializers getStructMemberInitializers() {
+    return findChildByClass(DLanguageStructMemberInitializers.class);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpComma() {
+    return findChildByType(OP_COMMA);
   }
 
 }

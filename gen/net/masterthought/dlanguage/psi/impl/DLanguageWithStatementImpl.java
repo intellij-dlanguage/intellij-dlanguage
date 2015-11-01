@@ -23,15 +23,27 @@ public class DLanguageWithStatementImpl extends ASTWrapperPsiElement implements 
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageExpression getExpression() {
-    return findNotNullChildByClass(DLanguageExpression.class);
+    return findChildByClass(DLanguageExpression.class);
   }
 
   @Override
   @NotNull
-  public DLanguageStatementNoCaseNoDefault getStatementNoCaseNoDefault() {
-    return findNotNullChildByClass(DLanguageStatementNoCaseNoDefault.class);
+  public DLanguageScopeStatement getScopeStatement() {
+    return findNotNullChildByClass(DLanguageScopeStatement.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageSymbol getSymbol() {
+    return findChildByClass(DLanguageSymbol.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageTemplateInstance getTemplateInstance() {
+    return findChildByClass(DLanguageTemplateInstance.class);
   }
 
   @Override

@@ -23,45 +23,33 @@ public class DLanguageInterfaceDeclarationImpl extends ASTWrapperPsiElement impl
   }
 
   @Override
-  @NotNull
+  @Nullable
+  public DLanguageAggregateBody getAggregateBody() {
+    return findChildByClass(DLanguageAggregateBody.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageBaseInterfaceList getBaseInterfaceList() {
+    return findChildByClass(DLanguageBaseInterfaceList.class);
+  }
+
+  @Override
+  @Nullable
   public DLanguageIdentifier getIdentifier() {
-    return findNotNullChildByClass(DLanguageIdentifier.class);
+    return findChildByClass(DLanguageIdentifier.class);
   }
 
   @Override
   @Nullable
-  public DLanguageBaseClassList getBaseClassList() {
-    return findChildByClass(DLanguageBaseClassList.class);
+  public DLanguageInterfaceTemplateDeclaration getInterfaceTemplateDeclaration() {
+    return findChildByClass(DLanguageInterfaceTemplateDeclaration.class);
   }
 
   @Override
   @Nullable
-  public DLanguageConstraint getConstraint() {
-    return findChildByClass(DLanguageConstraint.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageStructBody getStructBody() {
-    return findChildByClass(DLanguageStructBody.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageTemplateParameters getTemplateParameters() {
-    return findChildByClass(DLanguageTemplateParameters.class);
-  }
-
-  @Override
-  @NotNull
   public PsiElement getKwInterface() {
-    return findNotNullChildByType(KW_INTERFACE);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpColon() {
-    return findChildByType(OP_COLON);
+    return findChildByType(KW_INTERFACE);
   }
 
   @Override

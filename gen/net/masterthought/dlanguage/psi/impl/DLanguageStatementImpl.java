@@ -24,26 +24,14 @@ public class DLanguageStatementImpl extends ASTWrapperPsiElement implements DLan
 
   @Override
   @Nullable
-  public DLanguageCaseRangeStatement getCaseRangeStatement() {
-    return findChildByClass(DLanguageCaseRangeStatement.class);
+  public DLanguageNonEmptyStatement getNonEmptyStatement() {
+    return findChildByClass(DLanguageNonEmptyStatement.class);
   }
 
   @Override
   @Nullable
-  public DLanguageCaseStatement getCaseStatement() {
-    return findChildByClass(DLanguageCaseStatement.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageDefaultStatement getDefaultStatement() {
-    return findChildByClass(DLanguageDefaultStatement.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageStatementNoCaseNoDefault getStatementNoCaseNoDefault() {
-    return findChildByClass(DLanguageStatementNoCaseNoDefault.class);
+  public DLanguageScopeBlockStatement getScopeBlockStatement() {
+    return findChildByClass(DLanguageScopeBlockStatement.class);
   }
 
 }

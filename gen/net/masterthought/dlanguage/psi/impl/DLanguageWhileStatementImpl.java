@@ -24,14 +24,14 @@ public class DLanguageWhileStatementImpl extends ASTWrapperPsiElement implements
 
   @Override
   @NotNull
-  public DLanguageDeclarationOrStatement getDeclarationOrStatement() {
-    return findNotNullChildByClass(DLanguageDeclarationOrStatement.class);
+  public DLanguageExpression getExpression() {
+    return findNotNullChildByClass(DLanguageExpression.class);
   }
 
   @Override
   @NotNull
-  public DLanguageExpression getExpression() {
-    return findNotNullChildByClass(DLanguageExpression.class);
+  public DLanguageScopeStatement getScopeStatement() {
+    return findNotNullChildByClass(DLanguageScopeStatement.class);
   }
 
   @Override

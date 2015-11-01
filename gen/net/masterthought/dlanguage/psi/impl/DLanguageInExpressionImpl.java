@@ -29,15 +29,9 @@ public class DLanguageInExpressionImpl extends ASTWrapperPsiElement implements D
   }
 
   @Override
-  @NotNull
-  public PsiElement getKwIn() {
-    return findNotNullChildByType(KW_IN);
-  }
-
-  @Override
   @Nullable
-  public PsiElement getOpNot() {
-    return findChildByType(OP_NOT);
+  public PsiElement getKwIn() {
+    return findChildByType(KW_IN);
   }
 
 }

@@ -8,13 +8,19 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageNewAnonClassExpression extends PsiElement {
 
   @NotNull
-  List<DLanguageArguments> getArgumentsList();
+  DLanguageAggregateBody getAggregateBody();
 
   @Nullable
-  DLanguageBaseClassList getBaseClassList();
+  DLanguageAllocatorArguments getAllocatorArguments();
 
-  @NotNull
-  DLanguageStructBody getStructBody();
+  @Nullable
+  DLanguageClassArguments getClassArguments();
+
+  @Nullable
+  DLanguageInterfaces getInterfaces();
+
+  @Nullable
+  DLanguageSuperClass getSuperClass();
 
   @NotNull
   PsiElement getKwClass();

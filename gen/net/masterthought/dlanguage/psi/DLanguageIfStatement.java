@@ -7,11 +7,14 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageIfStatement extends PsiElement {
 
-  @NotNull
-  List<DLanguageDeclarationOrStatement> getDeclarationOrStatementList();
+  @Nullable
+  DLanguageElseStatement getElseStatement();
 
   @NotNull
   DLanguageIfCondition getIfCondition();
+
+  @NotNull
+  DLanguageThenStatement getThenStatement();
 
   @Nullable
   PsiElement getKwElse();

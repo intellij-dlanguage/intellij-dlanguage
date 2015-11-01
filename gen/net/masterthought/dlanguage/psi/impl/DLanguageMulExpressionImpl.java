@@ -30,8 +30,8 @@ public class DLanguageMulExpressionImpl extends ASTWrapperPsiElement implements 
 
   @Override
   @NotNull
-  public DLanguagePowExpression getPowExpression() {
-    return findNotNullChildByClass(DLanguagePowExpression.class);
+  public DLanguageUnaryExpression getUnaryExpression() {
+    return findNotNullChildByClass(DLanguageUnaryExpression.class);
   }
 
   @Override

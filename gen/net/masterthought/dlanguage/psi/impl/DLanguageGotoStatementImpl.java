@@ -24,14 +24,14 @@ public class DLanguageGotoStatementImpl extends ASTWrapperPsiElement implements 
 
   @Override
   @Nullable
-  public DLanguageIdentifier getIdentifier() {
-    return findChildByClass(DLanguageIdentifier.class);
+  public DLanguageExpression getExpression() {
+    return findChildByClass(DLanguageExpression.class);
   }
 
   @Override
   @Nullable
-  public DLanguageExpression getExpression() {
-    return findChildByClass(DLanguageExpression.class);
+  public DLanguageIdentifier getIdentifier() {
+    return findChildByClass(DLanguageIdentifier.class);
   }
 
   @Override

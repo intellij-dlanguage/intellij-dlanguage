@@ -24,20 +24,14 @@ public class DLanguagePrimaryExpressionImpl extends ASTWrapperPsiElement impleme
 
   @Override
   @Nullable
-  public DLanguageIdentifier getIdentifier() {
-    return findChildByClass(DLanguageIdentifier.class);
-  }
-
-  @Override
-  @NotNull
-  public List<DLanguageStringLiteral> getStringLiteralList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageStringLiteral.class);
+  public DLanguageArrayLiteral getArrayLiteral() {
+    return findChildByClass(DLanguageArrayLiteral.class);
   }
 
   @Override
   @Nullable
-  public DLanguageArrayLiteral getArrayLiteral() {
-    return findChildByClass(DLanguageArrayLiteral.class);
+  public DLanguageAssertExpression getAssertExpression() {
+    return findChildByClass(DLanguageAssertExpression.class);
   }
 
   @Override
@@ -48,8 +42,8 @@ public class DLanguagePrimaryExpressionImpl extends ASTWrapperPsiElement impleme
 
   @Override
   @Nullable
-  public DLanguageBuiltinType getBuiltinType() {
-    return findChildByClass(DLanguageBuiltinType.class);
+  public DLanguageBasicTypeX getBasicTypeX() {
+    return findChildByClass(DLanguageBasicTypeX.class);
   }
 
   @Override
@@ -60,14 +54,14 @@ public class DLanguagePrimaryExpressionImpl extends ASTWrapperPsiElement impleme
 
   @Override
   @Nullable
-  public DLanguageFunctionLiteralExpression getFunctionLiteralExpression() {
-    return findChildByClass(DLanguageFunctionLiteralExpression.class);
+  public DLanguageFunctionLiteral getFunctionLiteral() {
+    return findChildByClass(DLanguageFunctionLiteral.class);
   }
 
   @Override
   @Nullable
-  public DLanguageIdentifierOrTemplateInstance getIdentifierOrTemplateInstance() {
-    return findChildByClass(DLanguageIdentifierOrTemplateInstance.class);
+  public DLanguageIdentifier getIdentifier() {
+    return findChildByClass(DLanguageIdentifier.class);
   }
 
   @Override
@@ -84,14 +78,32 @@ public class DLanguagePrimaryExpressionImpl extends ASTWrapperPsiElement impleme
 
   @Override
   @Nullable
-  public DLanguageLambdaExpression getLambdaExpression() {
-    return findChildByClass(DLanguageLambdaExpression.class);
+  public DLanguageMixinExpression getMixinExpression() {
+    return findChildByClass(DLanguageMixinExpression.class);
   }
 
   @Override
   @Nullable
-  public DLanguageMixinExpression getMixinExpression() {
-    return findChildByClass(DLanguageMixinExpression.class);
+  public DLanguageNewExpressionWithArgs getNewExpressionWithArgs() {
+    return findChildByClass(DLanguageNewExpressionWithArgs.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageSpecialKeyword getSpecialKeyword() {
+    return findChildByClass(DLanguageSpecialKeyword.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageStringLiterals getStringLiterals() {
+    return findChildByClass(DLanguageStringLiterals.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageTemplateInstance getTemplateInstance() {
+    return findChildByClass(DLanguageTemplateInstance.class);
   }
 
   @Override
@@ -108,14 +120,8 @@ public class DLanguagePrimaryExpressionImpl extends ASTWrapperPsiElement impleme
 
   @Override
   @Nullable
-  public DLanguageTypeofExpression getTypeofExpression() {
-    return findChildByClass(DLanguageTypeofExpression.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageVector getVector() {
-    return findChildByClass(DLanguageVector.class);
+  public DLanguageTypeof getTypeof() {
+    return findChildByClass(DLanguageTypeof.class);
   }
 
   @Override
@@ -164,36 +170,6 @@ public class DLanguagePrimaryExpressionImpl extends ASTWrapperPsiElement impleme
   @Nullable
   public PsiElement getKwTrue() {
     return findChildByType(KW_TRUE);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwFile() {
-    return findChildByType(KW___FILE__);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwFunction() {
-    return findChildByType(KW___FUNCTION__);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwLine() {
-    return findChildByType(KW___LINE__);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwModule() {
-    return findChildByType(KW___MODULE__);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwPrettyFunction() {
-    return findChildByType(KW___PRETTY_FUNCTION__);
   }
 
   @Override

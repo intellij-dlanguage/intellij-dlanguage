@@ -8,18 +8,18 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageStructDeclaration extends PsiElement {
 
   @Nullable
+  DLanguageAggregateBody getAggregateBody();
+
+  @Nullable
+  DLanguageAnonStructDeclaration getAnonStructDeclaration();
+
+  @Nullable
   DLanguageIdentifier getIdentifier();
 
   @Nullable
-  DLanguageConstraint getConstraint();
+  DLanguageStructTemplateDeclaration getStructTemplateDeclaration();
 
   @Nullable
-  DLanguageStructBody getStructBody();
-
-  @Nullable
-  DLanguageTemplateParameters getTemplateParameters();
-
-  @NotNull
   PsiElement getKwStruct();
 
   @Nullable

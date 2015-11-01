@@ -23,15 +23,39 @@ public class DLanguageDeclarationImpl extends ASTWrapperPsiElement implements DL
   }
 
   @Override
-  @NotNull
-  public List<DLanguageAttribute> getAttributeList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageAttribute.class);
+  @Nullable
+  public DLanguageAggregateDeclaration getAggregateDeclaration() {
+    return findChildByClass(DLanguageAggregateDeclaration.class);
   }
 
   @Override
-  @NotNull
-  public DLanguageDeclaration2 getDeclaration2() {
-    return findNotNullChildByClass(DLanguageDeclaration2.class);
+  @Nullable
+  public DLanguageAliasDeclaration getAliasDeclaration() {
+    return findChildByClass(DLanguageAliasDeclaration.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageEnumDeclaration getEnumDeclaration() {
+    return findChildByClass(DLanguageEnumDeclaration.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageFuncDeclaration getFuncDeclaration() {
+    return findChildByClass(DLanguageFuncDeclaration.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageImportDeclaration getImportDeclaration() {
+    return findChildByClass(DLanguageImportDeclaration.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageVarDeclarations getVarDeclarations() {
+    return findChildByClass(DLanguageVarDeclarations.class);
   }
 
 }

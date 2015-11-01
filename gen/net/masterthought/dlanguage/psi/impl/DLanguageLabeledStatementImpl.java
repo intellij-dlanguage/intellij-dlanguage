@@ -30,8 +30,14 @@ public class DLanguageLabeledStatementImpl extends ASTWrapperPsiElement implemen
 
   @Override
   @Nullable
-  public DLanguageDeclarationOrStatement getDeclarationOrStatement() {
-    return findChildByClass(DLanguageDeclarationOrStatement.class);
+  public DLanguageNoScopeStatement getNoScopeStatement() {
+    return findChildByClass(DLanguageNoScopeStatement.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageStatement getStatement() {
+    return findChildByClass(DLanguageStatement.class);
   }
 
   @Override

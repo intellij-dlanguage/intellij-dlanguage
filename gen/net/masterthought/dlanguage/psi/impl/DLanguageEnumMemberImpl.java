@@ -23,15 +23,15 @@ public class DLanguageEnumMemberImpl extends ASTWrapperPsiElement implements DLa
   }
 
   @Override
-  @NotNull
-  public DLanguageIdentifier getIdentifier() {
-    return findNotNullChildByClass(DLanguageIdentifier.class);
-  }
-
-  @Override
   @Nullable
   public DLanguageAssignExpression getAssignExpression() {
     return findChildByClass(DLanguageAssignExpression.class);
+  }
+
+  @Override
+  @NotNull
+  public DLanguageIdentifier getIdentifier() {
+    return findNotNullChildByClass(DLanguageIdentifier.class);
   }
 
   @Override

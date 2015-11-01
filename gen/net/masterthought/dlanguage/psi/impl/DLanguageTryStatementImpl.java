@@ -29,15 +29,15 @@ public class DLanguageTryStatementImpl extends ASTWrapperPsiElement implements D
   }
 
   @Override
-  @NotNull
-  public DLanguageDeclarationOrStatement getDeclarationOrStatement() {
-    return findNotNullChildByClass(DLanguageDeclarationOrStatement.class);
+  @Nullable
+  public DLanguageFinallyStatement getFinallyStatement() {
+    return findChildByClass(DLanguageFinallyStatement.class);
   }
 
   @Override
-  @Nullable
-  public DLanguageFinally getFinally() {
-    return findChildByClass(DLanguageFinally.class);
+  @NotNull
+  public DLanguageScopeStatement getScopeStatement() {
+    return findNotNullChildByClass(DLanguageScopeStatement.class);
   }
 
   @Override

@@ -23,21 +23,15 @@ public class DLanguageDeclaratorImpl extends ASTWrapperPsiElement implements DLa
   }
 
   @Override
-  @NotNull
-  public DLanguageIdentifier getIdentifier() {
-    return findNotNullChildByClass(DLanguageIdentifier.class);
+  @Nullable
+  public DLanguageAltDeclarator getAltDeclarator() {
+    return findChildByClass(DLanguageAltDeclarator.class);
   }
 
   @Override
   @Nullable
-  public DLanguageInitializer getInitializer() {
-    return findChildByClass(DLanguageInitializer.class);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpEq() {
-    return findChildByType(OP_EQ);
+  public DLanguageVarDeclarator getVarDeclarator() {
+    return findChildByClass(DLanguageVarDeclarator.class);
   }
 
 }

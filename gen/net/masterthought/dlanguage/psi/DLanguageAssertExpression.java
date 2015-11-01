@@ -11,15 +11,6 @@ public interface DLanguageAssertExpression extends PsiElement {
   List<DLanguageAssignExpression> getAssignExpressionList();
 
   @NotNull
-  PsiElement getKwAssert();
-
-  @Nullable
   PsiElement getOpComma();
-
-  @NotNull
-  PsiElement getOpParLeft();
-
-  @NotNull
-  PsiElement getOpParRight();
 
 }

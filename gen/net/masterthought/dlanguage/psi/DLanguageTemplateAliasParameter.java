@@ -7,22 +7,22 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageTemplateAliasParameter extends PsiElement {
 
-  @NotNull
+  @Nullable
+  DLanguageBasicType getBasicType();
+
+  @Nullable
+  DLanguageDeclarator getDeclarator();
+
+  @Nullable
   DLanguageIdentifier getIdentifier();
 
-  @NotNull
-  List<DLanguageAssignExpression> getAssignExpressionList();
+  @Nullable
+  DLanguageTemplateAliasParameterDefault getTemplateAliasParameterDefault();
 
-  @NotNull
-  List<DLanguageType> getTypeList();
+  @Nullable
+  DLanguageTemplateAliasParameterSpecialization getTemplateAliasParameterSpecialization();
 
   @NotNull
   PsiElement getKwAlias();
-
-  @Nullable
-  PsiElement getOpColon();
-
-  @Nullable
-  PsiElement getOpEq();
 
 }

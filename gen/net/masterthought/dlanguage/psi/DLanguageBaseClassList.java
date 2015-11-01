@@ -7,7 +7,16 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageBaseClassList extends PsiElement {
 
+  @Nullable
+  DLanguageInterfaces getInterfaces();
+
+  @Nullable
+  DLanguageSuperClass getSuperClass();
+
   @NotNull
-  List<DLanguageBaseClass> getBaseClassList();
+  PsiElement getOpColon();
+
+  @Nullable
+  PsiElement getOpComma();
 
 }

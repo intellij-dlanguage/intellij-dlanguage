@@ -7,8 +7,8 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageArrayInitializer extends PsiElement {
 
-  @NotNull
-  List<DLanguageArrayMemberInitialization> getArrayMemberInitializationList();
+  @Nullable
+  DLanguageArrayMemberInitializations getArrayMemberInitializations();
 
   @NotNull
   PsiElement getOpBracketLeft();

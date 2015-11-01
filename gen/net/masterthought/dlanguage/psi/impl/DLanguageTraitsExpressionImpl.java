@@ -24,14 +24,14 @@ public class DLanguageTraitsExpressionImpl extends ASTWrapperPsiElement implemen
 
   @Override
   @NotNull
-  public DLanguageIdentifier getIdentifier() {
-    return findNotNullChildByClass(DLanguageIdentifier.class);
+  public DLanguageTraitsArguments getTraitsArguments() {
+    return findNotNullChildByClass(DLanguageTraitsArguments.class);
   }
 
   @Override
   @NotNull
-  public DLanguageTemplateArgumentList getTemplateArgumentList() {
-    return findNotNullChildByClass(DLanguageTemplateArgumentList.class);
+  public DLanguageTraitsKeyword getTraitsKeyword() {
+    return findNotNullChildByClass(DLanguageTraitsKeyword.class);
   }
 
   @Override

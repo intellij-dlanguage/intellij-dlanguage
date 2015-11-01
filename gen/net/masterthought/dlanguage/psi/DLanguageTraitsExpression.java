@@ -8,10 +8,10 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageTraitsExpression extends PsiElement {
 
   @NotNull
-  DLanguageIdentifier getIdentifier();
+  DLanguageTraitsArguments getTraitsArguments();
 
   @NotNull
-  DLanguageTemplateArgumentList getTemplateArgumentList();
+  DLanguageTraitsKeyword getTraitsKeyword();
 
   @NotNull
   PsiElement getKwTraits();

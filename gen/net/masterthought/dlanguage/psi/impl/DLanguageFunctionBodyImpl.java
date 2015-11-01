@@ -36,14 +36,8 @@ public class DLanguageFunctionBodyImpl extends ASTWrapperPsiElement implements D
 
   @Override
   @Nullable
-  public DLanguageInStatement getInStatement() {
-    return findChildByClass(DLanguageInStatement.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageOutStatement getOutStatement() {
-    return findChildByClass(DLanguageOutStatement.class);
+  public DLanguageFunctionContracts getFunctionContracts() {
+    return findChildByClass(DLanguageFunctionContracts.class);
   }
 
 }

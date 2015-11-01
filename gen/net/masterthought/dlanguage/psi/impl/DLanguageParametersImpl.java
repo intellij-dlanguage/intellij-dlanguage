@@ -23,9 +23,9 @@ public class DLanguageParametersImpl extends ASTWrapperPsiElement implements DLa
   }
 
   @Override
-  @NotNull
-  public List<DLanguageParameter> getParameterList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageParameter.class);
+  @Nullable
+  public DLanguageParameterList getParameterList() {
+    return findChildByClass(DLanguageParameterList.class);
   }
 
   @Override
@@ -38,12 +38,6 @@ public class DLanguageParametersImpl extends ASTWrapperPsiElement implements DLa
   @NotNull
   public PsiElement getOpParRight() {
     return findNotNullChildByType(OP_PAR_RIGHT);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpTripledot() {
-    return findChildByType(OP_TRIPLEDOT);
   }
 
 }

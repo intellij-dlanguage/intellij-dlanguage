@@ -24,26 +24,14 @@ public class DLanguageUnaryExpressionImpl extends ASTWrapperPsiElement implement
 
   @Override
   @Nullable
-  public DLanguageArgumentList getArgumentList() {
-    return findChildByClass(DLanguageArgumentList.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageAssertExpression getAssertExpression() {
-    return findChildByClass(DLanguageAssertExpression.class);
-  }
-
-  @Override
-  @NotNull
-  public List<DLanguageAssignExpression> getAssignExpressionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageAssignExpression.class);
-  }
-
-  @Override
-  @Nullable
   public DLanguageCastExpression getCastExpression() {
     return findChildByClass(DLanguageCastExpression.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageComplementExpression getComplementExpression() {
+    return findChildByClass(DLanguageComplementExpression.class);
   }
 
   @Override
@@ -54,26 +42,20 @@ public class DLanguageUnaryExpressionImpl extends ASTWrapperPsiElement implement
 
   @Override
   @Nullable
-  public DLanguageFunctionCallExpression getFunctionCallExpression() {
-    return findChildByClass(DLanguageFunctionCallExpression.class);
-  }
-
-  @Override
-  @NotNull
-  public List<DLanguageIdentifierOrTemplateInstance> getIdentifierOrTemplateInstanceList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageIdentifierOrTemplateInstance.class);
+  public DLanguageIdentifier getIdentifier() {
+    return findChildByClass(DLanguageIdentifier.class);
   }
 
   @Override
   @Nullable
-  public DLanguageNewExpression getNewExpression() {
-    return findChildByClass(DLanguageNewExpression.class);
+  public DLanguagePowExpression getPowExpression() {
+    return findChildByClass(DLanguagePowExpression.class);
   }
 
   @Override
   @Nullable
-  public DLanguagePrimaryExpression getPrimaryExpression() {
-    return findChildByClass(DLanguagePrimaryExpression.class);
+  public DLanguageTemplateInstance getTemplateInstance() {
+    return findChildByClass(DLanguageTemplateInstance.class);
   }
 
   @Override
@@ -83,9 +65,9 @@ public class DLanguageUnaryExpressionImpl extends ASTWrapperPsiElement implement
   }
 
   @Override
-  @NotNull
-  public List<DLanguageUnaryExpression> getUnaryExpressionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageUnaryExpression.class);
+  @Nullable
+  public DLanguageUnaryExpression getUnaryExpression() {
+    return findChildByClass(DLanguageUnaryExpression.class);
   }
 
   @Override
@@ -102,26 +84,20 @@ public class DLanguageUnaryExpressionImpl extends ASTWrapperPsiElement implement
 
   @Override
   @Nullable
-  public PsiElement getOpBracketLeft() {
-    return findChildByType(OP_BRACKET_LEFT);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpBracketRight() {
-    return findChildByType(OP_BRACKET_RIGHT);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpDdot() {
-    return findChildByType(OP_DDOT);
+  public PsiElement getOpDot() {
+    return findChildByType(OP_DOT);
   }
 
   @Override
   @Nullable
   public PsiElement getOpMinus() {
     return findChildByType(OP_MINUS);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpMinusMinus() {
+    return findChildByType(OP_MINUS_MINUS);
   }
 
   @Override
@@ -150,8 +126,8 @@ public class DLanguageUnaryExpressionImpl extends ASTWrapperPsiElement implement
 
   @Override
   @Nullable
-  public PsiElement getOpTilda() {
-    return findChildByType(OP_TILDA);
+  public PsiElement getOpPlusPlus() {
+    return findChildByType(OP_PLUS_PLUS);
   }
 
 }

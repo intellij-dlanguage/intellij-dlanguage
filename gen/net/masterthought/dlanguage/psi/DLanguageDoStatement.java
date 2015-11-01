@@ -11,7 +11,7 @@ public interface DLanguageDoStatement extends PsiElement {
   DLanguageExpression getExpression();
 
   @NotNull
-  DLanguageStatementNoCaseNoDefault getStatementNoCaseNoDefault();
+  DLanguageScopeStatement getScopeStatement();
 
   @NotNull
   PsiElement getKwDo();

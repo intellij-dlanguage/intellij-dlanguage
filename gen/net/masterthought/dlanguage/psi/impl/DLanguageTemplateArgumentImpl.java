@@ -30,6 +30,12 @@ public class DLanguageTemplateArgumentImpl extends ASTWrapperPsiElement implemen
 
   @Override
   @Nullable
+  public DLanguageSymbol getSymbol() {
+    return findChildByClass(DLanguageSymbol.class);
+  }
+
+  @Override
+  @Nullable
   public DLanguageType getType() {
     return findChildByClass(DLanguageType.class);
   }

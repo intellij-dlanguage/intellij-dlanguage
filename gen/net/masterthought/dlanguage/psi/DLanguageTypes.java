@@ -9,174 +9,231 @@ import net.masterthought.dlanguage.psi.impl.*;
 public interface DLanguageTypes {
 
   IElementType ADD_EXPRESSION = new DLanguageElementType("ADD_EXPRESSION");
+  IElementType AGGREGATE_BODY = new DLanguageElementType("AGGREGATE_BODY");
+  IElementType AGGREGATE_DECLARATION = new DLanguageElementType("AGGREGATE_DECLARATION");
   IElementType ALIAS_DECLARATION = new DLanguageElementType("ALIAS_DECLARATION");
-  IElementType ALIAS_INITIALIZER = new DLanguageElementType("ALIAS_INITIALIZER");
-  IElementType ALIAS_THIS_DECLARATION = new DLanguageElementType("ALIAS_THIS_DECLARATION");
+  IElementType ALIAS_DECLARATION_X = new DLanguageElementType("ALIAS_DECLARATION_X");
+  IElementType ALIAS_THIS = new DLanguageElementType("ALIAS_THIS");
   IElementType ALIGN_ATTRIBUTE = new DLanguageElementType("ALIGN_ATTRIBUTE");
+  IElementType ALLOCATOR = new DLanguageElementType("ALLOCATOR");
+  IElementType ALLOCATOR_ARGUMENTS = new DLanguageElementType("ALLOCATOR_ARGUMENTS");
+  IElementType ALT_DECLARATOR = new DLanguageElementType("ALT_DECLARATOR");
+  IElementType ALT_DECLARATOR_IDENTIFIER = new DLanguageElementType("ALT_DECLARATOR_IDENTIFIER");
+  IElementType ALT_DECLARATOR_SUFFIX = new DLanguageElementType("ALT_DECLARATOR_SUFFIX");
+  IElementType ALT_DECLARATOR_SUFFIXES = new DLanguageElementType("ALT_DECLARATOR_SUFFIXES");
+  IElementType ALT_DECLARATOR_X = new DLanguageElementType("ALT_DECLARATOR_X");
+  IElementType ALT_FUNC_DECLARATOR_SUFFIX = new DLanguageElementType("ALT_FUNC_DECLARATOR_SUFFIX");
   IElementType AND_AND_EXPRESSION = new DLanguageElementType("AND_AND_EXPRESSION");
   IElementType AND_EXPRESSION = new DLanguageElementType("AND_EXPRESSION");
   IElementType ANONYMOUS_ENUM_DECLARATION = new DLanguageElementType("ANONYMOUS_ENUM_DECLARATION");
   IElementType ANONYMOUS_ENUM_MEMBER = new DLanguageElementType("ANONYMOUS_ENUM_MEMBER");
-  IElementType ARGUMENTS = new DLanguageElementType("ARGUMENTS");
+  IElementType ANONYMOUS_ENUM_MEMBERS = new DLanguageElementType("ANONYMOUS_ENUM_MEMBERS");
+  IElementType ANON_STRUCT_DECLARATION = new DLanguageElementType("ANON_STRUCT_DECLARATION");
+  IElementType ANON_UNION_DECLARATION = new DLanguageElementType("ANON_UNION_DECLARATION");
   IElementType ARGUMENT_LIST = new DLanguageElementType("ARGUMENT_LIST");
   IElementType ARRAY_INITIALIZER = new DLanguageElementType("ARRAY_INITIALIZER");
   IElementType ARRAY_LITERAL = new DLanguageElementType("ARRAY_LITERAL");
   IElementType ARRAY_MEMBER_INITIALIZATION = new DLanguageElementType("ARRAY_MEMBER_INITIALIZATION");
-  IElementType ASM_ADD_EXP = new DLanguageElementType("ASM_ADD_EXP");
-  IElementType ASM_AND_EXP = new DLanguageElementType("ASM_AND_EXP");
-  IElementType ASM_BR_EXP = new DLanguageElementType("ASM_BR_EXP");
-  IElementType ASM_EQUAL_EXP = new DLanguageElementType("ASM_EQUAL_EXP");
-  IElementType ASM_EXP = new DLanguageElementType("ASM_EXP");
-  IElementType ASM_INSTRUCTION = new DLanguageElementType("ASM_INSTRUCTION");
-  IElementType ASM_LOG_AND_EXP = new DLanguageElementType("ASM_LOG_AND_EXP");
-  IElementType ASM_LOG_OR_EXP = new DLanguageElementType("ASM_LOG_OR_EXP");
-  IElementType ASM_MUL_EXP = new DLanguageElementType("ASM_MUL_EXP");
-  IElementType ASM_OR_EXP = new DLanguageElementType("ASM_OR_EXP");
-  IElementType ASM_PRIMARY_EXP = new DLanguageElementType("ASM_PRIMARY_EXP");
-  IElementType ASM_REL_EXP = new DLanguageElementType("ASM_REL_EXP");
-  IElementType ASM_SHIFT_EXP = new DLanguageElementType("ASM_SHIFT_EXP");
-  IElementType ASM_STATEMENT = new DLanguageElementType("ASM_STATEMENT");
-  IElementType ASM_TYPE_PREFIX = new DLanguageElementType("ASM_TYPE_PREFIX");
-  IElementType ASM_UNA_EXP = new DLanguageElementType("ASM_UNA_EXP");
-  IElementType ASM_XOR_EXP = new DLanguageElementType("ASM_XOR_EXP");
+  IElementType ARRAY_MEMBER_INITIALIZATIONS = new DLanguageElementType("ARRAY_MEMBER_INITIALIZATIONS");
   IElementType ASSERT_EXPRESSION = new DLanguageElementType("ASSERT_EXPRESSION");
   IElementType ASSIGN_EXPRESSION = new DLanguageElementType("ASSIGN_EXPRESSION");
-  IElementType ASSIGN_OPERATOR = new DLanguageElementType("ASSIGN_OPERATOR");
   IElementType ASSOC_ARRAY_LITERAL = new DLanguageElementType("ASSOC_ARRAY_LITERAL");
   IElementType ATTRIBUTE = new DLanguageElementType("ATTRIBUTE");
-  IElementType ATTRIBUTE_DECLARATION = new DLanguageElementType("ATTRIBUTE_DECLARATION");
-  IElementType AT_ATTRIBUTE = new DLanguageElementType("AT_ATTRIBUTE");
+  IElementType ATTRIBUTE_SPECIFIER = new DLanguageElementType("ATTRIBUTE_SPECIFIER");
   IElementType AUTO_DECLARATION = new DLanguageElementType("AUTO_DECLARATION");
-  IElementType BASE_CLASS = new DLanguageElementType("BASE_CLASS");
+  IElementType AUTO_DECLARATION_X = new DLanguageElementType("AUTO_DECLARATION_X");
+  IElementType AUTO_FUNC_DECLARATION = new DLanguageElementType("AUTO_FUNC_DECLARATION");
   IElementType BASE_CLASS_LIST = new DLanguageElementType("BASE_CLASS_LIST");
+  IElementType BASE_INTERFACE_LIST = new DLanguageElementType("BASE_INTERFACE_LIST");
+  IElementType BASIC_TYPE = new DLanguageElementType("BASIC_TYPE");
+  IElementType BASIC_TYPE_2 = new DLanguageElementType("BASIC_TYPE_2");
+  IElementType BASIC_TYPE_2_X = new DLanguageElementType("BASIC_TYPE_2_X");
+  IElementType BASIC_TYPE_X = new DLanguageElementType("BASIC_TYPE_X");
   IElementType BLOCK_STATEMENT = new DLanguageElementType("BLOCK_STATEMENT");
   IElementType BODY_STATEMENT = new DLanguageElementType("BODY_STATEMENT");
   IElementType BREAK_STATEMENT = new DLanguageElementType("BREAK_STATEMENT");
-  IElementType BUILTIN_TYPE = new DLanguageElementType("BUILTIN_TYPE");
   IElementType CASE_RANGE_STATEMENT = new DLanguageElementType("CASE_RANGE_STATEMENT");
   IElementType CASE_STATEMENT = new DLanguageElementType("CASE_STATEMENT");
   IElementType CAST_EXPRESSION = new DLanguageElementType("CAST_EXPRESSION");
-  IElementType CAST_QUALIFIER = new DLanguageElementType("CAST_QUALIFIER");
   IElementType CATCH = new DLanguageElementType("CATCH");
   IElementType CATCHES = new DLanguageElementType("CATCHES");
+  IElementType CATCH_PARAMETER = new DLanguageElementType("CATCH_PARAMETER");
+  IElementType CLASS_ARGUMENTS = new DLanguageElementType("CLASS_ARGUMENTS");
   IElementType CLASS_DECLARATION = new DLanguageElementType("CLASS_DECLARATION");
+  IElementType CLASS_TEMPLATE_DECLARATION = new DLanguageElementType("CLASS_TEMPLATE_DECLARATION");
   IElementType CMP_EXPRESSION = new DLanguageElementType("CMP_EXPRESSION");
-  IElementType COMPILE_CONDITION = new DLanguageElementType("COMPILE_CONDITION");
+  IElementType COMMA_EXPRESSION = new DLanguageElementType("COMMA_EXPRESSION");
+  IElementType COMPLEMENT_EXPRESSION = new DLanguageElementType("COMPLEMENT_EXPRESSION");
+  IElementType CONDITION = new DLanguageElementType("CONDITION");
   IElementType CONDITIONAL_DECLARATION = new DLanguageElementType("CONDITIONAL_DECLARATION");
+  IElementType CONDITIONAL_EXPRESSION = new DLanguageElementType("CONDITIONAL_EXPRESSION");
   IElementType CONDITIONAL_STATEMENT = new DLanguageElementType("CONDITIONAL_STATEMENT");
   IElementType CONSTRAINT = new DLanguageElementType("CONSTRAINT");
   IElementType CONSTRUCTOR = new DLanguageElementType("CONSTRUCTOR");
+  IElementType CONSTRUCTOR_TEMPLATE = new DLanguageElementType("CONSTRUCTOR_TEMPLATE");
   IElementType CONTINUE_STATEMENT = new DLanguageElementType("CONTINUE_STATEMENT");
+  IElementType DEALLOCATOR = new DLanguageElementType("DEALLOCATOR");
   IElementType DEBUG_CONDITION = new DLanguageElementType("DEBUG_CONDITION");
   IElementType DEBUG_SPECIFICATION = new DLanguageElementType("DEBUG_SPECIFICATION");
   IElementType DECLARATION = new DLanguageElementType("DECLARATION");
-  IElementType DECLARATIONS_AND_STATEMENTS = new DLanguageElementType("DECLARATIONS_AND_STATEMENTS");
-  IElementType DECLARATION_2 = new DLanguageElementType("DECLARATION_2");
-  IElementType DECLARATION_OR_STATEMENT = new DLanguageElementType("DECLARATION_OR_STATEMENT");
+  IElementType DECLARATION_BLOCK = new DLanguageElementType("DECLARATION_BLOCK");
+  IElementType DECLARATION_STATEMENT = new DLanguageElementType("DECLARATION_STATEMENT");
   IElementType DECLARATOR = new DLanguageElementType("DECLARATOR");
+  IElementType DECLARATORS = new DLanguageElementType("DECLARATORS");
+  IElementType DECLARATOR_IDENTIFIER = new DLanguageElementType("DECLARATOR_IDENTIFIER");
+  IElementType DECLARATOR_IDENTIFIER_LIST = new DLanguageElementType("DECLARATOR_IDENTIFIER_LIST");
+  IElementType DECLARATOR_INITIALIZER = new DLanguageElementType("DECLARATOR_INITIALIZER");
+  IElementType DECL_DEF = new DLanguageElementType("DECL_DEF");
+  IElementType DECL_DEFS = new DLanguageElementType("DECL_DEFS");
   IElementType DEFAULT_STATEMENT = new DLanguageElementType("DEFAULT_STATEMENT");
   IElementType DELETE_EXPRESSION = new DLanguageElementType("DELETE_EXPRESSION");
-  IElementType DEPRECATED = new DLanguageElementType("DEPRECATED");
+  IElementType DEPRECATED_ATTRIBUTE = new DLanguageElementType("DEPRECATED_ATTRIBUTE");
   IElementType DESTRUCTOR = new DLanguageElementType("DESTRUCTOR");
   IElementType DO_STATEMENT = new DLanguageElementType("DO_STATEMENT");
+  IElementType ELSE_STATEMENT = new DLanguageElementType("ELSE_STATEMENT");
+  IElementType ENUM_BASE_TYPE = new DLanguageElementType("ENUM_BASE_TYPE");
   IElementType ENUM_BODY = new DLanguageElementType("ENUM_BODY");
   IElementType ENUM_DECLARATION = new DLanguageElementType("ENUM_DECLARATION");
   IElementType ENUM_MEMBER = new DLanguageElementType("ENUM_MEMBER");
-  IElementType EPONYMOUS_TEMPLATE_DECLARATION = new DLanguageElementType("EPONYMOUS_TEMPLATE_DECLARATION");
+  IElementType ENUM_MEMBERS = new DLanguageElementType("ENUM_MEMBERS");
   IElementType EQUAL_EXPRESSION = new DLanguageElementType("EQUAL_EXPRESSION");
   IElementType EXPRESSION = new DLanguageElementType("EXPRESSION");
   IElementType EXPRESSION_STATEMENT = new DLanguageElementType("EXPRESSION_STATEMENT");
-  IElementType FINALLY = new DLanguageElementType("FINALLY");
+  IElementType EXP_INITIALIZER = new DLanguageElementType("EXP_INITIALIZER");
+  IElementType FINALLY_STATEMENT = new DLanguageElementType("FINALLY_STATEMENT");
   IElementType FINAL_SWITCH_STATEMENT = new DLanguageElementType("FINAL_SWITCH_STATEMENT");
+  IElementType FIRST_EXP = new DLanguageElementType("FIRST_EXP");
+  IElementType FOREACH = new DLanguageElementType("FOREACH");
+  IElementType FOREACH_AGGREGATE = new DLanguageElementType("FOREACH_AGGREGATE");
+  IElementType FOREACH_RANGE_STATEMENT = new DLanguageElementType("FOREACH_RANGE_STATEMENT");
   IElementType FOREACH_STATEMENT = new DLanguageElementType("FOREACH_STATEMENT");
   IElementType FOREACH_TYPE = new DLanguageElementType("FOREACH_TYPE");
+  IElementType FOREACH_TYPE_ATTRIBUTE = new DLanguageElementType("FOREACH_TYPE_ATTRIBUTE");
+  IElementType FOREACH_TYPE_ATTRIBUTES = new DLanguageElementType("FOREACH_TYPE_ATTRIBUTES");
   IElementType FOREACH_TYPE_LIST = new DLanguageElementType("FOREACH_TYPE_LIST");
   IElementType FOR_STATEMENT = new DLanguageElementType("FOR_STATEMENT");
   IElementType FUNCTION_ATTRIBUTE = new DLanguageElementType("FUNCTION_ATTRIBUTE");
+  IElementType FUNCTION_ATTRIBUTES = new DLanguageElementType("FUNCTION_ATTRIBUTES");
   IElementType FUNCTION_BODY = new DLanguageElementType("FUNCTION_BODY");
-  IElementType FUNCTION_CALL_EXPRESSION = new DLanguageElementType("FUNCTION_CALL_EXPRESSION");
-  IElementType FUNCTION_CALL_STATEMENT = new DLanguageElementType("FUNCTION_CALL_STATEMENT");
-  IElementType FUNCTION_DECLARATION = new DLanguageElementType("FUNCTION_DECLARATION");
-  IElementType FUNCTION_LITERAL_EXPRESSION = new DLanguageElementType("FUNCTION_LITERAL_EXPRESSION");
+  IElementType FUNCTION_CONTRACTS = new DLanguageElementType("FUNCTION_CONTRACTS");
+  IElementType FUNCTION_LITERAL = new DLanguageElementType("FUNCTION_LITERAL");
+  IElementType FUNCTION_LITERAL_BODY = new DLanguageElementType("FUNCTION_LITERAL_BODY");
+  IElementType FUNC_DECLARATION = new DLanguageElementType("FUNC_DECLARATION");
+  IElementType FUNC_DECLARATOR = new DLanguageElementType("FUNC_DECLARATOR");
+  IElementType FUNC_DECLARATOR_SUFFIX = new DLanguageElementType("FUNC_DECLARATOR_SUFFIX");
   IElementType GOTO_STATEMENT = new DLanguageElementType("GOTO_STATEMENT");
   IElementType IDENTIFIER = new DLanguageElementType("IDENTIFIER");
-  IElementType IDENTIFIER_CHAIN = new DLanguageElementType("IDENTIFIER_CHAIN");
   IElementType IDENTIFIER_LIST = new DLanguageElementType("IDENTIFIER_LIST");
-  IElementType IDENTIFIER_OR_TEMPLATE_CHAIN = new DLanguageElementType("IDENTIFIER_OR_TEMPLATE_CHAIN");
-  IElementType IDENTIFIER_OR_TEMPLATE_INSTANCE = new DLanguageElementType("IDENTIFIER_OR_TEMPLATE_INSTANCE");
   IElementType IDENTITY_EXPRESSION = new DLanguageElementType("IDENTITY_EXPRESSION");
   IElementType IF_CONDITION = new DLanguageElementType("IF_CONDITION");
   IElementType IF_STATEMENT = new DLanguageElementType("IF_STATEMENT");
+  IElementType IMPORT = new DLanguageElementType("IMPORT");
   IElementType IMPORT_BIND = new DLanguageElementType("IMPORT_BIND");
-  IElementType IMPORT_BINDINGS = new DLanguageElementType("IMPORT_BINDINGS");
+  IElementType IMPORT_BIND_LIST = new DLanguageElementType("IMPORT_BIND_LIST");
   IElementType IMPORT_DECLARATION = new DLanguageElementType("IMPORT_DECLARATION");
   IElementType IMPORT_EXPRESSION = new DLanguageElementType("IMPORT_EXPRESSION");
+  IElementType IMPORT_LIST = new DLanguageElementType("IMPORT_LIST");
+  IElementType INCREMENT = new DLanguageElementType("INCREMENT");
+  IElementType INITIALIZE = new DLanguageElementType("INITIALIZE");
   IElementType INITIALIZER = new DLanguageElementType("INITIALIZER");
+  IElementType INTERFACE = new DLanguageElementType("INTERFACE");
+  IElementType INTERFACES = new DLanguageElementType("INTERFACES");
   IElementType INTERFACE_DECLARATION = new DLanguageElementType("INTERFACE_DECLARATION");
+  IElementType INTERFACE_TEMPLATE_DECLARATION = new DLanguageElementType("INTERFACE_TEMPLATE_DECLARATION");
   IElementType INVARIANT = new DLanguageElementType("INVARIANT");
   IElementType IN_EXPRESSION = new DLanguageElementType("IN_EXPRESSION");
+  IElementType IN_OUT = new DLanguageElementType("IN_OUT");
+  IElementType IN_OUT_X = new DLanguageElementType("IN_OUT_X");
   IElementType IN_STATEMENT = new DLanguageElementType("IN_STATEMENT");
   IElementType IS_EXPRESSION = new DLanguageElementType("IS_EXPRESSION");
+  IElementType KEY_EXPRESSION = new DLanguageElementType("KEY_EXPRESSION");
   IElementType KEY_VALUE_PAIR = new DLanguageElementType("KEY_VALUE_PAIR");
   IElementType KEY_VALUE_PAIRS = new DLanguageElementType("KEY_VALUE_PAIRS");
   IElementType LABELED_STATEMENT = new DLanguageElementType("LABELED_STATEMENT");
-  IElementType LAMBDA_EXPRESSION = new DLanguageElementType("LAMBDA_EXPRESSION");
+  IElementType LAMBDA = new DLanguageElementType("LAMBDA");
   IElementType LAST_CATCH = new DLanguageElementType("LAST_CATCH");
+  IElementType LAST_EXP = new DLanguageElementType("LAST_EXP");
   IElementType LINKAGE_ATTRIBUTE = new DLanguageElementType("LINKAGE_ATTRIBUTE");
+  IElementType LINKAGE_TYPE = new DLanguageElementType("LINKAGE_TYPE");
+  IElementType LWR_EXPRESSION = new DLanguageElementType("LWR_EXPRESSION");
   IElementType MEMBER_FUNCTION_ATTRIBUTE = new DLanguageElementType("MEMBER_FUNCTION_ATTRIBUTE");
+  IElementType MEMBER_FUNCTION_ATTRIBUTES = new DLanguageElementType("MEMBER_FUNCTION_ATTRIBUTES");
   IElementType MIXIN_DECLARATION = new DLanguageElementType("MIXIN_DECLARATION");
   IElementType MIXIN_EXPRESSION = new DLanguageElementType("MIXIN_EXPRESSION");
-  IElementType MIXIN_TEMPLATE_DECLARATION = new DLanguageElementType("MIXIN_TEMPLATE_DECLARATION");
+  IElementType MIXIN_STATEMENT = new DLanguageElementType("MIXIN_STATEMENT");
   IElementType MIXIN_TEMPLATE_NAME = new DLanguageElementType("MIXIN_TEMPLATE_NAME");
   IElementType MODULE_DECLARATION = new DLanguageElementType("MODULE_DECLARATION");
+  IElementType MODULE_FULLY_QUALIFIED_NAME = new DLanguageElementType("MODULE_FULLY_QUALIFIED_NAME");
   IElementType MUL_EXPRESSION = new DLanguageElementType("MUL_EXPRESSION");
   IElementType NEW_ANON_CLASS_EXPRESSION = new DLanguageElementType("NEW_ANON_CLASS_EXPRESSION");
   IElementType NEW_EXPRESSION = new DLanguageElementType("NEW_EXPRESSION");
+  IElementType NEW_EXPRESSION_WITH_ARGS = new DLanguageElementType("NEW_EXPRESSION_WITH_ARGS");
+  IElementType NON_EMPTY_OR_SCOPE_BLOCK_STATEMENT = new DLanguageElementType("NON_EMPTY_OR_SCOPE_BLOCK_STATEMENT");
+  IElementType NON_EMPTY_STATEMENT = new DLanguageElementType("NON_EMPTY_STATEMENT");
+  IElementType NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT = new DLanguageElementType("NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT");
   IElementType NON_VOID_INITIALIZER = new DLanguageElementType("NON_VOID_INITIALIZER");
-  IElementType OPERANDS = new DLanguageElementType("OPERANDS");
+  IElementType NO_SCOPE_NON_EMPTY_STATEMENT = new DLanguageElementType("NO_SCOPE_NON_EMPTY_STATEMENT");
+  IElementType NO_SCOPE_STATEMENT = new DLanguageElementType("NO_SCOPE_STATEMENT");
   IElementType OR_EXPRESSION = new DLanguageElementType("OR_EXPRESSION");
   IElementType OR_OR_EXPRESSION = new DLanguageElementType("OR_OR_EXPRESSION");
   IElementType OUT_STATEMENT = new DLanguageElementType("OUT_STATEMENT");
   IElementType PARAMETER = new DLanguageElementType("PARAMETER");
   IElementType PARAMETERS = new DLanguageElementType("PARAMETERS");
-  IElementType PARAMETER_ATTRIBUTE = new DLanguageElementType("PARAMETER_ATTRIBUTE");
+  IElementType PARAMETER_ATTRIBUTES = new DLanguageElementType("PARAMETER_ATTRIBUTES");
+  IElementType PARAMETER_LIST = new DLanguageElementType("PARAMETER_LIST");
+  IElementType PARAMETER_MEMBER_ATTRIBUTES = new DLanguageElementType("PARAMETER_MEMBER_ATTRIBUTES");
+  IElementType POSTBLIT = new DLanguageElementType("POSTBLIT");
+  IElementType POSTFIX_EXPRESSION = new DLanguageElementType("POSTFIX_EXPRESSION");
   IElementType POW_EXPRESSION = new DLanguageElementType("POW_EXPRESSION");
-  IElementType PRAGMA_DECLARATION = new DLanguageElementType("PRAGMA_DECLARATION");
-  IElementType PRAGMA_EXPRESSION = new DLanguageElementType("PRAGMA_EXPRESSION");
+  IElementType PRAGMA = new DLanguageElementType("PRAGMA");
+  IElementType PRAGMA_STATEMENT = new DLanguageElementType("PRAGMA_STATEMENT");
   IElementType PRIMARY_EXPRESSION = new DLanguageElementType("PRIMARY_EXPRESSION");
-  IElementType REGISTER = new DLanguageElementType("REGISTER");
+  IElementType PROPERTY = new DLanguageElementType("PROPERTY");
+  IElementType PROPERTY_IDENTIFIER = new DLanguageElementType("PROPERTY_IDENTIFIER");
+  IElementType PROTECTION_ATTRIBUTE = new DLanguageElementType("PROTECTION_ATTRIBUTE");
+  IElementType QUALIFIED_IDENTIFIER_LIST = new DLanguageElementType("QUALIFIED_IDENTIFIER_LIST");
   IElementType REL_EXPRESSION = new DLanguageElementType("REL_EXPRESSION");
-  IElementType REL_OPERATOR = new DLanguageElementType("REL_OPERATOR");
   IElementType RETURN_STATEMENT = new DLanguageElementType("RETURN_STATEMENT");
+  IElementType SCOPE_BLOCK_STATEMENT = new DLanguageElementType("SCOPE_BLOCK_STATEMENT");
   IElementType SCOPE_GUARD_STATEMENT = new DLanguageElementType("SCOPE_GUARD_STATEMENT");
+  IElementType SCOPE_STATEMENT = new DLanguageElementType("SCOPE_STATEMENT");
+  IElementType SCOPE_STATEMENT_LIST = new DLanguageElementType("SCOPE_STATEMENT_LIST");
   IElementType SHARED_STATIC_CONSTRUCTOR = new DLanguageElementType("SHARED_STATIC_CONSTRUCTOR");
   IElementType SHARED_STATIC_DESTRUCTOR = new DLanguageElementType("SHARED_STATIC_DESTRUCTOR");
   IElementType SHIFT_EXPRESSION = new DLanguageElementType("SHIFT_EXPRESSION");
-  IElementType SINGLE_IMPORT = new DLanguageElementType("SINGLE_IMPORT");
+  IElementType SPECIAL_KEYWORD = new DLanguageElementType("SPECIAL_KEYWORD");
   IElementType STATEMENT = new DLanguageElementType("STATEMENT");
+  IElementType STATEMENT_LIST = new DLanguageElementType("STATEMENT_LIST");
+  IElementType STATEMENT_LIST_NO_CASE_NO_DEFAULT = new DLanguageElementType("STATEMENT_LIST_NO_CASE_NO_DEFAULT");
   IElementType STATEMENT_NO_CASE_NO_DEFAULT = new DLanguageElementType("STATEMENT_NO_CASE_NO_DEFAULT");
-  IElementType STATIC_ASSERT_DECLARATION = new DLanguageElementType("STATIC_ASSERT_DECLARATION");
-  IElementType STATIC_ASSERT_STATEMENT = new DLanguageElementType("STATIC_ASSERT_STATEMENT");
+  IElementType STATIC_ASSERT = new DLanguageElementType("STATIC_ASSERT");
   IElementType STATIC_CONSTRUCTOR = new DLanguageElementType("STATIC_CONSTRUCTOR");
   IElementType STATIC_DESTRUCTOR = new DLanguageElementType("STATIC_DESTRUCTOR");
   IElementType STATIC_IF_CONDITION = new DLanguageElementType("STATIC_IF_CONDITION");
   IElementType STORAGE_CLASS = new DLanguageElementType("STORAGE_CLASS");
+  IElementType STORAGE_CLASSES = new DLanguageElementType("STORAGE_CLASSES");
   IElementType STRING_LITERAL = new DLanguageElementType("STRING_LITERAL");
-  IElementType STRUCT_BODY = new DLanguageElementType("STRUCT_BODY");
+  IElementType STRING_LITERALS = new DLanguageElementType("STRING_LITERALS");
   IElementType STRUCT_DECLARATION = new DLanguageElementType("STRUCT_DECLARATION");
   IElementType STRUCT_INITIALIZER = new DLanguageElementType("STRUCT_INITIALIZER");
   IElementType STRUCT_MEMBER_INITIALIZER = new DLanguageElementType("STRUCT_MEMBER_INITIALIZER");
   IElementType STRUCT_MEMBER_INITIALIZERS = new DLanguageElementType("STRUCT_MEMBER_INITIALIZERS");
+  IElementType STRUCT_TEMPLATE_DECLARATION = new DLanguageElementType("STRUCT_TEMPLATE_DECLARATION");
+  IElementType SUPER_CLASS = new DLanguageElementType("SUPER_CLASS");
   IElementType SWITCH_STATEMENT = new DLanguageElementType("SWITCH_STATEMENT");
   IElementType SYMBOL = new DLanguageElementType("SYMBOL");
+  IElementType SYMBOL_TAIL = new DLanguageElementType("SYMBOL_TAIL");
   IElementType SYNCHRONIZED_STATEMENT = new DLanguageElementType("SYNCHRONIZED_STATEMENT");
   IElementType TEMPLATE_ALIAS_PARAMETER = new DLanguageElementType("TEMPLATE_ALIAS_PARAMETER");
+  IElementType TEMPLATE_ALIAS_PARAMETER_DEFAULT = new DLanguageElementType("TEMPLATE_ALIAS_PARAMETER_DEFAULT");
+  IElementType TEMPLATE_ALIAS_PARAMETER_SPECIALIZATION = new DLanguageElementType("TEMPLATE_ALIAS_PARAMETER_SPECIALIZATION");
   IElementType TEMPLATE_ARGUMENT = new DLanguageElementType("TEMPLATE_ARGUMENT");
   IElementType TEMPLATE_ARGUMENTS = new DLanguageElementType("TEMPLATE_ARGUMENTS");
   IElementType TEMPLATE_ARGUMENT_LIST = new DLanguageElementType("TEMPLATE_ARGUMENT_LIST");
   IElementType TEMPLATE_DECLARATION = new DLanguageElementType("TEMPLATE_DECLARATION");
   IElementType TEMPLATE_INSTANCE = new DLanguageElementType("TEMPLATE_INSTANCE");
-  IElementType TEMPLATE_MIXIN_EXPRESSION = new DLanguageElementType("TEMPLATE_MIXIN_EXPRESSION");
+  IElementType TEMPLATE_MIXIN = new DLanguageElementType("TEMPLATE_MIXIN");
+  IElementType TEMPLATE_MIXIN_DECLARATION = new DLanguageElementType("TEMPLATE_MIXIN_DECLARATION");
   IElementType TEMPLATE_PARAMETER = new DLanguageElementType("TEMPLATE_PARAMETER");
   IElementType TEMPLATE_PARAMETERS = new DLanguageElementType("TEMPLATE_PARAMETERS");
   IElementType TEMPLATE_PARAMETER_LIST = new DLanguageElementType("TEMPLATE_PARAMETER_LIST");
@@ -184,27 +241,39 @@ public interface DLanguageTypes {
   IElementType TEMPLATE_THIS_PARAMETER = new DLanguageElementType("TEMPLATE_THIS_PARAMETER");
   IElementType TEMPLATE_TUPLE_PARAMETER = new DLanguageElementType("TEMPLATE_TUPLE_PARAMETER");
   IElementType TEMPLATE_TYPE_PARAMETER = new DLanguageElementType("TEMPLATE_TYPE_PARAMETER");
+  IElementType TEMPLATE_TYPE_PARAMETER_DEFAULT = new DLanguageElementType("TEMPLATE_TYPE_PARAMETER_DEFAULT");
+  IElementType TEMPLATE_TYPE_PARAMETER_SPECIALIZATION = new DLanguageElementType("TEMPLATE_TYPE_PARAMETER_SPECIALIZATION");
   IElementType TEMPLATE_VALUE_PARAMETER = new DLanguageElementType("TEMPLATE_VALUE_PARAMETER");
   IElementType TEMPLATE_VALUE_PARAMETER_DEFAULT = new DLanguageElementType("TEMPLATE_VALUE_PARAMETER_DEFAULT");
-  IElementType TERNARY_EXPRESSION = new DLanguageElementType("TERNARY_EXPRESSION");
+  IElementType TEMPLATE_VALUE_PARAMETER_SPECIALIZATION = new DLanguageElementType("TEMPLATE_VALUE_PARAMETER_SPECIALIZATION");
+  IElementType TEST = new DLanguageElementType("TEST");
+  IElementType THEN_STATEMENT = new DLanguageElementType("THEN_STATEMENT");
   IElementType THROW_STATEMENT = new DLanguageElementType("THROW_STATEMENT");
+  IElementType TRAITS_ARGUMENT = new DLanguageElementType("TRAITS_ARGUMENT");
+  IElementType TRAITS_ARGUMENTS = new DLanguageElementType("TRAITS_ARGUMENTS");
   IElementType TRAITS_EXPRESSION = new DLanguageElementType("TRAITS_EXPRESSION");
+  IElementType TRAITS_KEYWORD = new DLanguageElementType("TRAITS_KEYWORD");
   IElementType TRY_STATEMENT = new DLanguageElementType("TRY_STATEMENT");
   IElementType TYPE = new DLanguageElementType("TYPE");
   IElementType TYPEID_EXPRESSION = new DLanguageElementType("TYPEID_EXPRESSION");
-  IElementType TYPEOF_EXPRESSION = new DLanguageElementType("TYPEOF_EXPRESSION");
-  IElementType TYPE_2 = new DLanguageElementType("TYPE_2");
-  IElementType TYPE_CONSTRUCTOR = new DLanguageElementType("TYPE_CONSTRUCTOR");
-  IElementType TYPE_CONSTRUCTORS = new DLanguageElementType("TYPE_CONSTRUCTORS");
+  IElementType TYPEOF = new DLanguageElementType("TYPEOF");
+  IElementType TYPE_CTOR = new DLanguageElementType("TYPE_CTOR");
+  IElementType TYPE_CTORS = new DLanguageElementType("TYPE_CTORS");
   IElementType TYPE_SPECIALIZATION = new DLanguageElementType("TYPE_SPECIALIZATION");
-  IElementType TYPE_SUFFIX = new DLanguageElementType("TYPE_SUFFIX");
+  IElementType TYPE_VECTOR = new DLanguageElementType("TYPE_VECTOR");
   IElementType UNARY_EXPRESSION = new DLanguageElementType("UNARY_EXPRESSION");
   IElementType UNION_DECLARATION = new DLanguageElementType("UNION_DECLARATION");
-  IElementType UNITTEST = new DLanguageElementType("UNITTEST");
-  IElementType VARIABLE_DECLARATION = new DLanguageElementType("VARIABLE_DECLARATION");
-  IElementType VECTOR = new DLanguageElementType("VECTOR");
+  IElementType UNION_TEMPLATE_DECLARATION = new DLanguageElementType("UNION_TEMPLATE_DECLARATION");
+  IElementType UNIT_TEST = new DLanguageElementType("UNIT_TEST");
+  IElementType UPR_EXPRESSION = new DLanguageElementType("UPR_EXPRESSION");
+  IElementType USER_DEFINED_ATTRIBUTE = new DLanguageElementType("USER_DEFINED_ATTRIBUTE");
+  IElementType VALUE_EXPRESSION = new DLanguageElementType("VALUE_EXPRESSION");
+  IElementType VAR_DECLARATIONS = new DLanguageElementType("VAR_DECLARATIONS");
+  IElementType VAR_DECLARATOR = new DLanguageElementType("VAR_DECLARATOR");
+  IElementType VAR_DECLARATOR_IDENTIFIER = new DLanguageElementType("VAR_DECLARATOR_IDENTIFIER");
   IElementType VERSION_CONDITION = new DLanguageElementType("VERSION_CONDITION");
   IElementType VERSION_SPECIFICATION = new DLanguageElementType("VERSION_SPECIFICATION");
+  IElementType VOID_INITIALIZER = new DLanguageElementType("VOID_INITIALIZER");
   IElementType WHILE_STATEMENT = new DLanguageElementType("WHILE_STATEMENT");
   IElementType WITH_STATEMENT = new DLanguageElementType("WITH_STATEMENT");
   IElementType XOR_EXPRESSION = new DLanguageElementType("XOR_EXPRESSION");
@@ -400,17 +469,47 @@ public interface DLanguageTypes {
        if (type == ADD_EXPRESSION) {
         return new DLanguageAddExpressionImpl(node);
       }
+      else if (type == AGGREGATE_BODY) {
+        return new DLanguageAggregateBodyImpl(node);
+      }
+      else if (type == AGGREGATE_DECLARATION) {
+        return new DLanguageAggregateDeclarationImpl(node);
+      }
       else if (type == ALIAS_DECLARATION) {
         return new DLanguageAliasDeclarationImpl(node);
       }
-      else if (type == ALIAS_INITIALIZER) {
-        return new DLanguageAliasInitializerImpl(node);
+      else if (type == ALIAS_DECLARATION_X) {
+        return new DLanguageAliasDeclarationXImpl(node);
       }
-      else if (type == ALIAS_THIS_DECLARATION) {
-        return new DLanguageAliasThisDeclarationImpl(node);
+      else if (type == ALIAS_THIS) {
+        return new DLanguageAliasThisImpl(node);
       }
       else if (type == ALIGN_ATTRIBUTE) {
         return new DLanguageAlignAttributeImpl(node);
+      }
+      else if (type == ALLOCATOR) {
+        return new DLanguageAllocatorImpl(node);
+      }
+      else if (type == ALLOCATOR_ARGUMENTS) {
+        return new DLanguageAllocatorArgumentsImpl(node);
+      }
+      else if (type == ALT_DECLARATOR) {
+        return new DLanguageAltDeclaratorImpl(node);
+      }
+      else if (type == ALT_DECLARATOR_IDENTIFIER) {
+        return new DLanguageAltDeclaratorIdentifierImpl(node);
+      }
+      else if (type == ALT_DECLARATOR_SUFFIX) {
+        return new DLanguageAltDeclaratorSuffixImpl(node);
+      }
+      else if (type == ALT_DECLARATOR_SUFFIXES) {
+        return new DLanguageAltDeclaratorSuffixesImpl(node);
+      }
+      else if (type == ALT_DECLARATOR_X) {
+        return new DLanguageAltDeclaratorXImpl(node);
+      }
+      else if (type == ALT_FUNC_DECLARATOR_SUFFIX) {
+        return new DLanguageAltFuncDeclaratorSuffixImpl(node);
       }
       else if (type == AND_AND_EXPRESSION) {
         return new DLanguageAndAndExpressionImpl(node);
@@ -424,8 +523,14 @@ public interface DLanguageTypes {
       else if (type == ANONYMOUS_ENUM_MEMBER) {
         return new DLanguageAnonymousEnumMemberImpl(node);
       }
-      else if (type == ARGUMENTS) {
-        return new DLanguageArgumentsImpl(node);
+      else if (type == ANONYMOUS_ENUM_MEMBERS) {
+        return new DLanguageAnonymousEnumMembersImpl(node);
+      }
+      else if (type == ANON_STRUCT_DECLARATION) {
+        return new DLanguageAnonStructDeclarationImpl(node);
+      }
+      else if (type == ANON_UNION_DECLARATION) {
+        return new DLanguageAnonUnionDeclarationImpl(node);
       }
       else if (type == ARGUMENT_LIST) {
         return new DLanguageArgumentListImpl(node);
@@ -439,56 +544,8 @@ public interface DLanguageTypes {
       else if (type == ARRAY_MEMBER_INITIALIZATION) {
         return new DLanguageArrayMemberInitializationImpl(node);
       }
-      else if (type == ASM_ADD_EXP) {
-        return new DLanguageAsmAddExpImpl(node);
-      }
-      else if (type == ASM_AND_EXP) {
-        return new DLanguageAsmAndExpImpl(node);
-      }
-      else if (type == ASM_BR_EXP) {
-        return new DLanguageAsmBrExpImpl(node);
-      }
-      else if (type == ASM_EQUAL_EXP) {
-        return new DLanguageAsmEqualExpImpl(node);
-      }
-      else if (type == ASM_EXP) {
-        return new DLanguageAsmExpImpl(node);
-      }
-      else if (type == ASM_INSTRUCTION) {
-        return new DLanguageAsmInstructionImpl(node);
-      }
-      else if (type == ASM_LOG_AND_EXP) {
-        return new DLanguageAsmLogAndExpImpl(node);
-      }
-      else if (type == ASM_LOG_OR_EXP) {
-        return new DLanguageAsmLogOrExpImpl(node);
-      }
-      else if (type == ASM_MUL_EXP) {
-        return new DLanguageAsmMulExpImpl(node);
-      }
-      else if (type == ASM_OR_EXP) {
-        return new DLanguageAsmOrExpImpl(node);
-      }
-      else if (type == ASM_PRIMARY_EXP) {
-        return new DLanguageAsmPrimaryExpImpl(node);
-      }
-      else if (type == ASM_REL_EXP) {
-        return new DLanguageAsmRelExpImpl(node);
-      }
-      else if (type == ASM_SHIFT_EXP) {
-        return new DLanguageAsmShiftExpImpl(node);
-      }
-      else if (type == ASM_STATEMENT) {
-        return new DLanguageAsmStatementImpl(node);
-      }
-      else if (type == ASM_TYPE_PREFIX) {
-        return new DLanguageAsmTypePrefixImpl(node);
-      }
-      else if (type == ASM_UNA_EXP) {
-        return new DLanguageAsmUnaExpImpl(node);
-      }
-      else if (type == ASM_XOR_EXP) {
-        return new DLanguageAsmXorExpImpl(node);
+      else if (type == ARRAY_MEMBER_INITIALIZATIONS) {
+        return new DLanguageArrayMemberInitializationsImpl(node);
       }
       else if (type == ASSERT_EXPRESSION) {
         return new DLanguageAssertExpressionImpl(node);
@@ -496,29 +553,41 @@ public interface DLanguageTypes {
       else if (type == ASSIGN_EXPRESSION) {
         return new DLanguageAssignExpressionImpl(node);
       }
-      else if (type == ASSIGN_OPERATOR) {
-        return new DLanguageAssignOperatorImpl(node);
-      }
       else if (type == ASSOC_ARRAY_LITERAL) {
         return new DLanguageAssocArrayLiteralImpl(node);
       }
       else if (type == ATTRIBUTE) {
         return new DLanguageAttributeImpl(node);
       }
-      else if (type == ATTRIBUTE_DECLARATION) {
-        return new DLanguageAttributeDeclarationImpl(node);
-      }
-      else if (type == AT_ATTRIBUTE) {
-        return new DLanguageAtAttributeImpl(node);
+      else if (type == ATTRIBUTE_SPECIFIER) {
+        return new DLanguageAttributeSpecifierImpl(node);
       }
       else if (type == AUTO_DECLARATION) {
         return new DLanguageAutoDeclarationImpl(node);
       }
-      else if (type == BASE_CLASS) {
-        return new DLanguageBaseClassImpl(node);
+      else if (type == AUTO_DECLARATION_X) {
+        return new DLanguageAutoDeclarationXImpl(node);
+      }
+      else if (type == AUTO_FUNC_DECLARATION) {
+        return new DLanguageAutoFuncDeclarationImpl(node);
       }
       else if (type == BASE_CLASS_LIST) {
         return new DLanguageBaseClassListImpl(node);
+      }
+      else if (type == BASE_INTERFACE_LIST) {
+        return new DLanguageBaseInterfaceListImpl(node);
+      }
+      else if (type == BASIC_TYPE) {
+        return new DLanguageBasicTypeImpl(node);
+      }
+      else if (type == BASIC_TYPE_2) {
+        return new DLanguageBasicType2Impl(node);
+      }
+      else if (type == BASIC_TYPE_2_X) {
+        return new DLanguageBasicType2XImpl(node);
+      }
+      else if (type == BASIC_TYPE_X) {
+        return new DLanguageBasicTypeXImpl(node);
       }
       else if (type == BLOCK_STATEMENT) {
         return new DLanguageBlockStatementImpl(node);
@@ -529,9 +598,6 @@ public interface DLanguageTypes {
       else if (type == BREAK_STATEMENT) {
         return new DLanguageBreakStatementImpl(node);
       }
-      else if (type == BUILTIN_TYPE) {
-        return new DLanguageBuiltinTypeImpl(node);
-      }
       else if (type == CASE_RANGE_STATEMENT) {
         return new DLanguageCaseRangeStatementImpl(node);
       }
@@ -541,26 +607,41 @@ public interface DLanguageTypes {
       else if (type == CAST_EXPRESSION) {
         return new DLanguageCastExpressionImpl(node);
       }
-      else if (type == CAST_QUALIFIER) {
-        return new DLanguageCastQualifierImpl(node);
-      }
       else if (type == CATCH) {
         return new DLanguageCatchImpl(node);
       }
       else if (type == CATCHES) {
         return new DLanguageCatchesImpl(node);
       }
+      else if (type == CATCH_PARAMETER) {
+        return new DLanguageCatchParameterImpl(node);
+      }
+      else if (type == CLASS_ARGUMENTS) {
+        return new DLanguageClassArgumentsImpl(node);
+      }
       else if (type == CLASS_DECLARATION) {
         return new DLanguageClassDeclarationImpl(node);
+      }
+      else if (type == CLASS_TEMPLATE_DECLARATION) {
+        return new DLanguageClassTemplateDeclarationImpl(node);
       }
       else if (type == CMP_EXPRESSION) {
         return new DLanguageCmpExpressionImpl(node);
       }
-      else if (type == COMPILE_CONDITION) {
-        return new DLanguageCompileConditionImpl(node);
+      else if (type == COMMA_EXPRESSION) {
+        return new DLanguageCommaExpressionImpl(node);
+      }
+      else if (type == COMPLEMENT_EXPRESSION) {
+        return new DLanguageComplementExpressionImpl(node);
+      }
+      else if (type == CONDITION) {
+        return new DLanguageConditionImpl(node);
       }
       else if (type == CONDITIONAL_DECLARATION) {
         return new DLanguageConditionalDeclarationImpl(node);
+      }
+      else if (type == CONDITIONAL_EXPRESSION) {
+        return new DLanguageConditionalExpressionImpl(node);
       }
       else if (type == CONDITIONAL_STATEMENT) {
         return new DLanguageConditionalStatementImpl(node);
@@ -571,8 +652,14 @@ public interface DLanguageTypes {
       else if (type == CONSTRUCTOR) {
         return new DLanguageConstructorImpl(node);
       }
+      else if (type == CONSTRUCTOR_TEMPLATE) {
+        return new DLanguageConstructorTemplateImpl(node);
+      }
       else if (type == CONTINUE_STATEMENT) {
         return new DLanguageContinueStatementImpl(node);
+      }
+      else if (type == DEALLOCATOR) {
+        return new DLanguageDeallocatorImpl(node);
       }
       else if (type == DEBUG_CONDITION) {
         return new DLanguageDebugConditionImpl(node);
@@ -583,17 +670,32 @@ public interface DLanguageTypes {
       else if (type == DECLARATION) {
         return new DLanguageDeclarationImpl(node);
       }
-      else if (type == DECLARATIONS_AND_STATEMENTS) {
-        return new DLanguageDeclarationsAndStatementsImpl(node);
+      else if (type == DECLARATION_BLOCK) {
+        return new DLanguageDeclarationBlockImpl(node);
       }
-      else if (type == DECLARATION_2) {
-        return new DLanguageDeclaration2Impl(node);
-      }
-      else if (type == DECLARATION_OR_STATEMENT) {
-        return new DLanguageDeclarationOrStatementImpl(node);
+      else if (type == DECLARATION_STATEMENT) {
+        return new DLanguageDeclarationStatementImpl(node);
       }
       else if (type == DECLARATOR) {
         return new DLanguageDeclaratorImpl(node);
+      }
+      else if (type == DECLARATORS) {
+        return new DLanguageDeclaratorsImpl(node);
+      }
+      else if (type == DECLARATOR_IDENTIFIER) {
+        return new DLanguageDeclaratorIdentifierImpl(node);
+      }
+      else if (type == DECLARATOR_IDENTIFIER_LIST) {
+        return new DLanguageDeclaratorIdentifierListImpl(node);
+      }
+      else if (type == DECLARATOR_INITIALIZER) {
+        return new DLanguageDeclaratorInitializerImpl(node);
+      }
+      else if (type == DECL_DEF) {
+        return new DLanguageDeclDefImpl(node);
+      }
+      else if (type == DECL_DEFS) {
+        return new DLanguageDeclDefsImpl(node);
       }
       else if (type == DEFAULT_STATEMENT) {
         return new DLanguageDefaultStatementImpl(node);
@@ -601,14 +703,20 @@ public interface DLanguageTypes {
       else if (type == DELETE_EXPRESSION) {
         return new DLanguageDeleteExpressionImpl(node);
       }
-      else if (type == DEPRECATED) {
-        return new DLanguageDeprecatedImpl(node);
+      else if (type == DEPRECATED_ATTRIBUTE) {
+        return new DLanguageDeprecatedAttributeImpl(node);
       }
       else if (type == DESTRUCTOR) {
         return new DLanguageDestructorImpl(node);
       }
       else if (type == DO_STATEMENT) {
         return new DLanguageDoStatementImpl(node);
+      }
+      else if (type == ELSE_STATEMENT) {
+        return new DLanguageElseStatementImpl(node);
+      }
+      else if (type == ENUM_BASE_TYPE) {
+        return new DLanguageEnumBaseTypeImpl(node);
       }
       else if (type == ENUM_BODY) {
         return new DLanguageEnumBodyImpl(node);
@@ -619,8 +727,8 @@ public interface DLanguageTypes {
       else if (type == ENUM_MEMBER) {
         return new DLanguageEnumMemberImpl(node);
       }
-      else if (type == EPONYMOUS_TEMPLATE_DECLARATION) {
-        return new DLanguageEponymousTemplateDeclarationImpl(node);
+      else if (type == ENUM_MEMBERS) {
+        return new DLanguageEnumMembersImpl(node);
       }
       else if (type == EQUAL_EXPRESSION) {
         return new DLanguageEqualExpressionImpl(node);
@@ -631,17 +739,38 @@ public interface DLanguageTypes {
       else if (type == EXPRESSION_STATEMENT) {
         return new DLanguageExpressionStatementImpl(node);
       }
-      else if (type == FINALLY) {
-        return new DLanguageFinallyImpl(node);
+      else if (type == EXP_INITIALIZER) {
+        return new DLanguageExpInitializerImpl(node);
+      }
+      else if (type == FINALLY_STATEMENT) {
+        return new DLanguageFinallyStatementImpl(node);
       }
       else if (type == FINAL_SWITCH_STATEMENT) {
         return new DLanguageFinalSwitchStatementImpl(node);
+      }
+      else if (type == FIRST_EXP) {
+        return new DLanguageFirstExpImpl(node);
+      }
+      else if (type == FOREACH) {
+        return new DLanguageForeachImpl(node);
+      }
+      else if (type == FOREACH_AGGREGATE) {
+        return new DLanguageForeachAggregateImpl(node);
+      }
+      else if (type == FOREACH_RANGE_STATEMENT) {
+        return new DLanguageForeachRangeStatementImpl(node);
       }
       else if (type == FOREACH_STATEMENT) {
         return new DLanguageForeachStatementImpl(node);
       }
       else if (type == FOREACH_TYPE) {
         return new DLanguageForeachTypeImpl(node);
+      }
+      else if (type == FOREACH_TYPE_ATTRIBUTE) {
+        return new DLanguageForeachTypeAttributeImpl(node);
+      }
+      else if (type == FOREACH_TYPE_ATTRIBUTES) {
+        return new DLanguageForeachTypeAttributesImpl(node);
       }
       else if (type == FOREACH_TYPE_LIST) {
         return new DLanguageForeachTypeListImpl(node);
@@ -652,20 +781,29 @@ public interface DLanguageTypes {
       else if (type == FUNCTION_ATTRIBUTE) {
         return new DLanguageFunctionAttributeImpl(node);
       }
+      else if (type == FUNCTION_ATTRIBUTES) {
+        return new DLanguageFunctionAttributesImpl(node);
+      }
       else if (type == FUNCTION_BODY) {
         return new DLanguageFunctionBodyImpl(node);
       }
-      else if (type == FUNCTION_CALL_EXPRESSION) {
-        return new DLanguageFunctionCallExpressionImpl(node);
+      else if (type == FUNCTION_CONTRACTS) {
+        return new DLanguageFunctionContractsImpl(node);
       }
-      else if (type == FUNCTION_CALL_STATEMENT) {
-        return new DLanguageFunctionCallStatementImpl(node);
+      else if (type == FUNCTION_LITERAL) {
+        return new DLanguageFunctionLiteralImpl(node);
       }
-      else if (type == FUNCTION_DECLARATION) {
-        return new DLanguageFunctionDeclarationImpl(node);
+      else if (type == FUNCTION_LITERAL_BODY) {
+        return new DLanguageFunctionLiteralBodyImpl(node);
       }
-      else if (type == FUNCTION_LITERAL_EXPRESSION) {
-        return new DLanguageFunctionLiteralExpressionImpl(node);
+      else if (type == FUNC_DECLARATION) {
+        return new DLanguageFuncDeclarationImpl(node);
+      }
+      else if (type == FUNC_DECLARATOR) {
+        return new DLanguageFuncDeclaratorImpl(node);
+      }
+      else if (type == FUNC_DECLARATOR_SUFFIX) {
+        return new DLanguageFuncDeclaratorSuffixImpl(node);
       }
       else if (type == GOTO_STATEMENT) {
         return new DLanguageGotoStatementImpl(node);
@@ -673,17 +811,8 @@ public interface DLanguageTypes {
       else if (type == IDENTIFIER) {
         return new DLanguageIdentifierImpl(node);
       }
-      else if (type == IDENTIFIER_CHAIN) {
-        return new DLanguageIdentifierChainImpl(node);
-      }
       else if (type == IDENTIFIER_LIST) {
         return new DLanguageIdentifierListImpl(node);
-      }
-      else if (type == IDENTIFIER_OR_TEMPLATE_CHAIN) {
-        return new DLanguageIdentifierOrTemplateChainImpl(node);
-      }
-      else if (type == IDENTIFIER_OR_TEMPLATE_INSTANCE) {
-        return new DLanguageIdentifierOrTemplateInstanceImpl(node);
       }
       else if (type == IDENTITY_EXPRESSION) {
         return new DLanguageIdentityExpressionImpl(node);
@@ -694,11 +823,14 @@ public interface DLanguageTypes {
       else if (type == IF_STATEMENT) {
         return new DLanguageIfStatementImpl(node);
       }
+      else if (type == IMPORT) {
+        return new DLanguageImportImpl(node);
+      }
       else if (type == IMPORT_BIND) {
         return new DLanguageImportBindImpl(node);
       }
-      else if (type == IMPORT_BINDINGS) {
-        return new DLanguageImportBindingsImpl(node);
+      else if (type == IMPORT_BIND_LIST) {
+        return new DLanguageImportBindListImpl(node);
       }
       else if (type == IMPORT_DECLARATION) {
         return new DLanguageImportDeclarationImpl(node);
@@ -706,11 +838,29 @@ public interface DLanguageTypes {
       else if (type == IMPORT_EXPRESSION) {
         return new DLanguageImportExpressionImpl(node);
       }
+      else if (type == IMPORT_LIST) {
+        return new DLanguageImportListImpl(node);
+      }
+      else if (type == INCREMENT) {
+        return new DLanguageIncrementImpl(node);
+      }
+      else if (type == INITIALIZE) {
+        return new DLanguageInitializeImpl(node);
+      }
       else if (type == INITIALIZER) {
         return new DLanguageInitializerImpl(node);
       }
+      else if (type == INTERFACE) {
+        return new DLanguageInterfaceImpl(node);
+      }
+      else if (type == INTERFACES) {
+        return new DLanguageInterfacesImpl(node);
+      }
       else if (type == INTERFACE_DECLARATION) {
         return new DLanguageInterfaceDeclarationImpl(node);
+      }
+      else if (type == INTERFACE_TEMPLATE_DECLARATION) {
+        return new DLanguageInterfaceTemplateDeclarationImpl(node);
       }
       else if (type == INVARIANT) {
         return new DLanguageInvariantImpl(node);
@@ -718,11 +868,20 @@ public interface DLanguageTypes {
       else if (type == IN_EXPRESSION) {
         return new DLanguageInExpressionImpl(node);
       }
+      else if (type == IN_OUT) {
+        return new DLanguageInOutImpl(node);
+      }
+      else if (type == IN_OUT_X) {
+        return new DLanguageInOutXImpl(node);
+      }
       else if (type == IN_STATEMENT) {
         return new DLanguageInStatementImpl(node);
       }
       else if (type == IS_EXPRESSION) {
         return new DLanguageIsExpressionImpl(node);
+      }
+      else if (type == KEY_EXPRESSION) {
+        return new DLanguageKeyExpressionImpl(node);
       }
       else if (type == KEY_VALUE_PAIR) {
         return new DLanguageKeyValuePairImpl(node);
@@ -733,17 +892,29 @@ public interface DLanguageTypes {
       else if (type == LABELED_STATEMENT) {
         return new DLanguageLabeledStatementImpl(node);
       }
-      else if (type == LAMBDA_EXPRESSION) {
-        return new DLanguageLambdaExpressionImpl(node);
+      else if (type == LAMBDA) {
+        return new DLanguageLambdaImpl(node);
       }
       else if (type == LAST_CATCH) {
         return new DLanguageLastCatchImpl(node);
       }
+      else if (type == LAST_EXP) {
+        return new DLanguageLastExpImpl(node);
+      }
       else if (type == LINKAGE_ATTRIBUTE) {
         return new DLanguageLinkageAttributeImpl(node);
       }
+      else if (type == LINKAGE_TYPE) {
+        return new DLanguageLinkageTypeImpl(node);
+      }
+      else if (type == LWR_EXPRESSION) {
+        return new DLanguageLwrExpressionImpl(node);
+      }
       else if (type == MEMBER_FUNCTION_ATTRIBUTE) {
         return new DLanguageMemberFunctionAttributeImpl(node);
+      }
+      else if (type == MEMBER_FUNCTION_ATTRIBUTES) {
+        return new DLanguageMemberFunctionAttributesImpl(node);
       }
       else if (type == MIXIN_DECLARATION) {
         return new DLanguageMixinDeclarationImpl(node);
@@ -751,14 +922,17 @@ public interface DLanguageTypes {
       else if (type == MIXIN_EXPRESSION) {
         return new DLanguageMixinExpressionImpl(node);
       }
-      else if (type == MIXIN_TEMPLATE_DECLARATION) {
-        return new DLanguageMixinTemplateDeclarationImpl(node);
+      else if (type == MIXIN_STATEMENT) {
+        return new DLanguageMixinStatementImpl(node);
       }
       else if (type == MIXIN_TEMPLATE_NAME) {
         return new DLanguageMixinTemplateNameImpl(node);
       }
       else if (type == MODULE_DECLARATION) {
         return new DLanguageModuleDeclarationImpl(node);
+      }
+      else if (type == MODULE_FULLY_QUALIFIED_NAME) {
+        return new DLanguageModuleFullyQualifiedNameImpl(node);
       }
       else if (type == MUL_EXPRESSION) {
         return new DLanguageMulExpressionImpl(node);
@@ -769,11 +943,26 @@ public interface DLanguageTypes {
       else if (type == NEW_EXPRESSION) {
         return new DLanguageNewExpressionImpl(node);
       }
+      else if (type == NEW_EXPRESSION_WITH_ARGS) {
+        return new DLanguageNewExpressionWithArgsImpl(node);
+      }
+      else if (type == NON_EMPTY_OR_SCOPE_BLOCK_STATEMENT) {
+        return new DLanguageNonEmptyOrScopeBlockStatementImpl(node);
+      }
+      else if (type == NON_EMPTY_STATEMENT) {
+        return new DLanguageNonEmptyStatementImpl(node);
+      }
+      else if (type == NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT) {
+        return new DLanguageNonEmptyStatementNoCaseNoDefaultImpl(node);
+      }
       else if (type == NON_VOID_INITIALIZER) {
         return new DLanguageNonVoidInitializerImpl(node);
       }
-      else if (type == OPERANDS) {
-        return new DLanguageOperandsImpl(node);
+      else if (type == NO_SCOPE_NON_EMPTY_STATEMENT) {
+        return new DLanguageNoScopeNonEmptyStatementImpl(node);
+      }
+      else if (type == NO_SCOPE_STATEMENT) {
+        return new DLanguageNoScopeStatementImpl(node);
       }
       else if (type == OR_EXPRESSION) {
         return new DLanguageOrExpressionImpl(node);
@@ -790,35 +979,62 @@ public interface DLanguageTypes {
       else if (type == PARAMETERS) {
         return new DLanguageParametersImpl(node);
       }
-      else if (type == PARAMETER_ATTRIBUTE) {
-        return new DLanguageParameterAttributeImpl(node);
+      else if (type == PARAMETER_ATTRIBUTES) {
+        return new DLanguageParameterAttributesImpl(node);
+      }
+      else if (type == PARAMETER_LIST) {
+        return new DLanguageParameterListImpl(node);
+      }
+      else if (type == PARAMETER_MEMBER_ATTRIBUTES) {
+        return new DLanguageParameterMemberAttributesImpl(node);
+      }
+      else if (type == POSTBLIT) {
+        return new DLanguagePostblitImpl(node);
+      }
+      else if (type == POSTFIX_EXPRESSION) {
+        return new DLanguagePostfixExpressionImpl(node);
       }
       else if (type == POW_EXPRESSION) {
         return new DLanguagePowExpressionImpl(node);
       }
-      else if (type == PRAGMA_DECLARATION) {
-        return new DLanguagePragmaDeclarationImpl(node);
+      else if (type == PRAGMA) {
+        return new DLanguagePragmaImpl(node);
       }
-      else if (type == PRAGMA_EXPRESSION) {
-        return new DLanguagePragmaExpressionImpl(node);
+      else if (type == PRAGMA_STATEMENT) {
+        return new DLanguagePragmaStatementImpl(node);
       }
       else if (type == PRIMARY_EXPRESSION) {
         return new DLanguagePrimaryExpressionImpl(node);
       }
-      else if (type == REGISTER) {
-        return new DLanguageRegisterImpl(node);
+      else if (type == PROPERTY) {
+        return new DLanguagePropertyImpl(node);
+      }
+      else if (type == PROPERTY_IDENTIFIER) {
+        return new DLanguagePropertyIdentifierImpl(node);
+      }
+      else if (type == PROTECTION_ATTRIBUTE) {
+        return new DLanguageProtectionAttributeImpl(node);
+      }
+      else if (type == QUALIFIED_IDENTIFIER_LIST) {
+        return new DLanguageQualifiedIdentifierListImpl(node);
       }
       else if (type == REL_EXPRESSION) {
         return new DLanguageRelExpressionImpl(node);
       }
-      else if (type == REL_OPERATOR) {
-        return new DLanguageRelOperatorImpl(node);
-      }
       else if (type == RETURN_STATEMENT) {
         return new DLanguageReturnStatementImpl(node);
       }
+      else if (type == SCOPE_BLOCK_STATEMENT) {
+        return new DLanguageScopeBlockStatementImpl(node);
+      }
       else if (type == SCOPE_GUARD_STATEMENT) {
         return new DLanguageScopeGuardStatementImpl(node);
+      }
+      else if (type == SCOPE_STATEMENT) {
+        return new DLanguageScopeStatementImpl(node);
+      }
+      else if (type == SCOPE_STATEMENT_LIST) {
+        return new DLanguageScopeStatementListImpl(node);
       }
       else if (type == SHARED_STATIC_CONSTRUCTOR) {
         return new DLanguageSharedStaticConstructorImpl(node);
@@ -829,20 +1045,23 @@ public interface DLanguageTypes {
       else if (type == SHIFT_EXPRESSION) {
         return new DLanguageShiftExpressionImpl(node);
       }
-      else if (type == SINGLE_IMPORT) {
-        return new DLanguageSingleImportImpl(node);
+      else if (type == SPECIAL_KEYWORD) {
+        return new DLanguageSpecialKeywordImpl(node);
       }
       else if (type == STATEMENT) {
         return new DLanguageStatementImpl(node);
       }
+      else if (type == STATEMENT_LIST) {
+        return new DLanguageStatementListImpl(node);
+      }
+      else if (type == STATEMENT_LIST_NO_CASE_NO_DEFAULT) {
+        return new DLanguageStatementListNoCaseNoDefaultImpl(node);
+      }
       else if (type == STATEMENT_NO_CASE_NO_DEFAULT) {
         return new DLanguageStatementNoCaseNoDefaultImpl(node);
       }
-      else if (type == STATIC_ASSERT_DECLARATION) {
-        return new DLanguageStaticAssertDeclarationImpl(node);
-      }
-      else if (type == STATIC_ASSERT_STATEMENT) {
-        return new DLanguageStaticAssertStatementImpl(node);
+      else if (type == STATIC_ASSERT) {
+        return new DLanguageStaticAssertImpl(node);
       }
       else if (type == STATIC_CONSTRUCTOR) {
         return new DLanguageStaticConstructorImpl(node);
@@ -856,11 +1075,14 @@ public interface DLanguageTypes {
       else if (type == STORAGE_CLASS) {
         return new DLanguageStorageClassImpl(node);
       }
+      else if (type == STORAGE_CLASSES) {
+        return new DLanguageStorageClassesImpl(node);
+      }
       else if (type == STRING_LITERAL) {
         return new DLanguageStringLiteralImpl(node);
       }
-      else if (type == STRUCT_BODY) {
-        return new DLanguageStructBodyImpl(node);
+      else if (type == STRING_LITERALS) {
+        return new DLanguageStringLiteralsImpl(node);
       }
       else if (type == STRUCT_DECLARATION) {
         return new DLanguageStructDeclarationImpl(node);
@@ -874,17 +1096,32 @@ public interface DLanguageTypes {
       else if (type == STRUCT_MEMBER_INITIALIZERS) {
         return new DLanguageStructMemberInitializersImpl(node);
       }
+      else if (type == STRUCT_TEMPLATE_DECLARATION) {
+        return new DLanguageStructTemplateDeclarationImpl(node);
+      }
+      else if (type == SUPER_CLASS) {
+        return new DLanguageSuperClassImpl(node);
+      }
       else if (type == SWITCH_STATEMENT) {
         return new DLanguageSwitchStatementImpl(node);
       }
       else if (type == SYMBOL) {
         return new DLanguageSymbolImpl(node);
       }
+      else if (type == SYMBOL_TAIL) {
+        return new DLanguageSymbolTailImpl(node);
+      }
       else if (type == SYNCHRONIZED_STATEMENT) {
         return new DLanguageSynchronizedStatementImpl(node);
       }
       else if (type == TEMPLATE_ALIAS_PARAMETER) {
         return new DLanguageTemplateAliasParameterImpl(node);
+      }
+      else if (type == TEMPLATE_ALIAS_PARAMETER_DEFAULT) {
+        return new DLanguageTemplateAliasParameterDefaultImpl(node);
+      }
+      else if (type == TEMPLATE_ALIAS_PARAMETER_SPECIALIZATION) {
+        return new DLanguageTemplateAliasParameterSpecializationImpl(node);
       }
       else if (type == TEMPLATE_ARGUMENT) {
         return new DLanguageTemplateArgumentImpl(node);
@@ -901,8 +1138,11 @@ public interface DLanguageTypes {
       else if (type == TEMPLATE_INSTANCE) {
         return new DLanguageTemplateInstanceImpl(node);
       }
-      else if (type == TEMPLATE_MIXIN_EXPRESSION) {
-        return new DLanguageTemplateMixinExpressionImpl(node);
+      else if (type == TEMPLATE_MIXIN) {
+        return new DLanguageTemplateMixinImpl(node);
+      }
+      else if (type == TEMPLATE_MIXIN_DECLARATION) {
+        return new DLanguageTemplateMixinDeclarationImpl(node);
       }
       else if (type == TEMPLATE_PARAMETER) {
         return new DLanguageTemplateParameterImpl(node);
@@ -925,20 +1165,41 @@ public interface DLanguageTypes {
       else if (type == TEMPLATE_TYPE_PARAMETER) {
         return new DLanguageTemplateTypeParameterImpl(node);
       }
+      else if (type == TEMPLATE_TYPE_PARAMETER_DEFAULT) {
+        return new DLanguageTemplateTypeParameterDefaultImpl(node);
+      }
+      else if (type == TEMPLATE_TYPE_PARAMETER_SPECIALIZATION) {
+        return new DLanguageTemplateTypeParameterSpecializationImpl(node);
+      }
       else if (type == TEMPLATE_VALUE_PARAMETER) {
         return new DLanguageTemplateValueParameterImpl(node);
       }
       else if (type == TEMPLATE_VALUE_PARAMETER_DEFAULT) {
         return new DLanguageTemplateValueParameterDefaultImpl(node);
       }
-      else if (type == TERNARY_EXPRESSION) {
-        return new DLanguageTernaryExpressionImpl(node);
+      else if (type == TEMPLATE_VALUE_PARAMETER_SPECIALIZATION) {
+        return new DLanguageTemplateValueParameterSpecializationImpl(node);
+      }
+      else if (type == TEST) {
+        return new DLanguageTestImpl(node);
+      }
+      else if (type == THEN_STATEMENT) {
+        return new DLanguageThenStatementImpl(node);
       }
       else if (type == THROW_STATEMENT) {
         return new DLanguageThrowStatementImpl(node);
       }
+      else if (type == TRAITS_ARGUMENT) {
+        return new DLanguageTraitsArgumentImpl(node);
+      }
+      else if (type == TRAITS_ARGUMENTS) {
+        return new DLanguageTraitsArgumentsImpl(node);
+      }
       else if (type == TRAITS_EXPRESSION) {
         return new DLanguageTraitsExpressionImpl(node);
+      }
+      else if (type == TRAITS_KEYWORD) {
+        return new DLanguageTraitsKeywordImpl(node);
       }
       else if (type == TRY_STATEMENT) {
         return new DLanguageTryStatementImpl(node);
@@ -949,23 +1210,20 @@ public interface DLanguageTypes {
       else if (type == TYPEID_EXPRESSION) {
         return new DLanguageTypeidExpressionImpl(node);
       }
-      else if (type == TYPEOF_EXPRESSION) {
-        return new DLanguageTypeofExpressionImpl(node);
+      else if (type == TYPEOF) {
+        return new DLanguageTypeofImpl(node);
       }
-      else if (type == TYPE_2) {
-        return new DLanguageType2Impl(node);
+      else if (type == TYPE_CTOR) {
+        return new DLanguageTypeCtorImpl(node);
       }
-      else if (type == TYPE_CONSTRUCTOR) {
-        return new DLanguageTypeConstructorImpl(node);
-      }
-      else if (type == TYPE_CONSTRUCTORS) {
-        return new DLanguageTypeConstructorsImpl(node);
+      else if (type == TYPE_CTORS) {
+        return new DLanguageTypeCtorsImpl(node);
       }
       else if (type == TYPE_SPECIALIZATION) {
         return new DLanguageTypeSpecializationImpl(node);
       }
-      else if (type == TYPE_SUFFIX) {
-        return new DLanguageTypeSuffixImpl(node);
+      else if (type == TYPE_VECTOR) {
+        return new DLanguageTypeVectorImpl(node);
       }
       else if (type == UNARY_EXPRESSION) {
         return new DLanguageUnaryExpressionImpl(node);
@@ -973,20 +1231,38 @@ public interface DLanguageTypes {
       else if (type == UNION_DECLARATION) {
         return new DLanguageUnionDeclarationImpl(node);
       }
-      else if (type == UNITTEST) {
-        return new DLanguageUnittestImpl(node);
+      else if (type == UNION_TEMPLATE_DECLARATION) {
+        return new DLanguageUnionTemplateDeclarationImpl(node);
       }
-      else if (type == VARIABLE_DECLARATION) {
-        return new DLanguageVariableDeclarationImpl(node);
+      else if (type == UNIT_TEST) {
+        return new DLanguageUnitTestImpl(node);
       }
-      else if (type == VECTOR) {
-        return new DLanguageVectorImpl(node);
+      else if (type == UPR_EXPRESSION) {
+        return new DLanguageUprExpressionImpl(node);
+      }
+      else if (type == USER_DEFINED_ATTRIBUTE) {
+        return new DLanguageUserDefinedAttributeImpl(node);
+      }
+      else if (type == VALUE_EXPRESSION) {
+        return new DLanguageValueExpressionImpl(node);
+      }
+      else if (type == VAR_DECLARATIONS) {
+        return new DLanguageVarDeclarationsImpl(node);
+      }
+      else if (type == VAR_DECLARATOR) {
+        return new DLanguageVarDeclaratorImpl(node);
+      }
+      else if (type == VAR_DECLARATOR_IDENTIFIER) {
+        return new DLanguageVarDeclaratorIdentifierImpl(node);
       }
       else if (type == VERSION_CONDITION) {
         return new DLanguageVersionConditionImpl(node);
       }
       else if (type == VERSION_SPECIFICATION) {
         return new DLanguageVersionSpecificationImpl(node);
+      }
+      else if (type == VOID_INITIALIZER) {
+        return new DLanguageVoidInitializerImpl(node);
       }
       else if (type == WHILE_STATEMENT) {
         return new DLanguageWhileStatementImpl(node);

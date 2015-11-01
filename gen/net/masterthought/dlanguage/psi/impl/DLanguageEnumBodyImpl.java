@@ -24,8 +24,8 @@ public class DLanguageEnumBodyImpl extends ASTWrapperPsiElement implements DLang
 
   @Override
   @NotNull
-  public List<DLanguageEnumMember> getEnumMemberList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageEnumMember.class);
+  public DLanguageEnumMembers getEnumMembers() {
+    return findNotNullChildByClass(DLanguageEnumMembers.class);
   }
 
   @Override

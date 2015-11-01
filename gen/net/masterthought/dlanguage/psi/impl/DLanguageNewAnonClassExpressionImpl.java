@@ -24,20 +24,32 @@ public class DLanguageNewAnonClassExpressionImpl extends ASTWrapperPsiElement im
 
   @Override
   @NotNull
-  public List<DLanguageArguments> getArgumentsList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageArguments.class);
+  public DLanguageAggregateBody getAggregateBody() {
+    return findNotNullChildByClass(DLanguageAggregateBody.class);
   }
 
   @Override
   @Nullable
-  public DLanguageBaseClassList getBaseClassList() {
-    return findChildByClass(DLanguageBaseClassList.class);
+  public DLanguageAllocatorArguments getAllocatorArguments() {
+    return findChildByClass(DLanguageAllocatorArguments.class);
   }
 
   @Override
-  @NotNull
-  public DLanguageStructBody getStructBody() {
-    return findNotNullChildByClass(DLanguageStructBody.class);
+  @Nullable
+  public DLanguageClassArguments getClassArguments() {
+    return findChildByClass(DLanguageClassArguments.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageInterfaces getInterfaces() {
+    return findChildByClass(DLanguageInterfaces.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageSuperClass getSuperClass() {
+    return findChildByClass(DLanguageSuperClass.class);
   }
 
   @Override

@@ -8,7 +8,7 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageDefaultStatement extends PsiElement {
 
   @NotNull
-  DLanguageDeclarationsAndStatements getDeclarationsAndStatements();
+  DLanguageScopeStatementList getScopeStatementList();
 
   @NotNull
   PsiElement getKwDefault();

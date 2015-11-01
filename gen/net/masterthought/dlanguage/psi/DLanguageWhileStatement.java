@@ -8,10 +8,10 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageWhileStatement extends PsiElement {
 
   @NotNull
-  DLanguageDeclarationOrStatement getDeclarationOrStatement();
+  DLanguageExpression getExpression();
 
   @NotNull
-  DLanguageExpression getExpression();
+  DLanguageScopeStatement getScopeStatement();
 
   @NotNull
   PsiElement getKwWhile();

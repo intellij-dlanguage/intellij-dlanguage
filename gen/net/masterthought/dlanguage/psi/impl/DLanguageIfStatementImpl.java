@@ -23,15 +23,21 @@ public class DLanguageIfStatementImpl extends ASTWrapperPsiElement implements DL
   }
 
   @Override
-  @NotNull
-  public List<DLanguageDeclarationOrStatement> getDeclarationOrStatementList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageDeclarationOrStatement.class);
+  @Nullable
+  public DLanguageElseStatement getElseStatement() {
+    return findChildByClass(DLanguageElseStatement.class);
   }
 
   @Override
   @NotNull
   public DLanguageIfCondition getIfCondition() {
     return findNotNullChildByClass(DLanguageIfCondition.class);
+  }
+
+  @Override
+  @NotNull
+  public DLanguageThenStatement getThenStatement() {
+    return findNotNullChildByClass(DLanguageThenStatement.class);
   }
 
   @Override

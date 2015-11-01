@@ -24,8 +24,8 @@ public class DLanguageBlockStatementImpl extends ASTWrapperPsiElement implements
 
   @Override
   @Nullable
-  public DLanguageDeclarationsAndStatements getDeclarationsAndStatements() {
-    return findChildByClass(DLanguageDeclarationsAndStatements.class);
+  public DLanguageStatementList getStatementList() {
+    return findChildByClass(DLanguageStatementList.class);
   }
 
   @Override

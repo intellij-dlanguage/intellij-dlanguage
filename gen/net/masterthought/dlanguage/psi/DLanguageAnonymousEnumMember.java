@@ -7,11 +7,14 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageAnonymousEnumMember extends PsiElement {
 
-  @NotNull
-  DLanguageIdentifier getIdentifier();
-
   @Nullable
   DLanguageAssignExpression getAssignExpression();
+
+  @Nullable
+  DLanguageEnumMember getEnumMember();
+
+  @Nullable
+  DLanguageIdentifier getIdentifier();
 
   @Nullable
   DLanguageType getType();

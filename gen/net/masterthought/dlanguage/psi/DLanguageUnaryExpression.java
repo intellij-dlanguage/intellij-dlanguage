@@ -8,37 +8,28 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageUnaryExpression extends PsiElement {
 
   @Nullable
-  DLanguageArgumentList getArgumentList();
-
-  @Nullable
-  DLanguageAssertExpression getAssertExpression();
-
-  @NotNull
-  List<DLanguageAssignExpression> getAssignExpressionList();
-
-  @Nullable
   DLanguageCastExpression getCastExpression();
+
+  @Nullable
+  DLanguageComplementExpression getComplementExpression();
 
   @Nullable
   DLanguageDeleteExpression getDeleteExpression();
 
   @Nullable
-  DLanguageFunctionCallExpression getFunctionCallExpression();
-
-  @NotNull
-  List<DLanguageIdentifierOrTemplateInstance> getIdentifierOrTemplateInstanceList();
+  DLanguageIdentifier getIdentifier();
 
   @Nullable
-  DLanguageNewExpression getNewExpression();
+  DLanguagePowExpression getPowExpression();
 
   @Nullable
-  DLanguagePrimaryExpression getPrimaryExpression();
+  DLanguageTemplateInstance getTemplateInstance();
 
   @Nullable
   DLanguageType getType();
 
-  @NotNull
-  List<DLanguageUnaryExpression> getUnaryExpressionList();
+  @Nullable
+  DLanguageUnaryExpression getUnaryExpression();
 
   @Nullable
   PsiElement getOpAnd();
@@ -47,16 +38,13 @@ public interface DLanguageUnaryExpression extends PsiElement {
   PsiElement getOpAsterisk();
 
   @Nullable
-  PsiElement getOpBracketLeft();
-
-  @Nullable
-  PsiElement getOpBracketRight();
-
-  @Nullable
-  PsiElement getOpDdot();
+  PsiElement getOpDot();
 
   @Nullable
   PsiElement getOpMinus();
+
+  @Nullable
+  PsiElement getOpMinusMinus();
 
   @Nullable
   PsiElement getOpNot();
@@ -71,6 +59,6 @@ public interface DLanguageUnaryExpression extends PsiElement {
   PsiElement getOpPlus();
 
   @Nullable
-  PsiElement getOpTilda();
+  PsiElement getOpPlusPlus();
 
 }

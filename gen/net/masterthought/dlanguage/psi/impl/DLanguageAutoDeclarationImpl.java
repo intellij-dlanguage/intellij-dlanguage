@@ -24,20 +24,14 @@ public class DLanguageAutoDeclarationImpl extends ASTWrapperPsiElement implement
 
   @Override
   @NotNull
-  public List<DLanguageIdentifier> getIdentifierList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageIdentifier.class);
+  public DLanguageAutoDeclarationX getAutoDeclarationX() {
+    return findNotNullChildByClass(DLanguageAutoDeclarationX.class);
   }
 
   @Override
   @NotNull
-  public List<DLanguageInitializer> getInitializerList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageInitializer.class);
-  }
-
-  @Override
-  @NotNull
-  public DLanguageStorageClass getStorageClass() {
-    return findNotNullChildByClass(DLanguageStorageClass.class);
+  public DLanguageStorageClasses getStorageClasses() {
+    return findNotNullChildByClass(DLanguageStorageClasses.class);
   }
 
   @Override

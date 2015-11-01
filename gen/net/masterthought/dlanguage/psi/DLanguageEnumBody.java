@@ -8,7 +8,7 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageEnumBody extends PsiElement {
 
   @NotNull
-  List<DLanguageEnumMember> getEnumMemberList();
+  DLanguageEnumMembers getEnumMembers();
 
   @NotNull
   PsiElement getOpBracesLeft();

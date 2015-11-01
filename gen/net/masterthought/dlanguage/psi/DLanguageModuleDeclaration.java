@@ -8,10 +8,10 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageModuleDeclaration extends PsiElement {
 
   @Nullable
-  DLanguageDeprecated getDeprecated();
+  DLanguageAttribute getAttribute();
 
   @NotNull
-  DLanguageIdentifierChain getIdentifierChain();
+  DLanguageModuleFullyQualifiedName getModuleFullyQualifiedName();
 
   @NotNull
   PsiElement getKwModule();

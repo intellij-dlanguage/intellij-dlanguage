@@ -7,11 +7,11 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageOutStatement extends PsiElement {
 
-  @Nullable
-  DLanguageIdentifier getIdentifier();
-
   @NotNull
   DLanguageBlockStatement getBlockStatement();
+
+  @Nullable
+  DLanguageIdentifier getIdentifier();
 
   @NotNull
   PsiElement getKwOut();

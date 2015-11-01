@@ -7,19 +7,22 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageAnonymousEnumDeclaration extends PsiElement {
 
-  @NotNull
-  DLanguageAnonymousEnumMember getAnonymousEnumMember();
+  @Nullable
+  DLanguageAnonymousEnumMembers getAnonymousEnumMembers();
 
   @Nullable
-  DLanguageType getType();
+  DLanguageEnumBaseType getEnumBaseType();
+
+  @Nullable
+  DLanguageEnumMembers getEnumMembers();
 
   @NotNull
   PsiElement getKwEnum();
 
-  @NotNull
+  @Nullable
   PsiElement getOpBracesLeft();
 
-  @NotNull
+  @Nullable
   PsiElement getOpBracesRight();
 
   @Nullable

@@ -23,21 +23,21 @@ public class DLanguageImportDeclarationImpl extends ASTWrapperPsiElement impleme
   }
 
   @Override
-  @Nullable
-  public DLanguageImportBindings getImportBindings() {
-    return findChildByClass(DLanguageImportBindings.class);
-  }
-
-  @Override
   @NotNull
-  public List<DLanguageSingleImport> getSingleImportList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageSingleImport.class);
+  public DLanguageImportList getImportList() {
+    return findNotNullChildByClass(DLanguageImportList.class);
   }
 
   @Override
   @NotNull
   public PsiElement getKwImport() {
     return findNotNullChildByType(KW_IMPORT);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getKwStatic() {
+    return findChildByType(KW_STATIC);
   }
 
   @Override

@@ -7,14 +7,11 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageCatch extends PsiElement {
 
-  @Nullable
-  DLanguageIdentifier getIdentifier();
+  @NotNull
+  DLanguageCatchParameter getCatchParameter();
 
   @NotNull
-  DLanguageDeclarationOrStatement getDeclarationOrStatement();
-
-  @NotNull
-  DLanguageType getType();
+  DLanguageNoScopeNonEmptyStatement getNoScopeNonEmptyStatement();
 
   @NotNull
   PsiElement getKwCatch();

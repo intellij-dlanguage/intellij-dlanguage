@@ -11,7 +11,7 @@ public interface DLanguageAndExpression extends PsiElement {
   DLanguageAndExpression getAndExpression();
 
   @NotNull
-  DLanguageCmpExpression getCmpExpression();
+  DLanguageShiftExpression getShiftExpression();
 
   @Nullable
   PsiElement getOpAnd();

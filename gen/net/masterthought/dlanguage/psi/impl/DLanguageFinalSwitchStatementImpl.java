@@ -24,14 +24,38 @@ public class DLanguageFinalSwitchStatementImpl extends ASTWrapperPsiElement impl
 
   @Override
   @NotNull
-  public DLanguageSwitchStatement getSwitchStatement() {
-    return findNotNullChildByClass(DLanguageSwitchStatement.class);
+  public DLanguageExpression getExpression() {
+    return findNotNullChildByClass(DLanguageExpression.class);
+  }
+
+  @Override
+  @NotNull
+  public DLanguageScopeStatement getScopeStatement() {
+    return findNotNullChildByClass(DLanguageScopeStatement.class);
   }
 
   @Override
   @NotNull
   public PsiElement getKwFinal() {
     return findNotNullChildByType(KW_FINAL);
+  }
+
+  @Override
+  @NotNull
+  public PsiElement getKwSwitch() {
+    return findNotNullChildByType(KW_SWITCH);
+  }
+
+  @Override
+  @NotNull
+  public PsiElement getOpParLeft() {
+    return findNotNullChildByType(OP_PAR_LEFT);
+  }
+
+  @Override
+  @NotNull
+  public PsiElement getOpParRight() {
+    return findNotNullChildByType(OP_PAR_RIGHT);
   }
 
 }

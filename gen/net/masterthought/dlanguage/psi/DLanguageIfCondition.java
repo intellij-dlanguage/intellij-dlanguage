@@ -8,13 +8,19 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageIfCondition extends PsiElement {
 
   @Nullable
-  DLanguageIdentifier getIdentifier();
+  DLanguageBasicType getBasicType();
+
+  @Nullable
+  DLanguageDeclarator getDeclarator();
 
   @NotNull
   DLanguageExpression getExpression();
 
   @Nullable
-  DLanguageType getType();
+  DLanguageIdentifier getIdentifier();
+
+  @Nullable
+  DLanguageTypeCtors getTypeCtors();
 
   @Nullable
   PsiElement getKwAuto();

@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageStaticConstructor extends PsiElement {
 
-  @NotNull
+  @Nullable
   DLanguageFunctionBody getFunctionBody();
 
   @NotNull
@@ -21,5 +21,8 @@ public interface DLanguageStaticConstructor extends PsiElement {
 
   @NotNull
   PsiElement getOpParRight();
+
+  @Nullable
+  PsiElement getOpScolon();
 
 }

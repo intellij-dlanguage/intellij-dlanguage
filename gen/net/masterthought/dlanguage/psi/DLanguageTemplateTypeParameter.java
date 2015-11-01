@@ -10,13 +10,10 @@ public interface DLanguageTemplateTypeParameter extends PsiElement {
   @NotNull
   DLanguageIdentifier getIdentifier();
 
-  @NotNull
-  List<DLanguageType> getTypeList();
+  @Nullable
+  DLanguageTemplateTypeParameterDefault getTemplateTypeParameterDefault();
 
   @Nullable
-  PsiElement getOpColon();
-
-  @Nullable
-  PsiElement getOpEq();
+  DLanguageTemplateTypeParameterSpecialization getTemplateTypeParameterSpecialization();
 
 }

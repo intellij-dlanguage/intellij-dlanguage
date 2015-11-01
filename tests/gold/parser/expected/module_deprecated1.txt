@@ -1,9 +1,10 @@
 D Language File
   DLanguageModuleDeclarationImpl(MODULE_DECLARATION)
-    DLanguageDeprecatedImpl(DEPRECATED)
-      PsiElement(DLanguageTokenType.deprecated)('deprecated')
+    DLanguageAttributeImpl(ATTRIBUTE)
+      DLanguageDeprecatedAttributeImpl(DEPRECATED_ATTRIBUTE)
+        PsiElement(DLanguageTokenType.deprecated)('deprecated')
     PsiElement(DLanguageTokenType.module)('module')
-    DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)
+    DLanguageModuleFullyQualifiedNameImpl(MODULE_FULLY_QUALIFIED_NAME)
       DLanguageIdentifierImpl(IDENTIFIER)
         PsiElement(DLanguageTokenType.ID)('foo')
     PsiElement(DLanguageTokenType.;)(';')

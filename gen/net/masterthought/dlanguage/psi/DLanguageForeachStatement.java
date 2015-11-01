@@ -8,25 +8,16 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageForeachStatement extends PsiElement {
 
   @NotNull
-  DLanguageDeclarationOrStatement getDeclarationOrStatement();
+  DLanguageForeach getForeach();
 
   @NotNull
-  List<DLanguageExpression> getExpressionList();
+  DLanguageForeachAggregate getForeachAggregate();
 
-  @Nullable
-  DLanguageForeachType getForeachType();
-
-  @Nullable
+  @NotNull
   DLanguageForeachTypeList getForeachTypeList();
 
-  @Nullable
-  PsiElement getKwForeach();
-
-  @Nullable
-  PsiElement getKwForeachReverse();
-
-  @Nullable
-  PsiElement getOpDdot();
+  @NotNull
+  DLanguageNoScopeNonEmptyStatement getNoScopeNonEmptyStatement();
 
   @NotNull
   PsiElement getOpParLeft();

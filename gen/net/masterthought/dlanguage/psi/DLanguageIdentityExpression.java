@@ -10,10 +10,7 @@ public interface DLanguageIdentityExpression extends PsiElement {
   @NotNull
   List<DLanguageShiftExpression> getShiftExpressionList();
 
-  @NotNull
-  PsiElement getKwIs();
-
   @Nullable
-  PsiElement getOpNot();
+  PsiElement getKwIs();
 
 }

@@ -30,26 +30,8 @@ public class DLanguageAssertExpressionImpl extends ASTWrapperPsiElement implemen
 
   @Override
   @NotNull
-  public PsiElement getKwAssert() {
-    return findNotNullChildByType(KW_ASSERT);
-  }
-
-  @Override
-  @Nullable
   public PsiElement getOpComma() {
-    return findChildByType(OP_COMMA);
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getOpParLeft() {
-    return findNotNullChildByType(OP_PAR_LEFT);
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getOpParRight() {
-    return findNotNullChildByType(OP_PAR_RIGHT);
+    return findNotNullChildByType(OP_COMMA);
   }
 
 }

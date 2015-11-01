@@ -11,7 +11,7 @@ public interface DLanguageCaseStatement extends PsiElement {
   DLanguageArgumentList getArgumentList();
 
   @NotNull
-  DLanguageDeclarationsAndStatements getDeclarationsAndStatements();
+  DLanguageScopeStatementList getScopeStatementList();
 
   @NotNull
   PsiElement getKwCase();

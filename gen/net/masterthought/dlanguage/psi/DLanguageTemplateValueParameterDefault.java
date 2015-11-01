@@ -11,19 +11,7 @@ public interface DLanguageTemplateValueParameterDefault extends PsiElement {
   DLanguageAssignExpression getAssignExpression();
 
   @Nullable
-  PsiElement getKwFile();
-
-  @Nullable
-  PsiElement getKwFunction();
-
-  @Nullable
-  PsiElement getKwLine();
-
-  @Nullable
-  PsiElement getKwModule();
-
-  @Nullable
-  PsiElement getKwPrettyFunction();
+  DLanguageSpecialKeyword getSpecialKeyword();
 
   @NotNull
   PsiElement getOpEq();

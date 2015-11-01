@@ -30,8 +30,8 @@ public class DLanguageInitializerImpl extends ASTWrapperPsiElement implements DL
 
   @Override
   @Nullable
-  public PsiElement getKwVoid() {
-    return findChildByType(KW_VOID);
+  public DLanguageVoidInitializer getVoidInitializer() {
+    return findChildByClass(DLanguageVoidInitializer.class);
   }
 
 }

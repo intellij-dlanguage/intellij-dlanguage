@@ -23,15 +23,21 @@ public class DLanguagePowExpressionImpl extends ASTWrapperPsiElement implements 
   }
 
   @Override
+  @NotNull
+  public DLanguagePostfixExpression getPostfixExpression() {
+    return findNotNullChildByClass(DLanguagePostfixExpression.class);
+  }
+
+  @Override
   @Nullable
   public DLanguagePowExpression getPowExpression() {
     return findChildByClass(DLanguagePowExpression.class);
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageUnaryExpression getUnaryExpression() {
-    return findNotNullChildByClass(DLanguageUnaryExpression.class);
+    return findChildByClass(DLanguageUnaryExpression.class);
   }
 
   @Override

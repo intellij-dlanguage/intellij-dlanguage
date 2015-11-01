@@ -29,15 +29,9 @@ public class DLanguageIdentityExpressionImpl extends ASTWrapperPsiElement implem
   }
 
   @Override
-  @NotNull
-  public PsiElement getKwIs() {
-    return findNotNullChildByType(KW_IS);
-  }
-
-  @Override
   @Nullable
-  public PsiElement getOpNot() {
-    return findChildByType(OP_NOT);
+  public PsiElement getKwIs() {
+    return findChildByType(KW_IS);
   }
 
 }

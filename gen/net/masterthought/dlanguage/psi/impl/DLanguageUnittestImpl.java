@@ -11,14 +11,14 @@ import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import net.masterthought.dlanguage.psi.*;
 
-public class DLanguageUnittestImpl extends ASTWrapperPsiElement implements DLanguageUnittest {
+public class DLanguageUnitTestImpl extends ASTWrapperPsiElement implements DLanguageUnitTest {
 
-  public DLanguageUnittestImpl(ASTNode node) {
+  public DLanguageUnitTestImpl(ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitUnittest(this);
+    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitUnitTest(this);
     else super.accept(visitor);
   }
 

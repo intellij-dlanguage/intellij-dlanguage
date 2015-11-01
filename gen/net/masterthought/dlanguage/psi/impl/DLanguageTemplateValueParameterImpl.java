@@ -24,14 +24,14 @@ public class DLanguageTemplateValueParameterImpl extends ASTWrapperPsiElement im
 
   @Override
   @NotNull
-  public DLanguageIdentifier getIdentifier() {
-    return findNotNullChildByClass(DLanguageIdentifier.class);
+  public DLanguageBasicType getBasicType() {
+    return findNotNullChildByClass(DLanguageBasicType.class);
   }
 
   @Override
-  @Nullable
-  public DLanguageAssignExpression getAssignExpression() {
-    return findChildByClass(DLanguageAssignExpression.class);
+  @NotNull
+  public DLanguageDeclarator getDeclarator() {
+    return findNotNullChildByClass(DLanguageDeclarator.class);
   }
 
   @Override
@@ -41,15 +41,9 @@ public class DLanguageTemplateValueParameterImpl extends ASTWrapperPsiElement im
   }
 
   @Override
-  @NotNull
-  public DLanguageType getType() {
-    return findNotNullChildByClass(DLanguageType.class);
-  }
-
-  @Override
   @Nullable
-  public PsiElement getOpColon() {
-    return findChildByType(OP_COLON);
+  public DLanguageTemplateValueParameterSpecialization getTemplateValueParameterSpecialization() {
+    return findChildByClass(DLanguageTemplateValueParameterSpecialization.class);
   }
 
 }

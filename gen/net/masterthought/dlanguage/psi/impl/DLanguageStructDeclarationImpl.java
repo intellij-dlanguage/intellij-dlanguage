@@ -24,32 +24,32 @@ public class DLanguageStructDeclarationImpl extends ASTWrapperPsiElement impleme
 
   @Override
   @Nullable
+  public DLanguageAggregateBody getAggregateBody() {
+    return findChildByClass(DLanguageAggregateBody.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageAnonStructDeclaration getAnonStructDeclaration() {
+    return findChildByClass(DLanguageAnonStructDeclaration.class);
+  }
+
+  @Override
+  @Nullable
   public DLanguageIdentifier getIdentifier() {
     return findChildByClass(DLanguageIdentifier.class);
   }
 
   @Override
   @Nullable
-  public DLanguageConstraint getConstraint() {
-    return findChildByClass(DLanguageConstraint.class);
+  public DLanguageStructTemplateDeclaration getStructTemplateDeclaration() {
+    return findChildByClass(DLanguageStructTemplateDeclaration.class);
   }
 
   @Override
   @Nullable
-  public DLanguageStructBody getStructBody() {
-    return findChildByClass(DLanguageStructBody.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageTemplateParameters getTemplateParameters() {
-    return findChildByClass(DLanguageTemplateParameters.class);
-  }
-
-  @Override
-  @NotNull
   public PsiElement getKwStruct() {
-    return findNotNullChildByType(KW_STRUCT);
+    return findChildByType(KW_STRUCT);
   }
 
   @Override

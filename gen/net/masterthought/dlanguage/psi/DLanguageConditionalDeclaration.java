@@ -8,10 +8,13 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageConditionalDeclaration extends PsiElement {
 
   @NotNull
-  DLanguageCompileCondition getCompileCondition();
+  DLanguageCondition getCondition();
+
+  @Nullable
+  DLanguageDeclDefs getDeclDefs();
 
   @NotNull
-  List<DLanguageDeclaration> getDeclarationList();
+  List<DLanguageDeclarationBlock> getDeclarationBlockList();
 
   @Nullable
   PsiElement getKwElse();

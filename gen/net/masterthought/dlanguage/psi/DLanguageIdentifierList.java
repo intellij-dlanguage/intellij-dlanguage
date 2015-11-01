@@ -7,7 +7,25 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageIdentifierList extends PsiElement {
 
-  @NotNull
-  List<DLanguageIdentifier> getIdentifierList();
+  @Nullable
+  DLanguageAssignExpression getAssignExpression();
+
+  @Nullable
+  DLanguageIdentifier getIdentifier();
+
+  @Nullable
+  DLanguageIdentifierList getIdentifierList();
+
+  @Nullable
+  DLanguageTemplateInstance getTemplateInstance();
+
+  @Nullable
+  PsiElement getOpBracketLeft();
+
+  @Nullable
+  PsiElement getOpBracketRight();
+
+  @Nullable
+  PsiElement getOpDot();
 
 }

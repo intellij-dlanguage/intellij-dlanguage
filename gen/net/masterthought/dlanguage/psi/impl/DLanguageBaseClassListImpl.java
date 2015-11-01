@@ -23,9 +23,27 @@ public class DLanguageBaseClassListImpl extends ASTWrapperPsiElement implements 
   }
 
   @Override
+  @Nullable
+  public DLanguageInterfaces getInterfaces() {
+    return findChildByClass(DLanguageInterfaces.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageSuperClass getSuperClass() {
+    return findChildByClass(DLanguageSuperClass.class);
+  }
+
+  @Override
   @NotNull
-  public List<DLanguageBaseClass> getBaseClassList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageBaseClass.class);
+  public PsiElement getOpColon() {
+    return findNotNullChildByType(OP_COLON);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpComma() {
+    return findChildByType(OP_COMMA);
   }
 
 }

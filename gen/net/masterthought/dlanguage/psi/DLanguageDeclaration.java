@@ -7,10 +7,22 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageDeclaration extends PsiElement {
 
-  @NotNull
-  List<DLanguageAttribute> getAttributeList();
+  @Nullable
+  DLanguageAggregateDeclaration getAggregateDeclaration();
 
-  @NotNull
-  DLanguageDeclaration2 getDeclaration2();
+  @Nullable
+  DLanguageAliasDeclaration getAliasDeclaration();
+
+  @Nullable
+  DLanguageEnumDeclaration getEnumDeclaration();
+
+  @Nullable
+  DLanguageFuncDeclaration getFuncDeclaration();
+
+  @Nullable
+  DLanguageImportDeclaration getImportDeclaration();
+
+  @Nullable
+  DLanguageVarDeclarations getVarDeclarations();
 
 }

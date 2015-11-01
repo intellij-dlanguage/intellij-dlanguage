@@ -30,32 +30,8 @@ public class DLanguageTemplateValueParameterDefaultImpl extends ASTWrapperPsiEle
 
   @Override
   @Nullable
-  public PsiElement getKwFile() {
-    return findChildByType(KW___FILE__);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwFunction() {
-    return findChildByType(KW___FUNCTION__);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwLine() {
-    return findChildByType(KW___LINE__);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwModule() {
-    return findChildByType(KW___MODULE__);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwPrettyFunction() {
-    return findChildByType(KW___PRETTY_FUNCTION__);
+  public DLanguageSpecialKeyword getSpecialKeyword() {
+    return findChildByClass(DLanguageSpecialKeyword.class);
   }
 
   @Override

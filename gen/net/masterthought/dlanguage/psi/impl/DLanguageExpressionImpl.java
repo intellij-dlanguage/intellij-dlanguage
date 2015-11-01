@@ -24,8 +24,8 @@ public class DLanguageExpressionImpl extends ASTWrapperPsiElement implements DLa
 
   @Override
   @NotNull
-  public List<DLanguageAssignExpression> getAssignExpressionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageAssignExpression.class);
+  public DLanguageCommaExpression getCommaExpression() {
+    return findNotNullChildByClass(DLanguageCommaExpression.class);
   }
 
 }

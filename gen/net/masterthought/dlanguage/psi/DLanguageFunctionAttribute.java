@@ -8,7 +8,7 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageFunctionAttribute extends PsiElement {
 
   @Nullable
-  DLanguageAtAttribute getAtAttribute();
+  DLanguageProperty getProperty();
 
   @Nullable
   PsiElement getKwNothrow();

@@ -46,4 +46,10 @@ public class DLanguageCmpExpressionImpl extends ASTWrapperPsiElement implements 
     return findChildByClass(DLanguageRelExpression.class);
   }
 
+  @Override
+  @Nullable
+  public DLanguageShiftExpression getShiftExpression() {
+    return findChildByClass(DLanguageShiftExpression.class);
+  }
+
 }

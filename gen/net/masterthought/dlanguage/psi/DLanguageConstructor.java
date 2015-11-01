@@ -8,21 +8,18 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageConstructor extends PsiElement {
 
   @Nullable
-  DLanguageConstraint getConstraint();
+  DLanguageConstructorTemplate getConstructorTemplate();
 
   @Nullable
   DLanguageFunctionBody getFunctionBody();
 
-  @NotNull
-  List<DLanguageMemberFunctionAttribute> getMemberFunctionAttributeList();
+  @Nullable
+  DLanguageMemberFunctionAttributes getMemberFunctionAttributes();
 
-  @NotNull
+  @Nullable
   DLanguageParameters getParameters();
 
   @Nullable
-  DLanguageTemplateParameters getTemplateParameters();
-
-  @NotNull
   PsiElement getKwThis();
 
   @Nullable

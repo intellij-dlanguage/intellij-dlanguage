@@ -10,11 +10,11 @@ public interface DLanguageTryStatement extends PsiElement {
   @Nullable
   DLanguageCatches getCatches();
 
-  @NotNull
-  DLanguageDeclarationOrStatement getDeclarationOrStatement();
-
   @Nullable
-  DLanguageFinally getFinally();
+  DLanguageFinallyStatement getFinallyStatement();
+
+  @NotNull
+  DLanguageScopeStatement getScopeStatement();
 
   @NotNull
   PsiElement getKwTry();

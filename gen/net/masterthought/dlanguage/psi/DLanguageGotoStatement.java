@@ -8,10 +8,10 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageGotoStatement extends PsiElement {
 
   @Nullable
-  DLanguageIdentifier getIdentifier();
+  DLanguageExpression getExpression();
 
   @Nullable
-  DLanguageExpression getExpression();
+  DLanguageIdentifier getIdentifier();
 
   @Nullable
   PsiElement getKwCase();

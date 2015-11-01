@@ -24,26 +24,26 @@ public class DLanguageForeachTypeImpl extends ASTWrapperPsiElement implements DL
 
   @Override
   @NotNull
+  public DLanguageBasicType getBasicType() {
+    return findNotNullChildByClass(DLanguageBasicType.class);
+  }
+
+  @Override
+  @NotNull
+  public DLanguageDeclarator getDeclarator() {
+    return findNotNullChildByClass(DLanguageDeclarator.class);
+  }
+
+  @Override
+  @NotNull
+  public List<DLanguageForeachTypeAttributes> getForeachTypeAttributesList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageForeachTypeAttributes.class);
+  }
+
+  @Override
+  @NotNull
   public DLanguageIdentifier getIdentifier() {
     return findNotNullChildByClass(DLanguageIdentifier.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageType getType() {
-    return findChildByClass(DLanguageType.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageTypeConstructors getTypeConstructors() {
-    return findChildByClass(DLanguageTypeConstructors.class);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwRef() {
-    return findChildByType(KW_REF);
   }
 
 }
