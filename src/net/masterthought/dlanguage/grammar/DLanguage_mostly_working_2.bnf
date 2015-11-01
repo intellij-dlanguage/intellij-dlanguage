@@ -1,0 +1,1688 @@
+{
+
+  parserClass="net.masterthought.dlanguage.parser.DLanguageParser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="DLanguage"
+  psiImplClassSuffix="Impl"
+  psiPackage="net.masterthought.dlanguage.psi"
+  psiImplPackage="net.masterthought.dlanguage.psi.impl"
+
+  elementTypeHolderClass="net.masterthought.dlanguage.psi.DLanguageTypes"
+  elementTypeClass="net.masterthought.dlanguage.psi.DLanguageElementType"
+  tokenTypeClass="net.masterthought.dlanguage.psi.DLanguageTokenType"
+
+  generateTokenAccessors=true
+
+tokens = [
+ KW_MODULE = "module"
+ KW_IMPORT = "import"
+ KW_STATIC = "static"
+ KW_BOOL = "bool"
+ KW_BYTE = "byte"
+ KW_UBYTE = "ubyte"
+ KW_SHORT = "short"
+ KW_USHORT = "ushort"
+ KW_INT = "int"
+ KW_UINT = "uint"
+ KW_LONG = "long"
+ KW_ULONG = "ulong"
+ KW_CHAR = "char"
+ KW_WCHAR = "wchar"
+ KW_DCHAR = "dchar"
+ KW_FLOAT = "float"
+ KW_DOUBLE = "double"
+ KW_REAL = "real"
+ KW_IFLOAT = "ifloat"
+ KW_IDOUBLE = "idouble"
+ KW_IREAL = "ireal"
+ KW_CFLOAT = "cfloat"
+ KW_CDOUBLE = "cdouble"
+ KW_CREAL = "creal"
+ KW_VOID = "void"
+ KW_TYPEOF = "typeof"
+ KW_CONST = "const"
+ KW_IMMUTABLE = "immutable"
+ KW_SHARED = "shared"
+ KW_INOUT = "inout"
+ KW_DELEGATE = "delegate"
+ KW_FUNCTION = "function"
+ KW_NOTHROW = "nothrow"
+ KW_PURE = "pure"
+ KW_THIS = "this"
+ KW___FILE__ = "__FILE__"
+ KW___MODULE__ = "__MODULE__"
+ KW___LINE__ = "__LINE__"
+ KW___FUNCTION__ = "__FUNCTION__"
+ KW___PRETTY_FUNCTION__ = "__PRETTY_FUNCTION__"
+ KW_ABSTRACT = "abstract"
+ KW_ALIAS = "alias"
+ KW_AUTO = "auto"
+ KW_DEPRECATED = "deprecated"
+ KW_ENUM = "enum"
+ KW_EXTERN = "extern"
+ KW_FINAL = "final"
+ KW_OVERRIDE = "override"
+ KW___GSHARED = "__gshared"
+ KW_SCOPE = "scope"
+ KW_SYNCHRONIZED = "synchronized"
+ KW_RETURN = "return"
+ KW_SUPER = "super"
+ KW_ALIGN = "align"
+ KW_PRAGMA = "pragma"
+ KW_PACKAGE = "package"
+ KW_PRIVATE = "private"
+ KW_PROTECTED = "protected"
+ KW_PUBLIC = "public"
+ KW_EXPORT = "export"
+ KW_PROPERTY = "property"
+ KW_SAFE = "safe"
+ KW_TRUSTED = "trusted"
+ KW_SYSTEM = "system"
+ KW_DISABLE = "disable"
+ KW_DELETE = "delete"
+ KW_NULL = "null"
+ KW_TRUE = "true"
+ KW_FALSE = "false"
+ KW_NEW = "new"
+ KW_TYPEID = "typeid"
+ KW_IS = "is"
+ KW_STRUCT = "struct"
+ KW_UNION = "union"
+ KW_CLASS = "class"
+ KW_INTERFACE = "interface"
+ KW___PARAMETERS = "__parameters"
+ KW_IN = "in"
+ KW_ASM = "asm"
+ KW_ASSERT = "assert"
+ KW_CASE = "case"
+ KW_CAST = "cast"
+ KW_REF = "ref"
+ KW_BREAK = "break"
+ KW_CONTINUE = "continue"
+ KW_DO = "do"
+ KW_ELSE = "else"
+ KW_FOR = "for"
+ KW_FOREACH = "foreach"
+ KW_FOREACH_REVERSE = "foreach_reverse"
+ KW_GOTO = "goto"
+ KW_IF = "if"
+ KW_CATCH = "catch"
+ KW_FINALLY = "finally"
+ KW_SWITCH = "switch"
+ KW_THROW = "throw"
+ KW_TRY = "try"
+ KW_DEFAULT = "default"
+ KW_WHILE = "while"
+ KW_WITH = "with"
+ KW_VERSION = "version"
+ KW_DEBUG = "debug"
+ KW_MIXIN = "mixin"
+ KW_INVARIANT = "invariant"
+ KW_BODY = "body"
+ KW_TEMPLATE = "template"
+ KW_LAZY = "lazy"
+ KW_OUT = "out"
+ KW_NOGC = "nogc"
+ KW___TRAITS = "__traits"
+ KW_UNITTEST = "unittest"
+ OP_SCOLON = ";"
+ OP_COLON = ":"
+ OP_EQ = "="
+ OP_COMMA = ","
+ OP_PAR_LEFT = "("
+ OP_PAR_RIGHT = ")"
+ OP_BRACKET_LEFT = "["
+ OP_BRACKET_RIGHT = "]"
+ OP_BRACES_LEFT = "{"
+ OP_BRACES_RIGHT = "}"
+ OP_ASTERISK = "*"
+ OP_DDOT = ".."
+ OP_TRIPLEDOT = "..."
+ OP_AT = "@"
+ OP_PLUS_EQ = "+="
+ OP_MINUS_EQ = "-="
+ OP_MUL_EQ = "*="
+ OP_DIV_EQ = "/="
+ OP_MOD_EQ = "%="
+ OP_AND_EQ = "&="
+ OP_OR_EQ = "|="
+ OP_XOR_EQ = "^="
+ OP_TILDA_EQ = "~="
+ OP_SH_LEFT_EQ = "<<="
+ OP_SH_RIGHT_EQ = ">>="
+ OP_USH_RIGHT_EQ = ">>>="
+ OP_POW_EQ = "^^="
+ OP_QUEST = "?"
+ OP_BOOL_OR = "||"
+ OP_BOOL_AND = "&&"
+ OP_OR = "|"
+ OP_XOR = "^"
+ OP_SH_LEFT = "<<"
+ OP_SH_RIGHT = ">>"
+ OP_USH_RIGHT = ">>>"
+ OP_PLUS = "+"
+ OP_MINUS = "-"
+ OP_TILDA = "~"
+ OP_DIV = "/"
+ OP_MOD = "%"
+ OP_AND = "&"
+ OP_PLUS_PLUS = "++"
+ OP_MINUS_MINUS = "--"
+ OP_NOT = "!"
+ OP_POW = "^^"
+ OP_DOLLAR = "$"
+ OP_EQ_EQ = "=="
+ OP_NOT_EQ = "!="
+ OP_LESS = "<"
+ OP_LESS_EQ = "<="
+ OP_GT = ">"
+ OP_GT_EQ = ">="
+ OP_UNORD = "!<>="
+ OP_UNORD_EQ = "!<>"
+ OP_LESS_GR = "<>"
+ OP_LESS_GR_EQ = "<>="
+ OP_NOT_GR = "!>"
+ OP_NOT_GR_EQ = "!>="
+ OP_NOT_LESS = "!<"
+ OP_NOT_LESS_EQ = "!<="
+ OP_LAMBDA_ARROW = "=>"
+ OP_DOT = "."
+
+ID = "regexp:\w+"
+
+  space='regexp:\s+'
+
+//  string_literal='regexp:"\w+"'
+//  string="regexp:('([^'\\]|\\.)*'|\"([^\"\\]|\\\"|\\\'|\\)*\")"
+//  number="regexp:\d+"
+//  float="regexp:[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?"
+  line_comment="regexp://.*"
+  block_comment="regexp:/\*(.|\n)*\*/"
+
+//   DoubleQuotedString = 'regexp:\"([^\\"]|((\\"|\\\?|\\\|\\0|\\a|\\b|\\f|\\n|\\r|\\t|\\v)|(\\x[0-9abcdefABCDEF_]{2})|(\\[0-7])|(\\[0-7]{2})|(\\[0-7]{3})|(\\u[0-9abcdefABCDEF_]{4})|(\\U[0-9abcdefABCDEF_]{8})|(\\&([a-zA-Z_])([a-zA-Z0-9_])*;)))*\"[cwd]*'
+  //  HexString = 'regexp:x\"([0-9a-fA-F][0-9a-fA-F]|[\r\n\s])*\"[cwd]*'
+
+
+]
+
+
+}
+
+dFile ::= item_*
+
+// ----------------------------------------------------------
+
+
+
+// unused --------------
+
+//postblit ::= 'this' '(' 'this' ')' memberFunctionAttribute* ( functionBody | ';' )
+
+// ---------------------------------------------------------
+private item_ ::= (Module)
+
+Identifier ::= ID
+StringLiteral  ::= (WYSIWYG_STRING|ALTERNATE_WYSIWYG_STRING|DOUBLE_QUOTED_STRING|HEX_STRING|DELIMITED_STRING)
+
+// Module
+
+Module ::= ModuleDeclaration | ImportDeclaration
+
+ModuleDeclaration ::=
+    'module' ModuleFullyQualifiedName ';'
+
+ModuleFullyQualifiedName ::=
+    Identifier ['.' ModuleFullyQualifiedName]
+
+// Import
+
+ImportDeclaration ::=
+    'import' ImportList ';'
+    | 'static' 'import' ImportList ';'
+
+ImportList ::=
+    Import (':' ImportBindList | ',' ImportList)?
+
+Import ::=
+//    ModuleFullyQualifiedName
+    (Identifier '=')? ModuleFullyQualifiedName
+
+ImportBindList ::=
+    ImportBind (',' ImportBindList)?
+
+ImportBind ::=
+    Identifier ('=' Identifier)?
+
+
+
+//DeclDefs ::=
+//    DeclDef
+//    | DeclDef DeclDefs
+//
+//DeclDef ::=
+//    (AttributeSpecifier
+//    | Declaration
+//    | Constructor
+//    | Destructor
+//    | Postblit
+//    | Allocator
+//    | Deallocator
+//    | Invariant
+//    | UnitTest
+//    | AliasThis
+//    | StaticConstructor
+//    | StaticDestructor
+//    | SharedStaticConstructor
+//    | SharedStaticDestructor
+//    | ConditionalDeclaration
+//    | DebugSpecification
+//    | VersionSpecification
+//    | StaticAssert
+//    | TemplateDeclaration
+//    | TemplateMixinDeclaration
+//    | TemplateMixin
+//    | MixinDeclaration) ';'
+
+
+//  orExpression ::= xorExpression ['|' orExpression]
+
+//  orExpression:
+//          xorExpression
+//        | orExpression '|' xorExpression
+//        ;
+
+
+
+
+
+//ModuleAliasIdentifier ::=
+//    Identifier
+
+//MixinDeclaration ::=
+//    'mixin' '(' AssignExpression ')' ';'
+
+//Type ::=
+//    TypeCtors? BasicType BasicType2?
+//
+//TypeCtors ::=
+//    TypeCtor
+//    | TypeCtor TypeCtors
+//
+//TypeCtor ::=
+//    'const'
+//    | 'immutable'
+//    | 'inout'
+//    | 'shared'
+//
+//BasicType ::=
+//    BasicTypeX
+//    | '.' IdentifierList
+//    | IdentifierList
+//    | Typeof
+//    | Typeof '.' IdentifierList
+//    | TypeCtor '(' Type ')'
+//    | TypeVector
+//
+//BasicTypeX ::=
+//     'bool'
+//    | 'byte'
+//    | 'ubyte'
+//    | 'short'
+//    | 'ushort'
+//    | 'int'
+//    | 'uint'
+//    | 'long'
+//    | 'ulong'
+//    | 'char'
+//    | 'wchar'
+//    | 'dchar'
+//    | 'float'
+//    | 'double'
+//    | 'real'
+//    | 'ifloat'
+//    | 'idouble'
+//    | 'ireal'
+//    | 'cfloat'
+//    | 'cdouble'
+//    | 'creal'
+//    | 'void'
+//
+//BasicType2 ::=
+//    BasicType2X BasicType2?
+//
+//BasicType2X ::=
+//    '*'
+//    | '[' ']'
+//    | '[' AssignExpression ']'
+//    | '[' AssignExpression '..' AssignExpression ']'
+//    | '[' Type ']'
+//    | delegate Parameters MemberFunctionAttributes?
+//    | function Parameters FunctionAttributes?
+//
+//IdentifierList ::=
+//    Identifier
+//    | Identifier '.' IdentifierList
+//    | TemplateInstance
+//    | TemplateInstance '.' IdentifierList
+//    | Identifier '[' AssignExpression ']' '.' IdentifierList
+//
+//Typeof ::=
+//    typeof '(' Expression ')'
+//    | typeof '(' return ')'
+//
+//TypeVector ::=
+//    '__vector' '(' Type ')'
+//
+//Expression ::=
+//    CommaExpression
+//
+//CommaExpression ::=
+//    AssignExpression
+//    | AssignExpression ',' CommaExpression
+//
+//AssignExpression ::=
+//    ConditionalExpression
+//    | ConditionalExpression '=' AssignExpression
+//    | ConditionalExpression '+=' AssignExpression
+//    | ConditionalExpression '-=' AssignExpression
+//    | ConditionalExpression '*=' AssignExpression
+//    | ConditionalExpression '/=' AssignExpression
+//    | ConditionalExpression '%=' AssignExpression
+//    | ConditionalExpression '&=' AssignExpression
+//    | ConditionalExpression '|=' AssignExpression
+//    | ConditionalExpression '^=' AssignExpression
+//    | ConditionalExpression '~=' AssignExpression
+//    | ConditionalExpression '<<=' AssignExpression
+//    | ConditionalExpression '>>=' AssignExpression
+//    | ConditionalExpression '>>>=' AssignExpression
+//    | ConditionalExpression '^^=' AssignExpression
+//
+//ConditionalExpression ::=
+//    OrOrExpression
+//    | OrOrExpression '?' Expression ':' ConditionalExpression
+//
+//OrOrExpression ::=
+//    AndAndExpression
+//    | OrOrExpression '||' AndAndExpression
+//
+//AndAndExpression ::=
+//    OrExpression
+//    | AndAndExpression '&&' OrExpression
+//    | CmpExpression
+//    | AndAndExpression '&&' CmpExpression
+//
+//OrExpression ::=
+//    XorExpression
+//    | (OrExpression | XorExpression)
+//
+//XorExpression ::=
+//    AndExpression
+//    | XorExpression '^' AndExpression
+//
+//AndExpression ::=
+//    ShiftExpression
+//    | AndExpression '&' ShiftExpression
+//
+//CmpExpression ::=
+//    ShiftExpression
+//    | EqualExpression
+//    | IdentityExpression
+//    | RelExpression
+//    | InExpression
+//
+//EqualExpression ::=
+//    ShiftExpression '==' ShiftExpression
+//    | ShiftExpression '!=' ShiftExpression
+//
+//IdentityExpression ::=
+//    ShiftExpression 'is' ShiftExpression
+//    | ShiftExpression '!is' ShiftExpression
+//
+//RelExpression ::=
+//    ShiftExpression '<' ShiftExpression
+//    | ShiftExpression '<=' ShiftExpression
+//    | ShiftExpression '>' ShiftExpression
+//    | ShiftExpression '>=' ShiftExpression
+//    | ShiftExpression '!<>=' ShiftExpression
+//    | ShiftExpression '!<>' ShiftExpression
+//    | ShiftExpression '<>' ShiftExpression
+//    | ShiftExpression '<>=' ShiftExpression
+//    | ShiftExpression '!>' ShiftExpression
+//    | ShiftExpression '!>=' ShiftExpression
+//    | ShiftExpression '!<' ShiftExpression
+//    | ShiftExpression '!<=' ShiftExpression
+//
+//InExpression ::=
+//    ShiftExpression 'in' ShiftExpression
+//    | ShiftExpression '!in' ShiftExpression
+//
+//ShiftExpression ::=
+//    AddExpression
+//    | ShiftExpression '<<' AddExpression
+//    | ShiftExpression '>>' AddExpression
+//    | ShiftExpression '>>>' AddExpression
+//
+//AddExpression:
+//    MulExpression
+//    AddExpression + MulExpression
+//    AddExpression - MulExpression
+//    CatExpression
+//CatExpression:
+//    AddExpression ~ MulExpression
+//MulExpression:
+//    UnaryExpression
+//    MulExpression * UnaryExpression
+//    MulExpression / UnaryExpression
+//    MulExpression % UnaryExpression
+//UnaryExpression:
+//    & UnaryExpression
+//    ++ UnaryExpression
+//    -- UnaryExpression
+//    * UnaryExpression
+//    - UnaryExpression
+//    + UnaryExpression
+//    ! UnaryExpression
+//    ComplementExpression
+//    ( Type ) . Identifier
+//    ( Type ) . TemplateInstance
+//    DeleteExpression
+//    CastExpression
+//    PowExpression
+//ComplementExpression:
+//    ~ UnaryExpression
+//NewExpression:
+//    new AllocatorArgumentsopt Type
+//    NewExpressionWithArgs
+//
+//NewExpressionWithArgs:
+//    new AllocatorArgumentsopt Type [ AssignExpression ]
+//    new AllocatorArgumentsopt Type ( ArgumentListopt )
+//    NewAnonClassExpression
+//
+//AllocatorArguments:
+//    ( ArgumentListopt )
+//
+//ArgumentList:
+//    AssignExpression
+//    AssignExpression ,
+//    AssignExpression , ArgumentList
+//NewAnonClassExpression:
+//    new AllocatorArgumentsopt class ClassArgumentsopt SuperClassopt Interfacesopt AggregateBody
+//
+//ClassArguments:
+//    ( ArgumentListopt )
+//DeleteExpression:
+//    delete UnaryExpression
+//CastExpression:
+//    cast ( Type ) UnaryExpression
+//    cast ( TypeCtorsopt ) UnaryExpression
+//PowExpression:
+//    PostfixExpression
+//    PostfixExpression ^^ UnaryExpression
+//PostfixExpression:
+//    PrimaryExpression
+//    PostfixExpression . Identifier
+//    PostfixExpression . TemplateInstance
+//    PostfixExpression . NewExpression
+//    PostfixExpression ++
+//    PostfixExpression --
+//    PostfixExpression ( ArgumentListopt )
+//    TypeCtorsopt BasicType ( ArgumentListopt )
+//    IndexExpression
+//    SliceExpression
+//IndexExpression:
+//    PostfixExpression [ ArgumentList ]
+//SliceExpression:
+//    PostfixExpression [ ]
+//    PostfixExpression [ AssignExpression .. AssignExpression ]
+//PrimaryExpression:
+//    Identifier
+//    . Identifier
+//    TemplateInstance
+//    . TemplateInstance
+//    this
+//    super
+//    null
+//    true
+//    false
+//    $
+//    IntegerLiteral
+//    FloatLiteral
+//    CharacterLiteral
+//    StringLiterals
+//    ArrayLiteral
+//    AssocArrayLiteral
+//    FunctionLiteral
+//    AssertExpression
+//    MixinExpression
+//    ImportExpression
+//    NewExpressionWithArgs
+//    BasicTypeX . Identifier
+//    Typeof
+//    TypeidExpression
+//    IsExpression
+//    ( Expression )
+//    TraitsExpression
+//    SpecialKeyword
+//StringLiterals:
+//    StringLiteral
+//    StringLiterals StringLiteral
+//ArrayLiteral:
+//    [ ArgumentListopt ]
+//AssocArrayLiteral:
+//    [ KeyValuePairs ]
+//
+//KeyValuePairs:
+//    KeyValuePair
+//    KeyValuePair , KeyValuePairs
+//
+//KeyValuePair:
+//    KeyExpression : ValueExpression
+//
+//KeyExpression:
+//    AssignExpression
+//
+//ValueExpression:
+//    AssignExpression
+//FunctionLiteral:
+//    function Typeopt ParameterAttributes opt FunctionLiteralBody
+//    delegate Typeopt ParameterMemberAttributes opt FunctionLiteralBody
+//    ParameterMemberAttributes FunctionLiteralBody
+//    FunctionLiteralBody
+//    Lambda
+//ParameterAttributes:
+//    Parameters FunctionAttributesopt
+//
+//ParameterMemberAttributes:
+//    Parameters MemberFunctionAttributesopt
+//
+//FunctionLiteralBody:
+//    BlockStatement
+//    FunctionContractsopt BodyStatement
+//
+//Lambda:
+//    function Typeopt ParameterAttributes => AssignExpression
+//    delegate Typeopt ParameterMemberAttributes => AssignExpression
+//    ParameterMemberAttributes => AssignExpression
+//    Identifier => AssignExpression
+//AssertExpression:
+//    assert ( AssignExpression )
+//    assert ( AssignExpression , AssignExpression )
+//MixinExpression:
+//    mixin ( AssignExpression )
+//ImportExpression:
+//    import ( AssignExpression )
+//TypeidExpression:
+//    typeid ( Type )
+//    typeid ( Expression )
+//IsExpression:
+//    is ( Type )
+//    is ( Type : TypeSpecialization )
+//    is ( Type == TypeSpecialization )
+//    is ( Type : TypeSpecialization , TemplateParameterList )
+//    is ( Type == TypeSpecialization , TemplateParameterList )
+//    is ( Type Identifier )
+//    is ( Type Identifier : TypeSpecialization )
+//    is ( Type Identifier == TypeSpecialization )
+//    is ( Type Identifier : TypeSpecialization , TemplateParameterList )
+//    is ( Type Identifier == TypeSpecialization , TemplateParameterList )
+//
+//TypeSpecialization:
+//    Type
+//    struct
+//    union
+//    class
+//    interface
+//    enum
+//    function
+//    delegate
+//    super
+//    const
+//    immutable
+//    inout
+//    shared
+//    return
+//    __parameters
+//TraitsExpression:
+//    __traits ( TraitsKeyword , TraitsArguments )
+//
+//TraitsKeyword:
+//    isAbstractClass
+//    isArithmetic
+//    isAssociativeArray
+//    isFinalClass
+//    isPOD
+//    isNested
+//    isFloating
+//    isIntegral
+//    isScalar
+//    isStaticArray
+//    isUnsigned
+//    isVirtualFunction
+//    isVirtualMethod
+//    isAbstractFunction
+//    isFinalFunction
+//    isStaticFunction
+//    isOverrideFunction
+//    isRef
+//    isOut
+//    isLazy
+//    hasMember
+//    identifier
+//    getAliasThis
+//    getAttributes
+//    getFunctionAttributes
+//    getMember
+//    getOverloads
+//    getPointerBitmap
+//    getProtection
+//    getVirtualFunctions
+//    getVirtualMethods
+//    getUnitTests
+//    parent
+//    classInstanceSize
+//    getVirtualIndex
+//    allMembers
+//    derivedMembers
+//    isSame
+//    compiles
+//
+//TraitsArguments:
+//    TraitsArgument
+//    TraitsArgument , TraitsArguments
+//
+//TraitsArgument:
+//    AssignExpression
+//    Type
+//SpecialKeyword:
+//    __FILE__
+//    __MODULE__
+//    __LINE__
+//    __FUNCTION__
+//    __PRETTY_FUNCTION__
+//Statement
+//Statement:
+//    ;
+//    NonEmptyStatement
+//    ScopeBlockStatement
+//
+//NoScopeNonEmptyStatement:
+//    NonEmptyStatement
+//    BlockStatement
+//
+//NoScopeStatement:
+//    ;
+//    NonEmptyStatement
+//    BlockStatement
+//
+//NonEmptyOrScopeBlockStatement:
+//    NonEmptyStatement
+//    ScopeBlockStatement
+//
+//NonEmptyStatement:
+//    NonEmptyStatementNoCaseNoDefault
+//    CaseStatement
+//    CaseRangeStatement
+//    DefaultStatement
+//
+//NonEmptyStatementNoCaseNoDefault:
+//    LabeledStatement
+//    ExpressionStatement
+//    DeclarationStatement
+//    IfStatement
+//    WhileStatement
+//    DoStatement
+//    ForStatement
+//    ForeachStatement
+//    SwitchStatement
+//    FinalSwitchStatement
+//    ContinueStatement
+//    BreakStatement
+//    ReturnStatement
+//    GotoStatement
+//    WithStatement
+//    SynchronizedStatement
+//    TryStatement
+//    ScopeGuardStatement
+//    ThrowStatement
+//    AsmStatement
+//    PragmaStatement
+//    MixinStatement
+//    ForeachRangeStatement
+//    ConditionalStatement
+//    StaticAssert
+//    TemplateMixin
+//    ImportDeclaration
+//ScopeStatement:
+//    NonEmptyStatement
+//    BlockStatement
+//ScopeBlockStatement:
+//    BlockStatement
+//LabeledStatement:
+//    Identifier :
+//    Identifier : NoScopeStatement
+//    Identifier : Statement
+//BlockStatement:
+//    { }
+//    { StatementList }
+//
+//StatementList:
+//    Statement
+//    Statement StatementList
+//ExpressionStatement:
+//    Expression ;
+//DeclarationStatement:
+//    StorageClassesopt Declaration
+//IfStatement:
+//    if ( IfCondition ) ThenStatement
+//    if ( IfCondition ) ThenStatement else ElseStatement
+//
+//IfCondition:
+//    Expression
+//    auto Identifier = Expression
+//    TypeCtors Identifier = Expression
+//    TypeCtorsopt BasicType Declarator = Expression
+//
+//ThenStatement:
+//    ScopeStatement
+//
+//ElseStatement:
+//    ScopeStatement
+//WhileStatement:
+//    while ( Expression ) ScopeStatement
+//DoStatement:
+//    do ScopeStatement  while ( Expression ) ;
+//ForStatement:
+//    for ( Initialize Testopt ; Incrementopt ) ScopeStatement
+//
+//Initialize:
+//    ;
+//    NoScopeNonEmptyStatement
+//
+//Test:
+//    Expression
+//
+//Increment:
+//    Expression
+//ForeachStatement:
+//    Foreach ( ForeachTypeList ; ForeachAggregate ) NoScopeNonEmptyStatement
+//
+//Foreach:
+//    foreach
+//    foreach_reverse
+//
+//ForeachTypeList:
+//    ForeachType
+//    ForeachType , ForeachTypeList
+//
+//ForeachType:
+//    ForeachTypeAttributesopt BasicType Declarator
+//    ForeachTypeAttributesopt Identifier
+//
+//ForeachTypeAttributes
+//    ForeachTypeAttribute
+//    ForeachTypeAttribute ForeachTypeAttributesopt
+//
+//ForeachTypeAttribute:
+//    ref
+//    TypeCtor
+//
+//ForeachAggregate:
+//    Expression
+//ForeachRangeStatement:
+//    Foreach ( ForeachType ; LwrExpression .. UprExpression ) ScopeStatement
+//
+//LwrExpression:
+//    Expression
+//
+//UprExpression:
+//    Expression
+//SwitchStatement:
+//    switch ( Expression ) ScopeStatement
+//
+//CaseStatement:
+//    case ArgumentList : ScopeStatementList
+//
+//CaseRangeStatement:
+//    case FirstExp : .. case LastExp : ScopeStatementList
+//
+//FirstExp:
+//    AssignExpression
+//
+//LastExp:
+//    AssignExpression
+//
+//DefaultStatement:
+//    default : ScopeStatementList
+//
+//ScopeStatementList:
+//    StatementListNoCaseNoDefault
+//
+//StatementListNoCaseNoDefault:
+//    StatementNoCaseNoDefault
+//    StatementNoCaseNoDefault StatementListNoCaseNoDefault
+//
+//StatementNoCaseNoDefault:
+//    ;
+//    NonEmptyStatementNoCaseNoDefault
+//    ScopeBlockStatement
+//FinalSwitchStatement:
+//    final switch ( Expression ) ScopeStatement
+//ContinueStatement:
+//    continue Identifieropt ;
+//BreakStatement:
+//    break Identifieropt ;
+//ReturnStatement:
+//    return Expressionopt ;
+//GotoStatement:
+//    goto Identifier ;
+//    goto default ;
+//    goto case ;
+//    goto case Expression ;
+//WithStatement:
+//    with ( Expression ) ScopeStatement
+//    with ( Symbol ) ScopeStatement
+//    with ( TemplateInstance ) ScopeStatement
+//SynchronizedStatement:
+//    synchronized ScopeStatement
+//    synchronized ( Expression ) ScopeStatement
+//TryStatement:
+//    try ScopeStatement Catches
+//    try ScopeStatement Catches FinallyStatement
+//    try ScopeStatement FinallyStatement
+//
+//Catches:
+//    LastCatch
+//    Catch
+//    Catch Catches
+//
+//LastCatch:
+//    catch NoScopeNonEmptyStatement
+//
+//Catch:
+//    catch ( CatchParameter ) NoScopeNonEmptyStatement
+//
+//CatchParameter:
+//    BasicType Identifier
+//
+//FinallyStatement:
+//    finally NoScopeNonEmptyStatement
+//ThrowStatement:
+//    throw Expression ;
+//ScopeGuardStatement:
+//    scope(exit) NonEmptyOrScopeBlockStatement
+//    scope(success) NonEmptyOrScopeBlockStatement
+//    scope(failure) NonEmptyOrScopeBlockStatement
+//AsmStatement:
+//    asm FunctionAttributesopt { AsmInstructionListopt }
+//
+//AsmInstructionList:
+//    AsmInstruction ;
+//    AsmInstruction ; AsmInstructionList
+//PragmaStatement:
+//    Pragma NoScopeStatement
+//MixinStatement:
+//    mixin ( AssignExpression ) ;
+//Iasm
+//AsmInstruction:
+//    Identifier : AsmInstruction
+//    align IntegerExpression
+//    even
+//    naked
+//    db Operands
+//    ds Operands
+//    di Operands
+//    dl Operands
+//    df Operands
+//    dd Operands
+//    de Operands
+//    Opcode
+//    Opcode Operands
+//
+//Operands:
+//    Operand
+//    Operand , Operands
+//IntegerExpression:
+//    IntegerLiteral
+//    Identifier
+//Register:
+//    AL AH AX EAX
+//    BL BH BX EBX
+//    CL CH CX ECX
+//    DL DH DX EDX
+//    BP EBP
+//    SP ESP
+//    DI EDI
+//    SI ESI
+//    ES CS SS DS GS FS
+//    CR0 CR2 CR3 CR4
+//    DR0 DR1 DR2 DR3 DR6 DR7
+//    TR3 TR4 TR5 TR6 TR7
+//    ST
+//    ST(0) ST(1) ST(2) ST(3) ST(4) ST(5) ST(6) ST(7)
+//    MM0  MM1  MM2  MM3  MM4  MM5  MM6  MM7
+//    XMM0 XMM1 XMM2 XMM3 XMM4 XMM5 XMM6 XMM7
+//Register64:
+//    RAX  RBX  RCX  RDX
+//    BPL  RBP
+//    SPL  RSP
+//    DIL  RDI
+//    SIL  RSI
+//    R8B  R8W  R8D  R8
+//    R9B  R9W  R9D  R9
+//    R10B R10W R10D R10
+//    R11B R11W R11D R11
+//    R12B R12W R12D R12
+//    R13B R13W R13D R13
+//    R14B R14W R14D R14
+//    R15B R15W R15D R15
+//    XMM8 XMM9 XMM10 XMM11 XMM12 XMM13 XMM14 XMM15
+//    YMM0 YMM1 YMM2  YMM3  YMM4  YMM5  YMM6  YMM7
+//    YMM8 YMM9 YMM10 YMM11 YMM12 YMM13 YMM14 YMM15
+//Operand:
+//    AsmExp
+//
+//AsmExp:
+//    AsmLogOrExp
+//    AsmLogOrExp ? AsmExp : AsmExp
+//
+//AsmLogOrExp:
+//    AsmLogAndExp
+//    AsmLogOrExp || AsmLogAndExp
+//
+//AsmLogAndExp:
+//    AsmOrExp
+//    AsmLogAndExp && AsmOrExp
+//
+//AsmOrExp:
+//    AsmXorExp
+//    AsmOrExp | AsmXorExp
+//
+//AsmXorExp:
+//    AsmAndExp
+//    AsmXorExp ^ AsmAndExp
+//
+//AsmAndExp:
+//    AsmEqualExp
+//    AsmAndExp & AsmEqualExp
+//
+//AsmEqualExp:
+//    AsmRelExp
+//    AsmEqualExp == AsmRelExp
+//    AsmEqualExp != AsmRelExp
+//
+//AsmRelExp:
+//    AsmShiftExp
+//    AsmRelExp < AsmShiftExp
+//    AsmRelExp <= AsmShiftExp
+//    AsmRelExp > AsmShiftExp
+//    AsmRelExp >= AsmShiftExp
+//
+//AsmShiftExp:
+//    AsmAddExp
+//    AsmShiftExp << AsmAddExp
+//    AsmShiftExp >> AsmAddExp
+//    AsmShiftExp >>> AsmAddExp
+//
+//AsmAddExp:
+//    AsmMulExp
+//    AsmAddExp + AsmMulExp
+//    AsmAddExp - AsmMulExp
+//
+//AsmMulExp:
+//    AsmBrExp
+//    AsmMulExp * AsmBrExp
+//    AsmMulExp / AsmBrExp
+//    AsmMulExp % AsmBrExp
+//
+//AsmBrExp:
+//    AsmUnaExp
+//    AsmBrExp [ AsmExp ]
+//
+//AsmUnaExp:
+//    AsmTypePrefix AsmExp
+//    offsetof AsmExp
+//    seg AsmExp
+//    + AsmUnaExp
+//    - AsmUnaExp
+//    ! AsmUnaExp
+//    ~ AsmUnaExp
+//    AsmPrimaryExp
+//
+//AsmPrimaryExp:
+//    IntegerLiteral
+//    FloatLiteral
+//    __LOCAL_SIZE
+//    $
+//    Register
+//    Register : AsmExp
+//    Register64
+//    Register64 : AsmExp
+//    DotIdentifier
+//    this
+//
+//DotIdentifier:
+//    Identifier
+//    Identifier . DotIdentifier
+//AsmTypePrefix:
+//    near ptr
+//    far ptr
+//    byte ptr
+//    short ptr
+//    int ptr
+//    word ptr
+//    dword ptr
+//    qword ptr
+//    float ptr
+//    double ptr
+//    real ptr
+//Declaration
+//Declaration:
+//    FuncDeclaration
+//    VarDeclarations
+//    AliasDeclaration
+//    AggregateDeclaration
+//    EnumDeclaration
+//    ImportDeclaration
+//AliasDeclaration:
+//    alias StorageClassesopt BasicType Declarator ;
+//    alias StorageClassesopt BasicType FuncDeclarator ;
+//    alias AliasDeclarationX ;
+//
+//AliasDeclarationX:
+//    Identifier TemplateParametersopt = StorageClassesopt Type
+//    AliasDeclarationX , Identifier TemplateParametersopt = StorageClassesopt Type
+//AutoDeclaration:
+//    StorageClasses AutoDeclarationX ;
+//
+//AutoDeclarationX:
+//    Identifier TemplateParametersopt = Initializer
+//    AutoDeclarationX , Identifier TemplateParametersopt = Initializer
+//VarDeclarations:
+//    StorageClassesopt BasicType Declarators ;
+//    AutoDeclaration
+//
+//Declarators:
+//    DeclaratorInitializer
+//    DeclaratorInitializer , DeclaratorIdentifierList
+//
+//DeclaratorInitializer:
+//    VarDeclarator
+//    VarDeclarator TemplateParametersopt = Initializer
+//    AltDeclarator
+//    AltDeclarator = Initializer
+//
+//DeclaratorIdentifierList:
+//    DeclaratorIdentifier
+//    DeclaratorIdentifier , DeclaratorIdentifierList
+//
+//DeclaratorIdentifier:
+//    VarDeclaratorIdentifier
+//    AltDeclaratorIdentifier
+//
+//VarDeclaratorIdentifier:
+//    Identifier
+//    Identifier TemplateParametersopt = Initializer
+//
+//AltDeclaratorIdentifier:
+//    BasicType2 Identifier AltDeclaratorSuffixesopt
+//    BasicType2 Identifier AltDeclaratorSuffixesopt = Initializer
+//    BasicType2opt Identifier AltDeclaratorSuffixes
+//    BasicType2opt Identifier AltDeclaratorSuffixes = Initializer
+//
+//Declarator:
+//    VarDeclarator
+//    AltDeclarator
+//
+//VarDeclarator:
+//    BasicType2opt Identifier
+//
+//AltDeclarator:
+//    BasicType2opt Identifier AltDeclaratorSuffixes
+//    BasicType2opt ( AltDeclaratorX )
+//    BasicType2opt ( AltDeclaratorX ) AltFuncDeclaratorSuffix
+//    BasicType2opt ( AltDeclaratorX ) AltDeclaratorSuffixes
+//
+//AltDeclaratorX:
+//    BasicType2opt Identifier
+//    BasicType2opt Identifier AltFuncDeclaratorSuffix
+//    AltDeclarator
+//
+//AltDeclaratorSuffixes:
+//    AltDeclaratorSuffix
+//    AltDeclaratorSuffix AltDeclaratorSuffixes
+//
+//AltDeclaratorSuffix:
+//    [ ]
+//    [ AssignExpression ]
+//    [ Type ]
+//
+//AltFuncDeclaratorSuffix:
+//    Parameters MemberFunctionAttributesopt
+//StorageClasses:
+//    StorageClass
+//    StorageClass StorageClasses
+//
+//StorageClass:
+//    LinkageAttribute
+//    AlignAttribute
+//    deprecated
+//    enum
+//    static
+//    extern
+//    abstract
+//    final
+//    override
+//    synchronized
+//    auto
+//    scope
+//    const
+//    immutable
+//    inout
+//    shared
+//    __gshared
+//    Property
+//    nothrow
+//    pure
+//    ref
+//Initializer:
+//    VoidInitializer
+//    NonVoidInitializer
+//
+//VoidInitializer:
+//    void
+//
+//NonVoidInitializer:
+//    ExpInitializer:
+//    ArrayInitializer
+//    StructInitializer
+//
+//ExpInitializer:
+//    AssignExpression
+//
+//ArrayInitializer:
+//    [ ArrayMemberInitializationsopt ]
+//
+//ArrayMemberInitializations:
+//    ArrayMemberInitialization
+//    ArrayMemberInitialization ,
+//    ArrayMemberInitialization , ArrayMemberInitializations
+//
+//ArrayMemberInitialization:
+//    NonVoidInitializer
+//    AssignExpression : NonVoidInitializer
+//
+//StructInitializer:
+//    { StructMemberInitializersopt }
+//
+//StructMemberInitializers:
+//    StructMemberInitializer
+//    StructMemberInitializer ,
+//    StructMemberInitializer , StructMemberInitializers
+//
+//StructMemberInitializer:
+//    NonVoidInitializer
+//    Identifier : NonVoidInitializer
+//Function
+//FuncDeclaration:
+//    StorageClassesopt BasicType FuncDeclarator FunctionBody
+//    AutoFuncDeclaration
+//
+//AutoFuncDeclaration:
+//    StorageClasses Identifier FuncDeclaratorSuffix FunctionBody
+//
+//FuncDeclarator:
+//    BasicType2opt Identifier FuncDeclaratorSuffix
+//
+//FuncDeclaratorSuffix:
+//    Parameters MemberFunctionAttributesopt
+//    TemplateParameters Parameters MemberFunctionAttributesopt Constraintopt
+//Parameters:
+//    ( ParameterListopt )
+//
+//ParameterList:
+//    Parameter
+//    Parameter , ParameterList
+//    ...
+//
+//Parameter:
+//    InOutopt BasicType Declarator
+//    InOutopt BasicType Declarator ...
+//    InOutopt BasicType Declarator = AssignExpression
+//    InOutopt Type
+//    InOutopt Type ...
+//
+//InOut:
+//    InOutX
+//    InOut InOutX
+//
+//InOutX:
+//    auto
+//    TypeCtor
+//    final
+//    in
+//    lazy
+//    out
+//    ref
+//    scope
+//
+//FunctionAttributes:
+//    FunctionAttribute
+//    FunctionAttribute FunctionAttributes
+//
+//FunctionAttribute:
+//    nothrow
+//    pure
+//    Property
+//
+//MemberFunctionAttributes:
+//    MemberFunctionAttribute
+//    MemberFunctionAttribute MemberFunctionAttributes
+//
+//MemberFunctionAttribute:
+//    const
+//    immutable
+//    inout
+//    shared
+//    FunctionAttribute
+//FunctionBody:
+//    BlockStatement
+//    FunctionContractsopt BodyStatement
+//    FunctionContracts
+//
+//FunctionContracts:
+//    InStatement OutStatementopt
+//    OutStatement InStatementopt
+//
+//InStatement:
+//    in BlockStatement
+//
+//OutStatement:
+//    out BlockStatement
+//    out ( Identifier ) BlockStatement
+//
+//BodyStatement:
+//    body BlockStatement
+//Constructor:
+//    this Parameters MemberFunctionAttributesopt ;
+//    this Parameters MemberFunctionAttributesopt FunctionBody
+//    ConstructorTemplate
+//
+//ConstructorTemplate:
+//    this TemplateParameters Parameters MemberFunctionAttributesopt Constraintopt ;
+//    this TemplateParameters Parameters MemberFunctionAttributesopt Constraintopt FunctionBody
+//
+//Destructor:
+//    ~ this ( ) MemberFunctionAttributesopt ;
+//    ~ this ( ) MemberFunctionAttributesopt FunctionBody
+//
+//Postblit:
+//    this ( this ) MemberFunctionAttributesopt ;
+//    this ( this ) MemberFunctionAttributesopt FunctionBody
+//
+//Allocator:
+//    new Parameters ;
+//    new Parameters FunctionBody
+//
+//Deallocator:
+//    delete Parameters ;
+//    delete Parameters FunctionBody
+//
+//Invariant:
+//    invariant ( ) BlockStatement
+//    invariant BlockStatement
+//
+//UnitTest:
+//    unittest BlockStatement
+//StaticConstructor:
+//    static this ( ) ;
+//    static this ( ) FunctionBody
+//
+//StaticDestructor:
+//    static ~ this ( ) MemberFunctionAttributesopt ;
+//    static ~ this ( ) MemberFunctionAttributesopt FunctionBody
+//
+//SharedStaticConstructor:
+//    shared static this ( ) ;
+//    shared static this ( ) FunctionBody
+//
+//SharedStaticDestructor:
+//    shared static ~ this ( ) MemberFunctionAttributesopt ;
+//    shared static ~ this ( ) MemberFunctionAttributesopt FunctionBody
+//Aggregate
+//AggregateDeclaration:
+//    ClassDeclaration
+//    InterfaceDeclaration
+//    StructDeclaration
+//    UnionDeclaration
+//
+//ClassDeclaration:
+//    class Identifier ;
+//    class Identifier BaseClassListopt AggregateBody
+//    ClassTemplateDeclaration
+//
+//ClassTemplateDeclaration:
+//    class Identifier TemplateParameters Constraintopt BaseClassListopt AggregateBody
+//    class Identifier TemplateParameters BaseClassList Constraint AggregateBody
+//
+//InterfaceDeclaration:
+//    interface Identifier ;
+//    interface Identifier BaseInterfaceListopt AggregateBody
+//    InterfaceTemplateDeclaration
+//
+//InterfaceTemplateDeclaration:
+//    interface Identifier TemplateParameters Constraintopt BaseInterfaceListopt AggregateBody
+//    interface Identifier TemplateParameters BaseInterfaceList Constraint AggregateBody
+//
+//StructDeclaration:
+//    struct Identifier ;
+//    struct Identifier AggregateBody
+//    StructTemplateDeclaration
+//    AnonStructDeclaration
+//
+//StructTemplateDeclaration:
+//    struct Identifier TemplateParameters Constraintopt AggregateBody
+//
+//AnonStructDeclaration:
+//    struct AggregateBody
+//
+//UnionDeclaration:
+//    union Identifier ;
+//    union Identifier AggregateBody
+//    UnionTemplateDeclaration
+//    AnonUnionDeclaration
+//
+//UnionTemplateDeclaration:
+//    union Identifier TemplateParameters Constraintopt AggregateBody
+//
+//AnonUnionDeclaration:
+//    union AggregateBody
+//
+//AggregateBody:
+//    { DeclDefsopt }
+//BaseClassList:
+//    : SuperClass
+//    : SuperClass , Interfaces
+//    : Interfaces
+//
+//BaseInterfaceList:
+//    : Interfaces
+//
+//SuperClass:
+//    BasicType
+//
+//Interfaces:
+//    Interface
+//    Interface , Interfaces
+//
+//Interface:
+//    BasicType
+//AliasThis:
+//    alias Identifier this ;
+//Enum
+//EnumDeclaration:
+//    enum Identifier EnumBody
+//    enum Identifier : EnumBaseType EnumBody
+//    AnonymousEnumDeclaration
+//
+//EnumBaseType:
+//    Type
+//
+//EnumBody:
+//    { EnumMembers }
+//    ;
+//
+//EnumMembers:
+//    EnumMember
+//    EnumMember ,
+//    EnumMember , EnumMembers
+//
+//EnumMember:
+//    Identifier
+//    Identifier = AssignExpression
+//
+//AnonymousEnumDeclaration:
+//    enum : EnumBaseType { EnumMembers }
+//    enum { EnumMembers }
+//    enum { AnonymousEnumMembers }
+//
+//AnonymousEnumMembers:
+//    AnonymousEnumMember
+//    AnonymousEnumMember ,
+//    AnonymousEnumMember , AnonymousEnumMembers
+//
+//AnonymousEnumMember:
+//    EnumMember
+//    Type Identifier = AssignExpression
+//Template
+//TemplateDeclaration:
+//    template Identifier TemplateParameters Constraintopt { DeclDefsopt }
+//
+//TemplateParameters:
+//    ( TemplateParameterListopt )
+//
+//TemplateParameterList:
+//    TemplateParameter
+//    TemplateParameter ,
+//    TemplateParameter , TemplateParameterList
+//
+//TemplateParameter:
+//    TemplateTypeParameter
+//    TemplateValueParameter
+//    TemplateAliasParameter
+//    TemplateTupleParameter
+//    TemplateThisParameter
+//
+//Constraint:
+//    if ( Expression )
+//TemplateInstance:
+//    Identifier TemplateArguments
+//
+//TemplateArguments:
+//    ! ( TemplateArgumentListopt )
+//    ! TemplateSingleArgument
+//
+//TemplateArgumentList:
+//    TemplateArgument
+//    TemplateArgument ,
+//    TemplateArgument , TemplateArgumentList
+//
+//TemplateArgument:
+//    Type
+//    AssignExpression
+//    Symbol
+//
+//Symbol:
+//    SymbolTail
+//    . SymbolTail
+//
+//SymbolTail:
+//    Identifier
+//    Identifier . SymbolTail
+//    TemplateInstance
+//    TemplateInstance . SymbolTail
+//
+//TemplateSingleArgument:
+//    Identifier
+//    BasicTypeX
+//    CharacterLiteral
+//    StringLiteral
+//    IntegerLiteral
+//    FloatLiteral
+//    true
+//    false
+//    null
+//    this
+//    SpecialKeyword
+//TemplateTypeParameter:
+//    Identifier
+//    Identifier TemplateTypeParameterSpecialization
+//    Identifier TemplateTypeParameterDefault
+//    Identifier TemplateTypeParameterSpecialization TemplateTypeParameterDefault
+//
+//TemplateTypeParameterSpecialization:
+//    : Type
+//
+//TemplateTypeParameterDefault:
+//    = Type
+//TemplateThisParameter:
+//    this TemplateTypeParameter
+//TemplateValueParameter:
+//    BasicType Declarator
+//    BasicType Declarator TemplateValueParameterSpecialization
+//    BasicType Declarator TemplateValueParameterDefault
+//    BasicType Declarator TemplateValueParameterSpecialization TemplateValueParameterDefault
+//
+//TemplateValueParameterSpecialization:
+//    : ConditionalExpression
+//
+//TemplateValueParameterDefault:
+//    = AssignExpression
+//    = SpecialKeyword
+//TemplateAliasParameter:
+//    alias Identifier TemplateAliasParameterSpecializationopt TemplateAliasParameterDefaultopt
+//    alias BasicType Declarator TemplateAliasParameterSpecializationopt TemplateAliasParameterDefaultopt
+//
+//TemplateAliasParameterSpecialization:
+//    : Type
+//    : ConditionalExpression
+//
+//TemplateAliasParameterDefault:
+//    = Type
+//    = ConditionalExpression
+//TemplateTupleParameter:
+//    Identifier ...
+//TemplateMixinDeclaration:
+//    mixin template Identifier TemplateParameters Constraintopt { DeclDefsopt }
+//
+//TemplateMixin:
+//    mixin MixinTemplateName TemplateArgumentsopt Identifieropt ;
+//
+//MixinTemplateName:
+//    . QualifiedIdentifierList
+//    QualifiedIdentifierList
+//    Typeof . QualifiedIdentifierList
+//
+//QualifiedIdentifierList:
+//    Identifier
+//    Identifier . QualifiedIdentifierList
+//    TemplateInstance . QualifiedIdentifierList
+//Attribute
+//AttributeSpecifier:
+//    Attribute :
+//    Attribute DeclarationBlock
+//
+//Attribute:
+//    LinkageAttribute
+//    AlignAttribute
+//    DeprecatedAttribute
+//    ProtectionAttribute
+//    Pragma
+//    static
+//    extern
+//    abstract
+//    final
+//    override
+//    synchronized
+//    auto
+//    scope
+//    const
+//    immutable
+//    inout
+//    shared
+//    __gshared
+//    Property
+//    nothrow
+//    pure
+//    ref
+//
+//DeclarationBlock:
+//    DeclDef
+//    { DeclDefsopt }
+//LinkageAttribute:
+//    extern ( LinkageType )
+//    extern ( C++, IdentifierList )
+//
+//LinkageType:
+//    C
+//    C++
+//    D
+//    Windows
+//    Pascal
+//    System
+//    Objective-C
+//AlignAttribute:
+//    align
+//    align ( IntegerLiteral )
+//DeprecatedAttribute:
+//    deprecated
+//    deprecated ( StringLiteral )
+//ProtectionAttribute:
+//    private
+//    package
+//    package ( IdentifierList )
+//    protected
+//    public
+//    export
+//Property:
+//    @ PropertyIdentifier
+//    UserDefinedAttribute
+//
+//PropertyIdentifier:
+//    property
+//    safe
+//    trusted
+//    system
+//    disable
+//    nogc
+//
+//UserDefinedAttribute:
+//    @ ( ArgumentList )
+//    @ Identifier
+//    @ Identifier ( ArgumentListopt )
+//    @ TemplateInstance
+//    @ TemplateInstance ( ArgumentListopt )
+//Pragma:
+//    pragma ( Identifier )
+//    pragma ( Identifier , ArgumentList )
+//Conditional
+//ConditionalDeclaration:
+//    Condition DeclarationBlock
+//    Condition DeclarationBlock else DeclarationBlock
+//    Condition : DeclDefsopt
+//    Condition DeclarationBlock else : DeclDefsopt
+//
+//ConditionalStatement:
+//    Condition NoScopeNonEmptyStatement
+//    Condition NoScopeNonEmptyStatement else NoScopeNonEmptyStatement
+//Condition:
+//    VersionCondition
+//    DebugCondition
+//    StaticIfCondition
+//
+//VersionCondition:
+//    version ( IntegerLiteral )
+//    version ( Identifier )
+//    version ( unittest )
+//    version ( assert )
+//
+//DebugCondition:
+//    debug
+//    debug ( IntegerLiteral )
+//    debug ( Identifier )
+//
+//StaticIfCondition:
+//    static if ( AssignExpression )
+//VersionSpecification:
+//    version = Identifier ;
+//    version = IntegerLiteral ;
+//
+//DebugSpecification:
+//    debug = Identifier ;
+//    debug = IntegerLiteral ;
+//StaticAssert:
+//    static assert ( AssignExpression );
+//    static assert ( AssignExpression , AssignExpression );
+
