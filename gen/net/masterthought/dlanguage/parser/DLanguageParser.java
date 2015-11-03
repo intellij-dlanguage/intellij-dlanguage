@@ -790,8 +790,8 @@ public class DLanguageParser implements PsiParser {
     else if (t == UNION_TEMPLATE_DECLARATION) {
       r = UnionTemplateDeclaration(b, 0);
     }
-    else if (t == UNIT_TEST) {
-      r = UnitTest(b, 0);
+    else if (t == UNIT_TESTING) {
+      r = UnitTesting(b, 0);
     }
     else if (t == UPR_EXPRESSION) {
       r = UprExpression(b, 0);
@@ -3311,7 +3311,7 @@ public class DLanguageParser implements PsiParser {
   //     | Allocator
   //     | Deallocator
   //     | Invariant
-  //     | UnitTest
+  //     | UnitTesting
   //     | AliasThis
   //     | StaticConstructor
   //     | StaticDestructor
@@ -3337,7 +3337,7 @@ public class DLanguageParser implements PsiParser {
     if (!r) r = Allocator(b, l + 1);
     if (!r) r = Deallocator(b, l + 1);
     if (!r) r = Invariant(b, l + 1);
-    if (!r) r = UnitTest(b, l + 1);
+    if (!r) r = UnitTesting(b, l + 1);
     if (!r) r = AliasThis(b, l + 1);
     if (!r) r = StaticConstructor(b, l + 1);
     if (!r) r = StaticDestructor(b, l + 1);
@@ -9354,14 +9354,14 @@ public class DLanguageParser implements PsiParser {
 
   /* ********************************************************** */
   // 'unittest' BlockStatement
-  public static boolean UnitTest(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "UnitTest")) return false;
+  public static boolean UnitTesting(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "UnitTesting")) return false;
     if (!nextTokenIs(b, KW_UNITTEST)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, KW_UNITTEST);
     r = r && BlockStatement(b, l + 1);
-    exit_section_(b, m, UNIT_TEST, r);
+    exit_section_(b, m, UNIT_TESTING, r);
     return r;
   }
 

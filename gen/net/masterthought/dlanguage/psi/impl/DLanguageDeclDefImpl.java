@@ -144,8 +144,8 @@ public class DLanguageDeclDefImpl extends ASTWrapperPsiElement implements DLangu
 
   @Override
   @Nullable
-  public DLanguageUnitTest getUnitTest() {
-    return findChildByClass(DLanguageUnitTest.class);
+  public DLanguageUnitTesting getUnitTesting() {
+    return findChildByClass(DLanguageUnitTesting.class);
   }
 
   @Override

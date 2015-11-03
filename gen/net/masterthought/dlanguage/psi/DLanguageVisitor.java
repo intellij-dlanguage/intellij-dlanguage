@@ -1031,7 +1031,7 @@ public class DLanguageVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitUnitTest(@NotNull DLanguageUnitTest o) {
+  public void visitUnitTesting(@NotNull DLanguageUnitTesting o) {
     visitPsiElement(o);
   }
 

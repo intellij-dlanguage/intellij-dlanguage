@@ -247,7 +247,7 @@ DeclDef ::=
     | Allocator
     | Deallocator
     | Invariant
-    | UnitTest
+    | UnitTesting
     | AliasThis
     | StaticConstructor
     | StaticDestructor
@@ -1301,7 +1301,7 @@ Invariant ::=
     'invariant' '(' ')' BlockStatement
     | 'invariant' BlockStatement
 
-UnitTest ::=
+UnitTesting ::=
     'unittest' BlockStatement
 
 StaticConstructor ::=

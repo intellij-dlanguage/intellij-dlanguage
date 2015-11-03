@@ -264,7 +264,7 @@ public interface DLanguageTypes {
   IElementType UNARY_EXPRESSION = new DLanguageElementType("UNARY_EXPRESSION");
   IElementType UNION_DECLARATION = new DLanguageElementType("UNION_DECLARATION");
   IElementType UNION_TEMPLATE_DECLARATION = new DLanguageElementType("UNION_TEMPLATE_DECLARATION");
-  IElementType UNIT_TEST = new DLanguageElementType("UNIT_TEST");
+  IElementType UNIT_TESTING = new DLanguageElementType("UNIT_TESTING");
   IElementType UPR_EXPRESSION = new DLanguageElementType("UPR_EXPRESSION");
   IElementType USER_DEFINED_ATTRIBUTE = new DLanguageElementType("USER_DEFINED_ATTRIBUTE");
   IElementType VALUE_EXPRESSION = new DLanguageElementType("VALUE_EXPRESSION");
@@ -1234,8 +1234,8 @@ public interface DLanguageTypes {
       else if (type == UNION_TEMPLATE_DECLARATION) {
         return new DLanguageUnionTemplateDeclarationImpl(node);
       }
-      else if (type == UNIT_TEST) {
-        return new DLanguageUnitTestImpl(node);
+      else if (type == UNIT_TESTING) {
+        return new DLanguageUnitTestingImpl(node);
       }
       else if (type == UPR_EXPRESSION) {
         return new DLanguageUprExpressionImpl(node);

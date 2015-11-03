@@ -68,7 +68,7 @@ public interface DLanguageDeclDef extends PsiElement {
   DLanguageTemplateMixinDeclaration getTemplateMixinDeclaration();
 
   @Nullable
-  DLanguageUnitTest getUnitTest();
+  DLanguageUnitTesting getUnitTesting();
 
   @Nullable
   DLanguageVersionSpecification getVersionSpecification();
