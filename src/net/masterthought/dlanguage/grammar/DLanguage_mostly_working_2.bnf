@@ -203,14 +203,12 @@ tokens = [
 
 dFile ::= item_*
 
-private item_ ::= (ModuleDeclaration | DeclDefs)
+private item_ ::= (ModuleDeclaration | DeclDefs | Statement)
 
 Identifier ::= ID
 StringLiteral  ::= (WYSIWYG_STRING|ALTERNATE_WYSIWYG_STRING|DOUBLE_QUOTED_STRING|HEX_STRING|DELIMITED_STRING)
 
 // Module
-
-//Module ::=  ModuleDeclaration? DeclDefs?
 
 ModuleDeclaration ::=
     Attribute? 'module' ModuleFullyQualifiedName ';'
@@ -1052,13 +1050,21 @@ Declaration ::=
    | VarDeclarations
 
 AliasDeclaration ::=
-    'alias' StorageClasses? BasicType Declarator ';'
-    | 'alias' StorageClasses? BasicType FuncDeclarator ';'
+    'alias' StorageClasses? BasicType (Declarator | FuncDeclarator) ';'
     | 'alias' AliasDeclarationX ';'
 
+//AliasDeclarationX ::=
+//    Identifier TemplateParameters? '=' StorageClasses? Type
+//    [',' Identifier TemplateParameters? '=' StorageClasses? Type AliasDeclarationX]
+
+//AliasDeclarationX ::=
+//    Identifier TemplateParameters? '=' StorageClasses? Type
+//    | AliasDeclarationX ',' Identifier TemplateParameters? '=' StorageClasses? Type
+
 AliasDeclarationX ::=
-    Identifier TemplateParameters? '=' StorageClasses? Type
-    [',' Identifier TemplateParameters? '=' StorageClasses? Type AliasDeclarationX]
+    (',')? Identifier TemplateParameters? '=' StorageClasses? Type [AliasDeclarationX]
+
+
 
 AutoDeclaration ::=
     StorageClasses AutoDeclarationX ';'
