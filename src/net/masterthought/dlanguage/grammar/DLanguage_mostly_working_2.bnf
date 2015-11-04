@@ -1053,25 +1053,14 @@ AliasDeclaration ::=
     'alias' StorageClasses? BasicType (Declarator | FuncDeclarator) ';'
     | 'alias' AliasDeclarationX ';'
 
-//AliasDeclarationX ::=
-//    Identifier TemplateParameters? '=' StorageClasses? Type
-//    [',' Identifier TemplateParameters? '=' StorageClasses? Type AliasDeclarationX]
-
-//AliasDeclarationX ::=
-//    Identifier TemplateParameters? '=' StorageClasses? Type
-//    | AliasDeclarationX ',' Identifier TemplateParameters? '=' StorageClasses? Type
-
 AliasDeclarationX ::=
-    (',')? Identifier TemplateParameters? '=' StorageClasses? Type [AliasDeclarationX]
-
-
+    (',')? Identifier TemplateParameters? '=' StorageClasses? Type? Initializer? [AliasDeclarationX]
 
 AutoDeclaration ::=
     StorageClasses AutoDeclarationX ';'
 
 AutoDeclarationX ::=
-    Identifier TemplateParameters? '=' Initializer
-    [',' Identifier TemplateParameters? '=' Initializer AutoDeclarationX]
+    (',')? Identifier TemplateParameters? '=' Initializer [AutoDeclarationX]
 
 VarDeclarations ::=
     StorageClasses? BasicType Declarators ';'
@@ -1096,11 +1085,8 @@ VarDeclaratorIdentifier ::=
     Identifier TemplateParameters? '=' Initializer
 
 AltDeclaratorIdentifier ::=
-    BasicType2 Identifier AltDeclaratorSuffixes?
-    | BasicType2 Identifier AltDeclaratorSuffixes? '=' Initializer
-    | BasicType2? Identifier AltDeclaratorSuffixes
-    | BasicType2? Identifier AltDeclaratorSuffixes '=' Initializer
-
+    BasicType2? Identifier AltDeclaratorSuffixes? ('=' Initializer)?
+    
 Declarator ::=
     VarDeclarator
     | AltDeclarator
@@ -1110,23 +1096,17 @@ VarDeclarator ::=
 
 AltDeclarator ::=
     BasicType2? Identifier AltDeclaratorSuffixes
-    | BasicType2? '(' AltDeclaratorX ')'
-    | BasicType2? '(' AltDeclaratorX ')' AltFuncDeclaratorSuffix
-    | BasicType2? '(' AltDeclaratorX ')' AltDeclaratorSuffixes
+    | BasicType2? '(' AltDeclaratorX ')' AltFuncDeclaratorSuffix? AltDeclaratorSuffixes?
 
 AltDeclaratorX ::=
-    BasicType2? Identifier
-    | BasicType2? Identifier AltFuncDeclaratorSuffix
+    BasicType2? Identifier AltFuncDeclaratorSuffix?
     | AltDeclarator
 
 AltDeclaratorSuffixes ::=
-    AltDeclaratorSuffix
-    | AltDeclaratorSuffix AltDeclaratorSuffixes
+    AltDeclaratorSuffix AltDeclaratorSuffixes?
 
 AltDeclaratorSuffix ::=
-    '[' ']'
-    | '[' AssignExpression ']'
-    | '[' Type ']'
+    '[' (AssignExpression | Type)? ']'
 
 AltFuncDeclaratorSuffix ::=
     Parameters MemberFunctionAttributes?
