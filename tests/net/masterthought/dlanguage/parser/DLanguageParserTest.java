@@ -160,4 +160,47 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
     public void testarrays_static() { doTest(true, true); }
 //    public void testarrays_void() { doTest(true, true); }
 
+
+// associative arrays
+//    public void testassocarrays() { doTest(true, true); }
+//    public void testassocarrays_classes() { doTest(true, true); }
+//    public void testassocarrays_constructor() { doTest(true, true); }
+//    public void testassocarrays_immutable() { doTest(true, true); }
+//    public void testassocarrays_membership() { doTest(true, true); }
+//    public void testassocarrays_removing() { doTest(true, true); }
+//    public void testassocarrays_structs() { doTest(true, true); }
+//    public void testassocarrays_word_count() { doTest(true, true); }
+
+// structs and unions
+//      public void teststructs() { doTest(true, true); }
+//      public void teststructs_constructors() { doTest(true, true); }
+//      public void teststructs_dynamic_init() { doTest(true, true); }
+//      public void teststructs_initialization() { doTest(true, true); }
+//      public void teststructs_literal() { doTest(true, true); }
+//      public void teststructs_nested() { doTest(true, true); }
+//      public void teststructs_overload() { doTest(true, true); }
+      public void teststructs_postblits() { doTest(true, true); }
+      public void teststructs_shared() { doTest(true, true); }
+//      public void testunion_initialization() { doTest(true, true); }
+
+// classes
+      public void testclasses() { doTest(true, true); }
+//      public void testclasses_alias_this() { doTest(true, true); }
+//      public void testclasses_allocators() { doTest(true, true); }
+//      public void testclasses_constructors() { doTest(true, true); }
+//      public void testclasses_constructors_fields() { doTest(true, true); }
+//      public void testclasses_deallocators() { doTest(true, true); }
+      public void testclasses_destructors() { doTest(true, true); }
+//      public void testclasses_field_properties() { doTest(true, true); }
+      public void testclasses_fields() { doTest(true, true); }
+      public void testclasses_final() { doTest(true, true); }
+      public void testclasses_members() { doTest(true, true); }
+//      public void testclasses_nested() { doTest(true, true); }
+//      public void testclasses_properties() { doTest(true, true); }
+      public void testclasses_scope() { doTest(true, true); }
+      public void testclasses_static_constructors() { doTest(true, true); }
+      public void testclasses_static_destructor() { doTest(true, true); }
+      public void testclasses_synchronized() { doTest(true, true); }
+
+
 }
