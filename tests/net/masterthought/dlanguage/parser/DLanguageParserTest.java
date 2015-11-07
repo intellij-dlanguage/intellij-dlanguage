@@ -138,6 +138,26 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
 //    public void teststatements_with() { doTest(true, true); }
 
     // arrays
-    public void testarrays() { doTest(true, true); }
+//    public void testarrays() { doTest(true, true); }
+//    public void testarrays_bounds_checking() { doTest(true, true); }
+//    public void testarrays_concatentation() { doTest(true, true); }
+//    public void testarrays_copying() { doTest(true, true); }
+    public void testarrays_declarations() { doTest(true, true); }
+    public void testarrays_dynamic() { doTest(true, true); }
+//    public void testarrays_dynamic_length() { doTest(true, true); }
+//    public void testarrays_function_properties() { doTest(true, true); }
+//    public void testarrays_initialization() { doTest(true, true); }
+//    public void testarrays_length() { doTest(true, true); }
+//    public void testarrays_operations() { doTest(true, true); }
+//    public void testarrays_pointer_arithmetic() { doTest(true, true); }
+    public void testarrays_pointers() { doTest(true, true); }
+//    public void testarrays_printf_c() { doTest(true, true); }
+//    public void testarrays_properties() { doTest(true, true); }
+//    public void testarrays_rectangular() { doTest(true, true); }
+//    public void testarrays_setting() { doTest(true, true); }
+//    public void testarrays_slicing() { doTest(true, true); }
+//    public void testarrays_special_strings() { doTest(true, true); }
+    public void testarrays_static() { doTest(true, true); }
+//    public void testarrays_void() { doTest(true, true); }
 
 }
