@@ -143,6 +143,10 @@ public class DLanguageVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitAutoDeclarationY(@NotNull DLanguageAutoDeclarationY o) {
+    visitPsiElement(o);
+  }
+
   public void visitAutoFuncDeclaration(@NotNull DLanguageAutoFuncDeclaration o) {
     visitPsiElement(o);
   }

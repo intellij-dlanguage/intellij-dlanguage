@@ -8,7 +8,7 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageParameter extends PsiElement {
 
   @Nullable
-  DLanguageAssignExpression getAssignExpression();
+  DLanguageAssertExpression getAssertExpression();
 
   @Nullable
   DLanguageBasicType getBasicType();

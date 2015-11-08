@@ -124,6 +124,9 @@ public class DLanguageParser implements PsiParser {
     else if (t == AUTO_DECLARATION_X) {
       r = AutoDeclarationX(b, 0);
     }
+    else if (t == AUTO_DECLARATION_Y) {
+      r = AutoDeclarationY(b, 0);
+    }
     else if (t == AUTO_FUNC_DECLARATION) {
       r = AutoFuncDeclaration(b, 0);
     }
@@ -1998,50 +2001,55 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // (',')? Identifier TemplateParameters? '=' Initializer [AutoDeclarationX]
+  // AutoDeclarationY [',' AutoDeclarationX]
   public static boolean AutoDeclarationX(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "AutoDeclarationX")) return false;
-    if (!nextTokenIs(b, "<auto declaration x>", OP_COMMA, ID)) return false;
+    if (!nextTokenIs(b, ID)) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, "<auto declaration x>");
-    r = AutoDeclarationX_0(b, l + 1);
-    r = r && Identifier(b, l + 1);
-    r = r && AutoDeclarationX_2(b, l + 1);
-    r = r && consumeToken(b, OP_EQ);
-    r = r && Initializer(b, l + 1);
-    r = r && AutoDeclarationX_5(b, l + 1);
-    exit_section_(b, l, m, AUTO_DECLARATION_X, r, false, null);
+    Marker m = enter_section_(b);
+    r = AutoDeclarationY(b, l + 1);
+    r = r && AutoDeclarationX_1(b, l + 1);
+    exit_section_(b, m, AUTO_DECLARATION_X, r);
     return r;
   }
 
-  // (',')?
-  private static boolean AutoDeclarationX_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AutoDeclarationX_0")) return false;
-    AutoDeclarationX_0_0(b, l + 1);
+  // [',' AutoDeclarationX]
+  private static boolean AutoDeclarationX_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "AutoDeclarationX_1")) return false;
+    AutoDeclarationX_1_0(b, l + 1);
     return true;
   }
 
-  // (',')
-  private static boolean AutoDeclarationX_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AutoDeclarationX_0_0")) return false;
+  // ',' AutoDeclarationX
+  private static boolean AutoDeclarationX_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "AutoDeclarationX_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, OP_COMMA);
+    r = r && AutoDeclarationX(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // TemplateParameters?
-  private static boolean AutoDeclarationX_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AutoDeclarationX_2")) return false;
-    TemplateParameters(b, l + 1);
-    return true;
+  /* ********************************************************** */
+  // Identifier TemplateParameters? '=' Initializer
+  public static boolean AutoDeclarationY(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "AutoDeclarationY")) return false;
+    if (!nextTokenIs(b, ID)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = Identifier(b, l + 1);
+    r = r && AutoDeclarationY_1(b, l + 1);
+    r = r && consumeToken(b, OP_EQ);
+    r = r && Initializer(b, l + 1);
+    exit_section_(b, m, AUTO_DECLARATION_Y, r);
+    return r;
   }
 
-  // [AutoDeclarationX]
-  private static boolean AutoDeclarationX_5(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AutoDeclarationX_5")) return false;
-    AutoDeclarationX(b, l + 1);
+  // TemplateParameters?
+  private static boolean AutoDeclarationY_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "AutoDeclarationY_1")) return false;
+    TemplateParameters(b, l + 1);
     return true;
   }
 
@@ -2488,10 +2496,21 @@ public class DLanguageParser implements PsiParser {
 
   /* ********************************************************** */
   // 'cast' '(' Type ')' UnaryExpression
-  //     'cast' '(' TypeCtors? ')' UnaryExpression
+  //     | 'cast' '(' TypeCtors? ')' UnaryExpression
   public static boolean CastExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "CastExpression")) return false;
     if (!nextTokenIs(b, KW_CAST)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = CastExpression_0(b, l + 1);
+    if (!r) r = CastExpression_1(b, l + 1);
+    exit_section_(b, m, CAST_EXPRESSION, r);
+    return r;
+  }
+
+  // 'cast' '(' Type ')' UnaryExpression
+  private static boolean CastExpression_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "CastExpression_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, KW_CAST);
@@ -2499,18 +2518,27 @@ public class DLanguageParser implements PsiParser {
     r = r && Type(b, l + 1);
     r = r && consumeToken(b, OP_PAR_RIGHT);
     r = r && UnaryExpression(b, l + 1);
-    r = r && consumeToken(b, KW_CAST);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // 'cast' '(' TypeCtors? ')' UnaryExpression
+  private static boolean CastExpression_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "CastExpression_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, KW_CAST);
     r = r && consumeToken(b, OP_PAR_LEFT);
-    r = r && CastExpression_7(b, l + 1);
+    r = r && CastExpression_1_2(b, l + 1);
     r = r && consumeToken(b, OP_PAR_RIGHT);
     r = r && UnaryExpression(b, l + 1);
-    exit_section_(b, m, CAST_EXPRESSION, r);
+    exit_section_(b, m, null, r);
     return r;
   }
 
   // TypeCtors?
-  private static boolean CastExpression_7(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "CastExpression_7")) return false;
+  private static boolean CastExpression_1_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "CastExpression_1_2")) return false;
     TypeCtors(b, l + 1);
     return true;
   }
@@ -3374,25 +3402,30 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // DeclaratorIdentifier
-  //     | DeclaratorIdentifier ',' DeclaratorIdentifierList
+  // DeclaratorIdentifier [',' DeclaratorIdentifierList]
   public static boolean DeclaratorIdentifierList(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "DeclaratorIdentifierList")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<declarator identifier list>");
     r = DeclaratorIdentifier(b, l + 1);
-    if (!r) r = DeclaratorIdentifierList_1(b, l + 1);
+    r = r && DeclaratorIdentifierList_1(b, l + 1);
     exit_section_(b, l, m, DECLARATOR_IDENTIFIER_LIST, r, false, null);
     return r;
   }
 
-  // DeclaratorIdentifier ',' DeclaratorIdentifierList
+  // [',' DeclaratorIdentifierList]
   private static boolean DeclaratorIdentifierList_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "DeclaratorIdentifierList_1")) return false;
+    DeclaratorIdentifierList_1_0(b, l + 1);
+    return true;
+  }
+
+  // ',' DeclaratorIdentifierList
+  private static boolean DeclaratorIdentifierList_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "DeclaratorIdentifierList_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = DeclaratorIdentifier(b, l + 1);
-    r = r && consumeToken(b, OP_COMMA);
+    r = consumeToken(b, OP_COMMA);
     r = r && DeclaratorIdentifierList(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
@@ -4239,14 +4272,12 @@ public class DLanguageParser implements PsiParser {
   /* ********************************************************** */
   // BlockStatement
   //     | FunctionContracts? BodyStatement
-  //     | FunctionContracts
   public static boolean FunctionBody(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "FunctionBody")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<function body>");
     r = BlockStatement(b, l + 1);
     if (!r) r = FunctionBody_1(b, l + 1);
-    if (!r) r = FunctionContracts(b, l + 1);
     exit_section_(b, l, m, FUNCTION_BODY, r, false, null);
     return r;
   }
@@ -4514,52 +4545,82 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // Identifier
-  //     | Identifier '.' IdentifierList
-  //     | TemplateInstance
-  //     | TemplateInstance '.' IdentifierList
+  // Identifier ('.' IdentifierList)?
+  //     | TemplateInstance ('.' IdentifierList)?
   //     | Identifier '[' AssignExpression ']' '.' IdentifierList
   public static boolean IdentifierList(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "IdentifierList")) return false;
     if (!nextTokenIs(b, ID)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = Identifier(b, l + 1);
+    r = IdentifierList_0(b, l + 1);
     if (!r) r = IdentifierList_1(b, l + 1);
-    if (!r) r = TemplateInstance(b, l + 1);
-    if (!r) r = IdentifierList_3(b, l + 1);
-    if (!r) r = IdentifierList_4(b, l + 1);
+    if (!r) r = IdentifierList_2(b, l + 1);
     exit_section_(b, m, IDENTIFIER_LIST, r);
     return r;
   }
 
-  // Identifier '.' IdentifierList
-  private static boolean IdentifierList_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "IdentifierList_1")) return false;
+  // Identifier ('.' IdentifierList)?
+  private static boolean IdentifierList_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "IdentifierList_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = Identifier(b, l + 1);
-    r = r && consumeToken(b, OP_DOT);
+    r = r && IdentifierList_0_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // ('.' IdentifierList)?
+  private static boolean IdentifierList_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "IdentifierList_0_1")) return false;
+    IdentifierList_0_1_0(b, l + 1);
+    return true;
+  }
+
+  // '.' IdentifierList
+  private static boolean IdentifierList_0_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "IdentifierList_0_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, OP_DOT);
     r = r && IdentifierList(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // TemplateInstance '.' IdentifierList
-  private static boolean IdentifierList_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "IdentifierList_3")) return false;
+  // TemplateInstance ('.' IdentifierList)?
+  private static boolean IdentifierList_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "IdentifierList_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = TemplateInstance(b, l + 1);
-    r = r && consumeToken(b, OP_DOT);
+    r = r && IdentifierList_1_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // ('.' IdentifierList)?
+  private static boolean IdentifierList_1_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "IdentifierList_1_1")) return false;
+    IdentifierList_1_1_0(b, l + 1);
+    return true;
+  }
+
+  // '.' IdentifierList
+  private static boolean IdentifierList_1_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "IdentifierList_1_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, OP_DOT);
     r = r && IdentifierList(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // Identifier '[' AssignExpression ']' '.' IdentifierList
-  private static boolean IdentifierList_4(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "IdentifierList_4")) return false;
+  private static boolean IdentifierList_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "IdentifierList_2")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = Identifier(b, l + 1);
@@ -4934,15 +4995,25 @@ public class DLanguageParser implements PsiParser {
 
   /* ********************************************************** */
   // InOutX
-  //     InOut InOutX
+  //     | InOut InOutX
   public static boolean InOut(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "InOut")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<in out>");
     r = InOutX(b, l + 1);
-    r = r && InOut(b, l + 1);
-    r = r && InOutX(b, l + 1);
+    if (!r) r = InOut_1(b, l + 1);
     exit_section_(b, l, m, IN_OUT, r, false, null);
+    return r;
+  }
+
+  // InOut InOutX
+  private static boolean InOut_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "InOut_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = InOut(b, l + 1);
+    r = r && InOutX(b, l + 1);
+    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -5698,27 +5769,22 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // MemberFunctionAttribute
-  //     | MemberFunctionAttribute MemberFunctionAttributes
+  // MemberFunctionAttribute [MemberFunctionAttributes]
   public static boolean MemberFunctionAttributes(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "MemberFunctionAttributes")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<member function attributes>");
     r = MemberFunctionAttribute(b, l + 1);
-    if (!r) r = MemberFunctionAttributes_1(b, l + 1);
+    r = r && MemberFunctionAttributes_1(b, l + 1);
     exit_section_(b, l, m, MEMBER_FUNCTION_ATTRIBUTES, r, false, null);
     return r;
   }
 
-  // MemberFunctionAttribute MemberFunctionAttributes
+  // [MemberFunctionAttributes]
   private static boolean MemberFunctionAttributes_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "MemberFunctionAttributes_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = MemberFunctionAttribute(b, l + 1);
-    r = r && MemberFunctionAttributes(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
+    MemberFunctionAttributes(b, l + 1);
+    return true;
   }
 
   /* ********************************************************** */
@@ -6258,25 +6324,19 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // InOut? BasicType Declarator
-  //     | InOut? BasicType Declarator '...'
-  //     | InOut? BasicType Declarator '=' AssignExpression
-  //     | InOut? Type
-  //     | InOut? Type '...'
+  // InOut? BasicType Declarator ('...' | '=' AssertExpression)?
+  //        | InOut? Type ('...')?
   public static boolean Parameter(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "Parameter")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<parameter>");
     r = Parameter_0(b, l + 1);
     if (!r) r = Parameter_1(b, l + 1);
-    if (!r) r = Parameter_2(b, l + 1);
-    if (!r) r = Parameter_3(b, l + 1);
-    if (!r) r = Parameter_4(b, l + 1);
     exit_section_(b, l, m, PARAMETER, r, false, null);
     return r;
   }
 
-  // InOut? BasicType Declarator
+  // InOut? BasicType Declarator ('...' | '=' AssertExpression)?
   private static boolean Parameter_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "Parameter_0")) return false;
     boolean r;
@@ -6284,6 +6344,7 @@ public class DLanguageParser implements PsiParser {
     r = Parameter_0_0(b, l + 1);
     r = r && BasicType(b, l + 1);
     r = r && Declarator(b, l + 1);
+    r = r && Parameter_0_3(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -6295,15 +6356,43 @@ public class DLanguageParser implements PsiParser {
     return true;
   }
 
-  // InOut? BasicType Declarator '...'
+  // ('...' | '=' AssertExpression)?
+  private static boolean Parameter_0_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "Parameter_0_3")) return false;
+    Parameter_0_3_0(b, l + 1);
+    return true;
+  }
+
+  // '...' | '=' AssertExpression
+  private static boolean Parameter_0_3_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "Parameter_0_3_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, OP_TRIPLEDOT);
+    if (!r) r = Parameter_0_3_0_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // '=' AssertExpression
+  private static boolean Parameter_0_3_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "Parameter_0_3_0_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, OP_EQ);
+    r = r && AssertExpression(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // InOut? Type ('...')?
   private static boolean Parameter_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "Parameter_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = Parameter_1_0(b, l + 1);
-    r = r && BasicType(b, l + 1);
-    r = r && Declarator(b, l + 1);
-    r = r && consumeToken(b, OP_TRIPLEDOT);
+    r = r && Type(b, l + 1);
+    r = r && Parameter_1_2(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -6315,62 +6404,21 @@ public class DLanguageParser implements PsiParser {
     return true;
   }
 
-  // InOut? BasicType Declarator '=' AssignExpression
-  private static boolean Parameter_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "Parameter_2")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = Parameter_2_0(b, l + 1);
-    r = r && BasicType(b, l + 1);
-    r = r && Declarator(b, l + 1);
-    r = r && consumeToken(b, OP_EQ);
-    r = r && AssignExpression(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // InOut?
-  private static boolean Parameter_2_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "Parameter_2_0")) return false;
-    InOut(b, l + 1);
+  // ('...')?
+  private static boolean Parameter_1_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "Parameter_1_2")) return false;
+    Parameter_1_2_0(b, l + 1);
     return true;
   }
 
-  // InOut? Type
-  private static boolean Parameter_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "Parameter_3")) return false;
+  // ('...')
+  private static boolean Parameter_1_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "Parameter_1_2_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = Parameter_3_0(b, l + 1);
-    r = r && Type(b, l + 1);
+    r = consumeToken(b, OP_TRIPLEDOT);
     exit_section_(b, m, null, r);
     return r;
-  }
-
-  // InOut?
-  private static boolean Parameter_3_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "Parameter_3_0")) return false;
-    InOut(b, l + 1);
-    return true;
-  }
-
-  // InOut? Type '...'
-  private static boolean Parameter_4(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "Parameter_4")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = Parameter_4_0(b, l + 1);
-    r = r && Type(b, l + 1);
-    r = r && consumeToken(b, OP_TRIPLEDOT);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // InOut?
-  private static boolean Parameter_4_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "Parameter_4_0")) return false;
-    InOut(b, l + 1);
-    return true;
   }
 
   /* ********************************************************** */
@@ -7048,8 +7096,7 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // ShiftExpression
-  //     ('<'
+  // ('<'
   //     | '<='
   //     | '>'
   //     | '>='
@@ -7065,8 +7112,7 @@ public class DLanguageParser implements PsiParser {
     if (!recursion_guard_(b, l, "RelExpression")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<rel expression>");
-    r = ShiftExpression(b, l + 1);
-    r = r && RelExpression_1(b, l + 1);
+    r = RelExpression_0(b, l + 1);
     r = r && ShiftExpression(b, l + 1);
     exit_section_(b, l, m, REL_EXPRESSION, r, false, null);
     return r;
@@ -7084,8 +7130,8 @@ public class DLanguageParser implements PsiParser {
   //     | '!>='
   //     | '!<'
   //     | '!<='
-  private static boolean RelExpression_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "RelExpression_1")) return false;
+  private static boolean RelExpression_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "RelExpression_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, OP_LESS);
@@ -7400,7 +7446,7 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // Statement StatementList?
+  // Statement [StatementList]
   public static boolean StatementList(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "StatementList")) return false;
     boolean r;
@@ -7411,7 +7457,7 @@ public class DLanguageParser implements PsiParser {
     return r;
   }
 
-  // StatementList?
+  // [StatementList]
   private static boolean StatementList_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "StatementList_1")) return false;
     StatementList(b, l + 1);
@@ -8974,53 +9020,39 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // 'typeof' '(' Expression ')'
-  //     | 'typeof' '(' 'return' ')'
+  // 'typeof' '(' (Expression | 'return') ')'
   public static boolean Typeof(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "Typeof")) return false;
     if (!nextTokenIs(b, KW_TYPEOF)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = Typeof_0(b, l + 1);
-    if (!r) r = Typeof_1(b, l + 1);
+    r = consumeToken(b, KW_TYPEOF);
+    r = r && consumeToken(b, OP_PAR_LEFT);
+    r = r && Typeof_2(b, l + 1);
+    r = r && consumeToken(b, OP_PAR_RIGHT);
     exit_section_(b, m, TYPEOF, r);
     return r;
   }
 
-  // 'typeof' '(' Expression ')'
-  private static boolean Typeof_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "Typeof_0")) return false;
+  // Expression | 'return'
+  private static boolean Typeof_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "Typeof_2")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, KW_TYPEOF);
-    r = r && consumeToken(b, OP_PAR_LEFT);
-    r = r && Expression(b, l + 1);
-    r = r && consumeToken(b, OP_PAR_RIGHT);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // 'typeof' '(' 'return' ')'
-  private static boolean Typeof_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "Typeof_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, KW_TYPEOF);
-    r = r && consumeToken(b, OP_PAR_LEFT);
-    r = r && consumeToken(b, KW_RETURN);
-    r = r && consumeToken(b, OP_PAR_RIGHT);
+    r = Expression(b, l + 1);
+    if (!r) r = consumeToken(b, KW_RETURN);
     exit_section_(b, m, null, r);
     return r;
   }
 
   /* ********************************************************** */
-  // '&' UnaryExpression
-  //     | '++' UnaryExpression
-  //     | '--' UnaryExpression
-  //     | '*' UnaryExpression
-  //     | '-' UnaryExpression
-  //     | '+' UnaryExpression
-  //     | '!' UnaryExpression
+  // ('&'
+  //     | '++'
+  //     | '--'
+  //     | '*'
+  //     | '-'
+  //     | '+'
+  //     | '!' ) [UnaryExpression]
   //     | ComplementExpression
   //     | '(' Type ')' '.' Identifier
   //     | '(' Type ')' '.' TemplateInstance
@@ -9030,17 +9062,11 @@ public class DLanguageParser implements PsiParser {
   public static boolean UnaryExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "UnaryExpression")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, "<unary expression>");
+    Marker m = enter_section_(b, l, _COLLAPSE_, "<unary expression>");
     r = UnaryExpression_0(b, l + 1);
-    if (!r) r = UnaryExpression_1(b, l + 1);
+    if (!r) r = ComplementExpression(b, l + 1);
     if (!r) r = UnaryExpression_2(b, l + 1);
     if (!r) r = UnaryExpression_3(b, l + 1);
-    if (!r) r = UnaryExpression_4(b, l + 1);
-    if (!r) r = UnaryExpression_5(b, l + 1);
-    if (!r) r = UnaryExpression_6(b, l + 1);
-    if (!r) r = ComplementExpression(b, l + 1);
-    if (!r) r = UnaryExpression_8(b, l + 1);
-    if (!r) r = UnaryExpression_9(b, l + 1);
     if (!r) r = DeleteExpression(b, l + 1);
     if (!r) r = CastExpression(b, l + 1);
     if (!r) r = PowExpression(b, l + 1);
@@ -9048,86 +9074,55 @@ public class DLanguageParser implements PsiParser {
     return r;
   }
 
-  // '&' UnaryExpression
+  // ('&'
+  //     | '++'
+  //     | '--'
+  //     | '*'
+  //     | '-'
+  //     | '+'
+  //     | '!' ) [UnaryExpression]
   private static boolean UnaryExpression_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "UnaryExpression_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
+    r = UnaryExpression_0_0(b, l + 1);
+    r = r && UnaryExpression_0_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // '&'
+  //     | '++'
+  //     | '--'
+  //     | '*'
+  //     | '-'
+  //     | '+'
+  //     | '!'
+  private static boolean UnaryExpression_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "UnaryExpression_0_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
     r = consumeToken(b, OP_AND);
-    r = r && UnaryExpression(b, l + 1);
+    if (!r) r = consumeToken(b, OP_PLUS_PLUS);
+    if (!r) r = consumeToken(b, OP_MINUS_MINUS);
+    if (!r) r = consumeToken(b, OP_ASTERISK);
+    if (!r) r = consumeToken(b, OP_MINUS);
+    if (!r) r = consumeToken(b, OP_PLUS);
+    if (!r) r = consumeToken(b, OP_NOT);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // '++' UnaryExpression
-  private static boolean UnaryExpression_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "UnaryExpression_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, OP_PLUS_PLUS);
-    r = r && UnaryExpression(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // '--' UnaryExpression
-  private static boolean UnaryExpression_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "UnaryExpression_2")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, OP_MINUS_MINUS);
-    r = r && UnaryExpression(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // '*' UnaryExpression
-  private static boolean UnaryExpression_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "UnaryExpression_3")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, OP_ASTERISK);
-    r = r && UnaryExpression(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // '-' UnaryExpression
-  private static boolean UnaryExpression_4(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "UnaryExpression_4")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, OP_MINUS);
-    r = r && UnaryExpression(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // '+' UnaryExpression
-  private static boolean UnaryExpression_5(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "UnaryExpression_5")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, OP_PLUS);
-    r = r && UnaryExpression(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // '!' UnaryExpression
-  private static boolean UnaryExpression_6(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "UnaryExpression_6")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, OP_NOT);
-    r = r && UnaryExpression(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
+  // [UnaryExpression]
+  private static boolean UnaryExpression_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "UnaryExpression_0_1")) return false;
+    UnaryExpression(b, l + 1);
+    return true;
   }
 
   // '(' Type ')' '.' Identifier
-  private static boolean UnaryExpression_8(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "UnaryExpression_8")) return false;
+  private static boolean UnaryExpression_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "UnaryExpression_2")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, OP_PAR_LEFT);
@@ -9140,8 +9135,8 @@ public class DLanguageParser implements PsiParser {
   }
 
   // '(' Type ')' '.' TemplateInstance
-  private static boolean UnaryExpression_9(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "UnaryExpression_9")) return false;
+  private static boolean UnaryExpression_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "UnaryExpression_3")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, OP_PAR_LEFT);

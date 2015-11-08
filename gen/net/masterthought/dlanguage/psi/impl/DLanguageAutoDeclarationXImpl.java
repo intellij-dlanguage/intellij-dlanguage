@@ -30,32 +30,14 @@ public class DLanguageAutoDeclarationXImpl extends ASTWrapperPsiElement implemen
 
   @Override
   @NotNull
-  public DLanguageIdentifier getIdentifier() {
-    return findNotNullChildByClass(DLanguageIdentifier.class);
-  }
-
-  @Override
-  @NotNull
-  public DLanguageInitializer getInitializer() {
-    return findNotNullChildByClass(DLanguageInitializer.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageTemplateParameters getTemplateParameters() {
-    return findChildByClass(DLanguageTemplateParameters.class);
+  public DLanguageAutoDeclarationY getAutoDeclarationY() {
+    return findNotNullChildByClass(DLanguageAutoDeclarationY.class);
   }
 
   @Override
   @Nullable
   public PsiElement getOpComma() {
     return findChildByType(OP_COMMA);
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getOpEq() {
-    return findNotNullChildByType(OP_EQ);
   }
 
 }

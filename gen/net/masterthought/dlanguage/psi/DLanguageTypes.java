@@ -42,6 +42,7 @@ public interface DLanguageTypes {
   IElementType ATTRIBUTE_SPECIFIER = new DLanguageElementType("ATTRIBUTE_SPECIFIER");
   IElementType AUTO_DECLARATION = new DLanguageElementType("AUTO_DECLARATION");
   IElementType AUTO_DECLARATION_X = new DLanguageElementType("AUTO_DECLARATION_X");
+  IElementType AUTO_DECLARATION_Y = new DLanguageElementType("AUTO_DECLARATION_Y");
   IElementType AUTO_FUNC_DECLARATION = new DLanguageElementType("AUTO_FUNC_DECLARATION");
   IElementType BASE_CLASS_LIST = new DLanguageElementType("BASE_CLASS_LIST");
   IElementType BASE_INTERFACE_LIST = new DLanguageElementType("BASE_INTERFACE_LIST");
@@ -567,6 +568,9 @@ public interface DLanguageTypes {
       }
       else if (type == AUTO_DECLARATION_X) {
         return new DLanguageAutoDeclarationXImpl(node);
+      }
+      else if (type == AUTO_DECLARATION_Y) {
+        return new DLanguageAutoDeclarationYImpl(node);
       }
       else if (type == AUTO_FUNC_DECLARATION) {
         return new DLanguageAutoFuncDeclarationImpl(node);

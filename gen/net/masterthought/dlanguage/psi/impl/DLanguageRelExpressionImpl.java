@@ -24,8 +24,8 @@ public class DLanguageRelExpressionImpl extends ASTWrapperPsiElement implements 
 
   @Override
   @NotNull
-  public List<DLanguageShiftExpression> getShiftExpressionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageShiftExpression.class);
+  public DLanguageShiftExpression getShiftExpression() {
+    return findNotNullChildByClass(DLanguageShiftExpression.class);
   }
 
   @Override

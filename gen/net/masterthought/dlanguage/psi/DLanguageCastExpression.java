@@ -7,13 +7,22 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageCastExpression extends PsiElement {
 
-  @NotNull
+  @Nullable
   DLanguageType getType();
 
   @Nullable
   DLanguageTypeCtors getTypeCtors();
 
   @NotNull
-  List<DLanguageUnaryExpression> getUnaryExpressionList();
+  DLanguageUnaryExpression getUnaryExpression();
+
+  @NotNull
+  PsiElement getKwCast();
+
+  @NotNull
+  PsiElement getOpParLeft();
+
+  @NotNull
+  PsiElement getOpParRight();
 
 }

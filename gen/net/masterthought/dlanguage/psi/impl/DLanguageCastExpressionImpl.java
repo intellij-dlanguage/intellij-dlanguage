@@ -23,9 +23,9 @@ public class DLanguageCastExpressionImpl extends ASTWrapperPsiElement implements
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageType getType() {
-    return findNotNullChildByClass(DLanguageType.class);
+    return findChildByClass(DLanguageType.class);
   }
 
   @Override
@@ -36,8 +36,26 @@ public class DLanguageCastExpressionImpl extends ASTWrapperPsiElement implements
 
   @Override
   @NotNull
-  public List<DLanguageUnaryExpression> getUnaryExpressionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageUnaryExpression.class);
+  public DLanguageUnaryExpression getUnaryExpression() {
+    return findNotNullChildByClass(DLanguageUnaryExpression.class);
+  }
+
+  @Override
+  @NotNull
+  public PsiElement getKwCast() {
+    return findNotNullChildByType(KW_CAST);
+  }
+
+  @Override
+  @NotNull
+  public PsiElement getOpParLeft() {
+    return findNotNullChildByType(OP_PAR_LEFT);
+  }
+
+  @Override
+  @NotNull
+  public PsiElement getOpParRight() {
+    return findNotNullChildByType(OP_PAR_RIGHT);
   }
 
 }

@@ -380,7 +380,6 @@ IdentityExpression ::=
     ShiftExpression ('is'|'!is') ShiftExpression
 
 RelExpression ::=
-    ShiftExpression
     ('<'
     | '<='
     | '>'
@@ -406,13 +405,13 @@ AddExpression ::=
 MulExpression ::= UnaryExpression [ ('*' | '/' | '%') MulExpression]
 
 UnaryExpression ::=
-     '&' UnaryExpression
-    | '++' UnaryExpression
-    | '--' UnaryExpression
-    | '*' UnaryExpression
-    | '-' UnaryExpression
-    | '+' UnaryExpression
-    | '!' UnaryExpression
+     ('&'
+    | '++'
+    | '--'
+    | '*'
+    | '-'
+    | '+'
+    | '!' ) [UnaryExpression]
     | ComplementExpression
     | '(' Type ')' '.' Identifier
     | '(' Type ')' '.' TemplateInstance
@@ -449,7 +448,7 @@ DeleteExpression ::=
 
 CastExpression ::=
     'cast' '(' Type ')' UnaryExpression
-    'cast' '(' TypeCtors? ')' UnaryExpression
+    | 'cast' '(' TypeCtors? ')' UnaryExpression
 
 PowExpression ::= PostfixExpression ['^^' UnaryExpression PowExpression]
 
@@ -1044,11 +1043,21 @@ AliasDeclaration ::=
 AliasDeclarationX ::=
     (',')? Identifier TemplateParameters? '=' StorageClasses? Type? Initializer? [AliasDeclarationX]
 
+//AutoDeclaration ::=
+//    StorageClasses AutoDeclarationX ';'
+//
+//AutoDeclarationX ::=
+//    (',')? Identifier TemplateParameters? '=' Initializer [AutoDeclarationX]
+
+
 AutoDeclaration ::=
     StorageClasses AutoDeclarationX ';'
 
 AutoDeclarationX ::=
-    (',')? Identifier TemplateParameters? '=' Initializer [AutoDeclarationX]
+    AutoDeclarationY [',' AutoDeclarationX]
+
+AutoDeclarationY ::=
+    Identifier TemplateParameters? '=' Initializer
 
 VarDeclarations ::=
     StorageClasses? BasicType Declarators ';'
@@ -1231,7 +1240,7 @@ MemberFunctionAttribute ::=
 FunctionBody ::=
     BlockStatement
     | FunctionContracts? BodyStatement
-    | FunctionContracts
+
 
 FunctionContracts ::=
     InStatement OutStatement?
