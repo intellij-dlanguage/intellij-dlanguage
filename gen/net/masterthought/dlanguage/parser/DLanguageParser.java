@@ -4033,17 +4033,13 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // ForeachTypeAttributes? BasicType Declarator
-  //     ForeachTypeAttributes? Identifier
+  // ForeachTypeAttributes? (Identifier | BasicType Declarator)
   public static boolean ForeachType(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ForeachType")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<foreach type>");
     r = ForeachType_0(b, l + 1);
-    r = r && BasicType(b, l + 1);
-    r = r && Declarator(b, l + 1);
-    r = r && ForeachType_3(b, l + 1);
-    r = r && Identifier(b, l + 1);
+    r = r && ForeachType_1(b, l + 1);
     exit_section_(b, l, m, FOREACH_TYPE, r, false, null);
     return r;
   }
@@ -4055,11 +4051,26 @@ public class DLanguageParser implements PsiParser {
     return true;
   }
 
-  // ForeachTypeAttributes?
-  private static boolean ForeachType_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "ForeachType_3")) return false;
-    ForeachTypeAttributes(b, l + 1);
-    return true;
+  // Identifier | BasicType Declarator
+  private static boolean ForeachType_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ForeachType_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = Identifier(b, l + 1);
+    if (!r) r = ForeachType_1_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // BasicType Declarator
+  private static boolean ForeachType_1_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ForeachType_1_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = BasicType(b, l + 1);
+    r = r && Declarator(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
   }
 
   /* ********************************************************** */
@@ -4076,56 +4087,49 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // ForeachTypeAttribute
-  //     | ForeachTypeAttribute ForeachTypeAttributes?
+  // ForeachTypeAttribute ForeachTypeAttributes?
   public static boolean ForeachTypeAttributes(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ForeachTypeAttributes")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<foreach type attributes>");
     r = ForeachTypeAttribute(b, l + 1);
-    if (!r) r = ForeachTypeAttributes_1(b, l + 1);
+    r = r && ForeachTypeAttributes_1(b, l + 1);
     exit_section_(b, l, m, FOREACH_TYPE_ATTRIBUTES, r, false, null);
     return r;
   }
 
-  // ForeachTypeAttribute ForeachTypeAttributes?
+  // ForeachTypeAttributes?
   private static boolean ForeachTypeAttributes_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ForeachTypeAttributes_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = ForeachTypeAttribute(b, l + 1);
-    r = r && ForeachTypeAttributes_1_1(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // ForeachTypeAttributes?
-  private static boolean ForeachTypeAttributes_1_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "ForeachTypeAttributes_1_1")) return false;
     ForeachTypeAttributes(b, l + 1);
     return true;
   }
 
   /* ********************************************************** */
-  // ForeachType
-  //     | ForeachType ',' ForeachTypeList
+  // ForeachType [',' ForeachTypeList]
   public static boolean ForeachTypeList(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ForeachTypeList")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<foreach type list>");
     r = ForeachType(b, l + 1);
-    if (!r) r = ForeachTypeList_1(b, l + 1);
+    r = r && ForeachTypeList_1(b, l + 1);
     exit_section_(b, l, m, FOREACH_TYPE_LIST, r, false, null);
     return r;
   }
 
-  // ForeachType ',' ForeachTypeList
+  // [',' ForeachTypeList]
   private static boolean ForeachTypeList_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ForeachTypeList_1")) return false;
+    ForeachTypeList_1_0(b, l + 1);
+    return true;
+  }
+
+  // ',' ForeachTypeList
+  private static boolean ForeachTypeList_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ForeachTypeList_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = ForeachType(b, l + 1);
-    r = r && consumeToken(b, OP_COMMA);
+    r = consumeToken(b, OP_COMMA);
     r = r && ForeachTypeList(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
@@ -4193,7 +4197,7 @@ public class DLanguageParser implements PsiParser {
 
   /* ********************************************************** */
   // Parameters MemberFunctionAttributes?
-  //     | TemplateParameters Parameters MemberFunctionAttributes? Constraint?
+  //     | TemplateParameters? Parameters MemberFunctionAttributes? Constraint?
   public static boolean FuncDeclaratorSuffix(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "FuncDeclaratorSuffix")) return false;
     if (!nextTokenIs(b, OP_PAR_LEFT)) return false;
@@ -4223,17 +4227,24 @@ public class DLanguageParser implements PsiParser {
     return true;
   }
 
-  // TemplateParameters Parameters MemberFunctionAttributes? Constraint?
+  // TemplateParameters? Parameters MemberFunctionAttributes? Constraint?
   private static boolean FuncDeclaratorSuffix_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "FuncDeclaratorSuffix_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = TemplateParameters(b, l + 1);
+    r = FuncDeclaratorSuffix_1_0(b, l + 1);
     r = r && Parameters(b, l + 1);
     r = r && FuncDeclaratorSuffix_1_2(b, l + 1);
     r = r && FuncDeclaratorSuffix_1_3(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
+  }
+
+  // TemplateParameters?
+  private static boolean FuncDeclaratorSuffix_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "FuncDeclaratorSuffix_1_0")) return false;
+    TemplateParameters(b, l + 1);
+    return true;
   }
 
   // MemberFunctionAttributes?

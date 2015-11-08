@@ -761,16 +761,13 @@ Foreach ::=
     | 'foreach_reverse'
 
 ForeachTypeList ::=
-    ForeachType
-    | ForeachType ',' ForeachTypeList
+    ForeachType [',' ForeachTypeList]
 
 ForeachType ::=
-    ForeachTypeAttributes? BasicType Declarator
-    ForeachTypeAttributes? Identifier
+    ForeachTypeAttributes? (Identifier | BasicType Declarator)
 
 ForeachTypeAttributes ::=
-    ForeachTypeAttribute
-    | ForeachTypeAttribute ForeachTypeAttributes?
+    ForeachTypeAttribute ForeachTypeAttributes?
 
 ForeachTypeAttribute ::=
     'ref'
