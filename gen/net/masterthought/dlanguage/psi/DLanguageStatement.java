@@ -8,9 +8,15 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageStatement extends PsiElement {
 
   @Nullable
+  DLanguageBlockStatement getBlockStatement();
+
+  @Nullable
   DLanguageNonEmptyStatement getNonEmptyStatement();
 
   @Nullable
   DLanguageScopeBlockStatement getScopeBlockStatement();
+
+  @Nullable
+  PsiElement getOpScolon();
 
 }

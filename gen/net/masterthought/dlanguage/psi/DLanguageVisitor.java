@@ -27,6 +27,10 @@ public class DLanguageVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitAliasDeclarationY(@NotNull DLanguageAliasDeclarationY o) {
+    visitPsiElement(o);
+  }
+
   public void visitAliasThis(@NotNull DLanguageAliasThis o) {
     visitPsiElement(o);
   }
@@ -652,18 +656,6 @@ public class DLanguageVisitor extends PsiElementVisitor {
   }
 
   public void visitNewExpressionWithArgs(@NotNull DLanguageNewExpressionWithArgs o) {
-    visitPsiElement(o);
-  }
-
-  public void visitNoScopeNonEmptyStatement(@NotNull DLanguageNoScopeNonEmptyStatement o) {
-    visitPsiElement(o);
-  }
-
-  public void visitNoScopeStatement(@NotNull DLanguageNoScopeStatement o) {
-    visitPsiElement(o);
-  }
-
-  public void visitNonEmptyOrScopeBlockStatement(@NotNull DLanguageNonEmptyOrScopeBlockStatement o) {
     visitPsiElement(o);
   }
 

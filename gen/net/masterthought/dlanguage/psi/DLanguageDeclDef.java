@@ -73,4 +73,7 @@ public interface DLanguageDeclDef extends PsiElement {
   @Nullable
   DLanguageVersionSpecification getVersionSpecification();
 
+  @Nullable
+  PsiElement getOpScolon();
+
 }

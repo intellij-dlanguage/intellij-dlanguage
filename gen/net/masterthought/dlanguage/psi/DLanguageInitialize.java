@@ -7,7 +7,10 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageInitialize extends PsiElement {
 
-  @NotNull
-  DLanguageNoScopeNonEmptyStatement getNoScopeNonEmptyStatement();
+  @Nullable
+  DLanguageStatement getStatement();
+
+  @Nullable
+  PsiElement getOpScolon();
 
 }

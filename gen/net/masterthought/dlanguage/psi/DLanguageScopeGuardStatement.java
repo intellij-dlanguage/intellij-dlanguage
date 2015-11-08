@@ -8,7 +8,7 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageScopeGuardStatement extends PsiElement {
 
   @NotNull
-  DLanguageNonEmptyOrScopeBlockStatement getNonEmptyOrScopeBlockStatement();
+  DLanguageStatement getStatement();
 
   @NotNull
   PsiElement getKwScope();

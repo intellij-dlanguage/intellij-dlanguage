@@ -8,9 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface DLanguagePragmaStatement extends PsiElement {
 
   @NotNull
-  DLanguageNoScopeStatement getNoScopeStatement();
+  DLanguagePragma getPragma();
 
   @NotNull
-  DLanguagePragma getPragma();
+  DLanguageStatement getStatement();
 
 }

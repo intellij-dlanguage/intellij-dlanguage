@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageFunctionLiteralBody extends PsiElement {
 
-  @Nullable
+  @NotNull
   DLanguageBlockStatement getBlockStatement();
 
   @Nullable

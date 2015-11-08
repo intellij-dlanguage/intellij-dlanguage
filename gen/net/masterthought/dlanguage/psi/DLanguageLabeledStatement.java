@@ -11,9 +11,6 @@ public interface DLanguageLabeledStatement extends PsiElement {
   DLanguageIdentifier getIdentifier();
 
   @Nullable
-  DLanguageNoScopeStatement getNoScopeStatement();
-
-  @Nullable
   DLanguageStatement getStatement();
 
   @NotNull

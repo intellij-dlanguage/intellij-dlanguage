@@ -24,6 +24,12 @@ public class DLanguageStatementImpl extends ASTWrapperPsiElement implements DLan
 
   @Override
   @Nullable
+  public DLanguageBlockStatement getBlockStatement() {
+    return findChildByClass(DLanguageBlockStatement.class);
+  }
+
+  @Override
+  @Nullable
   public DLanguageNonEmptyStatement getNonEmptyStatement() {
     return findChildByClass(DLanguageNonEmptyStatement.class);
   }
@@ -32,6 +38,12 @@ public class DLanguageStatementImpl extends ASTWrapperPsiElement implements DLan
   @Nullable
   public DLanguageScopeBlockStatement getScopeBlockStatement() {
     return findChildByClass(DLanguageScopeBlockStatement.class);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpScolon() {
+    return findChildByType(OP_SCOLON);
   }
 
 }

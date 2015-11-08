@@ -23,9 +23,15 @@ public class DLanguageInitializeImpl extends ASTWrapperPsiElement implements DLa
   }
 
   @Override
-  @NotNull
-  public DLanguageNoScopeNonEmptyStatement getNoScopeNonEmptyStatement() {
-    return findNotNullChildByClass(DLanguageNoScopeNonEmptyStatement.class);
+  @Nullable
+  public DLanguageStatement getStatement() {
+    return findChildByClass(DLanguageStatement.class);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpScolon() {
+    return findChildByType(OP_SCOLON);
   }
 
 }

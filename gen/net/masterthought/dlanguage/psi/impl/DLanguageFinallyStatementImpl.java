@@ -24,8 +24,8 @@ public class DLanguageFinallyStatementImpl extends ASTWrapperPsiElement implemen
 
   @Override
   @NotNull
-  public DLanguageNoScopeNonEmptyStatement getNoScopeNonEmptyStatement() {
-    return findNotNullChildByClass(DLanguageNoScopeNonEmptyStatement.class);
+  public DLanguageStatement getStatement() {
+    return findNotNullChildByClass(DLanguageStatement.class);
   }
 
   @Override

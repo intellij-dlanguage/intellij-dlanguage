@@ -30,8 +30,8 @@ public class DLanguageCatchImpl extends ASTWrapperPsiElement implements DLanguag
 
   @Override
   @NotNull
-  public DLanguageNoScopeNonEmptyStatement getNoScopeNonEmptyStatement() {
-    return findNotNullChildByClass(DLanguageNoScopeNonEmptyStatement.class);
+  public DLanguageStatement getStatement() {
+    return findNotNullChildByClass(DLanguageStatement.class);
   }
 
   @Override

@@ -30,44 +30,14 @@ public class DLanguageAliasDeclarationXImpl extends ASTWrapperPsiElement impleme
 
   @Override
   @NotNull
-  public DLanguageIdentifier getIdentifier() {
-    return findNotNullChildByClass(DLanguageIdentifier.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageInitializer getInitializer() {
-    return findChildByClass(DLanguageInitializer.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageStorageClasses getStorageClasses() {
-    return findChildByClass(DLanguageStorageClasses.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageTemplateParameters getTemplateParameters() {
-    return findChildByClass(DLanguageTemplateParameters.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageType getType() {
-    return findChildByClass(DLanguageType.class);
+  public DLanguageAliasDeclarationY getAliasDeclarationY() {
+    return findNotNullChildByClass(DLanguageAliasDeclarationY.class);
   }
 
   @Override
   @Nullable
   public PsiElement getOpComma() {
     return findChildByType(OP_COMMA);
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getOpEq() {
-    return findNotNullChildByType(OP_EQ);
   }
 
 }

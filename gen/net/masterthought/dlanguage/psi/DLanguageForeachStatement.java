@@ -17,7 +17,7 @@ public interface DLanguageForeachStatement extends PsiElement {
   DLanguageForeachTypeList getForeachTypeList();
 
   @NotNull
-  DLanguageNoScopeNonEmptyStatement getNoScopeNonEmptyStatement();
+  DLanguageStatement getStatement();
 
   @NotNull
   PsiElement getOpParLeft();

@@ -11,7 +11,7 @@ public interface DLanguageConditionalStatement extends PsiElement {
   DLanguageCondition getCondition();
 
   @NotNull
-  List<DLanguageNoScopeNonEmptyStatement> getNoScopeNonEmptyStatementList();
+  List<DLanguageStatement> getStatementList();
 
   @Nullable
   PsiElement getKwElse();

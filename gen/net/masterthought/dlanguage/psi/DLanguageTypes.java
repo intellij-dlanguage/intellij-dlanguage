@@ -13,6 +13,7 @@ public interface DLanguageTypes {
   IElementType AGGREGATE_DECLARATION = new DLanguageElementType("AGGREGATE_DECLARATION");
   IElementType ALIAS_DECLARATION = new DLanguageElementType("ALIAS_DECLARATION");
   IElementType ALIAS_DECLARATION_X = new DLanguageElementType("ALIAS_DECLARATION_X");
+  IElementType ALIAS_DECLARATION_Y = new DLanguageElementType("ALIAS_DECLARATION_Y");
   IElementType ALIAS_THIS = new DLanguageElementType("ALIAS_THIS");
   IElementType ALIGN_ATTRIBUTE = new DLanguageElementType("ALIGN_ATTRIBUTE");
   IElementType ALLOCATOR = new DLanguageElementType("ALLOCATOR");
@@ -170,12 +171,9 @@ public interface DLanguageTypes {
   IElementType NEW_ANON_CLASS_EXPRESSION = new DLanguageElementType("NEW_ANON_CLASS_EXPRESSION");
   IElementType NEW_EXPRESSION = new DLanguageElementType("NEW_EXPRESSION");
   IElementType NEW_EXPRESSION_WITH_ARGS = new DLanguageElementType("NEW_EXPRESSION_WITH_ARGS");
-  IElementType NON_EMPTY_OR_SCOPE_BLOCK_STATEMENT = new DLanguageElementType("NON_EMPTY_OR_SCOPE_BLOCK_STATEMENT");
   IElementType NON_EMPTY_STATEMENT = new DLanguageElementType("NON_EMPTY_STATEMENT");
   IElementType NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT = new DLanguageElementType("NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT");
   IElementType NON_VOID_INITIALIZER = new DLanguageElementType("NON_VOID_INITIALIZER");
-  IElementType NO_SCOPE_NON_EMPTY_STATEMENT = new DLanguageElementType("NO_SCOPE_NON_EMPTY_STATEMENT");
-  IElementType NO_SCOPE_STATEMENT = new DLanguageElementType("NO_SCOPE_STATEMENT");
   IElementType OR_EXPRESSION = new DLanguageElementType("OR_EXPRESSION");
   IElementType OR_OR_EXPRESSION = new DLanguageElementType("OR_OR_EXPRESSION");
   IElementType OUT_STATEMENT = new DLanguageElementType("OUT_STATEMENT");
@@ -483,6 +481,9 @@ public interface DLanguageTypes {
       }
       else if (type == ALIAS_DECLARATION_X) {
         return new DLanguageAliasDeclarationXImpl(node);
+      }
+      else if (type == ALIAS_DECLARATION_Y) {
+        return new DLanguageAliasDeclarationYImpl(node);
       }
       else if (type == ALIAS_THIS) {
         return new DLanguageAliasThisImpl(node);
@@ -955,9 +956,6 @@ public interface DLanguageTypes {
       else if (type == NEW_EXPRESSION_WITH_ARGS) {
         return new DLanguageNewExpressionWithArgsImpl(node);
       }
-      else if (type == NON_EMPTY_OR_SCOPE_BLOCK_STATEMENT) {
-        return new DLanguageNonEmptyOrScopeBlockStatementImpl(node);
-      }
       else if (type == NON_EMPTY_STATEMENT) {
         return new DLanguageNonEmptyStatementImpl(node);
       }
@@ -966,12 +964,6 @@ public interface DLanguageTypes {
       }
       else if (type == NON_VOID_INITIALIZER) {
         return new DLanguageNonVoidInitializerImpl(node);
-      }
-      else if (type == NO_SCOPE_NON_EMPTY_STATEMENT) {
-        return new DLanguageNoScopeNonEmptyStatementImpl(node);
-      }
-      else if (type == NO_SCOPE_STATEMENT) {
-        return new DLanguageNoScopeStatementImpl(node);
       }
       else if (type == OR_EXPRESSION) {
         return new DLanguageOrExpressionImpl(node);

@@ -30,8 +30,8 @@ public class DLanguageConditionalStatementImpl extends ASTWrapperPsiElement impl
 
   @Override
   @NotNull
-  public List<DLanguageNoScopeNonEmptyStatement> getNoScopeNonEmptyStatementList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageNoScopeNonEmptyStatement.class);
+  public List<DLanguageStatement> getStatementList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageStatement.class);
   }
 
   @Override

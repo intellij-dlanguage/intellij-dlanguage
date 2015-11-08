@@ -8,7 +8,7 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageFinallyStatement extends PsiElement {
 
   @NotNull
-  DLanguageNoScopeNonEmptyStatement getNoScopeNonEmptyStatement();
+  DLanguageStatement getStatement();
 
   @NotNull
   PsiElement getKwFinally();

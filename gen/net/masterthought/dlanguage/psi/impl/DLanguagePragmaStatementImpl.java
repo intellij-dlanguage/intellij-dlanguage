@@ -24,14 +24,14 @@ public class DLanguagePragmaStatementImpl extends ASTWrapperPsiElement implement
 
   @Override
   @NotNull
-  public DLanguageNoScopeStatement getNoScopeStatement() {
-    return findNotNullChildByClass(DLanguageNoScopeStatement.class);
+  public DLanguagePragma getPragma() {
+    return findNotNullChildByClass(DLanguagePragma.class);
   }
 
   @Override
   @NotNull
-  public DLanguagePragma getPragma() {
-    return findNotNullChildByClass(DLanguagePragma.class);
+  public DLanguageStatement getStatement() {
+    return findNotNullChildByClass(DLanguageStatement.class);
   }
 
 }

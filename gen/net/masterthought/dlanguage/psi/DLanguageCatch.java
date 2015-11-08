@@ -11,7 +11,7 @@ public interface DLanguageCatch extends PsiElement {
   DLanguageCatchParameter getCatchParameter();
 
   @NotNull
-  DLanguageNoScopeNonEmptyStatement getNoScopeNonEmptyStatement();
+  DLanguageStatement getStatement();
 
   @NotNull
   PsiElement getKwCatch();

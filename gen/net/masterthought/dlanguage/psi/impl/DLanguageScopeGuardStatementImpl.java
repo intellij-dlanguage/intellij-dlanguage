@@ -24,8 +24,8 @@ public class DLanguageScopeGuardStatementImpl extends ASTWrapperPsiElement imple
 
   @Override
   @NotNull
-  public DLanguageNonEmptyOrScopeBlockStatement getNonEmptyOrScopeBlockStatement() {
-    return findNotNullChildByClass(DLanguageNonEmptyOrScopeBlockStatement.class);
+  public DLanguageStatement getStatement() {
+    return findNotNullChildByClass(DLanguageStatement.class);
   }
 
   @Override

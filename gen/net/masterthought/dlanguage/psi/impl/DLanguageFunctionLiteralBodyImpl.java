@@ -23,9 +23,9 @@ public class DLanguageFunctionLiteralBodyImpl extends ASTWrapperPsiElement imple
   }
 
   @Override
-  @Nullable
+  @NotNull
   public DLanguageBlockStatement getBlockStatement() {
-    return findChildByClass(DLanguageBlockStatement.class);
+    return findNotNullChildByClass(DLanguageBlockStatement.class);
   }
 
   @Override

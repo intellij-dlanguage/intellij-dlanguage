@@ -154,4 +154,10 @@ public class DLanguageDeclDefImpl extends ASTWrapperPsiElement implements DLangu
     return findChildByClass(DLanguageVersionSpecification.class);
   }
 
+  @Override
+  @Nullable
+  public PsiElement getOpScolon() {
+    return findChildByType(OP_SCOLON);
+  }
+
 }
