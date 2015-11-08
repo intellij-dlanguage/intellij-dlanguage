@@ -319,15 +319,12 @@ BasicType2X ::=
     | 'function' Parameters FunctionAttributes?
 
 IdentifierList ::=
-    Identifier
-    | Identifier '.' IdentifierList
-    | TemplateInstance
-    | TemplateInstance '.' IdentifierList
+    Identifier ('.' IdentifierList)?
+    | TemplateInstance ('.' IdentifierList)?
     | Identifier '[' AssignExpression ']' '.' IdentifierList
 
 Typeof ::=
-    'typeof' '(' Expression ')'
-    | 'typeof' '(' 'return' ')'
+    'typeof' '(' (Expression | 'return') ')'
 
 TypeVector ::=
     '__vector' '(' Type ')'
@@ -702,7 +699,7 @@ BlockStatement ::=
  '{' StatementList? '}'
 
 StatementList ::=
-    Statement StatementList?
+    Statement [StatementList]
 
 ExpressionStatement ::=
     Expression ';'
@@ -1065,8 +1062,7 @@ DeclaratorInitializer ::=
     | AltDeclarator ('=' Initializer)?
 
 DeclaratorIdentifierList ::=
-    DeclaratorIdentifier
-    | DeclaratorIdentifier ',' DeclaratorIdentifierList
+    DeclaratorIdentifier [',' DeclaratorIdentifierList]
 
 DeclaratorIdentifier ::=
     VarDeclaratorIdentifier
@@ -1189,16 +1185,20 @@ ParameterList ::=
     Parameter (',' ParameterList)?
     | '...'
 
+//Parameter ::=
+//    InOut? BasicType Declarator
+//    | InOut? BasicType Declarator '...'
+//    | InOut? BasicType Declarator '=' AssignExpression
+//    | InOut? Type
+//    | InOut? Type '...'
+
 Parameter ::=
-    InOut? BasicType Declarator
-    | InOut? BasicType Declarator '...'
-    | InOut? BasicType Declarator '=' AssignExpression
-    | InOut? Type
-    | InOut? Type '...'
+       InOut? BasicType Declarator ('...' | '=' AssertExpression)?
+       | InOut? Type ('...')?
 
 InOut ::=
     InOutX
-    InOut InOutX
+    | InOut InOutX
 
 InOutX ::=
     'auto'
@@ -1219,8 +1219,7 @@ FunctionAttribute ::=
     | Property
 
 MemberFunctionAttributes ::=
-    MemberFunctionAttribute
-    | MemberFunctionAttribute MemberFunctionAttributes
+  MemberFunctionAttribute [MemberFunctionAttributes]
 
 MemberFunctionAttribute ::=
     'const'
