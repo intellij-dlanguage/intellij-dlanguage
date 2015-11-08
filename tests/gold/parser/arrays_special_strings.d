@@ -11,7 +11,7 @@ string str4 = str1;      // error, str4 is not mutable
 string str5 = str1.idup; // ok, make immutable copy
 
 str1 = str2;
-if (str1 < str3) { ... }
+if (str1 < str3) {  }
 func(str3 ~ str4);
 str4 ~= str1;
 
