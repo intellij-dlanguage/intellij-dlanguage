@@ -2,7 +2,7 @@ class Foo
 {
     int x;
 }
-...
+
 void test(Foo foo)
 {
     size_t o;

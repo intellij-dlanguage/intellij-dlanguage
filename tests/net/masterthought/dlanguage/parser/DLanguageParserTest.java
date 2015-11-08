@@ -186,12 +186,12 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
 // classes
       public void testclasses() { doTest(true, true); }
 //      public void testclasses_alias_this() { doTest(true, true); }
-//      public void testclasses_allocators() { doTest(true, true); }
-//      public void testclasses_constructors() { doTest(true, true); }
+      public void testclasses_allocators() { doTest(true, true); }
+      public void testclasses_constructors() { doTest(true, true); }
 //      public void testclasses_constructors_fields() { doTest(true, true); }
-//      public void testclasses_deallocators() { doTest(true, true); }
+      public void testclasses_deallocators() { doTest(true, true); }
       public void testclasses_destructors() { doTest(true, true); }
-//      public void testclasses_field_properties() { doTest(true, true); }
+      public void testclasses_field_properties() { doTest(true, true); }
       public void testclasses_fields() { doTest(true, true); }
       public void testclasses_final() { doTest(true, true); }
       public void testclasses_members() { doTest(true, true); }
@@ -203,9 +203,9 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
       public void testclasses_synchronized() { doTest(true, true); }
 
 // interfaces
-//      public void testinterfaces() { doTest(true, true); }
+      public void testinterfaces() { doTest(true, true); }
 //      public void testinterfaces_contracts() { doTest(true, true); }
-//      public void testinterfaces_com() { doTest(true, true); }
+      public void testinterfaces_com() { doTest(true, true); }
 //      public void testinterfaces_cplus() { doTest(true, true); }
 
 // enums
