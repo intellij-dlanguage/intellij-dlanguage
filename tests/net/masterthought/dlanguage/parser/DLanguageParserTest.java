@@ -138,6 +138,77 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
 //    public void teststatements_with() { doTest(true, true); }
 
     // arrays
-    public void testarrays() { doTest(true, true); }
+//    public void testarrays() { doTest(true, true); }
+//    public void testarrays_bounds_checking() { doTest(true, true); }
+//    public void testarrays_concatentation() { doTest(true, true); }
+//    public void testarrays_copying() { doTest(true, true); }
+    public void testarrays_declarations() { doTest(true, true); }
+    public void testarrays_dynamic() { doTest(true, true); }
+//    public void testarrays_dynamic_length() { doTest(true, true); }
+//    public void testarrays_function_properties() { doTest(true, true); }
+//    public void testarrays_initialization() { doTest(true, true); }
+//    public void testarrays_length() { doTest(true, true); }
+//    public void testarrays_operations() { doTest(true, true); }
+//    public void testarrays_pointer_arithmetic() { doTest(true, true); }
+    public void testarrays_pointers() { doTest(true, true); }
+//    public void testarrays_printf_c() { doTest(true, true); }
+//    public void testarrays_properties() { doTest(true, true); }
+//    public void testarrays_rectangular() { doTest(true, true); }
+//    public void testarrays_setting() { doTest(true, true); }
+//    public void testarrays_slicing() { doTest(true, true); }
+//    public void testarrays_special_strings() { doTest(true, true); }
+    public void testarrays_static() { doTest(true, true); }
+//    public void testarrays_void() { doTest(true, true); }
+
+
+// associative arrays
+//    public void testassocarrays() { doTest(true, true); }
+//    public void testassocarrays_classes() { doTest(true, true); }
+//    public void testassocarrays_constructor() { doTest(true, true); }
+//    public void testassocarrays_immutable() { doTest(true, true); }
+//    public void testassocarrays_membership() { doTest(true, true); }
+//    public void testassocarrays_removing() { doTest(true, true); }
+//    public void testassocarrays_structs() { doTest(true, true); }
+//    public void testassocarrays_word_count() { doTest(true, true); }
+
+// structs and unions
+//      public void teststructs() { doTest(true, true); }
+//      public void teststructs_constructors() { doTest(true, true); }
+//      public void teststructs_dynamic_init() { doTest(true, true); }
+//      public void teststructs_initialization() { doTest(true, true); }
+//      public void teststructs_literal() { doTest(true, true); }
+//      public void teststructs_nested() { doTest(true, true); }
+//      public void teststructs_overload() { doTest(true, true); }
+      public void teststructs_postblits() { doTest(true, true); }
+      public void teststructs_shared() { doTest(true, true); }
+//      public void testunion_initialization() { doTest(true, true); }
+
+// classes
+      public void testclasses() { doTest(true, true); }
+//      public void testclasses_alias_this() { doTest(true, true); }
+//      public void testclasses_allocators() { doTest(true, true); }
+//      public void testclasses_constructors() { doTest(true, true); }
+//      public void testclasses_constructors_fields() { doTest(true, true); }
+//      public void testclasses_deallocators() { doTest(true, true); }
+      public void testclasses_destructors() { doTest(true, true); }
+//      public void testclasses_field_properties() { doTest(true, true); }
+      public void testclasses_fields() { doTest(true, true); }
+      public void testclasses_final() { doTest(true, true); }
+      public void testclasses_members() { doTest(true, true); }
+//      public void testclasses_nested() { doTest(true, true); }
+//      public void testclasses_properties() { doTest(true, true); }
+      public void testclasses_scope() { doTest(true, true); }
+      public void testclasses_static_constructors() { doTest(true, true); }
+      public void testclasses_static_destructor() { doTest(true, true); }
+      public void testclasses_synchronized() { doTest(true, true); }
+
+// interfaces
+//      public void testinterfaces() { doTest(true, true); }
+//      public void testinterfaces_contracts() { doTest(true, true); }
+//      public void testinterfaces_com() { doTest(true, true); }
+//      public void testinterfaces_cplus() { doTest(true, true); }
+
+// enums
+//        public void testenums() { doTest(true, true); }
 
 }
