@@ -1195,7 +1195,7 @@ FuncDeclarator ::=
 
 FuncDeclaratorSuffix ::=
     Parameters MemberFunctionAttributes?
-    | TemplateParameters Parameters MemberFunctionAttributes? Constraint?
+    | TemplateParameters? Parameters MemberFunctionAttributes? Constraint?
 
 Parameters ::=
     '(' ParameterList? ')'

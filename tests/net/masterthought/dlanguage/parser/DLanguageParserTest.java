@@ -97,24 +97,24 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
 //    public void testexpressions_lambda() { doTest(true, true); }
     public void testexpressions_mixin() { doTest(true, true); }
 //    public void testexpressions_new() { doTest(true, true); }
-//    public void testexpressions_operators() { doTest(true, true); }
-//    public void testexpressions_precedence() { doTest(true, true); }
+    public void testexpressions_operators() { doTest(true, true); }
+    public void testexpressions_precedence() { doTest(true, true); }
     public void testexpressions_scalar() { doTest(true, true); }
-//    public void testexpressions_slice() { doTest(true, true); }
-//    public void testexpressions_string_literal() { doTest(true, true); }
-//    public void testexpressions_this() { doTest(true, true); }
-//    public void testexpressions_type_info() { doTest(true, true); }
+    public void testexpressions_slice() { doTest(true, true); }
+    public void testexpressions_string_literal() { doTest(true, true); }
+    public void testexpressions_this() { doTest(true, true); }
+    public void testexpressions_type_info() { doTest(true, true); }
 //
 //    // statements
 //    public void teststatements_asm() { doTest(true, true); }
 //    public void teststatements_asm_inline() { doTest(true, true); }
-//    public void teststatements_block() { doTest(true, true); }
-//    public void teststatements_break() { doTest(true, true); }
+    public void teststatements_block() { doTest(true, true); }
+    public void teststatements_break() { doTest(true, true); }
     public void teststatements_declaration() { doTest(true, true); }
-//    public void teststatements_declarator() { doTest(true, true); }
-//    public void teststatements_do() { doTest(true, true); }
-//    public void teststatements_expression() { doTest(true, true); }
-//    public void teststatements_for() { doTest(true, true); }
+    public void teststatements_declarator() { doTest(true, true); }
+    public void teststatements_do() { doTest(true, true); }
+    public void teststatements_expression() { doTest(true, true); }
+    public void teststatements_for() { doTest(true, true); }
 //    public void teststatements_foreach() { doTest(true, true); }
 //    public void teststatements_foreach_aggregates() { doTest(true, true); }
 //    public void teststatements_foreach_array() { doTest(true, true); }
@@ -126,16 +126,16 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
 //    public void teststatements_foreach_templated() { doTest(true, true); }
 //    public void teststatements_foreach_tuples() { doTest(true, true); }
 //    public void teststatements_foreach_types() { doTest(true, true); }
-//    public void teststatements_goto() { doTest(true, true); }
+    public void teststatements_goto() { doTest(true, true); }
     public void teststatements_mixin() { doTest(true, true); }
     public void teststatements_return() { doTest(true, true); }
-//    public void teststatements_scope() { doTest(true, true); }
+    public void teststatements_scope() { doTest(true, true); }
 //    public void teststatements_switch() { doTest(true, true); }
 //    public void teststatements_switch2() { doTest(true, true); }
     public void teststatements_synchronised() { doTest(true, true); }
-//    public void teststatements_throw() { doTest(true, true); }
-//    public void teststatements_while() { doTest(true, true); }
-//    public void teststatements_with() { doTest(true, true); }
+    public void teststatements_throw() { doTest(true, true); }
+    public void teststatements_while() { doTest(true, true); }
+    public void teststatements_with() { doTest(true, true); }
 
     // arrays
     public void testarrays() { doTest(true, true); }
