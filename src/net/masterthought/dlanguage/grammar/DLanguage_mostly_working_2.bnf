@@ -395,8 +395,8 @@ RelExpression ::=
     | '!<=') ShiftExpression
 
 InExpression ::=
-    ShiftExpression 'in' ShiftExpression
-    | ShiftExpression '!in' ShiftExpression
+    'in' ShiftExpression
+    | '!in' ShiftExpression
 
 ShiftExpression ::= AddExpression [('<<' | '>>' | '>>>') ShiftExpression]
 

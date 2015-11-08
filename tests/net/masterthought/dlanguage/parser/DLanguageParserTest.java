@@ -80,19 +80,19 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
     public void testpragmas_methods() { doTest(true, true); }
 //
 //    // expressions
-//    public void testexpressions_array_literal() { doTest(true, true); }
-//    public void testexpressions_assert() { doTest(true, true); }
-//    public void testexpressions_associative_array_literal() { doTest(true, true); }
-//    public void testexpressions_cast() { doTest(true, true); }
-//    public void testexpressions_cast2() { doTest(true, true); }
-//    public void testexpressions_cast_float() { doTest(true, true); }
+    public void testexpressions_array_literal() { doTest(true, true); }
+    public void testexpressions_assert() { doTest(true, true); }
+    public void testexpressions_associative_array_literal() { doTest(true, true); }
+    public void testexpressions_cast() { doTest(true, true); }
+    public void testexpressions_cast2() { doTest(true, true); }
+    public void testexpressions_cast_float() { doTest(true, true); }
 //    public void testexpressions_cast_pointer() { doTest(true, true); }
-//    public void testexpressions_class_comparison() { doTest(true, true); }
-//    public void testexpressions_equality() { doTest(true, true); }
-//    public void testexpressions_function_literal() { doTest(true, true); }
-//    public void testexpressions_function_literal2() { doTest(true, true); }
+    public void testexpressions_class_comparison() { doTest(true, true); }
+    public void testexpressions_equality() { doTest(true, true); }
+    public void testexpressions_function_literal() { doTest(true, true); }
+    public void testexpressions_function_literal2() { doTest(true, true); }
     public void testexpressions_import() { doTest(true, true); }
-//    public void testexpressions_in() { doTest(true, true); }
+    public void testexpressions_in() { doTest(true, true); }
 //    public void testexpressions_is() { doTest(true, true); }
 //    public void testexpressions_lambda() { doTest(true, true); }
     public void testexpressions_mixin() { doTest(true, true); }

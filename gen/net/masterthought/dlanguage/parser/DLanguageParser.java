@@ -4970,8 +4970,8 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // ShiftExpression 'in' ShiftExpression
-  //     | ShiftExpression '!in' ShiftExpression
+  // 'in' ShiftExpression
+  //     | '!in' ShiftExpression
   public static boolean InExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "InExpression")) return false;
     boolean r;
@@ -4982,25 +4982,23 @@ public class DLanguageParser implements PsiParser {
     return r;
   }
 
-  // ShiftExpression 'in' ShiftExpression
+  // 'in' ShiftExpression
   private static boolean InExpression_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "InExpression_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = ShiftExpression(b, l + 1);
-    r = r && consumeToken(b, KW_IN);
+    r = consumeToken(b, KW_IN);
     r = r && ShiftExpression(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // ShiftExpression '!in' ShiftExpression
+  // '!in' ShiftExpression
   private static boolean InExpression_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "InExpression_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = ShiftExpression(b, l + 1);
-    r = r && consumeToken(b, "!in");
+    r = consumeToken(b, "!in");
     r = r && ShiftExpression(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
