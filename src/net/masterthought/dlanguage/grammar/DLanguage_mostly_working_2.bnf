@@ -267,8 +267,7 @@ Type ::=
     TypeCtors? BasicType BasicType2?
 
 TypeCtors ::=
-    TypeCtor
-    | TypeCtor TypeCtors
+    TypeCtor TypeCtors?
 
 TypeCtor ::=
     'const'
@@ -278,11 +277,9 @@ TypeCtor ::=
 
 BasicType ::=
     BasicTypeX
-    | '.' IdentifierList
-    | IdentifierList
-    | Typeof
-    | Typeof '.' IdentifierList
-    | TypeCtor '(' Type ')'
+    | ('.')? IdentifierList
+    | Typeof ('.' IdentifierList)?
+    | '(' Type ')'
     | TypeVector
 
 BasicTypeX ::=
@@ -339,8 +336,7 @@ Expression ::=
     CommaExpression
 
 CommaExpression ::=
-    AssignExpression
-    | AssignExpression ',' CommaExpression
+    AssignExpression (',' CommaExpression)?
 
 AssignExpression ::=
    ConditionalExpression [ ( '='
@@ -364,9 +360,7 @@ ConditionalExpression ::=
 OrOrExpression ::= AndAndExpression [ '||' OrOrExpression]
 
 AndAndExpression ::=
-    OrExpression
-    | CmpExpression
-    [ '&&' ( OrExpression | CmpExpression ) AndAndExpression ]
+    ('&&')? ( OrExpression | CmpExpression ) [ AndAndExpression ]
 
 OrExpression ::=
     XorExpression [OrExpression]
@@ -383,7 +377,7 @@ CmpExpression ::=
     | InExpression
 
 EqualExpression ::=
-    ShiftExpression ('==' | '!=') ShiftExpression
+     ('==' | '!=') [ShiftExpression]
 
 IdentityExpression ::=
     ShiftExpression ('is'|'!is') ShiftExpression
@@ -445,8 +439,7 @@ AllocatorArguments ::=
     '(' ArgumentList? ')'
 
 ArgumentList ::=
-    AssignExpression ','
-   | AssignExpression [','  ArgumentList]
+   AssignExpression [','  ArgumentList]
 
 NewAnonClassExpression ::=
     'new' AllocatorArguments? 'class' ClassArguments? SuperClass? Interfaces? AggregateBody
@@ -505,8 +498,7 @@ AssocArrayLiteral ::=
     '[' KeyValuePairs ']'
 
 KeyValuePairs ::=
-    KeyValuePair
-    | KeyValuePair ',' KeyValuePairs
+    KeyValuePair [(',')? KeyValuePairs]
 
 KeyValuePair ::=
     KeyExpression ':' ValueExpression
@@ -1444,11 +1436,10 @@ TemplateArgument ::=
     | Symbol
 
 Symbol ::=
-    '.'? SymbolTail
+    ('.')? SymbolTail
 
 SymbolTail ::=
-    Identifier ('.' SymbolTail)?
-    | TemplateInstance ('.' SymbolTail)?
+    (Identifier | TemplateInstance) ['.' SymbolTail]
 
 TemplateSingleArgument ::=
     Identifier
@@ -1482,20 +1473,17 @@ TemplateValueParameterSpecialization ::=
     ':' ConditionalExpression
 
 TemplateValueParameterDefault ::=
-    '=' AssignExpression
-    | '=' SpecialKeyword
+    '=' ( AssignExpression | SpecialKeyword)
 
 TemplateAliasParameter ::=
     'alias' Identifier TemplateAliasParameterSpecialization? TemplateAliasParameterDefault?
     | 'alias' BasicType Declarator TemplateAliasParameterSpecialization? TemplateAliasParameterDefault?
 
 TemplateAliasParameterSpecialization ::=
-    ':' Type
-    | ':' ConditionalExpression
+    ':' ( Type | ConditionalExpression )
 
 TemplateAliasParameterDefault ::=
-    '=' Type
-    | '=' ConditionalExpression
+    '=' ( Type | ConditionalExpression)
 
 TemplateTupleParameter ::=
     Identifier '...'
@@ -1510,8 +1498,7 @@ MixinTemplateName ::=
     Typeof? '.' QualifiedIdentifierList?
 
 QualifiedIdentifierList ::=
-    Identifier ('.' QualifiedIdentifierList)?
-    TemplateInstance '.' QualifiedIdentifierList
+    (Identifier | TemplateInstance) [ '.' QualifiedIdentifierList ]
 
 //Attribute
 AttributeSpecifier ::=

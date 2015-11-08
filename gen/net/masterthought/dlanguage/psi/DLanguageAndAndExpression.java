@@ -10,8 +10,8 @@ public interface DLanguageAndAndExpression extends PsiElement {
   @Nullable
   DLanguageAndAndExpression getAndAndExpression();
 
-  @NotNull
-  List<DLanguageCmpExpression> getCmpExpressionList();
+  @Nullable
+  DLanguageCmpExpression getCmpExpression();
 
   @Nullable
   DLanguageOrExpression getOrExpression();

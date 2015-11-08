@@ -17,9 +17,6 @@ public interface DLanguageBasicType extends PsiElement {
   DLanguageType getType();
 
   @Nullable
-  DLanguageTypeCtor getTypeCtor();
-
-  @Nullable
   DLanguageTypeVector getTypeVector();
 
   @Nullable

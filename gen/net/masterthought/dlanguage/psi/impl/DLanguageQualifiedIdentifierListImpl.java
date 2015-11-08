@@ -23,21 +23,27 @@ public class DLanguageQualifiedIdentifierListImpl extends ASTWrapperPsiElement i
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageIdentifier getIdentifier() {
-    return findNotNullChildByClass(DLanguageIdentifier.class);
+    return findChildByClass(DLanguageIdentifier.class);
   }
 
   @Override
-  @NotNull
-  public List<DLanguageQualifiedIdentifierList> getQualifiedIdentifierListList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageQualifiedIdentifierList.class);
+  @Nullable
+  public DLanguageQualifiedIdentifierList getQualifiedIdentifierList() {
+    return findChildByClass(DLanguageQualifiedIdentifierList.class);
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageTemplateInstance getTemplateInstance() {
-    return findNotNullChildByClass(DLanguageTemplateInstance.class);
+    return findChildByClass(DLanguageTemplateInstance.class);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpDot() {
+    return findChildByType(OP_DOT);
   }
 
 }

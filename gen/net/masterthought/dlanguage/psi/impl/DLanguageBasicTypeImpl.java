@@ -42,12 +42,6 @@ public class DLanguageBasicTypeImpl extends ASTWrapperPsiElement implements DLan
 
   @Override
   @Nullable
-  public DLanguageTypeCtor getTypeCtor() {
-    return findChildByClass(DLanguageTypeCtor.class);
-  }
-
-  @Override
-  @Nullable
   public DLanguageTypeVector getTypeVector() {
     return findChildByClass(DLanguageTypeVector.class);
   }

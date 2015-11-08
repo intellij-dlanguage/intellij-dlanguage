@@ -7,13 +7,16 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageQualifiedIdentifierList extends PsiElement {
 
-  @NotNull
+  @Nullable
   DLanguageIdentifier getIdentifier();
 
-  @NotNull
-  List<DLanguageQualifiedIdentifierList> getQualifiedIdentifierListList();
+  @Nullable
+  DLanguageQualifiedIdentifierList getQualifiedIdentifierList();
 
-  @NotNull
+  @Nullable
   DLanguageTemplateInstance getTemplateInstance();
+
+  @Nullable
+  PsiElement getOpDot();
 
 }

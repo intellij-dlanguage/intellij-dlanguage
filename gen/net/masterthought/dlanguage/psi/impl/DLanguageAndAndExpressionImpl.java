@@ -29,9 +29,9 @@ public class DLanguageAndAndExpressionImpl extends ASTWrapperPsiElement implemen
   }
 
   @Override
-  @NotNull
-  public List<DLanguageCmpExpression> getCmpExpressionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageCmpExpression.class);
+  @Nullable
+  public DLanguageCmpExpression getCmpExpression() {
+    return findChildByClass(DLanguageCmpExpression.class);
   }
 
   @Override
