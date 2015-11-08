@@ -36,19 +36,19 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
 //    public void testdeclaration_type_storage2() { doTest(true, true); }
     public void testdeclaration_type_qualifier() { doTest(true, true); }
     public void testdeclaration_typeof3() { doTest(true, true); }
-//        public void testdeclaration_typeof() { doTest(true, true); }
+    public void testdeclaration_typeof() { doTest(true, true); }
 //
 //    // types
-//    public void testtype_arithmetic_conversion() { doTest(true, true); }
-//    public void testtype_implicit_conversion() { doTest(true, true); }
+    public void testtype_arithmetic_conversion() { doTest(true, true); }
+    public void testtype_implicit_conversion() { doTest(true, true); }
     public void testtype_delegates() { doTest(true, true); }
 //    public void testtype_delegates2() { doTest(true, true); }
-//    public void testtype_delegates3() { doTest(true, true); }
-//    public void testtype_delegates4() { doTest(true, true); }
-//    public void testtype_c_style() { doTest(true, true); }
+    public void testtype_delegates3() { doTest(true, true); }
+    public void testtype_delegates4() { doTest(true, true); }
+    public void testtype_c_style() { doTest(true, true); }
 
 //    // properties
-//    public void testproperties_init() { doTest(true, true); }
+    public void testproperties_init() { doTest(true, true); }
 //    public void testproperties_init2() { doTest(true, true); }
 //    public void testproperties_init3() { doTest(true, true); }
 //    public void testproperties_stringof() { doTest(true, true); }
