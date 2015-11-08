@@ -30,32 +30,44 @@ public class DLanguageAliasDeclarationXImpl extends ASTWrapperPsiElement impleme
 
   @Override
   @NotNull
-  public List<DLanguageIdentifier> getIdentifierList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageIdentifier.class);
+  public DLanguageIdentifier getIdentifier() {
+    return findNotNullChildByClass(DLanguageIdentifier.class);
   }
 
   @Override
-  @NotNull
-  public List<DLanguageStorageClasses> getStorageClassesList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageStorageClasses.class);
+  @Nullable
+  public DLanguageInitializer getInitializer() {
+    return findChildByClass(DLanguageInitializer.class);
   }
 
   @Override
-  @NotNull
-  public List<DLanguageTemplateParameters> getTemplateParametersList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageTemplateParameters.class);
+  @Nullable
+  public DLanguageStorageClasses getStorageClasses() {
+    return findChildByClass(DLanguageStorageClasses.class);
   }
 
   @Override
-  @NotNull
-  public List<DLanguageType> getTypeList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageType.class);
+  @Nullable
+  public DLanguageTemplateParameters getTemplateParameters() {
+    return findChildByClass(DLanguageTemplateParameters.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageType getType() {
+    return findChildByClass(DLanguageType.class);
   }
 
   @Override
   @Nullable
   public PsiElement getOpComma() {
     return findChildByType(OP_COMMA);
+  }
+
+  @Override
+  @NotNull
+  public PsiElement getOpEq() {
+    return findNotNullChildByType(OP_EQ);
   }
 
 }

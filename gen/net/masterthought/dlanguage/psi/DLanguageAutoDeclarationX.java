@@ -11,15 +11,18 @@ public interface DLanguageAutoDeclarationX extends PsiElement {
   DLanguageAutoDeclarationX getAutoDeclarationX();
 
   @NotNull
-  List<DLanguageIdentifier> getIdentifierList();
+  DLanguageIdentifier getIdentifier();
 
   @NotNull
-  List<DLanguageInitializer> getInitializerList();
+  DLanguageInitializer getInitializer();
 
-  @NotNull
-  List<DLanguageTemplateParameters> getTemplateParametersList();
+  @Nullable
+  DLanguageTemplateParameters getTemplateParameters();
 
   @Nullable
   PsiElement getOpComma();
+
+  @NotNull
+  PsiElement getOpEq();
 
 }

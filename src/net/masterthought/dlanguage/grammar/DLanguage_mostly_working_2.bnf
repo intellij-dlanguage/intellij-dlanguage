@@ -541,8 +541,7 @@ Lambda ::=
     | Identifier '=>' AssignExpression
 
 AssertExpression ::=
-    'assert' '(' AssignExpression ')'
-    'assert' '(' AssignExpression ',' AssignExpression ')'
+    'assert' '(' AssignExpression (',' AssignExpression)? ')'
 
 MixinExpression ::=
     'mixin' '(' AssignExpression ')'
@@ -1155,10 +1154,9 @@ ExpInitializer ::=
 ArrayInitializer ::=
     '[' ArrayMemberInitializations? ']'
 
+
 ArrayMemberInitializations ::=
-    ArrayMemberInitialization
-    | ArrayMemberInitialization ','
-    | ArrayMemberInitialization ',' ArrayMemberInitializations
+    ArrayMemberInitialization [(',')? ArrayMemberInitializations]
 
 ArrayMemberInitialization ::=
     NonVoidInitializer

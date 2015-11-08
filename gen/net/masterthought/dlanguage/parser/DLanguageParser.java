@@ -920,8 +920,7 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // 'alias' StorageClasses? BasicType Declarator ';'
-  //     | 'alias' StorageClasses? BasicType FuncDeclarator ';'
+  // 'alias' StorageClasses? BasicType (Declarator | FuncDeclarator) ';'
   //     | 'alias' AliasDeclarationX ';'
   public static boolean AliasDeclaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "AliasDeclaration")) return false;
@@ -930,12 +929,11 @@ public class DLanguageParser implements PsiParser {
     Marker m = enter_section_(b);
     r = AliasDeclaration_0(b, l + 1);
     if (!r) r = AliasDeclaration_1(b, l + 1);
-    if (!r) r = AliasDeclaration_2(b, l + 1);
     exit_section_(b, m, ALIAS_DECLARATION, r);
     return r;
   }
 
-  // 'alias' StorageClasses? BasicType Declarator ';'
+  // 'alias' StorageClasses? BasicType (Declarator | FuncDeclarator) ';'
   private static boolean AliasDeclaration_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "AliasDeclaration_0")) return false;
     boolean r;
@@ -943,7 +941,7 @@ public class DLanguageParser implements PsiParser {
     r = consumeToken(b, KW_ALIAS);
     r = r && AliasDeclaration_0_1(b, l + 1);
     r = r && BasicType(b, l + 1);
-    r = r && Declarator(b, l + 1);
+    r = r && AliasDeclaration_0_3(b, l + 1);
     r = r && consumeToken(b, OP_SCOLON);
     exit_section_(b, m, null, r);
     return r;
@@ -956,30 +954,20 @@ public class DLanguageParser implements PsiParser {
     return true;
   }
 
-  // 'alias' StorageClasses? BasicType FuncDeclarator ';'
-  private static boolean AliasDeclaration_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AliasDeclaration_1")) return false;
+  // Declarator | FuncDeclarator
+  private static boolean AliasDeclaration_0_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "AliasDeclaration_0_3")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, KW_ALIAS);
-    r = r && AliasDeclaration_1_1(b, l + 1);
-    r = r && BasicType(b, l + 1);
-    r = r && FuncDeclarator(b, l + 1);
-    r = r && consumeToken(b, OP_SCOLON);
+    r = Declarator(b, l + 1);
+    if (!r) r = FuncDeclarator(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // StorageClasses?
-  private static boolean AliasDeclaration_1_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AliasDeclaration_1_1")) return false;
-    StorageClasses(b, l + 1);
-    return true;
-  }
-
   // 'alias' AliasDeclarationX ';'
-  private static boolean AliasDeclaration_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AliasDeclaration_2")) return false;
+  private static boolean AliasDeclaration_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "AliasDeclaration_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, KW_ALIAS);
@@ -990,71 +978,73 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // Identifier TemplateParameters? '=' StorageClasses? Type
-  //     [',' Identifier TemplateParameters? '=' StorageClasses? Type AliasDeclarationX]
+  // (',')? Identifier TemplateParameters? '=' StorageClasses? Type? Initializer? [AliasDeclarationX]
   public static boolean AliasDeclarationX(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "AliasDeclarationX")) return false;
-    if (!nextTokenIs(b, ID)) return false;
+    if (!nextTokenIs(b, "<alias declaration x>", OP_COMMA, ID)) return false;
     boolean r;
-    Marker m = enter_section_(b);
-    r = Identifier(b, l + 1);
-    r = r && AliasDeclarationX_1(b, l + 1);
+    Marker m = enter_section_(b, l, _NONE_, "<alias declaration x>");
+    r = AliasDeclarationX_0(b, l + 1);
+    r = r && Identifier(b, l + 1);
+    r = r && AliasDeclarationX_2(b, l + 1);
     r = r && consumeToken(b, OP_EQ);
-    r = r && AliasDeclarationX_3(b, l + 1);
-    r = r && Type(b, l + 1);
+    r = r && AliasDeclarationX_4(b, l + 1);
     r = r && AliasDeclarationX_5(b, l + 1);
-    exit_section_(b, m, ALIAS_DECLARATION_X, r);
+    r = r && AliasDeclarationX_6(b, l + 1);
+    r = r && AliasDeclarationX_7(b, l + 1);
+    exit_section_(b, l, m, ALIAS_DECLARATION_X, r, false, null);
     return r;
   }
 
-  // TemplateParameters?
-  private static boolean AliasDeclarationX_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AliasDeclarationX_1")) return false;
-    TemplateParameters(b, l + 1);
+  // (',')?
+  private static boolean AliasDeclarationX_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "AliasDeclarationX_0")) return false;
+    AliasDeclarationX_0_0(b, l + 1);
     return true;
   }
 
-  // StorageClasses?
-  private static boolean AliasDeclarationX_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AliasDeclarationX_3")) return false;
-    StorageClasses(b, l + 1);
-    return true;
-  }
-
-  // [',' Identifier TemplateParameters? '=' StorageClasses? Type AliasDeclarationX]
-  private static boolean AliasDeclarationX_5(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AliasDeclarationX_5")) return false;
-    AliasDeclarationX_5_0(b, l + 1);
-    return true;
-  }
-
-  // ',' Identifier TemplateParameters? '=' StorageClasses? Type AliasDeclarationX
-  private static boolean AliasDeclarationX_5_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AliasDeclarationX_5_0")) return false;
+  // (',')
+  private static boolean AliasDeclarationX_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "AliasDeclarationX_0_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, OP_COMMA);
-    r = r && Identifier(b, l + 1);
-    r = r && AliasDeclarationX_5_0_2(b, l + 1);
-    r = r && consumeToken(b, OP_EQ);
-    r = r && AliasDeclarationX_5_0_4(b, l + 1);
-    r = r && Type(b, l + 1);
-    r = r && AliasDeclarationX(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // TemplateParameters?
-  private static boolean AliasDeclarationX_5_0_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AliasDeclarationX_5_0_2")) return false;
+  private static boolean AliasDeclarationX_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "AliasDeclarationX_2")) return false;
     TemplateParameters(b, l + 1);
     return true;
   }
 
   // StorageClasses?
-  private static boolean AliasDeclarationX_5_0_4(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AliasDeclarationX_5_0_4")) return false;
+  private static boolean AliasDeclarationX_4(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "AliasDeclarationX_4")) return false;
     StorageClasses(b, l + 1);
+    return true;
+  }
+
+  // Type?
+  private static boolean AliasDeclarationX_5(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "AliasDeclarationX_5")) return false;
+    Type(b, l + 1);
+    return true;
+  }
+
+  // Initializer?
+  private static boolean AliasDeclarationX_6(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "AliasDeclarationX_6")) return false;
+    Initializer(b, l + 1);
+    return true;
+  }
+
+  // [AliasDeclarationX]
+  private static boolean AliasDeclarationX_7(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "AliasDeclarationX_7")) return false;
+    AliasDeclarationX(b, l + 1);
     return true;
   }
 
@@ -1166,17 +1156,13 @@ public class DLanguageParser implements PsiParser {
 
   /* ********************************************************** */
   // BasicType2? Identifier AltDeclaratorSuffixes
-  //     | BasicType2? '(' AltDeclaratorX ')'
-  //     | BasicType2? '(' AltDeclaratorX ')' AltFuncDeclaratorSuffix
-  //     | BasicType2? '(' AltDeclaratorX ')' AltDeclaratorSuffixes
+  //     | BasicType2? '(' AltDeclaratorX ')' AltFuncDeclaratorSuffix? AltDeclaratorSuffixes?
   public static boolean AltDeclarator(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "AltDeclarator")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<alt declarator>");
     r = AltDeclarator_0(b, l + 1);
     if (!r) r = AltDeclarator_1(b, l + 1);
-    if (!r) r = AltDeclarator_2(b, l + 1);
-    if (!r) r = AltDeclarator_3(b, l + 1);
     exit_section_(b, l, m, ALT_DECLARATOR, r, false, null);
     return r;
   }
@@ -1200,7 +1186,7 @@ public class DLanguageParser implements PsiParser {
     return true;
   }
 
-  // BasicType2? '(' AltDeclaratorX ')'
+  // BasicType2? '(' AltDeclaratorX ')' AltFuncDeclaratorSuffix? AltDeclaratorSuffixes?
   private static boolean AltDeclarator_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "AltDeclarator_1")) return false;
     boolean r;
@@ -1209,6 +1195,8 @@ public class DLanguageParser implements PsiParser {
     r = r && consumeToken(b, OP_PAR_LEFT);
     r = r && AltDeclaratorX(b, l + 1);
     r = r && consumeToken(b, OP_PAR_RIGHT);
+    r = r && AltDeclarator_1_4(b, l + 1);
+    r = r && AltDeclarator_1_5(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -1220,243 +1208,139 @@ public class DLanguageParser implements PsiParser {
     return true;
   }
 
-  // BasicType2? '(' AltDeclaratorX ')' AltFuncDeclaratorSuffix
-  private static boolean AltDeclarator_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AltDeclarator_2")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = AltDeclarator_2_0(b, l + 1);
-    r = r && consumeToken(b, OP_PAR_LEFT);
-    r = r && AltDeclaratorX(b, l + 1);
-    r = r && consumeToken(b, OP_PAR_RIGHT);
-    r = r && AltFuncDeclaratorSuffix(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // BasicType2?
-  private static boolean AltDeclarator_2_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AltDeclarator_2_0")) return false;
-    BasicType2(b, l + 1);
+  // AltFuncDeclaratorSuffix?
+  private static boolean AltDeclarator_1_4(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "AltDeclarator_1_4")) return false;
+    AltFuncDeclaratorSuffix(b, l + 1);
     return true;
   }
 
-  // BasicType2? '(' AltDeclaratorX ')' AltDeclaratorSuffixes
-  private static boolean AltDeclarator_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AltDeclarator_3")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = AltDeclarator_3_0(b, l + 1);
-    r = r && consumeToken(b, OP_PAR_LEFT);
-    r = r && AltDeclaratorX(b, l + 1);
-    r = r && consumeToken(b, OP_PAR_RIGHT);
-    r = r && AltDeclaratorSuffixes(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // BasicType2?
-  private static boolean AltDeclarator_3_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AltDeclarator_3_0")) return false;
-    BasicType2(b, l + 1);
+  // AltDeclaratorSuffixes?
+  private static boolean AltDeclarator_1_5(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "AltDeclarator_1_5")) return false;
+    AltDeclaratorSuffixes(b, l + 1);
     return true;
   }
 
   /* ********************************************************** */
-  // BasicType2 Identifier AltDeclaratorSuffixes?
-  //     | BasicType2 Identifier AltDeclaratorSuffixes? '=' Initializer
-  //     | BasicType2? Identifier AltDeclaratorSuffixes
-  //     | BasicType2? Identifier AltDeclaratorSuffixes '=' Initializer
+  // BasicType2? Identifier AltDeclaratorSuffixes? ('=' Initializer)?
   public static boolean AltDeclaratorIdentifier(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "AltDeclaratorIdentifier")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<alt declarator identifier>");
     r = AltDeclaratorIdentifier_0(b, l + 1);
-    if (!r) r = AltDeclaratorIdentifier_1(b, l + 1);
-    if (!r) r = AltDeclaratorIdentifier_2(b, l + 1);
-    if (!r) r = AltDeclaratorIdentifier_3(b, l + 1);
+    r = r && Identifier(b, l + 1);
+    r = r && AltDeclaratorIdentifier_2(b, l + 1);
+    r = r && AltDeclaratorIdentifier_3(b, l + 1);
     exit_section_(b, l, m, ALT_DECLARATOR_IDENTIFIER, r, false, null);
     return r;
   }
 
-  // BasicType2 Identifier AltDeclaratorSuffixes?
+  // BasicType2?
   private static boolean AltDeclaratorIdentifier_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "AltDeclaratorIdentifier_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = BasicType2(b, l + 1);
-    r = r && Identifier(b, l + 1);
-    r = r && AltDeclaratorIdentifier_0_2(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // AltDeclaratorSuffixes?
-  private static boolean AltDeclaratorIdentifier_0_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AltDeclaratorIdentifier_0_2")) return false;
-    AltDeclaratorSuffixes(b, l + 1);
+    BasicType2(b, l + 1);
     return true;
   }
 
-  // BasicType2 Identifier AltDeclaratorSuffixes? '=' Initializer
-  private static boolean AltDeclaratorIdentifier_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AltDeclaratorIdentifier_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = BasicType2(b, l + 1);
-    r = r && Identifier(b, l + 1);
-    r = r && AltDeclaratorIdentifier_1_2(b, l + 1);
-    r = r && consumeToken(b, OP_EQ);
-    r = r && Initializer(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
   // AltDeclaratorSuffixes?
-  private static boolean AltDeclaratorIdentifier_1_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AltDeclaratorIdentifier_1_2")) return false;
-    AltDeclaratorSuffixes(b, l + 1);
-    return true;
-  }
-
-  // BasicType2? Identifier AltDeclaratorSuffixes
   private static boolean AltDeclaratorIdentifier_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "AltDeclaratorIdentifier_2")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = AltDeclaratorIdentifier_2_0(b, l + 1);
-    r = r && Identifier(b, l + 1);
-    r = r && AltDeclaratorSuffixes(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // BasicType2?
-  private static boolean AltDeclaratorIdentifier_2_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AltDeclaratorIdentifier_2_0")) return false;
-    BasicType2(b, l + 1);
+    AltDeclaratorSuffixes(b, l + 1);
     return true;
   }
 
-  // BasicType2? Identifier AltDeclaratorSuffixes '=' Initializer
+  // ('=' Initializer)?
   private static boolean AltDeclaratorIdentifier_3(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "AltDeclaratorIdentifier_3")) return false;
+    AltDeclaratorIdentifier_3_0(b, l + 1);
+    return true;
+  }
+
+  // '=' Initializer
+  private static boolean AltDeclaratorIdentifier_3_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "AltDeclaratorIdentifier_3_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = AltDeclaratorIdentifier_3_0(b, l + 1);
-    r = r && Identifier(b, l + 1);
-    r = r && AltDeclaratorSuffixes(b, l + 1);
-    r = r && consumeToken(b, OP_EQ);
+    r = consumeToken(b, OP_EQ);
     r = r && Initializer(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
-  }
-
-  // BasicType2?
-  private static boolean AltDeclaratorIdentifier_3_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AltDeclaratorIdentifier_3_0")) return false;
-    BasicType2(b, l + 1);
-    return true;
   }
 
   /* ********************************************************** */
-  // '[' ']'
-  //     | '[' AssignExpression ']'
-  //     | '[' Type ']'
+  // '[' (AssignExpression | Type)? ']'
   public static boolean AltDeclaratorSuffix(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "AltDeclaratorSuffix")) return false;
     if (!nextTokenIs(b, OP_BRACKET_LEFT)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = AltDeclaratorSuffix_0(b, l + 1);
-    if (!r) r = AltDeclaratorSuffix_1(b, l + 1);
-    if (!r) r = AltDeclaratorSuffix_2(b, l + 1);
+    r = consumeToken(b, OP_BRACKET_LEFT);
+    r = r && AltDeclaratorSuffix_1(b, l + 1);
+    r = r && consumeToken(b, OP_BRACKET_RIGHT);
     exit_section_(b, m, ALT_DECLARATOR_SUFFIX, r);
     return r;
   }
 
-  // '[' ']'
-  private static boolean AltDeclaratorSuffix_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AltDeclaratorSuffix_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, OP_BRACKET_LEFT);
-    r = r && consumeToken(b, OP_BRACKET_RIGHT);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // '[' AssignExpression ']'
+  // (AssignExpression | Type)?
   private static boolean AltDeclaratorSuffix_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "AltDeclaratorSuffix_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, OP_BRACKET_LEFT);
-    r = r && AssignExpression(b, l + 1);
-    r = r && consumeToken(b, OP_BRACKET_RIGHT);
-    exit_section_(b, m, null, r);
-    return r;
+    AltDeclaratorSuffix_1_0(b, l + 1);
+    return true;
   }
 
-  // '[' Type ']'
-  private static boolean AltDeclaratorSuffix_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AltDeclaratorSuffix_2")) return false;
+  // AssignExpression | Type
+  private static boolean AltDeclaratorSuffix_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "AltDeclaratorSuffix_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, OP_BRACKET_LEFT);
-    r = r && Type(b, l + 1);
-    r = r && consumeToken(b, OP_BRACKET_RIGHT);
+    r = AssignExpression(b, l + 1);
+    if (!r) r = Type(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   /* ********************************************************** */
-  // AltDeclaratorSuffix
-  //     | AltDeclaratorSuffix AltDeclaratorSuffixes
+  // AltDeclaratorSuffix AltDeclaratorSuffixes?
   public static boolean AltDeclaratorSuffixes(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "AltDeclaratorSuffixes")) return false;
     if (!nextTokenIs(b, OP_BRACKET_LEFT)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = AltDeclaratorSuffix(b, l + 1);
-    if (!r) r = AltDeclaratorSuffixes_1(b, l + 1);
+    r = r && AltDeclaratorSuffixes_1(b, l + 1);
     exit_section_(b, m, ALT_DECLARATOR_SUFFIXES, r);
     return r;
   }
 
-  // AltDeclaratorSuffix AltDeclaratorSuffixes
+  // AltDeclaratorSuffixes?
   private static boolean AltDeclaratorSuffixes_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "AltDeclaratorSuffixes_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = AltDeclaratorSuffix(b, l + 1);
-    r = r && AltDeclaratorSuffixes(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
+    AltDeclaratorSuffixes(b, l + 1);
+    return true;
   }
 
   /* ********************************************************** */
-  // BasicType2? Identifier
-  //     | BasicType2? Identifier AltFuncDeclaratorSuffix
+  // BasicType2? Identifier AltFuncDeclaratorSuffix?
   //     | AltDeclarator
   public static boolean AltDeclaratorX(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "AltDeclaratorX")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<alt declarator x>");
     r = AltDeclaratorX_0(b, l + 1);
-    if (!r) r = AltDeclaratorX_1(b, l + 1);
     if (!r) r = AltDeclarator(b, l + 1);
     exit_section_(b, l, m, ALT_DECLARATOR_X, r, false, null);
     return r;
   }
 
-  // BasicType2? Identifier
+  // BasicType2? Identifier AltFuncDeclaratorSuffix?
   private static boolean AltDeclaratorX_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "AltDeclaratorX_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = AltDeclaratorX_0_0(b, l + 1);
     r = r && Identifier(b, l + 1);
+    r = r && AltDeclaratorX_0_2(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -1468,22 +1352,10 @@ public class DLanguageParser implements PsiParser {
     return true;
   }
 
-  // BasicType2? Identifier AltFuncDeclaratorSuffix
-  private static boolean AltDeclaratorX_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AltDeclaratorX_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = AltDeclaratorX_1_0(b, l + 1);
-    r = r && Identifier(b, l + 1);
-    r = r && AltFuncDeclaratorSuffix(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // BasicType2?
-  private static boolean AltDeclaratorX_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AltDeclaratorX_1_0")) return false;
-    BasicType2(b, l + 1);
+  // AltFuncDeclaratorSuffix?
+  private static boolean AltDeclaratorX_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "AltDeclaratorX_0_2")) return false;
+    AltFuncDeclaratorSuffix(b, l + 1);
     return true;
   }
 
@@ -2136,55 +2008,50 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // Identifier TemplateParameters? '=' Initializer
-  //     [',' Identifier TemplateParameters? '=' Initializer AutoDeclarationX]
+  // (',')? Identifier TemplateParameters? '=' Initializer [AutoDeclarationX]
   public static boolean AutoDeclarationX(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "AutoDeclarationX")) return false;
-    if (!nextTokenIs(b, ID)) return false;
+    if (!nextTokenIs(b, "<auto declaration x>", OP_COMMA, ID)) return false;
     boolean r;
-    Marker m = enter_section_(b);
-    r = Identifier(b, l + 1);
-    r = r && AutoDeclarationX_1(b, l + 1);
+    Marker m = enter_section_(b, l, _NONE_, "<auto declaration x>");
+    r = AutoDeclarationX_0(b, l + 1);
+    r = r && Identifier(b, l + 1);
+    r = r && AutoDeclarationX_2(b, l + 1);
     r = r && consumeToken(b, OP_EQ);
     r = r && Initializer(b, l + 1);
-    r = r && AutoDeclarationX_4(b, l + 1);
-    exit_section_(b, m, AUTO_DECLARATION_X, r);
+    r = r && AutoDeclarationX_5(b, l + 1);
+    exit_section_(b, l, m, AUTO_DECLARATION_X, r, false, null);
     return r;
   }
 
-  // TemplateParameters?
-  private static boolean AutoDeclarationX_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AutoDeclarationX_1")) return false;
-    TemplateParameters(b, l + 1);
+  // (',')?
+  private static boolean AutoDeclarationX_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "AutoDeclarationX_0")) return false;
+    AutoDeclarationX_0_0(b, l + 1);
     return true;
   }
 
-  // [',' Identifier TemplateParameters? '=' Initializer AutoDeclarationX]
-  private static boolean AutoDeclarationX_4(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AutoDeclarationX_4")) return false;
-    AutoDeclarationX_4_0(b, l + 1);
-    return true;
-  }
-
-  // ',' Identifier TemplateParameters? '=' Initializer AutoDeclarationX
-  private static boolean AutoDeclarationX_4_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AutoDeclarationX_4_0")) return false;
+  // (',')
+  private static boolean AutoDeclarationX_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "AutoDeclarationX_0_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, OP_COMMA);
-    r = r && Identifier(b, l + 1);
-    r = r && AutoDeclarationX_4_0_2(b, l + 1);
-    r = r && consumeToken(b, OP_EQ);
-    r = r && Initializer(b, l + 1);
-    r = r && AutoDeclarationX(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // TemplateParameters?
-  private static boolean AutoDeclarationX_4_0_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AutoDeclarationX_4_0_2")) return false;
+  private static boolean AutoDeclarationX_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "AutoDeclarationX_2")) return false;
     TemplateParameters(b, l + 1);
+    return true;
+  }
+
+  // [AutoDeclarationX]
+  private static boolean AutoDeclarationX_5(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "AutoDeclarationX_5")) return false;
+    AutoDeclarationX(b, l + 1);
     return true;
   }
 
@@ -9750,13 +9617,14 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // ModuleDeclaration | DeclDefs
+  // ModuleDeclaration | DeclDefs | Statement
   static boolean item_(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "item_")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = ModuleDeclaration(b, l + 1);
     if (!r) r = DeclDefs(b, l + 1);
+    if (!r) r = Statement(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }

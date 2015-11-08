@@ -11,18 +11,24 @@ public interface DLanguageAliasDeclarationX extends PsiElement {
   DLanguageAliasDeclarationX getAliasDeclarationX();
 
   @NotNull
-  List<DLanguageIdentifier> getIdentifierList();
+  DLanguageIdentifier getIdentifier();
 
-  @NotNull
-  List<DLanguageStorageClasses> getStorageClassesList();
+  @Nullable
+  DLanguageInitializer getInitializer();
 
-  @NotNull
-  List<DLanguageTemplateParameters> getTemplateParametersList();
+  @Nullable
+  DLanguageStorageClasses getStorageClasses();
 
-  @NotNull
-  List<DLanguageType> getTypeList();
+  @Nullable
+  DLanguageTemplateParameters getTemplateParameters();
+
+  @Nullable
+  DLanguageType getType();
 
   @Nullable
   PsiElement getOpComma();
+
+  @NotNull
+  PsiElement getOpEq();
 
 }

@@ -18,16 +18,16 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
 
     // declarations
     public void testdeclaration1() { doTest(true, true); }
-//    public void testdeclaration_alias() { doTest(true, true); }
+    public void testdeclaration_alias() { doTest(true, true); }
 //    public void testdeclaration_alias2() { doTest(true, true); }
-//    public void testdeclaration_alias3() { doTest(true, true); }
+    public void testdeclaration_alias3() { doTest(true, true); }
     public void testdeclaration_extern() { doTest(true, true); }
     public void testdeclaration_typeof2() { doTest(true, true); }
     public void testdeclaration_void() { doTest(true, true); }
     public void testdeclaration_storage() { doTest(true, true); }
     public void testdeclaration_type_storage3() { doTest(true, true); }
 //    public void testdeclaration_type_storage4() { doTest(true, true); }
-//        public void testdeclaration_alias_symbol() { doTest(true, true); }
+        public void testdeclaration_alias_symbol() { doTest(true, true); }
 //    public void testdeclaration_c_style() { doTest(true, true); }
 //    public void testdeclaration_symbols() { doTest(true, true); }
     public void testdeclaration_type_inference() { doTest(true, true); }

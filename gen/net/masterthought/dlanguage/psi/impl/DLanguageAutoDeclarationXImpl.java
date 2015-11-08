@@ -30,26 +30,32 @@ public class DLanguageAutoDeclarationXImpl extends ASTWrapperPsiElement implemen
 
   @Override
   @NotNull
-  public List<DLanguageIdentifier> getIdentifierList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageIdentifier.class);
+  public DLanguageIdentifier getIdentifier() {
+    return findNotNullChildByClass(DLanguageIdentifier.class);
   }
 
   @Override
   @NotNull
-  public List<DLanguageInitializer> getInitializerList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageInitializer.class);
+  public DLanguageInitializer getInitializer() {
+    return findNotNullChildByClass(DLanguageInitializer.class);
   }
 
   @Override
-  @NotNull
-  public List<DLanguageTemplateParameters> getTemplateParametersList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageTemplateParameters.class);
+  @Nullable
+  public DLanguageTemplateParameters getTemplateParameters() {
+    return findChildByClass(DLanguageTemplateParameters.class);
   }
 
   @Override
   @Nullable
   public PsiElement getOpComma() {
     return findChildByType(OP_COMMA);
+  }
+
+  @Override
+  @NotNull
+  public PsiElement getOpEq() {
+    return findNotNullChildByType(OP_EQ);
   }
 
 }
