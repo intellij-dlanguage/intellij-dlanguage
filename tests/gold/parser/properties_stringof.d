@@ -5,8 +5,6 @@ struct Foo { }
 
 enum Enum { RED }
 
-typedef int myint;
-
 void main()
 {
     writeln((1+2).stringof);       // "1 + 2"

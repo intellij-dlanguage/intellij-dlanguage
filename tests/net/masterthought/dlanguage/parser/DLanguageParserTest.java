@@ -51,7 +51,7 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
     public void testproperties_init() { doTest(true, true); }
 //    public void testproperties_init2() { doTest(true, true); }
 //    public void testproperties_init3() { doTest(true, true); }
-//    public void testproperties_stringof() { doTest(true, true); }
+    public void testproperties_stringof() { doTest(true, true); }
     public void testproperties_sizeof() { doTest(true, true); }
 //    public void testproperties_user_defined() { doTest(true, true); }
 //
