@@ -23,15 +23,9 @@ public class DLanguagePostfixExpressionImpl extends ASTWrapperPsiElement impleme
   }
 
   @Override
-  @NotNull
-  public List<DLanguageArgumentList> getArgumentListList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageArgumentList.class);
-  }
-
-  @Override
-  @NotNull
-  public List<DLanguageAssignExpression> getAssignExpressionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageAssignExpression.class);
+  @Nullable
+  public DLanguageArgumentList getArgumentList() {
+    return findChildByClass(DLanguageArgumentList.class);
   }
 
   @Override
@@ -44,6 +38,12 @@ public class DLanguagePostfixExpressionImpl extends ASTWrapperPsiElement impleme
   @Nullable
   public DLanguageIdentifier getIdentifier() {
     return findChildByClass(DLanguageIdentifier.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageIndexExpression getIndexExpression() {
+    return findChildByClass(DLanguageIndexExpression.class);
   }
 
   @Override
@@ -66,6 +66,12 @@ public class DLanguagePostfixExpressionImpl extends ASTWrapperPsiElement impleme
 
   @Override
   @Nullable
+  public DLanguageSliceExpression getSliceExpression() {
+    return findChildByClass(DLanguageSliceExpression.class);
+  }
+
+  @Override
+  @Nullable
   public DLanguageTemplateInstance getTemplateInstance() {
     return findChildByClass(DLanguageTemplateInstance.class);
   }
@@ -78,24 +84,6 @@ public class DLanguagePostfixExpressionImpl extends ASTWrapperPsiElement impleme
 
   @Override
   @Nullable
-  public PsiElement getOpBracketLeft() {
-    return findChildByType(OP_BRACKET_LEFT);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpBracketRight() {
-    return findChildByType(OP_BRACKET_RIGHT);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpDdot() {
-    return findChildByType(OP_DDOT);
-  }
-
-  @Override
-  @Nullable
   public PsiElement getOpDot() {
     return findChildByType(OP_DOT);
   }
@@ -104,6 +92,18 @@ public class DLanguagePostfixExpressionImpl extends ASTWrapperPsiElement impleme
   @Nullable
   public PsiElement getOpMinusMinus() {
     return findChildByType(OP_MINUS_MINUS);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpParLeft() {
+    return findChildByType(OP_PAR_LEFT);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpParRight() {
+    return findChildByType(OP_PAR_RIGHT);
   }
 
   @Override

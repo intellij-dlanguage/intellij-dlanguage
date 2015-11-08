@@ -531,6 +531,10 @@ public class DLanguageVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitIndexExpression(@NotNull DLanguageIndexExpression o) {
+    visitPsiElement(o);
+  }
+
   public void visitInitialize(@NotNull DLanguageInitialize o) {
     visitPsiElement(o);
   }
@@ -780,6 +784,10 @@ public class DLanguageVisitor extends PsiElementVisitor {
   }
 
   public void visitShiftExpression(@NotNull DLanguageShiftExpression o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSliceExpression(@NotNull DLanguageSliceExpression o) {
     visitPsiElement(o);
   }
 

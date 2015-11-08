@@ -135,6 +135,7 @@ public interface DLanguageTypes {
   IElementType IMPORT_EXPRESSION = new DLanguageElementType("IMPORT_EXPRESSION");
   IElementType IMPORT_LIST = new DLanguageElementType("IMPORT_LIST");
   IElementType INCREMENT = new DLanguageElementType("INCREMENT");
+  IElementType INDEX_EXPRESSION = new DLanguageElementType("INDEX_EXPRESSION");
   IElementType INITIALIZE = new DLanguageElementType("INITIALIZE");
   IElementType INITIALIZER = new DLanguageElementType("INITIALIZER");
   IElementType INTERFACE = new DLanguageElementType("INTERFACE");
@@ -202,6 +203,7 @@ public interface DLanguageTypes {
   IElementType SHARED_STATIC_CONSTRUCTOR = new DLanguageElementType("SHARED_STATIC_CONSTRUCTOR");
   IElementType SHARED_STATIC_DESTRUCTOR = new DLanguageElementType("SHARED_STATIC_DESTRUCTOR");
   IElementType SHIFT_EXPRESSION = new DLanguageElementType("SHIFT_EXPRESSION");
+  IElementType SLICE_EXPRESSION = new DLanguageElementType("SLICE_EXPRESSION");
   IElementType SPECIAL_KEYWORD = new DLanguageElementType("SPECIAL_KEYWORD");
   IElementType STATEMENT = new DLanguageElementType("STATEMENT");
   IElementType STATEMENT_LIST = new DLanguageElementType("STATEMENT_LIST");
@@ -848,6 +850,9 @@ public interface DLanguageTypes {
       else if (type == INCREMENT) {
         return new DLanguageIncrementImpl(node);
       }
+      else if (type == INDEX_EXPRESSION) {
+        return new DLanguageIndexExpressionImpl(node);
+      }
       else if (type == INITIALIZE) {
         return new DLanguageInitializeImpl(node);
       }
@@ -1048,6 +1053,9 @@ public interface DLanguageTypes {
       }
       else if (type == SHIFT_EXPRESSION) {
         return new DLanguageShiftExpressionImpl(node);
+      }
+      else if (type == SLICE_EXPRESSION) {
+        return new DLanguageSliceExpressionImpl(node);
       }
       else if (type == SPECIAL_KEYWORD) {
         return new DLanguageSpecialKeywordImpl(node);

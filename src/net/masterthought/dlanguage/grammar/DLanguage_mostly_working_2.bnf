@@ -452,10 +452,31 @@ CastExpression ::=
 
 PowExpression ::= PostfixExpression ['^^' UnaryExpression PowExpression]
 
+//PostfixExpression ::=
+//    PrimaryExpression
+//    | TypeCtors? BasicType '(' ArgumentList? ')'
+//    [('.' Identifier | '.' TemplateInstance | '.' NewExpression | '++' | '--' | '(' ArgumentList? ')' | '[' ArgumentList? ']' | '[' AssignExpression '..' AssignExpression ']') PostfixExpression]
+
+
+
 PostfixExpression ::=
     PrimaryExpression
-    | TypeCtors? BasicType '(' ArgumentList? ')'
-    [('.' Identifier | '.' TemplateInstance | '.' NewExpression | '++' | '--' | '(' ArgumentList? ')' | '[' ArgumentList? ']' | '[' AssignExpression '..' AssignExpression ']') PostfixExpression]
+    | '.' Identifier [PostfixExpression]
+    | '.' TemplateInstance [PostfixExpression]
+    | '.' NewExpression [PostfixExpression]
+    | '++' [PostfixExpression]
+    |  '--' [PostfixExpression]
+    | '(' ArgumentList? ')' [PostfixExpression]
+    | TypeCtors? BasicType '(' ArgumentList? ')' [PostfixExpression]
+    | IndexExpression
+    | SliceExpression
+
+IndexExpression ::=
+     '[' ArgumentList ']' [PostfixExpression]
+
+SliceExpression ::=
+     '[' ']' [PostfixExpression]
+    |  '[' AssignExpression '..' AssignExpression ']' [PostfixExpression]
 
 PrimaryExpression ::=
      ('.')? Identifier

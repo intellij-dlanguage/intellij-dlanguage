@@ -61,9 +61,9 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
 //    public void testattributes_const() { doTest(true, true); }
 //    public void testattributes_deprecated() { doTest(true, true); }
 //    public void testattributes_deprecated_optional() { doTest(true, true); }
-//    public void testattributes_disabled() { doTest(true, true); }
+    public void testattributes_disabled() { doTest(true, true); }
 //    public void testattributes_extern() { doTest(true, true); }
-//    public void testattributes_gshared() { doTest(true, true); }
+    public void testattributes_gshared() { doTest(true, true); }
 //    public void testattributes_namespaces() { doTest(true, true); }
 //    public void testattributes_namespaces_multiple() { doTest(true, true); }
 //    public void testattributes_nogc() { doTest(true, true); }

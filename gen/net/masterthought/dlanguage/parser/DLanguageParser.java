@@ -415,6 +415,9 @@ public class DLanguageParser implements PsiParser {
     else if (t == INCREMENT) {
       r = Increment(b, 0);
     }
+    else if (t == INDEX_EXPRESSION) {
+      r = IndexExpression(b, 0);
+    }
     else if (t == INITIALIZE) {
       r = Initialize(b, 0);
     }
@@ -603,6 +606,9 @@ public class DLanguageParser implements PsiParser {
     }
     else if (t == SHIFT_EXPRESSION) {
       r = ShiftExpression(b, 0);
+    }
+    else if (t == SLICE_EXPRESSION) {
+      r = SliceExpression(b, 0);
     }
     else if (t == SPECIAL_KEYWORD) {
       r = SpecialKeyword(b, 0);
@@ -5067,6 +5073,28 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
+  // '[' ArgumentList ']' [PostfixExpression]
+  public static boolean IndexExpression(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "IndexExpression")) return false;
+    if (!nextTokenIs(b, OP_BRACKET_LEFT)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, OP_BRACKET_LEFT);
+    r = r && ArgumentList(b, l + 1);
+    r = r && consumeToken(b, OP_BRACKET_RIGHT);
+    r = r && IndexExpression_3(b, l + 1);
+    exit_section_(b, m, INDEX_EXPRESSION, r);
+    return r;
+  }
+
+  // [PostfixExpression]
+  private static boolean IndexExpression_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "IndexExpression_3")) return false;
+    PostfixExpression(b, l + 1);
+    return true;
+  }
+
+  /* ********************************************************** */
   // NoScopeNonEmptyStatement
   public static boolean Initialize(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "Initialize")) return false;
@@ -6584,166 +6612,187 @@ public class DLanguageParser implements PsiParser {
 
   /* ********************************************************** */
   // PrimaryExpression
-  //     | TypeCtors? BasicType '(' ArgumentList? ')'
-  //     [('.' Identifier | '.' TemplateInstance | '.' NewExpression | '++' | '--' | '(' ArgumentList? ')' | '[' ArgumentList? ']' | '[' AssignExpression '..' AssignExpression ']') PostfixExpression]
+  //     | '.' Identifier [PostfixExpression]
+  //     | '.' TemplateInstance [PostfixExpression]
+  //     | '.' NewExpression [PostfixExpression]
+  //     | '++' [PostfixExpression]
+  //     |  '--' [PostfixExpression]
+  //     | '(' ArgumentList? ')' [PostfixExpression]
+  //     | TypeCtors? BasicType '(' ArgumentList? ')' [PostfixExpression]
+  //     | IndexExpression
+  //     | SliceExpression
   public static boolean PostfixExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "PostfixExpression")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<postfix expression>");
     r = PrimaryExpression(b, l + 1);
     if (!r) r = PostfixExpression_1(b, l + 1);
+    if (!r) r = PostfixExpression_2(b, l + 1);
+    if (!r) r = PostfixExpression_3(b, l + 1);
+    if (!r) r = PostfixExpression_4(b, l + 1);
+    if (!r) r = PostfixExpression_5(b, l + 1);
+    if (!r) r = PostfixExpression_6(b, l + 1);
+    if (!r) r = PostfixExpression_7(b, l + 1);
+    if (!r) r = IndexExpression(b, l + 1);
+    if (!r) r = SliceExpression(b, l + 1);
     exit_section_(b, l, m, POSTFIX_EXPRESSION, r, false, null);
     return r;
   }
 
-  // TypeCtors? BasicType '(' ArgumentList? ')'
-  //     [('.' Identifier | '.' TemplateInstance | '.' NewExpression | '++' | '--' | '(' ArgumentList? ')' | '[' ArgumentList? ']' | '[' AssignExpression '..' AssignExpression ']') PostfixExpression]
+  // '.' Identifier [PostfixExpression]
   private static boolean PostfixExpression_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "PostfixExpression_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = PostfixExpression_1_0(b, l + 1);
+    r = consumeToken(b, OP_DOT);
+    r = r && Identifier(b, l + 1);
+    r = r && PostfixExpression_1_2(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // [PostfixExpression]
+  private static boolean PostfixExpression_1_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PostfixExpression_1_2")) return false;
+    PostfixExpression(b, l + 1);
+    return true;
+  }
+
+  // '.' TemplateInstance [PostfixExpression]
+  private static boolean PostfixExpression_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PostfixExpression_2")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, OP_DOT);
+    r = r && TemplateInstance(b, l + 1);
+    r = r && PostfixExpression_2_2(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // [PostfixExpression]
+  private static boolean PostfixExpression_2_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PostfixExpression_2_2")) return false;
+    PostfixExpression(b, l + 1);
+    return true;
+  }
+
+  // '.' NewExpression [PostfixExpression]
+  private static boolean PostfixExpression_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PostfixExpression_3")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, OP_DOT);
+    r = r && NewExpression(b, l + 1);
+    r = r && PostfixExpression_3_2(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // [PostfixExpression]
+  private static boolean PostfixExpression_3_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PostfixExpression_3_2")) return false;
+    PostfixExpression(b, l + 1);
+    return true;
+  }
+
+  // '++' [PostfixExpression]
+  private static boolean PostfixExpression_4(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PostfixExpression_4")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, OP_PLUS_PLUS);
+    r = r && PostfixExpression_4_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // [PostfixExpression]
+  private static boolean PostfixExpression_4_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PostfixExpression_4_1")) return false;
+    PostfixExpression(b, l + 1);
+    return true;
+  }
+
+  // '--' [PostfixExpression]
+  private static boolean PostfixExpression_5(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PostfixExpression_5")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, OP_MINUS_MINUS);
+    r = r && PostfixExpression_5_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // [PostfixExpression]
+  private static boolean PostfixExpression_5_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PostfixExpression_5_1")) return false;
+    PostfixExpression(b, l + 1);
+    return true;
+  }
+
+  // '(' ArgumentList? ')' [PostfixExpression]
+  private static boolean PostfixExpression_6(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PostfixExpression_6")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, OP_PAR_LEFT);
+    r = r && PostfixExpression_6_1(b, l + 1);
+    r = r && consumeToken(b, OP_PAR_RIGHT);
+    r = r && PostfixExpression_6_3(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // ArgumentList?
+  private static boolean PostfixExpression_6_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PostfixExpression_6_1")) return false;
+    ArgumentList(b, l + 1);
+    return true;
+  }
+
+  // [PostfixExpression]
+  private static boolean PostfixExpression_6_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PostfixExpression_6_3")) return false;
+    PostfixExpression(b, l + 1);
+    return true;
+  }
+
+  // TypeCtors? BasicType '(' ArgumentList? ')' [PostfixExpression]
+  private static boolean PostfixExpression_7(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PostfixExpression_7")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = PostfixExpression_7_0(b, l + 1);
     r = r && BasicType(b, l + 1);
     r = r && consumeToken(b, OP_PAR_LEFT);
-    r = r && PostfixExpression_1_3(b, l + 1);
+    r = r && PostfixExpression_7_3(b, l + 1);
     r = r && consumeToken(b, OP_PAR_RIGHT);
-    r = r && PostfixExpression_1_5(b, l + 1);
+    r = r && PostfixExpression_7_5(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // TypeCtors?
-  private static boolean PostfixExpression_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "PostfixExpression_1_0")) return false;
+  private static boolean PostfixExpression_7_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PostfixExpression_7_0")) return false;
     TypeCtors(b, l + 1);
     return true;
   }
 
   // ArgumentList?
-  private static boolean PostfixExpression_1_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "PostfixExpression_1_3")) return false;
+  private static boolean PostfixExpression_7_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PostfixExpression_7_3")) return false;
     ArgumentList(b, l + 1);
     return true;
   }
 
-  // [('.' Identifier | '.' TemplateInstance | '.' NewExpression | '++' | '--' | '(' ArgumentList? ')' | '[' ArgumentList? ']' | '[' AssignExpression '..' AssignExpression ']') PostfixExpression]
-  private static boolean PostfixExpression_1_5(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "PostfixExpression_1_5")) return false;
-    PostfixExpression_1_5_0(b, l + 1);
+  // [PostfixExpression]
+  private static boolean PostfixExpression_7_5(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PostfixExpression_7_5")) return false;
+    PostfixExpression(b, l + 1);
     return true;
-  }
-
-  // ('.' Identifier | '.' TemplateInstance | '.' NewExpression | '++' | '--' | '(' ArgumentList? ')' | '[' ArgumentList? ']' | '[' AssignExpression '..' AssignExpression ']') PostfixExpression
-  private static boolean PostfixExpression_1_5_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "PostfixExpression_1_5_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = PostfixExpression_1_5_0_0(b, l + 1);
-    r = r && PostfixExpression(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // '.' Identifier | '.' TemplateInstance | '.' NewExpression | '++' | '--' | '(' ArgumentList? ')' | '[' ArgumentList? ']' | '[' AssignExpression '..' AssignExpression ']'
-  private static boolean PostfixExpression_1_5_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "PostfixExpression_1_5_0_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = PostfixExpression_1_5_0_0_0(b, l + 1);
-    if (!r) r = PostfixExpression_1_5_0_0_1(b, l + 1);
-    if (!r) r = PostfixExpression_1_5_0_0_2(b, l + 1);
-    if (!r) r = consumeToken(b, OP_PLUS_PLUS);
-    if (!r) r = consumeToken(b, OP_MINUS_MINUS);
-    if (!r) r = PostfixExpression_1_5_0_0_5(b, l + 1);
-    if (!r) r = PostfixExpression_1_5_0_0_6(b, l + 1);
-    if (!r) r = PostfixExpression_1_5_0_0_7(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // '.' Identifier
-  private static boolean PostfixExpression_1_5_0_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "PostfixExpression_1_5_0_0_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, OP_DOT);
-    r = r && Identifier(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // '.' TemplateInstance
-  private static boolean PostfixExpression_1_5_0_0_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "PostfixExpression_1_5_0_0_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, OP_DOT);
-    r = r && TemplateInstance(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // '.' NewExpression
-  private static boolean PostfixExpression_1_5_0_0_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "PostfixExpression_1_5_0_0_2")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, OP_DOT);
-    r = r && NewExpression(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // '(' ArgumentList? ')'
-  private static boolean PostfixExpression_1_5_0_0_5(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "PostfixExpression_1_5_0_0_5")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, OP_PAR_LEFT);
-    r = r && PostfixExpression_1_5_0_0_5_1(b, l + 1);
-    r = r && consumeToken(b, OP_PAR_RIGHT);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // ArgumentList?
-  private static boolean PostfixExpression_1_5_0_0_5_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "PostfixExpression_1_5_0_0_5_1")) return false;
-    ArgumentList(b, l + 1);
-    return true;
-  }
-
-  // '[' ArgumentList? ']'
-  private static boolean PostfixExpression_1_5_0_0_6(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "PostfixExpression_1_5_0_0_6")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, OP_BRACKET_LEFT);
-    r = r && PostfixExpression_1_5_0_0_6_1(b, l + 1);
-    r = r && consumeToken(b, OP_BRACKET_RIGHT);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // ArgumentList?
-  private static boolean PostfixExpression_1_5_0_0_6_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "PostfixExpression_1_5_0_0_6_1")) return false;
-    ArgumentList(b, l + 1);
-    return true;
-  }
-
-  // '[' AssignExpression '..' AssignExpression ']'
-  private static boolean PostfixExpression_1_5_0_0_7(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "PostfixExpression_1_5_0_0_7")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, OP_BRACKET_LEFT);
-    r = r && AssignExpression(b, l + 1);
-    r = r && consumeToken(b, OP_DDOT);
-    r = r && AssignExpression(b, l + 1);
-    r = r && consumeToken(b, OP_BRACKET_RIGHT);
-    exit_section_(b, m, null, r);
-    return r;
   }
 
   /* ********************************************************** */
@@ -7411,6 +7460,61 @@ public class DLanguageParser implements PsiParser {
     if (!r) r = consumeToken(b, OP_USH_RIGHT);
     exit_section_(b, m, null, r);
     return r;
+  }
+
+  /* ********************************************************** */
+  // '[' ']' [PostfixExpression]
+  //     |  '[' AssignExpression '..' AssignExpression ']' [PostfixExpression]
+  public static boolean SliceExpression(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "SliceExpression")) return false;
+    if (!nextTokenIs(b, OP_BRACKET_LEFT)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = SliceExpression_0(b, l + 1);
+    if (!r) r = SliceExpression_1(b, l + 1);
+    exit_section_(b, m, SLICE_EXPRESSION, r);
+    return r;
+  }
+
+  // '[' ']' [PostfixExpression]
+  private static boolean SliceExpression_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "SliceExpression_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, OP_BRACKET_LEFT);
+    r = r && consumeToken(b, OP_BRACKET_RIGHT);
+    r = r && SliceExpression_0_2(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // [PostfixExpression]
+  private static boolean SliceExpression_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "SliceExpression_0_2")) return false;
+    PostfixExpression(b, l + 1);
+    return true;
+  }
+
+  // '[' AssignExpression '..' AssignExpression ']' [PostfixExpression]
+  private static boolean SliceExpression_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "SliceExpression_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, OP_BRACKET_LEFT);
+    r = r && AssignExpression(b, l + 1);
+    r = r && consumeToken(b, OP_DDOT);
+    r = r && AssignExpression(b, l + 1);
+    r = r && consumeToken(b, OP_BRACKET_RIGHT);
+    r = r && SliceExpression_1_5(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // [PostfixExpression]
+  private static boolean SliceExpression_1_5(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "SliceExpression_1_5")) return false;
+    PostfixExpression(b, l + 1);
+    return true;
   }
 
   /* ********************************************************** */
