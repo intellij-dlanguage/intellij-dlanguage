@@ -203,7 +203,7 @@ tokens = [
 
 dFile ::= item_*
 
-private item_ ::= (ModuleDeclaration | DeclDefs | Statement)
+private item_ ::= (ModuleDeclaration | DeclDefs | Statement )
 
 Identifier ::= ID
 StringLiteral  ::= (WYSIWYG_STRING|ALTERNATE_WYSIWYG_STRING|DOUBLE_QUOTED_STRING|HEX_STRING|DELIMITED_STRING)
@@ -234,7 +234,7 @@ ImportBindList ::=
 ImportBind ::=
     Identifier ('=' Identifier)?
 
-DeclDefs ::= DeclDef (DeclDefs)?
+DeclDefs ::= DeclDef [DeclDefs]
 
 DeclDef ::=
     (AttributeSpecifier
@@ -258,7 +258,9 @@ DeclDef ::=
     | TemplateDeclaration
     | TemplateMixinDeclaration
     | TemplateMixin
-    | MixinDeclaration)
+    | MixinDeclaration
+    | ';'
+    )
 
 MixinDeclaration ::=
     'mixin' '(' AssignExpression ')' ';'
@@ -267,7 +269,7 @@ Type ::=
     TypeCtors? BasicType BasicType2?
 
 TypeCtors ::=
-    TypeCtor TypeCtors?
+    TypeCtor [TypeCtors]
 
 TypeCtor ::=
     'const'
@@ -311,10 +313,9 @@ BasicType2 ::=
 
 BasicType2X ::=
     '*'
-    | '[' ']'
     | '[' AssignExpression ']'
     | '[' AssignExpression '..' AssignExpression ']'
-    | '[' Type ']'
+    | '[' Type? ']'
     | 'delegate' Parameters MemberFunctionAttributes?
     | 'function' Parameters FunctionAttributes?
 
@@ -541,7 +542,7 @@ ParameterMemberAttributes ::=
 
 FunctionLiteralBody ::=
     BlockStatement
-    | FunctionContracts? BodyStatement
+     FunctionContracts? BodyStatement?
 
 Lambda ::=
     'function' Type? ParameterAttributes '=>' AssignExpression
@@ -653,20 +654,11 @@ SpecialKeyword ::=
 // Statement
 
 Statement ::=
-    NonEmptyStatement
+    ';'
+    | NonEmptyStatement
     | ScopeBlockStatement
-
-NoScopeNonEmptyStatement ::=
-    NonEmptyStatement
     | BlockStatement
 
-NoScopeStatement ::=
-    NonEmptyStatement
-    | BlockStatement
-
-NonEmptyOrScopeBlockStatement ::=
-    NonEmptyStatement
-    | ScopeBlockStatement
 
 NonEmptyStatement ::=
     NonEmptyStatementNoCaseNoDefault
@@ -712,8 +704,8 @@ ScopeBlockStatement ::=
 
 LabeledStatement ::=
     Identifier ':'
-    | Identifier ':' NoScopeStatement
     | Identifier ':' Statement
+
 
 BlockStatement ::=
  '{' StatementList? '}'
@@ -752,7 +744,8 @@ ForStatement ::=
     'for' '(' Initialize Test? ';' Increment? ')' ScopeStatement
 
 Initialize ::=
-    NoScopeNonEmptyStatement
+   Statement
+   | ';'
 
 Test ::=
     Expression
@@ -761,7 +754,7 @@ Increment ::=
     Expression
 
 ForeachStatement ::=
-    Foreach '(' ForeachTypeList ';' ForeachAggregate ')' NoScopeNonEmptyStatement
+    Foreach '(' ForeachTypeList ';' ForeachAggregate ')' Statement
 
 Foreach ::=
     'foreach'
@@ -862,27 +855,27 @@ Catches ::=
     | Catch Catches
 
 LastCatch ::=
-    'catch' NoScopeNonEmptyStatement
+    'catch' Statement
 
 Catch ::=
-    'catch' '(' CatchParameter ')' NoScopeNonEmptyStatement
+    'catch' '(' CatchParameter ')' Statement
 
 CatchParameter ::=
     BasicType Identifier
 
 FinallyStatement ::=
-    'finally' NoScopeNonEmptyStatement
+    'finally' Statement
 
 ThrowStatement ::=
     'throw' Expression ';'
 
 ScopeGuardStatement ::=
-    'scope' '(' 'exit' ')' NonEmptyOrScopeBlockStatement
-    | 'scope' '(' 'success' ')' NonEmptyOrScopeBlockStatement
-    | 'scope' '(' 'failure' ')' NonEmptyOrScopeBlockStatement
+    'scope' '(' 'exit' ')' Statement
+    | 'scope' '(' 'success' ')' Statement
+    | 'scope' '(' 'failure' ')' Statement
 
 PragmaStatement ::=
-    Pragma NoScopeStatement
+    Pragma Statement
 
 MixinStatement ::=
     'mixin' '(' AssignExpression ')' ';'
@@ -1057,19 +1050,17 @@ Declaration ::=
    | ImportDeclaration
    | VarDeclarations
 
+
 AliasDeclaration ::=
-    'alias' StorageClasses? BasicType (Declarator | FuncDeclarator) ';'
-    | 'alias' AliasDeclarationX ';'
+    'alias' StorageClasses? BasicType ( Declarator | FuncDeclarator) ';'
+  | 'alias' AliasDeclarationX ';'
 
 AliasDeclarationX ::=
-    (',')? Identifier TemplateParameters? '=' StorageClasses? Type? Initializer? [AliasDeclarationX]
+    AliasDeclarationY [',' AliasDeclarationX]
 
-//AutoDeclaration ::=
-//    StorageClasses AutoDeclarationX ';'
-//
-//AutoDeclarationX ::=
-//    (',')? Identifier TemplateParameters? '=' Initializer [AutoDeclarationX]
-
+AliasDeclarationY ::=
+    Identifier TemplateParameters? '=' StorageClasses? Type
+    | Identifier TemplateParameters? '=' FunctionLiteral
 
 AutoDeclaration ::=
     StorageClasses AutoDeclarationX ';'
@@ -1120,7 +1111,7 @@ AltDeclaratorX ::=
     | AltDeclarator
 
 AltDeclaratorSuffixes ::=
-    AltDeclaratorSuffix AltDeclaratorSuffixes?
+    AltDeclaratorSuffix [AltDeclaratorSuffixes]
 
 AltDeclaratorSuffix ::=
     '[' (AssignExpression | Type)? ']'
@@ -1129,11 +1120,11 @@ AltFuncDeclaratorSuffix ::=
     Parameters MemberFunctionAttributes?
 
 StorageClasses ::=
-    StorageClass StorageClasses?
+    StorageClass [StorageClasses]
 
 StorageClass ::=
     LinkageAttribute
-    AlignAttribute
+    | AlignAttribute
     | 'deprecated'
     | 'enum'
     | 'static'
@@ -1184,9 +1175,7 @@ StructInitializer ::=
     '{' StructMemberInitializers? '}'
 
 StructMemberInitializers ::=
-    StructMemberInitializer
-    | StructMemberInitializer ','
-    | StructMemberInitializer ',' StructMemberInitializers
+    StructMemberInitializer (',' StructMemberInitializers)?
 
 StructMemberInitializer ::=
     NonVoidInitializer
@@ -1195,7 +1184,7 @@ StructMemberInitializer ::=
 //Function
 
 FuncDeclaration ::=
-    StorageClasses? BasicType FuncDeclarator FunctionBody
+    StorageClasses? BasicType FuncDeclarator FunctionBody?
     | AutoFuncDeclaration
 
 AutoFuncDeclaration ::=
@@ -1215,20 +1204,12 @@ ParameterList ::=
     Parameter (',' ParameterList)?
     | '...'
 
-//Parameter ::=
-//    InOut? BasicType Declarator
-//    | InOut? BasicType Declarator '...'
-//    | InOut? BasicType Declarator '=' AssignExpression
-//    | InOut? Type
-//    | InOut? Type '...'
-
 Parameter ::=
        InOut? BasicType Declarator ('...' | '=' AssertExpression)?
        | InOut? Type ('...')?
 
 InOut ::=
-    InOutX
-    | InOut InOutX
+    InOutX [InOut]
 
 InOutX ::=
     'auto'
@@ -1241,7 +1222,7 @@ InOutX ::=
     | 'scope'
 
 FunctionAttributes ::=
-    FunctionAttribute FunctionAttributes?
+    FunctionAttribute [FunctionAttributes]
 
 FunctionAttribute ::=
     'nothrow'
@@ -1260,7 +1241,7 @@ MemberFunctionAttribute ::=
 
 FunctionBody ::=
     BlockStatement
-    | FunctionContracts? BodyStatement
+   | FunctionContracts? BodyStatement
 
 
 FunctionContracts ::=
@@ -1606,8 +1587,7 @@ UserDefinedAttribute ::=
     | '@' TemplateInstance ('(' ArgumentList? ')')?
 
 Pragma ::=
-    'pragma' '(' Identifier ')'
-    | 'pragma' '(' Identifier ',' ArgumentList ')'
+    'pragma' '(' Identifier (',' ArgumentList)? ')'
 
 //Conditional
 
@@ -1617,7 +1597,7 @@ ConditionalDeclaration ::=
     | Condition DeclarationBlock 'else' ':' DeclDefs?
 
 ConditionalStatement ::=
-    Condition NoScopeNonEmptyStatement ('else' NoScopeNonEmptyStatement)?
+    Condition Statement ('else' Statement)?
 
 Condition ::=
     VersionCondition

@@ -75,9 +75,9 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
 //    public void testattributes_user_defined() { doTest(true, true); }
 //
 //    // pragmas
-//    public void testpragmas() { doTest(true, true); }
-//    public void testpragmas_inline() { doTest(true, true); }
-//    public void testpragmas_methods() { doTest(true, true); }
+    public void testpragmas() { doTest(true, true); }
+    public void testpragmas_inline() { doTest(true, true); }
+    public void testpragmas_methods() { doTest(true, true); }
 //
 //    // expressions
 //    public void testexpressions_array_literal() { doTest(true, true); }
