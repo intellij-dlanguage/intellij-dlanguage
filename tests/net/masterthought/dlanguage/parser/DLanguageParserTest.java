@@ -22,7 +22,7 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
 //    public void testdeclaration_alias2() { doTest(true, true); }
 //    public void testdeclaration_c_style() { doTest(true, true); }
 //    public void testdeclaration_symbols() { doTest(true, true); }
-//    public void testdeclaration_type_storage1() { doTest(true, true); }
+    public void testdeclaration_type_storage1() { doTest(true, true); }
 //    public void testdeclaration_type_storage2() { doTest(true, true); }
     public void testdeclaration_alias3() { doTest(true, true); }
     public void testdeclaration_extern() { doTest(true, true); }
@@ -42,16 +42,16 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
     public void testtype_arithmetic_conversion() { doTest(true, true); }
     public void testtype_implicit_conversion() { doTest(true, true); }
     public void testtype_delegates() { doTest(true, true); }
-//    public void testtype_delegates2() { doTest(true, true); }
+    public void testtype_delegates2() { doTest(true, true); }
     public void testtype_delegates3() { doTest(true, true); }
     public void testtype_delegates4() { doTest(true, true); }
     public void testtype_c_style() { doTest(true, true); }
 
 //  properties
     public void testproperties_init() { doTest(true, true); }
-//    public void testproperties_init2() { doTest(true, true); }
-//    public void testproperties_init3() { doTest(true, true); }
-//    public void testproperties_user_defined() { doTest(true, true); }
+    public void testproperties_init2() { doTest(true, true); }
+    public void testproperties_init3() { doTest(true, true); }
+    public void testproperties_user_defined() { doTest(true, true); }
     public void testproperties_stringof() { doTest(true, true); }
     public void testproperties_sizeof() { doTest(true, true); }
 
@@ -67,12 +67,12 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
     public void testattributes_namespaces() { doTest(true, true); }
     public void testattributes_override() { doTest(true, true); }
     public void testattributes_private() { doTest(true, true); }
-//    public void testattributes_namespaces_multiple() { doTest(true, true); }
-//    public void testattributes_nogc() { doTest(true, true); }
-//    public void testattributes_protection() { doTest(true, true); }
-//    public void testattributes_static() { doTest(true, true); }
+    public void testattributes_protection() { doTest(true, true); }
+    public void testattributes_static() { doTest(true, true); }
 //    public void testattributes_traits() { doTest(true, true); }
 //    public void testattributes_user_defined() { doTest(true, true); }
+//    public void testattributes_namespaces_multiple() { doTest(true, true); }
+//    public void testattributes_nogc() { doTest(true, true); }
 
 //  pragmas
     public void testpragmas() { doTest(true, true); }
@@ -86,10 +86,10 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
     public void testexpressions_cast() { doTest(true, true); }
     public void testexpressions_cast2() { doTest(true, true); }
     public void testexpressions_cast_float() { doTest(true, true); }
-//    public void testexpressions_cast_pointer() { doTest(true, true); }
+    public void testexpressions_cast_pointer() { doTest(true, true); }
 //    public void testexpressions_is() { doTest(true, true); }
-//    public void testexpressions_lambda() { doTest(true, true); }
-//    public void testexpressions_new() { doTest(true, true); }
+    public void testexpressions_lambda() { doTest(true, true); }
+    public void testexpressions_new() { doTest(true, true); }
     public void testexpressions_class_comparison() { doTest(true, true); }
     public void testexpressions_equality() { doTest(true, true); }
     public void testexpressions_function_literal() { doTest(true, true); }
@@ -173,13 +173,13 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
 
 // structs and unions
 //      public void teststructs() { doTest(true, true); }
-//      public void teststructs_constructors() { doTest(true, true); }
-//      public void teststructs_dynamic_init() { doTest(true, true); }
+      public void teststructs_constructors() { doTest(true, true); }
+      public void teststructs_dynamic_init() { doTest(true, true); }
 //      public void teststructs_initialization() { doTest(true, true); }
 //      public void teststructs_literal() { doTest(true, true); }
-//      public void teststructs_nested() { doTest(true, true); }
+      public void teststructs_nested() { doTest(true, true); }
 //      public void teststructs_overload() { doTest(true, true); }
-//      public void testunion_initialization() { doTest(true, true); }
+      public void testunion_initialization() { doTest(true, true); }
       public void teststructs_postblits() { doTest(true, true); }
       public void teststructs_shared() { doTest(true, true); }
 

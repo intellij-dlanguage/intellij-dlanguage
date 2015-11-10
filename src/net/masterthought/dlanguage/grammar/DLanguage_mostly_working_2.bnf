@@ -395,8 +395,7 @@ RelExpression ::=
     | '!<=') ShiftExpression
 
 InExpression ::=
-    'in' ShiftExpression
-    | '!in' ShiftExpression
+    ('in'| '!in') ShiftExpression
 
 ShiftExpression ::= AddExpression [('<<' | '>>' | '>>>') ShiftExpression]
 
@@ -649,7 +648,6 @@ SpecialKeyword ::=
 Statement ::=
     ';'
     | NonEmptyStatement
-//    | ScopeBlockStatement
     | BlockStatement
 
 
@@ -692,9 +690,6 @@ ScopeStatement ::=
     NonEmptyStatement
     | BlockStatement
 
-ScopeBlockStatement ::=
-    BlockStatement
-
 LabeledStatement ::=
     Identifier ':'
     | Identifier ':' Statement
@@ -707,7 +702,7 @@ StatementList ::=
     Statement [StatementList]
 
 ExpressionStatement ::=
-    Expression ';'
+    Expression ';'?
 
 DeclarationStatement ::=
     StorageClasses? Declaration
@@ -805,7 +800,7 @@ StatementListNoCaseNoDefault ::=
 
 StatementNoCaseNoDefault ::=
     NonEmptyStatementNoCaseNoDefault
-    | ScopeBlockStatement
+    | BlockStatement
 
 FinalSwitchStatement ::=
     'final' 'switch' '(' Expression ')' ScopeStatement

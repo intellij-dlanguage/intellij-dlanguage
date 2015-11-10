@@ -29,9 +29,9 @@ public class DLanguageExpressionStatementImpl extends ASTWrapperPsiElement imple
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getOpScolon() {
-    return findNotNullChildByType(OP_SCOLON);
+    return findChildByType(OP_SCOLON);
   }
 
 }

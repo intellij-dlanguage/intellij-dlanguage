@@ -747,10 +747,6 @@ public class DLanguageVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitScopeBlockStatement(@NotNull DLanguageScopeBlockStatement o) {
-    visitPsiElement(o);
-  }
-
   public void visitScopeGuardStatement(@NotNull DLanguageScopeGuardStatement o) {
     visitPsiElement(o);
   }

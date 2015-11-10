@@ -24,14 +24,14 @@ public class DLanguageStatementNoCaseNoDefaultImpl extends ASTWrapperPsiElement 
 
   @Override
   @Nullable
-  public DLanguageNonEmptyStatementNoCaseNoDefault getNonEmptyStatementNoCaseNoDefault() {
-    return findChildByClass(DLanguageNonEmptyStatementNoCaseNoDefault.class);
+  public DLanguageBlockStatement getBlockStatement() {
+    return findChildByClass(DLanguageBlockStatement.class);
   }
 
   @Override
   @Nullable
-  public DLanguageScopeBlockStatement getScopeBlockStatement() {
-    return findChildByClass(DLanguageScopeBlockStatement.class);
+  public DLanguageNonEmptyStatementNoCaseNoDefault getNonEmptyStatementNoCaseNoDefault() {
+    return findChildByClass(DLanguageNonEmptyStatementNoCaseNoDefault.class);
   }
 
 }

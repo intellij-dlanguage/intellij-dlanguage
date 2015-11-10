@@ -193,7 +193,6 @@ public interface DLanguageTypes {
   IElementType QUALIFIED_IDENTIFIER_LIST = new DLanguageElementType("QUALIFIED_IDENTIFIER_LIST");
   IElementType REL_EXPRESSION = new DLanguageElementType("REL_EXPRESSION");
   IElementType RETURN_STATEMENT = new DLanguageElementType("RETURN_STATEMENT");
-  IElementType SCOPE_BLOCK_STATEMENT = new DLanguageElementType("SCOPE_BLOCK_STATEMENT");
   IElementType SCOPE_GUARD_STATEMENT = new DLanguageElementType("SCOPE_GUARD_STATEMENT");
   IElementType SCOPE_STATEMENT = new DLanguageElementType("SCOPE_STATEMENT");
   IElementType SCOPE_STATEMENT_LIST = new DLanguageElementType("SCOPE_STATEMENT_LIST");
@@ -1020,9 +1019,6 @@ public interface DLanguageTypes {
       }
       else if (type == RETURN_STATEMENT) {
         return new DLanguageReturnStatementImpl(node);
-      }
-      else if (type == SCOPE_BLOCK_STATEMENT) {
-        return new DLanguageScopeBlockStatementImpl(node);
       }
       else if (type == SCOPE_GUARD_STATEMENT) {
         return new DLanguageScopeGuardStatementImpl(node);

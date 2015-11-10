@@ -10,7 +10,7 @@ public interface DLanguageExpressionStatement extends PsiElement {
   @NotNull
   DLanguageExpression getExpression();
 
-  @NotNull
+  @Nullable
   PsiElement getOpScolon();
 
 }

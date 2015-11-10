@@ -577,9 +577,6 @@ public class DLanguageParser implements PsiParser {
     else if (t == RETURN_STATEMENT) {
       r = ReturnStatement(b, 0);
     }
-    else if (t == SCOPE_BLOCK_STATEMENT) {
-      r = ScopeBlockStatement(b, 0);
-    }
     else if (t == SCOPE_GUARD_STATEMENT) {
       r = ScopeGuardStatement(b, 0);
     }
@@ -3877,15 +3874,22 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // Expression ';'
+  // Expression ';'?
   public static boolean ExpressionStatement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ExpressionStatement")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<expression statement>");
     r = Expression(b, l + 1);
-    r = r && consumeToken(b, OP_SCOLON);
+    r = r && ExpressionStatement_1(b, l + 1);
     exit_section_(b, l, m, EXPRESSION_STATEMENT, r, false, null);
     return r;
+  }
+
+  // ';'?
+  private static boolean ExpressionStatement_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ExpressionStatement_1")) return false;
+    consumeToken(b, OP_SCOLON);
+    return true;
   }
 
   /* ********************************************************** */
@@ -4974,36 +4978,24 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // 'in' ShiftExpression
-  //     | '!in' ShiftExpression
+  // ('in'| '!in') ShiftExpression
   public static boolean InExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "InExpression")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<in expression>");
     r = InExpression_0(b, l + 1);
-    if (!r) r = InExpression_1(b, l + 1);
+    r = r && ShiftExpression(b, l + 1);
     exit_section_(b, l, m, IN_EXPRESSION, r, false, null);
     return r;
   }
 
-  // 'in' ShiftExpression
+  // 'in'| '!in'
   private static boolean InExpression_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "InExpression_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, KW_IN);
-    r = r && ShiftExpression(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // '!in' ShiftExpression
-  private static boolean InExpression_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "InExpression_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, "!in");
-    r = r && ShiftExpression(b, l + 1);
+    if (!r) r = consumeToken(b, "!in");
     exit_section_(b, m, null, r);
     return r;
   }
@@ -7183,18 +7175,6 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // BlockStatement
-  public static boolean ScopeBlockStatement(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "ScopeBlockStatement")) return false;
-    if (!nextTokenIs(b, OP_BRACES_LEFT)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = BlockStatement(b, l + 1);
-    exit_section_(b, m, SCOPE_BLOCK_STATEMENT, r);
-    return r;
-  }
-
-  /* ********************************************************** */
   // 'scope' '(' 'exit' ')' Statement
   //     | 'scope' '(' 'success' ')' Statement
   //     | 'scope' '(' 'failure' ')' Statement
@@ -7501,7 +7481,6 @@ public class DLanguageParser implements PsiParser {
   /* ********************************************************** */
   // ';'
   //     | NonEmptyStatement
-  // //    | ScopeBlockStatement
   //     | BlockStatement
   public static boolean Statement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "Statement")) return false;
@@ -7559,13 +7538,13 @@ public class DLanguageParser implements PsiParser {
 
   /* ********************************************************** */
   // NonEmptyStatementNoCaseNoDefault
-  //     | ScopeBlockStatement
+  //     | BlockStatement
   public static boolean StatementNoCaseNoDefault(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "StatementNoCaseNoDefault")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<statement no case no default>");
     r = NonEmptyStatementNoCaseNoDefault(b, l + 1);
-    if (!r) r = ScopeBlockStatement(b, l + 1);
+    if (!r) r = BlockStatement(b, l + 1);
     exit_section_(b, l, m, STATEMENT_NO_CASE_NO_DEFAULT, r, false, null);
     return r;
   }
