@@ -267,6 +267,40 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
 //    public void testtemplates_typed_params() { doTest(true, true); }
 //    public void testtemplates_typed_specialization() { doTest(true, true); }
 //    public void testtemplates_variable() { doTest(true, true); }
+
+
+// contract programming
+//    public void testcontract_programming() { doTest(true, true); }
+
+// conditional compilation
+//    public void testconditional_compilation() { doTest(true, true); }
+
+// traits
+//    public void testtraits_allmembers() { doTest(true, true); }
+//    public void testtraits_compiles() { doTest(true, true); }
+//    public void testtraits_derivedmembers() { doTest(true, true); }
+//    public void testtraits_getattributes() { doTest(true, true); }
+//    public void testtraits_getfunctionattributes() { doTest(true, true); }
+//    public void testtraits_getmember() { doTest(true, true); }
+//    public void testtraits_getoverloads() { doTest(true, true); }
+//    public void testtraits_getpointerbitmap() { doTest(true, true); }
+//    public void testtraits_getprotection() { doTest(true, true); }
+//    public void testtraits_getunittests() { doTest(true, true); }
+//    public void testtraits_getvirtualmethods() { doTest(true, true); }
+//    public void testtraits_hasmember() { doTest(true, true); }
+//    public void testtraits_isabstractclass() { doTest(true, true); }
+//    public void testtraits_isabstractionfunction() { doTest(true, true); }
+//    public void testtraits_isarithmetic() { doTest(true, true); }
+//    public void testtraits_isfinalfunction() { doTest(true, true); }
+//    public void testtraits_isoverridefunction() { doTest(true, true); }
+//    public void testtraits_isrefoutlazy() { doTest(true, true); }
+//    public void testtraits_issame() { doTest(true, true); }
+//    public void testtraits_istemplate() { doTest(true, true); }
+//    public void testtraits_isvirtualmethod() { doTest(true, true); }
+//    public void testtraits_special_keyword() { doTest(true, true); }
+
+// unittest
+//   public void testunittests() { doTest(true, true); }
 }
 
 
