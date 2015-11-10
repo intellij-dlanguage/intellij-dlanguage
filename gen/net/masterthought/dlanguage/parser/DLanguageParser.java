@@ -917,7 +917,8 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // 'alias' StorageClasses? BasicType ( Declarator | FuncDeclarator) ';'
+  // 'alias' Identifier '=' Type TemplateArguments?
+  // //    'alias' StorageClasses? BasicType ( Declarator | FuncDeclarator) ';'
   //   | 'alias' AliasDeclarationX ';'
   public static boolean AliasDeclaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "AliasDeclaration")) return false;
@@ -930,36 +931,25 @@ public class DLanguageParser implements PsiParser {
     return r;
   }
 
-  // 'alias' StorageClasses? BasicType ( Declarator | FuncDeclarator) ';'
+  // 'alias' Identifier '=' Type TemplateArguments?
   private static boolean AliasDeclaration_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "AliasDeclaration_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, KW_ALIAS);
-    r = r && AliasDeclaration_0_1(b, l + 1);
-    r = r && BasicType(b, l + 1);
-    r = r && AliasDeclaration_0_3(b, l + 1);
-    r = r && consumeToken(b, OP_SCOLON);
+    r = r && Identifier(b, l + 1);
+    r = r && consumeToken(b, OP_EQ);
+    r = r && Type(b, l + 1);
+    r = r && AliasDeclaration_0_4(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // StorageClasses?
-  private static boolean AliasDeclaration_0_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AliasDeclaration_0_1")) return false;
-    StorageClasses(b, l + 1);
+  // TemplateArguments?
+  private static boolean AliasDeclaration_0_4(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "AliasDeclaration_0_4")) return false;
+    TemplateArguments(b, l + 1);
     return true;
-  }
-
-  // Declarator | FuncDeclarator
-  private static boolean AliasDeclaration_0_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AliasDeclaration_0_3")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = Declarator(b, l + 1);
-    if (!r) r = FuncDeclarator(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
   }
 
   // 'alias' AliasDeclarationX ';'
@@ -1006,64 +996,53 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // Identifier TemplateParameters? '=' StorageClasses? Type
-  //     | Identifier TemplateParameters? '=' FunctionLiteral
+  // Identifier TemplateParameters? '=' ( StorageClasses? Type | FunctionLiteral)
   public static boolean AliasDeclarationY(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "AliasDeclarationY")) return false;
     if (!nextTokenIs(b, ID)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = AliasDeclarationY_0(b, l + 1);
-    if (!r) r = AliasDeclarationY_1(b, l + 1);
+    r = Identifier(b, l + 1);
+    r = r && AliasDeclarationY_1(b, l + 1);
+    r = r && consumeToken(b, OP_EQ);
+    r = r && AliasDeclarationY_3(b, l + 1);
     exit_section_(b, m, ALIAS_DECLARATION_Y, r);
     return r;
   }
 
-  // Identifier TemplateParameters? '=' StorageClasses? Type
-  private static boolean AliasDeclarationY_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AliasDeclarationY_0")) return false;
+  // TemplateParameters?
+  private static boolean AliasDeclarationY_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "AliasDeclarationY_1")) return false;
+    TemplateParameters(b, l + 1);
+    return true;
+  }
+
+  // StorageClasses? Type | FunctionLiteral
+  private static boolean AliasDeclarationY_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "AliasDeclarationY_3")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = Identifier(b, l + 1);
-    r = r && AliasDeclarationY_0_1(b, l + 1);
-    r = r && consumeToken(b, OP_EQ);
-    r = r && AliasDeclarationY_0_3(b, l + 1);
+    r = AliasDeclarationY_3_0(b, l + 1);
+    if (!r) r = FunctionLiteral(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // StorageClasses? Type
+  private static boolean AliasDeclarationY_3_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "AliasDeclarationY_3_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = AliasDeclarationY_3_0_0(b, l + 1);
     r = r && Type(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // TemplateParameters?
-  private static boolean AliasDeclarationY_0_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AliasDeclarationY_0_1")) return false;
-    TemplateParameters(b, l + 1);
-    return true;
-  }
-
   // StorageClasses?
-  private static boolean AliasDeclarationY_0_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AliasDeclarationY_0_3")) return false;
+  private static boolean AliasDeclarationY_3_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "AliasDeclarationY_3_0_0")) return false;
     StorageClasses(b, l + 1);
-    return true;
-  }
-
-  // Identifier TemplateParameters? '=' FunctionLiteral
-  private static boolean AliasDeclarationY_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AliasDeclarationY_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = Identifier(b, l + 1);
-    r = r && AliasDeclarationY_1_1(b, l + 1);
-    r = r && consumeToken(b, OP_EQ);
-    r = r && FunctionLiteral(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // TemplateParameters?
-  private static boolean AliasDeclarationY_1_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AliasDeclarationY_1_1")) return false;
-    TemplateParameters(b, l + 1);
     return true;
   }
 

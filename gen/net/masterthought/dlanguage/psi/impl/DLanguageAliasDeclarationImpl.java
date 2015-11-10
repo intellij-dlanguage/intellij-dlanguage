@@ -30,26 +30,20 @@ public class DLanguageAliasDeclarationImpl extends ASTWrapperPsiElement implemen
 
   @Override
   @Nullable
-  public DLanguageBasicType getBasicType() {
-    return findChildByClass(DLanguageBasicType.class);
+  public DLanguageIdentifier getIdentifier() {
+    return findChildByClass(DLanguageIdentifier.class);
   }
 
   @Override
   @Nullable
-  public DLanguageDeclarator getDeclarator() {
-    return findChildByClass(DLanguageDeclarator.class);
+  public DLanguageTemplateArguments getTemplateArguments() {
+    return findChildByClass(DLanguageTemplateArguments.class);
   }
 
   @Override
   @Nullable
-  public DLanguageFuncDeclarator getFuncDeclarator() {
-    return findChildByClass(DLanguageFuncDeclarator.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageStorageClasses getStorageClasses() {
-    return findChildByClass(DLanguageStorageClasses.class);
+  public DLanguageType getType() {
+    return findChildByClass(DLanguageType.class);
   }
 
   @Override
@@ -59,9 +53,15 @@ public class DLanguageAliasDeclarationImpl extends ASTWrapperPsiElement implemen
   }
 
   @Override
-  @NotNull
+  @Nullable
+  public PsiElement getOpEq() {
+    return findChildByType(OP_EQ);
+  }
+
+  @Override
+  @Nullable
   public PsiElement getOpScolon() {
-    return findNotNullChildByType(OP_SCOLON);
+    return findChildByType(OP_SCOLON);
   }
 
 }

@@ -1036,16 +1036,15 @@ Declaration ::=
    | VarDeclarations
 
 
-AliasDeclaration ::=
-    'alias' StorageClasses? BasicType ( Declarator | FuncDeclarator) ';'
+AliasDeclaration ::= 'alias' Identifier '=' Type TemplateArguments?
+//    'alias' StorageClasses? BasicType ( Declarator | FuncDeclarator) ';'
   | 'alias' AliasDeclarationX ';'
 
 AliasDeclarationX ::=
     AliasDeclarationY [',' AliasDeclarationX]
 
 AliasDeclarationY ::=
-    Identifier TemplateParameters? '=' StorageClasses? Type
-    | Identifier TemplateParameters? '=' FunctionLiteral
+    Identifier TemplateParameters? '=' ( StorageClasses? Type | FunctionLiteral)
 
 AutoDeclaration ::=
     StorageClasses? AutoDeclarationX ';'

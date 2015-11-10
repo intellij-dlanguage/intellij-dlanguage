@@ -11,21 +11,21 @@ public interface DLanguageAliasDeclaration extends PsiElement {
   DLanguageAliasDeclarationX getAliasDeclarationX();
 
   @Nullable
-  DLanguageBasicType getBasicType();
+  DLanguageIdentifier getIdentifier();
 
   @Nullable
-  DLanguageDeclarator getDeclarator();
+  DLanguageTemplateArguments getTemplateArguments();
 
   @Nullable
-  DLanguageFuncDeclarator getFuncDeclarator();
-
-  @Nullable
-  DLanguageStorageClasses getStorageClasses();
+  DLanguageType getType();
 
   @NotNull
   PsiElement getKwAlias();
 
-  @NotNull
+  @Nullable
+  PsiElement getOpEq();
+
+  @Nullable
   PsiElement getOpScolon();
 
 }
