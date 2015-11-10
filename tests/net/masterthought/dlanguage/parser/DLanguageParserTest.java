@@ -241,4 +241,32 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
 //      public void testfunctions_variadic_lazy() { doTest(true, true); }
 //      public void testfunctions_variadic_typesafe() { doTest(true, true); }
 //      public void testfunctions_virtual() { doTest(true, true); }
+
+// operator overloading
+//        public void testoperator_overloading() { doTest(true, true); }
+
+
+// templates
+//    public void testtemplates() { doTest(true, true); }
+//    public void testtemplates_alias() { doTest(true, true); }
+//    public void testtemplates_alias_param() { doTest(true, true); }
+//    public void testtemplates_argument_deduction() { doTest(true, true); }
+//    public void testtemplates_defaults() { doTest(true, true); }
+//    public void testtemplates_function_templates() { doTest(true, true); }
+//    public void testtemplates_instant_scope() { doTest(true, true); }
+//    public void testtemplates_limitation() { doTest(true, true); }
+//    public void testtemplates_mixins() { doTest(true, true); }
+//    public void testtemplates_mixins_scope() { doTest(true, true); }
+//    public void testtemplates_nested() { doTest(true, true); }
+//    public void testtemplates_params() { doTest(true, true); }
+//    public void testtemplates_recursive() { doTest(true, true); }
+//    public void testtemplates_ref() { doTest(true, true); }
+//    public void testtemplates_specialization() { doTest(true, true); }
+//    public void testtemplates_this_params() { doTest(true, true); }
+//    public void testtemplates_tuples() { doTest(true, true); }
+//    public void testtemplates_typed_params() { doTest(true, true); }
+//    public void testtemplates_typed_specialization() { doTest(true, true); }
+//    public void testtemplates_variable() { doTest(true, true); }
 }
+
+
