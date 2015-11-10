@@ -217,10 +217,10 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
 //    public void testconst_immutable() { doTest(true, true); }
 
 // functions
-//      public void testfunctions_auto() { doTest(true, true); }
-//      public void testfunctions_auto_ref() { doTest(true, true); }
+      public void testfunctions_auto() { doTest(true, true); }
+      public void testfunctions_auto_ref() { doTest(true, true); }
 //      public void testfunctions_default_args() { doTest(true, true); }
-//      public void testfunctions_delegated_fp_closures() { doTest(true, true); }
+      public void testfunctions_delegated_fp_closures() { doTest(true, true); }
 //      public void testfunctions_inheritance() { doTest(true, true); }
 //      public void testfunctions_inout() { doTest(true, true); }
 //      public void testfunctions_local_static() { doTest(true, true); }
