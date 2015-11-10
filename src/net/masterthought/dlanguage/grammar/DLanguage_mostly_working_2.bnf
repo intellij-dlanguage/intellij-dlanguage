@@ -429,8 +429,8 @@ NewExpression ::=
 
 NewExpressionWithArgs ::=
     'new' AllocatorArguments? Type '[' AssignExpression ']'
-    | 'new' AllocatorArguments? Type '(' ArgumentList? ')'
-    | NewAnonClassExpression
+   | 'new' AllocatorArguments? Type ('(' ArgumentList? ')')?
+   | NewAnonClassExpression
 
 AllocatorArguments ::=
     '(' ArgumentList? ')'
