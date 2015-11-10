@@ -30,8 +30,8 @@ public class DLanguageNonVoidInitializerImpl extends ASTWrapperPsiElement implem
 
   @Override
   @Nullable
-  public DLanguageExpInitializer getExpInitializer() {
-    return findChildByClass(DLanguageExpInitializer.class);
+  public DLanguageAssignExpression getAssignExpression() {
+    return findChildByClass(DLanguageAssignExpression.class);
   }
 
   @Override

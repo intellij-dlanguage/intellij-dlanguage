@@ -295,9 +295,6 @@ public class DLanguageParser implements PsiParser {
     else if (t == EQUAL_EXPRESSION) {
       r = EqualExpression(b, 0);
     }
-    else if (t == EXP_INITIALIZER) {
-      r = ExpInitializer(b, 0);
-    }
     else if (t == EXPRESSION) {
       r = Expression(b, 0);
     }
@@ -2010,16 +2007,23 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // StorageClasses AutoDeclarationX ';'
+  // StorageClasses? AutoDeclarationX ';'
   public static boolean AutoDeclaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "AutoDeclaration")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<auto declaration>");
-    r = StorageClasses(b, l + 1);
+    r = AutoDeclaration_0(b, l + 1);
     r = r && AutoDeclarationX(b, l + 1);
     r = r && consumeToken(b, OP_SCOLON);
     exit_section_(b, l, m, AUTO_DECLARATION, r, false, null);
     return r;
+  }
+
+  // StorageClasses?
+  private static boolean AutoDeclaration_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "AutoDeclaration_0")) return false;
+    StorageClasses(b, l + 1);
+    return true;
   }
 
   /* ********************************************************** */
@@ -3859,17 +3863,6 @@ public class DLanguageParser implements PsiParser {
     if (!recursion_guard_(b, l, "EqualExpression_1")) return false;
     ShiftExpression(b, l + 1);
     return true;
-  }
-
-  /* ********************************************************** */
-  // AssignExpression
-  public static boolean ExpInitializer(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "ExpInitializer")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, "<exp initializer>");
-    r = AssignExpression(b, l + 1);
-    exit_section_(b, l, m, EXP_INITIALIZER, r, false, null);
-    return r;
   }
 
   /* ********************************************************** */
@@ -6064,8 +6057,8 @@ public class DLanguageParser implements PsiParser {
 
   /* ********************************************************** */
   // 'new' AllocatorArguments? Type '[' AssignExpression ']'
-  //     | 'new' AllocatorArguments? Type '(' ArgumentList? ')'
-  //     | NewAnonClassExpression
+  //    | 'new' AllocatorArguments? Type ('(' ArgumentList? ')')?
+  //    | NewAnonClassExpression
   public static boolean NewExpressionWithArgs(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "NewExpressionWithArgs")) return false;
     if (!nextTokenIs(b, KW_NEW)) return false;
@@ -6100,7 +6093,7 @@ public class DLanguageParser implements PsiParser {
     return true;
   }
 
-  // 'new' AllocatorArguments? Type '(' ArgumentList? ')'
+  // 'new' AllocatorArguments? Type ('(' ArgumentList? ')')?
   private static boolean NewExpressionWithArgs_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "NewExpressionWithArgs_1")) return false;
     boolean r;
@@ -6108,9 +6101,7 @@ public class DLanguageParser implements PsiParser {
     r = consumeToken(b, KW_NEW);
     r = r && NewExpressionWithArgs_1_1(b, l + 1);
     r = r && Type(b, l + 1);
-    r = r && consumeToken(b, OP_PAR_LEFT);
-    r = r && NewExpressionWithArgs_1_4(b, l + 1);
-    r = r && consumeToken(b, OP_PAR_RIGHT);
+    r = r && NewExpressionWithArgs_1_3(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -6122,9 +6113,28 @@ public class DLanguageParser implements PsiParser {
     return true;
   }
 
+  // ('(' ArgumentList? ')')?
+  private static boolean NewExpressionWithArgs_1_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "NewExpressionWithArgs_1_3")) return false;
+    NewExpressionWithArgs_1_3_0(b, l + 1);
+    return true;
+  }
+
+  // '(' ArgumentList? ')'
+  private static boolean NewExpressionWithArgs_1_3_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "NewExpressionWithArgs_1_3_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, OP_PAR_LEFT);
+    r = r && NewExpressionWithArgs_1_3_0_1(b, l + 1);
+    r = r && consumeToken(b, OP_PAR_RIGHT);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
   // ArgumentList?
-  private static boolean NewExpressionWithArgs_1_4(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "NewExpressionWithArgs_1_4")) return false;
+  private static boolean NewExpressionWithArgs_1_3_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "NewExpressionWithArgs_1_3_0_1")) return false;
     ArgumentList(b, l + 1);
     return true;
   }
@@ -6209,14 +6219,14 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // ExpInitializer
+  // AssignExpression
   //     | ArrayInitializer
   //     | StructInitializer
   public static boolean NonVoidInitializer(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "NonVoidInitializer")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<non void initializer>");
-    r = ExpInitializer(b, l + 1);
+    r = AssignExpression(b, l + 1);
     if (!r) r = ArrayInitializer(b, l + 1);
     if (!r) r = StructInitializer(b, l + 1);
     exit_section_(b, l, m, NON_VOID_INITIALIZER, r, false, null);
@@ -7491,7 +7501,7 @@ public class DLanguageParser implements PsiParser {
   /* ********************************************************** */
   // ';'
   //     | NonEmptyStatement
-  //     | ScopeBlockStatement
+  // //    | ScopeBlockStatement
   //     | BlockStatement
   public static boolean Statement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "Statement")) return false;
@@ -7499,7 +7509,6 @@ public class DLanguageParser implements PsiParser {
     Marker m = enter_section_(b, l, _NONE_, "<statement>");
     r = consumeToken(b, OP_SCOLON);
     if (!r) r = NonEmptyStatement(b, l + 1);
-    if (!r) r = ScopeBlockStatement(b, l + 1);
     if (!r) r = BlockStatement(b, l + 1);
     exit_section_(b, l, m, STATEMENT, r, false, null);
     return r;

@@ -453,13 +453,6 @@ CastExpression ::=
 
 PowExpression ::= PostfixExpression ['^^' UnaryExpression PowExpression]
 
-//PostfixExpression ::=
-//    PrimaryExpression
-//    | TypeCtors? BasicType '(' ArgumentList? ')'
-//    [('.' Identifier | '.' TemplateInstance | '.' NewExpression | '++' | '--' | '(' ArgumentList? ')' | '[' ArgumentList? ']' | '[' AssignExpression '..' AssignExpression ']') PostfixExpression]
-
-
-
 PostfixExpression ::=
     PrimaryExpression
     | '.' Identifier [PostfixExpression]
@@ -656,7 +649,7 @@ SpecialKeyword ::=
 Statement ::=
     ';'
     | NonEmptyStatement
-    | ScopeBlockStatement
+//    | ScopeBlockStatement
     | BlockStatement
 
 
@@ -1060,7 +1053,7 @@ AliasDeclarationY ::=
     | Identifier TemplateParameters? '=' FunctionLiteral
 
 AutoDeclaration ::=
-    StorageClasses AutoDeclarationX ';'
+    StorageClasses? AutoDeclarationX ';'
 
 AutoDeclarationX ::=
     AutoDeclarationY [',' AutoDeclarationX]
@@ -1150,12 +1143,9 @@ VoidInitializer ::=
     'void'
 
 NonVoidInitializer ::=
-    ExpInitializer
+    AssignExpression
     | ArrayInitializer
     | StructInitializer
-
-ExpInitializer ::=
-    AssignExpression
 
 ArrayInitializer ::=
     '[' ArrayMemberInitializations? ']'

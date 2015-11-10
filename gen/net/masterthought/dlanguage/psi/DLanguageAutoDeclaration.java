@@ -10,7 +10,7 @@ public interface DLanguageAutoDeclaration extends PsiElement {
   @NotNull
   DLanguageAutoDeclarationX getAutoDeclarationX();
 
-  @NotNull
+  @Nullable
   DLanguageStorageClasses getStorageClasses();
 
   @NotNull

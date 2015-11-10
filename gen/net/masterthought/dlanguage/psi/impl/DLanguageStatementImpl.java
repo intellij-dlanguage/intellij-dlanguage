@@ -36,12 +36,6 @@ public class DLanguageStatementImpl extends ASTWrapperPsiElement implements DLan
 
   @Override
   @Nullable
-  public DLanguageScopeBlockStatement getScopeBlockStatement() {
-    return findChildByClass(DLanguageScopeBlockStatement.class);
-  }
-
-  @Override
-  @Nullable
   public PsiElement getOpScolon() {
     return findChildByType(OP_SCOLON);
   }

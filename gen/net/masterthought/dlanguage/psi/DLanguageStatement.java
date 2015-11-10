@@ -14,9 +14,6 @@ public interface DLanguageStatement extends PsiElement {
   DLanguageNonEmptyStatement getNonEmptyStatement();
 
   @Nullable
-  DLanguageScopeBlockStatement getScopeBlockStatement();
-
-  @Nullable
   PsiElement getOpScolon();
 
 }

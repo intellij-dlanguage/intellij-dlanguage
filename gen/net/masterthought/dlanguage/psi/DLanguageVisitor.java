@@ -371,10 +371,6 @@ public class DLanguageVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitExpInitializer(@NotNull DLanguageExpInitializer o) {
-    visitPsiElement(o);
-  }
-
   public void visitExpression(@NotNull DLanguageExpression o) {
     visitPsiElement(o);
   }

@@ -29,9 +29,9 @@ public class DLanguageAutoDeclarationImpl extends ASTWrapperPsiElement implement
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageStorageClasses getStorageClasses() {
-    return findNotNullChildByClass(DLanguageStorageClasses.class);
+    return findChildByClass(DLanguageStorageClasses.class);
   }
 
   @Override

@@ -186,10 +186,10 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
 
 // classes
       public void testclasses() { doTest(true, true); }
-//      public void testclasses_alias_this() { doTest(true, true); }
-//      public void testclasses_constructors_fields() { doTest(true, true); }
-//      public void testclasses_nested() { doTest(true, true); }
-//      public void testclasses_properties() { doTest(true, true); }
+      public void testclasses_alias_this() { doTest(true, true); }
+      public void testclasses_constructors_fields() { doTest(true, true); }
+      public void testclasses_nested() { doTest(true, true); }
+      public void testclasses_properties() { doTest(true, true); }
       public void testclasses_allocators() { doTest(true, true); }
       public void testclasses_constructors() { doTest(true, true); }
       public void testclasses_deallocators() { doTest(true, true); }

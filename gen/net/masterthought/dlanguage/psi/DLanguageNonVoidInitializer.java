@@ -11,7 +11,7 @@ public interface DLanguageNonVoidInitializer extends PsiElement {
   DLanguageArrayInitializer getArrayInitializer();
 
   @Nullable
-  DLanguageExpInitializer getExpInitializer();
+  DLanguageAssignExpression getAssignExpression();
 
   @Nullable
   DLanguageStructInitializer getStructInitializer();

@@ -101,7 +101,6 @@ public interface DLanguageTypes {
   IElementType EQUAL_EXPRESSION = new DLanguageElementType("EQUAL_EXPRESSION");
   IElementType EXPRESSION = new DLanguageElementType("EXPRESSION");
   IElementType EXPRESSION_STATEMENT = new DLanguageElementType("EXPRESSION_STATEMENT");
-  IElementType EXP_INITIALIZER = new DLanguageElementType("EXP_INITIALIZER");
   IElementType FINALLY_STATEMENT = new DLanguageElementType("FINALLY_STATEMENT");
   IElementType FINAL_SWITCH_STATEMENT = new DLanguageElementType("FINAL_SWITCH_STATEMENT");
   IElementType FIRST_EXP = new DLanguageElementType("FIRST_EXP");
@@ -745,9 +744,6 @@ public interface DLanguageTypes {
       }
       else if (type == EXPRESSION_STATEMENT) {
         return new DLanguageExpressionStatementImpl(node);
-      }
-      else if (type == EXP_INITIALIZER) {
-        return new DLanguageExpInitializerImpl(node);
       }
       else if (type == FINALLY_STATEMENT) {
         return new DLanguageFinallyStatementImpl(node);
