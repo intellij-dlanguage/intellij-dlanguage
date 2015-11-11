@@ -16,4 +16,7 @@ public interface DLanguageTemplateTypeParameter extends PsiElement {
   @Nullable
   DLanguageTemplateTypeParameterSpecialization getTemplateTypeParameterSpecialization();
 
+  @Nullable
+  PsiElement getOpTripledot();
+
 }

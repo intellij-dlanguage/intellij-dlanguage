@@ -7,13 +7,13 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageMixinTemplateName extends PsiElement {
 
-  @Nullable
+  @NotNull
   DLanguageQualifiedIdentifierList getQualifiedIdentifierList();
 
   @Nullable
   DLanguageTypeof getTypeof();
 
-  @NotNull
+  @Nullable
   PsiElement getOpDot();
 
 }

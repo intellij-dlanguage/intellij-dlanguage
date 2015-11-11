@@ -40,4 +40,10 @@ public class DLanguageTemplateTypeParameterImpl extends ASTWrapperPsiElement imp
     return findChildByClass(DLanguageTemplateTypeParameterSpecialization.class);
   }
 
+  @Override
+  @Nullable
+  public PsiElement getOpTripledot() {
+    return findChildByType(OP_TRIPLEDOT);
+  }
+
 }

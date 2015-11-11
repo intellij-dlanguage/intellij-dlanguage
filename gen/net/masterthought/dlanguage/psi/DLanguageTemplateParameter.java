@@ -14,9 +14,6 @@ public interface DLanguageTemplateParameter extends PsiElement {
   DLanguageTemplateThisParameter getTemplateThisParameter();
 
   @Nullable
-  DLanguageTemplateTupleParameter getTemplateTupleParameter();
-
-  @Nullable
   DLanguageTemplateTypeParameter getTemplateTypeParameter();
 
   @Nullable

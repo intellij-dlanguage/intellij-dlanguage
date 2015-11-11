@@ -919,10 +919,6 @@ public class DLanguageVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitTemplateTupleParameter(@NotNull DLanguageTemplateTupleParameter o) {
-    visitPsiElement(o);
-  }
-
   public void visitTemplateTypeParameter(@NotNull DLanguageTemplateTypeParameter o) {
     visitPsiElement(o);
   }

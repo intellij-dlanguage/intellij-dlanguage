@@ -249,7 +249,7 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
 
 // templates
     public void testtemplates() { doTest(true, true); }
-//    public void testtemplates_alias() { doTest(true, true); }
+    public void testtemplates_alias() { doTest(true, true); }
 //    public void testtemplates_defaults() { doTest(true, true); }
 //    public void testtemplates_function_templates() { doTest(true, true); }
     public void testtemplates_alias_params() { doTest(true, true); }
@@ -259,7 +259,7 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
     public void testtemplates_recursive() { doTest(true, true); }
     public void testtemplates_specialization() { doTest(true, true); }
     public void testtemplates_typed_params() { doTest(true, true); }
-//    public void testtemplates_mixins() { doTest(true, true); }
+    public void testtemplates_mixins() { doTest(true, true); }
 //    public void testtemplates_mixins_scope() { doTest(true, true); }
 //    public void testtemplates_nested() { doTest(true, true); }
 //    public void testtemplates_params() { doTest(true, true); }

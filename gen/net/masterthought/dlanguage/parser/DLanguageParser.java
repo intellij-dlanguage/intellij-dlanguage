@@ -706,9 +706,6 @@ public class DLanguageParser implements PsiParser {
     else if (t == TEMPLATE_THIS_PARAMETER) {
       r = TemplateThisParameter(b, 0);
     }
-    else if (t == TEMPLATE_TUPLE_PARAMETER) {
-      r = TemplateTupleParameter(b, 0);
-    }
     else if (t == TEMPLATE_TYPE_PARAMETER) {
       r = TemplateTypeParameter(b, 0);
     }
@@ -5760,15 +5757,14 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // Typeof? '.' QualifiedIdentifierList?
+  // Typeof? '.'? QualifiedIdentifierList
   public static boolean MixinTemplateName(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "MixinTemplateName")) return false;
-    if (!nextTokenIs(b, "<mixin template name>", OP_DOT, KW_TYPEOF)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<mixin template name>");
     r = MixinTemplateName_0(b, l + 1);
-    r = r && consumeToken(b, OP_DOT);
-    r = r && MixinTemplateName_2(b, l + 1);
+    r = r && MixinTemplateName_1(b, l + 1);
+    r = r && QualifiedIdentifierList(b, l + 1);
     exit_section_(b, l, m, MIXIN_TEMPLATE_NAME, r, false, null);
     return r;
   }
@@ -5780,10 +5776,10 @@ public class DLanguageParser implements PsiParser {
     return true;
   }
 
-  // QualifiedIdentifierList?
-  private static boolean MixinTemplateName_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "MixinTemplateName_2")) return false;
-    QualifiedIdentifierList(b, l + 1);
+  // '.'?
+  private static boolean MixinTemplateName_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "MixinTemplateName_1")) return false;
+    consumeToken(b, OP_DOT);
     return true;
   }
 
@@ -8325,7 +8321,6 @@ public class DLanguageParser implements PsiParser {
   // TemplateTypeParameter
   //    | TemplateValueParameter
   //    | TemplateAliasParameter
-  //    | TemplateTupleParameter
   //    | TemplateThisParameter
   public static boolean TemplateParameter(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "TemplateParameter")) return false;
@@ -8334,14 +8329,13 @@ public class DLanguageParser implements PsiParser {
     r = TemplateTypeParameter(b, l + 1);
     if (!r) r = TemplateValueParameter(b, l + 1);
     if (!r) r = TemplateAliasParameter(b, l + 1);
-    if (!r) r = TemplateTupleParameter(b, l + 1);
     if (!r) r = TemplateThisParameter(b, l + 1);
     exit_section_(b, l, m, TEMPLATE_PARAMETER, r, false, null);
     return r;
   }
 
   /* ********************************************************** */
-  // TemplateParameter (',' TemplateParameterList?)?
+  // TemplateParameter [',' TemplateParameterList]
   public static boolean TemplateParameterList(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "TemplateParameterList")) return false;
     boolean r;
@@ -8352,29 +8346,22 @@ public class DLanguageParser implements PsiParser {
     return r;
   }
 
-  // (',' TemplateParameterList?)?
+  // [',' TemplateParameterList]
   private static boolean TemplateParameterList_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "TemplateParameterList_1")) return false;
     TemplateParameterList_1_0(b, l + 1);
     return true;
   }
 
-  // ',' TemplateParameterList?
+  // ',' TemplateParameterList
   private static boolean TemplateParameterList_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "TemplateParameterList_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, OP_COMMA);
-    r = r && TemplateParameterList_1_0_1(b, l + 1);
+    r = r && TemplateParameterList(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
-  }
-
-  // TemplateParameterList?
-  private static boolean TemplateParameterList_1_0_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "TemplateParameterList_1_0_1")) return false;
-    TemplateParameterList(b, l + 1);
-    return true;
   }
 
   /* ********************************************************** */
@@ -8443,20 +8430,7 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // Identifier '...'
-  public static boolean TemplateTupleParameter(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "TemplateTupleParameter")) return false;
-    if (!nextTokenIs(b, ID)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = Identifier(b, l + 1);
-    r = r && consumeToken(b, OP_TRIPLEDOT);
-    exit_section_(b, m, TEMPLATE_TUPLE_PARAMETER, r);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // Identifier TemplateTypeParameterSpecialization? TemplateTypeParameterDefault?
+  // Identifier '...'? TemplateTypeParameterSpecialization? TemplateTypeParameterDefault?
   public static boolean TemplateTypeParameter(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "TemplateTypeParameter")) return false;
     if (!nextTokenIs(b, ID)) return false;
@@ -8465,20 +8439,28 @@ public class DLanguageParser implements PsiParser {
     r = Identifier(b, l + 1);
     r = r && TemplateTypeParameter_1(b, l + 1);
     r = r && TemplateTypeParameter_2(b, l + 1);
+    r = r && TemplateTypeParameter_3(b, l + 1);
     exit_section_(b, m, TEMPLATE_TYPE_PARAMETER, r);
     return r;
   }
 
-  // TemplateTypeParameterSpecialization?
+  // '...'?
   private static boolean TemplateTypeParameter_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "TemplateTypeParameter_1")) return false;
+    consumeToken(b, OP_TRIPLEDOT);
+    return true;
+  }
+
+  // TemplateTypeParameterSpecialization?
+  private static boolean TemplateTypeParameter_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "TemplateTypeParameter_2")) return false;
     TemplateTypeParameterSpecialization(b, l + 1);
     return true;
   }
 
   // TemplateTypeParameterDefault?
-  private static boolean TemplateTypeParameter_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "TemplateTypeParameter_2")) return false;
+  private static boolean TemplateTypeParameter_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "TemplateTypeParameter_3")) return false;
     TemplateTypeParameterDefault(b, l + 1);
     return true;
   }

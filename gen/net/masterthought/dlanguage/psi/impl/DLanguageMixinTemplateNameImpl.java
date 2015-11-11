@@ -23,9 +23,9 @@ public class DLanguageMixinTemplateNameImpl extends ASTWrapperPsiElement impleme
   }
 
   @Override
-  @Nullable
+  @NotNull
   public DLanguageQualifiedIdentifierList getQualifiedIdentifierList() {
-    return findChildByClass(DLanguageQualifiedIdentifierList.class);
+    return findNotNullChildByClass(DLanguageQualifiedIdentifierList.class);
   }
 
   @Override
@@ -35,9 +35,9 @@ public class DLanguageMixinTemplateNameImpl extends ASTWrapperPsiElement impleme
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getOpDot() {
-    return findNotNullChildByType(OP_DOT);
+    return findChildByType(OP_DOT);
   }
 
 }

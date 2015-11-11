@@ -1388,13 +1388,12 @@ TemplateParameters ::=
     '(' TemplateParameterList? ')'
 
 TemplateParameterList ::=
-    TemplateParameter (',' TemplateParameterList?)?
+    TemplateParameter [',' TemplateParameterList]
 
 TemplateParameter ::=
     TemplateTypeParameter
    | TemplateValueParameter
    | TemplateAliasParameter
-   | TemplateTupleParameter
    | TemplateThisParameter
 
 Constraint ::=
@@ -1435,7 +1434,7 @@ TemplateSingleArgument ::=
     | SpecialKeyword
 
 TemplateTypeParameter ::=
-    Identifier TemplateTypeParameterSpecialization? TemplateTypeParameterDefault?
+    Identifier '...'? TemplateTypeParameterSpecialization? TemplateTypeParameterDefault?
 
 TemplateTypeParameterSpecialization ::=
     ':' Type
@@ -1465,9 +1464,6 @@ TemplateAliasParameterSpecialization ::=
 TemplateAliasParameterDefault ::=
     '=' ( Type | ConditionalExpression)
 
-TemplateTupleParameter ::=
-    Identifier '...'
-
 TemplateMixinDeclaration ::=
     'mixin' 'template' Identifier TemplateParameters Constraint? '{' DeclDefs? '}'
 
@@ -1475,7 +1471,7 @@ TemplateMixin ::=
     'mixin' MixinTemplateName TemplateArguments? Identifier? ';'
 
 MixinTemplateName ::=
-    Typeof? '.' QualifiedIdentifierList?
+    Typeof? '.'? QualifiedIdentifierList
 
 QualifiedIdentifierList ::=
     (Identifier | TemplateInstance) [ '.' QualifiedIdentifierList ]
