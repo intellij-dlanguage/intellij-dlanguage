@@ -71,6 +71,6 @@ unittest
 /// code sample generated, even if it only includes comments (or is empty)
 unittest
 {
-    /** assert(add(4, 4) == 8); */
+    // assert(add(4, 4) == 8);
 }
 

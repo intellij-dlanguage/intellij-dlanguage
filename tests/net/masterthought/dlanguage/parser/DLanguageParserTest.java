@@ -147,7 +147,7 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
 //    public void testarrays_bounds_checking() { doTest(true, true); }
 //    public void testarrays_dynamic_length() { doTest(true, true); }
 //    public void testarrays_initialization() { doTest(true, true); }
-//    public void testarrays_rectangular() { doTest(true, true); }
+    public void testarrays_rectangular() { doTest(true, true); }
     public void testarrays_length() { doTest(true, true); }
     public void testarrays_operations() { doTest(true, true); }
     public void testarrays_pointer_arithmetic() { doTest(true, true); }
@@ -166,9 +166,9 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
     public void testassocarrays_classes() { doTest(true, true); }
     public void testassocarrays_constructor() { doTest(true, true); }
     public void testassocarrays_removing() { doTest(true, true); }
-//    public void testassocarrays_immutable() { doTest(true, true); }
-//    public void testassocarrays_membership() { doTest(true, true); }
-//    public void testassocarrays_structs() { doTest(true, true); }
+    public void testassocarrays_immutable() { doTest(true, true); }
+    public void testassocarrays_membership() { doTest(true, true); }
+    public void testassocarrays_structs() { doTest(true, true); }
 //    public void testassocarrays_word_count() { doTest(true, true); }
 
 // structs and unions
@@ -302,7 +302,7 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
 
 
 // unittest
-//   public void testunittests() { doTest(true, true); }
+   public void testunittests() { doTest(true, true); }
 }
 
 
