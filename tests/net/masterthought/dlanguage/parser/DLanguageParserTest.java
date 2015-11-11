@@ -240,7 +240,7 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
 //      public void testfunctions_variadic_d() { doTest(true, true); }
 //      public void testfunctions_variadic_lazy() { doTest(true, true); }
 //      public void testfunctions_variadic_typesafe() { doTest(true, true); }
-//      public void testfunctions_virtual() { doTest(true, true); }
+      public void testfunctions_virtual() { doTest(true, true); }
 
 // operator overloading
 //        public void testoperator_overloading() { doTest(true, true); }

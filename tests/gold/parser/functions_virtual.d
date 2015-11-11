@@ -1,17 +1,17 @@
 class A
 {
-    int def() { ... }
-    final int foo() { ... }
-    final private int bar() { ... }
-    private int abc() { ... }
+    int def() {  }
+    final int foo() {  }
+    final private int bar() {  }
+    private int abc() {  }
 }
 
 class B : A
 {
-    override int def() { ... }  // ok, overrides A.def
-    override int foo() { ... }  // error, A.foo is final
-    int bar() { ... }  // ok, A.bar is final private, but not virtual
-    int abc() { ... }  // ok, A.abc is not virtual, B.abc is virtual
+    override int def() {  }  // ok, overrides A.def
+    override int foo() {  }  // error, A.foo is final
+    int bar() {  }  // ok, A.bar is final private, but not virtual
+    int abc() { a }  // ok, A.abc is not virtual, B.abc is virtual
 }
 
 void test(A a)
