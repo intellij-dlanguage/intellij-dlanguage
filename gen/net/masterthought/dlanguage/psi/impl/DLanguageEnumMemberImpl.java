@@ -36,6 +36,12 @@ public class DLanguageEnumMemberImpl extends ASTWrapperPsiElement implements DLa
 
   @Override
   @Nullable
+  public DLanguageType getType() {
+    return findChildByClass(DLanguageType.class);
+  }
+
+  @Override
+  @Nullable
   public PsiElement getOpEq() {
     return findChildByType(OP_EQ);
   }

@@ -27,8 +27,6 @@ public interface DLanguageTypes {
   IElementType AND_AND_EXPRESSION = new DLanguageElementType("AND_AND_EXPRESSION");
   IElementType AND_EXPRESSION = new DLanguageElementType("AND_EXPRESSION");
   IElementType ANONYMOUS_ENUM_DECLARATION = new DLanguageElementType("ANONYMOUS_ENUM_DECLARATION");
-  IElementType ANONYMOUS_ENUM_MEMBER = new DLanguageElementType("ANONYMOUS_ENUM_MEMBER");
-  IElementType ANONYMOUS_ENUM_MEMBERS = new DLanguageElementType("ANONYMOUS_ENUM_MEMBERS");
   IElementType ANON_STRUCT_DECLARATION = new DLanguageElementType("ANON_STRUCT_DECLARATION");
   IElementType ANON_UNION_DECLARATION = new DLanguageElementType("ANON_UNION_DECLARATION");
   IElementType ARGUMENT_LIST = new DLanguageElementType("ARGUMENT_LIST");
@@ -521,12 +519,6 @@ public interface DLanguageTypes {
       }
       else if (type == ANONYMOUS_ENUM_DECLARATION) {
         return new DLanguageAnonymousEnumDeclarationImpl(node);
-      }
-      else if (type == ANONYMOUS_ENUM_MEMBER) {
-        return new DLanguageAnonymousEnumMemberImpl(node);
-      }
-      else if (type == ANONYMOUS_ENUM_MEMBERS) {
-        return new DLanguageAnonymousEnumMembersImpl(node);
       }
       else if (type == ANON_STRUCT_DECLARATION) {
         return new DLanguageAnonStructDeclarationImpl(node);

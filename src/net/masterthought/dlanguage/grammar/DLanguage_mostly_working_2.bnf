@@ -378,7 +378,7 @@ EqualExpression ::=
      ('==' | '!=') [ShiftExpression]
 
 IdentityExpression ::=
-    ShiftExpression ('is'|'!is') ShiftExpression
+     ('is'|'!is') ShiftExpression
 
 RelExpression ::=
     ('<'
@@ -1362,8 +1362,7 @@ AliasThis ::=
 // Enum
 
 EnumDeclaration ::=
-    'enum' Identifier EnumBody
-    | 'enum' Identifier ':' EnumBaseType EnumBody
+    'enum' Identifier (':' EnumBaseType)? EnumBody
     | AnonymousEnumDeclaration
 
 EnumBaseType ::=
@@ -1375,20 +1374,10 @@ EnumBody ::=
 EnumMembers ::=
     EnumMember (',' EnumMembers?)?
 
-EnumMember ::=
-    Identifier ('=' AssignExpression)?
+EnumMember ::= Identifier ('=' AssignExpression)? | Type Identifier '=' AssignExpression
 
 AnonymousEnumDeclaration ::=
-    'enum' ':' EnumBaseType { EnumMembers }
-    | 'enum' '{' EnumMembers '}'
-    | 'enum' '{' AnonymousEnumMembers '}'
-
-AnonymousEnumMembers ::=
-    AnonymousEnumMember (',' AnonymousEnumMembers?)?
-
-AnonymousEnumMember ::=
-    EnumMember
-    | Type Identifier '=' AssignExpression
+    'enum' (':' EnumBaseType)? '{' (EnumMembers) '}'
 
 //Template
 

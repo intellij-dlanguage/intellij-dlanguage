@@ -85,12 +85,6 @@ public class DLanguageParser implements PsiParser {
     else if (t == ANONYMOUS_ENUM_DECLARATION) {
       r = AnonymousEnumDeclaration(b, 0);
     }
-    else if (t == ANONYMOUS_ENUM_MEMBER) {
-      r = AnonymousEnumMember(b, 0);
-    }
-    else if (t == ANONYMOUS_ENUM_MEMBERS) {
-      r = AnonymousEnumMembers(b, 0);
-    }
     else if (t == ARGUMENT_LIST) {
       r = ArgumentList(b, 0);
     }
@@ -1482,131 +1476,47 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // 'enum' ':' EnumBaseType { EnumMembers }
-  //     | 'enum' '{' EnumMembers '}'
-  //     | 'enum' '{' AnonymousEnumMembers '}'
+  // 'enum' (':' EnumBaseType)? '{' (EnumMembers) '}'
   public static boolean AnonymousEnumDeclaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "AnonymousEnumDeclaration")) return false;
     if (!nextTokenIs(b, KW_ENUM)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = AnonymousEnumDeclaration_0(b, l + 1);
-    if (!r) r = AnonymousEnumDeclaration_1(b, l + 1);
-    if (!r) r = AnonymousEnumDeclaration_2(b, l + 1);
+    r = consumeToken(b, KW_ENUM);
+    r = r && AnonymousEnumDeclaration_1(b, l + 1);
+    r = r && consumeToken(b, OP_BRACES_LEFT);
+    r = r && AnonymousEnumDeclaration_3(b, l + 1);
+    r = r && consumeToken(b, OP_BRACES_RIGHT);
     exit_section_(b, m, ANONYMOUS_ENUM_DECLARATION, r);
     return r;
   }
 
-  // 'enum' ':' EnumBaseType { EnumMembers }
-  private static boolean AnonymousEnumDeclaration_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AnonymousEnumDeclaration_0")) return false;
+  // (':' EnumBaseType)?
+  private static boolean AnonymousEnumDeclaration_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "AnonymousEnumDeclaration_1")) return false;
+    AnonymousEnumDeclaration_1_0(b, l + 1);
+    return true;
+  }
+
+  // ':' EnumBaseType
+  private static boolean AnonymousEnumDeclaration_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "AnonymousEnumDeclaration_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, KW_ENUM);
-    r = r && consumeToken(b, OP_COLON);
+    r = consumeToken(b, OP_COLON);
     r = r && EnumBaseType(b, l + 1);
-    r = r && AnonymousEnumDeclaration_0_3(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // { EnumMembers }
-  private static boolean AnonymousEnumDeclaration_0_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AnonymousEnumDeclaration_0_3")) return false;
+  // (EnumMembers)
+  private static boolean AnonymousEnumDeclaration_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "AnonymousEnumDeclaration_3")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = EnumMembers(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
-  }
-
-  // 'enum' '{' EnumMembers '}'
-  private static boolean AnonymousEnumDeclaration_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AnonymousEnumDeclaration_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, KW_ENUM);
-    r = r && consumeToken(b, OP_BRACES_LEFT);
-    r = r && EnumMembers(b, l + 1);
-    r = r && consumeToken(b, OP_BRACES_RIGHT);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // 'enum' '{' AnonymousEnumMembers '}'
-  private static boolean AnonymousEnumDeclaration_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AnonymousEnumDeclaration_2")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, KW_ENUM);
-    r = r && consumeToken(b, OP_BRACES_LEFT);
-    r = r && AnonymousEnumMembers(b, l + 1);
-    r = r && consumeToken(b, OP_BRACES_RIGHT);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // EnumMember
-  //     | Type Identifier '=' AssignExpression
-  public static boolean AnonymousEnumMember(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AnonymousEnumMember")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, "<anonymous enum member>");
-    r = EnumMember(b, l + 1);
-    if (!r) r = AnonymousEnumMember_1(b, l + 1);
-    exit_section_(b, l, m, ANONYMOUS_ENUM_MEMBER, r, false, null);
-    return r;
-  }
-
-  // Type Identifier '=' AssignExpression
-  private static boolean AnonymousEnumMember_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AnonymousEnumMember_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = Type(b, l + 1);
-    r = r && Identifier(b, l + 1);
-    r = r && consumeToken(b, OP_EQ);
-    r = r && AssignExpression(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // AnonymousEnumMember (',' AnonymousEnumMembers?)?
-  public static boolean AnonymousEnumMembers(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AnonymousEnumMembers")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, "<anonymous enum members>");
-    r = AnonymousEnumMember(b, l + 1);
-    r = r && AnonymousEnumMembers_1(b, l + 1);
-    exit_section_(b, l, m, ANONYMOUS_ENUM_MEMBERS, r, false, null);
-    return r;
-  }
-
-  // (',' AnonymousEnumMembers?)?
-  private static boolean AnonymousEnumMembers_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AnonymousEnumMembers_1")) return false;
-    AnonymousEnumMembers_1_0(b, l + 1);
-    return true;
-  }
-
-  // ',' AnonymousEnumMembers?
-  private static boolean AnonymousEnumMembers_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AnonymousEnumMembers_1_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, OP_COMMA);
-    r = r && AnonymousEnumMembers_1_0_1(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // AnonymousEnumMembers?
-  private static boolean AnonymousEnumMembers_1_0_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AnonymousEnumMembers_1_0_1")) return false;
-    AnonymousEnumMembers(b, l + 1);
-    return true;
   }
 
   /* ********************************************************** */
@@ -3700,8 +3610,7 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // 'enum' Identifier EnumBody
-  //     | 'enum' Identifier ':' EnumBaseType EnumBody
+  // 'enum' Identifier (':' EnumBaseType)? EnumBody
   //     | AnonymousEnumDeclaration
   public static boolean EnumDeclaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "EnumDeclaration")) return false;
@@ -3709,64 +3618,91 @@ public class DLanguageParser implements PsiParser {
     boolean r;
     Marker m = enter_section_(b);
     r = EnumDeclaration_0(b, l + 1);
-    if (!r) r = EnumDeclaration_1(b, l + 1);
     if (!r) r = AnonymousEnumDeclaration(b, l + 1);
     exit_section_(b, m, ENUM_DECLARATION, r);
     return r;
   }
 
-  // 'enum' Identifier EnumBody
+  // 'enum' Identifier (':' EnumBaseType)? EnumBody
   private static boolean EnumDeclaration_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "EnumDeclaration_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, KW_ENUM);
     r = r && Identifier(b, l + 1);
+    r = r && EnumDeclaration_0_2(b, l + 1);
     r = r && EnumBody(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // 'enum' Identifier ':' EnumBaseType EnumBody
-  private static boolean EnumDeclaration_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "EnumDeclaration_1")) return false;
+  // (':' EnumBaseType)?
+  private static boolean EnumDeclaration_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "EnumDeclaration_0_2")) return false;
+    EnumDeclaration_0_2_0(b, l + 1);
+    return true;
+  }
+
+  // ':' EnumBaseType
+  private static boolean EnumDeclaration_0_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "EnumDeclaration_0_2_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, KW_ENUM);
-    r = r && Identifier(b, l + 1);
-    r = r && consumeToken(b, OP_COLON);
+    r = consumeToken(b, OP_COLON);
     r = r && EnumBaseType(b, l + 1);
-    r = r && EnumBody(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   /* ********************************************************** */
-  // Identifier ('=' AssignExpression)?
+  // Identifier ('=' AssignExpression)? | Type Identifier '=' AssignExpression
   public static boolean EnumMember(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "EnumMember")) return false;
-    if (!nextTokenIs(b, ID)) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, "<enum member>");
+    r = EnumMember_0(b, l + 1);
+    if (!r) r = EnumMember_1(b, l + 1);
+    exit_section_(b, l, m, ENUM_MEMBER, r, false, null);
+    return r;
+  }
+
+  // Identifier ('=' AssignExpression)?
+  private static boolean EnumMember_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "EnumMember_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = Identifier(b, l + 1);
-    r = r && EnumMember_1(b, l + 1);
-    exit_section_(b, m, ENUM_MEMBER, r);
+    r = r && EnumMember_0_1(b, l + 1);
+    exit_section_(b, m, null, r);
     return r;
   }
 
   // ('=' AssignExpression)?
-  private static boolean EnumMember_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "EnumMember_1")) return false;
-    EnumMember_1_0(b, l + 1);
+  private static boolean EnumMember_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "EnumMember_0_1")) return false;
+    EnumMember_0_1_0(b, l + 1);
     return true;
   }
 
   // '=' AssignExpression
-  private static boolean EnumMember_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "EnumMember_1_0")) return false;
+  private static boolean EnumMember_0_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "EnumMember_0_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, OP_EQ);
+    r = r && AssignExpression(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // Type Identifier '=' AssignExpression
+  private static boolean EnumMember_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "EnumMember_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = Type(b, l + 1);
+    r = r && Identifier(b, l + 1);
+    r = r && consumeToken(b, OP_EQ);
     r = r && AssignExpression(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
@@ -3776,12 +3712,11 @@ public class DLanguageParser implements PsiParser {
   // EnumMember (',' EnumMembers?)?
   public static boolean EnumMembers(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "EnumMembers")) return false;
-    if (!nextTokenIs(b, ID)) return false;
     boolean r;
-    Marker m = enter_section_(b);
+    Marker m = enter_section_(b, l, _NONE_, "<enum members>");
     r = EnumMember(b, l + 1);
     r = r && EnumMembers_1(b, l + 1);
-    exit_section_(b, m, ENUM_MEMBERS, r);
+    exit_section_(b, l, m, ENUM_MEMBERS, r, false, null);
     return r;
   }
 
@@ -4634,21 +4569,20 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // ShiftExpression ('is'|'!is') ShiftExpression
+  // ('is'|'!is') ShiftExpression
   public static boolean IdentityExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "IdentityExpression")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<identity expression>");
-    r = ShiftExpression(b, l + 1);
-    r = r && IdentityExpression_1(b, l + 1);
+    r = IdentityExpression_0(b, l + 1);
     r = r && ShiftExpression(b, l + 1);
     exit_section_(b, l, m, IDENTITY_EXPRESSION, r, false, null);
     return r;
   }
 
   // 'is'|'!is'
-  private static boolean IdentityExpression_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "IdentityExpression_1")) return false;
+  private static boolean IdentityExpression_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "IdentityExpression_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, KW_IS);

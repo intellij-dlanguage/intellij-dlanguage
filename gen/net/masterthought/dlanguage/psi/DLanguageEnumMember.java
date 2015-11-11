@@ -14,6 +14,9 @@ public interface DLanguageEnumMember extends PsiElement {
   DLanguageIdentifier getIdentifier();
 
   @Nullable
+  DLanguageType getType();
+
+  @Nullable
   PsiElement getOpEq();
 
 }
