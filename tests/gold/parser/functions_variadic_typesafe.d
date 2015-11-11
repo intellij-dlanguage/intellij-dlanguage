@@ -53,7 +53,6 @@ class Foo
 
 void test(int x, Foo f ...);
 
-...
 
 Foo g = new Foo(3, "abc");
 test(1, g);         // ok, since g is an instance of Foo
@@ -77,7 +76,7 @@ int test(int i ...)
     return i;
 }
 
-...
+
 test(3);    // returns 3
 test(3, 4); // error, too many arguments
 int[] x;

@@ -12,6 +12,6 @@ import a;
 
 void func(int i) { }
 alias f = TFoo!(int);
-...
+
 f.bar();  // will call a.func(double)
 

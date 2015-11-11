@@ -205,9 +205,10 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
 
 // interfaces
       public void testinterfaces() { doTest(true, true); }
+      public void testinterfaces_com() { doTest(true, true); }
 //      public void testinterfaces_contracts() { doTest(true, true); }
 //      public void testinterfaces_cplus() { doTest(true, true); }
-      public void testinterfaces_com() { doTest(true, true); }
+
 
 
 // enums
@@ -220,26 +221,26 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
       public void testfunctions_auto() { doTest(true, true); }
       public void testfunctions_auto_ref() { doTest(true, true); }
 //      public void testfunctions_default_args() { doTest(true, true); }
-      public void testfunctions_delegated_fp_closures() { doTest(true, true); }
 //      public void testfunctions_inheritance() { doTest(true, true); }
-//      public void testfunctions_inout() { doTest(true, true); }
-//      public void testfunctions_local_static() { doTest(true, true); }
-//      public void testfunctions_local_vars() { doTest(true, true); }
 //      public void testfunctions_nested() { doTest(true, true); }
 //      public void testfunctions_optional_parens() { doTest(true, true); }
-//      public void testfunctions_overload_sets() { doTest(true, true); }
 //      public void testfunctions_overloading() { doTest(true, true); }
-//      public void testfunctions_parameters() { doTest(true, true); }
-//      public void testfunctions_properties() { doTest(true, true); }
-//      public void testfunctions_pure() { doTest(true, true); }
-//      public void testfunctions_ref() { doTest(true, true); }
-//      public void testfunctions_string_mixin() { doTest(true, true); }
 //      public void testfunctions_templates() { doTest(true, true); }
 //      public void testfunctions_ucfs() { doTest(true, true); }
-//      public void testfunctions_variadic() { doTest(true, true); }
-//      public void testfunctions_variadic_d() { doTest(true, true); }
-//      public void testfunctions_variadic_lazy() { doTest(true, true); }
-//      public void testfunctions_variadic_typesafe() { doTest(true, true); }
+      public void testfunctions_delegated_fp_closures() { doTest(true, true); }
+      public void testfunctions_inout() { doTest(true, true); }
+      public void testfunctions_local_static() { doTest(true, true); }
+      public void testfunctions_local_vars() { doTest(true, true); }
+      public void testfunctions_overload_sets() { doTest(true, true); }
+      public void testfunctions_parameters() { doTest(true, true); }
+      public void testfunctions_properties() { doTest(true, true); }
+      public void testfunctions_pure() { doTest(true, true); }
+      public void testfunctions_ref() { doTest(true, true); }
+      public void testfunctions_string_mixin() { doTest(true, true); }
+      public void testfunctions_variadic() { doTest(true, true); }
+      public void testfunctions_variadic_d() { doTest(true, true); }
+      public void testfunctions_variadic_lazy() { doTest(true, true); }
+      public void testfunctions_variadic_typesafe() { doTest(true, true); }
       public void testfunctions_virtual() { doTest(true, true); }
 
 // operator overloading
@@ -249,22 +250,22 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
 // templates
 //    public void testtemplates() { doTest(true, true); }
 //    public void testtemplates_alias() { doTest(true, true); }
-//    public void testtemplates_alias_param() { doTest(true, true); }
-//    public void testtemplates_argument_deduction() { doTest(true, true); }
 //    public void testtemplates_defaults() { doTest(true, true); }
 //    public void testtemplates_function_templates() { doTest(true, true); }
-//    public void testtemplates_instant_scope() { doTest(true, true); }
-//    public void testtemplates_limitation() { doTest(true, true); }
+    public void testtemplates_alias_params() { doTest(true, true); }
+    public void testtemplates_argument_deduction() { doTest(true, true); }
+    public void testtemplates_instant_scope() { doTest(true, true); }
+    public void testtemplates_limitation() { doTest(true, true); }
+    public void testtemplates_recursive() { doTest(true, true); }
+    public void testtemplates_specialization() { doTest(true, true); }
+    public void testtemplates_typed_params() { doTest(true, true); }
 //    public void testtemplates_mixins() { doTest(true, true); }
 //    public void testtemplates_mixins_scope() { doTest(true, true); }
 //    public void testtemplates_nested() { doTest(true, true); }
 //    public void testtemplates_params() { doTest(true, true); }
-//    public void testtemplates_recursive() { doTest(true, true); }
 //    public void testtemplates_ref() { doTest(true, true); }
-//    public void testtemplates_specialization() { doTest(true, true); }
 //    public void testtemplates_this_params() { doTest(true, true); }
 //    public void testtemplates_tuples() { doTest(true, true); }
-//    public void testtemplates_typed_params() { doTest(true, true); }
 //    public void testtemplates_typed_specialization() { doTest(true, true); }
 //    public void testtemplates_variable() { doTest(true, true); }
 
@@ -276,28 +277,30 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
 //    public void testconditional_compilation() { doTest(true, true); }
 
 // traits
-//    public void testtraits_allmembers() { doTest(true, true); }
+    public void testtraits_allmembers() { doTest(true, true); }
+    public void testtraits_derivedmembers() { doTest(true, true); }
+    public void testtraits_getfunctionattributes() { doTest(true, true); }
+    public void testtraits_getpointerbitmap() { doTest(true, true); }
+    public void testtraits_getprotection() { doTest(true, true); }
+    public void testtraits_isabstractionfunction() { doTest(true, true); }
+    public void testtraits_isarithmetic() { doTest(true, true); }
+    public void testtraits_isfinalfunction() { doTest(true, true); }
+    public void testtraits_isrefoutlazy() { doTest(true, true); }
+    public void testtraits_isvirtualmethod() { doTest(true, true); }
 //    public void testtraits_compiles() { doTest(true, true); }
-//    public void testtraits_derivedmembers() { doTest(true, true); }
-//    public void testtraits_getattributes() { doTest(true, true); }
-//    public void testtraits_getfunctionattributes() { doTest(true, true); }
+//    public void testtraits_getattributes() { doTest(true, true); }    
 //    public void testtraits_getmember() { doTest(true, true); }
 //    public void testtraits_getoverloads() { doTest(true, true); }
-//    public void testtraits_getpointerbitmap() { doTest(true, true); }
-//    public void testtraits_getprotection() { doTest(true, true); }
 //    public void testtraits_getunittests() { doTest(true, true); }
 //    public void testtraits_getvirtualmethods() { doTest(true, true); }
 //    public void testtraits_hasmember() { doTest(true, true); }
 //    public void testtraits_isabstractclass() { doTest(true, true); }
-//    public void testtraits_isabstractionfunction() { doTest(true, true); }
-//    public void testtraits_isarithmetic() { doTest(true, true); }
-//    public void testtraits_isfinalfunction() { doTest(true, true); }
-//    public void testtraits_isoverridefunction() { doTest(true, true); }
-//    public void testtraits_isrefoutlazy() { doTest(true, true); }
+//    public void testtraits_isoverridefunction() { doTest(true, true); } 
 //    public void testtraits_issame() { doTest(true, true); }
-//    public void testtraits_istemplate() { doTest(true, true); }
-//    public void testtraits_isvirtualmethod() { doTest(true, true); }
-//    public void testtraits_special_keyword() { doTest(true, true); }
+//    public void testtraits_istemplate() { doTest(true, true); }   
+//    public void testtraits_special_keyword() { doTest(true, true); }    
+
+
 
 // unittest
 //   public void testunittests() { doTest(true, true); }

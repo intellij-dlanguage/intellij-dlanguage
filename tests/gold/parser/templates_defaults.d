@@ -1,8 +1,8 @@
-template Foo(T, U = int) { ... }
+template Foo(T, U = int) {  }
 Foo!(uint,long); // instantiate Foo with T as uint, and U as long
 Foo!(uint);      // instantiate Foo with T as uint, and U as int
 
-template Foo(T, U = T*) { ... }
+template Foo(T, U = T*) {  }
 Foo!(uint);      // instantiate Foo with T as uint, and U as uint*
 
 template Foo(T)

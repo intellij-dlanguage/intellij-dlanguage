@@ -3,13 +3,13 @@ T Square(T)(T t)
     return t * t;
 }
 
-void Foo(T : T*)(T t) { ... }
+void Foo(T : T*)(T t) {  }
 
 int x,y;
 Foo!(int*)(x);   // ok, T is not deduced from function argument
 Foo(&y);         // error, T has specialization
 
-void Foo(T, U=T*)(T t) { U p; ... }
+void Foo(T, U=T*)(T t) { U p;  }
 
 int x;
 Foo(x);    // T is int, U is int*

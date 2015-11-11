@@ -29,9 +29,9 @@ class Foo
     template TBar(T)
     {
         T xx;               // becomes a static member of Foo
-        int func(T) { ... } // non-virtual
+        int func(T) {  } // non-virtual
 
         static T yy;                        // Ok
-        static int func(T t, int y) { ... } // Ok
+        static int func(T t, int y) {  } // Ok
     }
 }

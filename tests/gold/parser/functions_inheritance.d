@@ -1,11 +1,11 @@
 class A
 {
-    int foo(int x) { ... }
+    int foo(int x) {  }
 }
 
 class B : A
 {
-    override int foo(int x) { ... }
+    override int foo(int x) {  }
 }
 
 void test()
@@ -21,13 +21,13 @@ void bar(A a)
 
 class A
 {
-    int foo(int x) { ... }
-    int foo(long y) { ... }
+    int foo(int x) {  }
+    int foo(long y) {  }
 }
 
 class B : A
 {
-    override int foo(long x) { ... }
+    override int foo(long x) {  }
 }
 
 void test()
@@ -41,14 +41,14 @@ void test()
 
 class A
 {
-    int foo(int x) { ... }
-    int foo(long y) { ... }
+    int foo(int x) {  }
+    int foo(long y) {  }
 }
 
 class B : A
 {
     alias foo = A.foo;
-    override int foo(long x) { ... }
+    override int foo(long x) {  }
 }
 
 void test()
@@ -89,17 +89,17 @@ void main()
 
 class A
 {
-    void foo(int x = 5) { ... }
+    void foo(int x = 5) {  }
 }
 
 class B : A
 {
-    void foo(int x = 7) { ... }
+    void foo(int x = 7) {  }
 }
 
 class C : B
 {
-    void foo(int x) { ... }
+    void foo(int x) {  }
 }
 
 void test()

@@ -1,5 +1,5 @@
 template TFoo(T) { alias t = T*; }
-...
+
 TFoo!(int).t x; // declare x to be of type int*
 
 TFoo!int.t x;   // same as TFoo!(int).t x;
@@ -11,7 +11,7 @@ abc.t x;        // declare x to be of type int*
 template TFoo(T) { T f; }
 alias a = TFoo!(int);
 alias b = TFoo!(int);
-...
+
 a.f = 3;
 assert(b.f == 3);  // a and b refer to the same instance of TFoo
 
