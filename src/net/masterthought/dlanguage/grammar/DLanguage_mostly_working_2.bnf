@@ -585,7 +585,8 @@ TypeSpecialization ::=
     | '__parameters'
 
 TraitsExpression ::=
-    '__traits' '(' TraitsKeyword ',' TraitsArguments ')'
+    '__traits' ('(' TraitsKeyword ',' TraitsArguments ')')?
+//    '__traits' '(' TraitsKeyword ',' TraitsArguments ')'
 
 TraitsKeyword ::=
     'isAbstractClass'
@@ -629,8 +630,7 @@ TraitsKeyword ::=
     | 'compiles'
 
 TraitsArguments ::=
-    TraitsArgument
-    | TraitsArgument ',' TraitsArguments
+    TraitsArgument (',' TraitsArguments)?
 
 TraitsArgument ::=
     AssignExpression

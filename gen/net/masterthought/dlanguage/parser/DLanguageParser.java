@@ -8690,44 +8690,66 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // TraitsArgument
-  //     | TraitsArgument ',' TraitsArguments
+  // TraitsArgument (',' TraitsArguments)?
   public static boolean TraitsArguments(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "TraitsArguments")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<traits arguments>");
     r = TraitsArgument(b, l + 1);
-    if (!r) r = TraitsArguments_1(b, l + 1);
+    r = r && TraitsArguments_1(b, l + 1);
     exit_section_(b, l, m, TRAITS_ARGUMENTS, r, false, null);
     return r;
   }
 
-  // TraitsArgument ',' TraitsArguments
+  // (',' TraitsArguments)?
   private static boolean TraitsArguments_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "TraitsArguments_1")) return false;
+    TraitsArguments_1_0(b, l + 1);
+    return true;
+  }
+
+  // ',' TraitsArguments
+  private static boolean TraitsArguments_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "TraitsArguments_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = TraitsArgument(b, l + 1);
-    r = r && consumeToken(b, OP_COMMA);
+    r = consumeToken(b, OP_COMMA);
     r = r && TraitsArguments(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   /* ********************************************************** */
-  // '__traits' '(' TraitsKeyword ',' TraitsArguments ')'
+  // '__traits' ('(' TraitsKeyword ',' TraitsArguments ')')?
   public static boolean TraitsExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "TraitsExpression")) return false;
     if (!nextTokenIs(b, KW___TRAITS)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, KW___TRAITS);
-    r = r && consumeToken(b, OP_PAR_LEFT);
+    r = r && TraitsExpression_1(b, l + 1);
+    exit_section_(b, m, TRAITS_EXPRESSION, r);
+    return r;
+  }
+
+  // ('(' TraitsKeyword ',' TraitsArguments ')')?
+  private static boolean TraitsExpression_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "TraitsExpression_1")) return false;
+    TraitsExpression_1_0(b, l + 1);
+    return true;
+  }
+
+  // '(' TraitsKeyword ',' TraitsArguments ')'
+  private static boolean TraitsExpression_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "TraitsExpression_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, OP_PAR_LEFT);
     r = r && TraitsKeyword(b, l + 1);
     r = r && consumeToken(b, OP_COMMA);
     r = r && TraitsArguments(b, l + 1);
     r = r && consumeToken(b, OP_PAR_RIGHT);
-    exit_section_(b, m, TRAITS_EXPRESSION, r);
+    exit_section_(b, m, null, r);
     return r;
   }
 

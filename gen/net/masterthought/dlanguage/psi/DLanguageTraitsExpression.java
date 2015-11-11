@@ -7,22 +7,22 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageTraitsExpression extends PsiElement {
 
-  @NotNull
+  @Nullable
   DLanguageTraitsArguments getTraitsArguments();
 
-  @NotNull
+  @Nullable
   DLanguageTraitsKeyword getTraitsKeyword();
 
   @NotNull
   PsiElement getKwTraits();
 
-  @NotNull
+  @Nullable
   PsiElement getOpComma();
 
-  @NotNull
+  @Nullable
   PsiElement getOpParLeft();
 
-  @NotNull
+  @Nullable
   PsiElement getOpParRight();
 
 }

@@ -23,15 +23,15 @@ public class DLanguageTraitsExpressionImpl extends ASTWrapperPsiElement implemen
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageTraitsArguments getTraitsArguments() {
-    return findNotNullChildByClass(DLanguageTraitsArguments.class);
+    return findChildByClass(DLanguageTraitsArguments.class);
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageTraitsKeyword getTraitsKeyword() {
-    return findNotNullChildByClass(DLanguageTraitsKeyword.class);
+    return findChildByClass(DLanguageTraitsKeyword.class);
   }
 
   @Override
@@ -41,21 +41,21 @@ public class DLanguageTraitsExpressionImpl extends ASTWrapperPsiElement implemen
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getOpComma() {
-    return findNotNullChildByType(OP_COMMA);
+    return findChildByType(OP_COMMA);
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getOpParLeft() {
-    return findNotNullChildByType(OP_PAR_LEFT);
+    return findChildByType(OP_PAR_LEFT);
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getOpParRight() {
-    return findNotNullChildByType(OP_PAR_RIGHT);
+    return findChildByType(OP_PAR_RIGHT);
   }
 
 }

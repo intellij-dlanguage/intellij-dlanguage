@@ -287,19 +287,18 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
     public void testtraits_isfinalfunction() { doTest(true, true); }
     public void testtraits_isrefoutlazy() { doTest(true, true); }
     public void testtraits_isvirtualmethod() { doTest(true, true); }
-//    public void testtraits_compiles() { doTest(true, true); }
-//    public void testtraits_getattributes() { doTest(true, true); }    
-//    public void testtraits_getmember() { doTest(true, true); }
-//    public void testtraits_getoverloads() { doTest(true, true); }
+    public void testtraits_compiles() { doTest(true, true); }
+    public void testtraits_getmember() { doTest(true, true); }
+    public void testtraits_getoverloads() { doTest(true, true); }
+    public void testtraits_getvirtualmethods() { doTest(true, true); }
+    public void testtraits_hasmember() { doTest(true, true); }
+    public void testtraits_isabstractclass() { doTest(true, true); }
+    public void testtraits_isoverridefunction() { doTest(true, true); }
+    public void testtraits_issame() { doTest(true, true); }
+    public void testtraits_istemplate() { doTest(true, true); }
 //    public void testtraits_getunittests() { doTest(true, true); }
-//    public void testtraits_getvirtualmethods() { doTest(true, true); }
-//    public void testtraits_hasmember() { doTest(true, true); }
-//    public void testtraits_isabstractclass() { doTest(true, true); }
-//    public void testtraits_isoverridefunction() { doTest(true, true); } 
-//    public void testtraits_issame() { doTest(true, true); }
-//    public void testtraits_istemplate() { doTest(true, true); }   
 //    public void testtraits_special_keyword() { doTest(true, true); }    
-
+//    public void testtraits_getattributes() { doTest(true, true); }
 
 
 // unittest
