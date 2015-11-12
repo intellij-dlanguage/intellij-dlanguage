@@ -1,4 +1,4 @@
-struct ABC x;
+ABC x;
 
 struct S;
 union U;

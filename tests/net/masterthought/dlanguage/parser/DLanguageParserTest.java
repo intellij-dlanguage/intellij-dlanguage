@@ -172,7 +172,7 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
 //    public void testassocarrays_word_count() { doTest(true, true); }
 
 // structs and unions
-//      public void teststructs() { doTest(true, true); }
+      public void teststructs() { doTest(true, true); }
       public void teststructs_constructors() { doTest(true, true); }
       public void teststructs_dynamic_init() { doTest(true, true); }
 //      public void teststructs_initialization() { doTest(true, true); }
