@@ -4385,8 +4385,7 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // BlockStatement
-  //      FunctionContracts? BodyStatement?
+  // BlockStatement FunctionContracts? BodyStatement?
   public static boolean FunctionLiteralBody(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "FunctionLiteralBody")) return false;
     if (!nextTokenIs(b, OP_BRACES_LEFT)) return false;
@@ -5481,7 +5480,7 @@ public class DLanguageParser implements PsiParser {
   // 'function' Type? ParameterAttributes '=>' AssignExpression
   //     | 'delegate' Type? ParameterMemberAttributes '=>' AssignExpression
   //     | ParameterMemberAttributes '=>' AssignExpression
-  //     | Identifier '=>' AssignExpression
+  //     | Identifier? '=>' AssignExpression
   public static boolean Lambda(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "Lambda")) return false;
     boolean r;
@@ -5548,16 +5547,23 @@ public class DLanguageParser implements PsiParser {
     return r;
   }
 
-  // Identifier '=>' AssignExpression
+  // Identifier? '=>' AssignExpression
   private static boolean Lambda_3(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "Lambda_3")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = Identifier(b, l + 1);
+    r = Lambda_3_0(b, l + 1);
     r = r && consumeToken(b, OP_LAMBDA_ARROW);
     r = r && AssignExpression(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
+  }
+
+  // Identifier?
+  private static boolean Lambda_3_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "Lambda_3_0")) return false;
+    Identifier(b, l + 1);
+    return true;
   }
 
   /* ********************************************************** */

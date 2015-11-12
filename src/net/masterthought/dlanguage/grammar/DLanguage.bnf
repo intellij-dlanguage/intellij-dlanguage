@@ -520,6 +520,7 @@ FunctionLiteral ::=
     | FunctionLiteralBody
     | Lambda
 
+
 ParameterAttributes ::=
     Parameters FunctionAttributes?
 
@@ -527,14 +528,13 @@ ParameterMemberAttributes ::=
     Parameters MemberFunctionAttributes?
 
 FunctionLiteralBody ::=
-    BlockStatement
-     FunctionContracts? BodyStatement?
+    BlockStatement FunctionContracts? BodyStatement?
 
 Lambda ::=
     'function' Type? ParameterAttributes '=>' AssignExpression
     | 'delegate' Type? ParameterMemberAttributes '=>' AssignExpression
     | ParameterMemberAttributes '=>' AssignExpression
-    | Identifier '=>' AssignExpression
+    | Identifier? '=>' AssignExpression
 
 AssertExpression ::=
     'assert' '(' AssignExpression (',' AssignExpression)? ')'
