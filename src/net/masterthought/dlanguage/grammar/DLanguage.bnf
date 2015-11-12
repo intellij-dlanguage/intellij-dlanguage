@@ -511,13 +511,7 @@ KeyValuePairs ::=
     KeyValuePair [(',')? KeyValuePairs]
 
 KeyValuePair ::=
-    KeyExpression ':' ValueExpression
-
-KeyExpression ::=
-    AssignExpression
-
-ValueExpression ::=
-    AssignExpression
+    AssignExpression ':' AssignExpression
 
 FunctionLiteral ::=
     'function' Type? ParameterAttributes? FunctionLiteralBody
@@ -691,8 +685,7 @@ ScopeStatement ::=
     | BlockStatement
 
 LabeledStatement ::=
-    Identifier ':'
-    | Identifier ':' Statement
+    Identifier ':' Statement?
 
 
 BlockStatement ::=
@@ -1149,8 +1142,8 @@ ArrayMemberInitializations ::=
     ArrayMemberInitialization [(',')? ArrayMemberInitializations]
 
 ArrayMemberInitialization ::=
-    NonVoidInitializer
-    | AssignExpression ':' NonVoidInitializer
+    NonVoidInitializer [':' NonVoidInitializer]
+//     AssignExpression ':' NonVoidInitializer
 
 StructInitializer ::=
     '{' StructMemberInitializers? '}'
