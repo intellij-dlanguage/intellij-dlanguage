@@ -20,10 +20,9 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
     public void testdeclaration1() { doTest(true, true); }
     public void testdeclaration_alias() { doTest(true, true); }
     public void testdeclaration_alias2() { doTest(true, true); }
-//    public void testdeclaration_c_style() { doTest(true, true); }
 //    public void testdeclaration_symbols() { doTest(true, true); }
-    public void testdeclaration_type_storage1() { doTest(true, true); }
 //    public void testdeclaration_type_storage2() { doTest(true, true); }
+    public void testdeclaration_type_storage1() { doTest(true, true); }
     public void testdeclaration_alias3() { doTest(true, true); }
     public void testdeclaration_extern() { doTest(true, true); }
     public void testdeclaration_typeof2() { doTest(true, true); }
@@ -69,10 +68,10 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
     public void testattributes_private() { doTest(true, true); }
     public void testattributes_protection() { doTest(true, true); }
     public void testattributes_static() { doTest(true, true); }
-//    public void testattributes_traits() { doTest(true, true); }
-//    public void testattributes_user_defined() { doTest(true, true); }
+    public void testattributes_traits() { doTest(true, true); }
 //    public void testattributes_namespaces_multiple() { doTest(true, true); }
-//    public void testattributes_nogc() { doTest(true, true); }
+    public void testattributes_user_defined() { doTest(true, true); }
+    public void testattributes_nogc() { doTest(true, true); }
 
 //  pragmas
     public void testpragmas() { doTest(true, true); }
@@ -271,7 +270,7 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
 
 
 // contract programming
-//    public void testcontract_programming() { doTest(true, true); }
+    public void testcontract_programming() { doTest(true, true); }
 
 // conditional compilation
 //    public void testconditional_compilation() { doTest(true, true); }
