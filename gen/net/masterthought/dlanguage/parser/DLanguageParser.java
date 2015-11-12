@@ -436,9 +436,6 @@ public class DLanguageParser implements PsiParser {
     else if (t == IS_EXPRESSION) {
       r = IsExpression(b, 0);
     }
-    else if (t == KEY_EXPRESSION) {
-      r = KeyExpression(b, 0);
-    }
     else if (t == KEY_VALUE_PAIR) {
       r = KeyValuePair(b, 0);
     }
@@ -786,9 +783,6 @@ public class DLanguageParser implements PsiParser {
     }
     else if (t == USER_DEFINED_ATTRIBUTE) {
       r = UserDefinedAttribute(b, 0);
-    }
-    else if (t == VALUE_EXPRESSION) {
-      r = ValueExpression(b, 0);
     }
     else if (t == VAR_DECLARATIONS) {
       r = VarDeclarations(b, 0);
@@ -1589,25 +1583,30 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // NonVoidInitializer
-  //     | AssignExpression ':' NonVoidInitializer
+  // NonVoidInitializer [':' NonVoidInitializer]
   public static boolean ArrayMemberInitialization(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ArrayMemberInitialization")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<array member initialization>");
     r = NonVoidInitializer(b, l + 1);
-    if (!r) r = ArrayMemberInitialization_1(b, l + 1);
+    r = r && ArrayMemberInitialization_1(b, l + 1);
     exit_section_(b, l, m, ARRAY_MEMBER_INITIALIZATION, r, false, null);
     return r;
   }
 
-  // AssignExpression ':' NonVoidInitializer
+  // [':' NonVoidInitializer]
   private static boolean ArrayMemberInitialization_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ArrayMemberInitialization_1")) return false;
+    ArrayMemberInitialization_1_0(b, l + 1);
+    return true;
+  }
+
+  // ':' NonVoidInitializer
+  private static boolean ArrayMemberInitialization_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ArrayMemberInitialization_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = AssignExpression(b, l + 1);
-    r = r && consumeToken(b, OP_COLON);
+    r = consumeToken(b, OP_COLON);
     r = r && NonVoidInitializer(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
@@ -5381,25 +5380,14 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // AssignExpression
-  public static boolean KeyExpression(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "KeyExpression")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, "<key expression>");
-    r = AssignExpression(b, l + 1);
-    exit_section_(b, l, m, KEY_EXPRESSION, r, false, null);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // KeyExpression ':' ValueExpression
+  // AssignExpression ':' AssignExpression
   public static boolean KeyValuePair(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "KeyValuePair")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<key value pair>");
-    r = KeyExpression(b, l + 1);
+    r = AssignExpression(b, l + 1);
     r = r && consumeToken(b, OP_COLON);
-    r = r && ValueExpression(b, l + 1);
+    r = r && AssignExpression(b, l + 1);
     exit_section_(b, l, m, KEY_VALUE_PAIR, r, false, null);
     return r;
   }
@@ -5452,40 +5440,24 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // Identifier ':'
-  //     | Identifier ':' Statement
+  // Identifier ':' Statement?
   public static boolean LabeledStatement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "LabeledStatement")) return false;
     if (!nextTokenIs(b, ID)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = LabeledStatement_0(b, l + 1);
-    if (!r) r = LabeledStatement_1(b, l + 1);
+    r = Identifier(b, l + 1);
+    r = r && consumeToken(b, OP_COLON);
+    r = r && LabeledStatement_2(b, l + 1);
     exit_section_(b, m, LABELED_STATEMENT, r);
     return r;
   }
 
-  // Identifier ':'
-  private static boolean LabeledStatement_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "LabeledStatement_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = Identifier(b, l + 1);
-    r = r && consumeToken(b, OP_COLON);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // Identifier ':' Statement
-  private static boolean LabeledStatement_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "LabeledStatement_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = Identifier(b, l + 1);
-    r = r && consumeToken(b, OP_COLON);
-    r = r && Statement(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
+  // Statement?
+  private static boolean LabeledStatement_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "LabeledStatement_2")) return false;
+    Statement(b, l + 1);
+    return true;
   }
 
   /* ********************************************************** */
@@ -9286,17 +9258,6 @@ public class DLanguageParser implements PsiParser {
     if (!recursion_guard_(b, l, "UserDefinedAttribute_2_2_0_1")) return false;
     ArgumentList(b, l + 1);
     return true;
-  }
-
-  /* ********************************************************** */
-  // AssignExpression
-  public static boolean ValueExpression(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "ValueExpression")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, "<value expression>");
-    r = AssignExpression(b, l + 1);
-    exit_section_(b, l, m, VALUE_EXPRESSION, r, false, null);
-    return r;
   }
 
   /* ********************************************************** */

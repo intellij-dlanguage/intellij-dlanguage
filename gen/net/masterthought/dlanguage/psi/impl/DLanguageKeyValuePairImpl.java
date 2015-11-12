@@ -24,14 +24,8 @@ public class DLanguageKeyValuePairImpl extends ASTWrapperPsiElement implements D
 
   @Override
   @NotNull
-  public DLanguageKeyExpression getKeyExpression() {
-    return findNotNullChildByClass(DLanguageKeyExpression.class);
-  }
-
-  @Override
-  @NotNull
-  public DLanguageValueExpression getValueExpression() {
-    return findNotNullChildByClass(DLanguageValueExpression.class);
+  public List<DLanguageAssignExpression> getAssignExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageAssignExpression.class);
   }
 
   @Override

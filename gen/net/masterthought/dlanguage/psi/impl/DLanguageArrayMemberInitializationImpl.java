@@ -23,15 +23,9 @@ public class DLanguageArrayMemberInitializationImpl extends ASTWrapperPsiElement
   }
 
   @Override
-  @Nullable
-  public DLanguageAssignExpression getAssignExpression() {
-    return findChildByClass(DLanguageAssignExpression.class);
-  }
-
-  @Override
   @NotNull
-  public DLanguageNonVoidInitializer getNonVoidInitializer() {
-    return findNotNullChildByClass(DLanguageNonVoidInitializer.class);
+  public List<DLanguageNonVoidInitializer> getNonVoidInitializerList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageNonVoidInitializer.class);
   }
 
   @Override

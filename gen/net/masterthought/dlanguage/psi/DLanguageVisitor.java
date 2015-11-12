@@ -559,10 +559,6 @@ public class DLanguageVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitKeyExpression(@NotNull DLanguageKeyExpression o) {
-    visitPsiElement(o);
-  }
-
   public void visitKeyValuePair(@NotNull DLanguageKeyValuePair o) {
     visitPsiElement(o);
   }
@@ -1024,10 +1020,6 @@ public class DLanguageVisitor extends PsiElementVisitor {
   }
 
   public void visitUserDefinedAttribute(@NotNull DLanguageUserDefinedAttribute o) {
-    visitPsiElement(o);
-  }
-
-  public void visitValueExpression(@NotNull DLanguageValueExpression o) {
     visitPsiElement(o);
   }
 

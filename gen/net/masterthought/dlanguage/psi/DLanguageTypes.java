@@ -146,7 +146,6 @@ public interface DLanguageTypes {
   IElementType IN_OUT_X = new DLanguageElementType("IN_OUT_X");
   IElementType IN_STATEMENT = new DLanguageElementType("IN_STATEMENT");
   IElementType IS_EXPRESSION = new DLanguageElementType("IS_EXPRESSION");
-  IElementType KEY_EXPRESSION = new DLanguageElementType("KEY_EXPRESSION");
   IElementType KEY_VALUE_PAIR = new DLanguageElementType("KEY_VALUE_PAIR");
   IElementType KEY_VALUE_PAIRS = new DLanguageElementType("KEY_VALUE_PAIRS");
   IElementType LABELED_STATEMENT = new DLanguageElementType("LABELED_STATEMENT");
@@ -263,7 +262,6 @@ public interface DLanguageTypes {
   IElementType UNIT_TESTING = new DLanguageElementType("UNIT_TESTING");
   IElementType UPR_EXPRESSION = new DLanguageElementType("UPR_EXPRESSION");
   IElementType USER_DEFINED_ATTRIBUTE = new DLanguageElementType("USER_DEFINED_ATTRIBUTE");
-  IElementType VALUE_EXPRESSION = new DLanguageElementType("VALUE_EXPRESSION");
   IElementType VAR_DECLARATIONS = new DLanguageElementType("VAR_DECLARATIONS");
   IElementType VAR_DECLARATOR = new DLanguageElementType("VAR_DECLARATOR");
   IElementType VAR_DECLARATOR_IDENTIFIER = new DLanguageElementType("VAR_DECLARATOR_IDENTIFIER");
@@ -876,9 +874,6 @@ public interface DLanguageTypes {
       else if (type == IS_EXPRESSION) {
         return new DLanguageIsExpressionImpl(node);
       }
-      else if (type == KEY_EXPRESSION) {
-        return new DLanguageKeyExpressionImpl(node);
-      }
       else if (type == KEY_VALUE_PAIR) {
         return new DLanguageKeyValuePairImpl(node);
       }
@@ -1226,9 +1221,6 @@ public interface DLanguageTypes {
       }
       else if (type == USER_DEFINED_ATTRIBUTE) {
         return new DLanguageUserDefinedAttributeImpl(node);
-      }
-      else if (type == VALUE_EXPRESSION) {
-        return new DLanguageValueExpressionImpl(node);
       }
       else if (type == VAR_DECLARATIONS) {
         return new DLanguageVarDeclarationsImpl(node);

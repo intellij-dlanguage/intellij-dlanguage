@@ -8,10 +8,7 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageKeyValuePair extends PsiElement {
 
   @NotNull
-  DLanguageKeyExpression getKeyExpression();
-
-  @NotNull
-  DLanguageValueExpression getValueExpression();
+  List<DLanguageAssignExpression> getAssignExpressionList();
 
   @NotNull
   PsiElement getOpColon();
