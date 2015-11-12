@@ -1,9 +1,5 @@
-struct ABC x;
+struct S { int x; float y; }
 
-struct S;
-union U;
+int foo(S s) { return s.x; }
 
-struct S;
-S.sizeof; // error, size is not known
-S s;      // error, cannot initialize unknown contents
-S* p;     // ok, knowledge of members is not necessary
+foo( S(1, 2) ); // set field x to 1, field y to 2

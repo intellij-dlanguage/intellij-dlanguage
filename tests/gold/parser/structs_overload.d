@@ -1,4 +1,4 @@
-struct S { ... }  // S has postblit or destructor
+struct S {  }  // S has postblit or destructor
 S s;      // default construction of s
 S t = s;  // t is copy-constructed from s
 t = s;    // t is assigned from s

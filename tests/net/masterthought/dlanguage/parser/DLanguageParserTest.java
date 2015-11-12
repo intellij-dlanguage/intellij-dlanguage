@@ -176,9 +176,9 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
       public void teststructs_constructors() { doTest(true, true); }
       public void teststructs_dynamic_init() { doTest(true, true); }
       public void teststructs_initialization() { doTest(true, true); }
-//      public void teststructs_literal() { doTest(true, true); }
+      public void teststructs_literal() { doTest(true, true); }
       public void teststructs_nested() { doTest(true, true); }
-//      public void teststructs_overload() { doTest(true, true); }
+      public void teststructs_overload() { doTest(true, true); }
       public void testunion_initialization() { doTest(true, true); }
       public void teststructs_postblits() { doTest(true, true); }
       public void teststructs_shared() { doTest(true, true); }
