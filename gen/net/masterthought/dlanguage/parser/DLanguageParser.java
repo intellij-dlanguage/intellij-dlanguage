@@ -6212,7 +6212,7 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // InOut? BasicType Declarator ('...' | '=' AssertExpression)?
+  // InOut? BasicType Declarator ('...' | '=' AssignExpression)?
   //        | InOut? Type ('...')?
   public static boolean Parameter(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "Parameter")) return false;
@@ -6224,7 +6224,7 @@ public class DLanguageParser implements PsiParser {
     return r;
   }
 
-  // InOut? BasicType Declarator ('...' | '=' AssertExpression)?
+  // InOut? BasicType Declarator ('...' | '=' AssignExpression)?
   private static boolean Parameter_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "Parameter_0")) return false;
     boolean r;
@@ -6244,14 +6244,14 @@ public class DLanguageParser implements PsiParser {
     return true;
   }
 
-  // ('...' | '=' AssertExpression)?
+  // ('...' | '=' AssignExpression)?
   private static boolean Parameter_0_3(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "Parameter_0_3")) return false;
     Parameter_0_3_0(b, l + 1);
     return true;
   }
 
-  // '...' | '=' AssertExpression
+  // '...' | '=' AssignExpression
   private static boolean Parameter_0_3_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "Parameter_0_3_0")) return false;
     boolean r;
@@ -6262,13 +6262,13 @@ public class DLanguageParser implements PsiParser {
     return r;
   }
 
-  // '=' AssertExpression
+  // '=' AssignExpression
   private static boolean Parameter_0_3_0_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "Parameter_0_3_0_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, OP_EQ);
-    r = r && AssertExpression(b, l + 1);
+    r = r && AssignExpression(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }

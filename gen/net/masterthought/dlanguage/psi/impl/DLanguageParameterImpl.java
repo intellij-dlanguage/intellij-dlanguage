@@ -24,8 +24,8 @@ public class DLanguageParameterImpl extends ASTWrapperPsiElement implements DLan
 
   @Override
   @Nullable
-  public DLanguageAssertExpression getAssertExpression() {
-    return findChildByClass(DLanguageAssertExpression.class);
+  public DLanguageAssignExpression getAssignExpression() {
+    return findChildByClass(DLanguageAssignExpression.class);
   }
 
   @Override

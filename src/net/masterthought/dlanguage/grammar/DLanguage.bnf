@@ -1180,7 +1180,7 @@ ParameterList ::=
     | '...'
 
 Parameter ::=
-       InOut? BasicType Declarator ('...' | '=' AssertExpression)?
+       InOut? BasicType Declarator ('...' | '=' AssignExpression)?
        | InOut? Type ('...')?
 
 InOut ::=
