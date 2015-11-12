@@ -7,11 +7,8 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageStructMemberInitializer extends PsiElement {
 
-  @Nullable
-  DLanguageIdentifier getIdentifier();
-
   @NotNull
-  DLanguageNonVoidInitializer getNonVoidInitializer();
+  List<DLanguageNonVoidInitializer> getNonVoidInitializerList();
 
   @Nullable
   PsiElement getOpColon();

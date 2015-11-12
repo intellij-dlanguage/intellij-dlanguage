@@ -7752,25 +7752,30 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // NonVoidInitializer
-  //     | Identifier ':' NonVoidInitializer
+  // NonVoidInitializer [':' NonVoidInitializer]
   public static boolean StructMemberInitializer(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "StructMemberInitializer")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<struct member initializer>");
     r = NonVoidInitializer(b, l + 1);
-    if (!r) r = StructMemberInitializer_1(b, l + 1);
+    r = r && StructMemberInitializer_1(b, l + 1);
     exit_section_(b, l, m, STRUCT_MEMBER_INITIALIZER, r, false, null);
     return r;
   }
 
-  // Identifier ':' NonVoidInitializer
+  // [':' NonVoidInitializer]
   private static boolean StructMemberInitializer_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "StructMemberInitializer_1")) return false;
+    StructMemberInitializer_1_0(b, l + 1);
+    return true;
+  }
+
+  // ':' NonVoidInitializer
+  private static boolean StructMemberInitializer_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "StructMemberInitializer_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = Identifier(b, l + 1);
-    r = r && consumeToken(b, OP_COLON);
+    r = consumeToken(b, OP_COLON);
     r = r && NonVoidInitializer(b, l + 1);
     exit_section_(b, m, null, r);
     return r;

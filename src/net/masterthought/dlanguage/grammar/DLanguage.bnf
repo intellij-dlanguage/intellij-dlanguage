@@ -1152,8 +1152,9 @@ StructMemberInitializers ::=
     StructMemberInitializer (',' StructMemberInitializers)?
 
 StructMemberInitializer ::=
-    NonVoidInitializer
-    | Identifier ':' NonVoidInitializer
+ NonVoidInitializer [':' NonVoidInitializer]
+//    NonVoidInitializer
+//    | Identifier ':' NonVoidInitializer
 
 //Function
 
