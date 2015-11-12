@@ -29,9 +29,9 @@ public class DLanguageIdentifierListImpl extends ASTWrapperPsiElement implements
   }
 
   @Override
-  @Nullable
+  @NotNull
   public DLanguageIdentifier getIdentifier() {
-    return findChildByClass(DLanguageIdentifier.class);
+    return findNotNullChildByClass(DLanguageIdentifier.class);
   }
 
   @Override

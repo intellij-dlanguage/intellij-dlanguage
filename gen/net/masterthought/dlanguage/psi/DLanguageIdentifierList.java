@@ -10,7 +10,7 @@ public interface DLanguageIdentifierList extends PsiElement {
   @Nullable
   DLanguageAssignExpression getAssignExpression();
 
-  @Nullable
+  @NotNull
   DLanguageIdentifier getIdentifier();
 
   @Nullable
