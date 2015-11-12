@@ -10,16 +10,16 @@ public interface DLanguageAnonymousEnumDeclaration extends PsiElement {
   @Nullable
   DLanguageEnumBaseType getEnumBaseType();
 
-  @NotNull
+  @Nullable
   DLanguageEnumMembers getEnumMembers();
 
   @NotNull
   PsiElement getKwEnum();
 
-  @NotNull
+  @Nullable
   PsiElement getOpBracesLeft();
 
-  @NotNull
+  @Nullable
   PsiElement getOpBracesRight();
 
   @Nullable

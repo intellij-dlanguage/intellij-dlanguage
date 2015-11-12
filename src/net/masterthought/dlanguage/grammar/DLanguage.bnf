@@ -1371,7 +1371,7 @@ EnumMembers ::=
 EnumMember ::= Identifier ('=' AssignExpression)? | Type Identifier '=' AssignExpression
 
 AnonymousEnumDeclaration ::=
-    'enum' (':' EnumBaseType)? '{' (EnumMembers) '}'
+    'enum' (':' EnumBaseType)? ('{' (EnumMembers) '}')?
 
 //Template
 

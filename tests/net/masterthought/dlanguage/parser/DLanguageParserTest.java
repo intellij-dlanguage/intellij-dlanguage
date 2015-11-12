@@ -296,9 +296,9 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
     public void testtraits_isoverridefunction() { doTest(true, true); }
     public void testtraits_issame() { doTest(true, true); }
     public void testtraits_istemplate() { doTest(true, true); }
-//    public void testtraits_getunittests() { doTest(true, true); }
-//    public void testtraits_special_keyword() { doTest(true, true); }    
-//    public void testtraits_getattributes() { doTest(true, true); }
+    public void testtraits_getunittests() { doTest(true, true); }
+//    public void testtraits_special_keyword() { doTest(true, true); }
+    public void testtraits_getattributes() { doTest(true, true); }
 
 
 // unittest
