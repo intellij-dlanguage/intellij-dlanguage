@@ -215,7 +215,7 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
         public void testenums() { doTest(true, true); }
 
 // immutable const
-//    public void testconst_immutable() { doTest(true, true); }
+    public void testconst_immutable() { doTest(true, true); }
 
 // functions
       public void testfunctions_auto() { doTest(true, true); }

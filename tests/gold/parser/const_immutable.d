@@ -37,11 +37,11 @@ immutable(char)[] s = "hello";
 s[0] = 'b';  // error, s[] is immutable
 s = null;    // ok, s itself is not immutable
 
-immutable(char*)** p = ...;
-p = ...;        // ok, p is not immutable
-*p = ...;       // ok, *p is not immutable
-**p = ...;      // error, **p is immutable
-***p = ...;     // error, ***p is immutable
+immutable(char*)** p = 1;
+p = 1;        // ok, p is not immutable
+*p = 1;       // ok, *p is not immutable
+**p = 1;      // error, **p is immutable
+***p = 1;     // error, ***p is immutable
 
 immutable int x = 3;   // x is typed as immutable(int)
 immutable(int) y = 3;  // y is immutable
@@ -50,7 +50,7 @@ auto s = "hello";   // s is immutable(char)[5]
 char[] p = "world"; // error, cannot implicitly convert immutable
                     // to mutable
 
-char[] s = ...;
+char[] s = 1;
 immutable(char)[] p = cast(immutable)s;     // undefined behavior
 immutable(char)[] p = cast(immutable)s.dup; // ok, unique reference
 
