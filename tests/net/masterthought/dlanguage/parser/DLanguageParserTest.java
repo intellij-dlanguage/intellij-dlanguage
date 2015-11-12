@@ -220,7 +220,7 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
 // functions
       public void testfunctions_auto() { doTest(true, true); }
       public void testfunctions_auto_ref() { doTest(true, true); }
-//      public void testfunctions_default_args() { doTest(true, true); }
+      public void testfunctions_default_args() { doTest(true, true); }
 //      public void testfunctions_inheritance() { doTest(true, true); }
 //      public void testfunctions_nested() { doTest(true, true); }
 //      public void testfunctions_optional_parens() { doTest(true, true); }
