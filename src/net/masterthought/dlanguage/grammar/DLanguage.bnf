@@ -772,7 +772,7 @@ SwitchStatement ::=
     'switch' '(' Expression ')' ScopeStatement
 
 CaseStatement ::=
-    'case' ArgumentList ':' ScopeStatementList
+    'case' ArgumentList ':' ScopeStatementList?
 
 CaseRangeStatement ::=
     'case' FirstExp ':' '..' 'case' LastExp ':' ScopeStatementList
@@ -790,8 +790,7 @@ ScopeStatementList ::=
     StatementListNoCaseNoDefault
 
 StatementListNoCaseNoDefault ::=
-    StatementNoCaseNoDefault
-    | StatementNoCaseNoDefault StatementListNoCaseNoDefault
+    StatementNoCaseNoDefault [StatementListNoCaseNoDefault]
 
 StatementNoCaseNoDefault ::=
     NonEmptyStatementNoCaseNoDefault

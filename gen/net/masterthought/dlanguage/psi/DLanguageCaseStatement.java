@@ -10,7 +10,7 @@ public interface DLanguageCaseStatement extends PsiElement {
   @NotNull
   DLanguageArgumentList getArgumentList();
 
-  @NotNull
+  @Nullable
   DLanguageScopeStatementList getScopeStatementList();
 
   @NotNull

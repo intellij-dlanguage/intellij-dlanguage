@@ -2432,7 +2432,7 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // 'case' ArgumentList ':' ScopeStatementList
+  // 'case' ArgumentList ':' ScopeStatementList?
   public static boolean CaseStatement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "CaseStatement")) return false;
     if (!nextTokenIs(b, KW_CASE)) return false;
@@ -2441,9 +2441,16 @@ public class DLanguageParser implements PsiParser {
     r = consumeToken(b, KW_CASE);
     r = r && ArgumentList(b, l + 1);
     r = r && consumeToken(b, OP_COLON);
-    r = r && ScopeStatementList(b, l + 1);
+    r = r && CaseStatement_3(b, l + 1);
     exit_section_(b, m, CASE_STATEMENT, r);
     return r;
+  }
+
+  // ScopeStatementList?
+  private static boolean CaseStatement_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "CaseStatement_3")) return false;
+    ScopeStatementList(b, l + 1);
+    return true;
   }
 
   /* ********************************************************** */
@@ -7453,27 +7460,22 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // StatementNoCaseNoDefault
-  //     | StatementNoCaseNoDefault StatementListNoCaseNoDefault
+  // StatementNoCaseNoDefault [StatementListNoCaseNoDefault]
   public static boolean StatementListNoCaseNoDefault(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "StatementListNoCaseNoDefault")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<statement list no case no default>");
     r = StatementNoCaseNoDefault(b, l + 1);
-    if (!r) r = StatementListNoCaseNoDefault_1(b, l + 1);
+    r = r && StatementListNoCaseNoDefault_1(b, l + 1);
     exit_section_(b, l, m, STATEMENT_LIST_NO_CASE_NO_DEFAULT, r, false, null);
     return r;
   }
 
-  // StatementNoCaseNoDefault StatementListNoCaseNoDefault
+  // [StatementListNoCaseNoDefault]
   private static boolean StatementListNoCaseNoDefault_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "StatementListNoCaseNoDefault_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = StatementNoCaseNoDefault(b, l + 1);
-    r = r && StatementListNoCaseNoDefault(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
+    StatementListNoCaseNoDefault(b, l + 1);
+    return true;
   }
 
   /* ********************************************************** */

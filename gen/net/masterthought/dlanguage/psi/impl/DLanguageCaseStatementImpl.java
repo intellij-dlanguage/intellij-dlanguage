@@ -29,9 +29,9 @@ public class DLanguageCaseStatementImpl extends ASTWrapperPsiElement implements 
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageScopeStatementList getScopeStatementList() {
-    return findNotNullChildByClass(DLanguageScopeStatementList.class);
+    return findChildByClass(DLanguageScopeStatementList.class);
   }
 
   @Override
