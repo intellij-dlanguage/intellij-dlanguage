@@ -249,8 +249,8 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
 // templates
     public void testtemplates() { doTest(true, true); }
     public void testtemplates_alias() { doTest(true, true); }
-//    public void testtemplates_defaults() { doTest(true, true); }
-//    public void testtemplates_function_templates() { doTest(true, true); }
+    public void testtemplates_defaults() { doTest(true, true); }
+    public void testtemplates_function_templates() { doTest(true, true); }
     public void testtemplates_alias_params() { doTest(true, true); }
     public void testtemplates_argument_deduction() { doTest(true, true); }
     public void testtemplates_instant_scope() { doTest(true, true); }
