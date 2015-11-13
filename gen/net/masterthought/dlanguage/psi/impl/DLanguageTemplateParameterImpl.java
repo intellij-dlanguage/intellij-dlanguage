@@ -40,10 +40,4 @@ public class DLanguageTemplateParameterImpl extends ASTWrapperPsiElement impleme
     return findChildByClass(DLanguageTemplateTypeParameter.class);
   }
 
-  @Override
-  @Nullable
-  public DLanguageTemplateValueParameter getTemplateValueParameter() {
-    return findChildByClass(DLanguageTemplateValueParameter.class);
-  }
-
 }

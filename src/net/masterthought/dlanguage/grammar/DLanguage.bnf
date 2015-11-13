@@ -1144,7 +1144,6 @@ ArrayMemberInitializations ::=
 
 ArrayMemberInitialization ::=
     NonVoidInitializer [':' NonVoidInitializer]
-//     AssignExpression ':' NonVoidInitializer
 
 StructInitializer ::=
     '{' StructMemberInitializers? '}'
@@ -1154,8 +1153,6 @@ StructMemberInitializers ::=
 
 StructMemberInitializer ::=
  NonVoidInitializer [':' NonVoidInitializer]
-//    NonVoidInitializer
-//    | Identifier ':' NonVoidInitializer
 
 //Function
 
@@ -1385,12 +1382,6 @@ TemplateParameters ::=
 TemplateParameterList ::=
     TemplateParameter [',' TemplateParameterList]
 
-TemplateParameter ::=
-    TemplateTypeParameter
-   | TemplateValueParameter
-   | TemplateAliasParameter
-   | TemplateThisParameter
-
 Constraint ::=
     'if' '(' Expression ')'
 
@@ -1428,36 +1419,23 @@ TemplateSingleArgument ::=
     | 'this'
     | SpecialKeyword
 
-TemplateTypeParameter ::=
-    Identifier '...'? TemplateTypeParameterSpecialization? TemplateTypeParameterDefault?
 
-TemplateTypeParameterSpecialization ::=
-    ':' Type
+ TemplateParameter ::=
+     TemplateTypeParameter
+     | TemplateAliasParameter
+     | TemplateThisParameter
 
-TemplateTypeParameterDefault ::=
-    '=' Type
+ TemplateTypeParameter ::=
+     Type Identifier? '...'? [(':' Type)? ('=' Type)?] [(':' AssignExpression)? TemplateValueParameterDefault?]
+
+TemplateAliasParameter ::=
+     'alias' Type? Identifier? (':' (Type | AssignExpression))? ('=' (Type | AssignExpression))?
 
 TemplateThisParameter ::=
     'this' TemplateTypeParameter
 
-TemplateValueParameter ::=
-    BasicType Declarator TemplateValueParameterSpecialization? TemplateValueParameterDefault?
-
-TemplateValueParameterSpecialization ::=
-    ':' ConditionalExpression
-
 TemplateValueParameterDefault ::=
     '=' ( AssignExpression | SpecialKeyword)
-
-TemplateAliasParameter ::=
-    'alias' Identifier TemplateAliasParameterSpecialization? TemplateAliasParameterDefault?
-    | 'alias' BasicType Declarator TemplateAliasParameterSpecialization? TemplateAliasParameterDefault?
-
-TemplateAliasParameterSpecialization ::=
-    ':' ( Type | ConditionalExpression )
-
-TemplateAliasParameterDefault ::=
-    '=' ( Type | ConditionalExpression)
 
 TemplateMixinDeclaration ::=
     'mixin' 'template' Identifier TemplateParameters Constraint? '{' DeclDefs? '}'

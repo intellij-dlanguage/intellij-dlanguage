@@ -221,8 +221,6 @@ public interface DLanguageTypes {
   IElementType SYMBOL_TAIL = new DLanguageElementType("SYMBOL_TAIL");
   IElementType SYNCHRONIZED_STATEMENT = new DLanguageElementType("SYNCHRONIZED_STATEMENT");
   IElementType TEMPLATE_ALIAS_PARAMETER = new DLanguageElementType("TEMPLATE_ALIAS_PARAMETER");
-  IElementType TEMPLATE_ALIAS_PARAMETER_DEFAULT = new DLanguageElementType("TEMPLATE_ALIAS_PARAMETER_DEFAULT");
-  IElementType TEMPLATE_ALIAS_PARAMETER_SPECIALIZATION = new DLanguageElementType("TEMPLATE_ALIAS_PARAMETER_SPECIALIZATION");
   IElementType TEMPLATE_ARGUMENT = new DLanguageElementType("TEMPLATE_ARGUMENT");
   IElementType TEMPLATE_ARGUMENTS = new DLanguageElementType("TEMPLATE_ARGUMENTS");
   IElementType TEMPLATE_ARGUMENT_LIST = new DLanguageElementType("TEMPLATE_ARGUMENT_LIST");
@@ -236,11 +234,7 @@ public interface DLanguageTypes {
   IElementType TEMPLATE_SINGLE_ARGUMENT = new DLanguageElementType("TEMPLATE_SINGLE_ARGUMENT");
   IElementType TEMPLATE_THIS_PARAMETER = new DLanguageElementType("TEMPLATE_THIS_PARAMETER");
   IElementType TEMPLATE_TYPE_PARAMETER = new DLanguageElementType("TEMPLATE_TYPE_PARAMETER");
-  IElementType TEMPLATE_TYPE_PARAMETER_DEFAULT = new DLanguageElementType("TEMPLATE_TYPE_PARAMETER_DEFAULT");
-  IElementType TEMPLATE_TYPE_PARAMETER_SPECIALIZATION = new DLanguageElementType("TEMPLATE_TYPE_PARAMETER_SPECIALIZATION");
-  IElementType TEMPLATE_VALUE_PARAMETER = new DLanguageElementType("TEMPLATE_VALUE_PARAMETER");
   IElementType TEMPLATE_VALUE_PARAMETER_DEFAULT = new DLanguageElementType("TEMPLATE_VALUE_PARAMETER_DEFAULT");
-  IElementType TEMPLATE_VALUE_PARAMETER_SPECIALIZATION = new DLanguageElementType("TEMPLATE_VALUE_PARAMETER_SPECIALIZATION");
   IElementType TEST = new DLanguageElementType("TEST");
   IElementType THEN_STATEMENT = new DLanguageElementType("THEN_STATEMENT");
   IElementType THROW_STATEMENT = new DLanguageElementType("THROW_STATEMENT");
@@ -1099,12 +1093,6 @@ public interface DLanguageTypes {
       else if (type == TEMPLATE_ALIAS_PARAMETER) {
         return new DLanguageTemplateAliasParameterImpl(node);
       }
-      else if (type == TEMPLATE_ALIAS_PARAMETER_DEFAULT) {
-        return new DLanguageTemplateAliasParameterDefaultImpl(node);
-      }
-      else if (type == TEMPLATE_ALIAS_PARAMETER_SPECIALIZATION) {
-        return new DLanguageTemplateAliasParameterSpecializationImpl(node);
-      }
       else if (type == TEMPLATE_ARGUMENT) {
         return new DLanguageTemplateArgumentImpl(node);
       }
@@ -1144,20 +1132,8 @@ public interface DLanguageTypes {
       else if (type == TEMPLATE_TYPE_PARAMETER) {
         return new DLanguageTemplateTypeParameterImpl(node);
       }
-      else if (type == TEMPLATE_TYPE_PARAMETER_DEFAULT) {
-        return new DLanguageTemplateTypeParameterDefaultImpl(node);
-      }
-      else if (type == TEMPLATE_TYPE_PARAMETER_SPECIALIZATION) {
-        return new DLanguageTemplateTypeParameterSpecializationImpl(node);
-      }
-      else if (type == TEMPLATE_VALUE_PARAMETER) {
-        return new DLanguageTemplateValueParameterImpl(node);
-      }
       else if (type == TEMPLATE_VALUE_PARAMETER_DEFAULT) {
         return new DLanguageTemplateValueParameterDefaultImpl(node);
-      }
-      else if (type == TEMPLATE_VALUE_PARAMETER_SPECIALIZATION) {
-        return new DLanguageTemplateValueParameterSpecializationImpl(node);
       }
       else if (type == TEST) {
         return new DLanguageTestImpl(node);

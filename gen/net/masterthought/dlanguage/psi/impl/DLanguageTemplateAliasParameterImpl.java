@@ -23,15 +23,9 @@ public class DLanguageTemplateAliasParameterImpl extends ASTWrapperPsiElement im
   }
 
   @Override
-  @Nullable
-  public DLanguageBasicType getBasicType() {
-    return findChildByClass(DLanguageBasicType.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageDeclarator getDeclarator() {
-    return findChildByClass(DLanguageDeclarator.class);
+  @NotNull
+  public List<DLanguageAssignExpression> getAssignExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageAssignExpression.class);
   }
 
   @Override
@@ -41,21 +35,27 @@ public class DLanguageTemplateAliasParameterImpl extends ASTWrapperPsiElement im
   }
 
   @Override
-  @Nullable
-  public DLanguageTemplateAliasParameterDefault getTemplateAliasParameterDefault() {
-    return findChildByClass(DLanguageTemplateAliasParameterDefault.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageTemplateAliasParameterSpecialization getTemplateAliasParameterSpecialization() {
-    return findChildByClass(DLanguageTemplateAliasParameterSpecialization.class);
+  @NotNull
+  public List<DLanguageType> getTypeList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageType.class);
   }
 
   @Override
   @NotNull
   public PsiElement getKwAlias() {
     return findNotNullChildByType(KW_ALIAS);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpColon() {
+    return findChildByType(OP_COLON);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpEq() {
+    return findChildByType(OP_EQ);
   }
 
 }

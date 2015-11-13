@@ -859,14 +859,6 @@ public class DLanguageVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitTemplateAliasParameterDefault(@NotNull DLanguageTemplateAliasParameterDefault o) {
-    visitPsiElement(o);
-  }
-
-  public void visitTemplateAliasParameterSpecialization(@NotNull DLanguageTemplateAliasParameterSpecialization o) {
-    visitPsiElement(o);
-  }
-
   public void visitTemplateArgument(@NotNull DLanguageTemplateArgument o) {
     visitPsiElement(o);
   }
@@ -919,23 +911,7 @@ public class DLanguageVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitTemplateTypeParameterDefault(@NotNull DLanguageTemplateTypeParameterDefault o) {
-    visitPsiElement(o);
-  }
-
-  public void visitTemplateTypeParameterSpecialization(@NotNull DLanguageTemplateTypeParameterSpecialization o) {
-    visitPsiElement(o);
-  }
-
-  public void visitTemplateValueParameter(@NotNull DLanguageTemplateValueParameter o) {
-    visitPsiElement(o);
-  }
-
   public void visitTemplateValueParameterDefault(@NotNull DLanguageTemplateValueParameterDefault o) {
-    visitPsiElement(o);
-  }
-
-  public void visitTemplateValueParameterSpecialization(@NotNull DLanguageTemplateValueParameterSpecialization o) {
     visitPsiElement(o);
   }
 
