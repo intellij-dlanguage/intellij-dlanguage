@@ -225,7 +225,7 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
       public void testfunctions_optional_parens() { doTest(true, true); }
       public void testfunctions_overloading() { doTest(true, true); }
       public void testfunctions_templates() { doTest(true, true); }
-//      public void testfunctions_ucfs() { doTest(true, true); }
+      public void testfunctions_ucfs() { doTest(true, true); }
       public void testfunctions_delegated_fp_closures() { doTest(true, true); }
       public void testfunctions_inout() { doTest(true, true); }
       public void testfunctions_local_static() { doTest(true, true); }

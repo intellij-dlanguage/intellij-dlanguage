@@ -10,7 +10,7 @@ public interface DLanguageAutoFuncDeclaration extends PsiElement {
   @NotNull
   DLanguageFuncDeclaratorSuffix getFuncDeclaratorSuffix();
 
-  @NotNull
+  @Nullable
   DLanguageFunctionBody getFunctionBody();
 
   @NotNull

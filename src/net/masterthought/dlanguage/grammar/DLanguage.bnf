@@ -1164,7 +1164,7 @@ FuncDeclaration ::=
     | AutoFuncDeclaration
 
 AutoFuncDeclaration ::=
-    StorageClasses Identifier FuncDeclaratorSuffix FunctionBody
+    StorageClasses Identifier FuncDeclaratorSuffix FunctionBody?
 
 FuncDeclarator ::=
     BasicType2? Identifier FuncDeclaratorSuffix

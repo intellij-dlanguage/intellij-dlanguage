@@ -29,9 +29,9 @@ public class DLanguageAutoFuncDeclarationImpl extends ASTWrapperPsiElement imple
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageFunctionBody getFunctionBody() {
-    return findNotNullChildByClass(DLanguageFunctionBody.class);
+    return findChildByClass(DLanguageFunctionBody.class);
   }
 
   @Override

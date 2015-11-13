@@ -2012,7 +2012,7 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // StorageClasses Identifier FuncDeclaratorSuffix FunctionBody
+  // StorageClasses Identifier FuncDeclaratorSuffix FunctionBody?
   public static boolean AutoFuncDeclaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "AutoFuncDeclaration")) return false;
     boolean r;
@@ -2020,9 +2020,16 @@ public class DLanguageParser implements PsiParser {
     r = StorageClasses(b, l + 1);
     r = r && Identifier(b, l + 1);
     r = r && FuncDeclaratorSuffix(b, l + 1);
-    r = r && FunctionBody(b, l + 1);
+    r = r && AutoFuncDeclaration_3(b, l + 1);
     exit_section_(b, l, m, AUTO_FUNC_DECLARATION, r, false, null);
     return r;
+  }
+
+  // FunctionBody?
+  private static boolean AutoFuncDeclaration_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "AutoFuncDeclaration_3")) return false;
+    FunctionBody(b, l + 1);
+    return true;
   }
 
   /* ********************************************************** */
