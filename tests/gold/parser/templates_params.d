@@ -8,10 +8,7 @@ void main()
     writefln("%s", foo!("hello").bar()); // prints: hello betty
 }
 
-template foo(U : int, int T : 10)
-{
-    U x = T;
-}
+template foo(U : int, int T : 10){U x = T;}
 
 void main()
 {

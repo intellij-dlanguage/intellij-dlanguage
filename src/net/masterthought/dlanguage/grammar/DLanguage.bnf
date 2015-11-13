@@ -321,7 +321,7 @@ BasicType2X ::=
 
 IdentifierList ::=
 //    Identifier ('.' IdentifierList)?
-    Identifier TemplateInstance? ['.' IdentifierList]
+     Identifier TemplateInstance? ['.' IdentifierList]
     |  Identifier '[' AssignExpression ']' '.' IdentifierList
 
 Typeof ::=
@@ -514,9 +514,9 @@ KeyValuePair ::=
     AssignExpression ':' AssignExpression
 
 FunctionLiteral ::=
-    'function' Type? ParameterAttributes? FunctionLiteralBody
-    | 'delegate' Type? ParameterMemberAttributes? FunctionLiteralBody
-    | ParameterMemberAttributes FunctionLiteralBody
+     'function' Type? ParameterAttributes? FunctionLiteralBody?
+    | 'delegate' Type? ParameterMemberAttributes? FunctionLiteralBody?
+    | ParameterMemberAttributes FunctionLiteralBody?
     | FunctionLiteralBody
     | Lambda
 
@@ -528,7 +528,8 @@ ParameterMemberAttributes ::=
     Parameters MemberFunctionAttributes?
 
 FunctionLiteralBody ::=
-    BlockStatement FunctionContracts? BodyStatement?
+    BlockStatement |
+    FunctionContracts BodyStatement?
 
 Lambda ::=
     'function' Type? ParameterAttributes '=>' AssignExpression
@@ -1389,8 +1390,7 @@ TemplateInstance ::=
     Identifier? TemplateArguments
 
 TemplateArguments ::=
-    '!' '(' TemplateArgumentList? ')'
-    | '!' TemplateSingleArgument
+     '!' ('(' TemplateArgumentList? ')') | '!' TemplateSingleArgument
 
 TemplateArgumentList ::=
     TemplateArgument (',' TemplateArgumentList?)?
