@@ -745,10 +745,12 @@ ForeachTypeList ::=
     ForeachType [',' ForeachTypeList]
 
 ForeachType ::=
-    ForeachTypeAttributes? (Identifier | BasicType Declarator)
+   Type? ForeachTypeAttributes? Identifier
+   | ForeachTypeAttributes? Type? Identifier
+   | Identifier
 
 ForeachTypeAttributes ::=
-    ForeachTypeAttribute ForeachTypeAttributes?
+    ForeachTypeAttribute [ForeachTypeAttributes]
 
 ForeachTypeAttribute ::=
     'ref'

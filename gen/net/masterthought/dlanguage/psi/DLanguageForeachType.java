@@ -8,15 +8,12 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageForeachType extends PsiElement {
 
   @Nullable
-  DLanguageBasicType getBasicType();
-
-  @Nullable
-  DLanguageDeclarator getDeclarator();
-
-  @Nullable
   DLanguageForeachTypeAttributes getForeachTypeAttributes();
 
-  @Nullable
+  @NotNull
   DLanguageIdentifier getIdentifier();
+
+  @Nullable
+  DLanguageType getType();
 
 }

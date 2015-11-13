@@ -3990,44 +3990,70 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // ForeachTypeAttributes? (Identifier | BasicType Declarator)
+  // Type? ForeachTypeAttributes? Identifier
+  //    | ForeachTypeAttributes? Type? Identifier
+  //    | Identifier
   public static boolean ForeachType(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ForeachType")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<foreach type>");
     r = ForeachType_0(b, l + 1);
-    r = r && ForeachType_1(b, l + 1);
+    if (!r) r = ForeachType_1(b, l + 1);
+    if (!r) r = Identifier(b, l + 1);
     exit_section_(b, l, m, FOREACH_TYPE, r, false, null);
     return r;
   }
 
-  // ForeachTypeAttributes?
+  // Type? ForeachTypeAttributes? Identifier
   private static boolean ForeachType_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ForeachType_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = ForeachType_0_0(b, l + 1);
+    r = r && ForeachType_0_1(b, l + 1);
+    r = r && Identifier(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // Type?
+  private static boolean ForeachType_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ForeachType_0_0")) return false;
+    Type(b, l + 1);
+    return true;
+  }
+
+  // ForeachTypeAttributes?
+  private static boolean ForeachType_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ForeachType_0_1")) return false;
     ForeachTypeAttributes(b, l + 1);
     return true;
   }
 
-  // Identifier | BasicType Declarator
+  // ForeachTypeAttributes? Type? Identifier
   private static boolean ForeachType_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ForeachType_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = Identifier(b, l + 1);
-    if (!r) r = ForeachType_1_1(b, l + 1);
+    r = ForeachType_1_0(b, l + 1);
+    r = r && ForeachType_1_1(b, l + 1);
+    r = r && Identifier(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // BasicType Declarator
+  // ForeachTypeAttributes?
+  private static boolean ForeachType_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ForeachType_1_0")) return false;
+    ForeachTypeAttributes(b, l + 1);
+    return true;
+  }
+
+  // Type?
   private static boolean ForeachType_1_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ForeachType_1_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = BasicType(b, l + 1);
-    r = r && Declarator(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
+    Type(b, l + 1);
+    return true;
   }
 
   /* ********************************************************** */
@@ -4044,7 +4070,7 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // ForeachTypeAttribute ForeachTypeAttributes?
+  // ForeachTypeAttribute [ForeachTypeAttributes]
   public static boolean ForeachTypeAttributes(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ForeachTypeAttributes")) return false;
     boolean r;
@@ -4055,7 +4081,7 @@ public class DLanguageParser implements PsiParser {
     return r;
   }
 
-  // ForeachTypeAttributes?
+  // [ForeachTypeAttributes]
   private static boolean ForeachTypeAttributes_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ForeachTypeAttributes_1")) return false;
     ForeachTypeAttributes(b, l + 1);

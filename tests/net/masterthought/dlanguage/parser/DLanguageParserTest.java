@@ -107,10 +107,10 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
 //    // statements
 //    public void teststatements_asm() { doTest(true, true); }
 //    public void teststatements_asm_inline() { doTest(true, true); }
-//    public void teststatements_foreach_associative_array() { doTest(true, true); }
-//    public void teststatements_foreach_delegates() { doTest(true, true); }
+    public void teststatements_foreach_associative_array() { doTest(true, true); }
+    public void teststatements_foreach_delegates() { doTest(true, true); }
 //    public void teststatements_foreach_templated() { doTest(true, true); }
-//    public void teststatements_foreach_tuples() { doTest(true, true); }
+    public void teststatements_foreach_tuples() { doTest(true, true); }
 //    public void teststatements_switch() { doTest(true, true); }
 //    public void teststatements_switch2() { doTest(true, true); }
     public void teststatements_block() { doTest(true, true); }
