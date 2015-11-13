@@ -17,8 +17,8 @@ template Write(Args...)
 
 void main()
 {
-    Print!(1,'a',6.8).print();                    // prints: args are 1a6.8
-    Write!(int, char, double).write(1, 'a', 6.8); // prints: args are 1a6.8
+    //Print!(1,'a',6.8).print();                    // prints: args are 1a6.8
+    //Write!(int, char, double).write(1, 'a', 6.8); // prints: args are 1a6.8
 }
 
 template print(T, Args...)
@@ -33,16 +33,12 @@ template print(T, Args...)
 
 void main()
 {
-    print(1, 'a', 6.8);
+    //print(1, 'a', 6.8);
 }
 
 import std.stdio;
 
-/* Partially applies a delegate by tying its first argument to a particular value.
- * R = return type
- * T = first argument type
- * Args = TypeTuple of remaining argument types
- */
+
 R delegate(Args) partial(R, T, Args...)(R delegate(T, Args) dg, T first)
 {
     // return a closure
