@@ -3751,7 +3751,7 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // EnumMember (',' EnumMembers?)?
+  // EnumMember [',' EnumMembers]
   public static boolean EnumMembers(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "EnumMembers")) return false;
     boolean r;
@@ -3762,29 +3762,22 @@ public class DLanguageParser implements PsiParser {
     return r;
   }
 
-  // (',' EnumMembers?)?
+  // [',' EnumMembers]
   private static boolean EnumMembers_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "EnumMembers_1")) return false;
     EnumMembers_1_0(b, l + 1);
     return true;
   }
 
-  // ',' EnumMembers?
+  // ',' EnumMembers
   private static boolean EnumMembers_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "EnumMembers_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, OP_COMMA);
-    r = r && EnumMembers_1_0_1(b, l + 1);
+    r = r && EnumMembers(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
-  }
-
-  // EnumMembers?
-  private static boolean EnumMembers_1_0_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "EnumMembers_1_0_1")) return false;
-    EnumMembers(b, l + 1);
-    return true;
   }
 
   /* ********************************************************** */
@@ -5110,7 +5103,7 @@ public class DLanguageParser implements PsiParser {
 
   /* ********************************************************** */
   // 'interface' Identifier ';'
-  //     | 'interface' Identifier BaseInterfaceList? AggregateBody
+  //     | 'interface' Identifier BaseInterfaceList? AggregateBody?
   //     | InterfaceTemplateDeclaration
   public static boolean InterfaceDeclaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "InterfaceDeclaration")) return false;
@@ -5136,7 +5129,7 @@ public class DLanguageParser implements PsiParser {
     return r;
   }
 
-  // 'interface' Identifier BaseInterfaceList? AggregateBody
+  // 'interface' Identifier BaseInterfaceList? AggregateBody?
   private static boolean InterfaceDeclaration_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "InterfaceDeclaration_1")) return false;
     boolean r;
@@ -5144,7 +5137,7 @@ public class DLanguageParser implements PsiParser {
     r = consumeToken(b, KW_INTERFACE);
     r = r && Identifier(b, l + 1);
     r = r && InterfaceDeclaration_1_2(b, l + 1);
-    r = r && AggregateBody(b, l + 1);
+    r = r && InterfaceDeclaration_1_3(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -5153,6 +5146,13 @@ public class DLanguageParser implements PsiParser {
   private static boolean InterfaceDeclaration_1_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "InterfaceDeclaration_1_2")) return false;
     BaseInterfaceList(b, l + 1);
+    return true;
+  }
+
+  // AggregateBody?
+  private static boolean InterfaceDeclaration_1_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "InterfaceDeclaration_1_3")) return false;
+    AggregateBody(b, l + 1);
     return true;
   }
 

@@ -1299,7 +1299,7 @@ ClassTemplateDeclaration ::=
 
 InterfaceDeclaration ::=
     'interface' Identifier ';'
-    | 'interface' Identifier BaseInterfaceList? AggregateBody
+    | 'interface' Identifier BaseInterfaceList? AggregateBody?
     | InterfaceTemplateDeclaration
 
 InterfaceTemplateDeclaration ::=
@@ -1354,6 +1354,25 @@ AliasThis ::=
 
 // Enum
 
+//EnumBody ::=
+//     '{' EnumMember (',' EnumMember?)* '}'
+//
+// AnonymousEnumMember ::=
+//       Type? Identifier ('=' AssignExpression)?
+//
+// AnonymousEnumDeclaration ::=
+//     'enum' (':' Type)? '{' AnonymousEnumMember? '}'
+//
+// EnumDeclaration ::=
+//       'enum' Identifier (':' Type)? EnumBody? ';'
+//     | AnonymousEnumDeclaration
+//
+//
+// EnumMember ::=
+//      Identifier? '=' AssignExpression
+
+
+
 EnumDeclaration ::=
     'enum' Identifier (':' EnumBaseType)? EnumBody
     | AnonymousEnumDeclaration
@@ -1365,7 +1384,7 @@ EnumBody ::=
     '{' EnumMembers '}'
 
 EnumMembers ::=
-    EnumMember (',' EnumMembers?)?
+    EnumMember [',' EnumMembers]
 
 EnumMember ::= Identifier ('=' AssignExpression)? | Type Identifier '=' AssignExpression
 
