@@ -168,7 +168,7 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
     public void testassocarrays_immutable() { doTest(true, true); }
     public void testassocarrays_membership() { doTest(true, true); }
     public void testassocarrays_structs() { doTest(true, true); }
-//    public void testassocarrays_word_count() { doTest(true, true); }
+    public void testassocarrays_word_count() { doTest(true, true); }
 
 // structs and unions
       public void teststructs() { doTest(true, true); }
