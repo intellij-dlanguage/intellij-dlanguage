@@ -7793,7 +7793,7 @@ public class DLanguageParser implements PsiParser {
 
   /* ********************************************************** */
   // 'struct' Identifier ';'
-  //     | 'struct' Identifier AggregateBody
+  //     | 'struct' Identifier AggregateBody?
   //     | StructTemplateDeclaration
   //     | AnonStructDeclaration
   public static boolean StructDeclaration(PsiBuilder b, int l) {
@@ -7821,16 +7821,23 @@ public class DLanguageParser implements PsiParser {
     return r;
   }
 
-  // 'struct' Identifier AggregateBody
+  // 'struct' Identifier AggregateBody?
   private static boolean StructDeclaration_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "StructDeclaration_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, KW_STRUCT);
     r = r && Identifier(b, l + 1);
-    r = r && AggregateBody(b, l + 1);
+    r = r && StructDeclaration_1_2(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
+  }
+
+  // AggregateBody?
+  private static boolean StructDeclaration_1_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "StructDeclaration_1_2")) return false;
+    AggregateBody(b, l + 1);
+    return true;
   }
 
   /* ********************************************************** */

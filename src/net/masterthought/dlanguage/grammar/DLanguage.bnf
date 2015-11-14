@@ -1308,7 +1308,7 @@ InterfaceTemplateDeclaration ::=
 
 StructDeclaration ::=
     'struct' Identifier ';'
-    | 'struct' Identifier AggregateBody
+    | 'struct' Identifier AggregateBody?
     | StructTemplateDeclaration
     | AnonStructDeclaration
 
