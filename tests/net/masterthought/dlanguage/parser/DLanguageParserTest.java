@@ -69,7 +69,7 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
     public void testattributes_protection() { doTest(true, true); }
     public void testattributes_static() { doTest(true, true); }
     public void testattributes_traits() { doTest(true, true); }
-//    public void testattributes_namespaces_multiple() { doTest(true, true); }
+    public void testattributes_namespaces_multiple() { doTest(true, true); }
     public void testattributes_user_defined() { doTest(true, true); }
     public void testattributes_nogc() { doTest(true, true); }
 
