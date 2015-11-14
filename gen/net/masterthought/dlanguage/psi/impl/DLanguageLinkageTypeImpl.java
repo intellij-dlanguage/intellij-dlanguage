@@ -22,4 +22,16 @@ public class DLanguageLinkageTypeImpl extends ASTWrapperPsiElement implements DL
     else super.accept(visitor);
   }
 
+  @Override
+  @Nullable
+  public DLanguageIdentifier getIdentifier() {
+    return findChildByClass(DLanguageIdentifier.class);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpPlusPlus() {
+    return findChildByType(OP_PLUS_PLUS);
+  }
+
 }

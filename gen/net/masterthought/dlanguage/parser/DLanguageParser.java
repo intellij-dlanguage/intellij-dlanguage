@@ -5648,7 +5648,7 @@ public class DLanguageParser implements PsiParser {
 
   /* ********************************************************** */
   // 'extern' '(' LinkageType ')'
-  //     | 'extern' '(' 'C++' ',' IdentifierList ')'
+  //     | 'extern' '(' Identifier '++' (',' IdentifierList)? ')'
   public static boolean LinkageAttribute(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "LinkageAttribute")) return false;
     if (!nextTokenIs(b, KW_EXTERN)) return false;
@@ -5673,24 +5673,42 @@ public class DLanguageParser implements PsiParser {
     return r;
   }
 
-  // 'extern' '(' 'C++' ',' IdentifierList ')'
+  // 'extern' '(' Identifier '++' (',' IdentifierList)? ')'
   private static boolean LinkageAttribute_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "LinkageAttribute_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, KW_EXTERN);
     r = r && consumeToken(b, OP_PAR_LEFT);
-    r = r && consumeToken(b, "C++");
-    r = r && consumeToken(b, OP_COMMA);
-    r = r && IdentifierList(b, l + 1);
+    r = r && Identifier(b, l + 1);
+    r = r && consumeToken(b, OP_PLUS_PLUS);
+    r = r && LinkageAttribute_1_4(b, l + 1);
     r = r && consumeToken(b, OP_PAR_RIGHT);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // (',' IdentifierList)?
+  private static boolean LinkageAttribute_1_4(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "LinkageAttribute_1_4")) return false;
+    LinkageAttribute_1_4_0(b, l + 1);
+    return true;
+  }
+
+  // ',' IdentifierList
+  private static boolean LinkageAttribute_1_4_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "LinkageAttribute_1_4_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, OP_COMMA);
+    r = r && IdentifierList(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   /* ********************************************************** */
   // 'C'
-  //     | 'C++'
+  //     | Identifier '++'
   //     | 'D'
   //     | 'Windows'
   //     | 'Pascal'
@@ -5701,13 +5719,24 @@ public class DLanguageParser implements PsiParser {
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<linkage type>");
     r = consumeToken(b, "C");
-    if (!r) r = consumeToken(b, "C++");
+    if (!r) r = LinkageType_1(b, l + 1);
     if (!r) r = consumeToken(b, "D");
     if (!r) r = consumeToken(b, "Windows");
     if (!r) r = consumeToken(b, "Pascal");
     if (!r) r = consumeToken(b, "System");
     if (!r) r = consumeToken(b, "Objective-C");
     exit_section_(b, l, m, LINKAGE_TYPE, r, false, null);
+    return r;
+  }
+
+  // Identifier '++'
+  private static boolean LinkageType_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "LinkageType_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = Identifier(b, l + 1);
+    r = r && consumeToken(b, OP_PLUS_PLUS);
+    exit_section_(b, m, null, r);
     return r;
   }
 

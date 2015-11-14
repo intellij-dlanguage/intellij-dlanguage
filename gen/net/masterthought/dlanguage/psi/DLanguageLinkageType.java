@@ -7,4 +7,10 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageLinkageType extends PsiElement {
 
+  @Nullable
+  DLanguageIdentifier getIdentifier();
+
+  @Nullable
+  PsiElement getOpPlusPlus();
+
 }

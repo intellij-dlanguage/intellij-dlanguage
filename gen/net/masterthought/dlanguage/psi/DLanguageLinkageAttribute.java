@@ -8,6 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageLinkageAttribute extends PsiElement {
 
   @Nullable
+  DLanguageIdentifier getIdentifier();
+
+  @Nullable
   DLanguageIdentifierList getIdentifierList();
 
   @Nullable
@@ -24,5 +27,8 @@ public interface DLanguageLinkageAttribute extends PsiElement {
 
   @NotNull
   PsiElement getOpParRight();
+
+  @Nullable
+  PsiElement getOpPlusPlus();
 
 }

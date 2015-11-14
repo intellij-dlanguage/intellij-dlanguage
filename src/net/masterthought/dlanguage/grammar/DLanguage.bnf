@@ -1502,11 +1502,11 @@ DeclarationBlock ::=
 
 LinkageAttribute ::=
     'extern' '(' LinkageType ')'
-    | 'extern' '(' 'C++' ',' IdentifierList ')'
+    | 'extern' '(' Identifier '++' (',' IdentifierList)? ')'
 
 LinkageType ::=
      'C'
-    | 'C++'
+    | Identifier '++'
     | 'D'
     | 'Windows'
     | 'Pascal'

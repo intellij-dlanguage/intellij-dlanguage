@@ -24,6 +24,12 @@ public class DLanguageLinkageAttributeImpl extends ASTWrapperPsiElement implemen
 
   @Override
   @Nullable
+  public DLanguageIdentifier getIdentifier() {
+    return findChildByClass(DLanguageIdentifier.class);
+  }
+
+  @Override
+  @Nullable
   public DLanguageIdentifierList getIdentifierList() {
     return findChildByClass(DLanguageIdentifierList.class);
   }
@@ -56,6 +62,12 @@ public class DLanguageLinkageAttributeImpl extends ASTWrapperPsiElement implemen
   @NotNull
   public PsiElement getOpParRight() {
     return findNotNullChildByType(OP_PAR_RIGHT);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpPlusPlus() {
+    return findChildByType(OP_PLUS_PLUS);
   }
 
 }

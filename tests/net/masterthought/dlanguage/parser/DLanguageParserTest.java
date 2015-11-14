@@ -206,9 +206,7 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
       public void testinterfaces() { doTest(true, true); }
       public void testinterfaces_com() { doTest(true, true); }
       public void testinterfaces_contracts() { doTest(true, true); }
-//      public void testinterfaces_cplus() { doTest(true, true); }
-
-
+      public void testinterfaces_cplus() { doTest(true, true); }
 
 // enums
         public void testenums() { doTest(true, true); }
