@@ -3250,6 +3250,7 @@ public class DLanguageParser implements PsiParser {
   //    | AggregateDeclaration
   //    | EnumDeclaration
   //    | ImportDeclaration
+  //    | TemplateDeclaration
   //    | VarDeclarations
   public static boolean Declaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "Declaration")) return false;
@@ -3260,6 +3261,7 @@ public class DLanguageParser implements PsiParser {
     if (!r) r = AggregateDeclaration(b, l + 1);
     if (!r) r = EnumDeclaration(b, l + 1);
     if (!r) r = ImportDeclaration(b, l + 1);
+    if (!r) r = TemplateDeclaration(b, l + 1);
     if (!r) r = VarDeclarations(b, l + 1);
     exit_section_(b, l, m, DECLARATION, r, false, null);
     return r;

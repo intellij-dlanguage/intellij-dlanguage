@@ -23,6 +23,9 @@ public interface DLanguageDeclaration extends PsiElement {
   DLanguageImportDeclaration getImportDeclaration();
 
   @Nullable
+  DLanguageTemplateDeclaration getTemplateDeclaration();
+
+  @Nullable
   DLanguageVarDeclarations getVarDeclarations();
 
 }

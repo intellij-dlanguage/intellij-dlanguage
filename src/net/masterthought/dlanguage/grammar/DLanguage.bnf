@@ -1028,6 +1028,7 @@ Declaration ::=
    | AggregateDeclaration
    | EnumDeclaration
    | ImportDeclaration
+   | TemplateDeclaration
    | VarDeclarations
 
 

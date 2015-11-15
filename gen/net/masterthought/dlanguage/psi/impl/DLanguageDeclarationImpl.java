@@ -54,6 +54,12 @@ public class DLanguageDeclarationImpl extends ASTWrapperPsiElement implements DL
 
   @Override
   @Nullable
+  public DLanguageTemplateDeclaration getTemplateDeclaration() {
+    return findChildByClass(DLanguageTemplateDeclaration.class);
+  }
+
+  @Override
+  @Nullable
   public DLanguageVarDeclarations getVarDeclarations() {
     return findChildByClass(DLanguageVarDeclarations.class);
   }
