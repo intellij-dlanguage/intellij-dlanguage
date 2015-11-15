@@ -76,9 +76,6 @@ public class DLanguageParser implements PsiParser {
     else if (t == AND_EXPRESSION) {
       r = AndExpression(b, 0);
     }
-    else if (t == ANON_STRUCT_DECLARATION) {
-      r = AnonStructDeclaration(b, 0);
-    }
     else if (t == ANON_UNION_DECLARATION) {
       r = AnonUnionDeclaration(b, 0);
     }
@@ -639,9 +636,6 @@ public class DLanguageParser implements PsiParser {
     }
     else if (t == STRUCT_MEMBER_INITIALIZERS) {
       r = StructMemberInitializers(b, 0);
-    }
-    else if (t == STRUCT_TEMPLATE_DECLARATION) {
-      r = StructTemplateDeclaration(b, 0);
     }
     else if (t == SUPER_CLASS) {
       r = SuperClass(b, 0);
@@ -1453,19 +1447,6 @@ public class DLanguageParser implements PsiParser {
     r = consumeToken(b, OP_AND);
     r = r && AndExpression(b, l + 1);
     exit_section_(b, m, null, r);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // 'struct' AggregateBody
-  public static boolean AnonStructDeclaration(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AnonStructDeclaration")) return false;
-    if (!nextTokenIs(b, KW_STRUCT)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, KW_STRUCT);
-    r = r && AggregateBody(b, l + 1);
-    exit_section_(b, m, ANON_STRUCT_DECLARATION, r);
     return r;
   }
 
@@ -7795,52 +7776,58 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // 'struct' Identifier ';'
-  //     | 'struct' Identifier AggregateBody?
-  //     | StructTemplateDeclaration
-  //     | AnonStructDeclaration
+  // 'struct' Identifier? TemplateParameters? Constraint? (AggregateBody | ';')?
   public static boolean StructDeclaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "StructDeclaration")) return false;
     if (!nextTokenIs(b, KW_STRUCT)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = StructDeclaration_0(b, l + 1);
-    if (!r) r = StructDeclaration_1(b, l + 1);
-    if (!r) r = StructTemplateDeclaration(b, l + 1);
-    if (!r) r = AnonStructDeclaration(b, l + 1);
+    r = consumeToken(b, KW_STRUCT);
+    r = r && StructDeclaration_1(b, l + 1);
+    r = r && StructDeclaration_2(b, l + 1);
+    r = r && StructDeclaration_3(b, l + 1);
+    r = r && StructDeclaration_4(b, l + 1);
     exit_section_(b, m, STRUCT_DECLARATION, r);
     return r;
   }
 
-  // 'struct' Identifier ';'
-  private static boolean StructDeclaration_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "StructDeclaration_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, KW_STRUCT);
-    r = r && Identifier(b, l + 1);
-    r = r && consumeToken(b, OP_SCOLON);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // 'struct' Identifier AggregateBody?
+  // Identifier?
   private static boolean StructDeclaration_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "StructDeclaration_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, KW_STRUCT);
-    r = r && Identifier(b, l + 1);
-    r = r && StructDeclaration_1_2(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
+    Identifier(b, l + 1);
+    return true;
   }
 
-  // AggregateBody?
-  private static boolean StructDeclaration_1_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "StructDeclaration_1_2")) return false;
-    AggregateBody(b, l + 1);
+  // TemplateParameters?
+  private static boolean StructDeclaration_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "StructDeclaration_2")) return false;
+    TemplateParameters(b, l + 1);
     return true;
+  }
+
+  // Constraint?
+  private static boolean StructDeclaration_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "StructDeclaration_3")) return false;
+    Constraint(b, l + 1);
+    return true;
+  }
+
+  // (AggregateBody | ';')?
+  private static boolean StructDeclaration_4(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "StructDeclaration_4")) return false;
+    StructDeclaration_4_0(b, l + 1);
+    return true;
+  }
+
+  // AggregateBody | ';'
+  private static boolean StructDeclaration_4_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "StructDeclaration_4_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = AggregateBody(b, l + 1);
+    if (!r) r = consumeToken(b, OP_SCOLON);
+    exit_section_(b, m, null, r);
+    return r;
   }
 
   /* ********************************************************** */
@@ -7922,29 +7909,6 @@ public class DLanguageParser implements PsiParser {
     r = r && StructMemberInitializers(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
-  }
-
-  /* ********************************************************** */
-  // 'struct' Identifier TemplateParameters Constraint? AggregateBody
-  public static boolean StructTemplateDeclaration(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "StructTemplateDeclaration")) return false;
-    if (!nextTokenIs(b, KW_STRUCT)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, KW_STRUCT);
-    r = r && Identifier(b, l + 1);
-    r = r && TemplateParameters(b, l + 1);
-    r = r && StructTemplateDeclaration_3(b, l + 1);
-    r = r && AggregateBody(b, l + 1);
-    exit_section_(b, m, STRUCT_TEMPLATE_DECLARATION, r);
-    return r;
-  }
-
-  // Constraint?
-  private static boolean StructTemplateDeclaration_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "StructTemplateDeclaration_3")) return false;
-    Constraint(b, l + 1);
-    return true;
   }
 
   /* ********************************************************** */

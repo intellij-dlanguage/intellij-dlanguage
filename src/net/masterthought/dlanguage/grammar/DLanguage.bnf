@@ -1308,16 +1308,7 @@ InterfaceTemplateDeclaration ::=
     'interface' Identifier TemplateParameters BaseInterfaceList Constraint AggregateBody
 
 StructDeclaration ::=
-    'struct' Identifier ';'
-    | 'struct' Identifier AggregateBody?
-    | StructTemplateDeclaration
-    | AnonStructDeclaration
-
-StructTemplateDeclaration ::=
-    'struct' Identifier TemplateParameters Constraint? AggregateBody
-
-AnonStructDeclaration ::=
-    'struct' AggregateBody
+    'struct' Identifier? TemplateParameters? Constraint? (AggregateBody | ';')?
 
 UnionDeclaration ::=
     'union' Identifier ';'

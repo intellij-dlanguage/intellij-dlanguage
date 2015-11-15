@@ -27,7 +27,6 @@ public interface DLanguageTypes {
   IElementType AND_AND_EXPRESSION = new DLanguageElementType("AND_AND_EXPRESSION");
   IElementType AND_EXPRESSION = new DLanguageElementType("AND_EXPRESSION");
   IElementType ANONYMOUS_ENUM_DECLARATION = new DLanguageElementType("ANONYMOUS_ENUM_DECLARATION");
-  IElementType ANON_STRUCT_DECLARATION = new DLanguageElementType("ANON_STRUCT_DECLARATION");
   IElementType ANON_UNION_DECLARATION = new DLanguageElementType("ANON_UNION_DECLARATION");
   IElementType ARGUMENT_LIST = new DLanguageElementType("ARGUMENT_LIST");
   IElementType ARRAY_INITIALIZER = new DLanguageElementType("ARRAY_INITIALIZER");
@@ -214,7 +213,6 @@ public interface DLanguageTypes {
   IElementType STRUCT_INITIALIZER = new DLanguageElementType("STRUCT_INITIALIZER");
   IElementType STRUCT_MEMBER_INITIALIZER = new DLanguageElementType("STRUCT_MEMBER_INITIALIZER");
   IElementType STRUCT_MEMBER_INITIALIZERS = new DLanguageElementType("STRUCT_MEMBER_INITIALIZERS");
-  IElementType STRUCT_TEMPLATE_DECLARATION = new DLanguageElementType("STRUCT_TEMPLATE_DECLARATION");
   IElementType SUPER_CLASS = new DLanguageElementType("SUPER_CLASS");
   IElementType SWITCH_STATEMENT = new DLanguageElementType("SWITCH_STATEMENT");
   IElementType SYMBOL = new DLanguageElementType("SYMBOL");
@@ -510,9 +508,6 @@ public interface DLanguageTypes {
       }
       else if (type == ANONYMOUS_ENUM_DECLARATION) {
         return new DLanguageAnonymousEnumDeclarationImpl(node);
-      }
-      else if (type == ANON_STRUCT_DECLARATION) {
-        return new DLanguageAnonStructDeclarationImpl(node);
       }
       else if (type == ANON_UNION_DECLARATION) {
         return new DLanguageAnonUnionDeclarationImpl(node);
@@ -1071,9 +1066,6 @@ public interface DLanguageTypes {
       }
       else if (type == STRUCT_MEMBER_INITIALIZERS) {
         return new DLanguageStructMemberInitializersImpl(node);
-      }
-      else if (type == STRUCT_TEMPLATE_DECLARATION) {
-        return new DLanguageStructTemplateDeclarationImpl(node);
       }
       else if (type == SUPER_CLASS) {
         return new DLanguageSuperClassImpl(node);

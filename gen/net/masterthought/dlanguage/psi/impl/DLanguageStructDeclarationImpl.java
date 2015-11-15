@@ -30,8 +30,8 @@ public class DLanguageStructDeclarationImpl extends ASTWrapperPsiElement impleme
 
   @Override
   @Nullable
-  public DLanguageAnonStructDeclaration getAnonStructDeclaration() {
-    return findChildByClass(DLanguageAnonStructDeclaration.class);
+  public DLanguageConstraint getConstraint() {
+    return findChildByClass(DLanguageConstraint.class);
   }
 
   @Override
@@ -42,14 +42,14 @@ public class DLanguageStructDeclarationImpl extends ASTWrapperPsiElement impleme
 
   @Override
   @Nullable
-  public DLanguageStructTemplateDeclaration getStructTemplateDeclaration() {
-    return findChildByClass(DLanguageStructTemplateDeclaration.class);
+  public DLanguageTemplateParameters getTemplateParameters() {
+    return findChildByClass(DLanguageTemplateParameters.class);
   }
 
   @Override
-  @Nullable
+  @NotNull
   public PsiElement getKwStruct() {
-    return findChildByType(KW_STRUCT);
+    return findNotNullChildByType(KW_STRUCT);
   }
 
   @Override

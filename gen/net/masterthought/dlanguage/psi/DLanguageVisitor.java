@@ -79,10 +79,6 @@ public class DLanguageVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitAnonStructDeclaration(@NotNull DLanguageAnonStructDeclaration o) {
-    visitPsiElement(o);
-  }
-
   public void visitAnonUnionDeclaration(@NotNull DLanguageAnonUnionDeclaration o) {
     visitPsiElement(o);
   }
@@ -828,10 +824,6 @@ public class DLanguageVisitor extends PsiElementVisitor {
   }
 
   public void visitStructMemberInitializers(@NotNull DLanguageStructMemberInitializers o) {
-    visitPsiElement(o);
-  }
-
-  public void visitStructTemplateDeclaration(@NotNull DLanguageStructTemplateDeclaration o) {
     visitPsiElement(o);
   }
 

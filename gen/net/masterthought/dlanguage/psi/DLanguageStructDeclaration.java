@@ -11,15 +11,15 @@ public interface DLanguageStructDeclaration extends PsiElement {
   DLanguageAggregateBody getAggregateBody();
 
   @Nullable
-  DLanguageAnonStructDeclaration getAnonStructDeclaration();
+  DLanguageConstraint getConstraint();
 
   @Nullable
   DLanguageIdentifier getIdentifier();
 
   @Nullable
-  DLanguageStructTemplateDeclaration getStructTemplateDeclaration();
+  DLanguageTemplateParameters getTemplateParameters();
 
-  @Nullable
+  @NotNull
   PsiElement getKwStruct();
 
   @Nullable
