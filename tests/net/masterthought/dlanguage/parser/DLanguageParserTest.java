@@ -86,7 +86,7 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
     public void testexpressions_cast2() { doTest(true, true); }
     public void testexpressions_cast_float() { doTest(true, true); }
     public void testexpressions_cast_pointer() { doTest(true, true); }
-//    public void testexpressions_is() { doTest(true, true); }
+    public void testexpressions_is() { doTest(true, true); }
     public void testexpressions_lambda() { doTest(true, true); }
     public void testexpressions_new() { doTest(true, true); }
     public void testexpressions_class_comparison() { doTest(true, true); }

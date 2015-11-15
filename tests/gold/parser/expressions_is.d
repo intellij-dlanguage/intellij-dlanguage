@@ -7,7 +7,6 @@ void foo()
     else
         writeln("not satisfied");
 
-    if (is([][]))       // error, [][] is not a syntactically valid type
 
 }
 
@@ -41,8 +40,6 @@ void foo(bar x)
         alias S = long;
 
     writeln(typeid(S)); // prints "short"
-    if (is(bar T))      // error, Identifier T form can
-                        // only be in StaticIfConditions
 
 }
 

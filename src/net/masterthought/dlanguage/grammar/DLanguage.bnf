@@ -1031,7 +1031,7 @@ Declaration ::=
    | VarDeclarations
 
 
-AliasDeclaration ::= 'alias' Identifier '=' Type TemplateArguments?
+AliasDeclaration ::= 'alias' Identifier '=' Type TemplateArguments? ';'
   | 'alias' StorageClasses? BasicType (FuncDeclarator|Declarator) ';'
   | 'alias' AliasDeclarationX ';'
 

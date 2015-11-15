@@ -884,7 +884,7 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // 'alias' Identifier '=' Type TemplateArguments?
+  // 'alias' Identifier '=' Type TemplateArguments? ';'
   //   | 'alias' StorageClasses? BasicType (FuncDeclarator|Declarator) ';'
   //   | 'alias' AliasDeclarationX ';'
   public static boolean AliasDeclaration(PsiBuilder b, int l) {
@@ -899,7 +899,7 @@ public class DLanguageParser implements PsiParser {
     return r;
   }
 
-  // 'alias' Identifier '=' Type TemplateArguments?
+  // 'alias' Identifier '=' Type TemplateArguments? ';'
   private static boolean AliasDeclaration_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "AliasDeclaration_0")) return false;
     boolean r;
@@ -909,6 +909,7 @@ public class DLanguageParser implements PsiParser {
     r = r && consumeToken(b, OP_EQ);
     r = r && Type(b, l + 1);
     r = r && AliasDeclaration_0_4(b, l + 1);
+    r = r && consumeToken(b, OP_SCOLON);
     exit_section_(b, m, null, r);
     return r;
   }

@@ -366,7 +366,7 @@ StringLiteral  ::= (WYSIWYG_STRING|ALTERNATE_WYSIWYG_STRING|DOUBLE_QUOTED_STRING
      | '@' '(' argumentList ')'
      
  attribute ::= 
-     | pragmaExpression
+      pragmaExpression
      | alignAttribute
      | deprecated
      | atAttribute
@@ -396,8 +396,8 @@ StringLiteral  ::= (WYSIWYG_STRING|ALTERNATE_WYSIWYG_STRING|DOUBLE_QUOTED_STRING
  attributeDeclaration ::= 
      attribute ':'
      
- autoDeclaration ::= 
-     storageClass+ Identifier '=' initializer (',' Identifier '=' initializer)* ';'
+ autoDeclaration ::=
+     storageClass Identifier '=' initializer (',' Identifier '=' initializer)* ';'
      
  blockStatement ::= 
      '{' declarationsAndStatements? '}'
@@ -572,9 +572,9 @@ StringLiteral  ::= (WYSIWYG_STRING|ALTERNATE_WYSIWYG_STRING|DOUBLE_QUOTED_STRING
      '{' enumMember (',' enumMember?)* '}'
      
  anonymousEnumMember ::= 
-       type identifier '=' assignExpression
-     | identifier '=' assignExpression
-     | identifier
+       type Identifier '=' assignExpression
+     | Identifier '=' assignExpression
+     | Identifier
      
  anonymousEnumDeclaration ::= 
      'enum' (':' type)? '{' anonymousEnumMember '}'
@@ -626,7 +626,7 @@ StringLiteral  ::= (WYSIWYG_STRING|ALTERNATE_WYSIWYG_STRING|DOUBLE_QUOTED_STRING
      
  functionBody ::= 
        blockStatement
-     | (inStatement | outStatement | outStatement inStatement | inStatement outStatement)? bodyStatement?
+     | (inStatement | outStatement | outStatement inStatement | inStatement outStatement)? bodyStatement
      
  functionCallExpression ::= 
       symbol arguments
@@ -702,11 +702,11 @@ StringLiteral  ::= (WYSIWYG_STRING|ALTERNATE_WYSIWYG_STRING|DOUBLE_QUOTED_STRING
      'invariant' ('(' ')')? blockStatement
      
  isExpression ::= 
-     'is' '(' type identifier? ')'
-     'is' '(' type identifier? ':' typeSpecialization ')'
-     'is' '(' type identifier? '=' typeSpecialization ')'
-     'is' '(' type identifier? ':' typeSpecialization ',' templateParameterList ')'
-     'is' '(' type identifier? '=' typeSpecialization ',' templateParameterList ')'
+     'is' '(' type Identifier? ')'
+     'is' '(' type Identifier? ':' typeSpecialization ')'
+     'is' '(' type Identifier? '=' typeSpecialization ')'
+     'is' '(' type Identifier? ':' typeSpecialization ',' templateParameterList ')'
+     'is' '(' type Identifier? '=' typeSpecialization ',' templateParameterList ')'
      
  keyValuePair ::= 
      assignExpression ':' assignExpression
@@ -822,9 +822,9 @@ StringLiteral  ::= (WYSIWYG_STRING|ALTERNATE_WYSIWYG_STRING|DOUBLE_QUOTED_STRING
  primaryExpression ::= 
        identifierOrTemplateInstance
      | '.' identifierOrTemplateInstance
-     | typeConstructor '(' basicType ')' '.' Identifier
-     | basicType '.' Identifier
-     | basicType arguments
+     | typeConstructor '(' builtinType ')' '.' Identifier
+     | builtinType '.' Identifier
+     | builtinType arguments
      | typeofExpression
      | typeidExpression
      | vector
@@ -1158,10 +1158,11 @@ StringLiteral  ::= (WYSIWYG_STRING|ALTERNATE_WYSIWYG_STRING|DOUBLE_QUOTED_STRING
  unittest ::= 
      'unittest' blockStatement
      
- variableDeclaration ::= 
-       storageClass* type declarator (',' declarator)* ';'
-     | storageClass* type identifier '=' functionBody ';'
-     | autoDeclaration
+ variableDeclaration ::=
+      autoDeclaration
+     |  storageClass* type declarator (',' declarator)* ';'
+     | storageClass* type Identifier '=' functionBody ';'
+
      
  vector ::= 
      '__vector' '(' type ')'

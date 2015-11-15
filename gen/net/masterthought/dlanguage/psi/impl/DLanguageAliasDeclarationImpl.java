@@ -83,9 +83,9 @@ public class DLanguageAliasDeclarationImpl extends ASTWrapperPsiElement implemen
   }
 
   @Override
-  @Nullable
+  @NotNull
   public PsiElement getOpScolon() {
-    return findChildByType(OP_SCOLON);
+    return findNotNullChildByType(OP_SCOLON);
   }
 
 }

@@ -20,6 +20,4 @@ D Language File
                   DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                     DLanguageIdentifierImpl(IDENTIFIER)
                       PsiElement(DLanguageTokenType.ID)('bar')
-    DLanguageDeclDefsImpl(DECL_DEFS)
-      DLanguageDeclDefImpl(DECL_DEF)
-        PsiElement(DLanguageTokenType.;)(';')
+          PsiElement(DLanguageTokenType.;)(';')

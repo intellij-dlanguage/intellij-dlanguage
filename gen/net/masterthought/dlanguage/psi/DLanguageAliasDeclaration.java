@@ -37,7 +37,7 @@ public interface DLanguageAliasDeclaration extends PsiElement {
   @Nullable
   PsiElement getOpEq();
 
-  @Nullable
+  @NotNull
   PsiElement getOpScolon();
 
 }
