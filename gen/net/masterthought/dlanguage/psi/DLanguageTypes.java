@@ -162,6 +162,7 @@ public interface DLanguageTypes {
   IElementType MIXIN_TEMPLATE_NAME = new DLanguageElementType("MIXIN_TEMPLATE_NAME");
   IElementType MODULE_DECLARATION = new DLanguageElementType("MODULE_DECLARATION");
   IElementType MODULE_FULLY_QUALIFIED_NAME = new DLanguageElementType("MODULE_FULLY_QUALIFIED_NAME");
+  IElementType MULTIPLE_ASSIGN = new DLanguageElementType("MULTIPLE_ASSIGN");
   IElementType MUL_EXPRESSION = new DLanguageElementType("MUL_EXPRESSION");
   IElementType NEW_ANON_CLASS_EXPRESSION = new DLanguageElementType("NEW_ANON_CLASS_EXPRESSION");
   IElementType NEW_EXPRESSION = new DLanguageElementType("NEW_EXPRESSION");
@@ -913,6 +914,9 @@ public interface DLanguageTypes {
       }
       else if (type == MODULE_FULLY_QUALIFIED_NAME) {
         return new DLanguageModuleFullyQualifiedNameImpl(node);
+      }
+      else if (type == MULTIPLE_ASSIGN) {
+        return new DLanguageMultipleAssignImpl(node);
       }
       else if (type == MUL_EXPRESSION) {
         return new DLanguageMulExpressionImpl(node);

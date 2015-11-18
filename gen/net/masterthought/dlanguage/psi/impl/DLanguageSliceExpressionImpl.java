@@ -23,9 +23,9 @@ public class DLanguageSliceExpressionImpl extends ASTWrapperPsiElement implement
   }
 
   @Override
-  @NotNull
-  public List<DLanguageAssignExpression> getAssignExpressionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageAssignExpression.class);
+  @Nullable
+  public DLanguageMultipleAssign getMultipleAssign() {
+    return findChildByClass(DLanguageMultipleAssign.class);
   }
 
   @Override
@@ -44,12 +44,6 @@ public class DLanguageSliceExpressionImpl extends ASTWrapperPsiElement implement
   @NotNull
   public PsiElement getOpBracketRight() {
     return findNotNullChildByType(OP_BRACKET_RIGHT);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpDdot() {
-    return findChildByType(OP_DDOT);
   }
 
 }

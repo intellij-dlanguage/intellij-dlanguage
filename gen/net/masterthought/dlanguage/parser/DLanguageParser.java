@@ -487,6 +487,9 @@ public class DLanguageParser implements PsiParser {
     else if (t == MUL_EXPRESSION) {
       r = MulExpression(b, 0);
     }
+    else if (t == MULTIPLE_ASSIGN) {
+      r = MultipleAssign(b, 0);
+    }
     else if (t == NEW_ANON_CLASS_EXPRESSION) {
       r = NewAnonClassExpression(b, 0);
     }
@@ -5942,6 +5945,59 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
+  // ((AssignExpression '..' AssignExpression) | AssignExpression) [',' MultipleAssign ]
+  public static boolean MultipleAssign(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "MultipleAssign")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, "<multiple assign>");
+    r = MultipleAssign_0(b, l + 1);
+    r = r && MultipleAssign_1(b, l + 1);
+    exit_section_(b, l, m, MULTIPLE_ASSIGN, r, false, null);
+    return r;
+  }
+
+  // (AssignExpression '..' AssignExpression) | AssignExpression
+  private static boolean MultipleAssign_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "MultipleAssign_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = MultipleAssign_0_0(b, l + 1);
+    if (!r) r = AssignExpression(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // AssignExpression '..' AssignExpression
+  private static boolean MultipleAssign_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "MultipleAssign_0_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = AssignExpression(b, l + 1);
+    r = r && consumeToken(b, OP_DDOT);
+    r = r && AssignExpression(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // [',' MultipleAssign ]
+  private static boolean MultipleAssign_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "MultipleAssign_1")) return false;
+    MultipleAssign_1_0(b, l + 1);
+    return true;
+  }
+
+  // ',' MultipleAssign
+  private static boolean MultipleAssign_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "MultipleAssign_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, OP_COMMA);
+    r = r && MultipleAssign(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // 'new' AllocatorArguments? 'class' ClassArguments? SuperClass? Interfaces? AggregateBody
   public static boolean NewAnonClassExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "NewAnonClassExpression")) return false;
@@ -7379,7 +7435,7 @@ public class DLanguageParser implements PsiParser {
 
   /* ********************************************************** */
   // '[' ']' [PostfixExpression]
-  //     |  '[' AssignExpression '..' AssignExpression ']' [PostfixExpression]
+  //     |  '[' MultipleAssign ']' [PostfixExpression]
   public static boolean SliceExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "SliceExpression")) return false;
     if (!nextTokenIs(b, OP_BRACKET_LEFT)) return false;
@@ -7410,24 +7466,22 @@ public class DLanguageParser implements PsiParser {
     return true;
   }
 
-  // '[' AssignExpression '..' AssignExpression ']' [PostfixExpression]
+  // '[' MultipleAssign ']' [PostfixExpression]
   private static boolean SliceExpression_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "SliceExpression_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, OP_BRACKET_LEFT);
-    r = r && AssignExpression(b, l + 1);
-    r = r && consumeToken(b, OP_DDOT);
-    r = r && AssignExpression(b, l + 1);
+    r = r && MultipleAssign(b, l + 1);
     r = r && consumeToken(b, OP_BRACKET_RIGHT);
-    r = r && SliceExpression_1_5(b, l + 1);
+    r = r && SliceExpression_1_3(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // [PostfixExpression]
-  private static boolean SliceExpression_1_5(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "SliceExpression_1_5")) return false;
+  private static boolean SliceExpression_1_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "SliceExpression_1_3")) return false;
     PostfixExpression(b, l + 1);
     return true;
   }

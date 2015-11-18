@@ -469,7 +469,10 @@ IndexExpression ::=
 
 SliceExpression ::=
      '[' ']' [PostfixExpression]
-    |  '[' AssignExpression '..' AssignExpression ']' [PostfixExpression]
+    |  '[' MultipleAssign ']' [PostfixExpression]
+
+MultipleAssign ::=
+ ((AssignExpression '..' AssignExpression) | AssignExpression) [',' MultipleAssign ]
 
 PrimaryExpression ::=
      ('.')? Identifier

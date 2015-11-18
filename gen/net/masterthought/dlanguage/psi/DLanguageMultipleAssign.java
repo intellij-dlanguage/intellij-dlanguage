@@ -5,18 +5,18 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DLanguageSliceExpression extends PsiElement {
+public interface DLanguageMultipleAssign extends PsiElement {
+
+  @NotNull
+  List<DLanguageAssignExpression> getAssignExpressionList();
 
   @Nullable
   DLanguageMultipleAssign getMultipleAssign();
 
   @Nullable
-  DLanguagePostfixExpression getPostfixExpression();
+  PsiElement getOpComma();
 
-  @NotNull
-  PsiElement getOpBracketLeft();
-
-  @NotNull
-  PsiElement getOpBracketRight();
+  @Nullable
+  PsiElement getOpDdot();
 
 }

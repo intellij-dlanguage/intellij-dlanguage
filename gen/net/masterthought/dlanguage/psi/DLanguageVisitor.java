@@ -627,6 +627,10 @@ public class DLanguageVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitMultipleAssign(@NotNull DLanguageMultipleAssign o) {
+    visitPsiElement(o);
+  }
+
   public void visitNewAnonClassExpression(@NotNull DLanguageNewAnonClassExpression o) {
     visitPsiElement(o);
   }
