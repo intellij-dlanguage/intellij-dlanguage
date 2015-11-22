@@ -52,4 +52,16 @@ public class DLanguageFuncDeclarationImpl extends ASTWrapperPsiElement implement
     return findChildByClass(DLanguageStorageClasses.class);
   }
 
+  @Override
+  @Nullable
+  public PsiElement getOpEq() {
+    return findChildByType(OP_EQ);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpScolon() {
+    return findChildByType(OP_SCOLON);
+  }
+
 }

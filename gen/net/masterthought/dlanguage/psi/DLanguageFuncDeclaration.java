@@ -22,4 +22,10 @@ public interface DLanguageFuncDeclaration extends PsiElement {
   @Nullable
   DLanguageStorageClasses getStorageClasses();
 
+  @Nullable
+  PsiElement getOpEq();
+
+  @Nullable
+  PsiElement getOpScolon();
+
 }

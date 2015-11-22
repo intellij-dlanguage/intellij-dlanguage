@@ -218,7 +218,5 @@ D Language File
                                                                       DLanguageParametersImpl(PARAMETERS)
                                                                         PsiElement(DLanguageTokenType.()('(')
                                                                         PsiElement(DLanguageTokenType.))(')')
-                                                      DLanguageStatementListImpl(STATEMENT_LIST)
-                                                        DLanguageStatementImpl(STATEMENT)
-                                                          PsiElement(DLanguageTokenType.;)(';')
+                                                                  PsiElement(DLanguageTokenType.;)(';')
                                                 PsiElement(DLanguageTokenType.})('}')

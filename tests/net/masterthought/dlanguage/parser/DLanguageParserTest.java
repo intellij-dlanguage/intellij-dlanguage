@@ -264,7 +264,7 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
 //    public void testtemplates_this_params() { doTest(true, true); }
     public void testtemplates_tuples() { doTest(true, true); }
     public void testtemplates_typed_specialization() { doTest(true, true); }
-//    public void testtemplates_variable() { doTest(true, true); }
+    public void testtemplates_variable() { doTest(true, true); }
 
 
 // contract programming

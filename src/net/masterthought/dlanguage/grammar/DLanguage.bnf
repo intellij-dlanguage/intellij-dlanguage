@@ -1162,7 +1162,7 @@ StructMemberInitializer ::=
 //Function
 
 FuncDeclaration ::=
-    StorageClasses? BasicType FuncDeclarator FunctionBody?
+    StorageClasses? BasicType FuncDeclarator (FunctionBody |';'| '=')?
     | AutoFuncDeclaration
 
 AutoFuncDeclaration ::=
