@@ -868,7 +868,7 @@ AsmInstructionList ::=
 
 
 AsmInstruction ::=
-    Identifier ':' AsmInstruction
+    Identifier ':' AsmInstruction?
     | 'align' IntegerExpression
     | 'even'
     | 'naked'
@@ -928,57 +928,37 @@ Operand ::=
     AsmExp
 
 AsmExp ::=
-    AsmLogOrExp
-    | AsmLogOrExp '?' AsmExp ':' AsmExp
+  AsmLogOrExp ('?' AsmExp ':' AsmExp)?
 
 AsmLogOrExp ::=
-    AsmLogAndExp
-    | AsmLogOrExp '||' AsmLogAndExp
+    AsmLogAndExp ['||' AsmLogOrExp]
 
 AsmLogAndExp ::=
-    AsmOrExp
-    | AsmLogAndExp '&&' AsmOrExp
+    AsmOrExp ['&&' AsmLogAndExp]
 
 AsmOrExp ::=
-    AsmXorExp
-    | AsmOrExp '|' AsmXorExp
+    AsmXorExp ['|' AsmOrExp]
 
 AsmXorExp ::=
-    AsmAndExp
-    | AsmXorExp '^' AsmAndExp
+    AsmAndExp [ '^' AsmXorExp ]
 
 AsmAndExp ::=
-    AsmEqualExp
-    | AsmAndExp '&' AsmEqualExp
+   AsmEqualExp ['&' AsmAndExp]
 
 AsmEqualExp ::=
-    AsmRelExp
-    | AsmEqualExp '==' AsmRelExp
-    | AsmEqualExp '!=' AsmRelExp
+  AsmRelExp [ ('==' | '!=' ) AsmEqualExp]
 
 AsmRelExp ::=
-    AsmShiftExp
-    | AsmRelExp '<' AsmShiftExp
-    | AsmRelExp '<=' AsmShiftExp
-    | AsmRelExp '>' AsmShiftExp
-    | AsmRelExp '>=' AsmShiftExp
+   AsmShiftExp [ ('<' | '<=' | '>' | '>=' ) AsmRelExp]
 
 AsmShiftExp ::=
-    AsmAddExp
-    | AsmShiftExp '<<' AsmAddExp
-    | AsmShiftExp '>>' AsmAddExp
-    | AsmShiftExp '>>>'  AsmAddExp
+    AsmAddExp [ ('<<' | '>>' | '>>>') AsmShiftExp ]
 
 AsmAddExp ::=
-    AsmMulExp
-    | AsmAddExp '+' AsmMulExp
-    | AsmAddExp '-' AsmMulExp
+ AsmMulExp [ ('+' | '-') AsmAddExp ]
 
 AsmMulExp ::=
-    AsmBrExp
-    | AsmMulExp '*' AsmBrExp
-    | AsmMulExp '/' AsmBrExp
-    | AsmMulExp '%' AsmBrExp
+   AsmBrExp [ ('*' | '/' | '%') AsmMulExp]
 
 AsmBrExp ::=
        AsmUnaExp ['[' AsmExp ']']
@@ -995,13 +975,12 @@ AsmUnaExp ::=
 
 AsmPrimaryExp ::=
     INTEGER_LITERAL
+    | StringLiteral
     | FLOAT_LITERAL
     | '__LOCAL_SIZE'
     | '$'
-    | Register ':' AsmExp
-    | Register
-    | Register64 ':' AsmExp
-    | Register64
+    | Register (':' AsmExp)?
+    | Register64 (':' AsmExp)?
     | DotIdentifier
     | 'this'
 
