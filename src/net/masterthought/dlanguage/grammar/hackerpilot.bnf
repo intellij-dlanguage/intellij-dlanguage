@@ -10,8 +10,8 @@
   psiImplPackage="net.masterthought.dlanguage.psi.impl"
 
   elementTypeHolderClass="net.masterthought.dlanguage.psi.DLanguageTypes"
-  elementTypeClass="net.masterthought.dlanguage.psi.DLanguageElementType"
-  tokenTypeClass="net.masterthought.dlanguage.psi.DLanguageTokenType"
+  elementTypeClass="net.masterthought.dlanguage.psi.DElementType"
+  tokenTypeClass="net.masterthought.dlanguage.psi.DTokenType"
 
   generateTokenAccessors=true
 

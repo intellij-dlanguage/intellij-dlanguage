@@ -27,8 +27,9 @@
         <fileTypeFactory implementation="net.masterthought.dlanguage.DLanguageFileTypeFactory"/>
         <lang.parserDefinition language="D"
                                implementationClass="net.masterthought.dlanguage.DLanguageParserDefinition"/>
-        <!--<lang.syntaxHighlighterFactory key="D" implementationClass="net.masterthought.dlanguage.DLanguageHighlighterFactory"/>-->
-        <!--<colorSettingsPage implementation="net.masterthought.dlanguage.DLanguageColorSettingsPage"/>-->
+        <lang.syntaxHighlighterFactory key="D"
+                                       implementationClass="net.masterthought.dlanguage.highlighting.DHighlighterFactory"/>
+        <colorSettingsPage implementation="net.masterthought.dlanguage.settings.DColorSettingsPage"/>
 
 
         <!-- D Language support -->

@@ -1,0 +1,630 @@
+Index: src/net/masterthought/dlanguage/highlighting/DHighlighter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/net/masterthought/dlanguage/highlighting/DHighlighter.java	(revision )
++++ src/net/masterthought/dlanguage/highlighting/DHighlighter.java	(revision )
+@@ -0,0 +1,154 @@
++package net.masterthought.dlanguage.highlighting;
++
++import com.intellij.lexer.Lexer;
++import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
++import com.intellij.openapi.editor.colors.TextAttributesKey;
++import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
++import com.intellij.psi.TokenType;
++import com.intellij.psi.tree.IElementType;
++import net.masterthought.dlanguage.psi.DTokenSets;
++import org.jetbrains.annotations.NotNull;
++
++import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributesKey;
++
++/**
++ * Highlighter for D source.  Uses DHighlightingLexer to create tokens of
++ * DElementType, then returns the highlighting TextAttributesKey associated
++ * with the DElementType token.
++ */
++public class DHighlighter extends SyntaxHighlighterBase {
++
++    // Token based highlighting
++    public static final TextAttributesKey ILLEGAL = createTextAttributesKey("D_ILLEGAL", DefaultLanguageHighlighterColors.INVALID_STRING_ESCAPE);
++    public static final TextAttributesKey COMMENT = createTextAttributesKey("D_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
++    public static final TextAttributesKey STRING = createTextAttributesKey("D_STRING", DefaultLanguageHighlighterColors.STRING);
++    public static final TextAttributesKey NUMBER = createTextAttributesKey("D_NUMBER", DefaultLanguageHighlighterColors.NUMBER);
++    public static final TextAttributesKey KEYWORD = createTextAttributesKey("D_KEYWORD", DefaultLanguageHighlighterColors.KEYWORD);
++    public static final TextAttributesKey PARENTHESES = createTextAttributesKey("D_PARENTHESES", DefaultLanguageHighlighterColors.PARENTHESES);
++    public static final TextAttributesKey BRACES = createTextAttributesKey("D_BRACES", DefaultLanguageHighlighterColors.BRACES);
++    public static final TextAttributesKey BRACKETS = createTextAttributesKey("D_BRACKETS", DefaultLanguageHighlighterColors.BRACKETS);
++    public static final TextAttributesKey OP_SIGN = createTextAttributesKey("D_OP_SIGN", DefaultLanguageHighlighterColors.OPERATION_SIGN);
++
++    // Annotation based highlighting
++    public static final TextAttributesKey FUNCTION_DEFINITION = createTextAttributesKey("D_SYMBOL", DefaultLanguageHighlighterColors.INSTANCE_METHOD);
++    public static final TextAttributesKey REF_MODULE = createTextAttributesKey("D_REF_MODULE", DefaultLanguageHighlighterColors.NUMBER);
++    public static final TextAttributesKey VARIABLE = createTextAttributesKey("D_VARIABLE", DefaultLanguageHighlighterColors.INSTANCE_FIELD);
++
++    @NotNull
++    @Override
++    public Lexer getHighlightingLexer() {
++        return new DHighlightingLexer();
++    }
++
++    @NotNull
++    @Override
++    public TextAttributesKey[] getTokenHighlights(final IElementType type) {
++        if (type == TokenType.BAD_CHARACTER) {
++            return pack(ILLEGAL);
++        }
++        if (DTokenSets.COMMENTS.contains(type)) {
++            return pack(COMMENT);
++        }
++        if (DTokenSets.STRING_LITERALS.contains(type)) {
++            return pack(STRING);
++        }
++        if (DTokenSets.INTEGER_LITERALS.contains(type) || DTokenSets.FLOAT_LITERALS.contains(type)) {
++            return pack(NUMBER);
++        }
++        if (DTokenSets.OPERATOR.contains(type)) {
++            return pack(OP_SIGN);
++        }
++        if (DTokenSets.PARENS.contains(type)) {
++            return pack(PARENTHESES);
++        }
++        if (DTokenSets.BRACE.contains(type)) {
++            return pack(BRACES);
++        }
++        if (DTokenSets.BRACKET.contains(type)) {
++            return pack(BRACKETS);
++        }
++        if (DTokenSets.KEYWORD.contains(type)) {
++            return pack(KEYWORD);
++        }
++        return EMPTY;
++    }
++
++
++//    public static final TextAttributesKey LINE_COMMENT = createTextAttributesKey(
++//                                                                "LINE_COMMENT",
++//                                                                DefaultLanguageHighlighterColors.LINE_COMMENT);
++//    public static final TextAttributesKey BLOCK_COMMENT = createTextAttributesKey(
++//                                                                "BLOCK_COMMENT",
++//                                                                DefaultLanguageHighlighterColors.BLOCK_COMMENT);
++//    public static final TextAttributesKey DOC_COMMENT = createTextAttributesKey(
++//                                                                "DOC_COMMENT",
++//                                                                DefaultLanguageHighlighterColors.DOC_COMMENT);
++//
++//    private static final TextAttributesKey[] COMMENTS = new TextAttributesKey[]{LINE_COMMENT,BLOCK_COMMENT,DOC_COMMENT};
++//
++//
++//    public static final TextAttributesKey STRING_LITERAL = createTextAttributesKey(
++//                                                                "STRING_LITERAL",
++//                                                                DefaultLanguageHighlighterColors.STRING);
++//
++//    public static final TextAttributesKey NUM_LITERAL = createTextAttributesKey(
++//                                                                "NUM_LITERAL",
++//                                                                DefaultLanguageHighlighterColors.NUMBER);
++//
++//
++//    public static final TextAttributesKey OPERATOR = createTextAttributesKey(
++//                                                                "OPERATOR",
++//                                                                DefaultLanguageHighlighterColors.OPERATION_SIGN);
++//
++//    public static final TextAttributesKey KEYWORD = createTextAttributesKey(
++//                                                                "KEYWORD",
++//                                                                DefaultLanguageHighlighterColors.KEYWORD);
++//
++//    public static final TextAttributesKey PARENS = createTextAttributesKey(
++//                                                                "PARENS",
++//                                                                DefaultLanguageHighlighterColors.PARENTHESES);
++//    public static final TextAttributesKey BRACES = createTextAttributesKey(
++//                                                                "BRACES",
++//                                                                DefaultLanguageHighlighterColors.BRACES);
++//    public static final TextAttributesKey BRACKETS = createTextAttributesKey(
++//                                                                "BRACKETS",
++//                                                                DefaultLanguageHighlighterColors.BRACKETS);
++//
++///*
++//    public static final TextAttributesKey IDENTIFIER = TextAttributesKey.createTextAttributesKey("IDENTIFIER",
++//                                                                                                 DefaultLanguageHighlighterColors.KEYWORD);
++//*/
++//
++//    private static final Map<TokenSet, TextAttributesKey[]> keys;
++//    static {
++//        keys = new HashMap<TokenSet, TextAttributesKey[]>();
++//
++///*
++//        keys.put(DTokenType.LINE_COMMENT, LINE_COMMENT);
++//        keys.put(DTokenType.BLOCK_COMMENT, BLOCK_COMMENT);
++//        keys.put(DTokenType.BLOCK_COMMENT_NEST, BLOCK_COMMENT);
++//        keys.put(DTokenType.DOC_COMMENT, DOC_COMMENT);
++//        keys.put(DTokenType.DOC_COMMENT_NEST, DOC_COMMENT);
++//        keys.put(DTokenType.DOC_LINE_COMMENT, DOC_COMMENT);
++//*/
++//
++//        keys.put(DLanguageTokenType.COMMENTS, COMMENTS);
++//        keys.put(DLanguageTokenType.PARENS, pack(PARENS));
++//        keys.put(DLanguageTokenType.BRACE, pack(BRACES));
++//        keys.put(DLanguageTokenType.BRACKET, pack(BRACKETS));
++//        keys.put(DLanguageTokenType.OPERATOR, pack(OPERATOR));
++//        keys.put(DLanguageTokenType.KEYWORD, pack(KEYWORD));
++//        keys.put(DLanguageTokenType.STRING_LITERALS, pack(STRING_LITERAL));
++//
++///*
++//        keys.put(DTokenType.STRING_LITERAL, STRING_LITERAL);
++//        keys.put(DTokenType.DSTR_LITERAL, STRING_LITERAL);
++//        keys.put(DTokenType.WSTR_LITERAL, STRING_LITERAL);
++//        keys.put(DTokenType.CHAR_LITERAL, STRING_LITERAL);
++//*/
++//
++////        keys.put(DTokenType.LITERAL, NUM_LITERAL);
++////        keys.put(DTokenType.IDENTIFIER, IDENTIFIER);
++//}
++
++}
+Index: src/net/masterthought/dlanguage/grammar/hackerpilot.bnf
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/net/masterthought/dlanguage/grammar/hackerpilot.bnf	(revision 05e0578cba46877f456177b3634db699a487908f)
++++ src/net/masterthought/dlanguage/grammar/hackerpilot.bnf	(revision )
+@@ -10,8 +10,8 @@
+   psiImplPackage="net.masterthought.dlanguage.psi.impl"
+ 
+   elementTypeHolderClass="net.masterthought.dlanguage.psi.DLanguageTypes"
+-  elementTypeClass="net.masterthought.dlanguage.psi.DLanguageElementType"
+-  tokenTypeClass="net.masterthought.dlanguage.psi.DLanguageTokenType"
++  elementTypeClass="net.masterthought.dlanguage.psi.DElementType"
++  tokenTypeClass="net.masterthought.dlanguage.psi.DTokenType"
+ 
+   generateTokenAccessors=true
+ 
+Index: src/net/masterthought/dlanguage/highlighting/DHighlighterFactory.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/net/masterthought/dlanguage/highlighting/DHighlighterFactory.java	(revision )
++++ src/net/masterthought/dlanguage/highlighting/DHighlighterFactory.java	(revision )
+@@ -0,0 +1,19 @@
++package net.masterthought.dlanguage.highlighting;
++
++import com.intellij.openapi.fileTypes.SyntaxHighlighter;
++import com.intellij.openapi.fileTypes.SyntaxHighlighterFactory;
++import com.intellij.openapi.project.Project;
++import com.intellij.openapi.vfs.VirtualFile;
++import org.jetbrains.annotations.NotNull;
++import org.jetbrains.annotations.Nullable;
++
++public class DHighlighterFactory extends SyntaxHighlighterFactory {
++
++    @NotNull
++    @Override
++    public SyntaxHighlighter getSyntaxHighlighter(@Nullable final Project project,
++                                                  @Nullable final VirtualFile virtualFile) {
++        return new DHighlighter();
++    }
++}
++
+Index: src/net/masterthought/dlanguage/highlighting/DHighlightingLexer.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/net/masterthought/dlanguage/highlighting/DHighlightingLexer.java	(revision )
++++ src/net/masterthought/dlanguage/highlighting/DHighlightingLexer.java	(revision )
+@@ -0,0 +1,10 @@
++package net.masterthought.dlanguage.highlighting;
++
++import com.intellij.lexer.FlexAdapter;
++import net.masterthought.dlanguage.lexer.DLanguageLexer;
++
++public class DHighlightingLexer extends FlexAdapter {
++    public DHighlightingLexer() {
++        super(new DLanguageLexer(null));
++    }
++}
+Index: src/net/masterthought/dlanguage/DLanguage_orig.bnf
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/net/masterthought/dlanguage/DLanguage_orig.bnf	(revision 05e0578cba46877f456177b3634db699a487908f)
++++ src/net/masterthought/dlanguage/DLanguage_orig.bnf	(revision )
+@@ -10,8 +10,8 @@
+   psiImplPackage="net.masterthought.dlanguage.psi.impl"
+ 
+   elementTypeHolderClass="net.masterthought.dlanguage.psi.DLanguageTypes"
+-  elementTypeClass="net.masterthought.dlanguage.psi.DLanguageElementType"
+-  tokenTypeClass="net.masterthought.dlanguage.psi.DLanguageTokenType"
++  elementTypeClass="net.masterthought.dlanguage.psi.DElementType"
++  tokenTypeClass="net.masterthought.dlanguage.psi.DTokenType"
+ 
+   generateTokenAccessors=true
+ 
+Index: src/net/masterthought/dlanguage/psi/DTokenSets.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/net/masterthought/dlanguage/psi/DTokenSets.java	(revision )
++++ src/net/masterthought/dlanguage/psi/DTokenSets.java	(revision )
+@@ -0,0 +1,213 @@
++package net.masterthought.dlanguage.psi;
++
++import com.intellij.psi.TokenType;
++import com.intellij.psi.tree.TokenSet;
++
++public class DTokenSets {
++
++    public static final TokenSet WHITESPACES = TokenSet.create(TokenType.WHITE_SPACE);
++//    public static final TokenSet COMMENTS = TokenSet.create(DLanguageTypes.COMMENT_MULTI,
++//            DLanguageTypes.COMMENT_NESTED, DLanguageTypes.COMMENT_LINE,
++//            DLanguageTypes.DOCCOMMENT_MULTI, DLanguageTypes.DOCCOMMENT_NESTED,
++//            DLanguageTypes.DOCCOMMENT_LINE);
++
++    public static final TokenSet COMMENTS = TokenSet.create(DLanguageTypes.LINE_COMMENT,
++            DLanguageTypes.BLOCK_COMMENT);
++    
++//    public static final TokenSet MULTI_LINE_COMMENTS = TokenSet.create(DLanguageTypes.COMMENT_MULTI,
++//            DLanguageTypes.COMMENT_NESTED,
++//            DLanguageTypes.DOCCOMMENT_MULTI, DLanguageTypes.DOCCOMMENT_NESTED);
++    
++//    public static final TokenSet STRING_LITERALS = TokenSet.create(DLanguageTypes.STRING_WYSIWYG, DLanguageTypes.STRING_DELIM,
++//            DLanguageTypes.KW_CHAR,
++//            DLanguageTypes.KW_DCHAR,
++//            DLanguageTypes.KW_WCHAR,
++//            DLanguageTypes.DOUBLE_QUOTED_STRING
++//    );
++
++    public static final TokenSet STRING_LITERALS = TokenSet.create(DLanguageTypes.STRING_LITERALS);
++    public static final TokenSet INTEGER_LITERALS = TokenSet.create(DLanguageTypes.INTEGER_LITERAL);
++    public static final TokenSet FLOAT_LITERALS = TokenSet.create(DLanguageTypes.FLOAT_LITERAL);
++
++//    public static final TokenSet INTEGER_LITERALS = TokenSet.create(
++//            DLanguageTypes.INTEGER_DECIMAL,
++//            DLanguageTypes.INTEGER_BINARY,
++//            DLanguageTypes.INTEGER_OCTAL,
++//            DLanguageTypes.INTEGER_HEX);
++
++//    public static final TokenSet FLOAT_LITERALS = TokenSet.create(
++//            DLanguageTypes.FLOAT_DECIMAL,
++//            DLanguageTypes.FLOAT_HEX);
++
++    public static final TokenSet PARENS = TokenSet.create(DLanguageTypes.OP_PAR_LEFT, DLanguageTypes.OP_PAR_RIGHT);
++    public static final TokenSet BRACE = TokenSet.create(DLanguageTypes.OP_BRACES_LEFT, DLanguageTypes.OP_BRACES_RIGHT);
++    public static final TokenSet BRACKET = TokenSet.create(DLanguageTypes.OP_BRACKET_LEFT, DLanguageTypes.OP_BRACKET_RIGHT);
++
++    public static final TokenSet KEYWORD = TokenSet.create(
++            DLanguageTypes.KW_ABSTRACT,
++            DLanguageTypes.KW_ALIAS,
++            DLanguageTypes.KW_ALIGN,
++            DLanguageTypes.KW_ASM,
++            DLanguageTypes.KW_ASSERT,
++            DLanguageTypes.KW_AUTO,
++            DLanguageTypes.KW_BODY,
++            DLanguageTypes.KW_BOOL,
++            DLanguageTypes.KW_BREAK,
++            DLanguageTypes.KW_BYTE,
++            DLanguageTypes.KW_CASE,
++            DLanguageTypes.KW_CAST,
++            DLanguageTypes.KW_CATCH,
++            DLanguageTypes.KW_CDOUBLE,
++//            DLanguageTypes.KW_CENT,
++            DLanguageTypes.KW_CFLOAT,
++            DLanguageTypes.KW_CHAR,
++            DLanguageTypes.KW_CLASS,
++            DLanguageTypes.KW_CONST,
++            DLanguageTypes.KW_CONTINUE,
++            DLanguageTypes.KW_CREAL,
++            DLanguageTypes.KW_DCHAR,
++            DLanguageTypes.KW_DEBUG,
++            DLanguageTypes.KW_DEFAULT,
++            DLanguageTypes.KW_DELEGATE,
++            DLanguageTypes.KW_DELETE,
++            DLanguageTypes.KW_DEPRECATED,
++            DLanguageTypes.KW_DO,
++            DLanguageTypes.KW_DOUBLE,
++            DLanguageTypes.KW_ELSE,
++            DLanguageTypes.KW_ENUM,
++            DLanguageTypes.KW_EXPORT,
++            DLanguageTypes.KW_EXTERN,
++            DLanguageTypes.KW_FALSE,
++            DLanguageTypes.KW_FINAL,
++            DLanguageTypes.KW_FINALLY,
++            DLanguageTypes.KW_FLOAT,
++            DLanguageTypes.KW_FOR,
++            DLanguageTypes.KW_FOREACH,
++            DLanguageTypes.KW_FOREACH_REVERSE,
++            DLanguageTypes.KW_FUNCTION,
++            DLanguageTypes.KW_GOTO,
++            DLanguageTypes.KW_IDOUBLE,
++            DLanguageTypes.KW_IF,
++            DLanguageTypes.KW_IFLOAT,
++            DLanguageTypes.KW_IMMUTABLE,
++            DLanguageTypes.KW_IMPORT,
++            DLanguageTypes.KW_IN,
++            DLanguageTypes.KW_INOUT,
++            DLanguageTypes.KW_INT,
++            DLanguageTypes.KW_INTERFACE,
++            DLanguageTypes.KW_INVARIANT,
++            DLanguageTypes.KW_IREAL,
++            DLanguageTypes.KW_IS,
++            DLanguageTypes.KW_LAZY,
++            DLanguageTypes.KW_LONG,
++//            DLanguageTypes.KW_MACRO,
++            DLanguageTypes.KW_MIXIN,
++            DLanguageTypes.KW_MODULE,
++            DLanguageTypes.KW_NEW,
++            DLanguageTypes.KW_NOTHROW,
++            DLanguageTypes.KW_NULL,
++            DLanguageTypes.KW_OUT,
++            DLanguageTypes.KW_OVERRIDE,
++            DLanguageTypes.KW_PACKAGE,
++            DLanguageTypes.KW_PRAGMA,
++            DLanguageTypes.KW_PRIVATE,
++            DLanguageTypes.KW_PROTECTED,
++            DLanguageTypes.KW_PUBLIC,
++            DLanguageTypes.KW_PURE,
++            DLanguageTypes.KW_REAL,
++            DLanguageTypes.KW_REF,
++            DLanguageTypes.KW_RETURN,
++            DLanguageTypes.KW_SCOPE,
++            DLanguageTypes.KW_SHARED,
++            DLanguageTypes.KW_SHORT,
++            DLanguageTypes.KW_STATIC,
++            DLanguageTypes.KW_STRUCT,
++            DLanguageTypes.KW_SUPER,
++            DLanguageTypes.KW_SWITCH,
++            DLanguageTypes.KW_SYNCHRONIZED,
++            DLanguageTypes.KW_TEMPLATE,
++            DLanguageTypes.KW_THIS,
++            DLanguageTypes.KW_THROW,
++            DLanguageTypes.KW_TRUE,
++            DLanguageTypes.KW_TRY,
++//            DLanguageTypes.KW_TYPEDEF,
++            DLanguageTypes.KW_TYPEID,
++            DLanguageTypes.KW_TYPEOF,
++            DLanguageTypes.KW_UBYTE,
++//            DLanguageTypes.KW_UCENT,
++            DLanguageTypes.KW_UINT,
++            DLanguageTypes.KW_ULONG,
++            DLanguageTypes.KW_UNION,
++            DLanguageTypes.KW_UNITTEST,
++            DLanguageTypes.KW_USHORT,
++            DLanguageTypes.KW_VERSION,
++            DLanguageTypes.KW_VOID,
++//            DLanguageTypes.KW_VOLATILE,
++            DLanguageTypes.KW_WCHAR,
++            DLanguageTypes.KW_WHILE,
++            DLanguageTypes.KW_WITH,
++            DLanguageTypes.KW___FILE__,
++            DLanguageTypes.KW___LINE__,
++            DLanguageTypes.KW___GSHARED,
++            DLanguageTypes.KW___TRAITS
++//            DLanguageTypes.KW___VECTOR
++    );
++
++    public static final TokenSet OPERATOR = TokenSet.create(
++            DLanguageTypes.OP_SCOLON,       
++            DLanguageTypes.OP_COLON,        
++            DLanguageTypes.OP_EQ,           
++            DLanguageTypes.OP_COMMA,        
++            DLanguageTypes.OP_PAR_LEFT,     
++            DLanguageTypes.OP_PAR_RIGHT,    
++            DLanguageTypes.OP_BRACKET_LEFT, 
++            DLanguageTypes.OP_BRACKET_RIGHT,
++            DLanguageTypes.OP_BRACES_LEFT,  
++            DLanguageTypes.OP_BRACES_RIGHT, 
++            DLanguageTypes.OP_ASTERISK,     
++            DLanguageTypes.OP_DDOT,         
++            DLanguageTypes.OP_TRIPLEDOT,    
++            DLanguageTypes.OP_AT,           
++            DLanguageTypes.OP_PLUS_EQ,      
++            DLanguageTypes.OP_MINUS_EQ,     
++            DLanguageTypes.OP_MUL_EQ,       
++            DLanguageTypes.OP_DIV_EQ,       
++            DLanguageTypes.OP_MOD_EQ,       
++            DLanguageTypes.OP_AND_EQ,       
++            DLanguageTypes.OP_OR_EQ,        
++            DLanguageTypes.OP_XOR_EQ,       
++            DLanguageTypes.OP_TILDA_EQ,     
++            DLanguageTypes.OP_SH_LEFT_EQ,   
++            DLanguageTypes.OP_SH_RIGHT_EQ,  
++            DLanguageTypes.OP_USH_RIGHT_EQ, 
++            DLanguageTypes.OP_POW_EQ,       
++            DLanguageTypes.OP_QUEST,        
++            DLanguageTypes.OP_BOOL_OR,      
++            DLanguageTypes.OP_BOOL_AND,     
++            DLanguageTypes.OP_OR,           
++            DLanguageTypes.OP_XOR,          
++            DLanguageTypes.OP_SH_LEFT,      
++            DLanguageTypes.OP_SH_RIGHT,     
++            DLanguageTypes.OP_USH_RIGHT,    
++            DLanguageTypes.OP_PLUS,         
++            DLanguageTypes.OP_MINUS,        
++            DLanguageTypes.OP_TILDA,        
++            DLanguageTypes.OP_DIV,          
++            DLanguageTypes.OP_MOD,          
++            DLanguageTypes.OP_AND,          
++            DLanguageTypes.OP_PLUS_PLUS,    
++            DLanguageTypes.OP_MINUS_MINUS,  
++            DLanguageTypes.OP_NOT,          
++            DLanguageTypes.OP_POW,          
++            DLanguageTypes.OP_DOLLAR,       
++            DLanguageTypes.OP_EQ_EQ,        
++            DLanguageTypes.OP_NOT_EQ,       
++            DLanguageTypes.OP_LESS,         
++            DLanguageTypes.OP_LESS_EQ,      
++            DLanguageTypes.OP_GT,           
++            DLanguageTypes.OP_GT_EQ,        
++            DLanguageTypes.OP_UNORD,        
++            DLanguageTypes.OP_UNORD_EQ,
++            DLanguageTypes.LAMBDA
++    );
++}
+Index: src/net/masterthought/dlanguage/DLanguage2.bnf
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/net/masterthought/dlanguage/DLanguage2.bnf	(revision 05e0578cba46877f456177b3634db699a487908f)
++++ src/net/masterthought/dlanguage/DLanguage2.bnf	(revision )
+@@ -10,8 +10,8 @@
+   psiImplPackage="net.masterthought.dlanguage.psi.impl"
+ 
+   elementTypeHolderClass="net.masterthought.dlanguage.psi.DLanguageTypes"
+-  elementTypeClass="net.masterthought.dlanguage.psi.DLanguageElementType"
+-  tokenTypeClass="net.masterthought.dlanguage.psi.DLanguageTokenType"
++  elementTypeClass="net.masterthought.dlanguage.psi.DElementType"
++  tokenTypeClass="net.masterthought.dlanguage.psi.DTokenType"
+ 
+   generateTokenAccessors=true
+ 
+Index: META-INF/plugin.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- META-INF/plugin.xml	(revision 05e0578cba46877f456177b3634db699a487908f)
++++ META-INF/plugin.xml	(revision )
+@@ -27,8 +27,9 @@
+         <fileTypeFactory implementation="net.masterthought.dlanguage.DLanguageFileTypeFactory"/>
+         <lang.parserDefinition language="D"
+                                implementationClass="net.masterthought.dlanguage.DLanguageParserDefinition"/>
+-        <!--<lang.syntaxHighlighterFactory key="D" implementationClass="net.masterthought.dlanguage.DLanguageHighlighterFactory"/>-->
+-        <!--<colorSettingsPage implementation="net.masterthought.dlanguage.DLanguageColorSettingsPage"/>-->
++        <!--<lang.syntaxHighlighterFactory key="D"-->
++                                       <!--implementationClass="net.masterthought.dlanguage.highlighting.DHighlighterFactory"/>-->
++        <!--<colorSettingsPage implementation="net.masterthought.dlanguage.settings.DColorSettingsPage"/>-->
+ 
+ 
+         <!-- D Language support -->
+\ No newline at end of file
+Index: src/net/masterthought/dlanguage/settings/DColorSettingsPage.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/net/masterthought/dlanguage/settings/DColorSettingsPage.java	(revision )
++++ src/net/masterthought/dlanguage/settings/DColorSettingsPage.java	(revision )
+@@ -0,0 +1,120 @@
++package net.masterthought.dlanguage.settings;
++
++import com.intellij.openapi.editor.colors.TextAttributesKey;
++import com.intellij.openapi.fileTypes.SyntaxHighlighter;
++import com.intellij.openapi.options.colors.AttributesDescriptor;
++import com.intellij.openapi.options.colors.ColorDescriptor;
++import com.intellij.openapi.options.colors.ColorSettingsPage;
++import com.intellij.util.containers.ContainerUtil;
++import net.masterthought.dlanguage.DLanguageFileType;
++import net.masterthought.dlanguage.DLanguageIcons;
++import org.jetbrains.annotations.NotNull;
++import org.jetbrains.annotations.Nullable;
++
++import net.masterthought.dlanguage.highlighting.DHighlighter;
++
++import javax.swing.Icon;
++import java.util.Map;
++
++import static net.masterthought.dlanguage.highlighting.DHighlighter.*;
++
++
++public class DColorSettingsPage implements ColorSettingsPage {
++
++//    private static final AttributesDescriptor[] DESCRIPTORS = new AttributesDescriptor[] {
++//            new AttributesDescriptor(DHighlighter.OPERATOR.getExternalName(), DHighlighter.OPERATOR),
++//            new AttributesDescriptor(DHighlighter.STRING_LITERAL.getExternalName(), DHighlighter.STRING_LITERAL),
++//            new AttributesDescriptor(DHighlighter.LINE_COMMENT.getExternalName(), DHighlighter.LINE_COMMENT),
++//            new AttributesDescriptor(DHighlighter.BLOCK_COMMENT.getExternalName(), DHighlighter.BLOCK_COMMENT),
++//            new AttributesDescriptor(DHighlighter.DOC_COMMENT.getExternalName(), DHighlighter.DOC_COMMENT),
++//            new AttributesDescriptor(DHighlighter.KEYWORD.getExternalName(), DHighlighter.KEYWORD),
++//            new AttributesDescriptor(DHighlighter.OPERATOR.getExternalName(), DHighlighter.OPERATOR),
++//            new AttributesDescriptor(DHighlighter.PARENS.getExternalName(), DHighlighter.PARENS),
++//            new AttributesDescriptor(DHighlighter.BRACES.getExternalName(), DHighlighter.BRACES),
++//            new AttributesDescriptor(DHighlighter.BRACKETS.getExternalName(), DHighlighter.BRACKETS),
++//    };
++
++
++
++    private static final AttributesDescriptor[] DESCRIPTORS = new AttributesDescriptor[]{
++            new AttributesDescriptor("Illegal character", ILLEGAL),
++            new AttributesDescriptor("Comment", COMMENT),
++            new AttributesDescriptor("String", STRING),
++            new AttributesDescriptor("Number", NUMBER),
++            new AttributesDescriptor("Keyword", KEYWORD),
++            new AttributesDescriptor("Parenthesis", PARENTHESES),
++            new AttributesDescriptor("Braces", BRACES),
++            new AttributesDescriptor("Brackets", BRACKETS),
++            new AttributesDescriptor("Operation sign", OP_SIGN),
++            new AttributesDescriptor("Variables", VARIABLE),
++            new AttributesDescriptor("Function definition", FUNCTION_DEFINITION)
++    };
++
++    private static Map<String, TextAttributesKey> ATTRIBUTES_KEY_MAP = ContainerUtil.newHashMap();
++
++    static {
++        ATTRIBUTES_KEY_MAP.put("k", KEYWORD);
++    }
++
++    @Nullable
++    @Override
++    public Icon getIcon() {
++        return DLanguageIcons.FILE;
++    }
++
++    @NotNull
++    @Override
++    public SyntaxHighlighter getHighlighter() {
++        return new DHighlighter();
++    }
++
++    @NotNull
++    @Override
++    public String getDemoText() {
++        // Example from dlang.org
++        String code = "" +
++                "/*\n" +
++                " * Computes average line length for standard input.\n" +
++                " */\n" +
++                "import std.stdio;\n" +
++                "\n" +
++                "void main() {\n" +
++                "    ulong lines = 0;\n" +
++                "    double sumLength = 0;\n" +
++                "    foreach (line; stdin.byLine()) {\n" +
++                "        ++lines; // increment\n" +
++                "        sumLength += line.length;\n" +
++                "    }\n" +
++                "    writeln(\"Average line length: \",\n" +
++                "        lines ? sumLength / lines : 0);\n" +
++                " }\n" +
++                "";
++
++        return code;
++    }
++
++    @Nullable
++    @Override
++    public Map<String, TextAttributesKey> getAdditionalHighlightingTagToDescriptorMap() {
++        return ATTRIBUTES_KEY_MAP;
++    }
++
++    @NotNull
++    @Override
++    public AttributesDescriptor[] getAttributeDescriptors() {
++        return DESCRIPTORS;
++    }
++
++    @NotNull
++    @Override
++    public ColorDescriptor[] getColorDescriptors() {
++        return ColorDescriptor.EMPTY_ARRAY;
++    }
++
++    @NotNull
++    @Override
++    public String getDisplayName() {
++        return DLanguageFileType.INSTANCE.getName();
++    }
++}
++
