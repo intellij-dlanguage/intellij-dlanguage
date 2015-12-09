@@ -243,7 +243,6 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
 // operator overloading
         public void testoperator_overloading() { doTest(true, true); }
 
-
 // templates
     public void testtemplates() { doTest(true, true); }
     public void testtemplates_alias() { doTest(true, true); }
@@ -259,7 +258,7 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
     public void testtemplates_mixins() { doTest(true, true); }
     public void testtemplates_mixins_scope() { doTest(true, true); }
     public void testtemplates_nested() { doTest(true, true); }
-//    public void testtemplates_params() { doTest(true, true); }
+    public void testtemplates_params() { doTest(true, true); }
     public void testtemplates_ref() { doTest(true, true); }
 //    public void testtemplates_this_params() { doTest(true, true); }
     public void testtemplates_tuples() { doTest(true, true); }

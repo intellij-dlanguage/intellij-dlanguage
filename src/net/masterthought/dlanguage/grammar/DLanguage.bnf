@@ -475,8 +475,7 @@ MultipleAssign ::=
  ((AssignExpression '..' AssignExpression) | AssignExpression) [',' MultipleAssign ]
 
 PrimaryExpression ::=
-     ('.')? Identifier
-    | ('.')? TemplateInstance
+     ('.')? (TemplateInstance | Identifier)
     | 'this'
     | 'super'
     | 'null'

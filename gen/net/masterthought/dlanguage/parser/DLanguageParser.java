@@ -6877,8 +6877,7 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // ('.')? Identifier
-  //     | ('.')? TemplateInstance
+  // ('.')? (TemplateInstance | Identifier)
   //     | 'this'
   //     | 'super'
   //     | 'null'
@@ -6908,7 +6907,6 @@ public class DLanguageParser implements PsiParser {
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<primary expression>");
     r = PrimaryExpression_0(b, l + 1);
-    if (!r) r = PrimaryExpression_1(b, l + 1);
     if (!r) r = consumeToken(b, KW_THIS);
     if (!r) r = consumeToken(b, KW_SUPER);
     if (!r) r = consumeToken(b, KW_NULL);
@@ -6926,24 +6924,24 @@ public class DLanguageParser implements PsiParser {
     if (!r) r = MixinExpression(b, l + 1);
     if (!r) r = ImportExpression(b, l + 1);
     if (!r) r = NewExpressionWithArgs(b, l + 1);
-    if (!r) r = PrimaryExpression_19(b, l + 1);
+    if (!r) r = PrimaryExpression_18(b, l + 1);
     if (!r) r = Typeof(b, l + 1);
     if (!r) r = TypeidExpression(b, l + 1);
     if (!r) r = IsExpression(b, l + 1);
-    if (!r) r = PrimaryExpression_23(b, l + 1);
+    if (!r) r = PrimaryExpression_22(b, l + 1);
     if (!r) r = TraitsExpression(b, l + 1);
     if (!r) r = SpecialKeyword(b, l + 1);
     exit_section_(b, l, m, PRIMARY_EXPRESSION, r, false, null);
     return r;
   }
 
-  // ('.')? Identifier
+  // ('.')? (TemplateInstance | Identifier)
   private static boolean PrimaryExpression_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "PrimaryExpression_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = PrimaryExpression_0_0(b, l + 1);
-    r = r && Identifier(b, l + 1);
+    r = r && PrimaryExpression_0_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -6965,37 +6963,20 @@ public class DLanguageParser implements PsiParser {
     return r;
   }
 
-  // ('.')? TemplateInstance
-  private static boolean PrimaryExpression_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "PrimaryExpression_1")) return false;
+  // TemplateInstance | Identifier
+  private static boolean PrimaryExpression_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PrimaryExpression_0_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = PrimaryExpression_1_0(b, l + 1);
-    r = r && TemplateInstance(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // ('.')?
-  private static boolean PrimaryExpression_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "PrimaryExpression_1_0")) return false;
-    PrimaryExpression_1_0_0(b, l + 1);
-    return true;
-  }
-
-  // ('.')
-  private static boolean PrimaryExpression_1_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "PrimaryExpression_1_0_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, OP_DOT);
+    r = TemplateInstance(b, l + 1);
+    if (!r) r = Identifier(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // BasicTypeX '.' Identifier
-  private static boolean PrimaryExpression_19(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "PrimaryExpression_19")) return false;
+  private static boolean PrimaryExpression_18(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PrimaryExpression_18")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = BasicTypeX(b, l + 1);
@@ -7006,8 +6987,8 @@ public class DLanguageParser implements PsiParser {
   }
 
   // '(' Expression ')'
-  private static boolean PrimaryExpression_23(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "PrimaryExpression_23")) return false;
+  private static boolean PrimaryExpression_22(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "PrimaryExpression_22")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, OP_PAR_LEFT);
