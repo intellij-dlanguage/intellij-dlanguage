@@ -1172,8 +1172,8 @@ FuncDeclarator ::=
     BasicType2? Identifier FuncDeclaratorSuffix
 
 FuncDeclaratorSuffix ::=
-    Parameters MemberFunctionAttributes?
-    | TemplateParameters? Parameters MemberFunctionAttributes? Constraint?
+     TemplateParameters? Parameters MemberFunctionAttributes? Constraint?
+     | Parameters MemberFunctionAttributes?
 
 Parameters ::=
     '(' ParameterList? ')'

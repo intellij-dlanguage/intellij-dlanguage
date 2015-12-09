@@ -4167,8 +4167,8 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // Parameters MemberFunctionAttributes?
-  //     | TemplateParameters? Parameters MemberFunctionAttributes? Constraint?
+  // TemplateParameters? Parameters MemberFunctionAttributes? Constraint?
+  //      | Parameters MemberFunctionAttributes?
   public static boolean FuncDeclaratorSuffix(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "FuncDeclaratorSuffix")) return false;
     if (!nextTokenIs(b, OP_PAR_LEFT)) return false;
@@ -4180,55 +4180,55 @@ public class DLanguageParser implements PsiParser {
     return r;
   }
 
-  // Parameters MemberFunctionAttributes?
+  // TemplateParameters? Parameters MemberFunctionAttributes? Constraint?
   private static boolean FuncDeclaratorSuffix_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "FuncDeclaratorSuffix_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = Parameters(b, l + 1);
-    r = r && FuncDeclaratorSuffix_0_1(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // MemberFunctionAttributes?
-  private static boolean FuncDeclaratorSuffix_0_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "FuncDeclaratorSuffix_0_1")) return false;
-    MemberFunctionAttributes(b, l + 1);
-    return true;
-  }
-
-  // TemplateParameters? Parameters MemberFunctionAttributes? Constraint?
-  private static boolean FuncDeclaratorSuffix_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "FuncDeclaratorSuffix_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = FuncDeclaratorSuffix_1_0(b, l + 1);
+    r = FuncDeclaratorSuffix_0_0(b, l + 1);
     r = r && Parameters(b, l + 1);
-    r = r && FuncDeclaratorSuffix_1_2(b, l + 1);
-    r = r && FuncDeclaratorSuffix_1_3(b, l + 1);
+    r = r && FuncDeclaratorSuffix_0_2(b, l + 1);
+    r = r && FuncDeclaratorSuffix_0_3(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // TemplateParameters?
-  private static boolean FuncDeclaratorSuffix_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "FuncDeclaratorSuffix_1_0")) return false;
+  private static boolean FuncDeclaratorSuffix_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "FuncDeclaratorSuffix_0_0")) return false;
     TemplateParameters(b, l + 1);
     return true;
   }
 
   // MemberFunctionAttributes?
-  private static boolean FuncDeclaratorSuffix_1_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "FuncDeclaratorSuffix_1_2")) return false;
+  private static boolean FuncDeclaratorSuffix_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "FuncDeclaratorSuffix_0_2")) return false;
     MemberFunctionAttributes(b, l + 1);
     return true;
   }
 
   // Constraint?
-  private static boolean FuncDeclaratorSuffix_1_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "FuncDeclaratorSuffix_1_3")) return false;
+  private static boolean FuncDeclaratorSuffix_0_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "FuncDeclaratorSuffix_0_3")) return false;
     Constraint(b, l + 1);
+    return true;
+  }
+
+  // Parameters MemberFunctionAttributes?
+  private static boolean FuncDeclaratorSuffix_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "FuncDeclaratorSuffix_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = Parameters(b, l + 1);
+    r = r && FuncDeclaratorSuffix_1_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // MemberFunctionAttributes?
+  private static boolean FuncDeclaratorSuffix_1_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "FuncDeclaratorSuffix_1_1")) return false;
+    MemberFunctionAttributes(b, l + 1);
     return true;
   }
 

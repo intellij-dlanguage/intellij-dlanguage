@@ -13,11 +13,6 @@ int foo(S s)
     return -s;
 }
 
-opCast!(bool)(e)
-
-if (e)   =>  if (e.opCast!(bool))
-if (!e)  =>  if (!e.opCast!(bool))
-
 T opBinary(string op)(T rhs)
 {
     static if (op == "+") return data + rhs.data;
@@ -41,18 +36,18 @@ bool opEquals(Object a, Object b)
 struct S
 {
     // lhs should be mutable object
-    bool opEquals(const S s) { ... }        // for r-values (e.g. temporaries)
-    bool opEquals(ref const S s) { ... }    // for l-values (e.g. variables)
+    bool opEquals(const S s) {  }        // for r-values (e.g. temporaries)
+    bool opEquals(ref const S s) {  }    // for l-values (e.g. variables)
 
     // both hand side can be const object
-    bool opEquals(const S s) const { ... }  // for r-values (e.g. temporaries)
+    bool opEquals(const S s) const {  }  // for r-values (e.g. temporaries)
 }
 
 struct S
 {
     // for l-values and r-values,
     // with converting both hand side implicitly to const
-    bool opEquals()(auto ref const S s) const { ... }
+    bool opEquals()(auto ref const S s) const {  }
 }
 
 struct F
