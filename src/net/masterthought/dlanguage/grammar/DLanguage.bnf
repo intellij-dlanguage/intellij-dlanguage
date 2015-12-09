@@ -672,7 +672,7 @@ NonEmptyStatementNoCaseNoDefault ::=
     | TryStatement
     | ScopeGuardStatement
     | ThrowStatement
-//    | AsmStatement
+    | AsmStatement
     | PragmaStatement
     | MixinStatement
     | ForeachRangeStatement
@@ -860,167 +860,171 @@ PragmaStatement ::=
 MixinStatement ::=
     'mixin' '(' AssignExpression ')' ';'
 
-//AsmStatement:
-//    asm FunctionAttributesopt { AsmInstructionListopt }
-//
-//AsmInstructionList:
-//    AsmInstruction ;
-//    AsmInstruction ; AsmInstructionList
-//Iasm
-//AsmInstruction:
-//    Identifier : AsmInstruction
-//    align IntegerExpression
-//    even
-//    naked
-//    db Operands
-//    ds Operands
-//    di Operands
-//    dl Operands
-//    df Operands
-//    dd Operands
-//    de Operands
-//    Opcode
-//    Opcode Operands
-//
-//Operands:
-//    Operand
-//    Operand , Operands
-//IntegerExpression:
-//    IntegerLiteral
-//    Identifier
-//Register:
-//    AL AH AX EAX
-//    BL BH BX EBX
-//    CL CH CX ECX
-//    DL DH DX EDX
-//    BP EBP
-//    SP ESP
-//    DI EDI
-//    SI ESI
-//    ES CS SS DS GS FS
-//    CR0 CR2 CR3 CR4
-//    DR0 DR1 DR2 DR3 DR6 DR7
-//    TR3 TR4 TR5 TR6 TR7
-//    ST
-//    ST(0) ST(1) ST(2) ST(3) ST(4) ST(5) ST(6) ST(7)
-//    MM0  MM1  MM2  MM3  MM4  MM5  MM6  MM7
-//    XMM0 XMM1 XMM2 XMM3 XMM4 XMM5 XMM6 XMM7
-//Register64:
-//    RAX  RBX  RCX  RDX
-//    BPL  RBP
-//    SPL  RSP
-//    DIL  RDI
-//    SIL  RSI
-//    R8B  R8W  R8D  R8
-//    R9B  R9W  R9D  R9
-//    R10B R10W R10D R10
-//    R11B R11W R11D R11
-//    R12B R12W R12D R12
-//    R13B R13W R13D R13
-//    R14B R14W R14D R14
-//    R15B R15W R15D R15
-//    XMM8 XMM9 XMM10 XMM11 XMM12 XMM13 XMM14 XMM15
-//    YMM0 YMM1 YMM2  YMM3  YMM4  YMM5  YMM6  YMM7
-//    YMM8 YMM9 YMM10 YMM11 YMM12 YMM13 YMM14 YMM15
-//Operand:
-//    AsmExp
-//
-//AsmExp:
-//    AsmLogOrExp
-//    AsmLogOrExp ? AsmExp : AsmExp
-//
-//AsmLogOrExp:
-//    AsmLogAndExp
-//    AsmLogOrExp || AsmLogAndExp
-//
-//AsmLogAndExp:
-//    AsmOrExp
-//    AsmLogAndExp && AsmOrExp
-//
-//AsmOrExp:
-//    AsmXorExp
-//    AsmOrExp | AsmXorExp
-//
-//AsmXorExp:
-//    AsmAndExp
-//    AsmXorExp ^ AsmAndExp
-//
-//AsmAndExp:
-//    AsmEqualExp
-//    AsmAndExp & AsmEqualExp
-//
-//AsmEqualExp:
-//    AsmRelExp
-//    AsmEqualExp == AsmRelExp
-//    AsmEqualExp != AsmRelExp
-//
-//AsmRelExp:
-//    AsmShiftExp
-//    AsmRelExp < AsmShiftExp
-//    AsmRelExp <= AsmShiftExp
-//    AsmRelExp > AsmShiftExp
-//    AsmRelExp >= AsmShiftExp
-//
-//AsmShiftExp:
-//    AsmAddExp
-//    AsmShiftExp << AsmAddExp
-//    AsmShiftExp >> AsmAddExp
-//    AsmShiftExp >>> AsmAddExp
-//
-//AsmAddExp:
-//    AsmMulExp
-//    AsmAddExp + AsmMulExp
-//    AsmAddExp - AsmMulExp
-//
-//AsmMulExp:
-//    AsmBrExp
-//    AsmMulExp * AsmBrExp
-//    AsmMulExp / AsmBrExp
-//    AsmMulExp % AsmBrExp
-//
-//AsmBrExp:
-//    AsmUnaExp
-//    AsmBrExp [ AsmExp ]
-//
-//AsmUnaExp:
-//    AsmTypePrefix AsmExp
-//    offsetof AsmExp
-//    seg AsmExp
-//    + AsmUnaExp
-//    - AsmUnaExp
-//    ! AsmUnaExp
-//    ~ AsmUnaExp
-//    AsmPrimaryExp
-//
-//AsmPrimaryExp:
-//    IntegerLiteral
-//    FloatLiteral
-//    __LOCAL_SIZE
-//    $
-//    Register
-//    Register : AsmExp
-//    Register64
-//    Register64 : AsmExp
-//    DotIdentifier
-//    this
-//
-//DotIdentifier:
-//    Identifier
-//    Identifier . DotIdentifier
-//AsmTypePrefix:
-//    near ptr
-//    far ptr
-//    byte ptr
-//    short ptr
-//    int ptr
-//    word ptr
-//    dword ptr
-//    qword ptr
-//    float ptr
-//    double ptr
-//    real ptr
+AsmStatement ::=
+    'asm' FunctionAttributes? '{' AsmInstructionList? '}'
 
-//Declaration
+AsmInstructionList ::=
+    AsmInstruction ';'
+    | AsmInstruction ';' AsmInstructionList
+
+
+AsmInstruction ::=
+    Identifier ':' AsmInstruction
+    | 'align' IntegerExpression
+    | 'even'
+    | 'naked'
+    | 'db' Operands
+    | 'ds' Operands
+    | 'di' Operands
+    | 'dl' Operands
+    | 'df' Operands
+    | 'dd' Operands
+    | 'de' Operands
+    | 'Opcode'
+    | 'Opcode' Operands
+
+Operands ::=
+    Operand
+    | Operand ',' Operands
+
+IntegerExpression ::=
+    INTEGER_LITERAL
+   |  Identifier
+
+Register ::=
+    'AL' 'AH' 'AX' 'EAX'
+    | 'BL' 'BH' 'BX' 'EBX'
+    | 'CL' 'CH' 'CX' 'ECX'
+    | 'DL' 'DH' 'DX' 'EDX'
+    | 'BP' 'EBP'
+    | 'SP' 'ESP'
+    | 'DI' 'EDI'
+    | 'SI' 'ESI'
+    | 'ES' 'CS SS DS GS FS'
+    | 'CR0' 'CR2' 'CR3' 'CR4'
+    | 'DR0' 'DR1' 'DR2' 'DR3' 'DR6' 'DR7'
+    | 'TR3' 'TR4' 'TR5' 'TR6' 'TR7'
+    | 'ST'
+    | 'ST(0)' 'ST(1)' 'ST(2)' 'ST(3)' 'ST(4)' 'ST(5)' 'ST(6)' 'ST(7)'
+    | 'MM0'  'MM1'  'MM2'  'MM3'  'MM4'  'MM5'  'MM6'  'MM7'
+    | 'XMM0' 'XMM1' 'XMM2' 'XMM3' 'XMM4' 'XMM5' 'XMM6' 'XMM7'
+
+Register64 ::=
+    'RAX'  'RBX'  'RCX'  'RDX'
+    | 'BPL'  'RBP'
+    | 'SPL'  'RSP'
+    | 'DIL'  'RDI'
+    | 'SIL'  'RSI'
+    | 'R8B'  'R8W'  'R8D'  'R8'
+    | 'R9B'  'R9W'  'R9D'  'R9'
+    | 'R10B' 'R10W' 'R10D' 'R10'
+    | 'R11B' 'R11W' 'R11D' 'R11'
+    | 'R12B' 'R12W' 'R12D' 'R12'
+    | 'R13B' 'R13W' 'R13D' 'R13'
+    | 'R14B' 'R14W' 'R14D' 'R14'
+    | 'R15B' 'R15W' 'R15D' 'R15'
+    | 'XMM8' 'XMM9' 'XMM10' 'XMM11' 'XMM12' 'XMM13' 'XMM14' 'XMM15'
+    | 'YMM0' 'YMM1' 'YMM2' 'YMM3' 'YMM4' 'YMM5' 'YMM6' 'YMM7'
+    | 'YMM8' 'YMM9' 'YMM10' 'YMM11' 'YMM12' 'YMM13' 'YMM14' 'YMM15'
+
+Operand ::=
+    AsmExp
+
+AsmExp ::=
+    AsmLogOrExp
+    | AsmLogOrExp '?' AsmExp ':' AsmExp
+
+AsmLogOrExp ::=
+    AsmLogAndExp
+    | AsmLogOrExp '||' AsmLogAndExp
+
+AsmLogAndExp ::=
+    AsmOrExp
+    | AsmLogAndExp '&&' AsmOrExp
+
+AsmOrExp ::=
+    AsmXorExp
+    | AsmOrExp '|' AsmXorExp
+
+AsmXorExp ::=
+    AsmAndExp
+    | AsmXorExp '^' AsmAndExp
+
+AsmAndExp ::=
+    AsmEqualExp
+    | AsmAndExp '&' AsmEqualExp
+
+AsmEqualExp ::=
+    AsmRelExp
+    | AsmEqualExp '==' AsmRelExp
+    | AsmEqualExp '!=' AsmRelExp
+
+AsmRelExp ::=
+    AsmShiftExp
+    | AsmRelExp '<' AsmShiftExp
+    | AsmRelExp '<=' AsmShiftExp
+    | AsmRelExp '>' AsmShiftExp
+    | AsmRelExp '>=' AsmShiftExp
+
+AsmShiftExp ::=
+    AsmAddExp
+    | AsmShiftExp '<<' AsmAddExp
+    | AsmShiftExp '>>' AsmAddExp
+    | AsmShiftExp '>>>'  AsmAddExp
+
+AsmAddExp ::=
+    AsmMulExp
+    | AsmAddExp '+' AsmMulExp
+    | AsmAddExp '-' AsmMulExp
+
+AsmMulExp ::=
+    AsmBrExp
+    | AsmMulExp '*' AsmBrExp
+    | AsmMulExp '/' AsmBrExp
+    | AsmMulExp '%' AsmBrExp
+
+AsmBrExp ::=
+    AsmUnaExp
+    | AsmBrExp '[' AsmExp ']'
+
+AsmUnaExp ::=
+    AsmTypePrefix AsmExp
+    | 'offsetof' AsmExp
+    | 'seg' AsmExp
+    | '+' AsmUnaExp
+    | '-' AsmUnaExp
+    | '!' AsmUnaExp
+    | '~' AsmUnaExp
+    | AsmPrimaryExp
+
+AsmPrimaryExp ::=
+    INTEGER_LITERAL
+    | FLOAT_LITERAL
+    | '__LOCAL_SIZE'
+    | '$'
+    | Register
+    | Register ':' AsmExp
+    | Register64
+    | Register64 ':' AsmExp
+    | DotIdentifier
+    | 'this'
+
+DotIdentifier ::=
+    Identifier
+    | Identifier '.' DotIdentifier
+
+AsmTypePrefix ::=
+    'near' 'ptr'
+    | 'far' 'ptr'
+    | 'byte' 'ptr'
+    | 'short' 'ptr'
+    | 'int' 'ptr'
+    | 'word' 'ptr'
+    | 'dword' 'ptr'
+    | 'qword' 'ptr'
+    | 'float' 'ptr'
+    | 'double' 'ptr'
+    | 'real' 'ptr'
 
 Declaration ::=
     FuncDeclaration
