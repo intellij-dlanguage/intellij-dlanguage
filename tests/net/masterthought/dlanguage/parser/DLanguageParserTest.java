@@ -241,7 +241,7 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
       public void testfunctions_virtual() { doTest(true, true); }
 
 // operator overloading
-//        public void testoperator_overloading() { doTest(true, true); }
+        public void testoperator_overloading() { doTest(true, true); }
 
 
 // templates
