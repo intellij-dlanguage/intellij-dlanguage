@@ -24,32 +24,38 @@ public class DLanguageInterfaceTemplateDeclarationImpl extends ASTWrapperPsiElem
 
   @Override
   @NotNull
-  public List<DLanguageAggregateBody> getAggregateBodyList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageAggregateBody.class);
+  public DLanguageAggregateBody getAggregateBody() {
+    return findNotNullChildByClass(DLanguageAggregateBody.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageBaseInterfaceList getBaseInterfaceList() {
+    return findChildByClass(DLanguageBaseInterfaceList.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageConstraint getConstraint() {
+    return findChildByClass(DLanguageConstraint.class);
   }
 
   @Override
   @NotNull
-  public List<DLanguageBaseInterfaceList> getBaseInterfaceListList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageBaseInterfaceList.class);
+  public DLanguageIdentifier getIdentifier() {
+    return findNotNullChildByClass(DLanguageIdentifier.class);
   }
 
   @Override
   @NotNull
-  public List<DLanguageConstraint> getConstraintList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageConstraint.class);
+  public DLanguageTemplateParameters getTemplateParameters() {
+    return findNotNullChildByClass(DLanguageTemplateParameters.class);
   }
 
   @Override
   @NotNull
-  public List<DLanguageIdentifier> getIdentifierList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageIdentifier.class);
-  }
-
-  @Override
-  @NotNull
-  public List<DLanguageTemplateParameters> getTemplateParametersList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageTemplateParameters.class);
+  public PsiElement getKwInterface() {
+    return findNotNullChildByType(KW_INTERFACE);
   }
 
 }

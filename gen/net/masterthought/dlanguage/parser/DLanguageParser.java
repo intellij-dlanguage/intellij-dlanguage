@@ -5102,16 +5102,16 @@ public class DLanguageParser implements PsiParser {
 
   /* ********************************************************** */
   // 'interface' Identifier ';'
-  //     | 'interface' Identifier BaseInterfaceList? AggregateBody?
   //     | InterfaceTemplateDeclaration
+  //     | 'interface' Identifier BaseInterfaceList? AggregateBody?
   public static boolean InterfaceDeclaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "InterfaceDeclaration")) return false;
     if (!nextTokenIs(b, KW_INTERFACE)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = InterfaceDeclaration_0(b, l + 1);
-    if (!r) r = InterfaceDeclaration_1(b, l + 1);
     if (!r) r = InterfaceTemplateDeclaration(b, l + 1);
+    if (!r) r = InterfaceDeclaration_2(b, l + 1);
     exit_section_(b, m, INTERFACE_DECLARATION, r);
     return r;
   }
@@ -5129,35 +5129,34 @@ public class DLanguageParser implements PsiParser {
   }
 
   // 'interface' Identifier BaseInterfaceList? AggregateBody?
-  private static boolean InterfaceDeclaration_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "InterfaceDeclaration_1")) return false;
+  private static boolean InterfaceDeclaration_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "InterfaceDeclaration_2")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, KW_INTERFACE);
     r = r && Identifier(b, l + 1);
-    r = r && InterfaceDeclaration_1_2(b, l + 1);
-    r = r && InterfaceDeclaration_1_3(b, l + 1);
+    r = r && InterfaceDeclaration_2_2(b, l + 1);
+    r = r && InterfaceDeclaration_2_3(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // BaseInterfaceList?
-  private static boolean InterfaceDeclaration_1_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "InterfaceDeclaration_1_2")) return false;
+  private static boolean InterfaceDeclaration_2_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "InterfaceDeclaration_2_2")) return false;
     BaseInterfaceList(b, l + 1);
     return true;
   }
 
   // AggregateBody?
-  private static boolean InterfaceDeclaration_1_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "InterfaceDeclaration_1_3")) return false;
+  private static boolean InterfaceDeclaration_2_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "InterfaceDeclaration_2_3")) return false;
     AggregateBody(b, l + 1);
     return true;
   }
 
   /* ********************************************************** */
   // 'interface' Identifier TemplateParameters Constraint? BaseInterfaceList? AggregateBody
-  //     'interface' Identifier TemplateParameters BaseInterfaceList Constraint AggregateBody
   public static boolean InterfaceTemplateDeclaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "InterfaceTemplateDeclaration")) return false;
     if (!nextTokenIs(b, KW_INTERFACE)) return false;
@@ -5168,12 +5167,6 @@ public class DLanguageParser implements PsiParser {
     r = r && TemplateParameters(b, l + 1);
     r = r && InterfaceTemplateDeclaration_3(b, l + 1);
     r = r && InterfaceTemplateDeclaration_4(b, l + 1);
-    r = r && AggregateBody(b, l + 1);
-    r = r && consumeToken(b, KW_INTERFACE);
-    r = r && Identifier(b, l + 1);
-    r = r && TemplateParameters(b, l + 1);
-    r = r && BaseInterfaceList(b, l + 1);
-    r = r && Constraint(b, l + 1);
     r = r && AggregateBody(b, l + 1);
     exit_section_(b, m, INTERFACE_TEMPLATE_DECLARATION, r);
     return r;

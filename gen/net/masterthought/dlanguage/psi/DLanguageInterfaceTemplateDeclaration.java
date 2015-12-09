@@ -8,18 +8,21 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageInterfaceTemplateDeclaration extends PsiElement {
 
   @NotNull
-  List<DLanguageAggregateBody> getAggregateBodyList();
+  DLanguageAggregateBody getAggregateBody();
+
+  @Nullable
+  DLanguageBaseInterfaceList getBaseInterfaceList();
+
+  @Nullable
+  DLanguageConstraint getConstraint();
 
   @NotNull
-  List<DLanguageBaseInterfaceList> getBaseInterfaceListList();
+  DLanguageIdentifier getIdentifier();
 
   @NotNull
-  List<DLanguageConstraint> getConstraintList();
+  DLanguageTemplateParameters getTemplateParameters();
 
   @NotNull
-  List<DLanguageIdentifier> getIdentifierList();
-
-  @NotNull
-  List<DLanguageTemplateParameters> getTemplateParametersList();
+  PsiElement getKwInterface();
 
 }

@@ -1302,12 +1302,12 @@ ClassTemplateDeclaration ::=
 
 InterfaceDeclaration ::=
     'interface' Identifier ';'
-    | 'interface' Identifier BaseInterfaceList? AggregateBody?
     | InterfaceTemplateDeclaration
+    | 'interface' Identifier BaseInterfaceList? AggregateBody?
+   
 
-InterfaceTemplateDeclaration ::=
-    'interface' Identifier TemplateParameters Constraint? BaseInterfaceList? AggregateBody
-    'interface' Identifier TemplateParameters BaseInterfaceList Constraint AggregateBody
+InterfaceTemplateDeclaration ::= 
+      'interface' Identifier TemplateParameters Constraint? BaseInterfaceList? AggregateBody
 
 StructDeclaration ::=
     'struct' Identifier? TemplateParameters? Constraint? (AggregateBody | ';')?
