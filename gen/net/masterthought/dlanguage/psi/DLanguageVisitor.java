@@ -223,10 +223,6 @@ public class DLanguageVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitComplementExpression(@NotNull DLanguageComplementExpression o) {
-    visitPsiElement(o);
-  }
-
   public void visitCondition(@NotNull DLanguageCondition o) {
     visitPsiElement(o);
   }

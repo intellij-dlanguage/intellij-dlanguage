@@ -62,7 +62,6 @@ public interface DLanguageTypes {
   IElementType CLASS_TEMPLATE_DECLARATION = new DLanguageElementType("CLASS_TEMPLATE_DECLARATION");
   IElementType CMP_EXPRESSION = new DLanguageElementType("CMP_EXPRESSION");
   IElementType COMMA_EXPRESSION = new DLanguageElementType("COMMA_EXPRESSION");
-  IElementType COMPLEMENT_EXPRESSION = new DLanguageElementType("COMPLEMENT_EXPRESSION");
   IElementType CONDITION = new DLanguageElementType("CONDITION");
   IElementType CONDITIONAL_DECLARATION = new DLanguageElementType("CONDITIONAL_DECLARATION");
   IElementType CONDITIONAL_EXPRESSION = new DLanguageElementType("CONDITIONAL_EXPRESSION");
@@ -614,9 +613,6 @@ public interface DLanguageTypes {
       }
       else if (type == COMMA_EXPRESSION) {
         return new DLanguageCommaExpressionImpl(node);
-      }
-      else if (type == COMPLEMENT_EXPRESSION) {
-        return new DLanguageComplementExpressionImpl(node);
       }
       else if (type == CONDITION) {
         return new DLanguageConditionImpl(node);

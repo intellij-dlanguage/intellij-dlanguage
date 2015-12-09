@@ -30,12 +30,6 @@ public class DLanguageUnaryExpressionImpl extends ASTWrapperPsiElement implement
 
   @Override
   @Nullable
-  public DLanguageComplementExpression getComplementExpression() {
-    return findChildByClass(DLanguageComplementExpression.class);
-  }
-
-  @Override
-  @Nullable
   public DLanguageDeleteExpression getDeleteExpression() {
     return findChildByClass(DLanguageDeleteExpression.class);
   }
@@ -128,6 +122,18 @@ public class DLanguageUnaryExpressionImpl extends ASTWrapperPsiElement implement
   @Nullable
   public PsiElement getOpPlusPlus() {
     return findChildByType(OP_PLUS_PLUS);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpPow() {
+    return findChildByType(OP_POW);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpTilda() {
+    return findChildByType(OP_TILDA);
   }
 
 }

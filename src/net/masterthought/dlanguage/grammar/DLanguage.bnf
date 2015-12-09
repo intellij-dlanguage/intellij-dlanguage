@@ -407,20 +407,18 @@ MulExpression ::= UnaryExpression [ ('*' | '/' | '%') MulExpression]
 UnaryExpression ::=
      ('&'
     | '++'
+    | '^^'
     | '--'
     | '*'
     | '-'
     | '+'
-    | '!' ) [UnaryExpression]
-    | ComplementExpression
+    | '!'
+    | '~') [UnaryExpression]
     | '(' Type ')' '.' Identifier
     | '(' Type ')' '.' TemplateInstance
     | DeleteExpression
     | CastExpression
     | PowExpression
-
-ComplementExpression ::=
-    '~' UnaryExpression
 
 NewExpression ::=
     'new' AllocatorArguments? Type

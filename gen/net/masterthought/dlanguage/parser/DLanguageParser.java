@@ -184,9 +184,6 @@ public class DLanguageParser implements PsiParser {
     else if (t == COMMA_EXPRESSION) {
       r = CommaExpression(b, 0);
     }
-    else if (t == COMPLEMENT_EXPRESSION) {
-      r = ComplementExpression(b, 0);
-    }
     else if (t == CONDITION) {
       r = Condition(b, 0);
     }
@@ -2704,19 +2701,6 @@ public class DLanguageParser implements PsiParser {
     r = consumeToken(b, OP_COMMA);
     r = r && CommaExpression(b, l + 1);
     exit_section_(b, m, null, r);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // '~' UnaryExpression
-  public static boolean ComplementExpression(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "ComplementExpression")) return false;
-    if (!nextTokenIs(b, OP_TILDA)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, OP_TILDA);
-    r = r && UnaryExpression(b, l + 1);
-    exit_section_(b, m, COMPLEMENT_EXPRESSION, r);
     return r;
   }
 
@@ -9095,12 +9079,13 @@ public class DLanguageParser implements PsiParser {
   /* ********************************************************** */
   // ('&'
   //     | '++'
+  //     | '^^'
   //     | '--'
   //     | '*'
   //     | '-'
   //     | '+'
-  //     | '!' ) [UnaryExpression]
-  //     | ComplementExpression
+  //     | '!'
+  //     | '~') [UnaryExpression]
   //     | '(' Type ')' '.' Identifier
   //     | '(' Type ')' '.' TemplateInstance
   //     | DeleteExpression
@@ -9111,9 +9096,8 @@ public class DLanguageParser implements PsiParser {
     boolean r;
     Marker m = enter_section_(b, l, _COLLAPSE_, "<unary expression>");
     r = UnaryExpression_0(b, l + 1);
-    if (!r) r = ComplementExpression(b, l + 1);
+    if (!r) r = UnaryExpression_1(b, l + 1);
     if (!r) r = UnaryExpression_2(b, l + 1);
-    if (!r) r = UnaryExpression_3(b, l + 1);
     if (!r) r = DeleteExpression(b, l + 1);
     if (!r) r = CastExpression(b, l + 1);
     if (!r) r = PowExpression(b, l + 1);
@@ -9123,11 +9107,13 @@ public class DLanguageParser implements PsiParser {
 
   // ('&'
   //     | '++'
+  //     | '^^'
   //     | '--'
   //     | '*'
   //     | '-'
   //     | '+'
-  //     | '!' ) [UnaryExpression]
+  //     | '!'
+  //     | '~') [UnaryExpression]
   private static boolean UnaryExpression_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "UnaryExpression_0")) return false;
     boolean r;
@@ -9140,22 +9126,26 @@ public class DLanguageParser implements PsiParser {
 
   // '&'
   //     | '++'
+  //     | '^^'
   //     | '--'
   //     | '*'
   //     | '-'
   //     | '+'
   //     | '!'
+  //     | '~'
   private static boolean UnaryExpression_0_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "UnaryExpression_0_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, OP_AND);
     if (!r) r = consumeToken(b, OP_PLUS_PLUS);
+    if (!r) r = consumeToken(b, OP_POW);
     if (!r) r = consumeToken(b, OP_MINUS_MINUS);
     if (!r) r = consumeToken(b, OP_ASTERISK);
     if (!r) r = consumeToken(b, OP_MINUS);
     if (!r) r = consumeToken(b, OP_PLUS);
     if (!r) r = consumeToken(b, OP_NOT);
+    if (!r) r = consumeToken(b, OP_TILDA);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -9168,8 +9158,8 @@ public class DLanguageParser implements PsiParser {
   }
 
   // '(' Type ')' '.' Identifier
-  private static boolean UnaryExpression_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "UnaryExpression_2")) return false;
+  private static boolean UnaryExpression_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "UnaryExpression_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, OP_PAR_LEFT);
@@ -9182,8 +9172,8 @@ public class DLanguageParser implements PsiParser {
   }
 
   // '(' Type ')' '.' TemplateInstance
-  private static boolean UnaryExpression_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "UnaryExpression_3")) return false;
+  private static boolean UnaryExpression_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "UnaryExpression_2")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, OP_PAR_LEFT);

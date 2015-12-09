@@ -11,9 +11,6 @@ public interface DLanguageUnaryExpression extends PsiElement {
   DLanguageCastExpression getCastExpression();
 
   @Nullable
-  DLanguageComplementExpression getComplementExpression();
-
-  @Nullable
   DLanguageDeleteExpression getDeleteExpression();
 
   @Nullable
@@ -60,5 +57,11 @@ public interface DLanguageUnaryExpression extends PsiElement {
 
   @Nullable
   PsiElement getOpPlusPlus();
+
+  @Nullable
+  PsiElement getOpPow();
+
+  @Nullable
+  PsiElement getOpTilda();
 
 }
