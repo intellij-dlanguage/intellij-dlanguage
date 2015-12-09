@@ -145,7 +145,7 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
     public void testarrays_function_properties() { doTest(true, true); }
     public void testarrays_bounds_checking() { doTest(true, true); }
     public void testarrays_dynamic_length() { doTest(true, true); }
-//    public void testarrays_initialization() { doTest(true, true); }
+    public void testarrays_initialization() { doTest(true, true); }
     public void testarrays_rectangular() { doTest(true, true); }
     public void testarrays_length() { doTest(true, true); }
     public void testarrays_operations() { doTest(true, true); }

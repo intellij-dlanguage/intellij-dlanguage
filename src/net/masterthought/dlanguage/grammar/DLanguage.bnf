@@ -1061,8 +1061,9 @@ Declarators ::=
     DeclaratorInitializer (',' DeclaratorIdentifierList)?
 
 DeclaratorInitializer ::=
-    VarDeclarator (TemplateParameters? '=' Initializer)?
-    | AltDeclarator ('=' Initializer)?
+    AltDeclarator ('=' Initializer)?
+    | VarDeclarator (TemplateParameters? '=' Initializer)?
+
 
 DeclaratorIdentifierList ::=
     DeclaratorIdentifier [',' DeclaratorIdentifierList]

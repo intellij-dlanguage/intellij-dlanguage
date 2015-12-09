@@ -3359,8 +3359,8 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // VarDeclarator (TemplateParameters? '=' Initializer)?
-  //     | AltDeclarator ('=' Initializer)?
+  // AltDeclarator ('=' Initializer)?
+  //     | VarDeclarator (TemplateParameters? '=' Initializer)?
   public static boolean DeclaratorInitializer(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "DeclaratorInitializer")) return false;
     boolean r;
@@ -3371,30 +3371,59 @@ public class DLanguageParser implements PsiParser {
     return r;
   }
 
-  // VarDeclarator (TemplateParameters? '=' Initializer)?
+  // AltDeclarator ('=' Initializer)?
   private static boolean DeclaratorInitializer_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "DeclaratorInitializer_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = VarDeclarator(b, l + 1);
+    r = AltDeclarator(b, l + 1);
     r = r && DeclaratorInitializer_0_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // (TemplateParameters? '=' Initializer)?
+  // ('=' Initializer)?
   private static boolean DeclaratorInitializer_0_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "DeclaratorInitializer_0_1")) return false;
     DeclaratorInitializer_0_1_0(b, l + 1);
     return true;
   }
 
-  // TemplateParameters? '=' Initializer
+  // '=' Initializer
   private static boolean DeclaratorInitializer_0_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "DeclaratorInitializer_0_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = DeclaratorInitializer_0_1_0_0(b, l + 1);
+    r = consumeToken(b, OP_EQ);
+    r = r && Initializer(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // VarDeclarator (TemplateParameters? '=' Initializer)?
+  private static boolean DeclaratorInitializer_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "DeclaratorInitializer_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = VarDeclarator(b, l + 1);
+    r = r && DeclaratorInitializer_1_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // (TemplateParameters? '=' Initializer)?
+  private static boolean DeclaratorInitializer_1_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "DeclaratorInitializer_1_1")) return false;
+    DeclaratorInitializer_1_1_0(b, l + 1);
+    return true;
+  }
+
+  // TemplateParameters? '=' Initializer
+  private static boolean DeclaratorInitializer_1_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "DeclaratorInitializer_1_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = DeclaratorInitializer_1_1_0_0(b, l + 1);
     r = r && consumeToken(b, OP_EQ);
     r = r && Initializer(b, l + 1);
     exit_section_(b, m, null, r);
@@ -3402,39 +3431,10 @@ public class DLanguageParser implements PsiParser {
   }
 
   // TemplateParameters?
-  private static boolean DeclaratorInitializer_0_1_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "DeclaratorInitializer_0_1_0_0")) return false;
+  private static boolean DeclaratorInitializer_1_1_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "DeclaratorInitializer_1_1_0_0")) return false;
     TemplateParameters(b, l + 1);
     return true;
-  }
-
-  // AltDeclarator ('=' Initializer)?
-  private static boolean DeclaratorInitializer_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "DeclaratorInitializer_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = AltDeclarator(b, l + 1);
-    r = r && DeclaratorInitializer_1_1(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // ('=' Initializer)?
-  private static boolean DeclaratorInitializer_1_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "DeclaratorInitializer_1_1")) return false;
-    DeclaratorInitializer_1_1_0(b, l + 1);
-    return true;
-  }
-
-  // '=' Initializer
-  private static boolean DeclaratorInitializer_1_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "DeclaratorInitializer_1_1_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, OP_EQ);
-    r = r && Initializer(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
   }
 
   /* ********************************************************** */
