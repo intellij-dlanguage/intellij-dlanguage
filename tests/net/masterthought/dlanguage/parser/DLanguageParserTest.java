@@ -270,7 +270,7 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
     public void testcontract_programming() { doTest(true, true); }
 
 // conditional compilation
-//    public void testconditional_compilation() { doTest(true, true); }
+    public void testconditional_compilation() { doTest(true, true); }
 
 // traits
     public void testtraits_allmembers() { doTest(true, true); }

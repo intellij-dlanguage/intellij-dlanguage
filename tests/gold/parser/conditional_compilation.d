@@ -44,7 +44,7 @@ class Foo
     {
         int extrafunctionality()
         {
-            ...
+
             return 1;  // extra functionality is supported
         }
     }
