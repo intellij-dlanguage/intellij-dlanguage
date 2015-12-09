@@ -24,6 +24,12 @@ public class DLanguageNonEmptyStatementNoCaseNoDefaultImpl extends ASTWrapperPsi
 
   @Override
   @Nullable
+  public DLanguageAsmStatement getAsmStatement() {
+    return findChildByClass(DLanguageAsmStatement.class);
+  }
+
+  @Override
+  @Nullable
   public DLanguageBreakStatement getBreakStatement() {
     return findChildByClass(DLanguageBreakStatement.class);
   }

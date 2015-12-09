@@ -103,10 +103,13 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
     public void testexpressions_string_literal() { doTest(true, true); }
     public void testexpressions_this() { doTest(true, true); }
     public void testexpressions_type_info() { doTest(true, true); }
-//
-//    // statements
-//    public void teststatements_asm() { doTest(true, true); }
-//    public void teststatements_asm_inline() { doTest(true, true); }
+
+    // asm
+    public void testasm() { doTest(true, true); }
+    
+    // statements
+    public void teststatements_asm() { doTest(true, true); }
+    public void teststatements_asm_inline() { doTest(true, true); }
     public void teststatements_foreach_associative_array() { doTest(true, true); }
     public void teststatements_foreach_delegates() { doTest(true, true); }
     public void teststatements_foreach_templated() { doTest(true, true); }

@@ -8,6 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageNonEmptyStatementNoCaseNoDefault extends PsiElement {
 
   @Nullable
+  DLanguageAsmStatement getAsmStatement();
+
+  @Nullable
   DLanguageBreakStatement getBreakStatement();
 
   @Nullable

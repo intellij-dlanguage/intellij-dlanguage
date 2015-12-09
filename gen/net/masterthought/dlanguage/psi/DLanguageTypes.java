@@ -33,6 +33,24 @@ public interface DLanguageTypes {
   IElementType ARRAY_LITERAL = new DLanguageElementType("ARRAY_LITERAL");
   IElementType ARRAY_MEMBER_INITIALIZATION = new DLanguageElementType("ARRAY_MEMBER_INITIALIZATION");
   IElementType ARRAY_MEMBER_INITIALIZATIONS = new DLanguageElementType("ARRAY_MEMBER_INITIALIZATIONS");
+  IElementType ASM_ADD_EXP = new DLanguageElementType("ASM_ADD_EXP");
+  IElementType ASM_AND_EXP = new DLanguageElementType("ASM_AND_EXP");
+  IElementType ASM_BR_EXP = new DLanguageElementType("ASM_BR_EXP");
+  IElementType ASM_EQUAL_EXP = new DLanguageElementType("ASM_EQUAL_EXP");
+  IElementType ASM_EXP = new DLanguageElementType("ASM_EXP");
+  IElementType ASM_INSTRUCTION = new DLanguageElementType("ASM_INSTRUCTION");
+  IElementType ASM_INSTRUCTION_LIST = new DLanguageElementType("ASM_INSTRUCTION_LIST");
+  IElementType ASM_LOG_AND_EXP = new DLanguageElementType("ASM_LOG_AND_EXP");
+  IElementType ASM_LOG_OR_EXP = new DLanguageElementType("ASM_LOG_OR_EXP");
+  IElementType ASM_MUL_EXP = new DLanguageElementType("ASM_MUL_EXP");
+  IElementType ASM_OR_EXP = new DLanguageElementType("ASM_OR_EXP");
+  IElementType ASM_PRIMARY_EXP = new DLanguageElementType("ASM_PRIMARY_EXP");
+  IElementType ASM_REL_EXP = new DLanguageElementType("ASM_REL_EXP");
+  IElementType ASM_SHIFT_EXP = new DLanguageElementType("ASM_SHIFT_EXP");
+  IElementType ASM_STATEMENT = new DLanguageElementType("ASM_STATEMENT");
+  IElementType ASM_TYPE_PREFIX = new DLanguageElementType("ASM_TYPE_PREFIX");
+  IElementType ASM_UNA_EXP = new DLanguageElementType("ASM_UNA_EXP");
+  IElementType ASM_XOR_EXP = new DLanguageElementType("ASM_XOR_EXP");
   IElementType ASSERT_EXPRESSION = new DLanguageElementType("ASSERT_EXPRESSION");
   IElementType ASSIGN_EXPRESSION = new DLanguageElementType("ASSIGN_EXPRESSION");
   IElementType ASSOC_ARRAY_LITERAL = new DLanguageElementType("ASSOC_ARRAY_LITERAL");
@@ -87,6 +105,7 @@ public interface DLanguageTypes {
   IElementType DELETE_EXPRESSION = new DLanguageElementType("DELETE_EXPRESSION");
   IElementType DEPRECATED_ATTRIBUTE = new DLanguageElementType("DEPRECATED_ATTRIBUTE");
   IElementType DESTRUCTOR = new DLanguageElementType("DESTRUCTOR");
+  IElementType DOT_IDENTIFIER = new DLanguageElementType("DOT_IDENTIFIER");
   IElementType DO_STATEMENT = new DLanguageElementType("DO_STATEMENT");
   IElementType ELSE_STATEMENT = new DLanguageElementType("ELSE_STATEMENT");
   IElementType ENUM_BASE_TYPE = new DLanguageElementType("ENUM_BASE_TYPE");
@@ -134,6 +153,7 @@ public interface DLanguageTypes {
   IElementType INDEX_EXPRESSION = new DLanguageElementType("INDEX_EXPRESSION");
   IElementType INITIALIZE = new DLanguageElementType("INITIALIZE");
   IElementType INITIALIZER = new DLanguageElementType("INITIALIZER");
+  IElementType INTEGER_EXPRESSION = new DLanguageElementType("INTEGER_EXPRESSION");
   IElementType INTERFACE = new DLanguageElementType("INTERFACE");
   IElementType INTERFACES = new DLanguageElementType("INTERFACES");
   IElementType INTERFACE_DECLARATION = new DLanguageElementType("INTERFACE_DECLARATION");
@@ -169,6 +189,9 @@ public interface DLanguageTypes {
   IElementType NON_EMPTY_STATEMENT = new DLanguageElementType("NON_EMPTY_STATEMENT");
   IElementType NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT = new DLanguageElementType("NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT");
   IElementType NON_VOID_INITIALIZER = new DLanguageElementType("NON_VOID_INITIALIZER");
+  IElementType OPCODE = new DLanguageElementType("OPCODE");
+  IElementType OPERAND = new DLanguageElementType("OPERAND");
+  IElementType OPERANDS = new DLanguageElementType("OPERANDS");
   IElementType OR_EXPRESSION = new DLanguageElementType("OR_EXPRESSION");
   IElementType OR_OR_EXPRESSION = new DLanguageElementType("OR_OR_EXPRESSION");
   IElementType OUT_STATEMENT = new DLanguageElementType("OUT_STATEMENT");
@@ -187,6 +210,8 @@ public interface DLanguageTypes {
   IElementType PROPERTY_IDENTIFIER = new DLanguageElementType("PROPERTY_IDENTIFIER");
   IElementType PROTECTION_ATTRIBUTE = new DLanguageElementType("PROTECTION_ATTRIBUTE");
   IElementType QUALIFIED_IDENTIFIER_LIST = new DLanguageElementType("QUALIFIED_IDENTIFIER_LIST");
+  IElementType REGISTER = new DLanguageElementType("REGISTER");
+  IElementType REGISTER_64 = new DLanguageElementType("REGISTER_64");
   IElementType REL_EXPRESSION = new DLanguageElementType("REL_EXPRESSION");
   IElementType RETURN_STATEMENT = new DLanguageElementType("RETURN_STATEMENT");
   IElementType SCOPE_GUARD_STATEMENT = new DLanguageElementType("SCOPE_GUARD_STATEMENT");
@@ -527,6 +552,60 @@ public interface DLanguageTypes {
       else if (type == ARRAY_MEMBER_INITIALIZATIONS) {
         return new DLanguageArrayMemberInitializationsImpl(node);
       }
+      else if (type == ASM_ADD_EXP) {
+        return new DLanguageAsmAddExpImpl(node);
+      }
+      else if (type == ASM_AND_EXP) {
+        return new DLanguageAsmAndExpImpl(node);
+      }
+      else if (type == ASM_BR_EXP) {
+        return new DLanguageAsmBrExpImpl(node);
+      }
+      else if (type == ASM_EQUAL_EXP) {
+        return new DLanguageAsmEqualExpImpl(node);
+      }
+      else if (type == ASM_EXP) {
+        return new DLanguageAsmExpImpl(node);
+      }
+      else if (type == ASM_INSTRUCTION) {
+        return new DLanguageAsmInstructionImpl(node);
+      }
+      else if (type == ASM_INSTRUCTION_LIST) {
+        return new DLanguageAsmInstructionListImpl(node);
+      }
+      else if (type == ASM_LOG_AND_EXP) {
+        return new DLanguageAsmLogAndExpImpl(node);
+      }
+      else if (type == ASM_LOG_OR_EXP) {
+        return new DLanguageAsmLogOrExpImpl(node);
+      }
+      else if (type == ASM_MUL_EXP) {
+        return new DLanguageAsmMulExpImpl(node);
+      }
+      else if (type == ASM_OR_EXP) {
+        return new DLanguageAsmOrExpImpl(node);
+      }
+      else if (type == ASM_PRIMARY_EXP) {
+        return new DLanguageAsmPrimaryExpImpl(node);
+      }
+      else if (type == ASM_REL_EXP) {
+        return new DLanguageAsmRelExpImpl(node);
+      }
+      else if (type == ASM_SHIFT_EXP) {
+        return new DLanguageAsmShiftExpImpl(node);
+      }
+      else if (type == ASM_STATEMENT) {
+        return new DLanguageAsmStatementImpl(node);
+      }
+      else if (type == ASM_TYPE_PREFIX) {
+        return new DLanguageAsmTypePrefixImpl(node);
+      }
+      else if (type == ASM_UNA_EXP) {
+        return new DLanguageAsmUnaExpImpl(node);
+      }
+      else if (type == ASM_XOR_EXP) {
+        return new DLanguageAsmXorExpImpl(node);
+      }
       else if (type == ASSERT_EXPRESSION) {
         return new DLanguageAssertExpressionImpl(node);
       }
@@ -689,6 +768,9 @@ public interface DLanguageTypes {
       else if (type == DESTRUCTOR) {
         return new DLanguageDestructorImpl(node);
       }
+      else if (type == DOT_IDENTIFIER) {
+        return new DLanguageDotIdentifierImpl(node);
+      }
       else if (type == DO_STATEMENT) {
         return new DLanguageDoStatementImpl(node);
       }
@@ -830,6 +912,9 @@ public interface DLanguageTypes {
       else if (type == INITIALIZER) {
         return new DLanguageInitializerImpl(node);
       }
+      else if (type == INTEGER_EXPRESSION) {
+        return new DLanguageIntegerExpressionImpl(node);
+      }
       else if (type == INTERFACE) {
         return new DLanguageInterfaceImpl(node);
       }
@@ -935,6 +1020,15 @@ public interface DLanguageTypes {
       else if (type == NON_VOID_INITIALIZER) {
         return new DLanguageNonVoidInitializerImpl(node);
       }
+      else if (type == OPCODE) {
+        return new DLanguageOpcodeImpl(node);
+      }
+      else if (type == OPERAND) {
+        return new DLanguageOperandImpl(node);
+      }
+      else if (type == OPERANDS) {
+        return new DLanguageOperandsImpl(node);
+      }
       else if (type == OR_EXPRESSION) {
         return new DLanguageOrExpressionImpl(node);
       }
@@ -988,6 +1082,12 @@ public interface DLanguageTypes {
       }
       else if (type == QUALIFIED_IDENTIFIER_LIST) {
         return new DLanguageQualifiedIdentifierListImpl(node);
+      }
+      else if (type == REGISTER) {
+        return new DLanguageRegisterImpl(node);
+      }
+      else if (type == REGISTER_64) {
+        return new DLanguageRegister64Impl(node);
       }
       else if (type == REL_EXPRESSION) {
         return new DLanguageRelExpressionImpl(node);
