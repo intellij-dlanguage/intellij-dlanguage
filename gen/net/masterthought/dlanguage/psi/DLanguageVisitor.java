@@ -1,6 +1,9 @@
 // This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
+import net.masterthought.dlanguage.psi.interfaces.DLanguageFuncDeclaration;
+import net.masterthought.dlanguage.psi.interfaces.DLanguageIdentifier;
+import net.masterthought.dlanguage.psi.interfaces.DLanguageSymbol;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiElement;

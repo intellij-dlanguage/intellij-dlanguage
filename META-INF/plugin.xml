@@ -58,7 +58,9 @@
         <!-- Editing utils -->
         <lang.braceMatcher language="D" implementationClass="net.masterthought.dlanguage.features.DBraceMatcher"/>
         <lang.commenter language="D" implementationClass="net.masterthought.dlanguage.features.DCommenter"/>
+        <lang.foldingBuilder language="D" implementationClass="net.masterthought.dlanguage.features.DFoldingBuilder"/>
         <!--<completion.contributor language="D" implementationClass="net.masterthought.dlanguage.codeinsight.DCompletionContributor"/>-->
+        
         
     </extensions>
 
