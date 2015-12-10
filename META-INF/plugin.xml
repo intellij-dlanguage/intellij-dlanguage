@@ -55,6 +55,11 @@
         <!--<moduleConfigurationEditorProvider implementation="net.masterthought.dlanguage.settings.DLanguageModuleConfigurationEditor" order="first"/>-->
         <!-- Tab in IntelliJ -> Preferences -->
 
+        <!-- Editing utils -->
+        <lang.braceMatcher language="D" implementationClass="net.masterthought.dlanguage.features.DBraceMatcher"/>
+        <lang.commenter language="D" implementationClass="net.masterthought.dlanguage.features.DCommenter"/>
+        <!--<completion.contributor language="D" implementationClass="net.masterthought.dlanguage.codeinsight.DCompletionContributor"/>-->
+        
     </extensions>
 
     <application-components>
