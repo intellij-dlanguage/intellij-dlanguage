@@ -1,0 +1,79 @@
+package net.masterthought.dlanguage.codeinsight;
+
+import com.intellij.lang.cacheBuilder.DefaultWordsScanner;
+import com.intellij.lang.cacheBuilder.WordsScanner;
+import com.intellij.lang.findUsages.FindUsagesProvider;
+import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.psi.ElementDescriptionUtil;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiNamedElement;
+import com.intellij.psi.tree.TokenSet;
+import com.intellij.usageView.UsageViewNodeTextLocation;
+import net.masterthought.dlanguage.DLanguageLexerAdapter;
+import net.masterthought.dlanguage.psi.DLanguageClassDeclaration;
+import net.masterthought.dlanguage.psi.DLanguageTypes;
+import net.masterthought.dlanguage.psi.DTokenSets;
+import net.masterthought.dlanguage.psi.interfaces.DLanguageFuncDeclaration;
+import net.masterthought.dlanguage.psi.interfaces.DLanguageIdentifier;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+public class DFindUsagesProvider implements FindUsagesProvider {
+    @SuppressWarnings("UnusedDeclaration")
+    private final static Logger LOG = Logger.getInstance(DFindUsagesProvider.class);
+    // Second parameter is nodes that are PsiNamedElements in practice.
+    private final static WordsScanner SCANNER =
+            new DefaultWordsScanner(new DLanguageLexerAdapter(),
+                    TokenSet.create(DLanguageTypes.IDENTIFIER),
+                    DTokenSets.COMMENTS, DTokenSets.STRING_LITERALS);
+
+    @Nullable
+    @Override
+    public WordsScanner getWordsScanner() {
+        return SCANNER;
+    }
+
+    @Override
+    public boolean canFindUsagesFor(@NotNull PsiElement psiElement) {
+        return psiElement instanceof PsiNamedElement;
+    }
+
+    @Nullable
+    @Override
+    public String getHelpId(@NotNull PsiElement psiElement) {
+        // TODO: Use HelpID after 13.1.
+        return "reference.dialogs.findUsages.other";
+    }
+
+    @NotNull
+    @Override
+    public String getType(@NotNull PsiElement element) {
+//        return ElementDescriptionUtil.getElementDescription(element, UsageViewTypeLocation.INSTANCE);
+//        return "woops";
+
+        if (element instanceof DLanguageFuncDeclaration) {
+            return "Function";
+        } else if (element instanceof DLanguageIdentifier) {
+            return "Identifier";
+        } else if (element instanceof DLanguageClassDeclaration) {
+            return "Class";
+        } else {
+            return "";
+        }
+
+    }
+
+    @NotNull
+    @Override
+    public String getDescriptiveName(@NotNull PsiElement element) {
+//        return ElementDescriptionUtil.getElementDescription(element, UsageViewLongNameLocation.INSTANCE);
+        return "Totally rocks!";
+    }
+
+    @NotNull
+    @Override
+    public String getNodeText(@NotNull PsiElement element, boolean useFullName) {
+        return ElementDescriptionUtil.getElementDescription(element, UsageViewNodeTextLocation.INSTANCE);
+    }
+}
+

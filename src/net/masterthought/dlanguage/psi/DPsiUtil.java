@@ -1,4 +1,4 @@
-package net.masterthought.dlanguage.psi.references;
+package net.masterthought.dlanguage.psi;
 
 import com.google.common.collect.Sets;
 import com.intellij.psi.PsiElement;

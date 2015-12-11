@@ -1,4 +1,4 @@
-package net.masterthought.dlanguage.psi.references;
+package net.masterthought.dlanguage.utils;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.project.Project;
@@ -11,6 +11,7 @@ import com.intellij.util.containers.ContainerUtil;
 import net.masterthought.dlanguage.index.DModuleIndex;
 import net.masterthought.dlanguage.psi.DLanguageExpression;
 import net.masterthought.dlanguage.psi.DLanguageFile;
+import net.masterthought.dlanguage.psi.DPsiUtil;
 import net.masterthought.dlanguage.psi.interfaces.DLanguageIdentifier;
 import net.masterthought.dlanguage.psi.interfaces.DLanguageFuncDeclaration;
 import org.jetbrains.annotations.NotNull;

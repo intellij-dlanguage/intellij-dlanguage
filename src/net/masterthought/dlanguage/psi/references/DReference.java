@@ -6,6 +6,7 @@ import com.intellij.psi.*;
 import com.intellij.util.IncorrectOperationException;
 import net.masterthought.dlanguage.psi.impl.DPsiImplUtil;
 import net.masterthought.dlanguage.psi.interfaces.DLanguageFuncDeclaration;
+import net.masterthought.dlanguage.utils.DUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

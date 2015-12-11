@@ -56,6 +56,11 @@
         <!--<moduleConfigurationEditorProvider implementation="net.masterthought.dlanguage.settings.DLanguageModuleConfigurationEditor" order="first"/>-->
         <!-- Tab in IntelliJ -> Preferences -->
 
+        <!-- References/navigation -->
+        <psi.referenceContributor implementation="net.masterthought.dlanguage.psi.references.DReferenceContributor"/>
+        <lang.findUsagesProvider language="D"
+                                 implementationClass="net.masterthought.dlanguage.codeinsight.DFindUsagesProvider"/>
+        
         <!-- Editing utils -->
         <lang.braceMatcher language="D" implementationClass="net.masterthought.dlanguage.features.DBraceMatcher"/>
         <lang.commenter language="D" implementationClass="net.masterthought.dlanguage.features.DCommenter"/>
