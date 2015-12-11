@@ -155,7 +155,7 @@ D Language File
                         DLanguageDeclarationBlockImpl(DECLARATION_BLOCK)
                           DLanguageDeclDefImpl(DECL_DEF)
                             DLanguageDeclarationImpl(DECLARATION)
-                              DLanguageFuncDeclarationImpl(FUNC_DECLARATION)
+                              FUNC_DECLARATION
                                 DLanguageBasicTypeImpl(BASIC_TYPE)
                                   DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                                     DLanguageIdentifierImpl(IDENTIFIER)
@@ -303,7 +303,7 @@ D Language File
                           DLanguageDeclarationBlockImpl(DECLARATION_BLOCK)
                             DLanguageDeclDefImpl(DECL_DEF)
                               DLanguageDeclarationImpl(DECLARATION)
-                                DLanguageFuncDeclarationImpl(FUNC_DECLARATION)
+                                FUNC_DECLARATION
                                   DLanguageBasicTypeImpl(BASIC_TYPE)
                                     DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                                       DLanguageIdentifierImpl(IDENTIFIER)
