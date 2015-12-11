@@ -6,7 +6,7 @@ D Language File
           DLanguagePragmaImpl(PRAGMA)
             PsiElement(DLanguageTokenType.pragma)('pragma')
             PsiElement(DLanguageTokenType.()('(')
-            DLanguageIdentifierImpl(IDENTIFIER)
+            IDENTIFIER
               PsiElement(DLanguageTokenType.ID)('ident')
             PsiElement(DLanguageTokenType.))(')')
         DLanguageDeclarationBlockImpl(DECLARATION_BLOCK)
@@ -20,7 +20,7 @@ D Language File
           DLanguagePragmaImpl(PRAGMA)
             PsiElement(DLanguageTokenType.pragma)('pragma')
             PsiElement(DLanguageTokenType.()('(')
-            DLanguageIdentifierImpl(IDENTIFIER)
+            IDENTIFIER
               PsiElement(DLanguageTokenType.ID)('ident')
             PsiElement(DLanguageTokenType.))(')')
           DLanguageStatementImpl(STATEMENT)
@@ -43,7 +43,7 @@ D Language File
                                             DLanguagePowExpressionImpl(POW_EXPRESSION)
                                               DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
                                                 DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                                                  DLanguageIdentifierImpl(IDENTIFIER)
+                                                  IDENTIFIER
                                                     PsiElement(DLanguageTokenType.ID)('declaration')
                   PsiElement(DLanguageTokenType.;)(';')
   PsiComment(DLanguageTokenType.line_comment)('// influence one declaration')
@@ -54,7 +54,7 @@ D Language File
           DLanguagePragmaImpl(PRAGMA)
             PsiElement(DLanguageTokenType.pragma)('pragma')
             PsiElement(DLanguageTokenType.()('(')
-            DLanguageIdentifierImpl(IDENTIFIER)
+            IDENTIFIER
               PsiElement(DLanguageTokenType.ID)('ident')
             PsiElement(DLanguageTokenType.))(')')
         PsiElement(DLanguageTokenType.:)(':')
@@ -79,7 +79,7 @@ D Language File
                                     DLanguagePowExpressionImpl(POW_EXPRESSION)
                                       DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
                                         DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                                          DLanguageIdentifierImpl(IDENTIFIER)
+                                          IDENTIFIER
                                             PsiElement(DLanguageTokenType.ID)('declaration')
           PsiElement(DLanguageTokenType.;)(';')
   DLanguageStatementImpl(STATEMENT)
@@ -102,7 +102,7 @@ D Language File
                                     DLanguagePowExpressionImpl(POW_EXPRESSION)
                                       DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
                                         DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                                          DLanguageIdentifierImpl(IDENTIFIER)
+                                          IDENTIFIER
                                             PsiElement(DLanguageTokenType.ID)('declaration')
           PsiElement(DLanguageTokenType.;)(';')
   DLanguageStatementImpl(STATEMENT)
@@ -112,7 +112,7 @@ D Language File
           DLanguagePragmaImpl(PRAGMA)
             PsiElement(DLanguageTokenType.pragma)('pragma')
             PsiElement(DLanguageTokenType.()('(')
-            DLanguageIdentifierImpl(IDENTIFIER)
+            IDENTIFIER
               PsiElement(DLanguageTokenType.ID)('ident')
             PsiElement(DLanguageTokenType.))(')')
           PsiComment(DLanguageTokenType.line_comment)('// influence block of declarations')
@@ -161,7 +161,7 @@ D Language File
                                                                                             DLanguagePowExpressionImpl(POW_EXPRESSION)
                                                                                               DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
                                                                                                 DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                                                                                                  DLanguageIdentifierImpl(IDENTIFIER)
+                                                                                                  IDENTIFIER
                                                                                                     PsiElement(DLanguageTokenType.ID)('declaration')
                                                                   PsiElement(DLanguageTokenType.;)(';')
                                                           DLanguageStatementListImpl(STATEMENT_LIST)
@@ -185,7 +185,7 @@ D Language File
                                                                                               DLanguagePowExpressionImpl(POW_EXPRESSION)
                                                                                                 DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
                                                                                                   DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                                                                                                    DLanguageIdentifierImpl(IDENTIFIER)
+                                                                                                    IDENTIFIER
                                                                                                       PsiElement(DLanguageTokenType.ID)('declaration')
                                                                     PsiElement(DLanguageTokenType.;)(';')
                                                         PsiElement(DLanguageTokenType.})('}')
@@ -196,7 +196,7 @@ D Language File
           DLanguagePragmaImpl(PRAGMA)
             PsiElement(DLanguageTokenType.pragma)('pragma')
             PsiElement(DLanguageTokenType.()('(')
-            DLanguageIdentifierImpl(IDENTIFIER)
+            IDENTIFIER
               PsiElement(DLanguageTokenType.ID)('ident')
             PsiElement(DLanguageTokenType.))(')')
           DLanguageStatementImpl(STATEMENT)
@@ -219,7 +219,7 @@ D Language File
                                             DLanguagePowExpressionImpl(POW_EXPRESSION)
                                               DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
                                                 DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                                                  DLanguageIdentifierImpl(IDENTIFIER)
+                                                  IDENTIFIER
                                                     PsiElement(DLanguageTokenType.ID)('statement')
                   PsiElement(DLanguageTokenType.;)(';')
   PsiComment(DLanguageTokenType.line_comment)('// influence one statement')
@@ -230,7 +230,7 @@ D Language File
           DLanguagePragmaImpl(PRAGMA)
             PsiElement(DLanguageTokenType.pragma)('pragma')
             PsiElement(DLanguageTokenType.()('(')
-            DLanguageIdentifierImpl(IDENTIFIER)
+            IDENTIFIER
               PsiElement(DLanguageTokenType.ID)('ident')
             PsiElement(DLanguageTokenType.))(')')
           PsiComment(DLanguageTokenType.line_comment)('// influence block of statements')
@@ -279,7 +279,7 @@ D Language File
                                                                                             DLanguagePowExpressionImpl(POW_EXPRESSION)
                                                                                               DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
                                                                                                 DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                                                                                                  DLanguageIdentifierImpl(IDENTIFIER)
+                                                                                                  IDENTIFIER
                                                                                                     PsiElement(DLanguageTokenType.ID)('statement')
                                                                   PsiElement(DLanguageTokenType.;)(';')
                                                           DLanguageStatementListImpl(STATEMENT_LIST)
@@ -303,7 +303,7 @@ D Language File
                                                                                               DLanguagePowExpressionImpl(POW_EXPRESSION)
                                                                                                 DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
                                                                                                   DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                                                                                                    DLanguageIdentifierImpl(IDENTIFIER)
+                                                                                                    IDENTIFIER
                                                                                                       PsiElement(DLanguageTokenType.ID)('statement')
                                                                     PsiElement(DLanguageTokenType.;)(';')
                                                         PsiElement(DLanguageTokenType.})('}')

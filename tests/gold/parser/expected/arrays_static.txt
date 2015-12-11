@@ -28,6 +28,6 @@ D Language File
                                               DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                                                 PsiElement(DLanguageTokenType.INTEGER_LITERAL)('3')
                     PsiElement(DLanguageTokenType.])(']')
-                DLanguageIdentifierImpl(IDENTIFIER)
+                IDENTIFIER
                   PsiElement(DLanguageTokenType.ID)('s')
           PsiElement(DLanguageTokenType.;)(';')

@@ -13,6 +13,6 @@ D Language File
                   DLanguageBasicType2XImpl(BASIC_TYPE_2_X)
                     PsiElement(DLanguageTokenType.[)('[')
                     PsiElement(DLanguageTokenType.])(']')
-                DLanguageIdentifierImpl(IDENTIFIER)
+                IDENTIFIER
                   PsiElement(DLanguageTokenType.ID)('a')
           PsiElement(DLanguageTokenType.;)(';')

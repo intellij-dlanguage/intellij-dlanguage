@@ -12,7 +12,7 @@ D Language File
                 DLanguageBasicTypeImpl(BASIC_TYPE)
                   DLanguageBasicTypeXImpl(BASIC_TYPE_X)
                     PsiElement(DLanguageTokenType.int)('int')
-              DLanguageIdentifierImpl(IDENTIFIER)
+              IDENTIFIER
                 PsiElement(DLanguageTokenType.ID)('i')
             PsiElement(DLanguageTokenType.,)(',')
             DLanguageForeachTypeListImpl(FOREACH_TYPE_LIST)
@@ -21,7 +21,7 @@ D Language File
                   DLanguageBasicTypeImpl(BASIC_TYPE)
                     DLanguageBasicTypeXImpl(BASIC_TYPE_X)
                       PsiElement(DLanguageTokenType.char)('char')
-                DLanguageIdentifierImpl(IDENTIFIER)
+                IDENTIFIER
                   PsiElement(DLanguageTokenType.ID)('c')
           PsiElement(DLanguageTokenType.;)(';')
           DLanguageForeachAggregateImpl(FOREACH_AGGREGATE)
@@ -41,7 +41,7 @@ D Language File
                                       DLanguagePowExpressionImpl(POW_EXPRESSION)
                                         DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
                                           DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                                            DLanguageIdentifierImpl(IDENTIFIER)
+                                            IDENTIFIER
                                               PsiElement(DLanguageTokenType.ID)('a')
           PsiElement(DLanguageTokenType.))(')')
           DLanguageStatementImpl(STATEMENT)
@@ -89,7 +89,7 @@ D Language File
                                                                                             DLanguagePowExpressionImpl(POW_EXPRESSION)
                                                                                               DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
                                                                                                 DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                                                                                                  DLanguageIdentifierImpl(IDENTIFIER)
+                                                                                                  IDENTIFIER
                                                                                                     PsiElement(DLanguageTokenType.ID)('writefln')
                                                                                 DLanguageOrExpressionImpl(OR_EXPRESSION)
                                                                                   DLanguageXorExpressionImpl(XOR_EXPRESSION)
@@ -137,7 +137,7 @@ D Language File
                                                                                                                                 DLanguagePowExpressionImpl(POW_EXPRESSION)
                                                                                                                                   DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
                                                                                                                                     DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                                                                                                                                      DLanguageIdentifierImpl(IDENTIFIER)
+                                                                                                                                      IDENTIFIER
                                                                                                                                         PsiElement(DLanguageTokenType.ID)('i')
                                                                                                           PsiElement(DLanguageTokenType.,)(',')
                                                                                                           DLanguageCommaExpressionImpl(COMMA_EXPRESSION)
@@ -155,7 +155,7 @@ D Language File
                                                                                                                                   DLanguagePowExpressionImpl(POW_EXPRESSION)
                                                                                                                                     DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
                                                                                                                                       DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                                                                                                                                        DLanguageIdentifierImpl(IDENTIFIER)
+                                                                                                                                        IDENTIFIER
                                                                                                                                           PsiElement(DLanguageTokenType.ID)('c')
                                                                                                     PsiElement(DLanguageTokenType.))(')')
                                                                   PsiElement(DLanguageTokenType.;)(';')

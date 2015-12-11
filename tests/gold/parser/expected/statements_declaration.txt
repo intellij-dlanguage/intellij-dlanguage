@@ -9,7 +9,7 @@ D Language File
           DLanguageDeclaratorsImpl(DECLARATORS)
             DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
               DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
-                DLanguageIdentifierImpl(IDENTIFIER)
+                IDENTIFIER
                   PsiElement(DLanguageTokenType.ID)('a')
           PsiElement(DLanguageTokenType.;)(';')
     PsiComment(DLanguageTokenType.line_comment)('// declare a as type int and initialize it to 0')
@@ -19,7 +19,7 @@ D Language File
           DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
             DLanguageStructDeclarationImpl(STRUCT_DECLARATION)
               PsiElement(DLanguageTokenType.struct)('struct')
-              DLanguageIdentifierImpl(IDENTIFIER)
+              IDENTIFIER
                 PsiElement(DLanguageTokenType.ID)('S')
               DLanguageAggregateBodyImpl(AGGREGATE_BODY)
                 PsiElement(DLanguageTokenType.{)('{')
@@ -30,7 +30,7 @@ D Language File
           DLanguageDeclarationImpl(DECLARATION)
             DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
               PsiElement(DLanguageTokenType.alias)('alias')
-              DLanguageIdentifierImpl(IDENTIFIER)
+              IDENTIFIER
                 PsiElement(DLanguageTokenType.ID)('myint')
               PsiElement(DLanguageTokenType.=)('=')
               DLanguageTypeImpl(TYPE)

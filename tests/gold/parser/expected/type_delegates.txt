@@ -21,7 +21,7 @@ D Language File
                               DLanguageBasicTypeXImpl(BASIC_TYPE_X)
                                 PsiElement(DLanguageTokenType.int)('int')
                       PsiElement(DLanguageTokenType.))(')')
-                DLanguageIdentifierImpl(IDENTIFIER)
+                IDENTIFIER
                   PsiElement(DLanguageTokenType.ID)('fp')
           PsiElement(DLanguageTokenType.;)(';')
     PsiComment(DLanguageTokenType.line_comment)('// fp is pointer to a function')
@@ -47,7 +47,7 @@ D Language File
                                 DLanguageBasicTypeXImpl(BASIC_TYPE_X)
                                   PsiElement(DLanguageTokenType.int)('int')
                         PsiElement(DLanguageTokenType.))(')')
-                  DLanguageIdentifierImpl(IDENTIFIER)
+                  IDENTIFIER
                     PsiElement(DLanguageTokenType.ID)('dg')
             PsiElement(DLanguageTokenType.;)(';')
   PsiComment(DLanguageTokenType.line_comment)('// dg is a delegate to a function')

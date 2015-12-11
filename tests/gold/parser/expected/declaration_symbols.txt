@@ -9,13 +9,13 @@ D Language File
           DLanguageDeclaratorsImpl(DECLARATORS)
             DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
               DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
-                DLanguageIdentifierImpl(IDENTIFIER)
+                IDENTIFIER
                   PsiElement(DLanguageTokenType.ID)('x')
             PsiElement(DLanguageTokenType.,)(',')
             DLanguageDeclaratorIdentifierListImpl(DECLARATOR_IDENTIFIER_LIST)
               DLanguageDeclaratorIdentifierImpl(DECLARATOR_IDENTIFIER)
                 DLanguageAltDeclaratorIdentifierImpl(ALT_DECLARATOR_IDENTIFIER)
-                  DLanguageIdentifierImpl(IDENTIFIER)
+                  IDENTIFIER
                     PsiElement(DLanguageTokenType.ID)('y')
           PsiElement(DLanguageTokenType.;)(';')
     PsiComment(DLanguageTokenType.line_comment)('// x and y are ints')
@@ -32,13 +32,13 @@ D Language File
                   DLanguageBasicType2Impl(BASIC_TYPE_2)
                     DLanguageBasicType2XImpl(BASIC_TYPE_2_X)
                       PsiElement(DLanguageTokenType.*)('*')
-                  DLanguageIdentifierImpl(IDENTIFIER)
+                  IDENTIFIER
                     PsiElement(DLanguageTokenType.ID)('x')
               PsiElement(DLanguageTokenType.,)(',')
               DLanguageDeclaratorIdentifierListImpl(DECLARATOR_IDENTIFIER_LIST)
                 DLanguageDeclaratorIdentifierImpl(DECLARATOR_IDENTIFIER)
                   DLanguageAltDeclaratorIdentifierImpl(ALT_DECLARATOR_IDENTIFIER)
-                    DLanguageIdentifierImpl(IDENTIFIER)
+                    IDENTIFIER
                       PsiElement(DLanguageTokenType.ID)('y')
             PsiElement(DLanguageTokenType.;)(';')
       PsiComment(DLanguageTokenType.line_comment)('// x and y are pointers to ints')
@@ -56,13 +56,13 @@ D Language File
                       DLanguageBasicType2XImpl(BASIC_TYPE_2_X)
                         PsiElement(DLanguageTokenType.[)('[')
                         PsiElement(DLanguageTokenType.])(']')
-                    DLanguageIdentifierImpl(IDENTIFIER)
+                    IDENTIFIER
                       PsiElement(DLanguageTokenType.ID)('x')
                 PsiElement(DLanguageTokenType.,)(',')
                 DLanguageDeclaratorIdentifierListImpl(DECLARATOR_IDENTIFIER_LIST)
                   DLanguageDeclaratorIdentifierImpl(DECLARATOR_IDENTIFIER)
                     DLanguageAltDeclaratorIdentifierImpl(ALT_DECLARATOR_IDENTIFIER)
-                      DLanguageIdentifierImpl(IDENTIFIER)
+                      IDENTIFIER
                         PsiElement(DLanguageTokenType.ID)('y')
               PsiElement(DLanguageTokenType.;)(';')
   PsiComment(DLanguageTokenType.line_comment)('// x and y are arrays of ints')

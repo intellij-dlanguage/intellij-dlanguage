@@ -9,7 +9,7 @@ D Language File
           DLanguageDeclaratorsImpl(DECLARATORS)
             DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
               DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
-                DLanguageIdentifierImpl(IDENTIFIER)
+                IDENTIFIER
                   PsiElement(DLanguageTokenType.ID)('x')
               PsiElement(DLanguageTokenType.=)('=')
               DLanguageInitializerImpl(INITIALIZER)
@@ -57,7 +57,7 @@ D Language File
                                           DLanguageAsmUnaExpImpl(ASM_UNA_EXP)
                                             DLanguageAsmPrimaryExpImpl(ASM_PRIMARY_EXP)
                                               DLanguageDotIdentifierImpl(DOT_IDENTIFIER)
-                                                DLanguageIdentifierImpl(IDENTIFIER)
+                                                IDENTIFIER
                                                   PsiElement(DLanguageTokenType.ID)('EAX')
                 PsiElement(DLanguageTokenType.,)(',')
                 DLanguageOperandsImpl(OPERANDS)
@@ -77,7 +77,7 @@ D Language File
                                             DLanguageAsmUnaExpImpl(ASM_UNA_EXP)
                                               DLanguageAsmPrimaryExpImpl(ASM_PRIMARY_EXP)
                                                 DLanguageDotIdentifierImpl(DOT_IDENTIFIER)
-                                                  DLanguageIdentifierImpl(IDENTIFIER)
+                                                  IDENTIFIER
                                                     PsiElement(DLanguageTokenType.ID)('x')
             PsiElement(DLanguageTokenType.;)(';')
           PsiComment(DLanguageTokenType.line_comment)('// load x and put it in register EAX')

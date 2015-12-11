@@ -9,7 +9,7 @@ D Language File
           DLanguageDeclaratorsImpl(DECLARATORS)
             DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
               DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
-                DLanguageIdentifierImpl(IDENTIFIER)
+                IDENTIFIER
                   PsiElement(DLanguageTokenType.ID)('number')
           PsiElement(DLanguageTokenType.;)(';')
     DLanguageDeclDefsImpl(DECL_DEFS)
@@ -18,12 +18,12 @@ D Language File
           DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
             DLanguageBasicTypeImpl(BASIC_TYPE)
               DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                DLanguageIdentifierImpl(IDENTIFIER)
+                IDENTIFIER
                   PsiElement(DLanguageTokenType.ID)('string')
             DLanguageDeclaratorsImpl(DECLARATORS)
               DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
                 DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
-                  DLanguageIdentifierImpl(IDENTIFIER)
+                  IDENTIFIER
                     PsiElement(DLanguageTokenType.ID)('message')
             PsiElement(DLanguageTokenType.;)(';')
   DLanguageStatementImpl(STATEMENT)
@@ -48,7 +48,7 @@ D Language File
                                     DLanguagePowExpressionImpl(POW_EXPRESSION)
                                       DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
                                         DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                                          DLanguageIdentifierImpl(IDENTIFIER)
+                                          IDENTIFIER
                                             PsiElement(DLanguageTokenType.ID)('number')
           PsiElement(DLanguageTokenType.))(')')
           DLanguageScopeStatementImpl(SCOPE_STATEMENT)
@@ -109,7 +109,7 @@ D Language File
                                                                                                             DLanguageTypeImpl(TYPE)
                                                                                                               DLanguageBasicTypeImpl(BASIC_TYPE)
                                                                                                                 DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                                                                                                  DLanguageIdentifierImpl(IDENTIFIER)
+                                                                                                                  IDENTIFIER
                                                                                                                     PsiElement(DLanguageTokenType.ID)('Exception')
                                                                                                             PsiElement(DLanguageTokenType.()('(')
                                                                                                             DLanguageArgumentListImpl(ARGUMENT_LIST)
@@ -176,7 +176,7 @@ D Language File
                                                                                                       DLanguagePowExpressionImpl(POW_EXPRESSION)
                                                                                                         DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
                                                                                                           DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                                                                                                            DLanguageIdentifierImpl(IDENTIFIER)
+                                                                                                            IDENTIFIER
                                                                                                               PsiElement(DLanguageTokenType.ID)('message')
                                                                                   PsiElement(DLanguageTokenType.~=)('~=')
                                                                                   DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
@@ -247,7 +247,7 @@ D Language File
                                                                                                         DLanguagePowExpressionImpl(POW_EXPRESSION)
                                                                                                           DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
                                                                                                             DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                                                                                                              DLanguageIdentifierImpl(IDENTIFIER)
+                                                                                                              IDENTIFIER
                                                                                                                 PsiElement(DLanguageTokenType.ID)('message')
                                                                                     PsiElement(DLanguageTokenType.~=)('~=')
                                                                                     DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
@@ -318,7 +318,7 @@ D Language File
                                                                                                           DLanguagePowExpressionImpl(POW_EXPRESSION)
                                                                                                             DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
                                                                                                               DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                                                                                                                DLanguageIdentifierImpl(IDENTIFIER)
+                                                                                                                IDENTIFIER
                                                                                                                   PsiElement(DLanguageTokenType.ID)('message')
                                                                                       PsiElement(DLanguageTokenType.~=)('~=')
                                                                                       DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
@@ -390,7 +390,7 @@ D Language File
                                                                                                             DLanguagePowExpressionImpl(POW_EXPRESSION)
                                                                                                               DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
                                                                                                                 DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                                                                                                                  DLanguageIdentifierImpl(IDENTIFIER)
+                                                                                                                  IDENTIFIER
                                                                                                                     PsiElement(DLanguageTokenType.ID)('message')
                                                                                         PsiElement(DLanguageTokenType.~=)('~=')
                                                                                         DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
@@ -478,7 +478,7 @@ D Language File
                                                                                                                 DLanguagePowExpressionImpl(POW_EXPRESSION)
                                                                                                                   DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
                                                                                                                     DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                                                                                                                      DLanguageIdentifierImpl(IDENTIFIER)
+                                                                                                                      IDENTIFIER
                                                                                                                         PsiElement(DLanguageTokenType.ID)('message')
                                                                                             PsiElement(DLanguageTokenType.=)('=')
                                                                                             DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
