@@ -29,7 +29,7 @@
                                implementationClass="net.masterthought.dlanguage.DLanguageParserDefinition"/>
         <lang.syntaxHighlighterFactory key="D"
                                        implementationClass="net.masterthought.dlanguage.highlighting.DHighlighterFactory"/>
-        <annotator language="D" implementationClass="net.masterthought.dlanguage.highlighting.annotation.DAnnotator" />
+        <annotator language="D" implementationClass="net.masterthought.dlanguage.highlighting.annotation.DAnnotator"/>
         <colorSettingsPage implementation="net.masterthought.dlanguage.settings.DColorSettingsPage"/>
 
 
@@ -38,9 +38,14 @@
         <moduleType id="DLANGUAGE_MODULE" implementationClass="net.masterthought.dlanguage.DLanguageModuleType"/>
         <sdkType implementation="net.masterthought.dlanguage.DLanguageSdkType"/>
         <configurationType implementation="net.masterthought.dlanguage.run.DLanguageApplicationConfigurationType"/>
-        <runConfigurationProducer implementation="net.masterthought.dlanguage.run.DLanguageApplicationRunConfigurationProducer"/>
+        <runConfigurationProducer
+                implementation="net.masterthought.dlanguage.run.DLanguageApplicationRunConfigurationProducer"/>
 
         <programRunner implementation="net.masterthought.dlanguage.run.DLanguageRunner"/>
+
+        <!-- Indexes -->
+        <fileBasedIndex implementation="net.masterthought.dlanguage.index.DModuleIndex"/>
+        <stubIndex implementation="net.masterthought.dlanguage.stubs.index.DAllNameIndex"/>
 
         <!-- Project settings -->
 
@@ -60,14 +65,14 @@
         <psi.referenceContributor implementation="net.masterthought.dlanguage.psi.references.DReferenceContributor"/>
         <lang.findUsagesProvider language="D"
                                  implementationClass="net.masterthought.dlanguage.codeinsight.DFindUsagesProvider"/>
-        
+
         <!-- Editing utils -->
         <lang.braceMatcher language="D" implementationClass="net.masterthought.dlanguage.features.DBraceMatcher"/>
         <lang.commenter language="D" implementationClass="net.masterthought.dlanguage.features.DCommenter"/>
         <lang.foldingBuilder language="D" implementationClass="net.masterthought.dlanguage.features.DFoldingBuilder"/>
         <!--<completion.contributor language="D" implementationClass="net.masterthought.dlanguage.codeinsight.DCompletionContributor"/>-->
-        
-        
+
+
     </extensions>
 
     <application-components>

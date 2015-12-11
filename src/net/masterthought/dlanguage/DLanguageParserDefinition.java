@@ -12,11 +12,13 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IFileElementType;
+import com.intellij.psi.tree.IStubFileElementType;
 import com.intellij.psi.tree.TokenSet;
 import net.masterthought.dlanguage.lexer.DLanguageLexer;
 import net.masterthought.dlanguage.parser.DLanguageParser;
 import net.masterthought.dlanguage.psi.DLanguageFile;
 import net.masterthought.dlanguage.psi.DLanguageTypes;
+import net.masterthought.dlanguage.stubs.types.DFileStubElementType;
 import org.jetbrains.annotations.NotNull;
 
 public class DLanguageParserDefinition implements ParserDefinition {
@@ -24,7 +26,7 @@ public class DLanguageParserDefinition implements ParserDefinition {
     public static final TokenSet WHITE_SPACES = TokenSet.create(TokenType.WHITE_SPACE);
     public static final TokenSet COMMENTS = TokenSet.create(DLanguageTypes.LINE_COMMENT);
 
-    public static final IFileElementType FILE = new IFileElementType(Language.<DLanguage>findInstance(DLanguage.class));
+    public static final IStubFileElementType FILE_ELEMENT_TYPE = DFileStubElementType.INSTANCE;
 
     @NotNull
     @Override
@@ -54,7 +56,7 @@ public class DLanguageParserDefinition implements ParserDefinition {
 
     @Override
     public IFileElementType getFileNodeType() {
-        return FILE;
+        return FILE_ELEMENT_TYPE;
     }
 
     public PsiFile createFile(FileViewProvider viewProvider) {

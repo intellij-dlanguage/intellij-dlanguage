@@ -13,9 +13,16 @@
   elementTypeClass="net.masterthought.dlanguage.psi.DLanguageElementType"
   tokenTypeClass="net.masterthought.dlanguage.psi.DLanguageTokenType"
 
+  // used to attach custom methods into the classes - e.g. Identifier
   psiImplUtilClass="net.masterthought.dlanguage.psi.impl.DPsiImplUtil"
 
+  // used to implement DNamedElement in the generated interfaces
   implements("Identifier|FuncDeclaration")="net.masterthought.dlanguage.psi.DNamedElement"
+
+  // used to extend to use stubs
+  extends("FuncDeclaration")="net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase<?>"
+  elementTypeFactory("FuncDeclaration")="net.masterthought.dlanguage.psi.impl.DElementTypeFactory.factory"
+
 
   generateTokenAccessors=true
 
@@ -1729,6 +1736,7 @@ FuncDeclaration ::=
     StorageClasses? BasicType FuncDeclarator (FunctionBody |';'| '=')?
     | AutoFuncDeclaration {
       methods=[getName getNameIdentifier getReference setName getPresentation]
+      stubClass="net.masterthought.dlanguage.stubs.DLanguageFuncDeclarationStub"
     }
 
 AutoFuncDeclaration ::=

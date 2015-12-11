@@ -4,6 +4,7 @@ package net.masterthought.dlanguage.psi;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.PsiElement;
 import com.intellij.lang.ASTNode;
+import net.masterthought.dlanguage.psi.impl.DElementTypeFactory;
 import net.masterthought.dlanguage.psi.impl.*;
 
 public interface DLanguageTypes {
@@ -134,7 +135,7 @@ public interface DLanguageTypes {
   IElementType FUNCTION_CONTRACTS = new DLanguageElementType("FUNCTION_CONTRACTS");
   IElementType FUNCTION_LITERAL = new DLanguageElementType("FUNCTION_LITERAL");
   IElementType FUNCTION_LITERAL_BODY = new DLanguageElementType("FUNCTION_LITERAL_BODY");
-  IElementType FUNC_DECLARATION = new DLanguageElementType("FUNC_DECLARATION");
+  IElementType FUNC_DECLARATION = DElementTypeFactory.factory("FUNC_DECLARATION");
   IElementType FUNC_DECLARATOR = new DLanguageElementType("FUNC_DECLARATOR");
   IElementType FUNC_DECLARATOR_SUFFIX = new DLanguageElementType("FUNC_DECLARATOR_SUFFIX");
   IElementType GOTO_STATEMENT = new DLanguageElementType("GOTO_STATEMENT");
