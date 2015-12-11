@@ -10,7 +10,7 @@ D Language File
               DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
                 DLanguageClassDeclarationImpl(CLASS_DECLARATION)
                   PsiElement(DLanguageTokenType.class)('class')
-                  IDENTIFIER
+                  DLanguageIdentifierImpl(IDENTIFIER)
                     PsiElement(DLanguageTokenType.ID)('A')
                   DLanguageAggregateBodyImpl(AGGREGATE_BODY)
                     PsiElement(DLanguageTokenType.{)('{')
@@ -21,14 +21,14 @@ D Language File
           DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
             DLanguageClassDeclarationImpl(CLASS_DECLARATION)
               PsiElement(DLanguageTokenType.class)('class')
-              IDENTIFIER
+              DLanguageIdentifierImpl(IDENTIFIER)
                 PsiElement(DLanguageTokenType.ID)('B')
               DLanguageBaseClassListImpl(BASE_CLASS_LIST)
                 PsiElement(DLanguageTokenType.:)(':')
                 DLanguageSuperClassImpl(SUPER_CLASS)
                   DLanguageBasicTypeImpl(BASIC_TYPE)
                     DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                      IDENTIFIER
+                      DLanguageIdentifierImpl(IDENTIFIER)
                         PsiElement(DLanguageTokenType.ID)('A')
               DLanguageAggregateBodyImpl(AGGREGATE_BODY)
                 PsiElement(DLanguageTokenType.{)('{')

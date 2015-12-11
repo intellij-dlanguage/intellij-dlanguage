@@ -19,7 +19,7 @@ D Language File
                                     DLanguagePowExpressionImpl(POW_EXPRESSION)
                                       DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
                                         DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                                          IDENTIFIER
+                                          DLanguageIdentifierImpl(IDENTIFIER)
                                             PsiElement(DLanguageTokenType.ID)('fp')
                         DLanguageOrExpressionImpl(OR_EXPRESSION)
                           DLanguageXorExpressionImpl(XOR_EXPRESSION)
@@ -72,7 +72,7 @@ D Language File
                                     DLanguagePowExpressionImpl(POW_EXPRESSION)
                                       DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
                                         DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                                          IDENTIFIER
+                                          DLanguageIdentifierImpl(IDENTIFIER)
                                             PsiElement(DLanguageTokenType.ID)('dg')
                         DLanguageOrExpressionImpl(OR_EXPRESSION)
                           DLanguageXorExpressionImpl(XOR_EXPRESSION)

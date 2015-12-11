@@ -9,6 +9,6 @@ D Language File
         PsiElement(DLanguageTokenType.))(')')
     PsiElement(DLanguageTokenType.module)('module')
     DLanguageModuleFullyQualifiedNameImpl(MODULE_FULLY_QUALIFIED_NAME)
-      IDENTIFIER
+      DLanguageIdentifierImpl(IDENTIFIER)
         PsiElement(DLanguageTokenType.ID)('foo')
     PsiElement(DLanguageTokenType.;)(';')

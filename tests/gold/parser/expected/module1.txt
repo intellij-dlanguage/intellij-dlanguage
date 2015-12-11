@@ -2,10 +2,10 @@ D Language File
   DLanguageModuleDeclarationImpl(MODULE_DECLARATION)
     PsiElement(DLanguageTokenType.module)('module')
     DLanguageModuleFullyQualifiedNameImpl(MODULE_FULLY_QUALIFIED_NAME)
-      IDENTIFIER
+      DLanguageIdentifierImpl(IDENTIFIER)
         PsiElement(DLanguageTokenType.ID)('c')
       PsiElement(DLanguageTokenType..)('.')
       DLanguageModuleFullyQualifiedNameImpl(MODULE_FULLY_QUALIFIED_NAME)
-        IDENTIFIER
+        DLanguageIdentifierImpl(IDENTIFIER)
           PsiElement(DLanguageTokenType.ID)('stdio')
     PsiElement(DLanguageTokenType.;)(';')

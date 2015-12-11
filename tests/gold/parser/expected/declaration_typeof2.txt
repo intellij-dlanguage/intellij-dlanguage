@@ -5,7 +5,7 @@ D Language File
         DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
           DLanguageClassDeclarationImpl(CLASS_DECLARATION)
             PsiElement(DLanguageTokenType.class)('class')
-            IDENTIFIER
+            DLanguageIdentifierImpl(IDENTIFIER)
               PsiElement(DLanguageTokenType.ID)('A')
             DLanguageAggregateBodyImpl(AGGREGATE_BODY)
               PsiElement(DLanguageTokenType.{)('{')
@@ -16,14 +16,14 @@ D Language File
           DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
             DLanguageClassDeclarationImpl(CLASS_DECLARATION)
               PsiElement(DLanguageTokenType.class)('class')
-              IDENTIFIER
+              DLanguageIdentifierImpl(IDENTIFIER)
                 PsiElement(DLanguageTokenType.ID)('B')
               DLanguageBaseClassListImpl(BASE_CLASS_LIST)
                 PsiElement(DLanguageTokenType.:)(':')
                 DLanguageSuperClassImpl(SUPER_CLASS)
                   DLanguageBasicTypeImpl(BASIC_TYPE)
                     DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                      IDENTIFIER
+                      DLanguageIdentifierImpl(IDENTIFIER)
                         PsiElement(DLanguageTokenType.ID)('A')
               DLanguageAggregateBodyImpl(AGGREGATE_BODY)
                 PsiElement(DLanguageTokenType.{)('{')
@@ -56,7 +56,7 @@ D Language File
                         DLanguageDeclaratorsImpl(DECLARATORS)
                           DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
                             DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
-                              IDENTIFIER
+                              DLanguageIdentifierImpl(IDENTIFIER)
                                 PsiElement(DLanguageTokenType.ID)('x')
                         PsiElement(DLanguageTokenType.;)(';')
                   PsiComment(DLanguageTokenType.line_comment)('// x is declared to be a B')
@@ -89,7 +89,7 @@ D Language File
                           DLanguageDeclaratorsImpl(DECLARATORS)
                             DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
                               DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
-                                IDENTIFIER
+                                DLanguageIdentifierImpl(IDENTIFIER)
                                   PsiElement(DLanguageTokenType.ID)('y')
                           PsiElement(DLanguageTokenType.;)(';')
                 PsiComment(DLanguageTokenType.line_comment)('// y is declared to be an A')
@@ -100,7 +100,7 @@ D Language File
             DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
               DLanguageStructDeclarationImpl(STRUCT_DECLARATION)
                 PsiElement(DLanguageTokenType.struct)('struct')
-                IDENTIFIER
+                DLanguageIdentifierImpl(IDENTIFIER)
                   PsiElement(DLanguageTokenType.ID)('C')
                 DLanguageAggregateBodyImpl(AGGREGATE_BODY)
                   PsiElement(DLanguageTokenType.{)('{')
@@ -138,7 +138,7 @@ D Language File
                                 DLanguageDeclaratorsImpl(DECLARATORS)
                                   DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
                                     DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
-                                      IDENTIFIER
+                                      DLanguageIdentifierImpl(IDENTIFIER)
                                         PsiElement(DLanguageTokenType.ID)('z')
                                 PsiElement(DLanguageTokenType.;)(';')
                     PsiComment(DLanguageTokenType.line_comment)('// z is declared to be a C')
@@ -171,7 +171,7 @@ D Language File
                             DLanguageDeclaratorsImpl(DECLARATORS)
                               DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
                                 DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
-                                  IDENTIFIER
+                                  DLanguageIdentifierImpl(IDENTIFIER)
                                     PsiElement(DLanguageTokenType.ID)('q')
                             PsiElement(DLanguageTokenType.;)(';')
                   PsiComment(DLanguageTokenType.line_comment)('// error, no super struct for C')
@@ -205,7 +205,7 @@ D Language File
                 DLanguageDeclaratorsImpl(DECLARATORS)
                   DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
                     DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
-                      IDENTIFIER
+                      DLanguageIdentifierImpl(IDENTIFIER)
                         PsiElement(DLanguageTokenType.ID)('r')
                 PsiElement(DLanguageTokenType.;)(';')
   PsiComment(DLanguageTokenType.line_comment)('// error, no enclosing struct or class')

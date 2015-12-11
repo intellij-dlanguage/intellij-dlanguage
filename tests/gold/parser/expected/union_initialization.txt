@@ -5,7 +5,7 @@ D Language File
         DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
           DLanguageUnionDeclarationImpl(UNION_DECLARATION)
             PsiElement(DLanguageTokenType.union)('union')
-            IDENTIFIER
+            DLanguageIdentifierImpl(IDENTIFIER)
               PsiElement(DLanguageTokenType.ID)('U')
             DLanguageAggregateBodyImpl(AGGREGATE_BODY)
               PsiElement(DLanguageTokenType.{)('{')
@@ -19,7 +19,7 @@ D Language File
                       DLanguageDeclaratorsImpl(DECLARATORS)
                         DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
                           DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
-                            IDENTIFIER
+                            DLanguageIdentifierImpl(IDENTIFIER)
                               PsiElement(DLanguageTokenType.ID)('a')
                       PsiElement(DLanguageTokenType.;)(';')
                 DLanguageDeclDefsImpl(DECL_DEFS)
@@ -32,7 +32,7 @@ D Language File
                         DLanguageDeclaratorsImpl(DECLARATORS)
                           DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
                             DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
-                              IDENTIFIER
+                              DLanguageIdentifierImpl(IDENTIFIER)
                                 PsiElement(DLanguageTokenType.ID)('b')
                         PsiElement(DLanguageTokenType.;)(';')
               PsiElement(DLanguageTokenType.})('}')
@@ -47,12 +47,12 @@ D Language File
                 DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
                   DLanguageBasicTypeImpl(BASIC_TYPE)
                     DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                      IDENTIFIER
+                      DLanguageIdentifierImpl(IDENTIFIER)
                         PsiElement(DLanguageTokenType.ID)('U')
                   DLanguageDeclaratorsImpl(DECLARATORS)
                     DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
                       DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
-                        IDENTIFIER
+                        DLanguageIdentifierImpl(IDENTIFIER)
                           PsiElement(DLanguageTokenType.ID)('u')
                       PsiElement(DLanguageTokenType.=)('=')
                       DLanguageInitializerImpl(INITIALIZER)
@@ -80,7 +80,7 @@ D Language File
                                                                 DLanguageNonEmptyStatementImpl(NON_EMPTY_STATEMENT)
                                                                   DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
                                                                     DLanguageLabeledStatementImpl(LABELED_STATEMENT)
-                                                                      IDENTIFIER
+                                                                      DLanguageIdentifierImpl(IDENTIFIER)
                                                                         PsiElement(DLanguageTokenType.ID)('b')
                                                                       PsiElement(DLanguageTokenType.:)(':')
                                                                       DLanguageStatementImpl(STATEMENT)

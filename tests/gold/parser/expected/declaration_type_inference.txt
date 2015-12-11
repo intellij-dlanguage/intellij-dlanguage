@@ -11,7 +11,7 @@ D Language File
                 DLanguageAutoDeclarationImpl(AUTO_DECLARATION)
                   DLanguageAutoDeclarationXImpl(AUTO_DECLARATION_X)
                     DLanguageAutoDeclarationYImpl(AUTO_DECLARATION_Y)
-                      IDENTIFIER
+                      DLanguageIdentifierImpl(IDENTIFIER)
                         PsiElement(DLanguageTokenType.ID)('x')
                       PsiElement(DLanguageTokenType.=)('=')
                       DLanguageInitializerImpl(INITIALIZER)
@@ -45,7 +45,7 @@ D Language File
                   DLanguageAutoDeclarationImpl(AUTO_DECLARATION)
                     DLanguageAutoDeclarationXImpl(AUTO_DECLARATION_X)
                       DLanguageAutoDeclarationYImpl(AUTO_DECLARATION_Y)
-                        IDENTIFIER
+                        DLanguageIdentifierImpl(IDENTIFIER)
                           PsiElement(DLanguageTokenType.ID)('y')
                         PsiElement(DLanguageTokenType.=)('=')
                         DLanguageInitializerImpl(INITIALIZER)
@@ -79,7 +79,7 @@ D Language File
                     DLanguageAutoDeclarationImpl(AUTO_DECLARATION)
                       DLanguageAutoDeclarationXImpl(AUTO_DECLARATION_X)
                         DLanguageAutoDeclarationYImpl(AUTO_DECLARATION_Y)
-                          IDENTIFIER
+                          DLanguageIdentifierImpl(IDENTIFIER)
                             PsiElement(DLanguageTokenType.ID)('s')
                           PsiElement(DLanguageTokenType.=)('=')
                           DLanguageInitializerImpl(INITIALIZER)
@@ -109,7 +109,7 @@ D Language File
               DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
                 DLanguageClassDeclarationImpl(CLASS_DECLARATION)
                   PsiElement(DLanguageTokenType.class)('class')
-                  IDENTIFIER
+                  DLanguageIdentifierImpl(IDENTIFIER)
                     PsiElement(DLanguageTokenType.ID)('C')
                   DLanguageAggregateBodyImpl(AGGREGATE_BODY)
                     PsiElement(DLanguageTokenType.{)('{')
@@ -126,7 +126,7 @@ D Language File
                         DLanguageAutoDeclarationImpl(AUTO_DECLARATION)
                           DLanguageAutoDeclarationXImpl(AUTO_DECLARATION_X)
                             DLanguageAutoDeclarationYImpl(AUTO_DECLARATION_Y)
-                              IDENTIFIER
+                              DLanguageIdentifierImpl(IDENTIFIER)
                                 PsiElement(DLanguageTokenType.ID)('c')
                               PsiElement(DLanguageTokenType.=)('=')
                               DLanguageInitializerImpl(INITIALIZER)
@@ -150,7 +150,7 @@ D Language File
                                                                 DLanguageTypeImpl(TYPE)
                                                                   DLanguageBasicTypeImpl(BASIC_TYPE)
                                                                     DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                                                      IDENTIFIER
+                                                                      DLanguageIdentifierImpl(IDENTIFIER)
                                                                         PsiElement(DLanguageTokenType.ID)('C')
                                                                 PsiElement(DLanguageTokenType.()('(')
                                                                 PsiElement(DLanguageTokenType.))(')')

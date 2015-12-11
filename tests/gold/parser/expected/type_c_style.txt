@@ -14,7 +14,7 @@ D Language File
                   DLanguageBasicType2Impl(BASIC_TYPE_2)
                     DLanguageBasicType2XImpl(BASIC_TYPE_2_X)
                       PsiElement(DLanguageTokenType.*)('*')
-                  IDENTIFIER
+                  DLanguageIdentifierImpl(IDENTIFIER)
                     PsiElement(DLanguageTokenType.ID)('fp')
                 PsiElement(DLanguageTokenType.))(')')
                 DLanguageAltFuncDeclaratorSuffixImpl(ALT_FUNC_DECLARATOR_SUFFIX)
