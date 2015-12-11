@@ -3,11 +3,13 @@ package net.masterthought.dlanguage.psi.impl;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.openapi.util.TextRange;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiReference;
 import net.masterthought.dlanguage.DLanguageIcons;
 import net.masterthought.dlanguage.psi.DLanguageFile;
+import net.masterthought.dlanguage.psi.DLanguageFuncDeclarator;
 import net.masterthought.dlanguage.psi.interfaces.DLanguageFuncDeclaration;
 import net.masterthought.dlanguage.psi.interfaces.DLanguageIdentifier;
 import net.masterthought.dlanguage.psi.interfaces.DLanguageSymbol;
@@ -136,7 +138,13 @@ public class DPsiImplUtil {
     public static String getName(@NotNull DLanguageFuncDeclaration o) {
 //        DLanguageFuncDeclarationStub stub = o.getStub();
 //        if (stub != null) return StringUtil.notNullize(stub.getName());
-        return o.getFuncDeclarator().getIdentifier().getText();
+        
+        DLanguageFuncDeclarator fd = o.getFuncDeclarator();
+        if(fd != null){
+          return fd.getIdentifier().getText();  
+        } else {
+            return StringUtil.notNullize(o.getText());
+        }
     }
 
     @Nullable

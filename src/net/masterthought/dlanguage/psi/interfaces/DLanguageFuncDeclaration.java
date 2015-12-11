@@ -10,9 +10,6 @@ import org.jetbrains.annotations.Nullable;
 public interface DLanguageFuncDeclaration extends DNamedElement {
 
     @NotNull
-    PsiElement getSymbol();
-
-    @NotNull
     String getName();
 
     @Nullable

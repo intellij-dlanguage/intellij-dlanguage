@@ -21,21 +21,6 @@ import static net.masterthought.dlanguage.highlighting.DHighlighter.*;
 
 public class DColorSettingsPage implements ColorSettingsPage {
 
-//    private static final AttributesDescriptor[] DESCRIPTORS = new AttributesDescriptor[] {
-//            new AttributesDescriptor(DHighlighter.OPERATOR.getExternalName(), DHighlighter.OPERATOR),
-//            new AttributesDescriptor(DHighlighter.STRING_LITERAL.getExternalName(), DHighlighter.STRING_LITERAL),
-//            new AttributesDescriptor(DHighlighter.LINE_COMMENT.getExternalName(), DHighlighter.LINE_COMMENT),
-//            new AttributesDescriptor(DHighlighter.BLOCK_COMMENT.getExternalName(), DHighlighter.BLOCK_COMMENT),
-//            new AttributesDescriptor(DHighlighter.DOC_COMMENT.getExternalName(), DHighlighter.DOC_COMMENT),
-//            new AttributesDescriptor(DHighlighter.KEYWORD.getExternalName(), DHighlighter.KEYWORD),
-//            new AttributesDescriptor(DHighlighter.OPERATOR.getExternalName(), DHighlighter.OPERATOR),
-//            new AttributesDescriptor(DHighlighter.PARENS.getExternalName(), DHighlighter.PARENS),
-//            new AttributesDescriptor(DHighlighter.BRACES.getExternalName(), DHighlighter.BRACES),
-//            new AttributesDescriptor(DHighlighter.BRACKETS.getExternalName(), DHighlighter.BRACKETS),
-//    };
-
-
-
     private static final AttributesDescriptor[] DESCRIPTORS = new AttributesDescriptor[]{
             new AttributesDescriptor("Illegal character", ILLEGAL),
             new AttributesDescriptor("Comment", COMMENT),
