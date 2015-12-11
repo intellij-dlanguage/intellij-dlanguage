@@ -1,9 +1,6 @@
 // This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import net.masterthought.dlanguage.psi.interfaces.DLanguageFuncDeclaration;
-import net.masterthought.dlanguage.psi.interfaces.DLanguageIdentifier;
-import net.masterthought.dlanguage.psi.interfaces.DLanguageSymbol;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiElement;
@@ -491,7 +488,7 @@ public class DLanguageVisitor extends PsiElementVisitor {
   }
 
   public void visitFuncDeclaration(@NotNull DLanguageFuncDeclaration o) {
-    visitPsiElement(o);
+    visitDNamedElement(o);
   }
 
   public void visitFuncDeclarator(@NotNull DLanguageFuncDeclarator o) {
@@ -531,7 +528,7 @@ public class DLanguageVisitor extends PsiElementVisitor {
   }
 
   public void visitIdentifier(@NotNull DLanguageIdentifier o) {
-    visitPsiElement(o);
+    visitDNamedElement(o);
   }
 
   public void visitIdentifierList(@NotNull DLanguageIdentifierList o) {
@@ -1128,6 +1125,10 @@ public class DLanguageVisitor extends PsiElementVisitor {
 
   public void visitXorExpression(@NotNull DLanguageXorExpression o) {
     visitPsiElement(o);
+  }
+
+  public void visitDNamedElement(@NotNull DNamedElement o) {
+    visitElement(o);
   }
 
   public void visitPsiElement(@NotNull PsiElement o) {

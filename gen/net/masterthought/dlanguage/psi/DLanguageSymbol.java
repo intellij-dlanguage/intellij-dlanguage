@@ -5,13 +5,10 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DLanguageDotIdentifier extends PsiElement {
-
-  @Nullable
-  DLanguageDotIdentifier getDotIdentifier();
+public interface DLanguageSymbol extends PsiElement {
 
   @NotNull
-  DLanguageIdentifier getIdentifier();
+  DLanguageSymbolTail getSymbolTail();
 
   @Nullable
   PsiElement getOpDot();

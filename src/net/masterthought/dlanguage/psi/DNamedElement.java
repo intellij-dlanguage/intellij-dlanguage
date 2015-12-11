@@ -1,7 +1,8 @@
-package net.masterthought.dlanguage.psi.interfaces;
+package net.masterthought.dlanguage.psi;
 
 import com.intellij.navigation.NavigationItem;
 import com.intellij.psi.PsiNameIdentifierOwner;
+import net.masterthought.dlanguage.psi.DCompositeElement;
 
 /**
  * Interface that combines everything we need for convenient navigation.

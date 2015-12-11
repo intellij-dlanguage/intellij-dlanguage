@@ -9,11 +9,7 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.containers.ContainerUtil;
 import net.masterthought.dlanguage.index.DModuleIndex;
-import net.masterthought.dlanguage.psi.DLanguageExpression;
-import net.masterthought.dlanguage.psi.DLanguageFile;
-import net.masterthought.dlanguage.psi.DPsiUtil;
-import net.masterthought.dlanguage.psi.interfaces.DLanguageIdentifier;
-import net.masterthought.dlanguage.psi.interfaces.DLanguageFuncDeclaration;
+import net.masterthought.dlanguage.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

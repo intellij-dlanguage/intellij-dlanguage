@@ -10,8 +10,8 @@ import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.containers.ContainerUtil;
 import net.masterthought.dlanguage.psi.DLanguageAggregateDeclaration;
 import net.masterthought.dlanguage.psi.DLanguageFile;
+import net.masterthought.dlanguage.psi.DLanguageFuncDeclaration;
 import net.masterthought.dlanguage.psi.DLanguageImportDeclaration;
-import net.masterthought.dlanguage.psi.interfaces.DLanguageFuncDeclaration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

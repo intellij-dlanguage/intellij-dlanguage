@@ -2,8 +2,6 @@
 package net.masterthought.dlanguage.psi.impl;
 
 import java.util.List;
-
-import net.masterthought.dlanguage.psi.interfaces.DLanguageIdentifier;
 import org.jetbrains.annotations.*;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;

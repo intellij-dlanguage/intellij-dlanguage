@@ -13,6 +13,10 @@
   elementTypeClass="net.masterthought.dlanguage.psi.DLanguageElementType"
   tokenTypeClass="net.masterthought.dlanguage.psi.DLanguageTokenType"
 
+  psiImplUtilClass="net.masterthought.dlanguage.psi.impl.DPsiImplUtil"
+
+  implements("Identifier|FuncDeclaration")="net.masterthought.dlanguage.psi.DNamedElement"
+
   generateTokenAccessors=true
 
 tokens = [
@@ -205,7 +209,10 @@ dFile ::= item_*
 
 private item_ ::= (ModuleDeclaration | DeclDefs | Statement )
 
-Identifier ::= ID
+Identifier ::= ID {
+  methods=[getName getNameIdentifier getReference setName getPresentation]
+}
+
 StringLiteral  ::= (WYSIWYG_STRING|ALTERNATE_WYSIWYG_STRING|DOUBLE_QUOTED_STRING|HEX_STRING|DELIMITED_STRING)
 
 // Module
@@ -1720,7 +1727,9 @@ StructMemberInitializer ::=
 
 FuncDeclaration ::=
     StorageClasses? BasicType FuncDeclarator (FunctionBody |';'| '=')?
-    | AutoFuncDeclaration
+    | AutoFuncDeclaration {
+      methods=[getName getNameIdentifier getReference setName getPresentation]
+    }
 
 AutoFuncDeclaration ::=
     StorageClasses Identifier FuncDeclaratorSuffix FunctionBody?

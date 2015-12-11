@@ -5,9 +5,8 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFileFactory;
 import net.masterthought.dlanguage.DLanguage;
 import net.masterthought.dlanguage.psi.DLanguageFile;
-import net.masterthought.dlanguage.psi.interfaces.DLanguageIdentifier;
-import net.masterthought.dlanguage.psi.interfaces.DLanguageSymbol;
-import net.masterthought.dlanguage.psi.interfaces.DLanguageFuncDeclaration;
+import net.masterthought.dlanguage.psi.DLanguageFuncDeclaration;
+import net.masterthought.dlanguage.psi.DLanguageIdentifier;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,17 +25,13 @@ public class DElementFactory {
         return null;
     }
 
-//    public static DDefinitionClass createDDefinitionClassFromText(@NotNull Project project, @NotNull String name) {
-//        return ((DDefinitionClass) (createExpressionFromText(project, name + "uniq = " + name)).getFirstChild());
-//    }
-
     public static DLanguageIdentifier createDLanguageIdentifierFromText(@NotNull Project project, @NotNull String name) {
         return ((DLanguageIdentifier) (createExpressionFromText(project, name + "uniq = " + name)).getFirstChild());
     }
 
-    public static DLanguageSymbol createDLanguageSymbolFromText(@NotNull Project project, @NotNull String name) {
-        return ((DLanguageSymbol) (createExpressionFromText(project, name + "uniq = " + name)).getFirstChild());
-    }
+//    public static DLanguageSymbol createDLanguageSymbolFromText(@NotNull Project project, @NotNull String name) {
+//        return ((DLanguageSymbol) (createExpressionFromText(project, name + "uniq = " + name)).getFirstChild());
+//    }
 
 
 

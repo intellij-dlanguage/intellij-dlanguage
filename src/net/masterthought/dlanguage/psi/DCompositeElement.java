@@ -1,4 +1,4 @@
-package net.masterthought.dlanguage.psi.interfaces;
+package net.masterthought.dlanguage.psi;
 
 import com.intellij.psi.PsiElement;
 

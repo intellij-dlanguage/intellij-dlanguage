@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiReference;
 import net.masterthought.dlanguage.DLightPlatformCodeInsightFixtureTestCase;
-import net.masterthought.dlanguage.psi.interfaces.DLanguageIdentifier;
+import net.masterthought.dlanguage.psi.DLanguageIdentifier;
 
 
 import java.io.File;

@@ -6,10 +6,8 @@ import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.PsiReferenceContributor;
 import com.intellij.psi.PsiReferenceRegistrar;
 import net.masterthought.dlanguage.DLanguage;
-import net.masterthought.dlanguage.psi.interfaces.DLanguageFuncDeclaration;
-import net.masterthought.dlanguage.psi.interfaces.DLanguageIdentifier;
-import net.masterthought.dlanguage.psi.interfaces.DLanguageSymbol;
-
+import net.masterthought.dlanguage.psi.DLanguageFuncDeclaration;
+import net.masterthought.dlanguage.psi.DLanguageSymbol;
 
 public class DReferenceContributor extends PsiReferenceContributor {
     @Override

@@ -10,11 +10,7 @@ import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.tree.TokenSet;
 import com.intellij.usageView.UsageViewNodeTextLocation;
 import net.masterthought.dlanguage.DLanguageLexerAdapter;
-import net.masterthought.dlanguage.psi.DLanguageClassDeclaration;
-import net.masterthought.dlanguage.psi.DLanguageTypes;
-import net.masterthought.dlanguage.psi.DTokenSets;
-import net.masterthought.dlanguage.psi.interfaces.DLanguageFuncDeclaration;
-import net.masterthought.dlanguage.psi.interfaces.DLanguageIdentifier;
+import net.masterthought.dlanguage.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
