@@ -7,7 +7,7 @@ cache:
     - $HOME/idea
     - $HOME/.ant
 install:
-  - IDEA_VERSION=14.1.1
+  - IDEA_VERSION=14.1.5
   - IDEA_TAR=ideaIC-${IDEA_VERSION}.tar.gz
   - IDEA_PARENT_DIR=$HOME/idea
   - IDEA_DIR=$IDEA_PARENT_DIR/$IDEA_VERSION
