@@ -2,6 +2,7 @@ package net.masterthought.dlanguage.psi;
 
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.TokenSet;
+import net.masterthought.dlanguage.DLanguage;
 
 public class DTokenSets {
 
@@ -17,27 +18,20 @@ public class DTokenSets {
 //    public static final TokenSet MULTI_LINE_COMMENTS = TokenSet.create(DLanguageTypes.COMMENT_MULTI,
 //            DLanguageTypes.COMMENT_NESTED,
 //            DLanguageTypes.DOCCOMMENT_MULTI, DLanguageTypes.DOCCOMMENT_NESTED);
-    
-//    public static final TokenSet STRING_LITERALS = TokenSet.create(DLanguageTypes.STRING_WYSIWYG, DLanguageTypes.STRING_DELIM,
-//            DLanguageTypes.KW_CHAR,
-//            DLanguageTypes.KW_DCHAR,
-//            DLanguageTypes.KW_WCHAR,
-//            DLanguageTypes.DOUBLE_QUOTED_STRING
-//    );
 
-    public static final TokenSet STRING_LITERALS = TokenSet.create(DLanguageTypes.STRING_LITERALS);
+    public static final TokenSet STRING_LITERALS = TokenSet.create(DLanguageTypes.DOUBLE_QUOTED_STRING,
+            DLanguageTypes.KW_CHAR,
+            DLanguageTypes.KW_DCHAR,
+            DLanguageTypes.KW_WCHAR,
+            DLanguageTypes.STRING_LITERAL,
+            DLanguageTypes.STRING_LITERALS,
+            DLanguageTypes.HEX_STRING,
+            DLanguageTypes.CHARACTER_LITERAL,
+            DLanguageTypes.DELIMITED_STRING,
+            DLanguageTypes.WYSIWYG_STRING,
+            DLanguageTypes.ALTERNATE_WYSIWYG_STRING);
     public static final TokenSet INTEGER_LITERALS = TokenSet.create(DLanguageTypes.INTEGER_LITERAL);
     public static final TokenSet FLOAT_LITERALS = TokenSet.create(DLanguageTypes.FLOAT_LITERAL);
-
-//    public static final TokenSet INTEGER_LITERALS = TokenSet.create(
-//            DLanguageTypes.INTEGER_DECIMAL,
-//            DLanguageTypes.INTEGER_BINARY,
-//            DLanguageTypes.INTEGER_OCTAL,
-//            DLanguageTypes.INTEGER_HEX);
-
-//    public static final TokenSet FLOAT_LITERALS = TokenSet.create(
-//            DLanguageTypes.FLOAT_DECIMAL,
-//            DLanguageTypes.FLOAT_HEX);
 
     public static final TokenSet PARENS = TokenSet.create(DLanguageTypes.OP_PAR_LEFT, DLanguageTypes.OP_PAR_RIGHT);
     public static final TokenSet BRACE = TokenSet.create(DLanguageTypes.OP_BRACES_LEFT, DLanguageTypes.OP_BRACES_RIGHT);
