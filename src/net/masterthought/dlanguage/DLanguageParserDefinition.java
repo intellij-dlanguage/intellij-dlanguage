@@ -24,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 public class DLanguageParserDefinition implements ParserDefinition {
 
     public static final TokenSet WHITE_SPACES = TokenSet.create(TokenType.WHITE_SPACE);
-    public static final TokenSet COMMENTS = TokenSet.create(DLanguageTypes.LINE_COMMENT, DLanguageTypes.BLOCK_COMMENT);
+    public static final TokenSet COMMENTS = TokenSet.create(DLanguageTypes.LINE_COMMENT, DLanguageTypes.BLOCK_COMMENT, DLanguageTypes.NESTING_BLOCK_COMMENT);
 
     public static final IStubFileElementType FILE_ELEMENT_TYPE = DFileStubElementType.INSTANCE;
 

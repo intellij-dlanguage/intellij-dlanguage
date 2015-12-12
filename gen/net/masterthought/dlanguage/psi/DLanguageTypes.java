@@ -9,6 +9,7 @@ import net.masterthought.dlanguage.psi.impl.*;
 
 public interface DLanguageTypes {
 
+  IElementType NESTING_BLOCK_COMMENT = new DLanguageElementType("NESTING_BLOCK_COMMENT");
   IElementType ADD_EXPRESSION = new DLanguageElementType("ADD_EXPRESSION");
   IElementType AGGREGATE_BODY = new DLanguageElementType("AGGREGATE_BODY");
   IElementType AGGREGATE_DECLARATION = new DLanguageElementType("AGGREGATE_DECLARATION");

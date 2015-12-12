@@ -6,6 +6,9 @@ import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
 %%
 
 %{
+
+  private int nestedCommentDepth = 0;
+
   public DLanguageLexer() {
     this((java.io.Reader)null);
   }
@@ -27,6 +30,15 @@ ID = (_|{LETTER}) (_|{DIGIT}|{LETTER})*
 
 LINE_COMMENT="//".*
 BLOCK_COMMENT="/"\*(.|\n)*\*"/"
+
+/* JFlex doesn't support recursive rules. So NESTING_BLOCK_COMMENT doesn't support nesting now. */
+NESTING_BLOCK_COMMENT_START = \/\+
+NESTING_BLOCK_COMMENT_END = \+\/
+/*
+NESTING_BLOCK_COMMENT = "/+" {NESTING_BLOCK_COMMENT_CONTENT} "+/"
+NESTING_BLOCK_COMMENT_CONTENT = ( [^+] | "+"+ [^/] )*
+*/
+
 
 HEX_DIGIT = [0-9abcdefABCDEF_]
 OCTAL_DIGIT = [0-7]
@@ -78,10 +90,18 @@ DECIMAL_EXPONENT = [eE][\+\-]? [0-9_]+
 HEX_FLOAT = 0[xX] ([0-9a-fA-F]* \.)? [0-9a-fA-F]+ {HEX_EXPONENT}
 HEX_EXPONENT = [pP][\+\-]? [0-9]+
 
+%state WAITING_VALUE, NESTING_COMMENT_CONTENT
+
 %%
 
 <YYINITIAL> {WHITE_SPACE_CHAR}+ { return com.intellij.psi.TokenType.WHITE_SPACE; }
 <YYINITIAL> {NEW_LINE}+         { return com.intellij.psi.TokenType.WHITE_SPACE; }
+
+<YYINITIAL> {NESTING_BLOCK_COMMENT_START} {
+		yybegin(NESTING_COMMENT_CONTENT);
+		nestedCommentDepth = 1;
+		return DLanguageTypes.NESTING_BLOCK_COMMENT;
+	}
 
 <YYINITIAL> {CHARACTER_LITERAL} { return CHARACTER_LITERAL; }
 <YYINITIAL> {INTEGER_LITERAL} { return INTEGER_LITERAL; }
@@ -92,6 +112,23 @@ HEX_EXPONENT = [pP][\+\-]? [0-9]+
 <YYINITIAL> {DOUBLE_QUOTED_STRING} { return DOUBLE_QUOTED_STRING; }
 <YYINITIAL> {HEX_STRING} { return HEX_STRING; }
 <YYINITIAL> {DELIMITED_STRING} { return DELIMITED_STRING; }
+
+<NESTING_COMMENT_CONTENT> {
+	{NESTING_BLOCK_COMMENT_START}	{
+		nestedCommentDepth += 1;
+		return DLanguageTypes.NESTING_BLOCK_COMMENT;
+	}
+
+	{NESTING_BLOCK_COMMENT_END}	{
+		nestedCommentDepth -= 1;
+		if(nestedCommentDepth == 0) {
+			yybegin(YYINITIAL); //Exit nesting comment block
+		}
+		return DLanguageTypes.NESTING_BLOCK_COMMENT;
+	}
+	\n|\/|\+	{return DLanguageTypes.NESTING_BLOCK_COMMENT;}
+	[^/+\n]+	{return DLanguageTypes.NESTING_BLOCK_COMMENT;}
+}
 
 <YYINITIAL> "module"                   { return KW_MODULE; }
 <YYINITIAL> "import"                   { return KW_IMPORT; }
