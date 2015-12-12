@@ -4,6 +4,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import net.masterthought.dlanguage.lexer.DLanguageLexerTest;
 import net.masterthought.dlanguage.parser.DLanguageParserTest;
+import net.masterthought.dlanguage.resolve.DResolveTest;
 
 /**
  * Main testsuite driver. Specifies which components that should be tested.
@@ -23,7 +24,7 @@ public class DTestCase extends TestCase {
         suite.addTestSuite(DLanguageParserTest.class);
 
         // not working in ant for some reason
-//        suite.addTestSuite(DResolveTest.class);
+        suite.addTestSuite(DResolveTest.class);
 //        suite.addTestSuite(DFindUsagesTest.class);
 
 
