@@ -6,7 +6,7 @@ import com.intellij.psi.PsiFileFactory;
 import net.masterthought.dlanguage.DLanguage;
 import net.masterthought.dlanguage.psi.DLanguageFile;
 import net.masterthought.dlanguage.psi.DLanguageFuncDeclaration;
-import net.masterthought.dlanguage.psi.DLanguageIdentifier;
+import net.masterthought.dlanguage.psi.DLanguagePrimaryExpression;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -25,8 +25,8 @@ public class DElementFactory {
         return null;
     }
 
-    public static DLanguageIdentifier createDLanguageIdentifierFromText(@NotNull Project project, @NotNull String name) {
-        return ((DLanguageIdentifier) (createExpressionFromText(project, name + "uniq = " + name)).getFirstChild());
+    public static DLanguagePrimaryExpression createDLanguagePrimaryExpressionFromText(@NotNull Project project, @NotNull String name) {
+        return ((DLanguagePrimaryExpression) (createExpressionFromText(project, name + "uniq = " + name)).getFirstChild());
     }
 
 //    public static DLanguageSymbol createDLanguageSymbolFromText(@NotNull Project project, @NotNull String name) {

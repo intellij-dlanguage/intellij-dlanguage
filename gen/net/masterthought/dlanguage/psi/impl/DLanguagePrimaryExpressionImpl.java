@@ -8,13 +8,20 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import net.masterthought.dlanguage.stubs.DLanguagePrimaryExpressionStub;
 import net.masterthought.dlanguage.psi.*;
+import com.intellij.navigation.ItemPresentation;
+import com.intellij.psi.PsiReference;
+import com.intellij.psi.stubs.IStubElementType;
 
-public class DLanguagePrimaryExpressionImpl extends ASTWrapperPsiElement implements DLanguagePrimaryExpression {
+public class DLanguagePrimaryExpressionImpl extends DNamedStubbedPsiElementBase<DLanguagePrimaryExpressionStub> implements DLanguagePrimaryExpression {
 
   public DLanguagePrimaryExpressionImpl(ASTNode node) {
     super(node);
+  }
+
+  public DLanguagePrimaryExpressionImpl(DLanguagePrimaryExpressionStub stub, IStubElementType nodeType) {
+    super(stub, nodeType);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
@@ -194,6 +201,31 @@ public class DLanguagePrimaryExpressionImpl extends ASTWrapperPsiElement impleme
   @Nullable
   public PsiElement getOpParRight() {
     return findChildByType(OP_PAR_RIGHT);
+  }
+
+  @NotNull
+  public String getName() {
+    return DPsiImplUtil.getName(this);
+  }
+
+  @Nullable
+  public PsiElement getNameIdentifier() {
+    return DPsiImplUtil.getNameIdentifier(this);
+  }
+
+  @NotNull
+  public PsiReference getReference() {
+    return DPsiImplUtil.getReference(this);
+  }
+
+  @Nullable
+  public PsiElement setName(String newName) {
+    return DPsiImplUtil.setName(this, newName);
+  }
+
+  @NotNull
+  public ItemPresentation getPresentation() {
+    return DPsiImplUtil.getPresentation(this);
   }
 
 }

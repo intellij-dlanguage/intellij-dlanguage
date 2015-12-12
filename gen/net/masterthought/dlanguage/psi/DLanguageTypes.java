@@ -206,7 +206,7 @@ public interface DLanguageTypes {
   IElementType POW_EXPRESSION = new DLanguageElementType("POW_EXPRESSION");
   IElementType PRAGMA = new DLanguageElementType("PRAGMA");
   IElementType PRAGMA_STATEMENT = new DLanguageElementType("PRAGMA_STATEMENT");
-  IElementType PRIMARY_EXPRESSION = new DLanguageElementType("PRIMARY_EXPRESSION");
+  IElementType PRIMARY_EXPRESSION = DElementTypeFactory.factory("PRIMARY_EXPRESSION");
   IElementType PROPERTY = new DLanguageElementType("PROPERTY");
   IElementType PROPERTY_IDENTIFIER = new DLanguageElementType("PROPERTY_IDENTIFIER");
   IElementType PROTECTION_ATTRIBUTE = new DLanguageElementType("PROTECTION_ATTRIBUTE");

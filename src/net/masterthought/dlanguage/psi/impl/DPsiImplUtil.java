@@ -10,6 +10,8 @@ import com.intellij.psi.PsiReference;
 import net.masterthought.dlanguage.DLanguageIcons;
 import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.references.DReference;
+import net.masterthought.dlanguage.stubs.DLanguageFuncDeclarationStub;
+import net.masterthought.dlanguage.stubs.DLanguagePrimaryExpressionStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,87 +23,40 @@ import javax.swing.*;
  */
 public class DPsiImplUtil {
 
-//    // ------------- Symbol  ------------------ //
-//    @NotNull
-//    public static String getName(@NotNull DLanguageSymbol o) {
-//        return o.getText();
-//    }
-//
-//    @Nullable
-//    public static PsiElement getNameIdentifier(@NotNull DLanguageSymbol o) {
-//        ASTNode keyNode = o.getNode();
-//        return keyNode != null ? keyNode.getPsi() : null;
-//    }
-//
-//    @Nullable
-//    public static PsiElement setName(@NotNull DLanguageSymbol o, @NotNull String newName) {
-//        PsiElement e = DElementFactory.createDLanguageSymbolFromText(o.getProject(), newName);
-//        if (e == null) return null;
-//        o.replace(e);
-//        return o;
-//    }
-//
-//    @NotNull
-//    public static PsiReference getReference(@NotNull DLanguageSymbol o) {
-//        return new DReference(o, TextRange.from(0, getName(o).length()));
-//    }
-//
-//    @NotNull
-//    public static ItemPresentation getPresentation(final DLanguageSymbol o) {
-//        return new ItemPresentation() {
-//            @Nullable
-//            @Override
-//            public String getPresentableText() {
-//                return o.getName();
-//            }
-//
-//            /**
-//             * This is needed to decipher between files when resolving multiple references.
-//             */
-//            @Nullable
-//            @Override
-//            public String getLocationString() {
-//                final PsiFile psiFile = o.getContainingFile();
-//                return psiFile instanceof DLanguageFile ? ((DLanguageFile) psiFile).getModuleOrFileName() : null;
-//            }
-//
-//            @Nullable
-//            @Override
-//            public Icon getIcon(boolean unused) {
-//                return DLanguageIcons.FILE;
-//            }
-//        };
-//    }
-//    // ------------- Symbol ------------------ //
-
-
-    // ------------- Ref Identifier ------------------ //
+    // ------------- Primary Expression ------------------ //
     @NotNull
-    public static String getName(@NotNull DLanguageIdentifier o) {
-        return o.getText();
+    public static String getName(@NotNull DLanguagePrimaryExpression o) {
+        DLanguagePrimaryExpressionStub stub = o.getStub();
+             if (stub != null) return StringUtil.notNullize(stub.getName());
+
+             if (o.getIdentifier() != null) {
+                 return o.getIdentifier().getText();
+             } else {
+                 return o.getText();
+             }
     }
 
     @Nullable
-    public static PsiElement getNameIdentifier(@NotNull DLanguageIdentifier o) {
+    public static PsiElement getNameIdentifier(@NotNull DLanguagePrimaryExpression o) {
         ASTNode keyNode = o.getNode();
         return keyNode != null ? keyNode.getPsi() : null;
     }
 
     @Nullable
-    public static PsiElement setName(@NotNull DLanguageIdentifier o, @NotNull String newName) {
-        PsiElement e = DElementFactory.createDLanguageIdentifierFromText(o.getProject(), newName);
+    public static PsiElement setName(@NotNull DLanguagePrimaryExpression o, @NotNull String newName) {
+        PsiElement e = DElementFactory.createDLanguagePrimaryExpressionFromText(o.getProject(), newName);
         if (e == null) return null;
         o.replace(e);
         return o;
     }
 
     @NotNull
-    public static PsiReference getReference(@NotNull DLanguageIdentifier o) {
+    public static PsiReference getReference(@NotNull DLanguagePrimaryExpression o) {
         return new DReference(o, TextRange.from(0, getName(o).length()));
     }
 
     @NotNull
-    public static ItemPresentation getPresentation(final DLanguageIdentifier o) {
+    public static ItemPresentation getPresentation(final DLanguagePrimaryExpression o) {
         return new ItemPresentation() {
             @Nullable
             @Override
@@ -126,20 +81,20 @@ public class DPsiImplUtil {
             }
         };
     }
-    // ------------- Ref Identifier ------------------ //
+    // ------------- Primary Expression ------------------ //
 
 
-    // ------------- Definition function ------------------ //
+    // ------------- Function Definition ------------------ //
     @NotNull
     public static String getName(@NotNull DLanguageFuncDeclaration o) {
-//        DLanguageFuncDeclarationStub stub = o.getStub();
-//        if (stub != null) return StringUtil.notNullize(stub.getName());
-        
+        DLanguageFuncDeclarationStub stub = o.getStub();
+        if (stub != null) return StringUtil.notNullize(stub.getName());
+
         DLanguageFuncDeclarator fd = o.getFuncDeclarator();
         if(fd != null){
-          return fd.getIdentifier().getText();  
+          return fd.getIdentifier().getText();
         } else {
-            return StringUtil.notNullize(o.getText());
+            return o.getText();
         }
     }
 
@@ -188,7 +143,7 @@ public class DPsiImplUtil {
             }
         };
     }
-    // ------------- Definition function ------------------ //
+    // ------------- Function Definition ------------------ //
 
     // ------------- Definition class ------------------ //
 //    @NotNull
