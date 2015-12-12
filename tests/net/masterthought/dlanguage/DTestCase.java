@@ -2,6 +2,7 @@ package net.masterthought.dlanguage;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import net.masterthought.dlanguage.features.DFoldingBuilderTest;
 import net.masterthought.dlanguage.lexer.DLanguageLexerTest;
 import net.masterthought.dlanguage.parser.DLanguageParserTest;
 import net.masterthought.dlanguage.resolve.DResolveTest;
@@ -21,6 +22,7 @@ public class DTestCase extends TestCase {
         // not working in ant for some reason
 //        suite.addTestSuite(DResolveTest.class);
 //        suite.addTestSuite(DFindUsagesTest.class);
+//        suite.addTestSuite(DFoldingBuilderTest.class);
 
 
 //        suite.addTestSuite(HaskellParsingLexerTest.class);

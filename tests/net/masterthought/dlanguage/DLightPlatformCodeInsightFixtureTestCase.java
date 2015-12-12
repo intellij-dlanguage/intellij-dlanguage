@@ -23,7 +23,8 @@ public abstract class DLightPlatformCodeInsightFixtureTestCase extends LightPlat
 
     /**
      * Sets the expected input and outputs and calls the constructor of the parent.
-     * @param srcName Directory name of test inputs.
+     *
+     * @param srcName    Directory name of test inputs.
      * @param expectName Directory name of expected outputs.
      */
     protected DLightPlatformCodeInsightFixtureTestCase(String srcName, String expectName) {
@@ -45,6 +46,10 @@ public abstract class DLightPlatformCodeInsightFixtureTestCase extends LightPlat
     @Override
     protected String getTestDataPath() {
         return srcPath;
+    }
+
+    protected String getTestDataPath(String... names) {
+        return srcPath + '/' + StringUtil.join(names, "/");
     }
 
     /**
