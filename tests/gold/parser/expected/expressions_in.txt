@@ -21,7 +21,7 @@ D Language File
                                     DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                                       DLanguagePowExpressionImpl(POW_EXPRESSION)
                                         DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
-                                          DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
+                                          PRIMARY_EXPRESSION
                                             DLanguageStringLiteralsImpl(STRING_LITERALS)
                                               DLanguageStringLiteralImpl(STRING_LITERAL)
                                                 PsiElement(DLanguageTokenType.DOUBLE_QUOTED_STRING)('"hello"')
@@ -35,7 +35,7 @@ D Language File
                                     DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                                       DLanguagePowExpressionImpl(POW_EXPRESSION)
                                         DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
-                                          DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
+                                          PRIMARY_EXPRESSION
                                             DLanguageIdentifierImpl(IDENTIFIER)
                                               PsiElement(DLanguageTokenType.ID)('foo')
           PsiElement(DLanguageTokenType.))(')')
@@ -59,7 +59,7 @@ D Language File
                                             DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                                               DLanguagePowExpressionImpl(POW_EXPRESSION)
                                                 DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
-                                                  DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
+                                                  PRIMARY_EXPRESSION
                                                     DLanguageFunctionLiteralImpl(FUNCTION_LITERAL)
                                                       DLanguageFunctionLiteralBodyImpl(FUNCTION_LITERAL_BODY)
                                                         DLanguageBlockStatementImpl(BLOCK_STATEMENT)

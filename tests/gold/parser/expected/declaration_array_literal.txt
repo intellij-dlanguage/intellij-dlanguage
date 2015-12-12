@@ -29,7 +29,7 @@ D Language File
                                               DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                                                 DLanguagePowExpressionImpl(POW_EXPRESSION)
                                                   DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
-                                                    DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
+                                                    PRIMARY_EXPRESSION
                                                       DLanguageArrayLiteralImpl(ARRAY_LITERAL)
                                                         PsiElement(DLanguageTokenType.[)('[')
                                                         DLanguageArgumentListImpl(ARGUMENT_LIST)
@@ -46,7 +46,7 @@ D Language File
                                                                               DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                                                                                 DLanguagePowExpressionImpl(POW_EXPRESSION)
                                                                                   DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
-                                                                                    DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
+                                                                                    PRIMARY_EXPRESSION
                                                                                       DLanguageStringLiteralsImpl(STRING_LITERALS)
                                                                                         DLanguageStringLiteralImpl(STRING_LITERAL)
                                                                                           PsiElement(DLanguageTokenType.DOUBLE_QUOTED_STRING)('"hello"')
@@ -65,7 +65,7 @@ D Language File
                                                                                 DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                                                                                   DLanguagePowExpressionImpl(POW_EXPRESSION)
                                                                                     DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
-                                                                                      DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
+                                                                                      PRIMARY_EXPRESSION
                                                                                         DLanguageStringLiteralsImpl(STRING_LITERALS)
                                                                                           DLanguageStringLiteralImpl(STRING_LITERAL)
                                                                                             PsiElement(DLanguageTokenType.DOUBLE_QUOTED_STRING)('"world"')
