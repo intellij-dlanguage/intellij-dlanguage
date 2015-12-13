@@ -1,0 +1,74 @@
+package net.masterthought.dlanguage.run;
+
+import com.intellij.execution.actions.ConfigurationContext;
+import com.intellij.execution.actions.RunConfigurationProducer;
+import com.intellij.openapi.module.Module;
+import com.intellij.openapi.roots.ProjectRootManager;
+import com.intellij.openapi.util.Ref;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
+import net.masterthought.dlanguage.DLanguageFileType;
+import net.masterthought.dlanguage.DLanguageWritingAccessProvider;
+import net.masterthought.dlanguage.psi.DLanguageFile;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+public class DLanguageRunDubConfigurationProducer extends RunConfigurationProducer<DLanguageRunDubConfiguration> {
+
+
+    public DLanguageRunDubConfigurationProducer() {
+        super(new DLanguageRunDubConfigurationType());
+    }
+
+    @Override
+    protected boolean setupConfigurationFromContext(DLanguageRunDubConfiguration configuration, ConfigurationContext context, Ref<PsiElement> sourceElement) {
+        final VirtualFile dFile = getRunnableDFileFromContext(context);
+        if (dFile != null) {
+            Module module = context.getModule();
+            if (module != null) {
+                configuration.setModule(module);
+            }
+            configuration.setName("with Dub");
+            return true;
+        }
+        return false;
+    }
+
+    @Nullable
+    public static VirtualFile getRunnableDFileFromContext(final @NotNull ConfigurationContext context) {
+        final PsiElement psiLocation = context.getPsiLocation();
+        final PsiFile psiFile = psiLocation == null ? null : psiLocation.getContainingFile();
+        final VirtualFile virtualFile = getRealVirtualFile(psiFile);
+
+        if ((psiFile instanceof DLanguageFile) &&
+                virtualFile != null &&
+                ProjectRootManager.getInstance(context.getProject()).getFileIndex().isInContent(virtualFile) &&
+                !DLanguageWritingAccessProvider.isInDLanguageSdkOrDLanguagePackagesFolder(psiFile.getProject(), virtualFile)) {
+            return virtualFile;
+        }
+
+        return null;
+    }
+
+    @Override
+    public boolean isConfigurationFromContext(final @NotNull DLanguageRunDubConfiguration configuration,
+                                              final @NotNull ConfigurationContext context) {
+        final VirtualFile dFile = getDFileFromContext(context);
+        return dFile != null;
+    }
+
+    @Nullable
+    private static VirtualFile getDFileFromContext(final @NotNull ConfigurationContext context) {
+        final PsiElement psiLocation = context.getPsiLocation();
+        final PsiFile psiFile = psiLocation == null ? null : psiLocation.getContainingFile();
+        final VirtualFile virtualFile = getRealVirtualFile(psiFile);
+        return psiFile instanceof DLanguageFile && virtualFile != null ? virtualFile : null;
+    }
+
+    public static VirtualFile getRealVirtualFile(PsiFile psiFile) {
+        return psiFile != null ? psiFile.getOriginalFile().getVirtualFile() : null;
+    }
+
+
+}
