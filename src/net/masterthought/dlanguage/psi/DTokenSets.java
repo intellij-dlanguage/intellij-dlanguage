@@ -12,12 +12,9 @@ public class DTokenSets {
 //            DLanguageTypes.DOCCOMMENT_MULTI, DLanguageTypes.DOCCOMMENT_NESTED,
 //            DLanguageTypes.DOCCOMMENT_LINE);
 
-    public static final TokenSet COMMENTS = TokenSet.create(DLanguageTypes.LINE_COMMENT,
-            DLanguageTypes.BLOCK_COMMENT);
+    public static final TokenSet LINE_COMMENTS = TokenSet.create(DLanguageTypes.LINE_COMMENT);
     
-//    public static final TokenSet MULTI_LINE_COMMENTS = TokenSet.create(DLanguageTypes.COMMENT_MULTI,
-//            DLanguageTypes.COMMENT_NESTED,
-//            DLanguageTypes.DOCCOMMENT_MULTI, DLanguageTypes.DOCCOMMENT_NESTED);
+    public static final TokenSet BLOCK_COMMENTS = TokenSet.create(DLanguageTypes.BLOCK_COMMENT,DLanguageTypes.NESTING_BLOCK_COMMENT);
 
     public static final TokenSet STRING_LITERALS = TokenSet.create(DLanguageTypes.DOUBLE_QUOTED_STRING,
             DLanguageTypes.KW_CHAR,

@@ -177,4 +177,4 @@ D Language File
                                                                             PsiElement(DLanguageTokenType.ID)('a')
                                             PsiElement(DLanguageTokenType.))(')')
           PsiElement(DLanguageTokenType.;)(';')
-  PsiComment(DLanguageTokenType.line_comment)('// calls new(Foo.sizeof,1,2)')
+  PsiComment(DLanguageTokenType.LINE_COMMENT)('// calls new(Foo.sizeof,1,2)')

@@ -20,7 +20,8 @@ public class DHighlighter extends SyntaxHighlighterBase {
 
     // Token based highlighting
     public static final TextAttributesKey ILLEGAL = createTextAttributesKey("D_ILLEGAL", DefaultLanguageHighlighterColors.INVALID_STRING_ESCAPE);
-    public static final TextAttributesKey COMMENT = createTextAttributesKey("D_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
+    public static final TextAttributesKey LINE_COMMENT = createTextAttributesKey("D_LINE_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
+    public static final TextAttributesKey BLOCK_COMMENT = createTextAttributesKey("D_BLOCK_COMMENT", DefaultLanguageHighlighterColors.BLOCK_COMMENT);
     public static final TextAttributesKey STRING = createTextAttributesKey("D_STRING", DefaultLanguageHighlighterColors.STRING);
     public static final TextAttributesKey NUMBER = createTextAttributesKey("D_NUMBER", DefaultLanguageHighlighterColors.NUMBER);
     public static final TextAttributesKey KEYWORD = createTextAttributesKey("D_KEYWORD", DefaultLanguageHighlighterColors.KEYWORD);
@@ -46,8 +47,11 @@ public class DHighlighter extends SyntaxHighlighterBase {
         if (type == TokenType.BAD_CHARACTER) {
             return pack(ILLEGAL);
         }
-        if (DTokenSets.COMMENTS.contains(type)) {
-            return pack(COMMENT);
+        if (DTokenSets.LINE_COMMENTS.contains(type)) {
+            return pack(LINE_COMMENT);
+        }
+        if (DTokenSets.BLOCK_COMMENTS.contains(type)) {
+            return pack(BLOCK_COMMENT);
         }
         if (DTokenSets.STRING_LITERALS.contains(type)) {
             return pack(STRING);

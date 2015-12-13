@@ -176,7 +176,7 @@ D Language File
                                                               PRIMARY_EXPRESSION
                                                                 PsiElement(DLanguageTokenType.INTEGER_LITERAL)('3')
                               PsiElement(DLanguageTokenType.;)(';')
-                      PsiComment(DLanguageTokenType.line_comment)('// set x to 3')
+                      PsiComment(DLanguageTokenType.LINE_COMMENT)('// set x to 3')
                       DLanguageStatementListImpl(STATEMENT_LIST)
                         DLanguageStatementImpl(STATEMENT)
                           DLanguageNonEmptyStatementImpl(NON_EMPTY_STATEMENT)
@@ -280,7 +280,7 @@ D Language File
                                                                     PRIMARY_EXPRESSION
                                                                       PsiElement(DLanguageTokenType.INTEGER_LITERAL)('3')
                                     PsiElement(DLanguageTokenType.;)(';')
-                  PsiComment(DLanguageTokenType.line_comment)('// set y to 3')
+                  PsiComment(DLanguageTokenType.LINE_COMMENT)('// set y to 3')
                   PsiElement(DLanguageTokenType.})('}')
         DLanguageDeclDefsImpl(DECL_DEFS)
           DLanguageDeclDefImpl(DECL_DEF)
@@ -449,7 +449,7 @@ D Language File
                                                                     PRIMARY_EXPRESSION
                                                                       PsiElement(DLanguageTokenType.INTEGER_LITERAL)('3')
                                     PsiElement(DLanguageTokenType.;)(';')
-                        PsiComment(DLanguageTokenType.line_comment)('// sets Foo.p to 3')
+                        PsiComment(DLanguageTokenType.LINE_COMMENT)('// sets Foo.p to 3')
                         PsiElement(DLanguageTokenType.})('}')
               DLanguageDeclDefsImpl(DECL_DEFS)
                 DLanguageDeclDefImpl(DECL_DEF)
@@ -621,7 +621,7 @@ D Language File
                                                                                                               PsiElement(DLanguageTokenType.INTEGER_LITERAL)('3')
                                                                               PsiElement(DLanguageTokenType.))(')')
                                           PsiElement(DLanguageTokenType.;)(';')
-                              PsiComment(DLanguageTokenType.line_comment)('// calls std.string.toString(3)')
+                              PsiComment(DLanguageTokenType.LINE_COMMENT)('// calls std.string.toString(3)')
                               PsiElement(DLanguageTokenType.})('}')
                     DLanguageDeclDefsImpl(DECL_DEFS)
                       DLanguageDeclDefImpl(DECL_DEF)
@@ -860,7 +860,7 @@ D Language File
                                                                                   PRIMARY_EXPRESSION
                                                                                     PsiElement(DLanguageTokenType.INTEGER_LITERAL)('3')
                                                   PsiElement(DLanguageTokenType.;)(';')
-                                      PsiComment(DLanguageTokenType.line_comment)('// sets x to 3')
+                                      PsiComment(DLanguageTokenType.LINE_COMMENT)('// sets x to 3')
                                       PsiElement(DLanguageTokenType.})('}')
                             DLanguageDeclDefsImpl(DECL_DEFS)
                               DLanguageDeclDefImpl(DECL_DEF)
@@ -1107,7 +1107,7 @@ D Language File
                                                                                             PRIMARY_EXPRESSION
                                                                                               PsiElement(DLanguageTokenType.INTEGER_LITERAL)('3')
                                                             PsiElement(DLanguageTokenType.;)(';')
-                                              PsiComment(DLanguageTokenType.line_comment)('// sets x to 3')
+                                              PsiComment(DLanguageTokenType.LINE_COMMENT)('// sets x to 3')
                                               PsiElement(DLanguageTokenType.})('}')
                                     DLanguageDeclDefsImpl(DECL_DEFS)
                                       DLanguageDeclDefImpl(DECL_DEF)
@@ -1353,5 +1353,5 @@ D Language File
                                                                                                                       PsiElement(DLanguageTokenType.ID)('s')
                                                                                                       PsiElement(DLanguageTokenType.))(')')
                                                               PsiElement(DLanguageTokenType.;)(';')
-                                                  PsiComment(DLanguageTokenType.line_comment)('// prints 3bar')
+                                                  PsiComment(DLanguageTokenType.LINE_COMMENT)('// prints 3bar')
                                                   PsiElement(DLanguageTokenType.})('}')

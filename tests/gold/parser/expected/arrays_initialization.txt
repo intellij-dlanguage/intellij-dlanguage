@@ -91,7 +91,7 @@ D Language File
                                                         PsiElement(DLanguageTokenType.INTEGER_LITERAL)('3')
                     PsiElement(DLanguageTokenType.])(']')
           PsiElement(DLanguageTokenType.;)(';')
-    PsiComment(DLanguageTokenType.line_comment)('// a[0] = 0, a[1] = 2, a[2] = 3')
+    PsiComment(DLanguageTokenType.LINE_COMMENT)('// a[0] = 0, a[1] = 2, a[2] = 3')
     DLanguageDeclDefsImpl(DECL_DEFS)
       DLanguageDeclDefImpl(DECL_DEF)
         DLanguageDeclarationImpl(DECLARATION)

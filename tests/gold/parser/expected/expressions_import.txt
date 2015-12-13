@@ -16,7 +16,7 @@ D Language File
           DLanguageFunctionBodyImpl(FUNCTION_BODY)
             DLanguageBlockStatementImpl(BLOCK_STATEMENT)
               PsiElement(DLanguageTokenType.{)('{')
-              PsiComment(DLanguageTokenType.line_comment)('// Prints contents of file foo.txt')
+              PsiComment(DLanguageTokenType.LINE_COMMENT)('// Prints contents of file foo.txt')
               DLanguageStatementListImpl(STATEMENT_LIST)
                 DLanguageStatementImpl(STATEMENT)
                   DLanguageNonEmptyStatementImpl(NON_EMPTY_STATEMENT)

@@ -23,7 +23,8 @@ public class DColorSettingsPage implements ColorSettingsPage {
 
     private static final AttributesDescriptor[] DESCRIPTORS = new AttributesDescriptor[]{
             new AttributesDescriptor("Illegal character", ILLEGAL),
-            new AttributesDescriptor("Comment", COMMENT),
+            new AttributesDescriptor("Line Comment", LINE_COMMENT),
+            new AttributesDescriptor("Block Comment", BLOCK_COMMENT),
             new AttributesDescriptor("String", STRING),
             new AttributesDescriptor("Number", NUMBER),
             new AttributesDescriptor("Keyword", KEYWORD),

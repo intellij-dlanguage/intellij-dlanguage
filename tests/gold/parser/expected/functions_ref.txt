@@ -119,4 +119,4 @@ D Language File
                                                 PRIMARY_EXPRESSION
                                                   PsiElement(DLanguageTokenType.INTEGER_LITERAL)('3')
               PsiElement(DLanguageTokenType.;)(';')
-  PsiComment(DLanguageTokenType.line_comment)('// reference returns can be lvalues')
+  PsiComment(DLanguageTokenType.LINE_COMMENT)('// reference returns can be lvalues')

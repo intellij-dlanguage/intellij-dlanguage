@@ -33,4 +33,4 @@ D Language File
               DLanguageAggregateBodyImpl(AGGREGATE_BODY)
                 PsiElement(DLanguageTokenType.{)('{')
                 PsiElement(DLanguageTokenType.})('}')
-  PsiComment(DLanguageTokenType.line_comment)('// error, class A is final')
+  PsiComment(DLanguageTokenType.LINE_COMMENT)('// error, class A is final')

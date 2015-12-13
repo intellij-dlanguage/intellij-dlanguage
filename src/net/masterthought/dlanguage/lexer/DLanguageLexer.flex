@@ -8,6 +8,7 @@ import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
 %{
 
   private int nestedCommentDepth = 0;
+  private int blockCommentDepth = 0;
 
   public DLanguageLexer() {
     this((java.io.Reader)null);
@@ -29,7 +30,10 @@ DIGIT = [:digit:]
 ID = (_|{LETTER}) (_|{DIGIT}|{LETTER})*
 
 LINE_COMMENT="//".*
-BLOCK_COMMENT="/"\*(.|\n)*\*"/"
+//BLOCK_COMMENT="/"\*(.|\n)*\*"/"
+
+BLOCK_COMMENT_START = "/*"
+BLOCK_COMMENT_END = "*/"
 
 /* JFlex doesn't support recursive rules. So NESTING_BLOCK_COMMENT doesn't support nesting now. */
 NESTING_BLOCK_COMMENT_START = \/\+
@@ -90,7 +94,7 @@ DECIMAL_EXPONENT = [eE][\+\-]? [0-9_]+
 HEX_FLOAT = 0[xX] ([0-9a-fA-F]* \.)? [0-9a-fA-F]+ {HEX_EXPONENT}
 HEX_EXPONENT = [pP][\+\-]? [0-9]+
 
-%state WAITING_VALUE, NESTING_COMMENT_CONTENT
+%state WAITING_VALUE, NESTING_COMMENT_CONTENT BLOCK_COMMENT_CONTENT
 
 %%
 
@@ -101,6 +105,12 @@ HEX_EXPONENT = [pP][\+\-]? [0-9]+
 		yybegin(NESTING_COMMENT_CONTENT);
 		nestedCommentDepth = 1;
 		return DLanguageTypes.NESTING_BLOCK_COMMENT;
+	}
+
+<YYINITIAL> {BLOCK_COMMENT_START} {
+		yybegin(BLOCK_COMMENT_CONTENT);
+		blockCommentDepth = 1;
+		return DLanguageTypes.BLOCK_COMMENT;
 	}
 
 <YYINITIAL> {CHARACTER_LITERAL} { return CHARACTER_LITERAL; }
@@ -129,6 +139,24 @@ HEX_EXPONENT = [pP][\+\-]? [0-9]+
 	\n|\/|\+	{return DLanguageTypes.NESTING_BLOCK_COMMENT;}
 	[^/+\n]+	{return DLanguageTypes.NESTING_BLOCK_COMMENT;}
 }
+
+<BLOCK_COMMENT_CONTENT> {
+	{BLOCK_COMMENT_START}	{
+		blockCommentDepth += 1;
+		return DLanguageTypes.BLOCK_COMMENT;
+	}
+
+	{BLOCK_COMMENT_END}	{
+		blockCommentDepth -= 1;
+		if(blockCommentDepth == 0) {
+			yybegin(YYINITIAL); //Exit nesting comment block
+		}
+		return DLanguageTypes.BLOCK_COMMENT;
+	}
+	\n|\/|\*	{return DLanguageTypes.BLOCK_COMMENT;}
+	[^/*\n]+	{return DLanguageTypes.BLOCK_COMMENT;}
+}
+
 
 <YYINITIAL> "module"                   { return KW_MODULE; }
 <YYINITIAL> "import"                   { return KW_IMPORT; }
@@ -305,7 +333,7 @@ HEX_EXPONENT = [pP][\+\-]? [0-9]+
 <YYINITIAL> "."                        { return OP_DOT; }
 <YYINITIAL> {ID}                       { return ID; }
 <YYINITIAL> {LINE_COMMENT}             { return LINE_COMMENT; }
-<YYINITIAL> {BLOCK_COMMENT}            { return BLOCK_COMMENT; }
+
 
 . { return com.intellij.psi.TokenType.BAD_CHARACTER; }
 

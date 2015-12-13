@@ -28,4 +28,4 @@ D Language File
                               PsiElement(DLanguageTokenType.int)('int')
                     PsiElement(DLanguageTokenType.))(')')
           PsiElement(DLanguageTokenType.;)(';')
-  PsiComment(DLanguageTokenType.line_comment)('// fp is pointer to a function')
+  PsiComment(DLanguageTokenType.LINE_COMMENT)('// fp is pointer to a function')

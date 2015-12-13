@@ -9,7 +9,6 @@ import net.masterthought.dlanguage.psi.impl.*;
 
 public interface DLanguageTypes {
 
-  IElementType NESTING_BLOCK_COMMENT = new DLanguageElementType("NESTING_BLOCK_COMMENT");
   IElementType ADD_EXPRESSION = new DLanguageElementType("ADD_EXPRESSION");
   IElementType AGGREGATE_BODY = new DLanguageElementType("AGGREGATE_BODY");
   IElementType AGGREGATE_DECLARATION = new DLanguageElementType("AGGREGATE_DECLARATION");
@@ -292,7 +291,7 @@ public interface DLanguageTypes {
   IElementType XOR_EXPRESSION = new DLanguageElementType("XOR_EXPRESSION");
 
   IElementType ALTERNATE_WYSIWYG_STRING = new DLanguageTokenType("ALTERNATE_WYSIWYG_STRING");
-  IElementType BLOCK_COMMENT = new DLanguageTokenType("block_comment");
+  IElementType BLOCK_COMMENT = new DLanguageTokenType("BLOCK_COMMENT");
   IElementType CHARACTER_LITERAL = new DLanguageTokenType("CHARACTER_LITERAL");
   IElementType DELIMITED_STRING = new DLanguageTokenType("DELIMITED_STRING");
   IElementType DOUBLE_QUOTED_STRING = new DLanguageTokenType("DOUBLE_QUOTED_STRING");
@@ -411,7 +410,8 @@ public interface DLanguageTypes {
   IElementType KW___PARAMETERS = new DLanguageTokenType("__parameters");
   IElementType KW___PRETTY_FUNCTION__ = new DLanguageTokenType("__PRETTY_FUNCTION__");
   IElementType KW___TRAITS = new DLanguageTokenType("__traits");
-  IElementType LINE_COMMENT = new DLanguageTokenType("line_comment");
+  IElementType LINE_COMMENT = new DLanguageTokenType("LINE_COMMENT");
+  IElementType NESTING_BLOCK_COMMENT = new DLanguageTokenType("NESTING_BLOCK_COMMENT");
   IElementType OP_AND = new DLanguageTokenType("&");
   IElementType OP_AND_EQ = new DLanguageTokenType("&=");
   IElementType OP_ASTERISK = new DLanguageTokenType("*");

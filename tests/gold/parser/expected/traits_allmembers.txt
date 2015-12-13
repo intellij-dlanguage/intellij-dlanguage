@@ -252,5 +252,5 @@ D Language File
                                                                                   PsiElement(DLanguageTokenType.ID)('b')
                                                                       PsiElement(DLanguageTokenType.))(')')
                               PsiElement(DLanguageTokenType.;)(';')
-                  PsiComment(DLanguageTokenType.line_comment)('// ["__ctor", "__dtor", "foo", "toString", "toHash", "opCmp", "opEquals", "Monitor", "factory"]')
+                  PsiComment(DLanguageTokenType.LINE_COMMENT)('// ["__ctor", "__dtor", "foo", "toString", "toHash", "opCmp", "opEquals", "Monitor", "factory"]')
                   PsiElement(DLanguageTokenType.})('}')

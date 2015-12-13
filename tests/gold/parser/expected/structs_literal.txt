@@ -201,4 +201,4 @@ D Language File
                                                                               PsiElement(DLanguageTokenType.))(')')
                                             PsiElement(DLanguageTokenType.))(')')
           PsiElement(DLanguageTokenType.;)(';')
-  PsiComment(DLanguageTokenType.line_comment)('// set field x to 1, field y to 2')
+  PsiComment(DLanguageTokenType.LINE_COMMENT)('// set field x to 1, field y to 2')

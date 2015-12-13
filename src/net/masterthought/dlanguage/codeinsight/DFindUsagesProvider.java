@@ -21,7 +21,7 @@ public class DFindUsagesProvider implements FindUsagesProvider {
     private final static WordsScanner SCANNER =
             new DefaultWordsScanner(new DLanguageLexerAdapter(),
                     TokenSet.create(DLanguageTypes.IDENTIFIER),
-                    DTokenSets.COMMENTS, DTokenSets.STRING_LITERALS);
+                    DTokenSets.LINE_COMMENTS, DTokenSets.BLOCK_COMMENTS, DTokenSets.STRING_LITERALS);
 
     @Nullable
     @Override

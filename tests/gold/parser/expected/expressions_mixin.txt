@@ -76,5 +76,5 @@ D Language File
                                                         PRIMARY_EXPRESSION
                                                           PsiElement(DLanguageTokenType.INTEGER_LITERAL)('7')
                         PsiElement(DLanguageTokenType.;)(';')
-              PsiComment(DLanguageTokenType.line_comment)('// same as ((x + 1) * 7)')
+              PsiComment(DLanguageTokenType.LINE_COMMENT)('// same as ((x + 1) * 7)')
               PsiElement(DLanguageTokenType.})('}')
