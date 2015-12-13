@@ -32,8 +32,11 @@ public class DColorSettingsPage implements ColorSettingsPage {
             new AttributesDescriptor("Braces", BRACES),
             new AttributesDescriptor("Brackets", BRACKETS),
             new AttributesDescriptor("Operation sign", OP_SIGN),
-            new AttributesDescriptor("Variables", VARIABLE),
-            new AttributesDescriptor("Function definition", FUNCTION_DEFINITION)
+            new AttributesDescriptor("Function definition", FUNCTION_DEFINITION),
+            new AttributesDescriptor("Std Imports", STD_IMPORT),
+            new AttributesDescriptor("Module definition", MODULE_DEFINITION),
+            new AttributesDescriptor("Basic type", BASIC_TYPE),
+            new AttributesDescriptor("Aggregate definition", AGGREGATE_DEFINITION)
     };
 
     private static Map<String, TextAttributesKey> ATTRIBUTES_KEY_MAP = ContainerUtil.newHashMap();
@@ -58,23 +61,71 @@ public class DColorSettingsPage implements ColorSettingsPage {
     @Override
     public String getDemoText() {
         // Example from dlang.org
-        String code = "" +
-                "/*\n" +
-                " * Computes average line length for standard input.\n" +
-                " */\n" +
-                "import std.stdio;\n" +
+        String code = "/*\n" +
+                "  Some block commments\n" +
+                "  go here\n" +
+                "*/\n" +
+                "// Line comment\n" +
+                "/+\n" +
+                " Nesting comment\n" +
+                "+/\n" +
+                "module net.masterthought.cucumber.report_information;\n" +
                 "\n" +
-                "void main() {\n" +
-                "    ulong lines = 0;\n" +
-                "    double sumLength = 0;\n" +
-                "    foreach (line; stdin.byLine()) {\n" +
-                "        ++lines; // increment\n" +
-                "        sumLength += line.length;\n" +
-                "    }\n" +
-                "    writeln(\"Average line length: \",\n" +
-                "        lines ? sumLength / lines : 0);\n" +
+                "import std.algorithm;\n" +
+                "import std.array;\n" +
+                "\n" +
+                "import jsonizer.tojson;\n" +
+                "import net.masterthought.cucumber.report_parser;\n" +
+                "\n" +
+                "class ReportInformation{\n" +
+                "\n" +
+                "  string runId;\n" +
+                "  Feature[] features;\n" +
+                "\n" +
+                "  this(ReportParser parser){\n" +
+                "  \tthis.runId = parser.getRunId();\n" +
+                "    this.features = parser.getReports().map!(report => report.getFeatures()).joiner.array;\n" +
+                "  }\n" +
+                "\n" +
+                "  private Feature[] processFeatures(Feature[] features){\n" +
+                "    return features.map!((f){\n" +
+                "        f.featureInformation = calculateFeatureInformation(f);\n" +
+                "        f.scenarios = addScenarioInformation(f);\n" +
+                "        return f;\n" +
+                "      }).array;\n" +
+                "  }\n" +
+                "\n" +
+                "\n" +
+                "  public auto getTotalNumberOfBackgroundScenariosUnknown(){\n" +
+                "   return features.map!(f => f.getBackgroundScenariosUnknown().length).sum;\n" +
                 " }\n" +
-                "";
+                "\n" +
+                " struct {\n" +
+                "  string name;\n" +
+                " }\n" +
+                "\n" +
+                " union {\n" +
+                "  string day;\n" +
+                " }\n" +
+                "\n" +
+                "  unittest {\n" +
+                "\n" +
+                "     // load test json from file\n" +
+                "     auto testJson = to!string(read(\"src/test/resources/project1.json\"));\n" +
+                "     string runId = \"run 1\";\n" +
+                "     ReportInformation ri = new ReportInformation(new ReportParser(runId,[testJson]));\n" +
+                "\n" +
+                "     // should have correct number of features\n" +
+                "     ri.getFeatures().length.assertEqual(2);\n" +
+                "\n" +
+                "     // overall status\n" +
+                "     ri.getOverallStatus.assertEqual(to!string(Status.Failed));\n" +
+                "\n" +
+                "     // feature totals\n" +
+                "     Feature feature = ri.getFeatures().front;\n" +
+                "\n" +
+                "}\n" +
+                "}";
 
         return code;
     }

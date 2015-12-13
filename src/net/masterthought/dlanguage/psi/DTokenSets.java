@@ -2,15 +2,10 @@ package net.masterthought.dlanguage.psi;
 
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.TokenSet;
-import net.masterthought.dlanguage.DLanguage;
 
 public class DTokenSets {
 
     public static final TokenSet WHITESPACES = TokenSet.create(TokenType.WHITE_SPACE);
-//    public static final TokenSet COMMENTS = TokenSet.create(DLanguageTypes.COMMENT_MULTI,
-//            DLanguageTypes.COMMENT_NESTED, DLanguageTypes.COMMENT_LINE,
-//            DLanguageTypes.DOCCOMMENT_MULTI, DLanguageTypes.DOCCOMMENT_NESTED,
-//            DLanguageTypes.DOCCOMMENT_LINE);
 
     public static final TokenSet LINE_COMMENTS = TokenSet.create(DLanguageTypes.LINE_COMMENT);
     
