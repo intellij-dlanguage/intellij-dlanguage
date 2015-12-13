@@ -9,9 +9,6 @@ import net.masterthought.dlanguage.highlighting.DHighlighter;
 import net.masterthought.dlanguage.psi.*;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
 * Annotator that:
 * adds extra syntax highlighting
