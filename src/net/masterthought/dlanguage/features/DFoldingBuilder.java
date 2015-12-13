@@ -8,10 +8,7 @@ import com.intellij.openapi.project.DumbAware;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.containers.ContainerUtil;
-import net.masterthought.dlanguage.psi.DLanguageAggregateDeclaration;
-import net.masterthought.dlanguage.psi.DLanguageFile;
-import net.masterthought.dlanguage.psi.DLanguageFuncDeclaration;
-import net.masterthought.dlanguage.psi.DLanguageImportDeclaration;
+import net.masterthought.dlanguage.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -83,6 +80,13 @@ public class DFoldingBuilder extends FoldingBuilderEx implements DumbAware {
         }
         if (psi instanceof DLanguageImportDeclaration) {
             return "import ...";
+        }
+        if (psi instanceof DLanguageAggregateDeclaration) {
+            DLanguageAggregateDeclaration declaration = (DLanguageAggregateDeclaration) psi;
+            if(declaration.getClassDeclaration() != null){
+                return " (Class) ...";
+            }
+
         }
         //TODO - add stubs for classes and structs
 //        if (psi instanceof DDefinitionClass) {
