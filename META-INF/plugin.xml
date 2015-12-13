@@ -34,14 +34,38 @@
 
 
         <!-- D Language support -->
-        <internalFileTemplate name="D Language Module"/>
-        <moduleType id="DLANGUAGE_MODULE" implementationClass="net.masterthought.dlanguage.DLanguageModuleType"/>
-        <sdkType implementation="net.masterthought.dlanguage.DLanguageSdkType"/>
-        <configurationType implementation="net.masterthought.dlanguage.run.DLanguageApplicationConfigurationType"/>
-        <runConfigurationProducer
-                implementation="net.masterthought.dlanguage.run.DLanguageApplicationRunConfigurationProducer"/>
 
-        <programRunner implementation="net.masterthought.dlanguage.run.DLanguageRunner"/>
+        <sdkType implementation="net.masterthought.dlanguage.DLanguageSdkType"/>
+        <!--<configurationType implementation="net.masterthought.dlanguage.run.DLanguageApplicationConfigurationType"/>-->
+        <!--<runConfigurationProducer-->
+        <!--implementation="net.masterthought.dlanguage.run.DLanguageApplicationRunConfigurationProducer"/>-->
+
+        <!--<programRunner implementation="net.masterthought.dlanguage.run.DLanguageRunner"/>-->
+
+        <!-- module -->
+        <internalFileTemplate name="D Language Module"/>
+        <moduleType id="DLANGUAGE_MODULE" implementationClass="net.masterthought.dlanguage.module.DLanguageModuleType"/>
+        <configurationType implementation="net.masterthought.dlanguage.run.DLanguageRunDubConfigurationType"/>
+        <configurationType implementation="net.masterthought.dlanguage.run.DLanguageRunDmdConfigurationType"/>
+        <configurationType implementation="net.masterthought.dlanguage.run.DLanguageRunAppConfigurationType"/>
+        <projectService serviceInterface="net.masterthought.dlanguage.config.DLanguageGeneralSettings"
+                        serviceImplementation="net.masterthought.dlanguage.config.DLanguageGeneralSettings"/>
+        <projectConfigurable instance="net.masterthought.dlanguage.config.DLanguageSettingsPanel"
+                             id="DLangSettingsPanel"
+                             displayName="D language" order="last"/>
+        <moduleBuilder id="DLangModuleBuilder"
+                       builderClass="net.masterthought.dlanguage.module.DLanguageModuleBuilder"/>
+        <moduleBuilder id="DLangDubModuleBuilder"
+                       builderClass="net.masterthought.dlanguage.module.DLanguageDubModuleBuilder"/>
+        <moduleConfigurationEditorProvider
+                implementation="net.masterthought.dlanguage.module.DLanguageModuleEditorsProvider"/>
+
+        <!-- library -->
+        <library.type implementation="net.masterthought.dlanguage.library.DLanguageLibraryType"/>
+        <orderRootType implementation="net.masterthought.dlanguage.library.LibFileRootType" id="LIBRARY_FILE"
+                       order="FIRST"/>
+        <OrderRootTypeUI key="LIBRARY_FILE"
+                         implementationClass="net.masterthought.dlanguage.library.LibFileRootTypeUIFactory"/>
 
         <!-- Indexes -->
         <fileBasedIndex implementation="net.masterthought.dlanguage.index.DModuleIndex"/>

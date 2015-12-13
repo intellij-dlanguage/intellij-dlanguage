@@ -11,25 +11,24 @@ import java.lang.ref.SoftReference;
 import java.util.ResourceBundle;
 
 public class DLanguageBundle {
+        private static Reference<ResourceBundle> dLangBundle;
 
-  public static String message(@NotNull @PropertyKey(resourceBundle = BUNDLE) String key, @NotNull Object... params) {
-    return CommonBundle.message(getBundle(), key, params);
-  }
+        @NonNls private static final String BUNDLE_ID = "messages.Dlanguage";
 
-  private static Reference<ResourceBundle> ourBundle;
-  @NonNls
-  public static final String BUNDLE = "net.masterthought.dlanguage.DLanguageBundle";
+        private DLanguageBundle() {
+        }
 
-  private DLanguageBundle() {
-  }
+        public static String message(@PropertyKey(resourceBundle = BUNDLE_ID)String key, Object... params) {
+            return CommonBundle.message(getBundle(), key, params);
+        }
 
-  private static ResourceBundle getBundle() {
-    ResourceBundle bundle = com.intellij.reference.SoftReference.dereference(ourBundle);
-    if (bundle == null) {
-      bundle = ResourceBundle.getBundle(BUNDLE);
-      ourBundle = new SoftReference<ResourceBundle>(bundle);
-    }
-    return bundle;
-  }
+        private static ResourceBundle getBundle() {
+            ResourceBundle bundle = null;
+            if (dLangBundle != null) bundle = dLangBundle.get();
+            if (bundle == null) {
+                bundle = ResourceBundle.getBundle(BUNDLE_ID);
+                dLangBundle = new SoftReference<ResourceBundle>(bundle);
+            }
+            return bundle;
+        }
 }
-

@@ -9,6 +9,7 @@ import javax.swing.*;
 public class DLanguageFileType extends LanguageFileType {
 
     public static final DLanguageFileType INSTANCE = new DLanguageFileType();
+    public static final String DEFAULT_EXTENSION = "d";
 
     private DLanguageFileType() {
         super(DLanguage.INSTANCE);
@@ -29,7 +30,7 @@ public class DLanguageFileType extends LanguageFileType {
     @NotNull
     @Override
     public String getDefaultExtension() {
-        return "d";
+        return DEFAULT_EXTENSION;
     }
 
     @Nullable
