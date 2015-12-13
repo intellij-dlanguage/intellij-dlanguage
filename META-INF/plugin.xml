@@ -32,15 +32,10 @@
         <annotator language="D" implementationClass="net.masterthought.dlanguage.highlighting.annotation.DAnnotator"/>
         <colorSettingsPage implementation="net.masterthought.dlanguage.settings.DColorSettingsPage"/>
 
-
         <!-- D Language support -->
-
         <sdkType implementation="net.masterthought.dlanguage.DLanguageSdkType"/>
-        <!--<configurationType implementation="net.masterthought.dlanguage.run.DLanguageApplicationConfigurationType"/>-->
         <runConfigurationProducer
         implementation="net.masterthought.dlanguage.run.DLanguageRunDubConfigurationProducer"/>
-
-        <!--<programRunner implementation="net.masterthought.dlanguage.run.DLanguageRunner"/>-->
 
         <!-- module -->
         <internalFileTemplate name="D Language Module"/>
