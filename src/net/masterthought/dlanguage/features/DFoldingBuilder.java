@@ -84,7 +84,7 @@ public class DFoldingBuilder extends FoldingBuilderEx implements DumbAware {
         if (psi instanceof DLanguageAggregateDeclaration) {
             DLanguageAggregateDeclaration declaration = (DLanguageAggregateDeclaration) psi;
             if(declaration.getClassDeclaration() != null){
-                return " (Class) ...";
+                return declaration.getClassDeclaration().getName() + " (Class) ...";
             }
 
         }

@@ -3,7 +3,7 @@ D Language File
     DLanguageDeclDefImpl(DECL_DEF)
       DLanguageDeclarationImpl(DECLARATION)
         DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
-          DLanguageClassDeclarationImpl(CLASS_DECLARATION)
+          CLASS_DECLARATION
             PsiElement(DLanguageTokenType.class)('class')
             DLanguageIdentifierImpl(IDENTIFIER)
               PsiElement(DLanguageTokenType.ID)('Foo')
@@ -14,7 +14,7 @@ D Language File
       DLanguageDeclDefImpl(DECL_DEF)
         DLanguageDeclarationImpl(DECLARATION)
           DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
-            DLanguageClassDeclarationImpl(CLASS_DECLARATION)
+            CLASS_DECLARATION
               PsiElement(DLanguageTokenType.class)('class')
               DLanguageIdentifierImpl(IDENTIFIER)
                 PsiElement(DLanguageTokenType.ID)('Foo')

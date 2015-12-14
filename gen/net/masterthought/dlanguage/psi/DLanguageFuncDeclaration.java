@@ -12,16 +12,19 @@ import com.intellij.psi.PsiReference;
 public interface DLanguageFuncDeclaration extends DNamedElement, StubBasedPsiElement<DLanguageFuncDeclarationStub> {
 
   @Nullable
-  DLanguageAutoFuncDeclaration getAutoFuncDeclaration();
-
-  @Nullable
   DLanguageBasicType getBasicType();
 
   @Nullable
-  DLanguageFuncDeclarator getFuncDeclarator();
+  DLanguageBasicType2 getBasicType2();
+
+  @NotNull
+  DLanguageFuncDeclaratorSuffix getFuncDeclaratorSuffix();
 
   @Nullable
   DLanguageFunctionBody getFunctionBody();
+
+  @NotNull
+  DLanguageIdentifier getIdentifier();
 
   @Nullable
   DLanguageStorageClasses getStorageClasses();

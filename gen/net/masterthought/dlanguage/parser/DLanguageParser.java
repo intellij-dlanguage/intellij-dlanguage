@@ -175,9 +175,6 @@ public class DLanguageParser implements PsiParser {
     else if (t == AUTO_DECLARATION_Y) {
       r = AutoDeclarationY(b, 0);
     }
-    else if (t == AUTO_FUNC_DECLARATION) {
-      r = AutoFuncDeclaration(b, 0);
-    }
     else if (t == BASE_CLASS_LIST) {
       r = BaseClassList(b, 0);
     }
@@ -384,9 +381,6 @@ public class DLanguageParser implements PsiParser {
     }
     else if (t == FUNC_DECLARATION) {
       r = FuncDeclaration(b, 0);
-    }
-    else if (t == FUNC_DECLARATOR) {
-      r = FuncDeclarator(b, 0);
     }
     else if (t == FUNC_DECLARATOR_SUFFIX) {
       r = FuncDeclaratorSuffix(b, 0);
@@ -3021,15 +3015,15 @@ public class DLanguageParser implements PsiParser {
 
   /* ********************************************************** */
   // StorageClasses Identifier FuncDeclaratorSuffix FunctionBody?
-  public static boolean AutoFuncDeclaration(PsiBuilder b, int l) {
+  static boolean AutoFuncDeclaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "AutoFuncDeclaration")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, "<auto func declaration>");
+    Marker m = enter_section_(b);
     r = StorageClasses(b, l + 1);
     r = r && Identifier(b, l + 1);
     r = r && FuncDeclaratorSuffix(b, l + 1);
     r = r && AutoFuncDeclaration_3(b, l + 1);
-    exit_section_(b, l, m, AUTO_FUNC_DECLARATION, r, false, null);
+    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -5207,14 +5201,14 @@ public class DLanguageParser implements PsiParser {
 
   /* ********************************************************** */
   // BasicType2? Identifier FuncDeclaratorSuffix
-  public static boolean FuncDeclarator(PsiBuilder b, int l) {
+  static boolean FuncDeclarator(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "FuncDeclarator")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, "<func declarator>");
+    Marker m = enter_section_(b);
     r = FuncDeclarator_0(b, l + 1);
     r = r && Identifier(b, l + 1);
     r = r && FuncDeclaratorSuffix(b, l + 1);
-    exit_section_(b, l, m, FUNC_DECLARATOR, r, false, null);
+    exit_section_(b, m, null, r);
     return r;
   }
 

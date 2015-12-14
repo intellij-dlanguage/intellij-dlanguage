@@ -33,8 +33,8 @@ public class DAnnotator implements Annotator {
             }
 
             @Override
-            public void visitFuncDeclarator(@NotNull DLanguageFuncDeclarator o) {
-                super.visitFuncDeclarator(o);
+            public void visitFuncDeclaration(@NotNull DLanguageFuncDeclaration o) {
+                super.visitFuncDeclaration(o);
                 setHighlighting(o.getIdentifier(), holder, DHighlighter.FUNCTION_DEFINITION);
             }
 
@@ -61,12 +61,6 @@ public class DAnnotator implements Annotator {
                         setHighlighting(o.getInterfaceDeclaration().getIdentifier(), holder, DHighlighter.AGGREGATE_DEFINITION);
                     }
                 }
-            }
-
-            @Override
-            public void visitAutoFuncDeclaration(@NotNull DLanguageAutoFuncDeclaration o) {
-                super.visitAutoFuncDeclaration(o);
-                setHighlighting(o.getIdentifier(), holder, DHighlighter.FUNCTION_DEFINITION);
             }
 
             @Override

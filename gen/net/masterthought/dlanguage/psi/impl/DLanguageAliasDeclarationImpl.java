@@ -36,14 +36,20 @@ public class DLanguageAliasDeclarationImpl extends ASTWrapperPsiElement implemen
 
   @Override
   @Nullable
+  public DLanguageBasicType2 getBasicType2() {
+    return findChildByClass(DLanguageBasicType2.class);
+  }
+
+  @Override
+  @Nullable
   public DLanguageDeclarator getDeclarator() {
     return findChildByClass(DLanguageDeclarator.class);
   }
 
   @Override
   @Nullable
-  public DLanguageFuncDeclarator getFuncDeclarator() {
-    return findChildByClass(DLanguageFuncDeclarator.class);
+  public DLanguageFuncDeclaratorSuffix getFuncDeclaratorSuffix() {
+    return findChildByClass(DLanguageFuncDeclaratorSuffix.class);
   }
 
   @Override

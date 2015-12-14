@@ -4,9 +4,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFileFactory;
 import net.masterthought.dlanguage.DLanguage;
-import net.masterthought.dlanguage.psi.DLanguageFile;
-import net.masterthought.dlanguage.psi.DLanguageFuncDeclaration;
-import net.masterthought.dlanguage.psi.DLanguagePrimaryExpression;
+import net.masterthought.dlanguage.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -25,8 +23,16 @@ public class DElementFactory {
         return null;
     }
 
+    @Nullable
     public static DLanguagePrimaryExpression createDLanguagePrimaryExpressionFromText(@NotNull Project project, @NotNull String name) {
         return ((DLanguagePrimaryExpression) (createExpressionFromText(project, name + "uniq = " + name)).getFirstChild());
+    }
+
+    @Nullable
+    public static DLanguageClassDeclaration createDLanguageClassDeclarationFromText(@NotNull Project project, @NotNull String name) {
+        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
+        if (e instanceof DLanguageClassDeclaration) return (DLanguageClassDeclaration) e;
+        return null;
     }
 
 //    public static DLanguageSymbol createDLanguageSymbolFromText(@NotNull Project project, @NotNull String name) {

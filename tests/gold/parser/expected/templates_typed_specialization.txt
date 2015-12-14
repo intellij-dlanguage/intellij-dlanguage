@@ -330,7 +330,7 @@ D Language File
                           DLanguageDeclDefImpl(DECL_DEF)
                             DLanguageDeclarationImpl(DECLARATION)
                               DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
-                                DLanguageClassDeclarationImpl(CLASS_DECLARATION)
+                                CLASS_DECLARATION
                                   DLanguageClassTemplateDeclarationImpl(CLASS_TEMPLATE_DECLARATION)
                                     PsiElement(DLanguageTokenType.class)('class')
                                     DLanguageIdentifierImpl(IDENTIFIER)

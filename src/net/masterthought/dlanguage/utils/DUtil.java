@@ -143,19 +143,19 @@ public class DUtil {
         return element instanceof PsiNamedElement && definitionNode((PsiNamedElement) element);
     }
 
-    @Nullable
-    public static String getQualifiedPrefix(@NotNull PsiElement e) {
-        final PsiElement q = PsiTreeUtil.getParentOfType(e, DLanguageFuncDeclaration.class);
-        if (q == null) {
-            return null;
-        }
-        final String qText = q.getText();
-        final int lastDotPos = qText.lastIndexOf('.');
-        if (lastDotPos == -1) {
-            return null;
-        }
-        return qText.substring(0, lastDotPos);
-    }
+//    @Nullable
+//    public static String getQualifiedPrefix(@NotNull PsiElement e) {
+//        final PsiElement q = PsiTreeUtil.getParentOfType(e, DLanguageFuncDeclaration.class);
+//        if (q == null) {
+//            return null;
+//        }
+//        final String qText = q.getText();
+//        final int lastDotPos = qText.lastIndexOf('.');
+//        if (lastDotPos == -1) {
+//            return null;
+//        }
+//        return qText.substring(0, lastDotPos);
+//    }
 
 //    @NotNull
 //    public static Set<String> getPotentialDefinitionModuleNames(@NotNull PsiElement e, @NotNull List<String> imports) {

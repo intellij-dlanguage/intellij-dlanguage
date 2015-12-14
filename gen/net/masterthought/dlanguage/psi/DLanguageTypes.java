@@ -60,7 +60,6 @@ public interface DLanguageTypes {
   IElementType AUTO_DECLARATION = new DLanguageElementType("AUTO_DECLARATION");
   IElementType AUTO_DECLARATION_X = new DLanguageElementType("AUTO_DECLARATION_X");
   IElementType AUTO_DECLARATION_Y = new DLanguageElementType("AUTO_DECLARATION_Y");
-  IElementType AUTO_FUNC_DECLARATION = new DLanguageElementType("AUTO_FUNC_DECLARATION");
   IElementType BASE_CLASS_LIST = new DLanguageElementType("BASE_CLASS_LIST");
   IElementType BASE_INTERFACE_LIST = new DLanguageElementType("BASE_INTERFACE_LIST");
   IElementType BASIC_TYPE = new DLanguageElementType("BASIC_TYPE");
@@ -77,7 +76,7 @@ public interface DLanguageTypes {
   IElementType CATCHES = new DLanguageElementType("CATCHES");
   IElementType CATCH_PARAMETER = new DLanguageElementType("CATCH_PARAMETER");
   IElementType CLASS_ARGUMENTS = new DLanguageElementType("CLASS_ARGUMENTS");
-  IElementType CLASS_DECLARATION = new DLanguageElementType("CLASS_DECLARATION");
+  IElementType CLASS_DECLARATION = DElementTypeFactory.factory("CLASS_DECLARATION");
   IElementType CLASS_TEMPLATE_DECLARATION = new DLanguageElementType("CLASS_TEMPLATE_DECLARATION");
   IElementType CMP_EXPRESSION = new DLanguageElementType("CMP_EXPRESSION");
   IElementType COMMA_EXPRESSION = new DLanguageElementType("COMMA_EXPRESSION");
@@ -136,7 +135,6 @@ public interface DLanguageTypes {
   IElementType FUNCTION_LITERAL = new DLanguageElementType("FUNCTION_LITERAL");
   IElementType FUNCTION_LITERAL_BODY = new DLanguageElementType("FUNCTION_LITERAL_BODY");
   IElementType FUNC_DECLARATION = DElementTypeFactory.factory("FUNC_DECLARATION");
-  IElementType FUNC_DECLARATOR = new DLanguageElementType("FUNC_DECLARATOR");
   IElementType FUNC_DECLARATOR_SUFFIX = new DLanguageElementType("FUNC_DECLARATOR_SUFFIX");
   IElementType GOTO_STATEMENT = new DLanguageElementType("GOTO_STATEMENT");
   IElementType IDENTIFIER = new DLanguageElementType("IDENTIFIER");
@@ -632,9 +630,6 @@ public interface DLanguageTypes {
       else if (type == AUTO_DECLARATION_Y) {
         return new DLanguageAutoDeclarationYImpl(node);
       }
-      else if (type == AUTO_FUNC_DECLARATION) {
-        return new DLanguageAutoFuncDeclarationImpl(node);
-      }
       else if (type == BASE_CLASS_LIST) {
         return new DLanguageBaseClassListImpl(node);
       }
@@ -859,9 +854,6 @@ public interface DLanguageTypes {
       }
       else if (type == FUNC_DECLARATION) {
         return new DLanguageFuncDeclarationImpl(node);
-      }
-      else if (type == FUNC_DECLARATOR) {
-        return new DLanguageFuncDeclaratorImpl(node);
       }
       else if (type == FUNC_DECLARATOR_SUFFIX) {
         return new DLanguageFuncDeclaratorSuffixImpl(node);

@@ -31,26 +31,32 @@ public class DLanguageFuncDeclarationImpl extends DNamedStubbedPsiElementBase<DL
 
   @Override
   @Nullable
-  public DLanguageAutoFuncDeclaration getAutoFuncDeclaration() {
-    return findChildByClass(DLanguageAutoFuncDeclaration.class);
-  }
-
-  @Override
-  @Nullable
   public DLanguageBasicType getBasicType() {
     return findChildByClass(DLanguageBasicType.class);
   }
 
   @Override
   @Nullable
-  public DLanguageFuncDeclarator getFuncDeclarator() {
-    return findChildByClass(DLanguageFuncDeclarator.class);
+  public DLanguageBasicType2 getBasicType2() {
+    return findChildByClass(DLanguageBasicType2.class);
+  }
+
+  @Override
+  @NotNull
+  public DLanguageFuncDeclaratorSuffix getFuncDeclaratorSuffix() {
+    return findNotNullChildByClass(DLanguageFuncDeclaratorSuffix.class);
   }
 
   @Override
   @Nullable
   public DLanguageFunctionBody getFunctionBody() {
     return findChildByClass(DLanguageFunctionBody.class);
+  }
+
+  @Override
+  @NotNull
+  public DLanguageIdentifier getIdentifier() {
+    return findNotNullChildByClass(DLanguageIdentifier.class);
   }
 
   @Override

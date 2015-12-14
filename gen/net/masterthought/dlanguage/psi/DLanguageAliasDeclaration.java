@@ -14,10 +14,13 @@ public interface DLanguageAliasDeclaration extends PsiElement {
   DLanguageBasicType getBasicType();
 
   @Nullable
+  DLanguageBasicType2 getBasicType2();
+
+  @Nullable
   DLanguageDeclarator getDeclarator();
 
   @Nullable
-  DLanguageFuncDeclarator getFuncDeclarator();
+  DLanguageFuncDeclaratorSuffix getFuncDeclaratorSuffix();
 
   @Nullable
   DLanguageIdentifier getIdentifier();

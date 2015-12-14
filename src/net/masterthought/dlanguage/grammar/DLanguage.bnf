@@ -17,11 +17,11 @@
   psiImplUtilClass="net.masterthought.dlanguage.psi.impl.DPsiImplUtil"
 
   // used to implement DNamedElement in the generated interfaces
-  implements("FuncDeclaration|PrimaryExpression")="net.masterthought.dlanguage.psi.DNamedElement"
+  implements("FuncDeclaration|ClassDeclaration|PrimaryExpression")="net.masterthought.dlanguage.psi.DNamedElement"
 
   // used to extend to use stubs
-  extends("FuncDeclaration|PrimaryExpression")="net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase<?>"
-  elementTypeFactory("FuncDeclaration|PrimaryExpression")="net.masterthought.dlanguage.psi.impl.DElementTypeFactory.factory"
+  extends("FuncDeclaration|ClassDeclaration|PrimaryExpression")="net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase<?>"
+  elementTypeFactory("FuncDeclaration|ClassDeclaration|PrimaryExpression")="net.masterthought.dlanguage.psi.impl.DElementTypeFactory.factory"
 
 
   generateTokenAccessors=true
@@ -1743,10 +1743,10 @@ FuncDeclaration ::=
       stubClass="net.masterthought.dlanguage.stubs.DLanguageFuncDeclarationStub"
     }
 
-AutoFuncDeclaration ::=
+private AutoFuncDeclaration ::=
     StorageClasses Identifier FuncDeclaratorSuffix FunctionBody?
 
-FuncDeclarator ::=
+private FuncDeclarator ::=
     BasicType2? Identifier FuncDeclaratorSuffix
 
 FuncDeclaratorSuffix ::=
@@ -1871,9 +1871,12 @@ AggregateDeclaration ::=
     | UnionDeclaration
 
 ClassDeclaration ::=
-    'class' Identifier ';'
+    ('class' Identifier ';'
     | 'class' Identifier BaseClassList? AggregateBody
-    | ClassTemplateDeclaration
+    | ClassTemplateDeclaration) {
+      methods=[getName getNameIdentifier getReference setName getPresentation]
+      stubClass="net.masterthought.dlanguage.stubs.DLanguageClassDeclarationStub"
+    }
 
 ClassTemplateDeclaration ::=
     'class' Identifier TemplateParameters Constraint? BaseClassList? AggregateBody

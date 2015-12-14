@@ -211,10 +211,6 @@ public class DLanguageVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitAutoFuncDeclaration(@NotNull DLanguageAutoFuncDeclaration o) {
-    visitPsiElement(o);
-  }
-
   public void visitBaseClassList(@NotNull DLanguageBaseClassList o) {
     visitPsiElement(o);
   }
@@ -280,7 +276,7 @@ public class DLanguageVisitor extends PsiElementVisitor {
   }
 
   public void visitClassDeclaration(@NotNull DLanguageClassDeclaration o) {
-    visitPsiElement(o);
+    visitDNamedElement(o);
   }
 
   public void visitClassTemplateDeclaration(@NotNull DLanguageClassTemplateDeclaration o) {
@@ -489,10 +485,6 @@ public class DLanguageVisitor extends PsiElementVisitor {
 
   public void visitFuncDeclaration(@NotNull DLanguageFuncDeclaration o) {
     visitDNamedElement(o);
-  }
-
-  public void visitFuncDeclarator(@NotNull DLanguageFuncDeclarator o) {
-    visitPsiElement(o);
   }
 
   public void visitFuncDeclaratorSuffix(@NotNull DLanguageFuncDeclaratorSuffix o) {
