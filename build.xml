@@ -4,8 +4,8 @@
 
   <property file="build.properties"/>
   <property name="build.compiler" value="modern"/>
-  <!--<property name="jflex.jar" value="JFlex.jar"/>-->
-  <!--<property name="jflex.skeleton" value="idea-flex.skeleton"/>-->
+  <property name="jflex.jar" value="JFlex.jar"/>
+  <property name="jflex.skeleton" value="idea-flex.skeleton"/>
   <!--&lt;!&ndash; TODO: Consider using ant-contrib to generalize this pattern into a loop (task generate.sources) &ndash;&gt;-->
   <!--<property name="jflex.haskellHighlight.target.base" value="src/com/dlanguage/highlighting/_HaskellSyntaxHighlightingLexer"/>-->
   <!--<property name="jflex.haskellHighlight.input.file" value="${jflex.haskellHighlight.target.base}.flex"/>-->
@@ -305,10 +305,10 @@
         <patternset refid="compiler.resources"/>
         <type type="file"/>
       </fileset>
-      <!--<fileset dir="${module.dlanguage.basedir}/gen">-->
-        <!--<patternset refid="compiler.resources"/>-->
-        <!--<type type="file"/>-->
-      <!--</fileset>-->
+      <fileset dir="${module.dlanguage.basedir}/gen">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
       <fileset dir="${module.dlanguage.basedir}/resources">
         <patternset refid="compiler.resources"/>
         <type type="file"/>
