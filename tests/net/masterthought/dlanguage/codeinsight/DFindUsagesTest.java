@@ -4,7 +4,7 @@ import net.masterthought.dlanguage.DLightPlatformCodeInsightFixtureTestCase;
 
 public class DFindUsagesTest extends DLightPlatformCodeInsightFixtureTestCase {
     public DFindUsagesTest() {
-        super("codeInsight", "codeInsight");
+        super("codeinsight", "codeinsight");
     }
 
     public void testFunctionUsagesInSingleFile()    { doTest(2); }
