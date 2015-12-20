@@ -7,7 +7,7 @@ public class DFindUsagesTest extends DLightPlatformCodeInsightFixtureTestCase {
         super("codeinsight", "codeinsight");
     }
 
-    public void testFunctionUsagesInSingleFile()    { doTest(2); }
+    public void testFunctionUsagesInSingleFile()    { doTest(1); }
 //    public void testFunctionUsagesInMultipleFiles00001() { doTest(3, "FunctionUsagesInSingleFile00001.hs");}
 //    public void testFunctionUsagesInSingleFile00002()    { doTest(2); }
 

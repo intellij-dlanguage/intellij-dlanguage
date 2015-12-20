@@ -86,15 +86,7 @@ public class DFoldingBuilder extends FoldingBuilderEx implements DumbAware {
             if(declaration.getClassDeclaration() != null){
                 return declaration.getClassDeclaration().getName() + " (Class) ...";
             }
-
         }
-        //TODO - add stubs for classes and structs
-//        if (psi instanceof DDefinitionClass) {
-//            return ((DDefinitionClass) psi).getName() + " (Class) ...";
-//        }
-//        if (psi instanceof DDefinitionStruct) {
-//            return ((DDefinitionStruct) psi).getName() + " (Struct) ...";
-//        }
         return "...";
     }
 

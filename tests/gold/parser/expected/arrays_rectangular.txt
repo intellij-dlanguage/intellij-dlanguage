@@ -17,7 +17,7 @@ D Language File
                     DLanguageBasicType2XImpl(BASIC_TYPE_2_X)
                       PsiElement(DLanguageTokenType.[)('[')
                       PsiElement(DLanguageTokenType.])(']')
-                DLanguageIdentifierImpl(IDENTIFIER)
+                IDENTIFIER
                   PsiElement(DLanguageTokenType.ID)('matrix')
           PsiElement(DLanguageTokenType.;)(';')
     DLanguageDeclDefsImpl(DECL_DEFS)
@@ -46,7 +46,7 @@ D Language File
                                           DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                                             DLanguagePowExpressionImpl(POW_EXPRESSION)
                                               DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
-                                                PRIMARY_EXPRESSION
+                                                DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                                                   PsiElement(DLanguageTokenType.INTEGER_LITERAL)('3')
                       PsiElement(DLanguageTokenType.])(']')
                     DLanguageBasicType2Impl(BASIC_TYPE_2)
@@ -65,9 +65,9 @@ D Language File
                                             DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                                               DLanguagePowExpressionImpl(POW_EXPRESSION)
                                                 DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
-                                                  PRIMARY_EXPRESSION
+                                                  DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                                                     PsiElement(DLanguageTokenType.INTEGER_LITERAL)('3')
                         PsiElement(DLanguageTokenType.])(']')
-                  DLanguageIdentifierImpl(IDENTIFIER)
+                  IDENTIFIER
                     PsiElement(DLanguageTokenType.ID)('matrix')
             PsiElement(DLanguageTokenType.;)(';')

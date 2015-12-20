@@ -13,10 +13,7 @@ import net.masterthought.dlanguage.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * General util class. Provides methods for finding named nodes in the Psi tree.
@@ -64,8 +61,28 @@ public class DUtil {
         Collection<PsiNamedElement> namedElements = Collections.EMPTY_LIST;
 
         if (e instanceof DLanguageIdentifier) {
-            if (e.getParent() instanceof DLanguageExpression) {
-                namedElements = PsiTreeUtil.findChildrenOfType(file, (Class<? extends PsiNamedElement>) DLanguageFuncDeclaration.class);
+            if (e.getParent() instanceof DLanguagePrimaryExpression) {
+                Collection<DLanguageFuncDeclaration> fd = PsiTreeUtil.findChildrenOfType(file,DLanguageFuncDeclaration.class);
+                Collection<DLanguageClassDeclaration> cd = PsiTreeUtil.findChildrenOfType(file,DLanguageClassDeclaration.class);
+                Collection<DLanguageVarDeclarator> vd = PsiTreeUtil.findChildrenOfType(file,DLanguageVarDeclarator.class);
+                List<PsiNamedElement> ne = new ArrayList<>();
+                
+                // add func decls
+                for(DLanguageFuncDeclaration d : fd){
+                    ne.add(d.getIdentifier());
+                }
+
+                // add class decls
+                for(DLanguageClassDeclaration d : cd){
+                    ne.add(d.getIdentifier());
+                }
+
+                // add var decl
+                for(DLanguageVarDeclarator d : vd){
+                    ne.add(d.getIdentifier());
+                }
+                
+                 namedElements = ne;
 //            } else if (e.getParent() instanceof DExpNew) {
 //                namedElements = PsiTreeUtil.findChildrenOfType(file, (Class<? extends PsiNamedElement>) DDefinitionClass.class);
 //            } else if (e.getParent() instanceof DDefinitionVariable) {
@@ -74,7 +91,7 @@ public class DUtil {
 //                namedElements = PsiTreeUtil.findChildrenOfType(file, (Class<? extends PsiNamedElement>) DDefinitionFunction.class);
             }
         } else {
-            namedElements = PsiTreeUtil.findChildrenOfType(file, PsiNamedElement.class);
+//            namedElements = PsiTreeUtil.findChildrenOfType(file, PsiNamedElement.class);
         }
 
         // check the list of potential named elements for a match on name
@@ -121,12 +138,12 @@ public class DUtil {
      * Precondition: Element is in a Haskell file.
      */
     public static boolean definitionNode(@NotNull PsiNamedElement e) {
-        if (e instanceof DLanguageFuncDeclaration) return definitionNode((DLanguageFuncDeclaration) e);
+        if (e instanceof DLanguageIdentifier) return definitionNode((DLanguageIdentifier) e);
 //        if (e instanceof DDefinitionClass) return definitionNode((DDefinitionClass) e);
         return false;
     }
 
-    public static boolean definitionNode(@NotNull DLanguageFuncDeclaration e) {
+    public static boolean definitionNode(@NotNull DLanguageIdentifier e) {
         return true;
     }
 

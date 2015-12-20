@@ -8,11 +8,14 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiReference;
 import net.masterthought.dlanguage.DLanguageIcons;
-import net.masterthought.dlanguage.psi.*;
+import net.masterthought.dlanguage.psi.DLanguageClassDeclaration;
+import net.masterthought.dlanguage.psi.DLanguageFile;
+import net.masterthought.dlanguage.psi.DLanguageFuncDeclaration;
+import net.masterthought.dlanguage.psi.DLanguageIdentifier;
 import net.masterthought.dlanguage.psi.references.DReference;
 import net.masterthought.dlanguage.stubs.DLanguageClassDeclarationStub;
 import net.masterthought.dlanguage.stubs.DLanguageFuncDeclarationStub;
-import net.masterthought.dlanguage.stubs.DLanguagePrimaryExpressionStub;
+import net.masterthought.dlanguage.stubs.DLanguageIdentifierStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,40 +27,48 @@ import javax.swing.*;
  */
 public class DPsiImplUtil {
 
-    // ------------- Primary Expression ------------------ //
+    // ------------- Identifier ------------------ //
     @NotNull
-    public static String getName(@NotNull DLanguagePrimaryExpression o) {
-        DLanguagePrimaryExpressionStub stub = o.getStub();
-             if (stub != null) return StringUtil.notNullize(stub.getName());
-
-             if (o.getIdentifier() != null) {
-                 return o.getIdentifier().getText();
-             } else {
-                 return o.getText();
-             }
+    public static String getName(@NotNull DLanguageIdentifier o) {
+        DLanguageIdentifierStub stub = o.getStub();
+        if (stub != null) return StringUtil.notNullize(stub.getName());
+        return o.getText();
     }
 
     @Nullable
-    public static PsiElement getNameIdentifier(@NotNull DLanguagePrimaryExpression o) {
+    public static PsiElement getNameIdentifier(@NotNull DLanguageIdentifier o) {
         ASTNode keyNode = o.getNode();
         return keyNode != null ? keyNode.getPsi() : null;
     }
 
     @Nullable
-    public static PsiElement setName(@NotNull DLanguagePrimaryExpression o, @NotNull String newName) {
-        PsiElement e = DElementFactory.createDLanguagePrimaryExpressionFromText(o.getProject(), newName);
+    public static PsiElement setName(@NotNull DLanguageIdentifier o, @NotNull String newName) {
+        PsiElement e = DElementFactory.createDLanguageIdentifierFromText(o.getProject(), newName);
         if (e == null) return null;
         o.replace(e);
         return o;
     }
 
     @NotNull
-    public static PsiReference getReference(@NotNull DLanguagePrimaryExpression o) {
+    public static PsiReference getReference(@NotNull DLanguageIdentifier o) {
         return new DReference(o, TextRange.from(0, getName(o).length()));
     }
 
+//    private String findParentOfType(PsiElement clazz, Class target){
+//        if(clazz.getParent() instanceof target.getClass()){
+//
+//
+//        }
+//
+//    }
+//
+//    private String getParentDeclarationDescription(DLanguageIdentifier o){
+//
+//
+//    }
+    
     @NotNull
-    public static ItemPresentation getPresentation(final DLanguagePrimaryExpression o) {
+    public static ItemPresentation getPresentation(final DLanguageIdentifier o) {
         return new ItemPresentation() {
             @Nullable
             @Override
@@ -82,8 +93,7 @@ public class DPsiImplUtil {
             }
         };
     }
-    // ------------- Primary Expression ------------------ //
-
+    // ------------- Identifier ------------------ //
 
     // ------------- Function Definition ------------------ //
     @NotNull
@@ -199,6 +209,5 @@ public class DPsiImplUtil {
         };
     }
     // ------------- Class Definition ------------------ //
-
 }
 

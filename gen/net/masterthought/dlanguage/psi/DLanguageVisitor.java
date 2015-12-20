@@ -520,7 +520,7 @@ public class DLanguageVisitor extends PsiElementVisitor {
   }
 
   public void visitIdentifier(@NotNull DLanguageIdentifier o) {
-    visitPsiElement(o);
+    visitDNamedElement(o);
   }
 
   public void visitIdentifierList(@NotNull DLanguageIdentifierList o) {
@@ -788,7 +788,7 @@ public class DLanguageVisitor extends PsiElementVisitor {
   }
 
   public void visitPrimaryExpression(@NotNull DLanguagePrimaryExpression o) {
-    visitDNamedElement(o);
+    visitPsiElement(o);
   }
 
   public void visitProperty(@NotNull DLanguageProperty o) {

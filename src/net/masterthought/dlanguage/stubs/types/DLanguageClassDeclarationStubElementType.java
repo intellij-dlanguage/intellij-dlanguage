@@ -46,4 +46,3 @@ public class DLanguageClassDeclarationStubElementType extends DNamedStubElementT
         return new DLanguageClassDeclarationStub(parentStub, this, dataStream.readName());
     }
 }
-

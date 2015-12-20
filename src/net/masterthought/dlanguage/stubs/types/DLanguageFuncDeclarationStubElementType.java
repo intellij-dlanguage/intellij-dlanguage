@@ -43,4 +43,3 @@ public class DLanguageFuncDeclarationStubElementType extends DNamedStubElementTy
         return new DLanguageFuncDeclarationStub(parentStub, this, dataStream.readName());
     }
 }
-

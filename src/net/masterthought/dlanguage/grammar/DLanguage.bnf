@@ -17,11 +17,11 @@
   psiImplUtilClass="net.masterthought.dlanguage.psi.impl.DPsiImplUtil"
 
   // used to implement DNamedElement in the generated interfaces
-  implements("FuncDeclaration|ClassDeclaration|PrimaryExpression")="net.masterthought.dlanguage.psi.DNamedElement"
+  implements("Identifier|FuncDeclaration|ClassDeclaration")="net.masterthought.dlanguage.psi.DNamedElement"
 
   // used to extend to use stubs
-  extends("FuncDeclaration|ClassDeclaration|PrimaryExpression")="net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase<?>"
-  elementTypeFactory("FuncDeclaration|ClassDeclaration|PrimaryExpression")="net.masterthought.dlanguage.psi.impl.DElementTypeFactory.factory"
+  extends("Identifier|FuncDeclaration|ClassDeclaration")="net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase<?>"
+  elementTypeFactory("Identifier|FuncDeclaration|ClassDeclaration")="net.masterthought.dlanguage.psi.impl.DElementTypeFactory.factory"
 
 
   generateTokenAccessors=true
@@ -219,7 +219,10 @@ dFile ::= item_*
 
 private item_ ::= (ModuleDeclaration | DeclDefs | Statement )
 
-Identifier ::= ID
+Identifier ::= ID {
+                        methods=[getName getNameIdentifier getReference setName getPresentation]
+                        stubClass="net.masterthought.dlanguage.stubs.DLanguageIdentifierStub"
+                      }
 
 StringLiteral  ::= (WYSIWYG_STRING|ALTERNATE_WYSIWYG_STRING|DOUBLE_QUOTED_STRING|HEX_STRING|DELIMITED_STRING)
 
@@ -512,10 +515,7 @@ PrimaryExpression ::=
     | IsExpression
     | '(' Expression ')'
     | TraitsExpression
-    | SpecialKeyword {
-      methods=[getName getNameIdentifier getReference setName getPresentation]
-      stubClass="net.masterthought.dlanguage.stubs.DLanguagePrimaryExpressionStub"
-    }
+    | SpecialKeyword
 
 StringLiterals ::= StringLiteral [StringLiterals]
 
@@ -1739,9 +1739,9 @@ StructMemberInitializer ::=
 FuncDeclaration ::=
     StorageClasses? BasicType FuncDeclarator (FunctionBody |';'| '=')?
     | AutoFuncDeclaration {
-      methods=[getName getNameIdentifier getReference setName getPresentation]
-      stubClass="net.masterthought.dlanguage.stubs.DLanguageFuncDeclarationStub"
-    }
+                          methods=[getName getNameIdentifier getReference setName getPresentation]
+                          stubClass="net.masterthought.dlanguage.stubs.DLanguageFuncDeclarationStub"
+                          }
 
 private AutoFuncDeclaration ::=
     StorageClasses Identifier FuncDeclaratorSuffix FunctionBody?
@@ -1871,12 +1871,12 @@ AggregateDeclaration ::=
     | UnionDeclaration
 
 ClassDeclaration ::=
-    ('class' Identifier ';'
+    'class' Identifier ';'
     | 'class' Identifier BaseClassList? AggregateBody
-    | ClassTemplateDeclaration) {
-      methods=[getName getNameIdentifier getReference setName getPresentation]
-      stubClass="net.masterthought.dlanguage.stubs.DLanguageClassDeclarationStub"
-    }
+    | ClassTemplateDeclaration {
+       methods=[getName getNameIdentifier getReference setName getPresentation]
+       stubClass="net.masterthought.dlanguage.stubs.DLanguageClassDeclarationStub"
+       }
 
 ClassTemplateDeclaration ::=
     'class' Identifier TemplateParameters Constraint? BaseClassList? AggregateBody

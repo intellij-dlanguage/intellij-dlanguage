@@ -8,7 +8,7 @@ D Language File
           PsiElement(DLanguageTokenType.()('(')
           DLanguageForeachTypeListImpl(FOREACH_TYPE_LIST)
             DLanguageForeachTypeImpl(FOREACH_TYPE)
-              DLanguageIdentifierImpl(IDENTIFIER)
+              IDENTIFIER
                 PsiElement(DLanguageTokenType.ID)('e')
           PsiElement(DLanguageTokenType.;)(';')
           DLanguageForeachAggregateImpl(FOREACH_AGGREGATE)
@@ -27,8 +27,8 @@ D Language File
                                     DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                                       DLanguagePowExpressionImpl(POW_EXPRESSION)
                                         DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
-                                          PRIMARY_EXPRESSION
-                                            DLanguageIdentifierImpl(IDENTIFIER)
+                                          DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
+                                            IDENTIFIER
                                               PsiElement(DLanguageTokenType.ID)('range')
           PsiElement(DLanguageTokenType.))(')')
           DLanguageStatementImpl(STATEMENT)
@@ -50,7 +50,7 @@ D Language File
                                           DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                                             DLanguagePowExpressionImpl(POW_EXPRESSION)
                                               DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
-                                                PRIMARY_EXPRESSION
+                                                DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                                                   DLanguageFunctionLiteralImpl(FUNCTION_LITERAL)
                                                     DLanguageFunctionLiteralBodyImpl(FUNCTION_LITERAL_BODY)
                                                       DLanguageBlockStatementImpl(BLOCK_STATEMENT)

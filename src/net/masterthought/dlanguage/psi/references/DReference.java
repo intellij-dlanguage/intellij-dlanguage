@@ -5,6 +5,7 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.util.IncorrectOperationException;
 import net.masterthought.dlanguage.psi.DLanguageFuncDeclaration;
+import net.masterthought.dlanguage.psi.DLanguageIdentifier;
 import net.masterthought.dlanguage.psi.impl.DPsiImplUtil;
 import net.masterthought.dlanguage.utils.DUtil;
 import org.jetbrains.annotations.NotNull;
@@ -116,7 +117,7 @@ public class DReference extends PsiReferenceBase<PsiNamedElement> implements Psi
     public PsiElement handleElementRename(final String newName)  throws IncorrectOperationException {
         PsiElement element;
         if (myElement instanceof DLanguageFuncDeclaration) {
-            element = DPsiImplUtil.setName((DLanguageFuncDeclaration) myElement, newName);
+            element = DPsiImplUtil.setName((DLanguageIdentifier) myElement, newName);
             if (element != null) return element;
             throw new IncorrectOperationException("Cannot rename " + name + " to " + newName);
         }

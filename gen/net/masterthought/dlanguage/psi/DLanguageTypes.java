@@ -137,7 +137,7 @@ public interface DLanguageTypes {
   IElementType FUNC_DECLARATION = DElementTypeFactory.factory("FUNC_DECLARATION");
   IElementType FUNC_DECLARATOR_SUFFIX = new DLanguageElementType("FUNC_DECLARATOR_SUFFIX");
   IElementType GOTO_STATEMENT = new DLanguageElementType("GOTO_STATEMENT");
-  IElementType IDENTIFIER = new DLanguageElementType("IDENTIFIER");
+  IElementType IDENTIFIER = DElementTypeFactory.factory("IDENTIFIER");
   IElementType IDENTIFIER_LIST = new DLanguageElementType("IDENTIFIER_LIST");
   IElementType IDENTITY_EXPRESSION = new DLanguageElementType("IDENTITY_EXPRESSION");
   IElementType IF_CONDITION = new DLanguageElementType("IF_CONDITION");
@@ -204,7 +204,7 @@ public interface DLanguageTypes {
   IElementType POW_EXPRESSION = new DLanguageElementType("POW_EXPRESSION");
   IElementType PRAGMA = new DLanguageElementType("PRAGMA");
   IElementType PRAGMA_STATEMENT = new DLanguageElementType("PRAGMA_STATEMENT");
-  IElementType PRIMARY_EXPRESSION = DElementTypeFactory.factory("PRIMARY_EXPRESSION");
+  IElementType PRIMARY_EXPRESSION = new DLanguageElementType("PRIMARY_EXPRESSION");
   IElementType PROPERTY = new DLanguageElementType("PROPERTY");
   IElementType PROPERTY_IDENTIFIER = new DLanguageElementType("PROPERTY_IDENTIFIER");
   IElementType PROTECTION_ATTRIBUTE = new DLanguageElementType("PROTECTION_ATTRIBUTE");
