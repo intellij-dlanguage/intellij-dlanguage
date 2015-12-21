@@ -6,6 +6,7 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.PsiReference;
 import net.masterthought.dlanguage.DLanguageIcons;
 import net.masterthought.dlanguage.psi.DLanguageClassDeclaration;
@@ -54,26 +55,29 @@ public class DPsiImplUtil {
         return new DReference(o, TextRange.from(0, getName(o).length()));
     }
 
-//    private String findParentOfType(PsiElement clazz, Class target){
-//        if(clazz.getParent() instanceof target.getClass()){
-//
-//
-//        }
-//
-//    }
-//
-//    private String getParentDeclarationDescription(DLanguageIdentifier o){
-//
-//
-//    }
-    
+
+    private static PsiElement findParentOfType(PsiElement element, Class className) {
+        if (className.isInstance(element)) {
+            return element;
+        } else {
+            return findParentOfType(element.getParent(), className);
+        }
+
+    }
+
+    private static String getParentDeclarationDescription(DLanguageIdentifier o) {
+        PsiNamedElement found = null;
+        found = (PsiNamedElement) findParentOfType(o, DLanguageFuncDeclaration.class);
+        return found != null ? found.getName() : "";
+    }
+
     @NotNull
     public static ItemPresentation getPresentation(final DLanguageIdentifier o) {
         return new ItemPresentation() {
             @Nullable
             @Override
             public String getPresentableText() {
-                return o.getName();
+                return o.getName() + " (" + getParentDeclarationDescription(o) + ")";
             }
 
             /**
@@ -156,7 +160,7 @@ public class DPsiImplUtil {
         DLanguageClassDeclarationStub stub = o.getStub();
         if (stub != null) return StringUtil.notNullize(stub.getName());
 
-        if(o.getIdentifier() != null){
+        if (o.getIdentifier() != null) {
             return o.getIdentifier().getText();
         } else {
             return "not found";
