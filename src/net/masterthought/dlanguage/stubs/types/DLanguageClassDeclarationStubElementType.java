@@ -5,11 +5,8 @@ import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubInputStream;
 import com.intellij.psi.stubs.StubOutputStream;
 import net.masterthought.dlanguage.psi.DLanguageClassDeclaration;
-import net.masterthought.dlanguage.psi.DLanguageFuncDeclaration;
 import net.masterthought.dlanguage.psi.impl.DLanguageClassDeclarationImpl;
-import net.masterthought.dlanguage.psi.impl.DLanguageFuncDeclarationImpl;
 import net.masterthought.dlanguage.stubs.DLanguageClassDeclarationStub;
-import net.masterthought.dlanguage.stubs.DLanguageFuncDeclarationStub;
 import net.masterthought.dlanguage.utils.DUtil;
 import org.jetbrains.annotations.NotNull;
 

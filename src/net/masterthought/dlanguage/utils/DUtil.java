@@ -15,6 +15,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
+import static net.masterthought.dlanguage.psi.impl.DPsiImplUtil.findParentOfType;
+
 /**
  * General util class. Provides methods for finding named nodes in the Psi tree.
  */
@@ -51,6 +53,21 @@ public class DUtil {
         return result;
     }
 
+    public static Map<Boolean, PsiElement> findElementInParent(PsiElement identifier, Class className) {
+        PsiElement result = findParentOfType(identifier, className);
+        Map<Boolean, PsiElement> map = new HashMap<>();
+        map.put(result != null, result);
+        return map;
+    }
+
+    public static Boolean elementHasParentFor(Map<Boolean, PsiElement> result) {
+        return result.containsKey(true);
+    }
+
+    public static PsiElement getElementFor(Map<Boolean, PsiElement> result) {
+        return (PsiElement) result.values().toArray()[0];
+    }
+
     /**
      * Finds a name definition inside a D file. All definitions are found when name
      * is null.
@@ -62,35 +79,67 @@ public class DUtil {
 
         if (e instanceof DLanguageIdentifier) {
             if (e.getParent() instanceof DLanguagePrimaryExpression) {
-                Collection<DLanguageFuncDeclaration> fd = PsiTreeUtil.findChildrenOfType(file,DLanguageFuncDeclaration.class);
-                Collection<DLanguageClassDeclaration> cd = PsiTreeUtil.findChildrenOfType(file,DLanguageClassDeclaration.class);
-                Collection<DLanguageVarDeclarator> vd = PsiTreeUtil.findChildrenOfType(file,DLanguageVarDeclarator.class);
+
+
+                Collection<DLanguageFuncDeclaration> fd = PsiTreeUtil.findChildrenOfType(file, DLanguageFuncDeclaration.class);
+                Collection<DLanguageClassDeclaration> cd = PsiTreeUtil.findChildrenOfType(file, DLanguageClassDeclaration.class);
+                Collection<DLanguageVarDeclarator> vd = PsiTreeUtil.findChildrenOfType(file, DLanguageVarDeclarator.class);
+                Collection<DLanguageAutoDeclarationY> ady = PsiTreeUtil.findChildrenOfType(file, DLanguageAutoDeclarationY.class);
+
                 List<PsiNamedElement> ne = new ArrayList<>();
-                
+
                 // add func decls
-                for(DLanguageFuncDeclaration d : fd){
+                for (DLanguageFuncDeclaration d : fd) {
                     ne.add(d.getIdentifier());
                 }
 
                 // add class decls
-                for(DLanguageClassDeclaration d : cd){
+                for (DLanguageClassDeclaration d : cd) {
                     ne.add(d.getIdentifier());
                 }
 
                 // add var decl
-                for(DLanguageVarDeclarator d : vd){
+                for (DLanguageVarDeclarator d : vd) {
                     ne.add(d.getIdentifier());
                 }
-                
-                 namedElements = ne;
-//            } else if (e.getParent() instanceof DExpNew) {
-//                namedElements = PsiTreeUtil.findChildrenOfType(file, (Class<? extends PsiNamedElement>) DDefinitionClass.class);
-//            } else if (e.getParent() instanceof DDefinitionVariable) {
-//                namedElements = PsiTreeUtil.findChildrenOfType(file, (Class<? extends PsiNamedElement>) DDefinitionClass.class);
-//            } else if (e.getParent() instanceof DRefQualified){
-//                namedElements = PsiTreeUtil.findChildrenOfType(file, (Class<? extends PsiNamedElement>) DDefinitionFunction.class);
+
+                // add auto decl y
+                for (DLanguageAutoDeclarationY d : ady) {
+                    ne.add(d.getIdentifier());
+                }
+
+
+                namedElements = ne;
+
+            } else if (e.getParent() instanceof DLanguageIdentifierList) {
+                List<PsiNamedElement> ne = new ArrayList<>();
+
+                // add func decls
+                Collection<DLanguageFuncDeclaration> fd = PsiTreeUtil.findChildrenOfType(file, DLanguageFuncDeclaration.class);
+                for (DLanguageFuncDeclaration d : fd) {
+                    ne.add(d.getIdentifier());
+                }
+
+                // add var declarator
+                Collection<DLanguageVarDeclarator> vd = PsiTreeUtil.findChildrenOfType(file, DLanguageVarDeclarator.class);
+                for (DLanguageVarDeclarator d : vd) {
+                    ne.add(d.getIdentifier());
+                }
+
+                // add class decl
+                Collection<DLanguageClassDeclaration> cd = PsiTreeUtil.findChildrenOfType(file, DLanguageClassDeclaration.class);
+                for (DLanguageClassDeclaration d : cd) {
+                    ne.add(d.getIdentifier());
+                }
+
+                // add auto decl y
+                Collection<DLanguageAutoDeclarationY> ady = PsiTreeUtil.findChildrenOfType(file, DLanguageAutoDeclarationY.class);
+                for (DLanguageAutoDeclarationY d : ady) {
+                    ne.add(d.getIdentifier());
+                }
+                namedElements = ne;
             }
-        } else {
+//        } else {
 //            namedElements = PsiTreeUtil.findChildrenOfType(file, PsiNamedElement.class);
         }
 

@@ -56,19 +56,30 @@ public class DPsiImplUtil {
     }
 
 
-    private static PsiElement findParentOfType(PsiElement element, Class className) {
+    public static PsiElement findParentOfType(PsiElement element, Class className) {
         if (className.isInstance(element)) {
             return element;
         } else {
-            return findParentOfType(element.getParent(), className);
+            try {
+                return findParentOfType(element.getParent(), className);
+            } catch(Exception e){
+                return null;
+            }
         }
 
     }
 
     private static String getParentDeclarationDescription(DLanguageIdentifier o) {
-        PsiNamedElement found = null;
-        found = (PsiNamedElement) findParentOfType(o, DLanguageFuncDeclaration.class);
-        return found != null ? found.getName() : "";
+        PsiNamedElement funcDecl = (PsiNamedElement) findParentOfType(o, DLanguageFuncDeclaration.class);
+        PsiNamedElement classDecl = (PsiNamedElement) findParentOfType(o, DLanguageClassDeclaration.class);
+        String description = "";
+        if(funcDecl != null){
+            description = " [Function] (" + funcDecl.getName() + ")";
+        }
+        if(classDecl != null){
+            description = " [Class] (" + classDecl.getName() + ")";
+        }
+        return description;
     }
 
     @NotNull
@@ -77,7 +88,7 @@ public class DPsiImplUtil {
             @Nullable
             @Override
             public String getPresentableText() {
-                return o.getName() + " (" + getParentDeclarationDescription(o) + ")";
+                return o.getName() + getParentDeclarationDescription(o);
             }
 
             /**
@@ -99,6 +110,8 @@ public class DPsiImplUtil {
     }
     // ------------- Identifier ------------------ //
 
+    // For CodeFolding and not used in references directly much
+    
     // ------------- Function Definition ------------------ //
     @NotNull
     public static String getName(@NotNull DLanguageFuncDeclaration o) {

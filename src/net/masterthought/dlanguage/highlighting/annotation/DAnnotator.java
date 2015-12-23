@@ -69,6 +69,17 @@ public class DAnnotator implements Annotator {
                     setHighlighting(o, holder, DHighlighter.BASIC_TYPE);
             }
 
+            @Override
+            public void visitNewExpressionWithArgs(@NotNull DLanguageNewExpressionWithArgs o) {
+                super.visitNewExpressionWithArgs(o);
+                try {
+                    DLanguageIdentifier identifier = o.getType().getBasicType().getIdentifierList().getIdentifier();
+                    setHighlighting(identifier, holder, DHighlighter.AGGREGATE_DEFINITION);
+                } catch(Exception e){
+                   // do nothing 
+                }
+            }
+
         });
     }
 
