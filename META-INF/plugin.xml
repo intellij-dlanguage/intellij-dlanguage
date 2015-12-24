@@ -75,7 +75,7 @@
         <!-- Persistent data + build server communication for compiler settings -->
         <projectService serviceImplementation="net.masterthought.dlanguage.settings.DLanguageBuildSettings"/>
         <!-- Tab in IntelliJ -> Preferences -->
-        <!--<projectConfigurable instance="net.masterthought.dlanguage.settings.DLanguageToolsConfigurable"/>-->
+        <projectConfigurable instance="net.masterthought.dlanguage.settings.DLanguageToolsConfigurable"/>
         <!-- File -> Project Structure dialogue. -->
         <!--<moduleConfigurationEditorProvider implementation="net.masterthought.dlanguage.settings.DLanguageModuleConfigurationEditor" order="first"/>-->
         <!-- Tab in IntelliJ -> Preferences -->
@@ -89,7 +89,7 @@
         <lang.braceMatcher language="D" implementationClass="net.masterthought.dlanguage.features.DBraceMatcher"/>
         <lang.commenter language="D" implementationClass="net.masterthought.dlanguage.features.DCommenter"/>
         <lang.foldingBuilder language="D" implementationClass="net.masterthought.dlanguage.features.DFoldingBuilder"/>
-        <!--<completion.contributor language="D" implementationClass="net.masterthought.dlanguage.codeinsight.DCompletionContributor"/>-->
+        <completion.contributor language="D" implementationClass="net.masterthought.dlanguage.codeinsight.DCompletionContributor"/>
 
 
     </extensions>
@@ -104,6 +104,13 @@
             <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFile"/>
         </action>
     </actions>
+
+    <module-components>
+        <component>
+            <implementation-class>net.masterthought.dlanguage.codeinsight.dcd.DCDCompletionServer</implementation-class>
+            <interface-class>net.masterthought.dlanguage.codeinsight.dcd.DCDCompletionServer</interface-class>
+        </component>
+    </module-components>
 
     <project-components>
         <!-- Add your project components here -->
