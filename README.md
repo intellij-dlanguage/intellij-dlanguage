@@ -37,6 +37,8 @@ Please see the development status on
 
 #### Latest Updates
 
+* 24th December 2015 - Added Syntax highlighting, DCD autocompletion, dub compile checking and Dscanner annotation
+* 23rd December 2015 - Released an early test version to the intellij plugin repository
 * 9th December 2015 - I have finished the first pass of the BNF grammar complete with extensive tests - the next step is to move onto basic syntax highlighting
 * 21st October 2015 - Work has begun to re-organize and track the upcoming work as well an initial work on the BNF grammar - I have switched master to previous_master and current master is a currently not working bnf shell project
 * 7th October 2015 - I have finally figured out several aspects of the BNF grammar and feel like I know enough now to begin a complete re-write of the parser using the grammarkit plugin for intellij. This will overcome the terrible performance issues caused by the integration of the DDT parser and will enable a longer term view of complete language support and lots of cool features that are just not possible to add in any other way.

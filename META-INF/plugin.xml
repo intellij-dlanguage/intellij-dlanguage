@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>net.masterthought.dlanguage</id>
     <name>D Language</name>
-    <version>1.0</version>
+    <version>1.1</version>
     <vendor email="kingsley.hendrickse@gmail.com" url="http://www.masterthought.net">MasterThought</vendor>
 
     <description><![CDATA[
@@ -9,7 +9,7 @@
     ]]></description>
 
     <change-notes><![CDATA[
-      First Attempt
+      DCD support, DScanner and dub compile checking added
     ]]>
     </change-notes>
 
