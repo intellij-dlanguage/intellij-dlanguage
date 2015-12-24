@@ -81,6 +81,31 @@ Here are some screenshots of my progress so far:
 
 ## Recent Screenshots
 
+Dtools configuration
+
+![improved highlighting]
+(https://github.com/kingsleyh/DLanguage/raw/master/.README/tool_settings.png)
+
+Autocompletion using DCD
+
+![improved highlighting]
+(https://github.com/kingsleyh/DLanguage/raw/master/.README/autocomplete.png)
+
+Compile checking
+
+![improved highlighting]
+(https://github.com/kingsleyh/DLanguage/raw/master/.README/compile_checking.png)
+
+Dscanner Code Linting
+
+![improved highlighting]
+(https://github.com/kingsleyh/DLanguage/raw/master/.README/dscanner_linting.png)
+
+Goto Class
+
+![improved highlighting]
+(https://github.com/kingsleyh/DLanguage/raw/master/.README/goto_class.png)
+
 Improved Syntax Highlighting with Annotator:
 
 ![improved highlighting]
