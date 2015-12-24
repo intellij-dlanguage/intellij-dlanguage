@@ -29,9 +29,11 @@
                                implementationClass="net.masterthought.dlanguage.DLanguageParserDefinition"/>
         <lang.syntaxHighlighterFactory key="D"
                                        implementationClass="net.masterthought.dlanguage.highlighting.DHighlighterFactory"/>
-        <annotator language="D" implementationClass="net.masterthought.dlanguage.highlighting.annotation.DAnnotator"/>
         <colorSettingsPage implementation="net.masterthought.dlanguage.settings.DColorSettingsPage"/>
+        <annotator language="D" implementationClass="net.masterthought.dlanguage.highlighting.annotation.DAnnotator"/>
+        <externalAnnotator language="D" implementationClass="net.masterthought.dlanguage.highlighting.annotation.external.DExternalAnnotator"/>
 
+        
         <!-- D Language support -->
         <sdkType implementation="net.masterthought.dlanguage.DLanguageSdkType"/>
         <runConfigurationProducer
@@ -43,11 +45,6 @@
         <configurationType implementation="net.masterthought.dlanguage.run.DLanguageRunDubConfigurationType"/>
         <configurationType implementation="net.masterthought.dlanguage.run.DLanguageRunDmdConfigurationType"/>
         <configurationType implementation="net.masterthought.dlanguage.run.DLanguageRunAppConfigurationType"/>
-        <projectService serviceInterface="net.masterthought.dlanguage.config.DLanguageGeneralSettings"
-                        serviceImplementation="net.masterthought.dlanguage.config.DLanguageGeneralSettings"/>
-        <projectConfigurable instance="net.masterthought.dlanguage.config.DLanguageSettingsPanel"
-                             id="DLangSettingsPanel"
-                             displayName="D language" order="last"/>
         <moduleBuilder id="DLangModuleBuilder"
                        builderClass="net.masterthought.dlanguage.module.DLanguageModuleBuilder"/>
         <moduleBuilder id="DLangDubModuleBuilder"

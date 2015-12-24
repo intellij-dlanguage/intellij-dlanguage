@@ -6,7 +6,6 @@ import com.intellij.execution.Executor;
 import com.intellij.execution.configurations.CommandLineState;
 import com.intellij.execution.configurations.CommandLineTokenizer;
 import com.intellij.execution.configurations.GeneralCommandLine;
-import com.intellij.execution.configurations.RunProfileState;
 import com.intellij.execution.filters.TextConsoleBuilder;
 import com.intellij.execution.filters.TextConsoleBuilderImpl;
 import com.intellij.execution.process.OSProcessHandler;
@@ -20,9 +19,9 @@ import com.intellij.openapi.module.Module;
 import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
-import net.masterthought.dlanguage.config.DLanguageGeneralSettings;
 import net.masterthought.dlanguage.run.exception.ModuleNotFoundException;
 import net.masterthought.dlanguage.run.exception.NoDubExecutableException;
+import net.masterthought.dlanguage.settings.ToolKey;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
@@ -86,14 +85,15 @@ public class DLanguageRunDubState extends CommandLineState {
             throw new ModuleNotFoundException();
         }
 
-        DLanguageGeneralSettings generalSettings = DLanguageGeneralSettings.getInstance(config.getProject());
-        if( StringUtil.isEmptyOrSpaces(generalSettings.getDubExecutablePath())) {
+//        DLanguageGeneralSettings generalSettings = DLanguageGeneralSettings.getInstance(config.getProject());
+        String dubPath = ToolKey.DUB_KEY.getPath(config.getProject());
+        if( StringUtil.isEmptyOrSpaces(dubPath)) {
             throw new NoDubExecutableException();
         }
 
         VirtualFile sourcesRoot = getSourceRoot(module);
         GeneralCommandLine commandLine = new GeneralCommandLine();
-        commandLine.setExePath(generalSettings.getDubExecutablePath());
+        commandLine.setExePath(dubPath);
 
         if( !StringUtil.isEmptyOrSpaces( config.getWorkingDir()) ) {
             commandLine.withWorkDirectory(config.getWorkingDir());
