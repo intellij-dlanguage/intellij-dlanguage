@@ -22,7 +22,7 @@ import static net.masterthought.dlanguage.utils.DUtil.elementHasParentFor;
 import static net.masterthought.dlanguage.utils.DUtil.findElementInParent;
 
 /**
- * The "go to symbol"
+ * The "go to class"
  */
 public class DClassContributor implements ChooseByNameContributor {
     @NotNull
