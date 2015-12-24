@@ -62,7 +62,8 @@
         <!-- Indexes -->
         <fileBasedIndex implementation="net.masterthought.dlanguage.index.DModuleIndex"/>
         <stubIndex implementation="net.masterthought.dlanguage.stubs.index.DAllNameIndex"/>
-
+        <gotoSymbolContributor implementation="net.masterthought.dlanguage.features.DChooseByNameContributor"/>
+        <gotoClassContributor implementation="net.masterthought.dlanguage.features.DClassContributor" />
         <!-- Project settings -->
 
         <!-- Tab under compiler in IntelliJ -> Preferences -->
