@@ -37,6 +37,7 @@ Please see the development status on
 
 #### Latest Updates
 
+* 25th December 2015 - Added code formatting with DFmt
 * 24th December 2015 - Added Syntax highlighting, DCD autocompletion, dub compile checking and Dscanner annotation
 * 23rd December 2015 - Released an early test version to the intellij plugin repository
 * 9th December 2015 - I have finished the first pass of the BNF grammar complete with extensive tests - the next step is to move onto basic syntax highlighting
