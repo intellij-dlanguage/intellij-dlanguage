@@ -44,7 +44,11 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
     private RawCommandLineEditor dcdClientFlags;
     private JButton dcdClientAutoFind;
     private JTextField dcdClientVersion;
-
+    private TextFieldWithBrowseButton dFormatPath;
+    private RawCommandLineEditor dFormatFlags;
+    private JButton dFormatAutoFind;
+    private JTextField dFormatVersion;
+    
     private List<Tool> properties;
 
     public DLanguageToolsConfigurable(@NotNull Project project) {
@@ -57,7 +61,9 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
                 new Tool(project, "dcd-server", ToolKey.DCD_SERVER_KEY, dcdPath, dcdFlags,
                         dcdAutoFind, dcdVersion, "--version",SettingsChangeNotifier.DCD_TOPIC),
                 new Tool(project, "dcd-client", ToolKey.DCD_CLIENT_KEY, dcdClientPath, dcdClientFlags,
-                        dcdClientAutoFind, dcdClientVersion)
+                        dcdClientAutoFind, dcdClientVersion),
+                new Tool(project, "dfmt", ToolKey.DFORMAT_KEY, dFormatPath, dFormatFlags,
+                        dFormatAutoFind, dFormatVersion)
         );
     }
 

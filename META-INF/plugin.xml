@@ -31,13 +31,14 @@
                                        implementationClass="net.masterthought.dlanguage.highlighting.DHighlighterFactory"/>
         <colorSettingsPage implementation="net.masterthought.dlanguage.settings.DColorSettingsPage"/>
         <annotator language="D" implementationClass="net.masterthought.dlanguage.highlighting.annotation.DAnnotator"/>
-        <externalAnnotator language="D" implementationClass="net.masterthought.dlanguage.highlighting.annotation.external.DExternalAnnotator"/>
+        <externalAnnotator language="D"
+                           implementationClass="net.masterthought.dlanguage.highlighting.annotation.external.DExternalAnnotator"/>
 
-        
+
         <!-- D Language support -->
         <sdkType implementation="net.masterthought.dlanguage.DLanguageSdkType"/>
         <runConfigurationProducer
-        implementation="net.masterthought.dlanguage.run.DLanguageRunDubConfigurationProducer"/>
+                implementation="net.masterthought.dlanguage.run.DLanguageRunDubConfigurationProducer"/>
 
         <!-- module -->
         <internalFileTemplate name="D Language Module"/>
@@ -63,7 +64,7 @@
         <fileBasedIndex implementation="net.masterthought.dlanguage.index.DModuleIndex"/>
         <stubIndex implementation="net.masterthought.dlanguage.stubs.index.DAllNameIndex"/>
         <gotoSymbolContributor implementation="net.masterthought.dlanguage.features.DChooseByNameContributor"/>
-        <gotoClassContributor implementation="net.masterthought.dlanguage.features.DClassContributor" />
+        <gotoClassContributor implementation="net.masterthought.dlanguage.features.DClassContributor"/>
         <!-- Project settings -->
 
         <!-- Tab under compiler in IntelliJ -> Preferences -->
@@ -87,7 +88,8 @@
         <lang.braceMatcher language="D" implementationClass="net.masterthought.dlanguage.features.DBraceMatcher"/>
         <lang.commenter language="D" implementationClass="net.masterthought.dlanguage.features.DCommenter"/>
         <lang.foldingBuilder language="D" implementationClass="net.masterthought.dlanguage.features.DFoldingBuilder"/>
-        <completion.contributor language="D" implementationClass="net.masterthought.dlanguage.codeinsight.DCompletionContributor"/>
+        <completion.contributor language="D"
+                                implementationClass="net.masterthought.dlanguage.codeinsight.DCompletionContributor"/>
 
 
     </extensions>
@@ -100,6 +102,13 @@
         <action id="DLanguage.NewDLanguageFile" class="net.masterthought.dlanguage.actions.CreateDLanguageFileAction"
                 text="D File" description="Create new D file">
             <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFile"/>
+        </action>
+        <action id="DLanguage.DFormat"
+                class="net.masterthought.dlanguage.actions.DFormatAction"
+                text="Reformat code with DFormat"
+                description="Format current file with DFormat formatter">
+            <add-to-group group-id="CodeFormatGroup" anchor="last"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt K"/>
         </action>
     </actions>
 
@@ -114,8 +123,5 @@
         <!-- Add your project components here -->
     </project-components>
 
-    <actions>
-        <!-- Add your actions here -->
-    </actions>
 
 </idea-plugin>

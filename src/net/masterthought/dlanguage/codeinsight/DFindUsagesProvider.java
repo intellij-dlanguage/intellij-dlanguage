@@ -8,6 +8,7 @@ import com.intellij.psi.ElementDescriptionUtil;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.tree.TokenSet;
+import com.intellij.usageView.UsageViewLongNameLocation;
 import com.intellij.usageView.UsageViewNodeTextLocation;
 import net.masterthought.dlanguage.DLanguageLexerAdapter;
 import net.masterthought.dlanguage.psi.*;
@@ -62,8 +63,8 @@ public class DFindUsagesProvider implements FindUsagesProvider {
     @NotNull
     @Override
     public String getDescriptiveName(@NotNull PsiElement element) {
-//        return ElementDescriptionUtil.getElementDescription(element, UsageViewLongNameLocation.INSTANCE);
-        return "Totally rocks!";
+        return ElementDescriptionUtil.getElementDescription(element, UsageViewLongNameLocation.INSTANCE);
+//        return "Totally rocks!";
     }
 
     @NotNull

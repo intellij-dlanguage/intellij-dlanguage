@@ -31,7 +31,7 @@ public class DCDCompletionClient {
             if (path != null) {
                 DCDCompletionServer dcdCompletionServer = module.getComponent(DCDCompletionServer.class);
                 dcdCompletionServer.exec();
-                System.out.println("position: " + String.valueOf(position));
+//                System.out.println("position: " + String.valueOf(position));
                 final String workingDirectory = file.getProject().getBasePath();
 
                 final GeneralCommandLine commandLine = new GeneralCommandLine();
