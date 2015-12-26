@@ -66,7 +66,7 @@ public class DFormatAction extends AnAction implements DumbAware {
                 Notifications.Bus.notify(
                         new Notification(groupId, NOTIFICATION_TITLE,
                                 "DFormat executable path is empty"+
-                                        "<br/><a href='configureDTools'>Configure</a>",
+                                        "<br/><a href='configureDLanguageTools'>Configure</a>",
                                 NotificationType.WARNING, new DToolsNotificationListener(project)), project);
                 return;
             }

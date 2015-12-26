@@ -16,12 +16,14 @@ import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
 import com.intellij.openapi.module.Module;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import net.masterthought.dlanguage.run.exception.ModuleNotFoundException;
 import net.masterthought.dlanguage.run.exception.NoDubExecutableException;
 import net.masterthought.dlanguage.settings.ToolKey;
+import net.masterthought.dlanguage.utils.DToolsNotificationListener;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
@@ -54,22 +56,18 @@ public class DLanguageRunDubState extends CommandLineState {
             GeneralCommandLine dubCommandLine = getExecutableCommandLine(config);
             return new OSProcessHandler(dubCommandLine.createProcess(), dubCommandLine.getCommandLineString());
         }
-        catch (ModuleNotFoundException e) {
-            throw new ExecutionException("Run configuration has no module selected.");
-        }
-        catch (NoDubExecutableException e) {
-            throw new ExecutionException("DUB executable is not specified.<a href='configure'>Configure</a> DUB settings");
-        }
         catch (ExecutionException e) {
             String message = e.getMessage();
-            boolean isEmpty = message.equals("Executable is not specified");
+            final Project project = config.getProject();
+
+            boolean isEmpty = message.equals("DUB executable is not specified");
             boolean notCorrect = message.startsWith("Cannot run program");
             if (isEmpty || notCorrect) {
                 Notifications.Bus.notify(
                         new Notification("DUB run configuration", "DUB settings",
-                                "DUB executable path is " + (isEmpty ? "empty" : "not specified correctly") +
-                                        "<br/><a href='configure'>Configure</a> output folder",
-                                NotificationType.ERROR), config.getProject());
+                                "DUB executable is " + (isEmpty ? "not specified" : "not specified correctly") +
+                                        "<br/><a href='configureDLanguageTools'>Configure</a> executable",
+                                NotificationType.ERROR, new DToolsNotificationListener(project)), project);
             }
             throw e;
         }
@@ -78,17 +76,16 @@ public class DLanguageRunDubState extends CommandLineState {
     /* Build command line to start DUB executable
      */
     private GeneralCommandLine getExecutableCommandLine(DLanguageRunDubConfiguration config)
-            throws ModuleNotFoundException, NoDubExecutableException
+            throws ExecutionException
     {
         Module module = config.getConfigurationModule().getModule();
         if(module == null) {
-            throw new ModuleNotFoundException();
+            throw new ExecutionException("Run configuration has no module selected.");
         }
 
-//        DLanguageGeneralSettings generalSettings = DLanguageGeneralSettings.getInstance(config.getProject());
         String dubPath = ToolKey.DUB_KEY.getPath(config.getProject());
         if( StringUtil.isEmptyOrSpaces(dubPath)) {
-            throw new NoDubExecutableException();
+            throw new ExecutionException("DUB executable is not specified");
         }
 
         VirtualFile sourcesRoot = getSourceRoot(module);

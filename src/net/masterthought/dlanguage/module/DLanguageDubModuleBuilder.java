@@ -1,20 +1,32 @@
 package net.masterthought.dlanguage.module;
 
+import com.intellij.execution.ExecutionException;
 import com.intellij.execution.RunnerAndConfigurationSettings;
-import com.intellij.execution.configurations.ConfigurationFactory;
-import com.intellij.execution.configurations.ConfigurationType;
-import com.intellij.execution.configurations.ModuleBasedConfiguration;
+import com.intellij.execution.configurations.*;
 import com.intellij.execution.impl.RunManagerImpl;
+import com.intellij.execution.process.OSProcessHandler;
+import com.intellij.execution.process.ProcessAdapter;
+import com.intellij.execution.process.ProcessEvent;
 import com.intellij.openapi.extensions.Extensions;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ModifiableRootModel;
+import com.intellij.openapi.util.Key;
+import com.intellij.openapi.util.Pair;
 import net.masterthought.dlanguage.DLanguageBundle;
 import net.masterthought.dlanguage.run.DLanguageRunDubConfigurationType;
+import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DLanguageDubModuleBuilder extends DLanguageModuleBuilder {
 
     public static final String RUN_DUB_CONFIG_NAME = "Run DUB";
+
+    private List<Pair<String, String>> sourcePaths;
 
     public DLanguageDubModuleBuilder() {
         super("DLangDubApp", DLanguageBundle.message("module.dub.title"), DLanguageBundle.message("module.dub.description"), null);
@@ -29,7 +41,7 @@ public class DLanguageDubModuleBuilder extends DLanguageModuleBuilder {
 
         //Create "Run dub" configuration
         RunnerAndConfigurationSettings runDubSettings = runManager.findConfigurationByName(RUN_DUB_CONFIG_NAME);
-        if(runDubSettings == null) {
+        if (runDubSettings == null) {
             final DLanguageRunDubConfigurationType configurationType
                     = Extensions.findExtension(ConfigurationType.CONFIGURATION_TYPE_EP, DLanguageRunDubConfigurationType.class);
             final ConfigurationFactory factory = configurationType.getConfigurationFactories()[0];
@@ -37,6 +49,49 @@ public class DLanguageDubModuleBuilder extends DLanguageModuleBuilder {
             ((ModuleBasedConfiguration) runDubSettings.getConfiguration()).setModule(rootModel.getModule());
 
             runManager.addConfiguration(runDubSettings, false);
+        }
+    }
+
+    /* By default sources are located in {WORKING_DIR}/source folder. */
+    @NotNull
+    @Override
+    public List<Pair<String, String>> getSourcePaths() {
+        if (sourcePaths == null) {
+            final List<Pair<String, String>> paths = new ArrayList<Pair<String, String>>();
+            @NonNls final String path = getContentEntryPath() + File.separator + "source";
+            try {
+              createDub(getContentEntryPath());
+            } catch (Exception e) {
+                new File(path).mkdirs();
+            }
+            paths.add(Pair.create(path, ""));
+            sourcePaths = paths;
+        }
+        return sourcePaths;
+    }
+
+    private void createDub(String workingDirectory) {
+        GeneralCommandLine commandLine = new GeneralCommandLine();
+        commandLine.setWorkDirectory(workingDirectory);
+        commandLine.setExePath("dub");
+        ParametersList parametersList = commandLine.getParametersList();
+        parametersList.addParametersString("init");
+        try {
+            OSProcessHandler process = new OSProcessHandler(commandLine.createProcess());
+
+            final StringBuilder builder = new StringBuilder();
+            process.addProcessListener(new ProcessAdapter() {
+                @Override
+                public void onTextAvailable(ProcessEvent event, Key outputType) {
+                    builder.append(event.getText());
+                }
+            });
+
+            process.startNotify();
+            process.waitFor();
+
+        } catch (ExecutionException e) {
+            e.printStackTrace();
         }
     }
 }
