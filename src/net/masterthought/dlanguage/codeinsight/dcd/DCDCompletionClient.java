@@ -2,7 +2,6 @@ package net.masterthought.dlanguage.codeinsight.dcd;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.configurations.ParametersList;
 import com.intellij.openapi.module.Module;
@@ -14,7 +13,10 @@ import net.masterthought.dlanguage.settings.ToolKey;
 import net.masterthought.dlanguage.utils.ExecUtil;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +24,13 @@ import java.util.Map;
 public class DCDCompletionClient {
 
     private Map<String, String> completionTypeMap = getCompletionTypeMap();
+
+    private
+    @Nullable
+    Process process;
+    private
+    @Nullable
+    BufferedWriter output;
 
     public List<Completion> autoComplete(int position, PsiFile file) throws DCDCompletionServer.DCDError {
         final List<Completion> completions = Lists.newArrayList();
@@ -41,7 +50,9 @@ public class DCDCompletionClient {
                 parametersList.addParametersString("-c");
                 parametersList.addParametersString(String.valueOf(position));
                 try {
-                    commandLine.createProcess().getOutputStream().write(file.getText().getBytes());
+                    process = commandLine.createProcess();
+                    output = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
+                    output.write(file.getText());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -67,6 +78,7 @@ public class DCDCompletionClient {
                         System.out.println(tokens);
                     }
                 }
+                kill();
             }
         }
         return completions;
@@ -118,6 +130,18 @@ public class DCDCompletionClient {
         map.put("T", "Mixin");
         map.put("U", "Unknown");
         return map;
+    }
+
+    /**
+     * Kills the existing process and closes input and output if they exist.
+     */
+    private synchronized void kill() {
+        if (process != null) process.destroy();
+        process = null;
+        try {
+            if (output != null) output.close();
+        } catch (IOException e) { /* Ignored */ }
+        output = null;
     }
 
 }

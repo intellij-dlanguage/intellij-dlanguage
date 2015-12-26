@@ -2,6 +2,7 @@ package net.masterthought.dlanguage.codeinsight.dcd;
 
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
+import com.intellij.execution.configurations.ParametersList;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleComponent;
@@ -15,6 +16,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -65,6 +68,15 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
         GeneralCommandLine commandLine = new GeneralCommandLine(path);
         commandLine.setWorkDirectory(workingDirectory);
         commandLine.setRedirectErrorStream(true);
+        ParametersList parametersList = commandLine.getParametersList();
+        
+        
+        List<String> importList = Arrays.asList(flags.split(","));
+        for(String item : importList){
+//            parametersList.addParametersString("-I");
+            parametersList.addParametersString("-I"+item);
+        }
+
         try {
             process = commandLine.createProcess();
         } catch (ExecutionException e) {

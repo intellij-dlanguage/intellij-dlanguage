@@ -30,6 +30,40 @@ change the JVMVersion key to 1.7*:
 JVMVersion=1.7*
 ```
 
+## Quick Usage
+
+#### New Project with DUB
+
+  * When you select this to create a new project with dub - if dub is on your path it will attempt to use dub init to create a new dub project for you. If dub is not on your path it will create a source directory and you will have to create your sdl/json dub file manually or rename/delete the source folder and then use dub init to recreate it
+  * Or you can open an existing dub project by doing File -> Open 
+  * Once a dub project is loaded there is right click menu option to run with dub, or you can use the run config - run with Dub
+  * Before running go and configure the DTools in Preferences -> Other Settings -> D Tools
+  
+#### Configure DTools
+
+The best option is to do and get the following tools and build them according to their github page instructions:
+
+  * [dub](http://code.dlang.org/download)
+  * [DCD](https://github.com/Hackerpilot/DCD)
+  * [DScanner](https://github.com/Hackerpilot/Dscanner)
+  * [Dfmt](https://github.com/Hackerpilot/dfmt)
+
+If you put these tools on your path you can go to Preferences -> Other Settings -> D Tools and just click autofind on each of the tools and it will find them. Otherwise you will need to select the correct path to the tool for each one.
+
+#### Configuring DCD
+
+To configure DCD in the dcd-server add a comma separated list of paths that point to your libraries that you want to include in autocompletion.
+
+For example:
+
+        /Library/D/dmd/src/phobos,/Library/D/dmd/src/druntime/import,/Users/hendriki/.dub/packages/rainbow-master/src
+        
+This will add the phobos and druntime/import as well as my rainbow dub project. You can add other dub packages by adding the path to them. I should be able to autoconfigure this stuff in a future release.
+        
+#### DFormat
+
+To reformat D code use the shortcut or the menu item - Code -> Reformat Code with D Format (ctrl+alt+K) or on mac (cmd+alt+K)
+
 ## Progress
 
 Please see the development status on
