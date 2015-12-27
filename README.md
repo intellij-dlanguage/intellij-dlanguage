@@ -64,6 +64,16 @@ This will add the phobos and druntime/import as well as my rainbow dub project. 
 
 To reformat D code use the shortcut or the menu item - Code -> Reformat Code with D Format (ctrl+alt+K) or on mac (cmd+alt+K)
 
+#### Syntax Highlighting
+
+Go to Preferences -> Editor -> Colors and Fonts -> D File
+
+You can customize the syntax highlighting colours here. Save as a new theme - and then untick the inherit from checkbox and this will allow you to choose a colour for each item.
+Only the native items will show as changing in the code example. From function definition downwards the options are related to annotated highlighting which is based on the grammar and not the lexer. So these don't show as chanigng the code example but they do wok.
+I created one similar to the sublime dark theme by using Darcula theme and customizing the colours here.
+
+
+
 ## Progress
 
 Please see the development status on
@@ -140,6 +150,11 @@ Goto Class
 
 ![improved highlighting]
 (https://github.com/kingsleyh/DLanguage/raw/master/.README/goto_class.png)
+
+Configure Syntax Highlighting
+
+![highlighting settings]
+(https://github.com/kingsleyh/DLanguage/raw/master/.README/highlighting_settings.png)
 
 Improved Syntax Highlighting with Annotator:
 

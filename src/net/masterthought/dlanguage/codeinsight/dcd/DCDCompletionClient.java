@@ -11,6 +11,7 @@ import net.masterthought.dlanguage.codeinsight.dcd.completions.Completion;
 import net.masterthought.dlanguage.codeinsight.dcd.completions.TextCompletion;
 import net.masterthought.dlanguage.settings.ToolKey;
 import net.masterthought.dlanguage.utils.ExecUtil;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;
@@ -49,6 +50,14 @@ public class DCDCompletionClient {
                 ParametersList parametersList = commandLine.getParametersList();
                 parametersList.addParametersString("-c");
                 parametersList.addParametersString(String.valueOf(position));
+
+                String flags = ToolKey.DCD_CLIENT_KEY.getFlags(module.getProject());
+                List<String> importList = Arrays.asList(flags.split(","));
+                for(String item : importList){
+//                  parametersList.addParametersString("-I");
+                    parametersList.addParametersString("-I"+item);
+                }
+                
                 try {
                     process = commandLine.createProcess();
                     output = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
@@ -70,7 +79,6 @@ public class DCDCompletionClient {
                                 String completionText = getCompletionText(parts);
                                 Completion completion = new TextCompletion(completionType, completionText);
                                 completions.add(completion);
-//                                System.out.println(completion);
                             }
                         }
                     } else if (firstLine.contains("calltips")) {
