@@ -81,6 +81,7 @@ Please see the development status on
 
 #### Latest Updates
 
+* 27th December 2015 - Fixed DCD bugs and added dub init wizard to dub project creation
 * 25th December 2015 - Added code formatting with DFmt
 * 24th December 2015 - Added Syntax highlighting, DCD autocompletion, dub compile checking and Dscanner annotation
 * 23rd December 2015 - Released an early test version to the intellij plugin repository
@@ -156,6 +157,8 @@ Configure Syntax Highlighting
 ![highlighting settings]
 (https://github.com/kingsleyh/DLanguage/raw/master/.README/highlighting_settings.png)
 
+## Older Screenshots
+
 Improved Syntax Highlighting with Annotator:
 
 ![improved highlighting]
@@ -165,8 +168,6 @@ Syntax Highlighting and PSI Structure:
 
 ![highlighting and psi structure]
 (https://github.com/kingsleyh/DLanguage/raw/master/.README/highlighting_and_psi_structure.png)
-
-## Older Screenshots
 
 Create a new D project:
 
