@@ -27,6 +27,7 @@ public class DLanguageDubModuleBuilder extends DLanguageModuleBuilder {
     public static final String RUN_DUB_CONFIG_NAME = "Run DUB";
 
     private List<Pair<String, String>> sourcePaths;
+    private List<Pair<String, String>> dubInitOptions;
 
     public DLanguageDubModuleBuilder() {
         super("DLangDubApp", DLanguageBundle.message("module.dub.title"), DLanguageBundle.message("module.dub.description"), null);
@@ -60,7 +61,7 @@ public class DLanguageDubModuleBuilder extends DLanguageModuleBuilder {
             final List<Pair<String, String>> paths = new ArrayList<Pair<String, String>>();
             @NonNls final String path = getContentEntryPath() + File.separator + "source";
             try {
-              createDub(getContentEntryPath());
+                createDub(getContentEntryPath());
             } catch (Exception e) {
                 new File(path).mkdirs();
             }
@@ -70,12 +71,45 @@ public class DLanguageDubModuleBuilder extends DLanguageModuleBuilder {
         return sourcePaths;
     }
 
+    public void setDubInitOptions(List<Pair<String, String>> options) {
+        this.dubInitOptions = options;
+    }
+
+    public List<Pair<String, String>> getDubInitOptions() {
+        return dubInitOptions;
+    }
+
     private void createDub(String workingDirectory) {
+
+        List<Pair<String, String>> dubOptions = getDubInitOptions();
+        String dubFormat = "json";
+        String dubType = "minimal";
+        String dubParams = "";
+        for (Pair<String, String> pair : dubOptions) {
+            if (pair.getFirst().equals("dubFormat")) {
+                dubFormat = pair.getSecond();
+            } else if (pair.getFirst().equals("dubType")) {
+                dubType = pair.getSecond();
+            } else if (pair.getFirst().equals("dubParams")) {
+                dubParams = pair.getSecond();
+            }
+        }
+
         GeneralCommandLine commandLine = new GeneralCommandLine();
         commandLine.setWorkDirectory(workingDirectory);
         commandLine.setExePath("dub");
         ParametersList parametersList = commandLine.getParametersList();
         parametersList.addParametersString("init");
+
+        if (dubParams.isEmpty()) {
+            parametersList.addParametersString("--format");
+            parametersList.addParametersString(dubFormat);
+            parametersList.addParametersString("--type");
+            parametersList.addParametersString(dubType);
+        } else {
+            parametersList.addParametersString(dubParams);
+        }
+
         try {
             OSProcessHandler process = new OSProcessHandler(commandLine.createProcess());
 
