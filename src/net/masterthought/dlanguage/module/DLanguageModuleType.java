@@ -1,5 +1,9 @@
 package net.masterthought.dlanguage.module;
 
+import com.intellij.ide.util.importProject.ModulesDetectionStep;
+import com.intellij.ide.util.newProjectWizard.ProjectNameStep;
+import com.intellij.ide.util.newProjectWizard.modes.CreateFromScratchMode;
+import com.intellij.ide.util.newProjectWizard.modes.WizardMode;
 import com.intellij.ide.util.projectWizard.ModuleWizardStep;
 import com.intellij.ide.util.projectWizard.ProjectJdkForModuleStep;
 import com.intellij.ide.util.projectWizard.WizardContext;
@@ -13,6 +17,8 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DLanguageModuleType extends ModuleType<DLanguageModuleBuilder> {
     @NonNls
@@ -59,11 +65,23 @@ public class DLanguageModuleType extends ModuleType<DLanguageModuleBuilder> {
     public ModuleWizardStep[] createWizardSteps(@NotNull WizardContext wizardContext,
                                                 @NotNull final DLanguageModuleBuilder moduleBuilder,
                                                 @NotNull ModulesProvider modulesProvider) {
-        return new ModuleWizardStep[]{new ProjectJdkForModuleStep(wizardContext, DLanguageSdkType.getInstance()) {
+        
+        List<ModuleWizardStep> steps = new ArrayList<>();
+        
+        ModuleWizardStep setCompiler = new ProjectJdkForModuleStep(wizardContext, DLanguageSdkType.getInstance()) {
             public void updateDataModel() {
                 super.updateDataModel();
                 moduleBuilder.setModuleJdk(getJdk());
             }
-        }};
+        };
+        ModuleWizardStep setDubInit = new DubInitForModuleStep(wizardContext);
+        
+        steps.add(setCompiler);
+        
+        if((moduleBuilder.getBuilderId() != null && moduleBuilder.getBuilderId().equals("DLangDubApp"))){
+            steps.add(setDubInit);  
+        }
+
+        return steps.toArray(new ModuleWizardStep[steps.size()]);
     }
 }
