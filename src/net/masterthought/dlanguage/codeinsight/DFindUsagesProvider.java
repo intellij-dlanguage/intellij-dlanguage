@@ -19,15 +19,14 @@ public class DFindUsagesProvider implements FindUsagesProvider {
     @SuppressWarnings("UnusedDeclaration")
     private final static Logger LOG = Logger.getInstance(DFindUsagesProvider.class);
     // Second parameter is nodes that are PsiNamedElements in practice.
-    private final static WordsScanner SCANNER =
-            new DefaultWordsScanner(new DLanguageLexerAdapter(),
-                    TokenSet.create(DLanguageTypes.IDENTIFIER),
-                    DTokenSets.LINE_COMMENTS, DTokenSets.BLOCK_COMMENTS, DTokenSets.STRING_LITERALS);
+
 
     @Nullable
     @Override
     public WordsScanner getWordsScanner() {
-        return SCANNER;
+        return new DefaultWordsScanner(new DLanguageLexerAdapter(),
+                TokenSet.create(DLanguageTypes.IDENTIFIER),
+                DTokenSets.LINE_COMMENTS, DTokenSets.BLOCK_COMMENTS, DTokenSets.STRING_LITERALS);
     }
 
     @Override
