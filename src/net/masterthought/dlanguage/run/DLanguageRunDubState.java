@@ -20,8 +20,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
-import net.masterthought.dlanguage.run.exception.ModuleNotFoundException;
-import net.masterthought.dlanguage.run.exception.NoDubExecutableException;
 import net.masterthought.dlanguage.settings.ToolKey;
 import net.masterthought.dlanguage.utils.DToolsNotificationListener;
 import org.jetbrains.annotations.NotNull;
@@ -55,8 +53,7 @@ public class DLanguageRunDubState extends CommandLineState {
         try {
             GeneralCommandLine dubCommandLine = getExecutableCommandLine(config);
             return new OSProcessHandler(dubCommandLine.createProcess(), dubCommandLine.getCommandLineString());
-        }
-        catch (ExecutionException e) {
+        } catch (ExecutionException e) {
             String message = e.getMessage();
             final Project project = config.getProject();
 
@@ -76,15 +73,14 @@ public class DLanguageRunDubState extends CommandLineState {
     /* Build command line to start DUB executable
      */
     private GeneralCommandLine getExecutableCommandLine(DLanguageRunDubConfiguration config)
-            throws ExecutionException
-    {
+            throws ExecutionException {
         Module module = config.getConfigurationModule().getModule();
-        if(module == null) {
+        if (module == null) {
             throw new ExecutionException("Run configuration has no module selected.");
         }
 
         String dubPath = ToolKey.DUB_KEY.getPath(config.getProject());
-        if( StringUtil.isEmptyOrSpaces(dubPath)) {
+        if (StringUtil.isEmptyOrSpaces(dubPath)) {
             throw new ExecutionException("DUB executable is not specified");
         }
 
@@ -92,25 +88,112 @@ public class DLanguageRunDubState extends CommandLineState {
         GeneralCommandLine commandLine = new GeneralCommandLine();
         commandLine.setExePath(dubPath);
 
-        if( !StringUtil.isEmptyOrSpaces( config.getWorkingDir()) ) {
+        if (!StringUtil.isEmptyOrSpaces(config.getWorkingDir())) {
             commandLine.withWorkDirectory(config.getWorkingDir());
-        }
-        else {
+        } else {
             commandLine.withWorkDirectory(config.getProject().getBasePath());
         }
 
-        //Add command line parameters
-        if( !config.isRunAfterBuild() ) {
+        // Add command line parameters
+
+        boolean toBuild = config.getGeneralDubOptions() == 0;
+        boolean toRun = config.getGeneralDubOptions() == 1;
+        boolean toTest = config.getGeneralDubOptions() == 2;
+
+
+//        cbTempBuild.setEnabled(inRunState);
+//               cbCoverage.setEnabled(inTestState);
+//               tfMainFile.setEnabled(inTestState);
+//               cbRdmd.setEnabled(inBuildState || inRunState);
+//               cbParallel.setEnabled(inBuildState || inRunState);
+
+        if (toBuild) {
             commandLine.addParameter("build");
-        }
-        if( config.isQuiet() ) {
-            commandLine.addParameter("-q");
-        }
-        if( config.isVerbose() ) {
-            commandLine.addParameter("-v");
+        } else if (toTest) {
+            commandLine.addParameter("test");
+        } else if (toRun) {
+            commandLine.addParameter("run");
         }
 
-        if( StringUtil.isEmptyOrSpaces(config.getAdditionalParams()) ) {
+        if (toRun) {
+            if (config.isCbTempBuild()) {
+                commandLine.addParameter("--temp-build");
+            }
+        }
+
+        if (toTest) {
+            if (config.isCbCoverage()) {
+                commandLine.addParameter("--coverage");
+            }
+            if (!config.getTfMainFile().isEmpty()) {
+                commandLine.addParameter("--main-file");
+                commandLine.addParameter(config.getTfMainFile());
+            }
+        }
+
+        if (config.isCbRdmd()) {
+            commandLine.addParameter("--rdmd");
+        }
+        if (config.isCbForce()) {
+            commandLine.addParameter("--force");
+        }
+        if (config.isCbNoDeps()) {
+            commandLine.addParameter("--nodeps");
+        }
+        if (config.isCbForceRemove()) {
+            commandLine.addParameter("--force-remove");
+        }
+        if (config.isCbCombined()) {
+            commandLine.addParameter("--combined");
+        }
+        if (config.isCbParallel()) {
+            commandLine.addParameter("--parallel");
+        }
+        if (config.isQuiet()) {
+            commandLine.addParameter("-q");
+        }
+        if (config.isVerbose()) {
+            commandLine.addParameter("-v");
+        }
+        if (!config.getTfArch().isEmpty()) {
+            commandLine.addParameter("--arch");
+            commandLine.addParameter(config.getTfArch());
+        }
+        if (!config.getTfBuild().isEmpty()) {
+            commandLine.addParameter("--build");
+            commandLine.addParameter(config.getTfBuild());
+        }
+        if (!config.getTfConfig().isEmpty()) {
+            commandLine.addParameter("--config");
+            commandLine.addParameter(config.getTfConfig());
+        }
+        if (!config.getTfDebug().isEmpty()) {
+            commandLine.addParameter("--debug");
+            commandLine.addParameter(config.getTfDebug());
+        }
+        if (!config.getTfCompiler().isEmpty()) {
+            commandLine.addParameter("--compiler");
+            commandLine.addParameter(config.getTfCompiler());
+        }
+
+        boolean bmSeparate = config.getBuildMode() == 0;
+        boolean bmAll = config.getBuildMode() == 1;
+        boolean bmSingle = config.getBuildMode() == 2;
+
+        if (bmSeparate) {
+            commandLine.addParameter("--build-mode");
+            commandLine.addParameter("separate");
+        }
+        if (bmAll) {
+            commandLine.addParameter("--build-mode");
+            commandLine.addParameter("allAtOnce");
+        }
+        if (bmSingle) {
+            commandLine.addParameter("--build-mode");
+            commandLine.addParameter("singleFile");
+        }
+
+        if (StringUtil.isEmptyOrSpaces(config.getAdditionalParams())) {
             commandLine.addParameters(splitArguments(config.getAdditionalParams()));
         }
 
@@ -118,19 +201,18 @@ public class DLanguageRunDubState extends CommandLineState {
     }
 
     private String[] splitArguments(String arguments) {
-        if( StringUtil.isEmptyOrSpaces(arguments)) {
+        if (StringUtil.isEmptyOrSpaces(arguments)) {
             return new String[0];
         }
 
         List<String> argsLst = new LinkedList<String>();
         CommandLineTokenizer tokenizer = new CommandLineTokenizer(arguments);
-        while(tokenizer.hasMoreTokens()) {
+        while (tokenizer.hasMoreTokens()) {
             argsLst.add(tokenizer.nextToken());
         }
-        if(argsLst.size()>0) {
+        if (argsLst.size() > 0) {
             return (String[]) argsLst.toArray();
-        }
-        else {
+        } else {
             return new String[0];
         }
     }
