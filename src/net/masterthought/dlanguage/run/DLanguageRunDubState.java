@@ -24,6 +24,7 @@ import net.masterthought.dlanguage.settings.ToolKey;
 import net.masterthought.dlanguage.utils.DToolsNotificationListener;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -70,6 +71,10 @@ public class DLanguageRunDubState extends CommandLineState {
         }
     }
 
+    private boolean isNotNullOrEmpty(String str){
+      return (str != null && !str.isEmpty());
+    }
+
     /* Build command line to start DUB executable
      */
     private GeneralCommandLine getExecutableCommandLine(DLanguageRunDubConfiguration config)
@@ -100,13 +105,6 @@ public class DLanguageRunDubState extends CommandLineState {
         boolean toRun = config.getGeneralDubOptions() == 1;
         boolean toTest = config.getGeneralDubOptions() == 2;
 
-
-//        cbTempBuild.setEnabled(inRunState);
-//               cbCoverage.setEnabled(inTestState);
-//               tfMainFile.setEnabled(inTestState);
-//               cbRdmd.setEnabled(inBuildState || inRunState);
-//               cbParallel.setEnabled(inBuildState || inRunState);
-
         if (toBuild) {
             commandLine.addParameter("build");
         } else if (toTest) {
@@ -125,7 +123,7 @@ public class DLanguageRunDubState extends CommandLineState {
             if (config.isCbCoverage()) {
                 commandLine.addParameter("--coverage");
             }
-            if (!config.getTfMainFile().isEmpty()) {
+            if (config.getTfMainFile() != null) {
                 commandLine.addParameter("--main-file");
                 commandLine.addParameter(config.getTfMainFile());
             }
@@ -155,23 +153,24 @@ public class DLanguageRunDubState extends CommandLineState {
         if (config.isVerbose()) {
             commandLine.addParameter("-v");
         }
-        if (!config.getTfArch().isEmpty()) {
+
+        if (isNotNullOrEmpty(config.getTfArch())) {
             commandLine.addParameter("--arch");
             commandLine.addParameter(config.getTfArch());
         }
-        if (!config.getTfBuild().isEmpty()) {
+        if (isNotNullOrEmpty(config.getTfBuild())) {
             commandLine.addParameter("--build");
             commandLine.addParameter(config.getTfBuild());
         }
-        if (!config.getTfConfig().isEmpty()) {
+        if (isNotNullOrEmpty(config.getTfConfig())) {
             commandLine.addParameter("--config");
             commandLine.addParameter(config.getTfConfig());
         }
-        if (!config.getTfDebug().isEmpty()) {
+        if (isNotNullOrEmpty(config.getTfDebug())) {
             commandLine.addParameter("--debug");
             commandLine.addParameter(config.getTfDebug());
         }
-        if (!config.getTfCompiler().isEmpty()) {
+        if (isNotNullOrEmpty(config.getTfCompiler())) {
             commandLine.addParameter("--compiler");
             commandLine.addParameter(config.getTfCompiler());
         }
@@ -193,28 +192,11 @@ public class DLanguageRunDubState extends CommandLineState {
             commandLine.addParameter("singleFile");
         }
 
-        if (StringUtil.isEmptyOrSpaces(config.getAdditionalParams())) {
-            commandLine.addParameters(splitArguments(config.getAdditionalParams()));
+        if (isNotNullOrEmpty(config.getAdditionalParams())) {
+            commandLine.addParameters(Arrays.asList(config.getAdditionalParams().split("\\s")));
         }
 
         return commandLine;
-    }
-
-    private String[] splitArguments(String arguments) {
-        if (StringUtil.isEmptyOrSpaces(arguments)) {
-            return new String[0];
-        }
-
-        List<String> argsLst = new LinkedList<String>();
-        CommandLineTokenizer tokenizer = new CommandLineTokenizer(arguments);
-        while (tokenizer.hasMoreTokens()) {
-            argsLst.add(tokenizer.nextToken());
-        }
-        if (argsLst.size() > 0) {
-            return (String[]) argsLst.toArray();
-        } else {
-            return new String[0];
-        }
     }
 
     private VirtualFile getSourceRoot(Module module) {
