@@ -32,6 +32,13 @@ JVMVersion=1.7*
 
 ## Quick Usage
 
+#### Open existing DUB project
+
+  * File -> Open then choose your existing dub project folder
+  * After the project loads - right click on the module (first item in the project tree on left pane) and choose Module Settings (f4)
+  * In Module Setting - in the right pane in the Sources tab - locate the source directory in the tree and click it - and then click the blue sources folder at the top of the pane where it says Mark as
+  * That will mark the source folder as a Source folder in intellij - and it will go blue - now intellij know where to find the source code for your dub module and you can use the run configurations now
+
 #### New Project with DUB
 
   * When you select this to create a new project with dub - if dub is on your path it will attempt to use dub init to create a new dub project for you. If dub is not on your path it will create a source directory and you will have to create your sdl/json dub file manually or rename/delete the source folder and then use dub init to recreate it
