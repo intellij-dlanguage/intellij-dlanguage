@@ -95,7 +95,9 @@ public class DUtil {
 
                 // add class decls
                 for (DLanguageClassDeclaration d : cd) {
-                    ne.add(d.getIdentifier());
+                    if(d.getIdentifier() != null) {
+                        ne.add(d.getIdentifier());
+                    }
                 }
 
                 // add var decl
