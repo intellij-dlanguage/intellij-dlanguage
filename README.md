@@ -64,6 +64,10 @@ This will add the phobos and druntime/import as well as my rainbow dub project. 
 
 To reformat D code use the shortcut or the menu item - Code -> Reformat Code with D Format (ctrl+alt+K) or on mac (cmd+alt+K)
 
+#### DFix
+
+To apply DFix to the a file use the shortcut or the menu item - Code -> Fix D code with DFi (ctrl+alt+M) or on mac (cmd+alt+M)
+
 #### Syntax Highlighting
 
 Go to Preferences -> Editor -> Colors and Fonts -> D File
