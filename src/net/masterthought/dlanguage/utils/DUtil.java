@@ -209,6 +209,10 @@ public class DUtil {
         return element instanceof PsiNamedElement && definitionNode((PsiNamedElement) element);
     }
 
+    public static boolean isNotNullOrEmpty(String str){
+        return (str != null && !str.isEmpty());
+    }
+
 //    @Nullable
 //    public static String getQualifiedPrefix(@NotNull PsiElement e) {
 //        final PsiElement q = PsiTreeUtil.getParentOfType(e, DLanguageFuncDeclaration.class);

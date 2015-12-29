@@ -28,6 +28,8 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import static net.masterthought.dlanguage.utils.DUtil.isNotNullOrEmpty;
+
 
 public class DLanguageRunDubState extends CommandLineState {
     private DLanguageRunDubConfiguration config;
@@ -69,10 +71,6 @@ public class DLanguageRunDubState extends CommandLineState {
             }
             throw e;
         }
-    }
-
-    private boolean isNotNullOrEmpty(String str){
-      return (str != null && !str.isEmpty());
     }
 
     /* Build command line to start DUB executable

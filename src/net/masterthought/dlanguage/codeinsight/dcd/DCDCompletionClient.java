@@ -11,16 +11,16 @@ import net.masterthought.dlanguage.codeinsight.dcd.completions.Completion;
 import net.masterthought.dlanguage.codeinsight.dcd.completions.TextCompletion;
 import net.masterthought.dlanguage.settings.ToolKey;
 import net.masterthought.dlanguage.utils.ExecUtil;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
+import static net.masterthought.dlanguage.utils.DUtil.isNotNullOrEmpty;
 
 public class DCDCompletionClient {
 
@@ -52,12 +52,15 @@ public class DCDCompletionClient {
                 parametersList.addParametersString(String.valueOf(position));
 
                 String flags = ToolKey.DCD_CLIENT_KEY.getFlags(module.getProject());
-                List<String> importList = Arrays.asList(flags.split(","));
-                for(String item : importList){
-//                  parametersList.addParametersString("-I");
-                    parametersList.addParametersString("-I"+item);
+
+                if (isNotNullOrEmpty(flags)) {
+                    List<String> importList = Arrays.asList(flags.split(","));
+                    for (String item : importList) {
+                        parametersList.addParametersString("-I");
+                        parametersList.addParametersString(item);
+                    }
                 }
-                
+
                 try {
                     process = commandLine.createProcess();
                     output = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));

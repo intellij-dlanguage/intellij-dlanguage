@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static net.masterthought.dlanguage.utils.DUtil.isNotNullOrEmpty;
+
 /**
  * Process wrapper for DCD Server.  Implements ModuleComponent so destruction of processes coincides with closing projects.
  */
@@ -64,17 +66,20 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
         }
     }
 
+
     private void spawnProcess() throws DCDError {
         GeneralCommandLine commandLine = new GeneralCommandLine(path);
         commandLine.setWorkDirectory(workingDirectory);
         commandLine.setRedirectErrorStream(true);
         ParametersList parametersList = commandLine.getParametersList();
         
-        
-        List<String> importList = Arrays.asList(flags.split(","));
-        for(String item : importList){
-//            parametersList.addParametersString("-I");
-            parametersList.addParametersString("-I"+item);
+
+        if(isNotNullOrEmpty(flags)) {
+            List<String> importList = Arrays.asList(flags.split(","));
+            for (String item : importList) {
+                parametersList.addParametersString("-I");
+                parametersList.addParametersString(item);
+            }
         }
 
         try {
