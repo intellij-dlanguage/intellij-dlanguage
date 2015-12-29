@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>net.masterthought.dlanguage</id>
     <name>D Language</name>
-    <version>1.5</version>
+    <version>1.6</version>
     <vendor email="kingsley.hendrickse@gmail.com" url="http://www.masterthought.net">MasterThought</vendor>
 
     <description><![CDATA[
@@ -9,7 +9,7 @@
     ]]></description>
 
     <change-notes><![CDATA[
-     Better DUB support for new project creation and run configuration
+    Fixes for DCD when no imports supplied and added DFix action
     ]]>
     </change-notes>
 
