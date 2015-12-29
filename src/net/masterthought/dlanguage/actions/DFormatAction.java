@@ -46,7 +46,7 @@ public class DFormatAction extends AnAction implements DumbAware {
     }
 
     /**
-     * Main entry point. Calls stylish-haskell and detects errors.
+     * Main entry point. Calls Dfmt
      */
     @Override
     public void actionPerformed(AnActionEvent e) {

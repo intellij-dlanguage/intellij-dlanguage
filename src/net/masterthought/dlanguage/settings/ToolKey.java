@@ -15,6 +15,7 @@ public class ToolKey {
     public static final ToolKey DCD_SERVER_KEY = new ToolKey("dcd-server");
     public static final ToolKey DCD_CLIENT_KEY = new ToolKey("dcd-client");
     public static final ToolKey DFORMAT_KEY = new ToolKey("dfmt");
+    public static final ToolKey DFIX_KEY = new ToolKey("dfix");
 
     public final String pathKey;
     public final String flagsKey;

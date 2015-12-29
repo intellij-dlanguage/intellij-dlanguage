@@ -48,7 +48,11 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
     private RawCommandLineEditor dFormatFlags;
     private JButton dFormatAutoFind;
     private JTextField dFormatVersion;
-    
+    private TextFieldWithBrowseButton dFixPath;
+    private RawCommandLineEditor dFixFlags;
+    private JButton dFixAutoFind;
+    private JTextField dFixVersion;
+
     private List<Tool> properties;
 
     public DLanguageToolsConfigurable(@NotNull Project project) {
@@ -63,7 +67,9 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
                 new Tool(project, "dcd-client", ToolKey.DCD_CLIENT_KEY, dcdClientPath, dcdClientFlags,
                         dcdClientAutoFind, dcdClientVersion),
                 new Tool(project, "dfmt", ToolKey.DFORMAT_KEY, dFormatPath, dFormatFlags,
-                        dFormatAutoFind, dFormatVersion)
+                        dFormatAutoFind, dFormatVersion),
+                new Tool(project, "dfix", ToolKey.DFIX_KEY, dFixPath, dFixFlags,
+                        dFixAutoFind, dFixVersion)
         );
     }
 

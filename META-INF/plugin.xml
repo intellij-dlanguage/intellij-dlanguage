@@ -110,6 +110,13 @@
             <add-to-group group-id="CodeFormatGroup" anchor="last"/>
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt K"/>
         </action>
+        <action id="DLanguage.DFix"
+                class="net.masterthought.dlanguage.actions.DFixAction"
+                text="Fix D code with DFix"
+                description="Fix current file with DFix">
+            <add-to-group group-id="CodeFormatGroup" anchor="last"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt M"/>
+        </action>
     </actions>
 
     <module-components>
