@@ -131,7 +131,9 @@ public class DUtil {
                 // add class decl
                 Collection<DLanguageClassDeclaration> cd = PsiTreeUtil.findChildrenOfType(file, DLanguageClassDeclaration.class);
                 for (DLanguageClassDeclaration d : cd) {
-                    ne.add(d.getIdentifier());
+                    if(d.getIdentifier() != null) {
+                        ne.add(d.getIdentifier());
+                    }
                 }
 
                 // add auto decl y
