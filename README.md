@@ -242,7 +242,7 @@ read this document: [developing custom language plugins for intellij](https://co
 
 also see this document for getting the environment setup: [plugin development](https://confluence.jetbrains.com/display/IDEADEV/PluginDevelopment)
 
-this one is also helpful: [make a pluing in less than 30 mins](http://bjorn.tipling.com/how-to-make-an-intellij-idea-plugin-in-30-minutes)
+this one is also helpful: [make a plugin in less than 30 mins](http://bjorn.tipling.com/how-to-make-an-intellij-idea-plugin-in-30-minutes)
 ### Setup
 
 1. Download and install the community edition of intellij - [here](https://www.jetbrains.com/idea/download/)
