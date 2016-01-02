@@ -66,7 +66,11 @@ For example:
         /Library/D/dmd/src/phobos,/Library/D/dmd/src/druntime/import,/Users/hendriki/.dub/packages/rainbow-master/src
         
 This will add the phobos and druntime/import as well as my rainbow dub project. You can add other dub packages by adding the path to them. I should be able to autoconfigure this stuff in a future release.
-        
+
+#### DCD Server Restart Action
+
+I noticed that after a while the auto completion seemed to cause the editor to hang. As a first step I have added a menu action in Tools as the last option to Restart the DCD Server. This action will just kill the running process and restart it again which seems to fix the hanging issue. I will investigate further to find a way to prevent the hanging in the first place but this is a helpful restart action.
+
 #### DFormat
 
 To reformat D code use the shortcut or the menu item - Code -> Reformat Code with D Format (ctrl+alt+K) or on mac (cmd+alt+K)
