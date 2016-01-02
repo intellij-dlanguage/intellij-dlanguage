@@ -72,9 +72,9 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
         commandLine.setWorkDirectory(workingDirectory);
         commandLine.setRedirectErrorStream(true);
         ParametersList parametersList = commandLine.getParametersList();
-        
 
-        if(isNotNullOrEmpty(flags)) {
+
+        if (isNotNullOrEmpty(flags)) {
             List<String> importList = Arrays.asList(flags.split(","));
             for (String item : importList) {
                 parametersList.addParametersString("-I");
@@ -166,11 +166,21 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
     public void onSettingsChanged(@NotNull ToolSettings settings) {
         this.path = settings.getPath();
         this.flags = settings.getFlags();
+        restart();
+    }
+
+    /**
+     * Restarts the dcd-server.
+     */
+    public synchronized void restart() {
         kill();
         try {
+            Thread.sleep(1500);
             spawnProcess();
         } catch (DCDError e) {
             displayError(e.message);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 

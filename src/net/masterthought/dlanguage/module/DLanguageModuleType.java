@@ -7,8 +7,11 @@ import com.intellij.ide.util.newProjectWizard.modes.WizardMode;
 import com.intellij.ide.util.projectWizard.ModuleWizardStep;
 import com.intellij.ide.util.projectWizard.ProjectJdkForModuleStep;
 import com.intellij.ide.util.projectWizard.WizardContext;
+import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleType;
 import com.intellij.openapi.module.ModuleTypeManager;
+import com.intellij.openapi.module.ModuleUtil;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
 import net.masterthought.dlanguage.DLanguageBundle;
 import net.masterthought.dlanguage.DLanguageIcons;
@@ -18,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class DLanguageModuleType extends ModuleType<DLanguageModuleBuilder> {
@@ -83,5 +87,9 @@ public class DLanguageModuleType extends ModuleType<DLanguageModuleBuilder> {
         }
 
         return steps.toArray(new ModuleWizardStep[steps.size()]);
+    }
+
+    public static Collection<Module> findModules(Project project){
+      return ModuleUtil.getModulesOfType(project, DLanguageModuleType.getInstance());
     }
 }

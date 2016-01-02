@@ -117,6 +117,10 @@
             <add-to-group group-id="CodeFormatGroup" anchor="last"/>
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt M"/>
         </action>
+        <action id="net.masterthought.dlanguage.RestartDCD" class="net.masterthought.dlanguage.actions.RestartDCD"
+                   text="Restart DCD Server" description="Restarts the DCD server">
+             <add-to-group group-id="ToolsMenu" anchor="last"/>
+           </action>
     </actions>
 
     <module-components>
