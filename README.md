@@ -30,6 +30,17 @@ change the JVMVersion key to 1.7*:
 JVMVersion=1.7*
 ```
 
+## Installation
+
+[Download](https://www.jetbrains.com/idea/) and install IntelliJ Community Edition (Free) or Ultimate (Paid)
+From IntelliJ go to Preferences > Plugins > Browse Repositories and search For "D Language" - you will see 2 plugins - Choose the DLanguage Support one and click install and then click restart intellij
+
+You can also download the plugin jar to your local disk here: [Jetbrains plugin repository](https://plugins.jetbrains.com/plugin/8115?pr=) and then in intelliJ
+go to Preferences > Plugins > Install plugin from disk and choose the jar you downloaded
+
+![installation]
+(https://github.com/kingsleyh/DLanguage/raw/master/.README/install.png)
+
 ## Quick Usage
 
 #### Open existing DUB project
