@@ -10,8 +10,15 @@ This plugin brings D Language support to the Intellij IDE
 
 Come Along to the [London D Meetup!](http://www.meetup.com/London-D-Programmers/)
 
-![meet up group]
-(https://github.com/kingsleyh/DLanguage/raw/master/.README/london_d_programmers.png)
+[![London D Meetup](https://github.com/kingsleyh/DLanguage/raw/master/.README/london_d_programmers.png)](http://www.meetup.com/London-D-Programmers/)
+
+## Advertising
+
+I recently was a technical review for this great book about Learning D written by Michael Parker. Get it cheap by clicking on the images below:
+
+[![Learning D](https://github.com/kingsleyh/DLanguage/raw/master/.README/learningd.png)](http://bit.ly/1lSyjJ7)
+
+[![Learning D](https://github.com/kingsleyh/DLanguage/raw/master/.README/packt5.png)](http://bit.ly/1lSyjJ7)
 
 ## Background
 
@@ -67,6 +74,8 @@ The best option is to do and get the following tools and build them according to
   * [Dfmt](https://github.com/Hackerpilot/dfmt)
 
 If you put these tools on your path you can go to Preferences -> Other Settings -> D Tools and just click autofind on each of the tools and it will find them. Otherwise you will need to select the correct path to the tool for each one.
+
+There is a nice blog post about setting up the tools at: [www.samael.me.uk](http://www.samael.me.uk/2015/12/d-plugin-for-intellij-idea.html)
 
 #### Configuring DCD
 
