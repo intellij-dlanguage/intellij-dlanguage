@@ -27,8 +27,8 @@ Intellij plugin I've written and is still a work in progress to get the full sup
 
 ## Supported JDK
 
-I personally use a 1.8 JDK but the majority of users should be on a 1.7 JDK so I have written this plugin at the 1.7 language level. It will not work with a 1.6 JDK because
-it uses features of 1.7. If you are an OSX user like me - then you will need to Run intellij using 1.7 or 1.8 to use this plugin by doing the following:
+This plugin has been written at the Java 1.7 language level. It will not work with a 1.6 JDK because
+it uses features of 1.7. If you are an OSX user like me - then if you usually run intellij with something less than 1.7 - you will need to Run intellij using 1.7 or 1.8 to use this plugin by doing the following:
 
 To force running under JDK 1.7 copy `/Applications/<Product>.app/Contents/bin/idea.properties` to `~/Library/Preferences/<Product>/` and
 change the JVMVersion key to 1.7*:
