@@ -16,7 +16,7 @@ Come Along to the [London D Meetup!](http://www.meetup.com/London-D-Programmers/
 
 I recently was a technical review for this great book about Learning D written by Michael Parker. Get it cheap by clicking on the images below:
 
-[![Learning D](https://github.com/kingsleyh/DLanguage/raw/master/.README/learningd.png)](http://bit.ly/1lSyjJ7)
+[![Learning D](https://github.com/kingsleyh/DLanguage/raw/master/.README/learningd.jpg)](http://bit.ly/1lSyjJ7)
 
 [![Learning D](https://github.com/kingsleyh/DLanguage/raw/master/.README/packt5.png)](http://bit.ly/1lSyjJ7)
 
