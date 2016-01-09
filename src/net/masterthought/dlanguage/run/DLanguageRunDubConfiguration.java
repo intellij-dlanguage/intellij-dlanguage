@@ -24,7 +24,7 @@ public class DLanguageRunDubConfiguration extends ModuleBasedConfiguration<RunCo
         implements RunConfiguration {
 
     //General tab
-    private int generalDubOptions = 0;
+    private int generalDubOptions = 1;
 
     public int getGeneralDubOptions() {
         return this.generalDubOptions;

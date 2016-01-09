@@ -138,7 +138,8 @@ public class DLanguageRunDubConfigurationEditor extends SettingsEditor<DLanguage
     private void resetGeneralTabForm(DLanguageRunDubConfiguration config) {
         comboModules.fillModules(config.getProject(), DLanguageModuleType.getInstance());
         comboModules.setSelectedModule(config.getConfigurationModule().getModule());
-        comboGeneralDubOptions.setSelectedIndex(1);
+
+        comboGeneralDubOptions.setSelectedIndex(config.getGeneralDubOptions());
 
         cbRdmd.setSelected(config.isCbRdmd());
         cbNoDeps.setSelected(config.isCbNoDeps());
