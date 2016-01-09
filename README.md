@@ -87,6 +87,8 @@ For example:
         
 This will add the phobos and druntime/import as well as my rainbow dub project. You can add other dub packages by adding the path to them. I should be able to autoconfigure this stuff in a future release.
 
+UPDATE: all project files are not automatically added to DCD and if on OSX the D sources are also added automatically. Sorry Linux and Windows users but I don't know the paths to search on those platforms for the sources - I can get the dmd/dmd.exe file path and on OSX thats in the bin dir and the sources are in the src dir one level up. But no idea on Linux and Windows.
+
 #### DCD Server Restart Action
 
 I noticed that after a while the auto completion seemed to cause the editor to hang. As a first step I have added a menu action in Tools as the last option to Restart the DCD Server. This action will just kill the running process and restart it again which seems to fix the hanging issue. I will investigate further to find a way to prevent the hanging in the first place but this is a helpful restart action.
