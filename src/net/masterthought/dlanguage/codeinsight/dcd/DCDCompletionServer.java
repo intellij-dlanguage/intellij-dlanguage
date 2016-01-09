@@ -7,6 +7,15 @@ import com.intellij.notification.NotificationType;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleComponent;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.projectRoots.Sdk;
+import com.intellij.openapi.roots.ModuleRootManager;
+import com.intellij.openapi.roots.ProjectRootManager;
+import com.intellij.openapi.util.SystemInfo;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.util.containers.ContainerUtil;
+import net.masterthought.dlanguage.DLanguageSdkType;
+import net.masterthought.dlanguage.DSdkUtil;
+import net.masterthought.dlanguage.run.exception.NoValidDLanguageSdkFound;
 import net.masterthought.dlanguage.settings.SettingsChangeNotifier;
 import net.masterthought.dlanguage.settings.ToolKey;
 import net.masterthought.dlanguage.settings.ToolSettings;
@@ -16,6 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -82,6 +92,20 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
             }
         }
 
+        // try to auto add project files in source root
+        String sources = getRootSourceDir();
+        if(isNotNullOrEmpty(sources)){
+            parametersList.addParametersString("-I");
+            parametersList.addParametersString(sources);
+        }
+
+        // try to auto add the compiler sources
+        List<String> compilerSources = getCompilerSourceDirs();
+        for(String s : compilerSources){
+            parametersList.addParametersString("-I");
+            parametersList.addParametersString(s);
+        }
+
         try {
             process = commandLine.createProcess();
         } catch (ExecutionException e) {
@@ -90,6 +114,33 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
         input = new BufferedReader(new InputStreamReader(process.getInputStream()));
         output = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
 
+    }
+
+    private String getRootSourceDir(){
+        Project myProject = module.getProject();
+        final List<VirtualFile> sourceRoots = new ArrayList<>();
+        final ProjectRootManager projectRootManager = ProjectRootManager.getInstance(myProject);
+        ContainerUtil.addAll(sourceRoots, projectRootManager.getContentSourceRoots());
+        return sourceRoots.isEmpty() ? null : sourceRoots.get(0).getPath();
+    }
+
+    private List<String> getCompilerSourceDirs(){
+        ArrayList<String> compilerSources = new ArrayList<>();
+        ModuleRootManager moduleRootManager = ModuleRootManager.getInstance(module);
+        Sdk sdk = moduleRootManager.getSdk();
+
+        if(sdk!=null && (sdk.getSdkType() instanceof DLanguageSdkType)) {
+            String path = sdk.getHomePath();
+            if(isNotNullOrEmpty(path)){
+                if(SystemInfo.isMac) {
+                    String root = path.replaceAll("bin", "src");
+                    compilerSources.add(root + "/phobos");
+                    compilerSources.add(root + "/druntime/import");
+                }
+                // add linux and windows here once I know how
+            }
+        }
+        return compilerSources;
     }
 
     @NotNull

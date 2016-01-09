@@ -170,6 +170,14 @@ public class DLanguageSdkType extends SdkType {
         File dmdCompilerFile = new File(sdkHome, executableName);
         return dmdCompilerFile.getAbsolutePath();
     }
+
+    /* Returns full path to DMD compiler sources */
+    public static String getDmdSourcesPaths(Sdk sdk) {
+        String sdkHome = sdk.getHomePath();
+        String executableName = SystemInfo.isWindows ? "dmd.exe" : "dmd";
+        File dmdCompilerFile = new File(sdkHome, executableName);
+        return dmdCompilerFile.getAbsolutePath();
+    }
 }
 
 
