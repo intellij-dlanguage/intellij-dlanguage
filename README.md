@@ -114,8 +114,18 @@ I created one similar to the sublime dark theme by using Darcula theme and custo
 Please see the development status on
 [DLanguage ZenBoard](https://github.com/kingsleyh/DLanguage#boards)
 
+#### Next Release - 1.8
+
+The next release should have the following:
+
+  * [Issue 66 - Dub build configuration dub options bug](https://github.com/kingsleyh/DLanguage/issues/66)
+  * [Issue 65 - Bitwise Or token bug](https://github.com/kingsleyh/DLanguage/issues/65)
+  * [Issue 64 - DCD auto add source directories](https://github.com/kingsleyh/DLanguage/issues/64)
+  * [Issue 56 - DCD restart menu item bug](https://github.com/kingsleyh/DLanguage/issues/56)
+
 #### Latest Updates
 
+* 9th January 2016 - Fixed some bugs and working towards getting more of the intellij features working
 * 27th December 2015 - Fixed DCD bugs and added dub init wizard to dub project creation
 * 25th December 2015 - Added code formatting with DFmt
 * 24th December 2015 - Added Syntax highlighting, DCD autocompletion, dub compile checking and Dscanner annotation
