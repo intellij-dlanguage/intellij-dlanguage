@@ -106,7 +106,7 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
 
     // asm
     public void testasm() { doTest(true, true); }
-    
+
     // statements
     public void teststatements_asm() { doTest(true, true); }
     public void teststatements_asm_inline() { doTest(true, true); }
@@ -299,9 +299,11 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
     public void testtraits_special_keywords() { doTest(true, true); }
     public void testtraits_getattributes() { doTest(true, true); }
 
-
 // unittest
    public void testunittests() { doTest(true, true); }
+
+// bug fixes
+   public void testbitwise_or_bug() { doTest(true, true);}
 }
 
 

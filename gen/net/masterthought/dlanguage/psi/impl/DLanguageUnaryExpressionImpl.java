@@ -102,6 +102,12 @@ public class DLanguageUnaryExpressionImpl extends ASTWrapperPsiElement implement
 
   @Override
   @Nullable
+  public PsiElement getOpOr() {
+    return findChildByType(OP_OR);
+  }
+
+  @Override
+  @Nullable
   public PsiElement getOpParLeft() {
     return findChildByType(OP_PAR_LEFT);
   }

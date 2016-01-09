@@ -11861,6 +11861,7 @@ public class DLanguageParser implements PsiParser {
   /* ********************************************************** */
   // ('&'
   //     | '++'
+  //     | '|'
   //     | '^^'
   //     | '--'
   //     | '*'
@@ -11889,6 +11890,7 @@ public class DLanguageParser implements PsiParser {
 
   // ('&'
   //     | '++'
+  //     | '|'
   //     | '^^'
   //     | '--'
   //     | '*'
@@ -11908,6 +11910,7 @@ public class DLanguageParser implements PsiParser {
 
   // '&'
   //     | '++'
+  //     | '|'
   //     | '^^'
   //     | '--'
   //     | '*'
@@ -11921,6 +11924,7 @@ public class DLanguageParser implements PsiParser {
     Marker m = enter_section_(b);
     r = consumeToken(b, OP_AND);
     if (!r) r = consumeToken(b, OP_PLUS_PLUS);
+    if (!r) r = consumeToken(b, OP_OR);
     if (!r) r = consumeToken(b, OP_POW);
     if (!r) r = consumeToken(b, OP_MINUS_MINUS);
     if (!r) r = consumeToken(b, OP_ASTERISK);

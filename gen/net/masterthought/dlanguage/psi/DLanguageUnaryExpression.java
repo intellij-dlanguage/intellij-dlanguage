@@ -47,6 +47,9 @@ public interface DLanguageUnaryExpression extends PsiElement {
   PsiElement getOpNot();
 
   @Nullable
+  PsiElement getOpOr();
+
+  @Nullable
   PsiElement getOpParLeft();
 
   @Nullable
