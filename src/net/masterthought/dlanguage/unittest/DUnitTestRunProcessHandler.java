@@ -36,9 +36,6 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
 
     public void startProcessing() {
         ApplicationManager.getApplication().runReadAction(new Runnable() {
-
-
-            //        ApplicationUtil.tryRunReadAction(new Runnable() {
             @Override
             public void run() {
 
