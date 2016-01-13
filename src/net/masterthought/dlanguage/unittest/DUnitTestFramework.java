@@ -5,13 +5,18 @@ import com.intellij.ide.fileTemplates.FileTemplateDescriptor;
 import com.intellij.lang.Language;
 import com.intellij.openapi.module.Module;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.testIntegration.TestFramework;
 import com.intellij.util.IncorrectOperationException;
 import net.masterthought.dlanguage.DLanguage;
+import net.masterthought.dlanguage.psi.DLanguageClassDeclaration;
+import net.masterthought.dlanguage.psi.DLanguageFile;
+import net.masterthought.dlanguage.psi.DLanguageUserDefinedAttribute;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.util.Collection;
 
 public class DUnitTestFramework implements TestFramework {
     @NotNull
@@ -105,7 +110,13 @@ public class DUnitTestFramework implements TestFramework {
     @Override
     public boolean isTestMethod(final PsiElement element) {
         // TODO: However you determine whether a method is a test method.  For example, in mine they’re annotated with @Test or the testMethod modifier
-        return true;
+
+        if(element.getClass() == DLanguageFile.class) {
+            Collection<DLanguageUserDefinedAttribute> udas = PsiTreeUtil.findChildrenOfType(element, DLanguageUserDefinedAttribute.class);
+            return !udas.isEmpty();
+        } else {
+            return false;
+        }
     }
 
     @NotNull
@@ -113,4 +124,7 @@ public class DUnitTestFramework implements TestFramework {
     public Language getLanguage() {
         return DLanguage.INSTANCE;
     }
+    
+
+    
 }

@@ -1,142 +1,119 @@
 package net.masterthought.dlanguage.unittest;
 
+import com.intellij.execution.ExecutionBundle;
 import com.intellij.execution.configuration.EnvironmentVariablesComponent;
-import com.intellij.openapi.fileChooser.FileChooserDescriptor;
+import com.intellij.ide.util.TreeFileChooser;
+import com.intellij.ide.util.TreeFileChooserFactory;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SettingsEditor;
-import com.intellij.openapi.ui.TextComponentAccessor;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
+import com.intellij.openapi.util.io.FileUtil;
+import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.openapi.vfs.LocalFileSystem;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiManager;
 import com.intellij.ui.RawCommandLineEditor;
+import com.intellij.ui.components.JBCheckBox;
 import net.masterthought.dlanguage.DLanguageBundle;
+import net.masterthought.dlanguage.DLanguageFileType;
+import net.masterthought.dlanguage.DLanguageWritingAccessProvider;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
-import java.util.Map;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class DUnitTestRunConfigurationEditor extends SettingsEditor<DUnitTestRunConfiguration> {
+    private JPanel myMainPanel;
+    private JLabel myFileLabel;
+    private TextFieldWithBrowseButton myFileField;
+    private RawCommandLineEditor myVMOptions;
+    private JBCheckBox myRunDmdModeCheckBox;
+    private RawCommandLineEditor myArguments;
+    private TextFieldWithBrowseButton myWorkingDirectory;
+    private EnvironmentVariablesComponent myEnvironmentVariables;
 
-    private JPanel panel1;
-    private JPanel panel2;
-    private JPanel panel3;
+    public DUnitTestRunConfigurationEditor(final Project project) {
+        initDFileTextWithBrowse(project, myFileField);
 
-    // Common
-    private JCheckBox cbRdmd;
-    private JCheckBox cbForce;
-    private JCheckBox cbNoDeps;
-    private JCheckBox cbForceRemove;
-    private JCheckBox cbCombined;
-    private JCheckBox cbParallel;
-    private JTextField tfBuild;
-    private JTextField tfConfig;
-    private JTextField tfArch;
-    private JTextField tfDebug;
-    private JTextField tfCompiler;
-    private JComboBox tfBuildMode;
-    private JCheckBox cbVerbose;
-    private JCheckBox cbQuiet;
+        myWorkingDirectory.addBrowseFolderListener(ExecutionBundle.message("select.working.directory.message"), null, project,
+                FileChooserDescriptorFactory.createSingleFolderDescriptor());
 
-    // Run
-    private JCheckBox cbTempBuild;
+        myVMOptions.setDialogCaption(DLanguageBundle.message("config.vmoptions.caption"));
+        myArguments.setDialogCaption(DLanguageBundle.message("config.progargs.caption"));
 
-    // Test
-    private JTextField tfMainFile;
-
-    private TextFieldWithBrowseButton pathWorkingDir;
-    private RawCommandLineEditor textParameters;
-    private EnvironmentVariablesComponent envVariables;
-
-    /**
-     * Update editor UI with data of DLangRunDubConfiguration.
-     * All components must be changed according to "config" data.
-     */
-    @Override
-    protected void resetEditorFrom(DUnitTestRunConfiguration config) {
-        resetGeneralTabForm(config);
+        // 'Environment variables' is the widest label, anchored by myFileLabel
+        myFileLabel.setPreferredSize(myEnvironmentVariables.getLabel().getPreferredSize());
+        myEnvironmentVariables.setAnchor(myFileLabel);
     }
 
+    public static void initDFileTextWithBrowse(final @NotNull Project project,
+                                               final @NotNull TextFieldWithBrowseButton textWithBrowse) {
+        textWithBrowse.getButton().addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                final String initialPath = FileUtil.toSystemIndependentName(textWithBrowse.getText().trim());
+                final VirtualFile initialFile = initialPath.isEmpty() ? null : LocalFileSystem.getInstance().findFileByPath(initialPath);
+                final PsiFile initialPsiFile = initialFile == null ? null : PsiManager.getInstance(project).findFile(initialFile);
 
-    /**
-     * Save state of editor UI to DLangRunDubConfiguration instance.
-     */
+                TreeFileChooser fileChooser = TreeFileChooserFactory.getInstance(project).createFileChooser(
+                        DLanguageBundle.message("choose.dlanguage.main.file"),
+                        initialPsiFile,
+                        DLanguageFileType.INSTANCE,
+                        new TreeFileChooser.PsiFileFilter() {
+                            public boolean accept(PsiFile file) {
+                                return !DLanguageWritingAccessProvider.isInDLanguageSdkOrDLanguagePackagesFolder(file);
+                            }
+                        }
+                );
+
+                fileChooser.showDialog();
+
+                final PsiFile selectedFile = fileChooser.getSelectedFile();
+                final VirtualFile virtualFile = selectedFile == null ? null : selectedFile.getVirtualFile();
+                if (virtualFile != null) {
+                    final String path = FileUtil.toSystemDependentName(virtualFile.getPath());
+                    textWithBrowse.setText(path);
+                }
+            }
+        });
+    }
+
     @Override
-    protected void applyEditorTo(DUnitTestRunConfiguration config) throws ConfigurationException {
-        applyGeneralTabForm(config);
+    protected void resetEditorFrom(final DUnitTestRunConfiguration configuration) {
+        final DUnitTestParameters parameters = configuration.getRunnerParameters();
+
+        myFileField.setText(FileUtil.toSystemDependentName(StringUtil.notNullize(parameters.getFilePath())));
+        myArguments.setText(StringUtil.notNullize(parameters.getArguments()));
+        myVMOptions.setText(StringUtil.notNullize(parameters.getVMOptions()));
+        myRunDmdModeCheckBox.setSelected(parameters.isRunDubMode());
+        myWorkingDirectory.setText(FileUtil.toSystemDependentName(StringUtil.notNullize(parameters.getWorkingDirectory())));
+        myEnvironmentVariables.setEnvs(parameters.getEnvs());
+        myEnvironmentVariables.setPassParentEnvs(parameters.isIncludeParentEnvs());
+    }
+
+    @Override
+    protected void applyEditorTo(final DUnitTestRunConfiguration configuration) throws ConfigurationException {
+        final DUnitTestParameters parameters = configuration.getRunnerParameters();
+
+        parameters.setFilePath(StringUtil.nullize(FileUtil.toSystemIndependentName(myFileField.getText().trim()), true));
+        parameters.setArguments(StringUtil.nullize(myArguments.getText(), true));
+        parameters.setVMOptions(StringUtil.nullize(myVMOptions.getText(), true));
+        parameters.setRunDubMode(myRunDmdModeCheckBox.isSelected());
+        parameters.setWorkingDirectory(StringUtil.nullize(FileUtil.toSystemIndependentName(myWorkingDirectory.getText().trim()), true));
+        parameters.setEnvs(myEnvironmentVariables.getEnvs());
+        parameters.setIncludeParentEnvs(myEnvironmentVariables.isPassParentEnvs());
     }
 
     @NotNull
     @Override
     protected JComponent createEditor() {
-        FileChooserDescriptor fcd = FileChooserDescriptorFactory.createSingleFolderDescriptor();
-        fcd.setShowFileSystemRoots(true);
-        fcd.setTitle(DLanguageBundle.message("dmd.run.config.selectworkingdir.title"));
-        fcd.setDescription(DLanguageBundle.message("dmd.run.config.selectworkingdir.description"));
-        fcd.setHideIgnored(false);
-
-        pathWorkingDir.addBrowseFolderListener(null,
-                new TextFieldWithBrowseButton.BrowseFolderActionListener<JTextField>(fcd.getTitle(), fcd.getDescription(),
-                        pathWorkingDir, null, fcd, TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT));
-
-        return panel1;
-    }
-
-    @Override
-    protected void disposeEditor() {
-    }
-
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
-    }
-
-    private void applyGeneralTabForm(DUnitTestRunConfiguration config) {
-        config.setCbRdmd(cbRdmd.isSelected());
-        config.setCbNoDeps(cbNoDeps.isSelected());
-        config.setCbForce(cbForce.isSelected());
-        config.setCbForceRemove(cbForceRemove.isSelected());
-        config.setCbCombined(cbCombined.isSelected());
-        config.setCbParallel(cbParallel.isSelected());
-        config.setTfBuild(tfBuild.getText());
-        config.setTfConfig(tfConfig.getText());
-        config.setTfArch(tfArch.getText());
-        config.setTfDebug(tfDebug.getText());
-        config.setTfCompiler(tfCompiler.getText());
-        config.setBuildMode(tfBuildMode.getSelectedIndex());
-        config.setVerbose(cbVerbose.isSelected());
-        config.setQuiet(cbQuiet.isSelected());
-
-        config.setCbTempBuild(cbTempBuild.isSelected());
-        config.setTfMainFile(tfMainFile.getText());
-
-        config.setWorkingDir(pathWorkingDir.getText());
-        config.setAdditionalParams(textParameters.getText());
-        config.setEnvVars(envVariables.getEnvs());
-    }
-
-    private void resetGeneralTabForm(DUnitTestRunConfiguration config) {
-        cbRdmd.setSelected(config.isCbRdmd());
-        cbNoDeps.setSelected(config.isCbNoDeps());
-        cbForce.setSelected(config.isCbForce());
-        cbForceRemove.setSelected(config.isCbForceRemove());
-        cbCombined.setSelected(config.isCbCombined());
-        cbParallel.setSelected(config.isCbParallel());
-        cbVerbose.setSelected(config.isVerbose());
-        cbQuiet.setSelected(config.isQuiet());
-
-        tfBuild.setText(config.getTfBuild());
-        tfConfig.setText(config.getTfConfig());
-        tfArch.setText(config.getTfArch());
-        tfDebug.setText(config.getTfDebug());
-        tfCompiler.setText(config.getTfCompiler());
-        tfBuildMode.setSelectedIndex(config.getBuildMode());
-
-        cbTempBuild.setSelected(config.isCbTempBuild());
-        tfMainFile.setText(config.getTfMainFile());
-
-        pathWorkingDir.setText(config.getWorkingDir());
-        textParameters.setText(config.getAdditionalParams());
-        Map<String, String> envVars = config.getEnvVars();
-        if (envVars != null) {
-            envVariables.setEnvs(config.getEnvVars());
-        }
+        return myMainPanel;
     }
 }
+
+
+
+

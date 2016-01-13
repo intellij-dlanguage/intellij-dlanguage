@@ -94,9 +94,9 @@
 
         <!-- dunit support -->
         <configurationType implementation="net.masterthought.dlanguage.unittest.DUnitTestRunConfigurationType"/>
-        <runConfigurationProducer implementation="net.masterthought.dlanguage.unittest.DUnitTestRunConfigurationProducer"/>
+        <!--<runConfigurationProducer implementation="net.masterthought.dlanguage.unittest.DUnitTestRunConfigurationProducer"/>-->
         <programRunner implementation="net.masterthought.dlanguage.unittest.DUnitTestProgramRunner"/>
-        <testFramework implementation="net.masterthought.dlanguage.unittest.DUnitTestFramework"/>
+        <!--<testFramework implementation="net.masterthought.dlanguage.unittest.DUnitTestFramework"/>-->
         <!--<testFinder implementation="net.masterthought.dlanguage.unittest.DUnitTestFinder"/>-->
         <!--<consoleFilterProvider implementation="net.masterthought.dlanguage.unittest.DStackTraceFilter"/>-->
         <!--<analyzeStacktraceFilter implementation="net.masterthought.dlanguage.unittest.DStackTraceFilter"/>-->
