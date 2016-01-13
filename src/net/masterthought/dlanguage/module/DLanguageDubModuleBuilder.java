@@ -19,6 +19,10 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -123,6 +127,18 @@ public class DLanguageDubModuleBuilder extends DLanguageModuleBuilder {
 
             process.startNotify();
             process.waitFor();
+             
+            // write out a log file with the dub init error if dub init doesn't make the project
+            // would have been nice to log an event but the new project hasn't been loaded yet so this is the
+            // only way I could think to notify the user that dub init failed.
+            if (builder.toString().contains("Unknown")) {
+                Path dubInitErrorLog = Paths.get(getContentEntryPath() + File.separator + "dub_init_error_log.txt");
+                try {
+                    Files.write(dubInitErrorLog, builder.toString().getBytes());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
 
         } catch (ExecutionException e) {
             e.printStackTrace();
