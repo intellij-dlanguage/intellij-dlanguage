@@ -33,15 +33,6 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
         this.project = project;
         this.configuration = configuration;
     }
-    
-    private PsiFile getTestFile(){
-        try {
-            return PsiManager.getInstance(project).findFile(configuration.getRunnerParameters().getDFile());
-        } catch (RuntimeConfigurationError runtimeConfigurationError) {
-            runtimeConfigurationError.printStackTrace();
-        }
-        return null;
-    }
 
     public void startProcessing() {
         ApplicationManager.getApplication().runReadAction(new Runnable() {
@@ -110,10 +101,10 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
                     testSuiteFinished(className, 0);
                 }
 
-                
+                testRunFinished();
             }
 
-            
+
             // NOTE: After this, actual run your tests and, as results come back, call:
             //   testFinished() when a test method finishes successfully
             //   testFailed() when a test method finishes with a failure
@@ -124,7 +115,7 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
             //   testStdOut() to print the output from a test class/method to the console view for review
 //            }
         });
-        testRunFinished();
+
     }
 
     private void executeTest(String className, String testMethodName) {
@@ -138,7 +129,7 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
             commandLine.setWorkDirectory(workingDirectory);
             commandLine.setExePath("rdmd");
             ParametersList parametersList = commandLine.getParametersList();
-            parametersList.addParametersString("-I/Users/hendriki/.dub/packages/d-unit-0.7.2/src");
+            parametersList.addParametersString("-I/Users/kings/.dub/packages/d-unit-0.7.2/src");
             parametersList.addParametersString(testFile);
             parametersList.addParametersString("--filter");
             parametersList.addParametersString(testPath);
@@ -164,7 +155,7 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
 
             String result = builder.toString();
             // call either finished(success) or failed
-            if (result.contains("OK")) {
+            if (!result.contains("NOT OK")) {
                 testFinished(className, testMethodName, 0);
             } else {
                 testFailed(className, testMethodName, 0, "Failed", result);
@@ -370,12 +361,12 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
     @Override
     protected void destroyProcessImpl() {
         testRunCanceled();
-//        notifyProcessTerminated(0);
+        notifyProcessTerminated(0);
     }
 
     @Override
     protected void detachProcessImpl() {
-//        notifyProcessDetached();
+        notifyProcessDetached();
     }
 
     @Override
