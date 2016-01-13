@@ -1,54 +1,52 @@
 package net.masterthought.dlanguage.unittest;
 
+import com.intellij.execution.process.ProcessHandler;
 import com.intellij.execution.process.ProcessOutputTypes;
 import com.intellij.execution.testframework.sm.ServiceMessageBuilder;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.util.containers.ContainerUtil;
+import org.jetbrains.annotations.Nullable;
 
+import java.io.OutputStream;
 import java.util.*;
 
-public class DUnitTestRunProcessHandler extends AbstractDProcessHandler<DUnitTestRunProcessHandler>
-{
+public class DUnitTestRunProcessHandler extends ProcessHandler {
     private List<String> testClassNames;
     private Map<String, Set<String>> testClassToTestMethodNames;
 
     private final Map<String, Integer> nodeIdsByFullTestName = new HashMap<String, Integer>();
     private int nextNodeId = 0;
 
-    public DUnitTestRunProcessHandler(Project project, DUnitTestRunConfiguration configuration)
-    {
-        super(project, configuration);
+    private final Project project;
+    private final DUnitTestRunConfiguration configuration;
+
+    public DUnitTestRunProcessHandler(Project project, DUnitTestRunConfiguration configuration) {
+        this.project = project;
+        this.configuration = configuration;
     }
 
-    public void startProcessing()
-    {
-        ApplicationManager.getApplication().executeOnPooledThread(new Runnable()
-        {
+    public void startProcessing() {
+        ApplicationManager.getApplication().executeOnPooledThread(new Runnable() {
             @Override
-            public void run()
-            {
-                final Project project = getProject();
+            public void run() {
 
                 // NOTE: This tells the test runner that we’re actually going to do something
                 testRunStarted();
 
                 // NOTE: This creates the tree in the UI by sending testSuiteStarted() and testStarted() messages
                 DUnitTestFramework unitTestFramework = new DUnitTestFramework();
-                for (final String testClassName : testClassNames)
-                {
+                for (final String testClassName : testClassNames) {
                     List<String> testMethodNames = new LinkedList<String>();
                     // Populate the test method for the current class as appropriate for your framework
 
 
-                    if (!ContainerUtil.isEmpty(testMethodNames))
-                    {
+                    if (!ContainerUtil.isEmpty(testMethodNames)) {
                         Collections.sort(testMethodNames);
                         testSuiteStarted(testClassName, testMethodNames.size());
 
-                        for (String testMethodName : testMethodNames)
-                        {
-                            testStarted(simpleTestClassName, testMethodName);
+                        for (String testMethodName : testMethodNames) {
+//                            testStarted(simpleTestClassName, testMethodName);
                         }
                     }
                 }
@@ -65,53 +63,41 @@ public class DUnitTestRunProcessHandler extends AbstractDProcessHandler<DUnitTes
         });
     }
 
-    private synchronized int getNodeId(String fullTestName)
-    {
+    private synchronized int getNodeId(String fullTestName) {
         Integer nodeId = nodeIdsByFullTestName.get(fullTestName);
-        if (nodeId == null)
-        {
+        if (nodeId == null) {
             nodeId = nextNodeId++;
             nodeIdsByFullTestName.put(fullTestName, nodeId);
         }
         return nodeId;
     }
 
-    private void testRunStarted()
-    {
-        ApplicationManager.getApplication().invokeLater(new Runnable()
-        {
+    private void testRunStarted() {
+        ApplicationManager.getApplication().invokeLater(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 notifyTextAvailable(new ServiceMessageBuilder("enteredTheMatrix").toString() + "\n", ProcessOutputTypes.STDOUT);
             }
         });
     }
 
-    private void testRunFinished()
-    {
-        ApplicationManager.getApplication().invokeLater(new Runnable()
-        {
+    private void testRunFinished() {
+        ApplicationManager.getApplication().invokeLater(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 destroyProcess();
             }
         });
     }
 
-    private void testRunCanceled()
-    {
+    private void testRunCanceled() {
         // TODO: Whatever you’d need to do here
     }
 
-    private void testStdOut(final String testClassName, final String output)
-    {
-        ApplicationManager.getApplication().invokeLater(new Runnable()
-        {
+    private void testStdOut(final String testClassName, final String output) {
+        ApplicationManager.getApplication().invokeLater(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 notifyTextAvailable(ServiceMessageBuilder
                                 .testStdOut(testClassName)
                                 .addAttribute("out", output)
@@ -122,13 +108,10 @@ public class DUnitTestRunProcessHandler extends AbstractDProcessHandler<DUnitTes
         });
     }
 
-    private void testStdOut(final String testClassName, final String testMethodName, final String output)
-    {
-        ApplicationManager.getApplication().invokeLater(new Runnable()
-        {
+    private void testStdOut(final String testClassName, final String testMethodName, final String output) {
+        ApplicationManager.getApplication().invokeLater(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 String fullTestMethodName = testClassName + "." + testMethodName;
                 notifyTextAvailable(ServiceMessageBuilder
                                 .testStdOut(testMethodName)
@@ -141,13 +124,10 @@ public class DUnitTestRunProcessHandler extends AbstractDProcessHandler<DUnitTes
         });
     }
 
-    private void testSuiteStarted(final String testClassName, final int numTestMethods)
-    {
-        ApplicationManager.getApplication().invokeLater(new Runnable()
-        {
+    private void testSuiteStarted(final String testClassName, final int numTestMethods) {
+        ApplicationManager.getApplication().invokeLater(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 notifyTextAvailable(ServiceMessageBuilder
                                 .testSuiteStarted(testClassName)
                                 .addAttribute("isSuite", String.valueOf(true))
@@ -161,13 +141,10 @@ public class DUnitTestRunProcessHandler extends AbstractDProcessHandler<DUnitTes
         });
     }
 
-    private void testSuiteFinished(final String testClassName, final long duration)
-    {
-        ApplicationManager.getApplication().invokeLater(new Runnable()
-        {
+    private void testSuiteFinished(final String testClassName, final long duration) {
+        ApplicationManager.getApplication().invokeLater(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 notifyTextAvailable(ServiceMessageBuilder
                                 .testSuiteFinished(testClassName)
                                 .addAttribute("isSuite", String.valueOf(true))
@@ -181,13 +158,10 @@ public class DUnitTestRunProcessHandler extends AbstractDProcessHandler<DUnitTes
         });
     }
 
-    private void testStarted(final String testClassName, final String testMethodName)
-    {
-        ApplicationManager.getApplication().invokeLater(new Runnable()
-        {
+    private void testStarted(final String testClassName, final String testMethodName) {
+        ApplicationManager.getApplication().invokeLater(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 String fullTestMethodName = testClassName + "." + testMethodName;
                 notifyTextAvailable(ServiceMessageBuilder
                                 .testStarted(testMethodName)
@@ -201,13 +175,10 @@ public class DUnitTestRunProcessHandler extends AbstractDProcessHandler<DUnitTes
         });
     }
 
-    private void testFinished(final String testClassName, final String testMethodName, final long duration)
-    {
-        ApplicationManager.getApplication().invokeLater(new Runnable()
-        {
+    private void testFinished(final String testClassName, final String testMethodName, final long duration) {
+        ApplicationManager.getApplication().invokeLater(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 String fullTestMethodName = testClassName + "." + testMethodName;
                 notifyTextAvailable(ServiceMessageBuilder
                                 .testFinished(testMethodName)
@@ -222,13 +193,10 @@ public class DUnitTestRunProcessHandler extends AbstractDProcessHandler<DUnitTes
         });
     }
 
-    private void testFailed(final String testClassName, final String testMethodName, final long duration, final String message, final String stackTrace)
-    {
-        ApplicationManager.getApplication().invokeLater(new Runnable()
-        {
+    private void testFailed(final String testClassName, final String testMethodName, final long duration, final String message, final String stackTrace) {
+        ApplicationManager.getApplication().invokeLater(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 String fullTestMethodName = testClassName + "." + testMethodName;
                 notifyTextAvailable(ServiceMessageBuilder
                                 .testFailed(testMethodName)
@@ -245,13 +213,10 @@ public class DUnitTestRunProcessHandler extends AbstractDProcessHandler<DUnitTes
         });
     }
 
-    private void testIgnored(final String testClassName, final String testMethodName)
-    {
-        ApplicationManager.getApplication().invokeLater(new Runnable()
-        {
+    private void testIgnored(final String testClassName, final String testMethodName) {
+        ApplicationManager.getApplication().invokeLater(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 String fullTestMethodName = testClassName + "." + testMethodName;
                 notifyTextAvailable(ServiceMessageBuilder
                                 .testIgnored(testMethodName)
@@ -266,28 +231,24 @@ public class DUnitTestRunProcessHandler extends AbstractDProcessHandler<DUnitTes
     }
 
     @Override
-    protected void destroyProcessImpl()
-    {
+    protected void destroyProcessImpl() {
         testRunCanceled();
 //        notifyProcessTerminated(0);
     }
 
     @Override
-    protected void detachProcessImpl()
-    {
+    protected void detachProcessImpl() {
 //        notifyProcessDetached();
     }
 
     @Override
-    public boolean detachIsDefault()
-    {
+    public boolean detachIsDefault() {
         return false;
     }
 
     @Nullable
     @Override
-    public OutputStream getProcessInput()
-    {
+    public OutputStream getProcessInput() {
         return null;
     }
 }

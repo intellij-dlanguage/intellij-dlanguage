@@ -11,6 +11,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.WriteExternalException;
 import com.intellij.util.xmlb.XmlSerializer;
+import net.masterthought.dlanguage.DLanguage;
 import net.masterthought.dlanguage.run.DLanguageRunDubConfigurationEditor;
 import net.masterthought.dlanguage.run.DLanguageRunDubState;
 import net.masterthought.dlanguage.run.DMDRunner;
@@ -25,8 +26,10 @@ import java.util.Map;
 
 public class DUnitTestRunConfiguration extends LocatableConfigurationBase
 {
-    protected DUnitTestRunConfiguration(Project project, ConfigurationFactory factory, String name) {
-        super(project, factory, name);
+
+    public DUnitTestRunConfiguration(Project project)
+    {
+        super(project, new DUnitTestRunConfigurationFactory(DUnitTestRunConfigurationType.getInstance()), DLanguage.INSTANCE.getDisplayName());
         envVars = new HashMap<>();
     }
 

@@ -17,6 +17,6 @@ public class DUnitTestRunConfigurationFactory extends ConfigurationFactory
     @Override
     public RunConfiguration createTemplateConfiguration(@NotNull Project project)
     {
-        return new DUnitTestRunConfiguration(project,this,"configFactoryD");
+        return new DUnitTestRunConfiguration(project);
     }
 }

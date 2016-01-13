@@ -101,15 +101,15 @@ public class DUnitTestRunProfileState implements RunProfileState
         return executionResult;
     }
 
-    @Override
-    public RunnerSettings getRunnerSettings()
-    {
-        return environment.getRunnerSettings();
-    }
-
-    @Override
-    public ConfigurationPerRunnerSettings getConfigurationSettings()
-    {
-        return environment.getConfigurationSettings();
-    }
+//    @Override
+//    public RunnerSettings getRunnerSettings()
+//    {
+//        return environment.getRunnerSettings();
+//    }
+//
+//    @Override
+//    public ConfigurationPerRunnerSettings getConfigurationSettings()
+//    {
+//        return environment.getConfigurationSettings();
+//    }
 }
