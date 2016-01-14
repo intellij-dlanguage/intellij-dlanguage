@@ -12423,7 +12423,7 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // ModuleDeclaration | DeclDefs | Statement
+  // ModuleDeclaration | DeclDefs | Statement | SHEBANG
   static boolean item_(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "item_")) return false;
     boolean r;
@@ -12431,6 +12431,7 @@ public class DLanguageParser implements PsiParser {
     r = ModuleDeclaration(b, l + 1);
     if (!r) r = DeclDefs(b, l + 1);
     if (!r) r = Statement(b, l + 1);
+    if (!r) r = consumeToken(b, SHEBANG);
     exit_section_(b, m, null, r);
     return r;
   }

@@ -200,6 +200,7 @@ tokens = [
  OP_NOT_LESS_EQ = "!<="
  OP_LAMBDA_ARROW = "=>"
  OP_DOT = "."
+ SHEBANG = "shebang"
 
  LINE_COMMENT="LINE_COMMENT"
  BLOCK_COMMENT="BLOCK_COMMENT"
@@ -221,7 +222,7 @@ tokens = [
 
 dFile ::= item_*
 
-private item_ ::= (ModuleDeclaration | DeclDefs | Statement )
+private item_ ::= (ModuleDeclaration | DeclDefs | Statement | SHEBANG)
 
 Identifier ::= ID {
                         methods=[getName getNameIdentifier getReference setName getPresentation]
