@@ -36,6 +36,7 @@ public class DHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey AGGREGATE_DEFINITION = createTextAttributesKey("D_AGGREGATE_DEFINITION", DefaultLanguageHighlighterColors.INSTANCE_METHOD);
     public static final TextAttributesKey STD_IMPORT = createTextAttributesKey("D_STD_IMPORT", DefaultLanguageHighlighterColors.INSTANCE_METHOD);
     public static final TextAttributesKey BASIC_TYPE = createTextAttributesKey("D_BASIC_TYPE", DefaultLanguageHighlighterColors.INSTANCE_FIELD);
+    public static final TextAttributesKey USER_DEFINED_ATTRIBUTE = createTextAttributesKey("D_USER_DEFINED_ATTRIBUTE", DefaultLanguageHighlighterColors.INSTANCE_FIELD);
 
     @NotNull
     @Override

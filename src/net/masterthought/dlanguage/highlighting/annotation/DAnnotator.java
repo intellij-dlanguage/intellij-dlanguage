@@ -39,6 +39,20 @@ public class DAnnotator implements Annotator {
             }
 
             @Override
+            public void visitVarDeclarations(@NotNull DLanguageVarDeclarations o) {
+                super.visitVarDeclarations(o);
+                if(o.getBasicType() != null) {
+                    setHighlighting(o.getBasicType(), holder, DHighlighter.BASIC_TYPE);
+                }
+            }
+
+            @Override
+            public void visitUserDefinedAttribute(@NotNull DLanguageUserDefinedAttribute o) {
+                super.visitUserDefinedAttribute(o);
+                    setHighlighting(o, holder, DHighlighter.USER_DEFINED_ATTRIBUTE);
+            }
+
+            @Override
             public void visitAggregateDeclaration(@NotNull DLanguageAggregateDeclaration o) {
                 super.visitAggregateDeclaration(o);
                 if(o.getClassDeclaration() != null){
@@ -64,8 +78,8 @@ public class DAnnotator implements Annotator {
             }
 
             @Override
-            public void visitBasicTypeX(@NotNull DLanguageBasicTypeX o) {
-                super.visitBasicTypeX(o);
+            public void visitBasicType2(@NotNull DLanguageBasicType2 o) {
+                super.visitBasicType2(o);
                     setHighlighting(o, holder, DHighlighter.BASIC_TYPE);
             }
 
@@ -73,6 +87,7 @@ public class DAnnotator implements Annotator {
             public void visitNewExpressionWithArgs(@NotNull DLanguageNewExpressionWithArgs o) {
                 super.visitNewExpressionWithArgs(o);
                 try {
+                    // try catch this
                     DLanguageIdentifier identifier = o.getType().getBasicType().getIdentifierList().getIdentifier();
                     setHighlighting(identifier, holder, DHighlighter.AGGREGATE_DEFINITION);
                 } catch(Exception e){
