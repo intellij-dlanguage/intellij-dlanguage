@@ -8,6 +8,9 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
         super("parser", "d", new DLanguageParserDefinition());
     }
 
+    // shebang
+    public void testshebang() { doTest(true, true); }
+
     // modules
     public void testmodule1() { doTest(true, true); }
     public void testmodule2() { doTest(true, true); }
@@ -304,6 +307,10 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
 
 // bug fixes
    public void testbitwise_or_bug() { doTest(true, true);}
+   public void testbug_assoc_array() { doTest(true, true);}
+   public void testbug_try_catch() { doTest(true, true);}
+
+
 }
 
 

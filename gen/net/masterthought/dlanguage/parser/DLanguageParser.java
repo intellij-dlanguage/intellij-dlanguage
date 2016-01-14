@@ -3540,30 +3540,35 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // LastCatch
-  //     | Catch
-  //     | Catch Catches
+  // Catch [Catches]
+  //      | LastCatch
   public static boolean Catches(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "Catches")) return false;
     if (!nextTokenIs(b, KW_CATCH)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = LastCatch(b, l + 1);
-    if (!r) r = Catch(b, l + 1);
-    if (!r) r = Catches_2(b, l + 1);
+    r = Catches_0(b, l + 1);
+    if (!r) r = LastCatch(b, l + 1);
     exit_section_(b, m, CATCHES, r);
     return r;
   }
 
-  // Catch Catches
-  private static boolean Catches_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "Catches_2")) return false;
+  // Catch [Catches]
+  private static boolean Catches_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "Catches_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = Catch(b, l + 1);
-    r = r && Catches(b, l + 1);
+    r = r && Catches_0_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
+  }
+
+  // [Catches]
+  private static boolean Catches_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "Catches_0_1")) return false;
+    Catches(b, l + 1);
+    return true;
   }
 
   /* ********************************************************** */
@@ -7251,8 +7256,8 @@ public class DLanguageParser implements PsiParser {
 
   /* ********************************************************** */
   // LabeledStatement
-  //     | ExpressionStatement
   //     | DeclarationStatement
+  //     | ExpressionStatement
   //     | IfStatement
   //     | WhileStatement
   //     | DoStatement
@@ -7282,8 +7287,8 @@ public class DLanguageParser implements PsiParser {
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<non empty statement no case no default>");
     r = LabeledStatement(b, l + 1);
-    if (!r) r = ExpressionStatement(b, l + 1);
     if (!r) r = DeclarationStatement(b, l + 1);
+    if (!r) r = ExpressionStatement(b, l + 1);
     if (!r) r = IfStatement(b, l + 1);
     if (!r) r = WhileStatement(b, l + 1);
     if (!r) r = DoStatement(b, l + 1);
@@ -12423,7 +12428,7 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // ModuleDeclaration | DeclDefs | Statement
+  // ModuleDeclaration | DeclDefs | Statement | SHEBANG
   static boolean item_(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "item_")) return false;
     boolean r;
@@ -12431,6 +12436,7 @@ public class DLanguageParser implements PsiParser {
     r = ModuleDeclaration(b, l + 1);
     if (!r) r = DeclDefs(b, l + 1);
     if (!r) r = Statement(b, l + 1);
+    if (!r) r = consumeToken(b, SHEBANG);
     exit_section_(b, m, null, r);
     return r;
   }

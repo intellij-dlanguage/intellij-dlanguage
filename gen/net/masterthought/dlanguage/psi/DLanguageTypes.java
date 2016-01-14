@@ -472,6 +472,7 @@ public interface DLanguageTypes {
   IElementType OP_USH_RIGHT_EQ = new DLanguageTokenType(">>>=");
   IElementType OP_XOR = new DLanguageTokenType("^");
   IElementType OP_XOR_EQ = new DLanguageTokenType("^=");
+  IElementType SHEBANG = new DLanguageTokenType("shebang");
   IElementType WYSIWYG_STRING = new DLanguageTokenType("WYSIWYG_STRING");
 
   class Factory {

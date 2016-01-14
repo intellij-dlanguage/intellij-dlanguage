@@ -6,6 +6,9 @@ public class DLanguageLexerTest extends DLanguageLexerTestBase {
         super("lexer");
     }
 
+    // shebang
+    public void testshebang_line() { doTest(true, true); }
+
     // keywords
     public void testkeyword_abstract() { doTest(true, true); }
     public void testkeyword_deprecated() { doTest(true, true); }

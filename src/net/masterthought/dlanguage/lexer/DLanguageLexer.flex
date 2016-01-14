@@ -35,6 +35,8 @@ LINE_COMMENT="//".*
 BLOCK_COMMENT_START = "/*"
 BLOCK_COMMENT_END = "*/"
 
+SHEBANG = "#!" ([^\r\n])* (\r|\n|\r\n)?
+
 /* JFlex doesn't support recursive rules. So NESTING_BLOCK_COMMENT doesn't support nesting now. */
 NESTING_BLOCK_COMMENT_START = \/\+
 NESTING_BLOCK_COMMENT_END = \+\/
@@ -333,7 +335,7 @@ HEX_EXPONENT = [pP][\+\-]? [0-9]+
 <YYINITIAL> "."                        { return OP_DOT; }
 <YYINITIAL> {ID}                       { return ID; }
 <YYINITIAL> {LINE_COMMENT}             { return LINE_COMMENT; }
-
+<YYINITIAL> {SHEBANG}                  { return SHEBANG; }
 
 . { return com.intellij.psi.TokenType.BAD_CHARACTER; }
 

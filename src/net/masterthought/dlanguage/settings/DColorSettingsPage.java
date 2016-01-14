@@ -36,7 +36,8 @@ public class DColorSettingsPage implements ColorSettingsPage {
             new AttributesDescriptor("Std Imports", STD_IMPORT),
             new AttributesDescriptor("Module definition", MODULE_DEFINITION),
             new AttributesDescriptor("Basic type", BASIC_TYPE),
-            new AttributesDescriptor("Aggregate definition", AGGREGATE_DEFINITION)
+            new AttributesDescriptor("Aggregate definition", AGGREGATE_DEFINITION),
+            new AttributesDescriptor("User defined attribute", USER_DEFINED_ATTRIBUTE)
     };
 
     private static Map<String, TextAttributesKey> ATTRIBUTES_KEY_MAP = ContainerUtil.newHashMap();
