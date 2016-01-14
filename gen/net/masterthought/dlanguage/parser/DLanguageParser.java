@@ -7251,8 +7251,8 @@ public class DLanguageParser implements PsiParser {
 
   /* ********************************************************** */
   // LabeledStatement
-  //     | ExpressionStatement
   //     | DeclarationStatement
+  //     | ExpressionStatement
   //     | IfStatement
   //     | WhileStatement
   //     | DoStatement
@@ -7282,8 +7282,8 @@ public class DLanguageParser implements PsiParser {
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<non empty statement no case no default>");
     r = LabeledStatement(b, l + 1);
-    if (!r) r = ExpressionStatement(b, l + 1);
     if (!r) r = DeclarationStatement(b, l + 1);
+    if (!r) r = ExpressionStatement(b, l + 1);
     if (!r) r = IfStatement(b, l + 1);
     if (!r) r = WhileStatement(b, l + 1);
     if (!r) r = DoStatement(b, l + 1);

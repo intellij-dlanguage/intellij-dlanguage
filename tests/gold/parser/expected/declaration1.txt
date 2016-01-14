@@ -12,7 +12,7 @@ D Language File
                 IDENTIFIER
                   PsiElement(DLanguageTokenType.ID)('x')
           PsiElement(DLanguageTokenType.;)(';')
-    PsiComment(DLanguageTokenType.LINE_COMMENT)('// x is an int')
+    PsiComment(DLanguageTokenType.line_comment)('// x is an int')
     DLanguageDeclDefsImpl(DECL_DEFS)
       DLanguageDeclDefImpl(DECL_DEF)
         DLanguageDeclarationImpl(DECLARATION)
@@ -29,7 +29,7 @@ D Language File
                   IDENTIFIER
                     PsiElement(DLanguageTokenType.ID)('x')
             PsiElement(DLanguageTokenType.;)(';')
-      PsiComment(DLanguageTokenType.LINE_COMMENT)('// x is a pointer to int')
+      PsiComment(DLanguageTokenType.line_comment)('// x is a pointer to int')
       DLanguageDeclDefsImpl(DECL_DEFS)
         DLanguageDeclDefImpl(DECL_DEF)
           DLanguageDeclarationImpl(DECLARATION)
@@ -49,7 +49,7 @@ D Language File
                     IDENTIFIER
                       PsiElement(DLanguageTokenType.ID)('x')
               PsiElement(DLanguageTokenType.;)(';')
-        PsiComment(DLanguageTokenType.LINE_COMMENT)('// x is a pointer to a pointer to int')
+        PsiComment(DLanguageTokenType.line_comment)('// x is a pointer to a pointer to int')
         DLanguageDeclDefsImpl(DECL_DEFS)
           DLanguageDeclDefImpl(DECL_DEF)
             DLanguageDeclarationImpl(DECLARATION)
@@ -67,7 +67,7 @@ D Language File
                       IDENTIFIER
                         PsiElement(DLanguageTokenType.ID)('x')
                 PsiElement(DLanguageTokenType.;)(';')
-          PsiComment(DLanguageTokenType.LINE_COMMENT)('// x is an array of ints')
+          PsiComment(DLanguageTokenType.line_comment)('// x is an array of ints')
           DLanguageDeclDefsImpl(DECL_DEFS)
             DLanguageDeclDefImpl(DECL_DEF)
               DLanguageDeclarationImpl(DECLARATION)
@@ -88,7 +88,7 @@ D Language File
                         IDENTIFIER
                           PsiElement(DLanguageTokenType.ID)('x')
                   PsiElement(DLanguageTokenType.;)(';')
-            PsiComment(DLanguageTokenType.LINE_COMMENT)('// x is an array of pointers to ints')
+            PsiComment(DLanguageTokenType.line_comment)('// x is an array of pointers to ints')
             DLanguageDeclDefsImpl(DECL_DEFS)
               DLanguageDeclDefImpl(DECL_DEF)
                 DLanguageDeclarationImpl(DECLARATION)
@@ -109,7 +109,7 @@ D Language File
                           IDENTIFIER
                             PsiElement(DLanguageTokenType.ID)('x')
                     PsiElement(DLanguageTokenType.;)(';')
-              PsiComment(DLanguageTokenType.LINE_COMMENT)('// x is a pointer to an array of ints')
+              PsiComment(DLanguageTokenType.line_comment)('// x is a pointer to an array of ints')
               DLanguageDeclDefsImpl(DECL_DEFS)
                 DLanguageDeclDefImpl(DECL_DEF)
                   DLanguageDeclarationImpl(DECLARATION)
@@ -142,7 +142,7 @@ D Language File
                             IDENTIFIER
                               PsiElement(DLanguageTokenType.ID)('x')
                       PsiElement(DLanguageTokenType.;)(';')
-                PsiComment(DLanguageTokenType.LINE_COMMENT)('// x is an array of 3 ints')
+                PsiComment(DLanguageTokenType.line_comment)('// x is an array of 3 ints')
                 DLanguageDeclDefsImpl(DECL_DEFS)
                   DLanguageDeclDefImpl(DECL_DEF)
                     DLanguageDeclarationImpl(DECLARATION)
@@ -194,7 +194,7 @@ D Language File
                               IDENTIFIER
                                 PsiElement(DLanguageTokenType.ID)('x')
                         PsiElement(DLanguageTokenType.;)(';')
-                  PsiComment(DLanguageTokenType.LINE_COMMENT)('// x is an array of 5 arrays of 3 ints')
+                  PsiComment(DLanguageTokenType.line_comment)('// x is an array of 5 arrays of 3 ints')
                   DLanguageDeclDefsImpl(DECL_DEFS)
                     DLanguageDeclDefImpl(DECL_DEF)
                       DLanguageDeclarationImpl(DECLARATION)
@@ -249,4 +249,4 @@ D Language File
                                 IDENTIFIER
                                   PsiElement(DLanguageTokenType.ID)('x')
                           PsiElement(DLanguageTokenType.;)(';')
-  PsiComment(DLanguageTokenType.LINE_COMMENT)('// x is an array of 5 pointers to arrays of 3 ints')
+  PsiComment(DLanguageTokenType.line_comment)('// x is an array of 5 pointers to arrays of 3 ints')

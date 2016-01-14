@@ -61,4 +61,4 @@ D Language File
                                                   PsiElement(DLanguageTokenType.()('(')
                                                   PsiElement(DLanguageTokenType.))(')')
           PsiElement(DLanguageTokenType.;)(';')
-  PsiComment(DLanguageTokenType.LINE_COMMENT)('// Deprecated: function test.oldBar is deprecated - Don't use bar')
+  PsiComment(DLanguageTokenType.line_comment)('// Deprecated: function test.oldBar is deprecated - Don't use bar')

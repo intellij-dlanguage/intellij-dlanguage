@@ -50,7 +50,7 @@ D Language File
                                                     IDENTIFIER
                                                       PsiElement(DLanguageTokenType.ID)('func')
               PsiElement(DLanguageTokenType.;)(';')
-      PsiComment(DLanguageTokenType.LINE_COMMENT)('// fp points to func')
+      PsiComment(DLanguageTokenType.line_comment)('// fp points to func')
       DLanguageDeclDefsImpl(DECL_DEFS)
         DLanguageDeclDefImpl(DECL_DEF)
           DLanguageDeclarationImpl(DECLARATION)
@@ -140,5 +140,5 @@ D Language File
                                                           IDENTIFIER
                                                             PsiElement(DLanguageTokenType.ID)('member')
                     PsiElement(DLanguageTokenType.;)(';')
-  PsiComment(DLanguageTokenType.LINE_COMMENT)('// dg is a delegate to object o and')
-  PsiComment(DLanguageTokenType.LINE_COMMENT)('// member function member')
+  PsiComment(DLanguageTokenType.line_comment)('// dg is a delegate to object o and')
+  PsiComment(DLanguageTokenType.line_comment)('// member function member')

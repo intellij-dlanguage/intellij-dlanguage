@@ -80,5 +80,5 @@ D Language File
                                                   IDENTIFIER
                                                     PsiElement(DLanguageTokenType.ID)('x')
             PsiElement(DLanguageTokenType.;)(';')
-          PsiComment(DLanguageTokenType.LINE_COMMENT)('// load x and put it in register EAX')
+          PsiComment(DLanguageTokenType.line_comment)('// load x and put it in register EAX')
           PsiElement(DLanguageTokenType.})('}')
