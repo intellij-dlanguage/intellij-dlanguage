@@ -8,6 +8,7 @@ import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SettingsEditor;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.TextComponentAccessor;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.util.text.StringUtil;
@@ -25,16 +26,14 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Map;
 
 public class DUnitTestRunConfigurationEditor extends SettingsEditor<DUnitTestRunConfiguration> {
     private JPanel myMainPanel;
     private JLabel myFileLabel;
     private TextFieldWithBrowseButton myFileField;
-    private RawCommandLineEditor myVMOptions;
-    private JBCheckBox myRunDmdModeCheckBox;
-    private RawCommandLineEditor myArguments;
     private TextFieldWithBrowseButton myWorkingDirectory;
-    private EnvironmentVariablesComponent myEnvironmentVariables;
+    private EnvironmentVariablesComponent envVariables;
 
     public DUnitTestRunConfigurationEditor(final Project project) {
         initDFileTextWithBrowse(project, myFileField);
@@ -42,12 +41,6 @@ public class DUnitTestRunConfigurationEditor extends SettingsEditor<DUnitTestRun
         myWorkingDirectory.addBrowseFolderListener(ExecutionBundle.message("select.working.directory.message"), null, project,
                 FileChooserDescriptorFactory.createSingleFolderDescriptor());
 
-        myVMOptions.setDialogCaption(DLanguageBundle.message("config.vmoptions.caption"));
-        myArguments.setDialogCaption(DLanguageBundle.message("config.progargs.caption"));
-
-        // 'Environment variables' is the widest label, anchored by myFileLabel
-        myFileLabel.setPreferredSize(myEnvironmentVariables.getLabel().getPreferredSize());
-        myEnvironmentVariables.setAnchor(myFileLabel);
     }
 
     public static void initDFileTextWithBrowse(final @NotNull Project project,
@@ -82,29 +75,20 @@ public class DUnitTestRunConfigurationEditor extends SettingsEditor<DUnitTestRun
     }
 
     @Override
-    protected void resetEditorFrom(final DUnitTestRunConfiguration configuration) {
-        final DUnitTestParameters parameters = configuration.getRunnerParameters();
-
-        myFileField.setText(FileUtil.toSystemDependentName(StringUtil.notNullize(parameters.getFilePath())));
-        myArguments.setText(StringUtil.notNullize(parameters.getArguments()));
-        myVMOptions.setText(StringUtil.notNullize(parameters.getVMOptions()));
-        myRunDmdModeCheckBox.setSelected(parameters.isRunDubMode());
-        myWorkingDirectory.setText(FileUtil.toSystemDependentName(StringUtil.notNullize(parameters.getWorkingDirectory())));
-        myEnvironmentVariables.setEnvs(parameters.getEnvs());
-        myEnvironmentVariables.setPassParentEnvs(parameters.isIncludeParentEnvs());
+    protected void resetEditorFrom(final DUnitTestRunConfiguration config) {
+        myWorkingDirectory.setText(config.getWorkingDir());
+        myFileField.setText(config.getdFilePath());
+        Map<String, String> envVars = config.getEnvVars();
+        if (envVars != null) {
+            envVariables.setEnvs(config.getEnvVars());
+        }
     }
 
     @Override
-    protected void applyEditorTo(final DUnitTestRunConfiguration configuration) throws ConfigurationException {
-        final DUnitTestParameters parameters = configuration.getRunnerParameters();
-
-        parameters.setFilePath(StringUtil.nullize(FileUtil.toSystemIndependentName(myFileField.getText().trim()), true));
-        parameters.setArguments(StringUtil.nullize(myArguments.getText(), true));
-        parameters.setVMOptions(StringUtil.nullize(myVMOptions.getText(), true));
-        parameters.setRunDubMode(myRunDmdModeCheckBox.isSelected());
-        parameters.setWorkingDirectory(StringUtil.nullize(FileUtil.toSystemIndependentName(myWorkingDirectory.getText().trim()), true));
-        parameters.setEnvs(myEnvironmentVariables.getEnvs());
-        parameters.setIncludeParentEnvs(myEnvironmentVariables.isPassParentEnvs());
+    protected void applyEditorTo(final DUnitTestRunConfiguration config) throws ConfigurationException {
+        config.setEnvVars(envVariables.getEnvs());
+        config.setWorkingDir(myWorkingDirectory.getText());
+        config.setdFilePath(FileUtil.toSystemIndependentName(myFileField.getText().trim()));
     }
 
     @NotNull

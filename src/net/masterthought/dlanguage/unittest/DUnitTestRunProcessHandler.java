@@ -46,7 +46,7 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
                 DUnitTestFramework unitTestFramework = new DUnitTestFramework();
 
                 try {
-                    PsiFile psiFile = PsiManager.getInstance(project).findFile(configuration.getRunnerParameters().getDFile());
+                    PsiFile psiFile = PsiManager.getInstance(project).findFile(configuration.getDFile());
                     Collection<DLanguageClassDeclaration> cds = PsiTreeUtil.findChildrenOfType(psiFile, DLanguageClassDeclaration.class);
                     for (DLanguageClassDeclaration cd : cds) {
 
@@ -119,7 +119,7 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
         String testPath = className + "." + testMethodName;
         final String workingDirectory = project.getBasePath();
         try {
-            final String testFile = configuration.getRunnerParameters().getDFile().getCanonicalPath();
+            final String testFile = configuration.getDFile().getCanonicalPath();
 
             // rdmd -I/Users/hendriki/.dub/packages/d-unit-0.7.2/src ./source/SomeTest.d --filter CoolTest.shouldReturnName
             GeneralCommandLine commandLine = new GeneralCommandLine();
