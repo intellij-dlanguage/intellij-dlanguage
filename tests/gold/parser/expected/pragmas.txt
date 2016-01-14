@@ -12,7 +12,7 @@ D Language File
         DLanguageDeclarationBlockImpl(DECLARATION_BLOCK)
           DLanguageDeclDefImpl(DECL_DEF)
             PsiElement(DLanguageTokenType.;)(';')
-  PsiComment(DLanguageTokenType.line_comment)('// just by itself')
+  PsiComment(DLanguageTokenType.LINE_COMMENT)('// just by itself')
   DLanguageStatementImpl(STATEMENT)
     DLanguageNonEmptyStatementImpl(NON_EMPTY_STATEMENT)
       DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
@@ -46,7 +46,7 @@ D Language File
                                                   IDENTIFIER
                                                     PsiElement(DLanguageTokenType.ID)('declaration')
                   PsiElement(DLanguageTokenType.;)(';')
-  PsiComment(DLanguageTokenType.line_comment)('// influence one declaration')
+  PsiComment(DLanguageTokenType.LINE_COMMENT)('// influence one declaration')
   DLanguageDeclDefsImpl(DECL_DEFS)
     DLanguageDeclDefImpl(DECL_DEF)
       DLanguageAttributeSpecifierImpl(ATTRIBUTE_SPECIFIER)
@@ -58,7 +58,7 @@ D Language File
               PsiElement(DLanguageTokenType.ID)('ident')
             PsiElement(DLanguageTokenType.))(')')
         PsiElement(DLanguageTokenType.:)(':')
-  PsiComment(DLanguageTokenType.line_comment)('// influence subsequent declarations')
+  PsiComment(DLanguageTokenType.LINE_COMMENT)('// influence subsequent declarations')
   DLanguageStatementImpl(STATEMENT)
     DLanguageNonEmptyStatementImpl(NON_EMPTY_STATEMENT)
       DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
@@ -115,7 +115,7 @@ D Language File
             IDENTIFIER
               PsiElement(DLanguageTokenType.ID)('ident')
             PsiElement(DLanguageTokenType.))(')')
-          PsiComment(DLanguageTokenType.line_comment)('// influence block of declarations')
+          PsiComment(DLanguageTokenType.LINE_COMMENT)('// influence block of declarations')
           DLanguageStatementImpl(STATEMENT)
             DLanguageNonEmptyStatementImpl(NON_EMPTY_STATEMENT)
               DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
@@ -222,7 +222,7 @@ D Language File
                                                   IDENTIFIER
                                                     PsiElement(DLanguageTokenType.ID)('statement')
                   PsiElement(DLanguageTokenType.;)(';')
-  PsiComment(DLanguageTokenType.line_comment)('// influence one statement')
+  PsiComment(DLanguageTokenType.LINE_COMMENT)('// influence one statement')
   DLanguageStatementImpl(STATEMENT)
     DLanguageNonEmptyStatementImpl(NON_EMPTY_STATEMENT)
       DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
@@ -233,7 +233,7 @@ D Language File
             IDENTIFIER
               PsiElement(DLanguageTokenType.ID)('ident')
             PsiElement(DLanguageTokenType.))(')')
-          PsiComment(DLanguageTokenType.line_comment)('// influence block of statements')
+          PsiComment(DLanguageTokenType.LINE_COMMENT)('// influence block of statements')
           DLanguageStatementImpl(STATEMENT)
             DLanguageNonEmptyStatementImpl(NON_EMPTY_STATEMENT)
               DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)

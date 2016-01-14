@@ -88,5 +88,5 @@ D Language File
                                                         IDENTIFIER
                                                           PsiElement(DLanguageTokenType.ID)('c')
                   PsiElement(DLanguageTokenType.;)(';')
-  PsiComment(DLanguageTokenType.line_comment)('// Create an array from the concatenation')
-  PsiComment(DLanguageTokenType.line_comment)('// of the b and c arrays')
+  PsiComment(DLanguageTokenType.LINE_COMMENT)('// Create an array from the concatenation')
+  PsiComment(DLanguageTokenType.LINE_COMMENT)('// of the b and c arrays')

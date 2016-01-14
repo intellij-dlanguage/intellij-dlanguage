@@ -29,7 +29,7 @@ D Language File
                               IDENTIFIER
                                 PsiElement(DLanguageTokenType.ID)('a')
                         PsiElement(DLanguageTokenType.;)(';')
-                  PsiComment(DLanguageTokenType.line_comment)('// placed at offset 0')
+                  PsiComment(DLanguageTokenType.LINE_COMMENT)('// placed at offset 0')
                   DLanguageDeclDefsImpl(DECL_DEFS)
                     DLanguageDeclDefImpl(DECL_DEF)
                       DLanguageDeclarationImpl(DECLARATION)
@@ -43,7 +43,7 @@ D Language File
                                 IDENTIFIER
                                   PsiElement(DLanguageTokenType.ID)('b')
                           PsiElement(DLanguageTokenType.;)(';')
-                    PsiComment(DLanguageTokenType.line_comment)('// placed at offset 4')
+                    PsiComment(DLanguageTokenType.LINE_COMMENT)('// placed at offset 4')
                     DLanguageDeclDefsImpl(DECL_DEFS)
                       DLanguageDeclDefImpl(DECL_DEF)
                         DLanguageDeclarationImpl(DECLARATION)
@@ -57,7 +57,7 @@ D Language File
                                   IDENTIFIER
                                     PsiElement(DLanguageTokenType.ID)('c')
                             PsiElement(DLanguageTokenType.;)(';')
-              PsiComment(DLanguageTokenType.line_comment)('// placed at offset 8')
+              PsiComment(DLanguageTokenType.LINE_COMMENT)('// placed at offset 8')
               PsiElement(DLanguageTokenType.})('}')
     DLanguageDeclDefsImpl(DECL_DEFS)
       DLanguageDeclDefImpl(DECL_DEF)
@@ -106,7 +106,7 @@ D Language File
                                                           IDENTIFIER
                                                             PsiElement(DLanguageTokenType.ID)('sizeof')
                     PsiElement(DLanguageTokenType.;)(';')
-      PsiComment(DLanguageTokenType.line_comment)('// 16  );')
+      PsiComment(DLanguageTokenType.LINE_COMMENT)('// 16  );')
       DLanguageDeclDefsImpl(DECL_DEFS)
         DLanguageDeclDefImpl(DECL_DEF)
           DLanguageDeclarationImpl(DECLARATION)
@@ -140,7 +140,7 @@ D Language File
                                   IDENTIFIER
                                     PsiElement(DLanguageTokenType.ID)('a')
                             PsiElement(DLanguageTokenType.;)(';')
-                      PsiComment(DLanguageTokenType.line_comment)('// placed at offset 0')
+                      PsiComment(DLanguageTokenType.LINE_COMMENT)('// placed at offset 0')
                       DLanguageDeclDefsImpl(DECL_DEFS)
                         DLanguageDeclDefImpl(DECL_DEF)
                           DLanguageDeclarationImpl(DECLARATION)
@@ -154,7 +154,7 @@ D Language File
                                     IDENTIFIER
                                       PsiElement(DLanguageTokenType.ID)('b')
                               PsiElement(DLanguageTokenType.;)(';')
-                        PsiComment(DLanguageTokenType.line_comment)('// placed at offset 1')
+                        PsiComment(DLanguageTokenType.LINE_COMMENT)('// placed at offset 1')
                         DLanguageDeclDefsImpl(DECL_DEFS)
                           DLanguageDeclDefImpl(DECL_DEF)
                             DLanguageDeclarationImpl(DECLARATION)
@@ -168,7 +168,7 @@ D Language File
                                       IDENTIFIER
                                         PsiElement(DLanguageTokenType.ID)('c')
                                 PsiElement(DLanguageTokenType.;)(';')
-                  PsiComment(DLanguageTokenType.line_comment)('// placed at offset 5')
+                  PsiComment(DLanguageTokenType.LINE_COMMENT)('// placed at offset 5')
                   PsiElement(DLanguageTokenType.})('}')
         DLanguageDeclDefsImpl(DECL_DEFS)
           DLanguageDeclDefImpl(DECL_DEF)
@@ -217,7 +217,7 @@ D Language File
                                                               IDENTIFIER
                                                                 PsiElement(DLanguageTokenType.ID)('sizeof')
                         PsiElement(DLanguageTokenType.;)(';')
-          PsiComment(DLanguageTokenType.line_comment)('// 16')
+          PsiComment(DLanguageTokenType.LINE_COMMENT)('// 16')
           DLanguageDeclDefsImpl(DECL_DEFS)
             DLanguageDeclDefImpl(DECL_DEF)
               DLanguageAttributeSpecifierImpl(ATTRIBUTE_SPECIFIER)
@@ -260,7 +260,7 @@ D Language File
                                             IDENTIFIER
                                               PsiElement(DLanguageTokenType.ID)('a')
                                       PsiElement(DLanguageTokenType.;)(';')
-                                PsiComment(DLanguageTokenType.line_comment)('// placed at offset 0')
+                                PsiComment(DLanguageTokenType.LINE_COMMENT)('// placed at offset 0')
                                 DLanguageDeclDefsImpl(DECL_DEFS)
                                   DLanguageDeclDefImpl(DECL_DEF)
                                     DLanguageDeclarationImpl(DECLARATION)
@@ -274,7 +274,7 @@ D Language File
                                               IDENTIFIER
                                                 PsiElement(DLanguageTokenType.ID)('b')
                                         PsiElement(DLanguageTokenType.;)(';')
-                                  PsiComment(DLanguageTokenType.line_comment)('// placed at offset 1')
+                                  PsiComment(DLanguageTokenType.LINE_COMMENT)('// placed at offset 1')
                                   DLanguageDeclDefsImpl(DECL_DEFS)
                                     DLanguageDeclDefImpl(DECL_DEF)
                                       DLanguageDeclarationImpl(DECLARATION)
@@ -288,7 +288,7 @@ D Language File
                                                 IDENTIFIER
                                                   PsiElement(DLanguageTokenType.ID)('c')
                                           PsiElement(DLanguageTokenType.;)(';')
-                            PsiComment(DLanguageTokenType.line_comment)('// placed at offset 5')
+                            PsiComment(DLanguageTokenType.LINE_COMMENT)('// placed at offset 5')
                             PsiElement(DLanguageTokenType.})('}')
             DLanguageDeclDefsImpl(DECL_DEFS)
               DLanguageDeclDefImpl(DECL_DEF)
@@ -337,7 +337,7 @@ D Language File
                                                                   IDENTIFIER
                                                                     PsiElement(DLanguageTokenType.ID)('sizeof')
                             PsiElement(DLanguageTokenType.;)(';')
-              PsiComment(DLanguageTokenType.line_comment)('// 14')
+              PsiComment(DLanguageTokenType.LINE_COMMENT)('// 14')
               DLanguageDeclDefsImpl(DECL_DEFS)
                 DLanguageDeclDefImpl(DECL_DEF)
                   DLanguageDeclarationImpl(DECLARATION)
@@ -371,7 +371,7 @@ D Language File
                                           IDENTIFIER
                                             PsiElement(DLanguageTokenType.ID)('a')
                                     PsiElement(DLanguageTokenType.;)(';')
-                              PsiComment(DLanguageTokenType.line_comment)('// placed at offset 0')
+                              PsiComment(DLanguageTokenType.LINE_COMMENT)('// placed at offset 0')
                               DLanguageDeclDefsImpl(DECL_DEFS)
                                 DLanguageDeclDefImpl(DECL_DEF)
                                   DLanguageDeclarationImpl(DECLARATION)
@@ -385,7 +385,7 @@ D Language File
                                             IDENTIFIER
                                               PsiElement(DLanguageTokenType.ID)('b')
                                       PsiElement(DLanguageTokenType.;)(';')
-                                PsiComment(DLanguageTokenType.line_comment)('// placed at offset 4')
+                                PsiComment(DLanguageTokenType.LINE_COMMENT)('// placed at offset 4')
                                 DLanguageDeclDefsImpl(DECL_DEFS)
                                   DLanguageDeclDefImpl(DECL_DEF)
                                     DLanguageDeclarationImpl(DECLARATION)
@@ -399,7 +399,7 @@ D Language File
                                               IDENTIFIER
                                                 PsiElement(DLanguageTokenType.ID)('c')
                                         PsiElement(DLanguageTokenType.;)(';')
-                          PsiComment(DLanguageTokenType.line_comment)('// placed at offset 8')
+                          PsiComment(DLanguageTokenType.LINE_COMMENT)('// placed at offset 8')
                           PsiElement(DLanguageTokenType.})('}')
                 DLanguageDeclDefsImpl(DECL_DEFS)
                   DLanguageDeclDefImpl(DECL_DEF)
@@ -448,4 +448,4 @@ D Language File
                                                                       IDENTIFIER
                                                                         PsiElement(DLanguageTokenType.ID)('sizeof')
                                 PsiElement(DLanguageTokenType.;)(';')
-  PsiComment(DLanguageTokenType.line_comment)('// 12')
+  PsiComment(DLanguageTokenType.LINE_COMMENT)('// 12')

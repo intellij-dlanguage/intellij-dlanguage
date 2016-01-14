@@ -157,7 +157,7 @@ D Language File
                                   DLanguageBlockStatementImpl(BLOCK_STATEMENT)
                                     PsiElement(DLanguageTokenType.{)('{')
                                     PsiElement(DLanguageTokenType.})('}')
-                  PsiComment(DLanguageTokenType.line_comment)('// disallowed!')
+                  PsiComment(DLanguageTokenType.LINE_COMMENT)('// disallowed!')
                   PsiElement(DLanguageTokenType.})('}')
         DLanguageDeclDefsImpl(DECL_DEFS)
           DLanguageDeclDefImpl(DECL_DEF)
@@ -191,7 +191,7 @@ D Language File
                                     DLanguageBlockStatementImpl(BLOCK_STATEMENT)
                                       PsiElement(DLanguageTokenType.{)('{')
                                       PsiElement(DLanguageTokenType.})('}')
-                          PsiComment(DLanguageTokenType.line_comment)('// bar is synchronized')
+                          PsiComment(DLanguageTokenType.LINE_COMMENT)('// bar is synchronized')
                           PsiElement(DLanguageTokenType.})('}')
           DLanguageDeclDefsImpl(DECL_DEFS)
             DLanguageDeclDefImpl(DECL_DEF)
@@ -221,7 +221,7 @@ D Language File
                                           IDENTIFIER
                                             PsiElement(DLanguageTokenType.ID)('foo')
                                     PsiElement(DLanguageTokenType.;)(';')
-                            PsiComment(DLanguageTokenType.line_comment)('// disallowed: public field')
+                            PsiComment(DLanguageTokenType.LINE_COMMENT)('// disallowed: public field')
                             PsiElement(DLanguageTokenType.})('}')
             DLanguageDeclDefsImpl(DECL_DEFS)
               DLanguageDeclDefImpl(DECL_DEF)
@@ -257,5 +257,5 @@ D Language File
                                                   IDENTIFIER
                                                     PsiElement(DLanguageTokenType.ID)('bar')
                                             PsiElement(DLanguageTokenType.;)(';')
-                              PsiComment(DLanguageTokenType.line_comment)('// ok')
+                              PsiComment(DLanguageTokenType.LINE_COMMENT)('// ok')
                               PsiElement(DLanguageTokenType.})('}')

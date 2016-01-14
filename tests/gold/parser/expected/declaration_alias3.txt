@@ -97,7 +97,7 @@ D Language File
                         IDENTIFIER
                           PsiElement(DLanguageTokenType.ID)('bar')
                 PsiElement(DLanguageTokenType.;)(';')
-          PsiComment(DLanguageTokenType.line_comment)('// is it a type or a symbol?')
+          PsiComment(DLanguageTokenType.LINE_COMMENT)('// is it a type or a symbol?')
           DLanguageDeclDefsImpl(DECL_DEFS)
             DLanguageDeclDefImpl(DECL_DEF)
               DLanguageDeclarationImpl(DECLARATION)
@@ -159,7 +159,7 @@ D Language File
                               IDENTIFIER
                                 PsiElement(DLanguageTokenType.ID)('i')
                       PsiElement(DLanguageTokenType.;)(';')
-                PsiComment(DLanguageTokenType.line_comment)('// illegal, s.i is an expression')
+                PsiComment(DLanguageTokenType.LINE_COMMENT)('// illegal, s.i is an expression')
                 DLanguageDeclDefsImpl(DECL_DEFS)
                   DLanguageDeclDefImpl(DECL_DEF)
                     DLanguageDeclarationImpl(DECLARATION)
@@ -178,7 +178,7 @@ D Language File
                                 IDENTIFIER
                                   PsiElement(DLanguageTokenType.ID)('i')
                         PsiElement(DLanguageTokenType.;)(';')
-                  PsiComment(DLanguageTokenType.line_comment)('// ok')
+                  PsiComment(DLanguageTokenType.LINE_COMMENT)('// ok')
                   DLanguageDeclDefsImpl(DECL_DEFS)
                     DLanguageDeclDefImpl(DECL_DEF)
                       DLanguageDeclarationImpl(DECLARATION)
@@ -207,4 +207,4 @@ D Language File
                                                               DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                                                                 PsiElement(DLanguageTokenType.INTEGER_LITERAL)('4')
                             PsiElement(DLanguageTokenType.;)(';')
-  PsiComment(DLanguageTokenType.line_comment)('// sets S.i to 4')
+  PsiComment(DLanguageTokenType.LINE_COMMENT)('// sets S.i to 4')

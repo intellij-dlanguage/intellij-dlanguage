@@ -16,7 +16,7 @@ D Language File
                     PsiElement(DLanguageTokenType.this)('this')
                     PsiElement(DLanguageTokenType.()('(')
                     PsiElement(DLanguageTokenType.))(')')
-                    PsiComment(DLanguageTokenType.line_comment)('// destructor for Foo')
+                    PsiComment(DLanguageTokenType.LINE_COMMENT)('// destructor for Foo')
                     DLanguageFunctionBodyImpl(FUNCTION_BODY)
                       DLanguageBlockStatementImpl(BLOCK_STATEMENT)
                         PsiElement(DLanguageTokenType.{)('{')

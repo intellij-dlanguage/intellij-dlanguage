@@ -73,7 +73,7 @@ D Language File
                                                                                   IDENTIFIER
                                                                                     PsiElement(DLanguageTokenType.ID)('m')
                                                   PsiElement(DLanguageTokenType.;)(';')
-                                        PsiComment(DLanguageTokenType.line_comment)('// Ok to access member of Outer')
+                                        PsiComment(DLanguageTokenType.LINE_COMMENT)('// Ok to access member of Outer')
                                         PsiElement(DLanguageTokenType.})('}')
                             PsiElement(DLanguageTokenType.})('}')
               PsiElement(DLanguageTokenType.})('}')
@@ -163,7 +163,7 @@ D Language File
                                                                                           IDENTIFIER
                                                                                             PsiElement(DLanguageTokenType.ID)('m')
                                                           PsiElement(DLanguageTokenType.;)(';')
-                                                PsiComment(DLanguageTokenType.line_comment)('// Ok to access local variable m of func()')
+                                                PsiComment(DLanguageTokenType.LINE_COMMENT)('// Ok to access local variable m of func()')
                                                 PsiElement(DLanguageTokenType.})('}')
                                     PsiElement(DLanguageTokenType.})('}')
                 PsiElement(DLanguageTokenType.})('}')
@@ -264,7 +264,7 @@ D Language File
                                                                                               IDENTIFIER
                                                                                                 PsiElement(DLanguageTokenType.ID)('m')
                                                               PsiElement(DLanguageTokenType.;)(';')
-                                                      PsiComment(DLanguageTokenType.line_comment)('// Error, Inner is static and m needs a this')
+                                                      PsiComment(DLanguageTokenType.LINE_COMMENT)('// Error, Inner is static and m needs a this')
                                                       DLanguageStatementListImpl(STATEMENT_LIST)
                                                         DLanguageStatementImpl(STATEMENT)
                                                           DLanguageNonEmptyStatementImpl(NON_EMPTY_STATEMENT)
@@ -290,7 +290,7 @@ D Language File
                                                                                                 IDENTIFIER
                                                                                                   PsiElement(DLanguageTokenType.ID)('n')
                                                                 PsiElement(DLanguageTokenType.;)(';')
-                                                    PsiComment(DLanguageTokenType.line_comment)('// Ok, n is static')
+                                                    PsiComment(DLanguageTokenType.LINE_COMMENT)('// Ok, n is static')
                                                     PsiElement(DLanguageTokenType.})('}')
                                         PsiElement(DLanguageTokenType.})('}')
                   PsiElement(DLanguageTokenType.})('}')
@@ -402,7 +402,7 @@ D Language File
                                                                                                 IDENTIFIER
                                                                                                   PsiElement(DLanguageTokenType.ID)('m')
                                                                 PsiElement(DLanguageTokenType.;)(';')
-                                                        PsiComment(DLanguageTokenType.line_comment)('// Error, Inner is static and m is local to the stack')
+                                                        PsiComment(DLanguageTokenType.LINE_COMMENT)('// Error, Inner is static and m is local to the stack')
                                                         DLanguageStatementListImpl(STATEMENT_LIST)
                                                           DLanguageStatementImpl(STATEMENT)
                                                             DLanguageNonEmptyStatementImpl(NON_EMPTY_STATEMENT)
@@ -428,7 +428,7 @@ D Language File
                                                                                                   IDENTIFIER
                                                                                                     PsiElement(DLanguageTokenType.ID)('n')
                                                                   PsiElement(DLanguageTokenType.;)(';')
-                                                      PsiComment(DLanguageTokenType.line_comment)('// Ok, n is static')
+                                                      PsiComment(DLanguageTokenType.LINE_COMMENT)('// Ok, n is static')
                                                       PsiElement(DLanguageTokenType.})('}')
                                           PsiElement(DLanguageTokenType.})('}')
                     PsiElement(DLanguageTokenType.})('}')
@@ -541,7 +541,7 @@ D Language File
                                                                                     IDENTIFIER
                                                                                       PsiElement(DLanguageTokenType.ID)('Outer')
                                         PsiElement(DLanguageTokenType.;)(';')
-                            PsiComment(DLanguageTokenType.line_comment)('// Ok')
+                            PsiComment(DLanguageTokenType.LINE_COMMENT)('// Ok')
                             DLanguageStatementListImpl(STATEMENT_LIST)
                               DLanguageStatementImpl(STATEMENT)
                                 DLanguageNonEmptyStatementImpl(NON_EMPTY_STATEMENT)
@@ -591,7 +591,7 @@ D Language File
                                                                                         IDENTIFIER
                                                                                           PsiElement(DLanguageTokenType.ID)('Inner')
                                           PsiElement(DLanguageTokenType.;)(';')
-                              PsiComment(DLanguageTokenType.line_comment)('// Error, no 'this' for Outer')
+                              PsiComment(DLanguageTokenType.LINE_COMMENT)('// Error, no 'this' for Outer')
                               DLanguageStatementListImpl(STATEMENT_LIST)
                                 DLanguageStatementImpl(STATEMENT)
                                   DLanguageNonEmptyStatementImpl(NON_EMPTY_STATEMENT)
@@ -641,7 +641,7 @@ D Language File
                                                                                           IDENTIFIER
                                                                                             PsiElement(DLanguageTokenType.ID)('SInner')
                                             PsiElement(DLanguageTokenType.;)(';')
-                                PsiComment(DLanguageTokenType.line_comment)('// Ok')
+                                PsiComment(DLanguageTokenType.LINE_COMMENT)('// Ok')
                                 DLanguageStatementListImpl(STATEMENT_LIST)
                                   DLanguageStatementImpl(STATEMENT)
                                     DLanguageNonEmptyStatementImpl(NON_EMPTY_STATEMENT)
@@ -683,7 +683,7 @@ D Language File
                                                                                           IDENTIFIER
                                                                                             PsiElement(DLanguageTokenType.ID)('Nested')
                                               PsiElement(DLanguageTokenType.;)(';')
-                        PsiComment(DLanguageTokenType.line_comment)('// Ok')
+                        PsiComment(DLanguageTokenType.LINE_COMMENT)('// Ok')
                         PsiElement(DLanguageTokenType.})('}')
               DLanguageDeclDefsImpl(DECL_DEFS)
                 DLanguageDeclDefImpl(DECL_DEF)
@@ -982,7 +982,7 @@ D Language File
                                                                                       PsiElement(DLanguageTokenType.()('(')
                                                                                       PsiElement(DLanguageTokenType.))(')')
                                             PsiElement(DLanguageTokenType.;)(';')
-                            PsiComment(DLanguageTokenType.line_comment)('// returns 3')
+                            PsiComment(DLanguageTokenType.LINE_COMMENT)('// returns 3')
                             PsiElement(DLanguageTokenType.})('}')
                   DLanguageDeclDefsImpl(DECL_DEFS)
                     DLanguageDeclDefImpl(DECL_DEF)

@@ -134,7 +134,7 @@ D Language File
                                             IDENTIFIER
                                               PsiElement(DLanguageTokenType.ID)('temp')
                                       PsiElement(DLanguageTokenType.;)(';')
-                          PsiComment(DLanguageTokenType.line_comment)('// mutable buffer')
+                          PsiComment(DLanguageTokenType.LINE_COMMENT)('// mutable buffer')
                           DLanguageStatementListImpl(STATEMENT_LIST)
                             DLanguageStatementImpl(STATEMENT)
                               DLanguageNonEmptyStatementImpl(NON_EMPTY_STATEMENT)
@@ -335,7 +335,7 @@ D Language File
                                                                                 IDENTIFIER
                                                                                   PsiElement(DLanguageTokenType.ID)('rehash')
                                             PsiElement(DLanguageTokenType.;)(';')
-                            PsiComment(DLanguageTokenType.line_comment)('// for faster lookups')
+                            PsiComment(DLanguageTokenType.LINE_COMMENT)('// for faster lookups')
                             DLanguageStatementListImpl(STATEMENT_LIST)
                               DLanguageStatementImpl(STATEMENT)
                                 DLanguageNonEmptyStatementImpl(NON_EMPTY_STATEMENT)
