@@ -854,9 +854,8 @@ TryStatement ::=
     | 'try' ScopeStatement FinallyStatement
 
 Catches ::=
-    LastCatch
-    | Catch
-    | Catch Catches
+     Catch [Catches]
+     | LastCatch
 
 LastCatch ::=
     'catch' Statement

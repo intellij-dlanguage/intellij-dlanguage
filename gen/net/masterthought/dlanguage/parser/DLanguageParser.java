@@ -3540,30 +3540,35 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // LastCatch
-  //     | Catch
-  //     | Catch Catches
+  // Catch [Catches]
+  //      | LastCatch
   public static boolean Catches(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "Catches")) return false;
     if (!nextTokenIs(b, KW_CATCH)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = LastCatch(b, l + 1);
-    if (!r) r = Catch(b, l + 1);
-    if (!r) r = Catches_2(b, l + 1);
+    r = Catches_0(b, l + 1);
+    if (!r) r = LastCatch(b, l + 1);
     exit_section_(b, m, CATCHES, r);
     return r;
   }
 
-  // Catch Catches
-  private static boolean Catches_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "Catches_2")) return false;
+  // Catch [Catches]
+  private static boolean Catches_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "Catches_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = Catch(b, l + 1);
-    r = r && Catches(b, l + 1);
+    r = r && Catches_0_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
+  }
+
+  // [Catches]
+  private static boolean Catches_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "Catches_0_1")) return false;
+    Catches(b, l + 1);
+    return true;
   }
 
   /* ********************************************************** */
