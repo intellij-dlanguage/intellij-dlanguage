@@ -83,7 +83,25 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
                 } catch (RuntimeConfigurationError runtimeConfigurationError) {
                     runtimeConfigurationError.printStackTrace();
                 }
+            }
 
+
+            // NOTE: After this, actual run your tests and, as results come back, call:
+            //   testFinished() when a test method finishes successfully
+            //   testFailed() when a test method finishes with a failure
+            //   testIgnored() when a test method is skipped for any reason
+            //   testSuiteFinished() when all methods in a test class finish
+            //   testRunFinished() when all tests have completed
+            //   testRunCanceled() if the user has canceled the run if you need to clean up anything
+            //   testStdOut() to print the output from a test class/method to the console view for review
+//            }
+        });
+
+        // Actually run tests in separate runnable to avoid blocking the GUI
+        ApplicationManager.getApplication().executeOnPooledThread(new Runnable() {
+
+            @Override
+            public void run() {
                 for (Object o : testClassToTestMethodNames.entrySet()) {
                     Map.Entry pair = (Map.Entry) o;
                     String className = (String) pair.getKey();
@@ -100,17 +118,6 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
 
                 testRunFinished();
             }
-
-
-            // NOTE: After this, actual run your tests and, as results come back, call:
-            //   testFinished() when a test method finishes successfully
-            //   testFailed() when a test method finishes with a failure
-            //   testIgnored() when a test method is skipped for any reason
-            //   testSuiteFinished() when all methods in a test class finish
-            //   testRunFinished() when all tests have completed
-            //   testRunCanceled() if the user has canceled the run if you need to clean up anything
-            //   testStdOut() to print the output from a test class/method to the console view for review
-//            }
         });
 
     }
@@ -129,7 +136,7 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
             parametersList.addParametersString("-I/Users/kings/.dub/packages/d-unit-0.7.2/src");
             parametersList.addParametersString(testFile);
             parametersList.addParametersString("--filter");
-            parametersList.addParametersString(testPath);
+            parametersList.addParametersString(testPath + "$"); //regex to locate exact test
 
             final StringBuilder builder = new StringBuilder();
             try {

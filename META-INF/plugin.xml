@@ -129,6 +129,10 @@
                    text="Restart DCD Server" description="Restarts the DCD server">
              <add-to-group group-id="ToolsMenu" anchor="last"/>
            </action>
+        <action id="net.masterthought.dlanguage.ProcessDLibs" class="net.masterthought.dlanguage.actions.ProcessDLibs"
+                text="Process D Libs" description="Processes the D Libraries">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
     </actions>
 
     <module-components>
