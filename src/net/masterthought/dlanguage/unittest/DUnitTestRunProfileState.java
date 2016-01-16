@@ -74,19 +74,19 @@ public class DUnitTestRunProfileState implements RunProfileState
 //        CoverageHelper.attachToProcess(unitTestRunConfiguration, processHandler, getRunnerSettings());
 
         // Register an action to re-run failed tests
-//        ApexUnitTestRerunFailedTestsAction rerunFailedTestsAction = new ApexUnitTestRerunFailedTestsAction(project, consoleView);
-//        rerunFailedTestsAction.init(((BaseTestsOutputConsoleView) consoleView).getProperties());
-//        rerunFailedTestsAction.setModelProvider(new Getter<TestFrameworkRunningModel>()
-//        {
-//            @Override
-//            public TestFrameworkRunningModel get()
-//            {
-//                return consoleView.getResultsViewer();
-//            }
-//        });
+        DUnitTestRerunFailedTestsAction rerunFailedTestsAction = new DUnitTestRerunFailedTestsAction(project, consoleView);
+        rerunFailedTestsAction.init(((BaseTestsOutputConsoleView) consoleView).getProperties());
+        rerunFailedTestsAction.setModelProvider(new Getter<TestFrameworkRunningModel>()
+        {
+            @Override
+            public TestFrameworkRunningModel get()
+            {
+                return consoleView.getResultsViewer();
+            }
+        });
 
         DefaultExecutionResult executionResult = new DefaultExecutionResult(consoleView, processHandler);
-//        executionResult.setRestartActions(rerunFailedTestsAction);
+        executionResult.setRestartActions(rerunFailedTestsAction);
 
         // Start the process handler
         ApplicationManager.getApplication().invokeLater(new Runnable()
