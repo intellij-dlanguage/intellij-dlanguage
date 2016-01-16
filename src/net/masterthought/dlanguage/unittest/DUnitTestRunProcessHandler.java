@@ -6,20 +6,31 @@ import com.intellij.execution.configurations.ParametersList;
 import com.intellij.execution.configurations.RuntimeConfigurationError;
 import com.intellij.execution.process.*;
 import com.intellij.execution.testframework.sm.ServiceMessageBuilder;
+import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationType;
+import com.intellij.notification.Notifications;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.roots.OrderRootType;
+import com.intellij.openapi.roots.libraries.Library;
+import com.intellij.openapi.roots.libraries.LibraryTable;
+import com.intellij.openapi.roots.libraries.LibraryTablesRegistrar;
 import com.intellij.openapi.util.Key;
+import com.intellij.openapi.vfs.*;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.psi.*;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.OutputStream;
 import java.util.*;
 
 public class DUnitTestRunProcessHandler extends ProcessHandler {
+    private static final Logger LOG = Logger.getInstance(DUnitTestRunProcessHandler.class);
     private Map<String, Set<String>> testClassToTestMethodNames = new HashMap<>();
 
     private final Map<String, Integer> nodeIdsByFullTestName = new HashMap<>();
@@ -97,32 +108,83 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
 //            }
         });
 
-        // Actually run tests in separate runnable to avoid blocking the GUI
-        ApplicationManager.getApplication().executeOnPooledThread(new Runnable() {
+        // get d-unit path
+        final String dunitPath = getDUnitPath();
 
-            @Override
-            public void run() {
-                for (Object o : testClassToTestMethodNames.entrySet()) {
-                    Map.Entry pair = (Map.Entry) o;
-                    String className = (String) pair.getKey();
-                    Set<String> methodNames = (Set<String>) pair.getValue();
-                    testSuiteStarted(className, methodNames.size());
+        if (dunitPath == null) {
+            String message = "Please add d-unit to your dub.json/dub.sdl and run Tools > Process D Libraries";
+            Notifications.Bus.notify(new Notification(
+                    "Execute Tests", "No d-unit dependency found", message, NotificationType.ERROR), project);
+            LOG.warn(message);
+        } else {
+            // Actually run tests in separate runnable to avoid blocking the GUI
+            ApplicationManager.getApplication().executeOnPooledThread(new Runnable() {
 
-                    for (String testMethodName : methodNames) {
-                        testStarted(className, testMethodName);
-                        executeTest(className, testMethodName);
+                @Override
+                public void run() {
+                    for (Object o : testClassToTestMethodNames.entrySet()) {
+                        Map.Entry pair = (Map.Entry) o;
+                        String className = (String) pair.getKey();
+                        Set<String> methodNames = (Set<String>) pair.getValue();
+                        testSuiteStarted(className, methodNames.size());
+
+                        for (String testMethodName : methodNames) {
+                            testStarted(className, testMethodName);
+                            executeTest(className, testMethodName, dunitPath);
+                        }
+
+                        testSuiteFinished(className, 0);
                     }
 
-                    testSuiteFinished(className, 0);
+                    testRunFinished();
                 }
-
-                testRunFinished();
-            }
-        });
+            });
+        }
 
     }
 
-    private void executeTest(String className, String testMethodName) {
+    private String getDUnitPath() {
+        LibraryTable projectLibraryTable = LibraryTablesRegistrar.getInstance().getLibraryTable(project);
+        for (Library lib : projectLibraryTable.getLibraries()) {
+            String name = lib.getName();
+            if (name != null) {
+                if (name.contains("d-unit-")) {
+                    VirtualFile[] files = lib.getFiles(OrderRootType.CLASSES);
+                    if (files.length > 0) {
+                        return dubImportPath(files[0].getCanonicalPath());
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    private String dubImportPath(String rootPath) {
+        String pathUrl = VirtualFileManager.constructUrl(LocalFileSystem.PROTOCOL, rootPath);
+        VirtualFile file = VirtualFileManager.getInstance().findFileByUrl(pathUrl);
+        if (file == null) {
+            return null;
+        }
+        final List<String> sourcesDir = new ArrayList<>();
+        VfsUtilCore.visitChildrenRecursively(file, new VirtualFileVisitor() {
+            @Override
+            public boolean visitFile(@NotNull VirtualFile file) {
+                if (file.isDirectory()) {
+                    if (file.getName().equals("source")) {
+                        sourcesDir.add("source");
+                    }
+                    if (file.getName().equals("src")) {
+                        sourcesDir.add("src");
+                    }
+                }
+                return true;
+            }
+        });
+        return sourcesDir.isEmpty() ? null : VirtualFileManager.constructUrl(LocalFileSystem.PROTOCOL, rootPath + "/" + sourcesDir.get(0));
+    }
+
+
+    private void executeTest(String className, String testMethodName, String dunitPath) {
         String testPath = className + "." + testMethodName;
         final String workingDirectory = project.getBasePath();
         try {
@@ -133,7 +195,7 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
             commandLine.setWorkDirectory(workingDirectory);
             commandLine.setExePath("rdmd");
             ParametersList parametersList = commandLine.getParametersList();
-            parametersList.addParametersString("-I/Users/kings/.dub/packages/d-unit-0.7.2/src");
+            parametersList.addParametersString("-I" + dunitPath);
             parametersList.addParametersString(testFile);
             parametersList.addParametersString("--filter");
             parametersList.addParametersString(testPath + "$"); //regex to locate exact test
@@ -169,7 +231,6 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
         } catch (RuntimeConfigurationError runtimeConfigurationError) {
             runtimeConfigurationError.printStackTrace();
         }
-
 
     }
 

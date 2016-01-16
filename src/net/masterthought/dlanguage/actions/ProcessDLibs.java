@@ -18,9 +18,8 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.roots.ModifiableRootModel;
-import com.intellij.openapi.roots.ModuleRootModificationUtil;
-import com.intellij.openapi.roots.OrderRootType;
+import com.intellij.openapi.roots.*;
+import com.intellij.openapi.roots.impl.OrderEntryUtil;
 import com.intellij.openapi.roots.libraries.Library;
 import com.intellij.openapi.roots.libraries.LibraryTable;
 import com.intellij.openapi.roots.libraries.LibraryTablesRegistrar;
@@ -33,6 +32,7 @@ import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.ui.components.JBList;
 import net.masterthought.dlanguage.module.DLanguageModuleType;
 import net.masterthought.dlanguage.settings.ToolKey;
+import net.masterthought.dlanguage.utils.DToolsNotificationListener;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -42,7 +42,7 @@ import java.util.Iterator;
 public class ProcessDLibs extends AnAction implements DumbAware {
     private static final Logger LOG = Logger.getInstance(ProcessDLibs.class);
 
-    public static final String MENU_PATH = "Tools > Process D Libs";
+    public static final String MENU_PATH = "Tools > Process D Libraries";
 
     @Override
     public void update(@NotNull AnActionEvent e) {
@@ -92,13 +92,31 @@ public class ProcessDLibs extends AnAction implements DumbAware {
     }
 
     private static void processDLibs(@NotNull AnActionEvent e, @NotNull final Module module) {
-
         Project project = getEventProject(e);
-        final String dubPAth = ToolKey.DUB_KEY.getPath(project);
+        final String prefix = "Unable to process D libraries - ";
+        if (project == null) {
+            displayError(e, prefix + "No active project.");
+            return;
+        }
+
+        // remove all existing libs
+        removeDLibs(module, project);
+
+        // ask dub for required libs
+        final String dubPath = ToolKey.DUB_KEY.getPath(project);
+
+        if (dubPath == null) {
+            Notifications.Bus.notify(
+                    new Notification(e.getPresentation().getText(), "Process D Libraries",
+                            "DUB executable path is empty"+
+                                    "<br/><a href='configureDLanguageTools'>Configure</a>",
+                            NotificationType.WARNING, new DToolsNotificationListener(project)), project);
+            return;
+        }
 
         GeneralCommandLine commandLine = new GeneralCommandLine();
         commandLine.setWorkDirectory(module.getProject().getBasePath());
-        commandLine.setExePath(dubPAth);
+        commandLine.setExePath(dubPath);
         ParametersList parametersList = commandLine.getParametersList();
         parametersList.addParametersString("describe");
 
@@ -118,8 +136,8 @@ public class ProcessDLibs extends AnAction implements DumbAware {
 
             // remove the warning line at the top if it exists
             String json = builder.toString().replaceAll("WARNING.+","").trim();
-//            System.out.println(json);
 
+            // process output of dub describe to get external libraries list
             JsonObject jsonObject = new JsonParser().parse(json).getAsJsonObject();
             JsonArray packages = jsonObject.get("packages").getAsJsonArray();
             for (JsonElement pkg : packages) {
@@ -132,20 +150,19 @@ public class ProcessDLibs extends AnAction implements DumbAware {
                 }
             }
 
+            Notifications.Bus.notify(
+                    new Notification(e.getPresentation().getText(), "Process D Libraries",
+                            "Added your dub dependency libraries",
+                            NotificationType.INFORMATION, new DToolsNotificationListener(project)), project);
+
         } catch (ExecutionException ex) {
             ex.printStackTrace();
         }
-
     }
 
     private static void createLibraryDependency(final Module module, Project project, String libraryName, String libraryPath) {
         LibraryTable projectLibraryTable = LibraryTablesRegistrar.getInstance().getLibraryTable(project);
         final LibraryTable.ModifiableModel projectLibraryModel = projectLibraryTable.getModifiableModel();
-
-        // remove existing libs
-//        for(Library lib : projectLibraryModel.getLibraries()){
-//            projectLibraryModel.removeLibrary(lib);
-//        }
 
         final Library library = projectLibraryModel.createLibrary(libraryName);
         final Library.ModifiableModel libraryModel = library.getModifiableModel();
@@ -165,10 +182,52 @@ public class ProcessDLibs extends AnAction implements DumbAware {
         }
     }
 
+    private static void removeDLibs(Module module, Project project){
+        LibraryTable projectLibraryTable = LibraryTablesRegistrar.getInstance().getLibraryTable(project);
+        for(Library lib : projectLibraryTable.getLibraries()){
+            removeLibraryIfNeeded(module,lib.getName());
+        }
+    }
+
+    private static void removeLibraryIfNeeded(Module module, String libraryName) {
+        ApplicationManager.getApplication().assertIsDispatchThread();
+
+        final ModifiableModelsProvider modelsProvider = ModifiableModelsProvider.SERVICE.getInstance();
+        final ModifiableRootModel model = modelsProvider.getModuleModifiableModel(module);
+        final LibraryOrderEntry dLibraryEntry = OrderEntryUtil.findLibraryOrderEntry(model, libraryName);
+        if (dLibraryEntry != null) {
+            ApplicationManager.getApplication().runWriteAction(new Runnable() {
+                @Override
+                public void run() {
+                    Library library = dLibraryEntry.getLibrary();
+                    if (library != null) {
+                        LibraryTable table = library.getTable();
+                        if (table != null) {
+                            table.removeLibrary(library);
+                            model.removeOrderEntry(dLibraryEntry);
+                            modelsProvider.commitModuleModifiableModel(model);
+                        }
+                    }
+                    else {
+                        modelsProvider.disposeModuleModifiableModel(model);
+                    }
+                }
+            });
+        }
+        else {
+            ApplicationManager.getApplication().runWriteAction(new Runnable() {
+                @Override
+                public void run() {
+                    modelsProvider.disposeModuleModifiableModel(model);
+                }
+            });
+        }
+    }
+
     private static void displayError(@NotNull AnActionEvent e, @NotNull String message) {
         final String groupId = e.getPresentation().getText();
         Notifications.Bus.notify(new Notification(
-                groupId, "Restart dcd-server", message, NotificationType.ERROR), getEventProject(e));
+                groupId, "Process D libs", message, NotificationType.ERROR), getEventProject(e));
         LOG.warn(message);
     }
 
