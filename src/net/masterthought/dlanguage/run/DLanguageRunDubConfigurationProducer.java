@@ -14,6 +14,8 @@ import net.masterthought.dlanguage.psi.DLanguageFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import static net.masterthought.dlanguage.utils.DUtil.isDunitTestFile;
+
 public class DLanguageRunDubConfigurationProducer extends RunConfigurationProducer<DLanguageRunDubConfiguration> {
 
 
@@ -45,7 +47,13 @@ public class DLanguageRunDubConfigurationProducer extends RunConfigurationProduc
                 virtualFile != null &&
                 ProjectRootManager.getInstance(context.getProject()).getFileIndex().isInContent(virtualFile) &&
                 !DLanguageWritingAccessProvider.isInDLanguageSdkOrDLanguagePackagesFolder(psiFile.getProject(), virtualFile)) {
-            return virtualFile;
+
+            // dont try to run this producer if is a test file
+            if (isDunitTestFile(psiFile)) {
+                return null;
+            } else {
+                return virtualFile;
+            }
         }
 
         return null;

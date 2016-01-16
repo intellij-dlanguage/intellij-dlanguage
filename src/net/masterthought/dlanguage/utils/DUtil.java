@@ -95,7 +95,7 @@ public class DUtil {
 
                 // add class decls
                 for (DLanguageClassDeclaration d : cd) {
-                    if(d.getIdentifier() != null) {
+                    if (d.getIdentifier() != null) {
                         ne.add(d.getIdentifier());
                     }
                 }
@@ -131,7 +131,7 @@ public class DUtil {
                 // add class decl
                 Collection<DLanguageClassDeclaration> cd = PsiTreeUtil.findChildrenOfType(file, DLanguageClassDeclaration.class);
                 for (DLanguageClassDeclaration d : cd) {
-                    if(d.getIdentifier() != null) {
+                    if (d.getIdentifier() != null) {
                         ne.add(d.getIdentifier());
                     }
                 }
@@ -213,7 +213,7 @@ public class DUtil {
         return element instanceof PsiNamedElement && definitionNode((PsiNamedElement) element);
     }
 
-    public static boolean isNotNullOrEmpty(String str){
+    public static boolean isNotNullOrEmpty(String str) {
         return (str != null && !str.isEmpty());
     }
 
@@ -243,5 +243,20 @@ public class DUtil {
 //        }
 //        return result;
 //    }
+
+
+    public static boolean isDunitTestFile(PsiFile psiFile) {
+        Collection<DLanguageClassDeclaration> cds = PsiTreeUtil.findChildrenOfType(psiFile, DLanguageClassDeclaration.class);
+        for (DLanguageClassDeclaration cd : cds) {
+            // if a class contains the UnitTest mixin assume its a valid d-unit test class
+            Collection<DLanguageTemplateMixin> tmis = PsiTreeUtil.findChildrenOfType(cd, DLanguageTemplateMixin.class);
+            for (DLanguageTemplateMixin tmi : tmis) {
+                if (tmi.getText().contains("UnitTest")) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
 

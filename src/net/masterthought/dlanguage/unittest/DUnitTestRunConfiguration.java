@@ -117,11 +117,11 @@ public class DUnitTestRunConfiguration extends LocatableConfigurationBase {
         return dFile;
     }
 
-//    @Nullable
-//    public String suggestedName() {
-//        final String filePath = myRunnerParameters.getFilePath();
-//        return filePath == null ? null : PathUtil.getFileName(filePath);
-//    }
+    @Nullable
+    public String suggestedName() {
+        final String filePath = getdFilePath();
+        return filePath == null ? null : PathUtil.getFileName(filePath);
+    }
 //
 //    public DUnitTestRunConfiguration clone() {
 //        final DUnitTestRunConfiguration clone = (DUnitTestRunConfiguration)super.clone();

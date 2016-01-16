@@ -50,11 +50,10 @@ public class ProcessDLibs extends AnAction implements DumbAware {
     }
 
     private static boolean enabled(@NotNull AnActionEvent e) {
-//        final Project project = getEventProject(e);
-//        if (project == null) return false;
-//        final String cdcServerPath = ToolKey.DCD_SERVER_KEY.getPath(project);
-//        return cdcServerPath != null && !cdcServerPath.isEmpty() && DLanguageModuleType.findModules(project).size() > 0;
-        return true;
+        final Project project = getEventProject(e);
+        if (project == null) return false;
+        final String dubPath = ToolKey.DUB_KEY.getPath(project);
+        return dubPath != null && !dubPath.isEmpty() && DLanguageModuleType.findModules(project).size() > 0;
     }
 
     @Override

@@ -7,10 +7,19 @@ import com.intellij.openapi.util.Ref;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
+import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.DLanguageWritingAccessProvider;
+import net.masterthought.dlanguage.psi.DLanguageClassDeclaration;
 import net.masterthought.dlanguage.psi.DLanguageFile;
+import net.masterthought.dlanguage.psi.DLanguageIdentifier;
+import net.masterthought.dlanguage.psi.DLanguageTemplateMixin;
+import net.masterthought.dlanguage.utils.DUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Collection;
+
+import static net.masterthought.dlanguage.utils.DUtil.*;
 
 public class DUnitTestRunConfigurationProducer extends RunConfigurationProducer<DUnitTestRunConfiguration> {
 
@@ -43,7 +52,13 @@ public class DUnitTestRunConfigurationProducer extends RunConfigurationProducer<
                 virtualFile != null &&
                 ProjectRootManager.getInstance(context.getProject()).getFileIndex().isInContent(virtualFile) &&
                 !DLanguageWritingAccessProvider.isInDLanguageSdkOrDLanguagePackagesFolder(psiFile.getProject(), virtualFile)) {
-            return virtualFile;
+
+            // only run this producer if is test file
+            if (isDunitTestFile(psiFile)) {
+                return virtualFile;
+            } else {
+                return null;
+            }
         }
 
         return null;
