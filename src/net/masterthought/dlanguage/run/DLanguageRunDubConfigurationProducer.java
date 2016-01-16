@@ -31,7 +31,7 @@ public class DLanguageRunDubConfigurationProducer extends RunConfigurationProduc
             if (module != null) {
                 configuration.setModule(module);
             }
-            configuration.setName("with Dub");
+            configuration.setName("Dub");
             return true;
         }
         return false;
