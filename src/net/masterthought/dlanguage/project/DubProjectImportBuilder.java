@@ -16,6 +16,7 @@ import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.Pair;
 import com.intellij.packaging.artifacts.ModifiableArtifactModel;
 import com.intellij.projectImport.ProjectImportBuilder;
+import gnu.trove.THashSet;
 import net.masterthought.dlanguage.DLanguageIcons;
 import net.masterthought.dlanguage.DLanguageSdkType;
 import net.masterthought.dlanguage.module.DLanguageDubModuleBuilder;
@@ -39,11 +40,18 @@ public class DubProjectImportBuilder extends ProjectImportBuilder<String> {
 
     public static class Parameters {
         public List<String> packages;
-        public boolean openModuleSettings;
+        public boolean openModuleSettings = false;
     }
 
     private Parameters parameters;
 
+    @NotNull
+    public Parameters getParameters() {
+        if (parameters == null) {
+            parameters = new Parameters();
+        }
+        return parameters;
+    }
 
     @NotNull
     @Override
@@ -58,20 +66,20 @@ public class DubProjectImportBuilder extends ProjectImportBuilder<String> {
 
     @Override
     public List<String> getList() {
-        return parameters.packages;
+        return getParameters().packages;
     }
 
     @Override
     public void setList(List<String> list) throws ConfigurationException {
-       parameters.packages = list;
+        getParameters().packages = list;
     }
 
     public boolean isOpenProjectSettingsAfter() {
-        return parameters.openModuleSettings;
+        return getParameters().openModuleSettings;
     }
 
     public void setOpenProjectSettingsAfter(boolean on) {
-        parameters.openModuleSettings = on;
+        getParameters().openModuleSettings = on;
     }
 
     @Override
@@ -106,10 +114,10 @@ public class DubProjectImportBuilder extends ProjectImportBuilder<String> {
         DubConfigurationParser dubConfigurationParser = new DubConfigurationParser(project.getBaseDir().getCanonicalPath());
         DubConfigurationParser.DubPackage pkg = dubConfigurationParser.getDubPackage();
         DLanguageDubModuleBuilder builder = new DLanguageDubModuleBuilder();
-        builder.setModuleFilePath(pkg.path);
+        builder.setModuleFilePath(pkg.path + pkg.name + ".iml");
         builder.setContentEntryPath(pkg.path);
         builder.setName(pkg.name);
-//        builder.addSourcePath(Pair.create(pkg.path + pkg.sourcesDir, ""));
+        builder.addSourcePath(Pair.create(pkg.path + pkg.sourcesDir, ""));
         try {
             Module module = builder.createModule(moduleModel);
             builder.commit(project);
