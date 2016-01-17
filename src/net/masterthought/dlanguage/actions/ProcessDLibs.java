@@ -75,7 +75,7 @@ public class ProcessDLibs extends AnAction implements DumbAware {
         final JList list = new JBList(JBList.createDefaultListModel(modules.toArray()));
         JBPopup popup = JBPopupFactory.getInstance()
                 .createListPopupBuilder(list)
-                .setTitle("Restart dcd-server for module")
+                .setTitle("Process D libraries for module")
                 .setItemChoosenCallback(makeModuleChoiceCallback(e, list))
                 .createPopup();
         popup.showCenteredInCurrentWindow(project);

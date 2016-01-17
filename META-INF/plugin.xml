@@ -39,6 +39,11 @@
         <sdkType implementation="net.masterthought.dlanguage.DLanguageSdkType"/>
         <runConfigurationProducer implementation="net.masterthought.dlanguage.run.DLanguageRunDubConfigurationProducer"/>
 
+        <!-- project open and import -->
+        <projectImportProvider implementation="net.masterthought.dlanguage.project.DubProjectImportProvider"/>
+        <projectImportBuilder implementation="net.masterthought.dlanguage.project.DubProjectImportBuilder"/>
+        <!--<projectOpenProcessor id="DubProjectOpenProcessor" implementation="net.masterthought.dlanguage.project.DubProjectOpenProcessor"/>-->
+
         <!-- module -->
         <internalFileTemplate name="D Language Module"/>
         <moduleType id="DLANGUAGE_MODULE" implementationClass="net.masterthought.dlanguage.module.DLanguageModuleType"/>
