@@ -50,12 +50,13 @@ go to Preferences > Plugins > Install plugin from disk and choose the jar you do
 
 ## Quick Usage
 
-#### Open existing DUB project
+#### Import an existing DUB project
 
-  * File -> Open then choose your existing dub project folder
-  * After the project loads - right click on the module (first item in the project tree on left pane) and choose Module Settings (f4)
-  * In Module Setting - in the right pane in the Sources tab - locate the source directory in the tree and click it - and then click the blue sources folder at the top of the pane where it says Mark as
-  * That will mark the source folder as a Source folder in intellij - and it will go blue - now intellij know where to find the source code for your dub module and you can use the run configurations now
+  * If you have an existing dub project you can import it via File > Import Project
+  * Only dub.json is supported currently - if you want dub.sdl support please raise an Issue for it
+
+ ![Import]
+ (https://github.com/kingsleyh/DLanguage/raw/master/.README/import-dub-project.png)
 
 #### New Project with DUB
 
@@ -63,7 +64,23 @@ go to Preferences > Plugins > Install plugin from disk and choose the jar you do
   * Or you can open an existing dub project by doing File -> Open 
   * Once a dub project is loaded there is right click menu option to run with dub, or you can use the run config - run with Dub
   * Before running go and configure the DTools in Preferences -> Other Settings -> D Tools
-  
+
+#### Basic DUB Dependency Support
+
+  * There is very basic dub dependency support via Tools > Process D Libraries
+  * It reads the dub dependencies and loads the libraries into the External Libraries
+
+  ![Dub  Dependency]
+   (https://github.com/kingsleyh/DLanguage/raw/master/.README/process-d-libs.png)
+
+#### Basic D-Unit Test Runner Support
+
+  * If you add the d-unit dependency to your dub.json [d-unit](http://code.dlang.org/packages/d-unit)
+  * and then run Process D Libraries you will be able to run d-unit tests
+
+  ![Test Support]
+   (https://github.com/kingsleyh/DLanguage/raw/master/.README/d-unit-support.png)
+
 #### Configure DTools
 
 The best option is to do and get the following tools and build them according to their github page instructions:
