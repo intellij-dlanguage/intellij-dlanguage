@@ -42,7 +42,7 @@
         <!-- project open and import -->
         <projectImportProvider implementation="net.masterthought.dlanguage.project.DubProjectImportProvider"/>
         <projectImportBuilder implementation="net.masterthought.dlanguage.project.DubProjectImportBuilder"/>
-        <projectOpenProcessor id="DubProjectOpenProcessor" implementation="net.masterthought.dlanguage.project.DubProjectOpenProcessor"/>
+        <!--<projectOpenProcessor id="DubProjectOpenProcessor" implementation="net.masterthought.dlanguage.project.DubProjectOpenProcessor"/>-->
 
         <!-- module -->
         <internalFileTemplate name="D Language Module"/>
