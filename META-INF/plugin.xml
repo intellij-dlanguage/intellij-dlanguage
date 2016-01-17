@@ -42,7 +42,7 @@
         <!-- project open and import -->
         <projectImportProvider implementation="net.masterthought.dlanguage.project.DubProjectImportProvider"/>
         <projectImportBuilder implementation="net.masterthought.dlanguage.project.DubProjectImportBuilder"/>
-        <!--<projectOpenProcessor id="DubProjectOpenProcessor" implementation="net.masterthought.dlanguage.project.DubProjectOpenProcessor"/>-->
+        <projectOpenProcessor id="DubProjectOpenProcessor" implementation="net.masterthought.dlanguage.project.DubProjectOpenProcessor"/>
 
         <!-- module -->
         <internalFileTemplate name="D Language Module"/>
@@ -100,7 +100,7 @@
         <configurationType implementation="net.masterthought.dlanguage.unittest.DUnitTestRunConfigurationType"/>
         <runConfigurationProducer implementation="net.masterthought.dlanguage.unittest.DUnitTestRunConfigurationProducer"/>
         <programRunner implementation="net.masterthought.dlanguage.unittest.DUnitTestProgramRunner"/>
-        <testFramework implementation="net.masterthought.dlanguage.unittest.DUnitTestFramework"/>
+        <!--<testFramework implementation="net.masterthought.dlanguage.unittest.DUnitTestFramework"/>-->
         <!--<testFinder implementation="net.masterthought.dlanguage.unittest.DUnitTestFinder"/>-->
         <!--<consoleFilterProvider implementation="net.masterthought.dlanguage.unittest.DStackTraceFilter"/>-->
         <!--<analyzeStacktraceFilter implementation="net.masterthought.dlanguage.unittest.DStackTraceFilter"/>-->

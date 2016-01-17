@@ -34,6 +34,10 @@ public class DubProjectImportBuilder extends ProjectImportBuilder<String> {
 
     private static final Logger LOG = Logger.getInstance("#" + DubProjectImportBuilder.class.getName());
 
+    public void setRootDirectory(String path) {
+
+    }
+
     public static class Parameters {
         public List<String> packages;
         public boolean openModuleSettings = false;
