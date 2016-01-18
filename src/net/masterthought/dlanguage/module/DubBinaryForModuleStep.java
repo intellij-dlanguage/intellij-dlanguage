@@ -9,6 +9,7 @@ import com.intellij.openapi.ui.ComboBox;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.openapi.util.Pair;
 import com.intellij.projectImport.ProjectFormatPanel;
+import net.masterthought.dlanguage.project.DubProjectImportBuilder;
 import net.masterthought.dlanguage.utils.GuiUtil;
 
 import javax.swing.*;
@@ -70,6 +71,8 @@ public class DubBinaryForModuleStep extends ModuleWizardStep {
 
                     dubBuilder.setDubBinary(this.dubBinary.getText());
                 }
+            } else if(moduleBuilder instanceof DubProjectImportBuilder){
+                ((DubProjectImportBuilder) moduleBuilder).getParameters().dubBinary = this.dubBinary.getText();
             }
         }
 

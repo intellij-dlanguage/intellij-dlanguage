@@ -30,7 +30,7 @@ import java.util.Comparator;
 import java.util.List;
 
 
-public class DubProjectImportBuilder extends ProjectImportBuilder<String> {
+public class DubProjectImportBuilder extends ProjectImportBuilder<DubConfigurationParser.DubPackage> {
 
     private static final Logger LOG = Logger.getInstance("#" + DubProjectImportBuilder.class.getName());
 
@@ -39,11 +39,12 @@ public class DubProjectImportBuilder extends ProjectImportBuilder<String> {
     }
 
     public static class Parameters {
-        public List<String> packages;
+        public List<DubConfigurationParser.DubPackage> packages;
         public boolean openModuleSettings = false;
+        public String dubBinary;
     }
 
-    private Parameters parameters;
+    public Parameters parameters;
 
     @NotNull
     public Parameters getParameters() {
@@ -65,12 +66,12 @@ public class DubProjectImportBuilder extends ProjectImportBuilder<String> {
     }
 
     @Override
-    public List<String> getList() {
+    public List<DubConfigurationParser.DubPackage> getList() {
         return getParameters().packages;
     }
 
     @Override
-    public void setList(List<String> list) throws ConfigurationException {
+    public void setList(List<DubConfigurationParser.DubPackage> list) throws ConfigurationException {
         getParameters().packages = list;
     }
 
@@ -83,7 +84,7 @@ public class DubProjectImportBuilder extends ProjectImportBuilder<String> {
     }
 
     @Override
-    public boolean isMarked(String s) {
+    public boolean isMarked(DubConfigurationParser.DubPackage s) {
         return getList().contains(s);
     }
 
@@ -110,7 +111,7 @@ public class DubProjectImportBuilder extends ProjectImportBuilder<String> {
 
     private List<Module> buildModules(Project project, ModifiableModuleModel moduleModel) {
         List<Module> moduleList = new ArrayList<>();
-        DubConfigurationParser dubConfigurationParser = new DubConfigurationParser(project.getBaseDir().getCanonicalPath());
+        DubConfigurationParser dubConfigurationParser = new DubConfigurationParser(project, getParameters().dubBinary);
         DubConfigurationParser.DubPackage pkg = dubConfigurationParser.getDubPackage();
         DLanguageDubModuleBuilder builder = new DLanguageDubModuleBuilder();
         builder.setModuleFilePath(pkg.path + pkg.name + ".iml");

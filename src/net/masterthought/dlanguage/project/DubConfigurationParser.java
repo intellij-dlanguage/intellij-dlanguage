@@ -11,7 +11,9 @@ import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.execution.process.ProcessAdapter;
 import com.intellij.execution.process.ProcessEvent;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Key;
+import net.masterthought.dlanguage.settings.ToolKey;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -22,9 +24,14 @@ public class DubConfigurationParser {
     private static final Logger LOG = Logger.getInstance("#" + DubConfigurationParser.class.getName());
 
     private JsonObject dubConfiguration;
+    private Project project;
+    private String dubBinaryPath;
 
-    public DubConfigurationParser(String baseDir) {
-        this.dubConfiguration = parseDubConfiguration(baseDir);
+    public DubConfigurationParser(Project project, String dubBinaryPath) {
+
+        this.project = project;
+        this.dubBinaryPath = dubBinaryPath;
+        this.dubConfiguration = parseDubConfiguration();
     }
 
     public class DubPackage {
@@ -56,22 +63,15 @@ public class DubConfigurationParser {
         return packageList.get(0);
     }
 
-    private JsonObject parseDubConfiguration(String baseDir) {
-
-        LOG.info("about to parse dub config");
-        LOG.info("baseDir: " + baseDir);
-        LOG.info("checking for existance of baseDir");
-        LOG.info("exists: " + new File(baseDir).exists());
-        LOG.info("Moving on");
-
-
-        GeneralCommandLine commandLine = new GeneralCommandLine();
-        commandLine.setWorkDirectory(new File(baseDir));
-        commandLine.setExePath("dub");
-        ParametersList parametersList = commandLine.getParametersList();
-        parametersList.addParametersString("describe");
-
+    private JsonObject parseDubConfiguration() {
         try {
+            String baseDir = project.getBaseDir().getCanonicalPath();
+            GeneralCommandLine commandLine = new GeneralCommandLine();
+            commandLine.setWorkDirectory(new File(baseDir));
+            commandLine.setExePath(dubBinaryPath);
+            ParametersList parametersList = commandLine.getParametersList();
+            parametersList.addParametersString("describe");
+
             OSProcessHandler process = new OSProcessHandler(commandLine.createProcess());
 
             final StringBuilder builder = new StringBuilder();
