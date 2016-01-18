@@ -26,6 +26,7 @@ import net.masterthought.dlanguage.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.File;
 import java.io.OutputStream;
 import java.util.*;
 
@@ -180,7 +181,7 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
                 return true;
             }
         });
-        return sourcesDir.isEmpty() ? null : VirtualFileManager.constructUrl(LocalFileSystem.PROTOCOL, rootPath + "/" + sourcesDir.get(0));
+        return sourcesDir.isEmpty() ? null : rootPath + File.separator + sourcesDir.get(0);
     }
 
 
