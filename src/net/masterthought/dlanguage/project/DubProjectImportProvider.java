@@ -1,10 +1,14 @@
 package net.masterthought.dlanguage.project;
 
 import com.intellij.ide.util.projectWizard.ModuleWizardStep;
+import com.intellij.ide.util.projectWizard.ProjectJdkForModuleStep;
 import com.intellij.ide.util.projectWizard.WizardContext;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.projectImport.ProjectImportProvider;
+import net.masterthought.dlanguage.DLanguageSdkType;
+import net.masterthought.dlanguage.module.DubBinaryForModuleStep;
+import net.masterthought.dlanguage.module.DubInitForModuleStep;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -19,7 +23,12 @@ public class DubProjectImportProvider extends ProjectImportProvider {
 
     @Override
     public ModuleWizardStep[] createSteps(WizardContext wizardContext) {
-        return ModuleWizardStep.EMPTY_ARRAY;
+        List<ModuleWizardStep> steps = new ArrayList<>();
+
+        ModuleWizardStep setDubBinary = new DubBinaryForModuleStep(wizardContext);
+        steps.add(setDubBinary);
+
+        return steps.toArray(new ModuleWizardStep[steps.size()]);
     }
 
     @Override

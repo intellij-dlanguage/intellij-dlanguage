@@ -32,6 +32,11 @@ public class ToolKey {
     }
 
     @NotNull
+    public void setPath(@NotNull Project project, String newValue){
+       PropertiesComponent.getInstance(project).setValue(pathKey, newValue);
+    }
+
+    @NotNull
     public String getFlags(@NotNull Project project) {
         final String flags = PropertiesComponent.getInstance(project).getValue(flagsKey);
         return flags == null ? "" : flags;

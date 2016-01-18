@@ -10,12 +10,16 @@ import com.intellij.execution.configurations.ParametersList;
 import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.execution.process.ProcessAdapter;
 import com.intellij.execution.process.ProcessEvent;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.Key;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DubConfigurationParser {
+
+    private static final Logger LOG = Logger.getInstance("#" + DubConfigurationParser.class.getName());
 
     private JsonObject dubConfiguration;
 
@@ -53,8 +57,16 @@ public class DubConfigurationParser {
     }
 
     private JsonObject parseDubConfiguration(String baseDir) {
+
+        LOG.info("about to parse dub config");
+        LOG.info("baseDir: " + baseDir);
+        LOG.info("checking for existance of baseDir");
+        LOG.info("exists: " + new File(baseDir).exists());
+        LOG.info("Moving on");
+
+
         GeneralCommandLine commandLine = new GeneralCommandLine();
-        commandLine.setWorkDirectory(baseDir);
+        commandLine.setWorkDirectory(new File(baseDir));
         commandLine.setExePath("dub");
         ParametersList parametersList = commandLine.getParametersList();
         parametersList.addParametersString("describe");

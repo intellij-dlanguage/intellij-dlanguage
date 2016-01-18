@@ -78,12 +78,14 @@ public class DLanguageModuleType extends ModuleType<DLanguageModuleBuilder> {
                 moduleBuilder.setModuleJdk(getJdk());
             }
         };
+        ModuleWizardStep setDubBinary = new DubBinaryForModuleStep(wizardContext);
         ModuleWizardStep setDubInit = new DubInitForModuleStep(wizardContext);
-        
+
         steps.add(setCompiler);
         
         if((moduleBuilder.getBuilderId() != null && moduleBuilder.getBuilderId().equals("DLangDubApp"))){
-            steps.add(setDubInit);  
+            steps.add(setDubBinary);
+            steps.add(setDubInit);
         }
 
         return steps.toArray(new ModuleWizardStep[steps.size()]);

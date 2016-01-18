@@ -7,14 +7,17 @@ import com.intellij.execution.impl.RunManagerImpl;
 import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.execution.process.ProcessAdapter;
 import com.intellij.execution.process.ProcessEvent;
+import com.intellij.ide.impl.ProjectUtil;
 import com.intellij.openapi.extensions.Extensions;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.roots.ModifiableRootModel;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.Pair;
 import net.masterthought.dlanguage.DLanguageBundle;
 import net.masterthought.dlanguage.run.DLanguageRunDubConfigurationType;
+import net.masterthought.dlanguage.settings.ToolKey;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
@@ -33,6 +36,12 @@ public class DLanguageDubModuleBuilder extends DLanguageModuleBuilder {
     private List<Pair<String, String>> sourcePaths;
     private List<Pair<String, String>> dubInitOptions;
 
+    public String getDubBinary() {
+        return dubBinary;
+    }
+
+    private String dubBinary;
+
     public DLanguageDubModuleBuilder() {
         super("DLangDubApp", DLanguageBundle.message("module.dub.title"), DLanguageBundle.message("module.dub.description"), null);
     }
@@ -43,6 +52,10 @@ public class DLanguageDubModuleBuilder extends DLanguageModuleBuilder {
 
         Project project = rootModel.getProject();
         RunManagerImpl runManager = RunManagerImpl.getInstanceImpl(project);
+
+        if(dubBinary != null){
+            ToolKey.DUB_KEY.setPath(project, dubBinary);
+        }
 
         //Create "Run dub" configuration
         RunnerAndConfigurationSettings runDubSettings = runManager.findConfigurationByName(RUN_DUB_CONFIG_NAME);
@@ -101,7 +114,7 @@ public class DLanguageDubModuleBuilder extends DLanguageModuleBuilder {
 
         GeneralCommandLine commandLine = new GeneralCommandLine();
         commandLine.setWorkDirectory(workingDirectory);
-        commandLine.setExePath("dub");
+        commandLine.setExePath(getDubBinary());
         ParametersList parametersList = commandLine.getParametersList();
         parametersList.addParametersString("init");
 
@@ -143,5 +156,9 @@ public class DLanguageDubModuleBuilder extends DLanguageModuleBuilder {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setDubBinary(String dubBinary) {
+        this.dubBinary = dubBinary;
     }
 }
