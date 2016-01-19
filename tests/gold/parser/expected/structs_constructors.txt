@@ -813,7 +813,7 @@ D Language File
                                   DLanguagePropertyImpl(PROPERTY)
                                     PsiElement(DLanguageTokenType.@)('@')
                                     DLanguagePropertyIdentifierImpl(PROPERTY_IDENTIFIER)
-                                      PsiElement(DLanguageTokenType.disable)('disable')
+                                      PsiElement(DLanguageTokenType.ID)('disable')
                                 DLanguageDeclarationBlockImpl(DECLARATION_BLOCK)
                                   DLanguageDeclDefImpl(DECL_DEF)
                                     DLanguageConstructorImpl(CONSTRUCTOR)

@@ -221,10 +221,6 @@ HEX_EXPONENT = [pP][\+\-]? [0-9]+
 <YYINITIAL> "public"                   { return KW_PUBLIC; }
 <YYINITIAL> "export"                   { return KW_EXPORT; }
 <YYINITIAL> "property"                 { return KW_PROPERTY; }
-<YYINITIAL> "safe"                     { return KW_SAFE; }
-<YYINITIAL> "trusted"                  { return KW_TRUSTED; }
-<YYINITIAL> "system"                   { return KW_SYSTEM; }
-<YYINITIAL> "disable"                  { return KW_DISABLE; }
 <YYINITIAL> "delete"                   { return KW_DELETE; }
 <YYINITIAL> "null"                     { return KW_NULL; }
 <YYINITIAL> "true"                     { return KW_TRUE; }

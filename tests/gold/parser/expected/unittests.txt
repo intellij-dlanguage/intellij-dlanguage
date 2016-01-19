@@ -565,7 +565,7 @@ D Language File
                 DLanguagePropertyImpl(PROPERTY)
                   PsiElement(DLanguageTokenType.@)('@')
                   DLanguagePropertyIdentifierImpl(PROPERTY_IDENTIFIER)
-                    PsiElement(DLanguageTokenType.safe)('safe')
+                    PsiElement(DLanguageTokenType.ID)('safe')
               DLanguageDeclarationBlockImpl(DECLARATION_BLOCK)
                 DLanguageDeclDefImpl(DECL_DEF)
                   DLanguageAttributeSpecifierImpl(ATTRIBUTE_SPECIFIER)

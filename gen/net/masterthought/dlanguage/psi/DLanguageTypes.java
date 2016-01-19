@@ -323,7 +323,6 @@ public interface DLanguageTypes {
   IElementType KW_DELEGATE = new DLanguageTokenType("delegate");
   IElementType KW_DELETE = new DLanguageTokenType("delete");
   IElementType KW_DEPRECATED = new DLanguageTokenType("deprecated");
-  IElementType KW_DISABLE = new DLanguageTokenType("disable");
   IElementType KW_DO = new DLanguageTokenType("do");
   IElementType KW_DOUBLE = new DLanguageTokenType("double");
   IElementType KW_ELSE = new DLanguageTokenType("else");
@@ -371,7 +370,6 @@ public interface DLanguageTypes {
   IElementType KW_REAL = new DLanguageTokenType("real");
   IElementType KW_REF = new DLanguageTokenType("ref");
   IElementType KW_RETURN = new DLanguageTokenType("return");
-  IElementType KW_SAFE = new DLanguageTokenType("safe");
   IElementType KW_SCOPE = new DLanguageTokenType("scope");
   IElementType KW_SHARED = new DLanguageTokenType("shared");
   IElementType KW_SHORT = new DLanguageTokenType("short");
@@ -380,12 +378,10 @@ public interface DLanguageTypes {
   IElementType KW_SUPER = new DLanguageTokenType("super");
   IElementType KW_SWITCH = new DLanguageTokenType("switch");
   IElementType KW_SYNCHRONIZED = new DLanguageTokenType("synchronized");
-  IElementType KW_SYSTEM = new DLanguageTokenType("system");
   IElementType KW_TEMPLATE = new DLanguageTokenType("template");
   IElementType KW_THIS = new DLanguageTokenType("this");
   IElementType KW_THROW = new DLanguageTokenType("throw");
   IElementType KW_TRUE = new DLanguageTokenType("true");
-  IElementType KW_TRUSTED = new DLanguageTokenType("trusted");
   IElementType KW_TRY = new DLanguageTokenType("try");
   IElementType KW_TYPEID = new DLanguageTokenType("typeid");
   IElementType KW_TYPEOF = new DLanguageTokenType("typeof");

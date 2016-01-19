@@ -9305,10 +9305,10 @@ public class DLanguageParser implements PsiParser {
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<property identifier>");
     r = consumeToken(b, KW_PROPERTY);
-    if (!r) r = consumeToken(b, KW_SAFE);
-    if (!r) r = consumeToken(b, KW_TRUSTED);
-    if (!r) r = consumeToken(b, KW_SYSTEM);
-    if (!r) r = consumeToken(b, KW_DISABLE);
+    if (!r) r = consumeToken(b, "safe");
+    if (!r) r = consumeToken(b, "trusted");
+    if (!r) r = consumeToken(b, "system");
+    if (!r) r = consumeToken(b, "disable");
     if (!r) r = consumeToken(b, KW_NOGC);
     exit_section_(b, l, m, PROPERTY_IDENTIFIER, r, false, null);
     return r;

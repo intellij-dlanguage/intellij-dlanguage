@@ -24,12 +24,6 @@ public class DLanguagePropertyIdentifierImpl extends ASTWrapperPsiElement implem
 
   @Override
   @Nullable
-  public PsiElement getKwDisable() {
-    return findChildByType(KW_DISABLE);
-  }
-
-  @Override
-  @Nullable
   public PsiElement getKwNogc() {
     return findChildByType(KW_NOGC);
   }
@@ -38,24 +32,6 @@ public class DLanguagePropertyIdentifierImpl extends ASTWrapperPsiElement implem
   @Nullable
   public PsiElement getKwProperty() {
     return findChildByType(KW_PROPERTY);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwSafe() {
-    return findChildByType(KW_SAFE);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwSystem() {
-    return findChildByType(KW_SYSTEM);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwTrusted() {
-    return findChildByType(KW_TRUSTED);
   }
 
 }
