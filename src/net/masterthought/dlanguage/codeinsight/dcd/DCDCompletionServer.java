@@ -4,6 +4,7 @@ import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.configurations.ParametersList;
 import com.intellij.notification.NotificationType;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleComponent;
 import com.intellij.openapi.project.Project;
@@ -14,8 +15,6 @@ import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
 import net.masterthought.dlanguage.DLanguageSdkType;
-import net.masterthought.dlanguage.DSdkUtil;
-import net.masterthought.dlanguage.run.exception.NoValidDLanguageSdkFound;
 import net.masterthought.dlanguage.settings.SettingsChangeNotifier;
 import net.masterthought.dlanguage.settings.ToolKey;
 import net.masterthought.dlanguage.settings.ToolSettings;
@@ -76,7 +75,6 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
         }
     }
 
-
     private void spawnProcess() throws DCDError {
         GeneralCommandLine commandLine = new GeneralCommandLine(path);
         commandLine.setWorkDirectory(workingDirectory);
@@ -94,14 +92,14 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
 
         // try to auto add project files in source root
         String sources = getRootSourceDir();
-        if(isNotNullOrEmpty(sources)){
+        if (isNotNullOrEmpty(sources)) {
             parametersList.addParametersString("-I");
             parametersList.addParametersString(sources);
         }
 
         // try to auto add the compiler sources
         List<String> compilerSources = getCompilerSourceDirs();
-        for(String s : compilerSources){
+        for (String s : compilerSources) {
             parametersList.addParametersString("-I");
             parametersList.addParametersString(s);
         }
@@ -116,7 +114,7 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
 
     }
 
-    private String getRootSourceDir(){
+    private String getRootSourceDir() {
         Project myProject = module.getProject();
         final List<VirtualFile> sourceRoots = new ArrayList<>();
         final ProjectRootManager projectRootManager = ProjectRootManager.getInstance(myProject);
@@ -124,16 +122,16 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
         return sourceRoots.isEmpty() ? null : sourceRoots.get(0).getPath();
     }
 
-    private List<String> getCompilerSourceDirs(){
+    private List<String> getCompilerSourceDirs() {
         ArrayList<String> compilerSources = new ArrayList<>();
         ModuleRootManager moduleRootManager = ModuleRootManager.getInstance(module);
         Sdk sdk = moduleRootManager.getSdk();
 
-        if(sdk!=null && (sdk.getSdkType() instanceof DLanguageSdkType)) {
+        if (sdk != null && (sdk.getSdkType() instanceof DLanguageSdkType)) {
             String path = sdk.getHomePath();
-            if(isNotNullOrEmpty(path)){
-                if(SystemInfo.isMac) {
-                    String root = path.replaceAll("bin", "src");
+            if (isNotNullOrEmpty(path)) {
+                if (SystemInfo.isMac) {
+                    String root = path.replaceAll("bin", "/../src");
                     compilerSources.add(root + "/phobos");
                     compilerSources.add(root + "/druntime/import");
                 }
