@@ -4256,10 +4256,10 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // FuncDeclaration
+  // EnumDeclaration
+  //    | FuncDeclaration
   //    | AliasDeclaration
   //    | AggregateDeclaration
-  //    | EnumDeclaration
   //    | ImportDeclaration
   //    | TemplateDeclaration
   //    | VarDeclarations
@@ -4267,10 +4267,10 @@ public class DLanguageParser implements PsiParser {
     if (!recursion_guard_(b, l, "Declaration")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<declaration>");
-    r = FuncDeclaration(b, l + 1);
+    r = EnumDeclaration(b, l + 1);
+    if (!r) r = FuncDeclaration(b, l + 1);
     if (!r) r = AliasDeclaration(b, l + 1);
     if (!r) r = AggregateDeclaration(b, l + 1);
-    if (!r) r = EnumDeclaration(b, l + 1);
     if (!r) r = ImportDeclaration(b, l + 1);
     if (!r) r = TemplateDeclaration(b, l + 1);
     if (!r) r = VarDeclarations(b, l + 1);

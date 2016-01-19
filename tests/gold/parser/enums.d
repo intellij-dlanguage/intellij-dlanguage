@@ -1,5 +1,7 @@
 enum X { A, B, C }  // named enum
 
+enum size(X) = X.sizeof; // raised as bug for issue #84
+
 enum A = 3;
 enum B
 {

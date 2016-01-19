@@ -1601,10 +1601,10 @@ Opcode ::=
 
 
 Declaration ::=
-    FuncDeclaration
+    EnumDeclaration
+   | FuncDeclaration
    | AliasDeclaration
    | AggregateDeclaration
-   | EnumDeclaration
    | ImportDeclaration
    | TemplateDeclaration
    | VarDeclarations
