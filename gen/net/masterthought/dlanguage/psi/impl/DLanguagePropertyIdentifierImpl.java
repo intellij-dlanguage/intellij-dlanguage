@@ -28,10 +28,4 @@ public class DLanguagePropertyIdentifierImpl extends ASTWrapperPsiElement implem
     return findChildByType(KW_NOGC);
   }
 
-  @Override
-  @Nullable
-  public PsiElement getKwProperty() {
-    return findChildByType(KW_PROPERTY);
-  }
-
 }

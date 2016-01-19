@@ -76,7 +76,7 @@ D Language File
                                             IDENTIFIER
                                               PsiElement(DLanguageTokenType.ID)('sizeof')
           PsiElement(DLanguageTokenType.;)(';')
-  PsiComment(DLanguageTokenType.line_comment)('// error, size is not known')
+  PsiComment(DLanguageTokenType.LINE_COMMENT)('// error, size is not known')
   DLanguageDeclDefsImpl(DECL_DEFS)
     DLanguageDeclDefImpl(DECL_DEF)
       DLanguageDeclarationImpl(DECLARATION)
@@ -91,7 +91,7 @@ D Language File
                 IDENTIFIER
                   PsiElement(DLanguageTokenType.ID)('s')
           PsiElement(DLanguageTokenType.;)(';')
-    PsiComment(DLanguageTokenType.line_comment)('// error, cannot initialize unknown contents')
+    PsiComment(DLanguageTokenType.LINE_COMMENT)('// error, cannot initialize unknown contents')
     DLanguageDeclDefsImpl(DECL_DEFS)
       DLanguageDeclDefImpl(DECL_DEF)
         DLanguageDeclarationImpl(DECLARATION)
@@ -109,4 +109,4 @@ D Language File
                   IDENTIFIER
                     PsiElement(DLanguageTokenType.ID)('p')
             PsiElement(DLanguageTokenType.;)(';')
-  PsiComment(DLanguageTokenType.line_comment)('// ok, knowledge of members is not necessary')
+  PsiComment(DLanguageTokenType.LINE_COMMENT)('// ok, knowledge of members is not necessary')

@@ -158,7 +158,7 @@ D Language File
                                                             IDENTIFIER
                                                               PsiElement(DLanguageTokenType.ID)('q')
                         PsiElement(DLanguageTokenType.;)(';')
-                PsiComment(DLanguageTokenType.line_comment)('// p points to the same thing q does.')
+                PsiComment(DLanguageTokenType.LINE_COMMENT)('// p points to the same thing q does.')
                 DLanguageDeclDefsImpl(DECL_DEFS)
                   DLanguageDeclDefImpl(DECL_DEF)
                     DLanguageDeclarationImpl(DECLARATION)
@@ -201,7 +201,7 @@ D Language File
                                                                 IDENTIFIER
                                                                   PsiElement(DLanguageTokenType.ID)('ptr')
                           PsiElement(DLanguageTokenType.;)(';')
-                  PsiComment(DLanguageTokenType.line_comment)('// p points to the first element of the array s.')
+                  PsiComment(DLanguageTokenType.LINE_COMMENT)('// p points to the first element of the array s.')
                   DLanguageDeclDefsImpl(DECL_DEFS)
                     DLanguageDeclDefImpl(DECL_DEF)
                       DLanguageDeclarationImpl(DECLARATION)
@@ -244,7 +244,7 @@ D Language File
                                                                   IDENTIFIER
                                                                     PsiElement(DLanguageTokenType.ID)('ptr')
                             PsiElement(DLanguageTokenType.;)(';')
-                    PsiComment(DLanguageTokenType.line_comment)('// p points to the first element of the array a.')
+                    PsiComment(DLanguageTokenType.LINE_COMMENT)('// p points to the first element of the array a.')
                     DLanguageDeclDefsImpl(DECL_DEFS)
                       DLanguageDeclDefImpl(DECL_DEF)
                         DLanguageDeclarationImpl(DECLARATION)
@@ -274,7 +274,7 @@ D Language File
                                                                   IDENTIFIER
                                                                     PsiElement(DLanguageTokenType.ID)('s')
                               PsiElement(DLanguageTokenType.;)(';')
-                      PsiComment(DLanguageTokenType.line_comment)('// a is initialized to point to the s array')
+                      PsiComment(DLanguageTokenType.LINE_COMMENT)('// a is initialized to point to the s array')
                       DLanguageDeclDefsImpl(DECL_DEFS)
                         DLanguageDeclDefImpl(DECL_DEF)
                           DLanguageDeclarationImpl(DECLARATION)
@@ -304,4 +304,4 @@ D Language File
                                                                     IDENTIFIER
                                                                       PsiElement(DLanguageTokenType.ID)('b')
                                 PsiElement(DLanguageTokenType.;)(';')
-  PsiComment(DLanguageTokenType.line_comment)('// a points to the same array as b does')
+  PsiComment(DLanguageTokenType.LINE_COMMENT)('// a points to the same array as b does')

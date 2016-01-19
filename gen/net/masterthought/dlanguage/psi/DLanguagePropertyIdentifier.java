@@ -10,7 +10,4 @@ public interface DLanguagePropertyIdentifier extends PsiElement {
   @Nullable
   PsiElement getKwNogc();
 
-  @Nullable
-  PsiElement getKwProperty();
-
 }

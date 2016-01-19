@@ -215,7 +215,7 @@ D Language File
                                                                                                         PsiElement(DLanguageTokenType.))(')')
                                                             PsiElement(DLanguageTokenType.))(')')
                           PsiElement(DLanguageTokenType.;)(';')
-                PsiComment(DLanguageTokenType.line_comment)('// prints: hello betty')
+                PsiComment(DLanguageTokenType.LINE_COMMENT)('// prints: hello betty')
                 PsiElement(DLanguageTokenType.})('}')
       DLanguageDeclDefsImpl(DECL_DEFS)
         DLanguageDeclDefImpl(DECL_DEF)

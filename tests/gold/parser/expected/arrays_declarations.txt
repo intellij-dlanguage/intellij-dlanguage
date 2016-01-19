@@ -16,7 +16,7 @@ D Language File
                 IDENTIFIER
                   PsiElement(DLanguageTokenType.ID)('a')
           PsiElement(DLanguageTokenType.;)(';')
-    PsiComment(DLanguageTokenType.line_comment)('// dynamic array of ints')
+    PsiComment(DLanguageTokenType.LINE_COMMENT)('// dynamic array of ints')
     DLanguageDeclDefsImpl(DECL_DEFS)
       DLanguageDeclDefImpl(DECL_DEF)
         DLanguageDeclarationImpl(DECLARATION)
@@ -68,7 +68,7 @@ D Language File
                   IDENTIFIER
                     PsiElement(DLanguageTokenType.ID)('b')
             PsiElement(DLanguageTokenType.;)(';')
-      PsiComment(DLanguageTokenType.line_comment)('// array of 3 arrays of 4 ints each')
+      PsiComment(DLanguageTokenType.LINE_COMMENT)('// array of 3 arrays of 4 ints each')
       DLanguageDeclDefsImpl(DECL_DEFS)
         DLanguageDeclDefImpl(DECL_DEF)
           DLanguageDeclarationImpl(DECLARATION)
@@ -105,7 +105,7 @@ D Language File
                     IDENTIFIER
                       PsiElement(DLanguageTokenType.ID)('c')
               PsiElement(DLanguageTokenType.;)(';')
-        PsiComment(DLanguageTokenType.line_comment)('// array of 5 dynamic arrays of ints.')
+        PsiComment(DLanguageTokenType.LINE_COMMENT)('// array of 5 dynamic arrays of ints.')
         DLanguageDeclDefsImpl(DECL_DEFS)
           DLanguageDeclDefImpl(DECL_DEF)
             DLanguageDeclarationImpl(DECLARATION)
@@ -148,7 +148,7 @@ D Language File
                       IDENTIFIER
                         PsiElement(DLanguageTokenType.ID)('d')
                 PsiElement(DLanguageTokenType.;)(';')
-          PsiComment(DLanguageTokenType.line_comment)('// array of 3 pointers to dynamic arrays of pointers to ints')
+          PsiComment(DLanguageTokenType.LINE_COMMENT)('// array of 3 pointers to dynamic arrays of pointers to ints')
           DLanguageDeclDefsImpl(DECL_DEFS)
             DLanguageDeclDefImpl(DECL_DEF)
               DLanguageDeclarationImpl(DECLARATION)
@@ -169,4 +169,4 @@ D Language File
                         IDENTIFIER
                           PsiElement(DLanguageTokenType.ID)('e')
                   PsiElement(DLanguageTokenType.;)(';')
-  PsiComment(DLanguageTokenType.line_comment)('// pointer to dynamic array of ints')
+  PsiComment(DLanguageTokenType.LINE_COMMENT)('// pointer to dynamic array of ints')

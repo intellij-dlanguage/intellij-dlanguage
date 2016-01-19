@@ -76,7 +76,7 @@ D Language File
                                                 IDENTIFIER
                                                   PsiElement(DLanguageTokenType.ID)('x')
           PsiElement(DLanguageTokenType.;)(';')
-  PsiComment(DLanguageTokenType.line_comment)('// ok')
+  PsiComment(DLanguageTokenType.LINE_COMMENT)('// ok')
   DLanguageStatementImpl(STATEMENT)
     DLanguageNonEmptyStatementImpl(NON_EMPTY_STATEMENT)
       DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
@@ -106,4 +106,4 @@ D Language File
                                                 IDENTIFIER
                                                   PsiElement(DLanguageTokenType.ID)('f')
           PsiElement(DLanguageTokenType.;)(';')
-  PsiComment(DLanguageTokenType.line_comment)('// fails to instantiate')
+  PsiComment(DLanguageTokenType.LINE_COMMENT)('// fails to instantiate')

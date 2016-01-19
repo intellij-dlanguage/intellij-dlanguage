@@ -12,7 +12,7 @@ D Language File
                 IDENTIFIER
                   PsiElement(DLanguageTokenType.ID)('a')
           PsiElement(DLanguageTokenType.;)(';')
-    PsiComment(DLanguageTokenType.line_comment)('// declare a as type int and initialize it to 0')
+    PsiComment(DLanguageTokenType.LINE_COMMENT)('// declare a as type int and initialize it to 0')
     DLanguageDeclDefsImpl(DECL_DEFS)
       DLanguageDeclDefImpl(DECL_DEF)
         DLanguageDeclarationImpl(DECLARATION)
@@ -24,7 +24,7 @@ D Language File
               DLanguageAggregateBodyImpl(AGGREGATE_BODY)
                 PsiElement(DLanguageTokenType.{)('{')
                 PsiElement(DLanguageTokenType.})('}')
-      PsiComment(DLanguageTokenType.line_comment)('// declare struct s')
+      PsiComment(DLanguageTokenType.LINE_COMMENT)('// declare struct s')
       DLanguageDeclDefsImpl(DECL_DEFS)
         DLanguageDeclDefImpl(DECL_DEF)
           DLanguageDeclarationImpl(DECLARATION)

@@ -9320,7 +9320,7 @@ public class DLanguageParser implements PsiParser {
     if (!recursion_guard_(b, l, "PropertyIdentifier")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<property identifier>");
-    r = consumeToken(b, KW_PROPERTY);
+    r = consumeToken(b, "property");
     if (!r) r = consumeToken(b, "safe");
     if (!r) r = consumeToken(b, "trusted");
     if (!r) r = consumeToken(b, "system");

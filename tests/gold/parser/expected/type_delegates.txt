@@ -24,7 +24,7 @@ D Language File
                 IDENTIFIER
                   PsiElement(DLanguageTokenType.ID)('fp')
           PsiElement(DLanguageTokenType.;)(';')
-    PsiComment(DLanguageTokenType.line_comment)('// fp is pointer to a function')
+    PsiComment(DLanguageTokenType.LINE_COMMENT)('// fp is pointer to a function')
     DLanguageDeclDefsImpl(DECL_DEFS)
       DLanguageDeclDefImpl(DECL_DEF)
         DLanguageDeclarationImpl(DECLARATION)
@@ -50,4 +50,4 @@ D Language File
                   IDENTIFIER
                     PsiElement(DLanguageTokenType.ID)('dg')
             PsiElement(DLanguageTokenType.;)(';')
-  PsiComment(DLanguageTokenType.line_comment)('// dg is a delegate to a function')
+  PsiComment(DLanguageTokenType.LINE_COMMENT)('// dg is a delegate to a function')

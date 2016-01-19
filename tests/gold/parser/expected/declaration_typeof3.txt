@@ -16,7 +16,7 @@ D Language File
                       DLanguagePropertyImpl(PROPERTY)
                         PsiElement(DLanguageTokenType.@)('@')
                         DLanguagePropertyIdentifierImpl(PROPERTY_IDENTIFIER)
-                          PsiElement(DLanguageTokenType.property)('property')
+                          PsiElement(DLanguageTokenType.ID)('property')
                     DLanguageDeclarationBlockImpl(DECLARATION_BLOCK)
                       DLanguageDeclDefImpl(DECL_DEF)
                         DLanguageDeclarationImpl(DECLARATION)
@@ -105,4 +105,4 @@ D Language File
                   IDENTIFIER
                     PsiElement(DLanguageTokenType.ID)('n')
             PsiElement(DLanguageTokenType.;)(';')
-  PsiComment(DLanguageTokenType.line_comment)('// n is declared to be an int')
+  PsiComment(DLanguageTokenType.LINE_COMMENT)('// n is declared to be an int')

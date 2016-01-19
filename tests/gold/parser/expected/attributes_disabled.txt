@@ -79,5 +79,5 @@ D Language File
                                                                   PsiElement(DLanguageTokenType.()('(')
                                                                   PsiElement(DLanguageTokenType.))(')')
                           PsiElement(DLanguageTokenType.;)(';')
-                PsiComment(DLanguageTokenType.line_comment)('// error, foo is disabled')
+                PsiComment(DLanguageTokenType.LINE_COMMENT)('// error, foo is disabled')
                 PsiElement(DLanguageTokenType.})('}')

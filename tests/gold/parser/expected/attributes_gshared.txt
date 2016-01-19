@@ -12,7 +12,7 @@ D Language File
                 IDENTIFIER
                   PsiElement(DLanguageTokenType.ID)('foo')
           PsiElement(DLanguageTokenType.;)(';')
-    PsiComment(DLanguageTokenType.line_comment)('// Each thread has its own exclusive copy of foo.')
+    PsiComment(DLanguageTokenType.LINE_COMMENT)('// Each thread has its own exclusive copy of foo.')
     DLanguageDeclDefsImpl(DECL_DEFS)
       DLanguageDeclDefImpl(DECL_DEF)
         DLanguageAttributeSpecifierImpl(ATTRIBUTE_SPECIFIER)
@@ -31,7 +31,7 @@ D Language File
                         IDENTIFIER
                           PsiElement(DLanguageTokenType.ID)('bar')
                   PsiElement(DLanguageTokenType.;)(';')
-      PsiComment(DLanguageTokenType.line_comment)('// bar is shared by all threads.')
+      PsiComment(DLanguageTokenType.LINE_COMMENT)('// bar is shared by all threads.')
       DLanguageDeclDefsImpl(DECL_DEFS)
         DLanguageDeclDefImpl(DECL_DEF)
           DLanguageDeclarationImpl(DECLARATION)
@@ -147,5 +147,5 @@ D Language File
                                                           DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                                                             PsiElement(DLanguageTokenType.++)('++')
                                 PsiElement(DLanguageTokenType.;)(';')
-                    PsiComment(DLanguageTokenType.line_comment)('// Not thread safe.')
+                    PsiComment(DLanguageTokenType.LINE_COMMENT)('// Not thread safe.')
                     PsiElement(DLanguageTokenType.})('}')

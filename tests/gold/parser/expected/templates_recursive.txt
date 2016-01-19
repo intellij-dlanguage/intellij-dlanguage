@@ -273,5 +273,5 @@ D Language File
                                                                                                     PsiElement(DLanguageTokenType.))(')')
                                                               PsiElement(DLanguageTokenType.))(')')
                             PsiElement(DLanguageTokenType.;)(';')
-                  PsiComment(DLanguageTokenType.line_comment)('// prints 24')
+                  PsiComment(DLanguageTokenType.LINE_COMMENT)('// prints 24')
                   PsiElement(DLanguageTokenType.})('}')

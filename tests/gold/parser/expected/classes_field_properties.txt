@@ -124,7 +124,7 @@ D Language File
                                                                           IDENTIFIER
                                                                             PsiElement(DLanguageTokenType.ID)('offsetof')
                                   PsiElement(DLanguageTokenType.;)(';')
-                    PsiComment(DLanguageTokenType.line_comment)('// error, Foo.x needs a 'this' reference')
+                    PsiComment(DLanguageTokenType.LINE_COMMENT)('// error, Foo.x needs a 'this' reference')
                     DLanguageStatementListImpl(STATEMENT_LIST)
                       DLanguageStatementImpl(STATEMENT)
                         DLanguageNonEmptyStatementImpl(NON_EMPTY_STATEMENT)
@@ -183,5 +183,5 @@ D Language File
                                                                             IDENTIFIER
                                                                               PsiElement(DLanguageTokenType.ID)('offsetof')
                                     PsiElement(DLanguageTokenType.;)(';')
-                PsiComment(DLanguageTokenType.line_comment)('// ok')
+                PsiComment(DLanguageTokenType.LINE_COMMENT)('// ok')
                 PsiElement(DLanguageTokenType.})('}')

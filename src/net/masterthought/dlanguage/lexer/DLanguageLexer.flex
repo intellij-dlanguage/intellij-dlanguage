@@ -220,7 +220,6 @@ HEX_EXPONENT = [pP][\+\-]? [0-9]+
 <YYINITIAL> "protected"                { return KW_PROTECTED; }
 <YYINITIAL> "public"                   { return KW_PUBLIC; }
 <YYINITIAL> "export"                   { return KW_EXPORT; }
-<YYINITIAL> "property"                 { return KW_PROPERTY; }
 <YYINITIAL> "delete"                   { return KW_DELETE; }
 <YYINITIAL> "null"                     { return KW_NULL; }
 <YYINITIAL> "true"                     { return KW_TRUE; }

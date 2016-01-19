@@ -289,7 +289,7 @@ public interface DLanguageTypes {
   IElementType XOR_EXPRESSION = new DLanguageElementType("XOR_EXPRESSION");
 
   IElementType ALTERNATE_WYSIWYG_STRING = new DLanguageTokenType("ALTERNATE_WYSIWYG_STRING");
-  IElementType BLOCK_COMMENT = new DLanguageTokenType("block_comment");
+  IElementType BLOCK_COMMENT = new DLanguageTokenType("BLOCK_COMMENT");
   IElementType CHARACTER_LITERAL = new DLanguageTokenType("CHARACTER_LITERAL");
   IElementType DELIMITED_STRING = new DLanguageTokenType("DELIMITED_STRING");
   IElementType DOUBLE_QUOTED_STRING = new DLanguageTokenType("DOUBLE_QUOTED_STRING");
@@ -363,7 +363,6 @@ public interface DLanguageTypes {
   IElementType KW_PACKAGE = new DLanguageTokenType("package");
   IElementType KW_PRAGMA = new DLanguageTokenType("pragma");
   IElementType KW_PRIVATE = new DLanguageTokenType("private");
-  IElementType KW_PROPERTY = new DLanguageTokenType("property");
   IElementType KW_PROTECTED = new DLanguageTokenType("protected");
   IElementType KW_PUBLIC = new DLanguageTokenType("public");
   IElementType KW_PURE = new DLanguageTokenType("pure");
@@ -404,7 +403,7 @@ public interface DLanguageTypes {
   IElementType KW___PARAMETERS = new DLanguageTokenType("__parameters");
   IElementType KW___PRETTY_FUNCTION__ = new DLanguageTokenType("__PRETTY_FUNCTION__");
   IElementType KW___TRAITS = new DLanguageTokenType("__traits");
-  IElementType LINE_COMMENT = new DLanguageTokenType("line_comment");
+  IElementType LINE_COMMENT = new DLanguageTokenType("LINE_COMMENT");
   IElementType NESTING_BLOCK_COMMENT = new DLanguageTokenType("NESTING_BLOCK_COMMENT");
   IElementType OP_AND = new DLanguageTokenType("&");
   IElementType OP_AND_EQ = new DLanguageTokenType("&=");

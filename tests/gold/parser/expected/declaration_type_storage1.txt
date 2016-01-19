@@ -1,5 +1,5 @@
 D Language File
-  PsiComment(DLanguageTokenType.line_comment)('// ref declares the parameter x to be passed by reference')
+  PsiComment(DLanguageTokenType.LINE_COMMENT)('// ref declares the parameter x to be passed by reference')
   DLanguageDeclDefsImpl(DECL_DEFS)
     DLanguageDeclDefImpl(DECL_DEF)
       DLanguageDeclarationImpl(DECLARATION)
@@ -60,7 +60,7 @@ D Language File
                                                   DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                                                     PsiElement(DLanguageTokenType.++)('++')
                         PsiElement(DLanguageTokenType.;)(';')
-              PsiComment(DLanguageTokenType.line_comment)('// so modifications to x will be visible in the caller')
+              PsiComment(DLanguageTokenType.LINE_COMMENT)('// so modifications to x will be visible in the caller')
               PsiElement(DLanguageTokenType.})('}')
     DLanguageDeclDefsImpl(DECL_DEFS)
       DLanguageDeclDefImpl(DECL_DEF)
@@ -186,7 +186,7 @@ D Language File
                                                                                             PsiElement(DLanguageTokenType.INTEGER_LITERAL)('2')
                                                                 PsiElement(DLanguageTokenType.))(')')
                               PsiElement(DLanguageTokenType.;)(';')
-                      PsiComment(DLanguageTokenType.line_comment)('// However, ref is not a type qualifier, so the following is illegal:')
+                      PsiComment(DLanguageTokenType.LINE_COMMENT)('// However, ref is not a type qualifier, so the following is illegal:')
                       DLanguageStatementListImpl(STATEMENT_LIST)
                         DLanguageStatementImpl(STATEMENT)
                           DLanguageNonEmptyStatementImpl(NON_EMPTY_STATEMENT)
@@ -210,5 +210,5 @@ D Language File
                                           IDENTIFIER
                                             PsiElement(DLanguageTokenType.ID)('y')
                                     PsiElement(DLanguageTokenType.;)(';')
-                PsiComment(DLanguageTokenType.line_comment)('// Error: ref is not a type qualifier.')
+                PsiComment(DLanguageTokenType.LINE_COMMENT)('// Error: ref is not a type qualifier.')
                 PsiElement(DLanguageTokenType.})('}')

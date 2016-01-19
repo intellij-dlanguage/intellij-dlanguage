@@ -34,7 +34,7 @@ D Language File
                                                 IDENTIFIER
                                                   PsiElement(DLanguageTokenType.ID)('p')
           PsiElement(DLanguageTokenType.;)(';')
-  PsiComment(DLanguageTokenType.line_comment)('// cast (-p) to type foo')
+  PsiComment(DLanguageTokenType.LINE_COMMENT)('// cast (-p) to type foo')
   DLanguageStatementImpl(STATEMENT)
     DLanguageNonEmptyStatementImpl(NON_EMPTY_STATEMENT)
       DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
@@ -77,7 +77,7 @@ D Language File
                                             IDENTIFIER
                                               PsiElement(DLanguageTokenType.ID)('p')
           PsiElement(DLanguageTokenType.;)(';')
-  PsiComment(DLanguageTokenType.line_comment)('// subtract p from foo')
+  PsiComment(DLanguageTokenType.LINE_COMMENT)('// subtract p from foo')
   DLanguageDeclDefsImpl(DECL_DEFS)
     DLanguageDeclDefImpl(DECL_DEF)
       DLanguageDeclarationImpl(DECLARATION)
@@ -180,7 +180,7 @@ D Language File
                                                                     IDENTIFIER
                                                                       PsiElement(DLanguageTokenType.ID)('a')
                                 PsiElement(DLanguageTokenType.;)(';')
-                    PsiComment(DLanguageTokenType.line_comment)('// error, need cast')
+                    PsiComment(DLanguageTokenType.LINE_COMMENT)('// error, need cast')
                     DLanguageStatementListImpl(STATEMENT_LIST)
                       DLanguageStatementImpl(STATEMENT)
                         DLanguageNonEmptyStatementImpl(NON_EMPTY_STATEMENT)
@@ -227,7 +227,7 @@ D Language File
                                                                           IDENTIFIER
                                                                             PsiElement(DLanguageTokenType.ID)('a')
                                   PsiElement(DLanguageTokenType.;)(';')
-                      PsiComment(DLanguageTokenType.line_comment)('// bx is null if a is not a B')
+                      PsiComment(DLanguageTokenType.LINE_COMMENT)('// bx is null if a is not a B')
                       DLanguageStatementListImpl(STATEMENT_LIST)
                         DLanguageStatementImpl(STATEMENT)
                           DLanguageNonEmptyStatementImpl(NON_EMPTY_STATEMENT)
@@ -264,7 +264,7 @@ D Language File
                                                                         IDENTIFIER
                                                                           PsiElement(DLanguageTokenType.ID)('b')
                                     PsiElement(DLanguageTokenType.;)(';')
-                        PsiComment(DLanguageTokenType.line_comment)('// no cast needed')
+                        PsiComment(DLanguageTokenType.LINE_COMMENT)('// no cast needed')
                         DLanguageStatementListImpl(STATEMENT_LIST)
                           DLanguageStatementImpl(STATEMENT)
                             DLanguageNonEmptyStatementImpl(NON_EMPTY_STATEMENT)
@@ -311,5 +311,5 @@ D Language File
                                                                               IDENTIFIER
                                                                                 PsiElement(DLanguageTokenType.ID)('b')
                                       PsiElement(DLanguageTokenType.;)(';')
-                  PsiComment(DLanguageTokenType.line_comment)('// no runtime check needed for upcast')
+                  PsiComment(DLanguageTokenType.LINE_COMMENT)('// no runtime check needed for upcast')
                   PsiElement(DLanguageTokenType.})('}')

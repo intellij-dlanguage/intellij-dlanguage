@@ -1,5 +1,5 @@
 D Language File
-  PsiComment(DLanguageTokenType.line_comment)('// issue #76')
+  PsiComment(DLanguageTokenType.LINE_COMMENT)('// issue #76')
   DLanguageDeclDefsImpl(DECL_DEFS)
     DLanguageDeclDefImpl(DECL_DEF)
       DLanguageAttributeSpecifierImpl(ATTRIBUTE_SPECIFIER)
@@ -63,7 +63,7 @@ D Language File
                             PsiElement(DLanguageTokenType.,)(',')
                             PsiElement(DLanguageTokenType.])(']')
                   PsiElement(DLanguageTokenType.;)(';')
-    PsiComment(DLanguageTokenType.line_comment)('// error')
+    PsiComment(DLanguageTokenType.LINE_COMMENT)('// error')
     DLanguageDeclDefsImpl(DECL_DEFS)
       DLanguageDeclDefImpl(DECL_DEF)
         DLanguageDeclarationImpl(DECLARATION)
@@ -83,5 +83,5 @@ D Language File
                     IDENTIFIER
                       PsiElement(DLanguageTokenType.ID)('two')
               PsiElement(DLanguageTokenType.,)(',')
-              PsiComment(DLanguageTokenType.line_comment)('// error')
+              PsiComment(DLanguageTokenType.LINE_COMMENT)('// error')
               PsiElement(DLanguageTokenType.})('}')
