@@ -4,6 +4,9 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.configurations.ParametersList;
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.application.ModalityState;
+import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtilCore;
 import com.intellij.psi.PsiFile;
@@ -34,13 +37,18 @@ public class DCDCompletionClient {
     BufferedWriter output;
 
     public List<Completion> autoComplete(int position, PsiFile file) throws DCDCompletionServer.DCDError {
-        final List<Completion> completions = Lists.newArrayList();
         final Module module = ModuleUtilCore.findModuleForPsiElement(file);
+        
+        List<Completion> completions = Lists.newArrayList();
         if (module != null) {
             String path = lookupPath(module);
             if (path != null) {
                 DCDCompletionServer dcdCompletionServer = module.getComponent(DCDCompletionServer.class);
-                dcdCompletionServer.exec();
+                try {
+                    dcdCompletionServer.exec();
+                } catch (DCDCompletionServer.DCDError dcdError) {
+                    dcdError.printStackTrace();
+                }
 //                System.out.println("position: " + String.valueOf(position));
                 final String workingDirectory = file.getProject().getBasePath();
 
@@ -62,9 +70,11 @@ public class DCDCompletionClient {
                 }
 
                 try {
-                    process = commandLine.createProcess();
-                    output = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
-                    output.write(file.getText());
+                    if(process == null) {
+                        process = commandLine.createProcess();
+                        output = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
+                        output.write(file.getText());
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -89,7 +99,7 @@ public class DCDCompletionClient {
                         System.out.println(tokens);
                     }
                 }
-                kill();
+//                kill();
             }
         }
         return completions;
