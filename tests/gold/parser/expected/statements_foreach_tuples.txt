@@ -29,7 +29,7 @@ D Language File
                     IDENTIFIER
                       PsiElement(DLanguageTokenType.ID)('typetuple')
             PsiElement(DLanguageTokenType.;)(';')
-      PsiComment(DLanguageTokenType.LINE_COMMENT)('// for TypeTuple')
+      PsiComment(DLanguageTokenType.line_comment)('// for TypeTuple')
       DLanguageDeclDefsImpl(DECL_DEFS)
         DLanguageDeclDefImpl(DECL_DEF)
           DLanguageDeclarationImpl(DECLARATION)

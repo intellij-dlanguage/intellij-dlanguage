@@ -1,5 +1,5 @@
 D Language File
-  PsiComment(DLanguageTokenType.LINE_COMMENT)('// Test used for fixing the bitwise or bug (the pipe symbol)')
+  PsiComment(DLanguageTokenType.line_comment)('// Test used for fixing the bitwise or bug (the pipe symbol)')
   DLanguageStatementImpl(STATEMENT)
     DLanguageNonEmptyStatementImpl(NON_EMPTY_STATEMENT)
       DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)

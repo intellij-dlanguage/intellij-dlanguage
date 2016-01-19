@@ -26,7 +26,7 @@ D Language File
                             IDENTIFIER
                               PsiElement(DLanguageTokenType.ID)('a')
                       PsiElement(DLanguageTokenType.;)(';')
-                PsiComment(DLanguageTokenType.LINE_COMMENT)('// array is privately owned by this instance')
+                PsiComment(DLanguageTokenType.line_comment)('// array is privately owned by this instance')
                 DLanguageDeclDefsImpl(DECL_DEFS)
                   DLanguageDeclDefImpl(DECL_DEF)
                     DLanguagePostblitImpl(POSTBLIT)
@@ -110,7 +110,7 @@ D Language File
                             PsiElement(DLanguageTokenType.this)('this')
                             PsiElement(DLanguageTokenType.))(')')
                             PsiElement(DLanguageTokenType.;)(';')
-                PsiComment(DLanguageTokenType.LINE_COMMENT)('// disabling makes T not copyable')
+                PsiComment(DLanguageTokenType.line_comment)('// disabling makes T not copyable')
                 PsiElement(DLanguageTokenType.})('}')
       DLanguageDeclDefsImpl(DECL_DEFS)
         DLanguageDeclDefImpl(DECL_DEF)
@@ -136,7 +136,7 @@ D Language File
                                 IDENTIFIER
                                   PsiElement(DLanguageTokenType.ID)('t')
                           PsiElement(DLanguageTokenType.;)(';')
-                  PsiComment(DLanguageTokenType.LINE_COMMENT)('// uncopyable member makes S also not copyable')
+                  PsiComment(DLanguageTokenType.line_comment)('// uncopyable member makes S also not copyable')
                   PsiElement(DLanguageTokenType.})('}')
         DLanguageDeclDefsImpl(DECL_DEFS)
           DLanguageDeclDefImpl(DECL_DEF)
@@ -207,5 +207,5 @@ D Language File
                                                                         IDENTIFIER
                                                                           PsiElement(DLanguageTokenType.ID)('s')
                                     PsiElement(DLanguageTokenType.;)(';')
-                    PsiComment(DLanguageTokenType.LINE_COMMENT)('// error, S is not copyable')
+                    PsiComment(DLanguageTokenType.line_comment)('// error, S is not copyable')
                     PsiElement(DLanguageTokenType.})('}')

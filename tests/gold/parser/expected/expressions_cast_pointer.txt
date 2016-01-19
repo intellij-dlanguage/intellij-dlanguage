@@ -168,7 +168,7 @@ D Language File
                                                                           IDENTIFIER
                                                                             PsiElement(DLanguageTokenType.ID)('a')
                                   PsiElement(DLanguageTokenType.;)(';')
-                    PsiComment(DLanguageTokenType.LINE_COMMENT)('// runtime array cast misalignment')
+                    PsiComment(DLanguageTokenType.line_comment)('// runtime array cast misalignment')
                     DLanguageStatementListImpl(STATEMENT_LIST)
                       DLanguageStatementImpl(STATEMENT)
                         DLanguageNonEmptyStatementImpl(NON_EMPTY_STATEMENT)
@@ -307,9 +307,9 @@ D Language File
                                                                               IDENTIFIER
                                                                                 PsiElement(DLanguageTokenType.ID)('c')
                                       PsiElement(DLanguageTokenType.;)(';')
-                        PsiComment(DLanguageTokenType.LINE_COMMENT)('// ok')
-                        PsiComment(DLanguageTokenType.LINE_COMMENT)('// prints:')
-                        PsiComment(DLanguageTokenType.LINE_COMMENT)('// [1, 0, 0, 0, 2, 0, 0, 0, 3, 0, 0, 0]')
+                        PsiComment(DLanguageTokenType.line_comment)('// ok')
+                        PsiComment(DLanguageTokenType.line_comment)('// prints:')
+                        PsiComment(DLanguageTokenType.line_comment)('// [1, 0, 0, 0, 2, 0, 0, 0, 3, 0, 0, 0]')
                         DLanguageStatementListImpl(STATEMENT_LIST)
                           DLanguageStatementImpl(STATEMENT)
                             DLanguageNonEmptyStatementImpl(NON_EMPTY_STATEMENT)

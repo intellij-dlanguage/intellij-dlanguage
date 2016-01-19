@@ -40,4 +40,10 @@ public class DLanguageEnumBodyImpl extends ASTWrapperPsiElement implements DLang
     return findNotNullChildByType(OP_BRACES_RIGHT);
   }
 
+  @Override
+  @Nullable
+  public PsiElement getOpComma() {
+    return findChildByType(OP_COMMA);
+  }
+
 }

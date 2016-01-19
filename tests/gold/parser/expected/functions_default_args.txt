@@ -103,4 +103,4 @@ D Language File
                                                                             PsiElement(DLanguageTokenType.INTEGER_LITERAL)('4')
                                             PsiElement(DLanguageTokenType.))(')')
           PsiElement(DLanguageTokenType.;)(';')
-  PsiComment(DLanguageTokenType.LINE_COMMENT)('// same as foo(4, 3);')
+  PsiComment(DLanguageTokenType.line_comment)('// same as foo(4, 3);')

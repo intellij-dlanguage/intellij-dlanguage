@@ -192,7 +192,7 @@ D Language File
                                                                           PsiElement(DLanguageTokenType.ID)('init')
                                             PsiElement(DLanguageTokenType.))(')')
           PsiElement(DLanguageTokenType.;)(';')
-  PsiComment(DLanguageTokenType.LINE_COMMENT)('// object is still accessible')
+  PsiComment(DLanguageTokenType.line_comment)('// object is still accessible')
   DLanguageDeclDefsImpl(DECL_DEFS)
     DLanguageDeclDefImpl(DECL_DEF)
       DLanguageDeallocatorImpl(DEALLOCATOR)

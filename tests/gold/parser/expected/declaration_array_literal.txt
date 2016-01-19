@@ -71,4 +71,4 @@ D Language File
                                                                                             PsiElement(DLanguageTokenType.DOUBLE_QUOTED_STRING)('"world"')
                                                         PsiElement(DLanguageTokenType.])(']')
                   PsiElement(DLanguageTokenType.;)(';')
-  PsiComment(DLanguageTokenType.LINE_COMMENT)('// type is string[], not string[2]')
+  PsiComment(DLanguageTokenType.line_comment)('// type is string[], not string[2]')

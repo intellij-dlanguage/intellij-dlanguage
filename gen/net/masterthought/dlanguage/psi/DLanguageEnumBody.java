@@ -16,4 +16,7 @@ public interface DLanguageEnumBody extends PsiElement {
   @NotNull
   PsiElement getOpBracesRight();
 
+  @Nullable
+  PsiElement getOpComma();
+
 }

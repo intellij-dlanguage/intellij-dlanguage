@@ -223,5 +223,5 @@ D Language File
                                             PsiElement(DLanguageTokenType.ID)('a')
                                         PsiElement(DLanguageTokenType.))(')')
                                   PsiElement(DLanguageTokenType.;)(';')
-                  PsiComment(DLanguageTokenType.LINE_COMMENT)('// ["__ctor", "__dtor", "foo"]')
+                  PsiComment(DLanguageTokenType.line_comment)('// ["__ctor", "__dtor", "foo"]')
                   PsiElement(DLanguageTokenType.})('}')

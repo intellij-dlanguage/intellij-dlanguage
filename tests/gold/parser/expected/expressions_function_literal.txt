@@ -27,7 +27,7 @@ D Language File
                 IDENTIFIER
                   PsiElement(DLanguageTokenType.ID)('fp')
           PsiElement(DLanguageTokenType.;)(';')
-    PsiComment(DLanguageTokenType.LINE_COMMENT)('// declare pointer to a function')
+    PsiComment(DLanguageTokenType.line_comment)('// declare pointer to a function')
     DLanguageDeclDefsImpl(DECL_DEFS)
       DLanguageDeclDefImpl(DECL_DEF)
         DLanguageDeclarationImpl(DECLARATION)

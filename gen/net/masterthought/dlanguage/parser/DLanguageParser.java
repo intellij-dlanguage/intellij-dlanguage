@@ -1624,7 +1624,7 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // '[' ArrayMemberInitializations? ']'
+  // '[' ArrayMemberInitializations? ','? ']'
   public static boolean ArrayInitializer(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ArrayInitializer")) return false;
     if (!nextTokenIs(b, OP_BRACKET_LEFT)) return false;
@@ -1632,6 +1632,7 @@ public class DLanguageParser implements PsiParser {
     Marker m = enter_section_(b);
     r = consumeToken(b, OP_BRACKET_LEFT);
     r = r && ArrayInitializer_1(b, l + 1);
+    r = r && ArrayInitializer_2(b, l + 1);
     r = r && consumeToken(b, OP_BRACKET_RIGHT);
     exit_section_(b, m, ARRAY_INITIALIZER, r);
     return r;
@@ -1641,6 +1642,13 @@ public class DLanguageParser implements PsiParser {
   private static boolean ArrayInitializer_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ArrayInitializer_1")) return false;
     ArrayMemberInitializations(b, l + 1);
+    return true;
+  }
+
+  // ','?
+  private static boolean ArrayInitializer_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ArrayInitializer_2")) return false;
+    consumeToken(b, OP_COMMA);
     return true;
   }
 
@@ -4683,7 +4691,7 @@ public class DLanguageParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // '{' EnumMembers '}'
+  // '{' EnumMembers ','? '}'
   public static boolean EnumBody(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "EnumBody")) return false;
     if (!nextTokenIs(b, OP_BRACES_LEFT)) return false;
@@ -4691,9 +4699,17 @@ public class DLanguageParser implements PsiParser {
     Marker m = enter_section_(b);
     r = consumeToken(b, OP_BRACES_LEFT);
     r = r && EnumMembers(b, l + 1);
+    r = r && EnumBody_2(b, l + 1);
     r = r && consumeToken(b, OP_BRACES_RIGHT);
     exit_section_(b, m, ENUM_BODY, r);
     return r;
+  }
+
+  // ','?
+  private static boolean EnumBody_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "EnumBody_2")) return false;
+    consumeToken(b, OP_COMMA);
+    return true;
   }
 
   /* ********************************************************** */

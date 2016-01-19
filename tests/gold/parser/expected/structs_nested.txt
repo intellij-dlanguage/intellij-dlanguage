@@ -263,7 +263,7 @@ D Language File
                                                                           PsiElement(DLanguageTokenType.()('(')
                                                                           PsiElement(DLanguageTokenType.))(')')
                                 PsiElement(DLanguageTokenType.;)(';')
-              PsiComment(DLanguageTokenType.LINE_COMMENT)('// returns 11')
+              PsiComment(DLanguageTokenType.line_comment)('// returns 11')
               PsiElement(DLanguageTokenType.})('}')
     DLanguageDeclDefsImpl(DECL_DEFS)
       DLanguageDeclDefImpl(DECL_DEF)
@@ -391,7 +391,7 @@ D Language File
                                                                                             IDENTIFIER
                                                                                               PsiElement(DLanguageTokenType.ID)('i')
                                                             PsiElement(DLanguageTokenType.;)(';')
-                                                  PsiComment(DLanguageTokenType.LINE_COMMENT)('// error, SS is not a nested struct')
+                                                  PsiComment(DLanguageTokenType.line_comment)('// error, SS is not a nested struct')
                                                   PsiElement(DLanguageTokenType.})('}')
                                     PsiElement(DLanguageTokenType.})('}')
                 PsiElement(DLanguageTokenType.})('}')

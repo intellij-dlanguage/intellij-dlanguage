@@ -100,7 +100,7 @@ D Language File
                                             IDENTIFIER
                                               PsiElement(DLanguageTokenType.ID)('length')
           PsiElement(DLanguageTokenType.;)(';')
-  PsiComment(DLanguageTokenType.LINE_COMMENT)('// error, length not known for pointer')
+  PsiComment(DLanguageTokenType.line_comment)('// error, length not known for pointer')
   DLanguageStatementImpl(STATEMENT)
     DLanguageNonEmptyStatementImpl(NON_EMPTY_STATEMENT)
       DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
@@ -137,7 +137,7 @@ D Language File
                                             IDENTIFIER
                                               PsiElement(DLanguageTokenType.ID)('length')
           PsiElement(DLanguageTokenType.;)(';')
-  PsiComment(DLanguageTokenType.LINE_COMMENT)('// compile time constant 3')
+  PsiComment(DLanguageTokenType.line_comment)('// compile time constant 3')
   DLanguageStatementImpl(STATEMENT)
     DLanguageNonEmptyStatementImpl(NON_EMPTY_STATEMENT)
       DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
@@ -174,7 +174,7 @@ D Language File
                                             IDENTIFIER
                                               PsiElement(DLanguageTokenType.ID)('length')
           PsiElement(DLanguageTokenType.;)(';')
-  PsiComment(DLanguageTokenType.LINE_COMMENT)('// runtime value')
+  PsiComment(DLanguageTokenType.line_comment)('// runtime value')
   DLanguageStatementImpl(STATEMENT)
     DLanguageNonEmptyStatementImpl(NON_EMPTY_STATEMENT)
       DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
@@ -211,7 +211,7 @@ D Language File
                                             IDENTIFIER
                                               PsiElement(DLanguageTokenType.ID)('dup')
           PsiElement(DLanguageTokenType.;)(';')
-  PsiComment(DLanguageTokenType.LINE_COMMENT)('// error, length not known')
+  PsiComment(DLanguageTokenType.line_comment)('// error, length not known')
   DLanguageStatementImpl(STATEMENT)
     DLanguageNonEmptyStatementImpl(NON_EMPTY_STATEMENT)
       DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
@@ -248,8 +248,8 @@ D Language File
                                             IDENTIFIER
                                               PsiElement(DLanguageTokenType.ID)('dup')
           PsiElement(DLanguageTokenType.;)(';')
-  PsiComment(DLanguageTokenType.LINE_COMMENT)('// creates an array of 3 elements, copies')
-  PsiComment(DLanguageTokenType.LINE_COMMENT)('// elements s into it')
+  PsiComment(DLanguageTokenType.line_comment)('// creates an array of 3 elements, copies')
+  PsiComment(DLanguageTokenType.line_comment)('// elements s into it')
   DLanguageStatementImpl(STATEMENT)
     DLanguageNonEmptyStatementImpl(NON_EMPTY_STATEMENT)
       DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
@@ -286,5 +286,5 @@ D Language File
                                             IDENTIFIER
                                               PsiElement(DLanguageTokenType.ID)('dup')
           PsiElement(DLanguageTokenType.;)(';')
-  PsiComment(DLanguageTokenType.LINE_COMMENT)('// creates an array of a.length elements, copies')
-  PsiComment(DLanguageTokenType.LINE_COMMENT)('// elements of a into it')
+  PsiComment(DLanguageTokenType.line_comment)('// creates an array of a.length elements, copies')
+  PsiComment(DLanguageTokenType.line_comment)('// elements of a into it')

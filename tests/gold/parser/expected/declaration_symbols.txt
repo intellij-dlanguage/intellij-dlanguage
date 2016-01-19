@@ -18,7 +18,7 @@ D Language File
                   IDENTIFIER
                     PsiElement(DLanguageTokenType.ID)('y')
           PsiElement(DLanguageTokenType.;)(';')
-    PsiComment(DLanguageTokenType.LINE_COMMENT)('// x and y are ints')
+    PsiComment(DLanguageTokenType.line_comment)('// x and y are ints')
     DLanguageDeclDefsImpl(DECL_DEFS)
       DLanguageDeclDefImpl(DECL_DEF)
         DLanguageDeclarationImpl(DECLARATION)
@@ -41,7 +41,7 @@ D Language File
                     IDENTIFIER
                       PsiElement(DLanguageTokenType.ID)('y')
             PsiElement(DLanguageTokenType.;)(';')
-      PsiComment(DLanguageTokenType.LINE_COMMENT)('// x and y are pointers to ints')
+      PsiComment(DLanguageTokenType.line_comment)('// x and y are pointers to ints')
       DLanguageDeclDefsImpl(DECL_DEFS)
         DLanguageDeclDefImpl(DECL_DEF)
           DLanguageDeclarationImpl(DECLARATION)
@@ -65,4 +65,4 @@ D Language File
                       IDENTIFIER
                         PsiElement(DLanguageTokenType.ID)('y')
               PsiElement(DLanguageTokenType.;)(';')
-  PsiComment(DLanguageTokenType.LINE_COMMENT)('// x and y are arrays of ints')
+  PsiComment(DLanguageTokenType.line_comment)('// x and y are arrays of ints')

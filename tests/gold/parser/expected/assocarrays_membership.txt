@@ -189,7 +189,7 @@ D Language File
                                                                                                     DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                                                                                                       PsiElement(DLanguageTokenType.INTEGER_LITERAL)('4')
                                                                     PsiElement(DLanguageTokenType.;)(';')
-                                                            PsiComment(DLanguageTokenType.LINE_COMMENT)('// update value associated with key')
+                                                            PsiComment(DLanguageTokenType.line_comment)('// update value associated with key')
                                                             DLanguageStatementListImpl(STATEMENT_LIST)
                                                               DLanguageStatementImpl(STATEMENT)
                                                                 DLanguageNonEmptyStatementImpl(NON_EMPTY_STATEMENT)

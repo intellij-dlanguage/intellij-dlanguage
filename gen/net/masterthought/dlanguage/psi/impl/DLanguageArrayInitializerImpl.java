@@ -40,4 +40,10 @@ public class DLanguageArrayInitializerImpl extends ASTWrapperPsiElement implemen
     return findNotNullChildByType(OP_BRACKET_RIGHT);
   }
 
+  @Override
+  @Nullable
+  public PsiElement getOpComma() {
+    return findChildByType(OP_COMMA);
+  }
+
 }

@@ -23,7 +23,7 @@ D Language File
                     IDENTIFIER
                       PsiElement(DLanguageTokenType.ID)('C')
             PsiElement(DLanguageTokenType.})('}')
-    PsiComment(DLanguageTokenType.LINE_COMMENT)('// named enum')
+    PsiComment(DLanguageTokenType.line_comment)('// named enum')
     DLanguageDeclDefsImpl(DECL_DEFS)
       DLanguageDeclDefImpl(DECL_DEF)
         DLanguageDeclarationImpl(DECLARATION)
@@ -79,7 +79,7 @@ D Language File
                                                     IDENTIFIER
                                                       PsiElement(DLanguageTokenType.ID)('sizeof')
               PsiElement(DLanguageTokenType.;)(';')
-        PsiComment(DLanguageTokenType.LINE_COMMENT)('// raised as bug for issue #84')
+        PsiComment(DLanguageTokenType.line_comment)('// raised as bug for issue #84')
         DLanguageDeclDefsImpl(DECL_DEFS)
           DLanguageDeclDefImpl(DECL_DEF)
             DLanguageDeclarationImpl(DECLARATION)
@@ -144,7 +144,7 @@ D Language File
                                                     DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                                                       IDENTIFIER
                                                         PsiElement(DLanguageTokenType.ID)('A')
-                      PsiComment(DLanguageTokenType.LINE_COMMENT)('// error, circular reference')
+                      PsiComment(DLanguageTokenType.line_comment)('// error, circular reference')
                       PsiElement(DLanguageTokenType.})('}')
               DLanguageDeclDefsImpl(DECL_DEFS)
                 DLanguageDeclDefImpl(DECL_DEF)
@@ -177,7 +177,7 @@ D Language File
                                                         IDENTIFIER
                                                           PsiElement(DLanguageTokenType.ID)('B')
                           PsiElement(DLanguageTokenType.,)(',')
-                          PsiComment(DLanguageTokenType.LINE_COMMENT)('// A = 4')
+                          PsiComment(DLanguageTokenType.line_comment)('// A = 4')
                           DLanguageEnumMembersImpl(ENUM_MEMBERS)
                             DLanguageEnumMemberImpl(ENUM_MEMBER)
                               IDENTIFIER
@@ -200,7 +200,7 @@ D Language File
                                                           IDENTIFIER
                                                             PsiElement(DLanguageTokenType.ID)('D')
                             PsiElement(DLanguageTokenType.,)(',')
-                            PsiComment(DLanguageTokenType.LINE_COMMENT)('// B = 4')
+                            PsiComment(DLanguageTokenType.line_comment)('// B = 4')
                             DLanguageEnumMembersImpl(ENUM_MEMBERS)
                               DLanguageEnumMemberImpl(ENUM_MEMBER)
                                 IDENTIFIER
@@ -222,12 +222,12 @@ D Language File
                                                           DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                                                             PsiElement(DLanguageTokenType.INTEGER_LITERAL)('3')
                               PsiElement(DLanguageTokenType.,)(',')
-                              PsiComment(DLanguageTokenType.LINE_COMMENT)('// C = 3')
+                              PsiComment(DLanguageTokenType.line_comment)('// C = 3')
                               DLanguageEnumMembersImpl(ENUM_MEMBERS)
                                 DLanguageEnumMemberImpl(ENUM_MEMBER)
                                   IDENTIFIER
                                     PsiElement(DLanguageTokenType.ID)('D')
-                        PsiComment(DLanguageTokenType.LINE_COMMENT)('// D = 4')
+                        PsiComment(DLanguageTokenType.line_comment)('// D = 4')
                         PsiElement(DLanguageTokenType.})('}')
                 DLanguageDeclDefsImpl(DECL_DEFS)
                   DLanguageDeclDefImpl(DECL_DEF)
@@ -284,7 +284,7 @@ D Language File
                               DLanguageEnumMemberImpl(ENUM_MEMBER)
                                 IDENTIFIER
                                   PsiElement(DLanguageTokenType.ID)('E2')
-                          PsiComment(DLanguageTokenType.LINE_COMMENT)('// error, C.D is C.max')
+                          PsiComment(DLanguageTokenType.line_comment)('// error, C.D is C.max')
                           PsiElement(DLanguageTokenType.})('}')
                   DLanguageDeclDefsImpl(DECL_DEFS)
                     DLanguageDeclDefImpl(DECL_DEF)
@@ -340,7 +340,7 @@ D Language File
                                   IDENTIFIER
                                     PsiElement(DLanguageTokenType.ID)('x')
                             PsiElement(DLanguageTokenType.;)(';')
-                      PsiComment(DLanguageTokenType.LINE_COMMENT)('// x is initialized to 3')
+                      PsiComment(DLanguageTokenType.line_comment)('// x is initialized to 3')
                       DLanguageDeclDefsImpl(DECL_DEFS)
                         DLanguageDeclDefImpl(DECL_DEF)
                           DLanguageDeclarationImpl(DECLARATION)
@@ -416,7 +416,7 @@ D Language File
                                             PsiElement(DLanguageTokenType..)('.')
                                             IDENTIFIER
                                               PsiElement(DLanguageTokenType.ID)('min')
-                          PsiComment(DLanguageTokenType.LINE_COMMENT)('// is X.A')
+                          PsiComment(DLanguageTokenType.line_comment)('// is X.A')
                           DLanguageOrExpressionImpl(OR_EXPRESSION)
                             DLanguageXorExpressionImpl(XOR_EXPRESSION)
                               DLanguageAndExpressionImpl(AND_EXPRESSION)
@@ -442,7 +442,7 @@ D Language File
                                                 PsiElement(DLanguageTokenType..)('.')
                                                 IDENTIFIER
                                                   PsiElement(DLanguageTokenType.ID)('max')
-                              PsiComment(DLanguageTokenType.LINE_COMMENT)('// is X.C')
+                              PsiComment(DLanguageTokenType.line_comment)('// is X.C')
                               DLanguageOrExpressionImpl(OR_EXPRESSION)
                                 DLanguageXorExpressionImpl(XOR_EXPRESSION)
                                   DLanguageAndExpressionImpl(AND_EXPRESSION)
@@ -468,7 +468,7 @@ D Language File
                                                     PsiElement(DLanguageTokenType..)('.')
                                                     IDENTIFIER
                                                       PsiElement(DLanguageTokenType.ID)('sizeof')
-  PsiComment(DLanguageTokenType.LINE_COMMENT)('// is same as int.sizeof')
+  PsiComment(DLanguageTokenType.line_comment)('// is same as int.sizeof')
   DLanguageDeclDefsImpl(DECL_DEFS)
     DLanguageDeclDefImpl(DECL_DEF)
       DLanguageDeclarationImpl(DECLARATION)
@@ -491,7 +491,7 @@ D Language File
                     IDENTIFIER
                       PsiElement(DLanguageTokenType.ID)('C')
             PsiElement(DLanguageTokenType.})('}')
-    PsiComment(DLanguageTokenType.LINE_COMMENT)('// anonymous enum')
+    PsiComment(DLanguageTokenType.line_comment)('// anonymous enum')
     DLanguageDeclDefsImpl(DECL_DEFS)
       DLanguageDeclDefImpl(DECL_DEF)
         DLanguageDeclarationImpl(DECLARATION)
@@ -676,7 +676,7 @@ D Language File
                         DLanguageEnumMemberImpl(ENUM_MEMBER)
                           IDENTIFIER
                             PsiElement(DLanguageTokenType.ID)('C')
-                  PsiComment(DLanguageTokenType.LINE_COMMENT)('// error, cannot add 1 to "betty"')
+                  PsiComment(DLanguageTokenType.line_comment)('// error, cannot add 1 to "betty"')
                   PsiElement(DLanguageTokenType.})('}')
           DLanguageDeclDefsImpl(DECL_DEFS)
             DLanguageDeclDefImpl(DECL_DEF)
@@ -706,13 +706,13 @@ D Language File
                                                   DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                                                     PsiElement(DLanguageTokenType.FLOAT_LITERAL)('1.2f')
                       PsiElement(DLanguageTokenType.,)(',')
-                      PsiComment(DLanguageTokenType.LINE_COMMENT)('// A is 1.2f of type float')
+                      PsiComment(DLanguageTokenType.line_comment)('// A is 1.2f of type float')
                       DLanguageEnumMembersImpl(ENUM_MEMBERS)
                         DLanguageEnumMemberImpl(ENUM_MEMBER)
                           IDENTIFIER
                             PsiElement(DLanguageTokenType.ID)('B')
                         PsiElement(DLanguageTokenType.,)(',')
-                        PsiComment(DLanguageTokenType.LINE_COMMENT)('// B is 2.2f of type float')
+                        PsiComment(DLanguageTokenType.line_comment)('// B is 2.2f of type float')
                         DLanguageEnumMembersImpl(ENUM_MEMBERS)
                           DLanguageEnumMemberImpl(ENUM_MEMBER)
                             DLanguageTypeImpl(TYPE)
@@ -738,12 +738,12 @@ D Language File
                                                       DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                                                         PsiElement(DLanguageTokenType.INTEGER_LITERAL)('3')
                           PsiElement(DLanguageTokenType.,)(',')
-                          PsiComment(DLanguageTokenType.LINE_COMMENT)('// C is 3 of type int')
+                          PsiComment(DLanguageTokenType.line_comment)('// C is 3 of type int')
                           DLanguageEnumMembersImpl(ENUM_MEMBERS)
                             DLanguageEnumMemberImpl(ENUM_MEMBER)
                               IDENTIFIER
                                 PsiElement(DLanguageTokenType.ID)('D')
-                    PsiComment(DLanguageTokenType.LINE_COMMENT)('// D is 4 of type int')
+                    PsiComment(DLanguageTokenType.line_comment)('// D is 4 of type int')
                     PsiElement(DLanguageTokenType.})('}')
             DLanguageDeclDefsImpl(DECL_DEFS)
               DLanguageDeclDefImpl(DECL_DEF)
@@ -779,7 +779,7 @@ D Language File
                                                           DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                                                             PsiElement(DLanguageTokenType.INTEGER_LITERAL)('4')
                         PsiElement(DLanguageTokenType.;)(';')
-                PsiComment(DLanguageTokenType.LINE_COMMENT)('// i is 4 of type int')
+                PsiComment(DLanguageTokenType.line_comment)('// i is 4 of type int')
                 DLanguageDeclDefsImpl(DECL_DEFS)
                   DLanguageDeclDefImpl(DECL_DEF)
                     DLanguageDeclarationImpl(DECLARATION)
@@ -817,7 +817,7 @@ D Language File
                                                             DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                                                               PsiElement(DLanguageTokenType.INTEGER_LITERAL)('3')
                           PsiElement(DLanguageTokenType.;)(';')
-                    PsiComment(DLanguageTokenType.LINE_COMMENT)('// l is 3 of type long')
+                    PsiComment(DLanguageTokenType.line_comment)('// l is 3 of type long')
                     DLanguageDeclDefsImpl(DECL_DEFS)
                       DLanguageDeclDefImpl(DECL_DEF)
                         DLanguageDeclarationImpl(DECLARATION)
@@ -876,4 +876,4 @@ D Language File
                                                                                                         PsiElement(DLanguageTokenType.ID)('Foo')
                                                                       PsiElement(DLanguageTokenType.))(')')
                                 PsiElement(DLanguageTokenType.;)(';')
-  PsiComment(DLanguageTokenType.LINE_COMMENT)('// evaluated at compile-time')
+  PsiComment(DLanguageTokenType.line_comment)('// evaluated at compile-time')

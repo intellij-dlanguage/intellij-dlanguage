@@ -59,7 +59,7 @@ D Language File
                               IDENTIFIER
                                 PsiElement(DLanguageTokenType.ID)('x')
                         PsiElement(DLanguageTokenType.;)(';')
-                  PsiComment(DLanguageTokenType.LINE_COMMENT)('// x is declared to be a B')
+                  PsiComment(DLanguageTokenType.line_comment)('// x is declared to be a B')
                   DLanguageDeclDefsImpl(DECL_DEFS)
                     DLanguageDeclDefImpl(DECL_DEF)
                       DLanguageDeclarationImpl(DECLARATION)
@@ -92,7 +92,7 @@ D Language File
                                 IDENTIFIER
                                   PsiElement(DLanguageTokenType.ID)('y')
                           PsiElement(DLanguageTokenType.;)(';')
-                PsiComment(DLanguageTokenType.LINE_COMMENT)('// y is declared to be an A')
+                PsiComment(DLanguageTokenType.line_comment)('// y is declared to be an A')
                 PsiElement(DLanguageTokenType.})('}')
       DLanguageDeclDefsImpl(DECL_DEFS)
         DLanguageDeclDefImpl(DECL_DEF)
@@ -141,7 +141,7 @@ D Language File
                                       IDENTIFIER
                                         PsiElement(DLanguageTokenType.ID)('z')
                                 PsiElement(DLanguageTokenType.;)(';')
-                    PsiComment(DLanguageTokenType.LINE_COMMENT)('// z is declared to be a C')
+                    PsiComment(DLanguageTokenType.line_comment)('// z is declared to be a C')
                     DLanguageDeclDefsImpl(DECL_DEFS)
                       DLanguageDeclDefImpl(DECL_DEF)
                         DLanguageDeclarationImpl(DECLARATION)
@@ -174,7 +174,7 @@ D Language File
                                   IDENTIFIER
                                     PsiElement(DLanguageTokenType.ID)('q')
                             PsiElement(DLanguageTokenType.;)(';')
-                  PsiComment(DLanguageTokenType.LINE_COMMENT)('// error, no super struct for C')
+                  PsiComment(DLanguageTokenType.line_comment)('// error, no super struct for C')
                   PsiElement(DLanguageTokenType.})('}')
         DLanguageDeclDefsImpl(DECL_DEFS)
           DLanguageDeclDefImpl(DECL_DEF)
@@ -208,4 +208,4 @@ D Language File
                       IDENTIFIER
                         PsiElement(DLanguageTokenType.ID)('r')
                 PsiElement(DLanguageTokenType.;)(';')
-  PsiComment(DLanguageTokenType.LINE_COMMENT)('// error, no enclosing struct or class')
+  PsiComment(DLanguageTokenType.line_comment)('// error, no enclosing struct or class')

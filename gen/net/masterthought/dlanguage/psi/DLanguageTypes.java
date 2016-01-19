@@ -289,7 +289,7 @@ public interface DLanguageTypes {
   IElementType XOR_EXPRESSION = new DLanguageElementType("XOR_EXPRESSION");
 
   IElementType ALTERNATE_WYSIWYG_STRING = new DLanguageTokenType("ALTERNATE_WYSIWYG_STRING");
-  IElementType BLOCK_COMMENT = new DLanguageTokenType("BLOCK_COMMENT");
+  IElementType BLOCK_COMMENT = new DLanguageTokenType("block_comment");
   IElementType CHARACTER_LITERAL = new DLanguageTokenType("CHARACTER_LITERAL");
   IElementType DELIMITED_STRING = new DLanguageTokenType("DELIMITED_STRING");
   IElementType DOUBLE_QUOTED_STRING = new DLanguageTokenType("DOUBLE_QUOTED_STRING");
@@ -404,7 +404,7 @@ public interface DLanguageTypes {
   IElementType KW___PARAMETERS = new DLanguageTokenType("__parameters");
   IElementType KW___PRETTY_FUNCTION__ = new DLanguageTokenType("__PRETTY_FUNCTION__");
   IElementType KW___TRAITS = new DLanguageTokenType("__traits");
-  IElementType LINE_COMMENT = new DLanguageTokenType("LINE_COMMENT");
+  IElementType LINE_COMMENT = new DLanguageTokenType("line_comment");
   IElementType NESTING_BLOCK_COMMENT = new DLanguageTokenType("NESTING_BLOCK_COMMENT");
   IElementType OP_AND = new DLanguageTokenType("&");
   IElementType OP_AND_EQ = new DLanguageTokenType("&=");

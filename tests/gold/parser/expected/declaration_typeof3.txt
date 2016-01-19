@@ -105,4 +105,4 @@ D Language File
                   IDENTIFIER
                     PsiElement(DLanguageTokenType.ID)('n')
             PsiElement(DLanguageTokenType.;)(';')
-  PsiComment(DLanguageTokenType.LINE_COMMENT)('// n is declared to be an int')
+  PsiComment(DLanguageTokenType.line_comment)('// n is declared to be an int')

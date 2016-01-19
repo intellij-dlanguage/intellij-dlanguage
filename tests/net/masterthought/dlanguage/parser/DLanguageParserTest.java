@@ -309,6 +309,7 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
    public void testbitwise_or_bug() { doTest(true, true);}
    public void testbug_assoc_array() { doTest(true, true);}
    public void testbug_try_catch() { doTest(true, true);}
+   public void testbug_fixes() { doTest(true, true);}
 
 
 }

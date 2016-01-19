@@ -40,7 +40,7 @@ D Language File
                                   IDENTIFIER
                                     PsiElement(DLanguageTokenType.ID)('x')
                             PsiElement(DLanguageTokenType.;)(';')
-                PsiComment(DLanguageTokenType.LINE_COMMENT)('// error, hides previous definition of x')
+                PsiComment(DLanguageTokenType.line_comment)('// error, hides previous definition of x')
                 DLanguageStatementListImpl(STATEMENT_LIST)
                   DLanguageStatementImpl(STATEMENT)
                     DLanguageNonEmptyStatementImpl(NON_EMPTY_STATEMENT)
@@ -98,7 +98,7 @@ D Language File
                                                                                       IDENTIFIER
                                                                                         PsiElement(DLanguageTokenType.ID)('y')
                                                                                 PsiElement(DLanguageTokenType.;)(';')
-                                                                    PsiComment(DLanguageTokenType.LINE_COMMENT)('// error, hides previous definition of y')
+                                                                    PsiComment(DLanguageTokenType.line_comment)('// error, hides previous definition of y')
                                                                     DLanguageStatementListImpl(STATEMENT_LIST)
                                                                       DLanguageStatementImpl(STATEMENT)
                                                                         DLanguageNonEmptyStatementImpl(NON_EMPTY_STATEMENT)
@@ -146,6 +146,6 @@ D Language File
                                                                                         IDENTIFIER
                                                                                           PsiElement(DLanguageTokenType.ID)('z')
                                                                                   PsiElement(DLanguageTokenType.;)(';')
-                                                                    PsiComment(DLanguageTokenType.LINE_COMMENT)('// legal, previous z is out of scope')
+                                                                    PsiComment(DLanguageTokenType.line_comment)('// legal, previous z is out of scope')
                                                                     PsiElement(DLanguageTokenType.})('}')
               PsiElement(DLanguageTokenType.})('}')

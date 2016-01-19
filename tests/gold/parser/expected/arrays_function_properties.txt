@@ -188,4 +188,4 @@ D Language File
                                                                               PsiElement(DLanguageTokenType.INTEGER_LITERAL)('3')
                                               PsiElement(DLanguageTokenType.))(')')
           PsiElement(DLanguageTokenType.;)(';')
-  PsiComment(DLanguageTokenType.LINE_COMMENT)('// means the same thing')
+  PsiComment(DLanguageTokenType.line_comment)('// means the same thing')

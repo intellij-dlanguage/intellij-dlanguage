@@ -111,7 +111,7 @@ D Language File
                   IDENTIFIER
                     PsiElement(DLanguageTokenType.ID)('y')
             PsiElement(DLanguageTokenType.;)(';')
-  PsiComment(DLanguageTokenType.LINE_COMMENT)('// error, Y undefined')
+  PsiComment(DLanguageTokenType.line_comment)('// error, Y undefined')
   DLanguageStatementImpl(STATEMENT)
     DLanguageNonEmptyStatementImpl(NON_EMPTY_STATEMENT)
       DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
@@ -178,7 +178,7 @@ D Language File
                                                                             IDENTIFIER
                                                                               PsiElement(DLanguageTokenType.ID)('y')
                                                                       PsiElement(DLanguageTokenType.;)(';')
-                                                        PsiComment(DLanguageTokenType.LINE_COMMENT)('// same as Foo.Y y;')
+                                                        PsiComment(DLanguageTokenType.line_comment)('// same as Foo.Y y;')
                                                         PsiElement(DLanguageTokenType.})('}')
   DLanguageDeclDefsImpl(DECL_DEFS)
     DLanguageDeclDefImpl(DECL_DEF)
@@ -335,6 +335,6 @@ D Language File
                                                                                                                 DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                                                                                                                   PsiElement(DLanguageTokenType.++)('++')
                                                                                       PsiElement(DLanguageTokenType.;)(';')
-                                                                            PsiComment(DLanguageTokenType.LINE_COMMENT)('// error, shadows the int x declaration')
+                                                                            PsiComment(DLanguageTokenType.line_comment)('// error, shadows the int x declaration')
                                                                             PsiElement(DLanguageTokenType.})('}')
                 PsiElement(DLanguageTokenType.})('}')

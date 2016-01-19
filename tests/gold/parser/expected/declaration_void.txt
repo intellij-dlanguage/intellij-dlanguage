@@ -55,5 +55,5 @@ D Language File
                                         PsiElement(DLanguageTokenType.ID)('x')
                                     PsiElement(DLanguageTokenType.))(')')
                               PsiElement(DLanguageTokenType.;)(';')
-              PsiComment(DLanguageTokenType.LINE_COMMENT)('// will print garbage')
+              PsiComment(DLanguageTokenType.line_comment)('// will print garbage')
               PsiElement(DLanguageTokenType.})('}')

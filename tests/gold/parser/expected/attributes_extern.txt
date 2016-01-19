@@ -24,7 +24,7 @@ D Language File
                 PsiElement(DLanguageTokenType.()('(')
                 PsiElement(DLanguageTokenType.))(')')
             PsiElement(DLanguageTokenType.;)(';')
-      PsiComment(DLanguageTokenType.LINE_COMMENT)('// call foo() with C conventions')
+      PsiComment(DLanguageTokenType.line_comment)('// call foo() with C conventions')
       DLanguageDeclDefsImpl(DECL_DEFS)
         DLanguageDeclDefImpl(DECL_DEF)
           DLanguageAttributeSpecifierImpl(ATTRIBUTE_SPECIFIER)

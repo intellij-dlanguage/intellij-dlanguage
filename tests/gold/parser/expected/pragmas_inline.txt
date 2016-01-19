@@ -96,7 +96,7 @@ D Language File
                         IDENTIFIER
                           PsiElement(DLanguageTokenType.ID)('x')
                 PsiElement(DLanguageTokenType.))(')')
-            PsiComment(DLanguageTokenType.LINE_COMMENT)('// foo() is never inlined')
+            PsiComment(DLanguageTokenType.line_comment)('// foo() is never inlined')
             DLanguageFunctionBodyImpl(FUNCTION_BODY)
               DLanguageBlockStatementImpl(BLOCK_STATEMENT)
                 PsiElement(DLanguageTokenType.{)('{')
@@ -186,7 +186,7 @@ D Language File
                                 PsiElement(DLanguageTokenType.))(')')
                               DLanguageStatementImpl(STATEMENT)
                                 PsiElement(DLanguageTokenType.;)(';')
-                      PsiComment(DLanguageTokenType.LINE_COMMENT)('// supercedes the others')
+                      PsiComment(DLanguageTokenType.line_comment)('// supercedes the others')
                       DLanguageStatementListImpl(STATEMENT_LIST)
                         DLanguageStatementImpl(STATEMENT)
                           DLanguageNonEmptyStatementImpl(NON_EMPTY_STATEMENT)
