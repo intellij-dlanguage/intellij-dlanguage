@@ -23,12 +23,16 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.psi.*;
+import net.masterthought.dlanguage.settings.ToolKey;
+import net.masterthought.dlanguage.utils.DToolsNotificationListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.OutputStream;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DUnitTestRunProcessHandler extends ProcessHandler {
     private static final Logger LOG = Logger.getInstance(DUnitTestRunProcessHandler.class);
@@ -191,13 +195,25 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
         try {
             final String testFile = configuration.getDFile().getCanonicalPath();
 
+            final String dubPath = ToolKey.DUB_KEY.getPath(project);
+            if (dubPath == null || dubPath.isEmpty()) {
+                Notifications.Bus.notify(
+                        new Notification("Dunit Test Runner", "Dub path must be specified",
+                                "Dub executable path is empty"+
+                                        "<br/><a href='configureDLanguageTools'>Configure</a>",
+                                NotificationType.WARNING, new DToolsNotificationListener(project)), project);
+                return;
+            }
+            
             // rdmd -I/Users/hendriki/.dub/packages/d-unit-0.7.2/src ./source/SomeTest.d --filter CoolTest.shouldReturnName
             GeneralCommandLine commandLine = new GeneralCommandLine();
             commandLine.setWorkDirectory(workingDirectory);
-            commandLine.setExePath("rdmd");
+            commandLine.setExePath(dubPath);
             ParametersList parametersList = commandLine.getParametersList();
-            parametersList.addParametersString("-I" + dunitPath);
-            parametersList.addParametersString(testFile);
+//            parametersList.addParametersString("-I" + dunitPath);
+//            parametersList.addParametersString(testFile);
+            parametersList.addParametersString("--");
+            parametersList.addParametersString("-v");
             parametersList.addParametersString("--filter");
             parametersList.addParametersString(testPath + "$"); //regex to locate exact test
 
@@ -218,16 +234,20 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
             } catch (ExecutionException e) {
                 e.printStackTrace();
             }
-//            System.out.println(builder.toString());
 
             String result = builder.toString();
             // call either finished(success) or failed
-            if (!result.contains("NOT OK")) {
-                testFinished(className, testMethodName, 0);
-            } else {
-                testFailed(className, testMethodName, 0, "Failed", result);
-            }
+            String successPatternString = ".*OK:.*";
+            Pattern successPattern = Pattern.compile(successPatternString);
+            Matcher successMatcher = successPattern.matcher(result);
 
+            if (successMatcher.find()) {
+                testFinished(className, testMethodName, 0);
+            } else if (result.contains("FAILURE:")) {
+                testFailed(className, testMethodName, 0, "Failed", result);
+            } else {
+                testFailed(className, testMethodName, 0, "Failed for unknown reasons", result);
+            }
 
         } catch (RuntimeConfigurationError runtimeConfigurationError) {
             runtimeConfigurationError.printStackTrace();

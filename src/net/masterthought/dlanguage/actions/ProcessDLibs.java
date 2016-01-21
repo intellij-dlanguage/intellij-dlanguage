@@ -1,13 +1,6 @@
 package net.masterthought.dlanguage.actions;
 
-import com.google.gson.*;
-import com.google.gson.stream.JsonReader;
 import com.intellij.execution.ExecutionException;
-import com.intellij.execution.configurations.GeneralCommandLine;
-import com.intellij.execution.configurations.ParametersList;
-import com.intellij.execution.process.OSProcessHandler;
-import com.intellij.execution.process.ProcessAdapter;
-import com.intellij.execution.process.ProcessEvent;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
@@ -25,19 +18,18 @@ import com.intellij.openapi.roots.libraries.LibraryTable;
 import com.intellij.openapi.roots.libraries.LibraryTablesRegistrar;
 import com.intellij.openapi.ui.popup.JBPopup;
 import com.intellij.openapi.ui.popup.JBPopupFactory;
-import com.intellij.openapi.util.Key;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.ui.components.JBList;
 import net.masterthought.dlanguage.module.DLanguageModuleType;
+import net.masterthought.dlanguage.project.DubConfigurationParser;
 import net.masterthought.dlanguage.settings.ToolKey;
 import net.masterthought.dlanguage.utils.DToolsNotificationListener;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.util.Collection;
-import java.util.Iterator;
 
 public class ProcessDLibs extends AnAction implements DumbAware {
     private static final Logger LOG = Logger.getInstance(ProcessDLibs.class);
@@ -113,50 +105,17 @@ public class ProcessDLibs extends AnAction implements DumbAware {
             return;
         }
 
-        GeneralCommandLine commandLine = new GeneralCommandLine();
-        commandLine.setWorkDirectory(module.getProject().getBasePath());
-        commandLine.setExePath(dubPath);
-        ParametersList parametersList = commandLine.getParametersList();
-        parametersList.addParametersString("describe");
-
-        try {
-            OSProcessHandler process = new OSProcessHandler(commandLine.createProcess());
-
-            final StringBuilder builder = new StringBuilder();
-            process.addProcessListener(new ProcessAdapter() {
-                @Override
-                public void onTextAvailable(ProcessEvent event, Key outputType) {
-                    builder.append(event.getText());
-                }
-            });
-
-            process.startNotify();
-            process.waitFor();
-
-            // remove the warning line at the top if it exists
-            String json = builder.toString().replaceAll("WARNING.+","").trim();
-
-            // process output of dub describe to get external libraries list
-            JsonObject jsonObject = new JsonParser().parse(json).getAsJsonObject();
-            JsonArray packages = jsonObject.get("packages").getAsJsonArray();
-            for (JsonElement pkg : packages) {
-                String path = ((JsonObject) pkg).get("path").getAsString();
-                String name = ((JsonObject) pkg).get("name").getAsString();
-                String version = ((JsonObject) pkg).get("version").getAsString();
-                String fullName = name + "-" + version;
-                if (path.contains(".dub/packages")) {
-                    createLibraryDependency(module, project, fullName, path);
-                }
-            }
-
-            Notifications.Bus.notify(
-                    new Notification(e.getPresentation().getText(), "Process D Libraries",
-                            "Added your dub dependency libraries",
-                            NotificationType.INFORMATION, new DToolsNotificationListener(project)), project);
-
-        } catch (ExecutionException ex) {
-            ex.printStackTrace();
+        DubConfigurationParser dubConfig = new DubConfigurationParser(project, dubPath);
+        for(DubConfigurationParser.DubPackage pkg : dubConfig.getDubPackageDependencies()){
+            String fullName = pkg.name + "-" + pkg.version;
+            createLibraryDependency(module, project, fullName, pkg.path);
         }
+
+        Notifications.Bus.notify(
+                new Notification(e.getPresentation().getText(), "Process D Libraries",
+                        "Added your dub dependency libraries",
+                        NotificationType.INFORMATION, new DToolsNotificationListener(project)), project);
+
     }
 
     private static void createLibraryDependency(final Module module, Project project, String libraryName, String libraryPath) {

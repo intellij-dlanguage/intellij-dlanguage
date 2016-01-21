@@ -13,7 +13,6 @@ import com.intellij.execution.process.ProcessEvent;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Key;
-import net.masterthought.dlanguage.settings.ToolKey;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -38,29 +37,54 @@ public class DubConfigurationParser {
         public String name;
         public String path;
         public String sourcesDir;
+        public String version;
+        public boolean isRootPackage;
 
-        public DubPackage(String name, String path, String sourcesDir) {
+        public DubPackage(String name, String path, String sourcesDir, String version, boolean isRootPackage) {
             this.name = name;
             this.path = path;
             this.sourcesDir = sourcesDir;
+            this.version = version;
+            this.isRootPackage = isRootPackage;
         }
     }
 
     public DubPackage getDubPackage() {
+        for (DubPackage dubPackage : getAllPackages()) {
+            if (dubPackage.isRootPackage) {
+                return dubPackage;
+            }
+        }
+        return null;
+    }
+
+    public List<DubPackage> getDubPackageDependencies() {
+        List<DubPackage> dependencies = new ArrayList<>();
+        for (DubPackage dubPackage : getAllPackages()) {
+            if (!dubPackage.isRootPackage) {
+                dependencies.add(dubPackage);
+            }
+        }
+        return dependencies;
+    }
+    
+    private List<DubPackage> getAllPackages() {
         JsonArray packages = dubConfiguration.get("packages").getAsJsonArray();
+        String rootPackage = dubConfiguration.get("rootPackage").getAsString();
         List<DubPackage> packageList = new ArrayList<>();
         for (JsonElement pkg : packages) {
             JsonObject thePackage = ((JsonObject) pkg);
             String path = thePackage.get("path").getAsString();
             String name = thePackage.get("name").getAsString();
+            String version = thePackage.get("version").getAsString();
             String sourcesDir = "source";
             JsonArray importPaths = thePackage.get("importPaths").getAsJsonArray();
             if (importPaths.size() > 0) {
                 sourcesDir = importPaths.get(0).getAsString();
             }
-            packageList.add(new DubPackage(name, path, sourcesDir));
+            packageList.add(new DubPackage(name, path, sourcesDir, version, name.equals(rootPackage)));
         }
-        return packageList.get(0);
+        return packageList;
     }
 
     private JsonObject parseDubConfiguration() {

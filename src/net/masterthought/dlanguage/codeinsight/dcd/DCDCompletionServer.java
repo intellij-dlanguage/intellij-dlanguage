@@ -11,10 +11,14 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.roots.ProjectRootManager;
+import com.intellij.openapi.roots.libraries.Library;
+import com.intellij.openapi.roots.libraries.LibraryTable;
+import com.intellij.openapi.roots.libraries.LibraryTablesRegistrar;
 import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
 import net.masterthought.dlanguage.DLanguageSdkType;
+import net.masterthought.dlanguage.project.DubConfigurationParser;
 import net.masterthought.dlanguage.settings.SettingsChangeNotifier;
 import net.masterthought.dlanguage.settings.ToolKey;
 import net.masterthought.dlanguage.settings.ToolSettings;
@@ -102,6 +106,13 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
         for (String s : compilerSources) {
             parametersList.addParametersString("-I");
             parametersList.addParametersString(s);
+        }
+
+        // try to auto add dub dependecies
+        DubConfigurationParser dubConfig = new DubConfigurationParser(module.getProject(), ToolKey.DUB_KEY.getPath(module.getProject()));
+        for(DubConfigurationParser.DubPackage pkg : dubConfig.getDubPackageDependencies()){
+            parametersList.addParametersString("-I");
+            parametersList.addParametersString(pkg.path + pkg.sourcesDir);
         }
 
         try {
