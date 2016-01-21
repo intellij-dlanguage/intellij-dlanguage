@@ -84,7 +84,7 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
                         for (DLanguageFuncDeclaration fd : fds) {
                             if (testClassName != null) {
                                 // only add methods with @Test
-                                if (isTestMethod(fd)) {
+                                if (isTestMethod(fd) || isIgnoreMethod(fd)) {
                                     testMethodNames.add(fd.getIdentifier().getText());
                                 }
                             }
@@ -131,6 +131,7 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
                         Map.Entry pair = (Map.Entry) o;
                         String className = (String) pair.getKey();
                         Set<String> methodNames = (Set<String>) pair.getValue();
+
                         testSuiteStarted(className, methodNames.size());
 
                         for (String testMethodName : methodNames) {
@@ -192,72 +193,74 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
     private void executeTest(String className, String testMethodName, String dunitPath) {
         String testPath = className + "." + testMethodName;
         final String workingDirectory = project.getBasePath();
-        try {
-            final String testFile = configuration.getDFile().getCanonicalPath();
+        //            final String testFile = configuration.getDFile().getCanonicalPath();
 
-            final String dubPath = ToolKey.DUB_KEY.getPath(project);
-            if (dubPath == null || dubPath.isEmpty()) {
-                Notifications.Bus.notify(
-                        new Notification("Dunit Test Runner", "Dub path must be specified",
-                                "Dub executable path is empty"+
-                                        "<br/><a href='configureDLanguageTools'>Configure</a>",
-                                NotificationType.WARNING, new DToolsNotificationListener(project)), project);
-                return;
-            }
-            
-            // rdmd -I/Users/hendriki/.dub/packages/d-unit-0.7.2/src ./source/SomeTest.d --filter CoolTest.shouldReturnName
-            GeneralCommandLine commandLine = new GeneralCommandLine();
-            commandLine.setWorkDirectory(workingDirectory);
-            commandLine.setExePath(dubPath);
-            ParametersList parametersList = commandLine.getParametersList();
-//            parametersList.addParametersString("-I" + dunitPath);
-//            parametersList.addParametersString(testFile);
-            parametersList.addParametersString("--");
-            parametersList.addParametersString("-v");
-            parametersList.addParametersString("--filter");
-            parametersList.addParametersString(testPath + "$"); //regex to locate exact test
-
-            final StringBuilder builder = new StringBuilder();
-            try {
-                OSProcessHandler process = new OSProcessHandler(commandLine.createProcess());
-                process.addProcessListener(new ProcessAdapter() {
-                    @Override
-                    public void onTextAvailable(ProcessEvent event, Key outputType) {
-                        builder.append(event.getText());
-                    }
-                });
-
-                process.startNotify();
-                process.waitFor();
-
-
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
-
-            String result = builder.toString();
-            // call either finished(success) or failed
-            String successPatternString = ".*OK:.*";
-            Pattern successPattern = Pattern.compile(successPatternString);
-            Matcher successMatcher = successPattern.matcher(result);
-
-            if (successMatcher.find()) {
-                testFinished(className, testMethodName, 0);
-            } else if (result.contains("FAILURE:")) {
-                testFailed(className, testMethodName, 0, "Failed", result);
-            } else {
-                testFailed(className, testMethodName, 0, "Failed for unknown reasons", result);
-            }
-
-        } catch (RuntimeConfigurationError runtimeConfigurationError) {
-            runtimeConfigurationError.printStackTrace();
+        final String dubPath = ToolKey.DUB_KEY.getPath(project);
+        if (dubPath == null || dubPath.isEmpty()) {
+            Notifications.Bus.notify(
+                    new Notification("Dunit Test Runner", "Dub path must be specified",
+                            "Dub executable path is empty" +
+                                    "<br/><a href='configureDLanguageTools'>Configure</a>",
+                            NotificationType.WARNING, new DToolsNotificationListener(project)), project);
+            return;
         }
+
+        GeneralCommandLine commandLine = new GeneralCommandLine();
+        commandLine.setWorkDirectory(workingDirectory);
+        commandLine.setExePath(dubPath);
+        ParametersList parametersList = commandLine.getParametersList();
+        parametersList.addParametersString("--");
+        parametersList.addParametersString("-v");
+        parametersList.addParametersString("--filter");
+        parametersList.addParametersString(testPath + "$"); //regex to locate exact test
+
+        final StringBuilder builder = new StringBuilder();
+        try {
+            OSProcessHandler process = new OSProcessHandler(commandLine.createProcess());
+            process.addProcessListener(new ProcessAdapter() {
+                @Override
+                public void onTextAvailable(ProcessEvent event, Key outputType) {
+                    builder.append(event.getText());
+                }
+            });
+
+            process.startNotify();
+            process.waitFor();
+
+
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        String result = builder.toString();
+        // call either finished(success) or failed
+        String successPatternString = ".*OK:.*";
+        Pattern successPattern = Pattern.compile(successPatternString);
+        Matcher successMatcher = successPattern.matcher(result);
+
+        if (successMatcher.find()) {
+            testFinished(className, testMethodName, 0);
+            testStdOut(className, testMethodName, result);
+        } else if (result.contains("FAILURE:")) {
+            testFailed(className, testMethodName, 0, "Failed", result);
+        } else if (result.contains("SKIP:")) {
+            testIgnored(className, testMethodName);
+            testStdOut(className, testMethodName, result);
+        } else {
+            testFailed(className, testMethodName, 0, "Failed for unknown reasons", result);
+        }
+       
 
     }
 
     private boolean isTestMethod(DLanguageFuncDeclaration fd) {
         PsiElement ele = findElementUpstream(fd, DLanguageUserDefinedAttribute.class);
         return (ele != null && ele.getText().contains("@Test"));
+    }
+
+    private boolean isIgnoreMethod(DLanguageFuncDeclaration fd) {
+        PsiElement ele = findElementUpstream(fd, DLanguageUserDefinedAttribute.class);
+        return (ele != null && ele.getText().contains("@Ignore"));
     }
 
     private PsiElement findElementUpstream(PsiElement startingElement, Class className) {
