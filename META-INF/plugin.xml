@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>net.masterthought.dlanguage</id>
     <name>D Language</name>
-    <version>1.10</version>
+    <version>1.11</version>
     <vendor email="kingsley.hendrickse@gmail.com" url="http://www.masterthought.net">MasterThought</vendor>
 
     <description><![CDATA[
@@ -9,7 +9,7 @@
     ]]></description>
 
     <change-notes><![CDATA[
-     fixed DCD integration
+     fixed project import
     ]]>
     </change-notes>
 
