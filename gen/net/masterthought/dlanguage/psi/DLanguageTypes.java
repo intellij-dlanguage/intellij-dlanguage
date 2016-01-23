@@ -9,6 +9,18 @@ import net.masterthought.dlanguage.psi.impl.*;
 
 public interface DLanguageTypes {
 
+  IElementType KEYWORD = new DLanguageElementType("KEYWORD");
+  IElementType OPERATOR = new DLanguageElementType("OPERATOR");
+  IElementType NUMBER = new DLanguageElementType("NUMBER");
+  IElementType STRING = new DLanguageElementType("STRING");
+  IElementType PARENTHESES = new DLanguageElementType("PARENTHESES");
+  IElementType BRACES = new DLanguageElementType("BRACES");
+  IElementType BRACKETS = new DLanguageElementType("BRACKETS");
+  IElementType COMMA = new DLanguageElementType("COMMA");
+  IElementType SEMICOLON = new DLanguageElementType("SEMICOLON");
+  IElementType DOT = new DLanguageElementType("DOT");
+  IElementType MODULE_DEFINITION = new DLanguageElementType("MODULE_DEFINITION");
+
   IElementType ADD_EXPRESSION = new DLanguageElementType("ADD_EXPRESSION");
   IElementType AGGREGATE_BODY = new DLanguageElementType("AGGREGATE_BODY");
   IElementType AGGREGATE_DECLARATION = new DLanguageElementType("AGGREGATE_DECLARATION");

@@ -30,14 +30,17 @@ public class DColorSettingsPage implements ColorSettingsPage {
             new AttributesDescriptor("Keyword", KEYWORD),
             new AttributesDescriptor("Parenthesis", PARENTHESES),
             new AttributesDescriptor("Braces", BRACES),
+            new AttributesDescriptor("Dot", DOT),
+            new AttributesDescriptor("Comma", COMMA),
+            new AttributesDescriptor("Semicolon", SEMICOLON),
             new AttributesDescriptor("Brackets", BRACKETS),
-            new AttributesDescriptor("Operation sign", OP_SIGN),
-            new AttributesDescriptor("Function definition", FUNCTION_DEFINITION),
-            new AttributesDescriptor("Std Imports", STD_IMPORT),
+            new AttributesDescriptor("Operation sign", OPERATOR),
+//            new AttributesDescriptor("Function definition", FUNCTION_DEFINITION),
+//            new AttributesDescriptor("Std Imports", STD_IMPORT),
             new AttributesDescriptor("Module definition", MODULE_DEFINITION),
-            new AttributesDescriptor("Basic type", BASIC_TYPE),
-            new AttributesDescriptor("Aggregate definition", AGGREGATE_DEFINITION),
-            new AttributesDescriptor("User defined attribute", USER_DEFINED_ATTRIBUTE)
+//            new AttributesDescriptor("Basic type", BASIC_TYPE),
+//            new AttributesDescriptor("Aggregate definition", AGGREGATE_DEFINITION),
+//            new AttributesDescriptor("User defined attribute", USER_DEFINED_ATTRIBUTE)
     };
 
     private static Map<String, TextAttributesKey> ATTRIBUTES_KEY_MAP = ContainerUtil.newHashMap();
