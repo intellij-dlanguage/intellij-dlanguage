@@ -360,18 +360,18 @@ OPERATOR = (":"    |
    [\n\r]    { yybegin(YYINITIAL); return com.intellij.psi.TokenType.WHITE_SPACE; }
 }
 
-//// function
-//<YYINITIAL> {ID} "(" ")" "{"  {
-//		yybegin(FUNCTION_VALUE);
-//		return DLanguageTypes.KEYWORD;
-//	}
-//
-//<FUNCTION_VALUE> {
-//   {WHITE_SPACE_CHAR}* { return com.intellij.psi.TokenType.WHITE_SPACE; }
-//   {MODULE_DEFINITION} { yybegin(YYINITIAL); return DLanguageTypes.MODULE_DEFINITION; }
-//   [\n\r]    { yybegin(YYINITIAL); return com.intellij.psi.TokenType.WHITE_SPACE; }
-//}
+// function
+<YYINITIAL> {ID} \((.+)*\)({WHITE_SPACE_CHAR}|{NEW_LINE})*\{ {
+        yypushback(yylength());
+		yybegin(FUNCTION_VALUE);
+	}
 
+<FUNCTION_VALUE> {
+      {ID} { yybegin(YYINITIAL); return DLanguageTypes.FUNCTION_DEFINITION; }
+      [\n\r]    { yybegin(YYINITIAL); return com.intellij.psi.TokenType.WHITE_SPACE; }
+}
+
+//<YYINITIAL> {ID} \(.*\)({WHITE_SPACE_CHAR}|{NEW_LINE})*\{ { return FUNCTION_DEFINITION; }
 
 <YYINITIAL> {STRING} { return STRING; }
 <YYINITIAL> {NUMBER} { return NUMBER; }

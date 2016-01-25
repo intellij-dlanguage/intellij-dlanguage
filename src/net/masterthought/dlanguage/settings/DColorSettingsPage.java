@@ -35,7 +35,7 @@ public class DColorSettingsPage implements ColorSettingsPage {
             new AttributesDescriptor("Semicolon", SEMICOLON),
             new AttributesDescriptor("Brackets", BRACKETS),
             new AttributesDescriptor("Operation sign", OPERATOR),
-//            new AttributesDescriptor("Function definition", FUNCTION_DEFINITION),
+            new AttributesDescriptor("Function definition", FUNCTION_DEFINITION),
 //            new AttributesDescriptor("Std Imports", STD_IMPORT),
             new AttributesDescriptor("Module definition", MODULE_DEFINITION),
 //            new AttributesDescriptor("Basic type", BASIC_TYPE),

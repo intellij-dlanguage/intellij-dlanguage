@@ -20,6 +20,7 @@ public interface DLanguageTypes {
   IElementType SEMICOLON = new DLanguageElementType("SEMICOLON");
   IElementType DOT = new DLanguageElementType("DOT");
   IElementType MODULE_DEFINITION = new DLanguageElementType("MODULE_DEFINITION");
+  IElementType FUNCTION_DEFINITION = new DLanguageElementType("FUNCTION_DEFINITION");
 
   IElementType ADD_EXPRESSION = new DLanguageElementType("ADD_EXPRESSION");
   IElementType AGGREGATE_BODY = new DLanguageElementType("AGGREGATE_BODY");

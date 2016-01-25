@@ -19,8 +19,7 @@ public class DHighlightingTokenSets {
     public static final TokenSet LINE_COMMENT = TokenSet.create(DLanguageTypes.LINE_COMMENT);
     public static final TokenSet BLOCK_COMMENT = TokenSet.create(DLanguageTypes.BLOCK_COMMENT);
     public static final TokenSet MODULE_DEFINITION = TokenSet.create(DLanguageTypes.MODULE_DEFINITION);
-
-
+    public static final TokenSet FUNCTION_DEFINITION = TokenSet.create(DLanguageTypes.FUNCTION_DEFINITION);
 
 //    public static final TokenSet WHITESPACES = TokenSet.create(TokenType.WHITE_SPACE);
 //

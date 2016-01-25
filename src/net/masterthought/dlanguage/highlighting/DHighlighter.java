@@ -32,6 +32,7 @@ public class DHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey SEMICOLON = createTextAttributesKey("D_SEMICOLON", DefaultLanguageHighlighterColors.SEMICOLON);
     public static final TextAttributesKey COMMA = createTextAttributesKey("D_COMMA", DefaultLanguageHighlighterColors.COMMA);
     public static final TextAttributesKey MODULE_DEFINITION = createTextAttributesKey("D_MODULE_DEFINITION", DefaultLanguageHighlighterColors.GLOBAL_VARIABLE);
+    public static final TextAttributesKey FUNCTION_DEFINITION = createTextAttributesKey("D_FUNCTION_DEFINITION", DefaultLanguageHighlighterColors.GLOBAL_VARIABLE);
 
 //    // Annotation based highlighting
 //    public static final TextAttributesKey FUNCTION_DEFINITION = createTextAttributesKey("D_FUNCTION_DEFINITION", DefaultLanguageHighlighterColors.INSTANCE_METHOD);
@@ -88,6 +89,9 @@ public class DHighlighter extends SyntaxHighlighterBase {
         }
         if (DHighlightingTokenSets.MODULE_DEFINITION.contains(type)) {
             return pack(MODULE_DEFINITION);
+        }
+        if (DHighlightingTokenSets.FUNCTION_DEFINITION.contains(type)) {
+            return pack(FUNCTION_DEFINITION);
         }
         if (DHighlightingTokenSets.KEYWORD.contains(type)) {
             return pack(KEYWORD);
