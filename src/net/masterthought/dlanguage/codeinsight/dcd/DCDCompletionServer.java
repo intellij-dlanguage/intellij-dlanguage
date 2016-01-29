@@ -142,7 +142,7 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
             String path = sdk.getHomePath();
             if (isNotNullOrEmpty(path)) {
                 if (SystemInfo.isMac) {
-                    String root = path.replaceAll("bin", "/../src");
+                    String root = path.replaceAll("bin", "src");
                     compilerSources.add(root + "/phobos");
                     compilerSources.add(root + "/druntime/import");
                 }

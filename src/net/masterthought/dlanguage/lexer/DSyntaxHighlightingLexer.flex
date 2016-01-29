@@ -140,6 +140,7 @@ BASIC_TYPES = ( bool |
                 creal |
                 auto |
                 enum |
+                string |
                 void )
 
 KEYWORD = ({BASIC_TYPES} |
@@ -292,7 +293,10 @@ OPERATOR = (":"    |
             "!<="  |
             "=>")
 
+FUNCTION_DEFINITION = {ID}\(.*\)([^;]|[\s]*|[\r]*|[\n]*)
+
 %state WAITING_VALUE, NESTING_COMMENT_CONTENT BLOCK_COMMENT_CONTENT MODULE_VALUE FUNCTION_VALUE
+
 
 %%
 
@@ -361,17 +365,48 @@ OPERATOR = (":"    |
 }
 
 // function
-<YYINITIAL> {ID} \((.+)*\)({WHITE_SPACE_CHAR}|{NEW_LINE})*\{ {
-        yypushback(yylength());
-		yybegin(FUNCTION_VALUE);
-	}
 
-<FUNCTION_VALUE> {
-      {ID} { yybegin(YYINITIAL); return DLanguageTypes.FUNCTION_DEFINITION; }
-      [\n\r]    { yybegin(YYINITIAL); return com.intellij.psi.TokenType.WHITE_SPACE; }
-}
+
+
+
+
+
+
+//<YYINITIAL> {ID}\(\)({WHITE_SPACE_CHAR}*|{NEW_LINE}*)*\{ {
+//        yypushback(yylength()-2);
+//		yybegin(FUNCTION_VALUE);
+//	}
+//
+//<FUNCTION_VALUE> {
+//      {ID} { yybegin(YYINITIAL); return DLanguageTypes.FUNCTION_DEFINITION; }
+//      [\n\r]    { yybegin(YYINITIAL); return com.intellij.psi.TokenType.WHITE_SPACE; }
+//}
 
 //<YYINITIAL> {ID} \(.*\)({WHITE_SPACE_CHAR}|{NEW_LINE})*\{ { return FUNCTION_DEFINITION; }
+//<YYINITIAL> {ID} \(.*\)({WHITE_SPACE_CHAR}|{NEW_LINE})*\{ { return FUNCTION_DEFINITION; }
+
+
+//<FUNCTION_VALUE2>  { yybegin(FUNCTION_VALUE2); }
+//<FUNCTION_VALUE> {ID} { yybegin(FUNCTION_VALUE2); }
+
+//<YYINITIAL> {ID} \(.*\)({WHITE_SPACE_CHAR}|{NEW_LINE})*\{  {
+//          yybegin(YYINITIAL);
+//            String theMatch = yytext().toString();
+//           if(theMatch.contains("){")){
+//             return DLanguageTypes.FUNCTION_DEFINITION;
+//           }
+//          }
+
+
+
+
+//<FUNCTION_VALUE>{
+//  ({WHITE_SPACE_CHAR}*|{NEW_LINE}*)* { yybegin(YYINITIAL); return com.intellij.psi.TokenType.WHITE_SPACE; }
+//  \(\) {}
+// {ID} { yybegin(YYINITIAL); return DLanguageTypes.FUNCTION_DEFINITION; }
+//}
+
+
 
 <YYINITIAL> {STRING} { return STRING; }
 <YYINITIAL> {NUMBER} { return NUMBER; }
@@ -386,6 +421,12 @@ OPERATOR = (":"    |
 
 
 <YYINITIAL> {ID}                       { return ID; }
+
+<YYINITIAL> {ID}{PARENTHESES}{PARENTHESES}{BRACES} {  yypushback(yylength()); yybegin(FUNCTION_VALUE); }
+<FUNCTION_VALUE> {
+      {ID} { yybegin(YYINITIAL); return DLanguageTypes.FUNCTION_DEFINITION; }
+      }
+
 <YYINITIAL> {LINE_COMMENT}             { return LINE_COMMENT; }
 <YYINITIAL> {SHEBANG}                  { return SHEBANG; }
 
