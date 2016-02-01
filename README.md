@@ -37,6 +37,38 @@ change the JVMVersion key to 1.7*:
 JVMVersion=1.7*
 ```
 
+#### Next Release - 1.11
+
+The next release should have the following:
+
+  * tbd
+
+#### A note to my users
+
+I understand some of you may feel like the feature set is lacking in many areas. Some of the key areas are refactoring support, DUB as an external build tool, debugging and the full reference support that
+provides go to declaration and go to implementation etc. Other users would prefer to see the plugin operational in other jetbrains products like Clion etc. Please be patient and continue to raise Issues for
+features you would like and bugs you find. Remember I am a single developer (with a family) who has to work full time to support myself and them. All development on this project is done in my spare time
+which is time I could be spending with my family. In order to build a highly capable, stable and robust plugin it takes a lot of time and the documentation for the the majority of the feature sets is very basic
+if present at all. It often takes me several iterations of something to find the best way of doing something so be patient - I will implement all of the functionality required to make this plugin probably the
+best IDE option for D. My vision is to have full support for D in intellij - but this is a project that will span years not weeks. So please support me by using the plugin and feeding back your experiences by
+raising issues for feedback, feature requests and bugs. Thanks for your support :)
+
+#### Latest Updates
+
+* 1st February 2016 - I'm spending some time using the plugin for one of my projects to get a feel for how it's working under some real usage. Development will resume after this period.
+* 9th January 2016 - Fixed some bugs and working towards getting more of the intellij features working
+* 27th December 2015 - Fixed DCD bugs and added dub init wizard to dub project creation
+* 25th December 2015 - Added code formatting with DFmt
+* 24th December 2015 - Added Syntax highlighting, DCD autocompletion, dub compile checking and Dscanner annotation
+* 23rd December 2015 - Released an early test version to the intellij plugin repository
+* 9th December 2015 - I have finished the first pass of the BNF grammar complete with extensive tests - the next step is to move onto basic syntax highlighting
+* 21st October 2015 - Work has begun to re-organize and track the upcoming work as well an initial work on the BNF grammar - I have switched master to previous_master and current master is a currently not working bnf shell project
+* 7th October 2015 - I have finally figured out several aspects of the BNF grammar and feel like I know enough now to begin a complete re-write of the parser using the grammarkit plugin for intellij. This will overcome the terrible performance issues caused by the integration of the DDT parser and will enable a longer term view of complete language support and lots of cool features that are just not possible to add in any other way.
+* 29th March 2015 - I've not managed to fix the performance issue. The problem is that the integration of the DDT parser/lexer with intellij has to jump through many hoops to work correctly as intellij don't make it easy to use external parsers directly. I think the only option is to go back to writing the BNF grammer and JFlex lexer - which I have started working on - however I think this will take a few months of effort. So I'm pushing back the alpha release to after the summer.
+*  5th Feb 2015 - I've had some other demands on my time so had to push back the alpha release until end of March 2015. On the plus side I've discovered
+the major peformance issue that was holding me back - so I've started work on fixing it. Once I'm happy with the performance work will resume on more features.
+
+
 ## Installation
 
 [Download](https://www.jetbrains.com/idea/) and install IntelliJ Community Edition (Free) or Ultimate (Paid)
@@ -133,25 +165,6 @@ I created one similar to the sublime dark theme by using Darcula theme and custo
 Please see the development status on
 [DLanguage ZenBoard](https://github.com/kingsleyh/DLanguage#boards)
 
-#### Next Release - 1.9
-
-The next release should have the following:
-
-  * tbd
-
-#### Latest Updates
-
-* 9th January 2016 - Fixed some bugs and working towards getting more of the intellij features working
-* 27th December 2015 - Fixed DCD bugs and added dub init wizard to dub project creation
-* 25th December 2015 - Added code formatting with DFmt
-* 24th December 2015 - Added Syntax highlighting, DCD autocompletion, dub compile checking and Dscanner annotation
-* 23rd December 2015 - Released an early test version to the intellij plugin repository
-* 9th December 2015 - I have finished the first pass of the BNF grammar complete with extensive tests - the next step is to move onto basic syntax highlighting
-* 21st October 2015 - Work has begun to re-organize and track the upcoming work as well an initial work on the BNF grammar - I have switched master to previous_master and current master is a currently not working bnf shell project
-* 7th October 2015 - I have finally figured out several aspects of the BNF grammar and feel like I know enough now to begin a complete re-write of the parser using the grammarkit plugin for intellij. This will overcome the terrible performance issues caused by the integration of the DDT parser and will enable a longer term view of complete language support and lots of cool features that are just not possible to add in any other way.
-* 29th March 2015 - I've not managed to fix the performance issue. The problem is that the integration of the DDT parser/lexer with intellij has to jump through many hoops to work correctly as intellij don't make it easy to use external parsers directly. I think the only option is to go back to writing the BNF grammer and JFlex lexer - which I have started working on - however I think this will take a few months of effort. So I'm pushing back the alpha release to after the summer.
-*  5th Feb 2015 - I've had some other demands on my time so had to push back the alpha release until end of March 2015. On the plus side I've discovered
-the major peformance issue that was holding me back - so I've started work on fixing it. Once I'm happy with the performance work will resume on more features.
 
 ## Notes
 
