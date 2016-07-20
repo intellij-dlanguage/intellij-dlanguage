@@ -1,8 +1,29 @@
 <application>
+  <component name="StatisticsApplicationUsages">
+    <group name="module type">
+      <project id="awesomeD" values="DLANGUAGE_MODULE" collectionTime="1469038534668" />
+    </group>
+    <group name="run-configuration-type-temp">
+      <project id="awesomeD" values="DLanguageRunDubConfiguration,Unknown" collectionTime="1469038534668" />
+    </group>
+    <group name="file-type">
+      <project id="awesomeD" values="JSON Schema,PLAIN_TEXT,UNKNOWN,IDEA_MODULE,D file" collectionTime="1469038534677" />
+    </group>
+    <group name="images.ide.background">
+      <project id="awesomeD" values="editor=0,frame=0" collectionTime="1469038534678" />
+    </group>
+    <group name="Git">
+      <project id="awesomeD" values="config.ssh.enabled,config.update.type.BRANCH_DEFAULT,config.save.policy.STASH,config.push.update.all.roots.enabled,config.repo.sync.NOT_DECIDED,config.cherry-pick.autocommit.disabled,config.push.autoupdate.disabled,config.warn.about.crlf.enabled,config.warn.about.detached.enabled,config.force.push.enabled" collectionTime="1469038534680" />
+    </group>
+    <group name="language-level">
+      <project id="awesomeD" values="JDK_1_6" collectionTime="1469038534679" />
+    </group>
+  </component>
   <component name="UsageTrigger">
     <counts>
-      <entry feature="ideaapp.started" count="12" />
-      <entry feature="welcome.screen.WelcomeScreen.OpenProject" count="1" />
+      <entry feature="execute.DLanguageRunDubConfiguration.Run" count="1" />
+      <entry feature="ideaapp.started" count="13" />
+      <entry feature="welcome.screen.WelcomeScreen.OpenProject" count="2" />
     </counts>
   </component>
 </application>
