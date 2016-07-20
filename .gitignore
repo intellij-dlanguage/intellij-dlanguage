@@ -3,6 +3,8 @@ out
 .idea
 .gradle
 /build/
+/jps-plugin/build/
+/jps-shared/build/
 
 # Ignore Gradle GUI config
 gradle-app.setting
