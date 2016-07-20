@@ -9,12 +9,11 @@ buildscript {
 }
 
 plugins {
-    id 'org.jetbrains.intellij' version '0.0.40'
+    id 'org.jetbrains.intellij' version '0.1.10'
 }
 
 version = "0001"
 allprojects {
-//  apply plugin: 'java'
     apply plugin: 'kotlin'
     sourceCompatibility = javaVersion
     targetCompatibility = javaVersion
@@ -82,15 +81,6 @@ idea {
     }
 }
 
-//buildscript {
-//    ext.kotlin_version = '1.0.3'
-//    repositories {
-//        mavenCentral()
-//    }
-//    dependencies {
-//        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-//    }
-//}
 //sourceSets {
 //    main.java.srcDirs += 'src/main/kotlin'
 //}
