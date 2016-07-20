@@ -1,7 +1,0 @@
-module ${DLANGUAGE_MODULE_NAME};
-
-import std.stdio;
-
-void main(string[] args){
-
-}
