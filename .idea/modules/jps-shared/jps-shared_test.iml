@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module external.linked.project.id=":jps-shared:test" external.linked.project.path="$MODULE_DIR$/../../../jps-shared" external.root.project.path="$MODULE_DIR$/../../.." external.system.id="GRADLE" external.system.module.group="DLanguage" external.system.module.type="sourceSet" external.system.module.version="0.8" type="JAVA_MODULE" version="4">
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7" inherit-compiler-output="false">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="false">
     <output-test url="file://$MODULE_DIR$/../../../jps-shared/build/classes/test" />
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../../jps-shared/src/test">

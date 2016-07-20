@@ -31,7 +31,7 @@ allprojects {
 
   test {
     useJUnit {
-      exclude compilationPackages
+      exclude compilationPackages + 'net/masterthought/dlanguage/**/*TestBase*'
     }
     testLogging {
       exceptionFormat = 'full'

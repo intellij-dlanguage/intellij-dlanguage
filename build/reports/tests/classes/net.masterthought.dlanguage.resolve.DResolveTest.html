@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - Class net.masterthought.dlanguage.resolve.DResolveTest</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>Class net.masterthought.dlanguage.resolve.DResolveTest</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/net.masterthought.dlanguage.resolve.html">net.masterthought.dlanguage.resolve</a> &gt; DResolveTest</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">1</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">1</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">0.037s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox failures" id="successRate">
+<div class="percent">0%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div id="tabs">
+<ul class="tabLinks">
+<li>
+<a href="#tab0">Failed tests</a>
+</li>
+<li>
+<a href="#tab1">Tests</a>
+</li>
+<li>
+<a href="#tab2">Standard error</a>
+</li>
+</ul>
+<div id="tab0" class="tab">
+<h2>Failed tests</h2>
+<div class="test">
+<a name="testPrimaryExpressionToFunctionDefinition"></a>
+<h3 class="failures">testPrimaryExpressionToFunctionDefinition</h3>
+<span class="code">
+<pre>java.lang.RuntimeException: java.lang.RuntimeException: Could not initialize class net.masterthought.dlanguage.DLanguageIcons
+	at com.intellij.openapi.application.impl.LaterInvocator.invokeAndWait(LaterInvocator.java:177)
+	at com.intellij.openapi.application.impl.ApplicationImpl.invokeAndWait(ApplicationImpl.java:641)
+	at com.intellij.testFramework.EdtTestUtilKt.runInEdtAndWait(EdtTestUtil.kt:42)
+	at com.intellij.testFramework.EdtTestUtil$Companion.runInEdtAndWait(EdtTestUtil.kt:29)
+	at com.intellij.testFramework.EdtTestUtil.runInEdtAndWait(EdtTestUtil.kt)
+	at com.intellij.testFramework.UsefulTestCase.runBare(UsefulTestCase.java:423)
+	at junit.framework.TestResult$1.protect(TestResult.java:122)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.framework.TestResult.run(TestResult.java:125)
+	at junit.framework.TestCase.run(TestCase.java:129)
+	at junit.framework.TestSuite.runTest(TestSuite.java:252)
+	at junit.framework.TestSuite.run(TestSuite.java:247)
+	at org.junit.internal.runners.JUnit38ClassRunner.run(JUnit38ClassRunner.java:86)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.runTestClass(JUnitTestClassExecuter.java:112)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.execute(JUnitTestClassExecuter.java:56)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassProcessor.processTestClass(JUnitTestClassProcessor.java:66)
+	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.processTestClass(SuiteTestClassProcessor.java:51)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:483)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.messaging.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:32)
+	at org.gradle.messaging.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:93)
+	at com.sun.proxy.$Proxy2.processTestClass(Unknown Source)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.processTestClass(TestWorker.java:109)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:483)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.messaging.remote.internal.hub.MessageHub$Handler.run(MessageHub.java:364)
+	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:54)
+	at org.gradle.internal.concurrent.StoppableExecutorImpl$1.run(StoppableExecutorImpl.java:40)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.lang.RuntimeException: Could not initialize class net.masterthought.dlanguage.DLanguageIcons
+	at com.intellij.openapi.ui.TestDialog$1.show(TestDialog.java:23)
+	at com.intellij.openapi.ui.Messages.showDialog(Messages.java:259)
+	at com.intellij.openapi.ui.Messages.showDialog(Messages.java:284)
+	at com.intellij.openapi.ui.Messages.showDialog(Messages.java:295)
+	at com.intellij.openapi.ui.Messages.showErrorDialog(Messages.java:720)
+	at com.intellij.openapi.project.impl.ProjectManagerImpl.newProject(ProjectManagerImpl.java:186)
+	at com.intellij.testFramework.PlatformTestCase.createProject(PlatformTestCase.java:261)
+	at com.intellij.testFramework.PlatformTestCase.createProject(PlatformTestCase.java:252)
+	at com.intellij.testFramework.LightPlatformTestCase.initProject(LightPlatformTestCase.java:238)
+	at com.intellij.testFramework.LightPlatformTestCase.doSetup(LightPlatformTestCase.java:296)
+	at com.intellij.testFramework.fixtures.impl.LightIdeaTestFixtureImpl.setUp(LightIdeaTestFixtureImpl.java:53)
+	at com.intellij.testFramework.fixtures.impl.CodeInsightTestFixtureImpl$17.run(CodeInsightTestFixtureImpl.java:1311)
+	at com.intellij.testFramework.EdtTestUtil$Companion$runInEdtAndWait$1.invoke(EdtTestUtil.kt:29)
+	at com.intellij.testFramework.EdtTestUtil$Companion$runInEdtAndWait$1.invoke(EdtTestUtil.kt:27)
+	at com.intellij.testFramework.EdtTestUtilKt$sam$Runnable$ca4818df.run(EdtTestUtil.kt)
+	at com.intellij.openapi.application.impl.ApplicationImpl.invokeAndWait(ApplicationImpl.java:633)
+	at com.intellij.testFramework.EdtTestUtilKt.runInEdtAndWait(EdtTestUtil.kt:42)
+	at com.intellij.testFramework.EdtTestUtil$Companion.runInEdtAndWait(EdtTestUtil.kt:29)
+	at com.intellij.testFramework.EdtTestUtil.runInEdtAndWait(EdtTestUtil.kt)
+	at com.intellij.testFramework.fixtures.impl.CodeInsightTestFixtureImpl.setUp(CodeInsightTestFixtureImpl.java:1308)
+	at com.intellij.testFramework.fixtures.LightPlatformCodeInsightFixtureTestCase.setUp(LightPlatformCodeInsightFixtureTestCase.java:61)
+	at net.masterthought.dlanguage.DLightPlatformCodeInsightFixtureTestCase.setUp(DLightPlatformCodeInsightFixtureTestCase.java:38)
+	at net.masterthought.dlanguage.resolve.DResolveTestCase.setUp(DResolveTestCase.java:34)
+	at com.intellij.testFramework.UsefulTestCase.defaultRunBare(UsefulTestCase.java:364)
+	at com.intellij.testFramework.UsefulTestCase$$Lambda$11/1645267900.run(Unknown Source)
+	at com.intellij.testFramework.EdtTestUtil$Companion$runInEdtAndWait$1.invoke(EdtTestUtil.kt:29)
+	at com.intellij.testFramework.EdtTestUtil$Companion$runInEdtAndWait$1.invoke(EdtTestUtil.kt:27)
+	at com.intellij.testFramework.EdtTestUtilKt$sam$Runnable$ca4818df.run(EdtTestUtil.kt)
+	at com.intellij.openapi.application.TransactionGuardImpl$6.run(TransactionGuardImpl.java:291)
+	at com.intellij.openapi.application.impl.LaterInvocator$1.run(LaterInvocator.java:156)
+	at com.intellij.openapi.application.impl.LaterInvocator$FlushQueue.runNextEvent(LaterInvocator.java:326)
+	at com.intellij.openapi.application.impl.LaterInvocator$FlushQueue.run(LaterInvocator.java:310)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:744)
+	at java.awt.EventQueue.access$400(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:697)
+	at java.awt.EventQueue$3.run(EventQueue.java:691)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:75)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:714)
+	at com.intellij.ide.IdeEventQueue.defaultDispatchEvent(IdeEventQueue.java:863)
+	at com.intellij.ide.IdeEventQueue._dispatchEvent(IdeEventQueue.java:699)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent(IdeEventQueue.java:385)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+</pre>
+</span>
+</div>
+</div>
+<div id="tab1" class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="failures">testPrimaryExpressionToFunctionDefinition</td>
+<td>0.037s</td>
+<td class="failures">failed</td>
+</tr>
+</table>
+</div>
+<div id="tab2" class="tab">
+<h2>Standard error</h2>
+<span class="code">
+<pre>ERROR: Could not initialize class net.masterthought.dlanguage.DLanguageIcons
+com.intellij.openapi.extensions.impl.PicoPluginExtensionInitializationException: Could not initialize class net.masterthought.dlanguage.DLanguageIcons
+	at com.intellij.openapi.extensions.impl.ExtensionComponentAdapter.getComponentInstance(ExtensionComponentAdapter.java:96)
+	at com.intellij.openapi.extensions.impl.ExtensionComponentAdapter.getExtension(ExtensionComponentAdapter.java:119)
+	at com.intellij.openapi.extensions.impl.ExtensionPointImpl.processAdapters(ExtensionPointImpl.java:249)
+	at com.intellij.openapi.extensions.impl.ExtensionPointImpl.getExtensions(ExtensionPointImpl.java:194)
+	at com.intellij.openapi.extensions.Extensions.getExtensions(Extensions.java:100)
+	at com.intellij.openapi.extensions.Extensions.getExtensions(Extensions.java:87)
+	at com.intellij.openapi.extensions.ExtensionPointName.getExtensions(ExtensionPointName.java:49)
+	at com.intellij.execution.impl.RunManagerImpl.&lt;init&gt;(RunManagerImpl.java:103)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:408)
+	at org.picocontainer.defaults.InstantiatingComponentAdapter.newInstance(InstantiatingComponentAdapter.java:193)
+	at org.picocontainer.defaults.ConstructorInjectionComponentAdapter$1.run(ConstructorInjectionComponentAdapter.java:220)
+	at org.picocontainer.defaults.ThreadLocalCyclicDependencyGuard.observe(ThreadLocalCyclicDependencyGuard.java:53)
+	at org.picocontainer.defaults.ConstructorInjectionComponentAdapter.getComponentInstance(ConstructorInjectionComponentAdapter.java:248)
+	at com.intellij.util.pico.CachingConstructorInjectionComponentAdapter.getComponentInstance(CachingConstructorInjectionComponentAdapter.java:58)
+	at com.intellij.openapi.components.impl.ComponentManagerImpl$ComponentConfigComponentAdapter.getComponentInstance(ComponentManagerImpl.java:495)
+	at com.intellij.openapi.components.impl.ComponentManagerImpl.createComponents(ComponentManagerImpl.java:119)
+	at com.intellij.openapi.components.impl.ComponentManagerImpl.init(ComponentManagerImpl.java:103)
+	at com.intellij.openapi.components.impl.ComponentManagerImpl.init(ComponentManagerImpl.java:90)
+	at com.intellij.openapi.project.impl.ProjectImpl.init(ProjectImpl.java:283)
+	at com.intellij.openapi.project.impl.ProjectManagerImpl.initProject(ProjectManagerImpl.java:222)
+	at com.intellij.openapi.project.impl.ProjectManagerImpl.newProject(ProjectManagerImpl.java:178)
+	at com.intellij.testFramework.PlatformTestCase.createProject(PlatformTestCase.java:261)
+	at com.intellij.testFramework.PlatformTestCase.createProject(PlatformTestCase.java:252)
+	at com.intellij.testFramework.LightPlatformTestCase.initProject(LightPlatformTestCase.java:238)
+	at com.intellij.testFramework.LightPlatformTestCase.doSetup(LightPlatformTestCase.java:296)
+	at com.intellij.testFramework.fixtures.impl.LightIdeaTestFixtureImpl.setUp(LightIdeaTestFixtureImpl.java:53)
+	at com.intellij.testFramework.fixtures.impl.CodeInsightTestFixtureImpl$17.run(CodeInsightTestFixtureImpl.java:1311)
+	at com.intellij.testFramework.EdtTestUtil$Companion$runInEdtAndWait$1.invoke(EdtTestUtil.kt:29)
+	at com.intellij.testFramework.EdtTestUtil$Companion$runInEdtAndWait$1.invoke(EdtTestUtil.kt:27)
+	at com.intellij.testFramework.EdtTestUtilKt$sam$Runnable$ca4818df.run(EdtTestUtil.kt)
+	at com.intellij.openapi.application.impl.ApplicationImpl.invokeAndWait(ApplicationImpl.java:633)
+	at com.intellij.testFramework.EdtTestUtilKt.runInEdtAndWait(EdtTestUtil.kt:42)
+	at com.intellij.testFramework.EdtTestUtil$Companion.runInEdtAndWait(EdtTestUtil.kt:29)
+	at com.intellij.testFramework.EdtTestUtil.runInEdtAndWait(EdtTestUtil.kt)
+	at com.intellij.testFramework.fixtures.impl.CodeInsightTestFixtureImpl.setUp(CodeInsightTestFixtureImpl.java:1308)
+	at com.intellij.testFramework.fixtures.LightPlatformCodeInsightFixtureTestCase.setUp(LightPlatformCodeInsightFixtureTestCase.java:61)
+	at net.masterthought.dlanguage.DLightPlatformCodeInsightFixtureTestCase.setUp(DLightPlatformCodeInsightFixtureTestCase.java:38)
+	at net.masterthought.dlanguage.resolve.DResolveTestCase.setUp(DResolveTestCase.java:34)
+	at com.intellij.testFramework.UsefulTestCase.defaultRunBare(UsefulTestCase.java:364)
+	at com.intellij.testFramework.UsefulTestCase$$Lambda$11/1645267900.run(Unknown Source)
+	at com.intellij.testFramework.EdtTestUtil$Companion$runInEdtAndWait$1.invoke(EdtTestUtil.kt:29)
+	at com.intellij.testFramework.EdtTestUtil$Companion$runInEdtAndWait$1.invoke(EdtTestUtil.kt:27)
+	at com.intellij.testFramework.EdtTestUtilKt$sam$Runnable$ca4818df.run(EdtTestUtil.kt)
+	at com.intellij.openapi.application.TransactionGuardImpl$6.run(TransactionGuardImpl.java:291)
+	at com.intellij.openapi.application.impl.LaterInvocator$1.run(LaterInvocator.java:156)
+	at com.intellij.openapi.application.impl.LaterInvocator$FlushQueue.runNextEvent(LaterInvocator.java:326)
+	at com.intellij.openapi.application.impl.LaterInvocator$FlushQueue.run(LaterInvocator.java:310)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:744)
+	at java.awt.EventQueue.access$400(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:697)
+	at java.awt.EventQueue$3.run(EventQueue.java:691)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:75)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:714)
+	at com.intellij.ide.IdeEventQueue.defaultDispatchEvent(IdeEventQueue.java:863)
+	at com.intellij.ide.IdeEventQueue._dispatchEvent(IdeEventQueue.java:699)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent(IdeEventQueue.java:385)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+Caused by: java.lang.NoClassDefFoundError: Could not initialize class net.masterthought.dlanguage.DLanguageIcons
+	at net.masterthought.dlanguage.unittest.DUnitTestRunConfigurationType.&lt;init&gt;(DUnitTestRunConfigurationType.java:16)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:408)
+	at org.picocontainer.defaults.InstantiatingComponentAdapter.newInstance(InstantiatingComponentAdapter.java:193)
+	at org.picocontainer.defaults.ConstructorInjectionComponentAdapter$1.run(ConstructorInjectionComponentAdapter.java:220)
+	at org.picocontainer.defaults.ThreadLocalCyclicDependencyGuard.observe(ThreadLocalCyclicDependencyGuard.java:53)
+	at org.picocontainer.defaults.ConstructorInjectionComponentAdapter.getComponentInstance(ConstructorInjectionComponentAdapter.java:248)
+	at com.intellij.util.pico.CachingConstructorInjectionComponentAdapter.getComponentInstance(CachingConstructorInjectionComponentAdapter.java:58)
+	at com.intellij.openapi.extensions.impl.ExtensionComponentAdapter.getComponentInstance(ExtensionComponentAdapter.java:77)
+	... 66 more
+Caused by:
+
+java.lang.NoClassDefFoundError: Could not initialize class net.masterthought.dlanguage.DLanguageIcons
+	at net.masterthought.dlanguage.unittest.DUnitTestRunConfigurationType.&lt;init&gt;(DUnitTestRunConfigurationType.java:16)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:408)
+	at org.picocontainer.defaults.InstantiatingComponentAdapter.newInstance(InstantiatingComponentAdapter.java:193)
+	at org.picocontainer.defaults.ConstructorInjectionComponentAdapter$1.run(ConstructorInjectionComponentAdapter.java:220)
+	at org.picocontainer.defaults.ThreadLocalCyclicDependencyGuard.observe(ThreadLocalCyclicDependencyGuard.java:53)
+	at org.picocontainer.defaults.ConstructorInjectionComponentAdapter.getComponentInstance(ConstructorInjectionComponentAdapter.java:248)
+	at com.intellij.util.pico.CachingConstructorInjectionComponentAdapter.getComponentInstance(CachingConstructorInjectionComponentAdapter.java:58)
+	at com.intellij.openapi.extensions.impl.ExtensionComponentAdapter.getComponentInstance(ExtensionComponentAdapter.java:77)
+	at com.intellij.openapi.extensions.impl.ExtensionComponentAdapter.getExtension(ExtensionComponentAdapter.java:119)
+	at com.intellij.openapi.extensions.impl.ExtensionPointImpl.processAdapters(ExtensionPointImpl.java:249)
+	at com.intellij.openapi.extensions.impl.ExtensionPointImpl.getExtensions(ExtensionPointImpl.java:194)
+	at com.intellij.openapi.extensions.Extensions.getExtensions(Extensions.java:100)
+	at com.intellij.openapi.extensions.Extensions.getExtensions(Extensions.java:87)
+	at com.intellij.openapi.extensions.ExtensionPointName.getExtensions(ExtensionPointName.java:49)
+	at com.intellij.execution.impl.RunManagerImpl.&lt;init&gt;(RunManagerImpl.java:103)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:408)
+	at org.picocontainer.defaults.InstantiatingComponentAdapter.newInstance(InstantiatingComponentAdapter.java:193)
+	at org.picocontainer.defaults.ConstructorInjectionComponentAdapter$1.run(ConstructorInjectionComponentAdapter.java:220)
+	at org.picocontainer.defaults.ThreadLocalCyclicDependencyGuard.observe(ThreadLocalCyclicDependencyGuard.java:53)
+	at org.picocontainer.defaults.ConstructorInjectionComponentAdapter.getComponentInstance(ConstructorInjectionComponentAdapter.java:248)
+	at com.intellij.util.pico.CachingConstructorInjectionComponentAdapter.getComponentInstance(CachingConstructorInjectionComponentAdapter.java:58)
+	at com.intellij.openapi.components.impl.ComponentManagerImpl$ComponentConfigComponentAdapter.getComponentInstance(ComponentManagerImpl.java:495)
+	at com.intellij.openapi.components.impl.ComponentManagerImpl.createComponents(ComponentManagerImpl.java:119)
+	at com.intellij.openapi.components.impl.ComponentManagerImpl.init(ComponentManagerImpl.java:103)
+	at com.intellij.openapi.components.impl.ComponentManagerImpl.init(ComponentManagerImpl.java:90)
+	at com.intellij.openapi.project.impl.ProjectImpl.init(ProjectImpl.java:283)
+	at com.intellij.openapi.project.impl.ProjectManagerImpl.initProject(ProjectManagerImpl.java:222)
+	at com.intellij.openapi.project.impl.ProjectManagerImpl.newProject(ProjectManagerImpl.java:178)
+	at com.intellij.testFramework.PlatformTestCase.createProject(PlatformTestCase.java:261)
+	at com.intellij.testFramework.PlatformTestCase.createProject(PlatformTestCase.java:252)
+	at com.intellij.testFramework.LightPlatformTestCase.initProject(LightPlatformTestCase.java:238)
+	at com.intellij.testFramework.LightPlatformTestCase.doSetup(LightPlatformTestCase.java:296)
+	at com.intellij.testFramework.fixtures.impl.LightIdeaTestFixtureImpl.setUp(LightIdeaTestFixtureImpl.java:53)
+	at com.intellij.testFramework.fixtures.impl.CodeInsightTestFixtureImpl$17.run(CodeInsightTestFixtureImpl.java:1311)
+	at com.intellij.testFramework.EdtTestUtil$Companion$runInEdtAndWait$1.invoke(EdtTestUtil.kt:29)
+	at com.intellij.testFramework.EdtTestUtil$Companion$runInEdtAndWait$1.invoke(EdtTestUtil.kt:27)
+	at com.intellij.testFramework.EdtTestUtilKt$sam$Runnable$ca4818df.run(EdtTestUtil.kt)
+	at com.intellij.openapi.application.impl.ApplicationImpl.invokeAndWait(ApplicationImpl.java:633)
+	at com.intellij.testFramework.EdtTestUtilKt.runInEdtAndWait(EdtTestUtil.kt:42)
+	at com.intellij.testFramework.EdtTestUtil$Companion.runInEdtAndWait(EdtTestUtil.kt:29)
+	at com.intellij.testFramework.EdtTestUtil.runInEdtAndWait(EdtTestUtil.kt)
+	at com.intellij.testFramework.fixtures.impl.CodeInsightTestFixtureImpl.setUp(CodeInsightTestFixtureImpl.java:1308)
+	at com.intellij.testFramework.fixtures.LightPlatformCodeInsightFixtureTestCase.setUp(LightPlatformCodeInsightFixtureTestCase.java:61)
+	at net.masterthought.dlanguage.DLightPlatformCodeInsightFixtureTestCase.setUp(DLightPlatformCodeInsightFixtureTestCase.java:38)
+	at net.masterthought.dlanguage.resolve.DResolveTestCase.setUp(DResolveTestCase.java:34)
+	at com.intellij.testFramework.UsefulTestCase.defaultRunBare(UsefulTestCase.java:364)
+	at com.intellij.testFramework.UsefulTestCase$$Lambda$11/1645267900.run(Unknown Source)
+	at com.intellij.testFramework.EdtTestUtil$Companion$runInEdtAndWait$1.invoke(EdtTestUtil.kt:29)
+	at com.intellij.testFramework.EdtTestUtil$Companion$runInEdtAndWait$1.invoke(EdtTestUtil.kt:27)
+	at com.intellij.testFramework.EdtTestUtilKt$sam$Runnable$ca4818df.run(EdtTestUtil.kt)
+	at com.intellij.openapi.application.TransactionGuardImpl$6.run(TransactionGuardImpl.java:291)
+	at com.intellij.openapi.application.impl.LaterInvocator$1.run(LaterInvocator.java:156)
+	at com.intellij.openapi.application.impl.LaterInvocator$FlushQueue.runNextEvent(LaterInvocator.java:326)
+	at com.intellij.openapi.application.impl.LaterInvocator$FlushQueue.run(LaterInvocator.java:310)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:744)
+	at java.awt.EventQueue.access$400(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:697)
+	at java.awt.EventQueue$3.run(EventQueue.java:691)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:75)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:714)
+	at com.intellij.ide.IdeEventQueue.defaultDispatchEvent(IdeEventQueue.java:863)
+	at com.intellij.ide.IdeEventQueue._dispatchEvent(IdeEventQueue.java:699)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent(IdeEventQueue.java:385)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="http://www.gradle.org">Gradle 2.13</a> at Jul 20, 2016 6:49:15 PM</p>
+</div>
+</div>
+</body>
+</html>

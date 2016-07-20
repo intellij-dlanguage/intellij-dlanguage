@@ -1,0 +1,7 @@
+<application>
+  <component name="ExtensionsRootType">
+    <pluginVersions>
+      <plugin id="com.intellij" version="IC-162.1121.10" />
+    </pluginVersions>
+  </component>
+</application>

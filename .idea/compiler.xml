@@ -20,12 +20,12 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="DLanguage_main" target="1.7" />
-      <module name="DLanguage_test" target="1.7" />
-      <module name="jps-plugin_main" target="1.7" />
-      <module name="jps-plugin_test" target="1.7" />
-      <module name="jps-shared_main" target="1.7" />
-      <module name="jps-shared_test" target="1.7" />
+      <module name="DLanguage_main" target="1.8" />
+      <module name="DLanguage_test" target="1.8" />
+      <module name="jps-plugin_main" target="1.8" />
+      <module name="jps-plugin_test" target="1.8" />
+      <module name="jps-shared_main" target="1.8" />
+      <module name="jps-shared_test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
