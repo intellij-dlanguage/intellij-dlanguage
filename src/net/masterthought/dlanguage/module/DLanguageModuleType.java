@@ -1,9 +1,5 @@
 package net.masterthought.dlanguage.module;
 
-import com.intellij.ide.util.importProject.ModulesDetectionStep;
-import com.intellij.ide.util.newProjectWizard.ProjectNameStep;
-import com.intellij.ide.util.newProjectWizard.modes.CreateFromScratchMode;
-import com.intellij.ide.util.newProjectWizard.modes.WizardMode;
 import com.intellij.ide.util.projectWizard.ModuleWizardStep;
 import com.intellij.ide.util.projectWizard.ProjectJdkForModuleStep;
 import com.intellij.ide.util.projectWizard.WizardContext;
