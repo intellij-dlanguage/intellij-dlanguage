@@ -1,72 +1,98 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url 'http://dl.bintray.com/jetbrains/intellij-plugin-service' }
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
 plugins {
-  id 'org.jetbrains.intellij' version '0.0.40'
+    id 'org.jetbrains.intellij' version '0.0.40'
 }
 
 version = "0001"
 allprojects {
-  apply plugin: 'java'
-  sourceCompatibility = javaVersion
-  targetCompatibility = javaVersion
-  tasks.withType(JavaCompile) { options.encoding = 'UTF-8' }
+//  apply plugin: 'java'
+    apply plugin: 'kotlin'
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+    tasks.withType(JavaCompile) { options.encoding = 'UTF-8' }
 
-  sourceSets {
-    main {
-      java.srcDirs 'src', 'gen'
-      resources.srcDirs 'resources', 'plugin/resources'
+    sourceSets {
+        main {
+            java.srcDirs 'src', 'gen'
+            resources.srcDirs 'resources', 'plugin/resources'
+        }
+        test {
+            java.srcDir 'tests'
+        }
     }
+
+    apply plugin: 'org.jetbrains.intellij'
+    intellij {
+        pluginName 'D Language'
+        version ideaVersion
+        plugins 'copyright'
+        downloadSources Boolean.valueOf(sources)
+        sameSinceUntilBuild Boolean.valueOf(isEAP)
+    }
+
+    def compilationPackages = ['net/masterthought/dlanguage/build/**', 'net/masterthought/dlanguage/jps/**']
+
     test {
-      java.srcDir 'tests'
+        useJUnit {
+            exclude compilationPackages
+            include '**/**/DTestCase.class'
+        }
+        testLogging {
+            exceptionFormat = 'full'
+        }
     }
-  }
 
-  apply plugin: 'org.jetbrains.intellij'
-  intellij {
-    version ideaVersion
-    plugins 'copyright'
-    downloadSources Boolean.valueOf(sources)
-    sameSinceUntilBuild Boolean.valueOf(isEAP)
-  }
-
-  def compilationPackages = ['net/masterthought/dlanguage/build/**', 'net/masterthought/dlanguage/jps/**']
-
-  test {
-    useJUnit {
-      exclude compilationPackages
-      include '**/**/DTestCase.class'
+    task testCompilation(type: Test, group: 'Verification', dependsOn: [classes, testClasses]) {
+        useJUnit {
+            include compilationPackages
+        }
+        testLogging {
+            exceptionFormat = 'full'
+        }
     }
-    testLogging {
-      exceptionFormat = 'full'
-    }
-  }
-
-  task testCompilation(type: Test, group: 'Verification', dependsOn: [classes, testClasses]) {
-    useJUnit {
-      include compilationPackages
-    }
-    testLogging {
-      exceptionFormat = 'full'
-    }
-  }
 }
 
 repositories {
-  flatDir {
-    dirs 'libs'
-  }
+    mavenCentral()
 }
 
 dependencies {
-  compile project('jps-shared')
-  compile project('jps-plugin')
+    compile project('jps-shared')
+    compile project('jps-plugin')
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
 
 apply plugin: 'idea'
 idea {
-  project {
-    jdkName = javaVersion
-    languageLevel = javaVersion
-  }
-  module {
-    generatedSourceDirs += file('gen')
-  }
+    project {
+        jdkName = javaVersion
+        languageLevel = javaVersion
+    }
+    module {
+        generatedSourceDirs += file('gen')
+    }
 }
+
+//buildscript {
+//    ext.kotlin_version = '1.0.3'
+//    repositories {
+//        mavenCentral()
+//    }
+//    dependencies {
+//        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+//    }
+//}
+//sourceSets {
+//    main.java.srcDirs += 'src/main/kotlin'
+//}
+
+
