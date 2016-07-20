@@ -10,7 +10,7 @@ import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
 import net.masterthought.dlanguage.DLanguageBundle;
-import net.masterthought.dlanguage.DLanguageIcons;
+import net.masterthought.dlanguage.icons.DLanguageIcons;
 import net.masterthought.dlanguage.DLanguageSdkType;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;

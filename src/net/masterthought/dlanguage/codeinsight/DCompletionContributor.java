@@ -9,7 +9,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.util.Function;
 import com.intellij.util.ProcessingContext;
 import net.masterthought.dlanguage.DLanguage;
-import net.masterthought.dlanguage.DLanguageIcons;
+import net.masterthought.dlanguage.icons.DLanguageIcons;
 import net.masterthought.dlanguage.codeinsight.dcd.DCDCompletionClient;
 import net.masterthought.dlanguage.codeinsight.dcd.DCDCompletionServer;
 import net.masterthought.dlanguage.codeinsight.dcd.completions.Completion;

@@ -16,7 +16,7 @@ import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.Pair;
 import com.intellij.packaging.artifacts.ModifiableArtifactModel;
 import com.intellij.projectImport.ProjectImportBuilder;
-import net.masterthought.dlanguage.DLanguageIcons;
+import net.masterthought.dlanguage.icons.DLanguageIcons;
 import net.masterthought.dlanguage.DLanguageSdkType;
 import net.masterthought.dlanguage.module.DLanguageDubModuleBuilder;
 import org.jdom.JDOMException;

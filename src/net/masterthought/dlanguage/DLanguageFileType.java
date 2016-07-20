@@ -1,6 +1,7 @@
 package net.masterthought.dlanguage;
 
 import com.intellij.openapi.fileTypes.LanguageFileType;
+import net.masterthought.dlanguage.icons.DLanguageIcons;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

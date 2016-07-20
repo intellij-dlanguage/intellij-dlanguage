@@ -320,3 +320,53 @@ java.lang.AssertionError: Problems during index shutdown
 	at com.intellij.util.indexing.FileBasedIndexImpl$FileIndexDataInitialization$$Lambda$57/604146469.run(Unknown Source)
 	at com.intellij.openapi.util.ShutDownTracker.run(ShutDownTracker.java:60)
 	at java.lang.Thread.run(Thread.java:745)
+2016-07-20 19:10:19,462 [      0]   INFO -     #com.intellij.util.ui.JBUI - UI scale factor: 1.0 
+2016-07-20 19:10:19,954 [    492]   INFO - llij.ide.plugins.PluginManager - 3 plugins initialized in 459 ms 
+2016-07-20 19:10:19,955 [    493]   INFO - llij.ide.plugins.PluginManager - Loaded bundled plugins: Copyright (8.1), IDEA CORE (162.1121.10) 
+2016-07-20 19:10:19,955 [    493]   INFO - llij.ide.plugins.PluginManager - Loaded custom plugins: D Language (0001) 
+2016-07-20 19:10:20,664 [   1202]   INFO - ellij.util.io.PagedFileStorage - lower=100; upper=435; buffer=10; max=435 
+2016-07-20 19:10:20,749 [   1287]   INFO - pl.local.NativeFileWatcherImpl - Native file watcher is disabled 
+2016-07-20 19:10:21,764 [   2302]   INFO - il.indexing.FileBasedIndexImpl - Index exts enumerated:39 
+2016-07-20 19:10:21,770 [   2308]   INFO - il.indexing.FileBasedIndexImpl - Index scheduled:5 
+2016-07-20 19:10:21,788 [   2326]   INFO - tellij.psi.stubs.StubIndexImpl - All stub exts enumerated:13 
+2016-07-20 19:10:21,790 [   2328]   INFO - tellij.psi.stubs.StubIndexImpl - stub exts update scheduled:1 
+2016-07-20 19:10:21,923 [   2461]   INFO - rains.ide.BuiltInServerManager - built-in server started, port 64463 
+2016-07-20 19:10:21,977 [   2515]   INFO - plication.impl.ApplicationImpl - 73 application components initialized in 1980 ms 
+2016-07-20 19:10:22,378 [   2916]   INFO - pl$FileIndexDataInitialization - Initialization done:607 
+2016-07-20 19:10:22,408 [   2946]   INFO - exImpl$StubIndexInitialization - Initialization done:30 
+2016-07-20 19:10:24,139 [   4677]   INFO - ellij.project.impl.ProjectImpl - 100 project components initialized in 1815 ms 
+2016-07-20 19:10:24,140 [   4678]   INFO - le.impl.ModuleManagerComponent - 0 module(s) loaded in 0 ms 
+2016-07-20 19:10:24,255 [   4793]   WARN - impl.local.LocalFileSystemBase - Invalid path: light_idea_test_case.iml 
+2016-07-20 19:10:24,309 [   4847]   WARN - impl.local.LocalFileSystemBase - Invalid path: light_idea_test_case.iml 
+2016-07-20 19:10:24,419 [   4957]   WARN - impl.local.LocalFileSystemBase - Invalid path: light_idea_test_case.iml 
+2016-07-20 19:10:36,911 [  17449]   INFO - il.indexing.FileBasedIndexImpl - START INDEX SHUTDOWN 
+2016-07-20 19:10:37,099 [  17637]   INFO - il.indexing.FileBasedIndexImpl - END INDEX SHUTDOWN 
+2016-07-20 19:10:37,099 [  17637]   INFO - stubs.SerializationManagerImpl - START StubSerializationManager SHUTDOWN 
+2016-07-20 19:10:37,100 [  17638]   INFO - stubs.SerializationManagerImpl - END StubSerializationManager SHUTDOWN 
+2016-07-20 19:10:37,102 [  17640]   INFO - newvfs.persistent.PersistentFS - VFS dispose started 
+2016-07-20 19:10:37,106 [  17644]   INFO - newvfs.persistent.PersistentFS - VFS dispose completed 
+2016-07-20 19:13:36,506 [      0]   INFO -     #com.intellij.util.ui.JBUI - UI scale factor: 1.0 
+2016-07-20 19:13:36,934 [    428]   INFO - llij.ide.plugins.PluginManager - 3 plugins initialized in 401 ms 
+2016-07-20 19:13:36,935 [    429]   INFO - llij.ide.plugins.PluginManager - Loaded bundled plugins: Copyright (8.1), IDEA CORE (162.1121.10) 
+2016-07-20 19:13:36,935 [    429]   INFO - llij.ide.plugins.PluginManager - Loaded custom plugins: D Language (0001) 
+2016-07-20 19:13:37,375 [    869]   INFO - ellij.util.io.PagedFileStorage - lower=100; upper=435; buffer=10; max=435 
+2016-07-20 19:13:37,424 [    918]   INFO - pl.local.NativeFileWatcherImpl - Native file watcher is disabled 
+2016-07-20 19:13:38,692 [   2186]   INFO - il.indexing.FileBasedIndexImpl - Index exts enumerated:46 
+2016-07-20 19:13:38,698 [   2192]   INFO - il.indexing.FileBasedIndexImpl - Index scheduled:6 
+2016-07-20 19:13:38,715 [   2209]   INFO - tellij.psi.stubs.StubIndexImpl - All stub exts enumerated:14 
+2016-07-20 19:13:38,717 [   2211]   INFO - tellij.psi.stubs.StubIndexImpl - stub exts update scheduled:2 
+2016-07-20 19:13:38,784 [   2278]   INFO - rains.ide.BuiltInServerManager - built-in server started, port 64463 
+2016-07-20 19:13:38,858 [   2352]   INFO - plication.impl.ApplicationImpl - 73 application components initialized in 1904 ms 
+2016-07-20 19:13:39,061 [   2555]   INFO - pl$FileIndexDataInitialization - Initialization done:363 
+2016-07-20 19:13:39,125 [   2619]   INFO - exImpl$StubIndexInitialization - Initialization done:63 
+2016-07-20 19:13:40,577 [   4071]   INFO - ellij.project.impl.ProjectImpl - 100 project components initialized in 1600 ms 
+2016-07-20 19:13:40,577 [   4071]   INFO - le.impl.ModuleManagerComponent - 0 module(s) loaded in 0 ms 
+2016-07-20 19:13:40,671 [   4165]   WARN - impl.local.LocalFileSystemBase - Invalid path: light_idea_test_case.iml 
+2016-07-20 19:13:40,707 [   4201]   WARN - impl.local.LocalFileSystemBase - Invalid path: light_idea_test_case.iml 
+2016-07-20 19:13:40,807 [   4301]   WARN - impl.local.LocalFileSystemBase - Invalid path: light_idea_test_case.iml 
+2016-07-20 19:13:42,658 [   6152]   INFO - il.indexing.FileBasedIndexImpl - START INDEX SHUTDOWN 
+2016-07-20 19:13:42,687 [   6181]   INFO - il.indexing.FileBasedIndexImpl - END INDEX SHUTDOWN 
+2016-07-20 19:13:42,687 [   6181]   INFO - stubs.SerializationManagerImpl - START StubSerializationManager SHUTDOWN 
+2016-07-20 19:13:42,687 [   6181]   INFO - stubs.SerializationManagerImpl - END StubSerializationManager SHUTDOWN 
+2016-07-20 19:13:42,693 [   6187]   INFO - newvfs.persistent.PersistentFS - VFS dispose started 
+2016-07-20 19:13:42,699 [   6193]   INFO - newvfs.persistent.PersistentFS - VFS dispose completed 
