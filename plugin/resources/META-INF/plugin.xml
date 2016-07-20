@@ -1,0 +1,154 @@
+<idea-plugin version="2">
+    <id>net.masterthought.dlanguage</id>
+    <name>D Language</name>
+    <version>1.11</version>
+    <vendor email="kingsley.hendrickse@gmail.com" url="http://www.masterthought.net">MasterThought</vendor>
+
+    <description><![CDATA[
+     Support for the D Language
+    ]]></description>
+
+    <change-notes><![CDATA[
+     fixed project import
+    ]]>
+    </change-notes>
+
+    <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
+    <idea-version since-build="131"/>
+
+    <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
+         on how to target different products -->
+    <!-- uncomment to enable plugin in all products
+    <depends>com.intellij.modules.lang</depends>
+    -->
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+        <fileTypeFactory implementation="net.masterthought.dlanguage.DLanguageFileTypeFactory"/>
+        <lang.parserDefinition language="D"
+                               implementationClass="net.masterthought.dlanguage.DLanguageParserDefinition"/>
+        <lang.syntaxHighlighterFactory key="D"
+                                       implementationClass="net.masterthought.dlanguage.highlighting.DHighlighterFactory"/>
+        <colorSettingsPage implementation="net.masterthought.dlanguage.settings.DColorSettingsPage"/>
+        <annotator language="D" implementationClass="net.masterthought.dlanguage.highlighting.annotation.DAnnotator"/>
+        <externalAnnotator language="D"
+                           implementationClass="net.masterthought.dlanguage.highlighting.annotation.external.DExternalAnnotator"/>
+
+
+        <!-- D Language support -->
+        <sdkType implementation="net.masterthought.dlanguage.DLanguageSdkType"/>
+        <runConfigurationProducer implementation="net.masterthought.dlanguage.run.DLanguageRunDubConfigurationProducer"/>
+
+        <!-- project open and import -->
+        <projectImportProvider implementation="net.masterthought.dlanguage.project.DubProjectImportProvider"/>
+        <projectImportBuilder implementation="net.masterthought.dlanguage.project.DubProjectImportBuilder"/>
+        <!--<projectOpenProcessor id="DubProjectOpenProcessor" implementation="net.masterthought.dlanguage.project.DubProjectOpenProcessor"/>-->
+
+        <!-- module -->
+        <internalFileTemplate name="D Language Module"/>
+        <moduleType id="DLANGUAGE_MODULE" implementationClass="net.masterthought.dlanguage.module.DLanguageModuleType"/>
+        <configurationType implementation="net.masterthought.dlanguage.run.DLanguageRunDubConfigurationType"/>
+        <configurationType implementation="net.masterthought.dlanguage.run.DLanguageRunDmdConfigurationType"/>
+        <configurationType implementation="net.masterthought.dlanguage.run.DLanguageRunAppConfigurationType"/>
+        <moduleBuilder id="DLangModuleBuilder"
+                       builderClass="net.masterthought.dlanguage.module.DLanguageModuleBuilder"/>
+        <moduleBuilder id="DLangDubModuleBuilder"
+                       builderClass="net.masterthought.dlanguage.module.DLanguageDubModuleBuilder"/>
+        <moduleConfigurationEditorProvider
+                implementation="net.masterthought.dlanguage.module.DLanguageModuleEditorsProvider"/>
+
+        <!-- library -->
+        <library.type implementation="net.masterthought.dlanguage.library.DLanguageLibraryType"/>
+        <orderRootType implementation="net.masterthought.dlanguage.library.LibFileRootType" id="LIBRARY_FILE"
+                       order="FIRST"/>
+        <OrderRootTypeUI key="LIBRARY_FILE"
+                         implementationClass="net.masterthought.dlanguage.library.LibFileRootTypeUIFactory"/>
+
+        <!-- Indexes -->
+        <fileBasedIndex implementation="net.masterthought.dlanguage.index.DModuleIndex"/>
+        <stubIndex implementation="net.masterthought.dlanguage.stubs.index.DAllNameIndex"/>
+        <gotoSymbolContributor implementation="net.masterthought.dlanguage.features.DChooseByNameContributor"/>
+        <gotoClassContributor implementation="net.masterthought.dlanguage.features.DClassContributor"/>
+        <!-- Project settings -->
+
+        <!-- Tab under compiler in IntelliJ -> Preferences -->
+        <!--<projectConfigurable instance="net.masterthought.dlanguage.DLanguageCompilerConfigurable"-->
+        <!--parentId="project.propCompiler" id="DMD compiler"-->
+        <!--displayName="DMD Compiler"/>-->
+        <!-- Persistent data + build server communication for compiler settings -->
+        <projectService serviceImplementation="net.masterthought.dlanguage.settings.DLanguageBuildSettings"/>
+        <!-- Tab in IntelliJ -> Preferences -->
+        <projectConfigurable instance="net.masterthought.dlanguage.settings.DLanguageToolsConfigurable"/>
+        <!-- File -> Project Structure dialogue. -->
+        <!--<moduleConfigurationEditorProvider implementation="net.masterthought.dlanguage.settings.DLanguageModuleConfigurationEditor" order="first"/>-->
+        <!-- Tab in IntelliJ -> Preferences -->
+
+        <!-- References/navigation -->
+        <psi.referenceContributor implementation="net.masterthought.dlanguage.psi.references.DReferenceContributor"/>
+        <lang.findUsagesProvider language="D"
+                                 implementationClass="net.masterthought.dlanguage.codeinsight.DFindUsagesProvider"/>
+
+        <!-- Editing utils -->
+        <lang.braceMatcher language="D" implementationClass="net.masterthought.dlanguage.features.DBraceMatcher"/>
+        <lang.commenter language="D" implementationClass="net.masterthought.dlanguage.features.DCommenter"/>
+        <lang.foldingBuilder language="D" implementationClass="net.masterthought.dlanguage.features.DFoldingBuilder"/>
+        <completion.contributor language="D"
+                                implementationClass="net.masterthought.dlanguage.codeinsight.DCompletionContributor"/>
+
+
+        <!-- dunit support -->
+        <configurationType implementation="net.masterthought.dlanguage.unittest.DUnitTestRunConfigurationType"/>
+        <runConfigurationProducer implementation="net.masterthought.dlanguage.unittest.DUnitTestRunConfigurationProducer"/>
+        <programRunner implementation="net.masterthought.dlanguage.unittest.DUnitTestProgramRunner"/>
+        <!--<testFramework implementation="net.masterthought.dlanguage.unittest.DUnitTestFramework"/>-->
+        <!--<testFinder implementation="net.masterthought.dlanguage.unittest.DUnitTestFinder"/>-->
+        <!--<consoleFilterProvider implementation="net.masterthought.dlanguage.unittest.DStackTraceFilter"/>-->
+        <!--<analyzeStacktraceFilter implementation="net.masterthought.dlanguage.unittest.DStackTraceFilter"/>-->
+    </extensions>
+
+    <application-components>
+        <!-- Add your application components here -->
+    </application-components>
+
+    <actions>
+        <action id="DLanguage.NewDLanguageFile" class="net.masterthought.dlanguage.actions.CreateDLanguageFileAction"
+                text="D File" description="Create new D file">
+            <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFile"/>
+        </action>
+        <action id="DLanguage.DFormat"
+                class="net.masterthought.dlanguage.actions.DFormatAction"
+                text="Reformat code with DFormat"
+                description="Format current file with DFormat formatter">
+            <add-to-group group-id="CodeFormatGroup" anchor="last"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt K"/>
+        </action>
+        <action id="DLanguage.DFix"
+                class="net.masterthought.dlanguage.actions.DFixAction"
+                text="Fix D code with DFix"
+                description="Fix current file with DFix">
+            <add-to-group group-id="CodeFormatGroup" anchor="last"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt M"/>
+        </action>
+        <action id="net.masterthought.dlanguage.RestartDCD" class="net.masterthought.dlanguage.actions.RestartDCD"
+                   text="Restart DCD Server" description="Restarts the DCD server">
+             <add-to-group group-id="ToolsMenu" anchor="last"/>
+           </action>
+        <action id="net.masterthought.dlanguage.ProcessDLibs" class="net.masterthought.dlanguage.actions.ProcessDLibs"
+                text="Process D Libraries" description="Processes the D Libraries">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+    </actions>
+
+    <module-components>
+        <component>
+            <implementation-class>net.masterthought.dlanguage.codeinsight.dcd.DCDCompletionServer</implementation-class>
+            <interface-class>net.masterthought.dlanguage.codeinsight.dcd.DCDCompletionServer</interface-class>
+        </component>
+    </module-components>
+
+    <project-components>
+        <!-- Add your project components here -->
+    </project-components>
+
+
+</idea-plugin>
