@@ -1,10 +1,16 @@
-out
+out/
 .DS_Store
-.idea
-.gradle
+.gradle/
 /build/
 /jps-plugin/build/
 /jps-shared/build/
+
+# Ignore Intellij IDE specific files
+.idea/
+*.iml
+
+# Ignore Sublime Text workspace (project file is ok):
+*.sublime-workspace
 
 # Ignore Gradle GUI config
 gradle-app.setting

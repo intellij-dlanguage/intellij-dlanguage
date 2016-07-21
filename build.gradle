@@ -12,22 +12,23 @@ plugins {
     id 'org.jetbrains.intellij' version '0.1.10'
 }
 
+
+sourceSets {
+    main {
+        java.srcDirs 'src/main/java', 'gen'
+        resources.srcDirs 'src/main/resources'
+    }
+    test {
+        java.srcDir 'src/test/java'
+    }
+}
+
 version = "0001"
 allprojects {
     apply plugin: 'kotlin'
     sourceCompatibility = javaVersion
     targetCompatibility = javaVersion
     tasks.withType(JavaCompile) { options.encoding = 'UTF-8' }
-
-    sourceSets {
-        main {
-            java.srcDirs 'src', 'gen'
-            resources.srcDirs 'resources', 'plugin/resources'
-        }
-        test {
-            java.srcDir 'tests'
-        }
-    }
 
     apply plugin: 'org.jetbrains.intellij'
     intellij {

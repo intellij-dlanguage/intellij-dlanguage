@@ -308,8 +308,14 @@ also see this document for getting the environment setup: [plugin development](h
 this one is also helpful: [make a plugin in less than 30 mins](http://bjorn.tipling.com/how-to-make-an-intellij-idea-plugin-in-30-minutes)
 ### Setup
 
-1. Download and install the community edition of intellij - [here](https://www.jetbrains.com/idea/download/)
-2. Download the intellij community edition source code - git clone --depth 1 https://github.com/JetBrains/intellij-community.git (use depth 1 to reduce history otherwise it will take a long time)
-3. Open this plugin project in intellij
-4. In the module setting (F4) set the SDK to the path of the community edition JDK under the intellij platform plugin SDK
-5. Optionally add the community edition source to the source code paths in the module settings to allow access to the core code while debugging etc
+The project uses Gradle with the [gradle-intellij-plugin](https://github.com/JetBrains/gradle-intellij-plugin). Simply use the gradle wrapper in the root of the project to build the plugin using the following:
+
+```bash
+./gradlew buildPlugin
+```
+
+You can also use the plugin to boot up a stand alone instance of Intellij with the plugin installed using:
+
+```bash
+./gradlew runIdea
+```
