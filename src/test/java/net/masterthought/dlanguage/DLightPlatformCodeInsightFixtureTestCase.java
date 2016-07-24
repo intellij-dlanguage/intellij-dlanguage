@@ -56,7 +56,7 @@ public abstract class DLightPlatformCodeInsightFixtureTestCase extends LightPlat
      * Base path to the test files.
      */
     protected static String getDirPath() {
-        return "tests" + File.separator + "gold";
+        return "out/test/Dlanguage/gold";
     }
 
     /**

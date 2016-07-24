@@ -55,7 +55,7 @@ public class DLanguageLexerTestBase extends LexerTestCase {
 
     @Override
     protected String getDirPath() {
-        return "tests" + File.separator + "gold";
+        return "out/test/Dlanguage/gold";
     }
 
     /**

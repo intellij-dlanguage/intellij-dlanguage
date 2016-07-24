@@ -22,7 +22,7 @@ public abstract class DLanguageParserTestBase extends ParsingTestCase {
 
     @Override
     protected String getTestDataPath() {
-        return "tests" + File.separator + "gold";
+        return "out/test/Dlanguage/gold";
     }
 
     @Override
