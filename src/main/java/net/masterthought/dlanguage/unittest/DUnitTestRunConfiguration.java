@@ -102,16 +102,16 @@ public class DUnitTestRunConfiguration extends LocatableConfigurationBase {
     public VirtualFile getDFile() throws RuntimeConfigurationError {
         final String filePath = getdFilePath();
         if (StringUtil.isEmptyOrSpaces(filePath)) {
-            throw new RuntimeConfigurationError(DLanguageBundle.message("path.to.dlanguage.file.not.set"));
+            throw new RuntimeConfigurationError(DLanguageBundle.INSTANCE.message("path.to.dlanguage.file.not.set"));
         }
 
         final VirtualFile dFile = LocalFileSystem.getInstance().findFileByPath(filePath);
         if (dFile == null || dFile.isDirectory()) {
-            throw new RuntimeConfigurationError(DLanguageBundle.message("dlanguage.file.not.found", FileUtil.toSystemDependentName(filePath)));
+            throw new RuntimeConfigurationError(DLanguageBundle.INSTANCE.message("dlanguage.file.not.found", FileUtil.toSystemDependentName(filePath)));
         }
 
         if (dFile.getFileType() != DLanguageFileType.INSTANCE) {
-            throw new RuntimeConfigurationError(DLanguageBundle.message("not.a.dlanguage.file", FileUtil.toSystemDependentName(filePath)));
+            throw new RuntimeConfigurationError(DLanguageBundle.INSTANCE.message("not.a.dlanguage.file", FileUtil.toSystemDependentName(filePath)));
         }
 
         return dFile;

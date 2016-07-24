@@ -75,18 +75,17 @@ public class DElementFactory {
      * Takes an expression in text and returns a Psi tree of that program.
      */
     @NotNull
-    public static PsiElement createExpressionFromText(@NotNull Project project, @NotNull String name) {
-        DLanguageFile fileFromText = createFileFromText(project, name);
-        PsiElement rhs = fileFromText.getFirstChild().getFirstChild().getLastChild();
-        PsiElement nodeOfInterest = rhs.getLastChild().getLastChild().getLastChild();
-        return nodeOfInterest;
+    private static PsiElement createExpressionFromText(@NotNull Project project, @NotNull String name) {
+        final DLanguageFile fileFromText = createFileFromText(project, name);
+        final PsiElement rhs = fileFromText.getFirstChild().getFirstChild().getLastChild();
+        return rhs.getLastChild().getLastChild().getLastChild();
     }
 
     /**
      * Create a file containing text.
      */
     @NotNull
-    public static DLanguageFile createFileFromText(@NotNull Project project, @NotNull String text) {
+    private static DLanguageFile createFileFromText(@NotNull Project project, @NotNull String text) {
         return (DLanguageFile) PsiFileFactory.getInstance(project).createFileFromText("A.hs", DLanguage.INSTANCE, text);
     }
 

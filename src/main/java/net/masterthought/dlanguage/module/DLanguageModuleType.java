@@ -37,13 +37,13 @@ public class DLanguageModuleType extends ModuleType<DLanguageModuleBuilder> {
     @NotNull
     @Override
     public String getName() {
-        return DLanguageBundle.message("module.title");
+        return DLanguageBundle.INSTANCE.message("module.title");
     }
 
     @NotNull
     @Override
     public String getDescription() {
-        return DLanguageBundle.message("module.description");
+        return DLanguageBundle.INSTANCE.message("module.description");
     }
 
     @Override

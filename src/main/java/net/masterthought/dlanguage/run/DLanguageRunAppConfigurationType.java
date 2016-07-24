@@ -20,12 +20,12 @@ public class DLanguageRunAppConfigurationType implements ConfigurationType {
 
     @Override
     public String getDisplayName() {
-        return DLanguageBundle.message("run.app.text");
+        return DLanguageBundle.INSTANCE.message("run.app.text");
     }
 
     @Override
     public String getConfigurationTypeDescription() {
-        return DLanguageBundle.message("run.app.descr");
+        return DLanguageBundle.INSTANCE.message("run.app.descr");
     }
 
     @Override

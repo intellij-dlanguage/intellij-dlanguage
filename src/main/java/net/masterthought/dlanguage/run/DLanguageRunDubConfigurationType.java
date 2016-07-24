@@ -19,12 +19,12 @@ public class DLanguageRunDubConfigurationType  implements ConfigurationType {
 
     @Override
     public String getDisplayName() {
-        return DLanguageBundle.message("run.dub.text");
+        return DLanguageBundle.INSTANCE.message("run.dub.text");
     }
 
     @Override
     public String getConfigurationTypeDescription() {
-        return DLanguageBundle.message("run.dub.descr");
+        return DLanguageBundle.INSTANCE.message("run.dub.descr");
     }
 
     @Override
