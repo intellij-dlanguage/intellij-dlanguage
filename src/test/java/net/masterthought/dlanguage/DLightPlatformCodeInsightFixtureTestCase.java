@@ -13,6 +13,8 @@ import org.jetbrains.annotations.NonNls;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * Lightweight test case base.
@@ -29,8 +31,8 @@ public abstract class DLightPlatformCodeInsightFixtureTestCase extends LightPlat
      */
     protected DLightPlatformCodeInsightFixtureTestCase(String srcName, String expectName) {
         super();
-        srcPath = getDirPath() + File.separator + srcName;
-        expectPath = getDirPath() + File.separator + expectName;
+        srcPath = String.format("%s/%s", getDirPath(), srcName);
+        expectPath = String.format("%s/%s", getDirPath(), expectName);
     }
 
     @Override
@@ -49,25 +51,26 @@ public abstract class DLightPlatformCodeInsightFixtureTestCase extends LightPlat
     }
 
     protected String getTestDataPath(String... names) {
-        return srcPath + '/' + StringUtil.join(names, "/");
+        return this.getClass().getClassLoader().getResource(String.format("%s/%s", srcPath, StringUtil.join(names, "/"))).getPath();
     }
 
     /**
      * Base path to the test files.
      */
     protected static String getDirPath() {
-        return "out/test/Dlanguage/gold";
+        return "gold";
     }
 
     /**
      * Loads the test data file from the right place.
      */
-    protected String loadFile(@NonNls @TestDataFile String name) throws IOException {
+    protected String loadFile(@NonNls @TestDataFile String name) throws IOException, URISyntaxException {
         return doLoadFile(srcPath, name);
     }
 
-    private static String doLoadFile(String myFullDataPath, String name) throws IOException {
-        String text = FileUtil.loadFile(new File(myFullDataPath, name), CharsetToolkit.UTF8).trim();
+    private String doLoadFile(final String myFullDataPath, final String name) throws IOException, URISyntaxException {
+        final URI resource = this.getClass().getClassLoader().getResource(String.format("%s/%s", myFullDataPath, name)).toURI();
+        String text = FileUtil.loadFile(new File(resource), CharsetToolkit.UTF8).trim();
         text = StringUtil.convertLineSeparators(text);
         return text;
     }
