@@ -19,12 +19,12 @@ public class DLanguageRunDmdConfigurationType implements ConfigurationType {
 
     @Override
     public String getDisplayName() {
-        return DLanguageBundle.message("run.dmd.text");
+        return DLanguageBundle.INSTANCE.message("run.dmd.text");
     }
 
     @Override
     public String getConfigurationTypeDescription() {
-        return DLanguageBundle.message("run.dmd.descr");
+        return DLanguageBundle.INSTANCE.message("run.dmd.descr");
     }
 
     @Override

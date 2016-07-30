@@ -114,8 +114,8 @@ public class DLanguageRunDmdConfigurationEditor extends SettingsEditor<DLanguage
     protected JComponent createEditor() {
         FileChooserDescriptor fcd = FileChooserDescriptorFactory.createSingleFolderDescriptor();
         fcd.setShowFileSystemRoots(true);
-        fcd.setTitle(DLanguageBundle.message("dmd.run.config.selectimportfolder.title"));
-        fcd.setDescription(DLanguageBundle.message("dmd.run.config.selectimportfolder.description"));
+        fcd.setTitle(DLanguageBundle.INSTANCE.message("dmd.run.config.selectimportfolder.title"));
+        fcd.setDescription(DLanguageBundle.INSTANCE.message("dmd.run.config.selectimportfolder.description"));
         fcd.setHideIgnored(false);
 
         pathImports.addBrowseFolderListener(null,

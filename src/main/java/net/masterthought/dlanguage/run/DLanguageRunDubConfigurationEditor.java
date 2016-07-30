@@ -78,8 +78,8 @@ public class DLanguageRunDubConfigurationEditor extends SettingsEditor<DLanguage
     protected JComponent createEditor() {
         FileChooserDescriptor fcd = FileChooserDescriptorFactory.createSingleFolderDescriptor();
         fcd.setShowFileSystemRoots(true);
-        fcd.setTitle(DLanguageBundle.message("dmd.run.config.selectworkingdir.title"));
-        fcd.setDescription(DLanguageBundle.message("dmd.run.config.selectworkingdir.description"));
+        fcd.setTitle(DLanguageBundle.INSTANCE.message("dmd.run.config.selectworkingdir.title"));
+        fcd.setDescription(DLanguageBundle.INSTANCE.message("dmd.run.config.selectworkingdir.description"));
         fcd.setHideIgnored(false);
 
         pathWorkingDir.addBrowseFolderListener(null,

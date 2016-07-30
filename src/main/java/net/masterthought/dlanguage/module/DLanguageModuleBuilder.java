@@ -42,7 +42,7 @@ public class DLanguageModuleBuilder extends JavaModuleBuilder {
     private List<Pair<String,String>> sourcePaths;
 
     public DLanguageModuleBuilder() {
-        this("DLangDmdApp", DLanguageBundle.message("module.title"), DLanguageBundle.message("module.description"), null);
+        this("DLangDmdApp", DLanguageBundle.INSTANCE.message("module.title"), DLanguageBundle.INSTANCE.message("module.description"), null);
     }
 
     protected DLanguageModuleBuilder(String builderId, String presentableName, String description, Icon bigIcon) {
