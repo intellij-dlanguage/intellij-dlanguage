@@ -17,13 +17,15 @@ public class DFoldingBuilderTest extends DLightPlatformCodeInsightFixtureTestCas
 
     // Fold00001 should really result in "  ". OPENCOM and CLOSECOM remains in
     // the text, but the rest gets collapsed to "  ".
-    public void testFold00001() throws Throwable { doTest("main (Function) ..."); }
+    public void testFold00001() throws Throwable {
+        doTest("main (Function) ...");
+    }
 //    public void testFold00002() throws Throwable { doTest("--"); }
 
     /**
      * Folds the region at the caret and verifies that it is indeed collapsed
      * and the placeholder text corresponds to the expected one.
-     *
+     * <p>
      * There is supposedly support in the base class for testing folding but
      * I had little luck when following the tutorial verbatim.
      */

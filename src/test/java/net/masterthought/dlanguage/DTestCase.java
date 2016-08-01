@@ -22,7 +22,7 @@ public class DTestCase extends TestCase {
 
         // not working in ant for some reason
 //        suite.addTestSuite(DResolveTest.class);
-//        suite.addTestSuite(DFindUsagesTest.class);
+        suite.addTestSuite(DFindUsagesTest.class);
         suite.addTestSuite(DFoldingBuilderTest.class);
 
 
