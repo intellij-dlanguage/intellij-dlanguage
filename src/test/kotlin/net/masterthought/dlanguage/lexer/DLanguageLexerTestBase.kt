@@ -3,7 +3,7 @@ package net.masterthought.dlanguage.lexer
 import com.intellij.lexer.FlexAdapter
 import com.intellij.lexer.Lexer
 import com.intellij.openapi.util.Comparing
-import com.intellij.openapi.util.io.FileUtil
+import com.intellij.openapi.util.io.FileUtil.loadFile
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.openapi.vfs.CharsetToolkit
 import com.intellij.rt.execution.junit.FileComparisonFailure
@@ -28,21 +28,11 @@ open class DLanguageLexerTestBase(expectPath: String) : LexerTestCase() {
 
     fun doTest() {
         val fileName = getTestName(false) + ".d"
-        var text = ""
         try {
-            text = loadFile(fileName)
-        } catch (e: IOException) {
-            TestCase.fail("can't load file " + fileName + ": " + e.message)
-        } catch (e: URISyntaxException) {
-            TestCase.fail("can't load file " + fileName + ": " + e.message)
-        }
-
-        val result = printTokens(text, 0)
-        try {
-            doCheckResult(myExpectPath + File.separator + "expected",
-                    getTestName(false) + ".txt", result)
-        } catch (e: IOException) {
-            TestCase.fail("Unexpected IO Exception: " + e.message)
+            val text = loadFile(fileName)
+            doCheckResult(myExpectPath + File.separator + "expected", getTestName(false) + ".txt", printTokens(text, 0))
+        } catch (e: Exception) {
+            TestCase.fail("Something went wrong using file: " + fileName + ": " + e.message)
         }
 
     }
@@ -60,9 +50,7 @@ open class DLanguageLexerTestBase(expectPath: String) : LexerTestCase() {
         return "gold"
     }
 
-    /**
-     * Loads the test data file from the right place.
-     */
+    // Loads the test data file from the right place.
     @Throws(IOException::class, URISyntaxException::class)
     private fun loadFile(@NonNls @TestDataFile name: String): String {
         return doLoadFile(srcPath, name)
@@ -71,34 +59,27 @@ open class DLanguageLexerTestBase(expectPath: String) : LexerTestCase() {
     @Throws(IOException::class, URISyntaxException::class)
     private fun doLoadFile(myFullDataPath: String, name: String): String {
         val resource = this.javaClass.classLoader.getResource(String.format("%s/%s", myFullDataPath, name))!!.toURI()
-        var text = FileUtil.loadFile(File(resource), CharsetToolkit.UTF8).trim { it <= ' ' }
-        text = StringUtil.convertLineSeparators(text)
-        return text
+        return StringUtil.convertLineSeparators(loadFile(File(resource), CharsetToolkit.UTF8).trim { it <= ' ' })
     }
 
-    /**
-     * Check the result against a plain text file. Creates file if missing.
-     * Avoids the default sandboxing in IntelliJ.
-     */
+
+    // Check the result against a plain text file. Creates file if missing.
+    // Avoids the default sandboxing in IntelliJ.
     @Throws(IOException::class)
     private fun doCheckResult(fullPath: String, targetDataName: String, text: String) {
-        var text = text
-        text = text.trim { it <= ' ' }
+        val theText = text.trim { it <= ' ' }
         val expectedFileName = fullPath + File.separator + targetDataName
         if (UsefulTestCase.OVERWRITE_TESTDATA) {
-            VfsTestUtil.overwriteTestData(expectedFileName, text)
+            VfsTestUtil.overwriteTestData(expectedFileName, theText)
             println("File $expectedFileName created.")
         }
         try {
             val expectedText = doLoadFile(fullPath, targetDataName)
-            if (!Comparing.equal(expectedText, text)) {
-                throw FileComparisonFailure(targetDataName, expectedText, text, expectedFileName)
+            if (!Comparing.equal(expectedText, theText)) {
+                throw FileComparisonFailure(targetDataName, expectedText, theText, expectedFileName)
             }
-        } catch (e: URISyntaxException) {
-            VfsTestUtil.overwriteTestData(expectedFileName, text)
-            TestCase.fail("No output text found. File $expectedFileName created.")
-        } catch (e: IOException) {
-            VfsTestUtil.overwriteTestData(expectedFileName, text)
+        } catch (e: Exception) {
+            VfsTestUtil.overwriteTestData(expectedFileName, theText)
             TestCase.fail("No output text found. File $expectedFileName created.")
         }
 
