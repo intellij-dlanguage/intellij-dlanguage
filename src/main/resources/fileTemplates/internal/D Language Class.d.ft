@@ -1,0 +1,10 @@
+module ${DLANGUAGE_CLASS_NAME};
+
+class ${DLANGUAGE_CLASS_NAME}
+{
+    this()
+    {
+
+    }
+}
+
