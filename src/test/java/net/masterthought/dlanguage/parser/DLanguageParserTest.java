@@ -1,11 +1,11 @@
 package net.masterthought.dlanguage.parser;
 
-import net.masterthought.dlanguage.DLanguageParserDefinition;
+import net.masterthought.dlanguage.DLangParserDefinition;
 
 public class DLanguageParserTest extends DLanguageParserTestBase {
 
     public DLanguageParserTest() {
-        super("parser", "d", new DLanguageParserDefinition());
+        super("parser", "d", new DLangParserDefinition());
     }
 
     // shebang

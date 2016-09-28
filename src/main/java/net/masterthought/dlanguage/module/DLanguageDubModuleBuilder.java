@@ -7,11 +7,9 @@ import com.intellij.execution.impl.RunManagerImpl;
 import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.execution.process.ProcessAdapter;
 import com.intellij.execution.process.ProcessEvent;
-import com.intellij.ide.impl.ProjectUtil;
 import com.intellij.openapi.extensions.Extensions;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.roots.ModifiableRootModel;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.Pair;
@@ -31,19 +29,14 @@ import java.util.List;
 
 public class DLanguageDubModuleBuilder extends DLanguageModuleBuilder {
 
-    public static final String RUN_DUB_CONFIG_NAME = "Run DUB";
+    private static final String RUN_DUB_CONFIG_NAME = "Run DUB";
 
     private List<Pair<String, String>> sourcePaths;
     private List<Pair<String, String>> dubInitOptions;
-
-    public String getDubBinary() {
-        return dubBinary;
-    }
-
     private String dubBinary;
 
     public DLanguageDubModuleBuilder() {
-        super("DLangDubApp", DLanguageBundle.message("module.dub.title"), DLanguageBundle.message("module.dub.description"), null);
+        super("DLangDubApp", DLanguageBundle.INSTANCE.message("module.dub.title"), DLanguageBundle.INSTANCE.message("module.dub.description"), null);
     }
 
     @Override
@@ -112,9 +105,9 @@ public class DLanguageDubModuleBuilder extends DLanguageModuleBuilder {
             }
         }
 
-        GeneralCommandLine commandLine = new GeneralCommandLine();
+        final GeneralCommandLine commandLine = new GeneralCommandLine();
         commandLine.setWorkDirectory(workingDirectory);
-        commandLine.setExePath(getDubBinary());
+        commandLine.setExePath(this.dubBinary);
         ParametersList parametersList = commandLine.getParametersList();
         parametersList.addParametersString("init");
         parametersList.addParametersString("-n");

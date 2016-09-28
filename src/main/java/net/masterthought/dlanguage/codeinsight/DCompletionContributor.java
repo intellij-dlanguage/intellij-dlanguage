@@ -36,13 +36,13 @@ public class DCompletionContributor extends CompletionContributor {
                         List<Completion> completions = null;
                         try {
                             completions = dcdCompletionClient.autoComplete(position, file);
+
+                            for (final Completion completion : completions) {
+                                result.addElement(createLookupElement(completion.completionText(),"",completion.completionType()));
+                            }
                         } catch (DCDCompletionServer.DCDError dcdError) {
                             dcdError.printStackTrace();
                         }
-                        for (Completion completion : completions) {
-                            result.addElement(createLookupElement(completion.completionText(),"",completion.completionType()));
-                        }
-
                     }
                 }
         );
