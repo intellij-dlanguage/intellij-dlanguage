@@ -1,10 +1,21 @@
-module ${DLANGUAGE_CLASS_NAME};
+module ${DLANGUAGE_MODULE_NAME};
 
-class ${DLANGUAGE_CLASS_NAME}
-{
-    this()
-    {
+import std.stdio;
 
+class ${DLANGUAGE_CLASS_NAME} {
+
+    this() {
+    }
+
+    ~this() {
+    }
+
+    override size_t toHash() {
+        // todo
+    }
+
+    override string toString() {
+        // todo: make a useful toString()
     }
 }
 

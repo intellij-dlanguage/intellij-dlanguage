@@ -91,7 +91,9 @@ public class CreateDLanguageClassAction extends CreateFileFromTemplateAction imp
         try {
             // Patch props with custom property.
             final Properties props = FileTemplateManager.getInstance(project).getDefaultProperties();
-            props.setProperty("DLANGUAGE_CLASS_NAME", modulePrefix.isEmpty() ? name : String.format("%s.%s", modulePrefix, name));
+            props.setProperty("DLANGUAGE_MODULE_NAME", modulePrefix.isEmpty() ? name : String.format("%s.%s", modulePrefix, name));
+            props.setProperty("DLANGUAGE_CLASS_NAME", name);
+
             final PsiElement element = FileTemplateUtil.createFromTemplate(template, name, props, dir);
 
             final PsiFile psiFile = element.getContainingFile();
