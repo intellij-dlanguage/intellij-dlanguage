@@ -110,6 +110,10 @@
     </application-components>
 
     <actions>
+        <action id="DLanguage.NewDLanguageClass" class="net.masterthought.dlanguage.actions.CreateDLanguageClassAction"
+                text="D Class" description="Create new D Class">
+            <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFile"/>
+        </action>
         <action id="DLanguage.NewDLanguageFile" class="net.masterthought.dlanguage.actions.CreateDLanguageFileAction"
                 text="D File" description="Create new D file">
             <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFile"/>
