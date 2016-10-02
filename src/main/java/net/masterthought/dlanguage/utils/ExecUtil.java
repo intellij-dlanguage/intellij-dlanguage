@@ -178,7 +178,7 @@ public class ExecUtil {
                 writer.flush();
                 writer.close();
             }
-            output = new CapturingProcessHandler(process).runProcess().getStdout();
+            output = new CapturingProcessHandler(process,null,null).runProcess().getStdout();
         } catch (ExecutionException e) {
             LOG.debug(e);
         } catch (IOException e) {
