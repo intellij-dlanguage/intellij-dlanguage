@@ -66,7 +66,7 @@ public class ExecUtil {
         //          an Haskell SDK still autodetects things right.
         final GeneralCommandLine commandLine = new GeneralCommandLine();
         commandLine.setWorkDirectory(workDir);
-        commandLine.setPassParentEnvironment(true);
+        commandLine.withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE);
         if (SystemInfo.isWindows) {
             commandLine.setExePath("cmd");
             commandLine.addParameter("/c");
@@ -178,7 +178,7 @@ public class ExecUtil {
                 writer.flush();
                 writer.close();
             }
-            output = new CapturingProcessHandler(process,null,null).runProcess().getStdout();
+            output = new CapturingProcessHandler(process,null,commandLine.getCommandLineString()).runProcess().getStdout();
         } catch (ExecutionException e) {
             LOG.debug(e);
         } catch (IOException e) {
