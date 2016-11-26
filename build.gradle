@@ -31,6 +31,14 @@ allprojects {
     targetCompatibility = javaVersion
     tasks.withType(JavaCompile) { options.encoding = 'UTF-8' }
 
+    // take the version number defined in gradle build and use that in plugin.xml
+    task initConfig(type: Copy) {
+        from('src/main/resources') {
+            include '**/plugin.xml'
+            filter(org.apache.tools.ant.filters.ReplaceTokens, tokens: [version: version])
+        }
+    }
+
     apply plugin: 'org.jetbrains.intellij'
     intellij {
         pluginName 'D Language'
