@@ -13,6 +13,7 @@ import com.intellij.execution.runners.ProgramRunner;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.roots.ModuleRootManager;
@@ -31,6 +32,9 @@ import java.io.OutputStreamWriter;
 import java.util.List;
 
 public class DLanguageRunDmdState extends CommandLineState implements ProcessListener {
+
+    private static final Logger LOG = Logger.getInstance(DLanguageRunDmdState.class);
+
     private DLanguageRunDmdConfiguration config;
     private Executor executor;
 
@@ -105,6 +109,7 @@ public class DLanguageRunDmdState extends CommandLineState implements ProcessLis
         Sdk sdk = moduleRootManager.getSdk();
 
         if(sdk==null || !(sdk.getSdkType() instanceof DLanguageSdkType)) {
+            LOG.error("No valid D compiler found");
             throw new NoValidDLanguageSdkFound();
         }
 
@@ -115,8 +120,7 @@ public class DLanguageRunDmdState extends CommandLineState implements ProcessLis
         commandLine.withWorkDirectory(config.getProject().getBasePath());
         commandLine.setExePath(DLanguageSdkType.getDmdPath(sdk));
         commandLine.addParameter(tempFileWithParameters(dmdParameters));
-
-
+        LOG.debug(String.format("dmd command: %s", commandLine.getCommandLineString()));
         return commandLine;
     }
 
