@@ -47,7 +47,7 @@ public class CompileCheck {
 
         final StringBuilder builder = new StringBuilder();
         try {
-            OSProcessHandler process = new OSProcessHandler(commandLine.createProcess(), commandLine.getCommandLineString());
+            final OSProcessHandler process = new OSProcessHandler(commandLine.createProcess(), commandLine.getCommandLineString());
             process.addProcessListener(new ProcessAdapter() {
                 @Override
                 public void onTextAvailable(ProcessEvent event, Key outputType) {
@@ -57,7 +57,6 @@ public class CompileCheck {
 
             process.startNotify();
             process.waitFor();
-
 
         } catch (ExecutionException e) {
             e.printStackTrace();

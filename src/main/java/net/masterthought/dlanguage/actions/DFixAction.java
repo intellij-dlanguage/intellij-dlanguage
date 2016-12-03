@@ -77,7 +77,7 @@ public class DFixAction extends AnAction implements DumbAware {
             ApplicationManager.getApplication().saveAll();
 
             try {
-                OSProcessHandler process = new OSProcessHandler(commandLine.createProcess(), commandLine.getCommandLineString());
+                final OSProcessHandler process = new OSProcessHandler(commandLine.createProcess(), commandLine.getCommandLineString());
 
                 process.startNotify();
                 process.waitFor();
