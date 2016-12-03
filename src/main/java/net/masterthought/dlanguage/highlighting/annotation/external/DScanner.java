@@ -46,7 +46,7 @@ public class DScanner {
         parametersList.addParametersString(filePath);
         final StringBuilder builder = new StringBuilder();
         try {
-            OSProcessHandler process = new OSProcessHandler(commandLine.createProcess());
+            OSProcessHandler process = new OSProcessHandler(commandLine.createProcess(), commandLine.getCommandLineString());
             process.addProcessListener(new ProcessAdapter() {
                 @Override
                 public void onTextAvailable(ProcessEvent event, Key outputType) {

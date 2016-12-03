@@ -122,7 +122,7 @@ public class DLanguageDubModuleBuilder extends DLanguageModuleBuilder {
         }
 
         try {
-            OSProcessHandler process = new OSProcessHandler(commandLine.createProcess());
+            OSProcessHandler process = new OSProcessHandler(commandLine.createProcess(), commandLine.getCommandLineString());
 
             final StringBuilder builder = new StringBuilder();
             process.addProcessListener(new ProcessAdapter() {
@@ -134,7 +134,7 @@ public class DLanguageDubModuleBuilder extends DLanguageModuleBuilder {
 
             process.startNotify();
             process.waitFor();
-             
+
             // write out a log file with the dub init error if dub init doesn't make the project
             // would have been nice to log an event but the new project hasn't been loaded yet so this is the
             // only way I could think to notify the user that dub init failed.

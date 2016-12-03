@@ -67,7 +67,7 @@ public class DubConfigurationParser {
         }
         return dependencies;
     }
-    
+
     private List<DubPackage> getAllPackages() {
         JsonArray packages = dubConfiguration.get("packages").getAsJsonArray();
         String rootPackage = dubConfiguration.get("rootPackage").getAsString();
@@ -96,7 +96,7 @@ public class DubConfigurationParser {
             ParametersList parametersList = commandLine.getParametersList();
             parametersList.addParametersString("describe");
 
-            OSProcessHandler process = new OSProcessHandler(commandLine.createProcess());
+            OSProcessHandler process = new OSProcessHandler(commandLine.createProcess(), commandLine.getCommandLineString());
 
             final StringBuilder builder = new StringBuilder();
             process.addProcessListener(new ProcessAdapter() {
