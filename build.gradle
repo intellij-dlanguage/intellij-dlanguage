@@ -29,7 +29,10 @@ allprojects {
     apply plugin: 'kotlin'
     sourceCompatibility = javaVersion
     targetCompatibility = javaVersion
-    tasks.withType(JavaCompile) { options.encoding = 'UTF-8' }
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+        options.compilerArgs << "-Xlint:deprecation"
+    }
 
     // take the version number defined in gradle build and use that in plugin.xml
     task initConfig(type: Copy) {
