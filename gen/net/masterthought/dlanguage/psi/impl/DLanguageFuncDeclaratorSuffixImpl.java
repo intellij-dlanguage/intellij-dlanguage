@@ -17,33 +17,37 @@ public class DLanguageFuncDeclaratorSuffixImpl extends ASTWrapperPsiElement impl
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitFuncDeclaratorSuffix(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitFuncDeclaratorSuffix(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageConstraint getConstraint() {
-    return findChildByClass(DLanguageConstraint.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageConstraint.class);
   }
 
   @Override
   @Nullable
   public DLanguageMemberFunctionAttributes getMemberFunctionAttributes() {
-    return findChildByClass(DLanguageMemberFunctionAttributes.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageMemberFunctionAttributes.class);
   }
 
   @Override
   @NotNull
   public DLanguageParameters getParameters() {
-    return findNotNullChildByClass(DLanguageParameters.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageParameters.class));
   }
 
   @Override
   @Nullable
   public DLanguageTemplateParameters getTemplateParameters() {
-    return findChildByClass(DLanguageTemplateParameters.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateParameters.class);
   }
 
 }

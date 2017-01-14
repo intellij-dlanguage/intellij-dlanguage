@@ -17,21 +17,25 @@ public class DLanguageLastCatchImpl extends ASTWrapperPsiElement implements DLan
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitLastCatch(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitLastCatch(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageStatement getStatement() {
-    return findNotNullChildByClass(DLanguageStatement.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageStatement.class));
   }
 
   @Override
   @NotNull
   public PsiElement getKwCatch() {
-    return findNotNullChildByType(KW_CATCH);
+    return notNullChild(findChildByType(KW_CATCH));
   }
 
 }

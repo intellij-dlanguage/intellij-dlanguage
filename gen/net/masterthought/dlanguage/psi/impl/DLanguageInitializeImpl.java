@@ -17,15 +17,19 @@ public class DLanguageInitializeImpl extends ASTWrapperPsiElement implements DLa
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitInitialize(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitInitialize(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageStatement getStatement() {
-    return findChildByClass(DLanguageStatement.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageStatement.class);
   }
 
   @Override

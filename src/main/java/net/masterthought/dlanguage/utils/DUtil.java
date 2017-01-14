@@ -78,13 +78,15 @@ public class DUtil {
         Collection<PsiNamedElement> namedElements = Collections.EMPTY_LIST;
 
         if (e instanceof DLanguageIdentifier) {
-            if (e.getParent() instanceof DLanguagePrimaryExpression) {
-
+            if (e.getParent() instanceof DLanguagePrimaryExpression)//temp instance?????????
+                {
 
                 Collection<DLanguageFuncDeclaration> fd = PsiTreeUtil.findChildrenOfType(file, DLanguageFuncDeclaration.class);
                 Collection<DLanguageClassDeclaration> cd = PsiTreeUtil.findChildrenOfType(file, DLanguageClassDeclaration.class);
                 Collection<DLanguageVarDeclarator> vd = PsiTreeUtil.findChildrenOfType(file, DLanguageVarDeclarator.class);
                 Collection<DLanguageAutoDeclarationY> ady = PsiTreeUtil.findChildrenOfType(file, DLanguageAutoDeclarationY.class);
+
+                Collection<DLanguageTemplateDeclaration> td = PsiTreeUtil.findChildrenOfType(file,DLanguageTemplateDeclaration.class);
 
                 List<PsiNamedElement> ne = new ArrayList<>();
 
@@ -107,6 +109,10 @@ public class DUtil {
 
                 // add auto decl y
                 for (DLanguageAutoDeclarationY d : ady) {
+                    ne.add(d.getIdentifier());
+                }
+
+                for (DLanguageTemplateDeclaration d: td) {
                     ne.add(d.getIdentifier());
                 }
 
@@ -141,7 +147,22 @@ public class DUtil {
                 for (DLanguageAutoDeclarationY d : ady) {
                     ne.add(d.getIdentifier());
                 }
+
+
+
                 namedElements = ne;
+            }
+            else if (e.getParent() instanceof DLanguageTemplateInstance){
+                List<PsiNamedElement> ne = new ArrayList<>();
+
+                Collection<DLanguageTemplateDeclaration> td = PsiTreeUtil.findChildrenOfType(file,DLanguageTemplateDeclaration.class);
+
+                for (DLanguageTemplateDeclaration d: td) {
+                    ne.add(d.getIdentifier());
+                }
+
+                namedElements = ne;
+
             }
 //        } else {
 //            namedElements = PsiTreeUtil.findChildrenOfType(file, PsiNamedElement.class);
@@ -160,9 +181,9 @@ public class DUtil {
      * is null.
      */
     @NotNull
-    public static List<PsiNamedElement> findDefinitionNodes(@Nullable DLanguageFile haskellFile, @Nullable String name) {
+    public static List<PsiNamedElement> findDefinitionNodes(@Nullable DLanguageFile dLanguageFile, @Nullable String name) {
         List<PsiNamedElement> ret = ContainerUtil.newArrayList();
-        findDefinitionNode(haskellFile, name, null, ret);
+        findDefinitionNode(dLanguageFile, name, null, ret);
         return ret;
     }
 

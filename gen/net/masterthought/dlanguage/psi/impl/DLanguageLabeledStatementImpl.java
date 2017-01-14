@@ -17,27 +17,31 @@ public class DLanguageLabeledStatementImpl extends ASTWrapperPsiElement implemen
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitLabeledStatement(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitLabeledStatement(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageIdentifier getIdentifier() {
-    return findNotNullChildByClass(DLanguageIdentifier.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class));
   }
 
   @Override
   @Nullable
   public DLanguageStatement getStatement() {
-    return findChildByClass(DLanguageStatement.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageStatement.class);
   }
 
   @Override
   @NotNull
   public PsiElement getOpColon() {
-    return findNotNullChildByType(OP_COLON);
+    return notNullChild(findChildByType(OP_COLON));
   }
 
 }

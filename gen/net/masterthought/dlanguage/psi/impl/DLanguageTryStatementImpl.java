@@ -17,33 +17,37 @@ public class DLanguageTryStatementImpl extends ASTWrapperPsiElement implements D
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitTryStatement(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitTryStatement(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageCatches getCatches() {
-    return findChildByClass(DLanguageCatches.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageCatches.class);
   }
 
   @Override
   @Nullable
   public DLanguageFinallyStatement getFinallyStatement() {
-    return findChildByClass(DLanguageFinallyStatement.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageFinallyStatement.class);
   }
 
   @Override
   @NotNull
   public DLanguageScopeStatement getScopeStatement() {
-    return findNotNullChildByClass(DLanguageScopeStatement.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageScopeStatement.class));
   }
 
   @Override
   @NotNull
   public PsiElement getKwTry() {
-    return findNotNullChildByType(KW_TRY);
+    return notNullChild(findChildByType(KW_TRY));
   }
 
 }

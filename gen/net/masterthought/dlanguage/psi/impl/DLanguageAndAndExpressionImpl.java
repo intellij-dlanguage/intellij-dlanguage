@@ -17,27 +17,31 @@ public class DLanguageAndAndExpressionImpl extends ASTWrapperPsiElement implemen
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitAndAndExpression(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitAndAndExpression(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageAndAndExpression getAndAndExpression() {
-    return findChildByClass(DLanguageAndAndExpression.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAndAndExpression.class);
   }
 
   @Override
   @Nullable
   public DLanguageCmpExpression getCmpExpression() {
-    return findChildByClass(DLanguageCmpExpression.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageCmpExpression.class);
   }
 
   @Override
   @Nullable
   public DLanguageOrExpression getOrExpression() {
-    return findChildByClass(DLanguageOrExpression.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageOrExpression.class);
   }
 
   @Override

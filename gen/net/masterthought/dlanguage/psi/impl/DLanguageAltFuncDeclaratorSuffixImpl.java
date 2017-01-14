@@ -17,21 +17,25 @@ public class DLanguageAltFuncDeclaratorSuffixImpl extends ASTWrapperPsiElement i
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitAltFuncDeclaratorSuffix(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitAltFuncDeclaratorSuffix(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageMemberFunctionAttributes getMemberFunctionAttributes() {
-    return findChildByClass(DLanguageMemberFunctionAttributes.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageMemberFunctionAttributes.class);
   }
 
   @Override
   @NotNull
   public DLanguageParameters getParameters() {
-    return findNotNullChildByClass(DLanguageParameters.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageParameters.class));
   }
 
 }

@@ -17,27 +17,31 @@ public class DLanguageQualifiedIdentifierListImpl extends ASTWrapperPsiElement i
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitQualifiedIdentifierList(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitQualifiedIdentifierList(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageIdentifier getIdentifier() {
-    return findChildByClass(DLanguageIdentifier.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
   }
 
   @Override
   @Nullable
   public DLanguageQualifiedIdentifierList getQualifiedIdentifierList() {
-    return findChildByClass(DLanguageQualifiedIdentifierList.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageQualifiedIdentifierList.class);
   }
 
   @Override
   @Nullable
   public DLanguageTemplateInstance getTemplateInstance() {
-    return findChildByClass(DLanguageTemplateInstance.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateInstance.class);
   }
 
   @Override

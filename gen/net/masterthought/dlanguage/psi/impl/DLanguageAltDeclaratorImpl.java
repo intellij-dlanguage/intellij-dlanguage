@@ -17,39 +17,43 @@ public class DLanguageAltDeclaratorImpl extends ASTWrapperPsiElement implements 
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitAltDeclarator(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitAltDeclarator(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageAltDeclaratorSuffixes getAltDeclaratorSuffixes() {
-    return findChildByClass(DLanguageAltDeclaratorSuffixes.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAltDeclaratorSuffixes.class);
   }
 
   @Override
   @Nullable
   public DLanguageAltDeclaratorX getAltDeclaratorX() {
-    return findChildByClass(DLanguageAltDeclaratorX.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAltDeclaratorX.class);
   }
 
   @Override
   @Nullable
   public DLanguageAltFuncDeclaratorSuffix getAltFuncDeclaratorSuffix() {
-    return findChildByClass(DLanguageAltFuncDeclaratorSuffix.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAltFuncDeclaratorSuffix.class);
   }
 
   @Override
   @Nullable
   public DLanguageBasicType2 getBasicType2() {
-    return findChildByClass(DLanguageBasicType2.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageBasicType2.class);
   }
 
   @Override
   @Nullable
   public DLanguageIdentifier getIdentifier() {
-    return findChildByClass(DLanguageIdentifier.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
   }
 
   @Override

@@ -17,27 +17,31 @@ public class DLanguageDefaultStatementImpl extends ASTWrapperPsiElement implemen
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitDefaultStatement(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitDefaultStatement(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageScopeStatementList getScopeStatementList() {
-    return findNotNullChildByClass(DLanguageScopeStatementList.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageScopeStatementList.class));
   }
 
   @Override
   @NotNull
   public PsiElement getKwDefault() {
-    return findNotNullChildByType(KW_DEFAULT);
+    return notNullChild(findChildByType(KW_DEFAULT));
   }
 
   @Override
   @NotNull
   public PsiElement getOpColon() {
-    return findNotNullChildByType(OP_COLON);
+    return notNullChild(findChildByType(OP_COLON));
   }
 
 }

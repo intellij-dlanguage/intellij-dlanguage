@@ -17,33 +17,37 @@ public class DLanguagePostblitImpl extends ASTWrapperPsiElement implements DLang
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitPostblit(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitPostblit(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageFunctionBody getFunctionBody() {
-    return findChildByClass(DLanguageFunctionBody.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageFunctionBody.class);
   }
 
   @Override
   @Nullable
   public DLanguageMemberFunctionAttributes getMemberFunctionAttributes() {
-    return findChildByClass(DLanguageMemberFunctionAttributes.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageMemberFunctionAttributes.class);
   }
 
   @Override
   @NotNull
   public PsiElement getOpParLeft() {
-    return findNotNullChildByType(OP_PAR_LEFT);
+    return notNullChild(findChildByType(OP_PAR_LEFT));
   }
 
   @Override
   @NotNull
   public PsiElement getOpParRight() {
-    return findNotNullChildByType(OP_PAR_RIGHT);
+    return notNullChild(findChildByType(OP_PAR_RIGHT));
   }
 
   @Override

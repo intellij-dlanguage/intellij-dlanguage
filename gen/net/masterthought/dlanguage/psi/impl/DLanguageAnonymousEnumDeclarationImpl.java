@@ -17,27 +17,31 @@ public class DLanguageAnonymousEnumDeclarationImpl extends ASTWrapperPsiElement 
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitAnonymousEnumDeclaration(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitAnonymousEnumDeclaration(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageEnumBaseType getEnumBaseType() {
-    return findChildByClass(DLanguageEnumBaseType.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageEnumBaseType.class);
   }
 
   @Override
   @Nullable
   public DLanguageEnumMembers getEnumMembers() {
-    return findChildByClass(DLanguageEnumMembers.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageEnumMembers.class);
   }
 
   @Override
   @NotNull
   public PsiElement getKwEnum() {
-    return findNotNullChildByType(KW_ENUM);
+    return notNullChild(findChildByType(KW_ENUM));
   }
 
   @Override

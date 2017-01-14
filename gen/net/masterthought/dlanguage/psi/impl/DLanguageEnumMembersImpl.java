@@ -17,21 +17,25 @@ public class DLanguageEnumMembersImpl extends ASTWrapperPsiElement implements DL
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitEnumMembers(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitEnumMembers(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageEnumMember getEnumMember() {
-    return findNotNullChildByClass(DLanguageEnumMember.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageEnumMember.class));
   }
 
   @Override
   @Nullable
   public DLanguageEnumMembers getEnumMembers() {
-    return findChildByClass(DLanguageEnumMembers.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageEnumMembers.class);
   }
 
   @Override

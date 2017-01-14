@@ -17,57 +17,61 @@ public class DLanguageTemplateMixinDeclarationImpl extends ASTWrapperPsiElement 
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitTemplateMixinDeclaration(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitTemplateMixinDeclaration(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageConstraint getConstraint() {
-    return findChildByClass(DLanguageConstraint.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageConstraint.class);
   }
 
   @Override
   @Nullable
   public DLanguageDeclDefs getDeclDefs() {
-    return findChildByClass(DLanguageDeclDefs.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageDeclDefs.class);
   }
 
   @Override
   @NotNull
   public DLanguageIdentifier getIdentifier() {
-    return findNotNullChildByClass(DLanguageIdentifier.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class));
   }
 
   @Override
   @NotNull
   public DLanguageTemplateParameters getTemplateParameters() {
-    return findNotNullChildByClass(DLanguageTemplateParameters.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageTemplateParameters.class));
   }
 
   @Override
   @NotNull
   public PsiElement getKwMixin() {
-    return findNotNullChildByType(KW_MIXIN);
+    return notNullChild(findChildByType(KW_MIXIN));
   }
 
   @Override
   @NotNull
   public PsiElement getKwTemplate() {
-    return findNotNullChildByType(KW_TEMPLATE);
+    return notNullChild(findChildByType(KW_TEMPLATE));
   }
 
   @Override
   @NotNull
   public PsiElement getOpBracesLeft() {
-    return findNotNullChildByType(OP_BRACES_LEFT);
+    return notNullChild(findChildByType(OP_BRACES_LEFT));
   }
 
   @Override
   @NotNull
   public PsiElement getOpBracesRight() {
-    return findNotNullChildByType(OP_BRACES_RIGHT);
+    return notNullChild(findChildByType(OP_BRACES_RIGHT));
   }
 
 }

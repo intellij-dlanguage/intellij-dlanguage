@@ -2,7 +2,7 @@ D Language File
   DLanguageDeclDefsImpl(DECL_DEFS)
     DLanguageDeclDefImpl(DECL_DEF)
       DLanguageDeclarationImpl(DECLARATION)
-        DLanguageTemplateDeclarationImpl(TEMPLATE_DECLARATION)
+        TEMPLATE_DECLARATION
           PsiElement(DLanguageTokenType.template)('template')
           IDENTIFIER
             PsiElement(DLanguageTokenType.ID)('TFoo')
@@ -23,7 +23,7 @@ D Language File
     DLanguageDeclDefsImpl(DECL_DEFS)
       DLanguageDeclDefImpl(DECL_DEF)
         DLanguageDeclarationImpl(DECLARATION)
-          DLanguageTemplateDeclarationImpl(TEMPLATE_DECLARATION)
+          TEMPLATE_DECLARATION
             PsiElement(DLanguageTokenType.template)('template')
             IDENTIFIER
               PsiElement(DLanguageTokenType.ID)('TFoo')
@@ -54,7 +54,7 @@ D Language File
       DLanguageDeclDefsImpl(DECL_DEFS)
         DLanguageDeclDefImpl(DECL_DEF)
           DLanguageDeclarationImpl(DECLARATION)
-            DLanguageTemplateDeclarationImpl(TEMPLATE_DECLARATION)
+            TEMPLATE_DECLARATION
               PsiElement(DLanguageTokenType.template)('template')
               IDENTIFIER
                 PsiElement(DLanguageTokenType.ID)('TFoo')
@@ -80,7 +80,7 @@ D Language File
         DLanguageDeclDefsImpl(DECL_DEFS)
           DLanguageDeclDefImpl(DECL_DEF)
             DLanguageDeclarationImpl(DECLARATION)
-              DLanguageTemplateDeclarationImpl(TEMPLATE_DECLARATION)
+              TEMPLATE_DECLARATION
                 PsiElement(DLanguageTokenType.template)('template')
                 IDENTIFIER
                   PsiElement(DLanguageTokenType.ID)('TFoo')

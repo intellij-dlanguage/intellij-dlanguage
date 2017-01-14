@@ -17,21 +17,25 @@ public class DLanguageFinallyStatementImpl extends ASTWrapperPsiElement implemen
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitFinallyStatement(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitFinallyStatement(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageStatement getStatement() {
-    return findNotNullChildByClass(DLanguageStatement.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageStatement.class));
   }
 
   @Override
   @NotNull
   public PsiElement getKwFinally() {
-    return findNotNullChildByType(KW_FINALLY);
+    return notNullChild(findChildByType(KW_FINALLY));
   }
 
 }

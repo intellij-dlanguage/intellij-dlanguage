@@ -17,15 +17,19 @@ public class DLanguageExpressionStatementImpl extends ASTWrapperPsiElement imple
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitExpressionStatement(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitExpressionStatement(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageExpression getExpression() {
-    return findNotNullChildByClass(DLanguageExpression.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageExpression.class));
   }
 
   @Override

@@ -17,27 +17,31 @@ public class DLanguageSymbolTailImpl extends ASTWrapperPsiElement implements DLa
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitSymbolTail(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitSymbolTail(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageIdentifier getIdentifier() {
-    return findChildByClass(DLanguageIdentifier.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
   }
 
   @Override
   @Nullable
   public DLanguageSymbolTail getSymbolTail() {
-    return findChildByClass(DLanguageSymbolTail.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageSymbolTail.class);
   }
 
   @Override
   @Nullable
   public DLanguageTemplateInstance getTemplateInstance() {
-    return findChildByClass(DLanguageTemplateInstance.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateInstance.class);
   }
 
   @Override

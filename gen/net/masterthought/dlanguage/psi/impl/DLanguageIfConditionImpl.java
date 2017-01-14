@@ -17,39 +17,43 @@ public class DLanguageIfConditionImpl extends ASTWrapperPsiElement implements DL
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitIfCondition(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitIfCondition(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageBasicType getBasicType() {
-    return findChildByClass(DLanguageBasicType.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageBasicType.class);
   }
 
   @Override
   @Nullable
   public DLanguageDeclarator getDeclarator() {
-    return findChildByClass(DLanguageDeclarator.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageDeclarator.class);
   }
 
   @Override
   @NotNull
   public DLanguageExpression getExpression() {
-    return findNotNullChildByClass(DLanguageExpression.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageExpression.class));
   }
 
   @Override
   @Nullable
   public DLanguageIdentifier getIdentifier() {
-    return findChildByClass(DLanguageIdentifier.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
   }
 
   @Override
   @Nullable
   public DLanguageTypeCtors getTypeCtors() {
-    return findChildByClass(DLanguageTypeCtors.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageTypeCtors.class);
   }
 
   @Override

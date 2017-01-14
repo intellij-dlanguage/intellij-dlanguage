@@ -17,15 +17,19 @@ public class DLanguageConditionalStatementImpl extends ASTWrapperPsiElement impl
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitConditionalStatement(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitConditionalStatement(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageCondition getCondition() {
-    return findNotNullChildByClass(DLanguageCondition.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageCondition.class));
   }
 
   @Override

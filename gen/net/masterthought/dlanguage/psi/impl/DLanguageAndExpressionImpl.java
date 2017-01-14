@@ -17,21 +17,25 @@ public class DLanguageAndExpressionImpl extends ASTWrapperPsiElement implements 
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitAndExpression(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitAndExpression(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageAndExpression getAndExpression() {
-    return findChildByClass(DLanguageAndExpression.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAndExpression.class);
   }
 
   @Override
   @NotNull
   public DLanguageShiftExpression getShiftExpression() {
-    return findNotNullChildByClass(DLanguageShiftExpression.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageShiftExpression.class));
   }
 
   @Override

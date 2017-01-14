@@ -17,39 +17,43 @@ public class DLanguageCmpExpressionImpl extends ASTWrapperPsiElement implements 
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitCmpExpression(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitCmpExpression(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageEqualExpression getEqualExpression() {
-    return findChildByClass(DLanguageEqualExpression.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageEqualExpression.class);
   }
 
   @Override
   @Nullable
   public DLanguageIdentityExpression getIdentityExpression() {
-    return findChildByClass(DLanguageIdentityExpression.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageIdentityExpression.class);
   }
 
   @Override
   @Nullable
   public DLanguageInExpression getInExpression() {
-    return findChildByClass(DLanguageInExpression.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageInExpression.class);
   }
 
   @Override
   @Nullable
   public DLanguageRelExpression getRelExpression() {
-    return findChildByClass(DLanguageRelExpression.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageRelExpression.class);
   }
 
   @Override
   @Nullable
   public DLanguageShiftExpression getShiftExpression() {
-    return findChildByClass(DLanguageShiftExpression.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageShiftExpression.class);
   }
 
 }

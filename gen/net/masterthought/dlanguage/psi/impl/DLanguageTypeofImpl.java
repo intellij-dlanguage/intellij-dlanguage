@@ -17,15 +17,19 @@ public class DLanguageTypeofImpl extends ASTWrapperPsiElement implements DLangua
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitTypeof(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitTypeof(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageExpression getExpression() {
-    return findChildByClass(DLanguageExpression.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageExpression.class);
   }
 
   @Override
@@ -37,19 +41,19 @@ public class DLanguageTypeofImpl extends ASTWrapperPsiElement implements DLangua
   @Override
   @NotNull
   public PsiElement getKwTypeof() {
-    return findNotNullChildByType(KW_TYPEOF);
+    return notNullChild(findChildByType(KW_TYPEOF));
   }
 
   @Override
   @NotNull
   public PsiElement getOpParLeft() {
-    return findNotNullChildByType(OP_PAR_LEFT);
+    return notNullChild(findChildByType(OP_PAR_LEFT));
   }
 
   @Override
   @NotNull
   public PsiElement getOpParRight() {
-    return findNotNullChildByType(OP_PAR_RIGHT);
+    return notNullChild(findChildByType(OP_PAR_RIGHT));
   }
 
 }

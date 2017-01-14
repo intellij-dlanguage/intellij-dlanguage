@@ -17,21 +17,25 @@ public class DLanguageImportBindListImpl extends ASTWrapperPsiElement implements
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitImportBindList(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitImportBindList(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageImportBind getImportBind() {
-    return findNotNullChildByClass(DLanguageImportBind.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageImportBind.class));
   }
 
   @Override
   @Nullable
   public DLanguageImportBindList getImportBindList() {
-    return findChildByClass(DLanguageImportBindList.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageImportBindList.class);
   }
 
   @Override

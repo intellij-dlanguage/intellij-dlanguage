@@ -17,39 +17,43 @@ public class DLanguageStructDeclarationImpl extends ASTWrapperPsiElement impleme
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitStructDeclaration(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitStructDeclaration(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageAggregateBody getAggregateBody() {
-    return findChildByClass(DLanguageAggregateBody.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAggregateBody.class);
   }
 
   @Override
   @Nullable
   public DLanguageConstraint getConstraint() {
-    return findChildByClass(DLanguageConstraint.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageConstraint.class);
   }
 
   @Override
   @Nullable
   public DLanguageIdentifier getIdentifier() {
-    return findChildByClass(DLanguageIdentifier.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
   }
 
   @Override
   @Nullable
   public DLanguageTemplateParameters getTemplateParameters() {
-    return findChildByClass(DLanguageTemplateParameters.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateParameters.class);
   }
 
   @Override
   @NotNull
   public PsiElement getKwStruct() {
-    return findNotNullChildByType(KW_STRUCT);
+    return notNullChild(findChildByType(KW_STRUCT));
   }
 
   @Override

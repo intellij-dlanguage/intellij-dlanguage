@@ -17,15 +17,19 @@ public class DLanguageDebugConditionImpl extends ASTWrapperPsiElement implements
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitDebugCondition(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitDebugCondition(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageIdentifier getIdentifier() {
-    return findChildByClass(DLanguageIdentifier.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
   }
 
   @Override
@@ -37,7 +41,7 @@ public class DLanguageDebugConditionImpl extends ASTWrapperPsiElement implements
   @Override
   @NotNull
   public PsiElement getKwDebug() {
-    return findNotNullChildByType(KW_DEBUG);
+    return notNullChild(findChildByType(KW_DEBUG));
   }
 
   @Override

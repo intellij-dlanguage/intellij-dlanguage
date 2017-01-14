@@ -17,27 +17,31 @@ public class DLanguageEnumBodyImpl extends ASTWrapperPsiElement implements DLang
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitEnumBody(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitEnumBody(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageEnumMembers getEnumMembers() {
-    return findNotNullChildByClass(DLanguageEnumMembers.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageEnumMembers.class));
   }
 
   @Override
   @NotNull
   public PsiElement getOpBracesLeft() {
-    return findNotNullChildByType(OP_BRACES_LEFT);
+    return notNullChild(findChildByType(OP_BRACES_LEFT));
   }
 
   @Override
   @NotNull
   public PsiElement getOpBracesRight() {
-    return findNotNullChildByType(OP_BRACES_RIGHT);
+    return notNullChild(findChildByType(OP_BRACES_RIGHT));
   }
 
   @Override

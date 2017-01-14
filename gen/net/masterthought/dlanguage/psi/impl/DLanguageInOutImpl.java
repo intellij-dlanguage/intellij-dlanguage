@@ -17,21 +17,25 @@ public class DLanguageInOutImpl extends ASTWrapperPsiElement implements DLanguag
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitInOut(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitInOut(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageInOut getInOut() {
-    return findChildByClass(DLanguageInOut.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageInOut.class);
   }
 
   @Override
   @NotNull
   public DLanguageInOutX getInOutX() {
-    return findNotNullChildByClass(DLanguageInOutX.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageInOutX.class));
   }
 
 }

@@ -17,8 +17,12 @@ public class DLanguageStaticAssertImpl extends ASTWrapperPsiElement implements D
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitStaticAssert(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitStaticAssert(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
@@ -31,13 +35,13 @@ public class DLanguageStaticAssertImpl extends ASTWrapperPsiElement implements D
   @Override
   @NotNull
   public PsiElement getKwAssert() {
-    return findNotNullChildByType(KW_ASSERT);
+    return notNullChild(findChildByType(KW_ASSERT));
   }
 
   @Override
   @NotNull
   public PsiElement getKwStatic() {
-    return findNotNullChildByType(KW_STATIC);
+    return notNullChild(findChildByType(KW_STATIC));
   }
 
   @Override
@@ -49,19 +53,19 @@ public class DLanguageStaticAssertImpl extends ASTWrapperPsiElement implements D
   @Override
   @NotNull
   public PsiElement getOpParLeft() {
-    return findNotNullChildByType(OP_PAR_LEFT);
+    return notNullChild(findChildByType(OP_PAR_LEFT));
   }
 
   @Override
   @NotNull
   public PsiElement getOpParRight() {
-    return findNotNullChildByType(OP_PAR_RIGHT);
+    return notNullChild(findChildByType(OP_PAR_RIGHT));
   }
 
   @Override
   @NotNull
   public PsiElement getOpScolon() {
-    return findNotNullChildByType(OP_SCOLON);
+    return notNullChild(findChildByType(OP_SCOLON));
   }
 
 }

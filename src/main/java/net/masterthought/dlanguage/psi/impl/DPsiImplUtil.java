@@ -9,14 +9,12 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.PsiReference;
 import net.masterthought.dlanguage.icons.DLanguageIcons;
-import net.masterthought.dlanguage.psi.DLanguageClassDeclaration;
-import net.masterthought.dlanguage.psi.DLanguageFile;
-import net.masterthought.dlanguage.psi.DLanguageFuncDeclaration;
-import net.masterthought.dlanguage.psi.DLanguageIdentifier;
+import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.references.DReference;
 import net.masterthought.dlanguage.stubs.DLanguageClassDeclarationStub;
 import net.masterthought.dlanguage.stubs.DLanguageFuncDeclarationStub;
 import net.masterthought.dlanguage.stubs.DLanguageIdentifierStub;
+import net.masterthought.dlanguage.stubs.DLanguageTemplateDeclarationStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -111,7 +109,7 @@ public class DPsiImplUtil {
     // ------------- Identifier ------------------ //
 
     // For CodeFolding and not used in references directly much
-    
+
     // ------------- Function Definition ------------------ //
     @NotNull
     public static String getName(@NotNull DLanguageFuncDeclaration o) {
@@ -226,5 +224,65 @@ public class DPsiImplUtil {
         };
     }
     // ------------- Class Definition ------------------ //
+
+    // ------------- Template Definition ------------------ //
+    @NotNull
+    public static String getName(@NotNull DLanguageTemplateDeclaration o) {
+        DLanguageTemplateDeclarationStub stub = o.getStub();
+        if (stub != null) return StringUtil.notNullize(stub.getName());
+
+        if (o.getIdentifier() != null) {
+            return o.getIdentifier().getText();
+        } else {
+            return "not found";
+        }
+    }
+
+    @Nullable
+    public static PsiElement getNameIdentifier(@NotNull DLanguageTemplateDeclaration o) {
+        ASTNode keyNode = o.getNode();
+        return keyNode != null ? keyNode.getPsi() : null;
+    }
+
+    @Nullable
+    public static PsiElement setName(@NotNull DLanguageTemplateDeclaration o, @NotNull String newName) {
+        PsiElement e = DElementFactory.createDLanguageTemplateDeclarationFromText(o.getProject(), newName);
+        if (e == null) return null;
+        o.replace(e);
+        return o;
+    }
+
+    @NotNull
+    public static PsiReference getReference(@NotNull DLanguageTemplateDeclaration o) {
+        return new DReference(o, TextRange.from(0, getName(o).length()));
+    }
+
+    @NotNull
+    public static ItemPresentation getPresentation(final DLanguageTemplateDeclaration o) {
+        return new ItemPresentation() {
+            @Nullable
+            @Override
+            public String getPresentableText() {
+                return o.getName();
+            }
+
+            /**
+             * This is needed to decipher between files when resolving multiple references.
+             */
+            @Nullable
+            @Override
+            public String getLocationString() {
+                final PsiFile psiFile = o.getContainingFile();
+                return psiFile instanceof DLanguageFile ? ((DLanguageFile) psiFile).getModuleOrFileName() : null;
+            }
+
+            @Nullable
+            @Override
+            public Icon getIcon(boolean unused) {
+                return DLanguageIcons.FILE;
+            }
+        };
+    }
+    // ------------- Template Definition ------------------ //
 }
 

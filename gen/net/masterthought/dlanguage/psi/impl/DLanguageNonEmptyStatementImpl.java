@@ -17,33 +17,37 @@ public class DLanguageNonEmptyStatementImpl extends ASTWrapperPsiElement impleme
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitNonEmptyStatement(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitNonEmptyStatement(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageCaseRangeStatement getCaseRangeStatement() {
-    return findChildByClass(DLanguageCaseRangeStatement.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageCaseRangeStatement.class);
   }
 
   @Override
   @Nullable
   public DLanguageCaseStatement getCaseStatement() {
-    return findChildByClass(DLanguageCaseStatement.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageCaseStatement.class);
   }
 
   @Override
   @Nullable
   public DLanguageDefaultStatement getDefaultStatement() {
-    return findChildByClass(DLanguageDefaultStatement.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageDefaultStatement.class);
   }
 
   @Override
   @Nullable
   public DLanguageNonEmptyStatementNoCaseNoDefault getNonEmptyStatementNoCaseNoDefault() {
-    return findChildByClass(DLanguageNonEmptyStatementNoCaseNoDefault.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageNonEmptyStatementNoCaseNoDefault.class);
   }
 
 }

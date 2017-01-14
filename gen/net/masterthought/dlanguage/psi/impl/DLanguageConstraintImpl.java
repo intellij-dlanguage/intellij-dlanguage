@@ -17,33 +17,37 @@ public class DLanguageConstraintImpl extends ASTWrapperPsiElement implements DLa
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitConstraint(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitConstraint(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageExpression getExpression() {
-    return findNotNullChildByClass(DLanguageExpression.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageExpression.class));
   }
 
   @Override
   @NotNull
   public PsiElement getKwIf() {
-    return findNotNullChildByType(KW_IF);
+    return notNullChild(findChildByType(KW_IF));
   }
 
   @Override
   @NotNull
   public PsiElement getOpParLeft() {
-    return findNotNullChildByType(OP_PAR_LEFT);
+    return notNullChild(findChildByType(OP_PAR_LEFT));
   }
 
   @Override
   @NotNull
   public PsiElement getOpParRight() {
-    return findNotNullChildByType(OP_PAR_RIGHT);
+    return notNullChild(findChildByType(OP_PAR_RIGHT));
   }
 
 }

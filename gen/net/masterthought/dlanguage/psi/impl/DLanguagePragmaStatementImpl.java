@@ -17,21 +17,25 @@ public class DLanguagePragmaStatementImpl extends ASTWrapperPsiElement implement
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitPragmaStatement(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitPragmaStatement(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguagePragma getPragma() {
-    return findNotNullChildByClass(DLanguagePragma.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguagePragma.class));
   }
 
   @Override
   @NotNull
   public DLanguageStatement getStatement() {
-    return findNotNullChildByClass(DLanguageStatement.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageStatement.class));
   }
 
 }

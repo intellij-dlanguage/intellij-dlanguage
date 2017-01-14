@@ -17,21 +17,25 @@ public class DLanguageDeprecatedAttributeImpl extends ASTWrapperPsiElement imple
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitDeprecatedAttribute(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitDeprecatedAttribute(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageStringLiteral getStringLiteral() {
-    return findChildByClass(DLanguageStringLiteral.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageStringLiteral.class);
   }
 
   @Override
   @NotNull
   public PsiElement getKwDeprecated() {
-    return findNotNullChildByType(KW_DEPRECATED);
+    return notNullChild(findChildByType(KW_DEPRECATED));
   }
 
   @Override

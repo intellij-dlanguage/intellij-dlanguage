@@ -17,33 +17,37 @@ public class DLanguageUnionDeclarationImpl extends ASTWrapperPsiElement implemen
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitUnionDeclaration(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitUnionDeclaration(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageAggregateBody getAggregateBody() {
-    return findChildByClass(DLanguageAggregateBody.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAggregateBody.class);
   }
 
   @Override
   @Nullable
   public DLanguageAnonUnionDeclaration getAnonUnionDeclaration() {
-    return findChildByClass(DLanguageAnonUnionDeclaration.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAnonUnionDeclaration.class);
   }
 
   @Override
   @Nullable
   public DLanguageIdentifier getIdentifier() {
-    return findChildByClass(DLanguageIdentifier.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
   }
 
   @Override
   @Nullable
   public DLanguageUnionTemplateDeclaration getUnionTemplateDeclaration() {
-    return findChildByClass(DLanguageUnionTemplateDeclaration.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageUnionTemplateDeclaration.class);
   }
 
   @Override

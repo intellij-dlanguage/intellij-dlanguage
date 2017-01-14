@@ -17,21 +17,25 @@ public class DLanguageStructMemberInitializersImpl extends ASTWrapperPsiElement 
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitStructMemberInitializers(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitStructMemberInitializers(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageStructMemberInitializer getStructMemberInitializer() {
-    return findNotNullChildByClass(DLanguageStructMemberInitializer.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageStructMemberInitializer.class));
   }
 
   @Override
   @Nullable
   public DLanguageStructMemberInitializers getStructMemberInitializers() {
-    return findChildByClass(DLanguageStructMemberInitializers.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageStructMemberInitializers.class);
   }
 
   @Override

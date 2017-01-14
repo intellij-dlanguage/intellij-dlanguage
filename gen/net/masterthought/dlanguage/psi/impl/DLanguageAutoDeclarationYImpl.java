@@ -17,33 +17,37 @@ public class DLanguageAutoDeclarationYImpl extends ASTWrapperPsiElement implemen
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitAutoDeclarationY(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitAutoDeclarationY(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageIdentifier getIdentifier() {
-    return findNotNullChildByClass(DLanguageIdentifier.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class));
   }
 
   @Override
   @NotNull
   public DLanguageInitializer getInitializer() {
-    return findNotNullChildByClass(DLanguageInitializer.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageInitializer.class));
   }
 
   @Override
   @Nullable
   public DLanguageTemplateParameters getTemplateParameters() {
-    return findChildByClass(DLanguageTemplateParameters.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateParameters.class);
   }
 
   @Override
   @NotNull
   public PsiElement getOpEq() {
-    return findNotNullChildByType(OP_EQ);
+    return notNullChild(findChildByType(OP_EQ));
   }
 
 }
