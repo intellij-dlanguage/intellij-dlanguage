@@ -193,7 +193,7 @@ public class DUtil {
 
             PsiElement parent = e.getParent();
             try {
-                while (!(parent instanceof DLanguageNonVoidInitializer)) {
+                while (!(parent instanceof DLanguageNewExpression)) {
                     parent = parent.getParent();
                 }
                 resolvingConstructor = true;
