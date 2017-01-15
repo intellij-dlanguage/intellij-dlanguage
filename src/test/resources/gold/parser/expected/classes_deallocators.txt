@@ -24,7 +24,7 @@ D Language File
                       PsiElement(DLanguageTokenType.;)(';')
                 DLanguageDeclDefsImpl(DECL_DEFS)
                   DLanguageDeclDefImpl(DECL_DEF)
-                    DLanguageConstructorImpl(CONSTRUCTOR)
+                    CONSTRUCTOR
                       PsiElement(DLanguageTokenType.this)('this')
                       DLanguageParametersImpl(PARAMETERS)
                         PsiElement(DLanguageTokenType.()('(')

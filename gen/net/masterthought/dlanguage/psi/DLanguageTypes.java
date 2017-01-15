@@ -22,6 +22,7 @@ public interface DLanguageTypes {
     IElementType MODULE_DEFINITION = new DLanguageElementType("MODULE_DEFINITION");
     IElementType FUNCTION_DEFINITION = new DLanguageElementType("FUNCTION_DEFINITION");
 
+
     IElementType ADD_EXPRESSION = new DLanguageElementType("ADD_EXPRESSION");
     IElementType AGGREGATE_BODY = new DLanguageElementType("AGGREGATE_BODY");
     IElementType AGGREGATE_DECLARATION = new DLanguageElementType("AGGREGATE_DECLARATION");
@@ -98,7 +99,7 @@ public interface DLanguageTypes {
     IElementType CONDITIONAL_EXPRESSION = new DLanguageElementType("CONDITIONAL_EXPRESSION");
     IElementType CONDITIONAL_STATEMENT = new DLanguageElementType("CONDITIONAL_STATEMENT");
     IElementType CONSTRAINT = new DLanguageElementType("CONSTRAINT");
-    IElementType CONSTRUCTOR = new DLanguageElementType("CONSTRUCTOR");
+    IElementType CONSTRUCTOR = DElementTypeFactory.factory("CONSTRUCTOR");
     IElementType CONSTRUCTOR_TEMPLATE = new DLanguageElementType("CONSTRUCTOR_TEMPLATE");
     IElementType CONTINUE_STATEMENT = new DLanguageElementType("CONTINUE_STATEMENT");
     IElementType DEALLOCATOR = new DLanguageElementType("DEALLOCATOR");

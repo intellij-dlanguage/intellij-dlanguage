@@ -312,7 +312,7 @@ public class DLanguageVisitor extends PsiElementVisitor {
   }
 
   public void visitConstructor(@NotNull DLanguageConstructor o) {
-    visitPsiElement(o);
+    visitDNamedElement(o);
   }
 
   public void visitConstructorTemplate(@NotNull DLanguageConstructorTemplate o) {

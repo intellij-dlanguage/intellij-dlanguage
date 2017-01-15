@@ -91,5 +91,11 @@ public class DElementFactory {
         if (e instanceof DLanguageTemplateDeclaration) return e;
         return null;
     }
+
+    public static PsiElement createDLanguageConstructorFromText(Project project, String name) {
+        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
+        if (e instanceof DLanguageConstructor) return e;
+        return null;
+    }
 }
 
