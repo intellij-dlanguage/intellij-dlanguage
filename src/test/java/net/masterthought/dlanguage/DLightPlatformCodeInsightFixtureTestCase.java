@@ -51,7 +51,7 @@ public abstract class DLightPlatformCodeInsightFixtureTestCase extends LightPlat
     }
 
     protected String getTestDataPath(String... names) {
-        return this.getClass().getClassLoader().getResource(String.format("%s/%s", srcPath, StringUtil.join(names, "/"))).getPath();
+        return this.getClass().getClassLoader().getResource(String.format("%s/%s", srcPath, StringUtil.join(names, "/"))).getPath().replace("/C:","");
     }
 
     /**
