@@ -17,21 +17,25 @@ public class DLanguageDeclaratorsImpl extends ASTWrapperPsiElement implements DL
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitDeclarators(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitDeclarators(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageDeclaratorIdentifierList getDeclaratorIdentifierList() {
-    return findChildByClass(DLanguageDeclaratorIdentifierList.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageDeclaratorIdentifierList.class);
   }
 
   @Override
   @NotNull
   public DLanguageDeclaratorInitializer getDeclaratorInitializer() {
-    return findNotNullChildByClass(DLanguageDeclaratorInitializer.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageDeclaratorInitializer.class));
   }
 
   @Override

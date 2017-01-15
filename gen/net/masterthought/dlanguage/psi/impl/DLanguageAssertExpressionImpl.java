@@ -17,8 +17,12 @@ public class DLanguageAssertExpressionImpl extends ASTWrapperPsiElement implemen
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitAssertExpression(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitAssertExpression(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
@@ -31,7 +35,7 @@ public class DLanguageAssertExpressionImpl extends ASTWrapperPsiElement implemen
   @Override
   @NotNull
   public PsiElement getKwAssert() {
-    return findNotNullChildByType(KW_ASSERT);
+    return notNullChild(findChildByType(KW_ASSERT));
   }
 
   @Override
@@ -43,13 +47,13 @@ public class DLanguageAssertExpressionImpl extends ASTWrapperPsiElement implemen
   @Override
   @NotNull
   public PsiElement getOpParLeft() {
-    return findNotNullChildByType(OP_PAR_LEFT);
+    return notNullChild(findChildByType(OP_PAR_LEFT));
   }
 
   @Override
   @NotNull
   public PsiElement getOpParRight() {
-    return findNotNullChildByType(OP_PAR_RIGHT);
+    return notNullChild(findChildByType(OP_PAR_RIGHT));
   }
 
 }

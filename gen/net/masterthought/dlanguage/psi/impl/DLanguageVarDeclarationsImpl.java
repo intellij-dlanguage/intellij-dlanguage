@@ -17,33 +17,37 @@ public class DLanguageVarDeclarationsImpl extends ASTWrapperPsiElement implement
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitVarDeclarations(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitVarDeclarations(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageAutoDeclaration getAutoDeclaration() {
-    return findChildByClass(DLanguageAutoDeclaration.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAutoDeclaration.class);
   }
 
   @Override
   @Nullable
   public DLanguageBasicType getBasicType() {
-    return findChildByClass(DLanguageBasicType.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageBasicType.class);
   }
 
   @Override
   @Nullable
   public DLanguageDeclarators getDeclarators() {
-    return findChildByClass(DLanguageDeclarators.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageDeclarators.class);
   }
 
   @Override
   @Nullable
   public DLanguageStorageClasses getStorageClasses() {
-    return findChildByClass(DLanguageStorageClasses.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageStorageClasses.class);
   }
 
   @Override

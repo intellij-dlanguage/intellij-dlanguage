@@ -17,27 +17,31 @@ public class DLanguageAllocatorImpl extends ASTWrapperPsiElement implements DLan
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitAllocator(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitAllocator(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageFunctionBody getFunctionBody() {
-    return findChildByClass(DLanguageFunctionBody.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageFunctionBody.class);
   }
 
   @Override
   @NotNull
   public DLanguageParameters getParameters() {
-    return findNotNullChildByClass(DLanguageParameters.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageParameters.class));
   }
 
   @Override
   @NotNull
   public PsiElement getKwNew() {
-    return findNotNullChildByType(KW_NEW);
+    return notNullChild(findChildByType(KW_NEW));
   }
 
   @Override

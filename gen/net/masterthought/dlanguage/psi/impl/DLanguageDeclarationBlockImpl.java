@@ -17,21 +17,25 @@ public class DLanguageDeclarationBlockImpl extends ASTWrapperPsiElement implemen
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitDeclarationBlock(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitDeclarationBlock(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageDeclDef getDeclDef() {
-    return findChildByClass(DLanguageDeclDef.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageDeclDef.class);
   }
 
   @Override
   @Nullable
   public DLanguageDeclDefs getDeclDefs() {
-    return findChildByClass(DLanguageDeclDefs.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageDeclDefs.class);
   }
 
   @Override

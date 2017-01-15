@@ -17,15 +17,19 @@ public class DLanguageInterfaceImpl extends ASTWrapperPsiElement implements DLan
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitInterface(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitInterface(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageBasicType getBasicType() {
-    return findNotNullChildByClass(DLanguageBasicType.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageBasicType.class));
   }
 
 }

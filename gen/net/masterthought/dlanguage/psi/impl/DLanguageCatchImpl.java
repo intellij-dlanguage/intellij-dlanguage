@@ -17,39 +17,43 @@ public class DLanguageCatchImpl extends ASTWrapperPsiElement implements DLanguag
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitCatch(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitCatch(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageCatchParameter getCatchParameter() {
-    return findNotNullChildByClass(DLanguageCatchParameter.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageCatchParameter.class));
   }
 
   @Override
   @NotNull
   public DLanguageStatement getStatement() {
-    return findNotNullChildByClass(DLanguageStatement.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageStatement.class));
   }
 
   @Override
   @NotNull
   public PsiElement getKwCatch() {
-    return findNotNullChildByType(KW_CATCH);
+    return notNullChild(findChildByType(KW_CATCH));
   }
 
   @Override
   @NotNull
   public PsiElement getOpParLeft() {
-    return findNotNullChildByType(OP_PAR_LEFT);
+    return notNullChild(findChildByType(OP_PAR_LEFT));
   }
 
   @Override
   @NotNull
   public PsiElement getOpParRight() {
-    return findNotNullChildByType(OP_PAR_RIGHT);
+    return notNullChild(findChildByType(OP_PAR_RIGHT));
   }
 
 }

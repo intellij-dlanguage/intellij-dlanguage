@@ -17,33 +17,37 @@ public class DLanguageModuleDeclarationImpl extends ASTWrapperPsiElement impleme
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitModuleDeclaration(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitModuleDeclaration(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageAttribute getAttribute() {
-    return findChildByClass(DLanguageAttribute.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAttribute.class);
   }
 
   @Override
   @NotNull
   public DLanguageModuleFullyQualifiedName getModuleFullyQualifiedName() {
-    return findNotNullChildByClass(DLanguageModuleFullyQualifiedName.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageModuleFullyQualifiedName.class));
   }
 
   @Override
   @NotNull
   public PsiElement getKwModule() {
-    return findNotNullChildByType(KW_MODULE);
+    return notNullChild(findChildByType(KW_MODULE));
   }
 
   @Override
   @NotNull
   public PsiElement getOpScolon() {
-    return findNotNullChildByType(OP_SCOLON);
+    return notNullChild(findChildByType(OP_SCOLON));
   }
 
 }

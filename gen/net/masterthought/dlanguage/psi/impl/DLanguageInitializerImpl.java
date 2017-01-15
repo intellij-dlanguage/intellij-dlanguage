@@ -17,21 +17,25 @@ public class DLanguageInitializerImpl extends ASTWrapperPsiElement implements DL
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitInitializer(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitInitializer(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageNonVoidInitializer getNonVoidInitializer() {
-    return findChildByClass(DLanguageNonVoidInitializer.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageNonVoidInitializer.class);
   }
 
   @Override
   @Nullable
   public DLanguageVoidInitializer getVoidInitializer() {
-    return findChildByClass(DLanguageVoidInitializer.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageVoidInitializer.class);
   }
 
 }

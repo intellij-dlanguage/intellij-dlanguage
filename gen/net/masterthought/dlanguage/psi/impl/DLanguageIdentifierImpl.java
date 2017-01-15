@@ -16,23 +16,27 @@ import com.intellij.psi.stubs.IStubElementType;
 
 public class DLanguageIdentifierImpl extends DNamedStubbedPsiElementBase<DLanguageIdentifierStub> implements DLanguageIdentifier {
 
+  public DLanguageIdentifierImpl(DLanguageIdentifierStub stub, IStubElementType type) {
+    super(stub, type);
+  }
+
   public DLanguageIdentifierImpl(ASTNode node) {
     super(node);
   }
 
-  public DLanguageIdentifierImpl(DLanguageIdentifierStub stub, IStubElementType nodeType) {
-    super(stub, nodeType);
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitIdentifier(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitIdentifier(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public PsiElement getId() {
-    return findNotNullChildByType(ID);
+    return notNullChild(findChildByType(ID));
   }
 
   @NotNull

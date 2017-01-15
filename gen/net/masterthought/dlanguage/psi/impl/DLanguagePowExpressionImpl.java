@@ -17,27 +17,31 @@ public class DLanguagePowExpressionImpl extends ASTWrapperPsiElement implements 
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitPowExpression(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitPowExpression(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguagePostfixExpression getPostfixExpression() {
-    return findNotNullChildByClass(DLanguagePostfixExpression.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguagePostfixExpression.class));
   }
 
   @Override
   @Nullable
   public DLanguagePowExpression getPowExpression() {
-    return findChildByClass(DLanguagePowExpression.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguagePowExpression.class);
   }
 
   @Override
   @Nullable
   public DLanguageUnaryExpression getUnaryExpression() {
-    return findChildByClass(DLanguageUnaryExpression.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageUnaryExpression.class);
   }
 
   @Override

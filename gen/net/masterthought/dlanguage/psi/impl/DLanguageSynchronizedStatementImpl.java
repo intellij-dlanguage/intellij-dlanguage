@@ -17,27 +17,31 @@ public class DLanguageSynchronizedStatementImpl extends ASTWrapperPsiElement imp
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitSynchronizedStatement(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitSynchronizedStatement(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageExpression getExpression() {
-    return findChildByClass(DLanguageExpression.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageExpression.class);
   }
 
   @Override
   @NotNull
   public DLanguageScopeStatement getScopeStatement() {
-    return findNotNullChildByClass(DLanguageScopeStatement.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageScopeStatement.class));
   }
 
   @Override
   @NotNull
   public PsiElement getKwSynchronized() {
-    return findNotNullChildByType(KW_SYNCHRONIZED);
+    return notNullChild(findChildByType(KW_SYNCHRONIZED));
   }
 
   @Override

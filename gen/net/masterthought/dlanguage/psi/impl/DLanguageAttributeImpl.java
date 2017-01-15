@@ -17,45 +17,49 @@ public class DLanguageAttributeImpl extends ASTWrapperPsiElement implements DLan
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitAttribute(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitAttribute(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageAlignAttribute getAlignAttribute() {
-    return findChildByClass(DLanguageAlignAttribute.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAlignAttribute.class);
   }
 
   @Override
   @Nullable
   public DLanguageDeprecatedAttribute getDeprecatedAttribute() {
-    return findChildByClass(DLanguageDeprecatedAttribute.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageDeprecatedAttribute.class);
   }
 
   @Override
   @Nullable
   public DLanguageLinkageAttribute getLinkageAttribute() {
-    return findChildByClass(DLanguageLinkageAttribute.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageLinkageAttribute.class);
   }
 
   @Override
   @Nullable
   public DLanguagePragma getPragma() {
-    return findChildByClass(DLanguagePragma.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguagePragma.class);
   }
 
   @Override
   @Nullable
   public DLanguageProperty getProperty() {
-    return findChildByClass(DLanguageProperty.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageProperty.class);
   }
 
   @Override
   @Nullable
   public DLanguageProtectionAttribute getProtectionAttribute() {
-    return findChildByClass(DLanguageProtectionAttribute.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageProtectionAttribute.class);
   }
 
   @Override

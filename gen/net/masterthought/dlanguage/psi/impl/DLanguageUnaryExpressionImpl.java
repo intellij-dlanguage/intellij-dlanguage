@@ -17,51 +17,55 @@ public class DLanguageUnaryExpressionImpl extends ASTWrapperPsiElement implement
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitUnaryExpression(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitUnaryExpression(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageCastExpression getCastExpression() {
-    return findChildByClass(DLanguageCastExpression.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageCastExpression.class);
   }
 
   @Override
   @Nullable
   public DLanguageDeleteExpression getDeleteExpression() {
-    return findChildByClass(DLanguageDeleteExpression.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageDeleteExpression.class);
   }
 
   @Override
   @Nullable
   public DLanguageIdentifier getIdentifier() {
-    return findChildByClass(DLanguageIdentifier.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
   }
 
   @Override
   @Nullable
   public DLanguagePowExpression getPowExpression() {
-    return findChildByClass(DLanguagePowExpression.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguagePowExpression.class);
   }
 
   @Override
   @Nullable
   public DLanguageTemplateInstance getTemplateInstance() {
-    return findChildByClass(DLanguageTemplateInstance.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateInstance.class);
   }
 
   @Override
   @Nullable
   public DLanguageType getType() {
-    return findChildByClass(DLanguageType.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageType.class);
   }
 
   @Override
   @Nullable
   public DLanguageUnaryExpression getUnaryExpression() {
-    return findChildByClass(DLanguageUnaryExpression.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageUnaryExpression.class);
   }
 
   @Override

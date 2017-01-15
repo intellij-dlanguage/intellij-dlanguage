@@ -17,21 +17,25 @@ public class DLanguageFunctionContractsImpl extends ASTWrapperPsiElement impleme
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitFunctionContracts(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitFunctionContracts(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageInStatement getInStatement() {
-    return findChildByClass(DLanguageInStatement.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageInStatement.class);
   }
 
   @Override
   @Nullable
   public DLanguageOutStatement getOutStatement() {
-    return findChildByClass(DLanguageOutStatement.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageOutStatement.class);
   }
 
 }

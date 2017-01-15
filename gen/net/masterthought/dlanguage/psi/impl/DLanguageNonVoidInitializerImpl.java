@@ -17,27 +17,31 @@ public class DLanguageNonVoidInitializerImpl extends ASTWrapperPsiElement implem
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitNonVoidInitializer(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitNonVoidInitializer(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageArrayInitializer getArrayInitializer() {
-    return findChildByClass(DLanguageArrayInitializer.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageArrayInitializer.class);
   }
 
   @Override
   @Nullable
   public DLanguageAssignExpression getAssignExpression() {
-    return findChildByClass(DLanguageAssignExpression.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAssignExpression.class);
   }
 
   @Override
   @Nullable
   public DLanguageStructInitializer getStructInitializer() {
-    return findChildByClass(DLanguageStructInitializer.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageStructInitializer.class);
   }
 
 }

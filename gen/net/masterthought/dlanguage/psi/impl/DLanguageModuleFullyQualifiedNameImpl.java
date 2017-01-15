@@ -17,21 +17,25 @@ public class DLanguageModuleFullyQualifiedNameImpl extends ASTWrapperPsiElement 
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitModuleFullyQualifiedName(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitModuleFullyQualifiedName(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageIdentifier getIdentifier() {
-    return findNotNullChildByClass(DLanguageIdentifier.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class));
   }
 
   @Override
   @Nullable
   public DLanguageModuleFullyQualifiedName getModuleFullyQualifiedName() {
-    return findChildByClass(DLanguageModuleFullyQualifiedName.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageModuleFullyQualifiedName.class);
   }
 
   @Override

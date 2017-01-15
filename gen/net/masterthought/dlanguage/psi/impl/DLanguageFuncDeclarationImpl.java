@@ -16,53 +16,57 @@ import com.intellij.psi.stubs.IStubElementType;
 
 public class DLanguageFuncDeclarationImpl extends DNamedStubbedPsiElementBase<DLanguageFuncDeclarationStub> implements DLanguageFuncDeclaration {
 
+  public DLanguageFuncDeclarationImpl(DLanguageFuncDeclarationStub stub, IStubElementType type) {
+    super(stub, type);
+  }
+
   public DLanguageFuncDeclarationImpl(ASTNode node) {
     super(node);
   }
 
-  public DLanguageFuncDeclarationImpl(DLanguageFuncDeclarationStub stub, IStubElementType nodeType) {
-    super(stub, nodeType);
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitFuncDeclaration(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitFuncDeclaration(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageBasicType getBasicType() {
-    return findChildByClass(DLanguageBasicType.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageBasicType.class);
   }
 
   @Override
   @Nullable
   public DLanguageBasicType2 getBasicType2() {
-    return findChildByClass(DLanguageBasicType2.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageBasicType2.class);
   }
 
   @Override
   @NotNull
   public DLanguageFuncDeclaratorSuffix getFuncDeclaratorSuffix() {
-    return findNotNullChildByClass(DLanguageFuncDeclaratorSuffix.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageFuncDeclaratorSuffix.class));
   }
 
   @Override
   @Nullable
   public DLanguageFunctionBody getFunctionBody() {
-    return findChildByClass(DLanguageFunctionBody.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageFunctionBody.class);
   }
 
   @Override
   @NotNull
   public DLanguageIdentifier getIdentifier() {
-    return findNotNullChildByClass(DLanguageIdentifier.class);
+    return notNullChild(PsiTreeUtil.getStubChildOfType(this, DLanguageIdentifier.class));
   }
 
   @Override
   @Nullable
   public DLanguageStorageClasses getStorageClasses() {
-    return findChildByClass(DLanguageStorageClasses.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageStorageClasses.class);
   }
 
   @Override

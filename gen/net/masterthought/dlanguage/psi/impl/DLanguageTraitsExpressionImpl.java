@@ -17,27 +17,31 @@ public class DLanguageTraitsExpressionImpl extends ASTWrapperPsiElement implemen
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitTraitsExpression(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitTraitsExpression(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageTraitsArguments getTraitsArguments() {
-    return findChildByClass(DLanguageTraitsArguments.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageTraitsArguments.class);
   }
 
   @Override
   @Nullable
   public DLanguageTraitsKeyword getTraitsKeyword() {
-    return findChildByClass(DLanguageTraitsKeyword.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageTraitsKeyword.class);
   }
 
   @Override
   @NotNull
   public PsiElement getKwTraits() {
-    return findNotNullChildByType(KW___TRAITS);
+    return notNullChild(findChildByType(KW___TRAITS));
   }
 
   @Override

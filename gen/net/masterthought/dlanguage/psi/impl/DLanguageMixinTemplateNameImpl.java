@@ -17,21 +17,25 @@ public class DLanguageMixinTemplateNameImpl extends ASTWrapperPsiElement impleme
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitMixinTemplateName(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitMixinTemplateName(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageQualifiedIdentifierList getQualifiedIdentifierList() {
-    return findNotNullChildByClass(DLanguageQualifiedIdentifierList.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageQualifiedIdentifierList.class));
   }
 
   @Override
   @Nullable
   public DLanguageTypeof getTypeof() {
-    return findChildByClass(DLanguageTypeof.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageTypeof.class);
   }
 
   @Override

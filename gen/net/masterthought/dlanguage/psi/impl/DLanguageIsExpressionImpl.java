@@ -17,39 +17,43 @@ public class DLanguageIsExpressionImpl extends ASTWrapperPsiElement implements D
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitIsExpression(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitIsExpression(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageIdentifier getIdentifier() {
-    return findChildByClass(DLanguageIdentifier.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
   }
 
   @Override
   @Nullable
   public DLanguageTemplateParameterList getTemplateParameterList() {
-    return findChildByClass(DLanguageTemplateParameterList.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateParameterList.class);
   }
 
   @Override
   @NotNull
   public DLanguageType getType() {
-    return findNotNullChildByClass(DLanguageType.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageType.class));
   }
 
   @Override
   @Nullable
   public DLanguageTypeSpecialization getTypeSpecialization() {
-    return findChildByClass(DLanguageTypeSpecialization.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageTypeSpecialization.class);
   }
 
   @Override
   @NotNull
   public PsiElement getKwIs() {
-    return findNotNullChildByType(KW_IS);
+    return notNullChild(findChildByType(KW_IS));
   }
 
   @Override
@@ -73,13 +77,13 @@ public class DLanguageIsExpressionImpl extends ASTWrapperPsiElement implements D
   @Override
   @NotNull
   public PsiElement getOpParLeft() {
-    return findNotNullChildByType(OP_PAR_LEFT);
+    return notNullChild(findChildByType(OP_PAR_LEFT));
   }
 
   @Override
   @NotNull
   public PsiElement getOpParRight() {
-    return findNotNullChildByType(OP_PAR_RIGHT);
+    return notNullChild(findChildByType(OP_PAR_RIGHT));
   }
 
 }

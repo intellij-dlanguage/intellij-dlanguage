@@ -17,21 +17,25 @@ public class DLanguageAliasDeclarationXImpl extends ASTWrapperPsiElement impleme
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitAliasDeclarationX(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitAliasDeclarationX(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageAliasDeclarationX getAliasDeclarationX() {
-    return findChildByClass(DLanguageAliasDeclarationX.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAliasDeclarationX.class);
   }
 
   @Override
   @NotNull
   public DLanguageAliasDeclarationY getAliasDeclarationY() {
-    return findNotNullChildByClass(DLanguageAliasDeclarationY.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageAliasDeclarationY.class));
   }
 
   @Override

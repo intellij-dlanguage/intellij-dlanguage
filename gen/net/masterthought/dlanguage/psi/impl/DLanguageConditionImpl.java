@@ -17,27 +17,31 @@ public class DLanguageConditionImpl extends ASTWrapperPsiElement implements DLan
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitCondition(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitCondition(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageDebugCondition getDebugCondition() {
-    return findChildByClass(DLanguageDebugCondition.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageDebugCondition.class);
   }
 
   @Override
   @Nullable
   public DLanguageStaticIfCondition getStaticIfCondition() {
-    return findChildByClass(DLanguageStaticIfCondition.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageStaticIfCondition.class);
   }
 
   @Override
   @Nullable
   public DLanguageVersionCondition getVersionCondition() {
-    return findChildByClass(DLanguageVersionCondition.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageVersionCondition.class);
   }
 
 }

@@ -17,21 +17,25 @@ public class DLanguageAsmShiftExpImpl extends ASTWrapperPsiElement implements DL
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitAsmShiftExp(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitAsmShiftExp(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageAsmAddExp getAsmAddExp() {
-    return findNotNullChildByClass(DLanguageAsmAddExp.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageAsmAddExp.class));
   }
 
   @Override
   @Nullable
   public DLanguageAsmShiftExp getAsmShiftExp() {
-    return findChildByClass(DLanguageAsmShiftExp.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAsmShiftExp.class);
   }
 
   @Override

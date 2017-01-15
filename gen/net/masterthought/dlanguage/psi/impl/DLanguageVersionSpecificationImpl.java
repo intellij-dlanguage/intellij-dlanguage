@@ -17,15 +17,19 @@ public class DLanguageVersionSpecificationImpl extends ASTWrapperPsiElement impl
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitVersionSpecification(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitVersionSpecification(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageIdentifier getIdentifier() {
-    return findChildByClass(DLanguageIdentifier.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
   }
 
   @Override
@@ -37,19 +41,19 @@ public class DLanguageVersionSpecificationImpl extends ASTWrapperPsiElement impl
   @Override
   @NotNull
   public PsiElement getKwVersion() {
-    return findNotNullChildByType(KW_VERSION);
+    return notNullChild(findChildByType(KW_VERSION));
   }
 
   @Override
   @NotNull
   public PsiElement getOpEq() {
-    return findNotNullChildByType(OP_EQ);
+    return notNullChild(findChildByType(OP_EQ));
   }
 
   @Override
   @NotNull
   public PsiElement getOpScolon() {
-    return findNotNullChildByType(OP_SCOLON);
+    return notNullChild(findChildByType(OP_SCOLON));
   }
 
 }

@@ -17,27 +17,31 @@ public class DLanguageAggregateBodyImpl extends ASTWrapperPsiElement implements 
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitAggregateBody(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitAggregateBody(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageDeclDefs getDeclDefs() {
-    return findChildByClass(DLanguageDeclDefs.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageDeclDefs.class);
   }
 
   @Override
   @NotNull
   public PsiElement getOpBracesLeft() {
-    return findNotNullChildByType(OP_BRACES_LEFT);
+    return notNullChild(findChildByType(OP_BRACES_LEFT));
   }
 
   @Override
   @NotNull
   public PsiElement getOpBracesRight() {
-    return findNotNullChildByType(OP_BRACES_RIGHT);
+    return notNullChild(findChildByType(OP_BRACES_RIGHT));
   }
 
 }

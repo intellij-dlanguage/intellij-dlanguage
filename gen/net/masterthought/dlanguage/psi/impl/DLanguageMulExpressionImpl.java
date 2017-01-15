@@ -17,21 +17,25 @@ public class DLanguageMulExpressionImpl extends ASTWrapperPsiElement implements 
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitMulExpression(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitMulExpression(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageMulExpression getMulExpression() {
-    return findChildByClass(DLanguageMulExpression.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageMulExpression.class);
   }
 
   @Override
   @NotNull
   public DLanguageUnaryExpression getUnaryExpression() {
-    return findNotNullChildByClass(DLanguageUnaryExpression.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageUnaryExpression.class));
   }
 
   @Override

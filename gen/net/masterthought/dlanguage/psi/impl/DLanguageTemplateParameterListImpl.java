@@ -17,21 +17,25 @@ public class DLanguageTemplateParameterListImpl extends ASTWrapperPsiElement imp
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitTemplateParameterList(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitTemplateParameterList(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageTemplateParameter getTemplateParameter() {
-    return findNotNullChildByClass(DLanguageTemplateParameter.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageTemplateParameter.class));
   }
 
   @Override
   @Nullable
   public DLanguageTemplateParameterList getTemplateParameterList() {
-    return findChildByClass(DLanguageTemplateParameterList.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateParameterList.class);
   }
 
   @Override

@@ -17,21 +17,25 @@ public class DLanguageInvariantImpl extends ASTWrapperPsiElement implements DLan
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitInvariant(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitInvariant(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageBlockStatement getBlockStatement() {
-    return findNotNullChildByClass(DLanguageBlockStatement.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageBlockStatement.class));
   }
 
   @Override
   @NotNull
   public PsiElement getKwInvariant() {
-    return findNotNullChildByType(KW_INVARIANT);
+    return notNullChild(findChildByType(KW_INVARIANT));
   }
 
   @Override

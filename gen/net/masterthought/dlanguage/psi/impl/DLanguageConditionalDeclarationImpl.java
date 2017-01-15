@@ -17,21 +17,25 @@ public class DLanguageConditionalDeclarationImpl extends ASTWrapperPsiElement im
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitConditionalDeclaration(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitConditionalDeclaration(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageCondition getCondition() {
-    return findNotNullChildByClass(DLanguageCondition.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageCondition.class));
   }
 
   @Override
   @Nullable
   public DLanguageDeclDefs getDeclDefs() {
-    return findChildByClass(DLanguageDeclDefs.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageDeclDefs.class);
   }
 
   @Override
