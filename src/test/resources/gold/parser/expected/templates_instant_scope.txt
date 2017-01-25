@@ -106,7 +106,7 @@ D Language File
         DLanguageDeclDefsImpl(DECL_DEFS)
           DLanguageDeclDefImpl(DECL_DEF)
             DLanguageDeclarationImpl(DECLARATION)
-              DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
+              ALIAS_DECLARATION
                 PsiElement(DLanguageTokenType.alias)('alias')
                 IDENTIFIER
                   PsiElement(DLanguageTokenType.ID)('f')
@@ -285,7 +285,7 @@ D Language File
                   DLanguageDeclDefsImpl(DECL_DEFS)
                     DLanguageDeclDefImpl(DECL_DEF)
                       DLanguageDeclarationImpl(DECLARATION)
-                        DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
+                        ALIAS_DECLARATION
                           PsiElement(DLanguageTokenType.alias)('alias')
                           IDENTIFIER
                             PsiElement(DLanguageTokenType.ID)('f')

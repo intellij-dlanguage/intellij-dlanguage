@@ -4663,7 +4663,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // 'enum' Identifier (':' EnumBaseType)? EnumBody
+  // ('enum' Identifier (':' EnumBaseType)? EnumBody)
   //     | AnonymousEnumDeclaration
   public static boolean EnumDeclaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "EnumDeclaration")) return false;
@@ -10299,7 +10299,6 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   // LinkageAttribute
   //     | AlignAttribute
   //     | 'deprecated'
-  //     | 'enum'
   //     | 'static'
   //     | 'extern'
   //     | 'abstract'
@@ -10324,7 +10323,6 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     r = LinkageAttribute(b, l + 1);
     if (!r) r = AlignAttribute(b, l + 1);
     if (!r) r = consumeToken(b, KW_DEPRECATED);
-    if (!r) r = consumeToken(b, KW_ENUM);
     if (!r) r = consumeToken(b, KW_STATIC);
     if (!r) r = consumeToken(b, KW_EXTERN);
     if (!r) r = consumeToken(b, KW_ABSTRACT);

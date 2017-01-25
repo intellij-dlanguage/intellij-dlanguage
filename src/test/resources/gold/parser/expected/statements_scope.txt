@@ -651,7 +651,7 @@ D Language File
     DLanguageDeclDefImpl(DECL_DEF)
       DLanguageDeclarationImpl(DECLARATION)
         DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
-          DLanguageStructDeclarationImpl(STRUCT_DECLARATION)
+          STRUCT_DECLARATION
             PsiElement(DLanguageTokenType.struct)('struct')
             IDENTIFIER
               PsiElement(DLanguageTokenType.ID)('Foo')
@@ -700,7 +700,7 @@ D Language File
                         PsiElement(DLanguageTokenType.})('}')
                 DLanguageDeclDefsImpl(DECL_DEFS)
                   DLanguageDeclDefImpl(DECL_DEF)
-                    DLanguageDestructorImpl(DESTRUCTOR)
+                    DESTRUCTOR
                       PsiElement(DLanguageTokenType.~)('~')
                       PsiElement(DLanguageTokenType.this)('this')
                       PsiElement(DLanguageTokenType.()('(')

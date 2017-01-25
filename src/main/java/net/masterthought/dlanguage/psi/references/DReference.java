@@ -6,13 +6,16 @@ import com.intellij.psi.*;
 import com.intellij.util.IncorrectOperationException;
 import net.masterthought.dlanguage.psi.DLanguageFuncDeclaration;
 import net.masterthought.dlanguage.psi.DLanguageIdentifier;
+import net.masterthought.dlanguage.psi.DNamedElement;
 import net.masterthought.dlanguage.psi.impl.DPsiImplUtil;
+import net.masterthought.dlanguage.utils.DResolveUtil;
 import net.masterthought.dlanguage.utils.DUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Resolves references to elements.
@@ -44,9 +47,8 @@ public class DReference extends PsiReferenceBase<PsiNamedElement> implements Psi
 //            HaskellQconid qconid = PsiTreeUtil.getParentOfType(myElement, HaskellQconid.class);
 //            if (qconid == null) { return EMPTY_RESOLVE_RESULT; }
 //            if (!myElement.equals(Iterables.getLast(qconid.getConidList()))) { return EMPTY_RESOLVE_RESULT; }
-//        }
-        Project project = myElement.getProject();
-        final List<PsiNamedElement> namedElements = DUtil.findDefinitionNode(project, name, myElement);
+
+        final Set<PsiNamedElement> namedElements = DResolveUtil.findDefinitionNodes((DNamedElement) myElement)/**/;
         // Guess 20 variants tops most of the time in any real code base.
         List<ResolveResult> results = new ArrayList<ResolveResult>(20);
         for (PsiNamedElement property : namedElements) {

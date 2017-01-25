@@ -37,7 +37,7 @@ D Language File
                           PsiElement(DLanguageTokenType.})('}')
                   DLanguageDeclDefsImpl(DECL_DEFS)
                     DLanguageDeclDefImpl(DECL_DEF)
-                      DLanguageDestructorImpl(DESTRUCTOR)
+                      DESTRUCTOR
                         PsiElement(DLanguageTokenType.~)('~')
                         PsiElement(DLanguageTokenType.this)('this')
                         PsiElement(DLanguageTokenType.()('(')
@@ -331,7 +331,7 @@ D Language File
                             DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
                               DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
                                 DLanguageDeclarationImpl(DECLARATION)
-                                  DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
+                                  ALIAS_DECLARATION
                                     PsiElement(DLanguageTokenType.alias)('alias')
                                     IDENTIFIER
                                       PsiElement(DLanguageTokenType.ID)('b')

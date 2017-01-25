@@ -926,7 +926,7 @@ D Language File
                                             DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
                                               DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
                                                 DLanguageDeclarationImpl(DECLARATION)
-                                                  DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
+                                                  ALIAS_DECLARATION
                                                     PsiElement(DLanguageTokenType.alias)('alias')
                                                     IDENTIFIER
                                                       PsiElement(DLanguageTokenType.ID)('fooX')
@@ -1237,7 +1237,7 @@ D Language File
                                 DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
                                   DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
                                     DLanguageDeclarationImpl(DECLARATION)
-                                      DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
+                                      ALIAS_DECLARATION
                                         PsiElement(DLanguageTokenType.alias)('alias')
                                         IDENTIFIER
                                           PsiElement(DLanguageTokenType.ID)('fooX')
@@ -1840,7 +1840,7 @@ D Language File
                                       DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
                                         DLanguageDeclarationImpl(DECLARATION)
                                           DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
-                                            DLanguageStructDeclarationImpl(STRUCT_DECLARATION)
+                                            STRUCT_DECLARATION
                                               PsiElement(DLanguageTokenType.struct)('struct')
                                               IDENTIFIER
                                                 PsiElement(DLanguageTokenType.ID)('S')
@@ -2019,7 +2019,7 @@ D Language File
                     DLanguageDeclDefImpl(DECL_DEF)
                       DLanguageDeclarationImpl(DECLARATION)
                         DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
-                          DLanguageStructDeclarationImpl(STRUCT_DECLARATION)
+                          STRUCT_DECLARATION
                             PsiElement(DLanguageTokenType.struct)('struct')
                             IDENTIFIER
                               PsiElement(DLanguageTokenType.ID)('A')

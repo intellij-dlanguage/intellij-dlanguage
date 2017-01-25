@@ -52,7 +52,7 @@ D Language File
                         DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
                           DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
                             DLanguageDeclarationImpl(DECLARATION)
-                              DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
+                              ALIAS_DECLARATION
                                 PsiElement(DLanguageTokenType.alias)('alias')
                                 IDENTIFIER
                                   PsiElement(DLanguageTokenType.ID)('TL')

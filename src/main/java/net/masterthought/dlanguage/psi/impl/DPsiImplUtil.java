@@ -222,6 +222,66 @@ public class DPsiImplUtil {
     }
     // ------------- Class Definition ------------------ //
 
+    // ------------- Struct Definition ------------------ //
+    @NotNull
+    public static String getName(@NotNull DLanguageStructDeclaration o) {
+        DLanguageStructDeclarationStub stub = o.getStub();
+        if (stub != null) return StringUtil.notNullize(stub.getName());
+
+        if (o.getIdentifier() != null) {
+            return o.getIdentifier().getText();
+        } else {
+            return "not found";
+        }
+    }
+
+    @Nullable
+    public static PsiElement getNameIdentifier(@NotNull DLanguageStructDeclaration o) {
+        ASTNode keyNode = o.getNode();
+        return keyNode != null ? keyNode.getPsi() : null;
+    }
+
+    @Nullable
+    public static PsiElement setName(@NotNull DLanguageStructDeclaration o, @NotNull String newName) {
+        PsiElement e = DElementFactory.createDLanguageStructDeclarationFromText(o.getProject(), newName);
+        if (e == null) return null;
+        o.replace(e);
+        return o;
+    }
+
+    @NotNull
+    public static PsiReference getReference(@NotNull DLanguageStructDeclaration o) {
+        return new DReference(o, TextRange.from(0, getName(o).length()));
+    }
+
+    @NotNull
+    public static ItemPresentation getPresentation(final DLanguageStructDeclaration o) {
+        return new ItemPresentation() {
+            @Nullable
+            @Override
+            public String getPresentableText() {
+                return o.getName();
+            }
+
+            /**
+             * This is needed to decipher between files when resolving multiple references.
+             */
+            @Nullable
+            @Override
+            public String getLocationString() {
+                final PsiFile psiFile = o.getContainingFile();
+                return psiFile instanceof DLanguageFile ? ((DLanguageFile) psiFile).getModuleOrFileName() : null;
+            }
+
+            @Nullable
+            @Override
+            public Icon getIcon(boolean unused) {
+                return DLanguageIcons.FILE;
+            }
+        };
+    }
+    // ------------- Struct Definition ------------------ //
+
     // ------------- Template Definition ------------------ //
     @NotNull
     public static String getName(@NotNull DLanguageTemplateDeclaration o) {
@@ -356,5 +416,138 @@ public class DPsiImplUtil {
     }
     // ------------- Constructor ------------------ //
 
+    // ------------- Destructor ------------------ //
+    @NotNull
+    public static String getName(@NotNull DLanguageDestructor o) {
+        return "~this";
+//        DLanguageDestructorStub stub = o.getStub();
+//        if (stub != null) return StringUtil.notNullize(stub.getName());
+//
+//        PsiElement parent = o.getParent();
+//
+//
+//        while (!(parent instanceof DLanguageClassDeclaration)) {
+//            parent = parent.getParent();
+//        }
+
+//        return ((DLanguageClassDeclaration)parent).getName() + "constructor";
+//        if (o.getIdentifier() != null) {
+//            return o.getIdentifier().getText();
+//        } else {
+//            return "not found";
+//        }
+    }
+
+    @Nullable
+    public static PsiElement getNameIdentifier(@NotNull DLanguageDestructor o) {
+        ASTNode keyNode = o.getNode();
+        return keyNode != null ? keyNode.getPsi() : null;
+    }
+
+    @Nullable
+    public static PsiElement setName(@NotNull DLanguageDestructor o, @NotNull String newName) {
+        PsiElement e = DElementFactory.createDLanguageDestructorFromText(o.getProject(), newName);
+        if (e == null) return null;
+        o.replace(e);
+        return o;
+    }
+
+    @NotNull
+    public static PsiReference getReference(@NotNull DLanguageDestructor o) {
+        return new DReference(o, TextRange.from(0, getName(o).length()));
+    }
+
+    @NotNull
+    public static ItemPresentation getPresentation(final DLanguageDestructor o) {
+        return new ItemPresentation() {
+            @Nullable
+            @Override
+            public String getPresentableText() {
+                String string = "";
+                for (PsiElement psiElement : o.getChildren()) {
+                    if(psiElement instanceof DLanguageParametersImpl)
+                        string += psiElement.getText();
+                }
+                return o.getName() + string;
+            }
+
+            /**
+             * This is needed to decipher between files when resolving multiple references.
+             */
+            @Nullable
+            @Override
+            public String getLocationString() {
+                final PsiFile psiFile = o.getContainingFile();
+                return psiFile instanceof DLanguageFile ? ((DLanguageFile) psiFile).getModuleOrFileName() : null;
+            }
+
+            @Nullable
+            @Override
+            public Icon getIcon(boolean unused) {
+                return DLanguageIcons.FILE;
+            }
+        };
+    }
+    // ------------- Destructor ------------------ //
+
+    // ------------- Class Definition ------------------ //
+    @NotNull
+    public static String getName(@NotNull DLanguageAliasDeclaration o) {
+        DLanguageAliasDeclarationStub stub = o.getStub();
+        if (stub != null) return StringUtil.notNullize(stub.getName());
+
+        if (o.getIdentifier() != null) {
+            return o.getIdentifier().getText();
+        } else {
+            return "not found";
+        }
+    }
+
+    @Nullable
+    public static PsiElement getNameIdentifier(@NotNull DLanguageAliasDeclaration o) {
+        ASTNode keyNode = o.getNode();
+        return keyNode != null ? keyNode.getPsi() : null;
+    }
+
+    @Nullable
+    public static PsiElement setName(@NotNull DLanguageAliasDeclaration o, @NotNull String newName) {
+        PsiElement e = DElementFactory.createDLanguageAliasDeclarationFromText(o.getProject(), newName);
+        if (e == null) return null;
+        o.replace(e);
+        return o;
+    }
+
+    @NotNull
+    public static PsiReference getReference(@NotNull DLanguageAliasDeclaration o) {
+        return new DReference(o, TextRange.from(0, getName(o).length()));
+    }
+
+    @NotNull
+    public static ItemPresentation getPresentation(final DLanguageAliasDeclaration o) {
+        return new ItemPresentation() {
+            @Nullable
+            @Override
+            public String getPresentableText() {
+                return o.getName();
+            }
+
+            /**
+             * This is needed to decipher between files when resolving multiple references.
+             */
+            @Nullable
+            @Override
+            public String getLocationString() {
+                final PsiFile psiFile = o.getContainingFile();
+                return psiFile instanceof DLanguageFile ? ((DLanguageFile) psiFile).getModuleOrFileName() : null;
+            }
+
+            @Nullable
+            @Override
+            public Icon getIcon(boolean unused) {
+                return DLanguageIcons.FILE;
+            }
+        };
+    }
+    // ------------- Alias Definition ------------------ //
 }
 

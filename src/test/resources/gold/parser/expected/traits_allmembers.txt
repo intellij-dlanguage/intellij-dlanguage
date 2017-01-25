@@ -37,7 +37,7 @@ D Language File
                           PsiElement(DLanguageTokenType.})('}')
                   DLanguageDeclDefsImpl(DECL_DEFS)
                     DLanguageDeclDefImpl(DECL_DEF)
-                      DLanguageDestructorImpl(DESTRUCTOR)
+                      DESTRUCTOR
                         PsiElement(DLanguageTokenType.~)('~')
                         PsiElement(DLanguageTokenType.this)('this')
                         PsiElement(DLanguageTokenType.()('(')

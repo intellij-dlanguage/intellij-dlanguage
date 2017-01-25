@@ -97,5 +97,23 @@ public class DElementFactory {
         if (e instanceof DLanguageConstructor) return e;
         return null;
     }
+
+    public static PsiElement createDLanguageDestructorFromText(Project project, String name) {
+        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
+        if (e instanceof DLanguageDestructor) return e;
+        return null;
+    }
+
+    public static PsiElement createDLanguageStructDeclarationFromText(Project project, String name) {
+        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
+        if (e instanceof DLanguageDestructor) return e;
+        return null;
+    }
+
+    public static PsiElement createDLanguageAliasDeclarationFromText(Project project, String name) {
+        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
+        if (e instanceof DLanguageDestructor) return e;
+        return null;
+    }
 }
 

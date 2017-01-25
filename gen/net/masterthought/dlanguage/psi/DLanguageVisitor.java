@@ -20,7 +20,7 @@ public class DLanguageVisitor extends PsiElementVisitor {
   }
 
   public void visitAliasDeclaration(@NotNull DLanguageAliasDeclaration o) {
-    visitPsiElement(o);
+    visitDNamedElement(o);
   }
 
   public void visitAliasDeclarationX(@NotNull DLanguageAliasDeclarationX o) {
@@ -388,7 +388,7 @@ public class DLanguageVisitor extends PsiElementVisitor {
   }
 
   public void visitDestructor(@NotNull DLanguageDestructor o) {
-    visitPsiElement(o);
+    visitDNamedElement(o);
   }
 
   public void visitDoStatement(@NotNull DLanguageDoStatement o) {
@@ -904,7 +904,7 @@ public class DLanguageVisitor extends PsiElementVisitor {
   }
 
   public void visitStructDeclaration(@NotNull DLanguageStructDeclaration o) {
-    visitPsiElement(o);
+    visitDNamedElement(o);
   }
 
   public void visitStructInitializer(@NotNull DLanguageStructInitializer o) {

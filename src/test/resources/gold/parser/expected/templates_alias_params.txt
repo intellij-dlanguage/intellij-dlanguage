@@ -97,7 +97,7 @@ D Language File
                         DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
                           DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
                             DLanguageDeclarationImpl(DECLARATION)
-                              DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
+                              ALIAS_DECLARATION
                                 PsiElement(DLanguageTokenType.alias)('alias')
                                 IDENTIFIER
                                   PsiElement(DLanguageTokenType.ID)('bar')
@@ -201,7 +201,7 @@ D Language File
                               DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
                                 DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
                                   DLanguageDeclarationImpl(DECLARATION)
-                                    DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
+                                    ALIAS_DECLARATION
                                       PsiElement(DLanguageTokenType.alias)('alias')
                                       IDENTIFIER
                                         PsiElement(DLanguageTokenType.ID)('abc')
@@ -333,7 +333,7 @@ D Language File
                   DLanguageDeclDefsImpl(DECL_DEFS)
                     DLanguageDeclDefImpl(DECL_DEF)
                       DLanguageDeclarationImpl(DECLARATION)
-                        DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
+                        ALIAS_DECLARATION
                           PsiElement(DLanguageTokenType.alias)('alias')
                           IDENTIFIER
                             PsiElement(DLanguageTokenType.ID)('q')
@@ -371,7 +371,7 @@ D Language File
                               DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
                                 DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
                                   DLanguageDeclarationImpl(DECLARATION)
-                                    DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
+                                    ALIAS_DECLARATION
                                       PsiElement(DLanguageTokenType.alias)('alias')
                                       IDENTIFIER
                                         PsiElement(DLanguageTokenType.ID)('bar')
@@ -487,7 +487,7 @@ D Language File
                         DLanguageDeclDefsImpl(DECL_DEFS)
                           DLanguageDeclDefImpl(DECL_DEF)
                             DLanguageDeclarationImpl(DECLARATION)
-                              DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
+                              ALIAS_DECLARATION
                                 PsiElement(DLanguageTokenType.alias)('alias')
                                 IDENTIFIER
                                   PsiElement(DLanguageTokenType.ID)('y')
@@ -525,7 +525,7 @@ D Language File
                                     DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
                                       DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
                                         DLanguageDeclarationImpl(DECLARATION)
-                                          DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
+                                          ALIAS_DECLARATION
                                             PsiElement(DLanguageTokenType.alias)('alias')
                                             IDENTIFIER
                                               PsiElement(DLanguageTokenType.ID)('bar')
@@ -719,7 +719,7 @@ D Language File
                                 DLanguageDeclDefsImpl(DECL_DEFS)
                                   DLanguageDeclDefImpl(DECL_DEF)
                                     DLanguageDeclarationImpl(DECLARATION)
-                                      DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
+                                      ALIAS_DECLARATION
                                         PsiElement(DLanguageTokenType.alias)('alias')
                                         IDENTIFIER
                                           PsiElement(DLanguageTokenType.ID)('abc')
@@ -765,7 +765,7 @@ D Language File
                                             DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
                                               DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
                                                 DLanguageDeclarationImpl(DECLARATION)
-                                                  DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
+                                                  ALIAS_DECLARATION
                                                     PsiElement(DLanguageTokenType.alias)('alias')
                                                     IDENTIFIER
                                                       PsiElement(DLanguageTokenType.ID)('bar')
@@ -957,7 +957,7 @@ D Language File
                                         DLanguageDeclDefsImpl(DECL_DEFS)
                                           DLanguageDeclDefImpl(DECL_DEF)
                                             DLanguageDeclarationImpl(DECLARATION)
-                                              DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
+                                              ALIAS_DECLARATION
                                                 PsiElement(DLanguageTokenType.alias)('alias')
                                                 IDENTIFIER
                                                   PsiElement(DLanguageTokenType.ID)('q')
@@ -995,7 +995,7 @@ D Language File
                                                     DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
                                                       DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
                                                         DLanguageDeclarationImpl(DECLARATION)
-                                                          DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
+                                                          ALIAS_DECLARATION
                                                             PsiElement(DLanguageTokenType.alias)('alias')
                                                             IDENTIFIER
                                                               PsiElement(DLanguageTokenType.ID)('foo')
@@ -1024,7 +1024,7 @@ D Language File
                                                       DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
                                                         DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
                                                           DLanguageDeclarationImpl(DECLARATION)
-                                                            DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
+                                                            ALIAS_DECLARATION
                                                               PsiElement(DLanguageTokenType.alias)('alias')
                                                               IDENTIFIER
                                                                 PsiElement(DLanguageTokenType.ID)('bar')
@@ -1232,7 +1232,7 @@ D Language File
                                                         DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
                                                           DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
                                                             DLanguageDeclarationImpl(DECLARATION)
-                                                              DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
+                                                              ALIAS_DECLARATION
                                                                 PsiElement(DLanguageTokenType.alias)('alias')
                                                                 IDENTIFIER
                                                                   PsiElement(DLanguageTokenType.ID)('foo')

@@ -1183,7 +1183,7 @@ D Language File
                             DLanguageDeclDefsImpl(DECL_DEFS)
                               DLanguageDeclDefImpl(DECL_DEF)
                                 DLanguageDeclarationImpl(DECLARATION)
-                                  DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
+                                  ALIAS_DECLARATION
                                     PsiElement(DLanguageTokenType.alias)('alias')
                                     IDENTIFIER
                                       PsiElement(DLanguageTokenType.ID)('foo1')
@@ -1209,7 +1209,7 @@ D Language File
                               DLanguageDeclDefsImpl(DECL_DEFS)
                                 DLanguageDeclDefImpl(DECL_DEF)
                                   DLanguageDeclarationImpl(DECLARATION)
-                                    DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
+                                    ALIAS_DECLARATION
                                       PsiElement(DLanguageTokenType.alias)('alias')
                                       IDENTIFIER
                                         PsiElement(DLanguageTokenType.ID)('foo2')
@@ -1246,7 +1246,7 @@ D Language File
                                 DLanguageDeclDefsImpl(DECL_DEFS)
                                   DLanguageDeclDefImpl(DECL_DEF)
                                     DLanguageDeclarationImpl(DECLARATION)
-                                      DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
+                                      ALIAS_DECLARATION
                                         PsiElement(DLanguageTokenType.alias)('alias')
                                         IDENTIFIER
                                           PsiElement(DLanguageTokenType.ID)('foo3')
@@ -1273,7 +1273,7 @@ D Language File
                                   DLanguageDeclDefsImpl(DECL_DEFS)
                                     DLanguageDeclDefImpl(DECL_DEF)
                                       DLanguageDeclarationImpl(DECLARATION)
-                                        DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
+                                        ALIAS_DECLARATION
                                           PsiElement(DLanguageTokenType.alias)('alias')
                                           IDENTIFIER
                                             PsiElement(DLanguageTokenType.ID)('foo4')

@@ -17,11 +17,11 @@
   psiImplUtilClass="net.masterthought.dlanguage.psi.impl.DPsiImplUtil"
 
   // used to implement DNamedElement in the generated interfaces
-  implements("Identifier|FuncDeclaration|ClassDeclaration|TemplateDeclaration|Constructor")="net.masterthought.dlanguage.psi.DNamedElement"
+  implements("Identifier|FuncDeclaration|ClassDeclaration|TemplateDeclaration|Constructor|Destructor|StructDeclaration|AliasDeclaration")="net.masterthought.dlanguage.psi.DNamedElement"
 
   // used to extend to use stubs
-  extends("Identifier|FuncDeclaration|ClassDeclaration|TemplateDeclaration|Constructor")="net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase<?>"
-  elementTypeFactory("Identifier|FuncDeclaration|ClassDeclaration|TemplateDeclaration|Constructor")="net.masterthought.dlanguage.psi.impl.DElementTypeFactory.factory"
+  extends("Identifier|FuncDeclaration|ClassDeclaration|TemplateDeclaration|Constructor|Destructor|StructDeclaration|AliasDeclaration")="net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase<?>"
+  elementTypeFactory("Identifier|FuncDeclaration|ClassDeclaration|TemplateDeclaration|Constructor|Destructor|StructDeclaration|AliasDeclaration")="net.masterthought.dlanguage.psi.impl.DElementTypeFactory.factory"
 
 
   generateTokenAccessors=true
@@ -223,6 +223,15 @@ Identifier ::= ID {
                         methods=[getName getNameIdentifier getReference setName getPresentation]
                         stubClass="net.masterthought.dlanguage.stubs.DLanguageIdentifierStub"
                       }
+
+//possible solution to recursive comment issues
+SingleLineComment ::= '//' CommentBody SingleLineCommentEnd
+MultiLineComment ::= CommentStart CommentBody CommentEnd
+private CommentEnd ::= NESTING_BLOCK_COMMENT_START | BLOCK_COMMENT_END
+private CommentStart ::= NESTING_BLOCK_COMMENT_START | BLOCK_COMMENT_START
+
+CommentBody ::= MultiLineComment? SingleLineComment? Identifier? [CommentBody]
+
 
 StringLiteral  ::= (WYSIWYG_STRING|ALTERNATE_WYSIWYG_STRING|DOUBLE_QUOTED_STRING|HEX_STRING|DELIMITED_STRING)
 
@@ -1611,7 +1620,10 @@ Declaration ::=
 
 AliasDeclaration ::= 'alias' Identifier '=' Type TemplateArguments? ';'
   | 'alias' StorageClasses? BasicType (FuncDeclarator|Declarator) ';'
-  | 'alias' AliasDeclarationX ';'
+  | 'alias' AliasDeclarationX ';'{
+     methods=[getName getNameIdentifier getReference setName getPresentation]
+     stubClass="net.masterthought.dlanguage.stubs.DLanguageAliasDeclarationStub"
+}
 
 AliasDeclarationX ::=
     AliasDeclarationY [',' AliasDeclarationX]
@@ -1684,7 +1696,6 @@ StorageClass ::=
     LinkageAttribute
     | AlignAttribute
     | 'deprecated'
-    | 'enum'
     | 'static'
     | 'extern'
     | 'abstract'
@@ -1828,7 +1839,10 @@ ConstructorTemplate ::=
 
 Destructor ::=
     '~' 'this' '(' ')' MemberFunctionAttributes? ';'
-    | '~' 'this' '(' ')' MemberFunctionAttributes? FunctionBody
+    | '~' 'this' '(' ')' MemberFunctionAttributes? FunctionBody{
+        methods=[getName getNameIdentifier getReference setName getPresentation]
+        stubClass="net.masterthought.dlanguage.stubs.DLanguageDestructorStub"
+   }
 
 Postblit ::=
     'this' '(' 'this' ')' MemberFunctionAttributes? ';'
@@ -1895,7 +1909,10 @@ InterfaceTemplateDeclaration ::=
       'interface' Identifier TemplateParameters Constraint? BaseInterfaceList? AggregateBody
 
 StructDeclaration ::=
-    'struct' Identifier? TemplateParameters? Constraint? (AggregateBody | ';')?
+    'struct' Identifier? TemplateParameters? Constraint? (AggregateBody | ';')?{
+      methods=[getName getNameIdentifier getReference setName getPresentation]
+      stubClass="net.masterthought.dlanguage.stubs.DLanguageStructDeclarationStub"
+   }
 
 UnionDeclaration ::=
     'union' Identifier ';'
@@ -1953,7 +1970,7 @@ AliasThis ::=
 
 
 EnumDeclaration ::=
-    'enum' Identifier (':' EnumBaseType)? EnumBody
+    ('enum' Identifier (':' EnumBaseType)? EnumBody)
     | AnonymousEnumDeclaration
 
 EnumBaseType ::=

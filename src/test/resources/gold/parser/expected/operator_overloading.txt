@@ -3,7 +3,7 @@ D Language File
     DLanguageDeclDefImpl(DECL_DEF)
       DLanguageDeclarationImpl(DECLARATION)
         DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
-          DLanguageStructDeclarationImpl(STRUCT_DECLARATION)
+          STRUCT_DECLARATION
             PsiElement(DLanguageTokenType.struct)('struct')
             IDENTIFIER
               PsiElement(DLanguageTokenType.ID)('S')
@@ -970,7 +970,7 @@ D Language File
               DLanguageDeclDefImpl(DECL_DEF)
                 DLanguageDeclarationImpl(DECLARATION)
                   DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
-                    DLanguageStructDeclarationImpl(STRUCT_DECLARATION)
+                    STRUCT_DECLARATION
                       PsiElement(DLanguageTokenType.struct)('struct')
                       IDENTIFIER
                         PsiElement(DLanguageTokenType.ID)('S')
@@ -1085,7 +1085,7 @@ D Language File
                 DLanguageDeclDefImpl(DECL_DEF)
                   DLanguageDeclarationImpl(DECLARATION)
                     DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
-                      DLanguageStructDeclarationImpl(STRUCT_DECLARATION)
+                      STRUCT_DECLARATION
                         PsiElement(DLanguageTokenType.struct)('struct')
                         IDENTIFIER
                           PsiElement(DLanguageTokenType.ID)('S')
@@ -1141,7 +1141,7 @@ D Language File
                   DLanguageDeclDefImpl(DECL_DEF)
                     DLanguageDeclarationImpl(DECLARATION)
                       DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
-                        DLanguageStructDeclarationImpl(STRUCT_DECLARATION)
+                        STRUCT_DECLARATION
                           PsiElement(DLanguageTokenType.struct)('struct')
                           IDENTIFIER
                             PsiElement(DLanguageTokenType.ID)('F')
@@ -1403,7 +1403,7 @@ D Language File
                       DLanguageDeclDefImpl(DECL_DEF)
                         DLanguageDeclarationImpl(DECLARATION)
                           DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
-                            DLanguageStructDeclarationImpl(STRUCT_DECLARATION)
+                            STRUCT_DECLARATION
                               PsiElement(DLanguageTokenType.struct)('struct')
                               IDENTIFIER
                                 PsiElement(DLanguageTokenType.ID)('Multiplier')
@@ -1740,7 +1740,7 @@ D Language File
                           DLanguageDeclDefImpl(DECL_DEF)
                             DLanguageDeclarationImpl(DECLARATION)
                               DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
-                                DLanguageStructDeclarationImpl(STRUCT_DECLARATION)
+                                STRUCT_DECLARATION
                                   PsiElement(DLanguageTokenType.struct)('struct')
                                   IDENTIFIER
                                     PsiElement(DLanguageTokenType.ID)('Double')
@@ -1949,7 +1949,7 @@ D Language File
                               DLanguageDeclDefImpl(DECL_DEF)
                                 DLanguageDeclarationImpl(DECLARATION)
                                   DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
-                                    DLanguageStructDeclarationImpl(STRUCT_DECLARATION)
+                                    STRUCT_DECLARATION
                                       PsiElement(DLanguageTokenType.struct)('struct')
                                       IDENTIFIER
                                         PsiElement(DLanguageTokenType.ID)('S')
@@ -2042,7 +2042,7 @@ D Language File
                                 DLanguageDeclDefImpl(DECL_DEF)
                                   DLanguageDeclarationImpl(DECLARATION)
                                     DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
-                                      DLanguageStructDeclarationImpl(STRUCT_DECLARATION)
+                                      STRUCT_DECLARATION
                                         PsiElement(DLanguageTokenType.struct)('struct')
                                         IDENTIFIER
                                           PsiElement(DLanguageTokenType.ID)('S')
@@ -2333,7 +2333,7 @@ D Language File
                                                 DLanguageDeclDefImpl(DECL_DEF)
                                                   DLanguageDeclarationImpl(DECLARATION)
                                                     DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
-                                                      DLanguageStructDeclarationImpl(STRUCT_DECLARATION)
+                                                      STRUCT_DECLARATION
                                                         PsiElement(DLanguageTokenType.struct)('struct')
                                                         IDENTIFIER
                                                           PsiElement(DLanguageTokenType.ID)('A')
@@ -2511,7 +2511,7 @@ D Language File
                                                     DLanguageDeclDefImpl(DECL_DEF)
                                                       DLanguageDeclarationImpl(DECLARATION)
                                                         DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
-                                                          DLanguageStructDeclarationImpl(STRUCT_DECLARATION)
+                                                          STRUCT_DECLARATION
                                                             PsiElement(DLanguageTokenType.struct)('struct')
                                                             IDENTIFIER
                                                               PsiElement(DLanguageTokenType.ID)('A')
@@ -2846,7 +2846,7 @@ D Language File
                                                         DLanguageDeclDefImpl(DECL_DEF)
                                                           DLanguageDeclarationImpl(DECLARATION)
                                                             DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
-                                                              DLanguageStructDeclarationImpl(STRUCT_DECLARATION)
+                                                              STRUCT_DECLARATION
                                                                 PsiElement(DLanguageTokenType.struct)('struct')
                                                                 IDENTIFIER
                                                                   PsiElement(DLanguageTokenType.ID)('Array2D')
@@ -7759,7 +7759,7 @@ D Language File
                                                             DLanguageDeclDefImpl(DECL_DEF)
                                                               DLanguageDeclarationImpl(DECLARATION)
                                                                 DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
-                                                                  DLanguageStructDeclarationImpl(STRUCT_DECLARATION)
+                                                                  STRUCT_DECLARATION
                                                                     PsiElement(DLanguageTokenType.struct)('struct')
                                                                     IDENTIFIER
                                                                       PsiElement(DLanguageTokenType.ID)('A')
@@ -7962,7 +7962,7 @@ D Language File
                                                                 DLanguageDeclDefImpl(DECL_DEF)
                                                                   DLanguageDeclarationImpl(DECLARATION)
                                                                     DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
-                                                                      DLanguageStructDeclarationImpl(STRUCT_DECLARATION)
+                                                                      STRUCT_DECLARATION
                                                                         PsiElement(DLanguageTokenType.struct)('struct')
                                                                         IDENTIFIER
                                                                           PsiElement(DLanguageTokenType.ID)('S')
@@ -8337,7 +8337,7 @@ D Language File
                                                                     DLanguageDeclDefImpl(DECL_DEF)
                                                                       DLanguageDeclarationImpl(DECLARATION)
                                                                         DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
-                                                                          DLanguageStructDeclarationImpl(STRUCT_DECLARATION)
+                                                                          STRUCT_DECLARATION
                                                                             PsiElement(DLanguageTokenType.struct)('struct')
                                                                             IDENTIFIER
                                                                               PsiElement(DLanguageTokenType.ID)('Rectangle')
@@ -9094,7 +9094,7 @@ D Language File
                                                                           DLanguageDeclDefImpl(DECL_DEF)
                                                                             DLanguageDeclarationImpl(DECLARATION)
                                                                               DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
-                                                                                DLanguageStructDeclarationImpl(STRUCT_DECLARATION)
+                                                                                STRUCT_DECLARATION
                                                                                   PsiElement(DLanguageTokenType.struct)('struct')
                                                                                   IDENTIFIER
                                                                                     PsiElement(DLanguageTokenType.ID)('S')
@@ -9386,7 +9386,7 @@ D Language File
                                                                               DLanguageDeclDefImpl(DECL_DEF)
                                                                                 DLanguageDeclarationImpl(DECLARATION)
                                                                                   DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
-                                                                                    DLanguageStructDeclarationImpl(STRUCT_DECLARATION)
+                                                                                    STRUCT_DECLARATION
                                                                                       PsiElement(DLanguageTokenType.struct)('struct')
                                                                                       IDENTIFIER
                                                                                         PsiElement(DLanguageTokenType.ID)('D')
