@@ -29,6 +29,9 @@ public interface DLanguageStorageClass extends PsiElement {
   PsiElement getKwDeprecated();
 
   @Nullable
+  PsiElement getKwEnum();
+
+  @Nullable
   PsiElement getKwExtern();
 
   @Nullable

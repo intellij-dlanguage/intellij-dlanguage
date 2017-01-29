@@ -220,18 +220,9 @@ dFile ::= item_*
 private item_ ::= (ModuleDeclaration | DeclDefs | Statement | SHEBANG)
 
 Identifier ::= ID {
-                        methods=[getName getNameIdentifier getReference setName getPresentation]
-                        stubClass="net.masterthought.dlanguage.stubs.DLanguageIdentifierStub"
-                      }
-
-//possible solution to recursive comment issues
-SingleLineComment ::= '//' CommentBody SingleLineCommentEnd
-MultiLineComment ::= CommentStart CommentBody CommentEnd
-private CommentEnd ::= NESTING_BLOCK_COMMENT_START | BLOCK_COMMENT_END
-private CommentStart ::= NESTING_BLOCK_COMMENT_START | BLOCK_COMMENT_START
-
-CommentBody ::= MultiLineComment? SingleLineComment? Identifier? [CommentBody]
-
+    methods=[getName getNameIdentifier getReference setName getPresentation]
+    stubClass="net.masterthought.dlanguage.stubs.DLanguageIdentifierStub"
+    }
 
 StringLiteral  ::= (WYSIWYG_STRING|ALTERNATE_WYSIWYG_STRING|DOUBLE_QUOTED_STRING|HEX_STRING|DELIMITED_STRING)
 
@@ -714,7 +705,7 @@ ScopeStatement ::=
     | BlockStatement
 
 LabeledStatement ::=
-    Identifier ':' Statement?
+    Identifier ':' Statement? //todo make named element
 
 
 BlockStatement ::=
@@ -892,7 +883,6 @@ AsmStatement ::=
 
 AsmInstructionList ::=
    AsmInstruction ';' AsmInstructionList?
-
 
 AsmInstruction ::=
     Identifier ':' AsmInstruction?
@@ -1606,8 +1596,6 @@ Opcode ::=
 | 'pmulhrw'
 | 'pswapd'
 
-
-
 Declaration ::=
     EnumDeclaration
    | FuncDeclaration
@@ -1616,7 +1604,6 @@ Declaration ::=
    | ImportDeclaration
    | TemplateDeclaration
    | VarDeclarations
-
 
 AliasDeclaration ::= 'alias' Identifier '=' Type TemplateArguments? ';'
   | 'alias' StorageClasses? BasicType (FuncDeclarator|Declarator) ';'
@@ -1696,6 +1683,7 @@ StorageClass ::=
     LinkageAttribute
     | AlignAttribute
     | 'deprecated'
+    | 'enum'
     | 'static'
     | 'extern'
     | 'abstract'
@@ -1748,14 +1736,14 @@ StructMemberInitializer ::=
 //Function
 
 FuncDeclaration ::=
-    StorageClasses? BasicType FuncDeclarator (FunctionBody |';'| '=')?
+    StorageClasses? BasicType FuncDeclarator FunctionBody?
     | AutoFuncDeclaration {
-                          methods=[getName getNameIdentifier getReference setName getPresentation]
-                          stubClass="net.masterthought.dlanguage.stubs.DLanguageFuncDeclarationStub"
-                          }
+      methods=[getName getNameIdentifier getReference setName getPresentation]
+      stubClass="net.masterthought.dlanguage.stubs.DLanguageFuncDeclarationStub"
+      }
 
 private AutoFuncDeclaration ::=
-    StorageClasses Identifier FuncDeclaratorSuffix FunctionBody?
+    StorageClasses Identifier FuncDeclaratorSuffix FunctionBody
 
 private FuncDeclarator ::=
     BasicType2? Identifier FuncDeclaratorSuffix
@@ -1967,8 +1955,6 @@ AliasThis ::=
 // EnumMember ::=
 //      Identifier? '=' AssignExpression
 
-
-
 EnumDeclaration ::=
     ('enum' Identifier (':' EnumBaseType)? EnumBody)
     | AnonymousEnumDeclaration
@@ -2059,7 +2045,7 @@ TemplateMixinDeclaration ::=
     'mixin' 'template' Identifier TemplateParameters Constraint? '{' DeclDefs? '}'
 
 TemplateMixin ::=
-    'mixin' MixinTemplateName TemplateArguments? Identifier? ';'
+    'mixin' MixinTemplateName TemplateArguments? Identifier? ';'// the optional argument should be a named element as well todo
 
 MixinTemplateName ::=
     Typeof? '.'? QualifiedIdentifierList

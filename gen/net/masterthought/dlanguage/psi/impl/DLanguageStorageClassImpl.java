@@ -70,6 +70,12 @@ public class DLanguageStorageClassImpl extends ASTWrapperPsiElement implements D
 
   @Override
   @Nullable
+  public PsiElement getKwEnum() {
+    return findChildByType(KW_ENUM);
+  }
+
+  @Override
+  @Nullable
   public PsiElement getKwExtern() {
     return findChildByType(KW_EXTERN);
   }
