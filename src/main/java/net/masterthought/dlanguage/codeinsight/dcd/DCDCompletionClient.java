@@ -93,7 +93,7 @@ public class DCDCompletionClient {
                         {
                             String token = tokens[i];
                             if (!token.contains("identifiers")) {
-                                List<String> parts = Arrays.asList(token.split("\\s"));
+                                String[] parts = token.split("\\s");
                                 String completionType = getCompletionType(parts);
                                 String completionText = getCompletionText(parts);
                                 Completion completion = new TextCompletion(completionType, completionText);
@@ -116,18 +116,18 @@ public class DCDCompletionClient {
         return ToolKey.DCD_CLIENT_KEY.getPath(module.getProject());
     }
 
-    private String getType(List<String> parts) {
-        String type = parts.get(parts.size() - 1);
+    private String getType(String[] parts) {
+        String type = parts[parts.length - 1];
         return type.isEmpty() ? "U" : type.trim();
     }
 
-    private String getCompletionType(List<String> parts) {
+    private String getCompletionType(String[] parts) {
         String mapping = completionTypeMap.get(getType(parts));
         return mapping == null ? "Unknown" : mapping;
     }
 
-    private String getCompletionText(List<String> parts) {
-        String text = parts.get(0);
+    private String getCompletionText(String[] parts) {
+        String text = parts[0];
         String result = text.isEmpty() ? "" : text.trim();
         String type = getType(parts);
         if (type.equals("f")) {
