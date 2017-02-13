@@ -16,41 +16,45 @@ import com.intellij.psi.stubs.IStubElementType;
 
 public class DLanguageClassDeclarationImpl extends DNamedStubbedPsiElementBase<DLanguageClassDeclarationStub> implements DLanguageClassDeclaration {
 
+  public DLanguageClassDeclarationImpl(DLanguageClassDeclarationStub stub, IStubElementType type) {
+    super(stub, type);
+  }
+
   public DLanguageClassDeclarationImpl(ASTNode node) {
     super(node);
   }
 
-  public DLanguageClassDeclarationImpl(DLanguageClassDeclarationStub stub, IStubElementType nodeType) {
-    super(stub, nodeType);
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitClassDeclaration(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitClassDeclaration(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageAggregateBody getAggregateBody() {
-    return findChildByClass(DLanguageAggregateBody.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAggregateBody.class);
   }
 
   @Override
   @Nullable
   public DLanguageBaseClassList getBaseClassList() {
-    return findChildByClass(DLanguageBaseClassList.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageBaseClassList.class);
   }
 
   @Override
   @Nullable
   public DLanguageClassTemplateDeclaration getClassTemplateDeclaration() {
-    return findChildByClass(DLanguageClassTemplateDeclaration.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageClassTemplateDeclaration.class);
   }
 
   @Override
   @Nullable
   public DLanguageIdentifier getIdentifier() {
-    return findChildByClass(DLanguageIdentifier.class);
+    return PsiTreeUtil.getStubChildOfType(this, DLanguageIdentifier.class);
   }
 
   @Override

@@ -17,11 +17,11 @@
   psiImplUtilClass="net.masterthought.dlanguage.psi.impl.DPsiImplUtil"
 
   // used to implement DNamedElement in the generated interfaces
-  implements("Identifier|FuncDeclaration|ClassDeclaration")="net.masterthought.dlanguage.psi.DNamedElement"
+  implements("Identifier|FuncDeclaration|ClassDeclaration|TemplateDeclaration|Constructor")="net.masterthought.dlanguage.psi.DNamedElement"
 
   // used to extend to use stubs
-  extends("Identifier|FuncDeclaration|ClassDeclaration")="net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase<?>"
-  elementTypeFactory("Identifier|FuncDeclaration|ClassDeclaration")="net.masterthought.dlanguage.psi.impl.DElementTypeFactory.factory"
+  extends("Identifier|FuncDeclaration|ClassDeclaration|TemplateDeclaration|Constructor")="net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase<?>"
+  elementTypeFactory("Identifier|FuncDeclaration|ClassDeclaration|TemplateDeclaration|Constructor")="net.masterthought.dlanguage.psi.impl.DElementTypeFactory.factory"
 
 
   generateTokenAccessors=true
@@ -1652,7 +1652,7 @@ VarDeclaratorIdentifier ::=
 
 AltDeclaratorIdentifier ::=
     BasicType2? Identifier AltDeclaratorSuffixes? ('=' Initializer)?
-    
+
 Declarator ::=
     VarDeclarator
     | AltDeclarator
@@ -1817,7 +1817,10 @@ BodyStatement ::=
 Constructor ::=
     'this' Parameters MemberFunctionAttributes? ';'
     | 'this' Parameters MemberFunctionAttributes? FunctionBody
-    | ConstructorTemplate
+    | ConstructorTemplate {
+         methods=[getName getNameIdentifier getReference setName getPresentation]
+         stubClass="net.masterthought.dlanguage.stubs.DLanguageConstructorStub"
+    }
 
 ConstructorTemplate ::=
     'this' TemplateParameters Parameters MemberFunctionAttributes? Constraint? ';'
@@ -1886,9 +1889,9 @@ InterfaceDeclaration ::=
     'interface' Identifier ';'
     | InterfaceTemplateDeclaration
     | 'interface' Identifier BaseInterfaceList? AggregateBody?
-   
 
-InterfaceTemplateDeclaration ::= 
+
+InterfaceTemplateDeclaration ::=
       'interface' Identifier TemplateParameters Constraint? BaseInterfaceList? AggregateBody
 
 StructDeclaration ::=
@@ -1970,7 +1973,10 @@ AnonymousEnumDeclaration ::=
 //Template
 
 TemplateDeclaration ::=
-    'template' Identifier TemplateParameters Constraint? '{' DeclDefs? '}'
+    'template' Identifier TemplateParameters Constraint? '{' DeclDefs? '}' {
+      methods=[getName getNameIdentifier getReference setName getPresentation]
+      stubClass="net.masterthought.dlanguage.stubs.DLanguageTemplateDeclarationStub"
+    }
 
 TemplateParameters ::=
     '(' TemplateParameterList? ')'

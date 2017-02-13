@@ -17,21 +17,25 @@ public class DLanguageStatementImpl extends ASTWrapperPsiElement implements DLan
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitStatement(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitStatement(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageBlockStatement getBlockStatement() {
-    return findChildByClass(DLanguageBlockStatement.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageBlockStatement.class);
   }
 
   @Override
   @Nullable
   public DLanguageNonEmptyStatement getNonEmptyStatement() {
-    return findChildByClass(DLanguageNonEmptyStatement.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageNonEmptyStatement.class);
   }
 
   @Override

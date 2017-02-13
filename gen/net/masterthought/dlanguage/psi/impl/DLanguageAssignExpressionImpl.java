@@ -17,21 +17,25 @@ public class DLanguageAssignExpressionImpl extends ASTWrapperPsiElement implemen
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitAssignExpression(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitAssignExpression(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageAssignExpression getAssignExpression() {
-    return findChildByClass(DLanguageAssignExpression.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAssignExpression.class);
   }
 
   @Override
   @NotNull
   public DLanguageConditionalExpression getConditionalExpression() {
-    return findNotNullChildByClass(DLanguageConditionalExpression.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageConditionalExpression.class));
   }
 
   @Override

@@ -17,15 +17,19 @@ public class DLanguageProtectionAttributeImpl extends ASTWrapperPsiElement imple
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitProtectionAttribute(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitProtectionAttribute(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageIdentifierList getIdentifierList() {
-    return findChildByClass(DLanguageIdentifierList.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageIdentifierList.class);
   }
 
   @Override

@@ -17,39 +17,43 @@ public class DLanguageUnionTemplateDeclarationImpl extends ASTWrapperPsiElement 
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitUnionTemplateDeclaration(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitUnionTemplateDeclaration(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageAggregateBody getAggregateBody() {
-    return findNotNullChildByClass(DLanguageAggregateBody.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageAggregateBody.class));
   }
 
   @Override
   @Nullable
   public DLanguageConstraint getConstraint() {
-    return findChildByClass(DLanguageConstraint.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageConstraint.class);
   }
 
   @Override
   @NotNull
   public DLanguageIdentifier getIdentifier() {
-    return findNotNullChildByClass(DLanguageIdentifier.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class));
   }
 
   @Override
   @NotNull
   public DLanguageTemplateParameters getTemplateParameters() {
-    return findNotNullChildByClass(DLanguageTemplateParameters.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageTemplateParameters.class));
   }
 
   @Override
   @NotNull
   public PsiElement getKwUnion() {
-    return findNotNullChildByType(KW_UNION);
+    return notNullChild(findChildByType(KW_UNION));
   }
 
 }

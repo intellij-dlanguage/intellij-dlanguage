@@ -17,39 +17,43 @@ public class DLanguageNewExpressionWithArgsImpl extends ASTWrapperPsiElement imp
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitNewExpressionWithArgs(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitNewExpressionWithArgs(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageAllocatorArguments getAllocatorArguments() {
-    return findChildByClass(DLanguageAllocatorArguments.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAllocatorArguments.class);
   }
 
   @Override
   @Nullable
   public DLanguageArgumentList getArgumentList() {
-    return findChildByClass(DLanguageArgumentList.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageArgumentList.class);
   }
 
   @Override
   @Nullable
   public DLanguageAssignExpression getAssignExpression() {
-    return findChildByClass(DLanguageAssignExpression.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAssignExpression.class);
   }
 
   @Override
   @Nullable
   public DLanguageNewAnonClassExpression getNewAnonClassExpression() {
-    return findChildByClass(DLanguageNewAnonClassExpression.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageNewAnonClassExpression.class);
   }
 
   @Override
   @Nullable
   public DLanguageType getType() {
-    return findChildByClass(DLanguageType.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageType.class);
   }
 
   @Override

@@ -17,8 +17,12 @@ public class DLanguageMultipleAssignImpl extends ASTWrapperPsiElement implements
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitMultipleAssign(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitMultipleAssign(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
@@ -31,7 +35,7 @@ public class DLanguageMultipleAssignImpl extends ASTWrapperPsiElement implements
   @Override
   @Nullable
   public DLanguageMultipleAssign getMultipleAssign() {
-    return findChildByClass(DLanguageMultipleAssign.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageMultipleAssign.class);
   }
 
   @Override

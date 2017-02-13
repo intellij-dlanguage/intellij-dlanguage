@@ -17,21 +17,25 @@ public class DLanguageImportImpl extends ASTWrapperPsiElement implements DLangua
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitImport(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitImport(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageIdentifier getIdentifier() {
-    return findChildByClass(DLanguageIdentifier.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
   }
 
   @Override
   @NotNull
   public DLanguageModuleFullyQualifiedName getModuleFullyQualifiedName() {
-    return findNotNullChildByClass(DLanguageModuleFullyQualifiedName.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageModuleFullyQualifiedName.class));
   }
 
   @Override

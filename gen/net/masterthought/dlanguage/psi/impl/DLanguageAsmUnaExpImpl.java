@@ -17,33 +17,37 @@ public class DLanguageAsmUnaExpImpl extends ASTWrapperPsiElement implements DLan
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitAsmUnaExp(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitAsmUnaExp(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageAsmExp getAsmExp() {
-    return findChildByClass(DLanguageAsmExp.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAsmExp.class);
   }
 
   @Override
   @Nullable
   public DLanguageAsmPrimaryExp getAsmPrimaryExp() {
-    return findChildByClass(DLanguageAsmPrimaryExp.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAsmPrimaryExp.class);
   }
 
   @Override
   @Nullable
   public DLanguageAsmTypePrefix getAsmTypePrefix() {
-    return findChildByClass(DLanguageAsmTypePrefix.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAsmTypePrefix.class);
   }
 
   @Override
   @Nullable
   public DLanguageAsmUnaExp getAsmUnaExp() {
-    return findChildByClass(DLanguageAsmUnaExp.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAsmUnaExp.class);
   }
 
   @Override

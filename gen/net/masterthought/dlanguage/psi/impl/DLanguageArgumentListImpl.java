@@ -17,21 +17,25 @@ public class DLanguageArgumentListImpl extends ASTWrapperPsiElement implements D
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitArgumentList(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitArgumentList(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageArgumentList getArgumentList() {
-    return findChildByClass(DLanguageArgumentList.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageArgumentList.class);
   }
 
   @Override
   @NotNull
   public DLanguageAssignExpression getAssignExpression() {
-    return findNotNullChildByClass(DLanguageAssignExpression.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageAssignExpression.class));
   }
 
   @Override

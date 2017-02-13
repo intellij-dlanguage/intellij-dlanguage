@@ -17,27 +17,31 @@ public class DLanguageIfStatementImpl extends ASTWrapperPsiElement implements DL
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitIfStatement(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitIfStatement(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageElseStatement getElseStatement() {
-    return findChildByClass(DLanguageElseStatement.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageElseStatement.class);
   }
 
   @Override
   @NotNull
   public DLanguageIfCondition getIfCondition() {
-    return findNotNullChildByClass(DLanguageIfCondition.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageIfCondition.class));
   }
 
   @Override
   @NotNull
   public DLanguageThenStatement getThenStatement() {
-    return findNotNullChildByClass(DLanguageThenStatement.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageThenStatement.class));
   }
 
   @Override
@@ -49,19 +53,19 @@ public class DLanguageIfStatementImpl extends ASTWrapperPsiElement implements DL
   @Override
   @NotNull
   public PsiElement getKwIf() {
-    return findNotNullChildByType(KW_IF);
+    return notNullChild(findChildByType(KW_IF));
   }
 
   @Override
   @NotNull
   public PsiElement getOpParLeft() {
-    return findNotNullChildByType(OP_PAR_LEFT);
+    return notNullChild(findChildByType(OP_PAR_LEFT));
   }
 
   @Override
   @NotNull
   public PsiElement getOpParRight() {
-    return findNotNullChildByType(OP_PAR_RIGHT);
+    return notNullChild(findChildByType(OP_PAR_RIGHT));
   }
 
 }

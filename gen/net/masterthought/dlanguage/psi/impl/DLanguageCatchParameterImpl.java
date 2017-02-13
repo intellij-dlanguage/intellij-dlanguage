@@ -17,21 +17,25 @@ public class DLanguageCatchParameterImpl extends ASTWrapperPsiElement implements
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitCatchParameter(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitCatchParameter(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageBasicType getBasicType() {
-    return findNotNullChildByClass(DLanguageBasicType.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageBasicType.class));
   }
 
   @Override
   @NotNull
   public DLanguageIdentifier getIdentifier() {
-    return findNotNullChildByClass(DLanguageIdentifier.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class));
   }
 
 }

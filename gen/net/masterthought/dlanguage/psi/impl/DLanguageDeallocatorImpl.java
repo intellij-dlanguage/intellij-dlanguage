@@ -17,27 +17,31 @@ public class DLanguageDeallocatorImpl extends ASTWrapperPsiElement implements DL
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitDeallocator(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitDeallocator(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageFunctionBody getFunctionBody() {
-    return findChildByClass(DLanguageFunctionBody.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageFunctionBody.class);
   }
 
   @Override
   @NotNull
   public DLanguageParameters getParameters() {
-    return findNotNullChildByClass(DLanguageParameters.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageParameters.class));
   }
 
   @Override
   @NotNull
   public PsiElement getKwDelete() {
-    return findNotNullChildByType(KW_DELETE);
+    return notNullChild(findChildByType(KW_DELETE));
   }
 
   @Override

@@ -17,39 +17,43 @@ public class DLanguageAsmInstructionImpl extends ASTWrapperPsiElement implements
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitAsmInstruction(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitAsmInstruction(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageAsmInstruction getAsmInstruction() {
-    return findChildByClass(DLanguageAsmInstruction.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAsmInstruction.class);
   }
 
   @Override
   @Nullable
   public DLanguageIdentifier getIdentifier() {
-    return findChildByClass(DLanguageIdentifier.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
   }
 
   @Override
   @Nullable
   public DLanguageIntegerExpression getIntegerExpression() {
-    return findChildByClass(DLanguageIntegerExpression.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageIntegerExpression.class);
   }
 
   @Override
   @Nullable
   public DLanguageOpcode getOpcode() {
-    return findChildByClass(DLanguageOpcode.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageOpcode.class);
   }
 
   @Override
   @Nullable
   public DLanguageOperands getOperands() {
-    return findChildByClass(DLanguageOperands.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageOperands.class);
   }
 
   @Override

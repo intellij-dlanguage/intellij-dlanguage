@@ -17,21 +17,25 @@ public class DLanguageBasicType2Impl extends ASTWrapperPsiElement implements DLa
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitBasicType2(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitBasicType2(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageBasicType2 getBasicType2() {
-    return findChildByClass(DLanguageBasicType2.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageBasicType2.class);
   }
 
   @Override
   @NotNull
   public DLanguageBasicType2X getBasicType2X() {
-    return findNotNullChildByClass(DLanguageBasicType2X.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageBasicType2X.class));
   }
 
 }

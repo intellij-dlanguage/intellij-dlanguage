@@ -17,27 +17,31 @@ public class DLanguagePragmaImpl extends ASTWrapperPsiElement implements DLangua
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitPragma(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitPragma(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageArgumentList getArgumentList() {
-    return findChildByClass(DLanguageArgumentList.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageArgumentList.class);
   }
 
   @Override
   @NotNull
   public DLanguageIdentifier getIdentifier() {
-    return findNotNullChildByClass(DLanguageIdentifier.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class));
   }
 
   @Override
   @NotNull
   public PsiElement getKwPragma() {
-    return findNotNullChildByType(KW_PRAGMA);
+    return notNullChild(findChildByType(KW_PRAGMA));
   }
 
   @Override
@@ -49,13 +53,13 @@ public class DLanguagePragmaImpl extends ASTWrapperPsiElement implements DLangua
   @Override
   @NotNull
   public PsiElement getOpParLeft() {
-    return findNotNullChildByType(OP_PAR_LEFT);
+    return notNullChild(findChildByType(OP_PAR_LEFT));
   }
 
   @Override
   @NotNull
   public PsiElement getOpParRight() {
-    return findNotNullChildByType(OP_PAR_RIGHT);
+    return notNullChild(findChildByType(OP_PAR_RIGHT));
   }
 
 }

@@ -17,27 +17,31 @@ public class DLanguageCatchesImpl extends ASTWrapperPsiElement implements DLangu
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitCatches(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitCatches(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageCatch getCatch() {
-    return findChildByClass(DLanguageCatch.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageCatch.class);
   }
 
   @Override
   @Nullable
   public DLanguageCatches getCatches() {
-    return findChildByClass(DLanguageCatches.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageCatches.class);
   }
 
   @Override
   @Nullable
   public DLanguageLastCatch getLastCatch() {
-    return findChildByClass(DLanguageLastCatch.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageLastCatch.class);
   }
 
 }

@@ -17,39 +17,43 @@ public class DLanguageWhileStatementImpl extends ASTWrapperPsiElement implements
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitWhileStatement(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitWhileStatement(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageExpression getExpression() {
-    return findNotNullChildByClass(DLanguageExpression.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageExpression.class));
   }
 
   @Override
   @NotNull
   public DLanguageScopeStatement getScopeStatement() {
-    return findNotNullChildByClass(DLanguageScopeStatement.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageScopeStatement.class));
   }
 
   @Override
   @NotNull
   public PsiElement getKwWhile() {
-    return findNotNullChildByType(KW_WHILE);
+    return notNullChild(findChildByType(KW_WHILE));
   }
 
   @Override
   @NotNull
   public PsiElement getOpParLeft() {
-    return findNotNullChildByType(OP_PAR_LEFT);
+    return notNullChild(findChildByType(OP_PAR_LEFT));
   }
 
   @Override
   @NotNull
   public PsiElement getOpParRight() {
-    return findNotNullChildByType(OP_PAR_RIGHT);
+    return notNullChild(findChildByType(OP_PAR_RIGHT));
   }
 
 }

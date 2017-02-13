@@ -4,10 +4,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFileFactory;
 import net.masterthought.dlanguage.DLanguage;
-import net.masterthought.dlanguage.psi.DLanguageClassDeclaration;
-import net.masterthought.dlanguage.psi.DLanguageFile;
-import net.masterthought.dlanguage.psi.DLanguageFuncDeclaration;
-import net.masterthought.dlanguage.psi.DLanguageIdentifier;
+import net.masterthought.dlanguage.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -39,7 +36,7 @@ public class DElementFactory {
         if (e instanceof DLanguageClassDeclaration) return (DLanguageClassDeclaration) e;
         return null;
     }
-    
+
 //    /**
 //     * Takes a name and returns a Psi node of that name, or null.
 //     */
@@ -89,5 +86,16 @@ public class DElementFactory {
         return (DLanguageFile) PsiFileFactory.getInstance(project).createFileFromText("A.hs", DLanguage.INSTANCE, text);
     }
 
+    public static PsiElement createDLanguageTemplateDeclarationFromText(Project project, String name) {
+        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
+        if (e instanceof DLanguageTemplateDeclaration) return e;
+        return null;
+    }
+
+    public static PsiElement createDLanguageConstructorFromText(Project project, String name) {
+        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
+        if (e instanceof DLanguageConstructor) return e;
+        return null;
+    }
 }
 

@@ -17,21 +17,25 @@ public class DLanguageOrOrExpressionImpl extends ASTWrapperPsiElement implements
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitOrOrExpression(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitOrOrExpression(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageAndAndExpression getAndAndExpression() {
-    return findNotNullChildByClass(DLanguageAndAndExpression.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageAndAndExpression.class));
   }
 
   @Override
   @Nullable
   public DLanguageOrOrExpression getOrOrExpression() {
-    return findChildByClass(DLanguageOrOrExpression.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageOrOrExpression.class);
   }
 
   @Override

@@ -17,21 +17,25 @@ public class DLanguageParameterListImpl extends ASTWrapperPsiElement implements 
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitParameterList(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitParameterList(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageParameter getParameter() {
-    return findChildByClass(DLanguageParameter.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageParameter.class);
   }
 
   @Override
   @Nullable
   public DLanguageParameterList getParameterList() {
-    return findChildByClass(DLanguageParameterList.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageParameterList.class);
   }
 
   @Override

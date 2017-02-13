@@ -17,63 +17,67 @@ public class DLanguageForeachRangeStatementImpl extends ASTWrapperPsiElement imp
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitForeachRangeStatement(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitForeachRangeStatement(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageForeach getForeach() {
-    return findNotNullChildByClass(DLanguageForeach.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageForeach.class));
   }
 
   @Override
   @NotNull
   public DLanguageForeachType getForeachType() {
-    return findNotNullChildByClass(DLanguageForeachType.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageForeachType.class));
   }
 
   @Override
   @NotNull
   public DLanguageLwrExpression getLwrExpression() {
-    return findNotNullChildByClass(DLanguageLwrExpression.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageLwrExpression.class));
   }
 
   @Override
   @NotNull
   public DLanguageScopeStatement getScopeStatement() {
-    return findNotNullChildByClass(DLanguageScopeStatement.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageScopeStatement.class));
   }
 
   @Override
   @NotNull
   public DLanguageUprExpression getUprExpression() {
-    return findNotNullChildByClass(DLanguageUprExpression.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageUprExpression.class));
   }
 
   @Override
   @NotNull
   public PsiElement getOpDdot() {
-    return findNotNullChildByType(OP_DDOT);
+    return notNullChild(findChildByType(OP_DDOT));
   }
 
   @Override
   @NotNull
   public PsiElement getOpParLeft() {
-    return findNotNullChildByType(OP_PAR_LEFT);
+    return notNullChild(findChildByType(OP_PAR_LEFT));
   }
 
   @Override
   @NotNull
   public PsiElement getOpParRight() {
-    return findNotNullChildByType(OP_PAR_RIGHT);
+    return notNullChild(findChildByType(OP_PAR_RIGHT));
   }
 
   @Override
   @NotNull
   public PsiElement getOpScolon() {
-    return findNotNullChildByType(OP_SCOLON);
+    return notNullChild(findChildByType(OP_SCOLON));
   }
 
 }

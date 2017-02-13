@@ -17,141 +17,145 @@ public class DLanguageDeclDefImpl extends ASTWrapperPsiElement implements DLangu
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitDeclDef(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitDeclDef(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageAliasThis getAliasThis() {
-    return findChildByClass(DLanguageAliasThis.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAliasThis.class);
   }
 
   @Override
   @Nullable
   public DLanguageAllocator getAllocator() {
-    return findChildByClass(DLanguageAllocator.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAllocator.class);
   }
 
   @Override
   @Nullable
   public DLanguageAttributeSpecifier getAttributeSpecifier() {
-    return findChildByClass(DLanguageAttributeSpecifier.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAttributeSpecifier.class);
   }
 
   @Override
   @Nullable
   public DLanguageConditionalDeclaration getConditionalDeclaration() {
-    return findChildByClass(DLanguageConditionalDeclaration.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageConditionalDeclaration.class);
   }
 
   @Override
   @Nullable
   public DLanguageConstructor getConstructor() {
-    return findChildByClass(DLanguageConstructor.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageConstructor.class);
   }
 
   @Override
   @Nullable
   public DLanguageDeallocator getDeallocator() {
-    return findChildByClass(DLanguageDeallocator.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageDeallocator.class);
   }
 
   @Override
   @Nullable
   public DLanguageDebugSpecification getDebugSpecification() {
-    return findChildByClass(DLanguageDebugSpecification.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageDebugSpecification.class);
   }
 
   @Override
   @Nullable
   public DLanguageDeclaration getDeclaration() {
-    return findChildByClass(DLanguageDeclaration.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageDeclaration.class);
   }
 
   @Override
   @Nullable
   public DLanguageDestructor getDestructor() {
-    return findChildByClass(DLanguageDestructor.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageDestructor.class);
   }
 
   @Override
   @Nullable
   public DLanguageInvariant getInvariant() {
-    return findChildByClass(DLanguageInvariant.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageInvariant.class);
   }
 
   @Override
   @Nullable
   public DLanguageMixinDeclaration getMixinDeclaration() {
-    return findChildByClass(DLanguageMixinDeclaration.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageMixinDeclaration.class);
   }
 
   @Override
   @Nullable
   public DLanguagePostblit getPostblit() {
-    return findChildByClass(DLanguagePostblit.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguagePostblit.class);
   }
 
   @Override
   @Nullable
   public DLanguageSharedStaticConstructor getSharedStaticConstructor() {
-    return findChildByClass(DLanguageSharedStaticConstructor.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageSharedStaticConstructor.class);
   }
 
   @Override
   @Nullable
   public DLanguageSharedStaticDestructor getSharedStaticDestructor() {
-    return findChildByClass(DLanguageSharedStaticDestructor.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageSharedStaticDestructor.class);
   }
 
   @Override
   @Nullable
   public DLanguageStaticAssert getStaticAssert() {
-    return findChildByClass(DLanguageStaticAssert.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageStaticAssert.class);
   }
 
   @Override
   @Nullable
   public DLanguageStaticConstructor getStaticConstructor() {
-    return findChildByClass(DLanguageStaticConstructor.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageStaticConstructor.class);
   }
 
   @Override
   @Nullable
   public DLanguageStaticDestructor getStaticDestructor() {
-    return findChildByClass(DLanguageStaticDestructor.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageStaticDestructor.class);
   }
 
   @Override
   @Nullable
   public DLanguageTemplateDeclaration getTemplateDeclaration() {
-    return findChildByClass(DLanguageTemplateDeclaration.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateDeclaration.class);
   }
 
   @Override
   @Nullable
   public DLanguageTemplateMixin getTemplateMixin() {
-    return findChildByClass(DLanguageTemplateMixin.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateMixin.class);
   }
 
   @Override
   @Nullable
   public DLanguageTemplateMixinDeclaration getTemplateMixinDeclaration() {
-    return findChildByClass(DLanguageTemplateMixinDeclaration.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateMixinDeclaration.class);
   }
 
   @Override
   @Nullable
   public DLanguageUnitTesting getUnitTesting() {
-    return findChildByClass(DLanguageUnitTesting.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageUnitTesting.class);
   }
 
   @Override
   @Nullable
   public DLanguageVersionSpecification getVersionSpecification() {
-    return findChildByClass(DLanguageVersionSpecification.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageVersionSpecification.class);
   }
 
   @Override

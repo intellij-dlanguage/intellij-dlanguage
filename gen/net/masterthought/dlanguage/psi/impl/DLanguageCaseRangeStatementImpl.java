@@ -17,33 +17,37 @@ public class DLanguageCaseRangeStatementImpl extends ASTWrapperPsiElement implem
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitCaseRangeStatement(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitCaseRangeStatement(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageFirstExp getFirstExp() {
-    return findNotNullChildByClass(DLanguageFirstExp.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageFirstExp.class));
   }
 
   @Override
   @NotNull
   public DLanguageLastExp getLastExp() {
-    return findNotNullChildByClass(DLanguageLastExp.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageLastExp.class));
   }
 
   @Override
   @NotNull
   public DLanguageScopeStatementList getScopeStatementList() {
-    return findNotNullChildByClass(DLanguageScopeStatementList.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageScopeStatementList.class));
   }
 
   @Override
   @NotNull
   public PsiElement getOpDdot() {
-    return findNotNullChildByType(OP_DDOT);
+    return notNullChild(findChildByType(OP_DDOT));
   }
 
 }

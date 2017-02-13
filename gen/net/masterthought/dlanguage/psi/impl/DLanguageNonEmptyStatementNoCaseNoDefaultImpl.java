@@ -17,171 +17,175 @@ public class DLanguageNonEmptyStatementNoCaseNoDefaultImpl extends ASTWrapperPsi
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitNonEmptyStatementNoCaseNoDefault(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitNonEmptyStatementNoCaseNoDefault(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageAsmStatement getAsmStatement() {
-    return findChildByClass(DLanguageAsmStatement.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAsmStatement.class);
   }
 
   @Override
   @Nullable
   public DLanguageBreakStatement getBreakStatement() {
-    return findChildByClass(DLanguageBreakStatement.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageBreakStatement.class);
   }
 
   @Override
   @Nullable
   public DLanguageConditionalStatement getConditionalStatement() {
-    return findChildByClass(DLanguageConditionalStatement.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageConditionalStatement.class);
   }
 
   @Override
   @Nullable
   public DLanguageContinueStatement getContinueStatement() {
-    return findChildByClass(DLanguageContinueStatement.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageContinueStatement.class);
   }
 
   @Override
   @Nullable
   public DLanguageDeclarationStatement getDeclarationStatement() {
-    return findChildByClass(DLanguageDeclarationStatement.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageDeclarationStatement.class);
   }
 
   @Override
   @Nullable
   public DLanguageDoStatement getDoStatement() {
-    return findChildByClass(DLanguageDoStatement.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageDoStatement.class);
   }
 
   @Override
   @Nullable
   public DLanguageExpressionStatement getExpressionStatement() {
-    return findChildByClass(DLanguageExpressionStatement.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageExpressionStatement.class);
   }
 
   @Override
   @Nullable
   public DLanguageFinalSwitchStatement getFinalSwitchStatement() {
-    return findChildByClass(DLanguageFinalSwitchStatement.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageFinalSwitchStatement.class);
   }
 
   @Override
   @Nullable
   public DLanguageForStatement getForStatement() {
-    return findChildByClass(DLanguageForStatement.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageForStatement.class);
   }
 
   @Override
   @Nullable
   public DLanguageForeachRangeStatement getForeachRangeStatement() {
-    return findChildByClass(DLanguageForeachRangeStatement.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageForeachRangeStatement.class);
   }
 
   @Override
   @Nullable
   public DLanguageForeachStatement getForeachStatement() {
-    return findChildByClass(DLanguageForeachStatement.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageForeachStatement.class);
   }
 
   @Override
   @Nullable
   public DLanguageGotoStatement getGotoStatement() {
-    return findChildByClass(DLanguageGotoStatement.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageGotoStatement.class);
   }
 
   @Override
   @Nullable
   public DLanguageIfStatement getIfStatement() {
-    return findChildByClass(DLanguageIfStatement.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageIfStatement.class);
   }
 
   @Override
   @Nullable
   public DLanguageImportDeclaration getImportDeclaration() {
-    return findChildByClass(DLanguageImportDeclaration.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageImportDeclaration.class);
   }
 
   @Override
   @Nullable
   public DLanguageLabeledStatement getLabeledStatement() {
-    return findChildByClass(DLanguageLabeledStatement.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageLabeledStatement.class);
   }
 
   @Override
   @Nullable
   public DLanguageMixinStatement getMixinStatement() {
-    return findChildByClass(DLanguageMixinStatement.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageMixinStatement.class);
   }
 
   @Override
   @Nullable
   public DLanguagePragmaStatement getPragmaStatement() {
-    return findChildByClass(DLanguagePragmaStatement.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguagePragmaStatement.class);
   }
 
   @Override
   @Nullable
   public DLanguageReturnStatement getReturnStatement() {
-    return findChildByClass(DLanguageReturnStatement.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageReturnStatement.class);
   }
 
   @Override
   @Nullable
   public DLanguageScopeGuardStatement getScopeGuardStatement() {
-    return findChildByClass(DLanguageScopeGuardStatement.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageScopeGuardStatement.class);
   }
 
   @Override
   @Nullable
   public DLanguageStaticAssert getStaticAssert() {
-    return findChildByClass(DLanguageStaticAssert.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageStaticAssert.class);
   }
 
   @Override
   @Nullable
   public DLanguageSwitchStatement getSwitchStatement() {
-    return findChildByClass(DLanguageSwitchStatement.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageSwitchStatement.class);
   }
 
   @Override
   @Nullable
   public DLanguageSynchronizedStatement getSynchronizedStatement() {
-    return findChildByClass(DLanguageSynchronizedStatement.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageSynchronizedStatement.class);
   }
 
   @Override
   @Nullable
   public DLanguageTemplateMixin getTemplateMixin() {
-    return findChildByClass(DLanguageTemplateMixin.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateMixin.class);
   }
 
   @Override
   @Nullable
   public DLanguageThrowStatement getThrowStatement() {
-    return findChildByClass(DLanguageThrowStatement.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageThrowStatement.class);
   }
 
   @Override
   @Nullable
   public DLanguageTryStatement getTryStatement() {
-    return findChildByClass(DLanguageTryStatement.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageTryStatement.class);
   }
 
   @Override
   @Nullable
   public DLanguageWhileStatement getWhileStatement() {
-    return findChildByClass(DLanguageWhileStatement.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageWhileStatement.class);
   }
 
   @Override
   @Nullable
   public DLanguageWithStatement getWithStatement() {
-    return findChildByClass(DLanguageWithStatement.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageWithStatement.class);
   }
 
 }

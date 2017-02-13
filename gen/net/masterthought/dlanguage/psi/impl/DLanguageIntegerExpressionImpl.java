@@ -17,15 +17,19 @@ public class DLanguageIntegerExpressionImpl extends ASTWrapperPsiElement impleme
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitIntegerExpression(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitIntegerExpression(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageIdentifier getIdentifier() {
-    return findChildByClass(DLanguageIdentifier.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
   }
 
   @Override

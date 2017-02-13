@@ -17,15 +17,19 @@ public class DLanguageFunctionAttributeImpl extends ASTWrapperPsiElement impleme
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitFunctionAttribute(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitFunctionAttribute(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageProperty getProperty() {
-    return findChildByClass(DLanguageProperty.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageProperty.class);
   }
 
   @Override

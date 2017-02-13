@@ -17,33 +17,37 @@ public class DLanguageLinkageAttributeImpl extends ASTWrapperPsiElement implemen
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitLinkageAttribute(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitLinkageAttribute(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageIdentifier getIdentifier() {
-    return findChildByClass(DLanguageIdentifier.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
   }
 
   @Override
   @Nullable
   public DLanguageIdentifierList getIdentifierList() {
-    return findChildByClass(DLanguageIdentifierList.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageIdentifierList.class);
   }
 
   @Override
   @Nullable
   public DLanguageLinkageType getLinkageType() {
-    return findChildByClass(DLanguageLinkageType.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageLinkageType.class);
   }
 
   @Override
   @NotNull
   public PsiElement getKwExtern() {
-    return findNotNullChildByType(KW_EXTERN);
+    return notNullChild(findChildByType(KW_EXTERN));
   }
 
   @Override
@@ -55,13 +59,13 @@ public class DLanguageLinkageAttributeImpl extends ASTWrapperPsiElement implemen
   @Override
   @NotNull
   public PsiElement getOpParLeft() {
-    return findNotNullChildByType(OP_PAR_LEFT);
+    return notNullChild(findChildByType(OP_PAR_LEFT));
   }
 
   @Override
   @NotNull
   public PsiElement getOpParRight() {
-    return findNotNullChildByType(OP_PAR_RIGHT);
+    return notNullChild(findChildByType(OP_PAR_RIGHT));
   }
 
   @Override

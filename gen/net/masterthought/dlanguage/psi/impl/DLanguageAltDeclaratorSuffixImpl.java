@@ -17,33 +17,37 @@ public class DLanguageAltDeclaratorSuffixImpl extends ASTWrapperPsiElement imple
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitAltDeclaratorSuffix(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitAltDeclaratorSuffix(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageAssignExpression getAssignExpression() {
-    return findChildByClass(DLanguageAssignExpression.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAssignExpression.class);
   }
 
   @Override
   @Nullable
   public DLanguageType getType() {
-    return findChildByClass(DLanguageType.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageType.class);
   }
 
   @Override
   @NotNull
   public PsiElement getOpBracketLeft() {
-    return findNotNullChildByType(OP_BRACKET_LEFT);
+    return notNullChild(findChildByType(OP_BRACKET_LEFT));
   }
 
   @Override
   @NotNull
   public PsiElement getOpBracketRight() {
-    return findNotNullChildByType(OP_BRACKET_RIGHT);
+    return notNullChild(findChildByType(OP_BRACKET_RIGHT));
   }
 
 }

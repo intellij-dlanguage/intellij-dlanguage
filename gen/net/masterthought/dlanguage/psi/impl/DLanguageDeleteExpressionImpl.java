@@ -17,21 +17,25 @@ public class DLanguageDeleteExpressionImpl extends ASTWrapperPsiElement implemen
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitDeleteExpression(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitDeleteExpression(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageUnaryExpression getUnaryExpression() {
-    return findNotNullChildByClass(DLanguageUnaryExpression.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageUnaryExpression.class));
   }
 
   @Override
   @NotNull
   public PsiElement getKwDelete() {
-    return findNotNullChildByType(KW_DELETE);
+    return notNullChild(findChildByType(KW_DELETE));
   }
 
 }

@@ -17,8 +17,12 @@ public class DLanguageAlignAttributeImpl extends ASTWrapperPsiElement implements
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitAlignAttribute(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitAlignAttribute(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
@@ -31,7 +35,7 @@ public class DLanguageAlignAttributeImpl extends ASTWrapperPsiElement implements
   @Override
   @NotNull
   public PsiElement getKwAlign() {
-    return findNotNullChildByType(KW_ALIGN);
+    return notNullChild(findChildByType(KW_ALIGN));
   }
 
   @Override

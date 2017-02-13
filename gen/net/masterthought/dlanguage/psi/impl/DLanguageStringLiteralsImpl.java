@@ -17,21 +17,25 @@ public class DLanguageStringLiteralsImpl extends ASTWrapperPsiElement implements
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitStringLiterals(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitStringLiterals(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageStringLiteral getStringLiteral() {
-    return findNotNullChildByClass(DLanguageStringLiteral.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageStringLiteral.class));
   }
 
   @Override
   @Nullable
   public DLanguageStringLiterals getStringLiterals() {
-    return findChildByClass(DLanguageStringLiterals.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageStringLiterals.class);
   }
 
 }

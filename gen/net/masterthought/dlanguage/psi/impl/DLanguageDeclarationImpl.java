@@ -17,51 +17,55 @@ public class DLanguageDeclarationImpl extends ASTWrapperPsiElement implements DL
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitDeclaration(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitDeclaration(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageAggregateDeclaration getAggregateDeclaration() {
-    return findChildByClass(DLanguageAggregateDeclaration.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAggregateDeclaration.class);
   }
 
   @Override
   @Nullable
   public DLanguageAliasDeclaration getAliasDeclaration() {
-    return findChildByClass(DLanguageAliasDeclaration.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAliasDeclaration.class);
   }
 
   @Override
   @Nullable
   public DLanguageEnumDeclaration getEnumDeclaration() {
-    return findChildByClass(DLanguageEnumDeclaration.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageEnumDeclaration.class);
   }
 
   @Override
   @Nullable
   public DLanguageFuncDeclaration getFuncDeclaration() {
-    return findChildByClass(DLanguageFuncDeclaration.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageFuncDeclaration.class);
   }
 
   @Override
   @Nullable
   public DLanguageImportDeclaration getImportDeclaration() {
-    return findChildByClass(DLanguageImportDeclaration.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageImportDeclaration.class);
   }
 
   @Override
   @Nullable
   public DLanguageTemplateDeclaration getTemplateDeclaration() {
-    return findChildByClass(DLanguageTemplateDeclaration.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateDeclaration.class);
   }
 
   @Override
   @Nullable
   public DLanguageVarDeclarations getVarDeclarations() {
-    return findChildByClass(DLanguageVarDeclarations.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageVarDeclarations.class);
   }
 
 }

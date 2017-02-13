@@ -17,33 +17,37 @@ public class DLanguageAliasThisImpl extends ASTWrapperPsiElement implements DLan
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitAliasThis(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitAliasThis(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageIdentifier getIdentifier() {
-    return findNotNullChildByClass(DLanguageIdentifier.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class));
   }
 
   @Override
   @NotNull
   public PsiElement getKwAlias() {
-    return findNotNullChildByType(KW_ALIAS);
+    return notNullChild(findChildByType(KW_ALIAS));
   }
 
   @Override
   @NotNull
   public PsiElement getKwThis() {
-    return findNotNullChildByType(KW_THIS);
+    return notNullChild(findChildByType(KW_THIS));
   }
 
   @Override
   @NotNull
   public PsiElement getOpScolon() {
-    return findNotNullChildByType(OP_SCOLON);
+    return notNullChild(findChildByType(OP_SCOLON));
   }
 
 }

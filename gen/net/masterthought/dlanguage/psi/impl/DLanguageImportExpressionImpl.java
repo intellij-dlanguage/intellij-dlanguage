@@ -17,33 +17,37 @@ public class DLanguageImportExpressionImpl extends ASTWrapperPsiElement implemen
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitImportExpression(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitImportExpression(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageAssignExpression getAssignExpression() {
-    return findNotNullChildByClass(DLanguageAssignExpression.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageAssignExpression.class));
   }
 
   @Override
   @NotNull
   public PsiElement getKwImport() {
-    return findNotNullChildByType(KW_IMPORT);
+    return notNullChild(findChildByType(KW_IMPORT));
   }
 
   @Override
   @NotNull
   public PsiElement getOpParLeft() {
-    return findNotNullChildByType(OP_PAR_LEFT);
+    return notNullChild(findChildByType(OP_PAR_LEFT));
   }
 
   @Override
   @NotNull
   public PsiElement getOpParRight() {
-    return findNotNullChildByType(OP_PAR_RIGHT);
+    return notNullChild(findChildByType(OP_PAR_RIGHT));
   }
 
 }

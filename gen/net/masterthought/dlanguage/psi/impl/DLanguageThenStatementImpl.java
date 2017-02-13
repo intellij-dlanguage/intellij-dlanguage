@@ -17,15 +17,19 @@ public class DLanguageThenStatementImpl extends ASTWrapperPsiElement implements 
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitThenStatement(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitThenStatement(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageScopeStatement getScopeStatement() {
-    return findNotNullChildByClass(DLanguageScopeStatement.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageScopeStatement.class));
   }
 
 }

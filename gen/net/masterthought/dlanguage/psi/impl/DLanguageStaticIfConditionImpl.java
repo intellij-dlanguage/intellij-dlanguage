@@ -17,39 +17,43 @@ public class DLanguageStaticIfConditionImpl extends ASTWrapperPsiElement impleme
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitStaticIfCondition(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitStaticIfCondition(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageAssignExpression getAssignExpression() {
-    return findNotNullChildByClass(DLanguageAssignExpression.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageAssignExpression.class));
   }
 
   @Override
   @NotNull
   public PsiElement getKwIf() {
-    return findNotNullChildByType(KW_IF);
+    return notNullChild(findChildByType(KW_IF));
   }
 
   @Override
   @NotNull
   public PsiElement getKwStatic() {
-    return findNotNullChildByType(KW_STATIC);
+    return notNullChild(findChildByType(KW_STATIC));
   }
 
   @Override
   @NotNull
   public PsiElement getOpParLeft() {
-    return findNotNullChildByType(OP_PAR_LEFT);
+    return notNullChild(findChildByType(OP_PAR_LEFT));
   }
 
   @Override
   @NotNull
   public PsiElement getOpParRight() {
-    return findNotNullChildByType(OP_PAR_RIGHT);
+    return notNullChild(findChildByType(OP_PAR_RIGHT));
   }
 
 }

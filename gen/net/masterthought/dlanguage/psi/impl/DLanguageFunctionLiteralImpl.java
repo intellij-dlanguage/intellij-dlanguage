@@ -17,39 +17,43 @@ public class DLanguageFunctionLiteralImpl extends ASTWrapperPsiElement implement
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitFunctionLiteral(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitFunctionLiteral(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageFunctionLiteralBody getFunctionLiteralBody() {
-    return findChildByClass(DLanguageFunctionLiteralBody.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageFunctionLiteralBody.class);
   }
 
   @Override
   @Nullable
   public DLanguageLambda getLambda() {
-    return findChildByClass(DLanguageLambda.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageLambda.class);
   }
 
   @Override
   @Nullable
   public DLanguageParameterAttributes getParameterAttributes() {
-    return findChildByClass(DLanguageParameterAttributes.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageParameterAttributes.class);
   }
 
   @Override
   @Nullable
   public DLanguageParameterMemberAttributes getParameterMemberAttributes() {
-    return findChildByClass(DLanguageParameterMemberAttributes.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageParameterMemberAttributes.class);
   }
 
   @Override
   @Nullable
   public DLanguageType getType() {
-    return findChildByClass(DLanguageType.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageType.class);
   }
 
   @Override

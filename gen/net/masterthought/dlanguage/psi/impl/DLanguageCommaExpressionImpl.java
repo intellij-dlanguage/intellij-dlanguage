@@ -17,21 +17,25 @@ public class DLanguageCommaExpressionImpl extends ASTWrapperPsiElement implement
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitCommaExpression(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitCommaExpression(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageAssignExpression getAssignExpression() {
-    return findNotNullChildByClass(DLanguageAssignExpression.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageAssignExpression.class));
   }
 
   @Override
   @Nullable
   public DLanguageCommaExpression getCommaExpression() {
-    return findChildByClass(DLanguageCommaExpression.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageCommaExpression.class);
   }
 
   @Override

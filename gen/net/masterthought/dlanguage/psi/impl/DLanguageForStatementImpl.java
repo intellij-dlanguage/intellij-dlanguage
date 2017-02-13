@@ -17,57 +17,61 @@ public class DLanguageForStatementImpl extends ASTWrapperPsiElement implements D
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitForStatement(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitForStatement(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageIncrement getIncrement() {
-    return findChildByClass(DLanguageIncrement.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageIncrement.class);
   }
 
   @Override
   @NotNull
   public DLanguageInitialize getInitialize() {
-    return findNotNullChildByClass(DLanguageInitialize.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageInitialize.class));
   }
 
   @Override
   @NotNull
   public DLanguageScopeStatement getScopeStatement() {
-    return findNotNullChildByClass(DLanguageScopeStatement.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageScopeStatement.class));
   }
 
   @Override
   @Nullable
   public DLanguageTest getTest() {
-    return findChildByClass(DLanguageTest.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageTest.class);
   }
 
   @Override
   @NotNull
   public PsiElement getKwFor() {
-    return findNotNullChildByType(KW_FOR);
+    return notNullChild(findChildByType(KW_FOR));
   }
 
   @Override
   @NotNull
   public PsiElement getOpParLeft() {
-    return findNotNullChildByType(OP_PAR_LEFT);
+    return notNullChild(findChildByType(OP_PAR_LEFT));
   }
 
   @Override
   @NotNull
   public PsiElement getOpParRight() {
-    return findNotNullChildByType(OP_PAR_RIGHT);
+    return notNullChild(findChildByType(OP_PAR_RIGHT));
   }
 
   @Override
   @NotNull
   public PsiElement getOpScolon() {
-    return findNotNullChildByType(OP_SCOLON);
+    return notNullChild(findChildByType(OP_SCOLON));
   }
 
 }

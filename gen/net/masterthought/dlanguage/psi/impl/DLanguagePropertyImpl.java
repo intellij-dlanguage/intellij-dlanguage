@@ -17,21 +17,25 @@ public class DLanguagePropertyImpl extends ASTWrapperPsiElement implements DLang
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitProperty(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitProperty(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguagePropertyIdentifier getPropertyIdentifier() {
-    return findChildByClass(DLanguagePropertyIdentifier.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguagePropertyIdentifier.class);
   }
 
   @Override
   @Nullable
   public DLanguageUserDefinedAttribute getUserDefinedAttribute() {
-    return findChildByClass(DLanguageUserDefinedAttribute.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageUserDefinedAttribute.class);
   }
 
   @Override

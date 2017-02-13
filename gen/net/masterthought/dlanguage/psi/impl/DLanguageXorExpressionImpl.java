@@ -17,21 +17,25 @@ public class DLanguageXorExpressionImpl extends ASTWrapperPsiElement implements 
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitXorExpression(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitXorExpression(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageAndExpression getAndExpression() {
-    return findNotNullChildByClass(DLanguageAndExpression.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageAndExpression.class));
   }
 
   @Override
   @Nullable
   public DLanguageXorExpression getXorExpression() {
-    return findChildByClass(DLanguageXorExpression.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageXorExpression.class);
   }
 
   @Override

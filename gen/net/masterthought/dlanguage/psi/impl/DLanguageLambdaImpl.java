@@ -17,39 +17,43 @@ public class DLanguageLambdaImpl extends ASTWrapperPsiElement implements DLangua
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitLambda(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitLambda(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageAssignExpression getAssignExpression() {
-    return findNotNullChildByClass(DLanguageAssignExpression.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageAssignExpression.class));
   }
 
   @Override
   @Nullable
   public DLanguageIdentifier getIdentifier() {
-    return findChildByClass(DLanguageIdentifier.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
   }
 
   @Override
   @Nullable
   public DLanguageParameterAttributes getParameterAttributes() {
-    return findChildByClass(DLanguageParameterAttributes.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageParameterAttributes.class);
   }
 
   @Override
   @Nullable
   public DLanguageParameterMemberAttributes getParameterMemberAttributes() {
-    return findChildByClass(DLanguageParameterMemberAttributes.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageParameterMemberAttributes.class);
   }
 
   @Override
   @Nullable
   public DLanguageType getType() {
-    return findChildByClass(DLanguageType.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageType.class);
   }
 
   @Override
@@ -67,7 +71,7 @@ public class DLanguageLambdaImpl extends ASTWrapperPsiElement implements DLangua
   @Override
   @NotNull
   public PsiElement getOpLambdaArrow() {
-    return findNotNullChildByType(OP_LAMBDA_ARROW);
+    return notNullChild(findChildByType(OP_LAMBDA_ARROW));
   }
 
 }

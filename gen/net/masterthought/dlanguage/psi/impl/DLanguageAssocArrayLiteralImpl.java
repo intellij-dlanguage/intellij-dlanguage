@@ -17,27 +17,31 @@ public class DLanguageAssocArrayLiteralImpl extends ASTWrapperPsiElement impleme
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitAssocArrayLiteral(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitAssocArrayLiteral(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageKeyValuePairs getKeyValuePairs() {
-    return findNotNullChildByClass(DLanguageKeyValuePairs.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageKeyValuePairs.class));
   }
 
   @Override
   @NotNull
   public PsiElement getOpBracketLeft() {
-    return findNotNullChildByType(OP_BRACKET_LEFT);
+    return notNullChild(findChildByType(OP_BRACKET_LEFT));
   }
 
   @Override
   @NotNull
   public PsiElement getOpBracketRight() {
-    return findNotNullChildByType(OP_BRACKET_RIGHT);
+    return notNullChild(findChildByType(OP_BRACKET_RIGHT));
   }
 
 }

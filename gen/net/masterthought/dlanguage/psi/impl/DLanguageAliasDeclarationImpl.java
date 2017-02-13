@@ -17,69 +17,73 @@ public class DLanguageAliasDeclarationImpl extends ASTWrapperPsiElement implemen
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitAliasDeclaration(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitAliasDeclaration(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageAliasDeclarationX getAliasDeclarationX() {
-    return findChildByClass(DLanguageAliasDeclarationX.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAliasDeclarationX.class);
   }
 
   @Override
   @Nullable
   public DLanguageBasicType getBasicType() {
-    return findChildByClass(DLanguageBasicType.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageBasicType.class);
   }
 
   @Override
   @Nullable
   public DLanguageBasicType2 getBasicType2() {
-    return findChildByClass(DLanguageBasicType2.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageBasicType2.class);
   }
 
   @Override
   @Nullable
   public DLanguageDeclarator getDeclarator() {
-    return findChildByClass(DLanguageDeclarator.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageDeclarator.class);
   }
 
   @Override
   @Nullable
   public DLanguageFuncDeclaratorSuffix getFuncDeclaratorSuffix() {
-    return findChildByClass(DLanguageFuncDeclaratorSuffix.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageFuncDeclaratorSuffix.class);
   }
 
   @Override
   @Nullable
   public DLanguageIdentifier getIdentifier() {
-    return findChildByClass(DLanguageIdentifier.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
   }
 
   @Override
   @Nullable
   public DLanguageStorageClasses getStorageClasses() {
-    return findChildByClass(DLanguageStorageClasses.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageStorageClasses.class);
   }
 
   @Override
   @Nullable
   public DLanguageTemplateArguments getTemplateArguments() {
-    return findChildByClass(DLanguageTemplateArguments.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateArguments.class);
   }
 
   @Override
   @Nullable
   public DLanguageType getType() {
-    return findChildByClass(DLanguageType.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageType.class);
   }
 
   @Override
   @NotNull
   public PsiElement getKwAlias() {
-    return findNotNullChildByType(KW_ALIAS);
+    return notNullChild(findChildByType(KW_ALIAS));
   }
 
   @Override
@@ -91,7 +95,7 @@ public class DLanguageAliasDeclarationImpl extends ASTWrapperPsiElement implemen
   @Override
   @NotNull
   public PsiElement getOpScolon() {
-    return findNotNullChildByType(OP_SCOLON);
+    return notNullChild(findChildByType(OP_SCOLON));
   }
 
 }

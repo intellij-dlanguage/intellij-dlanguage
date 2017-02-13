@@ -17,33 +17,37 @@ public class DLanguageTemplateSingleArgumentImpl extends ASTWrapperPsiElement im
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitTemplateSingleArgument(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitTemplateSingleArgument(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageBasicTypeX getBasicTypeX() {
-    return findChildByClass(DLanguageBasicTypeX.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageBasicTypeX.class);
   }
 
   @Override
   @Nullable
   public DLanguageIdentifier getIdentifier() {
-    return findChildByClass(DLanguageIdentifier.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
   }
 
   @Override
   @Nullable
   public DLanguageSpecialKeyword getSpecialKeyword() {
-    return findChildByClass(DLanguageSpecialKeyword.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageSpecialKeyword.class);
   }
 
   @Override
   @Nullable
   public DLanguageStringLiteral getStringLiteral() {
-    return findChildByClass(DLanguageStringLiteral.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageStringLiteral.class);
   }
 
   @Override

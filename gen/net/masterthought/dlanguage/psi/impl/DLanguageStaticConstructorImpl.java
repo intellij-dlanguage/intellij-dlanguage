@@ -17,39 +17,43 @@ public class DLanguageStaticConstructorImpl extends ASTWrapperPsiElement impleme
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitStaticConstructor(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitStaticConstructor(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageFunctionBody getFunctionBody() {
-    return findChildByClass(DLanguageFunctionBody.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageFunctionBody.class);
   }
 
   @Override
   @NotNull
   public PsiElement getKwStatic() {
-    return findNotNullChildByType(KW_STATIC);
+    return notNullChild(findChildByType(KW_STATIC));
   }
 
   @Override
   @NotNull
   public PsiElement getKwThis() {
-    return findNotNullChildByType(KW_THIS);
+    return notNullChild(findChildByType(KW_THIS));
   }
 
   @Override
   @NotNull
   public PsiElement getOpParLeft() {
-    return findNotNullChildByType(OP_PAR_LEFT);
+    return notNullChild(findChildByType(OP_PAR_LEFT));
   }
 
   @Override
   @NotNull
   public PsiElement getOpParRight() {
-    return findNotNullChildByType(OP_PAR_RIGHT);
+    return notNullChild(findChildByType(OP_PAR_RIGHT));
   }
 
   @Override

@@ -17,8 +17,12 @@ public class DLanguageKeyValuePairImpl extends ASTWrapperPsiElement implements D
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitKeyValuePair(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitKeyValuePair(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
@@ -31,7 +35,7 @@ public class DLanguageKeyValuePairImpl extends ASTWrapperPsiElement implements D
   @Override
   @NotNull
   public PsiElement getOpColon() {
-    return findNotNullChildByType(OP_COLON);
+    return notNullChild(findChildByType(OP_COLON));
   }
 
 }

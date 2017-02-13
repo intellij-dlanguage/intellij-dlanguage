@@ -17,27 +17,31 @@ public class DLanguageTemplateArgumentsImpl extends ASTWrapperPsiElement impleme
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitTemplateArguments(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitTemplateArguments(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageTemplateArgumentList getTemplateArgumentList() {
-    return findChildByClass(DLanguageTemplateArgumentList.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateArgumentList.class);
   }
 
   @Override
   @Nullable
   public DLanguageTemplateSingleArgument getTemplateSingleArgument() {
-    return findChildByClass(DLanguageTemplateSingleArgument.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateSingleArgument.class);
   }
 
   @Override
   @NotNull
   public PsiElement getOpNot() {
-    return findNotNullChildByType(OP_NOT);
+    return notNullChild(findChildByType(OP_NOT));
   }
 
   @Override
