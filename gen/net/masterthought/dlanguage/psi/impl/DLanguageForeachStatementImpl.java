@@ -17,51 +17,55 @@ public class DLanguageForeachStatementImpl extends ASTWrapperPsiElement implemen
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitForeachStatement(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitForeachStatement(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageForeach getForeach() {
-    return findNotNullChildByClass(DLanguageForeach.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageForeach.class));
   }
 
   @Override
   @NotNull
   public DLanguageForeachAggregate getForeachAggregate() {
-    return findNotNullChildByClass(DLanguageForeachAggregate.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageForeachAggregate.class));
   }
 
   @Override
   @NotNull
   public DLanguageForeachTypeList getForeachTypeList() {
-    return findNotNullChildByClass(DLanguageForeachTypeList.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageForeachTypeList.class));
   }
 
   @Override
   @NotNull
   public DLanguageStatement getStatement() {
-    return findNotNullChildByClass(DLanguageStatement.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageStatement.class));
   }
 
   @Override
   @NotNull
   public PsiElement getOpParLeft() {
-    return findNotNullChildByType(OP_PAR_LEFT);
+    return notNullChild(findChildByType(OP_PAR_LEFT));
   }
 
   @Override
   @NotNull
   public PsiElement getOpParRight() {
-    return findNotNullChildByType(OP_PAR_RIGHT);
+    return notNullChild(findChildByType(OP_PAR_RIGHT));
   }
 
   @Override
   @NotNull
   public PsiElement getOpScolon() {
-    return findNotNullChildByType(OP_SCOLON);
+    return notNullChild(findChildByType(OP_SCOLON));
   }
 
 }

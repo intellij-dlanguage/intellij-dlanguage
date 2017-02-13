@@ -17,21 +17,25 @@ public class DLanguageFunctionAttributesImpl extends ASTWrapperPsiElement implem
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitFunctionAttributes(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitFunctionAttributes(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageFunctionAttribute getFunctionAttribute() {
-    return findNotNullChildByClass(DLanguageFunctionAttribute.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageFunctionAttribute.class));
   }
 
   @Override
   @Nullable
   public DLanguageFunctionAttributes getFunctionAttributes() {
-    return findChildByClass(DLanguageFunctionAttributes.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageFunctionAttributes.class);
   }
 
 }

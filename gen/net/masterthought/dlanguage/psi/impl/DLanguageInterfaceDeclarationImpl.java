@@ -17,33 +17,37 @@ public class DLanguageInterfaceDeclarationImpl extends ASTWrapperPsiElement impl
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitInterfaceDeclaration(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitInterfaceDeclaration(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageAggregateBody getAggregateBody() {
-    return findChildByClass(DLanguageAggregateBody.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAggregateBody.class);
   }
 
   @Override
   @Nullable
   public DLanguageBaseInterfaceList getBaseInterfaceList() {
-    return findChildByClass(DLanguageBaseInterfaceList.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageBaseInterfaceList.class);
   }
 
   @Override
   @Nullable
   public DLanguageIdentifier getIdentifier() {
-    return findChildByClass(DLanguageIdentifier.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
   }
 
   @Override
   @Nullable
   public DLanguageInterfaceTemplateDeclaration getInterfaceTemplateDeclaration() {
-    return findChildByClass(DLanguageInterfaceTemplateDeclaration.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageInterfaceTemplateDeclaration.class);
   }
 
   @Override

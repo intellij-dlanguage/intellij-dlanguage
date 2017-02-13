@@ -7,7 +7,10 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiReference;
 import net.masterthought.dlanguage.DLightPlatformCodeInsightFixtureTestCase;
+import net.masterthought.dlanguage.psi.DLanguageClassDeclaration;
+import net.masterthought.dlanguage.psi.DLanguageFuncDeclaration;
 import net.masterthought.dlanguage.psi.DLanguageIdentifier;
+import net.masterthought.dlanguage.psi.DLanguageTemplateDeclaration;
 
 
 import java.io.File;
@@ -22,7 +25,7 @@ public abstract class DResolveTestCase extends DLightPlatformCodeInsightFixtureT
 
     @Override
     protected String getTestDataPath() {
-        return new File(super.getTestDataPath(), getTestName(false)).getPath();
+        return this.getClass().getClassLoader().getResource("gold/resolve/" + getTestDirectoryName()).getPath();
     }
 
     private File[] getTestDataFiles() {
@@ -77,9 +80,15 @@ public abstract class DResolveTestCase extends DLightPlatformCodeInsightFixtureT
             fail("Could not find resolved element.");
         }
         if (succeed) {
-            assertEquals("Could not resolve expected reference.", resolvedElement, referencedElement.resolve());
+            if(resolvedElement instanceof DLanguageFuncDeclaration || resolvedElement instanceof DLanguageClassDeclaration || resolvedElement instanceof DLanguageTemplateDeclaration) {
+                //we want to resolve the identifier but for the purpose of tests we should use getParent to get the actual declaration insteadof the identifier part of the declaration
+                assertEquals("Could not resolve expected reference.", resolvedElement, referencedElement.resolve().getParent());
+            }
+            else
+                assertEquals("Could not resolve expected reference.", resolvedElement, referencedElement.resolve());
+
         } else {
-            assertFalse("Resolved unexpected reference.", resolvedElement.equals(referencedElement.resolve()));
+            assertFalse("Resolved unexpected reference.", resolvedElement.equals(referencedElement.resolve().getParent()));
         }
     }
 }

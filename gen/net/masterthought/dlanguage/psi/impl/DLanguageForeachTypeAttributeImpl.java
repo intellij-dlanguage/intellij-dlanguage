@@ -17,15 +17,19 @@ public class DLanguageForeachTypeAttributeImpl extends ASTWrapperPsiElement impl
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitForeachTypeAttribute(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitForeachTypeAttribute(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageTypeCtor getTypeCtor() {
-    return findChildByClass(DLanguageTypeCtor.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageTypeCtor.class);
   }
 
   @Override

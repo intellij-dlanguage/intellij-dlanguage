@@ -17,45 +17,49 @@ public class DLanguageCastExpressionImpl extends ASTWrapperPsiElement implements
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitCastExpression(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitCastExpression(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageType getType() {
-    return findChildByClass(DLanguageType.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageType.class);
   }
 
   @Override
   @Nullable
   public DLanguageTypeCtors getTypeCtors() {
-    return findChildByClass(DLanguageTypeCtors.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageTypeCtors.class);
   }
 
   @Override
   @NotNull
   public DLanguageUnaryExpression getUnaryExpression() {
-    return findNotNullChildByClass(DLanguageUnaryExpression.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageUnaryExpression.class));
   }
 
   @Override
   @NotNull
   public PsiElement getKwCast() {
-    return findNotNullChildByType(KW_CAST);
+    return notNullChild(findChildByType(KW_CAST));
   }
 
   @Override
   @NotNull
   public PsiElement getOpParLeft() {
-    return findNotNullChildByType(OP_PAR_LEFT);
+    return notNullChild(findChildByType(OP_PAR_LEFT));
   }
 
   @Override
   @NotNull
   public PsiElement getOpParRight() {
-    return findNotNullChildByType(OP_PAR_RIGHT);
+    return notNullChild(findChildByType(OP_PAR_RIGHT));
   }
 
 }

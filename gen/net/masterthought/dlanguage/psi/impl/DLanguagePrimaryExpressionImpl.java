@@ -17,111 +17,115 @@ public class DLanguagePrimaryExpressionImpl extends ASTWrapperPsiElement impleme
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitPrimaryExpression(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitPrimaryExpression(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageArrayLiteral getArrayLiteral() {
-    return findChildByClass(DLanguageArrayLiteral.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageArrayLiteral.class);
   }
 
   @Override
   @Nullable
   public DLanguageAssertExpression getAssertExpression() {
-    return findChildByClass(DLanguageAssertExpression.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAssertExpression.class);
   }
 
   @Override
   @Nullable
   public DLanguageAssocArrayLiteral getAssocArrayLiteral() {
-    return findChildByClass(DLanguageAssocArrayLiteral.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAssocArrayLiteral.class);
   }
 
   @Override
   @Nullable
   public DLanguageBasicTypeX getBasicTypeX() {
-    return findChildByClass(DLanguageBasicTypeX.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageBasicTypeX.class);
   }
 
   @Override
   @Nullable
   public DLanguageExpression getExpression() {
-    return findChildByClass(DLanguageExpression.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageExpression.class);
   }
 
   @Override
   @Nullable
   public DLanguageFunctionLiteral getFunctionLiteral() {
-    return findChildByClass(DLanguageFunctionLiteral.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageFunctionLiteral.class);
   }
 
   @Override
   @Nullable
   public DLanguageIdentifier getIdentifier() {
-    return findChildByClass(DLanguageIdentifier.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
   }
 
   @Override
   @Nullable
   public DLanguageImportExpression getImportExpression() {
-    return findChildByClass(DLanguageImportExpression.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageImportExpression.class);
   }
 
   @Override
   @Nullable
   public DLanguageIsExpression getIsExpression() {
-    return findChildByClass(DLanguageIsExpression.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageIsExpression.class);
   }
 
   @Override
   @Nullable
   public DLanguageMixinExpression getMixinExpression() {
-    return findChildByClass(DLanguageMixinExpression.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageMixinExpression.class);
   }
 
   @Override
   @Nullable
   public DLanguageNewExpressionWithArgs getNewExpressionWithArgs() {
-    return findChildByClass(DLanguageNewExpressionWithArgs.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageNewExpressionWithArgs.class);
   }
 
   @Override
   @Nullable
   public DLanguageSpecialKeyword getSpecialKeyword() {
-    return findChildByClass(DLanguageSpecialKeyword.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageSpecialKeyword.class);
   }
 
   @Override
   @Nullable
   public DLanguageStringLiterals getStringLiterals() {
-    return findChildByClass(DLanguageStringLiterals.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageStringLiterals.class);
   }
 
   @Override
   @Nullable
   public DLanguageTemplateInstance getTemplateInstance() {
-    return findChildByClass(DLanguageTemplateInstance.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateInstance.class);
   }
 
   @Override
   @Nullable
   public DLanguageTraitsExpression getTraitsExpression() {
-    return findChildByClass(DLanguageTraitsExpression.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageTraitsExpression.class);
   }
 
   @Override
   @Nullable
   public DLanguageTypeidExpression getTypeidExpression() {
-    return findChildByClass(DLanguageTypeidExpression.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageTypeidExpression.class);
   }
 
   @Override
   @Nullable
   public DLanguageTypeof getTypeof() {
-    return findChildByClass(DLanguageTypeof.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageTypeof.class);
   }
 
   @Override

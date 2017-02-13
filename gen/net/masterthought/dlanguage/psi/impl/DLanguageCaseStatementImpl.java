@@ -17,33 +17,37 @@ public class DLanguageCaseStatementImpl extends ASTWrapperPsiElement implements 
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitCaseStatement(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitCaseStatement(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageArgumentList getArgumentList() {
-    return findNotNullChildByClass(DLanguageArgumentList.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageArgumentList.class));
   }
 
   @Override
   @Nullable
   public DLanguageScopeStatementList getScopeStatementList() {
-    return findChildByClass(DLanguageScopeStatementList.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageScopeStatementList.class);
   }
 
   @Override
   @NotNull
   public PsiElement getKwCase() {
-    return findNotNullChildByType(KW_CASE);
+    return notNullChild(findChildByType(KW_CASE));
   }
 
   @Override
   @NotNull
   public PsiElement getOpColon() {
-    return findNotNullChildByType(OP_COLON);
+    return notNullChild(findChildByType(OP_COLON));
   }
 
 }

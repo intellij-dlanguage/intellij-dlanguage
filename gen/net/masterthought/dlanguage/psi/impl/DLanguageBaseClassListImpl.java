@@ -17,27 +17,31 @@ public class DLanguageBaseClassListImpl extends ASTWrapperPsiElement implements 
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitBaseClassList(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitBaseClassList(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageInterfaces getInterfaces() {
-    return findChildByClass(DLanguageInterfaces.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageInterfaces.class);
   }
 
   @Override
   @Nullable
   public DLanguageSuperClass getSuperClass() {
-    return findChildByClass(DLanguageSuperClass.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageSuperClass.class);
   }
 
   @Override
   @NotNull
   public PsiElement getOpColon() {
-    return findNotNullChildByType(OP_COLON);
+    return notNullChild(findChildByType(OP_COLON));
   }
 
   @Override

@@ -17,39 +17,43 @@ public class DLanguageBasicTypeImpl extends ASTWrapperPsiElement implements DLan
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitBasicType(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitBasicType(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageBasicTypeX getBasicTypeX() {
-    return findChildByClass(DLanguageBasicTypeX.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageBasicTypeX.class);
   }
 
   @Override
   @Nullable
   public DLanguageIdentifierList getIdentifierList() {
-    return findChildByClass(DLanguageIdentifierList.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageIdentifierList.class);
   }
 
   @Override
   @Nullable
   public DLanguageType getType() {
-    return findChildByClass(DLanguageType.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageType.class);
   }
 
   @Override
   @Nullable
   public DLanguageTypeVector getTypeVector() {
-    return findChildByClass(DLanguageTypeVector.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageTypeVector.class);
   }
 
   @Override
   @Nullable
   public DLanguageTypeof getTypeof() {
-    return findChildByClass(DLanguageTypeof.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageTypeof.class);
   }
 
   @Override

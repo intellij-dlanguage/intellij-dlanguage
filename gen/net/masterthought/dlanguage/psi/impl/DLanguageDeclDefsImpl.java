@@ -17,21 +17,25 @@ public class DLanguageDeclDefsImpl extends ASTWrapperPsiElement implements DLang
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitDeclDefs(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitDeclDefs(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageDeclDef getDeclDef() {
-    return findNotNullChildByClass(DLanguageDeclDef.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageDeclDef.class));
   }
 
   @Override
   @Nullable
   public DLanguageDeclDefs getDeclDefs() {
-    return findChildByClass(DLanguageDeclDefs.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageDeclDefs.class);
   }
 
 }

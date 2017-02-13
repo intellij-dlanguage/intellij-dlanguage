@@ -17,27 +17,31 @@ public class DLanguageAsmInstructionListImpl extends ASTWrapperPsiElement implem
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitAsmInstructionList(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitAsmInstructionList(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageAsmInstruction getAsmInstruction() {
-    return findNotNullChildByClass(DLanguageAsmInstruction.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageAsmInstruction.class));
   }
 
   @Override
   @Nullable
   public DLanguageAsmInstructionList getAsmInstructionList() {
-    return findChildByClass(DLanguageAsmInstructionList.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAsmInstructionList.class);
   }
 
   @Override
   @NotNull
   public PsiElement getOpScolon() {
-    return findNotNullChildByType(OP_SCOLON);
+    return notNullChild(findChildByType(OP_SCOLON));
   }
 
 }

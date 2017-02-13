@@ -17,15 +17,19 @@ public class DLanguageEnumBaseTypeImpl extends ASTWrapperPsiElement implements D
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitEnumBaseType(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitEnumBaseType(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageType getType() {
-    return findNotNullChildByClass(DLanguageType.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageType.class));
   }
 
 }

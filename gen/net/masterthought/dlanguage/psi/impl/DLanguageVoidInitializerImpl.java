@@ -17,15 +17,19 @@ public class DLanguageVoidInitializerImpl extends ASTWrapperPsiElement implement
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitVoidInitializer(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitVoidInitializer(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public PsiElement getKwVoid() {
-    return findNotNullChildByType(KW_VOID);
+    return notNullChild(findChildByType(KW_VOID));
   }
 
 }

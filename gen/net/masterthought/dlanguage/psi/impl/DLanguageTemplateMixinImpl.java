@@ -17,39 +17,43 @@ public class DLanguageTemplateMixinImpl extends ASTWrapperPsiElement implements 
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitTemplateMixin(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitTemplateMixin(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageIdentifier getIdentifier() {
-    return findChildByClass(DLanguageIdentifier.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
   }
 
   @Override
   @NotNull
   public DLanguageMixinTemplateName getMixinTemplateName() {
-    return findNotNullChildByClass(DLanguageMixinTemplateName.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageMixinTemplateName.class));
   }
 
   @Override
   @Nullable
   public DLanguageTemplateArguments getTemplateArguments() {
-    return findChildByClass(DLanguageTemplateArguments.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateArguments.class);
   }
 
   @Override
   @NotNull
   public PsiElement getKwMixin() {
-    return findNotNullChildByType(KW_MIXIN);
+    return notNullChild(findChildByType(KW_MIXIN));
   }
 
   @Override
   @NotNull
   public PsiElement getOpScolon() {
-    return findNotNullChildByType(OP_SCOLON);
+    return notNullChild(findChildByType(OP_SCOLON));
   }
 
 }

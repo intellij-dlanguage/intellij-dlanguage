@@ -17,21 +17,25 @@ public class DLanguageAsmLogAndExpImpl extends ASTWrapperPsiElement implements D
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitAsmLogAndExp(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitAsmLogAndExp(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageAsmLogAndExp getAsmLogAndExp() {
-    return findChildByClass(DLanguageAsmLogAndExp.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAsmLogAndExp.class);
   }
 
   @Override
   @NotNull
   public DLanguageAsmOrExp getAsmOrExp() {
-    return findNotNullChildByClass(DLanguageAsmOrExp.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageAsmOrExp.class));
   }
 
   @Override

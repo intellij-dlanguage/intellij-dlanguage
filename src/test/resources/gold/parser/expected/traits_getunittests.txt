@@ -227,7 +227,7 @@ D Language File
             DLanguageDeclDefsImpl(DECL_DEFS)
               DLanguageDeclDefImpl(DECL_DEF)
                 DLanguageDeclarationImpl(DECLARATION)
-                  DLanguageTemplateDeclarationImpl(TEMPLATE_DECLARATION)
+                  TEMPLATE_DECLARATION
                     PsiElement(DLanguageTokenType.template)('template')
                     IDENTIFIER
                       PsiElement(DLanguageTokenType.ID)('Tuple')
@@ -271,7 +271,7 @@ D Language File
                             PsiElement(DLanguageTokenType.static)('static')
                           DLanguageDeclarationBlockImpl(DECLARATION_BLOCK)
                             DLanguageDeclDefImpl(DECL_DEF)
-                              DLanguageConstructorImpl(CONSTRUCTOR)
+                              CONSTRUCTOR
                                 PsiElement(DLanguageTokenType.this)('this')
                                 DLanguageParametersImpl(PARAMETERS)
                                   PsiElement(DLanguageTokenType.()('(')

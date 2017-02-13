@@ -9,6 +9,8 @@ package net.masterthought.dlanguage.resolve;
  */
 public class DResolveTest extends DResolveTestCase {
     public void testPrimaryExpressionToFunctionDefinition() { doTest(); }
-
+    public void testClassConstructorToConstructorDefinition() { doTest(); }
+    public void testClassUsageToClassDefinition() { doTest(); }
+    public void testTemplateUsageToTemplateDeclaration() { doTest(); }
 }
 

@@ -17,21 +17,25 @@ public class DLanguageAsmEqualExpImpl extends ASTWrapperPsiElement implements DL
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitAsmEqualExp(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitAsmEqualExp(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageAsmEqualExp getAsmEqualExp() {
-    return findChildByClass(DLanguageAsmEqualExp.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAsmEqualExp.class);
   }
 
   @Override
   @NotNull
   public DLanguageAsmRelExp getAsmRelExp() {
-    return findNotNullChildByClass(DLanguageAsmRelExp.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageAsmRelExp.class));
   }
 
   @Override

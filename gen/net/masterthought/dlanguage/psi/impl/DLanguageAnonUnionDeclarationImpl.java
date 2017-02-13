@@ -17,21 +17,25 @@ public class DLanguageAnonUnionDeclarationImpl extends ASTWrapperPsiElement impl
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitAnonUnionDeclaration(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitAnonUnionDeclaration(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageAggregateBody getAggregateBody() {
-    return findNotNullChildByClass(DLanguageAggregateBody.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageAggregateBody.class));
   }
 
   @Override
   @NotNull
   public PsiElement getKwUnion() {
-    return findNotNullChildByType(KW_UNION);
+    return notNullChild(findChildByType(KW_UNION));
   }
 
 }

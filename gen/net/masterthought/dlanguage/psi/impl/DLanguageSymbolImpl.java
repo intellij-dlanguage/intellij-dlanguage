@@ -17,15 +17,19 @@ public class DLanguageSymbolImpl extends ASTWrapperPsiElement implements DLangua
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitSymbol(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitSymbol(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageSymbolTail getSymbolTail() {
-    return findNotNullChildByClass(DLanguageSymbolTail.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageSymbolTail.class));
   }
 
   @Override

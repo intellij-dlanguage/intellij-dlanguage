@@ -17,15 +17,19 @@ public class DLanguageEqualExpressionImpl extends ASTWrapperPsiElement implement
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitEqualExpression(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitEqualExpression(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageShiftExpression getShiftExpression() {
-    return findChildByClass(DLanguageShiftExpression.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageShiftExpression.class);
   }
 
   @Override

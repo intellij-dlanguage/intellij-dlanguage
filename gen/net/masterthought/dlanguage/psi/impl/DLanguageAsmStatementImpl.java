@@ -17,39 +17,43 @@ public class DLanguageAsmStatementImpl extends ASTWrapperPsiElement implements D
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitAsmStatement(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitAsmStatement(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageAsmInstructionList getAsmInstructionList() {
-    return findChildByClass(DLanguageAsmInstructionList.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAsmInstructionList.class);
   }
 
   @Override
   @Nullable
   public DLanguageFunctionAttributes getFunctionAttributes() {
-    return findChildByClass(DLanguageFunctionAttributes.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageFunctionAttributes.class);
   }
 
   @Override
   @NotNull
   public PsiElement getKwAsm() {
-    return findNotNullChildByType(KW_ASM);
+    return notNullChild(findChildByType(KW_ASM));
   }
 
   @Override
   @NotNull
   public PsiElement getOpBracesLeft() {
-    return findNotNullChildByType(OP_BRACES_LEFT);
+    return notNullChild(findChildByType(OP_BRACES_LEFT));
   }
 
   @Override
   @NotNull
   public PsiElement getOpBracesRight() {
-    return findNotNullChildByType(OP_BRACES_RIGHT);
+    return notNullChild(findChildByType(OP_BRACES_RIGHT));
   }
 
 }

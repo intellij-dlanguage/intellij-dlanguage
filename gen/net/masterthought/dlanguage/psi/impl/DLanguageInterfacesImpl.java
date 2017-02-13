@@ -17,21 +17,25 @@ public class DLanguageInterfacesImpl extends ASTWrapperPsiElement implements DLa
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitInterfaces(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitInterfaces(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageInterface getInterface() {
-    return findNotNullChildByClass(DLanguageInterface.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageInterface.class));
   }
 
   @Override
   @Nullable
   public DLanguageInterfaces getInterfaces() {
-    return findChildByClass(DLanguageInterfaces.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageInterfaces.class);
   }
 
   @Override

@@ -17,21 +17,25 @@ public class DLanguageForeachTypeAttributesImpl extends ASTWrapperPsiElement imp
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitForeachTypeAttributes(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitForeachTypeAttributes(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageForeachTypeAttribute getForeachTypeAttribute() {
-    return findNotNullChildByClass(DLanguageForeachTypeAttribute.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageForeachTypeAttribute.class));
   }
 
   @Override
   @Nullable
   public DLanguageForeachTypeAttributes getForeachTypeAttributes() {
-    return findChildByClass(DLanguageForeachTypeAttributes.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageForeachTypeAttributes.class);
   }
 
 }

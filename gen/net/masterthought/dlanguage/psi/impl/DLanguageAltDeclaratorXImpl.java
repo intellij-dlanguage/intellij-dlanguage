@@ -17,33 +17,37 @@ public class DLanguageAltDeclaratorXImpl extends ASTWrapperPsiElement implements
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitAltDeclaratorX(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitAltDeclaratorX(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageAltDeclarator getAltDeclarator() {
-    return findChildByClass(DLanguageAltDeclarator.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAltDeclarator.class);
   }
 
   @Override
   @Nullable
   public DLanguageAltFuncDeclaratorSuffix getAltFuncDeclaratorSuffix() {
-    return findChildByClass(DLanguageAltFuncDeclaratorSuffix.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAltFuncDeclaratorSuffix.class);
   }
 
   @Override
   @Nullable
   public DLanguageBasicType2 getBasicType2() {
-    return findChildByClass(DLanguageBasicType2.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageBasicType2.class);
   }
 
   @Override
   @Nullable
   public DLanguageIdentifier getIdentifier() {
-    return findChildByClass(DLanguageIdentifier.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
   }
 
 }

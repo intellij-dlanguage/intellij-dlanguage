@@ -82,7 +82,7 @@ D Language File
                 PsiElement(DLanguageTokenType.{)('{')
                 DLanguageDeclDefsImpl(DECL_DEFS)
                   DLanguageDeclDefImpl(DECL_DEF)
-                    DLanguageConstructorImpl(CONSTRUCTOR)
+                    CONSTRUCTOR
                       PsiElement(DLanguageTokenType.this)('this')
                       DLanguageParametersImpl(PARAMETERS)
                         PsiElement(DLanguageTokenType.()('(')
@@ -103,7 +103,7 @@ D Language File
                           PsiElement(DLanguageTokenType.})('}')
                   DLanguageDeclDefsImpl(DECL_DEFS)
                     DLanguageDeclDefImpl(DECL_DEF)
-                      DLanguageConstructorImpl(CONSTRUCTOR)
+                      CONSTRUCTOR
                         PsiElement(DLanguageTokenType.this)('this')
                         DLanguageParametersImpl(PARAMETERS)
                           PsiElement(DLanguageTokenType.()('(')
@@ -125,7 +125,7 @@ D Language File
                   PsiElement(DLanguageTokenType.{)('{')
                   DLanguageDeclDefsImpl(DECL_DEFS)
                     DLanguageDeclDefImpl(DECL_DEF)
-                      DLanguageConstructorImpl(CONSTRUCTOR)
+                      CONSTRUCTOR
                         PsiElement(DLanguageTokenType.this)('this')
                         DLanguageParametersImpl(PARAMETERS)
                           PsiElement(DLanguageTokenType.()('(')
@@ -176,7 +176,7 @@ D Language File
                             PsiElement(DLanguageTokenType.;)(';')
                       DLanguageDeclDefsImpl(DECL_DEFS)
                         DLanguageDeclDefImpl(DECL_DEF)
-                          DLanguageConstructorImpl(CONSTRUCTOR)
+                          CONSTRUCTOR
                             PsiElement(DLanguageTokenType.this)('this')
                             DLanguageParametersImpl(PARAMETERS)
                               PsiElement(DLanguageTokenType.()('(')
@@ -264,7 +264,7 @@ D Language File
                               PsiElement(DLanguageTokenType.;)(';')
                         DLanguageDeclDefsImpl(DECL_DEFS)
                           DLanguageDeclDefImpl(DECL_DEF)
-                            DLanguageConstructorImpl(CONSTRUCTOR)
+                            CONSTRUCTOR
                               PsiElement(DLanguageTokenType.this)('this')
                               DLanguageParametersImpl(PARAMETERS)
                                 PsiElement(DLanguageTokenType.()('(')
@@ -275,7 +275,7 @@ D Language File
                                   PsiElement(DLanguageTokenType.})('}')
                           DLanguageDeclDefsImpl(DECL_DEFS)
                             DLanguageDeclDefImpl(DECL_DEF)
-                              DLanguageConstructorImpl(CONSTRUCTOR)
+                              CONSTRUCTOR
                                 PsiElement(DLanguageTokenType.this)('this')
                                 DLanguageParametersImpl(PARAMETERS)
                                   PsiElement(DLanguageTokenType.()('(')
@@ -376,7 +376,7 @@ D Language File
                         PsiElement(DLanguageTokenType.{)('{')
                         DLanguageDeclDefsImpl(DECL_DEFS)
                           DLanguageDeclDefImpl(DECL_DEF)
-                            DLanguageConstructorImpl(CONSTRUCTOR)
+                            CONSTRUCTOR
                               PsiElement(DLanguageTokenType.this)('this')
                               DLanguageParametersImpl(PARAMETERS)
                                 PsiElement(DLanguageTokenType.()('(')
@@ -486,7 +486,7 @@ D Language File
                               PsiElement(DLanguageTokenType.{)('{')
                               DLanguageDeclDefsImpl(DECL_DEFS)
                                 DLanguageDeclDefImpl(DECL_DEF)
-                                  DLanguageConstructorImpl(CONSTRUCTOR)
+                                  CONSTRUCTOR
                                     PsiElement(DLanguageTokenType.this)('this')
                                     DLanguageParametersImpl(PARAMETERS)
                                       PsiElement(DLanguageTokenType.()('(')
@@ -495,7 +495,7 @@ D Language File
                                 PsiComment(DLanguageTokenType.LINE_COMMENT)('// non-shared mutable constructor')
                                 DLanguageDeclDefsImpl(DECL_DEFS)
                                   DLanguageDeclDefImpl(DECL_DEF)
-                                    DLanguageConstructorImpl(CONSTRUCTOR)
+                                    CONSTRUCTOR
                                       PsiElement(DLanguageTokenType.this)('this')
                                       DLanguageParametersImpl(PARAMETERS)
                                         PsiElement(DLanguageTokenType.()('(')
@@ -507,7 +507,7 @@ D Language File
                                   PsiComment(DLanguageTokenType.LINE_COMMENT)('// shared mutable constructor')
                                   DLanguageDeclDefsImpl(DECL_DEFS)
                                     DLanguageDeclDefImpl(DECL_DEF)
-                                      DLanguageConstructorImpl(CONSTRUCTOR)
+                                      CONSTRUCTOR
                                         PsiElement(DLanguageTokenType.this)('this')
                                         DLanguageParametersImpl(PARAMETERS)
                                           PsiElement(DLanguageTokenType.()('(')
@@ -658,7 +658,7 @@ D Language File
                                       PsiElement(DLanguageTokenType.{)('{')
                                       DLanguageDeclDefsImpl(DECL_DEFS)
                                         DLanguageDeclDefImpl(DECL_DEF)
-                                          DLanguageConstructorImpl(CONSTRUCTOR)
+                                          CONSTRUCTOR
                                             PsiElement(DLanguageTokenType.this)('this')
                                             DLanguageParametersImpl(PARAMETERS)
                                               PsiElement(DLanguageTokenType.()('(')
@@ -673,7 +673,7 @@ D Language File
                                         PsiComment(DLanguageTokenType.LINE_COMMENT)('// Then compiler can guarantee that the created object is unique.')
                                         DLanguageDeclDefsImpl(DECL_DEFS)
                                           DLanguageDeclDefImpl(DECL_DEF)
-                                            DLanguageConstructorImpl(CONSTRUCTOR)
+                                            CONSTRUCTOR
                                               PsiElement(DLanguageTokenType.this)('this')
                                               DLanguageParametersImpl(PARAMETERS)
                                                 PsiElement(DLanguageTokenType.()('(')

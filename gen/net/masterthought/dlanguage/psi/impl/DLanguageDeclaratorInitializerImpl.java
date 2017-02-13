@@ -17,33 +17,37 @@ public class DLanguageDeclaratorInitializerImpl extends ASTWrapperPsiElement imp
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitDeclaratorInitializer(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitDeclaratorInitializer(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageAltDeclarator getAltDeclarator() {
-    return findChildByClass(DLanguageAltDeclarator.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAltDeclarator.class);
   }
 
   @Override
   @Nullable
   public DLanguageInitializer getInitializer() {
-    return findChildByClass(DLanguageInitializer.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageInitializer.class);
   }
 
   @Override
   @Nullable
   public DLanguageTemplateParameters getTemplateParameters() {
-    return findChildByClass(DLanguageTemplateParameters.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateParameters.class);
   }
 
   @Override
   @Nullable
   public DLanguageVarDeclarator getVarDeclarator() {
-    return findChildByClass(DLanguageVarDeclarator.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageVarDeclarator.class);
   }
 
   @Override

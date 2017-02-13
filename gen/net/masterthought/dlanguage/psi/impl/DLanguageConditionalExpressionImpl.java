@@ -17,27 +17,31 @@ public class DLanguageConditionalExpressionImpl extends ASTWrapperPsiElement imp
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitConditionalExpression(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitConditionalExpression(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageConditionalExpression getConditionalExpression() {
-    return findChildByClass(DLanguageConditionalExpression.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageConditionalExpression.class);
   }
 
   @Override
   @Nullable
   public DLanguageExpression getExpression() {
-    return findChildByClass(DLanguageExpression.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageExpression.class);
   }
 
   @Override
   @NotNull
   public DLanguageOrOrExpression getOrOrExpression() {
-    return findNotNullChildByClass(DLanguageOrOrExpression.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageOrOrExpression.class));
   }
 
   @Override

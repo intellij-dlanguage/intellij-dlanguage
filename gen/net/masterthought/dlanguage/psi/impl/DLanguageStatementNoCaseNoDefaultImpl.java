@@ -17,21 +17,25 @@ public class DLanguageStatementNoCaseNoDefaultImpl extends ASTWrapperPsiElement 
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitStatementNoCaseNoDefault(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitStatementNoCaseNoDefault(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageBlockStatement getBlockStatement() {
-    return findChildByClass(DLanguageBlockStatement.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageBlockStatement.class);
   }
 
   @Override
   @Nullable
   public DLanguageNonEmptyStatementNoCaseNoDefault getNonEmptyStatementNoCaseNoDefault() {
-    return findChildByClass(DLanguageNonEmptyStatementNoCaseNoDefault.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageNonEmptyStatementNoCaseNoDefault.class);
   }
 
 }

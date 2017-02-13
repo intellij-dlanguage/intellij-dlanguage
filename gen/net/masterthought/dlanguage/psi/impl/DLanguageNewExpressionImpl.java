@@ -17,27 +17,31 @@ public class DLanguageNewExpressionImpl extends ASTWrapperPsiElement implements 
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitNewExpression(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitNewExpression(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @Nullable
   public DLanguageAllocatorArguments getAllocatorArguments() {
-    return findChildByClass(DLanguageAllocatorArguments.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAllocatorArguments.class);
   }
 
   @Override
   @Nullable
   public DLanguageNewExpressionWithArgs getNewExpressionWithArgs() {
-    return findChildByClass(DLanguageNewExpressionWithArgs.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageNewExpressionWithArgs.class);
   }
 
   @Override
   @Nullable
   public DLanguageType getType() {
-    return findChildByClass(DLanguageType.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageType.class);
   }
 
   @Override

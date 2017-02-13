@@ -17,33 +17,37 @@ public class DLanguageIndexExpressionImpl extends ASTWrapperPsiElement implement
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitIndexExpression(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitIndexExpression(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageArgumentList getArgumentList() {
-    return findNotNullChildByClass(DLanguageArgumentList.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageArgumentList.class));
   }
 
   @Override
   @Nullable
   public DLanguagePostfixExpression getPostfixExpression() {
-    return findChildByClass(DLanguagePostfixExpression.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguagePostfixExpression.class);
   }
 
   @Override
   @NotNull
   public PsiElement getOpBracketLeft() {
-    return findNotNullChildByType(OP_BRACKET_LEFT);
+    return notNullChild(findChildByType(OP_BRACKET_LEFT));
   }
 
   @Override
   @NotNull
   public PsiElement getOpBracketRight() {
-    return findNotNullChildByType(OP_BRACKET_RIGHT);
+    return notNullChild(findChildByType(OP_BRACKET_RIGHT));
   }
 
 }

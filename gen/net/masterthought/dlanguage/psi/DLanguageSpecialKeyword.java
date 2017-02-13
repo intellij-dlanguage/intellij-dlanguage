@@ -8,18 +8,18 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageSpecialKeyword extends PsiElement {
 
   @Nullable
-  PsiElement getKwFile();
+  PsiElement getKwFile__();
 
   @Nullable
-  PsiElement getKwFunction();
+  PsiElement getKwFunction__();
 
   @Nullable
-  PsiElement getKwLine();
+  PsiElement getKwLine__();
 
   @Nullable
-  PsiElement getKwModule();
+  PsiElement getKwModule__();
 
   @Nullable
-  PsiElement getKwPrettyFunction();
+  PsiElement getKwPrettyFunction__();
 
 }

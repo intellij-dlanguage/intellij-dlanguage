@@ -17,21 +17,25 @@ public class DLanguageAsmMulExpImpl extends ASTWrapperPsiElement implements DLan
     super(node);
   }
 
+  public void accept(@NotNull DLanguageVisitor visitor) {
+    visitor.visitAsmMulExp(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) ((DLanguageVisitor)visitor).visitAsmMulExp(this);
+    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
   public DLanguageAsmBrExp getAsmBrExp() {
-    return findNotNullChildByClass(DLanguageAsmBrExp.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageAsmBrExp.class));
   }
 
   @Override
   @Nullable
   public DLanguageAsmMulExp getAsmMulExp() {
-    return findChildByClass(DLanguageAsmMulExp.class);
+    return PsiTreeUtil.getChildOfType(this, DLanguageAsmMulExp.class);
   }
 
   @Override
