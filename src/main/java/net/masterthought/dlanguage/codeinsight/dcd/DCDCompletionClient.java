@@ -16,6 +16,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -33,10 +34,12 @@ public class DCDCompletionClient {
     @Nullable
     BufferedWriter output;
 
+    private List<Completion> completions = new ArrayList<>();
+
     public List<Completion> autoComplete(int position, PsiFile file) throws DCDCompletionServer.DCDError {
         final Module module = ModuleUtilCore.findModuleForPsiElement(file);
-        
-        List<Completion> completions = Lists.newArrayList();
+
+        completions.clear();
         if (module != null) {
             String path = lookupPath(module);
             if (path != null) {
@@ -58,11 +61,13 @@ public class DCDCompletionClient {
 
                 String flags = ToolKey.DCD_CLIENT_KEY.getFlags(module.getProject());
 
-                if (isNotNullOrEmpty(flags)) {
-                    List<String> importList = Arrays.asList(flags.split(","));
-                    for (String item : importList) {
+                if (isNotNullOrEmpty(flags))
+                {
+                    String[] importList = flags.split(",");
+                    for (int i = 0; i < importList.length; i++)
+                    {
                         parametersList.addParametersString("-I");
-                        parametersList.addParametersString(item);
+                        parametersList.addParametersString(importList[i]);
                     }
                 }
 
@@ -78,11 +83,15 @@ public class DCDCompletionClient {
 
                 String result = ExecUtil.readCommandLine(commandLine, file.getText());
 
-                if (result != null && !result.isEmpty()) {
-                    List<String> tokens = Arrays.asList(result.split("\\n"));
-                    String firstLine = tokens.get(0);
-                    if (firstLine.contains("identifiers")) {
-                        for (String token : tokens) {
+                if (result != null && !result.isEmpty())
+                {
+                    String[] tokens = result.split("\\n");
+                    String firstLine = tokens[0];
+                    if (firstLine.contains("identifiers"))
+                    {
+                        for (int i = 0; i < tokens.length; i++)
+                        {
+                            String token = tokens[i];
                             if (!token.contains("identifiers")) {
                                 List<String> parts = Arrays.asList(token.split("\\s"));
                                 String completionType = getCompletionType(parts);
