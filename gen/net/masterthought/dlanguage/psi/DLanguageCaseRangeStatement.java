@@ -7,13 +7,13 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageCaseRangeStatement extends PsiElement {
 
-  @NotNull
+  @Nullable
   DLanguageFirstExp getFirstExp();
 
-  @NotNull
+  @Nullable
   DLanguageLastExp getLastExp();
 
-  @NotNull
+  @Nullable
   DLanguageScopeStatementList getScopeStatementList();
 
   @NotNull

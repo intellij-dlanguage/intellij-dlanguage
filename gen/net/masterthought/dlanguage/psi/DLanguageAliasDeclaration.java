@@ -30,6 +30,9 @@ public interface DLanguageAliasDeclaration extends DNamedElement, StubBasedPsiEl
   DLanguageIdentifier getIdentifier();
 
   @Nullable
+  DLanguageInitializer getInitializer();
+
+  @Nullable
   DLanguageStorageClasses getStorageClasses();
 
   @Nullable

@@ -27,9 +27,9 @@ public class DLanguageDefaultStatementImpl extends ASTWrapperPsiElement implemen
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageScopeStatementList getScopeStatementList() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageScopeStatementList.class));
+    return PsiTreeUtil.getChildOfType(this, DLanguageScopeStatementList.class);
   }
 
   @Override

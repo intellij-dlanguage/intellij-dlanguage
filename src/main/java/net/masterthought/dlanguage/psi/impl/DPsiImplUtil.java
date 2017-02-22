@@ -19,7 +19,7 @@ import javax.swing.*;
 
 
 /**
- * Source of the methods pointed out in Haskell.bnf.
+ * Source of the methods pointed out in DLanguage.bnf.
  */
 public class DPsiImplUtil {
 

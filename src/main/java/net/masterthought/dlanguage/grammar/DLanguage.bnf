@@ -94,12 +94,14 @@ tokens = [
  KW_NEW = "new"
  KW_TYPEID = "typeid"
  KW_IS = "is"
+ KW_NOT_IS = "!is"
  KW_STRUCT = "struct"
  KW_UNION = "union"
  KW_CLASS = "class"
  KW_INTERFACE = "interface"
  KW___PARAMETERS = "__parameters"
  KW_IN = "in"
+ KW_NOT_IN = "!in"
  KW_ASM = "asm"
  KW_ASSERT = "assert"
  KW_CASE = "case"
@@ -207,7 +209,6 @@ tokens = [
 //space='regexp:\s+'
 //line_comment="regexp://.*"
 //block_comment="regexp:/\*(.|\n)*\*/"
-//
 //DOUBLE_QUOTED_STRING = 'regexp:\"([^\\"]|((\\"|\\\?|\\\|\\0|\\a|\\b|\\f|\\n|\\r|\\t|\\v)|(\\x[0-9abcdefABCDEF_]{2})|(\\[0-7])|(\\[0-7]{2})|(\\[0-7]{3})|(\\u[0-9abcdefABCDEF_]{4})|(\\U[0-9abcdefABCDEF_]{8})|(\\&([a-zA-Z_])([a-zA-Z0-9_])*;)))*\"[cwd]*'
 // ------------------------
 
@@ -217,7 +218,7 @@ tokens = [
 
 dFile ::= item_*
 
-private item_ ::= (ModuleDeclaration | DeclDefs | Statement | SHEBANG)
+private item_ ::= (ModuleDeclaration | DeclDefs | Statement | SHEBANG) {pin=5 recoverWhile=recover}
 
 Identifier ::= ID {
     methods=[getName getNameIdentifier getReference setName getPresentation]
@@ -230,6 +231,8 @@ StringLiteral  ::= (WYSIWYG_STRING|ALTERNATE_WYSIWYG_STRING|DOUBLE_QUOTED_STRING
 
 ModuleDeclaration ::=
     Attribute? 'module' ModuleFullyQualifiedName ';'
+
+private recover ::= !(ModuleDeclaration| DeclDefs | Statement | SHEBANG | ';')
 
 ModuleFullyQualifiedName ::=
     Identifier ['.' ModuleFullyQualifiedName]
@@ -254,12 +257,13 @@ ImportBind ::=
 
 DeclDefs ::= DeclDef [DeclDefs]
 
+//order matters
 DeclDef ::=
     (AttributeSpecifier
     | Declaration
+    | Postblit
     | Constructor
     | Destructor
-    | Postblit
     | Allocator
     | Deallocator
     | Invariant
@@ -277,14 +281,17 @@ DeclDef ::=
     | TemplateMixinDeclaration
     | TemplateMixin
     | MixinDeclaration
+    | StaticIfCondition
+    | StaticElseCondition
     | ';'
     )
 
 MixinDeclaration ::=
-    'mixin' '(' AssignExpression ')' ';'
+    'mixin' '(' (TemplateInstance | AssignExpression) ')' ';'
 
 Type ::=
-    TypeCtors? BasicType BasicType2?
+    TypeCtors? BasicType BasicType2? |
+    TemplateInstance
 
 TypeCtors ::=
     TypeCtor [TypeCtors]
@@ -475,10 +482,11 @@ PostfixExpression ::=
     | '.' TemplateInstance [PostfixExpression]
     | '.' NewExpression [PostfixExpression]
     | '++' [PostfixExpression]
-    |  '--' [PostfixExpression]
+    | '--' [PostfixExpression]
     | '(' ArgumentList? ')' [PostfixExpression]
     | TypeCtors? BasicType '(' ArgumentList? ')' [PostfixExpression]
-    | IndexExpression
+    | TypeCtors '(' ArgumentList? ')' [PostfixExpression]
+    | IndexExpression // there seems to be no way to distinguish between index expression and array literals correctly in grammar
     | SliceExpression
 
 IndexExpression ::=
@@ -491,8 +499,10 @@ SliceExpression ::=
 MultipleAssign ::=
  ((AssignExpression '..' AssignExpression) | AssignExpression) [',' MultipleAssign ]
 
+//note that the order of the below matters a lot
 PrimaryExpression ::=
-     ('.')? (TemplateInstance | Identifier)
+    TraitsExpression
+    | ('.')? (TemplateInstance | Identifier)
     | 'this'
     | 'super'
     | 'null'
@@ -505,7 +515,6 @@ PrimaryExpression ::=
     | StringLiterals
     | ArrayLiteral
     | AssocArrayLiteral
-    | FunctionLiteral
     | AssertExpression
     | MixinExpression
     | ImportExpression
@@ -515,13 +524,13 @@ PrimaryExpression ::=
     | TypeidExpression
     | IsExpression
     | '(' Expression ')'
-    | TraitsExpression
+    | FunctionLiteral
     | SpecialKeyword
 
 StringLiterals ::= StringLiteral [StringLiterals]
 
 ArrayLiteral ::=
-    '[' ArgumentList? ']'
+    '[' ArgumentList? ','? ']'
 
 AssocArrayLiteral ::=
     '[' KeyValuePairs ']'
@@ -545,6 +554,13 @@ ParameterAttributes ::=
 
 ParameterMemberAttributes ::=
     Parameters MemberFunctionAttributes?
+    | TypeInferredParameterMemberAttributes
+
+TypeInferredParameterMemberAttributes ::=
+    '(' TypeInferredParameterList? ')'
+
+TypeInferredParameterList ::=
+    StorageClass? TypeCtor? MemberFunctionAttributes? Identifier (',' TypeInferredParameterList)?
 
 FunctionLiteralBody ::=
     BlockStatement |
@@ -560,7 +576,7 @@ AssertExpression ::=
     'assert' '(' AssignExpression (',' AssignExpression)? ')'
 
 MixinExpression ::=
-    'mixin' '(' AssignExpression ')'
+    'mixin' '(' (TemplateInstance | AssignExpression) ')'
 
 ImportExpression ::=
     'import' '(' AssignExpression ')'
@@ -569,17 +585,19 @@ TypeidExpression ::=
     'typeid' '(' Type ')'
     | 'typeid' '(' Expression ')'
 
-IsExpression ::=
-     'is' '(' Type ')'
-    | 'is' '(' Type ':' TypeSpecialization ')'
-    | 'is' '(' Type '==' TypeSpecialization ')'
-    | 'is' '(' Type ':' TypeSpecialization ',' TemplateParameterList ')'
-    | 'is' '(' Type '==' TypeSpecialization ',' TemplateParameterList ')'
-    | 'is' '(' Type Identifier ')'
-    | 'is' '(' Type Identifier ':' TypeSpecialization ')'
-    | 'is' '(' Type Identifier '==' TypeSpecialization ')'
-    | 'is' '(' Type Identifier ':' TypeSpecialization ',' TemplateParameterList ')'
-    | 'is' '(' Type Identifier '==' TypeSpecialization ',' TemplateParameterList ')'
+IsExpression ::= ('is' | '!is') IsExpressionSuffix
+
+private IsExpressionSuffix ::=
+     '(' Type ')'
+    | '(' Type ':' TypeSpecialization ')'
+    | '(' Type '==' TypeSpecialization ')'
+    | '(' Type ':' TypeSpecialization ',' TemplateParameterList ')'
+    | '(' Type '==' TypeSpecialization ',' TemplateParameterList ')'
+    | '(' Type Identifier ')'
+    | '(' Type Identifier ':' TypeSpecialization ')'
+    | '(' Type Identifier '==' TypeSpecialization ')'
+    | '(' Type Identifier ':' TypeSpecialization ',' TemplateParameterList ')'
+    | '(' Type Identifier '==' TypeSpecialization ',' TemplateParameterList ')'
 
 TypeSpecialization ::=
     Type
@@ -599,7 +617,7 @@ TypeSpecialization ::=
     | '__parameters'
 
 TraitsExpression ::=
-    '__traits' ('(' TraitsKeyword ',' TraitsArguments ')')?
+    '__traits' '(' TraitsKeyword (',' TraitsArguments)? ')'
 //    '__traits' '(' TraitsKeyword ',' TraitsArguments ')'
 
 TraitsKeyword ::=
@@ -620,6 +638,7 @@ TraitsKeyword ::=
     | 'isFinalFunction'
     | 'isStaticFunction'
     | 'isOverrideFunction'
+    | 'isTemplate'
     | 'isRef'
     | 'isOut'
     | 'isLazy'
@@ -666,14 +685,16 @@ Statement ::=
 
 
 NonEmptyStatement ::=
-    NonEmptyStatementNoCaseNoDefault
+    CaseRangeStatement
     | CaseStatement
-    | CaseRangeStatement
     | DefaultStatement
+    | NonEmptyStatementNoCaseNoDefault
 
 NonEmptyStatementNoCaseNoDefault ::=
     LabeledStatement
+    | ScopeGuardStatement //must be above declaration
     | DeclarationStatement
+    | Declaration //for some reason a declaration may be detected/parsed when a Declaration statement is not
     | ExpressionStatement
     | IfStatement
     | WhileStatement
@@ -689,7 +710,6 @@ NonEmptyStatementNoCaseNoDefault ::=
     | WithStatement
     | SynchronizedStatement
     | TryStatement
-    | ScopeGuardStatement
     | ThrowStatement
     | AsmStatement
     | PragmaStatement
@@ -706,6 +726,7 @@ ScopeStatement ::=
 
 LabeledStatement ::=
     Identifier ':' Statement? //todo make named element
+//    | Identifier ':'
 
 
 BlockStatement ::=
@@ -765,8 +786,10 @@ ForeachTypeList ::=
     ForeachType [',' ForeachTypeList]
 
 ForeachType ::=
-   Type? ForeachTypeAttributes? Identifier
+   ForeachTypeAttribute? (TemplateInstance | Type) Identifier
+   | Type? ForeachTypeAttributes? Identifier
    | ForeachTypeAttributes? Type? Identifier
+   | ForeachTypeAttributes? Identifier
    | Identifier
 
 ForeachTypeAttributes ::=
@@ -795,7 +818,8 @@ CaseStatement ::=
     'case' ArgumentList ':' ScopeStatementList?
 
 CaseRangeStatement ::=
-    'case' FirstExp ':' '..' 'case' LastExp ':' ScopeStatementList
+    '..'
+    | 'case' FirstExp ':' '..' 'case' LastExp ':' ScopeStatementList
 
 FirstExp ::=
     AssignExpression
@@ -804,7 +828,7 @@ LastExp ::=
     AssignExpression
 
 DefaultStatement ::=
-    'default' ':' ScopeStatementList
+    'default' ':' ScopeStatementList?
 
 ScopeStatementList ::=
     StatementListNoCaseNoDefault
@@ -876,7 +900,7 @@ PragmaStatement ::=
     Pragma Statement
 
 MixinStatement ::=
-    'mixin' '(' AssignExpression ')' ';'
+    'mixin' '(' (TemplateInstance | AssignExpression) ')' ';'
 
 AsmStatement ::=
     'asm' FunctionAttributes? '{' AsmInstructionList? '}'
@@ -922,6 +946,21 @@ Register ::=
     | 'ST(0)' 'ST(1)' 'ST(2)' 'ST(3)' 'ST(4)' 'ST(5)' 'ST(6)' 'ST(7)'
     | 'MM0'  'MM1'  'MM2'  'MM3'  'MM4'  'MM5'  'MM6'  'MM7'
     | 'XMM0' 'XMM1' 'XMM2' 'XMM3' 'XMM4' 'XMM5' 'XMM6' 'XMM7'
+    | 'AL' | 'AH' | 'AX' | 'EAX'
+    | 'BL' | 'BH' | 'BX' | 'EBX'
+    | 'CL' | 'CH' | 'CX' | 'ECX'
+    | 'DL' | 'DH' | 'DX' | 'EDX'
+    | 'BP' | 'EBP'
+    | 'SP' | 'ESP'
+    | 'DI' | 'EDI'
+    | 'SI' | 'ESI'
+    | 'ES' | 'CS SS DS GS FS'
+    | 'CR0' | 'CR2' | 'CR3' | 'CR4'
+    | 'DR0' | 'DR1' | 'DR2' | 'DR3' | 'DR6' | 'DR7'
+    | 'TR3' | 'TR4' | 'TR5' | 'TR6' | 'TR7'
+    | 'ST(0)' | 'ST(1)' | 'ST(2)' | 'ST(3)' | 'ST(4)' | 'ST(5)' | 'ST(6)' | 'ST(7)'
+    | 'MM0' | 'MM1' | 'MM2' | 'MM3' | 'MM4' | 'MM5' | 'MM6' | 'MM7'
+    | 'XMM0' | 'XMM1' | 'XMM2' | 'XMM3' | 'XMM4' | 'XMM5' | 'XMM6' | 'XMM7'
 
 Register64 ::=
     'RAX'  'RBX'  'RCX'  'RDX'
@@ -981,7 +1020,7 @@ AsmBrExp ::=
        AsmUnaExp ['[' AsmExp ']']
 
 AsmUnaExp ::=
-    AsmTypePrefix AsmExp
+    AsmTypePrefix AsmUnaExp? AsmExp?
     | 'offsetof' AsmExp
     | 'seg' AsmExp
     | '+' AsmUnaExp
@@ -1016,6 +1055,7 @@ AsmTypePrefix ::=
     | 'float' 'ptr'
     | 'double' 'ptr'
     | 'real' 'ptr'
+    | 'real ptr'
 
 Opcode ::=
  'aaa'
@@ -1606,6 +1646,7 @@ Declaration ::=
    | VarDeclarations
 
 AliasDeclaration ::= 'alias' Identifier '=' Type TemplateArguments? ';'
+  | 'alias' Identifier '=' Initializer ';'
   | 'alias' StorageClasses? BasicType (FuncDeclarator|Declarator) ';'
   | 'alias' AliasDeclarationX ';'{
      methods=[getName getNameIdentifier getReference setName getPresentation]
@@ -1710,9 +1751,9 @@ VoidInitializer ::=
     'void'
 
 NonVoidInitializer ::=
-    AssignExpression
-    | ArrayInitializer
+    ArrayInitializer
     | StructInitializer
+    | AssignExpression
 
 ArrayInitializer ::=
     '[' ArrayMemberInitializations? ','? ']'
@@ -1736,14 +1777,14 @@ StructMemberInitializer ::=
 //Function
 
 FuncDeclaration ::=
-    StorageClasses? BasicType FuncDeclarator FunctionBody?
+    StorageClasses? BasicType FuncDeclarator (FunctionBody |';'| '=')?
     | AutoFuncDeclaration {
       methods=[getName getNameIdentifier getReference setName getPresentation]
       stubClass="net.masterthought.dlanguage.stubs.DLanguageFuncDeclarationStub"
       }
 
 private AutoFuncDeclaration ::=
-    StorageClasses Identifier FuncDeclaratorSuffix FunctionBody
+    StorageClasses Identifier FuncDeclaratorSuffix FunctionBody?
 
 private FuncDeclarator ::=
     BasicType2? Identifier FuncDeclaratorSuffix
@@ -1762,6 +1803,7 @@ ParameterList ::=
 Parameter ::=
        InOut? BasicType Declarator ('...' | '=' AssignExpression)?
        | InOut? Type ('...')?
+       | AssignExpression
 
 InOut ::=
     InOutX [InOut]
@@ -1775,6 +1817,7 @@ InOutX ::=
     | 'out'
     | 'ref'
     | 'scope'
+    | 'return ref'
 
 FunctionAttributes ::=
     FunctionAttribute [FunctionAttributes]
@@ -1792,6 +1835,7 @@ MemberFunctionAttribute ::=
     | 'immutable'
     | 'inout'
     | 'shared'
+    | 'return'
     | FunctionAttribute
 
 FunctionBody ::=
@@ -1971,7 +2015,7 @@ EnumMembers ::=
 EnumMember ::= Identifier ('=' AssignExpression)? | Type Identifier '=' AssignExpression
 
 AnonymousEnumDeclaration ::=
-    'enum' (':' EnumBaseType)? ('{' (EnumMembers) '}')?
+    'enum' (':' EnumBaseType)? ('{' EnumMembers ','? '}')?
 
 //Template
 
@@ -2000,7 +2044,8 @@ TemplateArgumentList ::=
     TemplateArgument (',' TemplateArgumentList?)?
 
 TemplateArgument ::=
-    Type
+    TypeCtors? BasicType BasicType2?//this was added here becuase things like foo!(int) would sometimes error, and this line seems to prevent that.
+    | Type
     | AssignExpression
     | Symbol
 
@@ -2055,7 +2100,8 @@ QualifiedIdentifierList ::=
 
 //Attribute
 AttributeSpecifier ::=
-    Attribute (':' | DeclarationBlock)
+   Attribute ':'
+   | Attribute DeclarationBlock
 
 Attribute ::=
     LinkageAttribute
@@ -2106,8 +2152,8 @@ DeprecatedAttribute ::=
 
 ProtectionAttribute ::=
      'private'
-    | 'package'
     | 'package' '(' IdentifierList ')'
+    | 'package'
     | 'protected'
     | 'public'
     | 'export'
@@ -2156,6 +2202,8 @@ DebugCondition ::=
 StaticIfCondition ::=
     'static' 'if' '(' AssignExpression ')'
 
+StaticElseCondition ::= 'else'
+
 VersionSpecification ::=
     'version' '=' (Identifier | INTEGER_LITERAL) ';'
 
@@ -2164,4 +2212,5 @@ DebugSpecification ::=
 
 StaticAssert ::=
     'static' 'assert' '(' AssignExpression (',' AssignExpression)? ')' ';'
+//    | 'static' 'assert' '(' TraitsExpression ')'' ;'
 

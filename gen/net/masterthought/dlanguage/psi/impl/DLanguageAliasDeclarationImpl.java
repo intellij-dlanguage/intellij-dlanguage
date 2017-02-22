@@ -71,6 +71,12 @@ public class DLanguageAliasDeclarationImpl extends DNamedStubbedPsiElementBase<D
 
   @Override
   @Nullable
+  public DLanguageInitializer getInitializer() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageInitializer.class);
+  }
+
+  @Override
+  @Nullable
   public DLanguageStorageClasses getStorageClasses() {
     return PsiTreeUtil.getChildOfType(this, DLanguageStorageClasses.class);
   }

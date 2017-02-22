@@ -38,4 +38,10 @@ public class DLanguageIdentityExpressionImpl extends ASTWrapperPsiElement implem
     return findChildByType(KW_IS);
   }
 
+  @Override
+  @Nullable
+  public PsiElement getKwNotIs() {
+    return findChildByType(KW_NOT_IS);
+  }
+
 }

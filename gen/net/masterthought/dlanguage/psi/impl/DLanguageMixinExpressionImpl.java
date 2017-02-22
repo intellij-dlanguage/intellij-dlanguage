@@ -27,9 +27,15 @@ public class DLanguageMixinExpressionImpl extends ASTWrapperPsiElement implement
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageAssignExpression getAssignExpression() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageAssignExpression.class));
+    return PsiTreeUtil.getChildOfType(this, DLanguageAssignExpression.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageTemplateInstance getTemplateInstance() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateInstance.class);
   }
 
   @Override

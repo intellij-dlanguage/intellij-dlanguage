@@ -10,7 +10,7 @@ public interface DLanguageTraitsExpression extends PsiElement {
   @Nullable
   DLanguageTraitsArguments getTraitsArguments();
 
-  @Nullable
+  @NotNull
   DLanguageTraitsKeyword getTraitsKeyword();
 
   @NotNull
@@ -19,10 +19,10 @@ public interface DLanguageTraitsExpression extends PsiElement {
   @Nullable
   PsiElement getOpComma();
 
-  @Nullable
+  @NotNull
   PsiElement getOpParLeft();
 
-  @Nullable
+  @NotNull
   PsiElement getOpParRight();
 
 }

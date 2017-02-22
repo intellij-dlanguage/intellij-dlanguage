@@ -7,8 +7,11 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageMixinStatement extends PsiElement {
 
-  @NotNull
+  @Nullable
   DLanguageAssignExpression getAssignExpression();
+
+  @Nullable
+  DLanguageTemplateInstance getTemplateInstance();
 
   @NotNull
   PsiElement getKwMixin();

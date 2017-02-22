@@ -69,6 +69,18 @@ public class DLanguageFuncDeclarationImpl extends DNamedStubbedPsiElementBase<DL
     return PsiTreeUtil.getChildOfType(this, DLanguageStorageClasses.class);
   }
 
+  @Override
+  @Nullable
+  public PsiElement getOpEq() {
+    return findChildByType(OP_EQ);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpScolon() {
+    return findChildByType(OP_SCOLON);
+  }
+
   @NotNull
   public String getName() {
     return DPsiImplUtil.getName(this);

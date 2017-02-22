@@ -883,6 +883,10 @@ public class DLanguageVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitStaticElseCondition(@NotNull DLanguageStaticElseCondition o) {
+    visitPsiElement(o);
+  }
+
   public void visitStaticIfCondition(@NotNull DLanguageStaticIfCondition o) {
     visitPsiElement(o);
   }
@@ -1040,6 +1044,14 @@ public class DLanguageVisitor extends PsiElementVisitor {
   }
 
   public void visitTypeCtors(@NotNull DLanguageTypeCtors o) {
+    visitPsiElement(o);
+  }
+
+  public void visitTypeInferredParameterList(@NotNull DLanguageTypeInferredParameterList o) {
+    visitPsiElement(o);
+  }
+
+  public void visitTypeInferredParameterMemberAttributes(@NotNull DLanguageTypeInferredParameterMemberAttributes o) {
     visitPsiElement(o);
   }
 

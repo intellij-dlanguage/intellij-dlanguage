@@ -241,6 +241,7 @@ public interface DLanguageTypes {
   IElementType STATIC_ASSERT = new DLanguageElementType("STATIC_ASSERT");
   IElementType STATIC_CONSTRUCTOR = new DLanguageElementType("STATIC_CONSTRUCTOR");
   IElementType STATIC_DESTRUCTOR = new DLanguageElementType("STATIC_DESTRUCTOR");
+  IElementType STATIC_ELSE_CONDITION = new DLanguageElementType("STATIC_ELSE_CONDITION");
   IElementType STATIC_IF_CONDITION = new DLanguageElementType("STATIC_IF_CONDITION");
   IElementType STORAGE_CLASS = new DLanguageElementType("STORAGE_CLASS");
   IElementType STORAGE_CLASSES = new DLanguageElementType("STORAGE_CLASSES");
@@ -283,6 +284,8 @@ public interface DLanguageTypes {
   IElementType TYPEOF = new DLanguageElementType("TYPEOF");
   IElementType TYPE_CTOR = new DLanguageElementType("TYPE_CTOR");
   IElementType TYPE_CTORS = new DLanguageElementType("TYPE_CTORS");
+  IElementType TYPE_INFERRED_PARAMETER_LIST = new DLanguageElementType("TYPE_INFERRED_PARAMETER_LIST");
+  IElementType TYPE_INFERRED_PARAMETER_MEMBER_ATTRIBUTES = new DLanguageElementType("TYPE_INFERRED_PARAMETER_MEMBER_ATTRIBUTES");
   IElementType TYPE_SPECIALIZATION = new DLanguageElementType("TYPE_SPECIALIZATION");
   IElementType TYPE_VECTOR = new DLanguageElementType("TYPE_VECTOR");
   IElementType UNARY_EXPRESSION = new DLanguageElementType("UNARY_EXPRESSION");
@@ -370,6 +373,8 @@ public interface DLanguageTypes {
   IElementType KW_NEW = new DLanguageTokenType("new");
   IElementType KW_NOGC = new DLanguageTokenType("nogc");
   IElementType KW_NOTHROW = new DLanguageTokenType("nothrow");
+  IElementType KW_NOT_IN = new DLanguageTokenType("!in");
+  IElementType KW_NOT_IS = new DLanguageTokenType("!is");
   IElementType KW_NULL = new DLanguageTokenType("null");
   IElementType KW_OUT = new DLanguageTokenType("out");
   IElementType KW_OVERRIDE = new DLanguageTokenType("override");
@@ -1143,6 +1148,9 @@ public interface DLanguageTypes {
       else if (type == STATIC_DESTRUCTOR) {
         return new DLanguageStaticDestructorImpl(node);
       }
+      else if (type == STATIC_ELSE_CONDITION) {
+        return new DLanguageStaticElseConditionImpl(node);
+      }
       else if (type == STATIC_IF_CONDITION) {
         return new DLanguageStaticIfConditionImpl(node);
       }
@@ -1268,6 +1276,12 @@ public interface DLanguageTypes {
       }
       else if (type == TYPE_CTORS) {
         return new DLanguageTypeCtorsImpl(node);
+      }
+      else if (type == TYPE_INFERRED_PARAMETER_LIST) {
+        return new DLanguageTypeInferredParameterListImpl(node);
+      }
+      else if (type == TYPE_INFERRED_PARAMETER_MEMBER_ATTRIBUTES) {
+        return new DLanguageTypeInferredParameterMemberAttributesImpl(node);
       }
       else if (type == TYPE_SPECIALIZATION) {
         return new DLanguageTypeSpecializationImpl(node);

@@ -85,7 +85,7 @@ HEXADECIMAL_INTEGER = 0[xX] [0-9a-fA-F] [0-9a-fA-F_]*
 FLOAT_LITERAL = ( ({DECIMAL_FLOAT} | {HEX_FLOAT}) [fFL]? i? ) | ( ({DECIMAL_INTEGER} | {BINARY_INTEGER} | {HEXADECIMAL_INTEGER}) [fFL]? i)
 DECIMAL_FLOAT = ( {DECIMAL_FLOAT_SIMPLE} | {DECIMAL_FLOAT_EXPONENT} | {DECIMAL_FLOAT_FIRST_DOT}
                 | {DECIMAL_FLOAT_FIRST_DOT_EXPONENT} | {DECIMAL_FLOAT_NO_DOT_EXPONENT} )
-DECIMAL_FLOAT_SIMPLE = [0-9] [0-9_]* \. ([0] | [1-9_] [0-9_]*)
+DECIMAL_FLOAT_SIMPLE = [0-9] [0-9_]* \. ([0] | [1-9_] [0-9_]*)?
 DECIMAL_FLOAT_EXPONENT = [0-9_]+ \. [0-9_]+ {DECIMAL_EXPONENT}
 DECIMAL_FLOAT_FIRST_DOT = \. ([0] | [1-9_] [0-9_]*)
 DECIMAL_FLOAT_FIRST_DOT_EXPONENT = \. ([0] | [1-9] [0-9]*) {DECIMAL_EXPONENT}
@@ -227,12 +227,14 @@ HEX_EXPONENT = [pP][\+\-]? [0-9]+
 <YYINITIAL> "new"                      { return KW_NEW; }
 <YYINITIAL> "typeid"                   { return KW_TYPEID; }
 <YYINITIAL> "is"                       { return KW_IS; }
+<YYINITIAL> "!is"                      { return KW_NOT_IS; }
 <YYINITIAL> "struct"                   { return KW_STRUCT; }
 <YYINITIAL> "union"                    { return KW_UNION; }
 <YYINITIAL> "class"                    { return KW_CLASS; }
 <YYINITIAL> "interface"                { return KW_INTERFACE; }
 <YYINITIAL> "__parameters"             { return KW___PARAMETERS; }
 <YYINITIAL> "in"                       { return KW_IN; }
+<YYINITIAL> "!in"                      { return KW_NOT_IN; }
 <YYINITIAL> "asm"                      { return KW_ASM; }
 <YYINITIAL> "assert"                   { return KW_ASSERT; }
 <YYINITIAL> "case"                     { return KW_CASE; }

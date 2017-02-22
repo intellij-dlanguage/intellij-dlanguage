@@ -20,6 +20,9 @@ public interface DLanguageNonEmptyStatementNoCaseNoDefault extends PsiElement {
   DLanguageContinueStatement getContinueStatement();
 
   @Nullable
+  DLanguageDeclaration getDeclaration();
+
+  @Nullable
   DLanguageDeclarationStatement getDeclarationStatement();
 
   @Nullable

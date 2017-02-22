@@ -29,6 +29,12 @@ public interface DLanguageFuncDeclaration extends DNamedElement, StubBasedPsiEle
   @Nullable
   DLanguageStorageClasses getStorageClasses();
 
+  @Nullable
+  PsiElement getOpEq();
+
+  @Nullable
+  PsiElement getOpScolon();
+
   @NotNull
   String getName();
 

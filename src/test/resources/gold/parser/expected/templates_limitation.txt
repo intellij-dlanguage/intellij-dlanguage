@@ -465,19 +465,17 @@ D Language File
                                                                                                                       PsiElement(DLanguageTokenType.()('(')
                                                                                                                       DLanguageTemplateArgumentListImpl(TEMPLATE_ARGUMENT_LIST)
                                                                                                                         DLanguageTemplateArgumentImpl(TEMPLATE_ARGUMENT)
-                                                                                                                          DLanguageTypeImpl(TYPE)
-                                                                                                                            DLanguageBasicTypeImpl(BASIC_TYPE)
-                                                                                                                              DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                                                                                                                IDENTIFIER
-                                                                                                                                  PsiElement(DLanguageTokenType.ID)('a')
+                                                                                                                          DLanguageBasicTypeImpl(BASIC_TYPE)
+                                                                                                                            DLanguageIdentifierListImpl(IDENTIFIER_LIST)
+                                                                                                                              IDENTIFIER
+                                                                                                                                PsiElement(DLanguageTokenType.ID)('a')
                                                                                                                         PsiElement(DLanguageTokenType.,)(',')
                                                                                                                         DLanguageTemplateArgumentListImpl(TEMPLATE_ARGUMENT_LIST)
                                                                                                                           DLanguageTemplateArgumentImpl(TEMPLATE_ARGUMENT)
-                                                                                                                            DLanguageTypeImpl(TYPE)
-                                                                                                                              DLanguageBasicTypeImpl(BASIC_TYPE)
-                                                                                                                                DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                                                                                                                  IDENTIFIER
-                                                                                                                                    PsiElement(DLanguageTokenType.ID)('b')
+                                                                                                                            DLanguageBasicTypeImpl(BASIC_TYPE)
+                                                                                                                              DLanguageIdentifierListImpl(IDENTIFIER_LIST)
+                                                                                                                                IDENTIFIER
+                                                                                                                                  PsiElement(DLanguageTokenType.ID)('b')
                                                                                                                       PsiElement(DLanguageTokenType.))(')')
                                                                                                 DLanguageOrExpressionImpl(OR_EXPRESSION)
                                                                                                   DLanguageXorExpressionImpl(XOR_EXPRESSION)
