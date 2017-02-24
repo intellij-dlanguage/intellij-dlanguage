@@ -178,7 +178,7 @@ public interface DLanguageTypes {
   IElementType IS_EXPRESSION = new DLanguageElementType("IS_EXPRESSION");
   IElementType KEY_VALUE_PAIR = new DLanguageElementType("KEY_VALUE_PAIR");
   IElementType KEY_VALUE_PAIRS = new DLanguageElementType("KEY_VALUE_PAIRS");
-  IElementType LABELED_STATEMENT = new DLanguageElementType("LABELED_STATEMENT");
+  IElementType LABELED_STATEMENT = DElementTypeFactory.factory("LABELED_STATEMENT");
   IElementType LAMBDA = new DLanguageElementType("LAMBDA");
   IElementType LAST_CATCH = new DLanguageElementType("LAST_CATCH");
   IElementType LAST_EXP = new DLanguageElementType("LAST_EXP");
@@ -191,7 +191,7 @@ public interface DLanguageTypes {
   IElementType MIXIN_EXPRESSION = new DLanguageElementType("MIXIN_EXPRESSION");
   IElementType MIXIN_STATEMENT = new DLanguageElementType("MIXIN_STATEMENT");
   IElementType MIXIN_TEMPLATE_NAME = new DLanguageElementType("MIXIN_TEMPLATE_NAME");
-  IElementType MODULE_DECLARATION = new DLanguageElementType("MODULE_DECLARATION");
+  IElementType MODULE_DECLARATION = DElementTypeFactory.factory("MODULE_DECLARATION");
   IElementType MODULE_FULLY_QUALIFIED_NAME = new DLanguageElementType("MODULE_FULLY_QUALIFIED_NAME");
   IElementType MULTIPLE_ASSIGN = new DLanguageElementType("MULTIPLE_ASSIGN");
   IElementType MUL_EXPRESSION = new DLanguageElementType("MUL_EXPRESSION");
@@ -294,7 +294,7 @@ public interface DLanguageTypes {
   IElementType UNIT_TESTING = new DLanguageElementType("UNIT_TESTING");
   IElementType UPR_EXPRESSION = new DLanguageElementType("UPR_EXPRESSION");
   IElementType USER_DEFINED_ATTRIBUTE = new DLanguageElementType("USER_DEFINED_ATTRIBUTE");
-  IElementType VAR_DECLARATIONS = new DLanguageElementType("VAR_DECLARATIONS");
+  IElementType VAR_DECLARATIONS = DElementTypeFactory.factory("VAR_DECLARATIONS");
   IElementType VAR_DECLARATOR = new DLanguageElementType("VAR_DECLARATOR");
   IElementType VAR_DECLARATOR_IDENTIFIER = new DLanguageElementType("VAR_DECLARATOR_IDENTIFIER");
   IElementType VERSION_CONDITION = new DLanguageElementType("VERSION_CONDITION");

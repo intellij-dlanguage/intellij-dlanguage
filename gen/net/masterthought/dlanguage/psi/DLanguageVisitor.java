@@ -632,7 +632,7 @@ public class DLanguageVisitor extends PsiElementVisitor {
   }
 
   public void visitLabeledStatement(@NotNull DLanguageLabeledStatement o) {
-    visitPsiElement(o);
+    visitDNamedElement(o);
   }
 
   public void visitLambda(@NotNull DLanguageLambda o) {
@@ -684,7 +684,7 @@ public class DLanguageVisitor extends PsiElementVisitor {
   }
 
   public void visitModuleDeclaration(@NotNull DLanguageModuleDeclaration o) {
-    visitPsiElement(o);
+    visitDNamedElement(o);
   }
 
   public void visitModuleFullyQualifiedName(@NotNull DLanguageModuleFullyQualifiedName o) {
@@ -1096,7 +1096,7 @@ public class DLanguageVisitor extends PsiElementVisitor {
   }
 
   public void visitVarDeclarations(@NotNull DLanguageVarDeclarations o) {
-    visitPsiElement(o);
+    visitDNamedElement(o);
   }
 
   public void visitVarDeclarator(@NotNull DLanguageVarDeclarator o) {

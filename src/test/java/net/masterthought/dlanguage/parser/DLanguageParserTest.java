@@ -311,6 +311,11 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
    public void testbug_try_catch() { doTest(true, true);}
    public void testbug_fixes() { doTest(true, true);}
 
+// standard library
+
+    public void teststdlib_array() {
+        doTest(true, true);
+    }
 
 }
 

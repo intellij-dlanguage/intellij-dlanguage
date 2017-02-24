@@ -12,10 +12,17 @@ import net.masterthought.dlanguage.icons.DLanguageIcons;
 import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.references.DReference;
 import net.masterthought.dlanguage.stubs.*;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static com.intellij.psi.util.PsiTreeUtil.getChildOfType;
+import static com.intellij.psi.util.PsiTreeUtil.getChildrenOfType;
 
 
 /**
@@ -548,6 +555,112 @@ public class DPsiImplUtil {
             }
         };
     }
+
+    public static DLanguageProtectionAttribute getProtection(DLanguageClassDeclaration o) {
+        return getChildOfType(o, DLanguageProtectionAttribute.class);
+    }
+
+    public static List<DLanguageFuncDeclaration> getMethods(DLanguageClassDeclaration o) {
+        final DLanguageFuncDeclaration[] methods = getChildrenOfType(o, DLanguageFuncDeclaration.class);
+        if (methods != null)
+            return Arrays.asList(methods);
+        return new ArrayList<>();
+    }
+
+    public static List<DLanguageVarDeclarations> getVariables(DLanguageClassDeclaration o) {
+        final DLanguageVarDeclarations[] methods = getChildrenOfType(o, DLanguageVarDeclarations.class);
+        if (methods != null)
+            return Arrays.asList(methods);
+        return new ArrayList<>();
+    }
+
+    public static List<DLanguageFuncDeclaration> getPropertyMethods(DLanguageClassDeclaration o) {
+        final DLanguageFuncDeclaration[] methods = getChildrenOfType(o, DLanguageFuncDeclaration.class);
+        if (methods == null)
+            return new ArrayList<>();
+        ArrayList<DLanguageFuncDeclaration> toReturn = new ArrayList<>();
+        for (DLanguageFuncDeclaration method : methods) {
+            if (getChildOfType(method, DLanguagePropertyIdentifier.class).getText().equals("property"))
+                toReturn.add(method);
+        }
+        return toReturn;
+    }
+
+    public static List<DLanguageTemplateParameter> getTemplateArguments(DLanguageClassDeclaration o) {
+        final DLanguageTemplateParameter[] methods = getChildrenOfType(o, DLanguageTemplateParameter.class);
+        if (methods != null)
+            return Arrays.asList(methods);
+        return new ArrayList<>();
+    }
+
     // ------------- Alias Definition ------------------ //
+
+    // ------------ Module Declaration ----------------- //
+
+    @NotNull
+    public static String getName(@NotNull DLanguageModuleDeclaration o) {
+        DLanguageModuleDeclarationStub stub = o.getStub();
+        if (stub != null) return StringUtil.notNullize(stub.getName());
+
+        if (o.getModuleFullyQualifiedName().getText() != null) {
+            return o.getModuleFullyQualifiedName().getText();
+        } else {
+            return "not found";
+        }
+    }
+
+    @Nullable
+    public static PsiElement getNameIdentifier(@NotNull DLanguageModuleDeclaration o) {
+        ASTNode keyNode = o.getNode();
+        return keyNode != null ? keyNode.getPsi() : null;
+    }
+
+    @Nullable
+    public static PsiElement setName(@NotNull DLanguageModuleDeclaration o, @NotNull String newName) {
+        PsiElement e = DElementFactory.createDLanguageModuleFromText(o.getProject(), newName);
+        if (e == null) return null;
+        o.replace(e);
+        return o;
+    }
+
+    @NotNull
+    public static PsiReference getReference(@NotNull DLanguageModuleDeclaration o) {
+        return new DReference(o, TextRange.from(0, getName(o).length()));
+    }
+
+    @NotNull
+    public static ItemPresentation getPresentation(final DLanguageModuleDeclaration o) {
+        return new ItemPresentation() {
+            @Nullable
+            @Override
+            public String getPresentableText() {
+                return o.getName();
+            }
+
+            /**
+             * This is needed to decipher between files when resolving multiple references.
+             */
+            @Nullable
+            @Override
+            public String getLocationString() {
+                final PsiFile psiFile = o.getContainingFile();
+                return psiFile instanceof DLanguageFile ? ((DLanguageFile) psiFile).getModuleOrFileName() : null;
+            }
+
+            @Nullable
+            @Override
+            public Icon getIcon(boolean unused) {
+                return DLanguageIcons.FILE;
+            }
+        };
+    }
+
+    @Contract("null -> null")
+    public static DLanguageProtectionAttribute getProtection(DLanguageModuleDeclaration o) {
+        return getChildOfType(o, DLanguageProtectionAttribute.class);
+    }
+
+    // ------------ Module Declaration ----------------- //
+
 }
 

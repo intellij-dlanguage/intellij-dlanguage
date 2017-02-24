@@ -16,6 +16,7 @@ public class DElementTypeFactory {
         if (name.equals("DESTRUCTOR")) return new DLanguageDestructorStubElementType(name);
         if (name.equals("STRUCT_DECLARATION")) return new DLanguageStructDeclarationStubElementType(name);
         if (name.equals("ALIAS_DECLARATION")) return new DLanguageAliasDeclarationStubElementType(name);
+        if (name.equals("MODULE_DECLARATION")) return new DLanguageModuleDeclarationStubElementType(name);
         throw new RuntimeException("Unknown element type: " + name);
     }
 }

@@ -39,6 +39,12 @@ public class DLanguageTemplateArgumentsImpl extends ASTWrapperPsiElement impleme
   }
 
   @Override
+  @Nullable
+  public PsiElement getOpComma() {
+    return findChildByType(OP_COMMA);
+  }
+
+  @Override
   @NotNull
   public PsiElement getOpNot() {
     return notNullChild(findChildByType(OP_NOT));

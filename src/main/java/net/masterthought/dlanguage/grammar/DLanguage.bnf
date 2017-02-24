@@ -17,11 +17,11 @@
   psiImplUtilClass="net.masterthought.dlanguage.psi.impl.DPsiImplUtil"
 
   // used to implement DNamedElement in the generated interfaces
-  implements("Identifier|FuncDeclaration|ClassDeclaration|TemplateDeclaration|Constructor|Destructor|StructDeclaration|AliasDeclaration")="net.masterthought.dlanguage.psi.DNamedElement"
+  implements("Identifier|LabeledStatement|VarDeclarations|FuncDeclaration|ClassDeclaration|TemplateDeclaration|Constructor|Destructor|StructDeclaration|AliasDeclaration|ModuleDeclaration")="net.masterthought.dlanguage.psi.DNamedElement"
 
   // used to extend to use stubs
-  extends("Identifier|FuncDeclaration|ClassDeclaration|TemplateDeclaration|Constructor|Destructor|StructDeclaration|AliasDeclaration")="net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase<?>"
-  elementTypeFactory("Identifier|FuncDeclaration|ClassDeclaration|TemplateDeclaration|Constructor|Destructor|StructDeclaration|AliasDeclaration")="net.masterthought.dlanguage.psi.impl.DElementTypeFactory.factory"
+  extends("Identifier|LabeledStatement|VarDeclarations|FuncDeclaration|ClassDeclaration|TemplateDeclaration|Constructor|Destructor|StructDeclaration|AliasDeclaration|ModuleDeclaration")="net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase<?>"
+  elementTypeFactory("Identifier|LabeledStatement|VarDeclarations|FuncDeclaration|ClassDeclaration|TemplateDeclaration|Constructor|Destructor|StructDeclaration|AliasDeclaration|ModuleDeclaration")="net.masterthought.dlanguage.psi.impl.DElementTypeFactory.factory"
 
 
   generateTokenAccessors=true
@@ -230,7 +230,11 @@ StringLiteral  ::= (WYSIWYG_STRING|ALTERNATE_WYSIWYG_STRING|DOUBLE_QUOTED_STRING
 // Module
 
 ModuleDeclaration ::=
-    Attribute? 'module' ModuleFullyQualifiedName ';'
+    Attribute? 'module' ModuleFullyQualifiedName ';'{
+        methods=[getName getNameIdentifier getReference setName getPresentation getProtection getClassDeclarations getTemplateDeclerations getStructDeclerations getVarDeclarations getImportStatements]
+        stubClass="net.masterthought.dlanguage.stubs.DLanguageModuleDeclarationStub"
+
+    }
 
 private recover ::= !(ModuleDeclaration| DeclDefs | Statement | SHEBANG | ';')
 
@@ -725,8 +729,9 @@ ScopeStatement ::=
     | BlockStatement
 
 LabeledStatement ::=
-    Identifier ':' Statement? //todo make named element
-//    | Identifier ':'
+    Identifier ':' Statement? {
+
+    }
 
 
 BlockStatement ::=
@@ -1639,17 +1644,18 @@ Opcode ::=
 Declaration ::=
     EnumDeclaration
    | FuncDeclaration
+   | VarDeclarations //must come before alias decleration
    | AliasDeclaration
    | AggregateDeclaration
    | ImportDeclaration
    | TemplateDeclaration
-   | VarDeclarations
 
-AliasDeclaration ::= 'alias' Identifier '=' Type TemplateArguments? ';'
+AliasDeclaration ::=
+  'alias' Identifier '=' Type TemplateArguments? ';'
   | 'alias' Identifier '=' Initializer ';'
   | 'alias' StorageClasses? BasicType (FuncDeclarator|Declarator) ';'
   | 'alias' AliasDeclarationX ';'{
-     methods=[getName getNameIdentifier getReference setName getPresentation]
+     methods=[getName getNameIdentifier getReference setName getPresentation getProtection]
      stubClass="net.masterthought.dlanguage.stubs.DLanguageAliasDeclarationStub"
 }
 
@@ -1669,8 +1675,10 @@ AutoDeclarationY ::=
     Identifier TemplateParameters? '=' Initializer
 
 VarDeclarations ::=
-    StorageClasses? BasicType Declarators ';'
-    | AutoDeclaration
+    StorageClasses? BasicType? Declarators ';'
+    | AutoDeclaration {
+
+    }
 
 Declarators ::=
     DeclaratorInitializer (',' DeclaratorIdentifierList)?
@@ -1745,6 +1753,7 @@ StorageClass ::=
 
 Initializer ::=
     VoidInitializer
+    | TemplateInstance
     | NonVoidInitializer
 
 VoidInitializer ::=
@@ -1756,7 +1765,7 @@ NonVoidInitializer ::=
     | AssignExpression
 
 ArrayInitializer ::=
-    '[' ArrayMemberInitializations? ','? ']'
+    '[' ArrayMemberInitializations? ','? ']' AssignExpression?
 
 
 ArrayMemberInitializations ::=
@@ -1779,9 +1788,9 @@ StructMemberInitializer ::=
 FuncDeclaration ::=
     StorageClasses? BasicType FuncDeclarator (FunctionBody |';'| '=')?
     | AutoFuncDeclaration {
-      methods=[getName getNameIdentifier getReference setName getPresentation]
+      methods=[getName getNameIdentifier getReference setName getPresentation getArguments getProtection getTemplateArguments]
       stubClass="net.masterthought.dlanguage.stubs.DLanguageFuncDeclarationStub"
-      }
+    }
 
 private AutoFuncDeclaration ::=
     StorageClasses Identifier FuncDeclaratorSuffix FunctionBody?
@@ -1923,9 +1932,9 @@ ClassDeclaration ::=
     'class' Identifier ';'
     | 'class' Identifier BaseClassList? AggregateBody
     | ClassTemplateDeclaration {
-       methods=[getName getNameIdentifier getReference setName getPresentation]
+       methods=[getName getNameIdentifier getReference setName getPresentation getTemplateArguments getConstructors getMethods getVariables getPropertyMethods getProtection]
        stubClass="net.masterthought.dlanguage.stubs.DLanguageClassDeclarationStub"
-       }
+    }
 
 ClassTemplateDeclaration ::=
     'class' Identifier TemplateParameters Constraint? BaseClassList? AggregateBody
@@ -2021,7 +2030,7 @@ AnonymousEnumDeclaration ::=
 
 TemplateDeclaration ::=
     'template' Identifier TemplateParameters Constraint? '{' DeclDefs? '}' {
-      methods=[getName getNameIdentifier getReference setName getPresentation]
+      methods=[getName getNameIdentifier getReference setName getPresentation getTemplateArguments getPublicSymbols]
       stubClass="net.masterthought.dlanguage.stubs.DLanguageTemplateDeclarationStub"
     }
 
@@ -2038,10 +2047,10 @@ TemplateInstance ::=
     Identifier? TemplateArguments
 
 TemplateArguments ::=
-     '!' ('(' TemplateArgumentList? ')') | '!' TemplateSingleArgument
+     '!' ('(' TemplateArgumentList? ','? ')') | '!' TemplateSingleArgument
 
 TemplateArgumentList ::=
-    TemplateArgument (',' TemplateArgumentList?)?
+    TemplateArgument [',' TemplateArgumentList?]
 
 TemplateArgument ::=
     TypeCtors? BasicType BasicType2?//this was added here becuase things like foo!(int) would sometimes error, and this line seems to prevent that.

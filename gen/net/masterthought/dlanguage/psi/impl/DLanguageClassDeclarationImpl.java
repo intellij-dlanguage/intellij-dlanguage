@@ -94,4 +94,24 @@ public class DLanguageClassDeclarationImpl extends DNamedStubbedPsiElementBase<D
     return DPsiImplUtil.getPresentation(this);
   }
 
+  public List<DLanguageTemplateParameter> getTemplateArguments() {
+    return DPsiImplUtil.getTemplateArguments(this);
+  }
+
+  public List<DLanguageFuncDeclaration> getMethods() {
+    return DPsiImplUtil.getMethods(this);
+  }
+
+  public List<DLanguageVarDeclarations> getVariables() {
+    return DPsiImplUtil.getVariables(this);
+  }
+
+  public List<DLanguageFuncDeclaration> getPropertyMethods() {
+    return DPsiImplUtil.getPropertyMethods(this);
+  }
+
+  public DLanguageProtectionAttribute getProtection() {
+    return DPsiImplUtil.getProtection(this);
+  }
+
 }

@@ -8,10 +8,14 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import net.masterthought.dlanguage.psi.*;
+import com.intellij.psi.stubs.IStubElementType;
 
-public class DLanguageLabeledStatementImpl extends ASTWrapperPsiElement implements DLanguageLabeledStatement {
+public class DLanguageLabeledStatementImpl extends DNamedStubbedPsiElementBase<?> implements DLanguageLabeledStatement {
+
+  public DLanguageLabeledStatementImpl(<T> stub, IStubElementType type) {
+    super(stub, type);
+  }
 
   public DLanguageLabeledStatementImpl(ASTNode node) {
     super(node);

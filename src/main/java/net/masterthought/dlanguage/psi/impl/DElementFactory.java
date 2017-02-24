@@ -106,13 +106,19 @@ public class DElementFactory {
 
     public static PsiElement createDLanguageStructDeclarationFromText(Project project, String name) {
         PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
-        if (e instanceof DLanguageDestructor) return e;
+        if (e instanceof DLanguageStructDeclaration) return e;
         return null;
     }
 
     public static PsiElement createDLanguageAliasDeclarationFromText(Project project, String name) {
         PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
-        if (e instanceof DLanguageDestructor) return e;
+        if (e instanceof DLanguageAliasDeclaration) return e;
+        return null;
+    }
+
+    public static PsiElement createDLanguageModuleFromText(Project project, String name) {
+        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
+        if (e instanceof DLanguageModuleDeclaration) return e;
         return null;
     }
 }

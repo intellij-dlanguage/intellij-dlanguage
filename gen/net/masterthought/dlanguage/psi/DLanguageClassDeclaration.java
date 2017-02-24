@@ -44,4 +44,14 @@ public interface DLanguageClassDeclaration extends DNamedElement, StubBasedPsiEl
   @NotNull
   ItemPresentation getPresentation();
 
+  List<DLanguageTemplateParameter> getTemplateArguments();
+
+  List<DLanguageFuncDeclaration> getMethods();
+
+  List<DLanguageVarDeclarations> getVariables();
+
+  List<DLanguageFuncDeclaration> getPropertyMethods();
+
+  DLanguageProtectionAttribute getProtection();
+
 }
