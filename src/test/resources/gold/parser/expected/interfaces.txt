@@ -3,7 +3,7 @@ D Language File
     DLanguageDeclDefImpl(DECL_DEF)
       DLanguageDeclarationImpl(DECLARATION)
         DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
-          DLanguageInterfaceDeclarationImpl(INTERFACE_DECLARATION)
+          INTERFACE_DECLARATION
             PsiElement(DLanguageTokenType.interface)('interface')
             IDENTIFIER
               PsiElement(DLanguageTokenType.ID)('D')
@@ -54,7 +54,7 @@ D Language File
         DLanguageDeclDefImpl(DECL_DEF)
           DLanguageDeclarationImpl(DECLARATION)
             DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
-              DLanguageInterfaceDeclarationImpl(INTERFACE_DECLARATION)
+              INTERFACE_DECLARATION
                 PsiElement(DLanguageTokenType.interface)('interface')
                 IDENTIFIER
                   PsiElement(DLanguageTokenType.ID)('D')
@@ -129,7 +129,7 @@ D Language File
           DLanguageDeclDefImpl(DECL_DEF)
             DLanguageDeclarationImpl(DECLARATION)
               DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
-                DLanguageInterfaceDeclarationImpl(INTERFACE_DECLARATION)
+                INTERFACE_DECLARATION
                   PsiElement(DLanguageTokenType.interface)('interface')
                   IDENTIFIER
                     PsiElement(DLanguageTokenType.ID)('D')
@@ -270,7 +270,7 @@ D Language File
               DLanguageDeclDefImpl(DECL_DEF)
                 DLanguageDeclarationImpl(DECLARATION)
                   DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
-                    DLanguageInterfaceDeclarationImpl(INTERFACE_DECLARATION)
+                    INTERFACE_DECLARATION
                       PsiElement(DLanguageTokenType.interface)('interface')
                       IDENTIFIER
                         PsiElement(DLanguageTokenType.ID)('D')
@@ -367,7 +367,7 @@ D Language File
                     DLanguageDeclDefImpl(DECL_DEF)
                       DLanguageDeclarationImpl(DECLARATION)
                         DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
-                          DLanguageInterfaceDeclarationImpl(INTERFACE_DECLARATION)
+                          INTERFACE_DECLARATION
                             PsiElement(DLanguageTokenType.interface)('interface')
                             IDENTIFIER
                               PsiElement(DLanguageTokenType.ID)('D')
@@ -509,7 +509,7 @@ D Language File
                         DLanguageDeclDefsImpl(DECL_DEFS)
                           DLanguageDeclDefImpl(DECL_DEF)
                             DLanguageDeclarationImpl(DECLARATION)
-                              DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                              VAR_DECLARATIONS
                                 DLanguageBasicTypeImpl(BASIC_TYPE)
                                   DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                                     IDENTIFIER
@@ -601,7 +601,7 @@ D Language File
   DLanguageDeclDefsImpl(DECL_DEFS)
     DLanguageDeclDefImpl(DECL_DEF)
       DLanguageDeclarationImpl(DECLARATION)
-        DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+        VAR_DECLARATIONS
           DLanguageBasicTypeImpl(BASIC_TYPE)
             DLanguageIdentifierListImpl(IDENTIFIER_LIST)
               IDENTIFIER
@@ -698,7 +698,7 @@ D Language File
     DLanguageDeclDefImpl(DECL_DEF)
       DLanguageDeclarationImpl(DECLARATION)
         DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
-          DLanguageInterfaceDeclarationImpl(INTERFACE_DECLARATION)
+          INTERFACE_DECLARATION
             PsiElement(DLanguageTokenType.interface)('interface')
             IDENTIFIER
               PsiElement(DLanguageTokenType.ID)('D')
@@ -847,7 +847,7 @@ D Language File
         DLanguageDeclDefsImpl(DECL_DEFS)
           DLanguageDeclDefImpl(DECL_DEF)
             DLanguageDeclarationImpl(DECLARATION)
-              DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+              VAR_DECLARATIONS
                 DLanguageBasicTypeImpl(BASIC_TYPE)
                   DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                     IDENTIFIER
@@ -939,7 +939,7 @@ D Language File
   DLanguageDeclDefsImpl(DECL_DEFS)
     DLanguageDeclDefImpl(DECL_DEF)
       DLanguageDeclarationImpl(DECLARATION)
-        DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+        VAR_DECLARATIONS
           DLanguageBasicTypeImpl(BASIC_TYPE)
             DLanguageIdentifierListImpl(IDENTIFIER_LIST)
               IDENTIFIER
@@ -1034,7 +1034,7 @@ D Language File
   DLanguageDeclDefsImpl(DECL_DEFS)
     DLanguageDeclDefImpl(DECL_DEF)
       DLanguageDeclarationImpl(DECLARATION)
-        DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+        VAR_DECLARATIONS
           DLanguageBasicTypeImpl(BASIC_TYPE)
             DLanguageIdentifierListImpl(IDENTIFIER_LIST)
               IDENTIFIER
@@ -1077,7 +1077,7 @@ D Language File
     DLanguageDeclDefsImpl(DECL_DEFS)
       DLanguageDeclDefImpl(DECL_DEF)
         DLanguageDeclarationImpl(DECLARATION)
-          DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+          VAR_DECLARATIONS
             DLanguageBasicTypeImpl(BASIC_TYPE)
               DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                 IDENTIFIER
@@ -1173,7 +1173,7 @@ D Language File
     DLanguageDeclDefImpl(DECL_DEF)
       DLanguageDeclarationImpl(DECLARATION)
         DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
-          DLanguageInterfaceDeclarationImpl(INTERFACE_DECLARATION)
+          INTERFACE_DECLARATION
             PsiElement(DLanguageTokenType.interface)('interface')
             IDENTIFIER
               PsiElement(DLanguageTokenType.ID)('D')

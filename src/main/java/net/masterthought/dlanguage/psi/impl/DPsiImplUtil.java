@@ -12,17 +12,17 @@ import net.masterthought.dlanguage.icons.DLanguageIcons;
 import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.references.DReference;
 import net.masterthought.dlanguage.stubs.*;
+import net.masterthought.dlanguage.utils.DResolveUtil;
+import net.masterthought.dlanguage.utils.DUtil;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
-import static com.intellij.psi.util.PsiTreeUtil.getChildOfType;
-import static com.intellij.psi.util.PsiTreeUtil.getChildrenOfType;
+import static com.intellij.psi.util.PsiTreeUtil.*;
+import static net.masterthought.dlanguage.utils.DResolveUtil.fromModulesToFiles;
 
 
 /**
@@ -112,8 +112,6 @@ public class DPsiImplUtil {
     }
     // ------------- Identifier ------------------ //
 
-    // For CodeFolding and not used in references directly much
-
     // ------------- Function Definition ------------------ //
     @NotNull
     public static String getName(@NotNull DLanguageFuncDeclaration o) {
@@ -167,6 +165,21 @@ public class DPsiImplUtil {
             }
         };
     }
+
+    public static List<DLanguageParameter> getArguments(DLanguageFuncDeclaration o) {
+        return Arrays.asList(getChildrenOfType(o.getFuncDeclaratorSuffix().getParameters(), DLanguageParameter.class));
+    }
+
+    public static List<DLanguageTemplateParameter> getTemplateArguments(DLanguageFuncDeclaration o) {
+        if (o.getFuncDeclaratorSuffix().getTemplateParameters() != null)
+            return Arrays.asList(getChildrenOfType(o.getFuncDeclaratorSuffix().getTemplateParameters(), DLanguageTemplateParameter.class));
+        return new ArrayList<>();
+    }
+
+    public static List<DLanguageProtectionAttribute> getProtection(DLanguageFuncDeclaration o) {
+        return Collections.singletonList(getChildOfType(o, DLanguageProtectionAttribute.class));
+    }
+
     // ------------- Function Definition ------------------ //
 
     // ------------- Class Definition ------------------ //
@@ -227,6 +240,119 @@ public class DPsiImplUtil {
             }
         };
     }
+
+
+    public static DLanguageProtectionAttribute getProtection(DLanguageClassDeclaration o) {
+        return getChildOfType(o, DLanguageProtectionAttribute.class);
+    }
+
+//    private static <T extends PsiElement> List<T> getXOfType(DLanguageStructDeclaration o,Class<? extends T> type,boolean inheritance,boolean mixin){
+//
+//    }
+
+    public static List<DLanguageFuncDeclaration> getMethods(DLanguageClassDeclaration o, boolean includeFromInheritance, boolean includeFromMixins) {
+        final DLanguageFuncDeclaration[] methods = getChildrenOfType(o, DLanguageFuncDeclaration.class);
+        if (methods != null)
+            return Arrays.asList(methods);
+        return new ArrayList<>();
+    }
+
+    public static List<DLanguageVarDeclarations> getVariables(DLanguageClassDeclaration o, boolean includeFromInheritance, boolean includeFromMixins) {
+        final DLanguageVarDeclarations[] methods = getChildrenOfType(o, DLanguageVarDeclarations.class);
+        if (methods != null)
+            return Arrays.asList(methods);
+        return new ArrayList<>();
+    }
+
+    public static List<DLanguageFuncDeclaration> getPropertyMethods(DLanguageClassDeclaration o, boolean includeFromInheritance, boolean includeFromMixins) {
+        final DLanguageFuncDeclaration[] methods = getChildrenOfType(o, DLanguageFuncDeclaration.class);
+        if (methods == null)
+            return new ArrayList<>();
+        ArrayList<DLanguageFuncDeclaration> toReturn = new ArrayList<>();
+        for (DLanguageFuncDeclaration method : methods) {
+            if (getChildOfType(method, DLanguagePropertyIdentifier.class).getText().equals("property"))
+                toReturn.add(method);
+        }
+        return toReturn;
+    }
+
+    public static List<DLanguageTemplateParameter> getTemplateArguments(DLanguageClassDeclaration o, boolean includeFromInheritance, boolean includeFromMixins) {
+        final DLanguageTemplateParameter[] methods = getChildrenOfType(o, DLanguageTemplateParameter.class);
+        if (methods != null)
+            return Arrays.asList(methods);
+        return new ArrayList<>();
+    }
+//
+//    public static List<DNamedElement> getPublicSymbols(DLanguageClassDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static List<DLanguageFuncDeclaration> getPublicMethods(DLanguageClassDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static List<DLanguageVarDeclarations> getPublicVariables(DLanguageClassDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static List<DNamedElement> getAllSymbols(DLanguageClassDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static List<DLanguageFuncDeclaration> getPublicPropertyMethods(DLanguageClassDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static List<DLanguageFuncDeclaration> getProtectedMethods(DLanguageClassDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static List<> getProtectedVariables(DLanguageClassDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static List<DLanguageFuncDeclaration> getProtectedPropertyMethods(DLanguageClassDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static String getBaseClassName(DLanguageClassDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static List<String> getInterfacesNames(DLanguageClassDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static List<DLanguageFuncDeclaration> getOverideMethods(DLanguageClassDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static List<DLanguageFuncDeclaration> getOverridePropertyMethods(DLanguageClassDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static List<> getDestructors(DLanguageClassDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static List<DLanguageConstructor> getPublicContructors(DLanguageClassDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static List<DLanguageConstructor> getProtectedConstructors(DLanguageClassDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static List<DLanguageConstructor> getPrivateConstructors(DLanguageClassDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static List<DLanguageDestructor> getPublicDestructors(DLanguageClassDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static List<DLanguageDestructor> getPrivateDestructors(DLanguageClassDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static List<DLanguageDestructor> getProtectedDestructors(DLanguageClassDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static List<DLanguageFuncDeclaration> getPrivateMethods(DLanguageClassDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static List<DLanguageVarDeclarations> getPrivateVariables(DLanguageClassDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static List<DLanguageFuncDeclaration> getPrivatePropertyMethod(DLanguageClassDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static List<DLanguageTemplateMixin> getMixins(DLanguageClassDeclaration o, boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+
     // ------------- Class Definition ------------------ //
 
     // ------------- Struct Definition ------------------ //
@@ -287,6 +413,119 @@ public class DPsiImplUtil {
             }
         };
     }
+
+    public static DLanguageProtectionAttribute getProtection(DLanguageStructDeclaration o) {
+        return getChildOfType(o, DLanguageProtectionAttribute.class);
+    }
+
+//    private static <T extends PsiElement> List<T> getXOfType(DLanguageStructDeclaration o,Class<? extends T> type,boolean inheritance,boolean mixin){
+//
+//    }
+
+    public static List<DLanguageFuncDeclaration> getMethods(DLanguageStructDeclaration o, boolean includeFromInheritance, boolean includeFromMixins) {
+        final DLanguageFuncDeclaration[] methods = getChildrenOfType(o, DLanguageFuncDeclaration.class);
+        if (methods != null)
+            return Arrays.asList(methods);
+        return new ArrayList<>();
+    }
+
+    public static List<DLanguageVarDeclarations> getVariables(DLanguageStructDeclaration o, boolean includeFromInheritance, boolean includeFromMixins) {
+        final DLanguageVarDeclarations[] methods = getChildrenOfType(o, DLanguageVarDeclarations.class);
+        if (methods != null)
+            return Arrays.asList(methods);
+        return new ArrayList<>();
+    }
+
+    public static List<DLanguageFuncDeclaration> getPropertyMethods(DLanguageStructDeclaration o, boolean includeFromInheritance, boolean includeFromMixins) {
+        final DLanguageFuncDeclaration[] methods = getChildrenOfType(o, DLanguageFuncDeclaration.class);
+        if (methods == null)
+            return new ArrayList<>();
+        ArrayList<DLanguageFuncDeclaration> toReturn = new ArrayList<>();
+        for (DLanguageFuncDeclaration method : methods) {
+            if (getChildOfType(method, DLanguagePropertyIdentifier.class).getText().equals("property"))
+                toReturn.add(method);
+        }
+        return toReturn;
+    }
+
+    public static List<DLanguageTemplateParameter> getTemplateArguments(DLanguageStructDeclaration o, boolean includeFromInheritance, boolean includeFromMixins) {
+        final DLanguageTemplateParameter[] methods = getChildrenOfType(o, DLanguageTemplateParameter.class);
+        if (methods != null)
+            return Arrays.asList(methods);
+        return new ArrayList<>();
+    }
+
+//    public static List<DNamedElement> getPublicSymbols(DLanguageStructDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static List<DLanguageFuncDeclaration> getPublicMethods(DLanguageStructDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static List<DLanguageVarDeclarations> getPublicVariables(DLanguageStructDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static List<DNamedElement> getAllSymbols(DLanguageStructDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static List<DLanguageFuncDeclaration> getPublicPropertyMethods(DLanguageStructDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static List<DLanguageFuncDeclaration> getProtectedMethods(DLanguageStructDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static List<> getProtectedVariables(DLanguageStructDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static List<DLanguageFuncDeclaration> getProtectedPropertyMethods(DLanguageStructDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static String getBaseClassName(DLanguageStructDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static List<String> getInterfacesNames(DLanguageStructDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static List<DLanguageFuncDeclaration> getOverideMethods(DLanguageStructDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static List<DLanguageFuncDeclaration> getOverridePropertyMethods(DLanguageStructDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static List<> getDestructors(DLanguageStructDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static List<DLanguageConstructor> getPublicContructors(DLanguageStructDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static List<DLanguageConstructor> getProtectedConstructors(DLanguageStructDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static List<DLanguageConstructor> getPrivateConstructors(DLanguageStructDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static List<DLanguageDestructor> getPublicDestructors(DLanguageStructDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static List<DLanguageDestructor> getPrivateDestructors(DLanguageStructDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static List<DLanguageDestructor> getProtectedDestructors(DLanguageStructDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static List<DLanguageFuncDeclaration> getPrivateMethods(DLanguageStructDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static List<DLanguageVarDeclarations> getPrivateVariables(DLanguageStructDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static List<DLanguageFuncDeclaration> getPrivatePropertyMethod(DLanguageStructDeclaration o,boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+//    public static List<DLanguageTemplateMixin> getMixins(DLanguageStructDeclaration o, boolean includeFromInheritance, boolean includeFromMixins){
+//
+//    }
+
+
     // ------------- Struct Definition ------------------ //
 
     // ------------- Template Definition ------------------ //
@@ -497,7 +736,7 @@ public class DPsiImplUtil {
     }
     // ------------- Destructor ------------------ //
 
-    // ------------- Class Definition ------------------ //
+    // ------------- Alias Definition ------------------ //
     @NotNull
     public static String getName(@NotNull DLanguageAliasDeclaration o) {
         DLanguageAliasDeclarationStub stub = o.getStub();
@@ -554,43 +793,6 @@ public class DPsiImplUtil {
                 return DLanguageIcons.FILE;
             }
         };
-    }
-
-    public static DLanguageProtectionAttribute getProtection(DLanguageClassDeclaration o) {
-        return getChildOfType(o, DLanguageProtectionAttribute.class);
-    }
-
-    public static List<DLanguageFuncDeclaration> getMethods(DLanguageClassDeclaration o) {
-        final DLanguageFuncDeclaration[] methods = getChildrenOfType(o, DLanguageFuncDeclaration.class);
-        if (methods != null)
-            return Arrays.asList(methods);
-        return new ArrayList<>();
-    }
-
-    public static List<DLanguageVarDeclarations> getVariables(DLanguageClassDeclaration o) {
-        final DLanguageVarDeclarations[] methods = getChildrenOfType(o, DLanguageVarDeclarations.class);
-        if (methods != null)
-            return Arrays.asList(methods);
-        return new ArrayList<>();
-    }
-
-    public static List<DLanguageFuncDeclaration> getPropertyMethods(DLanguageClassDeclaration o) {
-        final DLanguageFuncDeclaration[] methods = getChildrenOfType(o, DLanguageFuncDeclaration.class);
-        if (methods == null)
-            return new ArrayList<>();
-        ArrayList<DLanguageFuncDeclaration> toReturn = new ArrayList<>();
-        for (DLanguageFuncDeclaration method : methods) {
-            if (getChildOfType(method, DLanguagePropertyIdentifier.class).getText().equals("property"))
-                toReturn.add(method);
-        }
-        return toReturn;
-    }
-
-    public static List<DLanguageTemplateParameter> getTemplateArguments(DLanguageClassDeclaration o) {
-        final DLanguageTemplateParameter[] methods = getChildrenOfType(o, DLanguageTemplateParameter.class);
-        if (methods != null)
-            return Arrays.asList(methods);
-        return new ArrayList<>();
     }
 
     // ------------- Alias Definition ------------------ //
@@ -660,7 +862,397 @@ public class DPsiImplUtil {
         return getChildOfType(o, DLanguageProtectionAttribute.class);
     }
 
+
+    //todo include mixin contents in these results
+
+    private static DLanguageIdentifier getLastIdentifier(DLanguageQualifiedIdentifierList t) {
+        if (t.getQualifiedIdentifierList() != null)
+            return getLastIdentifier(t.getQualifiedIdentifierList());
+        return t.getIdentifier();
+    }
+
+    private static <T extends PsiElement> List<T> getXofType(DLanguageModuleDeclaration o, Class<? extends T> aClass, boolean includeMixins) {
+        final Set<DLanguageFile> dLanguageFiles = getdLanguageFiles(o);
+        List<T> declarations = new ArrayList<>();
+        if (includeMixins) {
+            final List<DLanguageTemplateMixin> templateMixins = getTemplateMixins(o, true);
+            for (DLanguageTemplateMixin templateMixin : templateMixins) {
+                final Set<PsiNamedElement> definitionNodes = DResolveUtil.findDefinitionNodes(getLastIdentifier(templateMixin.getMixinTemplateName().getQualifiedIdentifierList()));
+                if (definitionNodes.size() > 1) {
+                    throw new IllegalStateException("this shouldn't be happening");
+                }
+                for (PsiNamedElement definitionNode : definitionNodes) {
+                    if (definitionNode instanceof DNamedElement)
+                        final Collection<T> childrenOfType = findChildrenOfType(definitionNode, aClass);
+                    declarations.addAll(childrenOfType);
+                }
+            }
+        }
+        for (DLanguageFile dLanguageFile : dLanguageFiles) {
+            final Collection<T> childrenOfType = findChildrenOfType(dLanguageFile, aClass);
+            declarations.addAll(childrenOfType);
+        }
+        return declarations;
+    }
+
+    public static List<DLanguageClassDeclaration> getClassDeclarations(DLanguageModuleDeclaration o, boolean includeFromMixins) {
+        return getXofType(o, DLanguageClassDeclaration.class, includeFromMixins);
+    }
+
+    public static List<DLanguageTemplateDeclaration> getTemplateDeclarations(DLanguageModuleDeclaration o, boolean includeFromMixins) {
+        return getXofType(o, DLanguageTemplateDeclaration.class, includeFromMixins);
+    }
+
+    public static List<DLanguageStructDeclaration> getStructDeclarations(DLanguageModuleDeclaration o, boolean includeFromMixins) {
+        return getXofType(o, DLanguageStructDeclaration.class, includeFromMixins);
+    }
+
+    public static List<DLanguageFuncDeclaration> getFunctionDeclarations(DLanguageModuleDeclaration o, boolean includeFromMixins) {
+        return getXofType(o, DLanguageFuncDeclaration.class, includeFromMixins);
+    }
+
+    public static List<DLanguageVarDeclarations> getVarDeclarations(DLanguageModuleDeclaration o, boolean includeFromMixins) {
+        return getXofType(o, DLanguageVarDeclarations.class, includeFromMixins);
+    }
+
+    public static List<DLanguageTemplateMixin> getTemplateMixins(DLanguageModuleDeclaration o, boolean includeFromMixins) {
+        return getXofType(o, DLanguageTemplateMixin.class, includeFromMixins);
+    }
+
+    private static <T extends PsiElement> List<T> getTopLevelXofType(DLanguageModuleDeclaration o, Class<? extends T> aClass, boolean includeMixins) {
+        final Set<DLanguageFile> dLanguageFiles = getdLanguageFiles(o);
+        List<T> declarations = new ArrayList<>();
+        if (includeMixins) {
+            final List<DLanguageTemplateMixin> templateMixins = getTopLevelTemplateMixins(o, true);
+            for (DLanguageTemplateMixin templateMixin : templateMixins) {
+                final Set<PsiNamedElement> definitionNodes = DResolveUtil.findDefinitionNodes(getLastIdentifier(templateMixin.getMixinTemplateName().getQualifiedIdentifierList()));
+                if (definitionNodes.size() > 1) {
+                    throw new IllegalStateException("this shouldn't be happening");
+                }
+                for (PsiNamedElement definitionNode : definitionNodes) {
+                    final Collection<T> childrenOfType = findChildrenOfType(definitionNode, aClass);
+                    for (T childOfType : childrenOfType) {
+                        if (null != getParentOfType(childOfType, DLanguageClassDeclaration.class))
+                            continue;
+                        if (null != getParentOfType(childOfType, DLanguageFuncDeclaration.class))
+                            continue;
+                        if (null != getParentOfType(childOfType, DLanguageStructDeclaration.class))
+                            continue;
+                        if (null != getParentOfType(childOfType, DLanguageTemplateDeclaration.class))
+                            continue;
+                        if (null != getParentOfType(childOfType, DLanguageVarDeclarations.class))
+                            continue;
+                        declarations.add(childOfType);
+                    }
+                }
+            }
+        }
+        for (DLanguageFile dLanguageFile : dLanguageFiles) {
+            final Collection<T> childrenOfType = findChildrenOfType(dLanguageFile, aClass);
+            for (T childOfType : childrenOfType) {
+                if (null != getParentOfType(childOfType, DLanguageClassDeclaration.class))
+                    continue;
+                if (null != getParentOfType(childOfType, DLanguageFuncDeclaration.class))
+                    continue;
+                if (null != getParentOfType(childOfType, DLanguageStructDeclaration.class))
+                    continue;
+                if (null != getParentOfType(childOfType, DLanguageTemplateDeclaration.class))
+                    continue;
+                if (null != getParentOfType(childOfType, DLanguageVarDeclarations.class))
+                    continue;
+                declarations.add(childOfType);
+            }
+        }
+        return declarations;
+    }
+
+    public static List<DLanguageClassDeclaration> getTopLevelClassDeclarations(DLanguageModuleDeclaration o, boolean includeFromMixins) {
+        return getTopLevelXofType(o, DLanguageClassDeclaration.class, includeFromMixins);
+    }
+
+    public static List<DLanguageTemplateDeclaration> getTopLevelTemplateDeclarations(DLanguageModuleDeclaration o, boolean includeFromMixins) {
+        return getTopLevelXofType(o, DLanguageTemplateDeclaration.class, includeFromMixins);
+    }
+
+    public static List<DLanguageStructDeclaration> getTopLevelStructDeclarations(DLanguageModuleDeclaration o, boolean includeFromMixins) {
+        return getTopLevelXofType(o, DLanguageStructDeclaration.class, includeFromMixins);
+    }
+
+    public static List<DLanguageVarDeclarations> getTopLevelVarDeclarations(DLanguageModuleDeclaration o, boolean includeFromMixins) {
+        return getTopLevelXofType(o, DLanguageVarDeclarations.class, includeFromMixins);
+    }
+
+    public static List<DLanguageFuncDeclaration> getTopLevelFunctionDeclarations(DLanguageModuleDeclaration o, boolean includeFromMixins) {
+        return getTopLevelXofType(o, DLanguageFuncDeclaration.class, includeFromMixins);
+    }
+
+    private static Set<DLanguageFile> getdLanguageFiles(DLanguageModuleDeclaration o) {
+        Set<String> module = new HashSet<>();
+        module.add(o.getModuleFullyQualifiedName().getText());
+        return fromModulesToFiles(o.getProject(), module);
+    }
+
+    public static Set<DNamedElement> getPubliclyAccessibleSymbols(DLanguageModuleDeclaration o, boolean includeFromMixins) {
+        Set<DNamedElement> symbols = new HashSet<>();
+        Set<DNamedElement> publicSymbols = new HashSet<>();
+        symbols.addAll(getTopLevelClassDeclarations(o, includeFromMixins));
+        symbols.addAll(getTopLevelTemplateDeclarations(o, includeFromMixins));
+        symbols.addAll(getTopLevelStructDeclarations(o, includeFromMixins));
+        symbols.addAll(getTopLevelFunctionDeclarations(o, includeFromMixins));
+        symbols.addAll(getTopLevelVarDeclarations(o, includeFromMixins));
+        for (DNamedElement symbol : symbols) {
+            if (DUtil.isPublic(symbol))
+                publicSymbols.add(symbol);
+        }
+        return publicSymbols;
+    }
+
+    public static Set<DNamedElement> getAllSymbols(DLanguageModuleDeclaration o, boolean includeFromMixins) {
+        Set<DNamedElement> symbols = new HashSet<>();
+        symbols.addAll(getClassDeclarations(o, includeFromMixins));
+        symbols.addAll(getTemplateDeclarations(o, includeFromMixins));
+        symbols.addAll(getStructDeclarations(o, includeFromMixins));
+        symbols.addAll(getFunctionDeclarations(o, includeFromMixins));
+        symbols.addAll(getVarDeclarations(o, includeFromMixins));
+        return symbols;
+    }
+
+    public static List<DLanguageTemplateMixin> getTopLevelTemplateMixins(DLanguageModuleDeclaration o, boolean includeFromMixins) {
+        return getTopLevelXofType(o, DLanguageTemplateMixin.class, includeFromMixins);
+    }
+
     // ------------ Module Declaration ----------------- //
+
+    // ------------- Interface Definition ------------------ //
+    @NotNull
+    public static String getName(@NotNull DLanguageInterfaceDeclaration o) {
+        DLanguageInterfaceDeclarationStub stub = o.getStub();
+        if (stub != null) return StringUtil.notNullize(stub.getName());
+        return o.getIdentifier().getText();
+    }
+
+    @Nullable
+    public static PsiElement getNameIdentifier(@NotNull DLanguageInterfaceDeclaration o) {
+        ASTNode keyNode = o.getNode();
+        return keyNode != null ? keyNode.getPsi() : null;
+    }
+
+    @Nullable
+    public static PsiElement setName(@NotNull DLanguageInterfaceDeclaration o, @NotNull String newName) {
+        PsiElement e = DElementFactory.createDLanguageInterfaceDeclarationFromText(o.getProject(), newName);
+        if (e == null) return null;
+        o.replace(e);
+        return o;
+    }
+
+    @NotNull
+    public static PsiReference getReference(@NotNull DLanguageInterfaceDeclaration o) {
+        return new DReference(o, TextRange.from(0, getName(o).length()));
+    }
+
+    @NotNull
+    public static ItemPresentation getPresentation(final DLanguageInterfaceDeclaration o) {
+        return new ItemPresentation() {
+            @Nullable
+            @Override
+            public String getPresentableText() {
+                return o.getName();
+            }
+
+            /**
+             * This is needed to decipher between files when resolving multiple references.
+             */
+            @Nullable
+            @Override
+            public String getLocationString() {
+                final PsiFile psiFile = o.getContainingFile();
+                return psiFile instanceof DLanguageFile ? ((DLanguageFile) psiFile).getModuleOrFileName() : null;
+            }
+
+            @Nullable
+            @Override
+            public Icon getIcon(boolean unused) {
+                return DLanguageIcons.FILE;
+            }
+        };
+    }
+    // ------------- Interface Definition ------------------ //
+
+    // ------------- Var Declaration ------------------ //
+    @NotNull
+    public static String getName(@NotNull DLanguageVarDeclarations o) {
+        DLanguageVarDeclarationStub stub = o.getStub();
+        if (stub != null) return StringUtil.notNullize(stub.getName());
+        if (o.getAutoDeclaration() != null)
+            return o.getAutoDeclaration().getAutoDeclarationX().getAutoDeclarationY().getIdentifier().getText();
+        return o.getDeclarators().getText();//doesn't have any one name??
+    }
+
+    @Nullable
+    public static PsiElement getNameIdentifier(@NotNull DLanguageVarDeclarations o) {
+        ASTNode keyNode = o.getNode();
+        return keyNode != null ? keyNode.getPsi() : null;
+    }
+
+    @Nullable
+    public static PsiElement setName(@NotNull DLanguageVarDeclarations o, @NotNull String newName) {
+        PsiElement e = DElementFactory.createDLanguageVarDeclarationFromText(o.getProject(), newName);
+        if (e == null) return null;
+        o.replace(e);
+        return o;
+    }
+
+    @NotNull
+    public static PsiReference getReference(@NotNull DLanguageVarDeclarations o) {
+        return new DReference(o, TextRange.from(0, getName(o).length()));
+    }
+
+    @NotNull
+    public static ItemPresentation getPresentation(final DLanguageVarDeclarations o) {
+        return new ItemPresentation() {
+            @Nullable
+            @Override
+            public String getPresentableText() {
+                return o.getName();
+            }
+
+            /**
+             * This is needed to decipher between files when resolving multiple references.
+             */
+            @Nullable
+            @Override
+            public String getLocationString() {
+                final PsiFile psiFile = o.getContainingFile();
+                return psiFile instanceof DLanguageFile ? ((DLanguageFile) psiFile).getModuleOrFileName() : null;
+            }
+
+            @Nullable
+            @Override
+            public Icon getIcon(boolean unused) {
+                return DLanguageIcons.FILE;
+            }
+        };
+    }
+    // ------------- Var Declaration ------------------ //
+
+    // ------------- Labeled Statement ------------------ //
+    @NotNull
+    public static String getName(@NotNull DLanguageLabeledStatement o) {
+        DLanguageLabeledStatementStub stub = o.getStub();
+        if (stub != null) return StringUtil.notNullize(stub.getName());
+        return o.getIdentifier().getText();
+    }
+
+    @Nullable
+    public static PsiElement getNameIdentifier(@NotNull DLanguageLabeledStatement o) {
+        ASTNode keyNode = o.getNode();
+        return keyNode != null ? keyNode.getPsi() : null;
+    }
+
+    @Nullable
+    public static PsiElement setName(@NotNull DLanguageLabeledStatement o, @NotNull String newName) {
+        PsiElement e = DElementFactory.createDLanguageLabeledStatementFromText(o.getProject(), newName);
+        if (e == null) return null;
+        o.replace(e);
+        return o;
+    }
+
+    @NotNull
+    public static PsiReference getReference(@NotNull DLanguageLabeledStatement o) {
+        return new DReference(o, TextRange.from(0, getName(o).length()));
+    }
+
+    @NotNull
+    public static ItemPresentation getPresentation(final DLanguageLabeledStatement o) {
+        return new ItemPresentation() {
+            @Nullable
+            @Override
+            public String getPresentableText() {
+                return o.getName();
+            }
+
+            /**
+             * This is needed to decipher between files when resolving multiple references.
+             */
+            @Nullable
+            @Override
+            public String getLocationString() {
+                final PsiFile psiFile = o.getContainingFile();
+                return psiFile instanceof DLanguageFile ? ((DLanguageFile) psiFile).getModuleOrFileName() : null;
+            }
+
+            @Nullable
+            @Override
+            public Icon getIcon(boolean unused) {
+                return DLanguageIcons.FILE;
+            }
+        };
+    }
+    // ------------- Labeled Statement ------------------ //
+
+    // ------------- Mixin Declaration ------------------ //
+    @NotNull
+    public static String getName(@NotNull DLanguageTemplateMixinDeclaration o) {
+        DLanguageTemplateMixinDeclarationStub stub = o.getStub();
+        if (stub != null) return StringUtil.notNullize(stub.getName());
+        return o.getIdentifier().getText();//doesn't have any one name??
+    }
+
+    @Nullable
+    public static PsiElement getNameIdentifier(@NotNull DLanguageTemplateMixinDeclaration o) {
+        ASTNode keyNode = o.getNode();
+        return keyNode != null ? keyNode.getPsi() : null;
+    }
+
+    @Nullable
+    public static PsiElement setName(@NotNull DLanguageTemplateMixinDeclaration o, @NotNull String newName) {
+        PsiElement e = DElementFactory.createDLanguageVarDeclarationFromText(o.getProject(), newName);
+        if (e == null) return null;
+        o.replace(e);
+        return o;
+    }
+
+    @NotNull
+    public static PsiReference getReference(@NotNull DLanguageTemplateMixinDeclaration o) {
+        return new DReference(o, TextRange.from(0, getName(o).length()));
+    }
+
+    @NotNull
+    public static ItemPresentation getPresentation(final DLanguageTemplateMixinDeclaration o) {
+        return new ItemPresentation() {
+            @Nullable
+            @Override
+            public String getPresentableText() {
+                return o.getName();
+            }
+
+            /**
+             * This is needed to decipher between files when resolving multiple references.
+             */
+            @Nullable
+            @Override
+            public String getLocationString() {
+                final PsiFile psiFile = o.getContainingFile();
+                return psiFile instanceof DLanguageFile ? ((DLanguageFile) psiFile).getModuleOrFileName() : null;
+            }
+
+            @Nullable
+            @Override
+            public Icon getIcon(boolean unused) {
+                return DLanguageIcons.FILE;
+            }
+        };
+    }
+
+    // ------------- Mixin Declaration ------------------ //
+
+    // -------------- Mixin Statement ------------------- //
+    public DLanguageTemplateMixinDeclaration getTemplate() {
+
+    }
+
+    // -------------- Mixin Statement ------------------- //
+
 
 }
 

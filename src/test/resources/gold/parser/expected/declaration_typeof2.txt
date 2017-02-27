@@ -30,7 +30,7 @@ D Language File
                 DLanguageDeclDefsImpl(DECL_DEFS)
                   DLanguageDeclDefImpl(DECL_DEF)
                     DLanguageDeclarationImpl(DECLARATION)
-                      DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                      VAR_DECLARATIONS
                         DLanguageBasicTypeImpl(BASIC_TYPE)
                           DLanguageTypeofImpl(TYPEOF)
                             PsiElement(DLanguageTokenType.typeof)('typeof')
@@ -63,7 +63,7 @@ D Language File
                   DLanguageDeclDefsImpl(DECL_DEFS)
                     DLanguageDeclDefImpl(DECL_DEF)
                       DLanguageDeclarationImpl(DECLARATION)
-                        DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                        VAR_DECLARATIONS
                           DLanguageBasicTypeImpl(BASIC_TYPE)
                             DLanguageTypeofImpl(TYPEOF)
                               PsiElement(DLanguageTokenType.typeof)('typeof')
@@ -112,7 +112,7 @@ D Language File
                         DLanguageDeclarationBlockImpl(DECLARATION_BLOCK)
                           DLanguageDeclDefImpl(DECL_DEF)
                             DLanguageDeclarationImpl(DECLARATION)
-                              DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                              VAR_DECLARATIONS
                                 DLanguageBasicTypeImpl(BASIC_TYPE)
                                   DLanguageTypeofImpl(TYPEOF)
                                     PsiElement(DLanguageTokenType.typeof)('typeof')
@@ -145,7 +145,7 @@ D Language File
                     DLanguageDeclDefsImpl(DECL_DEFS)
                       DLanguageDeclDefImpl(DECL_DEF)
                         DLanguageDeclarationImpl(DECLARATION)
-                          DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                          VAR_DECLARATIONS
                             DLanguageBasicTypeImpl(BASIC_TYPE)
                               DLanguageTypeofImpl(TYPEOF)
                                 PsiElement(DLanguageTokenType.typeof)('typeof')
@@ -179,7 +179,7 @@ D Language File
         DLanguageDeclDefsImpl(DECL_DEFS)
           DLanguageDeclDefImpl(DECL_DEF)
             DLanguageDeclarationImpl(DECLARATION)
-              DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+              VAR_DECLARATIONS
                 DLanguageBasicTypeImpl(BASIC_TYPE)
                   DLanguageTypeofImpl(TYPEOF)
                     PsiElement(DLanguageTokenType.typeof)('typeof')

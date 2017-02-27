@@ -1,5 +1,5 @@
 D Language File
-  DLanguageModuleDeclarationImpl(MODULE_DECLARATION)
+  MODULE_DECLARATION
     PsiElement(DLanguageTokenType.module)('module')
     DLanguageModuleFullyQualifiedNameImpl(MODULE_FULLY_QUALIFIED_NAME)
       IDENTIFIER
@@ -48,7 +48,7 @@ D Language File
               DLanguageBlockStatementImpl(BLOCK_STATEMENT)
                 PsiElement(DLanguageTokenType.{)('{')
                 PsiElement(DLanguageTokenType.})('}')
-  DLanguageModuleDeclarationImpl(MODULE_DECLARATION)
+  MODULE_DECLARATION
     PsiElement(DLanguageTokenType.module)('module')
     DLanguageModuleFullyQualifiedNameImpl(MODULE_FULLY_QUALIFIED_NAME)
       IDENTIFIER
@@ -263,7 +263,7 @@ D Language File
                                   DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
                                     DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
                                       DLanguageDeclarationImpl(DECLARATION)
-                                        DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                                        VAR_DECLARATIONS
                                           DLanguageBasicTypeImpl(BASIC_TYPE)
                                             DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                                               IDENTIFIER
@@ -655,7 +655,7 @@ D Language File
                                             DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
                                               DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
                                                 DLanguageDeclarationImpl(DECLARATION)
-                                                  DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                                                  VAR_DECLARATIONS
                                                     DLanguageBasicTypeImpl(BASIC_TYPE)
                                                       DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                                                         IDENTIFIER

@@ -8,10 +8,17 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import net.masterthought.dlanguage.stubs.DLanguageTemplateMixinDeclarationStub;
 import net.masterthought.dlanguage.psi.*;
+import com.intellij.navigation.ItemPresentation;
+import com.intellij.psi.PsiReference;
+import com.intellij.psi.stubs.IStubElementType;
 
-public class DLanguageTemplateMixinDeclarationImpl extends ASTWrapperPsiElement implements DLanguageTemplateMixinDeclaration {
+public class DLanguageTemplateMixinDeclarationImpl extends DNamedStubbedPsiElementBase<DLanguageTemplateMixinDeclarationStub> implements DLanguageTemplateMixinDeclaration {
+
+  public DLanguageTemplateMixinDeclarationImpl(DLanguageTemplateMixinDeclarationStub stub, IStubElementType type) {
+    super(stub, type);
+  }
 
   public DLanguageTemplateMixinDeclarationImpl(ASTNode node) {
     super(node);
@@ -41,7 +48,7 @@ public class DLanguageTemplateMixinDeclarationImpl extends ASTWrapperPsiElement 
   @Override
   @NotNull
   public DLanguageIdentifier getIdentifier() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class));
+    return notNullChild(PsiTreeUtil.getStubChildOfType(this, DLanguageIdentifier.class));
   }
 
   @Override
@@ -72,6 +79,31 @@ public class DLanguageTemplateMixinDeclarationImpl extends ASTWrapperPsiElement 
   @NotNull
   public PsiElement getOpBracesRight() {
     return notNullChild(findChildByType(OP_BRACES_RIGHT));
+  }
+
+  @NotNull
+  public String getName() {
+    return DPsiImplUtil.getName(this);
+  }
+
+  @Nullable
+  public PsiElement getNameIdentifier() {
+    return DPsiImplUtil.getNameIdentifier(this);
+  }
+
+  @NotNull
+  public PsiReference getReference() {
+    return DPsiImplUtil.getReference(this);
+  }
+
+  @Nullable
+  public PsiElement setName(String newName) {
+    return DPsiImplUtil.setName(this, newName);
+  }
+
+  @NotNull
+  public ItemPresentation getPresentation() {
+    return DPsiImplUtil.getPresentation(this);
   }
 
 }

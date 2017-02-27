@@ -9,7 +9,7 @@ import net.masterthought.dlanguage.stubs.DLanguageFuncDeclarationStub;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
 
-public interface DLanguageFuncDeclaration extends DNamedElement, StubBasedPsiElement<DLanguageFuncDeclarationStub> {
+public interface DLanguageFuncDeclaration extends MixinContainer, StubBasedPsiElement<DLanguageFuncDeclarationStub> {
 
   @Nullable
   DLanguageBasicType getBasicType();
@@ -49,5 +49,11 @@ public interface DLanguageFuncDeclaration extends DNamedElement, StubBasedPsiEle
 
   @NotNull
   ItemPresentation getPresentation();
+
+  List<DLanguageParameter> getArguments();
+
+  List<DLanguageProtectionAttribute> getProtection();
+
+  List<DLanguageTemplateParameter> getTemplateArguments();
 
 }

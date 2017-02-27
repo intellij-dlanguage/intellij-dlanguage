@@ -8,10 +8,17 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import net.masterthought.dlanguage.stubs.DLanguageInterfaceDeclarationStub;
 import net.masterthought.dlanguage.psi.*;
+import com.intellij.navigation.ItemPresentation;
+import com.intellij.psi.PsiReference;
+import com.intellij.psi.stubs.IStubElementType;
 
-public class DLanguageInterfaceDeclarationImpl extends ASTWrapperPsiElement implements DLanguageInterfaceDeclaration {
+public class DLanguageInterfaceDeclarationImpl extends DNamedStubbedPsiElementBase<DLanguageInterfaceDeclarationStub> implements DLanguageInterfaceDeclaration {
+
+  public DLanguageInterfaceDeclarationImpl(DLanguageInterfaceDeclarationStub stub, IStubElementType type) {
+    super(stub, type);
+  }
 
   public DLanguageInterfaceDeclarationImpl(ASTNode node) {
     super(node);
@@ -41,7 +48,7 @@ public class DLanguageInterfaceDeclarationImpl extends ASTWrapperPsiElement impl
   @Override
   @Nullable
   public DLanguageIdentifier getIdentifier() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
+    return PsiTreeUtil.getStubChildOfType(this, DLanguageIdentifier.class);
   }
 
   @Override
@@ -60,6 +67,31 @@ public class DLanguageInterfaceDeclarationImpl extends ASTWrapperPsiElement impl
   @Nullable
   public PsiElement getOpScolon() {
     return findChildByType(OP_SCOLON);
+  }
+
+  @NotNull
+  public String getName() {
+    return DPsiImplUtil.getName(this);
+  }
+
+  @Nullable
+  public PsiElement getNameIdentifier() {
+    return DPsiImplUtil.getNameIdentifier(this);
+  }
+
+  @NotNull
+  public PsiReference getReference() {
+    return DPsiImplUtil.getReference(this);
+  }
+
+  @Nullable
+  public PsiElement setName(String newName) {
+    return DPsiImplUtil.setName(this, newName);
+  }
+
+  @NotNull
+  public ItemPresentation getPresentation() {
+    return DPsiImplUtil.getPresentation(this);
   }
 
 }

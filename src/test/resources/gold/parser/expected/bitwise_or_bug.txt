@@ -90,7 +90,7 @@ D Language File
         DLanguageDeclarationBlockImpl(DECLARATION_BLOCK)
           DLanguageDeclDefImpl(DECL_DEF)
             DLanguageDeclarationImpl(DECLARATION)
-              DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+              VAR_DECLARATIONS
                 DLanguageAutoDeclarationImpl(AUTO_DECLARATION)
                   DLanguageAutoDeclarationXImpl(AUTO_DECLARATION_X)
                     DLanguageAutoDeclarationYImpl(AUTO_DECLARATION_Y)

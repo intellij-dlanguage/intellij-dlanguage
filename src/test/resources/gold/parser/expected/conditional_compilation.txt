@@ -2,7 +2,7 @@ D Language File
   DLanguageDeclDefsImpl(DECL_DEFS)
     DLanguageDeclDefImpl(DECL_DEF)
       DLanguageDeclarationImpl(DECLARATION)
-        DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+        VAR_DECLARATIONS
           DLanguageBasicTypeImpl(BASIC_TYPE)
             DLanguageBasicTypeXImpl(BASIC_TYPE_X)
               PsiElement(DLanguageTokenType.int)('int')
@@ -28,7 +28,7 @@ D Language File
             DLanguageDeclDefsImpl(DECL_DEFS)
               DLanguageDeclDefImpl(DECL_DEF)
                 DLanguageDeclarationImpl(DECLARATION)
-                  DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                  VAR_DECLARATIONS
                     DLanguageBasicTypeImpl(BASIC_TYPE)
                       DLanguageBasicTypeXImpl(BASIC_TYPE_X)
                         PsiElement(DLanguageTokenType.int)('int')
@@ -41,7 +41,7 @@ D Language File
               DLanguageDeclDefsImpl(DECL_DEFS)
                 DLanguageDeclDefImpl(DECL_DEF)
                   DLanguageDeclarationImpl(DECLARATION)
-                    DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                    VAR_DECLARATIONS
                       DLanguageBasicTypeImpl(BASIC_TYPE)
                         DLanguageBasicTypeXImpl(BASIC_TYPE_X)
                           PsiElement(DLanguageTokenType.int)('int')
@@ -55,7 +55,7 @@ D Language File
                 DLanguageDeclDefsImpl(DECL_DEFS)
                   DLanguageDeclDefImpl(DECL_DEF)
                     DLanguageDeclarationImpl(DECLARATION)
-                      DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                      VAR_DECLARATIONS
                         DLanguageAutoDeclarationImpl(AUTO_DECLARATION)
                           DLanguageAutoDeclarationXImpl(AUTO_DECLARATION_X)
                             DLanguageAutoDeclarationYImpl(AUTO_DECLARATION_Y)
@@ -84,7 +84,7 @@ D Language File
       DLanguageDeclDefsImpl(DECL_DEFS)
         DLanguageDeclDefImpl(DECL_DEF)
           DLanguageDeclarationImpl(DECLARATION)
-            DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+            VAR_DECLARATIONS
               DLanguageAutoDeclarationImpl(AUTO_DECLARATION)
                 DLanguageAutoDeclarationXImpl(AUTO_DECLARATION_X)
                   DLanguageAutoDeclarationYImpl(AUTO_DECLARATION_Y)
@@ -214,7 +214,7 @@ D Language File
                         DLanguageDeclDefsImpl(DECL_DEFS)
                           DLanguageDeclDefImpl(DECL_DEF)
                             DLanguageDeclarationImpl(DECLARATION)
-                              DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                              VAR_DECLARATIONS
                                 DLanguageBasicTypeImpl(BASIC_TYPE)
                                   DLanguageBasicTypeXImpl(BASIC_TYPE_X)
                                     PsiElement(DLanguageTokenType.int)('int')
@@ -247,7 +247,7 @@ D Language File
                                 DLanguageDeclDefsImpl(DECL_DEFS)
                                   DLanguageDeclDefImpl(DECL_DEF)
                                     DLanguageDeclarationImpl(DECLARATION)
-                                      DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                                      VAR_DECLARATIONS
                                         DLanguageBasicTypeImpl(BASIC_TYPE)
                                           DLanguageBasicTypeXImpl(BASIC_TYPE_X)
                                             PsiElement(DLanguageTokenType.int)('int')
@@ -421,7 +421,7 @@ D Language File
                                         DLanguageDeclDefsImpl(DECL_DEFS)
                                           DLanguageDeclDefImpl(DECL_DEF)
                                             DLanguageDeclarationImpl(DECLARATION)
-                                              DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                                              VAR_DECLARATIONS
                                                 DLanguageBasicTypeImpl(BASIC_TYPE)
                                                   DLanguageBasicTypeXImpl(BASIC_TYPE_X)
                                                     PsiElement(DLanguageTokenType.int)('int')
@@ -447,7 +447,7 @@ D Language File
                                                 DLanguageDeclDefsImpl(DECL_DEFS)
                                                   DLanguageDeclDefImpl(DECL_DEF)
                                                     DLanguageDeclarationImpl(DECLARATION)
-                                                      DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                                                      VAR_DECLARATIONS
                                                         DLanguageBasicTypeImpl(BASIC_TYPE)
                                                           DLanguageBasicTypeXImpl(BASIC_TYPE_X)
                                                             PsiElement(DLanguageTokenType.int)('int')
@@ -568,7 +568,7 @@ D Language File
               DLanguageDeclarationBlockImpl(DECLARATION_BLOCK)
                 DLanguageDeclDefImpl(DECL_DEF)
                   DLanguageDeclarationImpl(DECLARATION)
-                    DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                    VAR_DECLARATIONS
                       DLanguageBasicTypeImpl(BASIC_TYPE)
                         DLanguageBasicTypeXImpl(BASIC_TYPE_X)
                           PsiElement(DLanguageTokenType.int)('int')
@@ -599,7 +599,7 @@ D Language File
           DLanguageDeclDefsImpl(DECL_DEFS)
             DLanguageDeclDefImpl(DECL_DEF)
               DLanguageDeclarationImpl(DECLARATION)
-                DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                VAR_DECLARATIONS
                   DLanguageBasicTypeImpl(BASIC_TYPE)
                     DLanguageBasicTypeXImpl(BASIC_TYPE_X)
                       PsiElement(DLanguageTokenType.int)('int')
@@ -668,7 +668,7 @@ D Language File
                   DLanguageDeclarationBlockImpl(DECLARATION_BLOCK)
                     DLanguageDeclDefImpl(DECL_DEF)
                       DLanguageDeclarationImpl(DECLARATION)
-                        DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                        VAR_DECLARATIONS
                           DLanguageBasicTypeImpl(BASIC_TYPE)
                             DLanguageBasicTypeXImpl(BASIC_TYPE_X)
                               PsiElement(DLanguageTokenType.int)('int')
@@ -696,7 +696,7 @@ D Language File
                                 DLanguageDeclarationBlockImpl(DECLARATION_BLOCK)
                                   DLanguageDeclDefImpl(DECL_DEF)
                                     DLanguageDeclarationImpl(DECLARATION)
-                                      DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                                      VAR_DECLARATIONS
                                         DLanguageBasicTypeImpl(BASIC_TYPE)
                                           DLanguageBasicTypeXImpl(BASIC_TYPE_X)
                                             PsiElement(DLanguageTokenType.int)('int')
@@ -765,7 +765,7 @@ D Language File
                                   DLanguageDeclarationBlockImpl(DECLARATION_BLOCK)
                                     DLanguageDeclDefImpl(DECL_DEF)
                                       DLanguageDeclarationImpl(DECLARATION)
-                                        DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                                        VAR_DECLARATIONS
                                           DLanguageBasicTypeImpl(BASIC_TYPE)
                                             DLanguageBasicTypeXImpl(BASIC_TYPE_X)
                                               PsiElement(DLanguageTokenType.int)('int')
@@ -779,7 +779,7 @@ D Language File
                                   DLanguageDeclarationBlockImpl(DECLARATION_BLOCK)
                                     DLanguageDeclDefImpl(DECL_DEF)
                                       DLanguageDeclarationImpl(DECLARATION)
-                                        DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                                        VAR_DECLARATIONS
                                           DLanguageBasicTypeImpl(BASIC_TYPE)
                                             DLanguageBasicTypeXImpl(BASIC_TYPE_X)
                                               PsiElement(DLanguageTokenType.long)('long')
@@ -830,7 +830,7 @@ D Language File
                                     DLanguageDeclarationBlockImpl(DECLARATION_BLOCK)
                                       DLanguageDeclDefImpl(DECL_DEF)
                                         DLanguageDeclarationImpl(DECLARATION)
-                                          DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                                          VAR_DECLARATIONS
                                             DLanguageBasicTypeImpl(BASIC_TYPE)
                                               DLanguageBasicTypeXImpl(BASIC_TYPE_X)
                                                 PsiElement(DLanguageTokenType.int)('int')
@@ -881,7 +881,7 @@ D Language File
                                       DLanguageDeclarationBlockImpl(DECLARATION_BLOCK)
                                         DLanguageDeclDefImpl(DECL_DEF)
                                           DLanguageDeclarationImpl(DECLARATION)
-                                            DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                                            VAR_DECLARATIONS
                                               DLanguageBasicTypeImpl(BASIC_TYPE)
                                                 DLanguageBasicTypeXImpl(BASIC_TYPE_X)
                                                   PsiElement(DLanguageTokenType.int)('int')
@@ -1042,7 +1042,7 @@ D Language File
                   DLanguageDeclDefsImpl(DECL_DEFS)
                     DLanguageDeclDefImpl(DECL_DEF)
                       DLanguageDeclarationImpl(DECLARATION)
-                        DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                        VAR_DECLARATIONS
                           DLanguageBasicTypeImpl(BASIC_TYPE)
                             DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                               IDENTIFIER
@@ -1079,7 +1079,7 @@ D Language File
                     DLanguageDeclDefsImpl(DECL_DEFS)
                       DLanguageDeclDefImpl(DECL_DEF)
                         DLanguageDeclarationImpl(DECLARATION)
-                          DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                          VAR_DECLARATIONS
                             DLanguageBasicTypeImpl(BASIC_TYPE)
                               DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                                 IDENTIFIER
@@ -1116,7 +1116,7 @@ D Language File
                       DLanguageDeclDefsImpl(DECL_DEFS)
                         DLanguageDeclDefImpl(DECL_DEF)
                           DLanguageDeclarationImpl(DECLARATION)
-                            DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                            VAR_DECLARATIONS
                               DLanguageBasicTypeImpl(BASIC_TYPE)
                                 DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                                   IDENTIFIER

@@ -8,8 +8,9 @@ import com.intellij.psi.StubBasedPsiElement;
 import net.masterthought.dlanguage.stubs.DLanguageModuleDeclarationStub;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
+import java.util.Set;
 
-public interface DLanguageModuleDeclaration extends DNamedElement, StubBasedPsiElement<DLanguageModuleDeclarationStub> {
+public interface DLanguageModuleDeclaration extends MixinContainer, StubBasedPsiElement<DLanguageModuleDeclarationStub> {
 
   @Nullable
   DLanguageAttribute getAttribute();
@@ -39,5 +40,29 @@ public interface DLanguageModuleDeclaration extends DNamedElement, StubBasedPsiE
   ItemPresentation getPresentation();
 
   DLanguageProtectionAttribute getProtection();
+
+  List<DLanguageClassDeclaration> getClassDeclarations(boolean includeFromMixins);
+
+  List<DLanguageTemplateDeclaration> getTemplateDeclarations(boolean includeFromMixins);
+
+  List<DLanguageStructDeclaration> getStructDeclarations(boolean includeFromMixins);
+
+  List<DLanguageFuncDeclaration> getFunctionDeclarations(boolean includeFromMixins);
+
+  List<DLanguageVarDeclarations> getVarDeclarations(boolean includeFromMixins);
+
+  List<DLanguageVarDeclarations> getTopLevelVarDeclarations(boolean includeFromMixins);
+
+  List<DLanguageFuncDeclaration> getTopLevelFunctionDeclarations(boolean includeFromMixins);
+
+  List<DLanguageStructDeclaration> getTopLevelStructDeclarations(boolean includeFromMixins);
+
+  List<DLanguageTemplateDeclaration> getTopLevelTemplateDeclarations(boolean includeFromMixins);
+
+  List<DLanguageClassDeclaration> getTopLevelClassDeclarations(boolean includeFromMixins);
+
+  Set<DNamedElement> getPubliclyAccessibleSymbols(boolean includeFromMixins);
+
+  Set<DNamedElement> getAllSymbols(boolean includeFromMixins);
 
 }

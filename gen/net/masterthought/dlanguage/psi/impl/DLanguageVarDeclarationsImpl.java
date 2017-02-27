@@ -8,12 +8,15 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
+import net.masterthought.dlanguage.stubs.DLanguageVarDeclarationStub;
 import net.masterthought.dlanguage.psi.*;
+import com.intellij.navigation.ItemPresentation;
+import com.intellij.psi.PsiReference;
 import com.intellij.psi.stubs.IStubElementType;
 
-public class DLanguageVarDeclarationsImpl extends DNamedStubbedPsiElementBase<?> implements DLanguageVarDeclarations {
+public class DLanguageVarDeclarationsImpl extends DNamedStubbedPsiElementBase<DLanguageVarDeclarationStub> implements DLanguageVarDeclarations {
 
-  public DLanguageVarDeclarationsImpl(<T> stub, IStubElementType type) {
+  public DLanguageVarDeclarationsImpl(DLanguageVarDeclarationStub stub, IStubElementType type) {
     super(stub, type);
   }
 
@@ -58,6 +61,31 @@ public class DLanguageVarDeclarationsImpl extends DNamedStubbedPsiElementBase<?>
   @Nullable
   public PsiElement getOpScolon() {
     return findChildByType(OP_SCOLON);
+  }
+
+  @NotNull
+  public String getName() {
+    return DPsiImplUtil.getName(this);
+  }
+
+  @Nullable
+  public PsiElement getNameIdentifier() {
+    return DPsiImplUtil.getNameIdentifier(this);
+  }
+
+  @NotNull
+  public PsiReference getReference() {
+    return DPsiImplUtil.getReference(this);
+  }
+
+  @Nullable
+  public PsiElement setName(String newName) {
+    return DPsiImplUtil.setName(this, newName);
+  }
+
+  @NotNull
+  public ItemPresentation getPresentation() {
+    return DPsiImplUtil.getPresentation(this);
   }
 
 }

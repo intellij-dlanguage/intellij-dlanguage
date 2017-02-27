@@ -24,7 +24,7 @@ D Language File
       DLanguageDeclDefsImpl(DECL_DEFS)
         DLanguageDeclDefImpl(DECL_DEF)
           DLanguageDeclarationImpl(DECLARATION)
-            DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+            VAR_DECLARATIONS
               DLanguageBasicTypeImpl(BASIC_TYPE)
                 DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                   IDENTIFIER

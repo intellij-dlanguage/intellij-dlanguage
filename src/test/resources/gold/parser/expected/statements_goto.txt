@@ -37,7 +37,7 @@ D Language File
   DLanguageDeclDefsImpl(DECL_DEFS)
     DLanguageDeclDefImpl(DECL_DEF)
       DLanguageDeclarationImpl(DECLARATION)
-        DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+        VAR_DECLARATIONS
           DLanguageAutoDeclarationImpl(AUTO_DECLARATION)
             DLanguageAutoDeclarationXImpl(AUTO_DECLARATION_X)
               DLanguageAutoDeclarationYImpl(AUTO_DECLARATION_Y)
@@ -65,7 +65,7 @@ D Language File
   DLanguageStatementImpl(STATEMENT)
     DLanguageNonEmptyStatementImpl(NON_EMPTY_STATEMENT)
       DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
-        DLanguageLabeledStatementImpl(LABELED_STATEMENT)
+        LABELED_STATEMENT
           IDENTIFIER
             PsiElement(DLanguageTokenType.ID)('L1')
           PsiElement(DLanguageTokenType.:)(':')
@@ -268,7 +268,7 @@ D Language File
                                                                             DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
                                                                               DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
                                                                                 DLanguageDeclarationImpl(DECLARATION)
-                                                                                  DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                                                                                  VAR_DECLARATIONS
                                                                                     DLanguageAutoDeclarationImpl(AUTO_DECLARATION)
                                                                                       DLanguageAutoDeclarationXImpl(AUTO_DECLARATION_X)
                                                                                         DLanguageAutoDeclarationYImpl(AUTO_DECLARATION_Y)

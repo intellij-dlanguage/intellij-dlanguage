@@ -5,14 +5,17 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiTreeUtil;
-import net.masterthought.dlanguage.DLanguage;
 import net.masterthought.dlanguage.index.DModuleIndex;
 import net.masterthought.dlanguage.psi.*;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-import static com.intellij.psi.util.PsiTreeUtil.*;
+import static com.intellij.psi.util.PsiTreeUtil.findChildrenOfType;
+import static com.intellij.psi.util.PsiTreeUtil.getParentOfType;
 import static java.util.Collections.EMPTY_SET;
 
 /**
@@ -35,7 +38,6 @@ public class DResolveUtil {
         for (WhatAreWeResolving w : WhatAreWeResolving.values()) {
             add(w);
         }
-        ;
     }};
     private static final Set<WhatAreWeResolving> aType = new HashSet<WhatAreWeResolving>() {{
         add(WhatAreWeResolving.Alias);
@@ -576,7 +578,7 @@ public class DResolveUtil {
         return res;
     }
 
-    private static Set<DLanguageFile> fromModulesToFiles(Project project, Set<String> modules) {
+    public static Set<DLanguageFile> fromModulesToFiles(Project project, Set<String> modules) {
         Set<DLanguageFile> filesFound = new HashSet<>();
         for (String module : modules) {
             List<DLanguageFile> files = DModuleIndex.getFilesByModuleName(project, module, GlobalSearchScope.allScope(project));

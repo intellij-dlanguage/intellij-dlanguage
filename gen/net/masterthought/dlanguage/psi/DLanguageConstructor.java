@@ -9,7 +9,7 @@ import net.masterthought.dlanguage.stubs.DLanguageConstructorStub;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
 
-public interface DLanguageConstructor extends DNamedElement, StubBasedPsiElement<DLanguageConstructorStub> {
+public interface DLanguageConstructor extends MixinContainer, StubBasedPsiElement<DLanguageConstructorStub> {
 
   @Nullable
   DLanguageConstructorTemplate getConstructorTemplate();

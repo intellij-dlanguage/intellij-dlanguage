@@ -9,7 +9,7 @@ import net.masterthought.dlanguage.stubs.DLanguageClassDeclarationStub;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
 
-public interface DLanguageClassDeclaration extends DNamedElement, StubBasedPsiElement<DLanguageClassDeclarationStub> {
+public interface DLanguageClassDeclaration extends MixinContainer, StubBasedPsiElement<DLanguageClassDeclarationStub> {
 
   @Nullable
   DLanguageAggregateBody getAggregateBody();
@@ -44,13 +44,13 @@ public interface DLanguageClassDeclaration extends DNamedElement, StubBasedPsiEl
   @NotNull
   ItemPresentation getPresentation();
 
-  List<DLanguageTemplateParameter> getTemplateArguments();
+  List<DLanguageTemplateParameter> getTemplateArguments(boolean includeFromInheritance, boolean includeFromMixins);
 
-  List<DLanguageFuncDeclaration> getMethods();
+  List<DLanguageFuncDeclaration> getMethods(boolean includeFromInheritance, boolean includeFromMixins);
 
-  List<DLanguageVarDeclarations> getVariables();
+  List<DLanguageVarDeclarations> getVariables(boolean includeFromInheritance, boolean includeFromMixins);
 
-  List<DLanguageFuncDeclaration> getPropertyMethods();
+  List<DLanguageFuncDeclaration> getPropertyMethods(boolean includeFromInheritance, boolean includeFromMixins);
 
   DLanguageProtectionAttribute getProtection();
 

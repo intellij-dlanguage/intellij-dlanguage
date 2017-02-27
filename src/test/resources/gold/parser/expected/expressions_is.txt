@@ -1023,7 +1023,7 @@ D Language File
                                                                                                     DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
                                                                                                       DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
                                                                                                         DLanguageDeclarationImpl(DECLARATION)
-                                                                                                          DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                                                                                                          VAR_DECLARATIONS
                                                                                                             DLanguageBasicTypeImpl(BASIC_TYPE)
                                                                                                               DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                                                                                                                 IDENTIFIER
@@ -1298,7 +1298,7 @@ D Language File
                                                           DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
                                                             DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
                                                               DLanguageDeclarationImpl(DECLARATION)
-                                                                DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                                                                VAR_DECLARATIONS
                                                                   DLanguageBasicTypeImpl(BASIC_TYPE)
                                                                     DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                                                                       IDENTIFIER
@@ -2329,7 +2329,7 @@ D Language File
                                                                                                                       DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
                                                                                                                         DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
                                                                                                                           DLanguageDeclarationImpl(DECLARATION)
-                                                                                                                            DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                                                                                                                            VAR_DECLARATIONS
                                                                                                                               DLanguageBasicTypeImpl(BASIC_TYPE)
                                                                                                                                 DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                                                                                                                                   IDENTIFIER

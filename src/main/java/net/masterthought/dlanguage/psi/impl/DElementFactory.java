@@ -121,5 +121,23 @@ public class DElementFactory {
         if (e instanceof DLanguageModuleDeclaration) return e;
         return null;
     }
+
+    public static PsiElement createDLanguageInterfaceDeclarationFromText(Project project, String name) {
+        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
+        if (e instanceof DLanguageInterfaceDeclaration) return e;
+        return null;
+    }
+
+    public static PsiElement createDLanguageVarDeclarationFromText(Project project, String name) {
+        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
+        if (e instanceof DLanguageVarDeclarations) return e;
+        return null;
+    }
+
+    public static PsiElement createDLanguageLabeledStatementFromText(Project project, String name) {
+        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
+        if (e instanceof DLanguageLabeledStatement) return e;
+        return null;
+    }
 }
 

@@ -13,7 +13,7 @@ D Language File
         DLanguageDeclDefsImpl(DECL_DEFS)
           DLanguageDeclDefImpl(DECL_DEF)
             DLanguageDeclarationImpl(DECLARATION)
-              DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+              VAR_DECLARATIONS
                 DLanguageBasicTypeImpl(BASIC_TYPE)
                   DLanguageBasicTypeXImpl(BASIC_TYPE_X)
                     PsiElement(DLanguageTokenType.int)('int')
@@ -192,7 +192,7 @@ D Language File
                                                                             DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
                                                                               DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
                                                                                 DLanguageDeclarationImpl(DECLARATION)
-                                                                                  DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                                                                                  VAR_DECLARATIONS
                                                                                     DLanguageBasicTypeImpl(BASIC_TYPE)
                                                                                       DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                                                                                         IDENTIFIER
@@ -209,7 +209,7 @@ D Language File
                                                                               DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
                                                                                 DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
                                                                                   DLanguageDeclarationImpl(DECLARATION)
-                                                                                    DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                                                                                    VAR_DECLARATIONS
                                                                                       DLanguageBasicTypeImpl(BASIC_TYPE)
                                                                                         DLanguageBasicTypeXImpl(BASIC_TYPE_X)
                                                                                           PsiElement(DLanguageTokenType.int)('int')
@@ -514,7 +514,7 @@ D Language File
                                                                                                                                         DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
                                                                                                                                           DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
                                                                                                                                             DLanguageDeclarationImpl(DECLARATION)
-                                                                                                                                              DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                                                                                                                                              VAR_DECLARATIONS
                                                                                                                                                 DLanguageAutoDeclarationImpl(AUTO_DECLARATION)
                                                                                                                                                   DLanguageAutoDeclarationXImpl(AUTO_DECLARATION_X)
                                                                                                                                                     DLanguageAutoDeclarationYImpl(AUTO_DECLARATION_Y)
@@ -764,7 +764,7 @@ D Language File
                 DLanguageDeclDefsImpl(DECL_DEFS)
                   DLanguageDeclDefImpl(DECL_DEF)
                     DLanguageDeclarationImpl(DECLARATION)
-                      DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                      VAR_DECLARATIONS
                         DLanguageBasicTypeImpl(BASIC_TYPE)
                           DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                             IDENTIFIER
@@ -1034,7 +1034,7 @@ D Language File
                                       DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
                                         DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
                                           DLanguageDeclarationImpl(DECLARATION)
-                                            DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                                            VAR_DECLARATIONS
                                               DLanguageBasicTypeImpl(BASIC_TYPE)
                                                 DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                                                   IDENTIFIER
@@ -1130,7 +1130,7 @@ D Language File
                                           DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
                                             DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
                                               DLanguageDeclarationImpl(DECLARATION)
-                                                DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                                                VAR_DECLARATIONS
                                                   DLanguageAutoDeclarationImpl(AUTO_DECLARATION)
                                                     DLanguageAutoDeclarationXImpl(AUTO_DECLARATION_X)
                                                       DLanguageAutoDeclarationYImpl(AUTO_DECLARATION_Y)
@@ -1220,7 +1220,7 @@ D Language File
                       DLanguageDeclDefsImpl(DECL_DEFS)
                         DLanguageDeclDefImpl(DECL_DEF)
                           DLanguageDeclarationImpl(DECLARATION)
-                            DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                            VAR_DECLARATIONS
                               DLanguageBasicTypeImpl(BASIC_TYPE)
                                 DLanguageBasicTypeXImpl(BASIC_TYPE_X)
                                   PsiElement(DLanguageTokenType.int)('int')
@@ -1324,7 +1324,7 @@ D Language File
                                             DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
                                               DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
                                                 DLanguageDeclarationImpl(DECLARATION)
-                                                  DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                                                  VAR_DECLARATIONS
                                                     DLanguageBasicTypeImpl(BASIC_TYPE)
                                                       DLanguageBasicTypeXImpl(BASIC_TYPE_X)
                                                         PsiElement(DLanguageTokenType.int)('int')
@@ -1519,7 +1519,7 @@ D Language File
                                                 DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
                                                   DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
                                                     DLanguageDeclarationImpl(DECLARATION)
-                                                      DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                                                      VAR_DECLARATIONS
                                                         DLanguageBasicTypeImpl(BASIC_TYPE)
                                                           DLanguageBasicTypeXImpl(BASIC_TYPE_X)
                                                             PsiElement(DLanguageTokenType.int)('int')
@@ -1765,7 +1765,7 @@ D Language File
                                                                                                                   DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
                                                                                                                     DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
                                                                                                                       DLanguageDeclarationImpl(DECLARATION)
-                                                                                                                        DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                                                                                                                        VAR_DECLARATIONS
                                                                                                                           DLanguageBasicTypeImpl(BASIC_TYPE)
                                                                                                                             DLanguageTypeofImpl(TYPEOF)
                                                                                                                               PsiElement(DLanguageTokenType.typeof)('typeof')
@@ -2714,7 +2714,7 @@ D Language File
                                                       DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
                                                         DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
                                                           DLanguageDeclarationImpl(DECLARATION)
-                                                            DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                                                            VAR_DECLARATIONS
                                                               DLanguageBasicTypeImpl(BASIC_TYPE)
                                                                 DLanguageBasicTypeXImpl(BASIC_TYPE_X)
                                                                   PsiElement(DLanguageTokenType.int)('int')
@@ -2748,7 +2748,7 @@ D Language File
                                                         DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
                                                           DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
                                                             DLanguageDeclarationImpl(DECLARATION)
-                                                              DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                                                              VAR_DECLARATIONS
                                                                 DLanguageBasicTypeImpl(BASIC_TYPE)
                                                                   DLanguageBasicTypeXImpl(BASIC_TYPE_X)
                                                                     PsiElement(DLanguageTokenType.int)('int')

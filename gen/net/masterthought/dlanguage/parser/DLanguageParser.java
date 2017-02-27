@@ -6661,9 +6661,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // Identifier ':' Statement? {
-  //         
-  //     }
+  // Identifier ':' Statement?
   public static boolean LabeledStatement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "LabeledStatement")) return false;
     if (!nextTokenIs(b, ID)) return false;
@@ -6672,7 +6670,6 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     r = Identifier(b, l + 1);
     r = r && consumeToken(b, OP_COLON);
     r = r && LabeledStatement_2(b, l + 1);
-    r = r && LabeledStatement_3(b, l + 1);
     exit_section_(b, m, LABELED_STATEMENT, r);
     return r;
   }
@@ -6681,13 +6678,6 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   private static boolean LabeledStatement_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "LabeledStatement_2")) return false;
     Statement(b, l + 1);
-    return true;
-  }
-
-  // {
-  //         
-  //     }
-  private static boolean LabeledStatement_3(PsiBuilder b, int l) {
     return true;
   }
 
@@ -12446,15 +12436,13 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // StorageClasses? BasicType? Declarators ';'
-  //     | AutoDeclaration {
-  //     
-  //     }
+  //     | AutoDeclaration
   public static boolean VarDeclarations(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "VarDeclarations")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, VAR_DECLARATIONS, "<var declarations>");
     r = VarDeclarations_0(b, l + 1);
-    if (!r) r = VarDeclarations_1(b, l + 1);
+    if (!r) r = AutoDeclaration(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -12483,26 +12471,6 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   private static boolean VarDeclarations_0_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "VarDeclarations_0_1")) return false;
     BasicType(b, l + 1);
-    return true;
-  }
-
-  // AutoDeclaration {
-  //     
-  //     }
-  private static boolean VarDeclarations_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "VarDeclarations_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = AutoDeclaration(b, l + 1);
-    r = r && VarDeclarations_1_1(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // {
-  //     
-  //     }
-  private static boolean VarDeclarations_1_1(PsiBuilder b, int l) {
     return true;
   }
 

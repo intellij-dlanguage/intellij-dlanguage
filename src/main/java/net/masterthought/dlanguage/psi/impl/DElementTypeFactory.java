@@ -17,6 +17,10 @@ public class DElementTypeFactory {
         if (name.equals("STRUCT_DECLARATION")) return new DLanguageStructDeclarationStubElementType(name);
         if (name.equals("ALIAS_DECLARATION")) return new DLanguageAliasDeclarationStubElementType(name);
         if (name.equals("MODULE_DECLARATION")) return new DLanguageModuleDeclarationStubElementType(name);
-        throw new RuntimeException("Unknown element type: " + name);
+        if (name.equals("INTERFACE_DECLARATION")) return new DLanguageInterfaceDeclarationStubElementType(name);
+        if (name.equals("VAR_DECLARATIONS")) return new DLanguageVarDeclarationStubElementType(name);
+        if (name.equals("LABELED_STATEMENT")) return new DLanguageLabeledStatementStubElementType(name);
+        if (name)
+            throw new RuntimeException("Unknown element type: " + name);
     }
 }

@@ -155,7 +155,7 @@ D Language File
                               DLanguageStorageClassImpl(STORAGE_CLASS)
                                 PsiElement(DLanguageTokenType.const)('const')
                             DLanguageDeclarationImpl(DECLARATION)
-                              DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                              VAR_DECLARATIONS
                                 DLanguageBasicTypeImpl(BASIC_TYPE)
                                   PsiElement(DLanguageTokenType.()('(')
                                   DLanguageTypeImpl(TYPE)
@@ -262,7 +262,7 @@ D Language File
                             DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
                               DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
                                 DLanguageDeclarationImpl(DECLARATION)
-                                  DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                                  VAR_DECLARATIONS
                                     DLanguageBasicTypeImpl(BASIC_TYPE)
                                       DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                                         IDENTIFIER
@@ -348,7 +348,7 @@ D Language File
                                       DLanguageStorageClassImpl(STORAGE_CLASS)
                                         PsiElement(DLanguageTokenType.immutable)('immutable')
                                     DLanguageDeclarationImpl(DECLARATION)
-                                      DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                                      VAR_DECLARATIONS
                                         DLanguageBasicTypeImpl(BASIC_TYPE)
                                           PsiElement(DLanguageTokenType.()('(')
                                           DLanguageTypeImpl(TYPE)
@@ -434,7 +434,7 @@ D Language File
           DLanguageDeclDefImpl(DECL_DEF)
             DLanguageDeclarationImpl(DECLARATION)
               DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
-                DLanguageInterfaceDeclarationImpl(INTERFACE_DECLARATION)
+                INTERFACE_DECLARATION
                   DLanguageInterfaceTemplateDeclarationImpl(INTERFACE_TEMPLATE_DECLARATION)
                     PsiElement(DLanguageTokenType.interface)('interface')
                     IDENTIFIER
@@ -622,7 +622,7 @@ D Language File
                                     DLanguageStorageClassImpl(STORAGE_CLASS)
                                       PsiElement(DLanguageTokenType.auto)('auto')
                                   DLanguageDeclarationImpl(DECLARATION)
-                                    DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                                    VAR_DECLARATIONS
                                       DLanguageAutoDeclarationImpl(AUTO_DECLARATION)
                                         DLanguageAutoDeclarationXImpl(AUTO_DECLARATION_X)
                                           DLanguageAutoDeclarationYImpl(AUTO_DECLARATION_Y)
@@ -773,7 +773,7 @@ D Language File
                 DLanguageDeclDefImpl(DECL_DEF)
                   DLanguageDeclarationImpl(DECLARATION)
                     DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
-                      DLanguageInterfaceDeclarationImpl(INTERFACE_DECLARATION)
+                      INTERFACE_DECLARATION
                         DLanguageInterfaceTemplateDeclarationImpl(INTERFACE_TEMPLATE_DECLARATION)
                           PsiElement(DLanguageTokenType.interface)('interface')
                           IDENTIFIER
@@ -986,7 +986,7 @@ D Language File
                                           DLanguageStorageClassImpl(STORAGE_CLASS)
                                             PsiElement(DLanguageTokenType.auto)('auto')
                                         DLanguageDeclarationImpl(DECLARATION)
-                                          DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                                          VAR_DECLARATIONS
                                             DLanguageAutoDeclarationImpl(AUTO_DECLARATION)
                                               DLanguageAutoDeclarationXImpl(AUTO_DECLARATION_X)
                                                 DLanguageAutoDeclarationYImpl(AUTO_DECLARATION_Y)

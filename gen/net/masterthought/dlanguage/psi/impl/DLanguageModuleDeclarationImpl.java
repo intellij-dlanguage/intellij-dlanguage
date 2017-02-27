@@ -12,6 +12,7 @@ import net.masterthought.dlanguage.stubs.DLanguageModuleDeclarationStub;
 import net.masterthought.dlanguage.psi.*;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
+import java.util.Set;
 import com.intellij.psi.stubs.IStubElementType;
 
 public class DLanguageModuleDeclarationImpl extends DNamedStubbedPsiElementBase<DLanguageModuleDeclarationStub> implements DLanguageModuleDeclaration {
@@ -84,6 +85,54 @@ public class DLanguageModuleDeclarationImpl extends DNamedStubbedPsiElementBase<
 
   public DLanguageProtectionAttribute getProtection() {
     return DPsiImplUtil.getProtection(this);
+  }
+
+  public List<DLanguageClassDeclaration> getClassDeclarations(boolean includeFromMixins) {
+    return DPsiImplUtil.getClassDeclarations(this, includeFromMixins);
+  }
+
+  public List<DLanguageTemplateDeclaration> getTemplateDeclarations(boolean includeFromMixins) {
+    return DPsiImplUtil.getTemplateDeclarations(this, includeFromMixins);
+  }
+
+  public List<DLanguageStructDeclaration> getStructDeclarations(boolean includeFromMixins) {
+    return DPsiImplUtil.getStructDeclarations(this, includeFromMixins);
+  }
+
+  public List<DLanguageFuncDeclaration> getFunctionDeclarations(boolean includeFromMixins) {
+    return DPsiImplUtil.getFunctionDeclarations(this, includeFromMixins);
+  }
+
+  public List<DLanguageVarDeclarations> getVarDeclarations(boolean includeFromMixins) {
+    return DPsiImplUtil.getVarDeclarations(this, includeFromMixins);
+  }
+
+  public List<DLanguageVarDeclarations> getTopLevelVarDeclarations(boolean includeFromMixins) {
+    return DPsiImplUtil.getTopLevelVarDeclarations(this, includeFromMixins);
+  }
+
+  public List<DLanguageFuncDeclaration> getTopLevelFunctionDeclarations(boolean includeFromMixins) {
+    return DPsiImplUtil.getTopLevelFunctionDeclarations(this, includeFromMixins);
+  }
+
+  public List<DLanguageStructDeclaration> getTopLevelStructDeclarations(boolean includeFromMixins) {
+    return DPsiImplUtil.getTopLevelStructDeclarations(this, includeFromMixins);
+  }
+
+  public List<DLanguageTemplateDeclaration> getTopLevelTemplateDeclarations(boolean includeFromMixins) {
+    return DPsiImplUtil.getTopLevelTemplateDeclarations(this, includeFromMixins);
+  }
+
+  public List<DLanguageClassDeclaration> getTopLevelClassDeclarations(boolean includeFromMixins) {
+    return DPsiImplUtil.getTopLevelClassDeclarations(this, includeFromMixins);
+  }
+
+  public Set<DNamedElement> getPubliclyAccessibleSymbols(boolean includeFromMixins) {
+    return DPsiImplUtil.getPubliclyAccessibleSymbols(this, includeFromMixins);
+  }
+
+  public Set<DNamedElement> getAllSymbols(boolean includeFromMixins) {
+    return DPsiImplUtil.getAllSymbols(this, includeFromMixins);
   }
 
 }

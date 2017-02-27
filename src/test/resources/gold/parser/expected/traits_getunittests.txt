@@ -1,5 +1,5 @@
 D Language File
-  DLanguageModuleDeclarationImpl(MODULE_DECLARATION)
+  MODULE_DECLARATION
     PsiElement(DLanguageTokenType.module)('module')
     DLanguageModuleFullyQualifiedNameImpl(MODULE_FULLY_QUALIFIED_NAME)
       IDENTIFIER
@@ -48,7 +48,7 @@ D Language File
                   DLanguageDeclDefsImpl(DECL_DEFS)
                     DLanguageDeclDefImpl(DECL_DEF)
                       DLanguageDeclarationImpl(DECLARATION)
-                        DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+                        VAR_DECLARATIONS
                           DLanguageBasicTypeImpl(BASIC_TYPE)
                             DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                               IDENTIFIER
