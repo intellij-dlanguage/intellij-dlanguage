@@ -986,7 +986,7 @@ public interface DLanguageTypes {
         return new DLanguageMixinTemplateNameImpl(node);
       }
       else if (type == MODULE_DECLARATION) {
-        return new DLanguageModuleDeclarationImpl(node);
+        return new DLanguageModuleGlobalDeclarationImpl(node);
       }
       else if (type == MODULE_FULLY_QUALIFIED_NAME) {
         return new DLanguageModuleFullyQualifiedNameImpl(node);

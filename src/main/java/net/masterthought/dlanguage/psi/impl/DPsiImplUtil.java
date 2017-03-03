@@ -800,7 +800,7 @@ public class DPsiImplUtil {
     // ------------ Module Declaration ----------------- //
 
     @NotNull
-    public static String getName(@NotNull DLanguageModuleDeclaration o) {
+    public static String getName(@NotNull DLanguageModuleGlobalDeclaration o) {
         DLanguageModuleDeclarationStub stub = o.getStub();
         if (stub != null) return StringUtil.notNullize(stub.getName());
 
@@ -812,13 +812,13 @@ public class DPsiImplUtil {
     }
 
     @Nullable
-    public static PsiElement getNameIdentifier(@NotNull DLanguageModuleDeclaration o) {
+    public static PsiElement getNameIdentifier(@NotNull DLanguageModuleGlobalDeclaration o) {
         ASTNode keyNode = o.getNode();
         return keyNode != null ? keyNode.getPsi() : null;
     }
 
     @Nullable
-    public static PsiElement setName(@NotNull DLanguageModuleDeclaration o, @NotNull String newName) {
+    public static PsiElement setName(@NotNull DLanguageModuleGlobalDeclaration o, @NotNull String newName) {
         PsiElement e = DElementFactory.createDLanguageModuleFromText(o.getProject(), newName);
         if (e == null) return null;
         o.replace(e);
@@ -826,12 +826,12 @@ public class DPsiImplUtil {
     }
 
     @NotNull
-    public static PsiReference getReference(@NotNull DLanguageModuleDeclaration o) {
+    public static PsiReference getReference(@NotNull DLanguageModuleGlobalDeclaration o) {
         return new DReference(o, TextRange.from(0, getName(o).length()));
     }
 
     @NotNull
-    public static ItemPresentation getPresentation(final DLanguageModuleDeclaration o) {
+    public static ItemPresentation getPresentation(final DLanguageModuleGlobalDeclaration o) {
         return new ItemPresentation() {
             @Nullable
             @Override
@@ -858,7 +858,7 @@ public class DPsiImplUtil {
     }
 
     @Contract("null -> null")
-    public static DLanguageProtectionAttribute getProtection(DLanguageModuleDeclaration o) {
+    public static DLanguageProtectionAttribute getProtection(DLanguageModuleGlobalDeclaration o) {
         return getChildOfType(o, DLanguageProtectionAttribute.class);
     }
 
@@ -871,7 +871,7 @@ public class DPsiImplUtil {
         return t.getIdentifier();
     }
 
-    private static <T extends PsiElement> List<T> getXofType(DLanguageModuleDeclaration o, Class<? extends T> aClass, boolean includeMixins) {
+    private static <T extends PsiElement> List<T> getXofType(DLanguageModuleGlobalDeclaration o, Class<? extends T> aClass, boolean includeMixins) {
         final Set<DLanguageFile> dLanguageFiles = getdLanguageFiles(o);
         List<T> declarations = new ArrayList<>();
         if (includeMixins) {
@@ -895,31 +895,31 @@ public class DPsiImplUtil {
         return declarations;
     }
 
-    public static List<DLanguageClassDeclaration> getClassDeclarations(DLanguageModuleDeclaration o, boolean includeFromMixins) {
+    public static List<DLanguageClassDeclaration> getClassDeclarations(DLanguageModuleGlobalDeclaration o, boolean includeFromMixins) {
         return getXofType(o, DLanguageClassDeclaration.class, includeFromMixins);
     }
 
-    public static List<DLanguageTemplateDeclaration> getTemplateDeclarations(DLanguageModuleDeclaration o, boolean includeFromMixins) {
+    public static List<DLanguageTemplateDeclaration> getTemplateDeclarations(DLanguageModuleGlobalDeclaration o, boolean includeFromMixins) {
         return getXofType(o, DLanguageTemplateDeclaration.class, includeFromMixins);
     }
 
-    public static List<DLanguageStructDeclaration> getStructDeclarations(DLanguageModuleDeclaration o, boolean includeFromMixins) {
+    public static List<DLanguageStructDeclaration> getStructDeclarations(DLanguageModuleGlobalDeclaration o, boolean includeFromMixins) {
         return getXofType(o, DLanguageStructDeclaration.class, includeFromMixins);
     }
 
-    public static List<DLanguageFuncDeclaration> getFunctionDeclarations(DLanguageModuleDeclaration o, boolean includeFromMixins) {
+    public static List<DLanguageFuncDeclaration> getFunctionDeclarations(DLanguageModuleGlobalDeclaration o, boolean includeFromMixins) {
         return getXofType(o, DLanguageFuncDeclaration.class, includeFromMixins);
     }
 
-    public static List<DLanguageVarDeclarations> getVarDeclarations(DLanguageModuleDeclaration o, boolean includeFromMixins) {
+    public static List<DLanguageVarDeclarations> getVarDeclarations(DLanguageModuleGlobalDeclaration o, boolean includeFromMixins) {
         return getXofType(o, DLanguageVarDeclarations.class, includeFromMixins);
     }
 
-    public static List<DLanguageTemplateMixin> getTemplateMixins(DLanguageModuleDeclaration o, boolean includeFromMixins) {
+    public static List<DLanguageTemplateMixin> getTemplateMixins(DLanguageModuleGlobalDeclaration o, boolean includeFromMixins) {
         return getXofType(o, DLanguageTemplateMixin.class, includeFromMixins);
     }
 
-    private static <T extends PsiElement> List<T> getTopLevelXofType(DLanguageModuleDeclaration o, Class<? extends T> aClass, boolean includeMixins) {
+    private static <T extends PsiElement> List<T> getTopLevelXofType(DLanguageModuleGlobalDeclaration o, Class<? extends T> aClass, boolean includeMixins) {
         final Set<DLanguageFile> dLanguageFiles = getdLanguageFiles(o);
         List<T> declarations = new ArrayList<>();
         if (includeMixins) {
@@ -966,33 +966,33 @@ public class DPsiImplUtil {
         return declarations;
     }
 
-    public static List<DLanguageClassDeclaration> getTopLevelClassDeclarations(DLanguageModuleDeclaration o, boolean includeFromMixins) {
+    public static List<DLanguageClassDeclaration> getTopLevelClassDeclarations(DLanguageModuleGlobalDeclaration o, boolean includeFromMixins) {
         return getTopLevelXofType(o, DLanguageClassDeclaration.class, includeFromMixins);
     }
 
-    public static List<DLanguageTemplateDeclaration> getTopLevelTemplateDeclarations(DLanguageModuleDeclaration o, boolean includeFromMixins) {
+    public static List<DLanguageTemplateDeclaration> getTopLevelTemplateDeclarations(DLanguageModuleGlobalDeclaration o, boolean includeFromMixins) {
         return getTopLevelXofType(o, DLanguageTemplateDeclaration.class, includeFromMixins);
     }
 
-    public static List<DLanguageStructDeclaration> getTopLevelStructDeclarations(DLanguageModuleDeclaration o, boolean includeFromMixins) {
+    public static List<DLanguageStructDeclaration> getTopLevelStructDeclarations(DLanguageModuleGlobalDeclaration o, boolean includeFromMixins) {
         return getTopLevelXofType(o, DLanguageStructDeclaration.class, includeFromMixins);
     }
 
-    public static List<DLanguageVarDeclarations> getTopLevelVarDeclarations(DLanguageModuleDeclaration o, boolean includeFromMixins) {
+    public static List<DLanguageVarDeclarations> getTopLevelVarDeclarations(DLanguageModuleGlobalDeclaration o, boolean includeFromMixins) {
         return getTopLevelXofType(o, DLanguageVarDeclarations.class, includeFromMixins);
     }
 
-    public static List<DLanguageFuncDeclaration> getTopLevelFunctionDeclarations(DLanguageModuleDeclaration o, boolean includeFromMixins) {
+    public static List<DLanguageFuncDeclaration> getTopLevelFunctionDeclarations(DLanguageModuleGlobalDeclaration o, boolean includeFromMixins) {
         return getTopLevelXofType(o, DLanguageFuncDeclaration.class, includeFromMixins);
     }
 
-    private static Set<DLanguageFile> getdLanguageFiles(DLanguageModuleDeclaration o) {
+    private static Set<DLanguageFile> getdLanguageFiles(DLanguageModuleGlobalDeclaration o) {
         Set<String> module = new HashSet<>();
         module.add(o.getModuleFullyQualifiedName().getText());
         return fromModulesToFiles(o.getProject(), module);
     }
 
-    public static Set<DNamedElement> getPubliclyAccessibleSymbols(DLanguageModuleDeclaration o, boolean includeFromMixins) {
+    public static Set<DNamedElement> getPubliclyAccessibleSymbols(DLanguageModuleGlobalDeclaration o, boolean includeFromMixins) {
         Set<DNamedElement> symbols = new HashSet<>();
         Set<DNamedElement> publicSymbols = new HashSet<>();
         symbols.addAll(getTopLevelClassDeclarations(o, includeFromMixins));
@@ -1007,7 +1007,7 @@ public class DPsiImplUtil {
         return publicSymbols;
     }
 
-    public static Set<DNamedElement> getAllSymbols(DLanguageModuleDeclaration o, boolean includeFromMixins) {
+    public static Set<DNamedElement> getAllSymbols(DLanguageModuleGlobalDeclaration o, boolean includeFromMixins) {
         Set<DNamedElement> symbols = new HashSet<>();
         symbols.addAll(getClassDeclarations(o, includeFromMixins));
         symbols.addAll(getTemplateDeclarations(o, includeFromMixins));
@@ -1017,7 +1017,7 @@ public class DPsiImplUtil {
         return symbols;
     }
 
-    public static List<DLanguageTemplateMixin> getTopLevelTemplateMixins(DLanguageModuleDeclaration o, boolean includeFromMixins) {
+    public static List<DLanguageTemplateMixin> getTopLevelTemplateMixins(DLanguageModuleGlobalDeclaration o, boolean includeFromMixins) {
         return getTopLevelXofType(o, DLanguageTemplateMixin.class, includeFromMixins);
     }
 
@@ -1081,7 +1081,7 @@ public class DPsiImplUtil {
     // ------------- Var Declaration ------------------ //
     @NotNull
     public static String getName(@NotNull DLanguageVarDeclarations o) {
-        DLanguageVarDeclarationStub stub = o.getStub();
+        DLanguageVarDeclaratorStub stub = o.getStub();
         if (stub != null) return StringUtil.notNullize(stub.getName());
         if (o.getAutoDeclaration() != null)
             return o.getAutoDeclaration().getAutoDeclarationX().getAutoDeclarationY().getIdentifier().getText();

@@ -10,12 +10,12 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Created by francis nixon on 1/11/2017.
  */
-public class DLanguageVarDeclarationStub extends NamedStubBase<DLanguageVarDeclarations> {
-    public DLanguageVarDeclarationStub(StubElement parent, @NotNull IStubElementType elementType, StringRef name) {
+public class DLanguageVarDeclaratorStub extends NamedStubBase<DLanguageVarDeclarations> {
+    public DLanguageVarDeclaratorStub(StubElement parent, @NotNull IStubElementType elementType, StringRef name) {
         super(parent, elementType, name);
     }
 
-    public DLanguageVarDeclarationStub(StubElement parent, IStubElementType elementType, String name) {
+    public DLanguageVarDeclaratorStub(StubElement parent, IStubElementType elementType, String name) {
         super(parent, elementType, name);
     }
 }

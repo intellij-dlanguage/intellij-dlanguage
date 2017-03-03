@@ -9,7 +9,7 @@ import net.masterthought.dlanguage.stubs.DLanguageTemplateDeclarationStub;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
 
-public interface DLanguageTemplateDeclaration extends MixinContainer, StubBasedPsiElement<DLanguageTemplateDeclarationStub> {
+public interface DLanguageTemplateDeclaration extends MixinContainer, DNamedElement, StubBasedPsiElement<DLanguageTemplateDeclarationStub> {
 
   @Nullable
   DLanguageConstraint getConstraint();

@@ -9,7 +9,7 @@ import net.masterthought.dlanguage.stubs.DLanguageAliasDeclarationStub;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
 
-public interface DLanguageAliasDeclaration extends MixinContainer, StubBasedPsiElement<DLanguageAliasDeclarationStub> {
+public interface DLanguageAliasDeclaration extends MixinContainer, DNamedElement, StubBasedPsiElement<DLanguageAliasDeclarationStub> {
 
   @Nullable
   DLanguageAliasDeclarationX getAliasDeclarationX();

@@ -9,7 +9,7 @@ import net.masterthought.dlanguage.stubs.DLanguageStructDeclarationStub;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
 
-public interface DLanguageStructDeclaration extends MixinContainer, StubBasedPsiElement<DLanguageStructDeclarationStub> {
+public interface DLanguageStructDeclaration extends MixinContainer, DNamedElement, StubBasedPsiElement<DLanguageStructDeclarationStub> {
 
   @Nullable
   DLanguageAggregateBody getAggregateBody();

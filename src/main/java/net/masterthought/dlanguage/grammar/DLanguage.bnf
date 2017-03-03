@@ -16,11 +16,10 @@
   // used to attach custom methods into the classes - e.g. Identifier
   psiImplUtilClass="net.masterthought.dlanguage.psi.impl.DPsiImplUtil"
 
-  implements("FuncDeclaration|ClassDeclaration|InterfaceDeclaration|TemplateDeclaration|Constructor|Destructor|StructDeclaration|AliasDeclaration|ModuleDeclaration|TemplateMixinDeclaration")="net.masterthought.dlanguage.psi.MixinContainer"
-
-
   // used to implement DNamedElement in the generated interfaces
-  implements("Identifier|LabeledStatement|VarDeclarations|FuncDeclaration|ClassDeclaration|InterfaceDeclaration|TemplateDeclaration|Constructor|Destructor|StructDeclaration|AliasDeclaration|ModuleDeclaration|TemplateMixinDeclaration")="net.masterthought.dlanguage.psi.DNamedElement"
+  // this will soon no longer be necessary as interfaces are now specified next to the bnf rule
+  implements("Identifier|LabeledStatement|AutoDeclarationY|DeclaratorInitializer|FuncDeclaration|ClassDeclaration|InterfaceDeclaration|TemplateDeclaration|Constructor|Destructor|StructDeclaration|AliasDeclaration|ModuleDeclaration|TemplateMixinDeclaration")=["net.masterthought.dlanguage.psi.DNamedElement"]
+
 
   // used to extend to use stubs
   extends("Identifier|LabeledStatement|VarDeclarations|FuncDeclaration|ClassDeclaration|InterfaceDeclaration|TemplateDeclaration|Constructor|Destructor|StructDeclaration|AliasDeclaration|ModuleDeclaration|TemplateMixinDeclaration")="net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase<?>"
@@ -236,6 +235,7 @@ ModuleDeclaration ::=
     Attribute? 'module' ModuleFullyQualifiedName ';'{
         methods=[getName getNameIdentifier getReference setName getPresentation getProtection getClassDeclarations getTemplateDeclarations getStructDeclarations getFunctionDeclarations getVarDeclarations getTopLevelVarDeclarations getTopLevelFunctionDeclarations getTopLevelStructDeclarations getTopLevelTemplateDeclarations getTopLevelClassDeclarations getPubliclyAccessibleSymbols getAllSymbols]
         stubClass="net.masterthought.dlanguage.stubs.DLanguageModuleDeclarationStub"
+        implements = ["net.masterthought.dlanguage.psi.DNamedElement" "net.masterthought.dlanguage.psi.GlobalDeclarationContainertainer" "net.masterthought.dlanguage.psi.HasVisibility"]
 
     }
 
@@ -733,8 +733,9 @@ ScopeStatement ::=
 
 LabeledStatement ::=
     Identifier ':' Statement? {
-        methods=[getName getNameIdentifier getReference setName getPresentation getTemplateArguments getConstructors getMethods getVariables getPropertyMethods getProtection]
+        methods=[getName getNameIdentifier getReference setName getPresentation ]
         stubClass="net.masterthought.dlanguage.stubs.DLanguageLabeledStatementStub"
+        implements = ["net.masterthought.dlanguage.psi.DNamedElement" "net.masterthought.dlanguage.psi.StatementContainer" ]
     }
 
 
@@ -1661,6 +1662,7 @@ AliasDeclaration ::=
   | 'alias' AliasDeclarationX ';'{
      methods=[getName getNameIdentifier getReference setName getPresentation getProtection]
      stubClass="net.masterthought.dlanguage.stubs.DLanguageAliasDeclarationStub"
+     implements=["net.masterthought.dlanguage.psi.DNamedElement"]
 }
 
 AliasDeclarationX ::=
@@ -1676,21 +1678,26 @@ AutoDeclarationX ::=
     AutoDeclarationY [',' AutoDeclarationX]
 
 AutoDeclarationY ::=
-    Identifier TemplateParameters? '=' Initializer
+    Identifier TemplateParameters? '=' Initializer{
+        methods = [getName getNameIdentifier getReference setName getPresentation getProtection]
+        stubClass="net.masterthought.dlanguage.stubs.DLanguageAutoDeclarationStub"
+        implements = ["net.masterthought.dlanguage.psi.DNamedElement" "net.masterthought.dlanguage.psi.VariableDeclaration"]
+    }
 
 VarDeclarations ::=
     StorageClasses? BasicType? Declarators ';'
-    | AutoDeclaration {
-        methods=[ getName getNameIdentifier getReference setName getPresentation getProtection ]
-                stubClass="net.masterthought.dlanguage.stubs.DLanguageVarDeclarationStub"
-    }
+    | AutoDeclaration
 
 Declarators ::=
     DeclaratorInitializer (',' DeclaratorIdentifierList)?
 
 DeclaratorInitializer ::=
     AltDeclarator ('=' Initializer)?
-    | VarDeclarator (TemplateParameters? '=' Initializer)?
+    | VarDeclarator (TemplateParameters? '=' Initializer)?{
+        methods=[ getName getNameIdentifier getReference setName getPresentation getProtection ]
+        stubClass="net.masterthought.dlanguage.stubs.DLanguageVarDeclaratorStub"
+        implements = ["net.masterthought.dlanguage.psi.DNamedElement" "net.masterthought.dlanguage.psi.VariableDeclaration"]
+    }
 
 
 DeclaratorIdentifierList ::=
@@ -1794,6 +1801,7 @@ FuncDeclaration ::=
     StorageClasses? BasicType FuncDeclarator (FunctionBody |';'| '=')?
     | AutoFuncDeclaration {
       methods=[getName getNameIdentifier getReference setName getPresentation getArguments getProtection getTemplateArguments]
+      implements = ["net.masterthought.dlanguage.psi.LocalDeclarationContainer" "net.masterthought.dlanguage.psi.DNamedElement"]
       stubClass="net.masterthought.dlanguage.stubs.DLanguageFuncDeclarationStub"
     }
 
@@ -1876,6 +1884,7 @@ Constructor ::=
     | 'this' Parameters MemberFunctionAttributes? FunctionBody
     | ConstructorTemplate {
          methods=[getName getNameIdentifier getReference setName getPresentation]
+         implements = ["net.masterthought.dlanguage.psi.LocalDeclarationContainer" "net.masterthought.dlanguage.psi.DNamedElement"]
          stubClass="net.masterthought.dlanguage.stubs.DLanguageConstructorStub"
     }
 
@@ -1887,6 +1896,7 @@ Destructor ::=
     '~' 'this' '(' ')' MemberFunctionAttributes? ';'
     | '~' 'this' '(' ')' MemberFunctionAttributes? FunctionBody{
         methods=[getName getNameIdentifier getReference setName getPresentation]
+        implements = ["net.masterthought.dlanguage.psi.LocalDeclarationContainer" "net.masterthought.dlanguage.psi.DNamedElement"]
         stubClass="net.masterthought.dlanguage.stubs.DLanguageDestructorStub"
    }
 
@@ -1911,19 +1921,34 @@ UnitTesting ::=
 
 StaticConstructor ::=
     'static' 'this' '(' ')' ';'
-    | 'static' 'this' '(' ')' FunctionBody
+    | 'static' 'this' '(' ')' FunctionBody{
+       methods=[getName getNameIdentifier getReference setName getPresentation]
+       implements = ["net.masterthought.dlanguage.psi.LocalDeclarationContainer" "net.masterthought.dlanguage.psi.DNamedElement"]
+       stubClass="net.masterthought.dlanguage.stubs.DLanguageStaticConstructorStub"
+   }
 
 StaticDestructor ::=
     'static' '~' 'this' '(' ')' MemberFunctionAttributes? ';'
-    | 'static' '~' 'this' '(' ')' MemberFunctionAttributes? FunctionBody
+    | 'static' '~' 'this' '(' ')' MemberFunctionAttributes? FunctionBody{
+       methods=[getName getNameIdentifier getReference setName getPresentation]
+       implements = ["net.masterthought.dlanguage.psi.LocalDeclarationContainer" "net.masterthought.dlanguage.psi.DNamedElement"]
+       stubClass="net.masterthought.dlanguage.stubs.DLanguageStaticDestructorStub"
+    }
 
 SharedStaticConstructor ::=
     'shared' 'static' 'this' '(' ')' ';'
-    | 'shared' 'static' 'this' '(' ')' FunctionBody
-
+    | 'shared' 'static' 'this' '(' ')' FunctionBody{
+      methods=[getName getNameIdentifier getReference setName getPresentation]
+      implements = ["net.masterthought.dlanguage.psi.LocalDeclarationContainer" "net.masterthought.dlanguage.psi.DNamedElement"]
+      stubClass="net.masterthought.dlanguage.stubs.DLanguageSharedStaticConstructorStub"
+  }
 SharedStaticDestructor ::=
     'shared' 'static' '~' 'this' '(' ')' MemberFunctionAttributes? ';'
-    | 'shared' 'static' '~' 'this' '(' ')' MemberFunctionAttributes? FunctionBody
+    | 'shared' 'static' '~' 'this' '(' ')' MemberFunctionAttributes? FunctionBody{
+       methods=[getName getNameIdentifier getReference setName getPresentation]
+       implements = ["net.masterthought.dlanguage.psi.LocalDeclarationContainer" "net.masterthought.dlanguage.psi.DNamedElement"]
+       stubClass="net.masterthought.dlanguage.stubs.DLanguageSharedStaticDestructorStub"
+   }
 
 // Aggregate
 
@@ -2105,7 +2130,7 @@ TemplateValueParameterDefault ::=
 
 TemplateMixinDeclaration ::=
     'mixin' 'template' Identifier TemplateParameters Constraint? '{' DeclDefs? '}'{
-        methods=[getName getNameIdentifier getReference setName getPresentation getTemplateArguments getPublicSymbols]
+        methods=[getName getNameIdentifier getReference setName getPresentation ]//getTemplateArguments getPublicSymbols]
         stubClass="net.masterthought.dlanguage.stubs.DLanguageTemplateMixinDeclarationStub"
     }
 

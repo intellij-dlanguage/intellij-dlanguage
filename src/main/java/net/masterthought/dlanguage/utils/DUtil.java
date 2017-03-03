@@ -138,11 +138,11 @@ public class DUtil {
         if (symbol instanceof DLanguageAttributeSpecifier)
             if (((DLanguageAttributeSpecifier) symbol).getAttribute().getProtectionAttribute() != null && ((DLanguageAttributeSpecifier) symbol).getAttribute().getProtectionAttribute().getText().equals("public"))
                 return true;
-        if (symbol instanceof DLanguageClassDeclaration || symbol instanceof DLanguageTemplateInstance || symbol instanceof DLanguageModuleDeclaration || symbol instanceof DLanguageFuncDeclaration || symbol instanceof DLanguageInterface || symbol instanceof DLanguageStructDeclaration)
+        if (symbol instanceof DLanguageClassDeclaration || symbol instanceof DLanguageTemplateInstance || symbol instanceof DLanguageModuleGlobalDeclaration || symbol instanceof DLanguageFuncDeclaration || symbol instanceof DLanguageInterface || symbol instanceof DLanguageStructDeclaration)
             return false;
         if (symbol == null)
             return false;
-        if (null != findChildOfType(symbol, DLanguageModuleDeclaration.class))
+        if (null != findChildOfType(symbol, DLanguageModuleGlobalDeclaration.class))
             return false;
         return searchForPublic(symbol.getParent());
     }

@@ -4,7 +4,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.DLightPlatformCodeInsightFixtureTestCase;
 import net.masterthought.dlanguage.psi.DLanguageIdentifier;
-import net.masterthought.dlanguage.psi.DLanguageModuleDeclaration;
+import net.masterthought.dlanguage.psi.DLanguageModuleGlobalDeclaration;
 
 import java.io.File;
 import java.nio.charset.Charset;
@@ -58,7 +58,7 @@ public class DPsiImplUtilTestCase extends DLightPlatformCodeInsightFixtureTestCa
 
     protected void doTestModule(boolean succeed) {
         String result = "";
-        final DLanguageModuleDeclaration module = PsiTreeUtil.findChildOfType(myFixture.getFile(), DLanguageModuleDeclaration.class);
+        final DLanguageModuleGlobalDeclaration module = PsiTreeUtil.findChildOfType(myFixture.getFile(), DLanguageModuleGlobalDeclaration.class);
         List<PsiElement> elements = new ArrayList<>();
         elements.addAll(module.getStructDeclarations(true));
         elements.addAll(module.getClassDeclarations(true));

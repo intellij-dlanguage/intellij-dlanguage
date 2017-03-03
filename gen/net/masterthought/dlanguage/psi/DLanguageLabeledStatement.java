@@ -9,7 +9,7 @@ import net.masterthought.dlanguage.stubs.DLanguageLabeledStatementStub;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
 
-public interface DLanguageLabeledStatement extends DNamedElement, StubBasedPsiElement<DLanguageLabeledStatementStub> {
+public interface DLanguageLabeledStatement extends DNamedElement, StatementContainer, StubBasedPsiElement<DLanguageLabeledStatementStub> {
 
   @NotNull
   DLanguageIdentifier getIdentifier();

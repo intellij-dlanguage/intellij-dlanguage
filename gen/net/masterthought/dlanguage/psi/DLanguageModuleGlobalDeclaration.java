@@ -10,7 +10,7 @@ import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
 import java.util.Set;
 
-public interface DLanguageModuleDeclaration extends MixinContainer, StubBasedPsiElement<DLanguageModuleDeclarationStub> {
+public interface DLanguageModuleGlobalDeclaration extends DNamedElement, GlobalDeclarationContainer, HasVisibility, StubBasedPsiElement<DLanguageModuleDeclarationStub> {
 
   @Nullable
   DLanguageAttribute getAttribute();
