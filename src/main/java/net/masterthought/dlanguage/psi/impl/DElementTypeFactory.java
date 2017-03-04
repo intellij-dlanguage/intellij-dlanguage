@@ -22,6 +22,10 @@ public class DElementTypeFactory {
         if (name.equals("LABELED_STATEMENT")) return new DLanguageLabeledStatementStubElementType(name);
         if (name.equals("TEMPLATE_MIXIN_DECLARATION"))
             return new DLanguageTemplateMixinDeclarationStubElementType(name);
+        if (name.equals("SHARED_STATIC_CONSTRUCTOR")) return new DLanguageSharedStaticConstructorStubElementType(name);
+        if (name.equals("SHARED_STATIC_DESTRUCTOR")) return new DLanguageSharedStaticDestructorStubElementType(name);
+        if (name.equals("STATIC_CONSTRUCTOR")) return new DLanguageStaticConstructorStubElementType(name);
+        if (name.equals("STATIC_DESTRUCTOR")) return new DLanguageStaticDestructorStubElementType(name);
             throw new RuntimeException("Unknown element type: " + name);
     }
 }

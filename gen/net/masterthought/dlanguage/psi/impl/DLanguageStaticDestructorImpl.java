@@ -8,13 +8,24 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import com.intellij.extapi.psi.StubBasedPsiElementBase;
+import net.masterthought.dlanguage.stubs.DLanguageStaticDestructorStub;
 import net.masterthought.dlanguage.psi.*;
+import com.intellij.psi.stubs.IStubElementType;
+import com.intellij.psi.tree.IElementType;
 
-public class DLanguageStaticDestructorImpl extends ASTWrapperPsiElement implements DLanguageStaticDestructor {
+public class DLanguageStaticDestructorImpl extends StubBasedPsiElementBase<DLanguageStaticDestructorStub> implements DLanguageStaticDestructor {
+
+  public DLanguageStaticDestructorImpl(DLanguageStaticDestructorStub stub, IStubElementType type) {
+    super(stub, type);
+  }
 
   public DLanguageStaticDestructorImpl(ASTNode node) {
     super(node);
+  }
+
+  public DLanguageStaticDestructorImpl(DLanguageStaticDestructorStub stub, IElementType type, ASTNode node) {
+    super(stub, type, node);
   }
 
   public void accept(@NotNull DLanguageVisitor visitor) {

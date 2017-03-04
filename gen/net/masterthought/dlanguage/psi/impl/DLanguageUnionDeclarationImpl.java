@@ -8,13 +8,24 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import com.intellij.extapi.psi.StubBasedPsiElementBase;
+import net.masterthought.dlanguage.stubs.DLanguageUnionDeclarationStub;
 import net.masterthought.dlanguage.psi.*;
+import com.intellij.psi.stubs.IStubElementType;
+import com.intellij.psi.tree.IElementType;
 
-public class DLanguageUnionDeclarationImpl extends ASTWrapperPsiElement implements DLanguageUnionDeclaration {
+public class DLanguageUnionDeclarationImpl extends StubBasedPsiElementBase<DLanguageUnionDeclarationStub> implements DLanguageUnionDeclaration {
+
+  public DLanguageUnionDeclarationImpl(DLanguageUnionDeclarationStub stub, IStubElementType type) {
+    super(stub, type);
+  }
 
   public DLanguageUnionDeclarationImpl(ASTNode node) {
     super(node);
+  }
+
+  public DLanguageUnionDeclarationImpl(DLanguageUnionDeclarationStub stub, IElementType type, ASTNode node) {
+    super(stub, type, node);
   }
 
   public void accept(@NotNull DLanguageVisitor visitor) {
@@ -41,7 +52,7 @@ public class DLanguageUnionDeclarationImpl extends ASTWrapperPsiElement implemen
   @Override
   @Nullable
   public DLanguageIdentifier getIdentifier() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
+    return PsiTreeUtil.getStubChildOfType(this, DLanguageIdentifier.class);
   }
 
   @Override

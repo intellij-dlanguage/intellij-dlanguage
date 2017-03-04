@@ -2,12 +2,12 @@
 package net.masterthought.dlanguage.psi;
 
 import java.util.List;
-
-import com.intellij.psi.PsiNamedElement;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.StubBasedPsiElement;
+import net.masterthought.dlanguage.stubs.DLanguageStaticConstructorStub;
 
-public interface DLanguageStaticConstructor extends PsiElement, PsiNamedElement {
+public interface DLanguageStaticConstructor extends StatementContainer, DNamedElement, HasVisibility, StubBasedPsiElement<DLanguageStaticConstructorStub> {
 
   @Nullable
   DLanguageFunctionBody getFunctionBody();

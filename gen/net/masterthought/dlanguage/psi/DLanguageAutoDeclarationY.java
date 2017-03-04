@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.StubBasedPsiElement;
 import net.masterthought.dlanguage.stubs.DLanguageAutoDeclarationStub;
 
-public interface DLanguageAutoDeclarationY extends DNamedElement, StubBasedPsiElement<DLanguageAutoDeclarationStub> {
+public interface DLanguageAutoDeclarationY extends DNamedElement, VariableDeclaration, StubBasedPsiElement<DLanguageAutoDeclarationStub> {
 
   @NotNull
   DLanguageIdentifier getIdentifier();

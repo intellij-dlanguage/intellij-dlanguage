@@ -1,5 +1,7 @@
 package net.masterthought.dlanguage.psi;
 
+import net.masterthought.dlanguage.utils.DUtil;
+
 import java.util.List;
 
 /**
@@ -9,18 +11,19 @@ public interface FunctionContainer {
     List<DLanguageFuncDeclaration> getFunctionDeclarations(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations);
 
     default List<DLanguageFuncDeclaration> getPropertyFunctions(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
-        // todo implement functions in func declaration which allow for autofiltering of property functions
+        return DUtil.getElementsWithAtProperty(getFunctionDeclarations(includeFromMixins, includeFromInheritance, includeNestedDeclarations));
     }
 
     default List<DLanguageFuncDeclaration> getPublicFunctions(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
-        //todo
+        return DUtil.getPublicElements(getFunctionDeclarations(includeFromMixins, includeFromInheritance, includeNestedDeclarations));
     }
 
     default List<DLanguageFuncDeclaration> getProtectedFunctions(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
-        //todo
+        return DUtil.getProtectedElements(getFunctionDeclarations(includeFromMixins, includeFromInheritance, includeNestedDeclarations));
     }
 
     default List<DLanguageFuncDeclaration> getPrivateFunctions(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
-        //todo
+        return DUtil.getPrivateElements(getFunctionDeclarations(includeFromMixins, includeFromInheritance, includeNestedDeclarations));
     }
+
 }

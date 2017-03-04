@@ -8,9 +8,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.psi.*;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static com.intellij.psi.util.PsiTreeUtil.findChildOfType;
 import static net.masterthought.dlanguage.psi.impl.DPsiImplUtil.findParentOfType;
@@ -145,6 +143,46 @@ public class DUtil {
         if (null != findChildOfType(symbol, DLanguageModuleGlobalDeclaration.class))
             return false;
         return searchForPublic(symbol.getParent());
+    }
+
+    public static <T extends HasVisibility> List<T> getPublicElements(List<T> elements) {
+        List<T> res = new ArrayList<>();
+        for (T element : elements) {
+            if (element.isPublic()) {
+                res.add(element);
+            }
+        }
+        return res;
+    }
+
+    public static <T extends HasVisibility> List<T> getProtectedElements(List<T> elements) {
+        List<T> res = new ArrayList<>();
+        for (T element : elements) {
+            if (element.isPublic()) {
+                res.add(element);
+            }
+        }
+        return res;
+    }
+
+    public static <T extends HasVisibility> List<T> getPrivateElements(List<T> elements) {
+        List<T> res = new ArrayList<>();
+        for (T element : elements) {
+            if (element.isPublic()) {
+                res.add(element);
+            }
+        }
+        return res;
+    }
+
+    public static <T extends HasProperty> List<T> getElementsWithAtProperty(List<T> elements) {
+        List<T> res = new ArrayList<>();
+        for (T element : elements) {
+            if (element.isPropertyFunction()) {
+                res.add(element);
+            }
+        }
+        return res;
     }
 }
 

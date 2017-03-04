@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.StubBasedPsiElement;
 import net.masterthought.dlanguage.stubs.DLanguageVarDeclaratorStub;
 
-public interface DLanguageDeclaratorInitializer extends DNamedElement, StubBasedPsiElement<DLanguageVarDeclaratorStub> {
+public interface DLanguageDeclaratorInitializer extends DNamedElement, VariableDeclaration, StubBasedPsiElement<DLanguageVarDeclaratorStub> {
 
   @Nullable
   DLanguageAltDeclarator getAltDeclarator();
