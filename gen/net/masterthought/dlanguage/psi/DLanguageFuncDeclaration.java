@@ -9,7 +9,7 @@ import net.masterthought.dlanguage.stubs.DLanguageFuncDeclarationStub;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
 
-public interface DLanguageFuncDeclaration extends StatementContainer, DNamedElement, HasVisibility, HasProperty, StubBasedPsiElement<DLanguageFuncDeclarationStub> {
+public interface DLanguageFuncDeclaration extends StatementContainer, DNamedElement, HasVisibility, HasProperty, HasTemplateArguments, HasArguments, StubBasedPsiElement<DLanguageFuncDeclarationStub> {
 
   @Nullable
   DLanguageBasicType getBasicType();

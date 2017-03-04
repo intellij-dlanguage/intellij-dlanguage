@@ -9,7 +9,7 @@ import net.masterthought.dlanguage.stubs.DLanguageTemplateMixinDeclarationStub;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
 
-public interface DLanguageTemplateMixinDeclaration extends DNamedElement, StatementContainer, GlobalDeclarationContainer, HasVisibility, StubBasedPsiElement<DLanguageTemplateMixinDeclarationStub> {
+public interface DLanguageTemplateMixinDeclaration extends DNamedElement, StatementContainer, GlobalDeclarationContainer, HasVisibility, HasTemplateArguments, StubBasedPsiElement<DLanguageTemplateMixinDeclarationStub> {
 
   @Nullable
   DLanguageConstraint getConstraint();

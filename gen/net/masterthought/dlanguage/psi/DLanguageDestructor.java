@@ -9,7 +9,7 @@ import net.masterthought.dlanguage.stubs.DLanguageDestructorStub;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
 
-public interface DLanguageDestructor extends StatementContainer, DNamedElement, HasVisibility, StubBasedPsiElement<DLanguageDestructorStub> {
+public interface DLanguageDestructor extends StatementContainer, DNamedElement, HasVisibility, HasTemplateArguments, HasArguments, StubBasedPsiElement<DLanguageDestructorStub> {
 
   @Nullable
   DLanguageFunctionBody getFunctionBody();

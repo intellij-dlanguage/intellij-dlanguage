@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.StubBasedPsiElement;
 import net.masterthought.dlanguage.stubs.DLanguageSharedStaticDestructorStub;
 
-public interface DLanguageSharedStaticDestructor extends StatementContainer, DNamedElement, HasVisibility, StubBasedPsiElement<DLanguageSharedStaticDestructorStub> {
+public interface DLanguageSharedStaticDestructor extends StatementContainer, DNamedElement, HasVisibility, HasTemplateArguments, HasArguments, StubBasedPsiElement<DLanguageSharedStaticDestructorStub> {
 
   @Nullable
   DLanguageFunctionBody getFunctionBody();
