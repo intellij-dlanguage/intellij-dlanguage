@@ -15,13 +15,13 @@ import com.intellij.psi.PsiReference;
 import java.util.Set;
 import com.intellij.psi.stubs.IStubElementType;
 
-public class DLanguageModuleGlobalDeclarationImpl extends DNamedStubbedPsiElementBase<DLanguageModuleDeclarationStub> implements DLanguageModuleGlobalDeclaration {
+public class DLanguageGlobalDeclarationImpl extends DNamedStubbedPsiElementBase<DLanguageModuleDeclarationStub> implements DLanguageGlobalDeclaration {
 
-  public DLanguageModuleGlobalDeclarationImpl(DLanguageModuleDeclarationStub stub, IStubElementType type) {
+  public DLanguageGlobalDeclarationImpl(DLanguageModuleDeclarationStub stub, IStubElementType type) {
     super(stub, type);
   }
 
-  public DLanguageModuleGlobalDeclarationImpl(ASTNode node) {
+  public DLanguageGlobalDeclarationImpl(ASTNode node) {
     super(node);
   }
 

@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by francis on 2/28/2017.
  */
-public interface GlobalVarContainer {
+public interface GlobalVarContainer extends AliasContainer {
     List<VariableDeclaration> getVariableDeclarations(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations);
 
     default List<VariableDeclaration> getPublicVariables(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {

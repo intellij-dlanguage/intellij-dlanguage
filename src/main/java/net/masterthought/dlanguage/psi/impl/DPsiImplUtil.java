@@ -58,7 +58,7 @@ public class DPsiImplUtil {
         return new DReference(o, TextRange.from(0, getName(o).length()));
     }
 
-
+    @Nullable
     public static PsiElement findParentOfType(PsiElement element, Class className) {
         if (className.isInstance(element)) {
             return element;
@@ -167,6 +167,7 @@ public class DPsiImplUtil {
         };
     }
 
+    @NotNull
     public static List<DLanguageParameter> getArguments(DLanguageFuncDeclaration o) {
         return Arrays.asList(getChildrenOfType(o.getFuncDeclaratorSuffix().getParameters(), DLanguageParameter.class));
     }
@@ -177,6 +178,7 @@ public class DPsiImplUtil {
         return new ArrayList<>();
     }
 
+    @NotNull
     public static List<DLanguageProtectionAttribute> getProtection(DLanguageFuncDeclaration o) {
         return Collections.singletonList(getChildOfType(o, DLanguageProtectionAttribute.class));
     }
@@ -584,12 +586,8 @@ public class DPsiImplUtil {
         };
     }
 
-    // ------------- Alias Definition ------------------ //
-
-    // ------------ Module Declaration ----------------- //
-
     @NotNull
-    public static String getName(@NotNull DLanguageModuleGlobalDeclaration o) {
+    public static String getName(@NotNull DLanguageModuleDeclaration o) {
         DLanguageModuleDeclarationStub stub = o.getStub();
         if (stub != null) return StringUtil.notNullize(stub.getName());
 
@@ -600,14 +598,18 @@ public class DPsiImplUtil {
         }
     }
 
+    // ------------- Alias Definition ------------------ //
+
+    // ------------ Module Declaration ----------------- //
+
     @Nullable
-    public static PsiElement getNameIdentifier(@NotNull DLanguageModuleGlobalDeclaration o) {
+    public static PsiElement getNameIdentifier(@NotNull DLanguageModuleDeclaration o) {
         ASTNode keyNode = o.getNode();
         return keyNode != null ? keyNode.getPsi() : null;
     }
 
     @Nullable
-    public static PsiElement setName(@NotNull DLanguageModuleGlobalDeclaration o, @NotNull String newName) {
+    public static PsiElement setName(@NotNull DLanguageModuleDeclaration o, @NotNull String newName) {
         PsiElement e = DElementFactory.createDLanguageModuleFromText(o.getProject(), newName);
         if (e == null) return null;
         o.replace(e);
@@ -615,12 +617,12 @@ public class DPsiImplUtil {
     }
 
     @NotNull
-    public static PsiReference getReference(@NotNull DLanguageModuleGlobalDeclaration o) {
+    public static PsiReference getReference(@NotNull DLanguageModuleDeclaration o) {
         return new DReference(o, TextRange.from(0, getName(o).length()));
     }
 
     @NotNull
-    public static ItemPresentation getPresentation(final DLanguageModuleGlobalDeclaration o) {
+    public static ItemPresentation getPresentation(final DLanguageModuleDeclaration o) {
         return new ItemPresentation() {
             @Nullable
             @Override
@@ -647,13 +649,9 @@ public class DPsiImplUtil {
     }
 
     @Contract("null -> null")
-    public static DLanguageProtectionAttribute getProtection(DLanguageModuleGlobalDeclaration o) {
+    public static DLanguageProtectionAttribute getProtection(DLanguageModuleDeclaration o) {
         return getChildOfType(o, DLanguageProtectionAttribute.class);
     }
-
-
-
-    // ------------ Module Declaration ----------------- //
 
     // ------------- Interface Definition ------------------ //
     @NotNull
@@ -662,6 +660,9 @@ public class DPsiImplUtil {
         if (stub != null) return StringUtil.notNullize(stub.getName());
         return o.getIdentifier().getText();
     }
+
+
+    // ------------ Module Declaration ----------------- //
 
     @Nullable
     public static PsiElement getNameIdentifier(@NotNull DLanguageInterfaceDeclaration o) {
@@ -708,12 +709,6 @@ public class DPsiImplUtil {
             }
         };
     }
-    // ------------- Interface Definition ------------------ //
-
-    // ------------- Var Declaration ------------------ //
-
-
-    // ------------- Var Declaration ------------------ //
 
     // ------------- Labeled Statement ------------------ //
     @NotNull
@@ -722,6 +717,17 @@ public class DPsiImplUtil {
         if (stub != null) return StringUtil.notNullize(stub.getName());
         return o.getIdentifier().getText();
     }
+    // ------------- Interface Definition ------------------ //
+
+    // ------------- Var Declaration ------------------ //
+
+
+    // ------------- Var Declaration ------------------ //
+
+    // ------------- Auto Declaration ------------------ //
+
+
+    // ------------- Auto Declaration ------------------ //
 
     @Nullable
     public static PsiElement getNameIdentifier(@NotNull DLanguageLabeledStatement o) {
@@ -768,7 +774,6 @@ public class DPsiImplUtil {
             }
         };
     }
-    // ------------- Labeled Statement ------------------ //
 
     // ------------- Mixin Declaration ------------------ //
     @NotNull
@@ -777,6 +782,7 @@ public class DPsiImplUtil {
         if (stub != null) return StringUtil.notNullize(stub.getName());
         return o.getIdentifier().getText();//doesn't have any one name??
     }
+    // ------------- Labeled Statement ------------------ //
 
     @Nullable
     public static PsiElement getNameIdentifier(@NotNull DLanguageTemplateMixinDeclaration o) {
@@ -824,12 +830,64 @@ public class DPsiImplUtil {
         };
     }
 
+    // -------------- Mixin Statement ------------------- //
+    public static DLanguageTemplateMixinDeclaration getTemplateMixinDeclaration(DLanguageMixinDeclaration t) {
+        return null;//todo
+    }
+
     // ------------- Mixin Declaration ------------------ //
 
-    // -------------- Mixin Statement ------------------- //
-    public DLanguageTemplateMixinDeclaration getTemplate() {
+    public static DLanguageTemplateDeclaration getTemplateDeclaration(DLanguageMixinDeclaration t) {
+        return null;//todo
+    }
+
+    public static DLanguageTemplateMixinDeclaration getTemplateMixinDeclaration(DLanguageTemplateMixin t) {
+        return null;//todo
+    }
+
+    public static DLanguageTemplateDeclaration getTemplateDeclaration(DLanguageTemplateMixin t) {
+        return null;//todo
+    }
+
+    public static DLanguageTemplateMixinDeclaration getTemplateMixinDeclaration(DLanguageMixinExpression t) {
+        return null;//todo
+    }
+
+    public static DLanguageTemplateDeclaration getTemplateDeclaration(DLanguageMixinExpression t) {
+        return null;//todo
+    }
+
+    public static DLanguageTemplateMixinDeclaration getTemplateMixinDeclaration(DLanguageMixinStatement t) {
+        return null;//todo
+    }
+
+    public static DLanguageTemplateDeclaration getTemplateDeclaration(DLanguageMixinStatement t) {
+        return null;//todo
+    }
+
+    private boolean isSomeVisibility(DLanguageAliasDeclaration o, String visibility) {
+        final DLanguageAttributeSpecifier attribute = (DLanguageAttributeSpecifier) o.getParent().getParent().getParent();
+        if (attribute.getAttribute().getProtectionAttribute() != null) {
+            if (attribute.getAttribute().getProtectionAttribute().getText().equals(visibility))
+                return true;
+        }
+        PsiElement parent = o.getParent();
+        while (true) {
+            if (parent instanceof AliasContainer)
+                return false;
+            if (parent instanceof DLanguageDeclDef && ((DLanguageDeclDef) parent).getAttributeSpecifier() != null) {
+                final DLanguageAttributeSpecifier attributeSpecifier = ((DLanguageDeclDef) parent).getAttributeSpecifier();
+                if (attribute.getAttribute().getProtectionAttribute() != null) {
+                    if (attribute.getAttribute().getProtectionAttribute().getText().equals(visibility))
+                        return true;
+                }
+            }
+            parent = parent.getParent();
+        }
 
     }
+
+
 
     // -------------- Mixin Statement ------------------- //
 

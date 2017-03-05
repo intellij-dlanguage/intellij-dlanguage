@@ -22,18 +22,6 @@ import static java.util.Collections.EMPTY_SET;
  * Created by franc on 1/18/2017.
  */
 public class DResolveUtil {
-    private enum WhatAreWeResolving {
-        Function,
-        Template,
-        Alias,
-        Label,
-        Module,
-        Variable,
-        ClassAndStruct,
-        Constructor,
-        MemberVariable//it is impossible to distinguish between a member variable and a function because of ucfs and @property functions. for this reason searchs for member vars must always include searchs for member functions
-    }
-
     private static final Set<WhatAreWeResolving> allOfTheAbove = new HashSet<WhatAreWeResolving>() {{
         for (WhatAreWeResolving w : WhatAreWeResolving.values()) {
             add(w);
@@ -303,11 +291,23 @@ public class DResolveUtil {
         Set<PsiNamedElement> result = new HashSet<>();
         final String elementName = element.getName();
         for (DLanguageIdentifier identifier : identifiers) {
-            if (identifier.getName().equals(elementName) && identifier.getParent().getParent() instanceof DLanguageModuleGlobalDeclaration)
+            if (identifier.getName().equals(elementName) && identifier.getParent().getParent() instanceof DLanguageGlobalDeclaration)
                 result.add(identifier);
         }
         return result;
 
+    }
+
+    private static Set<PsiNamedElement> findFunctionDefinitionNodes(DLanguageIdentifier element, Collection<DLanguageIdentifier> identifiers) {
+        Set<PsiNamedElement> returnValue = new HashSet<>();
+        String elementName = element.getName();
+        for (DLanguageIdentifier identifier : identifiers) {
+            if (elementName.equals(identifier.getName()) && identifier.getParent() instanceof DLanguageFuncDeclaration) {
+                returnValue.add(identifier);
+                //todo check the arguments and match
+            }
+        }
+        return returnValue;
     }
 
 
@@ -495,18 +495,6 @@ public class DResolveUtil {
 //
 //    }
 
-    private static Set<PsiNamedElement> findFunctionDefinitionNodes(DLanguageIdentifier element, Collection<DLanguageIdentifier> identifiers) {
-        Set<PsiNamedElement> returnValue = new HashSet<>();
-        String elementName = element.getName();
-        for (DLanguageIdentifier identifier : identifiers) {
-            if (elementName.equals(identifier.getName()) && identifier.getParent() instanceof DLanguageFuncDeclaration) {
-                returnValue.add(identifier);
-                //todo check the arguments and match
-            }
-        }
-        return returnValue;
-    }
-
     private static Set<PsiNamedElement> findAliasDefinitionNodes(DLanguageIdentifier element, Collection<DLanguageIdentifier> identifiers) {
         Set<PsiNamedElement> results = new HashSet<>();
         String elementName = element.getName();
@@ -585,5 +573,17 @@ public class DResolveUtil {
             filesFound.addAll(files);
         }
         return filesFound;
+    }
+
+    private enum WhatAreWeResolving {
+        Function,
+        Template,
+        Alias,
+        Label,
+        Module,
+        Variable,
+        ClassAndStruct,
+        Constructor,
+        MemberVariable//it is impossible to distinguish between a member variable and a function because of ucfs and @property functions. for this reason searchs for member vars must always include searchs for member functions
     }
 }

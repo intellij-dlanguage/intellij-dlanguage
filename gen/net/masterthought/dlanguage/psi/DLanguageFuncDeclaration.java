@@ -50,9 +50,8 @@ public interface DLanguageFuncDeclaration extends StatementContainer, DNamedElem
   @NotNull
   ItemPresentation getPresentation();
 
+  @NotNull
   List<DLanguageParameter> getArguments();
-
-  List<DLanguageProtectionAttribute> getProtection();
 
   List<DLanguageTemplateParameter> getTemplateArguments();
 

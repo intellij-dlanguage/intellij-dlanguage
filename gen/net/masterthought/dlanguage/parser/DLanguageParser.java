@@ -11752,7 +11752,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   //     | 'getMember'
   //     | 'getOverloads'
   //     | 'getPointerBitmap'
-  //     | 'getProtection'
+  //     | 'isSomeVisibility'
   //     | 'getVirtualFunctions'
   //     | 'getVirtualMethods'
   //     | 'getUnitTests'
@@ -11796,7 +11796,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, "getMember");
     if (!r) r = consumeToken(b, "getOverloads");
     if (!r) r = consumeToken(b, "getPointerBitmap");
-    if (!r) r = consumeToken(b, "getProtection");
+    if (!r) r = consumeToken(b, "isSomeVisibility");
     if (!r) r = consumeToken(b, "getVirtualFunctions");
     if (!r) r = consumeToken(b, "getVirtualMethods");
     if (!r) r = consumeToken(b, "getUnitTests");

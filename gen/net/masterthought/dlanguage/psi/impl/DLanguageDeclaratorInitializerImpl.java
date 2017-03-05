@@ -9,14 +9,14 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
 import com.intellij.extapi.psi.StubBasedPsiElementBase;
-import net.masterthought.dlanguage.stubs.DLanguageVarDeclaratorStub;
+import net.masterthought.dlanguage.stubs.DLanguageDeclaratorInitializerStub;
 import net.masterthought.dlanguage.psi.*;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.tree.IElementType;
 
-public class DLanguageDeclaratorInitializerImpl extends StubBasedPsiElementBase<DLanguageVarDeclaratorStub> implements DLanguageDeclaratorInitializer {
+public class DLanguageDeclaratorInitializerImpl extends StubBasedPsiElementBase<DLanguageDeclaratorInitializerStub> implements DLanguageDeclaratorInitializer {
 
-  public DLanguageDeclaratorInitializerImpl(DLanguageVarDeclaratorStub stub, IStubElementType type) {
+  public DLanguageDeclaratorInitializerImpl(DLanguageDeclaratorInitializerStub stub, IStubElementType type) {
     super(stub, type);
   }
 
@@ -24,7 +24,7 @@ public class DLanguageDeclaratorInitializerImpl extends StubBasedPsiElementBase<
     super(node);
   }
 
-  public DLanguageDeclaratorInitializerImpl(DLanguageVarDeclaratorStub stub, IElementType type, ASTNode node) {
+  public DLanguageDeclaratorInitializerImpl(DLanguageDeclaratorInitializerStub stub, IElementType type, ASTNode node) {
     super(stub, type, node);
   }
 

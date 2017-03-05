@@ -4,22 +4,22 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubInputStream;
 import com.intellij.psi.stubs.StubOutputStream;
-import net.masterthought.dlanguage.psi.DLanguageModuleGlobalDeclaration;
-import net.masterthought.dlanguage.psi.impl.DLanguageModuleGlobalDeclarationImpl;
+import net.masterthought.dlanguage.psi.DLanguageGlobalDeclaration;
+import net.masterthought.dlanguage.psi.impl.DLanguageGlobalDeclarationImpl;
 import net.masterthought.dlanguage.stubs.DLanguageModuleDeclarationStub;
 import net.masterthought.dlanguage.utils.DUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
-public class DLanguageModuleDeclarationStubElementType extends DNamedStubElementType<DLanguageModuleDeclarationStub, DLanguageModuleGlobalDeclaration> {
+public class DLanguageModuleDeclarationStubElementType extends DNamedStubElementType<DLanguageModuleDeclarationStub, DLanguageGlobalDeclaration> {
     public DLanguageModuleDeclarationStubElementType(String debugName) {
         super(debugName);
     }
 
     @Override
-    public DLanguageModuleGlobalDeclaration createPsi(@NotNull DLanguageModuleDeclarationStub stub) {
-        return new DLanguageModuleGlobalDeclarationImpl(stub, this);
+    public DLanguageGlobalDeclaration createPsi(@NotNull DLanguageModuleDeclarationStub stub) {
+        return new DLanguageGlobalDeclarationImpl(stub, this);
     }
 
     @Override
@@ -28,7 +28,7 @@ public class DLanguageModuleDeclarationStubElementType extends DNamedStubElement
     }
 
     @Override
-    public DLanguageModuleDeclarationStub createStub(@NotNull DLanguageModuleGlobalDeclaration psi, StubElement parentStub) {
+    public DLanguageModuleDeclarationStub createStub(@NotNull DLanguageGlobalDeclaration psi, StubElement parentStub) {
         return new DLanguageModuleDeclarationStub(parentStub, this, psi.getName());
     }
 

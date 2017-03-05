@@ -94,24 +94,4 @@ public class DLanguageStructDeclarationImpl extends DNamedStubbedPsiElementBase<
     return DPsiImplUtil.getPresentation(this);
   }
 
-  public List<DLanguageTemplateParameter> getTemplateArguments(boolean includeFromInheritance, boolean includeFromMixins) {
-    return DPsiImplUtil.getTemplateArguments(this, includeFromInheritance, includeFromMixins);
-  }
-
-  public List<DLanguageFuncDeclaration> getMethods(boolean includeFromInheritance, boolean includeFromMixins) {
-    return DPsiImplUtil.getMethods(this, includeFromInheritance, includeFromMixins);
-  }
-
-  public List<DLanguageVarDeclarations> getVariables(boolean includeFromInheritance, boolean includeFromMixins) {
-    return DPsiImplUtil.getVariables(this, includeFromInheritance, includeFromMixins);
-  }
-
-  public List<DLanguageFuncDeclaration> getPropertyMethods(boolean includeFromInheritance, boolean includeFromMixins) {
-    return DPsiImplUtil.getPropertyMethods(this, includeFromInheritance, includeFromMixins);
-  }
-
-  public DLanguageProtectionAttribute getProtection() {
-    return DPsiImplUtil.getProtection(this);
-  }
-
 }

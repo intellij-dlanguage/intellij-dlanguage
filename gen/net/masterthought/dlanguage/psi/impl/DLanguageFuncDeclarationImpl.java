@@ -106,12 +106,9 @@ public class DLanguageFuncDeclarationImpl extends DNamedStubbedPsiElementBase<DL
     return DPsiImplUtil.getPresentation(this);
   }
 
+  @NotNull
   public List<DLanguageParameter> getArguments() {
     return DPsiImplUtil.getArguments(this);
-  }
-
-  public List<DLanguageProtectionAttribute> getProtection() {
-    return DPsiImplUtil.getProtection(this);
   }
 
   public List<DLanguageTemplateParameter> getTemplateArguments() {

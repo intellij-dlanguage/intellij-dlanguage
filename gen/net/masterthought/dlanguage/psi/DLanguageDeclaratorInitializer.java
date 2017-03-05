@@ -5,9 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.StubBasedPsiElement;
-import net.masterthought.dlanguage.stubs.DLanguageVarDeclaratorStub;
+import net.masterthought.dlanguage.stubs.DLanguageDeclaratorInitializerStub;
 
-public interface DLanguageDeclaratorInitializer extends DNamedElement, VariableDeclaration, StubBasedPsiElement<DLanguageVarDeclaratorStub> {
+public interface DLanguageDeclaratorInitializer extends DNamedElement, VariableDeclaration, StubBasedPsiElement<DLanguageDeclaratorInitializerStub> {
 
   @Nullable
   DLanguageAltDeclarator getAltDeclarator();

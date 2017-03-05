@@ -44,14 +44,4 @@ public interface DLanguageClassDeclaration extends StatementContainer, DNamedEle
   @NotNull
   ItemPresentation getPresentation();
 
-  List<DLanguageTemplateParameter> getTemplateArguments(boolean includeFromInheritance, boolean includeFromMixins);
-
-  List<DLanguageFuncDeclaration> getMethods(boolean includeFromInheritance, boolean includeFromMixins);
-
-  List<DLanguageVarDeclarations> getVariables(boolean includeFromInheritance, boolean includeFromMixins);
-
-  List<DLanguageFuncDeclaration> getPropertyMethods(boolean includeFromInheritance, boolean includeFromMixins);
-
-  DLanguageProtectionAttribute getProtection();
-
 }

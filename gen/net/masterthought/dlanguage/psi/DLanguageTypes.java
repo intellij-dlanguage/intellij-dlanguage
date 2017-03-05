@@ -281,7 +281,7 @@ public interface DLanguageTypes {
   IElementType UNIT_TESTING = new DLanguageElementType("UNIT_TESTING");
   IElementType UPR_EXPRESSION = new DLanguageElementType("UPR_EXPRESSION");
   IElementType USER_DEFINED_ATTRIBUTE = new DLanguageElementType("USER_DEFINED_ATTRIBUTE");
-  IElementType VAR_DECLARATIONS = DElementTypeFactory.factory("VAR_DECLARATIONS");
+  IElementType VAR_DECLARATIONS = new DLanguageElementType("VAR_DECLARATIONS");
   IElementType VAR_DECLARATOR = new DLanguageElementType("VAR_DECLARATOR");
   IElementType VAR_DECLARATOR_IDENTIFIER = new DLanguageElementType("VAR_DECLARATOR_IDENTIFIER");
   IElementType VERSION_CONDITION = new DLanguageElementType("VERSION_CONDITION");

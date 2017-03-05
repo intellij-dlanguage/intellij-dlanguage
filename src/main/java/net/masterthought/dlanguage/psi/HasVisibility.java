@@ -4,10 +4,19 @@ package net.masterthought.dlanguage.psi;
  * Created by francis on 2/28/2017.
  */
 public interface HasVisibility extends DNamedElement {
-    boolean isPublic();
+    //todo should this be an enum
+    boolean isSomeVisibility(String visibility);
 
-    boolean isPrivate();
+    default boolean isPublic() {
+        return isSomeVisibility("public");
+    }
 
-    boolean isProtected();
+    default boolean isPrivate() {
+        return isSomeVisibility("private");
+    }
+
+    default boolean isProtected() {
+        return isSomeVisibility("protected");
+    }
 
 }

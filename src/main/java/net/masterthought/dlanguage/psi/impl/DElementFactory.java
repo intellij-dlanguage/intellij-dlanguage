@@ -118,7 +118,7 @@ public class DElementFactory {
 
     public static PsiElement createDLanguageModuleFromText(Project project, String name) {
         PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
-        if (e instanceof DLanguageModuleGlobalDeclaration) return e;
+        if (e instanceof DLanguageGlobalDeclaration) return e;
         return null;
     }
 
