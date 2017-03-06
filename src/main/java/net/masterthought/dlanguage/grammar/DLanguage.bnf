@@ -1966,7 +1966,7 @@ ClassDeclaration ::=
     | 'class' Identifier BaseClassList? AggregateBody
     | ClassTemplateDeclaration {
        methods=[getName getNameIdentifier getReference setName getPresentation getTemplateArguments getConstructors getMethods getVariables getPropertyMethods isSomeVisibility getPublicSymbols getPublicMethods getPublicVariables getAllSymbols getPublicPropertyMethods getProtectedMethods getProtectedVariables getProtectedPropertyMethods getBaseClass getInterfaces getOverideMethods getOverridePropertyMethods getDestructors getPublicContructors getProtectedConstructors getPrivateConstructors getPublicDestructors getPrivateDestructors getProtectedDestructors getPrivateMethods getPrivateVariables getPrivatePropertyMethods getMixins]
-       implements = ["net.masterthought.dlanguage.psi.StatementContainer" "net.masterthought.dlanguage.psi.DNamedElement" "net.masterthought.dlanguage.psi.HasVisibility" "net.masterthought.dlanguage.psi.HasTemplateArguments" "net.masterthought.dlanguage.psi.HasArguments"]
+       implements = ["net.masterthought.dlanguage.psi.StatementContainer" "net.masterthought.dlanguage.psi.DNamedElement" "net.masterthought.dlanguage.psi.HasVisibility" "net.masterthought.dlanguage.psi.HasTemplateArguments" "net.masterthought.dlanguage.psi.HasArguments" "net.masterthought.dlanguage.psi.CanInherit"]
        stubClass="net.masterthought.dlanguage.stubs.DLanguageClassDeclarationStub"
     }
 
@@ -1979,7 +1979,7 @@ InterfaceDeclaration ::=
     | InterfaceTemplateDeclaration
     | 'interface' Identifier BaseInterfaceList? AggregateBody?{
         methods=[getName getNameIdentifier getReference setName getPresentation getTemplateArguments getMethods getVariables getPropertyMethods isSomeVisibility getVariableDeclarations getAutoVariableDeclarations getNonAutoDeclarations getFunctionDeclarations getClassDeclarations getStructDeclarations getTemplateDeclarations getMixins getSymbolsFromMixins]
-       implements = ["net.masterthought.dlanguage.psi.StatementContainer" "net.masterthought.dlanguage.psi.DNamedElement" "net.masterthought.dlanguage.psi.HasVisibility" "net.masterthought.dlanguage.psi.HasTemplateArguments" "net.masterthought.dlanguage.psi.HasArguments"]
+       implements = ["net.masterthought.dlanguage.psi.StatementContainer" "net.masterthought.dlanguage.psi.DNamedElement" "net.masterthought.dlanguage.psi.HasVisibility" "net.masterthought.dlanguage.psi.HasTemplateArguments" "net.masterthought.dlanguage.psi.HasArguments" "net.masterthought.dlanguage.psi.CanInherit" ]
        stubClass="net.masterthought.dlanguage.stubs.DLanguageInterfaceDeclarationStub"
     }
 

@@ -10,15 +10,20 @@ import java.util.List;
 
 /**
  * Created by francis on 2/28/2017.
+ * todo: using linked lists or passing res as a parameter will likely improve the performance of this
  */
 public interface TemplateContainer extends DNamedElement {
     default List<DLanguageTemplateDeclaration> getTemplateDeclarations(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
-        if (includeFromInheritance) {
-            //todo
-        }
-        return getTemplateDeclarationsImpl(this, includeFromMixins, includeNestedDeclarations);
+        List<DLanguageTemplateDeclaration> res = new ArrayList<>();
+        if (includeFromInheritance && this instanceof CanInherit) {
+            final List<CanInherit> whatInheritsFrom = ((CanInherit) this).whatInheritsFrom();
+            for (CanInherit canInherit : whatInheritsFrom) {
+                res.addAll(canInherit.getTemplateDeclarations(includeFromMixins, includeFromInheritance, includeNestedDeclarations));
+            }
 
-//        throw new NotImplementedException();
+        }
+        res.addAll(getTemplateDeclarationsImpl(this, includeFromMixins, includeNestedDeclarations));
+        return res;
     }
 
     @NotNull
