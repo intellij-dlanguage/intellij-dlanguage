@@ -13,6 +13,12 @@ public interface VariableDeclaration extends HasVisibility {
      */
     boolean actuallyIsDeclaration();
 
+    /**
+     * todo change this to omething more usable than dlanguageType, becuase not everything may return a exsisting dlanguage type.
+     * ex: auto a = [7,7,9]; is of type int[] , but there is no int[] to return
+     *
+     * @return
+     */
     DLanguageType getType();
 
 

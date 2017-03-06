@@ -585,6 +585,18 @@ public class DPsiImplUtil {
         };
     }
 
+    public static boolean actuallyIsDeclaration(DLanguageAliasDeclaration o) {
+        return true;
+    }
+
+    public static DLanguageType getType(DLanguageAliasDeclaration o) {
+        return null;
+    }
+
+    // ------------- Alias Definition ------------------ //
+
+    // ------------ Module Declaration ----------------- //
+
     @NotNull
     public static String getName(@NotNull DLanguageModuleDeclaration o) {
         DLanguageModuleDeclarationStub stub = o.getStub();
@@ -596,10 +608,6 @@ public class DPsiImplUtil {
             return "not found";
         }
     }
-
-    // ------------- Alias Definition ------------------ //
-
-    // ------------ Module Declaration ----------------- //
 
     @Nullable
     public static PsiElement getNameIdentifier(@NotNull DLanguageModuleDeclaration o) {
@@ -652,6 +660,9 @@ public class DPsiImplUtil {
         return getChildOfType(o, DLanguageProtectionAttribute.class);
     }
 
+    // ------------ Module Declaration ----------------- //
+
+
     // ------------- Interface Definition ------------------ //
     @NotNull
     public static String getName(@NotNull DLanguageInterfaceDeclaration o) {
@@ -659,9 +670,6 @@ public class DPsiImplUtil {
         if (stub != null) return StringUtil.notNullize(stub.getName());
         return o.getIdentifier().getText();
     }
-
-
-    // ------------ Module Declaration ----------------- //
 
     @Nullable
     public static PsiElement getNameIdentifier(@NotNull DLanguageInterfaceDeclaration o) {
@@ -716,17 +724,6 @@ public class DPsiImplUtil {
         if (stub != null) return StringUtil.notNullize(stub.getName());
         return o.getIdentifier().getText();
     }
-    // ------------- Interface Definition ------------------ //
-
-    // ------------- Var Declaration ------------------ //
-
-
-    // ------------- Var Declaration ------------------ //
-
-    // ------------- Auto Declaration ------------------ //
-
-
-    // ------------- Auto Declaration ------------------ //
 
     @Nullable
     public static PsiElement getNameIdentifier(@NotNull DLanguageLabeledStatement o) {
@@ -948,6 +945,179 @@ public class DPsiImplUtil {
         return null;
     }
 
+    // ------------- Var Declaration ------------------ //
+    @NotNull
+    public static String getName(@NotNull DLanguageDeclaratorInitializer o) {
+        DLanguageDeclaratorInitializerStub stub = o.getStub();
+        if (stub != null) return StringUtil.notNullize(stub.getName());
+
+        if (getIdentifier(o) != null) {
+            return getIdentifier(o).getText();
+        } else {
+            return "not found";
+        }
+    }
+
+
+    // -------------- Mixin Template Resolving ------------------- //
+
+    @Nullable
+    private static DLanguageIdentifier getIdentifier(DLanguageDeclaratorInitializer o) {
+        if (o.getAltDeclarator() != null) {
+            final DLanguageAltDeclarator altDeclarator = o.getAltDeclarator();
+            if (altDeclarator.getIdentifier() != null) return altDeclarator.getIdentifier();
+            else return altDeclarator.getAltDeclaratorX().getIdentifier();
+        }
+        if (o.getVarDeclarator() != null) {
+            final DLanguageVarDeclarator varDeclarator = o.getVarDeclarator();
+            if (varDeclarator.getBasicType2() != null)
+                return varDeclarator.getIdentifier();
+        }
+        return null;
+    }
+
+    @Nullable
+    public static PsiElement getNameIdentifier(@NotNull DLanguageDeclaratorInitializer o) {
+        ASTNode keyNode = o.getNode();
+        return keyNode != null ? keyNode.getPsi() : null;
+    }
+
+    @Nullable
+    public static PsiElement setName(@NotNull DLanguageDeclaratorInitializer o, @NotNull String newName) {
+        PsiElement e = DElementFactory.createDLanguageDeclaratorInitializerFromText(o.getProject(), newName);
+        if (e == null) return null;
+        o.replace(e);
+        return o;
+    }
+
+    @NotNull
+    public static PsiReference getReference(@NotNull DLanguageDeclaratorInitializer o) {
+        return new DReference(o, TextRange.from(0, getName(o).length()));
+    }
+
+    @NotNull
+    public static ItemPresentation getPresentation(final DLanguageDeclaratorInitializer o) {
+        return new ItemPresentation() {
+            @Nullable
+            @Override
+            public String getPresentableText() {
+                return o.getName();
+            }
+
+            /**
+             * This is needed to decipher between files when resolving multiple references.
+             */
+            @Nullable
+            @Override
+            public String getLocationString() {
+                final PsiFile psiFile = o.getContainingFile();
+                return psiFile instanceof DLanguageFile ? ((DLanguageFile) psiFile).getModuleOrFileName() : null;
+            }
+
+            @Nullable
+            @Override
+            public Icon getIcon(boolean unused) {
+                return DLanguageIcons.FILE;
+            }
+        };
+    }
+
+    public static boolean actuallyIsDeclaration(DLanguageDeclaratorInitializer o) {
+        final DLanguageVarDeclarations parentVarDeclaration = (DLanguageVarDeclarations) o.getParent().getParent();
+        if (parentVarDeclaration.getStorageClasses() != null)
+            return true;
+        if (parentVarDeclaration.getBasicType() != null)
+            return true;
+        if (o.getAltDeclarator() != null) {
+            final DLanguageAltDeclarator altDeclarator = o.getAltDeclarator();
+            return false;//todo the majority of the time false is correct however occasionally an alt declarator might actually be a legitimate variable declaration
+        }
+        if (o.getVarDeclarator() != null) {
+            final DLanguageVarDeclarator varDeclarator = o.getVarDeclarator();
+            if (varDeclarator.getBasicType2() != null)
+                return true;
+        }
+        return false;//default to false.
+    }
+
+    public static DLanguageType getType(DLanguageDeclaratorInitializer o) {
+        return null;//todo implement
+
+    }
+
+    // ------------- Auto Declaration Y ------------------ //
+    @NotNull
+    public static String getName(@NotNull DLanguageAutoDeclarationY o) {
+        DLanguageAutoDeclarationStub stub = o.getStub();
+        if (stub != null) return StringUtil.notNullize(stub.getName());
+
+        if (o.getIdentifier() != null) {
+            return o.getIdentifier().getText();
+        } else {
+            return "not found";
+        }
+    }
+
+    // ------------- Var Declaration ------------------ //
+
+    @Nullable
+    public static PsiElement getNameIdentifier(@NotNull DLanguageAutoDeclarationY o) {
+        ASTNode keyNode = o.getNode();
+        return keyNode != null ? keyNode.getPsi() : null;
+    }
+
+    @Nullable
+    public static PsiElement setName(@NotNull DLanguageAutoDeclarationY o, @NotNull String newName) {
+        PsiElement e = DElementFactory.createDLanguageAutoDeclarationYFromText(o.getProject(), newName);
+        if (e == null) return null;
+        o.replace(e);
+        return o;
+    }
+
+    @NotNull
+    public static PsiReference getReference(@NotNull DLanguageAutoDeclarationY o) {
+        return new DReference(o, TextRange.from(0, getName(o).length()));
+    }
+
+    @NotNull
+    public static ItemPresentation getPresentation(final DLanguageAutoDeclarationY o) {
+        return new ItemPresentation() {
+            @Nullable
+            @Override
+            public String getPresentableText() {
+                return o.getName();
+            }
+
+            /**
+             * This is needed to decipher between files when resolving multiple references.
+             */
+            @Nullable
+            @Override
+            public String getLocationString() {
+                final PsiFile psiFile = o.getContainingFile();
+                return psiFile instanceof DLanguageFile ? ((DLanguageFile) psiFile).getModuleOrFileName() : null;
+            }
+
+            @Nullable
+            @Override
+            public Icon getIcon(boolean unused) {
+                return DLanguageIcons.FILE;
+            }
+        };
+    }
+
+    public static boolean actuallyIsDeclaration(DLanguageAutoDeclarationY o) {
+        final DLanguageStorageClasses storageClasses = ((DLanguageAutoDeclaration) o.getParent().getParent()).getStorageClasses();
+        if (storageClasses == null)
+            return false;
+        return storageClasses.getStorageClass().getKwAuto() != null;
+    }
+
+    public static DLanguageType getType(DLanguageAutoDeclarationY o) {
+        return null;//todo implement
+
+    }
+
     private boolean isSomeVisibility(DLanguageAliasDeclaration o, String visibility) {
         final DLanguageAttributeSpecifier attribute = (DLanguageAttributeSpecifier) o.getParent().getParent().getParent();
         if (attribute.getAttribute().getProtectionAttribute() != null) {
@@ -971,8 +1141,8 @@ public class DPsiImplUtil {
     }
 
 
+    // ------------- Auto Declaration Y ------------------ //
 
-    // -------------- Mixin Statement ------------------- //
 
 
 }

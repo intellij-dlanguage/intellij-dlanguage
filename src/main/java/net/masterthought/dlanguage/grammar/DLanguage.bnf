@@ -1663,7 +1663,7 @@ AliasDeclaration ::=
   | 'alias' Identifier '=' Initializer ';'
   | 'alias' StorageClasses? BasicType (FuncDeclarator|Declarator) ';'
   | 'alias' AliasDeclarationX ';'{
-     methods=[getName getNameIdentifier getReference setName getPresentation isSomeVisibility]
+     methods=[getName getNameIdentifier getReference setName getPresentation isSomeVisibility actuallyIsDeclaration getType]
      stubClass="net.masterthought.dlanguage.stubs.DLanguageAliasDeclarationStub"
      implements=["net.masterthought.dlanguage.psi.DNamedElement" "net.masterthought.dlanguage.psi.VariableDeclaration" ]
 }
@@ -1697,7 +1697,7 @@ Declarators ::=
 DeclaratorInitializer ::=
     AltDeclarator ('=' Initializer)?
     | VarDeclarator (TemplateParameters? '=' Initializer)?{
-        methods=[ getName getNameIdentifier getReference setName getPresentation isSomeVisibility ]
+        methods=[ getName getNameIdentifier getReference setName getPresentation isSomeVisibility actuallyIsDeclaration getType]
         stubClass="net.masterthought.dlanguage.stubs.DLanguageDeclaratorInitializerStub"
         implements = ["net.masterthought.dlanguage.psi.DNamedElement" "net.masterthought.dlanguage.psi.VariableDeclaration"]
     }

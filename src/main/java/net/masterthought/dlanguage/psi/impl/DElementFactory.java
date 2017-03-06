@@ -139,5 +139,17 @@ public class DElementFactory {
         if (e instanceof DLanguageLabeledStatement) return e;
         return null;
     }
+
+    public static PsiElement createDLanguageAutoDeclarationYFromText(Project project, String name) {
+        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
+        if (e instanceof DLanguageLabeledStatement) return e;
+        return null;
+    }
+
+    public static PsiElement createDLanguageDeclaratorInitializerFromText(Project project, String name) {
+        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
+        if (e instanceof DLanguageLabeledStatement) return e;
+        return null;
+    }
 }
 
