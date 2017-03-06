@@ -184,5 +184,13 @@ public class DUtil {
         }
         return res;
     }
+
+    @NotNull
+    public static DLanguageIdentifier getEndOfIdentifierList(DLanguageQualifiedIdentifierList list) {
+        if (list.getQualifiedIdentifierList() == null) {
+            return list.getIdentifier();
+        }
+        return getEndOfIdentifierList(list.getQualifiedIdentifierList());
+    }
 }
 

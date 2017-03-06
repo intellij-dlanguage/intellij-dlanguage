@@ -22,4 +22,8 @@ public interface DLanguageTemplateMixin extends PsiElement {
   @NotNull
   PsiElement getOpScolon();
 
+  DLanguageTemplateDeclaration getTemplateDeclaration();
+
+  DLanguageTemplateMixinDeclaration getTemplateMixinDeclaration();
+
 }

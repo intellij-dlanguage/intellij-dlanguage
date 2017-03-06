@@ -22,4 +22,8 @@ public interface DLanguageMixinExpression extends PsiElement {
   @NotNull
   PsiElement getOpParRight();
 
+  DLanguageTemplateDeclaration getTemplateDeclaration();
+
+  DLanguageTemplateMixinDeclaration getTemplateMixinDeclaration();
+
 }

@@ -33,16 +33,40 @@ public interface TemplateContainer extends DNamedElement {
 
         if (includeFromMixins) {
             if (elementToSearch instanceof DLanguageMixinDeclaration) {
-
+                final DLanguageMixinDeclaration mixin = (DLanguageMixinDeclaration) elementToSearch;
+                if (mixin.getTemplateDeclaration() != null) {
+                    res.addAll(mixin.getTemplateDeclaration().getTemplateDeclarations(true, false, includeNestedDeclarations));
+                }
+                if (mixin.getTemplateMixinDeclaration() != null) {
+                    res.addAll(mixin.getTemplateMixinDeclaration().getTemplateDeclarations(true, false, includeNestedDeclarations));
+                }
             }
             if (elementToSearch instanceof DLanguageTemplateMixin) {
-
+                final DLanguageTemplateMixin mixin = (DLanguageTemplateMixin) elementToSearch;
+                if (mixin.getTemplateDeclaration() != null) {
+                    res.addAll(mixin.getTemplateDeclaration().getTemplateDeclarations(true, false, includeNestedDeclarations));
+                }
+                if (mixin.getTemplateMixinDeclaration() != null) {
+                    res.addAll(mixin.getTemplateMixinDeclaration().getTemplateDeclarations(true, false, includeNestedDeclarations));
+                }
             }
             if (elementToSearch instanceof DLanguageMixinExpression) {
-
+                final DLanguageMixinExpression mixin = (DLanguageMixinExpression) elementToSearch;
+                if (mixin.getTemplateDeclaration() != null) {
+                    res.addAll(mixin.getTemplateDeclaration().getTemplateDeclarations(true, false, includeNestedDeclarations));
+                }
+                if (mixin.getTemplateMixinDeclaration() != null) {
+                    res.addAll(mixin.getTemplateMixinDeclaration().getTemplateDeclarations(true, false, includeNestedDeclarations));
+                }
             }
             if (elementToSearch instanceof DLanguageMixinStatement) {
-
+                final DLanguageMixinStatement mixin = (DLanguageMixinStatement) elementToSearch;
+                if (mixin.getTemplateDeclaration() != null) {
+                    res.addAll(mixin.getTemplateDeclaration().getTemplateDeclarations(true, false, includeNestedDeclarations));
+                }
+                if (mixin.getTemplateMixinDeclaration() != null) {
+                    res.addAll(mixin.getTemplateMixinDeclaration().getTemplateDeclarations(true, false, includeNestedDeclarations));
+                }
             }
         }
         if (includeNestedDeclarations && elementToSearch instanceof TemplateContainer && elementToSearch != this) {

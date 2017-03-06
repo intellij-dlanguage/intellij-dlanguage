@@ -17,13 +17,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static com.intellij.psi.util.PsiTreeUtil.getChildOfType;
 import static com.intellij.psi.util.PsiTreeUtil.getChildrenOfType;
+import static net.masterthought.dlanguage.utils.DResolveUtil.findDefinitionNodes;
+import static net.masterthought.dlanguage.utils.DUtil.getEndOfIdentifierList;
 
 
 /**
@@ -830,39 +829,123 @@ public class DPsiImplUtil {
         };
     }
 
-    // -------------- Mixin Statement ------------------- //
+    // -------------- Mixin Template Resolving ------------------- //
+    @Nullable
     public static DLanguageTemplateMixinDeclaration getTemplateMixinDeclaration(DLanguageMixinDeclaration t) {
-        return null;//todo
+        if (t.getTemplateInstance() != null) {
+            if (t.getTemplateInstance().getIdentifier() == null)
+                return null;
+            final Set<PsiNamedElement> definitionNodes = findDefinitionNodes(t.getTemplateInstance().getIdentifier());
+            if (definitionNodes.size() != 1)//this could be a source of bugs if resolve isn't working properly
+                return null;
+            if (definitionNodes.toArray()[0] instanceof DLanguageTemplateMixinDeclaration) {
+                return (DLanguageTemplateMixinDeclaration) definitionNodes.toArray()[0];
+            }
+
+        }
+        return null;
     }
 
-    // ------------- Mixin Declaration ------------------ //
-
+    @Nullable
     public static DLanguageTemplateDeclaration getTemplateDeclaration(DLanguageMixinDeclaration t) {
-        return null;//todo
+        if (t.getTemplateInstance() != null) {
+            if (t.getTemplateInstance().getIdentifier() == null)
+                return null;
+            final Set<PsiNamedElement> definitionNodes = findDefinitionNodes(t.getTemplateInstance().getIdentifier());
+            if (definitionNodes.size() != 1)//this could be a source of bugs if resolve isn't working properly
+                return null;
+            if (definitionNodes.toArray()[0] instanceof DLanguageTemplateDeclaration) {
+                return (DLanguageTemplateDeclaration) definitionNodes.toArray()[0];
+            }
+
+        }
+        return null;
     }
 
+    @Nullable
     public static DLanguageTemplateMixinDeclaration getTemplateMixinDeclaration(DLanguageTemplateMixin t) {
-        return null;//todo
+        final Set<PsiNamedElement> definitionNodes = findDefinitionNodes(getEndOfIdentifierList(t.getMixinTemplateName().getQualifiedIdentifierList()));
+        if (definitionNodes.size() != 1)//this could be a source of bugs if resolve isn't working properly
+            return null;
+        if (definitionNodes.toArray()[0] instanceof DLanguageTemplateMixinDeclaration) {
+            return (DLanguageTemplateMixinDeclaration) definitionNodes.toArray()[0];
+        }
+        return null;
     }
 
+    @Nullable
     public static DLanguageTemplateDeclaration getTemplateDeclaration(DLanguageTemplateMixin t) {
-        return null;//todo
+        final Set<PsiNamedElement> definitionNodes = findDefinitionNodes(getEndOfIdentifierList(t.getMixinTemplateName().getQualifiedIdentifierList()));
+        if (definitionNodes.size() != 1)//this could be a source of bugs if resolve isn't working properly
+            return null;
+        if (definitionNodes.toArray()[0] instanceof DLanguageTemplateDeclaration) {
+            return (DLanguageTemplateDeclaration) definitionNodes.toArray()[0];
+        }
+        return null;
     }
 
+    @Nullable
     public static DLanguageTemplateMixinDeclaration getTemplateMixinDeclaration(DLanguageMixinExpression t) {
-        return null;//todo
+        if (t.getTemplateInstance() != null) {
+            if (t.getTemplateInstance().getIdentifier() == null)
+                return null;
+            final Set<PsiNamedElement> definitionNodes = findDefinitionNodes(t.getTemplateInstance().getIdentifier());
+            if (definitionNodes.size() != 1)//this could be a source of bugs if resolve isn't working properly
+                return null;
+            if (definitionNodes.toArray()[0] instanceof DLanguageTemplateMixinDeclaration) {
+                return (DLanguageTemplateMixinDeclaration) definitionNodes.toArray()[0];
+            }
+
+        }
+        return null;
     }
 
+    @Nullable
     public static DLanguageTemplateDeclaration getTemplateDeclaration(DLanguageMixinExpression t) {
-        return null;//todo
+        if (t.getTemplateInstance() != null) {
+            if (t.getTemplateInstance().getIdentifier() == null)
+                return null;
+            final Set<PsiNamedElement> definitionNodes = findDefinitionNodes(t.getTemplateInstance().getIdentifier());
+            if (definitionNodes.size() != 1)//this could be a source of bugs if resolve isn't working properly
+                return null;
+            if (definitionNodes.toArray()[0] instanceof DLanguageTemplateDeclaration) {
+                return (DLanguageTemplateDeclaration) definitionNodes.toArray()[0];
+            }
+
+        }
+        return null;
     }
 
+    @Nullable
     public static DLanguageTemplateMixinDeclaration getTemplateMixinDeclaration(DLanguageMixinStatement t) {
-        return null;//todo
+        if (t.getTemplateInstance() != null) {
+            if (t.getTemplateInstance().getIdentifier() == null)
+                return null;
+            final Set<PsiNamedElement> definitionNodes = findDefinitionNodes(t.getTemplateInstance().getIdentifier());
+            if (definitionNodes.size() != 1)//this could be a source of bugs if resolve isn't working properly
+                return null;
+            if (definitionNodes.toArray()[0] instanceof DLanguageTemplateMixinDeclaration) {
+                return (DLanguageTemplateMixinDeclaration) definitionNodes.toArray()[0];
+            }
+
+        }
+        return null;
     }
 
+    @Nullable
     public static DLanguageTemplateDeclaration getTemplateDeclaration(DLanguageMixinStatement t) {
-        return null;//todo
+        if (t.getTemplateInstance() != null) {
+            if (t.getTemplateInstance().getIdentifier() == null)
+                return null;
+            final Set<PsiNamedElement> definitionNodes = findDefinitionNodes(t.getTemplateInstance().getIdentifier());
+            if (definitionNodes.size() != 1)//this could be a source of bugs if resolve isn't working properly
+                return null;
+            if (definitionNodes.toArray()[0] instanceof DLanguageTemplateDeclaration) {
+                return (DLanguageTemplateDeclaration) definitionNodes.toArray()[0];
+            }
+
+        }
+        return null;
     }
 
     private boolean isSomeVisibility(DLanguageAliasDeclaration o, String visibility) {
