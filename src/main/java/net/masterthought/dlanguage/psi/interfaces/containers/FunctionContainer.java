@@ -1,10 +1,11 @@
-package net.masterthought.dlanguage.psi;
+package net.masterthought.dlanguage.psi.interfaces.containers;
 
+import net.masterthought.dlanguage.psi.DLanguageFuncDeclaration;
 import net.masterthought.dlanguage.utils.DUtil;
 
 import java.util.List;
 
-import static net.masterthought.dlanguage.psi.ContainerUtil.getDeclarations;
+import static net.masterthought.dlanguage.psi.interfaces.containers.ContainerUtil.getDeclarations;
 
 /**
  * Created by franc on 2/28/2017.

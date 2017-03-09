@@ -7,6 +7,7 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.index.DModuleIndex;
 import net.masterthought.dlanguage.psi.*;
+import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;

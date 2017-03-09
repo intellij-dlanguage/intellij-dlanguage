@@ -1,4 +1,9 @@
-package net.masterthought.dlanguage.psi;
+package net.masterthought.dlanguage.psi.interfaces;
+
+import net.masterthought.dlanguage.psi.DLanguageTemplateAliasParameter;
+import net.masterthought.dlanguage.psi.DLanguageTemplateParameter;
+import net.masterthought.dlanguage.psi.DLanguageTemplateThisParameter;
+import net.masterthought.dlanguage.psi.DLanguageTemplateTypeParameter;
 
 import java.util.ArrayList;
 import java.util.List;

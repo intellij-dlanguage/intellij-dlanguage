@@ -1,4 +1,6 @@
-package net.masterthought.dlanguage.psi;
+package net.masterthought.dlanguage.psi.interfaces;
+
+import net.masterthought.dlanguage.psi.DLanguageUserDefinedAttribute;
 
 /**
  * Created by francis on 2/28/2017.

@@ -1,4 +1,6 @@
-package net.masterthought.dlanguage.psi;
+package net.masterthought.dlanguage.psi.interfaces;
+
+import net.masterthought.dlanguage.psi.DLanguageParameter;
 
 import java.util.List;
 

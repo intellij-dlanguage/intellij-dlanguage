@@ -1,4 +1,6 @@
-package net.masterthought.dlanguage.psi;
+package net.masterthought.dlanguage.psi.interfaces;
+
+import net.masterthought.dlanguage.psi.interfaces.containers.StatementContainer;
 
 import java.util.List;
 

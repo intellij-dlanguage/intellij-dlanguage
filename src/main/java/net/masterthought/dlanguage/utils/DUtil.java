@@ -7,6 +7,10 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.psi.*;
+import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+import net.masterthought.dlanguage.psi.interfaces.HasProperty;
+import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
+import net.masterthought.dlanguage.psi.interfaces.Mixinable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;

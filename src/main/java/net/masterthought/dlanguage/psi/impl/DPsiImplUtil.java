@@ -10,6 +10,7 @@ import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.PsiReference;
 import net.masterthought.dlanguage.icons.DLanguageIcons;
 import net.masterthought.dlanguage.psi.*;
+import net.masterthought.dlanguage.psi.interfaces.containers.*;
 import net.masterthought.dlanguage.psi.references.DReference;
 import net.masterthought.dlanguage.stubs.*;
 import org.jetbrains.annotations.Contract;
@@ -1456,6 +1457,22 @@ public class DPsiImplUtil {
 
     public boolean isSomeVisibility(DLanguageTemplateDeclaration o, String visibility) {
         return isSomeVisibility(o, visibility, TemplateContainer.class);
+    }
+
+    public boolean isSomeVisibility(DLanguageClassDeclaration o, String visibility) {
+        return isSomeVisibility(o, visibility, ClassContainer.class);
+    }
+
+    public boolean isSomeVisibility(DLanguageStructDeclaration o, String visibility) {
+        return isSomeVisibility(o, visibility, StructContainer.class);
+    }
+
+    public boolean isSomeVisibility(DLanguageConstructor o, String visibility) {
+        return isSomeVisibility(o, visibility, ConstructorContainer.class);
+    }
+
+    public boolean isSomeVisibility(DLanguageDestructor o, String visibility) {
+        return isSomeVisibility(o, visibility, DestructorContainer.class);
     }
 
     // -------------------- Visibility --------------------- //

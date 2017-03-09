@@ -1,15 +1,13 @@
 package net.masterthought.dlanguage.psi.references;
 
-import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.util.IncorrectOperationException;
 import net.masterthought.dlanguage.psi.DLanguageFuncDeclaration;
 import net.masterthought.dlanguage.psi.DLanguageIdentifier;
-import net.masterthought.dlanguage.psi.DNamedElement;
 import net.masterthought.dlanguage.psi.impl.DPsiImplUtil;
+import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 import net.masterthought.dlanguage.utils.DResolveUtil;
-import net.masterthought.dlanguage.utils.DUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,14 +19,13 @@ import java.util.Set;
  * Resolves references to elements.
  */
 public class DReference extends PsiReferenceBase<PsiNamedElement> implements PsiPolyVariantReference {
+    public static final ResolveResult[] EMPTY_RESOLVE_RESULT = new ResolveResult[0];
     private String name;
 
     public DReference(@NotNull PsiNamedElement element, TextRange textRange) {
         super(element, textRange);
         name = element.getName();
     }
-
-    public static final ResolveResult[] EMPTY_RESOLVE_RESULT = new ResolveResult[0];
 
     /**
      * Resolves references to a set of results.

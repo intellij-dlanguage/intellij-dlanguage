@@ -1,6 +1,7 @@
-package net.masterthought.dlanguage.psi;
+package net.masterthought.dlanguage.psi.interfaces.containers;
 
 import com.intellij.psi.PsiElement;
+import net.masterthought.dlanguage.psi.DLanguageTemplateMixin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;

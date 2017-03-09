@@ -1,9 +1,13 @@
-package net.masterthought.dlanguage.psi;
+package net.masterthought.dlanguage.psi.interfaces.containers;
+
+import net.masterthought.dlanguage.psi.DLanguageAutoDeclarationY;
+import net.masterthought.dlanguage.psi.DLanguageDeclaratorInitializer;
+import net.masterthought.dlanguage.psi.interfaces.VariableDeclaration;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static net.masterthought.dlanguage.psi.ContainerUtil.getDeclarations;
+import static net.masterthought.dlanguage.psi.interfaces.containers.ContainerUtil.getDeclarations;
 import static net.masterthought.dlanguage.utils.DUtil.*;
 
 /**
