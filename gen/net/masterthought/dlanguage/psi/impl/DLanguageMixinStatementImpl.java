@@ -62,10 +62,12 @@ public class DLanguageMixinStatementImpl extends ASTWrapperPsiElement implements
     return notNullChild(findChildByType(OP_SCOLON));
   }
 
+  @Nullable
   public DLanguageTemplateDeclaration getTemplateDeclaration() {
     return DPsiImplUtil.getTemplateDeclaration(this);
   }
 
+  @Nullable
   public DLanguageTemplateMixinDeclaration getTemplateMixinDeclaration() {
     return DPsiImplUtil.getTemplateMixinDeclaration(this);
   }

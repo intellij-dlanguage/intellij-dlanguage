@@ -4,11 +4,18 @@ import net.masterthought.dlanguage.utils.DUtil;
 
 import java.util.List;
 
+import static net.masterthought.dlanguage.psi.ContainerUtil.getDeclarations;
+
 /**
  * Created by franc on 2/28/2017.
  */
-public interface FunctionContainer {
-    List<DLanguageFuncDeclaration> getFunctionDeclarations(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations);
+public interface FunctionContainer extends Container {
+
+    Class functionClass = DLanguageFuncDeclaration.class;
+
+    default List<DLanguageFuncDeclaration> getFunctionDeclarations(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
+        return getDeclarations(this, functionClass, this.getClass(), includeFromMixins, includeFromInheritance, includeNestedDeclarations);
+    }
 
     default List<DLanguageFuncDeclaration> getPropertyFunctions(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
         return DUtil.getElementsWithAtProperty(getFunctionDeclarations(includeFromMixins, includeFromInheritance, includeNestedDeclarations));

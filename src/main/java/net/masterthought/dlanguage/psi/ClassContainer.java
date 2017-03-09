@@ -4,11 +4,18 @@ import net.masterthought.dlanguage.utils.DUtil;
 
 import java.util.List;
 
+import static net.masterthought.dlanguage.psi.ContainerUtil.getDeclarations;
+
 /**
  * Created by francis on 2/28/2017.
  */
-public interface ClassContainer {
-    List<DLanguageClassDeclaration> getClassDeclarations(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations);
+public interface ClassContainer extends Container {
+
+    Class classClass = DLanguageClassDeclaration.class;//sorry about the confusing name. The class object for class declarations.
+
+    default <T extends DNamedElement> List<T> getClassDeclarations(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
+        return getDeclarations(this, classClass, this.getClass(), includeFromMixins, includeFromInheritance, includeNestedDeclarations);
+    }
 
     default List<DLanguageClassDeclaration> getPublicClasses(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
         return DUtil.getPublicElements(getClassDeclarations(includeFromMixins, includeFromInheritance, includeNestedDeclarations));

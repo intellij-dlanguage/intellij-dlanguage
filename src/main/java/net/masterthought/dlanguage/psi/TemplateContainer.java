@@ -1,96 +1,24 @@
 package net.masterthought.dlanguage.psi;
 
-import com.intellij.psi.PsiElement;
 import net.masterthought.dlanguage.utils.DUtil;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import static net.masterthought.dlanguage.psi.ContainerUtil.getDeclarations;
 
 /**
  * Created by francis on 2/28/2017.
  * todo: using linked lists or passing res as a parameter will likely improve the performance of this
  */
-public interface TemplateContainer extends DNamedElement {
-    default List<DLanguageTemplateDeclaration> getTemplateDeclarations(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
-        List<DLanguageTemplateDeclaration> res = new ArrayList<>();
-        if (includeFromInheritance && this instanceof CanInherit) {
-            final List<CanInherit> whatInheritsFrom = ((CanInherit) this).whatInheritsFrom();
-            for (CanInherit canInherit : whatInheritsFrom) {
-                res.addAll(canInherit.getTemplateDeclarations(includeFromMixins, includeFromInheritance, includeNestedDeclarations));
-            }
+public interface TemplateContainer extends Container {
 
-        }
-        res.addAll(getTemplateDeclarationsImpl(this, includeFromMixins, includeNestedDeclarations));
-        return res;
+
+    Class templateClass = DLanguageTemplateDeclaration.class;
+
+
+    default <T extends DNamedElement> List<T> getTemplateDeclarations(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
+        return getDeclarations(this, templateClass, this.getClass(), includeFromMixins, includeFromInheritance, includeNestedDeclarations);
     }
-
-    @NotNull
-    default List<DLanguageTemplateDeclaration> getTemplateDeclarationsImpl(PsiElement elementToSearch, boolean includeFromMixins, boolean includeNestedDeclarations) {
-        List<DLanguageTemplateDeclaration> res = new ArrayList<>();
-        if (elementToSearch instanceof DLanguageTemplateDeclaration) {
-            if (!includeNestedDeclarations) {
-                return Collections.singletonList((DLanguageTemplateDeclaration) elementToSearch);
-            }
-            res.add((DLanguageTemplateDeclaration) elementToSearch);
-        }
-
-        if (includeFromMixins) {
-            if (elementToSearch instanceof DLanguageMixinDeclaration) {
-                final DLanguageMixinDeclaration mixin = (DLanguageMixinDeclaration) elementToSearch;
-                if (mixin.getTemplateDeclaration() != null) {
-                    res.addAll(mixin.getTemplateDeclaration().getTemplateDeclarations(true, false, includeNestedDeclarations));
-                }
-                if (mixin.getTemplateMixinDeclaration() != null) {
-                    res.addAll(mixin.getTemplateMixinDeclaration().getTemplateDeclarations(true, false, includeNestedDeclarations));
-                }
-            }
-            if (elementToSearch instanceof DLanguageTemplateMixin) {
-                final DLanguageTemplateMixin mixin = (DLanguageTemplateMixin) elementToSearch;
-                if (mixin.getTemplateDeclaration() != null) {
-                    res.addAll(mixin.getTemplateDeclaration().getTemplateDeclarations(true, false, includeNestedDeclarations));
-                }
-                if (mixin.getTemplateMixinDeclaration() != null) {
-                    res.addAll(mixin.getTemplateMixinDeclaration().getTemplateDeclarations(true, false, includeNestedDeclarations));
-                }
-            }
-            if (elementToSearch instanceof DLanguageMixinExpression) {
-                final DLanguageMixinExpression mixin = (DLanguageMixinExpression) elementToSearch;
-                if (mixin.getTemplateDeclaration() != null) {
-                    res.addAll(mixin.getTemplateDeclaration().getTemplateDeclarations(true, false, includeNestedDeclarations));
-                }
-                if (mixin.getTemplateMixinDeclaration() != null) {
-                    res.addAll(mixin.getTemplateMixinDeclaration().getTemplateDeclarations(true, false, includeNestedDeclarations));
-                }
-            }
-            if (elementToSearch instanceof DLanguageMixinStatement) {
-                final DLanguageMixinStatement mixin = (DLanguageMixinStatement) elementToSearch;
-                if (mixin.getTemplateDeclaration() != null) {
-                    res.addAll(mixin.getTemplateDeclaration().getTemplateDeclarations(true, false, includeNestedDeclarations));
-                }
-                if (mixin.getTemplateMixinDeclaration() != null) {
-                    res.addAll(mixin.getTemplateMixinDeclaration().getTemplateDeclarations(true, false, includeNestedDeclarations));
-                }
-            }
-        }
-        if (includeNestedDeclarations && elementToSearch instanceof TemplateContainer && elementToSearch != this) {
-            return res;
-        }
-
-        res.addAll(doRecursiveCall(elementToSearch, includeFromMixins, includeNestedDeclarations));
-        return res;
-    }
-
-    @NotNull
-    default List<DLanguageTemplateDeclaration> doRecursiveCall(PsiElement elementToSearch, boolean includeFromMixins, boolean includeNestedDeclarations) {
-        List<DLanguageTemplateDeclaration> res = new ArrayList<>();
-        for (PsiElement child : elementToSearch.getChildren()) {
-            res.addAll(getTemplateDeclarationsImpl(child, includeFromMixins, includeNestedDeclarations));
-        }
-        return res;
-    }
-
 
     default List<DLanguageTemplateDeclaration> getPublicTemplates(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
         return DUtil.getPublicElements(getTemplateDeclarations(includeFromMixins, includeFromInheritance, includeNestedDeclarations));

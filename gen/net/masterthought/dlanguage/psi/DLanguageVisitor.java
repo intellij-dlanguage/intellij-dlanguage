@@ -21,7 +21,7 @@ public class DLanguageVisitor extends PsiElementVisitor {
 
   public void visitAliasDeclaration(@NotNull DLanguageAliasDeclaration o) {
     visitDNamedElement(o);
-    // visitVariableDeclaration(o);
+    // visitHasVisibility(o);
   }
 
   public void visitAliasDeclarationX(@NotNull DLanguageAliasDeclarationX o) {
@@ -283,6 +283,7 @@ public class DLanguageVisitor extends PsiElementVisitor {
     // visitHasVisibility(o);
     // visitHasTemplateArguments(o);
     // visitHasArguments(o);
+    // visitCanInherit(o);
   }
 
   public void visitClassTemplateDeclaration(@NotNull DLanguageClassTemplateDeclaration o) {
@@ -630,6 +631,7 @@ public class DLanguageVisitor extends PsiElementVisitor {
     // visitHasVisibility(o);
     // visitHasTemplateArguments(o);
     // visitHasArguments(o);
+    // visitCanInherit(o);
   }
 
   public void visitInterfaceTemplateDeclaration(@NotNull DLanguageInterfaceTemplateDeclaration o) {
@@ -1014,6 +1016,7 @@ public class DLanguageVisitor extends PsiElementVisitor {
     // visitGlobalDeclarationContainer(o);
     // visitHasVisibility(o);
     // visitHasTemplateArguments(o);
+    // visitMixinable(o);
   }
 
   public void visitTemplateInstance(@NotNull DLanguageTemplateInstance o) {
@@ -1030,6 +1033,7 @@ public class DLanguageVisitor extends PsiElementVisitor {
     // visitGlobalDeclarationContainer(o);
     // visitHasVisibility(o);
     // visitHasTemplateArguments(o);
+    // visitMixinable(o);
   }
 
   public void visitTemplateParameter(@NotNull DLanguageTemplateParameter o) {

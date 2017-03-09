@@ -1,6 +1,7 @@
 package net.masterthought.dlanguage.utils;
 
 import com.intellij.lang.ASTNode;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiNamedElement;
@@ -17,6 +18,9 @@ import static net.masterthought.dlanguage.psi.impl.DPsiImplUtil.findParentOfType
  * General util class. Provides methods for finding named nodes in the Psi tree.
  */
 public class DUtil {
+
+    static Logger log = Logger.getInstance(DUtil.class);
+
 
     public static Map<Boolean, PsiElement> findElementInParent(PsiElement identifier, Class className) {
         PsiElement result = findParentOfType(identifier, className);
@@ -191,6 +195,51 @@ public class DUtil {
             return list.getIdentifier();
         }
         return getEndOfIdentifierList(list.getQualifiedIdentifierList());
+    }
+
+    public static List<Mixinable> getMixedInTemplates(PsiElement elementToSearch) {
+        List<Mixinable> containersFromMixin = new ArrayList<>();
+        if (elementToSearch instanceof DLanguageMixinDeclaration) {
+            final DLanguageMixinDeclaration mixin = (DLanguageMixinDeclaration) elementToSearch;
+            if (mixin.getTemplateDeclaration() != null) {
+                containersFromMixin.add(mixin.getTemplateDeclaration());
+            } else if (mixin.getTemplateMixinDeclaration() != null) {
+                containersFromMixin.add(mixin.getTemplateMixinDeclaration());
+            } else {
+                log.debug("unable to resolve mixin templateClass");//todo
+            }
+        }
+        if (elementToSearch instanceof DLanguageTemplateMixin) {
+            final DLanguageTemplateMixin mixin = (DLanguageTemplateMixin) elementToSearch;
+            if (mixin.getTemplateDeclaration() != null) {
+                containersFromMixin.add(mixin.getTemplateDeclaration());
+            } else if (mixin.getTemplateMixinDeclaration() != null) {
+                containersFromMixin.add(mixin.getTemplateMixinDeclaration());
+            } else {
+                log.debug("unable to resolve mixin templateClass");
+            }
+        }
+        if (elementToSearch instanceof DLanguageMixinExpression) {
+            final DLanguageMixinExpression mixin = (DLanguageMixinExpression) elementToSearch;
+            if (mixin.getTemplateDeclaration() != null) {
+                containersFromMixin.add(mixin.getTemplateDeclaration());
+            } else if (mixin.getTemplateMixinDeclaration() != null) {
+                containersFromMixin.add(mixin.getTemplateMixinDeclaration());
+            } else {
+                log.debug("unable to resolve mixin templateClass");
+            }
+        }
+        if (elementToSearch instanceof DLanguageMixinStatement) {
+            final DLanguageMixinStatement mixin = (DLanguageMixinStatement) elementToSearch;
+            if (mixin.getTemplateDeclaration() != null) {
+                containersFromMixin.add(mixin.getTemplateDeclaration());
+            } else if (mixin.getTemplateMixinDeclaration() != null) {
+                containersFromMixin.add(mixin.getTemplateMixinDeclaration());
+            } else {
+                log.debug("unable to resolve mixin templateClass");
+            }
+        }
+        return containersFromMixin;
     }
 }
 

@@ -9,7 +9,7 @@ import net.masterthought.dlanguage.stubs.DLanguageInterfaceDeclarationStub;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
 
-public interface DLanguageInterfaceDeclaration extends StatementContainer, DNamedElement, HasVisibility, HasTemplateArguments, HasArguments, StubBasedPsiElement<DLanguageInterfaceDeclarationStub> {
+public interface DLanguageInterfaceDeclaration extends StatementContainer, DNamedElement, HasVisibility, HasTemplateArguments, HasArguments, CanInherit, StubBasedPsiElement<DLanguageInterfaceDeclarationStub> {
 
   @Nullable
   DLanguageAggregateBody getAggregateBody();

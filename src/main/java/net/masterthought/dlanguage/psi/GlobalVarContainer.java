@@ -1,25 +1,71 @@
 package net.masterthought.dlanguage.psi;
 
-import net.masterthought.dlanguage.utils.DUtil;
-
+import java.util.ArrayList;
 import java.util.List;
+
+import static net.masterthought.dlanguage.psi.ContainerUtil.getDeclarations;
+import static net.masterthought.dlanguage.utils.DUtil.*;
 
 /**
  * Created by francis on 2/28/2017.
  */
-public interface GlobalVarContainer extends AliasContainer {
-    List<VariableDeclaration> getVariableDeclarations(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations);
+public interface GlobalVarContainer extends Container {
+    Class globalVarClass = VariableDeclaration.class;
 
-    default List<VariableDeclaration> getPublicVariables(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
-        return DUtil.getPublicElements(getVariableDeclarations(includeFromMixins, includeFromInheritance, includeNestedDeclarations));
+    Class autoDeclarationClass = DLanguageAutoDeclarationY.class;
+
+    Class declaratorInitializer = DLanguageDeclaratorInitializer.class;
+
+    default List<VariableDeclaration> getGlobalVariableDeclarations(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
+        List<VariableDeclaration> res = new ArrayList<>();
+        res.addAll(getGlobalAutoVariableDeclarations(includeFromMixins, includeFromInheritance, includeNestedDeclarations));
+        res.addAll(getGlobalNonAutoDeclarations(includeFromMixins, includeFromInheritance, includeNestedDeclarations));
+        return res;
     }
 
-    default List<VariableDeclaration> getProtectedVariables(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
-        return DUtil.getProtectedElements(getVariableDeclarations(includeFromMixins, includeFromInheritance, includeNestedDeclarations));
+    default List<DLanguageAutoDeclarationY> getGlobalAutoVariableDeclarations(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
+        return getDeclarations(this, autoDeclarationClass, this.getClass(), includeFromMixins, includeFromInheritance, includeNestedDeclarations);
     }
 
-    default List<VariableDeclaration> getPrivateVariables(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
-        return DUtil.getPrivateElements(getVariableDeclarations(includeFromMixins, includeFromInheritance, includeNestedDeclarations));
+    default List<DLanguageDeclaratorInitializer> getGlobalNonAutoDeclarations(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
+        return getDeclarations(this, declaratorInitializer, this.getClass(), includeFromMixins, includeFromInheritance, includeNestedDeclarations);
+    }
+
+
+    default List<VariableDeclaration> getGlobalPublicVariables(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
+        return getPublicElements(getGlobalVariableDeclarations(includeFromMixins, includeFromInheritance, includeNestedDeclarations));
+    }
+
+    default List<VariableDeclaration> getGlobalProtectedVariables(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
+        return getProtectedElements(getGlobalVariableDeclarations(includeFromMixins, includeFromInheritance, includeNestedDeclarations));
+    }
+
+    default List<VariableDeclaration> getGlobalPrivateVariables(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
+        return getPrivateElements(getGlobalVariableDeclarations(includeFromMixins, includeFromInheritance, includeNestedDeclarations));
+    }
+
+    default List<DLanguageAutoDeclarationY> getGlobalPublicAutoVariables(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
+        return getPublicElements(getGlobalAutoVariableDeclarations(includeFromMixins, includeFromInheritance, includeNestedDeclarations));
+    }
+
+    default List<DLanguageAutoDeclarationY> getGlobalProtectedAutoVariables(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
+        return getProtectedElements(getGlobalAutoVariableDeclarations(includeFromMixins, includeFromInheritance, includeNestedDeclarations));
+    }
+
+    default List<DLanguageAutoDeclarationY> getGlobalPrivateAutoVariables(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
+        return getPrivateElements(getGlobalAutoVariableDeclarations(includeFromMixins, includeFromInheritance, includeNestedDeclarations));
+    }
+
+    default List<DLanguageDeclaratorInitializer> getGlobalPublicNonAutoVariables(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
+        return getPublicElements(getGlobalNonAutoDeclarations(includeFromMixins, includeFromInheritance, includeNestedDeclarations));
+    }
+
+    default List<DLanguageDeclaratorInitializer> getGlobalProtectedNonAutoVariables(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
+        return getProtectedElements(getGlobalNonAutoDeclarations(includeFromMixins, includeFromInheritance, includeNestedDeclarations));
+    }
+
+    default List<DLanguageDeclaratorInitializer> getGlobalPrivateNonAutoVariables(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
+        return getPrivateElements(getGlobalNonAutoDeclarations(includeFromMixins, includeFromInheritance, includeNestedDeclarations));
     }
 
 }

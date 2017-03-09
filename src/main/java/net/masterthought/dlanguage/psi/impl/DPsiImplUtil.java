@@ -27,6 +27,7 @@ import static net.masterthought.dlanguage.utils.DUtil.getEndOfIdentifierList;
 
 /**
  * Source of the methods pointed out in DLanguage.bnf.
+ * todo: this file is rather long and not getting shorter. Split into multiple files at a later date.
  */
 public class DPsiImplUtil {
 
@@ -589,7 +590,7 @@ public class DPsiImplUtil {
         return true;
     }
 
-    public static DLanguageType getType(DLanguageAliasDeclaration o) {
+    public static DLanguageType getDeclarationType(DLanguageAliasDeclaration o) {
         return null;
     }
 
@@ -1040,7 +1041,7 @@ public class DPsiImplUtil {
         return false;//default to false.
     }
 
-    public static DLanguageType getType(DLanguageDeclaratorInitializer o) {
+    public static DLanguageType getDeclarationType(DLanguageDeclaratorInitializer o) {
         return null;//todo implement
 
     }
@@ -1113,12 +1114,163 @@ public class DPsiImplUtil {
         return storageClasses.getStorageClass().getKwAuto() != null;
     }
 
-    public static DLanguageType getType(DLanguageAutoDeclarationY o) {
+    public static DLanguageType getDeclarationType(DLanguageAutoDeclarationY o) {
         return null;//todo implement
 
     }
 
-    private boolean isSomeVisibility(DLanguageAliasDeclaration o, String visibility) {
+    // ------------- Static Constructor ------------------//
+    @NotNull
+    public static String getName(@NotNull DLanguageStaticConstructor o) {
+        return "this";
+//        DLanguageStaticConstructorStub stub = o.getStub();
+//        if (stub != null) return StringUtil.notNullize(stub.getName());
+//
+//        PsiElement parent = o.getParent();
+//
+//
+//        while (!(parent instanceof DLanguageClassDeclaration)) {
+//            parent = parent.getParent();
+//        }
+
+//        return ((DLanguageClassDeclaration)parent).getName() + "constructor";
+//        if (o.getIdentifier() != null) {
+//            return o.getIdentifier().getText();
+//        } else {
+//            return "not found";
+//        }
+    }
+
+
+    // ------------- Auto Declaration Y ------------------ //
+
+    @Nullable
+    public static PsiElement getNameIdentifier(@NotNull DLanguageStaticConstructor o) {
+        ASTNode keyNode = o.getNode();
+        return keyNode != null ? keyNode.getPsi() : null;
+    }
+
+    @Nullable
+    public static PsiElement setName(@NotNull DLanguageStaticConstructor o, @NotNull String newName) {
+        PsiElement e = DElementFactory.createDLanguageStaticConstructorFromText(o.getProject(), newName);
+        if (e == null) return null;
+        o.replace(e);
+        return o;
+    }
+
+    @NotNull
+    public static PsiReference getReference(@NotNull DLanguageStaticConstructor o) {
+        return new DReference(o, TextRange.from(0, getName(o).length()));
+    }
+
+    @NotNull
+    public static ItemPresentation getPresentation(final DLanguageStaticConstructor o) {
+        return new ItemPresentation() {
+            @Nullable
+            @Override
+            public String getPresentableText() {
+                String string = "";
+                for (PsiElement psiElement : o.getChildren()) {
+                    if (psiElement instanceof DLanguageParametersImpl)
+                        string += psiElement.getText();
+                }
+                return o.getName() + string;
+            }
+
+            /**
+             * This is needed to decipher between files when resolving multiple references.
+             */
+            @Nullable
+            @Override
+            public String getLocationString() {
+                final PsiFile psiFile = o.getContainingFile();
+                return psiFile instanceof DLanguageFile ? ((DLanguageFile) psiFile).getModuleOrFileName() : null;
+            }
+
+            @Nullable
+            @Override
+            public Icon getIcon(boolean unused) {
+                return DLanguageIcons.FILE;
+            }
+        };
+    }
+
+    // ---------- Shared Static Constructor ---------------//
+    @NotNull
+    public static String getName(@NotNull DLanguageSharedStaticConstructor o) {
+        return "this";//not sure about wether or not this should be "this" or not. Copy paste the bellow back in at a later date, but the classeclaration part should also include structs/templates/modules.
+//        DLanguageSharedStaticConstructorStub stub = o.getStub();
+//        if (stub != null) return StringUtil.notNullize(stub.getName());
+//
+//        PsiElement parent = o.getParent();
+//
+//
+//        while (!(parent instanceof DLanguageClassDeclaration)) {
+//            parent = parent.getParent();
+//        }
+
+//        return ((DLanguageClassDeclaration)parent).getName() + "constructor";
+//        if (o.getIdentifier() != null) {
+//            return o.getIdentifier().getText();
+//        } else {
+//            return "not found";
+//        }
+    }
+
+    // ------------- Static Constructor ------------------//
+
+    @Nullable
+    public static PsiElement getNameIdentifier(@NotNull DLanguageSharedStaticConstructor o) {
+        ASTNode keyNode = o.getNode();
+        return keyNode != null ? keyNode.getPsi() : null;
+    }
+
+    @Nullable
+    public static PsiElement setName(@NotNull DLanguageSharedStaticConstructor o, @NotNull String newName) {
+        PsiElement e = DElementFactory.createDLanguageSharedStaticConstructorFromText(o.getProject(), newName);
+        if (e == null) return null;
+        o.replace(e);
+        return o;
+    }
+
+    @NotNull
+    public static PsiReference getReference(@NotNull DLanguageSharedStaticConstructor o) {
+        return new DReference(o, TextRange.from(0, getName(o).length()));
+    }
+
+    @NotNull
+    public static ItemPresentation getPresentation(final DLanguageSharedStaticConstructor o) {
+        return new ItemPresentation() {
+            @Nullable
+            @Override
+            public String getPresentableText() {
+                String string = "";
+                for (PsiElement psiElement : o.getChildren()) {
+                    if (psiElement instanceof DLanguageParametersImpl)
+                        string += psiElement.getText();
+                }
+                return o.getName() + string;
+            }
+
+            /**
+             * This is needed to decipher between files when resolving multiple references.
+             */
+            @Nullable
+            @Override
+            public String getLocationString() {
+                final PsiFile psiFile = o.getContainingFile();
+                return psiFile instanceof DLanguageFile ? ((DLanguageFile) psiFile).getModuleOrFileName() : null;
+            }
+
+            @Nullable
+            @Override
+            public Icon getIcon(boolean unused) {
+                return DLanguageIcons.FILE;
+            }
+        };
+    }
+
+    public boolean isSomeVisibility(DLanguageAliasDeclaration o, String visibility) {
         final DLanguageAttributeSpecifier attribute = (DLanguageAttributeSpecifier) o.getParent().getParent().getParent();
         if (attribute.getAttribute().getProtectionAttribute() != null) {
             if (attribute.getAttribute().getProtectionAttribute().getText().equals(visibility))
@@ -1140,10 +1292,7 @@ public class DPsiImplUtil {
 
     }
 
-
-    // ------------- Auto Declaration Y ------------------ //
-
-
+    // ---------- Shared Static Constructor ---------------//
 
 }
 

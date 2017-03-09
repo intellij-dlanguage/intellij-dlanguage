@@ -142,13 +142,25 @@ public class DElementFactory {
 
     public static PsiElement createDLanguageAutoDeclarationYFromText(Project project, String name) {
         PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
-        if (e instanceof DLanguageLabeledStatement) return e;
+        if (e instanceof DLanguageAutoDeclarationY) return e;
         return null;
     }
 
     public static PsiElement createDLanguageDeclaratorInitializerFromText(Project project, String name) {
         PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
-        if (e instanceof DLanguageLabeledStatement) return e;
+        if (e instanceof DLanguageDeclaratorInitializer) return e;
+        return null;
+    }
+
+    public static PsiElement createDLanguageStaticConstructorFromText(Project project, String name) {
+        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
+        if (e instanceof DLanguageStaticConstructor) return e;
+        return null;
+    }
+
+    public static PsiElement createDLanguageSharedStaticConstructorFromText(Project project, String name) {
+        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
+        if (e instanceof DLanguageSharedStaticConstructor) return e;
         return null;
     }
 }

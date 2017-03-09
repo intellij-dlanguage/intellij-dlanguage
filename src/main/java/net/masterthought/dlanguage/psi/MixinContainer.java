@@ -9,7 +9,7 @@ import java.util.List;
  * Created by francis on 2/27/2017.
  * Class implemented by valid containers for a mixin
  */
-public interface MixinContainer {
+public interface MixinContainer extends Container {
     @NotNull
     List<DLanguageTemplateMixin> getMixins();
 

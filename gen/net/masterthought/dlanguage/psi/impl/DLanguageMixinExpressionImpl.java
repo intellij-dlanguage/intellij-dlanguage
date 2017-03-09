@@ -56,10 +56,12 @@ public class DLanguageMixinExpressionImpl extends ASTWrapperPsiElement implement
     return notNullChild(findChildByType(OP_PAR_RIGHT));
   }
 
+  @Nullable
   public DLanguageTemplateDeclaration getTemplateDeclaration() {
     return DPsiImplUtil.getTemplateDeclaration(this);
   }
 
+  @Nullable
   public DLanguageTemplateMixinDeclaration getTemplateMixinDeclaration() {
     return DPsiImplUtil.getTemplateMixinDeclaration(this);
   }

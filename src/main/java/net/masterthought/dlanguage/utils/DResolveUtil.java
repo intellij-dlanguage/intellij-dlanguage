@@ -356,7 +356,7 @@ public class DResolveUtil {
                         //
                     //import declaration
                         //resolving within
-                    //template declaration//contains a DeclDef body
+                    //templateClass declaration//contains a DeclDef body
                         //Template parameters within
                         //within constraint
                         //within main body
@@ -383,7 +383,7 @@ public class DResolveUtil {
                     // could contain the following goto case expression. where expression will evaluate to a switch branch
                 //with statement
                     //either in the body or:
-                    //when within a parentheses could be an expression or template instance.
+                    //when within a parentheses could be an expression or templateClass instance.
                 //synchronized statement
                     //in body
                     // parenthes may contain an expression whicvh will evualuate to a class

@@ -9,7 +9,7 @@ import net.masterthought.dlanguage.stubs.DLanguageAliasDeclarationStub;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
 
-public interface DLanguageAliasDeclaration extends DNamedElement, VariableDeclaration, StubBasedPsiElement<DLanguageAliasDeclarationStub> {
+public interface DLanguageAliasDeclaration extends DNamedElement, HasVisibility, StubBasedPsiElement<DLanguageAliasDeclarationStub> {
 
   @Nullable
   DLanguageAliasDeclarationX getAliasDeclarationX();
@@ -64,5 +64,9 @@ public interface DLanguageAliasDeclaration extends DNamedElement, VariableDeclar
 
   @NotNull
   ItemPresentation getPresentation();
+
+  boolean actuallyIsDeclaration();
+
+  DLanguageType getDeclarationType();
 
 }

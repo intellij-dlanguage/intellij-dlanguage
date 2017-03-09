@@ -1,7 +1,8 @@
 package net.masterthought.dlanguage.psi;
 
 /**
- * Created by franc on 2/28/2017.
+ * Created by francis on 2/28/2017.
+ * todo
  */
-public interface TemplateMixinContainer {
+public interface TemplateMixinContainer extends Container {
 }
