@@ -6,6 +6,8 @@ import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.StubBasedPsiElement;
 import net.masterthought.dlanguage.stubs.DLanguageSharedStaticDestructorStub;
+import com.intellij.navigation.ItemPresentation;
+import com.intellij.psi.PsiReference;
 
 public interface DLanguageSharedStaticDestructor extends StatementContainer, DNamedElement, HasVisibility, HasTemplateArguments, HasArguments, StubBasedPsiElement<DLanguageSharedStaticDestructorStub> {
 
@@ -35,5 +37,20 @@ public interface DLanguageSharedStaticDestructor extends StatementContainer, DNa
 
   @NotNull
   PsiElement getOpTilda();
+
+  @NotNull
+  String getName();
+
+  @Nullable
+  PsiElement getNameIdentifier();
+
+  @NotNull
+  PsiReference getReference();
+
+  @Nullable
+  PsiElement setName(String newName);
+
+  @NotNull
+  ItemPresentation getPresentation();
 
 }

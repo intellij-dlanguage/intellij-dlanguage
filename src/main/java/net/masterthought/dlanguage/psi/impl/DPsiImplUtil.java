@@ -1423,18 +1423,28 @@ public class DPsiImplUtil {
         };
     }
 
+    // ------------- Shared Static Destructor ------------- //
+
+    // -------------------- Visibility --------------------- //
+
     public boolean isSomeVisibility(DLanguageAliasDeclaration o, String visibility) {
         final DLanguageAttributeSpecifier attribute = (DLanguageAttributeSpecifier) o.getParent().getParent().getParent();
         if (attribute.getAttribute().getProtectionAttribute() != null) {
             if (attribute.getAttribute().getProtectionAttribute().getText().equals(visibility))
                 return true;
         }
-        PsiElement parent = o.getParent();
+        return isSomeVisibility(o, visibility, AliasContainer.class);
+
+    }
+
+    private boolean isSomeVisibility(PsiElement psiElement, String visibility, Class<? extends Container> containerType) {
+        PsiElement parent = psiElement.getParent();
         while (true) {
-            if (parent instanceof AliasContainer)
-                return false;
+            if (containerType.isInstance(parent)) {
+                return visibility.equals("public");
+            }
             if (parent instanceof DLanguageDeclDef && ((DLanguageDeclDef) parent).getAttributeSpecifier() != null) {
-                final DLanguageAttributeSpecifier attributeSpecifier = ((DLanguageDeclDef) parent).getAttributeSpecifier();
+                final DLanguageAttributeSpecifier attribute = ((DLanguageDeclDef) parent).getAttributeSpecifier();
                 if (attribute.getAttribute().getProtectionAttribute() != null) {
                     if (attribute.getAttribute().getProtectionAttribute().getText().equals(visibility))
                         return true;
@@ -1442,9 +1452,12 @@ public class DPsiImplUtil {
             }
             parent = parent.getParent();
         }
-
     }
-    // ------------- Shared Static Destructor ------------- //
 
+    public boolean isSomeVisibility(DLanguageTemplateDeclaration o, String visibility) {
+        return isSomeVisibility(o, visibility, TemplateContainer.class);
+    }
+
+    // -------------------- Visibility --------------------- //
 }
 

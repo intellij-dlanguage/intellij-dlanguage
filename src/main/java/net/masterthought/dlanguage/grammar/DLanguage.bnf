@@ -2076,7 +2076,7 @@ AnonymousEnumDeclaration ::=
 
 TemplateDeclaration ::=
     'template' Identifier TemplateParameters Constraint? '{' DeclDefs? '}' {
-      methods=[getName getNameIdentifier getReference setName getPresentation getTemplateArguments ]
+      methods=[getName getNameIdentifier getReference setName getPresentation getTemplateArguments isSomeVisibility]
     implements = ["net.masterthought.dlanguage.psi.DNamedElement" "net.masterthought.dlanguage.psi.StatementContainer" "net.masterthought.dlanguage.psi.GlobalDeclarationContainer" "net.masterthought.dlanguage.psi.HasVisibility" "net.masterthought.dlanguage.psi.HasTemplateArguments" "net.masterthought.dlanguage.psi.Mixinable"]
       stubClass="net.masterthought.dlanguage.stubs.DLanguageTemplateDeclarationStub"
     }
