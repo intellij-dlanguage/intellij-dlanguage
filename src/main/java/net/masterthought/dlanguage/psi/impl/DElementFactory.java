@@ -163,5 +163,17 @@ public class DElementFactory {
         if (e instanceof DLanguageSharedStaticConstructor) return e;
         return null;
     }
+
+    public static PsiElement createDLanguageStaticDestructorFromText(Project project, String name) {
+        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
+        if (e instanceof DLanguageStaticDestructor) return e;
+        return null;
+    }
+
+    public static PsiElement createDLanguageSharedStaticDestructorFromText(Project project, String name) {
+        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
+        if (e instanceof DLanguageSharedStaticDestructor) return e;
+        return null;
+    }
 }
 
