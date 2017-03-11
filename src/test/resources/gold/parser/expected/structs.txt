@@ -8,7 +8,7 @@ D Language File
               IDENTIFIER
                 PsiElement(DLanguageTokenType.ID)('ABC')
           DLanguageDeclaratorsImpl(DECLARATORS)
-            DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
+            DECLARATOR_INITIALIZER
               DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
                 IDENTIFIER
                   PsiElement(DLanguageTokenType.ID)('x')
@@ -17,7 +17,7 @@ D Language File
       DLanguageDeclDefImpl(DECL_DEF)
         DLanguageDeclarationImpl(DECLARATION)
           DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
-            DLanguageStructDeclarationImpl(STRUCT_DECLARATION)
+            STRUCT_DECLARATION
               PsiElement(DLanguageTokenType.struct)('struct')
               IDENTIFIER
                 PsiElement(DLanguageTokenType.ID)('S')
@@ -35,7 +35,7 @@ D Language File
           DLanguageDeclDefImpl(DECL_DEF)
             DLanguageDeclarationImpl(DECLARATION)
               DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
-                DLanguageStructDeclarationImpl(STRUCT_DECLARATION)
+                STRUCT_DECLARATION
                   PsiElement(DLanguageTokenType.struct)('struct')
                   IDENTIFIER
                     PsiElement(DLanguageTokenType.ID)('S')
@@ -86,7 +86,7 @@ D Language File
               IDENTIFIER
                 PsiElement(DLanguageTokenType.ID)('S')
           DLanguageDeclaratorsImpl(DECLARATORS)
-            DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
+            DECLARATOR_INITIALIZER
               DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
                 IDENTIFIER
                   PsiElement(DLanguageTokenType.ID)('s')
@@ -101,7 +101,7 @@ D Language File
                 IDENTIFIER
                   PsiElement(DLanguageTokenType.ID)('S')
             DLanguageDeclaratorsImpl(DECLARATORS)
-              DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
+              DECLARATOR_INITIALIZER
                 DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
                   DLanguageBasicType2Impl(BASIC_TYPE_2)
                     DLanguageBasicType2XImpl(BASIC_TYPE_2_X)

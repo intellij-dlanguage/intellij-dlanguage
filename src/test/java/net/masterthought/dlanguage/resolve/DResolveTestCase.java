@@ -6,11 +6,10 @@ import com.intellij.openapi.vfs.CharsetToolkit;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiReference;
+import com.intellij.psi.impl.source.resolve.reference.impl.PsiMultiReference;
+import com.intellij.psi.stubsHierarchy.stubs.ClassDeclaration;
 import net.masterthought.dlanguage.DLightPlatformCodeInsightFixtureTestCase;
-import net.masterthought.dlanguage.psi.DLanguageClassDeclaration;
-import net.masterthought.dlanguage.psi.DLanguageFuncDeclaration;
-import net.masterthought.dlanguage.psi.DLanguageIdentifier;
-import net.masterthought.dlanguage.psi.DLanguageTemplateDeclaration;
+import net.masterthought.dlanguage.psi.*;
 
 
 import java.io.File;
@@ -57,6 +56,15 @@ public abstract class DResolveTestCase extends DLightPlatformCodeInsightFixtureT
                 if (resolvedElement instanceof DLanguageIdentifier) {
                     resolvedElement = ref.getElement().getParent();
                 }
+                //if we're resolving something within a class don't resolve the class
+                if(ref instanceof PsiMultiReference && resolvedElement instanceof DLanguageClassDeclaration){
+                    for (PsiReference psiReference : ((PsiMultiReference) ref).getReferences()) {
+                        if(!(psiReference.getElement() instanceof DLanguageClassDeclaration)){
+                            resolvedElement = psiReference.getElement();
+                        }
+                    }
+
+                }
                 ensureNotNull(file);
             }
         }
@@ -80,7 +88,7 @@ public abstract class DResolveTestCase extends DLightPlatformCodeInsightFixtureT
             fail("Could not find resolved element.");
         }
         if (succeed) {
-            if(resolvedElement instanceof DLanguageFuncDeclaration || resolvedElement instanceof DLanguageClassDeclaration || resolvedElement instanceof DLanguageTemplateDeclaration) {
+            if(resolvedElement instanceof DLanguageFuncDeclaration || resolvedElement instanceof DLanguageClassDeclaration || resolvedElement instanceof DLanguageTemplateDeclaration || resolvedElement instanceof DLanguageVarDeclarator || resolvedElement instanceof DLanguageAliasDeclaration) {
                 //we want to resolve the identifier but for the purpose of tests we should use getParent to get the actual declaration insteadof the identifier part of the declaration
                 assertEquals("Could not resolve expected reference.", resolvedElement, referencedElement.resolve().getParent());
             }

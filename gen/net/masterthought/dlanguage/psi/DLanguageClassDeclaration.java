@@ -4,12 +4,17 @@ package net.masterthought.dlanguage.psi;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import net.masterthought.dlanguage.psi.interfaces.containers.StatementContainer;
+import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
+import net.masterthought.dlanguage.psi.interfaces.HasTemplateArguments;
+import net.masterthought.dlanguage.psi.interfaces.CanInherit;
 import com.intellij.psi.StubBasedPsiElement;
 import net.masterthought.dlanguage.stubs.DLanguageClassDeclarationStub;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
 
-public interface DLanguageClassDeclaration extends DNamedElement, StubBasedPsiElement<DLanguageClassDeclarationStub> {
+public interface DLanguageClassDeclaration extends StatementContainer, DNamedElement, HasVisibility, HasTemplateArguments, CanInherit, StubBasedPsiElement<DLanguageClassDeclarationStub> {
 
   @Nullable
   DLanguageAggregateBody getAggregateBody();
@@ -43,5 +48,11 @@ public interface DLanguageClassDeclaration extends DNamedElement, StubBasedPsiEl
 
   @NotNull
   ItemPresentation getPresentation();
+
+  boolean isSomeVisibility(String visibility);
+
+  DLanguageProtectionAttribute getProtection();
+
+  List<CanInherit> whatInheritsFrom();
 
 }

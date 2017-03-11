@@ -1,5 +1,5 @@
 D Language File
-  DLanguageModuleDeclarationImpl(MODULE_DECLARATION)
+  MODULE_DECLARATION
     PsiElement(DLanguageTokenType.module)('module')
     DLanguageModuleFullyQualifiedNameImpl(MODULE_FULLY_QUALIFIED_NAME)
       IDENTIFIER
@@ -48,7 +48,7 @@ D Language File
               DLanguageBlockStatementImpl(BLOCK_STATEMENT)
                 PsiElement(DLanguageTokenType.{)('{')
                 PsiElement(DLanguageTokenType.})('}')
-  DLanguageModuleDeclarationImpl(MODULE_DECLARATION)
+  MODULE_DECLARATION
     PsiElement(DLanguageTokenType.module)('module')
     DLanguageModuleFullyQualifiedNameImpl(MODULE_FULLY_QUALIFIED_NAME)
       IDENTIFIER
@@ -269,7 +269,7 @@ D Language File
                                               IDENTIFIER
                                                 PsiElement(DLanguageTokenType.ID)('foo')
                                           DLanguageDeclaratorsImpl(DECLARATORS)
-                                            DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
+                                            DECLARATOR_INITIALIZER
                                               DLanguageAltDeclaratorImpl(ALT_DECLARATOR)
                                                 PsiElement(DLanguageTokenType.()('(')
                                                 DLanguageAltDeclaratorXImpl(ALT_DECLARATOR_X)
@@ -496,7 +496,7 @@ D Language File
                   DLanguageDeclDefsImpl(DECL_DEFS)
                     DLanguageDeclDefImpl(DECL_DEF)
                       DLanguageDeclarationImpl(DECLARATION)
-                        DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
+                        ALIAS_DECLARATION
                           PsiElement(DLanguageTokenType.alias)('alias')
                           IDENTIFIER
                             PsiElement(DLanguageTokenType.ID)('foo')
@@ -514,7 +514,7 @@ D Language File
                     DLanguageDeclDefsImpl(DECL_DEFS)
                       DLanguageDeclDefImpl(DECL_DEF)
                         DLanguageDeclarationImpl(DECLARATION)
-                          DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
+                          ALIAS_DECLARATION
                             PsiElement(DLanguageTokenType.alias)('alias')
                             IDENTIFIER
                               PsiElement(DLanguageTokenType.ID)('foo')
@@ -661,7 +661,7 @@ D Language File
                                                         IDENTIFIER
                                                           PsiElement(DLanguageTokenType.ID)('foo')
                                                     DLanguageDeclaratorsImpl(DECLARATORS)
-                                                      DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
+                                                      DECLARATOR_INITIALIZER
                                                         DLanguageAltDeclaratorImpl(ALT_DECLARATOR)
                                                           PsiElement(DLanguageTokenType.()('(')
                                                           DLanguageAltDeclaratorXImpl(ALT_DECLARATOR_X)

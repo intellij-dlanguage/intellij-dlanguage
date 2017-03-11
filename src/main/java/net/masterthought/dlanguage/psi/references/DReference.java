@@ -1,31 +1,31 @@
 package net.masterthought.dlanguage.psi.references;
 
-import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.util.IncorrectOperationException;
 import net.masterthought.dlanguage.psi.DLanguageFuncDeclaration;
 import net.masterthought.dlanguage.psi.DLanguageIdentifier;
 import net.masterthought.dlanguage.psi.impl.DPsiImplUtil;
-import net.masterthought.dlanguage.utils.DUtil;
+import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+import net.masterthought.dlanguage.utils.DResolveUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Resolves references to elements.
  */
 public class DReference extends PsiReferenceBase<PsiNamedElement> implements PsiPolyVariantReference {
+    public static final ResolveResult[] EMPTY_RESOLVE_RESULT = new ResolveResult[0];
     private String name;
 
     public DReference(@NotNull PsiNamedElement element, TextRange textRange) {
         super(element, textRange);
         name = element.getName();
     }
-
-    public static final ResolveResult[] EMPTY_RESOLVE_RESULT = new ResolveResult[0];
 
     /**
      * Resolves references to a set of results.
@@ -44,9 +44,8 @@ public class DReference extends PsiReferenceBase<PsiNamedElement> implements Psi
 //            HaskellQconid qconid = PsiTreeUtil.getParentOfType(myElement, HaskellQconid.class);
 //            if (qconid == null) { return EMPTY_RESOLVE_RESULT; }
 //            if (!myElement.equals(Iterables.getLast(qconid.getConidList()))) { return EMPTY_RESOLVE_RESULT; }
-//        }
-        Project project = myElement.getProject();
-        final List<PsiNamedElement> namedElements = DUtil.findDefinitionNode(project, name, myElement);
+
+        final Set<PsiNamedElement> namedElements = DResolveUtil.findDefinitionNodes((DNamedElement) myElement)/**/;
         // Guess 20 variants tops most of the time in any real code base.
         List<ResolveResult> results = new ArrayList<ResolveResult>(20);
         for (PsiNamedElement property : namedElements) {

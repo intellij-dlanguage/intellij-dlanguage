@@ -7,7 +7,7 @@ D Language File
             DLanguageBasicTypeXImpl(BASIC_TYPE_X)
               PsiElement(DLanguageTokenType.int)('int')
           DLanguageDeclaratorsImpl(DECLARATORS)
-            DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
+            DECLARATOR_INITIALIZER
               DLanguageAltDeclaratorImpl(ALT_DECLARATOR)
                 PsiElement(DLanguageTokenType.()('(')
                 DLanguageAltDeclaratorXImpl(ALT_DECLARATOR_X)

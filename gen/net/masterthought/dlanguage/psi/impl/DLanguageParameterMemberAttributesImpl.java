@@ -33,9 +33,15 @@ public class DLanguageParameterMemberAttributesImpl extends ASTWrapperPsiElement
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageParameters getParameters() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageParameters.class));
+    return PsiTreeUtil.getChildOfType(this, DLanguageParameters.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageTypeInferredParameterMemberAttributes getTypeInferredParameterMemberAttributes() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageTypeInferredParameterMemberAttributes.class);
   }
 
 }

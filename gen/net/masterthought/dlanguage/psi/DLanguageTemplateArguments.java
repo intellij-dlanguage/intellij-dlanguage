@@ -13,6 +13,9 @@ public interface DLanguageTemplateArguments extends PsiElement {
   @Nullable
   DLanguageTemplateSingleArgument getTemplateSingleArgument();
 
+  @Nullable
+  PsiElement getOpComma();
+
   @NotNull
   PsiElement getOpNot();
 

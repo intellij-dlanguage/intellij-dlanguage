@@ -2,7 +2,7 @@ package net.masterthought.dlanguage.stubs.types;
 
 import com.intellij.psi.stubs.IndexSink;
 import com.intellij.psi.stubs.NamedStubBase;
-import net.masterthought.dlanguage.psi.DNamedElement;
+import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 import net.masterthought.dlanguage.stubs.index.DAllNameIndex;
 import org.jetbrains.annotations.NotNull;
 

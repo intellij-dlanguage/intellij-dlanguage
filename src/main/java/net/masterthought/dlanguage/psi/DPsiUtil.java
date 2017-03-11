@@ -5,8 +5,6 @@ import com.google.common.collect.Sets;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.util.PsiTreeUtil;
-import net.masterthought.dlanguage.psi.DLanguageImportDeclaration;
-import net.masterthought.dlanguage.psi.DLanguageModuleDeclaration;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;

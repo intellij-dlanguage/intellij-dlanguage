@@ -8,10 +8,17 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import net.masterthought.dlanguage.stubs.DLanguageStructDeclarationStub;
 import net.masterthought.dlanguage.psi.*;
+import com.intellij.navigation.ItemPresentation;
+import com.intellij.psi.PsiReference;
+import com.intellij.psi.stubs.IStubElementType;
 
-public class DLanguageStructDeclarationImpl extends ASTWrapperPsiElement implements DLanguageStructDeclaration {
+public class DLanguageStructDeclarationImpl extends DNamedStubbedPsiElementBase<DLanguageStructDeclarationStub> implements DLanguageStructDeclaration {
+
+  public DLanguageStructDeclarationImpl(DLanguageStructDeclarationStub stub, IStubElementType type) {
+    super(stub, type);
+  }
 
   public DLanguageStructDeclarationImpl(ASTNode node) {
     super(node);
@@ -41,7 +48,7 @@ public class DLanguageStructDeclarationImpl extends ASTWrapperPsiElement impleme
   @Override
   @Nullable
   public DLanguageIdentifier getIdentifier() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
+    return PsiTreeUtil.getStubChildOfType(this, DLanguageIdentifier.class);
   }
 
   @Override
@@ -60,6 +67,35 @@ public class DLanguageStructDeclarationImpl extends ASTWrapperPsiElement impleme
   @Nullable
   public PsiElement getOpScolon() {
     return findChildByType(OP_SCOLON);
+  }
+
+  @NotNull
+  public String getName() {
+    return DPsiImplUtil.getName(this);
+  }
+
+  @Nullable
+  public PsiElement getNameIdentifier() {
+    return DPsiImplUtil.getNameIdentifier(this);
+  }
+
+  @NotNull
+  public PsiReference getReference() {
+    return DPsiImplUtil.getReference(this);
+  }
+
+  @Nullable
+  public PsiElement setName(String newName) {
+    return DPsiImplUtil.setName(this, newName);
+  }
+
+  @NotNull
+  public ItemPresentation getPresentation() {
+    return DPsiImplUtil.getPresentation(this);
+  }
+
+  public boolean isSomeVisibility(String visibility) {
+    return DPsiImplUtil.isSomeVisibility(this, visibility);
   }
 
 }

@@ -13,4 +13,7 @@ public interface DLanguageIdentityExpression extends PsiElement {
   @Nullable
   PsiElement getKwIs();
 
+  @Nullable
+  PsiElement getKwNotIs();
+
 }
