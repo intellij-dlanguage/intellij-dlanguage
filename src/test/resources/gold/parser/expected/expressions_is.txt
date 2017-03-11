@@ -1133,7 +1133,7 @@ D Language File
                           DLanguageDeclDefsImpl(DECL_DEFS)
                             DLanguageDeclDefImpl(DECL_DEF)
                               DLanguageDeclarationImpl(DECLARATION)
-                                DLanguageEnumDeclarationImpl(ENUM_DECLARATION)
+                                ENUM_DECLARATION
                                   PsiElement(DLanguageTokenType.enum)('enum')
                                   IDENTIFIER
                                     PsiElement(DLanguageTokenType.ID)('E')

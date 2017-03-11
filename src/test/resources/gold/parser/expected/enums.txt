@@ -2,7 +2,7 @@ D Language File
   DLanguageDeclDefsImpl(DECL_DEFS)
     DLanguageDeclDefImpl(DECL_DEF)
       DLanguageDeclarationImpl(DECLARATION)
-        DLanguageEnumDeclarationImpl(ENUM_DECLARATION)
+        ENUM_DECLARATION
           PsiElement(DLanguageTokenType.enum)('enum')
           IDENTIFIER
             PsiElement(DLanguageTokenType.ID)('X')
@@ -27,7 +27,7 @@ D Language File
     DLanguageDeclDefsImpl(DECL_DEFS)
       DLanguageDeclDefImpl(DECL_DEF)
         DLanguageDeclarationImpl(DECLARATION)
-          DLanguageEnumDeclarationImpl(ENUM_DECLARATION)
+          ENUM_DECLARATION
             DLanguageAnonymousEnumDeclarationImpl(ANONYMOUS_ENUM_DECLARATION)
               PsiElement(DLanguageTokenType.enum)('enum')
       DLanguageDeclDefsImpl(DECL_DEFS)
@@ -83,7 +83,7 @@ D Language File
         DLanguageDeclDefsImpl(DECL_DEFS)
           DLanguageDeclDefImpl(DECL_DEF)
             DLanguageDeclarationImpl(DECLARATION)
-              DLanguageEnumDeclarationImpl(ENUM_DECLARATION)
+              ENUM_DECLARATION
                 DLanguageAnonymousEnumDeclarationImpl(ANONYMOUS_ENUM_DECLARATION)
                   PsiElement(DLanguageTokenType.enum)('enum')
           DLanguageDeclDefsImpl(DECL_DEFS)
@@ -117,7 +117,7 @@ D Language File
             DLanguageDeclDefsImpl(DECL_DEFS)
               DLanguageDeclDefImpl(DECL_DEF)
                 DLanguageDeclarationImpl(DECLARATION)
-                  DLanguageEnumDeclarationImpl(ENUM_DECLARATION)
+                  ENUM_DECLARATION
                     PsiElement(DLanguageTokenType.enum)('enum')
                     IDENTIFIER
                       PsiElement(DLanguageTokenType.ID)('B')
@@ -149,7 +149,7 @@ D Language File
               DLanguageDeclDefsImpl(DECL_DEFS)
                 DLanguageDeclDefImpl(DECL_DEF)
                   DLanguageDeclarationImpl(DECLARATION)
-                    DLanguageEnumDeclarationImpl(ENUM_DECLARATION)
+                    ENUM_DECLARATION
                       PsiElement(DLanguageTokenType.enum)('enum')
                       IDENTIFIER
                         PsiElement(DLanguageTokenType.ID)('C')
@@ -232,7 +232,7 @@ D Language File
                 DLanguageDeclDefsImpl(DECL_DEFS)
                   DLanguageDeclDefImpl(DECL_DEF)
                     DLanguageDeclarationImpl(DECLARATION)
-                      DLanguageEnumDeclarationImpl(ENUM_DECLARATION)
+                      ENUM_DECLARATION
                         PsiElement(DLanguageTokenType.enum)('enum')
                         IDENTIFIER
                           PsiElement(DLanguageTokenType.ID)('E')
@@ -289,7 +289,7 @@ D Language File
                   DLanguageDeclDefsImpl(DECL_DEFS)
                     DLanguageDeclDefImpl(DECL_DEF)
                       DLanguageDeclarationImpl(DECLARATION)
-                        DLanguageEnumDeclarationImpl(ENUM_DECLARATION)
+                        ENUM_DECLARATION
                           PsiElement(DLanguageTokenType.enum)('enum')
                           IDENTIFIER
                             PsiElement(DLanguageTokenType.ID)('X')
@@ -344,7 +344,7 @@ D Language File
                       DLanguageDeclDefsImpl(DECL_DEFS)
                         DLanguageDeclDefImpl(DECL_DEF)
                           DLanguageDeclarationImpl(DECLARATION)
-                            DLanguageEnumDeclarationImpl(ENUM_DECLARATION)
+                            ENUM_DECLARATION
                               PsiElement(DLanguageTokenType.enum)('enum')
                               IDENTIFIER
                                 PsiElement(DLanguageTokenType.ID)('X')
@@ -472,7 +472,7 @@ D Language File
   DLanguageDeclDefsImpl(DECL_DEFS)
     DLanguageDeclDefImpl(DECL_DEF)
       DLanguageDeclarationImpl(DECLARATION)
-        DLanguageEnumDeclarationImpl(ENUM_DECLARATION)
+        ENUM_DECLARATION
           DLanguageAnonymousEnumDeclarationImpl(ANONYMOUS_ENUM_DECLARATION)
             PsiElement(DLanguageTokenType.enum)('enum')
             PsiElement(DLanguageTokenType.{)('{')
@@ -495,7 +495,7 @@ D Language File
     DLanguageDeclDefsImpl(DECL_DEFS)
       DLanguageDeclDefImpl(DECL_DEF)
         DLanguageDeclarationImpl(DECLARATION)
-          DLanguageEnumDeclarationImpl(ENUM_DECLARATION)
+          ENUM_DECLARATION
             DLanguageAnonymousEnumDeclarationImpl(ANONYMOUS_ENUM_DECLARATION)
               PsiElement(DLanguageTokenType.enum)('enum')
               PsiElement(DLanguageTokenType.{)('{')
@@ -576,7 +576,7 @@ D Language File
       DLanguageDeclDefsImpl(DECL_DEFS)
         DLanguageDeclDefImpl(DECL_DEF)
           DLanguageDeclarationImpl(DECLARATION)
-            DLanguageEnumDeclarationImpl(ENUM_DECLARATION)
+            ENUM_DECLARATION
               DLanguageAnonymousEnumDeclarationImpl(ANONYMOUS_ENUM_DECLARATION)
                 PsiElement(DLanguageTokenType.enum)('enum')
                 PsiElement(DLanguageTokenType.:)(':')
@@ -615,7 +615,7 @@ D Language File
         DLanguageDeclDefsImpl(DECL_DEFS)
           DLanguageDeclDefImpl(DECL_DEF)
             DLanguageDeclarationImpl(DECLARATION)
-              DLanguageEnumDeclarationImpl(ENUM_DECLARATION)
+              ENUM_DECLARATION
                 DLanguageAnonymousEnumDeclarationImpl(ANONYMOUS_ENUM_DECLARATION)
                   PsiElement(DLanguageTokenType.enum)('enum')
                   PsiElement(DLanguageTokenType.:)(':')
@@ -681,7 +681,7 @@ D Language File
           DLanguageDeclDefsImpl(DECL_DEFS)
             DLanguageDeclDefImpl(DECL_DEF)
               DLanguageDeclarationImpl(DECLARATION)
-                DLanguageEnumDeclarationImpl(ENUM_DECLARATION)
+                ENUM_DECLARATION
                   DLanguageAnonymousEnumDeclarationImpl(ANONYMOUS_ENUM_DECLARATION)
                     PsiElement(DLanguageTokenType.enum)('enum')
                     PsiElement(DLanguageTokenType.{)('{')
@@ -748,7 +748,7 @@ D Language File
             DLanguageDeclDefsImpl(DECL_DEFS)
               DLanguageDeclDefImpl(DECL_DEF)
                 DLanguageDeclarationImpl(DECLARATION)
-                  DLanguageEnumDeclarationImpl(ENUM_DECLARATION)
+                  ENUM_DECLARATION
                     DLanguageAnonymousEnumDeclarationImpl(ANONYMOUS_ENUM_DECLARATION)
                       PsiElement(DLanguageTokenType.enum)('enum')
               DLanguageDeclDefsImpl(DECL_DEFS)
@@ -783,7 +783,7 @@ D Language File
                 DLanguageDeclDefsImpl(DECL_DEFS)
                   DLanguageDeclDefImpl(DECL_DEF)
                     DLanguageDeclarationImpl(DECLARATION)
-                      DLanguageEnumDeclarationImpl(ENUM_DECLARATION)
+                      ENUM_DECLARATION
                         DLanguageAnonymousEnumDeclarationImpl(ANONYMOUS_ENUM_DECLARATION)
                           PsiElement(DLanguageTokenType.enum)('enum')
                   DLanguageDeclDefsImpl(DECL_DEFS)
@@ -821,7 +821,7 @@ D Language File
                     DLanguageDeclDefsImpl(DECL_DEFS)
                       DLanguageDeclDefImpl(DECL_DEF)
                         DLanguageDeclarationImpl(DECLARATION)
-                          DLanguageEnumDeclarationImpl(ENUM_DECLARATION)
+                          ENUM_DECLARATION
                             DLanguageAnonymousEnumDeclarationImpl(ANONYMOUS_ENUM_DECLARATION)
                               PsiElement(DLanguageTokenType.enum)('enum')
                       DLanguageDeclDefsImpl(DECL_DEFS)

@@ -108,7 +108,7 @@ public class CreateDLanguageClassAction extends CreateFileFromTemplateAction imp
             }
         }
         catch (ParseException e) {
-            Messages.showErrorDialog(project, String.format("Error parsing Velocity templateClass: %s", e.getMessage()), "Create File from Template");
+            Messages.showErrorDialog(project, String.format("Error parsing Velocity template: %s", e.getMessage()), "Create File from Template");
         }
         catch (IncorrectOperationException e) {
             LOG.error(e);

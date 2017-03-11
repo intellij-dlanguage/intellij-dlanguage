@@ -7,10 +7,8 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.impl.source.resolve.reference.impl.PsiMultiReference;
-import com.intellij.psi.stubsHierarchy.stubs.ClassDeclaration;
 import net.masterthought.dlanguage.DLightPlatformCodeInsightFixtureTestCase;
 import net.masterthought.dlanguage.psi.*;
-
 
 import java.io.File;
 

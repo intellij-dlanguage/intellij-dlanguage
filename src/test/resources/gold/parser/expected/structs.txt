@@ -26,7 +26,7 @@ D Language File
         DLanguageDeclDefImpl(DECL_DEF)
           DLanguageDeclarationImpl(DECLARATION)
             DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
-              DLanguageUnionDeclarationImpl(UNION_DECLARATION)
+              UNION_DECLARATION
                 PsiElement(DLanguageTokenType.union)('union')
                 IDENTIFIER
                   PsiElement(DLanguageTokenType.ID)('U')

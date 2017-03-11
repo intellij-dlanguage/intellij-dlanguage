@@ -23,7 +23,7 @@ public interface DLanguageTypes {
     IElementType FUNCTION_DEFINITION = new DLanguageElementType("FUNCTION_DEFINITION");
 
 
-    IElementType ADD_EXPRESSION = new DLanguageElementType("ADD_EXPRESSION");
+  IElementType ADD_EXPRESSION = new DLanguageElementType("ADD_EXPRESSION");
   IElementType AGGREGATE_BODY = new DLanguageElementType("AGGREGATE_BODY");
   IElementType AGGREGATE_DECLARATION = new DLanguageElementType("AGGREGATE_DECLARATION");
   IElementType ALIAS_DECLARATION = DElementTypeFactory.factory("ALIAS_DECLARATION");

@@ -1,7 +1,7 @@
 D Language File
   DLanguageDeclDefsImpl(DECL_DEFS)
     DLanguageDeclDefImpl(DECL_DEF)
-      DLanguageTemplateMixinDeclarationImpl(TEMPLATE_MIXIN_DECLARATION)
+      TEMPLATE_MIXIN_DECLARATION
         PsiElement(DLanguageTokenType.mixin)('mixin')
         PsiElement(DLanguageTokenType.template)('template')
         IDENTIFIER
@@ -744,7 +744,7 @@ D Language File
                     PsiElement(DLanguageTokenType.})('}')
           DLanguageDeclDefsImpl(DECL_DEFS)
             DLanguageDeclDefImpl(DECL_DEF)
-              DLanguageTemplateMixinDeclarationImpl(TEMPLATE_MIXIN_DECLARATION)
+              TEMPLATE_MIXIN_DECLARATION
                 PsiElement(DLanguageTokenType.mixin)('mixin')
                 PsiElement(DLanguageTokenType.template)('template')
                 IDENTIFIER
@@ -815,7 +815,7 @@ D Language File
               PsiComment(DLanguageTokenType.LINE_COMMENT)('// create x of type int')
               DLanguageDeclDefsImpl(DECL_DEFS)
                 DLanguageDeclDefImpl(DECL_DEF)
-                  DLanguageTemplateMixinDeclarationImpl(TEMPLATE_MIXIN_DECLARATION)
+                  TEMPLATE_MIXIN_DECLARATION
                     PsiElement(DLanguageTokenType.mixin)('mixin')
                     PsiElement(DLanguageTokenType.template)('template')
                     IDENTIFIER
@@ -1250,7 +1250,7 @@ D Language File
                               PsiElement(DLanguageTokenType.;)(';')
                         DLanguageDeclDefsImpl(DECL_DEFS)
                           DLanguageDeclDefImpl(DECL_DEF)
-                            DLanguageTemplateMixinDeclarationImpl(TEMPLATE_MIXIN_DECLARATION)
+                            TEMPLATE_MIXIN_DECLARATION
                               PsiElement(DLanguageTokenType.mixin)('mixin')
                               PsiElement(DLanguageTokenType.template)('template')
                               IDENTIFIER
@@ -1436,7 +1436,7 @@ D Language File
                                       PsiElement(DLanguageTokenType.})('}')
                             DLanguageDeclDefsImpl(DECL_DEFS)
                               DLanguageDeclDefImpl(DECL_DEF)
-                                DLanguageTemplateMixinDeclarationImpl(TEMPLATE_MIXIN_DECLARATION)
+                                TEMPLATE_MIXIN_DECLARATION
                                   PsiElement(DLanguageTokenType.mixin)('mixin')
                                   PsiElement(DLanguageTokenType.template)('template')
                                   IDENTIFIER
@@ -1640,7 +1640,7 @@ D Language File
                                           PsiElement(DLanguageTokenType.})('}')
                                 DLanguageDeclDefsImpl(DECL_DEFS)
                                   DLanguageDeclDefImpl(DECL_DEF)
-                                    DLanguageTemplateMixinDeclarationImpl(TEMPLATE_MIXIN_DECLARATION)
+                                    TEMPLATE_MIXIN_DECLARATION
                                       PsiElement(DLanguageTokenType.mixin)('mixin')
                                       PsiElement(DLanguageTokenType.template)('template')
                                       IDENTIFIER

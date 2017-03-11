@@ -26,8 +26,9 @@ public class DElementTypeFactory {
         if (name.equals("SHARED_STATIC_DESTRUCTOR")) return new DLanguageSharedStaticDestructorStubElementType(name);
         if (name.equals("STATIC_CONSTRUCTOR")) return new DLanguageStaticConstructorStubElementType(name);
         if (name.equals("STATIC_DESTRUCTOR")) return new DLanguageStaticDestructorStubElementType(name);
-        if (name.equals("AUTO_DECLARATION_Y"))
-            return new DLanguageAutoDeclarationStubElementType(name);
+        if (name.equals("AUTO_DECLARATION_Y")) return new DLanguageAutoDeclarationStubElementType(name);
+        if (name.equals("ENUM_DECLARATION")) return new DLanguageEnumDeclarationStubElementType(name);
+        if (name.equals("UNION_DECLARATION")) return new DLanguageUnionDeclarationStubElementType(name);
         throw new RuntimeException("Unknown element type: " + name);
     }
 }

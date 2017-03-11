@@ -236,7 +236,7 @@ public class DUtil {
             } else if (mixin.getTemplateMixinDeclaration() != null) {
                 containersFromMixin.add(mixin.getTemplateMixinDeclaration());
             } else {
-                log.debug("unable to resolve mixin templateClass");//todo
+                log.debug("unable to resolve mixin template");//todo
             }
         }
         if (elementToSearch instanceof DLanguageTemplateMixin) {
@@ -246,7 +246,7 @@ public class DUtil {
             } else if (mixin.getTemplateMixinDeclaration() != null) {
                 containersFromMixin.add(mixin.getTemplateMixinDeclaration());
             } else {
-                log.debug("unable to resolve mixin templateClass");
+                log.debug("unable to resolve mixin template");
             }
         }
         if (elementToSearch instanceof DLanguageMixinExpression) {
@@ -256,7 +256,7 @@ public class DUtil {
             } else if (mixin.getTemplateMixinDeclaration() != null) {
                 containersFromMixin.add(mixin.getTemplateMixinDeclaration());
             } else {
-                log.debug("unable to resolve mixin templateClass");
+                log.debug("unable to resolve mixin template");
             }
         }
         if (elementToSearch instanceof DLanguageMixinStatement) {
@@ -266,7 +266,7 @@ public class DUtil {
             } else if (mixin.getTemplateMixinDeclaration() != null) {
                 containersFromMixin.add(mixin.getTemplateMixinDeclaration());
             } else {
-                log.debug("unable to resolve mixin templateClass");
+                log.debug("unable to resolve mixin template");
             }
         }
         return containersFromMixin;
