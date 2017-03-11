@@ -15,7 +15,7 @@ public interface EnumContainer extends Container {
     Class enumClass = DLanguageEnumDeclaration.class;
 
     default <T extends DNamedElement> List<T> getEnumDeclarations(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
-        return getDeclarations(this, enumClass, this.getClass(), includeFromMixins, includeFromInheritance, includeNestedDeclarations);
+        return getDeclarations(this, this, enumClass, includeFromMixins, includeFromInheritance, includeNestedDeclarations);
     }
 
     default List<DLanguageEnumDeclaration> getPublicEnumes(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {

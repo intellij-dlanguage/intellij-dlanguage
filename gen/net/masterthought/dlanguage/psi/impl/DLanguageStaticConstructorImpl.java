@@ -13,6 +13,7 @@ import net.masterthought.dlanguage.stubs.DLanguageStaticConstructorStub;
 import net.masterthought.dlanguage.psi.*;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
+import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.tree.IElementType;
 
@@ -100,7 +101,7 @@ public class DLanguageStaticConstructorImpl extends StubBasedPsiElementBase<DLan
     return DPsiImplUtil.getPresentation(this);
   }
 
-  public boolean isSomeVisibility(String visibility) {
+  public boolean isSomeVisibility(Visibility visibility) {
     return DPsiImplUtil.isSomeVisibility(this, visibility);
   }
 

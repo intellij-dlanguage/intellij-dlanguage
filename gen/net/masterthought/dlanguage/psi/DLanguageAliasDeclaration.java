@@ -10,6 +10,7 @@ import com.intellij.psi.StubBasedPsiElement;
 import net.masterthought.dlanguage.stubs.DLanguageAliasDeclarationStub;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
+import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 
 public interface DLanguageAliasDeclaration extends DNamedElement, HasVisibility, StubBasedPsiElement<DLanguageAliasDeclarationStub> {
 
@@ -67,7 +68,7 @@ public interface DLanguageAliasDeclaration extends DNamedElement, HasVisibility,
   @NotNull
   ItemPresentation getPresentation();
 
-  boolean isSomeVisibility(String visibility);
+  boolean isSomeVisibility(Visibility visibility);
 
   boolean actuallyIsDeclaration();
 

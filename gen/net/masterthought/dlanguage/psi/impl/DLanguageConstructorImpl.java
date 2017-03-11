@@ -12,6 +12,7 @@ import net.masterthought.dlanguage.stubs.DLanguageConstructorStub;
 import net.masterthought.dlanguage.psi.*;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
+import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 import com.intellij.psi.stubs.IStubElementType;
 
 public class DLanguageConstructorImpl extends DNamedStubbedPsiElementBase<DLanguageConstructorStub> implements DLanguageConstructor {
@@ -94,7 +95,7 @@ public class DLanguageConstructorImpl extends DNamedStubbedPsiElementBase<DLangu
     return DPsiImplUtil.getPresentation(this);
   }
 
-  public boolean isSomeVisibility(String visibility) {
+  public boolean isSomeVisibility(Visibility visibility) {
     return DPsiImplUtil.isSomeVisibility(this, visibility);
   }
 

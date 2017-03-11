@@ -16,7 +16,7 @@ public interface AliasContainer extends Container {
     Class aliasClass = DLanguageAliasDeclaration.class;
 
     default <T extends DNamedElement> List<T> getAliasDeclarations(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
-        return getDeclarations(this, aliasClass, this.getClass(), includeFromMixins, includeFromInheritance, includeNestedDeclarations);
+        return getDeclarations(this, this, aliasClass, includeFromMixins, includeFromInheritance, includeNestedDeclarations);
     }
 
 

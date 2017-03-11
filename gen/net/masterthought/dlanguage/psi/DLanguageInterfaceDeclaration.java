@@ -13,6 +13,7 @@ import com.intellij.psi.StubBasedPsiElement;
 import net.masterthought.dlanguage.stubs.DLanguageInterfaceDeclarationStub;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
+import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 
 public interface DLanguageInterfaceDeclaration extends StatementContainer, DNamedElement, HasVisibility, HasTemplateArguments, CanInherit, StubBasedPsiElement<DLanguageInterfaceDeclarationStub> {
 
@@ -49,7 +50,7 @@ public interface DLanguageInterfaceDeclaration extends StatementContainer, DName
   @NotNull
   ItemPresentation getPresentation();
 
-  boolean isSomeVisibility(String visibility);
+  boolean isSomeVisibility(Visibility visibility);
 
   List<CanInherit> whatInheritsFrom();
 

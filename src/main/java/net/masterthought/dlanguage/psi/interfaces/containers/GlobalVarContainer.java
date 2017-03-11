@@ -28,11 +28,11 @@ public interface GlobalVarContainer extends Container {
     }
 
     default List<DLanguageAutoDeclarationY> getGlobalAutoVariableDeclarations(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
-        return getDeclarations(this, autoDeclarationClass, this.getClass(), includeFromMixins, includeFromInheritance, includeNestedDeclarations);
+        return getDeclarations(this, this, autoDeclarationClass, includeFromMixins, includeFromInheritance, includeNestedDeclarations);
     }
 
     default List<DLanguageDeclaratorInitializer> getGlobalNonAutoDeclarations(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
-        return getDeclarations(this, declaratorInitializer, this.getClass(), includeFromMixins, includeFromInheritance, includeNestedDeclarations);
+        return getDeclarations(this, this, declaratorInitializer, includeFromMixins, includeFromInheritance, includeNestedDeclarations);
     }
 
 

@@ -21,7 +21,7 @@ public class DLanguageModuleEditorsProvider implements ModuleConfigurationEditor
         }
 
         final DefaultModuleConfigurationEditorFactory editorFactory = DefaultModuleConfigurationEditorFactory.getInstance();
-        List<ModuleConfigurationEditor> editors = new ArrayList<ModuleConfigurationEditor>();
+        List<ModuleConfigurationEditor> editors = new ArrayList<>();
         editors.add(new CommonContentEntriesEditor(module.getName(), state, JavaSourceRootType.SOURCE, JavaSourceRootType.TEST_SOURCE));
         editors.add(new OutputElementsEditor(state));
         editors.add(editorFactory.createClasspathEditor(state));

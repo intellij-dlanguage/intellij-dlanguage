@@ -8,12 +8,14 @@ import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.interfaces.*;
+import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
 import static com.intellij.psi.util.PsiTreeUtil.findChildOfType;
 import static net.masterthought.dlanguage.psi.impl.DPsiImplUtil.findParentOfType;
+import static net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility.*;
 
 /**
  * General util class. Provides methods for finding named nodes in the Psi tree.
@@ -270,6 +272,17 @@ public class DUtil {
             }
         }
         return containersFromMixin;
+    }
+
+    public static Visibility protectionToVisibilty(DLanguageProtectionAttribute protectionAttribute) {
+        final String text = protectionAttribute.getText();
+        if (text.equals("private"))
+            return private_;
+        if (text.equals("public"))
+            return public_;
+        if (text.equals("protected"))
+            return protected_;
+        throw new IllegalArgumentException(protectionAttribute.toString() + protectionAttribute.getText());
     }
 }
 

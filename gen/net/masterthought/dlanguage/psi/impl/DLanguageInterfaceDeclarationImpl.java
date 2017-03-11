@@ -13,6 +13,7 @@ import net.masterthought.dlanguage.psi.*;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
 import net.masterthought.dlanguage.psi.interfaces.CanInherit;
+import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 import com.intellij.psi.stubs.IStubElementType;
 
 public class DLanguageInterfaceDeclarationImpl extends DNamedStubbedPsiElementBase<DLanguageInterfaceDeclarationStub> implements DLanguageInterfaceDeclaration {
@@ -95,7 +96,7 @@ public class DLanguageInterfaceDeclarationImpl extends DNamedStubbedPsiElementBa
     return DPsiImplUtil.getPresentation(this);
   }
 
-  public boolean isSomeVisibility(String visibility) {
+  public boolean isSomeVisibility(Visibility visibility) {
     return DPsiImplUtil.isSomeVisibility(this, visibility);
   }
 

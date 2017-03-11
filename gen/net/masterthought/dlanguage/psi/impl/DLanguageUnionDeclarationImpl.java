@@ -12,6 +12,7 @@ import net.masterthought.dlanguage.stubs.DLanguageUnionDeclarationStub;
 import net.masterthought.dlanguage.psi.*;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
+import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 import com.intellij.psi.stubs.IStubElementType;
 
 public class DLanguageUnionDeclarationImpl extends DNamedStubbedPsiElementBase<DLanguageUnionDeclarationStub> implements DLanguageUnionDeclaration {
@@ -94,7 +95,7 @@ public class DLanguageUnionDeclarationImpl extends DNamedStubbedPsiElementBase<D
     return DPsiImplUtil.getPresentation(this);
   }
 
-  public boolean isSomeVisibility(String visibility) {
+  public boolean isSomeVisibility(Visibility visibility) {
     return DPsiImplUtil.isSomeVisibility(this, visibility);
   }
 

@@ -10,6 +10,7 @@ import com.intellij.psi.StubBasedPsiElement;
 import net.masterthought.dlanguage.stubs.DLanguageAutoDeclarationStub;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
+import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 
 public interface DLanguageAutoDeclarationY extends DNamedElement, VariableDeclaration, StubBasedPsiElement<DLanguageAutoDeclarationStub> {
 
@@ -40,7 +41,7 @@ public interface DLanguageAutoDeclarationY extends DNamedElement, VariableDeclar
   @NotNull
   ItemPresentation getPresentation();
 
-  boolean isSomeVisibility(String visibility);
+  boolean isSomeVisibility(Visibility visibility);
 
   boolean actuallyIsDeclaration();
 

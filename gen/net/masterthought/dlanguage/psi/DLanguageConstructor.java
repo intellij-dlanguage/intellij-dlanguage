@@ -13,6 +13,7 @@ import com.intellij.psi.StubBasedPsiElement;
 import net.masterthought.dlanguage.stubs.DLanguageConstructorStub;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
+import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 
 public interface DLanguageConstructor extends StatementContainer, DNamedElement, HasVisibility, HasTemplateArguments, HasArguments, StubBasedPsiElement<DLanguageConstructorStub> {
 
@@ -49,7 +50,7 @@ public interface DLanguageConstructor extends StatementContainer, DNamedElement,
   @NotNull
   ItemPresentation getPresentation();
 
-  boolean isSomeVisibility(String visibility);
+  boolean isSomeVisibility(Visibility visibility);
 
   @NotNull
   List<DLanguageParameter> getArguments();

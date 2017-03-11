@@ -11,10 +11,12 @@ import com.intellij.psi.PsiReference;
 import net.masterthought.dlanguage.icons.DLanguageIcons;
 import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.interfaces.CanInherit;
+import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 import net.masterthought.dlanguage.psi.interfaces.VariableDeclaration;
 import net.masterthought.dlanguage.psi.interfaces.containers.*;
 import net.masterthought.dlanguage.psi.references.DReference;
 import net.masterthought.dlanguage.stubs.*;
+import net.masterthought.dlanguage.utils.DUtil;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -1653,7 +1655,24 @@ public class DPsiImplUtil {
 
     // -------------------- Visibility --------------------- //
 
-    public static boolean isSomeVisibility(DLanguageAliasDeclaration o, String visibility) {
+    private static boolean isSomeVisibility(PsiElement psiElement, Visibility visibility, Class<? extends Container> containerType) {
+        PsiElement parent = psiElement.getParent();
+        while (true) {
+            if (containerType.isInstance(parent)) {
+                return visibility == Visibility.public_;
+            }
+            if (parent instanceof DLanguageDeclDef && ((DLanguageDeclDef) parent).getAttributeSpecifier() != null) {
+                final DLanguageAttributeSpecifier attribute = ((DLanguageDeclDef) parent).getAttributeSpecifier();
+                if (attribute.getAttribute().getProtectionAttribute() != null) {
+                    if (DUtil.protectionToVisibilty(attribute.getAttribute().getProtectionAttribute()) == visibility)
+                        return true;
+                }
+            }
+            parent = parent.getParent();
+        }
+    }
+
+    public static boolean isSomeVisibility(DLanguageAliasDeclaration o, Visibility visibility) {
         final DLanguageAttributeSpecifier attribute = (DLanguageAttributeSpecifier) o.getParent().getParent().getParent();
         if (attribute.getAttribute().getProtectionAttribute() != null) {
             if (attribute.getAttribute().getProtectionAttribute().getText().equals(visibility))
@@ -1663,12 +1682,12 @@ public class DPsiImplUtil {
 
     }
 
-    public static boolean isSomeVisibility(DLanguageEnumDeclaration o, String visibility) {
+    public static boolean isSomeVisibility(DLanguageEnumDeclaration o, Visibility visibility) {
         return isSomeVisibility(o, visibility, EnumContainer.class);
 
     }
 
-    public static boolean isSomeVisibility(DLanguageModuleDeclaration o, String visibility) {
+    public static boolean isSomeVisibility(DLanguageModuleDeclaration o, Visibility visibility) {
         if (o.getAttribute() != null)
             if (o.getAttribute().getProtectionAttribute() != null)
                 if (o.getAttribute().getProtectionAttribute().getText().equals(visibility))
@@ -1676,76 +1695,59 @@ public class DPsiImplUtil {
         return visibility.equals("public");
     }
 
-    private static boolean isSomeVisibility(PsiElement psiElement, String visibility, Class<? extends Container> containerType) {
-        PsiElement parent = psiElement.getParent();
-        while (true) {
-            if (containerType.isInstance(parent)) {
-                return visibility.equals("public");
-            }
-            if (parent instanceof DLanguageDeclDef && ((DLanguageDeclDef) parent).getAttributeSpecifier() != null) {
-                final DLanguageAttributeSpecifier attribute = ((DLanguageDeclDef) parent).getAttributeSpecifier();
-                if (attribute.getAttribute().getProtectionAttribute() != null) {
-                    if (attribute.getAttribute().getProtectionAttribute().getText().equals(visibility))
-                        return true;
-                }
-            }
-            parent = parent.getParent();
-        }
-    }
-
-    public static boolean isSomeVisibility(DLanguageTemplateDeclaration o, String visibility) {
+    public static boolean isSomeVisibility(DLanguageTemplateDeclaration o, Visibility visibility) {
         return isSomeVisibility(o, visibility, TemplateContainer.class);
     }
 
-    public static boolean isSomeVisibility(DLanguageInterfaceDeclaration o, String visibility) {
+    public static boolean isSomeVisibility(DLanguageInterfaceDeclaration o, Visibility visibility) {
         return isSomeVisibility(o, visibility, InterfaceContainer.class);
     }
 
-    public static boolean isSomeVisibility(DLanguageClassDeclaration o, String visibility) {
+    public static boolean isSomeVisibility(DLanguageClassDeclaration o, Visibility visibility) {
         return isSomeVisibility(o, visibility, ClassContainer.class);
     }
 
-    public static boolean isSomeVisibility(DLanguageStructDeclaration o, String visibility) {
+    public static boolean isSomeVisibility(DLanguageStructDeclaration o, Visibility visibility) {
         return isSomeVisibility(o, visibility, StructContainer.class);
     }
 
-    public static boolean isSomeVisibility(DLanguageConstructor o, String visibility) {
+    public static boolean isSomeVisibility(DLanguageConstructor o, Visibility visibility) {
         return isSomeVisibility(o, visibility, ConstructorContainer.class);
     }
 
-    public static boolean isSomeVisibility(DLanguageFuncDeclaration o, String visibility) {
+    public static boolean isSomeVisibility(DLanguageFuncDeclaration o, Visibility visibility) {
         return isSomeVisibility(o, visibility, FunctionContainer.class);
     }
 
-    public static boolean isSomeVisibility(DLanguageStaticConstructor o, String visibility) {
+    public static boolean isSomeVisibility(DLanguageStaticConstructor o, Visibility visibility) {
         return isSomeVisibility(o, visibility, ConstructorContainer.class);//todo convert to static constructor container
     }
 
-    public static boolean isSomeVisibility(DLanguageSharedStaticConstructor o, String visibility) {
+    public static boolean isSomeVisibility(DLanguageSharedStaticConstructor o, Visibility visibility) {
         return isSomeVisibility(o, visibility, ConstructorContainer.class);//todo convert to static constructor container
     }
 
-    public static boolean isSomeVisibility(DLanguageDestructor o, String visibility) {
+    public static boolean isSomeVisibility(DLanguageDestructor o, Visibility visibility) {
         return isSomeVisibility(o, visibility, DestructorContainer.class);
     }
 
-    public static boolean isSomeVisibility(DLanguageStaticDestructor o, String visibility) {
+    public static boolean isSomeVisibility(DLanguageStaticDestructor o, Visibility visibility) {
         return isSomeVisibility(o, visibility, DestructorContainer.class);//todo convert to static destructor container
     }
 
-    public static boolean isSomeVisibility(DLanguageSharedStaticDestructor o, String visibility) {
+    public static boolean isSomeVisibility(DLanguageSharedStaticDestructor o, Visibility visibility) {
         return isSomeVisibility(o, visibility, DestructorContainer.class);//todo convert to static destructor container
     }
 
-    public static boolean isSomeVisibility(VariableDeclaration o, String visibility) {
+    public static boolean isSomeVisibility(VariableDeclaration o, Visibility visibility) {
         return isSomeVisibility(o, visibility, GlobalVarContainer.class);//todo check that this still works correctly for local vars/ do we care if local vars don't have correct visibility?
     }
 
-    public static boolean isSomeVisibility(DLanguageUnionDeclaration o, String visibility) {
+    public static boolean isSomeVisibility(DLanguageUnionDeclaration o, Visibility visibility) {
         return isSomeVisibility(o, visibility, UnionContainer.class);//todo check that this still works correctly for local vars/ do we care if local vars don't have correct visibility?
     }
 
-    public static boolean isSomeVisibility(DLanguageTemplateMixinDeclaration o, String visibility) {
+    public static boolean isSomeVisibility(DLanguageTemplateMixinDeclaration o, Visibility visibility) {
         return isSomeVisibility(o, visibility, TemplateMixinContainer.class);
     }
 

@@ -12,6 +12,7 @@ import net.masterthought.dlanguage.stubs.DLanguageDestructorStub;
 import net.masterthought.dlanguage.psi.*;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
+import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 import com.intellij.psi.stubs.IStubElementType;
 
 public class DLanguageDestructorImpl extends DNamedStubbedPsiElementBase<DLanguageDestructorStub> implements DLanguageDestructor {
@@ -100,7 +101,7 @@ public class DLanguageDestructorImpl extends DNamedStubbedPsiElementBase<DLangua
     return DPsiImplUtil.getPresentation(this);
   }
 
-  public boolean isSomeVisibility(String visibility) {
+  public boolean isSomeVisibility(Visibility visibility) {
     return DPsiImplUtil.isSomeVisibility(this, visibility);
   }
 
