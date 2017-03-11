@@ -29,10 +29,10 @@ D Language File
                                 DLanguageStorageClassImpl(STORAGE_CLASS)
                                   PsiElement(DLanguageTokenType.auto)('auto')
                               DLanguageDeclarationImpl(DECLARATION)
-                                VAR_DECLARATIONS
+                                DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
                                   DLanguageAutoDeclarationImpl(AUTO_DECLARATION)
                                     DLanguageAutoDeclarationXImpl(AUTO_DECLARATION_X)
-                                      DLanguageAutoDeclarationYImpl(AUTO_DECLARATION_Y)
+                                      AUTO_DECLARATION_Y
                                         IDENTIFIER
                                           PsiElement(DLanguageTokenType.ID)('p')
                                         PsiElement(DLanguageTokenType.=)('=')
@@ -90,10 +90,10 @@ D Language File
     DLanguageDeclDefsImpl(DECL_DEFS)
       DLanguageDeclDefImpl(DECL_DEF)
         DLanguageDeclarationImpl(DECLARATION)
-          VAR_DECLARATIONS
+          DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
             DLanguageAutoDeclarationImpl(AUTO_DECLARATION)
               DLanguageAutoDeclarationXImpl(AUTO_DECLARATION_X)
-                DLanguageAutoDeclarationYImpl(AUTO_DECLARATION_Y)
+                AUTO_DECLARATION_Y
                   IDENTIFIER
                     PsiElement(DLanguageTokenType.ID)('foo')
                   DLanguageTemplateParametersImpl(TEMPLATE_PARAMETERS)

@@ -120,7 +120,7 @@ D Language File
             DLanguageDeclDefsImpl(DECL_DEFS)
               DLanguageDeclDefImpl(DECL_DEF)
                 DLanguageDeclarationImpl(DECLARATION)
-                  VAR_DECLARATIONS
+                  DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
                     DLanguageBasicTypeImpl(BASIC_TYPE)
                       DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                         IDENTIFIER
@@ -130,7 +130,7 @@ D Language File
                           IDENTIFIER
                             PsiElement(DLanguageTokenType.ID)('t')
                     DLanguageDeclaratorsImpl(DECLARATORS)
-                      DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
+                      DECLARATOR_INITIALIZER
                         DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
                           IDENTIFIER
                             PsiElement(DLanguageTokenType.ID)('v1')
@@ -139,13 +139,13 @@ D Language File
               DLanguageDeclDefsImpl(DECL_DEFS)
                 DLanguageDeclDefImpl(DECL_DEF)
                   DLanguageDeclarationImpl(DECLARATION)
-                    VAR_DECLARATIONS
+                    DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
                       DLanguageBasicTypeImpl(BASIC_TYPE)
                         DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                           IDENTIFIER
                             PsiElement(DLanguageTokenType.ID)('t2')
                       DLanguageDeclaratorsImpl(DECLARATORS)
-                        DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
+                        DECLARATOR_INITIALIZER
                           DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
                             IDENTIFIER
                               PsiElement(DLanguageTokenType.ID)('v2')
@@ -154,13 +154,13 @@ D Language File
                 DLanguageDeclDefsImpl(DECL_DEFS)
                   DLanguageDeclDefImpl(DECL_DEF)
                     DLanguageDeclarationImpl(DECLARATION)
-                      VAR_DECLARATIONS
+                      DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
                         DLanguageBasicTypeImpl(BASIC_TYPE)
                           DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                             IDENTIFIER
                               PsiElement(DLanguageTokenType.ID)('t3')
                         DLanguageDeclaratorsImpl(DECLARATORS)
-                          DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
+                          DECLARATOR_INITIALIZER
                             DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
                               IDENTIFIER
                                 PsiElement(DLanguageTokenType.ID)('v3')
@@ -169,13 +169,13 @@ D Language File
                   DLanguageDeclDefsImpl(DECL_DEFS)
                     DLanguageDeclDefImpl(DECL_DEF)
                       DLanguageDeclarationImpl(DECLARATION)
-                        VAR_DECLARATIONS
+                        DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
                           DLanguageBasicTypeImpl(BASIC_TYPE)
                             DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                               IDENTIFIER
                                 PsiElement(DLanguageTokenType.ID)('t4')
                           DLanguageDeclaratorsImpl(DECLARATORS)
-                            DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
+                            DECLARATOR_INITIALIZER
                               DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
                                 IDENTIFIER
                                   PsiElement(DLanguageTokenType.ID)('v4')

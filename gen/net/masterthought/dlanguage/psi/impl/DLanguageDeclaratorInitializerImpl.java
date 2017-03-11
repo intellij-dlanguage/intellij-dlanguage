@@ -8,15 +8,13 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
-import com.intellij.extapi.psi.StubBasedPsiElementBase;
 import net.masterthought.dlanguage.stubs.DLanguageDeclaratorInitializerStub;
 import net.masterthought.dlanguage.psi.*;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.stubs.IStubElementType;
-import com.intellij.psi.tree.IElementType;
 
-public class DLanguageDeclaratorInitializerImpl extends StubBasedPsiElementBase<DLanguageDeclaratorInitializerStub> implements DLanguageDeclaratorInitializer {
+public class DLanguageDeclaratorInitializerImpl extends DNamedStubbedPsiElementBase<DLanguageDeclaratorInitializerStub> implements DLanguageDeclaratorInitializer {
 
   public DLanguageDeclaratorInitializerImpl(DLanguageDeclaratorInitializerStub stub, IStubElementType type) {
     super(stub, type);
@@ -24,10 +22,6 @@ public class DLanguageDeclaratorInitializerImpl extends StubBasedPsiElementBase<
 
   public DLanguageDeclaratorInitializerImpl(ASTNode node) {
     super(node);
-  }
-
-  public DLanguageDeclaratorInitializerImpl(DLanguageDeclaratorInitializerStub stub, IElementType type, ASTNode node) {
-    super(stub, type, node);
   }
 
   public void accept(@NotNull DLanguageVisitor visitor) {

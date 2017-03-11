@@ -36,13 +36,13 @@ D Language File
                                 DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
                                   DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
                                     DLanguageDeclarationImpl(DECLARATION)
-                                      VAR_DECLARATIONS
+                                      DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
                                         DLanguageBasicTypeImpl(BASIC_TYPE)
                                           DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                                             IDENTIFIER
                                               PsiElement(DLanguageTokenType.ID)('string')
                                         DLanguageDeclaratorsImpl(DECLARATORS)
-                                          DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
+                                          DECLARATOR_INITIALIZER
                                             DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
                                               DLanguageBasicType2Impl(BASIC_TYPE_2)
                                                 DLanguageBasicType2XImpl(BASIC_TYPE_2_X)
@@ -142,13 +142,13 @@ D Language File
                                   DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)
                                     DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
                                       DLanguageDeclarationImpl(DECLARATION)
-                                        VAR_DECLARATIONS
+                                        DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
                                           DLanguageBasicTypeImpl(BASIC_TYPE)
                                             DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                                               IDENTIFIER
                                                 PsiElement(DLanguageTokenType.ID)('string')
                                           DLanguageDeclaratorsImpl(DECLARATORS)
-                                            DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
+                                            DECLARATOR_INITIALIZER
                                               DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
                                                 DLanguageBasicType2Impl(BASIC_TYPE_2)
                                                   DLanguageBasicType2XImpl(BASIC_TYPE_2_X)
