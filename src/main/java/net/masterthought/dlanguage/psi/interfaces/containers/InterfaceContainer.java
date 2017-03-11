@@ -15,7 +15,7 @@ public interface InterfaceContainer extends Container {
     Class interfaceClass = DLanguageInterfaceDeclaration.class;
 
     default <T extends DNamedElement> List<T> getInterfaceDeclarations(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
-        return getDeclarations(this, interfaceClass, this.getClass(), includeFromMixins, includeFromInheritance, includeNestedDeclarations);
+        return getDeclarations(this, this, interfaceClass, includeFromMixins, includeFromInheritance, includeNestedDeclarations);
     }
 
     default List<DLanguageInterfaceDeclaration> getPublicInterfacees(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {

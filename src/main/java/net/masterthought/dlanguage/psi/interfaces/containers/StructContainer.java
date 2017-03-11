@@ -16,7 +16,7 @@ public interface StructContainer extends Container {
     Class structClass = DLanguageStructDeclaration.class;
 
     default <T extends DNamedElement> List<T> getStructDeclarations(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
-        return getDeclarations(this, structClass, this.getClass(), includeFromMixins, includeFromInheritance, includeNestedDeclarations);
+        return getDeclarations(this, this, structClass, includeFromMixins, includeFromInheritance, includeNestedDeclarations);
     }
 
     default List<DLanguageStructDeclaration> getPublicStructes(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {

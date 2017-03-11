@@ -2059,7 +2059,7 @@ EnumDeclaration ::=
     | AnonymousEnumDeclaration{
       methods = [getName getNameIdentifier getReference setName getPresentation isSomeVisibility]
       implements = ["net.masterthought.dlanguage.psi.interfaces.DNamedElement" "net.masterthought.dlanguage.psi.interfaces.HasVisibility"]
-       stubClass="net.masterthought.dlanguage.stubs.DLanguageEnumDeclarationStub"//todo
+       stubClass="net.masterthought.dlanguage.stubs.DLanguageEnumDeclarationStub"
   }
 
 EnumBaseType ::=

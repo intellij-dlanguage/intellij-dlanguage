@@ -15,7 +15,7 @@ public interface UnionContainer extends Container {
     Class unionClass = DLanguageUnionDeclaration.class;
 
     default <T extends DNamedElement> List<T> getUnionDeclarations(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
-        return getDeclarations(this, unionClass, this.getClass(), includeFromMixins, includeFromInheritance, includeNestedDeclarations);
+        return getDeclarations(this, this, unionClass, includeFromMixins, includeFromInheritance, includeNestedDeclarations);
     }
 
     default List<DLanguageUnionDeclaration> getPublicUniones(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
