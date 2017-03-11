@@ -8,15 +8,13 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
-import com.intellij.extapi.psi.StubBasedPsiElementBase;
 import net.masterthought.dlanguage.stubs.DLanguageEnumDeclarationStub;
 import net.masterthought.dlanguage.psi.*;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.stubs.IStubElementType;
-import com.intellij.psi.tree.IElementType;
 
-public class DLanguageEnumDeclarationImpl extends StubBasedPsiElementBase<DLanguageEnumDeclarationStub> implements DLanguageEnumDeclaration {
+public class DLanguageEnumDeclarationImpl extends DNamedStubbedPsiElementBase<DLanguageEnumDeclarationStub> implements DLanguageEnumDeclaration {
 
   public DLanguageEnumDeclarationImpl(DLanguageEnumDeclarationStub stub, IStubElementType type) {
     super(stub, type);
@@ -24,10 +22,6 @@ public class DLanguageEnumDeclarationImpl extends StubBasedPsiElementBase<DLangu
 
   public DLanguageEnumDeclarationImpl(ASTNode node) {
     super(node);
-  }
-
-  public DLanguageEnumDeclarationImpl(DLanguageEnumDeclarationStub stub, IElementType type, ASTNode node) {
-    super(stub, type, node);
   }
 
   public void accept(@NotNull DLanguageVisitor visitor) {

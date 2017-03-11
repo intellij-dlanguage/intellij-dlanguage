@@ -22,10 +22,10 @@ D Language File
     DLanguageDeclDefsImpl(DECL_DEFS)
       DLanguageDeclDefImpl(DECL_DEF)
         DLanguageDeclarationImpl(DECLARATION)
-          VAR_DECLARATIONS
+          DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
             DLanguageAutoDeclarationImpl(AUTO_DECLARATION)
               DLanguageAutoDeclarationXImpl(AUTO_DECLARATION_X)
-                DLanguageAutoDeclarationYImpl(AUTO_DECLARATION_Y)
+                AUTO_DECLARATION_Y
                   IDENTIFIER
                     PsiElement(DLanguageTokenType.ID)('fp')
                   PsiElement(DLanguageTokenType.=)('=')
@@ -85,13 +85,13 @@ D Language File
         DLanguageDeclDefsImpl(DECL_DEFS)
           DLanguageDeclDefImpl(DECL_DEF)
             DLanguageDeclarationImpl(DECLARATION)
-              VAR_DECLARATIONS
+              DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
                 DLanguageBasicTypeImpl(BASIC_TYPE)
                   DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                     IDENTIFIER
                       PsiElement(DLanguageTokenType.ID)('OB')
                 DLanguageDeclaratorsImpl(DECLARATORS)
-                  DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
+                  DECLARATOR_INITIALIZER
                     DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
                       IDENTIFIER
                         PsiElement(DLanguageTokenType.ID)('o')
@@ -99,10 +99,10 @@ D Language File
           DLanguageDeclDefsImpl(DECL_DEFS)
             DLanguageDeclDefImpl(DECL_DEF)
               DLanguageDeclarationImpl(DECLARATION)
-                VAR_DECLARATIONS
+                DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
                   DLanguageAutoDeclarationImpl(AUTO_DECLARATION)
                     DLanguageAutoDeclarationXImpl(AUTO_DECLARATION_X)
-                      DLanguageAutoDeclarationYImpl(AUTO_DECLARATION_Y)
+                      AUTO_DECLARATION_Y
                         IDENTIFIER
                           PsiElement(DLanguageTokenType.ID)('dg')
                         PsiElement(DLanguageTokenType.=)('=')

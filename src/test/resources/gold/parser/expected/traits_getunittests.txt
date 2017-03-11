@@ -48,13 +48,13 @@ D Language File
                   DLanguageDeclDefsImpl(DECL_DEFS)
                     DLanguageDeclDefImpl(DECL_DEF)
                       DLanguageDeclarationImpl(DECLARATION)
-                        VAR_DECLARATIONS
+                        DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
                           DLanguageBasicTypeImpl(BASIC_TYPE)
                             DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                               IDENTIFIER
                                 PsiElement(DLanguageTokenType.ID)('string')
                           DLanguageDeclaratorsImpl(DECLARATORS)
-                            DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
+                            DECLARATOR_INITIALIZER
                               DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
                                 IDENTIFIER
                                   PsiElement(DLanguageTokenType.ID)('name')

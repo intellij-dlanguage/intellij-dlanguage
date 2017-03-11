@@ -73,7 +73,7 @@ public interface DLanguageTypes {
   IElementType ATTRIBUTE_SPECIFIER = new DLanguageElementType("ATTRIBUTE_SPECIFIER");
   IElementType AUTO_DECLARATION = new DLanguageElementType("AUTO_DECLARATION");
   IElementType AUTO_DECLARATION_X = new DLanguageElementType("AUTO_DECLARATION_X");
-  IElementType AUTO_DECLARATION_Y = new DLanguageElementType("AUTO_DECLARATION_Y");
+  IElementType AUTO_DECLARATION_Y = DElementTypeFactory.factory("AUTO_DECLARATION_Y");
   IElementType BASE_CLASS_LIST = new DLanguageElementType("BASE_CLASS_LIST");
   IElementType BASE_INTERFACE_LIST = new DLanguageElementType("BASE_INTERFACE_LIST");
   IElementType BASIC_TYPE = new DLanguageElementType("BASIC_TYPE");
@@ -112,7 +112,7 @@ public interface DLanguageTypes {
   IElementType DECLARATORS = new DLanguageElementType("DECLARATORS");
   IElementType DECLARATOR_IDENTIFIER = new DLanguageElementType("DECLARATOR_IDENTIFIER");
   IElementType DECLARATOR_IDENTIFIER_LIST = new DLanguageElementType("DECLARATOR_IDENTIFIER_LIST");
-  IElementType DECLARATOR_INITIALIZER = new DLanguageElementType("DECLARATOR_INITIALIZER");
+  IElementType DECLARATOR_INITIALIZER = DElementTypeFactory.factory("DECLARATOR_INITIALIZER");
   IElementType DECL_DEF = new DLanguageElementType("DECL_DEF");
   IElementType DECL_DEFS = new DLanguageElementType("DECL_DEFS");
   IElementType DEFAULT_STATEMENT = new DLanguageElementType("DEFAULT_STATEMENT");
@@ -124,7 +124,7 @@ public interface DLanguageTypes {
   IElementType ELSE_STATEMENT = new DLanguageElementType("ELSE_STATEMENT");
   IElementType ENUM_BASE_TYPE = new DLanguageElementType("ENUM_BASE_TYPE");
   IElementType ENUM_BODY = new DLanguageElementType("ENUM_BODY");
-  IElementType ENUM_DECLARATION = new DLanguageElementType("ENUM_DECLARATION");
+  IElementType ENUM_DECLARATION = DElementTypeFactory.factory("ENUM_DECLARATION");
   IElementType ENUM_MEMBER = new DLanguageElementType("ENUM_MEMBER");
   IElementType ENUM_MEMBERS = new DLanguageElementType("ENUM_MEMBERS");
   IElementType EQUAL_EXPRESSION = new DLanguageElementType("EQUAL_EXPRESSION");
@@ -290,7 +290,7 @@ public interface DLanguageTypes {
   IElementType TYPE_SPECIALIZATION = new DLanguageElementType("TYPE_SPECIALIZATION");
   IElementType TYPE_VECTOR = new DLanguageElementType("TYPE_VECTOR");
   IElementType UNARY_EXPRESSION = new DLanguageElementType("UNARY_EXPRESSION");
-  IElementType UNION_DECLARATION = new DLanguageElementType("UNION_DECLARATION");
+  IElementType UNION_DECLARATION = DElementTypeFactory.factory("UNION_DECLARATION");
   IElementType UNION_TEMPLATE_DECLARATION = new DLanguageElementType("UNION_TEMPLATE_DECLARATION");
   IElementType UNIT_TESTING = new DLanguageElementType("UNIT_TESTING");
   IElementType UPR_EXPRESSION = new DLanguageElementType("UPR_EXPRESSION");

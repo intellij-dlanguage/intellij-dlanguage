@@ -18,8 +18,8 @@
 
 
   // used to extend to use stubs
-  extends("Identifier|LabeledStatement|FuncDeclaration|ClassDeclaration|InterfaceDeclaration|TemplateDeclaration|Constructor|Destructor|StructDeclaration|AliasDeclaration|ModuleDeclaration|TemplateMixinDeclaration")="net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase<?>"
-  elementTypeFactory("Identifier|LabeledStatement|FuncDeclaration|ClassDeclaration|InterfaceDeclaration|TemplateDeclaration|Constructor|Destructor|StructDeclaration|AliasDeclaration|ModuleDeclaration|TemplateMixinDeclaration")="net.masterthought.dlanguage.psi.impl.DElementTypeFactory.factory"
+  extends("Identifier|LabeledStatement|FuncDeclaration|ClassDeclaration|InterfaceDeclaration|TemplateDeclaration|Constructor|Destructor|StructDeclaration|AliasDeclaration|ModuleDeclaration|TemplateMixinDeclaration|DeclaratorInitializer|AutoDeclarationY|UnionDeclaration|EnumDeclaration")="net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase<?>"
+  elementTypeFactory("Identifier|LabeledStatement|FuncDeclaration|ClassDeclaration|InterfaceDeclaration|TemplateDeclaration|Constructor|Destructor|StructDeclaration|AliasDeclaration|ModuleDeclaration|TemplateMixinDeclaration|DeclaratorInitializer|AutoDeclarationY|UnionDeclaration|EnumDeclaration")="net.masterthought.dlanguage.psi.impl.DElementTypeFactory.factory"
 
 
   generateTokenAccessors=true

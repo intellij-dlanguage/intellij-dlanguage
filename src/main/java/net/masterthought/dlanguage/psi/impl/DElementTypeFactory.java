@@ -26,6 +26,8 @@ public class DElementTypeFactory {
         if (name.equals("SHARED_STATIC_DESTRUCTOR")) return new DLanguageSharedStaticDestructorStubElementType(name);
         if (name.equals("STATIC_CONSTRUCTOR")) return new DLanguageStaticConstructorStubElementType(name);
         if (name.equals("STATIC_DESTRUCTOR")) return new DLanguageStaticDestructorStubElementType(name);
-            throw new RuntimeException("Unknown element type: " + name);
+        if (name.equals("AUTO_DECLARATION_Y"))
+            return new DLanguageAutoDeclarationStubElementType(name);
+        throw new RuntimeException("Unknown element type: " + name);
     }
 }
