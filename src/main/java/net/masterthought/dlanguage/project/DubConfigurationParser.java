@@ -96,7 +96,7 @@ public class DubConfigurationParser {
             ParametersList parametersList = commandLine.getParametersList();
             parametersList.addParametersString("describe");
 
-            OSProcessHandler process = new OSProcessHandler(commandLine.createProcess(),commandLine.getCommandLineString());
+            final OSProcessHandler process = new OSProcessHandler(commandLine.createProcess(), commandLine.getCommandLineString());
 
             final StringBuilder builder = new StringBuilder();
             process.addProcessListener(new ProcessAdapter() {
@@ -110,7 +110,10 @@ public class DubConfigurationParser {
             process.waitFor();
 
             // remove the warning line at the top if it exists
-            String json = builder.toString().replaceAll("WARNING.+", "").replace(commandLine.getCommandLineString(),"").trim();
+            final String json = builder.toString()
+                .replaceAll("WARNING.+", "")
+                .replace(commandLine.getCommandLineString(), "")
+                .trim();
 
             // process output of dub describe into jsonObject
             return new JsonParser().parse(json).getAsJsonObject();

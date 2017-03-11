@@ -4,6 +4,7 @@ import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.process.CapturingProcessHandler;
 import com.intellij.execution.process.ProcessOutput;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.projectRoots.*;
 import com.intellij.openapi.roots.OrderRootType;
 import com.intellij.openapi.util.SystemInfo;
@@ -25,22 +26,20 @@ import java.util.regex.Pattern;
  * as well as the project SDK configuration.
  */
 public class DLanguageSdkType extends SdkType {
-    public static final String SDK_TYPE_ID = "DMD2 SDK";
-    public static final String SDK_NAME = "DMD v2 SDK";
 
-    public static final File DEFAULT_SDK_PATH_WINDOWS = new File("c:/D/DMD2/windows/");
-       public static final File DEFAULT_SDK_PATH_OSX = new File("/usr/local/opt/dmd");
-       public static final File DEFAULT_SDK_PATH_LINUX = new File("/usr/");
+    private static final Logger LOG = Logger.getInstance(DLanguageSdkType.class);
+
+    private static final String SDK_TYPE_ID = "DMD2 SDK";
+    private static final String SDK_NAME = "DMD v2 SDK";
+
+    private static final File DEFAULT_SDK_PATH_WINDOWS = new File("c:/D/DMD2/windows/");
+    private static final File DEFAULT_SDK_PATH_OSX = new File("/usr/local/opt/dmd");
+    private static final File DEFAULT_SDK_PATH_LINUX = new File("/usr/bin");
 
     @NotNull
     public static DLanguageSdkType getInstance() {
-        DLanguageSdkType sdkType = SdkType.findInstance(DLanguageSdkType.class);
-        if(sdkType == null) {
-            return new DLanguageSdkType();
-        }
-        else {
-            return sdkType;
-        }
+        final DLanguageSdkType sdkType = SdkType.findInstance(DLanguageSdkType.class);
+        return sdkType != null? sdkType : new DLanguageSdkType();
     }
 
     public DLanguageSdkType() {
@@ -87,23 +86,24 @@ public class DLanguageSdkType extends SdkType {
     }
 
     @Override
-    public String suggestSdkName(String s, String sdkHome) {
-        String executableName = SystemInfo.isWindows ? "dmd.exe" : "dmd";
-        String guessedVersion = getSdkVersion(sdkHome, executableName);
-        if(guessedVersion == null) {
-            return SDK_NAME;
-        }
-        else {
-            return "DMD v"+guessedVersion+" SDK";
-        }
+    public String suggestSdkName(String currentSdkName, String sdkHome) {
+        final String version = getDmdVersion(sdkHome);
+        return version != null? version : SDK_NAME;
     }
 
     @Nullable
     @Override
     public String getVersionString(@NotNull String sdkHome) {
-        String executableName = SystemInfo.isWindows ? "dmd.exe" : "dmd";
-        String guessedVersion = getSdkVersion(sdkHome, executableName);
-        return (guessedVersion!=null) ? guessedVersion : "2.0";
+        final String version = getDmdVersion(sdkHome);
+
+        if(version != null) {
+            final Matcher m = Pattern.compile(".*v(\\d+\\.\\d+).*").matcher(version);
+            if(m.matches()) {
+                return m.group(1);
+            }
+        }
+
+        return "2.0";
     }
 
     @Nullable
@@ -127,36 +127,38 @@ public class DLanguageSdkType extends SdkType {
         return type != LibFileRootType.getInstance() && super.isRootTypeApplicable(type);
     }
 
-    /* Try to execute DMD compiler and parse first line to get a version
-     * @returns String with DMD version or null in case of any error. */
+    /**
+     * Try to execute 'dmd --version' and return first line of the output.
+     * @param sdkHome path to dmd home directory
+     * @return String containing DMD version or null
+     */
     @Nullable
-    public String getSdkVersion(String sdkHome, String executableName) {
-        File compilerFolder = new File(sdkHome);
-        File compilerFile = new File(sdkHome, executableName);
+    private String getDmdVersion(final String sdkHome) {
+        final File compilerFolder = new File(sdkHome);
+        final File compilerFile = new File(sdkHome, SystemInfo.isWindows ? "dmd.exe" : "dmd");
 
-        GeneralCommandLine commandLine = new GeneralCommandLine();
+        final GeneralCommandLine commandLine = new GeneralCommandLine();
         commandLine.withWorkDirectory(compilerFolder.getAbsolutePath());
         commandLine.setExePath(compilerFile.getAbsolutePath());
+        commandLine.addParameter("--version");
 
-        ProcessOutput output = null;
         try {
-            output = new CapturingProcessHandler(commandLine.createProcess(), Charset.defaultCharset(),
-                    commandLine.getCommandLineString()).runProcess();
-        } catch (ExecutionException e) {
+            final ProcessOutput output = new CapturingProcessHandler(
+                commandLine.createProcess(),
+                Charset.defaultCharset(),
+                commandLine.getCommandLineString()
+            ).runProcess();
+
+            //Parse output of a DMD compiler
+            final List<String> outputLines = output.getStdoutLines();
+            if(outputLines != null && !outputLines.isEmpty()) {
+                final String version = outputLines.get(0).trim();
+                LOG.debug(String.format("Found version: %s", version));
+                return version;
+            }
+        } catch (final ExecutionException e) {
             return null;
         }
-
-        //Parse output of a DMD compiler
-        List<String> outputLines = output.getStdoutLines();
-        if(outputLines.size()>0) {
-            String firstLine = outputLines.get(0).trim(); // line in format: "DMD32 D Compiler v2.058"
-            Pattern pattern = Pattern.compile(".*v(\\d+\\.\\d+).*");
-            Matcher m = pattern.matcher(firstLine);
-            if(m.matches()) {
-                return m.group(1);
-            }
-        }
-
         return null;
     }
 

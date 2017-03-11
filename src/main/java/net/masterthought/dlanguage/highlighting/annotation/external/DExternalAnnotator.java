@@ -47,7 +47,7 @@ public class DExternalAnnotator extends ExternalAnnotator<PsiFile, DExternalAnno
             public void run() {
                 FileDocumentManager.getInstance().saveAllDocuments();
             }
-        }, ModalityState.any());
+        }, ModalityState.NON_MODAL);
 
         State state = new State();
         state.dScannerProblems = new DScanner().checkFileSyntax(file);
