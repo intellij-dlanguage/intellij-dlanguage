@@ -8,6 +8,7 @@ import com.intellij.execution.runners.ProgramRunner;
 import com.intellij.execution.testframework.TestFrameworkRunningModel;
 import com.intellij.execution.testframework.sm.SMTestRunnerConnectionUtil;
 import com.intellij.execution.testframework.sm.runner.SMTRunnerConsoleProperties;
+import com.intellij.execution.testframework.sm.runner.SMTestLocator;
 import com.intellij.execution.testframework.sm.runner.ui.SMTRunnerConsoleView;
 import com.intellij.execution.testframework.ui.BaseTestsOutputConsoleView;
 import com.intellij.openapi.application.ApplicationManager;
@@ -55,16 +56,19 @@ public class DUnitTestRunProfileState implements RunProfileState
 
         // Create the test runner
         final DUnitTestRunProcessHandler processHandler = new DUnitTestRunProcessHandler(project, unitTestRunConfiguration);
-        SMTRunnerConsoleProperties consoleProperties = new SMTRunnerConsoleProperties(configuration, DLanguage.INSTANCE.getDisplayName(), executor);
-//        consoleProperties.addStackTraceFilter(new ApexStackTraceFilter());
-        final SMTRunnerConsoleView consoleView = (SMTRunnerConsoleView) SMTestRunnerConnectionUtil.createConsoleWithCustomLocator(
-                DLanguage.INSTANCE.getDisplayName(),
-                consoleProperties,
-                environment,
-                new DUnitTestLocationProvider(),
-                true,
-                null);
-        consoleView.attachToProcess(processHandler);
+        
+        final SMTRunnerConsoleProperties properties = new SMTRunnerConsoleProperties(configuration, DLanguage.INSTANCE.getDisplayName(), executor) {
+            @Override
+            public SMTestLocator getTestLocator() {
+                return DUnitTestLocationProvider.getInstance();
+            }
+        };
+
+//        properties.addStackTraceFilter(new ApexStackTraceFilter());
+
+        final SMTRunnerConsoleView consoleView = (SMTRunnerConsoleView) SMTestRunnerConnectionUtil
+            .createAndAttachConsole(DLanguage.INSTANCE.getDisplayName(), processHandler, properties);
+
         Disposer.register(project, consoleView);
 
         // Integrated code coverage

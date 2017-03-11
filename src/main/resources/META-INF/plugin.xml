@@ -1,20 +1,33 @@
 <idea-plugin version="2">
     <id>net.masterthought.dlanguage</id>
     <name>D Language</name>
-    <version>1.11</version>
+    <version>@version@</version>
     <vendor email="kingsley.hendrickse@gmail.com" url="http://www.masterthought.net">MasterThought</vendor>
 
     <description><![CDATA[
-     Support for the D Language
+     Support for the <a href="http://dlang.org/">D Language</a>.
+     <br/>
+     <a href="https://github.com/kingsleyh/DLanguage/">Github</a>
     ]]></description>
 
     <change-notes><![CDATA[
-     fixed project import
+        <b>v1.11</b><br/>
+        <ul>
+            <li>Compatibility for newer versions of IntelliJ</li>
+        </ul>
+        <b>v1.10</b><br/>
+        <ul>
+            <li>Fixes around grammar and DCD lock up fix</li>
+        </ul>
+        <b>v1.7</b><br/>
+        <ul>
+            <li>Fixes to references and added DCD server restart action</li>
+        </ul>
     ]]>
     </change-notes>
 
     <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
-    <idea-version since-build="131"/>
+    <idea-version since-build="163"/>
 
     <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
          on how to target different products -->

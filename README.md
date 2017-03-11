@@ -25,17 +25,9 @@ I recently contributed as a technical reviewer for this great book about Learnin
 I've just started learning the D programming language. I love the intellij IDE and wanted to have D support in my favourite IDE. This is the first
 Intellij plugin I've written and is still a work in progress to get the full support working.
 
-## Supported JDK
+## Supported versions of IntelliJ / JDK
 
-This plugin has been written at the Java 1.7 language level. It will not work with a 1.6 JDK because
-it uses features of 1.7. If you are an OSX user like me - then if you usually run intellij with something less than 1.7 - you will need to Run intellij using 1.7 or 1.8 to use this plugin by doing the following:
-
-To force running under JDK 1.7 copy `/Applications/<Product>.app/Contents/bin/idea.properties` to `~/Library/Preferences/<Product>/` and
-change the JVMVersion key to 1.7*:
-
-```
-JVMVersion=1.7*
-```
+Since Jetbrains released IntelliJ 16 (the 2016.* versions) Java 8 is required to run the IDE on all platforms. In the 1.11 release we are dropping support for older versions. The plugin will target 2016.2 and should have compatibility with 2016.3
 
 #### Next Release - 1.11
 
@@ -55,6 +47,7 @@ raising issues for feedback, feature requests and bugs. Thanks for your support 
 
 #### Latest Updates
 
+* December 2016 - New features are in progress. In the meantime a new version of the plugin is being release to address compatibility issues with IntelliJ 2016.3
 * 1st February 2016 - I'm spending some time using the plugin for one of my projects to get a feel for how it's working under some real usage. Development will resume after this period.
 * 9th January 2016 - Fixed some bugs and working towards getting more of the intellij features working
 * 27th December 2015 - Fixed DCD bugs and added dub init wizard to dub project creation

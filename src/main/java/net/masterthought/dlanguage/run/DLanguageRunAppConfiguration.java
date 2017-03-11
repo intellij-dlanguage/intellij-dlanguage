@@ -78,11 +78,6 @@ public class DLanguageRunAppConfiguration extends ModuleBasedConfiguration<RunCo
     }
 
     @Override
-    protected ModuleBasedConfiguration createInstance() {
-        return new DLanguageRunAppConfiguration(getName(), getProject(), getFactory());
-    }
-
-    @Override
     public SettingsEditor<? extends RunConfiguration> getConfigurationEditor() {
         return new DLanguageRunAppConfigurationEditor();
     }

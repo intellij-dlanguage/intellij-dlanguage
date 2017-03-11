@@ -9,7 +9,7 @@ buildscript {
 }
 
 plugins {
-    id 'org.jetbrains.intellij' version '0.1.10'
+    id 'org.jetbrains.intellij' version '0.2.5'
 }
 
 
@@ -29,11 +29,22 @@ allprojects {
     apply plugin: 'kotlin'
     sourceCompatibility = javaVersion
     targetCompatibility = javaVersion
-    tasks.withType(JavaCompile) { options.encoding = 'UTF-8' }
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+        options.compilerArgs << "-Xlint:deprecation"
+    }
+
+    // take the version number defined in gradle build and use that in plugin.xml
+    task initConfig(type: Copy) {
+        from('src/main/resources') {
+            include '**/plugin.xml'
+            filter(org.apache.tools.ant.filters.ReplaceTokens, tokens: [version: version])
+        }
+    }
 
     apply plugin: 'org.jetbrains.intellij'
     intellij {
-        pluginName 'D Language'
+        pluginName 'intellij-dlanguage'
         version ideaVersion
         plugins 'copyright'
         downloadSources Boolean.valueOf(sources)

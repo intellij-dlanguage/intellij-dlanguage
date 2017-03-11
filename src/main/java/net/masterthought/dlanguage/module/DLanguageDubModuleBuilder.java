@@ -122,7 +122,7 @@ public class DLanguageDubModuleBuilder extends DLanguageModuleBuilder {
         }
 
         try {
-            OSProcessHandler process = new OSProcessHandler(commandLine.createProcess(),commandLine.getCommandLineString());
+            final OSProcessHandler process = new OSProcessHandler(commandLine.createProcess(), commandLine.getCommandLineString());
 
             final StringBuilder builder = new StringBuilder();
             process.addProcessListener(new ProcessAdapter() {

@@ -92,11 +92,6 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
         return res;
     }
 
-    @Override
-    protected ModuleBasedConfiguration createInstance() {
-        return new DLanguageRunDmdConfiguration(getName(), getProject(), getFactory());
-    }
-
     @NotNull
     @Override
     public SettingsEditor<? extends RunConfiguration> getConfigurationEditor() {

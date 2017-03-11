@@ -214,11 +214,6 @@ public class DLanguageRunDubConfiguration extends ModuleBasedConfiguration<RunCo
     }
 
     @Override
-    protected ModuleBasedConfiguration createInstance() {
-        return new DLanguageRunDubConfiguration(getName(), getProject(), getFactory());
-    }
-
-    @Override
     public SettingsEditor<? extends RunConfiguration> getConfigurationEditor() {
         return new DLanguageRunDubConfigurationEditor();
     }
