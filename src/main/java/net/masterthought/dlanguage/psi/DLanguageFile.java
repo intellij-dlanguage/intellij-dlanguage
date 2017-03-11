@@ -39,7 +39,7 @@ public class DLanguageFile extends PsiFileBase {
      */
     @Nullable
     public String getModuleName() {
-        final DLanguageGlobalDeclaration module = findChildByClass(DLanguageGlobalDeclaration.class);
+        final DLanguageModuleDeclaration module = findChildByClass(DLanguageModuleDeclaration.class);
         if (module == null) {
             return null;
         }

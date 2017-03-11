@@ -12,6 +12,7 @@ import net.masterthought.dlanguage.stubs.DLanguageInterfaceDeclarationStub;
 import net.masterthought.dlanguage.psi.*;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
+import net.masterthought.dlanguage.psi.interfaces.CanInherit;
 import com.intellij.psi.stubs.IStubElementType;
 
 public class DLanguageInterfaceDeclarationImpl extends DNamedStubbedPsiElementBase<DLanguageInterfaceDeclarationStub> implements DLanguageInterfaceDeclaration {
@@ -92,6 +93,18 @@ public class DLanguageInterfaceDeclarationImpl extends DNamedStubbedPsiElementBa
   @NotNull
   public ItemPresentation getPresentation() {
     return DPsiImplUtil.getPresentation(this);
+  }
+
+  public boolean isSomeVisibility(String visibility) {
+    return DPsiImplUtil.isSomeVisibility(this, visibility);
+  }
+
+  public List<CanInherit> whatInheritsFrom() {
+    return DPsiImplUtil.whatInheritsFrom(this);
+  }
+
+  public List<DLanguageTemplateParameter> getTemplateArguments() {
+    return DPsiImplUtil.getTemplateArguments(this);
   }
 
 }

@@ -292,7 +292,7 @@ public class DResolveUtil {
         Set<PsiNamedElement> result = new HashSet<>();
         final String elementName = element.getName();
         for (DLanguageIdentifier identifier : identifiers) {
-            if (identifier.getName().equals(elementName) && identifier.getParent().getParent() instanceof DLanguageGlobalDeclaration)
+            if (identifier.getName().equals(elementName) && identifier.getParent().getParent() instanceof DLanguageModuleDeclaration)
                 result.add(identifier);
         }
         return result;

@@ -9,14 +9,16 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
 import com.intellij.extapi.psi.StubBasedPsiElementBase;
-import net.masterthought.dlanguage.stubs.DLanguageUnionDeclarationStub;
+import net.masterthought.dlanguage.stubs.DLanguageEnumDeclarationStub;
 import net.masterthought.dlanguage.psi.*;
+import com.intellij.navigation.ItemPresentation;
+import com.intellij.psi.PsiReference;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.tree.IElementType;
 
-public class DLanguageEnumDeclarationImpl extends StubBasedPsiElementBase<DLanguageUnionDeclarationStub> implements DLanguageEnumDeclaration {
+public class DLanguageEnumDeclarationImpl extends StubBasedPsiElementBase<DLanguageEnumDeclarationStub> implements DLanguageEnumDeclaration {
 
-  public DLanguageEnumDeclarationImpl(DLanguageUnionDeclarationStub stub, IStubElementType type) {
+  public DLanguageEnumDeclarationImpl(DLanguageEnumDeclarationStub stub, IStubElementType type) {
     super(stub, type);
   }
 
@@ -24,7 +26,7 @@ public class DLanguageEnumDeclarationImpl extends StubBasedPsiElementBase<DLangu
     super(node);
   }
 
-  public DLanguageEnumDeclarationImpl(DLanguageUnionDeclarationStub stub, IElementType type, ASTNode node) {
+  public DLanguageEnumDeclarationImpl(DLanguageEnumDeclarationStub stub, IElementType type, ASTNode node) {
     super(stub, type, node);
   }
 
@@ -71,6 +73,35 @@ public class DLanguageEnumDeclarationImpl extends StubBasedPsiElementBase<DLangu
   @Nullable
   public PsiElement getOpColon() {
     return findChildByType(OP_COLON);
+  }
+
+  @NotNull
+  public String getName() {
+    return DPsiImplUtil.getName(this);
+  }
+
+  @Nullable
+  public PsiElement getNameIdentifier() {
+    return DPsiImplUtil.getNameIdentifier(this);
+  }
+
+  @NotNull
+  public PsiReference getReference() {
+    return DPsiImplUtil.getReference(this);
+  }
+
+  @Nullable
+  public PsiElement setName(String newName) {
+    return DPsiImplUtil.setName(this, newName);
+  }
+
+  @NotNull
+  public ItemPresentation getPresentation() {
+    return DPsiImplUtil.getPresentation(this);
+  }
+
+  public boolean isSomeVisibility(String visibility) {
+    return DPsiImplUtil.isSomeVisibility(this, visibility);
   }
 
 }

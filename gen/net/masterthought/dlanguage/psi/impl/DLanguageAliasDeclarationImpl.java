@@ -136,6 +136,10 @@ public class DLanguageAliasDeclarationImpl extends DNamedStubbedPsiElementBase<D
     return DPsiImplUtil.getPresentation(this);
   }
 
+  public boolean isSomeVisibility(String visibility) {
+    return DPsiImplUtil.isSomeVisibility(this, visibility);
+  }
+
   public boolean actuallyIsDeclaration() {
     return DPsiImplUtil.actuallyIsDeclaration(this);
   }

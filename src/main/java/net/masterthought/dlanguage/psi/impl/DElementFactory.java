@@ -118,7 +118,7 @@ public class DElementFactory {
 
     public static PsiElement createDLanguageModuleFromText(Project project, String name) {
         PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
-        if (e instanceof DLanguageGlobalDeclaration) return e;
+        if (e instanceof DLanguageModuleDeclaration) return e;
         return null;
     }
 
@@ -173,6 +173,18 @@ public class DElementFactory {
     public static PsiElement createDLanguageSharedStaticDestructorFromText(Project project, String name) {
         PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
         if (e instanceof DLanguageSharedStaticDestructor) return e;
+        return null;
+    }
+
+    public static PsiElement createDLanguageEnumDeclarationFromText(Project project, String name) {
+        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
+        if (e instanceof DLanguageEnumDeclaration) return e;
+        return null;
+    }
+
+    public static PsiElement createDLanguageUnionDeclarationFromText(Project project, String name) {
+        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
+        if (e instanceof DLanguageUnionDeclaration) return e;
         return null;
     }
 }

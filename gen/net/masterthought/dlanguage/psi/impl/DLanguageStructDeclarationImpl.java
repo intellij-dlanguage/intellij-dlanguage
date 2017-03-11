@@ -94,4 +94,8 @@ public class DLanguageStructDeclarationImpl extends DNamedStubbedPsiElementBase<
     return DPsiImplUtil.getPresentation(this);
   }
 
+  public boolean isSomeVisibility(String visibility) {
+    return DPsiImplUtil.isSomeVisibility(this, visibility);
+  }
+
 }

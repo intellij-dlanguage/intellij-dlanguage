@@ -88,4 +88,16 @@ public class DLanguageAutoDeclarationYImpl extends StubBasedPsiElementBase<DLang
     return DPsiImplUtil.getPresentation(this);
   }
 
+  public boolean isSomeVisibility(String visibility) {
+    return DPsiImplUtil.isSomeVisibility(this, visibility);
+  }
+
+  public boolean actuallyIsDeclaration() {
+    return DPsiImplUtil.actuallyIsDeclaration(this);
+  }
+
+  public DLanguageType getVariableDeclarationType() {
+    return DPsiImplUtil.getVariableDeclarationType(this);
+  }
+
 }

@@ -7,10 +7,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.psi.*;
-import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
-import net.masterthought.dlanguage.psi.interfaces.HasProperty;
-import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
-import net.masterthought.dlanguage.psi.interfaces.Mixinable;
+import net.masterthought.dlanguage.psi.interfaces.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -144,11 +141,11 @@ public class DUtil {
         if (symbol instanceof DLanguageAttributeSpecifier)
             if (((DLanguageAttributeSpecifier) symbol).getAttribute().getProtectionAttribute() != null && ((DLanguageAttributeSpecifier) symbol).getAttribute().getProtectionAttribute().getText().equals("public"))
                 return true;
-        if (symbol instanceof DLanguageClassDeclaration || symbol instanceof DLanguageTemplateInstance || symbol instanceof DLanguageGlobalDeclaration || symbol instanceof DLanguageFuncDeclaration || symbol instanceof DLanguageInterface || symbol instanceof DLanguageStructDeclaration)
+        if (symbol instanceof DLanguageClassDeclaration || symbol instanceof DLanguageTemplateInstance || symbol instanceof DLanguageModuleDeclaration || symbol instanceof DLanguageFuncDeclaration || symbol instanceof DLanguageInterface || symbol instanceof DLanguageStructDeclaration)
             return false;
         if (symbol == null)
             return false;
-        if (null != findChildOfType(symbol, DLanguageGlobalDeclaration.class))
+        if (null != findChildOfType(symbol, DLanguageModuleDeclaration.class))
             return false;
         return searchForPublic(symbol.getParent());
     }
@@ -199,6 +196,35 @@ public class DUtil {
             return list.getIdentifier();
         }
         return getEndOfIdentifierList(list.getQualifiedIdentifierList());
+    }
+
+    @NotNull
+    public static DLanguageIdentifier getEndOfIdentifierList(DLanguageIdentifierList list) {
+        if (list.getIdentifierList() == null) {
+            return list.getIdentifier();
+        }
+        return getEndOfIdentifierList(list.getIdentifierList());
+    }
+
+    static List<Mixin> getMixins(PsiElement elementToSearch) {
+        List<Mixin> mixins = new ArrayList<>();
+        if (elementToSearch instanceof DLanguageMixinDeclaration) {
+            final DLanguageMixinDeclaration mixin = (DLanguageMixinDeclaration) elementToSearch;
+            mixins.add(mixin);
+        }
+        if (elementToSearch instanceof DLanguageTemplateMixin) {
+            final DLanguageTemplateMixin mixin = (DLanguageTemplateMixin) elementToSearch;
+            mixins.add(mixin);
+        }
+        if (elementToSearch instanceof DLanguageMixinExpression) {
+            final DLanguageMixinExpression mixin = (DLanguageMixinExpression) elementToSearch;
+            mixins.add(mixin);
+        }
+        if (elementToSearch instanceof DLanguageMixinStatement) {
+            final DLanguageMixinStatement mixin = (DLanguageMixinStatement) elementToSearch;
+            mixins.add(mixin);
+        }
+        return mixins;
     }
 
     public static List<Mixinable> getMixedInTemplates(PsiElement elementToSearch) {

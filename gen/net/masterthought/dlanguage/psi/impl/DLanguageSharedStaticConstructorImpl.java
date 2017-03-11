@@ -106,4 +106,8 @@ public class DLanguageSharedStaticConstructorImpl extends StubBasedPsiElementBas
     return DPsiImplUtil.getPresentation(this);
   }
 
+  public boolean isSomeVisibility(String visibility) {
+    return DPsiImplUtil.isSomeVisibility(this, visibility);
+  }
+
 }

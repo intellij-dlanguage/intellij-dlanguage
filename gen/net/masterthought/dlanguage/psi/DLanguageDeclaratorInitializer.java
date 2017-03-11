@@ -1,10 +1,11 @@
 // This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
-import net.masterthought.dlanguage.psi.interfaces.VariableDeclaration;
+import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+import net.masterthought.dlanguage.psi.interfaces.VariableDeclaration;
 import com.intellij.psi.StubBasedPsiElement;
 import net.masterthought.dlanguage.stubs.DLanguageDeclaratorInitializerStub;
 import com.intellij.navigation.ItemPresentation;
@@ -42,8 +43,10 @@ public interface DLanguageDeclaratorInitializer extends DNamedElement, VariableD
   @NotNull
   ItemPresentation getPresentation();
 
+  boolean isSomeVisibility(String visibility);
+
   boolean actuallyIsDeclaration();
 
-  DLanguageType getDeclarationType();
+  DLanguageType getVariableDeclarationType();
 
 }

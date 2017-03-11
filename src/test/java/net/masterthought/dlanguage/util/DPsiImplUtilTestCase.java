@@ -3,8 +3,8 @@ package net.masterthought.dlanguage.util;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.DLightPlatformCodeInsightFixtureTestCase;
-import net.masterthought.dlanguage.psi.DLanguageGlobalDeclaration;
 import net.masterthought.dlanguage.psi.DLanguageIdentifier;
+import net.masterthought.dlanguage.psi.DLanguageModuleDeclaration;
 
 import java.io.File;
 import java.nio.charset.Charset;
@@ -58,20 +58,20 @@ public class DPsiImplUtilTestCase extends DLightPlatformCodeInsightFixtureTestCa
 
     protected void doTestModule(boolean succeed) {
         String result = "";
-        final DLanguageGlobalDeclaration module = PsiTreeUtil.findChildOfType(myFixture.getFile(), DLanguageGlobalDeclaration.class);
+        final DLanguageModuleDeclaration module = PsiTreeUtil.findChildOfType(myFixture.getFile(), DLanguageModuleDeclaration.class);
         List<PsiElement> elements = new ArrayList<>();
-        elements.addAll(module.getStructDeclarations(true));
-        elements.addAll(module.getClassDeclarations(true));
-        elements.addAll(module.getTemplateDeclarations(true));
-        elements.addAll(module.getFunctionDeclarations(true));
-        elements.addAll(module.getVarDeclarations(true));
-        elements.addAll(module.getTemplateMixins(true));
-        elements.addAll(module.getTopLevelStructDeclarations(true));
-        elements.addAll(module.getTopLevelClassDeclarations(true));
-        elements.addAll(module.getTopLevelTemplateDeclarations(true));
-        elements.addAll(module.getTopLevelFunctionDeclarations(true));
-        elements.addAll(module.getTopLevelVarDeclarations(true));
-        elements.addAll(module.getTopLevelTemplateMixins(true));
+//        elements.addAll(module.g);
+//        elements.addAll(module.g);
+//        elements.addAll(module.g);
+//        elements.addAll(module.g);
+//        elements.addAll(module.g);
+//        elements.addAll(module.g);
+//        elements.addAll(module.g);
+//        elements.addAll(module.g);
+//        elements.addAll(module.g);
+//        elements.addAll(module.g);
+//        elements.addAll(module.g);
+//        elements.addAll(module.g);
 
         for (PsiElement element : elements) {
             result += PsiTreeUtil.findChildOfType(element, DLanguageIdentifier.class).getName();

@@ -100,4 +100,8 @@ public class DLanguageDestructorImpl extends DNamedStubbedPsiElementBase<DLangua
     return DPsiImplUtil.getPresentation(this);
   }
 
+  public boolean isSomeVisibility(String visibility) {
+    return DPsiImplUtil.isSomeVisibility(this, visibility);
+  }
+
 }

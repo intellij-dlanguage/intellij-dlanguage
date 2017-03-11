@@ -100,4 +100,8 @@ public class DLanguageStaticConstructorImpl extends StubBasedPsiElementBase<DLan
     return DPsiImplUtil.getPresentation(this);
   }
 
+  public boolean isSomeVisibility(String visibility) {
+    return DPsiImplUtil.isSomeVisibility(this, visibility);
+  }
+
 }

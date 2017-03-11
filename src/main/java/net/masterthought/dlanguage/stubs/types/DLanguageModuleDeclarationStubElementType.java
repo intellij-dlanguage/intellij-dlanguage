@@ -4,23 +4,19 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubInputStream;
 import com.intellij.psi.stubs.StubOutputStream;
-import net.masterthought.dlanguage.psi.DLanguageGlobalDeclaration;
-import net.masterthought.dlanguage.psi.impl.DLanguageGlobalDeclarationImpl;
+import net.masterthought.dlanguage.psi.DLanguageModuleDeclaration;
 import net.masterthought.dlanguage.stubs.DLanguageModuleDeclarationStub;
 import net.masterthought.dlanguage.utils.DUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
-public class DLanguageModuleDeclarationStubElementType extends DNamedStubElementType<DLanguageModuleDeclarationStub, DLanguageGlobalDeclaration> {
+public class DLanguageModuleDeclarationStubElementType extends DNamedStubElementType<DLanguageModuleDeclarationStub, DLanguageModuleDeclaration> {
     public DLanguageModuleDeclarationStubElementType(String debugName) {
         super(debugName);
     }
 
-    @Override
-    public DLanguageGlobalDeclaration createPsi(@NotNull DLanguageModuleDeclarationStub stub) {
-        return new DLanguageGlobalDeclarationImpl(stub, this);
-    }
+
 
     @Override
     public boolean shouldCreateStub(ASTNode node) {
@@ -28,7 +24,12 @@ public class DLanguageModuleDeclarationStubElementType extends DNamedStubElement
     }
 
     @Override
-    public DLanguageModuleDeclarationStub createStub(@NotNull DLanguageGlobalDeclaration psi, StubElement parentStub) {
+    public DLanguageModuleDeclaration createPsi(@NotNull DLanguageModuleDeclarationStub stub) {
+        return null;
+    }
+
+    @Override
+    public DLanguageModuleDeclarationStub createStub(@NotNull DLanguageModuleDeclaration psi, StubElement parentStub) {
         return new DLanguageModuleDeclarationStub(parentStub, this, psi.getName());
     }
 

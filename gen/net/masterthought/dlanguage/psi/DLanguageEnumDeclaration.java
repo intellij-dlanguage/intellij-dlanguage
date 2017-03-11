@@ -1,14 +1,17 @@
 // This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
-import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
+import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
 import com.intellij.psi.StubBasedPsiElement;
-import net.masterthought.dlanguage.stubs.DLanguageUnionDeclarationStub;
+import net.masterthought.dlanguage.stubs.DLanguageEnumDeclarationStub;
+import com.intellij.navigation.ItemPresentation;
+import com.intellij.psi.PsiReference;
 
-public interface DLanguageEnumDeclaration extends DNamedElement, HasVisibility, StubBasedPsiElement<DLanguageUnionDeclarationStub> {
+public interface DLanguageEnumDeclaration extends DNamedElement, HasVisibility, StubBasedPsiElement<DLanguageEnumDeclarationStub> {
 
   @Nullable
   DLanguageAnonymousEnumDeclaration getAnonymousEnumDeclaration();
@@ -27,5 +30,22 @@ public interface DLanguageEnumDeclaration extends DNamedElement, HasVisibility, 
 
   @Nullable
   PsiElement getOpColon();
+
+  @NotNull
+  String getName();
+
+  @Nullable
+  PsiElement getNameIdentifier();
+
+  @NotNull
+  PsiReference getReference();
+
+  @Nullable
+  PsiElement setName(String newName);
+
+  @NotNull
+  ItemPresentation getPresentation();
+
+  boolean isSomeVisibility(String visibility);
 
 }

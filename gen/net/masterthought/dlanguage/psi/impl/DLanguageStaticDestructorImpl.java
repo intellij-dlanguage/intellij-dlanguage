@@ -112,4 +112,8 @@ public class DLanguageStaticDestructorImpl extends StubBasedPsiElementBase<DLang
     return DPsiImplUtil.getPresentation(this);
   }
 
+  public boolean isSomeVisibility(String visibility) {
+    return DPsiImplUtil.isSomeVisibility(this, visibility);
+  }
+
 }

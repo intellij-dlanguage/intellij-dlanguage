@@ -1,16 +1,18 @@
 // This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import net.masterthought.dlanguage.psi.interfaces.*;
-import net.masterthought.dlanguage.psi.interfaces.containers.StatementContainer;
+import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import net.masterthought.dlanguage.psi.interfaces.containers.StatementContainer;
+import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
 import com.intellij.psi.StubBasedPsiElement;
 import net.masterthought.dlanguage.stubs.DLanguageSharedStaticConstructorStub;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
 
-public interface DLanguageSharedStaticConstructor extends StatementContainer, DNamedElement, HasVisibility, HasTemplateArguments, HasArguments, StubBasedPsiElement<DLanguageSharedStaticConstructorStub> {
+public interface DLanguageSharedStaticConstructor extends StatementContainer, DNamedElement, HasVisibility, StubBasedPsiElement<DLanguageSharedStaticConstructorStub> {
 
   @Nullable
   DLanguageFunctionBody getFunctionBody();
@@ -47,5 +49,7 @@ public interface DLanguageSharedStaticConstructor extends StatementContainer, DN
 
   @NotNull
   ItemPresentation getPresentation();
+
+  boolean isSomeVisibility(String visibility);
 
 }
