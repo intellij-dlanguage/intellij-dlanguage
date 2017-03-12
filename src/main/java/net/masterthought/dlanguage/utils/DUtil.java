@@ -244,7 +244,7 @@ public class DUtil {
         return mixins;
     }
 
-    public static List<Mixinable> getMixedInTemplates(PsiElement elementToSearch) {
+    public static List<Mixinable> getMixedInTemplates(Mixin elementToSearch) {
         List<Mixinable> containersFromMixin = new ArrayList<>();
         if (elementToSearch instanceof DLanguageMixinDeclaration) {
             final DLanguageMixinDeclaration mixin = (DLanguageMixinDeclaration) elementToSearch;
@@ -298,6 +298,17 @@ public class DUtil {
         if (text.equals("protected"))
             return protected_;
         throw new IllegalArgumentException(protectionAttribute.toString() + protectionAttribute.getText());
+    }
+
+    public static Visibility protectionToVisibilty(String text) {
+        if (text.equals("private"))
+            return private_;
+        if (text.equals("public"))
+            return public_;
+        if (text.equals("protected"))
+            return protected_;
+        throw new IllegalArgumentException(text);
+
     }
 }
 

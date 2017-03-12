@@ -171,25 +171,28 @@ public class DResolveUtil {
         PsiElement current = element.getParent();
         while (true) {
             if (current instanceof ClassContainer) {
-                ((ClassContainer) current).getClassDeclarations(true, includeFromInheritance, );
+                ((ClassContainer) current).getClassDeclarations(true, true, true);
             }
             if (current instanceof StructContainer) {
-                ((StructContainer) current).getStructDeclarations();
+                ((StructContainer) current).getStructDeclarations(true, true, true);
             }
             if (current instanceof TemplateContainer) {
-                ((TemplateContainer) current).getTemplateDeclarations();
+                ((TemplateContainer) current).getTemplateDeclarations(true, true, true);
             }
             if (current instanceof GlobalVariableContainer) {
-                ((GlobalVariableContainer) current).getGlobalVariableDeclarations();
+                ((GlobalVariableContainer) current).getGlobalVariableDeclarations(true, true, true);
+            }
+            if (current instanceof LocalVarContainer) {
+                ((LocalVarContainer) current).getLocalVariableDeclarations(true, true, true);
             }
             if (current instanceof FunctionContainer) {
-                ((FunctionContainer) current).getFunctionDeclarations();
+                ((FunctionContainer) current).getFunctionDeclarations(true, true, true);
             }
             if (current instanceof DLanguageFile)
                 break;
             current = current.getParent();
         }
-
+        return res;
     }
 
     private static List<DNamedElement> findModuleDefinitionNodes(DLanguageFile dLanguageFile, DLanguageModuleFullyQualifiedName module) {
