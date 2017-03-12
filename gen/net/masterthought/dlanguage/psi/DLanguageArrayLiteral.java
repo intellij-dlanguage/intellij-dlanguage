@@ -16,4 +16,7 @@ public interface DLanguageArrayLiteral extends PsiElement {
   @NotNull
   PsiElement getOpBracketRight();
 
+  @Nullable
+  PsiElement getOpComma();
+
 }

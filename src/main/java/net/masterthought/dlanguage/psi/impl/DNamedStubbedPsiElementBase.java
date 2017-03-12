@@ -3,7 +3,7 @@ package net.masterthought.dlanguage.psi.impl;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.stubs.StubElement;
-import net.masterthought.dlanguage.psi.DNamedElement;
+import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class DNamedStubbedPsiElementBase<T extends StubElement<?>> extends DStubbedPsiElementBase<T> implements DNamedElement {

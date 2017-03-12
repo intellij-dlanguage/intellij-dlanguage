@@ -228,7 +228,7 @@ D Language File
                                                                                             IDENTIFIER
                                                                                               PsiElement(DLanguageTokenType.ID)('write')
                                                                                         DLanguageDeclaratorsImpl(DECLARATORS)
-                                                                                          DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
+                                                                                          DECLARATOR_INITIALIZER
                                                                                             DLanguageAltDeclaratorImpl(ALT_DECLARATOR)
                                                                                               PsiElement(DLanguageTokenType.()('(')
                                                                                               DLanguageAltDeclaratorXImpl(ALT_DECLARATOR_X)

@@ -4,11 +4,15 @@ package net.masterthought.dlanguage.psi;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import net.masterthought.dlanguage.psi.interfaces.Mixin;
 
-public interface DLanguageMixinDeclaration extends PsiElement {
+public interface DLanguageMixinDeclaration extends Mixin {
 
-  @NotNull
+  @Nullable
   DLanguageAssignExpression getAssignExpression();
+
+  @Nullable
+  DLanguageTemplateInstance getTemplateInstance();
 
   @NotNull
   PsiElement getKwMixin();
@@ -21,5 +25,11 @@ public interface DLanguageMixinDeclaration extends PsiElement {
 
   @NotNull
   PsiElement getOpScolon();
+
+  @Nullable
+  DLanguageTemplateDeclaration getTemplateDeclaration();
+
+  @Nullable
+  DLanguageTemplateMixinDeclaration getTemplateMixinDeclaration();
 
 }

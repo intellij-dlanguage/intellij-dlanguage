@@ -4,12 +4,18 @@ package net.masterthought.dlanguage.psi;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import net.masterthought.dlanguage.psi.interfaces.containers.StatementContainer;
+import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
+import net.masterthought.dlanguage.psi.interfaces.HasProperty;
+import net.masterthought.dlanguage.psi.interfaces.HasTemplateArguments;
+import net.masterthought.dlanguage.psi.interfaces.HasArguments;
 import com.intellij.psi.StubBasedPsiElement;
 import net.masterthought.dlanguage.stubs.DLanguageFuncDeclarationStub;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
 
-public interface DLanguageFuncDeclaration extends DNamedElement, StubBasedPsiElement<DLanguageFuncDeclarationStub> {
+public interface DLanguageFuncDeclaration extends StatementContainer, DNamedElement, HasVisibility, HasProperty, HasTemplateArguments, HasArguments, StubBasedPsiElement<DLanguageFuncDeclarationStub> {
 
   @Nullable
   DLanguageBasicType getBasicType();
@@ -49,5 +55,29 @@ public interface DLanguageFuncDeclaration extends DNamedElement, StubBasedPsiEle
 
   @NotNull
   ItemPresentation getPresentation();
+
+  @NotNull
+  List<DLanguageParameter> getArguments();
+
+  boolean isSomeVisibility(String visibility);
+
+  List<DLanguageTemplateParameter> getTemplateArguments();
+
+  @NotNull
+  List<DLanguageProtectionAttribute> getProtection();
+
+  boolean isSystem();
+
+  boolean isNoGC();
+
+  boolean isTrusted();
+
+  boolean hasCustomProperty();
+
+  boolean isSafe();
+
+  DLanguageUserDefinedAttribute getCustomProperty();
+
+  boolean isPropertyFunction();
 
 }

@@ -106,4 +106,50 @@ public class DLanguageFuncDeclarationImpl extends DNamedStubbedPsiElementBase<DL
     return DPsiImplUtil.getPresentation(this);
   }
 
+  @NotNull
+  public List<DLanguageParameter> getArguments() {
+    return DPsiImplUtil.getArguments(this);
+  }
+
+  public boolean isSomeVisibility(String visibility) {
+    return DPsiImplUtil.isSomeVisibility(this, visibility);
+  }
+
+  public List<DLanguageTemplateParameter> getTemplateArguments() {
+    return DPsiImplUtil.getTemplateArguments(this);
+  }
+
+  @NotNull
+  public List<DLanguageProtectionAttribute> getProtection() {
+    return DPsiImplUtil.getProtection(this);
+  }
+
+  public boolean isSystem() {
+    return DPsiImplUtil.isSystem(this);
+  }
+
+  public boolean isNoGC() {
+    return DPsiImplUtil.isNoGC(this);
+  }
+
+  public boolean isTrusted() {
+    return DPsiImplUtil.isTrusted(this);
+  }
+
+  public boolean hasCustomProperty() {
+    return DPsiImplUtil.hasCustomProperty(this);
+  }
+
+  public boolean isSafe() {
+    return DPsiImplUtil.isSafe(this);
+  }
+
+  public DLanguageUserDefinedAttribute getCustomProperty() {
+    return DPsiImplUtil.getCustomProperty(this);
+  }
+
+  public boolean isPropertyFunction() {
+    return DPsiImplUtil.isPropertyFunction(this);
+  }
+
 }

@@ -16,7 +16,7 @@ D Language File
                       PsiElement(DLanguageTokenType.static)('static')
                     DLanguageDeclarationBlockImpl(DECLARATION_BLOCK)
                       DLanguageDeclDefImpl(DECL_DEF)
-                        DLanguageDestructorImpl(DESTRUCTOR)
+                        DESTRUCTOR
                           PsiElement(DLanguageTokenType.~)('~')
                           PsiElement(DLanguageTokenType.this)('this')
                           PsiElement(DLanguageTokenType.()('(')
@@ -44,7 +44,7 @@ D Language File
                         PsiElement(DLanguageTokenType.static)('static')
                       DLanguageDeclarationBlockImpl(DECLARATION_BLOCK)
                         DLanguageDeclDefImpl(DECL_DEF)
-                          DLanguageDestructorImpl(DESTRUCTOR)
+                          DESTRUCTOR
                             PsiElement(DLanguageTokenType.~)('~')
                             PsiElement(DLanguageTokenType.this)('this')
                             PsiElement(DLanguageTokenType.()('(')
@@ -67,7 +67,7 @@ D Language File
                                   PsiElement(DLanguageTokenType.private)('private')
                               DLanguageDeclarationBlockImpl(DECLARATION_BLOCK)
                                 DLanguageDeclDefImpl(DECL_DEF)
-                                  DLanguageDestructorImpl(DESTRUCTOR)
+                                  DESTRUCTOR
                                     PsiElement(DLanguageTokenType.~)('~')
                                     PsiElement(DLanguageTokenType.this)('this')
                                     PsiElement(DLanguageTokenType.()('(')
@@ -86,7 +86,7 @@ D Language File
                             PsiElement(DLanguageTokenType.{)('{')
                             DLanguageDeclDefsImpl(DECL_DEFS)
                               DLanguageDeclDefImpl(DECL_DEF)
-                                DLanguageDestructorImpl(DESTRUCTOR)
+                                DESTRUCTOR
                                   PsiElement(DLanguageTokenType.~)('~')
                                   PsiElement(DLanguageTokenType.this)('this')
                                   PsiElement(DLanguageTokenType.()('(')
@@ -105,7 +105,7 @@ D Language File
                             PsiElement(DLanguageTokenType.:)(':')
                         DLanguageDeclDefsImpl(DECL_DEFS)
                           DLanguageDeclDefImpl(DECL_DEF)
-                            DLanguageDestructorImpl(DESTRUCTOR)
+                            DESTRUCTOR
                               PsiElement(DLanguageTokenType.~)('~')
                               PsiElement(DLanguageTokenType.this)('this')
                               PsiElement(DLanguageTokenType.()('(')

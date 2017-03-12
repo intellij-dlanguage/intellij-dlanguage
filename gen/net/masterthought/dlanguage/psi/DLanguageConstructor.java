@@ -4,12 +4,17 @@ package net.masterthought.dlanguage.psi;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import net.masterthought.dlanguage.psi.interfaces.containers.StatementContainer;
+import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
+import net.masterthought.dlanguage.psi.interfaces.HasTemplateArguments;
+import net.masterthought.dlanguage.psi.interfaces.HasArguments;
 import com.intellij.psi.StubBasedPsiElement;
 import net.masterthought.dlanguage.stubs.DLanguageConstructorStub;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
 
-public interface DLanguageConstructor extends DNamedElement, StubBasedPsiElement<DLanguageConstructorStub> {
+public interface DLanguageConstructor extends StatementContainer, DNamedElement, HasVisibility, HasTemplateArguments, HasArguments, StubBasedPsiElement<DLanguageConstructorStub> {
 
   @Nullable
   DLanguageConstructorTemplate getConstructorTemplate();
@@ -43,5 +48,10 @@ public interface DLanguageConstructor extends DNamedElement, StubBasedPsiElement
 
   @NotNull
   ItemPresentation getPresentation();
+
+  boolean isSomeVisibility(String visibility);
+
+  @NotNull
+  List<DLanguageParameter> getArguments();
 
 }

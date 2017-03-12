@@ -8,10 +8,17 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import net.masterthought.dlanguage.stubs.DLanguageDeclaratorInitializerStub;
 import net.masterthought.dlanguage.psi.*;
+import com.intellij.navigation.ItemPresentation;
+import com.intellij.psi.PsiReference;
+import com.intellij.psi.stubs.IStubElementType;
 
-public class DLanguageDeclaratorInitializerImpl extends ASTWrapperPsiElement implements DLanguageDeclaratorInitializer {
+public class DLanguageDeclaratorInitializerImpl extends DNamedStubbedPsiElementBase<DLanguageDeclaratorInitializerStub> implements DLanguageDeclaratorInitializer {
+
+  public DLanguageDeclaratorInitializerImpl(DLanguageDeclaratorInitializerStub stub, IStubElementType type) {
+    super(stub, type);
+  }
 
   public DLanguageDeclaratorInitializerImpl(ASTNode node) {
     super(node);
@@ -54,6 +61,43 @@ public class DLanguageDeclaratorInitializerImpl extends ASTWrapperPsiElement imp
   @Nullable
   public PsiElement getOpEq() {
     return findChildByType(OP_EQ);
+  }
+
+  @NotNull
+  public String getName() {
+    return DPsiImplUtil.getName(this);
+  }
+
+  @Nullable
+  public PsiElement getNameIdentifier() {
+    return DPsiImplUtil.getNameIdentifier(this);
+  }
+
+  @NotNull
+  public PsiReference getReference() {
+    return DPsiImplUtil.getReference(this);
+  }
+
+  @Nullable
+  public PsiElement setName(String newName) {
+    return DPsiImplUtil.setName(this, newName);
+  }
+
+  @NotNull
+  public ItemPresentation getPresentation() {
+    return DPsiImplUtil.getPresentation(this);
+  }
+
+  public boolean isSomeVisibility(String visibility) {
+    return DPsiImplUtil.isSomeVisibility(this, visibility);
+  }
+
+  public boolean actuallyIsDeclaration() {
+    return DPsiImplUtil.actuallyIsDeclaration(this);
+  }
+
+  public DLanguageType getVariableDeclarationType() {
+    return DPsiImplUtil.getVariableDeclarationType(this);
   }
 
 }

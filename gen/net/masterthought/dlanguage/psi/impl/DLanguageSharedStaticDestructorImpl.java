@@ -8,13 +8,26 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import com.intellij.extapi.psi.StubBasedPsiElementBase;
+import net.masterthought.dlanguage.stubs.DLanguageSharedStaticDestructorStub;
 import net.masterthought.dlanguage.psi.*;
+import com.intellij.navigation.ItemPresentation;
+import com.intellij.psi.PsiReference;
+import com.intellij.psi.stubs.IStubElementType;
+import com.intellij.psi.tree.IElementType;
 
-public class DLanguageSharedStaticDestructorImpl extends ASTWrapperPsiElement implements DLanguageSharedStaticDestructor {
+public class DLanguageSharedStaticDestructorImpl extends StubBasedPsiElementBase<DLanguageSharedStaticDestructorStub> implements DLanguageSharedStaticDestructor {
+
+  public DLanguageSharedStaticDestructorImpl(DLanguageSharedStaticDestructorStub stub, IStubElementType type) {
+    super(stub, type);
+  }
 
   public DLanguageSharedStaticDestructorImpl(ASTNode node) {
     super(node);
+  }
+
+  public DLanguageSharedStaticDestructorImpl(DLanguageSharedStaticDestructorStub stub, IElementType type, ASTNode node) {
+    super(stub, type, node);
   }
 
   public void accept(@NotNull DLanguageVisitor visitor) {
@@ -78,6 +91,35 @@ public class DLanguageSharedStaticDestructorImpl extends ASTWrapperPsiElement im
   @NotNull
   public PsiElement getOpTilda() {
     return notNullChild(findChildByType(OP_TILDA));
+  }
+
+  @NotNull
+  public String getName() {
+    return DPsiImplUtil.getName(this);
+  }
+
+  @Nullable
+  public PsiElement getNameIdentifier() {
+    return DPsiImplUtil.getNameIdentifier(this);
+  }
+
+  @NotNull
+  public PsiReference getReference() {
+    return DPsiImplUtil.getReference(this);
+  }
+
+  @Nullable
+  public PsiElement setName(String newName) {
+    return DPsiImplUtil.setName(this, newName);
+  }
+
+  @NotNull
+  public ItemPresentation getPresentation() {
+    return DPsiImplUtil.getPresentation(this);
+  }
+
+  public boolean isSomeVisibility(String visibility) {
+    return DPsiImplUtil.isSomeVisibility(this, visibility);
   }
 
 }

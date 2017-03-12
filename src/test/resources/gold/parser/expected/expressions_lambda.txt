@@ -42,7 +42,7 @@ D Language File
                             DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
                               DLanguageAutoDeclarationImpl(AUTO_DECLARATION)
                                 DLanguageAutoDeclarationXImpl(AUTO_DECLARATION_X)
-                                  DLanguageAutoDeclarationYImpl(AUTO_DECLARATION_Y)
+                                  AUTO_DECLARATION_Y
                                     IDENTIFIER
                                       PsiElement(DLanguageTokenType.ID)('i')
                                     PsiElement(DLanguageTokenType.=)('=')
@@ -76,7 +76,7 @@ D Language File
                               DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
                                 DLanguageAutoDeclarationImpl(AUTO_DECLARATION)
                                   DLanguageAutoDeclarationXImpl(AUTO_DECLARATION_X)
-                                    DLanguageAutoDeclarationYImpl(AUTO_DECLARATION_Y)
+                                    AUTO_DECLARATION_Y
                                       IDENTIFIER
                                         PsiElement(DLanguageTokenType.ID)('twice')
                                       PsiElement(DLanguageTokenType.=)('=')
@@ -160,7 +160,7 @@ D Language File
                                 DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
                                   DLanguageAutoDeclarationImpl(AUTO_DECLARATION)
                                     DLanguageAutoDeclarationXImpl(AUTO_DECLARATION_X)
-                                      DLanguageAutoDeclarationYImpl(AUTO_DECLARATION_Y)
+                                      AUTO_DECLARATION_Y
                                         IDENTIFIER
                                           PsiElement(DLanguageTokenType.ID)('square')
                                         PsiElement(DLanguageTokenType.=)('=')
@@ -245,7 +245,7 @@ D Language File
                                   DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
                                     DLanguageAutoDeclarationImpl(AUTO_DECLARATION)
                                       DLanguageAutoDeclarationXImpl(AUTO_DECLARATION_X)
-                                        DLanguageAutoDeclarationYImpl(AUTO_DECLARATION_Y)
+                                        AUTO_DECLARATION_Y
                                           IDENTIFIER
                                             PsiElement(DLanguageTokenType.ID)('n')
                                           PsiElement(DLanguageTokenType.=)('=')
@@ -279,7 +279,7 @@ D Language File
                                     DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
                                       DLanguageAutoDeclarationImpl(AUTO_DECLARATION)
                                         DLanguageAutoDeclarationXImpl(AUTO_DECLARATION_X)
-                                          DLanguageAutoDeclarationYImpl(AUTO_DECLARATION_Y)
+                                          AUTO_DECLARATION_Y
                                             IDENTIFIER
                                               PsiElement(DLanguageTokenType.ID)('mul_n')
                                             PsiElement(DLanguageTokenType.=)('=')
@@ -363,7 +363,7 @@ D Language File
                                             IDENTIFIER
                                               PsiElement(DLanguageTokenType.ID)('writeln')
                                         DLanguageDeclaratorsImpl(DECLARATORS)
-                                          DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
+                                          DECLARATOR_INITIALIZER
                                             DLanguageAltDeclaratorImpl(ALT_DECLARATOR)
                                               PsiElement(DLanguageTokenType.()('(')
                                               DLanguageAltDeclaratorXImpl(ALT_DECLARATOR_X)
@@ -395,7 +395,7 @@ D Language File
                                               IDENTIFIER
                                                 PsiElement(DLanguageTokenType.ID)('writeln')
                                           DLanguageDeclaratorsImpl(DECLARATORS)
-                                            DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
+                                            DECLARATOR_INITIALIZER
                                               DLanguageAltDeclaratorImpl(ALT_DECLARATOR)
                                                 PsiElement(DLanguageTokenType.()('(')
                                                 DLanguageAltDeclaratorXImpl(ALT_DECLARATOR_X)
@@ -427,7 +427,7 @@ D Language File
                                                 IDENTIFIER
                                                   PsiElement(DLanguageTokenType.ID)('writeln')
                                             DLanguageDeclaratorsImpl(DECLARATORS)
-                                              DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
+                                              DECLARATOR_INITIALIZER
                                                 DLanguageAltDeclaratorImpl(ALT_DECLARATOR)
                                                   PsiElement(DLanguageTokenType.()('(')
                                                   DLanguageAltDeclaratorXImpl(ALT_DECLARATOR_X)
