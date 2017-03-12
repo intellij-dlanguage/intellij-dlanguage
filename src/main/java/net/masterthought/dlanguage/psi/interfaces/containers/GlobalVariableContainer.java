@@ -13,7 +13,7 @@ import static net.masterthought.dlanguage.utils.DUtil.*;
 /**
  * Created by francis on 2/28/2017.
  */
-public interface GlobalVarContainer extends Container {
+public interface GlobalVariableContainer extends Container {
     Class globalVarClass = VariableDeclaration.class;
 
     Class autoDeclarationClass = DLanguageAutoDeclarationY.class;

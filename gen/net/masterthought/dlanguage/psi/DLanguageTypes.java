@@ -22,7 +22,6 @@ public interface DLanguageTypes {
   IElementType MODULE_DEFINITION = new DLanguageElementType("MODULE_DEFINITION");
   IElementType FUNCTION_DEFINITION = new DLanguageElementType("FUNCTION_DEFINITION");
 
-
   IElementType ADD_EXPRESSION = new DLanguageElementType("ADD_EXPRESSION");
   IElementType AGGREGATE_BODY = new DLanguageElementType("AGGREGATE_BODY");
   IElementType AGGREGATE_DECLARATION = new DLanguageElementType("AGGREGATE_DECLARATION");
