@@ -1738,7 +1738,7 @@ public class DPsiImplUtil {
     }
 
     public static boolean isSomeVisibility(VariableDeclaration o, String visibility) {
-        return isSomeVisibility(o, visibility, GlobalVarContainer.class);//todo check that this still works correctly for local vars/ do we care if local vars don't have correct visibility?
+        return isSomeVisibility(o, visibility, GlobalVariableContainer.class);//todo check that this still works correctly for local vars/ do we care if local vars don't have correct visibility?
     }
 
     public static boolean isSomeVisibility(DLanguageUnionDeclaration o, String visibility) {

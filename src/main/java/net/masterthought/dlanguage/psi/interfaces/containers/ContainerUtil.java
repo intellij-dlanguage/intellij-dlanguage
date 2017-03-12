@@ -26,7 +26,7 @@ public class ContainerUtil {
         put(DestructorContainer.destructorClass, DestructorContainer.class);
         put(EnumContainer.enumClass, EnumContainer.class);
         put(FunctionContainer.functionClass, FunctionContainer.class);
-        put(GlobalVarContainer.globalVarClass, GlobalVarContainer.class);
+        put(GlobalVariableContainer.globalVarClass, GlobalVariableContainer.class);
         put(InterfaceContainer.interfaceClass, InterfaceContainer.class);
         put(LocalVarContainer.variableDeclarationClass, LocalVarContainer.class);
         put(StructContainer.structClass, StructContainer.class);
@@ -42,7 +42,7 @@ public class ContainerUtil {
         put(DestructorContainer.class, DestructorContainer.destructorClass);
         put(EnumContainer.class, EnumContainer.enumClass);
         put(FunctionContainer.class, FunctionContainer.functionClass);
-        put(GlobalVarContainer.class, GlobalVarContainer.globalVarClass);
+        put(GlobalVariableContainer.class, GlobalVariableContainer.globalVarClass);
         put(InterfaceContainer.class, InterfaceContainer.interfaceClass);
         put(LocalVarContainer.class, LocalVarContainer.variableDeclarationClass);
         put(StructContainer.class, StructContainer.structClass);

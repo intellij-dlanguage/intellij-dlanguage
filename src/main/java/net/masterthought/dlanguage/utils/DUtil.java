@@ -191,11 +191,26 @@ public class DUtil {
     }
 
     @NotNull
+    public static PsiElement getTopLevelOfRecursiveElement(PsiElement element, Class<? extends PsiElement> tClass) {
+        if (!tClass.isInstance(element.getParent()))
+            return element;
+        return getTopLevelOfRecursiveElement(element.getParent(), tClass);
+    }
+
+    @NotNull
     public static DLanguageIdentifier getEndOfIdentifierList(DLanguageQualifiedIdentifierList list) {
         if (list.getQualifiedIdentifierList() == null) {
             return list.getIdentifier();
         }
         return getEndOfIdentifierList(list.getQualifiedIdentifierList());
+    }
+
+    @NotNull
+    public static DLanguageIdentifier getEndOfIdentifierList(DLanguageModuleFullyQualifiedName list) {
+        if (list.getModuleFullyQualifiedName() == null) {
+            return list.getIdentifier();
+        }
+        return getEndOfIdentifierList(list.getModuleFullyQualifiedName());
     }
 
     @NotNull

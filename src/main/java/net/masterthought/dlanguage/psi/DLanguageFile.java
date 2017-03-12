@@ -3,16 +3,18 @@ package net.masterthought.dlanguage.psi;
 import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.psi.FileViewProvider;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.stubs.StubElement;
 import net.masterthought.dlanguage.DLanguage;
 import net.masterthought.dlanguage.DLanguageFileType;
+import net.masterthought.dlanguage.psi.interfaces.containers.GlobalDeclarationContainer;
 import net.masterthought.dlanguage.stubs.DLanguageFileStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
-public class DLanguageFile extends PsiFileBase {
+public class DLanguageFile extends PsiFileBase implements GlobalDeclarationContainer {
 
     public DLanguageFile(@NotNull FileViewProvider viewProvider) {
         super(viewProvider, DLanguage.INSTANCE);
@@ -64,5 +66,11 @@ public class DLanguageFile extends PsiFileBase {
         final StubElement stub = super.getStub();
         if (stub == null) return null;
         return (DLanguageFileStub)stub;
+    }
+
+    @Nullable
+    @Override
+    public PsiElement getNameIdentifier() {
+        return null;
     }
 }
