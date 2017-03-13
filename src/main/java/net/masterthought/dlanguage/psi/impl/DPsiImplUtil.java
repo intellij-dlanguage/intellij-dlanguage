@@ -11,6 +11,7 @@ import com.intellij.psi.PsiReference;
 import net.masterthought.dlanguage.icons.DLanguageIcons;
 import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.interfaces.CanInherit;
+import net.masterthought.dlanguage.psi.interfaces.Type;
 import net.masterthought.dlanguage.psi.interfaces.VariableDeclaration;
 import net.masterthought.dlanguage.psi.interfaces.containers.*;
 import net.masterthought.dlanguage.psi.references.DReference;
@@ -1272,12 +1273,12 @@ public class DPsiImplUtil {
         return false;//default to false.
     }
 
-    public static DLanguageType getVariableDeclarationType(DLanguageDeclaratorInitializer o) {
-        return null;//todo implement
+    public static Type getVariableDeclarationType(DLanguageDeclaratorInitializer o) {
+        return new Type(o);
 
     }
 
-    // ------------- Var Declaration ------------------ //
+    // ------------- Var Declaration ------------------ //`
 
     // ------------- Auto Declaration Y ------------------ //
     @NotNull

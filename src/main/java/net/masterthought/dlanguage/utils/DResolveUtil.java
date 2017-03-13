@@ -9,6 +9,7 @@ import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+import net.masterthought.dlanguage.psi.interfaces.Type;
 import net.masterthought.dlanguage.psi.interfaces.VariableDeclaration;
 import net.masterthought.dlanguage.psi.interfaces.containers.*;
 import org.jetbrains.annotations.NotNull;
@@ -98,7 +99,7 @@ public class DResolveUtil {
                 final PsiElement resolve = topLevelIdentifier.getReference().resolve();
                 if (resolve instanceof VariableDeclaration || resolve.getParent() instanceof VariableDeclaration) {
                     VariableDeclaration var = (VariableDeclaration) resolve;
-                    final DLanguageType variableDeclarationType = var.getVariableDeclarationType();
+                    final Type variableDeclarationType = var.getVariableDeclarationType();
                 }
                 //the identifier is within one of the following:
                 // IdentifierList
