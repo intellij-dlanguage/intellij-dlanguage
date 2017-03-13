@@ -13,6 +13,7 @@ import net.masterthought.dlanguage.psi.*;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
+import net.masterthought.dlanguage.psi.interfaces.Type;
 import com.intellij.psi.stubs.IStubElementType;
 
 public class DLanguageAliasDeclarationImpl extends DNamedStubbedPsiElementBase<DLanguageAliasDeclarationStub> implements DLanguageAliasDeclaration {
@@ -145,7 +146,7 @@ public class DLanguageAliasDeclarationImpl extends DNamedStubbedPsiElementBase<D
     return DPsiImplUtil.actuallyIsDeclaration(this);
   }
 
-  public DLanguageType getDeclarationType() {
+  public Type getDeclarationType() {
     return DPsiImplUtil.getDeclarationType(this);
   }
 

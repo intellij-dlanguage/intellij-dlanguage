@@ -11,6 +11,7 @@ import net.masterthought.dlanguage.stubs.DLanguageAutoDeclarationStub;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
+import net.masterthought.dlanguage.psi.interfaces.Type;
 
 public interface DLanguageAutoDeclarationY extends DNamedElement, VariableDeclaration, StubBasedPsiElement<DLanguageAutoDeclarationStub> {
 
@@ -45,6 +46,6 @@ public interface DLanguageAutoDeclarationY extends DNamedElement, VariableDeclar
 
   boolean actuallyIsDeclaration();
 
-  DLanguageType getVariableDeclarationType();
+  Type getVariableDeclarationType();
 
 }

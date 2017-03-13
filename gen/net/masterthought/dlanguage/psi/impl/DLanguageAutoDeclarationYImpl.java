@@ -13,6 +13,7 @@ import net.masterthought.dlanguage.psi.*;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
+import net.masterthought.dlanguage.psi.interfaces.Type;
 import com.intellij.psi.stubs.IStubElementType;
 
 public class DLanguageAutoDeclarationYImpl extends DNamedStubbedPsiElementBase<DLanguageAutoDeclarationStub> implements DLanguageAutoDeclarationY {
@@ -91,7 +92,7 @@ public class DLanguageAutoDeclarationYImpl extends DNamedStubbedPsiElementBase<D
     return DPsiImplUtil.actuallyIsDeclaration(this);
   }
 
-  public DLanguageType getVariableDeclarationType() {
+  public Type getVariableDeclarationType() {
     return DPsiImplUtil.getVariableDeclarationType(this);
   }
 

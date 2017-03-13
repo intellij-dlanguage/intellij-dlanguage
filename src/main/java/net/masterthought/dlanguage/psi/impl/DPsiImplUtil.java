@@ -789,7 +789,7 @@ public class DPsiImplUtil {
         return true;
     }
 
-    public static DLanguageType getDeclarationType(DLanguageAliasDeclaration o) {
+    public static Type getDeclarationType(DLanguageAliasDeclaration o) {
         return null;
     }
 
@@ -1203,8 +1203,7 @@ public class DPsiImplUtil {
         }
         if (o.getVarDeclarator() != null) {
             final DLanguageVarDeclarator varDeclarator = o.getVarDeclarator();
-            if (varDeclarator.getBasicType2() != null)
-                return varDeclarator.getIdentifier();
+            return varDeclarator.getIdentifier();
         }
         return null;
     }
@@ -1346,7 +1345,7 @@ public class DPsiImplUtil {
         return storageClasses.getStorageClass().getKwAuto() != null;
     }
 
-    public static DLanguageType getVariableDeclarationType(DLanguageAutoDeclarationY o) {
+    public static Type getVariableDeclarationType(DLanguageAutoDeclarationY o) {
         return null;//todo implement
 
     }

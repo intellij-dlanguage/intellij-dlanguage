@@ -29,7 +29,10 @@ import static net.masterthought.dlanguage.utils.DUtil.getTopLevelOfRecursiveElem
  */
 public class DResolveUtil {
     static Logger log = Logger.getInstance(DResolveUtil.class);
-    public static Set<PsiNamedElement> findDefinitionNodes(@NotNull DNamedElement element) {
+
+    public static
+    @NotNull
+    Set<PsiNamedElement> findDefinitionNodes(@NotNull DNamedElement element) {
         if (!(element instanceof DLanguageIdentifier))
             return EMPTY_SET;//prevent resolving definitions
         Set<PsiNamedElement> definitionNodes = new HashSet<>();
@@ -46,7 +49,9 @@ public class DResolveUtil {
 
     }
 
-    private static List<DNamedElement> findDefinitionNodes(DLanguageFile dLanguageFile, DLanguageIdentifier element) {
+    private static
+    @NotNull
+    List<DNamedElement> findDefinitionNodes(DLanguageFile dLanguageFile, DLanguageIdentifier element) {
         //five major possibilities:
         //1. identifier is part of import statement, and should resolve to a file
         //2. identifier is a normal function/class name/etc..
@@ -57,61 +62,68 @@ public class DResolveUtil {
         //5. resolving a member function/var of a class/struct/template etc...
         final PsiElement parent = element.getParent();
         //identifiers within templates break this approach
-        if (parent.getText().contains(".") || parent instanceof DLanguageModuleFullyQualifiedName) {
-            //#1,4, or 5 are true
-            if (getParentOfType(parent, DLanguageImportDeclaration.class) != null) {
-                //#1 is true
-                log.info("#1:" + parent.getText());//todo remove later
-                return findModuleDefinitionNodes(dLanguageFile, getParentOfType(element, DLanguageModuleFullyQualifiedName.class));
-            } else {
-                //#4 or #5 are true
-                log.info("#4/5:" + parent.getText());
-                //to distinguish between #4 and #5 resolve the rightmost identifier. eg. in foo.bar.gh(), find foo and resolve it
-                DLanguageIdentifier topLevelIdentifier = null;
-                if (parent instanceof DLanguagePrimaryExpression) {
-                    //find topLevel expression/statement
-                    PsiElement current = parent;
-                    while (true) {
-                        if (current instanceof DLanguageStatement)
-                            break;
-                        if (current instanceof DLanguageAssignExpression)
-                            break;
-                        if (current == null)
-                            throw new IllegalStateException();
-                        current = current.getParent();
-                    }
-                    topLevelIdentifier = findChildOfType(current, DLanguageIdentifier.class);//depth first search, so this will get the first identifier
+        if (getParentOfType(parent, DLanguageImportDeclaration.class) != null) {
+            //#1 is true
+            log.info("#1:" + parent.getText());//todo remove later
+            return findModuleDefinitionNodes(dLanguageFile, getParentOfType(element, DLanguageModuleFullyQualifiedName.class));
+        }
+        if (parent.getText().contains(".") && !parent.getText().contains("{") | parent instanceof DLanguageModuleFullyQualifiedName
+//            parent instanceof DLanguageUnaryExpression ||
+//            parent instanceof DLanguageIdentifierList ||
+//            parent instanceof DLanguagePostfixExpression ||
+//            parent instanceof DLanguageModuleFullyQualifiedName ||
+//            parent instanceof DLanguagePrimaryExpression ||
+//            parent instanceof DLanguageDotIdentifier ||
+//            parent instanceof DLanguageSymbol ||
+//            parent instanceof DLanguageSymbolTail ||
+//            parent instanceof DLanguageMixinTemplateName ||
+//            parent instanceof DLanguageQualifiedIdentifierList
+            ) {
+            //#4 or #5 are true
+            log.info("#4/5:" + parent.getText());
+            //to distinguish between #4 and #5 resolve the rightmost identifier. eg. in foo.bar.gh(), find foo and resolve it
+            DLanguageIdentifier topLevelIdentifier = null;
+            if (parent instanceof DLanguagePrimaryExpression) {
+                //find topLevel expression/statement
+                PsiElement current = parent;
+                while (true) {
+                    if (current instanceof DLanguageStatement)
+                        break;
+                    if (current instanceof DLanguageAssignExpression)
+                        break;
+                    if (current == null)
+                        throw new IllegalStateException();
+                    current = current.getParent();
                 }
-                if (parent instanceof DLanguageIdentifierList) {
-                    final DLanguageIdentifierList topLevel = (DLanguageIdentifierList) getTopLevelOfRecursiveElement(parent, parent.getClass());
-                    topLevelIdentifier = topLevel.getIdentifier();
-
-                } else if (parent instanceof DLanguageSymbolTail) {
-                    final DLanguageSymbolTail topLevel = (DLanguageSymbolTail) getTopLevelOfRecursiveElement(parent, parent.getClass());
-                    topLevelIdentifier = topLevel.getIdentifier();
-
-                } else if (parent instanceof DLanguageQualifiedIdentifierList) {
-                    final DLanguageQualifiedIdentifierList topLevel = (DLanguageQualifiedIdentifierList) getTopLevelOfRecursiveElement(parent, parent.getClass());
-                    topLevelIdentifier = topLevel.getIdentifier();
-                }
-                if (topLevelIdentifier.getReference() == null)
-                    throw new IllegalStateException();
-                final PsiElement resolve = topLevelIdentifier.getReference().resolve();
-                if (resolve instanceof VariableDeclaration || resolve.getParent() instanceof VariableDeclaration) {
-                    VariableDeclaration var = (VariableDeclaration) resolve;
-                    final Type variableDeclarationType = var.getVariableDeclarationType();
-                }
-                //the identifier is within one of the following:
-                // IdentifierList
-                // UnaryExpression
-                // PostfixExpression
-                // PrimaryExpression
-                // DotIdentifier
-                // Symbol
-                // SymbolTail
-                // MixinTemplateName
-                // QualifiedIdentifierList
+                topLevelIdentifier = findChildOfType(current, DLanguageIdentifier.class);//depth first search, so this will get the first identifier
             }
+            if (parent instanceof DLanguageIdentifierList) {
+                final DLanguageIdentifierList topLevel = (DLanguageIdentifierList) getTopLevelOfRecursiveElement(parent, parent.getClass());
+                topLevelIdentifier = topLevel.getIdentifier();
+
+            } else if (parent instanceof DLanguageSymbolTail) {
+                final DLanguageSymbolTail topLevel = (DLanguageSymbolTail) getTopLevelOfRecursiveElement(parent, parent.getClass());
+                topLevelIdentifier = topLevel.getIdentifier();
+
+            } else if (parent instanceof DLanguageQualifiedIdentifierList) {
+                final DLanguageQualifiedIdentifierList topLevel = (DLanguageQualifiedIdentifierList) getTopLevelOfRecursiveElement(parent, parent.getClass());
+                topLevelIdentifier = topLevel.getIdentifier();
+            }
+            if (topLevelIdentifier == null)
+                throw new IllegalStateException();
+            if (topLevelIdentifier.getReference() == null)
+                throw new IllegalStateException();
+            return findMemberDefinitionNodes(element, element.getName(), topLevelIdentifier);
+            //the identifier is within one of the following:
+            // IdentifierList
+            // UnaryExpression
+            // PostfixExpression
+            // PrimaryExpression
+            // DotIdentifier
+            // Symbol
+            // SymbolTail
+            // MixinTemplateName
+            // QualifiedIdentifierList
 
         } else {
             //#2 or 3
@@ -151,7 +163,44 @@ public class DResolveUtil {
             return findDefinitionNodesStandard(dLanguageFile, element, element.getName());
 
         }
-        return Collections.emptyList();
+    }
+
+    @NotNull
+    private static List<DNamedElement> findMemberDefinitionNodes(DLanguageIdentifier element, String name, DLanguageIdentifier topLevelIdentifier) {
+        List<DNamedElement> res = new ArrayList<>();
+        final PsiElement resolve = topLevelIdentifier.getReference().resolve();
+        if (resolve instanceof VariableDeclaration || resolve.getParent() instanceof VariableDeclaration) {
+            VariableDeclaration var = (VariableDeclaration) resolve;
+            final Type variableDeclarationType = var.getVariableDeclarationType();
+            if (variableDeclarationType.isOneIdentifier() == null)
+                return Collections.emptyList();
+            final PsiElement theTypeDeclaration = variableDeclarationType.isOneIdentifier().getReference().resolve();
+            if (theTypeDeclaration instanceof LocalVarContainer) {
+                final List<VariableDeclaration> memberVars = ((LocalVarContainer) theTypeDeclaration).getLocalPublicVariables(true, true, false);
+                for (VariableDeclaration memberVar : memberVars) {
+                    if (memberVar.actuallyIsDeclaration() && memberVar.getName().equals(name)) {
+                        res.add(memberVar);
+                    }
+                }
+            }
+            if (theTypeDeclaration instanceof FunctionContainer) {
+                final List<DLanguageFuncDeclaration> methods = ((FunctionContainer) theTypeDeclaration).getPublicFunctions(true, true, false);
+                for (DLanguageFuncDeclaration method : methods) {
+                    if (method.getName().equals(name)) {
+                        res.add(method);
+                    }
+                }
+            }
+            if (theTypeDeclaration instanceof GlobalVariableContainer) {
+                final List<VariableDeclaration> memberVars = ((GlobalVariableContainer) theTypeDeclaration).getGlobalPublicVariables(true, true, false);
+                for (VariableDeclaration memberVar : memberVars) {
+                    if (memberVar.getName().equals(name)) {
+                        res.add(memberVar);
+                    }
+                }
+            }
+        }
+        return res;
 
     }
 
@@ -163,7 +212,9 @@ public class DResolveUtil {
      * @param name
      * @return
      */
-    private static List<DNamedElement> findDefinitionNodesStandard(DLanguageFile dLanguageFile, DLanguageIdentifier element, String name) {
+    private static
+    @NotNull
+    List<DNamedElement> findDefinitionNodesStandard(DLanguageFile dLanguageFile, DLanguageIdentifier element, String name) {
         //first check in current file.
         ArrayList<DNamedElement> elements = new ArrayList<>();
         ArrayList<DNamedElement> res = new ArrayList<>();

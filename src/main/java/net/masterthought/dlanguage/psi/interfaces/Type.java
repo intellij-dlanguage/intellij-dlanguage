@@ -1,5 +1,6 @@
 package net.masterthought.dlanguage.psi.interfaces;
 
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.psi.*;
 
@@ -53,4 +54,27 @@ public class Type {
 //        }
     }
 
+    /**
+     * if the type is one identifier eg. Type foo = null;, then return that identifier, instead return null
+     *
+     * @return
+     */
+    public DLanguageIdentifier isOneIdentifier() {
+        List<DLanguageIdentifier> identifiers = new ArrayList<>();
+        for (PsiElement element : types) {
+            identifiers.addAll(PsiTreeUtil.findChildrenOfType(element, DLanguageIdentifier.class));
+        }
+        for (PsiElement element : basicTypes2) {
+            identifiers.addAll(PsiTreeUtil.findChildrenOfType(element, DLanguageIdentifier.class));
+        }
+        for (PsiElement element : storageClasses) {
+            identifiers.addAll(PsiTreeUtil.findChildrenOfType(element, DLanguageIdentifier.class));
+        }
+        for (PsiElement element : basicTypes) {
+            identifiers.addAll(PsiTreeUtil.findChildrenOfType(element, DLanguageIdentifier.class));
+        }
+        if (identifiers.size() == 1)
+            return identifiers.get(0);
+        return null;
+    }
 }
