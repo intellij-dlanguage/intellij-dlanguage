@@ -3,10 +3,13 @@ package net.masterthought.dlanguage.utils;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiNamedElement;
+import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+import net.masterthought.dlanguage.psi.interfaces.VariableDeclaration;
 import net.masterthought.dlanguage.psi.interfaces.containers.*;
 import org.jetbrains.annotations.NotNull;
 
@@ -15,7 +18,7 @@ import java.util.*;
 import static com.intellij.psi.util.PsiTreeUtil.findChildOfType;
 import static com.intellij.psi.util.PsiTreeUtil.getParentOfType;
 import static java.util.Collections.EMPTY_SET;
-import static net.masterthought.dlanguage.index.DModuleIndex.getFilesByModuleName;
+import static java.util.Collections.singletonList;
 import static net.masterthought.dlanguage.psi.DPsiUtil.parseImports;
 import static net.masterthought.dlanguage.utils.DUtil.getEndOfIdentifierList;
 import static net.masterthought.dlanguage.utils.DUtil.getTopLevelOfRecursiveElement;
@@ -90,7 +93,13 @@ public class DResolveUtil {
                     final DLanguageQualifiedIdentifierList topLevel = (DLanguageQualifiedIdentifierList) getTopLevelOfRecursiveElement(parent, parent.getClass());
                     topLevelIdentifier = topLevel.getIdentifier();
                 }
-
+                if (topLevelIdentifier.getReference() == null)
+                    throw new IllegalStateException();
+                final PsiElement resolve = topLevelIdentifier.getReference().resolve();
+                if (resolve instanceof VariableDeclaration || resolve.getParent() instanceof VariableDeclaration) {
+                    VariableDeclaration var = (VariableDeclaration) resolve;
+                    final DLanguageType variableDeclarationType = var.getVariableDeclarationType();
+                }
                 //the identifier is within one of the following:
                 // IdentifierList
                 // UnaryExpression
@@ -146,7 +155,7 @@ public class DResolveUtil {
     }
 
     /**
-     * for resolving anything that isn't a constructor and doesn't have a long name like foo.bar.gh()
+     * for resolving anything that isn't a constructor and doesn't have a longform name like foo.bar.gh()
      *
      * @param dLanguageFile
      * @param element
@@ -197,18 +206,25 @@ public class DResolveUtil {
 
     private static List<DNamedElement> findModuleDefinitionNodes(DLanguageFile dLanguageFile, DLanguageModuleFullyQualifiedName module) {
         final String fileName = dLanguageFile.getName();
-        final String moduleName = fileName.substring(0, fileName.length() - 2);
+        final String moduleNameFromFile = fileName.substring(0, fileName.length() - 2);
         final String name = getEndOfIdentifierList(module).getName();
-        if (name.equals(moduleName))
-            return Collections.singletonList(dLanguageFile);
+        if (name.equals(moduleNameFromFile)) {
+            if (findChildOfType(dLanguageFile, DLanguageModuleDeclaration.class) != null)
+                return singletonList(findChildOfType(dLanguageFile, DLanguageModuleDeclaration.class));
+            return singletonList(dLanguageFile);
+        }
         return Collections.emptyList();
     }
 
     public static Set<DLanguageFile> fromModulesToFiles(Project project, Set<String> modules) {
         Set<DLanguageFile> filesFound = new HashSet<>();
         for (String module : modules) {
-            List<DLanguageFile> files = getFilesByModuleName(project, module, GlobalSearchScope.allScope(project));
-            filesFound.addAll(files);
+            PsiFile[] files = FilenameIndex.getFilesByName(project, module + ".d", GlobalSearchScope.allScope(project));
+            for (PsiFile file : files) {
+                if (file instanceof DLanguageFile)
+                    filesFound.add((DLanguageFile) file);//todo go back to old method using DModuleIndex
+            }
+
         }
         return filesFound;
     }

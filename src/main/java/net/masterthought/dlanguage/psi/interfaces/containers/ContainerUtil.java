@@ -107,11 +107,11 @@ public class ContainerUtil {
             }
         }
         if (!includeNestedDeclarations && containerClass.isInstance(elementToSearch) && elementToSearch != topLevel) {
-            return res; // if not including nested declarations, stop recursive after a nested container has been found
+            return res; // if not including nested declarations, stop recursing after a nested container has been found
         }
 
         for (PsiElement child : elementToSearch.getChildren()) {
-            res.addAll(getDeclarationsImpl(topLevel, (Container) child, declarationClass, includeFromMixins, includeNestedDeclarations, visibility));
+            res.addAll(getDeclarationsImpl(child, topLevel, declarationClass, includeFromMixins, includeNestedDeclarations, visibility));
         }
         return res;
     }

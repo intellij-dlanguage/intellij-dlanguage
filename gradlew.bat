@@ -6,6 +6,9 @@
 @rem ##########################################################################
 
 @rem Set local scope for the variables with windows NT shell
+set DEFAULT_JVM_OPTS=-Xmx4G
+
+
 if "%OS%"=="Windows_NT" setlocal
 
 set DIRNAME=%~dp0
