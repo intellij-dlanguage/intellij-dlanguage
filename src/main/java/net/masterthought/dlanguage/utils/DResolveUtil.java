@@ -8,6 +8,7 @@ import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import net.masterthought.dlanguage.psi.*;
+import net.masterthought.dlanguage.psi.interfaces.CanInherit;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 import net.masterthought.dlanguage.psi.interfaces.Type;
 import net.masterthought.dlanguage.psi.interfaces.VariableDeclaration;
@@ -51,8 +52,8 @@ public class DResolveUtil {
 
     private static
     @NotNull
-    List<DNamedElement> findDefinitionNodes(DLanguageFile dLanguageFile, DLanguageIdentifier element) {
-        //five major possibilities:
+    List<? extends DNamedElement> findDefinitionNodes(DLanguageFile dLanguageFile, DLanguageIdentifier element) {
+        //six major possibilities:
         //1. identifier is part of import statement, and should resolve to a file
         //2. identifier is a normal function/class name/etc..
         //  2.a.overloaded functions, specifically resolving the correct overloaded functions
@@ -60,12 +61,17 @@ public class DResolveUtil {
         //  3.a.overloaded constructors, specifically resolving the correct overloaded functions
         //4. resolving something referred to with its full name eg. foo.bar.something();
         //5. resolving a member function/var of a class/struct/template etc...
+        //6. resolving the class/interface from which a class/interace inherits from. This needs its own category because the process that does this cannot call getDeclarations with include from inheritance due to infinite recursion issues.
         final PsiElement parent = element.getParent();
         //identifiers within templates break this approach
         if (getParentOfType(parent, DLanguageImportDeclaration.class) != null) {
             //#1 is true
-            log.info("#1:" + parent.getText());//todo remove later
+            log.info("#1:" + parent.getText());//todo remove these later
             return findModuleDefinitionNodes(dLanguageFile, getParentOfType(element, DLanguageModuleFullyQualifiedName.class));
+        }
+        if (getParentOfType(parent, DLanguageBaseClassList.class) != null || getParentOfType(parent, DLanguageBaseInterfaceList.class) != null) {
+            //#6 is true
+            return findClassOrInterfaceDefinitionNodes(dLanguageFile, element, element.getName());
         }
         if (parent.getText().contains(".") && !parent.getText().contains("{") | parent instanceof DLanguageModuleFullyQualifiedName
 //            parent instanceof DLanguageUnaryExpression ||
@@ -132,6 +138,10 @@ public class DResolveUtil {
                 if (current instanceof DLanguageNewExpression || current instanceof DLanguageNewExpressionWithArgs) {
                     //#3 is true
                     log.info("#3:" + parent.getText());
+                    return findConstructorDefinitionNodes(dLanguageFile, element, current);
+                }
+                if (current instanceof DLanguageDeleteExpression) {
+                    return findDestructorDefinitionNodes(dLanguageFile, element, current);
                 }
                 if (current instanceof DLanguageCastExpression) {
                     //#2 is true
@@ -165,6 +175,65 @@ public class DResolveUtil {
         }
     }
 
+    private static
+    @NotNull
+    List<CanInherit> findClassOrInterfaceDefinitionNodes(DLanguageFile file, DLanguageIdentifier element, String name) {
+        List<CanInherit> canidates = new ArrayList<>();
+        canidates.addAll(file.getClassDeclarations(true, false, false));
+        canidates.addAll(file.getInterfaceDeclarations(true, false, false));
+        List<CanInherit> res = new ArrayList<>();
+        for (CanInherit canidate : canidates) {
+            if (canidate.getName().equals(name))
+                res.add(canidate);
+        }
+        return res;
+    }
+
+    private static
+    @NotNull
+    List<DNamedElement> findDestructorDefinitionNodes(DLanguageFile dLanguageFile, DLanguageIdentifier element, PsiElement deleteExpression) {
+        //todo is this needed
+        List<DNamedElement> res = new ArrayList<>();
+        if (deleteExpression instanceof DLanguageDeleteExpression) {
+            for (DNamedElement dNamedElement : findDefinitionNodesStandard(dLanguageFile, element, element.getName())) {
+                if (dNamedElement instanceof DestructorContainer) {
+                    res.addAll(((DestructorContainer) dNamedElement).getPublicDestructors(true, false, false));
+                }
+            }
+        } else {
+            throw new IllegalArgumentException("new expression must contain a new expression");
+        }
+        return res;
+    }
+
+    private static
+    @NotNull
+    List<DNamedElement> findConstructorDefinitionNodes(@NotNull DLanguageFile dLanguageFile, @NotNull DLanguageIdentifier element, @NotNull PsiElement newExpression) {
+        List<DNamedElement> res = new ArrayList<>();
+        if (newExpression instanceof DLanguageNewExpression || newExpression instanceof DLanguageNewExpressionWithArgs) {
+            for (DNamedElement dNamedElement : findDefinitionNodesStandard(dLanguageFile, element, element.getName())) {
+                if (dNamedElement instanceof ConstructorContainer) {
+                    res.addAll(((ConstructorContainer) dNamedElement).getPublicConstructors(true, false, false));
+                }
+            }
+        } else {
+            throw new IllegalArgumentException("new expression must contain a new expression");
+        }
+        return res;
+    }
+
+    /**
+     * finds publicly accessible definitions within a class/struct/template etc.
+     * ex:
+     * Class c = new Class();
+     * c.toString();
+     * this allows for resolving toString.
+     *
+     * @param element            the element that the user wanted resolving
+     * @param name               the name of the element that needs resolving
+     * @param topLevelIdentifier the name of a variable containing the class/struct etc. in the above example it is c.
+     * @return resolved method(s)
+     */
     @NotNull
     private static List<DNamedElement> findMemberDefinitionNodes(DLanguageIdentifier element, String name, DLanguageIdentifier topLevelIdentifier) {
         List<DNamedElement> res = new ArrayList<>();

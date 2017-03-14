@@ -5,7 +5,6 @@ import net.masterthought.dlanguage.psi.DLanguageAutoDeclarationY;
 import net.masterthought.dlanguage.psi.DLanguageDeclaratorInitializer;
 import net.masterthought.dlanguage.psi.interfaces.CanInherit;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
-import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 import net.masterthought.dlanguage.psi.interfaces.Mixin;
 import net.masterthought.dlanguage.psi.interfaces.Mixinable;
 import org.jetbrains.annotations.NotNull;
@@ -80,18 +79,18 @@ public class ContainerUtil {
      */
     public static <DeclarationClass extends DNamedElement> List<? extends DeclarationClass> getDeclarations(PsiElement elementToSearch, Container topLevel, Class<DeclarationClass> declarationClass, boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
         List<DeclarationClass> res = new ArrayList<>();
-        if (includeFromInheritance && declarationClass.isInstance(CanInherit.class)) {
+        if (includeFromInheritance && CanInherit.class.isInstance(elementToSearch)) {
             final List<CanInherit> whatInheritsFrom = ((CanInherit) elementToSearch).whatInheritsFrom();
             for (CanInherit canInherit : whatInheritsFrom) {
-                res.addAll(getDeclarations(canInherit, topLevel, declarationClass, includeFromMixins, includeFromInheritance, includeNestedDeclarations));
+                res.addAll(getDeclarations(canInherit, canInherit, declarationClass, includeFromMixins, includeFromInheritance, includeNestedDeclarations));//todo only get publics
             }
         }
-        res.addAll(getDeclarationsImpl(elementToSearch, topLevel, declarationClass, includeFromMixins, includeNestedDeclarations, Visibility.private_));
+        res.addAll(getDeclarationsImpl(elementToSearch, topLevel, declarationClass, includeFromMixins, includeNestedDeclarations));
         return res;
     }
 
     @NotNull
-    public static <DeclarationClass extends DNamedElement> List<? extends DeclarationClass> getDeclarationsImpl(PsiElement elementToSearch, Container topLevel, Class<DeclarationClass> declarationClass, boolean includeFromMixins, boolean includeNestedDeclarations, Visibility visibility) {
+    public static <DeclarationClass extends DNamedElement> List<? extends DeclarationClass> getDeclarationsImpl(PsiElement elementToSearch, Container topLevel, Class<DeclarationClass> declarationClass, boolean includeFromMixins, boolean includeNestedDeclarations) {
         Class containerClass = declarationContainer.get(declarationClass);
         List<DeclarationClass> res = new ArrayList<>();
         if (declarationClass.isInstance(elementToSearch)) {
@@ -111,7 +110,7 @@ public class ContainerUtil {
         }
 
         for (PsiElement child : elementToSearch.getChildren()) {
-            res.addAll(getDeclarationsImpl(child, topLevel, declarationClass, includeFromMixins, includeNestedDeclarations, visibility));
+            res.addAll(getDeclarationsImpl(child, topLevel, declarationClass, includeFromMixins, includeNestedDeclarations));
         }
         return res;
     }

@@ -1682,14 +1682,22 @@ public class DPsiImplUtil {
     private static boolean isSomeVisibility(PsiElement psiElement, Visibility visibility, Class<? extends Container> containerType) {
         PsiElement parent = psiElement.getParent();
         while (true) {
+            //default to public
             if (containerType.isInstance(parent)) {
                 return visibility == public_;
             }
+            // check that named element isn't explicitly marked some visibilty, eg. private gh();
             if (parent instanceof DLanguageDeclDef && ((DLanguageDeclDef) parent).getAttributeSpecifier() != null) {
                 final DLanguageAttributeSpecifier attribute = ((DLanguageDeclDef) parent).getAttributeSpecifier();
                 if (attribute.getAttribute().getProtectionAttribute() != null) {
-                    if (DUtil.protectionToVisibilty(attribute.getAttribute().getProtectionAttribute()) == (visibility))
-                        return true;
+                    return DUtil.protectionToVisibilty(attribute.getAttribute().getProtectionAttribute()) == (visibility);
+                }
+            }
+            //check for public: or private: or protected:
+            if (parent instanceof DLanguageDeclDefs && ((DLanguageDeclDefs) parent).getDeclDef().getAttributeSpecifier() != null) {
+                final DLanguageAttributeSpecifier attribute = ((DLanguageDeclDefs) parent).getDeclDef().getAttributeSpecifier();
+                if (attribute.getAttribute().getProtectionAttribute() != null && attribute.getOpColon() != null) {
+                    return DUtil.protectionToVisibilty(attribute.getAttribute().getProtectionAttribute()) == (visibility);
                 }
             }
             parent = parent.getParent();
