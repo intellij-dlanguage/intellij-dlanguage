@@ -28,7 +28,7 @@ import static net.masterthought.dlanguage.utils.DUtil.getTopLevelOfRecursiveElem
 /**
  * todo when constructor resolution fails, the class/struct should be resolved instead
  * todo match arguments to resolve overloaded functions
- * todo allow for optional resolution of private methods for annotatrsetc that could rely on that
+ * todo allow for optional resolution of private methods for annotators that could rely on that
  * todo improve performance somehow
  * todo create much more expansive unitests
  * todo when returning a result resolve the identifier not the entire declaration

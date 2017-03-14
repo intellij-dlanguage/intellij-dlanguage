@@ -3,8 +3,7 @@ package net.masterthought.dlanguage.psi.references;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.util.IncorrectOperationException;
-import net.masterthought.dlanguage.psi.DLanguageFuncDeclaration;
-import net.masterthought.dlanguage.psi.DLanguageIdentifier;
+import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.impl.DPsiImplUtil;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 import net.masterthought.dlanguage.utils.DResolveUtil;
@@ -14,6 +13,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
+import static com.intellij.psi.util.PsiTreeUtil.findChildrenOfType;
+import static net.masterthought.dlanguage.utils.DUtil.getEndOfIdentifierList;
 
 /**
  * Resolves references to elements.
@@ -91,17 +93,33 @@ public class DReference extends PsiReferenceBase<PsiNamedElement> implements Psi
 //        DCDCompletion dcdCompletion = new DCDCompletion();
 //        return dcdCompletion.autoComplete(offset,containingFile).toArray();
 
-//        final PsiFile containingFile = myElement.getContainingFile();
-//        if (!(containingFile instanceof DLanguageFile)) {
-//            return new Object[]{};
-//        }
-//        List<PsiNamedElement> namedNodes = DUtil.findDefinitionNodes((DLanguageFile)containingFile);
-//        List<String> variants = new ArrayList<String>(20);
-//        for (final PsiNamedElement namedElement : namedNodes) {
-//            variants.add(namedElement.getName());
-//        }
-//        return variants.toArray();
-        return new Object[]{};
+        final PsiFile containingFile = myElement.getContainingFile();
+        if (!(containingFile instanceof DLanguageFile)) {
+            return new Object[]{};
+        }
+        List<PsiNamedElement> namedNodes = new ArrayList<>();
+        List<DLanguageFile> files = new ArrayList<>();
+        for (DLanguageModuleFullyQualifiedName dLanguageModuleFullyQualifiedName : findChildrenOfType(containingFile, DLanguageModuleFullyQualifiedName.class)) {
+            final PsiElement resolve = getEndOfIdentifierList(dLanguageModuleFullyQualifiedName).getReference().resolve();
+            if (resolve instanceof DLanguageFile)
+                files.add((DLanguageFile) resolve);
+            if (resolve instanceof DLanguageModuleDeclaration)
+                files.add((DLanguageFile) resolve.getContainingFile());
+        }
+        for (DLanguageFile file : files) {
+            namedNodes.addAll(file.getFunctionDeclarations(true, true, true));
+            namedNodes.addAll(file.getClassDeclarations(true, true, true));
+            namedNodes.addAll(file.getStructDeclarations(true, true, true));
+            namedNodes.addAll(file.getTemplateDeclarations(true, true, true));
+            namedNodes.addAll(file.getInterfaceDeclarations(true, true, true));
+            namedNodes.addAll(file.getGlobalVariableDeclarations(true, true, true));
+        }
+
+        List<String> variants = new ArrayList<String>(20);
+        for (final PsiNamedElement namedElement : namedNodes) {
+            variants.add(namedElement.getName());
+        }
+        return variants.toArray();
     }
 
     @Override
