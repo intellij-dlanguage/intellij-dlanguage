@@ -29,6 +29,7 @@ public class DElementTypeFactory {
         if (name.equals("AUTO_DECLARATION_Y")) return new DLanguageAutoDeclarationStubElementType(name);
         if (name.equals("ENUM_DECLARATION")) return new DLanguageEnumDeclarationStubElementType(name);
         if (name.equals("UNION_DECLARATION")) return new DLanguageUnionDeclarationStubElementType(name);
+        if (name.equals("IMPORT")) return new DLanguageImportDeclarationStubElementType(name);
         throw new RuntimeException("Unknown element type: " + name);
     }
 }

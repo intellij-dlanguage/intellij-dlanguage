@@ -187,5 +187,11 @@ public class DElementFactory {
         if (e instanceof DLanguageUnionDeclaration) return e;
         return null;
     }
+
+    public static PsiElement createDLanguageImportFromText(Project project, String name) {
+        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
+        if (e instanceof DLanguageImportDeclaration) return e;
+        return null;
+    }
 }
 

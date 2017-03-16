@@ -155,7 +155,7 @@ public interface DLanguageTypes {
   IElementType IDENTITY_EXPRESSION = new DLanguageElementType("IDENTITY_EXPRESSION");
   IElementType IF_CONDITION = new DLanguageElementType("IF_CONDITION");
   IElementType IF_STATEMENT = new DLanguageElementType("IF_STATEMENT");
-  IElementType IMPORT = new DLanguageElementType("IMPORT");
+  IElementType IMPORT = DElementTypeFactory.factory("IMPORT");
   IElementType IMPORT_BIND = new DLanguageElementType("IMPORT_BIND");
   IElementType IMPORT_BIND_LIST = new DLanguageElementType("IMPORT_BIND_LIST");
   IElementType IMPORT_DECLARATION = new DLanguageElementType("IMPORT_DECLARATION");

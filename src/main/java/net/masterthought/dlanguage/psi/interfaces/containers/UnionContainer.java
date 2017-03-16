@@ -18,15 +18,15 @@ public interface UnionContainer extends Container {
         return getDeclarations(this, this, unionClass, includeFromMixins, includeFromInheritance, includeNestedDeclarations);
     }
 
-    default List<DLanguageUnionDeclaration> getPublicUniones(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
+    default List<DLanguageUnionDeclaration> getPublicUnions(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
         return DUtil.getPublicElements(getUnionDeclarations(includeFromMixins, includeFromInheritance, includeNestedDeclarations));
     }
 
-    default List<DLanguageUnionDeclaration> getProtectedUniones(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
+    default List<DLanguageUnionDeclaration> getProtectedUnions(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
         return DUtil.getProtectedElements(getUnionDeclarations(includeFromMixins, includeFromInheritance, includeNestedDeclarations));
     }
 
-    default List<DLanguageUnionDeclaration> getPrivateUniones(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
+    default List<DLanguageUnionDeclaration> getPrivateUnions(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
         return DUtil.getPrivateElements(getUnionDeclarations(includeFromMixins, includeFromInheritance, includeNestedDeclarations));
     }
 

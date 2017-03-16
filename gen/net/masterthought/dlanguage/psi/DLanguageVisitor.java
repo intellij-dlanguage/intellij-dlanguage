@@ -570,7 +570,8 @@ public class DLanguageVisitor extends PsiElementVisitor {
   }
 
   public void visitImport(@NotNull DLanguageImport o) {
-    visitPsiElement(o);
+    visitDNamedElement(o);
+    // visitHasVisibility(o);
   }
 
   public void visitImportBind(@NotNull DLanguageImportBind o) {

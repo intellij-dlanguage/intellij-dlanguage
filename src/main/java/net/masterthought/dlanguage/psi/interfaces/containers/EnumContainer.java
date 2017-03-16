@@ -18,15 +18,15 @@ public interface EnumContainer extends Container {
         return getDeclarations(this, this, enumClass, includeFromMixins, includeFromInheritance, includeNestedDeclarations);
     }
 
-    default List<DLanguageEnumDeclaration> getPublicEnumes(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
+    default List<DLanguageEnumDeclaration> getPublicEnums(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
         return DUtil.getPublicElements(getEnumDeclarations(includeFromMixins, includeFromInheritance, includeNestedDeclarations));
     }
 
-    default List<DLanguageEnumDeclaration> getProtectedEnumes(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
+    default List<DLanguageEnumDeclaration> getProtectedEnums(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
         return DUtil.getProtectedElements(getEnumDeclarations(includeFromMixins, includeFromInheritance, includeNestedDeclarations));
     }
 
-    default List<DLanguageEnumDeclaration> getPrivateEnumes(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
+    default List<DLanguageEnumDeclaration> getPrivateEnums(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
         return DUtil.getPrivateElements(getEnumDeclarations(includeFromMixins, includeFromInheritance, includeNestedDeclarations));
     }
 

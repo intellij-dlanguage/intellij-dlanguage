@@ -3,26 +3,20 @@ package net.masterthought.dlanguage.utils;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiNamedElement;
-import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import net.masterthought.dlanguage.psi.*;
-import net.masterthought.dlanguage.psi.interfaces.CanInherit;
-import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
-import net.masterthought.dlanguage.psi.interfaces.Type;
-import net.masterthought.dlanguage.psi.interfaces.VariableDeclaration;
+import net.masterthought.dlanguage.psi.interfaces.*;
 import net.masterthought.dlanguage.psi.interfaces.containers.*;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
 import static com.intellij.psi.util.PsiTreeUtil.findChildOfType;
 import static com.intellij.psi.util.PsiTreeUtil.getParentOfType;
 import static java.util.Collections.EMPTY_SET;
-import static java.util.Collections.singletonList;
-import static net.masterthought.dlanguage.psi.DPsiUtil.parseImports;
-import static net.masterthought.dlanguage.utils.DUtil.getEndOfIdentifierList;
+import static net.masterthought.dlanguage.index.DModuleIndex.getFilesByModuleName;
 import static net.masterthought.dlanguage.utils.DUtil.getTopLevelOfRecursiveElement;
 
 /**
@@ -30,11 +24,12 @@ import static net.masterthought.dlanguage.utils.DUtil.getTopLevelOfRecursiveElem
  * todo match arguments to resolve overloaded functions
  * todo allow for optional resolution of private methods for annotators that could rely on that
  * todo improve performance somehow
- * todo create much more expansive unitests
- * todo when returning a result resolve the identifier not the entire declaration
+ * todo create much more expansive unittests
+ * todo when returning a result resolve the identifier not the entire declaration, however this may mess with some internal code in this file and in the ContainerUtil file
  * todo fix multipackage bugs with imports
  * todo make local imports work
  * todo allow for resolving of protected methods if within class in question
+ * todo classes in same module should be able to access private members
  * Created by franc on 1/18/2017.
  */
 public class DResolveUtil {
@@ -48,13 +43,7 @@ public class DResolveUtil {
         Set<PsiNamedElement> definitionNodes = new HashSet<>();
         //not found in current file, proceed to search all files
         Project project = element.getProject();
-        //todo:limited scope imports will not be parsed correctly
-        Set<String> importedModules = parseImports(element.getContainingFile());
-        Set<DLanguageFile> filesToSearch = fromModulesToFiles(project, importedModules);
-        filesToSearch.add((DLanguageFile) element.getContainingFile());
-        for (DLanguageFile dLanguageFile : filesToSearch) {
-            definitionNodes.addAll(findDefinitionNodes(dLanguageFile, (DLanguageIdentifier) element));
-        }
+        definitionNodes.addAll(findDefinitionNodes((DLanguageFile) element.getContainingFile(), (DLanguageIdentifier) element));
         return definitionNodes;
 
     }
@@ -62,7 +51,7 @@ public class DResolveUtil {
     private static
     @NotNull
     List<? extends DNamedElement> findDefinitionNodes(DLanguageFile dLanguageFile, DLanguageIdentifier element) {
-        //six major possibilities:
+        //seven major possibilities:
         //1. identifier is part of import statement, and should resolve to a file
         //2. identifier is a normal function/class name/etc..
         //  2.a.overloaded functions, specifically resolving the correct overloaded functions
@@ -71,16 +60,20 @@ public class DResolveUtil {
         //4. resolving something referred to with its full name eg. foo.bar.something();
         //5. resolving a member function/var of a class/struct/template etc...
         //6. resolving the class/interface from which a class/interace inherits from. This needs its own category because the process that does this cannot call getDeclarations with include from inheritance due to infinite recursion issues.
+        //7. resolving a mixin/mixin template This needs its own category because the process that does this cannot call getDeclarations with include from mixins due to infinite recursion issues.
         final PsiElement parent = element.getParent();
         //identifiers within templates break this approach
+        if (!dLanguageFile.getText().contains(element.getText()) &&
+            getParentOfType(parent, DLanguageImportDeclaration.class) == null)
+            return Collections.emptyList();//optimization to prevent unnecessary searching
         if (getParentOfType(parent, DLanguageImportDeclaration.class) != null) {
             //#1 is true
             log.info("#1:" + parent.getText());//todo remove these later
-            return findModuleDefinitionNodes(dLanguageFile, getParentOfType(element, DLanguageModuleFullyQualifiedName.class));
+            return findModuleDefinitionNodes(getParentOfType(element, DLanguageModuleFullyQualifiedName.class));
         }
         if (getParentOfType(parent, DLanguageBaseClassList.class) != null || getParentOfType(parent, DLanguageBaseInterfaceList.class) != null) {
             //#6 is true
-            return findClassOrInterfaceDefinitionNodes(dLanguageFile, element, element.getName());
+            return findClassOrInterfaceDefinitionNodes(element, element.getName());
         }
         if (parent.getText().contains(".") && !parent.getText().contains("{") | parent instanceof DLanguageModuleFullyQualifiedName
 //            parent instanceof DLanguageUnaryExpression ||
@@ -128,7 +121,7 @@ public class DResolveUtil {
                 throw new IllegalStateException();
             if (topLevelIdentifier.getReference() == null)
                 throw new IllegalStateException();
-            return findMemberDefinitionNodes(element, element.getName(), topLevelIdentifier);
+            return findMemberDefinitionNodes(element.getName(), topLevelIdentifier);
             //the identifier is within one of the following:
             // IdentifierList
             // UnaryExpression
@@ -147,10 +140,10 @@ public class DResolveUtil {
                 if (current instanceof DLanguageNewExpression || current instanceof DLanguageNewExpressionWithArgs) {
                     //#3 is true
                     log.info("#3:" + parent.getText());
-                    return findConstructorDefinitionNodes(dLanguageFile, element, current);
+                    return findConstructorDefinitionNodes(element, current);
                 }
                 if (current instanceof DLanguageDeleteExpression) {
-                    return findDestructorDefinitionNodes(dLanguageFile, element, current);
+                    return findDestructorDefinitionNodes(element, current);
                 }
                 if (current instanceof DLanguageCastExpression) {
                     //#2 is true
@@ -173,23 +166,63 @@ public class DResolveUtil {
                     //#2 is true
                     break;
                 }
+                //why are there 4 different ways of parsing a mixin?
+                if (current instanceof DLanguageMixinExpression ||
+                    current instanceof DLanguageMixinStatement ||
+                    current instanceof DLanguageMixinDeclaration ||
+                    current instanceof DLanguageTemplateMixin) {
+                    log.info("#7" + parent.getText());
+                    //7 is true
+                    return Collections.singletonList(findMixinDefinitionNodes(element, element.getName(), (Mixin) current));
+                }
                 if (current == null)
                     break;
                 current = current.getParent();
             }
             //default to #2:
             log.info("#2:" + parent.getText());
-            return findDefinitionNodesStandard(dLanguageFile, element, element.getName());
-
+            return findDefinitionNodesStandard(element, element.getName());
         }
+    }
+
+    /**
+     * resolves the definition of something that has been mixed in. This method cannot use the getDeclarations methods
+     *
+     * @param element
+     * @param name
+     * @return
+     */
+    @Nullable
+    private static Mixinable findMixinDefinitionNodes(DLanguageIdentifier element, String name, Mixin mixin) {
+        List<Mixinable> res = new ArrayList<>();
+        final List<Mixinable> mixinables = new ArrayList<>();
+        for (DNamedElement dNamedElement : getDeclarationsVisibleFromElement(element, element.getParentContainer(), false)) {
+            if (dNamedElement instanceof Mixinable)
+                mixinables.add((Mixinable) dNamedElement);
+        }
+        for (Mixinable mixinable : mixinables) {
+            if (mixinable.getName().equals(name))
+                if (mixinable instanceof HasVisibility)
+                    if (((HasVisibility) mixinable).isPublic())
+                        res.add(mixinable);
+                    else
+                        res.add(mixinable);
+        }
+        if (res.size() == 1)
+            return res.get(0);
+        return null;//todo should return list
     }
 
     private static
     @NotNull
-    List<CanInherit> findClassOrInterfaceDefinitionNodes(DLanguageFile file, DLanguageIdentifier element, String name) {
+    List<CanInherit> findClassOrInterfaceDefinitionNodes(DLanguageIdentifier element, String name) {
         List<CanInherit> canidates = new ArrayList<>();
-        canidates.addAll(file.getClassDeclarations(true, false, false));
-        canidates.addAll(file.getInterfaceDeclarations(true, false, false));
+        for (DNamedElement dNamedElement : getDeclarationsVisibleFromElement(element, element.getParentContainer())) {
+            if (dNamedElement instanceof CanInherit) {
+                canidates.add((CanInherit) dNamedElement);
+            }
+        }
+
         List<CanInherit> res = new ArrayList<>();
         for (CanInherit canidate : canidates) {
             if (canidate.getName().equals(name))
@@ -200,11 +233,11 @@ public class DResolveUtil {
 
     private static
     @NotNull
-    List<DNamedElement> findDestructorDefinitionNodes(DLanguageFile dLanguageFile, DLanguageIdentifier element, PsiElement deleteExpression) {
+    List<DNamedElement> findDestructorDefinitionNodes(DLanguageIdentifier element, PsiElement deleteExpression) {
         //todo is this needed
         List<DNamedElement> res = new ArrayList<>();
         if (deleteExpression instanceof DLanguageDeleteExpression) {
-            for (DNamedElement dNamedElement : findDefinitionNodesStandard(dLanguageFile, element, element.getName())) {
+            for (DNamedElement dNamedElement : findDefinitionNodesStandard(element, element.getName())) {
                 if (dNamedElement instanceof DestructorContainer) {
                     res.addAll(((DestructorContainer) dNamedElement).getPublicDestructors(true, false, false));
                 }
@@ -217,10 +250,10 @@ public class DResolveUtil {
 
     private static
     @NotNull
-    List<DNamedElement> findConstructorDefinitionNodes(@NotNull DLanguageFile dLanguageFile, @NotNull DLanguageIdentifier element, @NotNull PsiElement newExpression) {
+    List<DNamedElement> findConstructorDefinitionNodes(@NotNull DLanguageIdentifier element, @NotNull PsiElement newExpression) {
         List<DNamedElement> res = new ArrayList<>();
         if (newExpression instanceof DLanguageNewExpression || newExpression instanceof DLanguageNewExpressionWithArgs) {
-            for (DNamedElement dNamedElement : findDefinitionNodesStandard(dLanguageFile, element, element.getName())) {
+            for (DNamedElement dNamedElement : findDefinitionNodesStandard(element, element.getName())) {
                 if (dNamedElement instanceof ConstructorContainer) {
                     res.addAll(((ConstructorContainer) dNamedElement).getPublicConstructors(true, false, false));
                 }
@@ -238,16 +271,16 @@ public class DResolveUtil {
      * c.toString();
      * this allows for resolving toString.
      *
-     * @param element            the element that the user wanted resolving
      * @param name               the name of the element that needs resolving
      * @param topLevelIdentifier the name of a variable containing the class/struct etc. in the above example it is c.
      * @return resolved method(s)
      */
     @NotNull
-    private static List<DNamedElement> findMemberDefinitionNodes(DLanguageIdentifier element, String name, DLanguageIdentifier topLevelIdentifier) {
+    private static List<DNamedElement> findMemberDefinitionNodes(String name, DLanguageIdentifier topLevelIdentifier) {
+        //todo rewrite
         List<DNamedElement> res = new ArrayList<>();
         final PsiElement resolve = topLevelIdentifier.getReference().resolve();
-        if (resolve instanceof VariableDeclaration || resolve.getParent() instanceof VariableDeclaration) {
+        if (resolve instanceof VariableDeclaration ) {
             VariableDeclaration var = (VariableDeclaration) resolve;
             final Type variableDeclarationType = var.getVariableDeclarationType();
             if (variableDeclarationType.isOneIdentifier() == null)
@@ -270,7 +303,7 @@ public class DResolveUtil {
                 }
             }
             if (theTypeDeclaration instanceof GlobalVariableContainer) {
-                final List<VariableDeclaration> memberVars = ((GlobalVariableContainer) theTypeDeclaration).getGlobalPublicVariables(true, true, false);
+                final List<VariableDeclaration> memberVars = ((GlobalVariableContainer) theTypeDeclaration).getPublicGlobalVariables(true, true, false);
                 for (VariableDeclaration memberVar : memberVars) {
                     if (memberVar.getName().equals(name)) {
                         res.add(memberVar);
@@ -285,76 +318,73 @@ public class DResolveUtil {
     /**
      * for resolving anything that isn't a constructor and doesn't have a longform name like foo.bar.gh()
      *
-     * @param dLanguageFile
      * @param element
      * @param name
      * @return
      */
     private static
     @NotNull
-    List<DNamedElement> findDefinitionNodesStandard(DLanguageFile dLanguageFile, DLanguageIdentifier element, String name) {
-        //first check in current file.
-        ArrayList<DNamedElement> elements = new ArrayList<>();
-        ArrayList<DNamedElement> res = new ArrayList<>();
-        elements.addAll(dLanguageFile.getClassDeclarations(true, false, false));
-        elements.addAll(dLanguageFile.getStructDeclarations(true, false, false));
-        elements.addAll(dLanguageFile.getTemplateDeclarations(true, false, false));
-        elements.addAll(dLanguageFile.getGlobalVariableDeclarations(true, false, false));
-        elements.addAll(dLanguageFile.getFunctionDeclarations(true, false, false));
-        for (DNamedElement dNamedElement : elements) {
-            if (dNamedElement.getName().equals(name))
+    List<DNamedElement> findDefinitionNodesStandard(DLanguageIdentifier element, String name) {
+        List<DNamedElement> res = new ArrayList<>();
+        for (DNamedElement dNamedElement : getDeclarationsVisibleFromElement(element, element.getParentContainer())) {
+            if (dNamedElement.getName() != null && dNamedElement.getName().equals(name))
                 res.add(dNamedElement);
-        }
-        //check in element parents
-        boolean includeFromInheritance = false;
-        PsiElement current = element.getParent();
-        while (true) {
-            if (current instanceof ClassContainer) {
-                ((ClassContainer) current).getClassDeclarations(true, true, true);
-            }
-            if (current instanceof StructContainer) {
-                ((StructContainer) current).getStructDeclarations(true, true, true);
-            }
-            if (current instanceof TemplateContainer) {
-                ((TemplateContainer) current).getTemplateDeclarations(true, true, true);
-            }
-            if (current instanceof GlobalVariableContainer) {
-                ((GlobalVariableContainer) current).getGlobalVariableDeclarations(true, true, true);
-            }
-            if (current instanceof LocalVarContainer) {
-                ((LocalVarContainer) current).getLocalVariableDeclarations(true, true, true);
-            }
-            if (current instanceof FunctionContainer) {
-                ((FunctionContainer) current).getFunctionDeclarations(true, true, true);
-            }
-            if (current instanceof DLanguageFile)
-                break;
-            current = current.getParent();
         }
         return res;
     }
 
-    private static List<DNamedElement> findModuleDefinitionNodes(DLanguageFile dLanguageFile, DLanguageModuleFullyQualifiedName module) {
-        final String fileName = dLanguageFile.getName();
-        final String moduleNameFromFile = fileName.substring(0, fileName.length() - 2);
-        final String name = getEndOfIdentifierList(module).getName();
-        if (name.equals(moduleNameFromFile)) {
-            if (findChildOfType(dLanguageFile, DLanguageModuleDeclaration.class) != null)
-                return singletonList(findChildOfType(dLanguageFile, DLanguageModuleDeclaration.class));
-            return singletonList(dLanguageFile);
+    @NotNull
+    private static List<DNamedElement> getDeclarationsVisibleFromElement(DLanguageIdentifier element, Container parentContainer) {
+        return getDeclarationsVisibleFromElement(element, parentContainer, true);
+    }
+
+    @NotNull
+    private static List<DNamedElement> getDeclarationsVisibleFromElement(DLanguageIdentifier element, Container parentContainer, boolean includeFromMixins) {
+        List<DNamedElement> declarations = new ArrayList<>();
+        if (parentContainer instanceof ImportContainer) {
+            //add declarations from import
+            for (DLanguageImport importDeclaration : ((ImportContainer) parentContainer).getImportDeclarations(includeFromMixins, false, false)) {
+                final List<DNamedElement> moduleDefinitionNodes = findModuleDefinitionNodes(importDeclaration.getModuleFullyQualifiedName());
+                for (DNamedElement moduleDefinitionNode : moduleDefinitionNodes) {
+                    if (moduleDefinitionNode instanceof DLanguageFile) {
+                        declarations.addAll(ContainerUtil.getPublicDeclarations((DLanguageFile) moduleDefinitionNode, includeFromMixins, true, false));
+                    }
+                    if (moduleDefinitionNode instanceof DLanguageModuleDeclaration) {
+                        declarations.addAll(ContainerUtil.getPublicDeclarations((Container) moduleDefinitionNode.getContainingFile(), includeFromMixins, true, false));
+                    }
+                }
+            }
         }
-        return Collections.emptyList();
+        if (parentContainer instanceof DLanguageFile) {
+            declarations.addAll(ContainerUtil.getAllDeclarations(parentContainer, includeFromMixins, true, false));
+            return declarations;//don't keep searching up after leaving the file
+        }
+        //add the declarations from here
+//        declarations.addAll(ContainerUtil.getPrivateDeclarations(parentContainer,true,true,false));
+//        declarations.addAll(ContainerUtil.getPublicDeclarations(parentContainer,true,true,false));
+//        declarations.addAll(ContainerUtil.getProtectedDeclarations(parentContainer,true,true,false));
+        declarations.addAll(ContainerUtil.getAllDeclarations(parentContainer, includeFromMixins, true, false));
+        declarations.addAll(getDeclarationsVisibleFromElement(element, parentContainer.getParentContainer(), includeFromMixins));
+        return declarations;
+    }
+
+    private static List<DNamedElement> findModuleDefinitionNodes(DLanguageModuleFullyQualifiedName module) {
+        List<DNamedElement> res = new ArrayList<>();
+        for (DLanguageFile dLanguageFile : fromModulesToFiles(module.getProject(), Collections.singleton(module.getText()))) {
+            if (findChildOfType(dLanguageFile, DLanguageModuleDeclaration.class) != null) {
+                res.add(findChildOfType(dLanguageFile, DLanguageModuleDeclaration.class));
+            } else {
+                res.add(dLanguageFile);
+            }
+        }
+        return res;
     }
 
     public static Set<DLanguageFile> fromModulesToFiles(Project project, Set<String> modules) {
         Set<DLanguageFile> filesFound = new HashSet<>();
         for (String module : modules) {
-            PsiFile[] files = FilenameIndex.getFilesByName(project, module + ".d", GlobalSearchScope.allScope(project));
-            for (PsiFile file : files) {
-                if (file instanceof DLanguageFile)
-                    filesFound.add((DLanguageFile) file);//todo go back to old method using DModuleIndex
-            }
-
+            List<DLanguageFile> files = getFilesByModuleName(project, module, GlobalSearchScope.allScope(project));
+            filesFound.addAll(files);
         }
         return filesFound;
     }

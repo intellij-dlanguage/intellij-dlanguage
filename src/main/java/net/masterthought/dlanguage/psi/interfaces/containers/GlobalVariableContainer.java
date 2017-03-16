@@ -36,15 +36,15 @@ public interface GlobalVariableContainer extends Container {
     }
 
 
-    default List<VariableDeclaration> getGlobalPublicVariables(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
+    default List<VariableDeclaration> getPublicGlobalVariables(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
         return getPublicElements(getGlobalVariableDeclarations(includeFromMixins, includeFromInheritance, includeNestedDeclarations));
     }
 
-    default List<VariableDeclaration> getGlobalProtectedVariables(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
+    default List<VariableDeclaration> getProtectedGlobalVariables(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
         return getProtectedElements(getGlobalVariableDeclarations(includeFromMixins, includeFromInheritance, includeNestedDeclarations));
     }
 
-    default List<VariableDeclaration> getGlobalPrivateVariables(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
+    default List<VariableDeclaration> getPrivateGlobalVariables(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
         return getPrivateElements(getGlobalVariableDeclarations(includeFromMixins, includeFromInheritance, includeNestedDeclarations));
     }
 

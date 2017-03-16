@@ -10,6 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import net.masterthought.dlanguage.psi.*;
+import net.masterthought.dlanguage.psi.interfaces.Mixinable;
 
 public class DLanguageMixinExpressionImpl extends ASTWrapperPsiElement implements DLanguageMixinExpression {
 
@@ -57,13 +58,8 @@ public class DLanguageMixinExpressionImpl extends ASTWrapperPsiElement implement
   }
 
   @Nullable
-  public DLanguageTemplateDeclaration getTemplateDeclaration() {
-    return DPsiImplUtil.getTemplateDeclaration(this);
-  }
-
-  @Nullable
-  public DLanguageTemplateMixinDeclaration getTemplateMixinDeclaration() {
-    return DPsiImplUtil.getTemplateMixinDeclaration(this);
+  public Mixinable getMixinableDeclaration() {
+    return DPsiImplUtil.getMixinableDeclaration(this);
   }
 
 }

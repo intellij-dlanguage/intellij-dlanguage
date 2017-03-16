@@ -7,8 +7,11 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.psi.*;
-import net.masterthought.dlanguage.psi.interfaces.*;
+import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+import net.masterthought.dlanguage.psi.interfaces.HasProperty;
+import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
+import net.masterthought.dlanguage.psi.interfaces.Mixin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -242,51 +245,6 @@ public class DUtil {
             mixins.add(mixin);
         }
         return mixins;
-    }
-
-    public static List<Mixinable> getMixedInTemplates(Mixin elementToSearch) {
-        List<Mixinable> containersFromMixin = new ArrayList<>();
-        if (elementToSearch instanceof DLanguageMixinDeclaration) {
-            final DLanguageMixinDeclaration mixin = (DLanguageMixinDeclaration) elementToSearch;
-            if (mixin.getTemplateDeclaration() != null) {
-                containersFromMixin.add(mixin.getTemplateDeclaration());
-            } else if (mixin.getTemplateMixinDeclaration() != null) {
-                containersFromMixin.add(mixin.getTemplateMixinDeclaration());
-            } else {
-                log.debug("unable to resolve mixin template");//todo
-            }
-        }
-        if (elementToSearch instanceof DLanguageTemplateMixin) {
-            final DLanguageTemplateMixin mixin = (DLanguageTemplateMixin) elementToSearch;
-            if (mixin.getTemplateDeclaration() != null) {
-                containersFromMixin.add(mixin.getTemplateDeclaration());
-            } else if (mixin.getTemplateMixinDeclaration() != null) {
-                containersFromMixin.add(mixin.getTemplateMixinDeclaration());
-            } else {
-                log.debug("unable to resolve mixin template");
-            }
-        }
-        if (elementToSearch instanceof DLanguageMixinExpression) {
-            final DLanguageMixinExpression mixin = (DLanguageMixinExpression) elementToSearch;
-            if (mixin.getTemplateDeclaration() != null) {
-                containersFromMixin.add(mixin.getTemplateDeclaration());
-            } else if (mixin.getTemplateMixinDeclaration() != null) {
-                containersFromMixin.add(mixin.getTemplateMixinDeclaration());
-            } else {
-                log.debug("unable to resolve mixin template");
-            }
-        }
-        if (elementToSearch instanceof DLanguageMixinStatement) {
-            final DLanguageMixinStatement mixin = (DLanguageMixinStatement) elementToSearch;
-            if (mixin.getTemplateDeclaration() != null) {
-                containersFromMixin.add(mixin.getTemplateDeclaration());
-            } else if (mixin.getTemplateMixinDeclaration() != null) {
-                containersFromMixin.add(mixin.getTemplateMixinDeclaration());
-            } else {
-                log.debug("unable to resolve mixin template");
-            }
-        }
-        return containersFromMixin;
     }
 
     public static Visibility protectionToVisibilty(DLanguageProtectionAttribute protectionAttribute) {

@@ -19,15 +19,15 @@ public interface StructContainer extends Container {
         return getDeclarations(this, this, structClass, includeFromMixins, includeFromInheritance, includeNestedDeclarations);
     }
 
-    default List<DLanguageStructDeclaration> getPublicStructes(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
+    default List<DLanguageStructDeclaration> getPublicStructs(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
         return DUtil.getPublicElements(getStructDeclarations(includeFromMixins, includeFromInheritance, includeNestedDeclarations));
     }
 
-    default List<DLanguageStructDeclaration> getProtectedStructes(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
+    default List<DLanguageStructDeclaration> getProtectedStructs(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
         return DUtil.getProtectedElements(getStructDeclarations(includeFromMixins, includeFromInheritance, includeNestedDeclarations));
     }
 
-    default List<DLanguageStructDeclaration> getPrivateStructes(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
+    default List<DLanguageStructDeclaration> getPrivateStructs(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
         return DUtil.getPrivateElements(getStructDeclarations(includeFromMixins, includeFromInheritance, includeNestedDeclarations));
     }
 

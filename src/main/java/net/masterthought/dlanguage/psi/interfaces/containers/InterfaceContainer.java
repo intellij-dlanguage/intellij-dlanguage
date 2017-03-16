@@ -18,15 +18,15 @@ public interface InterfaceContainer extends Container {
         return getDeclarations(this, this, interfaceClass, includeFromMixins, includeFromInheritance, includeNestedDeclarations);
     }
 
-    default List<DLanguageInterfaceDeclaration> getPublicInterfacees(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
+    default List<DLanguageInterfaceDeclaration> getPublicInterfaces(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
         return DUtil.getPublicElements(getInterfaceDeclarations(includeFromMixins, includeFromInheritance, includeNestedDeclarations));
     }
 
-    default List<DLanguageInterfaceDeclaration> getProtectedInterfacees(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
+    default List<DLanguageInterfaceDeclaration> getProtectedInterfaces(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
         return DUtil.getProtectedElements(getInterfaceDeclarations(includeFromMixins, includeFromInheritance, includeNestedDeclarations));
     }
 
-    default List<DLanguageInterfaceDeclaration> getPrivateInterfacees(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
+    default List<DLanguageInterfaceDeclaration> getPrivateInterfaces(boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
         return DUtil.getPrivateElements(getInterfaceDeclarations(includeFromMixins, includeFromInheritance, includeNestedDeclarations));
     }
 
