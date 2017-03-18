@@ -13,6 +13,7 @@ import net.masterthought.dlanguage.psi.*;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
 import net.masterthought.dlanguage.psi.interfaces.CanInherit;
+import java.util.Map;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 import com.intellij.psi.stubs.IStubElementType;
 
@@ -106,6 +107,10 @@ public class DLanguageInterfaceDeclarationImpl extends DNamedStubbedPsiElementBa
 
   public List<DLanguageTemplateParameter> getTemplateArguments() {
     return DPsiImplUtil.getTemplateArguments(this);
+  }
+
+  public Map<String, DLanguageIdentifier> getSuperClassNames() {
+    return DPsiImplUtil.getSuperClassNames(this);
   }
 
 }

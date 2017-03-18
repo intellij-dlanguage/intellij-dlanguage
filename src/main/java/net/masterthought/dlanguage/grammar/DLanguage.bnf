@@ -296,7 +296,7 @@ DeclDef ::=
 
 MixinDeclaration ::=
     'mixin' '(' (TemplateInstance | AssignExpression) ')' ';'{
-     methods = [getMixinableDeclaration ] // the getTemplate method should resolve the template which is being mixed in.
+     methods = [getMixinableDeclaration getName ] // the getTemplate method should resolve the template which is being mixed in.
      implements = ["net.masterthought.dlanguage.psi.interfaces.Mixin"]
      }
 
@@ -588,7 +588,7 @@ AssertExpression ::=
 
 MixinExpression ::=
     'mixin' '(' (TemplateInstance | AssignExpression) ')'{
-     methods = [getMixinableDeclaration ] // the getTemplate method should resolve the template which is being mixed in.
+     methods = [getMixinableDeclaration getName ] // the getTemplate method should resolve the template which is being mixed in.
      implements = ["net.masterthought.dlanguage.psi.interfaces.Mixin"]
      }
 
@@ -918,7 +918,7 @@ PragmaStatement ::=
 
 MixinStatement ::=
     'mixin' '(' (TemplateInstance | AssignExpression) ')' ';'{
-     methods = [getMixinableDeclaration ] // the getTemplate method should resolve the template which is being mixed in.
+     methods = [getMixinableDeclaration getName] // the getTemplate method should resolve the template which is being mixed in.
      implements = ["net.masterthought.dlanguage.psi.interfaces.Mixin"]
      }
 
@@ -1972,7 +1972,7 @@ ClassDeclaration ::=
     'class' Identifier ';'
     | 'class' Identifier BaseClassList? AggregateBody
     | ClassTemplateDeclaration {
-       methods=[getName getNameIdentifier getReference setName getPresentation isSomeVisibility getProtection whatInheritsFrom]
+       methods=[getName getNameIdentifier getReference setName getPresentation isSomeVisibility getProtection whatInheritsFrom getSuperClassNames]
        implements = ["net.masterthought.dlanguage.psi.interfaces.containers.StatementContainer" "net.masterthought.dlanguage.psi.interfaces.DNamedElement" "net.masterthought.dlanguage.psi.interfaces.HasVisibility" "net.masterthought.dlanguage.psi.interfaces.HasTemplateArguments" "net.masterthought.dlanguage.psi.interfaces.CanInherit"]
        stubClass="net.masterthought.dlanguage.stubs.DLanguageClassDeclarationStub"
     }
@@ -1985,7 +1985,7 @@ InterfaceDeclaration ::=
     'interface' Identifier ';'
     | InterfaceTemplateDeclaration
     | 'interface' Identifier BaseInterfaceList? AggregateBody?{
-        methods=[getName getNameIdentifier getReference setName getPresentation isSomeVisibility whatInheritsFrom getTemplateArguments]
+        methods=[getName getNameIdentifier getReference setName getPresentation isSomeVisibility whatInheritsFrom getTemplateArguments getSuperClassNames]
        implements = ["net.masterthought.dlanguage.psi.interfaces.containers.StatementContainer" "net.masterthought.dlanguage.psi.interfaces.DNamedElement" "net.masterthought.dlanguage.psi.interfaces.HasVisibility" "net.masterthought.dlanguage.psi.interfaces.HasTemplateArguments" "net.masterthought.dlanguage.psi.interfaces.CanInherit" ]
        stubClass="net.masterthought.dlanguage.stubs.DLanguageInterfaceDeclarationStub"
     }
@@ -2159,7 +2159,7 @@ TemplateMixinDeclaration ::=
 
 TemplateMixin ::=
     'mixin' MixinTemplateName TemplateArguments? Identifier? ';'{
-        methods = [getMixinableDeclaration ]
+        methods = [getMixinableDeclaration getName ]
         implements = ["net.masterthought.dlanguage.psi.interfaces.Mixin"]
     }
 

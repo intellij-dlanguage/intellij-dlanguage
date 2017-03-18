@@ -27,7 +27,7 @@ import java.util.*;
 import static com.intellij.psi.util.PsiTreeUtil.*;
 import static net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 import static net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility.public_;
-import static net.masterthought.dlanguage.utils.DResolveUtil.findDefinitionNodes;
+import static net.masterthought.dlanguage.utils.DResolveUtil.findClassOrInterfaceDefinitionNodes;
 import static net.masterthought.dlanguage.utils.DUtil.getEndOfIdentifierList;
 import static net.masterthought.dlanguage.utils.DUtil.protectionToVisibilty;
 
@@ -298,7 +298,7 @@ public class DPsiImplUtil {
             assert (basicType.getTypeVector() == null);
             assert (basicType.getTypeof() == null);
             final DLanguageIdentifierList identifierList = basicType.getIdentifierList();
-            final Set<PsiNamedElement> definitionNodes = findDefinitionNodes(getEndOfIdentifierList(identifierList));
+            final List<CanInherit> definitionNodes = findClassOrInterfaceDefinitionNodes(getEndOfIdentifierList(identifierList), getEndOfIdentifierList(identifierList).getName(), new HashSet<>());
             assert (definitionNodes.size() == 1);
             res.add((CanInherit) definitionNodes.toArray()[0]);
 
@@ -307,7 +307,26 @@ public class DPsiImplUtil {
         return res;
     }
 
+    public static Map<String, DLanguageIdentifier> getSuperClassNames(@NotNull DLanguageClassDeclaration o) {
+        final DLanguageBaseClassList baseClassList = o.getBaseClassList();
+        if (baseClassList == null)
+            return Collections.emptyMap();
+        Map<String, DLanguageIdentifier> res = new HashMap<>();
+        ArrayList<DLanguageBasicType> basicTypes = new ArrayList<>();
+        basicTypes.add(baseClassList.getSuperClass().getBasicType());
+        for (DLanguageInterface interface_ : findChildrenOfType(baseClassList.getInterfaces(), DLanguageInterface.class)) {
+            basicTypes.add(interface_.getBasicType());
+        }
+        for (DLanguageBasicType basicType : basicTypes) {
+            assert (basicType.getBasicTypeX() == null);
+            assert (basicType.getTypeVector() == null);
+            assert (basicType.getTypeof() == null);
+            final DLanguageIdentifierList identifierList = basicType.getIdentifierList();
+            res.put(getEndOfIdentifierList(identifierList).getName(), getEndOfIdentifierList(identifierList));
+        }
 
+        return res;
+    }
 
     // ------------- Class Definition ------------------ //
 
@@ -935,12 +954,34 @@ public class DPsiImplUtil {
             assert (basicType.getTypeVector() == null);
             assert (basicType.getTypeof() == null);
             final DLanguageIdentifierList identifierList = basicType.getIdentifierList();
-            final Set<PsiNamedElement> definitionNodes = findDefinitionNodes(getEndOfIdentifierList(identifierList));
+            final List<CanInherit> definitionNodes = findClassOrInterfaceDefinitionNodes(getEndOfIdentifierList(identifierList), getEndOfIdentifierList(identifierList).getName(), new HashSet<>());
             assert (definitionNodes.size() == 1);
             res.add((CanInherit) definitionNodes.toArray()[0]);
 
         }
 
+        return res;
+    }
+
+    public static Map<String, DLanguageIdentifier> getSuperClassNames(@NotNull DLanguageInterfaceDeclaration o) {
+        DLanguageBaseInterfaceList baseInterfaceList = o.getBaseInterfaceList();
+        if (o.getInterfaceTemplateDeclaration() != null)
+            baseInterfaceList = o.getInterfaceTemplateDeclaration().getBaseInterfaceList();
+        if (baseInterfaceList == null) {
+            return Collections.emptyMap();
+        }
+        Map<String, DLanguageIdentifier> res = new HashMap<>();
+        ArrayList<DLanguageBasicType> basicTypes = new ArrayList<>();
+        for (DLanguageInterface interface_ : findChildrenOfType(baseInterfaceList.getInterfaces(), DLanguageInterface.class)) {
+            basicTypes.add(interface_.getBasicType());
+        }
+        for (DLanguageBasicType basicType : basicTypes) {
+            assert (basicType.getBasicTypeX() == null);
+            assert (basicType.getTypeVector() == null);
+            assert (basicType.getTypeof() == null);
+            final DLanguageIdentifierList identifierList = basicType.getIdentifierList();
+            res.put(getEndOfIdentifierList(identifierList).getName(), getEndOfIdentifierList(identifierList));
+        }
         return res;
     }
 
@@ -1105,6 +1146,41 @@ public class DPsiImplUtil {
             final PsiElement resolve = t.getTemplateInstance().getIdentifier().getReference().resolve();
             if (resolve instanceof Mixinable)
                 return (Mixinable) resolve;
+        }
+        return null;
+    }
+
+    @Nullable
+    public static String getName(@NotNull DLanguageMixinDeclaration t) {
+        if (t.getTemplateInstance() != null) {
+            if (t.getTemplateInstance().getIdentifier() == null)
+                return null;
+            return t.getTemplateInstance().getIdentifier().getName();
+        }
+        return null;
+    }
+
+    @NotNull
+    public static String getName(@NotNull DLanguageTemplateMixin t) {
+        return getEndOfIdentifierList(t.getMixinTemplateName().getQualifiedIdentifierList()).getName();
+    }
+
+    @Nullable
+    public static String getName(@NotNull DLanguageMixinExpression t) {
+        if (t.getTemplateInstance() == null)
+            return null;
+        if (t.getTemplateInstance().getIdentifier() == null)
+            return null;
+        t.getTemplateInstance().getIdentifier().getName();
+        return null;
+    }
+
+    @Nullable
+    public static String getName(@NotNull DLanguageMixinStatement t) {
+        if (t.getTemplateInstance() != null) {
+            if (t.getTemplateInstance().getIdentifier() == null)
+                return null;
+            return t.getTemplateInstance().getIdentifier().getName();
         }
         return null;
     }

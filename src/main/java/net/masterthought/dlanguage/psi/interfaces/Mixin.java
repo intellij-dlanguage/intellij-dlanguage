@@ -7,4 +7,6 @@ import com.intellij.psi.PsiElement;
  */
 public interface Mixin extends PsiElement {
     Mixinable getMixinableDeclaration();
+
+    String getName();
 }

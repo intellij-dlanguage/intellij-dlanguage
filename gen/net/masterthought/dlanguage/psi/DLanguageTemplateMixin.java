@@ -27,4 +27,7 @@ public interface DLanguageTemplateMixin extends Mixin {
   @Nullable
   Mixinable getMixinableDeclaration();
 
+  @NotNull
+  String getName();
+
 }

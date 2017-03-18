@@ -30,4 +30,7 @@ public interface DLanguageMixinStatement extends Mixin {
   @Nullable
   Mixinable getMixinableDeclaration();
 
+  @Nullable
+  String getName();
+
 }

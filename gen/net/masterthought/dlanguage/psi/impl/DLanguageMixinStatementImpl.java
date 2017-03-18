@@ -68,4 +68,9 @@ public class DLanguageMixinStatementImpl extends ASTWrapperPsiElement implements
     return DPsiImplUtil.getMixinableDeclaration(this);
   }
 
+  @Nullable
+  public String getName() {
+    return DPsiImplUtil.getName(this);
+  }
+
 }

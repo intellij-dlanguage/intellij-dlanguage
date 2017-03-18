@@ -82,7 +82,7 @@ public class ContainerUtil {
         if (includeFromInheritance && CanInherit.class.isInstance(elementToSearch)) {
             final List<CanInherit> whatInheritsFrom = ((CanInherit) elementToSearch).whatInheritsFrom();
             for (CanInherit canInherit : whatInheritsFrom) {
-                res.addAll(getDeclarations(canInherit, canInherit, declarationClass, includeFromMixins, includeFromInheritance, includeNestedDeclarations));//todo only get publics
+                res.addAll(getDeclarations(canInherit, canInherit, declarationClass, includeFromMixins, includeFromInheritance, includeNestedDeclarations));
             }
         }
         res.addAll(getDeclarationsImpl(elementToSearch, topLevel, declarationClass, includeFromMixins, includeNestedDeclarations));
@@ -274,6 +274,58 @@ public class ContainerUtil {
         }
         if (container instanceof TemplateMixinContainer) {
             res.addAll(((TemplateMixinContainer) container).getPrivateTemplateMixins(includefromMixins, includeFromInheritance, includeNestedDeclarations));
+        }
+        return res;
+    }
+
+    public static List<DNamedElement> getAllDeclarationsWithPlaceHolders(Container container) {
+        ArrayList<DNamedElement> res = new ArrayList<>();
+        if (container instanceof CanInherit) {
+            res.add(new InheritancePlaceHolder((CanInherit) container));
+        }
+        if (container instanceof UnionContainer) {
+            res.addAll(((UnionContainer) container).getUnionDeclarations(false, false, false));
+        }
+        if (container instanceof ClassContainer) {
+            res.addAll(((ClassContainer) container).getClassDeclarations(false, false, false));
+        }
+        if (container instanceof ConstructorContainer) {
+            res.addAll(((ConstructorContainer) container).getConstructorDeclarations(false, false, false));
+        }
+        if (container instanceof DestructorContainer) {
+            res.addAll(((DestructorContainer) container).getDestructorDeclarations(false, false, false));
+        }
+        if (container instanceof EnumContainer) {
+            res.addAll(((EnumContainer) container).getEnumDeclarations(false, false, false));
+        }
+        if (container instanceof FunctionContainer) {
+            res.addAll(((FunctionContainer) container).getFunctionDeclarations(false, false, false));
+        }
+        if (container instanceof GlobalVariableContainer) {
+            res.addAll(((GlobalVariableContainer) container).getGlobalVariableDeclarations(false, false, false));
+        }
+        if (container instanceof InterfaceContainer) {
+            res.addAll(((InterfaceContainer) container).getInterfaceDeclarations(false, false, false));
+        }
+        if (container instanceof LocalVarContainer) {
+            res.addAll(((LocalVarContainer) container).getLocalVariableDeclarations(false, false, false));
+        }
+        if (container instanceof StructContainer) {
+            res.addAll(((StructContainer) container).getStructDeclarations(false, false, false));
+        }
+        if (container instanceof TemplateContainer) {
+            res.addAll(((TemplateContainer) container).getTemplateDeclarations(false, false, false));
+        }
+        if (container instanceof TemplateMixinContainer) {
+            res.addAll(((TemplateMixinContainer) container).getTemplateMixinDeclarations(false, false, false));
+
+        }
+        if (container instanceof MixinContainer) {
+            for (DNamedElement dNamedElement : ((MixinContainer) container).getMixins(false, false, false)) {
+                assert (dNamedElement instanceof Mixin);
+                final Mixin mixin = (Mixin) dNamedElement;
+                res.add(new MixinPlaceHolder(mixin));
+            }
         }
         return res;
     }

@@ -62,4 +62,9 @@ public class DLanguageTemplateMixinImpl extends ASTWrapperPsiElement implements 
     return DPsiImplUtil.getMixinableDeclaration(this);
   }
 
+  @NotNull
+  public String getName() {
+    return DPsiImplUtil.getName(this);
+  }
+
 }
