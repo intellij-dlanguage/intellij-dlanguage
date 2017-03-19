@@ -1,18 +1,14 @@
 package net.masterthought.dlanguage.psi.interfaces.containers;
 
 import com.intellij.psi.PsiElement;
-import net.masterthought.dlanguage.psi.DLanguageAutoDeclarationY;
-import net.masterthought.dlanguage.psi.DLanguageDeclaratorInitializer;
+import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.interfaces.CanInherit;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 import net.masterthought.dlanguage.psi.interfaces.Mixin;
 import net.masterthought.dlanguage.psi.interfaces.Mixinable;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by francis on 3/8/2017.
@@ -37,6 +33,7 @@ public class ContainerUtil {
         put(TemplateMixinContainer.templateMixinClass, TemplateMixinContainer.class);
         put(UnionContainer.unionClass, UnionContainer.class);
         put(ImportContainer.importClass, ImportContainer.class);
+        put(MixinContainer.mixinClass, MixinContainer.class);
         //remeber to update the below hashmap if you update this one
     }};
     public static HashMap<Class<? extends Container>, Class<? extends DNamedElement>> containerDeclaration = new HashMap<Class<? extends Container>, Class<? extends DNamedElement>>() {{
@@ -54,13 +51,12 @@ public class ContainerUtil {
         put(TemplateMixinContainer.class, TemplateMixinContainer.templateMixinClass);
         put(UnionContainer.class, UnionContainer.unionClass);
         put(ImportContainer.class, ImportContainer.importClass);
+        put(MixinContainer.class, MixinContainer.mixinClass);
         //remember to update the above hashmap if you update this one
     }};
 
     /**
-     * todo: using linked lists or passing res as a parameter will likely improve the performance of this
-     * todo add alias this support
-     *
+     * todo rewrite
      * @param <DeclarationClass>              the type of declaration we are looking for
      * @param elementToSearch                 the container we are looking for declarations in
      * @param topLevel                        the topLevel container
@@ -77,7 +73,7 @@ public class ContainerUtil {
      *                                        <code/>
      * @return a list containing all the declarations found.
      */
-    public static <DeclarationClass extends DNamedElement> List<? extends DeclarationClass> getDeclarations(PsiElement elementToSearch, Container topLevel, Class<DeclarationClass> declarationClass, boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
+    public static <DeclarationClass extends PsiElement> List<? extends DeclarationClass> getDeclarations(@NotNull PsiElement elementToSearch, @NotNull Container topLevel, @NotNull Class<DeclarationClass> declarationClass, boolean includeFromMixins, boolean includeFromInheritance, boolean includeNestedDeclarations) {
         List<DeclarationClass> res = new ArrayList<>();
         if (includeFromInheritance && CanInherit.class.isInstance(elementToSearch)) {
             final List<CanInherit> whatInheritsFrom = ((CanInherit) elementToSearch).whatInheritsFrom();
@@ -90,7 +86,7 @@ public class ContainerUtil {
     }
 
     @NotNull
-    public static <DeclarationClass extends DNamedElement> List<? extends DeclarationClass> getDeclarationsImpl(PsiElement elementToSearch, Container topLevel, Class<DeclarationClass> declarationClass, boolean includeFromMixins, boolean includeNestedDeclarations) {
+    public static <DeclarationClass extends PsiElement> List<? extends DeclarationClass> getDeclarationsImpl(@NotNull PsiElement elementToSearch, @NotNull Container topLevel, @NotNull Class<DeclarationClass> declarationClass, boolean includeFromMixins, boolean includeNestedDeclarations) {
         Class containerClass = declarationContainer.get(declarationClass);
         List<DeclarationClass> res = new ArrayList<>();
         if (declarationClass.isInstance(elementToSearch)) {
@@ -103,10 +99,14 @@ public class ContainerUtil {
             Mixinable whatWasMixedIn = ((Mixin) elementToSearch).getMixinableDeclaration();
             res.addAll(getDeclarations(whatWasMixedIn, whatWasMixedIn, declarationClass, includeFromMixins, false, includeNestedDeclarations));//include from inheritance shouldn't matter for template mixins, however it could matter if mixing in a class. I'm unsure exactly how class mixins work todo
         }
+        if (containerClass == null || elementToSearch == null || topLevel == null)
+            throw new IllegalStateException();
         if (!includeNestedDeclarations && containerClass.isInstance(elementToSearch) && elementToSearch != topLevel) {
             return res; // if not including nested declarations, stop recursing after a nested container has been found
         }
-
+        if (topLevel == null) {
+            throw new IllegalStateException();
+        }
         for (PsiElement child : elementToSearch.getChildren()) {
             res.addAll(getDeclarationsImpl(child, topLevel, declarationClass, includeFromMixins, includeNestedDeclarations));
         }
@@ -278,8 +278,8 @@ public class ContainerUtil {
         return res;
     }
 
-    public static List<DNamedElement> getAllDeclarationsWithPlaceHolders(Container container) {
-        ArrayList<DNamedElement> res = new ArrayList<>();
+    public static Set<DNamedElement> getAllDeclarationsWithPlaceHolders(Container container) {
+        Set<DNamedElement> res = new HashSet<>();
         if (container instanceof CanInherit) {
             res.add(new InheritancePlaceHolder((CanInherit) container));
         }
@@ -287,7 +287,16 @@ public class ContainerUtil {
             res.addAll(((UnionContainer) container).getUnionDeclarations(false, false, false));
         }
         if (container instanceof ClassContainer) {
-            res.addAll(((ClassContainer) container).getClassDeclarations(false, false, false));
+            final List<DNamedElement> classDeclarations = ((ClassContainer) container).getClassDeclarations(false, false, false);
+            res.addAll(classDeclarations);
+            for (PsiElement classDeclaration : classDeclarations) {
+                if (classDeclaration instanceof MixinContainer) {
+                    for (DNamedElement mixin : ((MixinContainer) classDeclaration).getMixins(false, false, false)) {
+                        res.add(new MixinPlaceHolder((Mixin) mixin));
+                    }
+                }
+                res.addAll(((DLanguageClassDeclaration) classDeclaration).getFunctionDeclarations(false, false, false));
+            }
         }
         if (container instanceof ConstructorContainer) {
             res.addAll(((ConstructorContainer) container).getConstructorDeclarations(false, false, false));
@@ -311,19 +320,44 @@ public class ContainerUtil {
             res.addAll(((LocalVarContainer) container).getLocalVariableDeclarations(false, false, false));
         }
         if (container instanceof StructContainer) {
-            res.addAll(((StructContainer) container).getStructDeclarations(false, false, false));
+            final List<DNamedElement> structDeclarations = ((StructContainer) container).getStructDeclarations(false, false, false);
+            res.addAll(structDeclarations);
+            for (PsiElement structDeclaration : structDeclarations) {
+                if (structDeclaration instanceof MixinContainer) {
+                    for (DNamedElement mixin : ((MixinContainer) structDeclaration).getMixins(false, false, false)) {
+                        res.add(new MixinPlaceHolder((Mixin) mixin));
+                    }
+                }
+                res.addAll(((DLanguageStructDeclaration) structDeclaration).getFunctionDeclarations(false, false, false));
+            }
         }
         if (container instanceof TemplateContainer) {
-            res.addAll(((TemplateContainer) container).getTemplateDeclarations(false, false, false));
+            final List<DNamedElement> templateDeclarations = ((TemplateContainer) container).getTemplateDeclarations(false, false, false);
+            res.addAll(templateDeclarations);
+            for (PsiElement templateDeclaration : templateDeclarations) {
+                if (templateDeclaration instanceof MixinContainer) {
+                    for (DNamedElement mixin : ((MixinContainer) templateDeclaration).getMixins(false, false, false)) {
+                        res.add(new MixinPlaceHolder((Mixin) mixin));
+                    }
+                }
+                res.addAll(((DLanguageTemplateDeclaration) templateDeclaration).getFunctionDeclarations(false, false, false));
+            }
         }
         if (container instanceof TemplateMixinContainer) {
-            res.addAll(((TemplateMixinContainer) container).getTemplateMixinDeclarations(false, false, false));
-
+            final List<DNamedElement> templateMixinDeclarations = ((TemplateMixinContainer) container).getTemplateMixinDeclarations(false, false, false);
+            res.addAll(templateMixinDeclarations);
+            for (PsiElement element : templateMixinDeclarations) {
+                if (element instanceof MixinContainer) {
+                    for (DNamedElement mixin : ((MixinContainer) element).getMixins(false, false, false)) {
+                        res.add(new MixinPlaceHolder((Mixin) mixin));
+                    }
+                }
+            }
         }
         if (container instanceof MixinContainer) {
-            for (DNamedElement dNamedElement : ((MixinContainer) container).getMixins(false, false, false)) {
-                assert (dNamedElement instanceof Mixin);
-                final Mixin mixin = (Mixin) dNamedElement;
+            for (PsiElement element : ((MixinContainer) container).getMixins(false, false, false)) {
+                assert (element instanceof Mixin);
+                final Mixin mixin = (Mixin) element;
                 res.add(new MixinPlaceHolder(mixin));
             }
         }

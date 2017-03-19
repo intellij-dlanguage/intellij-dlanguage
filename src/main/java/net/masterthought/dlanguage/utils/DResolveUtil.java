@@ -19,6 +19,7 @@ import static java.util.Collections.EMPTY_SET;
 import static net.masterthought.dlanguage.index.DModuleIndex.getFilesByModuleName;
 import static net.masterthought.dlanguage.psi.interfaces.containers.ContainerUtil.getAllDeclarationsWithPlaceHolders;
 import static net.masterthought.dlanguage.utils.DUtil.getTopLevelOfRecursiveElement;
+import static net.masterthought.dlanguage.utils.PlaceHolderUtils.fillPlaceHolders;
 
 /**
  * so instead of doing some recursive complicated garbage this should work as follows:
@@ -203,7 +204,7 @@ public class DResolveUtil {
     private static Mixinable findMixinDefinitionNodes(DLanguageIdentifier element, String name, Mixin mixin, Set<DLanguageFile> excludedElements) {
         List<Mixinable> res = new ArrayList<>();
         final List<Mixinable> mixinables = new ArrayList<>();
-        for (DNamedElement dNamedElement : getDeclarationsVisibleFromElement(element, element.getParentContainer(), excludedElements)) {
+        for (DNamedElement dNamedElement : getDeclarationsVisibleFromElement(element, element.getParentContainer())) {
             if (dNamedElement instanceof Mixinable)
                 mixinables.add((Mixinable) dNamedElement);
         }
@@ -224,7 +225,7 @@ public class DResolveUtil {
     @NotNull
     List<CanInherit> findClassOrInterfaceDefinitionNodes(DLanguageIdentifier element, String name, Set<DLanguageFile> excludedElements) {
         List<CanInherit> canidates = new ArrayList<>();
-        for (DNamedElement dNamedElement : getDeclarationsVisibleFromElement(element, element.getParentContainer(), new HashSet<DLanguageFile>(excludedElements))) {
+        for (DNamedElement dNamedElement : getDeclarationsVisibleFromElement(element, element.getParentContainer())) {
             if (dNamedElement instanceof CanInherit) {
                 canidates.add((CanInherit) dNamedElement);
             }
@@ -284,7 +285,6 @@ public class DResolveUtil {
      */
     @NotNull
     private static List<DNamedElement> findMemberDefinitionNodes(String name, DLanguageIdentifier topLevelIdentifier) {
-        //todo rewrite
         List<DNamedElement> res = new ArrayList<>();
         final PsiElement resolve = topLevelIdentifier.getReference().resolve();
         if (resolve instanceof VariableDeclaration ) {
@@ -293,27 +293,10 @@ public class DResolveUtil {
             if (variableDeclarationType.isOneIdentifier() == null)
                 return Collections.emptyList();
             final PsiElement theTypeDeclaration = variableDeclarationType.isOneIdentifier().getReference().resolve();
-            if (theTypeDeclaration instanceof LocalVarContainer) {
-                final List<VariableDeclaration> memberVars = ((LocalVarContainer) theTypeDeclaration).getLocalPublicVariables(true, true, false);
-                for (VariableDeclaration memberVar : memberVars) {
-                    if (memberVar.actuallyIsDeclaration() && memberVar.getName().equals(name)) {
-                        res.add(memberVar);
-                    }
-                }
-            }
-            if (theTypeDeclaration instanceof FunctionContainer) {
-                final List<DLanguageFuncDeclaration> methods = ((FunctionContainer) theTypeDeclaration).getPublicFunctions(true, true, false);
-                for (DLanguageFuncDeclaration method : methods) {
-                    if (method.getName().equals(name)) {
-                        res.add(method);
-                    }
-                }
-            }
-            if (theTypeDeclaration instanceof GlobalVariableContainer) {
-                final List<VariableDeclaration> memberVars = ((GlobalVariableContainer) theTypeDeclaration).getPublicGlobalVariables(true, true, false);
-                for (VariableDeclaration memberVar : memberVars) {
-                    if (memberVar.getName().equals(name)) {
-                        res.add(memberVar);
+            for (DNamedElement declaration : fillPlaceHolders(getAllDeclarationsWithPlaceHolders((Container) theTypeDeclaration))) {
+                if (declaration instanceof VariableDeclaration || declaration instanceof DLanguageFuncDeclaration) {
+                    if (declaration.getName().equals(name)) {
+                        res.add(declaration);
                     }
                 }
             }
@@ -334,7 +317,7 @@ public class DResolveUtil {
     @NotNull
     List<DNamedElement> findDefinitionNodesStandard(DLanguageIdentifier element, String name, Set<DLanguageFile> excludedElements) {
         List<DNamedElement> res = new ArrayList<>();
-        for (DNamedElement dNamedElement : getDeclarationsVisibleFromElement(element, element.getParentContainer(), excludedElements)) {
+        for (DNamedElement dNamedElement : getDeclarationsVisibleFromElement(element, element.getParentContainer())) {
             if (dNamedElement.getName() != null && dNamedElement.getName().equals(name))
                 res.add(dNamedElement);
         }
@@ -346,36 +329,27 @@ public class DResolveUtil {
      *
      * @param element         element being resolved if relevant
      * @param parentContainer element.getParentContainer(), should be the defulat value unless you know what your doing. this is mostly here for internal implementation reasons
-     * @param excludedFiles   todo implement
      * @return
      */
     @NotNull
-    private static List<DNamedElement> getDeclarationsVisibleFromElement(DLanguageIdentifier element, Container parentContainer, Set<DLanguageFile> excludedFiles) {
-        final List<DNamedElement> withPlaceHolders = getVisibleElementWithPlaceHolders(element, parentContainer, excludedFiles);
-        return PlaceHolderUtils.fillPlaceHolders(withPlaceHolders);
+    private static Set<DNamedElement> getDeclarationsVisibleFromElement(DLanguageIdentifier element, Container parentContainer) {
+        final Set<DNamedElement> withPlaceHolders = getVisibleElementsWithPlaceHolders(element, parentContainer);
+        return fillPlaceHolders(withPlaceHolders);
     }
 
     @NotNull
-    private static List<DNamedElement> getVisibleElementWithPlaceHolders(DLanguageIdentifier element, Container parentContainer, Set<DLanguageFile> excludedFiles) {
-        List<DNamedElement> declarations = new ArrayList<>();
-        if (excludedFiles.contains(parentContainer))
-            return declarations;
+    private static Set<DNamedElement> getVisibleElementsWithPlaceHolders(DLanguageIdentifier element, Container parentContainer) {
+        Set<DNamedElement> declarations = new HashSet<>();
         if (parentContainer instanceof ImportContainer) {
             //add declarations from import
             for (DLanguageImport importDeclaration : ((ImportContainer) parentContainer).getImportDeclarations(false, false, false)) {
                 final List<DNamedElement> moduleDefinitionNodes = findModuleDefinitionNodes(importDeclaration.getModuleFullyQualifiedName());
                 for (DNamedElement moduleDefinitionNode : moduleDefinitionNodes) {
                     if (moduleDefinitionNode instanceof DLanguageFile) {
-                        if (excludedFiles.contains(moduleDefinitionNode))
-                            continue;
-                        declarations.addAll(getAllDeclarationsWithPlaceHolders((DLanguageFile) moduleDefinitionNode));
-                        excludedFiles.add((DLanguageFile) moduleDefinitionNode);//prevent re-searching the same files
+                        declarations.add(new FilePlaceHolder((DLanguageFile) moduleDefinitionNode));
                     }
                     if (moduleDefinitionNode instanceof DLanguageModuleDeclaration) {
-                        if (excludedFiles.contains(moduleDefinitionNode.getContainingFile()))
-                            continue;
-                        declarations.addAll(getAllDeclarationsWithPlaceHolders((DLanguageFile) moduleDefinitionNode.getContainingFile()));
-                        excludedFiles.add((DLanguageFile) moduleDefinitionNode.getContainingFile());//prevenent re-processing the same file.
+                        declarations.add(new FilePlaceHolder((DLanguageFile) moduleDefinitionNode.getContainingFile()));
                     }
                 }
             }
@@ -386,7 +360,7 @@ public class DResolveUtil {
         }
         //add the declarations from here
         declarations.addAll(getAllDeclarationsWithPlaceHolders(parentContainer));
-        declarations.addAll(getDeclarationsVisibleFromElement(element, parentContainer.getParentContainer(), excludedFiles));
+        declarations.addAll(getVisibleElementsWithPlaceHolders(element, parentContainer.getParentContainer()));
         return declarations;
     }
 
