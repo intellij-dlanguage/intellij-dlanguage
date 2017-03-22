@@ -32,14 +32,12 @@ Intellij plugin I've written and is still a work in progress to get the full sup
 
 ## Supported versions of IntelliJ / JDK
 
-Since Jetbrains released IntelliJ 16 (the 2016.* versions) Java 8 is required to run the IDE on all platforms. In the 1.11 release we are dropping support for older versions. The plugin will target 2016.2 and should have compatibility with 2016.3
+Since Jetbrains released IntelliJ 16 (the 2016.* versions) Java 8 is required to run the IDE on all platforms.
 
-#### Next Release - 1.12
-
-The next release should have the following:
-
-* Compatibility with Intellij 2017.1
-* tbd
+| Plugin Version | Intellij Versions |
+| :--- | :--- |
+| 1.12 | 2017.1 |
+| 1.11 | 2016.3 |
 
 #### A note to my users
 
@@ -53,7 +51,7 @@ raising issues for feedback, feature requests and bugs. Thanks for your support 
 
 #### Latest Updates
 
-* March 2017 - Compatibility with Intellij 2017.1 (#139)
+* March 2017 - Released v1.12 to add compatibility with Intellij 2017.1 (#139)
 * December 2016 - New features are in progress. In the meantime version 1.11 of the plugin adds compatibility with IntelliJ 2016.3
 * 1st February 2016 - I'm spending some time using the plugin for one of my projects to get a feel for how it's working under some real usage. Development will resume after this period.
 * 9th January 2016 - Fixed some bugs and working towards getting more of the intellij features working
