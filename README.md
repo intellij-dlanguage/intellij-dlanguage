@@ -1,8 +1,13 @@
 # Intellij Plugin to provide support for the [D Programming Language](http://dlang.org/)
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/kingsleyh/DLanguage?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![ZenHub] (https://raw.githubusercontent.com/ZenHubIO/support/master/zenhub-badge.png)] (https://zenhub.io)
-[![Build Status](https://travis-ci.org/kingsleyh/DLanguage.svg?branch=master)](https://travis-ci.org/kingsleyh/DLanguage)
+[![ZenHub](https://raw.githubusercontent.com/ZenHubIO/support/master/zenhub-badge.png)](https://zenhub.io)
+
+
+| Branch | Status |
+| :--- | :--- |
+| Master | [![Build Status](https://travis-ci.org/kingsleyh/DLanguage.svg?branch=master)](https://travis-ci.org/kingsleyh/DLanguage) |
+| Develop | [![Build Status](https://travis-ci.org/kingsleyh/DLanguage.svg?branch=develop)](https://travis-ci.org/kingsleyh/DLanguage) |
 
 This plugin brings D Language support to the Intellij IDE
 
@@ -29,11 +34,12 @@ Intellij plugin I've written and is still a work in progress to get the full sup
 
 Since Jetbrains released IntelliJ 16 (the 2016.* versions) Java 8 is required to run the IDE on all platforms. In the 1.11 release we are dropping support for older versions. The plugin will target 2016.2 and should have compatibility with 2016.3
 
-#### Next Release - 1.11
+#### Next Release - 1.12
 
 The next release should have the following:
 
-  * tbd
+* Compatibility with Intellij 2017.1
+* tbd
 
 #### A note to my users
 
@@ -47,7 +53,8 @@ raising issues for feedback, feature requests and bugs. Thanks for your support 
 
 #### Latest Updates
 
-* December 2016 - New features are in progress. In the meantime a new version of the plugin is being release to address compatibility issues with IntelliJ 2016.3
+* March 2017 - Compatibility with Intellij 2017.1 (#139)
+* December 2016 - New features are in progress. In the meantime version 1.11 of the plugin adds compatibility with IntelliJ 2016.3
 * 1st February 2016 - I'm spending some time using the plugin for one of my projects to get a feel for how it's working under some real usage. Development will resume after this period.
 * 9th January 2016 - Fixed some bugs and working towards getting more of the intellij features working
 * 27th December 2015 - Fixed DCD bugs and added dub init wizard to dub project creation
@@ -58,7 +65,7 @@ raising issues for feedback, feature requests and bugs. Thanks for your support 
 * 21st October 2015 - Work has begun to re-organize and track the upcoming work as well an initial work on the BNF grammar - I have switched master to previous_master and current master is a currently not working bnf shell project
 * 7th October 2015 - I have finally figured out several aspects of the BNF grammar and feel like I know enough now to begin a complete re-write of the parser using the grammarkit plugin for intellij. This will overcome the terrible performance issues caused by the integration of the DDT parser and will enable a longer term view of complete language support and lots of cool features that are just not possible to add in any other way.
 * 29th March 2015 - I've not managed to fix the performance issue. The problem is that the integration of the DDT parser/lexer with intellij has to jump through many hoops to work correctly as intellij don't make it easy to use external parsers directly. I think the only option is to go back to writing the BNF grammer and JFlex lexer - which I have started working on - however I think this will take a few months of effort. So I'm pushing back the alpha release to after the summer.
-*  5th Feb 2015 - I've had some other demands on my time so had to push back the alpha release until end of March 2015. On the plus side I've discovered
+* 5th Feb 2015 - I've had some other demands on my time so had to push back the alpha release until end of March 2015. On the plus side I've discovered
 the major peformance issue that was holding me back - so I've started work on fixing it. Once I'm happy with the performance work will resume on more features.
 
 
@@ -310,5 +317,5 @@ The project uses Gradle with the [gradle-intellij-plugin](https://github.com/Jet
 You can also use the plugin to boot up a stand alone instance of Intellij with the plugin installed using:
 
 ```bash
-./gradlew runIdea
+./gradlew runIde
 ```

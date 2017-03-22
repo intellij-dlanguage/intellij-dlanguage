@@ -15,10 +15,6 @@ env:
   matrix:
   - ORG_GRADLE_PROJECT_ideaVersion=LATEST-EAP-SNAPSHOT
   - ORG_GRADLE_PROJECT_ideaVersion=171-EAP-SNAPSHOT
-  - ORG_GRADLE_PROJECT_ideaVersion=2016.3.5
-  - ORG_GRADLE_PROJECT_ideaVersion=2016.3.4
-  - ORG_GRADLE_PROJECT_ideaVersion=2016.3.3
-  - ORG_GRADLE_PROJECT_ideaVersion=2016.3
 matrix:
   allow_failures:
   - env: ORG_GRADLE_PROJECT_ideaVersion=LATEST-EAP-SNAPSHOT
