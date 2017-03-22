@@ -17,6 +17,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 
 public class DLanguageLibraryType extends LibraryType<DummyLibraryProperties> {
+
     public static final PersistentLibraryKind<DummyLibraryProperties> DLANG_LIBRARY =
             new PersistentLibraryKind<DummyLibraryProperties>("DLangLib") {
                 @NotNull
@@ -62,7 +63,7 @@ public class DLanguageLibraryType extends LibraryType<DummyLibraryProperties> {
     }
 
     @Override
-    public Icon getIcon(@Nullable LibraryProperties properties) {
+    public Icon getIcon(@Nullable DummyLibraryProperties properties) {
         return DLanguageIcons.FILE;
     }
 

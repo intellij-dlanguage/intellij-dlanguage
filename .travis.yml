@@ -14,9 +14,10 @@ env:
   - secure: mecxRWRy086Z+xeX4d2b8xi55IBKpNAQgfU8M2aTsfF4WTjXQYgdZT6QhuDSaFvOLoX3kgUfDY905ZBtWs/DS6Adx5fkLbJcLi+XsXlslfFwjA8cvlNhP8UyCCV10r3rYo2ro7sYCLJ3eMhbjH+LfaoPwQrtb36BLhjRWG4gx80=
   matrix:
   - ORG_GRADLE_PROJECT_ideaVersion=LATEST-EAP-SNAPSHOT
+  - ORG_GRADLE_PROJECT_ideaVersion=171-EAP-SNAPSHOT
   - ORG_GRADLE_PROJECT_ideaVersion=2016.3.5
   - ORG_GRADLE_PROJECT_ideaVersion=2016.3.4
-  - ORG_GRADLE_PROJECT_ideaVersion=2016.3.1
+  - ORG_GRADLE_PROJECT_ideaVersion=2016.3.3
   - ORG_GRADLE_PROJECT_ideaVersion=2016.3
 matrix:
   allow_failures:
