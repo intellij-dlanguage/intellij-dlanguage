@@ -60,12 +60,7 @@ public class RestartDCD extends AnAction implements DumbAware {
     }
 
     private static Runnable makeModuleChoiceCallback(final @NotNull AnActionEvent e, final @NotNull JList list) {
-        return new Runnable() {
-            @Override
-            public void run() {
-                restartDcdServer(e, (Module) list.getSelectedValue());
-            }
-        };
+        return () -> restartDcdServer(e, (Module) list.getSelectedValue());
     }
 
     private static void restartDcdServer(@NotNull AnActionEvent e, @NotNull Module module) {

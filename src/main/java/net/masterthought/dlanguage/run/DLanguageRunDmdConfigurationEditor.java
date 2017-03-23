@@ -118,49 +118,34 @@ public class DLanguageRunDmdConfigurationEditor extends SettingsEditor<DLanguage
         fcd.setDescription(DLanguageBundle.INSTANCE.message("dmd.run.config.selectimportfolder.description"));
         fcd.setHideIgnored(false);
 
-        pathImports.addBrowseFolderListener(null,
-                new TextFieldWithBrowseButton.BrowseFolderActionListener<JTextField>(fcd.getTitle(), fcd.getDescription(),
+        pathImports.addActionListener(new TextFieldWithBrowseButton.BrowseFolderActionListener<>(fcd.getTitle(), fcd.getDescription(),
                         pathImports, null, fcd, TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT) );
 
         //XXX: fix title and description
-        pathStringImports.addBrowseFolderListener(null,
-                new TextFieldWithBrowseButton.BrowseFolderActionListener<JTextField>(fcd.getTitle(), fcd.getDescription(),
+        pathStringImports.addActionListener(new TextFieldWithBrowseButton.BrowseFolderActionListener<>(fcd.getTitle(), fcd.getDescription(),
                         pathStringImports, null, fcd, TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT) );
 
         //XXX: fix title and description
-        pathDocumentation.addBrowseFolderListener(null,
-                new TextFieldWithBrowseButton.BrowseFolderActionListener<JTextField>(fcd.getTitle(), fcd.getDescription(),
+        pathDocumentation.addActionListener(new TextFieldWithBrowseButton.BrowseFolderActionListener<>(fcd.getTitle(), fcd.getDescription(),
                         pathDocumentation, null, fcd, TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT) );
 
         //XXX: fix title and description
-        pathHeaderDir.addBrowseFolderListener(null,
-                new TextFieldWithBrowseButton.BrowseFolderActionListener<JTextField>(fcd.getTitle(), fcd.getDescription(),
+        pathHeaderDir.addActionListener(new TextFieldWithBrowseButton.BrowseFolderActionListener<>(fcd.getTitle(), fcd.getDescription(),
                         pathHeaderDir, null, fcd, TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT) );
 
-        cbGenerateDocumentation.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                final boolean enabled = cbGenerateDocumentation.isSelected();
-                filenameDocumentation.setEnabled(enabled);
-                pathDocumentation.setEnabled(enabled);
-            }
+        cbGenerateDocumentation.addChangeListener(e -> {
+            final boolean enabled = cbGenerateDocumentation.isSelected();
+            filenameDocumentation.setEnabled(enabled);
+            pathDocumentation.setEnabled(enabled);
         });
 
-        cbGenerateHeader.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                final boolean enabled = cbGenerateHeader.isSelected();
-                pathHeaderDir.setEnabled(enabled);
-                filenameHeader.setEnabled(enabled);
-            }
+        cbGenerateHeader.addChangeListener(e -> {
+            final boolean enabled = cbGenerateHeader.isSelected();
+            pathHeaderDir.setEnabled(enabled);
+            filenameHeader.setEnabled(enabled);
         });
 
-        cbGenerateJson.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                filenameJson.setEnabled(cbGenerateJson.isSelected());
-            }
-        });
+        cbGenerateJson.addChangeListener(e -> filenameJson.setEnabled(cbGenerateJson.isSelected()));
 
 
         setDocLink();
@@ -171,20 +156,17 @@ public class DLanguageRunDmdConfigurationEditor extends SettingsEditor<DLanguage
                 = Extensions.findExtension(ConfigurationType.CONFIGURATION_TYPE_EP, DLanguageRunDmdConfigurationType.class);
         final ConfigurationFactory factory = configurationType.getConfigurationFactories()[0];
 
-        addSettingsEditorListener(new SettingsEditorListener<DLanguageRunDmdConfiguration>() {
-            @Override
-            public void stateChanged(SettingsEditor<DLanguageRunDmdConfiguration> editor) {
-                try {
-                    Module module = comboModules.getSelectedModule();
-                    if(module!=null) {
-                        DLanguageRunDmdConfiguration config = (DLanguageRunDmdConfiguration) factory.createTemplateConfiguration(module.getProject());
-                        applyEditorTo(config); //Save current editor state to "config"
-                        fillArguments(config); //Convert "config" to DMD arguments to display on "Arguments" tab.
-                    }
+        addSettingsEditorListener(editor -> {
+            try {
+                Module module = comboModules.getSelectedModule();
+                if(module!=null) {
+                    DLanguageRunDmdConfiguration config = (DLanguageRunDmdConfiguration) factory.createTemplateConfiguration(module.getProject());
+                    applyEditorTo(config); //Save current editor state to "config"
+                    fillArguments(config); //Convert "config" to DMD arguments to display on "Arguments" tab.
                 }
-                catch (Exception e) {
-                    //pass
-                }
+            }
+            catch (Exception e) {
+                //pass
             }
         });
 
@@ -337,9 +319,7 @@ public class DLanguageRunDmdConfigurationEditor extends SettingsEditor<DLanguage
         try {
             java.util.List<String> args = DLanguageDmdConfigToArgsConverter.getDmdParameters(config, module);
             textArgsPane.setText(StringUtils.join(args, "\n"));
-        } catch (NoSourcesException e) {
-            textArgsPane.setText("*Exception*:\n" + e.getMessage());
-        } catch (ExecutionException e) {
+        } catch (NoSourcesException | ExecutionException e) {
             textArgsPane.setText("*Exception*:\n" + e.getMessage());
         }
     }

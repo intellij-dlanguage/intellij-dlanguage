@@ -26,9 +26,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DLanguageRunAppConfiguration extends ModuleBasedConfiguration<RunConfigurationModule>
-        implements RunConfiguration
-{
+public class DLanguageRunAppConfiguration extends ModuleBasedConfiguration<RunConfigurationModule> {
+
     private String workDir;
     private String additionalParams;
     private Map<String, String> envVars;
@@ -43,7 +42,7 @@ public class DLanguageRunAppConfiguration extends ModuleBasedConfiguration<RunCo
         }
 
         workDir = PathUtil.getLocalPath(project.getBaseDir());
-        envVars = new HashMap<String, String>();
+        envVars = new HashMap<>();
     }
 
     public String getExecutablePath() {
@@ -68,7 +67,7 @@ public class DLanguageRunAppConfiguration extends ModuleBasedConfiguration<RunCo
         Module[] modules = ModuleManager.getInstance(getProject()).getModules();
         final DMDRunner appRunner = new DMDRunner();
 
-        ArrayList<Module> res = new ArrayList<Module>();
+        ArrayList<Module> res = new ArrayList<>();
         for (Module module : modules) {
             if (appRunner.isValidModule(module)) {
                 res.add(module);
@@ -91,7 +90,7 @@ public class DLanguageRunAppConfiguration extends ModuleBasedConfiguration<RunCo
     @Override
     public void writeExternal(@NotNull Element element) throws WriteExternalException {
         if(envVars == null) {
-            envVars = new HashMap<String, String>();
+            envVars = new HashMap<>();
         }
 
         super.writeExternal(element);

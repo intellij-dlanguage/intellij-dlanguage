@@ -20,8 +20,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DLanguageRunDubConfiguration extends ModuleBasedConfiguration<RunConfigurationModule>
-        implements RunConfiguration {
+public class DLanguageRunDubConfiguration extends ModuleBasedConfiguration<RunConfigurationModule> {
 
     //General tab
     private int generalDubOptions = 1;

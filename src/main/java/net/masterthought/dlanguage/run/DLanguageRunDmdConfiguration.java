@@ -19,9 +19,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunConfigurationModule>
-        implements RunConfiguration
-{
+public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunConfigurationModule> {
+
     //Compiler settings properties
     private boolean release;
     private boolean debug;
@@ -83,7 +82,7 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
         Module[] modules = ModuleManager.getInstance(getProject()).getModules();
         final DMDRunner appRunner = new DMDRunner();
 
-        ArrayList<Module> res = new ArrayList<Module>();
+        ArrayList<Module> res = new ArrayList<>();
         for (Module module : modules) {
             if (appRunner.isValidModule(module)) {
                 res.add(module);
