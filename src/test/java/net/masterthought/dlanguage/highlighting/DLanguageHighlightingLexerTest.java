@@ -1,5 +1,8 @@
 package net.masterthought.dlanguage.highlighting;
 
+import org.junit.Ignore;
+
+@Ignore
 public class DLanguageHighlightingLexerTest extends DLanguageHighlightingLexerTestBase {
 
     public DLanguageHighlightingLexerTest() {
