@@ -9,9 +9,7 @@ cache:
   - "$HOME/.gradle/wrapper/"
 env:
   global:
-  - ORG_GRADLE_PROJECT_downloadIdeaSources=false
-  - secure: Ix6Dg3nsYJgQfU1M9JWYKsdjk3KCzx1P73pdQxI9OKQszt0LJ3WIqFdX1FKPMRrSrqY32JNF2MV6oSrMa52mu7jtmZ2lw6BiInOZzdhsYzHw2NRueMClH6Qykj3YSIcnY+yW5nWs6XbTIwET/RtTzF1std5GhCX+KcbDMnnhQtc=
-  - secure: mecxRWRy086Z+xeX4d2b8xi55IBKpNAQgfU8M2aTsfF4WTjXQYgdZT6QhuDSaFvOLoX3kgUfDY905ZBtWs/DS6Adx5fkLbJcLi+XsXlslfFwjA8cvlNhP8UyCCV10r3rYo2ro7sYCLJ3eMhbjH+LfaoPwQrtb36BLhjRWG4gx80=
+  - ORG_GRADLE_PROJECT_downloadIdeaSources=false 
   matrix:
   - ORG_GRADLE_PROJECT_ideaVersion=LATEST-EAP-SNAPSHOT
   - ORG_GRADLE_PROJECT_ideaVersion=2017.1
