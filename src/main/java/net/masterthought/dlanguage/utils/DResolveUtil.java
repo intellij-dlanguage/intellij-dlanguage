@@ -227,7 +227,7 @@ public class DResolveUtil {
     @NotNull
     Set<CanInherit> findClassOrInterfaceDefinitionNodes(DLanguageIdentifier element, String name) {
         Set<CanInherit> canidates = new HashSet<>();
-        for (DNamedElement dNamedElement : getDeclarationsVisibleFromElement(element, element.getParentContainer())) {
+        for (DNamedElement dNamedElement : getDeclarationsVisibleFromElement(element)) {
             if (dNamedElement instanceof CanInherit) {
                 canidates.add((CanInherit) dNamedElement);
             }

@@ -21,13 +21,18 @@ import static net.masterthought.dlanguage.psi.interfaces.containers.ContainerUti
  * Created by francis on 3/17/2017.
  */
 public class PlaceHolderUtils {
+
     static Set<DNamedElement> fillPlaceHolders(Set<DNamedElement> withPlaceHolders) {
-        Set<DNamedElement> res = fillFilePlaceHolders(withPlaceHolders);
+        return fillPlaceHolders(withPlaceHolders, new HashSet<>());
+    }
+
+    private static Set<DNamedElement> fillPlaceHolders(Set<DNamedElement> withPlaceHolders, Set<DLanguageFile> excludedFiles) {
+        Set<DNamedElement> res = fillFilePlaceHolders(withPlaceHolders, excludedFiles);
         res = fillMembersPlaceHolder(res);
         res = fillMixinPlaceHolders(res);
         res = fillInheritancePlaceHolders(res);
         if (containsPlaceHolders(res)) {
-            return fillPlaceHolders(res);
+            return fillPlaceHolders(res, excludedFiles);
         }
         return res;
     }
@@ -54,15 +59,18 @@ public class PlaceHolderUtils {
         return res;
     }
 
-    private static Set<DNamedElement> fillFilePlaceHolders(Set<DNamedElement> existingElements) {
+    private static Set<DNamedElement> fillFilePlaceHolders(Set<DNamedElement> existingElements, Set<DLanguageFile> excludedFiles) {
         Set<DNamedElement> res = new HashSet<>();
         for (DNamedElement declaration : existingElements) {
             if (declaration instanceof FilePlaceHolder) {
-                res.addAll(getContainedDeclarationsWithPlaceHolders(((FilePlaceHolder) declaration).getFile()));
-                if (findChildOfType(((FilePlaceHolder) declaration).getFile(), DLanguageModuleDeclaration.class) != null)
-                    res.add(findChildOfType(((FilePlaceHolder) declaration).getFile(), DLanguageModuleDeclaration.class));
-                else
-                    res.add(((FilePlaceHolder) declaration).getFile());
+                if (!excludedFiles.contains(((FilePlaceHolder) declaration).getFile())) {
+                    res.addAll(getContainedDeclarationsWithPlaceHolders(((FilePlaceHolder) declaration).getFile()));
+                    excludedFiles.add(((FilePlaceHolder) declaration).getFile());
+                    if (findChildOfType(((FilePlaceHolder) declaration).getFile(), DLanguageModuleDeclaration.class) != null)
+                        res.add(findChildOfType(((FilePlaceHolder) declaration).getFile(), DLanguageModuleDeclaration.class));
+                    else
+                        res.add(((FilePlaceHolder) declaration).getFile());
+                }
             } else {
                 res.add(declaration);
             }

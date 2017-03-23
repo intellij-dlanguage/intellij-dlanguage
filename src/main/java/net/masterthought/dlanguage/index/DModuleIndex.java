@@ -20,10 +20,6 @@ import java.util.List;
 import java.util.Map;
 
 public class DModuleIndex extends ScalarIndexExtension<String> {
-    private static final ID<String, Void> D_MODULE_INDEX = ID.create("DModuleIndex");
-    private static final int INDEX_VERSION = 0;
-    private static final EnumeratorStringDescriptor KEY_DESCRIPTOR = new EnumeratorStringDescriptor();
-    private static final MyDataIndexer INDEXER = new MyDataIndexer();
     public static final FileBasedIndex.InputFilter D_MODULE_FILTER = new FileBasedIndex.InputFilter() {
         @Override
         public boolean acceptInput(@NotNull VirtualFile file) {
@@ -31,6 +27,10 @@ public class DModuleIndex extends ScalarIndexExtension<String> {
             return file.getFileType() == DLanguageFileType.INSTANCE;
         }
     };
+    private static final ID<String, Void> D_MODULE_INDEX = ID.create("DModuleIndex");
+    private static final int INDEX_VERSION = 0;
+    private static final EnumeratorStringDescriptor KEY_DESCRIPTOR = new EnumeratorStringDescriptor();
+    private static final MyDataIndexer INDEXER = new MyDataIndexer();
 
     @NotNull
     public static List<DLanguageFile> getFilesByModuleName(@NotNull Project project, @NotNull String moduleName, @NotNull GlobalSearchScope searchScope) {
@@ -89,7 +89,14 @@ public class DModuleIndex extends ScalarIndexExtension<String> {
         @Override
         public Map<String, Void> map(FileContent inputData) {
             final PsiFile psiFile = inputData.getPsiFile();
-            final String moduleName = psiFile instanceof DLanguageFile ? ((DLanguageFile) psiFile).getModuleName() : null;
+            String moduleName;
+            if (psiFile instanceof DLanguageFile) {
+                moduleName = ((DLanguageFile) psiFile).getModuleName();
+                if (moduleName == null)
+                    moduleName = psiFile.getName().replace(".d", "");
+            } else {
+                moduleName = null;
+            }
             if (moduleName == null) { return Collections.emptyMap(); }
             return Collections.singletonMap(moduleName, null);
         }
