@@ -7,13 +7,14 @@ import com.intellij.psi.PsiElement;
 import net.masterthought.dlanguage.psi.interfaces.containers.StatementContainer;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
+import net.masterthought.dlanguage.psi.interfaces.containers.Declaration;
 import com.intellij.psi.StubBasedPsiElement;
 import net.masterthought.dlanguage.stubs.DLanguageStaticConstructorStub;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 
-public interface DLanguageStaticConstructor extends StatementContainer, DNamedElement, HasVisibility, StubBasedPsiElement<DLanguageStaticConstructorStub> {
+public interface DLanguageStaticConstructor extends StatementContainer, DNamedElement, HasVisibility, Declaration, StubBasedPsiElement<DLanguageStaticConstructorStub> {
 
   @Nullable
   DLanguageFunctionBody getFunctionBody();
@@ -35,6 +36,8 @@ public interface DLanguageStaticConstructor extends StatementContainer, DNamedEl
 
   @NotNull
   String getName();
+
+  String getFullName();
 
   @Nullable
   PsiElement getNameIdentifier();

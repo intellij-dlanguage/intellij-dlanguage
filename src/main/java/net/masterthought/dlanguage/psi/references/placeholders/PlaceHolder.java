@@ -1,4 +1,4 @@
-package net.masterthought.dlanguage.psi.interfaces.containers;
+package net.masterthought.dlanguage.psi.references.placeholders;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;
@@ -12,7 +12,6 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.SearchScope;
 import com.intellij.util.IncorrectOperationException;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
-import net.masterthought.dlanguage.psi.interfaces.Mixin;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -22,330 +21,323 @@ import javax.swing.*;
 /**
  * Created by francis on 3/17/2017.
  */
-public class MixinPlaceHolder implements DNamedElement, PlaceHolder {
-    private Mixin mixin;
+public interface PlaceHolder extends DNamedElement {
+    PsiElement getElement();
 
-    public MixinPlaceHolder(Mixin mixin) {
-        this.mixin = mixin;
+    @Nullable
+    @Override
+    default PsiElement getNameIdentifier() {
+        throw new IllegalStateException("you should never call this method on this class. This class is used as a placeholder for methods that will be added to declarations later");
     }
 
     @Nullable
     @Override
-    public ItemPresentation getPresentation() {
+    default String getName() {
         throw new IllegalStateException("you should never call this method on this class. This class is used as a placeholder for methods that will be added to declarations later");
     }
 
     @Override
-    public void navigate(boolean requestFocus) {
+    default PsiElement setName(@NonNls @NotNull String name) throws IncorrectOperationException {
+        throw new IllegalStateException("you should never call this method on this class. This class is used as a placeholder for methods that will be added to declarations later");
+    }
+
+    @Nullable
+    @Override
+    default ItemPresentation getPresentation() {
+        throw new IllegalStateException("you should never call this method on this class. This class is used as a placeholder for methods that will be added to declarations later");
+    }
+
+    @Override
+    default void navigate(boolean requestFocus) {
 
     }
 
     @Override
-    public boolean canNavigate() {
+    default boolean canNavigate() {
         return false;
     }
 
     @Override
-    public boolean canNavigateToSource() {
+    default boolean canNavigateToSource() {
         return false;
     }
 
-    @Nullable
+    @NotNull
     @Override
-    public PsiElement getNameIdentifier() {
-        throw new IllegalStateException("you should never call this method on this class. This class is used as a placeholder for methods that will be added to declarations later");
-    }
-
-    @Nullable
-    @Override
-    public String getName() {
-        throw new IllegalStateException("you should never call this method on this class. This class is used as a placeholder for methods that will be added to declarations later");
-    }
-
-    @Override
-    public PsiElement setName(@NonNls @NotNull String name) throws IncorrectOperationException {
+    default Project getProject() throws PsiInvalidElementAccessException {
         throw new IllegalStateException("you should never call this method on this class. This class is used as a placeholder for methods that will be added to declarations later");
     }
 
     @NotNull
     @Override
-    public Project getProject() throws PsiInvalidElementAccessException {
+    default Language getLanguage() {
+        throw new IllegalStateException("you should never call this method on this class. This class is used as a placeholder for methods that will be added to declarations later");
+    }
+
+    @Override
+    default PsiManager getManager() {
         throw new IllegalStateException("you should never call this method on this class. This class is used as a placeholder for methods that will be added to declarations later");
     }
 
     @NotNull
     @Override
-    public Language getLanguage() {
-        throw new IllegalStateException("you should never call this method on this class. This class is used as a placeholder for methods that will be added to declarations later");
-    }
-
-    @Override
-    public PsiManager getManager() {
-        throw new IllegalStateException("you should never call this method on this class. This class is used as a placeholder for methods that will be added to declarations later");
-    }
-
-    @NotNull
-    @Override
-    public PsiElement[] getChildren() {
+    default PsiElement[] getChildren() {
         return new PsiElement[0];
     }
 
     @Override
-    public PsiElement getParent() {
+    default PsiElement getParent() {
         throw new IllegalStateException("you should never call this method on this class. This class is used as a placeholder for methods that will be added to declarations later");
     }
 
     @Override
-    public PsiElement getFirstChild() {
+    default PsiElement getFirstChild() {
         throw new IllegalStateException("you should never call this method on this class. This class is used as a placeholder for methods that will be added to declarations later");
     }
 
     @Override
-    public PsiElement getLastChild() {
+    default PsiElement getLastChild() {
         throw new IllegalStateException("you should never call this method on this class. This class is used as a placeholder for methods that will be added to declarations later");
     }
 
     @Override
-    public PsiElement getNextSibling() {
+    default PsiElement getNextSibling() {
         throw new IllegalStateException("you should never call this method on this class. This class is used as a placeholder for methods that will be added to declarations later");
     }
 
     @Override
-    public PsiElement getPrevSibling() {
+    default PsiElement getPrevSibling() {
         throw new IllegalStateException("you should never call this method on this class. This class is used as a placeholder for methods that will be added to declarations later");
     }
 
     @Override
-    public PsiFile getContainingFile() throws PsiInvalidElementAccessException {
+    default PsiFile getContainingFile() throws PsiInvalidElementAccessException {
         throw new IllegalStateException("you should never call this method on this class. This class is used as a placeholder for methods that will be added to declarations later");
     }
 
     @Override
-    public TextRange getTextRange() {
+    default TextRange getTextRange() {
         throw new IllegalStateException("you should never call this method on this class. This class is used as a placeholder for methods that will be added to declarations later");
     }
 
     @Override
-    public int getStartOffsetInParent() {
+    default int getStartOffsetInParent() {
         return 0;
     }
 
     @Override
-    public int getTextLength() {
+    default int getTextLength() {
         return 0;
     }
 
     @Nullable
     @Override
-    public PsiElement findElementAt(int offset) {
+    default PsiElement findElementAt(int offset) {
         throw new IllegalStateException("you should never call this method on this class. This class is used as a placeholder for methods that will be added to declarations later");
     }
 
     @Nullable
     @Override
-    public PsiReference findReferenceAt(int offset) {
+    default PsiReference findReferenceAt(int offset) {
         throw new IllegalStateException("you should never call this method on this class. This class is used as a placeholder for methods that will be added to declarations later");
     }
 
     @Override
-    public int getTextOffset() {
+    default int getTextOffset() {
         return 0;
     }
 
     @Override
-    public String getText() {
+    default String getText() {
         throw new IllegalStateException("you should never call this method on this class. This class is used as a placeholder for methods that will be added to declarations later");
     }
 
     @NotNull
     @Override
-    public char[] textToCharArray() {
+    default char[] textToCharArray() {
         return new char[0];
     }
 
     @Override
-    public PsiElement getNavigationElement() {
+    default PsiElement getNavigationElement() {
         throw new IllegalStateException("you should never call this method on this class. This class is used as a placeholder for methods that will be added to declarations later");
     }
 
     @Override
-    public PsiElement getOriginalElement() {
+    default PsiElement getOriginalElement() {
         throw new IllegalStateException("you should never call this method on this class. This class is used as a placeholder for methods that will be added to declarations later");
     }
 
     @Override
-    public boolean textMatches(@NotNull @NonNls CharSequence text) {
+    default boolean textMatches(@NotNull @NonNls CharSequence text) {
         return false;
     }
 
     @Override
-    public boolean textMatches(@NotNull PsiElement element) {
+    default boolean textMatches(@NotNull PsiElement element) {
         return false;
     }
 
     @Override
-    public boolean textContains(char c) {
+    default boolean textContains(char c) {
         return false;
     }
 
     @Override
-    public void accept(@NotNull PsiElementVisitor visitor) {
+    default void accept(@NotNull PsiElementVisitor visitor) {
 
     }
 
     @Override
-    public void acceptChildren(@NotNull PsiElementVisitor visitor) {
+    default void acceptChildren(@NotNull PsiElementVisitor visitor) {
 
     }
 
     @Override
-    public PsiElement copy() {
+    default PsiElement copy() {
         throw new IllegalStateException("you should never call this method on this class. This class is used as a placeholder for methods that will be added to declarations later");
     }
 
     @Override
-    public PsiElement add(@NotNull PsiElement element) throws IncorrectOperationException {
+    default PsiElement add(@NotNull PsiElement element) throws IncorrectOperationException {
         throw new IllegalStateException("you should never call this method on this class. This class is used as a placeholder for methods that will be added to declarations later");
     }
 
     @Override
-    public PsiElement addBefore(@NotNull PsiElement element, @Nullable PsiElement anchor) throws IncorrectOperationException {
+    default PsiElement addBefore(@NotNull PsiElement element, @Nullable PsiElement anchor) throws IncorrectOperationException {
         throw new IllegalStateException("you should never call this method on this class. This class is used as a placeholder for methods that will be added to declarations later");
     }
 
     @Override
-    public PsiElement addAfter(@NotNull PsiElement element, @Nullable PsiElement anchor) throws IncorrectOperationException {
+    default PsiElement addAfter(@NotNull PsiElement element, @Nullable PsiElement anchor) throws IncorrectOperationException {
         throw new IllegalStateException("you should never call this method on this class. This class is used as a placeholder for methods that will be added to declarations later");
     }
 
     @Override
-    public void checkAdd(@NotNull PsiElement element) throws IncorrectOperationException {
+    default void checkAdd(@NotNull PsiElement element) throws IncorrectOperationException {
 
     }
 
     @Override
-    public PsiElement addRange(PsiElement first, PsiElement last) throws IncorrectOperationException {
+    default PsiElement addRange(PsiElement first, PsiElement last) throws IncorrectOperationException {
         throw new IllegalStateException("you should never call this method on this class. This class is used as a placeholder for methods that will be added to declarations later");
     }
 
     @Override
-    public PsiElement addRangeBefore(@NotNull PsiElement first, @NotNull PsiElement last, PsiElement anchor) throws IncorrectOperationException {
+    default PsiElement addRangeBefore(@NotNull PsiElement first, @NotNull PsiElement last, PsiElement anchor) throws IncorrectOperationException {
         throw new IllegalStateException("you should never call this method on this class. This class is used as a placeholder for methods that will be added to declarations later");
     }
 
     @Override
-    public PsiElement addRangeAfter(PsiElement first, PsiElement last, PsiElement anchor) throws IncorrectOperationException {
+    default PsiElement addRangeAfter(PsiElement first, PsiElement last, PsiElement anchor) throws IncorrectOperationException {
         throw new IllegalStateException("you should never call this method on this class. This class is used as a placeholder for methods that will be added to declarations later");
     }
 
     @Override
-    public void delete() throws IncorrectOperationException {
+    default void delete() throws IncorrectOperationException {
 
     }
 
     @Override
-    public void checkDelete() throws IncorrectOperationException {
+    default void checkDelete() throws IncorrectOperationException {
 
     }
 
     @Override
-    public void deleteChildRange(PsiElement first, PsiElement last) throws IncorrectOperationException {
+    default void deleteChildRange(PsiElement first, PsiElement last) throws IncorrectOperationException {
 
     }
 
     @Override
-    public PsiElement replace(@NotNull PsiElement newElement) throws IncorrectOperationException {
+    default PsiElement replace(@NotNull PsiElement newElement) throws IncorrectOperationException {
         throw new IllegalStateException("you should never call this method on this class. This class is used as a placeholder for methods that will be added to declarations later");
     }
 
     @Override
-    public boolean isValid() {
+    default boolean isValid() {
         return false;
     }
 
     @Override
-    public boolean isWritable() {
+    default boolean isWritable() {
         return false;
     }
 
     @Nullable
     @Override
-    public PsiReference getReference() {
+    default PsiReference getReference() {
         throw new IllegalStateException("you should never call this method on this class. This class is used as a placeholder for methods that will be added to declarations later");
     }
 
     @NotNull
     @Override
-    public PsiReference[] getReferences() {
+    default PsiReference[] getReferences() {
         return new PsiReference[0];
     }
 
     @Nullable
     @Override
-    public <T> T getCopyableUserData(Key<T> key) {
+    default <T> T getCopyableUserData(Key<T> key) {
         throw new IllegalStateException("you should never call this method on this class. This class is used as a placeholder for methods that will be added to declarations later");
     }
 
     @Override
-    public <T> void putCopyableUserData(Key<T> key, @Nullable T value) {
+    default <T> void putCopyableUserData(Key<T> key, @Nullable T value) {
 
     }
 
     @Override
-    public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, @Nullable PsiElement lastParent, @NotNull PsiElement place) {
+    default boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, @Nullable PsiElement lastParent, @NotNull PsiElement place) {
         return false;
     }
 
     @Nullable
     @Override
-    public PsiElement getContext() {
+    default PsiElement getContext() {
         throw new IllegalStateException("you should never call this method on this class. This class is used as a placeholder for methods that will be added to declarations later");
     }
 
     @Override
-    public boolean isPhysical() {
+    default boolean isPhysical() {
         return false;
     }
 
     @NotNull
     @Override
-    public GlobalSearchScope getResolveScope() {
+    default GlobalSearchScope getResolveScope() {
         throw new IllegalStateException("you should never call this method on this class. This class is used as a placeholder for methods that will be added to declarations later");
     }
 
     @NotNull
     @Override
-    public SearchScope getUseScope() {
+    default SearchScope getUseScope() {
         throw new IllegalStateException("you should never call this method on this class. This class is used as a placeholder for methods that will be added to declarations later");
     }
 
     @Override
-    public ASTNode getNode() {
+    default ASTNode getNode() {
         throw new IllegalStateException("you should never call this method on this class. This class is used as a placeholder for methods that will be added to declarations later");
     }
 
     @Override
-    public boolean isEquivalentTo(PsiElement another) {
+    default boolean isEquivalentTo(PsiElement another) {
         return false;
     }
 
     @Override
-    public Icon getIcon(@IconFlags int flags) {
+    default Icon getIcon(@IconFlags int flags) {
         throw new IllegalStateException("you should never call this method on this class. This class is used as a placeholder for methods that will be added to declarations later");
     }
 
     @Nullable
     @Override
-    public <T> T getUserData(@NotNull Key<T> key) {
+    default <T> T getUserData(@NotNull Key<T> key) {
         throw new IllegalStateException("you should never call this method on this class. This class is used as a placeholder for methods that will be added to declarations later");
     }
 
     @Override
-    public <T> void putUserData(@NotNull Key<T> key, @Nullable T value) {
+    default <T> void putUserData(@NotNull Key<T> key, @Nullable T value) {
 
     }
 
-    public Mixin getMixin() {
-        return mixin;
-    }
 }

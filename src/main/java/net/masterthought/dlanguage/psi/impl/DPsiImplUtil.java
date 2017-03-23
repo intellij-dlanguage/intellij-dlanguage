@@ -10,10 +10,7 @@ import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.PsiReference;
 import net.masterthought.dlanguage.icons.DLanguageIcons;
 import net.masterthought.dlanguage.psi.*;
-import net.masterthought.dlanguage.psi.interfaces.CanInherit;
-import net.masterthought.dlanguage.psi.interfaces.Mixinable;
-import net.masterthought.dlanguage.psi.interfaces.Type;
-import net.masterthought.dlanguage.psi.interfaces.VariableDeclaration;
+import net.masterthought.dlanguage.psi.interfaces.*;
 import net.masterthought.dlanguage.psi.interfaces.containers.*;
 import net.masterthought.dlanguage.psi.references.DReference;
 import net.masterthought.dlanguage.stubs.*;
@@ -121,6 +118,10 @@ public class DPsiImplUtil {
     // ------------- Identifier ------------------ //
 
     // ------------- Function Definition ------------------ //
+//    public String getFullName(DLanguageFuncDeclaration e){
+//        return getFullName(e);
+//    }
+
     @NotNull
     public static String getName(@NotNull DLanguageFuncDeclaration o) {
         DLanguageFuncDeclarationStub stub = o.getStub();
@@ -298,7 +299,7 @@ public class DPsiImplUtil {
             assert (basicType.getTypeVector() == null);
             assert (basicType.getTypeof() == null);
             final DLanguageIdentifierList identifierList = basicType.getIdentifierList();
-            final List<CanInherit> definitionNodes = findClassOrInterfaceDefinitionNodes(getEndOfIdentifierList(identifierList), getEndOfIdentifierList(identifierList).getName(), new HashSet<>());
+            final Set<CanInherit> definitionNodes = findClassOrInterfaceDefinitionNodes(getEndOfIdentifierList(identifierList), getEndOfIdentifierList(identifierList).getName());
             assert (definitionNodes.size() == 1);
             res.add((CanInherit) definitionNodes.toArray()[0]);
 
@@ -954,7 +955,7 @@ public class DPsiImplUtil {
             assert (basicType.getTypeVector() == null);
             assert (basicType.getTypeof() == null);
             final DLanguageIdentifierList identifierList = basicType.getIdentifierList();
-            final List<CanInherit> definitionNodes = findClassOrInterfaceDefinitionNodes(getEndOfIdentifierList(identifierList), getEndOfIdentifierList(identifierList).getName(), new HashSet<>());
+            final Set<CanInherit> definitionNodes = findClassOrInterfaceDefinitionNodes(getEndOfIdentifierList(identifierList), getEndOfIdentifierList(identifierList).getName());
             assert (definitionNodes.size() == 1);
             res.add((CanInherit) definitionNodes.toArray()[0]);
 
@@ -1847,5 +1848,13 @@ public class DPsiImplUtil {
     }
 
     // -------------------- Visibility --------------------- //
+
+    // -------------------- Misc --------------------- //
+    public static String getFullName(DNamedElement e) {
+        if (e == null)
+            return "";
+        return e.getName() + "." + getFullName(e.getParentContainer());
+    }
+    // -------------------- Misc --------------------- //
 }
 

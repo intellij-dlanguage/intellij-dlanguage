@@ -6,15 +6,17 @@ import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 import net.masterthought.dlanguage.psi.interfaces.containers.StatementContainer;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+import net.masterthought.dlanguage.psi.interfaces.containers.MixinContainer;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
 import net.masterthought.dlanguage.psi.interfaces.HasTemplateArguments;
+import net.masterthought.dlanguage.psi.interfaces.containers.Declaration;
 import com.intellij.psi.StubBasedPsiElement;
 import net.masterthought.dlanguage.stubs.DLanguageStructDeclarationStub;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 
-public interface DLanguageStructDeclaration extends StatementContainer, DNamedElement, HasVisibility, HasTemplateArguments, StubBasedPsiElement<DLanguageStructDeclarationStub> {
+public interface DLanguageStructDeclaration extends StatementContainer, DNamedElement, MixinContainer, HasVisibility, HasTemplateArguments, Declaration, StubBasedPsiElement<DLanguageStructDeclarationStub> {
 
   @Nullable
   DLanguageAggregateBody getAggregateBody();
@@ -36,6 +38,8 @@ public interface DLanguageStructDeclaration extends StatementContainer, DNamedEl
 
   @NotNull
   String getName();
+
+  String getFullName();
 
   @Nullable
   PsiElement getNameIdentifier();

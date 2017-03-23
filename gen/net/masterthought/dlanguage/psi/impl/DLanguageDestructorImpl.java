@@ -81,6 +81,10 @@ public class DLanguageDestructorImpl extends DNamedStubbedPsiElementBase<DLangua
     return DPsiImplUtil.getName(this);
   }
 
+  public String getFullName() {
+    return DPsiImplUtil.getFullName(this);
+  }
+
   @Nullable
   public PsiElement getNameIdentifier() {
     return DPsiImplUtil.getNameIdentifier(this);

@@ -1,5 +1,6 @@
-package net.masterthought.dlanguage.psi.interfaces.containers;
+package net.masterthought.dlanguage.psi.references.placeholders;
 
+import com.intellij.psi.PsiElement;
 import net.masterthought.dlanguage.psi.DLanguageIdentifier;
 import net.masterthought.dlanguage.psi.interfaces.CanInherit;
 
@@ -22,5 +23,10 @@ public class InheritancePlaceHolder implements PlaceHolder {
 
     public Map<String, DLanguageIdentifier> getSuperClassNames() {
         return canInherit.getSuperClassNames();
+    }
+
+    @Override
+    public PsiElement getElement() {
+        return canInherit;
     }
 }

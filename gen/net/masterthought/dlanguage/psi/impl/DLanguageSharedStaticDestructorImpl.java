@@ -99,6 +99,10 @@ public class DLanguageSharedStaticDestructorImpl extends StubBasedPsiElementBase
     return DPsiImplUtil.getName(this);
   }
 
+  public String getFullName() {
+    return DPsiImplUtil.getFullName(this);
+  }
+
   @Nullable
   public PsiElement getNameIdentifier() {
     return DPsiImplUtil.getNameIdentifier(this);

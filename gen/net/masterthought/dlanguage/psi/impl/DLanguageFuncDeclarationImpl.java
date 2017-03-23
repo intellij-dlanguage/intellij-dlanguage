@@ -87,6 +87,10 @@ public class DLanguageFuncDeclarationImpl extends DNamedStubbedPsiElementBase<DL
     return DPsiImplUtil.getName(this);
   }
 
+  public String getFullName() {
+    return DPsiImplUtil.getFullName(this);
+  }
+
   @Nullable
   public PsiElement getNameIdentifier() {
     return DPsiImplUtil.getNameIdentifier(this);

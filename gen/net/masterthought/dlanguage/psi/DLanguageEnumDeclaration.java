@@ -6,13 +6,14 @@ import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
+import net.masterthought.dlanguage.psi.interfaces.containers.Declaration;
 import com.intellij.psi.StubBasedPsiElement;
 import net.masterthought.dlanguage.stubs.DLanguageEnumDeclarationStub;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 
-public interface DLanguageEnumDeclaration extends DNamedElement, HasVisibility, StubBasedPsiElement<DLanguageEnumDeclarationStub> {
+public interface DLanguageEnumDeclaration extends DNamedElement, HasVisibility, Declaration, StubBasedPsiElement<DLanguageEnumDeclarationStub> {
 
   @Nullable
   DLanguageAnonymousEnumDeclaration getAnonymousEnumDeclaration();
@@ -34,6 +35,8 @@ public interface DLanguageEnumDeclaration extends DNamedElement, HasVisibility, 
 
   @NotNull
   String getName();
+
+  String getFullName();
 
   @Nullable
   PsiElement getNameIdentifier();

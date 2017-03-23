@@ -1,19 +1,21 @@
 package net.masterthought.dlanguage.utils;
 
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.util.PsiTreeUtil;
-import net.masterthought.dlanguage.psi.DLanguageIdentifier;
-import net.masterthought.dlanguage.psi.DLanguageModuleDeclaration;
+import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 import net.masterthought.dlanguage.psi.interfaces.Mixin;
-import net.masterthought.dlanguage.psi.interfaces.containers.*;
+import net.masterthought.dlanguage.psi.interfaces.containers.Container;
+import net.masterthought.dlanguage.psi.interfaces.containers.FilePlaceHolder;
+import net.masterthought.dlanguage.psi.references.placeholders.*;
 import org.jetbrains.annotations.Contract;
 
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static net.masterthought.dlanguage.psi.interfaces.containers.ContainerUtil.getAllDeclarationsWithPlaceHolders;
+import static com.intellij.psi.util.PsiTreeUtil.findChildOfType;
+import static net.masterthought.dlanguage.psi.interfaces.containers.ContainerUtil.getContainedDeclarationsWithPlaceHolders;
+import static net.masterthought.dlanguage.psi.interfaces.containers.ContainerUtil.getContainedDeclarationsWithPlaceHoldersImpl;
 
 /**
  * Created by francis on 3/17/2017.
@@ -21,6 +23,7 @@ import static net.masterthought.dlanguage.psi.interfaces.containers.ContainerUti
 public class PlaceHolderUtils {
     static Set<DNamedElement> fillPlaceHolders(Set<DNamedElement> withPlaceHolders) {
         Set<DNamedElement> res = fillFilePlaceHolders(withPlaceHolders);
+        res = fillMembersPlaceHolder(res);
         res = fillMixinPlaceHolders(res);
         res = fillInheritancePlaceHolders(res);
         if (containsPlaceHolders(res)) {
@@ -29,13 +32,35 @@ public class PlaceHolderUtils {
         return res;
     }
 
+    private static Set<DNamedElement> fillMembersPlaceHolder(Set<DNamedElement> existingElements) {
+        Set<DNamedElement> res = new HashSet<>();
+        for (DNamedElement declaration : existingElements) {
+            if (declaration instanceof StructMembersPlaceHolder) {
+                final DLanguageStructDeclaration structDeclaration = ((StructMembersPlaceHolder) declaration).getElement();
+                getContainedDeclarationsWithPlaceHoldersImpl(structDeclaration.getAggregateBody(), res);
+            } else if (declaration instanceof ClassMembersPlaceHolder) {
+                final DLanguageClassDeclaration classDeclaration = ((ClassMembersPlaceHolder) declaration).getElement();
+                getContainedDeclarationsWithPlaceHoldersImpl(classDeclaration.getAggregateBody(), res);
+            } else if (declaration instanceof TemplateMembersPlaceHolder) {
+                final DLanguageTemplateDeclaration templateDeclaration = ((TemplateMembersPlaceHolder) declaration).getElement();
+                getContainedDeclarationsWithPlaceHoldersImpl(templateDeclaration.getDeclDefs(), res);
+            } else if (declaration instanceof InterfaceMembersPlaceHolder) {
+                final DLanguageInterfaceDeclaration interfaceDeclaration = ((InterfaceMembersPlaceHolder) declaration).getElement();
+                getContainedDeclarationsWithPlaceHoldersImpl(interfaceDeclaration.getAggregateBody(), res);
+            } else {
+                res.add(declaration);
+            }
+        }
+        return res;
+    }
+
     private static Set<DNamedElement> fillFilePlaceHolders(Set<DNamedElement> existingElements) {
         Set<DNamedElement> res = new HashSet<>();
         for (DNamedElement declaration : existingElements) {
             if (declaration instanceof FilePlaceHolder) {
-                res.addAll(getAllDeclarationsWithPlaceHolders(((FilePlaceHolder) declaration).getFile()));
-                if (PsiTreeUtil.findChildOfType(((FilePlaceHolder) declaration).getFile(), DLanguageModuleDeclaration.class) != null)
-                    res.add(PsiTreeUtil.findChildOfType(((FilePlaceHolder) declaration).getFile(), DLanguageModuleDeclaration.class));
+                res.addAll(getContainedDeclarationsWithPlaceHolders(((FilePlaceHolder) declaration).getFile()));
+                if (findChildOfType(((FilePlaceHolder) declaration).getFile(), DLanguageModuleDeclaration.class) != null)
+                    res.add(findChildOfType(((FilePlaceHolder) declaration).getFile(), DLanguageModuleDeclaration.class));
                 else
                     res.add(((FilePlaceHolder) declaration).getFile());
             } else {
@@ -61,10 +86,28 @@ public class PlaceHolderUtils {
                 final Mixin mixin = ((MixinPlaceHolder) visibleElement).getMixin();
                 final String name = mixin.getName();
                 //search for definition
+                boolean success = false;
                 for (DNamedElement element : withPlaceHolders) {
                     if ((!(element instanceof PlaceHolder)) && element.getName().equals(name)) {
-                        res.addAll(getAllDeclarationsWithPlaceHolders((Container) element));
+                        res.addAll(getContainedDeclarationsWithPlaceHolders((Container) element));
+                        success = true;
+                        break;
                     }
+                }
+                if (!success) {
+//                    Set<DLanguageImport> imports = new HashSet<>();
+//                    getVisibleImports(visibleElement,imports);
+//                    Set<String> names = new HashSet<>();
+//                    for (DLanguageImport import_ : imports) {
+//                        names.add(import_.getName());
+//                    }
+//                    final Set<DLanguageFile> importedFiles = DResolveUtil.fromModulesToFiles(visibleElement.getProject(), names);
+//                    for (DLanguageFile importedFile : importedFiles) {
+//                        res.add()
+//                    }
+                    final PsiElement resolvedDef = findChildOfType(((MixinPlaceHolder) visibleElement).getMixin(), DLanguageIdentifier.class).getReference().resolve();
+                    res.addAll(getContainedDeclarationsWithPlaceHolders((Container) resolvedDef));
+//                    res.add(visibleElement);
                 }
             } else {
                 res.add(visibleElement);
@@ -81,19 +124,19 @@ public class PlaceHolderUtils {
                 final InheritancePlaceHolder placeHolder = (InheritancePlaceHolder) visibleElement;
                 Map<String, DLanguageIdentifier> whatInheritsFrom = placeHolder.getSuperClassNames();
                 //search for declarations which resolve the class declaration. This could foreseeable cause bugs in the distant future, if there where two classes/interfaces with the same name are both visible from here todo
-                for (DNamedElement element : withPlaceHolders) {
+                for (Object object : withPlaceHolders.toArray()) { //avoid concurrent modification exceptions
+                    DNamedElement element = (DNamedElement) object;
                     if (!(element instanceof PlaceHolder) && whatInheritsFrom.keySet().contains(element.getName())) {
-                        // yes I know deeply nested for loops, that could cause performance issues.
-                        withPlaceHolders.remove(element);
-                        res.addAll(getAllDeclarationsWithPlaceHolders((Container) element));
+                        // yes I know deeply nested for loops, could cause performance issues.
+                        res.addAll(getContainedDeclarationsWithPlaceHolders((Container) element));
                         whatInheritsFrom.remove(element.getName());
                     }
                 }
                 //if  unable to find the super class/ interface declaration in current scope, resolve the declaration.
-                for (DLanguageIdentifier identifier : whatInheritsFrom.values()) {
-                    final PsiElement resolve = identifier.getReference().resolve();
-                    res.addAll(getAllDeclarationsWithPlaceHolders((Container) resolve));
-                }
+//                for (DLanguageIdentifier identifier : whatInheritsFrom.values()) {
+//                    final PsiElement resolve = identifier.getReference().resolve();
+//                    res.addAll(getContainedDeclarationsWithPlaceHolders((Container) resolve));
+//                }
             } else {
                 res.add(visibleElement);
             }

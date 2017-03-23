@@ -7,7 +7,9 @@ import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.search.GlobalSearchScope;
 import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.interfaces.*;
-import net.masterthought.dlanguage.psi.interfaces.containers.*;
+import net.masterthought.dlanguage.psi.interfaces.containers.ConstructorContainer;
+import net.masterthought.dlanguage.psi.interfaces.containers.Container;
+import net.masterthought.dlanguage.psi.interfaces.containers.ContainerUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,7 +19,7 @@ import static com.intellij.psi.util.PsiTreeUtil.findChildOfType;
 import static com.intellij.psi.util.PsiTreeUtil.getParentOfType;
 import static java.util.Collections.EMPTY_SET;
 import static net.masterthought.dlanguage.index.DModuleIndex.getFilesByModuleName;
-import static net.masterthought.dlanguage.psi.interfaces.containers.ContainerUtil.getAllDeclarationsWithPlaceHolders;
+import static net.masterthought.dlanguage.psi.interfaces.containers.ContainerUtil.getContainedDeclarationsWithPlaceHolders;
 import static net.masterthought.dlanguage.utils.DUtil.getTopLevelOfRecursiveElement;
 import static net.masterthought.dlanguage.utils.PlaceHolderUtils.fillPlaceHolders;
 
@@ -47,18 +49,18 @@ public class DResolveUtil {
 
     public static
     @NotNull
-    Set<PsiNamedElement> findDefinitionNodes(@NotNull DNamedElement element, Set<DLanguageFile> excludedElements) {
+    Set<PsiNamedElement> findDefinitionNodes(@NotNull DNamedElement element) {
         if (!(element instanceof DLanguageIdentifier))
             return EMPTY_SET;//prevent resolving definitions
         Set<PsiNamedElement> definitionNodes = new HashSet<>();
-        definitionNodes.addAll(findDefinitionNodes((DLanguageFile) element.getContainingFile(), (DLanguageIdentifier) element, excludedElements));
+        definitionNodes.addAll(findDefinitionNodes((DLanguageFile) element.getContainingFile(), (DLanguageIdentifier) element));
         return definitionNodes;
 
     }
 
     private static
     @NotNull
-    List<? extends DNamedElement> findDefinitionNodes(DLanguageFile dLanguageFile, DLanguageIdentifier element, Set<DLanguageFile> excludedElements) {
+    Set<? extends DNamedElement> findDefinitionNodes(DLanguageFile dLanguageFile, DLanguageIdentifier element) {
         //seven major possibilities:
         //1. identifier is part of import statement, and should resolve to a file
         //2. identifier is a normal function/class name/etc..
@@ -73,7 +75,7 @@ public class DResolveUtil {
         //identifiers within templates break this approach
         if (!dLanguageFile.getText().contains(element.getText()) &&
             getParentOfType(parent, DLanguageImportDeclaration.class) == null)
-            return Collections.emptyList();//optimization to prevent unnecessary searching
+            return Collections.emptySet();//optimization to prevent unnecessary searching
         if (getParentOfType(parent, DLanguageImportDeclaration.class) != null) {
             //#1 is true
             log.info("#1:" + parent.getText());//todo remove these later
@@ -81,7 +83,7 @@ public class DResolveUtil {
         }
         if (getParentOfType(parent, DLanguageBaseClassList.class) != null || getParentOfType(parent, DLanguageBaseInterfaceList.class) != null) {
             //#6 is true
-            return findClassOrInterfaceDefinitionNodes(element, element.getName(), excludedElements);
+            return findClassOrInterfaceDefinitionNodes(element, element.getName());
         }
         if (parent.getText().contains(".") && !parent.getText().contains("{") | parent instanceof DLanguageModuleFullyQualifiedName
 //            parent instanceof DLanguageUnaryExpression ||
@@ -148,10 +150,10 @@ public class DResolveUtil {
                 if (current instanceof DLanguageNewExpression || current instanceof DLanguageNewExpressionWithArgs) {
                     //#3 is true
                     log.info("#3:" + parent.getText());
-                    return findConstructorDefinitionNodes(element, current, excludedElements);
+                    return findConstructorDefinitionNodes(element, current);
                 }
                 if (current instanceof DLanguageDeleteExpression) {
-                    return findDestructorDefinitionNodes(element, current, excludedElements);
+                    break;//todo resolving destructors?
                 }
                 if (current instanceof DLanguageCastExpression) {
                     //#2 is true
@@ -181,7 +183,7 @@ public class DResolveUtil {
                     current instanceof DLanguageTemplateMixin) {
                     log.info("#7" + parent.getText());
                     //7 is true
-                    return Collections.singletonList(findMixinDefinitionNodes(element, element.getName(), (Mixin) current, excludedElements));
+                    return Collections.singleton(findMixinDefinitionNodes(element, element.getName(), (Mixin) current));
                 }
                 if (current == null)
                     break;
@@ -189,7 +191,7 @@ public class DResolveUtil {
             }
             //default to #2:
             log.info("#2:" + parent.getText());
-            return findDefinitionNodesStandard(element, element.getName(), excludedElements);
+            return findDefinitionNodesStandard(element);
         }
     }
 
@@ -201,7 +203,7 @@ public class DResolveUtil {
      * @return
      */
     @Nullable
-    private static Mixinable findMixinDefinitionNodes(DLanguageIdentifier element, String name, Mixin mixin, Set<DLanguageFile> excludedElements) {
+    private static Mixinable findMixinDefinitionNodes(DLanguageIdentifier element, String name, Mixin mixin) {
         List<Mixinable> res = new ArrayList<>();
         final List<Mixinable> mixinables = new ArrayList<>();
         for (DNamedElement dNamedElement : getDeclarationsVisibleFromElement(element, element.getParentContainer())) {
@@ -223,15 +225,15 @@ public class DResolveUtil {
 
     public static
     @NotNull
-    List<CanInherit> findClassOrInterfaceDefinitionNodes(DLanguageIdentifier element, String name, Set<DLanguageFile> excludedElements) {
-        List<CanInherit> canidates = new ArrayList<>();
+    Set<CanInherit> findClassOrInterfaceDefinitionNodes(DLanguageIdentifier element, String name) {
+        Set<CanInherit> canidates = new HashSet<>();
         for (DNamedElement dNamedElement : getDeclarationsVisibleFromElement(element, element.getParentContainer())) {
             if (dNamedElement instanceof CanInherit) {
                 canidates.add((CanInherit) dNamedElement);
             }
         }
 
-        List<CanInherit> res = new ArrayList<>();
+        Set<CanInherit> res = new HashSet<>();
         for (CanInherit canidate : canidates) {
             if (canidate.getName().equals(name))
                 res.add(canidate);
@@ -241,29 +243,17 @@ public class DResolveUtil {
 
     private static
     @NotNull
-    List<DNamedElement> findDestructorDefinitionNodes(DLanguageIdentifier element, PsiElement deleteExpression, Set<DLanguageFile> excludedElements) {
-        //todo is this needed
-        List<DNamedElement> res = new ArrayList<>();
-        if (deleteExpression instanceof DLanguageDeleteExpression) {
-            for (DNamedElement dNamedElement : findDefinitionNodesStandard(element, element.getName(), excludedElements)) {
-                if (dNamedElement instanceof DestructorContainer) {
-                    res.addAll(((DestructorContainer) dNamedElement).getPublicDestructors(true, false, false));
-                }
-            }
-        } else {
-            throw new IllegalArgumentException("new expression must contain a new expression");
-        }
-        return res;
-    }
-
-    private static
-    @NotNull
-    List<DNamedElement> findConstructorDefinitionNodes(@NotNull DLanguageIdentifier element, @NotNull PsiElement newExpression, Set<DLanguageFile> excludedElements) {
-        List<DNamedElement> res = new ArrayList<>();
+    Set<DNamedElement> findConstructorDefinitionNodes(@NotNull DLanguageIdentifier element, @NotNull PsiElement newExpression) {
+        Set<DNamedElement> res = new HashSet<>();
         if (newExpression instanceof DLanguageNewExpression || newExpression instanceof DLanguageNewExpressionWithArgs) {
-            for (DNamedElement dNamedElement : findDefinitionNodesStandard(element, element.getName(), excludedElements)) {
+            for (DNamedElement dNamedElement : findDefinitionNodesStandard(element)) {
                 if (dNamedElement instanceof ConstructorContainer) {
-                    res.addAll(((ConstructorContainer) dNamedElement).getPublicConstructors(true, false, false));
+                    final Set<DNamedElement> memberDeclarations = fillPlaceHolders(ContainerUtil.getContainedDeclarationsWithPlaceHolders((Container) dNamedElement));
+                    for (DNamedElement memberDeclaration : memberDeclarations) {
+                        if (memberDeclaration instanceof DLanguageConstructor)
+                            res.add(memberDeclaration);
+                    }
+
                 }
             }
         } else {
@@ -284,55 +274,89 @@ public class DResolveUtil {
      * @return resolved method(s)
      */
     @NotNull
-    private static List<DNamedElement> findMemberDefinitionNodes(String name, DLanguageIdentifier topLevelIdentifier) {
-        List<DNamedElement> res = new ArrayList<>();
+    private static Set<DNamedElement> findMemberDefinitionNodes(String name, DLanguageIdentifier topLevelIdentifier) {
+        Set<DNamedElement> res = new HashSet<>();
         final PsiElement resolve = topLevelIdentifier.getReference().resolve();
         if (resolve instanceof VariableDeclaration ) {
             VariableDeclaration var = (VariableDeclaration) resolve;
             final Type variableDeclarationType = var.getVariableDeclarationType();
             if (variableDeclarationType.isOneIdentifier() == null)
-                return Collections.emptyList();
+                return Collections.emptySet();
             final PsiElement theTypeDeclaration = variableDeclarationType.isOneIdentifier().getReference().resolve();
-            for (DNamedElement declaration : fillPlaceHolders(getAllDeclarationsWithPlaceHolders((Container) theTypeDeclaration))) {
-                if (declaration instanceof VariableDeclaration || declaration instanceof DLanguageFuncDeclaration) {
-                    if (declaration.getName().equals(name)) {
-                        res.add(declaration);
-                    }
-                }
-            }
+            //todo
         }
-        return res;
-
+        return new HashSet<>();
     }
 
     /**
      * for resolving anything that isn't a constructor and doesn't have a longform name like foo.bar.gh()
      *
      * @param element
-     * @param name
-     * @param excludedElements
      * @return
      */
     private static
     @NotNull
-    List<DNamedElement> findDefinitionNodesStandard(DLanguageIdentifier element, String name, Set<DLanguageFile> excludedElements) {
-        List<DNamedElement> res = new ArrayList<>();
-        for (DNamedElement dNamedElement : getDeclarationsVisibleFromElement(element, element.getParentContainer())) {
-            if (dNamedElement.getName() != null && dNamedElement.getName().equals(name))
-                res.add(dNamedElement);
+    Set<DNamedElement> findDefinitionNodesStandard(DLanguageIdentifier element) {
+        Set<DNamedElement> res = new HashSet<>();
+        if (element.getParent() instanceof DLanguageModuleFullyQualifiedName) {
+            return EMPTY_SET;
         }
+        for (DNamedElement dNamedElement : getDeclarationsVisibleFromElement(element, element.getParentContainer())) {
+            if (dNamedElement.getName() != null && dNamedElement.getName().equals(element.getName()) && !(dNamedElement instanceof DLanguageModuleDeclaration)) {
+                res.add(dNamedElement);
+            }
+        }
+
+//        Set<DLanguageImport> imports = new HashSet<>();
+//        getVisibleImports(element,imports);
+//        Set<String> modules = new HashSet<>();
+//        for (DLanguageImport anImport : imports) {
+//            modules.add(anImport.getModuleFullyQualifiedName().getText());
+//        }
+//        for (DLanguageFile file : fromModulesToFiles(element.getProject(), modules)) {
+//
+//        }
+
         return res;
     }
 
+    static void getVisibleImports(DNamedElement element, Set<DLanguageImport> res) {
+        getVisibleImportsInContainer(element.getParentContainer(), res);
+        if (!(element instanceof DLanguageFile))
+            getVisibleImports(element.getParentContainer(), res);
+    }
+
+    private static void getVisibleImportsInContainer(Container container, Set<DLanguageImport> res) {
+        getVisibleImportsInContainerImpl(container, res);
+    }
+
+    private static void getVisibleImportsInContainerImpl(PsiElement element, Set<DLanguageImport> res) {
+        if (element instanceof Container) {
+            return;
+        }
+        for (PsiElement psiElement : element.getChildren()) {
+            if (psiElement instanceof DLanguageImport) {
+                res.add((DLanguageImport) element);
+            }
+            getVisibleImportsInContainerImpl(psiElement, res);
+        }
+
+    }
+
+
     /**
      * this method does most of the work for resolve and for completion.
-     *
-     * @param element         element being resolved if relevant
-     * @param parentContainer element.getParentContainer(), should be the defulat value unless you know what your doing. this is mostly here for internal implementation reasons
-     * @return
+     * it finds all declarations visible from an element
+     * @param element         element being resolved if relevant. The element from which declarations are visible
+     * @return declarations visible from element
      */
     @NotNull
-    private static Set<DNamedElement> getDeclarationsVisibleFromElement(DLanguageIdentifier element, Container parentContainer) {
+    public static Set<DNamedElement> getDeclarationsVisibleFromElement(@NotNull DLanguageIdentifier element) {
+        return getDeclarationsVisibleFromElement(element, element.getParentContainer());
+    }
+
+    @NotNull
+    private static Set<DNamedElement> getDeclarationsVisibleFromElement(@Nullable DLanguageIdentifier element, Container parentContainer) {
         final Set<DNamedElement> withPlaceHolders = getVisibleElementsWithPlaceHolders(element, parentContainer);
         return fillPlaceHolders(withPlaceHolders);
     }
@@ -340,32 +364,19 @@ public class DResolveUtil {
     @NotNull
     private static Set<DNamedElement> getVisibleElementsWithPlaceHolders(DLanguageIdentifier element, Container parentContainer) {
         Set<DNamedElement> declarations = new HashSet<>();
-        if (parentContainer instanceof ImportContainer) {
-            //add declarations from import
-            for (DLanguageImport importDeclaration : ((ImportContainer) parentContainer).getImportDeclarations(false, false, false)) {
-                final List<DNamedElement> moduleDefinitionNodes = findModuleDefinitionNodes(importDeclaration.getModuleFullyQualifiedName());
-                for (DNamedElement moduleDefinitionNode : moduleDefinitionNodes) {
-                    if (moduleDefinitionNode instanceof DLanguageFile) {
-                        declarations.add(new FilePlaceHolder((DLanguageFile) moduleDefinitionNode));
-                    }
-                    if (moduleDefinitionNode instanceof DLanguageModuleDeclaration) {
-                        declarations.add(new FilePlaceHolder((DLanguageFile) moduleDefinitionNode.getContainingFile()));
-                    }
-                }
-            }
-        }
+
         if (parentContainer instanceof DLanguageFile) {
-            declarations.addAll(getAllDeclarationsWithPlaceHolders(parentContainer));
+            declarations.addAll(getContainedDeclarationsWithPlaceHolders(parentContainer));
             return declarations;//don't keep searching up after leaving the file
         }
         //add the declarations from here
-        declarations.addAll(getAllDeclarationsWithPlaceHolders(parentContainer));
+        declarations.addAll(getContainedDeclarationsWithPlaceHolders(parentContainer));
         declarations.addAll(getVisibleElementsWithPlaceHolders(element, parentContainer.getParentContainer()));
         return declarations;
     }
 
-    private static List<DNamedElement> findModuleDefinitionNodes(DLanguageModuleFullyQualifiedName module) {
-        List<DNamedElement> res = new ArrayList<>();
+    public static Set<DNamedElement> findModuleDefinitionNodes(DLanguageModuleFullyQualifiedName module) {
+        Set<DNamedElement> res = new HashSet<>();
         for (DLanguageFile dLanguageFile : fromModulesToFiles(module.getProject(), Collections.singleton(module.getText()))) {
             if (findChildOfType(dLanguageFile, DLanguageModuleDeclaration.class) != null) {
                 res.add(findChildOfType(dLanguageFile, DLanguageModuleDeclaration.class));

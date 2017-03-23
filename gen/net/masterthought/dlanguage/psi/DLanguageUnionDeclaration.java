@@ -8,13 +8,14 @@ import net.masterthought.dlanguage.psi.interfaces.containers.StatementContainer;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
 import net.masterthought.dlanguage.psi.interfaces.HasTemplateArguments;
+import net.masterthought.dlanguage.psi.interfaces.containers.Declaration;
 import com.intellij.psi.StubBasedPsiElement;
 import net.masterthought.dlanguage.stubs.DLanguageUnionDeclarationStub;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 
-public interface DLanguageUnionDeclaration extends StatementContainer, DNamedElement, HasVisibility, HasTemplateArguments, StubBasedPsiElement<DLanguageUnionDeclarationStub> {
+public interface DLanguageUnionDeclaration extends StatementContainer, DNamedElement, HasVisibility, HasTemplateArguments, Declaration, StubBasedPsiElement<DLanguageUnionDeclarationStub> {
 
   @Nullable
   DLanguageAggregateBody getAggregateBody();
@@ -36,6 +37,8 @@ public interface DLanguageUnionDeclaration extends StatementContainer, DNamedEle
 
   @NotNull
   String getName();
+
+  String getFullName();
 
   @Nullable
   PsiElement getNameIdentifier();

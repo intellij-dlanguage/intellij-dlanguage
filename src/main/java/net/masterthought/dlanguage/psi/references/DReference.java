@@ -11,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -48,7 +47,7 @@ public class DReference extends PsiReferenceBase<PsiNamedElement> implements Psi
 //            if (qconid == null) { return EMPTY_RESOLVE_RESULT; }
 //            if (!myElement.equals(Iterables.getLast(qconid.getConidList()))) { return EMPTY_RESOLVE_RESULT; }
 
-        final Set<PsiNamedElement> namedElements = DResolveUtil.findDefinitionNodes((DNamedElement) myElement, new HashSet<>());
+        final Set<PsiNamedElement> namedElements = DResolveUtil.findDefinitionNodes((DNamedElement) myElement);
         // Guess 20 variants tops most of the time in any real code base.
         List<ResolveResult> results = new ArrayList<ResolveResult>(20);
         for (PsiNamedElement property : namedElements) {
@@ -107,15 +106,7 @@ public class DReference extends PsiReferenceBase<PsiNamedElement> implements Psi
             if (resolve instanceof DLanguageModuleDeclaration)
                 files.add((DLanguageFile) resolve.getContainingFile());
         }
-        for (DLanguageFile file : files) {
-            namedNodes.addAll(file.getFunctionDeclarations(true, true, true));
-            namedNodes.addAll(file.getClassDeclarations(true, true, true));
-            namedNodes.addAll(file.getStructDeclarations(true, true, true));
-            namedNodes.addAll(file.getTemplateDeclarations(true, true, true));
-            namedNodes.addAll(file.getInterfaceDeclarations(true, true, true));
-            namedNodes.addAll(file.getGlobalVariableDeclarations(true, true, true));
-        }
-
+        //todo
         List<String> variants = new ArrayList<String>(20);
         for (final PsiNamedElement namedElement : namedNodes) {
             variants.add(namedElement.getName());

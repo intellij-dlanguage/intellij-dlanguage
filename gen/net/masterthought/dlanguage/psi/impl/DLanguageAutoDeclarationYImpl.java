@@ -64,6 +64,10 @@ public class DLanguageAutoDeclarationYImpl extends DNamedStubbedPsiElementBase<D
     return DPsiImplUtil.getName(this);
   }
 
+  public String getFullName() {
+    return DPsiImplUtil.getFullName(this);
+  }
+
   @Nullable
   public PsiElement getNameIdentifier() {
     return DPsiImplUtil.getNameIdentifier(this);
