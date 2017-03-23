@@ -42,15 +42,23 @@ public class PlaceHolderUtils {
         for (DNamedElement declaration : existingElements) {
             if (declaration instanceof StructMembersPlaceHolder) {
                 final DLanguageStructDeclaration structDeclaration = ((StructMembersPlaceHolder) declaration).getElement();
+                if (structDeclaration.getAggregateBody() == null)
+                    continue;//non recoverable issue with psi
                 getContainedDeclarationsWithPlaceHoldersImpl(structDeclaration.getAggregateBody(), res);
             } else if (declaration instanceof ClassMembersPlaceHolder) {
                 final DLanguageClassDeclaration classDeclaration = ((ClassMembersPlaceHolder) declaration).getElement();
+                if (classDeclaration.getAggregateBody() == null)
+                    continue;
                 getContainedDeclarationsWithPlaceHoldersImpl(classDeclaration.getAggregateBody(), res);
             } else if (declaration instanceof TemplateMembersPlaceHolder) {
                 final DLanguageTemplateDeclaration templateDeclaration = ((TemplateMembersPlaceHolder) declaration).getElement();
+                if (templateDeclaration.getDeclDefs() == null)
+                    continue;
                 getContainedDeclarationsWithPlaceHoldersImpl(templateDeclaration.getDeclDefs(), res);
             } else if (declaration instanceof InterfaceMembersPlaceHolder) {
                 final DLanguageInterfaceDeclaration interfaceDeclaration = ((InterfaceMembersPlaceHolder) declaration).getElement();
+                if (interfaceDeclaration.getAggregateBody() == null)
+                    continue;
                 getContainedDeclarationsWithPlaceHoldersImpl(interfaceDeclaration.getAggregateBody(), res);
             } else {
                 res.add(declaration);
@@ -141,10 +149,10 @@ public class PlaceHolderUtils {
                     }
                 }
                 //if  unable to find the super class/ interface declaration in current scope, resolve the declaration.
-//                for (DLanguageIdentifier identifier : whatInheritsFrom.values()) {
-//                    final PsiElement resolve = identifier.getReference().resolve();
-//                    res.addAll(getContainedDeclarationsWithPlaceHolders((Container) resolve));
-//                }
+                for (DLanguageIdentifier identifier : whatInheritsFrom.values()) {
+                    final PsiElement resolve = identifier.getReference().resolve();
+                    res.addAll(getContainedDeclarationsWithPlaceHolders((Container) resolve));
+                }
             } else {
                 res.add(visibleElement);
             }

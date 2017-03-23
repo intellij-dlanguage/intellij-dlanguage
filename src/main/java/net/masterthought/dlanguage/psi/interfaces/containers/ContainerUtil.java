@@ -7,6 +7,7 @@ import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 import net.masterthought.dlanguage.psi.interfaces.Mixin;
 import net.masterthought.dlanguage.psi.references.placeholders.*;
 import net.masterthought.dlanguage.utils.DResolveUtil;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -28,7 +29,7 @@ public class ContainerUtil {
         return res;
     }
 
-    public static void getContainedDeclarationsWithPlaceHoldersImpl(PsiElement element, Set<DNamedElement> res) {
+    public static void getContainedDeclarationsWithPlaceHoldersImpl(@NotNull PsiElement element, Set<DNamedElement> res) {
         //add placeHolders for stuff that has members
         if (element instanceof DLanguageClassDeclaration) {
             res.add(new ClassMembersPlaceHolder((DLanguageClassDeclaration) element));

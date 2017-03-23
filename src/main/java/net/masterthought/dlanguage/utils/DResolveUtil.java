@@ -283,9 +283,14 @@ public class DResolveUtil {
             if (variableDeclarationType.isOneIdentifier() == null)
                 return Collections.emptySet();
             final PsiElement theTypeDeclaration = variableDeclarationType.isOneIdentifier().getReference().resolve();
-            //todo
+            //todo support ufcs
+            for (DNamedElement element : fillPlaceHolders(getContainedDeclarationsWithPlaceHolders((Container) theTypeDeclaration))) {
+                if (element.getName().equals(name)) {
+                    res.add(element);
+                }
+            }
         }
-        return new HashSet<>();
+        return res;
     }
 
     /**
