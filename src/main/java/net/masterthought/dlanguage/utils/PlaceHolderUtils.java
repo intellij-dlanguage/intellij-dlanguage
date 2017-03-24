@@ -171,7 +171,7 @@ public class PlaceHolderUtils {
                         resolve = (PsiElement) foundDeclarations.toArray()[0];
                     }
                     if (resolve == null)
-                        continue;//the super class was not found, skip this resolution
+                        continue;//the super class/ implemented interface was not found, skip this resolution
                     res.addAll(getContainedDeclarationsWithPlaceHolders((Container) resolve));
                 }
             } else {

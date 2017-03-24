@@ -6,7 +6,10 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.search.GlobalSearchScope;
 import net.masterthought.dlanguage.psi.*;
-import net.masterthought.dlanguage.psi.interfaces.*;
+import net.masterthought.dlanguage.psi.interfaces.CanInherit;
+import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+import net.masterthought.dlanguage.psi.interfaces.Type;
+import net.masterthought.dlanguage.psi.interfaces.VariableDeclaration;
 import net.masterthought.dlanguage.psi.interfaces.containers.ConstructorContainer;
 import net.masterthought.dlanguage.psi.interfaces.containers.Container;
 import net.masterthought.dlanguage.psi.interfaces.containers.ContainerUtil;
@@ -72,8 +75,7 @@ public class DResolveUtil {
         //  3.a.overloaded constructors, specifically resolving the correct overloaded functions
         //4. resolving something referred to with its full name eg. foo.bar.something();
         //5. resolving a member function/var of a class/struct/template etc...
-        //6. resolving the class/interface from which a class/interace inherits from. This needs its own category because the process that does this cannot call getDeclarations with include from inheritance due to infinite recursion issues.
-        //7. resolving a mixin/mixin template This needs its own category because the process that does this cannot call getDeclarations with include from mixins due to infinite recursion issues.
+        //  ex: Class a =new Class(); a.foo(); //resolving foo
         final PsiElement parent = element.getParent();
         //identifiers within templates break this approach
         if (!dLanguageFile.getText().contains(element.getText()) &&
@@ -83,10 +85,6 @@ public class DResolveUtil {
             //#1 is true
             log.info("#1:" + parent.getText());//todo remove these later
             return findModuleDefinitionNodes(getParentOfType(element, DLanguageModuleFullyQualifiedName.class));
-        }
-        if (getParentOfType(parent, DLanguageBaseClassList.class) != null || getParentOfType(parent, DLanguageBaseInterfaceList.class) != null) {
-            //#6 is true
-            return findClassOrInterfaceDefinitionNodes(element, element.getName());
         }
         if (parent.getText().contains(".") && !parent.getText().contains("{") | parent instanceof DLanguageModuleFullyQualifiedName
 //            parent instanceof DLanguageUnaryExpression ||
@@ -179,15 +177,6 @@ public class DResolveUtil {
                     //#2 is true
                     break;
                 }
-                //why are there 4 different ways of parsing a mixin?
-                if (current instanceof DLanguageMixinExpression ||
-                    current instanceof DLanguageMixinStatement ||
-                    current instanceof DLanguageMixinDeclaration ||
-                    current instanceof DLanguageTemplateMixin) {
-                    log.info("#7" + parent.getText());
-                    //7 is true
-                    return findMixinDefinitionNodes(element, element.getName(), (Mixin) current);
-                }
                 if (current == null)
                     break;
                 current = current.getParent();
@@ -196,32 +185,6 @@ public class DResolveUtil {
             log.info("#2:" + parent.getText());
             return findDefinitionNodesStandard(element);
         }
-    }
-
-    /**
-     * resolves the definition of something that has been mixed in. This method cannot use the getDeclarations methods
-     *
-     * @param element
-     * @param name
-     * @return
-     */
-    @NotNull
-    private static Set<Mixinable> findMixinDefinitionNodes(DLanguageIdentifier element, String name, Mixin mixin) {
-        Set<Mixinable> res = new HashSet<>();
-        final Set<Mixinable> mixinables = new HashSet<>();
-        for (DNamedElement dNamedElement : getDeclarationsVisibleFromElement(element, element.getParentContainer())) {
-            if (dNamedElement instanceof Mixinable)
-                mixinables.add((Mixinable) dNamedElement);
-        }
-        for (Mixinable mixinable : mixinables) {
-            if (longNamesAreReferringToSameThing(mixinable.getFullName(), name))
-                if (mixinable instanceof HasVisibility)
-                    if (((HasVisibility) mixinable).isPublic())
-                        res.add(mixinable);
-                    else
-                        res.add(mixinable);
-        }
-        return res;
     }
 
     public static
@@ -233,7 +196,6 @@ public class DResolveUtil {
                 canidates.add((CanInherit) dNamedElement);
             }
         }
-
         Set<CanInherit> res = new HashSet<>();
         for (CanInherit canidate : canidates) {
             if (longNamesAreReferringToSameThing(canidate.getFullName(), name))
@@ -284,7 +246,6 @@ public class DResolveUtil {
             if (variableDeclarationType.isOneIdentifier() == null)
                 return Collections.emptySet();
             final PsiElement theTypeDeclaration = variableDeclarationType.isOneIdentifier().getReference().resolve();
-            //todo support ufcs
             if (theTypeDeclaration == null) {
                 for (DNamedElement element : getDeclarationsVisibleFromElement(topLevelIdentifier)) {
                     if (element.getName().equals(name)) {
@@ -298,6 +259,8 @@ public class DResolveUtil {
                     res.add(element);
                 }
             }
+        } else {
+            //resort to something else:
         }
         return res;
     }
@@ -320,43 +283,8 @@ public class DResolveUtil {
                 res.add(dNamedElement);
             }
         }
-
-//        Set<DLanguageImport> imports = new HashSet<>();
-//        getVisibleImports(element,imports);
-//        Set<String> modules = new HashSet<>();
-//        for (DLanguageImport anImport : imports) {
-//            modules.add(anImport.getModuleFullyQualifiedName().getText());
-//        }
-//        for (DLanguageFile file : fromModulesToFiles(element.getProject(), modules)) {
-//
-//        }
-
         return res;
     }
-
-    static void getVisibleImports(DNamedElement element, Set<DLanguageImport> res) {
-        getVisibleImportsInContainer(element.getParentContainer(), res);
-        if (!(element instanceof DLanguageFile))
-            getVisibleImports(element.getParentContainer(), res);
-    }
-
-    private static void getVisibleImportsInContainer(Container container, Set<DLanguageImport> res) {
-        getVisibleImportsInContainerImpl(container, res);
-    }
-
-    private static void getVisibleImportsInContainerImpl(PsiElement element, Set<DLanguageImport> res) {
-        if (element instanceof Container) {
-            return;
-        }
-        for (PsiElement psiElement : element.getChildren()) {
-            if (psiElement instanceof DLanguageImport) {
-                res.add((DLanguageImport) element);
-            }
-            getVisibleImportsInContainerImpl(psiElement, res);
-        }
-
-    }
-
 
     /**
      * this method does most of the work for resolve and for completion.
