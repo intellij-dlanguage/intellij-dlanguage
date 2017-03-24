@@ -1,6 +1,7 @@
 package net.masterthought.dlanguage.psi.interfaces.containers;
 
 import com.intellij.psi.PsiElement;
+import net.masterthought.dlanguage.psi.impl.DPsiImplUtil;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 
 
@@ -18,6 +19,10 @@ public interface Container extends DNamedElement, PsiElement {
                 return null;
             current = current.getParent();
         }
+    }
+
+    default String getFullName() {
+        return DPsiImplUtil.getFullName(this);
     }
 
 }

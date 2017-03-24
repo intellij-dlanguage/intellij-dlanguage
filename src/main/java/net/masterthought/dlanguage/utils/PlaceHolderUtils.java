@@ -16,6 +16,7 @@ import java.util.Set;
 import static com.intellij.psi.util.PsiTreeUtil.findChildOfType;
 import static net.masterthought.dlanguage.psi.interfaces.containers.ContainerUtil.getContainedDeclarationsWithPlaceHolders;
 import static net.masterthought.dlanguage.psi.interfaces.containers.ContainerUtil.getContainedDeclarationsWithPlaceHoldersImpl;
+import static net.masterthought.dlanguage.utils.DResolveUtil.getVisibleElementsWithPlaceHolders;
 
 /**
  * Created by francis on 3/17/2017.
@@ -26,15 +27,30 @@ public class PlaceHolderUtils {
         return fillPlaceHolders(withPlaceHolders, new HashSet<>());
     }
 
-    private static Set<DNamedElement> fillPlaceHolders(Set<DNamedElement> withPlaceHolders, Set<DLanguageFile> excludedFiles) {
-        Set<DNamedElement> res = fillFilePlaceHolders(withPlaceHolders, excludedFiles);
+    private static Set<DNamedElement> fillPlaceHolders(Set<DNamedElement> withPlaceHolders, Set<PsiElement> excludedElements) {
+        Set<DNamedElement> res = removeExcluded(withPlaceHolders, excludedElements);
+        res = fillFilePlaceHolders(res, excludedElements);
         res = fillMembersPlaceHolder(res);
         res = fillMixinPlaceHolders(res);
-        res = fillInheritancePlaceHolders(res);
+        res = fillInheritancePlaceHolders(res, excludedElements);
         if (containsPlaceHolders(res)) {
-            return fillPlaceHolders(res, excludedFiles);
+            return fillPlaceHolders(res, excludedElements);
         }
         return res;
+    }
+
+    private static Set<DNamedElement> removeExcluded(Set<DNamedElement> withPlaceHolders, Set<PsiElement> excludedElements) {
+        Set<DNamedElement> res = new HashSet<>();
+        for (DNamedElement withPlaceHolder : withPlaceHolders) {
+            if (withPlaceHolder instanceof PlaceHolder) {
+                if (excludedElements.contains(((PlaceHolder) withPlaceHolder).getElement())) {
+                    continue;
+                }
+            }
+            res.add(withPlaceHolder);
+        }
+        return res;
+
     }
 
     private static Set<DNamedElement> fillMembersPlaceHolder(Set<DNamedElement> existingElements) {
@@ -67,13 +83,13 @@ public class PlaceHolderUtils {
         return res;
     }
 
-    private static Set<DNamedElement> fillFilePlaceHolders(Set<DNamedElement> existingElements, Set<DLanguageFile> excludedFiles) {
+    private static Set<DNamedElement> fillFilePlaceHolders(Set<DNamedElement> existingElements, Set<PsiElement> excludedElements) {
         Set<DNamedElement> res = new HashSet<>();
         for (DNamedElement declaration : existingElements) {
             if (declaration instanceof FilePlaceHolder) {
-                if (!excludedFiles.contains(((FilePlaceHolder) declaration).getFile())) {
+                if (!excludedElements.contains(((FilePlaceHolder) declaration).getFile())) {//technically this if is no longer necessary because removeExcluded should take care of this
                     res.addAll(getContainedDeclarationsWithPlaceHolders(((FilePlaceHolder) declaration).getFile()));
-                    excludedFiles.add(((FilePlaceHolder) declaration).getFile());
+                    excludedElements.add(((FilePlaceHolder) declaration).getFile());
                     if (findChildOfType(((FilePlaceHolder) declaration).getFile(), DLanguageModuleDeclaration.class) != null)
                         res.add(findChildOfType(((FilePlaceHolder) declaration).getFile(), DLanguageModuleDeclaration.class));
                     else
@@ -133,24 +149,29 @@ public class PlaceHolderUtils {
 
     }
 
-    private static Set<DNamedElement> fillInheritancePlaceHolders(Set<DNamedElement> withPlaceHolders) {
+    private static Set<DNamedElement> fillInheritancePlaceHolders(Set<DNamedElement> withPlaceHolders, Set<PsiElement> excludedElements) {
         Set<DNamedElement> res = new HashSet<>();
         for (DNamedElement visibleElement : withPlaceHolders) {
             if (visibleElement instanceof InheritancePlaceHolder) {
                 final InheritancePlaceHolder placeHolder = (InheritancePlaceHolder) visibleElement;
                 Map<String, DLanguageIdentifier> whatInheritsFrom = placeHolder.getSuperClassNames();
-                //search for declarations which resolve the class declaration. This could foreseeable cause bugs in the distant future, if there where two classes/interfaces with the same name are both visible from here todo
-                for (Object object : withPlaceHolders.toArray()) { //avoid concurrent modification exceptions
-                    DNamedElement element = (DNamedElement) object;
-                    if (!(element instanceof PlaceHolder) && whatInheritsFrom.keySet().contains(element.getName())) {
-                        // yes I know deeply nested for loops, could cause performance issues.
-                        res.addAll(getContainedDeclarationsWithPlaceHolders((Container) element));
-                        whatInheritsFrom.remove(element.getName());
-                    }
-                }
-                //if  unable to find the super class/ interface declaration in current scope, resolve the declaration.
+                //to find the super class/ interface declaration, resolve the declaration.
+                // cannot use getReference().resolve(), because excluded elements needs to be use
                 for (DLanguageIdentifier identifier : whatInheritsFrom.values()) {
-                    final PsiElement resolve = identifier.getReference().resolve();
+                    PsiElement resolve = null;
+                    Set<DNamedElement> foundDeclarations = new HashSet<>();
+                    for (DNamedElement canidateSuperDeclaration : fillPlaceHolders(getVisibleElementsWithPlaceHolders(identifier, identifier.getParentContainer()), new HashSet<PsiElement>(excludedElements) {{
+                        add(((InheritancePlaceHolder) visibleElement).getElement());// this excluded element is required in the event of the declaration not existing. If it doesn't exist we don't want this method to be recursively called forever in an attempt to fill an unfillable inheritance placeholder
+                    }})) {
+                        if (canidateSuperDeclaration.getName().equals(identifier.getName())) {
+                            foundDeclarations.add(canidateSuperDeclaration);
+                        }
+                    }
+                    if (foundDeclarations.size() == 1) {
+                        resolve = (PsiElement) foundDeclarations.toArray()[0];
+                    }
+                    if (resolve == null)
+                        continue;//the super class was not found, skip this resolution
                     res.addAll(getContainedDeclarationsWithPlaceHolders((Container) resolve));
                 }
             } else {

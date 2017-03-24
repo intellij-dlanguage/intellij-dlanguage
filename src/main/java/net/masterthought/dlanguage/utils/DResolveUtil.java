@@ -13,7 +13,10 @@ import net.masterthought.dlanguage.psi.interfaces.containers.ContainerUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static com.intellij.psi.util.PsiTreeUtil.findChildOfType;
 import static com.intellij.psi.util.PsiTreeUtil.getParentOfType;
@@ -183,7 +186,7 @@ public class DResolveUtil {
                     current instanceof DLanguageTemplateMixin) {
                     log.info("#7" + parent.getText());
                     //7 is true
-                    return Collections.singleton(findMixinDefinitionNodes(element, element.getName(), (Mixin) current));
+                    return findMixinDefinitionNodes(element, element.getName(), (Mixin) current);
                 }
                 if (current == null)
                     break;
@@ -202,25 +205,23 @@ public class DResolveUtil {
      * @param name
      * @return
      */
-    @Nullable
-    private static Mixinable findMixinDefinitionNodes(DLanguageIdentifier element, String name, Mixin mixin) {
-        List<Mixinable> res = new ArrayList<>();
-        final List<Mixinable> mixinables = new ArrayList<>();
+    @NotNull
+    private static Set<Mixinable> findMixinDefinitionNodes(DLanguageIdentifier element, String name, Mixin mixin) {
+        Set<Mixinable> res = new HashSet<>();
+        final Set<Mixinable> mixinables = new HashSet<>();
         for (DNamedElement dNamedElement : getDeclarationsVisibleFromElement(element, element.getParentContainer())) {
             if (dNamedElement instanceof Mixinable)
                 mixinables.add((Mixinable) dNamedElement);
         }
         for (Mixinable mixinable : mixinables) {
-            if (mixinable.getName().equals(name))
+            if (longNamesAreReferringToSameThing(mixinable.getFullName(), name))
                 if (mixinable instanceof HasVisibility)
                     if (((HasVisibility) mixinable).isPublic())
                         res.add(mixinable);
                     else
                         res.add(mixinable);
         }
-        if (res.size() == 1)
-            return res.get(0);
-        return null;//todo should return list
+        return res;
     }
 
     public static
@@ -235,7 +236,7 @@ public class DResolveUtil {
 
         Set<CanInherit> res = new HashSet<>();
         for (CanInherit canidate : canidates) {
-            if (canidate.getName().equals(name))
+            if (longNamesAreReferringToSameThing(canidate.getFullName(), name))
                 res.add(canidate);
         }
         return res;
@@ -284,6 +285,14 @@ public class DResolveUtil {
                 return Collections.emptySet();
             final PsiElement theTypeDeclaration = variableDeclarationType.isOneIdentifier().getReference().resolve();
             //todo support ufcs
+            if (theTypeDeclaration == null) {
+                for (DNamedElement element : getDeclarationsVisibleFromElement(topLevelIdentifier)) {
+                    if (element.getName().equals(name)) {
+                        res.add(element);
+                    }
+                }
+                return res;
+            }
             for (DNamedElement element : fillPlaceHolders(getContainedDeclarationsWithPlaceHolders((Container) theTypeDeclaration))) {
                 if (element.getName().equals(name)) {
                     res.add(element);
@@ -367,7 +376,7 @@ public class DResolveUtil {
     }
 
     @NotNull
-    private static Set<DNamedElement> getVisibleElementsWithPlaceHolders(DLanguageIdentifier element, Container parentContainer) {
+    static Set<DNamedElement> getVisibleElementsWithPlaceHolders(DLanguageIdentifier element, Container parentContainer) {
         Set<DNamedElement> declarations = new HashSet<>();
 
         if (parentContainer instanceof DLanguageFile) {
@@ -399,5 +408,12 @@ public class DResolveUtil {
             filesFound.addAll(files);
         }
         return filesFound;
+    }
+
+    public static boolean longNamesAreReferringToSameThing(String longName, String shorterName) {
+        final int i = longName.lastIndexOf(shorterName);
+        if (i < 0)
+            return false;
+        return i == longName.length() - shorterName.length();
     }
 }

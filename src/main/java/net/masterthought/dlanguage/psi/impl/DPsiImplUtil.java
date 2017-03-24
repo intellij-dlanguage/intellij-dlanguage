@@ -1853,7 +1853,9 @@ public class DPsiImplUtil {
     public static String getFullName(DNamedElement e) {
         if (e == null)
             return "";
-        return e.getName() + "." + getFullName(e.getParentContainer());
+        if (e instanceof DLanguageFile)
+            return getFullName(e.getParentContainer()) + "." + e.getName().replace(".d", "");
+        return getFullName(e.getParentContainer()) + "." + e.getName();
     }
     // -------------------- Misc --------------------- //
 }

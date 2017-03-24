@@ -3,7 +3,9 @@ package net.masterthought.dlanguage.psi.references;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.util.IncorrectOperationException;
-import net.masterthought.dlanguage.psi.*;
+import net.masterthought.dlanguage.psi.DLanguageFile;
+import net.masterthought.dlanguage.psi.DLanguageFuncDeclaration;
+import net.masterthought.dlanguage.psi.DLanguageIdentifier;
 import net.masterthought.dlanguage.psi.impl.DPsiImplUtil;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 import net.masterthought.dlanguage.utils.DResolveUtil;
@@ -11,11 +13,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import static com.intellij.psi.util.PsiTreeUtil.findChildrenOfType;
-import static net.masterthought.dlanguage.utils.DUtil.getEndOfIdentifierList;
 
 /**
  * Resolves references to elements.
@@ -95,18 +95,11 @@ public class DReference extends PsiReferenceBase<PsiNamedElement> implements Psi
 
         final PsiFile containingFile = myElement.getContainingFile();
         if (!(containingFile instanceof DLanguageFile)) {
-            return new Object[]{};
+            return new Object[0];
         }
-        List<PsiNamedElement> namedNodes = new ArrayList<>();
-        List<DLanguageFile> files = new ArrayList<>();
-        for (DLanguageModuleFullyQualifiedName dLanguageModuleFullyQualifiedName : findChildrenOfType(containingFile, DLanguageModuleFullyQualifiedName.class)) {
-            final PsiElement resolve = getEndOfIdentifierList(dLanguageModuleFullyQualifiedName).getReference().resolve();
-            if (resolve instanceof DLanguageFile)
-                files.add((DLanguageFile) resolve);
-            if (resolve instanceof DLanguageModuleDeclaration)
-                files.add((DLanguageFile) resolve.getContainingFile());
-        }
-        //todo
+        Set<DNamedElement> namedNodes = new HashSet<>();
+        if (myElement instanceof DLanguageIdentifier)
+            namedNodes = DResolveUtil.getDeclarationsVisibleFromElement((DLanguageIdentifier) myElement);
         List<String> variants = new ArrayList<String>(20);
         for (final PsiNamedElement namedElement : namedNodes) {
             variants.add(namedElement.getName());
