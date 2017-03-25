@@ -3,6 +3,7 @@ package net.masterthought.dlanguage.psi.interfaces;
 import com.intellij.navigation.NavigationItem;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiNameIdentifierOwner;
+import net.masterthought.dlanguage.psi.impl.DPsiImplUtil;
 import net.masterthought.dlanguage.psi.interfaces.containers.Container;
 
 /**
@@ -20,5 +21,9 @@ public interface DNamedElement extends DCompositeElement, PsiNameIdentifierOwner
                 return null;
             current = current.getParent();
         }
+    }
+
+    default String getFullName() {
+        return DPsiImplUtil.getFullName(this);
     }
 }

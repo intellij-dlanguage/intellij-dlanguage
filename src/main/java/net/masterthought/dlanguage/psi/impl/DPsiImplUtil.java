@@ -14,6 +14,7 @@ import net.masterthought.dlanguage.psi.interfaces.*;
 import net.masterthought.dlanguage.psi.interfaces.containers.*;
 import net.masterthought.dlanguage.psi.references.DReference;
 import net.masterthought.dlanguage.stubs.*;
+import net.masterthought.dlanguage.utils.DResolveUtil;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -24,7 +25,6 @@ import java.util.*;
 import static com.intellij.psi.util.PsiTreeUtil.*;
 import static net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 import static net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility.public_;
-import static net.masterthought.dlanguage.utils.DResolveUtil.findClassOrInterfaceDefinitionNodes;
 import static net.masterthought.dlanguage.utils.DUtil.getEndOfIdentifierList;
 import static net.masterthought.dlanguage.utils.DUtil.protectionToVisibilty;
 
@@ -299,7 +299,12 @@ public class DPsiImplUtil {
             assert (basicType.getTypeVector() == null);
             assert (basicType.getTypeof() == null);
             final DLanguageIdentifierList identifierList = basicType.getIdentifierList();
-            final Set<CanInherit> definitionNodes = findClassOrInterfaceDefinitionNodes(getEndOfIdentifierList(identifierList), getEndOfIdentifierList(identifierList).getName());
+            final Set<? extends DNamedElement> definitionNodesSimple = DResolveUtil.findDefinitionNodes(getEndOfIdentifierList(identifierList));
+            Set<CanInherit> definitionNodes = new HashSet<>();
+            for (PsiNamedElement node : definitionNodesSimple) {
+                if (definitionNodes instanceof CanInherit)
+                    definitionNodes.add((CanInherit) definitionNodes);
+            }
             assert (definitionNodes.size() == 1);
             res.add((CanInherit) definitionNodes.toArray()[0]);
 
@@ -955,7 +960,12 @@ public class DPsiImplUtil {
             assert (basicType.getTypeVector() == null);
             assert (basicType.getTypeof() == null);
             final DLanguageIdentifierList identifierList = basicType.getIdentifierList();
-            final Set<CanInherit> definitionNodes = findClassOrInterfaceDefinitionNodes(getEndOfIdentifierList(identifierList), getEndOfIdentifierList(identifierList).getName());
+            final Set<? extends DNamedElement> definitionNodesSimple = DResolveUtil.findDefinitionNodes(getEndOfIdentifierList(identifierList));
+            Set<CanInherit> definitionNodes = new HashSet<>();
+            for (PsiNamedElement node : definitionNodesSimple) {
+                if (definitionNodes instanceof CanInherit)
+                    definitionNodes.add((CanInherit) definitionNodes);
+            }
             assert (definitionNodes.size() == 1);
             res.add((CanInherit) definitionNodes.toArray()[0]);
 

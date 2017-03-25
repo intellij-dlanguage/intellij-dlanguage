@@ -3,26 +3,17 @@ package net.masterthought.dlanguage.utils;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.search.GlobalSearchScope;
 import net.masterthought.dlanguage.psi.*;
-import net.masterthought.dlanguage.psi.interfaces.CanInherit;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
-import net.masterthought.dlanguage.psi.interfaces.Type;
 import net.masterthought.dlanguage.psi.interfaces.VariableDeclaration;
-import net.masterthought.dlanguage.psi.interfaces.containers.ConstructorContainer;
-import net.masterthought.dlanguage.psi.interfaces.containers.Container;
-import net.masterthought.dlanguage.psi.interfaces.containers.ContainerUtil;
+import net.masterthought.dlanguage.psi.interfaces.containers.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-import static com.intellij.psi.util.PsiTreeUtil.findChildOfType;
-import static com.intellij.psi.util.PsiTreeUtil.getParentOfType;
+import static com.intellij.psi.util.PsiTreeUtil.*;
 import static java.util.Collections.EMPTY_SET;
 import static net.masterthought.dlanguage.index.DModuleIndex.getFilesByModuleName;
 import static net.masterthought.dlanguage.psi.interfaces.containers.ContainerUtil.getContainedDeclarationsWithPlaceHolders;
@@ -40,14 +31,11 @@ import static net.masterthought.dlanguage.utils.PlaceHolderUtils.fillPlaceHolder
  *
  * todo when constructor resolution fails, the class/struct should be resolved instead
  * todo match arguments to resolve overloaded functions
- * todo allow for optional resolution of private methods for annotators that could rely on that
  * todo improve performance somehow
  * todo create much more expansive unittests
  * todo when returning a result resolve the identifier not the entire declaration, however this may mess with some internal code in this file and in the ContainerUtil file
  * todo fix multipackage bugs with imports
  * todo make local imports work
- * todo allow for resolving of protected methods if within class in question
- * todo classes in same module should be able to access private members
  * Created by franc on 1/18/2017.
  */
 public class DResolveUtil {
@@ -55,12 +43,10 @@ public class DResolveUtil {
 
     public static
     @NotNull
-    Set<PsiNamedElement> findDefinitionNodes(@NotNull DNamedElement element) {
+    Set<? extends DNamedElement> findDefinitionNodes(@NotNull DNamedElement element) {
         if (!(element instanceof DLanguageIdentifier))
             return EMPTY_SET;//prevent resolving definitions
-        Set<PsiNamedElement> definitionNodes = new HashSet<>();
-        definitionNodes.addAll(findDefinitionNodes((DLanguageFile) element.getContainingFile(), (DLanguageIdentifier) element));
-        return definitionNodes;
+        return findDefinitionNodes((DLanguageFile) element.getContainingFile(), (DLanguageIdentifier) element);
 
     }
 
@@ -83,7 +69,6 @@ public class DResolveUtil {
             return Collections.emptySet();//optimization to prevent unnecessary searching
         if (getParentOfType(parent, DLanguageImportDeclaration.class) != null) {
             //#1 is true
-            log.info("#1:" + parent.getText());//todo remove these later
             return findModuleDefinitionNodes(getParentOfType(element, DLanguageModuleFullyQualifiedName.class));
         }
         if (parent.getText().contains(".") && !parent.getText().contains("{") | parent instanceof DLanguageModuleFullyQualifiedName
@@ -99,7 +84,6 @@ public class DResolveUtil {
 //            parent instanceof DLanguageQualifiedIdentifierList
             ) {
             //#4 or #5 are true
-            log.info("#4/5:" + parent.getText());
             //to distinguish between #4 and #5 resolve the rightmost identifier. eg. in foo.bar.gh(), find foo and resolve it
             DLanguageIdentifier topLevelIdentifier = null;
             if (parent instanceof DLanguagePrimaryExpression) {
@@ -130,9 +114,7 @@ public class DResolveUtil {
             }
             if (topLevelIdentifier == null)
                 throw new IllegalStateException();
-            if (topLevelIdentifier.getReference() == null)
-                throw new IllegalStateException();
-            return findMemberDefinitionNodes(element.getName(), topLevelIdentifier);
+            return findMemberDefinitionNodes(element.getName(), topLevelIdentifier, element);
             //the identifier is within one of the following:
             // IdentifierList
             // UnaryExpression
@@ -150,7 +132,6 @@ public class DResolveUtil {
             while (true) {
                 if (current instanceof DLanguageNewExpression || current instanceof DLanguageNewExpressionWithArgs) {
                     //#3 is true
-                    log.info("#3:" + parent.getText());
                     return findConstructorDefinitionNodes(element, current);
                 }
                 if (current instanceof DLanguageDeleteExpression) {
@@ -182,26 +163,8 @@ public class DResolveUtil {
                 current = current.getParent();
             }
             //default to #2:
-            log.info("#2:" + parent.getText());
             return findDefinitionNodesStandard(element);
         }
-    }
-
-    public static
-    @NotNull
-    Set<CanInherit> findClassOrInterfaceDefinitionNodes(DLanguageIdentifier element, String name) {
-        Set<CanInherit> canidates = new HashSet<>();
-        for (DNamedElement dNamedElement : getDeclarationsVisibleFromElement(element)) {
-            if (dNamedElement instanceof CanInherit) {
-                canidates.add((CanInherit) dNamedElement);
-            }
-        }
-        Set<CanInherit> res = new HashSet<>();
-        for (CanInherit canidate : canidates) {
-            if (longNamesAreReferringToSameThing(canidate.getFullName(), name))
-                res.add(canidate);
-        }
-        return res;
     }
 
     private static
@@ -237,32 +200,118 @@ public class DResolveUtil {
      * @return resolved method(s)
      */
     @NotNull
-    private static Set<DNamedElement> findMemberDefinitionNodes(String name, DLanguageIdentifier topLevelIdentifier) {
+    private static Set<DNamedElement> findMemberDefinitionNodes(String name, DLanguageIdentifier topLevelIdentifier, DLanguageIdentifier identifierToResolve) {
         Set<DNamedElement> res = new HashSet<>();
-        final PsiElement resolve = topLevelIdentifier.getReference().resolve();
-        if (resolve instanceof VariableDeclaration ) {
-            VariableDeclaration var = (VariableDeclaration) resolve;
-            final Type variableDeclarationType = var.getVariableDeclarationType();
-            if (variableDeclarationType.isOneIdentifier() == null)
-                return Collections.emptySet();
-            final PsiElement theTypeDeclaration = variableDeclarationType.isOneIdentifier().getReference().resolve();
-            if (theTypeDeclaration == null) {
-                for (DNamedElement element : getDeclarationsVisibleFromElement(topLevelIdentifier)) {
-                    if (element.getName().equals(name)) {
-                        res.add(element);
+        final PsiElement topLevelPsi = findCommonParent(topLevelIdentifier, identifierToResolve);//this will be a psi element which contains the entire identifier list
+        if (topLevelPsi == null)
+            throw new IllegalStateException();//this should never happen
+        List<DLanguageIdentifier> identifierList = new ArrayList<>();//the identifiers in this resolve tree
+        for (DLanguageIdentifier potentialIdentifierInList : getChildrenOfType(topLevelPsi, DLanguageIdentifier.class)) {
+            //templates are legal in a identifier list aka this is allowed:
+            // foo!(int,var).bar.gh();
+            //we want to avoid accidentally getting var as part of the list
+            final DLanguageTemplateParameter templateParameter = getParentOfType(potentialIdentifierInList, DLanguageTemplateParameter.class);
+            final DLanguageParameter parameter = getParentOfType(potentialIdentifierInList, DLanguageParameter.class);
+            if (isAncestor(templateParameter, topLevelPsi, true) ||
+                isAncestor(parameter, topLevelPsi, true)) {
+                //this identifier was part of a template or function parameter
+            } else {
+                identifierList.add(potentialIdentifierInList);
+            }
+        }
+        return findMemberDefinitionNodesImpl(identifierList);
+//        final PsiElement resolve = topLevelIdentifier.getReference().resolve();
+//        if (resolve instanceof VariableDeclaration ) {
+//            // we are resolving the member of a variable declaration
+//            // aka: Class foo = new Class();
+//            // foo.toString();// resolving toString
+//            VariableDeclaration var = (VariableDeclaration) resolve;
+//            final Type variableDeclarationType = var.getVariableDeclarationType();
+//            if (variableDeclarationType.isOneIdentifier() == null)
+//                return Collections.emptySet();
+//            final PsiElement theTypeDeclaration = variableDeclarationType.isOneIdentifier().getReference().resolve();
+//            if (theTypeDeclaration == null) {
+//                for (DNamedElement element : getDeclarationsVisibleFromElement(topLevelIdentifier)) {
+//                    if (longNamesAreReferringToSameThing(element.getFullName(),name)) {
+//                        res.add(element);
+//                    }
+//                }
+//                return res;
+//            }
+//            for (DNamedElement element : fillPlaceHolders(getContainedDeclarationsWithPlaceHolders((Container) theTypeDeclaration))) {
+//                if (longNamesAreReferringToSameThing(element.getFullName(),name)) {
+//                    res.add(element);
+//                }
+//            }
+//        } else if (resolve instanceof GlobalDeclarationContainer || resolve instanceof StatementContainer){
+//            //we are resolving the member of some kind of class/template/struct/module etc:
+////            class outer{
+////                static class inner{
+////                    static void foo(){};
+////                }
+////            }
+////            outer.inner.foo();//resolving foo or inner
+//            final DLanguageIdentifier nextIdentifier = ((DLanguageIdentifierList) topLevelIdentifier.getParent()).getIdentifierList().getIdentifier();
+//            for (DNamedElement element : fillPlaceHolders(getContainedDeclarationsWithPlaceHolders((Container) resolve))) {
+//                if(nextIdentifier.getName().equals(element)){
+//                    res.add(element);
+//                }
+//            }
+//        }
+//        else{
+//            throw new IllegalStateException();
+//        }
+//        return res;
+    }
+
+    private static Set<DNamedElement> findMemberDefinitionNodesImpl(List<DLanguageIdentifier> identifiers, Set<DNamedElement> declarationsToSearchWithin) {
+        if (identifiers.size() == 0) {
+        }
+        //figure something out
+        Set<DNamedElement> res = new HashSet<>();
+        final DLanguageIdentifier currentIdentifier = identifiers.get(0);
+        PsiElement resolve = null;
+        for (DNamedElement element : declarationsToSearchWithin) {
+            if (element.getName().equals(currentIdentifier.getName())) {
+                if (resolve == null)
+                    resolve = element;
+                else
+                    throw new IllegalStateException();
+            }
+        }
+
+        if (resolve instanceof VariableDeclaration) {
+            // we are resolving the member of a variable declaration
+            // aka: Class foo = new Class();
+            // foo.toString();// resolving toString
+            if (!((VariableDeclaration) resolve).actuallyIsDeclaration())
+                throw new IllegalStateException();//if this happens then the above was incorrectly resolved todo check that this will be done correctly in standard
+            if (((VariableDeclaration) resolve).getVariableDeclarationType().isOneIdentifier() != null) {
+                final PsiElement typeDeclaration = ((VariableDeclaration) resolve).getVariableDeclarationType().isOneIdentifier().getReference().resolve();//find the declaration of the type of this var aka finding  the type of foo above
+                for (DNamedElement candidate : fillPlaceHolders(getContainedDeclarationsWithPlaceHolders((Container) typeDeclaration))) {
+                    if (candidate.getName().equals(currentIdentifier.getName())) {
+                        res.add(candidate);
                     }
                 }
-                return res;
+                findMemberDefinitionNodesImpl(identifiers.subList(1, identifiers.size()), )
+
             }
-            for (DNamedElement element : fillPlaceHolders(getContainedDeclarationsWithPlaceHolders((Container) theTypeDeclaration))) {
-                if (element.getName().equals(name)) {
-                    res.add(element);
-                }
+
+        } else if (resolve instanceof GlobalDeclarationContainer || resolve instanceof StatementContainer) {
+            //we are resolving the member of some kind of class/template/struct/module etc:
+//            class outer{
+//                static class inner{
+//                    static void foo(){};
+//                }
+//            }
+//            outer.inner.foo();//resolving foo or inner
+            for (DNamedElement canidate : fillPlaceHolders(getContainedDeclarationsWithPlaceHolders((Container) resolve))) {
+
             }
+
         } else {
-            //resort to something else:
+            throw new IllegalStateException();
         }
-        return res;
     }
 
     /**
@@ -279,7 +328,7 @@ public class DResolveUtil {
             return EMPTY_SET;
         }
         for (DNamedElement dNamedElement : getDeclarationsVisibleFromElement(element, element.getParentContainer())) {
-            if (dNamedElement.getName() != null && dNamedElement.getName().equals(element.getName()) && !(dNamedElement instanceof DLanguageModuleDeclaration)) {
+            if (dNamedElement.getName() != null && longNamesAreReferringToSameThing(dNamedElement.getFullName(), element.getName()) && !(dNamedElement instanceof DLanguageModuleDeclaration)) {
                 res.add(dNamedElement);
             }
         }
