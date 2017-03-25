@@ -6,18 +6,22 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.search.GlobalSearchScope;
 import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
-import net.masterthought.dlanguage.psi.interfaces.VariableDeclaration;
-import net.masterthought.dlanguage.psi.interfaces.containers.*;
+import net.masterthought.dlanguage.psi.interfaces.containers.ConstructorContainer;
+import net.masterthought.dlanguage.psi.interfaces.containers.Container;
+import net.masterthought.dlanguage.psi.interfaces.containers.ContainerUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-import static com.intellij.psi.util.PsiTreeUtil.*;
+import static com.intellij.psi.util.PsiTreeUtil.findChildOfType;
+import static com.intellij.psi.util.PsiTreeUtil.getParentOfType;
 import static java.util.Collections.EMPTY_SET;
 import static net.masterthought.dlanguage.index.DModuleIndex.getFilesByModuleName;
 import static net.masterthought.dlanguage.psi.interfaces.containers.ContainerUtil.getContainedDeclarationsWithPlaceHolders;
-import static net.masterthought.dlanguage.utils.DUtil.getTopLevelOfRecursiveElement;
 import static net.masterthought.dlanguage.utils.PlaceHolderUtils.fillPlaceHolders;
 
 /**
@@ -85,36 +89,7 @@ public class DResolveUtil {
             ) {
             //#4 or #5 are true
             //to distinguish between #4 and #5 resolve the rightmost identifier. eg. in foo.bar.gh(), find foo and resolve it
-            DLanguageIdentifier topLevelIdentifier = null;
-            if (parent instanceof DLanguagePrimaryExpression) {
-                //find topLevel expression/statement
-                PsiElement current = parent;
-                while (true) {
-                    if (current instanceof DLanguageStatement)
-                        break;
-                    if (current instanceof DLanguageAssignExpression)
-                        break;
-                    if (current == null)
-                        throw new IllegalStateException();
-                    current = current.getParent();
-                }
-                topLevelIdentifier = findChildOfType(current, DLanguageIdentifier.class);//depth first search, so this will get the first identifier
-            }
-            if (parent instanceof DLanguageIdentifierList) {
-                final DLanguageIdentifierList topLevel = (DLanguageIdentifierList) getTopLevelOfRecursiveElement(parent, parent.getClass());
-                topLevelIdentifier = topLevel.getIdentifier();
-
-            } else if (parent instanceof DLanguageSymbolTail) {
-                final DLanguageSymbolTail topLevel = (DLanguageSymbolTail) getTopLevelOfRecursiveElement(parent, parent.getClass());
-                topLevelIdentifier = topLevel.getIdentifier();
-
-            } else if (parent instanceof DLanguageQualifiedIdentifierList) {
-                final DLanguageQualifiedIdentifierList topLevel = (DLanguageQualifiedIdentifierList) getTopLevelOfRecursiveElement(parent, parent.getClass());
-                topLevelIdentifier = topLevel.getIdentifier();
-            }
-            if (topLevelIdentifier == null)
-                throw new IllegalStateException();
-            return findMemberDefinitionNodes(element.getName(), topLevelIdentifier, element);
+            return findDefinitionNodesStandard(element);
             //the identifier is within one of the following:
             // IdentifierList
             // UnaryExpression
@@ -186,132 +161,6 @@ public class DResolveUtil {
             throw new IllegalArgumentException("new expression must contain a new expression");
         }
         return res;
-    }
-
-    /**
-     * finds publicly accessible definitions within a class/struct/template etc.
-     * ex:
-     * Class c = new Class();
-     * c.toString();
-     * this allows for resolving toString.
-     *
-     * @param name               the name of the element that needs resolving
-     * @param topLevelIdentifier the name of a variable containing the class/struct etc. in the above example it is c.
-     * @return resolved method(s)
-     */
-    @NotNull
-    private static Set<DNamedElement> findMemberDefinitionNodes(String name, DLanguageIdentifier topLevelIdentifier, DLanguageIdentifier identifierToResolve) {
-        Set<DNamedElement> res = new HashSet<>();
-        final PsiElement topLevelPsi = findCommonParent(topLevelIdentifier, identifierToResolve);//this will be a psi element which contains the entire identifier list
-        if (topLevelPsi == null)
-            throw new IllegalStateException();//this should never happen
-        List<DLanguageIdentifier> identifierList = new ArrayList<>();//the identifiers in this resolve tree
-        for (DLanguageIdentifier potentialIdentifierInList : getChildrenOfType(topLevelPsi, DLanguageIdentifier.class)) {
-            //templates are legal in a identifier list aka this is allowed:
-            // foo!(int,var).bar.gh();
-            //we want to avoid accidentally getting var as part of the list
-            final DLanguageTemplateParameter templateParameter = getParentOfType(potentialIdentifierInList, DLanguageTemplateParameter.class);
-            final DLanguageParameter parameter = getParentOfType(potentialIdentifierInList, DLanguageParameter.class);
-            if (isAncestor(templateParameter, topLevelPsi, true) ||
-                isAncestor(parameter, topLevelPsi, true)) {
-                //this identifier was part of a template or function parameter
-            } else {
-                identifierList.add(potentialIdentifierInList);
-            }
-        }
-        return findMemberDefinitionNodesImpl(identifierList);
-//        final PsiElement resolve = topLevelIdentifier.getReference().resolve();
-//        if (resolve instanceof VariableDeclaration ) {
-//            // we are resolving the member of a variable declaration
-//            // aka: Class foo = new Class();
-//            // foo.toString();// resolving toString
-//            VariableDeclaration var = (VariableDeclaration) resolve;
-//            final Type variableDeclarationType = var.getVariableDeclarationType();
-//            if (variableDeclarationType.isOneIdentifier() == null)
-//                return Collections.emptySet();
-//            final PsiElement theTypeDeclaration = variableDeclarationType.isOneIdentifier().getReference().resolve();
-//            if (theTypeDeclaration == null) {
-//                for (DNamedElement element : getDeclarationsVisibleFromElement(topLevelIdentifier)) {
-//                    if (longNamesAreReferringToSameThing(element.getFullName(),name)) {
-//                        res.add(element);
-//                    }
-//                }
-//                return res;
-//            }
-//            for (DNamedElement element : fillPlaceHolders(getContainedDeclarationsWithPlaceHolders((Container) theTypeDeclaration))) {
-//                if (longNamesAreReferringToSameThing(element.getFullName(),name)) {
-//                    res.add(element);
-//                }
-//            }
-//        } else if (resolve instanceof GlobalDeclarationContainer || resolve instanceof StatementContainer){
-//            //we are resolving the member of some kind of class/template/struct/module etc:
-////            class outer{
-////                static class inner{
-////                    static void foo(){};
-////                }
-////            }
-////            outer.inner.foo();//resolving foo or inner
-//            final DLanguageIdentifier nextIdentifier = ((DLanguageIdentifierList) topLevelIdentifier.getParent()).getIdentifierList().getIdentifier();
-//            for (DNamedElement element : fillPlaceHolders(getContainedDeclarationsWithPlaceHolders((Container) resolve))) {
-//                if(nextIdentifier.getName().equals(element)){
-//                    res.add(element);
-//                }
-//            }
-//        }
-//        else{
-//            throw new IllegalStateException();
-//        }
-//        return res;
-    }
-
-    private static Set<DNamedElement> findMemberDefinitionNodesImpl(List<DLanguageIdentifier> identifiers, Set<DNamedElement> declarationsToSearchWithin) {
-        if (identifiers.size() == 0) {
-        }
-        //figure something out
-        Set<DNamedElement> res = new HashSet<>();
-        final DLanguageIdentifier currentIdentifier = identifiers.get(0);
-        PsiElement resolve = null;
-        for (DNamedElement element : declarationsToSearchWithin) {
-            if (element.getName().equals(currentIdentifier.getName())) {
-                if (resolve == null)
-                    resolve = element;
-                else
-                    throw new IllegalStateException();
-            }
-        }
-
-        if (resolve instanceof VariableDeclaration) {
-            // we are resolving the member of a variable declaration
-            // aka: Class foo = new Class();
-            // foo.toString();// resolving toString
-            if (!((VariableDeclaration) resolve).actuallyIsDeclaration())
-                throw new IllegalStateException();//if this happens then the above was incorrectly resolved todo check that this will be done correctly in standard
-            if (((VariableDeclaration) resolve).getVariableDeclarationType().isOneIdentifier() != null) {
-                final PsiElement typeDeclaration = ((VariableDeclaration) resolve).getVariableDeclarationType().isOneIdentifier().getReference().resolve();//find the declaration of the type of this var aka finding  the type of foo above
-                for (DNamedElement candidate : fillPlaceHolders(getContainedDeclarationsWithPlaceHolders((Container) typeDeclaration))) {
-                    if (candidate.getName().equals(currentIdentifier.getName())) {
-                        res.add(candidate);
-                    }
-                }
-                findMemberDefinitionNodesImpl(identifiers.subList(1, identifiers.size()), )
-
-            }
-
-        } else if (resolve instanceof GlobalDeclarationContainer || resolve instanceof StatementContainer) {
-            //we are resolving the member of some kind of class/template/struct/module etc:
-//            class outer{
-//                static class inner{
-//                    static void foo(){};
-//                }
-//            }
-//            outer.inner.foo();//resolving foo or inner
-            for (DNamedElement canidate : fillPlaceHolders(getContainedDeclarationsWithPlaceHolders((Container) resolve))) {
-
-            }
-
-        } else {
-            throw new IllegalStateException();
-        }
     }
 
     /**

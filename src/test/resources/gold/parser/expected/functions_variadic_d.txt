@@ -49,7 +49,7 @@ D Language File
             DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
               PsiElement(DLanguageTokenType.import)('import')
               DLanguageImportListImpl(IMPORT_LIST)
-                DLanguageImportImpl(IMPORT)
+                IMPORT
                   DLanguageModuleFullyQualifiedNameImpl(MODULE_FULLY_QUALIFIED_NAME)
                     IDENTIFIER
                       PsiElement(DLanguageTokenType.ID)('core')
@@ -293,7 +293,7 @@ D Language File
                   DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
                     PsiElement(DLanguageTokenType.import)('import')
                     DLanguageImportListImpl(IMPORT_LIST)
-                      DLanguageImportImpl(IMPORT)
+                      IMPORT
                         DLanguageModuleFullyQualifiedNameImpl(MODULE_FULLY_QUALIFIED_NAME)
                           IDENTIFIER
                             PsiElement(DLanguageTokenType.ID)('std')
@@ -308,7 +308,7 @@ D Language File
                     DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
                       PsiElement(DLanguageTokenType.import)('import')
                       DLanguageImportListImpl(IMPORT_LIST)
-                        DLanguageImportImpl(IMPORT)
+                        IMPORT
                           DLanguageModuleFullyQualifiedNameImpl(MODULE_FULLY_QUALIFIED_NAME)
                             IDENTIFIER
                               PsiElement(DLanguageTokenType.ID)('core')
