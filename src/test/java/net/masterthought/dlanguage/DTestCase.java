@@ -7,7 +7,6 @@ import net.masterthought.dlanguage.features.DFoldingBuilderTest;
 import net.masterthought.dlanguage.lexer.DLanguageLexerTest;
 import net.masterthought.dlanguage.parser.DLanguageParserTest;
 import net.masterthought.dlanguage.resolve.DResolveTest;
-import net.masterthought.dlanguage.util.DPsiImplUtilTest;
 
 /**
  * Main testsuite driver. Specifies which components that should be tested.
@@ -25,7 +24,7 @@ public class DTestCase extends TestCase {
         suite.addTestSuite(DResolveTest.class);
         suite.addTestSuite(DFindUsagesTest.class);
         suite.addTestSuite(DFoldingBuilderTest.class);
-        suite.addTestSuite(DPsiImplUtilTest.class);
+//        suite.addTestSuite(DPsiImplUtilTest.class);
 
 //        suite.addTestSuite(HaskellParsingLexerTest.class);
 //        suite.addTestSuite(HaskellParserTest.class);
