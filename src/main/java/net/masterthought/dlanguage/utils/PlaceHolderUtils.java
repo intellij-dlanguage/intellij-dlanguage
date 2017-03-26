@@ -127,19 +127,11 @@ public class PlaceHolderUtils {
                     }
                 }
                 if (!success) {
-//                    Set<DLanguageImport> imports = new HashSet<>();
-//                    getVisibleImports(visibleElement,imports);
-//                    Set<String> names = new HashSet<>();
-//                    for (DLanguageImport import_ : imports) {
-//                        names.add(import_.getName());
-//                    }
-//                    final Set<DLanguageFile> importedFiles = DResolveUtil.fromModulesToFiles(visibleElement.getProject(), names);
-//                    for (DLanguageFile importedFile : importedFiles) {
-//                        res.add()
-//                    }
-                    final PsiElement resolvedDef = findChildOfType(((MixinPlaceHolder) visibleElement).getMixin(), DLanguageIdentifier.class).getReference().resolve();
+                    final Set<? extends DNamedElement> definitionNodes = DResolveUtil.findDefinitionNodes(findChildOfType(((MixinPlaceHolder) visibleElement).getMixin(), DLanguageIdentifier.class));
+                    if (definitionNodes.size() != 1)
+                        continue;
+                    final PsiElement resolvedDef = (PsiElement) definitionNodes.toArray()[0];
                     res.addAll(getContainedDeclarationsWithPlaceHolders((Container) resolvedDef));
-//                    res.add(visibleElement);
                 }
             } else {
                 res.add(visibleElement);

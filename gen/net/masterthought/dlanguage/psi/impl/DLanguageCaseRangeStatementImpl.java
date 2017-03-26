@@ -27,21 +27,21 @@ public class DLanguageCaseRangeStatementImpl extends ASTWrapperPsiElement implem
   }
 
   @Override
-  @Nullable
+  @NotNull
   public DLanguageFirstExp getFirstExp() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageFirstExp.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageFirstExp.class));
   }
 
   @Override
-  @Nullable
+  @NotNull
   public DLanguageLastExp getLastExp() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageLastExp.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageLastExp.class));
   }
 
   @Override
-  @Nullable
+  @NotNull
   public DLanguageScopeStatementList getScopeStatementList() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageScopeStatementList.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageScopeStatementList.class));
   }
 
   @Override

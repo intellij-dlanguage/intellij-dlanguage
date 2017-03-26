@@ -35,11 +35,10 @@ import static net.masterthought.dlanguage.utils.PlaceHolderUtils.fillPlaceHolder
  *
  * todo when constructor resolution fails, the class/struct should be resolved instead
  * todo match arguments to resolve overloaded functions
- * todo improve performance somehow
+ * todo improve performance somehow -- stub index/file index for declarations?
  * todo create much more expansive unittests
  * todo when returning a result resolve the identifier not the entire declaration, however this may mess with some internal code in this file and in the ContainerUtil file
- * todo fix multipackage bugs with imports
- * todo make local imports work
+ * todo make induvidual symbol imports work
  * Created by franc on 1/18/2017.
  */
 public class DResolveUtil {
@@ -177,7 +176,7 @@ public class DResolveUtil {
             return EMPTY_SET;
         }
         for (DNamedElement dNamedElement : getDeclarationsVisibleFromElement(element, element.getParentContainer())) {
-            if (dNamedElement.getName() != null && longNamesAreReferringToSameThing(dNamedElement.getFullName(), element.getName()) && !(dNamedElement instanceof DLanguageModuleDeclaration)) {
+            if (dNamedElement.getName() != null && longNamesAreReferringToSameThing(dNamedElement.getFullName(), element.getName()) && !(dNamedElement instanceof DLanguageModuleDeclaration) && dNamedElement.getName().equals(element.getName())) {
                 res.add(dNamedElement);
             }
         }

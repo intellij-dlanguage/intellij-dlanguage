@@ -8,7 +8,6 @@ import net.masterthought.dlanguage.psi.impl.DElementTypeFactory;
 import net.masterthought.dlanguage.psi.impl.*;
 
 public interface DLanguageTypes {
-
   IElementType KEYWORD = new DLanguageElementType("KEYWORD");
   IElementType OPERATOR = new DLanguageElementType("OPERATOR");
   IElementType NUMBER = new DLanguageElementType("NUMBER");

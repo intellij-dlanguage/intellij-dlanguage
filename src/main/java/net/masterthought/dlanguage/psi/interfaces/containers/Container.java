@@ -12,6 +12,8 @@ public interface Container extends DNamedElement, PsiElement {
 
     default Container getParentContainer() {
         PsiElement current = this.getParent();
+        if (current == null)
+            return null;
         while (true) {
             if (current != this && current instanceof Container)
                 return (Container) current;
