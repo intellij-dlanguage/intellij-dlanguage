@@ -72,6 +72,8 @@ public class ContainerUtil {
         }
         //get remaining declarations
         if (element instanceof DLanguageFuncDeclaration ||
+            element instanceof DLanguageDeclaratorInitializer ||
+            element instanceof DLanguageAutoDeclarationY ||
             element instanceof DLanguageUnionDeclaration ||
             element instanceof DLanguageEnumDeclaration ||
             element instanceof DLanguageClassDeclaration ||
