@@ -132,6 +132,7 @@ public class PlaceHolderUtils {
                         continue;
                     final PsiElement resolvedDef = (PsiElement) definitionNodes.toArray()[0];
                     res.addAll(getContainedDeclarationsWithPlaceHolders((Container) resolvedDef));
+//                    res.add(visibleElement);
                 }
             } else {
                 res.add(visibleElement);
