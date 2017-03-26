@@ -2,7 +2,9 @@ package net.masterthought.dlanguage.psi.references;
 
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
+import net.masterthought.dlanguage.psi.DLanguageConstructor;
 import net.masterthought.dlanguage.psi.DLanguageFile;
 import net.masterthought.dlanguage.psi.DLanguageFuncDeclaration;
 import net.masterthought.dlanguage.psi.DLanguageIdentifier;
@@ -48,9 +50,18 @@ public class DReference extends PsiReferenceBase<PsiNamedElement> implements Psi
 //            if (!myElement.equals(Iterables.getLast(qconid.getConidList()))) { return EMPTY_RESOLVE_RESULT; }
 
         final Set<? extends DNamedElement> namedElements = DResolveUtil.findDefinitionNodes((DNamedElement) myElement);
+        Set<PsiNamedElement> identifiers = new HashSet<>();
+        for (DNamedElement namedElement : namedElements) {
+            if (namedElement instanceof DLanguageConstructor) {
+                identifiers.add(namedElement);
+            } else {
+                identifiers.add(PsiTreeUtil.findChildOfType(namedElement, DLanguageIdentifier.class));
+            }
+        }
+
         // Guess 20 variants tops most of the time in any real code base.
         List<ResolveResult> results = new ArrayList<ResolveResult>(20);
-        for (PsiNamedElement property : namedElements) {
+        for (PsiNamedElement property : identifiers) {
             //noinspection ObjectAllocationInLoop
             results.add(new PsiElementResolveResult(property));
         }

@@ -5,6 +5,7 @@ import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.interfaces.CanInherit;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 import net.masterthought.dlanguage.psi.interfaces.Mixin;
+import net.masterthought.dlanguage.psi.interfaces.VariableDeclaration;
 import net.masterthought.dlanguage.psi.references.placeholders.*;
 import net.masterthought.dlanguage.utils.DResolveUtil;
 import org.jetbrains.annotations.NotNull;
@@ -65,10 +66,12 @@ public class ContainerUtil {
         if (element instanceof CanInherit) {
             res.add(new InheritancePlaceHolder((CanInherit) element));
         }
+        if (element instanceof VariableDeclaration) {
+            if (((VariableDeclaration) element).actuallyIsDeclaration())
+                res.add((VariableDeclaration) element);
+        }
         //get remaining declarations
         if (element instanceof DLanguageFuncDeclaration ||
-            element instanceof DLanguageDeclaratorInitializer ||
-            element instanceof DLanguageAutoDeclarationY ||
             element instanceof DLanguageUnionDeclaration ||
             element instanceof DLanguageEnumDeclaration ||
             element instanceof DLanguageClassDeclaration ||
@@ -76,6 +79,7 @@ public class ContainerUtil {
             element instanceof DLanguageInterfaceDeclaration ||
             element instanceof DLanguageTemplateDeclaration ||
             element instanceof DLanguageTemplateMixinDeclaration ||
+            element instanceof DLanguageAliasDeclaration ||
             element instanceof DLanguageConstructor) {
             res.add((DNamedElement) element);
         }

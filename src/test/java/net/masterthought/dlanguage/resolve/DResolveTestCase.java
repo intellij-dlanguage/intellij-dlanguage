@@ -86,7 +86,7 @@ public abstract class DResolveTestCase extends DLightPlatformCodeInsightFixtureT
             fail("Could not find resolved element.");
         }
         if (succeed) {
-            if(resolvedElement instanceof DLanguageFuncDeclaration || resolvedElement instanceof DLanguageClassDeclaration || resolvedElement instanceof DLanguageTemplateDeclaration || resolvedElement instanceof DLanguageVarDeclarator || resolvedElement instanceof DLanguageAliasDeclaration) {
+            if (resolvedElement instanceof DLanguageFuncDeclaration || resolvedElement instanceof DLanguageClassDeclaration || resolvedElement instanceof DLanguageTemplateDeclaration || resolvedElement instanceof DLanguageVarDeclarator || resolvedElement instanceof DLanguageAliasDeclaration || resolvedElement instanceof DLanguageDeclaratorInitializer) {
                 //we want to resolve the identifier but for the purpose of tests we should use getParent to get the actual declaration insteadof the identifier part of the declaration
                 assertEquals("Could not resolve expected reference.", resolvedElement, referencedElement.resolve().getParent());
             }
