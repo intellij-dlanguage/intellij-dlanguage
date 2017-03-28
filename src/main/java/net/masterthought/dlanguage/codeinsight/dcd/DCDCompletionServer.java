@@ -4,16 +4,13 @@ import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.configurations.ParametersList;
 import com.intellij.notification.NotificationType;
-import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleComponent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.roots.ProjectRootManager;
-import com.intellij.openapi.roots.libraries.Library;
-import com.intellij.openapi.roots.libraries.LibraryTable;
-import com.intellij.openapi.roots.libraries.LibraryTablesRegistrar;
 import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
@@ -40,6 +37,8 @@ import static net.masterthought.dlanguage.utils.DUtil.isNotNullOrEmpty;
  * Process wrapper for DCD Server.  Implements ModuleComponent so destruction of processes coincides with closing projects.
  */
 public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotifier {
+
+    private static final Logger LOG = Logger.getInstance(DCDCompletionServer.class);
 
     public
     @NotNull
@@ -80,53 +79,54 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
     }
 
     private void spawnProcess() throws DCDError {
-        GeneralCommandLine commandLine = new GeneralCommandLine(path);
+        final GeneralCommandLine commandLine = new GeneralCommandLine(path);
         commandLine.setWorkDirectory(workingDirectory);
         commandLine.setRedirectErrorStream(true);
-        ParametersList parametersList = commandLine.getParametersList();
-
+        final ParametersList parametersList = commandLine.getParametersList();
 
         if (isNotNullOrEmpty(flags)) {
-            List<String> importList = Arrays.asList(flags.split(","));
-            for (String item : importList) {
+            final List<String> importList = Arrays.asList(flags.split(","));
+            for (final String item : importList) {
                 parametersList.addParametersString("-I");
                 parametersList.addParametersString(item);
             }
         }
 
         // try to auto add project files in source root
-        String sources = getRootSourceDir();
+        final String sources = getRootSourceDir();
         if (isNotNullOrEmpty(sources)) {
             parametersList.addParametersString("-I");
             parametersList.addParametersString(sources);
         }
 
         // try to auto add the compiler sources
-        List<String> compilerSources = getCompilerSourceDirs();
-        for (String s : compilerSources) {
+        final List<String> compilerSources = getCompilerSourceDirs();
+        for (final String s : compilerSources) {
             parametersList.addParametersString("-I");
             parametersList.addParametersString(s);
         }
 
-        // try to auto add dub dependecies
-        DubConfigurationParser dubConfig = new DubConfigurationParser(module.getProject(), ToolKey.DUB_KEY.getPath(module.getProject()));
-        for(DubConfigurationParser.DubPackage pkg : dubConfig.getDubPackageDependencies()){
+        // try to auto add dub dependencies
+        final DubConfigurationParser dubConfig = new DubConfigurationParser(module.getProject(), ToolKey.DUB_KEY.getPath(module.getProject()));
+        final List<DubConfigurationParser.DubPackage> dependencies = dubConfig.getDubPackageDependencies();
+        for(final DubConfigurationParser.DubPackage pkg : dependencies) {
             parametersList.addParametersString("-I");
             parametersList.addParametersString(pkg.path + pkg.sourcesDir);
         }
 
         try {
             process = commandLine.createProcess();
-        } catch (ExecutionException e) {
+            LOG.info("DCD process started");
+        } catch (final ExecutionException e) {
+            LOG.error("Error spawning DCD process", e);
             throw new InitError(e.toString());
         }
         input = new BufferedReader(new InputStreamReader(process.getInputStream()));
         output = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
-
     }
 
     private String getRootSourceDir() {
-        Project myProject = module.getProject();
+        final Project myProject = module.getProject();
         final List<VirtualFile> sourceRoots = new ArrayList<>();
         final ProjectRootManager projectRootManager = ProjectRootManager.getInstance(myProject);
         ContainerUtil.addAll(sourceRoots, projectRootManager.getContentSourceRoots());
@@ -134,15 +134,15 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
     }
 
     private List<String> getCompilerSourceDirs() {
-        ArrayList<String> compilerSources = new ArrayList<>();
-        ModuleRootManager moduleRootManager = ModuleRootManager.getInstance(module);
-        Sdk sdk = moduleRootManager.getSdk();
+        final ArrayList<String> compilerSources = new ArrayList<>();
+        final ModuleRootManager moduleRootManager = ModuleRootManager.getInstance(module);
+        final Sdk sdk = moduleRootManager.getSdk();
 
         if (sdk != null && (sdk.getSdkType() instanceof DLanguageSdkType)) {
-            String path = sdk.getHomePath();
+            final String path = sdk.getHomePath();
             if (isNotNullOrEmpty(path)) {
                 if (SystemInfo.isMac) {
-                    String root = path.replaceAll("bin", "src");
+                    final String root = path.replaceAll("bin", "src");
                     compilerSources.add(root + "/phobos");
                     compilerSources.add(root + "/druntime/import");
                 }
