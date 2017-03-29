@@ -115,15 +115,12 @@ public class GuiUtil {
     }
 
     public static ActionListener createApplyPathAction(final TextAccessor textField, final String executable) {
-        return new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String guessedPath = ExecUtil.locateExecutableByGuessing(executable);
-                if (guessedPath != null) {
-                    textField.setText(guessedPath);
-                } else {
-                    Messages.showErrorDialog("Could not find '" + executable + "'.", "DLanguage");
-                }
+        return e -> {
+            final String path = ExecUtil.locateExecutableByGuessing(executable);
+            if (path != null) {
+                textField.setText(path);
+            } else {
+                Messages.showErrorDialog("Could not find '" + executable + "'.", "DLanguage");
             }
         };
     }

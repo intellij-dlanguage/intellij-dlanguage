@@ -121,7 +121,7 @@ public class ExecUtil {
      */
     @Nullable
     public static String locateExecutableByGuessing(@NotNull final String command) {
-        String located = locateExecutable(command);
+        final String located = locateExecutable(command);
         if (located != null && !located.isEmpty()) {
             // Found it!
             return located;
@@ -132,15 +132,14 @@ public class ExecUtil {
         if (SystemInfo.isWindows) {
             // TODO: Add windows paths.
         } else {
-            String homeDir = System.getProperty("user.home");
-
-            paths.add(homeDir + sep + "Library" + sep + "Haskell" + sep + "bin");
-            paths.add(homeDir + sep + ".cabal" + sep + "bin");
-            paths.add(sep + "usr" + "local" + sep + "bin");
+            final String homeDir = System.getProperty("user.home");
+            paths.add(sep + "usr" + sep + "local" + sep + "bin");
+            paths.add(sep + "usr" + sep + "bin");
             paths.add(homeDir + sep + "bin");
         }
-        for (String path : paths) {
-            String cmd = path + sep + command;
+        for (final String path : paths) {
+            LOG.info(String.format("Looking for %s in %s", command, path));
+            final String cmd = path + sep + command;
             //noinspection ObjectAllocationInLoop
             if (new File(cmd).canExecute()) return cmd;
         }
