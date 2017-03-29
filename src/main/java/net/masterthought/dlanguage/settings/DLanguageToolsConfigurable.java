@@ -1,6 +1,7 @@
 package net.masterthought.dlanguage.settings;
 
 import com.intellij.ide.util.PropertiesComponent;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SearchableConfigurable;
 import com.intellij.openapi.project.Project;
@@ -22,6 +23,9 @@ import java.util.List;
  * The "D Tools" option in Preferences->Project Settings.
  */
 public class DLanguageToolsConfigurable implements SearchableConfigurable {
+
+    private static final Logger LOG = Logger.getInstance(DLanguageToolsConfigurable.class);
+
     public static final String D_TOOLS_ID = "D Tools";
 
     private PropertiesComponent propertiesComponent;
@@ -293,6 +297,7 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
      * Persistent save of the current state.
      */
     private void saveState() {
+        LOG.info("Saving D Tools Config");
         for (Property property : properties) {
             property.saveState();
         }
@@ -302,6 +307,7 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
      * Restore components to the initial state.
      */
     private void restoreState() {
+        LOG.info("Restore D Tools Config");
         for (Property property : properties) {
             property.restoreState();
         }
