@@ -7,9 +7,13 @@ cache:
   directories:
   - "$HOME/.gradle/caches/"
   - "$HOME/.gradle/wrapper/"
+before_install:
+  - sudo wget http://master.dl.sourceforge.net/project/d-apt/files/d-apt.list -O /etc/apt/sources.list.d/d-apt.list
+  - wget -qO - https://dlang.org/d-keyring.gpg | sudo apt-key add -
+  - sudo apt-get update && sudo apt-get install dmd-bin dub dcd dfix dfmt dscanner
 env:
   global:
-  - ORG_GRADLE_PROJECT_downloadIdeaSources=false 
+  - ORG_GRADLE_PROJECT_downloadIdeaSources=false
   matrix:
   - ORG_GRADLE_PROJECT_ideaVersion=LATEST-EAP-SNAPSHOT
   - ORG_GRADLE_PROJECT_ideaVersion=2017.1
