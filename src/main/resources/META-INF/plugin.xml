@@ -107,6 +107,11 @@
                                 implementationClass="net.masterthought.dlanguage.codeinsight.DCompletionContributor"/>
 
 
+        <!--formatter-->
+        <lang.formatter language="D" implementationClass="net.masterthought.dlanguage.features.formatter.DFormattingModelBuilder"/>
+        <codeStyleSettingsProvider implementation="net.masterthought.dlanguage.features.formatter.settings.DCodeStyleSettingsProvider"/>
+        <langCodeStyleSettingsProvider implementation="net.masterthought.dlanguage.features.formatter.settings.DLanguageCodeStyleSettingsProvider"/>
+
         <!-- dunit support -->
         <configurationType implementation="net.masterthought.dlanguage.unittest.DUnitTestRunConfigurationType"/>
         <runConfigurationProducer implementation="net.masterthought.dlanguage.unittest.DUnitTestRunConfigurationProducer"/>
