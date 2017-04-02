@@ -9,6 +9,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
+import com.intellij.psi.impl.source.tree.LeafPsiElement;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 import com.intellij.util.containers.ContainerUtil;
@@ -69,6 +70,14 @@ public class DFormattingModelBuilder implements FormattingModelBuilder {
     }
 
     private static class DFormattingBlock extends UserDataHolderBase implements ASTBlock {
+
+//        private static final TokenSet BLOCKS_TOKEN_SET = TokenSet.create(
+//            BLOCK_STATEMENT,
+//            STRUCT_DECLARATION,
+//            INTERFACE_DECLARATION,
+//            EXPRESSION_STATEMENT
+//        );
+
         private static final TokenSet BRACES_TOKEN_SET = TokenSet.create(
             OP_BRACES_LEFT,
             OP_BRACES_RIGHT,
@@ -200,7 +209,9 @@ public class DFormattingModelBuilder implements FormattingModelBuilder {
         private Indent calcIndent(@NotNull ASTNode child) {
             IElementType parentType = myNode.getElementType();
             IElementType type = child.getElementType();
-            if (parentType == IMPORT_DECLARATION) return indentOfMultipleDeclarationChild(type, IMPORT_LIST);
+            if (parentType == IMPORT_DECLARATION) return indentOfMultipleDeclarationChild(type, DECLARATION);
+            if (parentType == FUNC_DECLARATION) return indentOfMultipleDeclarationChild(type, DECLARATION);
+            if (parentType == BLOCK_STATEMENT) return indentOfMultipleDeclarationChild(type, STATEMENT_LIST);
             return Indent.getNoneIndent();
         }
 
@@ -213,20 +224,37 @@ public class DFormattingModelBuilder implements FormattingModelBuilder {
 
         @Override
         public Spacing getSpacing(@Nullable Block child1, @NotNull Block child2) {
-            if (child1 instanceof DFormattingBlock && child2 instanceof DFormattingBlock) {
+             if (child1 instanceof DFormattingBlock && child2 instanceof DFormattingBlock) {
                 ASTNode n1 = ((DFormattingBlock) child1).getNode();
                 ASTNode n2 = ((DFormattingBlock) child2).getNode();
                 PsiElement psi1 = n1.getPsi();
                 PsiElement psi2 = n2.getPsi();
-                if (n1.getElementType() == DECL_DEF && psi2 instanceof DLanguageType) return one();
+//                if (n1.getElementType() == DECL_DEF && psi2 instanceof DLanguageType) return one();
 
-
-                if (psi1 instanceof DLanguageStatement && psi2 instanceof DLanguageStatement) {
-                    return lineBreak();
+//                if (psi1 instanceof DLanguageDeclaration && psi2 instanceof DLanguageStatement) {
+//                    return lineBreak();
+//                }
+//
+                if (psi1 instanceof DLanguageDeclDef && psi2 instanceof DLanguageDeclDefs) {
+                    return lineBreak(1, true);
                 }
-                if (isTopLevelDeclaration(psi2) && (isTopLevelDeclaration(psi1) || n1.getElementType() == SEMICOLON)) {
+
+                 if (psi1 instanceof DLanguageDeclDefs && psi2 instanceof DLanguageDeclDef) {
+                     return lineBreak(1, true);
+                 }
+
+                 if (n1.getElementType() == OP_BRACES_LEFT && psi2 instanceof DLanguageStatementList) {
+                     return lineBreak();
+                 }
+
+                 if (psi1 instanceof DLanguageStatementList && n2.getElementType() == OP_BRACES_RIGHT) {
+                     return lineBreak();
+                 }
+
+                 if (isTopLevelDeclaration(psi2) && (isTopLevelDeclaration(psi1) || n1.getElementType() == SEMICOLON)) {
+                    // Different declarations should be separated by blank line
                     boolean sameKind = psi1.getClass().equals(psi2.getClass())
-                        || psi1 instanceof DLanguageDeclDef && psi2 instanceof DLanguageDeclDef;
+                        || psi1 instanceof DLanguageDeclDefs && psi2 instanceof DLanguageDeclDefs;
                     return sameKind ? lineBreak() : lineBreak(1, true);
                 }
             }
@@ -236,7 +264,19 @@ public class DFormattingModelBuilder implements FormattingModelBuilder {
         @NotNull
         @Override
         public ChildAttributes getChildAttributes(int newChildIndex) {
+            // This governs the indent on the new line when pressing the ENTER key
             Indent childIndent = Indent.getNoneIndent();
+
+            IElementType parentType = myNode.getElementType();
+//
+//            if (BLOCKS_TOKEN_SET.contains(parentType) ||
+//                parentType == IMPORT_DECLARATION ||
+//                parentType == BLOCK_STATEMENT ||
+//                parentType == STRUCT_DECLARATION ||
+//                parentType == ARGUMENT_LIST) {
+//                childIndent = Indent.getNormalIndent();
+//            }
+
             return new ChildAttributes(childIndent, null);
         }
 
