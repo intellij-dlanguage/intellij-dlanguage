@@ -1,0 +1,1 @@
+alias T = typeof(return);
