@@ -17,6 +17,7 @@ import net.masterthought.dlanguage.psi.interfaces.Mixin;
 import net.masterthought.dlanguage.psi.interfaces.VariableDeclaration;
 import net.masterthought.dlanguage.psi.interfaces.CanInherit;
 import net.masterthought.dlanguage.psi.interfaces.Mixinable;
+import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
 
 public class DLanguageVisitor extends PsiElementVisitor {
 
@@ -1171,7 +1172,7 @@ public class DLanguageVisitor extends PsiElementVisitor {
   }
 
   public void visitUnitTesting(@NotNull DLanguageUnitTesting o) {
-    visitPsiElement(o);
+    visitDCompositeElement(o);
   }
 
   public void visitUprExpression(@NotNull DLanguageUprExpression o) {
@@ -1216,6 +1217,10 @@ public class DLanguageVisitor extends PsiElementVisitor {
 
   public void visitXorExpression(@NotNull DLanguageXorExpression o) {
     visitPsiElement(o);
+  }
+
+  public void visitDCompositeElement(@NotNull DCompositeElement o) {
+    visitElement(o);
   }
 
   public void visitDNamedElement(@NotNull DNamedElement o) {

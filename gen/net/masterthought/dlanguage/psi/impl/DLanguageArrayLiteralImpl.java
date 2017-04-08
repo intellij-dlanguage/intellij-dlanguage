@@ -44,10 +44,4 @@ public class DLanguageArrayLiteralImpl extends ASTWrapperPsiElement implements D
     return notNullChild(findChildByType(OP_BRACKET_RIGHT));
   }
 
-  @Override
-  @Nullable
-  public PsiElement getOpComma() {
-    return findChildByType(OP_COMMA);
-  }
-
 }

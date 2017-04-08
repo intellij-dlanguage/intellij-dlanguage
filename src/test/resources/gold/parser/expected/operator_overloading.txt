@@ -4932,7 +4932,7 @@ D Language File
                                                                   PsiElement(DLanguageTokenType.})('}')
                                                         DLanguageDeclDefsImpl(DECL_DEFS)
                                                           DLanguageDeclDefImpl(DECL_DEF)
-                                                            DLanguageUnitTestingImpl(UNIT_TESTING)
+                                                            UNIT_TESTING
                                                               PsiElement(DLanguageTokenType.unittest)('unittest')
                                                               DLanguageBlockStatementImpl(BLOCK_STATEMENT)
                                                                 PsiElement(DLanguageTokenType.{)('{')

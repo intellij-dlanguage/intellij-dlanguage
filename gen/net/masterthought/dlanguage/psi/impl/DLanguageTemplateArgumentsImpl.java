@@ -28,6 +28,12 @@ public class DLanguageTemplateArgumentsImpl extends ASTWrapperPsiElement impleme
 
   @Override
   @Nullable
+  public DLanguageParameterList getParameterList() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageParameterList.class);
+  }
+
+  @Override
+  @Nullable
   public DLanguageTemplateArgumentList getTemplateArgumentList() {
     return PsiTreeUtil.getChildOfType(this, DLanguageTemplateArgumentList.class);
   }
@@ -48,18 +54,6 @@ public class DLanguageTemplateArgumentsImpl extends ASTWrapperPsiElement impleme
   @NotNull
   public PsiElement getOpNot() {
     return notNullChild(findChildByType(OP_NOT));
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpParLeft() {
-    return findChildByType(OP_PAR_LEFT);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpParRight() {
-    return findChildByType(OP_PAR_RIGHT);
   }
 
 }

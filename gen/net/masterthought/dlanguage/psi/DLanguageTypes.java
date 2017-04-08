@@ -290,7 +290,7 @@ public interface DLanguageTypes {
   IElementType UNARY_EXPRESSION = new DLanguageElementType("UNARY_EXPRESSION");
   IElementType UNION_DECLARATION = DElementTypeFactory.factory("UNION_DECLARATION");
   IElementType UNION_TEMPLATE_DECLARATION = new DLanguageElementType("UNION_TEMPLATE_DECLARATION");
-  IElementType UNIT_TESTING = new DLanguageElementType("UNIT_TESTING");
+  IElementType UNIT_TESTING = DElementTypeFactory.factory("UNIT_TESTING");
   IElementType UPR_EXPRESSION = new DLanguageElementType("UPR_EXPRESSION");
   IElementType USER_DEFINED_ATTRIBUTE = new DLanguageElementType("USER_DEFINED_ATTRIBUTE");
   IElementType VAR_DECLARATIONS = new DLanguageElementType("VAR_DECLARATIONS");

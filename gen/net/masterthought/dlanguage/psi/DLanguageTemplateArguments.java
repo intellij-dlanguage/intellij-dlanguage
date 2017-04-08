@@ -8,6 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageTemplateArguments extends PsiElement {
 
   @Nullable
+  DLanguageParameterList getParameterList();
+
+  @Nullable
   DLanguageTemplateArgumentList getTemplateArgumentList();
 
   @Nullable
@@ -18,11 +21,5 @@ public interface DLanguageTemplateArguments extends PsiElement {
 
   @NotNull
   PsiElement getOpNot();
-
-  @Nullable
-  PsiElement getOpParLeft();
-
-  @Nullable
-  PsiElement getOpParRight();
 
 }

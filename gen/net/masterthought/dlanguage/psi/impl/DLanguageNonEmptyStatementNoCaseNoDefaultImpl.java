@@ -52,12 +52,6 @@ public class DLanguageNonEmptyStatementNoCaseNoDefaultImpl extends ASTWrapperPsi
 
   @Override
   @Nullable
-  public DLanguageDeclaration getDeclaration() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageDeclaration.class);
-  }
-
-  @Override
-  @Nullable
   public DLanguageDeclarationStatement getDeclarationStatement() {
     return PsiTreeUtil.getChildOfType(this, DLanguageDeclarationStatement.class);
   }
