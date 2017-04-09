@@ -12,12 +12,27 @@ before_install:
   - wget -qO - https://dlang.org/d-keyring.gpg | sudo apt-key add -
   - sudo apt-get update -qq
   - sudo apt-get install -qq --force-yes dmd-bin dub dcd dfix dfmt dscanner
+
 env:
   global:
   - ORG_GRADLE_PROJECT_downloadIdeaSources=false
   matrix:
   - ORG_GRADLE_PROJECT_ideaVersion=LATEST-EAP-SNAPSHOT
-  - ORG_GRADLE_PROJECT_ideaVersion=2017.1
+  - Build and publish
+    ORG_GRADLE_PROJECT_ideaVersion=2017.1
+
 matrix:
   allow_failures:
   - env: ORG_GRADLE_PROJECT_ideaVersion=LATEST-EAP-SNAPSHOT
+
+after_success:
+  - Build and publish
+    if ["$TRAVIS_BRANCH" == "develop"]; then
+    ORG_GRADLE_PROJECT_publishChannel=nightly
+    ORG_GRADLE_PROJECT_version=1.13-b$TRAVIS_BUILD_NUMBER
+    ./gradlew publishPlugin
+    fi
+    if ["$TRAVIS_BRANCH" == "master"]; then
+    ORG_GRADLE_PROJECT_publishChannel=stable
+    ./gradlew publishPlugin
+    fi
