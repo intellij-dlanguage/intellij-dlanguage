@@ -28,10 +28,12 @@ matrix:
 after_success:
   - Build and publish
     if ["$TRAVIS_BRANCH" == "develop"]; then
-      ORG_GRADLE_PROJECT_publishChannels=dev
-      ORG_GRADLE_PROJECT_version=1.13-b$TRAVIS_BUILD_NUMBER
+      export ORG_GRADLE_PROJECT_publishChannels=dev
+      export ORG_GRADLE_PROJECT_version=1.13-dev$TRAVIS_BUILD_NUMBER
       ./gradlew publishPlugin
     else if ["$TRAVIS_BRANCH" == "master"]; then
-      ORG_GRADLE_PROJECT_publishChannel=stable
+      export ORG_GRADLE_PROJECT_publishChannel=stable
       ./gradlew publishPlugin
+    else
+    echo "Builds are only published from master or develop"
     fi
