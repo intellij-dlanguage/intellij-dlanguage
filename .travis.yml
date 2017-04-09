@@ -28,7 +28,7 @@ matrix:
 after_success:
   - Build and publish
     if ["$TRAVIS_BRANCH" == "develop"]; then
-    ORG_GRADLE_PROJECT_publishChannel=nightly
+    ORG_GRADLE_PROJECT_publishChannels=nightly
     ORG_GRADLE_PROJECT_version=1.13-b$TRAVIS_BUILD_NUMBER
     ./gradlew publishPlugin
     fi

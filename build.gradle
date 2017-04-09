@@ -93,7 +93,7 @@ allprojects {
         publishPlugin {
             username System.getenv('JETBRAINS_USERNAME')
             password System.getenv('JETBRAINS_PASSWORD')
-            channel publishChannel
+            channels publishChannels
         }
     }
 
