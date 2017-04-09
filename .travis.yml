@@ -27,13 +27,22 @@ matrix:
 
 after_success:
   - Build and publish
-    if ["$TRAVIS_BRANCH" == "develop"]; then
+    if [[ "$TRAVIS_BRANCH" == "develop" ]]
+    then
+      echo "publish plugin to dev channel"
       export ORG_GRADLE_PROJECT_publishChannels=dev
       export ORG_GRADLE_PROJECT_version=1.13-dev$TRAVIS_BUILD_NUMBER
       ./gradlew publishPlugin
-    else if ["$TRAVIS_BRANCH" == "master"]; then
-      export ORG_GRADLE_PROJECT_publishChannel=stable
+    else if [[ "$TRAVIS_BRANCH" == "master" ]]
+    then
+      export ORG_GRADLE_PROJECT_publishChannels=eap,dev
+      ./gradlew publishPlugin
+    else if [[ $TRAVIS_TAG ]]
+    then
+      echo "publish plugin to stable channel $TRAVIS_TAG"
+      export ORG_GRADLE_PROJECT_publishChannels=stable
+      export ORG_GRADLE_PROJECT_version=$TRAVIS_TAG
       ./gradlew publishPlugin
     else
-    echo "Builds are only published from master or develop"
+      echo "Builds are only published from master, develop or a tag"
     fi
