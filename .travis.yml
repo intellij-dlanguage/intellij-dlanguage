@@ -29,22 +29,19 @@ deploy:
   # deploy develop to the dev channel
   - provider: script
     skip_cleanup: true
-    env: [ ORG_GRADLE_PROJECT_publishChannels=dev, ORG_GRADLE_PROJECT_version=1.13-dev$TRAVIS_BUILD_NUMBER ]
-    script: ./gradlew publishPlugin --info
+    script: ORG_GRADLE_PROJECT_publishChannels=dev ORG_GRADLE_PROJECT_version=1.13-dev$TRAVIS_BUILD_NUMBER ./gradlew publishPlugin --info
     on:
       branch: develop
       condition: $ORG_GRADLE_PROJECT_ideaVersion=2017.1
   # deploy master to eap channel
   - provider: script
-    env: [ ORG_GRADLE_PROJECT_publishChannels=eap ]
-    script: ./gradlew publishPlugin
+    script: ORG_GRADLE_PROJECT_publishChannels=eap ./gradlew publishPlugin
     on:
       branch: master
       condition: $ORG_GRADLE_PROJECT_ideaVersion=2017.1
   # deploy tags to stable channel
   - provider: script
-    env: [ ORG_GRADLE_PROJECT_publishChannels=stable, ORG_GRADLE_PROJECT_version=$TRAVIS_TAG ]
-    script: ./gradlew publishPlugin
+    script: ORG_GRADLE_PROJECT_publishChannels=stable ORG_GRADLE_PROJECT_version=$TRAVIS_TAG ./gradlew publishPlugin
     on:
       tags: true
       condition: $ORG_GRADLE_PROJECT_ideaVersion=2017.1
