@@ -8,7 +8,7 @@ D Language File
               IDENTIFIER
                 PsiElement(DLanguageTokenType.ID)('T')
           DLanguageDeclaratorsImpl(DECLARATORS)
-            DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
+            DECLARATOR_INITIALIZER
               DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
                 DLanguageBasicType2Impl(BASIC_TYPE_2)
                   DLanguageBasicType2XImpl(BASIC_TYPE_2_X)
@@ -41,7 +41,7 @@ D Language File
                             IDENTIFIER
                               PsiElement(DLanguageTokenType.ID)('size_t')
                         DLanguageDeclaratorsImpl(DECLARATORS)
-                          DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
+                          DECLARATOR_INITIALIZER
                             DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
                               IDENTIFIER
                                 PsiElement(DLanguageTokenType.ID)('i')
@@ -256,7 +256,7 @@ D Language File
               IDENTIFIER
                 PsiElement(DLanguageTokenType.ID)('T')
           DLanguageDeclaratorsImpl(DECLARATORS)
-            DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
+            DECLARATOR_INITIALIZER
               DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
                 DLanguageBasicType2Impl(BASIC_TYPE_2)
                   DLanguageBasicType2XImpl(BASIC_TYPE_2_X)

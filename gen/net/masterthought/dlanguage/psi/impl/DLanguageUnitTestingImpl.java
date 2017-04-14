@@ -8,10 +8,17 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import com.intellij.extapi.psi.StubBasedPsiElementBase;
+import net.masterthought.dlanguage.stubs.interfaces.UnitTestingStub;
 import net.masterthought.dlanguage.psi.*;
+import com.intellij.psi.stubs.IStubElementType;
+import com.intellij.psi.tree.IElementType;
 
-public class DLanguageUnitTestingImpl extends ASTWrapperPsiElement implements DLanguageUnitTesting {
+public class DLanguageUnitTestingImpl extends DStubbedPsiElementBase<UnitTestingStub> implements DLanguageUnitTesting {
+
+  public DLanguageUnitTestingImpl(UnitTestingStub stub, IStubElementType type) {
+    super(stub, type);
+  }
 
   public DLanguageUnitTestingImpl(ASTNode node) {
     super(node);

@@ -12,6 +12,7 @@ import net.masterthought.dlanguage.stubs.DLanguageTemplateDeclarationStub;
 import net.masterthought.dlanguage.psi.*;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
+import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 import com.intellij.psi.stubs.IStubElementType;
 
 public class DLanguageTemplateDeclarationImpl extends DNamedStubbedPsiElementBase<DLanguageTemplateDeclarationStub> implements DLanguageTemplateDeclaration {
@@ -80,6 +81,10 @@ public class DLanguageTemplateDeclarationImpl extends DNamedStubbedPsiElementBas
     return DPsiImplUtil.getName(this);
   }
 
+  public String getFullName() {
+    return DPsiImplUtil.getFullName(this);
+  }
+
   @Nullable
   public PsiElement getNameIdentifier() {
     return DPsiImplUtil.getNameIdentifier(this);
@@ -98,6 +103,10 @@ public class DLanguageTemplateDeclarationImpl extends DNamedStubbedPsiElementBas
   @NotNull
   public ItemPresentation getPresentation() {
     return DPsiImplUtil.getPresentation(this);
+  }
+
+  public boolean isSomeVisibility(Visibility visibility) {
+    return DPsiImplUtil.isSomeVisibility(this, visibility);
   }
 
 }
