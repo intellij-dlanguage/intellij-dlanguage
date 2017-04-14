@@ -24,7 +24,7 @@ public class DTestCase extends TestCase {
         suite.addTestSuite(DResolveTest.class);
         suite.addTestSuite(DFindUsagesTest.class);
         suite.addTestSuite(DFoldingBuilderTest.class);
-
+//        suite.addTestSuite(DPsiImplUtilTest.class);
 
 //        suite.addTestSuite(HaskellParsingLexerTest.class);
 //        suite.addTestSuite(HaskellParserTest.class);

@@ -8,9 +8,11 @@ package net.masterthought.dlanguage.resolve;
  *  - Insert "<resolved>" right before the element you wish for the reference to resolve to.
  */
 public class DResolveTest extends DResolveTestCase {
+    public void testClassUsageToClassDefinition() { doTest(); }
     public void testPrimaryExpressionToFunctionDefinition() { doTest(); }
     public void testClassConstructorToConstructorDefinition() { doTest(); }
-    public void testClassUsageToClassDefinition() { doTest(); }
     public void testTemplateUsageToTemplateDeclaration() { doTest(); }
+    public void testGlobalVariableUsageToVariableDeclaration() { doTest(); }
+    public void testAliasUsageToAliasDeclaration() { doTest(); }
 }
 
