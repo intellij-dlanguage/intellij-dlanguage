@@ -10,13 +10,13 @@ public interface DLanguageModuleDeclaration extends PsiElement {
   @Nullable
   DLanguageAttribute getAttribute();
 
-  @NotNull
+  @Nullable
   DLanguageModuleFullyQualifiedName getModuleFullyQualifiedName();
 
   @NotNull
   PsiElement getKwModule();
 
-  @NotNull
+  @Nullable
   PsiElement getOpScolon();
 
 }

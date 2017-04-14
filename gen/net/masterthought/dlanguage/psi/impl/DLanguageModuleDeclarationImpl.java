@@ -33,9 +33,9 @@ public class DLanguageModuleDeclarationImpl extends ASTWrapperPsiElement impleme
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageModuleFullyQualifiedName getModuleFullyQualifiedName() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageModuleFullyQualifiedName.class));
+    return PsiTreeUtil.getChildOfType(this, DLanguageModuleFullyQualifiedName.class);
   }
 
   @Override
@@ -45,9 +45,9 @@ public class DLanguageModuleDeclarationImpl extends ASTWrapperPsiElement impleme
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getOpScolon() {
-    return notNullChild(findChildByType(OP_SCOLON));
+    return findChildByType(OP_SCOLON);
   }
 
 }
