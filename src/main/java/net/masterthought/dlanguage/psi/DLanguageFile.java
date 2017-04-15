@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
-public class DLanguageFile extends PsiFileBase implements GlobalDeclarationContainer {
+public class DLanguageFile extends PsiFileBase {
 
     public DLanguageFile(@NotNull FileViewProvider viewProvider) {
         super(viewProvider, DLanguage.INSTANCE);
@@ -66,11 +66,5 @@ public class DLanguageFile extends PsiFileBase implements GlobalDeclarationConta
         final StubElement stub = super.getStub();
         if (stub == null) return null;
         return (DLanguageFileStub)stub;
-    }
-
-    @Nullable
-    @Override
-    public PsiElement getNameIdentifier() {
-        return null;
     }
 }

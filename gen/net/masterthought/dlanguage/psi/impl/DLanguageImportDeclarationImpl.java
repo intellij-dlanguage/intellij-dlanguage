@@ -27,9 +27,9 @@ public class DLanguageImportDeclarationImpl extends ASTWrapperPsiElement impleme
   }
 
   @Override
-  @Nullable
+  @NotNull
   public DLanguageImportList getImportList() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageImportList.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageImportList.class));
   }
 
   @Override
@@ -45,9 +45,9 @@ public class DLanguageImportDeclarationImpl extends ASTWrapperPsiElement impleme
   }
 
   @Override
-  @Nullable
+  @NotNull
   public PsiElement getOpScolon() {
-    return findChildByType(OP_SCOLON);
+    return notNullChild(findChildByType(OP_SCOLON));
   }
 
 }

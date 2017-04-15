@@ -41,9 +41,9 @@ public class DLanguageModuleDeclarationImpl extends DNamedStubbedPsiElementBase<
   }
 
   @Override
-  @Nullable
+  @NotNull
   public DLanguageModuleFullyQualifiedName getModuleFullyQualifiedName() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageModuleFullyQualifiedName.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageModuleFullyQualifiedName.class));
   }
 
   @Override
@@ -53,9 +53,9 @@ public class DLanguageModuleDeclarationImpl extends DNamedStubbedPsiElementBase<
   }
 
   @Override
-  @Nullable
+  @NotNull
   public PsiElement getOpScolon() {
-    return findChildByType(OP_SCOLON);
+    return notNullChild(findChildByType(OP_SCOLON));
   }
 
   @NotNull

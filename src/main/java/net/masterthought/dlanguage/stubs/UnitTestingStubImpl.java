@@ -14,4 +14,5 @@ public class UnitTestingStubImpl extends StubBase<DLanguageUnitTesting> implemen
     public UnitTestingStubImpl(StubElement parent, IStubElementType elementType) {
         super(parent, elementType);
     }
+
 }

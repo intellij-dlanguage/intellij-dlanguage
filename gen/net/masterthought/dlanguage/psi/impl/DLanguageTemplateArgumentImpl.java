@@ -34,18 +34,6 @@ public class DLanguageTemplateArgumentImpl extends ASTWrapperPsiElement implemen
 
   @Override
   @Nullable
-  public DLanguageBasicType getBasicType() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageBasicType.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageBasicType2 getBasicType2() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageBasicType2.class);
-  }
-
-  @Override
-  @Nullable
   public DLanguageSymbol getSymbol() {
     return PsiTreeUtil.getChildOfType(this, DLanguageSymbol.class);
   }
@@ -54,12 +42,6 @@ public class DLanguageTemplateArgumentImpl extends ASTWrapperPsiElement implemen
   @Nullable
   public DLanguageType getType() {
     return PsiTreeUtil.getChildOfType(this, DLanguageType.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageTypeCtors getTypeCtors() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageTypeCtors.class);
   }
 
 }

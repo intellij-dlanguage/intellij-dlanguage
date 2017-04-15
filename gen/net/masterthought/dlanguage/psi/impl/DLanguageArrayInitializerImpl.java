@@ -33,12 +33,6 @@ public class DLanguageArrayInitializerImpl extends ASTWrapperPsiElement implemen
   }
 
   @Override
-  @Nullable
-  public DLanguageAssignExpression getAssignExpression() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageAssignExpression.class);
-  }
-
-  @Override
   @NotNull
   public PsiElement getOpBracketLeft() {
     return notNullChild(findChildByType(OP_BRACKET_LEFT));

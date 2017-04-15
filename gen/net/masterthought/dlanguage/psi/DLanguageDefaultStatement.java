@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageDefaultStatement extends PsiElement {
 
-  @Nullable
+  @NotNull
   DLanguageScopeStatementList getScopeStatementList();
 
   @NotNull

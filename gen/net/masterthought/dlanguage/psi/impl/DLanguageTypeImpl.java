@@ -27,21 +27,15 @@ public class DLanguageTypeImpl extends ASTWrapperPsiElement implements DLanguage
   }
 
   @Override
-  @Nullable
+  @NotNull
   public DLanguageBasicType getBasicType() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageBasicType.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageBasicType.class));
   }
 
   @Override
   @Nullable
   public DLanguageBasicType2 getBasicType2() {
     return PsiTreeUtil.getChildOfType(this, DLanguageBasicType2.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageTemplateInstance getTemplateInstance() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateInstance.class);
   }
 
   @Override

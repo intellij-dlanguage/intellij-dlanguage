@@ -10,7 +10,6 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import net.masterthought.dlanguage.psi.*;
-import net.masterthought.dlanguage.psi.interfaces.Mixinable;
 
 public class DLanguageMixinStatementImpl extends ASTWrapperPsiElement implements DLanguageMixinStatement {
 
@@ -28,15 +27,9 @@ public class DLanguageMixinStatementImpl extends ASTWrapperPsiElement implements
   }
 
   @Override
-  @Nullable
+  @NotNull
   public DLanguageAssignExpression getAssignExpression() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageAssignExpression.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageTemplateInstance getTemplateInstance() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateInstance.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageAssignExpression.class));
   }
 
   @Override
@@ -61,11 +54,6 @@ public class DLanguageMixinStatementImpl extends ASTWrapperPsiElement implements
   @NotNull
   public PsiElement getOpScolon() {
     return notNullChild(findChildByType(OP_SCOLON));
-  }
-
-  @Nullable
-  public Mixinable getMixinableDeclaration() {
-    return DPsiImplUtil.getMixinableDeclaration(this);
   }
 
   @Nullable

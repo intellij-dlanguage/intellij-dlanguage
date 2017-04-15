@@ -5,15 +5,11 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 import net.masterthought.dlanguage.psi.interfaces.Mixin;
-import net.masterthought.dlanguage.psi.interfaces.Mixinable;
 
 public interface DLanguageMixinExpression extends Mixin {
 
-  @Nullable
+  @NotNull
   DLanguageAssignExpression getAssignExpression();
-
-  @Nullable
-  DLanguageTemplateInstance getTemplateInstance();
 
   @NotNull
   PsiElement getKwMixin();
@@ -23,9 +19,6 @@ public interface DLanguageMixinExpression extends Mixin {
 
   @NotNull
   PsiElement getOpParRight();
-
-  @Nullable
-  Mixinable getMixinableDeclaration();
 
   @Nullable
   String getName();

@@ -34,12 +34,6 @@ public class DLanguageInitializerImpl extends ASTWrapperPsiElement implements DL
 
   @Override
   @Nullable
-  public DLanguageTemplateInstance getTemplateInstance() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateInstance.class);
-  }
-
-  @Override
-  @Nullable
   public DLanguageVoidInitializer getVoidInitializer() {
     return PsiTreeUtil.getChildOfType(this, DLanguageVoidInitializer.class);
   }

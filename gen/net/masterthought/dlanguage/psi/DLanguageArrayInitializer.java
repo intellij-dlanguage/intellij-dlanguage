@@ -10,9 +10,6 @@ public interface DLanguageArrayInitializer extends PsiElement {
   @Nullable
   DLanguageArrayMemberInitializations getArrayMemberInitializations();
 
-  @Nullable
-  DLanguageAssignExpression getAssignExpression();
-
   @NotNull
   PsiElement getOpBracketLeft();
 

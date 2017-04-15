@@ -14,7 +14,7 @@ import net.masterthought.dlanguage.psi.interfaces.*;
 import net.masterthought.dlanguage.psi.interfaces.containers.*;
 import net.masterthought.dlanguage.psi.references.DReference;
 import net.masterthought.dlanguage.stubs.*;
-import net.masterthought.dlanguage.utils.DResolveUtil;
+import net.masterthought.dlanguage.utils.DUtil;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -299,7 +299,7 @@ public class DPsiImplUtil {
             assert (basicType.getTypeVector() == null);
             assert (basicType.getTypeof() == null);
             final DLanguageIdentifierList identifierList = basicType.getIdentifierList();
-            final Set<? extends DNamedElement> definitionNodesSimple = DResolveUtil.findDefinitionNodes(getEndOfIdentifierList(identifierList));
+            final List<PsiNamedElement> definitionNodesSimple = DUtil.findDefinitionNodes((DLanguageFile) identifierList.getContainingFile(),getEndOfIdentifierList(identifierList).getName());
             Set<CanInherit> definitionNodes = new HashSet<>();
             for (PsiNamedElement node : definitionNodesSimple) {
                 if (definitionNodes instanceof CanInherit)
@@ -960,7 +960,7 @@ public class DPsiImplUtil {
             assert (basicType.getTypeVector() == null);
             assert (basicType.getTypeof() == null);
             final DLanguageIdentifierList identifierList = basicType.getIdentifierList();
-            final Set<? extends DNamedElement> definitionNodesSimple = DResolveUtil.findDefinitionNodes(getEndOfIdentifierList(identifierList));
+            final List<PsiNamedElement> definitionNodesSimple = DUtil.findDefinitionNodes((DLanguageFile) identifierList.getContainingFile(),getEndOfIdentifierList(identifierList).getName());
             Set<CanInherit> definitionNodes = new HashSet<>();
             for (PsiNamedElement node : definitionNodesSimple) {
                 if (definitionNodes instanceof CanInherit)
@@ -1137,31 +1137,6 @@ public class DPsiImplUtil {
     }
 
     @Nullable
-    public static Mixinable getMixinableDeclaration(DLanguageMixinExpression t) {
-        if (t.getTemplateInstance() == null)
-            return null;
-        if (t.getTemplateInstance().getIdentifier() == null)
-            return null;
-        final PsiElement definitionNode = t.getTemplateInstance().getIdentifier().getReference().resolve();
-        if (definitionNode instanceof Mixinable) {
-            return (Mixinable) definitionNode;
-        }
-        return null;
-    }
-
-    @Nullable
-    public static Mixinable getMixinableDeclaration(DLanguageMixinStatement t) {
-        if (t.getTemplateInstance() != null) {
-            if (t.getTemplateInstance().getIdentifier() == null)
-                return null;
-            final PsiElement resolve = t.getTemplateInstance().getIdentifier().getReference().resolve();
-            if (resolve instanceof Mixinable)
-                return (Mixinable) resolve;
-        }
-        return null;
-    }
-
-    @Nullable
     public static String getName(@NotNull DLanguageMixinDeclaration t) {
         if (t.getTemplateInstance() != null) {
             if (t.getTemplateInstance().getIdentifier() == null)
@@ -1178,22 +1153,12 @@ public class DPsiImplUtil {
 
     @Nullable
     public static String getName(@NotNull DLanguageMixinExpression t) {
-        if (t.getTemplateInstance() == null)
-            return null;
-        if (t.getTemplateInstance().getIdentifier() == null)
-            return null;
-        t.getTemplateInstance().getIdentifier().getName();
-        return null;
+        return findChildOfType(t,DLanguageIdentifier.class).getName();
     }
 
     @Nullable
     public static String getName(@NotNull DLanguageMixinStatement t) {
-        if (t.getTemplateInstance() != null) {
-            if (t.getTemplateInstance().getIdentifier() == null)
-                return null;
-            return t.getTemplateInstance().getIdentifier().getName();
-        }
-        return null;
+        return findChildOfType(t,DLanguageIdentifier.class).getName();
     }
 
     // -------------- Mixin Template Resolving ------------------- //
@@ -1860,7 +1825,7 @@ public class DPsiImplUtil {
     // -------------------- Visibility --------------------- //
 
     // -------------------- Misc --------------------- //
-    public static String getFullName(DNamedElement e) {
+    public static String getFullName(net.masterthought.dlanguage.psi.interfaces.DNamedElement e) {
         if (e == null)
             return "";
         if (e instanceof DLanguageFile)

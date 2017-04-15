@@ -1131,14 +1131,6 @@ public class DLanguageVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitTypeInferredParameterList(@NotNull DLanguageTypeInferredParameterList o) {
-    visitPsiElement(o);
-  }
-
-  public void visitTypeInferredParameterMemberAttributes(@NotNull DLanguageTypeInferredParameterMemberAttributes o) {
-    visitPsiElement(o);
-  }
-
   public void visitTypeSpecialization(@NotNull DLanguageTypeSpecialization o) {
     visitPsiElement(o);
   }

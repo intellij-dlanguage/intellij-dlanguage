@@ -10,10 +10,7 @@ public interface DLanguageParameterMemberAttributes extends PsiElement {
   @Nullable
   DLanguageMemberFunctionAttributes getMemberFunctionAttributes();
 
-  @Nullable
+  @NotNull
   DLanguageParameters getParameters();
-
-  @Nullable
-  DLanguageTypeInferredParameterMemberAttributes getTypeInferredParameterMemberAttributes();
 
 }

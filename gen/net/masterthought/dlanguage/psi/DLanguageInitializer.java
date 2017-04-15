@@ -11,9 +11,6 @@ public interface DLanguageInitializer extends PsiElement {
   DLanguageNonVoidInitializer getNonVoidInitializer();
 
   @Nullable
-  DLanguageTemplateInstance getTemplateInstance();
-
-  @Nullable
   DLanguageVoidInitializer getVoidInitializer();
 
 }

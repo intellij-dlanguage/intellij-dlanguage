@@ -1,5 +1,6 @@
 package net.masterthought.dlanguage.stubs.types;
 
+import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.IndexSink;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubInputStream;
@@ -33,7 +34,6 @@ public class UnitTestingStubElementType extends DStubElementType<UnitTestingStub
     public UnitTestingStub createStub(@NotNull DLanguageUnitTesting psi, StubElement parentStub) {
         return new UnitTestingStubImpl(parentStub, this);
     }
-
     @Override
     public void serialize(@NotNull UnitTestingStub stub, @NotNull StubOutputStream dataStream) throws IOException {
         final ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();

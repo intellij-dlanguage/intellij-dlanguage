@@ -11,18 +11,9 @@ public interface DLanguageTemplateArgument extends PsiElement {
   DLanguageAssignExpression getAssignExpression();
 
   @Nullable
-  DLanguageBasicType getBasicType();
-
-  @Nullable
-  DLanguageBasicType2 getBasicType2();
-
-  @Nullable
   DLanguageSymbol getSymbol();
 
   @Nullable
   DLanguageType getType();
-
-  @Nullable
-  DLanguageTypeCtors getTypeCtors();
 
 }

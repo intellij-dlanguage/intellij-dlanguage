@@ -5,7 +5,6 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 import net.masterthought.dlanguage.psi.interfaces.Mixin;
-import net.masterthought.dlanguage.psi.interfaces.Mixinable;
 
 public interface DLanguageTemplateMixin extends Mixin {
 
@@ -23,9 +22,6 @@ public interface DLanguageTemplateMixin extends Mixin {
 
   @NotNull
   PsiElement getOpScolon();
-
-  @Nullable
-  Mixinable getMixinableDeclaration();
 
   @NotNull
   String getName();

@@ -62,10 +62,4 @@ public class DLanguageAnonymousEnumDeclarationImpl extends ASTWrapperPsiElement 
     return findChildByType(OP_COLON);
   }
 
-  @Override
-  @Nullable
-  public PsiElement getOpComma() {
-    return findChildByType(OP_COMMA);
-  }
-
 }

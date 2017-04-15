@@ -25,7 +25,4 @@ public interface DLanguageAnonymousEnumDeclaration extends PsiElement {
   @Nullable
   PsiElement getOpColon();
 
-  @Nullable
-  PsiElement getOpComma();
-
 }
