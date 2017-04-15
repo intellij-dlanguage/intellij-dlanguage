@@ -19,8 +19,11 @@ public interface DLanguageIsExpression extends PsiElement {
   @Nullable
   DLanguageTypeSpecialization getTypeSpecialization();
 
-  @NotNull
+  @Nullable
   PsiElement getKwIs();
+
+  @Nullable
+  PsiElement getKwNotIs();
 
   @Nullable
   PsiElement getOpColon();

@@ -42,7 +42,7 @@ D Language File
                                             IDENTIFIER
                                               PsiElement(DLanguageTokenType.ID)('string')
                                         DLanguageDeclaratorsImpl(DECLARATORS)
-                                          DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
+                                          DECLARATOR_INITIALIZER
                                             DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
                                               DLanguageBasicType2Impl(BASIC_TYPE_2)
                                                 DLanguageBasicType2XImpl(BASIC_TYPE_2_X)
@@ -158,7 +158,7 @@ D Language File
                                               IDENTIFIER
                                                 PsiElement(DLanguageTokenType.ID)('string')
                                           DLanguageDeclaratorsImpl(DECLARATORS)
-                                            DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
+                                            DECLARATOR_INITIALIZER
                                               DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
                                                 DLanguageBasicType2Impl(BASIC_TYPE_2)
                                                   DLanguageBasicType2XImpl(BASIC_TYPE_2_X)

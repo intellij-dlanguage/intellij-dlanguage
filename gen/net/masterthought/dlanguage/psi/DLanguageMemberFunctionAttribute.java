@@ -20,6 +20,9 @@ public interface DLanguageMemberFunctionAttribute extends PsiElement {
   PsiElement getKwInout();
 
   @Nullable
+  PsiElement getKwReturn();
+
+  @Nullable
   PsiElement getKwShared();
 
 }

@@ -2,7 +2,7 @@ package net.masterthought.dlanguage.stubs.index;
 
 import com.intellij.psi.stubs.StringStubIndexExtension;
 import com.intellij.psi.stubs.StubIndexKey;
-import net.masterthought.dlanguage.psi.DNamedElement;
+import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 import org.jetbrains.annotations.NotNull;
 
 /**

@@ -3,7 +3,7 @@ D Language File
     DLanguageDeclDefImpl(DECL_DEF)
       DLanguageDeclarationImpl(DECLARATION)
         DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
-          DLanguageStructDeclarationImpl(STRUCT_DECLARATION)
+          STRUCT_DECLARATION
             PsiElement(DLanguageTokenType.struct)('struct')
             IDENTIFIER
               PsiElement(DLanguageTokenType.ID)('S')
@@ -15,7 +15,7 @@ D Language File
                     DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
                       PsiElement(DLanguageTokenType.import)('import')
                       DLanguageImportListImpl(IMPORT_LIST)
-                        DLanguageImportImpl(IMPORT)
+                        IMPORT
                           DLanguageModuleFullyQualifiedNameImpl(MODULE_FULLY_QUALIFIED_NAME)
                             IDENTIFIER
                               PsiElement(DLanguageTokenType.ID)('std')

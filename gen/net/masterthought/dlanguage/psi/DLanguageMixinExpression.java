@@ -4,8 +4,9 @@ package net.masterthought.dlanguage.psi;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import net.masterthought.dlanguage.psi.interfaces.Mixin;
 
-public interface DLanguageMixinExpression extends PsiElement {
+public interface DLanguageMixinExpression extends Mixin {
 
   @NotNull
   DLanguageAssignExpression getAssignExpression();
@@ -18,5 +19,8 @@ public interface DLanguageMixinExpression extends PsiElement {
 
   @NotNull
   PsiElement getOpParRight();
+
+  @Nullable
+  String getName();
 
 }
