@@ -173,7 +173,7 @@ D Language File
                                                                                   DLanguageParametersImpl(PARAMETERS)
                                                                                     PsiElement(DLanguageTokenType.()('(')
                                                                                     PsiElement(DLanguageTokenType.))(')')
-                                            PsiElement(DLanguageTokenType.))(')')
+                                          PsiElement(DLanguageTokenType.))(')')
             PsiElement(DLanguageTokenType.))(')')
             PsiElement(DLanguageTokenType.;)(';')
         DLanguageDeclDefsImpl(DECL_DEFS)

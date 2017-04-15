@@ -1,4 +1,4 @@
-package net.masterthought.dlanguage.psi.interfaces.containers;
+package net.masterthought.dlanguage.psi.interfaces;
 
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 

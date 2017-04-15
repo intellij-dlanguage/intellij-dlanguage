@@ -55,9 +55,9 @@ public abstract class DResolveTestCase extends DLightPlatformCodeInsightFixtureT
                     resolvedElement = ref.getElement().getParent();
                 }
                 //if we're resolving something within a class don't resolve the class
-                if(ref instanceof PsiMultiReference && resolvedElement instanceof DLanguageClassDeclaration){
+                if (ref instanceof PsiMultiReference && resolvedElement instanceof DLanguageClassDeclaration) {
                     for (PsiReference psiReference : ((PsiMultiReference) ref).getReferences()) {
-                        if(!(psiReference.getElement() instanceof DLanguageClassDeclaration)){
+                        if (!(psiReference.getElement() instanceof DLanguageClassDeclaration)) {
                             resolvedElement = psiReference.getElement();
                         }
                     }
@@ -86,17 +86,14 @@ public abstract class DResolveTestCase extends DLightPlatformCodeInsightFixtureT
             fail("Could not find resolved element.");
         }
         if (succeed) {
-            if (resolvedElement instanceof DLanguageFuncDeclaration) {
-                assertEquals("Could not resolve expected reference.", resolvedElement, referencedElement.resolve().getParent());
-            } else if (resolvedElement instanceof DLanguageDeclaratorInitializer) {
+            if (resolvedElement instanceof DLanguageDeclaratorInitializer) {
                 assertEquals("Could not resolve expected reference.", resolvedElement, referencedElement.resolve().getParent().getParent());
-            } else if (resolvedElement instanceof DLanguageClassDeclaration || resolvedElement instanceof DLanguageTemplateDeclaration || resolvedElement instanceof DLanguageVarDeclarator || resolvedElement instanceof DLanguageAliasDeclaration) {
-                //we want to resolve the identifier but for the purpose of tests we should use getParent to get the actual declaration insteadof the identifier part of the declaration
-                assertEquals("Could not resolve expected reference.", resolvedElement, referencedElement.resolve().getParent());
+            }
+            if(resolvedElement instanceof DLanguageConstructor){
+                assertEquals("Could not resolve expected reference.", resolvedElement, referencedElement.resolve());
             }
             else
-                assertEquals("Could not resolve expected reference.", resolvedElement, referencedElement.resolve());
-
+                assertEquals("Could not resolve expected reference.", resolvedElement, referencedElement.resolve().getParent());
         } else {
             assertFalse("Resolved unexpected reference.", resolvedElement.equals(referencedElement.resolve().getParent()));
         }

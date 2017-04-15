@@ -6,17 +6,7 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiElement;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 import net.masterthought.dlanguage.psi.interfaces.containers.StatementContainer;
-import net.masterthought.dlanguage.psi.interfaces.containers.GlobalDeclarationContainer;
-import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
-import net.masterthought.dlanguage.psi.interfaces.containers.Declaration;
-import net.masterthought.dlanguage.psi.interfaces.HasTemplateArguments;
-import net.masterthought.dlanguage.psi.interfaces.HasArguments;
-import net.masterthought.dlanguage.psi.interfaces.containers.MixinContainer;
-import net.masterthought.dlanguage.psi.interfaces.HasProperty;
 import net.masterthought.dlanguage.psi.interfaces.Mixin;
-import net.masterthought.dlanguage.psi.interfaces.VariableDeclaration;
-import net.masterthought.dlanguage.psi.interfaces.CanInherit;
-import net.masterthought.dlanguage.psi.interfaces.Mixinable;
 import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
 
 public class DLanguageVisitor extends PsiElementVisitor {
