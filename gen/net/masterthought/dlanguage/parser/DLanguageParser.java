@@ -6919,13 +6919,13 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   // Identifier ['.' ModuleFullyQualifiedName]
   public static boolean ModuleFullyQualifiedName(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ModuleFullyQualifiedName")) return false;
-    if (!nextTokenIs(b, ID)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_, MODULE_FULLY_QUALIFIED_NAME, "<module fully qualified name>");
     r = Identifier(b, l + 1);
+    p = r; // pin = 1
     r = r && ModuleFullyQualifiedName_1(b, l + 1);
-    exit_section_(b, m, MODULE_FULLY_QUALIFIED_NAME, r);
-    return r;
+    exit_section_(b, l, m, r, p, module_name_recover_parser_);
+    return r || p;
   }
 
   // ['.' ModuleFullyQualifiedName]
@@ -12444,9 +12444,37 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     return r;
   }
 
+  /* ********************************************************** */
+  // !(/*Identifier*/ ':' | ',' |  ';')
+  static boolean module_name_recover(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "module_name_recover")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NOT_);
+    r = !module_name_recover_0(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // ':' | ',' |  ';'
+  private static boolean module_name_recover_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "module_name_recover_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, OP_COLON);
+    if (!r) r = consumeToken(b, OP_COMMA);
+    if (!r) r = consumeToken(b, OP_SCOLON);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
   final static Parser item_recover_parser_ = new Parser() {
     public boolean parse(PsiBuilder b, int l) {
       return item_recover(b, l + 1);
+    }
+  };
+  final static Parser module_name_recover_parser_ = new Parser() {
+    public boolean parse(PsiBuilder b, int l) {
+      return module_name_recover(b, l + 1);
     }
   };
 }

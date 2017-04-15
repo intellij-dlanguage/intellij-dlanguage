@@ -16,6 +16,7 @@ import net.masterthought.dlanguage.stubs.DLanguageInterfaceDeclarationStub;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
 import java.util.Map;
+import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 
 public interface DLanguageInterfaceDeclaration extends StatementContainer, DNamedElement, MixinContainer, HasVisibility, HasTemplateArguments, CanInherit, Declaration, StubBasedPsiElement<DLanguageInterfaceDeclarationStub> {
 
