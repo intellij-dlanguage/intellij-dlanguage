@@ -90,22 +90,6 @@ allprojects {
         pluginName 'intellij-dlanguage'
         version ideaVersion
 
-//        publish {
-//            username System.getenv('JETBRAINS_USERNAME')
-//            password System.getenv('JETBRAINS_PASSWORD')
-//            channel 'on-demand'
-//        }
-    }
-
-    def compilationPackages = ['net/masterthought/dlanguage/build/**', 'net/masterthought/dlanguage/jps/**']
-
-    test {
-        useJUnit {
-            exclude compilationPackages
-            include '**/**/DTestCase.class'
-        }
-        testLogging {
-            exceptionFormat = 'full'
         publishPlugin {
             username System.getenv('JETBRAINS_USERNAME')
             password System.getenv('JETBRAINS_PASSWORD')
