@@ -118,8 +118,7 @@ public class DUtil {
                     DLanguageConstructor constructor = (DLanguageConstructor) namedElement;
                     result.add(constructor);
                 }
-            }
-            else if (name == null || (name.equals(namedElement.getName()) && !(e.equals(namedElement)))) {
+            } else if (name == null || (name.equals(namedElement.getName()) && !(e.equals(namedElement)) && !(namedElement instanceof DLanguageConstructor))) {
                 result.add(namedElement);
             }
         }

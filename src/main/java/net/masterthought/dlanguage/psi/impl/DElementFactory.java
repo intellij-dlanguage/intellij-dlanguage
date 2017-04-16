@@ -4,7 +4,10 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFileFactory;
 import net.masterthought.dlanguage.DLanguage;
-import net.masterthought.dlanguage.psi.*;
+import net.masterthought.dlanguage.psi.DLanguageFile;
+import net.masterthought.dlanguage.psi.DLanguageIdentifier;
+import net.masterthought.dlanguage.psi.DLanguageImportDeclaration;
+import net.masterthought.dlanguage.psi.DLanguageModuleDeclaration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -25,51 +28,6 @@ public class DElementFactory {
         return null;
     }
 
-    @Nullable
-    public static DLanguageFuncDeclaration createDLanguageFuncDeclarationFromText(@NotNull Project project, @NotNull String name) {
-        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
-        if (e instanceof DLanguageFuncDeclaration) return (DLanguageFuncDeclaration) e;
-        return null;
-    }
-
-    @Nullable
-    public static DLanguageClassDeclaration createDLanguageClassDeclarationFromText(@NotNull Project project, @NotNull String name) {
-        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
-        if (e instanceof DLanguageClassDeclaration) return (DLanguageClassDeclaration) e;
-        return null;
-    }
-
-//    /**
-//     * Takes a name and returns a Psi node of that name, or null.
-//     */
-//    @NotNull
-//    public static HaskellTycon createTyconFromText(@NotNull Project project, @NotNull String name) {
-//        return ((HaskellTycon) (createExpressionFromText(project, name + "uniq = " + name)).getFirstChild());
-//    }
-//
-//    /**
-//     * Takes a name and returns a Psi node of that name, or null.
-//     */
-//    @NotNull
-//    public static HaskellTycls createTyclsFromText(@NotNull Project project, @NotNull String name) {
-//        return ((HaskellTycls) (createExpressionFromText(project, name + "uniq = " + name)).getFirstChild());
-//    }
-//
-//    @NotNull
-//    public static HaskellPpragma createPpragmaFromText(@NotNull Project project, @NotNull String text) {
-//        return ((HaskellPpragma) (createFileFromText(project, text + "\nmodule Foo where").getFirstChild()));
-//    }
-//
-//    @NotNull
-//    public static HaskellGendecl createGendeclFromText(@NotNull Project project, @NotNull String text) {
-//        return ((HaskellGendecl) (createFileFromText(project, text).getFirstChild().getFirstChild()));
-//    }
-//
-//    @NotNull
-//    public static PsiWhiteSpace createNewLine(@NotNull Project project) {
-//        return ((PsiWhiteSpace) (createFileFromText(project, "\n")).getFirstChild());
-//    }
-
     /**
      * Takes an expression in text and returns a Psi tree of that program.
      */
@@ -88,110 +46,14 @@ public class DElementFactory {
         return (DLanguageFile) PsiFileFactory.getInstance(project).createFileFromText("A.hs", DLanguage.INSTANCE, text);
     }
 
-    public static PsiElement createDLanguageTemplateDeclarationFromText(Project project, String name) {
-        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
-        if (e instanceof DLanguageTemplateDeclaration) return e;
-        return null;
-    }
-
-    public static PsiElement createDLanguageConstructorFromText(Project project, String name) {
-        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
-        if (e instanceof DLanguageConstructor) return e;
-        return null;
-    }
-
-    public static PsiElement createDLanguageDestructorFromText(Project project, String name) {
-        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
-        if (e instanceof DLanguageDestructor) return e;
-        return null;
-    }
-
-    public static PsiElement createDLanguageStructDeclarationFromText(Project project, String name) {
-        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
-        if (e instanceof DLanguageStructDeclaration) return e;
-        return null;
-    }
-
-    public static PsiElement createDLanguageAliasDeclarationFromText(Project project, String name) {
-        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
-        if (e instanceof DLanguageAliasDeclaration) return e;
-        return null;
-    }
-
     public static PsiElement createDLanguageModuleFromText(Project project, String name) {
-        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
+        PsiElement e = createExpressionFromText(project, "module " + name + ";").getFirstChild();
         if (e instanceof DLanguageModuleDeclaration) return e;
         return null;
     }
 
-    public static PsiElement createDLanguageInterfaceDeclarationFromText(Project project, String name) {
-        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
-        if (e instanceof DLanguageInterfaceDeclaration) return e;
-        return null;
-    }
-
-    public static PsiElement createDLanguageVarDeclarationFromText(Project project, String name) {
-        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
-        if (e instanceof DLanguageVarDeclarations) return e;
-        return null;
-    }
-
-    public static PsiElement createDLanguageLabeledStatementFromText(Project project, String name) {
-        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
-        if (e instanceof DLanguageLabeledStatement) return e;
-        return null;
-    }
-
-    public static PsiElement createDLanguageAutoDeclarationYFromText(Project project, String name) {
-        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
-        if (e instanceof DLanguageAutoDeclarationY) return e;
-        return null;
-    }
-
-    public static PsiElement createDLanguageDeclaratorInitializerFromText(Project project, String name) {
-        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
-        if (e instanceof DLanguageDeclaratorInitializer) return e;
-        return null;
-    }
-
-    public static PsiElement createDLanguageStaticConstructorFromText(Project project, String name) {
-        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
-        if (e instanceof DLanguageStaticConstructor) return e;
-        return null;
-    }
-
-    public static PsiElement createDLanguageSharedStaticConstructorFromText(Project project, String name) {
-        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
-        if (e instanceof DLanguageSharedStaticConstructor) return e;
-        return null;
-    }
-
-    public static PsiElement createDLanguageStaticDestructorFromText(Project project, String name) {
-        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
-        if (e instanceof DLanguageStaticDestructor) return e;
-        return null;
-    }
-
-    public static PsiElement createDLanguageSharedStaticDestructorFromText(Project project, String name) {
-        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
-        if (e instanceof DLanguageSharedStaticDestructor) return e;
-        return null;
-    }
-
-    public static PsiElement createDLanguageEnumDeclarationFromText(Project project, String name) {
-        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
-        if (e instanceof DLanguageEnumDeclaration) return e;
-        return null;
-    }
-
-    public static PsiElement createDLanguageUnionDeclarationFromText(Project project, String name) {
-        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
-        if (e instanceof DLanguageUnionDeclaration) return e;
-        return null;
-    }
-
     public static PsiElement createDLanguageImportFromText(Project project, String name) {
-        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
+        PsiElement e = createExpressionFromText(project, "import " + name + ";").getFirstChild();
         if (e instanceof DLanguageImportDeclaration) return e;
         return null;
     }
