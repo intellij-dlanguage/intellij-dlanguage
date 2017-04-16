@@ -10,13 +10,17 @@ import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.containers.ContainerUtil;
 import net.masterthought.dlanguage.index.DModuleIndex;
 import net.masterthought.dlanguage.psi.*;
+import net.masterthought.dlanguage.psi.interfaces.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.lang.reflect.Constructor;
 import java.util.*;
 
+import static com.intellij.psi.util.PsiTreeUtil.findChildOfType;
 import static net.masterthought.dlanguage.psi.impl.DPsiImplUtil.findParentOfType;
+import static net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility.private_;
+import static net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility.protected_;
+import static net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility.public_;
 
 /**
  * General util class. Provides methods for finding named nodes in the Psi tree.
@@ -27,13 +31,13 @@ public class DUtil {
      * definitions are found when name is null.
      */
     @NotNull
-    public static List<PsiNamedElement> findDefinitionNode(@NotNull Project project, @Nullable String name, @Nullable PsiNamedElement e) {
+    public static List<PsiElement> findDefinitionNode(@NotNull Project project, @Nullable String name, @Nullable PsiNamedElement e) {
         // Guess where the name could be defined by lookup up potential modules.
         final Set<String> potentialModules =
             e == null ? Collections.EMPTY_SET
                 : DPsiUtil.parseImports(e.getContainingFile());
 
-        List<PsiNamedElement> result = ContainerUtil.newArrayList();
+        List<PsiElement> result = ContainerUtil.newArrayList();
         final PsiFile psiFile = e == null ? null : e.getContainingFile().getOriginalFile();
         // find definition in current file
         if (psiFile instanceof DLanguageFile) {
@@ -72,141 +76,52 @@ public class DUtil {
 
     /**
      * finds definition(s) of functions/class/template
-     * todo this method could be made more efficient and effective. For starters is long and finds a lot of definitions that are never used later
+     * todo this method could be made more efficient and effective. Use a stub tree?
      * @param file the file to search for definitions in
      * @param name the name of the function/class/template to resolve
      * @param e the usage of the defined function/class/template etc.
      * @param result the results are added to the is arraylist
      */
-    public static void findDefinitionNode(@Nullable DLanguageFile file, @Nullable String name, @Nullable PsiNamedElement e, @NotNull List<PsiNamedElement> result) {
+    public static void findDefinitionNode(@Nullable DLanguageFile file, @Nullable String name, @Nullable PsiNamedElement e, @NotNull List<PsiElement> result) {
         if (file == null) return;
         // start with empty list of potential named elements
-        Collection<PsiNamedElement> namedElements = Collections.EMPTY_LIST;
+        Collection<DNamedElement> declarationElements = Collections.EMPTY_LIST;
 
         if (e instanceof DLanguageIdentifier) {
-            if (e.getParent() instanceof DLanguagePrimaryExpression) {
-
-                Collection<DLanguageFuncDeclaration> fd = PsiTreeUtil.findChildrenOfType(file, DLanguageFuncDeclaration.class);
-                Collection<DLanguageClassDeclaration> cd = PsiTreeUtil.findChildrenOfType(file, DLanguageClassDeclaration.class);
-                Collection<DLanguageVarDeclarator> vd = PsiTreeUtil.findChildrenOfType(file, DLanguageVarDeclarator.class);
-                Collection<DLanguageAutoDeclarationY> ady = PsiTreeUtil.findChildrenOfType(file, DLanguageAutoDeclarationY.class);
-
-                Collection<DLanguageTemplateDeclaration> td = PsiTreeUtil.findChildrenOfType(file, DLanguageTemplateDeclaration.class);
-
-                Collection<DLanguageConstructor> constructors = PsiTreeUtil.findChildrenOfType(file, DLanguageConstructor.class);
-
-                List<PsiNamedElement> ne = new ArrayList<>();
-
-                // add func decls
-                for (DLanguageFuncDeclaration d : fd) {
-                    ne.add(d.getIdentifier());
-                }
-
-                // add class decls
-                for (DLanguageClassDeclaration d : cd) {
-                    if (d.getIdentifier() != null) {
-                        ne.add(d.getIdentifier());
+            declarationElements = new HashSet<>();
+            Collection<Declaration> declarations = PsiTreeUtil.findChildrenOfAnyType(file, Declaration.class);
+            for (DNamedElement candidateDeclaration : declarations) {
+                if(candidateDeclaration instanceof DLanguageAutoDeclarationY){
+                    if(((DLanguageAutoDeclarationY) candidateDeclaration).actuallyIsDeclaration()){
+                        declarationElements.add(candidateDeclaration);
                     }
+                    continue;
                 }
-
-                // add var decl
-                for (DLanguageVarDeclarator d : vd) {
-                    ne.add(d.getIdentifier());
-                }
-
-                // add auto decl y
-                for (DLanguageAutoDeclarationY d : ady) {
-                    ne.add(d.getIdentifier());
-                }
-
-                for (DLanguageTemplateDeclaration d : td) {
-                    ne.add(d.getIdentifier());
-                }
-
-                for (DLanguageConstructor constructor : constructors) {
-                    ne.add(constructor);
-                }
-
-                namedElements = ne;
-
-            } else if (e.getParent() instanceof DLanguageIdentifierList) {
-                List<PsiNamedElement> ne = new ArrayList<>();
-
-                // add func decls
-                Collection<DLanguageAutoDeclarationY> ady = PsiTreeUtil.findChildrenOfType(file, DLanguageAutoDeclarationY.class);
-                Collection<DLanguageTemplateDeclaration> td = PsiTreeUtil.findChildrenOfType(file, DLanguageTemplateDeclaration.class);
-                Collection<DLanguageConstructor> constructors = PsiTreeUtil.findChildrenOfType(file, DLanguageConstructor.class);
-                Collection<DLanguageFuncDeclaration> fd = PsiTreeUtil.findChildrenOfType(file, DLanguageFuncDeclaration.class);
-                Collection<DLanguageVarDeclarator> vd = PsiTreeUtil.findChildrenOfType(file, DLanguageVarDeclarator.class);
-                Collection<DLanguageClassDeclaration> cd = PsiTreeUtil.findChildrenOfType(file, DLanguageClassDeclaration.class);
-
-                for (DLanguageFuncDeclaration d : fd) {
-                    ne.add(d.getIdentifier());
-                }
-
-                // add var declarator
-                for (DLanguageVarDeclarator d : vd) {
-                    ne.add(d.getIdentifier());
-                }
-
-                // add class decl
-                for (DLanguageClassDeclaration d : cd) {
-                    if (d.getIdentifier() != null) {
-                        ne.add(d.getIdentifier());
-                    }
-                }
-
-                // add auto decl y
-                for (DLanguageAutoDeclarationY d : ady) {
-                    ne.add(d.getIdentifier());
-                }
-
-                for (DLanguageTemplateDeclaration d : td) {
-                    ne.add(d.getIdentifier());
-                }
-
-                for (DLanguageConstructor constructor : constructors) {
-                    ne.add(constructor);
-                }
-
-                namedElements = ne;
-            } else if (e.getParent() instanceof DLanguageTemplateInstance) {
-                List<PsiNamedElement> ne = new ArrayList<>();
-
-                Collection<DLanguageTemplateDeclaration> td = PsiTreeUtil.findChildrenOfType(file, DLanguageTemplateDeclaration.class);
-
-                for (DLanguageTemplateDeclaration d : td) {
-                    ne.add(d.getIdentifier());
-                }
-
-                namedElements = ne;
-
+                declarationElements.add(candidateDeclaration);
             }
-//        } else {
-//            namedElements = PsiTreeUtil.findChildrenOfType(file, PsiNamedElement.class);
+        }
+
+        boolean resolvingConstructor = false;
+
+        PsiElement parent = e.getParent();
+        while (true) {
+            if(parent == null)
+                break;
+            if(parent instanceof DLanguageNewExpression || parent instanceof DLanguageNewExpressionWithArgs)
+                resolvingConstructor = true;
+            parent = parent.getParent();
         }
 
         // check the list of potential named elements for a match on name
-        for (PsiNamedElement namedElement : namedElements) {
+        for (DNamedElement namedElement : declarationElements) {
             //non void initializer
-            boolean resolvingConstructor = false;
-
-            PsiElement parent = e.getParent();
-            try {
-                while (!(parent instanceof DLanguageNewExpression)) {
-                    parent = parent.getParent();
-                }
-                resolvingConstructor = true;
-            } catch (NullPointerException ignored) {}
-
             if(resolvingConstructor) {
                 if (namedElement instanceof DLanguageConstructor) {
                     DLanguageConstructor constructor = (DLanguageConstructor) namedElement;
-                    //todo check that the constructor arguments match and only use those who match
                     result.add(constructor);
                 }
             }
-            else if ((name == null || name.equals(namedElement.getName())) && definitionNode(namedElement)) {
+            else if (name == null || (name.equals(namedElement.getName()) && !(e.equals(namedElement)))) {
                 result.add(namedElement);
             }
         }
@@ -217,8 +132,8 @@ public class DUtil {
      * is null.
      */
     @NotNull
-    public static List<PsiNamedElement> findDefinitionNodes(@Nullable DLanguageFile dLanguageFile, @Nullable String name) {
-        List<PsiNamedElement> ret = ContainerUtil.newArrayList();
+    public static List<PsiElement> findDefinitionNodes(@Nullable DLanguageFile dLanguageFile, @Nullable String name) {
+        List<PsiElement> ret = ContainerUtil.newArrayList();
         findDefinitionNode(dLanguageFile, name, null, ret);
         return ret;
     }
@@ -228,7 +143,7 @@ public class DUtil {
      * definitions are found when name is null.
      */
     @NotNull
-    public static List<PsiNamedElement> findDefinitionNodes(@NotNull Project project) {
+    public static List<PsiElement> findDefinitionNodes(@NotNull Project project) {
         return findDefinitionNode(project, null, null);
     }
 
@@ -236,8 +151,8 @@ public class DUtil {
      * Finds name definitions that are within the scope of a file, including imports (to some degree).
      */
     @NotNull
-    public static List<PsiNamedElement> findDefinitionNodes(@NotNull DLanguageFile psiFile) {
-        List<PsiNamedElement> result = findDefinitionNodes(psiFile, null);
+    public static List<PsiElement> findDefinitionNodes(@NotNull DLanguageFile psiFile) {
+        List<PsiElement> result = findDefinitionNodes(psiFile, null);
         result.addAll(findDefinitionNode(psiFile.getProject(), null, null));
         return result;
     }
@@ -314,6 +229,161 @@ public class DUtil {
             }
         }
         return false;
+    }
+
+    /**
+     * @param namedElement constructor, or method contained within a class or struct
+     * @return the class or struct containing this constructor/method. returns null if not found
+     */
+    public static DNamedElement getParentClassOrStruct(PsiElement namedElement) {
+        return PsiTreeUtil.getParentOfType(namedElement, DLanguageClassDeclaration.class, DLanguageStructDeclaration.class);
+    }
+
+    public static DLanguageFuncDeclaration getParentFunction(PsiElement namedElement){
+        return PsiTreeUtil.getParentOfType(namedElement,DLanguageFuncDeclaration.class);
+    }
+
+    public static boolean isPublic(DNamedElement symbol) {
+        //search for "public:" and "public{}"
+        final DLanguageProtectionAttribute protectionAttribute = findChildOfType(symbol, DLanguageProtectionAttribute.class);
+        try {
+            if (protectionAttribute.getText().equals("public")) {
+                return true;
+            }
+        } catch (NullPointerException ignored) {
+        }
+        return searchForPublicWrapper(symbol);
+    }
+
+    private static boolean searchForPublicWrapper(DNamedElement symbol) {
+        return searchForPublic(symbol);
+    }
+
+    private static boolean searchForPublic(PsiElement symbol) {
+        if (symbol instanceof DLanguageAttributeSpecifier)
+            if (((DLanguageAttributeSpecifier) symbol).getAttribute().getProtectionAttribute() != null && ((DLanguageAttributeSpecifier) symbol).getAttribute().getProtectionAttribute().getText().equals("public"))
+                return true;
+        if (symbol instanceof DLanguageClassDeclaration || symbol instanceof DLanguageTemplateInstance || symbol instanceof DLanguageModuleDeclaration || symbol instanceof DLanguageFuncDeclaration || symbol instanceof DLanguageInterface || symbol instanceof DLanguageStructDeclaration)
+            return false;
+        if (symbol == null)
+            return false;
+        if (null != findChildOfType(symbol, DLanguageModuleDeclaration.class))
+            return false;
+        return searchForPublic(symbol.getParent());
+    }
+
+    public static <T extends HasVisibility> List<T> getPublicElements(List<T> elements) {
+        List<T> res = new ArrayList<>();
+        for (T element : elements) {
+            if (element.isPublic()) {
+                res.add(element);
+            }
+        }
+        return res;
+    }
+
+    public static <T extends HasVisibility> List<T> getProtectedElements(List<T> elements) {
+        List<T> res = new ArrayList<>();
+        for (T element : elements) {
+            if (element.isPublic()) {
+                res.add(element);
+            }
+        }
+        return res;
+    }
+
+    public static <T extends HasVisibility> List<T> getPrivateElements(List<T> elements) {
+        List<T> res = new ArrayList<>();
+        for (T element : elements) {
+            if (element.isPublic()) {
+                res.add(element);
+            }
+        }
+        return res;
+    }
+
+    public static <T extends HasProperty> List<T> getElementsWithAtProperty(List<T> elements) {
+        List<T> res = new ArrayList<>();
+        for (T element : elements) {
+            if (element.isPropertyFunction()) {
+                res.add(element);
+            }
+        }
+        return res;
+    }
+
+    @NotNull
+    public static PsiElement getTopLevelOfRecursiveElement(PsiElement element, Class<? extends PsiElement> tClass) {
+        if (!tClass.isInstance(element.getParent()))
+            return element;
+        return getTopLevelOfRecursiveElement(element.getParent(), tClass);
+    }
+
+    @NotNull
+    public static DLanguageIdentifier getEndOfIdentifierList(DLanguageQualifiedIdentifierList list) {
+        if (list.getQualifiedIdentifierList() == null) {
+            return list.getIdentifier();
+        }
+        return getEndOfIdentifierList(list.getQualifiedIdentifierList());
+    }
+
+    @NotNull
+    public static DLanguageIdentifier getEndOfIdentifierList(DLanguageModuleFullyQualifiedName list) {
+        if (list.getModuleFullyQualifiedName() == null) {
+            return list.getIdentifier();
+        }
+        return getEndOfIdentifierList(list.getModuleFullyQualifiedName());
+    }
+
+    @NotNull
+    public static DLanguageIdentifier getEndOfIdentifierList(DLanguageIdentifierList list) {
+        if (list.getIdentifierList() == null) {
+            return list.getIdentifier();
+        }
+        return getEndOfIdentifierList(list.getIdentifierList());
+    }
+
+    static List<Mixin> getMixins(PsiElement elementToSearch) {
+        List<Mixin> mixins = new ArrayList<>();
+        if (elementToSearch instanceof DLanguageMixinDeclaration) {
+            final DLanguageMixinDeclaration mixin = (DLanguageMixinDeclaration) elementToSearch;
+            mixins.add(mixin);
+        }
+        if (elementToSearch instanceof DLanguageTemplateMixin) {
+            final DLanguageTemplateMixin mixin = (DLanguageTemplateMixin) elementToSearch;
+            mixins.add(mixin);
+        }
+        if (elementToSearch instanceof DLanguageMixinExpression) {
+            final DLanguageMixinExpression mixin = (DLanguageMixinExpression) elementToSearch;
+            mixins.add(mixin);
+        }
+        if (elementToSearch instanceof DLanguageMixinStatement) {
+            final DLanguageMixinStatement mixin = (DLanguageMixinStatement) elementToSearch;
+            mixins.add(mixin);
+        }
+        return mixins;
+    }
+
+    public static HasVisibility.Visibility protectionToVisibilty(DLanguageProtectionAttribute protectionAttribute) {
+        final String text = protectionAttribute.getText();
+        if (text.equals("private"))
+            return private_;
+        if (text.equals("public"))
+            return public_;
+        if (text.equals("protected"))
+            return protected_;
+        throw new IllegalArgumentException(protectionAttribute.toString() + protectionAttribute.getText());
+    }
+
+    public static HasVisibility.Visibility protectionToVisibilty(String text) {
+        if (text.equals("private"))
+            return private_;
+        if (text.equals("public"))
+            return public_;
+        if (text.equals("protected"))
+            return protected_;
+        throw new IllegalArgumentException(text);
+
     }
 }
 

@@ -3,23 +3,17 @@ package net.masterthought.dlanguage.features;
 import com.intellij.navigation.ChooseByNameContributor;
 import com.intellij.navigation.NavigationItem;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.stubs.StubIndex;
 import com.intellij.util.ArrayUtil;
 import com.intellij.util.containers.ContainerUtil;
-import net.masterthought.dlanguage.psi.DLanguageClassDeclaration;
-import net.masterthought.dlanguage.psi.DNamedElement;
 import net.masterthought.dlanguage.psi.impl.DLanguageClassDeclarationImpl;
+import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 import net.masterthought.dlanguage.stubs.index.DAllNameIndex;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-
-import static net.masterthought.dlanguage.utils.DUtil.elementHasParentFor;
-import static net.masterthought.dlanguage.utils.DUtil.findElementInParent;
 
 /**
  * The "go to class"
@@ -44,5 +38,5 @@ public class DClassContributor implements ChooseByNameContributor {
         }
         return items.toArray(new NavigationItem[items.size()]);
     }
-    
+
 }

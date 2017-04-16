@@ -2,7 +2,7 @@ D Language File
   DLanguageDeclDefsImpl(DECL_DEFS)
     DLanguageDeclDefImpl(DECL_DEF)
       DLanguageDeclarationImpl(DECLARATION)
-        DLanguageEnumDeclarationImpl(ENUM_DECLARATION)
+        ENUM_DECLARATION
           DLanguageAnonymousEnumDeclarationImpl(ANONYMOUS_ENUM_DECLARATION)
             PsiElement(DLanguageTokenType.enum)('enum')
     DLanguageDeclDefsImpl(DECL_DEFS)
@@ -151,7 +151,7 @@ D Language File
               DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
                 DLanguageAutoDeclarationImpl(AUTO_DECLARATION)
                   DLanguageAutoDeclarationXImpl(AUTO_DECLARATION_X)
-                    DLanguageAutoDeclarationYImpl(AUTO_DECLARATION_Y)
+                    AUTO_DECLARATION_Y
                       IDENTIFIER
                         PsiElement(DLanguageTokenType.ID)('array')
                       DLanguageTemplateParametersImpl(TEMPLATE_PARAMETERS)
@@ -209,7 +209,7 @@ D Language File
             DLanguageDeclDefsImpl(DECL_DEFS)
               DLanguageDeclDefImpl(DECL_DEF)
                 DLanguageDeclarationImpl(DECLARATION)
-                  DLanguageEnumDeclarationImpl(ENUM_DECLARATION)
+                  ENUM_DECLARATION
                     DLanguageAnonymousEnumDeclarationImpl(ANONYMOUS_ENUM_DECLARATION)
                       PsiElement(DLanguageTokenType.enum)('enum')
               DLanguageDeclDefsImpl(DECL_DEFS)
@@ -221,7 +221,7 @@ D Language File
                           IDENTIFIER
                             PsiElement(DLanguageTokenType.ID)('string')
                       DLanguageDeclaratorsImpl(DECLARATORS)
-                        DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
+                        DECLARATOR_INITIALIZER
                           DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
                             IDENTIFIER
                               PsiElement(DLanguageTokenType.ID)('constant')
@@ -286,7 +286,7 @@ D Language File
                         DLanguageBasicTypeXImpl(BASIC_TYPE_X)
                           PsiElement(DLanguageTokenType.ubyte)('ubyte')
                       DLanguageDeclaratorsImpl(DECLARATORS)
-                        DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
+                        DECLARATOR_INITIALIZER
                           DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
                             DLanguageBasicType2Impl(BASIC_TYPE_2)
                               DLanguageBasicType2XImpl(BASIC_TYPE_2_X)
@@ -374,7 +374,7 @@ D Language File
                             DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
                               DLanguageAutoDeclarationImpl(AUTO_DECLARATION)
                                 DLanguageAutoDeclarationXImpl(AUTO_DECLARATION_X)
-                                  DLanguageAutoDeclarationYImpl(AUTO_DECLARATION_Y)
+                                  AUTO_DECLARATION_Y
                                     IDENTIFIER
                                       PsiElement(DLanguageTokenType.ID)('array')
                                     PsiElement(DLanguageTokenType.=)('=')

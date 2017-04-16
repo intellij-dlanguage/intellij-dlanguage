@@ -1,5 +1,5 @@
 D Language File
-  DLanguageModuleDeclarationImpl(MODULE_DECLARATION)
+  MODULE_DECLARATION
     PsiElement(DLanguageTokenType.module)('module')
     DLanguageModuleFullyQualifiedNameImpl(MODULE_FULLY_QUALIFIED_NAME)
       IDENTIFIER
@@ -11,7 +11,7 @@ D Language File
         DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
           PsiElement(DLanguageTokenType.import)('import')
           DLanguageImportListImpl(IMPORT_LIST)
-            DLanguageImportImpl(IMPORT)
+            IMPORT
               DLanguageModuleFullyQualifiedNameImpl(MODULE_FULLY_QUALIFIED_NAME)
                 IDENTIFIER
                   PsiElement(DLanguageTokenType.ID)('std')
@@ -24,7 +24,7 @@ D Language File
       DLanguageDeclDefImpl(DECL_DEF)
         DLanguageDeclarationImpl(DECLARATION)
           DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
-            DLanguageStructDeclarationImpl(STRUCT_DECLARATION)
+            STRUCT_DECLARATION
               PsiElement(DLanguageTokenType.struct)('struct')
               IDENTIFIER
                 PsiElement(DLanguageTokenType.ID)('Foo')
@@ -34,7 +34,7 @@ D Language File
       DLanguageDeclDefsImpl(DECL_DEFS)
         DLanguageDeclDefImpl(DECL_DEF)
           DLanguageDeclarationImpl(DECLARATION)
-            DLanguageEnumDeclarationImpl(ENUM_DECLARATION)
+            ENUM_DECLARATION
               PsiElement(DLanguageTokenType.enum)('enum')
               IDENTIFIER
                 PsiElement(DLanguageTokenType.ID)('Enum')

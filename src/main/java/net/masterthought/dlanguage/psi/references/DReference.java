@@ -4,14 +4,15 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.util.IncorrectOperationException;
-import net.masterthought.dlanguage.psi.DLanguageFuncDeclaration;
-import net.masterthought.dlanguage.psi.DLanguageIdentifier;
+import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.impl.DPsiImplUtil;
 import net.masterthought.dlanguage.utils.DUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -46,10 +47,80 @@ public class DReference extends PsiReferenceBase<PsiNamedElement> implements Psi
 //            if (!myElement.equals(Iterables.getLast(qconid.getConidList()))) { return EMPTY_RESOLVE_RESULT; }
 //        }
         Project project = myElement.getProject();
-        final List<PsiNamedElement> namedElements = DUtil.findDefinitionNode(project, name, myElement);
+        final List<PsiElement> namedElements = DUtil.findDefinitionNode(project, name, myElement);
         // Guess 20 variants tops most of the time in any real code base.
+        final Collection<PsiElement> identifiers = new HashSet<>();
+        for (PsiElement namedElement : namedElements) {
+            if(namedElement instanceof DLanguageFuncDeclaration){
+                identifiers.add(((DLanguageFuncDeclaration) namedElement).getIdentifier());
+            }
+            else if(namedElement instanceof DLanguageTemplateDeclaration){
+                identifiers.add(((DLanguageTemplateDeclaration) namedElement).getIdentifier());
+            }
+            else if(namedElement instanceof DLanguageClassDeclaration){
+                if(((DLanguageClassDeclaration) namedElement).getIdentifier() != null) {
+                    identifiers.add(((DLanguageClassDeclaration) namedElement).getIdentifier());
+                }
+                else if(((DLanguageClassDeclaration) namedElement).getClassTemplateDeclaration().getIdentifier() != null) {
+                    identifiers.add(((DLanguageClassDeclaration) namedElement).getClassTemplateDeclaration().getIdentifier());
+                }
+            }
+            else if(namedElement instanceof DLanguageUnionDeclaration){
+                if(((DLanguageUnionDeclaration) namedElement).getIdentifier() != null) {
+                    identifiers.add(((DLanguageUnionDeclaration) namedElement).getIdentifier());
+                }
+                else if(((DLanguageUnionDeclaration) namedElement).getUnionTemplateDeclaration().getIdentifier() != null) {
+                    identifiers.add(((DLanguageUnionDeclaration) namedElement).getUnionTemplateDeclaration().getIdentifier());
+                }
+            }
+            else if(namedElement instanceof DLanguageInterfaceDeclaration){
+                if(((DLanguageInterfaceDeclaration) namedElement).getIdentifier() != null) {
+                    identifiers.add(((DLanguageInterfaceDeclaration) namedElement).getIdentifier());
+                }
+                else if(((DLanguageInterfaceDeclaration) namedElement).getInterfaceTemplateDeclaration().getIdentifier() != null) {
+                    identifiers.add(((DLanguageInterfaceDeclaration) namedElement).getInterfaceTemplateDeclaration().getIdentifier());
+                }
+            }
+            else if(namedElement instanceof DLanguageStructDeclaration){
+                if(((DLanguageStructDeclaration) namedElement).getIdentifier() != null) {
+                    identifiers.add(((DLanguageStructDeclaration) namedElement).getIdentifier());
+                }
+            }
+            else if(namedElement instanceof DLanguageEnumDeclaration){
+                identifiers.add(((DLanguageEnumDeclaration) namedElement).getIdentifier());
+            }
+            else if(namedElement instanceof DLanguageAutoDeclarationY){
+                identifiers.add(((DLanguageAutoDeclarationY) namedElement).getIdentifier());
+            }
+            else if(namedElement instanceof DLanguageAliasDeclaration){
+                if(((DLanguageAliasDeclaration) namedElement).getIdentifier() != null) {
+                    identifiers.add(((DLanguageAliasDeclaration) namedElement).getIdentifier());
+                }
+                else if(((DLanguageAliasDeclaration) namedElement).getAliasDeclarationX() != null) {
+                    identifiers.add(((DLanguageAliasDeclaration) namedElement).getAliasDeclarationX().getAliasDeclarationY().getIdentifier());
+                }
+                else if(((DLanguageAliasDeclaration) namedElement).getAliasDeclarationX() != null) {
+                    identifiers.add(((DLanguageAliasDeclaration) namedElement).getAliasDeclarationX().getAliasDeclarationY().getIdentifier());
+                }
+            }
+            else if(namedElement instanceof DLanguageDeclaratorInitializer){
+                if(((DLanguageDeclaratorInitializer) namedElement).getAltDeclarator() != null &&
+                    ((DLanguageDeclaratorInitializer) namedElement).getAltDeclarator().getIdentifier() != null){
+                    identifiers.add(((DLanguageDeclaratorInitializer) namedElement).getAltDeclarator().getIdentifier());
+                }
+                else if(((DLanguageDeclaratorInitializer) namedElement).getVarDeclarator() != null){
+                    identifiers.add(((DLanguageDeclaratorInitializer) namedElement).getVarDeclarator().getIdentifier());
+                }
+            }
+            else {
+                identifiers.add(namedElement);
+            }
+        }
+
+        identifiers.remove(myElement);
+
         List<ResolveResult> results = new ArrayList<ResolveResult>(20);
-        for (PsiNamedElement property : namedElements) {
+        for (PsiElement property : identifiers) {
             //noinspection ObjectAllocationInLoop
             results.add(new PsiElementResolveResult(property));
         }

@@ -15,8 +15,8 @@ public class DFindUsagesTest extends DLightPlatformCodeInsightFixtureTestCase {
     public void testFunctionUsagesInSingleFile() {
         doTest(1);
     }
-//    public void testFunctionUsagesInMultipleFiles00001() { doTest(3, "FunctionUsagesInSingleFile00001.hs");}
-//    public void testFunctionUsagesInSingleFile00002()    { doTest(2); }
+//    public void testFunctionUsagesInMultipleFiles00001() { doTestModule(3, "FunctionUsagesInSingleFile00001.hs");}
+//    public void testFunctionUsagesInSingleFile00002()    { doTestModule(2); }
 
     private void doTest(int expectedResult, String... extraFiles) {
         String[] files = new String[1 + extraFiles.length];
