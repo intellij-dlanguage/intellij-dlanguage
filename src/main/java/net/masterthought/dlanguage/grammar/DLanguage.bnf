@@ -217,10 +217,10 @@ DOUBLE_QUOTED_STRING = 'regexp:\"([^\\"]|((\\"|\\\?|\\\|\\0|\\a|\\b|\\f|\\n|\\r|
 dFile ::= item_*
 
 private item_ ::= (ModuleDeclaration | DeclDefs | Statement | SHEBANG) {
-    recoverWhile = item_recover
+//    recoverWhile = item_recover
 }
 
-private item_recover ::= !(ModuleDeclaration | DeclDefs | Statement | SHEBANG)
+//private item_recover ::= !(ModuleDeclaration | DeclDefs | Statement | SHEBANG)
 
 Identifier ::= ID {
     methods=[getName getNameIdentifier getReference setName getPresentation]
@@ -242,11 +242,11 @@ ModuleDeclaration ::=
 
 ModuleFullyQualifiedName ::=
     Identifier ['.' ModuleFullyQualifiedName] {
-        recoverWhile = module_name_recover
-        pin = 1
+//        recoverWhile = module_name_recover
+//        pin = 1
     }
 
-private module_name_recover ::= !(/*Identifier*/ ':' | ',' |  ';')
+//private module_name_recover ::= !(/*Identifier*/ ':' | ',' |  ';')
 
 // Import
 
@@ -255,12 +255,10 @@ ImportDeclaration ::=
     StaticImport
 
 private RegularImport ::=
-    'import' ImportList ';' //{pin = 1 recoverWhile=import_recover}
+    'import' ImportList ';'
 
 private StaticImport ::=
-    'static' 'import' ImportList ';'//{ pin=2 recoverWhile=import_recover}
-
-//private import_recover ::= item_recover
+    'static' 'import' ImportList ';'
 
 ImportList ::=
     Import (':' ImportBindList | ',' ImportList)?
@@ -307,7 +305,11 @@ DeclDef ::=
     | StaticIfCondition
     | StaticElseCondition
     | ';'
-    )
+    ){
+    pin = 1
+    recoverWhile = decldef_recover
+    }
+private decldef_recover ::= !('void' | BasicType | ';' | Identifier | '(' | ')')
 
 MixinDeclaration ::=
     'mixin' '(' (TemplateInstance | AssignExpression) ')' ';'{
@@ -372,7 +374,10 @@ BasicType2X ::=
 IdentifierList ::=
 //    Identifier ('.' IdentifierList)?
      Identifier TemplateInstance? ['.' IdentifierList]
-    |  Identifier '[' AssignExpression ']' '.' IdentifierList
+    |  Identifier '[' AssignExpression ']' '.' IdentifierList {
+        pin = 1
+//        recoverWhile = !()
+    }
 
 Typeof ::=
     'typeof' '(' (Expression | 'return') ')'
@@ -400,7 +405,11 @@ AssignExpression ::=
                               | '<<='
                               | '>>='
                               | '>>>='
-                              | '^^=') AssignExpression]
+                              | '^^=') AssignExpression]{
+   pin = 1
+   recoverWhile = assign_expression_recover
+}
+private assign_expression_recover ::= !( '(' | ')' | ';' | '{' | '}' | '[' | ']' | ':' | BasicType | ',' | '..' | '?' | 'break' | 'catch' | 'static' | 'version' | 'else' | 'finally' | 'foreach' | 'if' | 'struct' | 'pragma' | 'while' | 'for' | 'return')
 
 ConditionalExpression ::=
    OrOrExpression ['?' Expression ':' ConditionalExpression]
@@ -507,7 +516,7 @@ PostfixExpression ::=
     | '.' TemplateInstance [PostfixExpression]
     | '.' NewExpression [PostfixExpression]
     | '++' [PostfixExpression]
-    |  '--' [PostfixExpression]
+    | '--' [PostfixExpression]
     | '(' ArgumentList? ')' [PostfixExpression]
     | TypeCtors? BasicType '(' ArgumentList? ')' [PostfixExpression]
     | IndexExpression
@@ -636,8 +645,12 @@ TypeSpecialization ::=
     | '__parameters'
 
 TraitsExpression ::=
-    '__traits' ('(' TraitsKeyword ',' TraitsArguments ')')?
+    '__traits' ('(' TraitsKeyword ',' TraitsArguments ')')? {pin = 1
+    recoverWhile=traits_expression_recover
+    }
 //    '__traits' '(' TraitsKeyword ',' TraitsArguments ')'
+
+private traits_expression_recover ::= !('__traits')//todo fix/check
 
 TraitsKeyword ::=
     'isAbstractClass'
@@ -660,6 +673,7 @@ TraitsKeyword ::=
     | 'isRef'
     | 'isOut'
     | 'isLazy'
+    | 'isTemplate'
     | 'hasMember'
     | 'identifier'
     | 'getAliasThis'
@@ -682,7 +696,7 @@ TraitsKeyword ::=
     | 'compiles'
 
 TraitsArguments ::=
-    TraitsArgument (',' TraitsArguments)?
+    TraitsArgument [',' TraitsArguments]//{pin = 1}
 
 TraitsArgument ::=
     AssignExpression
@@ -700,7 +714,11 @@ SpecialKeyword ::=
 Statement ::=
     ';'
     | NonEmptyStatement
-    | BlockStatement
+    | BlockStatement{
+    pin = 0
+    recoverWhile = statement_recover
+    }
+private statement_recover ::= /*!Statement*/!('(' | ')' | '{' | '}' | '[' | ']' | ';' | BasicType | 'continue' | 'case' | 'break' | 'catch' | 'static' | 'version' | 'else' | 'finally' | 'foreach' | 'if' | 'struct' | 'pragma' | 'while' | 'for' | 'return' | 'auto' | 'assert' | 'switch' | 'goto' | 'asm' | 'try' | 'scope' | 'mixin' | 'throw' | 'import' | 'default' | 'in' | 'out' | 'body' | 'invariant' | 'const' | 'immutable' | 'alias' | 'template' |TypeSpecialization | 'this' | 'super' | 'ref' | '*' | '@' | 'debug' | 'delete' | 'extern' | 'with' /*| DeclaratorInitializer*/ ) //basically anything a statement could possibly start with
 
 NonEmptyStatement ::=
     NonEmptyStatementNoCaseNoDefault
@@ -750,10 +768,10 @@ LabeledStatement ::=
 
 
 BlockStatement ::=
- '{' StatementList? '}'
+ '{' StatementList? '}'//{pin = 1}
 
 StatementList ::=
-    Statement [StatementList]
+    Statement [StatementList]//{pin = 1}
 
 ExpressionStatement ::=
     Expression ';'?
@@ -887,7 +905,9 @@ SynchronizedStatement ::=
 TryStatement ::=
     'try' ScopeStatement Catches
     | 'try' ScopeStatement Catches FinallyStatement
-    | 'try' ScopeStatement FinallyStatement
+    | 'try' ScopeStatement FinallyStatement{
+        pin = 1
+    }
 
 Catches ::=
      Catch [Catches]
@@ -2160,6 +2180,7 @@ TemplateMixinDeclaration ::=
 
 TemplateMixin ::=
     'mixin' MixinTemplateName TemplateArguments? Identifier? ';'{
+        pin = 1
         methods = [ getName ]
         implements = ["net.masterthought.dlanguage.psi.interfaces.Mixin"]
     }
@@ -2168,7 +2189,12 @@ MixinTemplateName ::=
     Typeof? '.'? QualifiedIdentifierList
 
 QualifiedIdentifierList ::=
-    (Identifier | TemplateInstance) [ '.' QualifiedIdentifierList ]
+    (Identifier | TemplateInstance) [ '.' QualifiedIdentifierList ]{
+//    pin = 1
+//    recoverWhile = qualified_identifier_list_recover
+    }
+
+//private qualified_identifier_list_recover ::= !(!ModuleFullyQualifiedName | Identifier)
 
 //Attribute
 AttributeSpecifier ::=

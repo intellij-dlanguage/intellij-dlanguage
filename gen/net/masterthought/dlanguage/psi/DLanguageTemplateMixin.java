@@ -11,7 +11,7 @@ public interface DLanguageTemplateMixin extends Mixin {
   @Nullable
   DLanguageIdentifier getIdentifier();
 
-  @NotNull
+  @Nullable
   DLanguageMixinTemplateName getMixinTemplateName();
 
   @Nullable
@@ -20,7 +20,7 @@ public interface DLanguageTemplateMixin extends Mixin {
   @NotNull
   PsiElement getKwMixin();
 
-  @NotNull
+  @Nullable
   PsiElement getOpScolon();
 
   @NotNull
