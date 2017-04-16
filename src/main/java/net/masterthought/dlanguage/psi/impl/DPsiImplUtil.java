@@ -299,7 +299,7 @@ public class DPsiImplUtil {
             assert (basicType.getTypeVector() == null);
             assert (basicType.getTypeof() == null);
             final DLanguageIdentifierList identifierList = basicType.getIdentifierList();
-            final List<PsiElement> definitionNodesSimple = DUtil.findDefinitionNodes((DLanguageFile) identifierList.getContainingFile(),getEndOfIdentifierList(identifierList).getName());
+            final List<PsiNamedElement> definitionNodesSimple = DUtil.findDefinitionNodes((DLanguageFile) identifierList.getContainingFile(), getEndOfIdentifierList(identifierList).getName());
             Set<CanInherit> definitionNodes = new HashSet<>();
             for (PsiElement node : definitionNodesSimple) {
                 if (definitionNodes instanceof CanInherit)
@@ -960,7 +960,7 @@ public class DPsiImplUtil {
             assert (basicType.getTypeVector() == null);
             assert (basicType.getTypeof() == null);
             final DLanguageIdentifierList identifierList = basicType.getIdentifierList();
-            final List<PsiElement> definitionNodesSimple = DUtil.findDefinitionNodes((DLanguageFile) identifierList.getContainingFile(),getEndOfIdentifierList(identifierList).getName());
+            final List<PsiNamedElement> definitionNodesSimple = DUtil.findDefinitionNodes((DLanguageFile) identifierList.getContainingFile(), getEndOfIdentifierList(identifierList).getName());
             Set<CanInherit> definitionNodes = new HashSet<>();
             for (PsiElement node : definitionNodesSimple) {
                 if (definitionNodes instanceof CanInherit)
@@ -1825,7 +1825,7 @@ public class DPsiImplUtil {
     // -------------------- Visibility --------------------- //
 
     // -------------------- Misc --------------------- //
-    public static String getFullName(net.masterthought.dlanguage.psi.interfaces.DNamedElement e) {
+    public static String getFullName(DNamedElement e) {
         if (e == null)
             return "";
         if (e instanceof DLanguageFile)

@@ -3,30 +3,31 @@ package net.masterthought.dlanguage.psi.references;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
+import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
+import com.intellij.util.containers.ContainerUtil;
+import net.masterthought.dlanguage.index.DModuleIndex;
 import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.impl.DPsiImplUtil;
-import net.masterthought.dlanguage.utils.DUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
+
+import static net.masterthought.dlanguage.utils.DUtil.findDefinitionNode;
 
 /**
  * Resolves references to elements.
  */
 public class DReference extends PsiReferenceBase<PsiNamedElement> implements PsiPolyVariantReference {
+    public static final ResolveResult[] EMPTY_RESOLVE_RESULT = new ResolveResult[0];
     private String name;
 
     public DReference(@NotNull PsiNamedElement element, TextRange textRange) {
         super(element, textRange);
         name = element.getName();
     }
-
-    public static final ResolveResult[] EMPTY_RESOLVE_RESULT = new ResolveResult[0];
 
     /**
      * Resolves references to a set of results.
@@ -47,7 +48,7 @@ public class DReference extends PsiReferenceBase<PsiNamedElement> implements Psi
 //            if (!myElement.equals(Iterables.getLast(qconid.getConidList()))) { return EMPTY_RESOLVE_RESULT; }
 //        }
         Project project = myElement.getProject();
-        final List<PsiElement> namedElements = DUtil.findDefinitionNode(project, name, myElement);
+        final List<PsiNamedElement> namedElements = findDefinitionNode(project, name, myElement);
         // Guess 20 variants tops most of the time in any real code base.
         final Collection<PsiElement> identifiers = new HashSet<>();
         for (PsiElement namedElement : namedElements) {
@@ -173,7 +174,142 @@ public class DReference extends PsiReferenceBase<PsiNamedElement> implements Psi
 //            variants.add(namedElement.getName());
 //        }
 //        return variants.toArray();
-        return new Object[]{};
+        PsiNamedElement e = getElement();
+        Project project = e.getProject();
+        final Set<String> potentialModules =
+            DPsiUtil.parseImports(e.getContainingFile());
+
+        List<PsiNamedElement> declarations = ContainerUtil.newArrayList();
+        final PsiFile psiFile = e.getContainingFile().getOriginalFile();
+        // find definition in current file
+        if (psiFile instanceof DLanguageFile) {
+            findDefinitionNode((DLanguageFile) psiFile, null, e, declarations);
+            declarations.addAll(PsiTreeUtil.findChildrenOfType(psiFile, DLanguageIdentifier.class));
+        }
+        // find definition in imported files
+        for (String potentialModule : potentialModules) {
+            List<DLanguageFile> files = DModuleIndex.getFilesByModuleName(project, potentialModule, GlobalSearchScope.allScope(project));
+            for (DLanguageFile f : files) {
+                findDefinitionNode(f, null, e, declarations);
+            }
+        }
+        ArrayList<String> result = new ArrayList<>();
+        int i = 0;
+        for (PsiNamedElement declaration : declarations) {
+            result.add(declaration.getName());
+        }
+        result.add("abstract");
+        result.add("alias");
+        result.add("align");
+        result.add("asm");
+        result.add("assert");
+        result.add("auto");
+        result.add("body");
+        result.add("bool");
+        result.add("break");
+        result.add("byte");
+        result.add("case");
+        result.add("cast");
+        result.add("catch");
+        result.add("cdouble");
+        result.add("cent");
+        result.add("cfloat");
+        result.add("char");
+        result.add("class");
+        result.add("const");
+        result.add("continue");
+        result.add("creal");
+        result.add("dchar");
+        result.add("debug");
+        result.add("default");
+        result.add("delegate");
+        result.add("delete");
+        result.add("deprecated");
+        result.add("do");
+        result.add("double");
+        result.add("else");
+        result.add("enum");
+        result.add("export");
+        result.add("extern");
+        result.add("false");
+        result.add("final");
+        result.add("finally");
+        result.add("float");
+        result.add("for");
+        result.add("foreach");
+        result.add("foreach_reverse");
+        result.add("function");
+        result.add("goto");
+        result.add("idouble");
+        result.add("if");
+        result.add("ifloat");
+        result.add("immutable");
+        result.add("import");
+        result.add("in");
+        result.add("inout");
+        result.add("int");
+        result.add("interface");
+        result.add("invariant");
+        result.add("ireal");
+        result.add("is");
+        result.add("lazy");
+        result.add("long");
+        result.add("mixin");
+        result.add("module");
+        result.add("new");
+        result.add("nothrow");
+        result.add("null");
+        result.add("out");
+        result.add("override");
+        result.add("package");
+        result.add("pragma");
+        result.add("private");
+        result.add("protected");
+        result.add("public");
+        result.add("pure");
+        result.add("real");
+        result.add("ref");
+        result.add("return");
+        result.add("scope");
+        result.add("shared");
+        result.add("short");
+        result.add("static");
+        result.add("struct");
+        result.add("super");
+        result.add("switch");
+        result.add("synchronized");
+        result.add("template");
+        result.add("this");
+        result.add("throw");
+        result.add("true");
+        result.add("try");
+        result.add("typedef");
+        result.add("typeid");
+        result.add("typeof");
+        result.add("ubyte");
+        result.add("ucent");
+        result.add("uint");
+        result.add("ulong");
+        result.add("union");
+        result.add("unittest");
+        result.add("ushort");
+        result.add("version");
+        result.add("void");
+        result.add("volatile");
+        result.add("wchar");
+        result.add("while");
+        result.add("with");
+        result.add("__FILE__");
+        result.add("__FILE_FULL_PATH__");
+        result.add("__MODULE__");
+        result.add("__LINE__");
+        result.add("__FUNCTION__");
+        result.add("__PRETTY_FUNCTION__");
+        result.add("__gshared");
+        result.add("__traits");
+        result.add("__vector");
+        result.add("__parameters");
+        return result.toArray();
     }
 
     @Override
@@ -187,6 +323,11 @@ public class DReference extends PsiReferenceBase<PsiNamedElement> implements Psi
     @Override
     public PsiElement handleElementRename(final String newName)  throws IncorrectOperationException {
         PsiElement element;
+        if (myElement instanceof DLanguageIdentifier) {
+            element = DPsiImplUtil.setName((DLanguageIdentifier) myElement, newName);
+            if (element != null) return element;
+            throw new IncorrectOperationException("Cannot rename " + name + " to " + newName);
+        }
         if (myElement instanceof DLanguageFuncDeclaration) {
             element = DPsiImplUtil.setName((DLanguageIdentifier) myElement, newName);
             if (element != null) return element;

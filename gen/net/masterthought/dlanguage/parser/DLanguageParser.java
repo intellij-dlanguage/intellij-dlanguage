@@ -12407,12 +12407,13 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // ModuleDeclaration | DeclDefs | Statement | SHEBANG
+  // Identifier | ModuleDeclaration | DeclDefs | Statement | SHEBANG
   static boolean item_(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "item_")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_);
-    r = ModuleDeclaration(b, l + 1);
+    r = Identifier(b, l + 1);
+    if (!r) r = ModuleDeclaration(b, l + 1);
     if (!r) r = DeclDefs(b, l + 1);
     if (!r) r = Statement(b, l + 1);
     if (!r) r = consumeToken(b, SHEBANG);

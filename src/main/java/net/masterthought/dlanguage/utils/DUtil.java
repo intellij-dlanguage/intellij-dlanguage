@@ -18,9 +18,7 @@ import java.util.*;
 
 import static com.intellij.psi.util.PsiTreeUtil.findChildOfType;
 import static net.masterthought.dlanguage.psi.impl.DPsiImplUtil.findParentOfType;
-import static net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility.private_;
-import static net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility.protected_;
-import static net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility.public_;
+import static net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility.*;
 
 /**
  * General util class. Provides methods for finding named nodes in the Psi tree.
@@ -31,13 +29,13 @@ public class DUtil {
      * definitions are found when name is null.
      */
     @NotNull
-    public static List<PsiElement> findDefinitionNode(@NotNull Project project, @Nullable String name, @Nullable PsiNamedElement e) {
+    public static List<PsiNamedElement> findDefinitionNode(@NotNull Project project, @Nullable String name, @Nullable PsiNamedElement e) {
         // Guess where the name could be defined by lookup up potential modules.
         final Set<String> potentialModules =
             e == null ? Collections.EMPTY_SET
                 : DPsiUtil.parseImports(e.getContainingFile());
 
-        List<PsiElement> result = ContainerUtil.newArrayList();
+        List<PsiNamedElement> result = ContainerUtil.newArrayList();
         final PsiFile psiFile = e == null ? null : e.getContainingFile().getOriginalFile();
         // find definition in current file
         if (psiFile instanceof DLanguageFile) {
@@ -82,7 +80,7 @@ public class DUtil {
      * @param e the usage of the defined function/class/template etc.
      * @param result the results are added to the is arraylist
      */
-    public static void findDefinitionNode(@Nullable DLanguageFile file, @Nullable String name, @Nullable PsiNamedElement e, @NotNull List<PsiElement> result) {
+    public static void findDefinitionNode(@Nullable DLanguageFile file, @Nullable String name, @Nullable PsiNamedElement e, @NotNull List<PsiNamedElement> result) {
         if (file == null) return;
         // start with empty list of potential named elements
         Collection<DNamedElement> declarationElements = Collections.EMPTY_LIST;
@@ -132,8 +130,8 @@ public class DUtil {
      * is null.
      */
     @NotNull
-    public static List<PsiElement> findDefinitionNodes(@Nullable DLanguageFile dLanguageFile, @Nullable String name) {
-        List<PsiElement> ret = ContainerUtil.newArrayList();
+    public static List<PsiNamedElement> findDefinitionNodes(@Nullable DLanguageFile dLanguageFile, @Nullable String name) {
+        List<PsiNamedElement> ret = ContainerUtil.newArrayList();
         findDefinitionNode(dLanguageFile, name, null, ret);
         return ret;
     }
@@ -143,7 +141,7 @@ public class DUtil {
      * definitions are found when name is null.
      */
     @NotNull
-    public static List<PsiElement> findDefinitionNodes(@NotNull Project project) {
+    public static List<PsiNamedElement> findDefinitionNodes(@NotNull Project project) {
         return findDefinitionNode(project, null, null);
     }
 
@@ -151,8 +149,8 @@ public class DUtil {
      * Finds name definitions that are within the scope of a file, including imports (to some degree).
      */
     @NotNull
-    public static List<PsiElement> findDefinitionNodes(@NotNull DLanguageFile psiFile) {
-        List<PsiElement> result = findDefinitionNodes(psiFile, null);
+    public static List<PsiNamedElement> findDefinitionNodes(@NotNull DLanguageFile psiFile) {
+        List<PsiNamedElement> result = findDefinitionNodes(psiFile, null);
         result.addAll(findDefinitionNode(psiFile.getProject(), null, null));
         return result;
     }
