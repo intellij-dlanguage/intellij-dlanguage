@@ -216,7 +216,7 @@ tokens = [
 
 dFile ::= item_*
 
-private item_ ::= (Identifier | ModuleDeclaration | DeclDefs | Statement | SHEBANG) {
+private item_ ::= (ModuleDeclaration | DeclDefs | Statement | SHEBANG) {
     recoverWhile = item_recover
 }
 

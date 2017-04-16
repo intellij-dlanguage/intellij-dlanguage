@@ -328,11 +328,6 @@ public class DReference extends PsiReferenceBase<PsiNamedElement> implements Psi
             if (element != null) return element;
             throw new IncorrectOperationException("Cannot rename " + name + " to " + newName);
         }
-        if (myElement instanceof DLanguageFuncDeclaration) {
-            element = DPsiImplUtil.setName((DLanguageIdentifier) myElement, newName);
-            if (element != null) return element;
-            throw new IncorrectOperationException("Cannot rename " + name + " to " + newName);
-        }
         return super.handleElementRename(newName);
     }
 }

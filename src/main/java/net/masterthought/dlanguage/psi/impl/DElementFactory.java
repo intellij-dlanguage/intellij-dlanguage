@@ -8,6 +8,8 @@ import net.masterthought.dlanguage.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import static com.intellij.psi.util.PsiTreeUtil.findChildOfType;
+
 /**
  * Performs creation of element types.
  */
@@ -18,8 +20,8 @@ public class DElementFactory {
      */
     @Nullable
     public static DLanguageIdentifier createDLanguageIdentifierFromText(@NotNull Project project, @NotNull String name) {
-        PsiElement e = createExpressionFromText(project, name + "uniq = " + name).getFirstChild();
-        if (e instanceof DLanguageIdentifier) return (DLanguageIdentifier) e;
+        DLanguageIdentifier e = findChildOfType(createExpressionFromText(project, name + " uniq = " + name), DLanguageIdentifier.class);
+        if (e != null && e.getName().equals(name)) return e;
         return null;
     }
 
