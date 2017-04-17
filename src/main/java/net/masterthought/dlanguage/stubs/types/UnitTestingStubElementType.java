@@ -1,6 +1,5 @@
 package net.masterthought.dlanguage.stubs.types;
 
-import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.IndexSink;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubInputStream;
@@ -11,10 +10,7 @@ import net.masterthought.dlanguage.stubs.UnitTestingStubImpl;
 import net.masterthought.dlanguage.stubs.interfaces.UnitTestingStub;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 
 /**
  * Created by francis on 4/8/2017.
@@ -36,23 +32,25 @@ public class UnitTestingStubElementType extends DStubElementType<UnitTestingStub
     }
     @Override
     public void serialize(@NotNull UnitTestingStub stub, @NotNull StubOutputStream dataStream) throws IOException {
-        final ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
-        final ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteOutputStream);
-        objectOutputStream.writeObject(stub);
-        final byte[] bytes = byteOutputStream.toByteArray();
-        dataStream.writeInt(bytes.length);
-        dataStream.write(bytes);
+        return;//we don't need to doanything
+//        final ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
+//        final ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteOutputStream);
+//        objectOutputStream.writeObject(stub);
+//        final byte[] bytes = byteOutputStream.toByteArray();
+//        dataStream.writeInt(bytes.length);
+//        dataStream.write(bytes);
     }
 
     @NotNull
     @Override
     public UnitTestingStub deserialize(@NotNull StubInputStream dataStream, StubElement parentStub) throws IOException {
-        final ObjectInputStream objectInputStream = new ObjectInputStream(dataStream);
-        try {
-            return (UnitTestingStub) objectInputStream.readObject();
-        } catch (ClassNotFoundException | ClassCastException e) {
-            throw new IOException(e);
-        }
+        return new UnitTestingStubImpl(parentStub, this);
+//        final ObjectInputStream objectInputStream = new ObjectInputStream(dataStream);
+//        try {
+//            return (UnitTestingStub) objectInputStream.readObject();
+//        } catch (ClassNotFoundException | ClassCastException e) {
+//            throw new IOException(e);
+//        }
     }
 
     @Override
