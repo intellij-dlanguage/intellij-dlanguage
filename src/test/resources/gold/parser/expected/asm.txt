@@ -7,7 +7,7 @@ D Language File
             DLanguageBasicTypeXImpl(BASIC_TYPE_X)
               PsiElement(DLanguageTokenType.void)('void')
           DLanguageDeclaratorsImpl(DECLARATORS)
-            DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
+            DECLARATOR_INITIALIZER
               DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
                 DLanguageBasicType2Impl(BASIC_TYPE_2)
                   DLanguageBasicType2XImpl(BASIC_TYPE_2_X)
@@ -71,9 +71,8 @@ D Language File
                                             DLanguageAsmBrExpImpl(ASM_BR_EXP)
                                               DLanguageAsmUnaExpImpl(ASM_UNA_EXP)
                                                 DLanguageAsmPrimaryExpImpl(ASM_PRIMARY_EXP)
-                                                  DLanguageDotIdentifierImpl(DOT_IDENTIFIER)
-                                                    IDENTIFIER
-                                                      PsiElement(DLanguageTokenType.ID)('EBX')
+                                                  DLanguageRegisterImpl(REGISTER)
+                                                    PsiElement(DLanguageTokenType.ID)('EBX')
                 PsiElement(DLanguageTokenType.;)(';')
                 DLanguageAsmInstructionListImpl(ASM_INSTRUCTION_LIST)
                   DLanguageAsmInstructionImpl(ASM_INSTRUCTION)
@@ -113,9 +112,8 @@ D Language File
                                                                       DLanguageAsmBrExpImpl(ASM_BR_EXP)
                                                                         DLanguageAsmUnaExpImpl(ASM_UNA_EXP)
                                                                           DLanguageAsmPrimaryExpImpl(ASM_PRIMARY_EXP)
-                                                                            DLanguageDotIdentifierImpl(DOT_IDENTIFIER)
-                                                                              IDENTIFIER
-                                                                                PsiElement(DLanguageTokenType.ID)('EBP')
+                                                                            DLanguageRegisterImpl(REGISTER)
+                                                                              PsiElement(DLanguageTokenType.ID)('EBP')
                                                 PsiElement(DLanguageTokenType.])(']')
                       PsiElement(DLanguageTokenType.,)(',')
                       DLanguageOperandsImpl(OPERANDS)
@@ -134,9 +132,8 @@ D Language File
                                                 DLanguageAsmBrExpImpl(ASM_BR_EXP)
                                                   DLanguageAsmUnaExpImpl(ASM_UNA_EXP)
                                                     DLanguageAsmPrimaryExpImpl(ASM_PRIMARY_EXP)
-                                                      DLanguageDotIdentifierImpl(DOT_IDENTIFIER)
-                                                        IDENTIFIER
-                                                          PsiElement(DLanguageTokenType.ID)('EBX')
+                                                      DLanguageRegisterImpl(REGISTER)
+                                                        PsiElement(DLanguageTokenType.ID)('EBX')
                   PsiElement(DLanguageTokenType.;)(';')
           PsiComment(DLanguageTokenType.LINE_COMMENT)('// pc now points to code at L1')
           PsiElement(DLanguageTokenType.})('}')
@@ -421,7 +418,7 @@ D Language File
     DLanguageDeclDefImpl(DECL_DEF)
       DLanguageDeclarationImpl(DECLARATION)
         DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
-          DLanguageStructDeclarationImpl(STRUCT_DECLARATION)
+          STRUCT_DECLARATION
             PsiElement(DLanguageTokenType.struct)('struct')
             IDENTIFIER
               PsiElement(DLanguageTokenType.ID)('Foo')
@@ -435,7 +432,7 @@ D Language File
                         DLanguageBasicTypeXImpl(BASIC_TYPE_X)
                           PsiElement(DLanguageTokenType.int)('int')
                       DLanguageDeclaratorsImpl(DECLARATORS)
-                        DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
+                        DECLARATOR_INITIALIZER
                           DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
                             IDENTIFIER
                               PsiElement(DLanguageTokenType.ID)('a')
@@ -509,9 +506,8 @@ D Language File
                                                         DLanguageAsmBrExpImpl(ASM_BR_EXP)
                                                           DLanguageAsmUnaExpImpl(ASM_UNA_EXP)
                                                             DLanguageAsmPrimaryExpImpl(ASM_PRIMARY_EXP)
-                                                              DLanguageDotIdentifierImpl(DOT_IDENTIFIER)
-                                                                IDENTIFIER
-                                                                  PsiElement(DLanguageTokenType.ID)('EBX')
+                                                              DLanguageRegisterImpl(REGISTER)
+                                                                PsiElement(DLanguageTokenType.ID)('EBX')
                                 PsiElement(DLanguageTokenType.,)(',')
                                 DLanguageOperandsImpl(OPERANDS)
                                   DLanguageOperandImpl(OPERAND)
@@ -553,9 +549,8 @@ D Language File
                                                           DLanguageAsmBrExpImpl(ASM_BR_EXP)
                                                             DLanguageAsmUnaExpImpl(ASM_UNA_EXP)
                                                               DLanguageAsmPrimaryExpImpl(ASM_PRIMARY_EXP)
-                                                                DLanguageDotIdentifierImpl(DOT_IDENTIFIER)
-                                                                  IDENTIFIER
-                                                                    PsiElement(DLanguageTokenType.ID)('EAX')
+                                                                DLanguageRegisterImpl(REGISTER)
+                                                                  PsiElement(DLanguageTokenType.ID)('EAX')
                                   PsiElement(DLanguageTokenType.,)(',')
                                   DLanguageOperandsImpl(OPERANDS)
                                     DLanguageOperandImpl(OPERAND)
@@ -599,9 +594,8 @@ D Language File
                                                                                     DLanguageAsmBrExpImpl(ASM_BR_EXP)
                                                                                       DLanguageAsmUnaExpImpl(ASM_UNA_EXP)
                                                                                         DLanguageAsmPrimaryExpImpl(ASM_PRIMARY_EXP)
-                                                                                          DLanguageDotIdentifierImpl(DOT_IDENTIFIER)
-                                                                                            IDENTIFIER
-                                                                                              PsiElement(DLanguageTokenType.ID)('EBX')
+                                                                                          DLanguageRegisterImpl(REGISTER)
+                                                                                            PsiElement(DLanguageTokenType.ID)('EBX')
                                                               PsiElement(DLanguageTokenType.])(']')
                               PsiElement(DLanguageTokenType.;)(';')
                           PsiElement(DLanguageTokenType.})('}')
@@ -634,7 +628,7 @@ D Language File
                                     IDENTIFIER
                                       PsiElement(DLanguageTokenType.ID)('Foo')
                                 DLanguageDeclaratorsImpl(DECLARATORS)
-                                  DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
+                                  DECLARATOR_INITIALIZER
                                     DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
                                       IDENTIFIER
                                         PsiElement(DLanguageTokenType.ID)('f')
@@ -812,7 +806,7 @@ D Language File
           DLanguageDeclDefImpl(DECL_DEF)
             DLanguageDeclarationImpl(DECLARATION)
               DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
-                DLanguageStructDeclarationImpl(STRUCT_DECLARATION)
+                STRUCT_DECLARATION
                   PsiElement(DLanguageTokenType.struct)('struct')
                   IDENTIFIER
                     PsiElement(DLanguageTokenType.ID)('Foo')
@@ -827,7 +821,7 @@ D Language File
                               DLanguageBasicTypeXImpl(BASIC_TYPE_X)
                                 PsiElement(DLanguageTokenType.int)('int')
                             DLanguageDeclaratorsImpl(DECLARATORS)
-                              DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
+                              DECLARATOR_INITIALIZER
                                 DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
                                   IDENTIFIER
                                     PsiElement(DLanguageTokenType.ID)('a')
@@ -887,9 +881,8 @@ D Language File
                                                                           DLanguageAsmBrExpImpl(ASM_BR_EXP)
                                                                             DLanguageAsmUnaExpImpl(ASM_UNA_EXP)
                                                                               DLanguageAsmPrimaryExpImpl(ASM_PRIMARY_EXP)
-                                                                                DLanguageDotIdentifierImpl(DOT_IDENTIFIER)
-                                                                                  IDENTIFIER
-                                                                                    PsiElement(DLanguageTokenType.ID)('EBX')
+                                                                                DLanguageRegisterImpl(REGISTER)
+                                                                                  PsiElement(DLanguageTokenType.ID)('EBX')
                                                   PsiElement(DLanguageTokenType.,)(',')
                                                   DLanguageOperandsImpl(OPERANDS)
                                                     DLanguageOperandImpl(OPERAND)
@@ -929,9 +922,8 @@ D Language File
                                                                             DLanguageAsmBrExpImpl(ASM_BR_EXP)
                                                                               DLanguageAsmUnaExpImpl(ASM_UNA_EXP)
                                                                                 DLanguageAsmPrimaryExpImpl(ASM_PRIMARY_EXP)
-                                                                                  DLanguageDotIdentifierImpl(DOT_IDENTIFIER)
-                                                                                    IDENTIFIER
-                                                                                      PsiElement(DLanguageTokenType.ID)('EAX')
+                                                                                  DLanguageRegisterImpl(REGISTER)
+                                                                                    PsiElement(DLanguageTokenType.ID)('EAX')
                                                     PsiElement(DLanguageTokenType.,)(',')
                                                     DLanguageOperandsImpl(OPERANDS)
                                                       DLanguageOperandImpl(OPERAND)
@@ -967,9 +959,8 @@ D Language File
                                                                                                       DLanguageAsmBrExpImpl(ASM_BR_EXP)
                                                                                                         DLanguageAsmUnaExpImpl(ASM_UNA_EXP)
                                                                                                           DLanguageAsmPrimaryExpImpl(ASM_PRIMARY_EXP)
-                                                                                                            DLanguageDotIdentifierImpl(DOT_IDENTIFIER)
-                                                                                                              IDENTIFIER
-                                                                                                                PsiElement(DLanguageTokenType.ID)('EBX')
+                                                                                                            DLanguageRegisterImpl(REGISTER)
+                                                                                                              PsiElement(DLanguageTokenType.ID)('EBX')
                                                                                 PsiElement(DLanguageTokenType.])(']')
                                                 PsiElement(DLanguageTokenType.;)(';')
                                             PsiElement(DLanguageTokenType.})('}')
@@ -1003,7 +994,7 @@ D Language File
                                         IDENTIFIER
                                           PsiElement(DLanguageTokenType.ID)('Foo')
                                     DLanguageDeclaratorsImpl(DECLARATORS)
-                                      DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
+                                      DECLARATOR_INITIALIZER
                                         DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
                                           IDENTIFIER
                                             PsiElement(DLanguageTokenType.ID)('f')
@@ -1225,9 +1216,8 @@ D Language File
                                                                 DLanguageAsmBrExpImpl(ASM_BR_EXP)
                                                                   DLanguageAsmUnaExpImpl(ASM_UNA_EXP)
                                                                     DLanguageAsmPrimaryExpImpl(ASM_PRIMARY_EXP)
-                                                                      DLanguageDotIdentifierImpl(DOT_IDENTIFIER)
-                                                                        IDENTIFIER
-                                                                          PsiElement(DLanguageTokenType.ID)('EAX')
+                                                                      DLanguageRegisterImpl(REGISTER)
+                                                                        PsiElement(DLanguageTokenType.ID)('EAX')
                                         PsiElement(DLanguageTokenType.,)(',')
                                         DLanguageOperandsImpl(OPERANDS)
                                           DLanguageOperandImpl(OPERAND)
@@ -1263,9 +1253,8 @@ D Language File
                                                                                           DLanguageAsmBrExpImpl(ASM_BR_EXP)
                                                                                             DLanguageAsmUnaExpImpl(ASM_UNA_EXP)
                                                                                               DLanguageAsmPrimaryExpImpl(ASM_PRIMARY_EXP)
-                                                                                                DLanguageDotIdentifierImpl(DOT_IDENTIFIER)
-                                                                                                  IDENTIFIER
-                                                                                                    PsiElement(DLanguageTokenType.ID)('EBP')
+                                                                                                DLanguageRegisterImpl(REGISTER)
+                                                                                                  PsiElement(DLanguageTokenType.ID)('EBP')
                                                                     PsiElement(DLanguageTokenType.])(']')
                                     PsiElement(DLanguageTokenType.;)(';')
                                     PsiComment(DLanguageTokenType.LINE_COMMENT)('// loads value of parameter x into EAX')
@@ -1289,9 +1278,8 @@ D Language File
                                                                   DLanguageAsmBrExpImpl(ASM_BR_EXP)
                                                                     DLanguageAsmUnaExpImpl(ASM_UNA_EXP)
                                                                       DLanguageAsmPrimaryExpImpl(ASM_PRIMARY_EXP)
-                                                                        DLanguageDotIdentifierImpl(DOT_IDENTIFIER)
-                                                                          IDENTIFIER
-                                                                            PsiElement(DLanguageTokenType.ID)('EAX')
+                                                                        DLanguageRegisterImpl(REGISTER)
+                                                                          PsiElement(DLanguageTokenType.ID)('EAX')
                                           PsiElement(DLanguageTokenType.,)(',')
                                           DLanguageOperandsImpl(OPERANDS)
                                             DLanguageOperandImpl(OPERAND)

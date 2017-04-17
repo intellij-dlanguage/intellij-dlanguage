@@ -59,6 +59,12 @@ public interface DLanguageDeclDef extends PsiElement {
   DLanguageStaticDestructor getStaticDestructor();
 
   @Nullable
+  DLanguageStaticElseCondition getStaticElseCondition();
+
+  @Nullable
+  DLanguageStaticIfCondition getStaticIfCondition();
+
+  @Nullable
   DLanguageTemplateDeclaration getTemplateDeclaration();
 
   @Nullable

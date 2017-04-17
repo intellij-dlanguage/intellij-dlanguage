@@ -3,7 +3,7 @@ D Language File
     DLanguageDeclDefImpl(DECL_DEF)
       DLanguageDeclarationImpl(DECLARATION)
         DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
-          DLanguageStructDeclarationImpl(STRUCT_DECLARATION)
+          STRUCT_DECLARATION
             PsiElement(DLanguageTokenType.struct)('struct')
             IDENTIFIER
               PsiElement(DLanguageTokenType.ID)('S')
@@ -17,7 +17,7 @@ D Language File
                         DLanguageBasicTypeXImpl(BASIC_TYPE_X)
                           PsiElement(DLanguageTokenType.int)('int')
                       DLanguageDeclaratorsImpl(DECLARATORS)
-                        DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
+                        DECLARATOR_INITIALIZER
                           DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
                             IDENTIFIER
                               PsiElement(DLanguageTokenType.ID)('a')
@@ -66,7 +66,7 @@ D Language File
                                         DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
                                           DLanguageAutoDeclarationImpl(AUTO_DECLARATION)
                                             DLanguageAutoDeclarationXImpl(AUTO_DECLARATION_X)
-                                              DLanguageAutoDeclarationYImpl(AUTO_DECLARATION_Y)
+                                              AUTO_DECLARATION_Y
                                                 IDENTIFIER
                                                   PsiElement(DLanguageTokenType.ID)('a')
                                                 PsiElement(DLanguageTokenType.=)('=')
@@ -200,7 +200,7 @@ D Language File
                                   IDENTIFIER
                                     PsiElement(DLanguageTokenType.ID)('S')
                               DLanguageDeclaratorsImpl(DECLARATORS)
-                                DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
+                                DECLARATOR_INITIALIZER
                                   DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
                                     IDENTIFIER
                                       PsiElement(DLanguageTokenType.ID)('s3')

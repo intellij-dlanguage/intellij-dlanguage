@@ -50,4 +50,9 @@ public class DLanguageMixinExpressionImpl extends ASTWrapperPsiElement implement
     return notNullChild(findChildByType(OP_PAR_RIGHT));
   }
 
+  @Nullable
+  public String getName() {
+    return DPsiImplUtil.getName(this);
+  }
+
 }

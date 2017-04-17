@@ -38,4 +38,10 @@ public class DLanguageInExpressionImpl extends ASTWrapperPsiElement implements D
     return findChildByType(KW_IN);
   }
 
+  @Override
+  @Nullable
+  public PsiElement getKwNotIn() {
+    return findChildByType(KW_NOT_IN);
+  }
+
 }

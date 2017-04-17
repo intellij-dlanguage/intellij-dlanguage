@@ -13,4 +13,7 @@ public interface DLanguageInExpression extends PsiElement {
   @Nullable
   PsiElement getKwIn();
 
+  @Nullable
+  PsiElement getKwNotIn();
+
 }

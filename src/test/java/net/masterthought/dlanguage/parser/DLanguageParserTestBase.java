@@ -1,9 +1,7 @@
 package net.masterthought.dlanguage.parser;
 
 import com.intellij.lang.ParserDefinition;
-import com.intellij.mock.MockProjectEx;
 import com.intellij.mock.MockVirtualFile;
-import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.testFramework.ParsingTestCase;
@@ -32,7 +30,7 @@ public abstract class DLanguageParserTestBase extends ParsingTestCase {
 
     /**
      * Perform a test. Add tests that should work but does not work yet with
-     * doTest(false, false).
+     * doTestModule(false, false).
      */
     protected void doTest(boolean checkResult, boolean shouldPass) {
         doTest(true);

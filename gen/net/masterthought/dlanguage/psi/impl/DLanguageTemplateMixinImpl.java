@@ -33,9 +33,9 @@ public class DLanguageTemplateMixinImpl extends ASTWrapperPsiElement implements 
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageMixinTemplateName getMixinTemplateName() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageMixinTemplateName.class));
+    return PsiTreeUtil.getChildOfType(this, DLanguageMixinTemplateName.class);
   }
 
   @Override
@@ -51,9 +51,14 @@ public class DLanguageTemplateMixinImpl extends ASTWrapperPsiElement implements 
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getOpScolon() {
-    return notNullChild(findChildByType(OP_SCOLON));
+    return findChildByType(OP_SCOLON);
+  }
+
+  @NotNull
+  public String getName() {
+    return DPsiImplUtil.getName(this);
   }
 
 }

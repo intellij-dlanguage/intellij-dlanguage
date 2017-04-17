@@ -5,7 +5,7 @@ D Language File
         DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
           PsiElement(DLanguageTokenType.import)('import')
           DLanguageImportListImpl(IMPORT_LIST)
-            DLanguageImportImpl(IMPORT)
+            IMPORT
               DLanguageModuleFullyQualifiedNameImpl(MODULE_FULLY_QUALIFIED_NAME)
                 IDENTIFIER
                   PsiElement(DLanguageTokenType.ID)('core')
@@ -28,7 +28,7 @@ D Language File
           DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
             PsiElement(DLanguageTokenType.import)('import')
             DLanguageImportListImpl(IMPORT_LIST)
-              DLanguageImportImpl(IMPORT)
+              IMPORT
                 DLanguageModuleFullyQualifiedNameImpl(MODULE_FULLY_QUALIFIED_NAME)
                   IDENTIFIER
                     PsiElement(DLanguageTokenType.ID)('core')
@@ -49,7 +49,7 @@ D Language File
         DLanguageDeclDefImpl(DECL_DEF)
           DLanguageDeclarationImpl(DECLARATION)
             DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
-              DLanguageInterfaceDeclarationImpl(INTERFACE_DECLARATION)
+              INTERFACE_DECLARATION
                 PsiElement(DLanguageTokenType.interface)('interface')
                 IDENTIFIER
                   PsiElement(DLanguageTokenType.ID)('IText')
