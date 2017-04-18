@@ -25,8 +25,7 @@ import java.util.*;
 import static com.intellij.psi.util.PsiTreeUtil.*;
 import static net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 import static net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility.public_;
-import static net.masterthought.dlanguage.utils.DUtil.getEndOfIdentifierList;
-import static net.masterthought.dlanguage.utils.DUtil.protectionToVisibilty;
+import static net.masterthought.dlanguage.utils.DUtil.*;
 
 
 /**
@@ -137,9 +136,7 @@ public class DPsiImplUtil {
 
     @Nullable
     public static PsiElement setName(@NotNull DLanguageFuncDeclaration o, @NotNull String newName) {
-        PsiElement e = DElementFactory.createDLanguageFuncDeclarationFromText(o.getProject(), newName);
-        if (e == null) return null;
-        o.replace(e);
+        o.getIdentifier().setName(newName);
         return o;
     }
 
@@ -241,9 +238,12 @@ public class DPsiImplUtil {
 
     @Nullable
     public static PsiElement setName(@NotNull DLanguageClassDeclaration o, @NotNull String newName) {
-        PsiElement e = DElementFactory.createDLanguageClassDeclarationFromText(o.getProject(), newName);
-        if (e == null) return null;
-        o.replace(e);
+        if (o.getIdentifier() != null)
+            o.getIdentifier().setName(newName);
+        else if (o.getClassTemplateDeclaration() != null)
+            o.getClassTemplateDeclaration().getIdentifier().setName(newName);
+        else
+            return null;
         return o;
     }
 
@@ -299,7 +299,7 @@ public class DPsiImplUtil {
             assert (basicType.getTypeVector() == null);
             assert (basicType.getTypeof() == null);
             final DLanguageIdentifierList identifierList = basicType.getIdentifierList();
-            final List<PsiElement> definitionNodesSimple = DUtil.findDefinitionNodes((DLanguageFile) identifierList.getContainingFile(),getEndOfIdentifierList(identifierList).getName());
+            final List<PsiNamedElement> definitionNodesSimple = DUtil.findDefinitionNodes((DLanguageFile) identifierList.getContainingFile(), getEndOfIdentifierList(identifierList).getName());
             Set<CanInherit> definitionNodes = new HashSet<>();
             for (PsiElement node : definitionNodesSimple) {
                 if (definitionNodes instanceof CanInherit)
@@ -357,9 +357,10 @@ public class DPsiImplUtil {
 
     @Nullable
     public static PsiElement setName(@NotNull DLanguageStructDeclaration o, @NotNull String newName) {
-        PsiElement e = DElementFactory.createDLanguageStructDeclarationFromText(o.getProject(), newName);
-        if (e == null) return null;
-        o.replace(e);
+        if (o.getIdentifier() != null)
+            o.getIdentifier().setName(newName);
+        else
+            return null;
         return o;
     }
 
@@ -423,9 +424,11 @@ public class DPsiImplUtil {
 
     @Nullable
     public static PsiElement setName(@NotNull DLanguageEnumDeclaration o, @NotNull String newName) {
-        PsiElement e = DElementFactory.createDLanguageEnumDeclarationFromText(o.getProject(), newName);
-        if (e == null) return null;
-        o.replace(e);
+        if (o.getIdentifier() != null) {
+            o.getIdentifier().setName(newName);
+        } else if (o.getAnonymousEnumDeclaration() != null) {
+            return null;
+        }
         return o;
     }
 
@@ -489,9 +492,12 @@ public class DPsiImplUtil {
 
     @Nullable
     public static PsiElement setName(@NotNull DLanguageUnionDeclaration o, @NotNull String newName) {
-        PsiElement e = DElementFactory.createDLanguageUnionDeclarationFromText(o.getProject(), newName);
-        if (e == null) return null;
-        o.replace(e);
+        if (o.getIdentifier() != null) {
+            o.getIdentifier().setName(newName);
+        } else if (o.getUnionTemplateDeclaration() != null) {
+            o.getUnionTemplateDeclaration().getIdentifier().setName(newName);
+        } else
+            return null;
         return o;
     }
 
@@ -556,9 +562,7 @@ public class DPsiImplUtil {
 
     @Nullable
     public static PsiElement setName(@NotNull DLanguageTemplateDeclaration o, @NotNull String newName) {
-        PsiElement e = DElementFactory.createDLanguageTemplateDeclarationFromText(o.getProject(), newName);
-        if (e == null) return null;
-        o.replace(e);
+        o.getIdentifier().setName(newName);
         return o;
     }
 
@@ -598,23 +602,9 @@ public class DPsiImplUtil {
     // ------------- Constructor ------------------ //
     @NotNull
     public static String getName(@NotNull DLanguageConstructor o) {
-        return "this";
-//        DLanguageConstructorStub stub = o.getStub();
-//        if (stub != null) return StringUtil.notNullize(stub.getName());
-//
-//        PsiElement parent = o.getParent();
-//
-//
-//        while (!(parent instanceof DLanguageClassDeclaration)) {
-//            parent = parent.getParent();
-//        }
-
-//        return ((DLanguageClassDeclaration)parent).getName() + "constructor";
-//        if (o.getIdentifier() != null) {
-//            return o.getIdentifier().getText();
-//        } else {
-//            return "not found";
-//        }
+        if (DUtil.getParentClassOrStruct(o) != null)
+            return DUtil.getParentClassOrStruct(o).getName();
+        return "";
     }
 
     @Nullable
@@ -625,9 +615,7 @@ public class DPsiImplUtil {
 
     @Nullable
     public static PsiElement setName(@NotNull DLanguageConstructor o, @NotNull String newName) {
-        PsiElement e = DElementFactory.createDLanguageConstructorFromText(o.getProject(), newName);
-        if (e == null) return null;
-        o.replace(e);
+        DUtil.getParentClassOrStruct(o).setName(newName);
         return o;
     }
 
@@ -708,9 +696,7 @@ public class DPsiImplUtil {
 
     @Nullable
     public static PsiElement setName(@NotNull DLanguageDestructor o, @NotNull String newName) {
-        PsiElement e = DElementFactory.createDLanguageDestructorFromText(o.getProject(), newName);
-        if (e == null) return null;
-        o.replace(e);
+        getParentClassOrStruct(o).setName(newName);
         return o;
     }
 
@@ -773,9 +759,23 @@ public class DPsiImplUtil {
 
     @Nullable
     public static PsiElement setName(@NotNull DLanguageAliasDeclaration o, @NotNull String newName) {
-        PsiElement e = DElementFactory.createDLanguageAliasDeclarationFromText(o.getProject(), newName);
-        if (e == null) return null;
-        o.replace(e);
+        if (o.getIdentifier() != null) {
+            o.getIdentifier().setName(newName);
+        } else if (o.getAliasDeclarationX() != null) {
+            o.getAliasDeclarationX().getAliasDeclarationY().getIdentifier().setName(newName);
+        } else if (o.getDeclarator() != null) {
+            if (o.getDeclarator().getVarDeclarator() != null) {
+                o.getDeclarator().getVarDeclarator().getIdentifier().setName(newName);
+            } else if (o.getDeclarator().getAltDeclarator().getIdentifier() != null) {
+                o.getDeclarator().getAltDeclarator().getIdentifier().setName(newName);
+            } else if (o.getDeclarator().getAltDeclarator().getAltDeclaratorX().getIdentifier() != null) {
+                o.getDeclarator().getAltDeclarator().getAltDeclaratorX().getIdentifier().setName(newName);
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
         return o;
     }
 
@@ -905,9 +905,13 @@ public class DPsiImplUtil {
 
     @Nullable
     public static PsiElement setName(@NotNull DLanguageInterfaceDeclaration o, @NotNull String newName) {
-        PsiElement e = DElementFactory.createDLanguageInterfaceDeclarationFromText(o.getProject(), newName);
-        if (e == null) return null;
-        o.replace(e);
+        if (o.getIdentifier() != null) {
+            o.getIdentifier().setName(newName);
+        } else if (o.getInterfaceTemplateDeclaration() != null) {
+            o.getInterfaceTemplateDeclaration().getIdentifier().setName(newName);
+        } else {
+            return null;
+        }
         return o;
     }
 
@@ -960,7 +964,7 @@ public class DPsiImplUtil {
             assert (basicType.getTypeVector() == null);
             assert (basicType.getTypeof() == null);
             final DLanguageIdentifierList identifierList = basicType.getIdentifierList();
-            final List<PsiElement> definitionNodesSimple = DUtil.findDefinitionNodes((DLanguageFile) identifierList.getContainingFile(),getEndOfIdentifierList(identifierList).getName());
+            final List<PsiNamedElement> definitionNodesSimple = DUtil.findDefinitionNodes((DLanguageFile) identifierList.getContainingFile(), getEndOfIdentifierList(identifierList).getName());
             Set<CanInherit> definitionNodes = new HashSet<>();
             for (PsiElement node : definitionNodesSimple) {
                 if (definitionNodes instanceof CanInherit)
@@ -1018,9 +1022,7 @@ public class DPsiImplUtil {
 
     @Nullable
     public static PsiElement setName(@NotNull DLanguageLabeledStatement o, @NotNull String newName) {
-        PsiElement e = DElementFactory.createDLanguageLabeledStatementFromText(o.getProject(), newName);
-        if (e == null) return null;
-        o.replace(e);
+        o.getIdentifier().setName(newName);
         return o;
     }
 
@@ -1074,9 +1076,7 @@ public class DPsiImplUtil {
 
     @Nullable
     public static PsiElement setName(@NotNull DLanguageTemplateMixinDeclaration o, @NotNull String newName) {
-        PsiElement e = DElementFactory.createDLanguageVarDeclarationFromText(o.getProject(), newName);
-        if (e == null) return null;
-        o.replace(e);
+        o.getIdentifier().setName(newName);
         return o;
     }
 
@@ -1199,9 +1199,9 @@ public class DPsiImplUtil {
 
     @Nullable
     public static PsiElement setName(@NotNull DLanguageDeclaratorInitializer o, @NotNull String newName) {
-        PsiElement e = DElementFactory.createDLanguageDeclaratorInitializerFromText(o.getProject(), newName);
-        if (e == null) return null;
-        o.replace(e);
+        if (getIdentifier(o) == null)
+            return null;
+        getIdentifier(o).setName(newName);
         return o;
     }
 
@@ -1283,9 +1283,7 @@ public class DPsiImplUtil {
 
     @Nullable
     public static PsiElement setName(@NotNull DLanguageAutoDeclarationY o, @NotNull String newName) {
-        PsiElement e = DElementFactory.createDLanguageAutoDeclarationYFromText(o.getProject(), newName);
-        if (e == null) return null;
-        o.replace(e);
+        o.getIdentifier().setName(newName);
         return o;
     }
 
@@ -1365,10 +1363,7 @@ public class DPsiImplUtil {
 
     @Nullable
     public static PsiElement setName(@NotNull DLanguageStaticConstructor o, @NotNull String newName) {
-        PsiElement e = DElementFactory.createDLanguageStaticConstructorFromText(o.getProject(), newName);
-        if (e == null) return null;
-        o.replace(e);
-        return o;
+        throw new UnsupportedOperationException("you should not be renaming static constructors");
     }
 
     @NotNull
@@ -1442,10 +1437,7 @@ public class DPsiImplUtil {
 
     @Nullable
     public static PsiElement setName(@NotNull DLanguageSharedStaticConstructor o, @NotNull String newName) {
-        PsiElement e = DElementFactory.createDLanguageSharedStaticConstructorFromText(o.getProject(), newName);
-        if (e == null) return null;
-        o.replace(e);
-        return o;
+        throw new UnsupportedOperationException("you should not be renaming static constructors");
     }
 
     @NotNull
@@ -1517,10 +1509,7 @@ public class DPsiImplUtil {
 
     @Nullable
     public static PsiElement setName(@NotNull DLanguageStaticDestructor o, @NotNull String newName) {
-        PsiElement e = DElementFactory.createDLanguageStaticDestructorFromText(o.getProject(), newName);
-        if (e == null) return null;
-        o.replace(e);
-        return o;
+        throw new UnsupportedOperationException("you should not be renaming static destructors");
     }
 
     @NotNull
@@ -1592,10 +1581,7 @@ public class DPsiImplUtil {
 
     @Nullable
     public static PsiElement setName(@NotNull DLanguageSharedStaticDestructor o, @NotNull String newName) {
-        PsiElement e = DElementFactory.createDLanguageSharedStaticDestructorFromText(o.getProject(), newName);
-        if (e == null) return null;
-        o.replace(e);
-        return o;
+        throw new UnsupportedOperationException("you should not be renaming static constructors");
     }
 
     @NotNull
@@ -1825,7 +1811,7 @@ public class DPsiImplUtil {
     // -------------------- Visibility --------------------- //
 
     // -------------------- Misc --------------------- //
-    public static String getFullName(net.masterthought.dlanguage.psi.interfaces.DNamedElement e) {
+    public static String getFullName(DNamedElement e) {
         if (e == null)
             return "";
         if (e instanceof DLanguageFile)
