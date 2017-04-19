@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author singingbush
@@ -41,12 +42,14 @@ public class DubConfigurationParserTest extends LightPlatformTestCase {
     public void testDubParser() throws Exception {
         final DubConfigurationParser dubConfigurationParser = new DubConfigurationParser(ourProject, "dub");
 
-        final DubConfigurationParser.DubPackage rootPackage = dubConfigurationParser.getDubPackage();
-        assertNotNull("The root package should have been parsed", rootPackage);
+        final Optional<DubPackage> optRootPackage = dubConfigurationParser.getDubPackage();
+        assertTrue("The root package should have been parsed", optRootPackage.isPresent());
+        final DubPackage rootPackage = optRootPackage.get();
+        assertEquals("The root dub.sdl for vibe-d has 13 dependencies", 13, rootPackage.getDependencies().size());
 
-        final List<DubConfigurationParser.DubPackage> subPackages = dubConfigurationParser.getDubPackageDependencies();
-        assertNotEmpty(subPackages);
-        assertEquals("there should be 21 dependencies", 21, subPackages.size());
+        final List<DubPackage> allDubPackages = dubConfigurationParser.getDubPackageDependencies();
+        assertNotEmpty(allDubPackages);
+        assertEquals("there should be 21 dependencies", 21, allDubPackages.size());
     }
 
     private void loadTestFile(final String resourceLocation, final String destination) throws URISyntaxException, IOException {

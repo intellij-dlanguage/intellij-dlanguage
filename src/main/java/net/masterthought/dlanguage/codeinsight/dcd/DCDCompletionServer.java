@@ -16,6 +16,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
 import net.masterthought.dlanguage.DLanguageSdkType;
 import net.masterthought.dlanguage.project.DubConfigurationParser;
+import net.masterthought.dlanguage.project.DubPackage;
 import net.masterthought.dlanguage.settings.SettingsChangeNotifier;
 import net.masterthought.dlanguage.settings.ToolKey;
 import net.masterthought.dlanguage.settings.ToolSettings;
@@ -108,10 +109,10 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
 
         // try to auto add dub dependencies
         final DubConfigurationParser dubConfig = new DubConfigurationParser(module.getProject(), ToolKey.DUB_KEY.getPath(module.getProject()));
-        final List<DubConfigurationParser.DubPackage> dependencies = dubConfig.getDubPackageDependencies();
-        for(final DubConfigurationParser.DubPackage pkg : dependencies) {
+        final List<DubPackage> dependencies = dubConfig.getDubPackageDependencies();
+        for(final DubPackage pkg : dependencies) {
             parametersList.addParametersString("-I");
-            parametersList.addParametersString(pkg.path + pkg.sourcesDir);
+            parametersList.addParametersString(pkg.getPath() + pkg.getSourcesDir());
         }
 
         try {

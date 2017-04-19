@@ -24,6 +24,7 @@ import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.ui.components.JBList;
 import net.masterthought.dlanguage.module.DLanguageModuleType;
 import net.masterthought.dlanguage.project.DubConfigurationParser;
+import net.masterthought.dlanguage.project.DubPackage;
 import net.masterthought.dlanguage.settings.ToolKey;
 import net.masterthought.dlanguage.utils.DToolsNotificationListener;
 import org.jetbrains.annotations.NotNull;
@@ -105,10 +106,10 @@ public class ProcessDLibs extends AnAction implements DumbAware {
             return;
         }
 
-        DubConfigurationParser dubConfig = new DubConfigurationParser(project, dubPath);
-        for(DubConfigurationParser.DubPackage pkg : dubConfig.getDubPackageDependencies()){
-            String fullName = pkg.name + "-" + pkg.version;
-            createLibraryDependency(module, project, fullName, pkg.path);
+        final DubConfigurationParser dubConfig = new DubConfigurationParser(project, dubPath);
+        for(final DubPackage pkg : dubConfig.getDubPackageDependencies()){
+            final String fullName = pkg.getName() + "-" + pkg.getVersion();
+            createLibraryDependency(module, project, fullName, pkg.getPath());
         }
 
         Notifications.Bus.notify(

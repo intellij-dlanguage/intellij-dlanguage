@@ -15,16 +15,14 @@ import com.intellij.openapi.util.Key;
 
 import java.io.File;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class DubConfigurationParser {
 
     private static final Logger LOG = Logger.getInstance(DubConfigurationParser.class);
 
-    private JsonObject dubConfiguration;
+    private List<DubPackage> packages = new ArrayList<>();
     private final Project project;
     private final String dubBinaryPath;
 
@@ -32,66 +30,38 @@ public class DubConfigurationParser {
         this.project = project;
         this.dubBinaryPath = dubBinaryPath;
         parseDubConfiguration()
-            .ifPresent(jsonObject -> dubConfiguration = jsonObject);
-    }
-
-    public class DubPackage {
-        public String name;
-        public String path;
-        public List<String> dependencies;
-        public String sourcesDir; // todo: this should prob be String[]
-        public List<String> resources;
-        public String version;
-        public boolean isRootPackage;
-
-        public DubPackage(String name, String path, List<String> dependencies, String sourcesDir, List<String> resources, String version, boolean isRootPackage) {
-            this.name = name;
-            this.path = path;
-            this.dependencies = dependencies;
-            this.sourcesDir = sourcesDir;
-            this.resources = resources;
-            this.version = version;
-            this.isRootPackage = isRootPackage;
-        }
+            .ifPresent(this::parseDubDescription);
     }
 
     // todo: make this return Optional<DubPackage>
-    public DubPackage getDubPackage() {
-        for (DubPackage dubPackage : getAllPackages()) {
-            if (dubPackage.isRootPackage) {
-                return dubPackage;
-            }
-        }
-        return null;
+    public Optional<DubPackage> getDubPackage() {
+        return packages.stream()
+            .filter(DubPackage::isRootPackage)
+            .findFirst();
     }
 
     /**
      *
      * @return a list of DubPackage that the root DubPackage depends on. These may be sub-packages, libs, or other dub packages
      */
-    // todo: make this return Optional<List<DubPackage>>
     public List<DubPackage> getDubPackageDependencies() {
-        List<DubPackage> dependencies = new ArrayList<>();
-        for (DubPackage dubPackage : getAllPackages()) {
-            if (!dubPackage.isRootPackage) {
-                dependencies.add(dubPackage);
-            }
-        }
-        return dependencies;
+        return packages.stream()
+            .filter(dubPackage -> !dubPackage.isRootPackage())
+            .collect(Collectors.toList());
     }
 
-    private List<DubPackage> getAllPackages() {
-        if(dubConfiguration == null) {
-            return Collections.EMPTY_LIST;
+    private void parseDubDescription(final JsonObject dubProjectDescription) {
+        if(dubProjectDescription == null) {
+            return;
         }
 
-        final JsonArray packages = dubConfiguration.get("packages").getAsJsonArray();
-        final String rootPackage = dubConfiguration.get("rootPackage").getAsString();
+        final JsonArray packages = dubProjectDescription.get("packages").getAsJsonArray();
+        final String rootPackage = dubProjectDescription.get("rootPackage").getAsString();
 
         final Gson gson = new Gson();
         final Type listString = new TypeToken<List<String>>() {}.getType();
 
-        List<DubPackage> packageList = new ArrayList<>(packages.size());
+        final List<DubPackage> packageList = new ArrayList<>(packages.size());
         for (JsonElement pkg : packages) {
             JsonObject thePackage = ((JsonObject) pkg);
             String path = thePackage.get("path").getAsString();
@@ -106,7 +76,7 @@ public class DubConfigurationParser {
             final List<String> stringImportPaths = gson.fromJson(thePackage.get("stringImportPaths").getAsJsonArray(), listString); // eg: "views"
             packageList.add(new DubPackage(name, path, dependencies, sourcesDir, stringImportPaths, version, name.equals(rootPackage)));
         }
-        return packageList;
+        this.packages = packageList;
     }
 
     private Optional<JsonObject> parseDubConfiguration() {
