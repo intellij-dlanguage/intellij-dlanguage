@@ -25,9 +25,8 @@ matrix:
   allow_failures:
   - env: ORG_GRADLE_PROJECT_ideaVersion=LATEST-EAP-SNAPSHOT
 
-# Have commented out the deployment step for now until problem resolved
 ## pull requests skip the deployment step
-#deploy:
+deploy:
 #  # deploy develop to the dev channel
 #  - provider: script
 #    skip_cleanup: true
@@ -35,15 +34,15 @@ matrix:
 #    on:
 #      branch: develop
 #      condition: $ORG_GRADLE_PROJECT_ideaVersion=2017.1
-#  # deploy master to eap channel
-#  - provider: script
-#    script: ORG_GRADLE_PROJECT_publishChannels=eap ./gradlew publishPlugin
-#    on:
-#      branch: master
-#      condition: $ORG_GRADLE_PROJECT_ideaVersion=2017.1
-#  # deploy tags to stable channel
-#  - provider: script
-#    script: ORG_GRADLE_PROJECT_publishChannels=stable ORG_GRADLE_PROJECT_version=$TRAVIS_TAG ./gradlew publishPlugin
-#    on:
-#      tags: true
-#      condition: $ORG_GRADLE_PROJECT_ideaVersion=2017.1
+  # deploy master to eap channel
+  - provider: script
+    script: ORG_GRADLE_PROJECT_publishChannels=eap ./gradlew publishPlugin
+    on:
+      branch: master
+      condition: $ORG_GRADLE_PROJECT_ideaVersion=2017.1
+  # deploy tags to default channel
+  - provider: script
+    script: ORG_GRADLE_PROJECT_version=$TRAVIS_TAG ./gradlew publishPlugin
+    on:
+      tags: true
+      condition: $ORG_GRADLE_PROJECT_ideaVersion=2017.1
