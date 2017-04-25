@@ -29,12 +29,13 @@ public class DFoldingBuilder extends FoldingBuilderEx implements DumbAware {
 
         // add all functions
         for (DLanguageFuncDeclaration function : PsiTreeUtil.findChildrenOfType(file, DLanguageFuncDeclaration.class)) {
-            result.add(new FoldingDescriptor(function, function.getTextRange()));
+            if (function.isPhysical() && function.isValid() && function.isWritable() && !function.getText().equals(""))//required in case the psi element has been deleted
+                result.add(new FoldingDescriptor(function, function.getTextRange()));
         }
 
         // add all aggregates
         for (DLanguageAggregateDeclaration aggregateDefinition : PsiTreeUtil.findChildrenOfType(file, DLanguageAggregateDeclaration.class)) {
-            if (aggregateDefinition.isPhysical())//required in case the psi element has been deleted
+            if (aggregateDefinition.isPhysical() && aggregateDefinition.isValid() && aggregateDefinition.isWritable() && !aggregateDefinition.getText().equals(""))//required in case the psi element has been deleted
                 result.add(new FoldingDescriptor(aggregateDefinition, aggregateDefinition.getTextRange()));
         }
 
