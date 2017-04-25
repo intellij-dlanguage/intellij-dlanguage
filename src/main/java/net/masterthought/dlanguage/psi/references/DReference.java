@@ -118,7 +118,7 @@ public class DReference extends PsiReferenceBase<PsiNamedElement> implements Psi
             }
         }
 
-        identifiers.remove(myElement);
+//        identifiers.remove(myElement);
 
         List<ResolveResult> results = new ArrayList<ResolveResult>(20);
         for (PsiElement property : identifiers) {
