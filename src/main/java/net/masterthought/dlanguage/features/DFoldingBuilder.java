@@ -8,7 +8,10 @@ import com.intellij.openapi.project.DumbAware;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.containers.ContainerUtil;
-import net.masterthought.dlanguage.psi.*;
+import net.masterthought.dlanguage.psi.DLanguageAggregateDeclaration;
+import net.masterthought.dlanguage.psi.DLanguageFile;
+import net.masterthought.dlanguage.psi.DLanguageFuncDeclaration;
+import net.masterthought.dlanguage.psi.DLanguageImportDeclaration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,12 +29,14 @@ public class DFoldingBuilder extends FoldingBuilderEx implements DumbAware {
 
         // add all functions
         for (DLanguageFuncDeclaration function : PsiTreeUtil.findChildrenOfType(file, DLanguageFuncDeclaration.class)) {
-            result.add(new FoldingDescriptor(function, function.getTextRange()));
+            if (function.isPhysical() && function.isValid() && function.isWritable() && !function.getText().equals(""))//required in case the psi element has been deleted
+                result.add(new FoldingDescriptor(function, function.getTextRange()));
         }
 
         // add all aggregates
         for (DLanguageAggregateDeclaration aggregateDefinition : PsiTreeUtil.findChildrenOfType(file, DLanguageAggregateDeclaration.class)) {
-            result.add(new FoldingDescriptor(aggregateDefinition, aggregateDefinition.getTextRange()));
+            if (aggregateDefinition.isPhysical() && aggregateDefinition.isValid() && aggregateDefinition.isWritable() && !aggregateDefinition.getText().equals(""))//required in case the psi element has been deleted
+                result.add(new FoldingDescriptor(aggregateDefinition, aggregateDefinition.getTextRange()));
         }
 
 

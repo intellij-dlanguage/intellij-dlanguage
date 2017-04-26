@@ -30,4 +30,6 @@ public interface DLanguageIdentifier extends DNamedElement, StubBasedPsiElement<
   @NotNull
   ItemPresentation getPresentation();
 
+  void delete();
+
 }

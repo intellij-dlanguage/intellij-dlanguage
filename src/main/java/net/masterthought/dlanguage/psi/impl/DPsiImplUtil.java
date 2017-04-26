@@ -114,6 +114,13 @@ public class DPsiImplUtil {
             }
         };
     }
+
+    public static void delete(DLanguageIdentifier identifier) {
+        final List<PsiNamedElement> definitionNode = DUtil.findDefinitionNode(identifier.getProject(), identifier.getName(), identifier);
+        if (definitionNode.size() != 1)
+            throw new IllegalStateException();
+        definitionNode.get(0).delete();
+    }
     // ------------- Identifier ------------------ //
 
     // ------------- Function Definition ------------------ //

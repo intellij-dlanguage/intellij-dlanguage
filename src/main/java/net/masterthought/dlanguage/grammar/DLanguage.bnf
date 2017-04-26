@@ -223,7 +223,7 @@ private item_ ::= (ModuleDeclaration | DeclDefs | Statement | SHEBANG) {
 private item_recover ::= !(ModuleDeclaration | DeclDefs | Statement | SHEBANG)
 
 Identifier ::= ID {
-    methods=[getName getNameIdentifier getReference setName getPresentation]
+    methods=[getName getNameIdentifier getReference setName getPresentation delete]
     stubClass="net.masterthought.dlanguage.stubs.DLanguageIdentifierStub"
     implements = ["net.masterthought.dlanguage.psi.interfaces.DNamedElement"]
     }

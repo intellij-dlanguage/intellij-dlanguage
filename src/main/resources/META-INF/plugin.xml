@@ -44,6 +44,10 @@
         <annotator language="D" implementationClass="net.masterthought.dlanguage.highlighting.annotation.DAnnotator"/>
         <externalAnnotator language="D"
                            implementationClass="net.masterthought.dlanguage.highlighting.annotation.external.DExternalAnnotator"/>
+        <!-- Refactoring -->
+
+        <lang.refactoringSupport language="D"
+                                 implementationClass="net.masterthought.dlanguage.refactoring.DRefactoringSupportProvider"/>
 
 
         <!-- D Language support -->
