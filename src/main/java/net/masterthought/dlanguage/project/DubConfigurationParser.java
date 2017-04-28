@@ -8,6 +8,9 @@ import com.intellij.execution.configurations.ParametersList;
 import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.execution.process.ProcessAdapter;
 import com.intellij.execution.process.ProcessEvent;
+import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationType;
+import com.intellij.notification.Notifications;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
@@ -33,7 +36,6 @@ public class DubConfigurationParser {
             .ifPresent(this::parseDubDescription);
     }
 
-    // todo: make this return Optional<DubPackage>
     public Optional<DubPackage> getDubPackage() {
         return packages.stream()
             .filter(DubPackage::isRootPackage)
@@ -61,6 +63,7 @@ public class DubConfigurationParser {
         final Gson gson = new Gson();
         final Type listString = new TypeToken<List<String>>() {}.getType();
 
+        // potentially map all Dub Packages to a Tree structure
         final List<DubPackage> packageList = new ArrayList<>(packages.size());
         for (JsonElement pkg : packages) {
             JsonObject thePackage = ((JsonObject) pkg);
@@ -116,23 +119,38 @@ public class DubConfigurationParser {
             if (exitCode == 0) {
                 if (errors.isEmpty()) {
                     LOG.info(String.format("%s exited without errors", dubCommand));
-                    //Messages.showInfoMessage(this.project, "Dub project imported", "Dub Import");
+                    if(LOG.isDebugEnabled()) {
+                        Notifications.Bus.notify(new Notification(
+                                "DubNotification",
+                                "DUB Import",
+                                "dub project imported without errors",
+                                NotificationType.INFORMATION
+                            ),
+                            this.project);
+                    }
                 } else {
                     LOG.warn(String.format("%s exited with %s errors", dubCommand, errors.size()));
                     // potential error messages are things like:
                     //   "No valid root package found - aborting."
                     //   "Package vibe-d declared a sub-package, definition file is missing: /path/to/package"
                     //   "Non-optional dependency vibe-d:core of vibe-d not found in dependency tree!?."
-                    // todo: do something useful with the errors
-                    Messages.showWarningDialog(this.project, String.format("%s exited with %s errors", dubCommand, errors.size()), "Dub Import");
+                    errors.forEach(errorMessage -> Notifications.Bus.notify(
+                        new Notification(
+                            "DubNotification",
+                            "DUB Import Error",
+                            errorMessage,
+                            NotificationType.WARNING
+                        ),
+                        this.project)
+                    );
                 }
                 final JsonObject jsonObject = new JsonParser()
                     .parse(builder.toString())
                     .getAsJsonObject();
                 return Optional.of(jsonObject);
             } else {
-                LOG.error(String.format("%s exited with %s", dubCommand, exitCode));
-                // todo: do something useful with the errors
+                errors.forEach(LOG::warn);
+                LOG.warn(String.format("%s exited with %s", dubCommand, exitCode));
                 Messages.showErrorDialog(this.project, String.format("%s exited with %s", dubCommand, exitCode), "Dub Import");
             }
         } catch (ExecutionException | JsonSyntaxException e) {

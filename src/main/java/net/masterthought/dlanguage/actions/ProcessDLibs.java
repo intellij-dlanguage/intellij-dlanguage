@@ -1,6 +1,5 @@
 package net.masterthought.dlanguage.actions;
 
-import com.intellij.execution.ExecutionException;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
@@ -52,12 +51,12 @@ public class ProcessDLibs extends AnAction implements DumbAware {
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
         final String prefix = "Unable to process D libraries - ";
-        Project project = e.getProject();
+        final Project project = e.getProject();
         if (project == null) {
             displayError(e, prefix + "No active project.");
             return;
         }
-        Collection<Module> modules = DLanguageModuleType.findModules(project);
+        final Collection<Module> modules = DLanguageModuleType.findModules(project);
         int size = modules.size();
         if (size == 0) displayError(e, prefix + "No DLanguage modules are used in this project.");
         else if (size == 1) processDLibs(e, modules.iterator().next());
@@ -74,13 +73,8 @@ public class ProcessDLibs extends AnAction implements DumbAware {
         popup.showCenteredInCurrentWindow(project);
     }
 
-    private static Runnable makeModuleChoiceCallback(final @NotNull AnActionEvent e, final @NotNull JList list) {
-        return new Runnable() {
-            @Override
-            public void run() {
-                processDLibs(e, (Module) list.getSelectedValue());
-            }
-        };
+    private static Runnable makeModuleChoiceCallback(final @NotNull AnActionEvent event, final @NotNull JList list) {
+        return () -> processDLibs(event, (Module) list.getSelectedValue());
     }
 
     private static void processDLibs(@NotNull AnActionEvent e, @NotNull final Module module) {
@@ -130,13 +124,10 @@ public class ProcessDLibs extends AnAction implements DumbAware {
 
         if (file != null) {
             libraryModel.addRoot(file, OrderRootType.CLASSES);
-            ApplicationManager.getApplication().runWriteAction(new Runnable() {
-                @Override
-                public void run() {
-                    libraryModel.commit();
-                    projectLibraryModel.commit();
-                    ModuleRootModificationUtil.addDependency(module, library);
-                }
+            ApplicationManager.getApplication().runWriteAction(() -> {
+                libraryModel.commit();
+                projectLibraryModel.commit();
+                ModuleRootModificationUtil.addDependency(module, library);
             });
         }
     }
@@ -155,31 +146,23 @@ public class ProcessDLibs extends AnAction implements DumbAware {
         final ModifiableRootModel model = modelsProvider.getModuleModifiableModel(module);
         final LibraryOrderEntry dLibraryEntry = OrderEntryUtil.findLibraryOrderEntry(model, libraryName);
         if (dLibraryEntry != null) {
-            ApplicationManager.getApplication().runWriteAction(new Runnable() {
-                @Override
-                public void run() {
-                    Library library = dLibraryEntry.getLibrary();
-                    if (library != null) {
-                        LibraryTable table = library.getTable();
-                        if (table != null) {
-                            table.removeLibrary(library);
-                            model.removeOrderEntry(dLibraryEntry);
-                            modelsProvider.commitModuleModifiableModel(model);
-                        }
+            ApplicationManager.getApplication().runWriteAction(() -> {
+                Library library = dLibraryEntry.getLibrary();
+                if (library != null) {
+                    LibraryTable table = library.getTable();
+                    if (table != null) {
+                        table.removeLibrary(library);
+                        model.removeOrderEntry(dLibraryEntry);
+                        modelsProvider.commitModuleModifiableModel(model);
                     }
-                    else {
-                        modelsProvider.disposeModuleModifiableModel(model);
-                    }
+                }
+                else {
+                    modelsProvider.disposeModuleModifiableModel(model);
                 }
             });
         }
         else {
-            ApplicationManager.getApplication().runWriteAction(new Runnable() {
-                @Override
-                public void run() {
-                    modelsProvider.disposeModuleModifiableModel(model);
-                }
-            });
+            ApplicationManager.getApplication().runWriteAction(() -> modelsProvider.disposeModuleModifiableModel(model));
         }
     }
 

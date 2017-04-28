@@ -9,10 +9,7 @@ import net.masterthought.dlanguage.module.DubBinaryForModuleStep;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
 
 
 public class DubProjectImportProvider extends ProjectImportProvider {
@@ -23,12 +20,9 @@ public class DubProjectImportProvider extends ProjectImportProvider {
 
     @Override
     public ModuleWizardStep[] createSteps(WizardContext wizardContext) {
-        List<ModuleWizardStep> steps = new ArrayList<>();
+        final ModuleWizardStep setDubBinary = new DubBinaryForModuleStep(wizardContext);
 
-        ModuleWizardStep setDubBinary = new DubBinaryForModuleStep(wizardContext);
-        steps.add(setDubBinary);
-
-        return steps.toArray(new ModuleWizardStep[steps.size()]);
+        return new ModuleWizardStep[] { setDubBinary };
     }
 
     @Override
@@ -53,18 +47,13 @@ public class DubProjectImportProvider extends ProjectImportProvider {
         }
 
         // alternatively, check all the children for a dub.json or a dub.sdl
-        final VirtualFile[] dubFiles = fileOrDirectory.getChildren();
-
-        final Optional<VirtualFile> optionalDubFile = Arrays.stream(dubFiles)
+        return Arrays.stream(fileOrDirectory.getChildren())
             .filter(f -> !f.isDirectory())
-            .filter(f -> f.getNameWithoutExtension().equalsIgnoreCase("dub"))
-            .findFirst();
-
-        return optionalDubFile.isPresent() && canImportFromFile(optionalDubFile.get());
+            .anyMatch(this::canImportFromFile);
     }
 
     @Override
-    public boolean canImportFromFile(VirtualFile file) {
-        return true;
+    public boolean canImportFromFile(final VirtualFile file) {
+        return "dub.json".equalsIgnoreCase(file.getName()) || "dub.sdl".equalsIgnoreCase(file.getName());
     }
 }
