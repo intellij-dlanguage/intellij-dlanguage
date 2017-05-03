@@ -27,9 +27,9 @@ public class DLanguageConstraintImpl extends ASTWrapperPsiElement implements DLa
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageExpression getExpression() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageExpression.class));
+    return PsiTreeUtil.getChildOfType(this, DLanguageExpression.class);
   }
 
   @Override
@@ -39,15 +39,15 @@ public class DLanguageConstraintImpl extends ASTWrapperPsiElement implements DLa
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getOpParLeft() {
-    return notNullChild(findChildByType(OP_PAR_LEFT));
+    return findChildByType(OP_PAR_LEFT);
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getOpParRight() {
-    return notNullChild(findChildByType(OP_PAR_RIGHT));
+    return findChildByType(OP_PAR_RIGHT);
   }
 
 }

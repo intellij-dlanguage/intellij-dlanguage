@@ -37,9 +37,9 @@ public class DLanguageUnitTestingImpl extends DStubBasedPsiElementBase<UnitTesti
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageBlockStatement getBlockStatement() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageBlockStatement.class));
+    return PsiTreeUtil.getChildOfType(this, DLanguageBlockStatement.class);
   }
 
   @Override

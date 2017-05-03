@@ -19,7 +19,7 @@ public interface DLanguageDebugSpecification extends PsiElement {
   @NotNull
   PsiElement getOpEq();
 
-  @NotNull
+  @Nullable
   PsiElement getOpScolon();
 
 }

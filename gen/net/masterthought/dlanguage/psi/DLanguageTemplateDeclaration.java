@@ -29,16 +29,16 @@ public interface DLanguageTemplateDeclaration extends DNamedElement, StatementCo
   @NotNull
   DLanguageIdentifier getIdentifier();
 
-  @NotNull
+  @Nullable
   DLanguageTemplateParameters getTemplateParameters();
 
   @NotNull
   PsiElement getKwTemplate();
 
-  @NotNull
+  @Nullable
   PsiElement getOpBracesLeft();
 
-  @NotNull
+  @Nullable
   PsiElement getOpBracesRight();
 
   @NotNull

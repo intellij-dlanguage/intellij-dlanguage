@@ -16,7 +16,7 @@ public interface DLanguageAliasThis extends PsiElement {
   @NotNull
   PsiElement getKwThis();
 
-  @NotNull
+  @Nullable
   PsiElement getOpScolon();
 
 }

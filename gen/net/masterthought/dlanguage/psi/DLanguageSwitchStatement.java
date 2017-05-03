@@ -7,19 +7,19 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageSwitchStatement extends PsiElement {
 
-  @NotNull
+  @Nullable
   DLanguageExpression getExpression();
 
-  @NotNull
+  @Nullable
   DLanguageScopeStatement getScopeStatement();
 
   @NotNull
   PsiElement getKwSwitch();
 
-  @NotNull
+  @Nullable
   PsiElement getOpParLeft();
 
-  @NotNull
+  @Nullable
   PsiElement getOpParRight();
 
 }

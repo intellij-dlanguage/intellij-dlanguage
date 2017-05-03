@@ -45,15 +45,15 @@ public class DLanguageAsmStatementImpl extends ASTWrapperPsiElement implements D
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getOpBracesLeft() {
-    return notNullChild(findChildByType(OP_BRACES_LEFT));
+    return findChildByType(OP_BRACES_LEFT);
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getOpBracesRight() {
-    return notNullChild(findChildByType(OP_BRACES_RIGHT));
+    return findChildByType(OP_BRACES_RIGHT);
   }
 
 }

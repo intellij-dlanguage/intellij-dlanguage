@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageImportDeclaration extends PsiElement {
 
-  @NotNull
+  @Nullable
   DLanguageImportList getImportList();
 
   @NotNull
@@ -16,7 +16,7 @@ public interface DLanguageImportDeclaration extends PsiElement {
   @Nullable
   PsiElement getKwStatic();
 
-  @NotNull
+  @Nullable
   PsiElement getOpScolon();
 
 }

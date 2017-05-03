@@ -7,13 +7,13 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageDefaultStatement extends PsiElement {
 
-  @NotNull
+  @Nullable
   DLanguageScopeStatementList getScopeStatementList();
 
   @NotNull
   PsiElement getKwDefault();
 
-  @NotNull
+  @Nullable
   PsiElement getOpColon();
 
 }

@@ -7,13 +7,13 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageThrowStatement extends PsiElement {
 
-  @NotNull
+  @Nullable
   DLanguageExpression getExpression();
 
   @NotNull
   PsiElement getKwThrow();
 
-  @NotNull
+  @Nullable
   PsiElement getOpScolon();
 
 }

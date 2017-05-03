@@ -7,16 +7,16 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageConstraint extends PsiElement {
 
-  @NotNull
+  @Nullable
   DLanguageExpression getExpression();
 
   @NotNull
   PsiElement getKwIf();
 
-  @NotNull
+  @Nullable
   PsiElement getOpParLeft();
 
-  @NotNull
+  @Nullable
   PsiElement getOpParRight();
 
 }

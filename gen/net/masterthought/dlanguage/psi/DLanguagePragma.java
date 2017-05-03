@@ -10,7 +10,7 @@ public interface DLanguagePragma extends PsiElement {
   @Nullable
   DLanguageArgumentList getArgumentList();
 
-  @NotNull
+  @Nullable
   DLanguageIdentifier getIdentifier();
 
   @NotNull
@@ -19,10 +19,10 @@ public interface DLanguagePragma extends PsiElement {
   @Nullable
   PsiElement getOpComma();
 
-  @NotNull
+  @Nullable
   PsiElement getOpParLeft();
 
-  @NotNull
+  @Nullable
   PsiElement getOpParRight();
 
 }

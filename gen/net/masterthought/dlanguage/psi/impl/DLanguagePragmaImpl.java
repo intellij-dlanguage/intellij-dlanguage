@@ -33,9 +33,9 @@ public class DLanguagePragmaImpl extends ASTWrapperPsiElement implements DLangua
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageIdentifier getIdentifier() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class));
+    return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
   }
 
   @Override
@@ -51,15 +51,15 @@ public class DLanguagePragmaImpl extends ASTWrapperPsiElement implements DLangua
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getOpParLeft() {
-    return notNullChild(findChildByType(OP_PAR_LEFT));
+    return findChildByType(OP_PAR_LEFT);
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getOpParRight() {
-    return notNullChild(findChildByType(OP_PAR_RIGHT));
+    return findChildByType(OP_PAR_RIGHT);
   }
 
 }

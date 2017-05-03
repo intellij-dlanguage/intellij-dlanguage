@@ -45,9 +45,9 @@ public class DLanguageAliasThisImpl extends ASTWrapperPsiElement implements DLan
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getOpScolon() {
-    return notNullChild(findChildByType(OP_SCOLON));
+    return findChildByType(OP_SCOLON);
   }
 
 }

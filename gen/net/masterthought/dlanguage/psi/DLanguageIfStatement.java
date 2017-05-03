@@ -10,10 +10,10 @@ public interface DLanguageIfStatement extends PsiElement {
   @Nullable
   DLanguageElseStatement getElseStatement();
 
-  @NotNull
+  @Nullable
   DLanguageIfCondition getIfCondition();
 
-  @NotNull
+  @Nullable
   DLanguageThenStatement getThenStatement();
 
   @Nullable
@@ -22,10 +22,10 @@ public interface DLanguageIfStatement extends PsiElement {
   @NotNull
   PsiElement getKwIf();
 
-  @NotNull
+  @Nullable
   PsiElement getOpParLeft();
 
-  @NotNull
+  @Nullable
   PsiElement getOpParRight();
 
 }

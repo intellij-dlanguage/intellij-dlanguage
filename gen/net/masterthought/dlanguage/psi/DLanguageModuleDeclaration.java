@@ -19,13 +19,13 @@ public interface DLanguageModuleDeclaration extends DNamedElement, GlobalDeclara
   @Nullable
   DLanguageAttribute getAttribute();
 
-  @NotNull
+  @Nullable
   DLanguageModuleFullyQualifiedName getModuleFullyQualifiedName();
 
   @NotNull
   PsiElement getKwModule();
 
-  @NotNull
+  @Nullable
   PsiElement getOpScolon();
 
   @NotNull

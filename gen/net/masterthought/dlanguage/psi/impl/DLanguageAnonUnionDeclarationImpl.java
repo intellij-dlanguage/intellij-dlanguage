@@ -27,9 +27,9 @@ public class DLanguageAnonUnionDeclarationImpl extends ASTWrapperPsiElement impl
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageAggregateBody getAggregateBody() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageAggregateBody.class));
+    return PsiTreeUtil.getChildOfType(this, DLanguageAggregateBody.class);
   }
 
   @Override

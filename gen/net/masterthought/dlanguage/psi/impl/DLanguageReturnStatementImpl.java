@@ -39,9 +39,9 @@ public class DLanguageReturnStatementImpl extends ASTWrapperPsiElement implement
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getOpScolon() {
-    return notNullChild(findChildByType(OP_SCOLON));
+    return findChildByType(OP_SCOLON);
   }
 
 }

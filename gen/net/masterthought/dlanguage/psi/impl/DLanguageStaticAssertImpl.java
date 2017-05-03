@@ -57,15 +57,15 @@ public class DLanguageStaticAssertImpl extends ASTWrapperPsiElement implements D
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getOpParRight() {
-    return notNullChild(findChildByType(OP_PAR_RIGHT));
+    return findChildByType(OP_PAR_RIGHT);
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getOpScolon() {
-    return notNullChild(findChildByType(OP_SCOLON));
+    return findChildByType(OP_SCOLON);
   }
 
 }

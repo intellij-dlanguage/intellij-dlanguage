@@ -27,9 +27,9 @@ public class DLanguageStaticIfConditionImpl extends ASTWrapperPsiElement impleme
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageAssignExpression getAssignExpression() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageAssignExpression.class));
+    return PsiTreeUtil.getChildOfType(this, DLanguageAssignExpression.class);
   }
 
   @Override
@@ -51,9 +51,9 @@ public class DLanguageStaticIfConditionImpl extends ASTWrapperPsiElement impleme
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getOpParRight() {
-    return notNullChild(findChildByType(OP_PAR_RIGHT));
+    return findChildByType(OP_PAR_RIGHT);
   }
 
 }

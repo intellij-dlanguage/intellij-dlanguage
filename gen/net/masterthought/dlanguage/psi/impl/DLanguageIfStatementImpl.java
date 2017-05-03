@@ -33,15 +33,15 @@ public class DLanguageIfStatementImpl extends ASTWrapperPsiElement implements DL
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageIfCondition getIfCondition() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageIfCondition.class));
+    return PsiTreeUtil.getChildOfType(this, DLanguageIfCondition.class);
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageThenStatement getThenStatement() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageThenStatement.class));
+    return PsiTreeUtil.getChildOfType(this, DLanguageThenStatement.class);
   }
 
   @Override
@@ -57,15 +57,15 @@ public class DLanguageIfStatementImpl extends ASTWrapperPsiElement implements DL
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getOpParLeft() {
-    return notNullChild(findChildByType(OP_PAR_LEFT));
+    return findChildByType(OP_PAR_LEFT);
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getOpParRight() {
-    return notNullChild(findChildByType(OP_PAR_RIGHT));
+    return findChildByType(OP_PAR_RIGHT);
   }
 
 }
