@@ -64,7 +64,7 @@ requests and bugs. Even better get involved and submit pull requests.
 
 [Download](https://www.jetbrains.com/idea/) and install IntelliJ Community Edition (Free) or Ultimate (Paid)
 From IntelliJ go to Preferences > Plugins > Browse Repositories and search For "D Language" – you will see 2
-plugins - Choose the *DLanguage* one and click install and then click restart IntelliJ
+plugins – Choose the *DLanguage* one and click install and then click restart IntelliJ
 
 You can also download the plugin jar to your local disk
 here: [Jetbrains plugin repository](https://plugins.jetbrains.com/plugin/8115?pr=) and then in IntelliJ go
@@ -82,10 +82,10 @@ If you have an existing dub project you can import it via File > Import Project
 
 ### New Project with DUB
 
-When you select this to create a new project with dub – if dub is on your path it will attempt to use dub
-init to create a new dub project for you. If dub is not on your path it will create a source directory
+When you select this to create a new project with dub – if dub is on your path it will attempt to use _dub
+init_ to create a new dub project for you. If dub is not on your path it will create a source directory
 and you will have to create your sdl/json dub file manually or rename/delete the source folder and then
-use dub init to recreate it, or you can open an existing dub project by doing File -> Open,
+use _dub init_ to recreate it, or you can open an existing dub project by doing File -> Open,
 
 Once a dub project is loaded there is right click menu option to run with dub, or you can use the run config
 – run with Dub,
@@ -109,7 +109,7 @@ and then run Process D Libraries you will be able to run d-unit tests
 
 ### Configure DTools
 
-The best option is to do and get the following tools and build them according to their github page instructions:
+The best option is to do and get the following tools and build them according to their GitHub page instructions:
 
   * [dub](http://code.dlang.org/download)
   * [DCD](https://github.com/Hackerpilot/DCD)
@@ -135,10 +135,9 @@ For example:
 This will add the phobos and druntime/import as well as my rainbow dub project. You can add other dub
 packages by adding the path to them. I should be able to autoconfigure this stuff in a future release.
 
-**UPDATE**: all project files are now automatically added to DCD and if on OSX the D sources are also added
-automatically. Sorry Linux and Windows users but I don't know the paths to search on those platforms for the
-sources - I can get the dmd/dmd.exe file path and on OSX thats in the bin dir and the sources are in the src
-dir one level up. But no idea on Linux and Windows.
+**UPDATE**: all project files are now automatically added to DCD and if on MacOS/OSX/macOS the D sources are
+also added automatically. The position on Linux and Windows is not currently clear since this work was done
+on OSX.
 
 ### DCD Server Restart Action
 
@@ -149,24 +148,23 @@ find a way to prevent the hanging in the first place but this is a helpful resta
 
 ### DFormat
 
-To reformat D code use the shortcut or the menu item - Code -> Reformat Code with D Format (ctrl+alt+K) or
+To reformat D code use the shortcut or the menu item – Code -> Reformat Code with D Format (ctrl+alt+K) or
 on mac (cmd+alt+K)
 
 ### DFix
 
-To apply DFix to the a file use the shortcut or the menu item - Code -> Fix D code with DFi (ctrl+alt+M) or
+To apply DFix to the a file use the shortcut or the menu item – Code -> Fix D code with DFi (ctrl+alt+M) or
 on mac (cmd+alt+M)
 
 ### Syntax Highlighting
 
 Go to Preferences -> Editor -> Colors and Fonts -> D File
 
-You can customize the syntax highlighting colours here. Save as a new theme - and then untick the inherit
+You can customize the syntax highlighting colours here. Save as a new theme – and then untick the inherit
 from checkbox and this will allow you to choose a colour for each item.  Only the native items will show as
 changing in the code example. From function definition downwards the options are related to annotated
-highlighting which is based on the grammar and not the lexer. So these don't show as chanigng the code
-example but they do wok.  I created one similar to the sublime dark theme by using Darcula theme and
-customizing the colours here.
+highlighting which is based on the grammar and not the lexer. So these don't show as changing the code
+example but they do work.
 
 ## Progress
 
@@ -267,7 +265,10 @@ this one is also helpful: [make a plugin in less than 30 mins](http://bjorn.tipl
 
 ### Setup
 
-The project uses Gradle with the [gradle-intellij-plugin](https://github.com/JetBrains/gradle-intellij-plugin). Simply use the gradle wrapper in the root of the project to build the plugin using the following:
+The project uses Gradle with
+the [gradle-intellij-plugin](https://github.com/JetBrains/gradle-intellij-plugin). If you do not have Gradle
+already installed, simply use the Gradle wrapper in the root of the project to build the plugin using the
+following:
 
 ```bash
 ./gradlew buildPlugin
