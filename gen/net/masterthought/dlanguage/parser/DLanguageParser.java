@@ -7429,16 +7429,16 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // NonEmptyStatementNoCaseNoDefault
+  //     | CaseRangeStatement//must be above case statement becuase pin on case statement will detect a case statement, where there is a case range statement
   //     | CaseStatement
-  //     | CaseRangeStatement
   //     | DefaultStatement
   public static boolean NonEmptyStatement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "NonEmptyStatement")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, NON_EMPTY_STATEMENT, "<non empty statement>");
     r = NonEmptyStatementNoCaseNoDefault(b, l + 1);
-    if (!r) r = CaseStatement(b, l + 1);
     if (!r) r = CaseRangeStatement(b, l + 1);
+    if (!r) r = CaseStatement(b, l + 1);
     if (!r) r = DefaultStatement(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;

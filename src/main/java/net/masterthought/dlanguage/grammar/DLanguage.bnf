@@ -749,8 +749,8 @@ Statement ::=
 
 NonEmptyStatement ::=
     NonEmptyStatementNoCaseNoDefault
+    | CaseRangeStatement//must be above case statement because pin on case statement will detect a case statement, where there is a case range statement
     | CaseStatement
-    | CaseRangeStatement
     | DefaultStatement
 
 NonEmptyStatementNoCaseNoDefault ::=
