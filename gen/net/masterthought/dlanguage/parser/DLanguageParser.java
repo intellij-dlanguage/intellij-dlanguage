@@ -1555,18 +1555,17 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // 'enum' (':' EnumBaseType)? ('{' (EnumMembers) '}')?
+  // 'enum' (':' EnumBaseType)? ('{' EnumMembers ','? '}')?
   public static boolean AnonymousEnumDeclaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "AnonymousEnumDeclaration")) return false;
     if (!nextTokenIs(b, KW_ENUM)) return false;
-    boolean r, p;
-    Marker m = enter_section_(b, l, _NONE_, ANONYMOUS_ENUM_DECLARATION, null);
+    boolean r;
+    Marker m = enter_section_(b);
     r = consumeToken(b, KW_ENUM);
-    p = r; // pin = 1
-    r = r && report_error_(b, AnonymousEnumDeclaration_1(b, l + 1));
-    r = p && AnonymousEnumDeclaration_2(b, l + 1) && r;
-    exit_section_(b, l, m, r, p, null);
-    return r || p;
+    r = r && AnonymousEnumDeclaration_1(b, l + 1);
+    r = r && AnonymousEnumDeclaration_2(b, l + 1);
+    exit_section_(b, m, ANONYMOUS_ENUM_DECLARATION, r);
+    return r;
   }
 
   // (':' EnumBaseType)?
@@ -1587,33 +1586,31 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ('{' (EnumMembers) '}')?
+  // ('{' EnumMembers ','? '}')?
   private static boolean AnonymousEnumDeclaration_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "AnonymousEnumDeclaration_2")) return false;
     AnonymousEnumDeclaration_2_0(b, l + 1);
     return true;
   }
 
-  // '{' (EnumMembers) '}'
+  // '{' EnumMembers ','? '}'
   private static boolean AnonymousEnumDeclaration_2_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "AnonymousEnumDeclaration_2_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, OP_BRACES_LEFT);
-    r = r && AnonymousEnumDeclaration_2_0_1(b, l + 1);
+    r = r && EnumMembers(b, l + 1);
+    r = r && AnonymousEnumDeclaration_2_0_2(b, l + 1);
     r = r && consumeToken(b, OP_BRACES_RIGHT);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // (EnumMembers)
-  private static boolean AnonymousEnumDeclaration_2_0_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AnonymousEnumDeclaration_2_0_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = EnumMembers(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
+  // ','?
+  private static boolean AnonymousEnumDeclaration_2_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "AnonymousEnumDeclaration_2_0_2")) return false;
+    consumeToken(b, OP_COMMA);
+    return true;
   }
 
   /* ********************************************************** */
