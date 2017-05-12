@@ -2213,9 +2213,7 @@ EnumMembers ::=
 EnumMember ::= Identifier ('=' AssignExpression)? | Type Identifier '=' AssignExpression
 
 AnonymousEnumDeclaration ::=
-    'enum' (':' EnumBaseType)? ('{' (EnumMembers) '}')?{
-        pin = 1
-    }
+    'enum' (':' EnumBaseType)? ('{' EnumMembers ',' '}')//',' needed for extra comma allowed by d
 
 //Template
 

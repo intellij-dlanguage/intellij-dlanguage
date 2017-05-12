@@ -4585,7 +4585,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // 'default' ':' ScopeStatementList
+  // 'default' ':' ScopeStatementList?
   public static boolean DefaultStatement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "DefaultStatement")) return false;
     if (!nextTokenIs(b, KW_DEFAULT)) return false;
@@ -4593,9 +4593,16 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b, l, _NONE_, DEFAULT_STATEMENT, null);
     r = consumeTokens(b, 1, KW_DEFAULT, OP_COLON);
     p = r; // pin = 1
-    r = r && ScopeStatementList(b, l + 1);
+    r = r && DefaultStatement_2(b, l + 1);
     exit_section_(b, l, m, r, p, null);
     return r || p;
+  }
+
+  // ScopeStatementList?
+  private static boolean DefaultStatement_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "DefaultStatement_2")) return false;
+    ScopeStatementList(b, l + 1);
+    return true;
   }
 
   /* ********************************************************** */
@@ -12364,16 +12371,16 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // UserDefinedAttributeArgumentOnly
+  //     | UserDefinedAttributeWithTemplateInstance //must be above with identifier, becuae the pin on with Identifier will falsely match templates todo
   //     | UserDefinedAttributeWithIdentifier
-  //     | UserDefinedAttributeWithTemplateInstance
   public static boolean UserDefinedAttribute(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "UserDefinedAttribute")) return false;
     if (!nextTokenIs(b, OP_AT)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = UserDefinedAttributeArgumentOnly(b, l + 1);
-    if (!r) r = UserDefinedAttributeWithIdentifier(b, l + 1);
     if (!r) r = UserDefinedAttributeWithTemplateInstance(b, l + 1);
+    if (!r) r = UserDefinedAttributeWithIdentifier(b, l + 1);
     exit_section_(b, m, USER_DEFINED_ATTRIBUTE, r);
     return r;
   }
