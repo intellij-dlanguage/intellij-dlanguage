@@ -7,6 +7,12 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageStaticElseCondition extends PsiElement {
 
+  @Nullable
+  DLanguageAggregateBody getAggregateBody();
+
+  @Nullable
+  DLanguageDeclDef getDeclDef();
+
   @NotNull
   PsiElement getKwElse();
 

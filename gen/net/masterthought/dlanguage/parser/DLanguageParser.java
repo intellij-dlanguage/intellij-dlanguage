@@ -10690,13 +10690,39 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // 'else'
+  //     | 'else' DeclDef
+  //     | 'else' AggregateBody
   public static boolean StaticElseCondition(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "StaticElseCondition")) return false;
     if (!nextTokenIs(b, KW_ELSE)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, KW_ELSE);
+    if (!r) r = StaticElseCondition_1(b, l + 1);
+    if (!r) r = StaticElseCondition_2(b, l + 1);
     exit_section_(b, m, STATIC_ELSE_CONDITION, r);
+    return r;
+  }
+
+  // 'else' DeclDef
+  private static boolean StaticElseCondition_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "StaticElseCondition_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, KW_ELSE);
+    r = r && DeclDef(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // 'else' AggregateBody
+  private static boolean StaticElseCondition_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "StaticElseCondition_2")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, KW_ELSE);
+    r = r && AggregateBody(b, l + 1);
+    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -12325,9 +12351,9 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     boolean r, p;
     Marker m = enter_section_(b, l, _NONE_, UNION_TEMPLATE_DECLARATION, null);
     r = consumeToken(b, KW_UNION);
-    p = r; // pin = 1
-    r = r && report_error_(b, Identifier(b, l + 1));
-    r = p && report_error_(b, TemplateParameters(b, l + 1)) && r;
+    r = r && Identifier(b, l + 1);
+    p = r; // pin = 2
+    r = r && report_error_(b, TemplateParameters(b, l + 1));
     r = p && report_error_(b, UnionTemplateDeclaration_3(b, l + 1)) && r;
     r = p && AggregateBody(b, l + 1) && r;
     exit_section_(b, l, m, r, p, null);

@@ -39,9 +39,9 @@ public class DLanguageUnionTemplateDeclarationImpl extends ASTWrapperPsiElement 
   }
 
   @Override
-  @Nullable
+  @NotNull
   public DLanguageIdentifier getIdentifier() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class));
   }
 
   @Override

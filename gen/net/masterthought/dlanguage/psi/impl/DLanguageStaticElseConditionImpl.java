@@ -27,6 +27,18 @@ public class DLanguageStaticElseConditionImpl extends ASTWrapperPsiElement imple
   }
 
   @Override
+  @Nullable
+  public DLanguageAggregateBody getAggregateBody() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageAggregateBody.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageDeclDef getDeclDef() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageDeclDef.class);
+  }
+
+  @Override
   @NotNull
   public PsiElement getKwElse() {
     return notNullChild(findChildByType(KW_ELSE));

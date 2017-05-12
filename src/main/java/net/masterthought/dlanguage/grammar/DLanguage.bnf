@@ -2142,7 +2142,7 @@ UnionDeclaration ::=
 
 UnionTemplateDeclaration ::=
     'union' Identifier TemplateParameters Constraint? AggregateBody{
-    pin = 1
+    pin = 2// pin must be 2 because anon declarations have no identifier
     }
 
 AnonUnionDeclaration ::=
@@ -2439,11 +2439,15 @@ DebugCondition ::=
     }
 
 StaticIfCondition ::=
-    'static' 'if' '(' AssignExpression ')'{
+    'static' 'if' '(' AssignExpression ')' /*(DeclDef | AggregateBody)? StaticElseCondition?*/ {
     pin = 3
     }
 
-StaticElseCondition ::= 'else'
+//todo refactor Conditional declaration so that static else condition is not necesaray
+StaticElseCondition ::=
+    'else'
+    | 'else' DeclDef
+    | 'else' AggregateBody
 
 VersionSpecification ::=
     'version' '=' (Identifier | INTEGER_LITERAL) ';'{

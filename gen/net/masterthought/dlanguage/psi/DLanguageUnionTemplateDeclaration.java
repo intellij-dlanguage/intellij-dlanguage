@@ -13,7 +13,7 @@ public interface DLanguageUnionTemplateDeclaration extends PsiElement {
   @Nullable
   DLanguageConstraint getConstraint();
 
-  @Nullable
+  @NotNull
   DLanguageIdentifier getIdentifier();
 
   @Nullable
