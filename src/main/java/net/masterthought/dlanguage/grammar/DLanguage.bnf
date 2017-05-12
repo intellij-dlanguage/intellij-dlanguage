@@ -906,7 +906,7 @@ LastExp ::=
     AssignExpression
 
 DefaultStatement ::=
-    'default' ':' ScopeStatementList{
+    'default' ':' ScopeStatementList?{
     pin = 1
     }
 
