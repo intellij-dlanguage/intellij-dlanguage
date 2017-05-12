@@ -27,9 +27,9 @@ public class DLanguageClassTemplateDeclarationImpl extends ASTWrapperPsiElement 
   }
 
   @Override
-  @Nullable
+  @NotNull
   public DLanguageAggregateBody getAggregateBody() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageAggregateBody.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageAggregateBody.class));
   }
 
   @Override

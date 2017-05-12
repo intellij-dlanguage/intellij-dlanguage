@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageClassTemplateDeclaration extends PsiElement {
 
-  @Nullable
+  @NotNull
   DLanguageAggregateBody getAggregateBody();
 
   @Nullable

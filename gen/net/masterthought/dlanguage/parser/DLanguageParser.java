@@ -3448,6 +3448,19 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // '@' PropertyIdentifier
+  static boolean BuiltInProperty(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "BuiltInProperty")) return false;
+    if (!nextTokenIs(b, OP_AT)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, OP_AT);
+    r = r && PropertyIdentifier(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // 'case' FirstExp ':' '..' 'case' LastExp ':' ScopeStatementList
   public static boolean CaseRangeStatement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "CaseRangeStatement")) return false;
@@ -3678,7 +3691,9 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // 'class' Identifier TemplateParameters Constraint? BaseClassList? AggregateBody
-  //     | 'class' Identifier TemplateParameters BaseClassList Constraint AggregateBody
+  //     | 'class' Identifier TemplateParameters BaseClassList Constraint AggregateBody{
+  // //    pin(".*") = 3
+  //     }
   public static boolean ClassTemplateDeclaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ClassTemplateDeclaration")) return false;
     if (!nextTokenIs(b, KW_CLASS)) return false;
@@ -3693,17 +3708,16 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   // 'class' Identifier TemplateParameters Constraint? BaseClassList? AggregateBody
   private static boolean ClassTemplateDeclaration_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ClassTemplateDeclaration_0")) return false;
-    boolean r, p;
-    Marker m = enter_section_(b, l, _NONE_);
+    boolean r;
+    Marker m = enter_section_(b);
     r = consumeToken(b, KW_CLASS);
     r = r && Identifier(b, l + 1);
     r = r && TemplateParameters(b, l + 1);
-    p = r; // pin = 3
-    r = r && report_error_(b, ClassTemplateDeclaration_0_3(b, l + 1));
-    r = p && report_error_(b, ClassTemplateDeclaration_0_4(b, l + 1)) && r;
-    r = p && AggregateBody(b, l + 1) && r;
-    exit_section_(b, l, m, r, p, null);
-    return r || p;
+    r = r && ClassTemplateDeclaration_0_3(b, l + 1);
+    r = r && ClassTemplateDeclaration_0_4(b, l + 1);
+    r = r && AggregateBody(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
   }
 
   // Constraint?
@@ -3720,20 +3734,29 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // 'class' Identifier TemplateParameters BaseClassList Constraint AggregateBody
+  // 'class' Identifier TemplateParameters BaseClassList Constraint AggregateBody{
+  // //    pin(".*") = 3
+  //     }
   private static boolean ClassTemplateDeclaration_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ClassTemplateDeclaration_1")) return false;
-    boolean r, p;
-    Marker m = enter_section_(b, l, _NONE_);
+    boolean r;
+    Marker m = enter_section_(b);
     r = consumeToken(b, KW_CLASS);
     r = r && Identifier(b, l + 1);
     r = r && TemplateParameters(b, l + 1);
-    p = r; // pin = 3
-    r = r && report_error_(b, BaseClassList(b, l + 1));
-    r = p && report_error_(b, Constraint(b, l + 1)) && r;
-    r = p && AggregateBody(b, l + 1) && r;
-    exit_section_(b, l, m, r, p, null);
-    return r || p;
+    r = r && BaseClassList(b, l + 1);
+    r = r && Constraint(b, l + 1);
+    r = r && AggregateBody(b, l + 1);
+    r = r && ClassTemplateDeclaration_1_6(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // {
+  // //    pin(".*") = 3
+  //     }
+  private static boolean ClassTemplateDeclaration_1_6(PsiBuilder b, int l) {
+    return true;
   }
 
   /* ********************************************************** */
@@ -9418,27 +9441,16 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // '@' PropertyIdentifier
+  // BuiltInProperty
   //     | UserDefinedAttribute
   public static boolean Property(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "Property")) return false;
     if (!nextTokenIs(b, OP_AT)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = Property_0(b, l + 1);
+    r = BuiltInProperty(b, l + 1);
     if (!r) r = UserDefinedAttribute(b, l + 1);
     exit_section_(b, m, PROPERTY, r);
-    return r;
-  }
-
-  // '@' PropertyIdentifier
-  private static boolean Property_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "Property_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, OP_AT);
-    r = r && PropertyIdentifier(b, l + 1);
-    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -12318,105 +12330,114 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // '@' '(' ArgumentList ')'
-  //     | '@' Identifier ('(' ArgumentList? ')')?
-  //     | '@' TemplateInstance ('(' ArgumentList? ')')?
+  // UserDefinedAttributeArgumentOnly
+  //     | UserDefinedAttributeWithIdentifier
+  //     | UserDefinedAttributeWithTemplateInstance
   public static boolean UserDefinedAttribute(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "UserDefinedAttribute")) return false;
     if (!nextTokenIs(b, OP_AT)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = UserDefinedAttribute_0(b, l + 1);
-    if (!r) r = UserDefinedAttribute_1(b, l + 1);
-    if (!r) r = UserDefinedAttribute_2(b, l + 1);
+    r = UserDefinedAttributeArgumentOnly(b, l + 1);
+    if (!r) r = UserDefinedAttributeWithIdentifier(b, l + 1);
+    if (!r) r = UserDefinedAttributeWithTemplateInstance(b, l + 1);
     exit_section_(b, m, USER_DEFINED_ATTRIBUTE, r);
     return r;
   }
 
+  /* ********************************************************** */
   // '@' '(' ArgumentList ')'
-  private static boolean UserDefinedAttribute_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "UserDefinedAttribute_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, OP_AT, OP_PAR_LEFT);
-    r = r && ArgumentList(b, l + 1);
-    r = r && consumeToken(b, OP_PAR_RIGHT);
-    exit_section_(b, m, null, r);
-    return r;
+  static boolean UserDefinedAttributeArgumentOnly(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "UserDefinedAttributeArgumentOnly")) return false;
+    if (!nextTokenIs(b, OP_AT)) return false;
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_);
+    r = consumeTokens(b, 2, OP_AT, OP_PAR_LEFT);
+    p = r; // pin = 2
+    r = r && report_error_(b, ArgumentList(b, l + 1));
+    r = p && consumeToken(b, OP_PAR_RIGHT) && r;
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
   }
 
+  /* ********************************************************** */
   // '@' Identifier ('(' ArgumentList? ')')?
-  private static boolean UserDefinedAttribute_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "UserDefinedAttribute_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
+  static boolean UserDefinedAttributeWithIdentifier(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "UserDefinedAttributeWithIdentifier")) return false;
+    if (!nextTokenIs(b, OP_AT)) return false;
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_);
     r = consumeToken(b, OP_AT);
     r = r && Identifier(b, l + 1);
-    r = r && UserDefinedAttribute_1_2(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
+    p = r; // pin = 2
+    r = r && UserDefinedAttributeWithIdentifier_2(b, l + 1);
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
   }
 
   // ('(' ArgumentList? ')')?
-  private static boolean UserDefinedAttribute_1_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "UserDefinedAttribute_1_2")) return false;
-    UserDefinedAttribute_1_2_0(b, l + 1);
+  private static boolean UserDefinedAttributeWithIdentifier_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "UserDefinedAttributeWithIdentifier_2")) return false;
+    UserDefinedAttributeWithIdentifier_2_0(b, l + 1);
     return true;
   }
 
   // '(' ArgumentList? ')'
-  private static boolean UserDefinedAttribute_1_2_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "UserDefinedAttribute_1_2_0")) return false;
+  private static boolean UserDefinedAttributeWithIdentifier_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "UserDefinedAttributeWithIdentifier_2_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, OP_PAR_LEFT);
-    r = r && UserDefinedAttribute_1_2_0_1(b, l + 1);
+    r = r && UserDefinedAttributeWithIdentifier_2_0_1(b, l + 1);
     r = r && consumeToken(b, OP_PAR_RIGHT);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // ArgumentList?
-  private static boolean UserDefinedAttribute_1_2_0_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "UserDefinedAttribute_1_2_0_1")) return false;
+  private static boolean UserDefinedAttributeWithIdentifier_2_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "UserDefinedAttributeWithIdentifier_2_0_1")) return false;
     ArgumentList(b, l + 1);
     return true;
   }
 
+  /* ********************************************************** */
   // '@' TemplateInstance ('(' ArgumentList? ')')?
-  private static boolean UserDefinedAttribute_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "UserDefinedAttribute_2")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
+  static boolean UserDefinedAttributeWithTemplateInstance(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "UserDefinedAttributeWithTemplateInstance")) return false;
+    if (!nextTokenIs(b, OP_AT)) return false;
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_);
     r = consumeToken(b, OP_AT);
     r = r && TemplateInstance(b, l + 1);
-    r = r && UserDefinedAttribute_2_2(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
+    p = r; // pin = 2
+    r = r && UserDefinedAttributeWithTemplateInstance_2(b, l + 1);
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
   }
 
   // ('(' ArgumentList? ')')?
-  private static boolean UserDefinedAttribute_2_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "UserDefinedAttribute_2_2")) return false;
-    UserDefinedAttribute_2_2_0(b, l + 1);
+  private static boolean UserDefinedAttributeWithTemplateInstance_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "UserDefinedAttributeWithTemplateInstance_2")) return false;
+    UserDefinedAttributeWithTemplateInstance_2_0(b, l + 1);
     return true;
   }
 
   // '(' ArgumentList? ')'
-  private static boolean UserDefinedAttribute_2_2_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "UserDefinedAttribute_2_2_0")) return false;
+  private static boolean UserDefinedAttributeWithTemplateInstance_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "UserDefinedAttributeWithTemplateInstance_2_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, OP_PAR_LEFT);
-    r = r && UserDefinedAttribute_2_2_0_1(b, l + 1);
+    r = r && UserDefinedAttributeWithTemplateInstance_2_0_1(b, l + 1);
     r = r && consumeToken(b, OP_PAR_RIGHT);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // ArgumentList?
-  private static boolean UserDefinedAttribute_2_2_0_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "UserDefinedAttribute_2_2_0_1")) return false;
+  private static boolean UserDefinedAttributeWithTemplateInstance_2_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "UserDefinedAttributeWithTemplateInstance_2_0_1")) return false;
     ArgumentList(b, l + 1);
     return true;
   }

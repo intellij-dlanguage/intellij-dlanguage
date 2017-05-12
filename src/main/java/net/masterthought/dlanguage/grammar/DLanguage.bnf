@@ -202,11 +202,11 @@ tokens = [
 
 // Comment these back in when playing with Live Preview
 // ------------------------
-//ID = "regexp:\w+"
-//space='regexp:\s+'
-//line_comment="regexp://.*"
-//block_comment="regexp:/\*(.|\n)*\*/"
-//DOUBLE_QUOTED_STRING = 'regexp:\"([^\\"]|((\\"|\\\?|\\\|\\0|\\a|\\b|\\f|\\n|\\r|\\t|\\v)|(\\x[0-9abcdefABCDEF_]{2})|(\\[0-7])|(\\[0-7]{2})|(\\[0-7]{3})|(\\u[0-9abcdefABCDEF_]{4})|(\\U[0-9abcdefABCDEF_]{8})|(\\&([a-zA-Z_])([a-zA-Z0-9_])*;)))*\"[cwd]*'
+ID = "regexp:\w+"
+space='regexp:\s+'
+line_comment="regexp://.*"
+block_comment="regexp:/\*(.|\n)*\*/"
+DOUBLE_QUOTED_STRING = 'regexp:\"([^\\"]|((\\"|\\\?|\\\|\\0|\\a|\\b|\\f|\\n|\\r|\\t|\\v)|(\\x[0-9abcdefABCDEF_]{2})|(\\[0-7])|(\\[0-7]{2})|(\\[0-7]{3})|(\\u[0-9abcdefABCDEF_]{4})|(\\U[0-9abcdefABCDEF_]{8})|(\\&([a-zA-Z_])([a-zA-Z0-9_])*;)))*\"[cwd]*'
 // ------------------------
 
  ]
@@ -237,7 +237,6 @@ ModuleDeclaration ::=
         methods=[getName getFullName getNameIdentifier getReference setName getPresentation isSomeVisibility]
         stubClass="net.masterthought.dlanguage.stubs.DLanguageModuleDeclarationStub"
         implements = ["net.masterthought.dlanguage.psi.interfaces.DNamedElement" "net.masterthought.dlanguage.psi.interfaces.containers.GlobalDeclarationContainer" "net.masterthought.dlanguage.psi.interfaces.HasVisibility" "net.masterthought.dlanguage.psi.interfaces.Declaration" ]
-
     }
 
 ModuleFullyQualifiedName ::=
@@ -388,7 +387,7 @@ Typeof ::=
     }
 
 TypeVector ::=
-    '__vector' '(' Type ')'{
+    '__vector' '(' Type ')'{//todo add missing tokens
     pin = 1
     }
 
@@ -488,8 +487,8 @@ UnaryExpression ::=
     | '+'
     | '!'
     | '~') [UnaryExpression]
-    | '(' Type ')' '.' Identifier
-    | '(' Type ')' '.' TemplateInstance
+    | TypeCtor? '(' Type ')' '.' Identifier
+    | TypeCtor? '(' Type ')' '.' TemplateInstance
     | DeleteExpression
     | CastExpression
     | PowExpression
@@ -1927,8 +1926,10 @@ ParameterList ::=
     | '...'
 
 Parameter ::=
-       InOut? BasicType Declarator ('...' | '=' AssignExpression)?
-       | InOut? Type ('...')?
+       InOut? BasicType Declarator (('...' | '=') AssignExpression)?
+       | InOut? Type ('...')?//why is this '...'? necesary. surely Parameterlist covers this
+private
+
 
 InOut ::=
     InOutX [InOut]
@@ -2101,7 +2102,7 @@ ClassDeclaration ::=
 ClassTemplateDeclaration ::=
     'class' Identifier TemplateParameters Constraint? BaseClassList? AggregateBody
     | 'class' Identifier TemplateParameters BaseClassList Constraint AggregateBody{
-    pin(".*") = 3
+//    pin(".*") = 3
     }
 
 InterfaceDeclaration ::=
@@ -2374,8 +2375,13 @@ ProtectionAttribute ::=
     | 'export'
 
 Property ::=
-    '@' PropertyIdentifier
+    BuiltInProperty
     | UserDefinedAttribute
+
+private BuiltInProperty ::=
+    '@' PropertyIdentifier{
+    pin = 2
+    }
 
 PropertyIdentifier ::=
      'property'
@@ -2386,9 +2392,22 @@ PropertyIdentifier ::=
     | 'nogc'
 
 UserDefinedAttribute ::=
-      '@' '(' ArgumentList ')'
-    | '@' Identifier ('(' ArgumentList? ')')?
-    | '@' TemplateInstance ('(' ArgumentList? ')')?
+    UserDefinedAttributeArgumentOnly
+    | UserDefinedAttributeWithIdentifier
+    | UserDefinedAttributeWithTemplateInstance
+
+private UserDefinedAttributeArgumentOnly ::=
+    '@' '(' ArgumentList ')'{
+    pin = 2
+    }
+private UserDefinedAttributeWithIdentifier ::=
+    '@' Identifier ('(' ArgumentList? ')')?{
+        pin = 2
+    }
+private UserDefinedAttributeWithTemplateInstance ::=
+    '@' TemplateInstance ('(' ArgumentList? ')')?{
+        pin = 2
+    }
 
 Pragma ::=
     'pragma' '(' Identifier (',' ArgumentList)? ')'{
