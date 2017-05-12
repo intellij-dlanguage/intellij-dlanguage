@@ -5118,8 +5118,8 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // Type? ForeachTypeAttributes? Identifier
-  //    | ForeachTypeAttributes? Type? Identifier
+  // ForeachTypeAttributes? Type? Identifier // this needs to be above for ForeachTypeAttributes? Type? Identifier
+  //    | Type? ForeachTypeAttributes? Identifier
   //    | Identifier
   public static boolean ForeachType(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ForeachType")) return false;
@@ -5132,7 +5132,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // Type? ForeachTypeAttributes? Identifier
+  // ForeachTypeAttributes? Type? Identifier
   private static boolean ForeachType_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ForeachType_0")) return false;
     boolean r;
@@ -5144,21 +5144,21 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // Type?
+  // ForeachTypeAttributes?
   private static boolean ForeachType_0_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ForeachType_0_0")) return false;
-    Type(b, l + 1);
-    return true;
-  }
-
-  // ForeachTypeAttributes?
-  private static boolean ForeachType_0_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "ForeachType_0_1")) return false;
     ForeachTypeAttributes(b, l + 1);
     return true;
   }
 
-  // ForeachTypeAttributes? Type? Identifier
+  // Type?
+  private static boolean ForeachType_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ForeachType_0_1")) return false;
+    Type(b, l + 1);
+    return true;
+  }
+
+  // Type? ForeachTypeAttributes? Identifier
   private static boolean ForeachType_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ForeachType_1")) return false;
     boolean r;
@@ -5170,17 +5170,17 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ForeachTypeAttributes?
+  // Type?
   private static boolean ForeachType_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ForeachType_1_0")) return false;
-    ForeachTypeAttributes(b, l + 1);
+    Type(b, l + 1);
     return true;
   }
 
-  // Type?
+  // ForeachTypeAttributes?
   private static boolean ForeachType_1_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ForeachType_1_1")) return false;
-    Type(b, l + 1);
+    ForeachTypeAttributes(b, l + 1);
     return true;
   }
 
