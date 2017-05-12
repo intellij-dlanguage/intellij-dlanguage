@@ -27,9 +27,9 @@ public class DLanguageCaseRangeStatementImpl extends ASTWrapperPsiElement implem
   }
 
   @Override
-  @Nullable
+  @NotNull
   public DLanguageFirstExp getFirstExp() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageFirstExp.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageFirstExp.class));
   }
 
   @Override
@@ -45,9 +45,9 @@ public class DLanguageCaseRangeStatementImpl extends ASTWrapperPsiElement implem
   }
 
   @Override
-  @Nullable
+  @NotNull
   public PsiElement getOpDdot() {
-    return findChildByType(OP_DDOT);
+    return notNullChild(findChildByType(OP_DDOT));
   }
 
 }

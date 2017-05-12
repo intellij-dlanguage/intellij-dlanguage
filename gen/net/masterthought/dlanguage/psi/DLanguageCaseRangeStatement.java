@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageCaseRangeStatement extends PsiElement {
 
-  @Nullable
+  @NotNull
   DLanguageFirstExp getFirstExp();
 
   @Nullable
@@ -16,7 +16,7 @@ public interface DLanguageCaseRangeStatement extends PsiElement {
   @Nullable
   DLanguageScopeStatementList getScopeStatementList();
 
-  @Nullable
+  @NotNull
   PsiElement getOpDdot();
 
 }

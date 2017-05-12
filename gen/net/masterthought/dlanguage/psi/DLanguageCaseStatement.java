@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageCaseStatement extends PsiElement {
 
-  @Nullable
+  @NotNull
   DLanguageArgumentList getArgumentList();
 
   @Nullable
@@ -16,7 +16,7 @@ public interface DLanguageCaseStatement extends PsiElement {
   @NotNull
   PsiElement getKwCase();
 
-  @Nullable
+  @NotNull
   PsiElement getOpColon();
 
 }

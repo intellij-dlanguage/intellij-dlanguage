@@ -27,9 +27,9 @@ public class DLanguageCaseStatementImpl extends ASTWrapperPsiElement implements 
   }
 
   @Override
-  @Nullable
+  @NotNull
   public DLanguageArgumentList getArgumentList() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageArgumentList.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageArgumentList.class));
   }
 
   @Override
@@ -45,9 +45,9 @@ public class DLanguageCaseStatementImpl extends ASTWrapperPsiElement implements 
   }
 
   @Override
-  @Nullable
+  @NotNull
   public PsiElement getOpColon() {
-    return findChildByType(OP_COLON);
+    return notNullChild(findChildByType(OP_COLON));
   }
 
 }

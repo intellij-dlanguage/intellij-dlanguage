@@ -3468,10 +3468,10 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     boolean r, p;
     Marker m = enter_section_(b, l, _NONE_, CASE_RANGE_STATEMENT, null);
     r = consumeToken(b, KW_CASE);
-    p = r; // pin = 1
-    r = r && report_error_(b, FirstExp(b, l + 1));
-    r = p && report_error_(b, consumeTokens(b, -1, OP_COLON, OP_DDOT, KW_CASE)) && r;
-    r = p && report_error_(b, LastExp(b, l + 1)) && r;
+    r = r && FirstExp(b, l + 1);
+    r = r && consumeTokens(b, 2, OP_COLON, OP_DDOT, KW_CASE);
+    p = r; // pin = 4
+    r = r && report_error_(b, LastExp(b, l + 1));
     r = p && report_error_(b, consumeToken(b, OP_COLON)) && r;
     r = p && ScopeStatementList(b, l + 1) && r;
     exit_section_(b, l, m, r, p, null);
@@ -3486,10 +3486,10 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     boolean r, p;
     Marker m = enter_section_(b, l, _NONE_, CASE_STATEMENT, null);
     r = consumeToken(b, KW_CASE);
-    p = r; // pin = 1
-    r = r && report_error_(b, ArgumentList(b, l + 1));
-    r = p && report_error_(b, consumeToken(b, OP_COLON)) && r;
-    r = p && CaseStatement_3(b, l + 1) && r;
+    r = r && ArgumentList(b, l + 1);
+    r = r && consumeToken(b, OP_COLON);
+    p = r; // pin = 3
+    r = r && CaseStatement_3(b, l + 1);
     exit_section_(b, l, m, r, p, null);
     return r || p;
   }
