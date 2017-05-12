@@ -64,6 +64,12 @@ public class DLanguageUnaryExpressionImpl extends ASTWrapperPsiElement implement
 
   @Override
   @Nullable
+  public DLanguageTypeCtor getTypeCtor() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageTypeCtor.class);
+  }
+
+  @Override
+  @Nullable
   public DLanguageUnaryExpression getUnaryExpression() {
     return PsiTreeUtil.getChildOfType(this, DLanguageUnaryExpression.class);
   }

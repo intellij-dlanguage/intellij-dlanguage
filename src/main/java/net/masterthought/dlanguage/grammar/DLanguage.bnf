@@ -1926,9 +1926,8 @@ ParameterList ::=
     | '...'
 
 Parameter ::=
-       InOut? BasicType Declarator (('...' | '=') AssignExpression)?
+       InOut? BasicType Declarator (('...' | '=') AssignExpression?)?
        | InOut? Type ('...')?//why is this '...'? necesary. surely Parameterlist covers this
-private
 
 
 InOut ::=
