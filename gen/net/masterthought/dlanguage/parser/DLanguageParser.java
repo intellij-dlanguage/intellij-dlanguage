@@ -7431,6 +7431,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   /* ********************************************************** */
   // LabeledStatement
   //     | DeclarationStatement
+  //     | Declaration
   //     | ExpressionStatement
   //     | IfStatement
   //     | WhileStatement
@@ -7462,6 +7463,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b, l, _NONE_, NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT, "<non empty statement no case no default>");
     r = LabeledStatement(b, l + 1);
     if (!r) r = DeclarationStatement(b, l + 1);
+    if (!r) r = Declaration(b, l + 1);
     if (!r) r = ExpressionStatement(b, l + 1);
     if (!r) r = IfStatement(b, l + 1);
     if (!r) r = WhileStatement(b, l + 1);
@@ -10884,7 +10886,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // '{' StructMemberInitializers? '}'
+  // '{' StructMemberInitializers? ','? '}'
   public static boolean StructInitializer(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "StructInitializer")) return false;
     if (!nextTokenIs(b, OP_BRACES_LEFT)) return false;
@@ -10892,6 +10894,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = consumeToken(b, OP_BRACES_LEFT);
     r = r && StructInitializer_1(b, l + 1);
+    r = r && StructInitializer_2(b, l + 1);
     r = r && consumeToken(b, OP_BRACES_RIGHT);
     exit_section_(b, m, STRUCT_INITIALIZER, r);
     return r;
@@ -10901,6 +10904,13 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   private static boolean StructInitializer_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "StructInitializer_1")) return false;
     StructMemberInitializers(b, l + 1);
+    return true;
+  }
+
+  // ','?
+  private static boolean StructInitializer_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "StructInitializer_2")) return false;
+    consumeToken(b, OP_COMMA);
     return true;
   }
 
