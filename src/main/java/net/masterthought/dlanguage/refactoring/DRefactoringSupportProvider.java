@@ -5,7 +5,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiNamedElement;
 import net.masterthought.dlanguage.psi.DLanguageIdentifier;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
-import net.masterthought.dlanguage.utils.DUtil;
+import net.masterthought.dlanguage.utils.DResolveUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -18,7 +18,7 @@ public class DRefactoringSupportProvider extends RefactoringSupportProvider {
     public boolean isSafeDeleteAvailable(@NotNull PsiElement element) {
         if (!(element instanceof DLanguageIdentifier))
             return false;
-        final List<PsiNamedElement> resolve = DUtil.findDefinitionNode(element.getProject(), ((DNamedElement) element).getName(), (PsiNamedElement) element);
+        final List<PsiNamedElement> resolve = DResolveUtil.findDefinitionNode(element.getProject(), ((DNamedElement) element).getName(), (PsiNamedElement) element);
         return resolve.size() == 1;
     }
 }

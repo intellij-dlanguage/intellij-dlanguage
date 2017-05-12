@@ -14,6 +14,7 @@ import net.masterthought.dlanguage.psi.interfaces.*;
 import net.masterthought.dlanguage.psi.interfaces.containers.*;
 import net.masterthought.dlanguage.psi.references.DReference;
 import net.masterthought.dlanguage.stubs.*;
+import net.masterthought.dlanguage.utils.DResolveUtil;
 import net.masterthought.dlanguage.utils.DUtil;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -116,7 +117,7 @@ public class DPsiImplUtil {
     }
 
     public static void delete(DLanguageIdentifier identifier) {
-        final List<PsiNamedElement> definitionNode = DUtil.findDefinitionNode(identifier.getProject(), identifier.getName(), identifier);
+        final List<PsiNamedElement> definitionNode = DResolveUtil.findDefinitionNode(identifier.getProject(), identifier.getName(), identifier);
         if (definitionNode.size() != 1)
             throw new IllegalStateException();
         definitionNode.get(0).delete();
@@ -306,7 +307,7 @@ public class DPsiImplUtil {
             assert (basicType.getTypeVector() == null);
             assert (basicType.getTypeof() == null);
             final DLanguageIdentifierList identifierList = basicType.getIdentifierList();
-            final List<PsiNamedElement> definitionNodesSimple = DUtil.findDefinitionNodes((DLanguageFile) identifierList.getContainingFile(), getEndOfIdentifierList(identifierList).getName());
+            final List<PsiNamedElement> definitionNodesSimple = DResolveUtil.findDefinitionNodes((DLanguageFile) identifierList.getContainingFile(), getEndOfIdentifierList(identifierList).getName());
             Set<CanInherit> definitionNodes = new HashSet<>();
             for (PsiElement node : definitionNodesSimple) {
                 if (definitionNodes instanceof CanInherit)
@@ -971,7 +972,7 @@ public class DPsiImplUtil {
             assert (basicType.getTypeVector() == null);
             assert (basicType.getTypeof() == null);
             final DLanguageIdentifierList identifierList = basicType.getIdentifierList();
-            final List<PsiNamedElement> definitionNodesSimple = DUtil.findDefinitionNodes((DLanguageFile) identifierList.getContainingFile(), getEndOfIdentifierList(identifierList).getName());
+            final List<PsiNamedElement> definitionNodesSimple = DResolveUtil.findDefinitionNodes((DLanguageFile) identifierList.getContainingFile(), getEndOfIdentifierList(identifierList).getName());
             Set<CanInherit> definitionNodes = new HashSet<>();
             for (PsiElement node : definitionNodesSimple) {
                 if (definitionNodes instanceof CanInherit)

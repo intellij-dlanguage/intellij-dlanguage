@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-import static net.masterthought.dlanguage.utils.DUtil.findDefinitionNode;
+import static net.masterthought.dlanguage.utils.DResolveUtil.findDefinitionNode;
 
 /**
  * Resolves references to elements.
