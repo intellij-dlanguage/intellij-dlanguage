@@ -2421,7 +2421,7 @@ ConditionalDeclaration ::=
     | Condition DeclarationBlock 'else' ':' DeclDefs?
 
 ConditionalStatement ::=
-    Condition Statement ('else' Statement)?
+    Condition Statement ('else' (Statement | DeclDef | AggregateBody))?
 
 Condition ::=
     VersionCondition
@@ -2445,9 +2445,9 @@ StaticIfCondition ::=
 
 //todo refactor Conditional declaration so that static else condition is not necesaray
 StaticElseCondition ::=
-    'else'
-    | 'else' DeclDef
-    | 'else' AggregateBody
+    ('else' '{' DeclDefs? '}')
+    | ('else' DeclDef)
+    | 'else'
 
 VersionSpecification ::=
     'version' '=' (Identifier | INTEGER_LITERAL) ';'{

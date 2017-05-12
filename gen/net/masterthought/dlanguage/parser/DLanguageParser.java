@@ -3937,7 +3937,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // Condition Statement ('else' Statement)?
+  // Condition Statement ('else' (Statement | DeclDef | AggregateBody))?
   public static boolean ConditionalStatement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ConditionalStatement")) return false;
     boolean r;
@@ -3949,20 +3949,32 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ('else' Statement)?
+  // ('else' (Statement | DeclDef | AggregateBody))?
   private static boolean ConditionalStatement_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ConditionalStatement_2")) return false;
     ConditionalStatement_2_0(b, l + 1);
     return true;
   }
 
-  // 'else' Statement
+  // 'else' (Statement | DeclDef | AggregateBody)
   private static boolean ConditionalStatement_2_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ConditionalStatement_2_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, KW_ELSE);
-    r = r && Statement(b, l + 1);
+    r = r && ConditionalStatement_2_0_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // Statement | DeclDef | AggregateBody
+  private static boolean ConditionalStatement_2_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ConditionalStatement_2_0_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = Statement(b, l + 1);
+    if (!r) r = DeclDef(b, l + 1);
+    if (!r) r = AggregateBody(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -10689,19 +10701,38 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // 'else'
-  //     | 'else' DeclDef
-  //     | 'else' AggregateBody
+  // ('else' '{' DeclDefs? '}')
+  //     | ('else' DeclDef)
+  //     | 'else'
   public static boolean StaticElseCondition(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "StaticElseCondition")) return false;
     if (!nextTokenIs(b, KW_ELSE)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, KW_ELSE);
+    r = StaticElseCondition_0(b, l + 1);
     if (!r) r = StaticElseCondition_1(b, l + 1);
-    if (!r) r = StaticElseCondition_2(b, l + 1);
+    if (!r) r = consumeToken(b, KW_ELSE);
     exit_section_(b, m, STATIC_ELSE_CONDITION, r);
     return r;
+  }
+
+  // 'else' '{' DeclDefs? '}'
+  private static boolean StaticElseCondition_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "StaticElseCondition_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, KW_ELSE, OP_BRACES_LEFT);
+    r = r && StaticElseCondition_0_2(b, l + 1);
+    r = r && consumeToken(b, OP_BRACES_RIGHT);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // DeclDefs?
+  private static boolean StaticElseCondition_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "StaticElseCondition_0_2")) return false;
+    DeclDefs(b, l + 1);
+    return true;
   }
 
   // 'else' DeclDef
@@ -10711,17 +10742,6 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = consumeToken(b, KW_ELSE);
     r = r && DeclDef(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // 'else' AggregateBody
-  private static boolean StaticElseCondition_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "StaticElseCondition_2")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, KW_ELSE);
-    r = r && AggregateBody(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }

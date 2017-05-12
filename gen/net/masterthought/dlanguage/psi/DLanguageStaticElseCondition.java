@@ -8,12 +8,18 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageStaticElseCondition extends PsiElement {
 
   @Nullable
-  DLanguageAggregateBody getAggregateBody();
+  DLanguageDeclDef getDeclDef();
 
   @Nullable
-  DLanguageDeclDef getDeclDef();
+  DLanguageDeclDefs getDeclDefs();
 
   @NotNull
   PsiElement getKwElse();
+
+  @Nullable
+  PsiElement getOpBracesLeft();
+
+  @Nullable
+  PsiElement getOpBracesRight();
 
 }
