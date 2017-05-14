@@ -75,8 +75,7 @@ From IntelliJ go to Preferences > Plugins > Browse Repositories and search For "
 You can also download the plugin jar to your local disk here: [Jetbrains plugin repository](https://plugins.jetbrains.com/plugin/8115?pr=) and then in intelliJ
 go to Preferences > Plugins > Install plugin from disk and choose the jar you downloaded
 
-![installation]
-(https://github.com/kingsleyh/DLanguage/raw/master/.README/install.png)
+![installation](https://github.com/kingsleyh/DLanguage/raw/master/.README/install.png)
 
 ## Quick Usage
 
@@ -85,8 +84,7 @@ go to Preferences > Plugins > Install plugin from disk and choose the jar you do
   * If you have an existing dub project you can import it via File > Import Project
   * Only dub.json is supported currently - if you want dub.sdl support please raise an Issue for it
 
- ![Import]
- (https://github.com/kingsleyh/DLanguage/raw/master/.README/import-dub-project.png)
+ ![Import](https://github.com/kingsleyh/DLanguage/raw/master/.README/import-dub-project.png)
 
 #### New Project with DUB
 
@@ -100,16 +98,14 @@ go to Preferences > Plugins > Install plugin from disk and choose the jar you do
   * There is very basic dub dependency support via Tools > Process D Libraries
   * It reads the dub dependencies and loads the libraries into the External Libraries
 
-  ![Dub  Dependency]
-   (https://github.com/kingsleyh/DLanguage/raw/master/.README/process-d-libs.png)
+  ![Dub  Dependency](https://github.com/kingsleyh/DLanguage/raw/master/.README/process-d-libs.png)
 
 #### Basic D-Unit Test Runner Support
 
   * If you add the d-unit dependency to your dub.json [d-unit](http://code.dlang.org/packages/d-unit)
   * and then run Process D Libraries you will be able to run d-unit tests
 
-  ![Test Support]
-   (https://github.com/kingsleyh/DLanguage/raw/master/.README/d-unit-support.png)
+  ![Test Support](https://github.com/kingsleyh/DLanguage/raw/master/.README/d-unit-support.png)
 
 #### Configure DTools
 
@@ -201,95 +197,77 @@ Here are some screenshots of my progress so far:
 
 Dtools configuration
 
-![improved highlighting]
-(https://github.com/kingsleyh/DLanguage/raw/master/.README/tool_settings.png)
+![improved highlighting](https://github.com/kingsleyh/DLanguage/raw/master/.README/tool_settings.png)
 
 Autocompletion using DCD
 
-![improved highlighting]
-(https://github.com/kingsleyh/DLanguage/raw/master/.README/autocomplete.png)
+![improved highlighting](https://github.com/kingsleyh/DLanguage/raw/master/.README/autocomplete.png)
 
 Compile checking
 
-![improved highlighting]
-(https://github.com/kingsleyh/DLanguage/raw/master/.README/compile_checking.png)
+![improved highlighting](https://github.com/kingsleyh/DLanguage/raw/master/.README/compile_checking.png)
 
 Dscanner Code Linting
 
-![improved highlighting]
-(https://github.com/kingsleyh/DLanguage/raw/master/.README/dscanner_linting.png)
+![improved highlighting](https://github.com/kingsleyh/DLanguage/raw/master/.README/dscanner_linting.png)
 
 Goto Class
 
-![improved highlighting]
-(https://github.com/kingsleyh/DLanguage/raw/master/.README/goto_class.png)
+![improved highlighting](https://github.com/kingsleyh/DLanguage/raw/master/.README/goto_class.png)
 
 Configure Syntax Highlighting
 
-![highlighting settings]
-(https://github.com/kingsleyh/DLanguage/raw/master/.README/highlighting_settings.png)
+![highlighting settings](https://github.com/kingsleyh/DLanguage/raw/master/.README/highlighting_settings.png)
 
 ## Older Screenshots
 
 Improved Syntax Highlighting with Annotator:
 
-![improved highlighting]
-(https://github.com/kingsleyh/DLanguage/raw/master/.README/improved_syntax_highlighting.png)
+![improved highlighting](https://github.com/kingsleyh/DLanguage/raw/master/.README/improved_syntax_highlighting.png)
 
 Syntax Highlighting and PSI Structure:
 
-![highlighting and psi structure]
-(https://github.com/kingsleyh/DLanguage/raw/master/.README/highlighting_and_psi_structure.png)
+![highlighting and psi structure](https://github.com/kingsleyh/DLanguage/raw/master/.README/highlighting_and_psi_structure.png)
 
 Create a new D project:
 
-![create a new d project]
-(https://github.com/kingsleyh/DLanguage/raw/master/.README/create_new_d_project.png)
+![create a new d project](https://github.com/kingsleyh/DLanguage/raw/master/.README/create_new_d_project.png)
 
 Module Settings - add D compiler:
 
-![module settings add d compiler]
-(https://github.com/kingsleyh/DLanguage/raw/master/.README/module_settings_add_d_compiler.png)
+![module settings add d compiler](https://github.com/kingsleyh/DLanguage/raw/master/.README/module_settings_add_d_compiler.png)
 
 Module Settings - set D compiler in project:
 
-![module settings add compiler to project]
-(https://github.com/kingsleyh/DLanguage/raw/master/.README/module_settings_set_project_d_compiler.png)
+![module settings add compiler to project](https://github.com/kingsleyh/DLanguage/raw/master/.README/module_settings_set_project_d_compiler.png)
 
 Add new D file (from right click menu)
 
-![right click add new d file]
-(https://github.com/kingsleyh/DLanguage/raw/master/.README/right_click_add_new_d_file.png)
+![right click add new d file](https://github.com/kingsleyh/DLanguage/raw/master/.README/right_click_add_new_d_file.png)
 
 D file editor:
 
-![d file editor]
-(https://github.com/kingsleyh/DLanguage/raw/master/.README/d_file_editor.png)
+![d file editor](https://github.com/kingsleyh/DLanguage/raw/master/.README/d_file_editor.png)
 
 Run Configuration menus:
 
-![run configuration menus]
-(https://github.com/kingsleyh/DLanguage/raw/master/.README/run_configuration_menus.png)
+![run configuration menus](https://github.com/kingsleyh/DLanguage/raw/master/.README/run_configuration_menus.png)
 
 Run Configuration create box:
 
-![run configuration create box]
-(https://github.com/kingsleyh/DLanguage/raw/master/.README/run_configuration_create_box.png)
+![run configuration create box](https://github.com/kingsleyh/DLanguage/raw/master/.README/run_configuration_create_box.png)
 
 Run Configuration edit:
 
-![run configuration edit]
-(https://github.com/kingsleyh/DLanguage/raw/master/.README/run_configuration_edit.png)
+![run configuration edit](https://github.com/kingsleyh/DLanguage/raw/master/.README/run_configuration_edit.png)
 
 Run Configuration running:
 
-![run configuration running]
-(https://github.com/kingsleyh/DLanguage/raw/master/.README/run_configuration_running.png)
+![run configuration running](https://github.com/kingsleyh/DLanguage/raw/master/.README/run_configuration_running.png)
 
 PSI Tree and Highlighting:
 
-![psi tree and highlighting]
-(https://github.com/kingsleyh/DLanguage/raw/master/.README/psi_structure.png)
+![psi tree and highlighting](https://github.com/kingsleyh/DLanguage/raw/master/.README/psi_structure.png)
 
 
 ## Develop
