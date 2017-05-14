@@ -1,18 +1,13 @@
 package net.masterthought.dlanguage.utils;
 
 import com.intellij.lang.ASTNode;
-import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiNamedElement;
-import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.util.containers.ContainerUtil;
-import net.masterthought.dlanguage.index.DModuleIndex;
 import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.interfaces.*;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -48,8 +43,7 @@ public class DUtil {
      */
     public static boolean definitionNode(@NotNull PsiNamedElement e) {
         if (e instanceof DLanguageIdentifier) return definitionNode((DLanguageIdentifier) e);
-//        if (e instanceof DDefinitionClass) return definitionNode((DDefinitionClass) e);
-        return false;
+        return e instanceof Declaration;
     }
 
     public static boolean definitionNode(@NotNull DLanguageIdentifier e) {

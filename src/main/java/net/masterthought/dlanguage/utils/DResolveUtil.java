@@ -5,12 +5,13 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.psi.util.PsiTreeUtil;
+import com.intellij.psi.stubs.StubIndex;
 import com.intellij.util.containers.ContainerUtil;
 import net.masterthought.dlanguage.index.DModuleIndex;
 import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 import net.masterthought.dlanguage.psi.interfaces.Declaration;
+import net.masterthought.dlanguage.stubs.index.DAllNameIndex;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -63,11 +64,18 @@ public class DResolveUtil {
     public static void findDefinitionNode(@Nullable DLanguageFile file, @Nullable String name, @Nullable PsiNamedElement e, @NotNull List<PsiNamedElement> result) {
         if (file == null) return;
         // start with empty list of potential named elements
-        Collection<DNamedElement> declarationElements = Collections.EMPTY_LIST;
+        Collection<DNamedElement> declarationElements = new ArrayList<>();
 
         if (e instanceof DLanguageIdentifier) {
-            declarationElements = new HashSet<>();
-            Collection<Declaration> declarations = PsiTreeUtil.findChildrenOfAnyType(file, Declaration.class);
+
+            List<Declaration> declarations = new ArrayList<>();
+            final Collection<DNamedElement> elements = StubIndex.getElements(DAllNameIndex.KEY, e.getName(), e.getProject(), GlobalSearchScope.fileScope(file), DNamedElement.class);
+            for (DNamedElement element : elements) {
+                if (element instanceof Declaration) {
+                    declarations.add((Declaration) element);
+                }
+            }
+
             for (DNamedElement candidateDeclaration : declarations) {
                 if(candidateDeclaration instanceof DLanguageAutoDeclarationY){
                     if(((DLanguageAutoDeclarationY) candidateDeclaration).actuallyIsDeclaration()){
@@ -105,7 +113,7 @@ public class DResolveUtil {
     }
 
     /**
-     * Finds a name definition inside a Haskell file. All definitions are found when name
+     * Finds a name definition inside a D file. All definitions are found when name
      * is null.
      */
     @NotNull
@@ -116,7 +124,7 @@ public class DResolveUtil {
     }
 
     /**
-     * Finds name definition across all Haskell files in the project. All
+     * Finds name definition across all D files in the project. All
      * definitions are found when name is null.
      */
     @NotNull
