@@ -10,7 +10,7 @@ public interface DLanguageSynchronizedStatement extends PsiElement {
   @Nullable
   DLanguageExpression getExpression();
 
-  @NotNull
+  @Nullable
   DLanguageScopeStatement getScopeStatement();
 
   @NotNull

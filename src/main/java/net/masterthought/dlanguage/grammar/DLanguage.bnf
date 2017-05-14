@@ -202,11 +202,11 @@ tokens = [
 
 // Comment these back in when playing with Live Preview
 // ------------------------
-ID = "regexp:\w+"
-space='regexp:\s+'
-line_comment="regexp://.*"
-block_comment="regexp:/\*(.|\n)*\*/"
-DOUBLE_QUOTED_STRING = 'regexp:\"([^\\"]|((\\"|\\\?|\\\|\\0|\\a|\\b|\\f|\\n|\\r|\\t|\\v)|(\\x[0-9abcdefABCDEF_]{2})|(\\[0-7])|(\\[0-7]{2})|(\\[0-7]{3})|(\\u[0-9abcdefABCDEF_]{4})|(\\U[0-9abcdefABCDEF_]{8})|(\\&([a-zA-Z_])([a-zA-Z0-9_])*;)))*\"[cwd]*'
+//ID = "regexp:\w+"
+//space='regexp:\s+'
+//line_comment="regexp://.*"
+//block_comment="regexp:/\*(.|\n)*\*/"
+//DOUBLE_QUOTED_STRING = 'regexp:\"([^\\"]|((\\"|\\\?|\\\|\\0|\\a|\\b|\\f|\\n|\\r|\\t|\\v)|(\\x[0-9abcdefABCDEF_]{2})|(\\[0-7])|(\\[0-7]{2})|(\\[0-7]{3})|(\\u[0-9abcdefABCDEF_]{4})|(\\U[0-9abcdefABCDEF_]{8})|(\\&([a-zA-Z_])([a-zA-Z0-9_])*;)))*\"[cwd]*'
 // ------------------------
 
  ]
@@ -495,16 +495,12 @@ UnaryExpression ::=
 
 NewExpression ::=
     'new' AllocatorArguments? Type
-    | NewExpressionWithArgs{
-        //pin(".*") = 1
-    }
+    | NewExpressionWithArgs
 
 NewExpressionWithArgs ::=
     'new' AllocatorArguments? Type '[' AssignExpression ']'
    | 'new' AllocatorArguments? Type ('(' ArgumentList? ')')?
-   | NewAnonClassExpression{
-    //pin = 1//todo
-   }
+   | NewAnonClassExpression
 
 AllocatorArguments ::=
     '(' ArgumentList? ')'
@@ -522,7 +518,7 @@ ClassArguments ::=
 
 DeleteExpression ::=
     'delete' UnaryExpression{
-        pin = 1
+//        pin = 2
     }
 
 CastExpression ::=
@@ -640,14 +636,21 @@ ImportExpression ::=
     }
 
 TypeidExpression ::=
-    'typeid' '(' Type ')'
-    | 'typeid' '(' Expression ')'{
-    //pin(".*") = 1
+    TypeidExpressionType
+    | TypeidExpressionExpression
+
+private TypeidExpressionType ::=
+    'typeid' '(' Type ')'{
+        pin = 3
     }
 
-IsExpression ::= ('is' | '!is') IsExpressionSuffix{
-    pin = 2//todo decrease this pin to improve performance
-}
+private  TypeidExpressionExpression ::=
+    'typeid' '(' Expression ')'{
+        pin = 3
+    }
+
+
+IsExpression ::= ('is' | '!is') IsExpressionSuffix
 
 private IsExpressionSuffix ::=
      '(' Type ')'
@@ -944,29 +947,43 @@ GotoStatement ::=
     'goto' Identifier ';'
     | 'goto' 'default' ';'
     | 'goto' 'case' ';'
-    | 'goto' 'case' Expression ';'{
-    //pin(".*") = 1
-    }
+    | 'goto' 'case' Expression ';'
 
 WithStatement ::=
-    'with' '(' Expression ')' ScopeStatement
-    | 'with' '(' Symbol ')' ScopeStatement
-    | 'with' '(' TemplateInstance ')' ScopeStatement{
-    //pin(".*") = 1
+    WithStatementExpression
+    | WithStatementSymbol
+    | WithStatementTemplateInstance
+private WithStatementExpression ::=
+    'with' '(' Expression ')' ScopeStatement{
+        pin = 3
+    }
+private WithStatementSymbol ::=
+    'with' '(' Symbol ')' ScopeStatement{
+        pin = 3
+    }
+private WithStatementTemplateInstance ::=
+    'with' '(' TemplateInstance ')' ScopeStatement{
+        pin = 3
     }
 
 SynchronizedStatement ::=
-    'synchronized' ScopeStatement
-    | 'synchronized' '(' Expression ')' ScopeStatement{
-    //pin(".*") = 1
+    SynchronizedStatementWithExpression
+    | SynchronizedStatementWithoutExpression
+
+private SynchronizedStatementWithExpression ::=
+    'synchronized' '(' Expression ')' ScopeStatement{
+        pin = 2
     }
+private SynchronizedStatementWithoutExpression ::=
+    'synchronized' ScopeStatement{
+        pin = 2
+    }
+
 
 TryStatement ::=
     'try' ScopeStatement Catches
     | 'try' ScopeStatement Catches FinallyStatement
-    | 'try' ScopeStatement FinallyStatement{
-    //pin(".*") = 1
-    }
+    | 'try' ScopeStatement FinallyStatement
 
 Catches ::=
      Catch [Catches]
@@ -996,12 +1013,21 @@ ThrowStatement ::=
     }
 
 ScopeGuardStatement ::=
-    'scope' '(' 'exit' ')' Statement
-    | 'scope' '(' 'success' ')' Statement
-    | 'scope' '(' 'failure' ')' Statement{
-    //pin(".*") = 1
+    'scope' (ScopeExit|ScopeFailure|ScopeSuccess){
+    pin = 1
     }
-
+private ScopeExit ::=
+    '(' 'exit' ')' Statement{
+        pin = 2
+    }
+private ScopeFailure ::=
+    '(' 'success' ')' Statement{
+        pin = 2
+    }
+private ScopeSuccess ::=
+    '(' 'failure' ')' Statement{
+        pin = 2
+    }
 PragmaStatement ::=
     Pragma Statement{
     pin = 1
@@ -2028,14 +2054,20 @@ Allocator ::=
 
 Deallocator ::=
     'delete' Parameters ';'
-    | 'delete' Parameters FunctionBody{
-    //pin(".*") = 1
-    }
+    | 'delete' Parameters FunctionBody
 
 Invariant ::=
-    'invariant' '(' ')' BlockStatement
-    | 'invariant' BlockStatement{
-    //pin(".*") = 1
+    InvariantWithParen
+    | InvariantWithoutParen
+
+private InvariantWithoutParen ::=
+    'invariant' BlockStatement{
+        pin = 2
+    }
+
+private InvariantWithParen ::=
+    'invariant' '(' ')' BlockStatement{
+    pin = 2
     }
 
 UnitTesting ::=
@@ -2049,7 +2081,7 @@ UnitTesting ::=
 StaticConstructor ::=
     'static' 'this' '(' ')' ';'
     | 'static' 'this' '(' ')' FunctionBody{
-       //pin(".*") = 1
+       pin(".*") = 4
        methods=[getName getFullName getNameIdentifier getReference setName getPresentation isSomeVisibility ]
        implements = ["net.masterthought.dlanguage.psi.interfaces.containers.StatementContainer" "net.masterthought.dlanguage.psi.interfaces.DNamedElement" "net.masterthought.dlanguage.psi.interfaces.HasVisibility" "net.masterthought.dlanguage.psi.interfaces.Declaration" ]
        stubClass="net.masterthought.dlanguage.stubs.DLanguageStaticConstructorStub"
@@ -2058,7 +2090,7 @@ StaticConstructor ::=
 StaticDestructor ::=
     'static' '~' 'this' '(' ')' MemberFunctionAttributes? ';'
     | 'static' '~' 'this' '(' ')' MemberFunctionAttributes? FunctionBody{
-       //pin(".*") = 1
+       pin(".*") = 5
        methods=[getName getFullName getNameIdentifier getReference setName getPresentation isSomeVisibility]
        implements = ["net.masterthought.dlanguage.psi.interfaces.containers.StatementContainer" "net.masterthought.dlanguage.psi.interfaces.DNamedElement" "net.masterthought.dlanguage.psi.interfaces.HasVisibility" "net.masterthought.dlanguage.psi.interfaces.Declaration"]
        stubClass="net.masterthought.dlanguage.stubs.DLanguageStaticDestructorStub"
@@ -2067,15 +2099,16 @@ StaticDestructor ::=
 SharedStaticConstructor ::=
     'shared' 'static' 'this' '(' ')' ';'
     | 'shared' 'static' 'this' '(' ')' FunctionBody{
-      //pin(".*") = 1
+    pin (".*") = 5
       methods=[getName getFullName getNameIdentifier getReference setName getPresentation isSomeVisibility ]
       implements = ["net.masterthought.dlanguage.psi.interfaces.containers.StatementContainer" "net.masterthought.dlanguage.psi.interfaces.DNamedElement" "net.masterthought.dlanguage.psi.interfaces.HasVisibility" "net.masterthought.dlanguage.psi.interfaces.Declaration" ]
       stubClass="net.masterthought.dlanguage.stubs.DLanguageSharedStaticConstructorStub"
   }
-SharedStaticDestructor ::=
+
+  SharedStaticDestructor ::=
     'shared' 'static' '~' 'this' '(' ')' MemberFunctionAttributes? ';'
     | 'shared' 'static' '~' 'this' '(' ')' MemberFunctionAttributes? FunctionBody{
-       //pin(".*") = 1
+       pin(".*") = 6
        methods=[getName getFullName getNameIdentifier getReference setName getPresentation isSomeVisibility]
        implements = ["net.masterthought.dlanguage.psi.interfaces.containers.StatementContainer" "net.masterthought.dlanguage.psi.interfaces.DNamedElement" "net.masterthought.dlanguage.psi.interfaces.HasVisibility" "net.masterthought.dlanguage.psi.interfaces.Declaration"]
        stubClass="net.masterthought.dlanguage.stubs.DLanguageSharedStaticDestructorStub"
@@ -2343,7 +2376,7 @@ DeclarationBlock ::=
 LinkageAttribute ::=
     'extern' '(' LinkageType ')'
     | 'extern' '(' Identifier '++' (',' IdentifierList)? ')'{
-    //pin(".*") = 1
+//    pin(".*") = 2
     }
 
 LinkageType ::=

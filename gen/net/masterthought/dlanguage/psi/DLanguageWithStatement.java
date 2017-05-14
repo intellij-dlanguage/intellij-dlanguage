@@ -10,7 +10,7 @@ public interface DLanguageWithStatement extends PsiElement {
   @Nullable
   DLanguageExpression getExpression();
 
-  @NotNull
+  @Nullable
   DLanguageScopeStatement getScopeStatement();
 
   @Nullable
@@ -25,7 +25,7 @@ public interface DLanguageWithStatement extends PsiElement {
   @NotNull
   PsiElement getOpParLeft();
 
-  @NotNull
+  @Nullable
   PsiElement getOpParRight();
 
 }

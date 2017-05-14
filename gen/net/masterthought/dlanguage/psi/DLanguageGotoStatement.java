@@ -22,7 +22,7 @@ public interface DLanguageGotoStatement extends PsiElement {
   @NotNull
   PsiElement getKwGoto();
 
-  @NotNull
+  @Nullable
   PsiElement getOpScolon();
 
 }

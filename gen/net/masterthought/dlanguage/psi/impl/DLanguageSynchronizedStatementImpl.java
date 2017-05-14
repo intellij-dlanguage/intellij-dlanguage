@@ -33,9 +33,9 @@ public class DLanguageSynchronizedStatementImpl extends ASTWrapperPsiElement imp
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageScopeStatement getScopeStatement() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageScopeStatement.class));
+    return PsiTreeUtil.getChildOfType(this, DLanguageScopeStatement.class);
   }
 
   @Override

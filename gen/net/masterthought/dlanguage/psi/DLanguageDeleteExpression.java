@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageDeleteExpression extends PsiElement {
 
-  @Nullable
+  @NotNull
   DLanguageUnaryExpression getUnaryExpression();
 
   @NotNull

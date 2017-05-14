@@ -57,9 +57,9 @@ public class DLanguageGotoStatementImpl extends ASTWrapperPsiElement implements 
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getOpScolon() {
-    return notNullChild(findChildByType(OP_SCOLON));
+    return findChildByType(OP_SCOLON);
   }
 
 }
