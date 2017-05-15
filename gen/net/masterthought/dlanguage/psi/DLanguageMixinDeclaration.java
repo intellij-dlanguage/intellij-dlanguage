@@ -17,13 +17,13 @@ public interface DLanguageMixinDeclaration extends Mixin {
   @NotNull
   PsiElement getKwMixin();
 
-  @Nullable
+  @NotNull
   PsiElement getOpParLeft();
 
-  @Nullable
+  @NotNull
   PsiElement getOpParRight();
 
-  @Nullable
+  @NotNull
   PsiElement getOpScolon();
 
   @Nullable

@@ -12,20 +12,19 @@ D Language File
                 IDENTIFIER
                   PsiElement(DLanguageTokenType.ID)('number')
           PsiElement(DLanguageTokenType.;)(';')
-    DLanguageDeclDefsImpl(DECL_DEFS)
-      DLanguageDeclDefImpl(DECL_DEF)
-        DLanguageDeclarationImpl(DECLARATION)
-          DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
-            DLanguageBasicTypeImpl(BASIC_TYPE)
-              DLanguageIdentifierListImpl(IDENTIFIER_LIST)
+    DLanguageDeclDefImpl(DECL_DEF)
+      DLanguageDeclarationImpl(DECLARATION)
+        DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+          DLanguageBasicTypeImpl(BASIC_TYPE)
+            DLanguageIdentifierListImpl(IDENTIFIER_LIST)
+              IDENTIFIER
+                PsiElement(DLanguageTokenType.ID)('string')
+          DLanguageDeclaratorsImpl(DECLARATORS)
+            DECLARATOR_INITIALIZER
+              DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
                 IDENTIFIER
-                  PsiElement(DLanguageTokenType.ID)('string')
-            DLanguageDeclaratorsImpl(DECLARATORS)
-              DECLARATOR_INITIALIZER
-                DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
-                  IDENTIFIER
-                    PsiElement(DLanguageTokenType.ID)('message')
-            PsiElement(DLanguageTokenType.;)(';')
+                  PsiElement(DLanguageTokenType.ID)('message')
+          PsiElement(DLanguageTokenType.;)(';')
   DLanguageStatementImpl(STATEMENT)
     DLanguageNonEmptyStatementImpl(NON_EMPTY_STATEMENT)
       DLanguageNonEmptyStatementNoCaseNoDefaultImpl(NON_EMPTY_STATEMENT_NO_CASE_NO_DEFAULT)

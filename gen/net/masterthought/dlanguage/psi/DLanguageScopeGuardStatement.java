@@ -13,7 +13,7 @@ public interface DLanguageScopeGuardStatement extends PsiElement {
   @NotNull
   PsiElement getKwScope();
 
-  @NotNull
+  @Nullable
   PsiElement getOpParLeft();
 
   @Nullable

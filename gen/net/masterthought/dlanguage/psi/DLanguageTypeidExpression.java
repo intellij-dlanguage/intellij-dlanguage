@@ -19,7 +19,7 @@ public interface DLanguageTypeidExpression extends PsiElement {
   @NotNull
   PsiElement getOpParLeft();
 
-  @NotNull
+  @Nullable
   PsiElement getOpParRight();
 
 }

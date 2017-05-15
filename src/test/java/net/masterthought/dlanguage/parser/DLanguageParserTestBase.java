@@ -33,7 +33,23 @@ public abstract class DLanguageParserTestBase extends ParsingTestCase {
      * doTestModule(false, false).
      */
     protected void doTest(boolean checkResult, boolean shouldPass) {
-        doTest(true);
+//        String name = getTestName();
+//        try {
+//            String text = loadFile(name + "." + myFileExt);
+//            myFile = createPsiFile(name, text);
+//        }catch (IOException e){
+//            e.printStackTrace();
+//        }
+////        if(overwriteFile){
+//            String content = toParseTreeText(myFile, skipSpaces(), includeRanges());
+//            final String path = myFullDataPath.replace("/",File.separator).replace("build","src" +File.separator + "test").replace("resources" + File.separator + "test","resources") + File.separator +"expected" + File.separator + getTestName() + ".txt";
+//            try {
+//                Files.write(Paths.get(path.replace('\\','/').replace(":","").replace("/C","")), content.getBytes(), StandardOpenOption.CREATE);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+        doTest(checkResult);
         if (shouldPass) {
             assertFalse(
                     "PsiFile contains error elements",

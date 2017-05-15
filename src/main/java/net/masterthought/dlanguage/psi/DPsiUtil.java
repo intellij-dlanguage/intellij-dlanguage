@@ -22,6 +22,7 @@ public class DPsiUtil {
         return result;
     }
 
+    @Deprecated
     private static List<DLanguageDeclDefs> getDeclDefs(PsiElement defs, List<DLanguageDeclDefs> declDefsList) {
         DLanguageDeclDefs declDefs = PsiTreeUtil.getChildOfType(defs, DLanguageDeclDefs.class);
         if (declDefs != null) {
@@ -41,9 +42,9 @@ public class DPsiUtil {
     public static Set<String> parseImports(@NotNull final PsiFile file) {
         Set<String> imports = Sets.newHashSet();
         List<DLanguageDeclDefs> declDefsList = Lists.newArrayList();
-        declDefsList = getDeclDefs(file, declDefsList);
+        declDefsList.addAll(PsiTreeUtil.findChildrenOfType(file, DLanguageDeclDefs.class));
         for (DLanguageDeclDefs declDef : declDefsList) {
-            List<DLanguageImportDeclaration> importDecls = PsiTreeUtil.getChildrenOfTypeAsList(declDef.getDeclDef().getDeclaration(), DLanguageImportDeclaration.class);
+            List<DLanguageImportDeclaration> importDecls = PsiTreeUtil.getChildrenOfTypeAsList(declDef, DLanguageImportDeclaration.class);
             for (DLanguageImportDeclaration importDecl : importDecls) {
                 imports.add(importDecl.getImportList().getText());
             }
