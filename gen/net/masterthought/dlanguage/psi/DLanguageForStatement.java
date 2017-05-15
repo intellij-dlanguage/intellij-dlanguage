@@ -10,10 +10,10 @@ public interface DLanguageForStatement extends PsiElement {
   @Nullable
   DLanguageIncrement getIncrement();
 
-  @NotNull
+  @Nullable
   DLanguageInitialize getInitialize();
 
-  @NotNull
+  @Nullable
   DLanguageScopeStatement getScopeStatement();
 
   @Nullable
@@ -22,13 +22,13 @@ public interface DLanguageForStatement extends PsiElement {
   @NotNull
   PsiElement getKwFor();
 
-  @NotNull
+  @Nullable
   PsiElement getOpParLeft();
 
-  @NotNull
+  @Nullable
   PsiElement getOpParRight();
 
-  @NotNull
+  @Nullable
   PsiElement getOpScolon();
 
 }

@@ -16,10 +16,10 @@ public interface DLanguageAsmStatement extends PsiElement {
   @NotNull
   PsiElement getKwAsm();
 
-  @NotNull
+  @Nullable
   PsiElement getOpBracesLeft();
 
-  @NotNull
+  @Nullable
   PsiElement getOpBracesRight();
 
 }

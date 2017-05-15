@@ -25,7 +25,7 @@ public interface DLanguageVersionCondition extends PsiElement {
   @NotNull
   PsiElement getOpParLeft();
 
-  @NotNull
+  @Nullable
   PsiElement getOpParRight();
 
 }

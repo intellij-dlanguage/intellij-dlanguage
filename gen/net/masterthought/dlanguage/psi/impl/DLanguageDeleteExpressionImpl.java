@@ -27,9 +27,9 @@ public class DLanguageDeleteExpressionImpl extends ASTWrapperPsiElement implemen
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageUnaryExpression getUnaryExpression() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageUnaryExpression.class));
+    return PsiTreeUtil.getChildOfType(this, DLanguageUnaryExpression.class);
   }
 
   @Override

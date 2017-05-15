@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageNewAnonClassExpression extends PsiElement {
 
-  @NotNull
+  @Nullable
   DLanguageAggregateBody getAggregateBody();
 
   @Nullable
@@ -22,7 +22,7 @@ public interface DLanguageNewAnonClassExpression extends PsiElement {
   @Nullable
   DLanguageSuperClass getSuperClass();
 
-  @NotNull
+  @Nullable
   PsiElement getKwClass();
 
   @NotNull

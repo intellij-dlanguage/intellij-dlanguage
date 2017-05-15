@@ -13,7 +13,7 @@ public interface DLanguageContinueStatement extends PsiElement {
   @NotNull
   PsiElement getKwContinue();
 
-  @NotNull
+  @Nullable
   PsiElement getOpScolon();
 
 }

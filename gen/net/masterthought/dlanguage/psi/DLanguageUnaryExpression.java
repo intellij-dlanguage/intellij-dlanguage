@@ -26,6 +26,9 @@ public interface DLanguageUnaryExpression extends PsiElement {
   DLanguageType getType();
 
   @Nullable
+  DLanguageTypeCtor getTypeCtor();
+
+  @Nullable
   DLanguageUnaryExpression getUnaryExpression();
 
   @Nullable

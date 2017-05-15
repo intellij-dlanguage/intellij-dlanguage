@@ -33,15 +33,15 @@ public class DLanguageForStatementImpl extends ASTWrapperPsiElement implements D
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageInitialize getInitialize() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageInitialize.class));
+    return PsiTreeUtil.getChildOfType(this, DLanguageInitialize.class);
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageScopeStatement getScopeStatement() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageScopeStatement.class));
+    return PsiTreeUtil.getChildOfType(this, DLanguageScopeStatement.class);
   }
 
   @Override
@@ -57,21 +57,21 @@ public class DLanguageForStatementImpl extends ASTWrapperPsiElement implements D
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getOpParLeft() {
-    return notNullChild(findChildByType(OP_PAR_LEFT));
+    return findChildByType(OP_PAR_LEFT);
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getOpParRight() {
-    return notNullChild(findChildByType(OP_PAR_RIGHT));
+    return findChildByType(OP_PAR_RIGHT);
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getOpScolon() {
-    return notNullChild(findChildByType(OP_SCOLON));
+    return findChildByType(OP_SCOLON);
   }
 
 }

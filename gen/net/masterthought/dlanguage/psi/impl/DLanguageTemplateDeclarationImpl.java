@@ -53,9 +53,9 @@ public class DLanguageTemplateDeclarationImpl extends DNamedStubbedPsiElementBas
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageTemplateParameters getTemplateParameters() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageTemplateParameters.class));
+    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateParameters.class);
   }
 
   @Override
@@ -65,15 +65,15 @@ public class DLanguageTemplateDeclarationImpl extends DNamedStubbedPsiElementBas
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getOpBracesLeft() {
-    return notNullChild(findChildByType(OP_BRACES_LEFT));
+    return findChildByType(OP_BRACES_LEFT);
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getOpBracesRight() {
-    return notNullChild(findChildByType(OP_BRACES_RIGHT));
+    return findChildByType(OP_BRACES_RIGHT);
   }
 
   @NotNull

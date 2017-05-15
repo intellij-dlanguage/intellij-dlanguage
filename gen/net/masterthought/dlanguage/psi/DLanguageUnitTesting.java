@@ -10,7 +10,7 @@ import net.masterthought.dlanguage.stubs.interfaces.UnitTestingStub;
 
 public interface DLanguageUnitTesting extends DCompositeElement, StubBasedPsiElement<UnitTestingStub> {
 
-  @NotNull
+  @Nullable
   DLanguageBlockStatement getBlockStatement();
 
   @NotNull

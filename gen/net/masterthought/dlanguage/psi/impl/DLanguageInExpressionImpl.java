@@ -27,9 +27,9 @@ public class DLanguageInExpressionImpl extends ASTWrapperPsiElement implements D
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageShiftExpression getShiftExpression() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageShiftExpression.class));
+    return PsiTreeUtil.getChildOfType(this, DLanguageShiftExpression.class);
   }
 
   @Override

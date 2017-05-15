@@ -16,10 +16,10 @@ public interface DLanguageAssertExpression extends PsiElement {
   @Nullable
   PsiElement getOpComma();
 
-  @NotNull
+  @Nullable
   PsiElement getOpParLeft();
 
-  @NotNull
+  @Nullable
   PsiElement getOpParRight();
 
 }
