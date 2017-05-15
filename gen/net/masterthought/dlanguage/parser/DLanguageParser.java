@@ -4907,7 +4907,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // EnumMember [',' EnumMembers]
+  // EnumMember (',' EnumMember)*
   public static boolean EnumMembers(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "EnumMembers")) return false;
     boolean r;
@@ -4918,20 +4918,25 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // [',' EnumMembers]
+  // (',' EnumMember)*
   private static boolean EnumMembers_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "EnumMembers_1")) return false;
-    EnumMembers_1_0(b, l + 1);
+    int c = current_position_(b);
+    while (true) {
+      if (!EnumMembers_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "EnumMembers_1", c)) break;
+      c = current_position_(b);
+    }
     return true;
   }
 
-  // ',' EnumMembers
+  // ',' EnumMember
   private static boolean EnumMembers_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "EnumMembers_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, OP_COMMA);
-    r = r && EnumMembers(b, l + 1);
+    r = r && EnumMember(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -12068,14 +12073,13 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   static boolean TypeidExpressionType(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "TypeidExpressionType")) return false;
     if (!nextTokenIs(b, KW_TYPEID)) return false;
-    boolean r, p;
-    Marker m = enter_section_(b, l, _NONE_);
+    boolean r;
+    Marker m = enter_section_(b);
     r = consumeTokens(b, 0, KW_TYPEID, OP_PAR_LEFT);
     r = r && Type(b, l + 1);
-    p = r; // pin = 3
     r = r && consumeToken(b, OP_PAR_RIGHT);
-    exit_section_(b, l, m, r, p, null);
-    return r || p;
+    exit_section_(b, m, null, r);
+    return r;
   }
 
   /* ********************************************************** */

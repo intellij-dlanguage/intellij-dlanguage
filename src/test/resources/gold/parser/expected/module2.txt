@@ -1,7 +1,0 @@
-D Language File
-  MODULE_DECLARATION
-    PsiElement(DLanguageTokenType.module)('module')
-    DLanguageModuleFullyQualifiedNameImpl(MODULE_FULLY_QUALIFIED_NAME)
-      IDENTIFIER
-        PsiElement(DLanguageTokenType.ID)('foo_bar')
-    PsiElement(DLanguageTokenType.;)(';')
