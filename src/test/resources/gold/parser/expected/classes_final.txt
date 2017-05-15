@@ -1,0 +1,35 @@
+D Language File
+  DLanguageDeclDefsImpl(DECL_DEFS)
+    DLanguageDeclDefImpl(DECL_DEF)
+      DLanguageAttributeSpecifierImpl(ATTRIBUTE_SPECIFIER)
+        DLanguageAttributeImpl(ATTRIBUTE)
+          PsiElement(DLanguageTokenType.final)('final')
+        DLanguageDeclarationBlockImpl(DECLARATION_BLOCK)
+          DLanguageDeclDefImpl(DECL_DEF)
+            DLanguageDeclarationImpl(DECLARATION)
+              DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
+                CLASS_DECLARATION
+                  PsiElement(DLanguageTokenType.class)('class')
+                  IDENTIFIER
+                    PsiElement(DLanguageTokenType.ID)('A')
+                  DLanguageAggregateBodyImpl(AGGREGATE_BODY)
+                    PsiElement(DLanguageTokenType.{)('{')
+                    PsiElement(DLanguageTokenType.})('}')
+    DLanguageDeclDefImpl(DECL_DEF)
+      DLanguageDeclarationImpl(DECLARATION)
+        DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
+          CLASS_DECLARATION
+            PsiElement(DLanguageTokenType.class)('class')
+            IDENTIFIER
+              PsiElement(DLanguageTokenType.ID)('B')
+            DLanguageBaseClassListImpl(BASE_CLASS_LIST)
+              PsiElement(DLanguageTokenType.:)(':')
+              DLanguageSuperClassImpl(SUPER_CLASS)
+                DLanguageBasicTypeImpl(BASIC_TYPE)
+                  DLanguageIdentifierListImpl(IDENTIFIER_LIST)
+                    IDENTIFIER
+                      PsiElement(DLanguageTokenType.ID)('A')
+            DLanguageAggregateBodyImpl(AGGREGATE_BODY)
+              PsiElement(DLanguageTokenType.{)('{')
+              PsiElement(DLanguageTokenType.})('}')
+  PsiComment(DLanguageTokenType.LINE_COMMENT)('// error, class A is final')

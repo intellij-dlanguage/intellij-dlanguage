@@ -11,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-import static com.intellij.psi.util.PsiTreeUtil.findChildOfType;
 import static net.masterthought.dlanguage.psi.impl.DPsiImplUtil.findParentOfType;
 import static net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility.*;
 
@@ -121,34 +120,34 @@ public class DUtil {
         return PsiTreeUtil.getParentOfType(namedElement,DLanguageFuncDeclaration.class);
     }
 
-    public static boolean isPublic(DNamedElement symbol) {
-        //search for "public:" and "public{}"
-        final DLanguageProtectionAttribute protectionAttribute = findChildOfType(symbol, DLanguageProtectionAttribute.class);
-        try {
-            if (protectionAttribute.getText().equals("public")) {
-                return true;
-            }
-        } catch (NullPointerException ignored) {
-        }
-        return searchForPublicWrapper(symbol);
-    }
-
-    private static boolean searchForPublicWrapper(DNamedElement symbol) {
-        return searchForPublic(symbol);
-    }
-
-    private static boolean searchForPublic(PsiElement symbol) {
-        if (symbol instanceof DLanguageAttributeSpecifier)
-            if (((DLanguageAttributeSpecifier) symbol).getAttribute().getProtectionAttribute() != null && ((DLanguageAttributeSpecifier) symbol).getAttribute().getProtectionAttribute().getText().equals("public"))
-                return true;
-        if (symbol instanceof DLanguageClassDeclaration || symbol instanceof DLanguageTemplateInstance || symbol instanceof DLanguageModuleDeclaration || symbol instanceof DLanguageFuncDeclaration || symbol instanceof DLanguageInterface || symbol instanceof DLanguageStructDeclaration)
-            return false;
-        if (symbol == null)
-            return false;
-        if (null != findChildOfType(symbol, DLanguageModuleDeclaration.class))
-            return false;
-        return searchForPublic(symbol.getParent());
-    }
+//    public static boolean isPublic(DNamedElement symbol) {
+//        //search for "public:" and "public{}"
+//        final DLanguageProtectionAttribute protectionAttribute = findChildOfType(symbol, DLanguageProtectionAttribute.class);
+//        try {
+//            if (protectionAttribute.getText().equals("public")) {
+//                return true;
+//            }
+//        } catch (NullPointerException ignored) {
+//        }
+//        return searchForPublicWrapper(symbol);
+//    }
+//
+//    private static boolean searchForPublicWrapper(DNamedElement symbol) {
+//        return searchForPublic(symbol);
+//    }
+//
+//    private static boolean searchForPublic(PsiElement symbol) {
+//        if (symbol instanceof DLanguageAttributeSpecifier)
+//            if (((DLanguageAttributeSpecifier) symbol).getAttribute().getProtectionAttribute() != null && ((DLanguageAttributeSpecifier) symbol).getAttribute().getProtectionAttribute().getText().equals("public"))
+//                return true;
+//        if (symbol instanceof DLanguageClassDeclaration || symbol instanceof DLanguageTemplateInstance || symbol instanceof DLanguageModuleDeclaration || symbol instanceof DLanguageFuncDeclaration || symbol instanceof DLanguageInterface || symbol instanceof DLanguageStructDeclaration)
+//            return false;
+//        if (symbol == null)
+//            return false;
+//        if (null != findChildOfType(symbol, DLanguageModuleDeclaration.class))
+//            return false;
+//        return searchForPublic(symbol.getParent());
+//    }
 
     public static <T extends HasVisibility> List<T> getPublicElements(List<T> elements) {
         List<T> res = new ArrayList<>();

@@ -8,12 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageKeyValuePairs extends PsiElement {
 
   @NotNull
-  DLanguageKeyValuePair getKeyValuePair();
-
-  @Nullable
-  DLanguageKeyValuePairs getKeyValuePairs();
-
-  @Nullable
-  PsiElement getOpComma();
+  List<DLanguageKeyValuePair> getKeyValuePairList();
 
 }

@@ -1705,7 +1705,7 @@ public class DPsiImplUtil {
     public static boolean isSomeVisibility(DLanguageAliasDeclaration o, Visibility visibility) {
         final DLanguageAttributeSpecifier attribute = (DLanguageAttributeSpecifier) o.getParent().getParent().getParent();
         if (attribute.getAttribute().getProtectionAttribute() != null) {
-            if (attribute.getAttribute().getProtectionAttribute().getText().equals(visibility))
+            if (attribute.getAttribute().getProtectionAttribute().getText().equals(visibility))//todo iterate
                 return true;
         }
         return isSomeVisibility(o, visibility, AliasContainer.class);

@@ -27,21 +27,9 @@ public class DLanguageArgumentListImpl extends ASTWrapperPsiElement implements D
   }
 
   @Override
-  @Nullable
-  public DLanguageArgumentList getArgumentList() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageArgumentList.class);
-  }
-
-  @Override
   @NotNull
-  public DLanguageAssignExpression getAssignExpression() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageAssignExpression.class));
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpComma() {
-    return findChildByType(OP_COMMA);
+  public List<DLanguageAssignExpression> getAssignExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageAssignExpression.class);
   }
 
 }
