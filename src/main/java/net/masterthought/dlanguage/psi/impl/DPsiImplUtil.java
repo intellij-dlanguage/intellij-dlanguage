@@ -901,6 +901,9 @@ public class DPsiImplUtil {
     public static String getName(@NotNull DLanguageInterfaceDeclaration o) {
         DLanguageInterfaceDeclarationStub stub = o.getStub();
         if (stub != null) return StringUtil.notNullize(stub.getName());
+        if (o.getIdentifier() == null) {
+            return "";
+        }
         return o.getIdentifier().getText();
     }
 
