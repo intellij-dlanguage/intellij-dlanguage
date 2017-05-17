@@ -2,6 +2,8 @@ package net.masterthought.dlanguage.project;
 
 import com.intellij.testFramework.LightPlatformTestCase;
 
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -10,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,7 +24,53 @@ public class DubConfigurationParserTest extends LightPlatformTestCase {
     @Override
     public void setUp() throws Exception {
         super.setUp();
+    }
 
+    public void testDubParserWithVibed() throws Exception {
+        loadVibedTestFiles();
+
+        final DubConfigurationParser dubConfigurationParser = new DubConfigurationParser(ourProject, "dub");
+
+        final Optional<DubPackage> optRootPackage = dubConfigurationParser.getDubPackage();
+        assertTrue("The root package should have been parsed", optRootPackage.isPresent());
+        final DubPackage rootPackage = optRootPackage.get();
+        assertEquals("The root dub.sdl for vibe-d has 13 dependencies", 13, rootPackage.getDependencies().size());
+
+        final List<DubPackage> allDubPackages = dubConfigurationParser.getDubPackageDependencies();
+        assertNotEmpty(allDubPackages);
+        assertEquals("there should be 21 dependencies", 21, allDubPackages.size());
+
+//        final Map<String, List<String>> targets = dubConfigurationParser.getTargets();
+//        assertNotEmpty(targets.keySet());
+
+        final TreeNode packageTree = dubConfigurationParser.getPackageTree();
+        assertEquals(13, packageTree.getChildCount());
+
+        final Enumeration enumeration = packageTree.children();
+        while (enumeration.hasMoreElements()) {
+            DefaultMutableTreeNode node =  (DefaultMutableTreeNode)enumeration.nextElement();
+            final DubPackage dubPackage = DubPackage.class.cast(node.getUserObject());
+
+            if("vibe-d:utils".equals(dubPackage.getName())) {
+                assertTrue(dubPackage.getName(), dubPackage.getDependencies().isEmpty()); // utils module has no dependencies
+            } else {
+                assertFalse(dubPackage.getName(), dubPackage.getDependencies().isEmpty());
+            }
+        }
+    }
+
+    public void testDubParserWithHibernated() throws Exception {
+        loadTestFile("dub/hibernated/dub.json", "dub.json");
+
+        final DubConfigurationParser dubConfigurationParser = new DubConfigurationParser(ourProject, "dub");
+
+        final Optional<DubPackage> optRootPackage = dubConfigurationParser.getDubPackage();
+        assertTrue("The root package should have been parsed", optRootPackage.isPresent());
+        final DubPackage rootPackage = optRootPackage.get();
+        assertEquals("The root dub.json for hibernated has 1 dependency", 1, rootPackage.getDependencies().size());
+    }
+
+    private void loadVibedTestFiles() throws IOException, URISyntaxException {
         // I'm using the dub.sdl from Vibe-d as test data as it's a big multi module project
         loadTestFile("dub/vibe-d/dub.sdl", "dub.sdl");
         loadTestFile("dub/vibe-d/core/dub.sdl", "core/dub.sdl");
@@ -37,19 +86,6 @@ public class DubConfigurationParserTest extends LightPlatformTestCase {
         loadTestFile("dub/vibe-d/textfilter/dub.sdl", "textfilter/dub.sdl");
         loadTestFile("dub/vibe-d/utils/dub.sdl", "utils/dub.sdl");
         loadTestFile("dub/vibe-d/web/dub.sdl", "web/dub.sdl");
-    }
-
-    public void testDubParser() throws Exception {
-        final DubConfigurationParser dubConfigurationParser = new DubConfigurationParser(ourProject, "dub");
-
-        final Optional<DubPackage> optRootPackage = dubConfigurationParser.getDubPackage();
-        assertTrue("The root package should have been parsed", optRootPackage.isPresent());
-        final DubPackage rootPackage = optRootPackage.get();
-        assertEquals("The root dub.sdl for vibe-d has 13 dependencies", 13, rootPackage.getDependencies().size());
-
-        final List<DubPackage> allDubPackages = dubConfigurationParser.getDubPackageDependencies();
-        assertNotEmpty(allDubPackages);
-        assertEquals("there should be 21 dependencies", 21, allDubPackages.size());
     }
 
     private void loadTestFile(final String resourceLocation, final String destination) throws URISyntaxException, IOException {

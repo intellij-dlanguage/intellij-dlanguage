@@ -15,7 +15,10 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.Key;
+import org.jetbrains.annotations.Nullable;
 
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
 import java.io.File;
 import java.lang.reflect.Type;
 import java.util.*;
@@ -25,7 +28,12 @@ public class DubConfigurationParser {
 
     private static final Logger LOG = Logger.getInstance(DubConfigurationParser.class);
 
+    private static final Gson GSON = new Gson();
+    private static final Type LIST_STRING = new TypeToken<List<String>>() {}.getType();
+
     private List<DubPackage> packages = new ArrayList<>();
+//    private Map<String, List<String>> targets = new HashMap<>();
+    private TreeNode packageTree;
     private final Project project;
     private final String dubBinaryPath;
 
@@ -52,35 +60,72 @@ public class DubConfigurationParser {
             .collect(Collectors.toList());
     }
 
+//    public Map<String, List<String>> getTargets() {
+//        return targets;
+//    }
+
+    @Nullable
+    public TreeNode getPackageTree() {
+        return packageTree;
+    }
+
     private void parseDubDescription(final JsonObject dubProjectDescription) {
         if(dubProjectDescription == null) {
             return;
         }
 
+        final String rootPackageName = dubProjectDescription.get("rootPackage").getAsString();
         final JsonArray packages = dubProjectDescription.get("packages").getAsJsonArray();
-        final String rootPackage = dubProjectDescription.get("rootPackage").getAsString();
+        this.packages = parsePackages(rootPackageName, packages);
 
-        final Gson gson = new Gson();
-        final Type listString = new TypeToken<List<String>>() {}.getType();
+        packageTree = getDubPackage().map(this::buildDependencyTree).orElse(null);
 
-        // potentially map all Dub Packages to a Tree structure
-        final List<DubPackage> packageList = new ArrayList<>(packages.size());
-        for (JsonElement pkg : packages) {
-            JsonObject thePackage = ((JsonObject) pkg);
-            String path = thePackage.get("path").getAsString();
-            String name = thePackage.get("name").getAsString();
-            final List<String> dependencies = gson.fromJson(thePackage.get("dependencies").getAsJsonArray(), listString);
-            String version = thePackage.get("version").getAsString();
-            String sourcesDir = "source";
-            JsonArray importPaths = thePackage.get("importPaths").getAsJsonArray();
-            if (importPaths.size() > 0) {
-                sourcesDir = importPaths.get(0).getAsString();
-            }
-            final List<String> stringImportPaths = gson.fromJson(thePackage.get("stringImportPaths").getAsJsonArray(), listString); // eg: "views"
-            packageList.add(new DubPackage(name, path, dependencies, sourcesDir, stringImportPaths, version, name.equals(rootPackage)));
-        }
-        this.packages = packageList;
+//        final JsonArray targetsJson = dubProjectDescription.get("targets").getAsJsonArray();
+//        this.targets = parseTargets(targetsJson);
     }
+
+    private DefaultMutableTreeNode buildDependencyTree(final DubPackage dubPackage) {
+        final DefaultMutableTreeNode treeNode = new DefaultMutableTreeNode(dubPackage, !dubPackage.getDependencies().isEmpty());
+
+        getDubPackageDependencies().stream()
+            .filter(d -> dubPackage.getDependencies().contains(d.getName()))
+            .forEach(dependency -> treeNode.add(buildDependencyTree(dependency)));
+
+        return treeNode;
+    }
+
+    private List<DubPackage> parsePackages(final String rootPackageName, final JsonArray packages) {
+        final List<DubPackage> packageList = new ArrayList<>(packages.size());
+
+        for (final JsonElement pkg : packages) {
+            final JsonObject thePackage = ((JsonObject) pkg);
+            final String path = thePackage.get("path").getAsString();
+            final String name = thePackage.get("name").getAsString();
+            final List<String> dependencies = GSON.fromJson(thePackage.get("dependencies").getAsJsonArray(), LIST_STRING);
+            final String version = thePackage.get("version").getAsString();
+            final JsonArray importPaths = thePackage.get("importPaths").getAsJsonArray();
+            final String sourcesDir = importPaths.size() > 0 ? importPaths.get(0).getAsString() : "source";
+
+            final List<String> stringImportPaths = GSON.fromJson(thePackage.get("stringImportPaths").getAsJsonArray(), LIST_STRING); // eg: "views"
+            packageList.add(new DubPackage(name, path, dependencies, sourcesDir, stringImportPaths, version, name.equals(rootPackageName)));
+        }
+        return packageList;
+    }
+
+//    private Map<String, List<String>> parseTargets(final JsonArray targetsJson) {
+//        final Map<String, List<String>> targets = new HashMap<>(targetsJson.size());
+//        for (final JsonElement targetJson : targetsJson) {
+//            final JsonObject targetObj = ((JsonObject) targetJson);
+//
+//            final String targetRootPackageName = targetObj.get("rootPackage").getAsString();
+//            final List<String> targetPackages = GSON.fromJson(targetObj.get("packages").getAsJsonArray(), LIST_STRING);
+//            final List<String> targetDependencies = GSON.fromJson(targetObj.get("dependencies").getAsJsonArray(), LIST_STRING);
+//            final List<String> targetLinkDependencies = GSON.fromJson(targetObj.get("linkDependencies").getAsJsonArray(), LIST_STRING);
+//
+//            targets.put(targetRootPackageName, targetLinkDependencies);
+//        }
+//        return targets;
+//    }
 
     private Optional<JsonObject> parseDubConfiguration() {
         try {
