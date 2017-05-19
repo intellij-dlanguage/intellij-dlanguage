@@ -7,6 +7,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -41,10 +42,10 @@ public class DPsiUtil {
     @NotNull
     public static Set<String> parseImports(@NotNull final PsiFile file) {
         Set<String> imports = Sets.newHashSet();
-        List<DLanguageDeclDefs> declDefsList = Lists.newArrayList();
-        declDefsList.addAll(PsiTreeUtil.findChildrenOfType(file, DLanguageDeclDefs.class));
-        for (DLanguageDeclDefs declDef : declDefsList) {
-            List<DLanguageImportDeclaration> importDecls = PsiTreeUtil.getChildrenOfTypeAsList(declDef, DLanguageImportDeclaration.class);
+        List<DLanguageDeclDef> declDefList = Lists.newArrayList();
+        declDefList.addAll(PsiTreeUtil.findChildrenOfType(file, DLanguageDeclDef.class));
+        for (DLanguageDeclDef declDef : declDefList) {
+            Collection<DLanguageImportDeclaration> importDecls = PsiTreeUtil.findChildrenOfType(declDef, DLanguageImportDeclaration.class);
             for (DLanguageImportDeclaration importDecl : importDecls) {
                 imports.add(importDecl.getImportList().getText());
             }
