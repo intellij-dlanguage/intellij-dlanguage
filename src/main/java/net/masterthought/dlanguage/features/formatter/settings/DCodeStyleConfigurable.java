@@ -16,7 +16,7 @@ public class DCodeStyleConfigurable extends CodeStyleAbstractConfigurable {
     @NotNull
     @Override
     protected CodeStyleAbstractPanel createPanel(CodeStyleSettings settings) {
-        return new GoCodeStyleMainPanel(getCurrentSettings(), settings);
+        return new DCodeStyleMainPanel(getCurrentSettings(), settings);
     }
 
     @Override
@@ -24,8 +24,8 @@ public class DCodeStyleConfigurable extends CodeStyleAbstractConfigurable {
         return null;
     }
 
-    private static class GoCodeStyleMainPanel extends TabbedLanguageCodeStylePanel {
-        private GoCodeStyleMainPanel(CodeStyleSettings currentSettings, CodeStyleSettings settings) {
+    private static class DCodeStyleMainPanel extends TabbedLanguageCodeStylePanel {
+        private DCodeStyleMainPanel(CodeStyleSettings currentSettings, CodeStyleSettings settings) {
             super(DLanguage.INSTANCE, currentSettings, settings);
         }
 

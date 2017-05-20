@@ -30,9 +30,9 @@ public class DFormatterTest extends FormatterTestCase {
         doTest();
     }
 
-//    public void testDeclSpacing() throws Exception {
-//        doTest();
-//    }
+    public void testDeclSpacing() throws Exception {
+        doTest();
+    }
 //
 //    public void testattribute_constraint() throws Exception {
 //        doTest();
