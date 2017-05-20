@@ -401,7 +401,18 @@ CommaExpression ::=
     AssignExpression (',' CommaExpression)?
 
 AssignExpression ::=
-   ConditionalExpression [ ( '='
+   /*PostfixExpression
+   | PowExpression
+   | UnaryExpression
+   | MulExpression
+   | AddExpression
+   | ShiftExpression
+   | AndExpression
+   | XorExpression
+   | OrExpression
+   | AndAndExpression
+   | OrOrExpression
+   |*/ (ConditionalExpression [ ( '='
                               | '+='
                               | '-='
                               | '*='
@@ -414,72 +425,87 @@ AssignExpression ::=
                               | '<<='
                               | '>>='
                               | '>>>='
-                              | '^^=') AssignExpression]{
-//                              recoverWhile = assign_recover
+                              | '^^=') AssignExpression]){
+
                             }
-//private assign_recover ::= !(')' | ']' | '..' | ','| ':' | ';' | )
 
-ConditionalExpression ::=
-   OrOrExpression ['?' Expression ':' ConditionalExpression]
+private ConditionalExpression ::=
+   OrOrExpression_ [ConditionalExpression_]
 
-OrOrExpression ::= AndAndExpression [ '||' OrOrExpression]
+ConditionalExpression_ ::=//
+    '?' Expression ':' ConditionalExpression
 
-AndAndExpression ::=
-    ('&&')? ( OrExpression | CmpExpression ) [ AndAndExpression ]
+private OrOrExpression_ ::=
+    AndAndExpression [ OrOrExpression]
 
-OrExpression ::=
+OrOrExpression ::=
+    '||' OrOrExpression_
+
+//     OrExpression
+//        AndAndExpression && OrExpression
+//        CmpExpression
+//        AndAndExpression && CmpExpression//perhaps flip order
+//    ('&&')? ( OrExpression | CmpExpression ) [ AndAndExpression ]
+private AndAndExpression ::=
+    '&&'? (OrExpression | CmpExpression) [AndAndExpression]
+
+private OrExpression ::=
     XorExpression [OrExpression]
 
-XorExpression ::= AndExpression [ '^' XorExpression ]
+private XorExpression ::=
+    AndExpression [ XorExpression_ ]
 
-AndExpression ::= ShiftExpression [ '&' AndExpression ]
+XorExpression_ ::= '^' XorExpression
 
-CmpExpression ::=
+
+private AndExpression ::=
+    ShiftExpression [ AndExxpression_ ]
+
+AndExxpression_ ::= '&' AndExpression
+
+private CmpExpression ::=
     ShiftExpression
     | EqualExpression
     | IdentityExpression
     | RelExpression
     | InExpression
 
-EqualExpression ::=
+private EqualExpression ::=
      ('==' | '!=') [ShiftExpression]{
      pin = 1
      }
 
-IdentityExpression ::=
+private IdentityExpression ::=
      ('is'|'!is') ShiftExpression{
      pin = 1
      }
 
-RelExpression ::=
-    ('<'
-    | '<='
-    | '>'
-    | '>='
-    | '!<>='
-    | '!<>'
-    | '<>'
-    | '<>='
-    | '!>'
-    | '!>='
-    | '!<'
-    | '!<=') ShiftExpression{
+private RelExpression ::=
+    ('<' | '<=' | '>' | '>=' | '!<>=' | '!<>' | '<>' | '<>=' | '!>' | '!>=' | '!<' | '!<=') ShiftExpression{
     pin = 1
     }
 
-InExpression ::=
+private InExpression ::=
     ('in'| '!in') ShiftExpression{
     pin = 1
     }
 
-ShiftExpression ::= AddExpression [('<<' | '>>' | '>>>') ShiftExpression]
+private ShiftExpression ::=
+    AddExpression [ShiftExpression_]
 
-AddExpression ::=
-    MulExpression [ ('+' | '-' | '~') AddExpression]
+ShiftExpression_ ::= ('<<' | '>>' | '>>>') ShiftExpression
 
-MulExpression ::= UnaryExpression [ ('*' | '/' | '%') MulExpression]
+private AddExpression ::=
+    MulExpression [ AddExpression_]
 
-UnaryExpression ::=
+AddExpression_ ::= ('+' | '-' | '~') AddExpression
+
+private MulExpression ::=
+    UnaryExpression [ MulExpression_ ]
+
+MulExpression_ ::= ('*' | '/' | '%') MulExpression
+
+private UnaryExpression ::=
      ('&'
     | '++'
     | '|'
@@ -533,7 +559,9 @@ CastExpression ::=
         //pin(".*") = 1
     }
 
-PowExpression ::= PostfixExpression ['^^' UnaryExpression PowExpression]
+private PowExpression ::=
+    PostfixExpression [PowExpression_]
+PowExpression_ ::= '^^' UnaryExpression PowExpression
 
 PostfixExpression ::=
     PrimaryExpression

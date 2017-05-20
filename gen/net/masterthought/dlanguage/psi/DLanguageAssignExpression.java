@@ -11,7 +11,7 @@ public interface DLanguageAssignExpression extends PsiElement {
   DLanguageAssignExpression getAssignExpression();
 
   @NotNull
-  DLanguageConditionalExpression getConditionalExpression();
+  DLanguageConditionalExpression_ getConditionalExpression_();
 
   @Nullable
   PsiElement getOpAndEq();

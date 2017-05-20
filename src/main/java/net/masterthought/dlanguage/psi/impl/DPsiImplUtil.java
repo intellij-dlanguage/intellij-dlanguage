@@ -16,6 +16,7 @@ import net.masterthought.dlanguage.psi.references.DReference;
 import net.masterthought.dlanguage.stubs.*;
 import net.masterthought.dlanguage.utils.DResolveUtil;
 import net.masterthought.dlanguage.utils.DUtil;
+import org.apache.log4j.Logger;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -834,6 +835,11 @@ public class DPsiImplUtil {
     public static String getName(@NotNull DLanguageModuleDeclaration o) {
         DLanguageModuleDeclarationStub stub = o.getStub();
         if (stub != null) return StringUtil.notNullize(stub.getName());
+
+        if (o.getModuleFullyQualifiedName() == null) {
+            Logger.getLogger(DPsiImplUtil.class).debug("this had no name: " + o.getText());
+            return "";
+        }
 
         if (o.getModuleFullyQualifiedName().getText() != null) {
             return o.getModuleFullyQualifiedName().getText();

@@ -34,8 +34,8 @@ public class DLanguageAssignExpressionImpl extends ASTWrapperPsiElement implemen
 
   @Override
   @NotNull
-  public DLanguageConditionalExpression getConditionalExpression() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageConditionalExpression.class));
+  public DLanguageConditionalExpression_ getConditionalExpression_() {
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageConditionalExpression_.class));
   }
 
   @Override
