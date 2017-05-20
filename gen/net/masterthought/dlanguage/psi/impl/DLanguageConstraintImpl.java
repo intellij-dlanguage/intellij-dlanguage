@@ -28,8 +28,8 @@ public class DLanguageConstraintImpl extends ASTWrapperPsiElement implements DLa
 
   @Override
   @Nullable
-  public DLanguageExpression getExpression() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageExpression.class);
+  public DLanguageCommaExpression getCommaExpression() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageCommaExpression.class);
   }
 
   @Override

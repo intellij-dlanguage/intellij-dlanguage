@@ -27,27 +27,15 @@ public class DLanguageSymbolTailImpl extends ASTWrapperPsiElement implements DLa
   }
 
   @Override
-  @Nullable
-  public DLanguageIdentifier getIdentifier() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
+  @NotNull
+  public List<DLanguageIdentifier> getIdentifierList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageIdentifier.class);
   }
 
   @Override
-  @Nullable
-  public DLanguageSymbolTail getSymbolTail() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageSymbolTail.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageTemplateInstance getTemplateInstance() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateInstance.class);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpDot() {
-    return findChildByType(OP_DOT);
+  @NotNull
+  public List<DLanguageTemplateInstance> getTemplateInstanceList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageTemplateInstance.class);
   }
 
 }

@@ -20,7 +20,16 @@ public interface DLanguageOrOrExpression extends PsiElement {
   List<DLanguageDeleteExpression> getDeleteExpressionList();
 
   @NotNull
+  List<DLanguageEqualExpression> getEqualExpressionList();
+
+  @NotNull
   List<DLanguageIdentifier> getIdentifierList();
+
+  @NotNull
+  List<DLanguageIdentityExpression> getIdentityExpressionList();
+
+  @NotNull
+  List<DLanguageInExpression> getInExpressionList();
 
   @NotNull
   List<DLanguageMulExpression_> getMulExpression_List();
@@ -33,6 +42,9 @@ public interface DLanguageOrOrExpression extends PsiElement {
 
   @NotNull
   List<DLanguagePowExpression_> getPowExpression_List();
+
+  @NotNull
+  List<DLanguageRelExpression> getRelExpressionList();
 
   @NotNull
   List<DLanguageShiftExpression_> getShiftExpression_List();

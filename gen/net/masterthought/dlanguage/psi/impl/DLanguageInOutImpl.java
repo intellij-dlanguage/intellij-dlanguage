@@ -27,15 +27,9 @@ public class DLanguageInOutImpl extends ASTWrapperPsiElement implements DLanguag
   }
 
   @Override
-  @Nullable
-  public DLanguageInOut getInOut() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageInOut.class);
-  }
-
-  @Override
   @NotNull
-  public DLanguageInOutX getInOutX() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageInOutX.class));
+  public List<DLanguageInOutX> getInOutXList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageInOutX.class);
   }
 
 }

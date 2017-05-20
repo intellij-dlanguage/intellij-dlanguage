@@ -123,7 +123,7 @@ public interface DLanguageTypes {
   IElementType ENUM_DECLARATION = DElementTypeFactory.factory("ENUM_DECLARATION");
   IElementType ENUM_MEMBER = new DLanguageElementType("ENUM_MEMBER");
   IElementType ENUM_MEMBERS = new DLanguageElementType("ENUM_MEMBERS");
-  IElementType EXPRESSION = new DLanguageElementType("EXPRESSION");
+  IElementType EQUAL_EXPRESSION = new DLanguageElementType("EQUAL_EXPRESSION");
   IElementType EXPRESSION_STATEMENT = new DLanguageElementType("EXPRESSION_STATEMENT");
   IElementType FINALLY_STATEMENT = new DLanguageElementType("FINALLY_STATEMENT");
   IElementType FINAL_SWITCH_STATEMENT = new DLanguageElementType("FINAL_SWITCH_STATEMENT");
@@ -148,6 +148,7 @@ public interface DLanguageTypes {
   IElementType GOTO_STATEMENT = new DLanguageElementType("GOTO_STATEMENT");
   IElementType IDENTIFIER = DElementTypeFactory.factory("IDENTIFIER");
   IElementType IDENTIFIER_LIST = new DLanguageElementType("IDENTIFIER_LIST");
+  IElementType IDENTITY_EXPRESSION = new DLanguageElementType("IDENTITY_EXPRESSION");
   IElementType IF_CONDITION = new DLanguageElementType("IF_CONDITION");
   IElementType IF_STATEMENT = new DLanguageElementType("IF_STATEMENT");
   IElementType IMPORT = DElementTypeFactory.factory("IMPORT");
@@ -166,6 +167,7 @@ public interface DLanguageTypes {
   IElementType INTERFACE_DECLARATION = DElementTypeFactory.factory("INTERFACE_DECLARATION");
   IElementType INTERFACE_TEMPLATE_DECLARATION = new DLanguageElementType("INTERFACE_TEMPLATE_DECLARATION");
   IElementType INVARIANT = new DLanguageElementType("INVARIANT");
+  IElementType IN_EXPRESSION = new DLanguageElementType("IN_EXPRESSION");
   IElementType IN_OUT = new DLanguageElementType("IN_OUT");
   IElementType IN_OUT_X = new DLanguageElementType("IN_OUT_X");
   IElementType IN_STATEMENT = new DLanguageElementType("IN_STATEMENT");
@@ -217,6 +219,7 @@ public interface DLanguageTypes {
   IElementType QUALIFIED_IDENTIFIER_LIST = new DLanguageElementType("QUALIFIED_IDENTIFIER_LIST");
   IElementType REGISTER = new DLanguageElementType("REGISTER");
   IElementType REGISTER_64 = new DLanguageElementType("REGISTER_64");
+  IElementType REL_EXPRESSION = new DLanguageElementType("REL_EXPRESSION");
   IElementType RETURN_STATEMENT = new DLanguageElementType("RETURN_STATEMENT");
   IElementType SCOPE_GUARD_STATEMENT = new DLanguageElementType("SCOPE_GUARD_STATEMENT");
   IElementType SCOPE_STATEMENT = new DLanguageElementType("SCOPE_STATEMENT");
@@ -786,8 +789,8 @@ public interface DLanguageTypes {
       else if (type == ENUM_MEMBERS) {
         return new DLanguageEnumMembersImpl(node);
       }
-      else if (type == EXPRESSION) {
-        return new DLanguageExpressionImpl(node);
+      else if (type == EQUAL_EXPRESSION) {
+        return new DLanguageEqualExpressionImpl(node);
       }
       else if (type == EXPRESSION_STATEMENT) {
         return new DLanguageExpressionStatementImpl(node);
@@ -861,6 +864,9 @@ public interface DLanguageTypes {
       else if (type == IDENTIFIER_LIST) {
         return new DLanguageIdentifierListImpl(node);
       }
+      else if (type == IDENTITY_EXPRESSION) {
+        return new DLanguageIdentityExpressionImpl(node);
+      }
       else if (type == IF_CONDITION) {
         return new DLanguageIfConditionImpl(node);
       }
@@ -914,6 +920,9 @@ public interface DLanguageTypes {
       }
       else if (type == INVARIANT) {
         return new DLanguageInvariantImpl(node);
+      }
+      else if (type == IN_EXPRESSION) {
+        return new DLanguageInExpressionImpl(node);
       }
       else if (type == IN_OUT) {
         return new DLanguageInOutImpl(node);
@@ -1067,6 +1076,9 @@ public interface DLanguageTypes {
       }
       else if (type == REGISTER_64) {
         return new DLanguageRegister64Impl(node);
+      }
+      else if (type == REL_EXPRESSION) {
+        return new DLanguageRelExpressionImpl(node);
       }
       else if (type == RETURN_STATEMENT) {
         return new DLanguageReturnStatementImpl(node);

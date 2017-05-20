@@ -198,10 +198,7 @@ public class DUtil {
 
     @NotNull
     public static DLanguageIdentifier getEndOfIdentifierList(DLanguageQualifiedIdentifierList list) {
-        if (list.getQualifiedIdentifierList() == null) {
-            return list.getIdentifier();
-        }
-        return getEndOfIdentifierList(list.getQualifiedIdentifierList());
+        return (DLanguageIdentifier) (list.getChildren()[list.getChildren().length - 1]);//if not identifier through
     }
 
     @NotNull

@@ -1339,7 +1339,11 @@ public class DPsiImplUtil {
         final DLanguageStorageClasses storageClasses = ((DLanguageAutoDeclaration) o.getParent().getParent()).getStorageClasses();
         if (storageClasses == null)
             return false;
-        return storageClasses.getStorageClass().getKwAuto() != null;
+        for (DLanguageStorageClass dLanguageStorageClass : storageClasses.getStorageClassList()) {
+            if (dLanguageStorageClass.getKwAuto() != null)
+                return true;
+        }
+        return false;
     }
 
     public static Type getVariableDeclarationType(DLanguageAutoDeclarationY o) {

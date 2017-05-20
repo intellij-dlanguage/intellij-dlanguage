@@ -28,14 +28,8 @@ public class DLanguageStorageClassesImpl extends ASTWrapperPsiElement implements
 
   @Override
   @NotNull
-  public DLanguageStorageClass getStorageClass() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageStorageClass.class));
-  }
-
-  @Override
-  @Nullable
-  public DLanguageStorageClasses getStorageClasses() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageStorageClasses.class);
+  public List<DLanguageStorageClass> getStorageClassList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageStorageClass.class);
   }
 
 }

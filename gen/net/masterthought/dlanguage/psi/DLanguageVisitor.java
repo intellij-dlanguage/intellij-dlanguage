@@ -14,9 +14,9 @@ import net.masterthought.dlanguage.psi.interfaces.HasTemplateArguments;
 import net.masterthought.dlanguage.psi.interfaces.HasArguments;
 import net.masterthought.dlanguage.psi.interfaces.containers.MixinContainer;
 import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
+import net.masterthought.dlanguage.psi.interfaces.VariableDeclaration;
 import net.masterthought.dlanguage.psi.interfaces.HasProperty;
 import net.masterthought.dlanguage.psi.interfaces.Mixinable;
-import net.masterthought.dlanguage.psi.interfaces.VariableDeclaration;
 import net.masterthought.dlanguage.psi.interfaces.CanInherit;
 
 public class DLanguageVisitor extends PsiElementVisitor {
@@ -451,7 +451,7 @@ public class DLanguageVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitExpression(@NotNull DLanguageExpression o) {
+  public void visitEqualExpression(@NotNull DLanguageEqualExpression o) {
     visitPsiElement(o);
   }
 
@@ -557,6 +557,10 @@ public class DLanguageVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitIdentityExpression(@NotNull DLanguageIdentityExpression o) {
+    visitPsiElement(o);
+  }
+
   public void visitIfCondition(@NotNull DLanguageIfCondition o) {
     visitPsiElement(o);
   }
@@ -587,6 +591,10 @@ public class DLanguageVisitor extends PsiElementVisitor {
   }
 
   public void visitImportList(@NotNull DLanguageImportList o) {
+    visitPsiElement(o);
+  }
+
+  public void visitInExpression(@NotNull DLanguageInExpression o) {
     visitPsiElement(o);
   }
 
@@ -841,6 +849,10 @@ public class DLanguageVisitor extends PsiElementVisitor {
   }
 
   public void visitRegister64(@NotNull DLanguageRegister64 o) {
+    visitPsiElement(o);
+  }
+
+  public void visitRelExpression(@NotNull DLanguageRelExpression o) {
     visitPsiElement(o);
   }
 

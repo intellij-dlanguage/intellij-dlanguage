@@ -97,10 +97,11 @@ D Language File
                                                     DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                                                       IDENTIFIER
                                                         PsiElement(DLanguageTokenType.ID)('x')
-                                                  PsiElement(DLanguageTokenType.*)('*')
-                                                  DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
-                                                    DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                                                      PsiElement(DLanguageTokenType.INTEGER_LITERAL)('2')
+                                                  DLanguageMulExpression_Impl(MUL_EXPRESSION_)
+                                                    PsiElement(DLanguageTokenType.*)('*')
+                                                    DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
+                                                      DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
+                                                        PsiElement(DLanguageTokenType.INTEGER_LITERAL)('2')
                               PsiElement(DLanguageTokenType.;)(';')
                 DLanguageStatementImpl(STATEMENT)
                   DLanguageNonEmptyStatementImpl(NON_EMPTY_STATEMENT)
@@ -147,11 +148,12 @@ D Language File
                                                     DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                                                       IDENTIFIER
                                                         PsiElement(DLanguageTokenType.ID)('x')
-                                                  PsiElement(DLanguageTokenType.*)('*')
-                                                  DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
-                                                    DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                                                      IDENTIFIER
-                                                        PsiElement(DLanguageTokenType.ID)('x')
+                                                  DLanguageMulExpression_Impl(MUL_EXPRESSION_)
+                                                    PsiElement(DLanguageTokenType.*)('*')
+                                                    DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
+                                                      DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
+                                                        IDENTIFIER
+                                                          PsiElement(DLanguageTokenType.ID)('x')
                               PsiElement(DLanguageTokenType.;)(';')
                 DLanguageStatementImpl(STATEMENT)
                   DLanguageNonEmptyStatementImpl(NON_EMPTY_STATEMENT)
@@ -219,11 +221,12 @@ D Language File
                                                     DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                                                       IDENTIFIER
                                                         PsiElement(DLanguageTokenType.ID)('x')
-                                                  PsiElement(DLanguageTokenType.*)('*')
-                                                  DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
-                                                    DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                                                      IDENTIFIER
-                                                        PsiElement(DLanguageTokenType.ID)('n')
+                                                  DLanguageMulExpression_Impl(MUL_EXPRESSION_)
+                                                    PsiElement(DLanguageTokenType.*)('*')
+                                                    DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
+                                                      DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
+                                                        IDENTIFIER
+                                                          PsiElement(DLanguageTokenType.ID)('n')
                               PsiElement(DLanguageTokenType.;)(';')
                 DLanguageStatementImpl(STATEMENT)
                   DLanguageNonEmptyStatementImpl(NON_EMPTY_STATEMENT)

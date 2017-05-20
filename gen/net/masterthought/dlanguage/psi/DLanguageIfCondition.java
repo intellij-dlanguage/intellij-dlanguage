@@ -10,11 +10,11 @@ public interface DLanguageIfCondition extends PsiElement {
   @Nullable
   DLanguageBasicType getBasicType();
 
+  @NotNull
+  DLanguageCommaExpression getCommaExpression();
+
   @Nullable
   DLanguageDeclarator getDeclarator();
-
-  @NotNull
-  DLanguageExpression getExpression();
 
   @Nullable
   DLanguageIdentifier getIdentifier();

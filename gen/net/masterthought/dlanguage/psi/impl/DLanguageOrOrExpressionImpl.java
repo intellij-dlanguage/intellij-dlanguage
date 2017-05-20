@@ -52,8 +52,26 @@ public class DLanguageOrOrExpressionImpl extends ASTWrapperPsiElement implements
 
   @Override
   @NotNull
+  public List<DLanguageEqualExpression> getEqualExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageEqualExpression.class);
+  }
+
+  @Override
+  @NotNull
   public List<DLanguageIdentifier> getIdentifierList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageIdentifier.class);
+  }
+
+  @Override
+  @NotNull
+  public List<DLanguageIdentityExpression> getIdentityExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageIdentityExpression.class);
+  }
+
+  @Override
+  @NotNull
+  public List<DLanguageInExpression> getInExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageInExpression.class);
   }
 
   @Override
@@ -78,6 +96,12 @@ public class DLanguageOrOrExpressionImpl extends ASTWrapperPsiElement implements
   @NotNull
   public List<DLanguagePowExpression_> getPowExpression_List() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguagePowExpression_.class);
+  }
+
+  @Override
+  @NotNull
+  public List<DLanguageRelExpression> getRelExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageRelExpression.class);
   }
 
   @Override
