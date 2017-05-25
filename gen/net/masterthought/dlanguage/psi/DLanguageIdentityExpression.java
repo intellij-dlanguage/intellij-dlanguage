@@ -7,10 +7,13 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageIdentityExpression extends PsiElement {
 
-  @NotNull
+  @Nullable
   DLanguageShiftExpression getShiftExpression();
 
   @Nullable
   PsiElement getKwIs();
+
+  @Nullable
+  PsiElement getKwNotIs();
 
 }

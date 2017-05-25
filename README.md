@@ -87,8 +87,10 @@ init_ to create a new dub project for you. If dub is not on your path it will cr
 and you will have to create your sdl/json dub file manually or rename/delete the source folder and then
 use _dub init_ to recreate it, or you can open an existing dub project by doing File -> Open,
 
+
 Once a dub project is loaded there is right click menu option to run with dub, or you can use the run config
-– run with Dub,
+– run with Dub.
+
 
 Before running go and configure the DTools in Preferences -> Other Settings -> D Tools.
 

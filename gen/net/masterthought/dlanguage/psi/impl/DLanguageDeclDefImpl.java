@@ -130,6 +130,18 @@ public class DLanguageDeclDefImpl extends ASTWrapperPsiElement implements DLangu
 
   @Override
   @Nullable
+  public DLanguageStaticElseCondition getStaticElseCondition() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageStaticElseCondition.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageStaticIfCondition getStaticIfCondition() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageStaticIfCondition.class);
+  }
+
+  @Override
+  @Nullable
   public DLanguageTemplateDeclaration getTemplateDeclaration() {
     return PsiTreeUtil.getChildOfType(this, DLanguageTemplateDeclaration.class);
   }

@@ -30,7 +30,7 @@ D Language File
                   IDENTIFIER
                     PsiElement(DLanguageTokenType.ID)('Foo')
               DLanguageDeclaratorsImpl(DECLARATORS)
-                DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
+                DECLARATOR_INITIALIZER
                   DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
                     IDENTIFIER
                       PsiElement(DLanguageTokenType.ID)('var')

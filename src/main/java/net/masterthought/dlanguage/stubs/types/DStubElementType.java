@@ -3,7 +3,7 @@ package net.masterthought.dlanguage.stubs.types;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.stubs.StubElement;
 import net.masterthought.dlanguage.DLanguage;
-import net.masterthought.dlanguage.psi.DCompositeElement;
+import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
 import org.jetbrains.annotations.NotNull;
 
 

@@ -10,10 +10,10 @@ public interface DLanguageCaseRangeStatement extends PsiElement {
   @NotNull
   DLanguageFirstExp getFirstExp();
 
-  @NotNull
+  @Nullable
   DLanguageLastExp getLastExp();
 
-  @NotNull
+  @Nullable
   DLanguageScopeStatementList getScopeStatementList();
 
   @NotNull

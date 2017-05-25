@@ -10,7 +10,7 @@ public interface DLanguagePragmaStatement extends PsiElement {
   @NotNull
   DLanguagePragma getPragma();
 
-  @NotNull
+  @Nullable
   DLanguageStatement getStatement();
 
 }

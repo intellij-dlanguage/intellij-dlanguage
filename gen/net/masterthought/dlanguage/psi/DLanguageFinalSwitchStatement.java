@@ -7,10 +7,10 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageFinalSwitchStatement extends PsiElement {
 
-  @NotNull
+  @Nullable
   DLanguageExpression getExpression();
 
-  @NotNull
+  @Nullable
   DLanguageScopeStatement getScopeStatement();
 
   @NotNull
@@ -19,10 +19,10 @@ public interface DLanguageFinalSwitchStatement extends PsiElement {
   @NotNull
   PsiElement getKwSwitch();
 
-  @NotNull
+  @Nullable
   PsiElement getOpParLeft();
 
-  @NotNull
+  @Nullable
   PsiElement getOpParRight();
 
 }

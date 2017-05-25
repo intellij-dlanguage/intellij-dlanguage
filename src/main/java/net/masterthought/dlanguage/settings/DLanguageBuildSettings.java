@@ -1,6 +1,7 @@
 package net.masterthought.dlanguage.settings;
 
 import com.intellij.openapi.components.*;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import net.masterthought.dlanguage.jps.model.DLanguageBuildOptions;
 import net.masterthought.dlanguage.jps.model.JpsDLanguageBuildOptionsSerializer;
@@ -10,12 +11,14 @@ import org.jetbrains.annotations.Nullable;
 @State(
         name = JpsDLanguageBuildOptionsSerializer.DLANGUAGE_BUILD_OPTIONS_COMPONENT_NAME,
         storages = {
-                @Storage(file = StoragePathMacros.PROJECT_FILE),
-                @Storage(file = StoragePathMacros.PROJECT_CONFIG_DIR + "/compiler.xml",
-                        scheme = StorageScheme.DIRECTORY_BASED)
+                @Storage(file = StoragePathMacros.MODULE_FILE),
+                @Storage(value = "/compiler.xml", scheme = StorageScheme.DIRECTORY_BASED)
         }
 )
 public class DLanguageBuildSettings implements PersistentStateComponent<DLanguageBuildOptions> {
+
+    private static final Logger LOG = Logger.getInstance(DLanguageBuildSettings.class);
+
     private DLanguageBuildOptions myBuildOptions = new DLanguageBuildOptions();
 
     @Nullable
@@ -26,6 +29,7 @@ public class DLanguageBuildSettings implements PersistentStateComponent<DLanguag
 
     @Override
     public void loadState(DLanguageBuildOptions state) {
+        LOG.info("loading build options : " + state);
         myBuildOptions = state;
     }
 

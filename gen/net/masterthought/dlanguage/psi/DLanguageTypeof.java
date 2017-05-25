@@ -16,10 +16,10 @@ public interface DLanguageTypeof extends PsiElement {
   @NotNull
   PsiElement getKwTypeof();
 
-  @NotNull
+  @Nullable
   PsiElement getOpParLeft();
 
-  @NotNull
+  @Nullable
   PsiElement getOpParRight();
 
 }

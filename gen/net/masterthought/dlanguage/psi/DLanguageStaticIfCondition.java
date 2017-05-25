@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageStaticIfCondition extends PsiElement {
 
-  @NotNull
+  @Nullable
   DLanguageAssignExpression getAssignExpression();
 
   @NotNull
@@ -19,7 +19,7 @@ public interface DLanguageStaticIfCondition extends PsiElement {
   @NotNull
   PsiElement getOpParLeft();
 
-  @NotNull
+  @Nullable
   PsiElement getOpParRight();
 
 }

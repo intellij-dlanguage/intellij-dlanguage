@@ -3,7 +3,7 @@ D Language File
     DLanguageDeclDefImpl(DECL_DEF)
       DLanguageDeclarationImpl(DECLARATION)
         DLanguageAggregateDeclarationImpl(AGGREGATE_DECLARATION)
-          DLanguageInterfaceDeclarationImpl(INTERFACE_DECLARATION)
+          INTERFACE_DECLARATION
             PsiElement(DLanguageTokenType.interface)('interface')
             IDENTIFIER
               PsiElement(DLanguageTokenType.ID)('I')

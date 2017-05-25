@@ -27,15 +27,15 @@ public class DLanguageSwitchStatementImpl extends ASTWrapperPsiElement implement
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageExpression getExpression() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageExpression.class));
+    return PsiTreeUtil.getChildOfType(this, DLanguageExpression.class);
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageScopeStatement getScopeStatement() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageScopeStatement.class));
+    return PsiTreeUtil.getChildOfType(this, DLanguageScopeStatement.class);
   }
 
   @Override
@@ -45,15 +45,15 @@ public class DLanguageSwitchStatementImpl extends ASTWrapperPsiElement implement
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getOpParLeft() {
-    return notNullChild(findChildByType(OP_PAR_LEFT));
+    return findChildByType(OP_PAR_LEFT);
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getOpParRight() {
-    return notNullChild(findChildByType(OP_PAR_RIGHT));
+    return findChildByType(OP_PAR_RIGHT);
   }
 
 }

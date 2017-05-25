@@ -13,7 +13,6 @@ import com.intellij.psi.FileViewProvider
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.TokenType
-import com.intellij.psi.tree.IFileElementType
 import com.intellij.psi.tree.TokenSet
 import net.masterthought.dlanguage.lexer.DLanguageLexer
 import net.masterthought.dlanguage.parser.DLanguageParser
@@ -46,7 +45,7 @@ object DLanguageBundle {
     fun message(@PropertyKey(resourceBundle = BUNDLE_ID) key: String, vararg params: Any ): String {
         log.debug("Getting message: {}, {}", key, params)
 
-        return CommonBundle.message(getBundle(), key, params);
+        return CommonBundle.message(getBundle(), key, params)
     }
 
     private fun getBundle(): ResourceBundle {
@@ -60,7 +59,7 @@ object DLanguageBundle {
             bundle = ResourceBundle.getBundle(BUNDLE_ID)
             dLangBundle = SoftReference<ResourceBundle>(bundle)
         }
-        return bundle!!;
+        return bundle!!
     }
 }
 
@@ -78,7 +77,7 @@ class DLangParserDefinition : ParserDefinition {
     @NotNull
     override fun getStringLiteralElements(): TokenSet = TokenSet.EMPTY
 
-    override fun getFileNodeType(): IFileElementType? = DFileStubElementType.INSTANCE
+    override fun getFileNodeType(): DFileStubElementType = DFileStubElementType.INSTANCE
 
     @NotNull
     override fun getWhitespaceTokens(): TokenSet = WHITE_SPACES

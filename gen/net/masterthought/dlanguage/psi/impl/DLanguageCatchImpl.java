@@ -33,9 +33,9 @@ public class DLanguageCatchImpl extends ASTWrapperPsiElement implements DLanguag
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageStatement getStatement() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageStatement.class));
+    return PsiTreeUtil.getChildOfType(this, DLanguageStatement.class);
   }
 
   @Override
@@ -51,9 +51,9 @@ public class DLanguageCatchImpl extends ASTWrapperPsiElement implements DLanguag
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getOpParRight() {
-    return notNullChild(findChildByType(OP_PAR_RIGHT));
+    return findChildByType(OP_PAR_RIGHT);
   }
 
 }

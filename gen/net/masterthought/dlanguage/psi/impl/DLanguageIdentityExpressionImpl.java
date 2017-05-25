@@ -27,15 +27,21 @@ public class DLanguageIdentityExpressionImpl extends ASTWrapperPsiElement implem
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageShiftExpression getShiftExpression() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageShiftExpression.class));
+    return PsiTreeUtil.getChildOfType(this, DLanguageShiftExpression.class);
   }
 
   @Override
   @Nullable
   public PsiElement getKwIs() {
     return findChildByType(KW_IS);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getKwNotIs() {
+    return findChildByType(KW_NOT_IS);
   }
 
 }

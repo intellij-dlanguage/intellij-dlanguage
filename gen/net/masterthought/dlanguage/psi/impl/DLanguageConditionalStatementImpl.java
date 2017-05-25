@@ -27,9 +27,21 @@ public class DLanguageConditionalStatementImpl extends ASTWrapperPsiElement impl
   }
 
   @Override
+  @Nullable
+  public DLanguageAggregateBody getAggregateBody() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageAggregateBody.class);
+  }
+
+  @Override
   @NotNull
   public DLanguageCondition getCondition() {
     return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageCondition.class));
+  }
+
+  @Override
+  @Nullable
+  public DLanguageDeclDef getDeclDef() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageDeclDef.class);
   }
 
   @Override

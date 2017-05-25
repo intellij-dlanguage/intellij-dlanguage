@@ -27,9 +27,9 @@ public class DLanguageThrowStatementImpl extends ASTWrapperPsiElement implements
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageExpression getExpression() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageExpression.class));
+    return PsiTreeUtil.getChildOfType(this, DLanguageExpression.class);
   }
 
   @Override
@@ -39,9 +39,9 @@ public class DLanguageThrowStatementImpl extends ASTWrapperPsiElement implements
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getOpScolon() {
-    return notNullChild(findChildByType(OP_SCOLON));
+    return findChildByType(OP_SCOLON);
   }
 
 }

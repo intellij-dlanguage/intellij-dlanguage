@@ -64,4 +64,8 @@ public class DLanguageIdentifierImpl extends DNamedStubbedPsiElementBase<DLangua
     return DPsiImplUtil.getPresentation(this);
   }
 
+  public void delete() {
+    DPsiImplUtil.delete(this);
+  }
+
 }

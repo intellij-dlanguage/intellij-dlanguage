@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageFinallyStatement extends PsiElement {
 
-  @NotNull
+  @Nullable
   DLanguageStatement getStatement();
 
   @NotNull

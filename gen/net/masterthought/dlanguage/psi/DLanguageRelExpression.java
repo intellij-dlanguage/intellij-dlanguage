@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageRelExpression extends PsiElement {
 
-  @NotNull
+  @Nullable
   DLanguageShiftExpression getShiftExpression();
 
   @Nullable

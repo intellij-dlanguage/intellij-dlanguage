@@ -13,7 +13,7 @@ public interface DLanguageReturnStatement extends PsiElement {
   @NotNull
   PsiElement getKwReturn();
 
-  @NotNull
+  @Nullable
   PsiElement getOpScolon();
 
 }

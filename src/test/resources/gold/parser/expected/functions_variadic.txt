@@ -288,7 +288,7 @@ D Language File
           DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
             PsiElement(DLanguageTokenType.import)('import')
             DLanguageImportListImpl(IMPORT_LIST)
-              DLanguageImportImpl(IMPORT)
+              IMPORT
                 DLanguageModuleFullyQualifiedNameImpl(MODULE_FULLY_QUALIFIED_NAME)
                   IDENTIFIER
                     PsiElement(DLanguageTokenType.ID)('core')
@@ -456,7 +456,7 @@ D Language File
                                       IDENTIFIER
                                         PsiElement(DLanguageTokenType.ID)('va_list')
                                   DLanguageDeclaratorsImpl(DECLARATORS)
-                                    DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
+                                    DECLARATOR_INITIALIZER
                                       DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
                                         IDENTIFIER
                                           PsiElement(DLanguageTokenType.ID)('args')
@@ -712,7 +712,7 @@ D Language File
                                         DLanguageBasicTypeXImpl(BASIC_TYPE_X)
                                           PsiElement(DLanguageTokenType.int)('int')
                                       DLanguageDeclaratorsImpl(DECLARATORS)
-                                        DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
+                                        DECLARATOR_INITIALIZER
                                           DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
                                             IDENTIFIER
                                               PsiElement(DLanguageTokenType.ID)('z')

@@ -8,10 +8,18 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import net.masterthought.dlanguage.stubs.DLanguageTemplateMixinDeclarationStub;
 import net.masterthought.dlanguage.psi.*;
+import com.intellij.navigation.ItemPresentation;
+import com.intellij.psi.PsiReference;
+import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
+import com.intellij.psi.stubs.IStubElementType;
 
-public class DLanguageTemplateMixinDeclarationImpl extends ASTWrapperPsiElement implements DLanguageTemplateMixinDeclaration {
+public class DLanguageTemplateMixinDeclarationImpl extends DNamedStubbedPsiElementBase<DLanguageTemplateMixinDeclarationStub> implements DLanguageTemplateMixinDeclaration {
+
+  public DLanguageTemplateMixinDeclarationImpl(DLanguageTemplateMixinDeclarationStub stub, IStubElementType type) {
+    super(stub, type);
+  }
 
   public DLanguageTemplateMixinDeclarationImpl(ASTNode node) {
     super(node);
@@ -41,13 +49,13 @@ public class DLanguageTemplateMixinDeclarationImpl extends ASTWrapperPsiElement 
   @Override
   @NotNull
   public DLanguageIdentifier getIdentifier() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class));
+    return notNullChild(PsiTreeUtil.getStubChildOfType(this, DLanguageIdentifier.class));
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageTemplateParameters getTemplateParameters() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageTemplateParameters.class));
+    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateParameters.class);
   }
 
   @Override
@@ -63,15 +71,48 @@ public class DLanguageTemplateMixinDeclarationImpl extends ASTWrapperPsiElement 
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getOpBracesLeft() {
-    return notNullChild(findChildByType(OP_BRACES_LEFT));
+    return findChildByType(OP_BRACES_LEFT);
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getOpBracesRight() {
-    return notNullChild(findChildByType(OP_BRACES_RIGHT));
+    return findChildByType(OP_BRACES_RIGHT);
+  }
+
+  @NotNull
+  public String getName() {
+    return DPsiImplUtil.getName(this);
+  }
+
+  public String getFullName() {
+    return DPsiImplUtil.getFullName(this);
+  }
+
+  @Nullable
+  public PsiElement getNameIdentifier() {
+    return DPsiImplUtil.getNameIdentifier(this);
+  }
+
+  @NotNull
+  public PsiReference getReference() {
+    return DPsiImplUtil.getReference(this);
+  }
+
+  @Nullable
+  public PsiElement setName(String newName) {
+    return DPsiImplUtil.setName(this, newName);
+  }
+
+  @NotNull
+  public ItemPresentation getPresentation() {
+    return DPsiImplUtil.getPresentation(this);
+  }
+
+  public boolean isSomeVisibility(Visibility visibility) {
+    return DPsiImplUtil.isSomeVisibility(this, visibility);
   }
 
 }

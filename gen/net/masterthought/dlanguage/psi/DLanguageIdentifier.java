@@ -4,6 +4,7 @@ package net.masterthought.dlanguage.psi;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 import com.intellij.psi.StubBasedPsiElement;
 import net.masterthought.dlanguage.stubs.DLanguageIdentifierStub;
 import com.intellij.navigation.ItemPresentation;
@@ -28,5 +29,7 @@ public interface DLanguageIdentifier extends DNamedElement, StubBasedPsiElement<
 
   @NotNull
   ItemPresentation getPresentation();
+
+  void delete();
 
 }

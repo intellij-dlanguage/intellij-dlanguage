@@ -10,7 +10,7 @@ public interface DLanguageCatch extends PsiElement {
   @NotNull
   DLanguageCatchParameter getCatchParameter();
 
-  @NotNull
+  @Nullable
   DLanguageStatement getStatement();
 
   @NotNull
@@ -19,7 +19,7 @@ public interface DLanguageCatch extends PsiElement {
   @NotNull
   PsiElement getOpParLeft();
 
-  @NotNull
+  @Nullable
   PsiElement getOpParRight();
 
 }

@@ -3,8 +3,6 @@ package net.masterthought.dlanguage.features;
 import com.intellij.openapi.editor.FoldRegion;
 import net.masterthought.dlanguage.DLightPlatformCodeInsightFixtureTestCase;
 
-import java.io.File;
-
 /**
  * Folding builder test driver. Add new folding builder testcases here.
  */
@@ -20,7 +18,7 @@ public class DFoldingBuilderTest extends DLightPlatformCodeInsightFixtureTestCas
     public void testFold00001() throws Throwable {
         doTest("main (Function) ...");
     }
-//    public void testFold00002() throws Throwable { doTest("--"); }
+//    public void testFold00002() throws Throwable { doTestModule("--"); }
 
     /**
      * Folds the region at the caret and verifies that it is indeed collapsed

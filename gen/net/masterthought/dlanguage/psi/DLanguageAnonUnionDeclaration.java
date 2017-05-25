@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageAnonUnionDeclaration extends PsiElement {
 
-  @NotNull
+  @Nullable
   DLanguageAggregateBody getAggregateBody();
 
   @NotNull

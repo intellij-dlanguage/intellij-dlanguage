@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageUnionTemplateDeclaration extends PsiElement {
 
-  @NotNull
+  @Nullable
   DLanguageAggregateBody getAggregateBody();
 
   @Nullable
@@ -16,7 +16,7 @@ public interface DLanguageUnionTemplateDeclaration extends PsiElement {
   @NotNull
   DLanguageIdentifier getIdentifier();
 
-  @NotNull
+  @Nullable
   DLanguageTemplateParameters getTemplateParameters();
 
   @NotNull
