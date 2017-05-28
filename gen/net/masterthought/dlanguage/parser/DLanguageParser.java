@@ -3580,7 +3580,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // Catch [Catches]
+  // Catch Catch*//todo simplify
   //      | LastCatch
   public static boolean Catches(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "Catches")) return false;
@@ -3593,7 +3593,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // Catch [Catches]
+  // Catch Catch*
   private static boolean Catches_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "Catches_0")) return false;
     boolean r;
@@ -3604,10 +3604,15 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // [Catches]
+  // Catch*
   private static boolean Catches_0_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "Catches_0_1")) return false;
-    Catches(b, l + 1);
+    int c = current_position_(b);
+    while (true) {
+      if (!Catch(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "Catches_0_1", c)) break;
+      c = current_position_(b);
+    }
     return true;
   }
 
@@ -10548,18 +10553,21 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     r = consumeToken(b, OP_SCOLON);
     if (!r) r = NonEmptyStatement(b, l + 1);
     if (!r) r = BlockStatement(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
+    exit_section_(b, l, m, r, false, statement_recover_parser_);
     return r;
   }
 
   /* ********************************************************** */
-  // Statement Statement*
+  // Statement Statement*{
+  //         //recoverWhile= statement_list_recover
+  //     }
   public static boolean StatementList(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "StatementList")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, STATEMENT_LIST, "<statement list>");
     r = Statement(b, l + 1);
     r = r && StatementList_1(b, l + 1);
+    r = r && StatementList_2(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -10573,6 +10581,13 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
       if (!empty_element_parsed_guard_(b, "StatementList_1", c)) break;
       c = current_position_(b);
     }
+    return true;
+  }
+
+  // {
+  //         //recoverWhile= statement_list_recover
+  //     }
+  private static boolean StatementList_2(PsiBuilder b, int l) {
     return true;
   }
 
@@ -12820,7 +12835,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // !(ModuleDeclaration | DeclDefs | Statement | SHEBANG)
+  // !( ModuleDeclaration | DeclDefs | Statement | SHEBANG )
   static boolean item_recover(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "item_recover")) return false;
     boolean r;
@@ -12866,6 +12881,36 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     return r;
   }
 
+  /* ********************************************************** */
+  // !('else' | Statement | '}' | DeclDef | ModuleDeclaration | 'catch' | 'finally' | ':' | ',' | SHEBANG)
+  static boolean statement_recover(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "statement_recover")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NOT_);
+    r = !statement_recover_0(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // 'else' | Statement | '}' | DeclDef | ModuleDeclaration | 'catch' | 'finally' | ':' | ',' | SHEBANG
+  private static boolean statement_recover_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "statement_recover_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, KW_ELSE);
+    if (!r) r = Statement(b, l + 1);
+    if (!r) r = consumeToken(b, OP_BRACES_RIGHT);
+    if (!r) r = DeclDef(b, l + 1);
+    if (!r) r = ModuleDeclaration(b, l + 1);
+    if (!r) r = consumeToken(b, KW_CATCH);
+    if (!r) r = consumeToken(b, KW_FINALLY);
+    if (!r) r = consumeToken(b, OP_COLON);
+    if (!r) r = consumeToken(b, OP_COMMA);
+    if (!r) r = consumeToken(b, SHEBANG);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
   final static Parser item_recover_parser_ = new Parser() {
     public boolean parse(PsiBuilder b, int l) {
       return item_recover(b, l + 1);
@@ -12874,6 +12919,11 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   final static Parser module_name_recover_parser_ = new Parser() {
     public boolean parse(PsiBuilder b, int l) {
       return module_name_recover(b, l + 1);
+    }
+  };
+  final static Parser statement_recover_parser_ = new Parser() {
+    public boolean parse(PsiBuilder b, int l) {
+      return statement_recover(b, l + 1);
     }
   };
 }

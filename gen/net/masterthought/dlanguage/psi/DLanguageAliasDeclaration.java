@@ -11,6 +11,7 @@ import com.intellij.psi.StubBasedPsiElement;
 import net.masterthought.dlanguage.stubs.DLanguageAliasDeclarationStub;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
+import net.masterthought.dlanguage.psi.interfaces.containers.Container;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 import net.masterthought.dlanguage.psi.interfaces.Type;
 
@@ -73,6 +74,8 @@ public interface DLanguageAliasDeclaration extends DNamedElement, HasVisibility,
   ItemPresentation getPresentation();
 
   boolean isSomeVisibility(Visibility visibility);
+
+  boolean isSomeVisibility(Visibility visibility, Class<? extends Container> containerType);
 
   boolean actuallyIsDeclaration();
 

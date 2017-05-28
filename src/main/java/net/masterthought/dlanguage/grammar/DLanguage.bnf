@@ -215,11 +215,11 @@ tokens = [
 
 dFile ::= item_*
 
-private item_ ::= (ModuleDeclaration | DeclDefs | Statement | SHEBANG) {
+private item_ ::= (ModuleDeclaration | DeclDefs | Statement | SHEBANG ) {
     recoverWhile = item_recover
 }
 
-private item_recover ::= !(ModuleDeclaration | DeclDefs | Statement | SHEBANG)
+private item_recover ::= !( ModuleDeclaration | DeclDefs | Statement | SHEBANG )
 
 Identifier ::= ID {
     methods=[getName getNameIdentifier getReference setName getPresentation delete]
@@ -768,7 +768,15 @@ SpecialKeyword ::=
 Statement ::=
     ';'
     | NonEmptyStatement
-    | BlockStatement
+    | BlockStatement{
+    recoverWhile = statement_recover
+    }
+
+private statement_recover ::=
+    !('else' | Statement | '}' | DeclDef | ModuleDeclaration | 'catch' | 'finally' | ':' | ',' | SHEBANG | <<eof>>)
+
+//private statement_recover ::=
+//    !('else' | '{' | '}'  | Identifier | ';' | 'extern' | StorageClass |  'enum' | BasicTypeX |'.' | 'typeof' | '(' | '*' | '[' | 'delegate' | 'function' | 'auto' | 'return' | 'alias' | 'class' | 'interface' | 'struct' | 'union' | 'static' | 'import' | 'template' )
 
 NonEmptyStatement ::=
     NonEmptyStatementNoCaseNoDefault
@@ -824,7 +832,12 @@ BlockStatement ::=
  '{' StatementList? '}'
 
 StatementList ::=
-    Statement Statement*
+    Statement Statement*{
+        //recoverWhile= statement_list_recover
+    }
+
+//private statement_list_recover::=
+//    !('}'|Statement)
 
 ExpressionStatement ::=
     Expression ';'?
@@ -1008,7 +1021,7 @@ TryStatement ::=
     | 'try' ScopeStatement FinallyStatement
 
 Catches ::=
-     Catch [Catches]
+     Catch Catch*//todo simplify
      | LastCatch
 
 LastCatch ::=

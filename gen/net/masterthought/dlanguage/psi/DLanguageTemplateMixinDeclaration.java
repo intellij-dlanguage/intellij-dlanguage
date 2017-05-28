@@ -16,6 +16,7 @@ import com.intellij.psi.StubBasedPsiElement;
 import net.masterthought.dlanguage.stubs.DLanguageTemplateMixinDeclarationStub;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
+import net.masterthought.dlanguage.psi.interfaces.containers.Container;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 
 public interface DLanguageTemplateMixinDeclaration extends DNamedElement, StatementContainer, MixinContainer, GlobalDeclarationContainer, HasVisibility, HasTemplateArguments, Mixinable, Declaration, StubBasedPsiElement<DLanguageTemplateMixinDeclarationStub> {
@@ -60,6 +61,8 @@ public interface DLanguageTemplateMixinDeclaration extends DNamedElement, Statem
 
   @NotNull
   ItemPresentation getPresentation();
+
+  boolean isSomeVisibility(Visibility visibility, Class<? extends Container> containerType);
 
   boolean isSomeVisibility(Visibility visibility);
 

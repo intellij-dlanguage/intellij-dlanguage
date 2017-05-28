@@ -1735,7 +1735,7 @@ public class DPsiImplUtil {
         return visibility == protectionToVisibilty("public");
     }
 
-    private static boolean isSomeVisibility(DNamedElement psiElement, Visibility visibility, Class<? extends Container> containerType) {
+    public static boolean isSomeVisibility(DNamedElement psiElement, Visibility visibility, Class<? extends Container> containerType) {
         //todo fix
         return false;
     }

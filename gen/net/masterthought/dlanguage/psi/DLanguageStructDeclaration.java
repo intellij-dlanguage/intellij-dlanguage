@@ -14,6 +14,7 @@ import com.intellij.psi.StubBasedPsiElement;
 import net.masterthought.dlanguage.stubs.DLanguageStructDeclarationStub;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
+import net.masterthought.dlanguage.psi.interfaces.containers.Container;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 
 public interface DLanguageStructDeclaration extends StatementContainer, DNamedElement, MixinContainer, HasVisibility, HasTemplateArguments, Declaration, StubBasedPsiElement<DLanguageStructDeclarationStub> {
@@ -53,6 +54,12 @@ public interface DLanguageStructDeclaration extends StatementContainer, DNamedEl
   @NotNull
   ItemPresentation getPresentation();
 
+  boolean isSomeVisibility(Visibility visibility, Class<? extends Container> containerType);
+
   boolean isSomeVisibility(Visibility visibility);
+
+  //WARNING: getTemplateArguments(...) is skipped
+  //matching getTemplateArguments(DLanguageStructDeclaration, ...)
+  //methods are not found in DPsiImplUtil
 
 }

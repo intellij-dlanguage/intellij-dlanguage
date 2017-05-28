@@ -7,11 +7,8 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageCatches extends PsiElement {
 
-  @Nullable
-  DLanguageCatch getCatch();
-
-  @Nullable
-  DLanguageCatches getCatches();
+  @NotNull
+  List<DLanguageCatch> getCatchList();
 
   @Nullable
   DLanguageLastCatch getLastCatch();
