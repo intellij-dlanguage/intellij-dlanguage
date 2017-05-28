@@ -14,7 +14,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.TokenType
 import com.intellij.psi.tree.TokenSet
-import net.masterthought.dlanguage.lexer.DLanguageLexer
+import net.masterthought.dlanguage.dlanguage.DLanguageLexer
 import net.masterthought.dlanguage.parser.DLanguageParser
 import net.masterthought.dlanguage.psi.DLanguageFile
 import net.masterthought.dlanguage.psi.DLanguageTypes

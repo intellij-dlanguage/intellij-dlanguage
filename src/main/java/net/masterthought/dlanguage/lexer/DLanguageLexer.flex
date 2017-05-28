@@ -265,7 +265,7 @@ HEX_EXPONENT = [pP][\+\-]? [0-9]+
 <YYINITIAL> "template"                 { return KW_TEMPLATE; }
 <YYINITIAL> "lazy"                     { return KW_LAZY; }
 <YYINITIAL> "out"                      { return KW_OUT; }
-<YYINITIAL> "nogc"                     { return KW_NOGC; }
+//<YYINITIAL> "nogc"                     { return KW_NOGC; }//not a reserved word
 <YYINITIAL> "__traits"                 { return KW___TRAITS; }
 <YYINITIAL> "unittest"                 { return KW_UNITTEST; }
 <YYINITIAL> ";"                        { return OP_SCOLON; }

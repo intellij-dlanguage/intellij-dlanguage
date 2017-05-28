@@ -9509,7 +9509,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, "trusted");
     if (!r) r = consumeToken(b, "system");
     if (!r) r = consumeToken(b, "disable");
-    if (!r) r = consumeToken(b, KW_NOGC);
+    if (!r) r = consumeToken(b, "nogc");
     exit_section_(b, l, m, r, false, null);
     return r;
   }
