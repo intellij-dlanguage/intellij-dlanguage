@@ -12882,7 +12882,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // !('else' | Statement | '}' | DeclDef | ModuleDeclaration | 'catch' | 'finally' | ':' | ',' | SHEBANG)
+  // !('else' | Statement | '}' | DeclDef | ModuleDeclaration | 'catch' | 'finally' | ':' | ','| 'foreach' | SHEBANG | <<eof>>)
   static boolean statement_recover(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "statement_recover")) return false;
     boolean r;
@@ -12892,7 +12892,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // 'else' | Statement | '}' | DeclDef | ModuleDeclaration | 'catch' | 'finally' | ':' | ',' | SHEBANG
+  // 'else' | Statement | '}' | DeclDef | ModuleDeclaration | 'catch' | 'finally' | ':' | ','| 'foreach' | SHEBANG | <<eof>>
   private static boolean statement_recover_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "statement_recover_0")) return false;
     boolean r;
@@ -12906,7 +12906,9 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, KW_FINALLY);
     if (!r) r = consumeToken(b, OP_COLON);
     if (!r) r = consumeToken(b, OP_COMMA);
+    if (!r) r = consumeToken(b, KW_FOREACH);
     if (!r) r = consumeToken(b, SHEBANG);
+    if (!r) r = eof(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }

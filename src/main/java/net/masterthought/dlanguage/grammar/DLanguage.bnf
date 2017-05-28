@@ -773,10 +773,8 @@ Statement ::=
     }
 
 private statement_recover ::=
-    !('else' | Statement | '}' | DeclDef | ModuleDeclaration | 'catch' | 'finally' | ':' | ',' | SHEBANG | <<eof>>)
+    !('else' | Statement | '}' | DeclDef | ModuleDeclaration | 'catch' | 'finally' | ':' | ','| 'foreach' | SHEBANG | <<eof>>)//idk why the 'foreach' is needed todo
 
-//private statement_recover ::=
-//    !('else' | '{' | '}'  | Identifier | ';' | 'extern' | StorageClass |  'enum' | BasicTypeX |'.' | 'typeof' | '(' | '*' | '[' | 'delegate' | 'function' | 'auto' | 'return' | 'alias' | 'class' | 'interface' | 'struct' | 'union' | 'static' | 'import' | 'template' )
 
 NonEmptyStatement ::=
     NonEmptyStatementNoCaseNoDefault

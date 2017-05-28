@@ -315,9 +315,17 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
 
 // standard library
 
-//    public void teststdlib_array() {
-//        doTestModuletruefalsetrue,truefalse);
-//    }
+    public void teststdio() {
+        doTest(true, true);
+    }
+
+    public void testbase64() {
+        doTest(true, true);
+    }
+
+    public void testarray() {
+        doTest(true, true);
+    }
 
 }
 
