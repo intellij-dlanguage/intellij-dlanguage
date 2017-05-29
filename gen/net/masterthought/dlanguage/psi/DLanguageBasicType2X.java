@@ -23,6 +23,9 @@ public interface DLanguageBasicType2X extends PsiElement {
   DLanguageType getType();
 
   @Nullable
+  PsiElement getFloatLiteral();
+
+  @Nullable
   PsiElement getKwDelegate();
 
   @Nullable
@@ -39,5 +42,8 @@ public interface DLanguageBasicType2X extends PsiElement {
 
   @Nullable
   PsiElement getOpDdot();
+
+  @Nullable
+  PsiElement getOpDot();
 
 }

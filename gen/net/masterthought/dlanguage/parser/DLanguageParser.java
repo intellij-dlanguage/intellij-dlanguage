@@ -3228,6 +3228,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   // '*'
   //     | '[' AssignExpression ']'
   //     | '[' AssignExpression '..' AssignExpression ']'
+  //     | '[' FLOAT_LITERAL '.' AssignExpression']'// jflex doesn't support look ahead in the lexing process. This is a problem for situations such as [7..x], since this is lexed into '[' '7.' '.' ']'. The ponly solution I was able  to find was adding this in the parser. This is not ideal todo
   //     | '[' Type? ']'
   //     | 'delegate' Parameters MemberFunctionAttributes?
   //     | 'function' Parameters FunctionAttributes?
@@ -3241,6 +3242,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     if (!r) r = BasicType2X_3(b, l + 1);
     if (!r) r = BasicType2X_4(b, l + 1);
     if (!r) r = BasicType2X_5(b, l + 1);
+    if (!r) r = BasicType2X_6(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -3271,59 +3273,71 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // '[' Type? ']'
+  // '[' FLOAT_LITERAL '.' AssignExpression']'
   private static boolean BasicType2X_3(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "BasicType2X_3")) return false;
     boolean r;
     Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, OP_BRACKET_LEFT, FLOAT_LITERAL, OP_DOT);
+    r = r && AssignExpression(b, l + 1);
+    r = r && consumeToken(b, OP_BRACKET_RIGHT);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // '[' Type? ']'
+  private static boolean BasicType2X_4(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "BasicType2X_4")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
     r = consumeToken(b, OP_BRACKET_LEFT);
-    r = r && BasicType2X_3_1(b, l + 1);
+    r = r && BasicType2X_4_1(b, l + 1);
     r = r && consumeToken(b, OP_BRACKET_RIGHT);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // Type?
-  private static boolean BasicType2X_3_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "BasicType2X_3_1")) return false;
+  private static boolean BasicType2X_4_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "BasicType2X_4_1")) return false;
     Type(b, l + 1);
     return true;
   }
 
   // 'delegate' Parameters MemberFunctionAttributes?
-  private static boolean BasicType2X_4(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "BasicType2X_4")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, KW_DELEGATE);
-    r = r && Parameters(b, l + 1);
-    r = r && BasicType2X_4_2(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // MemberFunctionAttributes?
-  private static boolean BasicType2X_4_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "BasicType2X_4_2")) return false;
-    MemberFunctionAttributes(b, l + 1);
-    return true;
-  }
-
-  // 'function' Parameters FunctionAttributes?
   private static boolean BasicType2X_5(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "BasicType2X_5")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, KW_FUNCTION);
+    r = consumeToken(b, KW_DELEGATE);
     r = r && Parameters(b, l + 1);
     r = r && BasicType2X_5_2(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // FunctionAttributes?
+  // MemberFunctionAttributes?
   private static boolean BasicType2X_5_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "BasicType2X_5_2")) return false;
+    MemberFunctionAttributes(b, l + 1);
+    return true;
+  }
+
+  // 'function' Parameters FunctionAttributes?
+  private static boolean BasicType2X_6(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "BasicType2X_6")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, KW_FUNCTION);
+    r = r && Parameters(b, l + 1);
+    r = r && BasicType2X_6_2(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // FunctionAttributes?
+  private static boolean BasicType2X_6_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "BasicType2X_6_2")) return false;
     FunctionAttributes(b, l + 1);
     return true;
   }
@@ -5797,7 +5811,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // ('is'|'!is') ShiftExpression
+  // ('is'|'!is') (ShiftExpression | AssignExpression)
   public static boolean IdentityExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "IdentityExpression")) return false;
     if (!nextTokenIs(b, "<identity expression>", KW_NOT_IS, KW_IS)) return false;
@@ -5805,7 +5819,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b, l, _NONE_, IDENTITY_EXPRESSION, "<identity expression>");
     r = IdentityExpression_0(b, l + 1);
     p = r; // pin = 1
-    r = r && ShiftExpression(b, l + 1);
+    r = r && IdentityExpression_1(b, l + 1);
     exit_section_(b, l, m, r, p, null);
     return r || p;
   }
@@ -5817,6 +5831,17 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = consumeToken(b, KW_IS);
     if (!r) r = consumeToken(b, KW_NOT_IS);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // ShiftExpression | AssignExpression
+  private static boolean IdentityExpression_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "IdentityExpression_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = ShiftExpression(b, l + 1);
+    if (!r) r = AssignExpression(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -6096,10 +6121,10 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // ('in'| '!in') ShiftExpression
+  // ('in'| ('!''in')) ShiftExpression
   public static boolean InExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "InExpression")) return false;
-    if (!nextTokenIs(b, "<in expression>", KW_NOT_IN, KW_IN)) return false;
+    if (!nextTokenIs(b, "<in expression>", OP_NOT, KW_IN)) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _NONE_, IN_EXPRESSION, "<in expression>");
     r = InExpression_0(b, l + 1);
@@ -6109,13 +6134,23 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     return r || p;
   }
 
-  // 'in'| '!in'
+  // 'in'| ('!''in')
   private static boolean InExpression_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "InExpression_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, KW_IN);
-    if (!r) r = consumeToken(b, KW_NOT_IN);
+    if (!r) r = InExpression_0_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // '!''in'
+  private static boolean InExpression_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "InExpression_0_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, OP_NOT, KW_IN);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -7198,7 +7233,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // ((AssignExpression '..' AssignExpression) | AssignExpression) [',' MultipleAssign ]
+  // ((((FLOAT_LITERAL '.') | (AssignExpression '..')) AssignExpression) | AssignExpression) [',' MultipleAssign ]
   public static boolean MultipleAssign(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "MultipleAssign")) return false;
     boolean r;
@@ -7209,7 +7244,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // (AssignExpression '..' AssignExpression) | AssignExpression
+  // (((FLOAT_LITERAL '.') | (AssignExpression '..')) AssignExpression) | AssignExpression
   private static boolean MultipleAssign_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "MultipleAssign_0")) return false;
     boolean r;
@@ -7220,14 +7255,45 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // AssignExpression '..' AssignExpression
+  // ((FLOAT_LITERAL '.') | (AssignExpression '..')) AssignExpression
   private static boolean MultipleAssign_0_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "MultipleAssign_0_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
+    r = MultipleAssign_0_0_0(b, l + 1);
+    r = r && AssignExpression(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // (FLOAT_LITERAL '.') | (AssignExpression '..')
+  private static boolean MultipleAssign_0_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "MultipleAssign_0_0_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = MultipleAssign_0_0_0_0(b, l + 1);
+    if (!r) r = MultipleAssign_0_0_0_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // FLOAT_LITERAL '.'
+  private static boolean MultipleAssign_0_0_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "MultipleAssign_0_0_0_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, FLOAT_LITERAL, OP_DOT);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // AssignExpression '..'
+  private static boolean MultipleAssign_0_0_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "MultipleAssign_0_0_0_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
     r = AssignExpression(b, l + 1);
     r = r && consumeToken(b, OP_DDOT);
-    r = r && AssignExpression(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }

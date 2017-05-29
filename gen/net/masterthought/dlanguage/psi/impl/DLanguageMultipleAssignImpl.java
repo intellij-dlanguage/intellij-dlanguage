@@ -40,6 +40,12 @@ public class DLanguageMultipleAssignImpl extends ASTWrapperPsiElement implements
 
   @Override
   @Nullable
+  public PsiElement getFloatLiteral() {
+    return findChildByType(FLOAT_LITERAL);
+  }
+
+  @Override
+  @Nullable
   public PsiElement getOpComma() {
     return findChildByType(OP_COMMA);
   }
@@ -48,6 +54,12 @@ public class DLanguageMultipleAssignImpl extends ASTWrapperPsiElement implements
   @Nullable
   public PsiElement getOpDdot() {
     return findChildByType(OP_DDOT);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpDot() {
+    return findChildByType(OP_DOT);
   }
 
 }

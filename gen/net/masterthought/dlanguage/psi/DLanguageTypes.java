@@ -364,7 +364,6 @@ public interface DLanguageTypes {
   IElementType KW_MODULE = new DLanguageTokenType("module");
   IElementType KW_NEW = new DLanguageTokenType("new");
   IElementType KW_NOTHROW = new DLanguageTokenType("nothrow");
-  IElementType KW_NOT_IN = new DLanguageTokenType("!in");
   IElementType KW_NOT_IS = new DLanguageTokenType("!is");
   IElementType KW_NULL = new DLanguageTokenType("null");
   IElementType KW_OUT = new DLanguageTokenType("out");

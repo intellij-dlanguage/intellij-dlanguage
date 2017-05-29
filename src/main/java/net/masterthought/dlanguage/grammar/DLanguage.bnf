@@ -98,7 +98,6 @@ tokens = [
  KW_INTERFACE = "interface"
  KW___PARAMETERS = "__parameters"
  KW_IN = "in"
- KW_NOT_IN = "!in"
  KW_ASM = "asm"
  KW_ASSERT = "assert"
  KW_CASE = "case"
@@ -207,7 +206,14 @@ tokens = [
 //line_comment="regexp://.*"
 //block_comment="regexp:/\*(.|\n)*\*/"
 //DOUBLE_QUOTED_STRING = 'regexp:\"([^\\"]|((\\"|\\\?|\\\|\\0|\\a|\\b|\\f|\\n|\\r|\\t|\\v)|(\\x[0-9abcdefABCDEF_]{2})|(\\[0-7])|(\\[0-7]{2})|(\\[0-7]{3})|(\\u[0-9abcdefABCDEF_]{4})|(\\U[0-9abcdefABCDEF_]{8})|(\\&([a-zA-Z_])([a-zA-Z0-9_])*;)))*\"[cwd]*'
-// ------------------------
+//FLOAT_LITERAL = "regexp:[0-9][0-9_]*\.([0]|[1-9_][0-9_]*)?"
+//CHARACTER_LITERAL="regexp:\'([^\r\n\t\f\\])\'"
+////DECIMAL_FLOAT_SIMPLE ="regexp:[0-9][0-9_]*\.([0]|[1-9_][0-9_]*)?!\."
+//DECIMAL_FLOAT_EXPONENT = "regexp:[0-9_]+\.[0-9_]+[eE][\+\-]? [0-9_]+"
+//DECIMAL_FLOAT_FIRST_DOT = "regexp:\. ([0] | [1-9_] [0-9_]*)"
+//DECIMAL_FLOAT_FIRST_DOT_EXPONENT = "regexp:\. ([0] | [1-9] [0-9]*) [eE][\+\-]? [0-9_]+"
+//DECIMAL_FLOAT_NO_DOT_EXPONENT = "regexp:[0-9] [0-9_]* [eE][\+\-]? [0-9_]+"
+//// ------------------------
 
  ]
 
@@ -375,6 +381,7 @@ BasicType2X ::=
     '*'
     | '[' AssignExpression ']'
     | '[' AssignExpression '..' AssignExpression ']'
+    | '[' FLOAT_LITERAL '.' AssignExpression']'// jflex doesn't support look ahead in the lexing process. This is a problem for situations such as [7..x], since this is lexed into '[' '7.' '.' ']'. The ponly solution I was able  to find was adding this in the parser. This is not ideal todo
     | '[' Type? ']'
     | 'delegate' Parameters MemberFunctionAttributes?
     | 'function' Parameters FunctionAttributes?
@@ -463,7 +470,7 @@ EqualExpression ::=
      }
 
 IdentityExpression ::=
-     ('is'|'!is') ShiftExpression{
+     ('is'|'!is') (ShiftExpression | AssignExpression){
      pin = 1
      }
 
@@ -473,7 +480,7 @@ RelExpression ::=
     }
 
 InExpression ::=
-    ('in'| '!in') ShiftExpression{
+    ('in'| ('!''in')) ShiftExpression{
     pin = 1
     }
 
@@ -572,7 +579,8 @@ SliceExpression ::=
     |  '[' MultipleAssign ']' [PostfixExpression]
 
 MultipleAssign ::=
- ((AssignExpression '..' AssignExpression) | AssignExpression) [',' MultipleAssign ]
+ ((((FLOAT_LITERAL '.') | (AssignExpression '..')) AssignExpression) | AssignExpression) [',' MultipleAssign ]
+ // jflex doesn't support look ahead in the lexing process. This is a problem for situations such as [7..x], since this is lexed into '[' '7.' '.' ']'. The ponly solution I was able  to find was adding this in the parser. This is not ideal todo
 
 PrimaryExpression ::=
      ('.')? (TemplateInstance | Identifier)

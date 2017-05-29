@@ -58,6 +58,12 @@ public class DLanguageBasicType2XImpl extends ASTWrapperPsiElement implements DL
 
   @Override
   @Nullable
+  public PsiElement getFloatLiteral() {
+    return findChildByType(FLOAT_LITERAL);
+  }
+
+  @Override
+  @Nullable
   public PsiElement getKwDelegate() {
     return findChildByType(KW_DELEGATE);
   }
@@ -90,6 +96,12 @@ public class DLanguageBasicType2XImpl extends ASTWrapperPsiElement implements DL
   @Nullable
   public PsiElement getOpDdot() {
     return findChildByType(OP_DDOT);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpDot() {
+    return findChildByType(OP_DOT);
   }
 
 }
