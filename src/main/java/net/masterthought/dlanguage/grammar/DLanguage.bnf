@@ -235,6 +235,171 @@ Identifier ::= ID {
 
 StringLiteral  ::= (WYSIWYG_STRING|ALTERNATE_WYSIWYG_STRING|DOUBLE_QUOTED_STRING|HEX_STRING|DELIMITED_STRING)
 
+//float
+
+////FLOAT_LITERAL ::= (DECIMAL_INTEGER? '.' DECIMAL_INTEGER )| (DECIMAL_INTEGER '.') ('e' | 'E') '-'? DECIMAL_INTEGER
+//FLOAT_LITERAL ::= FloatLiteral
+//Integer ::= INTEGER_LITERAL
+//
+//FloatLiteral ::=
+//    Float
+//    | Float Suffix
+//    | Integer ImaginarySuffix
+//    | Integer FloatSuffix ImaginarySuffix
+//    | Integer RealSuffix ImaginarySuffix
+//
+//Float ::=
+//    DecimalFloat
+//    | HexFloat
+//
+//DecimalFloat ::=
+//    LeadingDecimal '.'
+//    | LeadingDecimal '.' DecimalDigits
+//    | DecimalDigits '.' DecimalDigitsNoStartingUS DecimalExponent
+//    | '.' DecimalInteger
+//    | '.' DecimalInteger DecimalExponent
+//    | LeadingDecimal DecimalExponent
+//
+//DecimalExponent ::=
+//    DecimalExponentStart DecimalDigitsNoSingleUS
+//
+//DecimalExponentStart ::=
+//    'e'
+//    | 'E'
+//    | 'e+'
+//    | 'E+'
+//    | 'e-'
+//    | 'E-'
+//
+//HexFloat ::=
+//    HexPrefix HexDigitsNoSingleUS '.' HexDigitsNoStartingUS HexExponent
+//    | HexPrefix '.' HexDigitsNoStartingUS HexExponent
+//    | HexPrefix HexDigitsNoSingleUS HexExponent
+//
+//HexPrefix ::=
+//    '0x'
+//    | '0X'
+//
+//HexExponent ::=
+//    HexExponentStart DecimalDigitsNoSingleUS
+//
+//HexExponentStart ::=
+//    'p'
+//    | 'P'
+//    | 'p+'
+//    | 'P+'
+//    | 'p-'
+//    | 'P-'
+//
+//
+//Suffix ::=
+//    FloatSuffix
+//    | RealSuffix
+//    | ImaginarySuffix
+//    | FloatSuffix ImaginarySuffix
+//    | RealSuffix ImaginarySuffix
+//
+//FloatSuffix ::=
+//    'f'
+//    | 'F'
+//
+//RealSuffix ::=
+//    'L'
+//
+//ImaginarySuffix ::=
+//    'i'
+//
+//LeadingDecimal ::=
+//    DecimalInteger
+//    | '0' DecimalDigitsNoSingleUS
+//
+//DecimalDigits ::=
+//    DecimalDigit
+//    | DecimalDigit DecimalDigits
+//
+//DecimalDigitsUS ::=
+//    DecimalDigitUS
+//    | DecimalDigitUS DecimalDigitsUS
+//
+//DecimalDigitsNoSingleUS ::=
+//    DecimalDigit
+//    | DecimalDigit DecimalDigitsUS
+//    | DecimalDigitsUS DecimalDigit
+//
+//DecimalDigitsNoStartingUS ::=
+//    DecimalDigit
+//    |DecimalDigit DecimalDigitsUS
+//
+//DecimalDigit ::=
+//    '0'
+//    | NonZeroDigit
+//
+//DecimalDigitUS ::=
+//    DecimalDigit
+//    | '_'
+//
+//BinaryDigitsUS ::=
+//    BinaryDigitUS
+//    | BinaryDigitUS BinaryDigitsUS
+//
+//BinaryDigit ::=
+//    '0'
+//    | '1'
+//
+//BinaryDigitUS ::=
+//    BinaryDigit
+//    | '_'
+//
+//OctalDigit ::=
+//    '0'
+//    | '1'
+//    | '2'
+//    | '3'
+//    | '4'
+//    | '5'
+//    | '6'
+//    | '7'
+//
+//HexDigits ::=
+//    HexDigit
+//    | HexDigit [HexDigits]
+//
+//HexDigitsUS ::=
+//    HexDigitUS
+//    | HexDigitUS HexDigitsUS
+//
+//HexDigitsNoSingleUS ::=
+//    HexDigit
+//    | HexDigit HexDigitsUS
+//    | HexDigitsUS HexDigit
+//
+//HexDigitsNoStartingUS ::=
+//    HexDigit
+//    | HexDigit HexDigitsUS
+//
+//HexDigit ::=
+//    DecimalDigit
+//    | HexLetter
+//
+//HexDigitUS ::=
+//    HexDigit
+//    | '_'
+//
+//HexLetter ::=
+//    'a'
+//    | 'b'
+//    | 'c'
+//    | 'd'
+//    | 'e'
+//    | 'f'
+//    | 'A'
+//    | 'B'
+//    | 'C'
+//    | 'D'
+//    | 'E'
+//    | 'F'
+
+
 // Module
 
 ModuleDeclaration ::=
@@ -381,7 +546,7 @@ BasicType2X ::=
     '*'
     | '[' AssignExpression ']'
     | '[' AssignExpression '..' AssignExpression ']'
-    | '[' FLOAT_LITERAL '.' AssignExpression']'// jflex doesn't support look ahead in the lexing process. This is a problem for situations such as [7..x], since this is lexed into '[' '7.' '.' ']'. The ponly solution I was able  to find was adding this in the parser. This is not ideal todo
+    // jflex doesn't support look ahead in the lexing process. This is a problem for situations such as [7..x], since this is lexed into '[' '7.' '.' ']'. This is not ideal todo
     | '[' Type? ']'
     | 'delegate' Parameters MemberFunctionAttributes?
     | 'function' Parameters FunctionAttributes?
@@ -579,8 +744,8 @@ SliceExpression ::=
     |  '[' MultipleAssign ']' [PostfixExpression]
 
 MultipleAssign ::=
- ((((FLOAT_LITERAL '.') | (AssignExpression '..')) AssignExpression) | AssignExpression) [',' MultipleAssign ]
- // jflex doesn't support look ahead in the lexing process. This is a problem for situations such as [7..x], since this is lexed into '[' '7.' '.' ']'. The ponly solution I was able  to find was adding this in the parser. This is not ideal todo
+ ((( (AssignExpression '..')) AssignExpression) | AssignExpression) [',' MultipleAssign ]
+ // jflex doesn't support look ahead in the lexing process. This is a problem for situations such as [7..x], since this is lexed into '[' '7.' '.' ']'. The only solution I was able  to find was adding this in the parser. This is not ideal todo
 
 PrimaryExpression ::=
      ('.')? (TemplateInstance | Identifier)
@@ -1997,6 +2162,7 @@ ParameterList ::=
 
 Parameter ::=
        InOut? BasicType Declarator (('...' | '=') AssignExpression?)?
+       | InOut? Type '=' AssignExpression
        | InOut? Type ('...')?//why is this '...'? necesary. surely Parameterlist covers this
 
 

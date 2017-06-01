@@ -40,6 +40,12 @@ public class DLanguageAsmPrimaryExpImpl extends ASTWrapperPsiElement implements 
 
   @Override
   @Nullable
+  public DLanguageFloatLiteral getFloatLiteral() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageFloatLiteral.class);
+  }
+
+  @Override
+  @Nullable
   public DLanguageRegister getRegister() {
     return PsiTreeUtil.getChildOfType(this, DLanguageRegister.class);
   }
@@ -54,12 +60,6 @@ public class DLanguageAsmPrimaryExpImpl extends ASTWrapperPsiElement implements 
   @Nullable
   public DLanguageStringLiteral getStringLiteral() {
     return PsiTreeUtil.getChildOfType(this, DLanguageStringLiteral.class);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getFloatLiteral() {
-    return findChildByType(FLOAT_LITERAL);
   }
 
   @Override

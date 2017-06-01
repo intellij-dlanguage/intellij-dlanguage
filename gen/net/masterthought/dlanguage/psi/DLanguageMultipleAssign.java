@@ -14,15 +14,9 @@ public interface DLanguageMultipleAssign extends PsiElement {
   DLanguageMultipleAssign getMultipleAssign();
 
   @Nullable
-  PsiElement getFloatLiteral();
-
-  @Nullable
   PsiElement getOpComma();
 
   @Nullable
   PsiElement getOpDdot();
-
-  @Nullable
-  PsiElement getOpDot();
 
 }

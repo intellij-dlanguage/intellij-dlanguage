@@ -459,6 +459,10 @@ public class DLanguageVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitFloatLiteral(@NotNull DLanguageFloatLiteral o) {
+    visitPsiElement(o);
+  }
+
   public void visitFinalSwitchStatement(@NotNull DLanguageFinalSwitchStatement o) {
     visitPsiElement(o);
   }
