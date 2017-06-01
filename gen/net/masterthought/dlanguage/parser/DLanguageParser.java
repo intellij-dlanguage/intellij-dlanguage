@@ -335,9 +335,6 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     else if (t == EXPRESSION_STATEMENT) {
       r = ExpressionStatement(b, 0);
     }
-    else if (t == FLOAT_LITERAL) {
-      r = FLOAT_LITERAL(b, 0);
-    }
     else if (t == FINAL_SWITCH_STATEMENT) {
       r = FinalSwitchStatement(b, 0);
     }
@@ -2302,7 +2299,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b, l, _NONE_, ASM_PRIMARY_EXP, "<asm primary exp>");
     r = consumeToken(b, INTEGER_LITERAL);
     if (!r) r = StringLiteral(b, l + 1);
-    if (!r) r = FLOAT_LITERAL(b, l + 1);
+    if (!r) r = consumeToken(b, FLOAT_LITERAL);
     if (!r) r = consumeToken(b, "__LOCAL_SIZE");
     if (!r) r = consumeToken(b, OP_DOLLAR);
     if (!r) r = AsmPrimaryExp_5(b, l + 1);
@@ -5005,78 +5002,6 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   private static boolean ExpressionStatement_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ExpressionStatement_1")) return false;
     consumeToken(b, OP_SCOLON);
-    return true;
-  }
-
-  /* ********************************************************** */
-  // (DECIMAL_INTEGER? '.' DECIMAL_INTEGER )| (DECIMAL_INTEGER '.') ('e' | 'E') '-'? DECIMAL_INTEGER
-  public static boolean FLOAT_LITERAL(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "FLOAT_LITERAL")) return false;
-    if (!nextTokenIs(b, "<float literal>", OP_DOT, DECIMAL_INTEGER)) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, FLOAT_LITERAL, "<float literal>");
-    r = FLOAT_LITERAL_0(b, l + 1);
-    if (!r) r = FLOAT_LITERAL_1(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  // DECIMAL_INTEGER? '.' DECIMAL_INTEGER
-  private static boolean FLOAT_LITERAL_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "FLOAT_LITERAL_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = FLOAT_LITERAL_0_0(b, l + 1);
-    r = r && consumeTokens(b, 0, OP_DOT, DECIMAL_INTEGER);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // DECIMAL_INTEGER?
-  private static boolean FLOAT_LITERAL_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "FLOAT_LITERAL_0_0")) return false;
-    consumeToken(b, DECIMAL_INTEGER);
-    return true;
-  }
-
-  // (DECIMAL_INTEGER '.') ('e' | 'E') '-'? DECIMAL_INTEGER
-  private static boolean FLOAT_LITERAL_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "FLOAT_LITERAL_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = FLOAT_LITERAL_1_0(b, l + 1);
-    r = r && FLOAT_LITERAL_1_1(b, l + 1);
-    r = r && FLOAT_LITERAL_1_2(b, l + 1);
-    r = r && consumeToken(b, DECIMAL_INTEGER);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // DECIMAL_INTEGER '.'
-  private static boolean FLOAT_LITERAL_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "FLOAT_LITERAL_1_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, DECIMAL_INTEGER, OP_DOT);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // 'e' | 'E'
-  private static boolean FLOAT_LITERAL_1_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "FLOAT_LITERAL_1_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, "e");
-    if (!r) r = consumeToken(b, "E");
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // '-'?
-  private static boolean FLOAT_LITERAL_1_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "FLOAT_LITERAL_1_2")) return false;
-    consumeToken(b, OP_MINUS);
     return true;
   }
 
@@ -9534,7 +9459,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, KW_FALSE);
     if (!r) r = consumeToken(b, OP_DOLLAR);
     if (!r) r = consumeToken(b, INTEGER_LITERAL);
-    if (!r) r = FLOAT_LITERAL(b, l + 1);
+    if (!r) r = consumeToken(b, FLOAT_LITERAL);
     if (!r) r = consumeToken(b, CHARACTER_LITERAL);
     if (!r) r = StringLiterals(b, l + 1);
     if (!r) r = ArrayLiteral(b, l + 1);
@@ -11717,7 +11642,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, CHARACTER_LITERAL);
     if (!r) r = StringLiteral(b, l + 1);
     if (!r) r = consumeToken(b, INTEGER_LITERAL);
-    if (!r) r = FLOAT_LITERAL(b, l + 1);
+    if (!r) r = consumeToken(b, FLOAT_LITERAL);
     if (!r) r = consumeToken(b, KW_TRUE);
     if (!r) r = consumeToken(b, KW_FALSE);
     if (!r) r = consumeToken(b, KW_NULL);

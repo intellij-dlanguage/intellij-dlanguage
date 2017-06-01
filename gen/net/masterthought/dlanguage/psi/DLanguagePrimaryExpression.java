@@ -23,9 +23,6 @@ public interface DLanguagePrimaryExpression extends PsiElement {
   DLanguageCommaExpression getCommaExpression();
 
   @Nullable
-  DLanguageFloatLiteral getFloatLiteral();
-
-  @Nullable
   DLanguageFunctionLiteral getFunctionLiteral();
 
   @Nullable
@@ -63,6 +60,9 @@ public interface DLanguagePrimaryExpression extends PsiElement {
 
   @Nullable
   PsiElement getCharacterLiteral();
+
+  @Nullable
+  PsiElement getFloatLiteral();
 
   @Nullable
   PsiElement getIntegerLiteral();

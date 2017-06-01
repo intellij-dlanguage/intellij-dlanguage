@@ -58,12 +58,6 @@ public class DLanguagePrimaryExpressionImpl extends ASTWrapperPsiElement impleme
 
   @Override
   @Nullable
-  public DLanguageFloatLiteral getFloatLiteral() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageFloatLiteral.class);
-  }
-
-  @Override
-  @Nullable
   public DLanguageFunctionLiteral getFunctionLiteral() {
     return PsiTreeUtil.getChildOfType(this, DLanguageFunctionLiteral.class);
   }
@@ -138,6 +132,12 @@ public class DLanguagePrimaryExpressionImpl extends ASTWrapperPsiElement impleme
   @Nullable
   public PsiElement getCharacterLiteral() {
     return findChildByType(CHARACTER_LITERAL);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getFloatLiteral() {
+    return findChildByType(FLOAT_LITERAL);
   }
 
   @Override

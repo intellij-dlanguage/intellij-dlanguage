@@ -1,7 +1,7 @@
 package net.masterthought.dlanguage.psi.interfaces.containers;
 
-import net.masterthought.dlanguage.psi.DLanguageFuncDeclaration;
 
+import net.masterthought.dlanguage.psi.DLanguageFuncDeclaration;
 
 /**
  * Created by franc on 2/28/2017.

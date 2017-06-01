@@ -11,9 +11,6 @@ public interface DLanguageTemplateSingleArgument extends PsiElement {
   DLanguageBasicTypeX getBasicTypeX();
 
   @Nullable
-  DLanguageFloatLiteral getFloatLiteral();
-
-  @Nullable
   DLanguageIdentifier getIdentifier();
 
   @Nullable
@@ -24,6 +21,9 @@ public interface DLanguageTemplateSingleArgument extends PsiElement {
 
   @Nullable
   PsiElement getCharacterLiteral();
+
+  @Nullable
+  PsiElement getFloatLiteral();
 
   @Nullable
   PsiElement getIntegerLiteral();

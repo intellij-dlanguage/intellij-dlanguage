@@ -25,7 +25,7 @@ public class DLanguageModuleDeclarationStubElementType extends DNamedStubElement
 
     @Override
     public DLanguageModuleDeclaration createPsi(@NotNull DLanguageModuleDeclarationStub stub) {
-        return null;
+        return null;//todo
     }
 
     @Override

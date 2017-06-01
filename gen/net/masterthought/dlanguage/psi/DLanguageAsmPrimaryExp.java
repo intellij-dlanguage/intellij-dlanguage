@@ -14,9 +14,6 @@ public interface DLanguageAsmPrimaryExp extends PsiElement {
   DLanguageDotIdentifier getDotIdentifier();
 
   @Nullable
-  DLanguageFloatLiteral getFloatLiteral();
-
-  @Nullable
   DLanguageRegister getRegister();
 
   @Nullable
@@ -24,6 +21,9 @@ public interface DLanguageAsmPrimaryExp extends PsiElement {
 
   @Nullable
   DLanguageStringLiteral getStringLiteral();
+
+  @Nullable
+  PsiElement getFloatLiteral();
 
   @Nullable
   PsiElement getIntegerLiteral();

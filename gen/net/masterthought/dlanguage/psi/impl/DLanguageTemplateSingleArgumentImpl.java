@@ -34,12 +34,6 @@ public class DLanguageTemplateSingleArgumentImpl extends ASTWrapperPsiElement im
 
   @Override
   @Nullable
-  public DLanguageFloatLiteral getFloatLiteral() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageFloatLiteral.class);
-  }
-
-  @Override
-  @Nullable
   public DLanguageIdentifier getIdentifier() {
     return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
   }
@@ -60,6 +54,12 @@ public class DLanguageTemplateSingleArgumentImpl extends ASTWrapperPsiElement im
   @Nullable
   public PsiElement getCharacterLiteral() {
     return findChildByType(CHARACTER_LITERAL);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getFloatLiteral() {
+    return findChildByType(FLOAT_LITERAL);
   }
 
   @Override

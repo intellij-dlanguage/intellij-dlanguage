@@ -128,7 +128,6 @@ public interface DLanguageTypes {
   IElementType FINALLY_STATEMENT = new DLanguageElementType("FINALLY_STATEMENT");
   IElementType FINAL_SWITCH_STATEMENT = new DLanguageElementType("FINAL_SWITCH_STATEMENT");
   IElementType FIRST_EXP = new DLanguageElementType("FIRST_EXP");
-  IElementType FLOAT_LITERAL = new DLanguageElementType("FLOAT_LITERAL");
   IElementType FOREACH = new DLanguageElementType("FOREACH");
   IElementType FOREACH_AGGREGATE = new DLanguageElementType("FOREACH_AGGREGATE");
   IElementType FOREACH_RANGE_STATEMENT = new DLanguageElementType("FOREACH_RANGE_STATEMENT");
@@ -300,9 +299,9 @@ public interface DLanguageTypes {
   IElementType ALTERNATE_WYSIWYG_STRING = new DLanguageTokenType("ALTERNATE_WYSIWYG_STRING");
   IElementType BLOCK_COMMENT = new DLanguageTokenType("BLOCK_COMMENT");
   IElementType CHARACTER_LITERAL = new DLanguageTokenType("CHARACTER_LITERAL");
-  IElementType DECIMAL_INTEGER = new DLanguageTokenType("DECIMAL_INTEGER");
   IElementType DELIMITED_STRING = new DLanguageTokenType("DELIMITED_STRING");
   IElementType DOUBLE_QUOTED_STRING = new DLanguageTokenType("DOUBLE_QUOTED_STRING");
+  IElementType FLOAT_LITERAL = new DLanguageTokenType("FLOAT_LITERAL");
   IElementType HEX_STRING = new DLanguageTokenType("HEX_STRING");
   IElementType ID = new DLanguageTokenType("ID");
   IElementType INTEGER_LITERAL = new DLanguageTokenType("INTEGER_LITERAL");
@@ -802,9 +801,6 @@ public interface DLanguageTypes {
       }
       else if (type == FIRST_EXP) {
         return new DLanguageFirstExpImpl(node);
-      }
-      else if (type == FLOAT_LITERAL) {
-        return new DLanguageFloatLiteralImpl(node);
       }
       else if (type == FOREACH) {
         return new DLanguageForeachImpl(node);
