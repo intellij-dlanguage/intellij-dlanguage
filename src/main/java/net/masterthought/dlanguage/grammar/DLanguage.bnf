@@ -201,11 +201,11 @@ tokens = [
 
 // Comment these back in when playing with Live Preview
 // ------------------------
-//ID = "regexp:\w+"
-//space='regexp:\s+'
-//line_comment="regexp://.*"
-//block_comment="regexp:/\*(.|\n)*\*/"
-//DOUBLE_QUOTED_STRING = 'regexp:\"([^\\"]|((\\"|\\\?|\\\|\\0|\\a|\\b|\\f|\\n|\\r|\\t|\\v)|(\\x[0-9abcdefABCDEF_]{2})|(\\[0-7])|(\\[0-7]{2})|(\\[0-7]{3})|(\\u[0-9abcdefABCDEF_]{4})|(\\U[0-9abcdefABCDEF_]{8})|(\\&([a-zA-Z_])([a-zA-Z0-9_])*;)))*\"[cwd]*'
+ID = "regexp:\w+"
+space='regexp:\s+'
+line_comment="regexp://.*"
+block_comment="regexp:/\*(.|\n)*\*/"
+DOUBLE_QUOTED_STRING = 'regexp:\"([^\\"]|((\\"|\\\?|\\\|\\0|\\a|\\b|\\f|\\n|\\r|\\t|\\v)|(\\x[0-9abcdefABCDEF_]{2})|(\\[0-7])|(\\[0-7]{2})|(\\[0-7]{3})|(\\u[0-9abcdefABCDEF_]{4})|(\\U[0-9abcdefABCDEF_]{8})|(\\&([a-zA-Z_])([a-zA-Z0-9_])*;)))*\"[cwd]*'
 //FLOAT_LITERAL = "regexp:[0-9][0-9_]*\.([0]|[1-9_][0-9_]*)?"
 //CHARACTER_LITERAL="regexp:\'([^\r\n\t\f\\])\'"
 ////DECIMAL_FLOAT_SIMPLE ="regexp:[0-9][0-9_]*\.([0]|[1-9_][0-9_]*)?!\."
@@ -420,7 +420,8 @@ AssignExpression ::=
    | OrExpression
    | AndAndExpression
    | OrOrExpression
-   |*/ (ConditionalExpression [ ( '=' | '+=' | '-=' | '*=' | '/=' | '%=' | '&=' | '|=' | '^=' | '~=' | '<<=' | '>>=' | '>>>=' | '^^=') AssignExpression]){
+   |*/
+   (ConditionalExpression [ ( '=' | '+=' | '-=' | '*=' | '/=' | '%=' | '&=' | '|=' | '^=' | '~=' | '<<=' | '>>=' | '>>>=' | '^^=') AssignExpression]){
 
                             }
 
@@ -797,7 +798,6 @@ NonEmptyStatementNoCaseNoDefault ::=
     | DeclarationStatement
     | Declaration
     | BlockStatement // must be above expression statement
-    | ExpressionStatement
     | IfStatement
     | WhileStatement
     | DoStatement
@@ -822,6 +822,7 @@ NonEmptyStatementNoCaseNoDefault ::=
     | StaticAssert
     | TemplateMixin
     | ImportDeclaration
+    | ExpressionStatement
 
 ScopeStatement ::=
     NonEmptyStatement
@@ -2319,13 +2320,26 @@ TemplateInstance ::=
     Identifier? TemplateArguments
 
 TemplateArguments ::=
-     '!' ('(' TemplateArgumentList? ')') | '!' TemplateSingleArgument
+     TemplateArgumentsWithParen
+     | TemplateArgumentsWithoutParen
+
+private TemplateArgumentsWithParen ::=
+    '!' ('(' TemplateArgumentList? ')') {
+        pin = 1
+    }
+private TemplateArgumentsWithoutParen ::=
+    '!' TemplateSingleArgument{
+        pin = 1
+    }
+
+
 
 TemplateArgumentList ::=
     TemplateArgument (',' TemplateArgumentList?)?
 
 TemplateArgument ::=
-    Type
+    Lambda //must be above assign expression
+    | Type
     | AssignExpression
     | Symbol
 
