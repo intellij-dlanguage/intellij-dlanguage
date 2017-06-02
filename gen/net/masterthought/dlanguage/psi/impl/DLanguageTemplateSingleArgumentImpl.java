@@ -28,6 +28,12 @@ public class DLanguageTemplateSingleArgumentImpl extends ASTWrapperPsiElement im
 
   @Override
   @Nullable
+  public DLanguageAssignExpression getAssignExpression() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageAssignExpression.class);
+  }
+
+  @Override
+  @Nullable
   public DLanguageBasicTypeX getBasicTypeX() {
     return PsiTreeUtil.getChildOfType(this, DLanguageBasicTypeX.class);
   }

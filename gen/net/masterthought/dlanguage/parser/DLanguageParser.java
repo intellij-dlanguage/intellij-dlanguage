@@ -11330,16 +11330,16 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // Lambda //must be above assign expression
-  //     | Type
   //     | AssignExpression
+  //     | Type
   //     | Symbol
   public static boolean TemplateArgument(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "TemplateArgument")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, TEMPLATE_ARGUMENT, "<template argument>");
     r = Lambda(b, l + 1);
-    if (!r) r = Type(b, l + 1);
     if (!r) r = AssignExpression(b, l + 1);
+    if (!r) r = Type(b, l + 1);
     if (!r) r = Symbol(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
@@ -11397,34 +11397,23 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // '!' ('(' TemplateArgumentList? ')')
+  // '!' '(' TemplateArgumentList? ')'
   static boolean TemplateArgumentsWithParen(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "TemplateArgumentsWithParen")) return false;
     if (!nextTokenIs(b, OP_NOT)) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _NONE_);
-    r = consumeToken(b, OP_NOT);
-    p = r; // pin = 1
-    r = r && TemplateArgumentsWithParen_1(b, l + 1);
+    r = consumeTokens(b, 2, OP_NOT, OP_PAR_LEFT);
+    p = r; // pin = 2
+    r = r && report_error_(b, TemplateArgumentsWithParen_2(b, l + 1));
+    r = p && consumeToken(b, OP_PAR_RIGHT) && r;
     exit_section_(b, l, m, r, p, null);
     return r || p;
   }
 
-  // '(' TemplateArgumentList? ')'
-  private static boolean TemplateArgumentsWithParen_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "TemplateArgumentsWithParen_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, OP_PAR_LEFT);
-    r = r && TemplateArgumentsWithParen_1_1(b, l + 1);
-    r = r && consumeToken(b, OP_PAR_RIGHT);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
   // TemplateArgumentList?
-  private static boolean TemplateArgumentsWithParen_1_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "TemplateArgumentsWithParen_1_1")) return false;
+  private static boolean TemplateArgumentsWithParen_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "TemplateArgumentsWithParen_2")) return false;
     TemplateArgumentList(b, l + 1);
     return true;
   }
@@ -11642,6 +11631,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   //     | 'null'
   //     | 'this'
   //     | SpecialKeyword
+  //     | AssignExpression
   public static boolean TemplateSingleArgument(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "TemplateSingleArgument")) return false;
     boolean r;
@@ -11657,6 +11647,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, KW_NULL);
     if (!r) r = consumeToken(b, KW_THIS);
     if (!r) r = SpecialKeyword(b, l + 1);
+    if (!r) r = AssignExpression(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }

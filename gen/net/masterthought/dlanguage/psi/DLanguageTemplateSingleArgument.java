@@ -8,6 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageTemplateSingleArgument extends PsiElement {
 
   @Nullable
+  DLanguageAssignExpression getAssignExpression();
+
+  @Nullable
   DLanguageBasicTypeX getBasicTypeX();
 
   @Nullable
