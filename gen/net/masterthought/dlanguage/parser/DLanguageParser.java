@@ -3133,6 +3133,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   //     | Typeof ('.' IdentifierList)?
   //     | '(' Type ')'
   //     | TypeVector
+  //     | '(' TypeVector ')'
   public static boolean BasicType(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "BasicType")) return false;
     boolean r;
@@ -3142,6 +3143,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     if (!r) r = BasicType_2(b, l + 1);
     if (!r) r = BasicType_3(b, l + 1);
     if (!r) r = TypeVector(b, l + 1);
+    if (!r) r = BasicType_5(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -3200,6 +3202,18 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = consumeToken(b, OP_PAR_LEFT);
     r = r && Type(b, l + 1);
+    r = r && consumeToken(b, OP_PAR_RIGHT);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // '(' TypeVector ')'
+  private static boolean BasicType_5(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "BasicType_5")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, OP_PAR_LEFT);
+    r = r && TypeVector(b, l + 1);
     r = r && consumeToken(b, OP_PAR_RIGHT);
     exit_section_(b, m, null, r);
     return r;
