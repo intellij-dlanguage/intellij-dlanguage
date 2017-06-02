@@ -571,15 +571,16 @@ D Language File
                                                   PsiElement(DLanguageTokenType.()('(')
                                                   DLanguageTemplateArgumentListImpl(TEMPLATE_ARGUMENT_LIST)
                                                     DLanguageTemplateArgumentImpl(TEMPLATE_ARGUMENT)
-                                                      DLanguageTypeImpl(TYPE)
-                                                        DLanguageBasicTypeImpl(BASIC_TYPE)
-                                                          DLanguageIdentifierListImpl(IDENTIFIER_LIST)
+                                                      DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
+                                                        DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
+                                                          DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                                                             IDENTIFIER
                                                               PsiElement(DLanguageTokenType.ID)('C')
+                                                        DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
+                                                          DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                                                             PsiElement(DLanguageTokenType..)('.')
-                                                            DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                                              IDENTIFIER
-                                                                PsiElement(DLanguageTokenType.ID)('num')
+                                                            IDENTIFIER
+                                                              PsiElement(DLanguageTokenType.ID)('num')
                                                   PsiElement(DLanguageTokenType.))(')')
                                               PsiElement(DLanguageTokenType..)('.')
                                               DLanguageIdentifierListImpl(IDENTIFIER_LIST)
