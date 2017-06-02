@@ -298,7 +298,7 @@ DeclDefs ::= DeclDef DeclDef*{
 //order matters
 DeclDef ::=
     (AttributeSpecifier
-    | DeclarationBlockWithStorageClasses
+//    | DeclarationBlockWithStorageClasses
     | Declaration
     | Postblit
     | Constructor
@@ -643,7 +643,7 @@ ParameterMemberAttributes ::=
     Parameters MemberFunctionAttributes?
 
 FunctionLiteralBody ::=
-    BlockStatement |
+    Property* BlockStatement |
     FunctionContracts BodyStatement?
 
 Lambda ::=

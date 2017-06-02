@@ -4298,7 +4298,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // AttributeSpecifier
-  //     | DeclarationBlockWithStorageClasses
+  // //    | DeclarationBlockWithStorageClasses
   //     | Declaration
   //     | Postblit
   //     | Constructor
@@ -4328,7 +4328,6 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, DECL_DEF, "<decl def>");
     r = AttributeSpecifier(b, l + 1);
-    if (!r) r = consumeToken(b, DECLARATIONBLOCKWITHSTORAGECLASSES);
     if (!r) r = Declaration(b, l + 1);
     if (!r) r = Postblit(b, l + 1);
     if (!r) r = Constructor(b, l + 1);
@@ -5676,16 +5675,39 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // BlockStatement |
+  // Property* BlockStatement |
   //     FunctionContracts BodyStatement?
   public static boolean FunctionLiteralBody(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "FunctionLiteralBody")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, FUNCTION_LITERAL_BODY, "<function literal body>");
-    r = BlockStatement(b, l + 1);
+    r = FunctionLiteralBody_0(b, l + 1);
     if (!r) r = FunctionLiteralBody_1(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
+  }
+
+  // Property* BlockStatement
+  private static boolean FunctionLiteralBody_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "FunctionLiteralBody_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = FunctionLiteralBody_0_0(b, l + 1);
+    r = r && BlockStatement(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // Property*
+  private static boolean FunctionLiteralBody_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "FunctionLiteralBody_0_0")) return false;
+    int c = current_position_(b);
+    while (true) {
+      if (!Property(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "FunctionLiteralBody_0_0", c)) break;
+      c = current_position_(b);
+    }
+    return true;
   }
 
   // FunctionContracts BodyStatement?

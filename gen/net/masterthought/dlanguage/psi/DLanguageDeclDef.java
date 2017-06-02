@@ -80,9 +80,6 @@ public interface DLanguageDeclDef extends PsiElement {
   DLanguageVersionSpecification getVersionSpecification();
 
   @Nullable
-  PsiElement getDeclarationBlockWithStorageClasses();
-
-  @Nullable
   PsiElement getOpScolon();
 
 }

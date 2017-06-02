@@ -44,4 +44,10 @@ public class DLanguageFunctionLiteralBodyImpl extends ASTWrapperPsiElement imple
     return PsiTreeUtil.getChildOfType(this, DLanguageFunctionContracts.class);
   }
 
+  @Override
+  @NotNull
+  public List<DLanguageProperty> getPropertyList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageProperty.class);
+  }
+
 }

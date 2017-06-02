@@ -319,10 +319,16 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
         doTest(true, true);
     }
 
-    public void testbase64() {
+    public void testtraits() {
         doTest(true, true);
     }
 
+    public void teststring() {
+        doTest(true, true);
+    }
+    public void testbase64() {
+        doTest(true, true);
+    }
     public void testarray() {
         doTest(true, true);
     }
