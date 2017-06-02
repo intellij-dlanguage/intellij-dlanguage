@@ -299,6 +299,7 @@ public interface DLanguageTypes {
   IElementType ALTERNATE_WYSIWYG_STRING = new DLanguageTokenType("ALTERNATE_WYSIWYG_STRING");
   IElementType BLOCK_COMMENT = new DLanguageTokenType("BLOCK_COMMENT");
   IElementType CHARACTER_LITERAL = new DLanguageTokenType("CHARACTER_LITERAL");
+  IElementType DECLARATIONBLOCKWITHSTORAGECLASSES = new DLanguageTokenType("DeclarationBlockWithStorageClasses");
   IElementType DELIMITED_STRING = new DLanguageTokenType("DELIMITED_STRING");
   IElementType DOUBLE_QUOTED_STRING = new DLanguageTokenType("DOUBLE_QUOTED_STRING");
   IElementType FLOAT_LITERAL = new DLanguageTokenType("FLOAT_LITERAL");

@@ -298,6 +298,7 @@ DeclDefs ::= DeclDef DeclDef*{
 //order matters
 DeclDef ::=
     (AttributeSpecifier
+    | DeclarationBlockWithStorageClasses
     | Declaration
     | Postblit
     | Constructor
@@ -381,10 +382,10 @@ BasicType2 ::=
 
 BasicType2X ::=
     '*'
+    | '[' Type? ']'
     | '[' AssignExpression ']'
     | '[' AssignExpression '..' AssignExpression ']'
     // jflex doesn't support look ahead in the lexing process. This is a problem for situations such as [7..x], since this is lexed into '[' '7.' '.' ']'. This is not ideal todo
-    | '[' Type? ']'
     | 'delegate' Parameters MemberFunctionAttributes?
     | 'function' Parameters FunctionAttributes?
 
@@ -587,6 +588,7 @@ MultipleAssign ::=
 
 PrimaryExpression ::=
      ('.')? (TemplateInstance | Identifier)
+    | Type
     | 'this'
     | 'super'
     | 'null'
@@ -721,6 +723,7 @@ TraitsExpression ::=
 
 TraitsKeyword ::=
     'isAbstractClass'
+    | 'isTemplate'
     | 'isArithmetic'
     | 'isAssociativeArray'
     | 'isFinalClass'
@@ -762,7 +765,7 @@ TraitsKeyword ::=
     | 'compiles'
 
 TraitsArguments ::=
-    TraitsArgument (',' TraitsArguments)?
+    TraitsArgument (',' TraitsArguments)*
 
 TraitsArgument ::=
     AssignExpression
@@ -2342,7 +2345,7 @@ TemplateArgumentList ::=
 TemplateArgument ::=
     Lambda //must be above assign expression
     | AssignExpression
-    | Type
+    | Type //this branch should be deprecated  since anything matched by Type is in theory matched by assignexpression
     | Symbol
 
 Symbol ::=
@@ -2352,7 +2355,7 @@ SymbolTail ::=
     (Identifier | TemplateInstance) ('.' (Identifier | TemplateInstance))*
 
 TemplateSingleArgument ::=
-    Identifier
+    IdentifierList
     | BasicTypeX
     | CHARACTER_LITERAL
     | StringLiteral
@@ -2510,7 +2513,7 @@ ConditionalDeclaration ::=
     | Condition DeclarationBlock 'else' ':' DeclDefs?
 
 ConditionalStatement ::=
-    Condition Statement ('else' (Statement | DeclarationBlock))?
+    Condition (Statement | BlockStatement | DeclarationBlock) ('else' (Statement | DeclarationBlock))?
 
 Condition ::=
     VersionCondition

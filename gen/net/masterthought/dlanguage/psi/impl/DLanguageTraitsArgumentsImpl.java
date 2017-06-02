@@ -33,15 +33,9 @@ public class DLanguageTraitsArgumentsImpl extends ASTWrapperPsiElement implement
   }
 
   @Override
-  @Nullable
-  public DLanguageTraitsArguments getTraitsArguments() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageTraitsArguments.class);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpComma() {
-    return findChildByType(OP_COMMA);
+  @NotNull
+  public List<DLanguageTraitsArguments> getTraitsArgumentsList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageTraitsArguments.class);
   }
 
 }

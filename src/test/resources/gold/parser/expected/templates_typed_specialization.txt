@@ -245,8 +245,9 @@ D Language File
                           DLanguageTemplateArgumentsImpl(TEMPLATE_ARGUMENTS)
                             PsiElement(DLanguageTokenType.!)('!')
                             DLanguageTemplateSingleArgumentImpl(TEMPLATE_SINGLE_ARGUMENT)
-                              IDENTIFIER
-                                PsiElement(DLanguageTokenType.ID)('V')
+                              DLanguageIdentifierListImpl(IDENTIFIER_LIST)
+                                IDENTIFIER
+                                  PsiElement(DLanguageTokenType.ID)('V')
               PsiElement(DLanguageTokenType.,)(',')
               DLanguageTemplateParameterImpl(TEMPLATE_PARAMETER)
                 DLanguageTemplateAliasParameterImpl(TEMPLATE_ALIAS_PARAMETER)

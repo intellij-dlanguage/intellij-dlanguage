@@ -172,6 +172,12 @@ public class DLanguageDeclDefImpl extends ASTWrapperPsiElement implements DLangu
 
   @Override
   @Nullable
+  public PsiElement getDeclarationBlockWithStorageClasses() {
+    return findChildByType(DECLARATIONBLOCKWITHSTORAGECLASSES);
+  }
+
+  @Override
+  @Nullable
   public PsiElement getOpScolon() {
     return findChildByType(OP_SCOLON);
   }

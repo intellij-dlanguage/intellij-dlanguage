@@ -164,8 +164,9 @@ D Language File
                                   DLanguageTemplateArgumentsImpl(TEMPLATE_ARGUMENTS)
                                     PsiElement(DLanguageTokenType.!)('!')
                                     DLanguageTemplateSingleArgumentImpl(TEMPLATE_SINGLE_ARGUMENT)
-                                      IDENTIFIER
-                                        PsiElement(DLanguageTokenType.ID)('var')
+                                      DLanguageIdentifierListImpl(IDENTIFIER_LIST)
+                                        IDENTIFIER
+                                          PsiElement(DLanguageTokenType.ID)('var')
                             DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
                               DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                                 DLanguageFunctionLiteralImpl(FUNCTION_LITERAL)

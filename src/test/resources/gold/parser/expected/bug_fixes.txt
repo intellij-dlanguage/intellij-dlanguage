@@ -425,8 +425,9 @@ D Language File
                 DLanguageTemplateArgumentsImpl(TEMPLATE_ARGUMENTS)
                   PsiElement(DLanguageTokenType.!)('!')
                   DLanguageTemplateSingleArgumentImpl(TEMPLATE_SINGLE_ARGUMENT)
-                    IDENTIFIER
-                      PsiElement(DLanguageTokenType.ID)('CustomPolicy')
+                    DLanguageIdentifierListImpl(IDENTIFIER_LIST)
+                      IDENTIFIER
+                        PsiElement(DLanguageTokenType.ID)('CustomPolicy')
               PsiElement(DLanguageTokenType.()('(')
               DLanguageArgumentListImpl(ARGUMENT_LIST)
                 DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)

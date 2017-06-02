@@ -12,9 +12,9 @@ D Language File
                 DLanguageBasicType2Impl(BASIC_TYPE_2)
                   DLanguageBasicType2XImpl(BASIC_TYPE_2_X)
                     PsiElement(DLanguageTokenType.[)('[')
-                    DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
-                      DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
-                        DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
+                    DLanguageTypeImpl(TYPE)
+                      DLanguageBasicTypeImpl(BASIC_TYPE)
+                        DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                           IDENTIFIER
                             PsiElement(DLanguageTokenType.ID)('string')
                     PsiElement(DLanguageTokenType.])(']')

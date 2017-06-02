@@ -59,8 +59,9 @@ D Language File
                     DLanguageTemplateArgumentsImpl(TEMPLATE_ARGUMENTS)
                       PsiElement(DLanguageTokenType.!)('!')
                       DLanguageTemplateSingleArgumentImpl(TEMPLATE_SINGLE_ARGUMENT)
-                        IDENTIFIER
-                          PsiElement(DLanguageTokenType.ID)('x')
+                        DLanguageIdentifierListImpl(IDENTIFIER_LIST)
+                          IDENTIFIER
+                            PsiElement(DLanguageTokenType.ID)('x')
           PsiElement(DLanguageTokenType.;)(';')
   PsiComment(DLanguageTokenType.LINE_COMMENT)('// ok')
   DLanguageStatementImpl(STATEMENT)
@@ -77,7 +78,8 @@ D Language File
                     DLanguageTemplateArgumentsImpl(TEMPLATE_ARGUMENTS)
                       PsiElement(DLanguageTokenType.!)('!')
                       DLanguageTemplateSingleArgumentImpl(TEMPLATE_SINGLE_ARGUMENT)
-                        IDENTIFIER
-                          PsiElement(DLanguageTokenType.ID)('f')
+                        DLanguageIdentifierListImpl(IDENTIFIER_LIST)
+                          IDENTIFIER
+                            PsiElement(DLanguageTokenType.ID)('f')
           PsiElement(DLanguageTokenType.;)(';')
   PsiComment(DLanguageTokenType.LINE_COMMENT)('// fails to instantiate')

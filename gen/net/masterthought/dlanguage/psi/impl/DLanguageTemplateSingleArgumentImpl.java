@@ -40,8 +40,8 @@ public class DLanguageTemplateSingleArgumentImpl extends ASTWrapperPsiElement im
 
   @Override
   @Nullable
-  public DLanguageIdentifier getIdentifier() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
+  public DLanguageIdentifierList getIdentifierList() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageIdentifierList.class);
   }
 
   @Override

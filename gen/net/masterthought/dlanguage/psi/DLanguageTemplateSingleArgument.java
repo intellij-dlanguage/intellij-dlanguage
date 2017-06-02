@@ -14,7 +14,7 @@ public interface DLanguageTemplateSingleArgument extends PsiElement {
   DLanguageBasicTypeX getBasicTypeX();
 
   @Nullable
-  DLanguageIdentifier getIdentifier();
+  DLanguageIdentifierList getIdentifierList();
 
   @Nullable
   DLanguageSpecialKeyword getSpecialKeyword();
