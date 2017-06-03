@@ -28,13 +28,13 @@ matrix:
 
 ## pull requests skip the deployment step
 deploy:
-#  # deploy develop to the dev channel
-#  - provider: script
-#    skip_cleanup: true
-#    script: ORG_GRADLE_PROJECT_publishChannels=dev ORG_GRADLE_PROJECT_version=1.13-dev$TRAVIS_BUILD_NUMBER ./gradlew publishPlugin --info
-#    on:
-#      branch: develop
-#      condition: $ORG_GRADLE_PROJECT_ideaVersion=2017.1
+  # deploy develop to the dev channel
+  - provider: script
+    skip_cleanup: true
+    script: ORG_GRADLE_PROJECT_publishChannels=Dev ORG_GRADLE_PROJECT_version=1.13-dev$TRAVIS_BUILD_NUMBER ./gradlew publishPlugin --info
+    on:
+      branch: develop
+      condition: $ORG_GRADLE_PROJECT_ideaVersion=2017.1
   # deploy master to eap channel
   - provider: script
     script: ORG_GRADLE_PROJECT_publishChannels=eap ./gradlew publishPlugin

@@ -89,6 +89,7 @@ allprojects {
     intellij {
         pluginName 'intellij-dlanguage'
         version ideaVersion
+        updateSinceUntilBuild false
 
         publishPlugin {
             username System.getenv('JETBRAINS_USERNAME')
