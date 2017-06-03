@@ -36,7 +36,7 @@ D Language File
                                           DLanguageStringLiteralsImpl(STRING_LITERALS)
                                             DLanguageStringLiteralImpl(STRING_LITERAL)
                                               PsiElement(DLanguageTokenType.DOUBLE_QUOTED_STRING)('"any"')
-                                  PsiElement(DLanguageTokenType.,)(',')
+                                    PsiElement(DLanguageTokenType.,)(',')
                                   PsiElement(DLanguageTokenType.])(']')
                   PsiElement(DLanguageTokenType.;)(';')
     PsiComment(DLanguageTokenType.LINE_COMMENT)('// error')

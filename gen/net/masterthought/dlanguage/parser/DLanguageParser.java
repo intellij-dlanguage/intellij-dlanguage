@@ -1607,13 +1607,14 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // ArgumentListMember (','  ArgumentListMember)*
+  // ArgumentListMember (','  ArgumentListMember)* ','?
   public static boolean ArgumentList(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ArgumentList")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, ARGUMENT_LIST, "<argument list>");
     r = ArgumentListMember(b, l + 1);
     r = r && ArgumentList_1(b, l + 1);
+    r = r && ArgumentList_2(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -1639,6 +1640,13 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     r = r && ArgumentListMember(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
+  }
+
+  // ','?
+  private static boolean ArgumentList_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ArgumentList_2")) return false;
+    consumeToken(b, OP_COMMA);
+    return true;
   }
 
   /* ********************************************************** */

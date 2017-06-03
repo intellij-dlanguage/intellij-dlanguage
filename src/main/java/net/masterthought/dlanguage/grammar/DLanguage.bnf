@@ -533,7 +533,7 @@ AllocatorArguments ::=
     '(' ArgumentList? ')'
 
 ArgumentList ::=
-    ArgumentListMember (','  ArgumentListMember)*
+    ArgumentListMember (','  ArgumentListMember)* ','?
 
 private ArgumentListMember ::=
    AssignExpression
