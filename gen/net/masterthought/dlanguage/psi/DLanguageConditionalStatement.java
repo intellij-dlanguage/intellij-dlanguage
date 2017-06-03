@@ -7,8 +7,14 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageConditionalStatement extends PsiElement {
 
+  @Nullable
+  DLanguageBlockStatement getBlockStatement();
+
   @NotNull
   DLanguageCondition getCondition();
+
+  @NotNull
+  List<DLanguageDeclarationBlock> getDeclarationBlockList();
 
   @NotNull
   List<DLanguageStatement> getStatementList();

@@ -81,7 +81,7 @@ public class ExecUtil {
         ProcessOutput output;
         try {
             output = new CapturingProcessHandler(commandLine.createProcess(),
-                            Charset.defaultCharset(), commandLine.getCommandLineString()).runProcess();
+                Charset.defaultCharset(), commandLine.getCommandLineString()).runProcess();
         } catch (ExecutionException e) {
             LOG.info("Failed executing " + command);
             LOG.info("Message: " + e.getMessage());
@@ -108,6 +108,10 @@ public class ExecUtil {
     public static String locateExecutable(@NotNull final String command) {
         String whereCmd = (SystemInfo.isWindows ? "where" : "which") + ' ' + command;
         String res = exec(whereCmd);
+        if (res != null && SystemInfo.isWindows && res.contains("C:\\")) {
+            final String[] split = res.split("(?=C:\\\\)");
+            res = split[0];//if there are multiple results defualt to first one.
+        }
         if (res != null && res.isEmpty()) {
             LOG.info("Could not find " + command);
         }
@@ -130,7 +134,7 @@ public class ExecUtil {
         char sep = File.separatorChar;
         List<String> paths = ContainerUtil.newArrayList();
         if (SystemInfo.isWindows) {
-            // TODO: Add windows paths.
+            paths.add(sep + "D" + sep + "dmd2" + sep + "windows" + sep + "bin");
         } else {
             final String homeDir = System.getProperty("user.home");
             paths.add(sep + "usr" + sep + "local" + sep + "bin");
@@ -212,4 +216,3 @@ public class ExecUtil {
         return readCommandLine(workingDirectory, command, params, null);
     }
 }
-

@@ -8,12 +8,12 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageReturnStatement extends PsiElement {
 
   @Nullable
-  DLanguageExpression getExpression();
+  DLanguageCommaExpression getCommaExpression();
 
   @NotNull
   PsiElement getKwReturn();
 
-  @NotNull
+  @Nullable
   PsiElement getOpScolon();
 
 }

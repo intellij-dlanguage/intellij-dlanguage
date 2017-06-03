@@ -28,14 +28,8 @@ public class DLanguageStatementListImpl extends ASTWrapperPsiElement implements 
 
   @Override
   @NotNull
-  public DLanguageStatement getStatement() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageStatement.class));
-  }
-
-  @Override
-  @Nullable
-  public DLanguageStatementList getStatementList() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageStatementList.class);
+  public List<DLanguageStatement> getStatementList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageStatement.class);
   }
 
 }

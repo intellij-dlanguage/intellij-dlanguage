@@ -28,8 +28,8 @@ public class DLanguageReturnStatementImpl extends ASTWrapperPsiElement implement
 
   @Override
   @Nullable
-  public DLanguageExpression getExpression() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageExpression.class);
+  public DLanguageCommaExpression getCommaExpression() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageCommaExpression.class);
   }
 
   @Override
@@ -39,9 +39,9 @@ public class DLanguageReturnStatementImpl extends ASTWrapperPsiElement implement
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getOpScolon() {
-    return notNullChild(findChildByType(OP_SCOLON));
+    return findChildByType(OP_SCOLON);
   }
 
 }

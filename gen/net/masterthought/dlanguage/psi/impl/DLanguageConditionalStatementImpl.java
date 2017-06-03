@@ -27,9 +27,21 @@ public class DLanguageConditionalStatementImpl extends ASTWrapperPsiElement impl
   }
 
   @Override
+  @Nullable
+  public DLanguageBlockStatement getBlockStatement() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageBlockStatement.class);
+  }
+
+  @Override
   @NotNull
   public DLanguageCondition getCondition() {
     return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageCondition.class));
+  }
+
+  @Override
+  @NotNull
+  public List<DLanguageDeclarationBlock> getDeclarationBlockList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageDeclarationBlock.class);
   }
 
   @Override

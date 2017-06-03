@@ -28,14 +28,8 @@ public class DLanguageMemberFunctionAttributesImpl extends ASTWrapperPsiElement 
 
   @Override
   @NotNull
-  public DLanguageMemberFunctionAttribute getMemberFunctionAttribute() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageMemberFunctionAttribute.class));
-  }
-
-  @Override
-  @Nullable
-  public DLanguageMemberFunctionAttributes getMemberFunctionAttributes() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageMemberFunctionAttributes.class);
+  public List<DLanguageMemberFunctionAttribute> getMemberFunctionAttributeList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageMemberFunctionAttribute.class);
   }
 
 }

@@ -34,6 +34,12 @@ public class DLanguageNonEmptyStatementNoCaseNoDefaultImpl extends ASTWrapperPsi
 
   @Override
   @Nullable
+  public DLanguageBlockStatement getBlockStatement() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageBlockStatement.class);
+  }
+
+  @Override
+  @Nullable
   public DLanguageBreakStatement getBreakStatement() {
     return PsiTreeUtil.getChildOfType(this, DLanguageBreakStatement.class);
   }
@@ -48,6 +54,12 @@ public class DLanguageNonEmptyStatementNoCaseNoDefaultImpl extends ASTWrapperPsi
   @Nullable
   public DLanguageContinueStatement getContinueStatement() {
     return PsiTreeUtil.getChildOfType(this, DLanguageContinueStatement.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageDeclaration getDeclaration() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageDeclaration.class);
   }
 
   @Override

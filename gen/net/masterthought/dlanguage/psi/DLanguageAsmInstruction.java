@@ -8,6 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageAsmInstruction extends PsiElement {
 
   @Nullable
+  DLanguageAsmBrExp getAsmBrExp();
+
+  @Nullable
   DLanguageAsmInstruction getAsmInstruction();
 
   @Nullable

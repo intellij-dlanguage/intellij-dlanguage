@@ -5,10 +5,9 @@ import com.google.common.collect.Sets;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.util.PsiTreeUtil;
-import net.masterthought.dlanguage.psi.DLanguageImportDeclaration;
-import net.masterthought.dlanguage.psi.DLanguageModuleDeclaration;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -24,6 +23,7 @@ public class DPsiUtil {
         return result;
     }
 
+    @Deprecated
     private static List<DLanguageDeclDefs> getDeclDefs(PsiElement defs, List<DLanguageDeclDefs> declDefsList) {
         DLanguageDeclDefs declDefs = PsiTreeUtil.getChildOfType(defs, DLanguageDeclDefs.class);
         if (declDefs != null) {
@@ -42,10 +42,10 @@ public class DPsiUtil {
     @NotNull
     public static Set<String> parseImports(@NotNull final PsiFile file) {
         Set<String> imports = Sets.newHashSet();
-        List<DLanguageDeclDefs> declDefsList = Lists.newArrayList();
-        declDefsList = getDeclDefs(file, declDefsList);
-        for (DLanguageDeclDefs declDef : declDefsList) {
-            List<DLanguageImportDeclaration> importDecls = PsiTreeUtil.getChildrenOfTypeAsList(declDef.getDeclDef().getDeclaration(), DLanguageImportDeclaration.class);
+        List<DLanguageDeclDef> declDefList = Lists.newArrayList();
+        declDefList.addAll(PsiTreeUtil.findChildrenOfType(file, DLanguageDeclDef.class));
+        for (DLanguageDeclDef declDef : declDefList) {
+            Collection<DLanguageImportDeclaration> importDecls = PsiTreeUtil.findChildrenOfType(declDef, DLanguageImportDeclaration.class);
             for (DLanguageImportDeclaration importDecl : importDecls) {
                 imports.add(importDecl.getImportList().getText());
             }

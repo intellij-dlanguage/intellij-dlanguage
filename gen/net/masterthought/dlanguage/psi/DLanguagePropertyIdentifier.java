@@ -7,7 +7,4 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguagePropertyIdentifier extends PsiElement {
 
-  @Nullable
-  PsiElement getKwNogc();
-
 }

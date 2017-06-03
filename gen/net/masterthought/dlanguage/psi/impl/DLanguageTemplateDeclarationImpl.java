@@ -12,6 +12,8 @@ import net.masterthought.dlanguage.stubs.DLanguageTemplateDeclarationStub;
 import net.masterthought.dlanguage.psi.*;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
+import net.masterthought.dlanguage.psi.interfaces.containers.Container;
+import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 import com.intellij.psi.stubs.IStubElementType;
 
 public class DLanguageTemplateDeclarationImpl extends DNamedStubbedPsiElementBase<DLanguageTemplateDeclarationStub> implements DLanguageTemplateDeclaration {
@@ -52,9 +54,9 @@ public class DLanguageTemplateDeclarationImpl extends DNamedStubbedPsiElementBas
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageTemplateParameters getTemplateParameters() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageTemplateParameters.class));
+    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateParameters.class);
   }
 
   @Override
@@ -64,20 +66,24 @@ public class DLanguageTemplateDeclarationImpl extends DNamedStubbedPsiElementBas
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getOpBracesLeft() {
-    return notNullChild(findChildByType(OP_BRACES_LEFT));
+    return findChildByType(OP_BRACES_LEFT);
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getOpBracesRight() {
-    return notNullChild(findChildByType(OP_BRACES_RIGHT));
+    return findChildByType(OP_BRACES_RIGHT);
   }
 
   @NotNull
   public String getName() {
     return DPsiImplUtil.getName(this);
+  }
+
+  public String getFullName() {
+    return DPsiImplUtil.getFullName(this);
   }
 
   @Nullable
@@ -98,6 +104,14 @@ public class DLanguageTemplateDeclarationImpl extends DNamedStubbedPsiElementBas
   @NotNull
   public ItemPresentation getPresentation() {
     return DPsiImplUtil.getPresentation(this);
+  }
+
+  public boolean isSomeVisibility(Visibility visibility, Class<? extends Container> containerType) {
+    return DPsiImplUtil.isSomeVisibility(this, visibility, containerType);
+  }
+
+  public boolean isSomeVisibility(Visibility visibility) {
+    return DPsiImplUtil.isSomeVisibility(this, visibility);
   }
 
 }

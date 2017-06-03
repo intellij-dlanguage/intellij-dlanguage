@@ -7,16 +7,16 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageImportExpression extends PsiElement {
 
-  @NotNull
+  @Nullable
   DLanguageAssignExpression getAssignExpression();
 
   @NotNull
   PsiElement getKwImport();
 
-  @NotNull
+  @Nullable
   PsiElement getOpParLeft();
 
-  @NotNull
+  @Nullable
   PsiElement getOpParRight();
 
 }

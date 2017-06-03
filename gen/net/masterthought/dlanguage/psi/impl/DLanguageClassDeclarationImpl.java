@@ -12,6 +12,10 @@ import net.masterthought.dlanguage.stubs.DLanguageClassDeclarationStub;
 import net.masterthought.dlanguage.psi.*;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
+import net.masterthought.dlanguage.psi.interfaces.containers.Container;
+import net.masterthought.dlanguage.psi.interfaces.CanInherit;
+import java.util.Map;
+import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 import com.intellij.psi.stubs.IStubElementType;
 
 public class DLanguageClassDeclarationImpl extends DNamedStubbedPsiElementBase<DLanguageClassDeclarationStub> implements DLanguageClassDeclaration {
@@ -74,6 +78,10 @@ public class DLanguageClassDeclarationImpl extends DNamedStubbedPsiElementBase<D
     return DPsiImplUtil.getName(this);
   }
 
+  public String getFullName() {
+    return DPsiImplUtil.getFullName(this);
+  }
+
   @Nullable
   public PsiElement getNameIdentifier() {
     return DPsiImplUtil.getNameIdentifier(this);
@@ -92,6 +100,26 @@ public class DLanguageClassDeclarationImpl extends DNamedStubbedPsiElementBase<D
   @NotNull
   public ItemPresentation getPresentation() {
     return DPsiImplUtil.getPresentation(this);
+  }
+
+  public boolean isSomeVisibility(Visibility visibility, Class<? extends Container> containerType) {
+    return DPsiImplUtil.isSomeVisibility(this, visibility, containerType);
+  }
+
+  public boolean isSomeVisibility(Visibility visibility) {
+    return DPsiImplUtil.isSomeVisibility(this, visibility);
+  }
+
+  public DLanguageProtectionAttribute getProtection() {
+    return DPsiImplUtil.getProtection(this);
+  }
+
+  public List<CanInherit> whatInheritsFrom() {
+    return DPsiImplUtil.whatInheritsFrom(this);
+  }
+
+  public Map<String, DLanguageIdentifier> getSuperClassNames() {
+    return DPsiImplUtil.getSuperClassNames(this);
   }
 
 }

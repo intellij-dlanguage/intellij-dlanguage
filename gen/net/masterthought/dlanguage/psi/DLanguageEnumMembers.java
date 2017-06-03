@@ -8,12 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageEnumMembers extends PsiElement {
 
   @NotNull
-  DLanguageEnumMember getEnumMember();
-
-  @Nullable
-  DLanguageEnumMembers getEnumMembers();
-
-  @Nullable
-  PsiElement getOpComma();
+  List<DLanguageEnumMember> getEnumMemberList();
 
 }

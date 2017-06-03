@@ -17,10 +17,16 @@ public interface DLanguageParameter extends PsiElement {
   DLanguageDeclarator getDeclarator();
 
   @Nullable
+  DLanguageIdentifier getIdentifier();
+
+  @Nullable
   DLanguageInOut getInOut();
 
   @Nullable
   DLanguageType getType();
+
+  @Nullable
+  PsiElement getKwAlias();
 
   @Nullable
   PsiElement getOpEq();

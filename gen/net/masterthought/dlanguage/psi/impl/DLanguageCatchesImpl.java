@@ -27,15 +27,9 @@ public class DLanguageCatchesImpl extends ASTWrapperPsiElement implements DLangu
   }
 
   @Override
-  @Nullable
-  public DLanguageCatch getCatch() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageCatch.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageCatches getCatches() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageCatches.class);
+  @NotNull
+  public List<DLanguageCatch> getCatchList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageCatch.class);
   }
 
   @Override

@@ -33,9 +33,9 @@ public class DLanguageAsmBrExpImpl extends ASTWrapperPsiElement implements DLang
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageAsmUnaExp getAsmUnaExp() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageAsmUnaExp.class));
+    return PsiTreeUtil.getChildOfType(this, DLanguageAsmUnaExp.class);
   }
 
   @Override

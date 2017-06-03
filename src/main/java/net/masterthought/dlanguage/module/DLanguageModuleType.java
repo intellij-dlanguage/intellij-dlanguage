@@ -10,8 +10,8 @@ import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
 import net.masterthought.dlanguage.DLanguageBundle;
-import net.masterthought.dlanguage.icons.DLanguageIcons;
 import net.masterthought.dlanguage.DLanguageSdkType;
+import net.masterthought.dlanguage.icons.DLanguageIcons;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,6 +26,14 @@ public class DLanguageModuleType extends ModuleType<DLanguageModuleBuilder> {
 
     public DLanguageModuleType() {
         super(ID);
+    }
+
+    public static DLanguageModuleType getInstance() {
+        return (DLanguageModuleType) ModuleTypeManager.getInstance().findByID(ID);
+    }
+
+    public static Collection<Module> findModules(Project project) {
+        return ModuleUtil.getModulesOfType(project, DLanguageModuleType.getInstance());
     }
 
     @NotNull
@@ -46,7 +54,7 @@ public class DLanguageModuleType extends ModuleType<DLanguageModuleBuilder> {
         return DLanguageBundle.INSTANCE.message("module.description");
     }
 
-    @Override
+    //    @Override
     public Icon getBigIcon() {
         return DLanguageIcons.FILE;
     }
@@ -56,18 +64,14 @@ public class DLanguageModuleType extends ModuleType<DLanguageModuleBuilder> {
         return DLanguageIcons.FILE;
     }
 
-    public static DLanguageModuleType getInstance() {
-        return (DLanguageModuleType) ModuleTypeManager.getInstance().findByID(ID);
-    }
-
     @NotNull
     @Override
     public ModuleWizardStep[] createWizardSteps(@NotNull WizardContext wizardContext,
                                                 @NotNull final DLanguageModuleBuilder moduleBuilder,
                                                 @NotNull ModulesProvider modulesProvider) {
-        
+
         List<ModuleWizardStep> steps = new ArrayList<>();
-        
+
         ModuleWizardStep setCompiler = new ProjectJdkForModuleStep(wizardContext, DLanguageSdkType.getInstance()) {
             public void updateDataModel() {
                 super.updateDataModel();
@@ -78,16 +82,12 @@ public class DLanguageModuleType extends ModuleType<DLanguageModuleBuilder> {
         ModuleWizardStep setDubInit = new DubInitForModuleStep(wizardContext);
 
         steps.add(setCompiler);
-        
+
         if((moduleBuilder.getBuilderId() != null && moduleBuilder.getBuilderId().equals("DLangDubApp"))){
             steps.add(setDubBinary);
             steps.add(setDubInit);
         }
 
         return steps.toArray(new ModuleWizardStep[steps.size()]);
-    }
-
-    public static Collection<Module> findModules(Project project){
-      return ModuleUtil.getModulesOfType(project, DLanguageModuleType.getInstance());
     }
 }

@@ -27,9 +27,9 @@ public class DLanguageUnionTemplateDeclarationImpl extends ASTWrapperPsiElement 
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageAggregateBody getAggregateBody() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageAggregateBody.class));
+    return PsiTreeUtil.getChildOfType(this, DLanguageAggregateBody.class);
   }
 
   @Override
@@ -45,9 +45,9 @@ public class DLanguageUnionTemplateDeclarationImpl extends ASTWrapperPsiElement 
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageTemplateParameters getTemplateParameters() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageTemplateParameters.class));
+    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateParameters.class);
   }
 
   @Override

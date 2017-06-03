@@ -1,0 +1,66 @@
+{
+    "name": "hibernated",
+    "description": "ORM for D language, similar to Hibernate",
+    "authors": [
+        "Vadim Lopatin"
+    ],
+    "homepage": "https://github.com/buggins/hibernated",
+    "license": "Boost Software License (BSL 1.0)",
+    "dependencies": {
+        "ddbc": "~>0.3.2"
+    },
+    "targetType": "staticLibrary",
+    "targetPath": "lib",
+    "configurations": [
+        {
+            "name": "full",
+            "versions": [
+                "USE_MYSQL",
+                "USE_SQLITE",
+                "USE_PGSQL"
+            ],
+            "subConfigurations": {
+                "ddbc": "full"
+            }
+        },
+        {
+            "name": "MySQL",
+            "versions": [
+                "USE_MYSQL"
+            ],
+            "subConfigurations": {
+                "ddbc": "MySQL"
+            }
+        },
+        {
+            "name": "SQLite",
+            "versions": [
+                "USE_SQLITE"
+            ],
+            "libs-posix": [
+                "sqlite3"
+            ],
+            "libs-windows": [
+                "sqlite3"
+            ],
+            "subConfigurations": {
+                "ddbc": "SQLite"
+            }
+        },
+        {
+            "name": "PGSQL",
+            "versions": [
+                "USE_PGSQL"
+            ],
+            "libs-posix": [
+                "pq"
+            ],
+            "libs-windows": [
+                "libpq"
+            ],
+            "subConfigurations": {
+                "ddbc": "PGSQL"
+            }
+        }
+    ]
+}

@@ -4,13 +4,13 @@ import com.intellij.application.options.ModulesComboBox;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.ConfigurationFactory;
 import com.intellij.execution.configurations.ConfigurationType;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.extensions.Extensions;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SettingsEditor;
-import com.intellij.openapi.options.SettingsEditorListener;
 import com.intellij.openapi.ui.TextComponentAccessor;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.ui.RawCommandLineEditor;
@@ -24,8 +24,6 @@ import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -34,6 +32,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 public class DLanguageRunDmdConfigurationEditor extends SettingsEditor<DLanguageRunDmdConfiguration> {
+
+    private static final Logger LOG = Logger.getInstance(DLanguageRunDmdConfigurationEditor.class);
+
     private JTabbedPane myMainPanel;
     private JPanel tabCompiler;
     private JPanel tabOutput;
@@ -250,9 +251,7 @@ public class DLanguageRunDmdConfigurationEditor extends SettingsEditor<DLanguage
                         try {
                             URI uri = new URI("http://dlang.org/dmd-linux.html#switches");
                             desktop.browse(uri);
-                        } catch (IOException ex) {
-                            //do nothing
-                        } catch (URISyntaxException ex) {
+                        } catch (final IOException | URISyntaxException ex) {
                             //do nothing
                         }
                     }
@@ -312,14 +311,15 @@ public class DLanguageRunDmdConfigurationEditor extends SettingsEditor<DLanguage
 
     /** Update "textArgsPane" text area with actual DMD command line arguments */
     private void fillArguments(DLanguageRunDmdConfiguration config) {
-        Module module = comboModules.getSelectedModule();
+        final Module module = comboModules.getSelectedModule();
         if(module == null) {
             return;
         }
         try {
-            java.util.List<String> args = DLanguageDmdConfigToArgsConverter.getDmdParameters(config, module);
+            final java.util.List<String> args = DLanguageDmdConfigToArgsConverter.getDmdParameters(config, module);
             textArgsPane.setText(StringUtils.join(args, "\n"));
         } catch (NoSourcesException | ExecutionException e) {
+            LOG.error("There was a problem filling the textArgsPane in DMD config page", e);
             textArgsPane.setText("*Exception*:\n" + e.getMessage());
         }
     }

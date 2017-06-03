@@ -17,8 +17,8 @@ import com.intellij.openapi.projectRoots.SdkTypeId;
 import com.intellij.openapi.roots.ModifiableRootModel;
 import com.intellij.openapi.util.Pair;
 import net.masterthought.dlanguage.DLanguageBundle;
-import net.masterthought.dlanguage.icons.DLanguageIcons;
 import net.masterthought.dlanguage.DLanguageSdkType;
+import net.masterthought.dlanguage.icons.DLanguageIcons;
 import net.masterthought.dlanguage.run.DLanguageRunAppConfigurationType;
 import net.masterthought.dlanguage.run.DLanguageRunDmdConfigurationType;
 import org.jetbrains.annotations.NonNls;
@@ -57,7 +57,7 @@ public class DLanguageModuleBuilder extends JavaModuleBuilder {
         return myBuilderId;
     }
 
-    @Override
+    //    @Override
     public Icon getBigIcon() {
         return myBigIcon;
     }

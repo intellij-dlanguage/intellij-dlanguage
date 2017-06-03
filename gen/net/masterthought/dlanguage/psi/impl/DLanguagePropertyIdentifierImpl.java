@@ -26,10 +26,4 @@ public class DLanguagePropertyIdentifierImpl extends ASTWrapperPsiElement implem
     else super.accept(visitor);
   }
 
-  @Override
-  @Nullable
-  public PsiElement getKwNogc() {
-    return findChildByType(KW_NOGC);
-  }
-
 }

@@ -8,9 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageStatementList extends PsiElement {
 
   @NotNull
-  DLanguageStatement getStatement();
-
-  @Nullable
-  DLanguageStatementList getStatementList();
+  List<DLanguageStatement> getStatementList();
 
 }

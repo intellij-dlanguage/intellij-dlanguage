@@ -7,19 +7,19 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageWhileStatement extends PsiElement {
 
-  @NotNull
-  DLanguageExpression getExpression();
+  @Nullable
+  DLanguageCommaExpression getCommaExpression();
 
-  @NotNull
+  @Nullable
   DLanguageScopeStatement getScopeStatement();
 
   @NotNull
   PsiElement getKwWhile();
 
-  @NotNull
+  @Nullable
   PsiElement getOpParLeft();
 
-  @NotNull
+  @Nullable
   PsiElement getOpParRight();
 
 }

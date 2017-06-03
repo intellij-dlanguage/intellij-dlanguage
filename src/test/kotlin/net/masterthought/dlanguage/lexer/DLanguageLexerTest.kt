@@ -97,11 +97,11 @@ class DLanguageLexerTest : DLanguageLexerTestBase("lexer") {
 
     // comments
     fun testcomment_line() = doTest()
-    //    public void testcomment_doc_line()   doTest();
-    //    public void testcomment_doc_multi()   doTest();
-    //    public void testcomment_doc_nested()   doTest();
-    //    public void testcomment_mulit()   doTest();
-    //    public void testcomment_nested()   doTest();  
+    //    public void testcomment_doc_line()   doTestModule();
+    //    public void testcomment_doc_multi()   doTestModule();
+    //    public void testcomment_doc_nested()   doTestModule();
+    //    public void testcomment_mulit()   doTestModule();
+    //    public void testcomment_nested()   doTestModule();
 
 
     // floats
@@ -188,4 +188,6 @@ class DLanguageLexerTest : DLanguageLexerTestBase("lexer") {
     fun testtokens_xor()                  = doTest()
     fun testtokens_xor_assign()           = doTest()
 
+    //chars
+    fun testchar() = doTest()
 }

@@ -8,12 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageCommaExpression extends PsiElement {
 
   @NotNull
-  DLanguageAssignExpression getAssignExpression();
-
-  @Nullable
-  DLanguageCommaExpression getCommaExpression();
-
-  @Nullable
-  PsiElement getOpComma();
+  List<DLanguageAssignExpression> getAssignExpressionList();
 
 }

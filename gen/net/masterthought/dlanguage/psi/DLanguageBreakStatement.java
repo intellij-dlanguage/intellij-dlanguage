@@ -13,7 +13,7 @@ public interface DLanguageBreakStatement extends PsiElement {
   @NotNull
   PsiElement getKwBreak();
 
-  @NotNull
+  @Nullable
   PsiElement getOpScolon();
 
 }

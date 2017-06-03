@@ -44,4 +44,10 @@ public class DLanguageStructInitializerImpl extends ASTWrapperPsiElement impleme
     return notNullChild(findChildByType(OP_BRACES_RIGHT));
   }
 
+  @Override
+  @Nullable
+  public PsiElement getOpComma() {
+    return findChildByType(OP_COMMA);
+  }
+
 }

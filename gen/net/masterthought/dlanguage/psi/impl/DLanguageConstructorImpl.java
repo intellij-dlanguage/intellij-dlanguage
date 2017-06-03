@@ -12,6 +12,8 @@ import net.masterthought.dlanguage.stubs.DLanguageConstructorStub;
 import net.masterthought.dlanguage.psi.*;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
+import net.masterthought.dlanguage.psi.interfaces.containers.Container;
+import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 import com.intellij.psi.stubs.IStubElementType;
 
 public class DLanguageConstructorImpl extends DNamedStubbedPsiElementBase<DLanguageConstructorStub> implements DLanguageConstructor {
@@ -74,6 +76,10 @@ public class DLanguageConstructorImpl extends DNamedStubbedPsiElementBase<DLangu
     return DPsiImplUtil.getName(this);
   }
 
+  public String getFullName() {
+    return DPsiImplUtil.getFullName(this);
+  }
+
   @Nullable
   public PsiElement getNameIdentifier() {
     return DPsiImplUtil.getNameIdentifier(this);
@@ -92,6 +98,19 @@ public class DLanguageConstructorImpl extends DNamedStubbedPsiElementBase<DLangu
   @NotNull
   public ItemPresentation getPresentation() {
     return DPsiImplUtil.getPresentation(this);
+  }
+
+  public boolean isSomeVisibility(Visibility visibility, Class<? extends Container> containerType) {
+    return DPsiImplUtil.isSomeVisibility(this, visibility, containerType);
+  }
+
+  public boolean isSomeVisibility(Visibility visibility) {
+    return DPsiImplUtil.isSomeVisibility(this, visibility);
+  }
+
+  @NotNull
+  public List<DLanguageParameter> getArguments() {
+    return DPsiImplUtil.getArguments(this);
   }
 
 }

@@ -19,7 +19,7 @@ public interface DLanguageVersionSpecification extends PsiElement {
   @NotNull
   PsiElement getOpEq();
 
-  @NotNull
+  @Nullable
   PsiElement getOpScolon();
 
 }

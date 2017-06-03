@@ -1,5 +1,5 @@
 D Language File
-  DLanguageModuleDeclarationImpl(MODULE_DECLARATION)
+  MODULE_DECLARATION
     PsiElement(DLanguageTokenType.module)('module')
     DLanguageModuleFullyQualifiedNameImpl(MODULE_FULLY_QUALIFIED_NAME)
       IDENTIFIER
@@ -22,7 +22,7 @@ D Language File
                   DLanguageAggregateBodyImpl(AGGREGATE_BODY)
                     PsiElement(DLanguageTokenType.{)('{')
                     PsiElement(DLanguageTokenType.})('}')
-  DLanguageModuleDeclarationImpl(MODULE_DECLARATION)
+  MODULE_DECLARATION
     PsiElement(DLanguageTokenType.module)('module')
     DLanguageModuleFullyQualifiedNameImpl(MODULE_FULLY_QUALIFIED_NAME)
       IDENTIFIER
@@ -45,59 +45,55 @@ D Language File
                   DLanguageAggregateBodyImpl(AGGREGATE_BODY)
                     PsiElement(DLanguageTokenType.{)('{')
                     PsiElement(DLanguageTokenType.})('}')
-    DLanguageDeclDefsImpl(DECL_DEFS)
-      DLanguageDeclDefImpl(DECL_DEF)
-        DLanguageDeclarationImpl(DECLARATION)
-          DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
-            PsiElement(DLanguageTokenType.import)('import')
-            DLanguageImportListImpl(IMPORT_LIST)
-              DLanguageImportImpl(IMPORT)
-                DLanguageModuleFullyQualifiedNameImpl(MODULE_FULLY_QUALIFIED_NAME)
-                  IDENTIFIER
-                    PsiElement(DLanguageTokenType.ID)('A')
-            PsiElement(DLanguageTokenType.;)(';')
-      DLanguageDeclDefsImpl(DECL_DEFS)
-        DLanguageDeclDefImpl(DECL_DEF)
-          DLanguageDeclarationImpl(DECLARATION)
-            DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
-              PsiElement(DLanguageTokenType.import)('import')
-              DLanguageImportListImpl(IMPORT_LIST)
-                DLanguageImportImpl(IMPORT)
-                  DLanguageModuleFullyQualifiedNameImpl(MODULE_FULLY_QUALIFIED_NAME)
-                    IDENTIFIER
-                      PsiElement(DLanguageTokenType.ID)('B')
-              PsiElement(DLanguageTokenType.;)(';')
-        DLanguageDeclDefsImpl(DECL_DEFS)
-          DLanguageDeclDefImpl(DECL_DEF)
-            DLanguageDeclarationImpl(DECLARATION)
-              DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
-                DLanguageBasicTypeImpl(BASIC_TYPE)
-                  DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                    IDENTIFIER
-                      PsiElement(DLanguageTokenType.ID)('Foo')
-                DLanguageDeclaratorsImpl(DECLARATORS)
-                  DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
-                    DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
-                      IDENTIFIER
-                        PsiElement(DLanguageTokenType.ID)('f1')
-                PsiElement(DLanguageTokenType.;)(';')
-          PsiComment(DLanguageTokenType.LINE_COMMENT)('// error, could be either A.Foo or B.Foo')
-          DLanguageDeclDefsImpl(DECL_DEFS)
-            DLanguageDeclDefImpl(DECL_DEF)
-              DLanguageDeclarationImpl(DECLARATION)
-                DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
-                  DLanguageBasicTypeImpl(BASIC_TYPE)
-                    DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                      IDENTIFIER
-                        PsiElement(DLanguageTokenType.ID)('B')
-                      PsiElement(DLanguageTokenType..)('.')
-                      DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                        IDENTIFIER
-                          PsiElement(DLanguageTokenType.ID)('Foo')
-                  DLanguageDeclaratorsImpl(DECLARATORS)
-                    DLanguageDeclaratorInitializerImpl(DECLARATOR_INITIALIZER)
-                      DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
-                        IDENTIFIER
-                          PsiElement(DLanguageTokenType.ID)('f2')
-                  PsiElement(DLanguageTokenType.;)(';')
+    DLanguageDeclDefImpl(DECL_DEF)
+      DLanguageDeclarationImpl(DECLARATION)
+        DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
+          PsiElement(DLanguageTokenType.import)('import')
+          DLanguageImportListImpl(IMPORT_LIST)
+            IMPORT
+              DLanguageModuleFullyQualifiedNameImpl(MODULE_FULLY_QUALIFIED_NAME)
+                IDENTIFIER
+                  PsiElement(DLanguageTokenType.ID)('A')
+          PsiElement(DLanguageTokenType.;)(';')
+    DLanguageDeclDefImpl(DECL_DEF)
+      DLanguageDeclarationImpl(DECLARATION)
+        DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
+          PsiElement(DLanguageTokenType.import)('import')
+          DLanguageImportListImpl(IMPORT_LIST)
+            IMPORT
+              DLanguageModuleFullyQualifiedNameImpl(MODULE_FULLY_QUALIFIED_NAME)
+                IDENTIFIER
+                  PsiElement(DLanguageTokenType.ID)('B')
+          PsiElement(DLanguageTokenType.;)(';')
+    DLanguageDeclDefImpl(DECL_DEF)
+      DLanguageDeclarationImpl(DECLARATION)
+        DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+          DLanguageBasicTypeImpl(BASIC_TYPE)
+            DLanguageIdentifierListImpl(IDENTIFIER_LIST)
+              IDENTIFIER
+                PsiElement(DLanguageTokenType.ID)('Foo')
+          DLanguageDeclaratorsImpl(DECLARATORS)
+            DECLARATOR_INITIALIZER
+              DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
+                IDENTIFIER
+                  PsiElement(DLanguageTokenType.ID)('f1')
+          PsiElement(DLanguageTokenType.;)(';')
+    PsiComment(DLanguageTokenType.LINE_COMMENT)('// error, could be either A.Foo or B.Foo')
+    DLanguageDeclDefImpl(DECL_DEF)
+      DLanguageDeclarationImpl(DECLARATION)
+        DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+          DLanguageBasicTypeImpl(BASIC_TYPE)
+            DLanguageIdentifierListImpl(IDENTIFIER_LIST)
+              IDENTIFIER
+                PsiElement(DLanguageTokenType.ID)('B')
+              PsiElement(DLanguageTokenType..)('.')
+              DLanguageIdentifierListImpl(IDENTIFIER_LIST)
+                IDENTIFIER
+                  PsiElement(DLanguageTokenType.ID)('Foo')
+          DLanguageDeclaratorsImpl(DECLARATORS)
+            DECLARATOR_INITIALIZER
+              DLanguageVarDeclaratorImpl(VAR_DECLARATOR)
+                IDENTIFIER
+                  PsiElement(DLanguageTokenType.ID)('f2')
+          PsiElement(DLanguageTokenType.;)(';')
   PsiComment(DLanguageTokenType.LINE_COMMENT)('// ok')

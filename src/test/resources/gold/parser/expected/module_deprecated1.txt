@@ -1,5 +1,5 @@
 D Language File
-  DLanguageModuleDeclarationImpl(MODULE_DECLARATION)
+  MODULE_DECLARATION
     DLanguageAttributeImpl(ATTRIBUTE)
       DLanguageDeprecatedAttributeImpl(DEPRECATED_ATTRIBUTE)
         PsiElement(DLanguageTokenType.deprecated)('deprecated')

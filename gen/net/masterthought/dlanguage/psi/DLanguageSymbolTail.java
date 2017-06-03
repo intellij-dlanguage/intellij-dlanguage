@@ -7,16 +7,10 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageSymbolTail extends PsiElement {
 
-  @Nullable
-  DLanguageIdentifier getIdentifier();
+  @NotNull
+  List<DLanguageIdentifier> getIdentifierList();
 
-  @Nullable
-  DLanguageSymbolTail getSymbolTail();
-
-  @Nullable
-  DLanguageTemplateInstance getTemplateInstance();
-
-  @Nullable
-  PsiElement getOpDot();
+  @NotNull
+  List<DLanguageTemplateInstance> getTemplateInstanceList();
 
 }

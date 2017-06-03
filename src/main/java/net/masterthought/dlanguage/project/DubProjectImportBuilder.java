@@ -30,7 +30,7 @@ import java.util.Comparator;
 import java.util.List;
 
 
-public class DubProjectImportBuilder extends ProjectImportBuilder<DubConfigurationParser.DubPackage> {
+public class DubProjectImportBuilder extends ProjectImportBuilder<DubPackage> {
 
     private static final Logger LOG = Logger.getInstance("#" + DubProjectImportBuilder.class.getName());
 
@@ -39,7 +39,7 @@ public class DubProjectImportBuilder extends ProjectImportBuilder<DubConfigurati
     }
 
     public static class Parameters {
-        public List<DubConfigurationParser.DubPackage> packages;
+        public List<DubPackage> packages;
         public boolean openModuleSettings = false;
         public String dubBinary;
     }
@@ -66,12 +66,12 @@ public class DubProjectImportBuilder extends ProjectImportBuilder<DubConfigurati
     }
 
     @Override
-    public List<DubConfigurationParser.DubPackage> getList() {
+    public List<DubPackage> getList() {
         return getParameters().packages;
     }
 
     @Override
-    public void setList(List<DubConfigurationParser.DubPackage> list) throws ConfigurationException {
+    public void setList(List<DubPackage> list) throws ConfigurationException {
         getParameters().packages = list;
     }
 
@@ -84,7 +84,7 @@ public class DubProjectImportBuilder extends ProjectImportBuilder<DubConfigurati
     }
 
     @Override
-    public boolean isMarked(DubConfigurationParser.DubPackage s) {
+    public boolean isMarked(DubPackage s) {
         return getList().contains(s);
     }
 
@@ -112,19 +112,20 @@ public class DubProjectImportBuilder extends ProjectImportBuilder<DubConfigurati
     private List<Module> buildModules(Project project, ModifiableModuleModel moduleModel) {
         List<Module> moduleList = new ArrayList<>();
         DubConfigurationParser dubConfigurationParser = new DubConfigurationParser(project, getParameters().dubBinary);
-        DubConfigurationParser.DubPackage pkg = dubConfigurationParser.getDubPackage();
-        DLanguageDubModuleBuilder builder = new DLanguageDubModuleBuilder();
-        builder.setModuleFilePath(pkg.path + pkg.name + ".iml");
-        builder.setContentEntryPath(pkg.path);
-        builder.setName(pkg.name);
-        builder.addSourcePath(Pair.create(pkg.path + pkg.sourcesDir, ""));
+        final DubPackage pkg = dubConfigurationParser.getDubPackage().get();
+
+        final DLanguageDubModuleBuilder builder = new DLanguageDubModuleBuilder();
+        builder.setModuleFilePath(pkg.getPath() + pkg.getName() + ".iml");
+        builder.setContentEntryPath(pkg.getPath());
+        builder.setName(pkg.getName());
+        builder.addSourcePath(Pair.create(pkg.getPath() + pkg.getSourcesDir(), ""));
+
         try {
-            Module module = builder.createModule(moduleModel);
+            final Module module = builder.createModule(moduleModel);
             builder.commit(project);
             moduleList.add(module);
-
         } catch (InvalidDataException | IOException | JDOMException | ModuleWithNameAlreadyExists | ConfigurationException e) {
-            e.printStackTrace();
+            LOG.error(e);
         }
         return moduleList;
     }

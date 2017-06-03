@@ -10,10 +10,7 @@ public interface DLanguageTraitsArguments extends PsiElement {
   @NotNull
   DLanguageTraitsArgument getTraitsArgument();
 
-  @Nullable
-  DLanguageTraitsArguments getTraitsArguments();
-
-  @Nullable
-  PsiElement getOpComma();
+  @NotNull
+  List<DLanguageTraitsArguments> getTraitsArgumentsList();
 
 }

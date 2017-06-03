@@ -27,9 +27,9 @@ public class DLanguageNewAnonClassExpressionImpl extends ASTWrapperPsiElement im
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageAggregateBody getAggregateBody() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageAggregateBody.class));
+    return PsiTreeUtil.getChildOfType(this, DLanguageAggregateBody.class);
   }
 
   @Override
@@ -57,9 +57,9 @@ public class DLanguageNewAnonClassExpressionImpl extends ASTWrapperPsiElement im
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getKwClass() {
-    return notNullChild(findChildByType(KW_CLASS));
+    return findChildByType(KW_CLASS);
   }
 
   @Override

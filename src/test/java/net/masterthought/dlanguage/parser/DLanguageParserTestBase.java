@@ -1,9 +1,7 @@
 package net.masterthought.dlanguage.parser;
 
 import com.intellij.lang.ParserDefinition;
-import com.intellij.mock.MockProjectEx;
 import com.intellij.mock.MockVirtualFile;
-import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.testFramework.ParsingTestCase;
@@ -32,10 +30,26 @@ public abstract class DLanguageParserTestBase extends ParsingTestCase {
 
     /**
      * Perform a test. Add tests that should work but does not work yet with
-     * doTest(false, false).
+     * doTestModule(false, false).
      */
     protected void doTest(boolean checkResult, boolean shouldPass) {
-        doTest(true);
+//        String name = getTestName();
+//        try {
+//            String text = loadFile(name + "." + myFileExt);
+//            myFile = createPsiFile(name, text);
+//        }catch (IOException e){
+//            e.printStackTrace();
+//        }
+////        if(overwriteFile){
+//            String content = toParseTreeText(myFile, skipSpaces(), includeRanges());
+//            final String path = myFullDataPath.replace("/",File.separator).replace("build","src" +File.separator + "test").replace("resources" + File.separator + "test","resources") + File.separator +"expected" + File.separator + getTestName() + ".txt";
+//            try {
+//                Files.write(Paths.get(path.replace('\\','/').replace(":","").replace("/C","")), content.getBytes(), StandardOpenOption.CREATE);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+        doTest(checkResult);
         if (shouldPass) {
             assertFalse(
                     "PsiFile contains error elements",

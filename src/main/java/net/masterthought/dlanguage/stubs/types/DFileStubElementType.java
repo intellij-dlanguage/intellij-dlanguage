@@ -16,7 +16,7 @@ import java.io.IOException;
 
 public class DFileStubElementType extends IStubFileElementType<DLanguageFileStub> {
     public static final int VERSION = 0;
-    public static final IStubFileElementType INSTANCE = new DFileStubElementType();
+    public static final DFileStubElementType INSTANCE = new DFileStubElementType();
 
     public DFileStubElementType() {
         super("FILE", DLanguage.INSTANCE);

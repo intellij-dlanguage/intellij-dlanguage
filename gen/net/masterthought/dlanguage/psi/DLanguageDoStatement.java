@@ -7,25 +7,25 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageDoStatement extends PsiElement {
 
-  @NotNull
-  DLanguageExpression getExpression();
+  @Nullable
+  DLanguageCommaExpression getCommaExpression();
 
-  @NotNull
+  @Nullable
   DLanguageScopeStatement getScopeStatement();
 
   @NotNull
   PsiElement getKwDo();
 
-  @NotNull
+  @Nullable
   PsiElement getKwWhile();
 
-  @NotNull
+  @Nullable
   PsiElement getOpParLeft();
 
-  @NotNull
+  @Nullable
   PsiElement getOpParRight();
 
-  @NotNull
+  @Nullable
   PsiElement getOpScolon();
 
 }

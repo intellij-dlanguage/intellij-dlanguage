@@ -8,7 +8,7 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageTypeof extends PsiElement {
 
   @Nullable
-  DLanguageExpression getExpression();
+  DLanguageCommaExpression getCommaExpression();
 
   @Nullable
   PsiElement getKwReturn();
@@ -16,10 +16,10 @@ public interface DLanguageTypeof extends PsiElement {
   @NotNull
   PsiElement getKwTypeof();
 
-  @NotNull
+  @Nullable
   PsiElement getOpParLeft();
 
-  @NotNull
+  @Nullable
   PsiElement getOpParRight();
 
 }

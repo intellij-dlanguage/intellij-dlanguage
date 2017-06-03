@@ -8,9 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageWithStatement extends PsiElement {
 
   @Nullable
-  DLanguageExpression getExpression();
+  DLanguageCommaExpression getCommaExpression();
 
-  @NotNull
+  @Nullable
   DLanguageScopeStatement getScopeStatement();
 
   @Nullable
@@ -25,7 +25,7 @@ public interface DLanguageWithStatement extends PsiElement {
   @NotNull
   PsiElement getOpParLeft();
 
-  @NotNull
+  @Nullable
   PsiElement getOpParRight();
 
 }
