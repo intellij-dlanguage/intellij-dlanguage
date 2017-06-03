@@ -8,9 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageDeclDefs extends PsiElement {
 
   @NotNull
-  DLanguageDeclDef getDeclDef();
-
-  @Nullable
-  DLanguageDeclDefs getDeclDefs();
+  List<DLanguageDeclDef> getDeclDefList();
 
 }

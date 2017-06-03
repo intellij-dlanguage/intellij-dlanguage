@@ -8,12 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageStructMemberInitializers extends PsiElement {
 
   @NotNull
-  DLanguageStructMemberInitializer getStructMemberInitializer();
-
-  @Nullable
-  DLanguageStructMemberInitializers getStructMemberInitializers();
-
-  @Nullable
-  PsiElement getOpComma();
+  List<DLanguageStructMemberInitializer> getStructMemberInitializerList();
 
 }

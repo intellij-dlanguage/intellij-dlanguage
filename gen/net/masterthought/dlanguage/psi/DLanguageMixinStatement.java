@@ -8,7 +8,7 @@ import net.masterthought.dlanguage.psi.interfaces.Mixin;
 
 public interface DLanguageMixinStatement extends Mixin {
 
-  @Nullable
+  @NotNull
   DLanguageAssignExpression getAssignExpression();
 
   @NotNull
@@ -17,10 +17,10 @@ public interface DLanguageMixinStatement extends Mixin {
   @NotNull
   PsiElement getOpParLeft();
 
-  @Nullable
+  @NotNull
   PsiElement getOpParRight();
 
-  @Nullable
+  @NotNull
   PsiElement getOpScolon();
 
   @Nullable

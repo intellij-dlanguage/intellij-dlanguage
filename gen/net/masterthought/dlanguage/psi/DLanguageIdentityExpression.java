@@ -8,12 +8,51 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageIdentityExpression extends PsiElement {
 
   @Nullable
-  DLanguageShiftExpression getShiftExpression();
+  DLanguageAddExpression_ getAddExpression_();
+
+  @Nullable
+  DLanguageCastExpression getCastExpression();
+
+  @Nullable
+  DLanguageDeleteExpression getDeleteExpression();
+
+  @Nullable
+  DLanguageIdentifier getIdentifier();
+
+  @Nullable
+  DLanguageMulExpression_ getMulExpression_();
+
+  @Nullable
+  DLanguagePostfixExpression getPostfixExpression();
+
+  @Nullable
+  DLanguagePowExpression_ getPowExpression_();
+
+  @Nullable
+  DLanguageShiftExpression_ getShiftExpression_();
+
+  @Nullable
+  DLanguageTemplateInstance getTemplateInstance();
+
+  @Nullable
+  DLanguageType getType();
+
+  @Nullable
+  DLanguageTypeCtor getTypeCtor();
 
   @Nullable
   PsiElement getKwIs();
 
   @Nullable
   PsiElement getKwNotIs();
+
+  @Nullable
+  PsiElement getOpDot();
+
+  @Nullable
+  PsiElement getOpParLeft();
+
+  @Nullable
+  PsiElement getOpParRight();
 
 }

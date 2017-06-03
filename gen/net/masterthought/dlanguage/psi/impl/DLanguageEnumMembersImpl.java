@@ -28,20 +28,8 @@ public class DLanguageEnumMembersImpl extends ASTWrapperPsiElement implements DL
 
   @Override
   @NotNull
-  public DLanguageEnumMember getEnumMember() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageEnumMember.class));
-  }
-
-  @Override
-  @Nullable
-  public DLanguageEnumMembers getEnumMembers() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageEnumMembers.class);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpComma() {
-    return findChildByType(OP_COMMA);
+  public List<DLanguageEnumMember> getEnumMemberList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageEnumMember.class);
   }
 
 }

@@ -7,10 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageInOut extends PsiElement {
 
-  @Nullable
-  DLanguageInOut getInOut();
-
   @NotNull
-  DLanguageInOutX getInOutX();
+  List<DLanguageInOutX> getInOutXList();
 
 }

@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageInvariant extends PsiElement {
 
-  @NotNull
+  @Nullable
   DLanguageBlockStatement getBlockStatement();
 
   @NotNull

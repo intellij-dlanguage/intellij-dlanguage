@@ -11,19 +11,25 @@ import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import net.masterthought.dlanguage.psi.*;
 
-public class DLanguageUnaryExpressionImpl extends ASTWrapperPsiElement implements DLanguageUnaryExpression {
+public class DLanguageShiftExpression_Impl extends ASTWrapperPsiElement implements DLanguageShiftExpression_ {
 
-  public DLanguageUnaryExpressionImpl(ASTNode node) {
+  public DLanguageShiftExpression_Impl(ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull DLanguageVisitor visitor) {
-    visitor.visitUnaryExpression(this);
+    visitor.visitShiftExpression_(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
     else super.accept(visitor);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageAddExpression_ getAddExpression_() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageAddExpression_.class);
   }
 
   @Override
@@ -46,8 +52,26 @@ public class DLanguageUnaryExpressionImpl extends ASTWrapperPsiElement implement
 
   @Override
   @Nullable
-  public DLanguagePowExpression getPowExpression() {
-    return PsiTreeUtil.getChildOfType(this, DLanguagePowExpression.class);
+  public DLanguageMulExpression_ getMulExpression_() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageMulExpression_.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguagePostfixExpression getPostfixExpression() {
+    return PsiTreeUtil.getChildOfType(this, DLanguagePostfixExpression.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguagePowExpression_ getPowExpression_() {
+    return PsiTreeUtil.getChildOfType(this, DLanguagePowExpression_.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageShiftExpression_ getShiftExpression_() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageShiftExpression_.class);
   }
 
   @Override
@@ -70,50 +94,8 @@ public class DLanguageUnaryExpressionImpl extends ASTWrapperPsiElement implement
 
   @Override
   @Nullable
-  public DLanguageUnaryExpression getUnaryExpression() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageUnaryExpression.class);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpAnd() {
-    return findChildByType(OP_AND);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpAsterisk() {
-    return findChildByType(OP_ASTERISK);
-  }
-
-  @Override
-  @Nullable
   public PsiElement getOpDot() {
     return findChildByType(OP_DOT);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpMinus() {
-    return findChildByType(OP_MINUS);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpMinusMinus() {
-    return findChildByType(OP_MINUS_MINUS);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpNot() {
-    return findChildByType(OP_NOT);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpOr() {
-    return findChildByType(OP_OR);
   }
 
   @Override
@@ -130,26 +112,20 @@ public class DLanguageUnaryExpressionImpl extends ASTWrapperPsiElement implement
 
   @Override
   @Nullable
-  public PsiElement getOpPlus() {
-    return findChildByType(OP_PLUS);
+  public PsiElement getOpShLeft() {
+    return findChildByType(OP_SH_LEFT);
   }
 
   @Override
   @Nullable
-  public PsiElement getOpPlusPlus() {
-    return findChildByType(OP_PLUS_PLUS);
+  public PsiElement getOpShRight() {
+    return findChildByType(OP_SH_RIGHT);
   }
 
   @Override
   @Nullable
-  public PsiElement getOpPow() {
-    return findChildByType(OP_POW);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpTilda() {
-    return findChildByType(OP_TILDA);
+  public PsiElement getOpUshRight() {
+    return findChildByType(OP_USH_RIGHT);
   }
 
 }

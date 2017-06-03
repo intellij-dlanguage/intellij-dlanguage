@@ -28,14 +28,8 @@ public class DLanguageAltDeclaratorSuffixesImpl extends ASTWrapperPsiElement imp
 
   @Override
   @NotNull
-  public DLanguageAltDeclaratorSuffix getAltDeclaratorSuffix() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageAltDeclaratorSuffix.class));
-  }
-
-  @Override
-  @Nullable
-  public DLanguageAltDeclaratorSuffixes getAltDeclaratorSuffixes() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageAltDeclaratorSuffixes.class);
+  public List<DLanguageAltDeclaratorSuffix> getAltDeclaratorSuffixList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageAltDeclaratorSuffix.class);
   }
 
 }

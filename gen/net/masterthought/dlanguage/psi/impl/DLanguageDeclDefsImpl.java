@@ -28,14 +28,8 @@ public class DLanguageDeclDefsImpl extends ASTWrapperPsiElement implements DLang
 
   @Override
   @NotNull
-  public DLanguageDeclDef getDeclDef() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageDeclDef.class));
-  }
-
-  @Override
-  @Nullable
-  public DLanguageDeclDefs getDeclDefs() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageDeclDefs.class);
+  public List<DLanguageDeclDef> getDeclDefList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageDeclDef.class);
   }
 
 }

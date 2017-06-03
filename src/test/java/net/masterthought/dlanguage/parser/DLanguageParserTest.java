@@ -9,7 +9,9 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
     }
 
     // shebang
-    public void testshebang() { doTest(true, true); }
+    public void testshebang() {
+        doTest(true, true);
+    }
 
     // modules
     public void testmodule1() { doTest(true, true); }
@@ -314,7 +316,7 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
 // standard library
 
 //    public void teststdlib_array() {
-//        doTestModule(true, true);
+//        doTestModuletruefalsetrue,truefalse);
 //    }
 
 }

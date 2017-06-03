@@ -28,6 +28,12 @@ public class DLanguageAsmInstructionImpl extends ASTWrapperPsiElement implements
 
   @Override
   @Nullable
+  public DLanguageAsmBrExp getAsmBrExp() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageAsmBrExp.class);
+  }
+
+  @Override
+  @Nullable
   public DLanguageAsmInstruction getAsmInstruction() {
     return PsiTreeUtil.getChildOfType(this, DLanguageAsmInstruction.class);
   }

@@ -8,9 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageMemberFunctionAttributes extends PsiElement {
 
   @NotNull
-  DLanguageMemberFunctionAttribute getMemberFunctionAttribute();
-
-  @Nullable
-  DLanguageMemberFunctionAttributes getMemberFunctionAttributes();
+  List<DLanguageMemberFunctionAttribute> getMemberFunctionAttributeList();
 
 }

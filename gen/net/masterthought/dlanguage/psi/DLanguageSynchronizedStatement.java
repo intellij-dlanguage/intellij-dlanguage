@@ -8,9 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageSynchronizedStatement extends PsiElement {
 
   @Nullable
-  DLanguageExpression getExpression();
+  DLanguageCommaExpression getCommaExpression();
 
-  @NotNull
+  @Nullable
   DLanguageScopeStatement getScopeStatement();
 
   @NotNull

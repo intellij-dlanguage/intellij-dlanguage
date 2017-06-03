@@ -28,14 +28,74 @@ public class DLanguageDeleteExpressionImpl extends ASTWrapperPsiElement implemen
 
   @Override
   @Nullable
-  public DLanguageUnaryExpression getUnaryExpression() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageUnaryExpression.class);
+  public DLanguageCastExpression getCastExpression() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageCastExpression.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageDeleteExpression getDeleteExpression() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageDeleteExpression.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageIdentifier getIdentifier() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguagePostfixExpression getPostfixExpression() {
+    return PsiTreeUtil.getChildOfType(this, DLanguagePostfixExpression.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguagePowExpression_ getPowExpression_() {
+    return PsiTreeUtil.getChildOfType(this, DLanguagePowExpression_.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageTemplateInstance getTemplateInstance() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateInstance.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageType getType() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageType.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageTypeCtor getTypeCtor() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageTypeCtor.class);
   }
 
   @Override
   @NotNull
   public PsiElement getKwDelete() {
     return notNullChild(findChildByType(KW_DELETE));
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpDot() {
+    return findChildByType(OP_DOT);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpParLeft() {
+    return findChildByType(OP_PAR_LEFT);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpParRight() {
+    return findChildByType(OP_PAR_RIGHT);
   }
 
 }

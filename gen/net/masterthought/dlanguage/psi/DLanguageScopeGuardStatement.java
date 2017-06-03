@@ -7,16 +7,16 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageScopeGuardStatement extends PsiElement {
 
-  @NotNull
+  @Nullable
   DLanguageStatement getStatement();
 
   @NotNull
   PsiElement getKwScope();
 
-  @NotNull
+  @Nullable
   PsiElement getOpParLeft();
 
-  @NotNull
+  @Nullable
   PsiElement getOpParRight();
 
 }
