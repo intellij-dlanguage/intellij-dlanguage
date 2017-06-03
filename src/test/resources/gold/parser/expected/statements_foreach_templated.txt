@@ -79,13 +79,13 @@ D Language File
                                     DLanguageTemplateArgumentsImpl(TEMPLATE_ARGUMENTS)
                                       PsiElement(DLanguageTokenType.!)('!')
                                       DLanguageTemplateSingleArgumentImpl(TEMPLATE_SINGLE_ARGUMENT)
-                                        IDENTIFIER
-                                          PsiElement(DLanguageTokenType.ID)('Dg')
-                              DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
-                                DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                                  PsiElement(DLanguageTokenType..)('.')
-                                  IDENTIFIER
-                                    PsiElement(DLanguageTokenType.ID)('length')
+                                        DLanguageIdentifierListImpl(IDENTIFIER_LIST)
+                                          IDENTIFIER
+                                            PsiElement(DLanguageTokenType.ID)('Dg')
+                                          PsiElement(DLanguageTokenType..)('.')
+                                          DLanguageIdentifierListImpl(IDENTIFIER_LIST)
+                                            IDENTIFIER
+                                              PsiElement(DLanguageTokenType.ID)('length')
                               DLanguageEqualExpressionImpl(EQUAL_EXPRESSION)
                                 PsiElement(DLanguageTokenType.==)('==')
                                 DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
@@ -158,13 +158,13 @@ D Language File
                                     DLanguageTemplateArgumentsImpl(TEMPLATE_ARGUMENTS)
                                       PsiElement(DLanguageTokenType.!)('!')
                                       DLanguageTemplateSingleArgumentImpl(TEMPLATE_SINGLE_ARGUMENT)
-                                        IDENTIFIER
-                                          PsiElement(DLanguageTokenType.ID)('Dg')
-                              DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
-                                DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                                  PsiElement(DLanguageTokenType..)('.')
-                                  IDENTIFIER
-                                    PsiElement(DLanguageTokenType.ID)('length')
+                                        DLanguageIdentifierListImpl(IDENTIFIER_LIST)
+                                          IDENTIFIER
+                                            PsiElement(DLanguageTokenType.ID)('Dg')
+                                          PsiElement(DLanguageTokenType..)('.')
+                                          DLanguageIdentifierListImpl(IDENTIFIER_LIST)
+                                            IDENTIFIER
+                                              PsiElement(DLanguageTokenType.ID)('length')
                               DLanguageEqualExpressionImpl(EQUAL_EXPRESSION)
                                 PsiElement(DLanguageTokenType.==)('==')
                                 DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)

@@ -118,6 +118,12 @@ public class DLanguagePrimaryExpressionImpl extends ASTWrapperPsiElement impleme
 
   @Override
   @Nullable
+  public DLanguageType getType() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageType.class);
+  }
+
+  @Override
+  @Nullable
   public DLanguageTypeidExpression getTypeidExpression() {
     return PsiTreeUtil.getChildOfType(this, DLanguageTypeidExpression.class);
   }

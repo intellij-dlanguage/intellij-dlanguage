@@ -34,6 +34,12 @@ public class DLanguageIdentityExpressionImpl extends ASTWrapperPsiElement implem
 
   @Override
   @Nullable
+  public DLanguageAssignExpression getAssignExpression() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageAssignExpression.class);
+  }
+
+  @Override
+  @Nullable
   public DLanguageCastExpression getCastExpression() {
     return PsiTreeUtil.getChildOfType(this, DLanguageCastExpression.class);
   }

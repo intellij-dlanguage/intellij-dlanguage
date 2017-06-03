@@ -12,6 +12,7 @@ import com.intellij.testFramework.TestDataFile
 import com.intellij.testFramework.UsefulTestCase
 import com.intellij.testFramework.VfsTestUtil
 import junit.framework.TestCase
+import net.masterthought.dlanguage.dlanguage.DLanguageLexer
 import org.jetbrains.annotations.NonNls
 import java.io.File
 import java.io.IOException

@@ -12,6 +12,7 @@ import net.masterthought.dlanguage.stubs.DLanguageEnumDeclarationStub;
 import net.masterthought.dlanguage.psi.*;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
+import net.masterthought.dlanguage.psi.interfaces.containers.Container;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 import com.intellij.psi.stubs.IStubElementType;
 
@@ -101,6 +102,10 @@ public class DLanguageEnumDeclarationImpl extends DNamedStubbedPsiElementBase<DL
 
   public boolean isSomeVisibility(Visibility visibility) {
     return DPsiImplUtil.isSomeVisibility(this, visibility);
+  }
+
+  public boolean isSomeVisibility(Visibility visibility, Class<? extends Container> containerType) {
+    return DPsiImplUtil.isSomeVisibility(this, visibility, containerType);
   }
 
 }

@@ -34,6 +34,12 @@ public class DLanguageTypeSpecializationImpl extends ASTWrapperPsiElement implem
 
   @Override
   @Nullable
+  public DLanguageTypeVector getTypeVector() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageTypeVector.class);
+  }
+
+  @Override
+  @Nullable
   public PsiElement getKwClass() {
     return findChildByType(KW_CLASS);
   }

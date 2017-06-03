@@ -354,8 +354,9 @@ D Language File
                         DLanguageTemplateArgumentsImpl(TEMPLATE_ARGUMENTS)
                           PsiElement(DLanguageTokenType.!)('!')
                           DLanguageTemplateSingleArgumentImpl(TEMPLATE_SINGLE_ARGUMENT)
-                            IDENTIFIER
-                              PsiElement(DLanguageTokenType.ID)('T')
+                            DLanguageIdentifierListImpl(IDENTIFIER_LIST)
+                              IDENTIFIER
+                                PsiElement(DLanguageTokenType.ID)('T')
               DLanguageAggregateBodyImpl(AGGREGATE_BODY)
                 PsiElement(DLanguageTokenType.{)('{')
                 DLanguageDeclDefsImpl(DECL_DEFS)
@@ -610,8 +611,9 @@ D Language File
                         DLanguageTemplateArgumentsImpl(TEMPLATE_ARGUMENTS)
                           PsiElement(DLanguageTokenType.!)('!')
                           DLanguageTemplateSingleArgumentImpl(TEMPLATE_SINGLE_ARGUMENT)
-                            IDENTIFIER
-                              PsiElement(DLanguageTokenType.ID)('T')
+                            DLanguageIdentifierListImpl(IDENTIFIER_LIST)
+                              IDENTIFIER
+                                PsiElement(DLanguageTokenType.ID)('T')
               DLanguageAggregateBodyImpl(AGGREGATE_BODY)
                 PsiElement(DLanguageTokenType.{)('{')
                 DLanguageDeclDefsImpl(DECL_DEFS)

@@ -40,11 +40,8 @@ public interface DLanguageInExpression extends PsiElement {
   @Nullable
   DLanguageTypeCtor getTypeCtor();
 
-  @Nullable
+  @NotNull
   PsiElement getKwIn();
-
-  @Nullable
-  PsiElement getKwNotIn();
 
   @Nullable
   PsiElement getOpDot();

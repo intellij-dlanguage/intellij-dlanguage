@@ -11,11 +11,9 @@ import com.intellij.testFramework.LexerTestCase;
 import com.intellij.testFramework.TestDataFile;
 import com.intellij.testFramework.VfsTestUtil;
 import net.masterthought.dlanguage.DLanguageHighlightingLexer;
-import net.masterthought.dlanguage.lexer.DLanguageLexer;
 import org.jetbrains.annotations.NonNls;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;

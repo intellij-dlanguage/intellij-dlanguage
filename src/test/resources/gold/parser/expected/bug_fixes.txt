@@ -36,7 +36,7 @@ D Language File
                                           DLanguageStringLiteralsImpl(STRING_LITERALS)
                                             DLanguageStringLiteralImpl(STRING_LITERAL)
                                               PsiElement(DLanguageTokenType.DOUBLE_QUOTED_STRING)('"any"')
-                                  PsiElement(DLanguageTokenType.,)(',')
+                                    PsiElement(DLanguageTokenType.,)(',')
                                   PsiElement(DLanguageTokenType.])(']')
                   PsiElement(DLanguageTokenType.;)(';')
     PsiComment(DLanguageTokenType.LINE_COMMENT)('// error')
@@ -425,8 +425,9 @@ D Language File
                 DLanguageTemplateArgumentsImpl(TEMPLATE_ARGUMENTS)
                   PsiElement(DLanguageTokenType.!)('!')
                   DLanguageTemplateSingleArgumentImpl(TEMPLATE_SINGLE_ARGUMENT)
-                    IDENTIFIER
-                      PsiElement(DLanguageTokenType.ID)('CustomPolicy')
+                    DLanguageIdentifierListImpl(IDENTIFIER_LIST)
+                      IDENTIFIER
+                        PsiElement(DLanguageTokenType.ID)('CustomPolicy')
               PsiElement(DLanguageTokenType.()('(')
               DLanguageArgumentListImpl(ARGUMENT_LIST)
                 DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)

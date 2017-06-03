@@ -58,9 +58,8 @@ D Language File
                   DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                     IDENTIFIER
                       PsiElement(DLanguageTokenType.ID)('p')
-                PsiElement(DLanguageTokenType.!)('!')
                 DLanguageIdentityExpressionImpl(IDENTITY_EXPRESSION)
-                  PsiElement(DLanguageTokenType.is)('is')
+                  PsiElement(DLanguageTokenType.!is)('!is')
                   DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
                     DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                       PsiElement(DLanguageTokenType.null)('null')

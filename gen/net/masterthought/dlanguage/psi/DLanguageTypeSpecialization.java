@@ -11,6 +11,9 @@ public interface DLanguageTypeSpecialization extends PsiElement {
   DLanguageType getType();
 
   @Nullable
+  DLanguageTypeVector getTypeVector();
+
+  @Nullable
   PsiElement getKwClass();
 
   @Nullable

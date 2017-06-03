@@ -11,6 +11,9 @@ public interface DLanguageIdentityExpression extends PsiElement {
   DLanguageAddExpression_ getAddExpression_();
 
   @Nullable
+  DLanguageAssignExpression getAssignExpression();
+
+  @Nullable
   DLanguageCastExpression getCastExpression();
 
   @Nullable

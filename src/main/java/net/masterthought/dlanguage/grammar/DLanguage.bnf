@@ -98,7 +98,6 @@ tokens = [
  KW_INTERFACE = "interface"
  KW___PARAMETERS = "__parameters"
  KW_IN = "in"
- KW_NOT_IN = "!in"
  KW_ASM = "asm"
  KW_ASSERT = "assert"
  KW_CASE = "case"
@@ -129,7 +128,7 @@ tokens = [
  KW_TEMPLATE = "template"
  KW_LAZY = "lazy"
  KW_OUT = "out"
- KW_NOGC = "nogc"
+// KW_NOGC = "nogc"// not a reserved word
  KW___TRAITS = "__traits"
  KW_UNITTEST = "unittest"
  OP_SCOLON = ";"
@@ -207,7 +206,14 @@ tokens = [
 //line_comment="regexp://.*"
 //block_comment="regexp:/\*(.|\n)*\*/"
 //DOUBLE_QUOTED_STRING = 'regexp:\"([^\\"]|((\\"|\\\?|\\\|\\0|\\a|\\b|\\f|\\n|\\r|\\t|\\v)|(\\x[0-9abcdefABCDEF_]{2})|(\\[0-7])|(\\[0-7]{2})|(\\[0-7]{3})|(\\u[0-9abcdefABCDEF_]{4})|(\\U[0-9abcdefABCDEF_]{8})|(\\&([a-zA-Z_])([a-zA-Z0-9_])*;)))*\"[cwd]*'
-// ------------------------
+//FLOAT_LITERAL = "regexp:[0-9][0-9_]*\.([0]|[1-9_][0-9_]*)?"
+//CHARACTER_LITERAL="regexp:\'([^\r\n\t\f\\])\'"
+////DECIMAL_FLOAT_SIMPLE ="regexp:[0-9][0-9_]*\.([0]|[1-9_][0-9_]*)?!\."
+//DECIMAL_FLOAT_EXPONENT = "regexp:[0-9_]+\.[0-9_]+[eE][\+\-]? [0-9_]+"
+//DECIMAL_FLOAT_FIRST_DOT = "regexp:\. ([0] | [1-9_] [0-9_]*)"
+//DECIMAL_FLOAT_FIRST_DOT_EXPONENT = "regexp:\. ([0] | [1-9] [0-9]*) [eE][\+\-]? [0-9_]+"
+//DECIMAL_FLOAT_NO_DOT_EXPONENT = "regexp:[0-9] [0-9_]* [eE][\+\-]? [0-9_]+"
+//// ------------------------
 
  ]
 
@@ -215,11 +221,11 @@ tokens = [
 
 dFile ::= item_*
 
-private item_ ::= (ModuleDeclaration | DeclDefs | Statement | SHEBANG) {
+private item_ ::= (ModuleDeclaration | DeclDefs | Statement | SHEBANG ) {
     recoverWhile = item_recover
 }
 
-private item_recover ::= !(ModuleDeclaration | DeclDefs | Statement | SHEBANG)
+private item_recover ::= !( ModuleDeclaration | DeclDefs | Statement | SHEBANG )
 
 Identifier ::= ID {
     methods=[getName getNameIdentifier getReference setName getPresentation delete]
@@ -228,6 +234,7 @@ Identifier ::= ID {
     }
 
 StringLiteral  ::= (WYSIWYG_STRING|ALTERNATE_WYSIWYG_STRING|DOUBLE_QUOTED_STRING|HEX_STRING|DELIMITED_STRING)
+
 
 // Module
 
@@ -291,6 +298,7 @@ DeclDefs ::= DeclDef DeclDef*{
 //order matters
 DeclDef ::=
     (AttributeSpecifier
+//    | DeclarationBlockWithStorageClasses
     | Declaration
     | Postblit
     | Constructor
@@ -343,6 +351,7 @@ BasicType ::=
     | Typeof ('.' IdentifierList)?
     | '(' Type ')'
     | TypeVector
+    | '(' TypeVector ')'
 
 BasicTypeX ::=
      'bool'
@@ -373,9 +382,10 @@ BasicType2 ::=
 
 BasicType2X ::=
     '*'
+    | '[' Type? ']'
     | '[' AssignExpression ']'
     | '[' AssignExpression '..' AssignExpression ']'
-    | '[' Type? ']'
+    // jflex doesn't support look ahead in the lexing process. This is a problem for situations such as [7..x], since this is lexed into '[' '7.' '.' ']'. This is not ideal todo
     | 'delegate' Parameters MemberFunctionAttributes?
     | 'function' Parameters FunctionAttributes?
 
@@ -390,7 +400,7 @@ Typeof ::=
     }
 
 TypeVector ::=
-    '__vector' '(' Type ')'{//todo add missing tokens
+    '__vector' '(' Type')'{//todo add missing tokens
     pin = 1
     }
 
@@ -412,7 +422,8 @@ AssignExpression ::=
    | OrExpression
    | AndAndExpression
    | OrOrExpression
-   |*/ (ConditionalExpression [ ( '=' | '+=' | '-=' | '*=' | '/=' | '%=' | '&=' | '|=' | '^=' | '~=' | '<<=' | '>>=' | '>>>=' | '^^=') AssignExpression]){
+   |*/
+   (ConditionalExpression [ ( '=' | '+=' | '-=' | '*=' | '/=' | '%=' | '&=' | '|=' | '^=' | '~=' | '<<=' | '>>=' | '>>>=' | '^^=') AssignExpression]){
 
                             }
 
@@ -463,7 +474,7 @@ EqualExpression ::=
      }
 
 IdentityExpression ::=
-     ('is'|'!is') ShiftExpression{
+     ('is'|'!is') (ShiftExpression | AssignExpression){
      pin = 1
      }
 
@@ -473,7 +484,7 @@ RelExpression ::=
     }
 
 InExpression ::=
-    ('in'| '!in') ShiftExpression{
+    ('in'| ('!''in')) ShiftExpression{
     pin = 1
     }
 
@@ -522,7 +533,7 @@ AllocatorArguments ::=
     '(' ArgumentList? ')'
 
 ArgumentList ::=
-    ArgumentListMember (','  ArgumentListMember)*
+    ArgumentListMember (','  ArgumentListMember)* ','?
 
 private ArgumentListMember ::=
    AssignExpression
@@ -572,10 +583,12 @@ SliceExpression ::=
     |  '[' MultipleAssign ']' [PostfixExpression]
 
 MultipleAssign ::=
- ((AssignExpression '..' AssignExpression) | AssignExpression) [',' MultipleAssign ]
+ ((( (AssignExpression '..')) AssignExpression) | AssignExpression) [',' MultipleAssign ]
+ // jflex doesn't support look ahead in the lexing process. This is a problem for situations such as [7..x], since this is lexed into '[' '7.' '.' ']'. The only solution I was able  to find was adding this in the parser. This is not ideal todo
 
 PrimaryExpression ::=
      ('.')? (TemplateInstance | Identifier)
+    | Type
     | 'this'
     | 'super'
     | 'null'
@@ -630,7 +643,7 @@ ParameterMemberAttributes ::=
     Parameters MemberFunctionAttributes?
 
 FunctionLiteralBody ::=
-    BlockStatement |
+    Property* BlockStatement |
     FunctionContracts BodyStatement?
 
 Lambda ::=
@@ -685,7 +698,8 @@ private IsExpressionSuffix ::=
     | '(' Type Identifier '==' TypeSpecialization ',' TemplateParameterList ')'
 
 TypeSpecialization ::=
-    Type
+    TypeVector
+    | Type
     | 'struct'
     | 'union'
     | 'class'
@@ -709,6 +723,7 @@ TraitsExpression ::=
 
 TraitsKeyword ::=
     'isAbstractClass'
+    | 'isTemplate'
     | 'isArithmetic'
     | 'isAssociativeArray'
     | 'isFinalClass'
@@ -750,7 +765,7 @@ TraitsKeyword ::=
     | 'compiles'
 
 TraitsArguments ::=
-    TraitsArgument (',' TraitsArguments)?
+    TraitsArgument (',' TraitsArguments)*
 
 TraitsArgument ::=
     AssignExpression
@@ -768,7 +783,13 @@ SpecialKeyword ::=
 Statement ::=
     ';'
     | NonEmptyStatement
-    | BlockStatement
+    | BlockStatement{
+    recoverWhile = statement_recover
+    }
+
+private statement_recover ::=
+    !('else' | Statement | '}' | DeclDef | ModuleDeclaration | 'catch' | 'finally' | ':' | ','| 'foreach' | SHEBANG | <<eof>>)//idk why the 'foreach' is needed todo
+
 
 NonEmptyStatement ::=
     NonEmptyStatementNoCaseNoDefault
@@ -781,7 +802,6 @@ NonEmptyStatementNoCaseNoDefault ::=
     | DeclarationStatement
     | Declaration
     | BlockStatement // must be above expression statement
-    | ExpressionStatement
     | IfStatement
     | WhileStatement
     | DoStatement
@@ -806,6 +826,7 @@ NonEmptyStatementNoCaseNoDefault ::=
     | StaticAssert
     | TemplateMixin
     | ImportDeclaration
+    | ExpressionStatement
 
 ScopeStatement ::=
     NonEmptyStatement
@@ -824,7 +845,12 @@ BlockStatement ::=
  '{' StatementList? '}'
 
 StatementList ::=
-    Statement Statement*
+    Statement Statement*{
+        //recoverWhile= statement_list_recover
+    }
+
+//private statement_list_recover::=
+//    !('}'|Statement)
 
 ExpressionStatement ::=
     Expression ';'?
@@ -1008,7 +1034,7 @@ TryStatement ::=
     | 'try' ScopeStatement FinallyStatement
 
 Catches ::=
-     Catch [Catches]
+     Catch Catch*//todo simplify
      | LastCatch
 
 LastCatch ::=
@@ -1977,6 +2003,8 @@ ParameterList ::=
 
 Parameter ::=
        InOut? BasicType Declarator (('...' | '=') AssignExpression?)?
+       | InOut? Type '=' AssignExpression
+       | InOut? 'alias' Identifier '=' AssignExpression
        | InOut? Type ('...')?//why is this '...'? necesary. surely Parameterlist covers this
 
 
@@ -2297,14 +2325,27 @@ TemplateInstance ::=
     Identifier? TemplateArguments
 
 TemplateArguments ::=
-     '!' ('(' TemplateArgumentList? ')') | '!' TemplateSingleArgument
+     TemplateArgumentsWithParen
+     | TemplateArgumentsWithoutParen
+
+private TemplateArgumentsWithParen ::=
+    '!' '(' TemplateArgumentList? ')' {
+        pin = 2
+    }
+private TemplateArgumentsWithoutParen ::=
+    '!' TemplateSingleArgument{
+        pin = 1
+    }
+
+
 
 TemplateArgumentList ::=
     TemplateArgument (',' TemplateArgumentList?)?
 
 TemplateArgument ::=
-    Type
+    Lambda //must be above assign expression
     | AssignExpression
+    | Type //this branch should be deprecated  since anything matched by Type is in theory matched by assignexpression
     | Symbol
 
 Symbol ::=
@@ -2314,7 +2355,7 @@ SymbolTail ::=
     (Identifier | TemplateInstance) ('.' (Identifier | TemplateInstance))*
 
 TemplateSingleArgument ::=
-    Identifier
+    IdentifierList
     | BasicTypeX
     | CHARACTER_LITERAL
     | StringLiteral
@@ -2325,6 +2366,7 @@ TemplateSingleArgument ::=
     | 'null'
     | 'this'
     | SpecialKeyword
+    | AssignExpression
 
 
  TemplateParameter ::=
@@ -2471,7 +2513,7 @@ ConditionalDeclaration ::=
     | Condition DeclarationBlock 'else' ':' DeclDefs?
 
 ConditionalStatement ::=
-    Condition Statement ('else' (Statement | DeclarationBlock))?
+    Condition (Statement | BlockStatement | DeclarationBlock) ('else' (Statement | DeclarationBlock))?
 
 Condition ::=
     VersionCondition

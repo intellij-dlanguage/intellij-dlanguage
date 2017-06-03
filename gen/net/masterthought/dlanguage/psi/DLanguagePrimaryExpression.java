@@ -53,6 +53,9 @@ public interface DLanguagePrimaryExpression extends PsiElement {
   DLanguageTraitsExpression getTraitsExpression();
 
   @Nullable
+  DLanguageType getType();
+
+  @Nullable
   DLanguageTypeidExpression getTypeidExpression();
 
   @Nullable
