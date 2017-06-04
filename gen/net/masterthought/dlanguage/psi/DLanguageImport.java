@@ -10,6 +10,7 @@ import com.intellij.psi.StubBasedPsiElement;
 import net.masterthought.dlanguage.stubs.DLanguageImportDeclarationStub;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
+import net.masterthought.dlanguage.psi.interfaces.containers.Container;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 
 public interface DLanguageImport extends DNamedElement, HasVisibility, StubBasedPsiElement<DLanguageImportDeclarationStub> {
@@ -37,6 +38,8 @@ public interface DLanguageImport extends DNamedElement, HasVisibility, StubBased
 
   @NotNull
   ItemPresentation getPresentation();
+
+  boolean isSomeVisibility(Visibility visibility, Class<? extends Container> containerType);
 
   boolean isSomeVisibility(Visibility visibility);
 

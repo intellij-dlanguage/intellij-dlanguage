@@ -20,7 +20,7 @@ public interface DLanguagePrimaryExpression extends PsiElement {
   DLanguageBasicTypeX getBasicTypeX();
 
   @Nullable
-  DLanguageExpression getExpression();
+  DLanguageCommaExpression getCommaExpression();
 
   @Nullable
   DLanguageFunctionLiteral getFunctionLiteral();
@@ -51,6 +51,9 @@ public interface DLanguagePrimaryExpression extends PsiElement {
 
   @Nullable
   DLanguageTraitsExpression getTraitsExpression();
+
+  @Nullable
+  DLanguageType getType();
 
   @Nullable
   DLanguageTypeidExpression getTypeidExpression();

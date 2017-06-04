@@ -188,4 +188,6 @@ class DLanguageLexerTest : DLanguageLexerTestBase("lexer") {
     fun testtokens_xor()                  = doTest()
     fun testtokens_xor_assign()           = doTest()
 
+    //chars
+    fun testchar() = doTest()
 }

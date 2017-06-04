@@ -8,7 +8,6 @@ import net.masterthought.dlanguage.psi.impl.DElementTypeFactory;
 import net.masterthought.dlanguage.psi.impl.*;
 
 public interface DLanguageTypes {
-
     IElementType KEYWORD = new DLanguageElementType("KEYWORD");
     IElementType OPERATOR = new DLanguageElementType("OPERATOR");
     IElementType NUMBER = new DLanguageElementType("NUMBER");
@@ -22,8 +21,7 @@ public interface DLanguageTypes {
     IElementType MODULE_DEFINITION = new DLanguageElementType("MODULE_DEFINITION");
     IElementType FUNCTION_DEFINITION = new DLanguageElementType("FUNCTION_DEFINITION");
 
-
-  IElementType ADD_EXPRESSION = new DLanguageElementType("ADD_EXPRESSION");
+  IElementType ADD_EXPRESSION_ = new DLanguageElementType("ADD_EXPRESSION_");
   IElementType AGGREGATE_BODY = new DLanguageElementType("AGGREGATE_BODY");
   IElementType AGGREGATE_DECLARATION = new DLanguageElementType("AGGREGATE_DECLARATION");
   IElementType ALIAS_DECLARATION = DElementTypeFactory.factory("ALIAS_DECLARATION");
@@ -39,8 +37,7 @@ public interface DLanguageTypes {
   IElementType ALT_DECLARATOR_SUFFIXES = new DLanguageElementType("ALT_DECLARATOR_SUFFIXES");
   IElementType ALT_DECLARATOR_X = new DLanguageElementType("ALT_DECLARATOR_X");
   IElementType ALT_FUNC_DECLARATOR_SUFFIX = new DLanguageElementType("ALT_FUNC_DECLARATOR_SUFFIX");
-  IElementType AND_AND_EXPRESSION = new DLanguageElementType("AND_AND_EXPRESSION");
-  IElementType AND_EXPRESSION = new DLanguageElementType("AND_EXPRESSION");
+  IElementType AND_EXXPRESSION_ = new DLanguageElementType("AND_EXXPRESSION_");
   IElementType ANONYMOUS_ENUM_DECLARATION = new DLanguageElementType("ANONYMOUS_ENUM_DECLARATION");
   IElementType ANON_UNION_DECLARATION = new DLanguageElementType("ANON_UNION_DECLARATION");
   IElementType ARGUMENT_LIST = new DLanguageElementType("ARGUMENT_LIST");
@@ -92,11 +89,10 @@ public interface DLanguageTypes {
   IElementType CLASS_ARGUMENTS = new DLanguageElementType("CLASS_ARGUMENTS");
   IElementType CLASS_DECLARATION = DElementTypeFactory.factory("CLASS_DECLARATION");
   IElementType CLASS_TEMPLATE_DECLARATION = new DLanguageElementType("CLASS_TEMPLATE_DECLARATION");
-  IElementType CMP_EXPRESSION = new DLanguageElementType("CMP_EXPRESSION");
   IElementType COMMA_EXPRESSION = new DLanguageElementType("COMMA_EXPRESSION");
   IElementType CONDITION = new DLanguageElementType("CONDITION");
   IElementType CONDITIONAL_DECLARATION = new DLanguageElementType("CONDITIONAL_DECLARATION");
-  IElementType CONDITIONAL_EXPRESSION = new DLanguageElementType("CONDITIONAL_EXPRESSION");
+  IElementType CONDITIONAL_EXPRESSION_ = new DLanguageElementType("CONDITIONAL_EXPRESSION_");
   IElementType CONDITIONAL_STATEMENT = new DLanguageElementType("CONDITIONAL_STATEMENT");
   IElementType CONSTRAINT = new DLanguageElementType("CONSTRAINT");
   IElementType CONSTRUCTOR = DElementTypeFactory.factory("CONSTRUCTOR");
@@ -128,7 +124,6 @@ public interface DLanguageTypes {
   IElementType ENUM_MEMBER = new DLanguageElementType("ENUM_MEMBER");
   IElementType ENUM_MEMBERS = new DLanguageElementType("ENUM_MEMBERS");
   IElementType EQUAL_EXPRESSION = new DLanguageElementType("EQUAL_EXPRESSION");
-  IElementType EXPRESSION = new DLanguageElementType("EXPRESSION");
   IElementType EXPRESSION_STATEMENT = new DLanguageElementType("EXPRESSION_STATEMENT");
   IElementType FINALLY_STATEMENT = new DLanguageElementType("FINALLY_STATEMENT");
   IElementType FINAL_SWITCH_STATEMENT = new DLanguageElementType("FINAL_SWITCH_STATEMENT");
@@ -195,7 +190,7 @@ public interface DLanguageTypes {
   IElementType MODULE_DECLARATION = DElementTypeFactory.factory("MODULE_DECLARATION");
   IElementType MODULE_FULLY_QUALIFIED_NAME = new DLanguageElementType("MODULE_FULLY_QUALIFIED_NAME");
   IElementType MULTIPLE_ASSIGN = new DLanguageElementType("MULTIPLE_ASSIGN");
-  IElementType MUL_EXPRESSION = new DLanguageElementType("MUL_EXPRESSION");
+  IElementType MUL_EXPRESSION_ = new DLanguageElementType("MUL_EXPRESSION_");
   IElementType NEW_ANON_CLASS_EXPRESSION = new DLanguageElementType("NEW_ANON_CLASS_EXPRESSION");
   IElementType NEW_EXPRESSION = new DLanguageElementType("NEW_EXPRESSION");
   IElementType NEW_EXPRESSION_WITH_ARGS = new DLanguageElementType("NEW_EXPRESSION_WITH_ARGS");
@@ -205,7 +200,6 @@ public interface DLanguageTypes {
   IElementType OPCODE = new DLanguageElementType("OPCODE");
   IElementType OPERAND = new DLanguageElementType("OPERAND");
   IElementType OPERANDS = new DLanguageElementType("OPERANDS");
-  IElementType OR_EXPRESSION = new DLanguageElementType("OR_EXPRESSION");
   IElementType OR_OR_EXPRESSION = new DLanguageElementType("OR_OR_EXPRESSION");
   IElementType OUT_STATEMENT = new DLanguageElementType("OUT_STATEMENT");
   IElementType PARAMETER = new DLanguageElementType("PARAMETER");
@@ -215,7 +209,7 @@ public interface DLanguageTypes {
   IElementType PARAMETER_MEMBER_ATTRIBUTES = new DLanguageElementType("PARAMETER_MEMBER_ATTRIBUTES");
   IElementType POSTBLIT = new DLanguageElementType("POSTBLIT");
   IElementType POSTFIX_EXPRESSION = new DLanguageElementType("POSTFIX_EXPRESSION");
-  IElementType POW_EXPRESSION = new DLanguageElementType("POW_EXPRESSION");
+  IElementType POW_EXPRESSION_ = new DLanguageElementType("POW_EXPRESSION_");
   IElementType PRAGMA = new DLanguageElementType("PRAGMA");
   IElementType PRAGMA_STATEMENT = new DLanguageElementType("PRAGMA_STATEMENT");
   IElementType PRIMARY_EXPRESSION = new DLanguageElementType("PRIMARY_EXPRESSION");
@@ -232,7 +226,7 @@ public interface DLanguageTypes {
   IElementType SCOPE_STATEMENT_LIST = new DLanguageElementType("SCOPE_STATEMENT_LIST");
   IElementType SHARED_STATIC_CONSTRUCTOR = new DLanguageElementType("SHARED_STATIC_CONSTRUCTOR");
   IElementType SHARED_STATIC_DESTRUCTOR = new DLanguageElementType("SHARED_STATIC_DESTRUCTOR");
-  IElementType SHIFT_EXPRESSION = new DLanguageElementType("SHIFT_EXPRESSION");
+  IElementType SHIFT_EXPRESSION_ = new DLanguageElementType("SHIFT_EXPRESSION_");
   IElementType SLICE_EXPRESSION = new DLanguageElementType("SLICE_EXPRESSION");
   IElementType SPECIAL_KEYWORD = new DLanguageElementType("SPECIAL_KEYWORD");
   IElementType STATEMENT = new DLanguageElementType("STATEMENT");
@@ -287,7 +281,6 @@ public interface DLanguageTypes {
   IElementType TYPE_CTORS = new DLanguageElementType("TYPE_CTORS");
   IElementType TYPE_SPECIALIZATION = new DLanguageElementType("TYPE_SPECIALIZATION");
   IElementType TYPE_VECTOR = new DLanguageElementType("TYPE_VECTOR");
-  IElementType UNARY_EXPRESSION = new DLanguageElementType("UNARY_EXPRESSION");
   IElementType UNION_DECLARATION = DElementTypeFactory.factory("UNION_DECLARATION");
   IElementType UNION_TEMPLATE_DECLARATION = new DLanguageElementType("UNION_TEMPLATE_DECLARATION");
   IElementType UNIT_TESTING = DElementTypeFactory.factory("UNIT_TESTING");
@@ -301,7 +294,7 @@ public interface DLanguageTypes {
   IElementType VOID_INITIALIZER = new DLanguageElementType("VOID_INITIALIZER");
   IElementType WHILE_STATEMENT = new DLanguageElementType("WHILE_STATEMENT");
   IElementType WITH_STATEMENT = new DLanguageElementType("WITH_STATEMENT");
-  IElementType XOR_EXPRESSION = new DLanguageElementType("XOR_EXPRESSION");
+  IElementType XOR_EXPRESSION_ = new DLanguageElementType("XOR_EXPRESSION_");
 
   IElementType ALTERNATE_WYSIWYG_STRING = new DLanguageTokenType("ALTERNATE_WYSIWYG_STRING");
   IElementType BLOCK_COMMENT = new DLanguageTokenType("BLOCK_COMMENT");
@@ -370,9 +363,7 @@ public interface DLanguageTypes {
   IElementType KW_MIXIN = new DLanguageTokenType("mixin");
   IElementType KW_MODULE = new DLanguageTokenType("module");
   IElementType KW_NEW = new DLanguageTokenType("new");
-  IElementType KW_NOGC = new DLanguageTokenType("nogc");
   IElementType KW_NOTHROW = new DLanguageTokenType("nothrow");
-  IElementType KW_NOT_IN = new DLanguageTokenType("!in");
   IElementType KW_NOT_IS = new DLanguageTokenType("!is");
   IElementType KW_NULL = new DLanguageTokenType("null");
   IElementType KW_OUT = new DLanguageTokenType("out");
@@ -490,8 +481,8 @@ public interface DLanguageTypes {
   class Factory {
     public static PsiElement createElement(ASTNode node) {
       IElementType type = node.getElementType();
-       if (type == ADD_EXPRESSION) {
-        return new DLanguageAddExpressionImpl(node);
+       if (type == ADD_EXPRESSION_) {
+        return new DLanguageAddExpression_Impl(node);
       }
       else if (type == AGGREGATE_BODY) {
         return new DLanguageAggregateBodyImpl(node);
@@ -538,11 +529,8 @@ public interface DLanguageTypes {
       else if (type == ALT_FUNC_DECLARATOR_SUFFIX) {
         return new DLanguageAltFuncDeclaratorSuffixImpl(node);
       }
-      else if (type == AND_AND_EXPRESSION) {
-        return new DLanguageAndAndExpressionImpl(node);
-      }
-      else if (type == AND_EXPRESSION) {
-        return new DLanguageAndExpressionImpl(node);
+      else if (type == AND_EXXPRESSION_) {
+        return new DLanguageAndExxpression_Impl(node);
       }
       else if (type == ANONYMOUS_ENUM_DECLARATION) {
         return new DLanguageAnonymousEnumDeclarationImpl(node);
@@ -697,9 +685,6 @@ public interface DLanguageTypes {
       else if (type == CLASS_TEMPLATE_DECLARATION) {
         return new DLanguageClassTemplateDeclarationImpl(node);
       }
-      else if (type == CMP_EXPRESSION) {
-        return new DLanguageCmpExpressionImpl(node);
-      }
       else if (type == COMMA_EXPRESSION) {
         return new DLanguageCommaExpressionImpl(node);
       }
@@ -709,8 +694,8 @@ public interface DLanguageTypes {
       else if (type == CONDITIONAL_DECLARATION) {
         return new DLanguageConditionalDeclarationImpl(node);
       }
-      else if (type == CONDITIONAL_EXPRESSION) {
-        return new DLanguageConditionalExpressionImpl(node);
+      else if (type == CONDITIONAL_EXPRESSION_) {
+        return new DLanguageConditionalExpression_Impl(node);
       }
       else if (type == CONDITIONAL_STATEMENT) {
         return new DLanguageConditionalStatementImpl(node);
@@ -804,9 +789,6 @@ public interface DLanguageTypes {
       }
       else if (type == EQUAL_EXPRESSION) {
         return new DLanguageEqualExpressionImpl(node);
-      }
-      else if (type == EXPRESSION) {
-        return new DLanguageExpressionImpl(node);
       }
       else if (type == EXPRESSION_STATEMENT) {
         return new DLanguageExpressionStatementImpl(node);
@@ -1006,8 +988,8 @@ public interface DLanguageTypes {
       else if (type == MULTIPLE_ASSIGN) {
         return new DLanguageMultipleAssignImpl(node);
       }
-      else if (type == MUL_EXPRESSION) {
-        return new DLanguageMulExpressionImpl(node);
+      else if (type == MUL_EXPRESSION_) {
+        return new DLanguageMulExpression_Impl(node);
       }
       else if (type == NEW_ANON_CLASS_EXPRESSION) {
         return new DLanguageNewAnonClassExpressionImpl(node);
@@ -1036,9 +1018,6 @@ public interface DLanguageTypes {
       else if (type == OPERANDS) {
         return new DLanguageOperandsImpl(node);
       }
-      else if (type == OR_EXPRESSION) {
-        return new DLanguageOrExpressionImpl(node);
-      }
       else if (type == OR_OR_EXPRESSION) {
         return new DLanguageOrOrExpressionImpl(node);
       }
@@ -1066,8 +1045,8 @@ public interface DLanguageTypes {
       else if (type == POSTFIX_EXPRESSION) {
         return new DLanguagePostfixExpressionImpl(node);
       }
-      else if (type == POW_EXPRESSION) {
-        return new DLanguagePowExpressionImpl(node);
+      else if (type == POW_EXPRESSION_) {
+        return new DLanguagePowExpression_Impl(node);
       }
       else if (type == PRAGMA) {
         return new DLanguagePragmaImpl(node);
@@ -1117,8 +1096,8 @@ public interface DLanguageTypes {
       else if (type == SHARED_STATIC_DESTRUCTOR) {
         return new DLanguageSharedStaticDestructorImpl(node);
       }
-      else if (type == SHIFT_EXPRESSION) {
-        return new DLanguageShiftExpressionImpl(node);
+      else if (type == SHIFT_EXPRESSION_) {
+        return new DLanguageShiftExpression_Impl(node);
       }
       else if (type == SLICE_EXPRESSION) {
         return new DLanguageSliceExpressionImpl(node);
@@ -1282,9 +1261,6 @@ public interface DLanguageTypes {
       else if (type == TYPE_VECTOR) {
         return new DLanguageTypeVectorImpl(node);
       }
-      else if (type == UNARY_EXPRESSION) {
-        return new DLanguageUnaryExpressionImpl(node);
-      }
       else if (type == UNION_DECLARATION) {
         return new DLanguageUnionDeclarationImpl(node);
       }
@@ -1324,8 +1300,8 @@ public interface DLanguageTypes {
       else if (type == WITH_STATEMENT) {
         return new DLanguageWithStatementImpl(node);
       }
-      else if (type == XOR_EXPRESSION) {
-        return new DLanguageXorExpressionImpl(node);
+      else if (type == XOR_EXPRESSION_) {
+        return new DLanguageXorExpression_Impl(node);
       }
       throw new AssertionError("Unknown element type: " + type);
     }

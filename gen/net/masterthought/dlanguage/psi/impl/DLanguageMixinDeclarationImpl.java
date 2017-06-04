@@ -45,21 +45,21 @@ public class DLanguageMixinDeclarationImpl extends ASTWrapperPsiElement implemen
   }
 
   @Override
-  @Nullable
+  @NotNull
   public PsiElement getOpParLeft() {
-    return findChildByType(OP_PAR_LEFT);
+    return notNullChild(findChildByType(OP_PAR_LEFT));
   }
 
   @Override
-  @Nullable
+  @NotNull
   public PsiElement getOpParRight() {
-    return findChildByType(OP_PAR_RIGHT);
+    return notNullChild(findChildByType(OP_PAR_RIGHT));
   }
 
   @Override
-  @Nullable
+  @NotNull
   public PsiElement getOpScolon() {
-    return findChildByType(OP_SCOLON);
+    return notNullChild(findChildByType(OP_SCOLON));
   }
 
   @Nullable

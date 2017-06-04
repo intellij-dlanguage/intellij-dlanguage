@@ -27,9 +27,9 @@ public class DLanguageMixinExpressionImpl extends ASTWrapperPsiElement implement
   }
 
   @Override
-  @Nullable
+  @NotNull
   public DLanguageAssignExpression getAssignExpression() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageAssignExpression.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageAssignExpression.class));
   }
 
   @Override
@@ -45,9 +45,9 @@ public class DLanguageMixinExpressionImpl extends ASTWrapperPsiElement implement
   }
 
   @Override
-  @Nullable
+  @NotNull
   public PsiElement getOpParRight() {
-    return findChildByType(OP_PAR_RIGHT);
+    return notNullChild(findChildByType(OP_PAR_RIGHT));
   }
 
   @Nullable

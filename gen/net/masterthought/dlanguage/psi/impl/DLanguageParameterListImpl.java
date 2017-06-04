@@ -27,21 +27,9 @@ public class DLanguageParameterListImpl extends ASTWrapperPsiElement implements 
   }
 
   @Override
-  @Nullable
-  public DLanguageParameter getParameter() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageParameter.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageParameterList getParameterList() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageParameterList.class);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpComma() {
-    return findChildByType(OP_COMMA);
+  @NotNull
+  public List<DLanguageParameter> getParameterList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageParameter.class);
   }
 
   @Override

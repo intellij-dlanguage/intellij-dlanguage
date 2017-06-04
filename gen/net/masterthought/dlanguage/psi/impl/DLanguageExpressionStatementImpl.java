@@ -28,8 +28,8 @@ public class DLanguageExpressionStatementImpl extends ASTWrapperPsiElement imple
 
   @Override
   @NotNull
-  public DLanguageExpression getExpression() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageExpression.class));
+  public DLanguageCommaExpression getCommaExpression() {
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageCommaExpression.class));
   }
 
   @Override

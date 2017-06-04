@@ -12,6 +12,7 @@ import net.masterthought.dlanguage.stubs.DLanguageAutoDeclarationStub;
 import net.masterthought.dlanguage.psi.*;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
+import net.masterthought.dlanguage.psi.interfaces.containers.Container;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 import net.masterthought.dlanguage.psi.interfaces.Type;
 import com.intellij.psi.stubs.IStubElementType;
@@ -86,6 +87,10 @@ public class DLanguageAutoDeclarationYImpl extends DNamedStubbedPsiElementBase<D
   @NotNull
   public ItemPresentation getPresentation() {
     return DPsiImplUtil.getPresentation(this);
+  }
+
+  public boolean isSomeVisibility(Visibility visibility, Class<? extends Container> containerType) {
+    return DPsiImplUtil.isSomeVisibility(this, visibility, containerType);
   }
 
   public boolean isSomeVisibility(Visibility visibility) {

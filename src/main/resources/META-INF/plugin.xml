@@ -1,16 +1,26 @@
-<idea-plugin version="2">
+<!DOCTYPE idea-plugin PUBLIC "Plugin/DTD" "http://plugins.intellij.net/plugin.dtd">
+<idea-plugin>
     <id>net.masterthought.dlanguage</id>
     <name>D Language</name>
     <version>@version@</version>
     <vendor email="kingsley.hendrickse@gmail.com" url="http://www.masterthought.net">MasterThought</vendor>
 
     <description><![CDATA[
-     Support for the <a href="http://dlang.org/">D Language</a>.
-     <br/>
-     <a href="https://github.com/kingsleyh/DLanguage/">Github</a>
+     <p>Support for the <a href="http://dlang.org/">D Language</a>.</p>
+     <p>Also adds support for using the <a href="https://code.dlang.org/">dub</a> build tool.</p>
+     <p>Project available on <a href="https://github.com/intellij-dlanguage/intellij-dlanguage/">Github</a>.</p>
     ]]></description>
 
     <change-notes><![CDATA[
+        <b>v1.13</b><br/>
+        <ul>
+            <li>Compatibility IntelliJ 2017.2</li>
+            <li>no longer requires DCD for code completion</li>
+        </ul>
+        <b>v1.12</b><br/>
+        <ul>
+            <li>Compatibility IntelliJ 2017.1</li>
+        </ul>
         <b>v1.11</b><br/>
         <ul>
             <li>Compatibility for newer versions of IntelliJ</li>

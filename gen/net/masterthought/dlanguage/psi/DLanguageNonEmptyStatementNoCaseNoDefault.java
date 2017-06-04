@@ -11,6 +11,9 @@ public interface DLanguageNonEmptyStatementNoCaseNoDefault extends PsiElement {
   DLanguageAsmStatement getAsmStatement();
 
   @Nullable
+  DLanguageBlockStatement getBlockStatement();
+
+  @Nullable
   DLanguageBreakStatement getBreakStatement();
 
   @Nullable

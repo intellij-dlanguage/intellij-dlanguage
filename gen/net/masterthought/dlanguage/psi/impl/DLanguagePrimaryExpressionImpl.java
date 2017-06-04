@@ -52,8 +52,8 @@ public class DLanguagePrimaryExpressionImpl extends ASTWrapperPsiElement impleme
 
   @Override
   @Nullable
-  public DLanguageExpression getExpression() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageExpression.class);
+  public DLanguageCommaExpression getCommaExpression() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageCommaExpression.class);
   }
 
   @Override
@@ -114,6 +114,12 @@ public class DLanguagePrimaryExpressionImpl extends ASTWrapperPsiElement impleme
   @Nullable
   public DLanguageTraitsExpression getTraitsExpression() {
     return PsiTreeUtil.getChildOfType(this, DLanguageTraitsExpression.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageType getType() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageType.class);
   }
 
   @Override

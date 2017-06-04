@@ -28,6 +28,12 @@ public class DLanguageForeachTypeImpl extends ASTWrapperPsiElement implements DL
 
   @Override
   @Nullable
+  public DLanguageForeachTypeAttribute getForeachTypeAttribute() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageForeachTypeAttribute.class);
+  }
+
+  @Override
+  @Nullable
   public DLanguageForeachTypeAttributes getForeachTypeAttributes() {
     return PsiTreeUtil.getChildOfType(this, DLanguageForeachTypeAttributes.class);
   }

@@ -28,20 +28,8 @@ public class DLanguageArrayMemberInitializationsImpl extends ASTWrapperPsiElemen
 
   @Override
   @NotNull
-  public DLanguageArrayMemberInitialization getArrayMemberInitialization() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageArrayMemberInitialization.class));
-  }
-
-  @Override
-  @Nullable
-  public DLanguageArrayMemberInitializations getArrayMemberInitializations() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageArrayMemberInitializations.class);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpComma() {
-    return findChildByType(OP_COMMA);
+  public List<DLanguageArrayMemberInitialization> getArrayMemberInitializationList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageArrayMemberInitialization.class);
   }
 
 }

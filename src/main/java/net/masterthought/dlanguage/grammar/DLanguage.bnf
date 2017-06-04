@@ -98,7 +98,6 @@ tokens = [
  KW_INTERFACE = "interface"
  KW___PARAMETERS = "__parameters"
  KW_IN = "in"
- KW_NOT_IN = "!in"
  KW_ASM = "asm"
  KW_ASSERT = "assert"
  KW_CASE = "case"
@@ -129,7 +128,7 @@ tokens = [
  KW_TEMPLATE = "template"
  KW_LAZY = "lazy"
  KW_OUT = "out"
- KW_NOGC = "nogc"
+// KW_NOGC = "nogc"// not a reserved word
  KW___TRAITS = "__traits"
  KW_UNITTEST = "unittest"
  OP_SCOLON = ";"
@@ -202,12 +201,19 @@ tokens = [
 
 // Comment these back in when playing with Live Preview
 // ------------------------
-ID = "regexp:\w+"
-space='regexp:\s+'
-line_comment="regexp://.*"
-block_comment="regexp:/\*(.|\n)*\*/"
-DOUBLE_QUOTED_STRING = 'regexp:\"([^\\"]|((\\"|\\\?|\\\|\\0|\\a|\\b|\\f|\\n|\\r|\\t|\\v)|(\\x[0-9abcdefABCDEF_]{2})|(\\[0-7])|(\\[0-7]{2})|(\\[0-7]{3})|(\\u[0-9abcdefABCDEF_]{4})|(\\U[0-9abcdefABCDEF_]{8})|(\\&([a-zA-Z_])([a-zA-Z0-9_])*;)))*\"[cwd]*'
-// ------------------------
+//ID = "regexp:\w+"
+//space='regexp:\s+'
+//line_comment="regexp://.*"
+//block_comment="regexp:/\*(.|\n)*\*/"
+//DOUBLE_QUOTED_STRING = 'regexp:\"([^\\"]|((\\"|\\\?|\\\|\\0|\\a|\\b|\\f|\\n|\\r|\\t|\\v)|(\\x[0-9abcdefABCDEF_]{2})|(\\[0-7])|(\\[0-7]{2})|(\\[0-7]{3})|(\\u[0-9abcdefABCDEF_]{4})|(\\U[0-9abcdefABCDEF_]{8})|(\\&([a-zA-Z_])([a-zA-Z0-9_])*;)))*\"[cwd]*'
+//FLOAT_LITERAL = "regexp:[0-9][0-9_]*\.([0]|[1-9_][0-9_]*)?"
+//CHARACTER_LITERAL="regexp:\'([^\r\n\t\f\\])\'"
+////DECIMAL_FLOAT_SIMPLE ="regexp:[0-9][0-9_]*\.([0]|[1-9_][0-9_]*)?!\."
+//DECIMAL_FLOAT_EXPONENT = "regexp:[0-9_]+\.[0-9_]+[eE][\+\-]? [0-9_]+"
+//DECIMAL_FLOAT_FIRST_DOT = "regexp:\. ([0] | [1-9_] [0-9_]*)"
+//DECIMAL_FLOAT_FIRST_DOT_EXPONENT = "regexp:\. ([0] | [1-9] [0-9]*) [eE][\+\-]? [0-9_]+"
+//DECIMAL_FLOAT_NO_DOT_EXPONENT = "regexp:[0-9] [0-9_]* [eE][\+\-]? [0-9_]+"
+//// ------------------------
 
  ]
 
@@ -215,11 +221,11 @@ DOUBLE_QUOTED_STRING = 'regexp:\"([^\\"]|((\\"|\\\?|\\\|\\0|\\a|\\b|\\f|\\n|\\r|
 
 dFile ::= item_*
 
-private item_ ::= (ModuleDeclaration | DeclDefs | Statement | SHEBANG) {
+private item_ ::= (ModuleDeclaration | DeclDefs | Statement | SHEBANG ) {
     recoverWhile = item_recover
 }
 
-private item_recover ::= !(ModuleDeclaration | DeclDefs | Statement | SHEBANG)
+private item_recover ::= !( ModuleDeclaration | DeclDefs | Statement | SHEBANG )
 
 Identifier ::= ID {
     methods=[getName getNameIdentifier getReference setName getPresentation delete]
@@ -228,6 +234,7 @@ Identifier ::= ID {
     }
 
 StringLiteral  ::= (WYSIWYG_STRING|ALTERNATE_WYSIWYG_STRING|DOUBLE_QUOTED_STRING|HEX_STRING|DELIMITED_STRING)
+
 
 // Module
 
@@ -284,11 +291,14 @@ ImportBindList ::=
 ImportBind ::=
     Identifier ('=' Identifier)?
 
-DeclDefs ::= DeclDef [DeclDefs]
+DeclDefs ::= DeclDef DeclDef*{
+    pin = 1
+}
 
 //order matters
 DeclDef ::=
     (AttributeSpecifier
+//    | DeclarationBlockWithStorageClasses
     | Declaration
     | Postblit
     | Constructor
@@ -316,8 +326,9 @@ DeclDef ::=
     )
 
 MixinDeclaration ::=
-    'mixin' '(' (TemplateInstance | AssignExpression) ')' ';'{
-     pin = 1
+    'mixin' '(' ((TemplateInstance AssignExpression?)| AssignExpression) ')' ';'{
+    //the extra AssignExpression after the TemplateInstance is for statements like:
+    //mixin(ImplementClassImpl!(Class, typeof(this))());
      methods = [getName ] // the getTemplate method should resolve the template which is being mixed in.
      implements = ["net.masterthought.dlanguage.psi.interfaces.Mixin"]
     }
@@ -340,6 +351,7 @@ BasicType ::=
     | Typeof ('.' IdentifierList)?
     | '(' Type ')'
     | TypeVector
+    | '(' TypeVector ')'
 
 BasicTypeX ::=
      'bool'
@@ -370,9 +382,10 @@ BasicType2 ::=
 
 BasicType2X ::=
     '*'
+    | '[' Type? ']'
     | '[' AssignExpression ']'
     | '[' AssignExpression '..' AssignExpression ']'
-    | '[' Type? ']'
+    // jflex doesn't support look ahead in the lexing process. This is a problem for situations such as [7..x], since this is lexed into '[' '7.' '.' ']'. This is not ideal todo
     | 'delegate' Parameters MemberFunctionAttributes?
     | 'function' Parameters FunctionAttributes?
 
@@ -387,51 +400,68 @@ Typeof ::=
     }
 
 TypeVector ::=
-    '__vector' '(' Type ')'{//todo add missing tokens
+    '__vector' '(' Type')'{//todo add missing tokens
     pin = 1
     }
 
-Expression ::=
+private Expression ::=
     CommaExpression
 
 CommaExpression ::=
-    AssignExpression (',' CommaExpression)?
+    AssignExpression (',' AssignExpression)*
 
 AssignExpression ::=
-   ConditionalExpression [ ( '='
-                              | '+='
-                              | '-='
-                              | '*='
-                              | '/='
-                              | '%='
-                              | '&='
-                              | '|='
-                              | '^='
-                              | '~='
-                              | '<<='
-                              | '>>='
-                              | '>>>='
-                              | '^^=') AssignExpression]{
-//                              recoverWhile = assign_recover
+   /*PostfixExpression
+   | PowExpression
+   | UnaryExpression
+   | MulExpression
+   | AddExpression
+   | ShiftExpression
+   | AndExpression
+   | XorExpression
+   | OrExpression
+   | AndAndExpression
+   | OrOrExpression
+   |*/
+   (ConditionalExpression [ ( '=' | '+=' | '-=' | '*=' | '/=' | '%=' | '&=' | '|=' | '^=' | '~=' | '<<=' | '>>=' | '>>>=' | '^^=') AssignExpression]){
+
                             }
-//private assign_recover ::= !(')' | ']' | '..' | ','| ':' | ';' | )
 
-ConditionalExpression ::=
-   OrOrExpression ['?' Expression ':' ConditionalExpression]
+private ConditionalExpression ::=
+   OrOrExpression_ [ConditionalExpression_]
 
-OrOrExpression ::= AndAndExpression [ '||' OrOrExpression]
+ConditionalExpression_ ::=//
+    '?' Expression ':' ConditionalExpression
 
-AndAndExpression ::=
-    ('&&')? ( OrExpression | CmpExpression ) [ AndAndExpression ]
+private OrOrExpression_ ::=
+    AndAndExpression [ OrOrExpression]
 
-OrExpression ::=
+OrOrExpression ::=
+    '||' OrOrExpression_
+
+//     OrExpression
+//        AndAndExpression && OrExpression
+//        CmpExpression
+//        AndAndExpression && CmpExpression//perhaps flip order
+//    ('&&')? ( OrExpression | CmpExpression ) [ AndAndExpression ]
+private AndAndExpression ::=
+    '&&'? (OrExpression | CmpExpression) [AndAndExpression]
+
+private OrExpression ::=
     XorExpression [OrExpression]
 
-XorExpression ::= AndExpression [ '^' XorExpression ]
+private XorExpression ::=
+    AndExpression [ XorExpression_ ]
 
-AndExpression ::= ShiftExpression [ '&' AndExpression ]
+XorExpression_ ::= '^' XorExpression
 
-CmpExpression ::=
+
+private AndExpression ::=
+    ShiftExpression [ AndExxpression_ ]
+
+AndExxpression_ ::= '&' AndExpression
+
+private CmpExpression ::=
     ShiftExpression
     | EqualExpression
     | IdentityExpression
@@ -444,39 +474,36 @@ EqualExpression ::=
      }
 
 IdentityExpression ::=
-     ('is'|'!is') ShiftExpression{
+     ('is'|'!is') (ShiftExpression | AssignExpression){
      pin = 1
      }
 
 RelExpression ::=
-    ('<'
-    | '<='
-    | '>'
-    | '>='
-    | '!<>='
-    | '!<>'
-    | '<>'
-    | '<>='
-    | '!>'
-    | '!>='
-    | '!<'
-    | '!<=') ShiftExpression{
+    ('<' | '<=' | '>' | '>=' | '!<>=' | '!<>' | '<>' | '<>=' | '!>' | '!>=' | '!<' | '!<=') ShiftExpression{
     pin = 1
     }
 
 InExpression ::=
-    ('in'| '!in') ShiftExpression{
+    ('in'| ('!''in')) ShiftExpression{
     pin = 1
     }
 
-ShiftExpression ::= AddExpression [('<<' | '>>' | '>>>') ShiftExpression]
+private ShiftExpression ::=
+    AddExpression [ShiftExpression_]
 
-AddExpression ::=
-    MulExpression [ ('+' | '-' | '~') AddExpression]
+ShiftExpression_ ::= ('<<' | '>>' | '>>>') ShiftExpression
 
-MulExpression ::= UnaryExpression [ ('*' | '/' | '%') MulExpression]
+private AddExpression ::=
+    MulExpression [ AddExpression_]
 
-UnaryExpression ::=
+AddExpression_ ::= ('+' | '-' | '~') AddExpression
+
+private MulExpression ::=
+    UnaryExpression [ MulExpression_ ]
+
+MulExpression_ ::= ('*' | '/' | '%') MulExpression
+
+private UnaryExpression ::=
      ('&'
     | '++'
     | '|'
@@ -495,22 +522,21 @@ UnaryExpression ::=
 
 NewExpression ::=
     'new' AllocatorArguments? Type
-    | NewExpressionWithArgs{
-        //pin(".*") = 1
-    }
+    | NewExpressionWithArgs
 
 NewExpressionWithArgs ::=
     'new' AllocatorArguments? Type '[' AssignExpression ']'
    | 'new' AllocatorArguments? Type ('(' ArgumentList? ')')?
-   | NewAnonClassExpression{
-    //pin = 1//todo
-   }
+   | NewAnonClassExpression
 
 AllocatorArguments ::=
     '(' ArgumentList? ')'
 
 ArgumentList ::=
-   AssignExpression [','  ArgumentList]
+    ArgumentListMember (','  ArgumentListMember)* ','?
+
+private ArgumentListMember ::=
+   AssignExpression
 
 NewAnonClassExpression ::=
     'new' AllocatorArguments? 'class' ClassArguments? SuperClass? Interfaces? AggregateBody{
@@ -522,7 +548,7 @@ ClassArguments ::=
 
 DeleteExpression ::=
     'delete' UnaryExpression{
-        pin = 1
+//        pin = 2
     }
 
 CastExpression ::=
@@ -531,7 +557,9 @@ CastExpression ::=
         //pin(".*") = 1
     }
 
-PowExpression ::= PostfixExpression ['^^' UnaryExpression PowExpression]
+private PowExpression ::=
+    PostfixExpression [PowExpression_]
+PowExpression_ ::= '^^' UnaryExpression PowExpression
 
 PostfixExpression ::=
     PrimaryExpression
@@ -555,10 +583,12 @@ SliceExpression ::=
     |  '[' MultipleAssign ']' [PostfixExpression]
 
 MultipleAssign ::=
- ((AssignExpression '..' AssignExpression) | AssignExpression) [',' MultipleAssign ]
+ ((( (AssignExpression '..')) AssignExpression) | AssignExpression) [',' MultipleAssign ]
+ // jflex doesn't support look ahead in the lexing process. This is a problem for situations such as [7..x], since this is lexed into '[' '7.' '.' ']'. The only solution I was able  to find was adding this in the parser. This is not ideal todo
 
 PrimaryExpression ::=
      ('.')? (TemplateInstance | Identifier)
+    | Type
     | 'this'
     | 'super'
     | 'null'
@@ -587,13 +617,13 @@ PrimaryExpression ::=
 StringLiterals ::= StringLiteral [StringLiterals]
 
 ArrayLiteral ::=
-    '[' ArgumentList? ']'
+    '[' ArgumentList? ','? ']'
 
 AssocArrayLiteral ::=
     '[' KeyValuePairs ']'
 
 KeyValuePairs ::=
-    KeyValuePair [(',')? KeyValuePairs]
+    KeyValuePair ((',') KeyValuePair)*
 
 KeyValuePair ::=
     AssignExpression ':' AssignExpression
@@ -613,7 +643,7 @@ ParameterMemberAttributes ::=
     Parameters MemberFunctionAttributes?
 
 FunctionLiteralBody ::=
-    BlockStatement |
+    Property* BlockStatement |
     FunctionContracts BodyStatement?
 
 Lambda ::=
@@ -629,7 +659,6 @@ AssertExpression ::=
 
 MixinExpression ::=
     'mixin' '(' ( AssignExpression) ')'{
-     pin = 2
      methods = [ getName ] // the getTemplate method should resolve the template which is being mixed in.
      implements = ["net.masterthought.dlanguage.psi.interfaces.Mixin"]
      }
@@ -640,14 +669,21 @@ ImportExpression ::=
     }
 
 TypeidExpression ::=
-    'typeid' '(' Type ')'
-    | 'typeid' '(' Expression ')'{
-    //pin(".*") = 1
+    TypeidExpressionType
+    | TypeidExpressionExpression
+
+private TypeidExpressionType ::=
+    'typeid' '(' Type ')'{
+        pin = 4//todo remove this
     }
 
-IsExpression ::= ('is' | '!is') IsExpressionSuffix{
-    pin = 2//todo decrease this pin to improve performance
-}
+private  TypeidExpressionExpression ::=
+    'typeid' '(' Expression ')'{
+        pin = 3
+    }
+
+
+IsExpression ::= ('is' | '!is') IsExpressionSuffix
 
 private IsExpressionSuffix ::=
      '(' Type ')'
@@ -662,7 +698,8 @@ private IsExpressionSuffix ::=
     | '(' Type Identifier '==' TypeSpecialization ',' TemplateParameterList ')'
 
 TypeSpecialization ::=
-    Type
+    TypeVector
+    | Type
     | 'struct'
     | 'union'
     | 'class'
@@ -686,6 +723,7 @@ TraitsExpression ::=
 
 TraitsKeyword ::=
     'isAbstractClass'
+    | 'isTemplate'
     | 'isArithmetic'
     | 'isAssociativeArray'
     | 'isFinalClass'
@@ -727,7 +765,7 @@ TraitsKeyword ::=
     | 'compiles'
 
 TraitsArguments ::=
-    TraitsArgument (',' TraitsArguments)?
+    TraitsArgument (',' TraitsArguments)*
 
 TraitsArgument ::=
     AssignExpression
@@ -745,7 +783,13 @@ SpecialKeyword ::=
 Statement ::=
     ';'
     | NonEmptyStatement
-    | BlockStatement
+    | BlockStatement{
+    recoverWhile = statement_recover
+    }
+
+private statement_recover ::=
+    !('else' | Statement | '}' | DeclDef | ModuleDeclaration | 'catch' | 'finally' | ':' | ','| 'foreach' | SHEBANG | <<eof>>)//idk why the 'foreach' is needed todo
+
 
 NonEmptyStatement ::=
     NonEmptyStatementNoCaseNoDefault
@@ -757,7 +801,7 @@ NonEmptyStatementNoCaseNoDefault ::=
     LabeledStatement
     | DeclarationStatement
     | Declaration
-    | ExpressionStatement
+    | BlockStatement // must be above expression statement
     | IfStatement
     | WhileStatement
     | DoStatement
@@ -782,6 +826,7 @@ NonEmptyStatementNoCaseNoDefault ::=
     | StaticAssert
     | TemplateMixin
     | ImportDeclaration
+    | ExpressionStatement
 
 ScopeStatement ::=
     NonEmptyStatement
@@ -800,7 +845,12 @@ BlockStatement ::=
  '{' StatementList? '}'
 
 StatementList ::=
-    Statement [StatementList]
+    Statement Statement*{
+        //recoverWhile= statement_list_recover
+    }
+
+//private statement_list_recover::=
+//    !('}'|Statement)
 
 ExpressionStatement ::=
     Expression ';'?
@@ -861,7 +911,8 @@ ForeachTypeList ::=
     ForeachType [',' ForeachTypeList]
 
 ForeachType ::=
-   ForeachTypeAttributes? Type? Identifier // this needs to be above for ForeachTypeAttributes? Type? Identifier
+   ForeachTypeAttribute Identifier
+   | ForeachTypeAttributes? Type? Identifier // this needs to be above for ForeachTypeAttributes? Type? Identifier
    | Type? ForeachTypeAttributes? Identifier
    | Identifier
 
@@ -944,32 +995,46 @@ GotoStatement ::=
     'goto' Identifier ';'
     | 'goto' 'default' ';'
     | 'goto' 'case' ';'
-    | 'goto' 'case' Expression ';'{
-    //pin(".*") = 1
-    }
+    | 'goto' 'case' Expression ';'
 
 WithStatement ::=
-    'with' '(' Expression ')' ScopeStatement
-    | 'with' '(' Symbol ')' ScopeStatement
-    | 'with' '(' TemplateInstance ')' ScopeStatement{
-    //pin(".*") = 1
+    WithStatementExpression
+    | WithStatementSymbol
+    | WithStatementTemplateInstance
+private WithStatementExpression ::=
+    'with' '(' Expression ')' ScopeStatement{
+        pin = 3
+    }
+private WithStatementSymbol ::=
+    'with' '(' Symbol ')' ScopeStatement{
+        pin = 3
+    }
+private WithStatementTemplateInstance ::=
+    'with' '(' TemplateInstance ')' ScopeStatement{
+        pin = 3
     }
 
 SynchronizedStatement ::=
-    'synchronized' ScopeStatement
-    | 'synchronized' '(' Expression ')' ScopeStatement{
-    //pin(".*") = 1
+    SynchronizedStatementWithExpression
+    | SynchronizedStatementWithoutExpression
+
+private SynchronizedStatementWithExpression ::=
+    'synchronized' '(' Expression ')' ScopeStatement{
+        pin = 2
     }
+private SynchronizedStatementWithoutExpression ::=
+    'synchronized' ScopeStatement{
+        pin = 2
+    }
+
 
 TryStatement ::=
     'try' ScopeStatement Catches
     | 'try' ScopeStatement Catches FinallyStatement
-    | 'try' ScopeStatement FinallyStatement{
-    //pin(".*") = 1
-    }
+    | 'try' ScopeStatement FinallyStatement
 
 Catches ::=
-     Catch [Catches]
+     Catch Catch*//todo simplify
      | LastCatch
 
 LastCatch ::=
@@ -996,12 +1061,21 @@ ThrowStatement ::=
     }
 
 ScopeGuardStatement ::=
-    'scope' '(' 'exit' ')' Statement
-    | 'scope' '(' 'success' ')' Statement
-    | 'scope' '(' 'failure' ')' Statement{
-    //pin(".*") = 1
+    'scope' (ScopeExit|ScopeFailure|ScopeSuccess){
+    pin = 1
     }
-
+private ScopeExit ::=
+    '(' 'exit' ')' Statement{
+        pin = 2
+    }
+private ScopeFailure ::=
+    '(' 'success' ')' Statement{
+        pin = 2
+    }
+private ScopeSuccess ::=
+    '(' 'failure' ')' Statement{
+        pin = 2
+    }
 PragmaStatement ::=
     Pragma Statement{
     pin = 1
@@ -1010,7 +1084,6 @@ PragmaStatement ::=
 MixinStatement ::=
     'mixin' '(' ( AssignExpression) ')' ';'{
      methods = [ getName] // the getTemplate method should resolve the template which is being mixed in.
-     pin = 2
      implements = ["net.masterthought.dlanguage.psi.interfaces.Mixin"]
      }
 
@@ -1035,6 +1108,7 @@ AsmInstruction ::=
     | 'dd' Operands
     | 'de' Operands
     | Opcode Operands?
+    | Opcode Operands? AsmBrExp
 
 Operands ::=
     Operand [',' Operands]
@@ -1131,7 +1205,7 @@ AsmMulExp ::=
    AsmBrExp [ ('*' | '/' | '%') AsmMulExp]
 
 AsmBrExp ::=
-       AsmUnaExp ['[' AsmExp ']']
+       AsmUnaExp? ['[' AsmExp ']']
 
 AsmUnaExp ::=
     AsmTypePrefix AsmExp
@@ -1790,7 +1864,8 @@ AutoDeclarationY ::=
     }
 
 VarDeclarations ::=
-    StorageClasses? BasicType? Declarators ';'
+    StorageClasses BasicType Declarators ';'
+    | StorageClasses? BasicType? Declarators ';'
     | AutoDeclaration
 
 Declarators ::=
@@ -1834,7 +1909,7 @@ AltDeclaratorX ::=
     | AltDeclarator
 
 AltDeclaratorSuffixes ::=
-    AltDeclaratorSuffix [AltDeclaratorSuffixes]
+    AltDeclaratorSuffix AltDeclaratorSuffix*
 
 AltDeclaratorSuffix ::=
     '[' (AssignExpression | Type)? ']'
@@ -1843,7 +1918,7 @@ AltFuncDeclaratorSuffix ::=
     Parameters MemberFunctionAttributes?
 
 StorageClasses ::=
-    StorageClass [StorageClasses]
+    StorageClass StorageClass*
 
 StorageClass ::=
     LinkageAttribute
@@ -1885,7 +1960,7 @@ ArrayInitializer ::=
 
 
 ArrayMemberInitializations ::=
-    ArrayMemberInitialization [(',')? ArrayMemberInitializations]
+    ArrayMemberInitialization (',' ArrayMemberInitialization)*
 
 ArrayMemberInitialization ::=
     NonVoidInitializer [':' NonVoidInitializer]
@@ -1894,7 +1969,7 @@ StructInitializer ::=
     '{' StructMemberInitializers? ','? '}'//extra comma necessary for extra comas which are allowed by dlang
 
 StructMemberInitializers ::=
-    StructMemberInitializer (',' StructMemberInitializers)?
+    StructMemberInitializer (',' StructMemberInitializer)*
 
 StructMemberInitializer ::=
  NonVoidInitializer [':' NonVoidInitializer]
@@ -1923,16 +1998,18 @@ Parameters ::=
     '(' ParameterList? ')'
 
 ParameterList ::=
-    Parameter (',' ParameterList)?
+    Parameter (',' Parameter)* ','? '...'?
     | '...'
 
 Parameter ::=
        InOut? BasicType Declarator (('...' | '=') AssignExpression?)?
+       | InOut? Type '=' AssignExpression
+       | InOut? 'alias' Identifier '=' AssignExpression
        | InOut? Type ('...')?//why is this '...'? necesary. surely Parameterlist covers this
 
 
 InOut ::=
-    InOutX [InOut]
+    InOutX InOutX*
 
 InOutX ::=
     'auto'
@@ -1946,7 +2023,7 @@ InOutX ::=
     | 'return ref'
 
 FunctionAttributes ::=
-    FunctionAttribute [FunctionAttributes]
+    FunctionAttribute FunctionAttribute*
 
 FunctionAttribute ::=
     'nothrow'
@@ -1954,7 +2031,7 @@ FunctionAttribute ::=
     | Property
 
 MemberFunctionAttributes ::=
-  MemberFunctionAttribute [MemberFunctionAttributes]
+  MemberFunctionAttribute MemberFunctionAttribute*
 
 MemberFunctionAttribute ::=
     'const'
@@ -2028,14 +2105,20 @@ Allocator ::=
 
 Deallocator ::=
     'delete' Parameters ';'
-    | 'delete' Parameters FunctionBody{
-    //pin(".*") = 1
-    }
+    | 'delete' Parameters FunctionBody
 
 Invariant ::=
-    'invariant' '(' ')' BlockStatement
-    | 'invariant' BlockStatement{
-    //pin(".*") = 1
+    InvariantWithParen
+    | InvariantWithoutParen
+
+private InvariantWithoutParen ::=
+    'invariant' BlockStatement{
+        pin = 2
+    }
+
+private InvariantWithParen ::=
+    'invariant' '(' ')' BlockStatement{
+    pin = 2
     }
 
 UnitTesting ::=
@@ -2049,7 +2132,7 @@ UnitTesting ::=
 StaticConstructor ::=
     'static' 'this' '(' ')' ';'
     | 'static' 'this' '(' ')' FunctionBody{
-       //pin(".*") = 1
+       pin(".*") = 4
        methods=[getName getFullName getNameIdentifier getReference setName getPresentation isSomeVisibility ]
        implements = ["net.masterthought.dlanguage.psi.interfaces.containers.StatementContainer" "net.masterthought.dlanguage.psi.interfaces.DNamedElement" "net.masterthought.dlanguage.psi.interfaces.HasVisibility" "net.masterthought.dlanguage.psi.interfaces.Declaration" ]
        stubClass="net.masterthought.dlanguage.stubs.DLanguageStaticConstructorStub"
@@ -2058,7 +2141,7 @@ StaticConstructor ::=
 StaticDestructor ::=
     'static' '~' 'this' '(' ')' MemberFunctionAttributes? ';'
     | 'static' '~' 'this' '(' ')' MemberFunctionAttributes? FunctionBody{
-       //pin(".*") = 1
+       pin(".*") = 5
        methods=[getName getFullName getNameIdentifier getReference setName getPresentation isSomeVisibility]
        implements = ["net.masterthought.dlanguage.psi.interfaces.containers.StatementContainer" "net.masterthought.dlanguage.psi.interfaces.DNamedElement" "net.masterthought.dlanguage.psi.interfaces.HasVisibility" "net.masterthought.dlanguage.psi.interfaces.Declaration"]
        stubClass="net.masterthought.dlanguage.stubs.DLanguageStaticDestructorStub"
@@ -2067,15 +2150,16 @@ StaticDestructor ::=
 SharedStaticConstructor ::=
     'shared' 'static' 'this' '(' ')' ';'
     | 'shared' 'static' 'this' '(' ')' FunctionBody{
-      //pin(".*") = 1
+    pin (".*") = 5
       methods=[getName getFullName getNameIdentifier getReference setName getPresentation isSomeVisibility ]
       implements = ["net.masterthought.dlanguage.psi.interfaces.containers.StatementContainer" "net.masterthought.dlanguage.psi.interfaces.DNamedElement" "net.masterthought.dlanguage.psi.interfaces.HasVisibility" "net.masterthought.dlanguage.psi.interfaces.Declaration" ]
       stubClass="net.masterthought.dlanguage.stubs.DLanguageSharedStaticConstructorStub"
   }
-SharedStaticDestructor ::=
+
+  SharedStaticDestructor ::=
     'shared' 'static' '~' 'this' '(' ')' MemberFunctionAttributes? ';'
     | 'shared' 'static' '~' 'this' '(' ')' MemberFunctionAttributes? FunctionBody{
-       //pin(".*") = 1
+       pin(".*") = 6
        methods=[getName getFullName getNameIdentifier getReference setName getPresentation isSomeVisibility]
        implements = ["net.masterthought.dlanguage.psi.interfaces.containers.StatementContainer" "net.masterthought.dlanguage.psi.interfaces.DNamedElement" "net.masterthought.dlanguage.psi.interfaces.HasVisibility" "net.masterthought.dlanguage.psi.interfaces.Declaration"]
        stubClass="net.masterthought.dlanguage.stubs.DLanguageSharedStaticDestructorStub"
@@ -2208,7 +2292,7 @@ EnumBody ::=
     '{' EnumMembers ','? '}'
 
 EnumMembers ::=
-    EnumMember [',' EnumMembers]
+    EnumMember (',' EnumMember)*
 
 EnumMember ::= Identifier ('=' AssignExpression)? | Type Identifier '=' AssignExpression
 
@@ -2230,7 +2314,7 @@ TemplateParameters ::=
     '(' TemplateParameterList? ')'
 
 TemplateParameterList ::=
-    TemplateParameter [',' TemplateParameterList]
+    TemplateParameter (',' TemplateParameter)*
 
 Constraint ::=
     'if' '(' Expression ')'{
@@ -2241,24 +2325,37 @@ TemplateInstance ::=
     Identifier? TemplateArguments
 
 TemplateArguments ::=
-     '!' ('(' TemplateArgumentList? ')') | '!' TemplateSingleArgument
+     TemplateArgumentsWithParen
+     | TemplateArgumentsWithoutParen
+
+private TemplateArgumentsWithParen ::=
+    '!' '(' TemplateArgumentList? ')' {
+        pin = 2
+    }
+private TemplateArgumentsWithoutParen ::=
+    '!' TemplateSingleArgument{
+        pin = 1
+    }
+
+
 
 TemplateArgumentList ::=
     TemplateArgument (',' TemplateArgumentList?)?
 
 TemplateArgument ::=
-    Type
+    Lambda //must be above assign expression
     | AssignExpression
+    | Type //this branch should be deprecated  since anything matched by Type is in theory matched by assignexpression
     | Symbol
 
 Symbol ::=
     ('.')? SymbolTail
 
 SymbolTail ::=
-    (Identifier | TemplateInstance) ['.' SymbolTail]
+    (Identifier | TemplateInstance) ('.' (Identifier | TemplateInstance))*
 
 TemplateSingleArgument ::=
-    Identifier
+    IdentifierList
     | BasicTypeX
     | CHARACTER_LITERAL
     | StringLiteral
@@ -2269,6 +2366,7 @@ TemplateSingleArgument ::=
     | 'null'
     | 'this'
     | SpecialKeyword
+    | AssignExpression
 
 
  TemplateParameter ::=
@@ -2306,7 +2404,7 @@ MixinTemplateName ::=
     Typeof? '.'? QualifiedIdentifierList
 
 QualifiedIdentifierList ::=
-    (Identifier | TemplateInstance) [ '.' QualifiedIdentifierList ]
+    (Identifier | TemplateInstance) ( '.' (Identifier | TemplateInstance) )*
 
 //Attribute
 AttributeSpecifier ::=
@@ -2343,7 +2441,7 @@ DeclarationBlock ::=
 LinkageAttribute ::=
     'extern' '(' LinkageType ')'
     | 'extern' '(' Identifier '++' (',' IdentifierList)? ')'{
-    //pin(".*") = 1
+//    pin(".*") = 2
     }
 
 LinkageType ::=
@@ -2367,8 +2465,8 @@ DeprecatedAttribute ::=
 
 ProtectionAttribute ::=
      'private'
-    | 'package'
     | 'package' '(' IdentifierList ')'
+    | 'package'
     | 'protected'
     | 'public'
     | 'export'
@@ -2378,9 +2476,7 @@ Property ::=
     | UserDefinedAttribute
 
 private BuiltInProperty ::=
-    '@' PropertyIdentifier{
-    pin = 2
-    }
+    '@' PropertyIdentifier
 
 PropertyIdentifier ::=
      'property'
@@ -2400,13 +2496,9 @@ private UserDefinedAttributeArgumentOnly ::=
     pin = 2
     }
 private UserDefinedAttributeWithIdentifier ::=
-    '@' Identifier ('(' ArgumentList? ')')?{
-        pin = 2
-    }
+    '@' Identifier ('(' ArgumentList? ')')?
 private UserDefinedAttributeWithTemplateInstance ::=
-    '@' TemplateInstance ('(' ArgumentList? ')')?{
-        pin = 2
-    }
+    '@' TemplateInstance ('(' ArgumentList? ')')?
 
 Pragma ::=
     'pragma' '(' Identifier (',' ArgumentList)? ')'{
@@ -2421,7 +2513,7 @@ ConditionalDeclaration ::=
     | Condition DeclarationBlock 'else' ':' DeclDefs?
 
 ConditionalStatement ::=
-    Condition Statement ('else' (Statement | DeclarationBlock))?
+    Condition (Statement | BlockStatement | DeclarationBlock) ('else' (Statement | DeclarationBlock))?
 
 Condition ::=
     VersionCondition

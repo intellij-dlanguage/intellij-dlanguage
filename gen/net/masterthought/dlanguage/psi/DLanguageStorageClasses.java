@@ -8,9 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageStorageClasses extends PsiElement {
 
   @NotNull
-  DLanguageStorageClass getStorageClass();
-
-  @Nullable
-  DLanguageStorageClasses getStorageClasses();
+  List<DLanguageStorageClass> getStorageClassList();
 
 }

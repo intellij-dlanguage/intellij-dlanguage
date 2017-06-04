@@ -46,6 +46,12 @@ public class DLanguageParameterImpl extends ASTWrapperPsiElement implements DLan
 
   @Override
   @Nullable
+  public DLanguageIdentifier getIdentifier() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
+  }
+
+  @Override
+  @Nullable
   public DLanguageInOut getInOut() {
     return PsiTreeUtil.getChildOfType(this, DLanguageInOut.class);
   }
@@ -54,6 +60,12 @@ public class DLanguageParameterImpl extends ASTWrapperPsiElement implements DLan
   @Nullable
   public DLanguageType getType() {
     return PsiTreeUtil.getChildOfType(this, DLanguageType.class);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getKwAlias() {
+    return findChildByType(KW_ALIAS);
   }
 
   @Override

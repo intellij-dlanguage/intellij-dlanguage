@@ -16,4 +16,7 @@ public interface DLanguageFunctionLiteralBody extends PsiElement {
   @Nullable
   DLanguageFunctionContracts getFunctionContracts();
 
+  @NotNull
+  List<DLanguageProperty> getPropertyList();
+
 }

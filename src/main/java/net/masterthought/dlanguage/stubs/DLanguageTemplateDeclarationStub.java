@@ -4,7 +4,6 @@ import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.stubs.NamedStubBase;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.util.io.StringRef;
-import net.masterthought.dlanguage.psi.DLanguageClassDeclaration;
 import net.masterthought.dlanguage.psi.DLanguageTemplateDeclaration;
 import org.jetbrains.annotations.NotNull;
 

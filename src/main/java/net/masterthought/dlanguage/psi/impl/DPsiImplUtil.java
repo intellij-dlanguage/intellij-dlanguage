@@ -16,6 +16,7 @@ import net.masterthought.dlanguage.psi.references.DReference;
 import net.masterthought.dlanguage.stubs.*;
 import net.masterthought.dlanguage.utils.DResolveUtil;
 import net.masterthought.dlanguage.utils.DUtil;
+import org.apache.log4j.Logger;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -25,7 +26,6 @@ import java.util.*;
 
 import static com.intellij.psi.util.PsiTreeUtil.*;
 import static net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
-import static net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility.public_;
 import static net.masterthought.dlanguage.utils.DUtil.*;
 
 
@@ -836,6 +836,11 @@ public class DPsiImplUtil {
         DLanguageModuleDeclarationStub stub = o.getStub();
         if (stub != null) return StringUtil.notNullize(stub.getName());
 
+        if (o.getModuleFullyQualifiedName() == null) {
+            Logger.getLogger(DPsiImplUtil.class).debug("this had no name: " + o.getText());
+            return "";
+        }
+
         if (o.getModuleFullyQualifiedName().getText() != null) {
             return o.getModuleFullyQualifiedName().getText();
         } else {
@@ -902,6 +907,9 @@ public class DPsiImplUtil {
     public static String getName(@NotNull DLanguageInterfaceDeclaration o) {
         DLanguageInterfaceDeclarationStub stub = o.getStub();
         if (stub != null) return StringUtil.notNullize(stub.getName());
+        if (o.getIdentifier() == null) {
+            return "";
+        }
         return o.getIdentifier().getText();
     }
 
@@ -1331,7 +1339,11 @@ public class DPsiImplUtil {
         final DLanguageStorageClasses storageClasses = ((DLanguageAutoDeclaration) o.getParent().getParent()).getStorageClasses();
         if (storageClasses == null)
             return false;
-        return storageClasses.getStorageClass().getKwAuto() != null;
+        for (DLanguageStorageClass dLanguageStorageClass : storageClasses.getStorageClassList()) {
+            if (dLanguageStorageClass.getKwAuto() != null)
+                return true;
+        }
+        return false;
     }
 
     public static Type getVariableDeclarationType(DLanguageAutoDeclarationY o) {
@@ -1703,7 +1715,7 @@ public class DPsiImplUtil {
     public static boolean isSomeVisibility(DLanguageAliasDeclaration o, Visibility visibility) {
         final DLanguageAttributeSpecifier attribute = (DLanguageAttributeSpecifier) o.getParent().getParent().getParent();
         if (attribute.getAttribute().getProtectionAttribute() != null) {
-            if (attribute.getAttribute().getProtectionAttribute().getText().equals(visibility))
+            if (attribute.getAttribute().getProtectionAttribute().getText().equals(visibility))//todo iterate
                 return true;
         }
         return isSomeVisibility(o, visibility, AliasContainer.class);
@@ -1723,38 +1735,55 @@ public class DPsiImplUtil {
         return visibility == protectionToVisibilty("public");
     }
 
-    private static boolean isSomeVisibility(PsiElement psiElement, Visibility visibility, Class<? extends Container> containerType) {
-        PsiElement parent = psiElement.getParent();
-        while (true) {
-            //default to public
-            if (containerType.isInstance(parent)) {
-                return visibility == public_;
-            }
-            // check that named element isn't explicitly marked some visibilty, eg. private gh();
-            if (parent instanceof DLanguageDeclDef && ((DLanguageDeclDef) parent).getAttributeSpecifier() != null) {
-                final DLanguageAttributeSpecifier attribute = ((DLanguageDeclDef) parent).getAttributeSpecifier();
-                if (attribute.getAttribute().getProtectionAttribute() != null) {
-                    try {
-                        return protectionToVisibilty(attribute.getAttribute().getProtectionAttribute()) == (visibility);
-                    } catch (IllegalArgumentException e) {
-                        return false;
-                    }
-                }
-            }
-            //check for public: or private: or protected:
-            if (parent instanceof DLanguageDeclDefs && ((DLanguageDeclDefs) parent).getDeclDef().getAttributeSpecifier() != null) {
-                final DLanguageAttributeSpecifier attribute = ((DLanguageDeclDefs) parent).getDeclDef().getAttributeSpecifier();
-                if (attribute.getAttribute().getProtectionAttribute() != null && attribute.getOpColon() != null) {
-                    try {
-                        return protectionToVisibilty(attribute.getAttribute().getProtectionAttribute()) == (visibility);
-                    } catch (IllegalArgumentException e) {
-                        return false;
-                    }
-                }
-            }
-            parent = parent.getParent();
-        }
+    public static boolean isSomeVisibility(DNamedElement psiElement, Visibility visibility, Class<? extends Container> containerType) {
+        //todo fix
+        return false;
     }
+//        PsiElement parent = psiElement.getParent();
+//        while (true) {
+//            //default to public
+//            if (containerType.isInstance(parent)) {
+//                return visibility == public_;
+//            }
+//            // check that named element isn't explicitly marked some visibilty, eg. private gh();
+//            if (parent instanceof DLanguageDeclDef && ((DLanguageDeclDef) parent).getAttributeSpecifier() != null) {
+//                final DLanguageAttributeSpecifier attribute = ((DLanguageDeclDef) parent).getAttributeSpecifier();
+//                if (attribute.getAttribute().getProtectionAttribute() != null) {
+//                    try {
+//                        return protectionToVisibilty(attribute.getAttribute().getProtectionAttribute()) == (visibility);
+//                    } catch (IllegalArgumentException e) {
+//                        return false;//todo
+//                    }
+//                }
+//            }
+//            if (parent instanceof DLanguageDeclDef && ((DLanguageDeclDefs) parent).getDeclDef().getAttributeSpecifier() != null) {
+//                final DLanguageAttributeSpecifier attribute = ((DLanguageDeclDefs) parent).getDeclDef().getAttributeSpecifier();
+//                if (attribute.getAttribute().getProtectionAttribute() != null && attribute.getOpColon() != null) {
+//                    try {
+//                        return protectionToVisibilty(attribute.getAttribute().getProtectionAttribute()) == (visibility);
+//                    } catch (IllegalArgumentException e) {
+//                        return false;
+//                    }
+//                }
+//            }
+//            if(parent instanceof DLanguageDeclDef)
+//                parent = parent.getPrevSibling();
+//            else
+//                parent = parent.getParent();
+////            //check for public: or private: or protected:
+////            if (parent instanceof DLanguageDeclDefs && ((DLanguageDeclDefs) parent).getDeclDef().getAttributeSpecifier() != null) {
+////                final DLanguageAttributeSpecifier attribute = ((DLanguageDeclDefs) parent).getDeclDef().getAttributeSpecifier();
+////                if (attribute.getAttribute().getProtectionAttribute() != null && attribute.getOpColon() != null) {
+////                    try {
+////                        return protectionToVisibilty(attribute.getAttribute().getProtectionAttribute()) == (visibility);
+////                    } catch (IllegalArgumentException e) {
+////                        return false;
+////                    }
+////                }
+////            }
+////            parent = parent.getParent();
+////        }
+//    }
 
     public static boolean isSomeVisibility(DLanguageTemplateDeclaration o, Visibility visibility) {
         return isSomeVisibility(o, visibility, TemplateContainer.class);

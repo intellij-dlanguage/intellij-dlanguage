@@ -8,7 +8,7 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageDoStatement extends PsiElement {
 
   @Nullable
-  DLanguageExpression getExpression();
+  DLanguageCommaExpression getCommaExpression();
 
   @Nullable
   DLanguageScopeStatement getScopeStatement();

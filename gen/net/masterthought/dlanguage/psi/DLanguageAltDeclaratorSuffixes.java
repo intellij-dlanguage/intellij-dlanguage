@@ -8,9 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageAltDeclaratorSuffixes extends PsiElement {
 
   @NotNull
-  DLanguageAltDeclaratorSuffix getAltDeclaratorSuffix();
-
-  @Nullable
-  DLanguageAltDeclaratorSuffixes getAltDeclaratorSuffixes();
+  List<DLanguageAltDeclaratorSuffix> getAltDeclaratorSuffixList();
 
 }
