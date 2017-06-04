@@ -17,6 +17,7 @@ import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.Key;
 import org.jetbrains.annotations.Nullable;
 
+import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 import java.io.File;
@@ -196,7 +197,7 @@ public class DubConfigurationParser {
             } else {
                 errors.forEach(LOG::warn);
                 LOG.warn(String.format("%s exited with %s", dubCommand, exitCode));
-                Messages.showErrorDialog(this.project, String.format("%s exited with %s", dubCommand, exitCode), "Dub Import");
+                SwingUtilities.invokeLater(() -> Messages.showErrorDialog(project, String.format("%s exited with %s", dubCommand, exitCode), "Dub Import"));
             }
         } catch (ExecutionException | JsonSyntaxException e) {
             LOG.error("Unable to parse dub configuration", e);
