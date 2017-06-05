@@ -43,8 +43,10 @@ public class DubConfigurationParser {
     public DubConfigurationParser(Project project, String dubBinaryPath) {
         this.project = project;
         this.dubBinaryPath = dubBinaryPath;
-        parseDubConfiguration()
-            .ifPresent(this::parseDubDescription);
+
+        if(canUseDub()) {
+            parseDubConfiguration().ifPresent(this::parseDubDescription);
+        }
     }
 
     public Optional<DubPackage> getDubPackage() {
