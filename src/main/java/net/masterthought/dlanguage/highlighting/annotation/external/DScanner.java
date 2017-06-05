@@ -6,76 +6,83 @@ import com.intellij.execution.configurations.ParametersList;
 import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.execution.process.ProcessAdapter;
 import com.intellij.execution.process.ProcessEvent;
+import com.intellij.execution.process.ProcessOutputTypes;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
-import com.intellij.util.containers.ContainerUtil;
 import net.masterthought.dlanguage.highlighting.annotation.DAnnotationHolder;
 import net.masterthought.dlanguage.highlighting.annotation.DProblem;
 import net.masterthought.dlanguage.highlighting.annotation.Problems;
 import net.masterthought.dlanguage.settings.ToolKey;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DScanner {
 
-    public Problems checkFileSyntax(@NotNull PsiFile file) {
+    private static final Logger LOG = Logger.getInstance(DScanner.class);
+
+    Problems checkFileSyntax(@NotNull PsiFile file) {
         final String dscannerPath = ToolKey.DSCANNER_KEY.getPath(file.getProject());
         if (dscannerPath == null) return new Problems();
 
-        String result = processFile(file, dscannerPath);
-        return findProblems(result, file);
+        final Problems problems = new Problems();
+        problems.addAllNotNull(processFile(file, dscannerPath));
+        return problems;
     }
 
-    private String processFile(PsiFile file, String dscannerPath) {
+    private List<Problem> processFile(final PsiFile file, final String dscannerPath) {
         final String filePath = file.getVirtualFile().getCanonicalPath();
         final String workingDirectory = file.getProject().getBasePath();
 
-        GeneralCommandLine commandLine = new GeneralCommandLine();
-        commandLine.setWorkDirectory(workingDirectory);
-        commandLine.setExePath(dscannerPath);
-        ParametersList parametersList = commandLine.getParametersList();
-        parametersList.addParametersString("-S");
-        parametersList.addParametersString(filePath);
-        final StringBuilder builder = new StringBuilder();
+        final GeneralCommandLine cmd = new GeneralCommandLine();
+        cmd.setWorkDirectory(workingDirectory);
+        cmd.setExePath(dscannerPath);
+
+        final ParametersList args = cmd.getParametersList();
+        args.addParametersString("-S");
+        args.addParametersString(filePath);
+
+        final List<Problem> problems = new ArrayList<>();
+
         try {
-            final OSProcessHandler process = new OSProcessHandler(commandLine.createProcess(), commandLine.getCommandLineString());
+            final OSProcessHandler process = new OSProcessHandler(cmd.createProcess(), cmd.getCommandLineString());
             process.addProcessListener(new ProcessAdapter() {
                 @Override
                 public void onTextAvailable(ProcessEvent event, Key outputType) {
-                    builder.append(event.getText());
+                    // we don't care about "system" or "stderr"
+                    if(ProcessOutputTypes.STDOUT.equals(outputType)) {
+                        parseProblem(event.getText(), file)
+                            .ifPresent(problems::add);
+                    } else if(ProcessOutputTypes.STDERR.equals(outputType)) {
+                        LOG.error(event.getText());
+                    }
                 }
             });
 
             process.startNotify();
             process.waitFor();
 
+            final Integer exitCode = process.getExitCode(); // 0 or 1 depending on whether DScanner found problems
 
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        return builder.toString();
-    }
-
-
-    @NotNull
-    public static Problems findProblems(String stdout, PsiFile file) {
-        final List<String> lints = StringUtil.split(stdout, "\n");
-        Problems problems = new Problems();
-        for (String lint : lints) {
-            ContainerUtil.addIfNotNull(problems, parseProblem(lint, file));
+            if(Integer.valueOf(1).equals(exitCode)) {
+                LOG.debug("DScanner found lint problems");
+            }
+        } catch (final ExecutionException e) {
+            LOG.error("There was a problem running DScanner", e);
         }
         return problems;
     }
 
-    public static int getOffsetStart(final PsiFile file, int startLine, int startColumn) {
+    private static int getOffsetStart(final PsiFile file, int startLine, int startColumn) {
         Document document = PsiDocumentManager.getInstance(file.getProject()).getDocument(file);
         int line = getValidLineNumber(startLine, document);
         int offset = StringUtil.lineColToOffset(file.getText(), line, startColumn - 1);
@@ -110,13 +117,13 @@ public class DScanner {
         return line;
     }
 
-    public static int getOffsetEndFallback(final PsiFile file, int line) {
+    private static int getOffsetEndFallback(final PsiFile file, int line) {
         Document document = PsiDocumentManager.getInstance(file.getProject()).getDocument(file);
         line = getValidLineNumber(line, document);
         return getLineEndOffset(document, line);
     }
 
-    public static int getOffsetEnd(PsiFile file, int offsetStart, int line) {
+    private static int getOffsetEnd(PsiFile file, int offsetStart, int line) {
         try {
             String fileText = file.getText();
             int width = 0;
@@ -140,34 +147,29 @@ public class DScanner {
     }
 
     // hello.d(1:7)[error]: Expected identifier instead of ;
-    @Nullable
-    public static Problem parseProblem(String lint, PsiFile file) {
-        Pattern p = Pattern.compile("\\w+\\.d\\((\\d+):(\\d+)\\)\\[(\\w+)\\]:(.+)");
-        Matcher m = p.matcher(lint);
+    private Optional<Problem> parseProblem(String lint, PsiFile file) {
+        final Pattern p = Pattern.compile("\\w+\\.d\\((\\d+):(\\d+)\\)\\[(\\w+)\\]:(.+)");
+        final Matcher m = p.matcher(lint);
 
-        String message = "";
-        int line = 0;
-        int column = 0;
-        String severity = "";
+        if (m.find()) {
+            final int line = Integer.valueOf(m.group(1));
+            final int column = Integer.valueOf(m.group(2));
+            final TextRange range = calculateTextRange(file, line, column);
+            final String severity = m.group(3);
+            final String message = StringUtil.trim(m.group(4));
 
-        while (m.find()) {
-            line = Integer.valueOf(m.group(1));
-            column = Integer.valueOf(m.group(2));
-            severity = m.group(3);
-            message = m.group(4);
+            final Problem problem = new Problem(range, message, severity);
+            return Optional.of(problem);
         }
-
-        TextRange range = calculateTextRange(file, line, column);
-
-        return new Problem(range, message, severity);
+        return Optional.empty();
     }
 
     public static class Problem extends DProblem {
-        public String severity;
-        public TextRange range;
-        public String message;
+        private final String severity;
+        private final TextRange range;
+        private final String message;
 
-        public Problem(TextRange range, String message, String severity) {
+        Problem(final TextRange range, final String message, final String severity) {
             this.range = range;
             this.severity = severity;
             this.message = message;
@@ -175,13 +177,23 @@ public class DScanner {
 
         @Override
         public void createAnnotations(@NotNull PsiFile file, @NotNull DAnnotationHolder holder) {
-            if (severity.equals("error")) {
+            if ("error".equals(severity)) {
                 holder.createErrorAnnotation(range, message);
             } else if (message.contains("undocumented")) {
                 holder.createInfoAnnotation(range, message);
             } else {
                 holder.createWarningAnnotation(range, message);
             }
+        }
+
+        @Override
+        public String toString() {
+            final StringBuilder sb = new StringBuilder("[");
+            sb.append(severity).append("] ")
+                .append(range)
+                .append(" ")
+                .append(message);
+            return sb.toString();
         }
     }
 
