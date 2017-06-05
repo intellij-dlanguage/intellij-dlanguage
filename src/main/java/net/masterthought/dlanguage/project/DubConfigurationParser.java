@@ -15,6 +15,8 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.Key;
+import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -49,6 +51,16 @@ public class DubConfigurationParser {
         return packages.stream()
             .filter(DubPackage::isRootPackage)
             .findFirst();
+    }
+
+    public boolean canUseDub() {
+        final boolean dubPathValid = StringUtil.isNotEmpty(this.dubBinaryPath) && StringUtil.trimExtensions(dubBinaryPath).endsWith("dub");
+
+        final VirtualFile baseDir = project.getBaseDir();
+
+        return dubPathValid && Arrays.stream(baseDir.getChildren())
+            .filter(f -> !f.isDirectory())
+            .anyMatch(file -> "dub.json".equalsIgnoreCase(file.getName()) || "dub.sdl".equalsIgnoreCase(file.getName()));
     }
 
     /**

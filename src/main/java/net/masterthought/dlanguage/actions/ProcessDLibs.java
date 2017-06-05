@@ -30,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.util.Collection;
+import java.util.List;
 
 public class ProcessDLibs extends AnAction implements DumbAware {
     private static final Logger LOG = Logger.getInstance(ProcessDLibs.class);
@@ -100,10 +101,15 @@ public class ProcessDLibs extends AnAction implements DumbAware {
             return;
         }
 
-        final DubConfigurationParser dubConfig = new DubConfigurationParser(project, dubPath);
-        for(final DubPackage pkg : dubConfig.getDubPackageDependencies()){
-            final String fullName = pkg.getName() + "-" + pkg.getVersion();
-            createLibraryDependency(module, project, fullName, pkg.getPath());
+        final DubConfigurationParser dubParser = new DubConfigurationParser(project, dubPath);
+        if(dubParser.canUseDub()) {
+            final List<DubPackage> dependencies = dubParser.getDubPackageDependencies();
+            for(final DubPackage pkg : dependencies){
+                final String fullName = pkg.getName() + "-" + pkg.getVersion();
+                createLibraryDependency(module, project, fullName, pkg.getPath());
+            }
+        } else {
+            LOG.info("not possible to run 'dub describe'");
         }
 
         Notifications.Bus.notify(
