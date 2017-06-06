@@ -7,6 +7,7 @@ import com.intellij.execution.impl.RunManagerImpl;
 import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.execution.process.ProcessAdapter;
 import com.intellij.execution.process.ProcessEvent;
+import com.intellij.execution.process.ProcessOutputTypes;
 import com.intellij.openapi.extensions.Extensions;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.Project;
@@ -24,15 +25,19 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class DLanguageDubModuleBuilder extends DLanguageModuleBuilder {
 
     private static final String RUN_DUB_CONFIG_NAME = "Run DUB";
 
     private List<Pair<String, String>> sourcePaths;
-    private List<Pair<String, String>> dubInitOptions;
+    private Map<String, String> dubOptions = new HashMap<>();
     private String dubBinary;
 
     public DLanguageDubModuleBuilder() {
@@ -68,7 +73,7 @@ public class DLanguageDubModuleBuilder extends DLanguageModuleBuilder {
     @Override
     public List<Pair<String, String>> getSourcePaths() {
         if (sourcePaths == null) {
-            final List<Pair<String, String>> paths = new ArrayList<Pair<String, String>>();
+            final List<Pair<String, String>> paths = new ArrayList<>();
             @NonNls final String path = getContentEntryPath() + File.separator + "source";
             try {
                 createDub(getContentEntryPath());
@@ -81,54 +86,40 @@ public class DLanguageDubModuleBuilder extends DLanguageModuleBuilder {
         return sourcePaths;
     }
 
-    public void setDubInitOptions(List<Pair<String, String>> options) {
-        this.dubInitOptions = options;
+    public void setDubOptions(final Map<String, String> options) {
+        this.dubOptions = options;
     }
 
-    public List<Pair<String, String>> getDubInitOptions() {
-        return dubInitOptions;
-    }
-
-    private void createDub(String workingDirectory) {
-
-        List<Pair<String, String>> dubOptions = getDubInitOptions();
-        String dubFormat = "json";
-        String dubType = "minimal";
-        String dubParams = "";
-        for (Pair<String, String> pair : dubOptions) {
-            if (pair.getFirst().equals("dubFormat")) {
-                dubFormat = pair.getSecond();
-            } else if (pair.getFirst().equals("dubType")) {
-                dubType = pair.getSecond();
-            } else if (pair.getFirst().equals("dubParams")) {
-                dubParams = pair.getSecond();
-            }
-        }
-
+    private void createDub(final String workingDirectory) {
         final GeneralCommandLine commandLine = new GeneralCommandLine();
         commandLine.setWorkDirectory(workingDirectory);
         commandLine.setExePath(this.dubBinary);
-        ParametersList parametersList = commandLine.getParametersList();
+        final ParametersList parametersList = commandLine.getParametersList();
         parametersList.addParametersString("init");
         parametersList.addParametersString("-n");
 
-        if (dubParams.isEmpty()) {
+        if (dubOptions.getOrDefault("dubParams", "").isEmpty()) {
             parametersList.addParametersString("--format");
-            parametersList.addParametersString(dubFormat);
+            parametersList.addParametersString(dubOptions.getOrDefault("dubFormat", "json"));
             parametersList.addParametersString("--type");
-            parametersList.addParametersString(dubType);
+            parametersList.addParametersString(dubOptions.getOrDefault("dubType", "minimal"));
         } else {
-            parametersList.addParametersString(dubParams);
+            parametersList.addParametersString(dubOptions.get("dubParams"));
         }
 
         try {
             final OSProcessHandler process = new OSProcessHandler(commandLine.createProcess(), commandLine.getCommandLineString());
 
             final StringBuilder builder = new StringBuilder();
+            final AtomicBoolean errors = new AtomicBoolean();
+
             process.addProcessListener(new ProcessAdapter() {
                 @Override
                 public void onTextAvailable(ProcessEvent event, Key outputType) {
-                    builder.append(event.getText());
+                    if(ProcessOutputTypes.STDERR.equals(outputType)) {
+                        errors.set(true);
+                    }
+                    builder.append(LocalTime.now()).append(" [").append(outputType).append("] ").append(event.getText());
                 }
             });
 
@@ -138,7 +129,7 @@ public class DLanguageDubModuleBuilder extends DLanguageModuleBuilder {
             // write out a log file with the dub init error if dub init doesn't make the project
             // would have been nice to log an event but the new project hasn't been loaded yet so this is the
             // only way I could think to notify the user that dub init failed.
-            if (builder.toString().contains("Unknown")) {
+            if (errors.get()) {
                 Path dubInitErrorLog = Paths.get(getContentEntryPath() + File.separator + "dub_init_error_log.txt");
                 try {
                     Files.write(dubInitErrorLog, builder.toString().getBytes());
