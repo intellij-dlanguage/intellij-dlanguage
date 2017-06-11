@@ -911,8 +911,8 @@ ForeachTypeList ::=
     ForeachType [',' ForeachTypeList]
 
 ForeachType ::=
-   ForeachTypeAttribute Identifier
-   | ForeachTypeAttributes? Type? Identifier // this needs to be above for ForeachTypeAttributes? Type? Identifier
+   ForeachTypeAttributes? Type? Identifier // this needs to be above for ForeachTypeAttributes? Type? Identifier
+   | ForeachTypeAttribute Identifier
    | Type? ForeachTypeAttributes? Identifier
    | Identifier
 
