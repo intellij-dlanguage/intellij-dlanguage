@@ -298,7 +298,6 @@ DeclDefs ::= DeclDef DeclDef*{
 //order matters
 DeclDef ::=
     (AttributeSpecifier
-//    | DeclarationBlockWithStorageClasses
     | Declaration
     | Postblit
     | Constructor
@@ -1825,8 +1824,8 @@ Opcode ::=
 | 'pswapd'
 
 Declaration ::=
-   EnumDeclaration
-   | FuncDeclaration
+   FuncDeclaration
+   | EnumDeclaration
    | VarDeclarations //must come before alias decleration
    | AliasDeclaration
    | AggregateDeclaration
@@ -1977,7 +1976,7 @@ StructMemberInitializer ::=
 //Function
 
 FuncDeclaration ::=
-    StorageClasses? BasicType FuncDeclarator (FunctionBody |';'| '=')?
+    StorageClasses? BasicType FuncDeclarator (FunctionBody |';' | ('=' AssignExpression ';'))?//todo this will match some invalid code
     | AutoFuncDeclaration {
       methods=[getName getFullName getNameIdentifier getReference setName getPresentation getArguments isSomeVisibility getTemplateArguments getProtection getArguments isSystem isNoGC isTrusted hasCustomProperty isSafe getCustomProperty isPropertyFunction]
       implements = ["net.masterthought.dlanguage.psi.interfaces.containers.StatementContainer" "net.masterthought.dlanguage.psi.interfaces.DNamedElement" "net.masterthought.dlanguage.psi.interfaces.HasVisibility" "net.masterthought.dlanguage.psi.interfaces.HasProperty" "net.masterthought.dlanguage.psi.interfaces.HasTemplateArguments" "net.masterthought.dlanguage.psi.interfaces.HasArguments" "net.masterthought.dlanguage.psi.interfaces.Declaration"]

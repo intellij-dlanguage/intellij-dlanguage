@@ -37,6 +37,12 @@ public class DLanguageFuncDeclarationImpl extends DNamedStubbedPsiElementBase<DL
 
   @Override
   @Nullable
+  public DLanguageAssignExpression getAssignExpression() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageAssignExpression.class);
+  }
+
+  @Override
+  @Nullable
   public DLanguageBasicType getBasicType() {
     return PsiTreeUtil.getChildOfType(this, DLanguageBasicType.class);
   }

@@ -4306,7 +4306,6 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // AttributeSpecifier
-  // //    | DeclarationBlockWithStorageClasses
   //     | Declaration
   //     | Postblit
   //     | Constructor
@@ -4390,8 +4389,8 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // EnumDeclaration
-  //    | FuncDeclaration
+  // FuncDeclaration
+  //    | EnumDeclaration
   //    | VarDeclarations //must come before alias decleration
   //    | AliasDeclaration
   //    | AggregateDeclaration
@@ -4401,8 +4400,8 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     if (!recursion_guard_(b, l, "Declaration")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, DECLARATION, "<declaration>");
-    r = EnumDeclaration(b, l + 1);
-    if (!r) r = FuncDeclaration(b, l + 1);
+    r = FuncDeclaration(b, l + 1);
+    if (!r) r = EnumDeclaration(b, l + 1);
     if (!r) r = VarDeclarations(b, l + 1);
     if (!r) r = AliasDeclaration(b, l + 1);
     if (!r) r = AggregateDeclaration(b, l + 1);
@@ -5320,7 +5319,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // StorageClasses? BasicType FuncDeclarator (FunctionBody |';'| '=')?
+  // StorageClasses? BasicType FuncDeclarator (FunctionBody |';' | ('=' AssignExpression ';'))?//todo this will match some invalid code
   //     | AutoFuncDeclaration
   public static boolean FuncDeclaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "FuncDeclaration")) return false;
@@ -5332,7 +5331,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // StorageClasses? BasicType FuncDeclarator (FunctionBody |';'| '=')?
+  // StorageClasses? BasicType FuncDeclarator (FunctionBody |';' | ('=' AssignExpression ';'))?
   private static boolean FuncDeclaration_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "FuncDeclaration_0")) return false;
     boolean r;
@@ -5352,21 +5351,33 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // (FunctionBody |';'| '=')?
+  // (FunctionBody |';' | ('=' AssignExpression ';'))?
   private static boolean FuncDeclaration_0_3(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "FuncDeclaration_0_3")) return false;
     FuncDeclaration_0_3_0(b, l + 1);
     return true;
   }
 
-  // FunctionBody |';'| '='
+  // FunctionBody |';' | ('=' AssignExpression ';')
   private static boolean FuncDeclaration_0_3_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "FuncDeclaration_0_3_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = FunctionBody(b, l + 1);
     if (!r) r = consumeToken(b, OP_SCOLON);
-    if (!r) r = consumeToken(b, OP_EQ);
+    if (!r) r = FuncDeclaration_0_3_0_2(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // '=' AssignExpression ';'
+  private static boolean FuncDeclaration_0_3_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "FuncDeclaration_0_3_0_2")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, OP_EQ);
+    r = r && AssignExpression(b, l + 1);
+    r = r && consumeToken(b, OP_SCOLON);
     exit_section_(b, m, null, r);
     return r;
   }
