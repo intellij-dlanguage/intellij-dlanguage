@@ -13,8 +13,8 @@ public interface DLanguageConditionalDeclaration extends PsiElement {
   @Nullable
   DLanguageDeclDefs getDeclDefs();
 
-  @NotNull
-  List<DLanguageDeclarationBlock> getDeclarationBlockList();
+  @Nullable
+  DLanguageDeclarationBlock getDeclarationBlock();
 
   @Nullable
   PsiElement getKwElse();

@@ -3851,9 +3851,9 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // Condition DeclarationBlock ('else' DeclarationBlock)?
+  // Condition DeclarationBlock 'else' ':' DeclDefs?//must be on top
+  //     | Condition DeclarationBlock ('else' DeclarationBlock)?
   //     | Condition ':' DeclDefs?
-  //     | Condition DeclarationBlock 'else' ':' DeclDefs?
   public static boolean ConditionalDeclaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ConditionalDeclaration")) return false;
     boolean r;
@@ -3865,28 +3865,48 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // Condition DeclarationBlock ('else' DeclarationBlock)?
+  // Condition DeclarationBlock 'else' ':' DeclDefs?
   private static boolean ConditionalDeclaration_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ConditionalDeclaration_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = Condition(b, l + 1);
     r = r && DeclarationBlock(b, l + 1);
-    r = r && ConditionalDeclaration_0_2(b, l + 1);
+    r = r && consumeTokens(b, 0, KW_ELSE, OP_COLON);
+    r = r && ConditionalDeclaration_0_4(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // DeclDefs?
+  private static boolean ConditionalDeclaration_0_4(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ConditionalDeclaration_0_4")) return false;
+    DeclDefs(b, l + 1);
+    return true;
+  }
+
+  // Condition DeclarationBlock ('else' DeclarationBlock)?
+  private static boolean ConditionalDeclaration_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ConditionalDeclaration_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = Condition(b, l + 1);
+    r = r && DeclarationBlock(b, l + 1);
+    r = r && ConditionalDeclaration_1_2(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // ('else' DeclarationBlock)?
-  private static boolean ConditionalDeclaration_0_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "ConditionalDeclaration_0_2")) return false;
-    ConditionalDeclaration_0_2_0(b, l + 1);
+  private static boolean ConditionalDeclaration_1_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ConditionalDeclaration_1_2")) return false;
+    ConditionalDeclaration_1_2_0(b, l + 1);
     return true;
   }
 
   // 'else' DeclarationBlock
-  private static boolean ConditionalDeclaration_0_2_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "ConditionalDeclaration_0_2_0")) return false;
+  private static boolean ConditionalDeclaration_1_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ConditionalDeclaration_1_2_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, KW_ELSE);
@@ -3896,40 +3916,20 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   }
 
   // Condition ':' DeclDefs?
-  private static boolean ConditionalDeclaration_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "ConditionalDeclaration_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = Condition(b, l + 1);
-    r = r && consumeToken(b, OP_COLON);
-    r = r && ConditionalDeclaration_1_2(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // DeclDefs?
-  private static boolean ConditionalDeclaration_1_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "ConditionalDeclaration_1_2")) return false;
-    DeclDefs(b, l + 1);
-    return true;
-  }
-
-  // Condition DeclarationBlock 'else' ':' DeclDefs?
   private static boolean ConditionalDeclaration_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ConditionalDeclaration_2")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = Condition(b, l + 1);
-    r = r && DeclarationBlock(b, l + 1);
-    r = r && consumeTokens(b, 0, KW_ELSE, OP_COLON);
-    r = r && ConditionalDeclaration_2_4(b, l + 1);
+    r = r && consumeToken(b, OP_COLON);
+    r = r && ConditionalDeclaration_2_2(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // DeclDefs?
-  private static boolean ConditionalDeclaration_2_4(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "ConditionalDeclaration_2_4")) return false;
+  private static boolean ConditionalDeclaration_2_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ConditionalDeclaration_2_2")) return false;
     DeclDefs(b, l + 1);
     return true;
   }

@@ -39,9 +39,9 @@ public class DLanguageConditionalDeclarationImpl extends ASTWrapperPsiElement im
   }
 
   @Override
-  @NotNull
-  public List<DLanguageDeclarationBlock> getDeclarationBlockList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageDeclarationBlock.class);
+  @Nullable
+  public DLanguageDeclarationBlock getDeclarationBlock() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageDeclarationBlock.class);
   }
 
   @Override

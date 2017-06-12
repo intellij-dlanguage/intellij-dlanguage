@@ -2513,9 +2513,9 @@ Pragma ::=
 //Conditional
 
 ConditionalDeclaration ::=
-    Condition DeclarationBlock ('else' DeclarationBlock)?
+    Condition DeclarationBlock 'else' ':' DeclDefs?//must be on top
+    | Condition DeclarationBlock ('else' DeclarationBlock)?
     | Condition ':' DeclDefs?
-    | Condition DeclarationBlock 'else' ':' DeclDefs?
 
 ConditionalStatement ::=
     Condition (Statement | BlockStatement | DeclarationBlock) ('else' (Statement | DeclarationBlock))?
