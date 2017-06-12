@@ -6302,7 +6302,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   //     | 'out'
   //     | 'ref'
   //     | 'scope'
-  //     | 'return ref'
+  //     | ('return' 'ref')
   public static boolean InOutX(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "InOutX")) return false;
     boolean r;
@@ -6315,8 +6315,18 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, KW_OUT);
     if (!r) r = consumeToken(b, KW_REF);
     if (!r) r = consumeToken(b, KW_SCOPE);
-    if (!r) r = consumeToken(b, "return ref");
+    if (!r) r = InOutX_8(b, l + 1);
     exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // 'return' 'ref'
+  private static boolean InOutX_8(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "InOutX_8")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, KW_RETURN, KW_REF);
+    exit_section_(b, m, null, r);
     return r;
   }
 
