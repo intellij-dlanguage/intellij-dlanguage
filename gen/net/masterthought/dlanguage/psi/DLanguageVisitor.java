@@ -443,6 +443,10 @@ public class DLanguageVisitor extends PsiElementVisitor {
     // visitDeclaration(o);
   }
 
+  public void visitEnumFuncDeclaration(@NotNull DLanguageEnumFuncDeclaration o) {
+    visitPsiElement(o);
+  }
+
   public void visitEnumMember(@NotNull DLanguageEnumMember o) {
     visitPsiElement(o);
   }

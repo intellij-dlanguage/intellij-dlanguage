@@ -121,6 +121,7 @@ public interface DLanguageTypes {
   IElementType ENUM_BASE_TYPE = new DLanguageElementType("ENUM_BASE_TYPE");
   IElementType ENUM_BODY = new DLanguageElementType("ENUM_BODY");
   IElementType ENUM_DECLARATION = DElementTypeFactory.factory("ENUM_DECLARATION");
+  IElementType ENUM_FUNC_DECLARATION = new DLanguageElementType("ENUM_FUNC_DECLARATION");
   IElementType ENUM_MEMBER = new DLanguageElementType("ENUM_MEMBER");
   IElementType ENUM_MEMBERS = new DLanguageElementType("ENUM_MEMBERS");
   IElementType EQUAL_EXPRESSION = new DLanguageElementType("EQUAL_EXPRESSION");
@@ -780,6 +781,9 @@ public interface DLanguageTypes {
       }
       else if (type == ENUM_DECLARATION) {
         return new DLanguageEnumDeclarationImpl(node);
+      }
+      else if (type == ENUM_FUNC_DECLARATION) {
+        return new DLanguageEnumFuncDeclarationImpl(node);
       }
       else if (type == ENUM_MEMBER) {
         return new DLanguageEnumMemberImpl(node);

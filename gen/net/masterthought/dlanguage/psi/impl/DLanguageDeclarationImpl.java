@@ -46,6 +46,12 @@ public class DLanguageDeclarationImpl extends ASTWrapperPsiElement implements DL
 
   @Override
   @Nullable
+  public DLanguageEnumFuncDeclaration getEnumFuncDeclaration() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageEnumFuncDeclaration.class);
+  }
+
+  @Override
+  @Nullable
   public DLanguageFuncDeclaration getFuncDeclaration() {
     return PsiTreeUtil.getChildOfType(this, DLanguageFuncDeclaration.class);
   }

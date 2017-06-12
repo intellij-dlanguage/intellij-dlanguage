@@ -323,6 +323,9 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     else if (t == ENUM_DECLARATION) {
       r = EnumDeclaration(b, 0);
     }
+    else if (t == ENUM_FUNC_DECLARATION) {
+      r = EnumFuncDeclaration(b, 0);
+    }
     else if (t == ENUM_MEMBER) {
       r = EnumMember(b, 0);
     }
@@ -4389,7 +4392,8 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // FuncDeclaration
+  // EnumFuncDeclaration
+  //    | FuncDeclaration
   //    | EnumDeclaration
   //    | VarDeclarations //must come before alias decleration
   //    | AliasDeclaration
@@ -4400,7 +4404,8 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     if (!recursion_guard_(b, l, "Declaration")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, DECLARATION, "<declaration>");
-    r = FuncDeclaration(b, l + 1);
+    r = EnumFuncDeclaration(b, l + 1);
+    if (!r) r = FuncDeclaration(b, l + 1);
     if (!r) r = EnumDeclaration(b, l + 1);
     if (!r) r = VarDeclarations(b, l + 1);
     if (!r) r = AliasDeclaration(b, l + 1);
@@ -4894,6 +4899,72 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // (('enum'|'auto'|Type) FuncDeclarator '=' AssignExpression ';')
+  //     | (('enum'|'auto'|Type) BasicType FuncDeclarator '=' AssignExpression ';')
+  public static boolean EnumFuncDeclaration(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "EnumFuncDeclaration")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, ENUM_FUNC_DECLARATION, "<enum func declaration>");
+    r = EnumFuncDeclaration_0(b, l + 1);
+    if (!r) r = EnumFuncDeclaration_1(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // ('enum'|'auto'|Type) FuncDeclarator '=' AssignExpression ';'
+  private static boolean EnumFuncDeclaration_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "EnumFuncDeclaration_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = EnumFuncDeclaration_0_0(b, l + 1);
+    r = r && FuncDeclarator(b, l + 1);
+    r = r && consumeToken(b, OP_EQ);
+    r = r && AssignExpression(b, l + 1);
+    r = r && consumeToken(b, OP_SCOLON);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // 'enum'|'auto'|Type
+  private static boolean EnumFuncDeclaration_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "EnumFuncDeclaration_0_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, KW_ENUM);
+    if (!r) r = consumeToken(b, KW_AUTO);
+    if (!r) r = Type(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // ('enum'|'auto'|Type) BasicType FuncDeclarator '=' AssignExpression ';'
+  private static boolean EnumFuncDeclaration_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "EnumFuncDeclaration_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = EnumFuncDeclaration_1_0(b, l + 1);
+    r = r && BasicType(b, l + 1);
+    r = r && FuncDeclarator(b, l + 1);
+    r = r && consumeToken(b, OP_EQ);
+    r = r && AssignExpression(b, l + 1);
+    r = r && consumeToken(b, OP_SCOLON);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // 'enum'|'auto'|Type
+  private static boolean EnumFuncDeclaration_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "EnumFuncDeclaration_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, KW_ENUM);
+    if (!r) r = consumeToken(b, KW_AUTO);
+    if (!r) r = Type(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // Identifier ('=' AssignExpression)? | Type Identifier '=' AssignExpression
   public static boolean EnumMember(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "EnumMember")) return false;
@@ -5319,7 +5390,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // StorageClasses? BasicType FuncDeclarator (FunctionBody |';' | ('=' AssignExpression ';'))?//todo this will match some invalid code
+  // StorageClasses? BasicType FuncDeclarator (FunctionBody |';' )?
   //     | AutoFuncDeclaration
   public static boolean FuncDeclaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "FuncDeclaration")) return false;
@@ -5331,7 +5402,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // StorageClasses? BasicType FuncDeclarator (FunctionBody |';' | ('=' AssignExpression ';'))?
+  // StorageClasses? BasicType FuncDeclarator (FunctionBody |';' )?
   private static boolean FuncDeclaration_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "FuncDeclaration_0")) return false;
     boolean r;
@@ -5351,33 +5422,20 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // (FunctionBody |';' | ('=' AssignExpression ';'))?
+  // (FunctionBody |';' )?
   private static boolean FuncDeclaration_0_3(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "FuncDeclaration_0_3")) return false;
     FuncDeclaration_0_3_0(b, l + 1);
     return true;
   }
 
-  // FunctionBody |';' | ('=' AssignExpression ';')
+  // FunctionBody |';'
   private static boolean FuncDeclaration_0_3_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "FuncDeclaration_0_3_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = FunctionBody(b, l + 1);
     if (!r) r = consumeToken(b, OP_SCOLON);
-    if (!r) r = FuncDeclaration_0_3_0_2(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // '=' AssignExpression ';'
-  private static boolean FuncDeclaration_0_3_0_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "FuncDeclaration_0_3_0_2")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, OP_EQ);
-    r = r && AssignExpression(b, l + 1);
-    r = r && consumeToken(b, OP_SCOLON);
     exit_section_(b, m, null, r);
     return r;
   }

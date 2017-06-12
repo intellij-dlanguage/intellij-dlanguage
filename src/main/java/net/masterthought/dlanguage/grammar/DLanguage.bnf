@@ -1824,13 +1824,19 @@ Opcode ::=
 | 'pswapd'
 
 Declaration ::=
-   FuncDeclaration
+   EnumFuncDeclaration
+   | FuncDeclaration
    | EnumDeclaration
    | VarDeclarations //must come before alias decleration
    | AliasDeclaration
    | AggregateDeclaration
    | ImportDeclaration
    | TemplateDeclaration
+
+EnumFuncDeclaration ::=
+    (('enum'|'auto'|Type) FuncDeclarator '=' AssignExpression ';')
+    | (('enum'|'auto'|Type) BasicType FuncDeclarator '=' AssignExpression ';')
+
 
 AliasDeclaration ::=
   'alias' Identifier '=' Type TemplateArguments? ';'
@@ -1976,7 +1982,7 @@ StructMemberInitializer ::=
 //Function
 
 FuncDeclaration ::=
-    StorageClasses? BasicType FuncDeclarator (FunctionBody |';' | ('=' AssignExpression ';'))?//todo this will match some invalid code
+    StorageClasses? BasicType FuncDeclarator (FunctionBody |';' )?
     | AutoFuncDeclaration {
       methods=[getName getFullName getNameIdentifier getReference setName getPresentation getArguments isSomeVisibility getTemplateArguments getProtection getArguments isSystem isNoGC isTrusted hasCustomProperty isSafe getCustomProperty isPropertyFunction]
       implements = ["net.masterthought.dlanguage.psi.interfaces.containers.StatementContainer" "net.masterthought.dlanguage.psi.interfaces.DNamedElement" "net.masterthought.dlanguage.psi.interfaces.HasVisibility" "net.masterthought.dlanguage.psi.interfaces.HasProperty" "net.masterthought.dlanguage.psi.interfaces.HasTemplateArguments" "net.masterthought.dlanguage.psi.interfaces.HasArguments" "net.masterthought.dlanguage.psi.interfaces.Declaration"]

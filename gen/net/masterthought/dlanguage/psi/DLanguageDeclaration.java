@@ -17,6 +17,9 @@ public interface DLanguageDeclaration extends PsiElement {
   DLanguageEnumDeclaration getEnumDeclaration();
 
   @Nullable
+  DLanguageEnumFuncDeclaration getEnumFuncDeclaration();
+
+  @Nullable
   DLanguageFuncDeclaration getFuncDeclaration();
 
   @Nullable

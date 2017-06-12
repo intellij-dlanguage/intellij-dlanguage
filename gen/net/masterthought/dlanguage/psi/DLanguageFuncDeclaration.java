@@ -21,9 +21,6 @@ import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 public interface DLanguageFuncDeclaration extends StatementContainer, DNamedElement, HasVisibility, HasProperty, HasTemplateArguments, HasArguments, Declaration, StubBasedPsiElement<DLanguageFuncDeclarationStub> {
 
   @Nullable
-  DLanguageAssignExpression getAssignExpression();
-
-  @Nullable
   DLanguageBasicType getBasicType();
 
   @Nullable
@@ -40,9 +37,6 @@ public interface DLanguageFuncDeclaration extends StatementContainer, DNamedElem
 
   @Nullable
   DLanguageStorageClasses getStorageClasses();
-
-  @Nullable
-  PsiElement getOpEq();
 
   @Nullable
   PsiElement getOpScolon();
