@@ -318,11 +318,9 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
     public void teststdio() {
         doTest(true, true);
     }
-
     public void testtraits() {
         doTest(true, true);
     }
-
     public void teststring() {
         doTest(true, true);
     }
@@ -332,6 +330,15 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
     public void testarray() {
         doTest(true, true);
     }
+
+    public void testtypecons() {
+        doTest(true, true);
+    }
+
+    public void testparallelism() {
+        doTest(true, true);
+    }
+
 
 }
 
