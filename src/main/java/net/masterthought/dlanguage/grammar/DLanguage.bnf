@@ -2464,7 +2464,7 @@ AlignAttribute ::=
     }
 
 DeprecatedAttribute ::=
-    'deprecated' ('(' StringLiteral ')')?{
+    'deprecated' ('(' AssignExpression')')?{
         pin = 1
     }
 

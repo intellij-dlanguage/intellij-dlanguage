@@ -4677,7 +4677,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // 'deprecated' ('(' StringLiteral ')')?
+  // 'deprecated' ('(' AssignExpression')')?
   public static boolean DeprecatedAttribute(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "DeprecatedAttribute")) return false;
     if (!nextTokenIs(b, KW_DEPRECATED)) return false;
@@ -4690,20 +4690,20 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     return r || p;
   }
 
-  // ('(' StringLiteral ')')?
+  // ('(' AssignExpression')')?
   private static boolean DeprecatedAttribute_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "DeprecatedAttribute_1")) return false;
     DeprecatedAttribute_1_0(b, l + 1);
     return true;
   }
 
-  // '(' StringLiteral ')'
+  // '(' AssignExpression')'
   private static boolean DeprecatedAttribute_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "DeprecatedAttribute_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, OP_PAR_LEFT);
-    r = r && StringLiteral(b, l + 1);
+    r = r && AssignExpression(b, l + 1);
     r = r && consumeToken(b, OP_PAR_RIGHT);
     exit_section_(b, m, null, r);
     return r;
