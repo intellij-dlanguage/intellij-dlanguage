@@ -945,7 +945,7 @@ CaseStatement ::=
     }
 
 CaseRangeStatement ::=
-    'case' FirstExp ':' '..' 'case' LastExp ':' ScopeStatementList{
+    'case' FirstExp ':' '..' 'case' LastExp ':' StatementList{
     pin = 4
     }
 

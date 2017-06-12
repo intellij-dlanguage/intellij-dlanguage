@@ -40,8 +40,8 @@ public class DLanguageCaseRangeStatementImpl extends ASTWrapperPsiElement implem
 
   @Override
   @Nullable
-  public DLanguageScopeStatementList getScopeStatementList() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageScopeStatementList.class);
+  public DLanguageStatementList getStatementList() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageStatementList.class);
   }
 
   @Override

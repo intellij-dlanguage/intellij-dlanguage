@@ -3478,7 +3478,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // 'case' FirstExp ':' '..' 'case' LastExp ':' ScopeStatementList
+  // 'case' FirstExp ':' '..' 'case' LastExp ':' StatementList
   public static boolean CaseRangeStatement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "CaseRangeStatement")) return false;
     if (!nextTokenIs(b, KW_CASE)) return false;
@@ -3490,7 +3490,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     p = r; // pin = 4
     r = r && report_error_(b, LastExp(b, l + 1));
     r = p && report_error_(b, consumeToken(b, OP_COLON)) && r;
-    r = p && ScopeStatementList(b, l + 1) && r;
+    r = p && StatementList(b, l + 1) && r;
     exit_section_(b, l, m, r, p, null);
     return r || p;
   }

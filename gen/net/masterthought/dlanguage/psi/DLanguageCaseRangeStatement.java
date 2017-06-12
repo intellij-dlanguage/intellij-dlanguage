@@ -14,7 +14,7 @@ public interface DLanguageCaseRangeStatement extends PsiElement {
   DLanguageLastExp getLastExp();
 
   @Nullable
-  DLanguageScopeStatementList getScopeStatementList();
+  DLanguageStatementList getStatementList();
 
   @NotNull
   PsiElement getOpDdot();
