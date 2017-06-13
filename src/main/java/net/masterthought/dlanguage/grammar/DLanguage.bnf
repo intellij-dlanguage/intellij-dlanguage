@@ -2401,14 +2401,33 @@ TemplateSingleArgument ::=
     | AssignExpression
 
 
-//this needs updating becuase it has been updated in the d grammar
  TemplateParameter ::=
-     TemplateTypeParameter
+     TemplateValueParameter
+     | TemplateTypeParameter
      | TemplateAliasParameter
+     | TemplateTupleParameter
      | TemplateThisParameter
 
- TemplateTypeParameter ::=
-     Type Identifier? '...'? [(':' Type)? ('=' Type)?] [(':' AssignExpression)? TemplateValueParameterDefault?]
+//TemplateTypeParameter ::=
+//    BasicType Identifier TemplateTypeParameterSpecialization? TemplateTypeParameterDefault?
+//
+//TemplateTypeParameterSpecialization ::=
+//    ':' Type
+//
+//TemplateTypeParameterDefault::=
+//    '=' Type
+
+TemplateTupleParameter ::=
+    Identifier '...'
+
+TemplateValueParameter ::=
+       BasicType Declarator ('=' (AssignExpression | SpecialKeyword))
+       | BasicType Declarator TemplateValueParameterSpecialization TemplateValueParameterDefault?
+
+private TemplateValueParameterSpecialization ::= ConditionalExpression
+
+TemplateTypeParameter ::=
+    Type Identifier? '...'? (':' Type)? ('=' Type)? (':' AssignExpression)? TemplateValueParameterDefault?
 
 TemplateAliasParameter ::=
      'alias' Type? Identifier? (':' (Type | AssignExpression))? ('=' (Type | AssignExpression))?
