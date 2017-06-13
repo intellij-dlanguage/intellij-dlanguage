@@ -28,4 +28,8 @@ public interface DLanguageForeachStatement extends PsiElement {
   @NotNull
   PsiElement getOpScolon();
 
+  //WARNING: processDeclarations(...) is skipped
+  //matching processDeclarations(DLanguageForeachStatement, ...)
+  //methods are not found in DPsiImplUtil
+
 }

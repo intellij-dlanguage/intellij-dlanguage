@@ -22,4 +22,8 @@ public interface DLanguageCatch extends PsiElement {
   @Nullable
   PsiElement getOpParRight();
 
+  //WARNING: processDeclarations(...) is skipped
+  //matching processDeclarations(DLanguageCatch, ...)
+  //methods are not found in DPsiImplUtil
+
 }

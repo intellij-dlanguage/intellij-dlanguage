@@ -10,7 +10,7 @@ public interface DLanguageCatchParameter extends PsiElement {
   @NotNull
   DLanguageBasicType getBasicType();
 
-  @NotNull
+  @Nullable
   DLanguageIdentifier getIdentifier();
 
 }

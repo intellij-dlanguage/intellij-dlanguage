@@ -19,4 +19,8 @@ public interface DLanguageAggregateDeclaration extends PsiElement {
   @Nullable
   DLanguageUnionDeclaration getUnionDeclaration();
 
+  //WARNING: processDeclarations(...) is skipped
+  //matching processDeclarations(DLanguageAggregateDeclaration, ...)
+  //methods are not found in DPsiImplUtil
+
 }

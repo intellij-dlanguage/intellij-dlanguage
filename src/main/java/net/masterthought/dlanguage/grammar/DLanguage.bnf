@@ -198,6 +198,8 @@ tokens = [
  LINE_COMMENT="LINE_COMMENT"
  BLOCK_COMMENT="BLOCK_COMMENT"
  NESTING_BLOCK_COMMENT="NESTING_BLOCK_COMMENT"
+ TOKEN_STRING = "TOKEN_STRING"
+
 
 // Comment these back in when playing with Live Preview
 // ------------------------
@@ -233,7 +235,7 @@ Identifier ::= ID {
     implements = ["net.masterthought.dlanguage.psi.interfaces.DNamedElement"]
     }
 
-StringLiteral  ::= (WYSIWYG_STRING|ALTERNATE_WYSIWYG_STRING|DOUBLE_QUOTED_STRING|HEX_STRING|DELIMITED_STRING)
+StringLiteral  ::= (WYSIWYG_STRING|ALTERNATE_WYSIWYG_STRING|DOUBLE_QUOTED_STRING|HEX_STRING|DELIMITED_STRING| (TOKEN_STRING TOKEN_STRING*))
 
 
 // Module
@@ -322,7 +324,9 @@ DeclDef ::=
     | StaticIfCondition
     | StaticElseCondition
     | ';'
-    )
+    ){
+        methods = [processDeclarations]
+    }
 
 MixinDeclaration ::=
     'mixin' '(' ((TemplateInstance AssignExpression?)| AssignExpression) ')' ';'{
@@ -784,6 +788,7 @@ Statement ::=
     | NonEmptyStatement
     | BlockStatement{
     recoverWhile = statement_recover
+    methods = [processDeclarations]
     }
 
 private statement_recover ::=
@@ -829,7 +834,9 @@ NonEmptyStatementNoCaseNoDefault ::=
 
 ScopeStatement ::=
     NonEmptyStatement
-    | BlockStatement
+    | BlockStatement{
+    methods= [processDeclarations]
+    }
 
 LabeledStatement ::=
     Identifier ':' Statement? {
@@ -841,7 +848,9 @@ LabeledStatement ::=
 
 
 BlockStatement ::=
- '{' StatementList? '}'
+ '{' StatementList? '}'{
+    methods = [processDeclarations]
+ }
 
 StatementList ::=
     Statement Statement*{
@@ -860,6 +869,7 @@ DeclarationStatement ::=
 IfStatement ::=
     'if' '(' IfCondition ')' ThenStatement ('else' ElseStatement)?{
     pin = 1
+    methods = [processDeclarations]
     }
 
 IfCondition ::=
@@ -877,16 +887,19 @@ ElseStatement ::=
 WhileStatement ::=
     'while' '(' Expression ')' ScopeStatement{
     pin = 1
+    methods = [processDeclarations]
     }
 
 DoStatement ::=
     'do' ScopeStatement 'while' '(' Expression ')' ';'{
     pin = 1
+    methods = [processDeclarations]
     }
 
 ForStatement ::=
     'for' '(' Initialize Test? ';' Increment? ')' ScopeStatement{
     pin = 1
+    methods = [processDeclarations]
     }
 
 Initialize ::=
@@ -900,7 +913,9 @@ Increment ::=
     Expression
 
 ForeachStatement ::=
-    Foreach '(' ForeachTypeList ';' ForeachAggregate ')' Statement
+    Foreach '(' ForeachTypeList ';' ForeachAggregate ')' Statement{
+        methods = [processDeclarations]
+    }
 
 Foreach ::=
     'foreach'
@@ -926,7 +941,9 @@ ForeachAggregate ::=
     Expression
 
 ForeachRangeStatement ::=//todo remove this from grammar
-    Foreach '(' ForeachType ';' LwrExpression '..' UprExpression ')' ScopeStatement
+    Foreach '(' ForeachType ';' LwrExpression '..' UprExpression ')' ScopeStatement{
+    methods = [processDeclarations]
+    }
 
 LwrExpression ::=
     Expression
@@ -937,6 +954,7 @@ UprExpression ::=
 SwitchStatement ::=
     'switch' '(' Expression ')' ScopeStatement{
     pin = 1
+    methods = [processDeclarations]
     }
 
 CaseStatement ::=
@@ -973,6 +991,7 @@ StatementNoCaseNoDefault ::=
 FinalSwitchStatement ::=
     'final' 'switch' '(' Expression ')' ScopeStatement{
     pin = 2
+    methods = [processDeclarations]
     }
 
 ContinueStatement ::=
@@ -1044,10 +1063,11 @@ LastCatch ::=
 Catch ::=
     'catch' '(' CatchParameter ')' Statement{
     pin = 3
+    methods = [processDeclarations]
     }
 
 CatchParameter ::=
-    BasicType Identifier
+    BasicType Identifier?//identifier is meant to be optional, but not optional in the main d gramma
 
 FinallyStatement ::=
     'finally' Statement{
@@ -1831,7 +1851,9 @@ Declaration ::=
    | AliasDeclaration
    | AggregateDeclaration
    | ImportDeclaration
-   | TemplateDeclaration
+   | TemplateDeclaration{
+    methods = [processDeclarations]
+   }
 
 EnumFuncDeclaration ::=
     (('enum'|'auto'|Type) FuncDeclarator '=' AssignExpression ';')
@@ -2177,7 +2199,9 @@ AggregateDeclaration ::=
     ClassDeclaration
     | InterfaceDeclaration
     | StructDeclaration
-    | UnionDeclaration
+    | UnionDeclaration{
+    methods = [processDeclarations]
+    }
 
 ClassDeclaration ::=
     'class' Identifier ';'
@@ -2241,7 +2265,9 @@ AnonUnionDeclaration ::=
     }
 
 AggregateBody ::=
-    '{' DeclDefs? '}'
+    '{' DeclDefs? '}'{
+    methods = [processDeclarations]
+    }
 
 BaseClassList ::=
     ':' SuperClass (',' Interfaces)?
@@ -2328,7 +2354,7 @@ Constraint ::=
     }
 
 TemplateInstance ::=
-    Identifier? TemplateArguments
+    Identifier? TemplateArguments//todo that identifier should not be optional
 
 TemplateArguments ::=
      TemplateArgumentsWithParen
@@ -2375,6 +2401,7 @@ TemplateSingleArgument ::=
     | AssignExpression
 
 
+//this needs updating becuase it has been updated in the d grammar
  TemplateParameter ::=
      TemplateTypeParameter
      | TemplateAliasParameter
@@ -2442,7 +2469,9 @@ Attribute ::=
 
 DeclarationBlock ::=
     DeclDef
-    | '{' DeclDefs? '}'
+    | '{' DeclDefs? '}'{
+    methods = [processDeclarations]
+    }
 
 LinkageAttribute ::=
     'extern' '(' LinkageType ')'
@@ -2519,7 +2548,9 @@ ConditionalDeclaration ::=
     | Condition ':' DeclDefs?
 
 ConditionalStatement ::=
-    Condition (Statement | BlockStatement | DeclarationBlock) ('else' (Statement | DeclarationBlock))?
+    Condition (Statement | BlockStatement | DeclarationBlock) ('else' (Statement | DeclarationBlock))?{
+    methods = [processDeclarations]
+    }
 
 Condition ::=
     VersionCondition

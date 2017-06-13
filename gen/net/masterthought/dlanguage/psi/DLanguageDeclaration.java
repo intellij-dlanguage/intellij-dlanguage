@@ -31,4 +31,8 @@ public interface DLanguageDeclaration extends PsiElement {
   @Nullable
   DLanguageVarDeclarations getVarDeclarations();
 
+  //WARNING: processDeclarations(...) is skipped
+  //matching processDeclarations(DLanguageDeclaration, ...)
+  //methods are not found in DPsiImplUtil
+
 }

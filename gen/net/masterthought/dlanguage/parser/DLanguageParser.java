@@ -3594,15 +3594,22 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // BasicType Identifier
+  // BasicType Identifier?
   public static boolean CatchParameter(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "CatchParameter")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, CATCH_PARAMETER, "<catch parameter>");
     r = BasicType(b, l + 1);
-    r = r && Identifier(b, l + 1);
+    r = r && CatchParameter_1(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
+  }
+
+  // Identifier?
+  private static boolean CatchParameter_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "CatchParameter_1")) return false;
+    Identifier(b, l + 1);
+    return true;
   }
 
   /* ********************************************************** */
@@ -11075,7 +11082,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // WYSIWYG_STRING|ALTERNATE_WYSIWYG_STRING|DOUBLE_QUOTED_STRING|HEX_STRING|DELIMITED_STRING
+  // WYSIWYG_STRING|ALTERNATE_WYSIWYG_STRING|DOUBLE_QUOTED_STRING|HEX_STRING|DELIMITED_STRING| (TOKEN_STRING TOKEN_STRING*)
   public static boolean StringLiteral(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "StringLiteral")) return false;
     boolean r;
@@ -11085,8 +11092,32 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, DOUBLE_QUOTED_STRING);
     if (!r) r = consumeToken(b, HEX_STRING);
     if (!r) r = consumeToken(b, DELIMITED_STRING);
+    if (!r) r = StringLiteral_5(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
+  }
+
+  // TOKEN_STRING TOKEN_STRING*
+  private static boolean StringLiteral_5(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "StringLiteral_5")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, TOKEN_STRING);
+    r = r && StringLiteral_5_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // TOKEN_STRING*
+  private static boolean StringLiteral_5_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "StringLiteral_5_1")) return false;
+    int c = current_position_(b);
+    while (true) {
+      if (!consumeToken(b, TOKEN_STRING)) break;
+      if (!empty_element_parsed_guard_(b, "StringLiteral_5_1", c)) break;
+      c = current_position_(b);
+    }
+    return true;
   }
 
   /* ********************************************************** */
