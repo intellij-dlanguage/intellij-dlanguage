@@ -27,15 +27,9 @@ public class DLanguageStatementListNoCaseNoDefaultImpl extends ASTWrapperPsiElem
   }
 
   @Override
-  @Nullable
-  public DLanguageStatementListNoCaseNoDefault getStatementListNoCaseNoDefault() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageStatementListNoCaseNoDefault.class);
-  }
-
-  @Override
   @NotNull
-  public DLanguageStatementNoCaseNoDefault getStatementNoCaseNoDefault() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageStatementNoCaseNoDefault.class));
+  public List<DLanguageStatementNoCaseNoDefault> getStatementNoCaseNoDefaultList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageStatementNoCaseNoDefault.class);
   }
 
 }

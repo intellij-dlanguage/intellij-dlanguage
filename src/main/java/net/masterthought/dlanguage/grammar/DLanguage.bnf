@@ -922,7 +922,7 @@ Foreach ::=
     | 'foreach_reverse'
 
 ForeachTypeList ::=
-    ForeachType [',' ForeachTypeList]
+    ForeachType (',' ForeachType)*
 
 ForeachType ::=
    ForeachTypeAttributes? Type? Identifier // this needs to be above for ForeachTypeAttributes? Type? Identifier
@@ -982,7 +982,7 @@ ScopeStatementList ::=
     StatementListNoCaseNoDefault
 
 StatementListNoCaseNoDefault ::=
-    StatementNoCaseNoDefault [StatementListNoCaseNoDefault]
+    StatementNoCaseNoDefault StatementNoCaseNoDefault*
 
 StatementNoCaseNoDefault ::=
     NonEmptyStatementNoCaseNoDefault
@@ -1865,7 +1865,6 @@ AliasDeclaration ::=
   | 'alias' Identifier '=' Initializer ';'
   | 'alias' StorageClasses? BasicType (FuncDeclarator|Declarator) ';'
   | 'alias' AliasDeclarationX ';'{
-     //pin(".*")=3//todo find a way of decreasing/adding this pin to improve parser performance
      methods=[getName getFullName getNameIdentifier getReference setName getPresentation isSomeVisibility actuallyIsDeclaration getDeclarationType]
      stubClass="net.masterthought.dlanguage.stubs.DLanguageAliasDeclarationStub"
      implements=["net.masterthought.dlanguage.psi.interfaces.DNamedElement" "net.masterthought.dlanguage.psi.interfaces.HasVisibility" "net.masterthought.dlanguage.psi.interfaces.Declaration"]

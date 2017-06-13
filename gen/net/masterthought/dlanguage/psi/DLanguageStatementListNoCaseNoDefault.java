@@ -7,10 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageStatementListNoCaseNoDefault extends PsiElement {
 
-  @Nullable
-  DLanguageStatementListNoCaseNoDefault getStatementListNoCaseNoDefault();
-
   @NotNull
-  DLanguageStatementNoCaseNoDefault getStatementNoCaseNoDefault();
+  List<DLanguageStatementNoCaseNoDefault> getStatementNoCaseNoDefaultList();
 
 }

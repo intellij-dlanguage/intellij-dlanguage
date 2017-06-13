@@ -5373,7 +5373,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // ForeachType [',' ForeachTypeList]
+  // ForeachType (',' ForeachType)*
   public static boolean ForeachTypeList(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ForeachTypeList")) return false;
     boolean r;
@@ -5384,20 +5384,25 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // [',' ForeachTypeList]
+  // (',' ForeachType)*
   private static boolean ForeachTypeList_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ForeachTypeList_1")) return false;
-    ForeachTypeList_1_0(b, l + 1);
+    int c = current_position_(b);
+    while (true) {
+      if (!ForeachTypeList_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "ForeachTypeList_1", c)) break;
+      c = current_position_(b);
+    }
     return true;
   }
 
-  // ',' ForeachTypeList
+  // ',' ForeachType
   private static boolean ForeachTypeList_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ForeachTypeList_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, OP_COMMA);
-    r = r && ForeachTypeList(b, l + 1);
+    r = r && ForeachType(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -10823,7 +10828,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // StatementNoCaseNoDefault [StatementListNoCaseNoDefault]
+  // StatementNoCaseNoDefault StatementNoCaseNoDefault*
   public static boolean StatementListNoCaseNoDefault(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "StatementListNoCaseNoDefault")) return false;
     boolean r;
@@ -10834,10 +10839,15 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // [StatementListNoCaseNoDefault]
+  // StatementNoCaseNoDefault*
   private static boolean StatementListNoCaseNoDefault_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "StatementListNoCaseNoDefault_1")) return false;
-    StatementListNoCaseNoDefault(b, l + 1);
+    int c = current_position_(b);
+    while (true) {
+      if (!StatementNoCaseNoDefault(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "StatementListNoCaseNoDefault_1", c)) break;
+      c = current_position_(b);
+    }
     return true;
   }
 
