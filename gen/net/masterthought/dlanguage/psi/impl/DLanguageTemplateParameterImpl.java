@@ -40,8 +40,20 @@ public class DLanguageTemplateParameterImpl extends ASTWrapperPsiElement impleme
 
   @Override
   @Nullable
+  public DLanguageTemplateTupleParameter getTemplateTupleParameter() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateTupleParameter.class);
+  }
+
+  @Override
+  @Nullable
   public DLanguageTemplateTypeParameter getTemplateTypeParameter() {
     return PsiTreeUtil.getChildOfType(this, DLanguageTemplateTypeParameter.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageTemplateValueParameter getTemplateValueParameter() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateValueParameter.class);
   }
 
 }

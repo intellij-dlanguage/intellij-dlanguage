@@ -265,7 +265,9 @@ public interface DLanguageTypes {
   IElementType TEMPLATE_PARAMETER_LIST = new DLanguageElementType("TEMPLATE_PARAMETER_LIST");
   IElementType TEMPLATE_SINGLE_ARGUMENT = new DLanguageElementType("TEMPLATE_SINGLE_ARGUMENT");
   IElementType TEMPLATE_THIS_PARAMETER = new DLanguageElementType("TEMPLATE_THIS_PARAMETER");
+  IElementType TEMPLATE_TUPLE_PARAMETER = new DLanguageElementType("TEMPLATE_TUPLE_PARAMETER");
   IElementType TEMPLATE_TYPE_PARAMETER = new DLanguageElementType("TEMPLATE_TYPE_PARAMETER");
+  IElementType TEMPLATE_VALUE_PARAMETER = new DLanguageElementType("TEMPLATE_VALUE_PARAMETER");
   IElementType TEMPLATE_VALUE_PARAMETER_DEFAULT = new DLanguageElementType("TEMPLATE_VALUE_PARAMETER_DEFAULT");
   IElementType TEST = new DLanguageElementType("TEST");
   IElementType THEN_STATEMENT = new DLanguageElementType("THEN_STATEMENT");
@@ -1215,8 +1217,14 @@ public interface DLanguageTypes {
       else if (type == TEMPLATE_THIS_PARAMETER) {
         return new DLanguageTemplateThisParameterImpl(node);
       }
+      else if (type == TEMPLATE_TUPLE_PARAMETER) {
+        return new DLanguageTemplateTupleParameterImpl(node);
+      }
       else if (type == TEMPLATE_TYPE_PARAMETER) {
         return new DLanguageTemplateTypeParameterImpl(node);
+      }
+      else if (type == TEMPLATE_VALUE_PARAMETER) {
+        return new DLanguageTemplateValueParameterImpl(node);
       }
       else if (type == TEMPLATE_VALUE_PARAMETER_DEFAULT) {
         return new DLanguageTemplateValueParameterDefaultImpl(node);
