@@ -28,12 +28,15 @@ public interface DLanguageClassDeclaration extends StatementContainer, MixinCont
   DLanguageBaseClassList getBaseClassList();
 
   @Nullable
-  DLanguageClassTemplateDeclaration getClassTemplateDeclaration();
+  DLanguageConstraint getConstraint();
 
-  @Nullable
+  @NotNull
   DLanguageIdentifier getIdentifier();
 
   @Nullable
+  DLanguageTemplateParameters getTemplateParameters();
+
+  @NotNull
   PsiElement getKwClass();
 
   @Nullable
@@ -65,5 +68,9 @@ public interface DLanguageClassDeclaration extends StatementContainer, MixinCont
   List<CanInherit> whatInheritsFrom();
 
   Map<String, DLanguageIdentifier> getSuperClassNames();
+
+  //WARNING: processDeclarations(...) is skipped
+  //matching processDeclarations(DLanguageClassDeclaration, ...)
+  //methods are not found in DPsiImplUtil
 
 }

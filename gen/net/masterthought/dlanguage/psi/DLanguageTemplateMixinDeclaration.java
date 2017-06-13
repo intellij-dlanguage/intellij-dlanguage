@@ -56,7 +56,7 @@ public interface DLanguageTemplateMixinDeclaration extends DNamedElement, Statem
   @NotNull
   PsiReference getReference();
 
-  @Nullable
+  @NotNull
   PsiElement setName(String newName);
 
   @NotNull
@@ -65,5 +65,9 @@ public interface DLanguageTemplateMixinDeclaration extends DNamedElement, Statem
   boolean isSomeVisibility(Visibility visibility, Class<? extends Container> containerType);
 
   boolean isSomeVisibility(Visibility visibility);
+
+  //WARNING: processDeclarations(...) is skipped
+  //matching processDeclarations(DLanguageTemplateMixinDeclaration, ...)
+  //methods are not found in DPsiImplUtil
 
 }

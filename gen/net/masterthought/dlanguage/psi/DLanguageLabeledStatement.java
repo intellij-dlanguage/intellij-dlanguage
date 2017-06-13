@@ -31,10 +31,14 @@ public interface DLanguageLabeledStatement extends DNamedElement, StatementConta
   @NotNull
   PsiReference getReference();
 
-  @Nullable
+  @NotNull
   PsiElement setName(String newName);
 
   @NotNull
   ItemPresentation getPresentation();
+
+  //WARNING: processDeclarations(...) is skipped
+  //matching processDeclarations(DLanguageLabeledStatement, ...)
+  //methods are not found in DPsiImplUtil
 
 }

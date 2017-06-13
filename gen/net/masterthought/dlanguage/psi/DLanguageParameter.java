@@ -34,4 +34,8 @@ public interface DLanguageParameter extends PsiElement {
   @Nullable
   PsiElement getOpTripledot();
 
+  //WARNING: processDeclarations(...) is skipped
+  //matching processDeclarations(DLanguageParameter, ...)
+  //methods are not found in DPsiImplUtil
+
 }

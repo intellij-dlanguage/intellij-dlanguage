@@ -8,7 +8,6 @@ import net.masterthought.dlanguage.psi.interfaces.containers.StatementContainer;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 import net.masterthought.dlanguage.psi.interfaces.containers.MixinContainer;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
-import net.masterthought.dlanguage.psi.interfaces.HasTemplateArguments;
 import net.masterthought.dlanguage.psi.interfaces.CanInherit;
 import net.masterthought.dlanguage.psi.interfaces.Declaration;
 import com.intellij.psi.StubBasedPsiElement;
@@ -19,7 +18,7 @@ import net.masterthought.dlanguage.psi.interfaces.containers.Container;
 import java.util.Map;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 
-public interface DLanguageInterfaceDeclaration extends StatementContainer, DNamedElement, MixinContainer, HasVisibility, HasTemplateArguments, CanInherit, Declaration, StubBasedPsiElement<DLanguageInterfaceDeclarationStub> {
+public interface DLanguageInterfaceDeclaration extends StatementContainer, DNamedElement, MixinContainer, HasVisibility, CanInherit, Declaration, StubBasedPsiElement<DLanguageInterfaceDeclarationStub> {
 
   @Nullable
   DLanguageAggregateBody getAggregateBody();
@@ -28,12 +27,15 @@ public interface DLanguageInterfaceDeclaration extends StatementContainer, DName
   DLanguageBaseInterfaceList getBaseInterfaceList();
 
   @Nullable
+  DLanguageConstraint getConstraint();
+
+  @NotNull
   DLanguageIdentifier getIdentifier();
 
   @Nullable
-  DLanguageInterfaceTemplateDeclaration getInterfaceTemplateDeclaration();
+  DLanguageTemplateParameters getTemplateParameters();
 
-  @Nullable
+  @NotNull
   PsiElement getKwInterface();
 
   @Nullable
@@ -50,7 +52,7 @@ public interface DLanguageInterfaceDeclaration extends StatementContainer, DName
   @NotNull
   PsiReference getReference();
 
-  @Nullable
+  @NotNull
   PsiElement setName(String newName);
 
   @NotNull
@@ -62,7 +64,9 @@ public interface DLanguageInterfaceDeclaration extends StatementContainer, DName
 
   List<CanInherit> whatInheritsFrom();
 
-  List<DLanguageTemplateParameter> getTemplateArguments();
+  //WARNING: getTemplateArguments(...) is skipped
+  //matching getTemplateArguments(DLanguageInterfaceDeclaration, ...)
+  //methods are not found in DPsiImplUtil
 
   Map<String, DLanguageIdentifier> getSuperClassNames();
 

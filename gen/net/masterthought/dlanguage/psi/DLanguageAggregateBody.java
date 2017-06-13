@@ -16,8 +16,4 @@ public interface DLanguageAggregateBody extends PsiElement {
   @NotNull
   PsiElement getOpBracesRight();
 
-  //WARNING: processDeclarations(...) is skipped
-  //matching processDeclarations(DLanguageAggregateBody, ...)
-  //methods are not found in DPsiImplUtil
-
 }

@@ -8,12 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageInterfaces extends PsiElement {
 
   @NotNull
-  DLanguageInterface getInterface();
-
-  @Nullable
-  DLanguageInterfaces getInterfaces();
-
-  @Nullable
-  PsiElement getOpComma();
+  List<DLanguageInterface> getInterfaceList();
 
 }

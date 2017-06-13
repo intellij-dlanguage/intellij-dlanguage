@@ -43,8 +43,8 @@ public class DLanguageUnionDeclarationImpl extends DNamedStubbedPsiElementBase<D
 
   @Override
   @Nullable
-  public DLanguageAnonUnionDeclaration getAnonUnionDeclaration() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageAnonUnionDeclaration.class);
+  public DLanguageConstraint getConstraint() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageConstraint.class);
   }
 
   @Override
@@ -55,14 +55,14 @@ public class DLanguageUnionDeclarationImpl extends DNamedStubbedPsiElementBase<D
 
   @Override
   @Nullable
-  public DLanguageUnionTemplateDeclaration getUnionTemplateDeclaration() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageUnionTemplateDeclaration.class);
+  public DLanguageTemplateParameters getTemplateParameters() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateParameters.class);
   }
 
   @Override
-  @Nullable
+  @NotNull
   public PsiElement getKwUnion() {
-    return findChildByType(KW_UNION);
+    return notNullChild(findChildByType(KW_UNION));
   }
 
   @Override

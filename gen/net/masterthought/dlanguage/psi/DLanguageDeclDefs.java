@@ -10,4 +10,8 @@ public interface DLanguageDeclDefs extends PsiElement {
   @NotNull
   List<DLanguageDeclDef> getDeclDefList();
 
+  //WARNING: processDeclarations(...) is skipped
+  //matching processDeclarations(DLanguageDeclDefs, ...)
+  //methods are not found in DPsiImplUtil
+
 }

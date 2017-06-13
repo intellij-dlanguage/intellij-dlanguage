@@ -67,4 +67,8 @@ public interface DLanguageTemplateDeclaration extends DNamedElement, StatementCo
 
   boolean isSomeVisibility(Visibility visibility);
 
+  //WARNING: proccessDeclarations(...) is skipped
+  //matching proccessDeclarations(DLanguageTemplateDeclaration, ...)
+  //methods are not found in DPsiImplUtil
+
 }

@@ -51,20 +51,26 @@ public class DLanguageClassDeclarationImpl extends DNamedStubbedPsiElementBase<D
 
   @Override
   @Nullable
-  public DLanguageClassTemplateDeclaration getClassTemplateDeclaration() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageClassTemplateDeclaration.class);
+  public DLanguageConstraint getConstraint() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageConstraint.class);
   }
 
   @Override
-  @Nullable
+  @NotNull
   public DLanguageIdentifier getIdentifier() {
-    return PsiTreeUtil.getStubChildOfType(this, DLanguageIdentifier.class);
+    return notNullChild(PsiTreeUtil.getStubChildOfType(this, DLanguageIdentifier.class));
   }
 
   @Override
   @Nullable
+  public DLanguageTemplateParameters getTemplateParameters() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateParameters.class);
+  }
+
+  @Override
+  @NotNull
   public PsiElement getKwClass() {
-    return findChildByType(KW_CLASS);
+    return notNullChild(findChildByType(KW_CLASS));
   }
 
   @Override

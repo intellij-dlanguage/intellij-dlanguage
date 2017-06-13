@@ -12,8 +12,6 @@ import net.masterthought.dlanguage.stubs.DLanguageModuleDeclarationStub;
 import net.masterthought.dlanguage.psi.*;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
-import net.masterthought.dlanguage.psi.interfaces.containers.Container;
-import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 import com.intellij.psi.stubs.IStubElementType;
 
 public class DLanguageModuleDeclarationImpl extends DNamedStubbedPsiElementBase<DLanguageModuleDeclarationStub> implements DLanguageModuleDeclaration {
@@ -86,14 +84,6 @@ public class DLanguageModuleDeclarationImpl extends DNamedStubbedPsiElementBase<
   @NotNull
   public ItemPresentation getPresentation() {
     return DPsiImplUtil.getPresentation(this);
-  }
-
-  public boolean isSomeVisibility(Visibility visibility) {
-    return DPsiImplUtil.isSomeVisibility(this, visibility);
-  }
-
-  public boolean isSomeVisibility(Visibility visibility, Class<? extends Container> containerType) {
-    return DPsiImplUtil.isSomeVisibility(this, visibility, containerType);
   }
 
 }

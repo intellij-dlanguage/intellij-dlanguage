@@ -26,4 +26,8 @@ public interface DLanguageMixinStatement extends Mixin {
   @Nullable
   String getName();
 
+  //WARNING: processDeclarations(...) is skipped
+  //matching processDeclarations(DLanguageMixinStatement, ...)
+  //methods are not found in DPsiImplUtil
+
 }

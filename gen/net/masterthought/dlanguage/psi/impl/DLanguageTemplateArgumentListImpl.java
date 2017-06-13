@@ -28,20 +28,8 @@ public class DLanguageTemplateArgumentListImpl extends ASTWrapperPsiElement impl
 
   @Override
   @NotNull
-  public DLanguageTemplateArgument getTemplateArgument() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageTemplateArgument.class));
-  }
-
-  @Override
-  @Nullable
-  public DLanguageTemplateArgumentList getTemplateArgumentList() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateArgumentList.class);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpComma() {
-    return findChildByType(OP_COMMA);
+  public List<DLanguageTemplateArgument> getTemplateArgumentList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageTemplateArgument.class);
   }
 
 }

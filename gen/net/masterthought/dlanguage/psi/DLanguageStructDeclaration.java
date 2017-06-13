@@ -62,4 +62,8 @@ public interface DLanguageStructDeclaration extends StatementContainer, DNamedEl
   //matching getTemplateArguments(DLanguageStructDeclaration, ...)
   //methods are not found in DPsiImplUtil
 
+  //WARNING: proccessDeclarations(...) is skipped
+  //matching proccessDeclarations(DLanguageStructDeclaration, ...)
+  //methods are not found in DPsiImplUtil
+
 }

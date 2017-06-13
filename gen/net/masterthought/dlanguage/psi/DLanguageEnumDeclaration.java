@@ -55,4 +55,8 @@ public interface DLanguageEnumDeclaration extends DNamedElement, HasVisibility, 
 
   boolean isSomeVisibility(Visibility visibility, Class<? extends Container> containerType);
 
+  //WARNING: processDeclarations(...) is skipped
+  //matching processDeclarations(DLanguageEnumDeclaration, ...)
+  //methods are not found in DPsiImplUtil
+
 }

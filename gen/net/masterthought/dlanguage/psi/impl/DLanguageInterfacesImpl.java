@@ -28,20 +28,8 @@ public class DLanguageInterfacesImpl extends ASTWrapperPsiElement implements DLa
 
   @Override
   @NotNull
-  public DLanguageInterface getInterface() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageInterface.class));
-  }
-
-  @Override
-  @Nullable
-  public DLanguageInterfaces getInterfaces() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageInterfaces.class);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpComma() {
-    return findChildByType(OP_COMMA);
+  public List<DLanguageInterface> getInterfaceList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageInterface.class);
   }
 
 }

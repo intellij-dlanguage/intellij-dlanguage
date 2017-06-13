@@ -10,6 +10,9 @@ public interface DLanguageTemplateParameters extends PsiElement {
   @Nullable
   DLanguageTemplateParameterList getTemplateParameterList();
 
+  @Nullable
+  PsiElement getOpComma();
+
   @NotNull
   PsiElement getOpParLeft();
 

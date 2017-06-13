@@ -37,4 +37,8 @@ public interface DLanguageEnumFuncDeclaration extends PsiElement {
   @NotNull
   PsiElement getOpScolon();
 
+  //WARNING: processDeclarations(...) is skipped
+  //matching processDeclarations(DLanguageEnumFuncDeclaration, ...)
+  //methods are not found in DPsiImplUtil
+
 }

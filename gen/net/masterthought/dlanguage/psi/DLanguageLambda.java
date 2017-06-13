@@ -31,4 +31,8 @@ public interface DLanguageLambda extends PsiElement {
   @NotNull
   PsiElement getOpLambdaArrow();
 
+  //WARNING: processDeclarations(...) is skipped
+  //matching processDeclarations(DLanguageLambda, ...)
+  //methods are not found in DPsiImplUtil
+
 }

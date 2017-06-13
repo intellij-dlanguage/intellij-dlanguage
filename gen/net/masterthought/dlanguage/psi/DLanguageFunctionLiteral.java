@@ -28,4 +28,8 @@ public interface DLanguageFunctionLiteral extends PsiElement {
   @Nullable
   PsiElement getKwFunction();
 
+  //WARNING: processDeclarations(...) is skipped
+  //matching processDeclarations(DLanguageFunctionLiteral, ...)
+  //methods are not found in DPsiImplUtil
+
 }

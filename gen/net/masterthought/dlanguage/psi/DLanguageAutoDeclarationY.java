@@ -54,4 +54,8 @@ public interface DLanguageAutoDeclarationY extends DNamedElement, VariableDeclar
 
   Type getVariableDeclarationType();
 
+  //WARNING: processDeclarations(...) is skipped
+  //matching processDeclarations(DLanguageAutoDeclarationY, ...)
+  //methods are not found in DPsiImplUtil
+
 }

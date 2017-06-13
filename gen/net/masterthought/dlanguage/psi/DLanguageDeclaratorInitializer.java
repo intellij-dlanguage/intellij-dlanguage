@@ -57,4 +57,8 @@ public interface DLanguageDeclaratorInitializer extends DNamedElement, VariableD
 
   Type getVariableDeclarationType();
 
+  //WARNING: processDeclarations(...) is skipped
+  //matching processDeclarations(DLanguageDeclaratorInitializer, ...)
+  //methods are not found in DPsiImplUtil
+
 }

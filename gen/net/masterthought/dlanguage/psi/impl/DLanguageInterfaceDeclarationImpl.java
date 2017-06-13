@@ -51,20 +51,26 @@ public class DLanguageInterfaceDeclarationImpl extends DNamedStubbedPsiElementBa
 
   @Override
   @Nullable
+  public DLanguageConstraint getConstraint() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageConstraint.class);
+  }
+
+  @Override
+  @NotNull
   public DLanguageIdentifier getIdentifier() {
-    return PsiTreeUtil.getStubChildOfType(this, DLanguageIdentifier.class);
+    return notNullChild(PsiTreeUtil.getStubChildOfType(this, DLanguageIdentifier.class));
   }
 
   @Override
   @Nullable
-  public DLanguageInterfaceTemplateDeclaration getInterfaceTemplateDeclaration() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageInterfaceTemplateDeclaration.class);
+  public DLanguageTemplateParameters getTemplateParameters() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateParameters.class);
   }
 
   @Override
-  @Nullable
+  @NotNull
   public PsiElement getKwInterface() {
-    return findChildByType(KW_INTERFACE);
+    return notNullChild(findChildByType(KW_INTERFACE));
   }
 
   @Override
@@ -92,7 +98,7 @@ public class DLanguageInterfaceDeclarationImpl extends DNamedStubbedPsiElementBa
     return DPsiImplUtil.getReference(this);
   }
 
-  @Nullable
+  @NotNull
   public PsiElement setName(String newName) {
     return DPsiImplUtil.setName(this, newName);
   }
@@ -112,10 +118,6 @@ public class DLanguageInterfaceDeclarationImpl extends DNamedStubbedPsiElementBa
 
   public List<CanInherit> whatInheritsFrom() {
     return DPsiImplUtil.whatInheritsFrom(this);
-  }
-
-  public List<DLanguageTemplateParameter> getTemplateArguments() {
-    return DPsiImplUtil.getTemplateArguments(this);
   }
 
   public Map<String, DLanguageIdentifier> getSuperClassNames() {

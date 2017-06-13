@@ -59,28 +59,15 @@ public class DReference extends PsiReferenceBase<PsiNamedElement> implements Psi
                 identifiers.add(((DLanguageTemplateDeclaration) namedElement).getIdentifier());
             }
             else if(namedElement instanceof DLanguageClassDeclaration){
-                if(((DLanguageClassDeclaration) namedElement).getIdentifier() != null) {
-                    identifiers.add(((DLanguageClassDeclaration) namedElement).getIdentifier());
-                }
-                else if(((DLanguageClassDeclaration) namedElement).getClassTemplateDeclaration().getIdentifier() != null) {
-                    identifiers.add(((DLanguageClassDeclaration) namedElement).getClassTemplateDeclaration().getIdentifier());
-                }
+                identifiers.add(((DLanguageClassDeclaration) namedElement).getIdentifier());
             }
             else if(namedElement instanceof DLanguageUnionDeclaration){
                 if(((DLanguageUnionDeclaration) namedElement).getIdentifier() != null) {
                     identifiers.add(((DLanguageUnionDeclaration) namedElement).getIdentifier());
                 }
-                else if(((DLanguageUnionDeclaration) namedElement).getUnionTemplateDeclaration().getIdentifier() != null) {
-                    identifiers.add(((DLanguageUnionDeclaration) namedElement).getUnionTemplateDeclaration().getIdentifier());
-                }
             }
             else if(namedElement instanceof DLanguageInterfaceDeclaration){
-                if(((DLanguageInterfaceDeclaration) namedElement).getIdentifier() != null) {
-                    identifiers.add(((DLanguageInterfaceDeclaration) namedElement).getIdentifier());
-                }
-                else if(((DLanguageInterfaceDeclaration) namedElement).getInterfaceTemplateDeclaration().getIdentifier() != null) {
-                    identifiers.add(((DLanguageInterfaceDeclaration) namedElement).getInterfaceTemplateDeclaration().getIdentifier());
-                }
+                identifiers.add(((DLanguageInterfaceDeclaration) namedElement).getIdentifier());
             }
             else if(namedElement instanceof DLanguageStructDeclaration){
                 if(((DLanguageStructDeclaration) namedElement).getIdentifier() != null) {

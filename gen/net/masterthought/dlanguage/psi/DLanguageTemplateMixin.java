@@ -26,4 +26,8 @@ public interface DLanguageTemplateMixin extends Mixin {
   @NotNull
   String getName();
 
+  //WARNING: processDeclarations(...) is skipped
+  //matching processDeclarations(DLanguageTemplateMixin, ...)
+  //methods are not found in DPsiImplUtil
+
 }

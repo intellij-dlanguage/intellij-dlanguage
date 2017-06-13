@@ -61,4 +61,8 @@ public interface DLanguageConstructor extends StatementContainer, DNamedElement,
   @NotNull
   List<DLanguageParameter> getArguments();
 
+  //WARNING: processDeclarations(...) is skipped
+  //matching processDeclarations(DLanguageConstructor, ...)
+  //methods are not found in DPsiImplUtil
+
 }

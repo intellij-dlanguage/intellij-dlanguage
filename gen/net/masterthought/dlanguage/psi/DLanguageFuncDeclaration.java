@@ -84,4 +84,8 @@ public interface DLanguageFuncDeclaration extends StatementContainer, DNamedElem
 
   boolean isPropertyFunction();
 
+  //WARNING: processDeclarations(...) is skipped
+  //matching processDeclarations(DLanguageFuncDeclaration, ...)
+  //methods are not found in DPsiImplUtil
+
 }

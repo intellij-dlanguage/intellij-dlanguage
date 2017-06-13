@@ -28,44 +28,14 @@ public class DLanguageIfConditionImpl extends ASTWrapperPsiElement implements DL
 
   @Override
   @Nullable
-  public DLanguageBasicType getBasicType() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageBasicType.class);
-  }
-
-  @Override
-  @NotNull
   public DLanguageCommaExpression getCommaExpression() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageCommaExpression.class));
+    return PsiTreeUtil.getChildOfType(this, DLanguageCommaExpression.class);
   }
 
   @Override
   @Nullable
-  public DLanguageDeclarator getDeclarator() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageDeclarator.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageIdentifier getIdentifier() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageTypeCtors getTypeCtors() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageTypeCtors.class);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwAuto() {
-    return findChildByType(KW_AUTO);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpEq() {
-    return findChildByType(OP_EQ);
+  public DLanguageIfConditionVariable getIfConditionVariable() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageIfConditionVariable.class);
   }
 
 }

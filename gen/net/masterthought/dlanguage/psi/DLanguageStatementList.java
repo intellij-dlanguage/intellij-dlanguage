@@ -10,4 +10,8 @@ public interface DLanguageStatementList extends PsiElement {
   @NotNull
   List<DLanguageStatement> getStatementList();
 
+  //WARNING: processDeclarations(...) is skipped
+  //matching processDeclarations(DLanguageStatementList, ...)
+  //methods are not found in DPsiImplUtil
+
 }

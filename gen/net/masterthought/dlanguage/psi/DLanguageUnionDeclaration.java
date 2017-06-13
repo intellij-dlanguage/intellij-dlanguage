@@ -22,15 +22,15 @@ public interface DLanguageUnionDeclaration extends StatementContainer, DNamedEle
   DLanguageAggregateBody getAggregateBody();
 
   @Nullable
-  DLanguageAnonUnionDeclaration getAnonUnionDeclaration();
+  DLanguageConstraint getConstraint();
 
   @Nullable
   DLanguageIdentifier getIdentifier();
 
   @Nullable
-  DLanguageUnionTemplateDeclaration getUnionTemplateDeclaration();
+  DLanguageTemplateParameters getTemplateParameters();
 
-  @Nullable
+  @NotNull
   PsiElement getKwUnion();
 
   @Nullable
@@ -59,6 +59,10 @@ public interface DLanguageUnionDeclaration extends StatementContainer, DNamedEle
 
   //WARNING: getTemplateArguments(...) is skipped
   //matching getTemplateArguments(DLanguageUnionDeclaration, ...)
+  //methods are not found in DPsiImplUtil
+
+  //WARNING: proccessDeclarations(...) is skipped
+  //matching proccessDeclarations(DLanguageUnionDeclaration, ...)
   //methods are not found in DPsiImplUtil
 
 }

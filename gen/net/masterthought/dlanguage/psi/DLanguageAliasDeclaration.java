@@ -81,4 +81,8 @@ public interface DLanguageAliasDeclaration extends DNamedElement, HasVisibility,
 
   Type getDeclarationType();
 
+  //WARNING: processDeclarations(...) is skipped
+  //matching processDeclarations(DLanguageAliasDeclaration, ...)
+  //methods are not found in DPsiImplUtil
+
 }
