@@ -10,6 +10,8 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import net.masterthought.dlanguage.psi.*;
+import com.intellij.psi.ResolveState;
+import com.intellij.psi.scope.PsiScopeProcessor;
 
 public class DLanguageAggregateDeclarationImpl extends ASTWrapperPsiElement implements DLanguageAggregateDeclaration {
 
@@ -48,6 +50,10 @@ public class DLanguageAggregateDeclarationImpl extends ASTWrapperPsiElement impl
   @Nullable
   public DLanguageUnionDeclaration getUnionDeclaration() {
     return PsiTreeUtil.getChildOfType(this, DLanguageUnionDeclaration.class);
+  }
+
+  public boolean processDeclarations(PsiScopeProcessor processor, ResolveState state, PsiElement lastParent, PsiElement place) {
+    return DPsiImplUtil.processDeclarations(this, processor, state, lastParent, place);
   }
 
 }

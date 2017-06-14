@@ -4,6 +4,8 @@ package net.masterthought.dlanguage.psi;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.ResolveState;
+import com.intellij.psi.scope.PsiScopeProcessor;
 
 public interface DLanguageDeclaration extends PsiElement {
 
@@ -17,9 +19,6 @@ public interface DLanguageDeclaration extends PsiElement {
   DLanguageEnumDeclaration getEnumDeclaration();
 
   @Nullable
-  DLanguageEnumFuncDeclaration getEnumFuncDeclaration();
-
-  @Nullable
   DLanguageFuncDeclaration getFuncDeclaration();
 
   @Nullable
@@ -31,8 +30,9 @@ public interface DLanguageDeclaration extends PsiElement {
   @Nullable
   DLanguageVarDeclarations getVarDeclarations();
 
-  //WARNING: processDeclarations(...) is skipped
-  //matching processDeclarations(DLanguageDeclaration, ...)
-  //methods are not found in DPsiImplUtil
+  @Nullable
+  DLanguageVarFuncDeclaration getVarFuncDeclaration();
+
+  boolean processDeclarations(PsiScopeProcessor processor, ResolveState state, PsiElement lastParent, PsiElement place);
 
 }

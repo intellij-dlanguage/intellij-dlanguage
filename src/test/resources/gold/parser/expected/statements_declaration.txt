@@ -26,13 +26,14 @@ D Language File
     PsiComment(DLanguageTokenType.LINE_COMMENT)('// declare struct s')
     DLanguageDeclDefImpl(DECL_DEF)
       DLanguageDeclarationImpl(DECLARATION)
-        ALIAS_DECLARATION
-          PsiElement(DLanguageTokenType.alias)('alias')
-          IDENTIFIER
-            PsiElement(DLanguageTokenType.ID)('myint')
-          PsiElement(DLanguageTokenType.=)('=')
-          DLanguageTypeImpl(TYPE)
-            DLanguageBasicTypeImpl(BASIC_TYPE)
-              DLanguageBasicTypeXImpl(BASIC_TYPE_X)
-                PsiElement(DLanguageTokenType.int)('int')
-          PsiElement(DLanguageTokenType.;)(';')
+        DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
+          ALIAS_DECLARATION_SINGLE
+            PsiElement(DLanguageTokenType.alias)('alias')
+            IDENTIFIER
+              PsiElement(DLanguageTokenType.ID)('myint')
+            PsiElement(DLanguageTokenType.=)('=')
+            DLanguageTypeImpl(TYPE)
+              DLanguageBasicTypeImpl(BASIC_TYPE)
+                DLanguageBasicTypeXImpl(BASIC_TYPE_X)
+                  PsiElement(DLanguageTokenType.int)('int')
+            PsiElement(DLanguageTokenType.;)(';')

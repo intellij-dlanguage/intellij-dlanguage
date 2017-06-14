@@ -39,7 +39,7 @@ D Language File
           DLanguageEnumBodyImpl(ENUM_BODY)
             PsiElement(DLanguageTokenType.{)('{')
             DLanguageEnumMembersImpl(ENUM_MEMBERS)
-              DLanguageEnumMemberImpl(ENUM_MEMBER)
+              ENUM_MEMBER
                 IDENTIFIER
                   PsiElement(DLanguageTokenType.ID)('RED')
             PsiElement(DLanguageTokenType.})('}')

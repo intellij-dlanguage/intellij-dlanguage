@@ -11,9 +11,8 @@ import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
 import net.masterthought.dlanguage.stubs.interfaces.UnitTestingStub;
 import net.masterthought.dlanguage.psi.*;
 import com.intellij.psi.stubs.IStubElementType;
-import com.intellij.psi.tree.IElementType;
 
-public class DLanguageUnitTestingImpl extends DStubBasedPsiElementBase<UnitTestingStub> implements DLanguageUnitTesting {
+public class DLanguageUnitTestingImpl extends DStubbedPsiElementBase<UnitTestingStub> implements DLanguageUnitTesting {
 
   public DLanguageUnitTestingImpl(UnitTestingStub stub, IStubElementType type) {
     super(stub, type);
@@ -21,10 +20,6 @@ public class DLanguageUnitTestingImpl extends DStubBasedPsiElementBase<UnitTesti
 
   public DLanguageUnitTestingImpl(ASTNode node) {
     super(node);
-  }
-
-  public DLanguageUnitTestingImpl(UnitTestingStub stub, IElementType type, ASTNode node) {
-    super(stub, type, node);
   }
 
   public void accept(@NotNull DLanguageVisitor visitor) {

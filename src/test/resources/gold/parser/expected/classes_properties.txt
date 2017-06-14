@@ -47,7 +47,7 @@ D Language File
             DLanguageParametersImpl(PARAMETERS)
               PsiElement(DLanguageTokenType.()('(')
               DLanguageParameterListImpl(PARAMETER_LIST)
-                DLanguageParameterImpl(PARAMETER)
+                PARAMETER
                   DLanguageBasicTypeImpl(BASIC_TYPE)
                     DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                       IDENTIFIER
@@ -127,7 +127,7 @@ D Language File
                       PsiElement(DLanguageTokenType.foreach)('foreach')
                     PsiElement(DLanguageTokenType.()('(')
                     DLanguageForeachTypeListImpl(FOREACH_TYPE_LIST)
-                      DLanguageForeachTypeImpl(FOREACH_TYPE)
+                      FOREACH_TYPE
                         IDENTIFIER
                           PsiElement(DLanguageTokenType.ID)('x')
                     PsiElement(DLanguageTokenType.;)(';')

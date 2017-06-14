@@ -27,13 +27,15 @@ public interface DLanguageImport extends DNamedElement, HasVisibility, StubBased
   @NotNull
   String getName();
 
+  String getFullName();
+
   @Nullable
   PsiElement getNameIdentifier();
 
   @NotNull
   PsiReference getReference();
 
-  @Nullable
+  @NotNull
   PsiElement setName(String newName);
 
   @NotNull

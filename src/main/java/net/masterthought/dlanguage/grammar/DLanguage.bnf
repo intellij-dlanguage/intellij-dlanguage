@@ -17,9 +17,9 @@
 
 
   // used to extend to use stubs
-  extends("Identifier|LabeledStatement|FuncDeclaration|ClassDeclaration|InterfaceDeclaration|TemplateDeclaration|Constructor|Destructor|StructDeclaration|AliasDeclaration|ModuleDeclaration|TemplateMixinDeclaration|DeclaratorInitializer|AutoDeclarationY|UnionDeclaration|EnumDeclaration|Import")="net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase<?>"
-  elementTypeFactory("Identifier|LabeledStatement|FuncDeclaration|ClassDeclaration|InterfaceDeclaration|TemplateDeclaration|Constructor|Destructor|StructDeclaration|AliasDeclaration|ModuleDeclaration|TemplateMixinDeclaration|DeclaratorInitializer|AutoDeclarationY|UnionDeclaration|EnumDeclaration|Import|UnitTesting")="net.masterthought.dlanguage.psi.impl.DElementTypeFactory.factory"
-
+  extends("Identifier|LabeledStatement|FuncDeclaration|ClassDeclaration|InterfaceDeclaration|TemplateDeclaration|Constructor|StructDeclaration|AliasDeclarationSingle|AliasDeclarationY|ModuleDeclaration|TemplateMixinDeclaration|DeclaratorInitializer|AutoDeclarationY|UnionDeclaration|EnumDeclaration|Import|ConditionVariableDeclaration|ForeachType|CatchParameter|VarFuncDeclaration|Parameter|EnumMember|TemplateParameter|Destructor|StaticDestructor|StaticConstructor|SharedStaticDestructor|SharedStaticConstructor")="net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase<?>"
+  elementTypeFactory("Identifier|LabeledStatement|FuncDeclaration|ClassDeclaration|InterfaceDeclaration|TemplateDeclaration|Constructor|StructDeclaration|AliasDeclarationSingle|AliasDeclarationY|ModuleDeclaration|TemplateMixinDeclaration|DeclaratorInitializer|AutoDeclarationY|UnionDeclaration|EnumDeclaration|Import|UnitTesting|ConditionVariableDeclaration|ForeachType|CatchParameter|VarFuncDeclaration|Parameter|EnumMember|TemplateParameter|Destructor|StaticDestructor|StaticConstructor|SharedStaticDestructor|SharedStaticConstructor")="net.masterthought.dlanguage.psi.impl.DElementTypeFactory.factory"
+//todo go through and add VariableDeclaration implmentations
 
   generateTokenAccessors=true
 
@@ -279,7 +279,7 @@ ImportList ::=
 
 Import ::=
     (Identifier '=')? ModuleFullyQualifiedName{
-     methods=[getName getNameIdentifier getReference setName getPresentation isSomeVisibility]
+     methods=[getName getFullName getNameIdentifier getReference setName getPresentation isSomeVisibility]
      pin = 2
      stubClass="net.masterthought.dlanguage.stubs.DLanguageImportDeclarationStub"
      implements = ["net.masterthought.dlanguage.psi.interfaces.DNamedElement" "net.masterthought.dlanguage.psi.interfaces.HasVisibility"]
@@ -826,7 +826,7 @@ ScopeStatement ::=
 LabeledStatement ::=
     Identifier ':' Statement?
     {
-        methods=[getName getNameIdentifier getReference setName getPresentation processDeclarations ]
+        methods=[getName getFullName getNameIdentifier getReference setName getPresentation processDeclarations ]
         pin = 2
         stubClass="net.masterthought.dlanguage.stubs.DLanguageLabeledStatementStub"
         implements = [ "net.masterthought.dlanguage.psi.interfaces.DNamedElement" "net.masterthought.dlanguage.psi.interfaces.containers.StatementContainer" ]
@@ -857,14 +857,16 @@ IfStatement ::=
 
 IfCondition ::=
     Expression
-    | IfConditionVariable//should be above expression
+    | ConditionVariableDeclaration//should be above expression
 
-IfConditionVariable ::=
+ConditionVariableDeclaration ::=
     'auto' Identifier '=' Expression
     | TypeCtors Identifier '=' Expression
     | TypeCtors? BasicType Declarator '=' Expression
     {
-        //todo needs to be named
+        methods=[getName getFullName getNameIdentifier getReference setName getPresentation processDeclarations ]
+        stubClass="net.masterthought.dlanguage.stubs.DLanguageConditionVariableDeclarationStub"
+        implements = [ "net.masterthought.dlanguage.psi.interfaces.DNamedElement" "net.masterthought.dlanguage.psi.interfaces.VariableDeclaration" "net.masterthought.dlanguage.psi.interfaces.Declaration" ]
     }
 
 ThenStatement ::=
@@ -876,7 +878,7 @@ ElseStatement ::=
 WhileStatement ::=
     'while' '(' Expression ')' ScopeStatement
     {
-        //todo check that while statements can't contain falsy/truethy declaration
+        //todo check that while statements can't contain falsy/truthy declaration
         pin = 1
         methods = [processDeclarations]//this need not exist if while(), cannot contain var declarations as described as the above todo
     }
@@ -924,7 +926,9 @@ ForeachType ::=
    | Type? ForeachTypeAttributes? Identifier
    | Identifier
    {
-    //todo this needs to be a named element
+        methods=[getName getFullName getNameIdentifier getReference setName getPresentation processDeclarations ]
+        stubClass="net.masterthought.dlanguage.stubs.DLanguageForeachTypeStub"
+        implements = [ "net.masterthought.dlanguage.psi.interfaces.DNamedElement" "net.masterthought.dlanguage.psi.interfaces.VariableDeclaration" "net.masterthought.dlanguage.psi.interfaces.Declaration"]
    }
 
 ForeachTypeAttributes ::=
@@ -1085,7 +1089,9 @@ Catch ::=
 CatchParameter ::=
     BasicType Identifier?//identifier should be optional, but not optional in the main d grammar
     {
-        //should be named element
+        methods=[getName getFullName getNameIdentifier getReference setName getPresentation isSomeVisibility]
+        stubClass="net.masterthought.dlanguage.stubs.DLanguageCatchParameterStub"
+        implements = ["net.masterthought.dlanguage.psi.interfaces.DNamedElement" "net.masterthought.dlanguage.psi.interfaces.VariableDeclaration" "net.masterthought.dlanguage.psi.interfaces.Declaration"]
     }
 
 FinallyStatement ::=
@@ -1871,7 +1877,7 @@ Opcode ::=
 | 'pswapd'
 
 Declaration ::=
-   EnumFuncDeclaration
+   VarFuncDeclaration
    | FuncDeclaration
    | EnumDeclaration
    | VarDeclarations //must come before alias decleration
@@ -1883,31 +1889,40 @@ Declaration ::=
        methods = [processDeclarations]
    }
 
-EnumFuncDeclaration ::=
+VarFuncDeclaration ::=
     (('enum'|'auto'|Type) FuncDeclarator '=' AssignExpression ';')
     | (('enum'|'auto'|Type) BasicType FuncDeclarator '=' AssignExpression ';')
     {
-       methods = [processDeclarations]
+        methods=[getName getFullName getNameIdentifier getReference setName getPresentation isSomeVisibility actuallyIsDeclaration getDeclarationType processDeclarations]
+        stubClass="net.masterthought.dlanguage.stubs.DLanguageVarFuncDeclarationStub"
+        implements=["net.masterthought.dlanguage.psi.interfaces.DNamedElement" "net.masterthought.dlanguage.psi.interfaces.HasVisibility" "net.masterthought.dlanguage.psi.interfaces.Declaration" ]
     }
 
 
 AliasDeclaration ::=
-  'alias' Identifier '=' Type TemplateArguments? ';'
-  | 'alias' Identifier '=' Initializer ';'
-  | 'alias' StorageClasses? BasicType (FuncDeclarator|Declarator) ';'
+  AliasDeclarationSingle
   | 'alias' AliasDeclarationX ';'
-  {
-     //todo AliasDeclarationX could have multiple names, so this needs to be split up into many named elements
-     methods=[getName getFullName getNameIdentifier getReference setName getPresentation isSomeVisibility actuallyIsDeclaration getDeclarationType processDeclarations]
-     stubClass="net.masterthought.dlanguage.stubs.DLanguageAliasDeclarationStub"
-     implements=["net.masterthought.dlanguage.psi.interfaces.DNamedElement" "net.masterthought.dlanguage.psi.interfaces.HasVisibility" "net.masterthought.dlanguage.psi.interfaces.Declaration"]
-  }
+
+AliasDeclarationSingle ::=
+    'alias' Identifier '=' Type TemplateArguments? ';'
+    | 'alias' Identifier '=' Initializer ';'
+    | 'alias' StorageClasses? BasicType (FuncDeclarator|Declarator) ';'
+    {
+         methods=[getName getFullName getNameIdentifier getReference setName getPresentation isSomeVisibility actuallyIsDeclaration getDeclarationType processDeclarations]
+         stubClass="net.masterthought.dlanguage.stubs.DLanguageAliasDeclarationSingleStub"
+         implements=["net.masterthought.dlanguage.psi.interfaces.DNamedElement" "net.masterthought.dlanguage.psi.interfaces.HasVisibility" "net.masterthought.dlanguage.psi.interfaces.Declaration"]
+      }
 
 AliasDeclarationX ::=
     AliasDeclarationY [',' AliasDeclarationX]
 
 AliasDeclarationY ::=
     Identifier TemplateParameters? '=' ( StorageClasses? Type | FunctionLiteral)
+    {
+        methods=[getName getFullName getNameIdentifier getReference setName getPresentation isSomeVisibility actuallyIsDeclaration getDeclarationType processDeclarations]
+                 stubClass="net.masterthought.dlanguage.stubs.DLanguageAliasDeclarationYStub"
+                 implements=["net.masterthought.dlanguage.psi.interfaces.DNamedElement" "net.masterthought.dlanguage.psi.interfaces.HasVisibility" "net.masterthought.dlanguage.psi.interfaces.Declaration"]
+    }
 
 AutoDeclaration ::=
     StorageClasses? AutoDeclarationX ';'
@@ -1920,7 +1935,7 @@ AutoDeclarationY ::=
     {
         methods = [getName getFullName getNameIdentifier getReference setName getPresentation isSomeVisibility actuallyIsDeclaration getVariableDeclarationType processDeclarations]
         stubClass="net.masterthought.dlanguage.stubs.DLanguageAutoDeclarationStub"
-        implements = ["net.masterthought.dlanguage.psi.interfaces.DNamedElement" "net.masterthought.dlanguage.psi.interfaces.VariableDeclaration" "net.masterthought.dlanguage.psi.interfaces.Declaration"]
+        implements = ["net.masterthought.dlanguage.psi.interfaces.DNamedElement" "net.masterthought.dlanguage.psi.interfaces.VariableDeclaration" "net.masterthought.dlanguage.psi.interfaces.Declaration" ]
     }
 
 VarDeclarations ::=
@@ -1937,7 +1952,7 @@ DeclaratorInitializer ::=
     {
         methods=[ getName getFullName getNameIdentifier getReference setName getPresentation isSomeVisibility actuallyIsDeclaration getVariableDeclarationType processDeclarations]
         stubClass="net.masterthought.dlanguage.stubs.DLanguageDeclaratorInitializerStub"
-        implements = ["net.masterthought.dlanguage.psi.interfaces.DNamedElement" "net.masterthought.dlanguage.psi.interfaces.VariableDeclaration" "net.masterthought.dlanguage.psi.interfaces.Declaration"]
+        implements = ["net.masterthought.dlanguage.psi.interfaces.DNamedElement" "net.masterthought.dlanguage.psi.interfaces.VariableDeclaration" "net.masterthought.dlanguage.psi.interfaces.Declaration" ]
     }
 
 
@@ -1957,7 +1972,6 @@ AltDeclaratorIdentifier ::=
 Declarator ::=
     VarDeclarator
     | AltDeclarator
-//todo check if the above needs to be named element
 
 VarDeclarator ::=
     BasicType2? Identifier
@@ -2070,7 +2084,9 @@ Parameter ::=
        | InOut? 'alias' Identifier '=' AssignExpression
        | InOut? Type ('...')?//why is this '...'? necesary. surely Parameterlist covers this
        {
-           methods = [processDeclarations]
+            methods = [getName getFullName getNameIdentifier getReference setName getPresentation isSomeVisibility  processDeclarations]
+            implements = ["net.masterthought.dlanguage.psi.interfaces.DNamedElement" "net.masterthought.dlanguage.psi.interfaces.Declaration" "net.masterthought.dlanguage.psi.interfaces.VariableDeclaration"]
+            stubClass="net.masterthought.dlanguage.stubs.DLanguageParameterStub"
        }
 
 
@@ -2154,9 +2170,8 @@ Destructor ::=
     '~' 'this' '(' ')' MemberFunctionAttributes? ';'
     | '~' 'this' '(' ')' MemberFunctionAttributes? FunctionBody
     {
-        //todo should only be a stub, not a DNamedElement
-        methods=[getName getFullName getNameIdentifier getReference setName getPresentation isSomeVisibility]
-        implements = ["net.masterthought.dlanguage.psi.interfaces.containers.StatementContainer" "net.masterthought.dlanguage.psi.interfaces.DNamedElement" "net.masterthought.dlanguage.psi.interfaces.HasVisibility" "net.masterthought.dlanguage.psi.interfaces.Declaration"]
+        implements = ["net.masterthought.dlanguage.psi.interfaces.DCompositeElement"]
+        extends = "net.masterthought.dlanguage.psi.impl.DStubbedPsiElementBase<net.masterthought.dlanguage.stubs.DLanguageDestructorStub>"
         stubClass="net.masterthought.dlanguage.stubs.DLanguageDestructorStub"
     }
 
@@ -2193,7 +2208,7 @@ UnitTesting ::=
     {
         pin= 1
         implements = ["net.masterthought.dlanguage.psi.interfaces.DCompositeElement"]
-        extends = "net.masterthought.dlanguage.psi.impl.DStubBasedPsiElementBase<net.masterthought.dlanguage.stubs.interfaces.UnitTestingStub>"
+        extends = "net.masterthought.dlanguage.psi.impl.DStubbedPsiElementBase<net.masterthought.dlanguage.stubs.interfaces.UnitTestingStub>"
         stubClass="net.masterthought.dlanguage.stubs.interfaces.UnitTestingStub"
     }
 
@@ -2201,10 +2216,8 @@ StaticConstructor ::=
     'static' 'this' '(' ')' ';'
     | 'static' 'this' '(' ')' FunctionBody
     {
-        //todo should be stub not DNamedElement
-       pin(".*") = 4
-       methods=[getName getFullName getNameIdentifier getReference setName getPresentation isSomeVisibility ]
-       implements = ["net.masterthought.dlanguage.psi.interfaces.containers.StatementContainer" "net.masterthought.dlanguage.psi.interfaces.DNamedElement" "net.masterthought.dlanguage.psi.interfaces.HasVisibility" "net.masterthought.dlanguage.psi.interfaces.Declaration" ]
+       implements = ["net.masterthought.dlanguage.psi.interfaces.DCompositeElement"]
+       extends = "net.masterthought.dlanguage.psi.impl.DStubbedPsiElementBase<net.masterthought.dlanguage.stubs.DLanguageStaticConstructorStub>"
        stubClass="net.masterthought.dlanguage.stubs.DLanguageStaticConstructorStub"
    }
 
@@ -2212,10 +2225,8 @@ StaticDestructor ::=
     'static' '~' 'this' '(' ')' MemberFunctionAttributes? ';'
     | 'static' '~' 'this' '(' ')' MemberFunctionAttributes? FunctionBody
     {
-        //todo should be stub not DNamedElement
-        pin(".*") = 5
-        methods=[getName getFullName getNameIdentifier getReference setName getPresentation isSomeVisibility]
-        implements = ["net.masterthought.dlanguage.psi.interfaces.containers.StatementContainer" "net.masterthought.dlanguage.psi.interfaces.DNamedElement" "net.masterthought.dlanguage.psi.interfaces.HasVisibility" "net.masterthought.dlanguage.psi.interfaces.Declaration"]
+        implements = ["net.masterthought.dlanguage.psi.interfaces.DCompositeElement"]
+        extends = "net.masterthought.dlanguage.psi.impl.DStubbedPsiElementBase<net.masterthought.dlanguage.stubs.DLanguageStaticDestructorStub>"
         stubClass="net.masterthought.dlanguage.stubs.DLanguageStaticDestructorStub"
     }
 
@@ -2223,21 +2234,17 @@ SharedStaticConstructor ::=
     'shared' 'static' 'this' '(' ')' ';'
     | 'shared' 'static' 'this' '(' ')' FunctionBody
     {
-        //todo should be stub not DNamedElement
-        pin (".*") = 5
-        methods=[getName getFullName getNameIdentifier getReference setName getPresentation isSomeVisibility ]
-        implements = ["net.masterthought.dlanguage.psi.interfaces.containers.StatementContainer" "net.masterthought.dlanguage.psi.interfaces.DNamedElement" "net.masterthought.dlanguage.psi.interfaces.HasVisibility" "net.masterthought.dlanguage.psi.interfaces.Declaration" ]
+        implements = ["net.masterthought.dlanguage.psi.interfaces.DCompositeElement"]
+        extends = "net.masterthought.dlanguage.psi.impl.DStubbedPsiElementBase<net.masterthought.dlanguage.stubs.DLanguageSharedStaticConstructorStub>"
         stubClass="net.masterthought.dlanguage.stubs.DLanguageSharedStaticConstructorStub"
-  }
+    }
 
 SharedStaticDestructor ::=
     'shared' 'static' '~' 'this' '(' ')' MemberFunctionAttributes? ';'
     | 'shared' 'static' '~' 'this' '(' ')' MemberFunctionAttributes? FunctionBody
     {
-        //todo should be stub not DNamedElement
-        pin(".*") = 6
-        methods=[getName getFullName getNameIdentifier getReference setName getPresentation isSomeVisibility]
-        implements = ["net.masterthought.dlanguage.psi.interfaces.containers.StatementContainer" "net.masterthought.dlanguage.psi.interfaces.DNamedElement" "net.masterthought.dlanguage.psi.interfaces.HasVisibility" "net.masterthought.dlanguage.psi.interfaces.Declaration"]
+        implements = ["net.masterthought.dlanguage.psi.interfaces.DCompositeElement"]
+        extends = "net.masterthought.dlanguage.psi.impl.DStubbedPsiElementBase<net.masterthought.dlanguage.stubs.DLanguageSharedStaticDestructorStub>"
         stubClass="net.masterthought.dlanguage.stubs.DLanguageSharedStaticDestructorStub"
     }
 
@@ -2372,7 +2379,12 @@ EnumBody ::=
 EnumMembers ::=
     EnumMember (',' EnumMember)*
 
-EnumMember ::= Identifier ('=' AssignExpression)? | Type Identifier '=' AssignExpression //todo should be DNamedElement
+EnumMember ::= Identifier ('=' AssignExpression)? | Type Identifier '=' AssignExpression
+    {
+        methods=[getName getFullName getNameIdentifier getReference setName getPresentation getTemplateArguments isSomeVisibility proccessDeclarations]
+        implements = ["net.masterthought.dlanguage.psi.interfaces.DNamedElement" "net.masterthought.dlanguage.psi.interfaces.Declaration"]
+        stubClass="net.masterthought.dlanguage.stubs.DLanguageEnumMemberStub"
+    }
 
 AnonymousEnumDeclaration ::=
     'enum' (':' EnumBaseType)? ('{' EnumMembers ','? '}')?//',' needed for extra comma allowed by d
@@ -2457,7 +2469,12 @@ TemplateParameter ::=
     | TemplateAliasParameter
     | TemplateTupleParameter
     | TemplateThisParameter
-//todo above should be named element
+    {
+        methods=[getName getFullName getNameIdentifier getReference setName getPresentation getTemplateArguments isSomeVisibility proccessDeclarations]
+        implements = ["net.masterthought.dlanguage.psi.interfaces.DNamedElement" "net.masterthought.dlanguage.psi.interfaces.Declaration" "net.masterthought.dlanguage.psi.interfaces.VariableDeclaration"]
+        stubClass="net.masterthought.dlanguage.stubs.DLanguageTemplateParameterStub"
+    }
+
 
 TemplateTupleParameter ::=
     Identifier '...'

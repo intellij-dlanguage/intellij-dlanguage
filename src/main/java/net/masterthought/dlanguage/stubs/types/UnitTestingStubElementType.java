@@ -1,9 +1,7 @@
 package net.masterthought.dlanguage.stubs.types;
 
-import com.intellij.psi.stubs.IndexSink;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubInputStream;
-import com.intellij.psi.stubs.StubOutputStream;
 import net.masterthought.dlanguage.psi.DLanguageUnitTesting;
 import net.masterthought.dlanguage.psi.impl.DLanguageUnitTestingImpl;
 import net.masterthought.dlanguage.stubs.UnitTestingStubImpl;
@@ -30,31 +28,10 @@ public class UnitTestingStubElementType extends DStubElementType<UnitTestingStub
     public UnitTestingStub createStub(@NotNull DLanguageUnitTesting psi, StubElement parentStub) {
         return new UnitTestingStubImpl(parentStub, this);
     }
-    @Override
-    public void serialize(@NotNull UnitTestingStub stub, @NotNull StubOutputStream dataStream) throws IOException {
-        return;//we don't need to doanything
-//        final ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
-//        final ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteOutputStream);
-//        objectOutputStream.writeObject(stub);
-//        final byte[] bytes = byteOutputStream.toByteArray();
-//        dataStream.writeInt(bytes.length);
-//        dataStream.write(bytes);
-    }
 
     @NotNull
     @Override
     public UnitTestingStub deserialize(@NotNull StubInputStream dataStream, StubElement parentStub) throws IOException {
         return new UnitTestingStubImpl(parentStub, this);
-//        final ObjectInputStream objectInputStream = new ObjectInputStream(dataStream);
-//        try {
-//            return (UnitTestingStub) objectInputStream.readObject();
-//        } catch (ClassNotFoundException | ClassCastException e) {
-//            throw new IOException(e);
-//        }
-    }
-
-    @Override
-    public void indexStub(@NotNull UnitTestingStub stub, @NotNull IndexSink sink) {
-
     }
 }

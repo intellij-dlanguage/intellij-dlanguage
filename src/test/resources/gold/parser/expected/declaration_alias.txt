@@ -2,22 +2,23 @@ D Language File
   DLanguageDeclDefsImpl(DECL_DEFS)
     DLanguageDeclDefImpl(DECL_DEF)
       DLanguageDeclarationImpl(DECLARATION)
-        ALIAS_DECLARATION
-          PsiElement(DLanguageTokenType.alias)('alias')
-          IDENTIFIER
-            PsiElement(DLanguageTokenType.ID)('myint')
-          PsiElement(DLanguageTokenType.=)('=')
-          DLanguageTypeImpl(TYPE)
-            DLanguageBasicTypeImpl(BASIC_TYPE)
-              DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                IDENTIFIER
-                  PsiElement(DLanguageTokenType.ID)('abc')
-                PsiElement(DLanguageTokenType..)('.')
+        DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
+          ALIAS_DECLARATION_SINGLE
+            PsiElement(DLanguageTokenType.alias)('alias')
+            IDENTIFIER
+              PsiElement(DLanguageTokenType.ID)('myint')
+            PsiElement(DLanguageTokenType.=)('=')
+            DLanguageTypeImpl(TYPE)
+              DLanguageBasicTypeImpl(BASIC_TYPE)
                 DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                   IDENTIFIER
-                    PsiElement(DLanguageTokenType.ID)('Foo')
+                    PsiElement(DLanguageTokenType.ID)('abc')
                   PsiElement(DLanguageTokenType..)('.')
                   DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                     IDENTIFIER
-                      PsiElement(DLanguageTokenType.ID)('bar')
-          PsiElement(DLanguageTokenType.;)(';')
+                      PsiElement(DLanguageTokenType.ID)('Foo')
+                    PsiElement(DLanguageTokenType..)('.')
+                    DLanguageIdentifierListImpl(IDENTIFIER_LIST)
+                      IDENTIFIER
+                        PsiElement(DLanguageTokenType.ID)('bar')
+            PsiElement(DLanguageTokenType.;)(';')

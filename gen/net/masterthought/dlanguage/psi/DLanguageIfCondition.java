@@ -11,6 +11,6 @@ public interface DLanguageIfCondition extends PsiElement {
   DLanguageCommaExpression getCommaExpression();
 
   @Nullable
-  DLanguageIfConditionVariable getIfConditionVariable();
+  DLanguageConditionVariableDeclaration getConditionVariableDeclaration();
 
 }

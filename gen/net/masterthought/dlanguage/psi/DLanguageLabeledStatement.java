@@ -25,6 +25,8 @@ public interface DLanguageLabeledStatement extends DNamedElement, StatementConta
   @NotNull
   String getName();
 
+  String getFullName();
+
   @Nullable
   PsiElement getNameIdentifier();
 

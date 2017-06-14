@@ -12,7 +12,7 @@ D Language File
             DLanguageTemplateParametersImpl(TEMPLATE_PARAMETERS)
               PsiElement(DLanguageTokenType.()('(')
               DLanguageTemplateParameterListImpl(TEMPLATE_PARAMETER_LIST)
-                DLanguageTemplateParameterImpl(TEMPLATE_PARAMETER)
+                TEMPLATE_PARAMETER
                   DLanguageTemplateTypeParameterImpl(TEMPLATE_TYPE_PARAMETER)
                     DLanguageTypeImpl(TYPE)
                       DLanguageBasicTypeImpl(BASIC_TYPE)

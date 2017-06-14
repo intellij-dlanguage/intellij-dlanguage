@@ -34,8 +34,8 @@ public class DLanguageIfConditionImpl extends ASTWrapperPsiElement implements DL
 
   @Override
   @Nullable
-  public DLanguageIfConditionVariable getIfConditionVariable() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageIfConditionVariable.class);
+  public DLanguageConditionVariableDeclaration getConditionVariableDeclaration() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageConditionVariableDeclaration.class);
   }
 
 }

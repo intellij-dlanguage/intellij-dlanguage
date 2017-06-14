@@ -73,7 +73,7 @@ D Language File
         DLanguageCatchImpl(CATCH)
           PsiElement(DLanguageTokenType.catch)('catch')
           PsiElement(DLanguageTokenType.()('(')
-          DLanguageCatchParameterImpl(CATCH_PARAMETER)
+          CATCH_PARAMETER
             DLanguageBasicTypeImpl(BASIC_TYPE)
               DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                 IDENTIFIER

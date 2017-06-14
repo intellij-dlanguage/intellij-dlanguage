@@ -1,18 +1,15 @@
 package net.masterthought.dlanguage.stubs.types;
 
-import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubInputStream;
-import com.intellij.psi.stubs.StubOutputStream;
 import net.masterthought.dlanguage.psi.DLanguageDestructor;
 import net.masterthought.dlanguage.psi.impl.DLanguageDestructorImpl;
 import net.masterthought.dlanguage.stubs.DLanguageDestructorStub;
-import net.masterthought.dlanguage.utils.DUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
-public class DLanguageDestructorStubElementType extends DNamedStubElementType<DLanguageDestructorStub, DLanguageDestructor> {
+public class DLanguageDestructorStubElementType extends DStubElementType<DLanguageDestructorStub, DLanguageDestructor> {
     public DLanguageDestructorStubElementType(String debugName) {
         super(debugName);
     }
@@ -22,24 +19,15 @@ public class DLanguageDestructorStubElementType extends DNamedStubElementType<DL
         return new DLanguageDestructorImpl(stub, this);
     }
 
-    @Override
-    public boolean shouldCreateStub(ASTNode node) {
-        return DUtil.definitionNode(node);
-    }
-
+    @NotNull
     @Override
     public DLanguageDestructorStub createStub(@NotNull DLanguageDestructor psi, StubElement parentStub) {
-        return new DLanguageDestructorStub(parentStub, this, psi.getName());
-    }
-
-    @Override
-    public void serialize(@NotNull DLanguageDestructorStub stub, @NotNull StubOutputStream dataStream) throws IOException {
-        dataStream.writeName(stub.getName());
+        return new DLanguageDestructorStub(parentStub, this);
     }
 
     @NotNull
     @Override
     public DLanguageDestructorStub deserialize(@NotNull StubInputStream dataStream, StubElement parentStub) throws IOException {
-        return new DLanguageDestructorStub(parentStub, this, dataStream.readName());
+        return new DLanguageDestructorStub(parentStub, this);
     }
 }

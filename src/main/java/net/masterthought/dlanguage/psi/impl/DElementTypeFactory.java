@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 public class DElementTypeFactory {
     private DElementTypeFactory(){}
 
+    @NotNull
     public static IElementType factory(@NotNull String name){
         if (name.equals("IDENTIFIER")) return new DLanguageIdentifierStubElementType(name);
         if (name.equals("FUNC_DECLARATION")) return new DLanguageFuncDeclarationStubElementType(name);
@@ -15,7 +16,8 @@ public class DElementTypeFactory {
         if (name.equals("CONSTRUCTOR")) return new DLanguageConstructorStubElementType(name);
         if (name.equals("DESTRUCTOR")) return new DLanguageDestructorStubElementType(name);
         if (name.equals("STRUCT_DECLARATION")) return new DLanguageStructDeclarationStubElementType(name);
-        if (name.equals("ALIAS_DECLARATION")) return new DLanguageAliasDeclarationStubElementType(name);
+        if (name.equals("ALIAS_DECLARATION_Y")) return new DLanguageAliasDeclarationYStubElementType(name);
+        if (name.equals("ALIAS_DECLARATION_SINGLE")) return new DLanguageAliasDeclarationSingleStubElementType(name);
         if (name.equals("MODULE_DECLARATION")) return new DLanguageModuleDeclarationStubElementType(name);
         if (name.equals("INTERFACE_DECLARATION")) return new DLanguageInterfaceDeclarationStubElementType(name);
         if (name.equals("DECLARATOR_INITIALIZER")) return new DLanguageDeclaratorInitializerStubElementType(name);
@@ -31,6 +33,16 @@ public class DElementTypeFactory {
         if (name.equals("UNION_DECLARATION")) return new DLanguageUnionDeclarationStubElementType(name);
         if (name.equals("IMPORT")) return new DLanguageImportDeclarationStubElementType(name);
         if (name.equals("UNIT_TESTING")) return new UnitTestingStubElementType(name);
+        if (name.equals("CATCH_PARAMETER")) return new DLanguageCatchParameterStubElementType(name);
+        if (name.equals("CONDITION_VARIABLE_DECLARATION"))
+            return new DLanguageConditionVariableDeclarationStubElementType(name);
+        if (name.equals("DECLARATOR")) return new DLanguageDestructorStubElementType(name);
+        if (name.equals("FOREACH_TYPE")) return new DLanguageForeachTypeStubElementType(name);
+        if (name.equals("PARAMETER")) return new DLanguageParameterStubElementType(name);
+        if (name.equals("TEMPLATE_PARAMETER")) return new DLanguageTemplateParameterStubElementType(name);
+        if (name.equals("UNION_DECLARATION")) return new DLanguageUnionDeclarationStubElementType(name);
+        if (name.equals("VAR_FUNC_DECLARATION")) return new DLanguageUnionDeclarationStubElementType(name);
+        if (name.equals("ENUM_MEMBER")) return new DLanguageEnumMemberStubElementType(name);
         throw new RuntimeException("Unknown element type: " + name);
     }
 }

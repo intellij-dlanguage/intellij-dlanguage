@@ -206,7 +206,7 @@ D Language File
         PsiElement(DLanguageTokenType.foreach)('foreach')
       PsiElement(DLanguageTokenType.()('(')
       DLanguageForeachTypeListImpl(FOREACH_TYPE_LIST)
-        DLanguageForeachTypeImpl(FOREACH_TYPE)
+        FOREACH_TYPE
           DLanguageForeachTypeAttributeImpl(FOREACH_TYPE_ATTRIBUTE)
             PsiElement(DLanguageTokenType.ref)('ref')
           IDENTIFIER
@@ -264,7 +264,7 @@ D Language File
                   PsiElement(DLanguageTokenType.foreach)('foreach')
                 PsiElement(DLanguageTokenType.()('(')
                 DLanguageForeachTypeListImpl(FOREACH_TYPE_LIST)
-                  DLanguageForeachTypeImpl(FOREACH_TYPE)
+                  FOREACH_TYPE
                     DLanguageForeachTypeAttributeImpl(FOREACH_TYPE_ATTRIBUTE)
                       PsiElement(DLanguageTokenType.ref)('ref')
                     IDENTIFIER

@@ -24,7 +24,7 @@ public interface DLanguageIdentifier extends DNamedElement, StubBasedPsiElement<
   @NotNull
   PsiReference getReference();
 
-  @Nullable
+  @NotNull
   PsiElement setName(String newName);
 
   @NotNull

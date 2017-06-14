@@ -43,7 +43,7 @@ public interface DLanguageDeclaratorInitializer extends DNamedElement, VariableD
   @NotNull
   PsiReference getReference();
 
-  @Nullable
+  @NotNull
   PsiElement setName(String newName);
 
   @NotNull

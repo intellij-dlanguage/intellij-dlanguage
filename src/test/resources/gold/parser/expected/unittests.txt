@@ -28,7 +28,7 @@ D Language File
                         DLanguageParametersImpl(PARAMETERS)
                           PsiElement(DLanguageTokenType.()('(')
                           DLanguageParameterListImpl(PARAMETER_LIST)
-                            DLanguageParameterImpl(PARAMETER)
+                            PARAMETER
                               DLanguageBasicTypeImpl(BASIC_TYPE)
                                 DLanguageBasicTypeXImpl(BASIC_TYPE_X)
                                   PsiElement(DLanguageTokenType.int)('int')
@@ -37,7 +37,7 @@ D Language File
                                   IDENTIFIER
                                     PsiElement(DLanguageTokenType.ID)('x')
                             PsiElement(DLanguageTokenType.,)(',')
-                            DLanguageParameterImpl(PARAMETER)
+                            PARAMETER
                               DLanguageBasicTypeImpl(BASIC_TYPE)
                                 DLanguageBasicTypeXImpl(BASIC_TYPE_X)
                                   PsiElement(DLanguageTokenType.int)('int')
@@ -196,7 +196,7 @@ D Language File
             DLanguageTemplateParametersImpl(TEMPLATE_PARAMETERS)
               PsiElement(DLanguageTokenType.()('(')
               DLanguageTemplateParameterListImpl(TEMPLATE_PARAMETER_LIST)
-                DLanguageTemplateParameterImpl(TEMPLATE_PARAMETER)
+                TEMPLATE_PARAMETER
                   DLanguageTemplateTypeParameterImpl(TEMPLATE_TYPE_PARAMETER)
                     DLanguageTypeImpl(TYPE)
                       DLanguageBasicTypeImpl(BASIC_TYPE)
@@ -207,7 +207,7 @@ D Language File
             DLanguageParametersImpl(PARAMETERS)
               PsiElement(DLanguageTokenType.()('(')
               DLanguageParameterListImpl(PARAMETER_LIST)
-                DLanguageParameterImpl(PARAMETER)
+                PARAMETER
                   DLanguageBasicTypeImpl(BASIC_TYPE)
                     DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                       IDENTIFIER
@@ -425,7 +425,7 @@ D Language File
                               DLanguageParametersImpl(PARAMETERS)
                                 PsiElement(DLanguageTokenType.()('(')
                                 DLanguageParameterListImpl(PARAMETER_LIST)
-                                  DLanguageParameterImpl(PARAMETER)
+                                  PARAMETER
                                     DLanguageBasicTypeImpl(BASIC_TYPE)
                                       DLanguageBasicTypeXImpl(BASIC_TYPE_X)
                                         PsiElement(DLanguageTokenType.int)('int')
@@ -434,7 +434,7 @@ D Language File
                                         IDENTIFIER
                                           PsiElement(DLanguageTokenType.ID)('x')
                                   PsiElement(DLanguageTokenType.,)(',')
-                                  DLanguageParameterImpl(PARAMETER)
+                                  PARAMETER
                                     DLanguageBasicTypeImpl(BASIC_TYPE)
                                       DLanguageBasicTypeXImpl(BASIC_TYPE_X)
                                         PsiElement(DLanguageTokenType.int)('int')
@@ -597,7 +597,7 @@ D Language File
             DLanguageParametersImpl(PARAMETERS)
               PsiElement(DLanguageTokenType.()('(')
               DLanguageParameterListImpl(PARAMETER_LIST)
-                DLanguageParameterImpl(PARAMETER)
+                PARAMETER
                   DLanguageBasicTypeImpl(BASIC_TYPE)
                     DLanguageBasicTypeXImpl(BASIC_TYPE_X)
                       PsiElement(DLanguageTokenType.int)('int')
@@ -606,7 +606,7 @@ D Language File
                       IDENTIFIER
                         PsiElement(DLanguageTokenType.ID)('x')
                 PsiElement(DLanguageTokenType.,)(',')
-                DLanguageParameterImpl(PARAMETER)
+                PARAMETER
                   DLanguageBasicTypeImpl(BASIC_TYPE)
                     DLanguageBasicTypeXImpl(BASIC_TYPE_X)
                       PsiElement(DLanguageTokenType.int)('int')

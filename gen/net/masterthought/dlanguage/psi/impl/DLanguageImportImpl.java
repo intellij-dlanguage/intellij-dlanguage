@@ -58,6 +58,10 @@ public class DLanguageImportImpl extends DNamedStubbedPsiElementBase<DLanguageIm
     return DPsiImplUtil.getName(this);
   }
 
+  public String getFullName() {
+    return DPsiImplUtil.getFullName(this);
+  }
+
   @Nullable
   public PsiElement getNameIdentifier() {
     return DPsiImplUtil.getNameIdentifier(this);
@@ -68,7 +72,7 @@ public class DLanguageImportImpl extends DNamedStubbedPsiElementBase<DLanguageIm
     return DPsiImplUtil.getReference(this);
   }
 
-  @Nullable
+  @NotNull
   public PsiElement setName(String newName) {
     return DPsiImplUtil.setName(this, newName);
   }

@@ -4,7 +4,7 @@ D Language File
       PsiElement(DLanguageTokenType.if)('if')
       PsiElement(DLanguageTokenType.()('(')
       DLanguageIfConditionImpl(IF_CONDITION)
-        DLanguageIfConditionVariableImpl(IF_CONDITION_VARIABLE)
+        CONDITION_VARIABLE_DECLARATION
           PsiElement(DLanguageTokenType.auto)('auto')
           IDENTIFIER
             PsiElement(DLanguageTokenType.ID)('m')

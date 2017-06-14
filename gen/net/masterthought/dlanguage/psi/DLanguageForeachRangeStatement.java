@@ -4,6 +4,8 @@ package net.masterthought.dlanguage.psi;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.ResolveState;
+import com.intellij.psi.scope.PsiScopeProcessor;
 
 public interface DLanguageForeachRangeStatement extends PsiElement {
 
@@ -34,8 +36,6 @@ public interface DLanguageForeachRangeStatement extends PsiElement {
   @NotNull
   PsiElement getOpScolon();
 
-  //WARNING: processDeclarations(...) is skipped
-  //matching processDeclarations(DLanguageForeachRangeStatement, ...)
-  //methods are not found in DPsiImplUtil
+  boolean processDeclarations(PsiScopeProcessor processor, ResolveState state, PsiElement lastParent, PsiElement place);
 
 }

@@ -12,7 +12,7 @@ D Language File
             DLanguageTemplateParametersImpl(TEMPLATE_PARAMETERS)
               PsiElement(DLanguageTokenType.()('(')
               DLanguageTemplateParameterListImpl(TEMPLATE_PARAMETER_LIST)
-                DLanguageTemplateParameterImpl(TEMPLATE_PARAMETER)
+                TEMPLATE_PARAMETER
                   DLanguageTemplateTypeParameterImpl(TEMPLATE_TYPE_PARAMETER)
                     DLanguageTypeImpl(TYPE)
                       DLanguageBasicTypeImpl(BASIC_TYPE)
@@ -24,7 +24,7 @@ D Language File
             DLanguageParametersImpl(PARAMETERS)
               PsiElement(DLanguageTokenType.()('(')
               DLanguageParameterListImpl(PARAMETER_LIST)
-                DLanguageParameterImpl(PARAMETER)
+                PARAMETER
                   DLanguageInOutImpl(IN_OUT)
                     DLanguageInOutXImpl(IN_OUT_X)
                       PsiElement(DLanguageTokenType.auto)('auto')
@@ -62,11 +62,11 @@ D Language File
                       PsiElement(DLanguageTokenType.foreach)('foreach')
                     PsiElement(DLanguageTokenType.()('(')
                     DLanguageForeachTypeListImpl(FOREACH_TYPE_LIST)
-                      DLanguageForeachTypeImpl(FOREACH_TYPE)
+                      FOREACH_TYPE
                         IDENTIFIER
                           PsiElement(DLanguageTokenType.ID)('i')
                       PsiElement(DLanguageTokenType.,)(',')
-                      DLanguageForeachTypeImpl(FOREACH_TYPE)
+                      FOREACH_TYPE
                         IDENTIFIER
                           PsiElement(DLanguageTokenType.ID)('v')
                     PsiElement(DLanguageTokenType.;)(';')
@@ -451,7 +451,7 @@ D Language File
                   DLanguageTemplateParametersImpl(TEMPLATE_PARAMETERS)
                     PsiElement(DLanguageTokenType.()('(')
                     DLanguageTemplateParameterListImpl(TEMPLATE_PARAMETER_LIST)
-                      DLanguageTemplateParameterImpl(TEMPLATE_PARAMETER)
+                      TEMPLATE_PARAMETER
                         DLanguageTemplateTypeParameterImpl(TEMPLATE_TYPE_PARAMETER)
                           DLanguageTypeImpl(TYPE)
                             DLanguageBasicTypeImpl(BASIC_TYPE)
@@ -459,7 +459,7 @@ D Language File
                                 IDENTIFIER
                                   PsiElement(DLanguageTokenType.ID)('T')
                       PsiElement(DLanguageTokenType.,)(',')
-                      DLanguageTemplateParameterImpl(TEMPLATE_PARAMETER)
+                      TEMPLATE_PARAMETER
                         DLanguageTemplateTypeParameterImpl(TEMPLATE_TYPE_PARAMETER)
                           DLanguageTypeImpl(TYPE)
                             DLanguageBasicTypeImpl(BASIC_TYPE)
@@ -470,7 +470,7 @@ D Language File
                   DLanguageParametersImpl(PARAMETERS)
                     PsiElement(DLanguageTokenType.()('(')
                     DLanguageParameterListImpl(PARAMETER_LIST)
-                      DLanguageParameterImpl(PARAMETER)
+                      PARAMETER
                         DLanguageInOutImpl(IN_OUT)
                           DLanguageInOutXImpl(IN_OUT_X)
                             PsiElement(DLanguageTokenType.auto)('auto')
@@ -485,7 +485,7 @@ D Language File
                             IDENTIFIER
                               PsiElement(DLanguageTokenType.ID)('lhs')
                       PsiElement(DLanguageTokenType.,)(',')
-                      DLanguageParameterImpl(PARAMETER)
+                      PARAMETER
                         DLanguageInOutImpl(IN_OUT)
                           DLanguageInOutXImpl(IN_OUT_X)
                             PsiElement(DLanguageTokenType.auto)('auto')
@@ -653,14 +653,14 @@ D Language File
                                             DLanguageParametersImpl(PARAMETERS)
                                               PsiElement(DLanguageTokenType.()('(')
                                               DLanguageParameterListImpl(PARAMETER_LIST)
-                                                DLanguageParameterImpl(PARAMETER)
+                                                PARAMETER
                                                   DLanguageTypeImpl(TYPE)
                                                     DLanguageBasicTypeImpl(BASIC_TYPE)
                                                       DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                                                         IDENTIFIER
                                                           PsiElement(DLanguageTokenType.ID)('x')
                                                 PsiElement(DLanguageTokenType.,)(',')
-                                                DLanguageParameterImpl(PARAMETER)
+                                                PARAMETER
                                                   DLanguageTypeImpl(TYPE)
                                                     DLanguageBasicTypeImpl(BASIC_TYPE)
                                                       DLanguageIdentifierListImpl(IDENTIFIER_LIST)
@@ -681,7 +681,7 @@ D Language File
                               DLanguageTemplateParametersImpl(TEMPLATE_PARAMETERS)
                                 PsiElement(DLanguageTokenType.()('(')
                                 DLanguageTemplateParameterListImpl(TEMPLATE_PARAMETER_LIST)
-                                  DLanguageTemplateParameterImpl(TEMPLATE_PARAMETER)
+                                  TEMPLATE_PARAMETER
                                     DLanguageTemplateTypeParameterImpl(TEMPLATE_TYPE_PARAMETER)
                                       DLanguageTypeImpl(TYPE)
                                         DLanguageBasicTypeImpl(BASIC_TYPE)
@@ -689,7 +689,7 @@ D Language File
                                             IDENTIFIER
                                               PsiElement(DLanguageTokenType.ID)('x')
                                   PsiElement(DLanguageTokenType.,)(',')
-                                  DLanguageTemplateParameterImpl(TEMPLATE_PARAMETER)
+                                  TEMPLATE_PARAMETER
                                     DLanguageTemplateTypeParameterImpl(TEMPLATE_TYPE_PARAMETER)
                                       DLanguageTypeImpl(TYPE)
                                         DLanguageBasicTypeImpl(BASIC_TYPE)

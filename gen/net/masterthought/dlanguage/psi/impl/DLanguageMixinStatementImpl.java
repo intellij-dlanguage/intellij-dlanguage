@@ -56,7 +56,7 @@ public class DLanguageMixinStatementImpl extends ASTWrapperPsiElement implements
     return notNullChild(findChildByType(OP_SCOLON));
   }
 
-  @Nullable
+  @NotNull
   public String getName() {
     return DPsiImplUtil.getName(this);
   }

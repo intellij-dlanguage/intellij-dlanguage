@@ -15,6 +15,8 @@ import com.intellij.psi.StubBasedPsiElement;
 import net.masterthought.dlanguage.stubs.DLanguageClassDeclarationStub;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
+import com.intellij.psi.ResolveState;
+import com.intellij.psi.scope.PsiScopeProcessor;
 import net.masterthought.dlanguage.psi.interfaces.containers.Container;
 import java.util.Map;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
@@ -53,7 +55,7 @@ public interface DLanguageClassDeclaration extends StatementContainer, MixinCont
   @NotNull
   PsiReference getReference();
 
-  @Nullable
+  @NotNull
   PsiElement setName(String newName);
 
   @NotNull
@@ -69,8 +71,6 @@ public interface DLanguageClassDeclaration extends StatementContainer, MixinCont
 
   Map<String, DLanguageIdentifier> getSuperClassNames();
 
-  //WARNING: processDeclarations(...) is skipped
-  //matching processDeclarations(DLanguageClassDeclaration, ...)
-  //methods are not found in DPsiImplUtil
+  boolean processDeclarations(PsiScopeProcessor processor, ResolveState state, PsiElement lastParent, PsiElement place);
 
 }

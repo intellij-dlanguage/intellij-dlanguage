@@ -56,15 +56,15 @@ D Language File
           DLanguageEnumBodyImpl(ENUM_BODY)
             PsiElement(DLanguageTokenType.{)('{')
             DLanguageEnumMembersImpl(ENUM_MEMBERS)
-              DLanguageEnumMemberImpl(ENUM_MEMBER)
+              ENUM_MEMBER
                 IDENTIFIER
                   PsiElement(DLanguageTokenType.ID)('red')
               PsiElement(DLanguageTokenType.,)(',')
-              DLanguageEnumMemberImpl(ENUM_MEMBER)
+              ENUM_MEMBER
                 IDENTIFIER
                   PsiElement(DLanguageTokenType.ID)('blue')
               PsiElement(DLanguageTokenType.,)(',')
-              DLanguageEnumMemberImpl(ENUM_MEMBER)
+              ENUM_MEMBER
                 IDENTIFIER
                   PsiElement(DLanguageTokenType.ID)('green')
             PsiElement(DLanguageTokenType.})('}')

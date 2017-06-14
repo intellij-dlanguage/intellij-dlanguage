@@ -274,7 +274,7 @@ D Language File
                     DLanguageParametersImpl(PARAMETERS)
                       PsiElement(DLanguageTokenType.()('(')
                       DLanguageParameterListImpl(PARAMETER_LIST)
-                        DLanguageParameterImpl(PARAMETER)
+                        PARAMETER
                           DLanguageBasicTypeImpl(BASIC_TYPE)
                             DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                               IDENTIFIER
@@ -563,7 +563,7 @@ D Language File
         DLanguageCatchImpl(CATCH)
           PsiElement(DLanguageTokenType.catch)('catch')
           PsiElement(DLanguageTokenType.()('(')
-          DLanguageCatchParameterImpl(CATCH_PARAMETER)
+          CATCH_PARAMETER
             DLanguageBasicTypeImpl(BASIC_TYPE)
               DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                 IDENTIFIER

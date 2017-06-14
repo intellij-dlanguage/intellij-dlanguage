@@ -13,8 +13,8 @@ import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
 import net.masterthought.dlanguage.psi.interfaces.HasTemplateArguments;
 import net.masterthought.dlanguage.psi.interfaces.HasArguments;
 import net.masterthought.dlanguage.psi.interfaces.containers.MixinContainer;
-import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
 import net.masterthought.dlanguage.psi.interfaces.VariableDeclaration;
+import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
 import net.masterthought.dlanguage.psi.interfaces.HasProperty;
 import net.masterthought.dlanguage.psi.interfaces.Mixinable;
 import net.masterthought.dlanguage.psi.interfaces.CanInherit;
@@ -34,6 +34,10 @@ public class DLanguageVisitor extends PsiElementVisitor {
   }
 
   public void visitAliasDeclaration(@NotNull DLanguageAliasDeclaration o) {
+    visitPsiElement(o);
+  }
+
+  public void visitAliasDeclarationSingle(@NotNull DLanguageAliasDeclarationSingle o) {
     visitDNamedElement(o);
     // visitHasVisibility(o);
     // visitDeclaration(o);
@@ -44,7 +48,9 @@ public class DLanguageVisitor extends PsiElementVisitor {
   }
 
   public void visitAliasDeclarationY(@NotNull DLanguageAliasDeclarationY o) {
-    visitPsiElement(o);
+    visitDNamedElement(o);
+    // visitHasVisibility(o);
+    // visitDeclaration(o);
   }
 
   public void visitAliasThis(@NotNull DLanguageAliasThis o) {
@@ -274,7 +280,9 @@ public class DLanguageVisitor extends PsiElementVisitor {
   }
 
   public void visitCatchParameter(@NotNull DLanguageCatchParameter o) {
-    visitPsiElement(o);
+    visitDNamedElement(o);
+    // visitVariableDeclaration(o);
+    // visitDeclaration(o);
   }
 
   public void visitCatches(@NotNull DLanguageCatches o) {
@@ -301,6 +309,12 @@ public class DLanguageVisitor extends PsiElementVisitor {
 
   public void visitCondition(@NotNull DLanguageCondition o) {
     visitPsiElement(o);
+  }
+
+  public void visitConditionVariableDeclaration(@NotNull DLanguageConditionVariableDeclaration o) {
+    visitDNamedElement(o);
+    // visitVariableDeclaration(o);
+    // visitDeclaration(o);
   }
 
   public void visitConditionalDeclaration(@NotNull DLanguageConditionalDeclaration o) {
@@ -403,10 +417,7 @@ public class DLanguageVisitor extends PsiElementVisitor {
   }
 
   public void visitDestructor(@NotNull DLanguageDestructor o) {
-    visitStatementContainer(o);
-    // visitDNamedElement(o);
-    // visitHasVisibility(o);
-    // visitDeclaration(o);
+    visitDCompositeElement(o);
   }
 
   public void visitDoStatement(@NotNull DLanguageDoStatement o) {
@@ -435,12 +446,9 @@ public class DLanguageVisitor extends PsiElementVisitor {
     // visitDeclaration(o);
   }
 
-  public void visitEnumFuncDeclaration(@NotNull DLanguageEnumFuncDeclaration o) {
-    visitPsiElement(o);
-  }
-
   public void visitEnumMember(@NotNull DLanguageEnumMember o) {
-    visitPsiElement(o);
+    visitDNamedElement(o);
+    // visitDeclaration(o);
   }
 
   public void visitEnumMembers(@NotNull DLanguageEnumMembers o) {
@@ -488,7 +496,9 @@ public class DLanguageVisitor extends PsiElementVisitor {
   }
 
   public void visitForeachType(@NotNull DLanguageForeachType o) {
-    visitPsiElement(o);
+    visitDNamedElement(o);
+    // visitVariableDeclaration(o);
+    // visitDeclaration(o);
   }
 
   public void visitForeachTypeAttribute(@NotNull DLanguageForeachTypeAttribute o) {
@@ -558,10 +568,6 @@ public class DLanguageVisitor extends PsiElementVisitor {
   }
 
   public void visitIfCondition(@NotNull DLanguageIfCondition o) {
-    visitPsiElement(o);
-  }
-
-  public void visitIfConditionVariable(@NotNull DLanguageIfConditionVariable o) {
     visitPsiElement(o);
   }
 
@@ -771,7 +777,9 @@ public class DLanguageVisitor extends PsiElementVisitor {
   }
 
   public void visitParameter(@NotNull DLanguageParameter o) {
-    visitPsiElement(o);
+    visitDNamedElement(o);
+    // visitDeclaration(o);
+    // visitVariableDeclaration(o);
   }
 
   public void visitParameterAttributes(@NotNull DLanguageParameterAttributes o) {
@@ -859,17 +867,11 @@ public class DLanguageVisitor extends PsiElementVisitor {
   }
 
   public void visitSharedStaticConstructor(@NotNull DLanguageSharedStaticConstructor o) {
-    visitStatementContainer(o);
-    // visitDNamedElement(o);
-    // visitHasVisibility(o);
-    // visitDeclaration(o);
+    visitDCompositeElement(o);
   }
 
   public void visitSharedStaticDestructor(@NotNull DLanguageSharedStaticDestructor o) {
-    visitStatementContainer(o);
-    // visitDNamedElement(o);
-    // visitHasVisibility(o);
-    // visitDeclaration(o);
+    visitDCompositeElement(o);
   }
 
   public void visitShiftExpression_(@NotNull DLanguageShiftExpression_ o) {
@@ -905,17 +907,11 @@ public class DLanguageVisitor extends PsiElementVisitor {
   }
 
   public void visitStaticConstructor(@NotNull DLanguageStaticConstructor o) {
-    visitStatementContainer(o);
-    // visitDNamedElement(o);
-    // visitHasVisibility(o);
-    // visitDeclaration(o);
+    visitDCompositeElement(o);
   }
 
   public void visitStaticDestructor(@NotNull DLanguageStaticDestructor o) {
-    visitStatementContainer(o);
-    // visitDNamedElement(o);
-    // visitHasVisibility(o);
-    // visitDeclaration(o);
+    visitDCompositeElement(o);
   }
 
   public void visitStaticElseCondition(@NotNull DLanguageStaticElseCondition o) {
@@ -1030,7 +1026,9 @@ public class DLanguageVisitor extends PsiElementVisitor {
   }
 
   public void visitTemplateParameter(@NotNull DLanguageTemplateParameter o) {
-    visitPsiElement(o);
+    visitDNamedElement(o);
+    // visitDeclaration(o);
+    // visitVariableDeclaration(o);
   }
 
   public void visitTemplateParameterList(@NotNull DLanguageTemplateParameterList o) {
@@ -1155,6 +1153,12 @@ public class DLanguageVisitor extends PsiElementVisitor {
 
   public void visitVarDeclaratorIdentifier(@NotNull DLanguageVarDeclaratorIdentifier o) {
     visitPsiElement(o);
+  }
+
+  public void visitVarFuncDeclaration(@NotNull DLanguageVarFuncDeclaration o) {
+    visitDNamedElement(o);
+    // visitHasVisibility(o);
+    // visitDeclaration(o);
   }
 
   public void visitVersionCondition(@NotNull DLanguageVersionCondition o) {

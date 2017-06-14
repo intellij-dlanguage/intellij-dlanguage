@@ -4,17 +4,15 @@ import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiNamedElement;
-import com.intellij.psi.PsiReference;
+import com.intellij.psi.*;
+import com.intellij.psi.scope.PsiScopeProcessor;
 import net.masterthought.dlanguage.icons.DLanguageIcons;
 import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.interfaces.*;
 import net.masterthought.dlanguage.psi.interfaces.containers.*;
 import net.masterthought.dlanguage.psi.references.DReference;
+import net.masterthought.dlanguage.resolve.DResolveUtil;
 import net.masterthought.dlanguage.stubs.*;
-import net.masterthought.dlanguage.utils.DResolveUtil;
 import net.masterthought.dlanguage.utils.DUtil;
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.Contract;
@@ -26,7 +24,8 @@ import java.util.*;
 
 import static com.intellij.psi.util.PsiTreeUtil.*;
 import static net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
-import static net.masterthought.dlanguage.utils.DUtil.*;
+import static net.masterthought.dlanguage.utils.DUtil.getEndOfIdentifierList;
+import static net.masterthought.dlanguage.utils.DUtil.protectionToVisibilty;
 
 
 /**
@@ -117,17 +116,15 @@ public class DPsiImplUtil {
     }
 
     public static void delete(DLanguageIdentifier identifier) {
-        final List<PsiNamedElement> definitionNode = DResolveUtil.findDefinitionNode(identifier.getProject(), identifier.getName(), identifier);
+        final List<PsiNamedElement> definitionNode = DResolveUtil.INSTANCE.findDefinitionNode(identifier.getProject(), identifier.getName(), identifier);
         if (definitionNode.size() != 1)
             throw new IllegalStateException();
         definitionNode.get(0).delete();
     }
+
     // ------------- Identifier ------------------ //
 
     // ------------- Function Definition ------------------ //
-//    public String getFullName(DLanguageFuncDeclaration e){
-//        return getFullName(e);
-//    }
 
     @NotNull
     public static String getName(@NotNull DLanguageFuncDeclaration o) {
@@ -298,7 +295,7 @@ public class DPsiImplUtil {
             assert (basicType.getTypeVector() == null);
             assert (basicType.getTypeof() == null);
             final DLanguageIdentifierList identifierList = basicType.getIdentifierList();
-            final List<PsiNamedElement> definitionNodesSimple = DResolveUtil.findDefinitionNodes((DLanguageFile) identifierList.getContainingFile(), getEndOfIdentifierList(identifierList).getName());
+            final List<PsiNamedElement> definitionNodesSimple = DResolveUtil.INSTANCE.findDefinitionNodes((DLanguageFile) identifierList.getContainingFile(), getEndOfIdentifierList(identifierList).getName());
             Set<CanInherit> definitionNodes = new HashSet<>();
             for (PsiElement node : definitionNodesSimple) {
                 if (definitionNodes instanceof CanInherit)
@@ -534,11 +531,10 @@ public class DPsiImplUtil {
         return getChildOfType(o, DLanguageProtectionAttribute.class);
     }
 
-
     // ------------- Union Definition -------------------- //
 
-
     // ------------- Template Definition ------------------ //
+
     @NotNull
     public static String getName(@NotNull DLanguageTemplateDeclaration o) {
         DLanguageTemplateDeclarationStub stub = o.getStub();
@@ -590,9 +586,11 @@ public class DPsiImplUtil {
             }
         };
     }
+
     // ------------- Template Definition ------------------ //
 
     // ------------- Constructor ------------------ //
+
     @NotNull
     public static String getName(@NotNull DLanguageConstructor o) {
         if (DUtil.getParentClassOrStruct(o) != null)
@@ -657,162 +655,8 @@ public class DPsiImplUtil {
             return Arrays.asList(getChildrenOfType(o.getConstructorTemplate().getParameters(), DLanguageParameter.class));
         }
     }
+
     // ------------- Constructor ------------------ //
-
-    // ------------- Destructor ------------------ //
-    @NotNull
-    public static String getName(@NotNull DLanguageDestructor o) {
-        return "~this";
-//        DLanguageDestructorStub stub = o.getStub();
-//        if (stub != null) return StringUtil.notNullize(stub.getName());
-//
-//        PsiElement parent = o.getParent();
-//
-//
-//        while (!(parent instanceof DLanguageClassDeclaration)) {
-//            parent = parent.getParent();
-//        }
-
-//        return ((DLanguageClassDeclaration)parent).getName() + "constructor";
-//        if (o.getIdentifier() != null) {
-//            return o.getIdentifier().getText();
-//        } else {
-//            return "not found";
-//        }
-    }
-
-    @Nullable
-    public static PsiElement getNameIdentifier(@NotNull DLanguageDestructor o) {
-        ASTNode keyNode = o.getNode();
-        return keyNode != null ? keyNode.getPsi() : null;
-    }
-
-    @NotNull
-    public static PsiElement setName(@NotNull DLanguageDestructor o, @NotNull String newName) {
-        getParentClassOrStruct(o).setName(newName);
-        return o;
-    }
-
-    @NotNull
-    public static PsiReference getReference(@NotNull DLanguageDestructor o) {
-        return new DReference(o, TextRange.from(0, getName(o).length()));
-    }
-
-    @NotNull
-    public static ItemPresentation getPresentation(final DLanguageDestructor o) {
-        return new ItemPresentation() {
-            @NotNull
-            @Override
-            public String getPresentableText() {
-                String string = "";
-                for (PsiElement psiElement : o.getChildren()) {
-                    if(psiElement instanceof DLanguageParametersImpl)
-                        string += psiElement.getText();
-                }
-                return o.getName() + string;
-            }
-
-            /**
-             * This is needed to decipher between files when resolving multiple references.
-             */
-            @Nullable
-            @Override
-            public String getLocationString() {
-                final PsiFile psiFile = o.getContainingFile();
-                return psiFile instanceof DLanguageFile ? ((DLanguageFile) psiFile).getModuleOrFileName() : null;
-            }
-
-            @Nullable
-            @Override
-            public Icon getIcon(boolean unused) {
-                return DLanguageIcons.FILE;
-            }
-        };
-    }
-    // ------------- Destructor ------------------ //
-
-    // ------------- Alias Definition ------------------ //
-    @NotNull
-    public static String getName(@NotNull DLanguageAliasDeclaration o) {
-        DLanguageAliasDeclarationStub stub = o.getStub();
-        if (stub != null) return StringUtil.notNullize(stub.getName());
-
-        if (o.getIdentifier() != null) {
-            return o.getIdentifier().getText();
-        } else {
-            return "not found";
-        }
-    }
-
-    @Nullable
-    public static PsiElement getNameIdentifier(@NotNull DLanguageAliasDeclaration o) {
-        ASTNode keyNode = o.getNode();
-        return keyNode != null ? keyNode.getPsi() : null;
-    }
-
-    @NotNull
-    public static PsiElement setName(@NotNull DLanguageAliasDeclaration o, @NotNull String newName) {
-        if (o.getIdentifier() != null) {
-            o.getIdentifier().setName(newName);
-        } else if (o.getAliasDeclarationX() != null) {
-            o.getAliasDeclarationX().getAliasDeclarationY().getIdentifier().setName(newName);
-        } else if (o.getDeclarator() != null) {
-            if (o.getDeclarator().getVarDeclarator() != null) {
-                o.getDeclarator().getVarDeclarator().getIdentifier().setName(newName);
-            } else if (o.getDeclarator().getAltDeclarator().getIdentifier() != null) {
-                o.getDeclarator().getAltDeclarator().getIdentifier().setName(newName);
-            } else if (o.getDeclarator().getAltDeclarator().getAltDeclaratorX().getIdentifier() != null) {
-                o.getDeclarator().getAltDeclarator().getAltDeclaratorX().getIdentifier().setName(newName);
-            } else {
-                return null;
-            }
-        } else {
-            return null;
-        }
-        return o;
-    }
-
-    @NotNull
-    public static PsiReference getReference(@NotNull DLanguageAliasDeclaration o) {
-        return new DReference(o, TextRange.from(0, getName(o).length()));
-    }
-
-    @NotNull
-    public static ItemPresentation getPresentation(final DLanguageAliasDeclaration o) {
-        return new ItemPresentation() {
-            @NotNull
-            @Override
-            public String getPresentableText() {
-                return o.getName();
-            }
-
-            /**
-             * This is needed to decipher between files when resolving multiple references.
-             */
-            @Nullable
-            @Override
-            public String getLocationString() {
-                final PsiFile psiFile = o.getContainingFile();
-                return psiFile instanceof DLanguageFile ? ((DLanguageFile) psiFile).getModuleOrFileName() : null;
-            }
-
-            @Nullable
-            @Override
-            public Icon getIcon(boolean unused) {
-                return DLanguageIcons.FILE;
-            }
-        };
-    }
-
-    public static boolean actuallyIsDeclaration(DLanguageAliasDeclaration o) {
-        return true;
-    }
-
-    public static Type getDeclarationType(DLanguageAliasDeclaration o) {
-        return null;
-    }
-
-    // ------------- Alias Definition ------------------ //
 
     // ------------ Module Declaration ----------------- //
 
@@ -886,8 +730,8 @@ public class DPsiImplUtil {
 
     // ------------ Module Declaration ----------------- //
 
-
     // ------------- Interface Definition ------------------ //
+
     @NotNull
     public static String getName(@NotNull DLanguageInterfaceDeclaration o) {
         DLanguageInterfaceDeclarationStub stub = o.getStub();
@@ -957,7 +801,7 @@ public class DPsiImplUtil {
             assert (basicType.getTypeVector() == null);
             assert (basicType.getTypeof() == null);
             final DLanguageIdentifierList identifierList = basicType.getIdentifierList();
-            final List<PsiNamedElement> definitionNodesSimple = DResolveUtil.findDefinitionNodes((DLanguageFile) identifierList.getContainingFile(), getEndOfIdentifierList(identifierList).getName());
+            final List<PsiNamedElement> definitionNodesSimple = DResolveUtil.INSTANCE.findDefinitionNodes((DLanguageFile) identifierList.getContainingFile(), getEndOfIdentifierList(identifierList).getName());
             Set<CanInherit> definitionNodes = new HashSet<>();
             for (PsiElement node : definitionNodesSimple) {
                 if (definitionNodes instanceof CanInherit)
@@ -991,7 +835,10 @@ public class DPsiImplUtil {
         return res;
     }
 
+    // ------------- Interface Definition ------------------ //
+
     // ------------- Labeled Statement ------------------ //
+
     @NotNull
     public static String getName(@NotNull DLanguageLabeledStatement o) {
         DLanguageLabeledStatementStub stub = o.getStub();
@@ -1046,6 +893,7 @@ public class DPsiImplUtil {
     // ------------- Labeled Statement ------------------ //
 
     // ------------- Mixin Declaration ------------------ //
+
     @NotNull
     public static String getName(@NotNull DLanguageTemplateMixinDeclaration o) {
         DLanguageTemplateMixinDeclarationStub stub = o.getStub();
@@ -1097,6 +945,8 @@ public class DPsiImplUtil {
         };
     }
 
+    // ------------- Mixin Declaration ------------------ //
+
     // -------------- Mixin Template Resolving ------------------- //
 
     @Nullable
@@ -1136,12 +986,12 @@ public class DPsiImplUtil {
         return getEndOfIdentifierList(t.getMixinTemplateName().getQualifiedIdentifierList()).getName();
     }
 
-    @Nullable
+    @NotNull
     public static String getName(@NotNull DLanguageMixinExpression t) {
         return findChildOfType(t,DLanguageIdentifier.class).getName();
     }
 
-    @Nullable
+    @NotNull
     public static String getName(@NotNull DLanguageMixinStatement t) {
         return findChildOfType(t,DLanguageIdentifier.class).getName();
     }
@@ -1162,18 +1012,28 @@ public class DPsiImplUtil {
         }
     }
 
-    @Nullable
+    @NotNull
     private static DLanguageIdentifier getIdentifier(DLanguageDeclaratorInitializer o) {
         if (o.getAltDeclarator() != null) {
             final DLanguageAltDeclarator altDeclarator = o.getAltDeclarator();
-            if (altDeclarator.getIdentifier() != null) return altDeclarator.getIdentifier();
-            else return altDeclarator.getAltDeclaratorX().getIdentifier();
-        }
-        if (o.getVarDeclarator() != null) {
+            return getIdentifier(altDeclarator);
+        } else /*if (o.getVarDeclarator() != null) */ {
             final DLanguageVarDeclarator varDeclarator = o.getVarDeclarator();
+            assert varDeclarator != null;
             return varDeclarator.getIdentifier();
         }
-        return null;
+    }
+
+    private static DLanguageIdentifier getIdentifier(DLanguageAltDeclarator altDeclarator) {
+        if (altDeclarator.getIdentifier() != null) return altDeclarator.getIdentifier();
+        else
+            return getIdentifier(altDeclarator.getAltDeclaratorX());
+    }
+
+    private static DLanguageIdentifier getIdentifier(DLanguageAltDeclaratorX altDeclaratorX) {
+        if (altDeclaratorX.getIdentifier() != null)
+            return altDeclaratorX.getIdentifier();
+        return getIdentifier(altDeclaratorX.getAltDeclarator());
     }
 
     @Nullable
@@ -1248,6 +1108,7 @@ public class DPsiImplUtil {
     // ------------- Var Declaration ------------------ //`
 
     // ------------- Auto Declaration Y ------------------ //
+
     @NotNull
     public static String getName(@NotNull DLanguageAutoDeclarationY o) {
         DLanguageAutoDeclarationStub stub = o.getStub();
@@ -1319,300 +1180,10 @@ public class DPsiImplUtil {
         return null;//todo implement
 
     }
+
     // ------------- Auto Declaration Y ------------------ //
 
-
-    // ------------- Static Constructor ------------------//
-    @NotNull
-    public static String getName(@NotNull DLanguageStaticConstructor o) {
-        return "this";
-//        DLanguageStaticConstructorStub stub = o.getStub();
-//        if (stub != null) return StringUtil.notNullize(stub.getName());
-//
-//        PsiElement parent = o.getParent();
-//
-//
-//        while (!(parent instanceof DLanguageClassDeclaration)) {
-//            parent = parent.getParent();
-//        }
-
-//        return ((DLanguageClassDeclaration)parent).getName() + "constructor";
-//        if (o.getIdentifier() != null) {
-//            return o.getIdentifier().getText();
-//        } else {
-//            return "not found";
-//        }
-    }
-
-    @Nullable
-    public static PsiElement getNameIdentifier(@NotNull DLanguageStaticConstructor o) {
-        ASTNode keyNode = o.getNode();
-        return keyNode != null ? keyNode.getPsi() : null;
-    }
-
-    @NotNull
-    public static PsiElement setName(@NotNull DLanguageStaticConstructor o, @NotNull String newName) {
-        throw new UnsupportedOperationException("you should not be renaming static constructors");
-    }
-
-    @NotNull
-    public static PsiReference getReference(@NotNull DLanguageStaticConstructor o) {
-        return new DReference(o, TextRange.from(0, getName(o).length()));
-    }
-
-    @NotNull
-    public static ItemPresentation getPresentation(final DLanguageStaticConstructor o) {
-        return new ItemPresentation() {
-            @NotNull
-            @Override
-            public String getPresentableText() {
-                String string = "";
-                for (PsiElement psiElement : o.getChildren()) {
-                    if (psiElement instanceof DLanguageParametersImpl)
-                        string += psiElement.getText();
-                }
-                return o.getName() + string;
-            }
-
-            /**
-             * This is needed to decipher between files when resolving multiple references.
-             */
-            @Nullable
-            @Override
-            public String getLocationString() {
-                final PsiFile psiFile = o.getContainingFile();
-                return psiFile instanceof DLanguageFile ? ((DLanguageFile) psiFile).getModuleOrFileName() : null;
-            }
-
-            @Nullable
-            @Override
-            public Icon getIcon(boolean unused) {
-                return DLanguageIcons.FILE;
-            }
-        };
-    }
-
-    // ------------- Static Constructor ------------------//
-
-
-    // ---------- Shared Static Constructor ---------------//
-
-    @NotNull
-    public static String getName(@NotNull DLanguageSharedStaticConstructor o) {
-        return "this";//not sure about wether or not this should be "this" or not. Copy paste the bellow back in at a later date, but the classeclaration part should also include structs/templates/modules. todo
-//        DLanguageSharedStaticConstructorStub stub = o.getStub();
-//        if (stub != null) return StringUtil.notNullize(stub.getName());
-//
-//        PsiElement parent = o.getParent();
-//
-//
-//        while (!(parent instanceof DLanguageClassDeclaration)) {
-//            parent = parent.getParent();
-//        }
-
-//        return ((DLanguageClassDeclaration)parent).getName() + "constructor";
-//        if (o.getIdentifier() != null) {
-//            return o.getIdentifier().getText();
-//        } else {
-//            return "not found";
-//        }
-    }
-
-    @Nullable
-    public static PsiElement getNameIdentifier(@NotNull DLanguageSharedStaticConstructor o) {
-        ASTNode keyNode = o.getNode();
-        return keyNode != null ? keyNode.getPsi() : null;
-    }
-
-    @NotNull
-    public static PsiElement setName(@NotNull DLanguageSharedStaticConstructor o, @NotNull String newName) {
-        throw new UnsupportedOperationException("you should not be renaming static constructors");
-    }
-
-    @NotNull
-    public static PsiReference getReference(@NotNull DLanguageSharedStaticConstructor o) {
-        return new DReference(o, TextRange.from(0, getName(o).length()));
-    }
-
-    @NotNull
-    public static ItemPresentation getPresentation(final DLanguageSharedStaticConstructor o) {
-        return new ItemPresentation() {
-            @NotNull
-            @Override
-            public String getPresentableText() {
-                String string = "";
-                for (PsiElement psiElement : o.getChildren()) {
-                    if (psiElement instanceof DLanguageParametersImpl)
-                        string += psiElement.getText();
-                }
-                return o.getName() + string;
-            }
-
-            /**
-             * This is needed to decipher between files when resolving multiple references.
-             */
-            @Nullable
-            @Override
-            public String getLocationString() {
-                final PsiFile psiFile = o.getContainingFile();
-                return psiFile instanceof DLanguageFile ? ((DLanguageFile) psiFile).getModuleOrFileName() : null;
-            }
-
-            @Nullable
-            @Override
-            public Icon getIcon(boolean unused) {
-                return DLanguageIcons.FILE;
-            }
-        };
-    }
-
-    // ---------- Shared Static Constructor ---------------//
-
-    // ------------- Static Destructor ------------------ //
-    @NotNull
-    public static String getName(@NotNull DLanguageStaticDestructor o) {
-        return "~this";
-//        DLanguageStaticDestructorStub stub = o.getStub();
-//        if (stub != null) return StringUtil.notNullize(stub.getName());
-//
-//        PsiElement parent = o.getParent();
-//
-//
-//        while (!(parent instanceof DLanguageClassDeclaration)) {
-//            parent = parent.getParent();
-//        }
-
-//        return ((DLanguageClassDeclaration)parent).getName() + "constructor";
-//        if (o.getIdentifier() != null) {
-//            return o.getIdentifier().getText();
-//        } else {
-//            return "not found";
-//        }
-    }
-
-    @Nullable
-    public static PsiElement getNameIdentifier(@NotNull DLanguageStaticDestructor o) {
-        ASTNode keyNode = o.getNode();
-        return keyNode != null ? keyNode.getPsi() : null;
-    }
-
-    @NotNull
-    public static PsiElement setName(@NotNull DLanguageStaticDestructor o, @NotNull String newName) {
-        throw new UnsupportedOperationException("you should not be renaming static destructors");
-    }
-
-    @NotNull
-    public static PsiReference getReference(@NotNull DLanguageStaticDestructor o) {
-        return new DReference(o, TextRange.from(0, getName(o).length()));
-    }
-
-    @NotNull
-    public static ItemPresentation getPresentation(final DLanguageStaticDestructor o) {
-        return new ItemPresentation() {
-            @NotNull
-            @Override
-            public String getPresentableText() {
-                String string = "";
-                for (PsiElement psiElement : o.getChildren()) {
-                    if (psiElement instanceof DLanguageParametersImpl)
-                        string += psiElement.getText();
-                }
-                return o.getName() + string;
-            }
-
-            /**
-             * This is needed to decipher between files when resolving multiple references.
-             */
-            @Nullable
-            @Override
-            public String getLocationString() {
-                final PsiFile psiFile = o.getContainingFile();
-                return psiFile instanceof DLanguageFile ? ((DLanguageFile) psiFile).getModuleOrFileName() : null;
-            }
-
-            @Nullable
-            @Override
-            public Icon getIcon(boolean unused) {
-                return DLanguageIcons.FILE;
-            }
-        };
-    }
-
-    @NotNull
-    public static String getName(@NotNull DLanguageSharedStaticDestructor o) {
-        return "~this";
-//        DLanguageSharedStaticDestructorStub stub = o.getStub();
-//        if (stub != null) return StringUtil.notNullize(stub.getName());
-//
-//        PsiElement parent = o.getParent();
-//
-//
-//        while (!(parent instanceof DLanguageClassDeclaration)) {
-//            parent = parent.getParent();
-//        }
-
-//        return ((DLanguageClassDeclaration)parent).getName() + "constructor";
-//        if (o.getIdentifier() != null) {
-//            return o.getIdentifier().getText();
-//        } else {
-//            return "not found";
-//        }
-    }
-
-
-    // ------------- Shared Static Destructor ------------- //
-
-    @Nullable
-    public static PsiElement getNameIdentifier(@NotNull DLanguageSharedStaticDestructor o) {
-        ASTNode keyNode = o.getNode();
-        return keyNode != null ? keyNode.getPsi() : null;
-    }
-
-    @NotNull
-    public static PsiElement setName(@NotNull DLanguageSharedStaticDestructor o, @NotNull String newName) {
-        throw new UnsupportedOperationException("you should not be renaming static constructors");
-    }
-
-    @NotNull
-    public static PsiReference getReference(@NotNull DLanguageSharedStaticDestructor o) {
-        return new DReference(o, TextRange.from(0, getName(o).length()));
-    }
-
-    @NotNull
-    public static ItemPresentation getPresentation(final DLanguageSharedStaticDestructor o) {
-        return new ItemPresentation() {
-            @NotNull
-            @Override
-            public String getPresentableText() {
-                String string = "";
-                for (PsiElement psiElement : o.getChildren()) {
-                    if (psiElement instanceof DLanguageParametersImpl)
-                        string += psiElement.getText();
-                }
-                return o.getName() + string;
-            }
-
-            /**
-             * This is needed to decipher between files when resolving multiple references.
-             */
-            @Nullable
-            @Override
-            public String getLocationString() {
-                final PsiFile psiFile = o.getContainingFile();
-                return psiFile instanceof DLanguageFile ? ((DLanguageFile) psiFile).getModuleOrFileName() : null;
-            }
-
-            @Nullable
-            @Override
-            public Icon getIcon(boolean unused) {
-                return DLanguageIcons.FILE;
-            }
-        };
-    }
-
-    // ------------- Shared Static Destructor ------------- //
-
-    // ------------ Module Declaration ----------------- //
+    // ------------ Import Declaration ----------------- //
 
     @NotNull
     public static String getName(@NotNull DLanguageImport o) {
@@ -1677,7 +1248,600 @@ public class DPsiImplUtil {
         return getChildOfType(o, DLanguageProtectionAttribute.class);
     }
 
-    // ------------ Module Declaration ----------------- //
+    // ------------ Import Declaration ----------------- //
+
+    // ------------ Catch Parameter ----------------- //
+
+    @NotNull
+    public static String getName(@NotNull DLanguageCatchParameter o) {
+        DLanguageCatchParameterStub stub = o.getStub();
+        if (stub != null) return StringUtil.notNullize(stub.getName());
+
+        if (o.getIdentifier() != null) {
+            return o.getIdentifier().getName();
+        }
+        return "anon_catch_parameter";
+
+    }
+
+    @Nullable
+    public static PsiElement getNameIdentifier(@NotNull DLanguageCatchParameter o) {
+        ASTNode keyNode = o.getNode();
+        return keyNode != null ? keyNode.getPsi() : null;
+    }
+
+    @NotNull
+    public static PsiElement setName(@NotNull DLanguageCatchParameter o, @NotNull String newName) {
+        if (o.getIdentifier() != null) {
+            o.getIdentifier().setName(newName);
+        } else {
+            throw new IllegalStateException("renaming a catch parameter withouta name");
+        }
+        return o;
+    }
+
+    @NotNull
+    public static PsiReference getReference(@NotNull DLanguageCatchParameter o) {
+        return new DReference(o, TextRange.from(0, getName(o).length()));
+    }
+
+    @NotNull
+    public static ItemPresentation getPresentation(final DLanguageCatchParameter o) {
+        return new ItemPresentation() {
+            @NotNull
+            @Override
+            public String getPresentableText() {
+                return o.getName();
+            }
+
+            /**
+             * This is needed to decipher between files when resolving multiple references.
+             */
+            @Nullable
+            @Override
+            public String getLocationString() {
+                final PsiFile psiFile = o.getContainingFile();
+                return psiFile instanceof DLanguageFile ? ((DLanguageFile) psiFile).getModuleOrFileName() : null;
+            }
+
+            @Nullable
+            @Override
+            public Icon getIcon(boolean unused) {
+                return DLanguageIcons.FILE;
+            }
+        };
+    }
+
+    // ------------ Catch Parameter ----------------- //
+
+    // ------------ Alias Declaration Y ----------------- //
+
+    @NotNull
+    public static String getName(@NotNull DLanguageAliasDeclarationY o) {
+        DLanguageAliasDeclarationYStub stub = o.getStub();
+        if (stub != null) return StringUtil.notNullize(stub.getName());
+        return o.getIdentifier().getName();
+    }
+
+    @Nullable
+    public static PsiElement getNameIdentifier(@NotNull DLanguageAliasDeclarationY o) {
+        ASTNode keyNode = o.getNode();
+        return keyNode != null ? keyNode.getPsi() : null;
+    }
+
+    @NotNull
+    public static PsiElement setName(@NotNull DLanguageAliasDeclarationY o, @NotNull String newName) {
+        o.getIdentifier().setName(newName);
+        return o;
+    }
+
+    @NotNull
+    public static PsiReference getReference(@NotNull DLanguageAliasDeclarationY o) {
+        return new DReference(o, TextRange.from(0, getName(o).length()));
+    }
+
+    @NotNull
+    public static ItemPresentation getPresentation(final DLanguageAliasDeclarationY o) {
+        return new ItemPresentation() {
+            @NotNull
+            @Override
+            public String getPresentableText() {
+                return o.getName();
+            }
+
+            /**
+             * This is needed to decipher between files when resolving multiple references.
+             */
+            @Nullable
+            @Override
+            public String getLocationString() {
+                final PsiFile psiFile = o.getContainingFile();
+                return psiFile instanceof DLanguageFile ? ((DLanguageFile) psiFile).getModuleOrFileName() : null;
+            }
+
+            @Nullable
+            @Override
+            public Icon getIcon(boolean unused) {
+                return DLanguageIcons.FILE;
+            }
+        };
+    }
+
+    public static boolean actuallyIsDeclaration(DLanguageAliasDeclarationY o) {
+        return true;
+    }
+
+    // ------------ Alias Declaration Y ----------------- //
+
+    // ------------ Alias Declaration Single ----------------- //
+
+    @NotNull
+    public static String getName(@NotNull DLanguageAliasDeclarationSingle o) {
+        DLanguageAliasDeclarationSingleStub stub = o.getStub();
+        if (stub != null) return StringUtil.notNullize(stub.getName());
+        if (o.getIdentifier() != null) {
+            return o.getIdentifier().getName();
+        }
+        return getIdentifier(o.getDeclarator()).getName();
+    }
+
+    @Nullable
+    public static PsiElement getNameIdentifier(@NotNull DLanguageAliasDeclarationSingle o) {
+        ASTNode keyNode = o.getNode();
+        return keyNode != null ? keyNode.getPsi() : null;
+    }
+
+    @NotNull
+    public static PsiElement setName(@NotNull DLanguageAliasDeclarationSingle o, @NotNull String newName) {
+        if (o.getIdentifier() != null) {
+            return o.getIdentifier().setName(newName);
+        } else {
+            getIdentifier(o.getDeclarator()).setName(newName);
+        }
+        return o;
+    }
+
+    @NotNull
+    public static PsiReference getReference(@NotNull DLanguageAliasDeclarationSingle o) {
+        return new DReference(o, TextRange.from(0, getName(o).length()));
+    }
+
+    @NotNull
+    public static ItemPresentation getPresentation(final DLanguageAliasDeclarationSingle o) {
+        return new ItemPresentation() {
+            @NotNull
+            @Override
+            public String getPresentableText() {
+                return o.getName();
+            }
+
+            /**
+             * This is needed to decipher between files when resolving multiple references.
+             */
+            @Nullable
+            @Override
+            public String getLocationString() {
+                final PsiFile psiFile = o.getContainingFile();
+                return psiFile instanceof DLanguageFile ? ((DLanguageFile) psiFile).getModuleOrFileName() : null;
+            }
+
+            @Nullable
+            @Override
+            public Icon getIcon(boolean unused) {
+                return DLanguageIcons.FILE;
+            }
+        };
+    }
+
+    public static boolean actuallyIsDeclaration(DLanguageAliasDeclarationSingle o) {
+        return true;
+    }
+
+    // ------------ Alias Declaration Single ----------------- //
+
+    // ------------ Condition Variable Declaration ----------------- //
+
+    public static DLanguageIdentifier getIdentifier(DLanguageConditionVariableDeclaration o) {
+        if (o.getIdentifier() != null) {
+            return o.getIdentifier();
+        }
+        if (o.getDeclarator() != null) {
+            return getIdentifier(o.getDeclarator());
+        }
+        throw new IllegalStateException("this should never happen");
+    }
+
+    public static DLanguageIdentifier getIdentifier(DLanguageDeclarator declarator) {
+        if (declarator.getVarDeclarator() != null) {
+            return declarator.getVarDeclarator().getIdentifier();
+        }
+        if (declarator.getAltDeclarator() != null) {
+            return getIdentifier(declarator.getAltDeclarator());
+        }
+        throw new IllegalStateException("this should never happen");
+    }
+
+    @NotNull
+    public static String getName(@NotNull DLanguageConditionVariableDeclaration o) {
+        DLanguageConditionVariableDeclarationStub stub = o.getStub();
+        if (stub != null) return StringUtil.notNullize(stub.getName());
+        return getIdentifier(o).getName();
+    }
+
+    @Nullable
+    public static PsiElement getNameIdentifier(@NotNull DLanguageConditionVariableDeclaration o) {
+        ASTNode keyNode = o.getNode();
+        return keyNode != null ? keyNode.getPsi() : null;
+    }
+
+    @NotNull
+    public static PsiElement setName(@NotNull DLanguageConditionVariableDeclaration o, @NotNull String newName) {
+        getIdentifier(o).setName(newName);
+        return o;
+    }
+
+    @NotNull
+    public static PsiReference getReference(@NotNull DLanguageConditionVariableDeclaration o) {
+        return new DReference(o, TextRange.from(0, getName(o).length()));
+    }
+
+    @NotNull
+    public static ItemPresentation getPresentation(final DLanguageConditionVariableDeclaration o) {
+        return new ItemPresentation() {
+            @NotNull
+            @Override
+            public String getPresentableText() {
+                return o.getName();
+            }
+
+            /**
+             * This is needed to decipher between files when resolving multiple references.
+             */
+            @Nullable
+            @Override
+            public String getLocationString() {
+                final PsiFile psiFile = o.getContainingFile();
+                return psiFile instanceof DLanguageFile ? ((DLanguageFile) psiFile).getModuleOrFileName() : null;
+            }
+
+            @Nullable
+            @Override
+            public Icon getIcon(boolean unused) {
+                return DLanguageIcons.FILE;
+            }
+        };
+    }
+
+    public static boolean actuallyIsDeclaration(DLanguageConditionVariableDeclaration o) {
+        return true;
+    }
+
+    // ------------ Condition Variable Declaration ----------------- //
+
+    // ------------ Foreach Type Declaration ----------------- //
+
+    @NotNull
+    public static String getName(@NotNull DLanguageForeachType o) {
+        DLanguageForeachTypeStub stub = o.getStub();
+        if (stub != null) return StringUtil.notNullize(stub.getName());
+        return o.getIdentifier().getName();
+    }
+
+    @Nullable
+    public static PsiElement getNameIdentifier(@NotNull DLanguageForeachType o) {
+        ASTNode keyNode = o.getNode();
+        return keyNode != null ? keyNode.getPsi() : null;
+    }
+
+    @NotNull
+    public static PsiElement setName(@NotNull DLanguageForeachType o, @NotNull String newName) {
+        o.getIdentifier().setName(newName);
+        return o;
+    }
+
+    @NotNull
+    public static PsiReference getReference(@NotNull DLanguageForeachType o) {
+        return new DReference(o, TextRange.from(0, getName(o).length()));
+    }
+
+    @NotNull
+    public static ItemPresentation getPresentation(final DLanguageForeachType o) {
+        return new ItemPresentation() {
+            @NotNull
+            @Override
+            public String getPresentableText() {
+                return o.getName();
+            }
+
+            /**
+             * This is needed to decipher between files when resolving multiple references.
+             */
+            @Nullable
+            @Override
+            public String getLocationString() {
+                final PsiFile psiFile = o.getContainingFile();
+                return psiFile instanceof DLanguageFile ? ((DLanguageFile) psiFile).getModuleOrFileName() : null;
+            }
+
+            @Nullable
+            @Override
+            public Icon getIcon(boolean unused) {
+                return DLanguageIcons.FILE;
+            }
+        };
+    }
+
+    public static boolean actuallyIsDeclaration(DLanguageForeachType o) {
+        return true;
+    }
+
+    // ------------ Foreach Type Declaration ----------------- //
+
+    // ------------ Var Func Declaration ----------------- //
+
+    @NotNull
+    public static String getName(@NotNull DLanguageVarFuncDeclaration o) {
+        DLanguageVarFuncDeclarationStub stub = o.getStub();
+        if (stub != null) return StringUtil.notNullize(stub.getName());
+        return o.getIdentifier().getName();
+    }
+
+    @Nullable
+    public static PsiElement getNameIdentifier(@NotNull DLanguageVarFuncDeclaration o) {
+        ASTNode keyNode = o.getNode();
+        return keyNode != null ? keyNode.getPsi() : null;
+    }
+
+    @NotNull
+    public static PsiElement setName(@NotNull DLanguageVarFuncDeclaration o, @NotNull String newName) {
+        o.getIdentifier().setName(newName);
+        return o;
+    }
+
+    @NotNull
+    public static PsiReference getReference(@NotNull DLanguageVarFuncDeclaration o) {
+        return new DReference(o, TextRange.from(0, getName(o).length()));
+    }
+
+    @NotNull
+    public static ItemPresentation getPresentation(final DLanguageVarFuncDeclaration o) {
+        return new ItemPresentation() {
+            @NotNull
+            @Override
+            public String getPresentableText() {
+                return o.getName();
+            }
+
+            /**
+             * This is needed to decipher between files when resolving multiple references.
+             */
+            @Nullable
+            @Override
+            public String getLocationString() {
+                final PsiFile psiFile = o.getContainingFile();
+                return psiFile instanceof DLanguageFile ? ((DLanguageFile) psiFile).getModuleOrFileName() : null;
+            }
+
+            @Nullable
+            @Override
+            public Icon getIcon(boolean unused) {
+                return DLanguageIcons.FILE;
+            }
+        };
+    }
+
+    // ------------ Var Func Declaration ----------------- //
+
+    // ------------ Parameter ----------------- //
+
+    public static @NotNull
+    DLanguageIdentifier getIdentifier(DLanguageParameter o) {
+        if (o.getIdentifier() != null) {
+            return o.getIdentifier();
+        }
+        if (o.getDeclarator() != null) {
+            return getIdentifier(o.getDeclarator());
+        }
+        if (o.getType() != null) {
+            return DUtil.getEndOfIdentifierList(o.getType().getBasicType().getIdentifierList());
+        }
+        throw new IllegalStateException("this should never happen");
+    }
+
+    @NotNull
+    public static String getName(@NotNull DLanguageParameter o) {
+        DLanguageParameterStub stub = o.getStub();
+        if (stub != null) return StringUtil.notNullize(stub.getName());
+        return getIdentifier(o).getName();
+    }
+
+    @Nullable
+    public static PsiElement getNameIdentifier(@NotNull DLanguageParameter o) {
+        ASTNode keyNode = o.getNode();
+        return keyNode != null ? keyNode.getPsi() : null;
+    }
+
+    @NotNull
+    public static PsiElement setName(@NotNull DLanguageParameter o, @NotNull String newName) {
+        getIdentifier(o).setName(newName);
+        return o;
+    }
+
+    @NotNull
+    public static PsiReference getReference(@NotNull DLanguageParameter o) {
+        return new DReference(o, TextRange.from(0, getName(o).length()));
+    }
+
+    @NotNull
+    public static ItemPresentation getPresentation(final DLanguageParameter o) {
+        return new ItemPresentation() {
+            @NotNull
+            @Override
+            public String getPresentableText() {
+                return o.getName();
+            }
+
+            /**
+             * This is needed to decipher between files when resolving multiple references.
+             */
+            @Nullable
+            @Override
+            public String getLocationString() {
+                final PsiFile psiFile = o.getContainingFile();
+                return psiFile instanceof DLanguageFile ? ((DLanguageFile) psiFile).getModuleOrFileName() : null;
+            }
+
+            @Nullable
+            @Override
+            public Icon getIcon(boolean unused) {
+                return DLanguageIcons.FILE;
+            }
+        };
+    }
+
+    // ------------ Parameter ----------------- //
+
+    // ------------ Template Parameter ----------------- //
+
+    @NotNull
+    private static DLanguageIdentifier getIdentifier(DLanguageTemplateTypeParameter templateTypeParameter) {
+        if (templateTypeParameter.getIdentifier() != null) {
+            return templateTypeParameter.getIdentifier();
+        }
+        return DUtil.getEndOfIdentifierList(templateTypeParameter.getTypeList().get(0).getBasicType().getIdentifierList());
+    }
+
+
+    public static @NotNull
+    DLanguageIdentifier getIdentifier(DLanguageTemplateParameter o) {
+        if (o.getTemplateAliasParameter() != null) {
+            if (o.getTemplateAliasParameter().getIdentifier() != null) {
+                return o.getTemplateAliasParameter().getIdentifier();
+            }
+            return DUtil.getEndOfIdentifierList(o.getTemplateAliasParameter().getTypeList().get(0).getBasicType().getIdentifierList());
+        }
+        if (o.getTemplateThisParameter() != null) {
+            return getIdentifier(o.getTemplateThisParameter().getTemplateTypeParameter());
+        }
+        if (o.getTemplateTupleParameter() != null) {
+            return o.getTemplateTupleParameter().getIdentifier();
+        }
+        if (o.getTemplateTypeParameter() != null) {
+            return getIdentifier(o.getTemplateTypeParameter());
+        }
+        if (o.getTemplateValueParameter() != null) {
+            return getIdentifier(o.getTemplateValueParameter().getDeclarator());
+        }
+        throw new IllegalStateException("this should never happen");
+    }
+
+    @NotNull
+    public static String getName(@NotNull DLanguageTemplateParameter o) {
+        DLanguageTemplateParameterStub stub = o.getStub();
+        if (stub != null) return StringUtil.notNullize(stub.getName());
+        return getIdentifier(o).getName();
+    }
+
+    @Nullable
+    public static PsiElement getNameIdentifier(@NotNull DLanguageTemplateParameter o) {
+        ASTNode keyNode = o.getNode();
+        return keyNode != null ? keyNode.getPsi() : null;
+    }
+
+    @NotNull
+    public static PsiElement setName(@NotNull DLanguageTemplateParameter o, @NotNull String newName) {
+        getIdentifier(o).setName(newName);
+        return o;
+    }
+
+    @NotNull
+    public static PsiReference getReference(@NotNull DLanguageTemplateParameter o) {
+        return new DReference(o, TextRange.from(0, getName(o).length()));
+    }
+
+    @NotNull
+    public static ItemPresentation getPresentation(final DLanguageTemplateParameter o) {
+        return new ItemPresentation() {
+            @NotNull
+            @Override
+            public String getPresentableText() {
+                return o.getName();
+            }
+
+            /**
+             * This is needed to decipher between files when resolving multiple references.
+             */
+            @Nullable
+            @Override
+            public String getLocationString() {
+                final PsiFile psiFile = o.getContainingFile();
+                return psiFile instanceof DLanguageFile ? ((DLanguageFile) psiFile).getModuleOrFileName() : null;
+            }
+
+            @Nullable
+            @Override
+            public Icon getIcon(boolean unused) {
+                return DLanguageIcons.FILE;
+            }
+        };
+    }
+
+    // ------------ Template Parameter ----------------- //
+
+    // ------------ Enum Member ----------------- //
+
+    @NotNull
+    public static String getName(@NotNull DLanguageEnumMember o) {
+        DLanguageEnumMemberStub stub = o.getStub();
+        if (stub != null) return StringUtil.notNullize(stub.getName());
+        return o.getIdentifier().getName();
+    }
+
+    @Nullable
+    public static PsiElement getNameIdentifier(@NotNull DLanguageEnumMember o) {
+        ASTNode keyNode = o.getNode();
+        return keyNode != null ? keyNode.getPsi() : null;
+    }
+
+    @NotNull
+    public static PsiElement setName(@NotNull DLanguageEnumMember o, @NotNull String newName) {
+        o.getIdentifier().setName(newName);
+        return o;
+    }
+
+    @NotNull
+    public static PsiReference getReference(@NotNull DLanguageEnumMember o) {
+        return new DReference(o, TextRange.from(0, getName(o).length()));
+    }
+
+    @NotNull
+    public static ItemPresentation getPresentation(final DLanguageEnumMember o) {
+        return new ItemPresentation() {
+            @NotNull
+            @Override
+            public String getPresentableText() {
+                return o.getName();
+            }
+
+            /**
+             * This is needed to decipher between files when resolving multiple references.
+             */
+            @Nullable
+            @Override
+            public String getLocationString() {
+                final PsiFile psiFile = o.getContainingFile();
+                return psiFile instanceof DLanguageFile ? ((DLanguageFile) psiFile).getModuleOrFileName() : null;
+            }
+
+            @Nullable
+            @Override
+            public Icon getIcon(boolean unused) {
+                return DLanguageIcons.FILE;
+            }
+        };
+    }
+
+    // ------------ Enum Member ----------------- //
 
     // -------------------- Visibility --------------------- //
 
@@ -1687,7 +1851,7 @@ public class DPsiImplUtil {
             if (attribute.getAttribute().getProtectionAttribute().getText().equals(visibility))//todo iterate
                 return true;
         }
-        return isSomeVisibility(o, visibility, AliasContainer.class);
+        return isSomeVisibility((DNamedElement) o, visibility, AliasContainer.class);
 
     }
 
@@ -1778,26 +1942,6 @@ public class DPsiImplUtil {
         return isSomeVisibility(o, visibility, FunctionContainer.class);
     }
 
-    public static boolean isSomeVisibility(DLanguageStaticConstructor o, Visibility visibility) {
-        return isSomeVisibility(o, visibility, ConstructorContainer.class);//todo convert to static constructor container
-    }
-
-    public static boolean isSomeVisibility(DLanguageSharedStaticConstructor o, Visibility visibility) {
-        return isSomeVisibility(o, visibility, ConstructorContainer.class);//todo convert to static constructor container
-    }
-
-    public static boolean isSomeVisibility(DLanguageDestructor o, Visibility visibility) {
-        return isSomeVisibility(o, visibility, DestructorContainer.class);
-    }
-
-    public static boolean isSomeVisibility(DLanguageStaticDestructor o, Visibility visibility) {
-        return isSomeVisibility(o, visibility, DestructorContainer.class);//todo convert to static destructor container
-    }
-
-    public static boolean isSomeVisibility(DLanguageSharedStaticDestructor o, Visibility visibility) {
-        return isSomeVisibility(o, visibility, DestructorContainer.class);//todo convert to static destructor container
-    }
-
     public static boolean isSomeVisibility(VariableDeclaration o, Visibility visibility) {
         return isSomeVisibility(o, visibility, GlobalVariableContainer.class);//todo check that this still works correctly for local vars/ do we care if local vars don't have correct visibility?
     }
@@ -1815,6 +1959,495 @@ public class DPsiImplUtil {
     }
 
     // -------------------- Visibility --------------------- //
+
+    // -------------------- Scope processing --------------- //
+
+    /**
+     * takes the elements declared in the given psi and passes them to the scope processor via the execute method. The scope processor will return false if it has found what it is "looking for". Note that certain declarations processors will not process child block statement/aggregate bodies since those have their own processor.
+     * Some of the process declarations methods may return early while others will search throught the entire scope
+     *
+     * @param element
+     * @param processor
+     * @param state
+     * @param lastParent todo make use of this do determine if scope statements/decldefs contained inside a element should be processed or not.
+     * @param place
+     * @return
+     */
+    public static boolean processDeclarations(DLanguageFuncDeclaration element, @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        //todo handle place
+        boolean shouldContinue = true;
+        for (DLanguageParameter parameter : element.getArguments()) {
+            if (!processor.execute(parameter, state)) {
+                shouldContinue = false;
+            }
+        }
+        for (DLanguageTemplateParameter templateParameter : element.getTemplateArguments()) {
+            if (!processor.execute(templateParameter, state)) {
+                shouldContinue = false;
+            }
+        }
+        return shouldContinue;
+    }
+
+    public static boolean processDeclarations(DLanguageForeachStatement element, @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        //todo handle place
+        boolean shouldContinue = true;
+        for (DLanguageForeachType foreachType : element.getForeachTypeList().getForeachTypeList()) {
+            if (!processor.execute(foreachType, state)) {
+                shouldContinue = false;
+            }
+        }
+        return shouldContinue;
+    }
+
+    public static boolean processDeclarations(DLanguageWhileStatement element, @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        //todo should handle place
+        return true;//todo check that while statement's can/can't contain truthy/falsy variable declarations or casts
+    }
+
+    public static boolean processDeclarations(DLanguageForStatement element, @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        //todo handle place
+        if (element.getInitialize() == null || element.getInitialize().getStatement() == null)
+            return true;
+        return element.getInitialize().getStatement().processDeclarations(processor, state, lastParent, place);
+    }
+
+    public static boolean processDeclarations(DLanguageDoStatement element, @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        return true;//todo check that while statement's can/can't contain truthy/falsy variable declarations or casts
+    }
+
+    public static boolean processDeclarations(DLanguageIfStatement element, @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        return true;
+    }
+
+    public static boolean processDeclarations(DLanguageBlockStatement element, @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        //todo handle place
+        //todo do statements
+        if (element.getStatementList() != null) {
+            for (DLanguageStatement dLangStatement : element.getStatementList().getStatementList()) {
+                if (!dLangStatement.processDeclarations(processor, state, lastParent, place)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public static boolean processDeclarations(DLanguageSwitchStatement element, @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        //todo truthy types in switch statement???//should declarations in the switch scope statementbe processed or do they go out of scope
+        return true;
+    }
+
+    public static boolean processDeclarations(DLanguageFinalSwitchStatement element, @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        return true;//see regular switch statement
+    }
+
+    public static boolean processDeclarations(DLanguageWithStatement element, @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        return true;//todo I don't actually know how with statements work in D
+    }
+
+    public static boolean processDeclarations(DLanguageSynchronizedStatement element, @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        return true; //how does scope work in synchronized D statements
+    }
+
+    public static boolean processDeclarations(DLanguageCatch element, @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        return processor.execute(element.getCatchParameter(), state);
+    }
+
+    public static boolean processDeclarations(DLanguageForeachRangeStatement element, @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        //see foreach
+        return processor.execute(element.getForeachType(), state);
+    }
+
+    public static boolean processDeclarations(DLanguageConditionalStatement element, @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        //always recurse in since this is a compile time condition
+        //handle place and lastParent
+        for (DLanguageStatement dLangStatement : element.getStatementList()) {
+            if (!dLangStatement.processDeclarations(processor, state, lastParent, place)) {
+                return false;
+            }
+        }
+        for (DLanguageDeclarationBlock block : element.getDeclarationBlockList()) {
+            if (block.processDeclarations(processor, state, lastParent, place)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    public static boolean processDeclarations(DLanguageDeclarationBlock element, @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        if (element.getDeclDef() != null) {
+            if (!element.getDeclDef().processDeclarations(processor, state, lastParent, place)) {
+                return false;
+            }
+        }
+        if (element.getDeclDefs() != null) {
+            for (DLanguageDeclDef def : element.getDeclDefs().getDeclDefList()) {
+                if (!def.processDeclarations(processor, state, lastParent, place)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public static boolean processDeclarations(DLanguageDeclDef def, @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        if (def.getDeclaration() != null) {
+            if (!def.getDeclaration().processDeclarations(processor, state, lastParent, place)) {
+                return false;
+            }
+        }
+        if (def.getConstructor() != null) {
+            //todo make sure names for constructors are handled correctly
+            processor.execute(def.getConstructor(), state);
+        }
+        if (def.getAliasThis() != null) {
+            //todo handle alias this
+            //processor.execute(def.getAliasThis(), state);
+        }
+        if (def.getConditionalDeclaration() != null) {
+            processor.execute(def.getConditionalDeclaration(), state);
+        }
+        if (def.getTemplateDeclaration() != null) {
+            processor.execute(def.getTemplateDeclaration(), state);
+        }
+        if (def.getTemplateMixinDeclaration() != null) {
+            processor.execute(def.getTemplateMixinDeclaration(), state);
+        }
+        if (def.getTemplateMixin() != null) {
+            //todo handle mixins
+            //processor.execute(def.getTemplateMixin(), state);
+        }
+        if (def.getMixinDeclaration() != null) {
+            //todo handle mixins
+            //processor.execute(def.getMixinDeclaration(), state);
+        }
+        if (def.getStaticIfCondition() != null) {
+            //todo
+//            if (def.getStaticIfCondition() != null) {
+//                if (def.getStaticIfCondition().getDeclarationBlock() != null) {
+//                    if (!(def.getStaticIfCondition().getDeclarationBlock().processDeclarations(processor, state, lastParent, place))) {
+//                        return false;
+//                    }
+//                }
+//            }
+        }
+        if (def.getStaticElseCondition() != null) {
+            if (def.getStaticElseCondition().getDeclarationBlock() != null) {
+                if (!(def.getStaticElseCondition().getDeclarationBlock().processDeclarations(processor, state, lastParent, place))) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+
+    public static boolean processDeclarations(DLanguageConditionalDeclaration element, @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+//        for (DLanguageDeclarationBlock block : element.getDeclarationBlockList()) {
+//            if (!block.processDeclarations(processor, state, lastParent, place)) {
+//                return false;
+//            }
+//        }
+        if (element.getDeclDefs() != null) {
+            for (DLanguageDeclDef def : element.getDeclDefs().getDeclDefList()) {
+                if (!def.processDeclarations(processor, state, lastParent, place)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public static boolean processDeclarations(DLanguageClassDeclaration element, @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+//        if (element.getClassTemplateDeclaration() != null) {
+//            if (element.getClassTemplateDeclaration().getTemplateParameters().getTemplateParameterList() != null) {
+//                for (DLanguageTemplateParameter templateParameter : element.getClassTemplateDeclaration().getTemplateParameters().getTemplateParameterList().getTemplateParameterList()) {
+//                    if (!processor.execute(templateParameter, state)) {
+//                        return false;
+//                    }
+//                }
+//            }
+//        }
+        return true;
+    }
+
+    public static boolean processDeclarations(DLanguageTemplateDeclaration element, @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        if (element.getTemplateParameters() != null) {
+            if (element.getTemplateParameters().getTemplateParameterList() != null) {
+                for (DLanguageTemplateParameter templateParameter : element.getTemplateParameters().getTemplateParameterList().getTemplateParameterList()) {
+                    if (!processor.execute(templateParameter, state)) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    public static boolean processDeclarations(DLanguageAggregateBody element, @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        if (element.getDeclDefs() != null) {
+            for (DLanguageDeclDef declDef : element.getDeclDefs().getDeclDefList()) {
+                if (!declDef.processDeclarations(processor, state, lastParent, place)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public static boolean processDeclarations(DLanguageStatement element, @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        if (element.getBlockStatement() != null) {
+            element.getBlockStatement().processDeclarations(processor, state, lastParent, place);
+        }
+//            if (nonEmptyStatement.getCaseRangeStatement() != null) {
+//
+//            }
+//            if (nonEmptyStatement.getCaseStatement() != null) {
+//
+//            }
+//            if (nonEmptyStatement.getDefaultStatement() != null) {
+//
+//            }
+//            if (nonEmptyStatement.getNonEmptyStatementNoCaseNoDefault() != null) {
+//                final DLanguageNonEmptyStatementNoCaseNoDefault statement = nonEmptyStatement.getNonEmptyStatementNoCaseNoDefault();
+//                if (statement.getLabeledStatement() != null) {
+//                    processor.execute(statement.getLabeledStatement(), state);//todo labeled statements should be DNamedElements
+//                    if (statement.getLabeledStatement().getStatement() != null) {
+//                        statement.getLabeledStatement().getStatement().processDeclarations(processor, state, lastParent, place);
+//                    }
+//                }
+//                if (statement.getDeclarationStatement() != null) {
+//                    statement.getDeclarationStatement().getDeclaration().processDeclarations(processor, state, lastParent, place);
+//                }
+//                if (statement.getBlockStatement() != null) {
+//                    statement.getBlockStatement().processDeclarations(processor, state, lastParent, place);
+//                }
+//                if (statement.getIfStatement() != null) {
+//                    final DLanguageIfCondition condition = statement.getIfStatement().getIfCondition();
+//                    //todo add return
+//                    if (condition != null) {
+//
+//                    }
+//                }
+//                //todo do/while statements should support truthy values etc
+////                if (statement.getWhileStatement() != null) {
+////                    processor.execute(statement.getWhileStatement(), state);
+////                }
+////                if (statement.getDoStatement() != null) {
+////                    processor.execute(statement.getDoStatement(), state);
+////                }
+//                if (statement.getForStatement() != null) {
+//                    statement.getForStatement().processDeclarations(processor, state, lastParent, place);
+//                }
+//                if (statement.getForeachStatement() != null) {
+//                    statement.getForeachStatement().processDeclarations(processor, state, lastParent, place);
+//                }
+//                if (statement.getSwitchStatement() != null) {
+//                    statement.getSwitchStatement().processDeclarations(processor, state, lastParent, place);
+//                }
+//                if (statement.getFinalSwitchStatement() != null) {
+//                    statement.getFinalSwitchStatement().processDeclarations(processor, state, lastParent, place);
+//                }
+////                if (statement.getWithStatement() != null) {
+////                    processor.execute(statement.getWithStatement(), state);
+////                }//todo idk how with statements work in d
+//                if (statement.getSynchronizedStatement() != null) {
+//                    //todo implement
+//                }
+//                if (statement.getTryStatement() != null) {
+//                    if (statement.getTryStatement().getCatches() != null) {
+//                        for (DLanguageCatch catch_ : statement.getTryStatement().getCatches().getCatchList()) {
+//                            processor.execute(catch_.getCatchParameter(), state);
+//                        }
+//
+//                    }
+//                }
+//                if (statement.getPragmaStatement() != null) {
+//                    if (statement.getPragmaStatement().getStatement() != null) {
+//                        statement.getPragmaStatement().getStatement().processDeclarations(processor, state, lastParent, place);
+//                    }
+//                }
+//                if (statement.getMixinStatement() != null) {
+//                    //todo handle mixins
+//                }
+//                if (statement.getForeachRangeStatement() != null) {
+//                    statement.getForeachRangeStatement().processDeclarations(processor, state, lastParent, place);
+//                }
+//                if (statement.getConditionalStatement() != null) {
+//                    statement.getConditionalStatement().processDeclarations(processor, state, lastParent, place);
+//                }
+//            }
+//        }
+        return true;
+    }
+
+    public static boolean processDeclarations(DLanguageDeclaration element, @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        if (element.getEnumDeclaration() != null) {
+            //todo members
+            if (!processor.execute(element.getEnumDeclaration(), state)) {
+                return false;
+            }
+        }
+        if (element.getFuncDeclaration() != null) {
+            if (!processor.execute(element.getFuncDeclaration(), state)) {
+                return false;
+            }
+        }
+        if (element.getVarDeclarations() != null) {
+            VariableDeclaration var;
+            if (element.getVarDeclarations().getAutoDeclaration() != null) {
+                var = element.getVarDeclarations().getAutoDeclaration().getAutoDeclarationX().getAutoDeclarationY();
+            } else {
+                var = element.getVarDeclarations().getDeclarators().getDeclaratorInitializer();
+            }
+            if (!processor.execute(var, state)) {
+                return false;
+            }
+        }
+        if (element.getAliasDeclaration() != null) {
+            if (!processor.execute(element.getAliasDeclaration(), state)) {
+                return false;
+            }
+        }
+        if (element.getAggregateDeclaration() != null) {
+            if (!element.getAggregateDeclaration().processDeclarations(processor, state, lastParent, place)) {
+                return false;
+            }
+        }
+        if (element.getImportDeclaration() != null) {
+            if (!processor.execute(element.getImportDeclaration(), state)) {
+                return false;
+            }
+        }
+        if (element.getTemplateDeclaration() != null) {
+            if (!(element.getTemplateDeclaration().processDeclarations(processor, state, lastParent, place))) {
+                return false;//todo template parameters are leaking through
+            }
+        }
+        return true;
+    }
+
+    public static boolean processDeclarations(DLanguageAggregateDeclaration element, @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        if (element.getClassDeclaration() != null) {
+            processor.execute(element.getClassDeclaration(), state);
+        }
+        if (element.getInterfaceDeclaration() != null) {
+            processor.execute(element.getInterfaceDeclaration(), state);
+        }
+        if (element.getUnionDeclaration() != null) {
+            processor.execute(element.getUnionDeclaration(), state);
+        }
+        if (element.getStructDeclaration() != null) {
+            processor.execute(element.getStructDeclaration(), state);
+        }
+        return true;
+    }
+
+    public static boolean processDeclarations(DLanguageStructDeclaration element, @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        if (element.getTemplateParameters() != null) {
+            if (element.getTemplateParameters().getTemplateParameterList() != null) {
+                for (DLanguageTemplateParameter templateParameter : element.getTemplateParameters().getTemplateParameterList().getTemplateParameterList()) {
+                    if (!processor.execute(templateParameter, state)) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    public static boolean processDeclarations(DLanguageTemplateMixinDeclaration element, @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        if (element.getTemplateParameters() != null) {
+            if (element.getTemplateParameters().getTemplateParameterList() != null) {
+                for (DLanguageTemplateParameter templateParameter : element.getTemplateParameters().getTemplateParameterList().getTemplateParameterList()) {
+                    if (!processor.execute(templateParameter, state)) {
+                        return false;
+                    }
+                }
+
+            }
+        }
+        return true;
+    }
+    // -------------------- Scope processing --------------- //
+
 
     // -------------------- Misc --------------------- //
     public static String getFullName(DNamedElement e) {

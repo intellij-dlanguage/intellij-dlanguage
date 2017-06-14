@@ -10,12 +10,14 @@ import com.intellij.util.containers.ContainerUtil;
 import net.masterthought.dlanguage.index.DModuleIndex;
 import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.impl.DPsiImplUtil;
+import net.masterthought.dlanguage.resolve.DResolveUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-import static net.masterthought.dlanguage.utils.DResolveUtil.findDefinitionNode;
+import static net.masterthought.dlanguage.psi.impl.DPsiImplUtil.getIdentifier;
+
 
 /**
  * Resolves references to elements.
@@ -48,7 +50,7 @@ public class DReference extends PsiReferenceBase<PsiNamedElement> implements Psi
 //            if (!myElement.equals(Iterables.getLast(qconid.getConidList()))) { return EMPTY_RESOLVE_RESULT; }
 //        }
         Project project = myElement.getProject();
-        final List<PsiNamedElement> namedElements = findDefinitionNode(project, name, myElement);
+        final List<PsiNamedElement> namedElements = DResolveUtil.INSTANCE.findDefinitionNode(project, name, myElement);
         // Guess 20 variants tops most of the time in any real code base.
         final Collection<PsiElement> identifiers = new HashSet<>();
         for (PsiElement namedElement : namedElements) {
@@ -79,17 +81,15 @@ public class DReference extends PsiReferenceBase<PsiNamedElement> implements Psi
             }
             else if(namedElement instanceof DLanguageAutoDeclarationY){
                 identifiers.add(((DLanguageAutoDeclarationY) namedElement).getIdentifier());
-            }
-            else if(namedElement instanceof DLanguageAliasDeclaration){
-                if(((DLanguageAliasDeclaration) namedElement).getIdentifier() != null) {
-                    identifiers.add(((DLanguageAliasDeclaration) namedElement).getIdentifier());
+            } else if (namedElement instanceof DLanguageAliasDeclarationY) {
+                identifiers.add(((DLanguageAliasDeclarationY) namedElement).getIdentifier());
+            } else if (namedElement instanceof DLanguageAliasDeclarationSingle) {
+                if (((DLanguageAliasDeclarationSingle) namedElement).getIdentifier() != null) {
+                    identifiers.add(((DLanguageAliasDeclarationSingle) namedElement).getIdentifier());
+                } else {
+                    identifiers.add(getIdentifier(((DLanguageAliasDeclarationSingle) namedElement).getDeclarator()));
                 }
-                else if(((DLanguageAliasDeclaration) namedElement).getAliasDeclarationX() != null) {
-                    identifiers.add(((DLanguageAliasDeclaration) namedElement).getAliasDeclarationX().getAliasDeclarationY().getIdentifier());
-                }
-                else if(((DLanguageAliasDeclaration) namedElement).getAliasDeclarationX() != null) {
-                    identifiers.add(((DLanguageAliasDeclaration) namedElement).getAliasDeclarationX().getAliasDeclarationY().getIdentifier());
-                }
+
             }
             else if(namedElement instanceof DLanguageDeclaratorInitializer){
                 if(((DLanguageDeclaratorInitializer) namedElement).getAltDeclarator() != null &&
@@ -170,14 +170,14 @@ public class DReference extends PsiReferenceBase<PsiNamedElement> implements Psi
         final PsiFile psiFile = e.getContainingFile().getOriginalFile();
         // find definition in current file
         if (psiFile instanceof DLanguageFile) {
-            findDefinitionNode((DLanguageFile) psiFile, null, e, declarations);
+            DResolveUtil.INSTANCE.findDefinitionNode((DLanguageFile) psiFile, null, e, declarations);
             declarations.addAll(PsiTreeUtil.findChildrenOfType(psiFile, DLanguageIdentifier.class));
         }
         // find definition in imported files
         for (String potentialModule : potentialModules) {
             List<DLanguageFile> files = DModuleIndex.getFilesByModuleName(project, potentialModule, GlobalSearchScope.allScope(project));
             for (DLanguageFile f : files) {
-                findDefinitionNode(f, null, e, declarations);
+                DResolveUtil.INSTANCE.findDefinitionNode(f, null, e, declarations);
             }
         }
         ArrayList<String> result = new ArrayList<>();

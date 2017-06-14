@@ -119,7 +119,7 @@ D Language File
                               DLanguageParametersImpl(PARAMETERS)
                                 PsiElement(DLanguageTokenType.()('(')
                                 DLanguageParameterListImpl(PARAMETER_LIST)
-                                  DLanguageParameterImpl(PARAMETER)
+                                  PARAMETER
                                     DLanguageBasicTypeImpl(BASIC_TYPE)
                                       DLanguageBasicTypeXImpl(BASIC_TYPE_X)
                                         PsiElement(DLanguageTokenType.int)('int')
@@ -195,7 +195,7 @@ D Language File
                               DLanguageParametersImpl(PARAMETERS)
                                 PsiElement(DLanguageTokenType.()('(')
                                 DLanguageParameterListImpl(PARAMETER_LIST)
-                                  DLanguageParameterImpl(PARAMETER)
+                                  PARAMETER
                                     DLanguageBasicTypeImpl(BASIC_TYPE)
                                       DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                                         IDENTIFIER

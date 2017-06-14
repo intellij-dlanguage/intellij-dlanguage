@@ -23,7 +23,7 @@ public interface DLanguageMixinStatement extends Mixin {
   @NotNull
   PsiElement getOpScolon();
 
-  @Nullable
+  @NotNull
   String getName();
 
   //WARNING: processDeclarations(...) is skipped

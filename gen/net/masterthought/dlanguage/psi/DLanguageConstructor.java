@@ -48,7 +48,7 @@ public interface DLanguageConstructor extends StatementContainer, DNamedElement,
   @NotNull
   PsiReference getReference();
 
-  @Nullable
+  @NotNull
   PsiElement setName(String newName);
 
   @NotNull

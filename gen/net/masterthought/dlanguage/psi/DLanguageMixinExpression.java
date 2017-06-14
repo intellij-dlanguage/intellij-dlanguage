@@ -20,7 +20,7 @@ public interface DLanguageMixinExpression extends Mixin {
   @NotNull
   PsiElement getOpParRight();
 
-  @Nullable
+  @NotNull
   String getName();
 
   //WARNING: processDeclarations(...) is skipped

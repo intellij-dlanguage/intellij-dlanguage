@@ -12,21 +12,22 @@ D Language File
           PsiElement(DLanguageTokenType.;)(';')
     DLanguageDeclDefImpl(DECL_DEF)
       DLanguageDeclarationImpl(DECLARATION)
-        ALIAS_DECLARATION
-          PsiElement(DLanguageTokenType.alias)('alias')
-          IDENTIFIER
-            PsiElement(DLanguageTokenType.ID)('mylen')
-          PsiElement(DLanguageTokenType.=)('=')
-          DLanguageTypeImpl(TYPE)
-            DLanguageBasicTypeImpl(BASIC_TYPE)
-              DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                IDENTIFIER
-                  PsiElement(DLanguageTokenType.ID)('string')
-                PsiElement(DLanguageTokenType..)('.')
+        DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
+          ALIAS_DECLARATION_SINGLE
+            PsiElement(DLanguageTokenType.alias)('alias')
+            IDENTIFIER
+              PsiElement(DLanguageTokenType.ID)('mylen')
+            PsiElement(DLanguageTokenType.=)('=')
+            DLanguageTypeImpl(TYPE)
+              DLanguageBasicTypeImpl(BASIC_TYPE)
                 DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                   IDENTIFIER
-                    PsiElement(DLanguageTokenType.ID)('strlen')
-          PsiElement(DLanguageTokenType.;)(';')
+                    PsiElement(DLanguageTokenType.ID)('string')
+                  PsiElement(DLanguageTokenType..)('.')
+                  DLanguageIdentifierListImpl(IDENTIFIER_LIST)
+                    IDENTIFIER
+                      PsiElement(DLanguageTokenType.ID)('strlen')
+            PsiElement(DLanguageTokenType.;)(';')
     DLanguageDeclDefImpl(DECL_DEF)
       DLanguageDeclarationImpl(DECLARATION)
         DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)

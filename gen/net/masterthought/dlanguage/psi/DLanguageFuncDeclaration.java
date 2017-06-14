@@ -15,6 +15,8 @@ import com.intellij.psi.StubBasedPsiElement;
 import net.masterthought.dlanguage.stubs.DLanguageFuncDeclarationStub;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
+import com.intellij.psi.ResolveState;
+import com.intellij.psi.scope.PsiScopeProcessor;
 import net.masterthought.dlanguage.psi.interfaces.containers.Container;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 
@@ -52,7 +54,7 @@ public interface DLanguageFuncDeclaration extends StatementContainer, DNamedElem
   @NotNull
   PsiReference getReference();
 
-  @Nullable
+  @NotNull
   PsiElement setName(String newName);
 
   @NotNull
@@ -84,8 +86,6 @@ public interface DLanguageFuncDeclaration extends StatementContainer, DNamedElem
 
   boolean isPropertyFunction();
 
-  //WARNING: processDeclarations(...) is skipped
-  //matching processDeclarations(DLanguageFuncDeclaration, ...)
-  //methods are not found in DPsiImplUtil
+  boolean processDeclarations(PsiScopeProcessor processor, ResolveState state, PsiElement lastParent, PsiElement place);
 
 }

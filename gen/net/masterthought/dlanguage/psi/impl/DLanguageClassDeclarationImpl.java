@@ -12,6 +12,8 @@ import net.masterthought.dlanguage.stubs.DLanguageClassDeclarationStub;
 import net.masterthought.dlanguage.psi.*;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
+import com.intellij.psi.ResolveState;
+import com.intellij.psi.scope.PsiScopeProcessor;
 import net.masterthought.dlanguage.psi.interfaces.containers.Container;
 import net.masterthought.dlanguage.psi.interfaces.CanInherit;
 import java.util.Map;
@@ -98,7 +100,7 @@ public class DLanguageClassDeclarationImpl extends DNamedStubbedPsiElementBase<D
     return DPsiImplUtil.getReference(this);
   }
 
-  @Nullable
+  @NotNull
   public PsiElement setName(String newName) {
     return DPsiImplUtil.setName(this, newName);
   }
@@ -126,6 +128,10 @@ public class DLanguageClassDeclarationImpl extends DNamedStubbedPsiElementBase<D
 
   public Map<String, DLanguageIdentifier> getSuperClassNames() {
     return DPsiImplUtil.getSuperClassNames(this);
+  }
+
+  public boolean processDeclarations(PsiScopeProcessor processor, ResolveState state, PsiElement lastParent, PsiElement place) {
+    return DPsiImplUtil.processDeclarations(this, processor, state, lastParent, place);
   }
 
 }

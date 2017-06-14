@@ -22,7 +22,7 @@ D Language File
                       PsiElement(DLanguageTokenType.foreach)('foreach')
                     PsiElement(DLanguageTokenType.()('(')
                     DLanguageForeachTypeListImpl(FOREACH_TYPE_LIST)
-                      DLanguageForeachTypeImpl(FOREACH_TYPE)
+                      FOREACH_TYPE
                         DLanguageTypeImpl(TYPE)
                           DLanguageBasicTypeImpl(BASIC_TYPE)
                             DLanguageBasicTypeXImpl(BASIC_TYPE_X)
@@ -76,7 +76,7 @@ D Language File
                       PsiElement(DLanguageTokenType.foreach)('foreach')
                     PsiElement(DLanguageTokenType.()('(')
                     DLanguageForeachTypeListImpl(FOREACH_TYPE_LIST)
-                      DLanguageForeachTypeImpl(FOREACH_TYPE)
+                      FOREACH_TYPE
                         DLanguageTypeImpl(TYPE)
                           DLanguageBasicTypeImpl(BASIC_TYPE)
                             DLanguageBasicTypeXImpl(BASIC_TYPE_X)
