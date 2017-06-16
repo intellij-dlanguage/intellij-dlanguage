@@ -15,6 +15,7 @@ import com.intellij.psi.PsiReference;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import net.masterthought.dlanguage.psi.interfaces.containers.Container;
+import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 import com.intellij.psi.stubs.IStubElementType;
 
 public class DLanguageConstructorImpl extends DNamedStubbedPsiElementBase<DLanguageConstructorStub> implements DLanguageConstructor {
@@ -116,7 +117,7 @@ public class DLanguageConstructorImpl extends DNamedStubbedPsiElementBase<DLangu
   }
 
   @NotNull
-  public List<DLanguageParameter> getArguments() {
+  public List<DLanguageParameter> getParameterList() {
     return DPsiImplUtil.getParameterList(this);
   }
 

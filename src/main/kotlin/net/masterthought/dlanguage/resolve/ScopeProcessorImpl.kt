@@ -7,7 +7,7 @@ import net.masterthought.dlanguage.utils.*
 
 /**
  * implements processDeclarations for various statements
- *
+ * todo make cases named for when someone goto's case
  */
 object ScopeProcessorImpl {
     /**
@@ -50,7 +50,7 @@ object ScopeProcessorImpl {
         //todo handle place and iterate backwards from place
         for (def in element.statementList) {
             if (!(def.processDeclarations(processor, state, lastParent, place))) {
-                result = false
+                result = false//todo use statement processDeclartions
             }
         }
         return result
@@ -177,6 +177,19 @@ object ScopeProcessorImpl {
     }
 
     fun processDeclarations(element: TemplateDeclaration,
+                            processor: PsiScopeProcessor,
+                            state: ResolveState,
+                            lastParent: PsiElement,
+                            place: PsiElement): Boolean {
+        if (element.templateParameters != null) {
+            if (!ScopeProcessorImplUtil.processTemplateParameters(element.templateParameters!!, processor, state, lastParent, place)) {
+                return false
+            }
+        }
+        return true
+    }
+
+    fun processDeclarations(element: UnionDeclaration,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
                             lastParent: PsiElement,
@@ -402,9 +415,7 @@ object ScopeProcessorImpl {
                             lastParent: PsiElement,
                             place: PsiElement): Boolean {
         if (def.declaration != null) {
-            if (!def.declaration!!.processDeclarations(processor, state, lastParent, place)) {
-                return false
-            }
+            return ScopeProcessorImplUtil.processDeclarations(def.declaration!!, processor, state, lastParent, place)
         }
         if (def.constructor != null) {
             //todo make sure names for constructors are handled correctly
@@ -438,17 +449,25 @@ object ScopeProcessorImpl {
         }
         if (def.templateMixin != null) {
             //todo handle mixins
+            return true
         }
         if (def.mixinDeclaration != null) {
             //todo handle mixins
+            return true
         }
         if (def.staticIfCondition != null) {
-            return true
+            return def.staticIfCondition!!.nextSibling?.processDeclarations(processor, state, lastParent, place) ?: true//process the declaration block after static if
         }
         if (def.staticElseCondition != null) {
             return ScopeProcessorImplUtil.processDeclarationsWithinBlock(def.staticElseCondition!!.declarationBlock!!, processor, state, lastParent, place)
         }
-        return true
+        if (def.attributeSpecifier != null) {
+            return ScopeProcessorImplUtil.processDeclarationsWithinBlock(def.attributeSpecifier!!.declarationBlock!!, processor, state, lastParent, place)
+        }
+        if (def.postblit != null || def.destructor != null || def.allocator != null || def.deallocator != null || def.invariant != null || def.unitTesting != null || def.staticConstructor != null || def.staticDestructor != null || def.sharedStaticConstructor != null || def.sharedStaticDestructor != null || def.staticAssert != null || def.debugSpecification != null || def.versionSpecification != null) {
+            return true
+        }
+        throw IllegalStateException("this should never happen")
     }
 
     fun processDeclarations(element: ConditionalStatement,
@@ -549,6 +568,10 @@ object ScopeProcessorImpl {
                             lastParent: PsiElement,
                             place: PsiElement): Boolean {
         //should not descend into scope
+        if (element.blockStatement != null) {
+            return true
+        }
+
         if (element.labeledStatement != null) {
             if (!(processor.execute(element.labeledStatement!!, state))) {
                 return false
@@ -649,6 +672,18 @@ object ScopeProcessorImpl {
                 }
             }
             return result
+        }
+        if (element.expressionStatement != null) {
+            return true
+        }
+        if (element.staticAssert != null) {
+            return true
+        }
+        if (element.importDeclaration != null) {
+            return true
+        }
+        if (element.templateMixin != null) {
+            return true
         }
         if (element.expressionStatement != null) {
             return true

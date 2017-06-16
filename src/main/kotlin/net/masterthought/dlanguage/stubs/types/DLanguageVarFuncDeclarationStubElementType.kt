@@ -7,7 +7,6 @@ import com.intellij.psi.stubs.StubOutputStream
 import net.masterthought.dlanguage.psi.DLanguageVarFuncDeclaration
 import net.masterthought.dlanguage.psi.impl.DLanguageVarFuncDeclarationImpl
 import net.masterthought.dlanguage.stubs.DLanguageVarFuncDeclarationStub
-import net.masterthought.dlanguage.utils.DUtil
 import java.io.IOException
 
 /**
@@ -20,7 +19,7 @@ class DLanguageVarFuncDeclarationStubElementType(debugName: String) : DNamedStub
     }
 
     override fun shouldCreateStub(node: ASTNode?): Boolean {
-        return DUtil.definitionNode(node!!)
+        return true
     }
 
     override fun createStub(psi: DLanguageVarFuncDeclaration, parentStub: StubElement<*>): DLanguageVarFuncDeclarationStub {

@@ -3,14 +3,18 @@ package net.masterthought.dlanguage.resolve
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiNamedElement
+import com.intellij.psi.ResolveState
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.stubs.StubIndex
+import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.util.containers.ContainerUtil
 import net.masterthought.dlanguage.index.DModuleIndex
 import net.masterthought.dlanguage.psi.*
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement
 import net.masterthought.dlanguage.psi.interfaces.Declaration
-import net.masterthought.dlanguage.stubs.index.DAllNameIndex
+import net.masterthought.dlanguage.stubs.index.DTopLevelDeclarationIndex
+import net.masterthought.dlanguage.utils.Constructor
+import net.masterthought.dlanguage.utils.Identifier
 import java.util.*
 
 /**
@@ -21,43 +25,62 @@ object DResolveUtil {
      * Finds name definition across all Haskell files in the project. All
      * definitions are found when name is null.
      */
-    fun findDefinitionNode(project: Project, name: String?, e: PsiNamedElement?): List<PsiNamedElement> {
+    fun findDefinitionNode(project: Project, e: PsiNamedElement): List<PsiNamedElement> {
         // Guess where the name could be defined by lookup up potential modules.
-        val potentialModules: MutableSet<String> = if (e == null)
-            mutableSetOf()
-        else
-            DPsiUtil.parseImports(e.containingFile)
-
-        val result = ContainerUtil.newArrayList<PsiNamedElement>()
-        val psiFile = if (e == null) null else e.containingFile.originalFile
-        // find definition in current file
-        if (psiFile is DLanguageFile) {
-            findDefinitionNode(psiFile as DLanguageFile?, name, e, result)
+        if (e !is Identifier) {
+            return emptyList()
         }
+
+        val nameProcessor = DNameScopeProcessor(e)
+        PsiTreeUtil.treeWalkUp(nameProcessor, e, e.containingFile, ResolveState.initial())
+        if (nameProcessor.result.size != 0) {
+            return nameProcessor.result.toList()
+        }
+
+        val importProcessor = DImportScopeProcessor()
+        PsiTreeUtil.treeWalkUp(importProcessor, e, e.containingFile, ResolveState.initial())
+        val potentialModules: MutableList<String> = mutableListOf()
+        importProcessor.imports.mapTo(potentialModules) { it.name }
+
+        val result = mutableSetOf<PsiNamedElement>()
         // find definition in imported files
         for (potentialModule in potentialModules) {
             val files = DModuleIndex.getFilesByModuleName(project, potentialModule, GlobalSearchScope.allScope(project))
             for (f in files) {
-                val returnAllReferences = name == null
-                val inLocalModule = f != null && f == psiFile
-                val inImportedModule = f != null && potentialModules.contains(f.moduleName)
-                if (returnAllReferences || inLocalModule || inImportedModule) {
-                    findDefinitionNode(f, name, e, result)
-                }
+                result.addAll(StubIndex.getElements(DTopLevelDeclarationIndex.KEY, e.name, e.project, GlobalSearchScope.fileScope(f), Declaration::class.java))
             }
         }
-        return result
+        val finalResult = mutableListOf<PsiNamedElement>()
+        for (element in result) {
+            if (element is Constructor) {
+                if (resolvingConstructor(e)) {
+                    finalResult.add(element)
+                } else continue
+            }
+            if (!resolvingConstructor(e)) {
+                finalResult.add(element)
+            }
+        }
+        return finalResult
+    }
+
+    fun resolvingConstructor(e: PsiElement): Boolean {
+        var parent: PsiElement? = e.parent
+        while (true) {
+            if (parent == null)
+                break
+            if (parent is DLanguageNewExpression || parent is DLanguageNewExpressionWithArgs)
+                return true
+            parent = parent.parent
+        }
+        return false
     }
 
     /**
      * finds definition(s) of functions/class/template
-     * todo this method could be made more efficient and effective. Use a stub tree?
      * @param file the file to search for definitions in
-     * *
      * @param name the name of the function/class/template to resolve
-     * *
      * @param e the usage of the defined function/class/template etc.
-     * *
      * @param result the results are added to the is arraylist
      */
     fun findDefinitionNode(file: DLanguageFile?, name: String?, e: PsiNamedElement?, result: MutableList<PsiNamedElement>) {
@@ -67,13 +90,7 @@ object DResolveUtil {
 
         if (e is DLanguageIdentifier) {
 
-            val declarations = ArrayList<Declaration>()
-            val elements = StubIndex.getElements(DAllNameIndex.KEY, e.name, e.project, GlobalSearchScope.fileScope(file), DNamedElement::class.java)
-            for (element in elements) {
-                if (element is Declaration) {
-                    declarations.add(element)
-                }
-            }
+            val declarations = StubIndex.getElements(DTopLevelDeclarationIndex.KEY, e.name, e.project, GlobalSearchScope.fileScope(file), Declaration::class.java)
 
             for (candidateDeclaration in declarations) {
                 if (candidateDeclaration is DLanguageAutoDeclarationY) {
@@ -86,28 +103,9 @@ object DResolveUtil {
             }
         }
 
-        var resolvingConstructor = false
 
-        var parent: PsiElement? = e!!.parent
-        while (true) {
-            if (parent == null)
-                break
-            if (parent is DLanguageNewExpression || parent is DLanguageNewExpressionWithArgs)
-                resolvingConstructor = true
-            parent = parent.parent
-        }
 
         // check the list of potential named elements for a match on name
-        for (namedElement in declarationElements) {
-            //non void initializer
-            if (resolvingConstructor) {
-                if (namedElement is DLanguageConstructor) {
-                    result.add(namedElement)
-                }
-            } else if (name == null || name == namedElement.name && e != namedElement && namedElement !is DLanguageConstructor) {
-                result.add(namedElement)
-            }
-        }
     }
 
     /**
@@ -120,20 +118,4 @@ object DResolveUtil {
         return ret
     }
 
-    /**
-     * Finds name definition across all D files in the project. All
-     * definitions are found when name is null.
-     */
-    fun findDefinitionNodes(project: Project): List<PsiNamedElement> {
-        return findDefinitionNode(project, null, null)
-    }
-
-    /**
-     * Finds name definitions that are within the scope of a file, including imports (to some degree).
-     */
-    fun findDefinitionNodes(psiFile: DLanguageFile): List<PsiNamedElement> {
-        val result = findDefinitionNodes(psiFile, null)
-        result.addAll(findDefinitionNode(psiFile.project, null, null))
-        return result
-    }
 }

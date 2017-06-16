@@ -93,6 +93,8 @@
         <!-- Indexes -->
         <fileBasedIndex implementation="net.masterthought.dlanguage.index.DModuleIndex"/>
         <stubIndex implementation="net.masterthought.dlanguage.stubs.index.DAllNameIndex"/>
+        <stubIndex implementation="net.masterthought.dlanguage.stubs.index.DTopLevelDeclarationIndex"/>
+        <stubIndex implementation="net.masterthought.dlanguage.stubs.index.DModuleDeclarationIndex"/>
         <gotoSymbolContributor implementation="net.masterthought.dlanguage.features.DChooseByNameContributor"/>
         <gotoClassContributor implementation="net.masterthought.dlanguage.features.DClassContributor"/>
         <!-- Project settings -->

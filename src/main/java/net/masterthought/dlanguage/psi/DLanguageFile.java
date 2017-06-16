@@ -4,10 +4,12 @@ import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.psi.FileViewProvider;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.ResolveState;
+import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.StubElement;
 import net.masterthought.dlanguage.DLanguage;
 import net.masterthought.dlanguage.DLanguageFileType;
-import net.masterthought.dlanguage.psi.interfaces.containers.GlobalDeclarationContainer;
+import net.masterthought.dlanguage.resolve.ScopeProcessorImpl;
 import net.masterthought.dlanguage.stubs.DLanguageFileStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -66,5 +68,27 @@ public class DLanguageFile extends PsiFileBase {
         final StubElement stub = super.getStub();
         if (stub == null) return null;
         return (DLanguageFileStub)stub;
+    }
+
+    @Override
+    public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
+        for (PsiElement element : getChildren()) {
+            if (element instanceof DLanguageDeclDefs) {
+                if (!ScopeProcessorImpl.INSTANCE.processDeclarations((DLanguageDeclDefs) element, processor, state, lastParent, place)) {
+                    return false;
+                }
+            }
+            if (element instanceof DLanguageStatement) {
+                if (!ScopeProcessorImpl.INSTANCE.processDeclarations((DLanguageStatement) element, processor, state, lastParent, place)) {
+                    return false;
+                }
+            }
+            if (element instanceof DLanguageModuleDeclaration) {
+                if (!processor.execute(element, state)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

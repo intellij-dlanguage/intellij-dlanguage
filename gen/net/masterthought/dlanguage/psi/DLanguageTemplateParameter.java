@@ -56,8 +56,4 @@ public interface DLanguageTemplateParameter extends DNamedElement, Declaration, 
 
   boolean isSomeVisibility(Visibility visibility);
 
-  //WARNING: proccessDeclarations(...) is skipped
-  //matching proccessDeclarations(DLanguageTemplateParameter, ...)
-  //methods are not found in DPsiImplUtil
-
 }

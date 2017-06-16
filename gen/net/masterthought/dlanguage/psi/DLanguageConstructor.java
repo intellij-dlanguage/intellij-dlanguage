@@ -64,7 +64,7 @@ public interface DLanguageConstructor extends StatementContainer, DNamedElement,
   boolean isSomeVisibility(Visibility visibility);
 
   @NotNull
-  List<DLanguageParameter> getArguments();
+  List<DLanguageParameter> getParameterList();
 
   boolean processDeclarations(PsiScopeProcessor processor, ResolveState state, PsiElement lastParent, PsiElement place);
 

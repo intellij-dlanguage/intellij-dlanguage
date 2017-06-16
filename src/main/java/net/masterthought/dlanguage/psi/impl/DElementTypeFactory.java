@@ -40,8 +40,7 @@ public class DElementTypeFactory {
         if (name.equals("FOREACH_TYPE")) return new DLanguageForeachTypeStubElementType(name);
         if (name.equals("PARAMETER")) return new DLanguageParameterStubElementType(name);
         if (name.equals("TEMPLATE_PARAMETER")) return new DLanguageTemplateParameterStubElementType(name);
-        if (name.equals("UNION_DECLARATION")) return new DLanguageUnionDeclarationStubElementType(name);
-        if (name.equals("VAR_FUNC_DECLARATION")) return new DLanguageUnionDeclarationStubElementType(name);
+        if (name.equals("VAR_FUNC_DECLARATION")) return new DLanguageVarFuncDeclarationStubElementType(name);
         if (name.equals("ENUM_MEMBER")) return new DLanguageEnumMemberStubElementType(name);
         throw new RuntimeException("Unknown element type: " + name);
     }

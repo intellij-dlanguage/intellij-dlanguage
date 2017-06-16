@@ -77,6 +77,7 @@ public class DPsiImplUtil {
     }
 
     private static String getParentDeclarationDescription(DLanguageIdentifier o) {
+        //todo keep this up to date
         PsiNamedElement funcDecl = (PsiNamedElement) findParentOfType(o, DLanguageFuncDeclaration.class);
         PsiNamedElement classDecl = (PsiNamedElement) findParentOfType(o, DLanguageClassDeclaration.class);
         String description = "";
@@ -117,7 +118,7 @@ public class DPsiImplUtil {
     }
 
     public static void delete(DLanguageIdentifier identifier) {
-        final List<PsiNamedElement> definitionNode = DResolveUtil.INSTANCE.findDefinitionNode(identifier.getProject(), identifier.getName(), identifier);
+        final List<PsiNamedElement> definitionNode = DResolveUtil.INSTANCE.findDefinitionNode(identifier.getProject(), identifier);
         if (definitionNode.size() != 1)
             throw new IllegalStateException();
         definitionNode.get(0).delete();
@@ -1631,7 +1632,7 @@ public class DPsiImplUtil {
 
     // ------------ Parameter ----------------- //
 
-    public static @NotNull
+    public static @Nullable
     DLanguageIdentifier getIdentifier(DLanguageParameter o) {
         if (o.getIdentifier() != null) {
             return o.getIdentifier();
@@ -1640,6 +1641,9 @@ public class DPsiImplUtil {
             return getIdentifier(o.getDeclarator());
         }
         if (o.getType() != null) {
+            if (o.getType().getBasicType().getIdentifierList() == null) {
+                return null;
+            }
             return DUtil.getEndOfIdentifierList(o.getType().getBasicType().getIdentifierList());
         }
         throw new IllegalStateException("this should never happen");
@@ -1649,7 +1653,10 @@ public class DPsiImplUtil {
     public static String getName(@NotNull DLanguageParameter o) {
         DLanguageParameterStub stub = o.getStub();
         if (stub != null) return StringUtil.notNullize(stub.getName());
-        return getIdentifier(o).getName();
+        if (getIdentifier(o) != null) {
+            return getIdentifier(o).getName();
+        }
+        return "unamed parameter";
     }
 
     @Nullable
@@ -1660,6 +1667,9 @@ public class DPsiImplUtil {
 
     @NotNull
     public static PsiElement setName(@NotNull DLanguageParameter o, @NotNull String newName) {
+        if (getIdentifier(o) == null) {
+            throw new IllegalStateException("cannot rename");
+        }
         getIdentifier(o).setName(newName);
         return o;
     }
@@ -2222,6 +2232,14 @@ public class DPsiImplUtil {
     }
 
     public static boolean processDeclarations(DLanguageTemplateDeclaration element,
+                                              @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(element, processor, state, lastParent, place);
+    }
+
+    public static boolean processDeclarations(DLanguageUnionDeclaration element,
                                               @NotNull PsiScopeProcessor processor,
                                               @NotNull ResolveState state,
                                               PsiElement lastParent,

@@ -70,7 +70,7 @@ public interface DLanguageFuncDeclaration extends StatementContainer, DNamedElem
   ItemPresentation getPresentation();
 
   @NotNull
-  List<DLanguageParameter> getArguments();
+  List<DLanguageParameter> getParameterList();
 
   boolean isSomeVisibility(Visibility visibility, Class<? extends Container> containerType);
 

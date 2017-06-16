@@ -3,6 +3,7 @@ package net.masterthought.dlanguage.resolve
 import com.intellij.psi.PsiElement
 import com.intellij.psi.ResolveState
 import com.intellij.psi.scope.PsiScopeProcessor
+import com.intellij.psi.util.PsiTreeUtil
 import net.masterthought.dlanguage.psi.interfaces.HasParameters
 import net.masterthought.dlanguage.psi.interfaces.HasTemplateParameters
 import net.masterthought.dlanguage.psi.interfaces.VariableDeclaration
@@ -86,8 +87,10 @@ object ScopeProcessorImplUtil {
             }
         }
         if (element.importDeclaration != null) {
-            if (!processor.execute(element.importDeclaration!!, state)) {
-                return false
+            for (import in PsiTreeUtil.findChildrenOfType(element.importDeclaration, Import::class.java)) {
+                if (!processor.execute(import, state)) {
+                    return false
+                }
             }
         }
         if (element.templateDeclaration != null) {

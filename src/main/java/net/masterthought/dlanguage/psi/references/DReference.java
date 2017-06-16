@@ -50,7 +50,7 @@ public class DReference extends PsiReferenceBase<PsiNamedElement> implements Psi
 //            if (!myElement.equals(Iterables.getLast(qconid.getConidList()))) { return EMPTY_RESOLVE_RESULT; }
 //        }
         Project project = myElement.getProject();
-        final List<PsiNamedElement> namedElements = DResolveUtil.INSTANCE.findDefinitionNode(project, name, myElement);
+        final List<PsiNamedElement> namedElements = DResolveUtil.INSTANCE.findDefinitionNode(project, myElement);
         // Guess 20 variants tops most of the time in any real code base.
         final Collection<PsiElement> identifiers = new HashSet<>();
         for (PsiElement namedElement : namedElements) {
