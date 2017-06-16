@@ -8,14 +8,14 @@ import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 import net.masterthought.dlanguage.psi.interfaces.containers.StatementContainer;
 import net.masterthought.dlanguage.psi.interfaces.containers.GlobalDeclarationContainer;
 import net.masterthought.dlanguage.psi.interfaces.Declaration;
-import net.masterthought.dlanguage.psi.interfaces.Mixin;
+import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
-import net.masterthought.dlanguage.psi.interfaces.HasTemplateArguments;
-import net.masterthought.dlanguage.psi.interfaces.HasArguments;
+import net.masterthought.dlanguage.psi.interfaces.HasTemplateParameters;
+import net.masterthought.dlanguage.psi.interfaces.HasParameters;
 import net.masterthought.dlanguage.psi.interfaces.containers.MixinContainer;
 import net.masterthought.dlanguage.psi.interfaces.VariableDeclaration;
-import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
 import net.masterthought.dlanguage.psi.interfaces.HasProperty;
+import net.masterthought.dlanguage.psi.interfaces.Mixin;
 import net.masterthought.dlanguage.psi.interfaces.Mixinable;
 import net.masterthought.dlanguage.psi.interfaces.CanInherit;
 
@@ -298,7 +298,7 @@ public class DLanguageVisitor extends PsiElementVisitor {
     // visitMixinContainer(o);
     // visitDNamedElement(o);
     // visitHasVisibility(o);
-    // visitHasTemplateArguments(o);
+    // visitHasTemplateParameters(o);
     // visitCanInherit(o);
     // visitDeclaration(o);
   }
@@ -337,13 +337,9 @@ public class DLanguageVisitor extends PsiElementVisitor {
     visitStatementContainer(o);
     // visitDNamedElement(o);
     // visitHasVisibility(o);
-    // visitHasTemplateArguments(o);
-    // visitHasArguments(o);
+    // visitHasTemplateParameters(o);
+    // visitHasParameters(o);
     // visitDeclaration(o);
-  }
-
-  public void visitConstructorTemplate(@NotNull DLanguageConstructorTemplate o) {
-    visitPsiElement(o);
   }
 
   public void visitContinueStatement(@NotNull DLanguageContinueStatement o) {
@@ -518,13 +514,9 @@ public class DLanguageVisitor extends PsiElementVisitor {
     // visitDNamedElement(o);
     // visitHasVisibility(o);
     // visitHasProperty(o);
-    // visitHasTemplateArguments(o);
-    // visitHasArguments(o);
+    // visitHasTemplateParameters(o);
+    // visitHasParameters(o);
     // visitDeclaration(o);
-  }
-
-  public void visitFuncDeclaratorSuffix(@NotNull DLanguageFuncDeclaratorSuffix o) {
-    visitPsiElement(o);
   }
 
   public void visitFunctionAttribute(@NotNull DLanguageFunctionAttribute o) {
@@ -752,6 +744,10 @@ public class DLanguageVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitNonEmptyStatement(@NotNull DLanguageNonEmptyStatement o) {
+    visitPsiElement(o);
+  }
+
   public void visitNonVoidInitializer(@NotNull DLanguageNonVoidInitializer o) {
     visitPsiElement(o);
   }
@@ -943,7 +939,7 @@ public class DLanguageVisitor extends PsiElementVisitor {
     // visitDNamedElement(o);
     // visitMixinContainer(o);
     // visitHasVisibility(o);
-    // visitHasTemplateArguments(o);
+    // visitHasTemplateParameters(o);
     // visitDeclaration(o);
   }
 
@@ -1001,7 +997,7 @@ public class DLanguageVisitor extends PsiElementVisitor {
     // visitMixinContainer(o);
     // visitGlobalDeclarationContainer(o);
     // visitHasVisibility(o);
-    // visitHasTemplateArguments(o);
+    // visitHasTemplateParameters(o);
     // visitMixinable(o);
     // visitDeclaration(o);
   }
@@ -1020,7 +1016,7 @@ public class DLanguageVisitor extends PsiElementVisitor {
     // visitMixinContainer(o);
     // visitGlobalDeclarationContainer(o);
     // visitHasVisibility(o);
-    // visitHasTemplateArguments(o);
+    // visitHasTemplateParameters(o);
     // visitMixinable(o);
     // visitDeclaration(o);
   }
@@ -1127,7 +1123,7 @@ public class DLanguageVisitor extends PsiElementVisitor {
     visitStatementContainer(o);
     // visitDNamedElement(o);
     // visitHasVisibility(o);
-    // visitHasTemplateArguments(o);
+    // visitHasTemplateParameters(o);
     // visitDeclaration(o);
   }
 

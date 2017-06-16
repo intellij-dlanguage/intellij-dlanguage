@@ -96,7 +96,6 @@ public interface DLanguageTypes {
   IElementType CONDITION_VARIABLE_DECLARATION = DElementTypeFactory.factory("CONDITION_VARIABLE_DECLARATION");
   IElementType CONSTRAINT = new DLanguageElementType("CONSTRAINT");
   IElementType CONSTRUCTOR = DElementTypeFactory.factory("CONSTRUCTOR");
-  IElementType CONSTRUCTOR_TEMPLATE = new DLanguageElementType("CONSTRUCTOR_TEMPLATE");
   IElementType CONTINUE_STATEMENT = new DLanguageElementType("CONTINUE_STATEMENT");
   IElementType DEALLOCATOR = new DLanguageElementType("DEALLOCATOR");
   IElementType DEBUG_CONDITION = new DLanguageElementType("DEBUG_CONDITION");
@@ -144,7 +143,6 @@ public interface DLanguageTypes {
   IElementType FUNCTION_LITERAL = new DLanguageElementType("FUNCTION_LITERAL");
   IElementType FUNCTION_LITERAL_BODY = new DLanguageElementType("FUNCTION_LITERAL_BODY");
   IElementType FUNC_DECLARATION = DElementTypeFactory.factory("FUNC_DECLARATION");
-  IElementType FUNC_DECLARATOR_SUFFIX = new DLanguageElementType("FUNC_DECLARATOR_SUFFIX");
   IElementType GOTO_STATEMENT = new DLanguageElementType("GOTO_STATEMENT");
   IElementType IDENTIFIER = DElementTypeFactory.factory("IDENTIFIER");
   IElementType IDENTIFIER_LIST = new DLanguageElementType("IDENTIFIER_LIST");
@@ -193,6 +191,7 @@ public interface DLanguageTypes {
   IElementType NEW_ANON_CLASS_EXPRESSION = new DLanguageElementType("NEW_ANON_CLASS_EXPRESSION");
   IElementType NEW_EXPRESSION = new DLanguageElementType("NEW_EXPRESSION");
   IElementType NEW_EXPRESSION_WITH_ARGS = new DLanguageElementType("NEW_EXPRESSION_WITH_ARGS");
+  IElementType NON_EMPTY_STATEMENT = new DLanguageElementType("NON_EMPTY_STATEMENT");
   IElementType NON_VOID_INITIALIZER = new DLanguageElementType("NON_VOID_INITIALIZER");
   IElementType OPCODE = new DLanguageElementType("OPCODE");
   IElementType OPERAND = new DLanguageElementType("OPERAND");
@@ -706,9 +705,6 @@ public interface DLanguageTypes {
       else if (type == CONSTRUCTOR) {
         return new DLanguageConstructorImpl(node);
       }
-      else if (type == CONSTRUCTOR_TEMPLATE) {
-        return new DLanguageConstructorTemplateImpl(node);
-      }
       else if (type == CONTINUE_STATEMENT) {
         return new DLanguageContinueStatementImpl(node);
       }
@@ -849,9 +845,6 @@ public interface DLanguageTypes {
       }
       else if (type == FUNC_DECLARATION) {
         return new DLanguageFuncDeclarationImpl(node);
-      }
-      else if (type == FUNC_DECLARATOR_SUFFIX) {
-        return new DLanguageFuncDeclaratorSuffixImpl(node);
       }
       else if (type == GOTO_STATEMENT) {
         return new DLanguageGotoStatementImpl(node);
@@ -996,6 +989,9 @@ public interface DLanguageTypes {
       }
       else if (type == NEW_EXPRESSION_WITH_ARGS) {
         return new DLanguageNewExpressionWithArgsImpl(node);
+      }
+      else if (type == NON_EMPTY_STATEMENT) {
+        return new DLanguageNonEmptyStatementImpl(node);
       }
       else if (type == NON_VOID_INITIALIZER) {
         return new DLanguageNonVoidInitializerImpl(node);

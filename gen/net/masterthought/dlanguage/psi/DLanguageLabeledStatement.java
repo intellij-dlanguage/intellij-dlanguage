@@ -10,6 +10,8 @@ import com.intellij.psi.StubBasedPsiElement;
 import net.masterthought.dlanguage.stubs.DLanguageLabeledStatementStub;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
+import com.intellij.psi.ResolveState;
+import com.intellij.psi.scope.PsiScopeProcessor;
 
 public interface DLanguageLabeledStatement extends DNamedElement, StatementContainer, StubBasedPsiElement<DLanguageLabeledStatementStub> {
 
@@ -39,8 +41,6 @@ public interface DLanguageLabeledStatement extends DNamedElement, StatementConta
   @NotNull
   ItemPresentation getPresentation();
 
-  //WARNING: processDeclarations(...) is skipped
-  //matching processDeclarations(DLanguageLabeledStatement, ...)
-  //methods are not found in DPsiImplUtil
+  boolean processDeclarations(PsiScopeProcessor processor, ResolveState state, PsiElement lastParent, PsiElement place);
 
 }

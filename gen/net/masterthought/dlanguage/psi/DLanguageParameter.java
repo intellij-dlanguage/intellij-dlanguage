@@ -64,8 +64,4 @@ public interface DLanguageParameter extends DNamedElement, Declaration, Variable
 
   boolean isSomeVisibility(Visibility visibility);
 
-  //WARNING: processDeclarations(...) is skipped
-  //matching processDeclarations(DLanguageParameter, ...)
-  //methods are not found in DPsiImplUtil
-
 }

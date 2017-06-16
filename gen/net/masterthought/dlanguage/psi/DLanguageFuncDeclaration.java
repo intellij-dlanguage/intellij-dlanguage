@@ -8,8 +8,8 @@ import net.masterthought.dlanguage.psi.interfaces.containers.StatementContainer;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
 import net.masterthought.dlanguage.psi.interfaces.HasProperty;
-import net.masterthought.dlanguage.psi.interfaces.HasTemplateArguments;
-import net.masterthought.dlanguage.psi.interfaces.HasArguments;
+import net.masterthought.dlanguage.psi.interfaces.HasTemplateParameters;
+import net.masterthought.dlanguage.psi.interfaces.HasParameters;
 import net.masterthought.dlanguage.psi.interfaces.Declaration;
 import com.intellij.psi.StubBasedPsiElement;
 import net.masterthought.dlanguage.stubs.DLanguageFuncDeclarationStub;
@@ -20,7 +20,7 @@ import com.intellij.psi.scope.PsiScopeProcessor;
 import net.masterthought.dlanguage.psi.interfaces.containers.Container;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 
-public interface DLanguageFuncDeclaration extends StatementContainer, DNamedElement, HasVisibility, HasProperty, HasTemplateArguments, HasArguments, Declaration, StubBasedPsiElement<DLanguageFuncDeclarationStub> {
+public interface DLanguageFuncDeclaration extends StatementContainer, DNamedElement, HasVisibility, HasProperty, HasTemplateParameters, HasParameters, Declaration, StubBasedPsiElement<DLanguageFuncDeclarationStub> {
 
   @Nullable
   DLanguageBasicType getBasicType();
@@ -28,8 +28,8 @@ public interface DLanguageFuncDeclaration extends StatementContainer, DNamedElem
   @Nullable
   DLanguageBasicType2 getBasicType2();
 
-  @NotNull
-  DLanguageFuncDeclaratorSuffix getFuncDeclaratorSuffix();
+  @Nullable
+  DLanguageConstraint getConstraint();
 
   @Nullable
   DLanguageFunctionBody getFunctionBody();
@@ -38,7 +38,16 @@ public interface DLanguageFuncDeclaration extends StatementContainer, DNamedElem
   DLanguageIdentifier getIdentifier();
 
   @Nullable
+  DLanguageMemberFunctionAttributes getMemberFunctionAttributes();
+
+  @NotNull
+  DLanguageParameters getParameters();
+
+  @Nullable
   DLanguageStorageClasses getStorageClasses();
+
+  @Nullable
+  DLanguageTemplateParameters getTemplateParameters();
 
   @Nullable
   PsiElement getOpScolon();

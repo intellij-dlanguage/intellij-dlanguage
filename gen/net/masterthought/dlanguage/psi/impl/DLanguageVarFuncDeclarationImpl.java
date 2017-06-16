@@ -12,6 +12,8 @@ import net.masterthought.dlanguage.stubs.DLanguageVarFuncDeclarationStub;
 import net.masterthought.dlanguage.psi.*;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
+import com.intellij.psi.ResolveState;
+import com.intellij.psi.scope.PsiScopeProcessor;
 import net.masterthought.dlanguage.psi.interfaces.containers.Container;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 import com.intellij.psi.stubs.IStubElementType;
@@ -54,15 +56,33 @@ public class DLanguageVarFuncDeclarationImpl extends DNamedStubbedPsiElementBase
   }
 
   @Override
-  @NotNull
-  public DLanguageFuncDeclaratorSuffix getFuncDeclaratorSuffix() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageFuncDeclaratorSuffix.class));
+  @Nullable
+  public DLanguageConstraint getConstraint() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageConstraint.class);
   }
 
   @Override
   @NotNull
   public DLanguageIdentifier getIdentifier() {
     return notNullChild(PsiTreeUtil.getStubChildOfType(this, DLanguageIdentifier.class));
+  }
+
+  @Override
+  @Nullable
+  public DLanguageMemberFunctionAttributes getMemberFunctionAttributes() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageMemberFunctionAttributes.class);
+  }
+
+  @Override
+  @NotNull
+  public DLanguageParameters getParameters() {
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageParameters.class));
+  }
+
+  @Override
+  @Nullable
+  public DLanguageTemplateParameters getTemplateParameters() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateParameters.class);
   }
 
   @Override
@@ -126,6 +146,10 @@ public class DLanguageVarFuncDeclarationImpl extends DNamedStubbedPsiElementBase
 
   public boolean isSomeVisibility(Visibility visibility, Class<? extends Container> containerType) {
     return DPsiImplUtil.isSomeVisibility(this, visibility, containerType);
+  }
+
+  public boolean processDeclarations(PsiScopeProcessor processor, ResolveState state, PsiElement lastParent, PsiElement place) {
+    return DPsiImplUtil.processDeclarations(this, processor, state, lastParent, place);
   }
 
 }

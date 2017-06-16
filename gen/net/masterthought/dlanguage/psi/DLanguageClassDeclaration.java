@@ -8,7 +8,7 @@ import net.masterthought.dlanguage.psi.interfaces.containers.StatementContainer;
 import net.masterthought.dlanguage.psi.interfaces.containers.MixinContainer;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
-import net.masterthought.dlanguage.psi.interfaces.HasTemplateArguments;
+import net.masterthought.dlanguage.psi.interfaces.HasTemplateParameters;
 import net.masterthought.dlanguage.psi.interfaces.CanInherit;
 import net.masterthought.dlanguage.psi.interfaces.Declaration;
 import com.intellij.psi.StubBasedPsiElement;
@@ -21,7 +21,7 @@ import net.masterthought.dlanguage.psi.interfaces.containers.Container;
 import java.util.Map;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 
-public interface DLanguageClassDeclaration extends StatementContainer, MixinContainer, DNamedElement, HasVisibility, HasTemplateArguments, CanInherit, Declaration, StubBasedPsiElement<DLanguageClassDeclarationStub> {
+public interface DLanguageClassDeclaration extends StatementContainer, MixinContainer, DNamedElement, HasVisibility, HasTemplateParameters, CanInherit, Declaration, StubBasedPsiElement<DLanguageClassDeclarationStub> {
 
   @Nullable
   DLanguageAggregateBody getAggregateBody();

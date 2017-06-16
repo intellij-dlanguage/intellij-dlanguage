@@ -9,7 +9,7 @@ import net.masterthought.dlanguage.psi.interfaces.containers.StatementContainer;
 import net.masterthought.dlanguage.psi.interfaces.containers.MixinContainer;
 import net.masterthought.dlanguage.psi.interfaces.containers.GlobalDeclarationContainer;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
-import net.masterthought.dlanguage.psi.interfaces.HasTemplateArguments;
+import net.masterthought.dlanguage.psi.interfaces.HasTemplateParameters;
 import net.masterthought.dlanguage.psi.interfaces.Mixinable;
 import net.masterthought.dlanguage.psi.interfaces.Declaration;
 import com.intellij.psi.StubBasedPsiElement;
@@ -21,7 +21,7 @@ import com.intellij.psi.scope.PsiScopeProcessor;
 import net.masterthought.dlanguage.psi.interfaces.containers.Container;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 
-public interface DLanguageTemplateMixinDeclaration extends DNamedElement, StatementContainer, MixinContainer, GlobalDeclarationContainer, HasVisibility, HasTemplateArguments, Mixinable, Declaration, StubBasedPsiElement<DLanguageTemplateMixinDeclarationStub> {
+public interface DLanguageTemplateMixinDeclaration extends DNamedElement, StatementContainer, MixinContainer, GlobalDeclarationContainer, HasVisibility, HasTemplateParameters, Mixinable, Declaration, StubBasedPsiElement<DLanguageTemplateMixinDeclarationStub> {
 
   @Nullable
   DLanguageConstraint getConstraint();

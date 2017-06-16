@@ -11,6 +11,8 @@ import com.intellij.psi.StubBasedPsiElement;
 import net.masterthought.dlanguage.stubs.DLanguageAliasDeclarationSingleStub;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
+import com.intellij.psi.ResolveState;
+import com.intellij.psi.scope.PsiScopeProcessor;
 import net.masterthought.dlanguage.psi.interfaces.containers.Container;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 
@@ -23,10 +25,10 @@ public interface DLanguageAliasDeclarationSingle extends DNamedElement, HasVisib
   DLanguageBasicType2 getBasicType2();
 
   @Nullable
-  DLanguageDeclarator getDeclarator();
+  DLanguageConstraint getConstraint();
 
   @Nullable
-  DLanguageFuncDeclaratorSuffix getFuncDeclaratorSuffix();
+  DLanguageDeclarator getDeclarator();
 
   @Nullable
   DLanguageIdentifier getIdentifier();
@@ -35,10 +37,19 @@ public interface DLanguageAliasDeclarationSingle extends DNamedElement, HasVisib
   DLanguageInitializer getInitializer();
 
   @Nullable
+  DLanguageMemberFunctionAttributes getMemberFunctionAttributes();
+
+  @Nullable
+  DLanguageParameters getParameters();
+
+  @Nullable
   DLanguageStorageClasses getStorageClasses();
 
   @Nullable
   DLanguageTemplateArguments getTemplateArguments();
+
+  @Nullable
+  DLanguageTemplateParameters getTemplateParameters();
 
   @Nullable
   DLanguageType getType();
@@ -77,8 +88,6 @@ public interface DLanguageAliasDeclarationSingle extends DNamedElement, HasVisib
   //matching getDeclarationType(DLanguageAliasDeclarationSingle, ...)
   //methods are not found in DPsiImplUtil
 
-  //WARNING: processDeclarations(...) is skipped
-  //matching processDeclarations(DLanguageAliasDeclarationSingle, ...)
-  //methods are not found in DPsiImplUtil
+  boolean processDeclarations(PsiScopeProcessor processor, ResolveState state, PsiElement lastParent, PsiElement place);
 
 }

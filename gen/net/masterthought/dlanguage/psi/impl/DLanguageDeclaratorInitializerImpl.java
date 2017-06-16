@@ -12,6 +12,8 @@ import net.masterthought.dlanguage.stubs.DLanguageDeclaratorInitializerStub;
 import net.masterthought.dlanguage.psi.*;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
+import com.intellij.psi.ResolveState;
+import com.intellij.psi.scope.PsiScopeProcessor;
 import net.masterthought.dlanguage.psi.interfaces.containers.Container;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 import net.masterthought.dlanguage.psi.interfaces.Type;
@@ -109,6 +111,10 @@ public class DLanguageDeclaratorInitializerImpl extends DNamedStubbedPsiElementB
 
   public Type getVariableDeclarationType() {
     return DPsiImplUtil.getVariableDeclarationType(this);
+  }
+
+  public boolean processDeclarations(PsiScopeProcessor processor, ResolveState state, PsiElement lastParent, PsiElement place) {
+    return DPsiImplUtil.processDeclarations(this, processor, state, lastParent, place);
   }
 
 }

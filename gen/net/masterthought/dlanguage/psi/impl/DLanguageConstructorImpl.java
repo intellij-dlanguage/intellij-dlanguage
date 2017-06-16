@@ -12,8 +12,9 @@ import net.masterthought.dlanguage.stubs.DLanguageConstructorStub;
 import net.masterthought.dlanguage.psi.*;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
+import com.intellij.psi.ResolveState;
+import com.intellij.psi.scope.PsiScopeProcessor;
 import net.masterthought.dlanguage.psi.interfaces.containers.Container;
-import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 import com.intellij.psi.stubs.IStubElementType;
 
 public class DLanguageConstructorImpl extends DNamedStubbedPsiElementBase<DLanguageConstructorStub> implements DLanguageConstructor {
@@ -37,8 +38,8 @@ public class DLanguageConstructorImpl extends DNamedStubbedPsiElementBase<DLangu
 
   @Override
   @Nullable
-  public DLanguageConstructorTemplate getConstructorTemplate() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageConstructorTemplate.class);
+  public DLanguageConstraint getConstraint() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageConstraint.class);
   }
 
   @Override
@@ -54,15 +55,21 @@ public class DLanguageConstructorImpl extends DNamedStubbedPsiElementBase<DLangu
   }
 
   @Override
-  @Nullable
+  @NotNull
   public DLanguageParameters getParameters() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageParameters.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageParameters.class));
   }
 
   @Override
   @Nullable
+  public DLanguageTemplateParameters getTemplateParameters() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateParameters.class);
+  }
+
+  @Override
+  @NotNull
   public PsiElement getKwThis() {
-    return findChildByType(KW_THIS);
+    return notNullChild(findChildByType(KW_THIS));
   }
 
   @Override
@@ -110,7 +117,11 @@ public class DLanguageConstructorImpl extends DNamedStubbedPsiElementBase<DLangu
 
   @NotNull
   public List<DLanguageParameter> getArguments() {
-    return DPsiImplUtil.getArguments(this);
+    return DPsiImplUtil.getParameterList(this);
+  }
+
+  public boolean processDeclarations(PsiScopeProcessor processor, ResolveState state, PsiElement lastParent, PsiElement place) {
+    return DPsiImplUtil.processDeclarations(this, processor, state, lastParent, place);
   }
 
 }

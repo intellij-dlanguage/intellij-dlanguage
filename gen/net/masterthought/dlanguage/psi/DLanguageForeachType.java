@@ -43,8 +43,4 @@ public interface DLanguageForeachType extends DNamedElement, VariableDeclaration
   @NotNull
   ItemPresentation getPresentation();
 
-  //WARNING: processDeclarations(...) is skipped
-  //matching processDeclarations(DLanguageForeachType, ...)
-  //methods are not found in DPsiImplUtil
-
 }

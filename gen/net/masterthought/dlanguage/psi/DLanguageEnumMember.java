@@ -44,14 +44,6 @@ public interface DLanguageEnumMember extends DNamedElement, Declaration, StubBas
   @NotNull
   ItemPresentation getPresentation();
 
-  //WARNING: getTemplateArguments(...) is skipped
-  //matching getTemplateArguments(DLanguageEnumMember, ...)
-  //methods are not found in DPsiImplUtil
-
   boolean isSomeVisibility(Visibility visibility, Class<? extends Container> containerType);
-
-  //WARNING: proccessDeclarations(...) is skipped
-  //matching proccessDeclarations(DLanguageEnumMember, ...)
-  //methods are not found in DPsiImplUtil
 
 }

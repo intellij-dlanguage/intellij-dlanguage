@@ -52,8 +52,4 @@ public interface DLanguageConditionVariableDeclaration extends DNamedElement, Va
   @NotNull
   ItemPresentation getPresentation();
 
-  //WARNING: processDeclarations(...) is skipped
-  //matching processDeclarations(DLanguageConditionVariableDeclaration, ...)
-  //methods are not found in DPsiImplUtil
-
 }

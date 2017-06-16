@@ -11,6 +11,8 @@ import com.intellij.psi.StubBasedPsiElement;
 import net.masterthought.dlanguage.stubs.DLanguageAutoDeclarationStub;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
+import com.intellij.psi.ResolveState;
+import com.intellij.psi.scope.PsiScopeProcessor;
 import net.masterthought.dlanguage.psi.interfaces.containers.Container;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 import net.masterthought.dlanguage.psi.interfaces.Type;
@@ -54,8 +56,6 @@ public interface DLanguageAutoDeclarationY extends DNamedElement, VariableDeclar
 
   Type getVariableDeclarationType();
 
-  //WARNING: processDeclarations(...) is skipped
-  //matching processDeclarations(DLanguageAutoDeclarationY, ...)
-  //methods are not found in DPsiImplUtil
+  boolean processDeclarations(PsiScopeProcessor processor, ResolveState state, PsiElement lastParent, PsiElement place);
 
 }

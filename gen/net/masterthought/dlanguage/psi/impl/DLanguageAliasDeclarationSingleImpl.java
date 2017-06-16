@@ -12,6 +12,8 @@ import net.masterthought.dlanguage.stubs.DLanguageAliasDeclarationSingleStub;
 import net.masterthought.dlanguage.psi.*;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
+import com.intellij.psi.ResolveState;
+import com.intellij.psi.scope.PsiScopeProcessor;
 import net.masterthought.dlanguage.psi.interfaces.containers.Container;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 import com.intellij.psi.stubs.IStubElementType;
@@ -49,14 +51,14 @@ public class DLanguageAliasDeclarationSingleImpl extends DNamedStubbedPsiElement
 
   @Override
   @Nullable
-  public DLanguageDeclarator getDeclarator() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageDeclarator.class);
+  public DLanguageConstraint getConstraint() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageConstraint.class);
   }
 
   @Override
   @Nullable
-  public DLanguageFuncDeclaratorSuffix getFuncDeclaratorSuffix() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageFuncDeclaratorSuffix.class);
+  public DLanguageDeclarator getDeclarator() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageDeclarator.class);
   }
 
   @Override
@@ -73,6 +75,18 @@ public class DLanguageAliasDeclarationSingleImpl extends DNamedStubbedPsiElement
 
   @Override
   @Nullable
+  public DLanguageMemberFunctionAttributes getMemberFunctionAttributes() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageMemberFunctionAttributes.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageParameters getParameters() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageParameters.class);
+  }
+
+  @Override
+  @Nullable
   public DLanguageStorageClasses getStorageClasses() {
     return PsiTreeUtil.getChildOfType(this, DLanguageStorageClasses.class);
   }
@@ -81,6 +95,12 @@ public class DLanguageAliasDeclarationSingleImpl extends DNamedStubbedPsiElement
   @Nullable
   public DLanguageTemplateArguments getTemplateArguments() {
     return PsiTreeUtil.getChildOfType(this, DLanguageTemplateArguments.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageTemplateParameters getTemplateParameters() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateParameters.class);
   }
 
   @Override
@@ -142,6 +162,10 @@ public class DLanguageAliasDeclarationSingleImpl extends DNamedStubbedPsiElement
 
   public boolean actuallyIsDeclaration() {
     return DPsiImplUtil.actuallyIsDeclaration(this);
+  }
+
+  public boolean processDeclarations(PsiScopeProcessor processor, ResolveState state, PsiElement lastParent, PsiElement place) {
+    return DPsiImplUtil.processDeclarations(this, processor, state, lastParent, place);
   }
 
 }

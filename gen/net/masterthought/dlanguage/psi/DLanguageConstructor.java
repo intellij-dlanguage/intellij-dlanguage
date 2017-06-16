@@ -7,20 +7,22 @@ import com.intellij.psi.PsiElement;
 import net.masterthought.dlanguage.psi.interfaces.containers.StatementContainer;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
-import net.masterthought.dlanguage.psi.interfaces.HasTemplateArguments;
-import net.masterthought.dlanguage.psi.interfaces.HasArguments;
+import net.masterthought.dlanguage.psi.interfaces.HasTemplateParameters;
+import net.masterthought.dlanguage.psi.interfaces.HasParameters;
 import net.masterthought.dlanguage.psi.interfaces.Declaration;
 import com.intellij.psi.StubBasedPsiElement;
 import net.masterthought.dlanguage.stubs.DLanguageConstructorStub;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
+import com.intellij.psi.ResolveState;
+import com.intellij.psi.scope.PsiScopeProcessor;
 import net.masterthought.dlanguage.psi.interfaces.containers.Container;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 
-public interface DLanguageConstructor extends StatementContainer, DNamedElement, HasVisibility, HasTemplateArguments, HasArguments, Declaration, StubBasedPsiElement<DLanguageConstructorStub> {
+public interface DLanguageConstructor extends StatementContainer, DNamedElement, HasVisibility, HasTemplateParameters, HasParameters, Declaration, StubBasedPsiElement<DLanguageConstructorStub> {
 
   @Nullable
-  DLanguageConstructorTemplate getConstructorTemplate();
+  DLanguageConstraint getConstraint();
 
   @Nullable
   DLanguageFunctionBody getFunctionBody();
@@ -28,10 +30,13 @@ public interface DLanguageConstructor extends StatementContainer, DNamedElement,
   @Nullable
   DLanguageMemberFunctionAttributes getMemberFunctionAttributes();
 
-  @Nullable
+  @NotNull
   DLanguageParameters getParameters();
 
   @Nullable
+  DLanguageTemplateParameters getTemplateParameters();
+
+  @NotNull
   PsiElement getKwThis();
 
   @Nullable
@@ -61,8 +66,6 @@ public interface DLanguageConstructor extends StatementContainer, DNamedElement,
   @NotNull
   List<DLanguageParameter> getArguments();
 
-  //WARNING: processDeclarations(...) is skipped
-  //matching processDeclarations(DLanguageConstructor, ...)
-  //methods are not found in DPsiImplUtil
+  boolean processDeclarations(PsiScopeProcessor processor, ResolveState state, PsiElement lastParent, PsiElement place);
 
 }

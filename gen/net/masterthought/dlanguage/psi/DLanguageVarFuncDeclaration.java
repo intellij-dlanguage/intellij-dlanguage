@@ -11,6 +11,8 @@ import com.intellij.psi.StubBasedPsiElement;
 import net.masterthought.dlanguage.stubs.DLanguageVarFuncDeclarationStub;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
+import com.intellij.psi.ResolveState;
+import com.intellij.psi.scope.PsiScopeProcessor;
 import net.masterthought.dlanguage.psi.interfaces.containers.Container;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 
@@ -25,11 +27,20 @@ public interface DLanguageVarFuncDeclaration extends DNamedElement, HasVisibilit
   @Nullable
   DLanguageBasicType2 getBasicType2();
 
-  @NotNull
-  DLanguageFuncDeclaratorSuffix getFuncDeclaratorSuffix();
+  @Nullable
+  DLanguageConstraint getConstraint();
 
   @NotNull
   DLanguageIdentifier getIdentifier();
+
+  @Nullable
+  DLanguageMemberFunctionAttributes getMemberFunctionAttributes();
+
+  @NotNull
+  DLanguageParameters getParameters();
+
+  @Nullable
+  DLanguageTemplateParameters getTemplateParameters();
 
   @Nullable
   DLanguageType getType();
@@ -73,8 +84,6 @@ public interface DLanguageVarFuncDeclaration extends DNamedElement, HasVisibilit
   //matching getDeclarationType(DLanguageVarFuncDeclaration, ...)
   //methods are not found in DPsiImplUtil
 
-  //WARNING: processDeclarations(...) is skipped
-  //matching processDeclarations(DLanguageVarFuncDeclaration, ...)
-  //methods are not found in DPsiImplUtil
+  boolean processDeclarations(PsiScopeProcessor processor, ResolveState state, PsiElement lastParent, PsiElement place);
 
 }

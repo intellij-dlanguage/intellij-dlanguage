@@ -4,6 +4,8 @@ package net.masterthought.dlanguage.psi;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.ResolveState;
+import com.intellij.psi.scope.PsiScopeProcessor;
 
 public interface DLanguageFunctionLiteral extends PsiElement {
 
@@ -28,8 +30,6 @@ public interface DLanguageFunctionLiteral extends PsiElement {
   @Nullable
   PsiElement getKwFunction();
 
-  //WARNING: processDeclarations(...) is skipped
-  //matching processDeclarations(DLanguageFunctionLiteral, ...)
-  //methods are not found in DPsiImplUtil
+  boolean processDeclarations(PsiScopeProcessor processor, ResolveState state, PsiElement lastParent, PsiElement place);
 
 }

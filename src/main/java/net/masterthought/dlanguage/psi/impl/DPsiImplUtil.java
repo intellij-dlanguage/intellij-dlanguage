@@ -12,6 +12,7 @@ import net.masterthought.dlanguage.psi.interfaces.*;
 import net.masterthought.dlanguage.psi.interfaces.containers.*;
 import net.masterthought.dlanguage.psi.references.DReference;
 import net.masterthought.dlanguage.resolve.DResolveUtil;
+import net.masterthought.dlanguage.resolve.ScopeProcessorImpl;
 import net.masterthought.dlanguage.stubs.*;
 import net.masterthought.dlanguage.utils.DUtil;
 import org.apache.log4j.Logger;
@@ -68,7 +69,7 @@ public class DPsiImplUtil {
         } else {
             try {
                 return findParentOfType(element.getParent(), className);
-            } catch(Exception e){
+            } catch (Exception e) {
                 return null;
             }
         }
@@ -79,10 +80,10 @@ public class DPsiImplUtil {
         PsiNamedElement funcDecl = (PsiNamedElement) findParentOfType(o, DLanguageFuncDeclaration.class);
         PsiNamedElement classDecl = (PsiNamedElement) findParentOfType(o, DLanguageClassDeclaration.class);
         String description = "";
-        if(funcDecl != null){
+        if (funcDecl != null) {
             description = " [Function] (" + funcDecl.getName() + ")";
         }
-        if(classDecl != null){
+        if (classDecl != null) {
             description = " [Class] (" + classDecl.getName() + ")";
         }
         return description;
@@ -178,13 +179,13 @@ public class DPsiImplUtil {
     }
 
     @NotNull
-    public static List<DLanguageParameter> getArguments(DLanguageFuncDeclaration o) {
-        return Arrays.asList(getChildrenOfType(o.getFuncDeclaratorSuffix().getParameters(), DLanguageParameter.class));
+    public static List<DLanguageParameter> getParameterList(DLanguageFuncDeclaration o) {
+        return Arrays.asList(getChildrenOfType(o.getParameters(), DLanguageParameter.class));
     }
 
     public static List<DLanguageTemplateParameter> getTemplateArguments(DLanguageFuncDeclaration o) {
-        if (o.getFuncDeclaratorSuffix().getTemplateParameters() != null)
-            return Arrays.asList(getChildrenOfType(o.getFuncDeclaratorSuffix().getTemplateParameters(), DLanguageTemplateParameter.class));
+        if (o.getTemplateParameters() != null)
+            return Arrays.asList(getChildrenOfType(o.getTemplateParameters(), DLanguageTemplateParameter.class));
         return new ArrayList<>();
     }
 
@@ -623,7 +624,7 @@ public class DPsiImplUtil {
             public String getPresentableText() {
                 String string = "";
                 for (PsiElement psiElement : o.getChildren()) {
-                    if(psiElement instanceof DLanguageParametersImpl)
+                    if (psiElement instanceof DLanguageParametersImpl)
                         string += psiElement.getText();
                 }
                 return o.getName() + string;
@@ -648,12 +649,8 @@ public class DPsiImplUtil {
     }
 
     @NotNull
-    public static List<DLanguageParameter> getArguments(@NotNull DLanguageConstructor o) {
-        if (o.getConstructorTemplate() == null) {
+    public static List<DLanguageParameter> getParameterList(@NotNull DLanguageConstructor o) {
             return Arrays.asList(getChildrenOfType(o.getParameters(), DLanguageParameter.class));
-        } else {
-            return Arrays.asList(getChildrenOfType(o.getConstructorTemplate().getParameters(), DLanguageParameter.class));
-        }
     }
 
     // ------------- Constructor ------------------ //
@@ -988,12 +985,12 @@ public class DPsiImplUtil {
 
     @NotNull
     public static String getName(@NotNull DLanguageMixinExpression t) {
-        return findChildOfType(t,DLanguageIdentifier.class).getName();
+        return findChildOfType(t, DLanguageIdentifier.class).getName();
     }
 
     @NotNull
     public static String getName(@NotNull DLanguageMixinStatement t) {
-        return findChildOfType(t,DLanguageIdentifier.class).getName();
+        return findChildOfType(t, DLanguageIdentifier.class).getName();
     }
 
     // -------------- Mixin Template Resolving ------------------- //
@@ -1973,487 +1970,296 @@ public class DPsiImplUtil {
      * @param place
      * @return
      */
-    public static boolean processDeclarations(DLanguageFuncDeclaration element, @NotNull PsiScopeProcessor processor,
+    public static boolean processDeclarations(DLanguageDeclDefs element,
+                                              @NotNull PsiScopeProcessor processor,
                                               @NotNull ResolveState state,
                                               PsiElement lastParent,
                                               @NotNull PsiElement place) {
-        //todo handle place
-        boolean shouldContinue = true;
-        for (DLanguageParameter parameter : element.getArguments()) {
-            if (!processor.execute(parameter, state)) {
-                shouldContinue = false;
-            }
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(element, processor, state, lastParent, place);
+    }
+
+    public static boolean processDeclarations(DLanguageFunctionLiteral element,
+                                              @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(element, processor, state, lastParent, place);
+    }
+
+    public static boolean processDeclarations(DLanguageLambda element,
+                                              @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(element, processor, state, lastParent, place);
+    }
+
+    public static boolean processDeclarations(DLanguageLabeledStatement element,
+                                              @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(element, processor, state, lastParent, place);
+    }
+
+    public static boolean processDeclarations(DLanguageForeachStatement element,
+                                              @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(element, processor, state, lastParent, place);
+    }
+
+    public static boolean processDeclarations(DLanguageConstructor element,
+                                              @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(element, processor, state, lastParent, place);
+    }
+
+    public static boolean processDeclarations(DLanguageFuncDeclaration element,
+                                              @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(element, processor, state, lastParent, place);
+    }
+
+    public static boolean processDeclarations(DLanguageWhileStatement element,
+                                              @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(element, processor, state, lastParent, place);
+    }
+
+    public static boolean processDeclarations(DLanguageForStatement element,
+                                              @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(element, processor, state, lastParent, place);
+    }
+
+    public static boolean processDeclarations(DLanguageDoStatement element,
+                                              @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(element, processor, state, lastParent, place);
+    }
+
+    public static boolean processDeclarations(DLanguageIfStatement element,
+                                              @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(element, processor, state, lastParent, place);
+    }
+
+    public static boolean processDeclarations(DLanguageStatementList element,
+                                              @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(element, processor, state, lastParent, place);
+    }
+
+    public static boolean processDeclarations(DLanguageSwitchStatement element,
+                                              @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(element, processor, state, lastParent, place);
+    }
+
+    public static boolean processDeclarations(DLanguageFinalSwitchStatement element,
+                                              @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(element, processor, state, lastParent, place);
+    }
+
+    public static boolean processDeclarations(DLanguageWithStatement element,
+                                              @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(element, processor, state, lastParent, place);
+    }
+
+    public static boolean processDeclarations(DLanguageSynchronizedStatement element,
+                                              @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(element, processor, state, lastParent, place);
+    }
+
+    public static boolean processDeclarations(DLanguageCatch element,
+                                              @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(element, processor, state, lastParent, place);
+    }
+
+    public static boolean processDeclarations(DLanguageVarFuncDeclaration element,
+                                              @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(element, processor, state, lastParent, place);
+    }
+
+    public static boolean processDeclarations(DLanguageForeachRangeStatement element,
+                                              @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(element, processor, state, lastParent, place);
+    }
+
+    public static boolean processDeclarations(DLanguageAliasDeclarationSingle element,
+                                              @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(element, processor, state, lastParent, place);
+    }
+
+    public static boolean processDeclarations(DLanguageAliasDeclarationY element,
+                                              @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(element, processor, state, lastParent, place);
+    }
+
+    public static boolean processDeclarations(DLanguageAutoDeclarationY element,
+                                              @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(element, processor, state, lastParent, place);
+    }
+
+    public static boolean processDeclarations(DLanguageDeclaratorInitializer element,
+                                              @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(element, processor, state, lastParent, place);
+    }
+
+    public static boolean processDeclarations(DLanguageParameterList element,
+                                              @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(element, processor, state, lastParent, place);
+    }
+
+    public static boolean processDeclarations(DLanguageParameters element,
+                                              @NotNull PsiScopeProcessor processor,
+                                              @NotNull ResolveState state,
+                                              PsiElement lastParent,
+                                              @NotNull PsiElement place) {
+        if (element.getParameterList() != null) {
+            return ScopeProcessorImpl.INSTANCE.processDeclarations(element.getParameterList(), processor, state, lastParent, place);
         }
-        for (DLanguageTemplateParameter templateParameter : element.getTemplateArguments()) {
-            if (!processor.execute(templateParameter, state)) {
-                shouldContinue = false;
-            }
-        }
-        return shouldContinue;
-    }
-
-    public static boolean processDeclarations(DLanguageForeachStatement element, @NotNull PsiScopeProcessor processor,
-                                              @NotNull ResolveState state,
-                                              PsiElement lastParent,
-                                              @NotNull PsiElement place) {
-        //todo handle place
-        boolean shouldContinue = true;
-        for (DLanguageForeachType foreachType : element.getForeachTypeList().getForeachTypeList()) {
-            if (!processor.execute(foreachType, state)) {
-                shouldContinue = false;
-            }
-        }
-        return shouldContinue;
-    }
-
-    public static boolean processDeclarations(DLanguageWhileStatement element, @NotNull PsiScopeProcessor processor,
-                                              @NotNull ResolveState state,
-                                              PsiElement lastParent,
-                                              @NotNull PsiElement place) {
-        //todo should handle place
-        return true;//todo check that while statement's can/can't contain truthy/falsy variable declarations or casts
-    }
-
-    public static boolean processDeclarations(DLanguageForStatement element, @NotNull PsiScopeProcessor processor,
-                                              @NotNull ResolveState state,
-                                              PsiElement lastParent,
-                                              @NotNull PsiElement place) {
-        //todo handle place
-        if (element.getInitialize() == null || element.getInitialize().getStatement() == null)
-            return true;
-        return element.getInitialize().getStatement().processDeclarations(processor, state, lastParent, place);
-    }
-
-    public static boolean processDeclarations(DLanguageDoStatement element, @NotNull PsiScopeProcessor processor,
-                                              @NotNull ResolveState state,
-                                              PsiElement lastParent,
-                                              @NotNull PsiElement place) {
-        return true;//todo check that while statement's can/can't contain truthy/falsy variable declarations or casts
-    }
-
-    public static boolean processDeclarations(DLanguageIfStatement element, @NotNull PsiScopeProcessor processor,
-                                              @NotNull ResolveState state,
-                                              PsiElement lastParent,
-                                              @NotNull PsiElement place) {
         return true;
     }
 
-    public static boolean processDeclarations(DLanguageBlockStatement element, @NotNull PsiScopeProcessor processor,
+    public static boolean processDeclarations(DLanguageConditionalStatement element,
+                                              @NotNull PsiScopeProcessor processor,
                                               @NotNull ResolveState state,
                                               PsiElement lastParent,
                                               @NotNull PsiElement place) {
-        //todo handle place
-        //todo do statements
-        if (element.getStatementList() != null) {
-            for (DLanguageStatement dLangStatement : element.getStatementList().getStatementList()) {
-                if (!dLangStatement.processDeclarations(processor, state, lastParent, place)) {
-                    return false;
-                }
-            }
-        }
-        return true;
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(element, processor, state, lastParent, place);
     }
 
-    public static boolean processDeclarations(DLanguageSwitchStatement element, @NotNull PsiScopeProcessor processor,
+    public static boolean processDeclarations(DLanguageScopeStatement element,
+                                              @NotNull PsiScopeProcessor processor,
                                               @NotNull ResolveState state,
                                               PsiElement lastParent,
                                               @NotNull PsiElement place) {
-        //todo truthy types in switch statement???//should declarations in the switch scope statementbe processed or do they go out of scope
-        return true;
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(element, processor, state, lastParent, place);
     }
 
-    public static boolean processDeclarations(DLanguageFinalSwitchStatement element, @NotNull PsiScopeProcessor processor,
+    public static boolean processDeclarations(DLanguageEnumMembers element,
+                                              @NotNull PsiScopeProcessor processor,
                                               @NotNull ResolveState state,
                                               PsiElement lastParent,
                                               @NotNull PsiElement place) {
-        return true;//see regular switch statement
-    }
-
-    public static boolean processDeclarations(DLanguageWithStatement element, @NotNull PsiScopeProcessor processor,
-                                              @NotNull ResolveState state,
-                                              PsiElement lastParent,
-                                              @NotNull PsiElement place) {
-        return true;//todo I don't actually know how with statements work in D
-    }
-
-    public static boolean processDeclarations(DLanguageSynchronizedStatement element, @NotNull PsiScopeProcessor processor,
-                                              @NotNull ResolveState state,
-                                              PsiElement lastParent,
-                                              @NotNull PsiElement place) {
-        return true; //how does scope work in synchronized D statements
-    }
-
-    public static boolean processDeclarations(DLanguageCatch element, @NotNull PsiScopeProcessor processor,
-                                              @NotNull ResolveState state,
-                                              PsiElement lastParent,
-                                              @NotNull PsiElement place) {
-        return processor.execute(element.getCatchParameter(), state);
-    }
-
-    public static boolean processDeclarations(DLanguageForeachRangeStatement element, @NotNull PsiScopeProcessor processor,
-                                              @NotNull ResolveState state,
-                                              PsiElement lastParent,
-                                              @NotNull PsiElement place) {
-        //see foreach
-        return processor.execute(element.getForeachType(), state);
-    }
-
-    public static boolean processDeclarations(DLanguageConditionalStatement element, @NotNull PsiScopeProcessor processor,
-                                              @NotNull ResolveState state,
-                                              PsiElement lastParent,
-                                              @NotNull PsiElement place) {
-        //always recurse in since this is a compile time condition
-        //handle place and lastParent
-        for (DLanguageStatement dLangStatement : element.getStatementList()) {
-            if (!dLangStatement.processDeclarations(processor, state, lastParent, place)) {
-                return false;
-            }
-        }
-        for (DLanguageDeclarationBlock block : element.getDeclarationBlockList()) {
-            if (block.processDeclarations(processor, state, lastParent, place)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-
-    public static boolean processDeclarations(DLanguageDeclarationBlock element, @NotNull PsiScopeProcessor processor,
-                                              @NotNull ResolveState state,
-                                              PsiElement lastParent,
-                                              @NotNull PsiElement place) {
-        if (element.getDeclDef() != null) {
-            if (!element.getDeclDef().processDeclarations(processor, state, lastParent, place)) {
-                return false;
-            }
-        }
-        if (element.getDeclDefs() != null) {
-            for (DLanguageDeclDef def : element.getDeclDefs().getDeclDefList()) {
-                if (!def.processDeclarations(processor, state, lastParent, place)) {
-                    return false;
-                }
-            }
-        }
-        return true;
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(element, processor, state, lastParent, place);
     }
 
     public static boolean processDeclarations(DLanguageDeclDef def, @NotNull PsiScopeProcessor processor,
                                               @NotNull ResolveState state,
                                               PsiElement lastParent,
                                               @NotNull PsiElement place) {
-        if (def.getDeclaration() != null) {
-            if (!def.getDeclaration().processDeclarations(processor, state, lastParent, place)) {
-                return false;
-            }
-        }
-        if (def.getConstructor() != null) {
-            //todo make sure names for constructors are handled correctly
-            processor.execute(def.getConstructor(), state);
-        }
-        if (def.getAliasThis() != null) {
-            //todo handle alias this
-            //processor.execute(def.getAliasThis(), state);
-        }
-        if (def.getConditionalDeclaration() != null) {
-            processor.execute(def.getConditionalDeclaration(), state);
-        }
-        if (def.getTemplateDeclaration() != null) {
-            processor.execute(def.getTemplateDeclaration(), state);
-        }
-        if (def.getTemplateMixinDeclaration() != null) {
-            processor.execute(def.getTemplateMixinDeclaration(), state);
-        }
-        if (def.getTemplateMixin() != null) {
-            //todo handle mixins
-            //processor.execute(def.getTemplateMixin(), state);
-        }
-        if (def.getMixinDeclaration() != null) {
-            //todo handle mixins
-            //processor.execute(def.getMixinDeclaration(), state);
-        }
-        if (def.getStaticIfCondition() != null) {
-            //todo
-//            if (def.getStaticIfCondition() != null) {
-//                if (def.getStaticIfCondition().getDeclarationBlock() != null) {
-//                    if (!(def.getStaticIfCondition().getDeclarationBlock().processDeclarations(processor, state, lastParent, place))) {
-//                        return false;
-//                    }
-//                }
-//            }
-        }
-        if (def.getStaticElseCondition() != null) {
-            if (def.getStaticElseCondition().getDeclarationBlock() != null) {
-                if (!(def.getStaticElseCondition().getDeclarationBlock().processDeclarations(processor, state, lastParent, place))) {
-                    return false;
-                }
-            }
-        }
-        return true;
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(def, processor, state, lastParent, place);
     }
 
 
-    public static boolean processDeclarations(DLanguageConditionalDeclaration element, @NotNull PsiScopeProcessor processor,
+    public static boolean processDeclarations(DLanguageConditionalDeclaration element,
+                                              @NotNull PsiScopeProcessor processor,
                                               @NotNull ResolveState state,
                                               PsiElement lastParent,
                                               @NotNull PsiElement place) {
-//        for (DLanguageDeclarationBlock block : element.getDeclarationBlockList()) {
-//            if (!block.processDeclarations(processor, state, lastParent, place)) {
-//                return false;
-//            }
-//        }
-        if (element.getDeclDefs() != null) {
-            for (DLanguageDeclDef def : element.getDeclDefs().getDeclDefList()) {
-                if (!def.processDeclarations(processor, state, lastParent, place)) {
-                    return false;
-                }
-            }
-        }
-        return true;
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(element, processor, state, lastParent, place);
     }
 
-    public static boolean processDeclarations(DLanguageClassDeclaration element, @NotNull PsiScopeProcessor processor,
+    public static boolean processDeclarations(DLanguageClassDeclaration element,
+                                              @NotNull PsiScopeProcessor processor,
                                               @NotNull ResolveState state,
                                               PsiElement lastParent,
                                               @NotNull PsiElement place) {
-//        if (element.getClassTemplateDeclaration() != null) {
-//            if (element.getClassTemplateDeclaration().getTemplateParameters().getTemplateParameterList() != null) {
-//                for (DLanguageTemplateParameter templateParameter : element.getClassTemplateDeclaration().getTemplateParameters().getTemplateParameterList().getTemplateParameterList()) {
-//                    if (!processor.execute(templateParameter, state)) {
-//                        return false;
-//                    }
-//                }
-//            }
-//        }
-        return true;
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(element, processor, state, lastParent, place);
     }
 
-    public static boolean processDeclarations(DLanguageTemplateDeclaration element, @NotNull PsiScopeProcessor processor,
+    public static boolean processDeclarations(DLanguageTemplateDeclaration element,
+                                              @NotNull PsiScopeProcessor processor,
                                               @NotNull ResolveState state,
                                               PsiElement lastParent,
                                               @NotNull PsiElement place) {
-        if (element.getTemplateParameters() != null) {
-            if (element.getTemplateParameters().getTemplateParameterList() != null) {
-                for (DLanguageTemplateParameter templateParameter : element.getTemplateParameters().getTemplateParameterList().getTemplateParameterList()) {
-                    if (!processor.execute(templateParameter, state)) {
-                        return false;
-                    }
-                }
-            }
-        }
-        return true;
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(element, processor, state, lastParent, place);
     }
 
-    public static boolean processDeclarations(DLanguageAggregateBody element, @NotNull PsiScopeProcessor processor,
+    public static boolean processDeclarations(DLanguageStatement element,
+                                              @NotNull PsiScopeProcessor processor,
                                               @NotNull ResolveState state,
                                               PsiElement lastParent,
                                               @NotNull PsiElement place) {
-        if (element.getDeclDefs() != null) {
-            for (DLanguageDeclDef declDef : element.getDeclDefs().getDeclDefList()) {
-                if (!declDef.processDeclarations(processor, state, lastParent, place)) {
-                    return false;
-                }
-            }
-        }
-        return true;
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(element, processor, state, lastParent, place);
     }
 
-    public static boolean processDeclarations(DLanguageStatement element, @NotNull PsiScopeProcessor processor,
+    public static boolean processDeclarations(DLanguageStructDeclaration element,
+                                              @NotNull PsiScopeProcessor processor,
                                               @NotNull ResolveState state,
                                               PsiElement lastParent,
                                               @NotNull PsiElement place) {
-        if (element.getBlockStatement() != null) {
-            element.getBlockStatement().processDeclarations(processor, state, lastParent, place);
-        }
-//            if (nonEmptyStatement.getCaseRangeStatement() != null) {
-//
-//            }
-//            if (nonEmptyStatement.getCaseStatement() != null) {
-//
-//            }
-//            if (nonEmptyStatement.getDefaultStatement() != null) {
-//
-//            }
-//            if (nonEmptyStatement.getNonEmptyStatementNoCaseNoDefault() != null) {
-//                final DLanguageNonEmptyStatementNoCaseNoDefault statement = nonEmptyStatement.getNonEmptyStatementNoCaseNoDefault();
-//                if (statement.getLabeledStatement() != null) {
-//                    processor.execute(statement.getLabeledStatement(), state);//todo labeled statements should be DNamedElements
-//                    if (statement.getLabeledStatement().getStatement() != null) {
-//                        statement.getLabeledStatement().getStatement().processDeclarations(processor, state, lastParent, place);
-//                    }
-//                }
-//                if (statement.getDeclarationStatement() != null) {
-//                    statement.getDeclarationStatement().getDeclaration().processDeclarations(processor, state, lastParent, place);
-//                }
-//                if (statement.getBlockStatement() != null) {
-//                    statement.getBlockStatement().processDeclarations(processor, state, lastParent, place);
-//                }
-//                if (statement.getIfStatement() != null) {
-//                    final DLanguageIfCondition condition = statement.getIfStatement().getIfCondition();
-//                    //todo add return
-//                    if (condition != null) {
-//
-//                    }
-//                }
-//                //todo do/while statements should support truthy values etc
-////                if (statement.getWhileStatement() != null) {
-////                    processor.execute(statement.getWhileStatement(), state);
-////                }
-////                if (statement.getDoStatement() != null) {
-////                    processor.execute(statement.getDoStatement(), state);
-////                }
-//                if (statement.getForStatement() != null) {
-//                    statement.getForStatement().processDeclarations(processor, state, lastParent, place);
-//                }
-//                if (statement.getForeachStatement() != null) {
-//                    statement.getForeachStatement().processDeclarations(processor, state, lastParent, place);
-//                }
-//                if (statement.getSwitchStatement() != null) {
-//                    statement.getSwitchStatement().processDeclarations(processor, state, lastParent, place);
-//                }
-//                if (statement.getFinalSwitchStatement() != null) {
-//                    statement.getFinalSwitchStatement().processDeclarations(processor, state, lastParent, place);
-//                }
-////                if (statement.getWithStatement() != null) {
-////                    processor.execute(statement.getWithStatement(), state);
-////                }//todo idk how with statements work in d
-//                if (statement.getSynchronizedStatement() != null) {
-//                    //todo implement
-//                }
-//                if (statement.getTryStatement() != null) {
-//                    if (statement.getTryStatement().getCatches() != null) {
-//                        for (DLanguageCatch catch_ : statement.getTryStatement().getCatches().getCatchList()) {
-//                            processor.execute(catch_.getCatchParameter(), state);
-//                        }
-//
-//                    }
-//                }
-//                if (statement.getPragmaStatement() != null) {
-//                    if (statement.getPragmaStatement().getStatement() != null) {
-//                        statement.getPragmaStatement().getStatement().processDeclarations(processor, state, lastParent, place);
-//                    }
-//                }
-//                if (statement.getMixinStatement() != null) {
-//                    //todo handle mixins
-//                }
-//                if (statement.getForeachRangeStatement() != null) {
-//                    statement.getForeachRangeStatement().processDeclarations(processor, state, lastParent, place);
-//                }
-//                if (statement.getConditionalStatement() != null) {
-//                    statement.getConditionalStatement().processDeclarations(processor, state, lastParent, place);
-//                }
-//            }
-//        }
-        return true;
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(element, processor, state, lastParent, place);
     }
 
-    public static boolean processDeclarations(DLanguageDeclaration element, @NotNull PsiScopeProcessor processor,
+    public static boolean processDeclarations(DLanguageTemplateMixinDeclaration element,
+                                              @NotNull PsiScopeProcessor processor,
                                               @NotNull ResolveState state,
                                               PsiElement lastParent,
                                               @NotNull PsiElement place) {
-        if (element.getEnumDeclaration() != null) {
-            //todo members
-            if (!processor.execute(element.getEnumDeclaration(), state)) {
-                return false;
-            }
-        }
-        if (element.getFuncDeclaration() != null) {
-            if (!processor.execute(element.getFuncDeclaration(), state)) {
-                return false;
-            }
-        }
-        if (element.getVarDeclarations() != null) {
-            VariableDeclaration var;
-            if (element.getVarDeclarations().getAutoDeclaration() != null) {
-                var = element.getVarDeclarations().getAutoDeclaration().getAutoDeclarationX().getAutoDeclarationY();
-            } else {
-                var = element.getVarDeclarations().getDeclarators().getDeclaratorInitializer();
-            }
-            if (!processor.execute(var, state)) {
-                return false;
-            }
-        }
-        if (element.getAliasDeclaration() != null) {
-            if (!processor.execute(element.getAliasDeclaration(), state)) {
-                return false;
-            }
-        }
-        if (element.getAggregateDeclaration() != null) {
-            if (!element.getAggregateDeclaration().processDeclarations(processor, state, lastParent, place)) {
-                return false;
-            }
-        }
-        if (element.getImportDeclaration() != null) {
-            if (!processor.execute(element.getImportDeclaration(), state)) {
-                return false;
-            }
-        }
-        if (element.getTemplateDeclaration() != null) {
-            if (!(element.getTemplateDeclaration().processDeclarations(processor, state, lastParent, place))) {
-                return false;//todo template parameters are leaking through
-            }
-        }
-        return true;
-    }
-
-    public static boolean processDeclarations(DLanguageAggregateDeclaration element, @NotNull PsiScopeProcessor processor,
-                                              @NotNull ResolveState state,
-                                              PsiElement lastParent,
-                                              @NotNull PsiElement place) {
-        if (element.getClassDeclaration() != null) {
-            processor.execute(element.getClassDeclaration(), state);
-        }
-        if (element.getInterfaceDeclaration() != null) {
-            processor.execute(element.getInterfaceDeclaration(), state);
-        }
-        if (element.getUnionDeclaration() != null) {
-            processor.execute(element.getUnionDeclaration(), state);
-        }
-        if (element.getStructDeclaration() != null) {
-            processor.execute(element.getStructDeclaration(), state);
-        }
-        return true;
-    }
-
-    public static boolean processDeclarations(DLanguageStructDeclaration element, @NotNull PsiScopeProcessor processor,
-                                              @NotNull ResolveState state,
-                                              PsiElement lastParent,
-                                              @NotNull PsiElement place) {
-        if (element.getTemplateParameters() != null) {
-            if (element.getTemplateParameters().getTemplateParameterList() != null) {
-                for (DLanguageTemplateParameter templateParameter : element.getTemplateParameters().getTemplateParameterList().getTemplateParameterList()) {
-                    if (!processor.execute(templateParameter, state)) {
-                        return false;
-                    }
-                }
-            }
-        }
-        return true;
-    }
-
-    public static boolean processDeclarations(DLanguageTemplateMixinDeclaration element, @NotNull PsiScopeProcessor processor,
-                                              @NotNull ResolveState state,
-                                              PsiElement lastParent,
-                                              @NotNull PsiElement place) {
-        if (element.getTemplateParameters() != null) {
-            if (element.getTemplateParameters().getTemplateParameterList() != null) {
-                for (DLanguageTemplateParameter templateParameter : element.getTemplateParameters().getTemplateParameterList().getTemplateParameterList()) {
-                    if (!processor.execute(templateParameter, state)) {
-                        return false;
-                    }
-                }
-
-            }
-        }
-        return true;
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(element, processor, state, lastParent, place);
     }
     // -------------------- Scope processing --------------- //
 
 
     // -------------------- Misc --------------------- //
     public static String getFullName(DNamedElement e) {
-        if (e == null)
+        if (e == null || e.getName() == null)
             return "";
-        if (e instanceof DLanguageFile)
+        if (e instanceof DLanguageFile && e.getName() != null)
             return getFullName(e.getParentContainer()) + "." + e.getName().replace(".d", "");
         return getFullName(e.getParentContainer()) + "." + e.getName();
     }

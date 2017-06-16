@@ -248,9 +248,6 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     else if (t == CONSTRUCTOR) {
       r = Constructor(b, 0);
     }
-    else if (t == CONSTRUCTOR_TEMPLATE) {
-      r = ConstructorTemplate(b, 0);
-    }
     else if (t == CONTINUE_STATEMENT) {
       r = ContinueStatement(b, 0);
     }
@@ -373,9 +370,6 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     }
     else if (t == FUNC_DECLARATION) {
       r = FuncDeclaration(b, 0);
-    }
-    else if (t == FUNC_DECLARATOR_SUFFIX) {
-      r = FuncDeclaratorSuffix(b, 0);
     }
     else if (t == FUNCTION_ATTRIBUTE) {
       r = FunctionAttribute(b, 0);
@@ -538,6 +532,9 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     }
     else if (t == NEW_EXPRESSION_WITH_ARGS) {
       r = NewExpressionWithArgs(b, 0);
+    }
+    else if (t == NON_EMPTY_STATEMENT) {
+      r = NonEmptyStatement(b, 0);
     }
     else if (t == NON_VOID_INITIALIZER) {
       r = NonVoidInitializer(b, 0);
@@ -3230,7 +3227,6 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   //     | '[' Type? ']'
   //     | '[' AssignExpression ']'
   //     | '[' AssignExpression '..' AssignExpression ']'
-  //     // jflex doesn't support look ahead in the lexing process. This is a problem for situations such as [7..x], since this is lexed into '[' '7.' '.' ']'. This is not ideal todo
   //     | 'delegate' Parameters MemberFunctionAttributes?
   //     | 'function' Parameters FunctionAttributes?
   public static boolean BasicType2X(PsiBuilder b, int l) {
@@ -4117,14 +4113,14 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   /* ********************************************************** */
   // 'this' TemplateParameters Parameters MemberFunctionAttributes? Constraint? ';'
   //     | 'this' TemplateParameters Parameters MemberFunctionAttributes? Constraint? FunctionBody
-  public static boolean ConstructorTemplate(PsiBuilder b, int l) {
+  static boolean ConstructorTemplate(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ConstructorTemplate")) return false;
     if (!nextTokenIs(b, KW_THIS)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = ConstructorTemplate_0(b, l + 1);
     if (!r) r = ConstructorTemplate_1(b, l + 1);
-    exit_section_(b, m, CONSTRUCTOR_TEMPLATE, r);
+    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -4428,6 +4424,8 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   /* ********************************************************** */
   // DeclDef
   //     | '{' DeclDefs? '}'
+  //     {
+  //     }
   public static boolean DeclarationBlock(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "DeclarationBlock")) return false;
     boolean r;
@@ -4439,6 +4437,8 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   }
 
   // '{' DeclDefs? '}'
+  //     {
+  //     }
   private static boolean DeclarationBlock_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "DeclarationBlock_1")) return false;
     boolean r;
@@ -4446,6 +4446,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     r = consumeToken(b, OP_BRACES_LEFT);
     r = r && DeclarationBlock_1_1(b, l + 1);
     r = r && consumeToken(b, OP_BRACES_RIGHT);
+    r = r && DeclarationBlock_1_3(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -4454,6 +4455,12 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   private static boolean DeclarationBlock_1_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "DeclarationBlock_1_1")) return false;
     DeclDefs(b, l + 1);
+    return true;
+  }
+
+  // {
+  //     }
+  private static boolean DeclarationBlock_1_3(PsiBuilder b, int l) {
     return true;
   }
 
@@ -5401,14 +5408,14 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   /* ********************************************************** */
   // TemplateParameters? Parameters MemberFunctionAttributes? Constraint?
   //      | Parameters MemberFunctionAttributes?
-  public static boolean FuncDeclaratorSuffix(PsiBuilder b, int l) {
+  static boolean FuncDeclaratorSuffix(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "FuncDeclaratorSuffix")) return false;
     if (!nextTokenIs(b, OP_PAR_LEFT)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = FuncDeclaratorSuffix_0(b, l + 1);
     if (!r) r = FuncDeclaratorSuffix_1(b, l + 1);
-    exit_section_(b, m, FUNC_DECLARATOR_SUFFIX, r);
+    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -7460,15 +7467,15 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   //     | CaseRangeStatement//must be above case statement because pin on case statement will detect a case statement, where there is a case range statement
   //     | CaseStatement
   //     | DefaultStatement
-  static boolean NonEmptyStatement(PsiBuilder b, int l) {
+  public static boolean NonEmptyStatement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "NonEmptyStatement")) return false;
     boolean r;
-    Marker m = enter_section_(b);
+    Marker m = enter_section_(b, l, _NONE_, NON_EMPTY_STATEMENT, "<non empty statement>");
     r = NonEmptyStatementNoCaseNoDefault(b, l + 1);
     if (!r) r = CaseRangeStatement(b, l + 1);
     if (!r) r = CaseStatement(b, l + 1);
     if (!r) r = DefaultStatement(b, l + 1);
-    exit_section_(b, m, null, r);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 

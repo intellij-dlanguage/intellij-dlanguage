@@ -12,6 +12,8 @@ import net.masterthought.dlanguage.stubs.DLanguageLabeledStatementStub;
 import net.masterthought.dlanguage.psi.*;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
+import com.intellij.psi.ResolveState;
+import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
 
 public class DLanguageLabeledStatementImpl extends DNamedStubbedPsiElementBase<DLanguageLabeledStatementStub> implements DLanguageLabeledStatement {
@@ -78,6 +80,10 @@ public class DLanguageLabeledStatementImpl extends DNamedStubbedPsiElementBase<D
   @NotNull
   public ItemPresentation getPresentation() {
     return DPsiImplUtil.getPresentation(this);
+  }
+
+  public boolean processDeclarations(PsiScopeProcessor processor, ResolveState state, PsiElement lastParent, PsiElement place) {
+    return DPsiImplUtil.processDeclarations(this, processor, state, lastParent, place);
   }
 
 }

@@ -15,7 +15,6 @@ import com.intellij.psi.PsiReference;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import net.masterthought.dlanguage.psi.interfaces.containers.Container;
-import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 import com.intellij.psi.stubs.IStubElementType;
 
 public class DLanguageFuncDeclarationImpl extends DNamedStubbedPsiElementBase<DLanguageFuncDeclarationStub> implements DLanguageFuncDeclaration {
@@ -50,9 +49,9 @@ public class DLanguageFuncDeclarationImpl extends DNamedStubbedPsiElementBase<DL
   }
 
   @Override
-  @NotNull
-  public DLanguageFuncDeclaratorSuffix getFuncDeclaratorSuffix() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageFuncDeclaratorSuffix.class));
+  @Nullable
+  public DLanguageConstraint getConstraint() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageConstraint.class);
   }
 
   @Override
@@ -69,8 +68,26 @@ public class DLanguageFuncDeclarationImpl extends DNamedStubbedPsiElementBase<DL
 
   @Override
   @Nullable
+  public DLanguageMemberFunctionAttributes getMemberFunctionAttributes() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageMemberFunctionAttributes.class);
+  }
+
+  @Override
+  @NotNull
+  public DLanguageParameters getParameters() {
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageParameters.class));
+  }
+
+  @Override
+  @Nullable
   public DLanguageStorageClasses getStorageClasses() {
     return PsiTreeUtil.getChildOfType(this, DLanguageStorageClasses.class);
+  }
+
+  @Override
+  @Nullable
+  public DLanguageTemplateParameters getTemplateParameters() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateParameters.class);
   }
 
   @Override
@@ -110,7 +127,7 @@ public class DLanguageFuncDeclarationImpl extends DNamedStubbedPsiElementBase<DL
 
   @NotNull
   public List<DLanguageParameter> getArguments() {
-    return DPsiImplUtil.getArguments(this);
+    return DPsiImplUtil.getParameterList(this);
   }
 
   public boolean isSomeVisibility(Visibility visibility, Class<? extends Container> containerType) {
