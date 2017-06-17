@@ -6,6 +6,7 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.*;
 import com.intellij.psi.scope.PsiScopeProcessor;
+import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.icons.DLanguageIcons;
 import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.interfaces.*;
@@ -19,6 +20,7 @@ import org.apache.log4j.Logger;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import sun.tools.tree.DeclarationStatement;
 
 import javax.swing.*;
 import java.util.*;
@@ -651,7 +653,7 @@ public class DPsiImplUtil {
 
     @NotNull
     public static List<DLanguageParameter> getParameterList(@NotNull DLanguageConstructor o) {
-            return Arrays.asList(getChildrenOfType(o.getParameters(), DLanguageParameter.class));
+        return Arrays.asList(getChildrenOfType(o.getParameters(), DLanguageParameter.class));
     }
 
     // ------------- Constructor ------------------ //
@@ -1163,13 +1165,43 @@ public class DPsiImplUtil {
         };
     }
 
+    private static PsiElement getPrevSiblingWithoutWhitespace(PsiElement element){
+        if(element == null){
+            return null;
+        }
+        if(element.getPrevSibling() instanceof PsiWhiteSpace){
+            return getPrevSiblingWithoutWhitespace(element.getPrevSibling());
+        }
+        return element.getPrevSibling();
+    }
+
     public static boolean actuallyIsDeclaration(DLanguageAutoDeclarationY o) {
-        final DLanguageStorageClasses storageClasses = ((DLanguageAutoDeclaration) o.getParent().getParent()).getStorageClasses();
-        if (storageClasses == null)
+        DLanguageStorageClasses storageClasses = null;
+        final DLanguageDeclaration parent = PsiTreeUtil.getParentOfType(o, DLanguageDeclaration.class);
+        if (parent.getParent() instanceof DLanguageDeclarationStatement) {
+            storageClasses = ((DLanguageDeclarationStatement) parent.getParent()).getStorageClasses();
+        }
+        //todo statements
+        if(parent.getParent() instanceof DLanguageDeclDef){
+            if (getPrevSiblingWithoutWhitespace(parent.getParent()) != null) {
+                if(getPrevSiblingWithoutWhitespace(parent.getParent()) instanceof DLanguageDeclDef){
+                    if (((DLanguageDeclDef) getPrevSiblingWithoutWhitespace(parent.getParent())).getDeclaration() != null) {
+                        if (((DLanguageDeclDef) getPrevSiblingWithoutWhitespace(parent.getParent())).getDeclaration().getEnumDeclaration() != null) {
+                            if (((DLanguageDeclDef) getPrevSiblingWithoutWhitespace(parent.getParent())).getDeclaration().getEnumDeclaration().getAnonymousEnumDeclaration() != null) {
+                                if (((DLanguageDeclDef) getPrevSiblingWithoutWhitespace(parent.getParent())).getDeclaration().getEnumDeclaration().getAnonymousEnumDeclaration().getEnumMembers() == null && ((DLanguageDeclDef) getPrevSiblingWithoutWhitespace(parent.getParent())).getDeclaration().getEnumDeclaration().getAnonymousEnumDeclaration().getEnumBaseType() == null) {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if(storageClasses == null){
             return false;
+        }
         for (DLanguageStorageClass dLanguageStorageClass : storageClasses.getStorageClassList()) {
-            if (dLanguageStorageClass.getKwAuto() != null)
-                return true;
+            return true;
         }
         return false;
     }

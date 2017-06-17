@@ -631,7 +631,7 @@ Lambda ::=
     'function' Type? ParameterAttributes '=>' AssignExpression
     | 'delegate' Type? ParameterMemberAttributes '=>' AssignExpression
     | ParameterMemberAttributes '=>' AssignExpression
-    | Identifier? '=>' AssignExpression
+    | Identifier? '=>' AssignExpression//todo that identifier shouldn't be optional and should be resolvable
     {
         methods = [processDeclarations]
     }

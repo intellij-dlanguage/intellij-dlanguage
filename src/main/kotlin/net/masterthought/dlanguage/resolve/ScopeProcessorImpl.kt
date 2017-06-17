@@ -48,8 +48,8 @@ object ScopeProcessorImpl {
                             place: PsiElement): Boolean {
         var result: Boolean = true
         //todo handle place and iterate backwards from place
-        for (def in element.statementList) {
-            if (!(def.processDeclarations(processor, state, lastParent, place))) {
+        for (statement in element.statementList) {
+            if (!(statement.processDeclarations(processor, state, lastParent, place))) {
                 result = false//todo use statement processDeclartions
             }
         }
@@ -432,7 +432,7 @@ object ScopeProcessorImpl {
             return true
         }
         if (def.conditionalDeclaration != null) {
-            return processor.execute(def.conditionalDeclaration!!, state)
+            return processDeclarations(def.conditionalDeclaration!!,processor,state,lastParent,place);
         }
         if (def.templateDeclaration != null) {
             if (!processor.execute(def.templateDeclaration!!, state)) {
@@ -502,18 +502,23 @@ object ScopeProcessorImpl {
                             lastParent: PsiElement,
                             place: PsiElement): Boolean {
         //todo the available getters seem to not match the grammar for this
+        var defNotFound = true;
         if (element.declDefs != null) {
             for (def in element.declDefs!!.declDefList) {
                 if (!def.processDeclarations(processor, state, lastParent, place)) {
-                    return false
+                    defNotFound = false
                 }
             }
         }
-        if (element.declarationBlock != null) {
-            return ScopeProcessorImplUtil.processDeclarationsWithinBlock(element.declarationBlock!!, processor, state, lastParent, place)
+        for (child in element.children) {
+            if(child is DeclarationBlock){
+                if (!ScopeProcessorImplUtil.processDeclarationsWithinBlock(child, processor, state, lastParent, place)) {
+                    defNotFound = false;
+                }
+            }
         }
 
-        return true
+        return defNotFound
     }
 
     //todo convert all calls of this method to direct

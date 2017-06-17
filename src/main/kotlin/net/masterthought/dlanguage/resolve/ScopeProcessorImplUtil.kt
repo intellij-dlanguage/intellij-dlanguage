@@ -75,7 +75,7 @@ object ScopeProcessorImplUtil {
                 }
             }
             if (element.aliasDeclaration!!.aliasDeclarationSingle != null) {
-                if (processor.execute(element.aliasDeclaration!!.aliasDeclarationSingle!!, state)) {
+                if (!processor.execute(element.aliasDeclaration!!.aliasDeclarationSingle!!, state)) {
                     return false
                 }
             }
