@@ -8,13 +8,14 @@ import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.stubs.StubIndex
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.util.containers.ContainerUtil
-import net.masterthought.dlanguage.index.DModuleIndex
+import net.masterthought.dlanguage.index.DModuleIndex.getFilesByModuleName
 import net.masterthought.dlanguage.psi.*
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement
 import net.masterthought.dlanguage.psi.interfaces.Declaration
 import net.masterthought.dlanguage.stubs.index.DTopLevelDeclarationIndex
 import net.masterthought.dlanguage.utils.Constructor
 import net.masterthought.dlanguage.utils.Identifier
+import net.masterthought.dlanguage.utils.ModuleFullyQualifiedName
 import java.util.*
 
 /**
@@ -26,9 +27,18 @@ object DResolveUtil {
      * definitions are found when name is null.
      */
     fun findDefinitionNode(project: Project, e: PsiNamedElement): List<PsiNamedElement> {
+        fun inModuleName(e: Identifier): ModuleFullyQualifiedName? {
+            return PsiTreeUtil.getTopmostParentOfType(e, ModuleFullyQualifiedName::class.java)
+        }
+
+
         // Guess where the name could be defined by lookup up potential modules.
         if (e !is Identifier) {
             return emptyList()
+        }
+
+        if (inModuleName(e) != null) {
+            return getFilesByModuleName(project, inModuleName(e)!!.text, GlobalSearchScope.allScope(project))
         }
 
         val nameProcessor = DNameScopeProcessor(e)
@@ -39,13 +49,13 @@ object DResolveUtil {
 
         val importProcessor = DImportScopeProcessor()
         PsiTreeUtil.treeWalkUp(importProcessor, e, e.containingFile, ResolveState.initial())
-        val potentialModules: MutableList<String> = mutableListOf()
-        importProcessor.imports.mapTo(potentialModules) { it.name }
+        val modules: MutableList<String> = mutableListOf()
+        importProcessor.imports.mapTo(modules) { it.name }
 
         val result = mutableSetOf<PsiNamedElement>()
         // find definition in imported files
-        for (potentialModule in potentialModules) {
-            val files = DModuleIndex.getFilesByModuleName(project, potentialModule, GlobalSearchScope.allScope(project))
+        for (module in modules) {
+            val files = getFilesByModuleName(project, module, GlobalSearchScope.allScope(project))
             for (f in files) {
                 result.addAll(StubIndex.getElements(DTopLevelDeclarationIndex.KEY, e.name, e.project, GlobalSearchScope.fileScope(f), Declaration::class.java))
             }
@@ -102,7 +112,6 @@ object DResolveUtil {
                 declarationElements.add(candidateDeclaration)
             }
         }
-
 
 
         // check the list of potential named elements for a match on name

@@ -432,7 +432,7 @@ object ScopeProcessorImpl {
             return true
         }
         if (def.conditionalDeclaration != null) {
-            return processDeclarations(def.conditionalDeclaration!!,processor,state,lastParent,place);
+            return processDeclarations(def.conditionalDeclaration!!, processor, state, lastParent, place)
         }
         if (def.templateDeclaration != null) {
             if (!processor.execute(def.templateDeclaration!!, state)) {
@@ -468,7 +468,14 @@ object ScopeProcessorImpl {
             return def.staticIfCondition!!.nextSibling?.processDeclarations(processor, state, lastParent, place) ?: true//process the declaration block after static if
         }
         if (def.staticElseCondition != null) {
-            return ScopeProcessorImplUtil.processDeclarationsWithinBlock(def.staticElseCondition!!.declarationBlock!!, processor, state, lastParent, place)
+            if (def.staticElseCondition!!.declarationBlock != null) {
+                return ScopeProcessorImplUtil.processDeclarationsWithinBlock(def.staticElseCondition!!.declarationBlock!!, processor, state, lastParent, place)
+            } else {
+                return true
+            }
+        }
+        if (def.opScolon != null) {
+            return true
         }
         if (def.postblit != null || def.destructor != null || def.allocator != null || def.deallocator != null || def.invariant != null || def.unitTesting != null || def.staticConstructor != null || def.staticDestructor != null || def.sharedStaticConstructor != null || def.sharedStaticDestructor != null || def.staticAssert != null || def.debugSpecification != null || def.versionSpecification != null) {
             return true
@@ -502,7 +509,7 @@ object ScopeProcessorImpl {
                             lastParent: PsiElement,
                             place: PsiElement): Boolean {
         //todo the available getters seem to not match the grammar for this
-        var defNotFound = true;
+        var defNotFound = true
         if (element.declDefs != null) {
             for (def in element.declDefs!!.declDefList) {
                 if (!def.processDeclarations(processor, state, lastParent, place)) {
@@ -513,7 +520,7 @@ object ScopeProcessorImpl {
         for (child in element.children) {
             if(child is DeclarationBlock){
                 if (!ScopeProcessorImplUtil.processDeclarationsWithinBlock(child, processor, state, lastParent, place)) {
-                    defNotFound = false;
+                    defNotFound = false
                 }
             }
         }
@@ -667,12 +674,22 @@ object ScopeProcessorImpl {
         }
         if (element.conditionalStatement != null) {
             //version, static if etc. Needs to process into these
-            //todo descend into block statements that are hidden inside statement
+            //descends into block statements that are hidden inside statement
             //todo when to use result and not
             var result: Boolean = true
             for (statement in element.conditionalStatement!!.statementList) {
                 if (!(statement.processDeclarations(processor, state, lastParent, place))) {
                     result = false
+                }
+                if (statement.blockStatement?.statementList != null) {
+                    if (!ScopeProcessorImpl.processDeclarations(statement.blockStatement!!.statementList!!, processor, state, lastParent, place)) {
+                        result = false
+                    }
+                }
+                if (statement.nonEmptyStatement?.blockStatement?.statementList != null) {
+                    if (!ScopeProcessorImpl.processDeclarations(statement.nonEmptyStatement?.blockStatement!!.statementList!!, processor, state, lastParent, place)) {
+                        result = false
+                    }
                 }
             }
             if (element.conditionalStatement!!.blockStatement?.statementList != null) {

@@ -5,8 +5,7 @@ import com.intellij.psi.stubs.NamedStubBase;
 import com.intellij.psi.stubs.StubElement;
 import net.masterthought.dlanguage.psi.DLanguageModuleDeclaration;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
-import net.masterthought.dlanguage.stubs.DLanguageFuncDeclarationStub;
-import net.masterthought.dlanguage.stubs.DLanguageIdentifierStub;
+import net.masterthought.dlanguage.stubs.*;
 import net.masterthought.dlanguage.stubs.index.DAllNameIndex;
 import net.masterthought.dlanguage.stubs.index.DModuleDeclarationIndex;
 import net.masterthought.dlanguage.stubs.index.DTopLevelDeclarationIndex;
@@ -34,9 +33,14 @@ public abstract class DNamedStubElementType<S extends NamedStubBase<T>, T extend
         }
     }
 
-    public boolean topLevelDeclaration(S stub) {
+    private boolean topLevelDeclaration(S stub) {
         //stuff within unittests does not count as top level
-        //stuff within func declarations does not count as tp level b/c not globally accessible todo check if this is true for all declaration types
+        //stuff within func declarations does not count as top level b/c not globally accessible todo check if this is true for all declaration types
+        //todo switch the topLevel declaration to a file based index
+
+        if (stub instanceof DLanguageParameterStub || stub instanceof DLanguageForeachTypeStub || stub instanceof DLanguageTemplateParameterStub) {
+            return false;
+        }
 
         StubElement stubParent = stub;
         while (true) {
@@ -47,10 +51,15 @@ public abstract class DNamedStubElementType<S extends NamedStubBase<T>, T extend
             if (stubParent instanceof DLanguageFuncDeclarationStub) {
                 return false;
             }
+            if (stubParent instanceof DLanguageConstructorStub || stubParent instanceof DLanguageSharedStaticConstructorStub || stubParent instanceof DLanguageStaticConstructorStub || stubParent instanceof DLanguageDestructorStub || stubParent instanceof DLanguageSharedStaticDestructorStub || stubParent instanceof DLanguageStaticDestructorStub) {
+                return false;
+            }
             if (stubParent instanceof UnitTestingStub) {
                 return false;
             }
         }
     }
+
+
 }
 
