@@ -157,24 +157,19 @@ D Language File
                                             PsiElement(DLanguageTokenType.ID)('assertArrayEquals')
                                       DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
                                         DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                                          DLanguageFunctionLiteralImpl(FUNCTION_LITERAL)
-                                            DLanguageParameterMemberAttributesImpl(PARAMETER_MEMBER_ATTRIBUTES)
-                                              DLanguageParametersImpl(PARAMETERS)
-                                                PsiElement(DLanguageTokenType.()('(')
-                                                DLanguageParameterListImpl(PARAMETER_LIST)
-                                                  PARAMETER
-                                                    DLanguageTypeImpl(TYPE)
-                                                      DLanguageBasicTypeImpl(BASIC_TYPE)
-                                                        DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                                          IDENTIFIER
-                                                            PsiElement(DLanguageTokenType.ID)('expected')
-                                                  PsiElement(DLanguageTokenType.,)(',')
-                                                  PARAMETER
-                                                    DLanguageTypeImpl(TYPE)
-                                                      DLanguageBasicTypeImpl(BASIC_TYPE)
-                                                        DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                                          IDENTIFIER
-                                                            PsiElement(DLanguageTokenType.ID)('actual')
-                                                PsiElement(DLanguageTokenType.))(')')
+                                          PsiElement(DLanguageTokenType.()('(')
+                                          DLanguageCommaExpressionImpl(COMMA_EXPRESSION)
+                                            DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
+                                              DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
+                                                DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
+                                                  IDENTIFIER
+                                                    PsiElement(DLanguageTokenType.ID)('expected')
+                                            PsiElement(DLanguageTokenType.,)(',')
+                                            DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
+                                              DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
+                                                DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
+                                                  IDENTIFIER
+                                                    PsiElement(DLanguageTokenType.ID)('actual')
+                                          PsiElement(DLanguageTokenType.))(')')
                                   PsiElement(DLanguageTokenType.;)(';')
                           PsiElement(DLanguageTokenType.})('}')

@@ -5594,7 +5594,7 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
   /* ********************************************************** */
   // 'function' Type? ParameterAttributes? FunctionLiteralBody?
   //     | 'delegate' Type? ParameterMemberAttributes? FunctionLiteralBody?
-  //     | ParameterMemberAttributes FunctionLiteralBody?
+  //     | ParameterMemberAttributes FunctionLiteralBody//Body cannot be optional
   //     | FunctionLiteralBody
   //     | Lambda
   public static boolean FunctionLiteral(PsiBuilder b, int l) {
@@ -5678,22 +5678,15 @@ public class DLanguageParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // ParameterMemberAttributes FunctionLiteralBody?
+  // ParameterMemberAttributes FunctionLiteralBody
   private static boolean FunctionLiteral_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "FunctionLiteral_2")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = ParameterMemberAttributes(b, l + 1);
-    r = r && FunctionLiteral_2_1(b, l + 1);
+    r = r && FunctionLiteralBody(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
-  }
-
-  // FunctionLiteralBody?
-  private static boolean FunctionLiteral_2_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "FunctionLiteral_2_1")) return false;
-    FunctionLiteralBody(b, l + 1);
-    return true;
   }
 
   /* ********************************************************** */

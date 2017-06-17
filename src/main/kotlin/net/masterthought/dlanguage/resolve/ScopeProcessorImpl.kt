@@ -414,18 +414,25 @@ object ScopeProcessorImpl {
                             state: ResolveState,
                             lastParent: PsiElement,
                             place: PsiElement): Boolean {
+        if (def.attributeSpecifier != null) {
+            if (def.attributeSpecifier!!.declarationBlock != null) {
+                return ScopeProcessorImplUtil.processDeclarationsWithinBlock(def.attributeSpecifier!!.declarationBlock!!, processor, state, lastParent, place)
+            }
+            return true
+        }
         if (def.declaration != null) {
             return ScopeProcessorImplUtil.processDeclarations(def.declaration!!, processor, state, lastParent, place)
         }
         if (def.constructor != null) {
             //todo make sure names for constructors are handled correctly
-            processor.execute(def.constructor!!, state)
+            return processor.execute(def.constructor!!, state)
         }
         if (def.aliasThis != null) {
             //todo handle alias this
+            return true
         }
         if (def.conditionalDeclaration != null) {
-            processor.execute(def.conditionalDeclaration!!, state)
+            return processor.execute(def.conditionalDeclaration!!, state)
         }
         if (def.templateDeclaration != null) {
             if (!processor.execute(def.templateDeclaration!!, state)) {
@@ -436,6 +443,7 @@ object ScopeProcessorImpl {
                     return false
                 }
             }
+            return true
         }
         if (def.templateMixinDeclaration != null) {
             if (!processor.execute(def.templateMixinDeclaration!!, state)) {
@@ -446,6 +454,7 @@ object ScopeProcessorImpl {
                     return false
                 }
             }
+            return true
         }
         if (def.templateMixin != null) {
             //todo handle mixins
@@ -460,9 +469,6 @@ object ScopeProcessorImpl {
         }
         if (def.staticElseCondition != null) {
             return ScopeProcessorImplUtil.processDeclarationsWithinBlock(def.staticElseCondition!!.declarationBlock!!, processor, state, lastParent, place)
-        }
-        if (def.attributeSpecifier != null) {
-            return ScopeProcessorImplUtil.processDeclarationsWithinBlock(def.attributeSpecifier!!.declarationBlock!!, processor, state, lastParent, place)
         }
         if (def.postblit != null || def.destructor != null || def.allocator != null || def.deallocator != null || def.invariant != null || def.unitTesting != null || def.staticConstructor != null || def.staticDestructor != null || def.sharedStaticConstructor != null || def.sharedStaticDestructor != null || def.staticAssert != null || def.debugSpecification != null || def.versionSpecification != null) {
             return true
