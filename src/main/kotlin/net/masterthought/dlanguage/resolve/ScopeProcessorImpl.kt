@@ -557,6 +557,9 @@ object ScopeProcessorImpl {
         if (element.blockStatement != null) {
             return true
         }
+        if (element.opScolon != null) {
+            return true
+        }
         return processDeclarations(element.nonEmptyStatement!!, processor, state, lastParent, place)
     }
 

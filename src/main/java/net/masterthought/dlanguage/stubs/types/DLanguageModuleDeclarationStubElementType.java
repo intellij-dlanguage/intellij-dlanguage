@@ -5,6 +5,7 @@ import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubInputStream;
 import com.intellij.psi.stubs.StubOutputStream;
 import net.masterthought.dlanguage.psi.DLanguageModuleDeclaration;
+import net.masterthought.dlanguage.psi.impl.DLanguageModuleDeclarationImpl;
 import net.masterthought.dlanguage.stubs.DLanguageModuleDeclarationStub;
 import net.masterthought.dlanguage.utils.DUtil;
 import org.jetbrains.annotations.NotNull;
@@ -25,7 +26,7 @@ public class DLanguageModuleDeclarationStubElementType extends DNamedStubElement
 
     @Override
     public DLanguageModuleDeclaration createPsi(@NotNull DLanguageModuleDeclarationStub stub) {
-        return null;//todo
+        return new DLanguageModuleDeclarationImpl(stub, this);
     }
 
     @Override
