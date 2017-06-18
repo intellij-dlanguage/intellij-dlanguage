@@ -20,7 +20,6 @@ import org.apache.log4j.Logger;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import sun.tools.tree.DeclarationStatement;
 
 import javax.swing.*;
 import java.util.*;
@@ -299,7 +298,7 @@ public class DPsiImplUtil {
             assert (basicType.getTypeVector() == null);
             assert (basicType.getTypeof() == null);
             final DLanguageIdentifierList identifierList = basicType.getIdentifierList();
-            final List<PsiNamedElement> definitionNodesSimple = DResolveUtil.INSTANCE.findDefinitionNodes((DLanguageFile) identifierList.getContainingFile(), getEndOfIdentifierList(identifierList).getName());
+            final List<PsiNamedElement> definitionNodesSimple = DResolveUtil.INSTANCE.findDefinitionNode(identifierList.getProject(), getEndOfIdentifierList(identifierList));
             Set<CanInherit> definitionNodes = new HashSet<>();
             for (PsiElement node : definitionNodesSimple) {
                 if (definitionNodes instanceof CanInherit)
@@ -801,7 +800,7 @@ public class DPsiImplUtil {
             assert (basicType.getTypeVector() == null);
             assert (basicType.getTypeof() == null);
             final DLanguageIdentifierList identifierList = basicType.getIdentifierList();
-            final List<PsiNamedElement> definitionNodesSimple = DResolveUtil.INSTANCE.findDefinitionNodes((DLanguageFile) identifierList.getContainingFile(), getEndOfIdentifierList(identifierList).getName());
+            final List<PsiNamedElement> definitionNodesSimple = DResolveUtil.INSTANCE.findDefinitionNode(identifierList.getProject(), getEndOfIdentifierList(identifierList));
             Set<CanInherit> definitionNodes = new HashSet<>();
             for (PsiElement node : definitionNodesSimple) {
                 if (definitionNodes instanceof CanInherit)

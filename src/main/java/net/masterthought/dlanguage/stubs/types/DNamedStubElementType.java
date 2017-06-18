@@ -3,12 +3,14 @@ package net.masterthought.dlanguage.stubs.types;
 import com.intellij.psi.stubs.IndexSink;
 import com.intellij.psi.stubs.NamedStubBase;
 import com.intellij.psi.stubs.StubElement;
+import net.masterthought.dlanguage.psi.DLanguageFile;
 import net.masterthought.dlanguage.psi.DLanguageModuleDeclaration;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 import net.masterthought.dlanguage.stubs.*;
 import net.masterthought.dlanguage.stubs.index.DAllNameIndex;
 import net.masterthought.dlanguage.stubs.index.DModuleDeclarationIndex;
 import net.masterthought.dlanguage.stubs.index.DTopLevelDeclarationIndex;
+import net.masterthought.dlanguage.stubs.index.DTopLevelDeclarationsByModule;
 import net.masterthought.dlanguage.stubs.interfaces.UnitTestingStub;
 import org.jetbrains.annotations.NotNull;
 
@@ -30,6 +32,10 @@ public abstract class DNamedStubElementType<S extends NamedStubBase<T>, T extend
         }
         if ((!(stub instanceof DLanguageIdentifierStub)) && topLevelDeclaration(stub)) {
             sink.occurrence(DTopLevelDeclarationIndex.Companion.getKEY(), name);
+        }
+        if ((!(stub instanceof DLanguageIdentifierStub)) && topLevelDeclaration(stub)) {
+            final String fileName = ((DLanguageFile) stub.getPsi().getContainingFile()).getModuleOrFileName();
+            sink.occurrence(DTopLevelDeclarationsByModule.Companion.getKEY(), fileName);
         }
     }
 

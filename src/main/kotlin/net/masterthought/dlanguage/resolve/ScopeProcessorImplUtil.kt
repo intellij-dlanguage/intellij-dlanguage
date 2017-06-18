@@ -82,7 +82,7 @@ object ScopeProcessorImplUtil {
 
         }
         if (element.aggregateDeclaration != null) {
-            if (!element.aggregateDeclaration!!.processDeclarations(processor, state, lastParent, place)) {
+            if (!ScopeProcessorImplUtil.processDeclarations(element.aggregateDeclaration!!, processor, state, lastParent, place)) {
                 return false
             }
         }

@@ -15,7 +15,7 @@ class DTopLevelDeclarationIndex : StringStubIndexExtension<Declaration>() {
     }
 
     companion object {
-        val KEY = StubIndexKey.createIndexKey<String, Declaration>("d.globally.accessible.name")
+        val KEY: StubIndexKey<String, Declaration> = StubIndexKey.createIndexKey<String, Declaration>("d.globally.accessible.name")
         val VERSION = 4
     }
 }
