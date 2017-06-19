@@ -73,12 +73,6 @@ public class DLanguageFuncDeclarationImpl extends DNamedStubbedPsiElementBase<DL
 
   @Override
   @Nullable
-  public PsiElement getOpEq() {
-    return findChildByType(OP_EQ);
-  }
-
-  @Override
-  @Nullable
   public PsiElement getOpScolon() {
     return findChildByType(OP_SCOLON);
   }

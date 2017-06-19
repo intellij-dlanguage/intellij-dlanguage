@@ -16,4 +16,8 @@ public interface DLanguageStatement extends PsiElement {
   @Nullable
   PsiElement getOpScolon();
 
+  //WARNING: processDeclarations(...) is skipped
+  //matching processDeclarations(DLanguageStatement, ...)
+  //methods are not found in DPsiImplUtil
+
 }

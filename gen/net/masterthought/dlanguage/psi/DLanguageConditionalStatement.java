@@ -22,4 +22,8 @@ public interface DLanguageConditionalStatement extends PsiElement {
   @Nullable
   PsiElement getKwElse();
 
+  //WARNING: processDeclarations(...) is skipped
+  //matching processDeclarations(DLanguageConditionalStatement, ...)
+  //methods are not found in DPsiImplUtil
+
 }

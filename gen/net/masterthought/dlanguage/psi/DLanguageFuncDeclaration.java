@@ -39,9 +39,6 @@ public interface DLanguageFuncDeclaration extends StatementContainer, DNamedElem
   DLanguageStorageClasses getStorageClasses();
 
   @Nullable
-  PsiElement getOpEq();
-
-  @Nullable
   PsiElement getOpScolon();
 
   @NotNull

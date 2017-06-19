@@ -70,10 +70,9 @@ D Language File
                             IDENTIFIER
                               PsiElement(DLanguageTokenType.ID)('i')
                           PsiElement(DLanguageTokenType.,)(',')
-                          DLanguageForeachTypeListImpl(FOREACH_TYPE_LIST)
-                            DLanguageForeachTypeImpl(FOREACH_TYPE)
-                              IDENTIFIER
-                                PsiElement(DLanguageTokenType.ID)('v')
+                          DLanguageForeachTypeImpl(FOREACH_TYPE)
+                            IDENTIFIER
+                              PsiElement(DLanguageTokenType.ID)('v')
                         PsiElement(DLanguageTokenType.;)(';')
                         DLanguageForeachAggregateImpl(FOREACH_AGGREGATE)
                           DLanguageCommaExpressionImpl(COMMA_EXPRESSION)

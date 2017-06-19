@@ -187,6 +187,7 @@ class DLanguageLexerTest : DLanguageLexerTestBase("lexer") {
     fun testtokens_unordered_le()         = doTest()
     fun testtokens_xor()                  = doTest()
     fun testtokens_xor_assign()           = doTest()
+    fun testtokenstrings()                = doTest()
 
     //chars
     fun testchar() = doTest()
