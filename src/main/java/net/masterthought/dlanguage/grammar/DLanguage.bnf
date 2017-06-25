@@ -1,5 +1,6 @@
 {
   parserClass="net.masterthought.dlanguage.parser.DLanguageParser"
+  parserUtilClass="net.masterthought.dlanguage.parser.ParserUtil"
 
   extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
 
@@ -202,11 +203,11 @@ tokens = [
 
 // Comment these back in when playing with Live Preview
 // ------------------------
-//ID = "regexp:\w+"
-//space='regexp:\s+'
-//line_comment="regexp://.*"
-//block_comment="regexp:/\*(.|\n)*\*/"
-//DOUBLE_QUOTED_STRING = 'regexp:\"([^\\"]|((\\"|\\\?|\\\|\\0|\\a|\\b|\\f|\\n|\\r|\\t|\\v)|(\\x[0-9abcdefABCDEF_]{2})|(\\[0-7])|(\\[0-7]{2})|(\\[0-7]{3})|(\\u[0-9abcdefABCDEF_]{4})|(\\U[0-9abcdefABCDEF_]{8})|(\\&([a-zA-Z_])([a-zA-Z0-9_])*;)))*\"[cwd]*'
+ID = "regexp:\w+"
+space='regexp:\s+'
+line_comment="regexp://.*"
+block_comment="regexp:/\*(.|\n)*\*/"
+DOUBLE_QUOTED_STRING = 'regexp:\"([^\\"]|((\\"|\\\?|\\\|\\0|\\a|\\b|\\f|\\n|\\r|\\t|\\v)|(\\x[0-9abcdefABCDEF_]{2})|(\\[0-7])|(\\[0-7]{2})|(\\[0-7]{3})|(\\u[0-9abcdefABCDEF_]{4})|(\\U[0-9abcdefABCDEF_]{8})|(\\&([a-zA-Z_])([a-zA-Z0-9_])*;)))*\"[cwd]*'
 //FLOAT_LITERAL = "regexp:[0-9][0-9_]*\.([0]|[1-9_][0-9_]*)?"
 //CHARACTER_LITERAL="regexp:\'([^\r\n\t\f\\])\'"
 ////DECIMAL_FLOAT_SIMPLE ="regexp:[0-9][0-9_]*\.([0]|[1-9_][0-9_]*)?!\."
@@ -335,28 +336,37 @@ MixinDeclaration ::=
      implements = ["net.masterthought.dlanguage.psi.interfaces.Mixin"]
     }
 
-Type ::=
-    TypeCtors? BasicType BasicType2?
-
+//external external_type ::= parseType
+//Type ::=  TypeCtors <<external_type false>>
 TypeCtors ::=
-    TypeCtor [TypeCtors]
+    TypeCtor*
 
 TypeCtor ::=
     'const'
     | 'immutable'
-    | 'inout'
     | 'shared'
+    | 'inout'
+
+Type ::=
+    TypeCtors? BasicType BasicType2?
+
 
 BasicType ::=
     BasicTypeX
-    | ('.')? IdentifierList
-    | Typeof ('.' IdentifierList)?
-    | '(' Type ')'
+    | (
+        ('this' BasicTypeX)
+        | ('super' BasicTypeX)
+        | (TemplateInstance)
+        | (Identifier BasicTypeX)
+    )
+    | '.' BasicType
+    | 'typeof' ( BasicType )
     | TypeVector
-    | '(' TypeVector ')'
+    | TypeCtor '(' Type ')'
 
 BasicTypeX ::=
-     'bool'
+    'void'
+    | 'bool'
     | 'byte'
     | 'ubyte'
     | 'short'
@@ -377,7 +387,26 @@ BasicTypeX ::=
     | 'cfloat'
     | 'cdouble'
     | 'creal'
-    | 'void'
+    //todo add any missing types
+
+// See https://issues.dlang.org/show_bug.cgi?id=1215
+// A basic type can look like MyType (typical case), but also:
+//  MyType.T -> A type
+//  MyType[expr] -> Either a static array of MyType or a type (iif MyType is a Ttuple)
+//  MyType[expr].T -> A type.
+//  MyType[expr].T[expr] ->  Either a static array of MyType[expr].T or a type
+//                           (iif MyType[expr].T is a Ttuple)
+BasicType3 ::=
+    '.' Identifier
+    | '[' ']'
+    | '[' Type ']'
+    | '[' AssignExpression ']'
+    | '[' AssignExpression '..' AssignExpression ']'
+
+
+
+BasicTypeWithArray ::=
+
 
 BasicType2 ::=
     BasicType2X BasicType2?
@@ -390,7 +419,7 @@ BasicType2X ::=
     | 'delegate' Parameters MemberFunctionAttributes?
     | 'function' Parameters FunctionAttributes?
 //todo these parameters might need a processDeclarations statement
-
+*/
 IdentifierList ::=
      Identifier TemplateInstance? ['.' IdentifierList]
     |  Identifier '[' AssignExpression ']' '.' IdentifierList
@@ -591,7 +620,8 @@ PrimaryExpression ::=
     | TraitsExpression
     | SpecialKeyword
 
-StringLiterals ::= StringLiteral [StringLiterals]
+StringLiterals ::= StringLiteral StringLiteral*
+
 
 ArrayLiteral ::=
     '[' ArgumentList? ','? ']'
@@ -2417,6 +2447,16 @@ Constraint ::=
 TemplateInstance ::=
     Identifier? TemplateArguments//todo that identifier should not be optional
 
+
+/******************************************
+     * Parse template arguments.
+     * Input:
+     *      current token is opening '!'
+     * Output:
+     *      current token is one after closing '$(RPAREN)'
+     * Comment taken from dmd source
+     * todo dmd source has an equivalent to a recover rule for this
+     */
 TemplateArguments ::=
      TemplateArgumentsWithParen
      | TemplateArgumentsWithoutParen
@@ -2433,15 +2473,33 @@ private TemplateArgumentsWithoutParen ::=
     }
 
 
-
+/******************************************
+     * Parse template argument list.
+     * Input:
+     *      current token is opening '$(LPAREN)',
+     *          or ',' for __traits
+     * Output:
+     *      current token is one after closing '$(RPAREN)'
+     * comment taken from dmd source todo add this to the top of the file so I don't have to write this every time
+     * this differes from  the dmd source by not having '(' and ')' included in the tenplate argument list. This is so that there can be better pins.
+     */
 TemplateArgumentList ::=
     TemplateArgument (',' TemplateArgument)* ','?
 
+/**
+ *   template argument rule not included in dmd source
+ * old version:
+//TemplateArgument ::=
+//    Lambda //must be above assign expression
+//    | AssignExpression
+//    | Type //this branch should be deprecated  since anything matched by Type is in theory matched by assignexpression
+//    | Symbol
+ *
+ */
+
 TemplateArgument ::=
-    Lambda //must be above assign expression
+    Type
     | AssignExpression
-    | Type //this branch should be deprecated  since anything matched by Type is in theory matched by assignexpression
-    | Symbol
 
 Symbol ::=
     ('.')? SymbolTail
@@ -2449,20 +2507,18 @@ Symbol ::=
 SymbolTail ::=
     (Identifier | TemplateInstance) ('.' (Identifier | TemplateInstance))*
 
+/*****************************
+ * Parse single template argument, to support the syntax:
+ *      foo!arg
+ * Input:
+ *      current token is the arg
+ * todo the dmd source distinguishs between type identifier and regular identifier
+*/
 TemplateSingleArgument ::=
     IdentifierList
+    | TypeVector
     | BasicTypeX
-    | CHARACTER_LITERAL
-    | StringLiteral
-    | INTEGER_LITERAL
-    | FLOAT_LITERAL
-    | 'true'
-    | 'false'
-    | 'null'
-    | 'this'
-    | SpecialKeyword
-    | AssignExpression
-
+    | PrimaryExpression
 
 TemplateParameter ::=
     TemplateValueParameter
@@ -2481,23 +2537,40 @@ TemplateTupleParameter ::=
     Identifier '...'
 
 TemplateValueParameter ::=
-       BasicType Declarator ('=' (AssignExpression | SpecialKeyword))
-       | BasicType Declarator TemplateValueParameterSpecialization TemplateValueParameterDefault?
+    Identifier (
+    ':' ConditionalExpression
+    | '=' ConditionalExpression
+    )?
+//TemplateValueParameter ::=
+//       BasicType Declarator ('=' (AssignExpression | SpecialKeyword))
+//       | BasicType Declarator TemplateValueParameterSpecialization TemplateValueParameterDefault?
 
-private TemplateValueParameterSpecialization ::= ConditionalExpression
+//private TemplateValueParameterSpecialization ::= ConditionalExpression
 
 TemplateTypeParameter ::=
-    Type Identifier? '...'? (':' Type)? ('=' Type)? (':' AssignExpression)? TemplateValueParameterDefault?
+    Identifier (':' Type)? ( '=' Type)?
+
+//TemplateTypeParameter ::=
+//    Type Identifier? '...'? (':' Type)? ('=' Type)? (':' AssignExpression)? TemplateValueParameterDefault?
 
 TemplateAliasParameter ::=
-     'alias' Identifier '=' AssignExpression
-     | 'alias' Type? Identifier? (':' (Type | AssignExpression))? ('=' (Type | AssignExpression))?
+    'alias' (
+    Type (':' (Type | ConditionalExpression))? ('=' (Type | ConditionalExpression))?
+    | Identifier (':' (Type | ConditionalExpression))? ('=' (Type | ConditionalExpression))?
+    ){
+        pin = 1
+    }
+//TemplateAliasParameter ::=
+//     'alias' Identifier '=' AssignExpression
+//     | 'alias' Type? Identifier? (':' (Type | AssignExpression))? ('=' (Type | AssignExpression))?
 
 TemplateThisParameter ::=
-    'this' TemplateTypeParameter
+    'this' TemplateTypeParameter {
+        pin = 1
+    }
 
-TemplateValueParameterDefault ::=
-    '=' ( AssignExpression | SpecialKeyword)
+//TemplateValueParameterDefault ::=
+//    '=' ( AssignExpression | SpecialKeyword)
 
 TemplateMixinDeclaration ::=
     'mixin' 'template' Identifier TemplateParameters Constraint? '{' DeclDefs? '}'
@@ -2508,6 +2581,19 @@ TemplateMixinDeclaration ::=
         stubClass="net.masterthought.dlanguage.stubs.DLanguageTemplateMixinDeclarationStub"
     }
 
+/******************************************
+     * Parse template mixin.
+     *      mixin Foo;
+     *      mixin Foo!(args);
+     *      mixin a.b.c!(args).Foo!(args);
+     *      mixin Foo!(args) identifier;
+     *      mixin typeof(expr).identifier!(args);
+     * Comment from dmd source
+
+
+
+
+     */
 TemplateMixin ::=
     'mixin' MixinTemplateName TemplateArguments? Identifier? ';'
     {
