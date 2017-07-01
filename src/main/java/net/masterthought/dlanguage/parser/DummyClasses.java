@@ -681,9 +681,6 @@ public class DummyClasses {
     static class XorExpression{
 
     }
-    static class AliasDeclaration{
-
-    }
     static class AliasInitializer{
 
     }
