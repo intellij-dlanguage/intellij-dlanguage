@@ -2311,292 +2311,347 @@ public class ParserPreliminaryJavaWriteUp {
             return parseDeclaration(false,false);
         }
 
-        boolean parseDeclaration(boolean strict,boolean mustBeDeclaration)
-        {
+        boolean parseDeclaration(boolean strict) {
+            return parseDeclaration(strict,false);
+        }
+
+        boolean parseDeclaration(boolean strict, boolean mustBeDeclaration) {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             Marker m = enter_section_(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Declaration,false);
-            if (!moreTokens())
-            {
+            if (!moreTokens()) {
                 error("declaration expected instead of EOF");
                 return false;
             }
 //            if (current().comment != null)
 //            comment = current().comment;
-            Number autoStorageClassStart = Number.max;
+//            Number autoStorageClassStart = Number.max;
+            boolean nodeAttributes = false;
             DecType isAuto;
-            do
-            {
-                isAuto = isAutoDeclaration(autoStorageClassStart);
+            do {
+                final Pair<DecType, Integer> pair = isAutoDeclaration();
+                int autoStorageClassStart = pair.second;
+                isAuto = pair.first;
                 if (isAuto != DecType.other && index == autoStorageClassStart)
                     break;
                 if (!isAttribute())
                     break;
 //                c = allocator.setCheckpoint();
                 boolean attr = parseAttribute();
-                if (!attr)
-                {
+                if (!attr) {
 //                    allocator.rollback(c);
                     break;
                 }
-                if (currentIs(tok(":")))
-                {
-                    parseAttributeDeclaration();
-                    mixin(nullCheck("node.attributeDeclaration"));
+                if (currentIs(tok(":"))) {
+                    if (!parseAttributeDeclaration()) {
+                        cleanup(m);
+                        return false;
+                    }
                     return true;
-                }
+                } else
+                    nodeAttributes = true;
             } while (moreTokens());
 
-            if (!moreTokens())
-            {
+            if (!moreTokens()) {
                 error("declaration expected instead of EOF");
                 return false;
             }
 
-            if (isAuto == DecType.autoVar)
-            {
-                mixin(nullCheck("node.variableDeclaration = parseVariableDeclaration(null, true)"));
+            if (isAuto == DecType.autoVar) {
+                if (!parseVariableDeclaration(true, true)) {
+                    cleanup(m);
+                    return false;
+                }
                 return true;
-            }
-            else if (isAuto == DecType.autoFun)
-            {
-                mixin(nullCheck("node.functionDeclaration = parseFunctionDeclaration(null, true)"));
+            } else if (isAuto == DecType.autoFun) {
+                if (!parseFunctionDeclaration(true, true)) {
+                    cleanup(m);
+                    return false;
+                }
                 return true;
             }
 
-            switch (current().type)
+            final IdType idType = current().type;
             {
-                case tok("asm"):
-                case tok("break"):
-                case tok("case"):
-                case tok("continue"):
-                case tok("default"):
-                case tok("do"):
-                case tok("for"):
-                case tok("foreach"):
-                case tok("foreach_reverse"):
-                case tok("goto"):
-                case tok("if"):
-                case tok("return"):
-                case tok("switch"):
-                case tok("throw"):
-                case tok("try"):
-                case tok("while"):
-                case tok("assert"):
-            goto default;
-                case tok(";"):
+                if (idType.equals(tok("asm")) ||
+                    idType.equals(tok("break")) || idType.equals(tok("case")) || idType.equals(tok("continue")) || idType.equals(tok("default")) || idType.equals(tok("do")) || idType.equals(tok("for")) || idType.equals(tok("foreach")) || idType.equals(tok("foreach_reverse")) || idType.equals(tok("goto")) || idType.equals(tok("if")) || idType.equals(tok("return")) || idType.equals(tok("switch")) || idType.equals(tok("throw")) || idType.equals(tok("try")) || idType.equals(tok("while")) || idType.equals(tok("assert"))) {
+                    error("Declaration expected");
+                    return false;
+                } else if (idType.equals(tok(";"))) {
                     // http://d.magic.com/issues/show_bug.cgi?id=4559
                     warn("Empty declaration");
                     advance();
-                    break;
-                case tok("{"):
-                    if (node.attributes.empty)
-                    {
+                } else if (idType.equals(tok("{"))) {
+                    if (!nodeAttributes) {
                         error("declaration expected instead of '{'");
-                        return null;
+                        return false;
                     }
                     advance();
-                    StackBuffer declarations;
-                    while (moreTokens() && !currentIs(tok("}")))
-                {
-                    auto c = allocator.setCheckpoint();
-                    if (!declarations.put(parseDeclaration(strict)))
-                    {
-                        allocator.rollback(c);
-                        return null;
+                    while (moreTokens() && !currentIs(tok("}"))) {
+//                        auto c = allocator.setCheckpoint();
+                        if (!parseDeclaration(strict)) {
+//                            allocator.rollback(c);
+                            cleanup(m);
+                            return false;
+                        }
                     }
-                }
-                ownArray(node.declarations, declarations);
-                if(!tokenCheck("}")){return false;}
-                break;
-                case tok("alias"):
+//                    ownArray(node.declarations, declarations);
+                    if (!tokenCheck("}")) {
+                        cleanup(m);
+                        return false;
+                    }
+                } else if (idType.equals(tok("alias"))) {
                     if (startsWith(tok("alias"), tok("identifier"), tok("this")))
-                    mixin(parseNodeQ("node.aliasThisDeclaration", "AliasThisDeclaration"));
-            else
-                    mixin(parseNodeQ("node.aliasDeclaration", "AliasDeclaration"));
-                    break;
-                case tok("class"):
-                    mixin(parseNodeQ("node.classDeclaration", "ClassDeclaration"));
-                    break;
-                case tok("this"):
-                    if (!mustBeDeclaration && peekIs(tok("(")))
-                {
-                    // Do not parse as a declaration if we could parse as a function call.
-                    ++index;
-                 past = peekPastParens();
-                    --index;
-                    if (past != null && past.type == tok(";"))
-                    return null;
-                }
-                if (startsWith(tok("this"), tok("("), tok("this"), tok(")")))
-                mixin(parseNodeQ("node.postblit", "Postblit"));
-            else
-                mixin(parseNodeQ("node.ructor", "Constructor"));
-                break;
-                case tok("~"):
-                    mixin(parseNodeQ("node.destructor", "Destructor"));
-                    break;
-                case tok("enum"):
+                        if (!parseNodeQ("node.aliasThisDeclaration", "AliasThisDeclaration")) {
+                            cleanup(m);
+                            return false;
+                        } else if (!parseNodeQ("node.aliasDeclaration", "AliasDeclaration")) {
+                            cleanup(m);
+                            return false;
+                        }
+                } else if (idType.equals(tok("class"))) {
+                    if (!parseNodeQ("node.classDeclaration", "ClassDeclaration")) {
+                        cleanup(m);
+                        return false;
+                    }
+                } else if (idType.equals(tok("this"))) {
+                    if (!mustBeDeclaration && peekIs(tok("("))) {
+                        // Do not parse as a declaration if we could parse as a function call.
+                        ++index;
+                        Token past = peekPastParens();
+                        --index;
+                        if (past != null && past.type == tok(";"))
+                            return false;
+                    }
+                    if (startsWith(tok("this"), tok("("), tok("this"), tok(")")))
+                        if (!parseNodeQ("node.postblit", "Postblit")) {
+                            cleanup(m);
+                            return false;
+                        } else if (!parseNodeQ("node.ructor", "Constructor")) {
+                            cleanup(m);
+                            return false;
+                        }
+                } else if (idType.equals(tok("~"))) {
+                    if (!parseNodeQ("node.destructor", "Destructor")) {
+                        cleanup(m);
+                        return false;
+                    }
+                } else if (idType.equals(tok("enum"))) {
                     Bookmark b = setBookmark();
                     advance(); // enum
-                    if (currentIsOneOf(tok(":"), tok("{")))
-                {
-                    goToBookmark(b);
-                    mixin(parseNodeQ("node.anonymousEnumDeclaration", "AnonymousEnumDeclaration"));
-                }
-            else if (currentIs(tok("identifier")))
-                {
-                    advance();
-                    if (currentIs(tok("(")))
-                    {
-                        skipParens(); // ()
-                        if (currentIs(tok("(")))
-                        skipParens();
-                        if (!currentIs(tok("=")))
-                        {
-                            goToBookmark(b);
-                            node.functionDeclaration = parseFunctionDeclaration(null, true, node.attributes);
-                            mixin (nullCheck("node.functionDeclaration"));
-                        }
-                    else
-                        {
-                            goToBookmark(b);
-                            mixin(parseNodeQ("node.eponymousTemplateDeclaration", "EponymousTemplateDeclaration"));
-                        }
-                    }
-                else if (currentIsOneOf(tok(":"), tok("{"), tok(";")))
-                    {
+                    if (currentIsOneOf(tok(":"), tok("{"))) {
                         goToBookmark(b);
-                        mixin(parseNodeQ("node.enumDeclaration", "EnumDeclaration"));
-                    }
-                else
-                    {
-                        boolean eq = currentIs(tok("="));
+                        if (!parseNodeQ("node.anonymousEnumDeclaration", "AnonymousEnumDeclaration")) {
+                            cleanup(m);
+                            return false;
+                        }
+                    } else if (currentIs(tok("identifier"))) {
+                        advance();
+                        if (currentIs(tok("("))) {
+                            skipParens(); // ()
+                            if (currentIs(tok("(")))
+                                skipParens();
+                            if (!currentIs(tok("="))) {
+                                goToBookmark(b);
+                                boolean nodeFunctionDeclaration = parseFunctionDeclaration(true, true);
+                                if (!nodeFunctionDeclaration) {
+                                    cleanup(m);
+                                    return false;
+                                }
+                            } else {
+                                goToBookmark(b);
+                                if (!parseNodeQ("node.eponymousTemplateDeclaration", "EponymousTemplateDeclaration")) {
+                                    cleanup(m);
+                                    return false;
+                                }
+                            }
+                        } else if (currentIsOneOf(tok(":"), tok("{"), tok(";"))) {
+                            goToBookmark(b);
+                            if (!parseNodeQ("node.enumDeclaration", "EnumDeclaration")) {
+                                cleanup(m);
+                                return false;
+                            }
+                        } else {
+                            boolean eq = currentIs(tok("="));
+                            goToBookmark(b);
+                            if (!parseVariableDeclaration(true, eq)) {
+                                cleanup(m);
+                                return false;
+                            }
+                        }
+                    } else {
+                        boolean s = isStorageClass();
                         goToBookmark(b);
-                        mixin (nullCheck("node.variableDeclaration = parseVariableDeclaration(null, eq)"));
+                        if (!parseVariableDeclaration(true, s)) {
+                            cleanup(m);
+                            return false;
+                        }
                     }
-                }
-            else
-                {
-                    boolean s = isStorageClass();
-                    goToBookmark(b);
-                    mixin (nullCheck("node.variableDeclaration = parseVariableDeclaration(null, s)"));
-                }
-                break;
-                case tok("import"):
-                    mixin(parseNodeQ("node.importDeclaration", "ImportDeclaration"));
-                    break;
-                case tok("interface"):
-                    mixin(parseNodeQ("node.interfaceDeclaration", "InterfaceDeclaration"));
-                    break;
-                case tok("mixin"):
+                } else if (idType.equals(tok("import"))) {
+                    if (!parseNodeQ("node.importDeclaration", "ImportDeclaration")) {
+                        cleanup(m);
+                        return false;
+                    }
+                } else if (idType.equals(tok("interface"))) {
+                    if (!parseNodeQ("node.interfaceDeclaration", "InterfaceDeclaration")) {
+                        cleanup(m);
+                        return false;
+                    }
+                } else if (idType.equals(tok("mixin"))) {
                     if (peekIs(tok("template")))
-                    mixin(parseNodeQ("node.mixinTemplateDeclaration", "MixinTemplateDeclaration"));
-            else
-                {
-                    b = setBookmark();
-                    advance();
-                    if (currentIs(tok("(")))
-                    {
-                     t = peekPastParens();
-                        if (t != null && t.type == tok(";"))
-                        {
-                            goToBookmark(b);
-                            mixin(parseNodeQ("node.mixinDeclaration", "MixinDeclaration"));
+                        if (!parseNodeQ("node.mixinTemplateDeclaration", "MixinTemplateDeclaration")) {
+                            cleanup(m);
+                            return false;
+                        } else {
+                            Bookmark b = setBookmark();
+                            advance();
+                            if (currentIs(tok("("))) {
+                                Token t = peekPastParens();
+                                if (t != null && t.type == tok(";")) {
+                                    goToBookmark(b);
+                                    if (!parseNodeQ("node.mixinDeclaration", "MixinDeclaration")) {
+                                        cleanup(m);
+                                        return false;
+                                    }
+                                } else {
+                                    goToBookmark(b);
+                                    error("Declaration expected");
+                                    return false;
+                                }
+                            } else {
+                                goToBookmark(b);
+                                if (!parseNodeQ("node.mixinDeclaration", "MixinDeclaration")) {
+                                    cleanup(m);
+                                    return false;
+                                }
+                            }
                         }
-                    else
-                        {
-                            goToBookmark(b);
-                            error("Declaration expected");
-                            return null;
+                } else if (idType.equals(tok("pragma"))) {
+                    if (!parseNodeQ("node.pragmaDeclaration", "PragmaDeclaration")) {
+                        cleanup(m);
+                        return false;
+                    }
+                } else if (idType.equals(tok("shared"))) {
+                    if (startsWith(tok("shared"), tok("static"), tok("this"))) {
+                        if (!parseNodeQ("node.sharedStaticConstructor", "SharedStaticConstructor")) {
+                            cleanup(m);
+                            return false;
+                        } else {
+                            if (startsWith(tok("shared"), tok("static"), tok("~")))
+                                if (!parseNodeQ("node.sharedStaticDestructor", "SharedStaticDestructor")) {
+                                    cleanup(m);
+                                    return false;
+                                } else {
+                                    if (!type(m)) {
+                                        cleanup(m);
+                                        return false;
+                                    }
+                                }
                         }
                     }
-                else
-                    {
-                        goToBookmark(b);
-                        mixin(parseNodeQ("node.mixinDeclaration", "MixinDeclaration"));
-                    }
-                }
-                break;
-                case tok("pragma"):
-                    mixin(parseNodeQ("node.pragmaDeclaration", "PragmaDeclaration"));
-                    break;
-                case tok("shared"):
-                    if (startsWith(tok("shared"), tok("static"), tok("this")))
-                    mixin(parseNodeQ("node.sharedStaticConstructor", "SharedStaticConstructor"));
-            else if (startsWith(tok("shared"), tok("static"), tok("~")))
-                    mixin(parseNodeQ("node.sharedStaticDestructor", "SharedStaticDestructor"));
-            else
-                goto type;
-                    break;
-                case tok("static"):
+                } else if (idType.equals(tok("static"))) {
                     if (peekIs(tok("this")))
-                    mixin(parseNodeQ("node.staticConstructor", "StaticConstructor"));
-            else if (peekIs(tok("~")))
-                    mixin(parseNodeQ("node.staticDestructor", "StaticDestructor"));
-            else if (peekIs(tok("if")))
-                    mixin (nullCheck("node.conditionalDeclaration = parseConditionalDeclaration(strict)"));
-            else if (peekIs(tok("assert")))
-                    mixin(parseNodeQ("node.staticAssertDeclaration", "StaticAssertDeclaration"));
-            else
-                goto type;
+                        if (!parseNodeQ("node.staticConstructor", "StaticConstructor")) {
+                            cleanup(m);
+                            return false;
+                        } else if (peekIs(tok("~"))) {
+                            if (!parseNodeQ("node.staticDestructor", "StaticDestructor")) {
+                                cleanup(m);
+                                return false;
+                            } else if (peekIs(tok("if"))) {
+                                if (!parseConditionalDeclaration(strict)) {
+                                    cleanup(m);
+                                    return false;
+                                }
+                            } else if (peekIs(tok("assert"))) {
+                                if (!parseNodeQ("node.staticAssertDeclaration", "StaticAssertDeclaration")) {
+                                    cleanup(m);
+                                    return false;
+                                } else {
+                                    if (!type(m)) {
+                                        cleanup(m);
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+                } else if (idType.equals(tok("struct"))) {
+                    if (!parseNodeQ("node.structDeclaration", "StructDeclaration")) {
+                        cleanup(m);
+                        return false;
+                    }
+                } else if (idType.equals(tok("template"))) {
+                    if (!parseNodeQ("node.templateDeclaration", "TemplateDeclaration")) {
+                        cleanup(m);
+                        return false;
+                    }
+                } else if (idType.equals(tok("union"))) {
+                    if (!parseNodeQ("node.unionDeclaration", "UnionDeclaration")) {
+                        cleanup(m);
+                        return false;
+                    }
+                } else if (idType.equals(tok("invariant"))) {
+                    if (!parseNodeQ("node.invariant_", "Invariant")) {
+                        cleanup(m);
+                        return false;
+                    }
+                } else if (idType.equals(tok("unittest"))) {
+                    if (!parseNodeQ("node.unittest_", "Unittest")) {
+                        cleanup(m);
+                        return false;
+                    }
+                } else if (idType.equals(tok("identifier")) || idType.equals(tok(".")) || idType.equals(tok("")) || idType.equals(tok("immutable")) || idType.equals(tok("inout")) || idType.equals(tok("scope")) || idType.equals(tok("typeof")) || idType.equals(tok("__vector")) || idType.equals(tok("int")) || idType.equals(tok("bool")) || idType.equals(tok("byte")) || idType.equals(tok("cdouble")) || idType.equals(tok("cent")) || idType.equals(tok("cfloat")) || idType.equals(tok("char")) || idType.equals(tok("creal")) || idType.equals(tok("dchar")) || idType.equals(tok("double")) || idType.equals(tok("float")) || idType.equals(tok("idouble")) || idType.equals(tok("ifloat")) || idType.equals(tok("ireal")) || idType.equals(tok("long")) || idType.equals(tok("real")) || idType.equals(tok("short")) || idType.equals(tok("ubyte")) || idType.equals(tok("ucent")) || idType.equals(tok("uint")) || idType.equals(tok("ulong")) || idType.equals(tok("ushort")) || idType.equals(tok("void")) || idType.equals(tok("wchar"))) {
+                    if (!type(m)) {
+                        cleanup(m);
+                        return false;
+                    }
                     break;
-                case tok("struct"):
-                    mixin(parseNodeQ("node.structDeclaration", "StructDeclaration"));
-                    break;
-                case tok("template"):
-                    mixin(parseNodeQ("node.templateDeclaration", "TemplateDeclaration"));
-                    break;
-                case tok("union"):
-                    mixin(parseNodeQ("node.unionDeclaration", "UnionDeclaration"));
-                    break;
-                case tok("invariant"):
-                    mixin(parseNodeQ("node.invariant_", "Invariant"));
-                    break;
-                case tok("unittest"):
-                    mixin(parseNodeQ("node.unittest_", "Unittest"));
-                    break;
-                case tok("identifier"):
-                case tok("."):
-                case tok(""):
-                case tok("immutable"):
-                case tok("inout"):
-                case tok("scope"):
-                case tok("typeof"):
-                case tok("__vector"):
-                    foreach (B; BasicTypes) { case B: }
-                type:
-                Type t = parseType();
-                if (t == null || !currentIs(tok("identifier")))
-                return null;
-                if (peekIs(tok("(")))
-                mixin (nullCheck("node.functionDeclaration = parseFunctionDeclaration(t, false)"));
-            else
-                mixin (nullCheck("node.variableDeclaration = parseVariableDeclaration(t, false)"));
-                break;
-                case tok("version"):
+                } else if (idType.equals(tok("version"))) {
                     if (peekIs(tok("(")))
-                    mixin (nullCheck("node.conditionalDeclaration = parseConditionalDeclaration(strict)"));
-            else if (peekIs(tok("=")))
-                    mixin(parseNodeQ("node.versionSpecification", "VersionSpecification"));
-            else
-                {
-                    error(""=" or "(" expected following "version"");
-                    return null;
-                }
-                break;
-                case tok("debug"):
+                        if (!parseConditionalDeclaration(strict)) {
+                            cleanup(m);
+                            return false;
+                        } else if (peekIs(tok("=")))
+                            if (!parseNodeQ("node.versionSpecification", "VersionSpecification")) {
+                                cleanup(m);
+                                return false;
+                            } else {
+                                error("\"=\" or \"(\" expected following \"version\"");
+                                return false;
+                            }
+                } else if (idType.equals(tok("debug"))) {
                     if (peekIs(tok("=")))
-                    mixin(parseNodeQ("node.debugSpecification", "DebugSpecification"));
-            else
-                    mixin (nullCheck("node.conditionalDeclaration = parseConditionalDeclaration(strict)"));
-                    break;
-                default:
+                        if (!parseNodeQ("node.debugSpecification", "DebugSpecification")) {
+                            cleanup(m);
+                            return false;
+                        } else if (!parseConditionalDeclaration(strict)) {
+                            cleanup(m);
+                            return false;
+                        }
+                } else {
                     error("Declaration expected");
-                    return null;
+                    return false;
+                }
             }
+            exit_section_(builder, m, DECLARATION, true);
             return true;
         }
+
+        private boolean type(Marker m) {
+            boolean t = parseType();
+            if ((!t) || !currentIs(tok("identifier")))
+                return false;
+            if (peekIs(tok("(")))
+                if (!parseFunctionDeclaration(t, false)) {
+                    cleanup(m);
+                    return false;
+                } else if (!parseVariableDeclaration(t, false)) {
+                    cleanup(m);
+                    return false;
+                }
+            return true;
+        }
+
 
         /**
          * Parses DeclarationsAndStatements
@@ -2609,34 +2664,40 @@ public class ParserPreliminaryJavaWriteUp {
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             final boolean includeCases = true;
-//            Marker m = enter_section_(builder);
+            Marker m = enter_section_(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.DeclarationsAndStatements,false);
             StackBuffer declarationsAndStatements;
             while (!currentIsOneOf(tok("}"), tok("else")) && moreTokens() && suppressedErrorCount <= MAX_ERRORS)
             {
-                if (currentIs(tok("case")) && !includeCases)
-                break;
+                if (currentIs(tok("case")) && !includeCases) {
+                    break;
+                }
                 if (currentIs(tok("while")))
                 {
-                    b = setBookmark();
-                    scope (exit) goToBookmark(b);
+                    Bookmark b = setBookmark();
                     advance();
                     if (currentIs(tok("(")))
                     {
-                     p = peekPastParens();
-                        if (p != null && *p == tok(";"))
-                        break;
+                        Token p = peekPastParens();
+                        if (p != null && p.type == tok(";")) {
+                            goToBookmark(b);
+                            break;
+                        }
+                        goToBookmark(b);
                     }
                 }
-                c = allocator.setCheckpoint();
-                if (!declarationsAndStatements.put(parseDeclarationOrStatement()))
+//                c = allocator.setCheckpoint();
+                if (!parseDeclarationOrStatement())
                 {
-                    allocator.rollback(c);
-                    if (suppressMessages > 0)
-                        return null;
+//                    allocator.rollback(c);
+                    if (suppressMessages > 0) {
+                        cleanup(m);
+                        return false;
+                    }
                 }
             }
-            ownArray(node.declarationsAndStatements, declarationsAndStatements);
+//            ownArray(node.declarationsAndStatements, declarationsAndStatements);
+            exit_section_(builder,m,DECLARATION_STATEMENT,true);//todo types
             return true;
         }
 
@@ -2651,28 +2712,32 @@ public class ParserPreliminaryJavaWriteUp {
         boolean parseDeclarationOrStatement()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            Marker m = enter_section_(builder);
+            Marker m = enter_section_(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.DeclarationOrStatement,false);
             // "Any ambiguities in the grammar between Statements and
             // Declarations are resolved by the declarations taking precedence."
             Bookmark b = setBookmark();
-            c = allocator.setCheckpoint();
-            auto d = parseDeclaration(true, false);
-            if (d == null)
+//            c = allocator.setCheckpoint();
+            boolean d = parseDeclaration(true, false);
+            if (!d)
             {
-                allocator.rollback(c);
+//                allocator.rollback(c);
                 goToBookmark(b);
-                mixin(parseNodeQ("node.statement", "Statement"));
+                if(!parseNodeQ("node.statement", "Statement")){
+                    cleanup(m);
+                    return false;
+                }
             }
-        else
+            else
             {
                 // TODO: Make this more efficient. Right now we parse the declaration
                 // twice, once with errors and warnings ignored, and once with them
                 // printed. Maybe store messages to then be abandoned or written later?
-                allocator.rollback(c);
+//                allocator.rollback(c);
                 goToBookmark(b);
-                node.declaration = parseDeclaration(true, true);
+                parseDeclaration(true, true);
             }
+            exit_section_(builder,m,DECLARATION_STATEMENT,true);//todo type
             return true;
         }
 
@@ -2688,31 +2753,46 @@ public class ParserPreliminaryJavaWriteUp {
         boolean parseDeclarator()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            Marker m = enter_section_(builder);
+            Marker m = enter_section_(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Declarator,false);
-            id = expect(tok("identifier"));
-            mixin (nullCheck("id"));
-            node.name = *id;
+            Token id = expect(tok("identifier"));
+            if(id == null){
+                cleanup(m);
+                return false;
+            }
             if (currentIs(tok("["))) // dmd doesn't accept pointer after identifier
             {
                 warn("C-style array declaration.");
-                StackBuffer typeSuffixes;
                 while (moreTokens() && currentIs(tok("[")))
-                if (!typeSuffixes.put(parseTypeSuffix()))
-                    return null;
-                ownArray(node.cstyle, typeSuffixes);
+                if (!parseTypeSuffix()) {
+                    cleanup(m);
+                    return false;
+                }
             }
             if (currentIs(tok("(")))
             {
-                mixin (nullCheck("(node.templateParameters = parseTemplateParameters())"));
-                if(!tokenCheck("=")){return false;}
-                mixin (nullCheck("(node.initializer = parseInitializer())"));
+                if(!parseTemplateParameters()){
+                    cleanup(m);
+                    return false;
+                }
+                if (!tokenCheck("=")) {
+                    cleanup(m);
+                    return false;
+                }
+                if(!parseInitializer()){
+                    cleanup(m);
+                    return false;
+                }
             }
-        else if (currentIs(tok("=")))
+            else if (currentIs(tok("=")))
             {
                 advance();
-                mixin(parseNodeQ("node.initializer", "Initializer"));
+                if(!parseNodeQ("node.initializer", "Initializer")){
+                    cleanup(m);
+                    return false;
+                }
             }
+            exit_section_(builder,m,DECLARATOR,true);
             return true;
         }
 
@@ -2726,14 +2806,22 @@ public class ParserPreliminaryJavaWriteUp {
         boolean parseDefaultStatement()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            Marker m = enter_section_(builder);
+            Marker m = enter_section_(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.DefaultStatement,false);
-            if(!tokenCheck("default")){return false;}
-         colon = expect(tok(":"));
-            if (colon == null)
-            return null;
-            node.colonLocation = colon.index;
-            mixin(parseNodeQ("node.declarationsAndStatements", "DeclarationsAndStatements"));
+            if (!tokenCheck("default")) {
+                cleanup(m);
+                return false;
+            }
+            Token colon = expect(tok(":"));
+            if (colon == null) {
+                cleanup(m);
+                return false;
+            }
+            if(!parseNodeQ("node.declarationsAndStatements", "DeclarationsAndStatements")){
+                cleanup(m);
+                return false;
+            }
+            exit_section_(builder,m,DEFAULT_STATEMENT,true);
             return true;
         }
 
@@ -3427,6 +3515,10 @@ public class ParserPreliminaryJavaWriteUp {
             return true;
         }
 
+        boolean parseFunctionDeclaration(){
+            return parseFunctionDeclaration(true,false);
+        }
+
         /**
          * Parses a FunctionDeclaration
          *
@@ -3435,72 +3527,99 @@ public class ParserPreliminaryJavaWriteUp {
          *     | ($(RULE storageClass)+ | $(RULE _type)) $(LITERAL Identifier) $(RULE templateParameters) $(RULE parameters) $(RULE memberFunctionAttribute)* $(RULE raint)? ($(RULE functionBody) | $(LITERAL ';'))
          *     ;)
          */
-        FunctionDeclaration parseFunctionDeclaration()//(Type type = null,Attribute[] attributes = null)
+        boolean parseFunctionDeclaration(boolean parseType, boolean isAuto)//(Type type = null,Attribute[] attributes = null)
         {
-            final boolean isAuto = false;
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            Marker m = enter_section_(builder);
+            Marker m = enter_section_(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.FunctionDeclaration,false);
 //            node.comment = comment;
 //            comment = null;
-            StackBuffer memberFunctionAttributes;
-            node.attributes = attributes;
-
+//            StackBuffer memberFunctionAttributes;
+//            node.attributes = attributes;
             if (isAuto)
             {
-                StackBuffer storageClasses;
+//                StackBuffer storageClasses;
                 while (isStorageClass())
-                    if (!storageClasses.put(parseStorageClass()))
-                        return null;
-                ownArray(node.storageClasses, storageClasses);
+                    if (!parseStorageClass()) {
+                        cleanup(m);
+                        return false;
+                    }
+//                ownArray(node.storageClasses, storageClasses);
 
-                foreach (a; node.attributes)
-                {
-                    if (a.attribute == tok("auto"))
-                    node.hasAuto = true;
-                else if (a.attribute == tok("ref"))
-                    node.hasRef = true;
-                else
-                    continue;
-                }
+//                for( a; node.attributes)
+//                {
+//                    if (a.attribute == tok("auto"))
+//                    node.hasAuto = true;
+//                else if (a.attribute == tok("ref"))
+//                    node.hasRef = true;
+//                else
+//                    continue;
+//                }
             }
             else
             {
                 while (moreTokens() && currentIsMemberFunctionAttribute())
-                    if (!memberFunctionAttributes.put(parseMemberFunctionAttribute()))
-                        return null;
-                if (type == null)
-                mixin(parseNodeQ("node.returnType", "Type"));
-            else
-                node.returnType = type;
+                    if (!parseMemberFunctionAttribute()) {
+                        cleanup(m);
+                        return false;
+                    }
+                if (parseType) {
+                    if(!parseNodeQ("node.returnType", "Type")){
+                        cleanup(m);
+                        return false;
+                    }
+                }
+//                else
+//                node.returnType = type;
             }
 
-            mixin(tokenCheck!("node.name", "identifier"));
+            if(!tokenCheck("node.name", "identifier")){//todo check this
+                cleanup(m);
+                return false;
+            }
             if (!currentIs(tok("(")))
             {
                 error("'(' expected");
-                return null;
+//                cleanup(m);//todo
+                return false;
             }
-         p = peekPastParens();
-            boolean isTemplate = p == null && p.type != tok("(");
+            Token p = peekPastParens();
+            boolean isTemplate = p != null && p.type != tok("(");
 
-            if (isTemplate)
-                mixin(parseNodeQ("node.templateParameters", "TemplateParameters"));
+            if (isTemplate) {
+                if(!parseNodeQ("node.templateParameters", "TemplateParameters")){
+                    cleanup(m);
+                    return false;
+                }
+            }
 
-            mixin(parseNodeQ("node.parameters", "Parameters"));
+            if(!parseNodeQ("node.parameters", "Parameters")){
+                cleanup(m);
+                return false;
+            }
 
             while (moreTokens() && currentIsMemberFunctionAttribute())
-                if (!memberFunctionAttributes.put(parseMemberFunctionAttribute()))
-                    return null;
+                if (!parseMemberFunctionAttribute()) {
+                cleanup(m);
+                return false;
+                }
 
-            if (isTemplate && currentIs(tok("if")))
-            mixin(parseNodeQ("node.raint", "Constraint"));
+            if (isTemplate && currentIs(tok("if"))) {
+                if(!parseNodeQ("node.raint", "Constraint")){
+                    cleanup(m);
+                    return false;
+                };
+            }
 
             if (currentIs(tok(";")))
-            advance();
-        else
-            mixin(parseNodeQ("node.functionBody", "FunctionBody"));
-            ownArray(node.memberFunctionAttributes, memberFunctionAttributes);
+                advance();
+            else {
+                if(!parseNodeQ("node.functionBody", "FunctionBody")){
+                    cleanup(m);
+                    return false;
+                }
+            }
+            exit_section_(builder,m,FUNC_DECLARATION,true);
             return true;
         }
 
@@ -6915,6 +7034,11 @@ public class ParserPreliminaryJavaWriteUp {
             mixin (simpleParse!(Unittest, tok("unittest"), "blockStatement|parseBlockStatement"));
         }
 
+        boolean parseVariableDeclaration(){
+            return parseVariableDeclaration(true,false);
+        }
+
+
         /**
          * Parses a VariableDeclaration
          *
@@ -6924,64 +7048,71 @@ public class ParserPreliminaryJavaWriteUp {
          *     | $(RULE autoDeclaration)
          *     ;)
          */
-        boolean parseVariableDeclaration()//(Type type = null )
+        boolean parseVariableDeclaration(boolean parseType, boolean isAuto)//(Type type = null )
         {
-            final boolean isAuto = false;
 //            mixin (traceEnterAndExit!(__FUNCTION__));
-//            Marker m = enter_section_(builder);
+            Marker m = enter_section_(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.VariableDeclaration,false);
 
             if (isAuto)
             {
                 mixin(parseNodeQ("node.autoDeclaration", "AutoDeclaration"));
-                node.comment = node.autoDeclaration.comment;
+//                node.comment = node.autoDeclaration.comment;
                 return true;
             }
 
             StackBuffer storageClasses;
             while (isStorageClass())
-                if (!storageClasses.put(parseStorageClass()))
-                    return null;
-            ownArray(node.storageClasses, storageClasses);
+                if (!parseStorageClass()) {
+                    cleanup(m);
+                    return false;
+                }
+//            ownArray(node.storageClasses, storageClasses);
 
-            node.type = type == null ? parseType() : type;
-            node.comment = comment;
-            comment = null;
+            if(parseType) {
+                parseType();
+            }
+//            node.comment = comment;
+//            comment = null;
 
             // TODO: handle function bodies correctly
 
-            StackBuffer declarators;
-            Declarator last;
             while (true)
             {
-                auto declarator = parseDeclarator();
-                if (!declarators.put(declarator))
-                    return null;
-                else
-                    last = declarator;
+                boolean declarator = parseDeclarator();
+                if (!declarator) {
+                    cleanup(m);
+                    return false;
+                } else {
+//                    last = declarator;
+                }
                 if (moreTokens() && currentIs(tok(",")))
                 {
-                    if (node.comment != null)
-                    declarator.comment = node.comment ~ "\n" ~ current().trailingComment;
-                else
-                    declarator.comment = current().trailingComment;
+//                    if (node.comment != null)
+//                    declarator.comment = node.comment ~ "\n" ~ current().trailingComment;
+//                else
+//                    declarator.comment = current().trailingComment;
                     advance();
                 }
             else
                 break;
             }
-            ownArray(node.declarators, declarators);
-         semicolon = expect(tok(";"));
-            mixin (nullCheck("semicolon"));
-            if (node.comment != null)
-            {
-                if (semicolon.trailingComment == null)
-                last.comment = node.comment;
-            else
-                last.comment = node.comment ~ "\n" ~ semicolon.trailingComment;
+//            ownArray(node.declarators, declarators);
+            Token semicolon = expect(tok(";"));
+            if(semicolon == null){
+                cleanup(m);
+                return false;
             }
-        else
-            last.comment = semicolon.trailingComment;
+//            if (node.comment != null)
+//            {
+//                if (semicolon.trailingComment == null)
+//                last.comment = node.comment;
+//            else
+//                last.comment = node.comment ~ "\n" ~ semicolon.trailingComment;
+//            }
+//        else
+//            last.comment = semicolon.trailingComment;
+            exit_section_(builder,m,VAR_DECLARATIONS,true);//todo type
             return true;
         }
 
@@ -7225,106 +7356,104 @@ public class ParserPreliminaryJavaWriteUp {
             other
         }
 
-        DecType isAutoDeclaration(Number beginIndex)
-        {
-            Bookmark b = setBookmark();
-            scope(exit) goToBookmark(b);
+        class Pair<First,Second>{
+            First first;
+            Second second;
 
-            loop: while (moreTokens()) switch (current().type)
-            {
-                case tok("pragma"):
-                    beginIndex = java.lang.Number.max;
-                    advance();
-                    if (currentIs(tok("(")))
-                {
-                    skipParens();
-                    break;
-                }
-                else
-                return DecType.other;
-                case tok("package"):
-                case tok("private"):
-                case tok("protected"):
-                case tok("public"):
-                    beginIndex = java.lang.Number.max;
-                    advance();
-                    break;
-                case tok("@"):
-                    beginIndex = min(beginIndex, index);
-                    advance();
-                    if (currentIs(tok("(")))
-                    skipParens();
-                else if (currentIs(tok("identifier")))
-                {
-                    advance();
-                    if (currentIs(tok("!")))
-                    {
-                        advance();
-                        if (currentIs(tok("(")))
-                        skipParens();
-                        else
-                        advance();
-                    }
-                    if (currentIs(tok("(")))
-                    skipParens();
-                }
-                else
-                return DecType.other;
-                break;
-                case tok("deprecated"):
-                case tok("align"):
-                case tok("extern"):
-                    beginIndex = min(beginIndex, index);
-                    advance();
-                    if (currentIs(tok("(")))
-                    skipParens();
-                    break;
-                case tok(""):
-                case tok("immutable"):
-                case tok("inout"):
-                case tok("synchronized"):
-                    if (peekIs(tok("(")))
-                    return DecType.other;
-                else
-                {
-                    beginIndex = min(beginIndex, index);
-                    advance();
-                    break;
-                }
-                case tok("auto"):
-                case tok("enum"):
-                case tok("export"):
-                case tok("final"):
-                case tok("__gshared"):
-                case tok(""):
-                case tok("override"):
-                case tok(""):
-                case tok("ref"):
-                case tok("scope"):
-                case tok("shared"):
-                case tok("static"):
-                    beginIndex = min(beginIndex, index);
-                    advance();
-                    break;
-                default:
-                    break loop;
+            Pair(First first,Second second){
+                this.first = first;
+                this.second = second;
             }
-            if (index <= b)
-                return DecType.other;
-            if (startsWith(tok("identifier"), tok("=")))
-            return DecType.autoVar;
+        }
+
+        Pair<DecType,Integer> isAutoDeclaration()
+        {
+            int beginIndex = Integer.MAX_VALUE;
+            Bookmark b = setBookmark();
+//            goToBookmark(b);// on scope exit
+            loop: while (moreTokens()) {
+                IdType i = current().type;
+                if (i.equals(tok("pragma"))) {
+                    beginIndex = Integer.MAX_VALUE;
+                    advance();
+                    if (currentIs(tok("("))) {
+                        skipParens();
+                        break;
+                    } else {
+                        goToBookmark(b);
+                        return new Pair<>(DecType.other, beginIndex);
+                    }
+                } else if (i.equals(tok("package")) || i.equals(tok("private")) || i.equals(tok("protected")) || i.equals(tok("public"))) {
+                    beginIndex = Integer.MAX_VALUE;
+                    advance();
+                } else if (i.equals(tok("@"))) {
+                    beginIndex = Math.min(beginIndex, index);
+                    advance();
+                    if (currentIs(tok("(")))
+                        skipParens();
+                    else if (currentIs(tok("identifier"))) {
+                        advance();
+                        if (currentIs(tok("!"))) {
+                            advance();
+                            if (currentIs(tok("(")))
+                                skipParens();
+                            else
+                                advance();
+                        }
+                        if (currentIs(tok("(")))
+                            skipParens();
+                    } else {
+                        goToBookmark(b);
+                        return new Pair<>(DecType.other, beginIndex);
+                    }
+
+                } else if (i.equals(tok("deprecated")) || i.equals(tok("align")) || i.equals(tok("extern"))) {
+                    beginIndex = Math.min(beginIndex, index);
+                    advance();
+                    if (currentIs(tok("(")))
+                        skipParens();
+                } else if (i.equals(tok("")) || i.equals(tok("immutable")) || i.equals(tok("inout")) || i.equals(tok("synchronized"))) {
+                    if (peekIs(tok("("))) {
+                        goToBookmark(b);
+                        return new Pair<>(DecType.other, beginIndex);
+                    } else {
+                        beginIndex = Math.min(beginIndex, index);
+                        advance();
+                        break;
+                    }
+                } else if (i.equals(tok("auto")) || i.equals(tok("enum")) || i.equals(tok("export")) || i.equals(tok("final")) || i.equals(tok("__gshared")) || i.equals(tok("")) || i.equals(tok("override")) || i.equals(tok("")) || i.equals(tok("ref")) || i.equals(tok("scope")) || i.equals(tok("shared")) || i.equals(tok("static"))) {
+                    beginIndex = Math.min(beginIndex, index);
+                    advance();
+                } else {
+                    break loop;
+                }
+            }
+            if (index <= b.intValue())//todo
+            {
+                goToBookmark(b);
+                return new Pair<>(DecType.other, beginIndex);
+            }
+            if (startsWith(tok("identifier"), tok("="))) {
+                goToBookmark(b);
+                return new Pair<>(DecType.autoVar, beginIndex);
+            }
             if (startsWith(tok("identifier"), tok("(")))
             {
                 advance();
-                auto past = peekPastParens();
-                if (past == null)
-                return DecType.other;
-                else if (past.type == tok("="))
-                return DecType.autoVar;
-                else
-                return DecType.autoFun;
+                Token past = peekPastParens();
+                if (past == null) {
+                    goToBookmark(b);
+                    return new Pair<>(DecType.other, beginIndex);
+                } else if (past.type == tok("=")) {
+                    goToBookmark(b);
+                    return new Pair<>(DecType.autoVar, beginIndex);
+                } else {
+                    goToBookmark(b);
+                    return new Pair<>(DecType.autoFun, beginIndex);
+                }
             }
-            return DecType.other;
+            goToBookmark(b);
+            return new Pair<>(DecType.other, beginIndex);
         }
 
         boolean isDeclaration()
