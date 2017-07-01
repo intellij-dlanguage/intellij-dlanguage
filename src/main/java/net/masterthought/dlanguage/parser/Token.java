@@ -4,9 +4,10 @@ import com.intellij.psi.tree.IElementType;
 
 /**
  * Created by francis on 6/28/2017.
+ * a class that emulates the behavior of tokens in libdparse
  */
 public class Token {
-    public final String text;
+    public final String text;//todo check that this is correct
 
     public Token(IdType type) {
         text = type.type.toString();

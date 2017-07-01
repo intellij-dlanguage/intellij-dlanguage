@@ -1,16 +1,24 @@
 package net.masterthought.dlanguage.parser;
 
 import com.intellij.lang.PsiBuilder;
+import com.intellij.lang.PsiBuilder.Marker;
 import com.intellij.psi.tree.IElementType;
+import hidden.edu.emory.mathcs.backport.java.util.Arrays;
+import net.masterthought.dlanguage.parser.Token.IdType;
+import net.masterthought.dlanguage.psi.DLanguageTypes;
+import org.fest.util.Sets;
 
 import java.util.HashMap;
 
+import static com.intellij.lang.parser.GeneratedParserUtilBase.enter_section_;
+import static com.intellij.lang.parser.GeneratedParserUtilBase.exit_section_;
 import static net.masterthought.dlanguage.parser.DummyClasses.*;
+import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
 
 /**
  * Created by francis on 6/28/2017.
  */
-public class ParserPrelimnaryJavaWriteUp {
+public class ParserPreliminaryJavaWriteUp {
 
     /**
      * Params:
@@ -22,14 +30,14 @@ public class ParserPrelimnaryJavaWriteUp {
      *         means warning).
      * Returns: the parsed module
      */
-    Module parseModule(Token[] tokens, String fileName, RollbackAllocator allocator)
+    boolean parseModule(Token[] tokens, String fileName, RollbackAllocator allocator)
     {
         Parser parser = new Parser();
 //        parser.fileName = fileName;
         parser.tokens = tokens;
 //        parser.messageFunction = messageFunction;
 //        parser.allocator = allocator;
-        Module mod = parser.parseModule();
+        boolean mod = parser.parseModule();
 //        if (warningCount != null)
 //        *warningCount = parser.warningCount;
 //        if (errorCount != null)
@@ -50,77 +58,101 @@ public class ParserPrelimnaryJavaWriteUp {
      */
     class Parser
     {
+
+
+        public void cleanup(Marker... markers){
+            for (Marker marker : markers) {
+                exit_section_(builder,marker, STATIC_IF_CONDITION,false);//the static if could be anything. todo make an actual dummy type for it
+            }
+        }
+
         /**
          * Parses an AddExpression.
-         *
+         *  converted
          * $(GRAMMAR $(RULEDEF addExpression):
          *       $(RULE mulExpression)
          *     | $(RULE addExpression) $(LPAREN)$(LITERAL '+') | $(LITERAL'-') | $(LITERAL'~')$(RPAREN) $(RULE mulExpression)
          *     ;)
          */
-        ExpressionNode parseAddExpression()
+        boolean parseAddExpression()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-            return parseLeftAssocBinaryExpression(AddExpression, MulExpression,
-            tok("+"), tok("-"), tok("~"));
+            final Marker section = enter_section_(builder);
+            boolean result = parseLeftAssocBinaryExpression("AddExpression", "MulExpression",tok("+"), tok("-"), tok("~"));
+            exit_section_(builder,section, ADD_EXPRESSION_,result);
+            return result;
         }
 
         /**
          * Parses an AliasDeclaration.
-         *
+         * converted
          * $(GRAMMAR $(RULEDEF aliasDeclaration):
          *       $(LITERAL 'alias') $(RULE aliasInitializer) $(LPAREN)$(LITERAL ',') $(RULE aliasInitializer)$(RPAREN)* $(LITERAL ';')
          *     | $(LITERAL 'alias') $(RULE storageClass)* $(RULE type) $(RULE identifierList) $(LITERAL ';')
          *     | $(LITERAL 'alias') $(RULE storageClass)* $(RULE type) $(RULE identifier) $(LITERAL '(') $(RULE parameters) $(LITERAL ')') $(memberFunctionAttribute)* $(LITERAL ';')
          *     ;)
          */
-        AliasDeclaration parseAliasDeclaration()
+        boolean parseAliasDeclaration()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!AliasDeclaration;
-            mixin(tokenCheck("alias"));
+            Marker m = enter_section_(builder);
+            if(!tokenCheck("alias")){
+                cleanup(m);
+                return false;
+            }
 //            node.comment = comment;
 //            comment = null;
 
-            if (startsWith(tok("identifier"), tok("=")) || startsWith(tok("identifier"), tok("(")))
-            {
-                StackBuffer initializers;
-                do
-                {
-                    if (!initializers.put(parseAliasInitializer()))
-                        return null;
-                    if (currentIs(tok(",")))
-                    advance();
-                else
-                    break;
+            if (startsWith(tok("identifier"), tok("=")) || startsWith(tok("identifier"), tok("("))) {
+                final Marker aliasInitializers = enter_section_(builder);
+                do {
+                    if (!parseAliasInitializer()) {
+                        cleanup(m, aliasInitializers);
+                        return false;
+                    }
+                    if (currentIs(tok(","))) {
+                        advance();
+                    } else {
+                        break;
+                    }
                 }
                 while (moreTokens());
-                ownArray(node.initializers, initializers);
-            }
-        else
-            {
-                StackBuffer storageClasses;
-                while (moreTokens() && isStorageClass())
-                    if (!storageClasses.put(parseStorageClass()))
-                        return null;
-                ownArray(node.storageClasses, storageClasses);
-                mixin (parseNodeQ("node.type", "Type"));
-                mixin (parseNodeQ("node.identifierList", "IdentifierList"));
-                if (currentIs(tok("(")))
-                {
+                exit_section_(builder, aliasInitializers, ALIAS_DECLARATION_Y, true);
+            } else {
+                final Marker storageClassesMarker = enter_section_(builder);
+                while (moreTokens() && isStorageClass()) {
+                    if (!parseStorageClass()) {
+                        cleanup(m, storageClassesMarker);
+                        return false;
+                    }
+                }
+                exit_section_(builder, storageClassesMarker, STORAGE_CLASSES, true);
+                if (!parseNodeQ("node.type", "Type")) {
+                    cleanup(m);
+                    return false;
+                }
+                if (!parseNodeQ("node.identifierList", "IdentifierList")) {
+                    cleanup(m);
+                    return false;
+                }
+                if (currentIs(tok("("))) {
                     mixin(parseNodeQ("node.parameters", "Parameters"));
-                    StackBuffer memberFunctionAttributes;
-                    while (moreTokens() && currentIsMemberFunctionAttribute())
-                        if (!memberFunctionAttributes.put(parseMemberFunctionAttribute()))
-                            return null;
-                    ownArray(node.memberFunctionAttributes, memberFunctionAttributes);
+                    final Marker memberFunctionAttributes = enter_section_(builder);
+                    while (moreTokens() && currentIsMemberFunctionAttribute()) {
+                        if (!parseMemberFunctionAttribute()) {
+                            cleanup(m, memberFunctionAttributes);
+                            return false;
+                        }
+                    }
+                    exit_section_(builder, memberFunctionAttributes, MEMBER_FUNCTION_ATTRIBUTES, true);
+
                 }
             }
-            return attachCommentFromSemicolon(node);
+            return true;
         }
 
 
-        boolean isFunction()
+        private boolean isFunction()
         {
             if (currentIsOneOf(tok("function"), tok("delegate"), tok("{")))
                 return true;
@@ -128,7 +160,7 @@ public class ParserPrelimnaryJavaWriteUp {
                 return true;
             if (currentIs(tok("(")))
             {
-                t = peekPastParens();
+                Token t = peekPastParens();
                 if (t != null)
                 {
                     if (t.type == tok("=>") || t.type == tok("{")
@@ -147,26 +179,41 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(LITERAL Identifier) $(RULE templateParameters)? $(LITERAL '=') $(RULE functionLiteralExpression)
          *     ;)
          */
-        AliasInitializer parseAliasInitializer()
-        {
+        boolean parseAliasInitializer() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!AliasInitializer;
-            mixin (tokenCheck("node.name", "identifier"));
-            if (currentIs(tok("(")))
-                mixin (parseNodeQ("node.templateParameters", "TemplateParameters"));
-            mixin(tokenCheck("="));
-            if (isFunction())
-                mixin (parseNodeQ("node.functionLiteralExpression", "FunctionLiteralExpression"));
-        else
-            {
-                StackBuffer storageClasses;
-                while (moreTokens() && isStorageClass())
-                    if (!storageClasses.put(parseStorageClass()))
-                        return null;
-                ownArray(node.storageClasses, storageClasses);
-                mixin (parseNodeQ("node.type", "Type"));
+            Marker m = enter_section_(builder);
+            if (!tokenCheck( "identifier")) {//todo check that name
+                cleanup(m);
+                return false;
             }
-            return node;
+            if (currentIs(tok("(")))
+                if (!parseNodeQ("node.templateParameters", "TemplateParameters")) {
+                    cleanup(m);
+                    return false;
+                }
+            if (!tokenCheck("=")) {
+                cleanup(m);
+                return false;
+            }
+            if (isFunction())
+                if (!parseNodeQ("node.functionLiteralExpression", "FunctionLiteralExpression")) {
+                    cleanup(m);
+                    return false;
+                } else {
+                    final Marker storageClassesMarker = enter_section_(builder);
+                    while (moreTokens() && isStorageClass()) {
+                        if (!parseStorageClass()) {
+                            cleanup(m, storageClassesMarker);
+                            return false;
+                        }
+                    }
+                    exit_section_(builder, storageClassesMarker, STORAGE_CLASSES, true);
+                    if (!parseNodeQ("node.type", "Type")) {
+                        cleanup(m);
+                        return false;
+                    }
+                }
+            return true;
         }
 
         /**
@@ -176,14 +223,24 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'alias') $(LITERAL Identifier) $(LITERAL 'this') $(LITERAL ';')
          *     ;)
          */
-        AliasThisDeclaration parseAliasThisDeclaration()
-        {
+        boolean parseAliasThisDeclaration() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!AliasThisDeclaration;
-            mixin(tokenCheck("alias"));
-            mixin(tokenCheck("node.identifier", "identifier"));
-            mixin(tokenCheck("this"));
-            return attachCommentFromSemicolon(node);
+            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.AliasThisDeclaration,false);
+            if (!tokenCheck("alias")) {
+                cleanup(m);
+                return false;
+            }
+            if(!tokenCheck("identifier")){//todo check that
+                cleanup(m);
+                return false;
+            }
+            if (!tokenCheck("this")) {
+                cleanup(m);
+                return false;
+            }
+            exit_section_(builder, m, ALIAS_THIS, true);
+            return true;
         }
 
         /**
@@ -193,18 +250,29 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'align') ($(LITERAL '$(LPAREN)') $(RULE AssignExpression) $(LITERAL '$(RPAREN)'))?
          *     ;)
          */
-        AlignAttribute parseAlignAttribute()
+        boolean parseAlignAttribute()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!AlignAttribute;
+            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.AlignAttribute,false);
             expect(tok("align"));
             if (currentIs(tok("(")))
             {
-                mixin(tokenCheck("("));
-                mixin(parseNodeQ("node.assignExpression", "AssignExpression"));
-                mixin(tokenCheck(")"));
+                if (!tokenCheck("(")) {
+                    cleanup(m);
+                    return false;
+                }
+                if(!parseNodeQ("node.assignExpression", "AssignExpression")){
+                    cleanup(m);
+                    return false;
+                }
+                if (!tokenCheck(")")) {
+                    cleanup(m);
+                    return false;
+                }
             }
-            return node;
+            exit_section_(builder,m,ALIGN_ATTRIBUTE,true);
+            return true;
         }
 
         /**
@@ -215,11 +283,14 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(RULE andAndExpression) $(LITERAL '&&') $(RULE orExpression)
          *     ;)
          */
-        ExpressionNode parseAndAndExpression()
+        boolean parseAndAndExpression()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-            return parseLeftAssocBinaryExpression(AndAndExpression, OrExpression,
-            tok("&&"));
+            Marker m = enter_section_(builder);
+            final boolean result = parseLeftAssocBinaryExpression("AndAndExpression", "OrExpression", tok("&&"));
+            exit_section_(builder,m,
+                AND_EXXPRESSION_,result);//todo new types needed.
+            return result;
         }
 
         /**
@@ -230,10 +301,13 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(RULE andExpression) $(LITERAL '&') $(RULE cmpExpression)
          *     ;)
          */
-        ExpressionNode parseAndExpression()
+        boolean parseAndExpression()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-            return parseLeftAssocBinaryExpression(AndExpression, CmpExpression, tok("&"));
+            Marker m = enter_section_(builder);
+            final boolean result = parseLeftAssocBinaryExpression("AndExpression", "CmpExpression", tok("&"));
+            exit_section_(builder,m, AND_EXXPRESSION_,result);
+            return result;
         }
 
         /**
@@ -243,20 +317,23 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(RULE assignExpression) ($(LITERAL ',') $(RULE assignExpression)?)*
          *     ;)
          */
-        ArgumentList parseArgumentList()
+        boolean parseArgumentList()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-            if (!moreTokens)
+            if (!moreTokens())
             {
                 error("argument list expected instead of EOF");
-                return null;
+                return false;
             }
-            Number startLocation = current().index;
-            auto node = parseCommaSeparatedRule(ArgumentList, AssignExpression);
-            mixin (nullCheck("node"));
-            node.startLocation = startLocation;
-            if (moreTokens) node.endLocation = current().index;
-            return node;
+            final Marker argumentList = enter_section_(builder);
+            boolean node = parseCommaSeparatedRule("ArgumentList", "AssignExpression");
+            if(!node){
+                cleanup(argumentList);
+                return false;
+            }
+//            if (moreTokens()) node.endLocation = current().index;// figure out what this  is about
+            exit_section_(builder,argumentList,ARGUMENT_LIST,true);
+            return true;
         }
 
         /**
@@ -266,15 +343,17 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL '$(LPAREN)') $(RULE argumentList)? $(LITERAL '$(RPAREN)')
          *     ;)
          */
-        Arguments parseArguments()
+        boolean parseArguments()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!Arguments;
-            mixin(tokenCheck("("));
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Arguments,false);
+            if(!tokenCheck("(")){/*cleanup(m);*/return false;}
             if (!currentIs(tok(")")))
-            mixin (parseNodeQ("node.argumentList", "ArgumentList"));
-            mixin(tokenCheck(")"));
-            return node;
+            if(!parseNodeQ("node.argumentList", "ArgumentList")){/*cleanup(m)*/;return false;}
+            if(!tokenCheck(")")){/*cleanup(m);*/return false;}
+//            exit_section_(builder,m,ArGUM,true);//todo needs a type
+            return true;
         }
 
         /**
@@ -285,30 +364,38 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(LITERAL '[') $(RULE arrayMemberInitialization) ($(LITERAL ',') $(RULE arrayMemberInitialization)?)* $(LITERAL ']')
          *     ;)
          */
-        ArrayInitializer parseArrayInitializer()
+        boolean parseArrayInitializer()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!ArrayInitializer;
-         open = expect(tok("["));
-            mixin (nullCheck("open"));
-            node.startLocation = open.index;
-            StackBuffer arrayMemberInitializations;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ArrayInitializer,false);
+            final Marker arrayInit = enter_section_(builder);
+            Token open = expect(tok("["));
+            if(open == null){
+                cleanup(arrayInit);
+                return false;
+            }
             while (moreTokens())
             {
                 if (currentIs(tok("]")))
-                break;
-                if (!arrayMemberInitializations.put(parseArrayMemberInitialization()))
-                    return null;
+                    break;
+                if (!parseArrayMemberInitialization()) {
+                    cleanup(arrayInit);
+                    return false;
+                }
                 if (currentIs(tok(",")))
-                advance();
-            else
-                break;
+                    advance();
+                else
+                    break;
             }
-            ownArray(node.arrayMemberInitializations, arrayMemberInitializations);
-         close = expect(tok("]"));
-            mixin (nullCheck("close"));
-            node.endLocation = close.index;
-            return node;
+            Token close = expect(tok("]"));
+            if(close == null){
+                cleanup(arrayInit);
+                return false;
+            }
+//            node.endLocation = close.index;
+            exit_section_(builder,arrayInit,ARRAY_INITIALIZER,true);
+            return true;
         }
 
         /**
@@ -318,15 +405,26 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL '[') $(RULE argumentList)? $(LITERAL ']')
          *     ;)
          */
-        ArrayLiteral parseArrayLiteral()
+        boolean parseArrayLiteral()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!ArrayLiteral;
-            mixin(tokenCheck("["));
+            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ArrayLiteral,false);
+            if (!tokenCheck("[")) {
+                cleanup(m);
+                return false;
+            }
             if (!currentIs(tok("]")))
-            mixin (parseNodeQ("node.argumentList", "ArgumentList"));
-            mixin(tokenCheck("]"));
-            return node;
+                if (!parseNodeQ("node.argumentList", "ArgumentList")) {
+                    cleanup(m);
+                    return false;
+                }
+            if (!tokenCheck("]")) {
+                cleanup(m);
+                return false;
+            }
+            exit_section_(builder, m, ARRAY_LITERAL, true);
+            return true;
         }
 
         /**
@@ -336,46 +434,53 @@ public class ParserPrelimnaryJavaWriteUp {
          *     ($(RULE assignExpression) $(LITERAL ':'))? $(RULE nonVoidInitializer)
          *     ;)
          */
-        ArrayMemberInitialization parseArrayMemberInitialization()
-        {
-//            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!ArrayMemberInitialization;
-            switch (current().type)
-            {
-                case tok("["):
-                    Bookmark b = setBookmark();
-                    skipBrackets();
-                    if (currentIs(tok(":")))
-                {
-                    mixin (parseNodeQ("node.assignExpression", "AssignExpression"));
+        boolean parseArrayMemberInitialization() {
+//            mixin(traceEnterAndExit!(__FUNCTION__))
+            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ArrayMemberInitialization,false);
+            if (current().type == tok("[")) {
+                Bookmark b = setBookmark();
+                skipBrackets();
+                if (currentIs(tok(":"))) {
+                    if (!parseNodeQ("node.assignExpression", "AssignExpression")) {
+                        cleanup(m);
+                        return false;
+                    }
                     advance(); // :
-                    mixin (parseNodeQ("node.nonVoidInitializer", "NonVoidInitializer"));
-                    break;
-                }
-            else
-                {
+                    if (!parseNodeQ("node.nonVoidInitializer", "NonVoidInitializer")) {
+                        cleanup(m);
+                        return false;
+                    }
+                    exit_section_(builder, m, ARRAY_MEMBER_INITIALIZATION, true);
+                    return true;
+                } else {
                     goToBookmark(b);
-                goto case;
-                }
-                case tok("{"):
-                    mixin (parseNodeQ("node.nonVoidInitializer", "NonVoidInitializer"));
-                    break;
-                default:
-                    auto assignExpression = parseAssignExpression();
-                    mixin (nullCheck("assignExpression"));
-                    if (currentIs(tok(":")))
-                {
-                    node.assignExpression = assignExpression;
-                    advance();
-                    mixin(parseNodeQ("node.nonVoidInitializer", "NonVoidInitializer"));
-                }
-            else
-                {
-                    node.nonVoidInitializer = allocator.make!NonVoidInitializer;
-                    node.nonVoidInitializer.assignExpression = assignExpression;
                 }
             }
-            return node;
+            if (current().type == tok("{")) {
+                if (!parseNodeQ("node.nonVoidInitializer", "NonVoidInitializer")) {
+                    cleanup(m);
+                    return false;
+                }
+                exit_section_(builder, m, ARRAY_MEMBER_INITIALIZATION, true);
+                return true;
+            } else {
+                boolean assignExpression = parseAssignExpression();
+                if (!assignExpression) {
+                    cleanup(m);
+                    return false;
+                }
+                if (currentIs(tok(":"))) {
+                    advance();
+                    if (!parseNodeQ("node.nonVoidInitializer", "NonVoidInitializer")) {
+                        cleanup(m);
+                        return false;
+                    }
+                }
+                exit_section_(builder, m, ARRAY_MEMBER_INITIALIZATION, true);
+                return true;
+            }
+
         }
 
         /**
@@ -386,11 +491,13 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(RULE asmAddExp) ($(LITERAL '+') | $(LITERAL '-')) $(RULE asmMulExp)
          *     ;)
          */
-        ExpressionNode parseAsmAddExp()
+        boolean parseAsmAddExp()
         {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
-            return parseLeftAssocBinaryExpression(AsmAddExp, AsmMulExp,
-            tok("+"), tok("-"));
+            final Marker m = enter_section_(builder);
+            final boolean result = parseLeftAssocBinaryExpression("AsmAddExp", "AsmMulExp", tok("+"), tok("-"));
+            exit_section_(builder,m,ASM_ADD_EXP,result);
+            return result;
         }
 
         /**
@@ -401,10 +508,13 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(RULE asmAndExp) $(LITERAL '&') $(RULE asmEqualExp)
          *     ;)
          */
-        ExpressionNode parseAsmAndExp()
+        boolean parseAsmAndExp()
         {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
-            return parseLeftAssocBinaryExpression(AsmAndExp, AsmEqualExp, tok("&"));
+            final Marker m = enter_section_(builder);
+            final boolean result = parseLeftAssocBinaryExpression("AsmAndExp", "AsmEqualExp", tok("&"));
+            exit_section_(builder,m,ASM_AND_EXP,result);
+            return result;
         }
 
         /**
@@ -415,39 +525,57 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(RULE asmBrExp)? $(LITERAL '[') $(RULE asmExp) $(LITERAL ']')
          *     ;)
          */
-        AsmBrExp parseAsmBrExp()
+        boolean parseAsmBrExp()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
 //            AsmBrExp node = allocator.make!AsmBrExp();
-//            Number line = current().line;
-//            Number column = current().column;
-            if (currentIs(tok("[")))
-            {
+            final Marker m = enter_section_(builder);
+            if (currentIs(tok("["))) {
                 advance(); // [
-                mixin (parseNodeQ("node.asmExp", "AsmExp"));
-                mixin(tokenCheck("]"));
+                if (!parseNodeQ("node.asmExp", "AsmExp")) {
+                    cleanup(m);
+                    return false;
+                }
+                if (!tokenCheck("]")) {
+                    cleanup(m);
+                    return false;
+                }
                 if (currentIs(tok("["))) {
-                goto brLoop;
+                    while (currentIs(tok("[")))
+                    {
+                        advance(); // [
+                        if(!parseNodeQ("node.asmExp", "AsmExp")){
+                            cleanup(m);
+                            return false;
+                        }
+                        if (!tokenCheck("]")) {
+                            cleanup(m);
+                            return false;
+                        }
+                    }
                 }
             }
-        else
+            else
             {
-                mixin(parseNodeQ("node.asmUnaExp", "AsmUnaExp"));
-                brLoop: while (currentIs(tok("[")))
+                if(!parseNodeQ("node.asmUnaExp", "AsmUnaExp")){
+                    cleanup(m);
+                    return false;
+                }
+                while (currentIs(tok("[")))
                 {
-//                    AsmBrExp br = allocator.make!AsmBrExp(); // huehuehuehue
-                    br.asmBrExp = node;
-//                    br.line = current().line;
-//                    br.column = current().column;
-                    node = br;
-//                    node.line = line;
-//                    node.column = column;
                     advance(); // [
-                    mixin(parseNodeQ("node.asmExp", "AsmExp"));
-                    mixin(tokenCheck("]"));
+                    if(!parseNodeQ("node.asmExp", "AsmExp")){
+                        cleanup(m);
+                        return false;
+                    }
+                    if (!tokenCheck("]")) {
+                        cleanup(m);
+                        return false;
+                    }
                 }
             }
-            return node;
+            exit_section_(builder,m,DLanguageTypes.ASM_BR_EXP,true);
+            return true;
         }
 
         /**
@@ -458,10 +586,13 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(RULE asmEqualExp) ('==' | '!=') $(RULE asmRelExp)
          *     ;)
          */
-        ExpressionNode parseAsmEqualExp()
+        boolean parseAsmEqualExp()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-            return parseLeftAssocBinaryExpression(AsmEqualExp, AsmRelExp, tok("=="), tok("!="));
+            final Marker m = enter_section_(builder);
+            final boolean result = parseLeftAssocBinaryExpression("AsmEqualExp", "AsmRelExp", tok("=="), tok("!="));
+            exit_section_(builder,m,ASM_EQUAL_EXP,result);
+            return result;
         }
 
         /**
@@ -471,19 +602,33 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(RULE asmLogOrExp) ($(LITERAL '?') $(RULE asmExp) $(LITERAL ':') $(RULE asmExp))?
          *     ;)
          */
-        ExpressionNode parseAsmExp()
+        boolean parseAsmExp()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
 //            AsmExp node = allocator.make!AsmExp;
-            mixin(parseNodeQ("node.left", "AsmLogOrExp"));
+            final Marker m = enter_section_(builder);
+            if(!parseNodeQ("node.left", "AsmLogOrExp")){
+                cleanup(m);
+                return false;
+            }
             if (currentIs(tok("?")))
             {
                 advance();
-                mixin(parseNodeQ("node.middle", "AsmExp"));
-                mixin(tokenCheck(":"));
-                mixin(parseNodeQ("node.right", "AsmExp"));
+                if(!parseNodeQ("node.middle", "AsmExp")){
+                    cleanup(m);
+                    return false;
+                }
+                if(!tokenCheck(":")){
+                    cleanup(m);
+                    return false;
+                }
+                if(!parseNodeQ("node.right", "AsmExp")){
+                    cleanup(m);
+                    return false;
+                }
             }
-            return node;
+            exit_section_(builder,m,ASM_EXP,true);
+            return true;
         }
 
         /**
@@ -500,31 +645,36 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(LITERAL 'int') $(RULE operands)
          *     ;)
          */
-        AsmInstruction parseAsmInstruction()
-        {
+        boolean parseAsmInstruction() {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
 //            AsmInstruction node = allocator.make!AsmInstruction;
-            if (currentIs(tok("align")))
-            {
+            final Marker m = enter_section_(builder);
+            if (currentIs(tok("align"))) {
                 advance(); // align
-                node.hasAlign = true;
-                if (currentIsOneOf(tok("intLiteral"), tok("identifier")))
-                    node.identifierOrIntegerOrOpcode = advance();
-                else
+//                node.hasAlign = true;
+                if (currentIsOneOf(tok("intLiteral"), tok("identifier"))) {//todo check identifier
+                    advance();
+//                    node.identifierOrIntegerOrOpcode = advance();
+                } else {
                     error("Identifier or integer literal expected.");
-            }
-        else if (currentIsOneOf(tok("identifier"), tok("in"), tok("out"), tok("int")))
-            {
-                node.identifierOrIntegerOrOpcode = advance();
-                if (node.identifierOrIntegerOrOpcode == tok("identifier") && currentIs(tok(":")))
-                {
-                    advance(); // :
-                    mixin(parseNodeQ("node.asmInstruction", "AsmInstruction"));
                 }
-            else if (!currentIs(tok(";")))
-                mixin(parseNodeQ("node.operands", "Operands"));
+            } else if (currentIsOneOf(tok("identifier"), tok("in"), tok("out"), tok("int"))) {
+//                node.identifierOrIntegerOrOpcode = advance();
+                final Token t = advance();
+                if (t.type == tok("identifier") && currentIs(tok(":"))) {
+                    advance(); // :
+                    if (!parseNodeQ("node.asmInstruction", "AsmInstruction")) {
+                        cleanup(m);
+                        return false;
+                    }
+                } else if (!currentIs(tok(";")))
+                    if (!parseNodeQ("node.operands", "Operands")) {
+                        cleanup(m);
+                        return false;
+                    }
             }
-            return node;
+            exit_section_(builder, m, ASM_INSTRUCTION, true);
+            return true;
         }
 
         /**
@@ -535,10 +685,13 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(RULE asmLogAndExp) $(LITERAL '&&') $(RULE asmOrExp)
          *     ;)
          */
-        ExpressionNode parseAsmLogAndExp()
+        boolean parseAsmLogAndExp()
         {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
-            return parseLeftAssocBinaryExpression(AsmLogAndExp, AsmOrExp, tok("&&"));
+            final Marker m = enter_section_(builder);
+            final boolean result = parseLeftAssocBinaryExpression("AsmLogAndExp", "AsmOrExp", tok("&&"));
+            exit_section_(builder,m,ASM_LOG_AND_EXP,result);
+            return result;
         }
 
         /**
@@ -549,10 +702,13 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(RULE asmLogOrExp) '||' $(RULE asmLogAndExp)
          *     ;)
          */
-        ExpressionNode parseAsmLogOrExp()
+        boolean parseAsmLogOrExp()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-            return parseLeftAssocBinaryExpression(AsmLogOrExp, AsmLogAndExp, tok("||"));
+            final Marker m = enter_section_(builder);
+            final boolean result = parseLeftAssocBinaryExpression("AsmLogOrExp", "AsmLogAndExp", tok("||"));
+            exit_section_(builder,m,ASM_LOG_OR_EXP,result);
+            return result;
         }
 
         /**
@@ -563,10 +719,13 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(RULE asmMulExp) ($(LITERAL '*') | $(LITERAL '/') | $(LITERAL '%')) $(RULE asmBrExp)
          *     ;)
          */
-        ExpressionNode parseAsmMulExp()
+        boolean parseAsmMulExp()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-            return parseLeftAssocBinaryExpression(AsmMulExp, AsmBrExp, tok("*"), tok("/"), tok("%"));
+            final Marker m = enter_section_(builder);
+            final boolean result = parseLeftAssocBinaryExpression("AsmMulExp", "AsmBrExp", tok("*"), tok("/"), tok("%"));
+            exit_section_(builder,m,ASM_MUL_EXP,result);
+            return result;
         }
 
         /**
@@ -577,10 +736,13 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(RULE asmOrExp) $(LITERAL '|') $(RULE asmXorExp)
          *     ;)
          */
-        ExpressionNode parseAsmOrExp()
+        boolean parseAsmOrExp()
         {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
-            return parseLeftAssocBinaryExpression(AsmOrExp, AsmXorExp, tok("|"));
+            final Marker m = enter_section_(builder);
+            final boolean result = parseLeftAssocBinaryExpression("AsmOrExp", "AsmXorExp", tok("|"));
+            exit_section_(builder,m,ASM_OR_EXP,result);
+            return result;
         }
 
         void trace(String ignored) {}
@@ -598,39 +760,41 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(LITERAL '$')
          *     ;)
          */
-        AsmPrimaryExp parseAsmPrimaryExp()
+        boolean parseAsmPrimaryExp()
         {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
 //            AsmPrimaryExp node = allocator.make!AsmPrimaryExp();
-            switch (current().type)
-            {
-                case tok("doubleLiteral"):
-                case tok("floatLiteral"):
-                case tok("intLiteral"):
-                case tok("longLiteral"):
-                case tok("StringLiteral"):
-                case tok("$"):
-                    node.token = advance();
-                    break;
-                case tok("identifier"):
-                    if (assumeSorted(REGISTER_NAMES).equalRange(current().text).length > 0)
-                    {
-                        trace("Found register");
-                        mixin (nullCheck("(node.register = parseRegister())"));
-                        if (current().type == tok(":"))
-                        {
-                            advance();
-                            mixin(parseNodeQ("node.segmentOverrideSuffix", "AsmExp"));
+            final Marker m = enter_section_(builder);
+            IdType i = current().type;
+            if (i.equals(tok("doubleLiteral")) || i.equals(tok("floatLiteral")) || i.equals(tok("intLiteral")) || i.equals(tok("longLiteral")) || i.equals(tok("StringLiteral")) || i.equals(tok("$"))) {
+                advance();
+            } else if (i.equals(tok("identifier"))) {
+                if ((Sets.newHashSet(Arrays.asList(REGISTER_NAMES))).contains(current().text)) {
+                    trace("Found register");
+                    if (!parseRegister()) {
+                        cleanup(m);
+                        return false;
+                    }
+                    if (current().type == tok(":")) {
+                        advance();
+                        if (!parseNodeQ("node.segmentOverrideSuffix", "AsmExp")) {
+                            cleanup(m);
+                            return false;
                         }
                     }
-                    else
-                        mixin(parseNodeQ("node.identifierChain", "IdentifierChain"));
-                    break;
-                default:
-                    error("Float literal, integer literal, $, or identifier expected.");
-                    return null;
+                } else {
+                    if (!parseNodeQ("node.identifierChain", "IdentifierChain")) {
+                        cleanup(m);
+                        return false;
+                    }
+                }
+            } else {
+                error("Float literal, integer literal, $, or identifier expected.");
+                cleanup(m);
+                return false;
             }
-            return node;
+            exit_section_(builder,m,ASM_PRIMARY_EXP,true);
+            return true;
         }
 
         /**
@@ -641,11 +805,13 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(RULE asmRelExp) (($(LITERAL '<') | $(LITERAL '<=') | $(LITERAL '>') | $(LITERAL '>=')) $(RULE asmShiftExp))?
          *     ;)
          */
-        ExpressionNode parseAsmRelExp()
+        boolean parseAsmRelExp()
         {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
-            return parseLeftAssocBinaryExpression(AsmRelExp, AsmShiftExp, tok("<"),
-            tok("<="), tok(">"), tok(">="));
+            final Marker m = enter_section_(builder);
+            final boolean result = parseLeftAssocBinaryExpression("AsmRelExp", "AsmShiftExp", tok("<"), tok("<="), tok(">"), tok(">="));
+            exit_section_(builder,m,ASM_REL_EXP,result);
+            return result;
         }
 
         /**
@@ -656,11 +822,13 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(RULE asmShiftExp) ($(LITERAL '<<') | $(LITERAL '>>') | $(LITERAL '>>>')) $(RULE asmAddExp)
          *     ;)
          */
-        ExpressionNode parseAsmShiftExp()
+        boolean parseAsmShiftExp()
         {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
-            return parseLeftAssocBinaryExpression(AsmShiftExp, AsmAddExp, tok("<<"),
-            tok(">>"), tok(">>>"));
+            final Marker m = enter_section_(builder);
+            final boolean result = parseLeftAssocBinaryExpression("AsmShiftExp", "AsmAddExp", tok("<<"), tok(">>"), tok(">>>"));
+            exit_section_(builder,m,ASM_SHIFT_EXP,result);
+            return result;
         }
 
         /**
@@ -670,34 +838,36 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'asm') $(RULE functionAttributes)? $(LITERAL '{') $(RULE asmInstruction)+ $(LITERAL '}')
          *     ;)
          */
-        AsmStatement parseAsmStatement()
+        boolean parseAsmStatement()
         {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
 //            AsmStatement node = allocator.make!AsmStatement;
+            final Marker m = enter_section_(builder);
             advance(); // asm
-            StackBuffer functionAttributes;
             while (isAttribute())
             {
-                if (!functionAttributes.put(parseFunctionAttribute()))
+                if (!parseFunctionAttribute(true))
                 {
                     error("Function attribute or '{' expected");
-                    return null;
+                    //should there be a cleanup here or would that suppress the error?
+                    cleanup(m);
+                    return false;
                 }
             }
-            ownArray(node.functionAttributes, functionAttributes);
             advance(); // {
-            StackBuffer instructions;
+//            final Marker statementList = enter_section_(builder);
             while (moreTokens() && !currentIs(tok("}")))
             {
-                auto c = allocator.setCheckpoint();
-                if (!instructions.put(parseAsmInstruction()))
-                    allocator.rollback(c);
-                else
-                    expect(tok(";"));
+                //todo the libdparse source does some stuff with the rollback allocator here that I don't understand
+                parseAsmInstruction();
+//
+//                else
+                expect(tok(";"));
             }
-            ownArray(node.asmInstructions, instructions);
+//            exit_section_(builder,statementList,);//todo needs type
             expect(tok("}"));
-            return node;
+            exit_section_(builder,m,ASM_STATEMENT,true);
+            return true;
         }
 
         /**
@@ -717,39 +887,37 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(LITERAL 'real') $(LITERAL Identifier)?
          *     ;)
          */
-        AsmTypePrefix parseAsmTypePrefix()
+        boolean parseAsmTypePrefix()
         {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
-            switch (current().type)
-            {
-                case tok("identifier"):
-                case tok("byte"):
-                case tok("short"):
-                case tok("int"):
-                case tok("float"):
-                case tok("double"):
-                case tok("real"):
-//                    AsmTypePrefix node = allocator.make!AsmTypePrefix();
-                    node.left = advance();
-                    if (node.left.type == tok("identifier"))
-                        switch (node.left.text)
-                        {
-                            case "near":
-                            case "far":
-                            case "word":
-                            case "dword":
-                            case "qword":
-                                break;
-                            default:
-                                error("ASM type node expected");
-                                return null;
+            final Marker m = enter_section_(builder);
+            IdType i = current().type;
+            if (i.equals(tok("identifier")) || i.equals(tok("byte")) || i.equals(tok("short")) || i.equals(tok("int")) || i.equals(tok("float")) || i.equals(tok("double")) || i.equals(tok("real"))) {
+                Token t = advance();
+                if (t.type == tok("identifier"))
+                    switch (t.text) {
+                        case "near":
+                        case "far":
+                        case "word":
+                        case "dword":
+                        case "qword": {
+                            break;
                         }
-                    if (currentIs(tok("identifier")) && current().text == "ptr")
-                        node.right = advance();
-                    return node;
-                default:
-                    error("Expected an identifier, 'byte', 'short', 'int', 'float', 'double', or 'real'");
-                    return null;
+                        default: {
+                            error("ASM type node expected");
+                            cleanup(m);//todo should there be a cleanup here
+                            return false;
+                        }
+                    }
+                if (currentIs(tok("identifier")) && current().text.equals("ptr")) {
+                    advance();
+                }
+                exit_section_(builder, m, ASM_TYPE_PREFIX, true);
+                return true;
+            } else {
+                error("Expected an identifier, 'byte', 'short', 'int', 'float', 'double', or 'real'");
+                cleanup(m);
+                return false;
             }
         }
 
@@ -766,53 +934,70 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(RULE asmPrimaryExp)
          *     ;)
          */
-        AsmUnaExp parseAsmUnaExp()
+        boolean parseAsmUnaExp()
         {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
 //            AsmUnaExp node = allocator.make!AsmUnaExp();
-            switch (current().type)
-            {
-                case tok("+"):
-                case tok("-"):
-                case tok("!"):
-                case tok("~"):
-                    node.prefix = advance();
-                    mixin(parseNodeQ("node.asmUnaExp", "AsmUnaExp"));
-                    break;
-                case tok("byte"):
-                case tok("short"):
-                case tok("int"):
-                case tok("float"):
-                case tok("double"):
-                case tok("real"):
-                    typePrefix:
-                    mixin(parseNodeQ("node.asmTypePrefix", "AsmTypePrefix"));
-                    mixin(parseNodeQ("node.asmExp", "AsmExp"));
-                    break;
-                case tok("identifier"):
-                    switch (current().text)
-                    {
-                        case "offsetof":
-                        case "seg":
-                            node.prefix = advance();
-                            mixin(parseNodeQ("node.asmExp", "AsmExp"));
-                            break;
-                        case "near":
-                        case "far":
-                        case "word":
-                        case "dword":
-                        case "qword":
-                goto typePrefix;
-                        default:
-                goto outerDefault;
+            final Marker m = enter_section_(builder);
+            IdType i = current().type;
+            if (i.equals(tok("+")) || i.equals(tok("-")) || i.equals(tok("!")) || i.equals(tok("~"))) {
+                advance();
+                if (!parseNodeQ("node.asmUnaExp", "AsmUnaExp")) {
+                    cleanup(m);
+                    return false;
+                }
+            } else if (i.equals(tok("byte")) || i.equals(tok("short")) || i.equals(tok("int")) || i.equals(tok("float")) || i.equals(tok("double")) || i.equals(tok("real"))) {
+                if (!parseNodeQ("node.asmTypePrefix", "AsmTypePrefix")) {
+                    cleanup(m);
+                    return false;
+                }
+                if (!parseNodeQ("node.asmExp", "AsmExp")) {
+                    cleanup(m);
+                    return false;
+                }
+            } else if (i.equals(tok("identifier"))) {
+                switch (current().text) {
+                    case "offsetof":
+                    case "seg": {
+                        advance();
+                        if (!parseNodeQ("node.asmExp", "AsmExp")) {
+                            cleanup(m);
+                            return false;
+                        }
+                        break;
                     }
-                    break;
-                outerDefault:
-                default:
-                mixin(parseNodeQ("node.asmPrimaryExp", "AsmPrimaryExp"));
-                break;
+                    case "near":
+                    case "far":
+                    case "word":
+                    case "dword":
+                    case "qword": {
+                        if (!parseNodeQ("node.asmTypePrefix", "AsmTypePrefix")) {
+                            cleanup(m);
+                            return false;
+                        }
+                        if (!parseNodeQ("node.asmExp", "AsmExp")) {
+                            cleanup(m);
+                            return false;
+                        }
+                        break;
+                    }
+                    default: {
+                        if (!parseNodeQ("node.asmPrimaryExp", "AsmPrimaryExp")) {
+                            cleanup(m);
+                            return false;
+                        }
+                        break;
+                    }
+                }
+
+            } else {
+                if (!parseNodeQ("node.asmPrimaryExp", "AsmPrimaryExp")) {
+                    cleanup(m);
+                    return false;
+                }
             }
-            return node;
+            exit_section_(builder,m,ASM_UNA_EXP,true);
+            return true;
         }
 
         /**
@@ -823,10 +1008,13 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(RULE asmXorExp) $(LITERAL '^') $(RULE asmAndExp)
          *     ;)
          */
-        ExpressionNode parseAsmXorExp()
+        boolean parseAsmXorExp()
         {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
-            return parseLeftAssocBinaryExpression(AsmXorExp, AsmAndExp, tok("^"));
+            final Marker m = enter_section_(builder);
+            final boolean result = parseLeftAssocBinaryExpression("AsmXorExp", "AsmAndExp", tok("^"));
+            exit_section_(builder,m,ASM_XOR_EXP,result);
+            return result;
         }
 
         /**
@@ -836,29 +1024,41 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'assert') $(LITERAL '$(LPAREN)') $(RULE assignExpression) ($(LITERAL ',') $(RULE assignExpression))? $(LITERAL ',')? $(LITERAL '$(RPAREN)')
          *     ;)
          */
-        AssertExpression parseAssertExpression()
+        boolean parseAssertExpression()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!AssertExpression;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.AssertExpression,false);
 //            node.line = current().line;
 //            node.column = current().column;
+            final Marker m = enter_section_(builder);
             advance(); // "assert"
-            mixin(tokenCheck("("));
-            mixin(parseNodeQ("node.assertion", "AssignExpression"));
+            if(!tokenCheck("(")){return false;}
+            if(!parseNodeQ("node.assertion", "AssignExpression")){
+                cleanup(m);
+                return false;
+            }
             if (currentIs(tok(",")))
             {
                 advance();
                 if (currentIs(tok(")")))
                 {
                     advance();
-                    return node;
+                    return true;
                 }
-                mixin(parseNodeQ("node.message", "AssignExpression"));
+                if(!parseNodeQ("node.message", "AssignExpression")){
+                    cleanup(m);
+                    return false;
+                }
             }
             if (currentIs(tok(",")))
-            advance();
-            mixin(tokenCheck(")"));
-            return node;
+                advance();
+            if(!tokenCheck(")")){
+                cleanup(m);
+                return false;
+            }
+            exit_section_(builder,m,ASSERT_EXPRESSION,true);
+            return true;
         }
 
         /**
@@ -884,33 +1084,34 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(LITERAL '~=')
          *     ;)
          */
-        ExpressionNode parseAssignExpression()
+        boolean parseAssignExpression()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-            if (!moreTokens)
+            final Marker m = enter_section_(builder);
+            if (!moreTokens())
             {
                 error("Assign expression expected instead of EOF");
-                return null;
+                return false;
             }
-            auto ternary = parseTernaryExpression();
-            if (ternary == null)
-            return null;
-            if (currentIsOneOf(tok("="), tok(">>>="),
-            tok(">>="), tok("<<="),
-            tok("+="), tok("-="), tok("*="),
-            tok("%="), tok("&="), tok("/="),
-            tok("|="), tok("^^="), tok("^="),
-            tok("~=")))
-            {
-//                auto node = allocator.make!AssignExpression;
+            boolean ternary = parseTernaryExpression();
+            if (!ternary) {
+                cleanup(m);
+                return false;
+            }
+            if (currentIsOneOf(tok("="), tok(">>>="), tok(">>="), tok("<<="), tok("+="), tok("-="), tok("*="), tok("%="), tok("&="), tok("/="), tok("|="), tok("^^="), tok("^="), tok("~="))) {
+//                Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.AssignExpression,false);
 //                node.line = current().line;
 //                node.column = current().column;
-                node.ternaryExpression = ternary;
-                node.operator = advance().type;
-                mixin(parseNodeQ("node.expression", "AssignExpression"));
-                return node;
+//                node.ternaryExpression = ternary;
+//                node.operator = advance().type;
+                if(!parseNodeQ("node.expression", "AssignExpression")){
+                    cleanup(m);
+                    return false;
+                }
+                return true;
             }
-            return ternary;
+            return true;
         }
 
         /**
@@ -920,12 +1121,87 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL '[') $(RULE keyValuePairs) $(LITERAL ']')
          *     ;)
          */
-        AssocArrayLiteral parseAssocArrayLiteral()
+        boolean parseAssocArrayLiteral()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-            mixin (simpleParse(AssocArrayLiteral, tok("["),
-            "keyValuePairs|parseKeyValuePairs", tok("]")));
+            final Marker m = enter_section_(builder);
+            final boolean result = simpleParse("AssocArrayLiteral", tok("["), "keyValuePairs|parseKeyValuePairs", tok("]"));
+            exit_section_(builder,m,ASSOC_ARRAY_LITERAL,result);
+            return result;
         }
+
+        /**
+         * moove and document these
+         * @param nodeType
+         * @param parts
+         * @return
+         */
+        private boolean simpleParse(String nodeType, Object... parts) {
+            //open marker for type
+            final Marker m = enter_section_(builder);
+            final boolean result = simpleParseItems(parts);
+            exit_section_(builder,m,nodeTypeToIElementType(nodeType),result);
+            return result;
+        }
+
+        boolean simpleParseItems(Object... items){
+            for (Object item : items) {
+                if(item instanceof IdType){
+                    if(!simpleParseItemsSingle((IdType) item)){
+                        return false;
+                    }
+                }
+                else if(item instanceof String){
+                    if(!simpleParseItemsSingle((String) item)){
+                        return false;
+                    }
+                }
+                else {
+                    throw new IllegalArgumentException();
+                }
+
+            }
+            return true;
+
+
+        }
+
+        boolean simpleParseItemsSingle(String item){
+            final int i = item.indexOf("|");
+            final String first = item.substring(0, i);//unneeded, libdparse uses for building it's ast, but we don't need to
+            final String second = item.substring(i + 1);
+            final String name = second.replace("parse", "");
+            return parseName(name);
+
+        }
+
+        boolean simpleParseItemsSingle(IdType item){
+            if (expect(item) == null) {
+                return false;
+            }
+            return true;
+        }
+
+//        template simpleParseItems(items ...)
+//        {
+//            static if (items.length > 1)
+//            enum simpleParseItems = simpleParseItem!(items[0]) ~ "\n"
+//            ~ simpleParseItems!(items[1 .. $]);
+//        else static if (items.length == 1)
+//            enum simpleParseItems = simpleParseItem!(items[0]);
+//        else
+//            enum simpleParseItems = "";
+//        }
+
+//        template simpleParseItem(alias item)
+//        {
+//            static if (is (typeof(item) == string))
+//            enum simpleParseItem = "if ((node." ~ item[0 .. item.countUntil("|")]
+//            ~ " = " ~ item[item.countUntil("|") + 1 .. $] ~ "()) is null) { return null; }";
+//        else
+//            enum simpleParseItem = "if (expect(" ~ item.stringof ~ ") is null) { return null; }";
+//        }
+
 
         /**
          * Parses an AtAttribute
@@ -937,10 +1213,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(LITERAL '@') $(RULE TemplateInstance)
          *     ;)
          */
-        AtAttribute parseAtAttribute()
+        boolean parseAtAttribute()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!AtAttribute;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.AtAttribute,false);
          start = expect(tok("@"));
             mixin (nullCheck("start"));
             if (!moreTokens)
@@ -974,7 +1251,7 @@ public class ParserPrelimnaryJavaWriteUp {
                     return null;
             }
             if (moreTokens) node.endLocation = current().index;
-            return node;
+            return true;
         }
 
         /**
@@ -1009,10 +1286,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(LITERAL 'ref')
          *     ;)
          */
-        Attribute parseAttribute()
+        boolean parseAttribute()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!Attribute;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Attribute,false);
             switch (current().type)
             {
                 case tok("pragma"):
@@ -1068,7 +1346,7 @@ public class ParserPrelimnaryJavaWriteUp {
                 default:
                     return null;
             }
-            return node;
+            return true;
         }
 
         /**
@@ -1078,13 +1356,14 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(RULE attribute) $(LITERAL ':')
          *     ;)
          */
-        AttributeDeclaration parseAttributeDeclaration()//(Attribute attribute = null)
+        boolean parseAttributeDeclaration()//(Attribute attribute = null)
         {
-//            auto node = allocator.make!AttributeDeclaration;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.AttributeDeclaration,false);
 //            node.line = current().line;
             node.attribute = attribute == null ? parseAttribute() : attribute;
             expect(tok(":"));
-            return node;
+            return true;
         }
 
         /**
@@ -1094,10 +1373,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(RULE storageClass)+  $(RULE autoDeclarationPart) ($(LITERAL ',') $(RULE autoDeclarationPart))* $(LITERAL ';')
          *     ;)
          */
-        AutoDeclaration parseAutoDeclaration()
+        boolean parseAutoDeclaration()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!AutoDeclaration;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.AutoDeclaration,false);
 //            node.comment = comment;
 //            comment = null;
             StackBuffer storageClasses;
@@ -1126,7 +1406,7 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL Identifier) $(RULE templateParameters)? $(LITERAL '=') $(RULE initializer)
          *     ;)
          */
-        AutoDeclarationPart parseAutoDeclarationPart()
+        boolean parseAutoDeclarationPart()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
 //            auto part = allocator.make!AutoDeclarationPart;
@@ -1136,7 +1416,7 @@ public class ParserPrelimnaryJavaWriteUp {
             part.identifier = *i;
             if (currentIs(tok("(")))
             mixin(parseNodeQ("part.templateParameters", "TemplateParameters"));
-            mixin(tokenCheck("="));
+            if(!tokenCheck("=")){return false;}
             mixin(parseNodeQ("part.initializer", "Initializer"));
             return part;
         }
@@ -1148,10 +1428,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL '{') $(RULE declarationsAndStatements)? $(LITERAL '}')
          *     ;)
          */
-        BlockStatement parseBlockStatement()
+        boolean parseBlockStatement()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!BlockStatement;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.BlockStatement,false);
          openBrace = expect(tok("{"));
             mixin (nullCheck("openBrace"));
             node.startLocation = openBrace.index;
@@ -1168,7 +1449,7 @@ public class ParserPrelimnaryJavaWriteUp {
                 node.endLocation = Number.max;
             }
 
-            return node;
+            return true;
         }
 
         /**
@@ -1178,7 +1459,7 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'body') $(RULE blockStatement)
          *     ;)
          */
-        BodyStatement parseBodyStatement()
+        boolean parseBodyStatement()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             mixin (simpleParse!(BodyStatement, tok("body"),
@@ -1192,16 +1473,17 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'break') $(LITERAL Identifier)? $(LITERAL ';')
          *     ;)
          */
-        BreakStatement parseBreakStatement()
+        boolean parseBreakStatement()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             expect(tok("break"));
-//            auto node = allocator.make!BreakStatement;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.BreakStatement,false);
             switch (current().type)
             {
                 case tok("identifier"):
                     node.label = advance();
-                    mixin(tokenCheck(";"));
+                    if(!tokenCheck(";")){return false;}
                     break;
                 case tok(";"):
                     advance();
@@ -1210,7 +1492,7 @@ public class ParserPrelimnaryJavaWriteUp {
                     error("Identifier or semicolon expected following \"break\"");
                     return null;
             }
-            return node;
+            return true;
         }
 
         /**
@@ -1220,10 +1502,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(RULE type2)
          *     ;)
          */
-        BaseClass parseBaseClass()
+        boolean parseBaseClass()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!BaseClass;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.BaseClass,false);
             if (current().type.isProtection())
             {
                 warn("Use of base class protection == deprecated.");
@@ -1233,7 +1516,7 @@ public class ParserPrelimnaryJavaWriteUp {
             {
                 return null;
             }
-            return node;
+            return true;
         }
 
         /**
@@ -1243,7 +1526,7 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(RULE baseClass) ($(LITERAL ',') $(RULE baseClass))*
          *     ;)
          */
-        BaseClassList parseBaseClassList()
+        boolean parseBaseClassList()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             return parseCommaSeparatedRule(BaseClassList, BaseClass);
@@ -1277,7 +1560,7 @@ public class ParserPrelimnaryJavaWriteUp {
          *    | $(LITERAL 'void')
          *    ;)
          */
-        Token.IdType parseBuiltinType()
+        Token.boolean parseBuiltinType()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             return advance().type;
@@ -1293,11 +1576,12 @@ public class ParserPrelimnaryJavaWriteUp {
         CaseRangeStatement parseCaseRangeStatement(ExpressionNode low)
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!CaseRangeStatement;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.CaseRangeStatement,false);
             assert (low != null);
             node.low = low;
-            mixin(tokenCheck(":"));
-            mixin(tokenCheck(".."));
+            if(!tokenCheck(":")){return false;}
+            if(!tokenCheck("..")){return false;}
             expect(tok("case"));
             mixin(parseNodeQ("node.high", "AssignExpression"));
          colon = expect(tok(":"));
@@ -1305,7 +1589,7 @@ public class ParserPrelimnaryJavaWriteUp {
             return null;
             node.colonLocation = colon.index;
             mixin(parseNodeQ("node.declarationsAndStatements", "DeclarationsAndStatements"));
-            return node;
+            return true;
         }
 
         /**
@@ -1318,14 +1602,15 @@ public class ParserPrelimnaryJavaWriteUp {
         CaseStatement parseCaseStatement(ArgumentList argumentList = null)
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!CaseStatement;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.CaseStatement,false);
             node.argumentList = argumentList;
          colon = expect(tok(":"));
             if (colon == null)
             return null;
             node.colonLocation = colon.index;
             mixin (nullCheck("node.declarationsAndStatements = parseDeclarationsAndStatements(false)"));
-            return node;
+            return true;
         }
 
         /**
@@ -1335,12 +1620,13 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'cast') $(LITERAL '$(LPAREN)') ($(RULE type) | $(RULE castQualifier))? $(LITERAL '$(RPAREN)') $(RULE unaryExpression)
          *     ;)
          */
-        CastExpression parseCastExpression()
+        boolean parseCastExpression()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!CastExpression;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.CastExpression,false);
             expect(tok("cast"));
-            mixin(tokenCheck("("));
+            if(!tokenCheck("(")){return false;}
             if (!currentIs(tok(")")))
             {
                 if (isCastQualifier())
@@ -1348,9 +1634,9 @@ public class ParserPrelimnaryJavaWriteUp {
             else
                 mixin(parseNodeQ("node.type", "Type"));
             }
-            mixin(tokenCheck(")"));
+            if(!tokenCheck(")")){return false;}
             mixin(parseNodeQ("node.unaryExpression", "UnaryExpression"));
-            return node;
+            return true;
         }
 
         /**
@@ -1367,10 +1653,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *    | $(LITERAL 'shared') $(LITERAL 'inout')
          *    ;)
          */
-        CastQualifier parseCastQualifier()
+        boolean parseCastQualifier()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!CastQualifier;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.CastQualifier,false);
             switch (current().type)
             {
                 case tok("inout"):
@@ -1391,7 +1678,7 @@ public class ParserPrelimnaryJavaWriteUp {
                     error(", immutable, inout, or shared expected");
                     return null;
             }
-            return node;
+            return true;
         }
 
         /**
@@ -1401,18 +1688,19 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'catch') $(LITERAL '$(LPAREN)') $(RULE type) $(LITERAL Identifier)? $(LITERAL '$(RPAREN)') $(RULE declarationOrStatement)
          *     ;)
          */
-        Catch parseCatch()
+        boolean parseCatch()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!Catch;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Catch,false);
             expect(tok("catch"));
-            mixin(tokenCheck("("));
+            if(!tokenCheck("(")){return false;}
             mixin(parseNodeQ("node.type", "Type"));
             if (currentIs(tok("identifier")))
             node.identifier = advance();
-            mixin(tokenCheck(")"));
+            if(!tokenCheck(")")){return false;}
             mixin(parseNodeQ("node.declarationOrStatement", "DeclarationOrStatement"));
-            return node;
+            return true;
         }
 
         /**
@@ -1423,10 +1711,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(RULE catch)* $(RULE lastCatch)
          *     ;)
          */
-        Catches parseCatches()
+        boolean parseCatches()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!Catches;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Catches,false);
             StackBuffer catches;
             while (moreTokens())
             {
@@ -1444,7 +1733,7 @@ public class ParserPrelimnaryJavaWriteUp {
                 }
             }
             ownArray(node.catches, catches);
-            return node;
+            return true;
         }
 
         /**
@@ -1458,10 +1747,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(LITERAL 'class') $(LITERAL Identifier) $(RULE templateParameters) ($(LITERAL ':') $(RULE baseClassList))? $(RULE raint)? $(RULE structBody)
          *     ;)
          */
-        ClassDeclaration parseClassDeclaration()
+        boolean parseClassDeclaration()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!ClassDeclaration;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ClassDeclaration,false);
             expect(tok("class"));
             return parseInterfaceOrClass(node);
         }
@@ -1477,7 +1767,7 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(RULE inExpression)
          *     ;)
          */
-        ExpressionNode parseCmpExpression()
+        boolean parseCmpExpression()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             auto shift = parseShiftExpression();
@@ -1488,20 +1778,23 @@ public class ParserPrelimnaryJavaWriteUp {
             switch (current().type)
             {
                 case tok("is"):
-//                    auto node = allocator.make!CmpExpression;
+//                    Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.CmpExpression,false);
                     mixin (nullCheck("node.identityExpression = parseIdentityExpression(shift)"));
-                    return node;
+                    return true;
                 case tok("in"):
-//                    auto node = allocator.make!CmpExpression;
+//                    Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.CmpExpression,false);
                     mixin (nullCheck("node.inExpression = parseInExpression(shift)"));
-                    return node;
+                    return true;
                 case tok("!"):
-//                    auto node = allocator.make!CmpExpression;
+//                    Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.CmpExpression,false);
                     if (peekIs(tok("is")))
                     mixin (nullCheck("node.identityExpression = parseIdentityExpression(shift)"));
             else if (peekIs(tok("in")))
                     mixin (nullCheck("node.inExpression = parseInExpression(shift)"));
-                    return node;
+                    return true;
                 case tok("<"):
                 case tok("<="):
                 case tok(">"):
@@ -1514,14 +1807,16 @@ public class ParserPrelimnaryJavaWriteUp {
                 case tok("!>="):
                 case tok("!<"):
                 case tok("!<="):
-//                    auto node = allocator.make!CmpExpression;
+//                    Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.CmpExpression,false);
                     mixin (nullCheck("node.relExpression = parseRelExpression(shift)"));
-                    return node;
+                    return true;
                 case tok("=="):
                 case tok("!="):
-//                    auto node = allocator.make!CmpExpression;
+//                    Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.CmpExpression,false);
                     mixin (nullCheck("node.equalExpression = parseEqualExpression(shift)"));
-                    return node;
+                    return true;
                 default:
                     return shift;
             }
@@ -1536,10 +1831,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(RULE staticIfCondition)
          *     ;)
          */
-        CompileCondition parseCompileCondition()
+        boolean parseCompileCondition()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!CompileCondition;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.CompileCondition,false);
             switch (current().type)
             {
                 case tok("version"):
@@ -1555,7 +1851,7 @@ public class ParserPrelimnaryJavaWriteUp {
                     error("\"version\", \"debug\", or \"static\" expected");
                     return null;
             }
-            return node;
+            return true;
         }
 
         /**
@@ -1579,7 +1875,8 @@ public class ParserPrelimnaryJavaWriteUp {
         ConditionalDeclaration parseConditionalDeclaration(boolean strict)
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!ConditionalDeclaration;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ConditionalDeclaration,false);
             mixin(parseNodeQ("node.compileCondition", "CompileCondition"));
 
             StackBuffer trueDeclarations;
@@ -1600,7 +1897,7 @@ public class ParserPrelimnaryJavaWriteUp {
                     }
                 }
                 if (brace)
-                    mixin(tokenCheck("}"));
+                    if(!tokenCheck("}")){return false;}
             }
         else if (!trueDeclarations.put(parseDeclaration(strict, true)))
             return null;
@@ -1613,7 +1910,7 @@ public class ParserPrelimnaryJavaWriteUp {
                 advance();
             }
         else
-            return node;
+            return true;
 
             StackBuffer falseDeclarations;
             if (currentIs(tok(":")) || currentIs(tok("{")))
@@ -1624,7 +1921,7 @@ public class ParserPrelimnaryJavaWriteUp {
                 if (!falseDeclarations.put(parseDeclaration(strict, true)))
                     return null;
                 if (brace)
-                    mixin(tokenCheck("}"));
+                    if(!tokenCheck("}")){return false;}
             }
         else
             {
@@ -1632,7 +1929,7 @@ public class ParserPrelimnaryJavaWriteUp {
                     return null;
             }
             ownArray(node.falseDeclarations, falseDeclarations);
-            return node;
+            return true;
         }
 
         /**
@@ -1642,10 +1939,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(RULE compileCondition) $(RULE declarationOrStatement) ($(LITERAL 'else') $(RULE declarationOrStatement))?
          *     ;)
          */
-        ConditionalStatement parseConditionalStatement()
+        boolean parseConditionalStatement()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!ConditionalStatement;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ConditionalStatement,false);
             mixin(parseNodeQ("node.compileCondition", "CompileCondition"));
             mixin(parseNodeQ("node.trueStatement", "DeclarationOrStatement"));
             if (currentIs(tok("else")))
@@ -1653,7 +1951,7 @@ public class ParserPrelimnaryJavaWriteUp {
                 advance();
                 mixin(parseNodeQ("node.falseStatement", "DeclarationOrStatement"));
             }
-            return node;
+            return true;
         }
 
         /**
@@ -1663,17 +1961,18 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'if') $(LITERAL '$(LPAREN)') $(RULE expression) $(LITERAL '$(RPAREN)')
          *     ;)
          */
-        Constraint parseConstraint()
+        boolean parseConstraint()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!Constraint;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Constraint,false);
             Token ifToken = expect(tok("if"));
             mixin (nullCheck("ifToken"));
             node.location = ifToken.index;
-            mixin(tokenCheck("("));
+            if(!tokenCheck("(")){return false;}
             mixin(parseNodeQ("node.expression", "Expression"));
-            mixin(tokenCheck(")"));
-            return node;
+            if(!tokenCheck(")")){return false;}
+            return true;
         }
 
         /**
@@ -1683,7 +1982,7 @@ public class ParserPrelimnaryJavaWriteUp {
          *       $(LITERAL 'this') $(RULE templateParameters)? $(RULE parameters) $(RULE memberFunctionAttribute)* $(RULE raint)? ($(RULE functionBody) | $(LITERAL ';'))
          *     ;)
          */
-        Constructor parseConstructor()
+        boolean parseConstructor()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             Constructor node = allocator.make!Constructor;
@@ -1715,7 +2014,7 @@ public class ParserPrelimnaryJavaWriteUp {
             advance();
         else
             mixin(parseNodeQ("node.functionBody", "FunctionBody"));
-            return node;
+            return true;
         }
 
         /**
@@ -1725,16 +2024,17 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'continue') $(LITERAL Identifier)? $(LITERAL ';')
          *     ;)
          */
-        ContinueStatement parseContinueStatement()
+        boolean parseContinueStatement()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!ContinueStatement;
-            mixin(tokenCheck("continue"));
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ContinueStatement,false);
+            if(!tokenCheck("continue")){return false;}
             switch (current().type)
             {
                 case tok("identifier"):
                     node.label = advance();
-                    mixin(tokenCheck(";"));
+                    if(!tokenCheck(";")){return false;}
                     break;
                 case tok(";"):
                     advance();
@@ -1743,7 +2043,7 @@ public class ParserPrelimnaryJavaWriteUp {
                     error("Identifier or semicolon expected following "continue"");
                     return null;
             }
-            return node;
+            return true;
         }
 
         /**
@@ -1753,10 +2053,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'debug') ($(LITERAL '$(LPAREN)') ($(LITERAL IntegerLiteral) | $(LITERAL Identifier)) $(LITERAL '$(RPAREN)'))?
          *     ;)
          */
-        DebugCondition parseDebugCondition()
+        boolean parseDebugCondition()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!DebugCondition;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.DebugCondition,false);
 
          d = expect(tok("debug"));
             mixin (nullCheck("d"));
@@ -1772,9 +2073,9 @@ public class ParserPrelimnaryJavaWriteUp {
                     error("Integer literal or identifier expected");
                     return null;
                 }
-                mixin(tokenCheck(")"));
+                if(!tokenCheck(")")){return false;}
             }
-            return node;
+            return true;
         }
 
         /**
@@ -1784,12 +2085,13 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'debug') $(LITERAL '=') ($(LITERAL Identifier) | $(LITERAL IntegerLiteral)) $(LITERAL ';')
          *     ;)
          */
-        DebugSpecification parseDebugSpecification()
+        boolean parseDebugSpecification()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!DebugSpecification;
-            mixin(tokenCheck("debug"));
-            mixin(tokenCheck("="));
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.DebugSpecification,false);
+            if(!tokenCheck("debug")){return false;}
+            if(!tokenCheck("=")){return false;}
             if (currentIsOneOf(tok("identifier"), tok("intLiteral")))
             node.identifierOrInteger = advance();
         else
@@ -1797,8 +2099,8 @@ public class ParserPrelimnaryJavaWriteUp {
                 error("Integer literal or identifier expected");
                 return null;
             }
-            mixin(tokenCheck(";"));
-            return node;
+            if(!tokenCheck(";")){return false;}
+            return true;
         }
 
         /**
@@ -1842,12 +2144,13 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(RULE versionSpecification)
          *     ;)
          */
-        Declaration parseDeclaration()
+        boolean parseDeclaration()
         {
             final boolean strict = false;
             final boolean mustBeDeclaration = false;
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!Declaration;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Declaration,false);
             if (!moreTokens)
             {
                 error("declaration expected instead of EOF");
@@ -1877,7 +2180,7 @@ public class ParserPrelimnaryJavaWriteUp {
                     node.attributeDeclaration = parseAttributeDeclaration(attr);
                     mixin(nullCheck("node.attributeDeclaration"));
                     ownArray(node.attributes, attributes);
-                    return node;
+                    return true;
                 }
             else
                 attributes.put(attr);
@@ -1893,12 +2196,12 @@ public class ParserPrelimnaryJavaWriteUp {
             if (isAuto == DecType.autoVar)
             {
                 mixin(nullCheck("node.variableDeclaration = parseVariableDeclaration(null, true)"));
-                return node;
+                return true;
             }
             else if (isAuto == DecType.autoFun)
             {
                 mixin(nullCheck("node.functionDeclaration = parseFunctionDeclaration(null, true)"));
-                return node;
+                return true;
             }
 
             switch (current().type)
@@ -1944,7 +2247,7 @@ public class ParserPrelimnaryJavaWriteUp {
                     }
                 }
                 ownArray(node.declarations, declarations);
-                mixin(tokenCheck("}"));
+                if(!tokenCheck("}")){return false;}
                 break;
                 case tok("alias"):
                     if (startsWith(tok("alias"), tok("identifier"), tok("this")))
@@ -2132,7 +2435,7 @@ public class ParserPrelimnaryJavaWriteUp {
                     error("Declaration expected");
                     return null;
             }
-            return node;
+            return true;
         }
 
         /**
@@ -2142,11 +2445,12 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(RULE declarationOrStatement)+
          *     ;)
          */
-        DeclarationsAndStatements parseDeclarationsAndStatements()
+        boolean parseDeclarationsAndStatements()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             final boolean includeCases = true;
-//            auto node = allocator.make!DeclarationsAndStatements;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.DeclarationsAndStatements,false);
             StackBuffer declarationsAndStatements;
             while (!currentIsOneOf(tok("}"), tok("else")) && moreTokens() && suppressedErrorCount <= MAX_ERRORS)
             {
@@ -2173,7 +2477,7 @@ public class ParserPrelimnaryJavaWriteUp {
                 }
             }
             ownArray(node.declarationsAndStatements, declarationsAndStatements);
-            return node;
+            return true;
         }
 
         /**
@@ -2184,10 +2488,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(RULE statement)
          *     ;)
          */
-        DeclarationOrStatement parseDeclarationOrStatement()
+        boolean parseDeclarationOrStatement()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!DeclarationOrStatement;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.DeclarationOrStatement,false);
             // "Any ambiguities in the grammar between Statements and
             // Declarations are resolved by the declarations taking precedence."
             Bookmark b = setBookmark();
@@ -2208,7 +2513,7 @@ public class ParserPrelimnaryJavaWriteUp {
                 goToBookmark(b);
                 node.declaration = parseDeclaration(true, true);
             }
-            return node;
+            return true;
         }
 
         /**
@@ -2220,10 +2525,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(LITERAL Identifier) $(RULE templateParameters) $(LITERAL '=') $(RULE initializer)
          *     ;)
          */
-        Declarator parseDeclarator()
+        boolean parseDeclarator()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!Declarator;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Declarator,false);
             id = expect(tok("identifier"));
             mixin (nullCheck("id"));
             node.name = *id;
@@ -2239,7 +2545,7 @@ public class ParserPrelimnaryJavaWriteUp {
             if (currentIs(tok("(")))
             {
                 mixin (nullCheck("(node.templateParameters = parseTemplateParameters())"));
-                mixin(tokenCheck("="));
+                if(!tokenCheck("=")){return false;}
                 mixin (nullCheck("(node.initializer = parseInitializer())"));
             }
         else if (currentIs(tok("=")))
@@ -2247,7 +2553,7 @@ public class ParserPrelimnaryJavaWriteUp {
                 advance();
                 mixin(parseNodeQ("node.initializer", "Initializer"));
             }
-            return node;
+            return true;
         }
 
         /**
@@ -2257,17 +2563,18 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'default') $(LITERAL ':') $(RULE declarationsAndStatements)
          *     ;)
          */
-        DefaultStatement parseDefaultStatement()
+        boolean parseDefaultStatement()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!DefaultStatement;
-            mixin(tokenCheck("default"));
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.DefaultStatement,false);
+            if(!tokenCheck("default")){return false;}
          colon = expect(tok(":"));
             if (colon == null)
             return null;
             node.colonLocation = colon.index;
             mixin(parseNodeQ("node.declarationsAndStatements", "DeclarationsAndStatements"));
-            return node;
+            return true;
         }
 
         /**
@@ -2277,15 +2584,16 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'delete') $(RULE unaryExpression)
          *     ;)
          */
-        DeleteExpression parseDeleteExpression()
+        boolean parseDeleteExpression()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!DeleteExpression;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.DeleteExpression,false);
             node.line = current().line;
             node.column = current().column;
-            mixin(tokenCheck("delete"));
+            if(!tokenCheck("delete")){return false;}
             mixin(parseNodeQ("node.unaryExpression", "UnaryExpression"));
-            return node;
+            return true;
         }
 
         /**
@@ -2295,18 +2603,19 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'deprecated') ($(LITERAL '$(LPAREN)') $(LITERAL StringLiteral)+ $(LITERAL '$(RPAREN)'))?
          *     ;)
          */
-        Deprecated parseDeprecated()
+        boolean parseDeprecated()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!Deprecated;
-            mixin(tokenCheck("deprecated"));
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Deprecated,false);
+            if(!tokenCheck("deprecated")){return false;}
             if (currentIs(tok("(")))
             {
                 advance();
-                mixin (parseNodeQ("node.assignExpression", "AssignExpression"));
+                if(!parseNodeQ("node.assignExpression", "AssignExpression")){cleanup(/*todo*/);return false;}
                 mixin (tokenCheck(")"));
             }
-            return node;
+            return true;
         }
 
         /**
@@ -2316,13 +2625,14 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL '~') $(LITERAL 'this') $(LITERAL '$(LPAREN)') $(LITERAL '$(RPAREN)') $(RULE memberFunctionAttribute)* ($(RULE functionBody) | $(LITERAL ';'))
          *     ;)
          */
-        Destructor parseDestructor()
+        boolean parseDestructor()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!Destructor;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Destructor,false);
 //            node.comment = comment;
             comment = null;
-            mixin(tokenCheck("~"));
+            if(!tokenCheck("~")){return false;}
             if (!moreTokens)
             {
                 error("'this' expected");
@@ -2331,9 +2641,9 @@ public class ParserPrelimnaryJavaWriteUp {
 //            node.index = current().index;
 //            node.line = current().line;
 //            node.column = current().column;
-            mixin(tokenCheck("this"));
-            mixin(tokenCheck("("));
-            mixin(tokenCheck(")"));
+            if(!tokenCheck("this")){return false;}
+            if(!tokenCheck("(")){return false;}
+            if(!tokenCheck(")")){return false;}
             if (currentIs(tok(";")))
             advance();
         else
@@ -2345,7 +2655,7 @@ public class ParserPrelimnaryJavaWriteUp {
                 ownArray(node.memberFunctionAttributes, memberFunctionAttributes);
                 mixin(parseNodeQ("node.functionBody", "FunctionBody"));
             }
-            return node;
+            return true;
         }
 
         /**
@@ -2355,18 +2665,19 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'do') $(RULE statementNoCaseNoDefault) $(LITERAL 'while') $(LITERAL '$(LPAREN)') $(RULE expression) $(LITERAL '$(RPAREN)') $(LITERAL ';')
          *     ;)
          */
-        DoStatement parseDoStatement()
+        boolean parseDoStatement()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!DoStatement;
-            mixin(tokenCheck("do"));
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.DoStatement,false);
+            if(!tokenCheck("do")){return false;}
             mixin(parseNodeQ("node.statementNoCaseNoDefault", "StatementNoCaseNoDefault"));
-            mixin(tokenCheck("while"));
-            mixin(tokenCheck("("));
+            if(!tokenCheck("while")){return false;}
+            if(!tokenCheck("(")){return false;}
             mixin(parseNodeQ("node.expression", "Expression"));
-            mixin(tokenCheck(")"));
-            mixin(tokenCheck(";"));
-            return node;
+            if(!tokenCheck(")")){return false;}
+            if(!tokenCheck(";")){return false;}
+            return true;
         }
 
         /**
@@ -2376,7 +2687,7 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL '{') $(RULE enumMember) ($(LITERAL ',') $(RULE enumMember)?)* $(LITERAL '}')
          *     ;)
          */
-        EnumBody parseEnumBody()
+        boolean parseEnumBody()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             EnumBody node = allocator.make!EnumBody;
@@ -2423,7 +2734,7 @@ public class ParserPrelimnaryJavaWriteUp {
          close = expect (tok("}"));
             if (close != null)
             node.endLocation = close.index;
-            return node;
+            return true;
         }
 
         /**
@@ -2433,11 +2744,13 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(LITERAL identifier)
          *     ;)
          */
-        AnonymousEnumMember parseAnonymousEnumMember(boolean typeAllowed)
+        boolean parseAnonymousEnumMember()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!AnonymousEnumMember;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.AnonymousEnumMember,false);
 
+            boolean typeAllowed = false;//todo idk what default should be
             if (currentIs(tok("identifier")) && peekIsOneOf(tok(","), tok("="), tok("}")))
             {
 //                node.comment = current().comment;
@@ -2453,7 +2766,7 @@ public class ParserPrelimnaryJavaWriteUp {
 //            node.comment = current().comment;
             mixin(parseNodeQ("node.type", "Type"));
             mixin(tokenCheck!("node.name", "identifier"));
-            mixin(tokenCheck("="));
+            if(!tokenCheck("=")){return false;}
             assign:
             mixin(parseNodeQ("node.assignExpression", "AssignExpression"));
         }
@@ -2462,7 +2775,7 @@ public class ParserPrelimnaryJavaWriteUp {
             error("Cannot specify anonymous enum member type if anonymous enum has a base type.");
             return null;
         }
-            return node;
+            return true;
         }
 
         /**
@@ -2470,18 +2783,19 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'enum') ($(LITERAL ':') $(RULE type))? $(LITERAL '{') $(RULE anonymousEnumMember)+ $(LITERAL '}')
          *     ;)
          */
-        AnonymousEnumDeclaration parseAnonymousEnumDeclaration()
+        boolean parseAnonymousEnumDeclaration()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!AnonymousEnumDeclaration;
-            mixin(tokenCheck("enum"));
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.AnonymousEnumDeclaration,false);
+            if(!tokenCheck("enum")){return false;}
             boolean hasBaseType = currentIs(tok(":"));
             if (hasBaseType)
             {
                 advance();
                 mixin(parseNodeQ("node.baseType", "Type"));
             }
-            mixin(tokenCheck("{"));
+            if(!tokenCheck("{")){return false;}
             StackBuffer members;
             AnonymousEnumMember last;
             while (moreTokens())
@@ -2510,8 +2824,8 @@ public class ParserPrelimnaryJavaWriteUp {
                 }
             }
             ownArray(node.members, members);
-            mixin(tokenCheck("}"));
-            return node;
+            if(!tokenCheck("}")){return false;}
+            return true;
         }
 
         /**
@@ -2522,18 +2836,19 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(LITERAL 'enum') $(LITERAL Identifier) ($(LITERAL ':') $(RULE type))? $(RULE enumBody)
          *     ;)
          */
-        EnumDeclaration parseEnumDeclaration()
+        boolean parseEnumDeclaration()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!EnumDeclaration;
-            mixin(tokenCheck("enum"));
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.EnumDeclaration,false);
+            if(!tokenCheck("enum")){return false;}
             mixin (tokenCheck!("node.name", "identifier"));
 //            node.comment = comment;
 //            comment = null;
             if (currentIs(tok(";")))
             {
                 advance();
-                return node;
+                return true;
             }
             if (currentIs(tok(":")))
             {
@@ -2541,7 +2856,7 @@ public class ParserPrelimnaryJavaWriteUp {
                 mixin(parseNodeQ("node.type", "Type"));
             }
             mixin(parseNodeQ("node.enumBody", "EnumBody"));
-            return node;
+            return true;
         }
 
         /**
@@ -2552,10 +2867,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(LITERAL Identifier) $(LITERAL '=') $(RULE assignExpression)
          *     ;)
          */
-        EnumMember parseEnumMember()
+        boolean parseEnumMember()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!EnumMember;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.EnumMember,false);
 //            node.comment = current().comment;
             mixin (tokenCheck!("node.name", "identifier"));
             if (currentIs(tok("=")))
@@ -2563,7 +2879,7 @@ public class ParserPrelimnaryJavaWriteUp {
                 advance();
                 mixin(parseNodeQ("node.assignExpression", "AssignExpression"));
             }
-            return node;
+            return true;
         }
 
         /**
@@ -2573,10 +2889,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'enum') $(LITERAL Identifier) $(RULE templateParameters) $(LITERAL '=') $(RULE assignExpression) $(LITERAL ';')
          *     ;)
          */
-        EponymousTemplateDeclaration parseEponymousTemplateDeclaration()
+        boolean parseEponymousTemplateDeclaration()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!EponymousTemplateDeclaration;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.EponymousTemplateDeclaration,false);
             advance(); // enum
          ident = expect(tok("identifier"));
             mixin (nullCheck("ident"));
@@ -2587,7 +2904,7 @@ public class ParserPrelimnaryJavaWriteUp {
             if (node.assignExpression == null)
             mixin(parseNodeQ("node.type", "Type"));
             expect(tok(";"));
-            return node;
+            return true;
         }
 
         /**
@@ -2600,13 +2917,14 @@ public class ParserPrelimnaryJavaWriteUp {
         EqualExpression parseEqualExpression(ExpressionNode shift = null)
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!EqualExpression;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.EqualExpression,false);
             node.left = shift == null ? parseShiftExpression() : shift;
             mixin (nullCheck("node.left"));
             if (currentIsOneOf(tok("=="), tok("!=")))
             node.operator = advance().type;
             mixin(parseNodeQ("node.right", "ShiftExpression"));
-            return node;
+            return true;
         }
 
         /**
@@ -2616,7 +2934,7 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(RULE assignExpression) ($(LITERAL ',') $(RULE assignExpression))*
          *     ;)
          */
-        Expression parseExpression()
+        boolean parseExpression()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             if (suppressedErrorCount > MAX_ERRORS)
@@ -2639,11 +2957,12 @@ public class ParserPrelimnaryJavaWriteUp {
         ExpressionStatement parseExpressionStatement(Expression expression = null)
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!ExpressionStatement;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ExpressionStatement,false);
             node.expression = expression == null ? parseExpression() : expression;
             if (node.expression == null || expect(tok(";")) == null)
             return null;
-            return node;
+            return true;
         }
 
         /**
@@ -2653,7 +2972,7 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'final') $(RULE switchStatement)
          *     ;)
          */
-        FinalSwitchStatement parseFinalSwitchStatement()
+        boolean parseFinalSwitchStatement()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             mixin (simpleParse!(FinalSwitchStatement, tok("final"), "switchStatement|parseSwitchStatement"));
@@ -2666,13 +2985,14 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'finally') $(RULE declarationOrStatement)
          *     ;)
          */
-        Finally parseFinally()
+        boolean parseFinally()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!Finally;
-            mixin(tokenCheck("finally"));
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Finally,false);
+            if(!tokenCheck("finally")){return false;}
             mixin(parseNodeQ("node.declarationOrStatement", "DeclarationOrStatement"));
-            return node;
+            return true;
         }
 
         /**
@@ -2682,13 +3002,14 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'for') $(LITERAL '$(LPAREN)') ($(RULE declaration) | $(RULE statementNoCaseNoDefault)) $(RULE expression)? $(LITERAL ';') $(RULE expression)? $(LITERAL '$(RPAREN)') $(RULE declarationOrStatement)
          *     ;)
          */
-        ForStatement parseForStatement()
+        boolean parseForStatement()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!ForStatement;
-            mixin(tokenCheck("for"));
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ForStatement,false);
+            if(!tokenCheck("for")){return false;}
             if (!moreTokens) node.startIndex = current().index;
-            mixin(tokenCheck("("));
+            if(!tokenCheck("(")){return false;}
 
             if (currentIs(tok(";")))
             advance();
@@ -2706,18 +3027,18 @@ public class ParserPrelimnaryJavaWriteUp {
             if (!currentIs(tok(")")))
             mixin(parseNodeQ("node.increment", "Expression"));
 
-            mixin(tokenCheck(")"));
+            if(!tokenCheck(")")){return false;}
 
             // Intentionally return an incomplete parse tree so that DCD will work
             // more correctly.
             if (currentIs(tok("}")))
             {
                 error("Statement expected", false);
-                return node;
+                return true;
             }
 
             mixin(parseNodeQ("node.declarationOrStatement", "DeclarationOrStatement"));
-            return node;
+            return true;
         }
 
         /**
@@ -2728,7 +3049,7 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | ($(LITERAL 'foreach') | $(LITERAL 'foreach_reverse')) $(LITERAL '$(LPAREN)') $(RULE foreachType) $(LITERAL ';') $(RULE expression) $(LITERAL '..') $(RULE expression) $(LITERAL '$(RPAREN)') $(RULE declarationOrStatement)
          *     ;)
          */
-        ForeachStatement parseForeachStatement()
+        boolean parseForeachStatement()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             ForeachStatement node = allocator.make!ForeachStatement;
@@ -2740,12 +3061,12 @@ public class ParserPrelimnaryJavaWriteUp {
                 return null;
             }
             node.startIndex = current().index;
-            mixin(tokenCheck("("));
+            if(!tokenCheck("(")){return false;}
             ForeachTypeList feType = parseForeachTypeList();
             mixin (nullCheck("feType"));
             boolean canBeRange = feType.items.length == 1;
 
-            mixin(tokenCheck(";"));
+            if(!tokenCheck(";")){return false;}
             mixin(parseNodeQ("node.low", "Expression"));
             mixin (nullCheck("node.low"));
             if (currentIs(tok("..")))
@@ -2764,14 +3085,14 @@ public class ParserPrelimnaryJavaWriteUp {
             {
                 node.foreachTypeList = feType;
             }
-            mixin(tokenCheck(")"));
+            if(!tokenCheck(")")){return false;}
             if (currentIs(tok("}")))
             {
                 error("Statement expected", false);
-                return node; // this line makes DCD better
+                return true; // this line makes DCD better
             }
             mixin(parseNodeQ("node.declarationOrStatement", "DeclarationOrStatement"));
-            return node;
+            return true;
         }
 
         /**
@@ -2782,10 +3103,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(RULE typeConstructors)? $(LITERAL 'ref')? $(RULE type)? $(LITERAL Identifier)
          *     ;)
          */
-        ForeachType parseForeachType()
+        boolean parseForeachType()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!ForeachType;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ForeachType,false);
             if (currentIs(tok("ref")))
             {
                 node.isRef = true;
@@ -2805,13 +3127,13 @@ public class ParserPrelimnaryJavaWriteUp {
             if (currentIs(tok("identifier")) && peekIsOneOf(tok(","), tok(";")))
             {
                 node.identifier = advance();
-                return node;
+                return true;
             }
             mixin(parseNodeQ("node.type", "Type"));
          ident = expect(tok("identifier"));
             mixin(nullCheck("ident"));
             node.identifier = *ident;
-            return node;
+            return true;
         }
 
         /**
@@ -2821,7 +3143,7 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(RULE foreachType) ($(LITERAL ',') $(RULE foreachType))*
          *     ;)
          */
-        ForeachTypeList parseForeachTypeList()
+        boolean parseForeachTypeList()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             return parseCommaSeparatedRule!(ForeachTypeList, ForeachType)();
@@ -2836,9 +3158,10 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(LITERAL '')
          *     ;)
          */
-        FunctionAttribute parseFunctionAttribute(boolean validate = true)
+        boolean parseFunctionAttribute(boolean validate)
         {
-//            auto node = allocator.make!FunctionAttribute;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.FunctionAttribute,false);
             switch (current().type)
             {
                 case tok("@"):
@@ -2853,7 +3176,7 @@ public class ParserPrelimnaryJavaWriteUp {
                         error("@attribute, "", or "" expected");
                     return null;
             }
-            return node;
+            return true;
         }
 
         /**
@@ -2864,14 +3187,15 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | ($(RULE inStatement) | $(RULE outStatement) | $(RULE outStatement) $(RULE inStatement) | $(RULE inStatement) $(RULE outStatement))? $(RULE bodyStatement)?
          *     ;)
          */
-        FunctionBody parseFunctionBody()
+        boolean parseFunctionBody()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!FunctionBody;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.FunctionBody,false);
             if (currentIs(tok(";")))
             {
                 advance();
-                return node;
+                return true;
             }
         else if (currentIs(tok("{")))
             mixin(parseNodeQ("node.blockStatement", "BlockStatement"));
@@ -2899,7 +3223,7 @@ public class ParserPrelimnaryJavaWriteUp {
                 error("'in', 'out', 'body', or block statement expected");
                 return null;
             }
-            return node;
+            return true;
         }
 
         /**
@@ -2911,12 +3235,13 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(RULE type) $(RULE arguments)
          *     ;)
          */
-        FunctionCallExpression parseFunctionCallExpression()//(UnaryExpression unary = null)
+        boolean parseFunctionCallExpression()//(UnaryExpression unary = null)
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
 
 
-//            auto node = allocator.make!FunctionCallExpression;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.FunctionCallExpression,false);
             switch (current().type)
             {
                 case tok(""):
@@ -2939,7 +3264,7 @@ public class ParserPrelimnaryJavaWriteUp {
                     if (unary != null)
                     mixin(parseNodeQ("node.arguments", "Arguments"));
             }
-            return node;
+            return true;
         }
 
         /**
@@ -2954,7 +3279,8 @@ public class ParserPrelimnaryJavaWriteUp {
         {
             final boolean isAuto = false;
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!FunctionDeclaration;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.FunctionDeclaration,false);
 //            node.comment = comment;
 //            comment = null;
             StackBuffer memberFunctionAttributes;
@@ -3015,7 +3341,7 @@ public class ParserPrelimnaryJavaWriteUp {
         else
             mixin(parseNodeQ("node.functionBody", "FunctionBody"));
             ownArray(node.memberFunctionAttributes, memberFunctionAttributes);
-            return node;
+            return true;
         }
 
         /**
@@ -3032,10 +3358,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(RULE parameters) $(RULE functionAttribute)* $(LITERAL '=>') $(RULE assignExpression)
          *     ;)
          */
-        FunctionLiteralExpression parseFunctionLiteralExpression()
+        boolean parseFunctionLiteralExpression()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!FunctionLiteralExpression;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.FunctionLiteralExpression,false);
 //            node.line = current().line;
 //            node.column = current().column;
             if (currentIsOneOf(tok("function"), tok("delegate")))
@@ -3050,7 +3377,7 @@ public class ParserPrelimnaryJavaWriteUp {
                 node.identifier = advance();
                 advance(); // =>
                 mixin(parseNodeQ("node.assignExpression", "AssignExpression"));
-                return node;
+                return true;
             }
         else if (currentIs(tok("(")))
             {
@@ -3074,7 +3401,7 @@ public class ParserPrelimnaryJavaWriteUp {
             }
         else
             mixin(parseNodeQ("node.functionBody", "FunctionBody"));
-            return node;
+            return true;
         }
 
         /**
@@ -3084,11 +3411,12 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'goto') ($(LITERAL Identifier) | $(LITERAL 'default') | $(LITERAL 'case') $(RULE expression)?) $(LITERAL ';')
          *     ;)
          */
-        GotoStatement parseGotoStatement()
+        boolean parseGotoStatement()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!GotoStatement;
-            mixin(tokenCheck("goto"));
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.GotoStatement,false);
+            if(!tokenCheck("goto")){return false;}
             switch (current().type)
             {
                 case tok("identifier"):
@@ -3104,8 +3432,8 @@ public class ParserPrelimnaryJavaWriteUp {
                     error("Identifier, \"default\", or \"case\" expected");
                     return null;
             }
-            mixin(tokenCheck(";"));
-            return node;
+            if(!tokenCheck(";")){return false;}
+            return true;
         }
 
         /**
@@ -3115,9 +3443,10 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL Identifier) ($(LITERAL '.') $(LITERAL Identifier))*
          *     ;)
          */
-        IdentifierChain parseIdentifierChain()
+        boolean parseIdentifierChain()
         {
-//            auto node = allocator.make!IdentifierChain;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.IdentifierChain,false);
             StackBuffer identifiers;
             while (moreTokens())
             {
@@ -3133,7 +3462,7 @@ public class ParserPrelimnaryJavaWriteUp {
                 break;
             }
             ownArray(node.identifiers, identifiers);
-            return node;
+            return true;
         }
 
         /**
@@ -3143,9 +3472,10 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL Identifier) ($(LITERAL ',') $(LITERAL Identifier))*
          *     ;)
          */
-        IdentifierList parseIdentifierList()
+        boolean parseIdentifierList()
         {
-//            auto node = allocator.make!IdentifierList;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.IdentifierList,false);
             StackBuffer identifiers;
             while (moreTokens())
             {
@@ -3161,7 +3491,7 @@ public class ParserPrelimnaryJavaWriteUp {
                     break;
             }
             ownArray(node.identifiers, identifiers);
-            return node;
+            return true;
         }
 
         /**
@@ -3171,9 +3501,10 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(RULE identifierOrTemplateInstance) ($(LITERAL '.') $(RULE identifierOrTemplateInstance))*
          *     ;)
          */
-        IdentifierOrTemplateChain parseIdentifierOrTemplateChain()
+        boolean parseIdentifierOrTemplateChain()
         {
-//            auto node = allocator.make!IdentifierOrTemplateChain;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.IdentifierOrTemplateChain,false);
             StackBuffer identifiersOrTemplateInstances;
             while (moreTokens())
             {
@@ -3192,7 +3523,7 @@ public class ParserPrelimnaryJavaWriteUp {
                 advance();
             }
             ownArray(node.identifiersOrTemplateInstances, identifiersOrTemplateInstances);
-            return node;
+            return true;
         }
 
         /**
@@ -3203,10 +3534,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(RULE templateInstance)
          *     ;)
          */
-        IdentifierOrTemplateInstance parseIdentifierOrTemplateInstance()
+        boolean parseIdentifierOrTemplateInstance()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!IdentifierOrTemplateInstance;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.IdentifierOrTemplateInstance,false);
             if (peekIs(tok("!")) && !startsWith(tok("identifier"),
             tok("!"), tok("is"))
             && !startsWith(tok("identifier"), tok("!"), tok("in")))
@@ -3219,7 +3551,7 @@ public class ParserPrelimnaryJavaWriteUp {
                 mixin(nullCheck("ident"));
                 node.identifier = ident;
             }
-            return node;
+            return true;
         }
 
         /**
@@ -3229,19 +3561,20 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(RULE shiftExpression) ($(LITERAL 'is') | ($(LITERAL '!') $(LITERAL 'is'))) $(RULE shiftExpression)
          *     ;)
          */
-        ExpressionNode parseIdentityExpression()//(ExpressionNode shift = null)
+        boolean parseIdentityExpression()//(ExpressionNode shift = null)
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!IdentityExpression;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.IdentityExpression,false);
             mixin(nullCheck("node.left = shift == null ? parseShiftExpression() : shift"));
             if (currentIs(tok("!")))
             {
                 advance();
                 node.negated = true;
             }
-            mixin(tokenCheck("is"));
+            if(!tokenCheck("is")){return false;}
             mixin(parseNodeQ("node.right", "ShiftExpression"));
-            return node;
+            return true;
         }
 
         /**
@@ -3256,15 +3589,16 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(RULE expression)
          *     ;)
          */
-        IfStatement parseIfStatement()
+        boolean parseIfStatement()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!IfStatement;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.IfStatement,false);
 //            node.line = current().line;
 //            node.column = current().column;
-            mixin(tokenCheck("if"));
+            if(!tokenCheck("if")){return false;}
             node.startIndex = current().index;
-            mixin(tokenCheck("("));
+            if(!tokenCheck("(")){return false;}
 
             if (currentIs(tok("auto")))
             {
@@ -3307,16 +3641,16 @@ public class ParserPrelimnaryJavaWriteUp {
                     abandonBookmark(b);
                     node.type = type;
                     mixin(tokenCheck("node.identifier", "identifier"));
-                    mixin(tokenCheck("="));
+                    if(!tokenCheck("=")){return false;}
                     mixin(parseNodeQ("node.expression", "Expression"));
                 }
             }
 
-            mixin(tokenCheck(")"));
+            if(!tokenCheck(")")){return false;}
             if (currentIs(tok("}")))
             {
                 error("Statement expected", false);
-                return node; // this line makes DCD better
+                return true; // this line makes DCD better
             }
             mixin(parseNodeQ("node.thenStatement", "DeclarationOrStatement"));
             if (currentIs(tok("else")))
@@ -3324,7 +3658,7 @@ public class ParserPrelimnaryJavaWriteUp {
                 advance();
                 mixin(parseNodeQ("node.elseStatement", "DeclarationOrStatement"));
             }
-            return node;
+            return true;
         }
 
         /**
@@ -3334,9 +3668,10 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL Identifier) ($(LITERAL '=') $(LITERAL Identifier))?
          *     ;)
          */
-        ImportBind parseImportBind()
+        boolean parseImportBind()
         {
-//            auto node = allocator.make!ImportBind;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ImportBind,false);
             Token ident = expect(tok("identifier"));
             mixin(nullCheck("ident"));
             node.left = ident;
@@ -3347,7 +3682,7 @@ public class ParserPrelimnaryJavaWriteUp {
                 mixin(nullCheck("id"));
                 node.right = id;
             }
-            return node;
+            return true;
         }
 
         /**
@@ -3359,9 +3694,10 @@ public class ParserPrelimnaryJavaWriteUp {
          */
         ImportBindings parseImportBindings(SingleImport singleImport)
         {
-//            auto node = allocator.make!ImportBindings;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ImportBindings,false);
             mixin(nullCheck("node.singleImport = singleImport == null ? parseSingleImport() : singleImport"));
-            mixin(tokenCheck(":"));
+            if(!tokenCheck(":")){return false;}
             StackBuffer importBinds;
             while (moreTokens())
             {
@@ -3380,7 +3716,7 @@ public class ParserPrelimnaryJavaWriteUp {
                 }
             }
             ownArray(node.importBinds, importBinds);
-            return node;
+            return true;
         }
 
         /**
@@ -3391,11 +3727,12 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(LITERAL 'import') $(RULE importBindings) $(LITERAL ';')
          *     ;)
          */
-        ImportDeclaration parseImportDeclaration()
+        boolean parseImportDeclaration()
         {
-//            auto node = allocator.make!ImportDeclaration;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ImportDeclaration,false);
             node.startIndex = current().index;
-            mixin(tokenCheck("import"));
+            if(!tokenCheck("import")){return false;}
             SingleImport si = parseSingleImport();
             if (si == null)
             return null;
@@ -3430,8 +3767,8 @@ public class ParserPrelimnaryJavaWriteUp {
                 ownArray(node.singleImports, singleImports);
             }
             node.endIndex = (moreTokens() ? current() : previous()).index + 1;
-            mixin(tokenCheck(";"));
-            return node;
+            if(!tokenCheck(";")){return false;}
+            return true;
         }
 
         /**
@@ -3441,7 +3778,7 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'import') $(LITERAL '$(LPAREN)') $(RULE assignExpression) $(LITERAL '$(RPAREN)')
          *     ;)
          */
-        ImportExpression parseImportExpression()
+        boolean parseImportExpression()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             mixin(simpleParse(ImportExpression, tok("import"), tok("("),
@@ -3456,17 +3793,18 @@ public class ParserPrelimnaryJavaWriteUp {
          *     ;
          * )
          */
-        Index parseIndex()
+        boolean parseIndex()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!Index();
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Index(),false);
             mixin(parseNodeQ("node.low", "AssignExpression"));
             if (currentIs(tok("..")))
             {
                 advance();
                 mixin(parseNodeQ("node.high", "AssignExpression"));
             }
-            return node;
+            return true;
         }
 
         /**
@@ -3478,12 +3816,13 @@ public class ParserPrelimnaryJavaWriteUp {
          *     ;
          * )
          */
-        IndexExpression parseIndexExpression()//(UnaryExpression unaryExpression = null)
+        boolean parseIndexExpression()//(UnaryExpression unaryExpression = null)
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!IndexExpression;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.IndexExpression,false);
             mixin(nullCheck("node.unaryExpression = unaryExpression == null ? parseUnaryExpression() : unaryExpression"));
-            mixin(tokenCheck("["));
+            if(!tokenCheck("[")){return false;}
             StackBuffer indexes;
             while (true)
             {
@@ -3503,7 +3842,7 @@ public class ParserPrelimnaryJavaWriteUp {
             }
             ownArray(node.indexes, indexes);
             advance(); // ]
-            return node;
+            return true;
         }
 
         /**
@@ -3515,16 +3854,17 @@ public class ParserPrelimnaryJavaWriteUp {
          */
         ExpressionNode parseInExpression()//(ExpressionNode shift = null)
         {
-//            auto node = allocator.make!InExpression;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.InExpression,false);
             mixin(nullCheck("node.left = shift == null ? parseShiftExpression() : shift"));
             if (currentIs(tok("!")))
             {
                 node.negated = true;
                 advance();
             }
-            mixin(tokenCheck("in"));
+            if(!tokenCheck("in")){return false;}
             mixin(parseNodeQ("node.right", "ShiftExpression"));
-            return node;
+            return true;
         }
 
         /**
@@ -3534,14 +3874,15 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'in') $(RULE blockStatement)
          *     ;)
          */
-        InStatement parseInStatement()
+        boolean parseInStatement()
         {
-//            auto node = allocator.make!InStatement;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.InStatement,false);
             Token i = expect(tok("in"));
             mixin(nullCheck("i"));
             node.inTokenLocation = i.index;
             mixin(parseNodeQ("node.blockStatement", "BlockStatement"));
-            return node;
+            return true;
         }
 
         /**
@@ -3552,14 +3893,15 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(RULE nonVoidInitializer)
          *     ;)
          */
-        Initializer parseInitializer()
+        boolean parseInitializer()
         {
-//            auto node = allocator.make!Initializer;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Initializer,false);
             if (currentIs(tok("void")) && peekIsOneOf(tok(","), tok(";")))
             advance();
         else
             mixin(parseNodeQ("node.nonVoidInitializer", "NonVoidInitializer"));
-            return node;
+            return true;
         }
 
         /**
@@ -3572,9 +3914,10 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(LITERAL 'interface') $(LITERAL Identifier) $(RULE templateParameters) ($(LITERAL ':') $(RULE baseClassList))? $(RULE raint)? $(RULE structBody)
          *     ;)
          */
-        InterfaceDeclaration parseInterfaceDeclaration()
+        boolean parseInterfaceDeclaration()
         {
-//            auto node = allocator.make!InterfaceDeclaration;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.InterfaceDeclaration,false);
             expect(tok("interface"));
             return parseInterfaceOrClass(node);
         }
@@ -3586,19 +3929,20 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'invariant') ($(LITERAL '$(LPAREN)') $(LITERAL '$(RPAREN)'))? $(RULE blockStatement)
          *     ;)
          */
-        Invariant parseInvariant()
+        boolean parseInvariant()
         {
-//            auto node = allocator.make!Invariant;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Invariant,false);
             node.index = current().index;
             node.line = current().line;
-            mixin(tokenCheck("invariant"));
+            if(!tokenCheck("invariant")){return false;}
             if (currentIs(tok("(")))
             {
                 advance();
-                mixin(tokenCheck(")"));
+                if(!tokenCheck(")")){return false;}
             }
             mixin(parseNodeQ("node.blockStatement", "BlockStatement"));
-            return node;
+            return true;
         }
 
         /**
@@ -3612,12 +3956,13 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL'is') $(LITERAL '$(LPAREN)') $(RULE type) $(LITERAL identifier)? $(LITERAL '=') $(RULE typeSpecialization) $(LITERAL ',') $(RULE templateParameterList) $(LITERAL '$(RPAREN)')
          *     ;)
          */
-        IsExpression parseIsExpression()
+        boolean parseIsExpression()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!IsExpression;
-            mixin(tokenCheck("is"));
-            mixin(tokenCheck("("));
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.IsExpression,false);
+            if(!tokenCheck("is")){return false;}
+            if(!tokenCheck("(")){return false;}
             mixin(parseNodeQ("node.type", "Type"));
             if (currentIs(tok("identifier")))
             node.identifier = advance();
@@ -3631,8 +3976,8 @@ public class ParserPrelimnaryJavaWriteUp {
                     mixin(parseNodeQ("node.templateParameterList", "TemplateParameterList"));
                 }
             }
-            mixin(tokenCheck(")"));
-            return node;
+            if(!tokenCheck(")")){return false;}
+            return true;
         }
 
         /**
@@ -3642,14 +3987,15 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(RULE assignExpression) $(LITERAL ':') $(RULE assignExpression)
          *     ;)
          */
-        KeyValuePair parseKeyValuePair()
+        boolean parseKeyValuePair()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!KeyValuePair;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.KeyValuePair,false);
             mixin(parseNodeQ("node.key", "AssignExpression"));
-            mixin(tokenCheck(":"));
+            if(!tokenCheck(":")){return false;}
             mixin(parseNodeQ("node.value", "AssignExpression"));
-            return node;
+            return true;
         }
 
         /**
@@ -3659,10 +4005,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(RULE keyValuePair) ($(LITERAL ',') $(RULE keyValuePair))* $(LITERAL ',')?
          *     ;)
          */
-        KeyValuePairs parseKeyValuePairs()
+        boolean parseKeyValuePairs()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!KeyValuePairs;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.KeyValuePairs,false);
             StackBuffer keyValuePairs;
             while (moreTokens())
             {
@@ -3678,7 +4025,7 @@ public class ParserPrelimnaryJavaWriteUp {
                 break;
             }
             ownArray(node.keyValuePairs, keyValuePairs);
-            return node;
+            return true;
         }
 
         /**
@@ -3688,17 +4035,18 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL Identifier) $(LITERAL ':') $(RULE declarationOrStatement)?
          *     ;)
          */
-        LabeledStatement parseLabeledStatement()
+        boolean parseLabeledStatement()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!LabeledStatement;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.LabeledStatement,false);
          ident = expect(tok("identifier"));
             mixin (nullCheck("ident"));
             node.identifier = *ident;
             expect(tok(":"));
             if (!currentIs(tok("}")))
             mixin(parseNodeQ("node.declarationOrStatement", "DeclarationOrStatement"));
-            return node;
+            return true;
         }
 
         /**
@@ -3708,16 +4056,17 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'catch') $(RULE statementNoCaseNoDefault)
          *     ;)
          */
-        LastCatch parseLastCatch()
+        boolean parseLastCatch()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!LastCatch;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.LastCatch,false);
          t = expect(tok("catch"));
             mixin (nullCheck("t"));
             node.line = t.line;
             node.column = t.column;
             mixin(parseNodeQ("node.statementNoCaseNoDefault", "StatementNoCaseNoDefault"));
-            return node;
+            return true;
         }
 
         /**
@@ -3729,10 +4078,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(LITERAL 'extern') $(LITERAL '$(LPAREN)') $(LITERAL Identifier) $(LITERAL '++') ($(LITERAL ',') $(RULE identifierChain) | $(LITERAL 'struct') | $(LITERAL 'class'))? $(LITERAL '$(RPAREN)')
          *     ;)
          */
-        LinkageAttribute parseLinkageAttribute()
+        boolean parseLinkageAttribute()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!LinkageAttribute;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.LinkageAttribute,false);
             mixin (tokenCheck("extern"));
             mixin (tokenCheck("("));
          ident = expect(tok("identifier"));
@@ -3754,10 +4104,10 @@ public class ParserPrelimnaryJavaWriteUp {
         else if (currentIs(tok("-")))
             {
                 advance();
-                mixin(tokenCheck("identifier"));
+                if(!tokenCheck("identifier")){return false;}
             }
             expect(tok(")"));
-            return node;
+            return true;
         }
 
         /**
@@ -3773,10 +4123,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(LITERAL 'scope')
          *     ;)
          */
-        MemberFunctionAttribute parseMemberFunctionAttribute()
+        boolean parseMemberFunctionAttribute()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!MemberFunctionAttribute;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.MemberFunctionAttribute,false);
             switch (current().type)
             {
                 case tok("@"):
@@ -3795,7 +4146,7 @@ public class ParserPrelimnaryJavaWriteUp {
                 default:
                     error("Member funtion attribute expected");
             }
-            return node;
+            return true;
         }
 
         /**
@@ -3806,10 +4157,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(RULE templateMixinExpression) $(LITERAL ';')
          *     ;)
          */
-        MixinDeclaration parseMixinDeclaration()
+        boolean parseMixinDeclaration()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!MixinDeclaration;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.MixinDeclaration,false);
             if (peekIsOneOf(tok("identifier"), tok("typeof"), tok(".")))
             mixin(parseNodeQ("node.templateMixinExpression", "TemplateMixinExpression"));
         else if (peekIs(tok("(")))
@@ -3820,7 +4172,7 @@ public class ParserPrelimnaryJavaWriteUp {
                 return null;
             }
             expect(tok(";"));
-            return node;
+            return true;
         }
 
         /**
@@ -3830,15 +4182,16 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'mixin') $(LITERAL '$(LPAREN)') $(RULE assignExpression) $(LITERAL '$(RPAREN)')
          *     ;)
          */
-        MixinExpression parseMixinExpression()
+        boolean parseMixinExpression()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!MixinExpression;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.MixinExpression,false);
             expect(tok("mixin"));
             expect(tok("("));
             mixin(parseNodeQ("node.assignExpression", "AssignExpression"));
             expect(tok(")"));
-            return node;
+            return true;
         }
 
         /**
@@ -3848,13 +4201,14 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'mixin') $(RULE templateDeclaration)
          *     ;)
          */
-        MixinTemplateDeclaration parseMixinTemplateDeclaration()
+        boolean parseMixinTemplateDeclaration()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!MixinTemplateDeclaration;
-            mixin(tokenCheck("mixin"));
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.MixinTemplateDeclaration,false);
+            if(!tokenCheck("mixin")){return false;}
             mixin(parseNodeQ("node.templateDeclaration", "TemplateDeclaration"));
-            return node;
+            return true;
         }
 
         /**
@@ -3865,10 +4219,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(RULE typeofExpression) $(LITERAL '.') $(RULE identifierOrTemplateChain)
          *     ;)
          */
-        MixinTemplateName parseMixinTemplateName()
+        boolean parseMixinTemplateName()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!MixinTemplateName;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.MixinTemplateName,false);
             if (currentIs(tok("typeof")))
             {
                 mixin(parseNodeQ("node.typeofExpression", "TypeofExpression"));
@@ -3877,7 +4232,7 @@ public class ParserPrelimnaryJavaWriteUp {
             }
         else
             mixin(parseNodeQ("node.symbol", "Symbol"));
-            return node;
+            return true;
         }
 
         /**
@@ -3887,7 +4242,7 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(RULE moduleDeclaration)? $(RULE declaration)*
          *     ;)
          */
-        Module parseModule()
+        boolean parseModule()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             Module m = allocator.make!Module;
@@ -3930,9 +4285,10 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(RULE deprecated)? $(LITERAL 'module') $(RULE identifierChain) $(LITERAL ';')
          *     ;)
          */
-        ModuleDeclaration parseModuleDeclaration()
+        boolean parseModuleDeclaration()
         {
-//            auto node = allocator.make!ModuleDeclaration;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ModuleDeclaration,false);
             if (currentIs(tok("deprecated")))
             mixin(parseNodeQ("node.deprecated_", "Deprecated"));
          start = expect(tok("module"));
@@ -3946,7 +4302,7 @@ public class ParserPrelimnaryJavaWriteUp {
             node.startLocation = start.index;
             if (end != null)
             node.endLocation = end.index;
-            return node;
+            return true;
         }
 
         /**
@@ -3957,7 +4313,7 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(RULE mulExpression) ($(LITERAL '*') | $(LITERAL '/') | $(LITERAL '%')) $(RULE powExpression)
          *     ;)
          */
-        ExpressionNode parseMulExpression()
+        boolean parseMulExpression()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             return parseLeftAssocBinaryExpression(MulExpression, PowExpression,
@@ -3971,10 +4327,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'new') $(RULE arguments)? $(LITERAL 'class') $(RULE arguments)? $(RULE baseClassList)? $(RULE structBody)
          *     ;)
          */
-        NewAnonClassExpression parseNewAnonClassExpression()
+        boolean parseNewAnonClassExpression()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!NewAnonClassExpression;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.NewAnonClassExpression,false);
             expect(tok("new"));
             if (currentIs(tok("(")))
             mixin(parseNodeQ("node.allocatorArguments", "Arguments"));
@@ -3984,7 +4341,7 @@ public class ParserPrelimnaryJavaWriteUp {
             if (!currentIs(tok("{")))
             mixin(parseNodeQ("node.baseClassList", "BaseClassList"));
             mixin(parseNodeQ("node.structBody", "StructBody"));
-            return node;
+            return true;
         }
 
         /**
@@ -3995,7 +4352,7 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(RULE newAnonClassExpression)
          *     ;)
          */
-        NewExpression parseNewExpression()
+        boolean parseNewExpression()
         {
             // Parse ambiguity.
             // auto a = new int[10];
@@ -4003,7 +4360,8 @@ public class ParserPrelimnaryJavaWriteUp {
             // auto a = new int[10];
             //              ^^^****
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!NewExpression;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.NewExpression,false);
             if (peekIsOneOf(tok("class"), tok("(")))
             mixin(parseNodeQ("node.newAnonClassExpression", "NewAnonClassExpression"));
         else
@@ -4019,7 +4377,7 @@ public class ParserPrelimnaryJavaWriteUp {
             else if (currentIs(tok("(")))
                 mixin(parseNodeQ("node.arguments", "Arguments"));
             }
-            return node;
+            return true;
         }
 
         /**
@@ -4031,10 +4389,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(RULE structInitializer)
          *     ;)
          */
-        NonVoidInitializer parseNonVoidInitializer()
+        boolean parseNonVoidInitializer()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!NonVoidInitializer;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.NonVoidInitializer,false);
             if (currentIs(tok("{")))
             {
              b = peekPastBraces();
@@ -4076,7 +4435,7 @@ public class ParserPrelimnaryJavaWriteUp {
             if (node.assignExpression == null && node.arrayInitializer == null
             && node.structInitializer == null)
             return null;
-            return node;
+            return true;
         }
 
         /**
@@ -4087,7 +4446,7 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(RULE asmExp) $(LITERAL ',') $(RULE operands)
          *     ;)
          */
-        Operands parseOperands()
+        boolean parseOperands()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             Operands node = allocator.make!Operands;
@@ -4102,7 +4461,7 @@ public class ParserPrelimnaryJavaWriteUp {
                 break;
             }
             ownArray(node.operands, expressions);
-            return node;
+            return true;
         }
 
         /**
@@ -4113,7 +4472,7 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(RULE orExpression) $(LITERAL '|') $(RULE xorExpression)
          *     ;)
          */
-        ExpressionNode parseOrExpression()
+        boolean parseOrExpression()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             return parseLeftAssocBinaryExpression(OrExpression, XorExpression,
@@ -4128,7 +4487,7 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(RULE orOrExpression) $(LITERAL '||') $(RULE andAndExpression)
          *     ;)
          */
-        ExpressionNode parseOrOrExpression()
+        boolean parseOrOrExpression()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             return parseLeftAssocBinaryExpression(OrOrExpression, AndAndExpression,
@@ -4142,9 +4501,10 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'out') ($(LITERAL '$(LPAREN)') $(LITERAL Identifier) $(LITERAL '$(RPAREN)'))? $(RULE blockStatement)
          *     ;)
          */
-        OutStatement parseOutStatement()
+        boolean parseOutStatement()
         {
-//            auto node = allocator.make!OutStatement;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.OutStatement,false);
          o = expect(tok("out"));
             mixin(nullCheck("o"));
             node.outTokenLocation = o.index;
@@ -4157,7 +4517,7 @@ public class ParserPrelimnaryJavaWriteUp {
                 expect(tok(")"));
             }
             mixin(parseNodeQ("node.blockStatement", "BlockStatement"));
-            return node;
+            return true;
         }
 
         /**
@@ -4169,14 +4529,15 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(RULE parameterAttribute)* $(RULE type) $(LITERAL Identifier)? ($(LITERAL '=') $(RULE assignExpression))?
          *     ;)
          */
-        Parameter parseParameter()
+        boolean parseParameter()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!Parameter;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Parameter,false);
             StackBuffer parameterAttributes;
             while (moreTokens())
             {
-                Token.IdType type = parseParameterAttribute(false);
+                IdType type = parseParameterAttribute(false);
                 if (type == tok(""))
                 break;
             else
@@ -4216,7 +4577,7 @@ public class ParserPrelimnaryJavaWriteUp {
                 advance();
                 mixin(parseNodeQ("node.default_", "AssignExpression"));
             }
-            return node;
+            return true;
         }
 
         /**
@@ -4234,7 +4595,7 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(LITERAL 'return')
          *     ;)
          */
-        Token.IdType parseParameterAttribute()
+        Token.boolean parseParameterAttribute()
         {
             final boolean boolean validate = false;
 //            mixin(traceEnterAndExit!(__FUNCTION__));
@@ -4273,23 +4634,24 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(LITERAL '$(LPAREN)') $(LITERAL '$(RPAREN)')
          *     ;)
          */
-        Parameters parseParameters()
+        boolean parseParameters()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!Parameters;
-            mixin(tokenCheck("("));
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Parameters,false);
+            if(!tokenCheck("(")){return false;}
 
             if (currentIs(tok(")")))
             {
                 advance(); // )
-                return node;
+                return true;
             }
             if (currentIs(tok("...")))
             {
                 advance();
                 node.hasVarargs = true;
-                mixin(tokenCheck(")"));
-                return node;
+                if(!tokenCheck(")")){return false;}
+                return true;
             }
             StackBuffer parameters;
             while (moreTokens())
@@ -4310,8 +4672,8 @@ public class ParserPrelimnaryJavaWriteUp {
                 break;
             }
             ownArray(node.parameters, parameters);
-            mixin(tokenCheck(")"));
-            return node;
+            if(!tokenCheck(")")){return false;}
+            return true;
         }
 
         /**
@@ -4321,10 +4683,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'this') $(LITERAL '$(LPAREN)') $(LITERAL 'this') $(LITERAL '$(RPAREN)') $(RULE memberFunctionAttribute)* ($(RULE functionBody) | $(LITERAL ';'))
          *     ;)
          */
-        Postblit parsePostblit()
+        boolean parsePostblit()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!Postblit;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Postblit,false);
             node.line = current().line;
             node.column = current().column;
             node.location = current().index;
@@ -4338,7 +4701,7 @@ public class ParserPrelimnaryJavaWriteUp {
             advance();
         else
             mixin(parseNodeQ("node.functionBody", "FunctionBody"));
-            return node;
+            return true;
         }
 
         /**
@@ -4349,7 +4712,7 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(RULE powExpression) $(LITERAL '^^') $(RULE unaryExpression)
          *     ;)
          */
-        ExpressionNode parsePowExpression()
+        boolean parsePowExpression()
         {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
             return parseLeftAssocBinaryExpression(PowExpression, UnaryExpression,
@@ -4363,7 +4726,7 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(RULE pragmaExpression) $(LITERAL ';')
          *     ;)
          */
-        PragmaDeclaration parsePragmaDeclaration()
+        boolean parsePragmaDeclaration()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             mixin(simpleParse!(PragmaDeclaration, "pragmaExpression|parsePragmaExpression", tok(";")));
@@ -4376,10 +4739,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(RULE 'pragma') $(LITERAL '$(LPAREN)') $(LITERAL Identifier) ($(LITERAL ',') $(RULE argumentList))? $(LITERAL '$(RPAREN)')
          *     ;)
          */
-        PragmaExpression parsePragmaExpression()
+        boolean parsePragmaExpression()
         {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!PragmaExpression;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.PragmaExpression,false);
             expect(tok("pragma"));
             expect(tok("("));
          ident = expect(tok("identifier"));
@@ -4391,7 +4755,7 @@ public class ParserPrelimnaryJavaWriteUp {
                 mixin(parseNodeQ("node.argumentList", "ArgumentList"));
             }
             expect(tok(")"));
-            return node;
+            return true;
         }
 
         /**
@@ -4436,10 +4800,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(LITERAL CharacterLiteral)
          *     ;)
          */
-        PrimaryExpression parsePrimaryExpression()
+        boolean parsePrimaryExpression()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!PrimaryExpression;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.PrimaryExpression,false);
             if (!moreTokens())
             {
                 error("Expected primary statement instead of EOF");
@@ -4519,7 +4884,7 @@ public class ParserPrelimnaryJavaWriteUp {
                     goToBookmark(b);
                     advance();
                     mixin(parseNodeQ("node.expression", "Expression"));
-                    mixin(tokenCheck(")"));
+                    if(!tokenCheck(")")){return false;}
                 }
                 break;
                 case tok("is"):
@@ -4559,7 +4924,7 @@ public class ParserPrelimnaryJavaWriteUp {
                     error("Primary expression expected");
                     return null;
             }
-            return node;
+            return true;
         }
 
         /**
@@ -4570,10 +4935,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(LITERAL Identifier) $(LITERAL '$(LPAREN)') $(LITERAL IntegerLiteral) $(LITERAL '$(RPAREN)')
          *     ;)
          */
-        Register parseRegister()
+        boolean parseRegister()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!Register;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Register,false);
          ident = expect(tok("identifier"));
             mixin(nullCheck("ident"));
             node.identifier = *ident;
@@ -4585,7 +4951,7 @@ public class ParserPrelimnaryJavaWriteUp {
                 node.intLiteral = *intLit;
                 expect(tok(")"));
             }
-            return node;
+            return true;
         }
 
         /**
@@ -4610,7 +4976,7 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(LITERAL '!<=')
          *     ;)
          */
-        ExpressionNode parseRelExpression()//(ExpressionNode shift)
+        boolean parseRelExpression()//(ExpressionNode shift)
         {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
             return parseLeftAssocBinaryExpression!(RelExpression, ShiftExpression,
@@ -4626,10 +4992,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'return') $(RULE expression)? $(LITERAL ';')
          *     ;)
          */
-        ReturnStatement parseReturnStatement()
+        boolean parseReturnStatement()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!ReturnStatement;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ReturnStatement,false);
          start = expect(tok("return"));
             mixin(nullCheck("start"));
             node.startLocation = start.index;
@@ -4638,7 +5005,7 @@ public class ParserPrelimnaryJavaWriteUp {
          semicolon = expect(tok(";"));
             mixin(nullCheck("semicolon"));
             node.endLocation = semicolon.index;
-            return node;
+            return true;
         }
 
         /**
@@ -4648,10 +5015,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'scope') $(LITERAL '$(LPAREN)') $(LITERAL Identifier) $(LITERAL '$(RPAREN)') $(RULE statementNoCaseNoDefault)
          *     ;)
          */
-        ScopeGuardStatement parseScopeGuardStatement()
+        boolean parseScopeGuardStatement()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!ScopeGuardStatement;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ScopeGuardStatement,false);
             expect(tok("scope"));
             expect(tok("("));
          ident = expect(tok("identifier"));
@@ -4659,7 +5027,7 @@ public class ParserPrelimnaryJavaWriteUp {
             node.identifier = *ident;
             expect(tok(")"));
             mixin(parseNodeQ("node.statementNoCaseNoDefault", "StatementNoCaseNoDefault"));
-            return node;
+            return true;
         }
 
         /**
@@ -4669,13 +5037,14 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'shared') $(LITERAL 'static') $(LITERAL 'this') $(LITERAL '$(LPAREN)') $(LITERAL '$(RPAREN)') $(RULE MemberFunctionAttribute)* ($(RULE functionBody) | $(LITERAL ";"))
          *     ;)
          */
-        SharedStaticConstructor parseSharedStaticConstructor()
+        boolean parseSharedStaticConstructor()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!SharedStaticConstructor;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.SharedStaticConstructor,false);
             node.location = current().index;
-            mixin(tokenCheck("shared"));
-            mixin(tokenCheck("static"));
+            if(!tokenCheck("shared")){return false;}
+            if(!tokenCheck("static")){return false;}
             return parseStaticCtorDtorCommon(node);
         }
 
@@ -4686,14 +5055,15 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'shared') $(LITERAL 'static') $(LITERAL '~') $(LITERAL 'this') $(LITERAL '$(LPAREN)') $(LITERAL '$(RPAREN)') $(RULE MemberFunctionAttribute)* ($(RULE functionBody) | $(LITERAL ";"))
          *     ;)
          */
-        SharedStaticDestructor parseSharedStaticDestructor()
+        boolean parseSharedStaticDestructor()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!SharedStaticDestructor;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.SharedStaticDestructor,false);
             node.location = current().index;
-            mixin(tokenCheck("shared"));
-            mixin(tokenCheck("static"));
-            mixin(tokenCheck("~"));
+            if(!tokenCheck("shared")){return false;}
+            if(!tokenCheck("static")){return false;}
+            if(!tokenCheck("~")){return false;}
             return parseStaticCtorDtorCommon(node);
         }
 
@@ -4705,7 +5075,7 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(RULE shiftExpression) ($(LITERAL '<<') | $(LITERAL '>>') | $(LITERAL '>>>')) $(RULE addExpression)
          *     ;)
          */
-        ExpressionNode parseShiftExpression()
+        boolean parseShiftExpression()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             return parseLeftAssocBinaryExpression(ShiftExpression, AddExpression,
@@ -4719,10 +5089,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     ($(LITERAL Identifier) $(LITERAL '='))? $(RULE identifierChain)
          *     ;)
          */
-        SingleImport parseSingleImport()
+        boolean parseSingleImport()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!SingleImport;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.SingleImport,false);
             if (startsWith(tok("identifier"), tok("=")))
             {
                 node.rename = advance(); // identifier
@@ -4731,7 +5102,7 @@ public class ParserPrelimnaryJavaWriteUp {
             mixin(parseNodeQ("node.identifierChain", "IdentifierChain"));
             if (node.identifierChain == null)
             return null;
-            return node;
+            return true;
         }
 
         /**
@@ -4744,10 +5115,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(RULE defaultStatement)
          *     ;)
          */
-        Statement parseStatement()
+        boolean parseStatement()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!Statement;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Statement,false);
             if (!moreTokens())
             {
                 error("Expected statement instead of EOF");
@@ -4772,7 +5144,7 @@ public class ParserPrelimnaryJavaWriteUp {
                     mixin(parseNodeQ("node.statementNoCaseNoDefault", "StatementNoCaseNoDefault"));
                     break;
             }
-            return node;
+            return true;
         }
 
         /**
@@ -4805,10 +5177,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(RULE expressionStatement)
          *     ;)
          */
-        StatementNoCaseNoDefault parseStatementNoCaseNoDefault()
+        boolean parseStatementNoCaseNoDefault()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!StatementNoCaseNoDefault;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.StatementNoCaseNoDefault,false);
             node.startLocation = current().index;
             switch (current().type)
             {
@@ -4912,7 +5285,7 @@ public class ParserPrelimnaryJavaWriteUp {
                     break;
             }
             node.endLocation = tokens[index - 1].index;
-            return node;
+            return true;
         }
 
         /**
@@ -4922,7 +5295,7 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(RULE staticAssertStatement)
          *     ;)
          */
-        StaticAssertDeclaration parseStaticAssertDeclaration()
+        boolean parseStaticAssertDeclaration()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             mixin(simpleParse!(StaticAssertDeclaration,
@@ -4937,7 +5310,7 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'static') $(RULE assertExpression) $(LITERAL ';')
          *     ;)
          */
-        StaticAssertStatement parseStaticAssertStatement()
+        boolean parseStaticAssertStatement()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             mixin(simpleParse!(StaticAssertStatement,
@@ -4951,12 +5324,13 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'static') $(LITERAL 'this') $(LITERAL '$(LPAREN)') $(LITERAL '$(RPAREN)') $(RULE memberFunctionAttribute)* ($(RULE functionBody) | $(LITERAL ";"))
          *     ;)
          */
-        StaticConstructor parseStaticConstructor()
+        boolean parseStaticConstructor()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!StaticConstructor;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.StaticConstructor,false);
             node.location = current().index;
-            mixin(tokenCheck("static"));
+            if(!tokenCheck("static")){return false;}
             return parseStaticCtorDtorCommon(node);
         }
 
@@ -4967,13 +5341,14 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'static') $(LITERAL '~') $(LITERAL 'this') $(LITERAL '$(LPAREN)') $(LITERAL '$(RPAREN)') $(RULE memberFunctionAttribute)* ($(RULE functionBody) | $(LITERAL ";"))
          *     ;)
          */
-        StaticDestructor parseStaticDestructor()
+        boolean parseStaticDestructor()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!StaticDestructor;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.StaticDestructor,false);
             node.location = current().index;
-            mixin(tokenCheck("static"));
-            mixin(tokenCheck("~"));
+            if(!tokenCheck("static")){return false;}
+            if(!tokenCheck("~")){return false;}
             return parseStaticCtorDtorCommon(node);
         }
 
@@ -4984,7 +5359,7 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'static') $(LITERAL 'if') $(LITERAL '$(LPAREN)') $(RULE assignExpression) $(LITERAL '$(RPAREN)')
          *     ;)
          */
-        StaticIfCondition parseStaticIfCondition()
+        boolean parseStaticIfCondition()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             mixin(simpleParse!(StaticIfCondition, tok("static"), tok("if"), tok("("),
@@ -5015,9 +5390,10 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(LITERAL 'synchronized')
          *     ;)
          */
-        StorageClass parseStorageClass()
+        boolean parseStorageClass()
         {
-//            auto node = allocator.make!StorageClass;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.StorageClass,false);
             switch (current().type)
             {
                 case tok("@"):
@@ -5058,7 +5434,7 @@ public class ParserPrelimnaryJavaWriteUp {
                     error("Storage class expected");
                     return null;
             }
-            return node;
+            return true;
         }
 
         /**
@@ -5068,10 +5444,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL '{') $(RULE declaration)* $(LITERAL '}')
          *     ;)
          */
-        StructBody parseStructBody()
+        boolean parseStructBody()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!StructBody;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.StructBody,false);
          start = expect(tok("{"));
             if (start != null) node.startLocation = start.index;
             StackBuffer declarations;
@@ -5084,7 +5461,7 @@ public class ParserPrelimnaryJavaWriteUp {
             ownArray(node.declarations, declarations);
          end = expect(tok("}"));
             if (end != null) node.endLocation = end.index;
-            return node;
+            return true;
         }
 
         /**
@@ -5094,10 +5471,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'struct') $(LITERAL Identifier)? ($(RULE templateParameters) $(RULE raint)? $(RULE structBody) | ($(RULE structBody) | $(LITERAL ';')))
          *     ;)
          */
-        StructDeclaration parseStructDeclaration()
+        boolean parseStructDeclaration()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!StructDeclaration;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.StructDeclaration,false);
          t = expect(tok("struct"));
             if (currentIs(tok("identifier")))
             node.name = advance();
@@ -5127,7 +5505,7 @@ public class ParserPrelimnaryJavaWriteUp {
                 error("Template Parameters, Struct Body, or Semicolon expected");
                 return null;
             }
-            return node;
+            return true;
         }
 
         /**
@@ -5137,10 +5515,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL '{') $(RULE structMemberInitializers)? $(LITERAL '}')
          *     ;)
          */
-        StructInitializer parseStructInitializer()
+        boolean parseStructInitializer()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!StructInitializer;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.StructInitializer,false);
          a = expect(tok("{"));
             node.startLocation = a.index;
             if (currentIs(tok("}")))
@@ -5155,7 +5534,7 @@ public class ParserPrelimnaryJavaWriteUp {
                 mixin (nullCheck("e"));
                 node.endLocation = e.index;
             }
-            return node;
+            return true;
         }
 
         /**
@@ -5165,17 +5544,18 @@ public class ParserPrelimnaryJavaWriteUp {
          *     ($(LITERAL Identifier) $(LITERAL ':'))? $(RULE nonVoidInitializer)
          *     ;)
          */
-        StructMemberInitializer parseStructMemberInitializer()
+        boolean parseStructMemberInitializer()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!StructMemberInitializer;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.StructMemberInitializer,false);
             if (startsWith(tok("identifier"), tok(":")))
             {
                 node.identifier = tokens[index++];
                 index++;
             }
             mixin(parseNodeQ("node.nonVoidInitializer", "NonVoidInitializer"));
-            return node;
+            return true;
         }
 
         /**
@@ -5185,10 +5565,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(RULE structMemberInitializer) ($(LITERAL ',') $(RULE structMemberInitializer)?)*
          *     ;)
          */
-        StructMemberInitializers parseStructMemberInitializers()
+        boolean parseStructMemberInitializers()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!StructMemberInitializers;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.StructMemberInitializers,false);
             StackBuffer structMemberInitializers;
             do
             {
@@ -5201,7 +5582,7 @@ public class ParserPrelimnaryJavaWriteUp {
                 break;
             } while (moreTokens() && !currentIs(tok("}")));
             ownArray(node.structMemberInitializers, structMemberInitializers);
-            return node;
+            return true;
         }
 
         /**
@@ -5211,16 +5592,17 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'switch') $(LITERAL '$(LPAREN)') $(RULE expression) $(LITERAL '$(RPAREN)') $(RULE statement)
          *     ;)
          */
-        SwitchStatement parseSwitchStatement()
+        boolean parseSwitchStatement()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!SwitchStatement;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.SwitchStatement,false);
             expect(tok("switch"));
             expect(tok("("));
             mixin(parseNodeQ("node.expression", "Expression"));
             expect(tok(")"));
             mixin(parseNodeQ("node.statement", "Statement"));
-            return node;
+            return true;
         }
 
         /**
@@ -5230,17 +5612,18 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL '.')? $(RULE identifierOrTemplateChain)
          *     ;)
          */
-        Symbol parseSymbol()
+        boolean parseSymbol()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!Symbol;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Symbol,false);
             if (currentIs(tok(".")))
             {
                 node.dot = true;
                 advance();
             }
             mixin(parseNodeQ("node.identifierOrTemplateChain", "IdentifierOrTemplateChain"));
-            return node;
+            return true;
         }
 
         /**
@@ -5250,10 +5633,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'synchronized') ($(LITERAL '$(LPAREN)') $(RULE expression) $(LITERAL '$(RPAREN)'))? $(RULE statementNoCaseNoDefault)
          *     ;)
          */
-        SynchronizedStatement parseSynchronizedStatement()
+        boolean parseSynchronizedStatement()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!SynchronizedStatement;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.SynchronizedStatement,false);
             expect(tok("synchronized"));
             if (currentIs(tok("(")))
             {
@@ -5262,7 +5646,7 @@ public class ParserPrelimnaryJavaWriteUp {
                 expect(tok(")"));
             }
             mixin(parseNodeQ("node.statementNoCaseNoDefault", "StatementNoCaseNoDefault"));
-            return node;
+            return true;
         }
 
         /**
@@ -5272,10 +5656,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'alias') $(RULE type)? $(LITERAL Identifier) ($(LITERAL ':') ($(RULE type) | $(RULE assignExpression)))? ($(LITERAL '=') ($(RULE type) | $(RULE assignExpression)))?
          *     ;)
          */
-        TemplateAliasParameter parseTemplateAliasParameter()
+        boolean parseTemplateAliasParameter()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!TemplateAliasParameter;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateAliasParameter,false);
             expect(tok("alias"));
             if (currentIs(tok("identifier")) && !peekIs(tok(".")))
             {
@@ -5309,7 +5694,7 @@ public class ParserPrelimnaryJavaWriteUp {
             else
                 mixin(parseNodeQ("node.assignExpression", "AssignExpression"));
             }
-            return node;
+            return true;
         }
 
         /**
@@ -5320,11 +5705,12 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(RULE assignExpression)
          *     ;)
          */
-        TemplateArgument parseTemplateArgument()
+        boolean parseTemplateArgument()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             if (suppressedErrorCount > MAX_ERRORS) return null;
-//            auto node = allocator.make!TemplateArgument;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateArgument,false);
             Bookmark b = setBookmark();
             auto t = parseType();
             if (t != null && currentIsOneOf(tok(","), tok(")")))
@@ -5337,7 +5723,7 @@ public class ParserPrelimnaryJavaWriteUp {
                 goToBookmark(b);
                 mixin(parseNodeQ("node.assignExpression", "AssignExpression"));
             }
-            return node;
+            return true;
         }
 
         /**
@@ -5347,7 +5733,7 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(RULE templateArgument) ($(LITERAL ',') $(RULE templateArgument)?)*
          *     ;)
          */
-        TemplateArgumentList parseTemplateArgumentList()
+        boolean parseTemplateArgumentList()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             return parseCommaSeparatedRule!(TemplateArgumentList, TemplateArgument)(true);
@@ -5360,22 +5746,23 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL '!') ($(LITERAL '$(LPAREN)') $(RULE templateArgumentList)? $(LITERAL '$(RPAREN)')) | $(RULE templateSingleArgument)
          *     ;)
          */
-        TemplateArguments parseTemplateArguments()
+        boolean parseTemplateArguments()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             if (suppressedErrorCount > MAX_ERRORS) return null;
-//            auto node = allocator.make!TemplateArguments;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateArguments,false);
             expect(tok("!"));
             if (currentIs(tok("(")))
             {
                 advance();
                 if (!currentIs(tok(")")))
                 mixin(parseNodeQ("node.templateArgumentList", "TemplateArgumentList"));
-                mixin(tokenCheck(")"));
+                if(!tokenCheck(")")){return false;}
             }
         else
             mixin(parseNodeQ("node.templateSingleArgument", "TemplateSingleArgument"));
-            return node;
+            return true;
         }
 
         /**
@@ -5385,10 +5772,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *       $(LITERAL 'template') $(LITERAL Identifier) $(RULE templateParameters) $(RULE raint)? $(LITERAL '{') $(RULE declaration)* $(LITERAL '}')
          *     ;)
          */
-        TemplateDeclaration parseTemplateDeclaration()
+        boolean parseTemplateDeclaration()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!TemplateDeclaration;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateDeclaration,false);
             node.comment = comment;
             comment = null;
             expect(tok("template"));
@@ -5411,7 +5799,7 @@ public class ParserPrelimnaryJavaWriteUp {
             ownArray(node.declarations, declarations);
          end = expect(tok("}"));
             if (end != null) node.endLocation = end.index;
-            return node;
+            return true;
         }
 
         /**
@@ -5421,18 +5809,19 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL Identifier) $(RULE templateArguments)
          *     ;)
          */
-        TemplateInstance parseTemplateInstance()
+        boolean parseTemplateInstance()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             if (suppressedErrorCount > MAX_ERRORS) return null;
-//            auto node = allocator.make!TemplateInstance;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateInstance,false);
          ident = expect(tok("identifier"));
             mixin(nullCheck("ident"));
             node.identifier = *ident;
             mixin(parseNodeQ("node.templateArguments", "TemplateArguments"));
             if (node.templateArguments == null)
             return null;
-            return node;
+            return true;
         }
 
         /**
@@ -5442,17 +5831,18 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'mixin') $(RULE mixinTemplateName) $(RULE templateArguments)? $(LITERAL Identifier)?
          *     ;)
          */
-        TemplateMixinExpression parseTemplateMixinExpression()
+        boolean parseTemplateMixinExpression()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!TemplateMixinExpression;
-            mixin(tokenCheck("mixin"));
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateMixinExpression,false);
+            if(!tokenCheck("mixin")){return false;}
             mixin(parseNodeQ("node.mixinTemplateName", "MixinTemplateName"));
             if (currentIs(tok("!")))
             mixin(parseNodeQ("node.templateArguments", "TemplateArguments"));
             if (currentIs(tok("identifier")))
             node.identifier = advance();
-            return node;
+            return true;
         }
 
         /**
@@ -5466,10 +5856,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(RULE templateThisParameter)
          *     ;)
          */
-        TemplateParameter parseTemplateParameter()
+        boolean parseTemplateParameter()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!TemplateParameter;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateParameter,false);
             switch (current().type)
             {
                 case tok("alias"):
@@ -5490,7 +5881,7 @@ public class ParserPrelimnaryJavaWriteUp {
                     mixin(parseNodeQ("node.templateValueParameter", "TemplateValueParameter"));
                     break;
             }
-            return node;
+            return true;
         }
 
         /**
@@ -5500,7 +5891,7 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(RULE templateParameter) ($(LITERAL ',') $(RULE templateParameter)?)* $(LITERAL ',')?
          *     ;)
          */
-        TemplateParameterList parseTemplateParameterList()
+        boolean parseTemplateParameterList()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             return parseCommaSeparatedRule!(TemplateParameterList, TemplateParameter)(true);
@@ -5513,15 +5904,16 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL '$(LPAREN)') $(RULE templateParameterList)? $(LITERAL '$(RPAREN)')
          *     ;)
          */
-        TemplateParameters parseTemplateParameters()
+        boolean parseTemplateParameters()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!TemplateParameters;
-            mixin(tokenCheck("("));
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateParameters,false);
+            if(!tokenCheck("(")){return false;}
             if (!currentIs(tok(")")))
             mixin(parseNodeQ("node.templateParameterList", "TemplateParameterList"));
-            mixin(tokenCheck(")"));
-            return node;
+            if(!tokenCheck(")")){return false;}
+            return true;
         }
 
         /**
@@ -5550,10 +5942,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(LITERAL '___PRETTY_FUNCTION__')
          *     ;)
          */
-        TemplateSingleArgument parseTemplateSingleArgument()
+        boolean parseTemplateSingleArgument()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!TemplateSingleArgument;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateSingleArgument,false);
             if (!moreTokens)
             {
                 error("template argument expected instead of EOF");
@@ -5571,7 +5964,7 @@ public class ParserPrelimnaryJavaWriteUp {
                     error("Invalid template argument. (Try enclosing in parenthesis?)");
                     return null;
             }
-            return node;
+            return true;
         }
 
         /**
@@ -5581,13 +5974,14 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'this') $(RULE templateTypeParameter)
          *     ;)
          */
-        TemplateThisParameter parseTemplateThisParameter()
+        boolean parseTemplateThisParameter()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!TemplateThisParameter;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateThisParameter,false);
             expect(tok("this"));
             mixin(parseNodeQ("node.templateTypeParameter", "TemplateTypeParameter"));
-            return node;
+            return true;
         }
 
         /**
@@ -5597,16 +5991,17 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL Identifier) $(LITERAL '...')
          *     ;)
          */
-        TemplateTupleParameter parseTemplateTupleParameter()
+        boolean parseTemplateTupleParameter()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!TemplateTupleParameter;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateTupleParameter,false);
          i = expect(tok("identifier"));
             if (i == null)
             return null;
             node.identifier = *i;
-            mixin(tokenCheck("..."));
-            return node;
+            if(!tokenCheck("...")){return false;}
+            return true;
         }
 
         /**
@@ -5616,10 +6011,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL Identifier) ($(LITERAL ':') $(RULE type))? ($(LITERAL '=') $(RULE type))?
          *     ;)
          */
-        TemplateTypeParameter parseTemplateTypeParameter()
+        boolean parseTemplateTypeParameter()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!TemplateTypeParameter;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateTypeParameter,false);
          ident = expect(tok("identifier"));
             mixin(nullCheck("ident"));
             node.identifier = *ident;
@@ -5633,7 +6029,7 @@ public class ParserPrelimnaryJavaWriteUp {
                 advance();
                 mixin(parseNodeQ("node.assignType", "Type"));
             }
-            return node;
+            return true;
         }
 
         /**
@@ -5643,10 +6039,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(RULE type) $(LITERAL Identifier) ($(LITERAL ':') $(RULE assignExpression))? $(RULE templateValueParameterDefault)?
          *     ;)
          */
-        TemplateValueParameter parseTemplateValueParameter()
+        boolean parseTemplateValueParameter()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!TemplateValueParameter;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateValueParameter,false);
             mixin(parseNodeQ("node.type", "Type"));
             mixin(tokenCheck!("node.identifier", "identifier"));
             if (currentIs(tok(":")))
@@ -5656,7 +6053,7 @@ public class ParserPrelimnaryJavaWriteUp {
             }
             if (currentIs(tok("=")))
             mixin(parseNodeQ("node.templateValueParameterDefault", "TemplateValueParameterDefault"));
-            return node;
+            return true;
         }
 
         /**
@@ -5666,10 +6063,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL '=') ($(LITERAL '___FILE__') | $(LITERAL '___MODULE__') | $(LITERAL '___LINE__') | $(LITERAL '___FUNCTION__') | $(LITERAL '___PRETTY_FUNCTION__') | $(RULE assignExpression))
          *     ;)
          */
-        TemplateValueParameterDefault parseTemplateValueParameterDefault()
+        boolean parseTemplateValueParameterDefault()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!TemplateValueParameterDefault;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateValueParameterDefault,false);
             expect(tok("="));
             switch (current().type)
             {
@@ -5684,7 +6082,7 @@ public class ParserPrelimnaryJavaWriteUp {
                     mixin(parseNodeQ("node.assignExpression", "AssignExpression"));
                     break;
             }
-            return node;
+            return true;
         }
 
         /**
@@ -5694,7 +6092,7 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(RULE orOrExpression) ($(LITERAL '?') $(RULE expression) $(LITERAL ':') $(RULE ternaryExpression))?
          *     ;)
          */
-        ExpressionNode parseTernaryExpression()
+        boolean parseTernaryExpression()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
 
@@ -5711,7 +6109,7 @@ public class ParserPrelimnaryJavaWriteUp {
                 mixin(nullCheck("colon"));
                 node.colon = *colon;
                 mixin(parseNodeQ("node.ternaryExpression", "TernaryExpression"));
-                return node;
+                return true;
             }
             return orOrExpression;
         }
@@ -5723,14 +6121,15 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'throw') $(RULE expression) $(LITERAL ';')
          *     ;)
          */
-        ThrowStatement parseThrowStatement()
+        boolean parseThrowStatement()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!ThrowStatement;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ThrowStatement,false);
             expect(tok("throw"));
             mixin(parseNodeQ("node.expression", "Expression"));
             expect(tok(";"));
-            return node;
+            return true;
         }
 
         /**
@@ -5740,12 +6139,13 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL '___traits') $(LITERAL '$(LPAREN)') $(LITERAL Identifier) $(LITERAL ',') $(RULE TemplateArgumentList) $(LITERAL '$(RPAREN)')
          *     ;)
          */
-        TraitsExpression parseTraitsExpression()
+        boolean parseTraitsExpression()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!TraitsExpression;
-            mixin(tokenCheck("__traits"));
-            mixin(tokenCheck("("));
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TraitsExpression,false);
+            if(!tokenCheck("__traits")){return false;}
+            if(!tokenCheck("(")){return false;}
          ident = expect(tok("identifier"));
             mixin(nullCheck("ident"));
             node.identifier = *ident;
@@ -5754,8 +6154,8 @@ public class ParserPrelimnaryJavaWriteUp {
                 advance();
                 mixin (nullCheck("(node.templateArgumentList = parseTemplateArgumentList())"));
             }
-            mixin(tokenCheck(")"));
-            return node;
+            if(!tokenCheck(")")){return false;}
+            return true;
         }
 
         /**
@@ -5765,17 +6165,18 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'try') $(RULE declarationOrStatement) ($(RULE catches) | $(RULE catches) $(RULE finally) | $(RULE finally))
          *     ;)
          */
-        TryStatement parseTryStatement()
+        boolean parseTryStatement()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!TryStatement;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TryStatement,false);
             expect(tok("try"));
             mixin(parseNodeQ("node.declarationOrStatement", "DeclarationOrStatement"));
             if (currentIs(tok("catch")))
             mixin(parseNodeQ("node.catches", "Catches"));
             if (currentIs(tok("finally")))
             mixin(parseNodeQ("node.finally_", "Finally"));
-            return node;
+            return true;
         }
 
         /**
@@ -5785,10 +6186,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(RULE typeConstructors)? $(RULE type2) $(RULE typeSuffix)*
          *     ;)
          */
-        Type parseType()
+        boolean parseType()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!Type;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Type,false);
             if (!moreTokens)
             {
                 error("type expected");
@@ -5835,7 +6237,7 @@ public class ParserPrelimnaryJavaWriteUp {
                     break loop;
             }
             ownArray(node.typeSuffixes, typeSuffixes);
-            return node;
+            return true;
         }
 
         /**
@@ -5851,10 +6253,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(RULE vector)
          *     ;)
          */
-        Type2 parseType2()
+        boolean parseType2()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!Type2;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Type2,false);
             if (!moreTokens)
             {
                 error("type2 expected instead of EOF");
@@ -5872,7 +6275,7 @@ public class ParserPrelimnaryJavaWriteUp {
                 case tok("super"):
                 case tok("this"):
                     node.superOrThis = advance().type;
-                    mixin(tokenCheck("."));
+                    if(!tokenCheck(".")){return false;}
                     mixin(parseNodeQ("node.identifierOrTemplateChain", "IdentifierOrTemplateChain"));
                     break;
                 case tok("typeof"):
@@ -5889,9 +6292,9 @@ public class ParserPrelimnaryJavaWriteUp {
                 case tok("inout"):
                 case tok("shared"):
                     node.typeConstructor = advance().type;
-                    mixin(tokenCheck("("));
+                    if(!tokenCheck("(")){return false;}
                     mixin (nullCheck("(node.type = parseType())"));
-                    mixin(tokenCheck(")"));
+                    if(!tokenCheck(")")){return false;}
                     break;
                 case tok("__vector"):
                     if ((node.vector = parseVector()) == null)
@@ -5901,7 +6304,7 @@ public class ParserPrelimnaryJavaWriteUp {
                     error("Basic type, type ructor, symbol, or typeof expected");
                     return null;
             }
-            return node;
+            return true;
         }
 
         /**
@@ -5914,7 +6317,7 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(LITERAL 'shared')
          *     ;)
          */
-        Token.IdType parseTypeConstructor()
+        Token.boolean parseTypeConstructor()
         {
             final boolean validate = true;
 //            mixin(traceEnterAndExit!(__FUNCTION__));
@@ -5941,13 +6344,13 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(RULE typeConstructor)+
          *     ;)
          */
-        Token.IdType[] parseTypeConstructors()
+        IdType[]boolean parseTypeConstructors()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-            Token.IdType[] r;
+            IdType[] r;
             while (moreTokens())
             {
-                Token.IdType type = parseTypeConstructor(false);
+                IdType type = parseTypeConstructor(false);
                 if (type == tok(""))
                 break;
             else
@@ -5978,10 +6381,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(LITERAL '___parameters')
          *     ;)
          */
-        TypeSpecialization parseTypeSpecialization()
+        boolean parseTypeSpecialization()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!TypeSpecialization;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TypeSpecialization,false);
             switch (current().type)
             {
                 case tok("struct"):
@@ -6009,7 +6413,7 @@ public class ParserPrelimnaryJavaWriteUp {
                     mixin(parseNodeQ("node.type", "Type"));
                     break;
             }
-            return node;
+            return true;
         }
 
         /**
@@ -6023,22 +6427,23 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | ($(LITERAL 'delegate') | $(LITERAL 'function')) $(RULE parameters) $(RULE memberFunctionAttribute)*
          *     ;)
          */
-        TypeSuffix parseTypeSuffix()
+        boolean parseTypeSuffix()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!TypeSuffix;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TypeSuffix,false);
             switch (current().type)
             {
                 case tok("*"):
                     node.star = advance();
-                    return node;
+                    return true;
                 case tok("["):
                     node.array = true;
                     advance();
                     if (currentIs(tok("]")))
                 {
                     advance();
-                    return node;
+                    return true;
                 }
                 auto bookmark = setBookmark();
                 auto type = parseType();
@@ -6059,8 +6464,8 @@ public class ParserPrelimnaryJavaWriteUp {
                         mixin (nullCheck("node.high"));
                     }
                 }
-                mixin(tokenCheck("]"));
-                return node;
+                if(!tokenCheck("]")){return false;}
+                return true;
                 case tok("delegate"):
                 case tok("function"):
                     node.delegateOrFunction = advance();
@@ -6070,7 +6475,7 @@ public class ParserPrelimnaryJavaWriteUp {
                         if (!memberFunctionAttributes.put(parseMemberFunctionAttribute()))
                             return null;
                     ownArray(node.memberFunctionAttributes, memberFunctionAttributes);
-                    return node;
+                    return true;
                 default:
                     error(""*", "[", "delegate", or "function" expected.");
                     return null;
@@ -6084,10 +6489,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'typeid') $(LITERAL '$(LPAREN)') ($(RULE type) | $(RULE expression)) $(LITERAL '$(RPAREN)')
          *     ;)
          */
-        TypeidExpression parseTypeidExpression()
+        boolean parseTypeidExpression()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!TypeidExpression;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TypeidExpression,false);
             expect(tok("typeid"));
             expect(tok("("));
             Bookmark b = setBookmark();
@@ -6104,7 +6510,7 @@ public class ParserPrelimnaryJavaWriteUp {
                 node.type = t;
             }
             expect(tok(")"));
-            return node;
+            return true;
         }
 
         /**
@@ -6114,10 +6520,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'typeof') $(LITERAL '$(LPAREN)') ($(RULE expression) | $(LITERAL 'return')) $(LITERAL '$(RPAREN)')
          *     ;)
          */
-        TypeofExpression parseTypeofExpression()
+        boolean parseTypeofExpression()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!TypeofExpression;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TypeofExpression,false);
             expect(tok("typeof"));
             expect(tok("("));
             if (currentIs(tok("return")))
@@ -6125,7 +6532,7 @@ public class ParserPrelimnaryJavaWriteUp {
         else
             mixin(parseNodeQ("node.expression", "Expression"));
             expect(tok(")"));
-            return node;
+            return true;
         }
 
         /**
@@ -6154,12 +6561,13 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(RULE unaryExpression) $(LITERAL '++')
          *     ;)
          */
-        UnaryExpression parseUnaryExpression()
+        boolean parseUnaryExpression()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             if (!moreTokens())
                 return null;
-//            auto node = allocator.make!UnaryExpression;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.UnaryExpression,false);
             switch (current().type)
             {
                 case tok(""):
@@ -6288,7 +6696,7 @@ public class ParserPrelimnaryJavaWriteUp {
                 default:
                     break loop;
             }
-            return node;
+            return true;
         }
 
         /**
@@ -6300,10 +6708,11 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(LITERAL 'union') $(RULE structBody)
          *     ;)
          */
-        UnionDeclaration parseUnionDeclaration()
+        boolean parseUnionDeclaration()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!UnionDeclaration;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.UnionDeclaration,false);
             node.comment = comment;
             comment = null;
             // grab line number even if it's anonymous
@@ -6331,7 +6740,7 @@ public class ParserPrelimnaryJavaWriteUp {
             else
                 mixin(parseNodeQ("node.structBody", "StructBody"));
             }
-            return node;
+            return true;
         }
 
         /**
@@ -6341,7 +6750,7 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'unittest') $(RULE blockStatement)
          *     ;)
          */
-        Unittest parseUnittest()
+        boolean parseUnittest()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             mixin (simpleParse!(Unittest, tok("unittest"), "blockStatement|parseBlockStatement"));
@@ -6356,17 +6765,18 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(RULE autoDeclaration)
          *     ;)
          */
-        VariableDeclaration parseVariableDeclaration()//(Type type = null )
+        boolean parseVariableDeclaration()//(Type type = null )
         {
             final boolean isAuto = false;
 //            mixin (traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!VariableDeclaration;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.VariableDeclaration,false);
 
             if (isAuto)
             {
                 mixin(parseNodeQ("node.autoDeclaration", "AutoDeclaration"));
                 node.comment = node.autoDeclaration.comment;
-                return node;
+                return true;
             }
 
             StackBuffer storageClasses;
@@ -6413,7 +6823,7 @@ public class ParserPrelimnaryJavaWriteUp {
             }
         else
             last.comment = semicolon.trailingComment;
-            return node;
+            return true;
         }
 
         /**
@@ -6423,7 +6833,7 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL '___vector') $(LITERAL '$(LPAREN)') $(RULE type) $(LITERAL '$(RPAREN)')
          *     ;)
          */
-        Vector parseVector()
+        boolean parseVector()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             mixin (simpleParse!(Vector, tok("__vector"), tok("("), "type|parseType", tok(")")));
@@ -6436,14 +6846,15 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'version') $(LITERAL '$(LPAREN)') ($(LITERAL IntegerLiteral) | $(LITERAL Identifier) | $(LITERAL 'unittest') | $(LITERAL 'assert')) $(LITERAL '$(RPAREN)')
          *     ;)
          */
-        VersionCondition parseVersionCondition()
+        boolean parseVersionCondition()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!VersionCondition;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.VersionCondition,false);
 		 v = expect(tok("version"));
             mixin(nullCheck("v"));
             node.versionIndex = v.index;
-            mixin(tokenCheck("("));
+            if(!tokenCheck("(")){return false;}
             if (currentIsOneOf(tok("intLiteral"), tok("identifier"), tok("unittest"), tok("assert")))
             node.token = advance();
 		else
@@ -6452,7 +6863,7 @@ public class ParserPrelimnaryJavaWriteUp {
                 return null;
             }
             expect(tok(")"));
-            return node;
+            return true;
         }
 
         /**
@@ -6462,12 +6873,13 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'version') $(LITERAL '=') ($(LITERAL Identifier) | $(LITERAL IntegerLiteral)) $(LITERAL ';')
          *     ;)
          */
-        VersionSpecification parseVersionSpecification()
+        boolean parseVersionSpecification()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!VersionSpecification;
-            mixin(tokenCheck("version"));
-            mixin(tokenCheck("="));
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.VersionSpecification,false);
+            if(!tokenCheck("version")){return false;}
+            if(!tokenCheck("=")){return false;}
             if (!currentIsOneOf(tok("identifier"), tok("intLiteral")))
             {
                 error("Identifier or integer literal expected");
@@ -6475,7 +6887,7 @@ public class ParserPrelimnaryJavaWriteUp {
             }
             node.token = advance();
             expect(tok(";"));
-            return node;
+            return true;
         }
 
         /**
@@ -6485,22 +6897,23 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'while') $(LITERAL '$(LPAREN)') $(RULE expression) $(LITERAL '$(RPAREN)') $(RULE declarationOrStatement)
          *     ;)
          */
-        WhileStatement parseWhileStatement()
+        boolean parseWhileStatement()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-//            auto node = allocator.make!WhileStatement;
-            mixin(tokenCheck("while"));
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.WhileStatement,false);
+            if(!tokenCheck("while")){return false;}
             node.startIndex = current().index;
-            mixin(tokenCheck("("));
+            if(!tokenCheck("(")){return false;}
             mixin(parseNodeQ("node.expression", "Expression"));
-            mixin(tokenCheck(")"));
+            if(!tokenCheck(")")){return false;}
             if (currentIs(tok("}")))
             {
                 error("Statement expected", false);
-                return node; // this line makes DCD better
+                return true; // this line makes DCD better
             }
             mixin(parseNodeQ("node.declarationOrStatement", "DeclarationOrStatement"));
-            return node;
+            return true;
         }
 
         /**
@@ -6510,7 +6923,7 @@ public class ParserPrelimnaryJavaWriteUp {
          *     $(LITERAL 'with') $(LITERAL '$(LPAREN)') $(RULE expression) $(LITERAL '$(RPAREN)') $(RULE statementNoCaseNoDefault)
          *     ;)
          */
-        WithStatement parseWithStatement()
+        boolean parseWithStatement()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             mixin (simpleParse!(WithStatement, tok("with"), tok("("),
@@ -6526,7 +6939,7 @@ public class ParserPrelimnaryJavaWriteUp {
          *     | $(RULE xorExpression) $(LITERAL '^') $(RULE andExpression)
          *     ;)
          */
-        ExpressionNode parseXorExpression()
+        boolean parseXorExpression()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             return parseLeftAssocBinaryExpression(XorExpression, AndExpression,
@@ -6932,7 +7345,7 @@ public class ParserPrelimnaryJavaWriteUp {
             }
         }
 
-        static boolean isMemberFunctionAttribute(Token.IdType t)
+        static boolean isMemberFunctionAttribute(IdType t)
         {
             switch (t)
             {
@@ -6951,7 +7364,7 @@ public class ParserPrelimnaryJavaWriteUp {
             }
         }
 
-        static boolean isTypeCtor(Token.IdType t)
+        static boolean isTypeCtor(IdType t)
         {
             switch (t)
             {
@@ -6970,55 +7383,54 @@ public class ParserPrelimnaryJavaWriteUp {
             return moreTokens && isMemberFunctionAttribute(current().type);
         }
 
-        ExpressionNode parseLeftAssocBinaryExpression()//(alias ExpressionType, alias ExpressionPartType, Operators ...)(ExpressionNode part = null)
-        {
-            ExpressionNode node;
-            mixin ("node = part == null ? parse" ~ ExpressionPartType.Stringof ~ "() : part;");
-            if (node == null)
-                return null;
-            while (currentIsOneOf(Operators))
-            {
-//                auto n = allocator.make!ExpressionType;
-                n.line = current().line;
-                n.column = current().column;
-                if (__traits(hasMember, ExpressionType, "operator"))
-                    n.operator = advance().type;
-                else
-                    advance();
-                n.left = node;
-                mixin (parseNodeQ("n.right", ExpressionPartType.Stringof));
-                node = n;
-            }
-            return node;
+        boolean parseLeftAssocBinaryExpression(String ExpressionType,String ExpressionPartType, IdType... operators){
+            return parseLeftAssocBinaryExpression(ExpressionType,ExpressionPartType,false,operators);
         }
 
-        ListType parseCommaSeparatedRule()//(alias ListType, alias ItemType,)
+        boolean parseLeftAssocBinaryExpression(String ExpressionType,String ExpressionPartType, boolean part, IdType... operators)//(alias ExpressionType, alias ExpressionPartType, Operators ...)(ExpressionNode part = null)
         {
-            final boolean setLineAndColumn = false;
-//            auto node = allocator.make!ListType;
-            if (setLineAndColumn)
-        {
-            node.line = current().line;
-            node.column = current().column;
-        }
-            StackBuffer items;
-            while (moreTokens())
+            boolean node = (!part) ? parseName(ExpressionPartType) : part;
+            if (!node)
+                return false;
+            while (currentIsOneOf(operators))
             {
-                if (!items.put(mixin("parse" ~ ItemType.Stringof ~ "()")))
-                return null;
-                if (currentIs(tok(",")))
-                {
-                    advance();
-                    if (true && currentIsOneOf(tok(")"), tok("}"), tok("]")))
-                    break;
-                else
-                    continue;
+//                auto n = allocator.make!ExpressionType;
+                advance();
+                if(!parseNodeQ("n.right", ExpressionPartType)){
+                    return false;
                 }
-            else
-                break;
             }
-            ownArray(node.items, items);
-            return node;
+            return true;
+        }
+
+        //todo
+        boolean parseCommaSeparatedRule(String listType, String itemType)//(alias ListType, alias ItemType,)
+        {
+//            final boolean setLineAndColumn = false;
+//            Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ListType,false);
+//            if (setLineAndColumn)
+//            {
+////                node.line = current().line;
+////                node.column = current().column;
+//            }
+//            final Marker m = enter_section_(builder);
+            while (moreTokens()) {
+                if (!parseName(itemType)) {
+//                    cleanup(m);
+                    return false;
+                }
+                if (currentIs(tok(","))) {
+                    advance();
+                    if (currentIsOneOf(tok(")"), tok("}"), tok("]")))
+                        break;
+                    else
+                        continue;
+                } else
+                    break;
+            }
+//            exit_section_(builder,m,,true);
+            return true;
         }
 
         void warn(String message)
@@ -7153,22 +7565,22 @@ public class ParserPrelimnaryJavaWriteUp {
             return peekPast(tok("{"), tok("}"));
         }
 
-        boolean peekIs(Token.IdType t)
+        boolean peekIs(IdType t)
         {
             return index + 1 < tokens.length && tokens[index + 1].type == t;
         }
 
-        boolean peekIsOneOf(Token.IdType... types)
+        boolean peekIsOneOf(IdType... types)
         {
-        if (index + 1 >= tokens.length) return false;
-        return canFind(types, tokens[index + 1].type);
-    }
+            if (index + 1 >= tokens.length) return false;
+            return canFind(types, tokens[index + 1].type);
+        }
 
         /**
          * Returns a token of the specified type if it was the next token, otherwise
          * calls the error function and returns null. Advances the lexer by one token.
          */
-        Token expect(Token.IdType type)
+        Token expect(IdType type)
         {
             if (index < tokens.length && tokens[index].type == type)
                 return tokens[index++];
@@ -7220,7 +7632,7 @@ public class ParserPrelimnaryJavaWriteUp {
         /**
          * Returns: true if the current token has the given type
          */
-        boolean currentIs(Token.IdType type)
+        boolean currentIs(IdType type)
         {
             return index < tokens.length && tokens[index].type == type;
         }
@@ -7228,14 +7640,14 @@ public class ParserPrelimnaryJavaWriteUp {
         /**
          * Returns: true if the current token == one of the given types
          */
-        boolean currentIsOneOf(Token.IdType... types)
+        boolean currentIsOneOf(IdType... types)
         {
             if (index >= tokens.length)
                 return false;
             return canFind(types, current().type);
         }
 
-        boolean startsWith(Token.IdType... types)
+        boolean startsWith(IdType... types)
         {
             if (index + types.length >= tokens.length)
                 return false;
@@ -7274,24 +7686,24 @@ public class ParserPrelimnaryJavaWriteUp {
         Bookmark setBookmark()
         {
 ////        mixin(traceEnterAndExit!(__FUNCTION__));
-        ++suppressMessages;
-        return index;
-    }
+            ++suppressMessages;
+            return index;
+        }
 
         void abandonBookmark(Bookmark)
         {
-        --suppressMessages;
-        if (suppressMessages == 0)
-            suppressedErrorCount = 0;
-    }
+            --suppressMessages;
+            if (suppressMessages == 0)
+                suppressedErrorCount = 0;
+        }
 
         void goToBookmark(Bookmark bookmark)
         {
-        --suppressMessages;
-        if (suppressMessages == 0)
-            suppressedErrorCount = 0;
-        index = bookmark;
-    }
+            --suppressMessages;
+            if (suppressMessages == 0)
+                suppressedErrorCount = 0;
+            index = bookmark;
+        }
 
 //        template simpleParse//(NodeType, parts ...)
 //        {
@@ -7312,10 +7724,11 @@ public class ParserPrelimnaryJavaWriteUp {
 //            enum nodeLoc = "node.location = current().index;\n";
 //        else enum nodeLoc = "";
 //
-////            enum simpleParse = "auto node = allocator.make!" ~ NodeType.Stringof ~ ";\n"
+////            enum simpleParse = "Marker m = enter_section_(builder);
+//			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes." ~ NodeType.Stringof ~ ",false);\n"
 //            ~ nodeComm ~ nodeLine ~ nodeColumn ~ nodeLoc
 //            ~ simpleParseItems!(parts)
-//            ~ "\nreturn node;\n";
+//            ~ "\nreturn true;\n";
 //        }
 //
 //        template simpleParseItems//(items ...)
@@ -7365,9 +7778,16 @@ public class ParserPrelimnaryJavaWriteUp {
 //                void trace(lazy String) {}
 //            }
 
+
+
         boolean parseNodeQ(String VarName, String NodeName)
         {
-            enum parseNodeQ = "{ if ((" ~ VarName ~ " = parse" ~ NodeName ~ "()) == null) return null; }";//potentiall huge implmentatation in java todo
+            if(!parseName(NodeName)){
+                return false;
+            }
+            //we can ignore VarName, since that is aside effect not strictly necessary for parsing
+            return true;
+//            enum parseNodeQ = "{ if ((" ~ VarName ~ " = parse" ~ NodeName ~ "()) == null) return null; }";//potentiall huge implmentatation in java todo
         }
 
         boolean nullCheck(String exp)
@@ -7386,9 +7806,9 @@ public class ParserPrelimnaryJavaWriteUp {
             return true;
         }
 
-        static HashMap<String,Token.IdType> tokenTypeIndex = new HashMap<>();
+        static HashMap<String,IdType> tokenTypeIndex = new HashMap<>();
 
-        private static Token.IdType tok(String tok) {
+        private static IdType tok(String tok) {
             if(tokenTypeIndex.get(tok) != null){
                 return tokenTypeIndex.get(tok);
             }
@@ -7396,16 +7816,23 @@ public class ParserPrelimnaryJavaWriteUp {
             if(matchingTypes.length != 1){
                 throw new IllegalArgumentException();
             }
-            final Token.IdType result = new Token.IdType(matchingTypes[0]);
+            final IdType result = new IdType(matchingTypes[0]);
             tokenTypeIndex.put(tok,result);
             return result;
         }
 
         boolean tokenCheck(String Exp, String Tok)
         {
-            enum tokenCheck = "{auto t = expect(tok("" ~ Tok ~ ""));"
-            ~ "if (t == null) { return null;}"
-            ~ "else {" ~ Exp ~ " = *t; }}";
+            final Token t = expect(tok(Tok));
+            if(t == null){
+                return false;
+            }
+            else{
+                //do nothing. Side-effects not relevant for purely parsing
+            }
+//            enum tokenCheck = "{auto t = expect(tok("" ~ Tok ~ ""));"
+//            ~ "if (t == null) { return null;}"
+//            ~ "else {" ~ Exp ~ " = *t; }}";
         }
 
         private <T> T attachCommentFromSemicolon(T node)
@@ -7423,7 +7850,7 @@ public class ParserPrelimnaryJavaWriteUp {
                     node.comment ~= semicolon.trailingComment;
                 }
             }
-            return node;
+            return true;
         }
 
         // This list MUST BE MAINTAINED IN SORTED ORDER.
@@ -7443,14 +7870,13 @@ public class ParserPrelimnaryJavaWriteUp {
             "YMM3", "YMM4", "YMM5", "YMM6", "YMM7", "YMM8", "YMM9"
         };
 
-
         <N> N parseStaticCtorDtorCommon(N node)
         {
             node.line = current().line;
             node.column = current().column;
-            mixin(tokenCheck("this"));
-            mixin(tokenCheck("("));
-            mixin(tokenCheck(")"));
+            if(!tokenCheck("this")){return false;}
+            if(!tokenCheck("(")){return false;}
+            if(!tokenCheck(")")){return false;}
             StackBuffer attributes;
             while (moreTokens() && !currentIsOneOf(tok("{"), tok("in"), tok("out"), tok("body"), tok(";")))
             if (!attributes.put(parseMemberFunctionAttribute()))
@@ -7460,8 +7886,9 @@ public class ParserPrelimnaryJavaWriteUp {
             advance();
     else
             mixin(parseNodeQ("node.functionBody", "FunctionBody"));
-            return node;
+            return true;
         }
+
 
         <N> N parseInterfaceOrClass(N node)
         {
@@ -7511,17 +7938,1020 @@ public class ParserPrelimnaryJavaWriteUp {
             }
             structBody:
             mixin(parseNodeQ("node.structBody", "StructBody"));
-            return node;
+            return true;
             emptyBody:
             advance();
-            return node;
+            return true;
         }
 
         int suppressMessages;
+
         int index;
         int _traceDepth;
         String comment;
-//            boolean[typeof(Token.index)] cachedAAChecks;
+
+        private boolean parseName(String NodeName){
+            switch (NodeName){
+                case "AliasThisDeclaration":
+                    return parseAliasThisDeclaration();
+                case "AlignAttribute":
+                    return parseAlignAttribute();
+                case "ArgumentList":
+                    return parseArgumentList();
+                case "Arguments":
+                    return parseArguments();
+                case "ArrayInitializer":
+                    return parseArrayInitializer();
+                case "ArrayLiteral":
+                    return parseArrayLiteral();
+                case "ArrayMemberInitialization":
+                    return parseArrayMemberInitialization();
+                case "AsmInstruction":
+                    return parseAsmInstruction();
+                case "AsmPrimaryExp":
+                    return parseAsmPrimaryExp();
+                case "AsmStatement":
+                    return parseAsmStatement();
+                case "AsmTypePrefix":
+                    return parseAsmTypePrefix();
+                case "AssocArrayLiteral":
+                    return parseAssocArrayLiteral();
+                case "AtAttribute":
+                    return parseAtAttribute();
+                case "Attribute":
+                    return parseAttribute();
+                case "AttributeDeclaration":
+                    return parseAttributeDeclaration();
+                case "AutoDeclaration":
+                    return parseAutoDeclaration();
+                case "AutoDeclarationPart":
+                    return parseAutoDeclarationPart();
+                case "BlockStatement":
+                    return parseBlockStatement();
+                case "BodyStatement":
+                    return parseBodyStatement();
+                case "BreakStatement":
+                    return parseBreakStatement();
+                case "BaseClass":
+                    return parseBaseClass();
+                case "BaseClassList":
+                    return parseBaseClassList();
+//                case "CaseRangeStatement":
+//                    return parseCaseRangeStatement();
+//                case "CaseStatement":
+//                    return parseCaseStatement();
+                case "CastExpression":
+                    return parseCastExpression();
+                case "CastQualifier":
+                    return parseCastQualifier();
+                case "Catch":
+                    return parseCatch();
+                case "Catches":
+                    return parseCatches();
+                case "ClassDeclaration":
+                    return parseClassDeclaration();
+                case "CompileCondition":
+                    return parseCompileCondition();
+//                case "ConditionalDeclaration":
+//                    return parseConditionalDeclaration();
+                case "ConditionalStatement":
+                    return parseConditionalStatement();
+                case "Constraint":
+                    return parseConstraint();
+                case "Constructor":
+                    return parseConstructor();
+                case "ContinueStatement":
+                    return parseContinueStatement();
+                case "DebugCondition":
+                    return parseDebugCondition();
+                case "DebugSpecification":
+                    return parseDebugSpecification();
+                case "Declaration":
+                    return parseDeclaration();
+                case "DeclarationsAndStatements":
+                    return parseDeclarationsAndStatements();
+                case "DeclarationOrStatement":
+                    return parseDeclarationOrStatement();
+                case "Declarator":
+                    return parseDeclarator();
+                case "DefaultStatement":
+                    return parseDefaultStatement();
+                case "Deprecated":
+                    return parseDeprecated();
+                case "Destructor":
+                    return parseDestructor();
+                case "DoStatement":
+                    return parseDoStatement();
+                case "EnumBody":
+                    return parseEnumBody();
+                case "AnonymousEnumMember":
+                    return parseAnonymousEnumMember();
+                case "AnonymousEnumDeclaration":
+                    return parseAnonymousEnumDeclaration();
+                case "EnumDeclaration":
+                    return parseEnumDeclaration();
+                case "EnumMember":
+                    return parseEnumMember();
+                case "EponymousTemplateDeclaration":
+                    return parseEponymousTemplateDeclaration();
+//                case "ExpressionStatement":
+//                    return parseExpressionStatement();
+                case "FinalSwitchStatement":
+                    return parseFinalSwitchStatement();
+                case "Finally":
+                    return parseFinally();
+                case "ForStatement":
+                    return parseForStatement();
+                case "ForeachStatement":
+                    return parseForeachStatement();
+                case "ForeachType":
+                    return parseForeachType();
+                case "ForeachTypeList":
+                    return parseForeachTypeList();
+//                case "FunctionAttribute":
+//                    return parseFunctionAttribute();
+                case "FunctionBody":
+                    return parseFunctionBody();
+//                case "FunctionDeclaration":
+//                    return parseFunctionDeclaration();
+                case "GotoStatement":
+                    return parseGotoStatement();
+                case "IdentifierChain":
+                    return parseIdentifierChain();
+                case "IdentifierList":
+                    return parseIdentifierList();
+                case "IdentifierOrTemplateChain":
+                    return parseIdentifierOrTemplateChain();
+                case "IdentifierOrTemplateInstance":
+                    return parseIdentifierOrTemplateInstance();
+                case "IfStatement":
+                    return parseIfStatement();
+                case "ImportBind":
+                    return parseImportBind();
+//                case "ImportBindings":
+//                    return parseImportBindings();
+                case "ImportDeclaration":
+                    return parseImportDeclaration();
+                case "InStatement":
+                    return parseInStatement();
+                case "Initializer":
+                    return parseInitializer();
+                case "InterfaceDeclaration":
+                    return parseInterfaceDeclaration();
+                case "Invariant":
+                    return parseInvariant();
+                case "KeyValuePair":
+                    return parseKeyValuePair();
+                case "KeyValuePairs":
+                    return parseKeyValuePairs();
+                case "LabeledStatement":
+                    return parseLabeledStatement();
+                case "LastCatch":
+                    return parseLastCatch();
+                case "LinkageAttribute":
+                    return parseLinkageAttribute();
+                case "MemberFunctionAttribute":
+                    return parseMemberFunctionAttribute();
+                case "MixinDeclaration":
+                    return parseMixinDeclaration();
+                case "MixinTemplateDeclaration":
+                    return parseMixinTemplateDeclaration();
+                case "MixinTemplateName":
+                    return parseMixinTemplateName();
+                case "Module":
+                    return parseModule();
+                case "ModuleDeclaration":
+                    return parseModuleDeclaration();
+                case "NonVoidInitializer":
+                    return parseNonVoidInitializer();
+                case "Operands":
+                    return parseOperands();
+                case "OutStatement":
+                    return parseOutStatement();
+                case "Parameter":
+                    return parseParameter();
+                case "Parameters":
+                    return parseParameters();
+                case "Postblit":
+                    return parsePostblit();
+                case "PragmaDeclaration":
+                    return parsePragmaDeclaration();
+                case "Register":
+                    return parseRegister();
+                case "ReturnStatement":
+                    return parseReturnStatement();
+                case "ScopeGuardStatement":
+                    return parseScopeGuardStatement();
+                case "SharedStaticConstructor":
+                    return parseSharedStaticConstructor();
+                case "SharedStaticDestructor":
+                    return parseSharedStaticDestructor();
+                case "SingleImport":
+                    return parseSingleImport();
+                case "Statement":
+                    return parseStatement();
+                case "StatementNoCaseNoDefault":
+                    return parseStatementNoCaseNoDefault();
+                case "StaticAssertDeclaration":
+                    return parseStaticAssertDeclaration();
+                case "StaticAssertStatement":
+                    return parseStaticAssertStatement();
+                case "StaticConstructor":
+                    return parseStaticConstructor();
+                case "StaticDestructor":
+                    return parseStaticDestructor();
+                case "StaticIfCondition":
+                    return parseStaticIfCondition();
+                case "StorageClass":
+                    return parseStorageClass();
+                case "StructBody":
+                    return parseStructBody();
+                case "StructDeclaration":
+                    return parseStructDeclaration();
+                case "StructInitializer":
+                    return parseStructInitializer();
+                case "StructMemberInitializer":
+                    return parseStructMemberInitializer();
+                case "StructMemberInitializers":
+                    return parseStructMemberInitializers();
+                case "SwitchStatement":
+                    return parseSwitchStatement();
+                case "Symbol":
+                    return parseSymbol();
+                case "SynchronizedStatement":
+                    return parseSynchronizedStatement();
+                case "TemplateAliasParameter":
+                    return parseTemplateAliasParameter();
+                case "TemplateArgument":
+                    return parseTemplateArgument();
+                case "TemplateArgumentList":
+                    return parseTemplateArgumentList();
+                case "TemplateArguments":
+                    return parseTemplateArguments();
+                case "TemplateDeclaration":
+                    return parseTemplateDeclaration();
+                case "TemplateInstance":
+                    return parseTemplateInstance();
+                case "TemplateParameter":
+                    return parseTemplateParameter();
+                case "TemplateParameterList":
+                    return parseTemplateParameterList();
+                case "TemplateParameters":
+                    return parseTemplateParameters();
+                case "TemplateSingleArgument":
+                    return parseTemplateSingleArgument();
+                case "TemplateThisParameter":
+                    return parseTemplateThisParameter();
+                case "TemplateTupleParameter":
+                    return parseTemplateTupleParameter();
+                case "TemplateTypeParameter":
+                    return parseTemplateTypeParameter();
+                case "TemplateValueParameter":
+                    return parseTemplateValueParameter();
+                case "TemplateValueParameterDefault":
+                    return parseTemplateValueParameterDefault();
+                case "ThrowStatement":
+                    return parseThrowStatement();
+                case "TryStatement":
+                    return parseTryStatement();
+                case "Type":
+                    return parseType();
+                case "Type2":
+                    return parseType2();
+                case "TypeSpecialization":
+                    return parseTypeSpecialization();
+                case "TypeSuffix":
+                    return parseTypeSuffix();
+                case "UnionDeclaration":
+                    return parseUnionDeclaration();
+                case "Unittest":
+                    return parseUnittest();
+                case "VariableDeclaration":
+                    return parseVariableDeclaration();
+                case "Vector":
+                    return parseVector();
+                case "VersionCondition":
+                    return parseVersionCondition();
+                case "VersionSpecification":
+                    return parseVersionSpecification();
+                case "WhileStatement":
+                    return parseWhileStatement();
+                case "WithStatement":
+                    return parseWithStatement();
+                case "AddExpression":
+                    return parseAddExpression();
+                case "AndAndExpression":
+                    return parseAndAndExpression();
+                case "AndExpression":
+                    return parseAndExpression();
+                case "AsmAddExp":
+                    return parseAsmAddExp();
+                case "AsmAndExp":
+                    return parseAsmAndExp();
+                case "AsmBrExp":
+                    return parseAsmBrExp();
+                case "AsmExp":
+                    return parseAsmExp();
+                case "AsmEqualExp":
+                    return parseAsmEqualExp();
+                case "AsmLogAndExp":
+                    return parseAsmLogAndExp();
+                case "AsmLogOrExp":
+                    return parseAsmLogOrExp();
+                case "AsmMulExp":
+                    return parseAsmMulExp();
+                case "AsmOrExp":
+                    return parseAsmOrExp();
+                case "AsmRelExp":
+                    return parseAsmRelExp();
+                case "AsmUnaExp":
+                    return parseAsmUnaExp();
+                case "AsmShiftExp":
+                    return parseAsmShiftExp();
+                case "AsmXorExp":
+                    return parseAsmXorExp();
+                case "AssertExpression":
+                    return parseAssertExpression();
+                case "AssignExpression":
+                    return parseAssignExpression();
+                case "CmpExpression":
+                    return parseCmpExpression();
+                case "DeleteExpression":
+                    return parseDeleteExpression();
+//                case "EqualExpression":
+//                    return parseEqualExpression();
+                case "Expression":
+                    return parseExpression();
+                case "FunctionCallExpression":
+                    return parseFunctionCallExpression();
+                case "FunctionLiteralExpression":
+                    return parseFunctionLiteralExpression();
+                case "IdentityExpression":
+                    return parseIdentityExpression();
+                case "ImportExpression":
+                    return parseImportExpression();
+                case "IndexExpression":
+                    return parseIndexExpression();
+//                case "InExpression":
+//                    return parseInExpression();
+                case "IsExpression":
+                    return parseIsExpression();
+                case "MixinExpression":
+                    return parseMixinExpression();
+                case "MulExpression":
+                    return parseMulExpression();
+                case "NewAnonClassExpression":
+                    return parseNewAnonClassExpression();
+                case "NewExpression":
+                    return parseNewExpression();
+                case "OrExpression":
+                    return parseOrExpression();
+                case "OrOrExpression":
+                    return parseOrOrExpression();
+                case "PowExpression":
+                    return parsePowExpression();
+                case "PragmaExpression":
+                    return parsePragmaExpression();
+                case "PrimaryExpression":
+                    return parsePrimaryExpression();
+                case "RelExpression":
+                    return parseRelExpression();
+                case "ShiftExpression":
+                    return parseShiftExpression();
+                case "Index":
+                    return parseIndex();
+                case "TemplateMixinExpression":
+                    return parseTemplateMixinExpression();
+                case "TernaryExpression":
+                    return parseTernaryExpression();
+                case "TraitsExpression":
+                    return parseTraitsExpression();
+                case "TypeidExpression":
+                    return parseTypeidExpression();
+                case "TypeofExpression":
+                    return parseTypeofExpression();
+                case "UnaryExpression":
+                    return parseUnaryExpression();
+                case "XorExpression":
+                    return parseXorExpression();
+                case "AliasInitializer":
+                    return parseAliasInitializer();
+                default:
+                    throw new IllegalArgumentException("unrecognized thing to parse:" + NodeName);
+            }
+        }
+
     }
+
+    private IElementType nodeTypeToIElementType(String nodeType) {
+        switch (nodeType) {
+            case "AliasThisDeclaration":
+                return DLanguageTypes.ALIAS_THIS;
+            case "AlignAttribute":
+                return DLanguageTypes.ALIGN_ATTRIBUTE;
+            case "ArgumentList":
+                return DLanguageTypes.ARGUMENT_LIST;
+//            case "Arguments":
+//                return DLanguageTypes.ARGUMEN;
+            case "ArrayInitializer":
+                return DLanguageTypes.ARRAY_INITIALIZER;
+            case "ArrayLiteral":
+                return DLanguageTypes.ARRAY_LITERAL;
+            case "ArrayMemberInitialization":
+                return DLanguageTypes.ARRAY_MEMBER_INITIALIZATION;
+            case "AsmInstruction":
+                return DLanguageTypes.ASM_INSTRUCTION;
+            case "AsmPrimaryExp":
+                return DLanguageTypes.ASM_PRIMARY_EXP;
+            case "AsmStatement":
+                return DLanguageTypes.ASM_STATEMENT;
+            case "AsmTypePrefix":
+                return DLanguageTypes.ASM_TYPE_PREFIX;
+            case "AssocArrayLiteral":
+                return DLanguageTypes.ASSOC_ARRAY_LITERAL;
+//            case "AtAttribute":
+//                return DLanguageTypes.ATTRIBUTE;
+            case "Attribute":
+                return DLanguageTypes.ATTRIBUTE;
+            case "AttributeDeclaration":
+                return DLanguageTypes.ATTRIBUTE_SPECIFIER;
+            case "AutoDeclaration":
+                return DLanguageTypes.AUTO_DECLARATION;
+            case "AutoDeclarationPart":
+                return DLanguageTypes.AUTO_DECLARATION_X;
+            case "BlockStatement":
+                return DLanguageTypes.BLOCK_STATEMENT;
+            case "BodyStatement":
+                return DLanguageTypes.BODY_STATEMENT;
+            case "BreakStatement":
+                return DLanguageTypes.BREAK_STATEMENT;
+//            case "BaseClass":
+//                return DLanguageTypes.BASE_CLASS;
+            case "BaseClassList":
+                return DLanguageTypes.BASE_CLASS_LIST;
+//                case "CaseRangeStatement":
+//                    return DLanguageTypes.CASERANGE_STATEMENT;
+//                case "CaseStatement":
+//                    return DLanguageTypes.CASE_STATEMENT;
+            case "CastExpression":
+                return DLanguageTypes.CAST_EXPRESSION;
+//            case "CastQualifier":
+//                return DLanguageTypes.CAST_QUALIFIER;
+            case "Catch":
+                return DLanguageTypes.CATCH;
+            case "Catches":
+                return DLanguageTypes.CATCHES;
+            case "ClassDeclaration":
+                return DLanguageTypes.CLASS_DECLARATION;
+//            case "CompileCondition":
+//                return DLanguageTypes.COMPILE_CONDITION;
+//                case "ConditionalDeclaration":
+//                    return DLanguageTypes.CONDITIONAL_DECLARATION;
+            case "ConditionalStatement":
+                return DLanguageTypes.CONDITIONAL_STATEMENT;
+            case "Constraint":
+                return DLanguageTypes.CONSTRAINT;
+            case "Constructor":
+                return DLanguageTypes.CONSTRUCTOR;
+            case "ContinueStatement":
+                return DLanguageTypes.CONTINUE_STATEMENT;
+            case "DebugCondition":
+                return DLanguageTypes.DEBUG_CONDITION;
+            case "DebugSpecification":
+                return DLanguageTypes.DEBUG_SPECIFICATION;
+            case "Declaration":
+                return DLanguageTypes.DECLARATION;
+//            case "DeclarationsAndStatements":
+//                return DLanguageTypes.DECLARATIONSAND_STATEMENTS;
+//            case "DeclarationOrStatement":
+//                return DLanguageTypes.DECLARATIONOR_STATEMENT;
+            case "Declarator":
+                return DLanguageTypes.DECLARATOR;
+            case "DefaultStatement":
+                return DLanguageTypes.DEFAULT_STATEMENT;
+            case "Deprecated":
+                return DLanguageTypes.DEPRECATED_ATTRIBUTE;
+            case "Destructor":
+                return DLanguageTypes.DESTRUCTOR;
+            case "DoStatement":
+                return DLanguageTypes.DO_STATEMENT;
+            case "EnumBody":
+                return DLanguageTypes.ENUM_BODY;
+            case "AnonymousEnumMember":
+                return DLanguageTypes.ANONYMOUS_ENUM_DECLARATION;
+            case "AnonymousEnumDeclaration":
+                return DLanguageTypes.ANONYMOUS_ENUM_DECLARATION;
+            case "EnumDeclaration":
+                return DLanguageTypes.ENUM_DECLARATION;
+            case "EnumMember":
+                return DLanguageTypes.ENUM_MEMBER;
+//            case "EponymousTemplateDeclaration":
+//                return DLanguageTypes.EPONYMOUSTEMPLATE_DECLARATION;
+//                case "ExpressionStatement":
+//                    return DLanguageTypes.EXPRESSION_STATEMENT;
+            case "FinalSwitchStatement":
+                return DLanguageTypes.FINAL_SWITCH_STATEMENT;
+            case "Finally":
+                return DLanguageTypes.FINALLY_STATEMENT;
+            case "ForStatement":
+                return DLanguageTypes.FOR_STATEMENT;
+            case "ForeachStatement":
+                return DLanguageTypes.FOREACH_STATEMENT;
+            case "ForeachType":
+                return DLanguageTypes.FOREACH_TYPE;
+            case "ForeachTypeList":
+                return DLanguageTypes.FOREACH_TYPE_LIST;
+//                case "FunctionAttribute":
+//                    return DLanguageTypes.FUNCTIONATTRIBUTE;
+            case "FunctionBody":
+                return DLanguageTypes.FUNCTION_BODY;
+//                case "FunctionDeclaration":
+//                    return DLanguageTypes.FUNCTION_DECLARATION;
+            case "GotoStatement":
+                return DLanguageTypes.GOTO_STATEMENT;
+//            case "IdentifierChain":
+//                return DLanguageTypes.IDENTIFIERCHAIN;
+            case "IdentifierList":
+                return DLanguageTypes.IDENTIFIER_LIST;
+//            case "IdentifierOrTemplateChain":
+//                return DLanguageTypes.IDENTIFIERORTEMPLATECHAIN;
+//            case "IdentifierOrTemplateInstance":
+//                return DLanguageTypes.IDENTIFIERORTEMPLATEINSTANCE;
+            case "IfStatement":
+                return DLanguageTypes.IF_STATEMENT;
+            case "ImportBind":
+                return DLanguageTypes.IMPORT_BIND;
+//                case "ImportBindings":
+//                    return DLanguageTypes.IMPORTBINDINGS;
+            case "ImportDeclaration":
+                return DLanguageTypes.IMPORT_DECLARATION;
+            case "InStatement":
+                return DLanguageTypes.IN_STATEMENT;
+            case "Initializer":
+                return DLanguageTypes.INITIALIZER;
+            case "InterfaceDeclaration":
+                return DLanguageTypes.INTERFACE_DECLARATION;
+            case "Invariant":
+                return DLanguageTypes.INVARIANT;
+            case "KeyValuePair":
+                return DLanguageTypes.KEY_VALUE_PAIR;
+            case "KeyValuePairs":
+                return DLanguageTypes.KEY_VALUE_PAIRS;
+            case "LabeledStatement":
+                return DLanguageTypes.LABELED_STATEMENT;
+            case "LastCatch":
+                return DLanguageTypes.LAST_CATCH;
+            case "LinkageAttribute":
+                return DLanguageTypes.LINKAGE_ATTRIBUTE;
+            case "MemberFunctionAttribute":
+                return DLanguageTypes.MEMBER_FUNCTION_ATTRIBUTE;
+            case "MixinDeclaration":
+                return DLanguageTypes.MIXIN_DECLARATION;
+            case "MixinTemplateDeclaration":
+                return DLanguageTypes.TEMPLATE_MIXIN_DECLARATION;
+//            case "MixinTemplateName":
+//                return DLanguageTypes.MIXINTEMPLATENAME;
+            case "Module":
+                return DLanguageTypes.MODULE_FULLY_QUALIFIED_NAME;
+            case "ModuleDeclaration":
+                return DLanguageTypes.MODULE_DECLARATION;
+            case "NonVoidInitializer":
+                return DLanguageTypes.NON_VOID_INITIALIZER;
+            case "Operands":
+                return DLanguageTypes.OPERANDS;
+            case "OutStatement":
+                return DLanguageTypes.OUT_STATEMENT;
+            case "Parameter":
+                return DLanguageTypes.PARAMETER;
+            case "Parameters":
+                return DLanguageTypes.PARAMETERS;
+            case "Postblit":
+                return DLanguageTypes.POSTBLIT;
+            case "PragmaDeclaration":
+                return DLanguageTypes.PRAGMA;
+            case "Register":
+                return DLanguageTypes.REGISTER;
+            case "ReturnStatement":
+                return DLanguageTypes.RETURN_STATEMENT;
+            case "ScopeGuardStatement":
+                return DLanguageTypes.SCOPE_GUARD_STATEMENT;
+            case "SharedStaticConstructor":
+                return DLanguageTypes.SHARED_STATIC_CONSTRUCTOR;
+            case "SharedStaticDestructor":
+                return DLanguageTypes.SHARED_STATIC_DESTRUCTOR;
+            case "SingleImport":
+                return DLanguageTypes.IMPORT;
+            case "Statement":
+                return DLanguageTypes.STATEMENT;
+            case "StatementNoCaseNoDefault":
+                return DLanguageTypes.STATEMENT_NO_CASE_NO_DEFAULT;
+            case "StaticAssertDeclaration":
+                return DLanguageTypes.STATIC_ASSERT;
+            case "StaticAssertStatement":
+                return DLanguageTypes.STATIC_ASSERT;
+            case "StaticConstructor":
+                return DLanguageTypes.STATIC_CONSTRUCTOR;
+            case "StaticDestructor":
+                return DLanguageTypes.STATIC_DESTRUCTOR;
+            case "StaticIfCondition":
+                return DLanguageTypes.STATIC_IF_CONDITION;
+            case "StorageClass":
+                return DLanguageTypes.STORAGE_CLASS;
+//            case "StructBody":
+//                return DLanguageTypes.STRUCT_BODY;
+            case "StructDeclaration":
+                return DLanguageTypes.STRUCT_DECLARATION;
+            case "StructInitializer":
+                return DLanguageTypes.STRUCT_INITIALIZER;
+            case "StructMemberInitializer":
+                return DLanguageTypes.STRUCT_MEMBER_INITIALIZER;
+            case "StructMemberInitializers":
+                return DLanguageTypes.STRUCT_MEMBER_INITIALIZERS;
+            case "SwitchStatement":
+                return DLanguageTypes.SWITCH_STATEMENT;
+            case "Symbol":
+                return DLanguageTypes.SYMBOL;
+            case "SynchronizedStatement":
+                return DLanguageTypes.SYNCHRONIZED_STATEMENT;
+            case "TemplateAliasParameter":
+                return DLanguageTypes.TEMPLATE_ALIAS_PARAMETER;
+            case "TemplateArgument":
+                return DLanguageTypes.TEMPLATE_ARGUMENT;
+            case "TemplateArgumentList":
+                return DLanguageTypes.TEMPLATE_ARGUMENT_LIST;
+            case "TemplateArguments":
+                return DLanguageTypes.TEMPLATE_ARGUMENTS;
+            case "TemplateDeclaration":
+                return DLanguageTypes.TEMPLATE_DECLARATION;
+            case "TemplateInstance":
+                return DLanguageTypes.TEMPLATE_INSTANCE;
+            case "TemplateParameter":
+                return DLanguageTypes.TEMPLATE_PARAMETER;
+            case "TemplateParameterList":
+                return DLanguageTypes.TEMPLATE_PARAMETER_LIST;
+            case "TemplateParameters":
+                return DLanguageTypes.TEMPLATE_PARAMETERS;
+            case "TemplateSingleArgument":
+                return DLanguageTypes.TEMPLATE_SINGLE_ARGUMENT;
+            case "TemplateThisParameter":
+                return DLanguageTypes.TEMPLATE_THIS_PARAMETER;
+            case "TemplateTupleParameter":
+                return DLanguageTypes.TEMPLATE_TUPLE_PARAMETER;
+            case "TemplateTypeParameter":
+                return DLanguageTypes.TEMPLATE_TYPE_PARAMETER;
+            case "TemplateValueParameter":
+                return DLanguageTypes.TEMPLATE_VALUE_PARAMETER;
+            case "TemplateValueParameterDefault":
+                return DLanguageTypes.TEMPLATE_VALUE_PARAMETER_DEFAULT;
+            case "ThrowStatement":
+                return DLanguageTypes.THROW_STATEMENT;
+            case "TryStatement":
+                return DLanguageTypes.TRY_STATEMENT;
+            case "Type":
+                return DLanguageTypes.TYPE;
+//            case "Type2":
+//                return DLanguageTypes.TYPE2;
+            case "TypeSpecialization":
+                return DLanguageTypes.TYPE_SPECIALIZATION;
+//            case "TypeSuffix":
+//                return DLanguageTypes.TYPE_SUFFIX;
+            case "UnionDeclaration":
+                return DLanguageTypes.UNION_DECLARATION;
+            case "Unittest":
+                return DLanguageTypes.UNIT_TESTING;
+//            case "VariableDeclaration":
+//                return DLanguageTypes.VARIABLE_DECLARATION;
+            case "Vector":
+                return DLanguageTypes.TYPE_VECTOR;
+            case "VersionCondition":
+                return DLanguageTypes.VERSION_CONDITION;
+            case "VersionSpecification":
+                return DLanguageTypes.VERSION_SPECIFICATION;
+            case "WhileStatement":
+                return DLanguageTypes.WHILE_STATEMENT;
+            case "WithStatement":
+                return DLanguageTypes.WITH_STATEMENT;
+            case "AddExpression":
+                return DLanguageTypes.ADD_EXPRESSION_;
+//            case "AndAndExpression":
+//                return DLanguageTypes.AND_AND_EXPRESSION_;
+//            case "AndExpression":
+//                return DLanguageTypes.AND_EXPRESSION_;
+            case "AsmAddExp":
+                return DLanguageTypes.ASM_ADD_EXP;
+            case "AsmAndExp":
+                return DLanguageTypes.ASM_AND_EXP;
+            case "AsmBrExp":
+                return DLanguageTypes.ASM_BR_EXP;
+            case "AsmExp":
+                return DLanguageTypes.ASM_EXP;
+            case "AsmEqualExp":
+                return DLanguageTypes.ASM_EQUAL_EXP;
+            case "AsmLogAndExp":
+                return DLanguageTypes.ASM_LOG_AND_EXP;
+            case "AsmLogOrExp":
+                return DLanguageTypes.ASM_LOG_OR_EXP;
+            case "AsmMulExp":
+                return DLanguageTypes.ASM_MUL_EXP;
+            case "AsmOrExp":
+                return DLanguageTypes.ASM_OR_EXP;
+            case "AsmRelExp":
+                return DLanguageTypes.ASM_REL_EXP;
+            case "AsmUnaExp":
+                return DLanguageTypes.ASM_UNA_EXP;
+            case "AsmShiftExp":
+                return DLanguageTypes.ASM_SHIFT_EXP;
+            case "AsmXorExp":
+                return DLanguageTypes.ASM_XOR_EXP;
+            case "AssertExpression":
+                return DLanguageTypes.ASSERT_EXPRESSION;
+            case "AssignExpression":
+                return DLanguageTypes.ASSIGN_EXPRESSION;
+//            case "CmpExpression":
+//                return DLanguageTypes.CMP_EXPRESSION;
+            case "DeleteExpression":
+                return DLanguageTypes.DELETE_EXPRESSION;
+//                case "EqualExpression":
+//                    return DLanguageTypes.EQUALEXPRESSION;
+//            case "Expression":
+//                return DLanguageTypes.EXPRESSION;
+//            case "FunctionCallExpression":
+//                return DLanguageTypes.FUNCTIONCALLEXPRESSION;
+            case "FunctionLiteralExpression":
+                return DLanguageTypes.FUNCTION_LITERAL;
+            case "IdentityExpression":
+                return DLanguageTypes.IDENTITY_EXPRESSION;
+            case "ImportExpression":
+                return DLanguageTypes.IMPORT_EXPRESSION;
+            case "IndexExpression":
+                return DLanguageTypes.INDEX_EXPRESSION;
+//                case "InExpression":
+//                    return DLanguageTypes.INEXPRESSION;
+            case "IsExpression":
+                return DLanguageTypes.IS_EXPRESSION;
+            case "MixinExpression":
+                return DLanguageTypes.MIXIN_EXPRESSION;
+            case "MulExpression":
+                return DLanguageTypes.MUL_EXPRESSION_;
+            case "NewAnonClassExpression":
+                return DLanguageTypes.NEW_ANON_CLASS_EXPRESSION;
+            case "NewExpression":
+                return DLanguageTypes.NEW_EXPRESSION;
+            case "OrExpression":
+//                return DLanguageTypes.OR_EXPRESSION_;
+//            case "OrOrExpression":
+//                return DLanguageTypes.OROR_EXPRESSION_;
+//            case "PowExpression":
+                return DLanguageTypes.POW_EXPRESSION_;
+//            case "PragmaExpression":
+//                return DLanguageTypes.PRAGMA_STATEMENT;
+            case "PrimaryExpression":
+                return DLanguageTypes.PRIMARY_EXPRESSION;
+            case "RelExpression":
+                return DLanguageTypes.REL_EXPRESSION;
+            case "ShiftExpression":
+                return DLanguageTypes.SHIFT_EXPRESSION_;
+//            case "Index":
+//                return DLanguageTypes.INDEX;
+            case "TemplateMixinExpression":
+                return DLanguageTypes.TEMPLATE_MIXIN;
+//            case "TernaryExpression":
+//                return DLanguageTypes.TERNARY_EXPRESSION;
+            case "TraitsExpression":
+                return DLanguageTypes.TRAITS_EXPRESSION;
+            case "TypeidExpression":
+                return DLanguageTypes.TYPEID_EXPRESSION;
+            case "TypeofExpression":
+                return DLanguageTypes.TYPEOF;
+//            case "UnaryExpression":
+//                return DLanguageTypes.UNARY_EXPRESSION;
+            case "XorExpression":
+                return DLanguageTypes.XOR_EXPRESSION_;
+//            case "AliasInitializer":
+//                return DLanguageTypes.ALIAS__INITIALIZER;
+            default:
+                throw new IllegalArgumentException("unrecognized thing to parse:" + nodeType);
+        }
+    }
+    //            boolean[typeof(Token.index)] cachedAAChecks;
+//    private boolean parseName(String NodeName){
+//        Map<String, Callable<Boolean>> methodLookupTable = ImmutableMap.of(
+//            "AliasThisDeclaration", (Callable<Boolean>) this::parseAliasThisDeclaration,
+//            "AlignAttribute", (Callable<Boolean>) this::parseAlignAttribute,
+//            "ArgumentList", (Callable<Boolean>) this::parseArgumentList,
+//            "Arguments", (Callable<Boolean>) this::parseArguments,
+//            "ArrayInitializer", (Callable<Boolean>) this::parseArrayInitializer,
+//            "ArrayLiteral", (Callable<Boolean>) this::parseArrayLiteral,
+//            "ArrayMemberInitialization", (Callable<Boolean>) this::parseArrayMemberInitialization,
+//            "AsmBrExp", (Callable<Boolean>) this::parseAsmBrExp,
+//            "AsmInstruction", (Callable<Boolean>) this::parseAsmInstruction,
+//            "AsmPrimaryExp", (Callable<Boolean>) this::parseAsmPrimaryExp,
+//            "AsmStatement", (Callable<Boolean>) this::parseAsmStatement,
+//            "AsmTypePrefix", (Callable<Boolean>) this::parseAsmTypePrefix,
+//            "AsmUnaExp", (Callable<Boolean>) this::parseAsmUnaExp,
+//            "AssertExpression", (Callable<Boolean>) this::parseAssertExpression,
+//            "AssocArrayLiteral", (Callable<Boolean>) this::parseAssocArrayLiteral,
+//            "AtAttribute", (Callable<Boolean>) this::parseAtAttribute,
+//            "Attribute", (Callable<Boolean>) this::parseAttribute,
+//            "AttributeDeclaration", (Callable<Boolean>) this::parseAttributeDeclaration,
+//            "AutoDeclaration", (Callable<Boolean>) this::parseAutoDeclaration,
+//            "AutoDeclarationPart", (Callable<Boolean>) this::parseAutoDeclarationPart,
+//            "BlockStatement", (Callable<Boolean>) this::parseBlockStatement,
+//            "BodyStatement", (Callable<Boolean>) this::parseBodyStatement,
+//            "BreakStatement", (Callable<Boolean>) this::parseBreakStatement,
+//            "BaseClass", (Callable<Boolean>) this::parseBaseClass,
+//            "BaseClassList", (Callable<Boolean>) this::parseBaseClassList,
+//            "CaseRangeStatement", (Callable<Boolean>) () -> parseCaseRangeStatement(),
+//            "CaseStatement", (Callable<Boolean>) () -> parseCaseStatement(),
+//            "CastExpression", (Callable<Boolean>) this::parseCastExpression,
+//            "CastQualifier", (Callable<Boolean>) this::parseCastQualifier,
+//            "Catch", (Callable<Boolean>) this::parseCatch,
+//            "Catches", (Callable<Boolean>) this::parseCatches,
+//            "ClassDeclaration", (Callable<Boolean>) this::parseClassDeclaration,
+//            "CompileCondition", (Callable<Boolean>) this::parseCompileCondition,
+//            "ConditionalDeclaration", (Callable<Boolean>) () -> parseConditionalDeclaration(),
+//            "ConditionalStatement", (Callable<Boolean>) this::parseConditionalStatement,
+//            "Constraint", (Callable<Boolean>) this::parseConstraint,
+//            "Constructor", (Callable<Boolean>) this::parseConstructor,
+//            "ContinueStatement", (Callable<Boolean>) this::parseContinueStatement,
+//            "DebugCondition", (Callable<Boolean>) this::parseDebugCondition,
+//            "DebugSpecification", (Callable<Boolean>) this::parseDebugSpecification,
+//            "Declaration", (Callable<Boolean>) this::parseDeclaration,
+//            "DeclarationsAndStatements", (Callable<Boolean>) this::parseDeclarationsAndStatements,
+//            "DeclarationOrStatement", (Callable<Boolean>) this::parseDeclarationOrStatement,
+//            "Declarator", (Callable<Boolean>) this::parseDeclarator,
+//            "DefaultStatement", (Callable<Boolean>) this::parseDefaultStatement,
+//            "DeleteExpression", (Callable<Boolean>) this::parseDeleteExpression,
+//            "Deprecated", (Callable<Boolean>) this::parseDeprecated,
+//            "Destructor", (Callable<Boolean>) this::parseDestructor,
+//            "DoStatement", (Callable<Boolean>) this::parseDoStatement,
+//            "EnumBody", (Callable<Boolean>) this::parseEnumBody,
+//            "AnonymousEnumMember", (Callable<Boolean>) this::parseAnonymousEnumMember,
+//            "AnonymousEnumDeclaration", (Callable<Boolean>) this::parseAnonymousEnumDeclaration,
+//            "EnumDeclaration", (Callable<Boolean>) this::parseEnumDeclaration,
+//            "EnumMember", (Callable<Boolean>) this::parseEnumMember,
+//            "EponymousTemplateDeclaration", (Callable<Boolean>) this::parseEponymousTemplateDeclaration,
+//            "EqualExpression", (Callable<Boolean>) () -> parseEqualExpression(),
+//            "Expression", (Callable<Boolean>) this::parseExpression,
+//            "ExpressionStatement", (Callable<Boolean>) () -> parseExpressionStatement(),
+//            "FinalSwitchStatement", (Callable<Boolean>) this::parseFinalSwitchStatement,
+//            "Finally", (Callable<Boolean>) this::parseFinally,
+//            "ForStatement", (Callable<Boolean>) this::parseForStatement,
+//            "ForeachStatement", (Callable<Boolean>) this::parseForeachStatement,
+//            "ForeachType", (Callable<Boolean>) this::parseForeachType,
+//            "ForeachTypeList", (Callable<Boolean>) this::parseForeachTypeList,
+//            "FunctionAttribute", (Callable<Boolean>) () -> parseFunctionAttribute(),
+//            "FunctionBody", (Callable<Boolean>) this::parseFunctionBody,
+//            "FunctionCallExpression", (Callable<Boolean>) this::parseFunctionCallExpression,
+//            "FunctionDeclaration", (Callable<Boolean>) this::parseFunctionDeclaration,
+//            "FunctionLiteralExpression", (Callable<Boolean>) () -> parseFunctionLiteralExpression(),
+//            "GotoStatement", (Callable<Boolean>) () -> parseGotoStatement(),
+//            "IdentifierChain", (Callable<Boolean>) () -> parseIdentifierChain(),
+//            "IdentifierList", (Callable<Boolean>) () -> parseIdentifierList(),
+//            "IdentifierOrTemplateChain", (Callable<Boolean>) () -> parseIdentifierOrTemplateChain(),
+//            "IdentifierOrTemplateInstance", (Callable<Boolean>) () -> parseIdentifierOrTemplateInstance(),
+//            "IfStatement", (Callable<Boolean>) () -> parseIfStatement(),
+//            "ImportBind", (Callable<Boolean>) () -> parseImportBind(),
+//            "ImportBindings", (Callable<Boolean>) () -> parseImportBindings(),
+//            "ImportDeclaration", (Callable<Boolean>) () -> parseImportDeclaration(),
+//            "ImportExpression", (Callable<Boolean>) () -> parseImportExpression(),
+//            "Index", (Callable<Boolean>) () -> parseIndex(),
+//            "IndexExpression", (Callable<Boolean>) () -> parseIndexExpression(),
+//            "InStatement", (Callable<Boolean>) () -> parseInStatement(),
+//            "Initializer", (Callable<Boolean>) () -> parseInitializer(),
+//            "InterfaceDeclaration", (Callable<Boolean>) () -> parseInterfaceDeclaration(),
+//            "Invariant", (Callable<Boolean>) () -> parseInvariant(),
+//            "IsExpression", (Callable<Boolean>) () -> parseIsExpression(),
+//            "KeyValuePair", (Callable<Boolean>) () -> parseKeyValuePair(),
+//            "KeyValuePairs", (Callable<Boolean>) () -> parseKeyValuePairs(),
+//            "LabeledStatement", (Callable<Boolean>) () -> parseLabeledStatement(),
+//            "LastCatch", (Callable<Boolean>) () -> parseLastCatch(),
+//            "LinkageAttribute", (Callable<Boolean>) () -> parseLinkageAttribute(),
+//            "MemberFunctionAttribute", (Callable<Boolean>) () -> parseMemberFunctionAttribute(),
+//            "MixinDeclaration", (Callable<Boolean>) () -> parseMixinDeclaration(),
+//            "MixinExpression", (Callable<Boolean>) () -> parseMixinExpression(),
+//            "MixinTemplateDeclaration", (Callable<Boolean>) () -> parseMixinTemplateDeclaration(),
+//            "MixinTemplateName", (Callable<Boolean>) () -> parseMixinTemplateName(),
+//            "Module", (Callable<Boolean>) () -> parseModule(),
+//            "ModuleDeclaration", (Callable<Boolean>) () -> parseModuleDeclaration(),
+//            "NewAnonClassExpression", (Callable<Boolean>) () -> parseNewAnonClassExpression(),
+//            "NewExpression", (Callable<Boolean>) () -> parseNewExpression(),
+//            "NonVoidInitializer", (Callable<Boolean>) () -> parseNonVoidInitializer(),
+//            "Operands", (Callable<Boolean>) () -> parseOperands(),
+//            "OutStatement", (Callable<Boolean>) () -> parseOutStatement(),
+//            "Parameter", (Callable<Boolean>) () -> parseParameter(),
+//            "Parameters", (Callable<Boolean>) () -> parseParameters(),
+//            "Postblit", (Callable<Boolean>) () -> parsePostblit(),
+//            "PragmaDeclaration", (Callable<Boolean>) () -> parsePragmaDeclaration(),
+//            "PragmaExpression", (Callable<Boolean>) () -> parsePragmaExpression(),
+//            "PrimaryExpression", (Callable<Boolean>) () -> parsePrimaryExpression(),
+//            "Register", (Callable<Boolean>) () -> parseRegister(),
+//            "ReturnStatement", (Callable<Boolean>) () -> parseReturnStatement(),
+//            "ScopeGuardStatement", (Callable<Boolean>) () -> parseScopeGuardStatement(),
+//            "SharedStaticConstructor", (Callable<Boolean>) () -> parseSharedStaticConstructor(),
+//            "SharedStaticDestructor", (Callable<Boolean>) () -> parseSharedStaticDestructor(),
+//            "SingleImport", (Callable<Boolean>) () -> parseSingleImport(),
+//            "Statement", (Callable<Boolean>) () -> parseStatement(),
+//            "StatementNoCaseNoDefault", (Callable<Boolean>) () -> parseStatementNoCaseNoDefault(),
+//            "StaticAssertDeclaration", (Callable<Boolean>) () -> parseStaticAssertDeclaration(),
+//            "StaticAssertStatement", (Callable<Boolean>) () -> parseStaticAssertStatement(),
+//            "StaticConstructor", (Callable<Boolean>) () -> parseStaticConstructor(),
+//            "StaticDestructor", (Callable<Boolean>) () -> parseStaticDestructor(),
+//            "StaticIfCondition", (Callable<Boolean>) () -> parseStaticIfCondition(),
+//            "StorageClass", (Callable<Boolean>) () -> parseStorageClass(),
+//            "StructBody", (Callable<Boolean>) () -> parseStructBody(),
+//            "StructDeclaration", (Callable<Boolean>) () -> parseStructDeclaration(),
+//            "StructInitializer", (Callable<Boolean>) () -> parseStructInitializer(),
+//            "StructMemberInitializer", (Callable<Boolean>) () -> parseStructMemberInitializer(),
+//            "StructMemberInitializers", (Callable<Boolean>) () -> parseStructMemberInitializers(),
+//            "SwitchStatement", (Callable<Boolean>) () -> parseSwitchStatement(),
+//            "Symbol", (Callable<Boolean>) () -> parseSymbol(),
+//            "SynchronizedStatement", (Callable<Boolean>) () -> parseSynchronizedStatement(),
+//            "TemplateAliasParameter", (Callable<Boolean>) () -> parseTemplateAliasParameter(),
+//            "TemplateArgument", (Callable<Boolean>) () -> parseTemplateArgument(),
+//            "TemplateArgumentList", (Callable<Boolean>) () -> parseTemplateArgumentList(),
+//            "TemplateArguments", (Callable<Boolean>) () -> parseTemplateArguments(),
+//            "TemplateDeclaration", (Callable<Boolean>) () -> parseTemplateDeclaration(),
+//            "TemplateInstance", (Callable<Boolean>) () -> parseTemplateInstance(),
+//            "TemplateMixinExpression", (Callable<Boolean>) () -> parseTemplateMixinExpression(),
+//            "TemplateParameter", (Callable<Boolean>) () -> parseTemplateParameter(),
+//            "TemplateParameterList", (Callable<Boolean>) () -> parseTemplateParameterList(),
+//            "TemplateParameters", (Callable<Boolean>) () -> parseTemplateParameters(),
+//            "TemplateSingleArgument", (Callable<Boolean>) () -> parseTemplateSingleArgument(),
+//            "TemplateThisParameter", (Callable<Boolean>) () -> parseTemplateThisParameter(),
+//            "TemplateTupleParameter", (Callable<Boolean>) () -> parseTemplateTupleParameter(),
+//            "TemplateTypeParameter", (Callable<Boolean>) () -> parseTemplateTypeParameter(),
+//            "TemplateValueParameter", (Callable<Boolean>) () -> parseTemplateValueParameter(),
+//            "TemplateValueParameterDefault", (Callable<Boolean>) () -> parseTemplateValueParameterDefault(),
+//            "ThrowStatement", (Callable<Boolean>) () -> parseThrowStatement(),
+//            "TraitsExpression", (Callable<Boolean>) () -> parseTraitsExpression(),
+//            "TryStatement", (Callable<Boolean>) () -> parseTryStatement(),
+//            "Type", (Callable<Boolean>) () -> parseType(),
+//            "Type2", (Callable<Boolean>) () -> parseType2(),
+//            "TypeSpecialization", (Callable<Boolean>) () -> parseTypeSpecialization(),
+//            "TypeSuffix", (Callable<Boolean>) () -> parseTypeSuffix(),
+//            "TypeidExpression", (Callable<Boolean>) () -> parseTypeidExpression(),
+//            "TypeofExpression", (Callable<Boolean>) () -> parseTypeofExpression(),
+//            "UnaryExpression", (Callable<Boolean>) () -> parseUnaryExpression(),
+//            "UnionDeclaration", (Callable<Boolean>) () -> parseUnionDeclaration(),
+//            "Unittest", (Callable<Boolean>) () -> parseUnittest(),
+//            "VariableDeclaration", (Callable<Boolean>) () -> parseVariableDeclaration(),
+//            "Vector", (Callable<Boolean>) () -> parseVector(),
+//            "VersionCondition", (Callable<Boolean>) () -> parseVersionCondition(),
+//            "VersionSpecification", (Callable<Boolean>) () -> parseVersionSpecification(),
+//            "WhileStatement", (Callable<Boolean>) () -> parseWhileStatement(),
+//            "WithStatement", (Callable<Boolean>) () -> parseWithStatement(),
+//            "AddExpression", (Callable<Boolean>) () -> parseAddExpression(),
+//            "AndAndExpression", (Callable<Boolean>) () -> parseAndAndExpression(),
+//            "AndExpression", (Callable<Boolean>) () -> parseAndExpression(),
+//            "AsmAddExp", (Callable<Boolean>) () -> parseAsmAddExp(),
+//            "AsmAndExp", (Callable<Boolean>) () -> parseAsmAndExp(),
+//            "AsmBrExp", (Callable<Boolean>) () -> parseAsmBrExp(),
+//            "AsmExp", (Callable<Boolean>) () -> parseAsmExp(),
+//            "AsmEqualExp", (Callable<Boolean>) () -> parseAsmEqualExp(),
+//            "AsmLogAndExp", (Callable<Boolean>) () -> parseAsmLogAndExp(),
+//            "AsmLogOrExp", (Callable<Boolean>) () -> parseAsmLogOrExp(),
+//            "AsmMulExp", (Callable<Boolean>) () -> parseAsmMulExp(),
+//            "AsmOrExp", (Callable<Boolean>) () -> parseAsmOrExp(),
+//            "AsmRelExp", (Callable<Boolean>) () -> parseAsmRelExp(),
+//            "AsmUnaExp", (Callable<Boolean>) () -> parseAsmUnaExp(),
+//            "AsmShiftExp", (Callable<Boolean>) () -> parseAsmShiftExp(),
+//            "AsmXorExp", (Callable<Boolean>) () -> parseAsmXorExp(),
+//            "AssertExpression", (Callable<Boolean>) () -> parseAssertExpression(),
+//            "AssignExpression", (Callable<Boolean>) () -> parseAssignExpression(),
+//            "CmpExpression", (Callable<Boolean>) () -> parseCmpExpression(),
+//            "DeleteExpression", (Callable<Boolean>) () -> parseDeleteExpression(),
+//            "EqualExpression", (Callable<Boolean>) () -> parseEqualExpression(),
+//            "Expression", (Callable<Boolean>) () -> parseExpression(),
+//            "FunctionCallExpression", (Callable<Boolean>) () -> parseFunctionCallExpression(),
+//            "FunctionLiteralExpression", (Callable<Boolean>) () -> parseFunctionLiteralExpression(),
+//            "IdentityExpression", (Callable<Boolean>) () -> parseIdentityExpression(),
+//            "ImportExpression", (Callable<Boolean>) () -> parseImportExpression(),
+//            "IndexExpression", (Callable<Boolean>) () -> parseIndexExpression(),
+//            "InExpression", (Callable<Boolean>) () -> parseInExpression(),
+//            "IsExpression", (Callable<Boolean>) () -> parseIsExpression(),
+//            "MixinExpression", (Callable<Boolean>) () -> parseMixinExpression(),
+//            "MulExpression", (Callable<Boolean>) () -> parseMulExpression(),
+//            "NewAnonClassExpression", (Callable<Boolean>) () -> parseNewAnonClassExpression(),
+//            "NewExpression", (Callable<Boolean>) () -> parseNewExpression(),
+//            "OrExpression", (Callable<Boolean>) () -> parseOrExpression(),
+//            "OrOrExpression", (Callable<Boolean>) () -> parseOrOrExpression(),
+//            "PowExpression", (Callable<Boolean>) () -> parsePowExpression(),
+//            "PragmaExpression", (Callable<Boolean>) () -> parsePragmaExpression(),
+//            "PrimaryExpression", (Callable<Boolean>) () -> parsePrimaryExpression(),
+//            "RelExpression", (Callable<Boolean>) () -> parseRelExpression(),
+//            "ShiftExpression", (Callable<Boolean>) () -> parseShiftExpression(),
+//            "Index", (Callable<Boolean>) () -> parseIndex(),
+//            "TemplateMixinExpression", (Callable<Boolean>) () -> parseTemplateMixinExpression(),
+//            "TernaryExpression", (Callable<Boolean>) () -> parseTernaryExpression(),
+//            "TraitsExpression", (Callable<Boolean>) () -> parseTraitsExpression(),
+//            "TypeidExpression", (Callable<Boolean>) () -> parseTypeidExpression(),
+//            "TypeofExpression", (Callable<Boolean>) () -> parseTypeofExpression(),
+//            "UnaryExpression", (Callable<Boolean>) () -> parseUnaryExpression(),
+//            "XorExpression", (Callable<Boolean>) () -> parseXorExpression(),
+//            "AliasInitializer", (Callable<Boolean>) () -> parseAliasInitializer()
+//
+//        );
+//    }
 
 }
