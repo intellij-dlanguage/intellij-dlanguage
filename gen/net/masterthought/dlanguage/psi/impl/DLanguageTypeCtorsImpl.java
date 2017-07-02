@@ -28,14 +28,8 @@ public class DLanguageTypeCtorsImpl extends ASTWrapperPsiElement implements DLan
 
   @Override
   @NotNull
-  public DLanguageTypeCtor getTypeCtor() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageTypeCtor.class));
-  }
-
-  @Override
-  @Nullable
-  public DLanguageTypeCtors getTypeCtors() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageTypeCtors.class);
+  public List<DLanguageTypeCtor> getTypeCtorList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageTypeCtor.class);
   }
 
 }

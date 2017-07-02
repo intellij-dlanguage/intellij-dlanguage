@@ -14,22 +14,13 @@ public interface DLanguageConditionalExpression_ extends PsiElement {
   List<DLanguageAndExxpression_> getAndExxpression_List();
 
   @NotNull
-  List<DLanguageCastExpression> getCastExpressionList();
-
-  @NotNull
   DLanguageCommaExpression getCommaExpression();
 
   @Nullable
   DLanguageConditionalExpression_ getConditionalExpression_();
 
   @NotNull
-  List<DLanguageDeleteExpression> getDeleteExpressionList();
-
-  @NotNull
   List<DLanguageEqualExpression> getEqualExpressionList();
-
-  @NotNull
-  List<DLanguageIdentifier> getIdentifierList();
 
   @NotNull
   List<DLanguageIdentityExpression> getIdentityExpressionList();
@@ -44,25 +35,13 @@ public interface DLanguageConditionalExpression_ extends PsiElement {
   DLanguageOrOrExpression getOrOrExpression();
 
   @NotNull
-  List<DLanguagePostfixExpression> getPostfixExpressionList();
-
-  @NotNull
-  List<DLanguagePowExpression_> getPowExpression_List();
-
-  @NotNull
   List<DLanguageRelExpression> getRelExpressionList();
 
   @NotNull
   List<DLanguageShiftExpression_> getShiftExpression_List();
 
   @NotNull
-  List<DLanguageTemplateInstance> getTemplateInstanceList();
-
-  @NotNull
-  List<DLanguageType> getTypeList();
-
-  @NotNull
-  List<DLanguageTypeCtor> getTypeCtorList();
+  List<DLanguageUnaryExpression> getUnaryExpressionList();
 
   @NotNull
   List<DLanguageXorExpression_> getXorExpression_List();

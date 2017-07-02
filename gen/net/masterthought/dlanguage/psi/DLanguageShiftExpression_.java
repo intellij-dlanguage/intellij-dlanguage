@@ -11,43 +11,13 @@ public interface DLanguageShiftExpression_ extends PsiElement {
   DLanguageAddExpression_ getAddExpression_();
 
   @Nullable
-  DLanguageCastExpression getCastExpression();
-
-  @Nullable
-  DLanguageDeleteExpression getDeleteExpression();
-
-  @Nullable
-  DLanguageIdentifier getIdentifier();
-
-  @Nullable
   DLanguageMulExpression_ getMulExpression_();
-
-  @Nullable
-  DLanguagePostfixExpression getPostfixExpression();
-
-  @Nullable
-  DLanguagePowExpression_ getPowExpression_();
 
   @Nullable
   DLanguageShiftExpression_ getShiftExpression_();
 
-  @Nullable
-  DLanguageTemplateInstance getTemplateInstance();
-
-  @Nullable
-  DLanguageType getType();
-
-  @Nullable
-  DLanguageTypeCtor getTypeCtor();
-
-  @Nullable
-  PsiElement getOpDot();
-
-  @Nullable
-  PsiElement getOpParLeft();
-
-  @Nullable
-  PsiElement getOpParRight();
+  @NotNull
+  DLanguageUnaryExpression getUnaryExpression();
 
   @Nullable
   PsiElement getOpShLeft();

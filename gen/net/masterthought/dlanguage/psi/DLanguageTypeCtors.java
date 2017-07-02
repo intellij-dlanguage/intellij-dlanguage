@@ -8,9 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageTypeCtors extends PsiElement {
 
   @NotNull
-  DLanguageTypeCtor getTypeCtor();
-
-  @Nullable
-  DLanguageTypeCtors getTypeCtors();
+  List<DLanguageTypeCtor> getTypeCtorList();
 
 }

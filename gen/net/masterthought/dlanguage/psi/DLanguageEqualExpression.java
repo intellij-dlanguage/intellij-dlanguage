@@ -11,48 +11,18 @@ public interface DLanguageEqualExpression extends PsiElement {
   DLanguageAddExpression_ getAddExpression_();
 
   @Nullable
-  DLanguageCastExpression getCastExpression();
-
-  @Nullable
-  DLanguageDeleteExpression getDeleteExpression();
-
-  @Nullable
-  DLanguageIdentifier getIdentifier();
-
-  @Nullable
   DLanguageMulExpression_ getMulExpression_();
-
-  @Nullable
-  DLanguagePostfixExpression getPostfixExpression();
-
-  @Nullable
-  DLanguagePowExpression_ getPowExpression_();
 
   @Nullable
   DLanguageShiftExpression_ getShiftExpression_();
 
   @Nullable
-  DLanguageTemplateInstance getTemplateInstance();
-
-  @Nullable
-  DLanguageType getType();
-
-  @Nullable
-  DLanguageTypeCtor getTypeCtor();
-
-  @Nullable
-  PsiElement getOpDot();
+  DLanguageUnaryExpression getUnaryExpression();
 
   @Nullable
   PsiElement getOpEqEq();
 
   @Nullable
   PsiElement getOpNotEq();
-
-  @Nullable
-  PsiElement getOpParLeft();
-
-  @Nullable
-  PsiElement getOpParRight();
 
 }

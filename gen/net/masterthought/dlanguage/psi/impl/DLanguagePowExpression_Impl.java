@@ -27,69 +27,27 @@ public class DLanguagePowExpression_Impl extends ASTWrapperPsiElement implements
   }
 
   @Override
-  @Nullable
-  public DLanguageCastExpression getCastExpression() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageCastExpression.class);
+  @NotNull
+  public DLanguagePostfixExpression getPostfixExpression() {
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguagePostfixExpression.class));
   }
 
   @Override
   @Nullable
-  public DLanguageDeleteExpression getDeleteExpression() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageDeleteExpression.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageIdentifier getIdentifier() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
+  public DLanguagePowExpression_ getPowExpression_() {
+    return PsiTreeUtil.getChildOfType(this, DLanguagePowExpression_.class);
   }
 
   @Override
   @NotNull
-  public List<DLanguagePostfixExpression> getPostfixExpressionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguagePostfixExpression.class);
+  public DLanguageUnaryExpression getUnaryExpression() {
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageUnaryExpression.class));
   }
 
   @Override
   @NotNull
-  public List<DLanguagePowExpression_> getPowExpression_List() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguagePowExpression_.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageTemplateInstance getTemplateInstance() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateInstance.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageType getType() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageType.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageTypeCtor getTypeCtor() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageTypeCtor.class);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpDot() {
-    return findChildByType(OP_DOT);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpParLeft() {
-    return findChildByType(OP_PAR_LEFT);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpParRight() {
-    return findChildByType(OP_PAR_RIGHT);
+  public PsiElement getOpPow() {
+    return notNullChild(findChildByType(OP_POW));
   }
 
 }

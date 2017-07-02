@@ -11,39 +11,18 @@ public interface DLanguageAddExpression_ extends PsiElement {
   DLanguageAddExpression_ getAddExpression_();
 
   @Nullable
-  DLanguageCastExpression getCastExpression();
-
-  @Nullable
-  DLanguageDeleteExpression getDeleteExpression();
-
-  @Nullable
-  DLanguageIdentifier getIdentifier();
-
-  @Nullable
   DLanguageMulExpression_ getMulExpression_();
 
-  @Nullable
-  DLanguagePostfixExpression getPostfixExpression();
+  @NotNull
+  DLanguageUnaryExpression getUnaryExpression();
 
   @Nullable
-  DLanguagePowExpression_ getPowExpression_();
+  PsiElement getOpMinus();
 
   @Nullable
-  DLanguageTemplateInstance getTemplateInstance();
+  PsiElement getOpPlus();
 
   @Nullable
-  DLanguageType getType();
-
-  @Nullable
-  DLanguageTypeCtor getTypeCtor();
-
-  @Nullable
-  PsiElement getOpDot();
-
-  @Nullable
-  PsiElement getOpParLeft();
-
-  @Nullable
-  PsiElement getOpParRight();
+  PsiElement getOpTilda();
 
 }

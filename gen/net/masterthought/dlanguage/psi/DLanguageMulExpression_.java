@@ -8,45 +8,18 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageMulExpression_ extends PsiElement {
 
   @Nullable
-  DLanguageCastExpression getCastExpression();
-
-  @Nullable
-  DLanguageDeleteExpression getDeleteExpression();
-
-  @Nullable
-  DLanguageIdentifier getIdentifier();
-
-  @Nullable
   DLanguageMulExpression_ getMulExpression_();
 
-  @Nullable
-  DLanguagePostfixExpression getPostfixExpression();
+  @NotNull
+  DLanguageUnaryExpression getUnaryExpression();
 
   @Nullable
-  DLanguagePowExpression_ getPowExpression_();
-
-  @Nullable
-  DLanguageTemplateInstance getTemplateInstance();
-
-  @Nullable
-  DLanguageType getType();
-
-  @Nullable
-  DLanguageTypeCtor getTypeCtor();
+  PsiElement getOpAsterisk();
 
   @Nullable
   PsiElement getOpDiv();
 
   @Nullable
-  PsiElement getOpDot();
-
-  @Nullable
   PsiElement getOpMod();
-
-  @Nullable
-  PsiElement getOpParLeft();
-
-  @Nullable
-  PsiElement getOpParRight();
 
 }

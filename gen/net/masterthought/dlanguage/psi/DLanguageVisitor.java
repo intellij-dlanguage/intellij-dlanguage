@@ -1055,10 +1055,6 @@ public class DLanguageVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitTemplateValueParameterDefault(@NotNull DLanguageTemplateValueParameterDefault o) {
-    visitPsiElement(o);
-  }
-
   public void visitTest(@NotNull DLanguageTest o) {
     visitPsiElement(o);
   }
@@ -1116,6 +1112,10 @@ public class DLanguageVisitor extends PsiElementVisitor {
   }
 
   public void visitTypeof(@NotNull DLanguageTypeof o) {
+    visitPsiElement(o);
+  }
+
+  public void visitUnaryExpression(@NotNull DLanguageUnaryExpression o) {
     visitPsiElement(o);
   }
 

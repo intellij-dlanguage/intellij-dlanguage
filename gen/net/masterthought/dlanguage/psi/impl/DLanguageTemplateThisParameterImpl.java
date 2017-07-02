@@ -27,9 +27,9 @@ public class DLanguageTemplateThisParameterImpl extends ASTWrapperPsiElement imp
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageTemplateTypeParameter getTemplateTypeParameter() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageTemplateTypeParameter.class));
+    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateTypeParameter.class);
   }
 
   @Override

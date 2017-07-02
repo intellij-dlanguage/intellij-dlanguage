@@ -8,39 +8,15 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageTemplateSingleArgument extends PsiElement {
 
   @Nullable
-  DLanguageAssignExpression getAssignExpression();
-
-  @Nullable
   DLanguageBasicTypeX getBasicTypeX();
 
   @Nullable
   DLanguageIdentifierList getIdentifierList();
 
   @Nullable
-  DLanguageSpecialKeyword getSpecialKeyword();
+  DLanguagePrimaryExpression getPrimaryExpression();
 
   @Nullable
-  DLanguageStringLiteral getStringLiteral();
-
-  @Nullable
-  PsiElement getCharacterLiteral();
-
-  @Nullable
-  PsiElement getFloatLiteral();
-
-  @Nullable
-  PsiElement getIntegerLiteral();
-
-  @Nullable
-  PsiElement getKwFalse();
-
-  @Nullable
-  PsiElement getKwNull();
-
-  @Nullable
-  PsiElement getKwThis();
-
-  @Nullable
-  PsiElement getKwTrue();
+  DLanguageTypeVector getTypeVector();
 
 }

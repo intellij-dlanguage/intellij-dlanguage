@@ -45,12 +45,6 @@ public class DLanguageAssignExpressionImpl extends ASTWrapperPsiElement implemen
   }
 
   @Override
-  @NotNull
-  public List<DLanguageCastExpression> getCastExpressionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageCastExpression.class);
-  }
-
-  @Override
   @Nullable
   public DLanguageConditionalExpression_ getConditionalExpression_() {
     return PsiTreeUtil.getChildOfType(this, DLanguageConditionalExpression_.class);
@@ -58,20 +52,8 @@ public class DLanguageAssignExpressionImpl extends ASTWrapperPsiElement implemen
 
   @Override
   @NotNull
-  public List<DLanguageDeleteExpression> getDeleteExpressionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageDeleteExpression.class);
-  }
-
-  @Override
-  @NotNull
   public List<DLanguageEqualExpression> getEqualExpressionList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageEqualExpression.class);
-  }
-
-  @Override
-  @NotNull
-  public List<DLanguageIdentifier> getIdentifierList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageIdentifier.class);
   }
 
   @Override
@@ -100,18 +82,6 @@ public class DLanguageAssignExpressionImpl extends ASTWrapperPsiElement implemen
 
   @Override
   @NotNull
-  public List<DLanguagePostfixExpression> getPostfixExpressionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguagePostfixExpression.class);
-  }
-
-  @Override
-  @NotNull
-  public List<DLanguagePowExpression_> getPowExpression_List() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguagePowExpression_.class);
-  }
-
-  @Override
-  @NotNull
   public List<DLanguageRelExpression> getRelExpressionList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageRelExpression.class);
   }
@@ -124,20 +94,8 @@ public class DLanguageAssignExpressionImpl extends ASTWrapperPsiElement implemen
 
   @Override
   @NotNull
-  public List<DLanguageTemplateInstance> getTemplateInstanceList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageTemplateInstance.class);
-  }
-
-  @Override
-  @NotNull
-  public List<DLanguageType> getTypeList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageType.class);
-  }
-
-  @Override
-  @NotNull
-  public List<DLanguageTypeCtor> getTypeCtorList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageTypeCtor.class);
+  public List<DLanguageUnaryExpression> getUnaryExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageUnaryExpression.class);
   }
 
   @Override

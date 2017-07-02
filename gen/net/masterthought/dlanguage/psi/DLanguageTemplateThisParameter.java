@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguageTemplateThisParameter extends PsiElement {
 
-  @NotNull
+  @Nullable
   DLanguageTemplateTypeParameter getTemplateTypeParameter();
 
   @NotNull

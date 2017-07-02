@@ -40,38 +40,8 @@ public class DLanguageTemplateValueParameterImpl extends ASTWrapperPsiElement im
 
   @Override
   @Nullable
-  public DLanguageAssignExpression getAssignExpression() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageAssignExpression.class);
-  }
-
-  @Override
-  @NotNull
-  public DLanguageBasicType getBasicType() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageBasicType.class));
-  }
-
-  @Override
-  @NotNull
-  public List<DLanguageCastExpression> getCastExpressionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageCastExpression.class);
-  }
-
-  @Override
-  @Nullable
   public DLanguageConditionalExpression_ getConditionalExpression_() {
     return PsiTreeUtil.getChildOfType(this, DLanguageConditionalExpression_.class);
-  }
-
-  @Override
-  @NotNull
-  public DLanguageDeclarator getDeclarator() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageDeclarator.class));
-  }
-
-  @Override
-  @NotNull
-  public List<DLanguageDeleteExpression> getDeleteExpressionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageDeleteExpression.class);
   }
 
   @Override
@@ -82,8 +52,8 @@ public class DLanguageTemplateValueParameterImpl extends ASTWrapperPsiElement im
 
   @Override
   @NotNull
-  public List<DLanguageIdentifier> getIdentifierList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageIdentifier.class);
+  public DLanguageIdentifier getIdentifier() {
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class));
   }
 
   @Override
@@ -112,18 +82,6 @@ public class DLanguageTemplateValueParameterImpl extends ASTWrapperPsiElement im
 
   @Override
   @NotNull
-  public List<DLanguagePostfixExpression> getPostfixExpressionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguagePostfixExpression.class);
-  }
-
-  @Override
-  @NotNull
-  public List<DLanguagePowExpression_> getPowExpression_List() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguagePowExpression_.class);
-  }
-
-  @Override
-  @NotNull
   public List<DLanguageRelExpression> getRelExpressionList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageRelExpression.class);
   }
@@ -135,39 +93,21 @@ public class DLanguageTemplateValueParameterImpl extends ASTWrapperPsiElement im
   }
 
   @Override
-  @Nullable
-  public DLanguageSpecialKeyword getSpecialKeyword() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageSpecialKeyword.class);
-  }
-
-  @Override
   @NotNull
-  public List<DLanguageTemplateInstance> getTemplateInstanceList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageTemplateInstance.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageTemplateValueParameterDefault getTemplateValueParameterDefault() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateValueParameterDefault.class);
-  }
-
-  @Override
-  @NotNull
-  public List<DLanguageType> getTypeList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageType.class);
-  }
-
-  @Override
-  @NotNull
-  public List<DLanguageTypeCtor> getTypeCtorList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageTypeCtor.class);
+  public List<DLanguageUnaryExpression> getUnaryExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageUnaryExpression.class);
   }
 
   @Override
   @NotNull
   public List<DLanguageXorExpression_> getXorExpression_List() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageXorExpression_.class);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOpColon() {
+    return findChildByType(OP_COLON);
   }
 
   @Override

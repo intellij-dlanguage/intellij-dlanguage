@@ -296,7 +296,7 @@ public class DPsiImplUtil {
         for (DLanguageBasicType basicType : basicTypes) {
             assert (basicType.getBasicTypeX() == null);
             assert (basicType.getTypeVector() == null);
-            assert (basicType.getTypeof() == null);
+//            assert (basicType.getTypeof() == null);
             final DLanguageIdentifierList identifierList = basicType.getIdentifierList();
             final List<PsiNamedElement> definitionNodesSimple = DResolveUtil.INSTANCE.findDefinitionNode(identifierList.getProject(), getEndOfIdentifierList(identifierList));
             Set<CanInherit> definitionNodes = new HashSet<>();
@@ -1767,9 +1767,9 @@ public class DPsiImplUtil {
         if (o.getTemplateTypeParameter() != null) {
             return getIdentifier(o.getTemplateTypeParameter());
         }
-        if (o.getTemplateValueParameter() != null) {
-            return getIdentifier(o.getTemplateValueParameter().getDeclarator());
-        }
+//        if (o.getTemplateValueParameter() != null) {
+//            return getIdentifier(o.getTemplateValueParameter().getDeclarator());
+//        }
         throw new IllegalStateException("this should never happen");
     }
 

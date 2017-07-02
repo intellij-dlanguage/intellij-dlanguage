@@ -28,14 +28,8 @@ public class DLanguageStringLiteralsImpl extends ASTWrapperPsiElement implements
 
   @Override
   @NotNull
-  public DLanguageStringLiteral getStringLiteral() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageStringLiteral.class));
-  }
-
-  @Override
-  @Nullable
-  public DLanguageStringLiterals getStringLiterals() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageStringLiterals.class);
+  public List<DLanguageStringLiteral> getStringLiteralList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageStringLiteral.class);
   }
 
 }

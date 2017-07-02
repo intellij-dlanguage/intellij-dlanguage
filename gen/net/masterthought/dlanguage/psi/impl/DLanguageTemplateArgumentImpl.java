@@ -34,18 +34,6 @@ public class DLanguageTemplateArgumentImpl extends ASTWrapperPsiElement implemen
 
   @Override
   @Nullable
-  public DLanguageLambda getLambda() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageLambda.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageSymbol getSymbol() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageSymbol.class);
-  }
-
-  @Override
-  @Nullable
   public DLanguageType getType() {
     return PsiTreeUtil.getChildOfType(this, DLanguageType.class);
   }

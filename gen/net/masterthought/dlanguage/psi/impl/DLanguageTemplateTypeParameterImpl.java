@@ -27,21 +27,9 @@ public class DLanguageTemplateTypeParameterImpl extends ASTWrapperPsiElement imp
   }
 
   @Override
-  @Nullable
-  public DLanguageAssignExpression getAssignExpression() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageAssignExpression.class);
-  }
-
-  @Override
-  @Nullable
+  @NotNull
   public DLanguageIdentifier getIdentifier() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageTemplateValueParameterDefault getTemplateValueParameterDefault() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateValueParameterDefault.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class));
   }
 
   @Override
@@ -52,14 +40,14 @@ public class DLanguageTemplateTypeParameterImpl extends ASTWrapperPsiElement imp
 
   @Override
   @Nullable
-  public PsiElement getOpEq() {
-    return findChildByType(OP_EQ);
+  public PsiElement getOpColon() {
+    return findChildByType(OP_COLON);
   }
 
   @Override
   @Nullable
-  public PsiElement getOpTripledot() {
-    return findChildByType(OP_TRIPLEDOT);
+  public PsiElement getOpEq() {
+    return findChildByType(OP_EQ);
   }
 
 }

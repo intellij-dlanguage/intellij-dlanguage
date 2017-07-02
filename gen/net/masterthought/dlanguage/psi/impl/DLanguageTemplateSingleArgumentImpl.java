@@ -28,12 +28,6 @@ public class DLanguageTemplateSingleArgumentImpl extends ASTWrapperPsiElement im
 
   @Override
   @Nullable
-  public DLanguageAssignExpression getAssignExpression() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageAssignExpression.class);
-  }
-
-  @Override
-  @Nullable
   public DLanguageBasicTypeX getBasicTypeX() {
     return PsiTreeUtil.getChildOfType(this, DLanguageBasicTypeX.class);
   }
@@ -46,56 +40,14 @@ public class DLanguageTemplateSingleArgumentImpl extends ASTWrapperPsiElement im
 
   @Override
   @Nullable
-  public DLanguageSpecialKeyword getSpecialKeyword() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageSpecialKeyword.class);
+  public DLanguagePrimaryExpression getPrimaryExpression() {
+    return PsiTreeUtil.getChildOfType(this, DLanguagePrimaryExpression.class);
   }
 
   @Override
   @Nullable
-  public DLanguageStringLiteral getStringLiteral() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageStringLiteral.class);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getCharacterLiteral() {
-    return findChildByType(CHARACTER_LITERAL);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getFloatLiteral() {
-    return findChildByType(FLOAT_LITERAL);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getIntegerLiteral() {
-    return findChildByType(INTEGER_LITERAL);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwFalse() {
-    return findChildByType(KW_FALSE);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwNull() {
-    return findChildByType(KW_NULL);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwThis() {
-    return findChildByType(KW_THIS);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwTrue() {
-    return findChildByType(KW_TRUE);
+  public DLanguageTypeVector getTypeVector() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageTypeVector.class);
   }
 
 }

@@ -7,37 +7,16 @@ import com.intellij.psi.PsiElement;
 
 public interface DLanguagePowExpression_ extends PsiElement {
 
-  @Nullable
-  DLanguageCastExpression getCastExpression();
+  @NotNull
+  DLanguagePostfixExpression getPostfixExpression();
 
   @Nullable
-  DLanguageDeleteExpression getDeleteExpression();
-
-  @Nullable
-  DLanguageIdentifier getIdentifier();
+  DLanguagePowExpression_ getPowExpression_();
 
   @NotNull
-  List<DLanguagePostfixExpression> getPostfixExpressionList();
+  DLanguageUnaryExpression getUnaryExpression();
 
   @NotNull
-  List<DLanguagePowExpression_> getPowExpression_List();
-
-  @Nullable
-  DLanguageTemplateInstance getTemplateInstance();
-
-  @Nullable
-  DLanguageType getType();
-
-  @Nullable
-  DLanguageTypeCtor getTypeCtor();
-
-  @Nullable
-  PsiElement getOpDot();
-
-  @Nullable
-  PsiElement getOpParLeft();
-
-  @Nullable
-  PsiElement getOpParRight();
+  PsiElement getOpPow();
 
 }

@@ -263,7 +263,6 @@ public interface DLanguageTypes {
   IElementType TEMPLATE_TUPLE_PARAMETER = new DLanguageElementType("TEMPLATE_TUPLE_PARAMETER");
   IElementType TEMPLATE_TYPE_PARAMETER = new DLanguageElementType("TEMPLATE_TYPE_PARAMETER");
   IElementType TEMPLATE_VALUE_PARAMETER = new DLanguageElementType("TEMPLATE_VALUE_PARAMETER");
-  IElementType TEMPLATE_VALUE_PARAMETER_DEFAULT = new DLanguageElementType("TEMPLATE_VALUE_PARAMETER_DEFAULT");
   IElementType TEST = new DLanguageElementType("TEST");
   IElementType THEN_STATEMENT = new DLanguageElementType("THEN_STATEMENT");
   IElementType THROW_STATEMENT = new DLanguageElementType("THROW_STATEMENT");
@@ -478,7 +477,7 @@ public interface DLanguageTypes {
   IElementType TOKEN_STRING = new DLanguageTokenType("TOKEN_STRING");
   IElementType WYSIWYG_STRING = new DLanguageTokenType("WYSIWYG_STRING");
 
-    class Factory {
+  class Factory {
     public static PsiElement createElement(ASTNode node) {
       IElementType type = node.getElementType();
        if (type == ADD_EXPRESSION_) {
@@ -1207,9 +1206,6 @@ public interface DLanguageTypes {
       else if (type == TEMPLATE_VALUE_PARAMETER) {
         return new DLanguageTemplateValueParameterImpl(node);
       }
-      else if (type == TEMPLATE_VALUE_PARAMETER_DEFAULT) {
-        return new DLanguageTemplateValueParameterDefaultImpl(node);
-      }
       else if (type == TEST) {
         return new DLanguageTestImpl(node);
       }
@@ -1254,6 +1250,9 @@ public interface DLanguageTypes {
       }
       else if (type == TYPE_VECTOR) {
         return new DLanguageTypeVectorImpl(node);
+      }
+      else if (type == UNARY_EXPRESSION) {
+        return new DLanguageUnaryExpressionImpl(node);
       }
       else if (type == UNION_DECLARATION) {
         return new DLanguageUnionDeclarationImpl(node);
