@@ -1624,12 +1624,12 @@ public class ParserPreliminaryJavaWriteUp {
          *     $(LITERAL 'case') $(RULE assignExpression) $(LITERAL ':') $(LITERAL '...') $(LITERAL 'case') $(RULE assignExpression) $(LITERAL ':') $(RULE declarationsAndStatements)
          *     ;)
          */
-        boolean parseCaseRangeStatement(ExpressionNode low)
+        boolean parseCaseRangeStatement()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             Marker m = enter_section_(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.CaseRangeStatement,false);
-            assert (low != null);
+//            assert (low != null);
 //            node.low = low;
             if(!tokenCheck(":")) {
                 cleanup(m);
@@ -5695,25 +5695,28 @@ public class ParserPreliminaryJavaWriteUp {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             Marker m = enter_section_(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Register,false);
-         ident = expect(tok("identifier"));
-            if(!ident){
-            cleanup(m/*todo*/);
-            return false;
-            }
-            node.identifier = *ident;
-            if (currentIs(tok("(")))
-            {
-                advance();
-             intLit = expect(tok("intLiteral"));
-                if(!intLit){
-                cleanup(m/*todo*/);
+            Token ident = expect(tok("identifier"));
+            if (ident == null) {
+                cleanup(m);
                 return false;
+            }
+//            node.identifier = *ident;
+            if (currentIs(tok("("))) {
+                advance();
+                Token intLit = expect(tok("intLiteral"));
+                if (intLit == null) {
+                    cleanup(m);
+                    return false;
                 }
-                node.intLiteral = *intLit;
+//                node.intLiteral = *intLit;
                 expect(tok(")"));
             }
-            exit_section_(builder,m,/*todo*/,true);
+            exit_section_(builder, m, REGISTER, true);
             return true;
+        }
+
+        boolean parseRelExpression(){
+            return parseRelExpression(true);
         }
 
         /**
@@ -5738,13 +5741,13 @@ public class ParserPreliminaryJavaWriteUp {
          *     | $(LITERAL '!<=')
          *     ;)
          */
-        boolean parseRelExpression()//(ExpressionNode shift)
+        boolean parseRelExpression(boolean parseShift)//(ExpressionNode shift)
         {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
-            return parseLeftAssocBinaryExpression!(RelExpression, ShiftExpression,
-            tok("<"), tok("<="), tok(">"), tok(">="), tok("!<>="), tok("!<>"),
-            tok("<>"), tok("<>="), tok("!>"), tok("!>="), tok("!>="), tok("!<"),
-            tok("!<="))(shift);
+            final Marker marker = enter_section_(builder);
+            final boolean b = parseLeftAssocBinaryExpression("RelExpression", "ShiftExpression", parseShift, tok("<"), tok("<="), tok(">"), tok(">="), tok("!<>="), tok("!<>"), tok("<>"), tok("<>="), tok("!>"), tok("!>="), tok("!>="), tok("!<"), tok("!<="));
+            exit_section_(builder,marker,REL_EXPRESSION,b);
+            return b;
         }
 
         /**
@@ -5759,21 +5762,24 @@ public class ParserPreliminaryJavaWriteUp {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             Marker m = enter_section_(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ReturnStatement,false);
-         start = expect(tok("return"));
-            if(!start){
-            cleanup(m/*todo*/);
-            return false;
+            Token start = expect(tok("return"));
+            if(start == null) {
+                cleanup(m);
+                return false;
             }
-            node.startLocation = start.index;
+//            node.startLocation = start.index;
             if (!currentIs(tok(";")))
-            if(!parseNodeQ("node.expression", "Expression")){cleanup(m/*todo*/);return false;}
-         semicolon = expect(tok(";"));
-            if(!semicolon){
-            cleanup(m/*todo*/);
-            return false;
+                if (!parseNodeQ("node.expression", "Expression")) {
+                    cleanup(m);
+                    return false;
+                }
+            Token semicolon = expect(tok(";"));
+            if (semicolon == null) {
+                cleanup(m);
+                return false;
             }
-            node.endLocation = semicolon.index;
-            exit_section_(builder,m,/*todo*/,true);
+//            node.endLocation = semicolon.index;
+            exit_section_(builder,m,RETURN_STATEMENT,true);
             return true;
         }
 
@@ -5791,15 +5797,18 @@ public class ParserPreliminaryJavaWriteUp {
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ScopeGuardStatement,false);
             expect(tok("scope"));
             expect(tok("("));
-         ident = expect(tok("identifier"));
-            if(!ident){
-            cleanup(m/*todo*/);
-            return false;
+            Token ident = expect(tok("identifier"));
+            if (ident == null) {
+                cleanup(m);
+                return false;
             }
-            node.identifier = *ident;
+//            node.identifier = *ident;
             expect(tok(")"));
-            if(!parseNodeQ("node.statementNoCaseNoDefault", "StatementNoCaseNoDefault")){cleanup(m/*todo*/);return false;}
-            exit_section_(builder,m,/*todo*/,true);
+            if (!parseNodeQ("node.statementNoCaseNoDefault", "StatementNoCaseNoDefault")) {
+                cleanup(m);
+                return false;
+            }
+            exit_section_(builder,m,SCOPE_GUARD_STATEMENT,true);
             return true;
         }
 
@@ -5815,10 +5824,18 @@ public class ParserPreliminaryJavaWriteUp {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             Marker m = enter_section_(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.SharedStaticConstructor,false);
-            node.location = current().index;
-            if(!tokenCheck("shared")){return false;}
-            if(!tokenCheck("static")){return false;}
-            return parseStaticCtorDtorCommon();
+//            node.location = current().index;
+            if (!tokenCheck("shared")) {
+                cleanup(m);
+                return false;
+            }
+            if (!tokenCheck("static")) {
+                cleanup(m);
+                return false;
+            }
+            final boolean b = parseStaticCtorDtorCommon();
+            exit_section_(builder,m,SHARED_STATIC_CONSTRUCTOR,b);
+            return b;
         }
 
         /**
@@ -5833,11 +5850,22 @@ public class ParserPreliminaryJavaWriteUp {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             Marker m = enter_section_(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.SharedStaticDestructor,false);
-            node.location = current().index;
-            if(!tokenCheck("shared")){return false;}
-            if(!tokenCheck("static")){return false;}
-            if(!tokenCheck("~")){return false;}
-            return parseStaticCtorDtorCommon();
+//            node.location = current().index;
+            if (!tokenCheck("shared")) {
+                cleanup(m);
+                return false;
+            }
+            if (!tokenCheck("static")) {
+                cleanup(m);
+                return false;
+            }
+            if (!tokenCheck("~")) {
+                cleanup(m);
+                return false;
+            }
+            final boolean b = parseStaticCtorDtorCommon();
+            exit_section_(builder,m,SHARED_STATIC_DESTRUCTOR,b);
+            return b;
         }
 
         /**
@@ -5851,8 +5879,10 @@ public class ParserPreliminaryJavaWriteUp {
         boolean parseShiftExpression()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-            return parseLeftAssocBinaryExpression(ShiftExpression, AddExpression,
-            tok("<<"), tok(">>"), tok(">>>"));
+            final Marker marker = enter_section_(builder);
+            final boolean b = parseLeftAssocBinaryExpression("ShiftExpression", "AddExpression", tok("<<"), tok(">>"), tok(">>>"));
+            exit_section_(builder,marker,SHIFT_EXPRESSION_,b);
+            return b;
         }
 
         /**
@@ -5869,13 +5899,14 @@ public class ParserPreliminaryJavaWriteUp {
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.SingleImport,false);
             if (startsWith(tok("identifier"), tok("=")))
             {
-                node.rename = advance(); // identifier
+                advance(); // identifier
                 advance(); // =
             }
-            if(!parseNodeQ("node.identifierChain", "IdentifierChain")){cleanup(m/*todo*/);return false;}
-            if (node.identifierChain == null)
-            return null;
-            exit_section_(builder,m,/*todo*/,true);
+            if (!parseNodeQ("node.identifierChain", "IdentifierChain")) {
+                cleanup(m);
+                return false;
+            }
+            exit_section_(builder,m,IMPORT,true);//todo type
             return true;
         }
 
@@ -5897,28 +5928,32 @@ public class ParserPreliminaryJavaWriteUp {
             if (!moreTokens())
             {
                 error("Expected statement instead of EOF");
-                return null;
+                return false;
             }
-            switch (current().type)
-            {
-                case tok("case"):
-                    advance();
-                    auto argumentList = parseArgumentList();
-                    if (argumentList == null)
-                    return null;
-                if (argumentList.items.length == 1 && startsWith(tok(":"), tok("..")))
-                node.caseRangeStatement = parseCaseRangeStatement(argumentList.items[0]);
-            else
-                node.caseStatement = parseCaseStatement(argumentList);
-                break;
-                case tok("default"):
-                    if(!parseNodeQ("node.defaultStatement", "DefaultStatement")){cleanup(m/*todo*/);return false;}
-                    break;
-                default:
-                    if(!parseNodeQ("node.statementNoCaseNoDefault", "StatementNoCaseNoDefault")){cleanup(m/*todo*/);return false;}
-                    break;
+            IdType i = current().type;
+            if (i.equals(tok("case"))) {
+                advance();
+                boolean argumentList = parseArgumentList();
+                if (!argumentList) {
+                    cleanup(m);
+                    return false;
+                }
+                if (startsWith(tok(":"), tok("..")))
+                    parseCaseRangeStatement();
+                else
+                    parseCaseStatement();
+            } else if (i.equals(tok("default"))) {
+                if (!parseNodeQ("node.defaultStatement", "DefaultStatement")) {
+                    cleanup(m);
+                    return false;
+                }
+            } else {
+                if (!parseNodeQ("node.statementNoCaseNoDefault", "StatementNoCaseNoDefault")) {
+                    cleanup(m);
+                    return false;
+                }
             }
-            exit_section_(builder,m,/*todo*/,true);
+            exit_section_(builder,m,STATEMENT,true);
             return true;
         }
 
@@ -5957,110 +5992,158 @@ public class ParserPreliminaryJavaWriteUp {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             Marker m = enter_section_(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.StatementNoCaseNoDefault,false);
-            node.startLocation = current().index;
-            switch (current().type)
-            {
-                case tok("{"):
-                    if(!parseNodeQ("node.blockStatement", "BlockStatement")){cleanup(m/*todo*/);return false;}
-                    break;
-                case tok("if"):
-                    if(!parseNodeQ("node.ifStatement", "IfStatement")){cleanup(m/*todo*/);return false;}
-                    break;
-                case tok("while"):
-                    if(!parseNodeQ("node.whileStatement", "WhileStatement")){cleanup(m/*todo*/);return false;}
-                    break;
-                case tok("do"):
-                    if(!parseNodeQ("node.doStatement", "DoStatement")){cleanup(m/*todo*/);return false;}
-                    break;
-                case tok("for"):
-                    if(!parseNodeQ("node.forStatement", "ForStatement")){cleanup(m/*todo*/);return false;}
-                    break;
-                case tok("foreach"):
-                case tok("foreach_reverse"):
-                    if(!parseNodeQ("node.foreachStatement", "ForeachStatement")){cleanup(m/*todo*/);return false;}
-                    break;
-                case tok("switch"):
-                    if(!parseNodeQ("node.switchStatement", "SwitchStatement")){cleanup(m/*todo*/);return false;}
-                    break;
-                case tok("continue"):
-                    if(!parseNodeQ("node.continueStatement", "ContinueStatement")){cleanup(m/*todo*/);return false;}
-                    break;
-                case tok("break"):
-                    if(!parseNodeQ("node.breakStatement", "BreakStatement")){cleanup(m/*todo*/);return false;}
-                    break;
-                case tok("return"):
-                    if(!parseNodeQ("node.returnStatement", "ReturnStatement")){cleanup(m/*todo*/);return false;}
-                    break;
-                case tok("goto"):
-                    if(!parseNodeQ("node.gotoStatement", "GotoStatement")){cleanup(m/*todo*/);return false;}
-                    break;
-                case tok("with"):
-                    if(!parseNodeQ("node.withStatement", "WithStatement")){cleanup(m/*todo*/);return false;}
-                    break;
-                case tok("synchronized"):
-                    if(!parseNodeQ("node.synchronizedStatement", "SynchronizedStatement")){cleanup(m/*todo*/);return false;}
-                    break;
-                case tok("try"):
-                    if(!parseNodeQ("node.tryStatement", "TryStatement")){cleanup(m/*todo*/);return false;}
-                    break;
-                case tok("throw"):
-                    if(!parseNodeQ("node.throwStatement", "ThrowStatement")){cleanup(m/*todo*/);return false;}
-                    break;
-                case tok("scope"):
-                    if(!parseNodeQ("node.scopeGuardStatement", "ScopeGuardStatement")){cleanup(m/*todo*/);return false;}
-                    break;
-                case tok("asm"):
-                    if(!parseNodeQ("node.asmStatement", "AsmStatement")){cleanup(m/*todo*/);return false;}
-                    break;
-                case tok("final"):
-                    if (peekIs(tok("switch")))
-                {
-                    if(!parseNodeQ("node.finalSwitchStatement", "FinalSwitchStatement")){cleanup(m/*todo*/);return false;}
-                    break;
+            current();
+            IdType i = current().type;
+            if (i.equals(tok("{"))) {
+                if (!parseNodeQ("node.blockStatement", "BlockStatement")) {
+                    cleanup(m);
+                    return false;
                 }
-            else
-                {
-                    error(""switch" expected");
-                    return null;
+            } else if (i.equals(tok("if"))) {
+                if (!parseNodeQ("node.ifStatement", "IfStatement")) {
+                    cleanup(m);
+                    return false;
                 }
-                case tok("debug"):
-                    if (peekIs(tok("=")))
-                    if(!parseNodeQ("node.debugSpecification", "DebugSpecification")){cleanup(m/*todo*/);return false;}
-            else
-                    if(!parseNodeQ("node.conditionalStatement", "ConditionalStatement")){cleanup(m/*todo*/);return false;}
-                    break;
-                case tok("version"):
-                    if (peekIs(tok("=")))
-                    if(!parseNodeQ("node.versionSpecification", "VersionSpecification")){cleanup(m/*todo*/);return false;}
-            else
-                    if(!parseNodeQ("node.conditionalStatement", "ConditionalStatement")){cleanup(m/*todo*/);return false;}
-                    break;
-                case tok("static"):
-                    if (peekIs(tok("if")))
-                    if(!parseNodeQ("node.conditionalStatement", "ConditionalStatement")){cleanup(m/*todo*/);return false;}
-            else if (peekIs(tok("assert")))
-                    if(!parseNodeQ("node.staticAssertStatement", "StaticAssertStatement")){cleanup(m/*todo*/);return false;}
-            else
-                {
-                    error("'if' or 'assert' expected.");
-                    return null;
+            } else if (i.equals(tok("while"))) {
+                if (!parseNodeQ("node.whileStatement", "WhileStatement")) {
+                    cleanup(m);
+                    return false;
                 }
-                break;
-                case tok("identifier"):
-                    if (peekIs(tok(":")))
-                {
-                    if(!parseNodeQ("node.labeledStatement", "LabeledStatement")){cleanup(m/*todo*/);return false;}
-                    break;
+            } else if (i.equals(tok("do"))) {
+                if (!parseNodeQ("node.doStatement", "DoStatement")) {
+                    cleanup(m);
+                    return false;
                 }
-            goto default;
-                case tok("delete"):
-                case tok("assert"):
-                default:
-                    if(!parseNodeQ("node.expressionStatement", "ExpressionStatement")){cleanup(m/*todo*/);return false;}
-                    break;
+            } else if (i.equals(tok("for"))) {
+                if (!parseNodeQ("node.forStatement", "ForStatement")) {
+                    cleanup(m);
+                    return false;
+                }
+            } else if (i.equals(tok("foreach")) || i.equals(tok("foreach_reverse"))) {
+                if (!parseNodeQ("node.foreachStatement", "ForeachStatement")) {
+                    cleanup(m);
+                    return false;
+                }
+            } else if (i.equals(tok("switch"))) {
+                if (!parseNodeQ("node.switchStatement", "SwitchStatement")) {
+                    cleanup(m);
+                    return false;
+                }
+            } else if (i.equals(tok("continue"))) {
+                if (!parseNodeQ("node.continueStatement", "ContinueStatement")) {
+                    cleanup(m);
+                    return false;
+                }
+            } else if (i.equals(tok("break"))) {
+                if (!parseNodeQ("node.breakStatement", "BreakStatement")) {
+                    cleanup(m);
+                    return false;
+                }
+            } else if (i.equals(tok("return"))) {
+                if (!parseNodeQ("node.returnStatement", "ReturnStatement")) {
+                    cleanup(m);
+                    return false;
+                }
+            } else if (i.equals(tok("goto"))) {
+                if (!parseNodeQ("node.gotoStatement", "GotoStatement")) {
+                    cleanup(m);
+                    return false;
+                }
+            } else if (i.equals(tok("with"))) {
+                if (!parseNodeQ("node.withStatement", "WithStatement")) {
+                    cleanup(m);
+                    return false;
+                }
+            } else if (i.equals(tok("synchronized"))) {
+                if (!parseNodeQ("node.synchronizedStatement", "SynchronizedStatement")) {
+                    cleanup(m);
+                    return false;
+                }
+            } else if (i.equals(tok("try"))) {
+                if (!parseNodeQ("node.tryStatement", "TryStatement")) {
+                    cleanup(m);
+                    return false;
+                }
+            } else if (i.equals(tok("throw"))) {
+                if (!parseNodeQ("node.throwStatement", "ThrowStatement")) {
+                    cleanup(m);
+                    return false;
+                }
+            } else if (i.equals(tok("scope"))) {
+                if (!parseNodeQ("node.scopeGuardStatement", "ScopeGuardStatement")) {
+                    cleanup(m);
+                    return false;
+                }
+            } else if (i.equals(tok("asm"))) {
+                if (!parseNodeQ("node.asmStatement", "AsmStatement")) {
+                    cleanup(m);
+                    return false;
+                }
+            } else if (i.equals(tok("final"))) {
+                if (peekIs(tok("switch"))) {
+
+                    if (!parseNodeQ("node.finalSwitchStatement", "FinalSwitchStatement")) {
+                        cleanup(m);
+                        return false;
+                    }
+                    exit_section_(builder,m,STATEMENT_NO_CASE_NO_DEFAULT,true);
+                    return true;
+                } else {
+                    error("\"switch\" expected");
+                    return false;
+                }
+            } else if (i.equals(tok("debug"))) {
+                if (peekIs(tok("=")))
+                    if (!parseNodeQ("node.debugSpecification", "DebugSpecification")) {
+                        cleanup(m);
+                        return false;
+                    } else if (!parseNodeQ("node.conditionalStatement", "ConditionalStatement")) {
+                        cleanup(m);
+                        return false;
+                    }
+            } else if (i.equals(tok("version"))) {
+                if (peekIs(tok("=")))
+                    if (!parseNodeQ("node.versionSpecification", "VersionSpecification")) {
+                        cleanup(m);
+                        return false;
+                    } else if (!parseNodeQ("node.conditionalStatement", "ConditionalStatement")) {
+                        cleanup(m);
+                        return false;
+                    }
+            } else if (i.equals(tok("static"))) {
+                if (peekIs(tok("if")))
+                    if (!parseNodeQ("node.conditionalStatement", "ConditionalStatement")) {
+                        cleanup(m);
+                        return false;
+                    } else if (peekIs(tok("assert")))
+                        if (!parseNodeQ("node.staticAssertStatement", "StaticAssertStatement")) {
+                            cleanup(m);
+                            return false;
+                        } else {
+                            error("'if' or 'assert' expected.");
+                            return false;
+                        }
+            } else if (i.equals(tok("identifier"))) {
+                if (peekIs(tok(":"))) {
+                    if (!parseNodeQ("node.labeledStatement", "LabeledStatement")) {
+                        cleanup(m);
+                        return false;
+                    }
+                    exit_section_(builder,m,STATEMENT_NO_CASE_NO_DEFAULT,true);
+                    return true;
+                }
+                if (!parseNodeQ("node.expressionStatement", "ExpressionStatement")) {
+                    cleanup(m);
+                    return false;
+                }
+            } else {
+                if (!parseNodeQ("node.expressionStatement", "ExpressionStatement")) {
+                    cleanup(m);
+                    return false;
+                }
             }
-            node.endLocation = tokens[index - 1].index;
-            exit_section_(builder,m,/*todo*/,true);
+//            node.endLocation = tokens[index - 1].index;
+            exit_section_(builder,m,STATEMENT_NO_CASE_NO_DEFAULT,true);
             return true;
         }
 
@@ -6074,8 +6157,11 @@ public class ParserPreliminaryJavaWriteUp {
         boolean parseStaticAssertDeclaration()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-            mixin(simpleParse(StaticAssertDeclaration,
-            "staticAssertStatement|parseStaticAssertStatement"));
+            final Marker marker = enter_section_(builder);
+            final boolean b = simpleParse("StaticAssertDeclaration",
+                "staticAssertStatement|parseStaticAssertStatement");
+            exit_section_(builder,marker,STATIC_ASSERT,b);
+            return b;
         }
 
 
@@ -6089,8 +6175,11 @@ public class ParserPreliminaryJavaWriteUp {
         boolean parseStaticAssertStatement()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-            mixin(simpleParse(StaticAssertStatement,
-            tok("static"), "assertExpression|parseAssertExpression", tok(";")));
+            final Marker marker = enter_section_(builder);
+            final boolean b = simpleParse("StaticAssertStatement",
+                tok("static"), "assertExpression|parseAssertExpression", tok(";"));
+            exit_section_(builder,marker,STATIC_ASSERT,b);
+            return b;
         }
 
         /**
@@ -6105,9 +6194,14 @@ public class ParserPreliminaryJavaWriteUp {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             Marker m = enter_section_(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.StaticConstructor,false);
-            node.location = current().index;
-            if(!tokenCheck("static")){return false;}
-            return parseStaticCtorDtorCommon();
+//            node.location = current().index;
+            if (!tokenCheck("static")) {
+                cleanup(m);
+                return false;
+            }
+            final boolean b = parseStaticCtorDtorCommon();
+            exit_section_(builder,m,STATIC_CONSTRUCTOR,b);
+            return b;
         }
 
         /**
@@ -6122,10 +6216,18 @@ public class ParserPreliminaryJavaWriteUp {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             Marker m = enter_section_(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.StaticDestructor,false);
-            node.location = current().index;
-            if(!tokenCheck("static")){return false;}
-            if(!tokenCheck("~")){return false;}
-            return parseStaticCtorDtorCommon();
+//            node.location = current().index;
+            if(!tokenCheck("static")) {
+                cleanup(m);
+                return false;
+            }
+            if (!tokenCheck("~")) {
+                cleanup(m);
+                return false;
+            }
+            final boolean b = parseStaticCtorDtorCommon();
+            exit_section_(builder,m,STATIC_DESTRUCTOR,b);
+            return b;
         }
 
         /**
@@ -6138,8 +6240,11 @@ public class ParserPreliminaryJavaWriteUp {
         boolean parseStaticIfCondition()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-            mixin(simpleParse(StaticIfCondition, tok("static"), tok("if"), tok("("),
-            "assignExpression|parseAssignExpression", tok(")")));
+            final Marker marker = enter_section_(builder);
+            final boolean b = simpleParse("StaticIfCondition", tok("static"), tok("if"), tok("("),
+                "assignExpression|parseAssignExpression", tok(")"));
+            exit_section_(builder,marker,STATIC_IF_CONDITION,b);
+            return b;
         }
 
         /**
@@ -6166,51 +6271,42 @@ public class ParserPreliminaryJavaWriteUp {
          *     | $(LITERAL 'synchronized')
          *     ;)
          */
-        boolean parseStorageClass()
-        {
+        boolean parseStorageClass() {
             Marker m = enter_section_(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.StorageClass,false);
-            switch (current().type)
-            {
-                case tok("@"):
-                    if(!parseNodeQ("node.atAttribute", "AtAttribute")){cleanup(m/*todo*/);return false;}
-                    break;
-                case tok("deprecated"):
-                    if(!parseNodeQ("node.deprecated_", "Deprecated")){cleanup(m/*todo*/);return false;}
-                    break;
-                case tok("align"):
-                    if(!parseNodeQ("node.alignAttribute", "AlignAttribute")){cleanup(m/*todo*/);return false;}
-                    break;
-                case tok("extern"):
-                    if (peekIs(tok("(")))
-                {
-                    if(!parseNodeQ("node.linkageAttribute", "LinkageAttribute")){cleanup(m/*todo*/);return false;}
-                    break;
+            IdType i = current().type;
+            if (i.equals(tok("@"))) {
+                if (!parseNodeQ("node.atAttribute", "AtAttribute")) {
+                    cleanup(m);
+                    return false;
                 }
-            else goto case;
-                case tok(""):
-                case tok("immutable"):
-                case tok("inout"):
-                case tok("shared"):
-                case tok("abstract"):
-                case tok("auto"):
-                case tok("enum"):
-                case tok("final"):
-                case tok(""):
-                case tok("override"):
-                case tok(""):
-                case tok("ref"):
-                case tok("__gshared"):
-                case tok("scope"):
-                case tok("static"):
-                case tok("synchronized"):
-                    node.token = advance();
-                    break;
-                default:
-                    error("Storage class expected");
-                    return null;
+            } else if (i.equals(tok("deprecated"))) {
+                if (!parseNodeQ("node.deprecated_", "Deprecated")) {
+                    cleanup(m);
+                    return false;
+                }
+            } else if (i.equals(tok("align"))) {
+                if (!parseNodeQ("node.alignAttribute", "AlignAttribute")) {
+                    cleanup(m);
+                    return false;
+                }
+            } else if (i.equals(tok("extern"))) {
+                if (peekIs(tok("("))) {
+                    if (!parseNodeQ("node.linkageAttribute", "LinkageAttribute")) {
+                        cleanup(m);
+                        return false;
+                    }
+                    exit_section_(builder, m, STORAGE_CLASS, true);
+                    return true;
+                }
+                advance();
+            } else if (i.equals(tok("")) || i.equals(tok("immutable")) || i.equals(tok("inout")) || i.equals(tok("shared")) || i.equals(tok("abstract")) || i.equals(tok("auto")) || i.equals(tok("enum")) || i.equals(tok("final")) || i.equals(tok("")) || i.equals(tok("override")) || i.equals(tok("")) || i.equals(tok("ref")) || i.equals(tok("__gshared")) || i.equals(tok("scope")) || i.equals(tok("static")) || i.equals(tok("synchronized"))) {
+                advance();
+            } else {
+                error("Storage class expected");
+                return false;
             }
-            exit_section_(builder,m,/*todo*/,true);
+            exit_section_(builder, m, STORAGE_CLASS, true);
             return true;
         }
 
@@ -6221,24 +6317,22 @@ public class ParserPreliminaryJavaWriteUp {
          *     $(LITERAL '{') $(RULE declaration)* $(LITERAL '}')
          *     ;)
          */
-        boolean parseStructBody()
-        {
+        boolean parseStructBody() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             Marker m = enter_section_(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.StructBody,false);
-         start = expect(tok("{"));
-            if (start != null) node.startLocation = start.index;
+            Token start = expect(tok("{"));
+//            if (start != null) node.startLocation = start.index;
             StackBuffer declarations;
-            while (!currentIs(tok("}")) && moreTokens())
-            {
-                c = allocator.setCheckpoint();
-                if (!declarations.put(parseDeclaration(true, true)))
-                    allocator.rollback(c);
+            while (!currentIs(tok("}")) && moreTokens()) {
+//                c = allocator.setCheckpoint();
+                parseDeclaration(true, true);
+//                    allocator.rollback(c);
             }
-            ownArray(node.declarations, declarations);
-         end = expect(tok("}"));
-            if (end != null) node.endLocation = end.index;
-            exit_section_(builder,m,/*todo*/,true);
+//            ownArray(node.declarations, declarations);
+            Token end = expect(tok("}"));
+//            if (end != null) node.endLocation = end.index;
+            exit_section_(builder, m, AGGREGATE_BODY, true);//todo type
             return true;
         }
 
@@ -6254,36 +6348,42 @@ public class ParserPreliminaryJavaWriteUp {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             Marker m = enter_section_(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.StructDeclaration,false);
-         t = expect(tok("struct"));
+            Token t = expect(tok("struct"));
             if (currentIs(tok("identifier")))
-            node.name = advance();
-        else
-            {
-                node.name.line = t.line;
-                node.name.column = t.column;
-            }
-            node.comment = comment;
-            comment = null;
+                advance();
+//            else {
+//                node.name.line = t.line;
+//                node.name.column = t.column;
+//            }
+//            node.comment = comment;
+//            comment = null;
 
-            if (currentIs(tok("(")))
-            {
-                if(!parseNodeQ("node.templateParameters", "TemplateParameters")){cleanup(m/*todo*/);return false;}
+            if (currentIs(tok("("))) {
+                if (!parseNodeQ("node.templateParameters", "TemplateParameters")) {
+                    cleanup(m);
+                    return false;
+                }
                 if (currentIs(tok("if")))
-                if(!parseNodeQ("node.raint", "Constraint")){cleanup(m/*todo*/);return false;}
-                if(!parseNodeQ("node.structBody", "StructBody")){cleanup(m/*todo*/);return false;}
-            }
-        else if (currentIs(tok("{")))
-            {
-                if(!parseNodeQ("node.structBody", "StructBody")){cleanup(m/*todo*/);return false;}
-            }
-        else if (currentIs(tok(";")))
-            advance();
-        else
-            {
+                    if (!parseNodeQ("node.raint", "Constraint")) {
+                        cleanup(m);
+                        return false;
+                    }
+                if (!parseNodeQ("node.structBody", "StructBody")) {
+                    cleanup(m);
+                    return false;
+                }
+            } else if (currentIs(tok("{"))) {
+                if (!parseNodeQ("node.structBody", "StructBody")) {
+                    cleanup(m);
+                    return false;
+                }
+            } else if (currentIs(tok(";")))
+                advance();
+            else {
                 error("Template Parameters, Struct Body, or Semicolon expected");
-                return null;
+                return false;
             }
-            exit_section_(builder,m,/*todo*/,true);
+            exit_section_(builder,m,STRUCT_DECLARATION,true);
             return true;
         }
 
@@ -6299,24 +6399,25 @@ public class ParserPreliminaryJavaWriteUp {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             Marker m = enter_section_(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.StructInitializer,false);
-         a = expect(tok("{"));
-            node.startLocation = a.index;
+            Token a = expect(tok("{"));
+//            node.startLocation = a.index;
             if (currentIs(tok("}")))
             {
-                node.endLocation = current().index;
+//                node.endLocation = current().index;
                 advance();
-            }
-        else
-            {
-                if(!parseNodeQ("node.structMemberInitializers", "StructMemberInitializers")){cleanup(m/*todo*/);return false;}
-             e = expect(tok("}"));
-                if(!e){
-                cleanup(m/*todo*/);
-                return false;
+            } else {
+                if (!parseNodeQ("node.structMemberInitializers", "StructMemberInitializers")) {
+                    cleanup(m);
+                    return false;
                 }
-                node.endLocation = e.index;
+                Token e = expect(tok("}"));
+                if (e == null) {
+                    cleanup(m);
+                    return false;
+                }
+//                node.endLocation = e.index;
             }
-            exit_section_(builder,m,/*todo*/,true);
+            exit_section_(builder, m,STRUCT_INITIALIZER, true);
             return true;
         }
 
@@ -6334,11 +6435,14 @@ public class ParserPreliminaryJavaWriteUp {
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.StructMemberInitializer,false);
             if (startsWith(tok("identifier"), tok(":")))
             {
-                node.identifier = tokens[index++];
+                /*node.identifier = *//*tokens[*/index++/*]*/;//todo make sure consumption is done correctly
                 index++;
             }
-            if(!parseNodeQ("node.nonVoidInitializer", "NonVoidInitializer")){cleanup(m/*todo*/);return false;}
-            exit_section_(builder,m,/*todo*/,true);
+            if (!parseNodeQ("node.nonVoidInitializer", "NonVoidInitializer")) {
+                cleanup(m);
+                return false;
+            }
+            exit_section_(builder,m,STRUCT_MEMBER_INITIALIZER,true);
             return true;
         }
 
@@ -6354,19 +6458,18 @@ public class ParserPreliminaryJavaWriteUp {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             Marker m = enter_section_(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.StructMemberInitializers,false);
-            StackBuffer structMemberInitializers;
             do
             {
-                auto c = allocator.setCheckpoint();
-                if (!structMemberInitializers.put(parseStructMemberInitializer()))
-                    allocator.rollback(c);
+//                auto c = allocator.setCheckpoint();
+                parseStructMemberInitializer();
+//                    allocator.rollback(c);
                 if (currentIs(tok(",")))
-                advance();
+                    advance();
             else
                 break;
             } while (moreTokens() && !currentIs(tok("}")));
-            ownArray(node.structMemberInitializers, structMemberInitializers);
-            exit_section_(builder,m,/*todo*/,true);
+//            ownArray(node.structMemberInitializers, structMemberInitializers);
+            exit_section_(builder,m,STRUCT_MEMBER_INITIALIZERS,true);
             return true;
         }
 
@@ -6384,10 +6487,16 @@ public class ParserPreliminaryJavaWriteUp {
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.SwitchStatement,false);
             expect(tok("switch"));
             expect(tok("("));
-            if(!parseNodeQ("node.expression", "Expression")){cleanup(m/*todo*/);return false;}
+            if (!parseNodeQ("node.expression", "Expression")) {
+                cleanup(m);
+                return false;
+            }
             expect(tok(")"));
-            if(!parseNodeQ("node.statement", "Statement")){cleanup(m/*todo*/);return false;}
-            exit_section_(builder,m,/*todo*/,true);
+            if (!parseNodeQ("node.statement", "Statement")) {
+                cleanup(m);
+                return false;
+            }
+            exit_section_(builder, m,SWITCH_STATEMENT, true);
             return true;
         }
 
@@ -6405,11 +6514,14 @@ public class ParserPreliminaryJavaWriteUp {
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Symbol,false);
             if (currentIs(tok(".")))
             {
-                node.dot = true;
+//                node.dot = true;
                 advance();
             }
-            if(!parseNodeQ("node.identifierOrTemplateChain", "IdentifierOrTemplateChain")){cleanup(m/*todo*/);return false;}
-            exit_section_(builder,m,/*todo*/,true);
+            if (!parseNodeQ("node.identifierOrTemplateChain", "IdentifierOrTemplateChain")) {
+                cleanup(m);
+                return false;
+            }
+            exit_section_(builder,m,SYMBOL,true);
             return true;
         }
 
@@ -6429,11 +6541,17 @@ public class ParserPreliminaryJavaWriteUp {
             if (currentIs(tok("(")))
             {
                 expect(tok("("));
-                if(!parseNodeQ("node.expression", "Expression")){cleanup(m/*todo*/);return false;}
+                if (!parseNodeQ("node.expression", "Expression")) {
+                    cleanup(m);
+                    return false;
+                }
                 expect(tok(")"));
             }
-            if(!parseNodeQ("node.statementNoCaseNoDefault", "StatementNoCaseNoDefault")){cleanup(m/*todo*/);return false;}
-            exit_section_(builder,m,/*todo*/,true);
+            if (!parseNodeQ("node.statementNoCaseNoDefault", "StatementNoCaseNoDefault")) {
+                cleanup(m);
+                return false;
+            }
+            exit_section_(builder,m,SYNCHRONIZED_STATEMENT,true);
             return true;
         }
 
@@ -6444,48 +6562,61 @@ public class ParserPreliminaryJavaWriteUp {
          *     $(LITERAL 'alias') $(RULE type)? $(LITERAL Identifier) ($(LITERAL ':') ($(RULE type) | $(RULE assignExpression)))? ($(LITERAL '=') ($(RULE type) | $(RULE assignExpression)))?
          *     ;)
          */
-        boolean parseTemplateAliasParameter()
-        {
+        boolean parseTemplateAliasParameter() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             Marker m = enter_section_(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateAliasParameter,false);
             expect(tok("alias"));
-            if (currentIs(tok("identifier")) && !peekIs(tok(".")))
-            {
+            if (currentIs(tok("identifier")) && !peekIs(tok("."))) {
                 if (peekIsOneOf(tok(","), tok(")"), tok("="), tok(":")))
-                node.identifier = advance();
-            else
-                goto type;
-            }
-        else
-            {
-                type:
-                if(!parseNodeQ("node.type", "Type")){cleanup(m/*todo*/);return false;}
-             ident = expect(tok("identifier"));
-                if(!ident){
-                cleanup(m/*todo*/);
-                return false;
+                    advance();
+                else {
+                    if (!parseNodeQ("node.type", "Type")) {
+                        cleanup(m);
+                        return false;
+                    }
+                    Token ident = expect(tok("identifier"));
+                    if (ident == null) {
+                        cleanup(m);
+                        return false;
+                    }
                 }
-                node.identifier = *ident;
+            } else {
+                if (!parseNodeQ("node.type", "Type")) {
+                    cleanup(m);
+                    return false;
+                }
+                Token ident = expect(tok("identifier"));
+                if (ident == null) {
+                    cleanup(m);
+                    return false;
+                }
+//                node.identifier = *ident;
             }
 
-            if (currentIs(tok(":")))
-            {
+            if (currentIs(tok(":"))) {
                 advance();
                 if (isType())
-                    if(!parseNodeQ("node.colonType", "Type")){cleanup(m/*todo*/);return false;}
-            else
-                if(!parseNodeQ("node.colonExpression", "AssignExpression")){cleanup(m/*todo*/);return false;}
+                    if (!parseNodeQ("node.colonType", "Type")) {
+                        cleanup(m);
+                        return false;
+                    } else if (!parseNodeQ("node.colonExpression", "AssignExpression")) {
+                        cleanup(m);
+                        return false;
+                    }
             }
-            if (currentIs(tok("=")))
-            {
+            if (currentIs(tok("="))) {
                 advance();
                 if (isType())
-                    if(!parseNodeQ("node.assignType", "Type")){cleanup(m/*todo*/);return false;}
-            else
-                if(!parseNodeQ("node.assignExpression", "AssignExpression")){cleanup(m/*todo*/);return false;}
+                    if (!parseNodeQ("node.assignType", "Type")) {
+                        cleanup(m);
+                        return false;
+                    } else if (!parseNodeQ("node.assignExpression", "AssignExpression")) {
+                        cleanup(m);
+                        return false;
+                    }
             }
-            exit_section_(builder,m,/*todo*/,true);
+            exit_section_(builder, m,TEMPLATE_ALIAS_PARAMETER, true);
             return true;
         }
 
@@ -6500,22 +6631,22 @@ public class ParserPreliminaryJavaWriteUp {
         boolean parseTemplateArgument()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-            if (suppressedErrorCount > MAX_ERRORS) return null;
+            if (suppressedErrorCount > MAX_ERRORS) return false;
             Marker m = enter_section_(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateArgument,false);
             Bookmark b = setBookmark();
-            auto t = parseType();
-            if (t != null && currentIsOneOf(tok(","), tok(")")))
-            {
+            boolean t = parseType();
+            if (t && currentIsOneOf(tok(","), tok(")"))) {
                 abandonBookmark(b);
-                node.type = t;
-            }
-        else
-            {
+//                node.type = t;
+            } else {
                 goToBookmark(b);
-                if(!parseNodeQ("node.assignExpression", "AssignExpression")){cleanup(m/*todo*/);return false;}
+                if (!parseNodeQ("node.assignExpression", "AssignExpression")) {
+                    cleanup(m);
+                    return false;
+                }
             }
-            exit_section_(builder,m,/*todo*/,true);
+            exit_section_(builder, m,TEMPLATE_ARGUMENT, true);
             return true;
         }
 
@@ -6529,7 +6660,10 @@ public class ParserPreliminaryJavaWriteUp {
         boolean parseTemplateArgumentList()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-            return parseCommaSeparatedRule!(TemplateArgumentList, TemplateArgument)(true);
+            final Marker marker = enter_section_(builder);
+            final boolean b = parseCommaSeparatedRule("TemplateArgumentList", "TemplateArgument");
+            exit_section_(builder,marker,TEMPLATE_ARGUMENT_LIST,b);
+            return b;
         }
 
         /**
@@ -6542,20 +6676,26 @@ public class ParserPreliminaryJavaWriteUp {
         boolean parseTemplateArguments()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-            if (suppressedErrorCount > MAX_ERRORS) return null;
+            if (suppressedErrorCount > MAX_ERRORS) return false;
             Marker m = enter_section_(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateArguments,false);
             expect(tok("!"));
-            if (currentIs(tok("(")))
-            {
+            if (currentIs(tok("("))) {
                 advance();
                 if (!currentIs(tok(")")))
-                if(!parseNodeQ("node.templateArgumentList", "TemplateArgumentList")){cleanup(m/*todo*/);return false;}
-                if(!tokenCheck(")")){return false;}
+                    if (!parseNodeQ("node.templateArgumentList", "TemplateArgumentList")) {
+                        cleanup(m);
+                        return false;
+                    }
+                if (!tokenCheck(")")) {
+                    cleanup(m);
+                    return false;
+                }
+            } else if (!parseNodeQ("node.templateSingleArgument", "TemplateSingleArgument")) {
+                cleanup(m);
+                return false;
             }
-        else
-            if(!parseNodeQ("node.templateSingleArgument", "TemplateSingleArgument")){cleanup(m/*todo*/);return false;}
-            exit_section_(builder,m,/*todo*/,true);
+            exit_section_(builder, m,TEMPLATE_ARGUMENTS, true);
             return true;
         }
 
@@ -6571,35 +6711,41 @@ public class ParserPreliminaryJavaWriteUp {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             Marker m = enter_section_(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateDeclaration,false);
-            node.comment = comment;
-            comment = null;
+//            node.comment = comment;
+//            comment = null;
             expect(tok("template"));
-         ident = expect(tok("identifier"));
-            if(!ident){
-            cleanup(m/*todo*/);
-            return false;
+            Token ident = expect(tok("identifier"));
+            if (ident == null) {
+                cleanup(m);
+                return false;
             }
-            node.name = *ident;
-            if(!parseNodeQ("node.templateParameters", "TemplateParameters")){cleanup(m/*todo*/);return false;}
+//            node.name = *ident;
+            if (!parseNodeQ("node.templateParameters", "TemplateParameters")) {
+                cleanup(m);
+                return false;
+            }
             if (currentIs(tok("if")))
-            if(!parseNodeQ("node.raint", "Constraint")){cleanup(m/*todo*/);return false;}
-         start = expect(tok("{"));
-            if(!start){
-            cleanup(m/*todo*/);
-            return false;
+                if (!parseNodeQ("node.raint", "Constraint")) {
+                    cleanup(m);
+                    return false;
+                }
+            Token start = expect(tok("{"));
+            if(start == null) {
+                cleanup(m);
+                return false;
             }
-            node.startLocation = start.index;
-            StackBuffer declarations;
+//            node.startLocation = start.index;
+//            StackBuffer declarations;
             while (moreTokens() && !currentIs(tok("}")))
             {
-                c = allocator.setCheckpoint();
-                if (!declarations.put(parseDeclaration(true, true)))
-                    allocator.rollback(c);
+//                c = allocator.setCheckpoint();
+                parseDeclaration(true, true);
+//                    allocator.rollback(c);
             }
-            ownArray(node.declarations, declarations);
-         end = expect(tok("}"));
-            if (end != null) node.endLocation = end.index;
-            exit_section_(builder,m,/*todo*/,true);
+//            ownArray(node.declarations, declarations);
+            Token end = expect(tok("}"));
+//            if (end != null) node.endLocation = end.index;
+            exit_section_(builder,m,TEMPLATE_DECLARATION,true);
             return true;
         }
 
@@ -6613,19 +6759,20 @@ public class ParserPreliminaryJavaWriteUp {
         boolean parseTemplateInstance()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-            if (suppressedErrorCount > MAX_ERRORS) return null;
+            if (suppressedErrorCount > MAX_ERRORS) return false;
             Marker m = enter_section_(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateInstance,false);
-         ident = expect(tok("identifier"));
-            if(!ident){
-            cleanup(m/*todo*/);
-            return false;
+            Token ident = expect(tok("identifier"));
+            if(ident == null) {
+                cleanup(m);
+                return false;
             }
-            node.identifier = *ident;
-            if(!parseNodeQ("node.templateArguments", "TemplateArguments")){cleanup(m/*todo*/);return false;}
-            if (node.templateArguments == null)
-            return null;
-            exit_section_(builder,m,/*todo*/,true);
+//            node.identifier = *ident;
+            if (!parseNodeQ("node.templateArguments", "TemplateArguments")) {
+                cleanup(m);
+                return false;
+            }
+            exit_section_(builder,m,TEMPLATE_INSTANCE,true);
             return true;
         }
 
@@ -6641,13 +6788,22 @@ public class ParserPreliminaryJavaWriteUp {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             Marker m = enter_section_(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateMixinExpression,false);
-            if(!tokenCheck("mixin")){return false;}
-            if(!parseNodeQ("node.mixinTemplateName", "MixinTemplateName")){cleanup(m/*todo*/);return false;}
+            if (!tokenCheck("mixin")) {
+                cleanup(m);
+                return false;
+            }
+            if (!parseNodeQ("node.mixinTemplateName", "MixinTemplateName")) {
+                cleanup(m);
+                return false;
+            }
             if (currentIs(tok("!")))
-            if(!parseNodeQ("node.templateArguments", "TemplateArguments")){cleanup(m/*todo*/);return false;}
+                if (!parseNodeQ("node.templateArguments", "TemplateArguments")) {
+                    cleanup(m);
+                    return false;
+                }
             if (currentIs(tok("identifier")))
-            node.identifier = advance();
-            exit_section_(builder,m,/*todo*/,true);
+                advance();
+            exit_section_(builder,m,MIXIN_EXPRESSION,true);//todo type
             return true;
         }
 
@@ -6667,27 +6823,37 @@ public class ParserPreliminaryJavaWriteUp {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             Marker m = enter_section_(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateParameter,false);
-            switch (current().type)
-            {
-                case tok("alias"):
-                    if(!parseNodeQ("node.templateAliasParameter", "TemplateAliasParameter")){cleanup(m/*todo*/);return false;}
-                    break;
-                case tok("identifier"):
-                    if (peekIs(tok("...")))
-                    if(!parseNodeQ("node.templateTupleParameter", "TemplateTupleParameter")){cleanup(m/*todo*/);return false;}
-            else if (peekIsOneOf(tok(":"), tok("="), tok(","), tok(")")))
-                    if(!parseNodeQ("node.templateTypeParameter", "TemplateTypeParameter")){cleanup(m/*todo*/);return false;}
-            else
-                    if(!parseNodeQ("node.templateValueParameter", "TemplateValueParameter")){cleanup(m/*todo*/);return false;}
-                    break;
-                case tok("this"):
-                    if(!parseNodeQ("node.templateThisParameter", "TemplateThisParameter")){cleanup(m/*todo*/);return false;}
-                    break;
-                default:
-                    if(!parseNodeQ("node.templateValueParameter", "TemplateValueParameter")){cleanup(m/*todo*/);return false;}
-                    break;
+            IdType i = current().type;
+            if (i.equals(tok("alias"))) {
+                if (!parseNodeQ("node.templateAliasParameter", "TemplateAliasParameter")) {
+                    cleanup(m);
+                    return false;
+                }
+            } else if (i.equals(tok("identifier"))) {
+                if (peekIs(tok("...")))
+                    if (!parseNodeQ("node.templateTupleParameter", "TemplateTupleParameter")) {
+                        cleanup(m);
+                        return false;
+                    } else if (peekIsOneOf(tok(":"), tok("="), tok(","), tok(")")))
+                        if (!parseNodeQ("node.templateTypeParameter", "TemplateTypeParameter")) {
+                            cleanup(m);
+                            return false;
+                        } else if (!parseNodeQ("node.templateValueParameter", "TemplateValueParameter")) {
+                            cleanup(m);
+                            return false;
+                        }
+            } else if (i.equals(tok("this"))) {
+                if (!parseNodeQ("node.templateThisParameter", "TemplateThisParameter")) {
+                    cleanup(m);
+                    return false;
+                }
+            } else {
+                if (!parseNodeQ("node.templateValueParameter", "TemplateValueParameter")) {
+                    cleanup(m);
+                    return false;
+                }
             }
-            exit_section_(builder,m,/*todo*/,true);
+            exit_section_(builder,m,TEMPLATE_PARAMETER,true);
             return true;
         }
 
@@ -6701,7 +6867,10 @@ public class ParserPreliminaryJavaWriteUp {
         boolean parseTemplateParameterList()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-            return parseCommaSeparatedRule!(TemplateParameterList, TemplateParameter)(true);
+            final Marker marker = enter_section_(builder);
+            final boolean b = parseCommaSeparatedRule("TemplateParameterList", "TemplateParameter");
+            exit_section_(builder,marker,TEMPLATE_PARAMETER_LIST,b);
+            return b;
         }
 
         /**
@@ -6716,11 +6885,19 @@ public class ParserPreliminaryJavaWriteUp {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             Marker m = enter_section_(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateParameters,false);
-            if(!tokenCheck("(")){return false;}
+            if (!tokenCheck("(")) {
+                cleanup(m);
+                return false;
+            }
             if (!currentIs(tok(")")))
-            if(!parseNodeQ("node.templateParameterList", "TemplateParameterList")){cleanup(m/*todo*/);return false;}
-            if(!tokenCheck(")")){return false;}
-            exit_section_(builder,m,/*todo*/,true);
+                if (!parseNodeQ("node.templateParameterList", "TemplateParameterList")) {
+                    cleanup(m);
+                    return false;
+                }
+            if (!tokenCheck(")")) {
+                return false;
+            }
+            exit_section_(builder, m,TEMPLATE_PARAMETERS, true);
             return true;
         }
 
@@ -6755,24 +6932,19 @@ public class ParserPreliminaryJavaWriteUp {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             Marker m = enter_section_(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateSingleArgument,false);
-            if (!moreTokens)
+            if (!moreTokens())
             {
                 error("template argument expected instead of EOF");
-                return null;
+                return false;
             }
-            switch (current().type)
-            {
-                case tok("this"):
-                case tok("identifier"):
-                    foreach (B; Literals) { case B: }
-                foreach (C; BasicTypes) { case C: }
-                node.token = advance();
-                break;
-                default:
-                    error("Invalid template argument. (Try enclosing in parenthesis?)");
-                    return null;
+            IdType i = current().type;
+            if (i.equals(tok("this")) || i.equals(tok("identifier")) || i.equals(tok("characterLiteral")) || i.equals(tok("true")) || i.equals(tok("false")) || i.equals(tok("null")) || i.equals(tok("$")) || i.equals(tok("dstringLiteral")) || i.equals(tok("stringLiteral")) || i.equals(tok("wstringLiteral")) || i.equals(tok("doubleLiteral")) || i.equals(tok("floatLiteral")) || i.equals(tok("idoubleLiteral")) || i.equals(tok("ifloatLiteral")) || i.equals(tok("intLiteral")) || i.equals(tok("longLiteral")) || i.equals(tok("realLiteral")) || i.equals(tok("irealLiteral")) || i.equals(tok("uintLiteral")) || i.equals(tok("ulongLiteral")) || i.equals(tok("__DATE__")) || i.equals(tok("__TIME__")) || i.equals(tok("__TIMESTAMP__")) || i.equals(tok("__VENDOR__")) || i.equals(tok("__VERSION__")) || i.equals(tok("__FILE__")) || i.equals(tok("__FILE_FULL_PATH__")) || i.equals(tok("__LINE__")) || i.equals(tok("__MODULE__")) || i.equals(tok("__FUNCTION__")) || i.equals(tok("__PRETTY_FUNCTION__")) || i.equals(tok("int")) || i.equals(tok("bool")) || i.equals(tok("byte")) || i.equals(tok("cdouble")) || i.equals(tok("cent")) || i.equals(tok("cfloat")) || i.equals(tok("char")) || i.equals(tok("creal")) || i.equals(tok("dchar")) || i.equals(tok("double")) || i.equals(tok("float")) || i.equals(tok("idouble")) || i.equals(tok("ifloat")) || i.equals(tok("ireal")) || i.equals(tok("long")) || i.equals(tok("real")) || i.equals(tok("short")) || i.equals(tok("ubyte")) || i.equals(tok("ucent")) || i.equals(tok("uint")) || i.equals(tok("ulong")) || i.equals(tok("ushort")) || i.equals(tok("void")) || i.equals(tok("wchar"))) {
+                advance();
+            } else {
+                error("Invalid template argument. (Try enclosing in parenthesis?)");
+                return false;
             }
-            exit_section_(builder,m,/*todo*/,true);
+            exit_section_(builder,m,TEMPLATE_SINGLE_ARGUMENT,true);
             return true;
         }
 
@@ -6789,8 +6961,11 @@ public class ParserPreliminaryJavaWriteUp {
             Marker m = enter_section_(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateThisParameter,false);
             expect(tok("this"));
-            if(!parseNodeQ("node.templateTypeParameter", "TemplateTypeParameter")){cleanup(m/*todo*/);return false;}
-            exit_section_(builder,m,/*todo*/,true);
+            if (!parseNodeQ("node.templateTypeParameter", "TemplateTypeParameter")) {
+                cleanup(m);
+                return false;
+            }
+            exit_section_(builder,m,TEMPLATE_THIS_PARAMETER,true);
             return true;
         }
 
@@ -6806,12 +6981,17 @@ public class ParserPreliminaryJavaWriteUp {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             Marker m = enter_section_(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateTupleParameter,false);
-         i = expect(tok("identifier"));
-            if (i == null)
-            return null;
-            node.identifier = *i;
-            if(!tokenCheck("...")){return false;}
-            exit_section_(builder,m,/*todo*/,true);
+            Token i = expect(tok("identifier"));
+            if (i == null) {
+                cleanup(m);
+                return false;
+            }
+//            node.identifier = *i;
+            if (!tokenCheck("...")) {
+                cleanup(m);
+                return false;
+            }
+            exit_section_(builder,m,TEMPLATE_TUPLE_PARAMETER,true);
             return true;
         }
 
@@ -8291,7 +8471,7 @@ public class ParserPreliminaryJavaWriteUp {
             return true;
         }
 
-        //todo idk why though
+        //todo idk why though, probably the true/false args
         boolean parseCommaSeparatedRule(String listType, String itemType)//(alias ListType, alias ItemType,)
         {
 //            final boolean setLineAndColumn = false;
