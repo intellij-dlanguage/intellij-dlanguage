@@ -11,6 +11,7 @@ import org.fest.util.Sets;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import static com.intellij.lang.parser.GeneratedParserUtilBase.enter_section_;
 import static com.intellij.lang.parser.GeneratedParserUtilBase.exit_section_;
@@ -8153,40 +8154,40 @@ public class ParserPreliminaryJavaWriteUp {
 
         boolean isCastQualifier()
         {
-            switch (current().type)
-            {
-                case tok(""):
-                    if (peekIs(tok(")"))) exit_section_(builder,m,/*todo*/,true);
- return true;
+            final Marker m = enter_section_(builder);
+            IdType i = current().type;
+            if (i.equals(tok(""))) {
+                if (peekIs(tok(")")))
+                    return true;
                 return startsWith(tok(""), tok("shared"), tok(")"));
-                case tok("immutable"):
-                    return peekIs(tok(")"));
-                case tok("inout"):
-                    if (peekIs(tok(")"))) exit_section_(builder,m,/*todo*/,true);
- return true;
+            } else if (i.equals(tok("immutable"))) {
+                return peekIs(tok(")"));
+            } else if (i.equals(tok("inout"))) {
+                if (peekIs(tok(")")))
+                    return true;
                 return startsWith(tok("inout"), tok("shared"), tok(")"));
-                case tok("shared"):
-                    if (peekIs(tok(")"))) exit_section_(builder,m,/*todo*/,true);
- return true;
-                if (startsWith(tok("shared"), tok(""), tok(")"))) exit_section_(builder,m,/*todo*/,true);
- return true;
+            } else if (i.equals(tok("shared"))) {
+                if (peekIs(tok(")")))
+                    return true;
+                if (startsWith(tok("shared"), tok(""), tok(")")))
+                    return true;
                 return startsWith(tok("shared"), tok("inout"), tok(")"));
-                default:
-                    return false;
+            } else {
+                return false;
             }
         }
 
         boolean isAssociativeArrayLiteral()
         {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-            if (auto p = current().index in cachedAAChecks)
-            return *p;
-            Number currentIndex = current().index;
+            if (cachedAAChecks.keySet().contains(index))//todo check this translation is correct
+                return true;
+//            size_t currentIndex = current.index;
             Bookmark b = setBookmark();
-            scope(exit) goToBookmark(b);
             advance();
-            boolean result = !currentIs(tok("]")) && parseExpression() != null && currentIs(tok(":"));
-            cachedAAChecks[currentIndex] = result;
+            boolean result = !currentIs(tok("]")) && parseExpression() && currentIs(tok(":"));
+            cachedAAChecks.put(index,result);
+            goToBookmark(b);
             return result;
         }
 
@@ -8317,91 +8318,75 @@ public class ParserPreliminaryJavaWriteUp {
             return new Pair<>(DecType.other, beginIndex);
         }
 
-        boolean isDeclaration()
-        {
+        boolean isDeclaration() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
             if (!moreTokens()) return false;
-            switch (current().type)
-            {
-                case tok("final"):
-                    return !peekIs(tok("switch"));
-                case tok("debug"):
-                    if (peekIs(tok(":")))
-                    exit_section_(builder,m,/*todo*/,true);
+            IdType i = current().type;
+            if (i.equals(tok("final"))) {
+                return !peekIs(tok("switch"));
+            }
+            if (i.equals(tok("debug"))) {
+                if (peekIs(tok(":")))
                     return true;
-            goto case;
-                case tok("version"):
-                    if (peekIs(tok("=")))
-                    exit_section_(builder,m,/*todo*/,true);
+                if (peekIs(tok("=")))
                     return true;
-                if (peekIs(tok("(")))
-                goto default;
-                return false;
-                case tok("synchronized"):
-                    if (peekIs(tok("(")))
-                    return false;
-            else
-                goto default;
-                case tok("static"):
-                    if (peekIs(tok("if")))
-                    return false;
-            goto case;
-                case tok("scope"):
-                    if (peekIs(tok("(")))
-                    return false;
-            goto case;
-                case tok("@"):
-                case tok("abstract"):
-                case tok("alias"):
-                case tok("align"):
-                case tok("auto"):
-                case tok("class"):
-                case tok("deprecated"):
-                case tok("enum"):
-                case tok("export"):
-                case tok("extern"):
-                case tok("__gshared"):
-                case tok("interface"):
-                case tok(""):
-                case tok("override"):
-                case tok("package"):
-                case tok("private"):
-                case tok("protected"):
-                case tok("public"):
-                case tok(""):
-                case tok("ref"):
-                case tok("struct"):
-                case tok("union"):
-                case tok("unittest"):
-                    exit_section_(builder,m,/*todo*/,true);
-                    return true;
-                foreach (B; BasicTypes) { case B: }
-                return !peekIsOneOf(tok("."), tok("("));
-                case tok("asm"):
-                case tok("break"):
-                case tok("case"):
-                case tok("continue"):
-                case tok("default"):
-                case tok("do"):
-                case tok("for"):
-                case tok("foreach"):
-                case tok("foreach_reverse"):
-                case tok("goto"):
-                case tok("if"):
-                case tok("return"):
-                case tok("switch"):
-                case tok("throw"):
-                case tok("try"):
-                case tok("while"):
-                case tok("{"):
-                case tok("assert"):
-                    return false;
-                default:
+                if (peekIs(tok("("))) {
+                    //default
                     Bookmark b = setBookmark();
-                    scope(exit) goToBookmark(b);
-                    auto c = allocator.setCheckpoint();
-                    scope(exit) allocator.rollback(c);
-                    return parseDeclaration(true, true) != null;
+                    final boolean res = parseDeclaration(true, true);
+                    goToBookmark(b);
+                    return res;
+                }
+                return false;
+            }
+            if (i.equals(tok("version"))) {
+                if (peekIs(tok("=")))
+                    return true;
+                if (peekIs(tok("("))) {
+                    //default
+                    Bookmark b = setBookmark();
+                    final boolean res = parseDeclaration(true, true);
+                    goToBookmark(b);
+                    return res;
+                }
+                return false;
+            }
+            if (i.equals(tok("synchronized"))) {
+                if (peekIs(tok("(")))
+                    return false;
+                else {
+                    //default
+                    Bookmark b = setBookmark();
+                    final boolean res = parseDeclaration(true, true);
+                    goToBookmark(b);
+                    return res;
+                }
+            }
+            if (i.equals(tok("static"))) {
+                if (peekIs(tok("if")))
+                    return false;
+                if (peekIs(tok("(")))
+                    return false;
+                return true;
+            }
+            if (i.equals(tok("scope"))) {
+                if (peekIs(tok("(")))
+                    return false;
+                return true;
+            }
+            if (i.equals(tok("@")) || i.equals(tok("abstract")) || i.equals(tok("alias")) || i.equals(tok("align")) || i.equals(tok("auto")) || i.equals(tok("class")) || i.equals(tok("deprecated")) || i.equals(tok("enum")) || i.equals(tok("export")) || i.equals(tok("extern")) || i.equals(tok("__gshared")) || i.equals(tok("interface")) || i.equals(tok("")) || i.equals(tok("override")) || i.equals(tok("package")) || i.equals(tok("private")) || i.equals(tok("protected")) || i.equals(tok("public")) || i.equals(tok("")) || i.equals(tok("ref")) || i.equals(tok("struct")) || i.equals(tok("union")) || i.equals(tok("unittest"))) {
+                return true;
+            }
+            if (i.equals(tok("int")) || i.equals(tok("bool")) || i.equals(tok("byte")) || i.equals(tok("cdouble")) || i.equals(tok("cent")) || i.equals(tok("cfloat")) || i.equals(tok("char")) || i.equals(tok("creal")) || i.equals(tok("dchar")) || i.equals(tok("double")) || i.equals(tok("float")) || i.equals(tok("idouble")) || i.equals(tok("ifloat")) || i.equals(tok("ireal")) || i.equals(tok("long")) || i.equals(tok("real")) || i.equals(tok("short")) || i.equals(tok("ubyte")) || i.equals(tok("ucent")) || i.equals(tok("uint")) || i.equals(tok("ulong")) || i.equals(tok("ushort")) || i.equals(tok("void")) || i.equals(tok("wchar"))) {
+                return !peekIsOneOf(tok("."), tok("("));
+            }
+            if (i.equals(tok("asm")) || i.equals(tok("break")) || i.equals(tok("case")) || i.equals(tok("continue")) || i.equals(tok("default")) || i.equals(tok("do")) || i.equals(tok("for")) || i.equals(tok("foreach")) || i.equals(tok("foreach_reverse")) || i.equals(tok("goto")) || i.equals(tok("if")) || i.equals(tok("return")) || i.equals(tok("switch")) || i.equals(tok("throw")) || i.equals(tok("try")) || i.equals(tok("while")) || i.equals(tok("{")) || i.equals(tok("assert"))) {
+                return false;
+            } else {
+                Bookmark b = setBookmark();
+                final boolean res = parseDeclaration(true, true);
+                goToBookmark(b);
+                return res;
             }
         }
 
@@ -8410,128 +8395,71 @@ public class ParserPreliminaryJavaWriteUp {
         {
             if (!moreTokens()) return false;
             Bookmark b = setBookmark();
-            scope (exit) goToBookmark(b);
-            auto c = allocator.setCheckpoint();
-            scope (exit) allocator.rollback(c);
-            if (parseType() == null) return false;
+//            auto c = allocator.setCheckpoint();
+//            scope (exit) allocator.rollback(c);
+            if (!parseType()) {
+                goToBookmark(b);
+                return false;
+            }
+            goToBookmark(b);
             return currentIsOneOf(tok(","), tok(")"), tok("="));
         }
 
         boolean isStorageClass()
         {
             if (!moreTokens()) return false;
-            switch (current().type)
-            {
-                case tok(""):
-                case tok("immutable"):
-                case tok("inout"):
-                case tok("shared"):
-                    return !peekIs(tok("("));
-                case tok("@"):
-                case tok("deprecated"):
-                case tok("abstract"):
-                case tok("align"):
-                case tok("auto"):
-                case tok("enum"):
-                case tok("extern"):
-                case tok("final"):
-                case tok(""):
-                case tok("override"):
-                case tok(""):
-                case tok("ref"):
-                case tok("__gshared"):
-                case tok("scope"):
-                case tok("static"):
-                case tok("synchronized"):
-                    exit_section_(builder,m,/*todo*/,true);
-                    return true;
-                default:
-                    return false;
+            IdType i = current().type;
+            if (i.equals(tok("")) || i.equals(tok("immutable")) || i.equals(tok("inout")) || i.equals(tok("shared"))) {
+                return !peekIs(tok("("));
+            } else if (i.equals(tok("@")) || i.equals(tok("deprecated")) || i.equals(tok("abstract")) || i.equals(tok("align")) || i.equals(tok("auto")) || i.equals(tok("enum")) || i.equals(tok("extern")) || i.equals(tok("final")) || i.equals(tok("")) || i.equals(tok("override")) || i.equals(tok("")) || i.equals(tok("ref")) || i.equals(tok("__gshared")) || i.equals(tok("scope")) || i.equals(tok("static")) || i.equals(tok("synchronized"))) {
+                return true;
+            } else {
+                return false;
             }
         }
 
         boolean isAttribute()
         {
             if (!moreTokens()) return false;
-            switch (current().type)
-            {
-                case tok(""):
-                case tok("immutable"):
-                case tok("inout"):
-                case tok("scope"):
-                    return !peekIs(tok("("));
-                case tok("static"):
-                    return !peekIsOneOf(tok("assert"), tok("this"), tok("if"), tok("~"));
-                case tok("shared"):
-                    return !(startsWith(tok("shared"), tok("static"), tok("this"))
-                || startsWith(tok("shared"), tok("static"), tok("~"))
-                || peekIs(tok("(")));
-                case tok("pragma"):
-                    Bookmark b = setBookmark();
-                    scope(exit) goToBookmark(b);
-                    advance();
-             past = peekPastParens();
-                    if (past == null || *past == tok(";"))
+            IdType i = current().type;
+            if (i.equals(tok("")) || i.equals(tok("immutable")) || i.equals(tok("inout")) || i.equals(tok("scope"))) {
+                return !peekIs(tok("("));
+            } else if (i.equals(tok("static"))) {
+                return !peekIsOneOf(tok("assert"), tok("this"), tok("if"), tok("~"));
+            } else if (i.equals(tok("shared"))) {
+                return !(startsWith(tok("shared"), tok("static"), tok("this")) || startsWith(tok("shared"), tok("static"), tok("~")) || peekIs(tok("(")));
+            } else if (i.equals(tok("pragma"))) {
+                Bookmark b = setBookmark();
+                advance();
+                Token past = peekPastParens();
+                if (past == null || past.type == tok(";")) {
+                    goToBookmark(b);
                     return false;
-                exit_section_(builder,m,/*todo*/,true);
+                }
+                goToBookmark(b);
                 return true;
-                case tok("deprecated"):
-                case tok("private"):
-                case tok("package"):
-                case tok("protected"):
-                case tok("public"):
-                case tok("export"):
-                case tok("final"):
-                case tok("synchronized"):
-                case tok("override"):
-                case tok("abstract"):
-                case tok("auto"):
-                case tok("__gshared"):
-                case tok(""):
-                case tok(""):
-                case tok("@"):
-                case tok("ref"):
-                case tok("extern"):
-                case tok("align"):
-                    exit_section_(builder,m,/*todo*/,true);
-                    return true;
-                default:
-                    return false;
+            } else if (i.equals(tok("deprecated")) || i.equals(tok("private")) || i.equals(tok("package")) || i.equals(tok("protected")) || i.equals(tok("public")) || i.equals(tok("export")) || i.equals(tok("final")) || i.equals(tok("synchronized")) || i.equals(tok("override")) || i.equals(tok("abstract")) || i.equals(tok("auto")) || i.equals(tok("__gshared")) || i.equals(tok("")) || i.equals(tok("")) || i.equals(tok("@")) || i.equals(tok("ref")) || i.equals(tok("extern")) || i.equals(tok("align"))) {
+                return true;
+            } else {
+                return false;
             }
         }
 
-        static boolean isMemberFunctionAttribute(IdType t)
+        boolean isMemberFunctionAttribute(IdType t)
         {
-            switch (t)
-            {
-                case tok(""):
-                case tok("immutable"):
-                case tok("inout"):
-                case tok("shared"):
-                case tok("@"):
-                case tok(""):
-                case tok(""):
-                case tok("return"):
-                case tok("scope"):
-                    exit_section_(builder,m,/*todo*/,true);
-                    return true;
-                default:
-                    return false;
+            if (t.equals(tok("")) || t.equals(tok("immutable")) || t.equals(tok("inout")) || t.equals(tok("shared")) || t.equals(tok("@")) || t.equals(tok("")) || t.equals(tok("")) || t.equals(tok("return")) || t.equals(tok("scope"))) {
+                return true;
+            } else {
+                return false;
             }
         }
 
-        static boolean isTypeCtor(IdType t)
+        boolean isTypeCtor(IdType t)
         {
-            switch (t)
-            {
-                case tok(""):
-                case tok("immutable"):
-                case tok("inout"):
-                case tok("shared"):
-                    exit_section_(builder,m,/*todo*/,true);
-                    return true;
-                default:
-                    return false;
+            if (t.equals(tok("")) || t.equals(tok("immutable")) || t.equals(tok("inout")) || t.equals(tok("shared"))) {
+                return true;
+            } else {
+                return false;
             }
         }
 
@@ -8557,7 +8485,6 @@ public class ParserPreliminaryJavaWriteUp {
                     return false;
                 }
             }
-            exit_section_(builder,m,/*todo*/,true);
             return true;
         }
 
@@ -8588,7 +8515,6 @@ public class ParserPreliminaryJavaWriteUp {
                     break;
             }
 //            exit_section_(builder,m,,true);
-            exit_section_(builder,m,/*todo*/,true);
             return true;
         }
 
@@ -9018,15 +8944,17 @@ public class ParserPreliminaryJavaWriteUp {
             if (!tokenCheck(")")) {
                 return false;}
             StackBuffer attributes;
-            while (moreTokens() && !currentIsOneOf(tok("{"), tok("in"), tok("out"), tok("body"), tok(";")))
-            if (!attributes.put(parseMemberFunctionAttribute()))
-                return null;
+            while (moreTokens() && !currentIsOneOf(tok("{"), tok("in"), tok("out"), tok("body"), tok(";"))) {
+                if (!(parseMemberFunctionAttribute())) {
+                    return false;
+                }
+            }
 //            ownArray(node.memberFunctionAttributes, attributes);
             if (currentIs(tok(";")))
             advance();
-    else
-            if(!parseNodeQ("node.functionBody", "FunctionBody")){cleanup(m/*todo*/);return false;}
-            exit_section_(builder,m,/*todo*/,true);
+    else if (!parseNodeQ("node.functionBody", "FunctionBody")) {
+                return false;
+            }
             return true;
         }
 
@@ -9048,7 +8976,9 @@ public class ParserPreliminaryJavaWriteUp {
             }
             if (currentIs(tok("(")))
             {
-                if(!parseNodeQ("node.templateParameters", "TemplateParameters")){cleanup(m/*todo*/);return false;}
+                if (!parseNodeQ("node.templateParameters", "TemplateParameters")) {
+                    return false;
+                }
                 if (currentIs(tok(";"))) {
                     return emptyBody();
                 }
@@ -9068,7 +8998,9 @@ public class ParserPreliminaryJavaWriteUp {
         }
 
         private boolean structBody() {
-            if(!parseNodeQ("node.structBody", "StructBody")){cleanup(m/*todo*/);return false;}
+            if (!parseNodeQ("node.structBody", "StructBody")) {
+                return false;
+            }
             return true;
         }
 
@@ -9085,7 +9017,9 @@ public class ParserPreliminaryJavaWriteUp {
 
         private boolean constraint(boolean baseClassListQ){
             if (currentIs(tok("if"))) {
-                if(!parseNodeQ("node.raint", "Constraint")){cleanup(m/*todo*/);return false;}
+                if (!parseNodeQ("node.raint", "Constraint")) {
+                    return false;
+                }
             }
             if (baseClassListQ) {
                 if (currentIs(tok("{"))) {
@@ -9098,10 +9032,10 @@ public class ParserPreliminaryJavaWriteUp {
                 }
             }
             if (currentIs(tok(":"))) {
-                    return baseClassList();
+                return baseClassList();
             }
             if (currentIs(tok("if"))) {
-                    return constraint(baseClassListQ);
+                return constraint(baseClassListQ);
             }
             if (currentIs(tok(";"))) {
                     return emptyBody();
@@ -9903,7 +9837,7 @@ public class ParserPreliminaryJavaWriteUp {
                 throw new IllegalArgumentException("unrecognized thing to parse:" + nodeType);
         }
     }
-    //            boolean[typeof(Token.index)] cachedAAChecks;
+                Map<Integer,Boolean> cachedAAChecks = new HashMap<>();
 //    private boolean parseName(String NodeName){
 //        Map<String, Callable<Boolean>> methodLookupTable = ImmutableMap.of(
 //            "AliasThisDeclaration", (Callable<Boolean>) this::parseAliasThisDeclaration,
