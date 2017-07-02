@@ -279,6 +279,7 @@ public interface DLanguageTypes {
   IElementType TYPE_CTORS = new DLanguageElementType("TYPE_CTORS");
   IElementType TYPE_SPECIALIZATION = new DLanguageElementType("TYPE_SPECIALIZATION");
   IElementType TYPE_VECTOR = new DLanguageElementType("TYPE_VECTOR");
+  IElementType UNARY_EXPRESSION = new DLanguageElementType("UNARY_EXPRESSION");
   IElementType UNION_DECLARATION = DElementTypeFactory.factory("UNION_DECLARATION");
   IElementType UNIT_TESTING = DElementTypeFactory.factory("UNIT_TESTING");
   IElementType UPR_EXPRESSION = new DLanguageElementType("UPR_EXPRESSION");
@@ -477,7 +478,7 @@ public interface DLanguageTypes {
   IElementType TOKEN_STRING = new DLanguageTokenType("TOKEN_STRING");
   IElementType WYSIWYG_STRING = new DLanguageTokenType("WYSIWYG_STRING");
 
-  class Factory {
+    class Factory {
     public static PsiElement createElement(ASTNode node) {
       IElementType type = node.getElementType();
        if (type == ADD_EXPRESSION_) {
