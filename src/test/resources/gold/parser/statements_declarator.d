@@ -1,3 +1,5 @@
+unittest
+{
 if (auto m = std.regexp.search("abcdef", "b(c)d"))
 {
     writefln("[%s]", m.pre);      // prints [a]
@@ -11,3 +13,4 @@ else
     writeln(m.post);    // error, m undefined
 }
 writeln(m.pre);         // error, m undefined
+}

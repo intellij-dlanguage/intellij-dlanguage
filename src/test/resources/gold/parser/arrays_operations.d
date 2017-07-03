@@ -1,3 +1,5 @@
+unittest
+{
 T[] a, b;
 
 for (size_t i = 0; i < a.length; i++)
@@ -6,3 +8,4 @@ for (size_t i = 0; i < a.length; i++)
 T[] a, b;
 
 a[] = b[] + 4;
+}

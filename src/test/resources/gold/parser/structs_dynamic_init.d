@@ -1,3 +1,4 @@
+unite
 struct S { int a; }
 S t;      // default initialized
 t.a = 3;

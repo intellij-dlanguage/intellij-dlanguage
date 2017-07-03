@@ -1,3 +1,5 @@
+unittest
+{
 enum X { A, B, C }  // named enum
 
 enum size(X) = X.sizeof; // raised as bug for issue #84
@@ -53,3 +55,4 @@ enum i = 4;      // i is 4 of type int
 enum long l = 3; // l is 3 of type long
 
 enum size = __traits(classInstanceSize, Foo);  // evaluated at compile-time
+}

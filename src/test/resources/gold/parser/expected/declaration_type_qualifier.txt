@@ -11,6 +11,8 @@ D Language File
                 DLanguageBasicTypeImpl(BASIC_TYPE)
                   PsiElement(DLanguageTokenType.()('(')
                   DLanguageTypeImpl(TYPE)
+                    DLanguageTypeCtorsImpl(TYPE_CTORS)
+                      <empty list>
                     DLanguageBasicTypeImpl(BASIC_TYPE)
                       DLanguageBasicTypeXImpl(BASIC_TYPE_X)
                         PsiElement(DLanguageTokenType.int)('int')
@@ -33,6 +35,8 @@ D Language File
                 DLanguageBasicTypeImpl(BASIC_TYPE)
                   PsiElement(DLanguageTokenType.()('(')
                   DLanguageTypeImpl(TYPE)
+                    DLanguageTypeCtorsImpl(TYPE_CTORS)
+                      <empty list>
                     DLanguageBasicTypeImpl(BASIC_TYPE)
                       DLanguageBasicTypeXImpl(BASIC_TYPE_X)
                         PsiElement(DLanguageTokenType.int)('int')
@@ -65,6 +69,8 @@ D Language File
               DLanguageBasicTypeImpl(BASIC_TYPE)
                 PsiElement(DLanguageTokenType.()('(')
                 DLanguageTypeImpl(TYPE)
+                  DLanguageTypeCtorsImpl(TYPE_CTORS)
+                    <empty list>
                   DLanguageBasicTypeImpl(BASIC_TYPE)
                     DLanguageBasicTypeXImpl(BASIC_TYPE_X)
                       PsiElement(DLanguageTokenType.int)('int')

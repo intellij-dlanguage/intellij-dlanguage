@@ -1,10 +1,12 @@
 struct S {  }  // S has postblit or destructor
 S s;      // default construction of s
 S t = s;  // t is copy-constructed from s
-t = s;    // t is assigned from s
+unittest
+{
+    t = s;    // t is assigned from s
 
-t.opAssign(s);
-
+    t.opAssign(s);
+}
 ref S opAssign(S s)
 {
     S tmp = this;   // bitcopy this into tmp

@@ -1,5 +1,5 @@
-module A;
-private class Foo {}
+//module A;
+//private class Foo {}
 
 module B;
 public class Foo {}

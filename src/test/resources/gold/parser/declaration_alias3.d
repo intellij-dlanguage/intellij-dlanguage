@@ -16,6 +16,7 @@ version (Win32)
 
  alias a = s.i; // illegal, s.i is an expression
  alias b = S.i; // ok
+unittest
+{
  b = 4;         // sets S.i to 4
-
- 
+}

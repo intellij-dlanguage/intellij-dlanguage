@@ -399,34 +399,7 @@ public class ParserPreliminaryJavaWriteUp {
         }
     }
 
-    /**
-     * Params:
-     * tokens = the tokens parsed by dparse.lexer
-     * fileName = the name of the file being parsed
-     * messageFunction = a function to call on error or warning messages.
-     * The parameters are the file name, line number, column number,
-     * the error or warning message, and a booleanean (true means error, false
-     * means warning).
-     * Returns: the parsed module
-     */
-    boolean parseModule(Token[] tokens, String fileName, RollbackAllocator allocator) {
-        DLangParser parser = new DLangParser();
-//        parser.fileName = fileName;
-        parser.tokens = tokens;
-//        parser.messageFunction = messageFunction;
-//        parser.allocator = allocator;
-        boolean mod = parser.parseModule();
-//        if (warningCount != null)
-//        *warningCount = parser.warningCount;
-//        if (errorCount != null)
-//        *errorCount = parser.errorCount;
-        return mod;
-    }
-
-    void mixin(Object... args) {
-        //todo
-    }
-//    private boolean parseName(String NodeName){
+    //    private boolean parseName(String NodeName){
 //        Map<String, Callable<Boolean>> methodLookupTable = ImmutableMap.of(
 //            "AliasThisDeclaration", (Callable<Boolean>) this::parseAliasThisDeclaration,
 //            "AlignAttribute", (Callable<Boolean>) this::parseAlignAttribute,

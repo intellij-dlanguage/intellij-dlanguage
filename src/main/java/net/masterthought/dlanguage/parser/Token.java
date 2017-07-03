@@ -8,16 +8,15 @@ import com.intellij.psi.tree.IElementType;
  */
 public class Token {
     public final String text;//todo check that this is correct
+    public final IdType type;
 
     public Token(IdType type) {
         text = type.type.toString();
         this.type = type;
     }
 
-    public final IdType type;
-
     static class IdType{
-        IElementType type;
+        final IElementType type;
 
         public IdType(IElementType matchingType) {
             type = matchingType;
@@ -26,6 +25,10 @@ public class Token {
         @Override
         public String toString() {
             return type.toString();
+        }
+
+        public boolean equals(IdType obj) {
+            return type.equals(obj.type);
         }
     }
 }

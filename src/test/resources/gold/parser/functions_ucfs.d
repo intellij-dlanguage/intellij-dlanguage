@@ -1,3 +1,7 @@
+module a;
+unittest
+{
+
 void func(X thisObj);
 
 X obj;
@@ -17,8 +21,7 @@ stdin.byLine(KeepTerminator.yes)
 X obj;
 obj.prop;      // Rewrites to: prop(obj);
 obj.prop = 1;  // Rewrites to: prop(obj, 1);
-
-module a;
+}
 void foo(X);
 alias boo = foo;
 void main()

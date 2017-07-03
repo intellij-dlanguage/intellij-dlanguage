@@ -1,11 +1,13 @@
+unittest
+{
  if (foo)
         goto L1;
     x = 3;
 L1:
     x++;
-    
-    
-    
+
+
+
 switch (x)
 {
     case 3:
@@ -17,4 +19,5 @@ switch (x)
     default:
         x = 4;
         break;
+}
 }

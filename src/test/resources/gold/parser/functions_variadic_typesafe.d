@@ -53,7 +53,8 @@ class Foo
 
 void test(int x, Foo f ...);
 
-
+unittest
+{
 Foo g = new Foo(3, "abc");
 test(1, g);         // ok, since g is an instance of Foo
 test(1, 4, "def");  // ok
@@ -82,3 +83,4 @@ test(3, 4); // error, too many arguments
 int[] x;
 test(x);    // error, type mismatch
 
+}

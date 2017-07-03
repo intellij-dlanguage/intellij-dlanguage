@@ -13,10 +13,11 @@ D Language File
         DLanguageForeachAggregateImpl(FOREACH_AGGREGATE)
           DLanguageCommaExpressionImpl(COMMA_EXPRESSION)
             DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
-              DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
-                DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                  IDENTIFIER
-                    PsiElement(DLanguageTokenType.ID)('range')
+              DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
+                DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
+                  DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
+                    IDENTIFIER
+                      PsiElement(DLanguageTokenType.ID)('range')
         PsiElement(DLanguageTokenType.))(')')
         DLanguageStatementImpl(STATEMENT)
           DLanguageNonEmptyStatementImpl(NON_EMPTY_STATEMENT)

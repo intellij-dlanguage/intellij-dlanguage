@@ -4,4 +4,7 @@ ref int foo()
     return *p;
 }
 
+unittest
+{
 foo() = 3;  // reference returns can be lvalues
+}

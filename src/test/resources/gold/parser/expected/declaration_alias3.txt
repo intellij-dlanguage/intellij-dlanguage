@@ -21,6 +21,8 @@ D Language File
                       PsiElement(DLanguageTokenType.ID)('myfoo')
                     PsiElement(DLanguageTokenType.=)('=')
                     DLanguageTypeImpl(TYPE)
+                      DLanguageTypeCtorsImpl(TYPE_CTORS)
+                        <empty list>
                       DLanguageBasicTypeImpl(BASIC_TYPE)
                         DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                           IDENTIFIER
@@ -52,6 +54,8 @@ D Language File
                       PsiElement(DLanguageTokenType.ID)('myfoo')
                     PsiElement(DLanguageTokenType.=)('=')
                     DLanguageTypeImpl(TYPE)
+                      DLanguageTypeCtorsImpl(TYPE_CTORS)
+                        <empty list>
                       DLanguageBasicTypeImpl(BASIC_TYPE)
                         DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                           IDENTIFIER
@@ -71,6 +75,8 @@ D Language File
               PsiElement(DLanguageTokenType.ID)('strlen')
             PsiElement(DLanguageTokenType.=)('=')
             DLanguageTypeImpl(TYPE)
+              DLanguageTypeCtorsImpl(TYPE_CTORS)
+                <empty list>
               DLanguageBasicTypeImpl(BASIC_TYPE)
                 DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                   IDENTIFIER
@@ -89,6 +95,8 @@ D Language File
               PsiElement(DLanguageTokenType.ID)('abc')
             PsiElement(DLanguageTokenType.=)('=')
             DLanguageTypeImpl(TYPE)
+              DLanguageTypeCtorsImpl(TYPE_CTORS)
+                <empty list>
               DLanguageBasicTypeImpl(BASIC_TYPE)
                 DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                   IDENTIFIER
@@ -149,6 +157,8 @@ D Language File
               PsiElement(DLanguageTokenType.ID)('a')
             PsiElement(DLanguageTokenType.=)('=')
             DLanguageTypeImpl(TYPE)
+              DLanguageTypeCtorsImpl(TYPE_CTORS)
+                <empty list>
               DLanguageBasicTypeImpl(BASIC_TYPE)
                 DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                   IDENTIFIER
@@ -168,6 +178,8 @@ D Language File
               PsiElement(DLanguageTokenType.ID)('b')
             PsiElement(DLanguageTokenType.=)('=')
             DLanguageTypeImpl(TYPE)
+              DLanguageTypeCtorsImpl(TYPE_CTORS)
+                <empty list>
               DLanguageBasicTypeImpl(BASIC_TYPE)
                 DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                   IDENTIFIER
@@ -190,8 +202,9 @@ D Language File
                 DLanguageInitializerImpl(INITIALIZER)
                   DLanguageNonVoidInitializerImpl(NON_VOID_INITIALIZER)
                     DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
-                      DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
-                        DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                          PsiElement(DLanguageTokenType.INTEGER_LITERAL)('4')
+                      DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
+                        DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
+                          DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
+                            PsiElement(DLanguageTokenType.INTEGER_LITERAL)('4')
             PsiElement(DLanguageTokenType.;)(';')
   PsiComment(DLanguageTokenType.LINE_COMMENT)('// sets S.i to 4')

@@ -9,6 +9,8 @@ D Language File
               PsiElement(DLanguageTokenType.ID)('myint')
             PsiElement(DLanguageTokenType.=)('=')
             DLanguageTypeImpl(TYPE)
+              DLanguageTypeCtorsImpl(TYPE_CTORS)
+                <empty list>
               DLanguageBasicTypeImpl(BASIC_TYPE)
                 DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                   IDENTIFIER

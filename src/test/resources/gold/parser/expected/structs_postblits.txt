@@ -51,15 +51,17 @@ D Language File
                                           DLanguageInitializerImpl(INITIALIZER)
                                             DLanguageNonVoidInitializerImpl(NON_VOID_INITIALIZER)
                                               DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
-                                                DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
-                                                  DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                                                    IDENTIFIER
-                                                      PsiElement(DLanguageTokenType.ID)('a')
-                                                DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
-                                                  DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                                                    PsiElement(DLanguageTokenType..)('.')
-                                                    IDENTIFIER
-                                                      PsiElement(DLanguageTokenType.ID)('dup')
+                                                DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
+                                                  DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
+                                                    DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
+                                                      IDENTIFIER
+                                                        PsiElement(DLanguageTokenType.ID)('a')
+                                                DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
+                                                  DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
+                                                    DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
+                                                      PsiElement(DLanguageTokenType..)('.')
+                                                      IDENTIFIER
+                                                        PsiElement(DLanguageTokenType.ID)('dup')
                                       PsiElement(DLanguageTokenType.;)(';')
                         PsiElement(DLanguageTokenType.})('}')
               PsiElement(DLanguageTokenType.})('}')
@@ -163,10 +165,11 @@ D Language File
                               DLanguageInitializerImpl(INITIALIZER)
                                 DLanguageNonVoidInitializerImpl(NON_VOID_INITIALIZER)
                                   DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
-                                    DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
-                                      DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                                        IDENTIFIER
-                                          PsiElement(DLanguageTokenType.ID)('s')
+                                    DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
+                                      DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
+                                        DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
+                                          IDENTIFIER
+                                            PsiElement(DLanguageTokenType.ID)('s')
                           PsiElement(DLanguageTokenType.;)(';')
               PsiComment(DLanguageTokenType.LINE_COMMENT)('// error, S is not copyable')
               PsiElement(DLanguageTokenType.})('}')

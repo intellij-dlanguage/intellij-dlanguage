@@ -13,9 +13,10 @@ D Language File
                   DLanguageBasicType2XImpl(BASIC_TYPE_2_X)
                     PsiElement(DLanguageTokenType.[)('[')
                     DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
-                      DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
-                        DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                          PsiElement(DLanguageTokenType.INTEGER_LITERAL)('3')
+                      DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
+                        DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
+                          DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
+                            PsiElement(DLanguageTokenType.INTEGER_LITERAL)('3')
                     PsiElement(DLanguageTokenType.])(']')
                 IDENTIFIER
                   PsiElement(DLanguageTokenType.ID)('s')

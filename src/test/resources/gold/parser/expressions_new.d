@@ -1,3 +1,5 @@
+unittest
+{
 char[][] foo;
 foo = new char[][30];
 
@@ -15,4 +17,5 @@ foreach (ref a; bar)
     {
         b = new int[30];
     }
+}
 }

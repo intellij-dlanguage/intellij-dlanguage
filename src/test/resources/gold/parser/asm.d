@@ -1,4 +1,7 @@
 void *pc;
+
+unittest
+{
 asm
 {
     call L1          ;
@@ -31,7 +34,7 @@ asm
     rep  ;
     nop  ;
 }
-
+}
 struct Foo { int a,b,c; }
 int bar(Foo *f)
 {

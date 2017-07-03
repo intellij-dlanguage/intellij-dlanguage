@@ -1,3 +1,5 @@
+unittest
+{
 switch (i)
 {
     case 1:
@@ -5,4 +7,5 @@ switch (i)
         case 2:
     }
     break;
+}
 }

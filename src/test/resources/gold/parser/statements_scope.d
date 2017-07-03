@@ -1,3 +1,5 @@
+unittest
+{
 write("1");
 {
     write("2");
@@ -39,3 +41,4 @@ catch (Exception e)
 {
 }
 writeln();
+}

@@ -1,6 +1,8 @@
 extern (C++, N) { void foo(); }
 
 namespace N { void foo(); }
+unittest
+{
 
 foo();
 N.foo();
@@ -11,3 +13,4 @@ extern (C++, M) { void foo(); }
 bar();   // ok
 foo();   // error - N.foo() or M.foo() ?
 M.foo(); // ok
+}

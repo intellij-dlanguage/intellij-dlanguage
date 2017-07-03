@@ -222,6 +222,8 @@ HEX_EXPONENT = [pP][\+\-]? [0-9]+
 <YYINITIAL> "cfloat"                   { return KW_CFLOAT; }
 <YYINITIAL> "cdouble"                  { return KW_CDOUBLE; }
 <YYINITIAL> "creal"                    { return KW_CREAL; }
+<YYINITIAL> "cent"                     { return KW_CENT; }
+<YYINITIAL> "ucent"                    { return KW_UCENT; }
 <YYINITIAL> "void"                     { return KW_VOID; }
 <YYINITIAL> "typeof"                   { return KW_TYPEOF; }
 <YYINITIAL> "const"                    { return KW_CONST; }

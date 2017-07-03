@@ -1,3 +1,5 @@
+unittest
+{
 const float f = 0.2f;
 writeln(f - 0.2);
 
@@ -14,3 +16,4 @@ void main()
 const float f = 0x1.99999ap-3f;
 writeln(f - 0.2);
 
+}

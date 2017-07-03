@@ -42,15 +42,17 @@ D Language File
       DLanguageExpressionStatementImpl(EXPRESSION_STATEMENT)
         DLanguageCommaExpressionImpl(COMMA_EXPRESSION)
           DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
-            DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
-              DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                IDENTIFIER
-                  PsiElement(DLanguageTokenType.ID)('S')
-            DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
-              DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                PsiElement(DLanguageTokenType..)('.')
-                IDENTIFIER
-                  PsiElement(DLanguageTokenType.ID)('sizeof')
+            DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
+              DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
+                DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
+                  IDENTIFIER
+                    PsiElement(DLanguageTokenType.ID)('S')
+            DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
+              DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
+                DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
+                  PsiElement(DLanguageTokenType..)('.')
+                  IDENTIFIER
+                    PsiElement(DLanguageTokenType.ID)('sizeof')
         PsiElement(DLanguageTokenType.;)(';')
   PsiComment(DLanguageTokenType.LINE_COMMENT)('// error, size is not known')
   DLanguageDeclDefsImpl(DECL_DEFS)

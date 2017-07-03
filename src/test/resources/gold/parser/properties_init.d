@@ -1,3 +1,5 @@
+unittest
+{
 int a;
 int b = 1;
 t c;
@@ -18,3 +20,4 @@ struct Foo
 
 Foo.init.a;  // is 0
 Foo.init.b;  // is 7
+}

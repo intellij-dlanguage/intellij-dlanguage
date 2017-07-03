@@ -316,6 +316,8 @@ public interface DLanguageTypes {
   IElementType KW_CASE = new DLanguageTokenType("case");
   IElementType KW_CAST = new DLanguageTokenType("cast");
   IElementType KW_CATCH = new DLanguageTokenType("catch");
+  IElementType KW_CENT = new DLanguageTokenType("cent");
+  IElementType KW_UCENT = new DLanguageTokenType("ucent");
   IElementType KW_CDOUBLE = new DLanguageTokenType("cdouble");
   IElementType KW_CFLOAT = new DLanguageTokenType("cfloat");
   IElementType KW_CHAR = new DLanguageTokenType("char");
@@ -409,6 +411,7 @@ public interface DLanguageTypes {
   IElementType KW___PARAMETERS = new DLanguageTokenType("__parameters");
   IElementType KW___PRETTY_FUNCTION__ = new DLanguageTokenType("__PRETTY_FUNCTION__");
   IElementType KW___TRAITS = new DLanguageTokenType("__traits");
+  IElementType KW___VECTOR = new DLanguageTokenType("__vector");
   IElementType LINE_COMMENT = new DLanguageTokenType("LINE_COMMENT");
   IElementType NESTING_BLOCK_COMMENT = new DLanguageTokenType("NESTING_BLOCK_COMMENT");
   IElementType OP_AND = new DLanguageTokenType("&");
@@ -477,7 +480,9 @@ public interface DLanguageTypes {
   IElementType TOKEN_STRING = new DLanguageTokenType("TOKEN_STRING");
   IElementType WYSIWYG_STRING = new DLanguageTokenType("WYSIWYG_STRING");
 
-  class Factory {
+  IElementType SPECIAL_EMPTY_TOKEN = new DLanguageTokenType("SPECIAL_EMPTY_TOKEN");
+
+    class Factory {
     public static PsiElement createElement(ASTNode node) {
       IElementType type = node.getElementType();
        if (type == ADD_EXPRESSION_) {

@@ -1,3 +1,5 @@
+unittest
+{
 int number;
 string message;
 switch (number)
@@ -23,4 +25,5 @@ switch (number)
     case 1:     // valid: the body is empty
     case 2:     // valid: this is the last case in the switch statement.
         message = "one or two";
+}
 }

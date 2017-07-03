@@ -1,3 +1,5 @@
+unittest
+{
 int[10] a;   // declare array of 10 ints
 int[] b;
 
@@ -17,3 +19,4 @@ b = a[0 .. a.length];
 
 int* p;
 int[] b = p[0..8];
+}

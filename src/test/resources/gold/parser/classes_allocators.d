@@ -13,5 +13,7 @@ class Foo
     }
 }
 
-
+unittest
+{
 new(1,2) Foo(a);        // calls new(Foo.sizeof,1,2)
+}
