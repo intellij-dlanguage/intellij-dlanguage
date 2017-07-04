@@ -109,6 +109,7 @@ class DLangParser {
     Map<Integer, Boolean> cachedAAChecks = new HashMap<>();
     int suppressMessages;
     int index;
+    HashMap<Marker, Integer> beginnings = new HashMap<>();
 
     public DLangParser(@NotNull PsiBuilder builder) {
         this.errorCount = 0;
@@ -162,10 +163,9 @@ class DLangParser {
         return tokenArray;
     }
 
-    public void cleanup(@NotNull Marker... markers) {
-        for (@NotNull Marker marker : markers) {
-            exit_section_(builder, marker, STATIC_IF_CONDITION, false);//the static if could be anything. todo make an actual dummy type for it
-        }
+    public void cleanup(@NotNull Marker marker) {
+        exit_section_(builder, marker, STATIC_IF_CONDITION, false);//the static if could be anything. todo make an actual dummy type for it
+        index = beginnings.get(marker);
     }
 
     /**
@@ -178,7 +178,7 @@ class DLangParser {
      */
     boolean parseAddExpression() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        final Marker section = enter_section_(builder);
+        final Marker section = enter_section_modified(builder);
         boolean result = parseLeftAssocBinaryExpression("AddExpression", "MulExpression", tok("+"), tok("-"), tok("~"));
         exit_section_(builder, section, ADD_EXPRESSION_, result);
         return result;
@@ -195,14 +195,11 @@ class DLangParser {
      */
     boolean parseAliasDeclaration() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
         if (!tokenCheck("alias")) {
             cleanup(m);
             return false;
         }
-//            node.comment = comment;
-//            comment = null;
-
         if (startsWith(tok("identifier"), tok("=")) || startsWith(tok("identifier"), tok("("))) {
             do {
                 if (!parseAliasInitializer()) {
@@ -216,10 +213,6 @@ class DLangParser {
                 }
             }
             while (moreTokens());
-            if (expect(tok(";")) == null) {
-                cleanup(m);
-                return false;
-            }
         } else {
             while (moreTokens() && isStorageClass()) {
                 if (!parseStorageClass()) {
@@ -240,19 +233,12 @@ class DLangParser {
                     cleanup(m);
                     return false;
                 }
-                final Marker memberFunctionAttributes = enter_section_(builder);
                 while (moreTokens() && currentIsMemberFunctionAttribute()) {
                     if (!parseMemberFunctionAttribute()) {
-                        cleanup(m, memberFunctionAttributes);
+                        cleanup(m);
                         return false;
                     }
                 }
-                if (expect(tok(";")) == null) {
-                    cleanup(m);
-                    return false;
-                }
-                exit_section_(builder, memberFunctionAttributes, MEMBER_FUNCTION_ATTRIBUTES, true);
-
             }
         }
         if (expect(tok(";")) == null) {
@@ -288,7 +274,7 @@ class DLangParser {
      */
     boolean parseAliasInitializer() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
         if (!tokenCheck("identifier")) {
             cleanup(m);
             return false;
@@ -309,19 +295,18 @@ class DLangParser {
                 return false;
             }
         } else {
-            final Marker storageClassesMarker = enter_section_(builder);
             while (moreTokens() && isStorageClass()) {
                 if (!parseStorageClass()) {
-                    cleanup(m, storageClassesMarker);
+                    cleanup(m);
                     return false;
                 }
             }
-            exit_section_(builder, storageClassesMarker, STORAGE_CLASSES, true);//todo get rid of these
             if (!parseNodeQ("node.type", "Type")) {
                 cleanup(m);
                 return false;
             }
         }
+        exit_section_(builder, m, ALIAS_DECLARATION_Y, true);//todo types
         return true;
     }
 
@@ -334,7 +319,7 @@ class DLangParser {
      */
     boolean parseAliasThisDeclaration() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.AliasThisDeclaration,false);
         if (!tokenCheck("alias")) {
             cleanup(m);
@@ -365,7 +350,7 @@ class DLangParser {
      */
     boolean parseAlignAttribute() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.AlignAttribute,false);
         expect(tok("align"));//todo note expect has an error side affect
         if (currentIs(tok("("))) {
@@ -396,7 +381,7 @@ class DLangParser {
      */
     boolean parseAndAndExpression() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
         final boolean result = parseLeftAssocBinaryExpression("AndAndExpression", "OrExpression", tok("&&"));
         exit_section_(builder, m, AND_EXPRESSION_, result);//todo new types needed.
         return result;
@@ -412,7 +397,7 @@ class DLangParser {
      */
     boolean parseAndExpression() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
         final boolean result = parseLeftAssocBinaryExpression("AndExpression", "CmpExpression", tok("&"));
         exit_section_(builder, m, AND_EXPRESSION_, result);
         return result;
@@ -431,7 +416,7 @@ class DLangParser {
             error("argument list expected instead of EOF");
             return false;
         }
-        final Marker argumentList = enter_section_(builder);
+        final Marker argumentList = enter_section_modified(builder);
         boolean node = parseCommaSeparatedRule("ArgumentList", "AssignExpression");
         if (!node) {
             cleanup(argumentList);
@@ -478,7 +463,7 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
 //        Marker m = enter_section_(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ArrayInitializer,false);
-        final Marker arrayInit = enter_section_(builder);
+        final Marker arrayInit = enter_section_modified(builder);
         Token open = expect(tok("["));
         if (open == null) {
             cleanup(arrayInit);
@@ -515,7 +500,7 @@ class DLangParser {
      */
     boolean parseArrayLiteral() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ArrayLiteral,false);
         if (!tokenCheck("[")) {
             cleanup(m);
@@ -544,7 +529,7 @@ class DLangParser {
      */
     boolean parseArrayMemberInitialization() {
 //            mixin(traceEnterAndExit!(__FUNCTION__))
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ArrayMemberInitialization,false);
         if (current().type.equals(tok("["))) {
             Bookmark b = setBookmark();
@@ -601,7 +586,7 @@ class DLangParser {
      */
     boolean parseAsmAddExp() {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
-        final Marker m = enter_section_(builder);
+        final Marker m = enter_section_modified(builder);
         final boolean result = parseLeftAssocBinaryExpression("AsmAddExp", "AsmMulExp", tok("+"), tok("-"));
         exit_section_(builder, m, ASM_ADD_EXP, result);
         return result;
@@ -617,7 +602,7 @@ class DLangParser {
      */
     boolean parseAsmAndExp() {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
-        final Marker m = enter_section_(builder);
+        final Marker m = enter_section_modified(builder);
         final boolean result = parseLeftAssocBinaryExpression("AsmAndExp", "AsmEqualExp", tok("&"));
         exit_section_(builder, m, ASM_AND_EXP, result);
         return result;
@@ -634,7 +619,7 @@ class DLangParser {
     boolean parseAsmBrExp() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
 //            AsmBrExp node = allocator.make!AsmBrExp();
-        final Marker m = enter_section_(builder);
+        final Marker m = enter_section_modified(builder);
         if (currentIs(tok("["))) {
             advance(); // [
             if (!parseNodeQ("node.asmExp", "AsmExp")) {
@@ -689,7 +674,7 @@ class DLangParser {
      */
     boolean parseAsmEqualExp() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        final Marker m = enter_section_(builder);
+        final Marker m = enter_section_modified(builder);
         final boolean result = parseLeftAssocBinaryExpression("AsmEqualExp", "AsmRelExp", tok("=="), tok("!="));
         exit_section_(builder, m, ASM_EQUAL_EXP, result);
         return result;
@@ -705,7 +690,7 @@ class DLangParser {
     boolean parseAsmExp() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
 //            AsmExp node = allocator.make!AsmExp;
-        final Marker m = enter_section_(builder);
+        final Marker m = enter_section_modified(builder);
         if (!parseNodeQ("node.left", "AsmLogOrExp")) {
             cleanup(m);
             return false;
@@ -746,7 +731,7 @@ class DLangParser {
     boolean parseAsmInstruction() {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
 //            AsmInstruction node = allocator.make!AsmInstruction;
-        final Marker m = enter_section_(builder);
+        final Marker m = enter_section_modified(builder);
         if (currentIs(tok("align"))) {
             advance(); // align
 //                node.hasAlign = true;
@@ -786,25 +771,9 @@ class DLangParser {
      */
     boolean parseAsmLogAndExp() {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
-        final Marker m = enter_section_(builder);
+        final Marker m = enter_section_modified(builder);
         final boolean result = parseLeftAssocBinaryExpression("AsmLogAndExp", "AsmOrExp", tok("&&"));
         exit_section_(builder, m, ASM_LOG_AND_EXP, result);
-        return result;
-    }
-
-    /**
-     * Parses an AsmLogOrExp
-     * <p>
-     * $(GRAMMAR $(RULEDEF asmLogOrExp):
-     * $(RULE asmLogAndExp)
-     * | $(RULE asmLogOrExp) '||' $(RULE asmLogAndExp)
-     * ;)
-     */
-    boolean parseAsmLogOrExp() {
-//            mixin(traceEnterAndExit!(__FUNCTION__));
-        final Marker m = enter_section_(builder);
-        final boolean result = parseLeftAssocBinaryExpression("AsmLogOrExp", "AsmLogAndExp", tok("||"));
-        exit_section_(builder, m, ASM_LOG_OR_EXP, result);
         return result;
     }
 
@@ -829,6 +798,22 @@ class DLangParser {
 //        }
 
     /**
+     * Parses an AsmLogOrExp
+     * <p>
+     * $(GRAMMAR $(RULEDEF asmLogOrExp):
+     * $(RULE asmLogAndExp)
+     * | $(RULE asmLogOrExp) '||' $(RULE asmLogAndExp)
+     * ;)
+     */
+    boolean parseAsmLogOrExp() {
+//            mixin(traceEnterAndExit!(__FUNCTION__));
+        final Marker m = enter_section_modified(builder);
+        final boolean result = parseLeftAssocBinaryExpression("AsmLogOrExp", "AsmLogAndExp", tok("||"));
+        exit_section_(builder, m, ASM_LOG_OR_EXP, result);
+        return result;
+    }
+
+    /**
      * Parses an AsmMulExp
      * <p>
      * $(GRAMMAR $(RULEDEF asmMulExp):
@@ -838,7 +823,7 @@ class DLangParser {
      */
     boolean parseAsmMulExp() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        final Marker m = enter_section_(builder);
+        final Marker m = enter_section_modified(builder);
         final boolean result = parseLeftAssocBinaryExpression("AsmMulExp", "AsmBrExp", tok("*"), tok("/"), tok("%"));
         exit_section_(builder, m, ASM_MUL_EXP, result);
         return result;
@@ -854,7 +839,7 @@ class DLangParser {
      */
     boolean parseAsmOrExp() {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
-        final Marker m = enter_section_(builder);
+        final Marker m = enter_section_modified(builder);
         final boolean result = parseLeftAssocBinaryExpression("AsmOrExp", "AsmXorExp", tok("|"));
         exit_section_(builder, m, ASM_OR_EXP, result);
         return result;
@@ -879,7 +864,7 @@ class DLangParser {
     boolean parseAsmPrimaryExp() {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
 //            AsmPrimaryExp node = allocator.make!AsmPrimaryExp();
-        final Marker m = enter_section_(builder);
+        final Marker m = enter_section_modified(builder);
         Token.IdType i = current().type;
         if (i.equals(tok("doubleLiteral")) || i.equals(tok("floatLiteral")) || i.equals(tok("intLiteral")) || i.equals(tok("longLiteral")) || i.equals(tok("stringLiteral")) || i.equals(tok("$"))) {
             advance();
@@ -922,7 +907,7 @@ class DLangParser {
      */
     boolean parseAsmRelExp() {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
-        final Marker m = enter_section_(builder);
+        final Marker m = enter_section_modified(builder);
         final boolean result = parseLeftAssocBinaryExpression("AsmRelExp", "AsmShiftExp", tok("<"), tok("<="), tok(">"), tok(">="));
         exit_section_(builder, m, ASM_REL_EXP, result);
         return result;
@@ -938,7 +923,7 @@ class DLangParser {
      */
     boolean parseAsmShiftExp() {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
-        final Marker m = enter_section_(builder);
+        final Marker m = enter_section_modified(builder);
         final boolean result = parseLeftAssocBinaryExpression("AsmShiftExp", "AsmAddExp", tok("<<"), tok(">>"), tok(">>>"));
         exit_section_(builder, m, ASM_SHIFT_EXP, result);
         return result;
@@ -954,7 +939,7 @@ class DLangParser {
     boolean parseAsmStatement() {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
 //            AsmStatement node = allocator.make!AsmStatement;
-        final Marker m = enter_section_(builder);
+        final Marker m = enter_section_modified(builder);
         advance(); // asm
         while (isAttribute()) {
             if (!parseFunctionAttribute(true)) {
@@ -998,7 +983,7 @@ class DLangParser {
      */
     boolean parseAsmTypePrefix() {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
-        final Marker m = enter_section_(builder);
+        final Marker m = enter_section_modified(builder);
         Token.IdType i = current().type;
         if (i.equals(tok("identifier")) || i.equals(tok("byte")) || i.equals(tok("short")) || i.equals(tok("int")) || i.equals(tok("float")) || i.equals(tok("double")) || i.equals(tok("real"))) {
             Token t = advance();
@@ -1045,7 +1030,7 @@ class DLangParser {
     boolean parseAsmUnaExp() {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
 //            AsmUnaExp node = allocator.make!AsmUnaExp();
-        final Marker m = enter_section_(builder);
+        final Marker m = enter_section_modified(builder);
         Token.IdType i = current().type;
         if (i.equals(tok("+")) || i.equals(tok("-")) || i.equals(tok("!")) || i.equals(tok("~"))) {
             advance();
@@ -1117,7 +1102,7 @@ class DLangParser {
      */
     boolean parseAsmXorExp() {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
-        final Marker m = enter_section_(builder);
+        final Marker m = enter_section_modified(builder);
         final boolean result = parseLeftAssocBinaryExpression("AsmXorExp", "AsmAndExp", tok("^"));
         exit_section_(builder, m, ASM_XOR_EXP, result);
         return result;
@@ -1136,7 +1121,7 @@ class DLangParser {
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.AssertExpression,false);
 //            node.line = current().line;
 //            node.column = current().column;
-        final Marker m = enter_section_(builder);
+        final Marker m = enter_section_modified(builder);
         advance(); // "assert"
         if (!tokenCheck("(")) {
             return false;
@@ -1191,7 +1176,7 @@ class DLangParser {
      */
     boolean parseAssignExpression() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        final Marker m = enter_section_(builder);
+        final Marker m = enter_section_modified(builder);
         if (!moreTokens()) {
             error("Assign expression expected instead of EOF");
             return false;
@@ -1226,7 +1211,7 @@ class DLangParser {
      */
     boolean parseAssocArrayLiteral() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        final Marker m = enter_section_(builder);
+        final Marker m = enter_section_modified(builder);
         final boolean result = simpleParse("AssocArrayLiteral", tok("["), "keyValuePairs|parseKeyValuePairs", tok("]"));
         exit_section_(builder, m, ASSOC_ARRAY_LITERAL, result);
         return result;
@@ -1241,7 +1226,7 @@ class DLangParser {
      */
     private boolean simpleParse(String nodeType, Object... parts) {
         //open marker for type
-        final Marker m = enter_section_(builder);
+        final Marker m = enter_section_modified(builder);
         final boolean result = simpleParseItems(parts);
         exit_section_(builder, m, ParserPreliminaryJavaWriteUp.nodeTypeToIElementType(nodeType), result);
         return result;
@@ -1292,7 +1277,7 @@ class DLangParser {
      */
     boolean parseAtAttribute() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.AtAttribute,false);
         Token start = expect(tok("@"));
         if (start == null) {
@@ -1372,7 +1357,7 @@ class DLangParser {
      */
     boolean parseAttribute() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Attribute,false);
         Token.IdType i = current().type;
         if (i.equals(tok("pragma"))) {
@@ -1436,7 +1421,7 @@ class DLangParser {
      */
     boolean parseAttributeDeclaration()//(Attribute attribute = null)
     {
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.AttributeDeclaration,false);
 //            node.line = current().line;
         final boolean result = parseAttribute();
@@ -1454,7 +1439,7 @@ class DLangParser {
      */
     boolean parseAutoDeclaration() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.AutoDeclaration,false);
 //            node.comment = comment;
 //            comment = null;
@@ -1494,7 +1479,7 @@ class DLangParser {
     boolean parseAutoDeclarationPart() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
 //            auto part = allocator.make!AutoDeclarationPart;
-        final Marker m = enter_section_(builder);
+        final Marker m = enter_section_modified(builder);
         Token i = expect(tok("identifier"));//todo
         if (i == null) {
             cleanup(m);
@@ -1527,7 +1512,7 @@ class DLangParser {
      */
     boolean parseBlockStatement() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.BlockStatement,false);
         Token openBrace = expect(tok("{"));
         if (!nullCheck("openBrace")) {
@@ -1561,7 +1546,7 @@ class DLangParser {
      */
     boolean parseBodyStatement() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        final Marker m = enter_section_(builder);
+        final Marker m = enter_section_modified(builder);
         final boolean result = simpleParse("BodyStatement", tok("body"), "blockStatement|parseBlockStatement");
         exit_section_(builder, m, BODY_STATEMENT, result);
         return result;
@@ -1576,7 +1561,7 @@ class DLangParser {
      */
     boolean parseBreakStatement() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
         expect(tok("break"));
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.BreakStatement,false);
         Token.IdType i = current().type;
@@ -1622,7 +1607,7 @@ class DLangParser {
      */
     boolean parseBaseClass() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.BaseClass,false);
         if (isProtection(current().type)) {
             warn("Use of base class protection == deprecated.");
@@ -1645,7 +1630,7 @@ class DLangParser {
      */
     boolean parseBaseClassList() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
         final boolean result = parseCommaSeparatedRule("BaseClassList", "BaseClass");
         exit_section_(builder, m, BASE_CLASS_LIST, result);
         return result;
@@ -1693,7 +1678,7 @@ class DLangParser {
      */
     boolean parseCaseRangeStatement() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.CaseRangeStatement,false);
 //            assert (low != null);
 //            node.low = low;
@@ -1730,7 +1715,7 @@ class DLangParser {
      */
     boolean parseCaseStatement() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.CaseStatement,false);
 //            node.argumentList = argumentList;
         Token colon = expect(tok(":"));
@@ -1756,7 +1741,7 @@ class DLangParser {
      */
     boolean parseCastExpression() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.CastExpression,false);
         expect(tok("cast"));
         if (!tokenCheck("(")) {
@@ -1804,7 +1789,7 @@ class DLangParser {
      */
     boolean parseCastQualifier() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.CastQualifier,false);
         Token.IdType i = current().type;
         if (i.equals(tok("inout")) || i.equals(tok("const"))) {
@@ -1834,7 +1819,7 @@ class DLangParser {
      */
     boolean parseCatch() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Catch,false);
         expect(tok("catch"));
         if (!tokenCheck("(")) {
@@ -1870,7 +1855,7 @@ class DLangParser {
      */
     boolean parseCatches() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Catches,false);
         while (moreTokens()) {
             if (!currentIs(tok("catch")))
@@ -1905,7 +1890,7 @@ class DLangParser {
      */
     boolean parseClassDeclaration() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ClassDeclaration,false);
         expect(tok("class"));
         final boolean result = parseInterfaceOrClass();
@@ -1926,7 +1911,7 @@ class DLangParser {
      */
     boolean parseCmpExpression() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        final Marker m = enter_section_(builder);
+        final Marker m = enter_section_modified(builder);
         boolean shift = parseShiftExpression();
         if (!shift) {
             cleanup(m);
@@ -1983,6 +1968,12 @@ class DLangParser {
         }
     }
 
+    private Marker enter_section_modified(PsiBuilder builder) {
+        final Marker marker = enter_section_(builder);
+        beginnings.put(marker, index);
+        return marker;
+    }
+
     /**
      * Parses a CompileCondition
      * <p>
@@ -1994,7 +1985,7 @@ class DLangParser {
      */
     boolean parseCompileCondition() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.CompileCondition,false);
         Token.IdType i = current().type;
         if (i.equals(tok("version"))) {
@@ -2040,7 +2031,7 @@ class DLangParser {
      */
     boolean parseConditionalDeclaration(boolean strict) {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ConditionalDeclaration,false);
         if (!parseNodeQ("node.compileCondition", "CompileCondition")) {
             cleanup(m);
@@ -2110,7 +2101,7 @@ class DLangParser {
      */
     boolean parseConditionalStatement() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ConditionalStatement,false);
         if (!parseNodeQ("node.compileCondition", "CompileCondition")) {
             cleanup(m);
@@ -2140,7 +2131,7 @@ class DLangParser {
      */
     boolean parseConstraint() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Constraint,false);
         Token ifToken = expect(tok("if"));
         if (ifToken == null) {
@@ -2175,7 +2166,7 @@ class DLangParser {
 //            Constructor node = allocator.make!Constructor;
 //            node.comment = comment;
 //            comment = null;
-        final Marker m = enter_section_(builder);
+        final Marker m = enter_section_modified(builder);
         Token t = expect(tok("this"));
         if (t == null) {
             cleanup(m);
@@ -2228,7 +2219,7 @@ class DLangParser {
      */
     boolean parseContinueStatement() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ContinueStatement,false);
         if (!tokenCheck("continue")) {
             cleanup(m);
@@ -2260,7 +2251,7 @@ class DLangParser {
      */
     boolean parseDebugCondition() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.DebugCondition,false);
         Token d = expect(tok("debug"));
         if (d == null) {
@@ -2295,7 +2286,7 @@ class DLangParser {
      */
     boolean parseDebugSpecification() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.DebugSpecification,false);
         if (!tokenCheck("debug")) {
             cleanup(m);
@@ -2370,7 +2361,7 @@ class DLangParser {
 
     boolean parseDeclaration(boolean strict, boolean mustBeDeclaration) {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        final Marker m = enter_section_(builder);
+        final Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Declaration,false);
         if (!moreTokens()) {
             error("declaration expected instead of EOF");
@@ -2477,7 +2468,7 @@ class DLangParser {
                     Bookmark b = setBookmark();
                     Token past = peekPastParens();
                     goToBookmark(b);
-                    if (past != null && past.type == tok(";"))
+                    if (past != null && past.type.equals(tok(";")))
                         return false;
                 }
                 if (startsWith(tok("this"), tok("("), tok("this"), tok(")"))) {
@@ -2728,7 +2719,7 @@ class DLangParser {
     boolean parseDeclarationsAndStatements() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         final boolean includeCases = true;
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.DeclarationsAndStatements,false);
 //        StackBuffer declarationsAndStatements;
         while (!currentIsOneOf(tok("}"), tok("else")) && moreTokens() && suppressedErrorCount <= MAX_ERRORS) {
@@ -2771,7 +2762,7 @@ class DLangParser {
      */
     boolean parseDeclarationOrStatement() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.DeclarationOrStatement,false);
         // "Any ambiguities in the grammar between Statements and
         // Declarations are resolved by the declarations taking precedence."
@@ -2808,7 +2799,7 @@ class DLangParser {
      */
     boolean parseDeclarator() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Declarator,false);
         Token id = expect(tok("identifier"));
         if (id == null) {
@@ -2857,7 +2848,7 @@ class DLangParser {
      */
     boolean parseDefaultStatement() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.DefaultStatement,false);
         if (!tokenCheck("default")) {
             cleanup(m);
@@ -2885,7 +2876,7 @@ class DLangParser {
      */
     boolean parseDeleteExpression() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.DeleteExpression,false);
 //            node.line = current().line;
 //            node.column = current().column;
@@ -2910,7 +2901,7 @@ class DLangParser {
      */
     boolean parseDeprecated() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Deprecated,false);
         if (!tokenCheck("deprecated")) {
             cleanup(m);
@@ -2940,7 +2931,7 @@ class DLangParser {
      */
     boolean parseDestructor() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Destructor,false);
 //            node.comment = comment;
 //            comment = null;
@@ -2995,7 +2986,7 @@ class DLangParser {
      */
     boolean parseDoStatement() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.DoStatement,false);
         if (!tokenCheck("do")) {
             cleanup(m);
@@ -3039,7 +3030,7 @@ class DLangParser {
     boolean parseEnumBody() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
 //            EnumBody node = allocator.make!EnumBody;
-        final Marker m = enter_section_(builder);
+        final Marker m = enter_section_modified(builder);
         Token open = expect(tok("{"));
         if (open == null) {
             cleanup(m);
@@ -3096,12 +3087,12 @@ class DLangParser {
      */
     boolean parseAnonymousEnumMember(boolean typeAllowed) {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.AnonymousEnumMember,false);
 
         if (currentIs(tok("identifier")) && peekIsOneOf(tok(","), tok("="), tok("}"))) {
 //                node.comment = current().comment;
-            if (!tokenCheck("node.name", "identifier")) {
+            if (!tokenCheck("identifier")) {
                 cleanup(m);
                 return false;
             }
@@ -3118,7 +3109,7 @@ class DLangParser {
                 cleanup(m);
                 return false;
             }
-            if (tokenCheck("node.name", "identifier")) {
+            if (tokenCheck("identifier")) {
                 cleanup(m);
                 return false;
             }
@@ -3146,7 +3137,7 @@ class DLangParser {
      */
     boolean parseAnonymousEnumDeclaration() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.AnonymousEnumDeclaration,false);
         if (!tokenCheck("enum")) {
             cleanup(m);
@@ -3202,13 +3193,13 @@ class DLangParser {
      */
     boolean parseEnumDeclaration() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.EnumDeclaration,false);
         if (!tokenCheck("enum")) {
             cleanup(m);
             return false;
         }
-        if (!tokenCheck("node.name", "identifier")) {
+        if (!tokenCheck("identifier")) {
             cleanup(m);
             return false;
         }
@@ -3243,10 +3234,10 @@ class DLangParser {
      */
     boolean parseEnumMember() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.EnumMember,false);
 //            node.comment = current().comment;
-        if (!tokenCheck("node.name", "identifier")) {
+        if (!tokenCheck("identifier")) {
             cleanup(m);
             return false;
         }
@@ -3270,7 +3261,7 @@ class DLangParser {
      */
     boolean parseEponymousTemplateDeclaration() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.EponymousTemplateDeclaration,false);
         advance(); // enum
         Token ident = expect(tok("identifier"));
@@ -3307,7 +3298,7 @@ class DLangParser {
      */
     boolean parseEqualExpression(boolean parseShift) {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.EqualExpression,false);
         if (parseShift) {
             boolean shift = parseShiftExpression();
@@ -3336,7 +3327,7 @@ class DLangParser {
      */
     boolean parseExpression() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        final Marker m = enter_section_(builder);
+        final Marker m = enter_section_modified(builder);
         if (suppressedErrorCount > MAX_ERRORS)
             return false;
         if (!moreTokens()) {
@@ -3358,7 +3349,7 @@ class DLangParser {
      */
     boolean parseExpressionStatement(boolean parseExpression) {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ExpressionStatement,false);
         if (parseExpression) {
             final boolean b = parseExpression();
@@ -3384,7 +3375,7 @@ class DLangParser {
      */
     boolean parseFinalSwitchStatement() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        final Marker m = enter_section_(builder);
+        final Marker m = enter_section_modified(builder);
         final boolean result = simpleParse("FinalSwitchStatement", tok("final"), "switchStatement|parseSwitchStatement");
         exit_section_(builder, m, FINAL_SWITCH_STATEMENT, result);
         return result;
@@ -3399,7 +3390,7 @@ class DLangParser {
      */
     boolean parseFinally() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Finally,false);
         if (!tokenCheck("finally")) {
             cleanup(m);
@@ -3422,7 +3413,7 @@ class DLangParser {
      */
     boolean parseForStatement() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ForStatement,false);
         if (!tokenCheck("for")) {
             cleanup(m);
@@ -3487,7 +3478,7 @@ class DLangParser {
     boolean parseForeachStatement() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
 //            ForeachStatement node = allocator.make!ForeachStatement;
-        final Marker m = enter_section_(builder);
+        final Marker m = enter_section_modified(builder);
         if (currentIsOneOf(tok("foreach"), tok("foreach_reverse"))) {
             advance();
         } else {
@@ -3551,7 +3542,7 @@ class DLangParser {
      */
     boolean parseForeachType() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ForeachType,false);
         if (currentIs(tok("ref"))) {
             advance();
@@ -3594,7 +3585,7 @@ class DLangParser {
      */
     boolean parseForeachTypeList() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        final Marker marker = enter_section_(builder);
+        final Marker marker = enter_section_modified(builder);
         final boolean b = parseCommaSeparatedRule("ForeachTypeList", "ForeachType");
         exit_section_(builder, marker, FOREACH_TYPE_LIST, b);
         return b;
@@ -3610,7 +3601,7 @@ class DLangParser {
      * ;)
      */
     boolean parseFunctionAttribute(boolean validate) {
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.FunctionAttribute,false);
         Token.IdType i = current().type;
         if (i.equals(tok("@"))) {
@@ -3641,7 +3632,7 @@ class DLangParser {
      */
     boolean parseFunctionBody() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.FunctionBody,false);
         if (currentIs(tok(";"))) {
             advance();
@@ -3708,7 +3699,7 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
 
 
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.FunctionCallExpression,false);
         Token.IdType i = current().type;
         if (i.equals(tok("const")) || i.equals(tok("immutable")) || i.equals(tok("inout")) || i.equals(tok("shared")) || i.equals(tok("scope")) || i.equals(tok("const")) || i.equals(tok("const"))) {
@@ -3756,7 +3747,7 @@ class DLangParser {
     boolean parseFunctionDeclaration(boolean parseType, boolean isAuto)//(Type type = null,Attribute[] attributes = null)
     {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.FunctionDeclaration,false);
 //            node.comment = comment;
 //            comment = null;
@@ -3796,7 +3787,7 @@ class DLangParser {
 //                node.returnType = type;
         }
 
-        if (!tokenCheck("node.name", "identifier")) {
+        if (!tokenCheck("identifier")) {
             cleanup(m);
             return false;
         }
@@ -3862,7 +3853,7 @@ class DLangParser {
      */
     boolean parseFunctionLiteralExpression() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.FunctionLiteralExpression,false);
 //            node.line = current().line;
 //            node.column = current().column;
@@ -3921,7 +3912,7 @@ class DLangParser {
      */
     boolean parseGotoStatement() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.GotoStatement,false);
         if (!tokenCheck("goto")) {
             cleanup(m);
@@ -3957,7 +3948,7 @@ class DLangParser {
      * ;)
      */
     boolean parseIdentifierChain() {
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.IdentifierChain,false);
         while (moreTokens()) {
             Token ident = expect(tok("identifier"));
@@ -3983,7 +3974,7 @@ class DLangParser {
      * ;)
      */
     boolean parseIdentifierList() {
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.IdentifierList,false);
         while (moreTokens()) {
             Token ident = expect(tok("identifier"));
@@ -4009,7 +4000,7 @@ class DLangParser {
      * ;)
      */
     boolean parseIdentifierOrTemplateChain() {
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.IdentifierOrTemplateChain,false);
         int identifiersOrTemplateInstancesLength = 0;
         while (moreTokens()) {
@@ -4042,7 +4033,7 @@ class DLangParser {
      */
     boolean parseIdentifierOrTemplateInstance() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.IdentifierOrTemplateInstance,false);
         if (peekIs(tok("!")) && !startsWith(tok("identifier"), tok("!"), tok("is")) && !startsWith(tok("identifier"), tok("!"), tok("in"))) {
             if (!parseNodeQ("node.templateInstance", "TemplateInstance")) {
@@ -4075,7 +4066,7 @@ class DLangParser {
     boolean parseIdentityExpression(boolean parseShift)//(ExpressionNode shift = null)
     {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.IdentityExpression,false);
         if (parseShift) {
             if (!parseShiftExpression()) {
@@ -4112,7 +4103,7 @@ class DLangParser {
      */
     boolean parseIfStatement() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.IfStatement,false);
 //            node.line = current().line;
 //            node.column = current().column;
@@ -4209,7 +4200,7 @@ class DLangParser {
      * ;)
      */
     boolean parseImportBind() {
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ImportBind,false);
         Token ident = expect(tok("identifier"));
         if (ident == null) {
@@ -4236,7 +4227,7 @@ class DLangParser {
      * ;)
      */
     boolean parseImportBindings(boolean parseSingleImport) {
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ImportBindings,false);
         if (parseSingleImport) {
             if (!parseSingleImport()) {
@@ -4273,7 +4264,7 @@ class DLangParser {
      * ;)
      */
     boolean parseImportDeclaration() {
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ImportDeclaration,false);
 //            node.startIndex = current().index;
         if (!tokenCheck("import")) {
@@ -4323,7 +4314,7 @@ class DLangParser {
      */
     boolean parseImportExpression() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        final Marker marker = enter_section_(builder);
+        final Marker marker = enter_section_modified(builder);
         final boolean b = simpleParse("ImportExpression", tok("import"), tok("("),
             "assignExpression|parseAssignExpression", tok(")"));
         exit_section_(builder, marker, IMPORT_EXPRESSION, b);
@@ -4340,7 +4331,7 @@ class DLangParser {
      */
     boolean parseIndex() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Index(),false);
         if (!parseNodeQ("node.low", "AssignExpression")) {
             cleanup(m);
@@ -4373,7 +4364,7 @@ class DLangParser {
     boolean parseIndexExpression(boolean parseUnary)//(UnaryExpression unaryExpression = null)
     {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.IndexExpression,false);
         if (parseUnary) {
             if (!parseUnaryExpression()) {
@@ -4420,7 +4411,7 @@ class DLangParser {
      */
     boolean parseInExpression(boolean parseShift)//(ExpressionNode shift = null)
     {
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.InExpression,false);
         if (parseShift) {
             if (!parseShiftExpression()) {
@@ -4452,7 +4443,7 @@ class DLangParser {
      * ;)
      */
     boolean parseInStatement() {
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.InStatement,false);
         Token i = expect(tok("in"));
         if (i == null) {
@@ -4477,7 +4468,7 @@ class DLangParser {
      * ;)
      */
     boolean parseInitializer() {
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Initializer,false);
         if (currentIs(tok("void")) && peekIsOneOf(tok(","), tok(";")))
             advance();
@@ -4500,7 +4491,7 @@ class DLangParser {
      * ;)
      */
     boolean parseInterfaceDeclaration() {
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.InterfaceDeclaration,false);
         expect(tok("interface"));
         final boolean b = parseInterfaceOrClass();
@@ -4516,7 +4507,7 @@ class DLangParser {
      * ;)
      */
     boolean parseInvariant() {
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Invariant,false);
 //            node.index = current().index;
 //            node.line = current().line;
@@ -4552,7 +4543,7 @@ class DLangParser {
      */
     boolean parseIsExpression() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.IsExpression,false);
         if (!tokenCheck("is")) {
             cleanup(m);
@@ -4599,7 +4590,7 @@ class DLangParser {
      */
     boolean parseKeyValuePair() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.KeyValuePair,false);
         if (!parseNodeQ("node.key", "AssignExpression")) {
             cleanup(m);
@@ -4626,7 +4617,7 @@ class DLangParser {
      */
     boolean parseKeyValuePairs() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.KeyValuePairs,false);
         while (moreTokens()) {
             if (!parseKeyValuePair()) {
@@ -4653,7 +4644,7 @@ class DLangParser {
      */
     boolean parseLabeledStatement() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.LabeledStatement,false);
         Token ident = expect(tok("identifier"));
         if (ident == null) {
@@ -4679,7 +4670,7 @@ class DLangParser {
      */
     boolean parseLastCatch() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.LastCatch,false);
         Token t = expect(tok("catch"));
         if (t == null) {
@@ -4707,7 +4698,7 @@ class DLangParser {
      */
     boolean parseLinkageAttribute() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.LinkageAttribute,false);
         if (!tokenCheck("extern")) {
             cleanup(m);
@@ -4762,7 +4753,7 @@ class DLangParser {
      */
     boolean parseMemberFunctionAttribute() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.MemberFunctionAttribute,false);
         Token.IdType i = current().type;
         if (i.equals(tok("@"))) {
@@ -4789,7 +4780,7 @@ class DLangParser {
      */
     boolean parseMixinDeclaration() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.MixinDeclaration,false);
         if (peekIsOneOf(tok("identifier"), tok("typeof"), tok("."))) {
             if (!parseNodeQ("node.templateMixinExpression", "TemplateMixinExpression")) {
@@ -4820,7 +4811,7 @@ class DLangParser {
      */
     boolean parseMixinExpression() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.MixinExpression,false);
         expect(tok("mixin"));
         expect(tok("("));
@@ -4842,7 +4833,7 @@ class DLangParser {
      */
     boolean parseMixinTemplateDeclaration() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.MixinTemplateDeclaration,false);
         if (!tokenCheck("mixin")) {
             cleanup(m);
@@ -4866,7 +4857,7 @@ class DLangParser {
      */
     boolean parseMixinTemplateName() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.MixinTemplateName,false);
         if (currentIs(tok("typeof"))) {
             if (!parseNodeQ("node.typeofExpression", "TypeofExpression")) {
@@ -4933,7 +4924,7 @@ class DLangParser {
      * ;)
      */
     boolean parseModuleDeclaration() {
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ModuleDeclaration,false);
         if (currentIs(tok("deprecated")))
             if (!parseNodeQ("node.deprecated_", "Deprecated")) {
@@ -4971,7 +4962,7 @@ class DLangParser {
      */
     boolean parseMulExpression() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        final Marker marker = enter_section_(builder);
+        final Marker marker = enter_section_modified(builder);
         final boolean b = parseLeftAssocBinaryExpression("MulExpression", "PowExpression",
             tok("*"), tok("/"), tok("%"));
         exit_section_(builder, marker, MUL_EXPRESSION_, b);
@@ -4987,7 +4978,7 @@ class DLangParser {
      */
     boolean parseNewAnonClassExpression() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.NewAnonClassExpression,false);
         expect(tok("new"));
         if (currentIs(tok("(")))
@@ -5029,7 +5020,7 @@ class DLangParser {
         // auto a = new int[10];
         //              ^^^****
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.NewExpression,false);
         if (peekIsOneOf(tok("class"), tok("("))) {
             if (!parseNodeQ("node.newAnonClassExpression", "NewAnonClassExpression")) {
@@ -5070,7 +5061,7 @@ class DLangParser {
      */
     boolean parseNonVoidInitializer() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.NonVoidInitializer,false);
         boolean assignExpressionParsed = false;
         boolean arrayInitializerParsed = false;
@@ -5143,7 +5134,7 @@ class DLangParser {
     boolean parseOperands() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
 //            Operands node = allocator.make!Operands;
-        final Marker marker = enter_section_(builder);
+        final Marker marker = enter_section_modified(builder);
 //            StackBuffer expressions;
         while (true) {
             if (!(parseAsmExp())) {
@@ -5170,7 +5161,7 @@ class DLangParser {
      */
     boolean parseOrExpression() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        final Marker marker = enter_section_(builder);
+        final Marker marker = enter_section_modified(builder);
         final boolean b = parseLeftAssocBinaryExpression("OrExpression", "XorExpression",
             tok("|"));
         exit_section_(builder, marker, AND_EXPRESSION_, b);//todo type
@@ -5187,7 +5178,7 @@ class DLangParser {
      */
     boolean parseOrOrExpression() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        final Marker marker = enter_section_(builder);
+        final Marker marker = enter_section_modified(builder);
         final boolean b = parseLeftAssocBinaryExpression("OrOrExpression", "AndAndExpression",
             tok("||"));
         exit_section_(builder, marker, OR_OR_EXPRESSION, b);
@@ -5202,7 +5193,7 @@ class DLangParser {
      * ;)
      */
     boolean parseOutStatement() {
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.OutStatement,false);
         Token o = expect(tok("out"));
         if (o == null) {
@@ -5239,7 +5230,7 @@ class DLangParser {
      */
     boolean parseParameter() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Parameter,false);
         while (moreTokens()) {
             Token.IdType type = parseParameterAttribute();//todo check args
@@ -5326,7 +5317,7 @@ class DLangParser {
      */
     boolean parseParameters() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Parameters,false);
         if (!tokenCheck("(")) {
             cleanup(m);
@@ -5384,7 +5375,7 @@ class DLangParser {
      */
     boolean parsePostblit() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Postblit,false);
 //            node.line = current().line;
 //            node.column = current().column;
@@ -5421,7 +5412,7 @@ class DLangParser {
      */
     boolean parsePowExpression() {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
-        final Marker marker = enter_section_(builder);
+        final Marker marker = enter_section_modified(builder);
         final boolean b = parseLeftAssocBinaryExpression("PowExpression", "UnaryExpression",
             tok("^^"));
         exit_section_(builder, marker, POW_EXPRESSION_, b);
@@ -5437,7 +5428,7 @@ class DLangParser {
      */
     boolean parsePragmaDeclaration() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        final Marker marker = enter_section_(builder);
+        final Marker marker = enter_section_modified(builder);
         final boolean res = simpleParse("PragmaDeclaration", "pragmaExpression|parsePragmaExpression", tok(";"));
         exit_section_(builder, marker, PRAGMA_STATEMENT, true);//todo type
         return res;
@@ -5452,7 +5443,7 @@ class DLangParser {
      */
     boolean parsePragmaExpression() {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.PragmaExpression,false);
         expect(tok("pragma"));
         expect(tok("("));
@@ -5518,7 +5509,7 @@ class DLangParser {
      */
     boolean parsePrimaryExpression() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.PrimaryExpression,false);
         if (!moreTokens()) {
             error("Expected primary statement instead of EOF");
@@ -5666,7 +5657,7 @@ class DLangParser {
      */
     boolean parseRegister() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Register,false);
         Token ident = expect(tok("identifier"));
         if (ident == null) {
@@ -5717,7 +5708,7 @@ class DLangParser {
     boolean parseRelExpression(boolean parseShift)//(ExpressionNode shift)
     {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
-        final Marker marker = enter_section_(builder);
+        final Marker marker = enter_section_modified(builder);
         final boolean b = parseLeftAssocBinaryExpression("RelExpression", "ShiftExpression", parseShift, tok("<"), tok("<="), tok(">"), tok(">="), tok("!<>="), tok("!<>"), tok("<>"), tok("<>="), tok("!>"), tok("!>="), tok("!>="), tok("!<"), tok("!<="));
         exit_section_(builder, marker, REL_EXPRESSION, b);
         return b;
@@ -5732,7 +5723,7 @@ class DLangParser {
      */
     boolean parseReturnStatement() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ReturnStatement,false);
         Token start = expect(tok("return"));
         if (start == null) {
@@ -5764,7 +5755,7 @@ class DLangParser {
      */
     boolean parseScopeGuardStatement() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ScopeGuardStatement,false);
         expect(tok("scope"));
         expect(tok("("));
@@ -5792,7 +5783,7 @@ class DLangParser {
      */
     boolean parseSharedStaticConstructor() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.SharedStaticConstructor,false);
 //            node.location = current().index;
         if (!tokenCheck("shared")) {
@@ -5817,7 +5808,7 @@ class DLangParser {
      */
     boolean parseSharedStaticDestructor() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.SharedStaticDestructor,false);
 //            node.location = current().index;
         if (!tokenCheck("shared")) {
@@ -5847,7 +5838,7 @@ class DLangParser {
      */
     boolean parseShiftExpression() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        final Marker marker = enter_section_(builder);
+        final Marker marker = enter_section_modified(builder);
         final boolean b = parseLeftAssocBinaryExpression("ShiftExpression", "AddExpression", tok("<<"), tok(">>"), tok(">>>"));
         exit_section_(builder, marker, SHIFT_EXPRESSION_, b);
         return b;
@@ -5862,7 +5853,7 @@ class DLangParser {
      */
     boolean parseSingleImport() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.SingleImport,false);
         if (startsWith(tok("identifier"), tok("="))) {
             advance(); // identifier
@@ -5888,7 +5879,7 @@ class DLangParser {
      */
     boolean parseStatement() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Statement,false);
         if (!moreTokens()) {
             error("Expected statement instead of EOF");
@@ -5954,7 +5945,7 @@ class DLangParser {
      */
     boolean parseStatementNoCaseNoDefault() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.StatementNoCaseNoDefault,false);
 //        current();
         Token.IdType i = current().type;
@@ -6126,7 +6117,7 @@ class DLangParser {
      */
     boolean parseStaticAssertDeclaration() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        final Marker marker = enter_section_(builder);
+        final Marker marker = enter_section_modified(builder);
         final boolean b = simpleParse("StaticAssertDeclaration",
             "staticAssertStatement|parseStaticAssertStatement");
         exit_section_(builder, marker, STATIC_ASSERT, b);
@@ -6142,7 +6133,7 @@ class DLangParser {
      */
     boolean parseStaticAssertStatement() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        final Marker marker = enter_section_(builder);
+        final Marker marker = enter_section_modified(builder);
         final boolean b = simpleParse("StaticAssertStatement",
             tok("static"), "assertExpression|parseAssertExpression", tok(";"));
         exit_section_(builder, marker, STATIC_ASSERT, b);
@@ -6158,7 +6149,7 @@ class DLangParser {
      */
     boolean parseStaticConstructor() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.StaticConstructor,false);
 //            node.location = current().index;
         if (!tokenCheck("static")) {
@@ -6179,7 +6170,7 @@ class DLangParser {
      */
     boolean parseStaticDestructor() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.StaticDestructor,false);
 //            node.location = current().index;
         if (!tokenCheck("static")) {
@@ -6204,7 +6195,7 @@ class DLangParser {
      */
     boolean parseStaticIfCondition() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        final Marker marker = enter_section_(builder);
+        final Marker marker = enter_section_modified(builder);
         final boolean b = simpleParse("StaticIfCondition", tok("static"), tok("if"), tok("("),
             "assignExpression|parseAssignExpression", tok(")"));
         exit_section_(builder, marker, STATIC_IF_CONDITION, b);
@@ -6236,7 +6227,7 @@ class DLangParser {
      * ;)
      */
     boolean parseStorageClass() {
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.StorageClass,false);
         Token.IdType i = current().type;
         if (i.equals(tok("@"))) {
@@ -6284,7 +6275,7 @@ class DLangParser {
      */
     boolean parseStructBody() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.StructBody,false);
         Token start = expect(tok("{"));
 //            if (start != null) node.startLocation = start.index;
@@ -6310,7 +6301,7 @@ class DLangParser {
      */
     boolean parseStructDeclaration() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.StructDeclaration,false);
         Token t = expect(tok("struct"));
         if (currentIs(tok("identifier")))
@@ -6361,7 +6352,7 @@ class DLangParser {
      */
     boolean parseStructInitializer() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.StructInitializer,false);
         Token a = expect(tok("{"));
 //            node.startLocation = a.index;
@@ -6393,7 +6384,7 @@ class DLangParser {
      */
     boolean parseStructMemberInitializer() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.StructMemberInitializer,false);
         if (startsWith(tok("identifier"), tok(":"))) {
             /*node.identifier = *//*tokens[*/
@@ -6419,7 +6410,7 @@ class DLangParser {
      */
     boolean parseStructMemberInitializers() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.StructMemberInitializers,false);
         do {
 //                auto c = allocator.setCheckpoint();
@@ -6444,7 +6435,7 @@ class DLangParser {
      */
     boolean parseSwitchStatement() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.SwitchStatement,false);
         expect(tok("switch"));
         expect(tok("("));
@@ -6470,7 +6461,7 @@ class DLangParser {
      */
     boolean parseSymbol() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Symbol,false);
         if (currentIs(tok("."))) {
 //                node.dot = true;
@@ -6493,7 +6484,7 @@ class DLangParser {
      */
     boolean parseSynchronizedStatement() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.SynchronizedStatement,false);
         expect(tok("synchronized"));
         if (currentIs(tok("("))) {
@@ -6521,7 +6512,7 @@ class DLangParser {
      */
     boolean parseTemplateAliasParameter() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateAliasParameter,false);
         expect(tok("alias"));
         if (currentIs(tok("identifier")) && !peekIs(tok("."))) {
@@ -6590,7 +6581,7 @@ class DLangParser {
     boolean parseTemplateArgument() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         if (suppressedErrorCount > MAX_ERRORS) return false;
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateArgument,false);
         Bookmark b = setBookmark();
         boolean t = parseType();
@@ -6617,7 +6608,7 @@ class DLangParser {
      */
     boolean parseTemplateArgumentList() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        final Marker marker = enter_section_(builder);
+        final Marker marker = enter_section_modified(builder);
         final boolean b = parseCommaSeparatedRule("TemplateArgumentList", "TemplateArgument");
         exit_section_(builder, marker, TEMPLATE_ARGUMENT_LIST, b);
         return b;
@@ -6633,7 +6624,7 @@ class DLangParser {
     boolean parseTemplateArguments() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         if (suppressedErrorCount > MAX_ERRORS) return false;
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateArguments,false);
         expect(tok("!"));
         if (currentIs(tok("("))) {
@@ -6664,7 +6655,7 @@ class DLangParser {
      */
     boolean parseTemplateDeclaration() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateDeclaration,false);
 //            node.comment = comment;
 //            comment = null;
@@ -6713,7 +6704,7 @@ class DLangParser {
     boolean parseTemplateInstance() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         if (suppressedErrorCount > MAX_ERRORS) return false;
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateInstance,false);
         Token ident = expect(tok("identifier"));
         if (ident == null) {
@@ -6738,7 +6729,7 @@ class DLangParser {
      */
     boolean parseTemplateMixinExpression() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateMixinExpression,false);
         if (!tokenCheck("mixin")) {
             cleanup(m);
@@ -6772,7 +6763,7 @@ class DLangParser {
      */
     boolean parseTemplateParameter() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateParameter,false);
         Token.IdType i = current().type;
         if (i.equals(tok("alias"))) {
@@ -6819,7 +6810,7 @@ class DLangParser {
      */
     boolean parseTemplateParameterList() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        final Marker marker = enter_section_(builder);
+        final Marker marker = enter_section_modified(builder);
         final boolean b = parseCommaSeparatedRule("TemplateParameterList", "TemplateParameter");
         exit_section_(builder, marker, TEMPLATE_PARAMETER_LIST, b);
         return b;
@@ -6834,7 +6825,7 @@ class DLangParser {
      */
     boolean parseTemplateParameters() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateParameters,false);
         if (!tokenCheck("(")) {
             cleanup(m);
@@ -6881,7 +6872,7 @@ class DLangParser {
      */
     boolean parseTemplateSingleArgument() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateSingleArgument,false);
         if (!moreTokens()) {
             error("template argument expected instead of EOF");
@@ -6909,7 +6900,7 @@ class DLangParser {
      */
     boolean parseTemplateThisParameter() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateThisParameter,false);
         expect(tok("this"));
         if (!parseNodeQ("node.templateTypeParameter", "TemplateTypeParameter")) {
@@ -6929,7 +6920,7 @@ class DLangParser {
      */
     boolean parseTemplateTupleParameter() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateTupleParameter,false);
         Token i = expect(tok("identifier"));
         if (i == null) {
@@ -6954,7 +6945,7 @@ class DLangParser {
      */
     boolean parseTemplateTypeParameter() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateTypeParameter,false);
         Token ident = expect(tok("identifier"));
         if (ident == null) {
@@ -6989,13 +6980,13 @@ class DLangParser {
      */
     boolean parseTemplateValueParameter() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateValueParameter,false);
         if (!parseNodeQ("node.type", "Type")) {
             cleanup(m);
             return false;
         }
-        if (!tokenCheck("node.identifier", "identifier")) {
+        if (!tokenCheck("identifier")) {
             cleanup(m);
             return false;
         }
@@ -7024,7 +7015,7 @@ class DLangParser {
      */
     boolean parseTemplateValueParameterDefault() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateValueParameterDefault,false);
         expect(tok("="));
         Token.IdType i = current().type;
@@ -7059,7 +7050,7 @@ class DLangParser {
         if (currentIs(tok("?"))) {
 //                TernaryExpression node = allocator.make!TernaryExpression;
 //                node.orOrExpression = orOrExpression;
-            final Marker m = enter_section_(builder);
+            final Marker m = enter_section_modified(builder);
             advance();
             if (!parseNodeQ("node.expression", "Expression")) {
                 cleanup(m);
@@ -7091,7 +7082,7 @@ class DLangParser {
      */
     boolean parseThrowStatement() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ThrowStatement,false);
         expect(tok("throw"));
         if (!parseNodeQ("node.expression", "Expression")) {
@@ -7112,7 +7103,7 @@ class DLangParser {
      */
     boolean parseTraitsExpression() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TraitsExpression,false);
         if (!tokenCheck("__traits")) {
             cleanup(m);
@@ -7152,7 +7143,7 @@ class DLangParser {
      */
     boolean parseTryStatement() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TryStatement,false);
         expect(tok("try"));
         if (!parseNodeQ("node.declarationOrStatement", "DeclarationOrStatement")) {
@@ -7182,7 +7173,7 @@ class DLangParser {
      */
     boolean parseType() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Type,false);
         if (!moreTokens()) {
             error("type expected");
@@ -7241,7 +7232,7 @@ class DLangParser {
      */
     boolean parseType2() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Type2,false);
         if (!moreTokens()) {
             error("type2 expected instead of EOF");
@@ -7378,7 +7369,7 @@ class DLangParser {
      */
     boolean parseTypeSpecialization() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TypeSpecialization,false);
         Token.IdType i = current().type;
         if (i.equals(tok("struct")) || i.equals(tok("union")) || i.equals(tok("class")) || i.equals(tok("interface")) || i.equals(tok("enum")) || i.equals(tok("function")) || i.equals(tok("delegate")) || i.equals(tok("super")) || i.equals(tok("return")) || i.equals(tok("typedef")) || i.equals(tok("__parameters")) || i.equals(tok("const")) || i.equals(tok("immutable")) || i.equals(tok("inout")) || i.equals(tok("shared"))) {
@@ -7414,7 +7405,7 @@ class DLangParser {
      */
     boolean parseTypeSuffix() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TypeSuffix,false);
         Token.IdType i = current().type;
         if (i.equals(tok("*"))) {
@@ -7489,7 +7480,7 @@ class DLangParser {
      */
     boolean parseTypeidExpression() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TypeidExpression,false);
         expect(tok("typeid"));
         expect(tok("("));
@@ -7523,7 +7514,7 @@ class DLangParser {
      */
     boolean parseTypeofExpression() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TypeofExpression,false);
         expect(tok("typeof"));
         expect(tok("("));
@@ -7583,7 +7574,7 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         if (!moreTokens())
             return false;
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.UnaryExpression,false);
         boolean fallThrough = false;
         Token.IdType i = current().type;
@@ -7690,29 +7681,23 @@ class DLangParser {
                     boolean jump = (currentIs(tok("(")) && p != null && p.type.equals(tok("("))) || peekIs(tok("("));
                     goToBookmark(b);
                     if (jump) {
-                        final Marker newUnary = enter_section_(builder);
                         if (!parseFunctionCallExpression()) {
-                            cleanup(m, newUnary);
+                            cleanup(m);
                             return false;
                         }
-                        exit_section_(builder, newUnary, DLanguageTypes.UNARY_EXPRESSION, true);
                     } else
                         break loop;
                 } else
                     break loop;
-                final Marker newUnary = enter_section_(builder);
                 if (!parseFunctionCallExpression()) {
-                    cleanup(m, newUnary);
+                    cleanup(m);
                     return false;
                 }
-                exit_section_(builder, newUnary, DLanguageTypes.UNARY_EXPRESSION, true);
             } else if (i1.equals(tok("("))) {
-                final Marker newUnary = enter_section_(builder);
                 if (!parseFunctionCallExpression()) {
-                    cleanup(m, newUnary);
+                    cleanup(m);
                     return false;
                 }
-                exit_section_(builder, newUnary, DLanguageTypes.UNARY_EXPRESSION, true);
             } else if (i1.equals(tok("++")) || i1.equals(tok("--"))) {
                 advance();
             } else if (i1.equals(tok("["))) {
@@ -7745,7 +7730,7 @@ class DLangParser {
      */
     boolean parseUnionDeclaration() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.UnionDeclaration,false);
 //            node.comment = comment;
 //            comment = null;
@@ -7797,7 +7782,7 @@ class DLangParser {
      */
     boolean parseUnittest() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        final Marker marker = enter_section_(builder);
+        final Marker marker = enter_section_modified(builder);
         final boolean b = simpleParse("Unittest", tok("unittest"), "blockStatement|parseBlockStatement");
         exit_section_(builder, marker, UNIT_TESTING, b);
         return b;
@@ -7819,7 +7804,7 @@ class DLangParser {
     boolean parseVariableDeclaration(boolean parseType, boolean isAuto)//(Type type = null )
     {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.VariableDeclaration,false);
 
         if (isAuto) {
@@ -7893,7 +7878,7 @@ class DLangParser {
      */
     boolean parseVector() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        final Marker marker = enter_section_(builder);
+        final Marker marker = enter_section_modified(builder);
         final boolean b = simpleParse("Vector", tok("__vector"), tok("("), "type|parseType", tok(")"));
         exit_section_(builder, marker, TYPE_VECTOR, b);
         return b;
@@ -7928,7 +7913,7 @@ class DLangParser {
      */
     boolean parseVersionCondition() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.VersionCondition,false);
         Token v = expect(tok("version"));
         if (v == null) {
@@ -7960,7 +7945,7 @@ class DLangParser {
      */
     boolean parseVersionSpecification() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.VersionSpecification,false);
         if (!tokenCheck("version")) {
             cleanup(m);
@@ -7990,7 +7975,7 @@ class DLangParser {
      */
     boolean parseWhileStatement() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_(builder);
+        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.WhileStatement,false);
         if (!tokenCheck("while")) {
             cleanup(m);
@@ -8030,7 +8015,7 @@ class DLangParser {
      */
     boolean parseWithStatement() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        final Marker marker = enter_section_(builder);
+        final Marker marker = enter_section_modified(builder);
         final boolean b = simpleParse("WithStatement", tok("with"), tok("("), "expression|parseExpression", tok(")"), "statementNoCaseNoDefault|parseStatementNoCaseNoDefault");
         exit_section_(builder, marker, WITH_STATEMENT, b);
         return b;
@@ -8046,7 +8031,7 @@ class DLangParser {
      */
     boolean parseXorExpression() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        final Marker marker = enter_section_(builder);
+        final Marker marker = enter_section_modified(builder);
         final boolean b = parseLeftAssocBinaryExpression("XorExpression", "AndExpression",
             tok("^"));
         exit_section_(builder, marker, XOR_EXPRESSION_, b);
@@ -8065,7 +8050,7 @@ class DLangParser {
     }
 
     boolean isCastQualifier() {
-        final Marker m = enter_section_(builder);
+        final Marker m = enter_section_modified(builder);
         Token.IdType i = current().type;
         if (i.equals(tok("const"))) {
             if (peekIs(tok(")")))
@@ -8635,7 +8620,7 @@ class DLangParser {
         if (index + types.length >= tokens.length)
             return false;
         for (int i = 0; (i < types.length) && ((index + i) < tokens.length); ++i) {
-            if (tokens[index + i].type != types[i])
+            if (!tokens[index + i].type.equals(types[i]))
                 return false;
         }
         return true;
@@ -8644,7 +8629,7 @@ class DLangParser {
     Bookmark setBookmark() {
 ////        mixin(traceEnterAndExit!(__FUNCTION__));
         ++suppressMessages;
-        final Marker m = enter_section_(builder);
+        final Marker m = enter_section_modified(builder);
         return new Bookmark(index, m);
     }
 
@@ -8683,19 +8668,6 @@ class DLangParser {
 
     boolean tokenCheck(String Tok) {
         return expect(tok(Tok)) != null;
-    }
-
-    boolean tokenCheck(String Exp, String Tok) {
-        final Token t = expect(tok(Tok));
-        if (t == null) {
-            return false;
-        } else {
-            //do nothing. Side-effects not relevant for purely parsing
-        }
-//            enum tokenCheck = "{auto t = expect(tok("const" ~ Tok ~ "const"));"
-//            ~ "if (t == null) { return null;}"
-//            ~ "else {" ~ Exp ~ " = *t; }}";
-        return true;
     }
 
     boolean parseStaticCtorDtorCommon() {
