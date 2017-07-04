@@ -40,6 +40,44 @@ class DLangParser {
         "YMM3", "YMM4", "YMM5", "YMM6", "YMM7", "YMM8", "YMM9"
     };
     static HashMap<String, Token.IdType> tokenTypeIndex = new HashMap<>();
+
+    static {
+        tokenTypeIndex.put("scriptLine", new Token.IdType(DLanguageTypes.SHEBANG));
+        tokenTypeIndex.put("identifier", new Token.IdType(DLanguageTypes.ID));
+        tokenTypeIndex.put("__DATE__", new Token.IdType(DLanguageTypes.KW___DATE__));//todo
+        tokenTypeIndex.put("__EOF__", new Token.IdType(DLanguageTypes.KW___EOF__));
+        tokenTypeIndex.put("__FILE__", new Token.IdType(DLanguageTypes.KW___FILE__));
+        tokenTypeIndex.put("__FILE_FULL_PATH__", new Token.IdType(DLanguageTypes.KW___FILE_FULL_PATH__));
+        tokenTypeIndex.put("__FUNCTION__", new Token.IdType(DLanguageTypes.KW___FUNCTION__));
+        tokenTypeIndex.put("__gshared", new Token.IdType(DLanguageTypes.KW___GSHARED));
+        tokenTypeIndex.put("__LINE__", new Token.IdType(DLanguageTypes.KW___LINE__));
+        tokenTypeIndex.put("__MODULE__", new Token.IdType(DLanguageTypes.KW___MODULE__));
+        tokenTypeIndex.put("__parameters", new Token.IdType(DLanguageTypes.KW___PARAMETERS));
+        tokenTypeIndex.put("__PRETTY_FUNCTION__", new Token.IdType(DLanguageTypes.KW___PRETTY_FUNCTION__));
+        tokenTypeIndex.put("__TIME__", new Token.IdType(DLanguageTypes.KW___TIME__));
+        tokenTypeIndex.put("__TIMESTAMP__", new Token.IdType(DLanguageTypes.KW___TIMESTAMP__));
+        tokenTypeIndex.put("__traits", new Token.IdType(DLanguageTypes.KW___TRAITS));
+        tokenTypeIndex.put("__vector", new Token.IdType(DLanguageTypes.KW___VECTOR));
+        tokenTypeIndex.put("__VENDOR__", new Token.IdType(DLanguageTypes.KW___VENDOR__));
+        tokenTypeIndex.put("__VERSION__", new Token.IdType(DLanguageTypes.KW___VERSION__));
+        tokenTypeIndex.put("", new Token.IdType(DLanguageTypes.SPECIAL_EMPTY_TOKEN));
+        tokenTypeIndex.put("floatLiteral", new Token.IdType(DLanguageTypes.FLOAT_LITERAL));
+        tokenTypeIndex.put("doubleLiteral", new Token.IdType(DLanguageTypes.FLOAT_LITERAL));//todo
+        tokenTypeIndex.put("idoubleLiteral", new Token.IdType(DLanguageTypes.FLOAT_LITERAL));//todo
+        tokenTypeIndex.put("ifloatLiteral", new Token.IdType(DLanguageTypes.FLOAT_LITERAL));//todo
+        tokenTypeIndex.put("realLiteral", new Token.IdType(DLanguageTypes.FLOAT_LITERAL));//todo
+        tokenTypeIndex.put("irealLiteral", new Token.IdType(DLanguageTypes.FLOAT_LITERAL));//todo
+        tokenTypeIndex.put("intLiteral", new Token.IdType(DLanguageTypes.INTEGER_LITERAL));
+        tokenTypeIndex.put("uintLiteral", new Token.IdType(DLanguageTypes.INTEGER_LITERAL));
+        tokenTypeIndex.put("longLiteral", new Token.IdType(DLanguageTypes.INTEGER_LITERAL));
+        tokenTypeIndex.put("ulongLiteral", new Token.IdType(DLanguageTypes.INTEGER_LITERAL));
+        tokenTypeIndex.put("characterLiteral", new Token.IdType(DLanguageTypes.CHARACTER_LITERAL));
+        tokenTypeIndex.put("stringLiteral", new Token.IdType(DLanguageTypes.STRING_LITERAL));
+        tokenTypeIndex.put("dstringLiteral", new Token.IdType(DLanguageTypes.STRING_LITERAL));//todo create an actual lexer entry for this
+        tokenTypeIndex.put("wstringLiteral", new Token.IdType(DLanguageTypes.STRING_LITERAL));//todo create an actual lexer entry for this
+        tokenTypeIndex.put("typedef", new Token.IdType(DLanguageTypes.ID));//todo create an actual lexer entry for this
+    }
+
     public Token.IdType[] Protections = {tok("export"), tok("package"),
         tok("private"), tok("public"), tok("protected")};
     @NotNull
@@ -71,7 +109,6 @@ class DLangParser {
     Map<Integer, Boolean> cachedAAChecks = new HashMap<>();
     int suppressMessages;
     int index;
-
     public DLangParser(PsiBuilder builder) {
         this.errorCount = 0;
         this.warningCount = 0;
@@ -94,15 +131,6 @@ class DLangParser {
             }
             return false;
         });
-        if (tok.equals("identifier")) {
-            return new Token.IdType(DLanguageTypes.ID);
-        }
-        if (tok.equals("")) {
-            return new Token.IdType(DLanguageTypes.SPECIAL_EMPTY_TOKEN);
-        }
-        if (tok.equals("dstringLiteral")) {
-//            return new Token.IdType(DLanguageTypes.STR);
-        }
         if (matchingTypes.length != 1) {
             throw new IllegalArgumentException("string:" + tok);
         }
@@ -355,8 +383,7 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_(builder);
         final boolean result = parseLeftAssocBinaryExpression("AndAndExpression", "OrExpression", tok("&&"));
-        exit_section_(builder, m,
-            AND_EXXPRESSION_, result);//todo new types needed.
+        exit_section_(builder, m, AND_EXPRESSION_, result);//todo new types needed.
         return result;
     }
 
@@ -372,7 +399,7 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_(builder);
         final boolean result = parseLeftAssocBinaryExpression("AndExpression", "CmpExpression", tok("&"));
-        exit_section_(builder, m, AND_EXXPRESSION_, result);
+        exit_section_(builder, m, AND_EXPRESSION_, result);
         return result;
     }
 
@@ -839,7 +866,7 @@ class DLangParser {
 //            AsmPrimaryExp node = allocator.make!AsmPrimaryExp();
         final Marker m = enter_section_(builder);
         Token.IdType i = current().type;
-        if (i.equals(tok("doubleLiteral")) || i.equals(tok("floatLiteral")) || i.equals(tok("intLiteral")) || i.equals(tok("longLiteral")) || i.equals(tok("StringLiteral")) || i.equals(tok("$"))) {
+        if (i.equals(tok("doubleLiteral")) || i.equals(tok("floatLiteral")) || i.equals(tok("intLiteral")) || i.equals(tok("longLiteral")) || i.equals(tok("stringLiteral")) || i.equals(tok("$"))) {
             advance();
         } else if (i.equals(tok("identifier"))) {
             if ((Sets.newHashSet(Arrays.asList(REGISTER_NAMES))).contains(current().text)) {
@@ -1229,7 +1256,7 @@ class DLangParser {
         final int i = item.indexOf("|");
         final String first = item.substring(0, i);//unneeded, libdparse uses for building it's ast, but we don't need to
         final String second = item.substring(i + 1);
-        final String name = second.replace("parse", "const");
+        final String name = second.replace("parse", "");
         return parseName(name);
 
     }
@@ -1489,7 +1516,7 @@ class DLangParser {
         }
 //            node.startLocation = openBrace.index;
         if (!currentIs(tok("}"))) {
-            if (parseNodeQ("node.declarationsAndStatements", "DeclarationsAndStatements")) {
+            if (!parseNodeQ("node.declarationsAndStatements", "DeclarationsAndStatements")) {
                 cleanup(m);
                 return false;
             }
@@ -2652,14 +2679,15 @@ class DLangParser {
         boolean t = parseType();
         if ((!t) || !currentIs(tok("identifier")))
             return false;
-        if (peekIs(tok("(")))
+        if (peekIs(tok("("))) {
             if (!parseFunctionDeclaration(!t, false)) {
                 cleanup(m);
                 return false;
-            } else if (!parseVariableDeclaration(t, false)) {
-                cleanup(m);
-                return false;
             }
+        } else if (!parseVariableDeclaration(t, false)) {
+            cleanup(m);
+            return false;
+        }
         return true;
     }
 
@@ -3592,44 +3620,45 @@ class DLangParser {
             advance();
             exit_section_(builder, m, FUNCTION_BODY, true);
             return true;
-        } else if (currentIs(tok("{")))
+        } else if (currentIs(tok("{"))) {
             if (!parseNodeQ("node.blockStatement", "BlockStatement")) {
                 cleanup(m);
                 return false;
-            } else if (currentIsOneOf(tok("in"), tok("out"), tok("body"))) {
-                if (currentIs(tok("in"))) {
-                    if (!parseNodeQ("node.inStatement", "InStatement")) {
-                        cleanup(m);
-                        return false;
-                    }
-                    if (currentIs(tok("out")))
-                        if (!parseNodeQ("node.outStatement", "OutStatement")) {
-                            cleanup(m);
-                            return false;
-                        }
-                } else if (currentIs(tok("out"))) {
+            }
+        } else if (currentIsOneOf(tok("in"), tok("out"), tok("body"))) {
+            if (currentIs(tok("in"))) {
+                if (!parseNodeQ("node.inStatement", "InStatement")) {
+                    cleanup(m);
+                    return false;
+                }
+                if (currentIs(tok("out")))
                     if (!parseNodeQ("node.outStatement", "OutStatement")) {
                         cleanup(m);
                         return false;
                     }
-                    if (currentIs(tok("in")))
-                        if (!parseNodeQ("node.inStatement", "InStatement")) {
-                            cleanup(m);
-                            return false;
-                        }
+            } else if (currentIs(tok("out"))) {
+                if (!parseNodeQ("node.outStatement", "OutStatement")) {
+                    cleanup(m);
+                    return false;
                 }
-                // Allow function bodies without body statements because this is
-                // valid inside of interfaces.
-                if (currentIs(tok("body")))
-                    if (!parseNodeQ("node.bodyStatement", "BodyStatement")) {
+                if (currentIs(tok("in")))
+                    if (!parseNodeQ("node.inStatement", "InStatement")) {
                         cleanup(m);
                         return false;
                     }
-            } else {
-                error("'in', 'out', 'body', or block statement expected");
-                exit_section_(builder, m, FUNCTION_BODY, true);
-                return false;
             }
+            // Allow function bodies without body statements because this is
+            // valid inside of interfaces.
+            if (currentIs(tok("body")))
+                if (!parseNodeQ("node.bodyStatement", "BodyStatement")) {
+                    cleanup(m);
+                    return false;
+                }
+        } else {
+            error("'in', 'out', 'body', or block statement expected");
+            exit_section_(builder, m, FUNCTION_BODY, true);
+            return false;
+        }
         exit_section_(builder, m, FUNCTION_BODY, true);
         return true;
     }
@@ -4832,9 +4861,9 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
 //            Module m = allocator.make!Module;
 //        final Marker marker = enter_section_(builder);
-//        if (currentIs(tok("scriptLine"))) {//todo what is scriptLine
-//            advance();
-//        }
+        if (currentIs(tok("scriptLine"))) {
+            advance();
+        }
         boolean isDeprecatedModule = false;
         if (currentIs(tok("deprecated"))) {
             Bookmark b = setBookmark();
@@ -5106,7 +5135,7 @@ class DLangParser {
         final Marker marker = enter_section_(builder);
         final boolean b = parseLeftAssocBinaryExpression("OrExpression", "XorExpression",
             tok("|"));
-        exit_section_(builder, marker, AND_EXXPRESSION_, b);//todo type
+        exit_section_(builder, marker, AND_EXPRESSION_, b);//todo type
         return b;
     }
 
@@ -5566,11 +5595,11 @@ class DLangParser {
                 return false;
             }
         } else if (i.equals(tok("this")) || i.equals(tok("super")) || i.equals(tok("dstringLiteral")) || i.equals(tok("stringLiteral")) || i.equals(tok("wstringLiteral")) || i.equals(tok("characterLiteral")) || i.equals(tok("true")) || i.equals(tok("false")) || i.equals(tok("null")) || i.equals(tok("$")) || i.equals(tok("doubleLiteral")) || i.equals(tok("floatLiteral")) || i.equals(tok("idoubleLiteral")) || i.equals(tok("ifloatLiteral")) || i.equals(tok("intLiteral")) || i.equals(tok("longLiteral")) || i.equals(tok("realLiteral")) || i.equals(tok("irealLiteral")) || i.equals(tok("uintLiteral")) || i.equals(tok("ulongLiteral")) || i.equals(tok("__DATE__")) || i.equals(tok("__TIME__")) || i.equals(tok("__TIMESTAMP__")) || i.equals(tok("__VENDOR__")) || i.equals(tok("__VERSION__")) || i.equals(tok("__FILE__")) || i.equals(tok("__FILE_FULL_PATH__")) || i.equals(tok("__LINE__")) || i.equals(tok("__MODULE__")) || i.equals(tok("__FUNCTION__")) || i.equals(tok("__PRETTY_FUNCTION__"))) {
-            if (currentIsOneOf(tok("StringLiteral"), tok("wStringLiteral"), tok("dStringLiteral"))) {
+            if (currentIsOneOf(tok("stringLiteral"), tok("wstringLiteral"), tok("dstringLiteral"))) {
                 advance();
                 boolean alreadyWarned = false;
-                while (currentIsOneOf(tok("StringLiteral"), tok("wStringLiteral"),
-                    tok("dStringLiteral"))) {
+                while (currentIsOneOf(tok("stringLiteral"), tok("wstringLiteral"),
+                    tok("dstringLiteral"))) {
                     if (!alreadyWarned) {
                         warn("Implicit concatenation of String literals");
                         alreadyWarned = true;
@@ -5888,7 +5917,7 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.StatementNoCaseNoDefault,false);
-        current();
+//        current();
         Token.IdType i = current().type;
         if (i.equals(tok("{"))) {
             if (!parseNodeQ("node.blockStatement", "BlockStatement")) {
@@ -7248,12 +7277,12 @@ class DLangParser {
             if (validate) {
                 error("\"\", \"immutable\", \"inout\", or \"shared\" expected");
             }
-            return tok("const");
+            return tok("");
         } else {
             if (validate) {
                 error("\"\", \"immutable\", \"inout\", or \"shared\" expected");
             }
-            return tok("const");
+            return tok("");
         }
     }
 
@@ -7269,7 +7298,7 @@ class DLangParser {
         List<Token.IdType> r = new LinkedList<>();
         while (moreTokens()) {
             Token.IdType type = parseTypeConstructor(false);
-            if (type.equals(tok("const")))
+            if (type.equals(tok("")))
                 break;
             else
                 r.add(type);
@@ -7342,7 +7371,8 @@ class DLangParser {
         Token.IdType i = current().type;
         if (i.equals(tok("*"))) {
             advance();
-            exit_section_(builder, m, TYPE_CTOR, true);//todo typereturn true;
+            exit_section_(builder, m, TYPE_CTOR, true);//todo type
+            return true;
         } else if (i.equals(tok("["))) {
             advance();
             if (currentIs(tok("]"))) {
@@ -7400,7 +7430,6 @@ class DLangParser {
             exit_section_(builder, m, TYPE_CTOR, true);//TODO TYPE
             return false;
         }
-        throw new IllegalStateException("this should never happen");
     }
 
     /**
@@ -8261,7 +8290,7 @@ class DLangParser {
     boolean parseCommaSeparatedRule(String listType, String itemType)//(alias ListType, alias ItemType,)
     {
 //            final boolean setLineAndColumn = false;
-        Marker m = enter_section_(builder);
+//        Marker m = enter_section_(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ListType,false);
 //            if (setLineAndColumn)
 //            {
@@ -9108,6 +9137,8 @@ class DLangParser {
                 return parseAliasInitializer();
             case "ExpressionStatement":
                 return parseExpressionStatement();
+            case "TypeConstructors":
+                return parseTypeConstructors() != null;
             default:
                 throw new IllegalArgumentException("unrecognized thing to parse:" + NodeName);
         }

@@ -198,6 +198,8 @@ HEX_EXPONENT = [pP][\+\-]? [0-9]+
 	[^/*\n]+	{return DLanguageTypes.BLOCK_COMMENT;}
 }
 
+//todo add typedef
+
 <YYINITIAL> "module"                   { return KW_MODULE; }
 <YYINITIAL> "import"                   { return KW_IMPORT; }
 <YYINITIAL> "static"                   { return KW_STATIC; }
@@ -273,6 +275,22 @@ HEX_EXPONENT = [pP][\+\-]? [0-9]+
 <YYINITIAL> "class"                    { return KW_CLASS; }
 <YYINITIAL> "interface"                { return KW_INTERFACE; }
 <YYINITIAL> "__parameters"             { return KW___PARAMETERS; }
+<YYINITIAL> "__DATE__"                 { return KW___DATE__; }
+<YYINITIAL> "__EOF__"                  { return KW___EOF__; }
+<YYINITIAL> "__FILE__"                 { return KW___FILE__; }
+<YYINITIAL> "__FILE_FULL_PATH__"       { return KW___FILE_FULL_PATH__; }
+<YYINITIAL> "__FUNCTION__"             { return KW___FUNCTION__; }
+<YYINITIAL> "__gshared"                { return KW___GSHARED; }
+<YYINITIAL> "__LINE__"                 { return KW___LINE__; }
+<YYINITIAL> "__MODULE__"               { return KW___MODULE__; }
+<YYINITIAL> "__parameters"             { return KW___PARAMETERS; }
+<YYINITIAL> "__PRETTY_FUNCTION__"      { return KW___PRETTY_FUNCTION__; }
+<YYINITIAL> "__TIME__"                 { return KW___TIME__; }
+<YYINITIAL> "__TIMESTAMP__"            { return KW___TIMESTAMP__; }
+<YYINITIAL> "__traits"                 { return KW___TRAITS; }
+<YYINITIAL> "__vector"                 { return KW___VECTOR; }
+<YYINITIAL> "__VENDOR__"               { return KW___VENDOR__; }
+<YYINITIAL> "__VERSION__"              { return KW___VERSION__; }
 <YYINITIAL> "in"                       { return KW_IN; }
 //<YYINITIAL> "!in"                      { return KW_NOT_IN; } // was causing issues with templates + int
 <YYINITIAL> "asm"                      { return KW_ASM; }

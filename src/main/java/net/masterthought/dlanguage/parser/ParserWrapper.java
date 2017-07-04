@@ -53,7 +53,7 @@ public class ParserWrapper implements LightPsiParser, PsiParser {
 //            r = AltDeclaratorX(b, 0);
         } else if (t == ALT_FUNC_DECLARATOR_SUFFIX) {
 //            r = AltFuncDeclaratorSuffix(b, 0);
-        } else if (t == AND_EXXPRESSION_) {
+        } else if (t == AND_EXPRESSION_) {
 //            r = AndExxpression_(b, 0);
         } else if (t == ANONYMOUS_ENUM_DECLARATION) {
 //            r = AnonymousEnumDeclaration(b, 0);

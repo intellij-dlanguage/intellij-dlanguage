@@ -1,10 +1,9 @@
 // This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.PsiElement;
 import com.intellij.lang.ASTNode;
-import net.masterthought.dlanguage.psi.impl.DElementTypeFactory;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.tree.IElementType;
 import net.masterthought.dlanguage.psi.impl.*;
 
 public interface DLanguageTypes {
@@ -38,7 +37,7 @@ public interface DLanguageTypes {
   IElementType ALT_DECLARATOR_SUFFIXES = new DLanguageElementType("ALT_DECLARATOR_SUFFIXES");
   IElementType ALT_DECLARATOR_X = new DLanguageElementType("ALT_DECLARATOR_X");
   IElementType ALT_FUNC_DECLARATOR_SUFFIX = new DLanguageElementType("ALT_FUNC_DECLARATOR_SUFFIX");
-  IElementType AND_EXXPRESSION_ = new DLanguageElementType("AND_EXXPRESSION_");
+    IElementType AND_EXPRESSION_ = new DLanguageElementType("AND_EXPRESSION_");
   IElementType ANONYMOUS_ENUM_DECLARATION = new DLanguageElementType("ANONYMOUS_ENUM_DECLARATION");
   IElementType ARGUMENT_LIST = new DLanguageElementType("ARGUMENT_LIST");
   IElementType ARRAY_INITIALIZER = new DLanguageElementType("ARRAY_INITIALIZER");
@@ -403,15 +402,6 @@ public interface DLanguageTypes {
   IElementType KW_WCHAR = new DLanguageTokenType("wchar");
   IElementType KW_WHILE = new DLanguageTokenType("while");
   IElementType KW_WITH = new DLanguageTokenType("with");
-  IElementType KW___FILE__ = new DLanguageTokenType("__FILE__");
-  IElementType KW___FUNCTION__ = new DLanguageTokenType("__FUNCTION__");
-  IElementType KW___GSHARED = new DLanguageTokenType("__gshared");
-  IElementType KW___LINE__ = new DLanguageTokenType("__LINE__");
-  IElementType KW___MODULE__ = new DLanguageTokenType("__MODULE__");
-  IElementType KW___PARAMETERS = new DLanguageTokenType("__parameters");
-  IElementType KW___PRETTY_FUNCTION__ = new DLanguageTokenType("__PRETTY_FUNCTION__");
-  IElementType KW___TRAITS = new DLanguageTokenType("__traits");
-  IElementType KW___VECTOR = new DLanguageTokenType("__vector");
   IElementType LINE_COMMENT = new DLanguageTokenType("LINE_COMMENT");
   IElementType NESTING_BLOCK_COMMENT = new DLanguageTokenType("NESTING_BLOCK_COMMENT");
   IElementType OP_AND = new DLanguageTokenType("&");
@@ -479,6 +469,22 @@ public interface DLanguageTypes {
   IElementType SHEBANG = new DLanguageTokenType("shebang");
   IElementType TOKEN_STRING = new DLanguageTokenType("TOKEN_STRING");
   IElementType WYSIWYG_STRING = new DLanguageTokenType("WYSIWYG_STRING");
+    IElementType KW___DATE__ = new DLanguageTokenType("__DATE__");
+    IElementType KW___EOF__ = new DLanguageTokenType("__EOF__");
+    IElementType KW___FILE__ = new DLanguageTokenType("__FILE__");
+    IElementType KW___FILE_FULL_PATH__ = new DLanguageTokenType("__FILE_FULL_PATH__");
+    IElementType KW___FUNCTION__ = new DLanguageTokenType("__FUNCTION__");
+    IElementType KW___GSHARED = new DLanguageTokenType("__gshared");
+    IElementType KW___LINE__ = new DLanguageTokenType("__LINE__");
+    IElementType KW___MODULE__ = new DLanguageTokenType("__MODULE__");
+    IElementType KW___PARAMETERS = new DLanguageTokenType("__parameters");
+    IElementType KW___PRETTY_FUNCTION__ = new DLanguageTokenType("__PRETTY_FUNCTION__");
+    IElementType KW___TIME__ = new DLanguageTokenType("__TIME__");
+    IElementType KW___TIMESTAMP__ = new DLanguageTokenType("__TIMESTAMP__");
+    IElementType KW___TRAITS = new DLanguageTokenType("__traits");
+    IElementType KW___VECTOR = new DLanguageTokenType("__vector");
+    IElementType KW___VENDOR__ = new DLanguageTokenType("__VENDOR__");
+    IElementType KW___VERSION__ = new DLanguageTokenType("__VERSION__");
 
   IElementType SPECIAL_EMPTY_TOKEN = new DLanguageTokenType("SPECIAL_EMPTY_TOKEN");
 
@@ -535,8 +541,7 @@ public interface DLanguageTypes {
       }
       else if (type == ALT_FUNC_DECLARATOR_SUFFIX) {
         return new DLanguageAltFuncDeclaratorSuffixImpl(node);
-      }
-      else if (type == AND_EXXPRESSION_) {
+      } else if (type == AND_EXPRESSION_) {
         return new DLanguageAndExxpression_Impl(node);
       }
       else if (type == ANONYMOUS_ENUM_DECLARATION) {
