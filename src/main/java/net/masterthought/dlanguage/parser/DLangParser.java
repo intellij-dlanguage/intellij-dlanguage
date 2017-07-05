@@ -220,16 +220,16 @@ class DLangParser {
                     return false;
                 }
             }
-            if (!parseNodeQ("node.type", "Type")) {
+            if (!parseNodeQ("Type")) {
                 cleanup(m);
                 return false;
             }
-            if (!parseNodeQ("node.identifierList", "IdentifierList")) {
+            if (!parseNodeQ("IdentifierList")) {
                 cleanup(m);
                 return false;
             }
             if (currentIs(tok("("))) {
-                if (!parseNodeQ("node.parameters", "Parameters")) {
+                if (!parseNodeQ("Parameters")) {
                     cleanup(m);
                     return false;
                 }
@@ -280,7 +280,7 @@ class DLangParser {
             return false;
         }
         if (currentIs(tok("("))) {
-            if (!parseNodeQ("node.templateParameters", "TemplateParameters")) {
+            if (!parseNodeQ("TemplateParameters")) {
                 cleanup(m);
                 return false;
             }
@@ -290,7 +290,7 @@ class DLangParser {
             return false;
         }
         if (isFunction()) {
-            if (!parseNodeQ("node.functionLiteralExpression", "FunctionLiteralExpression")) {
+            if (!parseNodeQ("FunctionLiteralExpression")) {
                 cleanup(m);
                 return false;
             }
@@ -301,7 +301,7 @@ class DLangParser {
                     return false;
                 }
             }
-            if (!parseNodeQ("node.type", "Type")) {
+            if (!parseNodeQ("Type")) {
                 cleanup(m);
                 return false;
             }
@@ -358,7 +358,7 @@ class DLangParser {
                 cleanup(m);
                 return false;
             }
-            if (!parseNodeQ("node.assignExpression", "AssignExpression")) {
+            if (!parseNodeQ("AssignExpression")) {
                 cleanup(m);
                 return false;
             }
@@ -441,7 +441,7 @@ class DLangParser {
             return false;
         }
         if (!currentIs(tok(")")))
-            if (!parseNodeQ("node.argumentList", "ArgumentList")) {/*cleanup(m)*/
+            if (!parseNodeQ("ArgumentList")) {/*cleanup(m)*/
                 return false;
             }
         if (!tokenCheck(")")) {/*cleanup(m);*/
@@ -507,7 +507,7 @@ class DLangParser {
             return false;
         }
         if (!currentIs(tok("]"))) {
-            if (!parseNodeQ("node.argumentList", "ArgumentList")) {
+            if (!parseNodeQ("ArgumentList")) {
                 cleanup(m);
                 return false;
             }
@@ -535,12 +535,12 @@ class DLangParser {
             Bookmark b = setBookmark();
             skipBrackets();
             if (currentIs(tok(":"))) {
-                if (!parseNodeQ("node.assignExpression", "AssignExpression")) {
+                if (!parseNodeQ("AssignExpression")) {
                     cleanup(m);
                     return false;
                 }
                 advance(); // :
-                if (!parseNodeQ("node.nonVoidInitializer", "NonVoidInitializer")) {
+                if (!parseNodeQ("NonVoidInitializer")) {
                     cleanup(m);
                     return false;
                 }
@@ -551,7 +551,7 @@ class DLangParser {
             }
         }
         if (current().type.equals(tok("{"))) {
-            if (!parseNodeQ("node.nonVoidInitializer", "NonVoidInitializer")) {
+            if (!parseNodeQ("NonVoidInitializer")) {
                 cleanup(m);
                 return false;
             }
@@ -565,7 +565,7 @@ class DLangParser {
             }
             if (currentIs(tok(":"))) {
                 advance();
-                if (!parseNodeQ("node.nonVoidInitializer", "NonVoidInitializer")) {
+                if (!parseNodeQ("NonVoidInitializer")) {
                     cleanup(m);
                     return false;
                 }
@@ -622,7 +622,7 @@ class DLangParser {
         final Marker m = enter_section_modified(builder);
         if (currentIs(tok("["))) {
             advance(); // [
-            if (!parseNodeQ("node.asmExp", "AsmExp")) {
+            if (!parseNodeQ("AsmExp")) {
                 cleanup(m);
                 return false;
             }
@@ -633,7 +633,7 @@ class DLangParser {
             if (currentIs(tok("["))) {
                 while (currentIs(tok("["))) {
                     advance(); // [
-                    if (!parseNodeQ("node.asmExp", "AsmExp")) {
+                    if (!parseNodeQ("AsmExp")) {
                         cleanup(m);
                         return false;
                     }
@@ -644,13 +644,13 @@ class DLangParser {
                 }
             }
         } else {
-            if (!parseNodeQ("node.asmUnaExp", "AsmUnaExp")) {
+            if (!parseNodeQ("AsmUnaExp")) {
                 cleanup(m);
                 return false;
             }
             while (currentIs(tok("["))) {
                 advance(); // [
-                if (!parseNodeQ("node.asmExp", "AsmExp")) {
+                if (!parseNodeQ("AsmExp")) {
                     cleanup(m);
                     return false;
                 }
@@ -691,13 +691,13 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
 //            AsmExp node = allocator.make!AsmExp;
         final Marker m = enter_section_modified(builder);
-        if (!parseNodeQ("node.left", "AsmLogOrExp")) {
+        if (!parseNodeQ("AsmLogOrExp")) {
             cleanup(m);
             return false;
         }
         if (currentIs(tok("?"))) {
             advance();
-            if (!parseNodeQ("node.middle", "AsmExp")) {
+            if (!parseNodeQ("AsmExp")) {
                 cleanup(m);
                 return false;
             }
@@ -705,7 +705,7 @@ class DLangParser {
                 cleanup(m);
                 return false;
             }
-            if (!parseNodeQ("node.right", "AsmExp")) {
+            if (!parseNodeQ("AsmExp")) {
                 cleanup(m);
                 return false;
             }
@@ -747,12 +747,12 @@ class DLangParser {
             final Token t = advance();
             if (t.type.equals(tok("identifier")) && currentIs(tok(":"))) {
                 advance(); // :
-                if (!parseNodeQ("node.asmInstruction", "AsmInstruction")) {
+                if (!parseNodeQ("AsmInstruction")) {
                     cleanup(m);
                     return false;
                 }
             } else if (!currentIs(tok(";")))
-                if (!parseNodeQ("node.operands", "Operands")) {
+                if (!parseNodeQ("Operands")) {
                     cleanup(m);
                     return false;
                 }
@@ -877,13 +877,13 @@ class DLangParser {
                 }
                 if (current().type.equals(tok(":"))) {
                     advance();
-                    if (!parseNodeQ("node.segmentOverrideSuffix", "AsmExp")) {
+                    if (!parseNodeQ("AsmExp")) {
                         cleanup(m);
                         return false;
                     }
                 }
             } else {
-                if (!parseNodeQ("node.identifierChain", "IdentifierChain")) {
+                if (!parseNodeQ("IdentifierChain")) {
                     cleanup(m);
                     return false;
                 }
@@ -1034,16 +1034,16 @@ class DLangParser {
         Token.IdType i = current().type;
         if (i.equals(tok("+")) || i.equals(tok("-")) || i.equals(tok("!")) || i.equals(tok("~"))) {
             advance();
-            if (!parseNodeQ("node.asmUnaExp", "AsmUnaExp")) {
+            if (!parseNodeQ("AsmUnaExp")) {
                 cleanup(m);
                 return false;
             }
         } else if (i.equals(tok("byte")) || i.equals(tok("short")) || i.equals(tok("int")) || i.equals(tok("float")) || i.equals(tok("double")) || i.equals(tok("real"))) {
-            if (!parseNodeQ("node.asmTypePrefix", "AsmTypePrefix")) {
+            if (!parseNodeQ("AsmTypePrefix")) {
                 cleanup(m);
                 return false;
             }
-            if (!parseNodeQ("node.asmExp", "AsmExp")) {
+            if (!parseNodeQ("AsmExp")) {
                 cleanup(m);
                 return false;
             }
@@ -1052,7 +1052,7 @@ class DLangParser {
                 case "offsetof":
                 case "seg": {
                     advance();
-                    if (!parseNodeQ("node.asmExp", "AsmExp")) {
+                    if (!parseNodeQ("AsmExp")) {
                         cleanup(m);
                         return false;
                     }
@@ -1063,18 +1063,18 @@ class DLangParser {
                 case "word":
                 case "dword":
                 case "qword": {
-                    if (!parseNodeQ("node.asmTypePrefix", "AsmTypePrefix")) {
+                    if (!parseNodeQ("AsmTypePrefix")) {
                         cleanup(m);
                         return false;
                     }
-                    if (!parseNodeQ("node.asmExp", "AsmExp")) {
+                    if (!parseNodeQ("AsmExp")) {
                         cleanup(m);
                         return false;
                     }
                     break;
                 }
                 default: {
-                    if (!parseNodeQ("node.asmPrimaryExp", "AsmPrimaryExp")) {
+                    if (!parseNodeQ("AsmPrimaryExp")) {
                         cleanup(m);
                         return false;
                     }
@@ -1083,7 +1083,7 @@ class DLangParser {
             }
 
         } else {
-            if (!parseNodeQ("node.asmPrimaryExp", "AsmPrimaryExp")) {
+            if (!parseNodeQ("AsmPrimaryExp")) {
                 cleanup(m);
                 return false;
             }
@@ -1124,9 +1124,10 @@ class DLangParser {
         final Marker m = enter_section_modified(builder);
         advance(); // "assert"
         if (!tokenCheck("(")) {
+            cleanup(m);
             return false;
         }
-        if (!parseNodeQ("node.assertion", "AssignExpression")) {
+        if (!parseNodeQ("AssignExpression")) {
             cleanup(m);
             return false;
         }
@@ -1136,7 +1137,7 @@ class DLangParser {
                 advance();
                 return true;
             }
-            if (!parseNodeQ("node.message", "AssignExpression")) {
+            if (!parseNodeQ("AssignExpression")) {
                 cleanup(m);
                 return false;
             }
@@ -1179,6 +1180,7 @@ class DLangParser {
         final Marker m = enter_section_modified(builder);
         if (!moreTokens()) {
             error("Assign expression expected instead of EOF");
+            exit_section_(builder, m, ASSIGN_EXPRESSION, true);//todo compare with source and make sure that return null v return node makes sense
             return false;
         }
         boolean ternary = parseTernaryExpression();
@@ -1192,8 +1194,8 @@ class DLangParser {
 //                node.line = current().line;
 //                node.column = current().column;
 //                node.ternaryExpression = ternary;
-//                node.operator = advance().type;
-            if (!parseNodeQ("node.expression", "AssignExpression")) {
+            advance();
+            if (!parseNodeQ("AssignExpression")) {
                 cleanup(m);
                 return false;
             }
@@ -1286,13 +1288,14 @@ class DLangParser {
         }
         if (!moreTokens()) {
             error("\"(\", or identifier expected");
+            exit_section_(builder, m, ATTRIBUTE, true);
             return false;
         }
 //            node.startLocation = start.index;
         Token.IdType i = current().type;
         if (i.equals(tok("identifier"))) {
             if (peekIs(tok("!"))) {
-                if (!parseNodeQ("node.templateInstance", "TemplateInstance")) {
+                if (!parseNodeQ("TemplateInstance")) {
                     cleanup(m);
                     return false;
                 }
@@ -1301,7 +1304,7 @@ class DLangParser {
             if (currentIs(tok("("))) {
                 advance(); // (
                 if (!currentIs(tok(")"))) {
-                    if (!parseNodeQ("node.argumentList", "ArgumentList")) {
+                    if (!parseNodeQ("ArgumentList")) {
                         cleanup(m);
                         return false;
                     }
@@ -1310,13 +1313,14 @@ class DLangParser {
             }
         } else if (i.equals(tok("("))) {
             advance();
-            if (!parseNodeQ("node.argumentList", "ArgumentList")) {
+            if (!parseNodeQ("ArgumentList")) {
                 cleanup(m);
                 return false;
             }
             expect(tok(")"));
         } else {
             error("\"(\", or identifier expected");
+            exit_section_(builder, m, ATTRIBUTE, true);//todo elementType
             return false;
         }
         exit_section_(builder, m, ATTRIBUTE, true);//todo elementType
@@ -1361,22 +1365,22 @@ class DLangParser {
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Attribute,false);
         Token.IdType i = current().type;
         if (i.equals(tok("pragma"))) {
-            if (!parseNodeQ("node.pragmaExpression", "PragmaExpression")) {
+            if (!parseNodeQ("PragmaExpression")) {
                 cleanup(m);
                 return false;
             }
         } else if (i.equals(tok("deprecated"))) {
-            if (!parseNodeQ("node.deprecated_", "Deprecated")) {
+            if (!parseNodeQ("Deprecated")) {
                 cleanup(m);
                 return false;
             }
         } else if (i.equals(tok("align"))) {
-            if (!parseNodeQ("node.alignAttribute", "AlignAttribute")) {
+            if (!parseNodeQ("AlignAttribute")) {
                 cleanup(m);
                 return false;
             }
         } else if (i.equals(tok("@"))) {
-            if (!parseNodeQ("node.atAttribute", "AtAttribute")) {
+            if (!parseNodeQ("AtAttribute")) {
                 cleanup(m);
                 return false;
             }
@@ -1384,7 +1388,7 @@ class DLangParser {
             advance();
             if (currentIs(tok("("))) {
                 expect(tok("("));
-                if (!parseNodeQ("node.identifierChain", "IdentifierChain")) {
+                if (!parseNodeQ("IdentifierChain")) {
                     cleanup(m);
                     return false;
                 }
@@ -1392,7 +1396,7 @@ class DLangParser {
             }
         } else if (i.equals(tok("extern"))) {
             if (peekIs(tok("("))) {
-                if (!parseNodeQ("node.linkageAttribute", "LinkageAttribute")) {
+                if (!parseNodeQ("LinkageAttribute")) {
                     cleanup(m);
                     return false;
                 }
@@ -1486,7 +1490,7 @@ class DLangParser {
             return false;
         }
         if (currentIs(tok("("))) {
-            if (!parseNodeQ("part.templateParameters", "TemplateParameters")) {
+            if (!parseNodeQ("TemplateParameters")) {
                 cleanup(m);
                 return false;
             }
@@ -1495,7 +1499,7 @@ class DLangParser {
             cleanup(m);
             return false;
         }
-        if (!parseNodeQ("part.initializer", "Initializer")) {
+        if (!parseNodeQ("Initializer")) {
             cleanup(m);
             return false;
         }
@@ -1515,13 +1519,13 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.BlockStatement,false);
         Token openBrace = expect(tok("{"));
-        if (!nullCheck("openBrace")) {
+        if (openBrace == null) {
             cleanup(m);
             return false;
         }
 //            node.startLocation = openBrace.index;
         if (!currentIs(tok("}"))) {
-            if (!parseNodeQ("node.declarationsAndStatements", "DeclarationsAndStatements")) {
+            if (!parseNodeQ("DeclarationsAndStatements")) {
                 cleanup(m);
                 return false;
             }
@@ -1575,6 +1579,7 @@ class DLangParser {
             advance();
         } else {
             error("Identifier or semicolon expected following \"break\"");
+            exit_section_(builder, m, BREAK_STATEMENT, true);
             return false;//todo cleanup?
         }
         exit_section_(builder, m, BREAK_STATEMENT, true);
@@ -1691,14 +1696,16 @@ class DLangParser {
             return false;
         }
         expect(tok("case"));
-        if (!parseNodeQ("node.high", "AssignExpression")) {
+        if (!parseNodeQ("AssignExpression")) {
             cleanup(m);
             return false;
         }
         Token colon = expect(tok(":"));
-        if (colon == null)
+        if (colon == null) {
+            cleanup(m);
             return false;
-        if (!parseNodeQ("node.declarationsAndStatements", "DeclarationsAndStatements")) {
+        }
+        if (!parseNodeQ("DeclarationsAndStatements")) {
             cleanup(m);
             return false;
         }
@@ -1724,7 +1731,7 @@ class DLangParser {
             return false;
         }
 //            node.colonLocation = colon.index;
-        if (!nullCheck("node.declarationsAndStatements = parseDeclarationsAndStatements(false)")) {
+        if (!parseDeclarationsAndStatements()) {
             cleanup(m);
             return false;
         }
@@ -1750,12 +1757,12 @@ class DLangParser {
         }
         if (!currentIs(tok(")"))) {
             if (isCastQualifier()) {
-                if (!parseNodeQ("node.castQualifier", "CastQualifier")) {
+                if (!parseNodeQ("CastQualifier")) {
                     cleanup(m);
                     return false;
                 }
             } else {
-                if (!parseNodeQ("node.type", "Type")) {
+                if (!parseNodeQ("Type")) {
                     cleanup(m);
                     return false;
                 }
@@ -1765,7 +1772,7 @@ class DLangParser {
             cleanup(m);
             return false;
         }
-        if (!parseNodeQ("node.unaryExpression", "UnaryExpression")) {
+        if (!parseNodeQ("UnaryExpression")) {
             cleanup(m);
             return false;
         }
@@ -1789,7 +1796,7 @@ class DLangParser {
      */
     boolean parseCastQualifier() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        Marker m = enter_section_modified(builder);
+//        Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.CastQualifier,false);
         Token.IdType i = current().type;
         if (i.equals(tok("inout")) || i.equals(tok("const"))) {
@@ -1826,7 +1833,7 @@ class DLangParser {
             cleanup(m);
             return false;
         }
-        if (!parseNodeQ("node.type", "Type")) {
+        if (!parseNodeQ("Type")) {
             cleanup(m);
             return false;
         }
@@ -1837,7 +1844,7 @@ class DLangParser {
             cleanup(m);
             return false;
         }
-        if (!parseNodeQ("node.declarationOrStatement", "DeclarationOrStatement")) {
+        if (!parseNodeQ("DeclarationOrStatement")) {
             cleanup(m);
             return false;
         }
@@ -1866,7 +1873,7 @@ class DLangParser {
                     return false;
                 }
             } else {
-                if (!parseNodeQ("node.lastCatch", "LastCatch")) {
+                if (!parseNodeQ("LastCatch")) {
                     cleanup(m);
                     return false;
                 }
@@ -1989,22 +1996,23 @@ class DLangParser {
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.CompileCondition,false);
         Token.IdType i = current().type;
         if (i.equals(tok("version"))) {
-            if (!parseNodeQ("node.versionCondition", "VersionCondition")) {
+            if (!parseNodeQ("VersionCondition")) {
                 cleanup(m);
                 return false;
             }
         } else if (i.equals(tok("debug"))) {
-            if (!parseNodeQ("node.debugCondition", "DebugCondition")) {
+            if (!parseNodeQ("DebugCondition")) {
                 cleanup(m);
                 return false;
             }
         } else if (i.equals(tok("static"))) {
-            if (!parseNodeQ("node.staticIfCondition", "StaticIfCondition")) {
+            if (!parseNodeQ("StaticIfCondition")) {
                 cleanup(m);
                 return false;
             }
         } else {
             error("\"version\", \"debug\", or \"static\" expected");
+            exit_section_(builder, m, CONDITIONAL_DECLARATION, true);//todo types
             return false;
         }
         exit_section_(builder, m, CONDITIONAL_DECLARATION, true);//todo types
@@ -2033,7 +2041,7 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ConditionalDeclaration,false);
-        if (!parseNodeQ("node.compileCondition", "CompileCondition")) {
+        if (!parseNodeQ("CompileCondition")) {
             cleanup(m);
             return false;
         }
@@ -2059,6 +2067,7 @@ class DLangParser {
                     return false;
                 }
         } else if (!parseDeclaration(strict, true)) {
+            cleanup(m);
             return false;
         }
 
@@ -2080,6 +2089,7 @@ class DLangParser {
                 }
             if (brace)
                 if (!tokenCheck("}")) {
+                    cleanup(m);
                     return false;
                 }
         } else {
@@ -2103,17 +2113,17 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ConditionalStatement,false);
-        if (!parseNodeQ("node.compileCondition", "CompileCondition")) {
+        if (!parseNodeQ("CompileCondition")) {
             cleanup(m);
             return false;
         }
-        if (!parseNodeQ("node.trueStatement", "DeclarationOrStatement")) {
+        if (!parseNodeQ("DeclarationOrStatement")) {
             cleanup(m);
             return false;
         }
         if (currentIs(tok("else"))) {
             advance();
-            if (!parseNodeQ("node.falseStatement", "DeclarationOrStatement")) {
+            if (!parseNodeQ("DeclarationOrStatement")) {
                 cleanup(m);
                 return false;
             }
@@ -2142,7 +2152,7 @@ class DLangParser {
             cleanup(m);
             return false;
         }
-        if (!parseNodeQ("node.expression", "Expression")) {
+        if (!parseNodeQ("Expression")) {
             cleanup(m);
             return false;
         }
@@ -2179,12 +2189,12 @@ class DLangParser {
         boolean isTemplate = false;
         if (p != null && p.type.equals(tok("("))) {
             isTemplate = true;
-            if (!parseNodeQ("node.templateParameters", "TemplateParameters")) {
+            if (!parseNodeQ("TemplateParameters")) {
                 cleanup(m);
                 return false;
             }
         }
-        if (!parseNodeQ("node.parameters", "Parameters")) {
+        if (!parseNodeQ("Parameters")) {
             cleanup(m);
             return false;
         }
@@ -2196,13 +2206,13 @@ class DLangParser {
             }
 
         if (isTemplate && currentIs(tok("if")))
-            if (!parseNodeQ("node.raint", "Constraint")) {
+            if (!parseNodeQ("Constraint")) {
                 cleanup(m);
                 return false;
             }
         if (currentIs(tok(";")))
             advance();
-        else if (!parseNodeQ("node.functionBody", "FunctionBody")) {
+        else if (!parseNodeQ("FunctionBody")) {
             cleanup(m);
             return false;
         }
@@ -2236,6 +2246,7 @@ class DLangParser {
             advance();
         } else {
             error("Identifier or semicolon expected following \"continue\"");
+            exit_section_(builder, m, CONTINUE_STATEMENT, true);
             return false;
         }
         exit_section_(builder, m, CONTINUE_STATEMENT, true);
@@ -2266,6 +2277,7 @@ class DLangParser {
                 advance();
             } else {
                 error("Integer literal or identifier expected");
+                exit_section_(builder, m, DEBUG_CONDITION, true);
                 return false;
             }
             if (!tokenCheck(")")) {
@@ -2300,6 +2312,7 @@ class DLangParser {
             advance();
         } else {
             error("Integer literal or identifier expected");
+            exit_section_(builder, m, DEBUG_SPECIFICATION, true);
             return false;
         }
         if (!tokenCheck(";")) {
@@ -2449,16 +2462,16 @@ class DLangParser {
                 }
             } else if (idType.equals(tok("alias"))) {
                 if (startsWith(tok("alias"), tok("identifier"), tok("this"))) {
-                    if (!parseNodeQ("node.aliasThisDeclaration", "AliasThisDeclaration")) {
+                    if (!parseNodeQ("AliasThisDeclaration")) {
                         cleanup(m);
                         return false;
                     }
-                } else if (!parseNodeQ("node.aliasDeclaration", "AliasDeclaration")) {
+                } else if (!parseNodeQ("AliasDeclaration")) {
                     cleanup(m);
                     return false;
                 }
             } else if (idType.equals(tok("class"))) {
-                if (!parseNodeQ("node.classDeclaration", "ClassDeclaration")) {
+                if (!parseNodeQ("ClassDeclaration")) {
                     cleanup(m);
                     return false;
                 }
@@ -2472,16 +2485,16 @@ class DLangParser {
                         return false;
                 }
                 if (startsWith(tok("this"), tok("("), tok("this"), tok(")"))) {
-                    if (!parseNodeQ("node.postblit", "Postblit")) {
+                    if (!parseNodeQ("Postblit")) {
                         cleanup(m);
                         return false;
                     }
-                } else if (!parseNodeQ("node.constructorructor", "Constructor")) {
+                } else if (!parseNodeQ("Constructor")) {
                     cleanup(m);
                     return false;
                 }
             } else if (idType.equals(tok("~"))) {
-                if (!parseNodeQ("node.destructor", "Destructor")) {
+                if (!parseNodeQ("Destructor")) {
                     cleanup(m);
                     return false;
                 }
@@ -2490,7 +2503,7 @@ class DLangParser {
                 advance(); // enum
                 if (currentIsOneOf(tok(":"), tok("{"))) {
                     goToBookmark(b);
-                    if (!parseNodeQ("node.anonymousEnumDeclaration", "AnonymousEnumDeclaration")) {
+                    if (!parseNodeQ("AnonymousEnumDeclaration")) {
                         cleanup(m);
                         return false;
                     }
@@ -2509,14 +2522,14 @@ class DLangParser {
                             }
                         } else {
                             goToBookmark(b);
-                            if (!parseNodeQ("node.eponymousTemplateDeclaration", "EponymousTemplateDeclaration")) {
+                            if (!parseNodeQ("EponymousTemplateDeclaration")) {
                                 cleanup(m);
                                 return false;
                             }
                         }
                     } else if (currentIsOneOf(tok(":"), tok("{"), tok(";"))) {
                         goToBookmark(b);
-                        if (!parseNodeQ("node.enumDeclaration", "EnumDeclaration")) {
+                        if (!parseNodeQ("EnumDeclaration")) {
                             cleanup(m);
                             return false;
                         }
@@ -2537,18 +2550,18 @@ class DLangParser {
                     }
                 }
             } else if (idType.equals(tok("import"))) {
-                if (!parseNodeQ("node.importDeclaration", "ImportDeclaration")) {
+                if (!parseNodeQ("ImportDeclaration")) {
                     cleanup(m);
                     return false;
                 }
             } else if (idType.equals(tok("interface"))) {
-                if (!parseNodeQ("node.interfaceDeclaration", "InterfaceDeclaration")) {
+                if (!parseNodeQ("InterfaceDeclaration")) {
                     cleanup(m);
                     return false;
                 }
             } else if (idType.equals(tok("mixin"))) {
                 if (peekIs(tok("template"))) {
-                    if (!parseNodeQ("node.mixinTemplateDeclaration", "MixinTemplateDeclaration")) {
+                    if (!parseNodeQ("MixinTemplateDeclaration")) {
                         cleanup(m);
                         return false;
                     }
@@ -2559,7 +2572,7 @@ class DLangParser {
                         Token t = peekPastParens();
                         if (t != null && t.type.equals(tok(";"))) {
                             goToBookmark(b);
-                            if (!parseNodeQ("node.mixinDeclaration", "MixinDeclaration")) {
+                            if (!parseNodeQ("MixinDeclaration")) {
                                 cleanup(m);
                                 return false;
                             }
@@ -2571,25 +2584,25 @@ class DLangParser {
                         }
                     } else {
                         goToBookmark(b);
-                        if (!parseNodeQ("node.mixinDeclaration", "MixinDeclaration")) {
+                        if (!parseNodeQ("MixinDeclaration")) {
                             cleanup(m);
                             return false;
                         }
                     }
                 }
             } else if (idType.equals(tok("pragma"))) {
-                if (!parseNodeQ("node.pragmaDeclaration", "PragmaDeclaration")) {
+                if (!parseNodeQ("PragmaDeclaration")) {
                     cleanup(m);
                     return false;
                 }
             } else if (idType.equals(tok("shared"))) {
                 if (startsWith(tok("shared"), tok("static"), tok("this"))) {
-                    if (!parseNodeQ("node.sharedStaticConstructor", "SharedStaticConstructor")) {
+                    if (!parseNodeQ("SharedStaticConstructor")) {
                         cleanup(m);
                         return false;
                     }
                 } else if (startsWith(tok("shared"), tok("static"), tok("~"))) {
-                    if (!parseNodeQ("node.sharedStaticDestructor", "SharedStaticDestructor")) {
+                    if (!parseNodeQ("SharedStaticDestructor")) {
                         cleanup(m);
                         return false;
                     }
@@ -2601,12 +2614,12 @@ class DLangParser {
                 }
             } else if (idType.equals(tok("static"))) {
                 if (peekIs(tok("this"))) {
-                    if (!parseNodeQ("node.staticConstructor", "StaticConstructor")) {
+                    if (!parseNodeQ("StaticConstructor")) {
                         cleanup(m);
                         return false;
                     }
                 } else if (peekIs(tok("~"))) {
-                    if (!parseNodeQ("node.staticDestructor", "StaticDestructor")) {
+                    if (!parseNodeQ("StaticDestructor")) {
                         cleanup(m);
                         return false;
                     }
@@ -2616,7 +2629,7 @@ class DLangParser {
                         return false;
                     }
                 } else if (peekIs(tok("assert"))) {
-                    if (!parseNodeQ("node.staticAssertDeclaration", "StaticAssertDeclaration")) {
+                    if (!parseNodeQ("StaticAssertDeclaration")) {
                         cleanup(m);
                         return false;
                     }
@@ -2628,27 +2641,27 @@ class DLangParser {
                 }
 
             } else if (idType.equals(tok("struct"))) {
-                if (!parseNodeQ("node.structDeclaration", "StructDeclaration")) {
+                if (!parseNodeQ("StructDeclaration")) {
                     cleanup(m);
                     return false;
                 }
             } else if (idType.equals(tok("template"))) {
-                if (!parseNodeQ("node.templateDeclaration", "TemplateDeclaration")) {
+                if (!parseNodeQ("TemplateDeclaration")) {
                     cleanup(m);
                     return false;
                 }
             } else if (idType.equals(tok("union"))) {
-                if (!parseNodeQ("node.unionDeclaration", "UnionDeclaration")) {
+                if (!parseNodeQ("UnionDeclaration")) {
                     cleanup(m);
                     return false;
                 }
             } else if (idType.equals(tok("invariant"))) {
-                if (!parseNodeQ("node.invariant_", "Invariant")) {
+                if (!parseNodeQ("Invariant")) {
                     cleanup(m);
                     return false;
                 }
             } else if (idType.equals(tok("unittest"))) {
-                if (!parseNodeQ("node.unittest_", "Unittest")) {
+                if (!parseNodeQ("Unittest")) {
                     cleanup(m);
                     return false;
                 }
@@ -2664,7 +2677,7 @@ class DLangParser {
                         return false;
                     }
                 } else if (peekIs(tok("="))) {
-                    if (!parseNodeQ("node.versionSpecification", "VersionSpecification")) {
+                    if (!parseNodeQ("VersionSpecification")) {
                         cleanup(m);
                         return false;
                     }
@@ -2675,7 +2688,7 @@ class DLangParser {
                 }
             } else if (idType.equals(tok("debug"))) {
                 if (peekIs(tok("="))) {
-                    if (!parseNodeQ("node.debugSpecification", "DebugSpecification")) {
+                    if (!parseNodeQ("DebugSpecification")) {
                         cleanup(m);
                         return false;
                     }
@@ -2772,7 +2785,7 @@ class DLangParser {
         if (!d) {
 //                allocator.rollback(c);
             goToBookmark(b);
-            if (!parseNodeQ("node.statement", "Statement")) {
+            if (!parseNodeQ("Statement")) {
                 cleanup(m);
                 return false;
             }
@@ -2830,7 +2843,7 @@ class DLangParser {
             }
         } else if (currentIs(tok("="))) {
             advance();
-            if (!parseNodeQ("node.initializer", "Initializer")) {
+            if (!parseNodeQ("Initializer")) {
                 cleanup(m);
                 return false;
             }
@@ -2859,7 +2872,7 @@ class DLangParser {
             cleanup(m);
             return false;
         }
-        if (!parseNodeQ("node.declarationsAndStatements", "DeclarationsAndStatements")) {
+        if (!parseNodeQ("DeclarationsAndStatements")) {
             cleanup(m);
             return false;
         }
@@ -2884,7 +2897,7 @@ class DLangParser {
             cleanup(m);
             return false;
         }
-        if (!parseNodeQ("node.unaryExpression", "UnaryExpression")) {
+        if (!parseNodeQ("UnaryExpression")) {
             cleanup(m);
             return false;
         }
@@ -2909,7 +2922,7 @@ class DLangParser {
         }
         if (currentIs(tok("("))) {
             advance();
-            if (!parseNodeQ("node.assignExpression", "AssignExpression")) {
+            if (!parseNodeQ("AssignExpression")) {
                 cleanup(m);
                 return false;
             }
@@ -2968,7 +2981,7 @@ class DLangParser {
                     return false;
                 }
 //                ownArray(node.memberFunctionAttributes, memberFunctionAttributes);
-            if (!parseNodeQ("node.functionBody", "FunctionBody")) {
+            if (!parseNodeQ("FunctionBody")) {
                 cleanup(m);
                 return false;
             }
@@ -2992,7 +3005,7 @@ class DLangParser {
             cleanup(m);
             return false;
         }
-        if (!parseNodeQ("node.statementNoCaseNoDefault", "StatementNoCaseNoDefault")) {
+        if (!parseNodeQ("StatementNoCaseNoDefault")) {
             cleanup(m);
             return false;
         }
@@ -3004,7 +3017,7 @@ class DLangParser {
             cleanup(m);
             return false;
         }
-        if (!parseNodeQ("node.expression", "Expression")) {
+        if (!parseNodeQ("Expression")) {
             cleanup(m);
             return false;
         }
@@ -3098,14 +3111,14 @@ class DLangParser {
             }
             if (currentIs(tok("="))) {
                 advance(); // =
-                if (!parseNodeQ("node.assignExpression", "AssignExpression")) {
+                if (!parseNodeQ("AssignExpression")) {
                     cleanup(m);
                     return false;
                 }
             }
         } else if (typeAllowed) {
 //            node.comment = current().comment;
-            if (!parseNodeQ("node.type", "Type")) {
+            if (!parseNodeQ("Type")) {
                 cleanup(m);
                 return false;
             }
@@ -3117,7 +3130,7 @@ class DLangParser {
                 cleanup(m);
                 return false;
             }
-            if (!parseNodeQ("node.assignExpression", "AssignExpression")) {
+            if (!parseNodeQ("AssignExpression")) {
                 cleanup(m);
                 return false;
             }
@@ -3146,7 +3159,7 @@ class DLangParser {
         boolean hasBaseType = currentIs(tok(":"));
         if (hasBaseType) {
             advance();
-            if (!parseNodeQ("node.baseType", "Type")) {
+            if (!parseNodeQ("Type")) {
                 cleanup(m);
                 return false;
             }
@@ -3211,12 +3224,12 @@ class DLangParser {
         }
         if (currentIs(tok(":"))) {
             advance(); // skip ':'
-            if (!parseNodeQ("node.type", "Type")) {
+            if (!parseNodeQ("Type")) {
                 cleanup(m);
                 return false;
             }
         }
-        if (!parseNodeQ("node.enumBody", "EnumBody")) {
+        if (!parseNodeQ("EnumBody")) {
             cleanup(m);
             return false;
         }
@@ -3243,7 +3256,7 @@ class DLangParser {
         }
         if (currentIs(tok("="))) {
             advance();
-            if (!parseNodeQ("node.assignExpression", "AssignExpression")) {
+            if (!parseNodeQ("AssignExpression")) {
                 cleanup(m);
                 return false;
             }
@@ -3265,18 +3278,18 @@ class DLangParser {
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.EponymousTemplateDeclaration,false);
         advance(); // enum
         Token ident = expect(tok("identifier"));
-        if (!nullCheck("ident")) {
+        if (ident == null) {
             cleanup(m);
             return false;
         }
 //            node.name = *ident;
-        if (!parseNodeQ("node.templateParameters", "TemplateParameters")) {
+        if (!parseNodeQ("TemplateParameters")) {
             cleanup(m);
             return false;
         }
         expect(tok("="));
         if (!parseAssignExpression())
-            if (!parseNodeQ("node.type", "Type")) {
+            if (!parseNodeQ("Type")) {
                 cleanup(m);
                 return false;
             }
@@ -3310,7 +3323,7 @@ class DLangParser {
         if (currentIsOneOf(tok("=="), tok("!="))) {
             advance();
         }
-        if (!parseNodeQ("node.right", "ShiftExpression")) {
+        if (!parseNodeQ("ShiftExpression")) {
             cleanup(m);
             return false;
         }
@@ -3328,8 +3341,10 @@ class DLangParser {
     boolean parseExpression() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         final Marker m = enter_section_modified(builder);
-        if (suppressedErrorCount > MAX_ERRORS)
+        if (suppressedErrorCount > MAX_ERRORS) {
+            cleanup(m);
             return false;
+        }
         if (!moreTokens()) {
             error("Expected expression instead of EOF");
             exit_section_(builder, m, EXPRESSION_STATEMENT, true);//todo types
@@ -3396,7 +3411,7 @@ class DLangParser {
             cleanup(m);
             return false;
         }
-        if (!parseNodeQ("node.declarationOrStatement", "DeclarationOrStatement")) {
+        if (!parseNodeQ("DeclarationOrStatement")) {
             cleanup(m);
             return false;
         }
@@ -3426,7 +3441,7 @@ class DLangParser {
 
         if (currentIs(tok(";")))
             advance();
-        else if (!parseNodeQ("node.initialization", "DeclarationOrStatement")) {
+        else if (!parseNodeQ("DeclarationOrStatement")) {
             cleanup(m);
             return false;
         }
@@ -3434,7 +3449,7 @@ class DLangParser {
         if (currentIs(tok(";")))
             advance();
         else {
-            if (!parseNodeQ("node.test", "Expression")) {
+            if (!parseNodeQ("Expression")) {
                 cleanup(m);
                 return false;
             }
@@ -3442,12 +3457,13 @@ class DLangParser {
         }
 
         if (!currentIs(tok(")")))
-            if (!parseNodeQ("node.increment", "Expression")) {
+            if (!parseNodeQ("Expression")) {
                 cleanup(m);
                 return false;
             }
 
         if (!tokenCheck(")")) {
+            cleanup(m);
             return false;
         }
 
@@ -3459,7 +3475,7 @@ class DLangParser {
             return true;
         }
 
-        if (!parseNodeQ("node.declarationOrStatement", "DeclarationOrStatement")) {
+        if (!parseNodeQ("DeclarationOrStatement")) {
             cleanup(m);
             return false;
         }
@@ -3499,7 +3515,7 @@ class DLangParser {
             cleanup(m);
             return false;
         }
-        if (!parseNodeQ("node.low", "Expression")) {
+        if (!parseNodeQ("Expression")) {
             cleanup(m);
             return false;
         }
@@ -3510,7 +3526,7 @@ class DLangParser {
 //                    return null;
 //                }
             advance();
-            if (!parseNodeQ("node.high", "Expression")) {
+            if (!parseNodeQ("Expression")) {
                 cleanup(m);
                 return false;
             }
@@ -3524,7 +3540,7 @@ class DLangParser {
             exit_section_(builder, m, FOREACH_STATEMENT, true);
             return true; // this line makes DCD better
         }
-        if (!parseNodeQ("node.declarationOrStatement", "DeclarationOrStatement")) {
+        if (!parseNodeQ("DeclarationOrStatement")) {
             cleanup(m);
             return false;
         }
@@ -3550,7 +3566,7 @@ class DLangParser {
         if (currentIsOneOf(tok("const"), tok("immutable"),
             tok("inout"), tok("shared")) && !peekIs(tok("("))) {
             trace("\033[01;36mType constructor");
-            if (!parseNodeQ("node.typeConstructors", "TypeConstructors")) {
+            if (!parseNodeQ("TypeConstructors")) {
                 cleanup(m);
                 return false;
             }
@@ -3563,7 +3579,7 @@ class DLangParser {
             exit_section_(builder, m, FOREACH_TYPE, true);
             return true;
         }
-        if (!parseNodeQ("node.type", "Type")) {
+        if (!parseNodeQ("Type")) {
             cleanup(m);
             return false;
         }
@@ -3605,7 +3621,7 @@ class DLangParser {
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.FunctionAttribute,false);
         Token.IdType i = current().type;
         if (i.equals(tok("@"))) {
-            if (!parseNodeQ("node.atAttribute", "AtAttribute")) {
+            if (!parseNodeQ("AtAttribute")) {
                 cleanup(m);
                 return false;
             }
@@ -3615,7 +3631,9 @@ class DLangParser {
             if (validate) {
                 error("@attribute, \"\", or \"\" expected");
                 exit_section_(builder, m, FUNCTION_ATTRIBUTE, true);
+                return false;
             }
+            cleanup(m);
             return false;
         }
         exit_section_(builder, m, FUNCTION_ATTRIBUTE, true);
@@ -3639,28 +3657,28 @@ class DLangParser {
             exit_section_(builder, m, FUNCTION_BODY, true);
             return true;
         } else if (currentIs(tok("{"))) {
-            if (!parseNodeQ("node.blockStatement", "BlockStatement")) {
+            if (!parseNodeQ("BlockStatement")) {
                 cleanup(m);
                 return false;
             }
         } else if (currentIsOneOf(tok("in"), tok("out"), tok("body"))) {
             if (currentIs(tok("in"))) {
-                if (!parseNodeQ("node.inStatement", "InStatement")) {
+                if (!parseNodeQ("InStatement")) {
                     cleanup(m);
                     return false;
                 }
                 if (currentIs(tok("out")))
-                    if (!parseNodeQ("node.outStatement", "OutStatement")) {
+                    if (!parseNodeQ("OutStatement")) {
                         cleanup(m);
                         return false;
                     }
             } else if (currentIs(tok("out"))) {
-                if (!parseNodeQ("node.outStatement", "OutStatement")) {
+                if (!parseNodeQ("OutStatement")) {
                     cleanup(m);
                     return false;
                 }
                 if (currentIs(tok("in")))
-                    if (!parseNodeQ("node.inStatement", "InStatement")) {
+                    if (!parseNodeQ("InStatement")) {
                         cleanup(m);
                         return false;
                     }
@@ -3668,7 +3686,7 @@ class DLangParser {
             // Allow function bodies without body statements because this is
             // valid inside of interfaces.
             if (currentIs(tok("body")))
-                if (!parseNodeQ("node.bodyStatement", "BodyStatement")) {
+                if (!parseNodeQ("BodyStatement")) {
                     cleanup(m);
                     return false;
                 }
@@ -3703,27 +3721,27 @@ class DLangParser {
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.FunctionCallExpression,false);
         Token.IdType i = current().type;
         if (i.equals(tok("const")) || i.equals(tok("immutable")) || i.equals(tok("inout")) || i.equals(tok("shared")) || i.equals(tok("scope")) || i.equals(tok("const")) || i.equals(tok("const"))) {
-            if (!parseNodeQ("node.type", "Type")) {
-                cleanup(m/*todo*/);
+            if (!parseNodeQ("Type")) {
+                cleanup(m);
                 return false;
             }
-            if (!parseNodeQ("node.arguments", "Arguments")) {
-                cleanup(m/*todo*/);
+            if (!parseNodeQ("Arguments")) {
+                cleanup(m);
                 return false;
             }
         } else {
             if (!parseUnary) {
-            } else if (!parseNodeQ("node.unaryExpression", "UnaryExpression")) {
+            } else if (!parseNodeQ("UnaryExpression")) {
                 cleanup(m);
                 return false;
             }
             if (currentIs(tok("!")))
-                if (!parseNodeQ("node.templateArguments", "TemplateArguments")) {
+                if (!parseNodeQ("TemplateArguments")) {
                     cleanup(m);
                     return false;
                 }
             if (!parseUnary)
-                if (!parseNodeQ("node.arguments", "Arguments")) {
+                if (!parseNodeQ("Arguments")) {
                     cleanup(m);
                     return false;
                 }
@@ -3778,7 +3796,7 @@ class DLangParser {
                     return false;
                 }
             if (parseType) {
-                if (!parseNodeQ("node.returnType", "Type")) {
+                if (!parseNodeQ("Type")) {
                     cleanup(m);
                     return false;
                 }
@@ -3801,13 +3819,13 @@ class DLangParser {
         boolean isTemplate = p != null && p.type.equals(tok("("));
 
         if (isTemplate) {
-            if (!parseNodeQ("node.templateParameters", "TemplateParameters")) {
+            if (!parseNodeQ("TemplateParameters")) {
                 cleanup(m);
                 return false;
             }
         }
 
-        if (!parseNodeQ("node.parameters", "Parameters")) {
+        if (!parseNodeQ("Parameters")) {
             cleanup(m);
             return false;
         }
@@ -3819,7 +3837,7 @@ class DLangParser {
             }
 
         if (isTemplate && currentIs(tok("if"))) {
-            if (!parseNodeQ("node.raint", "Constraint")) {
+            if (!parseNodeQ("Constraint")) {
                 cleanup(m);
                 return false;
             }
@@ -3828,7 +3846,7 @@ class DLangParser {
         if (currentIs(tok(";")))
             advance();
         else {
-            if (!parseNodeQ("node.functionBody", "FunctionBody")) {
+            if (!parseNodeQ("FunctionBody")) {
                 cleanup(m);
                 return false;
             }
@@ -3861,7 +3879,7 @@ class DLangParser {
             advance();
             if (!currentIsOneOf(tok("("), tok("in"), tok("body"),
                 tok("out"), tok("{"), tok("=>")))
-                if (!parseNodeQ("node.returnType", "Type")) {
+                if (!parseNodeQ("Type")) {
                     cleanup(m);
                     return false;
                 }
@@ -3869,14 +3887,14 @@ class DLangParser {
         if (startsWith(tok("identifier"), tok("=>"))) {
             advance();
             advance(); // =>
-            if (!parseNodeQ("node.assignExpression", "AssignExpression")) {
+            if (!parseNodeQ("AssignExpression")) {
                 cleanup(m);
                 return false;
             }
             exit_section_(builder, m, FUNCTION_LITERAL, true);//todo type
             return true;
         } else if (currentIs(tok("("))) {
-            if (!parseNodeQ("node.parameters", "Parameters")) {
+            if (!parseNodeQ("Parameters")) {
                 cleanup(m);
                 return false;
             }
@@ -3891,11 +3909,11 @@ class DLangParser {
         }
         if (currentIs(tok("=>"))) {
             advance();
-            if (!parseNodeQ("node.assignExpression", "AssignExpression")) {
+            if (!parseNodeQ("AssignExpression")) {
                 cleanup(m);
                 return false;
             }
-        } else if (!parseNodeQ("node.functionBody", "FunctionBody")) {
+        } else if (!parseNodeQ("FunctionBody")) {
             cleanup(m);
             return false;
         }
@@ -3924,8 +3942,8 @@ class DLangParser {
         } else if (i.equals(tok("case"))) {
             advance();
             if (!currentIs(tok(";")))
-                if (!parseNodeQ("node.expression", "Expression")) {
-                    cleanup(m/*todo*/);
+                if (!parseNodeQ("Expression")) {
+                    cleanup(m);
                     return false;
                 }
         } else {
@@ -3934,6 +3952,7 @@ class DLangParser {
             return false;//todo cleanup?
         }
         if (!tokenCheck(";")) {
+            cleanup(m);
             return false;
         }
         exit_section_(builder, m, GOTO_STATEMENT, true);
@@ -4036,7 +4055,7 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.IdentifierOrTemplateInstance,false);
         if (peekIs(tok("!")) && !startsWith(tok("identifier"), tok("!"), tok("is")) && !startsWith(tok("identifier"), tok("!"), tok("in"))) {
-            if (!parseNodeQ("node.templateInstance", "TemplateInstance")) {
+            if (!parseNodeQ("TemplateInstance")) {
                 cleanup(m);
                 return false;
             }
@@ -4081,7 +4100,7 @@ class DLangParser {
             cleanup(m);
             return false;
         }
-        if (!parseNodeQ("node.right", "ShiftExpression")) {
+        if (!parseNodeQ("ShiftExpression")) {
             cleanup(m);
             return false;
         }
@@ -4121,7 +4140,7 @@ class DLangParser {
             Token i = expect(tok("identifier"));
             if (i != null)
                 expect(tok("="));
-            if (!parseNodeQ("node.expression", "Expression")) {
+            if (!parseNodeQ("Expression")) {
                 cleanup(m);
                 return false;
             }
@@ -4150,7 +4169,7 @@ class DLangParser {
                 || !peekIs(tok("="))) {
 //                    allocator.rollback(c);
                 goToBookmark(b);
-                if (!parseNodeQ("node.expression", "Expression")) {
+                if (!parseNodeQ("Expression")) {
                     cleanup(m);
                     return false;
                 }
@@ -4161,7 +4180,7 @@ class DLangParser {
                     cleanup(m);
                     return false;
                 }
-                if (!parseNodeQ("node.expression", "Expression")) {
+                if (!parseNodeQ("Expression")) {
                     cleanup(m);
                     return false;
                 }
@@ -4177,13 +4196,13 @@ class DLangParser {
             exit_section_(builder, m, IF_STATEMENT, true);
             return true; // this line makes DCD better
         }
-        if (!parseNodeQ("node.thenStatement", "DeclarationOrStatement")) {
+        if (!parseNodeQ("DeclarationOrStatement")) {
             cleanup(m);
             return false;
         }
         if (currentIs(tok("else"))) {
             advance();
-            if (!parseNodeQ("node.elseStatement", "DeclarationOrStatement")) {
+            if (!parseNodeQ("DeclarationOrStatement")) {
                 cleanup(m);
                 return false;
             }
@@ -4268,11 +4287,14 @@ class DLangParser {
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ImportDeclaration,false);
 //            node.startIndex = current().index;
         if (!tokenCheck("import")) {
+            cleanup(m);
             return false;
         }
         boolean si = parseSingleImport();
-        if (!si)
+        if (!si) {
+            cleanup(m);
             return false;
+        }
         if (currentIs(tok(":")))
             parseImportBindings(!si);//todo I think this should be negated check
         else {
@@ -4299,6 +4321,7 @@ class DLangParser {
         }
 //            node.endIndex = (moreTokens() ? current() : previous()).index + 1;
         if (!tokenCheck(";")) {
+            cleanup(m);
             return false;
         }
         exit_section_(builder, m, IMPORT_DECLARATION, true);
@@ -4333,13 +4356,13 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Index(),false);
-        if (!parseNodeQ("node.low", "AssignExpression")) {
+        if (!parseNodeQ("AssignExpression")) {
             cleanup(m);
             return false;
         }
         if (currentIs(tok(".."))) {
             advance();
-            if (!parseNodeQ("node.high", "AssignExpression")) {
+            if (!parseNodeQ("AssignExpression")) {
                 cleanup(m);
                 return false;
             }
@@ -4427,7 +4450,7 @@ class DLangParser {
             cleanup(m);
             return false;
         }
-        if (!parseNodeQ("node.right", "ShiftExpression")) {
+        if (!parseNodeQ("ShiftExpression")) {
             cleanup(m);
             return false;
         }
@@ -4451,7 +4474,7 @@ class DLangParser {
             return false;
         }
 //            node.inTokenLocation = i.index;
-        if (!parseNodeQ("node.blockStatement", "BlockStatement")) {
+        if (!parseNodeQ("BlockStatement")) {
             cleanup(m);
             return false;
         }
@@ -4472,7 +4495,7 @@ class DLangParser {
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.Initializer,false);
         if (currentIs(tok("void")) && peekIsOneOf(tok(","), tok(";")))
             advance();
-        else if (!parseNodeQ("node.nonVoidInitializer", "NonVoidInitializer")) {
+        else if (!parseNodeQ("NonVoidInitializer")) {
             cleanup(m);
             return false;
         }
@@ -4522,7 +4545,7 @@ class DLangParser {
                 return false;
             }
         }
-        if (!parseNodeQ("node.blockStatement", "BlockStatement")) {
+        if (!parseNodeQ("BlockStatement")) {
             cleanup(m);
             return false;
         }
@@ -4553,7 +4576,7 @@ class DLangParser {
             cleanup(m);
             return false;
         }
-        if (!parseNodeQ("node.type", "Type")) {
+        if (!parseNodeQ("Type")) {
             cleanup(m);
             return false;
         }
@@ -4561,13 +4584,13 @@ class DLangParser {
             advance();
         if (currentIsOneOf(tok("=="), tok(":"))) {
             advance();
-            if (!parseNodeQ("node.typeSpecialization", "TypeSpecialization")) {
+            if (!parseNodeQ("TypeSpecialization")) {
                 cleanup(m);
                 return false;
             }
             if (currentIs(tok(","))) {
                 advance();
-                if (!parseNodeQ("node.templateParameterList", "TemplateParameterList")) {
+                if (!parseNodeQ("TemplateParameterList")) {
                     cleanup(m);
                     return false;
                 }
@@ -4592,7 +4615,7 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.KeyValuePair,false);
-        if (!parseNodeQ("node.key", "AssignExpression")) {
+        if (!parseNodeQ("AssignExpression")) {
             cleanup(m);
             return false;
         }
@@ -4600,7 +4623,7 @@ class DLangParser {
             cleanup(m);
             return false;
         }
-        if (!parseNodeQ("node.value", "AssignExpression")) {
+        if (!parseNodeQ("AssignExpression")) {
             cleanup(m);
             return false;
         }
@@ -4653,7 +4676,7 @@ class DLangParser {
         }
         expect(tok(":"));
         if (!currentIs(tok("}")))
-            if (!parseNodeQ("node.declarationOrStatement", "DeclarationOrStatement")) {
+            if (!parseNodeQ("DeclarationOrStatement")) {
                 cleanup(m);
                 return false;
             }
@@ -4679,7 +4702,7 @@ class DLangParser {
         }
 //            node.line = t.line;
 //            node.column = t.column;
-        if (!parseNodeQ("node.statementNoCaseNoDefault", "StatementNoCaseNoDefault")) {
+        if (!parseNodeQ("StatementNoCaseNoDefault")) {
             cleanup(m);
             return false;
         }
@@ -4721,7 +4744,7 @@ class DLangParser {
                 advance();
                 if (currentIsOneOf(tok("struct"), tok("class")))
                     advance();
-                else if (!parseNodeQ("node.identifierChain", "IdentifierChain")) {
+                else if (!parseNodeQ("IdentifierChain")) {
                     cleanup(m);
                     return false;
                 }
@@ -4757,7 +4780,7 @@ class DLangParser {
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.MemberFunctionAttribute,false);
         Token.IdType i = current().type;
         if (i.equals(tok("@"))) {
-            if (!parseNodeQ("node.atAttribute", "AtAttribute")) {
+            if (!parseNodeQ("AtAttribute")) {
                 cleanup(m);
                 return false;
             }
@@ -4783,12 +4806,12 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.MixinDeclaration,false);
         if (peekIsOneOf(tok("identifier"), tok("typeof"), tok("."))) {
-            if (!parseNodeQ("node.templateMixinExpression", "TemplateMixinExpression")) {
+            if (!parseNodeQ("TemplateMixinExpression")) {
                 cleanup(m);
                 return false;
             }
         } else if (peekIs(tok("("))) {
-            if (!parseNodeQ("node.mixinExpression", "MixinExpression")) {
+            if (!parseNodeQ("MixinExpression")) {
                 cleanup(m);
                 return false;
             }
@@ -4815,7 +4838,7 @@ class DLangParser {
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.MixinExpression,false);
         expect(tok("mixin"));
         expect(tok("("));
-        if (!parseNodeQ("node.assignExpression", "AssignExpression")) {
+        if (!parseNodeQ("AssignExpression")) {
             cleanup(m);
             return false;
         }
@@ -4839,7 +4862,7 @@ class DLangParser {
             cleanup(m);
             return false;
         }
-        if (!parseNodeQ("node.templateDeclaration", "TemplateDeclaration")) {
+        if (!parseNodeQ("TemplateDeclaration")) {
             cleanup(m);
             return false;
         }
@@ -4860,16 +4883,16 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.MixinTemplateName,false);
         if (currentIs(tok("typeof"))) {
-            if (!parseNodeQ("node.typeofExpression", "TypeofExpression")) {
+            if (!parseNodeQ("TypeofExpression")) {
                 cleanup(m);
                 return false;
             }
             expect(tok("."));
-            if (!parseNodeQ("node.identifierOrTemplateChain", "IdentifierOrTemplateChain")) {
+            if (!parseNodeQ("IdentifierOrTemplateChain")) {
                 cleanup(m);
                 return false;
             }
-        } else if (!parseNodeQ("node.symbol", "Symbol")) {
+        } else if (!parseNodeQ("Symbol")) {
             cleanup(m);
             return false;
         }
@@ -4927,7 +4950,7 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ModuleDeclaration,false);
         if (currentIs(tok("deprecated")))
-            if (!parseNodeQ("node.deprecated_", "Deprecated")) {
+            if (!parseNodeQ("Deprecated")) {
                 cleanup(m);
                 return false;
             }
@@ -4936,7 +4959,7 @@ class DLangParser {
             cleanup(m);
             return false;
         }
-        if (!parseNodeQ("node.moduleName", "IdentifierChain")) {
+        if (!parseNodeQ("IdentifierChain")) {
             cleanup(m);
             return false;
         }
@@ -4982,22 +5005,22 @@ class DLangParser {
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.NewAnonClassExpression,false);
         expect(tok("new"));
         if (currentIs(tok("(")))
-            if (!parseNodeQ("node.allocatorArguments", "Arguments")) {
+            if (!parseNodeQ("Arguments")) {
                 cleanup(m);
                 return false;
             }
         expect(tok("class"));
         if (currentIs(tok("(")))
-            if (!parseNodeQ("node.ructorArguments", "Arguments")) {
+            if (!parseNodeQ("Arguments")) {
                 cleanup(m);
                 return false;
             }
         if (!currentIs(tok("{")))
-            if (!parseNodeQ("node.baseClassList", "BaseClassList")) {
+            if (!parseNodeQ("BaseClassList")) {
                 cleanup(m);
                 return false;
             }
-        if (!parseNodeQ("node.structBody", "StructBody")) {
+        if (!parseNodeQ("StructBody")) {
             cleanup(m);
             return false;
         }
@@ -5023,25 +5046,25 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.NewExpression,false);
         if (peekIsOneOf(tok("class"), tok("("))) {
-            if (!parseNodeQ("node.newAnonClassExpression", "NewAnonClassExpression")) {
+            if (!parseNodeQ("NewAnonClassExpression")) {
                 cleanup(m);
                 return false;
             }
         } else {
             expect(tok("new"));
-            if (!parseNodeQ("node.type", "Type")) {
+            if (!parseNodeQ("Type")) {
                 cleanup(m);
                 return false;
             }
             if (currentIs(tok("["))) {
                 advance();
-                if (!parseNodeQ("node.assignExpression", "AssignExpression")) {
+                if (!parseNodeQ("AssignExpression")) {
                     cleanup(m);
                     return false;
                 }
                 expect(tok("]"));
             } else if (currentIs(tok("(")))
-                if (!parseNodeQ("node.arguments", "Arguments")) {
+                if (!parseNodeQ("Arguments")) {
                     cleanup(m);
                     return false;
                 }
@@ -5069,7 +5092,7 @@ class DLangParser {
         if (currentIs(tok("{"))) {
             Token b = peekPastBraces();
             if (b != null && (b.type.equals(tok("(")))) {
-                if (!parseNodeQ("node.assignExpression", "AssignExpression")) {
+                if (!parseNodeQ("AssignExpression")) {
                     cleanup(m);
                     return false;
                 }
@@ -5084,7 +5107,7 @@ class DLangParser {
                     structInitializerParsed = true;
                 } else {
                     goToBookmark(bookmark);
-                    if (!parseNodeQ("node.assignExpression", "AssignExpression")) {
+                    if (!parseNodeQ("AssignExpression")) {
                         cleanup(m);
                         return false;
                     }
@@ -5098,18 +5121,18 @@ class DLangParser {
                 || b.type.equals(tok("]"))
                 || b.type.equals(tok("}"))
                 || b.type.equals(tok(";")))) {
-                if (!parseNodeQ("node.arrayInitializer", "ArrayInitializer")) {
+                if (!parseNodeQ("ArrayInitializer")) {
                     cleanup(m);
                     return false;
                 }
                 arrayInitializerParsed = true;
-            } else if (!parseNodeQ("node.assignExpression", "AssignExpression")) {
+            } else if (!parseNodeQ("AssignExpression")) {
                 cleanup(m);
                 return false;
             } else {
                 assignExpressionParsed = true;
             }
-        } else if (!parseNodeQ("node.assignExpression", "AssignExpression")) {
+        } else if (!parseNodeQ("AssignExpression")) {
             cleanup(m);
             return false;
         } else {
@@ -5211,7 +5234,7 @@ class DLangParser {
 //                node.parameter = *ident;
             expect(tok(")"));
         }
-        if (!parseNodeQ("node.blockStatement", "BlockStatement")) {
+        if (!parseNodeQ("BlockStatement")) {
             cleanup(m);
             return false;
         }
@@ -5237,7 +5260,7 @@ class DLangParser {
             if (type.equals(tok("")))
                 break;
         }
-        if (!parseNodeQ("node.type", "Type")) {
+        if (!parseNodeQ("Type")) {
             cleanup(m);
             return false;
         }
@@ -5248,7 +5271,7 @@ class DLangParser {
 //                    node.vararg = true;
             } else if (currentIs(tok("="))) {
                 advance();
-                if (!parseNodeQ("node.default_", "AssignExpression")) {
+                if (!parseNodeQ("AssignExpression")) {
                     cleanup(m);
                     return false;
                 }
@@ -5264,7 +5287,7 @@ class DLangParser {
             advance();
         } else if (currentIs(tok("="))) {
             advance();
-            if (!parseNodeQ("node.default_", "AssignExpression")) {
+            if (!parseNodeQ("AssignExpression")) {
                 cleanup(m);
                 return false;
             }
@@ -5394,7 +5417,7 @@ class DLangParser {
 //            ownArray(node.memberFunctionAttributes, memberFunctionAttributes);
         if (currentIs(tok(";")))
             advance();
-        else if (!parseNodeQ("node.functionBody", "FunctionBody")) {
+        else if (!parseNodeQ("FunctionBody")) {
             cleanup(m);
             return false;
         }
@@ -5455,7 +5478,7 @@ class DLangParser {
 //            node.identifier = *ident;
         if (currentIs(tok(","))) {
             advance();
-            if (!parseNodeQ("node.argumentList", "ArgumentList")) {
+            if (!parseNodeQ("ArgumentList")) {
                 cleanup(m);
                 return false;
             }
@@ -5522,18 +5545,18 @@ class DLangParser {
         Token.IdType i = current().type;
         if (i.equals(tok("identifier"))) {
             if (peekIs(tok("=>"))) {
-                if (!parseNodeQ("node.functionLiteralExpression", "FunctionLiteralExpression")) {
+                if (!parseNodeQ("FunctionLiteralExpression")) {
                     cleanup(m);
                     return false;
                 }
-            } else if (!parseNodeQ("node.identifierOrTemplateInstance", "IdentifierOrTemplateInstance")) {
+            } else if (!parseNodeQ("IdentifierOrTemplateInstance")) {
                 cleanup(m);
                 return false;
             }
         } else if (i.equals(tok("immutable")) || i.equals(tok("const")) || i.equals(tok("inout")) || i.equals(tok("shared"))) {
             advance();
             expect(tok("("));
-            if (!parseNodeQ("node.type", "Type")) {
+            if (!parseNodeQ("Type")) {
                 cleanup(m);
                 return false;
             }
@@ -5548,37 +5571,37 @@ class DLangParser {
 //                        if (t != null)
 //                            node.primary = *t;
             } else if (currentIs(tok("(")))
-                if (!parseNodeQ("node.arguments", "Arguments")) {
+                if (!parseNodeQ("Arguments")) {
                     cleanup(m);
                     return false;
                 }
         } else if (i.equals(tok("function")) || i.equals(tok("delegate")) || i.equals(tok("{")) || i.equals(tok("in")) || i.equals(tok("out")) || i.equals(tok("body"))) {
-            if (!parseNodeQ("node.functionLiteralExpression", "FunctionLiteralExpression")) {
+            if (!parseNodeQ("FunctionLiteralExpression")) {
                 cleanup(m);
                 return false;
             }
         } else if (i.equals(tok("typeof"))) {
-            if (!parseNodeQ("node.typeofExpression", "TypeofExpression")) {
+            if (!parseNodeQ("TypeofExpression")) {
                 cleanup(m);
                 return false;
             }
         } else if (i.equals(tok("typeid"))) {
-            if (!parseNodeQ("node.typeidExpression", "TypeidExpression")) {
+            if (!parseNodeQ("TypeidExpression")) {
                 cleanup(m);
                 return false;
             }
         } else if (i.equals(tok("__vector"))) {
-            if (!parseNodeQ("node.vector", "Vector")) {
+            if (!parseNodeQ("Vector")) {
                 cleanup(m);
                 return false;
             }
         } else if (i.equals(tok("["))) {
             if (isAssociativeArrayLiteral()) {
-                if (!parseNodeQ("node.assocArrayLiteral", "AssocArrayLiteral")) {
+                if (!parseNodeQ("AssocArrayLiteral")) {
                     cleanup(m);
                     return false;
                 }
-            } else if (!parseNodeQ("node.arrayLiteral", "ArrayLiteral")) {
+            } else if (!parseNodeQ("ArrayLiteral")) {
                 cleanup(m);
                 return false;
             }
@@ -5589,38 +5612,39 @@ class DLangParser {
                 parseAttribute();
             if (currentIsOneOf(tok("=>"), tok("{"))) {
                 goToBookmark(b);
-                if (!parseNodeQ("node.functionLiteralExpression", "FunctionLiteralExpression")) {
+                if (!parseNodeQ("FunctionLiteralExpression")) {
                     cleanup(m);
                     return false;
                 }
             } else {
                 goToBookmark(b);
                 advance();
-                if (!parseNodeQ("node.expression", "Expression")) {
+                if (!parseNodeQ("Expression")) {
                     cleanup(m);
                     return false;
                 }
                 if (!tokenCheck(")")) {
+                    cleanup(m);
                     return false;
                 }
             }
         } else if (i.equals(tok("is"))) {
-            if (!parseNodeQ("node.isExpression", "IsExpression")) {
+            if (!parseNodeQ("IsExpression")) {
                 cleanup(m);
                 return false;
             }
         } else if (i.equals(tok("__traits"))) {
-            if (!parseNodeQ("node.traitsExpression", "TraitsExpression")) {
+            if (!parseNodeQ("TraitsExpression")) {
                 cleanup(m);
                 return false;
             }
         } else if (i.equals(tok("mixin"))) {
-            if (!parseNodeQ("node.mixinExpression", "MixinExpression")) {
+            if (!parseNodeQ("MixinExpression")) {
                 cleanup(m);
                 return false;
             }
         } else if (i.equals(tok("import"))) {
-            if (!parseNodeQ("node.importExpression", "ImportExpression")) {
+            if (!parseNodeQ("ImportExpression")) {
                 cleanup(m);
                 return false;
             }
@@ -5732,7 +5756,7 @@ class DLangParser {
         }
 //            node.startLocation = start.index;
         if (!currentIs(tok(";")))
-            if (!parseNodeQ("node.expression", "Expression")) {
+            if (!parseNodeQ("Expression")) {
                 cleanup(m);
                 return false;
             }
@@ -5766,7 +5790,7 @@ class DLangParser {
         }
 //            node.identifier = *ident;
         expect(tok(")"));
-        if (!parseNodeQ("node.statementNoCaseNoDefault", "StatementNoCaseNoDefault")) {
+        if (!parseNodeQ("StatementNoCaseNoDefault")) {
             cleanup(m);
             return false;
         }
@@ -5859,7 +5883,7 @@ class DLangParser {
             advance(); // identifier
             advance(); // =
         }
-        if (!parseNodeQ("node.identifierChain", "IdentifierChain")) {
+        if (!parseNodeQ("IdentifierChain")) {
             cleanup(m);
             return false;
         }
@@ -5899,12 +5923,12 @@ class DLangParser {
             else
                 parseCaseStatement();
         } else if (i.equals(tok("default"))) {
-            if (!parseNodeQ("node.defaultStatement", "DefaultStatement")) {
+            if (!parseNodeQ("DefaultStatement")) {
                 cleanup(m);
                 return false;
             }
         } else {
-            if (!parseNodeQ("node.statementNoCaseNoDefault", "StatementNoCaseNoDefault")) {
+            if (!parseNodeQ("StatementNoCaseNoDefault")) {
                 cleanup(m);
                 return false;
             }
@@ -5950,94 +5974,94 @@ class DLangParser {
 //        current();
         Token.IdType i = current().type;
         if (i.equals(tok("{"))) {
-            if (!parseNodeQ("node.blockStatement", "BlockStatement")) {
+            if (!parseNodeQ("BlockStatement")) {
                 cleanup(m);
                 return false;
             }
         } else if (i.equals(tok("if"))) {
-            if (!parseNodeQ("node.ifStatement", "IfStatement")) {
+            if (!parseNodeQ("IfStatement")) {
                 cleanup(m);
                 return false;
             }
         } else if (i.equals(tok("while"))) {
-            if (!parseNodeQ("node.whileStatement", "WhileStatement")) {
+            if (!parseNodeQ("WhileStatement")) {
                 cleanup(m);
                 return false;
             }
         } else if (i.equals(tok("do"))) {
-            if (!parseNodeQ("node.doStatement", "DoStatement")) {
+            if (!parseNodeQ("DoStatement")) {
                 cleanup(m);
                 return false;
             }
         } else if (i.equals(tok("for"))) {
-            if (!parseNodeQ("node.forStatement", "ForStatement")) {
+            if (!parseNodeQ("ForStatement")) {
                 cleanup(m);
                 return false;
             }
         } else if (i.equals(tok("foreach")) || i.equals(tok("foreach_reverse"))) {
-            if (!parseNodeQ("node.foreachStatement", "ForeachStatement")) {
+            if (!parseNodeQ("ForeachStatement")) {
                 cleanup(m);
                 return false;
             }
         } else if (i.equals(tok("switch"))) {
-            if (!parseNodeQ("node.switchStatement", "SwitchStatement")) {
+            if (!parseNodeQ("SwitchStatement")) {
                 cleanup(m);
                 return false;
             }
         } else if (i.equals(tok("continue"))) {
-            if (!parseNodeQ("node.continueStatement", "ContinueStatement")) {
+            if (!parseNodeQ("ContinueStatement")) {
                 cleanup(m);
                 return false;
             }
         } else if (i.equals(tok("break"))) {
-            if (!parseNodeQ("node.breakStatement", "BreakStatement")) {
+            if (!parseNodeQ("BreakStatement")) {
                 cleanup(m);
                 return false;
             }
         } else if (i.equals(tok("return"))) {
-            if (!parseNodeQ("node.returnStatement", "ReturnStatement")) {
+            if (!parseNodeQ("ReturnStatement")) {
                 cleanup(m);
                 return false;
             }
         } else if (i.equals(tok("goto"))) {
-            if (!parseNodeQ("node.gotoStatement", "GotoStatement")) {
+            if (!parseNodeQ("GotoStatement")) {
                 cleanup(m);
                 return false;
             }
         } else if (i.equals(tok("with"))) {
-            if (!parseNodeQ("node.withStatement", "WithStatement")) {
+            if (!parseNodeQ("WithStatement")) {
                 cleanup(m);
                 return false;
             }
         } else if (i.equals(tok("synchronized"))) {
-            if (!parseNodeQ("node.synchronizedStatement", "SynchronizedStatement")) {
+            if (!parseNodeQ("SynchronizedStatement")) {
                 cleanup(m);
                 return false;
             }
         } else if (i.equals(tok("try"))) {
-            if (!parseNodeQ("node.tryStatement", "TryStatement")) {
+            if (!parseNodeQ("TryStatement")) {
                 cleanup(m);
                 return false;
             }
         } else if (i.equals(tok("throw"))) {
-            if (!parseNodeQ("node.throwStatement", "ThrowStatement")) {
+            if (!parseNodeQ("ThrowStatement")) {
                 cleanup(m);
                 return false;
             }
         } else if (i.equals(tok("scope"))) {
-            if (!parseNodeQ("node.scopeGuardStatement", "ScopeGuardStatement")) {
+            if (!parseNodeQ("ScopeGuardStatement")) {
                 cleanup(m);
                 return false;
             }
         } else if (i.equals(tok("asm"))) {
-            if (!parseNodeQ("node.asmStatement", "AsmStatement")) {
+            if (!parseNodeQ("AsmStatement")) {
                 cleanup(m);
                 return false;
             }
         } else if (i.equals(tok("final"))) {
             if (peekIs(tok("switch"))) {
 
-                if (!parseNodeQ("node.finalSwitchStatement", "FinalSwitchStatement")) {
+                if (!parseNodeQ("FinalSwitchStatement")) {
                     cleanup(m);
                     return false;
                 }
@@ -6050,32 +6074,32 @@ class DLangParser {
             }
         } else if (i.equals(tok("debug"))) {
             if (peekIs(tok("="))) {
-                if (!parseNodeQ("node.debugSpecification", "DebugSpecification")) {
+                if (!parseNodeQ("DebugSpecification")) {
                     cleanup(m);
                     return false;
                 }
-            } else if (!parseNodeQ("node.conditionalStatement", "ConditionalStatement")) {
+            } else if (!parseNodeQ("ConditionalStatement")) {
                     cleanup(m);
                     return false;
                 }
         } else if (i.equals(tok("version"))) {
             if (peekIs(tok("="))) {
-                if (!parseNodeQ("node.versionSpecification", "VersionSpecification")) {
+                if (!parseNodeQ("VersionSpecification")) {
                     cleanup(m);
                     return false;
                 }
-            } else if (!parseNodeQ("node.conditionalStatement", "ConditionalStatement")) {
+            } else if (!parseNodeQ("ConditionalStatement")) {
                 cleanup(m);
                 return false;
             }
         } else if (i.equals(tok("static"))) {
             if (peekIs(tok("if"))) {
-                if (!parseNodeQ("node.conditionalStatement", "ConditionalStatement")) {
+                if (!parseNodeQ("ConditionalStatement")) {
                     cleanup(m);
                     return false;
                 }
             } else if (peekIs(tok("assert"))) {
-                if (!parseNodeQ("node.staticAssertStatement", "StaticAssertStatement")) {
+                if (!parseNodeQ("StaticAssertStatement")) {
                     cleanup(m);
                     return false;
                 }
@@ -6086,19 +6110,19 @@ class DLangParser {
             }
         } else if (i.equals(tok("identifier"))) {
             if (peekIs(tok(":"))) {
-                if (!parseNodeQ("node.labeledStatement", "LabeledStatement")) {
+                if (!parseNodeQ("LabeledStatement")) {
                     cleanup(m);
                     return false;
                 }
                 exit_section_(builder, m, STATEMENT_NO_CASE_NO_DEFAULT, true);
                 return true;
             }
-            if (!parseNodeQ("node.expressionStatement", "ExpressionStatement")) {
+            if (!parseNodeQ("ExpressionStatement")) {
                 cleanup(m);
                 return false;
             }
         } else {
-            if (!parseNodeQ("node.expressionStatement", "ExpressionStatement")) {
+            if (!parseNodeQ("ExpressionStatement")) {
                 cleanup(m);
                 return false;
             }
@@ -6231,23 +6255,23 @@ class DLangParser {
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.StorageClass,false);
         Token.IdType i = current().type;
         if (i.equals(tok("@"))) {
-            if (!parseNodeQ("node.atAttribute", "AtAttribute")) {
+            if (!parseNodeQ("AtAttribute")) {
                 cleanup(m);
                 return false;
             }
         } else if (i.equals(tok("deprecated"))) {
-            if (!parseNodeQ("node.deprecated_", "Deprecated")) {
+            if (!parseNodeQ("Deprecated")) {
                 cleanup(m);
                 return false;
             }
         } else if (i.equals(tok("align"))) {
-            if (!parseNodeQ("node.alignAttribute", "AlignAttribute")) {
+            if (!parseNodeQ("AlignAttribute")) {
                 cleanup(m);
                 return false;
             }
         } else if (i.equals(tok("extern"))) {
             if (peekIs(tok("("))) {
-                if (!parseNodeQ("node.linkageAttribute", "LinkageAttribute")) {
+                if (!parseNodeQ("LinkageAttribute")) {
                     cleanup(m);
                     return false;
                 }
@@ -6279,7 +6303,7 @@ class DLangParser {
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.StructBody,false);
         Token start = expect(tok("{"));
 //            if (start != null) node.startLocation = start.index;
-        StackBuffer declarations;
+//        StackBuffer declarations;
         while (!currentIs(tok("}")) && moreTokens()) {
 //                c = allocator.setCheckpoint();
             parseDeclaration(true, true);
@@ -6314,21 +6338,21 @@ class DLangParser {
 //            comment = null;
 
         if (currentIs(tok("("))) {
-            if (!parseNodeQ("node.templateParameters", "TemplateParameters")) {
+            if (!parseNodeQ("TemplateParameters")) {
                 cleanup(m);
                 return false;
             }
             if (currentIs(tok("if")))
-                if (!parseNodeQ("node.raint", "Constraint")) {
+                if (!parseNodeQ("Constraint")) {
                     cleanup(m);
                     return false;
                 }
-            if (!parseNodeQ("node.structBody", "StructBody")) {
+            if (!parseNodeQ("StructBody")) {
                 cleanup(m);
                 return false;
             }
         } else if (currentIs(tok("{"))) {
-            if (!parseNodeQ("node.structBody", "StructBody")) {
+            if (!parseNodeQ("StructBody")) {
                 cleanup(m);
                 return false;
             }
@@ -6360,7 +6384,7 @@ class DLangParser {
 //                node.endLocation = current().index;
             advance();
         } else {
-            if (!parseNodeQ("node.structMemberInitializers", "StructMemberInitializers")) {
+            if (!parseNodeQ("StructMemberInitializers")) {
                 cleanup(m);
                 return false;
             }
@@ -6393,7 +6417,7 @@ class DLangParser {
             builder.advanceLexer();
             builder.advanceLexer();
         }
-        if (!parseNodeQ("node.nonVoidInitializer", "NonVoidInitializer")) {
+        if (!parseNodeQ("NonVoidInitializer")) {
             cleanup(m);
             return false;
         }
@@ -6439,12 +6463,12 @@ class DLangParser {
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.SwitchStatement,false);
         expect(tok("switch"));
         expect(tok("("));
-        if (!parseNodeQ("node.expression", "Expression")) {
+        if (!parseNodeQ("Expression")) {
             cleanup(m);
             return false;
         }
         expect(tok(")"));
-        if (!parseNodeQ("node.statement", "Statement")) {
+        if (!parseNodeQ("Statement")) {
             cleanup(m);
             return false;
         }
@@ -6467,7 +6491,7 @@ class DLangParser {
 //                node.dot = true;
             advance();
         }
-        if (!parseNodeQ("node.identifierOrTemplateChain", "IdentifierOrTemplateChain")) {
+        if (!parseNodeQ("IdentifierOrTemplateChain")) {
             cleanup(m);
             return false;
         }
@@ -6489,13 +6513,13 @@ class DLangParser {
         expect(tok("synchronized"));
         if (currentIs(tok("("))) {
             expect(tok("("));
-            if (!parseNodeQ("node.expression", "Expression")) {
+            if (!parseNodeQ("Expression")) {
                 cleanup(m);
                 return false;
             }
             expect(tok(")"));
         }
-        if (!parseNodeQ("node.statementNoCaseNoDefault", "StatementNoCaseNoDefault")) {
+        if (!parseNodeQ("StatementNoCaseNoDefault")) {
             cleanup(m);
             return false;
         }
@@ -6519,7 +6543,7 @@ class DLangParser {
             if (peekIsOneOf(tok(","), tok(")"), tok("="), tok(":")))
                 advance();
             else {
-                if (!parseNodeQ("node.type", "Type")) {
+                if (!parseNodeQ("Type")) {
                     cleanup(m);
                     return false;
                 }
@@ -6530,7 +6554,7 @@ class DLangParser {
                 }
             }
         } else {
-            if (!parseNodeQ("node.type", "Type")) {
+            if (!parseNodeQ("Type")) {
                 cleanup(m);
                 return false;
             }
@@ -6545,11 +6569,11 @@ class DLangParser {
         if (currentIs(tok(":"))) {
             advance();
             if (isType()) {
-                if (!parseNodeQ("node.colonType", "Type")) {
+                if (!parseNodeQ("Type")) {
                     cleanup(m);
                     return false;
                 }
-            } else if (!parseNodeQ("node.colonExpression", "AssignExpression")) {
+            } else if (!parseNodeQ("AssignExpression")) {
                 cleanup(m);
                 return false;
             }
@@ -6557,11 +6581,11 @@ class DLangParser {
         if (currentIs(tok("="))) {
             advance();
             if (isType()) {
-                if (!parseNodeQ("node.assignType", "Type")) {
+                if (!parseNodeQ("Type")) {
                     cleanup(m);
                     return false;
                 }
-            } else if (!parseNodeQ("node.assignExpression", "AssignExpression")) {
+            } else if (!parseNodeQ("AssignExpression")) {
                 cleanup(m);
                 return false;
             }
@@ -6580,7 +6604,9 @@ class DLangParser {
      */
     boolean parseTemplateArgument() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
-        if (suppressedErrorCount > MAX_ERRORS) return false;
+        if (suppressedErrorCount > MAX_ERRORS) {
+            return false;
+        }
         Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateArgument,false);
         Bookmark b = setBookmark();
@@ -6590,7 +6616,7 @@ class DLangParser {
 //                node.type = t;
         } else {
             goToBookmark(b);
-            if (!parseNodeQ("node.assignExpression", "AssignExpression")) {
+            if (!parseNodeQ("AssignExpression")) {
                 cleanup(m);
                 return false;
             }
@@ -6630,7 +6656,7 @@ class DLangParser {
         if (currentIs(tok("("))) {
             advance();
             if (!currentIs(tok(")")))
-                if (!parseNodeQ("node.templateArgumentList", "TemplateArgumentList")) {
+                if (!parseNodeQ("TemplateArgumentList")) {
                     cleanup(m);
                     return false;
                 }
@@ -6638,7 +6664,7 @@ class DLangParser {
                 cleanup(m);
                 return false;
             }
-        } else if (!parseNodeQ("node.templateSingleArgument", "TemplateSingleArgument")) {
+        } else if (!parseNodeQ("TemplateSingleArgument")) {
             cleanup(m);
             return false;
         }
@@ -6666,12 +6692,12 @@ class DLangParser {
             return false;
         }
 //            node.name = *ident;
-        if (!parseNodeQ("node.templateParameters", "TemplateParameters")) {
+        if (!parseNodeQ("TemplateParameters")) {
             cleanup(m);
             return false;
         }
         if (currentIs(tok("if")))
-            if (!parseNodeQ("node.constraint", "Constraint")) {
+            if (!parseNodeQ("Constraint")) {
                 cleanup(m);
                 return false;
             }
@@ -6712,7 +6738,7 @@ class DLangParser {
             return false;
         }
 //            node.identifier = *ident;
-        if (!parseNodeQ("node.templateArguments", "TemplateArguments")) {
+        if (!parseNodeQ("TemplateArguments")) {
             cleanup(m);
             return false;
         }
@@ -6735,12 +6761,12 @@ class DLangParser {
             cleanup(m);
             return false;
         }
-        if (!parseNodeQ("node.mixinTemplateName", "MixinTemplateName")) {
+        if (!parseNodeQ("MixinTemplateName")) {
             cleanup(m);
             return false;
         }
         if (currentIs(tok("!")))
-            if (!parseNodeQ("node.templateArguments", "TemplateArguments")) {
+            if (!parseNodeQ("TemplateArguments")) {
                 cleanup(m);
                 return false;
             }
@@ -6767,32 +6793,32 @@ class DLangParser {
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateParameter,false);
         Token.IdType i = current().type;
         if (i.equals(tok("alias"))) {
-            if (!parseNodeQ("node.templateAliasParameter", "TemplateAliasParameter")) {
+            if (!parseNodeQ("TemplateAliasParameter")) {
                 cleanup(m);
                 return false;
             }
         } else if (i.equals(tok("identifier"))) {
             if (peekIs(tok("..."))) {
-                if (!parseNodeQ("node.templateTupleParameter", "TemplateTupleParameter")) {
+                if (!parseNodeQ("TemplateTupleParameter")) {
                     cleanup(m);
                     return false;
                 }
             } else if (peekIsOneOf(tok(":"), tok("="), tok(","), tok(")"))) {
-                if (!parseNodeQ("node.templateTypeParameter", "TemplateTypeParameter")) {
+                if (!parseNodeQ("TemplateTypeParameter")) {
                     cleanup(m);
                     return false;
                 }
-            } else if (!parseNodeQ("node.templateValueParameter", "TemplateValueParameter")) {
+            } else if (!parseNodeQ("TemplateValueParameter")) {
                 cleanup(m);
                 return false;
             }
         } else if (i.equals(tok("this"))) {
-            if (!parseNodeQ("node.templateThisParameter", "TemplateThisParameter")) {
+            if (!parseNodeQ("TemplateThisParameter")) {
                 cleanup(m);
                 return false;
             }
         } else {
-            if (!parseNodeQ("node.templateValueParameter", "TemplateValueParameter")) {
+            if (!parseNodeQ("TemplateValueParameter")) {
                 cleanup(m);
                 return false;
             }
@@ -6832,7 +6858,7 @@ class DLangParser {
             return false;
         }
         if (!currentIs(tok(")")))
-            if (!parseNodeQ("node.templateParameterList", "TemplateParameterList")) {
+            if (!parseNodeQ("TemplateParameterList")) {
                 cleanup(m);
                 return false;
             }
@@ -6903,7 +6929,7 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateThisParameter,false);
         expect(tok("this"));
-        if (!parseNodeQ("node.templateTypeParameter", "TemplateTypeParameter")) {
+        if (!parseNodeQ("TemplateTypeParameter")) {
             cleanup(m);
             return false;
         }
@@ -6955,14 +6981,14 @@ class DLangParser {
 //            node.identifier = *ident;
         if (currentIs(tok(":"))) {
             advance();
-            if (!parseNodeQ("node.colonType", "Type")) {
+            if (!parseNodeQ("Type")) {
                 cleanup(m);
                 return false;
             }
         }
         if (currentIs(tok("="))) {
             advance();
-            if (!parseNodeQ("node.assignType", "Type")) {
+            if (!parseNodeQ("Type")) {
                 cleanup(m);
                 return false;
             }
@@ -6982,7 +7008,7 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TemplateValueParameter,false);
-        if (!parseNodeQ("node.type", "Type")) {
+        if (!parseNodeQ("Type")) {
             cleanup(m);
             return false;
         }
@@ -6992,13 +7018,13 @@ class DLangParser {
         }
         if (currentIs(tok(":"))) {
             advance();
-            if (!parseNodeQ("node.assignExpression", "AssignExpression")) {
+            if (!parseNodeQ("AssignExpression")) {
                 cleanup(m);
                 return false;
             }
         }
         if (currentIs(tok("=")))
-            if (!parseNodeQ("node.templateValueParameterDefault", "TemplateValueParameterDefault")) {
+            if (!parseNodeQ("TemplateValueParameterDefault")) {
                 cleanup(m);
                 return false;
             }
@@ -7023,7 +7049,7 @@ class DLangParser {
             advance();
 
         } else {
-            if (!parseNodeQ("node.assignExpression", "AssignExpression")) {
+            if (!parseNodeQ("AssignExpression")) {
                 cleanup(m);
                 return false;
             }
@@ -7052,7 +7078,7 @@ class DLangParser {
 //                node.orOrExpression = orOrExpression;
             final Marker m = enter_section_modified(builder);
             advance();
-            if (!parseNodeQ("node.expression", "Expression")) {
+            if (!parseNodeQ("Expression")) {
                 cleanup(m);
                 return false;
             }
@@ -7062,7 +7088,7 @@ class DLangParser {
                 return false;
             }
 //                node.colon = *colon;
-            if (!parseNodeQ("node.ternaryExpression", "TernaryExpression")) {
+            if (!parseNodeQ("TernaryExpression")) {
                 cleanup(m);
                 return false;
             }
@@ -7085,7 +7111,7 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.ThrowStatement,false);
         expect(tok("throw"));
-        if (!parseNodeQ("node.expression", "Expression")) {
+        if (!parseNodeQ("Expression")) {
             cleanup(m);
             return false;
         }
@@ -7146,17 +7172,17 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.TryStatement,false);
         expect(tok("try"));
-        if (!parseNodeQ("node.declarationOrStatement", "DeclarationOrStatement")) {
+        if (!parseNodeQ("DeclarationOrStatement")) {
             cleanup(m);
             return false;
         }
         if (currentIs(tok("catch")))
-            if (!parseNodeQ("node.catches", "Catches")) {
+            if (!parseNodeQ("Catches")) {
                 cleanup(m);
                 return false;
             }
         if (currentIs(tok("finally")))
-            if (!parseNodeQ("node.finally_", "Finally")) {
+            if (!parseNodeQ("Finally")) {
                 cleanup(m);
                 return false;
             }
@@ -7183,12 +7209,12 @@ class DLangParser {
         Token.IdType i = current().type;
         if (i.equals(tok("const")) || i.equals(tok("immutable")) || i.equals(tok("inout")) || i.equals(tok("shared"))) {
             if (!peekIs(tok("(")))
-                if (!parseNodeQ("node.typeConstructors", "TypeConstructors")) {
+                if (!parseNodeQ("TypeConstructors")) {
                     cleanup(m);
                     return false;
                 }
         }
-        if (!parseNodeQ("node.type2", "Type2")) {
+        if (!parseNodeQ("Type2")) {
             cleanup(m);
             return false;
         }
@@ -7206,6 +7232,7 @@ class DLangParser {
                 }
             } else if (i1.equals(tok("*")) || i1.equals(tok("delegate")) || i1.equals(tok("function"))) {
                 if (!parseTypeSuffix()) {
+                    cleanup(m);
                     return false;
                 }
             } else {
@@ -7241,7 +7268,7 @@ class DLangParser {
         }
         Token.IdType i = current().type;
         if (i.equals(tok("identifier")) || i.equals(tok("."))) {
-            if (!parseNodeQ("node.symbol", "Symbol")) {
+            if (!parseNodeQ("Symbol")) {
                 cleanup(m);
                 return false;
             }
@@ -7253,7 +7280,7 @@ class DLangParser {
                 cleanup(m);
                 return false;
             }
-            if (!parseNodeQ("node.identifierOrTemplateChain", "IdentifierOrTemplateChain")) {
+            if (!parseNodeQ("IdentifierOrTemplateChain")) {
                 cleanup(m);
                 return false;
             }
@@ -7264,7 +7291,7 @@ class DLangParser {
             }
             if (currentIs(tok("."))) {
                 advance();
-                if (!parseNodeQ("node.identifierOrTemplateChain", "IdentifierOrTemplateChain")) {
+                if (!parseNodeQ("IdentifierOrTemplateChain")) {
                     cleanup(m);
                     return false;
                 }
@@ -7378,12 +7405,12 @@ class DLangParser {
                 exit_section_(builder, m, TYPE_SPECIALIZATION, true);
                 return true;
             }
-            if (!parseNodeQ("node.type", "Type")) {
+            if (!parseNodeQ("Type")) {
                 cleanup(m);
                 return false;
             }
         }
-        if (!parseNodeQ("node.type", "Type")) {
+        if (!parseNodeQ("Type")) {
             cleanup(m);
             return false;
         }
@@ -7426,7 +7453,7 @@ class DLangParser {
 //                        node.type = type;
             } else {
                 goToBookmark(bookmark);
-                if (!parseNodeQ("node.low", "AssignExpression")) {
+                if (!parseNodeQ("AssignExpression")) {
                     cleanup(m);
                     return false;
                 }
@@ -7436,7 +7463,7 @@ class DLangParser {
 //                        }
                 if (currentIs(tok(".."))) {
                     advance();
-                    if (!parseNodeQ("node.high", "AssignExpression")) {
+                    if (!parseNodeQ("AssignExpression")) {
                         cleanup(m);
                         return false;
                     }
@@ -7447,13 +7474,14 @@ class DLangParser {
                 }
             }
             if (!tokenCheck("]")) {
+                cleanup(m);
                 return false;
             }
             exit_section_(builder, m, TYPE_CTOR, true);
             return true;
         } else if (i.equals(tok("delegate")) || i.equals(tok("function"))) {
             advance();
-            if (!parseNodeQ("node.parameters", "Parameters")) {
+            if (!parseNodeQ("Parameters")) {
                 cleanup(m);
                 return false;
             }
@@ -7488,7 +7516,7 @@ class DLangParser {
         boolean t = parseType();
         if (!t || !currentIs(tok(")"))) {
             goToBookmark(b);
-            if (!parseNodeQ("node.expression", "Expression")) {
+            if (!parseNodeQ("Expression")) {
                 cleanup(m);
                 return false;
             }
@@ -7520,7 +7548,7 @@ class DLangParser {
         expect(tok("("));
         if (currentIs(tok("return")))
             advance();
-        else if (!parseNodeQ("node.expression", "Expression")) {
+        else if (!parseNodeQ("Expression")) {
             cleanup(m);
             return false;
         }
@@ -7530,7 +7558,7 @@ class DLangParser {
     }
 
     private boolean unaryExpressionSwitchDefault(Marker m) {
-        if (!parseNodeQ("node.primaryExpression", "PrimaryExpression")) {
+        if (!parseNodeQ("PrimaryExpression")) {
             cleanup(m);
             return false;
         }
@@ -7595,7 +7623,7 @@ class DLangParser {
             goToBookmark(b);
             if (fallThrough) {
                 if (i.equals(tok("scope")) || i.equals(tok("const")) || i.equals(tok("const"))) {
-                    if (!parseNodeQ("node.functionCallExpression", "FunctionCallExpression")) {
+                    if (!parseNodeQ("FunctionCallExpression")) {
                         cleanup(m);
                         return false;
                     }
@@ -7603,33 +7631,33 @@ class DLangParser {
             }
         } else {
             if (i.equals(tok("scope")) || i.equals(tok("const")) || i.equals(tok("const"))) {
-                if (!parseNodeQ("node.functionCallExpression", "FunctionCallExpression")) {
+                if (!parseNodeQ("FunctionCallExpression")) {
                     cleanup(m);
                     return false;
                 }
             } else if (i.equals(tok("&")) || i.equals(tok("!")) || i.equals(tok("*")) || i.equals(tok("+")) || i.equals(tok("-")) || i.equals(tok("~")) || i.equals(tok("++")) || i.equals(tok("--"))) {
                 advance();
-                if (!parseNodeQ("node.unaryExpression", "UnaryExpression")) {
+                if (!parseNodeQ("UnaryExpression")) {
                     cleanup(m);
                     return false;
                 }
             } else if (i.equals(tok("new"))) {
-                if (!parseNodeQ("node.newExpression", "NewExpression")) {
+                if (!parseNodeQ("NewExpression")) {
                     cleanup(m);
                     return false;
                 }
             } else if (i.equals(tok("delete"))) {
-                if (!parseNodeQ("node.deleteExpression", "DeleteExpression")) {
+                if (!parseNodeQ("DeleteExpression")) {
                     cleanup(m);
                     return false;
                 }
             } else if (i.equals(tok("cast"))) {
-                if (!parseNodeQ("node.castExpression", "CastExpression")) {
+                if (!parseNodeQ("CastExpression")) {
                     cleanup(m);
                     return false;
                 }
             } else if (i.equals(tok("assert"))) {
-                if (!parseNodeQ("node.assertExpression", "AssertExpression")) {
+                if (!parseNodeQ("AssertExpression")) {
                     cleanup(m);
                     return false;
                 }
@@ -7652,7 +7680,7 @@ class DLangParser {
 //                        node.type = t;
                         advance(); // )
                         advance(); // .
-                        if (!parseNodeQ("node.identifierOrTemplateInstance", "IdentifierOrTemplateInstance")) {
+                        if (!parseNodeQ("IdentifierOrTemplateInstance")) {
                             cleanup(m);
                             return false;
                         }
@@ -7705,7 +7733,7 @@ class DLangParser {
             } else if (i1.equals(tok("."))) {
                 advance();
                 if (currentIs(tok("new"))) {
-                    if (!parseNodeQ("node.newExpression", "NewExpression")) {
+                    if (!parseNodeQ("NewExpression")) {
                         cleanup(m);
                         return false;
                     }
@@ -7739,22 +7767,22 @@ class DLangParser {
         if (currentIs(tok("identifier"))) {
             advance();
             if (currentIs(tok("("))) {
-                if (!parseNodeQ("node.templateParameters", "TemplateParameters")) {
+                if (!parseNodeQ("TemplateParameters")) {
                     cleanup(m);
                     return false;
                 }
                 if (currentIs(tok("if")))
-                    if (!parseNodeQ("node.raint", "Constraint")) {
+                    if (!parseNodeQ("Constraint")) {
                         cleanup(m);
                         return false;
                     }
-                if (!parseNodeQ("node.structBody", "StructBody")) {
+                if (!parseNodeQ("StructBody")) {
                     cleanup(m);
                     return false;
                 }
             } else if (currentIs(tok(";")))
                 advance();
-            else if (!parseNodeQ("node.structBody", "StructBody")) {
+            else if (!parseNodeQ("StructBody")) {
                 cleanup(m);
                 return false;
             }
@@ -7764,7 +7792,7 @@ class DLangParser {
 //                semiOrStructBody:
             if (currentIs(tok(";")))
                 advance();
-            else if (!parseNodeQ("node.structBody", "StructBody")) {
+            else if (!parseNodeQ("StructBody")) {
                 cleanup(m);
                 return false;
             }
@@ -7808,7 +7836,7 @@ class DLangParser {
 //			Runnable cleanup =() ->  exit_section_(builder,m,DLanguageTypes.VariableDeclaration,false);
 
         if (isAuto) {
-            if (!parseNodeQ("node.autoDeclaration", "AutoDeclaration")) {
+            if (!parseNodeQ("AutoDeclaration")) {
                 cleanup(m);
                 return false;
             }
@@ -7922,6 +7950,7 @@ class DLangParser {
         }
 //            node.versionIndex = v.index;
         if (!tokenCheck("(")) {
+            cleanup(m);
             return false;
         }
         if (currentIsOneOf(tok("intLiteral"), tok("identifier"), tok("unittest"), tok("assert")))
@@ -7986,11 +8015,12 @@ class DLangParser {
             cleanup(m);
             return false;
         }
-        if (!parseNodeQ("node.expression", "Expression")) {
+        if (!parseNodeQ("Expression")) {
             cleanup(m);
             return false;
         }
         if (!tokenCheck(")")) {
+            cleanup(m);
             return false;
         }
         if (currentIs(tok("}"))) {
@@ -7998,7 +8028,7 @@ class DLangParser {
             exit_section_(builder, m, WHILE_STATEMENT, true);
             return true; // this line makes DCD better
         }
-        if (!parseNodeQ("node.declarationOrStatement", "DeclarationOrStatement")) {
+        if (!parseNodeQ("DeclarationOrStatement")) {
             cleanup(m);
             return false;
         }
@@ -8313,7 +8343,7 @@ class DLangParser {
         while (currentIsOneOf(operators)) {
 //                auto n = allocator.make!ExpressionType;
             advance();
-            if (!parseNodeQ("n.right", ExpressionPartType)) {
+            if (!parseNodeQ(ExpressionPartType)) {
                 return false;
             }
         }
@@ -8653,17 +8683,13 @@ class DLangParser {
         bookmark.dropped = true;
     }
 
-    boolean parseNodeQ(String VarName, String NodeName) {
+    boolean parseNodeQ(String NodeName) {
         if (!parseName(NodeName)) {
             return false;
         }
         //we can ignore VarName, since that is aside effect not strictly necessary for parsing
         return true;
 //            enum parseNodeQ = "{ if ((" ~ VarName ~ " = parse" ~ NodeName ~ "()) == null) return null; }";//potentiall huge implmentatation in java todo
-    }
-
-    boolean nullCheck(String exp) {
-        return exp != null;
     }
 
     boolean tokenCheck(String Tok) {
@@ -8691,7 +8717,7 @@ class DLangParser {
 //            ownArray(node.memberFunctionAttributes, attributes);
         if (currentIs(tok(";")))
             advance();
-        else if (!parseNodeQ("node.functionBody", "FunctionBody")) {
+        else if (!parseNodeQ("FunctionBody")) {
             return false;
         }
         return true;
@@ -8712,7 +8738,7 @@ class DLangParser {
             return structBody();
         }
         if (currentIs(tok("("))) {
-            if (!parseNodeQ("node.templateParameters", "TemplateParameters")) {
+            if (!parseNodeQ("TemplateParameters")) {
                 return false;
             }
             if (currentIs(tok(";"))) {
@@ -8733,7 +8759,7 @@ class DLangParser {
     }
 
     private boolean structBody() {
-        return parseNodeQ("node.structBody", "StructBody");
+        return parseNodeQ("StructBody");
     }
 
     private boolean baseClassList() {
@@ -8749,7 +8775,7 @@ class DLangParser {
 
     private boolean constraint(boolean baseClassListQ) {
         if (currentIs(tok("if"))) {
-            if (!parseNodeQ("node.raint", "Constraint")) {
+            if (!parseNodeQ("Constraint")) {
                 return false;
             }
         }
