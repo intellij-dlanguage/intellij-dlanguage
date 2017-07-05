@@ -1930,14 +1930,14 @@ class DLangParser {
         }
         Token.IdType i = current().type;
         if (i.equals(tok("is"))) {
-            if (!parseIdentityExpression()) {
+            if (!parseIdentityExpression(false)) {
                 cleanup(m);
                 return false;
             }
             exit_section_(builder, m, DLanguageTypes.CONDITIONAL_EXPRESSION_, true);//todo
             return true;
         } else if (i.equals(tok("in"))) {
-            if (!parseInExpression()) {
+            if (!parseInExpression(false)) {
                 cleanup(m);
                 return false;
             }
@@ -1945,25 +1945,25 @@ class DLangParser {
             return true;
         } else if (i.equals(tok("!"))) {
             if (peekIs(tok("is")))
-                if (!parseIdentityExpression()) {
+                if (!parseIdentityExpression(false)) {
                     cleanup(m);
                     return false;
                 } else if (peekIs(tok("in")))
-                    if (!parseInExpression()) {
+                    if (!parseInExpression(false)) {
                         cleanup(m);
                         return false;
                     }
             exit_section_(builder, m, DLanguageTypes.CONDITIONAL_EXPRESSION_, true);//todo
             return true;
         } else if (i.equals(tok("<")) || i.equals(tok("<=")) || i.equals(tok(">")) || i.equals(tok(">=")) || i.equals(tok("!<>=")) || i.equals(tok("!<>")) || i.equals(tok("<>")) || i.equals(tok("<>=")) || i.equals(tok("!>")) || i.equals(tok("!>=")) || i.equals(tok("!<")) || i.equals(tok("!<="))) {
-            if (!parseRelExpression()) {
+            if (!parseRelExpression(false)) {
                 cleanup(m);
                 return false;
             }
             exit_section_(builder, m, DLanguageTypes.CONDITIONAL_EXPRESSION_, true);//todo
             return true;
         } else if (i.equals(tok("==")) || i.equals(tok("!="))) {
-            if (!parseEqualExpression()) {
+            if (!parseEqualExpression(false)) {
                 cleanup(m);
                 return false;
             }
@@ -2046,7 +2046,6 @@ class DLangParser {
             return false;
         }
 
-        StackBuffer trueDeclarations;
         if (currentIs(tok(":")) || currentIs(tok("{"))) {
             boolean brace = advance().type.equals(tok("{"));
             while (moreTokens() && !currentIs(tok("}")) && !currentIs(tok("else"))) {
@@ -2421,12 +2420,14 @@ class DLangParser {
                 cleanup(m);
                 return false;
             }
+            exit_section_(builder, m, DECLARATION, true);
             return true;
         } else if (isAuto == DecType.autoFun) {
             if (!parseFunctionDeclaration(true, true)) {
                 cleanup(m);
                 return false;
             }
+            exit_section_(builder, m, DECLARATION, true);
             return true;
         }
 
@@ -2608,7 +2609,7 @@ class DLangParser {
                     }
                 } else {
                     if (!type(m)) {
-                        cleanup(m);
+//                        cleanup(m);//already done
                         return false;
                     }
                 }
@@ -2635,7 +2636,7 @@ class DLangParser {
                     }
                 } else {
                     if (!type(m)) {
-                        cleanup(m);
+//                        cleanup(m);//already done by type
                         return false;
                     }
                 }
@@ -4071,7 +4072,7 @@ class DLangParser {
         return true;
     }
 
-    boolean parseIdentityExpression() {
+    boolean parseIdentityExpression() {//todo
         return parseIdentityExpression(true);
     }
 
@@ -4260,7 +4261,7 @@ class DLangParser {
         }
         while (moreTokens()) {
 //                c = allocator.setCheckpoint();
-            if (!parseImportBind()) {
+            if (parseImportBind()) {
                 if (currentIs(tok(",")))
                     advance();
                 else
@@ -7709,7 +7710,7 @@ class DLangParser {
                     boolean jump = (currentIs(tok("(")) && p != null && p.type.equals(tok("("))) || peekIs(tok("("));
                     goToBookmark(b);
                     if (jump) {
-                        if (!parseFunctionCallExpression()) {
+                        if (!parseFunctionCallExpression(false)) {
                             cleanup(m);
                             return false;
                         }
@@ -7722,7 +7723,7 @@ class DLangParser {
                     return false;
                 }
             } else if (i1.equals(tok("("))) {
-                if (!parseFunctionCallExpression()) {
+                if (!parseFunctionCallExpression(false)) {
                     cleanup(m);
                     return false;
                 }
