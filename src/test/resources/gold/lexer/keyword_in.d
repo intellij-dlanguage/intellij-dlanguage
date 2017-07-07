@@ -11,3 +11,10 @@ body
 {
     return cast(long)std.math.sqrt(cast(real)x);
 }
+
+int test(int[string] input){
+    if("" in input){
+        return !inSomeTemplateThingThatStartsWithIn!("");
+    }
+    return inSomeTemplateThingThatStartsWithIn!("");
+}

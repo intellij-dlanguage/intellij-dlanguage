@@ -92,9 +92,11 @@ HEXADECIMAL_INTEGER = 0[xX] [0-9a-fA-F] [0-9a-fA-F_]*
 FLOAT_LITERAL = (( ({DECIMAL_FLOAT} | {HEX_FLOAT}) [fFL]? i? ) | ( ({DECIMAL_INTEGER} | {BINARY_INTEGER} | {HEXADECIMAL_INTEGER}) [fFL]? i))
 DECIMAL_FLOAT = ( {DECIMAL_FLOAT_SIMPLE} | {DECIMAL_FLOAT_EXPONENT} | {DECIMAL_FLOAT_FIRST_DOT}
                 | {DECIMAL_FLOAT_FIRST_DOT_EXPONENT} | {DECIMAL_FLOAT_NO_DOT_EXPONENT} )
-DECIMAL_FLOAT_SIMPLE = [0-9] [0-9_]* \. ([0] | [1-9_] [0-9_]*)? //(?!.)
+//DECIMAL_FLOAT_SIMPLE = [0-9] [0-9_]* \. ([0] | [1-9_] [0-9_]* [0-9])? //(?!.)
+DECIMAL_FLOAT_SIMPLE = [0-9] [0-9]* \. ([0] | [1-9] [0-9]* )? //(?!.)
 DECIMAL_FLOAT_EXPONENT = [0-9_]+ \. [0-9_]+ {DECIMAL_EXPONENT}
-DECIMAL_FLOAT_FIRST_DOT = \. ([0] | [1-9_] [0-9_]*)
+//DECIMAL_FLOAT_FIRST_DOT = \. ([0] | [1-9_] [0-9_]* [0-9] )
+DECIMAL_FLOAT_FIRST_DOT = \. ([0] | [1-9] [0-9]* )
 DECIMAL_FLOAT_FIRST_DOT_EXPONENT = \. ([0] | [1-9] [0-9]*) {DECIMAL_EXPONENT}
 DECIMAL_FLOAT_NO_DOT_EXPONENT = [0-9] [0-9_]* {DECIMAL_EXPONENT}
 
@@ -154,7 +156,7 @@ HEX_EXPONENT = [pP][\+\-]? [0-9]+
 
 <YYINITIAL> {CHARACTER_LITERAL} { return CHARACTER_LITERAL; }
 <YYINITIAL> {INTEGER_LITERAL} { return INTEGER_LITERAL; }
-<YYINITIAL> {FLOAT_LITERAL}/[^\.] {
+<YYINITIAL> {FLOAT_LITERAL}/[^[\.]] {
     return FLOAT_LITERAL;
 }
 <YYINITIAL> {DOUBLE_QUOTED_STRING} { return DOUBLE_QUOTED_STRING; }
@@ -269,7 +271,7 @@ HEX_EXPONENT = [pP][\+\-]? [0-9]+
 <YYINITIAL> "new"                      { return KW_NEW; }
 <YYINITIAL> "typeid"                   { return KW_TYPEID; }
 <YYINITIAL> "is"                       { return KW_IS; }
-<YYINITIAL> "!is"                      { return KW_NOT_IS; }
+//<YYINITIAL> "!is"/[^a-z]               { return KW_NOT_IS; }
 <YYINITIAL> "struct"                   { return KW_STRUCT; }
 <YYINITIAL> "union"                    { return KW_UNION; }
 <YYINITIAL> "class"                    { return KW_CLASS; }
@@ -292,7 +294,7 @@ HEX_EXPONENT = [pP][\+\-]? [0-9]+
 <YYINITIAL> "__VENDOR__"               { return KW___VENDOR__; }
 <YYINITIAL> "__VERSION__"              { return KW___VERSION__; }
 <YYINITIAL> "in"                       { return KW_IN; }
-//<YYINITIAL> "!in"                      { return KW_NOT_IN; } // was causing issues with templates + int
+//<YYINITIAL> "!in"/[^a-z]               { return KW_NOT_IN; }
 <YYINITIAL> "asm"                      { return KW_ASM; }
 <YYINITIAL> "assert"                   { return KW_ASSERT; }
 <YYINITIAL> "case"                     { return KW_CASE; }

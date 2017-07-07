@@ -7,3 +7,9 @@ void main(){
 
 
 
+int test(int[string] input){
+    if("" is null){
+        return !isSomeTemplateThingThatStartsWithIn!("");
+    }
+    return isSomeTemplateThingThatStartsWithIn!("");
+}

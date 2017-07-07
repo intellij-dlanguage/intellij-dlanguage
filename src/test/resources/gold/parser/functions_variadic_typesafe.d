@@ -1,3 +1,6 @@
+int[3] ii = [4, 5, 6];
+
+
 int test()
 {
     return sum(1, 2, 3) + sum(); // returns 6+0

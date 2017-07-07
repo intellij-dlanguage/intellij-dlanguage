@@ -191,4 +191,7 @@ class DLanguageLexerTest : DLanguageLexerTestBase("lexer") {
 
     //chars
     fun testchar() = doTest()
+
+    //stdlib
+    fun testparallelism() = doTest()
 }
