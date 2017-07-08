@@ -25,8 +25,6 @@ import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
 @SuppressWarnings({"WeakerAccess", "SameParameterValue", "ConstantConditions"})
 class DLangParser {
 
-    Bookmark debugBookmark = null;//used to be able to eval expressions while dubbuging and thhen rollback sideeffects
-
     // This list MUST BE MAINTAINED IN SORTED ORDER.
     static final String[] REGISTER_NAMES = {
         "AH", "AL", "AX", "BH", "BL", "BP", "BPL", "BX", "CH", "CL", "CR0", "CR2",
@@ -84,6 +82,7 @@ class DLangParser {
 
     public Token.IdType[] Protections = {tok("export"), tok("package"),
         tok("private"), tok("public"), tok("protected")};
+    Bookmark debugBookmark = null;//used to be able to eval expressions while dubbuging and thhen rollback sideeffects
     @NotNull
     PsiBuilder builder;
     /**
@@ -1498,10 +1497,8 @@ class DLangParser {
                 exit_section_modified(builder, m, ATTRIBUTE, true);
                 return true;
             }
-
-
             advance();
-        } else if (i.equals(tok("private")) || i.equals(tok("protected")) || i.equals(tok("public")) || i.equals(tok("export")) || i.equals(tok("static")) || i.equals(tok("abstract")) || i.equals(tok("final")) || i.equals(tok("override")) || i.equals(tok("synchronized")) || i.equals(tok("auto")) || i.equals(tok("scope")) || i.equals(tok("const")) || i.equals(tok("immutable")) || i.equals(tok("inout")) || i.equals(tok("shared")) || i.equals(tok("__gshared")) || i.equals(tok("const")) || i.equals(tok("const")) || i.equals(tok("ref"))) {
+        } else if (i.equals(tok("private")) || i.equals(tok("protected")) || i.equals(tok("public")) || i.equals(tok("export")) || i.equals(tok("static")) || i.equals(tok("abstract")) || i.equals(tok("final")) || i.equals(tok("override")) || i.equals(tok("synchronized")) || i.equals(tok("auto")) || i.equals(tok("scope")) || i.equals(tok("const")) || i.equals(tok("immutable")) || i.equals(tok("inout")) || i.equals(tok("shared")) || i.equals(tok("__gshared")) || i.equals(tok("nothrow")) || i.equals(tok("pure")) || i.equals(tok("ref"))) {
             advance();
         } else {
             cleanup(m);
@@ -2910,6 +2907,7 @@ class DLangParser {
                 return false;
             }
         } else {
+            // original comment from libdparse:
             // TODO: Make this more efficient. Right now we parse the declaration
             // twice, once with errors and warnings ignored, and once with them
             // printed. Maybe store messages to then be abandoned or written later?
@@ -3340,7 +3338,8 @@ class DLangParser {
 //            comment = null;
         if (currentIs(tok(";"))) {
             advance();
-            return false;
+            exit_section_(builder, m, ENUM_DECLARATION, true);
+            return true;
         }
         if (currentIs(tok(":"))) {
             advance(); // skip ':'
@@ -4295,7 +4294,10 @@ class DLangParser {
                 }
             } else {
                 abandonBookmark(b);
-//                mixin(tokenCheck("node.identifier", "identifier"));//todo?
+                if (!tokenCheck("identifier")) {
+                    cleanup(m);
+                    return false;
+                }
                 if (!tokenCheck("=")) {
                     cleanup(m);
                     return false;
@@ -6445,7 +6447,7 @@ class DLangParser {
                 return true;
             }
             advance();
-        } else if (i.equals(tok("const")) || i.equals(tok("immutable")) || i.equals(tok("inout")) || i.equals(tok("shared")) || i.equals(tok("abstract")) || i.equals(tok("auto")) || i.equals(tok("enum")) || i.equals(tok("final")) || i.equals(tok("const")) || i.equals(tok("override")) || i.equals(tok("const")) || i.equals(tok("ref")) || i.equals(tok("__gshared")) || i.equals(tok("scope")) || i.equals(tok("static")) || i.equals(tok("synchronized"))) {
+        } else if (i.equals(tok("const")) || i.equals(tok("immutable")) || i.equals(tok("inout")) || i.equals(tok("shared")) || i.equals(tok("abstract")) || i.equals(tok("auto")) || i.equals(tok("enum")) || i.equals(tok("final")) || i.equals(tok("nothrow")) || i.equals(tok("override")) || i.equals(tok("pure")) || i.equals(tok("ref")) || i.equals(tok("__gshared")) || i.equals(tok("scope")) || i.equals(tok("static")) || i.equals(tok("synchronized"))) {
             advance();
         } else {
             error("Storage class expected");
@@ -7584,8 +7586,7 @@ class DLangParser {
                 cleanup(m);
                 return false;
             }
-        }
-        if (!parseNodeQ("Type")) {
+        } else if (!parseNodeQ("Type")) {
             cleanup(m);
             return false;
         }
@@ -7783,8 +7784,8 @@ class DLangParser {
         Token.IdType i = current().type;
         if (i.equals(tok("const")) || i.equals(tok("immutable")) || i.equals(tok("inout")) || i.equals(tok("shared"))) {
             Bookmark b = setBookmark();
+            fallThrough = true;
             if (peekIs(tok("("))) {
-                fallThrough = true;
                 advance();
                 Token past = peekPastParens();
                 if (past != null && past.type.equals(tok("."))) {
@@ -7797,15 +7798,14 @@ class DLangParser {
             }
             goToBookmark(b);
             if (fallThrough) {
-                if (i.equals(tok("scope")) || i.equals(tok("const")) || i.equals(tok("const"))) {
-                    if (!parseNodeQ("FunctionCallExpression")) {
-                        cleanup(m);
-                        return false;
-                    }
+                //todo check for other goto case related problems
+                if (!parseNodeQ("FunctionCallExpression")) {
+                    cleanup(m);
+                    return false;
                 }
             }
         } else {
-            if (i.equals(tok("scope")) || i.equals(tok("const")) || i.equals(tok("const"))) {
+            if (i.equals(tok("scope")) || i.equals(tok("pure")) || i.equals(tok("nothrow"))) {
                 if (!parseNodeQ("FunctionCallExpression")) {
                     cleanup(m);
                     return false;
@@ -8262,7 +8262,6 @@ class DLangParser {
     }
 
     boolean isCastQualifier() {
-        final Marker m = enter_section_modified(builder);
         Token.IdType i = current().type;
         if (i.equals(tok("const"))) {
             if (peekIs(tok(")")))
@@ -8353,7 +8352,7 @@ class DLangParser {
                     advance();
                     break;
                 }
-            } else if (i.equals(tok("auto")) || i.equals(tok("enum")) || i.equals(tok("export")) || i.equals(tok("final")) || i.equals(tok("__gshared")) || i.equals(tok("const")) || i.equals(tok("override")) || i.equals(tok("const")) || i.equals(tok("ref")) || i.equals(tok("scope")) || i.equals(tok("shared")) || i.equals(tok("static"))) {
+            } else if (i.equals(tok("auto")) || i.equals(tok("enum")) || i.equals(tok("export")) || i.equals(tok("final")) || i.equals(tok("__gshared")) || i.equals(tok("nothrow")) || i.equals(tok("override")) || i.equals(tok("pure")) || i.equals(tok("ref")) || i.equals(tok("scope")) || i.equals(tok("shared")) || i.equals(tok("static"))) {
                 beginIndex = Math.min(beginIndex, index);
                 advance();
             } else {
@@ -8439,7 +8438,7 @@ class DLangParser {
         if (i.equals(tok("scope"))) {
             return !peekIs(tok("("));
         }
-        if (i.equals(tok("@")) || i.equals(tok("abstract")) || i.equals(tok("alias")) || i.equals(tok("align")) || i.equals(tok("auto")) || i.equals(tok("class")) || i.equals(tok("deprecated")) || i.equals(tok("enum")) || i.equals(tok("export")) || i.equals(tok("extern")) || i.equals(tok("__gshared")) || i.equals(tok("interface")) || i.equals(tok("const")) || i.equals(tok("override")) || i.equals(tok("package")) || i.equals(tok("private")) || i.equals(tok("protected")) || i.equals(tok("public")) || i.equals(tok("const")) || i.equals(tok("ref")) || i.equals(tok("struct")) || i.equals(tok("union")) || i.equals(tok("unittest"))) {
+        if (i.equals(tok("@")) || i.equals(tok("abstract")) || i.equals(tok("alias")) || i.equals(tok("align")) || i.equals(tok("auto")) || i.equals(tok("class")) || i.equals(tok("deprecated")) || i.equals(tok("enum")) || i.equals(tok("export")) || i.equals(tok("extern")) || i.equals(tok("__gshared")) || i.equals(tok("interface")) || i.equals(tok("nothrow")) || i.equals(tok("override")) || i.equals(tok("package")) || i.equals(tok("private")) || i.equals(tok("protected")) || i.equals(tok("public")) || i.equals(tok("pure")) || i.equals(tok("ref")) || i.equals(tok("struct")) || i.equals(tok("union")) || i.equals(tok("unittest"))) {
             return true;
         }
         if (i.equals(tok("int")) || i.equals(tok("bool")) || i.equals(tok("byte")) || i.equals(tok("cdouble")) || i.equals(tok("cent")) || i.equals(tok("cfloat")) || i.equals(tok("char")) || i.equals(tok("creal")) || i.equals(tok("dchar")) || i.equals(tok("double")) || i.equals(tok("float")) || i.equals(tok("idouble")) || i.equals(tok("ifloat")) || i.equals(tok("ireal")) || i.equals(tok("long")) || i.equals(tok("real")) || i.equals(tok("short")) || i.equals(tok("ubyte")) || i.equals(tok("ucent")) || i.equals(tok("uint")) || i.equals(tok("ulong")) || i.equals(tok("ushort")) || i.equals(tok("void")) || i.equals(tok("wchar"))) {
@@ -8475,7 +8474,7 @@ class DLangParser {
         if (i.equals(tok("const")) || i.equals(tok("immutable")) || i.equals(tok("inout")) || i.equals(tok("shared"))) {
             return !peekIs(tok("("));
         } else
-            return i.equals(tok("@")) || i.equals(tok("deprecated")) || i.equals(tok("abstract")) || i.equals(tok("align")) || i.equals(tok("auto")) || i.equals(tok("enum")) || i.equals(tok("extern")) || i.equals(tok("final")) || i.equals(tok("const")) || i.equals(tok("override")) || i.equals(tok("const")) || i.equals(tok("ref")) || i.equals(tok("__gshared")) || i.equals(tok("scope")) || i.equals(tok("static")) || i.equals(tok("synchronized"));
+            return i.equals(tok("@")) || i.equals(tok("deprecated")) || i.equals(tok("abstract")) || i.equals(tok("align")) || i.equals(tok("auto")) || i.equals(tok("enum")) || i.equals(tok("extern")) || i.equals(tok("final")) || i.equals(tok("nothrow")) || i.equals(tok("override")) || i.equals(tok("pure")) || i.equals(tok("ref")) || i.equals(tok("__gshared")) || i.equals(tok("scope")) || i.equals(tok("static")) || i.equals(tok("synchronized"));
     }
 
     boolean isAttribute() {

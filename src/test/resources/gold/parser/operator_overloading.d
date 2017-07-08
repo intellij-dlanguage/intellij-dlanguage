@@ -105,10 +105,12 @@ struct S
     // not identity assignment, also allowed.
     void opAssign(int);
 }
-S s;
-s = S();      // Rewritten to s.opAssign(S());
-s = 1;        // Rewritten to s.opAssign(1);
 
+unittest{
+    S s;
+    s = S();      // Rewritten to s.opAssign(S());
+    s = 1;        // Rewritten to s.opAssign(1);
+}
 class C
 {
     // If X is the same type as C or the type which is
@@ -123,10 +125,11 @@ class C
     // not an identity assignment - allowed
     void opAssign(int);
 }
+unittest{
 C c = new C();
 c = new C();  // Rebinding referencee
 c = 1;        // Rewritten to c.opAssign(1);
-
+}
 struct A
 {
     int opIndexAssign(int value, size_t i1, size_t i2);

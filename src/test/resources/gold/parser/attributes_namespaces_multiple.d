@@ -5,4 +5,5 @@ unittest
 N.M.R.foo();
 }
 
-namespace N { namespace M { namespace R { void foo(); } } }
+//not valid:
+//namespace N { namespace M { namespace R { void foo(); } } }

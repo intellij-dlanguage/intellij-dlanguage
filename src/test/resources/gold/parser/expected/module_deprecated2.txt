@@ -1,0 +1,15 @@
+D Language File
+  MODULE_DECLARATION
+    DLanguageDeprecatedAttributeImpl(DEPRECATED_ATTRIBUTE)
+      PsiElement(DLanguageTokenType.deprecated)('deprecated')
+      PsiElement(DLanguageTokenType.()('(')
+      DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
+        DLanguageConditionalExpression_Impl(CONDITIONAL_EXPRESSION_)
+          DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
+            DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
+              PsiElement(DLanguageTokenType.DOUBLE_QUOTED_STRING)('"Please use foo2 instead."')
+      PsiElement(DLanguageTokenType.))(')')
+    PsiElement(DLanguageTokenType.module)('module')
+    DLanguageIdentifierListImpl(IDENTIFIER_LIST)
+      PsiElement(DLanguageTokenType.ID)('foo')
+    PsiElement(DLanguageTokenType.;)(';')

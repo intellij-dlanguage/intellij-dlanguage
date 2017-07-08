@@ -1,9 +1,10 @@
-unite
 struct S { int a; }
-S t;      // default initialized
-t.a = 3;
-S s = t;  // s.a is set to 3
-
+unittest
+{
+    S t;      // default initialized
+    t.a = 3;
+    S s = t;  // s.a is set to 3
+}
 struct S
 {
     int a;
@@ -22,6 +23,8 @@ struct S
         return s;
     }
 }
-
-S s = 3; // sets s.a to 3
-S t = s; // sets t.a to 3, S.opCall(s) is not called
+unittest
+{
+    S s = 3; // sets s.a to 3
+    S t = s; // sets t.a to 3, S.opCall(s) is not called
+}

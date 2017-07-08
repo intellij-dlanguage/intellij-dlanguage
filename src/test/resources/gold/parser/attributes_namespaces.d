@@ -1,6 +1,6 @@
 extern (C++, N) { void foo(); }
-
-namespace N { void foo(); }
+//no longer valid d:
+//namespace N { void foo(); }
 unittest
 {
 

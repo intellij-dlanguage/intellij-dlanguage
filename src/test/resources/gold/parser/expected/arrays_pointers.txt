@@ -1,0 +1,11 @@
+D Language File
+  DLanguageDeclarationImpl(DECLARATION)
+    DLanguageTypeImpl(TYPE)
+      DLanguageTypeImpl(TYPE)
+        PsiElement(DLanguageTokenType.int)('int')
+      DLanguageTypeCtorImpl(TYPE_CTOR)
+        PsiElement(DLanguageTokenType.*)('*')
+    DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
+      DLanguageDeclaratorImpl(DECLARATOR)
+        PsiElement(DLanguageTokenType.ID)('p')
+      PsiElement(DLanguageTokenType.;)(';')

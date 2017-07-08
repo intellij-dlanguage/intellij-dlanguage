@@ -16,7 +16,7 @@ void main()
     char[] t = "y = 3;";
     mixin(t);  // error, t is not evaluatable at compile time
 
-    mixin("y =") 4; // error, string must be complete statement
+    //mixin("y =") 4; // error, string must be complete statement//idk why this was included in test cases becuase it isn't valid
 
     mixin("y =" ~ "4;");  // ok
 }

@@ -1,21 +1,23 @@
 pragma(ident);        // just by itself
 
-pragma(ident) declaration; // influence one declaration
+pragma(ident) int x = 0; // influence one declaration
 
 pragma(ident): // influence subsequent declarations
-    declaration;
-    declaration;
+    float y = 0;
+    double a = 0;
 
 pragma(ident)   // influence block of declarations
 {
-    declaration;
-    declaration;
+    long b = 0;
+    ulong c = 0;
 }
 
-pragma(ident) statement; // influence one statement
+unittest{
+    pragma(ident) c = 9; // influence one statement
 
-pragma(ident)   // influence block of statements
-{
-    statement;
-    statement;
+    pragma(ident)   // influence block of statements
+    {
+        b = -6;
+        y = 9.7;
+    }
 }

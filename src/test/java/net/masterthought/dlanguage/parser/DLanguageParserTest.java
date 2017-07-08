@@ -8,6 +8,10 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
         super("parser", "d", new DLangParserDefinition());
     }
 
+    public void teststaticifbug() {
+        doTest(true, true);
+    }
+
     // shebang
     public void testshebang() {
         doTest(true, true);

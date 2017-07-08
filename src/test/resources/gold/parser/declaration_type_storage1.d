@@ -11,5 +11,5 @@ void main()
     assert(x == 2);
 
     // However, ref is not a type qualifier, so the following is illegal:
-    ref(int) y; // Error: ref is not a type qualifier.
+    //ref(int) y; // Error: ref is not a type qualifier.
 }

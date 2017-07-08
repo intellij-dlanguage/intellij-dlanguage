@@ -1,5 +1,5 @@
 enum string constant(TL...) = TL.stringof;
-ubyte[T.sizeof] storage(T) = 0;
+//ubyte[T.sizeof] storage(T) = 0;//not valid d
 auto array(alias a) = a;
 
 template constant(TL...)

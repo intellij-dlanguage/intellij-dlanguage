@@ -1,0 +1,3 @@
+D Language File
+  PsiComment(DLanguageTokenType.LINE_COMMENT)('//no longer valid according to dmd:')
+  PsiComment(DLanguageTokenType.LINE_COMMENT)('//int (*fp)(int);  // fp is pointer to a function')

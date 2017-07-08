@@ -1,0 +1,19 @@
+D Language File
+  DLanguageDeclarationImpl(DECLARATION)
+    CLASS_DECLARATION
+      PsiElement(DLanguageTokenType.class)('class')
+      PsiElement(DLanguageTokenType.ID)('Foo')
+      DLanguageAggregateBodyImpl(AGGREGATE_BODY)
+        PsiElement(DLanguageTokenType.{)('{')
+        DLanguageDeclarationImpl(DECLARATION)
+          DESTRUCTOR
+            PsiElement(DLanguageTokenType.~)('~')
+            PsiElement(DLanguageTokenType.this)('this')
+            PsiElement(DLanguageTokenType.()('(')
+            PsiElement(DLanguageTokenType.))(')')
+            PsiComment(DLanguageTokenType.LINE_COMMENT)('// destructor for Foo')
+            DLanguageFunctionBodyImpl(FUNCTION_BODY)
+              DLanguageBlockStatementImpl(BLOCK_STATEMENT)
+                PsiElement(DLanguageTokenType.{)('{')
+                PsiElement(DLanguageTokenType.})('}')
+        PsiElement(DLanguageTokenType.})('}')
