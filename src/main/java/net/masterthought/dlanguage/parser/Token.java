@@ -27,8 +27,16 @@ public class Token {
             return type.toString();
         }
 
-        public boolean equals(IdType obj) {
-            return type.equals(obj.type);
+        @Override
+        public int hashCode() {
+            return type.getIndex();
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if(!(obj instanceof IdType))
+                return false;
+            return type.getIndex() == ((IdType)obj).type.getIndex();
         }
     }
 }

@@ -3161,7 +3161,7 @@ class DLangParser {
                 cleanup(m);
                 return false;
             }
-            if (tokenCheck("identifier")) {
+            if (!tokenCheck("identifier")) {
                 cleanup(m);
                 return false;
             }
@@ -8540,7 +8540,7 @@ class DLangParser {
         if (suppressMessages == 0)
             suppressedErrorCount = 0;
         index = bookmark.num;
-        assert !bookmark.dropped;
+//        assert !bookmark.dropped;
         bookmark.m.rollbackTo();
         bookmark.dropped = true;
     }
