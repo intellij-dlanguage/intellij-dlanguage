@@ -10,17 +10,21 @@ D Language File
               DLanguageDeclarationImpl(DECLARATION)
                 ENUM_DECLARATION
                   PsiElement(DLanguageTokenType.enum)('enum')
-                  PsiElement(DLanguageTokenType.ID)('X')
+                  IDENTIFIER
+                    PsiElement(DLanguageTokenType.ID)('X')
                   DLanguageEnumBodyImpl(ENUM_BODY)
                     PsiElement(DLanguageTokenType.{)('{')
                     ENUM_MEMBER
-                      PsiElement(DLanguageTokenType.ID)('A')
+                      IDENTIFIER
+                        PsiElement(DLanguageTokenType.ID)('A')
                     PsiElement(DLanguageTokenType.,)(',')
                     ENUM_MEMBER
-                      PsiElement(DLanguageTokenType.ID)('B')
+                      IDENTIFIER
+                        PsiElement(DLanguageTokenType.ID)('B')
                     PsiElement(DLanguageTokenType.,)(',')
                     ENUM_MEMBER
-                      PsiElement(DLanguageTokenType.ID)('C')
+                      IDENTIFIER
+                        PsiElement(DLanguageTokenType.ID)('C')
                     PsiElement(DLanguageTokenType.})('}')
             PsiComment(DLanguageTokenType.LINE_COMMENT)('// named enum')
             DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
@@ -30,13 +34,15 @@ D Language File
                     DLanguageStorageClassImpl(STORAGE_CLASS)
                       PsiElement(DLanguageTokenType.enum)('enum')
                     DLanguageAutoDeclarationXImpl(AUTO_DECLARATION_X)
-                      PsiElement(DLanguageTokenType.ID)('size')
+                      IDENTIFIER
+                        PsiElement(DLanguageTokenType.ID)('size')
                       DLanguageTemplateParametersImpl(TEMPLATE_PARAMETERS)
                         PsiElement(DLanguageTokenType.()('(')
                         DLanguageTemplateParameterListImpl(TEMPLATE_PARAMETER_LIST)
                           TEMPLATE_PARAMETER
                             DLanguageTemplateTypeParameterImpl(TEMPLATE_TYPE_PARAMETER)
-                              PsiElement(DLanguageTokenType.ID)('X')
+                              IDENTIFIER
+                                PsiElement(DLanguageTokenType.ID)('X')
                         PsiElement(DLanguageTokenType.))(')')
                       PsiElement(DLanguageTokenType.=)('=')
                       DLanguageInitializerImpl(INITIALIZER)
@@ -46,10 +52,12 @@ D Language File
                               DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                                 DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                                   DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                    PsiElement(DLanguageTokenType.ID)('X')
+                                    IDENTIFIER
+                                      PsiElement(DLanguageTokenType.ID)('X')
                                 PsiElement(DLanguageTokenType..)('.')
                                 DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                  PsiElement(DLanguageTokenType.ID)('sizeof')
+                                  IDENTIFIER
+                                    PsiElement(DLanguageTokenType.ID)('sizeof')
                     PsiElement(DLanguageTokenType.;)(';')
             PsiComment(DLanguageTokenType.LINE_COMMENT)('// raised as bug for issue #84')
             DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
@@ -59,7 +67,8 @@ D Language File
                     DLanguageStorageClassImpl(STORAGE_CLASS)
                       PsiElement(DLanguageTokenType.enum)('enum')
                     DLanguageAutoDeclarationXImpl(AUTO_DECLARATION_X)
-                      PsiElement(DLanguageTokenType.ID)('A')
+                      IDENTIFIER
+                        PsiElement(DLanguageTokenType.ID)('A')
                       PsiElement(DLanguageTokenType.=)('=')
                       DLanguageInitializerImpl(INITIALIZER)
                         DLanguageNonVoidInitializerImpl(NON_VOID_INITIALIZER)
@@ -73,51 +82,60 @@ D Language File
               DLanguageDeclarationImpl(DECLARATION)
                 ENUM_DECLARATION
                   PsiElement(DLanguageTokenType.enum)('enum')
-                  PsiElement(DLanguageTokenType.ID)('B')
+                  IDENTIFIER
+                    PsiElement(DLanguageTokenType.ID)('B')
                   DLanguageEnumBodyImpl(ENUM_BODY)
                     PsiElement(DLanguageTokenType.{)('{')
                     ENUM_MEMBER
-                      PsiElement(DLanguageTokenType.ID)('A')
+                      IDENTIFIER
+                        PsiElement(DLanguageTokenType.ID)('A')
                       PsiElement(DLanguageTokenType.=)('=')
                       DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
                         DLanguageConditionalExpression_Impl(CONDITIONAL_EXPRESSION_)
                           DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                             DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                               DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                PsiElement(DLanguageTokenType.ID)('A')
+                                IDENTIFIER
+                                  PsiElement(DLanguageTokenType.ID)('A')
                     PsiComment(DLanguageTokenType.LINE_COMMENT)('// error, circular reference')
                     PsiElement(DLanguageTokenType.})('}')
             DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
               DLanguageDeclarationImpl(DECLARATION)
                 ENUM_DECLARATION
                   PsiElement(DLanguageTokenType.enum)('enum')
-                  PsiElement(DLanguageTokenType.ID)('C')
+                  IDENTIFIER
+                    PsiElement(DLanguageTokenType.ID)('C')
                   DLanguageEnumBodyImpl(ENUM_BODY)
                     PsiElement(DLanguageTokenType.{)('{')
                     ENUM_MEMBER
-                      PsiElement(DLanguageTokenType.ID)('A')
+                      IDENTIFIER
+                        PsiElement(DLanguageTokenType.ID)('A')
                       PsiElement(DLanguageTokenType.=)('=')
                       DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
                         DLanguageConditionalExpression_Impl(CONDITIONAL_EXPRESSION_)
                           DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                             DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                               DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                PsiElement(DLanguageTokenType.ID)('B')
+                                IDENTIFIER
+                                  PsiElement(DLanguageTokenType.ID)('B')
                     PsiElement(DLanguageTokenType.,)(',')
                     PsiComment(DLanguageTokenType.LINE_COMMENT)('// A = 4')
                     ENUM_MEMBER
-                      PsiElement(DLanguageTokenType.ID)('B')
+                      IDENTIFIER
+                        PsiElement(DLanguageTokenType.ID)('B')
                       PsiElement(DLanguageTokenType.=)('=')
                       DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
                         DLanguageConditionalExpression_Impl(CONDITIONAL_EXPRESSION_)
                           DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                             DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                               DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                PsiElement(DLanguageTokenType.ID)('D')
+                                IDENTIFIER
+                                  PsiElement(DLanguageTokenType.ID)('D')
                     PsiElement(DLanguageTokenType.,)(',')
                     PsiComment(DLanguageTokenType.LINE_COMMENT)('// B = 4')
                     ENUM_MEMBER
-                      PsiElement(DLanguageTokenType.ID)('C')
+                      IDENTIFIER
+                        PsiElement(DLanguageTokenType.ID)('C')
                       PsiElement(DLanguageTokenType.=)('=')
                       DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
                         DLanguageConditionalExpression_Impl(CONDITIONAL_EXPRESSION_)
@@ -127,49 +145,58 @@ D Language File
                     PsiElement(DLanguageTokenType.,)(',')
                     PsiComment(DLanguageTokenType.LINE_COMMENT)('// C = 3')
                     ENUM_MEMBER
-                      PsiElement(DLanguageTokenType.ID)('D')
+                      IDENTIFIER
+                        PsiElement(DLanguageTokenType.ID)('D')
                     PsiComment(DLanguageTokenType.LINE_COMMENT)('// D = 4')
                     PsiElement(DLanguageTokenType.})('}')
             DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
               DLanguageDeclarationImpl(DECLARATION)
                 ENUM_DECLARATION
                   PsiElement(DLanguageTokenType.enum)('enum')
-                  PsiElement(DLanguageTokenType.ID)('E')
+                  IDENTIFIER
+                    PsiElement(DLanguageTokenType.ID)('E')
                   PsiElement(DLanguageTokenType.:)(':')
                   DLanguageTypeImpl(TYPE)
                     DLanguageTypeImpl(TYPE)
                       DLanguageSymbolImpl(SYMBOL)
                         DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                           DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                            PsiElement(DLanguageTokenType.ID)('C')
+                            IDENTIFIER
+                              PsiElement(DLanguageTokenType.ID)('C')
                   DLanguageEnumBodyImpl(ENUM_BODY)
                     PsiElement(DLanguageTokenType.{)('{')
                     ENUM_MEMBER
-                      PsiElement(DLanguageTokenType.ID)('E1')
+                      IDENTIFIER
+                        PsiElement(DLanguageTokenType.ID)('E1')
                       PsiElement(DLanguageTokenType.=)('=')
                       DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
                         DLanguageConditionalExpression_Impl(CONDITIONAL_EXPRESSION_)
                           DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                             DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                               DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                PsiElement(DLanguageTokenType.ID)('C')
+                                IDENTIFIER
+                                  PsiElement(DLanguageTokenType.ID)('C')
                             PsiElement(DLanguageTokenType..)('.')
                             DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                              PsiElement(DLanguageTokenType.ID)('D')
+                              IDENTIFIER
+                                PsiElement(DLanguageTokenType.ID)('D')
                     PsiElement(DLanguageTokenType.,)(',')
                     ENUM_MEMBER
-                      PsiElement(DLanguageTokenType.ID)('E2')
+                      IDENTIFIER
+                        PsiElement(DLanguageTokenType.ID)('E2')
                     PsiComment(DLanguageTokenType.LINE_COMMENT)('// error, C.D is C.max')
                     PsiElement(DLanguageTokenType.})('}')
             DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
               DLanguageDeclarationImpl(DECLARATION)
                 ENUM_DECLARATION
                   PsiElement(DLanguageTokenType.enum)('enum')
-                  PsiElement(DLanguageTokenType.ID)('X')
+                  IDENTIFIER
+                    PsiElement(DLanguageTokenType.ID)('X')
                   DLanguageEnumBodyImpl(ENUM_BODY)
                     PsiElement(DLanguageTokenType.{)('{')
                     ENUM_MEMBER
-                      PsiElement(DLanguageTokenType.ID)('A')
+                      IDENTIFIER
+                        PsiElement(DLanguageTokenType.ID)('A')
                       PsiElement(DLanguageTokenType.=)('=')
                       DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
                         DLanguageConditionalExpression_Impl(CONDITIONAL_EXPRESSION_)
@@ -178,10 +205,12 @@ D Language File
                               PsiElement(DLanguageTokenType.INTEGER_LITERAL)('3')
                     PsiElement(DLanguageTokenType.,)(',')
                     ENUM_MEMBER
-                      PsiElement(DLanguageTokenType.ID)('B')
+                      IDENTIFIER
+                        PsiElement(DLanguageTokenType.ID)('B')
                     PsiElement(DLanguageTokenType.,)(',')
                     ENUM_MEMBER
-                      PsiElement(DLanguageTokenType.ID)('C')
+                      IDENTIFIER
+                        PsiElement(DLanguageTokenType.ID)('C')
                     PsiElement(DLanguageTokenType.})('}')
             DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
               DLanguageDeclarationImpl(DECLARATION)
@@ -190,21 +219,25 @@ D Language File
                     DLanguageSymbolImpl(SYMBOL)
                       DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                         DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                          PsiElement(DLanguageTokenType.ID)('X')
+                          IDENTIFIER
+                            PsiElement(DLanguageTokenType.ID)('X')
                 DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
                   DLanguageDeclaratorImpl(DECLARATOR)
-                    PsiElement(DLanguageTokenType.ID)('x')
+                    IDENTIFIER
+                      PsiElement(DLanguageTokenType.ID)('x')
                   PsiElement(DLanguageTokenType.;)(';')
             PsiComment(DLanguageTokenType.LINE_COMMENT)('// x is initialized to 3')
             DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
               DLanguageDeclarationImpl(DECLARATION)
                 ENUM_DECLARATION
                   PsiElement(DLanguageTokenType.enum)('enum')
-                  PsiElement(DLanguageTokenType.ID)('X')
+                  IDENTIFIER
+                    PsiElement(DLanguageTokenType.ID)('X')
                   DLanguageEnumBodyImpl(ENUM_BODY)
                     PsiElement(DLanguageTokenType.{)('{')
                     ENUM_MEMBER
-                      PsiElement(DLanguageTokenType.ID)('A')
+                      IDENTIFIER
+                        PsiElement(DLanguageTokenType.ID)('A')
                       PsiElement(DLanguageTokenType.=)('=')
                       DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
                         DLanguageConditionalExpression_Impl(CONDITIONAL_EXPRESSION_)
@@ -213,10 +246,12 @@ D Language File
                               PsiElement(DLanguageTokenType.INTEGER_LITERAL)('3')
                     PsiElement(DLanguageTokenType.,)(',')
                     ENUM_MEMBER
-                      PsiElement(DLanguageTokenType.ID)('B')
+                      IDENTIFIER
+                        PsiElement(DLanguageTokenType.ID)('B')
                     PsiElement(DLanguageTokenType.,)(',')
                     ENUM_MEMBER
-                      PsiElement(DLanguageTokenType.ID)('C')
+                      IDENTIFIER
+                        PsiElement(DLanguageTokenType.ID)('C')
                     PsiElement(DLanguageTokenType.})('}')
             DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
               DLanguageStatementImpl(STATEMENT)
@@ -228,10 +263,12 @@ D Language File
                           DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                             DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                               DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                PsiElement(DLanguageTokenType.ID)('X')
+                                IDENTIFIER
+                                  PsiElement(DLanguageTokenType.ID)('X')
                             PsiElement(DLanguageTokenType..)('.')
                             DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                              PsiElement(DLanguageTokenType.ID)('min')
+                              IDENTIFIER
+                                PsiElement(DLanguageTokenType.ID)('min')
                     PsiElement(DLanguageTokenType.;)(';')
             PsiComment(DLanguageTokenType.LINE_COMMENT)('// is X.A')
             DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
@@ -244,10 +281,12 @@ D Language File
                           DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                             DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                               DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                PsiElement(DLanguageTokenType.ID)('X')
+                                IDENTIFIER
+                                  PsiElement(DLanguageTokenType.ID)('X')
                             PsiElement(DLanguageTokenType..)('.')
                             DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                              PsiElement(DLanguageTokenType.ID)('max')
+                              IDENTIFIER
+                                PsiElement(DLanguageTokenType.ID)('max')
                     PsiElement(DLanguageTokenType.;)(';')
             PsiComment(DLanguageTokenType.LINE_COMMENT)('// is X.C')
             DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
@@ -260,10 +299,12 @@ D Language File
                           DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                             DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                               DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                PsiElement(DLanguageTokenType.ID)('X')
+                                IDENTIFIER
+                                  PsiElement(DLanguageTokenType.ID)('X')
                             PsiElement(DLanguageTokenType..)('.')
                             DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                              PsiElement(DLanguageTokenType.ID)('sizeof')
+                              IDENTIFIER
+                                PsiElement(DLanguageTokenType.ID)('sizeof')
                     PsiElement(DLanguageTokenType.;)(';')
             PsiComment(DLanguageTokenType.LINE_COMMENT)('// is same as int.sizeof')
             DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
@@ -272,13 +313,16 @@ D Language File
                   PsiElement(DLanguageTokenType.enum)('enum')
                   PsiElement(DLanguageTokenType.{)('{')
                   ENUM_MEMBER
-                    PsiElement(DLanguageTokenType.ID)('A')
+                    IDENTIFIER
+                      PsiElement(DLanguageTokenType.ID)('A')
                   PsiElement(DLanguageTokenType.,)(',')
                   ENUM_MEMBER
-                    PsiElement(DLanguageTokenType.ID)('B')
+                    IDENTIFIER
+                      PsiElement(DLanguageTokenType.ID)('B')
                   PsiElement(DLanguageTokenType.,)(',')
                   ENUM_MEMBER
-                    PsiElement(DLanguageTokenType.ID)('C')
+                    IDENTIFIER
+                      PsiElement(DLanguageTokenType.ID)('C')
                   PsiElement(DLanguageTokenType.})('}')
             PsiComment(DLanguageTokenType.LINE_COMMENT)('// anonymous enum')
             DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
@@ -287,10 +331,12 @@ D Language File
                   PsiElement(DLanguageTokenType.enum)('enum')
                   PsiElement(DLanguageTokenType.{)('{')
                   ENUM_MEMBER
-                    PsiElement(DLanguageTokenType.ID)('A')
+                    IDENTIFIER
+                      PsiElement(DLanguageTokenType.ID)('A')
                   PsiElement(DLanguageTokenType.,)(',')
                   ENUM_MEMBER
-                    PsiElement(DLanguageTokenType.ID)('B')
+                    IDENTIFIER
+                      PsiElement(DLanguageTokenType.ID)('B')
                     PsiElement(DLanguageTokenType.=)('=')
                     DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
                       DLanguageConditionalExpression_Impl(CONDITIONAL_EXPRESSION_)
@@ -304,10 +350,12 @@ D Language File
                               PsiElement(DLanguageTokenType.INTEGER_LITERAL)('7')
                   PsiElement(DLanguageTokenType.,)(',')
                   ENUM_MEMBER
-                    PsiElement(DLanguageTokenType.ID)('C')
+                    IDENTIFIER
+                      PsiElement(DLanguageTokenType.ID)('C')
                   PsiElement(DLanguageTokenType.,)(',')
                   ENUM_MEMBER
-                    PsiElement(DLanguageTokenType.ID)('D')
+                    IDENTIFIER
+                      PsiElement(DLanguageTokenType.ID)('D')
                     PsiElement(DLanguageTokenType.=)('=')
                     DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
                       DLanguageConditionalExpression_Impl(CONDITIONAL_EXPRESSION_)
@@ -319,10 +367,12 @@ D Language File
                           DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                             DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                               DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                PsiElement(DLanguageTokenType.ID)('C')
+                                IDENTIFIER
+                                  PsiElement(DLanguageTokenType.ID)('C')
                   PsiElement(DLanguageTokenType.,)(',')
                   ENUM_MEMBER
-                    PsiElement(DLanguageTokenType.ID)('E')
+                    IDENTIFIER
+                      PsiElement(DLanguageTokenType.ID)('E')
                   PsiElement(DLanguageTokenType.})('}')
             DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
               DLanguageDeclarationImpl(DECLARATION)
@@ -334,7 +384,8 @@ D Language File
                       PsiElement(DLanguageTokenType.long)('long')
                   PsiElement(DLanguageTokenType.{)('{')
                   ENUM_MEMBER
-                    PsiElement(DLanguageTokenType.ID)('A')
+                    IDENTIFIER
+                      PsiElement(DLanguageTokenType.ID)('A')
                     PsiElement(DLanguageTokenType.=)('=')
                     DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
                       DLanguageConditionalExpression_Impl(CONDITIONAL_EXPRESSION_)
@@ -343,7 +394,8 @@ D Language File
                             PsiElement(DLanguageTokenType.INTEGER_LITERAL)('3')
                   PsiElement(DLanguageTokenType.,)(',')
                   ENUM_MEMBER
-                    PsiElement(DLanguageTokenType.ID)('B')
+                    IDENTIFIER
+                      PsiElement(DLanguageTokenType.ID)('B')
                   PsiElement(DLanguageTokenType.})('}')
             DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
               DLanguageDeclarationImpl(DECLARATION)
@@ -355,10 +407,12 @@ D Language File
                       DLanguageSymbolImpl(SYMBOL)
                         DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                           DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                            PsiElement(DLanguageTokenType.ID)('string')
+                            IDENTIFIER
+                              PsiElement(DLanguageTokenType.ID)('string')
                   PsiElement(DLanguageTokenType.{)('{')
                   ENUM_MEMBER
-                    PsiElement(DLanguageTokenType.ID)('A')
+                    IDENTIFIER
+                      PsiElement(DLanguageTokenType.ID)('A')
                     PsiElement(DLanguageTokenType.=)('=')
                     DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
                       DLanguageConditionalExpression_Impl(CONDITIONAL_EXPRESSION_)
@@ -367,7 +421,8 @@ D Language File
                             PsiElement(DLanguageTokenType.DOUBLE_QUOTED_STRING)('"hello"')
                   PsiElement(DLanguageTokenType.,)(',')
                   ENUM_MEMBER
-                    PsiElement(DLanguageTokenType.ID)('B')
+                    IDENTIFIER
+                      PsiElement(DLanguageTokenType.ID)('B')
                     PsiElement(DLanguageTokenType.=)('=')
                     DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
                       DLanguageConditionalExpression_Impl(CONDITIONAL_EXPRESSION_)
@@ -376,7 +431,8 @@ D Language File
                             PsiElement(DLanguageTokenType.DOUBLE_QUOTED_STRING)('"betty"')
                   PsiElement(DLanguageTokenType.,)(',')
                   ENUM_MEMBER
-                    PsiElement(DLanguageTokenType.ID)('C')
+                    IDENTIFIER
+                      PsiElement(DLanguageTokenType.ID)('C')
                   PsiComment(DLanguageTokenType.LINE_COMMENT)('// error, cannot add 1 to "betty"')
                   PsiElement(DLanguageTokenType.})('}')
             DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
@@ -385,7 +441,8 @@ D Language File
                   PsiElement(DLanguageTokenType.enum)('enum')
                   PsiElement(DLanguageTokenType.{)('{')
                   ENUM_MEMBER
-                    PsiElement(DLanguageTokenType.ID)('A')
+                    IDENTIFIER
+                      PsiElement(DLanguageTokenType.ID)('A')
                     PsiElement(DLanguageTokenType.=)('=')
                     DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
                       DLanguageConditionalExpression_Impl(CONDITIONAL_EXPRESSION_)
@@ -395,14 +452,16 @@ D Language File
                   PsiElement(DLanguageTokenType.,)(',')
                   PsiComment(DLanguageTokenType.LINE_COMMENT)('// A is 1.2f of type float')
                   ENUM_MEMBER
-                    PsiElement(DLanguageTokenType.ID)('B')
+                    IDENTIFIER
+                      PsiElement(DLanguageTokenType.ID)('B')
                   PsiElement(DLanguageTokenType.,)(',')
                   PsiComment(DLanguageTokenType.LINE_COMMENT)('// B is 2.2f of type float')
                   ENUM_MEMBER
                     DLanguageTypeImpl(TYPE)
                       DLanguageTypeImpl(TYPE)
                         PsiElement(DLanguageTokenType.int)('int')
-                    PsiElement(DLanguageTokenType.ID)('C')
+                    IDENTIFIER
+                      PsiElement(DLanguageTokenType.ID)('C')
                     PsiElement(DLanguageTokenType.=)('=')
                     DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
                       DLanguageConditionalExpression_Impl(CONDITIONAL_EXPRESSION_)
@@ -412,7 +471,8 @@ D Language File
                   PsiElement(DLanguageTokenType.,)(',')
                   PsiComment(DLanguageTokenType.LINE_COMMENT)('// C is 3 of type int')
                   ENUM_MEMBER
-                    PsiElement(DLanguageTokenType.ID)('D')
+                    IDENTIFIER
+                      PsiElement(DLanguageTokenType.ID)('D')
                   PsiComment(DLanguageTokenType.LINE_COMMENT)('// D is 4 of type int')
                   PsiElement(DLanguageTokenType.})('}')
             DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
@@ -422,7 +482,8 @@ D Language File
                     DLanguageStorageClassImpl(STORAGE_CLASS)
                       PsiElement(DLanguageTokenType.enum)('enum')
                     DLanguageAutoDeclarationXImpl(AUTO_DECLARATION_X)
-                      PsiElement(DLanguageTokenType.ID)('i')
+                      IDENTIFIER
+                        PsiElement(DLanguageTokenType.ID)('i')
                       PsiElement(DLanguageTokenType.=)('=')
                       DLanguageInitializerImpl(INITIALIZER)
                         DLanguageNonVoidInitializerImpl(NON_VOID_INITIALIZER)
@@ -442,7 +503,8 @@ D Language File
                     DLanguageTypeImpl(TYPE)
                       PsiElement(DLanguageTokenType.long)('long')
                   DLanguageDeclaratorImpl(DECLARATOR)
-                    PsiElement(DLanguageTokenType.ID)('l')
+                    IDENTIFIER
+                      PsiElement(DLanguageTokenType.ID)('l')
                     PsiElement(DLanguageTokenType.=)('=')
                     DLanguageInitializerImpl(INITIALIZER)
                       DLanguageNonVoidInitializerImpl(NON_VOID_INITIALIZER)
@@ -460,7 +522,8 @@ D Language File
                     DLanguageStorageClassImpl(STORAGE_CLASS)
                       PsiElement(DLanguageTokenType.enum)('enum')
                     DLanguageAutoDeclarationXImpl(AUTO_DECLARATION_X)
-                      PsiElement(DLanguageTokenType.ID)('size')
+                      IDENTIFIER
+                        PsiElement(DLanguageTokenType.ID)('size')
                       PsiElement(DLanguageTokenType.=)('=')
                       DLanguageInitializerImpl(INITIALIZER)
                         DLanguageNonVoidInitializerImpl(NON_VOID_INITIALIZER)
@@ -471,7 +534,8 @@ D Language File
                                   DLanguageTraitsExpressionImpl(TRAITS_EXPRESSION)
                                     PsiElement(DLanguageTokenType.__traits)('__traits')
                                     PsiElement(DLanguageTokenType.()('(')
-                                    PsiElement(DLanguageTokenType.ID)('classInstanceSize')
+                                    IDENTIFIER
+                                      PsiElement(DLanguageTokenType.ID)('classInstanceSize')
                                     PsiElement(DLanguageTokenType.,)(',')
                                     DLanguageTemplateArgumentListImpl(TEMPLATE_ARGUMENT_LIST)
                                       DLanguageTemplateArgumentImpl(TEMPLATE_ARGUMENT)
@@ -480,7 +544,8 @@ D Language File
                                             DLanguageSymbolImpl(SYMBOL)
                                               DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                                                 DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                                  PsiElement(DLanguageTokenType.ID)('Foo')
+                                                  IDENTIFIER
+                                                    PsiElement(DLanguageTokenType.ID)('Foo')
                                     PsiElement(DLanguageTokenType.))(')')
                     PsiElement(DLanguageTokenType.;)(';')
           PsiComment(DLanguageTokenType.LINE_COMMENT)('// evaluated at compile-time')

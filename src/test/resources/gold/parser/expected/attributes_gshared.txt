@@ -5,7 +5,8 @@ D Language File
         PsiElement(DLanguageTokenType.int)('int')
     DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
       DLanguageDeclaratorImpl(DECLARATOR)
-        PsiElement(DLanguageTokenType.ID)('foo')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('foo')
       PsiElement(DLanguageTokenType.;)(';')
   PsiComment(DLanguageTokenType.LINE_COMMENT)('// Each thread has its own exclusive copy of foo.')
   DLanguageDeclarationImpl(DECLARATION)
@@ -16,13 +17,15 @@ D Language File
         PsiElement(DLanguageTokenType.int)('int')
     DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
       DLanguageDeclaratorImpl(DECLARATOR)
-        PsiElement(DLanguageTokenType.ID)('bar')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('bar')
       PsiElement(DLanguageTokenType.;)(';')
   PsiComment(DLanguageTokenType.LINE_COMMENT)('// bar is shared by all threads.')
   DLanguageDeclarationImpl(DECLARATION)
     CLASS_DECLARATION
       PsiElement(DLanguageTokenType.class)('class')
-      PsiElement(DLanguageTokenType.ID)('Foo')
+      IDENTIFIER
+        PsiElement(DLanguageTokenType.ID)('Foo')
       DLanguageAggregateBodyImpl(AGGREGATE_BODY)
         PsiElement(DLanguageTokenType.{)('{')
         DLanguageDeclarationImpl(DECLARATION)
@@ -33,7 +36,8 @@ D Language File
               PsiElement(DLanguageTokenType.int)('int')
           DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
             DLanguageDeclaratorImpl(DECLARATOR)
-              PsiElement(DLanguageTokenType.ID)('bar')
+              IDENTIFIER
+                PsiElement(DLanguageTokenType.ID)('bar')
             PsiElement(DLanguageTokenType.;)(';')
         PsiElement(DLanguageTokenType.})('}')
   DLanguageDeclarationImpl(DECLARATION)
@@ -41,7 +45,8 @@ D Language File
       DLanguageTypeImpl(TYPE)
         PsiElement(DLanguageTokenType.int)('int')
     FUNC_DECLARATION
-      PsiElement(DLanguageTokenType.ID)('foo')
+      IDENTIFIER
+        PsiElement(DLanguageTokenType.ID)('foo')
       DLanguageParametersImpl(PARAMETERS)
         PsiElement(DLanguageTokenType.()('(')
         PsiElement(DLanguageTokenType.))(')')
@@ -58,7 +63,8 @@ D Language File
                     PsiElement(DLanguageTokenType.int)('int')
                 DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
                   DLanguageDeclaratorImpl(DECLARATOR)
-                    PsiElement(DLanguageTokenType.ID)('bar')
+                    IDENTIFIER
+                      PsiElement(DLanguageTokenType.ID)('bar')
                     PsiElement(DLanguageTokenType.=)('=')
                     DLanguageInitializerImpl(INITIALIZER)
                       DLanguageNonVoidInitializerImpl(NON_VOID_INITIALIZER)
@@ -79,7 +85,8 @@ D Language File
                           DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                             DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                               DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                PsiElement(DLanguageTokenType.ID)('bar')
+                                IDENTIFIER
+                                  PsiElement(DLanguageTokenType.ID)('bar')
                             PsiElement(DLanguageTokenType.++)('++')
                     PsiElement(DLanguageTokenType.;)(';')
           PsiComment(DLanguageTokenType.LINE_COMMENT)('// Not thread safe.')

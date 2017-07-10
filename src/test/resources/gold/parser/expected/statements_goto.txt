@@ -18,14 +18,16 @@ D Language File
                           DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                             DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                               DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                PsiElement(DLanguageTokenType.ID)('foo')
+                                IDENTIFIER
+                                  PsiElement(DLanguageTokenType.ID)('foo')
                     PsiElement(DLanguageTokenType.))(')')
                     DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
                       DLanguageStatementImpl(STATEMENT)
                         DLanguageStatementNoCaseNoDefaultImpl(STATEMENT_NO_CASE_NO_DEFAULT)
                           DLanguageGotoStatementImpl(GOTO_STATEMENT)
                             PsiElement(DLanguageTokenType.goto)('goto')
-                            PsiElement(DLanguageTokenType.ID)('L1')
+                            IDENTIFIER
+                              PsiElement(DLanguageTokenType.ID)('L1')
                             PsiElement(DLanguageTokenType.;)(';')
             DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
               DLanguageStatementImpl(STATEMENT)
@@ -37,7 +39,8 @@ D Language File
                           DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                             DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                               DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                PsiElement(DLanguageTokenType.ID)('x')
+                                IDENTIFIER
+                                  PsiElement(DLanguageTokenType.ID)('x')
                         PsiElement(DLanguageTokenType.=)('=')
                         DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
                           DLanguageConditionalExpression_Impl(CONDITIONAL_EXPRESSION_)
@@ -49,7 +52,8 @@ D Language File
               DLanguageStatementImpl(STATEMENT)
                 DLanguageStatementNoCaseNoDefaultImpl(STATEMENT_NO_CASE_NO_DEFAULT)
                   LABELED_STATEMENT
-                    PsiElement(DLanguageTokenType.ID)('L1')
+                    IDENTIFIER
+                      PsiElement(DLanguageTokenType.ID)('L1')
                     PsiElement(DLanguageTokenType.:)(':')
                     DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
                       DLanguageStatementImpl(STATEMENT)
@@ -61,7 +65,8 @@ D Language File
                                   DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                                     DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                                       DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                        PsiElement(DLanguageTokenType.ID)('x')
+                                        IDENTIFIER
+                                          PsiElement(DLanguageTokenType.ID)('x')
                                     PsiElement(DLanguageTokenType.++)('++')
                             PsiElement(DLanguageTokenType.;)(';')
             DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
@@ -76,7 +81,8 @@ D Language File
                           DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                             DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                               DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                PsiElement(DLanguageTokenType.ID)('x')
+                                IDENTIFIER
+                                  PsiElement(DLanguageTokenType.ID)('x')
                     PsiElement(DLanguageTokenType.))(')')
                     DLanguageStatementImpl(STATEMENT)
                       DLanguageStatementNoCaseNoDefaultImpl(STATEMENT_NO_CASE_NO_DEFAULT)
@@ -162,7 +168,8 @@ D Language File
                                                           DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                                                             DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                                                               DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                                                PsiElement(DLanguageTokenType.ID)('x')
+                                                                IDENTIFIER
+                                                                  PsiElement(DLanguageTokenType.ID)('x')
                                                         PsiElement(DLanguageTokenType.=)('=')
                                                         DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
                                                           DLanguageConditionalExpression_Impl(CONDITIONAL_EXPRESSION_)

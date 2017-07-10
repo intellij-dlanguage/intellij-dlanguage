@@ -2,7 +2,8 @@ D Language File
   DLanguageDeclarationImpl(DECLARATION)
     STRUCT_DECLARATION
       PsiElement(DLanguageTokenType.struct)('struct')
-      PsiElement(DLanguageTokenType.ID)('S')
+      IDENTIFIER
+        PsiElement(DLanguageTokenType.ID)('S')
       DLanguageAggregateBodyImpl(AGGREGATE_BODY)
         PsiElement(DLanguageTokenType.{)('{')
         PsiComment(DLanguageTokenType.LINE_COMMENT)('// Is const here a type qualifier or a storage class?')
@@ -15,7 +16,8 @@ D Language File
             DLanguageTypeImpl(TYPE)
               PsiElement(DLanguageTokenType.int)('int')
           FUNC_DECLARATION
-            PsiElement(DLanguageTokenType.ID)('func')
+            IDENTIFIER
+              PsiElement(DLanguageTokenType.ID)('func')
             DLanguageParametersImpl(PARAMETERS)
               PsiElement(DLanguageTokenType.()('(')
               PsiElement(DLanguageTokenType.))(')')

@@ -5,7 +5,8 @@ D Language File
         DLanguageStorageClassImpl(STORAGE_CLASS)
           PsiElement(DLanguageTokenType.auto)('auto')
         DLanguageAutoDeclarationXImpl(AUTO_DECLARATION_X)
-          PsiElement(DLanguageTokenType.ID)('v')
+          IDENTIFIER
+            PsiElement(DLanguageTokenType.ID)('v')
           PsiElement(DLanguageTokenType.=)('=')
           DLanguageInitializerImpl(INITIALIZER)
             DLanguageNonVoidInitializerImpl(NON_VOID_INITIALIZER)

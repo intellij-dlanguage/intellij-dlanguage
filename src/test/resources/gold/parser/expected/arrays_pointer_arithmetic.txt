@@ -13,7 +13,8 @@ D Language File
         PsiElement(DLanguageTokenType.])(']')
     DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
       DLanguageDeclaratorImpl(DECLARATOR)
-        PsiElement(DLanguageTokenType.ID)('abc')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('abc')
       PsiElement(DLanguageTokenType.;)(';')
   PsiComment(DLanguageTokenType.LINE_COMMENT)('// static array of 3 ints')
   DLanguageDeclarationImpl(DECLARATION)
@@ -25,7 +26,8 @@ D Language File
         PsiElement(DLanguageTokenType.])(']')
     DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
       DLanguageDeclaratorImpl(DECLARATOR)
-        PsiElement(DLanguageTokenType.ID)('def')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('def')
         PsiElement(DLanguageTokenType.=)('=')
         DLanguageInitializerImpl(INITIALIZER)
           DLanguageNonVoidInitializerImpl(NON_VOID_INITIALIZER)
@@ -59,7 +61,8 @@ D Language File
       DLanguageTypeImpl(TYPE)
         PsiElement(DLanguageTokenType.void)('void')
     FUNC_DECLARATION
-      PsiElement(DLanguageTokenType.ID)('dibb')
+      IDENTIFIER
+        PsiElement(DLanguageTokenType.ID)('dibb')
       DLanguageParametersImpl(PARAMETERS)
         PsiElement(DLanguageTokenType.()('(')
         PARAMETER
@@ -68,7 +71,8 @@ D Language File
               PsiElement(DLanguageTokenType.int)('int')
             DLanguageTypeCtorImpl(TYPE_CTOR)
               PsiElement(DLanguageTokenType.*)('*')
-          PsiElement(DLanguageTokenType.ID)('array')
+          IDENTIFIER
+            PsiElement(DLanguageTokenType.ID)('array')
         PsiElement(DLanguageTokenType.))(')')
       DLanguageFunctionBodyImpl(FUNCTION_BODY)
         DLanguageBlockStatementImpl(BLOCK_STATEMENT)
@@ -84,7 +88,8 @@ D Language File
                           DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                             DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                               DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                PsiElement(DLanguageTokenType.ID)('array')
+                                IDENTIFIER
+                                  PsiElement(DLanguageTokenType.ID)('array')
                             DLanguageIndexExpressionImpl(INDEX_EXPRESSION)
                               PsiElement(DLanguageTokenType.[)('[')
                               DLanguageIndexExpressionImpl(INDEX_EXPRESSION)
@@ -115,7 +120,8 @@ D Language File
                                         DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                                           DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                                             DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                              PsiElement(DLanguageTokenType.ID)('array')
+                                              IDENTIFIER
+                                                PsiElement(DLanguageTokenType.ID)('array')
                                         PsiElement(DLanguageTokenType.+)('+')
                                         DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                                           DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
@@ -129,7 +135,8 @@ D Language File
       DLanguageTypeImpl(TYPE)
         PsiElement(DLanguageTokenType.void)('void')
     FUNC_DECLARATION
-      PsiElement(DLanguageTokenType.ID)('diss')
+      IDENTIFIER
+        PsiElement(DLanguageTokenType.ID)('diss')
       DLanguageParametersImpl(PARAMETERS)
         PsiElement(DLanguageTokenType.()('(')
         PARAMETER
@@ -139,7 +146,8 @@ D Language File
             DLanguageTypeCtorImpl(TYPE_CTOR)
               PsiElement(DLanguageTokenType.[)('[')
               PsiElement(DLanguageTokenType.])(']')
-          PsiElement(DLanguageTokenType.ID)('array')
+          IDENTIFIER
+            PsiElement(DLanguageTokenType.ID)('array')
         PsiElement(DLanguageTokenType.))(')')
       DLanguageFunctionBodyImpl(FUNCTION_BODY)
         DLanguageBlockStatementImpl(BLOCK_STATEMENT)
@@ -155,7 +163,8 @@ D Language File
                           DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                             DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                               DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                PsiElement(DLanguageTokenType.ID)('array')
+                                IDENTIFIER
+                                  PsiElement(DLanguageTokenType.ID)('array')
                             DLanguageIndexExpressionImpl(INDEX_EXPRESSION)
                               PsiElement(DLanguageTokenType.[)('[')
                               DLanguageIndexExpressionImpl(INDEX_EXPRESSION)
@@ -186,7 +195,8 @@ D Language File
                                         DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                                           DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                                             DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                              PsiElement(DLanguageTokenType.ID)('array')
+                                              IDENTIFIER
+                                                PsiElement(DLanguageTokenType.ID)('array')
                                         PsiElement(DLanguageTokenType.+)('+')
                                         DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                                           DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
@@ -200,7 +210,8 @@ D Language File
       DLanguageTypeImpl(TYPE)
         PsiElement(DLanguageTokenType.void)('void')
     FUNC_DECLARATION
-      PsiElement(DLanguageTokenType.ID)('ditt')
+      IDENTIFIER
+        PsiElement(DLanguageTokenType.ID)('ditt')
       DLanguageParametersImpl(PARAMETERS)
         PsiElement(DLanguageTokenType.()('(')
         PARAMETER
@@ -215,7 +226,8 @@ D Language File
                     DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                       PsiElement(DLanguageTokenType.INTEGER_LITERAL)('3')
               PsiElement(DLanguageTokenType.])(']')
-          PsiElement(DLanguageTokenType.ID)('array')
+          IDENTIFIER
+            PsiElement(DLanguageTokenType.ID)('array')
         PsiElement(DLanguageTokenType.))(')')
       DLanguageFunctionBodyImpl(FUNCTION_BODY)
         DLanguageBlockStatementImpl(BLOCK_STATEMENT)
@@ -231,7 +243,8 @@ D Language File
                           DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                             DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                               DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                PsiElement(DLanguageTokenType.ID)('array')
+                                IDENTIFIER
+                                  PsiElement(DLanguageTokenType.ID)('array')
                             DLanguageIndexExpressionImpl(INDEX_EXPRESSION)
                               PsiElement(DLanguageTokenType.[)('[')
                               DLanguageIndexExpressionImpl(INDEX_EXPRESSION)
@@ -262,7 +275,8 @@ D Language File
                                         DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                                           DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                                             DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                              PsiElement(DLanguageTokenType.ID)('array')
+                                              IDENTIFIER
+                                                PsiElement(DLanguageTokenType.ID)('array')
                                         PsiElement(DLanguageTokenType.+)('+')
                                         DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                                           DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)

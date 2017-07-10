@@ -2,7 +2,8 @@ D Language File
   MODULE_DECLARATION
     PsiElement(DLanguageTokenType.module)('module')
     DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-      PsiElement(DLanguageTokenType.ID)('foo')
+      IDENTIFIER
+        PsiElement(DLanguageTokenType.ID)('foo')
     PsiElement(DLanguageTokenType.;)(';')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageTypeImpl(TYPE)
@@ -10,7 +11,8 @@ D Language File
         PsiElement(DLanguageTokenType.int)('int')
     DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
       DLanguageDeclaratorImpl(DECLARATOR)
-        PsiElement(DLanguageTokenType.ID)('x')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('x')
         PsiElement(DLanguageTokenType.=)('=')
         DLanguageInitializerImpl(INITIALIZER)
           DLanguageNonVoidInitializerImpl(NON_VOID_INITIALIZER)
@@ -29,7 +31,8 @@ D Language File
         PsiElement(DLanguageTokenType.int)('int')
     DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
       DLanguageDeclaratorImpl(DECLARATOR)
-        PsiElement(DLanguageTokenType.ID)('y')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('y')
         PsiElement(DLanguageTokenType.=)('=')
         DLanguageInitializerImpl(INITIALIZER)
           DLanguageNonVoidInitializerImpl(NON_VOID_INITIALIZER)

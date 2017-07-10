@@ -5,7 +5,8 @@ D Language File
         PsiElement(DLanguageTokenType.ubyte)('ubyte')
     DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
       DLanguageDeclaratorImpl(DECLARATOR)
-        PsiElement(DLanguageTokenType.ID)('u1')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('u1')
         PsiElement(DLanguageTokenType.=)('=')
         DLanguageInitializerImpl(INITIALIZER)
           DLanguageNonVoidInitializerImpl(NON_VOID_INITIALIZER)
@@ -32,7 +33,8 @@ D Language File
         PsiElement(DLanguageTokenType.ushort)('ushort')
     DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
       DLanguageDeclaratorImpl(DECLARATOR)
-        PsiElement(DLanguageTokenType.ID)('u2')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('u2')
         PsiElement(DLanguageTokenType.=)('=')
         DLanguageInitializerImpl(INITIALIZER)
           DLanguageNonVoidInitializerImpl(NON_VOID_INITIALIZER)
@@ -59,7 +61,8 @@ D Language File
         PsiElement(DLanguageTokenType.uint)('uint')
     DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
       DLanguageDeclaratorImpl(DECLARATOR)
-        PsiElement(DLanguageTokenType.ID)('u3')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('u3')
         PsiElement(DLanguageTokenType.=)('=')
         DLanguageInitializerImpl(INITIALIZER)
           DLanguageNonVoidInitializerImpl(NON_VOID_INITIALIZER)
@@ -86,7 +89,8 @@ D Language File
         PsiElement(DLanguageTokenType.ulong)('ulong')
     DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
       DLanguageDeclaratorImpl(DECLARATOR)
-        PsiElement(DLanguageTokenType.ID)('u4')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('u4')
         PsiElement(DLanguageTokenType.=)('=')
         DLanguageInitializerImpl(INITIALIZER)
           DLanguageNonVoidInitializerImpl(NON_VOID_INITIALIZER)

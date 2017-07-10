@@ -1,5 +1,8 @@
+unittest{
 assert(expression);
+}
 
+void func()
 in
 {
 }
@@ -64,6 +67,9 @@ class Foo
 
 auto mydate = new Date(); //class
 auto s = S();             //struct
-assert(mydate);           // check that class Date invariant holds
-assert(&s);               // check that struct S invariant holds
 
+unittest
+{
+    assert(mydate);           // check that class Date invariant holds
+    assert(&s);               // check that struct S invariant holds
+}

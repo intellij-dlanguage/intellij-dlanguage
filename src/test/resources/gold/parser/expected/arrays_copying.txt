@@ -13,7 +13,8 @@ D Language File
         PsiElement(DLanguageTokenType.])(']')
     DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
       DLanguageDeclaratorImpl(DECLARATOR)
-        PsiElement(DLanguageTokenType.ID)('s')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('s')
       PsiElement(DLanguageTokenType.;)(';')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageTypeImpl(TYPE)
@@ -29,7 +30,8 @@ D Language File
         PsiElement(DLanguageTokenType.])(']')
     DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
       DLanguageDeclaratorImpl(DECLARATOR)
-        PsiElement(DLanguageTokenType.ID)('t')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('t')
       PsiElement(DLanguageTokenType.;)(';')
   DLanguageDeclarationImpl(DECLARATION)
     UNIT_TESTING
@@ -48,7 +50,8 @@ D Language File
                           DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                             DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                               DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                PsiElement(DLanguageTokenType.ID)('s')
+                                IDENTIFIER
+                                  PsiElement(DLanguageTokenType.ID)('s')
                             DLanguageIndexExpressionImpl(INDEX_EXPRESSION)
                               PsiElement(DLanguageTokenType.[)('[')
                               PsiElement(DLanguageTokenType.])(']')
@@ -58,7 +61,8 @@ D Language File
                             DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                               DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                                 DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                  PsiElement(DLanguageTokenType.ID)('t')
+                                  IDENTIFIER
+                                    PsiElement(DLanguageTokenType.ID)('t')
                     PsiElement(DLanguageTokenType.;)(';')
             PsiComment(DLanguageTokenType.LINE_COMMENT)('// the 3 elements of t[3] are copied into s[3]')
             DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
@@ -71,7 +75,8 @@ D Language File
                           DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                             DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                               DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                PsiElement(DLanguageTokenType.ID)('s')
+                                IDENTIFIER
+                                  PsiElement(DLanguageTokenType.ID)('s')
                             DLanguageIndexExpressionImpl(INDEX_EXPRESSION)
                               PsiElement(DLanguageTokenType.[)('[')
                               PsiElement(DLanguageTokenType.])(']')
@@ -81,7 +86,8 @@ D Language File
                             DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                               DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                                 DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                  PsiElement(DLanguageTokenType.ID)('t')
+                                  IDENTIFIER
+                                    PsiElement(DLanguageTokenType.ID)('t')
                               DLanguageIndexExpressionImpl(INDEX_EXPRESSION)
                                 PsiElement(DLanguageTokenType.[)('[')
                                 PsiElement(DLanguageTokenType.])(']')
@@ -97,7 +103,8 @@ D Language File
                           DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                             DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                               DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                PsiElement(DLanguageTokenType.ID)('s')
+                                IDENTIFIER
+                                  PsiElement(DLanguageTokenType.ID)('s')
                             DLanguageIndexExpressionImpl(INDEX_EXPRESSION)
                               PsiElement(DLanguageTokenType.[)('[')
                               DLanguageIndexExpressionImpl(INDEX_EXPRESSION)
@@ -119,7 +126,8 @@ D Language File
                             DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                               DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                                 DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                  PsiElement(DLanguageTokenType.ID)('t')
+                                  IDENTIFIER
+                                    PsiElement(DLanguageTokenType.ID)('t')
                               DLanguageIndexExpressionImpl(INDEX_EXPRESSION)
                                 PsiElement(DLanguageTokenType.[)('[')
                                 DLanguageIndexExpressionImpl(INDEX_EXPRESSION)
@@ -147,7 +155,8 @@ D Language File
                           DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                             DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                               DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                PsiElement(DLanguageTokenType.ID)('s')
+                                IDENTIFIER
+                                  PsiElement(DLanguageTokenType.ID)('s')
                             DLanguageIndexExpressionImpl(INDEX_EXPRESSION)
                               PsiElement(DLanguageTokenType.[)('[')
                               DLanguageIndexExpressionImpl(INDEX_EXPRESSION)
@@ -169,7 +178,8 @@ D Language File
                             DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                               DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                                 DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                  PsiElement(DLanguageTokenType.ID)('t')
+                                  IDENTIFIER
+                                    PsiElement(DLanguageTokenType.ID)('t')
                               DLanguageIndexExpressionImpl(INDEX_EXPRESSION)
                                 PsiElement(DLanguageTokenType.[)('[')
                                 DLanguageIndexExpressionImpl(INDEX_EXPRESSION)

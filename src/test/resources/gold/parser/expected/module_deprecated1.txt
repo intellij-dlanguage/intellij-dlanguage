@@ -4,5 +4,6 @@ D Language File
       PsiElement(DLanguageTokenType.deprecated)('deprecated')
     PsiElement(DLanguageTokenType.module)('module')
     DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-      PsiElement(DLanguageTokenType.ID)('foo')
+      IDENTIFIER
+        PsiElement(DLanguageTokenType.ID)('foo')
     PsiElement(DLanguageTokenType.;)(';')

@@ -8,7 +8,8 @@ D Language File
         PsiElement(DLanguageTokenType.])(']')
     DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
       DLanguageDeclaratorImpl(DECLARATOR)
-        PsiElement(DLanguageTokenType.ID)('a')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('a')
       PsiElement(DLanguageTokenType.;)(';')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageTypeImpl(TYPE)
@@ -19,7 +20,8 @@ D Language File
         PsiElement(DLanguageTokenType.])(']')
     DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
       DLanguageDeclaratorImpl(DECLARATOR)
-        PsiElement(DLanguageTokenType.ID)('b')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('b')
       PsiElement(DLanguageTokenType.;)(';')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageTypeImpl(TYPE)
@@ -30,7 +32,8 @@ D Language File
         PsiElement(DLanguageTokenType.])(']')
     DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
       DLanguageDeclaratorImpl(DECLARATOR)
-        PsiElement(DLanguageTokenType.ID)('c')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('c')
       PsiElement(DLanguageTokenType.;)(';')
   DLanguageDeclarationImpl(DECLARATION)
     UNIT_TESTING
@@ -49,7 +52,8 @@ D Language File
                           DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                             DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                               DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                PsiElement(DLanguageTokenType.ID)('a')
+                                IDENTIFIER
+                                  PsiElement(DLanguageTokenType.ID)('a')
                         PsiElement(DLanguageTokenType.=)('=')
                         DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
                           DLanguageConditionalExpression_Impl(CONDITIONAL_EXPRESSION_)
@@ -57,12 +61,14 @@ D Language File
                               DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                                 DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                                   DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                    PsiElement(DLanguageTokenType.ID)('b')
+                                    IDENTIFIER
+                                      PsiElement(DLanguageTokenType.ID)('b')
                               PsiElement(DLanguageTokenType.~)('~')
                               DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                                 DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                                   DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                    PsiElement(DLanguageTokenType.ID)('c')
+                                    IDENTIFIER
+                                      PsiElement(DLanguageTokenType.ID)('c')
                     PsiElement(DLanguageTokenType.;)(';')
           PsiComment(DLanguageTokenType.LINE_COMMENT)('// Create an array from the concatenation')
           PsiComment(DLanguageTokenType.LINE_COMMENT)('// of the b and c arrays')

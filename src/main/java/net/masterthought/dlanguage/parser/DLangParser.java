@@ -44,43 +44,48 @@ class DLangParser {
     static HashMap<String, Token.IdType> tokenTypeIndex = new HashMap<>();
 
     static {
-        tokenTypeIndex.put("scriptLine", new Token.IdType(DLanguageTypes.SHEBANG));
-        tokenTypeIndex.put("identifier", new Token.IdType(DLanguageTypes.ID));
-        tokenTypeIndex.put("__DATE__", new Token.IdType(DLanguageTypes.KW___DATE__));//todo
-        tokenTypeIndex.put("__EOF__", new Token.IdType(DLanguageTypes.KW___EOF__));
-        tokenTypeIndex.put("__FILE__", new Token.IdType(DLanguageTypes.KW___FILE__));
-        tokenTypeIndex.put("__FILE_FULL_PATH__", new Token.IdType(DLanguageTypes.KW___FILE_FULL_PATH__));
-        tokenTypeIndex.put("__FUNCTION__", new Token.IdType(DLanguageTypes.KW___FUNCTION__));
-        tokenTypeIndex.put("__gshared", new Token.IdType(DLanguageTypes.KW___GSHARED));
-        tokenTypeIndex.put("__LINE__", new Token.IdType(DLanguageTypes.KW___LINE__));
-        tokenTypeIndex.put("__MODULE__", new Token.IdType(DLanguageTypes.KW___MODULE__));
-        tokenTypeIndex.put("__parameters", new Token.IdType(DLanguageTypes.KW___PARAMETERS));
-        tokenTypeIndex.put("__PRETTY_FUNCTION__", new Token.IdType(DLanguageTypes.KW___PRETTY_FUNCTION__));
-        tokenTypeIndex.put("__TIME__", new Token.IdType(DLanguageTypes.KW___TIME__));
-        tokenTypeIndex.put("__TIMESTAMP__", new Token.IdType(DLanguageTypes.KW___TIMESTAMP__));
-        tokenTypeIndex.put("__traits", new Token.IdType(DLanguageTypes.KW___TRAITS));
-        tokenTypeIndex.put("__vector", new Token.IdType(DLanguageTypes.KW___VECTOR));
-        tokenTypeIndex.put("__VENDOR__", new Token.IdType(DLanguageTypes.KW___VENDOR__));
-        tokenTypeIndex.put("__VERSION__", new Token.IdType(DLanguageTypes.KW___VERSION__));
-        tokenTypeIndex.put("", new Token.IdType(DLanguageTypes.SPECIAL_EMPTY_TOKEN));
-        tokenTypeIndex.put("floatLiteral", new Token.IdType(DLanguageTypes.FLOAT_LITERAL));
-        tokenTypeIndex.put("doubleLiteral", new Token.IdType(DLanguageTypes.FLOAT_LITERAL));//todo
-        tokenTypeIndex.put("idoubleLiteral", new Token.IdType(DLanguageTypes.FLOAT_LITERAL));//todo
-        tokenTypeIndex.put("ifloatLiteral", new Token.IdType(DLanguageTypes.FLOAT_LITERAL));//todo
-        tokenTypeIndex.put("realLiteral", new Token.IdType(DLanguageTypes.FLOAT_LITERAL));//todo
-        tokenTypeIndex.put("irealLiteral", new Token.IdType(DLanguageTypes.FLOAT_LITERAL));//todo
-        tokenTypeIndex.put("intLiteral", new Token.IdType(DLanguageTypes.INTEGER_LITERAL));
-        tokenTypeIndex.put("uintLiteral", new Token.IdType(DLanguageTypes.INTEGER_LITERAL));
-        tokenTypeIndex.put("longLiteral", new Token.IdType(DLanguageTypes.INTEGER_LITERAL));
-        tokenTypeIndex.put("ulongLiteral", new Token.IdType(DLanguageTypes.INTEGER_LITERAL));
-        tokenTypeIndex.put("characterLiteral", new Token.IdType(DLanguageTypes.CHARACTER_LITERAL));
-        tokenTypeIndex.put("stringLiteral", new Token.IdType(DLanguageTypes.DOUBLE_QUOTED_STRING));
-        tokenTypeIndex.put("dstringLiteral", new Token.IdType(DLanguageTypes.DOUBLE_QUOTED_STRING));//todo create an actual lexer entry for this
-        tokenTypeIndex.put("wstringLiteral", new Token.IdType(DLanguageTypes.WYSIWYG_STRING));//todo create an actual lexer entry for this
-        tokenTypeIndex.put("typedef", new Token.IdType(DLanguageTypes.ID));//todo create an actual lexer entry for this
+        tokenTypeIndex.put("scriptLine", new Token.IdType(SHEBANG));
+        tokenTypeIndex.put("identifier", new Token.IdType(ID));
+        tokenTypeIndex.put("__DATE__", new Token.IdType(KW___DATE__));//todo
+        tokenTypeIndex.put("__EOF__", new Token.IdType(KW___EOF__));
+        tokenTypeIndex.put("__FILE__", new Token.IdType(KW___FILE__));
+        tokenTypeIndex.put("__FILE_FULL_PATH__", new Token.IdType(KW___FILE_FULL_PATH__));
+        tokenTypeIndex.put("__FUNCTION__", new Token.IdType(KW___FUNCTION__));
+        tokenTypeIndex.put("__gshared", new Token.IdType(KW___GSHARED));
+        tokenTypeIndex.put("__LINE__", new Token.IdType(KW___LINE__));
+        tokenTypeIndex.put("__MODULE__", new Token.IdType(KW___MODULE__));
+        tokenTypeIndex.put("__parameters", new Token.IdType(KW___PARAMETERS));
+        tokenTypeIndex.put("__PRETTY_FUNCTION__", new Token.IdType(KW___PRETTY_FUNCTION__));
+        tokenTypeIndex.put("__TIME__", new Token.IdType(KW___TIME__));
+        tokenTypeIndex.put("__TIMESTAMP__", new Token.IdType(KW___TIMESTAMP__));
+        tokenTypeIndex.put("__traits", new Token.IdType(KW___TRAITS));
+        tokenTypeIndex.put("__vector", new Token.IdType(KW___VECTOR));
+        tokenTypeIndex.put("__VENDOR__", new Token.IdType(KW___VENDOR__));
+        tokenTypeIndex.put("__VERSION__", new Token.IdType(KW___VERSION__));
+        tokenTypeIndex.put("", new Token.IdType(SPECIAL_EMPTY_TOKEN));
+        tokenTypeIndex.put("floatLiteral", new Token.IdType(FLOAT_LITERAL));
+        tokenTypeIndex.put("doubleLiteral", new Token.IdType(FLOAT_LITERAL));//todo
+        tokenTypeIndex.put("idoubleLiteral", new Token.IdType(FLOAT_LITERAL));//todo
+        tokenTypeIndex.put("ifloatLiteral", new Token.IdType(FLOAT_LITERAL));//todo
+        tokenTypeIndex.put("realLiteral", new Token.IdType(FLOAT_LITERAL));//todo
+        tokenTypeIndex.put("irealLiteral", new Token.IdType(FLOAT_LITERAL));//todo
+        tokenTypeIndex.put("intLiteral", new Token.IdType(INTEGER_LITERAL));
+        tokenTypeIndex.put("uintLiteral", new Token.IdType(INTEGER_LITERAL));
+        tokenTypeIndex.put("longLiteral", new Token.IdType(INTEGER_LITERAL));
+        tokenTypeIndex.put("ulongLiteral", new Token.IdType(INTEGER_LITERAL));
+        tokenTypeIndex.put("characterLiteral", new Token.IdType(CHARACTER_LITERAL));
+        tokenTypeIndex.put("stringLiteral", new Token.IdType(DOUBLE_QUOTED_STRING));
+        tokenTypeIndex.put("dstringLiteral", new Token.IdType(ALTERNATE_WYSIWYG_STRING));//todo create an actual lexer entry for this
+        tokenTypeIndex.put("wstringLiteral", new Token.IdType(WYSIWYG_STRING));//todo create an actual lexer entry for this
+        tokenTypeIndex.put("tokenstringLiteral", new Token.IdType(TOKEN_STRING));//note has a special rule in advance to make up for the shortcomings of jflex. improvew this todo
+        tokenTypeIndex.put("typedef", new Token.IdType(ID));//todo create an actual lexer entry for this, could be the source of bugs
     }
 
-    final Set<Token.IdType> literals = Sets.newHashSet(tok("dstringLiteral"), tok("stringLiteral"), tok("wstringLiteral"), tok("characterLiteral"), tok("true"), tok("false"), tok("null"), tok("$"), tok("doubleLiteral"), tok("floatLiteral"), tok("idoubleLiteral"), tok("ifloatLiteral"), tok("intLiteral"), tok("longLiteral"), tok("realLiteral"), tok("irealLiteral"), tok("uintLiteral"), tok("ulongLiteral"), tok("__DATE__"), tok("__TIME__"), tok("__TIMESTAMP__"), tok("__VENDOR__"), tok("__VERSION__"), tok("__FILE__"), tok("__FILE_FULL_PATH__"), tok("__LINE__"), tok("__MODULE__"), tok("__FUNCTION__"), tok("__PRETTY_FUNCTION__"));
+    final Set<Token.IdType> stringLiteralsSet = Sets.newHashSet(tok("stringLiteral"), tok("wstringLiteral"), tok("dstringLiteral"), tok("tokenstringLiteral"));
+
+    final Token.IdType[] stringLiteralsArray = {tok("stringLiteral"), tok("wstringLiteral"), tok("dstringLiteral"), tok("tokenstringLiteral")};
+
+    final Set<Token.IdType> literals = Sets.newHashSet(tok("dstringLiteral"), tok("stringLiteral"), tok("wstringLiteral"), tok("tokenstringLiteral"), tok("characterLiteral"), tok("true"), tok("false"), tok("null"), tok("$"), tok("doubleLiteral"), tok("floatLiteral"), tok("idoubleLiteral"), tok("ifloatLiteral"), tok("intLiteral"), tok("longLiteral"), tok("realLiteral"), tok("irealLiteral"), tok("uintLiteral"), tok("ulongLiteral"), tok("__DATE__"), tok("__TIME__"), tok("__TIMESTAMP__"), tok("__VENDOR__"), tok("__VERSION__"), tok("__FILE__"), tok("__FILE_FULL_PATH__"), tok("__LINE__"), tok("__MODULE__"), tok("__FUNCTION__"), tok("__PRETTY_FUNCTION__"));
     final Set<Token.IdType> basicTypes = Sets.newHashSet(tok("int"), tok("bool"), tok("byte"), tok("cdouble"), tok("cent"), tok("cfloat"), tok("char"), tok("creal"), tok("dchar"), tok("double"), tok("float"), tok("idouble"), tok("ifloat"), tok("ireal"), tok("long"), tok("real"), tok("short"), tok("ubyte"), tok("ucent"), tok("uint"), tok("ulong"), tok("ushort"), tok("void"), tok("wchar"));
     public Token.IdType[] Protections = {tok("export"), tok("package"),
         tok("private"), tok("public"), tok("protected")};
@@ -167,10 +172,10 @@ class DLangParser {
         return tokenArray;
     }
 
-    public void cleanup(@NotNull Marker marker) {
-        index = beginnings.get(marker);
-        beginnings.remove(marker);
-        exit_section_modified(builder, marker, STATIC_IF_CONDITION, false);//the static if could be anything. todo make an actual dummy type for it
+    public void cleanup(@NotNull Marker marker, IElementType element) {
+//        index = beginnings.get(marker);
+//        beginnings.remove(marker);
+        exit_section_modified(builder, marker, element, true);
     }
 
     /**
@@ -209,13 +214,13 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_modified(builder);
         if (!tokenCheck("alias")) {
-            cleanup(m);
+            cleanup(m, ALIAS_DECLARATION);
             return false;
         }
         if (startsWith(tok("identifier"), tok("=")) || startsWith(tok("identifier"), tok("("))) {
             do {
                 if (!parseAliasInitializer()) {
-                    cleanup(m);
+                    cleanup(m, ALIAS_DECLARATION);
                     return false;
                 }
                 if (currentIs(tok(","))) {
@@ -228,33 +233,33 @@ class DLangParser {
         } else {
             while (moreTokens() && isStorageClass()) {
                 if (!parseStorageClass()) {
-                    cleanup(m);
+                    cleanup(m, ALIAS_DECLARATION);
                     return false;
                 }
             }
             if (!parseNodeQ("Type")) {
-                cleanup(m);
+                cleanup(m, ALIAS_DECLARATION);
                 return false;
             }
             if (!parseNodeQ("IdentifierList")) {
-                cleanup(m);
+                cleanup(m, ALIAS_DECLARATION);
                 return false;
             }
             if (currentIs(tok("("))) {
                 if (!parseNodeQ("Parameters")) {
-                    cleanup(m);
+                    cleanup(m, ALIAS_DECLARATION);
                     return false;
                 }
                 while (moreTokens() && currentIsMemberFunctionAttribute()) {
                     if (!parseMemberFunctionAttribute()) {
-                        cleanup(m);
+                        cleanup(m, ALIAS_DECLARATION);
                         return false;
                     }
                 }
             }
         }
         if (expect(tok(";")) == null) {
-            cleanup(m);
+            cleanup(m, ALIAS_DECLARATION);
             return false;
         }
         exit_section_modified(builder, m, ALIAS_DECLARATION, true);
@@ -288,33 +293,33 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_modified(builder);
         if (!tokenCheck("identifier")) {
-            cleanup(m);
+            cleanup(m, ALIAS_DECLARATION_Y);
             return false;
         }
         if (currentIs(tok("("))) {
             if (!parseNodeQ("TemplateParameters")) {
-                cleanup(m);
+                cleanup(m, ALIAS_DECLARATION_Y);
                 return false;
             }
         }
         if (!tokenCheck("=")) {
-            cleanup(m);
+            cleanup(m, ALIAS_DECLARATION_Y);
             return false;
         }
         if (isFunction()) {
             if (!parseNodeQ("FunctionLiteralExpression")) {
-                cleanup(m);
+                cleanup(m, ALIAS_DECLARATION_Y);
                 return false;
             }
         } else {
             while (moreTokens() && isStorageClass()) {
                 if (!parseStorageClass()) {
-                    cleanup(m);
+                    cleanup(m, ALIAS_DECLARATION_Y);
                     return false;
                 }
             }
             if (!parseNodeQ("Type")) {
-                cleanup(m);
+                cleanup(m, ALIAS_DECLARATION_Y);
                 return false;
             }
         }
@@ -334,19 +339,19 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_modified(builder,m,DLanguageTypes.AliasThisDeclaration,false);
         if (!tokenCheck("alias")) {
-            cleanup(m);
+            cleanup(m, ALIAS_THIS);
             return false;
         }
         if (!tokenCheck("identifier")) {
-            cleanup(m);
+            cleanup(m, ALIAS_THIS);
             return false;
         }
         if (!tokenCheck("this")) {
-            cleanup(m);
+            cleanup(m, ALIAS_THIS);
             return false;
         }
         if (expect(tok(";")) == null) {
-            cleanup(m);
+            cleanup(m, ALIAS_THIS);
             return false;
         }
         exit_section_modified(builder, m, ALIAS_THIS, true);
@@ -363,19 +368,18 @@ class DLangParser {
     boolean parseAlignAttribute() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_modified(builder);
-//			Runnable cleanup =() ->  exit_section_modified(builder,m,DLanguageTypes.AlignAttribute,false);
         expect(tok("align"));//todo note expect has an error side affect
         if (currentIs(tok("("))) {
             if (!tokenCheck("(")) {
-                cleanup(m);
+                cleanup(m, ALIGN_ATTRIBUTE);
                 return false;
             }
             if (!parseNodeQ("AssignExpression")) {
-                cleanup(m);
+                cleanup(m, ALIGN_ATTRIBUTE);
                 return false;
             }
             if (!tokenCheck(")")) {
-                cleanup(m);
+                cleanup(m, ALIGN_ATTRIBUTE);
                 return false;
             }
         }
@@ -447,7 +451,7 @@ class DLangParser {
         length.element = 0;
         boolean node = parseCommaSeparatedRule(length, "ArgumentList", "AssignExpression");
         if (!node) {
-            cleanup(argumentList);
+            cleanup(argumentList, ARGUMENT_LIST);
             return new Pair<>(false, -1);
         }
         exit_section_modified(builder, argumentList, ARGUMENT_LIST, true);
@@ -494,14 +498,14 @@ class DLangParser {
         final Marker arrayInit = enter_section_modified(builder);
         Token open = expect(tok("["));
         if (open == null) {
-            cleanup(arrayInit);
+            cleanup(arrayInit, ARRAY_INITIALIZER);
             return false;
         }
         while (moreTokens()) {
             if (currentIs(tok("]")))
                 break;
             if (!parseArrayMemberInitialization()) {
-                cleanup(arrayInit);
+                cleanup(arrayInit, ARRAY_INITIALIZER);
                 return false;
             }
             if (currentIs(tok(",")))
@@ -511,10 +515,9 @@ class DLangParser {
         }
         Token close = expect(tok("]"));
         if (close == null) {
-            cleanup(arrayInit);
+            cleanup(arrayInit, ARRAY_INITIALIZER);
             return false;
         }
-//            node.endLocation = close.index;
         exit_section_modified(builder, arrayInit, ARRAY_INITIALIZER, true);
         return true;
     }
@@ -531,17 +534,17 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_modified(builder,m,DLanguageTypes.ArrayLiteral,false);
         if (!tokenCheck("[")) {
-            cleanup(m);
+            cleanup(m, ARRAY_LITERAL);
             return false;
         }
         if (!currentIs(tok("]"))) {
             if (!parseNodeQ("ArgumentList")) {
-                cleanup(m);
+                cleanup(m, ARRAY_LITERAL);
                 return false;
             }
         }
         if (!tokenCheck("]")) {
-            cleanup(m);
+            cleanup(m, ARRAY_LITERAL);
             return false;
         }
         exit_section_modified(builder, m, ARRAY_LITERAL, true);
@@ -564,12 +567,12 @@ class DLangParser {
             skipBrackets();
             if (currentIs(tok(":"))) {
                 if (!parseNodeQ("AssignExpression")) {
-                    cleanup(m);
+                    cleanup(m, ARRAY_MEMBER_INITIALIZATION);
                     return false;
                 }
                 advance(); // :
                 if (!parseNodeQ("NonVoidInitializer")) {
-                    cleanup(m);
+                    cleanup(m, ARRAY_MEMBER_INITIALIZATION);
                     return false;
                 }
                 exit_section_modified(builder, m, ARRAY_MEMBER_INITIALIZATION, true);
@@ -580,7 +583,7 @@ class DLangParser {
         }
         if (current().type.equals(tok("{"))) {
             if (!parseNodeQ("NonVoidInitializer")) {
-                cleanup(m);
+                cleanup(m, ARRAY_MEMBER_INITIALIZATION);
                 return false;
             }
             exit_section_modified(builder, m, ARRAY_MEMBER_INITIALIZATION, true);
@@ -588,13 +591,13 @@ class DLangParser {
         } else {
             boolean assignExpression = parseAssignExpression();
             if (!assignExpression) {
-                cleanup(m);
+                cleanup(m, ARRAY_MEMBER_INITIALIZATION);
                 return false;
             }
             if (currentIs(tok(":"))) {
                 advance();
                 if (!parseNodeQ("NonVoidInitializer")) {
-                    cleanup(m);
+                    cleanup(m, ARRAY_MEMBER_INITIALIZATION);
                     return false;
                 }
             }
@@ -665,44 +668,44 @@ class DLangParser {
         if (currentIs(tok("["))) {
             advance(); // [
             if (!parseNodeQ("AsmExp")) {
-                cleanup(m);
+                cleanup(m, ASM_BR_EXP);
                 return false;
             }
             if (!tokenCheck("]")) {
-                cleanup(m);
+                cleanup(m, ASM_BR_EXP);
                 return false;
             }
             if (currentIs(tok("["))) {
                 while (currentIs(tok("["))) {
                     advance(); // [
                     if (!parseNodeQ("AsmExp")) {
-                        cleanup(m);
+                        cleanup(m, ASM_BR_EXP);
                         return false;
                     }
                     if (!tokenCheck("]")) {
-                        cleanup(m);
+                        cleanup(m, ASM_BR_EXP);
                         return false;
                     }
                 }
             }
         } else {
             if (!parseNodeQ("AsmUnaExp")) {
-                cleanup(m);
+                cleanup(m, ASM_BR_EXP);
                 return false;
             }
             while (currentIs(tok("["))) {
                 advance(); // [
                 if (!parseNodeQ("AsmExp")) {
-                    cleanup(m);
+                    cleanup(m, ASM_BR_EXP);
                     return false;
                 }
                 if (!tokenCheck("]")) {
-                    cleanup(m);
+                    cleanup(m, ASM_BR_EXP);
                     return false;
                 }
             }
         }
-        exit_section_modified(builder, m, DLanguageTypes.ASM_BR_EXP, true);
+        exit_section_modified(builder, m, ASM_BR_EXP, true);
         return true;
     }
 
@@ -741,21 +744,21 @@ class DLangParser {
 //            AsmExp node = allocator.make!AsmExp;
         final Marker m = enter_section_modified(builder);
         if (!parseNodeQ("AsmLogOrExp")) {
-            cleanup(m);
+            cleanup(m, ASM_EXP);
             return false;
         }
         if (currentIs(tok("?"))) {
             advance();
             if (!parseNodeQ("AsmExp")) {
-                cleanup(m);
+                cleanup(m, ASM_EXP);
                 return false;
             }
             if (!tokenCheck(":")) {
-                cleanup(m);
+                cleanup(m, ASM_EXP);
                 return false;
             }
             if (!parseNodeQ("AsmExp")) {
-                cleanup(m);
+                cleanup(m, ASM_EXP);
                 return false;
             }
         }
@@ -817,12 +820,12 @@ class DLangParser {
             if (t.type.equals(tok("identifier")) && currentIs(tok(":"))) {
                 advance(); // :
                 if (!parseNodeQ("AsmInstruction")) {
-                    cleanup(m);
+                    cleanup(m, ASM_INSTRUCTION);
                     return false;
                 }
             } else if (!currentIs(tok(";")))
                 if (!parseNodeQ("Operands")) {
-                    cleanup(m);
+                    cleanup(m, ASM_INSTRUCTION);
                     return false;
                 }
         }
@@ -949,25 +952,25 @@ class DLangParser {
             if ((Sets.newHashSet(Arrays.asList(REGISTER_NAMES))).contains(current().text)) {
                 trace("Found register");
                 if (!parseRegister()) {
-                    cleanup(m);
+                    cleanup(m, ASM_PRIMARY_EXP);
                     return false;
                 }
                 if (current().type.equals(tok(":"))) {
                     advance();
                     if (!parseNodeQ("AsmExp")) {
-                        cleanup(m);
+                        cleanup(m, ASM_PRIMARY_EXP);
                         return false;
                     }
                 }
             } else {
                 if (!parseNodeQ("IdentifierChain")) {
-                    cleanup(m);
+                    cleanup(m, ASM_PRIMARY_EXP);
                     return false;
                 }
             }
         } else {
             error("Float literal, integer literal, $, or identifier expected.");
-            cleanup(m);//this seems to be correct instead of exit_section true todo go through and fix
+            cleanup(m, ASM_PRIMARY_EXP);//this seems to be correct instead of exit_section true todo go through and fix
             return false;
         }
         exit_section_modified(builder, m, ASM_PRIMARY_EXP, true);
@@ -1035,7 +1038,7 @@ class DLangParser {
         while (isAttribute()) {
             if (!parseFunctionAttribute(true)) {
                 error("Function attribute or '{' expected");
-                cleanup(m);//todo these should probably be changed to drop
+                cleanup(m, ASM_STATEMENT);//todo these should probably be changed to drop
                 return false;
             }
         }
@@ -1078,10 +1081,11 @@ class DLangParser {
         final Marker m = enter_section_modified(builder);
         Token.IdType i = current().type;
         if (i.equals(tok("identifier")) || i.equals(tok("byte")) || i.equals(tok("short")) || i.equals(tok("int")) || i.equals(tok("float")) || i.equals(tok("double")) || i.equals(tok("real"))) {
+            String tokenText = builder.getTokenText();
             Token t = advance();
             if (t.type.equals(tok("identifier")))
 //                switch (t.text) {//todo t.text is probably not correct
-                switch (builder.getTokenText()) {
+                switch (tokenText) {
                     case "near":
                     case "far":
                     case "word":
@@ -1095,14 +1099,14 @@ class DLangParser {
                         return false;
                     }
                 }
-            if (currentIs(tok("identifier")) && current().text.equals("ptr")) {
+            if (currentIs(tok("identifier")) && builder.getTokenText().equals("ptr")) {
                 advance();
             }
             exit_section_modified(builder, m, ASM_TYPE_PREFIX, true);
             return true;
         } else {
             error("Expected an identifier, 'byte', 'short', 'int', 'float', 'double', or 'real'");
-            cleanup(m);
+            cleanup(m, ASM_TYPE_PREFIX);
             return false;
         }
     }
@@ -1128,7 +1132,7 @@ class DLangParser {
         if (i.equals(tok("+")) || i.equals(tok("-")) || i.equals(tok("!")) || i.equals(tok("~"))) {
             advance();
             if (!parseNodeQ("AsmUnaExp")) {
-                cleanup(m);
+                cleanup(m, ASM_UNA_EXP);
                 return false;
             }
         } else if (i.equals(tok("byte")) || i.equals(tok("short")) || i.equals(tok("int")) || i.equals(tok("float")) || i.equals(tok("double")) || i.equals(tok("real"))) {
@@ -1140,7 +1144,7 @@ class DLangParser {
                 case "seg": {
                     advance();
                     if (!parseNodeQ("AsmExp")) {
-                        cleanup(m);
+                        cleanup(m, ASM_UNA_EXP);
                         return false;
                     }
                     break;
@@ -1168,7 +1172,7 @@ class DLangParser {
 
     private boolean outerDefault(Marker m) {
         if (!parseNodeQ("AsmPrimaryExp")) {
-            cleanup(m);
+            cleanup(m, ASM_UNA_EXP);
             return false;
         }
         return true;
@@ -1176,11 +1180,11 @@ class DLangParser {
 
     private boolean typePrefix(Marker m) {
         if (!parseNodeQ("AsmTypePrefix")) {
-            cleanup(m);
+            cleanup(m, ASM_UNA_EXP);
             return false;
         }
         if (!parseNodeQ("AsmExp")) {
-            cleanup(m);
+            cleanup(m, ASM_UNA_EXP);
             return false;
         }
         return true;
@@ -1222,11 +1226,11 @@ class DLangParser {
         final Marker m = enter_section_modified(builder);
         advance(); // "assert"
         if (!tokenCheck("(")) {
-            cleanup(m);
+            cleanup(m, ASSERT_EXPRESSION);
             return false;
         }
         if (!parseNodeQ("AssignExpression")) {
-            cleanup(m);
+            cleanup(m, ASSERT_EXPRESSION);
             return false;
         }
         if (currentIs(tok(","))) {
@@ -1237,14 +1241,14 @@ class DLangParser {
                 return true;
             }
             if (!parseNodeQ("AssignExpression")) {
-                cleanup(m);
+                cleanup(m, ASSERT_EXPRESSION);
                 return false;
             }
         }
         if (currentIs(tok(",")))
             advance();
         if (!tokenCheck(")")) {
-            cleanup(m);
+            cleanup(m, ASSERT_EXPRESSION);
             return false;
         }
         exit_section_modified(builder, m, ASSERT_EXPRESSION, true);
@@ -1284,7 +1288,7 @@ class DLangParser {
         }
         boolean ternary = parseTernaryExpression();
         if (!ternary) {
-            cleanup(m);
+            cleanup(m, ASSIGN_EXPRESSION);
             return false;
         }
         if (currentIsOneOf(tok("="), tok(">>>="), tok(">>="), tok("<<="), tok("+="), tok("-="), tok("*="), tok("%="), tok("&="), tok("/="), tok("|="), tok("^^="), tok("^="), tok("~="))) {
@@ -1292,7 +1296,7 @@ class DLangParser {
 //                node.ternaryExpression = ternary;
             advance();
             if (!parseNodeQ("AssignExpression")) {
-                cleanup(m);
+                cleanup(m, ASSIGN_EXPRESSION);
                 return false;
             }
         }
@@ -1379,7 +1383,7 @@ class DLangParser {
 //			Runnable cleanup =() ->  exit_section_modified(builder,m,DLanguageTypes.AtAttribute,false);
         Token start = expect(tok("@"));
         if (start == null) {
-            cleanup(m);
+            cleanup(m, ATTRIBUTE);
             return false;
         }
         if (!moreTokens()) {
@@ -1392,7 +1396,7 @@ class DLangParser {
         if (i.equals(tok("identifier"))) {
             if (peekIs(tok("!"))) {
                 if (!parseNodeQ("TemplateInstance")) {
-                    cleanup(m);
+                    cleanup(m, ATTRIBUTE);
                     return false;
                 }
             } else
@@ -1401,7 +1405,7 @@ class DLangParser {
                 advance(); // (
                 if (!currentIs(tok(")"))) {
                     if (!parseNodeQ("ArgumentList")) {
-                        cleanup(m);
+                        cleanup(m, ATTRIBUTE);
                         return false;
                     }
                 }
@@ -1410,7 +1414,7 @@ class DLangParser {
         } else if (i.equals(tok("("))) {
             advance();
             if (!parseNodeQ("ArgumentList")) {
-                cleanup(m);
+                cleanup(m, ATTRIBUTE);
                 return false;
             }
             expect(tok(")"));
@@ -1458,26 +1462,25 @@ class DLangParser {
     boolean parseAttribute() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_modified(builder);
-//			Runnable cleanup =() ->  exit_section_modified(builder,m,DLanguageTypes.Attribute,false);
         Token.IdType i = current().type;
         if (i.equals(tok("pragma"))) {
             if (!parseNodeQ("PragmaExpression")) {
-                cleanup(m);
+                cleanup(m, ATTRIBUTE);
                 return false;
             }
         } else if (i.equals(tok("deprecated"))) {
             if (!parseNodeQ("Deprecated")) {
-                cleanup(m);
+                cleanup(m, ATTRIBUTE);
                 return false;
             }
         } else if (i.equals(tok("align"))) {
             if (!parseNodeQ("AlignAttribute")) {
-                cleanup(m);
+                cleanup(m, ATTRIBUTE);
                 return false;
             }
         } else if (i.equals(tok("@"))) {
             if (!parseNodeQ("AtAttribute")) {
-                cleanup(m);
+                cleanup(m, ATTRIBUTE);
                 return false;
             }
         } else if (i.equals(tok("package"))) {
@@ -1485,7 +1488,7 @@ class DLangParser {
             if (currentIs(tok("("))) {
                 expect(tok("("));
                 if (!parseNodeQ("IdentifierChain")) {
-                    cleanup(m);
+                    cleanup(m, ATTRIBUTE);
                     return false;
                 }
                 expect(tok(")"));
@@ -1493,7 +1496,7 @@ class DLangParser {
         } else if (i.equals(tok("extern"))) {
             if (peekIs(tok("("))) {
                 if (!parseNodeQ("LinkageAttribute")) {
-                    cleanup(m);
+                    cleanup(m, ATTRIBUTE);
                     return false;
                 }
                 exit_section_modified(builder, m, ATTRIBUTE, true);
@@ -1503,7 +1506,7 @@ class DLangParser {
         } else if (i.equals(tok("private")) || i.equals(tok("protected")) || i.equals(tok("public")) || i.equals(tok("export")) || i.equals(tok("static")) || i.equals(tok("abstract")) || i.equals(tok("final")) || i.equals(tok("override")) || i.equals(tok("synchronized")) || i.equals(tok("auto")) || i.equals(tok("scope")) || i.equals(tok("const")) || i.equals(tok("immutable")) || i.equals(tok("inout")) || i.equals(tok("shared")) || i.equals(tok("__gshared")) || i.equals(tok("nothrow")) || i.equals(tok("pure")) || i.equals(tok("ref"))) {
             advance();
         } else {
-            cleanup(m);
+            cleanup(m, ATTRIBUTE);
             return false;
         }
         exit_section_modified(builder, m, ATTRIBUTE, true);
@@ -1544,13 +1547,13 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
         while (isStorageClass()) {
             if (!parseStorageClass()) {
-                cleanup(m);
+                cleanup(m, AUTO_DECLARATION);
                 return false;
             }
         }
         do {
             if (!parseAutoDeclarationPart()) {
-                cleanup(m);
+                cleanup(m, AUTO_DECLARATION);
                 return false;
             }
             if (currentIs(tok(",")))
@@ -1560,7 +1563,7 @@ class DLangParser {
         } while (moreTokens());
         final Token semi = expect(tok(";"));
         if (semi == null) {
-            cleanup(m);
+            cleanup(m, AUTO_DECLARATION);
             return false;
         }
         exit_section_modified(builder, m, AUTO_DECLARATION, true);
@@ -1580,21 +1583,21 @@ class DLangParser {
         final Marker m = enter_section_modified(builder);
         Token i = expect(tok("identifier"));//todo
         if (i == null) {
-            cleanup(m);
+            cleanup(m, AUTO_DECLARATION_X);
             return false;
         }
         if (currentIs(tok("("))) {
             if (!parseNodeQ("TemplateParameters")) {
-                cleanup(m);
+                cleanup(m, AUTO_DECLARATION_X);
                 return false;
             }
         }
         if (!tokenCheck("=")) {
-            cleanup(m);
+            cleanup(m, AUTO_DECLARATION_X);
             return false;
         }
         if (!parseNodeQ("Initializer")) {
-            cleanup(m);
+            cleanup(m, AUTO_DECLARATION_X);
             return false;
         }
         exit_section_modified(builder, m, AUTO_DECLARATION_X, true);
@@ -1614,13 +1617,13 @@ class DLangParser {
 //			Runnable cleanup =() ->  exit_section_modified(builder,m,DLanguageTypes.BlockStatement,false);
         Token openBrace = expect(tok("{"));
         if (openBrace == null) {
-            cleanup(m);
+            cleanup(m, BLOCK_STATEMENT);
             return false;
         }
 //            node.startLocation = openBrace.index;
         if (!currentIs(tok("}"))) {
             if (!parseNodeQ("DeclarationsAndStatements")) {
-                cleanup(m);
+                cleanup(m, BLOCK_STATEMENT);
                 return false;
             }
         }
@@ -1663,7 +1666,7 @@ class DLangParser {
         if (i.equals(tok("identifier"))) {
             advance();
             if (!tokenCheck(";")) {
-                cleanup(m);
+                cleanup(m, BREAK_STATEMENT);
                 return false;
             }
         } else if (i.equals(tok(";"))) {
@@ -1707,7 +1710,7 @@ class DLangParser {
             advance();
         }
         if (!parseType2()) {
-            cleanup(m);
+            cleanup(m, BASE_CLASS_LIST);
             return false;
         }
         exit_section_modified(builder, m, BASE_CLASS_LIST, true);//todo needs type
@@ -1775,25 +1778,25 @@ class DLangParser {
 //            assert (low != null);
 //            node.low = low;
         if (!tokenCheck(":")) {
-            cleanup(m);
+            cleanup(m, CASE_RANGE_STATEMENT);
             return false;
         }
         if (!tokenCheck("..")) {
-            cleanup(m);
+            cleanup(m, CASE_RANGE_STATEMENT);
             return false;
         }
         expect(tok("case"));
         if (!parseNodeQ("AssignExpression")) {
-            cleanup(m);
+            cleanup(m, CASE_RANGE_STATEMENT);
             return false;
         }
         Token colon = expect(tok(":"));
         if (colon == null) {
-            cleanup(m);
+            cleanup(m, CASE_RANGE_STATEMENT);
             return false;
         }
         if (!parseNodeQ("DeclarationsAndStatements")) {
-            cleanup(m);
+            cleanup(m, CASE_RANGE_STATEMENT);
             return false;
         }
         exit_section_modified(builder, m, CASE_RANGE_STATEMENT, true);
@@ -1812,11 +1815,11 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
         Token colon = expect(tok(":"));
         if (colon == null) {
-            cleanup(m);
+            cleanup(m, CASE_STATEMENT);
             return false;
         }
         if (!parseDeclarationsAndStatements(false)) {
-            cleanup(m);
+            cleanup(m, CASE_STATEMENT);
             return false;
         }
         exit_section_modified(builder, m, CASE_STATEMENT, true);
@@ -1839,28 +1842,28 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
         expect(tok("cast"));
         if (!tokenCheck("(")) {
-            cleanup(m);
+            cleanup(m, CAST_EXPRESSION);
             return false;
         }
         if (!currentIs(tok(")"))) {
             if (isCastQualifier()) {
                 if (!parseNodeQ("CastQualifier")) {
-                    cleanup(m);
+                    cleanup(m, CAST_EXPRESSION);
                     return false;
                 }
             } else {
                 if (!parseNodeQ("Type")) {
-                    cleanup(m);
+                    cleanup(m, CAST_EXPRESSION);
                     return false;
                 }
             }
         }
         if (!tokenCheck(")")) {
-            cleanup(m);
+            cleanup(m, CAST_EXPRESSION);
             return false;
         }
         if (!parseNodeQ("UnaryExpression")) {
-            cleanup(m);
+            cleanup(m, CAST_EXPRESSION);
             return false;
         }
         exit_section_modified(builder, m, CAST_EXPRESSION, true);
@@ -1913,25 +1916,24 @@ class DLangParser {
     boolean parseCatch() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_modified(builder);
-//			Runnable cleanup =() ->  exit_section_modified(builder,m,DLanguageTypes.Catch,false);
         expect(tok("catch"));
         if (!tokenCheck("(")) {
-            cleanup(m);
+            cleanup(m, CATCH);
             return false;
         }
         if (!parseNodeQ("Type")) {
-            cleanup(m);
+            cleanup(m, CATCH);
             return false;
         }
         if (currentIs(tok("identifier"))) {
             advance();
         }
         if (!tokenCheck(")")) {
-            cleanup(m);
+            cleanup(m, CATCH);
             return false;
         }
         if (!parseNodeQ("DeclarationOrStatement")) {
-            cleanup(m);
+            cleanup(m, CATCH);
             return false;
         }
         exit_section_modified(builder, m, CATCH, true);
@@ -1954,12 +1956,12 @@ class DLangParser {
                 break;
             if (peekIs(tok("("))) {
                 if (!parseCatch()) {
-                    cleanup(m);
+                    cleanup(m, CATCHES);
                     return false;
                 }
             } else {
                 if (!parseNodeQ("LastCatch")) {
-                    cleanup(m);
+                    cleanup(m, CATCHES);
                     return false;
                 }
                 break;
@@ -2005,57 +2007,57 @@ class DLangParser {
         final Marker m = enter_section_modified(builder);
         boolean shift = parseShiftExpression();
         if (!shift) {
-            cleanup(m);
+            cleanup(m, CONDITIONAL_EXPRESSION_);
             return false;
         }
         if (!moreTokens()) {
-            exit_section_modified(builder, m, DLanguageTypes.CONDITIONAL_EXPRESSION_, true);//todo
+            exit_section_modified(builder, m, CONDITIONAL_EXPRESSION_, true);//todo
             return shift;
         }
         Token.IdType i = current().type;
         if (i.equals(tok("is"))) {
             if (!parseIdentityExpression(false)) {
-                cleanup(m);
+                cleanup(m, CONDITIONAL_EXPRESSION_);
                 return false;
             }
-            exit_section_modified(builder, m, DLanguageTypes.CONDITIONAL_EXPRESSION_, true);//todo
+            exit_section_modified(builder, m, CONDITIONAL_EXPRESSION_, true);//todo
             return true;
         } else if (i.equals(tok("in"))) {
             if (!parseInExpression(false)) {
-                cleanup(m);
+                cleanup(m, CONDITIONAL_EXPRESSION_);
                 return false;
             }
-            exit_section_modified(builder, m, DLanguageTypes.CONDITIONAL_EXPRESSION_, true);//todo
+            exit_section_modified(builder, m, CONDITIONAL_EXPRESSION_, true);//todo
             return true;
         } else if (i.equals(tok("!"))) {
             if (peekIs(tok("is"))) {
                 if (!parseIdentityExpression(false)) {
-                    cleanup(m);
+                    cleanup(m, CONDITIONAL_EXPRESSION_);
                     return false;
                 }
             } else if (peekIs(tok("in")))
                 if (!parseInExpression(false)) {
-                    cleanup(m);
+                    cleanup(m, CONDITIONAL_EXPRESSION_);
                     return false;
                 }
-            exit_section_modified(builder, m, DLanguageTypes.CONDITIONAL_EXPRESSION_, true);//todo
+            exit_section_modified(builder, m, CONDITIONAL_EXPRESSION_, true);//todo
             return true;
         } else if (i.equals(tok("<")) || i.equals(tok("<=")) || i.equals(tok(">")) || i.equals(tok(">=")) || i.equals(tok("!<>=")) || i.equals(tok("!<>")) || i.equals(tok("<>")) || i.equals(tok("<>=")) || i.equals(tok("!>")) || i.equals(tok("!>=")) || i.equals(tok("!<")) || i.equals(tok("!<="))) {
             if (!parseRelExpression(false)) {
-                cleanup(m);
+                cleanup(m, CONDITIONAL_EXPRESSION_);
                 return false;
             }
-            exit_section_modified(builder, m, DLanguageTypes.CONDITIONAL_EXPRESSION_, true);//todo
+            exit_section_modified(builder, m, CONDITIONAL_EXPRESSION_, true);//todo
             return true;
         } else if (i.equals(tok("==")) || i.equals(tok("!="))) {
             if (!parseEqualExpression(false)) {
-                cleanup(m);
+                cleanup(m, CONDITIONAL_EXPRESSION_);
                 return false;
             }
-            exit_section_modified(builder, m, DLanguageTypes.CONDITIONAL_EXPRESSION_, true);//todo TYPE
+            exit_section_modified(builder, m, CONDITIONAL_EXPRESSION_, true);//todo TYPE
             return true;
         } else {
-            exit_section_modified(builder, m, DLanguageTypes.CONDITIONAL_EXPRESSION_, true);//todo
+            exit_section_modified(builder, m, CONDITIONAL_EXPRESSION_, true);//todo
             return true;
         }
     }
@@ -2081,17 +2083,17 @@ class DLangParser {
         Token.IdType i = current().type;
         if (i.equals(tok("version"))) {
             if (!parseNodeQ("VersionCondition")) {
-                cleanup(m);
+                cleanup(m, CONDITIONAL_DECLARATION);
                 return false;
             }
         } else if (i.equals(tok("debug"))) {
             if (!parseNodeQ("DebugCondition")) {
-                cleanup(m);
+                cleanup(m, CONDITIONAL_DECLARATION);
                 return false;
             }
         } else if (i.equals(tok("static"))) {
             if (!parseNodeQ("StaticIfCondition")) {
-                cleanup(m);
+                cleanup(m, CONDITIONAL_DECLARATION);
                 return false;
             }
         } else {
@@ -2125,7 +2127,7 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_modified(builder);
         if (!parseNodeQ("CompileCondition")) {
-            cleanup(m);
+            cleanup(m, CONDITIONAL_DECLARATION);
             return false;
         }
         if (currentIs(tok(":")) || currentIs(tok("{"))) {
@@ -2138,17 +2140,17 @@ class DLangParser {
                 } else {
                     goToBookmark(b);
 //                        allocator.rollback(c);
-                    cleanup(m);
+                    cleanup(m, CONDITIONAL_DECLARATION);
                     return false;
                 }
             }
             if (brace)
                 if (!tokenCheck("}")) {
-                    cleanup(m);
+                    cleanup(m, CONDITIONAL_DECLARATION);
                     return false;
                 }
         } else if (!parseDeclaration(strict, true)) {
-            cleanup(m);
+            cleanup(m, CONDITIONAL_DECLARATION);
             return false;
         }
         if (currentIs(tok("else"))) {
@@ -2162,17 +2164,17 @@ class DLangParser {
             advance();
             while (moreTokens() && !currentIs(tok("}")))
                 if (!parseDeclaration(strict, true)) {
-                    cleanup(m);
+                    cleanup(m, CONDITIONAL_DECLARATION);
                     return false;
                 }
             if (brace)
                 if (!tokenCheck("}")) {
-                    cleanup(m);
+                    cleanup(m, CONDITIONAL_DECLARATION);
                     return false;
                 }
         } else {
             if (!parseDeclaration(strict, true)) {
-                cleanup(m);
+                cleanup(m, CONDITIONAL_DECLARATION);
                 return false;
             }
         }
@@ -2191,17 +2193,17 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_modified(builder);
         if (!parseNodeQ("CompileCondition")) {
-            cleanup(m);
+            cleanup(m, CONDITIONAL_STATEMENT);
             return false;
         }
         if (!parseNodeQ("DeclarationOrStatement")) {
-            cleanup(m);
+            cleanup(m, CONDITIONAL_STATEMENT);
             return false;
         }
         if (currentIs(tok("else"))) {
             advance();
             if (!parseNodeQ("DeclarationOrStatement")) {
-                cleanup(m);
+                cleanup(m, CONDITIONAL_STATEMENT);
                 return false;
             }
         }
@@ -2221,19 +2223,19 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
         Token ifToken = expect(tok("if"));
         if (ifToken == null) {
-            cleanup(m);
+            cleanup(m, CONSTRAINT);
             return false;
         }
         if (!tokenCheck("(")) {
-            cleanup(m);
+            cleanup(m, CONSTRAINT);
             return false;
         }
         if (!parseNodeQ("Expression")) {
-            cleanup(m);
+            cleanup(m, CONSTRAINT);
             return false;
         }
         if (!tokenCheck(")")) {
-            cleanup(m);
+            cleanup(m, CONSTRAINT);
             return false;
         }
         exit_section_modified(builder, m, CONSTRAINT, true);
@@ -2253,7 +2255,7 @@ class DLangParser {
         final Marker m = enter_section_modified(builder);
         Token t = expect(tok("this"));
         if (t == null) {
-            cleanup(m);
+            cleanup(m, CONSTRUCTOR);
             return false;
         }
         Token p = peekPastParens();
@@ -2261,28 +2263,28 @@ class DLangParser {
         if (p != null && p.type.equals(tok("("))) {
             isTemplate = true;
             if (!parseNodeQ("TemplateParameters")) {
-                cleanup(m);
+                cleanup(m, CONSTRUCTOR);
                 return false;
             }
         }
         if (!parseNodeQ("Parameters")) {
-            cleanup(m);
+            cleanup(m, CONSTRUCTOR);
             return false;
         }
         while (moreTokens() && currentIsMemberFunctionAttribute())
             if (!parseMemberFunctionAttribute()) {
-                cleanup(m);
+                cleanup(m, CONSTRUCTOR);
                 return false;
             }
         if (isTemplate && currentIs(tok("if")))
             if (!parseNodeQ("Constraint")) {
-                cleanup(m);
+                cleanup(m, CONSTRUCTOR);
                 return false;
             }
         if (currentIs(tok(";")))
             advance();
         else if (!parseNodeQ("FunctionBody")) {
-            cleanup(m);
+            cleanup(m, CONSTRUCTOR);
             return false;
         }
         exit_section_modified(builder, m, CONSTRUCTOR, true);
@@ -2300,14 +2302,14 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_modified(builder);
         if (!tokenCheck("continue")) {
-            cleanup(m);
+            cleanup(m, CONTINUE_STATEMENT);
             return false;
         }
         Token.IdType i = current().type;
         if (i.equals(tok("identifier"))) {
             advance();
             if (!tokenCheck(";")) {
-                cleanup(m);
+                cleanup(m, CONTINUE_STATEMENT);
                 return false;
             }
         } else if (i.equals(tok(";"))) {
@@ -2333,7 +2335,7 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
         Token d = expect(tok("debug"));
         if (d == null) {
-            cleanup(m);
+            cleanup(m, DEBUG_CONDITION);
             return false;
         }
         if (currentIs(tok("("))) {
@@ -2346,7 +2348,7 @@ class DLangParser {
                 return false;
             }
             if (!tokenCheck(")")) {
-                cleanup(m);
+                cleanup(m, DEBUG_CONDITION);
                 return false;
             }
         }
@@ -2365,11 +2367,11 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_modified(builder);
         if (!tokenCheck("debug")) {
-            cleanup(m);
+            cleanup(m, DEBUG_SPECIFICATION);
             return false;
         }
         if (!tokenCheck("=")) {
-            cleanup(m);
+            cleanup(m, DEBUG_SPECIFICATION);
             return false;
         }
         if (currentIsOneOf(tok("identifier"), tok("intLiteral"))) {
@@ -2380,7 +2382,7 @@ class DLangParser {
             return false;
         }
         if (!tokenCheck(";")) {
-            cleanup(m);
+            cleanup(m, DEBUG_SPECIFICATION);
             return false;
         }
         exit_section_modified(builder, m, DEBUG_SPECIFICATION, true);
@@ -2462,7 +2464,7 @@ class DLangParser {
             }
             if (currentIs(tok(":"))) {
                 if (!parseAttributeDeclaration(false)) {
-                    cleanup(m);
+                    cleanup(m, DECLARATION);
                     return false;
                 }
                 exit_section_modified(builder, m, DECLARATION, true);
@@ -2479,14 +2481,14 @@ class DLangParser {
 
         if (isAuto == DecType.autoVar) {
             if (!parseVariableDeclaration(true, true)) {
-                cleanup(m);
+                cleanup(m, DECLARATION);
                 return false;
             }
             exit_section_modified(builder, m, DECLARATION, true);
             return true;
         } else if (isAuto == DecType.autoFun) {
             if (!parseFunctionDeclaration(true, true)) {
-                cleanup(m);
+                cleanup(m, DECLARATION);
                 return false;
             }
             exit_section_modified(builder, m, DECLARATION, true);
@@ -2512,28 +2514,28 @@ class DLangParser {
 //                        auto c = allocator.setCheckpoint();
                     if (!parseDeclaration(strict)) {
 //                            allocator.rollback(c);
-                        cleanup(m);
+                        cleanup(m, DECLARATION);
                         return false;
                     }
                 }
 //                    ownArray(node.declarations, declarations);
                 if (!tokenCheck("}")) {
-                    cleanup(m);
+                    cleanup(m, DECLARATION);
                     return false;
                 }
             } else if (idType.equals(tok("alias"))) {
                 if (startsWith(tok("alias"), tok("identifier"), tok("this"))) {
                     if (!parseNodeQ("AliasThisDeclaration")) {
-                        cleanup(m);
+                        cleanup(m, DECLARATION);
                         return false;
                     }
                 } else if (!parseNodeQ("AliasDeclaration")) {
-                    cleanup(m);
+                    cleanup(m, DECLARATION);
                     return false;
                 }
             } else if (idType.equals(tok("class"))) {
                 if (!parseNodeQ("ClassDeclaration")) {
-                    cleanup(m);
+                    cleanup(m, DECLARATION);
                     return false;
                 }
             } else if (idType.equals(tok("this"))) {
@@ -2543,22 +2545,22 @@ class DLangParser {
                     Token past = peekPastParens();
                     goToBookmark(b);
                     if (past != null && past.type.equals(tok(";"))) {
-                        cleanup(m);
+                        cleanup(m, DECLARATION);
                         return false;
                     }
                 }
                 if (startsWith(tok("this"), tok("("), tok("this"), tok(")"))) {
                     if (!parseNodeQ("Postblit")) {
-                        cleanup(m);
+                        cleanup(m, DECLARATION);
                         return false;
                     }
                 } else if (!parseNodeQ("Constructor")) {
-                    cleanup(m);
+                    cleanup(m, DECLARATION);
                     return false;
                 }
             } else if (idType.equals(tok("~"))) {
                 if (!parseNodeQ("Destructor")) {
-                    cleanup(m);
+                    cleanup(m, DECLARATION);
                     return false;
                 }
             } else if (idType.equals(tok("enum"))) {
@@ -2567,7 +2569,7 @@ class DLangParser {
                 if (currentIsOneOf(tok(":"), tok("{"))) {
                     goToBookmark(b);
                     if (!parseNodeQ("AnonymousEnumDeclaration")) {
-                        cleanup(m);
+                        cleanup(m, DECLARATION);
                         return false;
                     }
                 } else if (currentIs(tok("identifier"))) {
@@ -2580,27 +2582,27 @@ class DLangParser {
                             goToBookmark(b);
                             boolean nodeFunctionDeclaration = parseFunctionDeclaration(true, true);
                             if (!nodeFunctionDeclaration) {
-                                cleanup(m);
+                                cleanup(m, DECLARATION);
                                 return false;
                             }
                         } else {
                             goToBookmark(b);
                             if (!parseNodeQ("EponymousTemplateDeclaration")) {
-                                cleanup(m);
+                                cleanup(m, DECLARATION);
                                 return false;
                             }
                         }
                     } else if (currentIsOneOf(tok(":"), tok("{"), tok(";"))) {
                         goToBookmark(b);
                         if (!parseNodeQ("EnumDeclaration")) {
-                            cleanup(m);
+                            cleanup(m, DECLARATION);
                             return false;
                         }
                     } else {
                         boolean eq = currentIs(tok("="));
                         goToBookmark(b);
                         if (!parseVariableDeclaration(true, eq)) {
-                            cleanup(m);
+                            cleanup(m, DECLARATION);
                             return false;
                         }
                     }
@@ -2608,24 +2610,24 @@ class DLangParser {
                     boolean s = isStorageClass();
                     goToBookmark(b);
                     if (!parseVariableDeclaration(true, s)) {
-                        cleanup(m);
+                        cleanup(m, DECLARATION);
                         return false;
                     }
                 }
             } else if (idType.equals(tok("import"))) {
                 if (!parseNodeQ("ImportDeclaration")) {
-                    cleanup(m);
+                    cleanup(m, DECLARATION);
                     return false;
                 }
             } else if (idType.equals(tok("interface"))) {
                 if (!parseNodeQ("InterfaceDeclaration")) {
-                    cleanup(m);
+                    cleanup(m, DECLARATION);
                     return false;
                 }
             } else if (idType.equals(tok("mixin"))) {
                 if (peekIs(tok("template"))) {
                     if (!parseNodeQ("MixinTemplateDeclaration")) {
-                        cleanup(m);
+                        cleanup(m, DECLARATION);
                         return false;
                     }
                 } else {
@@ -2636,7 +2638,7 @@ class DLangParser {
                         if (t != null && t.type.equals(tok(";"))) {
                             goToBookmark(b);
                             if (!parseNodeQ("MixinDeclaration")) {
-                                cleanup(m);
+                                cleanup(m, DECLARATION);
                                 return false;
                             }
                         } else {
@@ -2646,25 +2648,25 @@ class DLangParser {
                     } else {
                         goToBookmark(b);
                         if (!parseNodeQ("MixinDeclaration")) {
-                            cleanup(m);
+                            cleanup(m, DECLARATION);
                             return false;
                         }
                     }
                 }
             } else if (idType.equals(tok("pragma"))) {
                 if (!parseNodeQ("PragmaDeclaration")) {
-                    cleanup(m);
+                    cleanup(m, DECLARATION);
                     return false;
                 }
             } else if (idType.equals(tok("shared"))) {
                 if (startsWith(tok("shared"), tok("static"), tok("this"))) {
                     if (!parseNodeQ("SharedStaticConstructor")) {
-                        cleanup(m);
+                        cleanup(m, DECLARATION);
                         return false;
                     }
                 } else if (startsWith(tok("shared"), tok("static"), tok("~"))) {
                     if (!parseNodeQ("SharedStaticDestructor")) {
-                        cleanup(m);
+                        cleanup(m, DECLARATION);
                         return false;
                     }
                 } else {
@@ -2676,22 +2678,22 @@ class DLangParser {
             } else if (idType.equals(tok("static"))) {
                 if (peekIs(tok("this"))) {
                     if (!parseNodeQ("StaticConstructor")) {
-                        cleanup(m);
+                        cleanup(m, DECLARATION);
                         return false;
                     }
                 } else if (peekIs(tok("~"))) {
                     if (!parseNodeQ("StaticDestructor")) {
-                        cleanup(m);
+                        cleanup(m, DECLARATION);
                         return false;
                     }
                 } else if (peekIs(tok("if"))) {
                     if (!parseConditionalDeclaration(strict)) {
-                        cleanup(m);
+                        cleanup(m, DECLARATION);
                         return false;
                     }
                 } else if (peekIs(tok("assert"))) {
                     if (!parseNodeQ("StaticAssertDeclaration")) {
-                        cleanup(m);
+                        cleanup(m, DECLARATION);
                         return false;
                     }
                 } else {
@@ -2703,27 +2705,27 @@ class DLangParser {
 
             } else if (idType.equals(tok("struct"))) {
                 if (!parseNodeQ("StructDeclaration")) {
-                    cleanup(m);
+                    cleanup(m, DECLARATION);
                     return false;
                 }
             } else if (idType.equals(tok("template"))) {
                 if (!parseNodeQ("TemplateDeclaration")) {
-                    cleanup(m);
+                    cleanup(m, DECLARATION);
                     return false;
                 }
             } else if (idType.equals(tok("union"))) {
                 if (!parseNodeQ("UnionDeclaration")) {
-                    cleanup(m);
+                    cleanup(m, DECLARATION);
                     return false;
                 }
             } else if (idType.equals(tok("invariant"))) {
                 if (!parseNodeQ("Invariant")) {
-                    cleanup(m);
+                    cleanup(m, DECLARATION);
                     return false;
                 }
             } else if (idType.equals(tok("unittest"))) {
                 if (!parseNodeQ("Unittest")) {
-                    cleanup(m);
+                    cleanup(m, DECLARATION);
                     return false;
                 }
             } else if (idType.equals(tok("identifier")) || idType.equals(tok(".")) || idType.equals(tok("const")) || idType.equals(tok("immutable")) || idType.equals(tok("inout")) || idType.equals(tok("scope")) || idType.equals(tok("typeof")) || idType.equals(tok("__vector")) || idType.equals(tok("int")) || idType.equals(tok("bool")) || idType.equals(tok("byte")) || idType.equals(tok("cdouble")) || idType.equals(tok("cent")) || idType.equals(tok("cfloat")) || idType.equals(tok("char")) || idType.equals(tok("creal")) || idType.equals(tok("dchar")) || idType.equals(tok("double")) || idType.equals(tok("float")) || idType.equals(tok("idouble")) || idType.equals(tok("ifloat")) || idType.equals(tok("ireal")) || idType.equals(tok("long")) || idType.equals(tok("real")) || idType.equals(tok("short")) || idType.equals(tok("ubyte")) || idType.equals(tok("ucent")) || idType.equals(tok("uint")) || idType.equals(tok("ulong")) || idType.equals(tok("ushort")) || idType.equals(tok("void")) || idType.equals(tok("wchar"))) {
@@ -2734,12 +2736,12 @@ class DLangParser {
             } else if (idType.equals(tok("version"))) {
                 if (peekIs(tok("("))) {
                     if (!parseConditionalDeclaration(strict)) {
-                        cleanup(m);
+                        cleanup(m, DECLARATION);
                         return false;
                     }
                 } else if (peekIs(tok("="))) {
                     if (!parseNodeQ("VersionSpecification")) {
-                        cleanup(m);
+                        cleanup(m, DECLARATION);
                         return false;
                     }
                 } else {
@@ -2750,11 +2752,11 @@ class DLangParser {
             } else if (idType.equals(tok("debug"))) {
                 if (peekIs(tok("="))) {
                     if (!parseNodeQ("DebugSpecification")) {
-                        cleanup(m);
+                        cleanup(m, DECLARATION);
                         return false;
                     }
                 } else if (!parseConditionalDeclaration(strict)) {
-                    cleanup(m);
+                    cleanup(m, DECLARATION);
                     return false;
                 }
             } else {
@@ -2774,16 +2776,16 @@ class DLangParser {
     private boolean type(@NotNull Marker m) {
         boolean t = parseType();
         if ((!t) || !currentIs(tok("identifier"))) {
-            cleanup(m);
+            cleanup(m, DECLARATION);
             return false;
         }
         if (peekIs(tok("("))) {
             if (!parseFunctionDeclaration(!t, false)) {
-                cleanup(m);
+                cleanup(m, DECLARATION);
                 return false;
             }
         } else if (!parseVariableDeclaration(!t, false)) {
-            cleanup(m);
+            cleanup(m, DECLARATION);
             return false;
         }
         return true;//todo check that this heads to the last line of caller
@@ -2820,7 +2822,7 @@ class DLangParser {
 //                    allocator.rollback(c);
 //                advance();
                 if (suppressMessages > 0) {
-                    cleanup(m);
+                    cleanup(m, DECLARATION_STATEMENT);
                     return false;
                 }
             }
@@ -2830,8 +2832,9 @@ class DLangParser {
     }
 
     private void exit_section_modified(PsiBuilder builder, Marker m, IElementType type, boolean b) {
+        //todo there is no incorrect parsing
         beginnings.remove(m);
-        exit_section_(builder, m, type, b);
+        exit_section_(builder, m, type, true);
 
     }
 
@@ -2855,7 +2858,7 @@ class DLangParser {
 //                allocator.rollback(c);
             goToBookmark(b);
             if (!parseNodeQ("Statement")) {
-                cleanup(m);
+                cleanup(m, DECLARATION_STATEMENT);
                 return false;
             }
         } else {
@@ -2885,7 +2888,7 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
         Token id = expect(tok("identifier"));
         if (id == null) {
-            cleanup(m);
+            cleanup(m, DECLARATOR);
             return false;
         }
         if (currentIs(tok("["))) // dmd doesn't accept pointer after identifier
@@ -2893,27 +2896,27 @@ class DLangParser {
             warn("C-style array declaration.");
             while (moreTokens() && currentIs(tok("[")))
                 if (!parseTypeSuffix()) {
-                    cleanup(m);
+                    cleanup(m, DECLARATOR);
                     return false;
                 }
         }
         if (currentIs(tok("("))) {
             if (!parseTemplateParameters()) {
-                cleanup(m);
+                cleanup(m, DECLARATOR);
                 return false;
             }
             if (!tokenCheck("=")) {
-                cleanup(m);
+                cleanup(m, DECLARATOR);
                 return false;
             }
             if (!parseInitializer()) {
-                cleanup(m);
+                cleanup(m, DECLARATOR);
                 return false;
             }
         } else if (currentIs(tok("="))) {
             advance();
             if (!parseNodeQ("Initializer")) {
-                cleanup(m);
+                cleanup(m, DECLARATOR);
                 return false;
             }
         }
@@ -2932,16 +2935,16 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_modified(builder);
         if (!tokenCheck("default")) {
-            cleanup(m);
+            cleanup(m, DEFAULT_STATEMENT);
             return false;
         }
         Token colon = expect(tok(":"));
         if (colon == null) {
-            cleanup(m);
+            cleanup(m, DEFAULT_STATEMENT);
             return false;
         }
         if (!parseNodeQ("DeclarationsAndStatements")) {
-            cleanup(m);
+            cleanup(m, DEFAULT_STATEMENT);
             return false;
         }
         exit_section_modified(builder, m, DEFAULT_STATEMENT, true);
@@ -2959,11 +2962,11 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_modified(builder);
         if (!tokenCheck("delete")) {
-            cleanup(m);
+            cleanup(m, DELETE_EXPRESSION);
             return false;
         }
         if (!parseNodeQ("UnaryExpression")) {
-            cleanup(m);
+            cleanup(m, DELETE_EXPRESSION);
             return false;
         }
         exit_section_modified(builder, m, DELETE_EXPRESSION, true);
@@ -2981,17 +2984,17 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_modified(builder);
         if (!tokenCheck("deprecated")) {
-            cleanup(m);
+            cleanup(m, DEPRECATED_ATTRIBUTE);
             return false;
         }
         if (currentIs(tok("("))) {
             advance();
             if (!parseNodeQ("AssignExpression")) {
-                cleanup(m);
+                cleanup(m, DEPRECATED_ATTRIBUTE);
                 return false;
             }
             if (!tokenCheck(")")) {
-                cleanup(m);
+                cleanup(m, DEPRECATED_ATTRIBUTE);
                 return false;
             }
         }
@@ -3010,7 +3013,7 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_modified(builder);
         if (!tokenCheck("~")) {
-            cleanup(m);
+            cleanup(m, DESTRUCTOR);
             return false;
         }
         if (!moreTokens()) {
@@ -3019,15 +3022,15 @@ class DLangParser {
             return false;
         }
         if (!tokenCheck("this")) {
-            cleanup(m);
+            cleanup(m, DESTRUCTOR);
             return false;
         }
         if (!tokenCheck("(")) {
-            cleanup(m);
+            cleanup(m, DESTRUCTOR);
             return false;
         }
         if (!tokenCheck(")")) {
-            cleanup(m);
+            cleanup(m, DESTRUCTOR);
             return false;
         }
         if (currentIs(tok(";")))
@@ -3035,11 +3038,11 @@ class DLangParser {
         else {
             while (moreTokens() && currentIsMemberFunctionAttribute())
                 if (!parseMemberFunctionAttribute()) {
-                    cleanup(m);
+                    cleanup(m, DESTRUCTOR);
                     return false;
                 }
             if (!parseNodeQ("FunctionBody")) {
-                cleanup(m);
+                cleanup(m, DESTRUCTOR);
                 return false;
             }
         }
@@ -3058,31 +3061,31 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_modified(builder);
         if (!tokenCheck("do")) {
-            cleanup(m);
+            cleanup(m, DO_STATEMENT);
             return false;
         }
         if (!parseNodeQ("StatementNoCaseNoDefault")) {
-            cleanup(m);
+            cleanup(m, DO_STATEMENT);
             return false;
         }
         if (!tokenCheck("while")) {
-            cleanup(m);
+            cleanup(m, DO_STATEMENT);
             return false;
         }
         if (!tokenCheck("(")) {
-            cleanup(m);
+            cleanup(m, DO_STATEMENT);
             return false;
         }
         if (!parseNodeQ("Expression")) {
-            cleanup(m);
+            cleanup(m, DO_STATEMENT);
             return false;
         }
         if (!tokenCheck(")")) {
-            cleanup(m);
+            cleanup(m, DO_STATEMENT);
             return false;
         }
         if (!tokenCheck(";")) {
-            cleanup(m);
+            cleanup(m, DO_STATEMENT);
             return false;
         }
         exit_section_modified(builder, m, DO_STATEMENT, true);
@@ -3102,7 +3105,7 @@ class DLangParser {
         final Marker m = enter_section_modified(builder);
         Token open = expect(tok("{"));
         if (open == null) {
-            cleanup(m);
+            cleanup(m, ENUM_BODY);
             return false;
         }
         while (moreTokens()) {
@@ -3149,7 +3152,7 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
         if (currentIs(tok("identifier")) && peekIsOneOf(tok(","), tok("="), tok("}"))) {
             if (!tokenCheck("identifier")) {
-                cleanup(m);
+                cleanup(m, ENUM_MEMBER);
                 return false;
             }
             if (currentIs(tok("="))) {
@@ -3158,21 +3161,21 @@ class DLangParser {
             }
         } else if (typeAllowed) {
             if (!parseNodeQ("Type")) {
-                cleanup(m);
+                cleanup(m, ENUM_MEMBER);
                 return false;
             }
             if (!tokenCheck("identifier")) {
-                cleanup(m);
+                cleanup(m, ENUM_MEMBER);
                 return false;
             }
             if (!tokenCheck("=")) {
-                cleanup(m);
+                cleanup(m, ENUM_MEMBER);
                 return false;
             }
             if (!assignAnonEnumMember(m)) return false;
         } else {
             error("Cannot specify anonymous enum member type if anonymous enum has a base type.");
-            exit_section_modified(builder, m, ANONYMOUS_ENUM_DECLARATION, true);
+            exit_section_modified(builder, m, ENUM_MEMBER, true);
             return false;
         }
         exit_section_modified(builder, m, ENUM_MEMBER, true);
@@ -3181,7 +3184,7 @@ class DLangParser {
 
     private boolean assignAnonEnumMember(Marker m) {
         if (!parseNodeQ("AssignExpression")) {
-            cleanup(m);
+            cleanup(m, ENUM_MEMBER);
             return false;
         }
         return true;
@@ -3196,19 +3199,19 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_modified(builder);
         if (!tokenCheck("enum")) {
-            cleanup(m);
+            cleanup(m, ANONYMOUS_ENUM_DECLARATION);
             return false;
         }
         boolean hasBaseType = currentIs(tok(":"));
         if (hasBaseType) {
             advance();
             if (!parseNodeQ("Type")) {
-                cleanup(m);
+                cleanup(m, ANONYMOUS_ENUM_DECLARATION);
                 return false;
             }
         }
         if (!tokenCheck("{")) {
-            cleanup(m);
+            cleanup(m, ANONYMOUS_ENUM_DECLARATION);
             return false;
         }
         while (moreTokens()) {
@@ -3232,7 +3235,7 @@ class DLangParser {
         }
 //            ownArray(node.members, members);
         if (!tokenCheck("}")) {
-            cleanup(m);
+            cleanup(m, ANONYMOUS_ENUM_DECLARATION);
             return false;
         }
         exit_section_modified(builder, m, ANONYMOUS_ENUM_DECLARATION, true);
@@ -3251,11 +3254,11 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_modified(builder);
         if (!tokenCheck("enum")) {
-            cleanup(m);
+            cleanup(m, ENUM_DECLARATION);
             return false;
         }
         if (!tokenCheck("identifier")) {
-            cleanup(m);
+            cleanup(m, ENUM_DECLARATION);
             return false;
         }
         if (currentIs(tok(";"))) {
@@ -3266,12 +3269,12 @@ class DLangParser {
         if (currentIs(tok(":"))) {
             advance(); // skip ':'
             if (!parseNodeQ("Type")) {
-                cleanup(m);
+                cleanup(m, ENUM_DECLARATION);
                 return false;
             }
         }
         if (!parseNodeQ("EnumBody")) {
-            cleanup(m);
+            cleanup(m, ENUM_DECLARATION);
             return false;
         }
         exit_section_modified(builder, m, ENUM_DECLARATION, true);
@@ -3290,13 +3293,13 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_modified(builder);
         if (!tokenCheck("identifier")) {
-            cleanup(m);
+            cleanup(m, ENUM_MEMBER);
             return false;
         }
         if (currentIs(tok("="))) {
             advance();
             if (!parseNodeQ("AssignExpression")) {
-                cleanup(m);
+                cleanup(m, ENUM_MEMBER);
                 return false;
             }
         }
@@ -3317,17 +3320,17 @@ class DLangParser {
         advance(); // enum
         Token ident = expect(tok("identifier"));
         if (ident == null) {
-            cleanup(m);
+            cleanup(m, VAR_FUNC_DECLARATION);
             return false;
         }
         if (!parseNodeQ("TemplateParameters")) {
-            cleanup(m);
+            cleanup(m, VAR_FUNC_DECLARATION);
             return false;
         }
         expect(tok("="));
         if (!parseAssignExpression())
             if (!parseNodeQ("Type")) {
-                cleanup(m);
+                cleanup(m, VAR_FUNC_DECLARATION);
                 return false;
             }
         expect(tok(";"));
@@ -3352,7 +3355,7 @@ class DLangParser {
         if (parseShift) {
             boolean shift = parseShiftExpression();
             if (!shift) {
-                cleanup(m);
+                cleanup(m, EQUAL_EXPRESSION);
                 return false;
             }
         }
@@ -3360,7 +3363,7 @@ class DLangParser {
             advance();
         }
         if (!parseNodeQ("ShiftExpression")) {
-            cleanup(m);
+            cleanup(m, EQUAL_EXPRESSION);
             return false;
         }
         exit_section_modified(builder, m, EQUAL_EXPRESSION, true);
@@ -3378,7 +3381,7 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         final Marker m = enter_section_modified(builder);
         if (suppressedErrorCount > MAX_ERRORS) {
-            cleanup(m);
+            cleanup(m, EXPRESSION_STATEMENT);
             return false;
         }
         if (!moreTokens()) {
@@ -3404,12 +3407,12 @@ class DLangParser {
         if (parseExpression) {
             final boolean b = parseExpression();
             if (!b) {
-                cleanup(m);
+                cleanup(m, EXPRESSION_STATEMENT);
                 return false;
             }
         }
         if (expect(tok(";")) == null) {
-            cleanup(m);
+            cleanup(m, EXPRESSION_STATEMENT);
             return false;
         }
         exit_section_modified(builder, m, EXPRESSION_STATEMENT, true);
@@ -3442,11 +3445,11 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_modified(builder);
         if (!tokenCheck("finally")) {
-            cleanup(m);
+            cleanup(m, FINALLY_STATEMENT);
             return false;
         }
         if (!parseNodeQ("DeclarationOrStatement")) {
-            cleanup(m);
+            cleanup(m, FINALLY_STATEMENT);
             return false;
         }
         exit_section_modified(builder, m, FINALLY_STATEMENT, true);
@@ -3464,35 +3467,35 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_modified(builder);
         if (!tokenCheck("for")) {
-            cleanup(m);
+            cleanup(m, FOR_STATEMENT);
             return false;
         }
         if (!tokenCheck("(")) {
-            cleanup(m);
+            cleanup(m, FOR_STATEMENT);
             return false;
         }
         if (currentIs(tok(";")))
             advance();
         else if (!parseNodeQ("DeclarationOrStatement")) {
-            cleanup(m);
+            cleanup(m, FOR_STATEMENT);
             return false;
         }
         if (currentIs(tok(";")))
             advance();
         else {
             if (!parseNodeQ("Expression")) {
-                cleanup(m);
+                cleanup(m, FOR_STATEMENT);
                 return false;
             }
             expect(tok(";"));
         }
         if (!currentIs(tok(")")))
             if (!parseNodeQ("Expression")) {
-                cleanup(m);
+                cleanup(m, FOR_STATEMENT);
                 return false;
             }
         if (!tokenCheck(")")) {
-            cleanup(m);
+            cleanup(m, FOR_STATEMENT);
             return false;
         }
         // Intentionally return an incomplete parse tree so that DCD will work
@@ -3504,7 +3507,7 @@ class DLangParser {
         }
 
         if (!parseNodeQ("DeclarationOrStatement")) {
-            cleanup(m);
+            cleanup(m, FOR_STATEMENT);
             return false;
         }
         exit_section_modified(builder, m, FOR_STATEMENT, true);
@@ -3531,22 +3534,22 @@ class DLangParser {
             return false;
         }
         if (!tokenCheck("(")) {
-            cleanup(m);
+            cleanup(m, FOREACH_STATEMENT);
             return false;
         }
         final Pair<Boolean, Integer> booleanLengthPair = parseForeachTypeList();
         boolean feType = booleanLengthPair.first;
         if (!feType) {
-            cleanup(m);
+            cleanup(m, FOREACH_STATEMENT);
             return false;
         }
         boolean canBeRange = booleanLengthPair.second == 1;
         if (!tokenCheck(";")) {
-            cleanup(m);
+            cleanup(m, FOREACH_STATEMENT);
             return false;
         }
         if (!parseNodeQ("Expression")) {
-            cleanup(m);
+            cleanup(m, FOREACH_STATEMENT);
             return false;
         }
         if (currentIs(tok(".."))) {
@@ -3558,12 +3561,12 @@ class DLangParser {
             }
             advance();
             if (!parseNodeQ("Expression")) {
-                cleanup(m);
+                cleanup(m, FOREACH_STATEMENT);
                 return false;
             }
         }
         if (!tokenCheck(")")) {
-            cleanup(m);
+            cleanup(m, FOREACH_STATEMENT);
             return false;
         }
         if (currentIs(tok("}"))) {
@@ -3572,7 +3575,7 @@ class DLangParser {
             return true; // this line makes DCD better
         }
         if (!parseNodeQ("DeclarationOrStatement")) {
-            cleanup(m);
+            cleanup(m, FOREACH_STATEMENT);
             return false;
         }
         exit_section_modified(builder, m, FOREACH_STATEMENT, true);
@@ -3597,7 +3600,7 @@ class DLangParser {
             tok("inout"), tok("shared")) && !peekIs(tok("("))) {
             trace("\033[01;36mType constructor");
             if (!parseNodeQ("TypeConstructors")) {
-                cleanup(m);
+                cleanup(m, FOREACH_TYPE);
                 return false;
             }
         }
@@ -3610,12 +3613,12 @@ class DLangParser {
             return true;
         }
         if (!parseNodeQ("Type")) {
-            cleanup(m);
+            cleanup(m, FOREACH_TYPE);
             return false;
         }
         Token ident = expect(tok("identifier"));
         if (ident == null) {
-            cleanup(m);
+            cleanup(m, FOREACH_TYPE);
             return false;
         }
         exit_section_modified(builder, m, FOREACH_TYPE, true);
@@ -3650,11 +3653,10 @@ class DLangParser {
      */
     boolean parseFunctionAttribute(boolean validate) {
         Marker m = enter_section_modified(builder);
-//			Runnable cleanup =() ->  exit_section_modified(builder,m,DLanguageTypes.FunctionAttribute,false);
         Token.IdType i = current().type;
         if (i.equals(tok("@"))) {
             if (!parseNodeQ("AtAttribute")) {
-                cleanup(m);
+                cleanup(m, FUNCTION_ATTRIBUTE);
                 return false;
             }
         } else if (i.equals(tok("pure")) || i.equals(tok("nothrow"))) {
@@ -3665,7 +3667,7 @@ class DLangParser {
                 exit_section_modified(builder, m, FUNCTION_ATTRIBUTE, true);
                 return false;
             }
-            cleanup(m);
+            cleanup(m, FUNCTION_ATTRIBUTE);
             return false;
         }
         exit_section_modified(builder, m, FUNCTION_ATTRIBUTE, true);
@@ -3689,28 +3691,28 @@ class DLangParser {
             return true;
         } else if (currentIs(tok("{"))) {
             if (!parseNodeQ("BlockStatement")) {
-                cleanup(m);
+                cleanup(m, FUNCTION_BODY);
                 return false;
             }
         } else if (currentIsOneOf(tok("in"), tok("out"), tok("body"))) {
             if (currentIs(tok("in"))) {
                 if (!parseNodeQ("InStatement")) {
-                    cleanup(m);
+                    cleanup(m, FUNCTION_BODY);
                     return false;
                 }
                 if (currentIs(tok("out")))
                     if (!parseNodeQ("OutStatement")) {
-                        cleanup(m);
+                        cleanup(m, FUNCTION_BODY);
                         return false;
                     }
             } else if (currentIs(tok("out"))) {
                 if (!parseNodeQ("OutStatement")) {
-                    cleanup(m);
+                    cleanup(m, FUNCTION_BODY);
                     return false;
                 }
                 if (currentIs(tok("in")))
                     if (!parseNodeQ("InStatement")) {
-                        cleanup(m);
+                        cleanup(m, FUNCTION_BODY);
                         return false;
                     }
             }
@@ -3718,7 +3720,7 @@ class DLangParser {
             // valid inside of interfaces.
             if (currentIs(tok("body")))
                 if (!parseNodeQ("BodyStatement")) {
-                    cleanup(m);
+                    cleanup(m, FUNCTION_BODY);
                     return false;
                 }
         } else {
@@ -3750,31 +3752,31 @@ class DLangParser {
         Token.IdType i = current().type;
         if (i.equals(tok("const")) || i.equals(tok("immutable")) || i.equals(tok("inout")) || i.equals(tok("shared")) || i.equals(tok("scope")) || i.equals(tok("pure")) || i.equals(tok("nothrow"))) {
             if (!parseNodeQ("Type")) {
-                cleanup(m);
+                cleanup(m, ASSIGN_EXPRESSION);
                 return false;
             }
             if (!parseNodeQ("Arguments")) {
-                cleanup(m);
+                cleanup(m, ASSIGN_EXPRESSION);
                 return false;
             }
         } else {
             if (!parseUnary) {
             } else if (!parseNodeQ("UnaryExpression")) {
-                cleanup(m);
+                cleanup(m, ASSIGN_EXPRESSION);
                 return false;
             }
             if (currentIs(tok("!")))
                 if (!parseNodeQ("TemplateArguments")) {
-                    cleanup(m);
+                    cleanup(m, ASSIGN_EXPRESSION);
                     return false;
                 }
             if (!parseUnary)
                 if (!parseNodeQ("Arguments")) {
-                    cleanup(m);
+                    cleanup(m, ASSIGN_EXPRESSION);
                     return false;
                 }
         }
-        exit_section_modified(builder, m, null, true);//todo type
+        exit_section_modified(builder, m, ASSIGN_EXPRESSION, true);//todo type
         return true;
     }
 
@@ -3797,7 +3799,7 @@ class DLangParser {
         if (isAuto) {
             while (isStorageClass())
                 if (!parseStorageClass()) {
-                    cleanup(m);
+                    cleanup(m, FUNC_DECLARATION);
                     return false;
                 }
 //                for( a; node.attributes)
@@ -3812,18 +3814,18 @@ class DLangParser {
         } else {
             while (moreTokens() && currentIsMemberFunctionAttribute())
                 if (!parseMemberFunctionAttribute()) {
-                    cleanup(m);
+                    cleanup(m, FUNC_DECLARATION);
                     return false;
                 }
             if (parseType) {
                 if (!parseNodeQ("Type")) {
-                    cleanup(m);
+                    cleanup(m, FUNC_DECLARATION);
                     return false;
                 }
             }
         }
         if (!tokenCheck("identifier")) {
-            cleanup(m);
+            cleanup(m, FUNC_DECLARATION);
             return false;
         }
         if (!currentIs(tok("("))) {
@@ -3835,22 +3837,22 @@ class DLangParser {
         boolean isTemplate = p != null && p.type.equals(tok("("));
         if (isTemplate) {
             if (!parseNodeQ("TemplateParameters")) {
-                cleanup(m);
+                cleanup(m, FUNC_DECLARATION);
                 return false;
             }
         }
         if (!parseNodeQ("Parameters")) {
-            cleanup(m);
+            cleanup(m, FUNC_DECLARATION);
             return false;
         }
         while (moreTokens() && currentIsMemberFunctionAttribute())
             if (!parseMemberFunctionAttribute()) {
-                cleanup(m);
+                cleanup(m, FUNC_DECLARATION);
                 return false;
             }
         if (isTemplate && currentIs(tok("if"))) {
             if (!parseNodeQ("Constraint")) {
-                cleanup(m);
+                cleanup(m, FUNC_DECLARATION);
                 return false;
             }
         }
@@ -3858,7 +3860,7 @@ class DLangParser {
             advance();
         else {
             if (!parseNodeQ("FunctionBody")) {
-                cleanup(m);
+                cleanup(m, FUNC_DECLARATION);
                 return false;
             }
         }
@@ -3888,7 +3890,7 @@ class DLangParser {
             if (!currentIsOneOf(tok("("), tok("in"), tok("body"),
                 tok("out"), tok("{"), tok("=>")))
                 if (!parseNodeQ("Type")) {
-                    cleanup(m);
+                    cleanup(m, FUNCTION_LITERAL);
                     return false;
                 }
         }
@@ -3896,14 +3898,14 @@ class DLangParser {
             advance();
             advance(); // =>
             if (!parseNodeQ("AssignExpression")) {
-                cleanup(m);
+                cleanup(m, FUNCTION_LITERAL);
                 return false;
             }
             exit_section_modified(builder, m, FUNCTION_LITERAL, true);//todo type
             return true;
         } else if (currentIs(tok("("))) {
             if (!parseNodeQ("Parameters")) {
-                cleanup(m);
+                cleanup(m, FUNCTION_LITERAL);
                 return false;
             }
             while (currentIsMemberFunctionAttribute()) {
@@ -3917,11 +3919,11 @@ class DLangParser {
         if (currentIs(tok("=>"))) {
             advance();
             if (!parseNodeQ("AssignExpression")) {
-                cleanup(m);
+                cleanup(m, FUNCTION_LITERAL);
                 return false;
             }
         } else if (!parseNodeQ("FunctionBody")) {
-            cleanup(m);
+            cleanup(m, FUNCTION_LITERAL);
             return false;
         }
         exit_section_modified(builder, m, FUNCTION_LITERAL, true);
@@ -3939,7 +3941,7 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_modified(builder);
         if (!tokenCheck("goto")) {
-            cleanup(m);
+            cleanup(m, GOTO_STATEMENT);
             return false;
         }
         Token.IdType i = current().type;
@@ -3949,7 +3951,7 @@ class DLangParser {
             advance();
             if (!currentIs(tok(";")))
                 if (!parseNodeQ("Expression")) {
-                    cleanup(m);
+                    cleanup(m, GOTO_STATEMENT);
                     return false;
                 }
         } else {
@@ -3958,7 +3960,7 @@ class DLangParser {
             return false;//todo cleanup?
         }
         if (!tokenCheck(";")) {
-            cleanup(m);
+            cleanup(m, GOTO_STATEMENT);
             return false;
         }
         exit_section_modified(builder, m, GOTO_STATEMENT, true);
@@ -3977,7 +3979,7 @@ class DLangParser {
         while (moreTokens()) {
             Token ident = expect(tok("identifier"));
             if (ident == null) {
-                cleanup(m);
+                cleanup(m, IDENTIFIER_LIST);
                 return false;
             }
             if (currentIs(tok("."))) {
@@ -4002,7 +4004,7 @@ class DLangParser {
         while (moreTokens()) {
             Token ident = expect(tok("identifier"));
             if (ident == null) {
-                cleanup(m);
+                cleanup(m, IDENTIFIER_LIST);
                 return false;
             }
             if (currentIs(tok(","))) {
@@ -4031,7 +4033,7 @@ class DLangParser {
                 identifiersOrTemplateInstancesLength++;
 //                    allocator.rollback(c);
                 if (identifiersOrTemplateInstancesLength == 0) {
-                    cleanup(m);
+                    cleanup(m, IDENTIFIER_LIST);
                     return false;
                 } else
                     break;
@@ -4058,13 +4060,13 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
         if (peekIs(tok("!")) && !startsWith(tok("identifier"), tok("!"), tok("is")) && !startsWith(tok("identifier"), tok("!"), tok("in"))) {
             if (!parseNodeQ("TemplateInstance")) {
-                cleanup(m);
+                cleanup(m, IDENTIFIER_LIST);
                 return false;
             }
         } else {
             Token ident = expect(tok("identifier"));
             if (ident == null) {
-                cleanup(m);
+                cleanup(m, IDENTIFIER_LIST);
                 return false;
             }
         }
@@ -4089,7 +4091,7 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
         if (parseShift) {
             if (!parseShiftExpression()) {
-                cleanup(m);
+                cleanup(m, IDENTITY_EXPRESSION);
                 return false;
             }
         }
@@ -4097,11 +4099,11 @@ class DLangParser {
             advance();
         }
         if (!tokenCheck("is")) {
-            cleanup(m);
+            cleanup(m, IDENTITY_EXPRESSION);
             return false;
         }
         if (!parseNodeQ("ShiftExpression")) {
-            cleanup(m);
+            cleanup(m, IDENTITY_EXPRESSION);
             return false;
         }
         exit_section_modified(builder, m, IDENTITY_EXPRESSION, true);
@@ -4124,11 +4126,11 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_modified(builder);
         if (!tokenCheck("if")) {
-            cleanup(m);
+            cleanup(m, IF_STATEMENT);
             return false;
         }
         if (!tokenCheck("(")) {
-            cleanup(m);
+            cleanup(m, IF_STATEMENT);
             return false;
         }
         if (currentIs(tok("auto"))) {
@@ -4137,7 +4139,7 @@ class DLangParser {
             if (i != null)
                 expect(tok("="));
             if (!parseNodeQ("Expression")) {
-                cleanup(m);
+                cleanup(m, IF_STATEMENT);
                 return false;
             }
         } else {
@@ -4164,28 +4166,28 @@ class DLangParser {
 //                    allocator.rollback(c);
                 goToBookmark(b);
                 if (!parseNodeQ("Expression")) {
-                    cleanup(m);
+                    cleanup(m, IF_STATEMENT);
                     return false;
                 }
             } else {
                 abandonBookmark(b);
                 if (!tokenCheck("identifier")) {
-                    cleanup(m);
+                    cleanup(m, IF_STATEMENT);
                     return false;
                 }
                 if (!tokenCheck("=")) {
-                    cleanup(m);
+                    cleanup(m, IF_STATEMENT);
                     return false;
                 }
                 if (!parseNodeQ("Expression")) {
-                    cleanup(m);
+                    cleanup(m, IF_STATEMENT);
                     return false;
                 }
             }
         }
 
         if (!tokenCheck(")")) {
-            cleanup(m);
+            cleanup(m, IF_STATEMENT);
             return false;
         }
         if (currentIs(tok("}"))) {
@@ -4194,13 +4196,13 @@ class DLangParser {
             return true; // this line makes DCD better
         }
         if (!parseNodeQ("DeclarationOrStatement")) {
-            cleanup(m);
+            cleanup(m, IF_STATEMENT);
             return false;
         }
         if (currentIs(tok("else"))) {
             advance();
             if (!parseNodeQ("DeclarationOrStatement")) {
-                cleanup(m);
+                cleanup(m, IF_STATEMENT);
                 return false;
             }
         }
@@ -4219,14 +4221,14 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
         Token ident = expect(tok("identifier"));
         if (ident == null) {
-            cleanup(m);
+            cleanup(m, IMPORT_BIND);
             return false;
         }
         if (currentIs(tok("="))) {
             advance();
             Token id = expect(tok("identifier"));
             if (id == null) {
-                cleanup(m);
+                cleanup(m, IMPORT_BIND);
                 return false;
             }
         }
@@ -4245,12 +4247,12 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
         if (parseSingleImport) {
             if (!parseSingleImport()) {
-                cleanup(m);
+                cleanup(m, IMPORT_BIND_LIST);
                 return false;
             }
         }
         if (!tokenCheck(":")) {
-            cleanup(m);
+            cleanup(m, IMPORT_BIND_LIST);
             return false;
         }
         while (moreTokens()) {
@@ -4280,12 +4282,12 @@ class DLangParser {
     boolean parseImportDeclaration() {
         Marker m = enter_section_modified(builder);
         if (!tokenCheck("import")) {
-            cleanup(m);
+            cleanup(m, IMPORT_DECLARATION);
             return false;
         }
         boolean si = parseSingleImport();
         if (!si) {
-            cleanup(m);
+            cleanup(m, IMPORT_DECLARATION);
             return false;
         }
         if (currentIs(tok(":")))
@@ -4296,7 +4298,7 @@ class DLangParser {
                 while (moreTokens()) {
                     boolean single = parseSingleImport();
                     if (!single) {
-                        cleanup(m);
+                        cleanup(m, IMPORT_DECLARATION);
                         return false;
                     }
                     if (currentIs(tok(":"))) {
@@ -4312,7 +4314,7 @@ class DLangParser {
             }
         }
         if (!tokenCheck(";")) {
-            cleanup(m);
+            cleanup(m, IMPORT_DECLARATION);
             return false;
         }
         exit_section_modified(builder, m, IMPORT_DECLARATION, true);
@@ -4347,13 +4349,13 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_modified(builder);
         if (!parseNodeQ("AssignExpression")) {
-            cleanup(m);
+            cleanup(m, INDEX_EXPRESSION);
             return false;
         }
         if (currentIs(tok(".."))) {
             advance();
             if (!parseNodeQ("AssignExpression")) {
-                cleanup(m);
+                cleanup(m, INDEX_EXPRESSION);
                 return false;
             }
         }
@@ -4380,12 +4382,12 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
         if (parseUnary) {
             if (!parseUnaryExpression()) {
-                cleanup(m);
+                cleanup(m, INDEX_EXPRESSION);
                 return false;
             }
         }
         if (!tokenCheck("[")) {
-            cleanup(m);
+            cleanup(m, INDEX_EXPRESSION);
             return false;
         }
         while (true) {
@@ -4397,7 +4399,7 @@ class DLangParser {
             if (currentIs(tok("]")))
                 break;
             if (!(parseIndex())) {
-                cleanup(m);
+                cleanup(m, INDEX_EXPRESSION);
                 return false;
             }
             if (currentIs(tok(",")))
@@ -4426,7 +4428,7 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
         if (parseShift) {
             if (!parseShiftExpression()) {
-                cleanup(m);
+                cleanup(m, IN_EXPRESSION);
                 return false;
             }
         }
@@ -4434,11 +4436,11 @@ class DLangParser {
             advance();
         }
         if (!tokenCheck("in")) {
-            cleanup(m);
+            cleanup(m, IN_EXPRESSION);
             return false;
         }
         if (!parseNodeQ("ShiftExpression")) {
-            cleanup(m);
+            cleanup(m, IN_EXPRESSION);
             return false;
         }
         exit_section_modified(builder, m, IN_EXPRESSION, true);
@@ -4456,11 +4458,11 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
         Token i = expect(tok("in"));
         if (i == null) {
-            cleanup(m);
+            cleanup(m, IN_STATEMENT);
             return false;
         }
         if (!parseNodeQ("BlockStatement")) {
-            cleanup(m);
+            cleanup(m, IN_STATEMENT);
             return false;
         }
         exit_section_modified(builder, m, IN_STATEMENT, true);
@@ -4480,7 +4482,7 @@ class DLangParser {
         if (currentIs(tok("void")) && peekIsOneOf(tok(","), tok(";")))
             advance();
         else if (!parseNodeQ("NonVoidInitializer")) {
-            cleanup(m);
+            cleanup(m, INITIALIZER);
             return false;
         }
         exit_section_modified(builder, m, INITIALIZER, true);
@@ -4515,18 +4517,18 @@ class DLangParser {
     boolean parseInvariant() {
         Marker m = enter_section_modified(builder);
         if (!tokenCheck("invariant")) {
-            cleanup(m);
+            cleanup(m, INVARIANT);
             return false;
         }
         if (currentIs(tok("("))) {
             advance();
             if (!tokenCheck(")")) {
-                cleanup(m);
+                cleanup(m, INVARIANT);
                 return false;
             }
         }
         if (!parseNodeQ("BlockStatement")) {
-            cleanup(m);
+            cleanup(m, INVARIANT);
             return false;
         }
         exit_section_modified(builder, m, INVARIANT, true);
@@ -4548,15 +4550,15 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_modified(builder);
         if (!tokenCheck("is")) {
-            cleanup(m);
+            cleanup(m, IS_EXPRESSION);
             return false;
         }
         if (!tokenCheck("(")) {
-            cleanup(m);
+            cleanup(m, IS_EXPRESSION);
             return false;
         }
         if (!parseNodeQ("Type")) {
-            cleanup(m);
+            cleanup(m, IS_EXPRESSION);
             return false;
         }
         if (currentIs(tok("identifier")))
@@ -4564,19 +4566,19 @@ class DLangParser {
         if (currentIsOneOf(tok("=="), tok(":"))) {
             advance();
             if (!parseNodeQ("TypeSpecialization")) {
-                cleanup(m);
+                cleanup(m, IS_EXPRESSION);
                 return false;
             }
             if (currentIs(tok(","))) {
                 advance();
                 if (!parseNodeQ("TemplateParameterList")) {
-                    cleanup(m);
+                    cleanup(m, IS_EXPRESSION);
                     return false;
                 }
             }
         }
         if (!tokenCheck(")")) {
-            cleanup(m);
+            cleanup(m, IS_EXPRESSION);
             return false;
         }
         exit_section_modified(builder, m, IS_EXPRESSION, true);
@@ -4594,15 +4596,15 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_modified(builder);
         if (!parseNodeQ("AssignExpression")) {
-            cleanup(m);
+            cleanup(m, KEY_VALUE_PAIR);
             return false;
         }
         if (!tokenCheck(":")) {
-            cleanup(m);
+            cleanup(m, KEY_VALUE_PAIR);
             return false;
         }
         if (!parseNodeQ("AssignExpression")) {
-            cleanup(m);
+            cleanup(m, KEY_VALUE_PAIR);
             return false;
         }
         exit_section_modified(builder, m, KEY_VALUE_PAIR, true);
@@ -4621,7 +4623,7 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
         while (moreTokens()) {
             if (!parseKeyValuePair()) {
-                cleanup(m);
+                cleanup(m, KEY_VALUE_PAIRS);
                 return false;
             }
             if (currentIs(tok(","))) {
@@ -4647,13 +4649,13 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
         Token ident = expect(tok("identifier"));
         if (ident == null) {
-            cleanup(m);
+            cleanup(m, LABELED_STATEMENT);
             return false;
         }
         expect(tok(":"));
         if (!currentIs(tok("}")))
             if (!parseNodeQ("DeclarationOrStatement")) {
-                cleanup(m);
+                cleanup(m, LABELED_STATEMENT);
                 return false;
             }
         exit_section_modified(builder, m, LABELED_STATEMENT, true);
@@ -4672,11 +4674,11 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
         Token t = expect(tok("catch"));
         if (t == null) {
-            cleanup(m);
+            cleanup(m, LAST_CATCH);
             return false;
         }
         if (!parseNodeQ("StatementNoCaseNoDefault")) {
-            cleanup(m);
+            cleanup(m, LAST_CATCH);
             return false;
         }
         exit_section_modified(builder, m, LAST_CATCH, true);
@@ -4696,16 +4698,16 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_modified(builder);
         if (!tokenCheck("extern")) {
-            cleanup(m);
+            cleanup(m, LINKAGE_ATTRIBUTE);
             return false;
         }
         if (!tokenCheck("(")) {
-            cleanup(m);
+            cleanup(m, LINKAGE_ATTRIBUTE);
             return false;
         }
         Token ident = expect(tok("identifier"));
         if (ident == null) {
-            cleanup(m);
+            cleanup(m, LINKAGE_ATTRIBUTE);
             return false;
         }
         if (currentIs(tok("++"))) {
@@ -4715,14 +4717,14 @@ class DLangParser {
                 if (currentIsOneOf(tok("struct"), tok("class")))
                     advance();
                 else if (!parseNodeQ("IdentifierChain")) {
-                    cleanup(m);
+                    cleanup(m, LINKAGE_ATTRIBUTE);
                     return false;
                 }
             }
         } else if (currentIs(tok("-"))) {
             advance();
             if (!tokenCheck("identifier")) {
-                cleanup(m);
+                cleanup(m, LINKAGE_ATTRIBUTE);
                 return false;
             }
         }
@@ -4750,7 +4752,7 @@ class DLangParser {
         Token.IdType i = current().type;
         if (i.equals(tok("@"))) {
             if (!parseNodeQ("AtAttribute")) {
-                cleanup(m);
+                cleanup(m, MEMBER_FUNCTION_ATTRIBUTE);
                 return false;
             }
         } else if (i.equals(tok("immutable")) || i.equals(tok("inout")) || i.equals(tok("shared")) || i.equals(tok("const")) || i.equals(tok("pure")) || i.equals(tok("nothrow")) || i.equals(tok("return")) || i.equals(tok("scope"))) {
@@ -4775,12 +4777,12 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
         if (peekIsOneOf(tok("identifier"), tok("typeof"), tok("."))) {
             if (!parseNodeQ("TemplateMixinExpression")) {
-                cleanup(m);
+                cleanup(m, MIXIN_DECLARATION);
                 return false;
             }
         } else if (peekIs(tok("("))) {
             if (!parseNodeQ("MixinExpression")) {
-                cleanup(m);
+                cleanup(m, MIXIN_DECLARATION);
                 return false;
             }
         } else {
@@ -4806,7 +4808,7 @@ class DLangParser {
         expect(tok("mixin"));
         expect(tok("("));
         if (!parseNodeQ("AssignExpression")) {
-            cleanup(m);
+            cleanup(m, MIXIN_EXPRESSION);
             return false;
         }
         expect(tok(")"));
@@ -4825,11 +4827,11 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_modified(builder);
         if (!tokenCheck("mixin")) {
-            cleanup(m);
+            cleanup(m, TEMPLATE_MIXIN_DECLARATION);
             return false;
         }
         if (!parseNodeQ("TemplateDeclaration")) {
-            cleanup(m);
+            cleanup(m, TEMPLATE_MIXIN_DECLARATION);
             return false;
         }
         exit_section_modified(builder, m, TEMPLATE_MIXIN_DECLARATION, true);
@@ -4849,16 +4851,16 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
         if (currentIs(tok("typeof"))) {
             if (!parseNodeQ("TypeofExpression")) {
-                cleanup(m);
+                cleanup(m, MIXIN_TEMPLATE_NAME);
                 return false;
             }
             expect(tok("."));
             if (!parseNodeQ("IdentifierOrTemplateChain")) {
-                cleanup(m);
+                cleanup(m, MIXIN_TEMPLATE_NAME);
                 return false;
             }
         } else if (!parseNodeQ("Symbol")) {
-            cleanup(m);
+            cleanup(m, MIXIN_TEMPLATE_NAME);
             return false;
         }
         exit_section_modified(builder, m, MIXIN_TEMPLATE_NAME, true);
@@ -4913,16 +4915,16 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
         if (currentIs(tok("deprecated")))
             if (!parseNodeQ("Deprecated")) {
-                cleanup(m);
+                cleanup(m, MODULE_DECLARATION);
                 return false;
             }
         Token start = expect(tok("module"));
         if (start == null) {
-            cleanup(m);
+            cleanup(m, MODULE_DECLARATION);
             return false;
         }
         if (!parseNodeQ("IdentifierChain")) {
-            cleanup(m);
+            cleanup(m, MODULE_DECLARATION);
             return false;
         }
         Token end = expect(tok(";"));
@@ -4967,22 +4969,22 @@ class DLangParser {
         expect(tok("new"));
         if (currentIs(tok("(")))
             if (!parseNodeQ("Arguments")) {
-                cleanup(m);
+                cleanup(m, NEW_ANON_CLASS_EXPRESSION);
                 return false;
             }
         expect(tok("class"));
         if (currentIs(tok("(")))
             if (!parseNodeQ("Arguments")) {
-                cleanup(m);
+                cleanup(m, NEW_ANON_CLASS_EXPRESSION);
                 return false;
             }
         if (!currentIs(tok("{")))
             if (!parseNodeQ("BaseClassList")) {
-                cleanup(m);
+                cleanup(m, NEW_ANON_CLASS_EXPRESSION);
                 return false;
             }
         if (!parseNodeQ("StructBody")) {
-            cleanup(m);
+            cleanup(m, NEW_ANON_CLASS_EXPRESSION);
             return false;
         }
         exit_section_modified(builder, m, NEW_ANON_CLASS_EXPRESSION, true);
@@ -5007,25 +5009,25 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
         if (peekIsOneOf(tok("class"), tok("("))) {
             if (!parseNodeQ("NewAnonClassExpression")) {
-                cleanup(m);
+                cleanup(m, NEW_EXPRESSION_WITH_ARGS);
                 return false;
             }
         } else {
             expect(tok("new"));
             if (!parseNodeQ("Type")) {
-                cleanup(m);
+                cleanup(m, NEW_EXPRESSION_WITH_ARGS);
                 return false;
             }
             if (currentIs(tok("["))) {
                 advance();
                 if (!parseNodeQ("AssignExpression")) {
-                    cleanup(m);
+                    cleanup(m, NEW_EXPRESSION_WITH_ARGS);
                     return false;
                 }
                 expect(tok("]"));
             } else if (currentIs(tok("(")))
                 if (!parseNodeQ("Arguments")) {
-                    cleanup(m);
+                    cleanup(m, NEW_EXPRESSION_WITH_ARGS);
                     return false;
                 }
         }
@@ -5052,7 +5054,7 @@ class DLangParser {
             Token b = peekPastBraces();
             if (b != null && (b.type.equals(tok("(")))) {
                 if (!parseNodeQ("AssignExpression")) {
-                    cleanup(m);
+                    cleanup(m, NON_VOID_INITIALIZER);
                     return false;
                 }
             } else {
@@ -5066,7 +5068,7 @@ class DLangParser {
                 } else {
                     goToBookmark(bookmark);
                     if (!parseNodeQ("AssignExpression")) {
-                        cleanup(m);
+                        cleanup(m, NON_VOID_INITIALIZER);
                         return false;
                     }
                     assignExpressionParsed = true;
@@ -5080,24 +5082,24 @@ class DLangParser {
                 || b.type.equals(tok("}"))
                 || b.type.equals(tok(";")))) {
                 if (!parseNodeQ("ArrayInitializer")) {
-                    cleanup(m);
+                    cleanup(m, NON_VOID_INITIALIZER);
                     return false;
                 }
                 arrayInitializerParsed = true;
             } else if (!parseNodeQ("AssignExpression")) {
-                cleanup(m);
+                cleanup(m, NON_VOID_INITIALIZER);
                 return false;
             } else {
                 assignExpressionParsed = true;
             }
         } else if (!parseNodeQ("AssignExpression")) {
-            cleanup(m);
+            cleanup(m, NON_VOID_INITIALIZER);
             return false;
         } else {
             assignExpressionParsed = true;
         }
         if (!assignExpressionParsed && !structInitializerParsed && !arrayInitializerParsed) {
-            cleanup(m);
+            cleanup(m, NON_VOID_INITIALIZER);
             return false;
         }
         exit_section_modified(builder, m, NON_VOID_INITIALIZER, true);
@@ -5117,7 +5119,7 @@ class DLangParser {
         final Marker marker = enter_section_modified(builder);
         while (true) {
             if (!(parseAsmExp())) {
-                cleanup(marker);
+                cleanup(marker, OPERANDS);
                 return false;
             }
             if (currentIs(tok(",")))
@@ -5193,20 +5195,20 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
         Token o = expect(tok("out"));
         if (o == null) {
-            cleanup(m);
+            cleanup(m, OUT_STATEMENT);
             return false;
         }
         if (currentIs(tok("("))) {
             advance();
             Token ident = expect(tok("identifier"));
             if (ident == null) {
-                cleanup(m);
+                cleanup(m, OUT_STATEMENT);
                 return false;
             }
             expect(tok(")"));
         }
         if (!parseNodeQ("BlockStatement")) {
-            cleanup(m);
+            cleanup(m, OUT_STATEMENT);
             return false;
         }
         exit_section_modified(builder, m, OUT_STATEMENT, true);
@@ -5231,7 +5233,7 @@ class DLangParser {
                 break;
         }
         if (!parseNodeQ("Type")) {
-            cleanup(m);
+            cleanup(m, PARAMETER);
             return false;
         }
         if (currentIs(tok("identifier"))) {
@@ -5241,13 +5243,13 @@ class DLangParser {
             } else if (currentIs(tok("="))) {
                 advance();
                 if (!parseNodeQ("AssignExpression")) {
-                    cleanup(m);
+                    cleanup(m, PARAMETER);
                     return false;
                 }
             } else if (currentIs(tok("["))) {
                 while (moreTokens() && currentIs(tok("[")))
                     if (!(parseTypeSuffix())) {
-                        cleanup(m);
+                        cleanup(m, PARAMETER);
                         return false;
                     }
             }
@@ -5256,7 +5258,7 @@ class DLangParser {
         } else if (currentIs(tok("="))) {
             advance();
             if (!parseNodeQ("AssignExpression")) {
-                cleanup(m);
+                cleanup(m, PARAMETER);
                 return false;
             }
         }
@@ -5314,7 +5316,7 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_modified(builder);
         if (!tokenCheck("(")) {
-            cleanup(m);
+            cleanup(m, PARAMETERS);
             return false;
         }
 
@@ -5326,7 +5328,7 @@ class DLangParser {
         if (currentIs(tok("..."))) {
             advance();
             if (!tokenCheck(")")) {
-                cleanup(m);
+                cleanup(m, PARAMETERS);
                 return false;
             }
             exit_section_modified(builder, m, PARAMETERS, true);
@@ -5340,7 +5342,7 @@ class DLangParser {
             if (currentIs(tok(")")))
                 break;
             if (!(parseParameter())) {
-                cleanup(m);
+                cleanup(m, PARAMETERS);
                 return false;
             }
             if (currentIs(tok(",")))
@@ -5349,7 +5351,7 @@ class DLangParser {
                 break;
         }
         if (!tokenCheck(")")) {
-            cleanup(m);
+            cleanup(m, PARAMETERS);
             return false;
         }
         exit_section_modified(builder, m, PARAMETERS, true);
@@ -5372,13 +5374,13 @@ class DLangParser {
         advance();
         while (currentIsMemberFunctionAttribute())
             if (!parseMemberFunctionAttribute()) {
-                cleanup(m);
+                cleanup(m, POSTBLIT);
                 return false;
             }
         if (currentIs(tok(";")))
             advance();
         else if (!parseNodeQ("FunctionBody")) {
-            cleanup(m);
+            cleanup(m, POSTBLIT);
             return false;
         }
         exit_section_modified(builder, m, POSTBLIT, true);
@@ -5438,13 +5440,13 @@ class DLangParser {
         expect(tok("("));
         Token ident = expect(tok("identifier"));
         if (ident == null) {
-            cleanup(m);
+            cleanup(m, PRAGMA);
             return false;
         }
         if (currentIs(tok(","))) {
             advance();
             if (!parseNodeQ("ArgumentList")) {
-                cleanup(m);
+                cleanup(m, PRAGMA);
                 return false;
             }
         }
@@ -5513,7 +5515,7 @@ class DLangParser {
             advance();
             expect(tok("("));
             if (!parseNodeQ("Type")) {
-                cleanup(m);
+                cleanup(m, PRIMARY_EXPRESSION);
                 return false;
             }
             expect(tok(")"));
@@ -5526,37 +5528,37 @@ class DLangParser {
                 Token t = expect(tok("identifier"));
             } else if (currentIs(tok("(")))
                 if (!parseNodeQ("Arguments")) {
-                    cleanup(m);
+                    cleanup(m, PRIMARY_EXPRESSION);
                     return false;
                 }
         } else if (i.equals(tok("function")) || i.equals(tok("delegate")) || i.equals(tok("{")) || i.equals(tok("in")) || i.equals(tok("out")) || i.equals(tok("body"))) {
             if (!parseNodeQ("FunctionLiteralExpression")) {
-                cleanup(m);
+                cleanup(m, PRIMARY_EXPRESSION);
                 return false;
             }
         } else if (i.equals(tok("typeof"))) {
             if (!parseNodeQ("TypeofExpression")) {
-                cleanup(m);
+                cleanup(m, PRIMARY_EXPRESSION);
                 return false;
             }
         } else if (i.equals(tok("typeid"))) {
             if (!parseNodeQ("TypeidExpression")) {
-                cleanup(m);
+                cleanup(m, PRIMARY_EXPRESSION);
                 return false;
             }
         } else if (i.equals(tok("__vector"))) {
             if (!parseNodeQ("Vector")) {
-                cleanup(m);
+                cleanup(m, PRIMARY_EXPRESSION);
                 return false;
             }
         } else if (i.equals(tok("["))) {
             if (isAssociativeArrayLiteral()) {
                 if (!parseNodeQ("AssocArrayLiteral")) {
-                    cleanup(m);
+                    cleanup(m, PRIMARY_EXPRESSION);
                     return false;
                 }
             } else if (!parseNodeQ("ArrayLiteral")) {
-                cleanup(m);
+                cleanup(m, PRIMARY_EXPRESSION);
                 return false;
             }
         } else if (i.equals(tok("("))) {
@@ -5567,47 +5569,46 @@ class DLangParser {
             if (currentIsOneOf(tok("=>"), tok("{"))) {
                 goToBookmark(b);
                 if (!parseNodeQ("FunctionLiteralExpression")) {
-                    cleanup(m);
+                    cleanup(m, PRIMARY_EXPRESSION);
                     return false;
                 }
             } else {
                 goToBookmark(b);
                 advance();
                 if (!parseNodeQ("Expression")) {
-                    cleanup(m);
+                    cleanup(m, PRIMARY_EXPRESSION);
                     return false;
                 }
                 if (!tokenCheck(")")) {
-                    cleanup(m);
+                    cleanup(m, PRIMARY_EXPRESSION);
                     return false;
                 }
             }
         } else if (i.equals(tok("is"))) {
             if (!parseNodeQ("IsExpression")) {
-                cleanup(m);
+                cleanup(m, PRIMARY_EXPRESSION);
                 return false;
             }
         } else if (i.equals(tok("__traits"))) {
             if (!parseNodeQ("TraitsExpression")) {
-                cleanup(m);
+                cleanup(m, PRIMARY_EXPRESSION);
                 return false;
             }
         } else if (i.equals(tok("mixin"))) {
             if (!parseNodeQ("MixinExpression")) {
-                cleanup(m);
+                cleanup(m, PRIMARY_EXPRESSION);
                 return false;
             }
         } else if (i.equals(tok("import"))) {
             if (!parseNodeQ("ImportExpression")) {
-                cleanup(m);
+                cleanup(m, PRIMARY_EXPRESSION);
                 return false;
             }
         } else if (i.equals(tok("this")) || i.equals(tok("super")) || isLiteral(i)) {
-            if (currentIsOneOf(tok("stringLiteral"), tok("wstringLiteral"), tok("dstringLiteral"))) {
+            if (currentIsOneOf(stringLiteralsArray)) {
                 advance();
                 boolean alreadyWarned = false;
-                while (currentIsOneOf(tok("stringLiteral"), tok("wstringLiteral"),
-                    tok("dstringLiteral"))) {
+                while (currentIsOneOf(stringLiteralsArray)) {
                     if (!alreadyWarned) {
                         warn("Implicit concatenation of String literals");
                         alreadyWarned = true;
@@ -5636,11 +5637,11 @@ class DLangParser {
     private boolean primaryExpressionIdentifierCase(Marker m) {
         if (peekIs(tok("=>"))) {
             if (!parseNodeQ("FunctionLiteralExpression")) {
-                cleanup(m);
+                cleanup(m, PRIMARY_EXPRESSION);
                 return false;
             }
         } else if (!parseNodeQ("IdentifierOrTemplateInstance")) {
-            cleanup(m);
+            cleanup(m, PRIMARY_EXPRESSION);
             return false;
         }
         return true;
@@ -5659,14 +5660,14 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
         Token ident = expect(tok("identifier"));
         if (ident == null) {
-            cleanup(m);
+            cleanup(m, REGISTER);
             return false;
         }
         if (currentIs(tok("("))) {
             advance();
             Token intLit = expect(tok("intLiteral"));
             if (intLit == null) {
-                cleanup(m);
+                cleanup(m, REGISTER);
                 return false;
             }
             expect(tok(")"));
@@ -5729,17 +5730,17 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
         Token start = expect(tok("return"));
         if (start == null) {
-            cleanup(m);
+            cleanup(m, RETURN_STATEMENT);
             return false;
         }
         if (!currentIs(tok(";")))
             if (!parseNodeQ("Expression")) {
-                cleanup(m);
+                cleanup(m, RETURN_STATEMENT);
                 return false;
             }
         Token semicolon = expect(tok(";"));
         if (semicolon == null) {
-            cleanup(m);
+            cleanup(m, RETURN_STATEMENT);
             return false;
         }
         exit_section_modified(builder, m, RETURN_STATEMENT, true);
@@ -5760,12 +5761,12 @@ class DLangParser {
         expect(tok("("));
         Token ident = expect(tok("identifier"));
         if (ident == null) {
-            cleanup(m);
+            cleanup(m, SCOPE_GUARD_STATEMENT);
             return false;
         }
         expect(tok(")"));
         if (!parseNodeQ("StatementNoCaseNoDefault")) {
-            cleanup(m);
+            cleanup(m, SCOPE_GUARD_STATEMENT);
             return false;
         }
         exit_section_modified(builder, m, SCOPE_GUARD_STATEMENT, true);
@@ -5783,11 +5784,11 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_modified(builder);
         if (!tokenCheck("shared")) {
-            cleanup(m);
+            cleanup(m, SHARED_STATIC_CONSTRUCTOR);
             return false;
         }
         if (!tokenCheck("static")) {
-            cleanup(m);
+            cleanup(m, SHARED_STATIC_CONSTRUCTOR);
             return false;
         }
         final boolean b = parseStaticCtorDtorCommon();
@@ -5806,15 +5807,15 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_modified(builder);
         if (!tokenCheck("shared")) {
-            cleanup(m);
+            cleanup(m, SHARED_STATIC_DESTRUCTOR);
             return false;
         }
         if (!tokenCheck("static")) {
-            cleanup(m);
+            cleanup(m, SHARED_STATIC_DESTRUCTOR);
             return false;
         }
         if (!tokenCheck("~")) {
-            cleanup(m);
+            cleanup(m, SHARED_STATIC_DESTRUCTOR);
             return false;
         }
         final boolean b = parseStaticCtorDtorCommon();
@@ -5860,7 +5861,7 @@ class DLangParser {
             advance(); // =
         }
         if (!parseNodeQ("IdentifierChain")) {
-            cleanup(m);
+            cleanup(m, IMPORT);
             return false;
         }
         exit_section_modified(builder, m, IMPORT, true);//todo type
@@ -5891,7 +5892,7 @@ class DLangParser {
             Pair<Boolean, Integer> argumentListRetVal = parseArgumentList();
             boolean argumentList = argumentListRetVal.first;
             if (!argumentList) {
-                cleanup(m);
+                cleanup(m, STATEMENT);
                 return false;
             }
             if (argumentListRetVal.second == 1 && startsWith(tok(":"), tok("..")))
@@ -5900,12 +5901,12 @@ class DLangParser {
                 parseCaseStatement();
         } else if (i.equals(tok("default"))) {
             if (!parseNodeQ("DefaultStatement")) {
-                cleanup(m);
+                cleanup(m, STATEMENT);
                 return false;
             }
         } else {
             if (!parseNodeQ("StatementNoCaseNoDefault")) {
-                cleanup(m);
+                cleanup(m, STATEMENT);
                 return false;
             }
         }
@@ -5949,94 +5950,94 @@ class DLangParser {
         Token.IdType i = current().type;
         if (i.equals(tok("{"))) {
             if (!parseNodeQ("BlockStatement")) {
-                cleanup(m);
+                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
                 return false;
             }
         } else if (i.equals(tok("if"))) {
             if (!parseNodeQ("IfStatement")) {
-                cleanup(m);
+                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
                 return false;
             }
         } else if (i.equals(tok("while"))) {
             if (!parseNodeQ("WhileStatement")) {
-                cleanup(m);
+                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
                 return false;
             }
         } else if (i.equals(tok("do"))) {
             if (!parseNodeQ("DoStatement")) {
-                cleanup(m);
+                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
                 return false;
             }
         } else if (i.equals(tok("for"))) {
             if (!parseNodeQ("ForStatement")) {
-                cleanup(m);
+                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
                 return false;
             }
         } else if (i.equals(tok("foreach")) || i.equals(tok("foreach_reverse"))) {
             if (!parseNodeQ("ForeachStatement")) {
-                cleanup(m);
+                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
                 return false;
             }
         } else if (i.equals(tok("switch"))) {
             if (!parseNodeQ("SwitchStatement")) {
-                cleanup(m);
+                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
                 return false;
             }
         } else if (i.equals(tok("continue"))) {
             if (!parseNodeQ("ContinueStatement")) {
-                cleanup(m);
+                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
                 return false;
             }
         } else if (i.equals(tok("break"))) {
             if (!parseNodeQ("BreakStatement")) {
-                cleanup(m);
+                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
                 return false;
             }
         } else if (i.equals(tok("return"))) {
             if (!parseNodeQ("ReturnStatement")) {
-                cleanup(m);
+                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
                 return false;
             }
         } else if (i.equals(tok("goto"))) {
             if (!parseNodeQ("GotoStatement")) {
-                cleanup(m);
+                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
                 return false;
             }
         } else if (i.equals(tok("with"))) {
             if (!parseNodeQ("WithStatement")) {
-                cleanup(m);
+                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
                 return false;
             }
         } else if (i.equals(tok("synchronized"))) {
             if (!parseNodeQ("SynchronizedStatement")) {
-                cleanup(m);
+                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
                 return false;
             }
         } else if (i.equals(tok("try"))) {
             if (!parseNodeQ("TryStatement")) {
-                cleanup(m);
+                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
                 return false;
             }
         } else if (i.equals(tok("throw"))) {
             if (!parseNodeQ("ThrowStatement")) {
-                cleanup(m);
+                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
                 return false;
             }
         } else if (i.equals(tok("scope"))) {
             if (!parseNodeQ("ScopeGuardStatement")) {
-                cleanup(m);
+                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
                 return false;
             }
         } else if (i.equals(tok("asm"))) {
             if (!parseNodeQ("AsmStatement")) {
-                cleanup(m);
+                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
                 return false;
             }
         } else if (i.equals(tok("final"))) {
             if (peekIs(tok("switch"))) {
 
                 if (!parseNodeQ("FinalSwitchStatement")) {
-                    cleanup(m);
+                    cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
                     return false;
                 }
                 exit_section_modified(builder, m, STATEMENT_NO_CASE_NO_DEFAULT, true);
@@ -6049,32 +6050,32 @@ class DLangParser {
         } else if (i.equals(tok("debug"))) {
             if (peekIs(tok("="))) {
                 if (!parseNodeQ("DebugSpecification")) {
-                    cleanup(m);
+                    cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
                     return false;
                 }
             } else if (!parseNodeQ("ConditionalStatement")) {
-                cleanup(m);
+                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
                 return false;
             }
         } else if (i.equals(tok("version"))) {
             if (peekIs(tok("="))) {
                 if (!parseNodeQ("VersionSpecification")) {
-                    cleanup(m);
+                    cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
                     return false;
                 }
             } else if (!parseNodeQ("ConditionalStatement")) {
-                cleanup(m);
+                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
                 return false;
             }
         } else if (i.equals(tok("static"))) {
             if (peekIs(tok("if"))) {
                 if (!parseNodeQ("ConditionalStatement")) {
-                    cleanup(m);
+                    cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
                     return false;
                 }
             } else if (peekIs(tok("assert"))) {
                 if (!parseNodeQ("StaticAssertStatement")) {
-                    cleanup(m);
+                    cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
                     return false;
                 }
             } else {
@@ -6085,19 +6086,19 @@ class DLangParser {
         } else if (i.equals(tok("identifier"))) {
             if (peekIs(tok(":"))) {
                 if (!parseNodeQ("LabeledStatement")) {
-                    cleanup(m);
+                    cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
                     return false;
                 }
                 exit_section_modified(builder, m, STATEMENT_NO_CASE_NO_DEFAULT, true);
                 return true;
             }
             if (!parseNodeQ("ExpressionStatement")) {
-                cleanup(m);
+                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
                 return false;
             }
         } else {
             if (!parseNodeQ("ExpressionStatement")) {
-                cleanup(m);
+                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
                 return false;
             }
         }
@@ -6149,7 +6150,7 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_modified(builder);
         if (!tokenCheck("static")) {
-            cleanup(m);
+            cleanup(m, STATIC_CONSTRUCTOR);
             return false;
         }
         final boolean b = parseStaticCtorDtorCommon();
@@ -6170,11 +6171,11 @@ class DLangParser {
 //			Runnable cleanup =() ->  exit_section_modified(builder,m,DLanguageTypes.StaticDestructor,false);
 //            node.location = current().index;
         if (!tokenCheck("static")) {
-            cleanup(m);
+            cleanup(m, STATIC_DESTRUCTOR);
             return false;
         }
         if (!tokenCheck("~")) {
-            cleanup(m);
+            cleanup(m, STATIC_DESTRUCTOR);
             return false;
         }
         final boolean b = parseStaticCtorDtorCommon();
@@ -6227,23 +6228,23 @@ class DLangParser {
         Token.IdType i = current().type;
         if (i.equals(tok("@"))) {
             if (!parseNodeQ("AtAttribute")) {
-                cleanup(m);
+                cleanup(m, STORAGE_CLASS);
                 return false;
             }
         } else if (i.equals(tok("deprecated"))) {
             if (!parseNodeQ("Deprecated")) {
-                cleanup(m);
+                cleanup(m, STORAGE_CLASS);
                 return false;
             }
         } else if (i.equals(tok("align"))) {
             if (!parseNodeQ("AlignAttribute")) {
-                cleanup(m);
+                cleanup(m, STORAGE_CLASS);
                 return false;
             }
         } else if (i.equals(tok("extern"))) {
             if (peekIs(tok("("))) {
                 if (!parseNodeQ("LinkageAttribute")) {
-                    cleanup(m);
+                    cleanup(m, STORAGE_CLASS);
                     return false;
                 }
                 exit_section_modified(builder, m, STORAGE_CLASS, true);
@@ -6298,21 +6299,21 @@ class DLangParser {
             advance();
         if (currentIs(tok("("))) {
             if (!parseNodeQ("TemplateParameters")) {
-                cleanup(m);
+                cleanup(m, STRUCT_DECLARATION);
                 return false;
             }
             if (currentIs(tok("if")))
                 if (!parseNodeQ("Constraint")) {
-                    cleanup(m);
+                    cleanup(m, STRUCT_DECLARATION);
                     return false;
                 }
             if (!parseNodeQ("StructBody")) {
-                cleanup(m);
+                cleanup(m, STRUCT_DECLARATION);
                 return false;
             }
         } else if (currentIs(tok("{"))) {
             if (!parseNodeQ("StructBody")) {
-                cleanup(m);
+                cleanup(m, STRUCT_DECLARATION);
                 return false;
             }
         } else if (currentIs(tok(";")))
@@ -6341,12 +6342,12 @@ class DLangParser {
             advance();
         } else {
             if (!parseNodeQ("StructMemberInitializers")) {
-                cleanup(m);
+                cleanup(m, STRUCT_INITIALIZER);
                 return false;
             }
             Token e = expect(tok("}"));
             if (e == null) {
-                cleanup(m);
+                cleanup(m, STRUCT_INITIALIZER);
                 return false;
             }
         }
@@ -6369,7 +6370,7 @@ class DLangParser {
             advance();
         }
         if (!parseNodeQ("NonVoidInitializer")) {
-            cleanup(m);
+            cleanup(m, STRUCT_MEMBER_INITIALIZER);
             return false;
         }
         exit_section_modified(builder, m, STRUCT_MEMBER_INITIALIZER, true);
@@ -6412,12 +6413,12 @@ class DLangParser {
         expect(tok("switch"));
         expect(tok("("));
         if (!parseNodeQ("Expression")) {
-            cleanup(m);
+            cleanup(m, SWITCH_STATEMENT);
             return false;
         }
         expect(tok(")"));
         if (!parseNodeQ("Statement")) {
-            cleanup(m);
+            cleanup(m, SWITCH_STATEMENT);
             return false;
         }
         exit_section_modified(builder, m, SWITCH_STATEMENT, true);
@@ -6438,7 +6439,7 @@ class DLangParser {
             advance();
         }
         if (!parseNodeQ("IdentifierOrTemplateChain")) {
-            cleanup(m);
+            cleanup(m, SYMBOL);
             return false;
         }
         exit_section_modified(builder, m, SYMBOL, true);
@@ -6459,13 +6460,13 @@ class DLangParser {
         if (currentIs(tok("("))) {
             expect(tok("("));
             if (!parseNodeQ("Expression")) {
-                cleanup(m);
+                cleanup(m, SYNCHRONIZED_STATEMENT);
                 return false;
             }
             expect(tok(")"));
         }
         if (!parseNodeQ("StatementNoCaseNoDefault")) {
-            cleanup(m);
+            cleanup(m, SYNCHRONIZED_STATEMENT);
             return false;
         }
         exit_section_modified(builder, m, SYNCHRONIZED_STATEMENT, true);
@@ -6488,23 +6489,23 @@ class DLangParser {
                 advance();
             else {
                 if (!parseNodeQ("Type")) {
-                    cleanup(m);
+                    cleanup(m, TEMPLATE_ALIAS_PARAMETER);
                     return false;
                 }
                 Token ident = expect(tok("identifier"));
                 if (ident == null) {
-                    cleanup(m);
+                    cleanup(m, TEMPLATE_ALIAS_PARAMETER);
                     return false;
                 }
             }
         } else {
             if (!parseNodeQ("Type")) {
-                cleanup(m);
+                cleanup(m, TEMPLATE_ALIAS_PARAMETER);
                 return false;
             }
             Token ident = expect(tok("identifier"));
             if (ident == null) {
-                cleanup(m);
+                cleanup(m, TEMPLATE_ALIAS_PARAMETER);
                 return false;
             }
         }
@@ -6513,11 +6514,11 @@ class DLangParser {
             advance();
             if (isType()) {
                 if (!parseNodeQ("Type")) {
-                    cleanup(m);
+                    cleanup(m, TEMPLATE_ALIAS_PARAMETER);
                     return false;
                 }
             } else if (!parseNodeQ("AssignExpression")) {
-                cleanup(m);
+                cleanup(m, TEMPLATE_ALIAS_PARAMETER);
                 return false;
             }
         }
@@ -6525,11 +6526,11 @@ class DLangParser {
             advance();
             if (isType()) {
                 if (!parseNodeQ("Type")) {
-                    cleanup(m);
+                    cleanup(m, TEMPLATE_ALIAS_PARAMETER);
                     return false;
                 }
             } else if (!parseNodeQ("AssignExpression")) {
-                cleanup(m);
+                cleanup(m, TEMPLATE_ALIAS_PARAMETER);
                 return false;
             }
         }
@@ -6558,7 +6559,7 @@ class DLangParser {
         } else {
             goToBookmark(b);
             if (!parseNodeQ("AssignExpression")) {
-                cleanup(m);
+                cleanup(m, TEMPLATE_ARGUMENT);
                 return false;
             }
         }
@@ -6597,15 +6598,15 @@ class DLangParser {
             advance();
             if (!currentIs(tok(")")))
                 if (!parseNodeQ("TemplateArgumentList")) {
-                    cleanup(m);
+                    cleanup(m, TEMPLATE_ARGUMENTS);
                     return false;
                 }
             if (!tokenCheck(")")) {
-                cleanup(m);
+                cleanup(m, TEMPLATE_ARGUMENTS);
                 return false;
             }
         } else if (!parseNodeQ("TemplateSingleArgument")) {
-            cleanup(m);
+            cleanup(m, TEMPLATE_ARGUMENTS);
             return false;
         }
         exit_section_modified(builder, m, TEMPLATE_ARGUMENTS, true);
@@ -6625,21 +6626,21 @@ class DLangParser {
         expect(tok("template"));
         Token ident = expect(tok("identifier"));
         if (ident == null) {
-            cleanup(m);
+            cleanup(m, TEMPLATE_DECLARATION);
             return false;
         }
         if (!parseNodeQ("TemplateParameters")) {
-            cleanup(m);
+            cleanup(m, TEMPLATE_DECLARATION);
             return false;
         }
         if (currentIs(tok("if")))
             if (!parseNodeQ("Constraint")) {
-                cleanup(m);
+                cleanup(m, TEMPLATE_DECLARATION);
                 return false;
             }
         Token start = expect(tok("{"));
         if (start == null) {
-            cleanup(m);
+            cleanup(m, TEMPLATE_DECLARATION);
             return false;
         }
         while (moreTokens() && !currentIs(tok("}"))) {
@@ -6668,11 +6669,11 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
         Token ident = expect(tok("identifier"));
         if (ident == null) {
-            cleanup(m);
+            cleanup(m, TEMPLATE_INSTANCE);
             return false;
         }
         if (!parseNodeQ("TemplateArguments")) {
-            cleanup(m);
+            cleanup(m, TEMPLATE_INSTANCE);
             return false;
         }
         exit_section_modified(builder, m, TEMPLATE_INSTANCE, true);
@@ -6690,16 +6691,16 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_modified(builder);
         if (!tokenCheck("mixin")) {
-            cleanup(m);
+            cleanup(m, MIXIN_EXPRESSION);
             return false;
         }
         if (!parseNodeQ("MixinTemplateName")) {
-            cleanup(m);
+            cleanup(m, MIXIN_EXPRESSION);
             return false;
         }
         if (currentIs(tok("!")))
             if (!parseNodeQ("TemplateArguments")) {
-                cleanup(m);
+                cleanup(m, MIXIN_EXPRESSION);
                 return false;
             }
         if (currentIs(tok("identifier")))
@@ -6725,32 +6726,32 @@ class DLangParser {
         Token.IdType i = current().type;
         if (i.equals(tok("alias"))) {
             if (!parseNodeQ("TemplateAliasParameter")) {
-                cleanup(m);
+                cleanup(m, TEMPLATE_PARAMETER);
                 return false;
             }
         } else if (i.equals(tok("identifier"))) {
             if (peekIs(tok("..."))) {
                 if (!parseNodeQ("TemplateTupleParameter")) {
-                    cleanup(m);
+                    cleanup(m, TEMPLATE_PARAMETER);
                     return false;
                 }
             } else if (peekIsOneOf(tok(":"), tok("="), tok(","), tok(")"))) {
                 if (!parseNodeQ("TemplateTypeParameter")) {
-                    cleanup(m);
+                    cleanup(m, TEMPLATE_PARAMETER);
                     return false;
                 }
             } else if (!parseNodeQ("TemplateValueParameter")) {
-                cleanup(m);
+                cleanup(m, TEMPLATE_PARAMETER);
                 return false;
             }
         } else if (i.equals(tok("this"))) {
             if (!parseNodeQ("TemplateThisParameter")) {
-                cleanup(m);
+                cleanup(m, TEMPLATE_PARAMETER);
                 return false;
             }
         } else {
             if (!parseNodeQ("TemplateValueParameter")) {
-                cleanup(m);
+                cleanup(m, TEMPLATE_PARAMETER);
                 return false;
             }
         }
@@ -6784,16 +6785,16 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_modified(builder);
         if (!tokenCheck("(")) {
-            cleanup(m);
+            cleanup(m, TEMPLATE_PARAMETERS);
             return false;
         }
         if (!currentIs(tok(")")))
             if (!parseNodeQ("TemplateParameterList")) {
-                cleanup(m);
+                cleanup(m, TEMPLATE_PARAMETERS);
                 return false;
             }
         if (!tokenCheck(")")) {
-            cleanup(m);
+            cleanup(m, TEMPLATE_PARAMETERS);
             return false;
         }
         exit_section_modified(builder, m, TEMPLATE_PARAMETERS, true);
@@ -6858,7 +6859,7 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
         expect(tok("this"));
         if (!parseNodeQ("TemplateTypeParameter")) {
-            cleanup(m);
+            cleanup(m, TEMPLATE_THIS_PARAMETER);
             return false;
         }
         exit_section_modified(builder, m, TEMPLATE_THIS_PARAMETER, true);
@@ -6877,11 +6878,11 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
         Token i = expect(tok("identifier"));
         if (i == null) {
-            cleanup(m);
+            cleanup(m, TEMPLATE_TUPLE_PARAMETER);
             return false;
         }
         if (!tokenCheck("...")) {
-            cleanup(m);
+            cleanup(m, TEMPLATE_TUPLE_PARAMETER);
             return false;
         }
         exit_section_modified(builder, m, TEMPLATE_TUPLE_PARAMETER, true);
@@ -6900,20 +6901,20 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
         Token ident = expect(tok("identifier"));
         if (ident == null) {
-            cleanup(m);
+            cleanup(m, TEMPLATE_TYPE_PARAMETER);
             return false;
         }
         if (currentIs(tok(":"))) {
             advance();
             if (!parseNodeQ("Type")) {
-                cleanup(m);
+                cleanup(m, TEMPLATE_TYPE_PARAMETER);
                 return false;
             }
         }
         if (currentIs(tok("="))) {
             advance();
             if (!parseNodeQ("Type")) {
-                cleanup(m);
+                cleanup(m, TEMPLATE_TYPE_PARAMETER);
                 return false;
             }
         }
@@ -6932,23 +6933,23 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_modified(builder);
         if (!parseNodeQ("Type")) {
-            cleanup(m);
+            cleanup(m, TEMPLATE_VALUE_PARAMETER);
             return false;
         }
         if (!tokenCheck("identifier")) {
-            cleanup(m);
+            cleanup(m, TEMPLATE_VALUE_PARAMETER);
             return false;
         }
         if (currentIs(tok(":"))) {
             advance();
             if (!parseNodeQ("AssignExpression")) {
-                cleanup(m);
+                cleanup(m, TEMPLATE_VALUE_PARAMETER);
                 return false;
             }
         }
         if (currentIs(tok("=")))
             if (!parseNodeQ("TemplateValueParameterDefault")) {
-                cleanup(m);
+                cleanup(m, TEMPLATE_VALUE_PARAMETER);
                 return false;
             }
         exit_section_modified(builder, m, TEMPLATE_VALUE_PARAMETER, true);
@@ -6971,7 +6972,7 @@ class DLangParser {
             advance();
         } else {
             if (!parseNodeQ("AssignExpression")) {
-                cleanup(m);
+                cleanup(m, TEMPLATE_VALUE_PARAMETER);
                 return false;
             }
 
@@ -6997,16 +6998,16 @@ class DLangParser {
             final Marker m = enter_section_modified(builder);
             advance();
             if (!parseNodeQ("Expression")) {
-                cleanup(m);
+                cleanup(m, CONDITIONAL_EXPRESSION_);
                 return false;
             }
             Token colon = expect(tok(":"));
             if (colon == null) {
-                cleanup(m);
+                cleanup(m, CONDITIONAL_EXPRESSION_);
                 return false;
             }
             if (!parseNodeQ("TernaryExpression")) {
-                cleanup(m);
+                cleanup(m, CONDITIONAL_EXPRESSION_);
                 return false;
             }
             exit_section_modified(builder, m, CONDITIONAL_EXPRESSION_, true);
@@ -7027,7 +7028,7 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
         expect(tok("throw"));
         if (!parseNodeQ("Expression")) {
-            cleanup(m);
+            cleanup(m, THROW_STATEMENT);
             return false;
         }
         expect(tok(";"));
@@ -7046,27 +7047,27 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_modified(builder);
         if (!tokenCheck("__traits")) {
-            cleanup(m);
+            cleanup(m, TRAITS_EXPRESSION);
             return false;
         }
         if (!tokenCheck("(")) {
-            cleanup(m);
+            cleanup(m, TRAITS_EXPRESSION);
             return false;
         }
         Token ident = expect(tok("identifier"));
         if (ident == null) {
-            cleanup(m);
+            cleanup(m, TRAITS_EXPRESSION);
             return false;
         }
         if (currentIs(tok(","))) {
             advance();
             if (!(parseTemplateArgumentList())) {
-                cleanup(m);
+                cleanup(m, TRAITS_EXPRESSION);
                 return false;
             }
         }
         if (!tokenCheck(")")) {
-            cleanup(m);
+            cleanup(m, TRAITS_EXPRESSION);
             return false;
         }
         exit_section_modified(builder, m, TRAITS_EXPRESSION, true);
@@ -7085,17 +7086,17 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
         expect(tok("try"));
         if (!parseNodeQ("DeclarationOrStatement")) {
-            cleanup(m);
+            cleanup(m, TRY_STATEMENT);
             return false;
         }
         if (currentIs(tok("catch")))
             if (!parseNodeQ("Catches")) {
-                cleanup(m);
+                cleanup(m, TRY_STATEMENT);
                 return false;
             }
         if (currentIs(tok("finally")))
             if (!parseNodeQ("Finally")) {
-                cleanup(m);
+                cleanup(m, TRY_STATEMENT);
                 return false;
             }
         exit_section_modified(builder, m, TRY_STATEMENT, true);
@@ -7121,12 +7122,12 @@ class DLangParser {
         if (i.equals(tok("const")) || i.equals(tok("immutable")) || i.equals(tok("inout")) || i.equals(tok("shared"))) {
             if (!peekIs(tok("(")))
                 if (!parseNodeQ("TypeConstructors")) {
-                    cleanup(m);
+                    cleanup(m, TYPE);
                     return false;
                 }
         }
         if (!parseNodeQ("Type2")) {
-            cleanup(m);
+            cleanup(m, TYPE);
             return false;
         }
         while (moreTokens()) {
@@ -7142,7 +7143,7 @@ class DLangParser {
                 }
             } else if (i1.equals(tok("*")) || i1.equals(tok("delegate")) || i1.equals(tok("function"))) {
                 if (!parseTypeSuffix()) {
-                    cleanup(m);
+                    cleanup(m, TYPE);
                     return false;
                 }
             } else {
@@ -7177,7 +7178,7 @@ class DLangParser {
         Token.IdType i = current().type;
         if (i.equals(tok("identifier")) || i.equals(tok("."))) {
             if (!parseNodeQ("Symbol")) {
-                cleanup(m);
+                cleanup(m, TYPE);
                 return false;
             }
         } else if (isBasicType(i)) {
@@ -7185,42 +7186,42 @@ class DLangParser {
         } else if (i.equals(tok("super")) || i.equals(tok("this"))) {
             advance();
             if (!tokenCheck(".")) {
-                cleanup(m);
+                cleanup(m, TYPE);
                 return false;
             }
             if (!parseNodeQ("IdentifierOrTemplateChain")) {
-                cleanup(m);
+                cleanup(m, TYPE);
                 return false;
             }
         } else if (i.equals(tok("typeof"))) {
             if (!parseTypeofExpression()) {
-                cleanup(m);
+                cleanup(m, TYPE);
                 return false;
             }
             if (currentIs(tok("."))) {
                 advance();
                 if (!parseNodeQ("IdentifierOrTemplateChain")) {
-                    cleanup(m);
+                    cleanup(m, TYPE);
                     return false;
                 }
             }
         } else if (i.equals(tok("const")) || i.equals(tok("immutable")) || i.equals(tok("inout")) || i.equals(tok("shared"))) {
             advance();
             if (!tokenCheck("(")) {
-                cleanup(m);
+                cleanup(m, TYPE);
                 return false;
             }
             if (!(parseType())) {
-                cleanup(m);
+                cleanup(m, TYPE);
                 return false;
             }
             if (!tokenCheck(")")) {
-                cleanup(m);
+                cleanup(m, TYPE);
                 return false;
             }
         } else if (i.equals(tok("__vector"))) {
             if (!(parseVector())) {
-                cleanup(m);
+                cleanup(m, TYPE);
                 return false;
             }
         } else {
@@ -7319,11 +7320,11 @@ class DLangParser {
                 return true;
             }
             if (!parseNodeQ("Type")) {
-                cleanup(m);
+                cleanup(m, TYPE_SPECIALIZATION);
                 return false;
             }
         } else if (!parseNodeQ("Type")) {
-            cleanup(m);
+            cleanup(m, TYPE_SPECIALIZATION);
             return false;
         }
         exit_section_modified(builder, m, TYPE_SPECIALIZATION, true);
@@ -7363,19 +7364,19 @@ class DLangParser {
             } else {
                 goToBookmark(bookmark);
                 if (!parseNodeQ("AssignExpression")) {
-                    cleanup(m);
+                    cleanup(m, TYPE_CTOR);
                     return false;
                 }
                 if (currentIs(tok(".."))) {
                     advance();
                     if (!parseNodeQ("AssignExpression")) {
-                        cleanup(m);
+                        cleanup(m, TYPE_CTOR);
                         return false;
                     }
                 }
             }
             if (!tokenCheck("]")) {
-                cleanup(m);
+                cleanup(m, TYPE_CTOR);
                 return false;
             }
             exit_section_modified(builder, m, TYPE_CTOR, true);
@@ -7383,12 +7384,12 @@ class DLangParser {
         } else if (i.equals(tok("delegate")) || i.equals(tok("function"))) {
             advance();
             if (!parseNodeQ("Parameters")) {
-                cleanup(m);
+                cleanup(m, TYPE_CTOR);
                 return false;
             }
             while (currentIsMemberFunctionAttribute())
                 if (!parseMemberFunctionAttribute()) {
-                    cleanup(m);
+                    cleanup(m, TYPE_CTOR);
                     return false;
                 }
             exit_section_modified(builder, m, TYPE_CTOR, true);
@@ -7417,7 +7418,7 @@ class DLangParser {
         if (!t || !currentIs(tok(")"))) {
             goToBookmark(b);
             if (!parseNodeQ("Expression")) {
-                cleanup(m);
+                cleanup(m, TYPEID_EXPRESSION);
                 return false;
             }
         } else {
@@ -7443,7 +7444,7 @@ class DLangParser {
         if (currentIs(tok("return")))
             advance();
         else if (!parseNodeQ("Expression")) {
-            cleanup(m);
+            cleanup(m, TYPEOF);
             return false;
         }
         expect(tok(")"));
@@ -7453,7 +7454,7 @@ class DLangParser {
 
     private boolean unaryExpressionSwitchDefault(Marker m) {
         if (!parseNodeQ("PrimaryExpression")) {
-            cleanup(m);
+            cleanup(m, UNARY_EXPRESSION);
             return false;
         }
         return true;
@@ -7510,40 +7511,40 @@ class DLangParser {
             if (fallThrough) {
                 //todo check for other goto case related problems
                 if (!parseNodeQ("FunctionCallExpression")) {
-                    cleanup(m);
+                    cleanup(m, UNARY_EXPRESSION);
                     return false;
                 }
             }
         } else {
             if (i.equals(tok("scope")) || i.equals(tok("pure")) || i.equals(tok("nothrow"))) {
                 if (!parseNodeQ("FunctionCallExpression")) {
-                    cleanup(m);
+                    cleanup(m, UNARY_EXPRESSION);
                     return false;
                 }
             } else if (i.equals(tok("&")) || i.equals(tok("!")) || i.equals(tok("*")) || i.equals(tok("+")) || i.equals(tok("-")) || i.equals(tok("~")) || i.equals(tok("++")) || i.equals(tok("--"))) {
                 advance();
                 if (!parseNodeQ("UnaryExpression")) {
-                    cleanup(m);
+                    cleanup(m, UNARY_EXPRESSION);
                     return false;
                 }
             } else if (i.equals(tok("new"))) {
                 if (!parseNodeQ("NewExpression")) {
-                    cleanup(m);
+                    cleanup(m, UNARY_EXPRESSION);
                     return false;
                 }
             } else if (i.equals(tok("delete"))) {
                 if (!parseNodeQ("DeleteExpression")) {
-                    cleanup(m);
+                    cleanup(m, UNARY_EXPRESSION);
                     return false;
                 }
             } else if (i.equals(tok("cast"))) {
                 if (!parseNodeQ("CastExpression")) {
-                    cleanup(m);
+                    cleanup(m, UNARY_EXPRESSION);
                     return false;
                 }
             } else if (i.equals(tok("assert"))) {
                 if (!parseNodeQ("AssertExpression")) {
-                    cleanup(m);
+                    cleanup(m, UNARY_EXPRESSION);
                     return false;
                 }
             } else if (i.equals(tok("("))) {
@@ -7565,7 +7566,7 @@ class DLangParser {
                         advance(); // )
                         advance(); // .
                         if (!parseNodeQ("IdentifierOrTemplateInstance")) {
-                            cleanup(m);
+                            cleanup(m, UNARY_EXPRESSION);
                             return false;
                         }
                     }
@@ -7594,7 +7595,7 @@ class DLangParser {
                     goToBookmark(b);
                     if (jump) {
                         if (!parseFunctionCallExpression(false)) {
-                            cleanup(m);
+                            cleanup(m, UNARY_EXPRESSION);
                             return false;
                         }
                     } else
@@ -7602,12 +7603,12 @@ class DLangParser {
                 } else
                     break loop;
                 if (!parseFunctionCallExpression(false)) {
-                    cleanup(m);
+                    cleanup(m, UNARY_EXPRESSION);
                     return false;
                 }
             } else if (i1.equals(tok("("))) {
                 if (!parseFunctionCallExpression(false)) {
-                    cleanup(m);
+                    cleanup(m, UNARY_EXPRESSION);
                     return false;
                 }
             } else if (i1.equals(tok("++")) || i1.equals(tok("--"))) {
@@ -7618,7 +7619,7 @@ class DLangParser {
                 advance();
                 if (currentIs(tok("new"))) {
                     if (!parseNodeQ("NewExpression")) {
-                        cleanup(m);
+                        cleanup(m, UNARY_EXPRESSION);
                         return false;
                     }
                 } else
@@ -7648,23 +7649,23 @@ class DLangParser {
             advance();
             if (currentIs(tok("("))) {
                 if (!parseNodeQ("TemplateParameters")) {
-                    cleanup(m);
+                    cleanup(m, UNION_DECLARATION);
                     return false;
                 }
                 if (currentIs(tok("if")))
                     if (!parseNodeQ("Constraint")) {
-                        cleanup(m);
+                        cleanup(m, UNION_DECLARATION);
                         return false;
                     }
                 if (!parseNodeQ("StructBody")) {
-                    cleanup(m);
+                    cleanup(m, UNION_DECLARATION);
                     return false;
                 }
             } else {
                 if (currentIs(tok(";")))
                     advance();
                 else if (!parseNodeQ("StructBody")) {
-                    cleanup(m);
+                    cleanup(m, UNION_DECLARATION);
                     return false;
                 }
             }
@@ -7672,7 +7673,7 @@ class DLangParser {
             if (currentIs(tok(";")))
                 advance();
             else if (!parseNodeQ("StructBody")) {
-                cleanup(m);
+                cleanup(m, UNION_DECLARATION);
                 return false;
             }
         }
@@ -7714,7 +7715,7 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
         if (isAuto) {
             if (!parseNodeQ("AutoDeclaration")) {
-                cleanup(m);
+                cleanup(m, VAR_DECLARATIONS);
                 return false;
             }
             exit_section_modified(builder, m, VAR_DECLARATIONS, true);//todo type
@@ -7722,7 +7723,7 @@ class DLangParser {
         }
         while (isStorageClass())
             if (!parseStorageClass()) {
-                cleanup(m);
+                cleanup(m, VAR_DECLARATIONS);
                 return false;
             }
         if (parseType) {
@@ -7733,7 +7734,7 @@ class DLangParser {
         while (true) {
             boolean declarator = parseDeclarator();
             if (!declarator) {
-                cleanup(m);
+                cleanup(m, VAR_DECLARATIONS);
                 return false;
             }
             if (moreTokens() && currentIs(tok(","))) {
@@ -7743,7 +7744,7 @@ class DLangParser {
         }
         Token semicolon = expect(tok(";"));
         if (semicolon == null) {
-            cleanup(m);
+            cleanup(m, VAR_DECLARATIONS);
             return false;
         }
         exit_section_modified(builder, m, VAR_DECLARATIONS, true);//todo type
@@ -7797,11 +7798,11 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
         Token v = expect(tok("version"));
         if (v == null) {
-            cleanup(m);
+            cleanup(m, VERSION_CONDITION);
             return false;
         }
         if (!tokenCheck("(")) {
-            cleanup(m);
+            cleanup(m, VERSION_CONDITION);
             return false;
         }
         if (currentIsOneOf(tok("intLiteral"), tok("identifier"), tok("unittest"), tok("assert")))
@@ -7827,11 +7828,11 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_modified(builder);
         if (!tokenCheck("version")) {
-            cleanup(m);
+            cleanup(m, VERSION_SPECIFICATION);
             return false;
         }
         if (!tokenCheck("=")) {
-            cleanup(m);
+            cleanup(m, VERSION_SPECIFICATION);
             return false;
         }
         if (!currentIsOneOf(tok("identifier"), tok("intLiteral"))) {
@@ -7856,19 +7857,19 @@ class DLangParser {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         Marker m = enter_section_modified(builder);
         if (!tokenCheck("while")) {
-            cleanup(m);
+            cleanup(m, WHILE_STATEMENT);
             return false;
         }
         if (!tokenCheck("(")) {
-            cleanup(m);
+            cleanup(m, WHILE_STATEMENT);
             return false;
         }
         if (!parseNodeQ("Expression")) {
-            cleanup(m);
+            cleanup(m, WHILE_STATEMENT);
             return false;
         }
         if (!tokenCheck(")")) {
-            cleanup(m);
+            cleanup(m, WHILE_STATEMENT);
             return false;
         }
         if (currentIs(tok("}"))) {
@@ -7877,7 +7878,7 @@ class DLangParser {
             return true; // this line makes DCD better
         }
         if (!parseNodeQ("DeclarationOrStatement")) {
-            cleanup(m);
+            cleanup(m, WHILE_STATEMENT);
             return false;
         }
         exit_section_modified(builder, m, WHILE_STATEMENT, true);
@@ -8151,7 +8152,7 @@ class DLangParser {
         } else if (i.equals(tok("static"))) {
             return !peekIsOneOf(tok("assert"), tok("this"), tok("if"), tok("~"));
         } else if (i.equals(tok("shared"))) {
-            return !(startsWith(tok("shared"), tok("static"), tok("this"))) || startsWith(tok("shared"), tok("static"), tok("~")) || peekIs(tok("("));
+            return !(startsWith(tok("shared"), tok("static"), tok("this")) || startsWith(tok("shared"), tok("static"), tok("~")) || peekIs(tok("(")));
         } else if (i.equals(tok("pragma"))) {
             Bookmark b = setBookmark();
             advance();
@@ -8372,8 +8373,16 @@ class DLangParser {
             if (!builder.getTokenType().equals(tokens[index].type.type)) {
                 throw new AssertionError();
             }
+            Marker m = null;
+            if (currentIs(tok("identifier"))) {
+                m = enter_section_(builder);
+            }
             builder.advanceLexer();
-            return tokens[index++];
+            index++;
+            if (m != null) {
+                exit_section_(builder, m, IDENTIFIER, true);
+            }
+            return tokens[index - 1];
         } else {
             String tokenString = type.toString();
             boolean shouldNotAdvance = index < tokens.length && (tokens[index].type.equals(tok(")")) || tokens[index].type.equals(tok(";")) || tokens[index].type.equals(tok("}")));
@@ -8408,8 +8417,28 @@ class DLangParser {
         if (!builder.getTokenType().equals(tokens[index].type.type)) {
             throw new AssertionError();
         }
+        Marker identifierMarker = null;
+        Marker tokenStringMarker = null;
+        if(currentIs(tok("identifier"))){
+            identifierMarker = enter_section_(builder);
+        }
+        if(currentIs(tok("tokenstringLiteral"))){
+            tokenStringMarker = enter_section_modified(builder);
+        }
         builder.advanceLexer();
-        return tokens[index++];
+        index++;
+        if(identifierMarker != null) {
+            exit_section_(builder, identifierMarker, IDENTIFIER, true);
+        }
+        if(tokenStringMarker != null){
+            while (builder.getTokenType().equals(TOKEN_STRING)){
+                builder.advanceLexer();
+                index++;
+            }
+            exit_section_(builder,tokenStringMarker,STRING_LITERAL,true);//todo type
+            //todo this is not necessary in expect but may be necessary in the future.
+        }
+        return tokens[index - 1];
     }
 
     /**

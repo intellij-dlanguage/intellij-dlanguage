@@ -4,7 +4,8 @@ D Language File
       DLanguageTypeImpl(TYPE)
         PsiElement(DLanguageTokenType.int)('int')
     FUNC_DECLARATION
-      PsiElement(DLanguageTokenType.ID)('gethardware')
+      IDENTIFIER
+        PsiElement(DLanguageTokenType.ID)('gethardware')
       DLanguageParametersImpl(PARAMETERS)
         PsiElement(DLanguageTokenType.()('(')
         PsiElement(DLanguageTokenType.))(')')
@@ -19,25 +20,30 @@ D Language File
                     PsiElement(DLanguageTokenType.asm)('asm')
                     PsiElement(DLanguageTokenType.{)('{')
                     DLanguageAsmInstructionImpl(ASM_INSTRUCTION)
-                      PsiElement(DLanguageTokenType.ID)('mov')
+                      IDENTIFIER
+                        PsiElement(DLanguageTokenType.ID)('mov')
                       DLanguageOperandsImpl(OPERANDS)
                         DLanguageAsmExpImpl(ASM_EXP)
                           DLanguageAsmBrExpImpl(ASM_BR_EXP)
                             DLanguageAsmUnaExpImpl(ASM_UNA_EXP)
                               DLanguageAsmPrimaryExpImpl(ASM_PRIMARY_EXP)
                                 DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                  PsiElement(DLanguageTokenType.ID)('EAX')
+                                  IDENTIFIER
+                                    PsiElement(DLanguageTokenType.ID)('EAX')
                         PsiElement(DLanguageTokenType.,)(',')
                         DLanguageAsmExpImpl(ASM_EXP)
                           DLanguageAsmBrExpImpl(ASM_BR_EXP)
                             DLanguageAsmUnaExpImpl(ASM_UNA_EXP)
-                              DLanguageAsmPrimaryExpImpl(ASM_PRIMARY_EXP)
-                                DLanguageIdentifierListImpl(IDENTIFIER_LIST)
+                              DLanguageAsmTypePrefixImpl(ASM_TYPE_PREFIX)
+                                IDENTIFIER
                                   PsiElement(DLanguageTokenType.ID)('dword')
-                    PsiErrorElement:Expected DLanguageTokenType.; instead of DLanguageTokenType.ID
-                      <empty list>
-                    PsiElement(DLanguageTokenType.ID)('ptr')
-                    PsiElement(DLanguageTokenType.INTEGER_LITERAL)('0x1234')
+                                IDENTIFIER
+                                  PsiElement(DLanguageTokenType.ID)('ptr')
+                              DLanguageAsmExpImpl(ASM_EXP)
+                                DLanguageAsmBrExpImpl(ASM_BR_EXP)
+                                  DLanguageAsmUnaExpImpl(ASM_UNA_EXP)
+                                    DLanguageAsmPrimaryExpImpl(ASM_PRIMARY_EXP)
+                                      PsiElement(DLanguageTokenType.INTEGER_LITERAL)('0x1234')
                     PsiElement(DLanguageTokenType.;)(';')
                     PsiElement(DLanguageTokenType.})('}')
           PsiElement(DLanguageTokenType.})('}')

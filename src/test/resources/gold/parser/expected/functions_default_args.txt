@@ -4,20 +4,23 @@ D Language File
       DLanguageTypeImpl(TYPE)
         PsiElement(DLanguageTokenType.void)('void')
     FUNC_DECLARATION
-      PsiElement(DLanguageTokenType.ID)('foo')
+      IDENTIFIER
+        PsiElement(DLanguageTokenType.ID)('foo')
       DLanguageParametersImpl(PARAMETERS)
         PsiElement(DLanguageTokenType.()('(')
         PARAMETER
           DLanguageTypeImpl(TYPE)
             DLanguageTypeImpl(TYPE)
               PsiElement(DLanguageTokenType.int)('int')
-          PsiElement(DLanguageTokenType.ID)('x')
+          IDENTIFIER
+            PsiElement(DLanguageTokenType.ID)('x')
         PsiElement(DLanguageTokenType.,)(',')
         PARAMETER
           DLanguageTypeImpl(TYPE)
             DLanguageTypeImpl(TYPE)
               PsiElement(DLanguageTokenType.int)('int')
-          PsiElement(DLanguageTokenType.ID)('y')
+          IDENTIFIER
+            PsiElement(DLanguageTokenType.ID)('y')
           PsiElement(DLanguageTokenType.=)('=')
           DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
             DLanguageConditionalExpression_Impl(CONDITIONAL_EXPRESSION_)
@@ -33,7 +36,8 @@ D Language File
     DLanguageAttributeImpl(ATTRIBUTE)
       DLanguageAttributeImpl(ATTRIBUTE)
         PsiElement(DLanguageTokenType.@)('@')
-        PsiElement(DLanguageTokenType.ID)('safe')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('safe')
     UNIT_TESTING
       UNIT_TESTING
         PsiElement(DLanguageTokenType.unittest)('unittest')
@@ -50,15 +54,17 @@ D Language File
                           DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                             DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                               DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                PsiElement(DLanguageTokenType.ID)('foo')
-                            PsiElement(DLanguageTokenType.()('(')
-                            DLanguageArgumentListImpl(ARGUMENT_LIST)
-                              DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
-                                DLanguageConditionalExpression_Impl(CONDITIONAL_EXPRESSION_)
-                                  DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
-                                    DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                                      PsiElement(DLanguageTokenType.INTEGER_LITERAL)('4')
-                            PsiElement(DLanguageTokenType.))(')')
+                                IDENTIFIER
+                                  PsiElement(DLanguageTokenType.ID)('foo')
+                            DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
+                              PsiElement(DLanguageTokenType.()('(')
+                              DLanguageArgumentListImpl(ARGUMENT_LIST)
+                                DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
+                                  DLanguageConditionalExpression_Impl(CONDITIONAL_EXPRESSION_)
+                                    DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
+                                      DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
+                                        PsiElement(DLanguageTokenType.INTEGER_LITERAL)('4')
+                              PsiElement(DLanguageTokenType.))(')')
                     PsiElement(DLanguageTokenType.;)(';')
             PsiComment(DLanguageTokenType.LINE_COMMENT)('// same as foo(4, 3);')
             DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
@@ -67,14 +73,16 @@ D Language File
                   DLanguageTypeImpl(TYPE)
                     PsiElement(DLanguageTokenType.int)('int')
                 FUNC_DECLARATION
-                  PsiElement(DLanguageTokenType.ID)('foo')
+                  IDENTIFIER
+                    PsiElement(DLanguageTokenType.ID)('foo')
                   DLanguageParametersImpl(PARAMETERS)
                     PsiElement(DLanguageTokenType.()('(')
                     PARAMETER
                       DLanguageTypeImpl(TYPE)
                         DLanguageTypeImpl(TYPE)
                           PsiElement(DLanguageTokenType.int)('int')
-                      PsiElement(DLanguageTokenType.ID)('num')
+                      IDENTIFIER
+                        PsiElement(DLanguageTokenType.ID)('num')
                     PsiElement(DLanguageTokenType.,)(',')
                     PARAMETER
                       DLanguageTypeImpl(TYPE)

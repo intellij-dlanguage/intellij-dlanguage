@@ -9,7 +9,8 @@ D Language File
         DLanguageTypeImpl(TYPE)
           PsiElement(DLanguageTokenType.void)('void')
       FUNC_DECLARATION
-        PsiElement(DLanguageTokenType.ID)('oldFoo')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('oldFoo')
         DLanguageParametersImpl(PARAMETERS)
           PsiElement(DLanguageTokenType.()('(')
           PsiElement(DLanguageTokenType.))(')')
@@ -32,9 +33,11 @@ D Language File
                           DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                             DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                               DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                PsiElement(DLanguageTokenType.ID)('oldFoo')
-                            PsiElement(DLanguageTokenType.()('(')
-                            PsiElement(DLanguageTokenType.))(')')
+                                IDENTIFIER
+                                  PsiElement(DLanguageTokenType.ID)('oldFoo')
+                            DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
+                              PsiElement(DLanguageTokenType.()('(')
+                              PsiElement(DLanguageTokenType.))(')')
                     PsiElement(DLanguageTokenType.;)(';')
           PsiComment(DLanguageTokenType.LINE_COMMENT)('// Deprecated: function test.oldFoo is deprecated')
           PsiElement(DLanguageTokenType.})('}')

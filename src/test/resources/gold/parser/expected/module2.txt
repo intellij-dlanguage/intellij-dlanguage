@@ -2,5 +2,6 @@ D Language File
   MODULE_DECLARATION
     PsiElement(DLanguageTokenType.module)('module')
     DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-      PsiElement(DLanguageTokenType.ID)('foo_bar')
+      IDENTIFIER
+        PsiElement(DLanguageTokenType.ID)('foo_bar')
     PsiElement(DLanguageTokenType.;)(';')

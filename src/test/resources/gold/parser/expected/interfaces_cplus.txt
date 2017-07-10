@@ -4,12 +4,14 @@ D Language File
       DLanguageLinkageAttributeImpl(LINKAGE_ATTRIBUTE)
         PsiElement(DLanguageTokenType.extern)('extern')
         PsiElement(DLanguageTokenType.()('(')
-        PsiElement(DLanguageTokenType.ID)('C')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('C')
         PsiElement(DLanguageTokenType.++)('++')
         PsiElement(DLanguageTokenType.))(')')
     INTERFACE_DECLARATION
       PsiElement(DLanguageTokenType.interface)('interface')
-      PsiElement(DLanguageTokenType.ID)('Ifoo')
+      IDENTIFIER
+        PsiElement(DLanguageTokenType.ID)('Ifoo')
       DLanguageAggregateBodyImpl(AGGREGATE_BODY)
         PsiElement(DLanguageTokenType.{)('{')
         DLanguageDeclarationImpl(DECLARATION)
@@ -17,7 +19,8 @@ D Language File
             DLanguageTypeImpl(TYPE)
               PsiElement(DLanguageTokenType.void)('void')
           FUNC_DECLARATION
-            PsiElement(DLanguageTokenType.ID)('foo')
+            IDENTIFIER
+              PsiElement(DLanguageTokenType.ID)('foo')
             DLanguageParametersImpl(PARAMETERS)
               PsiElement(DLanguageTokenType.()('(')
               PsiElement(DLanguageTokenType.))(')')
@@ -27,7 +30,8 @@ D Language File
             DLanguageTypeImpl(TYPE)
               PsiElement(DLanguageTokenType.void)('void')
           FUNC_DECLARATION
-            PsiElement(DLanguageTokenType.ID)('bar')
+            IDENTIFIER
+              PsiElement(DLanguageTokenType.ID)('bar')
             DLanguageParametersImpl(PARAMETERS)
               PsiElement(DLanguageTokenType.()('(')
               PsiElement(DLanguageTokenType.))(')')

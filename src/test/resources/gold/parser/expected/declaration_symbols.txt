@@ -5,10 +5,12 @@ D Language File
         PsiElement(DLanguageTokenType.int)('int')
     DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
       DLanguageDeclaratorImpl(DECLARATOR)
-        PsiElement(DLanguageTokenType.ID)('x')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('x')
       PsiElement(DLanguageTokenType.,)(',')
       DLanguageDeclaratorImpl(DECLARATOR)
-        PsiElement(DLanguageTokenType.ID)('y')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('y')
       PsiElement(DLanguageTokenType.;)(';')
   PsiComment(DLanguageTokenType.LINE_COMMENT)('// x and y are ints')
   DLanguageDeclarationImpl(DECLARATION)
@@ -19,10 +21,12 @@ D Language File
         PsiElement(DLanguageTokenType.*)('*')
     DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
       DLanguageDeclaratorImpl(DECLARATOR)
-        PsiElement(DLanguageTokenType.ID)('x')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('x')
       PsiElement(DLanguageTokenType.,)(',')
       DLanguageDeclaratorImpl(DECLARATOR)
-        PsiElement(DLanguageTokenType.ID)('y')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('y')
       PsiElement(DLanguageTokenType.;)(';')
   PsiComment(DLanguageTokenType.LINE_COMMENT)('// x and y are pointers to ints')
   DLanguageDeclarationImpl(DECLARATION)
@@ -34,9 +38,11 @@ D Language File
         PsiElement(DLanguageTokenType.])(']')
     DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
       DLanguageDeclaratorImpl(DECLARATOR)
-        PsiElement(DLanguageTokenType.ID)('x')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('x')
       PsiElement(DLanguageTokenType.,)(',')
       DLanguageDeclaratorImpl(DECLARATOR)
-        PsiElement(DLanguageTokenType.ID)('y')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('y')
       PsiElement(DLanguageTokenType.;)(';')
   PsiComment(DLanguageTokenType.LINE_COMMENT)('// x and y are arrays of ints')

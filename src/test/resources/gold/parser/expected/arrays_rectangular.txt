@@ -11,7 +11,8 @@ D Language File
         PsiElement(DLanguageTokenType.])(']')
     DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
       DLanguageDeclaratorImpl(DECLARATOR)
-        PsiElement(DLanguageTokenType.ID)('matrix')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('matrix')
       PsiElement(DLanguageTokenType.;)(';')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageTypeImpl(TYPE)
@@ -35,5 +36,6 @@ D Language File
         PsiElement(DLanguageTokenType.])(']')
     DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
       DLanguageDeclaratorImpl(DECLARATOR)
-        PsiElement(DLanguageTokenType.ID)('matrix')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('matrix')
       PsiElement(DLanguageTokenType.;)(';')

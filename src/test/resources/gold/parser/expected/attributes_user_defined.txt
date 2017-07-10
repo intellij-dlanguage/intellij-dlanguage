@@ -16,7 +16,8 @@ D Language File
         PsiElement(DLanguageTokenType.int)('int')
     DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
       DLanguageDeclaratorImpl(DECLARATOR)
-        PsiElement(DLanguageTokenType.ID)('a')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('a')
       PsiElement(DLanguageTokenType.;)(';')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageAttributeImpl(ATTRIBUTE)
@@ -41,29 +42,34 @@ D Language File
         PsiElement(DLanguageTokenType.int)('int')
     DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
       DLanguageDeclaratorImpl(DECLARATOR)
-        PsiElement(DLanguageTokenType.ID)('b')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('b')
       PsiElement(DLanguageTokenType.;)(';')
   DLanguageDeclarationImpl(DECLARATION)
     ENUM_DECLARATION
       PsiElement(DLanguageTokenType.enum)('enum')
-      PsiElement(DLanguageTokenType.ID)('Foo')
+      IDENTIFIER
+        PsiElement(DLanguageTokenType.ID)('Foo')
       PsiElement(DLanguageTokenType.;)(';')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageAttributeImpl(ATTRIBUTE)
       DLanguageAttributeImpl(ATTRIBUTE)
         PsiElement(DLanguageTokenType.@)('@')
-        PsiElement(DLanguageTokenType.ID)('Foo')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('Foo')
     DLanguageTypeImpl(TYPE)
       DLanguageTypeImpl(TYPE)
         PsiElement(DLanguageTokenType.int)('int')
     DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
       DLanguageDeclaratorImpl(DECLARATOR)
-        PsiElement(DLanguageTokenType.ID)('c')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('c')
       PsiElement(DLanguageTokenType.;)(';')
   DLanguageDeclarationImpl(DECLARATION)
     STRUCT_DECLARATION
       PsiElement(DLanguageTokenType.struct)('struct')
-      PsiElement(DLanguageTokenType.ID)('Bar')
+      IDENTIFIER
+        PsiElement(DLanguageTokenType.ID)('Bar')
       DLanguageAggregateBodyImpl(AGGREGATE_BODY)
         PsiElement(DLanguageTokenType.{)('{')
         DLanguageDeclarationImpl(DECLARATION)
@@ -72,14 +78,16 @@ D Language File
               PsiElement(DLanguageTokenType.int)('int')
           DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
             DLanguageDeclaratorImpl(DECLARATOR)
-              PsiElement(DLanguageTokenType.ID)('x')
+              IDENTIFIER
+                PsiElement(DLanguageTokenType.ID)('x')
             PsiElement(DLanguageTokenType.;)(';')
         PsiElement(DLanguageTokenType.})('}')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageAttributeImpl(ATTRIBUTE)
       DLanguageAttributeImpl(ATTRIBUTE)
         PsiElement(DLanguageTokenType.@)('@')
-        PsiElement(DLanguageTokenType.ID)('Bar')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('Bar')
         PsiElement(DLanguageTokenType.()('(')
         DLanguageArgumentListImpl(ARGUMENT_LIST)
           DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
@@ -93,7 +101,8 @@ D Language File
         PsiElement(DLanguageTokenType.int)('int')
     DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
       DLanguageDeclaratorImpl(DECLARATOR)
-        PsiElement(DLanguageTokenType.ID)('d')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('d')
       PsiElement(DLanguageTokenType.;)(';')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageAttributeImpl(ATTRIBUTE)
@@ -125,7 +134,8 @@ D Language File
           PsiElement(DLanguageTokenType.int)('int')
       DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
         DLanguageDeclaratorImpl(DECLARATOR)
-          PsiElement(DLanguageTokenType.ID)('a')
+          IDENTIFIER
+            PsiElement(DLanguageTokenType.ID)('a')
         PsiElement(DLanguageTokenType.;)(';')
     PsiComment(DLanguageTokenType.LINE_COMMENT)('// has UDA's (1, 2)')
     DLanguageDeclarationImpl(DECLARATION)
@@ -145,7 +155,8 @@ D Language File
           PsiElement(DLanguageTokenType.int)('int')
       DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
         DLanguageDeclaratorImpl(DECLARATOR)
-          PsiElement(DLanguageTokenType.ID)('b')
+          IDENTIFIER
+            PsiElement(DLanguageTokenType.ID)('b')
         PsiElement(DLanguageTokenType.;)(';')
     PsiComment(DLanguageTokenType.LINE_COMMENT)('// has UDA's (1, "string")')
     PsiElement(DLanguageTokenType.})('}')

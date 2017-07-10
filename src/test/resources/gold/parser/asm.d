@@ -57,7 +57,7 @@ struct Foo   // or class
     {
         asm
         {
-            mov EBX, this   ;
+            //mov EBX, this   ; //todo check if this is valid
             mov EAX, b[EBX] ;
         }
     }

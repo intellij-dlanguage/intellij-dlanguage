@@ -18,7 +18,8 @@ D Language File
                           DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                             DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                               DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                PsiElement(DLanguageTokenType.ID)('i')
+                                IDENTIFIER
+                                  PsiElement(DLanguageTokenType.ID)('i')
                     PsiElement(DLanguageTokenType.))(')')
                     DLanguageStatementImpl(STATEMENT)
                       DLanguageStatementNoCaseNoDefaultImpl(STATEMENT_NO_CASE_NO_DEFAULT)

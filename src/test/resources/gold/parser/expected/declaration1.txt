@@ -5,7 +5,8 @@ D Language File
         PsiElement(DLanguageTokenType.int)('int')
     DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
       DLanguageDeclaratorImpl(DECLARATOR)
-        PsiElement(DLanguageTokenType.ID)('x')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('x')
       PsiElement(DLanguageTokenType.;)(';')
   PsiComment(DLanguageTokenType.LINE_COMMENT)('// x is an int')
   DLanguageDeclarationImpl(DECLARATION)
@@ -16,7 +17,8 @@ D Language File
         PsiElement(DLanguageTokenType.*)('*')
     DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
       DLanguageDeclaratorImpl(DECLARATOR)
-        PsiElement(DLanguageTokenType.ID)('x')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('x')
       PsiElement(DLanguageTokenType.;)(';')
   PsiComment(DLanguageTokenType.LINE_COMMENT)('// x is a pointer to int')
   DLanguageDeclarationImpl(DECLARATION)
@@ -29,7 +31,8 @@ D Language File
         PsiElement(DLanguageTokenType.*)('*')
     DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
       DLanguageDeclaratorImpl(DECLARATOR)
-        PsiElement(DLanguageTokenType.ID)('x')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('x')
       PsiElement(DLanguageTokenType.;)(';')
   PsiComment(DLanguageTokenType.LINE_COMMENT)('// x is a pointer to a pointer to int')
   DLanguageDeclarationImpl(DECLARATION)
@@ -41,7 +44,8 @@ D Language File
         PsiElement(DLanguageTokenType.])(']')
     DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
       DLanguageDeclaratorImpl(DECLARATOR)
-        PsiElement(DLanguageTokenType.ID)('x')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('x')
       PsiElement(DLanguageTokenType.;)(';')
   PsiComment(DLanguageTokenType.LINE_COMMENT)('// x is an array of ints')
   DLanguageDeclarationImpl(DECLARATION)
@@ -55,7 +59,8 @@ D Language File
         PsiElement(DLanguageTokenType.])(']')
     DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
       DLanguageDeclaratorImpl(DECLARATOR)
-        PsiElement(DLanguageTokenType.ID)('x')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('x')
       PsiElement(DLanguageTokenType.;)(';')
   PsiComment(DLanguageTokenType.LINE_COMMENT)('// x is an array of pointers to ints')
   DLanguageDeclarationImpl(DECLARATION)
@@ -69,7 +74,8 @@ D Language File
         PsiElement(DLanguageTokenType.*)('*')
     DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
       DLanguageDeclaratorImpl(DECLARATOR)
-        PsiElement(DLanguageTokenType.ID)('x')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('x')
       PsiElement(DLanguageTokenType.;)(';')
   PsiComment(DLanguageTokenType.LINE_COMMENT)('// x is a pointer to an array of ints')
   DLanguageDeclarationImpl(DECLARATION)
@@ -86,7 +92,8 @@ D Language File
         PsiElement(DLanguageTokenType.])(']')
     DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
       DLanguageDeclaratorImpl(DECLARATOR)
-        PsiElement(DLanguageTokenType.ID)('x')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('x')
       PsiElement(DLanguageTokenType.;)(';')
   PsiComment(DLanguageTokenType.LINE_COMMENT)('// x is an array of 3 ints')
   DLanguageDeclarationImpl(DECLARATION)
@@ -111,7 +118,8 @@ D Language File
         PsiElement(DLanguageTokenType.])(']')
     DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
       DLanguageDeclaratorImpl(DECLARATOR)
-        PsiElement(DLanguageTokenType.ID)('x')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('x')
       PsiElement(DLanguageTokenType.;)(';')
   PsiComment(DLanguageTokenType.LINE_COMMENT)('// x is an array of 5 arrays of 3 ints')
   DLanguageDeclarationImpl(DECLARATION)
@@ -138,6 +146,7 @@ D Language File
         PsiElement(DLanguageTokenType.])(']')
     DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
       DLanguageDeclaratorImpl(DECLARATOR)
-        PsiElement(DLanguageTokenType.ID)('x')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('x')
       PsiElement(DLanguageTokenType.;)(';')
   PsiComment(DLanguageTokenType.LINE_COMMENT)('// x is an array of 5 pointers to arrays of 3 ints')

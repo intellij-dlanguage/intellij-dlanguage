@@ -5,7 +5,8 @@ D Language File
         DLanguageStorageClassImpl(STORAGE_CLASS)
           PsiElement(DLanguageTokenType.auto)('auto')
         DLanguageAutoDeclarationXImpl(AUTO_DECLARATION_X)
-          PsiElement(DLanguageTokenType.ID)('a')
+          IDENTIFIER
+            PsiElement(DLanguageTokenType.ID)('a')
           PsiElement(DLanguageTokenType.=)('=')
           DLanguageInitializerImpl(INITIALIZER)
             DLanguageNonVoidInitializerImpl(NON_VOID_INITIALIZER)
@@ -30,7 +31,8 @@ D Language File
         DLanguageStorageClassImpl(STORAGE_CLASS)
           PsiElement(DLanguageTokenType.auto)('auto')
         DLanguageAutoDeclarationXImpl(AUTO_DECLARATION_X)
-          PsiElement(DLanguageTokenType.ID)('b')
+          IDENTIFIER
+            PsiElement(DLanguageTokenType.ID)('b')
           PsiElement(DLanguageTokenType.=)('=')
           DLanguageInitializerImpl(INITIALIZER)
             DLanguageNonVoidInitializerImpl(NON_VOID_INITIALIZER)
@@ -46,7 +48,8 @@ D Language File
                             DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                               DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                                 DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                  PsiElement(DLanguageTokenType.ID)('a')
+                                  IDENTIFIER
+                                    PsiElement(DLanguageTokenType.ID)('a')
                       PsiElement(DLanguageTokenType.))(')')
         PsiElement(DLanguageTokenType.;)(';')
   PsiComment(DLanguageTokenType.LINE_COMMENT)('// implicitly convert a short variable 'a' to double')
@@ -56,7 +59,8 @@ D Language File
         DLanguageStorageClassImpl(STORAGE_CLASS)
           PsiElement(DLanguageTokenType.auto)('auto')
         DLanguageAutoDeclarationXImpl(AUTO_DECLARATION_X)
-          PsiElement(DLanguageTokenType.ID)('c')
+          IDENTIFIER
+            PsiElement(DLanguageTokenType.ID)('c')
           PsiElement(DLanguageTokenType.=)('=')
           DLanguageInitializerImpl(INITIALIZER)
             DLanguageNonVoidInitializerImpl(NON_VOID_INITIALIZER)
@@ -81,7 +85,8 @@ D Language File
         DLanguageStorageClassImpl(STORAGE_CLASS)
           PsiElement(DLanguageTokenType.auto)('auto')
         DLanguageAutoDeclarationXImpl(AUTO_DECLARATION_X)
-          PsiElement(DLanguageTokenType.ID)('a')
+          IDENTIFIER
+            PsiElement(DLanguageTokenType.ID)('a')
           PsiElement(DLanguageTokenType.=)('=')
           DLanguageInitializerImpl(INITIALIZER)
             DLanguageNonVoidInitializerImpl(NON_VOID_INITIALIZER)
@@ -100,7 +105,8 @@ D Language File
         DLanguageStorageClassImpl(STORAGE_CLASS)
           PsiElement(DLanguageTokenType.auto)('auto')
         DLanguageAutoDeclarationXImpl(AUTO_DECLARATION_X)
-          PsiElement(DLanguageTokenType.ID)('b')
+          IDENTIFIER
+            PsiElement(DLanguageTokenType.ID)('b')
           PsiElement(DLanguageTokenType.=)('=')
           DLanguageInitializerImpl(INITIALIZER)
             DLanguageNonVoidInitializerImpl(NON_VOID_INITIALIZER)
@@ -119,7 +125,8 @@ D Language File
         DLanguageStorageClassImpl(STORAGE_CLASS)
           PsiElement(DLanguageTokenType.auto)('auto')
         DLanguageAutoDeclarationXImpl(AUTO_DECLARATION_X)
-          PsiElement(DLanguageTokenType.ID)('c')
+          IDENTIFIER
+            PsiElement(DLanguageTokenType.ID)('c')
           PsiElement(DLanguageTokenType.=)('=')
           DLanguageInitializerImpl(INITIALIZER)
             DLanguageNonVoidInitializerImpl(NON_VOID_INITIALIZER)

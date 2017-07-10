@@ -13,7 +13,8 @@ D Language File
         PsiElement(DLanguageTokenType.])(']')
     DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
       DLanguageDeclaratorImpl(DECLARATOR)
-        PsiElement(DLanguageTokenType.ID)('a')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('a')
         PsiElement(DLanguageTokenType.=)('=')
         DLanguageInitializerImpl(INITIALIZER)
           DLanguageNonVoidInitializerImpl(NON_VOID_INITIALIZER)
@@ -45,17 +46,21 @@ D Language File
   DLanguageDeclarationImpl(DECLARATION)
     ENUM_DECLARATION
       PsiElement(DLanguageTokenType.enum)('enum')
-      PsiElement(DLanguageTokenType.ID)('Color')
+      IDENTIFIER
+        PsiElement(DLanguageTokenType.ID)('Color')
       DLanguageEnumBodyImpl(ENUM_BODY)
         PsiElement(DLanguageTokenType.{)('{')
         ENUM_MEMBER
-          PsiElement(DLanguageTokenType.ID)('red')
+          IDENTIFIER
+            PsiElement(DLanguageTokenType.ID)('red')
         PsiElement(DLanguageTokenType.,)(',')
         ENUM_MEMBER
-          PsiElement(DLanguageTokenType.ID)('blue')
+          IDENTIFIER
+            PsiElement(DLanguageTokenType.ID)('blue')
         PsiElement(DLanguageTokenType.,)(',')
         ENUM_MEMBER
-          PsiElement(DLanguageTokenType.ID)('green')
+          IDENTIFIER
+            PsiElement(DLanguageTokenType.ID)('green')
         PsiElement(DLanguageTokenType.})('}')
   DLanguageDeclarationImpl(DECLARATION)
     PsiElement(DLanguageTokenType.;)(';')
@@ -65,7 +70,8 @@ D Language File
         PsiElement(DLanguageTokenType.int)('int')
     DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
       DLanguageDeclaratorImpl(DECLARATOR)
-        PsiElement(DLanguageTokenType.ID)('value')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('value')
         DLanguageTypeCtorImpl(TYPE_CTOR)
           PsiElement(DLanguageTokenType.[)('[')
           DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
@@ -74,10 +80,12 @@ D Language File
                 DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                   DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                     DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                      PsiElement(DLanguageTokenType.ID)('Color')
+                      IDENTIFIER
+                        PsiElement(DLanguageTokenType.ID)('Color')
                   PsiElement(DLanguageTokenType..)('.')
                   DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                    PsiElement(DLanguageTokenType.ID)('max')
+                    IDENTIFIER
+                      PsiElement(DLanguageTokenType.ID)('max')
                 PsiElement(DLanguageTokenType.+)('+')
                 DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                   DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
@@ -94,10 +102,12 @@ D Language File
                     DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                       DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                         DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                          PsiElement(DLanguageTokenType.ID)('Color')
+                          IDENTIFIER
+                            PsiElement(DLanguageTokenType.ID)('Color')
                       PsiElement(DLanguageTokenType..)('.')
                       DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                        PsiElement(DLanguageTokenType.ID)('blue')
+                        IDENTIFIER
+                          PsiElement(DLanguageTokenType.ID)('blue')
                 PsiElement(DLanguageTokenType.:)(':')
                 DLanguageNonVoidInitializerImpl(NON_VOID_INITIALIZER)
                   DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
@@ -112,10 +122,12 @@ D Language File
                     DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                       DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                         DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                          PsiElement(DLanguageTokenType.ID)('Color')
+                          IDENTIFIER
+                            PsiElement(DLanguageTokenType.ID)('Color')
                       PsiElement(DLanguageTokenType..)('.')
                       DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                        PsiElement(DLanguageTokenType.ID)('green')
+                        IDENTIFIER
+                          PsiElement(DLanguageTokenType.ID)('green')
                 PsiElement(DLanguageTokenType.:)(':')
                 DLanguageNonVoidInitializerImpl(NON_VOID_INITIALIZER)
                   DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
@@ -130,10 +142,12 @@ D Language File
                     DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                       DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                         DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                          PsiElement(DLanguageTokenType.ID)('Color')
+                          IDENTIFIER
+                            PsiElement(DLanguageTokenType.ID)('Color')
                       PsiElement(DLanguageTokenType..)('.')
                       DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                        PsiElement(DLanguageTokenType.ID)('red')
+                        IDENTIFIER
+                          PsiElement(DLanguageTokenType.ID)('red')
                 PsiElement(DLanguageTokenType.:)(':')
                 DLanguageNonVoidInitializerImpl(NON_VOID_INITIALIZER)
                   DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)

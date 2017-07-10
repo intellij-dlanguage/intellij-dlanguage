@@ -8,10 +8,6 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
         super("parser", "d", new DLangParserDefinition());
     }
 
-    public void teststaticifbug() {
-        doTest(true, true);
-    }
-
     // shebang
     public void testshebang() {
         doTest(true, true);
@@ -316,6 +312,8 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
    public void testbug_assoc_array() { doTest(true, true);}
    public void testbug_try_catch() { doTest(true, true);}
    public void testbug_fixes() { doTest(true, true);}
+   public void teststaticifbug() { doTest(true, true);}
+   public void testcollection_of_bugs() { doTest(true, true);}
 
 // standard library
 

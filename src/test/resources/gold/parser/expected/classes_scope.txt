@@ -4,7 +4,8 @@ D Language File
       PsiElement(DLanguageTokenType.scope)('scope')
     CLASS_DECLARATION
       PsiElement(DLanguageTokenType.class)('class')
-      PsiElement(DLanguageTokenType.ID)('Foo')
+      IDENTIFIER
+        PsiElement(DLanguageTokenType.ID)('Foo')
       DLanguageAggregateBodyImpl(AGGREGATE_BODY)
         PsiElement(DLanguageTokenType.{)('{')
         PsiElement(DLanguageTokenType.})('}')
@@ -13,7 +14,8 @@ D Language File
       DLanguageTypeImpl(TYPE)
         PsiElement(DLanguageTokenType.void)('void')
     FUNC_DECLARATION
-      PsiElement(DLanguageTokenType.ID)('func')
+      IDENTIFIER
+        PsiElement(DLanguageTokenType.ID)('func')
       DLanguageParametersImpl(PARAMETERS)
         PsiElement(DLanguageTokenType.()('(')
         PsiElement(DLanguageTokenType.))(')')
@@ -28,10 +30,12 @@ D Language File
                     DLanguageSymbolImpl(SYMBOL)
                       DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                         DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                          PsiElement(DLanguageTokenType.ID)('Foo')
+                          IDENTIFIER
+                            PsiElement(DLanguageTokenType.ID)('Foo')
                 DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
                   DLanguageDeclaratorImpl(DECLARATOR)
-                    PsiElement(DLanguageTokenType.ID)('f')
+                    IDENTIFIER
+                      PsiElement(DLanguageTokenType.ID)('f')
                   PsiElement(DLanguageTokenType.;)(';')
             PsiComment(DLanguageTokenType.LINE_COMMENT)('// error, reference to scope class must be scope')
             DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
@@ -43,10 +47,12 @@ D Language File
                     DLanguageSymbolImpl(SYMBOL)
                       DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                         DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                          PsiElement(DLanguageTokenType.ID)('Foo')
+                          IDENTIFIER
+                            PsiElement(DLanguageTokenType.ID)('Foo')
                 DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
                   DLanguageDeclaratorImpl(DECLARATOR)
-                    PsiElement(DLanguageTokenType.ID)('g')
+                    IDENTIFIER
+                      PsiElement(DLanguageTokenType.ID)('g')
                     PsiElement(DLanguageTokenType.=)('=')
                     DLanguageInitializerImpl(INITIALIZER)
                       DLanguageNonVoidInitializerImpl(NON_VOID_INITIALIZER)
@@ -60,7 +66,8 @@ D Language File
                                     DLanguageSymbolImpl(SYMBOL)
                                       DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                                         DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                          PsiElement(DLanguageTokenType.ID)('Foo')
+                                          IDENTIFIER
+                                            PsiElement(DLanguageTokenType.ID)('Foo')
                                 PsiElement(DLanguageTokenType.()('(')
                                 PsiElement(DLanguageTokenType.))(')')
                   PsiElement(DLanguageTokenType.;)(';')

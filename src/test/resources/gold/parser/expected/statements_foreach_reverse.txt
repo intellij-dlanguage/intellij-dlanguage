@@ -14,7 +14,8 @@ D Language File
                     PsiElement(DLanguageTokenType.()('(')
                     DLanguageForeachTypeListImpl(FOREACH_TYPE_LIST)
                       FOREACH_TYPE
-                        PsiElement(DLanguageTokenType.ID)('e')
+                        IDENTIFIER
+                          PsiElement(DLanguageTokenType.ID)('e')
                     PsiElement(DLanguageTokenType.;)(';')
                     DLanguageExpressionStatementImpl(EXPRESSION_STATEMENT)
                       DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
@@ -22,7 +23,8 @@ D Language File
                           DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                             DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                               DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                                PsiElement(DLanguageTokenType.ID)('range')
+                                IDENTIFIER
+                                  PsiElement(DLanguageTokenType.ID)('range')
                     PsiElement(DLanguageTokenType.))(')')
                     DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
                       DLanguageStatementImpl(STATEMENT)

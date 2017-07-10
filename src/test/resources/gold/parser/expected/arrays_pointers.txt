@@ -7,5 +7,6 @@ D Language File
         PsiElement(DLanguageTokenType.*)('*')
     DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
       DLanguageDeclaratorImpl(DECLARATOR)
-        PsiElement(DLanguageTokenType.ID)('p')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('p')
       PsiElement(DLanguageTokenType.;)(';')

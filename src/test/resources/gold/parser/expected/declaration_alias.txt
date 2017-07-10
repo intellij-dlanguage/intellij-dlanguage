@@ -3,18 +3,22 @@ D Language File
     DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
       PsiElement(DLanguageTokenType.alias)('alias')
       ALIAS_DECLARATION_Y
-        PsiElement(DLanguageTokenType.ID)('myint')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('myint')
         PsiElement(DLanguageTokenType.=)('=')
         DLanguageTypeImpl(TYPE)
           DLanguageTypeImpl(TYPE)
             DLanguageSymbolImpl(SYMBOL)
               DLanguageIdentifierListImpl(IDENTIFIER_LIST)
                 DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                  PsiElement(DLanguageTokenType.ID)('abc')
+                  IDENTIFIER
+                    PsiElement(DLanguageTokenType.ID)('abc')
                 PsiElement(DLanguageTokenType..)('.')
                 DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                  PsiElement(DLanguageTokenType.ID)('Foo')
+                  IDENTIFIER
+                    PsiElement(DLanguageTokenType.ID)('Foo')
                 PsiElement(DLanguageTokenType..)('.')
                 DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                  PsiElement(DLanguageTokenType.ID)('bar')
+                  IDENTIFIER
+                    PsiElement(DLanguageTokenType.ID)('bar')
       PsiElement(DLanguageTokenType.;)(';')

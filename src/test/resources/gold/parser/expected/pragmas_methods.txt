@@ -5,7 +5,8 @@ D Language File
         DLanguagePragmaImpl(PRAGMA)
           PsiElement(DLanguageTokenType.pragma)('pragma')
           PsiElement(DLanguageTokenType.()('(')
-          PsiElement(DLanguageTokenType.ID)('lib')
+          IDENTIFIER
+            PsiElement(DLanguageTokenType.ID)('lib')
           PsiElement(DLanguageTokenType.,)(',')
           DLanguageArgumentListImpl(ARGUMENT_LIST)
             DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
@@ -20,7 +21,8 @@ D Language File
       DLanguagePragmaImpl(PRAGMA)
         PsiElement(DLanguageTokenType.pragma)('pragma')
         PsiElement(DLanguageTokenType.()('(')
-        PsiElement(DLanguageTokenType.ID)('mangle')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('mangle')
         PsiElement(DLanguageTokenType.,)(',')
         DLanguageArgumentListImpl(ARGUMENT_LIST)
           DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
@@ -33,13 +35,15 @@ D Language File
       DLanguageLinkageAttributeImpl(LINKAGE_ATTRIBUTE)
         PsiElement(DLanguageTokenType.extern)('extern')
         PsiElement(DLanguageTokenType.()('(')
-        PsiElement(DLanguageTokenType.ID)('C')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('C')
         PsiElement(DLanguageTokenType.))(')')
     DLanguageTypeImpl(TYPE)
       DLanguageTypeImpl(TYPE)
         PsiElement(DLanguageTokenType.void)('void')
     FUNC_DECLARATION
-      PsiElement(DLanguageTokenType.ID)('body_func')
+      IDENTIFIER
+        PsiElement(DLanguageTokenType.ID)('body_func')
       DLanguageParametersImpl(PARAMETERS)
         PsiElement(DLanguageTokenType.()('(')
         PsiElement(DLanguageTokenType.))(')')
@@ -50,7 +54,8 @@ D Language File
         DLanguagePragmaImpl(PRAGMA)
           PsiElement(DLanguageTokenType.pragma)('pragma')
           PsiElement(DLanguageTokenType.()('(')
-          PsiElement(DLanguageTokenType.ID)('msg')
+          IDENTIFIER
+            PsiElement(DLanguageTokenType.ID)('msg')
           PsiElement(DLanguageTokenType.,)(',')
           DLanguageArgumentListImpl(ARGUMENT_LIST)
             DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
@@ -77,7 +82,8 @@ D Language File
       DLanguageTypeImpl(TYPE)
         PsiElement(DLanguageTokenType.void)('void')
     FUNC_DECLARATION
-      PsiElement(DLanguageTokenType.ID)('foo')
+      IDENTIFIER
+        PsiElement(DLanguageTokenType.ID)('foo')
       DLanguageParametersImpl(PARAMETERS)
         PsiElement(DLanguageTokenType.()('(')
         PsiElement(DLanguageTokenType.))(')')
@@ -91,7 +97,8 @@ D Language File
         DLanguagePragmaImpl(PRAGMA)
           PsiElement(DLanguageTokenType.pragma)('pragma')
           PsiElement(DLanguageTokenType.()('(')
-          PsiElement(DLanguageTokenType.ID)('startaddress')
+          IDENTIFIER
+            PsiElement(DLanguageTokenType.ID)('startaddress')
           PsiElement(DLanguageTokenType.,)(',')
           DLanguageArgumentListImpl(ARGUMENT_LIST)
             DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
@@ -99,7 +106,8 @@ D Language File
                 DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                   DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                     DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                      PsiElement(DLanguageTokenType.ID)('foo')
+                      IDENTIFIER
+                        PsiElement(DLanguageTokenType.ID)('foo')
           PsiElement(DLanguageTokenType.))(')')
         PsiElement(DLanguageTokenType.;)(';')
   DLanguageDeclarationImpl(DECLARATION)
@@ -107,7 +115,8 @@ D Language File
       DLanguagePragmaImpl(PRAGMA)
         PsiElement(DLanguageTokenType.pragma)('pragma')
         PsiElement(DLanguageTokenType.()('(')
-        PsiElement(DLanguageTokenType.ID)('DigitalMars_funky_extension')
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('DigitalMars_funky_extension')
         PsiElement(DLanguageTokenType.))(')')
     PsiElement(DLanguageTokenType.{)('{')
     PsiElement(DLanguageTokenType.})('}')
@@ -117,7 +126,8 @@ D Language File
         DLanguageVersionConditionImpl(VERSION_CONDITION)
           PsiElement(DLanguageTokenType.version)('version')
           PsiElement(DLanguageTokenType.()('(')
-          PsiElement(DLanguageTokenType.ID)('DigitalMars')
+          IDENTIFIER
+            PsiElement(DLanguageTokenType.ID)('DigitalMars')
           PsiElement(DLanguageTokenType.))(')')
       PsiElement(DLanguageTokenType.{)('{')
       DLanguageDeclarationImpl(DECLARATION)
@@ -125,7 +135,8 @@ D Language File
           DLanguagePragmaImpl(PRAGMA)
             PsiElement(DLanguageTokenType.pragma)('pragma')
             PsiElement(DLanguageTokenType.()('(')
-            PsiElement(DLanguageTokenType.ID)('DigitalMars_funky_extension')
+            IDENTIFIER
+              PsiElement(DLanguageTokenType.ID)('DigitalMars_funky_extension')
             PsiElement(DLanguageTokenType.))(')')
         PsiElement(DLanguageTokenType.{)('{')
         PsiElement(DLanguageTokenType.})('}')
