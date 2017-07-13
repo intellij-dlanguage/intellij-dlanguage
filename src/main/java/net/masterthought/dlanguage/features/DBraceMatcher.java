@@ -12,9 +12,9 @@ import org.jetbrains.annotations.Nullable;
 
 public class DBraceMatcher implements PairedBraceMatcher {
     private static final BracePair[] PAIRS = new BracePair[]{
-            new BracePair(DLanguageTypes.OP_PAR_LEFT, DLanguageTypes.OP_PAR_RIGHT, false),
-            new BracePair(DLanguageTypes.OP_BRACES_LEFT, DLanguageTypes.OP_BRACES_RIGHT, true),
-            new BracePair(DLanguageTypes.OP_BRACKET_LEFT, DLanguageTypes.OP_BRACKET_RIGHT, false),
+            new BracePair(DLanguageTypes.PARENTHESES_LEFT, DLanguageTypes.PARENTHESES_RIGHT, false),
+            new BracePair(DLanguageTypes.BRACES_LEFT, DLanguageTypes.BRACES_RIGHT, true),
+            new BracePair(DLanguageTypes.BRACKETS_LEFT, DLanguageTypes.BRACKETS_RIGHT, false),
     };
 
     private static final TokenSet alwaysMatch = TokenSet.create(DLanguageTypes.OP_BRACES_LEFT);

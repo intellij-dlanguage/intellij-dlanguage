@@ -12,9 +12,12 @@ public interface DLanguageTypes {
     IElementType OPERATOR = new DLanguageElementType("OPERATOR");
     IElementType NUMBER = new DLanguageElementType("NUMBER");
     IElementType STRING = new DLanguageElementType("STRING");
-    IElementType PARENTHESES = new DLanguageElementType("PARENTHESES");
-    IElementType BRACES = new DLanguageElementType("BRACES");
-    IElementType BRACKETS = new DLanguageElementType("BRACKETS");
+    IElementType PARENTHESES_RIGHT = new DLanguageElementType("PARENTHESES_RIGHT");
+    IElementType PARENTHESES_LEFT = new DLanguageElementType("PARENTHESES_LEFT");
+    IElementType BRACES_RIGHT = new DLanguageElementType("BRACES_RIGHT");
+    IElementType BRACES_LEFT = new DLanguageElementType("BRACES_LEFT");
+    IElementType BRACKETS_RIGHT = new DLanguageElementType("BRACKETS_RIGHT");
+    IElementType BRACKETS_LEFT = new DLanguageElementType("BRACKETS_LEFT");
     IElementType COMMA = new DLanguageElementType("COMMA");
     IElementType SEMICOLON = new DLanguageElementType("SEMICOLON");
     IElementType DOT = new DLanguageElementType("DOT");
