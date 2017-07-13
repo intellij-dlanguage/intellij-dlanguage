@@ -8,12 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface DLanguageForeachTypeList extends PsiElement {
 
   @NotNull
-  DLanguageForeachType getForeachType();
-
-  @Nullable
-  DLanguageForeachTypeList getForeachTypeList();
-
-  @Nullable
-  PsiElement getOpComma();
+  List<DLanguageForeachType> getForeachTypeList();
 
 }

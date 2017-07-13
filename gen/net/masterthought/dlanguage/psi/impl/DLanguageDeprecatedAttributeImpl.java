@@ -28,8 +28,8 @@ public class DLanguageDeprecatedAttributeImpl extends ASTWrapperPsiElement imple
 
   @Override
   @Nullable
-  public DLanguageStringLiteral getStringLiteral() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageStringLiteral.class);
+  public DLanguageAssignExpression getAssignExpression() {
+    return PsiTreeUtil.getChildOfType(this, DLanguageAssignExpression.class);
   }
 
   @Override

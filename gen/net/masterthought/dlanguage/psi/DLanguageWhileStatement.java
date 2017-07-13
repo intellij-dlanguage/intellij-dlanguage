@@ -22,4 +22,8 @@ public interface DLanguageWhileStatement extends PsiElement {
   @Nullable
   PsiElement getOpParRight();
 
+  //WARNING: processDeclarations(...) is skipped
+  //matching processDeclarations(DLanguageWhileStatement, ...)
+  //methods are not found in DPsiImplUtil
+
 }

@@ -70,6 +70,12 @@ public class DLanguageInOutXImpl extends ASTWrapperPsiElement implements DLangua
 
   @Override
   @Nullable
+  public PsiElement getKwReturn() {
+    return findChildByType(KW_RETURN);
+  }
+
+  @Override
+  @Nullable
   public PsiElement getKwScope() {
     return findChildByType(KW_SCOPE);
   }

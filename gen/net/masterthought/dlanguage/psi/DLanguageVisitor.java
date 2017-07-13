@@ -13,11 +13,11 @@ import net.masterthought.dlanguage.psi.interfaces.Mixin;
 import net.masterthought.dlanguage.psi.interfaces.HasTemplateArguments;
 import net.masterthought.dlanguage.psi.interfaces.HasArguments;
 import net.masterthought.dlanguage.psi.interfaces.containers.MixinContainer;
-import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
 import net.masterthought.dlanguage.psi.interfaces.VariableDeclaration;
 import net.masterthought.dlanguage.psi.interfaces.HasProperty;
 import net.masterthought.dlanguage.psi.interfaces.Mixinable;
 import net.masterthought.dlanguage.psi.interfaces.CanInherit;
+import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
 
 public class DLanguageVisitor extends PsiElementVisitor {
 
@@ -441,6 +441,10 @@ public class DLanguageVisitor extends PsiElementVisitor {
     visitDNamedElement(o);
     // visitHasVisibility(o);
     // visitDeclaration(o);
+  }
+
+  public void visitEnumFuncDeclaration(@NotNull DLanguageEnumFuncDeclaration o) {
+    visitPsiElement(o);
   }
 
   public void visitEnumMember(@NotNull DLanguageEnumMember o) {
@@ -1063,7 +1067,15 @@ public class DLanguageVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitTemplateTupleParameter(@NotNull DLanguageTemplateTupleParameter o) {
+    visitPsiElement(o);
+  }
+
   public void visitTemplateTypeParameter(@NotNull DLanguageTemplateTypeParameter o) {
+    visitPsiElement(o);
+  }
+
+  public void visitTemplateValueParameter(@NotNull DLanguageTemplateValueParameter o) {
     visitPsiElement(o);
   }
 

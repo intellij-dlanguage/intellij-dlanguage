@@ -33,9 +33,9 @@ public class DLanguageCatchParameterImpl extends ASTWrapperPsiElement implements
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DLanguageIdentifier getIdentifier() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class));
+    return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
   }
 
 }

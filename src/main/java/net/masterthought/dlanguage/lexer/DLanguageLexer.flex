@@ -10,6 +10,7 @@ import net.masterthought.dlanguage.psi.DLanguageTypes;
 
   private int nestedCommentDepth = 0;
   private int blockCommentDepth = 0;
+  private int tokenStringDepth = 0;
 
   public DLanguageLexer() {
     this((java.io.Reader)null);
@@ -63,6 +64,11 @@ DELIMITED_STRING_PARENTH =       q\"\( ([^\)] | \)[^\"])* \)\"
 DELIMITED_STRING_ANGLE_PARENTH = q\"\< ([^\>] | \>[^\"])* \>\"
 DELIMITED_STRING_BRACE =         q\"\{ ([^}]  |  }[^\"])* }\"
 
+TOKEN_STRING_START = q\{
+TOKEN_CLOSE_CURLY = \}
+TOKEN_OPEN_CURLY = \{
+TOKEN_STRING_CONTENT = [^]
+
 STRING_POSTFIX = [cwd]
 ESCAPE_SEQUENCE = {ESCAPE_SEQUENCE_SPEC_CHAR} | {ESCAPE_SEQUENCE_HEX_OCTAL}
                 | {ESCAPE_SEQUENCE_UNICODE} | ("\\" {NAMED_CHARACTER_ENTITY})
@@ -99,12 +105,40 @@ DECIMAL_EXPONENT = [eE][\+\-]? [0-9_]+
 HEX_FLOAT = 0[xX] ([0-9a-fA-F]* \.)? [0-9a-fA-F]+ {HEX_EXPONENT}
 HEX_EXPONENT = [pP][\+\-]? [0-9]+
 
-%state WAITING_VALUE, NESTING_COMMENT_CONTENT BLOCK_COMMENT_CONTENT
+%state WAITING_VALUE, NESTING_COMMENT_CONTENT BLOCK_COMMENT_CONTENT TOKEN_STRING_CONTENT
 
 %%
 
 <YYINITIAL> {WHITE_SPACE_CHAR}+ { return com.intellij.psi.TokenType.WHITE_SPACE; }
 <YYINITIAL> {NEW_LINE}+         { return com.intellij.psi.TokenType.WHITE_SPACE; }
+
+<TOKEN_STRING_CONTENT> {
+    {TOKEN_OPEN_CURLY} {
+        tokenStringDepth++;
+         return DLanguageTypes.TOKEN_STRING;
+    }
+    {TOKEN_CLOSE_CURLY} {
+        tokenStringDepth--;
+        if(tokenStringDepth == 0){
+            yybegin(YYINITIAL);
+        }
+        return DLanguageTypes.TOKEN_STRING;
+    }
+    {TOKEN_STRING_START} {
+        tokenStringDepth++;
+        return DLanguageTypes.TOKEN_STRING;
+    }
+    {TOKEN_STRING_CONTENT} {
+        return DLanguageTypes.TOKEN_STRING;
+    }
+}
+<YYINITIAL> {TOKEN_STRING_START} {
+    yybegin(TOKEN_STRING_CONTENT);
+    tokenStringDepth = 1;
+    return DLanguageTypes.TOKEN_STRING;
+}
+
+
 
 <YYINITIAL> {NESTING_BLOCK_COMMENT_START} {
 		yybegin(NESTING_COMMENT_CONTENT);

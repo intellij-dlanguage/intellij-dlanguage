@@ -124,11 +124,17 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
         }
 
         // try to auto add dub dependencies
-        final DubConfigurationParser dubConfig = new DubConfigurationParser(module.getProject(), ToolKey.DUB_KEY.getPath(module.getProject()));
-        final List<DubPackage> dependencies = dubConfig.getDubPackageDependencies();
-        for(final DubPackage pkg : dependencies) {
-            parametersList.addParametersString("-I");
-            parametersList.addParametersString(pkg.getPath() + pkg.getSourcesDir());
+        final DubConfigurationParser dubParser = new DubConfigurationParser(module.getProject(), ToolKey.DUB_KEY.getPath(module.getProject()));
+        if(dubParser.canUseDub()) {
+            final List<DubPackage> dependencies = dubParser.getDubPackageDependencies();
+            for(final DubPackage pkg : dependencies) {
+                parametersList.addParametersString("-I");
+                final String pkgSource = String.format("%s%s", pkg.getPath(), pkg.getSourcesDir());
+                LOG.debug("adding source for ", pkg.getName());
+                parametersList.addParametersString(pkgSource);
+            }
+        } else {
+            LOG.info("not possible to run 'dub describe'");
         }
 
         try {

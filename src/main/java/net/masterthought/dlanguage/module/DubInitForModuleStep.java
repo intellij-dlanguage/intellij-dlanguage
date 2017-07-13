@@ -5,13 +5,13 @@ import com.intellij.ide.util.projectWizard.ModuleWizardStep;
 import com.intellij.ide.util.projectWizard.ProjectBuilder;
 import com.intellij.ide.util.projectWizard.WizardContext;
 import com.intellij.openapi.ui.ComboBox;
-import com.intellij.openapi.util.Pair;
 import com.intellij.projectImport.ProjectFormatPanel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DubInitForModuleStep extends ModuleWizardStep {
 
@@ -84,15 +84,15 @@ public class DubInitForModuleStep extends ModuleWizardStep {
             if (moduleBuilder instanceof ModuleBuilder) {
                 ModuleBuilder builder = (ModuleBuilder) moduleBuilder;
 
-                if (builder.getBuilderId() != null && builder.getBuilderId().equals("DLangDubApp")) {
-                    DLanguageDubModuleBuilder dubBuilder = (DLanguageDubModuleBuilder) builder;
+                if ("DLangDubApp".equals(builder.getBuilderId())) {
+                    final DLanguageDubModuleBuilder dubBuilder = (DLanguageDubModuleBuilder) builder;
 
-                    List<Pair<String, String>> optionsList = new ArrayList<>();
-                    optionsList.add(Pair.create("dubFormat", this.dubFormat.getSelectedItem().toString()));
-                    optionsList.add(Pair.create("dubType", this.dubType.getSelectedItem().toString()));
-                    optionsList.add(Pair.create("dubParams", this.dubParams.getText()));
+                    final Map<String, String> options = new HashMap<>(3);
+                    options.put("dubFormat", this.dubFormat.getSelectedItem().toString());
+                    options.put("dubType", this.dubType.getSelectedItem().toString());
+                    options.put("dubParams", this.dubParams.getText());
 
-                    dubBuilder.setDubInitOptions(optionsList);
+                    dubBuilder.setDubOptions(options);
                 }
             }
         }
