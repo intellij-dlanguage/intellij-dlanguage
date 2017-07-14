@@ -1,12 +1,15 @@
 language: java
-jdk:
-- oraclejdk8
+
+jdk: oraclejdk8
+
 before_cache:
-- rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+ - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+
 cache:
   directories:
   - "$HOME/.gradle/caches/"
   - "$HOME/.gradle/wrapper/"
+
 before_install:
   - sudo wget http://master.dl.sourceforge.net/project/d-apt/files/d-apt.list -O /etc/apt/sources.list.d/d-apt.list
   - wget -qO - https://dlang.org/d-keyring.gpg | sudo apt-key add -
@@ -31,6 +34,7 @@ matrix:
 
 ## pull requests skip the deployment step
 deploy:
+  skip_cleanup: true
   # deploy master to eap channel
   - provider: script
     script: ORG_GRADLE_PROJECT_publishChannels=eap ORG_GRADLE_PROJECT_version=1.13-eap$TRAVIS_BUILD_NUMBER ./gradlew publishPlugin
