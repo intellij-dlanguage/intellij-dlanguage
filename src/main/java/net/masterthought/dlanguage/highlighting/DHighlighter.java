@@ -20,7 +20,9 @@ public class DHighlighter extends SyntaxHighlighterBase {
     //    // Token based highlighting
     public static final TextAttributesKey ILLEGAL = createTextAttributesKey("D_ILLEGAL", DefaultLanguageHighlighterColors.INVALID_STRING_ESCAPE);
     public static final TextAttributesKey LINE_COMMENT = createTextAttributesKey("D_LINE_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
+    public static final TextAttributesKey LINE_DOC = createTextAttributesKey("D_LINE_DOC", DefaultLanguageHighlighterColors.DOC_COMMENT);
     public static final TextAttributesKey BLOCK_COMMENT = createTextAttributesKey("D_BLOCK_COMMENT", DefaultLanguageHighlighterColors.BLOCK_COMMENT);
+    public static final TextAttributesKey DOC_COMMENT = createTextAttributesKey("D_DOC_COMMENT", DefaultLanguageHighlighterColors.DOC_COMMENT);
     public static final TextAttributesKey CHAR = createTextAttributesKey("D_STRING", DefaultLanguageHighlighterColors.STRING);
     public static final TextAttributesKey STRING = createTextAttributesKey("D_STRING", DefaultLanguageHighlighterColors.STRING);
     public static final TextAttributesKey NUMBER = createTextAttributesKey("D_NUMBER", DefaultLanguageHighlighterColors.NUMBER);
@@ -55,11 +57,17 @@ public class DHighlighter extends SyntaxHighlighterBase {
         if (type == TokenType.BAD_CHARACTER) {
             return pack(ILLEGAL);
         }
+        if (DHighlightingTokenSets.LINE_DOC.contains(type)) {
+            return pack(LINE_DOC);
+        }
         if (DHighlightingTokenSets.LINE_COMMENT.contains(type)) {
             return pack(LINE_COMMENT);
         }
         if (DHighlightingTokenSets.BLOCK_COMMENT.contains(type)) {
             return pack(BLOCK_COMMENT);
+        }
+        if (DHighlightingTokenSets.DOC_COMMENT.contains(type)) {
+            return pack(DOC_COMMENT);
         }
         if (DHighlightingTokenSets.STRING.contains(type)) {
             return pack(STRING);

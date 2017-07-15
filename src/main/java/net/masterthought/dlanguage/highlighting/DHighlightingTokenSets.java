@@ -18,7 +18,9 @@ public class DHighlightingTokenSets {
     public static final TokenSet SEMICOLON = TokenSet.create(DLanguageTypes.SEMICOLON);
     public static final TokenSet DOT = TokenSet.create(DLanguageTypes.DOT);
     public static final TokenSet LINE_COMMENT = TokenSet.create(DLanguageTypes.LINE_COMMENT);
+    public static final TokenSet LINE_DOC = TokenSet.create(DLanguageTypes.LINE_DOC);
     public static final TokenSet BLOCK_COMMENT = TokenSet.create(DLanguageTypes.BLOCK_COMMENT);
+    public static final TokenSet DOC_COMMENT = TokenSet.create(DLanguageTypes.DOC_COMMENT);
     public static final TokenSet MODULE_DEFINITION = TokenSet.create(DLanguageTypes.MODULE_DEFINITION);
     public static final TokenSet FUNCTION_DEFINITION = TokenSet.create(DLanguageTypes.FUNCTION_DEFINITION);
 

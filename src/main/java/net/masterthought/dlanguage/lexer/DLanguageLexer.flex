@@ -35,9 +35,6 @@ LINE_COMMENT="//".*
 
 BLOCK_COMMENT_START = "/*"
 BLOCK_COMMENT_END = "*/"
-/*
-DOC_COMMENT_START = "*//**"
-DOC_COMMENT_END = "*//*"*/
 
 SHEBANG = "#!" ([^\r\n])* (\r|\n|\r\n)?
 
@@ -120,12 +117,6 @@ HEX_EXPONENT = [pP][\+\-]? [0-9]+
 		blockCommentDepth = 1;
 		return DLanguageTypes.BLOCK_COMMENT;
 	}
-
-/*<YYINITIAL> {DOC_COMMENT_START} {
-        yybegin(DOC_COMMENT_CONTENT);
-        docCommentDepth = 1;
-        return DLanguageTypes.DOC_COMMENT;
-    }*/
 
 <YYINITIAL> {CHARACTER_LITERAL} { return CHARACTER_LITERAL; }
 <YYINITIAL> {INTEGER_LITERAL} { return INTEGER_LITERAL; }
