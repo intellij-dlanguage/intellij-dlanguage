@@ -9,6 +9,7 @@ public class DHighlightingTokenSets {
     public static final TokenSet KEYWORD = TokenSet.create(DLanguageTypes.KEYWORD);
     public static final TokenSet NUMBER = TokenSet.create(DLanguageTypes.NUMBER);
     public static final TokenSet STRING = TokenSet.create(DLanguageTypes.STRING);
+    public static final TokenSet CHAR = TokenSet.create(DLanguageTypes.CHARACTER_LITERAL);
     public static final TokenSet OPERATOR = TokenSet.create(DLanguageTypes.OPERATOR);
     public static final TokenSet PARENTHESES = TokenSet.create(DLanguageTypes.PARENTHESES);
     public static final TokenSet BRACES = TokenSet.create(DLanguageTypes.BRACES);

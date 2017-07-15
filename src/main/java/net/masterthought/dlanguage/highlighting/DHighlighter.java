@@ -21,6 +21,7 @@ public class DHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey ILLEGAL = createTextAttributesKey("D_ILLEGAL", DefaultLanguageHighlighterColors.INVALID_STRING_ESCAPE);
     public static final TextAttributesKey LINE_COMMENT = createTextAttributesKey("D_LINE_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
     public static final TextAttributesKey BLOCK_COMMENT = createTextAttributesKey("D_BLOCK_COMMENT", DefaultLanguageHighlighterColors.BLOCK_COMMENT);
+    public static final TextAttributesKey CHAR = createTextAttributesKey("D_STRING", DefaultLanguageHighlighterColors.STRING);
     public static final TextAttributesKey STRING = createTextAttributesKey("D_STRING", DefaultLanguageHighlighterColors.STRING);
     public static final TextAttributesKey NUMBER = createTextAttributesKey("D_NUMBER", DefaultLanguageHighlighterColors.NUMBER);
     public static final TextAttributesKey KEYWORD = createTextAttributesKey("D_KEYWORD", DefaultLanguageHighlighterColors.KEYWORD);
@@ -62,6 +63,9 @@ public class DHighlighter extends SyntaxHighlighterBase {
         }
         if (DHighlightingTokenSets.STRING.contains(type)) {
             return pack(STRING);
+        }
+        if (DHighlightingTokenSets.CHAR.contains(type)) {
+            return pack(CHAR);
         }
         if (DHighlightingTokenSets.NUMBER.contains(type)) {
             return pack(NUMBER);

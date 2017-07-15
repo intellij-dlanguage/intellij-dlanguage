@@ -408,6 +408,7 @@ FUNCTION_DEFINITION = {ID}\(.*\)([^;]|[\s]*|[\r]*|[\n]*)
 
 
 
+<YYINITIAL> {CHARACTER_LITERAL} { return CHARACTER_LITERAL; }
 <YYINITIAL> {STRING} { return STRING; }
 <YYINITIAL> {NUMBER} { return NUMBER; }
 <YYINITIAL> {KEYWORD} { return KEYWORD; }

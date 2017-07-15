@@ -108,6 +108,9 @@ public class DCDCompletionClient {
 //                kill();
             }
         }
+
+
+
         return completions;
     }
 
