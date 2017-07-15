@@ -1,31 +1,22 @@
-// This is a generated file. Not intended for manual editing.
-package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
-import com.intellij.psi.PsiElement;
+    package net.masterthought.dlanguage.psi;
 
-public interface DLanguageIdentifierList extends PsiElement {
+    import com.intellij.psi.PsiElement;
+    import org.jetbrains.annotations.NotNull;
+    import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
+    import org.jetbrains.annotations.Nullable;
+    import com.intellij.psi.util.PsiTreeUtil;
+    import java.util.List;
+    import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+    import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
 
-  @Nullable
-  DLanguageAssignExpression getAssignExpression();
 
-  @NotNull
-  DLanguageIdentifier getIdentifier();
 
-  @Nullable
-  DLanguageIdentifierList getIdentifierList();
 
-  @Nullable
-  DLanguageTemplateInstance getTemplateInstance();
-
-  @Nullable
-  PsiElement getOpBracketLeft();
-
-  @Nullable
-  PsiElement getOpBracketRight();
-
-  @Nullable
-  PsiElement getOpDot();
-
+    public interface DLanguageIdentifierList extends PsiElement {
+                @NotNull
+                public List<DLanguageIdentifier> getIdentifiers();
+                @NotNull
+                public List<PsiElement> getOP_COMMAs();
+            
 }

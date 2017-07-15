@@ -4,14 +4,14 @@ import com.intellij.openapi.util.Key
 import com.intellij.psi.PsiElement
 import com.intellij.psi.ResolveState
 import com.intellij.psi.scope.PsiScopeProcessor
-import net.masterthought.dlanguage.utils.Import
+import net.masterthought.dlanguage.utils.SingleImport
 
 /**
  * Created by francis on 6/16/2017.
  */
 class DImportScopeProcessor : PsiScopeProcessor {
 
-    var imports = mutableSetOf<Import>()
+    var imports = mutableSetOf<SingleImport>()
 
     override fun handleEvent(event: PsiScopeProcessor.Event, associated: Any?) {
         return
@@ -22,7 +22,7 @@ class DImportScopeProcessor : PsiScopeProcessor {
     }
 
     override fun execute(element: PsiElement, state: ResolveState): Boolean {
-        if (element is Import) {
+        if (element is SingleImport) {
             imports.add(element)
         }
         return true

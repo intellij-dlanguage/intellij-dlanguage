@@ -1,8 +1,0 @@
-DLanguageTokenType.module ('module')
-WHITE_SPACE (' ')
-DLanguageTokenType.ID ('net')
-DLanguageTokenType.. ('.')
-DLanguageTokenType.ID ('masterthought')
-DLanguageTokenType.. ('.')
-DLanguageTokenType.ID ('dlanguage')
-DLanguageTokenType.; (';')

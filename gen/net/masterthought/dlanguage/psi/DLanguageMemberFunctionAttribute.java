@@ -1,28 +1,31 @@
-// This is a generated file. Not intended for manual editing.
-package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
-import com.intellij.psi.PsiElement;
+    package net.masterthought.dlanguage.psi;
 
-public interface DLanguageMemberFunctionAttribute extends PsiElement {
+    import com.intellij.psi.PsiElement;
+    import org.jetbrains.annotations.NotNull;
+    import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
+    import org.jetbrains.annotations.Nullable;
+    import com.intellij.psi.util.PsiTreeUtil;
+    import java.util.List;
+    import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+    import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
 
-  @Nullable
-  DLanguageFunctionAttribute getFunctionAttribute();
 
-  @Nullable
-  PsiElement getKwConst();
 
-  @Nullable
-  PsiElement getKwImmutable();
 
-  @Nullable
-  PsiElement getKwInout();
-
-  @Nullable
-  PsiElement getKwReturn();
-
-  @Nullable
-  PsiElement getKwShared();
-
+    public interface DLanguageMemberFunctionAttribute extends PsiElement {
+            @Nullable
+            public DLanguageFunctionAttribute getFunctionAttribute();
+            @Nullable
+            public PsiElement getKW_IMMUTABLE();
+        
+            @Nullable
+            public PsiElement getKW_INOUT();
+        
+            @Nullable
+            public PsiElement getKW_SHARED();
+        
+            @Nullable
+            public PsiElement getKW_CONST();
+        
 }

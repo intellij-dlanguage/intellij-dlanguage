@@ -1,29 +1,24 @@
-// This is a generated file. Not intended for manual editing.
-package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.ResolveState;
-import com.intellij.psi.scope.PsiScopeProcessor;
+    package net.masterthought.dlanguage.psi;
 
-public interface DLanguageConditionalStatement extends PsiElement {
+    import com.intellij.psi.PsiElement;
+    import org.jetbrains.annotations.NotNull;
+    import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
+    import org.jetbrains.annotations.Nullable;
+    import com.intellij.psi.util.PsiTreeUtil;
+    import java.util.List;
+    import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+    import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
 
-  @Nullable
-  DLanguageBlockStatement getBlockStatement();
 
-  @NotNull
-  DLanguageCondition getCondition();
 
-  @NotNull
-  List<DLanguageDeclarationBlock> getDeclarationBlockList();
 
-  @NotNull
-  List<DLanguageStatement> getStatementList();
-
-  @Nullable
-  PsiElement getKwElse();
-
-  boolean processDeclarations(PsiScopeProcessor processor, ResolveState state, PsiElement lastParent, PsiElement place);
-
+    public interface DLanguageConditionalStatement extends PsiElement {
+            @Nullable
+            public DLanguageCompileCondition getCompileCondition();
+                @NotNull
+                public List<DLanguageDeclarationOrStatement> getDeclarationOrStatements();
+            @Nullable
+            public PsiElement getKW_ELSE();
+        
 }

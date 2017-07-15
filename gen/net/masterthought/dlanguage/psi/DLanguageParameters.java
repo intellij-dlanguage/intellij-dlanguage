@@ -1,23 +1,31 @@
-// This is a generated file. Not intended for manual editing.
-package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.ResolveState;
-import com.intellij.psi.scope.PsiScopeProcessor;
+    package net.masterthought.dlanguage.psi;
 
-public interface DLanguageParameters extends PsiElement {
+    import com.intellij.psi.PsiElement;
+    import org.jetbrains.annotations.NotNull;
+    import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
+    import org.jetbrains.annotations.Nullable;
+    import com.intellij.psi.util.PsiTreeUtil;
+    import java.util.List;
+    import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+    import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
 
-  @Nullable
-  DLanguageParameterList getParameterList();
 
-  @NotNull
-  PsiElement getOpParLeft();
 
-  @NotNull
-  PsiElement getOpParRight();
 
-  boolean processDeclarations(PsiScopeProcessor processor, ResolveState state, PsiElement lastParent, PsiElement place);
-
+    public interface DLanguageParameters extends PsiElement {
+                @NotNull
+                public List<PsiElement> getOP_COMMAs();
+            
+            @Nullable
+            public PsiElement getOP_TRIPLEDOT();
+        
+                @NotNull
+                public List<DLanguageParameter> getParameters();
+            @Nullable
+            public PsiElement getOP_PAR_LEFT();
+        
+            @Nullable
+            public PsiElement getOP_PAR_RIGHT();
+        
 }

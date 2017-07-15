@@ -1,22 +1,30 @@
-// This is a generated file. Not intended for manual editing.
-package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
-import com.intellij.psi.PsiElement;
+    package net.masterthought.dlanguage.psi;
 
-public interface DLanguageCaseRangeStatement extends PsiElement {
+    import com.intellij.psi.PsiElement;
+    import org.jetbrains.annotations.NotNull;
+    import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
+    import org.jetbrains.annotations.Nullable;
+    import com.intellij.psi.util.PsiTreeUtil;
+    import java.util.List;
+    import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+    import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
 
-  @NotNull
-  DLanguageFirstExp getFirstExp();
 
-  @Nullable
-  DLanguageLastExp getLastExp();
 
-  @Nullable
-  DLanguageStatementList getStatementList();
 
-  @NotNull
-  PsiElement getOpDdot();
-
+    public interface DLanguageCaseRangeStatement extends PsiElement {
+                @NotNull
+                public List<PsiElement> getKW_CASEs();
+            
+            @Nullable
+            public PsiElement getOP_TRIPLEDOT();
+        
+                @NotNull
+                public List<PsiElement> getOP_COLONs();
+            
+            @Nullable
+            public DLanguageAssignExpression getAssignExpression();
+            @Nullable
+            public DLanguageDeclarationsAndStatements getDeclarationsAndStatements();
 }

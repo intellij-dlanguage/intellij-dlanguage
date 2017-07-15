@@ -7,7 +7,7 @@ import com.intellij.psi.tree.IElementType;
  * a class that emulates the behavior of tokens in libdparse
  */
 public class Token {
-    public final String text;//todo check that this is correct
+    public final String text;//todo this is pretty much useless, needs remobving
     public final IdType type;
 
     public Token(IdType type) {

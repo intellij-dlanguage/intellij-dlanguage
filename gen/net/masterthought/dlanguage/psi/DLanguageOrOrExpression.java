@@ -1,46 +1,24 @@
-// This is a generated file. Not intended for manual editing.
-package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
-import com.intellij.psi.PsiElement;
+    package net.masterthought.dlanguage.psi;
 
-public interface DLanguageOrOrExpression extends PsiElement {
+    import com.intellij.psi.PsiElement;
+    import org.jetbrains.annotations.NotNull;
+    import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
+    import org.jetbrains.annotations.Nullable;
+    import com.intellij.psi.util.PsiTreeUtil;
+    import java.util.List;
+    import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+    import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
 
-  @NotNull
-  List<DLanguageAddExpression_> getAddExpression_List();
 
-  @NotNull
-  List<DLanguageAndExxpression_> getAndExxpression_List();
 
-  @NotNull
-  List<DLanguageEqualExpression> getEqualExpressionList();
 
-  @NotNull
-  List<DLanguageIdentityExpression> getIdentityExpressionList();
-
-  @NotNull
-  List<DLanguageInExpression> getInExpressionList();
-
-  @NotNull
-  List<DLanguageMulExpression_> getMulExpression_List();
-
-  @Nullable
-  DLanguageOrOrExpression getOrOrExpression();
-
-  @NotNull
-  List<DLanguageRelExpression> getRelExpressionList();
-
-  @NotNull
-  List<DLanguageShiftExpression_> getShiftExpression_List();
-
-  @NotNull
-  List<DLanguageUnaryExpression> getUnaryExpressionList();
-
-  @NotNull
-  List<DLanguageXorExpression_> getXorExpression_List();
-
-  @NotNull
-  PsiElement getOpBoolOr();
-
+    public interface DLanguageOrOrExpression extends PsiElement {
+            @Nullable
+            public DLanguageAndAndExpression getAndAndExpression();
+            @Nullable
+            public DLanguageOrOrExpression getOrOrExpression();
+            @Nullable
+            public PsiElement getOP_BOOL_OR();
+        
 }

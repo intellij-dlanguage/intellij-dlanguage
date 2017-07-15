@@ -1,58 +1,61 @@
-// This is a generated file. Not intended for manual editing.
-package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
-import com.intellij.psi.PsiElement;
+    package net.masterthought.dlanguage.psi;
 
-public interface DLanguageTypeSpecialization extends PsiElement {
+    import com.intellij.psi.PsiElement;
+    import org.jetbrains.annotations.NotNull;
+    import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
+    import org.jetbrains.annotations.Nullable;
+    import com.intellij.psi.util.PsiTreeUtil;
+    import java.util.List;
+    import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+    import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
 
-  @Nullable
-  DLanguageType getType();
 
-  @Nullable
-  DLanguageTypeVector getTypeVector();
 
-  @Nullable
-  PsiElement getKwClass();
 
-  @Nullable
-  PsiElement getKwConst();
-
-  @Nullable
-  PsiElement getKwDelegate();
-
-  @Nullable
-  PsiElement getKwEnum();
-
-  @Nullable
-  PsiElement getKwFunction();
-
-  @Nullable
-  PsiElement getKwImmutable();
-
-  @Nullable
-  PsiElement getKwInout();
-
-  @Nullable
-  PsiElement getKwInterface();
-
-  @Nullable
-  PsiElement getKwReturn();
-
-  @Nullable
-  PsiElement getKwShared();
-
-  @Nullable
-  PsiElement getKwStruct();
-
-  @Nullable
-  PsiElement getKwSuper();
-
-  @Nullable
-  PsiElement getKwUnion();
-
-  @Nullable
-  PsiElement getKwParameters();
-
+    public interface DLanguageTypeSpecialization extends PsiElement {
+            @Nullable
+            public DLanguageType getType();
+            @Nullable
+            public PsiElement getKW___PARAMETERS();
+        
+            @Nullable
+            public PsiElement getKW_STRUCT();
+        
+            @Nullable
+            public PsiElement getKW_UNION();
+        
+            @Nullable
+            public PsiElement getKW_CLASS();
+        
+            @Nullable
+            public PsiElement getKW_INTERFACE();
+        
+            @Nullable
+            public PsiElement getKW_ENUM();
+        
+            @Nullable
+            public PsiElement getKW_FUNCTION();
+        
+            @Nullable
+            public PsiElement getKW_DELEGATE();
+        
+            @Nullable
+            public PsiElement getKW_SUPER();
+        
+            @Nullable
+            public PsiElement getKW_CONST();
+        
+            @Nullable
+            public PsiElement getKW_IMMUTABLE();
+        
+            @Nullable
+            public PsiElement getKW_INOUT();
+        
+            @Nullable
+            public PsiElement getKW_SHARED();
+        
+            @Nullable
+            public PsiElement getKW_RETURN();
+        
 }

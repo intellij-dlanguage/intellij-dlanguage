@@ -1,37 +1,34 @@
-// This is a generated file. Not intended for manual editing.
-package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
-import com.intellij.psi.PsiElement;
-import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
-import com.intellij.psi.StubBasedPsiElement;
-import net.masterthought.dlanguage.stubs.DLanguageStaticDestructorStub;
+    package net.masterthought.dlanguage.psi;
 
-public interface DLanguageStaticDestructor extends DCompositeElement, StubBasedPsiElement<DLanguageStaticDestructorStub> {
+    import com.intellij.psi.PsiElement;
+    import org.jetbrains.annotations.NotNull;
+    import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
+    import org.jetbrains.annotations.Nullable;
+    import com.intellij.psi.util.PsiTreeUtil;
+    import java.util.List;
+    import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+    import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
 
-  @Nullable
-  DLanguageFunctionBody getFunctionBody();
 
-  @Nullable
-  DLanguageMemberFunctionAttributes getMemberFunctionAttributes();
 
-  @NotNull
-  PsiElement getKwStatic();
 
-  @NotNull
-  PsiElement getKwThis();
-
-  @NotNull
-  PsiElement getOpParLeft();
-
-  @NotNull
-  PsiElement getOpParRight();
-
-  @Nullable
-  PsiElement getOpScolon();
-
-  @NotNull
-  PsiElement getOpTilda();
-
+    public interface DLanguageStaticDestructor extends PsiElement , DCompositeElement{
+            @Nullable
+            public PsiElement getOP_TILDA();
+        
+            @Nullable
+            public PsiElement getKW_STATIC();
+        
+            @Nullable
+            public PsiElement getKW_THIS();
+        
+            @Nullable
+            public PsiElement getOP_PAR_LEFT();
+        
+            @Nullable
+            public PsiElement getOP_PAR_RIGHT();
+        
+            @Nullable
+            public DLanguageFunctionBody getFunctionBody();
 }

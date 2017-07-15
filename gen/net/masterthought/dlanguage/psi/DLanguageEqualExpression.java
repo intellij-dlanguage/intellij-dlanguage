@@ -1,28 +1,25 @@
-// This is a generated file. Not intended for manual editing.
-package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
-import com.intellij.psi.PsiElement;
+    package net.masterthought.dlanguage.psi;
 
-public interface DLanguageEqualExpression extends PsiElement {
+    import com.intellij.psi.PsiElement;
+    import org.jetbrains.annotations.NotNull;
+    import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
+    import org.jetbrains.annotations.Nullable;
+    import com.intellij.psi.util.PsiTreeUtil;
+    import java.util.List;
+    import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+    import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
 
-  @Nullable
-  DLanguageAddExpression_ getAddExpression_();
 
-  @Nullable
-  DLanguageMulExpression_ getMulExpression_();
 
-  @Nullable
-  DLanguageShiftExpression_ getShiftExpression_();
 
-  @Nullable
-  DLanguageUnaryExpression getUnaryExpression();
-
-  @Nullable
-  PsiElement getOpEqEq();
-
-  @Nullable
-  PsiElement getOpNotEq();
-
+    public interface DLanguageEqualExpression extends PsiElement {
+                @NotNull
+                public List<DLanguageShiftExpression> getShiftExpressions();
+            @Nullable
+            public PsiElement getOP_EQ_EQ();
+        
+            @Nullable
+            public PsiElement getOP_NOT_EQ();
+        
 }

@@ -27,6 +27,7 @@ public class DLanguageTemplateDeclarationStubElementType extends DNamedStubEleme
         return DUtil.definitionNode(node);
     }
 
+    @NotNull
     @Override
     public DLanguageTemplateDeclarationStub createStub(@NotNull DLanguageTemplateDeclaration psi, StubElement parentStub) {
         return new DLanguageTemplateDeclarationStub(parentStub, this, psi.getName());

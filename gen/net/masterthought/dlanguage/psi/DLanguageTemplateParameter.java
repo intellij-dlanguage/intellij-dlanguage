@@ -1,59 +1,27 @@
-// This is a generated file. Not intended for manual editing.
-package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
-import com.intellij.psi.PsiElement;
-import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
-import net.masterthought.dlanguage.psi.interfaces.Declaration;
-import net.masterthought.dlanguage.psi.interfaces.VariableDeclaration;
-import com.intellij.psi.StubBasedPsiElement;
-import net.masterthought.dlanguage.stubs.DLanguageTemplateParameterStub;
-import com.intellij.navigation.ItemPresentation;
-import com.intellij.psi.PsiReference;
-import net.masterthought.dlanguage.psi.interfaces.containers.Container;
-import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
+    package net.masterthought.dlanguage.psi;
 
-public interface DLanguageTemplateParameter extends DNamedElement, Declaration, VariableDeclaration, StubBasedPsiElement<DLanguageTemplateParameterStub> {
+    import com.intellij.psi.PsiElement;
+    import org.jetbrains.annotations.NotNull;
+    import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
+    import org.jetbrains.annotations.Nullable;
+    import com.intellij.psi.util.PsiTreeUtil;
+    import java.util.List;
+    import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+    import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
 
-  @Nullable
-  DLanguageTemplateAliasParameter getTemplateAliasParameter();
 
-  @Nullable
-  DLanguageTemplateThisParameter getTemplateThisParameter();
 
-  @Nullable
-  DLanguageTemplateTupleParameter getTemplateTupleParameter();
 
-  @Nullable
-  DLanguageTemplateTypeParameter getTemplateTypeParameter();
-
-  @Nullable
-  DLanguageTemplateValueParameter getTemplateValueParameter();
-
-  @NotNull
-  String getName();
-
-  String getFullName();
-
-  @Nullable
-  PsiElement getNameIdentifier();
-
-  @NotNull
-  PsiReference getReference();
-
-  @NotNull
-  PsiElement setName(String newName);
-
-  @NotNull
-  ItemPresentation getPresentation();
-
-  //WARNING: getTemplateArguments(...) is skipped
-  //matching getTemplateArguments(DLanguageTemplateParameter, ...)
-  //methods are not found in DPsiImplUtil
-
-  boolean isSomeVisibility(Visibility visibility, Class<? extends Container> containerType);
-
-  boolean isSomeVisibility(Visibility visibility);
-
+    public interface DLanguageTemplateParameter extends PsiElement , DNamedElement{
+            @Nullable
+            public DLanguageTemplateAliasParameter getTemplateAliasParameter();
+            @Nullable
+            public DLanguageTemplateTupleParameter getTemplateTupleParameter();
+            @Nullable
+            public DLanguageTemplateTypeParameter getTemplateTypeParameter();
+            @Nullable
+            public DLanguageTemplateThisParameter getTemplateThisParameter();
+            @Nullable
+            public DLanguageTemplateValueParameter getTemplateValueParameter();
 }

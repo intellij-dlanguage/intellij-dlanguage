@@ -1,29 +1,32 @@
-// This is a generated file. Not intended for manual editing.
-package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.ResolveState;
-import com.intellij.psi.scope.PsiScopeProcessor;
+    package net.masterthought.dlanguage.psi;
 
-public interface DLanguageCatch extends PsiElement {
+    import com.intellij.psi.PsiElement;
+    import org.jetbrains.annotations.NotNull;
+    import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
+    import org.jetbrains.annotations.Nullable;
+    import com.intellij.psi.util.PsiTreeUtil;
+    import java.util.List;
+    import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+    import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
 
-  @NotNull
-  DLanguageCatchParameter getCatchParameter();
 
-  @Nullable
-  DLanguageStatement getStatement();
 
-  @NotNull
-  PsiElement getKwCatch();
 
-  @NotNull
-  PsiElement getOpParLeft();
-
-  @Nullable
-  PsiElement getOpParRight();
-
-  boolean processDeclarations(PsiScopeProcessor processor, ResolveState state, PsiElement lastParent, PsiElement place);
-
+    public interface DLanguageCatch extends PsiElement , DNamedElement{
+            @Nullable
+            public PsiElement getKW_CATCH();
+        
+            @Nullable
+            public PsiElement getOP_PAR_LEFT();
+        
+            @Nullable
+            public PsiElement getOP_PAR_RIGHT();
+        
+            @Nullable
+            public DLanguageType getType();
+            @Nullable
+            public DLanguageIdentifier getIdentifier();
+            @Nullable
+            public DLanguageDeclarationOrStatement getDeclarationOrStatement();
 }

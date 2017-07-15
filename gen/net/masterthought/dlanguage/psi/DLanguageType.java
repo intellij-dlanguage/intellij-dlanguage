@@ -1,19 +1,23 @@
-// This is a generated file. Not intended for manual editing.
-package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
-import com.intellij.psi.PsiElement;
+    package net.masterthought.dlanguage.psi;
 
-public interface DLanguageType extends PsiElement {
+    import com.intellij.psi.PsiElement;
+    import org.jetbrains.annotations.NotNull;
+    import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
+    import org.jetbrains.annotations.Nullable;
+    import com.intellij.psi.util.PsiTreeUtil;
+    import java.util.List;
+    import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+    import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
 
-  @NotNull
-  DLanguageBasicType getBasicType();
 
-  @Nullable
-  DLanguageBasicType2 getBasicType2();
 
-  @Nullable
-  DLanguageTypeCtors getTypeCtors();
 
+    public interface DLanguageType extends PsiElement {
+            @Nullable
+            public DLanguageAttribute getAttribute();
+            @Nullable
+            public DLanguageType_2 getType_2();
+                @NotNull
+                public List<DLanguageTypeSuffix> getTypeSuffixs();
 }

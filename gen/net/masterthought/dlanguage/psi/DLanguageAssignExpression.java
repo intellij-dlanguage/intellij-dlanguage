@@ -1,91 +1,87 @@
-// This is a generated file. Not intended for manual editing.
-package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
-import com.intellij.psi.PsiElement;
+    package net.masterthought.dlanguage.psi;
 
-public interface DLanguageAssignExpression extends PsiElement {
+    import com.intellij.psi.PsiElement;
+    import org.jetbrains.annotations.NotNull;
+    import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
+    import org.jetbrains.annotations.Nullable;
+    import com.intellij.psi.util.PsiTreeUtil;
+    import java.util.List;
+    import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+    import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
 
-  @NotNull
-  List<DLanguageAddExpression_> getAddExpression_List();
 
-  @NotNull
-  List<DLanguageAndExxpression_> getAndExxpression_List();
 
-  @Nullable
-  DLanguageAssignExpression getAssignExpression();
 
-  @Nullable
-  DLanguageConditionalExpression_ getConditionalExpression_();
-
-  @NotNull
-  List<DLanguageEqualExpression> getEqualExpressionList();
-
-  @NotNull
-  List<DLanguageIdentityExpression> getIdentityExpressionList();
-
-  @NotNull
-  List<DLanguageInExpression> getInExpressionList();
-
-  @NotNull
-  List<DLanguageMulExpression_> getMulExpression_List();
-
-  @Nullable
-  DLanguageOrOrExpression getOrOrExpression();
-
-  @NotNull
-  List<DLanguageRelExpression> getRelExpressionList();
-
-  @NotNull
-  List<DLanguageShiftExpression_> getShiftExpression_List();
-
-  @NotNull
-  List<DLanguageUnaryExpression> getUnaryExpressionList();
-
-  @NotNull
-  List<DLanguageXorExpression_> getXorExpression_List();
-
-  @Nullable
-  PsiElement getOpAndEq();
-
-  @Nullable
-  PsiElement getOpDivEq();
-
-  @Nullable
-  PsiElement getOpEq();
-
-  @Nullable
-  PsiElement getOpMinusEq();
-
-  @Nullable
-  PsiElement getOpModEq();
-
-  @Nullable
-  PsiElement getOpMulEq();
-
-  @Nullable
-  PsiElement getOpOrEq();
-
-  @Nullable
-  PsiElement getOpPlusEq();
-
-  @Nullable
-  PsiElement getOpPowEq();
-
-  @Nullable
-  PsiElement getOpShLeftEq();
-
-  @Nullable
-  PsiElement getOpShRightEq();
-
-  @Nullable
-  PsiElement getOpTildaEq();
-
-  @Nullable
-  PsiElement getOpUshRightEq();
-
-  @Nullable
-  PsiElement getOpXorEq();
-
+    public interface DLanguageAssignExpression extends PsiElement {
+            @Nullable
+            public DLanguageTernaryExpression getTernaryExpression();
+            @Nullable
+            public DLanguageAssignExpression getAssignExpression();
+            @Nullable
+            public PsiElement getOP_AND_EQ();
+        
+            @Nullable
+            public PsiElement getOP_DIV_EQ();
+        
+            @Nullable
+            public PsiElement getOP_EQ();
+        
+            @Nullable
+            public PsiElement getOP_EQ_EQ();
+        
+            @Nullable
+            public PsiElement getOP_GT_EQ();
+        
+            @Nullable
+            public PsiElement getOP_LESS_EQ();
+        
+            @Nullable
+            public PsiElement getOP_LESS_GR_EQ();
+        
+            @Nullable
+            public PsiElement getOP_MINUS_EQ();
+        
+            @Nullable
+            public PsiElement getOP_MOD_EQ();
+        
+            @Nullable
+            public PsiElement getOP_MUL_EQ();
+        
+            @Nullable
+            public PsiElement getOP_NOT_EQ();
+        
+            @Nullable
+            public PsiElement getOP_NOT_GR_EQ();
+        
+            @Nullable
+            public PsiElement getOP_NOT_LESS_EQ();
+        
+            @Nullable
+            public PsiElement getOP_OR_EQ();
+        
+            @Nullable
+            public PsiElement getOP_PLUS_EQ();
+        
+            @Nullable
+            public PsiElement getOP_POW_EQ();
+        
+            @Nullable
+            public PsiElement getOP_SH_LEFT_EQ();
+        
+            @Nullable
+            public PsiElement getOP_SH_RIGHT_EQ();
+        
+            @Nullable
+            public PsiElement getOP_TILDA_EQ();
+        
+            @Nullable
+            public PsiElement getOP_UNORD_EQ();
+        
+            @Nullable
+            public PsiElement getOP_USH_RIGHT_EQ();
+        
+            @Nullable
+            public PsiElement getOP_XOR_EQ();
+        
 }

@@ -1,6 +1,0 @@
-DLanguageTokenType.shared ('shared')
-WHITE_SPACE (' ')
-DLanguageTokenType.int ('int')
-WHITE_SPACE (' ')
-DLanguageTokenType.ID ('flag')
-DLanguageTokenType.; (';')

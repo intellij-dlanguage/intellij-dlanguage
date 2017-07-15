@@ -7,7 +7,7 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.stubs.StubIndex;
 import com.intellij.util.ArrayUtil;
 import com.intellij.util.containers.ContainerUtil;
-import net.masterthought.dlanguage.psi.impl.DLanguageClassDeclarationImpl;
+import net.masterthought.dlanguage.psi.impl.DLanguageInterfaceOrClassImpl;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 import net.masterthought.dlanguage.stubs.index.DAllNameIndex;
 import org.jetbrains.annotations.NotNull;
@@ -32,7 +32,7 @@ public class DClassContributor implements ChooseByNameContributor {
         Collection<DNamedElement> result = StubIndex.getElements(DAllNameIndex.KEY, name, project, scope, DNamedElement.class);
         List<NavigationItem> items = ContainerUtil.newArrayListWithCapacity(result.size());
         for (DNamedElement element : result) {
-            if(element.getParent().getClass() == DLanguageClassDeclarationImpl.class) {
+            if(element.getParent().getClass() == DLanguageInterfaceOrClassImpl.class) {
                 items.add(element);
             }
         }

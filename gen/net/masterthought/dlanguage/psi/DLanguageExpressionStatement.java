@@ -1,16 +1,22 @@
-// This is a generated file. Not intended for manual editing.
-package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
-import com.intellij.psi.PsiElement;
+    package net.masterthought.dlanguage.psi;
 
-public interface DLanguageExpressionStatement extends PsiElement {
+    import com.intellij.psi.PsiElement;
+    import org.jetbrains.annotations.NotNull;
+    import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
+    import org.jetbrains.annotations.Nullable;
+    import com.intellij.psi.util.PsiTreeUtil;
+    import java.util.List;
+    import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+    import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
 
-  @NotNull
-  DLanguageCommaExpression getCommaExpression();
 
-  @Nullable
-  PsiElement getOpScolon();
 
+
+    public interface DLanguageExpressionStatement extends PsiElement {
+            @Nullable
+            public DLanguageExpression getExpression();
+            @Nullable
+            public PsiElement getOP_SCOLON();
+        
 }

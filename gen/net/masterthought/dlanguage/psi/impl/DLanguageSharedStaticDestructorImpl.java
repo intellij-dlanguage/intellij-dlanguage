@@ -1,88 +1,70 @@
-// This is a generated file. Not intended for manual editing.
+
+
 package net.masterthought.dlanguage.psi.impl;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.stubs.IStubElementType;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.util.PsiTreeUtil;
-import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
 import net.masterthought.dlanguage.stubs.DLanguageSharedStaticDestructorStub;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import net.masterthought.dlanguage.psi.*;
-import com.intellij.psi.stubs.IStubElementType;
+import java.util.List;
+import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
 
-public class DLanguageSharedStaticDestructorImpl extends DStubbedPsiElementBase<DLanguageSharedStaticDestructorStub> implements DLanguageSharedStaticDestructor {
 
-  public DLanguageSharedStaticDestructorImpl(DLanguageSharedStaticDestructorStub stub, IStubElementType type) {
-    super(stub, type);
-  }
+public class DLanguageSharedStaticDestructorImpl extends DStubbedPsiElementBase<DLanguageSharedStaticDestructorStub> implements DLanguageSharedStaticDestructor{
+       public DLanguageSharedStaticDestructorImpl (ASTNode node){
+               super(node);
+       }
 
-  public DLanguageSharedStaticDestructorImpl(ASTNode node) {
-    super(node);
-  }
+    public DLanguageSharedStaticDestructorImpl(DLanguageSharedStaticDestructorStub stub, IStubElementType nodeType) {
+        super(stub, nodeType);
+    }
 
-  public void accept(@NotNull DLanguageVisitor visitor) {
-    visitor.visitSharedStaticDestructor(this);
-  }
+    public void accept(@NotNull DLanguageVisitor visitor){
+           visitor.visitSharedStaticDestructor(this);
+       }
+       public void accept(@NotNull PsiElementVisitor visitor){
+           if(visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
+           else super.accept(visitor);
+       }
 
-  public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
-    else super.accept(visitor);
-  }
+            @Nullable
+            public PsiElement getOP_TILDA() {
+                return findChildByType(OP_TILDA);
+            }
 
-  @Override
-  @Nullable
-  public DLanguageFunctionBody getFunctionBody() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageFunctionBody.class);
-  }
+            @Nullable
+            public PsiElement getKW_STATIC() {
+                return findChildByType(KW_STATIC);
+            }
 
-  @Override
-  @Nullable
-  public DLanguageMemberFunctionAttributes getMemberFunctionAttributes() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageMemberFunctionAttributes.class);
-  }
+            @Nullable
+            public PsiElement getKW_SHARED() {
+                return findChildByType(KW_SHARED);
+            }
 
-  @Override
-  @NotNull
-  public PsiElement getKwShared() {
-    return notNullChild(findChildByType(KW_SHARED));
-  }
+            @Nullable
+            public PsiElement getKW_THIS() {
+                return findChildByType(KW_THIS);
+            }
 
-  @Override
-  @NotNull
-  public PsiElement getKwStatic() {
-    return notNullChild(findChildByType(KW_STATIC));
-  }
+            @Nullable
+            public PsiElement getOP_PAR_LEFT() {
+                return findChildByType(OP_PAR_LEFT);
+            }
 
-  @Override
-  @NotNull
-  public PsiElement getKwThis() {
-    return notNullChild(findChildByType(KW_THIS));
-  }
+            @Nullable
+            public PsiElement getOP_PAR_RIGHT() {
+                return findChildByType(OP_PAR_RIGHT);
+            }
 
-  @Override
-  @NotNull
-  public PsiElement getOpParLeft() {
-    return notNullChild(findChildByType(OP_PAR_LEFT));
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getOpParRight() {
-    return notNullChild(findChildByType(OP_PAR_RIGHT));
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpScolon() {
-    return findChildByType(OP_SCOLON);
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getOpTilda() {
-    return notNullChild(findChildByType(OP_TILDA));
-  }
-
+            @Nullable
+            public DLanguageFunctionBody getFunctionBody() {
+                return PsiTreeUtil.getChildOfType(this, DLanguageFunctionBody.class);
+            }
 }

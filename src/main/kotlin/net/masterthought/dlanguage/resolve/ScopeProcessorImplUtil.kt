@@ -15,6 +15,39 @@ import net.masterthought.dlanguage.utils.*
 
 object ScopeProcessorImplUtil {
 
+    fun processConditionalDeclaration(element: ConditionalDeclaration,
+                                      processor: PsiScopeProcessor,
+                                      state: ResolveState,
+                                      lastParent: PsiElement,
+                                      place: PsiElement): Boolean {
+
+        var defNotFound = true
+        for (declaration in element.declarations) {
+            if(!ScopeProcessorImpl.processDeclarations(declaration, processor, state, lastParent, place)){
+                defNotFound = false;
+            }
+        }
+        return defNotFound;
+    }
+
+
+    fun processConditionalStatement(element: ConditionalStatement,
+                                    processor: PsiScopeProcessor,
+                                    state: ResolveState,
+                                    lastParent: PsiElement,
+                                    place: PsiElement): Boolean {
+        //always recurse in since this is a compile time condition
+        //handle place and lastParent
+        var toContinue = true;
+        for (dLangStatement in element.declarationOrStatements) {
+            if (!dLangStatement.processDeclarations(processor, state, lastParent, place)) {
+                toContinue = false
+            }
+        }
+        return toContinue
+    }
+    /*
+
     /**
      * effectively a utility method for decldef and statement
      */
@@ -204,12 +237,14 @@ object ScopeProcessorImplUtil {
         return true
     }
 
+
+    */
     fun processParameters(element: Parameters,
                           processor: PsiScopeProcessor,
                           state: ResolveState,
                           lastParent: PsiElement,
                           place: PsiElement): Boolean {
-        for (p in element.parameterList?.parameterList ?: listOf()) {
+        for (p in element?.parameters ?: listOf()) {
             if (!processor.execute(p, state)) {
                 return false
             }
@@ -222,13 +257,12 @@ object ScopeProcessorImplUtil {
                                   state: ResolveState,
                                   lastParent: PsiElement,
                                   place: PsiElement): Boolean {
-        for (p in element.templateParameterList?.templateParameterList ?: listOf()) {
+        for (p in element.templateParameterList?.templateParameters ?: listOf()) {
             if (!processor.execute(p, state)) {
                 return false
             }
         }
         return true
     }
-
 
 }

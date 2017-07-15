@@ -1,7 +1,0 @@
-DLanguageTokenType.class ('class')
-WHITE_SPACE (' ')
-DLanguageTokenType.ID ('Apple')
-DLanguageTokenType.( ('(')
-DLanguageTokenType.) (')')
-DLanguageTokenType.{ ('{')
-DLanguageTokenType.} ('}')

@@ -1,137 +1,64 @@
-// This is a generated file. Not intended for manual editing.
+
+
 package net.masterthought.dlanguage.psi.impl;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.util.PsiTreeUtil;
-import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
-import net.masterthought.dlanguage.stubs.DLanguageClassDeclarationStub;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import net.masterthought.dlanguage.psi.*;
-import com.intellij.navigation.ItemPresentation;
-import com.intellij.psi.PsiReference;
-import com.intellij.psi.ResolveState;
-import com.intellij.psi.scope.PsiScopeProcessor;
-import net.masterthought.dlanguage.psi.interfaces.containers.Container;
-import net.masterthought.dlanguage.psi.interfaces.CanInherit;
-import java.util.Map;
-import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
-import com.intellij.psi.stubs.IStubElementType;
+import java.util.List;
+import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
 
-public class DLanguageClassDeclarationImpl extends DNamedStubbedPsiElementBase<DLanguageClassDeclarationStub> implements DLanguageClassDeclaration {
 
-  public DLanguageClassDeclarationImpl(DLanguageClassDeclarationStub stub, IStubElementType type) {
-    super(stub, type);
-  }
+public class DLanguageClassDeclarationImpl extends ASTWrapperPsiElement implements DLanguageClassDeclaration{
+       public DLanguageClassDeclarationImpl (ASTNode node){
+               super(node);
+       }
+       public void accept(@NotNull DLanguageVisitor visitor){
+           visitor.visitClassDeclaration(this);
+       }
+       public void accept(@NotNull PsiElementVisitor visitor){
+           if(visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
+           else super.accept(visitor);
+       }
 
-  public DLanguageClassDeclarationImpl(ASTNode node) {
-    super(node);
-  }
-
-  public void accept(@NotNull DLanguageVisitor visitor) {
-    visitor.visitClassDeclaration(this);
-  }
-
-  public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
-    else super.accept(visitor);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageAggregateBody getAggregateBody() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageAggregateBody.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageBaseClassList getBaseClassList() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageBaseClassList.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageConstraint getConstraint() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageConstraint.class);
-  }
-
-  @Override
-  @NotNull
-  public DLanguageIdentifier getIdentifier() {
-    return notNullChild(PsiTreeUtil.getStubChildOfType(this, DLanguageIdentifier.class));
-  }
-
-  @Override
-  @Nullable
-  public DLanguageTemplateParameters getTemplateParameters() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateParameters.class);
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getKwClass() {
-    return notNullChild(findChildByType(KW_CLASS));
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpScolon() {
-    return findChildByType(OP_SCOLON);
-  }
-
-  @NotNull
-  public String getName() {
-    return DPsiImplUtil.getName(this);
-  }
-
-  public String getFullName() {
-    return DPsiImplUtil.getFullName(this);
-  }
-
-  @Nullable
-  public PsiElement getNameIdentifier() {
-    return DPsiImplUtil.getNameIdentifier(this);
-  }
-
-  @NotNull
-  public PsiReference getReference() {
-    return DPsiImplUtil.getReference(this);
-  }
-
-  @NotNull
-  public PsiElement setName(String newName) {
-    return DPsiImplUtil.setName(this, newName);
-  }
-
-  @NotNull
-  public ItemPresentation getPresentation() {
-    return DPsiImplUtil.getPresentation(this);
-  }
-
-  public boolean isSomeVisibility(Visibility visibility, Class<? extends Container> containerType) {
-    return DPsiImplUtil.isSomeVisibility(this, visibility, containerType);
-  }
-
-  public boolean isSomeVisibility(Visibility visibility) {
-    return DPsiImplUtil.isSomeVisibility(this, visibility);
-  }
-
-  public DLanguageProtectionAttribute getProtection() {
-    return DPsiImplUtil.getProtection(this);
-  }
-
-  public List<CanInherit> whatInheritsFrom() {
-    return DPsiImplUtil.whatInheritsFrom(this);
-  }
-
-  public Map<String, DLanguageIdentifier> getSuperClassNames() {
-    return DPsiImplUtil.getSuperClassNames(this);
-  }
-
-  public boolean processDeclarations(PsiScopeProcessor processor, ResolveState state, PsiElement lastParent, PsiElement place) {
-    return DPsiImplUtil.processDeclarations(this, processor, state, lastParent, place);
-  }
-
+            @Nullable
+            public PsiElement getKW_CLASS() {
+                return findChildByType(KW_CLASS);
+            }
+        
+            @Nullable
+            public DLanguageIdentifier getIdentifier() {
+                return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
+            }
+            @Nullable
+            public PsiElement getOP_SCOLON() {
+                return findChildByType(OP_SCOLON);
+            }
+        
+            @Nullable
+            public PsiElement getOP_COLON() {
+                return findChildByType(OP_COLON);
+            }
+        
+            @Nullable
+            public DLanguageStructBody getStructBody() {
+                return PsiTreeUtil.getChildOfType(this, DLanguageStructBody.class);
+            }
+            @Nullable
+            public DLanguageTemplateParameters getTemplateParameters() {
+                return PsiTreeUtil.getChildOfType(this, DLanguageTemplateParameters.class);
+            }
+            @Nullable
+            public DLanguageConstraint getConstraint() {
+                return PsiTreeUtil.getChildOfType(this, DLanguageConstraint.class);
+            }
+            @Nullable
+            public DLanguageBaseClassList getBaseClassList() {
+                return PsiTreeUtil.getChildOfType(this, DLanguageBaseClassList.class);
+            }
 }

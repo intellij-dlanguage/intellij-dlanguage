@@ -1,61 +1,32 @@
-// This is a generated file. Not intended for manual editing.
-package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
-import com.intellij.psi.PsiElement;
+    package net.masterthought.dlanguage.psi;
 
-public interface DLanguageTemplateAliasParameter extends PsiElement {
+    import com.intellij.psi.PsiElement;
+    import org.jetbrains.annotations.NotNull;
+    import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
+    import org.jetbrains.annotations.Nullable;
+    import com.intellij.psi.util.PsiTreeUtil;
+    import java.util.List;
+    import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+    import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
 
-  @NotNull
-  List<DLanguageAddExpression_> getAddExpression_List();
 
-  @NotNull
-  List<DLanguageAndExxpression_> getAndExxpression_List();
 
-  @NotNull
-  List<DLanguageConditionalExpression_> getConditionalExpression_List();
 
-  @NotNull
-  List<DLanguageEqualExpression> getEqualExpressionList();
-
-  @Nullable
-  DLanguageIdentifier getIdentifier();
-
-  @NotNull
-  List<DLanguageIdentityExpression> getIdentityExpressionList();
-
-  @NotNull
-  List<DLanguageInExpression> getInExpressionList();
-
-  @NotNull
-  List<DLanguageMulExpression_> getMulExpression_List();
-
-  @NotNull
-  List<DLanguageOrOrExpression> getOrOrExpressionList();
-
-  @NotNull
-  List<DLanguageRelExpression> getRelExpressionList();
-
-  @NotNull
-  List<DLanguageShiftExpression_> getShiftExpression_List();
-
-  @NotNull
-  List<DLanguageType> getTypeList();
-
-  @NotNull
-  List<DLanguageUnaryExpression> getUnaryExpressionList();
-
-  @NotNull
-  List<DLanguageXorExpression_> getXorExpression_List();
-
-  @NotNull
-  PsiElement getKwAlias();
-
-  @Nullable
-  PsiElement getOpColon();
-
-  @Nullable
-  PsiElement getOpEq();
-
+    public interface DLanguageTemplateAliasParameter extends PsiElement {
+            @Nullable
+            public PsiElement getKW_ALIAS();
+        
+            @Nullable
+            public DLanguageIdentifier getIdentifier();
+                @NotNull
+                public List<DLanguageType> getTypes();
+                @NotNull
+                public List<DLanguageAssignExpression> getAssignExpressions();
+            @Nullable
+            public PsiElement getOP_COLON();
+        
+            @Nullable
+            public PsiElement getOP_EQ();
+        
 }

@@ -1,73 +1,22 @@
-// This is a generated file. Not intended for manual editing.
-package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
-import com.intellij.psi.PsiElement;
-import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
-import net.masterthought.dlanguage.psi.interfaces.containers.StatementContainer;
-import net.masterthought.dlanguage.psi.interfaces.containers.MixinContainer;
-import net.masterthought.dlanguage.psi.interfaces.containers.GlobalDeclarationContainer;
-import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
-import net.masterthought.dlanguage.psi.interfaces.HasTemplateParameters;
-import net.masterthought.dlanguage.psi.interfaces.Mixinable;
-import net.masterthought.dlanguage.psi.interfaces.Declaration;
-import com.intellij.psi.StubBasedPsiElement;
-import net.masterthought.dlanguage.stubs.DLanguageTemplateMixinDeclarationStub;
-import com.intellij.navigation.ItemPresentation;
-import com.intellij.psi.PsiReference;
-import com.intellij.psi.ResolveState;
-import com.intellij.psi.scope.PsiScopeProcessor;
-import net.masterthought.dlanguage.psi.interfaces.containers.Container;
-import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
+    package net.masterthought.dlanguage.psi;
 
-public interface DLanguageTemplateMixinDeclaration extends DNamedElement, StatementContainer, MixinContainer, GlobalDeclarationContainer, HasVisibility, HasTemplateParameters, Mixinable, Declaration, StubBasedPsiElement<DLanguageTemplateMixinDeclarationStub> {
+    import com.intellij.psi.PsiElement;
+    import org.jetbrains.annotations.NotNull;
+    import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
+    import org.jetbrains.annotations.Nullable;
+    import com.intellij.psi.util.PsiTreeUtil;
+    import java.util.List;
+    import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+    import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
 
-  @Nullable
-  DLanguageConstraint getConstraint();
 
-  @Nullable
-  DLanguageDeclDefs getDeclDefs();
 
-  @NotNull
-  DLanguageIdentifier getIdentifier();
 
-  @Nullable
-  DLanguageTemplateParameters getTemplateParameters();
-
-  @NotNull
-  PsiElement getKwMixin();
-
-  @NotNull
-  PsiElement getKwTemplate();
-
-  @Nullable
-  PsiElement getOpBracesLeft();
-
-  @Nullable
-  PsiElement getOpBracesRight();
-
-  @NotNull
-  String getName();
-
-  String getFullName();
-
-  @Nullable
-  PsiElement getNameIdentifier();
-
-  @NotNull
-  PsiReference getReference();
-
-  @NotNull
-  PsiElement setName(String newName);
-
-  @NotNull
-  ItemPresentation getPresentation();
-
-  boolean isSomeVisibility(Visibility visibility, Class<? extends Container> containerType);
-
-  boolean isSomeVisibility(Visibility visibility);
-
-  boolean processDeclarations(PsiScopeProcessor processor, ResolveState state, PsiElement lastParent, PsiElement place);
-
+    public interface DLanguageTemplateMixinDeclaration extends PsiElement {
+            @Nullable
+            public PsiElement getKW_MIXIN();
+        
+            @Nullable
+            public DLanguageTemplateDeclaration getTemplateDeclaration();
 }

@@ -1,25 +1,30 @@
-// This is a generated file. Not intended for manual editing.
-package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
-import com.intellij.psi.PsiElement;
+    package net.masterthought.dlanguage.psi;
 
-public interface DLanguageOutStatement extends PsiElement {
+    import com.intellij.psi.PsiElement;
+    import org.jetbrains.annotations.NotNull;
+    import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
+    import org.jetbrains.annotations.Nullable;
+    import com.intellij.psi.util.PsiTreeUtil;
+    import java.util.List;
+    import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+    import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
 
-  @NotNull
-  DLanguageBlockStatement getBlockStatement();
 
-  @Nullable
-  DLanguageIdentifier getIdentifier();
 
-  @NotNull
-  PsiElement getKwOut();
 
-  @Nullable
-  PsiElement getOpParLeft();
-
-  @Nullable
-  PsiElement getOpParRight();
-
+    public interface DLanguageOutStatement extends PsiElement {
+            @Nullable
+            public DLanguageIdentifier getIdentifier();
+            @Nullable
+            public DLanguageBlockStatement getBlockStatement();
+            @Nullable
+            public PsiElement getKW_OUT();
+        
+            @Nullable
+            public PsiElement getOP_PAR_LEFT();
+        
+            @Nullable
+            public PsiElement getOP_PAR_RIGHT();
+        
 }

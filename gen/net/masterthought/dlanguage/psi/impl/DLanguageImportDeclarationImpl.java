@@ -1,53 +1,52 @@
-// This is a generated file. Not intended for manual editing.
+
+
 package net.masterthought.dlanguage.psi.impl;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.util.PsiTreeUtil;
-import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import net.masterthought.dlanguage.psi.*;
+import java.util.List;
+import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
 
-public class DLanguageImportDeclarationImpl extends ASTWrapperPsiElement implements DLanguageImportDeclaration {
 
-  public DLanguageImportDeclarationImpl(ASTNode node) {
-    super(node);
-  }
+public class DLanguageImportDeclarationImpl extends ASTWrapperPsiElement implements DLanguageImportDeclaration{
+       public DLanguageImportDeclarationImpl (ASTNode node){
+               super(node);
+       }
+       public void accept(@NotNull DLanguageVisitor visitor){
+           visitor.visitImportDeclaration(this);
+       }
+       public void accept(@NotNull PsiElementVisitor visitor){
+           if(visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
+           else super.accept(visitor);
+       }
 
-  public void accept(@NotNull DLanguageVisitor visitor) {
-    visitor.visitImportDeclaration(this);
-  }
-
-  public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
-    else super.accept(visitor);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageImportList getImportList() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageImportList.class);
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getKwImport() {
-    return notNullChild(findChildByType(KW_IMPORT));
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwStatic() {
-    return findChildByType(KW_STATIC);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpScolon() {
-    return findChildByType(OP_SCOLON);
-  }
-
+            @Nullable
+            public PsiElement getKW_IMPORT() {
+                return findChildByType(KW_IMPORT);
+            }
+        
+                @NotNull
+                public List<DLanguageSingleImport> getSingleImports() {
+                    return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageSingleImport.class);
+                }
+            @Nullable
+            public DLanguageImportBindings getImportBindings() {
+                return PsiTreeUtil.getChildOfType(this, DLanguageImportBindings.class);
+            }
+                @NotNull
+                public List<PsiElement> getOP_COMMAs() {
+                    return findChildrenByType(OP_COMMA);
+                }
+            
+            @Nullable
+            public PsiElement getOP_SCOLON() {
+                return findChildByType(OP_SCOLON);
+            }
+        
 }

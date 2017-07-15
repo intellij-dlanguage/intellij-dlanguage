@@ -1,69 +1,27 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
-import net.masterthought.dlanguage.psi.interfaces.containers.StatementContainer;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
-import net.masterthought.dlanguage.psi.interfaces.containers.MixinContainer;
-import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
-import net.masterthought.dlanguage.psi.interfaces.HasTemplateParameters;
-import net.masterthought.dlanguage.psi.interfaces.Declaration;
-import com.intellij.psi.StubBasedPsiElement;
-import net.masterthought.dlanguage.stubs.DLanguageStructDeclarationStub;
-import com.intellij.navigation.ItemPresentation;
-import com.intellij.psi.PsiReference;
-import com.intellij.psi.ResolveState;
-import com.intellij.psi.scope.PsiScopeProcessor;
-import net.masterthought.dlanguage.psi.interfaces.containers.Container;
-import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
+import org.jetbrains.annotations.Nullable;
 
-public interface DLanguageStructDeclaration extends StatementContainer, DNamedElement, MixinContainer, HasVisibility, HasTemplateParameters, Declaration, StubBasedPsiElement<DLanguageStructDeclarationStub> {
 
-  @Nullable
-  DLanguageAggregateBody getAggregateBody();
+public interface DLanguageStructDeclaration extends PsiElement, DNamedElement {
+    @Nullable
+    public PsiElement getKW_STRUCT();
 
-  @Nullable
-  DLanguageConstraint getConstraint();
+    @Nullable
+    public DLanguageIdentifier getIdentifier();
 
-  @Nullable
-  DLanguageIdentifier getIdentifier();
+    @Nullable
+    public DLanguageTemplateParameters getTemplateParameters();
 
-  @Nullable
-  DLanguageTemplateParameters getTemplateParameters();
+    @Nullable
+    public DLanguageConstraint getConstraint();
 
-  @NotNull
-  PsiElement getKwStruct();
+    @Nullable
+    public DLanguageStructBody getStructBody();
 
-  @Nullable
-  PsiElement getOpScolon();
-
-  @NotNull
-  String getName();
-
-  String getFullName();
-
-  @Nullable
-  PsiElement getNameIdentifier();
-
-  @NotNull
-  PsiReference getReference();
-
-  @Nullable
-  PsiElement setName(String newName);
-
-  @NotNull
-  ItemPresentation getPresentation();
-
-  boolean isSomeVisibility(Visibility visibility, Class<? extends Container> containerType);
-
-  boolean isSomeVisibility(Visibility visibility);
-
-  //WARNING: getTemplateArguments(...) is skipped
-  //matching getTemplateArguments(DLanguageStructDeclaration, ...)
-  //methods are not found in DPsiImplUtil
-
-  boolean processDeclarations(PsiScopeProcessor processor, ResolveState state, PsiElement lastParent, PsiElement place);
+    @Nullable
+    public PsiElement getOP_SCOLON();
 
 }

@@ -1,35 +1,33 @@
-// This is a generated file. Not intended for manual editing.
-package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.ResolveState;
-import com.intellij.psi.scope.PsiScopeProcessor;
+    package net.masterthought.dlanguage.psi;
 
-public interface DLanguageIfStatement extends PsiElement {
+    import com.intellij.psi.PsiElement;
+    import org.jetbrains.annotations.NotNull;
+    import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
+    import org.jetbrains.annotations.Nullable;
+    import com.intellij.psi.util.PsiTreeUtil;
+    import java.util.List;
+    import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+    import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
 
-  @Nullable
-  DLanguageElseStatement getElseStatement();
 
-  @Nullable
-  DLanguageIfCondition getIfCondition();
 
-  @Nullable
-  DLanguageThenStatement getThenStatement();
 
-  @Nullable
-  PsiElement getKwElse();
-
-  @NotNull
-  PsiElement getKwIf();
-
-  @Nullable
-  PsiElement getOpParLeft();
-
-  @Nullable
-  PsiElement getOpParRight();
-
-  boolean processDeclarations(PsiScopeProcessor processor, ResolveState state, PsiElement lastParent, PsiElement place);
-
+    public interface DLanguageIfStatement extends PsiElement {
+                @NotNull
+                public List<DLanguageDeclarationOrStatement> getDeclarationOrStatements();
+            @Nullable
+            public PsiElement getKW_ELSE();
+        
+            @Nullable
+            public PsiElement getKW_IF();
+        
+            @Nullable
+            public PsiElement getOP_PAR_LEFT();
+        
+            @Nullable
+            public PsiElement getOP_PAR_RIGHT();
+        
+            @Nullable
+            public DLanguageIfCondition getIfCondition();
 }

@@ -54,7 +54,7 @@ public abstract class DNamedStubElementType<S extends NamedStubBase<T>, T extend
             if (stubParent == null) {
                 return true;
             }
-            if (stubParent instanceof DLanguageFuncDeclarationStub) {
+            if (stubParent instanceof DLanguageFunctionDeclarationStub) {
                 return false;
             }
             if (stubParent instanceof DLanguageConstructorStub || stubParent instanceof DLanguageSharedStaticConstructorStub || stubParent instanceof DLanguageStaticConstructorStub || stubParent instanceof DLanguageDestructorStub || stubParent instanceof DLanguageSharedStaticDestructorStub || stubParent instanceof DLanguageStaticDestructorStub) {

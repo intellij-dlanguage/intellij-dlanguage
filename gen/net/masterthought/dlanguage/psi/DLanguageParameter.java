@@ -1,67 +1,33 @@
-// This is a generated file. Not intended for manual editing.
-package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
-import com.intellij.psi.PsiElement;
-import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
-import net.masterthought.dlanguage.psi.interfaces.Declaration;
-import net.masterthought.dlanguage.psi.interfaces.VariableDeclaration;
-import com.intellij.psi.StubBasedPsiElement;
-import net.masterthought.dlanguage.stubs.DLanguageParameterStub;
-import com.intellij.navigation.ItemPresentation;
-import com.intellij.psi.PsiReference;
-import net.masterthought.dlanguage.psi.interfaces.containers.Container;
-import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
+    package net.masterthought.dlanguage.psi;
 
-public interface DLanguageParameter extends DNamedElement, Declaration, VariableDeclaration, StubBasedPsiElement<DLanguageParameterStub> {
+    import com.intellij.psi.PsiElement;
+    import org.jetbrains.annotations.NotNull;
+    import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
+    import org.jetbrains.annotations.Nullable;
+    import com.intellij.psi.util.PsiTreeUtil;
+    import java.util.List;
+    import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+    import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
 
-  @Nullable
-  DLanguageAssignExpression getAssignExpression();
 
-  @Nullable
-  DLanguageBasicType getBasicType();
 
-  @Nullable
-  DLanguageDeclarator getDeclarator();
 
-  @Nullable
-  DLanguageIdentifier getIdentifier();
-
-  @Nullable
-  DLanguageInOut getInOut();
-
-  @Nullable
-  DLanguageType getType();
-
-  @Nullable
-  PsiElement getKwAlias();
-
-  @Nullable
-  PsiElement getOpEq();
-
-  @Nullable
-  PsiElement getOpTripledot();
-
-  @NotNull
-  String getName();
-
-  String getFullName();
-
-  @Nullable
-  PsiElement getNameIdentifier();
-
-  @NotNull
-  PsiReference getReference();
-
-  @NotNull
-  PsiElement setName(String newName);
-
-  @NotNull
-  ItemPresentation getPresentation();
-
-  boolean isSomeVisibility(Visibility visibility, Class<? extends Container> containerType);
-
-  boolean isSomeVisibility(Visibility visibility);
-
+    public interface DLanguageParameter extends PsiElement , DNamedElement{
+                @NotNull
+                public List<DLanguageParameterAttribute> getParameterAttributes();
+            @Nullable
+            public DLanguageType getType();
+            @Nullable
+            public DLanguageIdentifier getIdentifier();
+                @NotNull
+                public List<DLanguageTypeSuffix> getTypeSuffixs();
+            @Nullable
+            public PsiElement getOP_TRIPLEDOT();
+        
+            @Nullable
+            public DLanguageAssignExpression getAssignExpression();
+            @Nullable
+            public PsiElement getOP_EQ();
+        
 }

@@ -1,1 +1,0 @@
-DLanguageTokenType.LINE_COMMENT ('// a comment line')

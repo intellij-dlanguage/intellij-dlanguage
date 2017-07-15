@@ -1,65 +1,56 @@
-// This is a generated file. Not intended for manual editing.
+
+
 package net.masterthought.dlanguage.psi.impl;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.util.PsiTreeUtil;
-import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import net.masterthought.dlanguage.psi.*;
+import java.util.List;
+import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
 
-public class DLanguageCastExpressionImpl extends ASTWrapperPsiElement implements DLanguageCastExpression {
 
-  public DLanguageCastExpressionImpl(ASTNode node) {
-    super(node);
-  }
+public class DLanguageCastExpressionImpl extends ASTWrapperPsiElement implements DLanguageCastExpression{
+       public DLanguageCastExpressionImpl (ASTNode node){
+               super(node);
+       }
+       public void accept(@NotNull DLanguageVisitor visitor){
+           visitor.visitCastExpression(this);
+       }
+       public void accept(@NotNull PsiElementVisitor visitor){
+           if(visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
+           else super.accept(visitor);
+       }
 
-  public void accept(@NotNull DLanguageVisitor visitor) {
-    visitor.visitCastExpression(this);
-  }
-
-  public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
-    else super.accept(visitor);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageType getType() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageType.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageTypeCtors getTypeCtors() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageTypeCtors.class);
-  }
-
-  @Override
-  @NotNull
-  public DLanguageUnaryExpression getUnaryExpression() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageUnaryExpression.class));
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getKwCast() {
-    return notNullChild(findChildByType(KW_CAST));
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getOpParLeft() {
-    return notNullChild(findChildByType(OP_PAR_LEFT));
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getOpParRight() {
-    return notNullChild(findChildByType(OP_PAR_RIGHT));
-  }
-
+            @Nullable
+            public DLanguageCastQualifier getCastQualifier() {
+                return PsiTreeUtil.getChildOfType(this, DLanguageCastQualifier.class);
+            }
+            @Nullable
+            public DLanguageType getType() {
+                return PsiTreeUtil.getChildOfType(this, DLanguageType.class);
+            }
+            @Nullable
+            public DLanguageUnaryExpression getUnaryExpression() {
+                return PsiTreeUtil.getChildOfType(this, DLanguageUnaryExpression.class);
+            }
+            @Nullable
+            public PsiElement getKW_CAST() {
+                return findChildByType(KW_CAST);
+            }
+        
+            @Nullable
+            public PsiElement getOP_PAR_LEFT() {
+                return findChildByType(OP_PAR_LEFT);
+            }
+        
+            @Nullable
+            public PsiElement getOP_PAR_RIGHT() {
+                return findChildByType(OP_PAR_RIGHT);
+            }
+        
 }

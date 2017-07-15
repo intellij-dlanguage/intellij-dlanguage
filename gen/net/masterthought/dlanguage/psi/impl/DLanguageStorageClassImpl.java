@@ -1,155 +1,119 @@
-// This is a generated file. Not intended for manual editing.
+
+
 package net.masterthought.dlanguage.psi.impl;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.util.PsiTreeUtil;
-import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import net.masterthought.dlanguage.psi.*;
+import java.util.List;
+import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
 
-public class DLanguageStorageClassImpl extends ASTWrapperPsiElement implements DLanguageStorageClass {
 
-  public DLanguageStorageClassImpl(ASTNode node) {
-    super(node);
-  }
+public class DLanguageStorageClassImpl extends ASTWrapperPsiElement implements DLanguageStorageClass{
+       public DLanguageStorageClassImpl (ASTNode node){
+               super(node);
+       }
+       public void accept(@NotNull DLanguageVisitor visitor){
+           visitor.visitStorageClass(this);
+       }
+       public void accept(@NotNull PsiElementVisitor visitor){
+           if(visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
+           else super.accept(visitor);
+       }
 
-  public void accept(@NotNull DLanguageVisitor visitor) {
-    visitor.visitStorageClass(this);
-  }
-
-  public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
-    else super.accept(visitor);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageAlignAttribute getAlignAttribute() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageAlignAttribute.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageLinkageAttribute getLinkageAttribute() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageLinkageAttribute.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageProperty getProperty() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageProperty.class);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwAbstract() {
-    return findChildByType(KW_ABSTRACT);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwAuto() {
-    return findChildByType(KW_AUTO);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwConst() {
-    return findChildByType(KW_CONST);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwDeprecated() {
-    return findChildByType(KW_DEPRECATED);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwEnum() {
-    return findChildByType(KW_ENUM);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwExtern() {
-    return findChildByType(KW_EXTERN);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwFinal() {
-    return findChildByType(KW_FINAL);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwImmutable() {
-    return findChildByType(KW_IMMUTABLE);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwInout() {
-    return findChildByType(KW_INOUT);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwNothrow() {
-    return findChildByType(KW_NOTHROW);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwOverride() {
-    return findChildByType(KW_OVERRIDE);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwPure() {
-    return findChildByType(KW_PURE);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwRef() {
-    return findChildByType(KW_REF);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwScope() {
-    return findChildByType(KW_SCOPE);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwShared() {
-    return findChildByType(KW_SHARED);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwStatic() {
-    return findChildByType(KW_STATIC);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwSynchronized() {
-    return findChildByType(KW_SYNCHRONIZED);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwGshared() {
-    return findChildByType(KW___GSHARED);
-  }
-
+            @Nullable
+            public DLanguageAtAttribute getAtAttribute() {
+                return PsiTreeUtil.getChildOfType(this, DLanguageAtAttribute.class);
+            }
+            @Nullable
+            public DLanguageDeprecated getDeprecated() {
+                return PsiTreeUtil.getChildOfType(this, DLanguageDeprecated.class);
+            }
+            @Nullable
+            public DLanguageAlignAttribute getAlignAttribute() {
+                return PsiTreeUtil.getChildOfType(this, DLanguageAlignAttribute.class);
+            }
+            @Nullable
+            public DLanguageLinkageAttribute getLinkageAttribute() {
+                return PsiTreeUtil.getChildOfType(this, DLanguageLinkageAttribute.class);
+            }
+            @Nullable
+            public PsiElement getKW_SYNCHRONIZED() {
+                return findChildByType(KW_SYNCHRONIZED);
+            }
+        
+            @Nullable
+            public DLanguageTypeConstructor getTypeConstructor() {
+                return PsiTreeUtil.getChildOfType(this, DLanguageTypeConstructor.class);
+            }
+            @Nullable
+            public PsiElement getKW_ABSTRACT() {
+                return findChildByType(KW_ABSTRACT);
+            }
+        
+            @Nullable
+            public PsiElement getKW_AUTO() {
+                return findChildByType(KW_AUTO);
+            }
+        
+            @Nullable
+            public PsiElement getKW_ENUM() {
+                return findChildByType(KW_ENUM);
+            }
+        
+            @Nullable
+            public PsiElement getKW_EXTERN() {
+                return findChildByType(KW_EXTERN);
+            }
+        
+            @Nullable
+            public PsiElement getKW_FINAL() {
+                return findChildByType(KW_FINAL);
+            }
+        
+            @Nullable
+            public PsiElement getKW_VIRTUAL() {
+                return findChildByType(KW_VIRTUAL);
+            }
+        
+            @Nullable
+            public PsiElement getKW_NOTHROW() {
+                return findChildByType(KW_NOTHROW);
+            }
+        
+            @Nullable
+            public PsiElement getKW_OVERRIDE() {
+                return findChildByType(KW_OVERRIDE);
+            }
+        
+            @Nullable
+            public PsiElement getKW_PURE() {
+                return findChildByType(KW_PURE);
+            }
+        
+            @Nullable
+            public PsiElement getKW_REF() {
+                return findChildByType(KW_REF);
+            }
+        
+            @Nullable
+            public PsiElement getKW___GSHARED() {
+                return findChildByType(KW___GSHARED);
+            }
+        
+            @Nullable
+            public PsiElement getKW_SCOPE() {
+                return findChildByType(KW_SCOPE);
+            }
+        
+            @Nullable
+            public PsiElement getKW_STATIC() {
+                return findChildByType(KW_STATIC);
+            }
+        
 }

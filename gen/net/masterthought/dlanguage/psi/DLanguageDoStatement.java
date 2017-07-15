@@ -1,35 +1,36 @@
-// This is a generated file. Not intended for manual editing.
-package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.ResolveState;
-import com.intellij.psi.scope.PsiScopeProcessor;
+    package net.masterthought.dlanguage.psi;
 
-public interface DLanguageDoStatement extends PsiElement {
+    import com.intellij.psi.PsiElement;
+    import org.jetbrains.annotations.NotNull;
+    import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
+    import org.jetbrains.annotations.Nullable;
+    import com.intellij.psi.util.PsiTreeUtil;
+    import java.util.List;
+    import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+    import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
 
-  @Nullable
-  DLanguageCommaExpression getCommaExpression();
 
-  @Nullable
-  DLanguageScopeStatement getScopeStatement();
 
-  @NotNull
-  PsiElement getKwDo();
 
-  @Nullable
-  PsiElement getKwWhile();
-
-  @Nullable
-  PsiElement getOpParLeft();
-
-  @Nullable
-  PsiElement getOpParRight();
-
-  @Nullable
-  PsiElement getOpScolon();
-
-  boolean processDeclarations(PsiScopeProcessor processor, ResolveState state, PsiElement lastParent, PsiElement place);
-
+    public interface DLanguageDoStatement extends PsiElement {
+            @Nullable
+            public PsiElement getKW_DO();
+        
+            @Nullable
+            public PsiElement getKW_WHILE();
+        
+            @Nullable
+            public DLanguageStatementNoCaseNoDefault getStatementNoCaseNoDefault();
+            @Nullable
+            public DLanguageExpression getExpression();
+            @Nullable
+            public PsiElement getOP_SCOLON();
+        
+            @Nullable
+            public PsiElement getOP_PAR_RIGHT();
+        
+            @Nullable
+            public PsiElement getOP_PAR_LEFT();
+        
 }

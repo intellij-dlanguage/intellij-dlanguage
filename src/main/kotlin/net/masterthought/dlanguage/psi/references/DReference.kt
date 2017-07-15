@@ -50,42 +50,32 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
         // Guess 20 variants tops most of the time in any real code base.
         val identifiers = HashSet<PsiElement>()
         for (namedElement in namedElements) {
-            if (namedElement is DLanguageFuncDeclaration) {
-                identifiers.add(namedElement.identifier)
+            if (namedElement is DLanguageFunctionDeclaration) {
+                identifiers.add(namedElement.identifier!!)
             } else if (namedElement is DLanguageTemplateDeclaration) {
-                identifiers.add(namedElement.identifier)
+                if (namedElement.identifier != null) {
+                    identifiers.add(namedElement.identifier!!)
+                }else{
+                    identifiers.add(namedElement.eponymousTemplateDeclaration!!.identifier!!);
+                }
             } else if (namedElement is DLanguageClassDeclaration) {
-                identifiers.add(namedElement.identifier)
+                identifiers.add(namedElement.identifier!!)
             } else if (namedElement is DLanguageUnionDeclaration) {
                 if (namedElement.identifier != null) {
                     identifiers.add(namedElement.identifier!!)
                 }
-            } else if (namedElement is DLanguageInterfaceDeclaration) {
-                identifiers.add(namedElement.identifier)
+            } else if (namedElement is DLanguageInterfaceOrClass) {
+                identifiers.add(namedElement.identifier!!)
             } else if (namedElement is DLanguageStructDeclaration) {
                 if (namedElement.identifier != null) {
                     identifiers.add(namedElement.identifier!!)
                 }
             } else if (namedElement is DLanguageEnumDeclaration) {
                 identifiers.add(namedElement.identifier!!)
-            } else if (namedElement is DLanguageAutoDeclarationY) {
-                identifiers.add(namedElement.identifier)
-            } else if (namedElement is DLanguageAliasDeclarationY) {
-                identifiers.add(namedElement.identifier)
-            } else if (namedElement is DLanguageAliasDeclarationSingle) {
-                if (namedElement.identifier != null) {
-                    identifiers.add(namedElement.identifier!!)
-                } else {
-                    identifiers.add(getIdentifier(namedElement.declarator))
-                }
-
-            } else if (namedElement is DLanguageDeclaratorInitializer) {
-                if (namedElement.altDeclarator != null && namedElement.altDeclarator!!.identifier != null) {
-                    identifiers.add(namedElement.altDeclarator!!.identifier!!)
-                } else if (namedElement.varDeclarator != null) {
-                    identifiers.add(namedElement.varDeclarator!!.identifier)
-                }
-            } else {
+            } else if (namedElement is DLanguageAutoDeclarationPart) {
+                identifiers.add(namedElement.identifier!!)
+            }
+            else {
                 identifiers.add(namedElement)
             }
         }

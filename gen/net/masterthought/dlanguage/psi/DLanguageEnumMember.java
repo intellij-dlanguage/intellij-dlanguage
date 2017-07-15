@@ -1,49 +1,26 @@
-// This is a generated file. Not intended for manual editing.
-package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
-import com.intellij.psi.PsiElement;
-import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
-import net.masterthought.dlanguage.psi.interfaces.Declaration;
-import com.intellij.psi.StubBasedPsiElement;
-import net.masterthought.dlanguage.stubs.DLanguageEnumMemberStub;
-import com.intellij.navigation.ItemPresentation;
-import com.intellij.psi.PsiReference;
-import net.masterthought.dlanguage.psi.interfaces.containers.Container;
-import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
+    package net.masterthought.dlanguage.psi;
 
-public interface DLanguageEnumMember extends DNamedElement, Declaration, StubBasedPsiElement<DLanguageEnumMemberStub> {
+    import com.intellij.psi.PsiElement;
+    import org.jetbrains.annotations.NotNull;
+    import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
+    import org.jetbrains.annotations.Nullable;
+    import com.intellij.psi.util.PsiTreeUtil;
+    import java.util.List;
+    import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+    import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
 
-  @Nullable
-  DLanguageAssignExpression getAssignExpression();
 
-  @NotNull
-  DLanguageIdentifier getIdentifier();
 
-  @Nullable
-  DLanguageType getType();
 
-  @Nullable
-  PsiElement getOpEq();
-
-  @NotNull
-  String getName();
-
-  String getFullName();
-
-  @Nullable
-  PsiElement getNameIdentifier();
-
-  @NotNull
-  PsiReference getReference();
-
-  @NotNull
-  PsiElement setName(String newName);
-
-  @NotNull
-  ItemPresentation getPresentation();
-
-  boolean isSomeVisibility(Visibility visibility, Class<? extends Container> containerType);
-
+    public interface DLanguageEnumMember extends PsiElement , DNamedElement{
+            @Nullable
+            public DLanguageIdentifier getIdentifier();
+            @Nullable
+            public PsiElement getOP_EQ();
+        
+            @Nullable
+            public DLanguageType getType();
+            @Nullable
+            public DLanguageAssignExpression getAssignExpression();
 }
