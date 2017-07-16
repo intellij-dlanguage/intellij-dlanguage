@@ -439,14 +439,13 @@ D Language File
                                                                 IDENTIFIER
                                                                   PsiElement(DLanguageTokenType.ID)('i')
                                                               PsiElement(DLanguageTokenType.,)(',')
-                                                              DLanguageForeachTypeListImpl(FOREACH_TYPE_LIST)
-                                                                DLanguageForeachTypeImpl(FOREACH_TYPE)
-                                                                  DLanguageTypeImpl(TYPE)
-                                                                    DLanguageBasicTypeImpl(BASIC_TYPE)
-                                                                      DLanguageBasicTypeXImpl(BASIC_TYPE_X)
-                                                                        PsiElement(DLanguageTokenType.char)('char')
-                                                                  IDENTIFIER
-                                                                    PsiElement(DLanguageTokenType.ID)('c')
+                                                              DLanguageForeachTypeImpl(FOREACH_TYPE)
+                                                                DLanguageTypeImpl(TYPE)
+                                                                  DLanguageBasicTypeImpl(BASIC_TYPE)
+                                                                    DLanguageBasicTypeXImpl(BASIC_TYPE_X)
+                                                                      PsiElement(DLanguageTokenType.char)('char')
+                                                                IDENTIFIER
+                                                                  PsiElement(DLanguageTokenType.ID)('c')
                                                             PsiElement(DLanguageTokenType.;)(';')
                                                             DLanguageForeachAggregateImpl(FOREACH_AGGREGATE)
                                                               DLanguageCommaExpressionImpl(COMMA_EXPRESSION)

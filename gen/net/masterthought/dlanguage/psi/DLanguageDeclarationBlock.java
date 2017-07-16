@@ -19,4 +19,8 @@ public interface DLanguageDeclarationBlock extends PsiElement {
   @Nullable
   PsiElement getOpBracesRight();
 
+  //WARNING: processDeclarations(...) is skipped
+  //matching processDeclarations(DLanguageDeclarationBlock, ...)
+  //methods are not found in DPsiImplUtil
+
 }

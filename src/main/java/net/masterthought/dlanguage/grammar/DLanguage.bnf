@@ -198,6 +198,8 @@ tokens = [
  LINE_COMMENT="LINE_COMMENT"
  BLOCK_COMMENT="BLOCK_COMMENT"
  NESTING_BLOCK_COMMENT="NESTING_BLOCK_COMMENT"
+ TOKEN_STRING = "TOKEN_STRING"
+
 
 // Comment these back in when playing with Live Preview
 // ------------------------
@@ -233,7 +235,7 @@ Identifier ::= ID {
     implements = ["net.masterthought.dlanguage.psi.interfaces.DNamedElement"]
     }
 
-StringLiteral  ::= (WYSIWYG_STRING|ALTERNATE_WYSIWYG_STRING|DOUBLE_QUOTED_STRING|HEX_STRING|DELIMITED_STRING)
+StringLiteral  ::= (WYSIWYG_STRING|ALTERNATE_WYSIWYG_STRING|DOUBLE_QUOTED_STRING|HEX_STRING|DELIMITED_STRING| (TOKEN_STRING TOKEN_STRING*))
 
 
 // Module
@@ -298,7 +300,6 @@ DeclDefs ::= DeclDef DeclDef*{
 //order matters
 DeclDef ::=
     (AttributeSpecifier
-//    | DeclarationBlockWithStorageClasses
     | Declaration
     | Postblit
     | Constructor
@@ -323,7 +324,9 @@ DeclDef ::=
     | StaticIfCondition
     | StaticElseCondition
     | ';'
-    )
+    ){
+        methods = [processDeclarations]
+    }
 
 MixinDeclaration ::=
     'mixin' '(' ((TemplateInstance AssignExpression?)| AssignExpression) ')' ';'{
@@ -785,6 +788,7 @@ Statement ::=
     | NonEmptyStatement
     | BlockStatement{
     recoverWhile = statement_recover
+    methods = [processDeclarations]
     }
 
 private statement_recover ::=
@@ -830,7 +834,9 @@ NonEmptyStatementNoCaseNoDefault ::=
 
 ScopeStatement ::=
     NonEmptyStatement
-    | BlockStatement
+    | BlockStatement{
+    methods= [processDeclarations]
+    }
 
 LabeledStatement ::=
     Identifier ':' Statement? {
@@ -842,7 +848,9 @@ LabeledStatement ::=
 
 
 BlockStatement ::=
- '{' StatementList? '}'
+ '{' StatementList? '}'{
+    methods = [processDeclarations]
+ }
 
 StatementList ::=
     Statement Statement*{
@@ -861,6 +869,7 @@ DeclarationStatement ::=
 IfStatement ::=
     'if' '(' IfCondition ')' ThenStatement ('else' ElseStatement)?{
     pin = 1
+    methods = [processDeclarations]
     }
 
 IfCondition ::=
@@ -878,16 +887,19 @@ ElseStatement ::=
 WhileStatement ::=
     'while' '(' Expression ')' ScopeStatement{
     pin = 1
+    methods = [processDeclarations]
     }
 
 DoStatement ::=
     'do' ScopeStatement 'while' '(' Expression ')' ';'{
     pin = 1
+    methods = [processDeclarations]
     }
 
 ForStatement ::=
     'for' '(' Initialize Test? ';' Increment? ')' ScopeStatement{
     pin = 1
+    methods = [processDeclarations]
     }
 
 Initialize ::=
@@ -901,18 +913,20 @@ Increment ::=
     Expression
 
 ForeachStatement ::=
-    Foreach '(' ForeachTypeList ';' ForeachAggregate ')' Statement
+    Foreach '(' ForeachTypeList ';' ForeachAggregate ')' Statement{
+        methods = [processDeclarations]
+    }
 
 Foreach ::=
     'foreach'
     | 'foreach_reverse'
 
 ForeachTypeList ::=
-    ForeachType [',' ForeachTypeList]
+    ForeachType (',' ForeachType)*
 
 ForeachType ::=
-   ForeachTypeAttribute Identifier
-   | ForeachTypeAttributes? Type? Identifier // this needs to be above for ForeachTypeAttributes? Type? Identifier
+   ForeachTypeAttributes? Type? Identifier // this needs to be above for ForeachTypeAttributes? Type? Identifier
+   | ForeachTypeAttribute Identifier
    | Type? ForeachTypeAttributes? Identifier
    | Identifier
 
@@ -927,7 +941,9 @@ ForeachAggregate ::=
     Expression
 
 ForeachRangeStatement ::=//todo remove this from grammar
-    Foreach '(' ForeachType ';' LwrExpression '..' UprExpression ')' ScopeStatement
+    Foreach '(' ForeachType ';' LwrExpression '..' UprExpression ')' ScopeStatement{
+    methods = [processDeclarations]
+    }
 
 LwrExpression ::=
     Expression
@@ -938,6 +954,7 @@ UprExpression ::=
 SwitchStatement ::=
     'switch' '(' Expression ')' ScopeStatement{
     pin = 1
+    methods = [processDeclarations]
     }
 
 CaseStatement ::=
@@ -946,7 +963,7 @@ CaseStatement ::=
     }
 
 CaseRangeStatement ::=
-    'case' FirstExp ':' '..' 'case' LastExp ':' ScopeStatementList{
+    'case' FirstExp ':' '..' 'case' LastExp ':' StatementList{
     pin = 4
     }
 
@@ -965,7 +982,7 @@ ScopeStatementList ::=
     StatementListNoCaseNoDefault
 
 StatementListNoCaseNoDefault ::=
-    StatementNoCaseNoDefault [StatementListNoCaseNoDefault]
+    StatementNoCaseNoDefault StatementNoCaseNoDefault*
 
 StatementNoCaseNoDefault ::=
     NonEmptyStatementNoCaseNoDefault
@@ -974,6 +991,7 @@ StatementNoCaseNoDefault ::=
 FinalSwitchStatement ::=
     'final' 'switch' '(' Expression ')' ScopeStatement{
     pin = 2
+    methods = [processDeclarations]
     }
 
 ContinueStatement ::=
@@ -1045,10 +1063,11 @@ LastCatch ::=
 Catch ::=
     'catch' '(' CatchParameter ')' Statement{
     pin = 3
+    methods = [processDeclarations]
     }
 
 CatchParameter ::=
-    BasicType Identifier
+    BasicType Identifier?//identifier is meant to be optional, but not optional in the main d gramma
 
 FinallyStatement ::=
     'finally' Statement{
@@ -1825,20 +1844,27 @@ Opcode ::=
 | 'pswapd'
 
 Declaration ::=
-   EnumDeclaration
+   EnumFuncDeclaration
    | FuncDeclaration
+   | EnumDeclaration
    | VarDeclarations //must come before alias decleration
    | AliasDeclaration
    | AggregateDeclaration
    | ImportDeclaration
-   | TemplateDeclaration
+   | TemplateDeclaration{
+    methods = [processDeclarations]
+   }
+
+EnumFuncDeclaration ::=
+    (('enum'|'auto'|Type) FuncDeclarator '=' AssignExpression ';')
+    | (('enum'|'auto'|Type) BasicType FuncDeclarator '=' AssignExpression ';')
+
 
 AliasDeclaration ::=
   'alias' Identifier '=' Type TemplateArguments? ';'
   | 'alias' Identifier '=' Initializer ';'
   | 'alias' StorageClasses? BasicType (FuncDeclarator|Declarator) ';'
   | 'alias' AliasDeclarationX ';'{
-     //pin(".*")=3//todo find a way of decreasing/adding this pin to improve parser performance
      methods=[getName getFullName getNameIdentifier getReference setName getPresentation isSomeVisibility actuallyIsDeclaration getDeclarationType]
      stubClass="net.masterthought.dlanguage.stubs.DLanguageAliasDeclarationStub"
      implements=["net.masterthought.dlanguage.psi.interfaces.DNamedElement" "net.masterthought.dlanguage.psi.interfaces.HasVisibility" "net.masterthought.dlanguage.psi.interfaces.Declaration"]
@@ -1977,7 +2003,7 @@ StructMemberInitializer ::=
 //Function
 
 FuncDeclaration ::=
-    StorageClasses? BasicType FuncDeclarator (FunctionBody |';'| '=')?
+    StorageClasses? BasicType FuncDeclarator (FunctionBody |';' )?
     | AutoFuncDeclaration {
       methods=[getName getFullName getNameIdentifier getReference setName getPresentation getArguments isSomeVisibility getTemplateArguments getProtection getArguments isSystem isNoGC isTrusted hasCustomProperty isSafe getCustomProperty isPropertyFunction]
       implements = ["net.masterthought.dlanguage.psi.interfaces.containers.StatementContainer" "net.masterthought.dlanguage.psi.interfaces.DNamedElement" "net.masterthought.dlanguage.psi.interfaces.HasVisibility" "net.masterthought.dlanguage.psi.interfaces.HasProperty" "net.masterthought.dlanguage.psi.interfaces.HasTemplateArguments" "net.masterthought.dlanguage.psi.interfaces.HasArguments" "net.masterthought.dlanguage.psi.interfaces.Declaration"]
@@ -2020,7 +2046,8 @@ InOutX ::=
     | 'out'
     | 'ref'
     | 'scope'
-    | 'return ref'
+    | ('return' 'ref')
+    | 'return' //added becuase off: "char[] toUTF8(return out char[4] buf, dchar c) nothrow @nogc @safe pure"
 
 FunctionAttributes ::=
     FunctionAttribute FunctionAttribute*
@@ -2171,7 +2198,9 @@ AggregateDeclaration ::=
     ClassDeclaration
     | InterfaceDeclaration
     | StructDeclaration
-    | UnionDeclaration
+    | UnionDeclaration{
+    methods = [processDeclarations]
+    }
 
 ClassDeclaration ::=
     'class' Identifier ';'
@@ -2235,7 +2264,9 @@ AnonUnionDeclaration ::=
     }
 
 AggregateBody ::=
-    '{' DeclDefs? '}'
+    '{' DeclDefs? '}'{
+    methods = [processDeclarations]
+    }
 
 BaseClassList ::=
     ':' SuperClass (',' Interfaces)?
@@ -2322,7 +2353,7 @@ Constraint ::=
     }
 
 TemplateInstance ::=
-    Identifier? TemplateArguments
+    Identifier? TemplateArguments//todo that identifier should not be optional
 
 TemplateArguments ::=
      TemplateArgumentsWithParen
@@ -2370,12 +2401,32 @@ TemplateSingleArgument ::=
 
 
  TemplateParameter ::=
-     TemplateTypeParameter
+     TemplateValueParameter
+     | TemplateTypeParameter
      | TemplateAliasParameter
+     | TemplateTupleParameter
      | TemplateThisParameter
 
- TemplateTypeParameter ::=
-     Type Identifier? '...'? [(':' Type)? ('=' Type)?] [(':' AssignExpression)? TemplateValueParameterDefault?]
+//TemplateTypeParameter ::=
+//    BasicType Identifier TemplateTypeParameterSpecialization? TemplateTypeParameterDefault?
+//
+//TemplateTypeParameterSpecialization ::=
+//    ':' Type
+//
+//TemplateTypeParameterDefault::=
+//    '=' Type
+
+TemplateTupleParameter ::=
+    Identifier '...'
+
+TemplateValueParameter ::=
+       BasicType Declarator ('=' (AssignExpression | SpecialKeyword))
+       | BasicType Declarator TemplateValueParameterSpecialization TemplateValueParameterDefault?
+
+private TemplateValueParameterSpecialization ::= ConditionalExpression
+
+TemplateTypeParameter ::=
+    Type Identifier? '...'? (':' Type)? ('=' Type)? (':' AssignExpression)? TemplateValueParameterDefault?
 
 TemplateAliasParameter ::=
      'alias' Type? Identifier? (':' (Type | AssignExpression))? ('=' (Type | AssignExpression))?
@@ -2436,7 +2487,9 @@ Attribute ::=
 
 DeclarationBlock ::=
     DeclDef
-    | '{' DeclDefs? '}'
+    | '{' DeclDefs? '}'{
+    methods = [processDeclarations]
+    }
 
 LinkageAttribute ::=
     'extern' '(' LinkageType ')'
@@ -2459,7 +2512,7 @@ AlignAttribute ::=
     }
 
 DeprecatedAttribute ::=
-    'deprecated' ('(' StringLiteral ')')?{
+    'deprecated' ('(' AssignExpression')')?{
         pin = 1
     }
 
@@ -2508,12 +2561,14 @@ Pragma ::=
 //Conditional
 
 ConditionalDeclaration ::=
-    Condition DeclarationBlock ('else' DeclarationBlock)?
+    Condition DeclarationBlock 'else' ':' DeclDefs?//must be on top
+    | Condition DeclarationBlock ('else' DeclarationBlock)?
     | Condition ':' DeclDefs?
-    | Condition DeclarationBlock 'else' ':' DeclDefs?
 
 ConditionalStatement ::=
-    Condition (Statement | BlockStatement | DeclarationBlock) ('else' (Statement | DeclarationBlock))?
+    Condition (Statement | BlockStatement | DeclarationBlock) ('else' (Statement | DeclarationBlock))?{
+    methods = [processDeclarations]
+    }
 
 Condition ::=
     VersionCondition

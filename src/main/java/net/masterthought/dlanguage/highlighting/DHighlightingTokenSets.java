@@ -11,9 +11,12 @@ public class DHighlightingTokenSets {
     public static final TokenSet STRING = TokenSet.create(DLanguageTypes.STRING);
     public static final TokenSet CHAR = TokenSet.create(DLanguageTypes.CHARACTER_LITERAL);
     public static final TokenSet OPERATOR = TokenSet.create(DLanguageTypes.OPERATOR);
-    public static final TokenSet PARENTHESES = TokenSet.create(DLanguageTypes.PARENTHESES);
-    public static final TokenSet BRACES = TokenSet.create(DLanguageTypes.BRACES);
-    public static final TokenSet BRACKETS = TokenSet.create(DLanguageTypes.BRACKETS);
+    public static final TokenSet PARENTHESES_LEFT = TokenSet.create(DLanguageTypes.PARENTHESES_LEFT);
+    public static final TokenSet PARENTHESES_RIGHT = TokenSet.create(DLanguageTypes.PARENTHESES_RIGHT);
+    public static final TokenSet BRACES_LEFT = TokenSet.create(DLanguageTypes.BRACES_LEFT);
+    public static final TokenSet BRACES_RTGHT = TokenSet.create(DLanguageTypes.BRACES_RIGHT);
+    public static final TokenSet BRACKETS_LEFT = TokenSet.create(DLanguageTypes.BRACKETS_LEFT);
+    public static final TokenSet BRACKETS_RIGHT = TokenSet.create(DLanguageTypes.BRACKETS_RIGHT);
     public static final TokenSet COMMA = TokenSet.create(DLanguageTypes.COMMA);
     public static final TokenSet SEMICOLON = TokenSet.create(DLanguageTypes.SEMICOLON);
     public static final TokenSet DOT = TokenSet.create(DLanguageTypes.DOT);

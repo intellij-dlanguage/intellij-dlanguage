@@ -39,14 +39,13 @@ D Language File
               IDENTIFIER
                 PsiElement(DLanguageTokenType.ID)('s')
             PsiElement(DLanguageTokenType.,)(',')
-            DLanguageForeachTypeListImpl(FOREACH_TYPE_LIST)
-              DLanguageForeachTypeImpl(FOREACH_TYPE)
-                DLanguageTypeImpl(TYPE)
-                  DLanguageBasicTypeImpl(BASIC_TYPE)
-                    DLanguageBasicTypeXImpl(BASIC_TYPE_X)
-                      PsiElement(DLanguageTokenType.double)('double')
-                IDENTIFIER
-                  PsiElement(DLanguageTokenType.ID)('d')
+            DLanguageForeachTypeImpl(FOREACH_TYPE)
+              DLanguageTypeImpl(TYPE)
+                DLanguageBasicTypeImpl(BASIC_TYPE)
+                  DLanguageBasicTypeXImpl(BASIC_TYPE_X)
+                    PsiElement(DLanguageTokenType.double)('double')
+              IDENTIFIER
+                PsiElement(DLanguageTokenType.ID)('d')
           PsiElement(DLanguageTokenType.;)(';')
           DLanguageForeachAggregateImpl(FOREACH_AGGREGATE)
             DLanguageCommaExpressionImpl(COMMA_EXPRESSION)

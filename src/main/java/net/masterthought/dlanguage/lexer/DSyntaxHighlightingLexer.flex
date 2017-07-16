@@ -232,11 +232,17 @@ KEYWORD = ({BASIC_TYPES} |
            __traits |
            unittest)
 
-PARENTHESES = ("(" | ")")
+PARENTHESES_LEFT = ("(")
 
-BRACES = ("{" | "}")
+PARENTHESES_RIGHT = (")")
 
-BRACKETS = ("[" | "]")
+BRACES_LEFT = ("{")
+
+BRACES_RIGHT = ("}")
+
+BRACKETS_LEFT = ("[")
+
+BRACKETS_RIGHT = ( "]")
 
 COMMA = ","
 
@@ -441,9 +447,12 @@ FUNCTION_DEFINITION = {ID}\(.*\)([^;]|[\s]*|[\r]*|[\n]*)
 <YYINITIAL> {NUMBER} { return NUMBER; }
 <YYINITIAL> {KEYWORD} { return KEYWORD; }
 <YYINITIAL> {OPERATOR} { return OPERATOR; }
-<YYINITIAL> {PARENTHESES} { return PARENTHESES; }
-<YYINITIAL> {BRACES} { return BRACES; }
-<YYINITIAL> {BRACKETS} { return BRACKETS; }
+<YYINITIAL> {PARENTHESES_LEFT} { return PARENTHESES_LEFT; }
+<YYINITIAL> {PARENTHESES_RIGHT} { return PARENTHESES_RIGHT; }
+<YYINITIAL> {BRACES_LEFT} { return BRACES_LEFT; }
+<YYINITIAL> {BRACES_RIGHT} { return BRACES_RIGHT; }
+<YYINITIAL> {BRACKETS_LEFT} { return BRACKETS_LEFT; }
+<YYINITIAL> {BRACKETS_RIGHT} { return BRACKETS_RIGHT; }
 <YYINITIAL> {COMMA} { return COMMA; }
 <YYINITIAL> {SEMICOLON} { return SEMICOLON; }
 <YYINITIAL> {DOT} { return DOT; }
@@ -451,7 +460,7 @@ FUNCTION_DEFINITION = {ID}\(.*\)([^;]|[\s]*|[\r]*|[\n]*)
 
 <YYINITIAL> {ID}                       { return ID; }
 
-<YYINITIAL> {ID}{PARENTHESES}{PARENTHESES}{BRACES} {  yypushback(yylength()); yybegin(FUNCTION_VALUE); }
+<YYINITIAL> {ID}{PARENTHESES_RIGHT}{PARENTHESES_RIGHT}{BRACES_RIGHT}{PARENTHESES_LEFT}{PARENTHESES_LEFT}{BRACES_LEFT} {  yypushback(yylength()); yybegin(FUNCTION_VALUE); }
 <FUNCTION_VALUE> {
       {ID} { yybegin(YYINITIAL); return DLanguageTypes.FUNCTION_DEFINITION; }
       }
