@@ -6,14 +6,13 @@ import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiElement;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
-import net.masterthought.dlanguage.psi.interfaces.containers.StatementContainer;
 import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
 import net.masterthought.dlanguage.psi.interfaces.Mixin;
 
 
 public class DLanguageVisitor extends PsiElementVisitor {
 
-    public void visitAliasDeclaration(@NotNull DLanguageAliasInitializerImpl o) {
+    public void visitAliasDeclaration(@NotNull DLanguageAliasDeclarationImpl o) {
         visitPsiElement(o);
     }
 
@@ -201,7 +200,7 @@ public class DLanguageVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
-    public void visitClassDeclaration(@NotNull DLanguageInterfaceOrClassImpl o) {
+    public void visitClassDeclaration(@NotNull DLanguageClassDeclarationImpl o) {
         visitPsiElement(o);
     }
 
@@ -714,10 +713,6 @@ public class DLanguageVisitor extends PsiElementVisitor {
         visitElement(o);
     }
 
-    public void visitStatementContainer(@NotNull StatementContainer o) {
-        visitElement(o);
-    }
-
     public void visitPsiElement(@NotNull PsiElement o) {
         visitElement(o);
     }
@@ -804,5 +799,58 @@ public class DLanguageVisitor extends PsiElementVisitor {
 
     public void visitIdentifier(DLanguageIdentifierImpl identifier) {
         visitPsiElement(identifier);
+    }
+
+    public void visitType_2(DLanguageType_2Impl o) {
+        visitPsiElement(o);
+    }
+
+    public void visitParameterAttribute(DLanguageParameterAttributeImpl o) {
+        visitPsiElement(o);
+    }
+
+    public void visitTypeConstructors(DLanguageTypeConstructorsImpl o) {
+        visitPsiElement(o);
+    }
+
+    public void visitEponymousTemplateDeclaration(DLanguageEponymousTemplateDeclarationImpl o) {
+        visitPsiElement(o);
+    }
+
+
+    public void visitUnittest(DLanguageUnittestImpl o) {
+        visitPsiElement(o);
+    }
+
+    public void visitTypeConstructor(DLanguageTypeConstructorImpl o) {
+        visitPsiElement(o);
+    }
+
+    public void visitTemplateMixinDeclaration(DLanguageTemplateMixinDeclarationImpl o) {
+        visitPsiElement(o);
+    }
+
+    public void visitSliceExpression(DLanguageSliceExpressionImpl o) {
+        visitPsiElement(o);
+    }
+
+    public void visitAndAndExpression(DLanguageAndAndExpressionImpl o) {
+        visitPsiElement(o);
+    }
+
+    public void visitAlignAttribute(DLanguageAlignAttributeImpl o) {
+        visitPsiElement(o);
+    }
+
+    public void visitLambdaExpression(DLanguageLambdaExpressionImpl o) {
+        visitPsiElement(o);
+    }
+
+    public void visitInterfaceOrClass(DLanguageInterfaceOrClassImpl o) {
+        visitPsiElement(o);
+    }
+
+    public void visitString(DLanguageStringImpl o) {
+        visitPsiElement(o);
     }
 }

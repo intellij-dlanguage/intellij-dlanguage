@@ -10,8 +10,8 @@ public class ParserPreliminaryJavaWriteUp {
 
     static IElementType nodeTypeToIElementType(String nodeType) {
         switch (nodeType) {
-            case "AliasThisDeclaration":
-                return DLanguageTypes.ALIAS_THIS;
+//            case "AliasThisDeclaration":
+//                return DLanguageTypes.ALIAS_THIS;
             case "AlignAttribute":
                 return DLanguageTypes.ALIGN_ATTRIBUTE;
             case "ArgumentList":
@@ -38,12 +38,12 @@ public class ParserPreliminaryJavaWriteUp {
 //                return DLanguageTypes.ATTRIBUTE;
             case "Attribute":
                 return DLanguageTypes.ATTRIBUTE;
-            case "AttributeDeclaration":
-                return DLanguageTypes.ATTRIBUTE_SPECIFIER;
+//            case "AttributeDeclaration":
+//                return DLanguageTypes.ATTRIBUTE_SPECIFIER;
             case "AutoDeclaration":
                 return DLanguageTypes.AUTO_DECLARATION;
-            case "AutoDeclarationPart":
-                return DLanguageTypes.AUTO_DECLARATION_X;
+//            case "AutoDeclarationPart":
+//                return DLanguageTypes.AUTO_DECLARATION_X;
             case "BlockStatement":
                 return DLanguageTypes.BLOCK_STATEMENT;
             case "BodyStatement":
@@ -66,8 +66,8 @@ public class ParserPreliminaryJavaWriteUp {
                 return DLanguageTypes.CATCH;
             case "Catches":
                 return DLanguageTypes.CATCHES;
-            case "ClassDeclaration":
-                return DLanguageTypes.CLASS_DECLARATION;
+//            case "ClassDeclaration":
+//                return DLanguageTypes.CLASS_DECLARATION;
 //            case "CompileCondition":
 //                return DLanguageTypes.COMPILE_CONDITION;
 //                case "ConditionalDeclaration":
@@ -94,8 +94,8 @@ public class ParserPreliminaryJavaWriteUp {
                 return DLanguageTypes.DECLARATOR;
             case "DefaultStatement":
                 return DLanguageTypes.DEFAULT_STATEMENT;
-            case "Deprecated":
-                return DLanguageTypes.DEPRECATED_ATTRIBUTE;
+//            case "Deprecated":
+//                return DLanguageTypes.DEPRECATED_ATTRIBUTE;
             case "Destructor":
                 return DLanguageTypes.DESTRUCTOR;
             case "DoStatement":
@@ -116,8 +116,8 @@ public class ParserPreliminaryJavaWriteUp {
 //                    return DLanguageTypes.EXPRESSION_STATEMENT;
             case "FinalSwitchStatement":
                 return DLanguageTypes.FINAL_SWITCH_STATEMENT;
-            case "Finally":
-                return DLanguageTypes.FINALLY_STATEMENT;
+//            case "Finally":
+//                return DLanguageTypes.FINALLY_STATEMENT;
             case "ForStatement":
                 return DLanguageTypes.FOR_STATEMENT;
             case "ForeachStatement":
@@ -154,8 +154,8 @@ public class ParserPreliminaryJavaWriteUp {
                 return DLanguageTypes.IN_STATEMENT;
             case "Initializer":
                 return DLanguageTypes.INITIALIZER;
-            case "InterfaceDeclaration":
-                return DLanguageTypes.INTERFACE_DECLARATION;
+//            case "InterfaceDeclaration":
+//                return DLanguageTypes.INTERFACE_DECLARATION;
             case "Invariant":
                 return DLanguageTypes.INVARIANT;
             case "KeyValuePair":
@@ -172,12 +172,12 @@ public class ParserPreliminaryJavaWriteUp {
                 return DLanguageTypes.MEMBER_FUNCTION_ATTRIBUTE;
             case "MixinDeclaration":
                 return DLanguageTypes.MIXIN_DECLARATION;
-            case "MixinTemplateDeclaration":
-                return DLanguageTypes.TEMPLATE_MIXIN_DECLARATION;
+//            case "MixinTemplateDeclaration":
+//                return DLanguageTypes.TEMPLATE_MIXIN_DECLARATION;
 //            case "MixinTemplateName":
 //                return DLanguageTypes.MIXINTEMPLATENAME;
-            case "Module":
-                return DLanguageTypes.MODULE_FULLY_QUALIFIED_NAME;
+//            case "Module":
+//                return DLanguageTypes.MODULE_FULLY_QUALIFIED_NAME;
             case "ModuleDeclaration":
                 return DLanguageTypes.MODULE_DECLARATION;
             case "NonVoidInitializer":
@@ -192,8 +192,8 @@ public class ParserPreliminaryJavaWriteUp {
                 return DLanguageTypes.PARAMETERS;
             case "Postblit":
                 return DLanguageTypes.POSTBLIT;
-            case "PragmaDeclaration":
-                return DLanguageTypes.PRAGMA;
+//            case "PragmaDeclaration":
+//                return DLanguageTypes.PRAGMA;
             case "Register":
                 return DLanguageTypes.REGISTER;
             case "ReturnStatement":
@@ -204,16 +204,16 @@ public class ParserPreliminaryJavaWriteUp {
                 return DLanguageTypes.SHARED_STATIC_CONSTRUCTOR;
             case "SharedStaticDestructor":
                 return DLanguageTypes.SHARED_STATIC_DESTRUCTOR;
-            case "SingleImport":
-                return DLanguageTypes.IMPORT;
+//            case "SingleImport":
+//                return DLanguageTypes.IMPORT;
             case "Statement":
                 return DLanguageTypes.STATEMENT;
             case "StatementNoCaseNoDefault":
                 return DLanguageTypes.STATEMENT_NO_CASE_NO_DEFAULT;
-            case "StaticAssertDeclaration":
-                return DLanguageTypes.STATIC_ASSERT;
-            case "StaticAssertStatement":
-                return DLanguageTypes.STATIC_ASSERT;
+//            case "StaticAssertDeclaration":
+//                return DLanguageTypes.STATIC_ASSERT;
+//            case "StaticAssertStatement":
+//                return DLanguageTypes.STATIC_ASSERT;
             case "StaticConstructor":
                 return DLanguageTypes.STATIC_CONSTRUCTOR;
             case "StaticDestructor":
@@ -282,12 +282,12 @@ public class ParserPreliminaryJavaWriteUp {
 //                return DLanguageTypes.TYPE_SUFFIX;
             case "UnionDeclaration":
                 return DLanguageTypes.UNION_DECLARATION;
-            case "Unittest":
-                return DLanguageTypes.UNIT_TESTING;
+//            case "Unittest":
+//                return DLanguageTypes.UNIT_TESTING;
 //            case "VariableDeclaration":
 //                return DLanguageTypes.VARIABLE_DECLARATION;
-            case "Vector":
-                return DLanguageTypes.TYPE_VECTOR;
+//            case "Vector":
+//                return DLanguageTypes.TYPE_VECTOR;
             case "VersionCondition":
                 return DLanguageTypes.VERSION_CONDITION;
             case "VersionSpecification":
@@ -296,8 +296,8 @@ public class ParserPreliminaryJavaWriteUp {
                 return DLanguageTypes.WHILE_STATEMENT;
             case "WithStatement":
                 return DLanguageTypes.WITH_STATEMENT;
-            case "AddExpression":
-                return DLanguageTypes.ADD_EXPRESSION_;
+//            case "AddExpression":
+//                return DLanguageTypes.ADD_EXPRESSION_;
 //            case "AndAndExpression":
 //                return DLanguageTypes.AND_AND_EXPRESSION_;
 //            case "AndExpression":
@@ -342,8 +342,8 @@ public class ParserPreliminaryJavaWriteUp {
 //                return DLanguageTypes.EXPRESSION;
 //            case "FunctionCallExpression":
 //                return DLanguageTypes.FUNCTIONCALLEXPRESSION;
-            case "FunctionLiteralExpression":
-                return DLanguageTypes.FUNCTION_LITERAL;
+//            case "FunctionLiteralExpression":
+//                return DLanguageTypes.FUNCTION_LITERAL;
             case "IdentityExpression":
                 return DLanguageTypes.IDENTITY_EXPRESSION;
             case "ImportExpression":
@@ -356,8 +356,8 @@ public class ParserPreliminaryJavaWriteUp {
                 return DLanguageTypes.IS_EXPRESSION;
             case "MixinExpression":
                 return DLanguageTypes.MIXIN_EXPRESSION;
-            case "MulExpression":
-                return DLanguageTypes.MUL_EXPRESSION_;
+//            case "MulExpression":
+//                return DLanguageTypes.MUL_EXPRESSION_;
             case "NewAnonClassExpression":
                 return DLanguageTypes.NEW_ANON_CLASS_EXPRESSION;
             case "NewExpression":
@@ -367,31 +367,41 @@ public class ParserPreliminaryJavaWriteUp {
 //            case "OrOrExpression":
 //                return DLanguageTypes.OROR_EXPRESSION_;
 //            case "PowExpression":
-                return DLanguageTypes.POW_EXPRESSION_;
+//                return DLanguageTypes.POW_EXPRESSION_;
 //            case "PragmaExpression":
 //                return DLanguageTypes.PRAGMA_STATEMENT;
             case "PrimaryExpression":
                 return DLanguageTypes.PRIMARY_EXPRESSION;
+            case "PragmaDeclaration":
+                return DLanguageTypes.PRAGMA_DECLARATION;
             case "RelExpression":
                 return DLanguageTypes.REL_EXPRESSION;
-            case "ShiftExpression":
-                return DLanguageTypes.SHIFT_EXPRESSION_;
+            case "StaticAssertStatement":
+                return DLanguageTypes.STATIC_ASSERT_STATEMENT;
+            case "StaticAssertDeclaration":
+                return DLanguageTypes.STATIC_ASSERT_DECLARATION;
+//            case "ShiftExpression":
+//                return DLanguageTypes.SHIFT_EXPRESSION_;
 //            case "Index":
 //                return DLanguageTypes.INDEX;
-            case "TemplateMixinExpression":
-                return DLanguageTypes.TEMPLATE_MIXIN;
+//            case "TemplateMixinExpression":
+//                return DLanguageTypes.TEMPLATE_MIXIN;
 //            case "TernaryExpression":
 //                return DLanguageTypes.TERNARY_EXPRESSION;
             case "TraitsExpression":
                 return DLanguageTypes.TRAITS_EXPRESSION;
             case "TypeidExpression":
                 return DLanguageTypes.TYPEID_EXPRESSION;
-            case "TypeofExpression":
-                return DLanguageTypes.TYPEOF;
+            case "Unittest":
+                return DLanguageTypes.UNITTEST;
+            case "Vector":
+                return DLanguageTypes.VECTOR;
+//            case "TypeofExpression":
+//                return DLanguageTypes.TYPEOF;
 //            case "UnaryExpression":
 //                return DLanguageTypes.UNARY_EXPRESSION;
-            case "XorExpression":
-                return DLanguageTypes.XOR_EXPRESSION_;
+//            case "XorExpression":
+//                return DLanguageTypes.XOR_EXPRESSION_;
 //            case "AliasInitializer":
 //                return DLanguageTypes.ALIAS__INITIALIZER;
             default:

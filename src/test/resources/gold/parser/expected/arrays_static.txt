@@ -1,18 +1,18 @@
 D Language File
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageTypeImpl(TYPE)
-      DLanguageTypeImpl(TYPE)
+      DLanguageType_2Impl(TYPE_2)
         PsiElement(DLanguageTokenType.int)('int')
-      DLanguageTypeCtorImpl(TYPE_CTOR)
+      DLanguageTypeSuffixImpl(TYPE_SUFFIX)
         PsiElement(DLanguageTokenType.[)('[')
         DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
-          DLanguageConditionalExpression_Impl(CONDITIONAL_EXPRESSION_)
+          DLanguageCmpExpressionImpl(CMP_EXPRESSION)
             DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
               DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                 PsiElement(DLanguageTokenType.INTEGER_LITERAL)('3')
         PsiElement(DLanguageTokenType.])(']')
-    DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
-      DLanguageDeclaratorImpl(DECLARATOR)
+    DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
+      DECLARATOR
         IDENTIFIER
           PsiElement(DLanguageTokenType.ID)('s')
       PsiElement(DLanguageTokenType.;)(';')

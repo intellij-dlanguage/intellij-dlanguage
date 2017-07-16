@@ -8,10 +8,10 @@ D Language File
           PsiElement(DLanguageTokenType.ID)('C')
         PsiElement(DLanguageTokenType.))(')')
     DLanguageTypeImpl(TYPE)
-      DLanguageTypeImpl(TYPE)
+      DLanguageType_2Impl(TYPE_2)
         PsiElement(DLanguageTokenType.int)('int')
-    DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
-      DLanguageDeclaratorImpl(DECLARATOR)
+    DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
+      DECLARATOR
         IDENTIFIER
           PsiElement(DLanguageTokenType.ID)('foo')
       PsiElement(DLanguageTokenType.;)(';')
@@ -27,10 +27,10 @@ D Language File
           PsiElement(DLanguageTokenType.ID)('C')
         PsiElement(DLanguageTokenType.))(')')
     DLanguageTypeImpl(TYPE)
-      DLanguageTypeImpl(TYPE)
+      DLanguageType_2Impl(TYPE_2)
         PsiElement(DLanguageTokenType.int)('int')
-    DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
-      DLanguageDeclaratorImpl(DECLARATOR)
+    DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
+      DECLARATOR
         IDENTIFIER
           PsiElement(DLanguageTokenType.ID)('bar')
       PsiElement(DLanguageTokenType.;)(';')

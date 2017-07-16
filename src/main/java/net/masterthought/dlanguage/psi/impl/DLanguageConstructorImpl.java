@@ -4,13 +4,11 @@ import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
-import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.icons.DLanguageIcons;
 import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
-import net.masterthought.dlanguage.psi.interfaces.containers.Container;
 import net.masterthought.dlanguage.psi.references.DReference;
 import net.masterthought.dlanguage.stubs.DLanguageConstructorStub;
 import net.masterthought.dlanguage.utils.DUtil;
@@ -79,11 +77,7 @@ public class DLanguageConstructorImpl extends DNamedStubbedPsiElementBase<DLangu
 
     @NotNull
     public String getName() {
-        return DPsiImplUtil.getName(this);
-    }
-
-    public String getFullName() {
-        return DPsiImplUtil.getFullName(this);
+        return DUtil.getParentClassOrStruct(this).getName();
     }
 
     @Nullable
@@ -94,7 +88,7 @@ public class DLanguageConstructorImpl extends DNamedStubbedPsiElementBase<DLangu
 
     @NotNull
     public PsiReference getReference() {
-        return new DReference(this, TextRange.from(0, DPsiImplUtil.getName(this).length()));
+        return new DReference(this, TextRange.from(0, (this).getName().length()));
     }
 
     @NotNull
@@ -135,18 +129,13 @@ public class DLanguageConstructorImpl extends DNamedStubbedPsiElementBase<DLangu
         };
     }
 
-    public boolean isSomeVisibility(HasVisibility.Visibility visibility, Class<? extends Container> containerType) {
-        //todo fix
-        return false;
-    }
-
     public boolean isSomeVisibility(HasVisibility.Visibility visibility) {
         //todo fix
         return false;
     }
 
-    public boolean processDeclarations(PsiScopeProcessor processor, ResolveState state, PsiElement lastParent, PsiElement place) {
-        return DPsiImplUtil.processDeclarations(this, processor, state, lastParent, place);
-    }
+//    public boolean processDeclarations(PsiScopeProcessor processor, ResolveState state, PsiElement lastParent, PsiElement place) {
+//        return DPsiImplUtil.processDeclarations(this, processor, state, lastParent, place);
+//    }
 
 }

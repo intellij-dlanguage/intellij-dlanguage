@@ -45,14 +45,14 @@ object DResolveUtil {
         val importProcessor = DImportScopeProcessor()
         PsiTreeUtil.treeWalkUp(importProcessor, e, e.containingFile, ResolveState.initial())
         val modules: MutableList<String> = mutableListOf()
-        importProcessor.imports.mapTo(modules) { it.name }
+        (importProcessor.imports).filterNotNull().mapTo(modules) { it.name!! }
 
         val result = mutableSetOf<PsiNamedElement>()
         // find definition in imported files
         for (module in modules) {
             val files = getFilesByModuleName(project, module, GlobalSearchScope.allScope(project))
             for (f in files) {
-                result.addAll(StubIndex.getElements(DTopLevelDeclarationIndex.KEY, e.name, e.project, GlobalSearchScope.fileScope(f), Declaration::class.java))
+                result.addAll(StubIndex.getElements(DTopLevelDeclarationIndex.KEY, e.name!!, e.project, GlobalSearchScope.fileScope(f), Declaration::class.java))
             }
         }
         val finalResult = mutableListOf<PsiNamedElement>()

@@ -7,7 +7,6 @@ import com.intellij.psi.ResolveState;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.ProcessingContext;
 import net.masterthought.dlanguage.DLanguage;
-import net.masterthought.dlanguage.psi.DLanguageImport;
 import net.masterthought.dlanguage.resolve.DImportScopeProcessor;
 import org.jetbrains.annotations.NotNull;
 
@@ -22,9 +21,10 @@ public class DCompletionContributorImports extends CompletionContributor {
                 final PsiElement position = parameters.getPosition();
                 final DImportScopeProcessor importScopeProcessor = new DImportScopeProcessor();
                 PsiTreeUtil.treeWalkUp(importScopeProcessor, position, position.getContainingFile(), ResolveState.initial());
-                for (DLanguageImport anImport : importScopeProcessor.getImports()) {
-
-                }
+//                for (DLanguageImport anImport : importScopeProcessor.getImports()) {
+//
+//                }
+                //todo
 
             }
         });

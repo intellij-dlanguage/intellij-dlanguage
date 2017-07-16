@@ -6,19 +6,18 @@ import com.intellij.psi.stubs.StubInputStream;
 import com.intellij.psi.stubs.StubOutputStream;
 import net.masterthought.dlanguage.psi.DLanguageInterfaceOrClass;
 import net.masterthought.dlanguage.psi.impl.DLanguageInterfaceOrClassImpl;
-import net.masterthought.dlanguage.stubs.DLanguageInterfaceOrClassDeclarationStub;
-import net.masterthought.dlanguage.utils.DUtil;
+import net.masterthought.dlanguage.stubs.DLanguageInterfaceOrClassStub;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
-public class InterfaceOrClassStubElementType extends DNamedStubElementType<DLanguageInterfaceOrClassDeclarationStub, DLanguageInterfaceOrClass> {
+public class InterfaceOrClassStubElementType extends DNamedStubElementType<DLanguageInterfaceOrClassStub, DLanguageInterfaceOrClass> {
     public InterfaceOrClassStubElementType(String debugName) {
         super(debugName);
     }
 
     @Override
-    public DLanguageInterfaceOrClass createPsi(@NotNull DLanguageInterfaceOrClassDeclarationStub stub) {
+    public DLanguageInterfaceOrClass createPsi(@NotNull DLanguageInterfaceOrClassStub stub) {
         return new DLanguageInterfaceOrClassImpl(stub, this);
     }
 
@@ -28,18 +27,18 @@ public class InterfaceOrClassStubElementType extends DNamedStubElementType<DLang
     }
 
     @Override
-    public DLanguageInterfaceOrClassDeclarationStub createStub(@NotNull DLanguageInterfaceOrClass psi, StubElement parentStub) {
-        return new DLanguageInterfaceOrClassDeclarationStub(parentStub, this, psi.getName());
+    public DLanguageInterfaceOrClassStub createStub(@NotNull DLanguageInterfaceOrClass psi, StubElement parentStub) {
+        return new DLanguageInterfaceOrClassStub(parentStub, this, psi.getName());
     }
 
     @Override
-    public void serialize(@NotNull DLanguageInterfaceOrClassDeclarationStub stub, @NotNull StubOutputStream dataStream) throws IOException {
+    public void serialize(@NotNull DLanguageInterfaceOrClassStub stub, @NotNull StubOutputStream dataStream) throws IOException {
         dataStream.writeName(stub.getName());
     }
 
     @NotNull
     @Override
-    public DLanguageInterfaceOrClassDeclarationStub deserialize(@NotNull StubInputStream dataStream, StubElement parentStub) throws IOException {
-        return new DLanguageInterfaceOrClassDeclarationStub(parentStub, this, dataStream.readName());
+    public DLanguageInterfaceOrClassStub deserialize(@NotNull StubInputStream dataStream, StubElement parentStub) throws IOException {
+        return new DLanguageInterfaceOrClassStub(parentStub, this, dataStream.readName());
     }
 }

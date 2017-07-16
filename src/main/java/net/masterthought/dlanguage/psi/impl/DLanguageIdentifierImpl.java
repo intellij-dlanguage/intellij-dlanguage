@@ -1,6 +1,7 @@
 package net.masterthought.dlanguage.psi.impl;
 
 import com.intellij.openapi.util.TextRange;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.*;
 import net.masterthought.dlanguage.icons.DLanguageIcons;
 import net.masterthought.dlanguage.psi.references.DReference;
@@ -38,7 +39,9 @@ public class DLanguageIdentifierImpl extends DNamedStubbedPsiElementBase<DLangua
 
   @NotNull
   public String getName() {
-    return DPsiImplUtil.getName(this);
+      DLanguageIdentifierStub stub = this.getStub();
+      if (stub != null) return StringUtil.notNullize(stub.getName());
+      return getText();
   }
 
   @Nullable

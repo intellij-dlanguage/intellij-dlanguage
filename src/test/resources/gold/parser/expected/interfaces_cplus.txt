@@ -8,32 +8,33 @@ D Language File
           PsiElement(DLanguageTokenType.ID)('C')
         PsiElement(DLanguageTokenType.++)('++')
         PsiElement(DLanguageTokenType.))(')')
-    INTERFACE_DECLARATION
+    DLanguageInterfaceDeclarationImpl(INTERFACE_DECLARATION)
       PsiElement(DLanguageTokenType.interface)('interface')
-      IDENTIFIER
-        PsiElement(DLanguageTokenType.ID)('Ifoo')
-      DLanguageAggregateBodyImpl(AGGREGATE_BODY)
-        PsiElement(DLanguageTokenType.{)('{')
-        DLanguageDeclarationImpl(DECLARATION)
-          DLanguageTypeImpl(TYPE)
+      INTERFACE_OR_CLASS
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('Ifoo')
+        DLanguageStructBodyImpl(STRUCT_BODY)
+          PsiElement(DLanguageTokenType.{)('{')
+          DLanguageDeclarationImpl(DECLARATION)
             DLanguageTypeImpl(TYPE)
-              PsiElement(DLanguageTokenType.void)('void')
-          FUNC_DECLARATION
-            IDENTIFIER
-              PsiElement(DLanguageTokenType.ID)('foo')
-            DLanguageParametersImpl(PARAMETERS)
-              PsiElement(DLanguageTokenType.()('(')
-              PsiElement(DLanguageTokenType.))(')')
-            PsiElement(DLanguageTokenType.;)(';')
-        DLanguageDeclarationImpl(DECLARATION)
-          DLanguageTypeImpl(TYPE)
+              DLanguageType_2Impl(TYPE_2)
+                PsiElement(DLanguageTokenType.void)('void')
+            FUNCTION_DECLARATION
+              IDENTIFIER
+                PsiElement(DLanguageTokenType.ID)('foo')
+              DLanguageParametersImpl(PARAMETERS)
+                PsiElement(DLanguageTokenType.()('(')
+                PsiElement(DLanguageTokenType.))(')')
+              PsiElement(DLanguageTokenType.;)(';')
+          DLanguageDeclarationImpl(DECLARATION)
             DLanguageTypeImpl(TYPE)
-              PsiElement(DLanguageTokenType.void)('void')
-          FUNC_DECLARATION
-            IDENTIFIER
-              PsiElement(DLanguageTokenType.ID)('bar')
-            DLanguageParametersImpl(PARAMETERS)
-              PsiElement(DLanguageTokenType.()('(')
-              PsiElement(DLanguageTokenType.))(')')
-            PsiElement(DLanguageTokenType.;)(';')
-        PsiElement(DLanguageTokenType.})('}')
+              DLanguageType_2Impl(TYPE_2)
+                PsiElement(DLanguageTokenType.void)('void')
+            FUNCTION_DECLARATION
+              IDENTIFIER
+                PsiElement(DLanguageTokenType.ID)('bar')
+              DLanguageParametersImpl(PARAMETERS)
+                PsiElement(DLanguageTokenType.()('(')
+                PsiElement(DLanguageTokenType.))(')')
+              PsiElement(DLanguageTokenType.;)(';')
+          PsiElement(DLanguageTokenType.})('}')

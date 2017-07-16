@@ -35,7 +35,7 @@ static this() {
     types_children["AsmBrExp"] = ["AsmExp", "AsmUnaExp", "AsmBrExp", "OP_BRACKET_RIGHT", "OP_BRACKET_LEFT"];
     types_children["AsmEqualExp"] = ["AsmEqualExp", "AsmRelExp",  "OP_NOT_EQ", "OP_EQ_EQ"];
     types_children["AsmExp"] = ["AsmLogOrExp",  "AsmExp", "OP_QUEST", "OP_COLON"];
-    types_children["AsmInstruction"] = [ "INTEGER_LITERAL","Identifier","AsmInstruction","Operands","KW_ALIGN", "Operands", "OP_COLON"];
+    types_children["AsmInstruction"] = [ "INTEGER_LITERAL","Identifier","AsmInstruction","Operands","KW_ALIGN", "OP_COLON"];
     types_children["AsmLogAndExp"] = ["AsmLogAndExp", "AsmOrExp", "OP_BOOL_AND"];
     types_children["AsmLogOrExp"] = ["AsmLogOrExp", "AsmLogAndExp", "OP_BOOL_OR"];
     types_children["AsmMulExp"] = ["AsmMulExp", "AsmBrExp","OP_MOD","OP_DIV","OP_ASTERISK"];
@@ -54,14 +54,14 @@ static this() {
     types_children["Attribute"] = [   "PragmaExpression", "StorageClass", "KW_EXPORT","KW_PACKAGE", "KW_PRIVATE","KW_PROTECTED","KW_PUBLIC"];
     types_children["AttributeDeclaration"] = ["OP_COLON","Attribute"];
     types_children["AutoDeclaration"] = ["StorageClass","OP_COMMA*","OP_SCOLON","AutoDeclarationPart*"];
-    named_children["AutoDeclarationPart"] = ["Identifier","TemplateParameters","OP_EQ","Initializer*"];
+    named_children["AutoDeclarationPart"] = ["Identifier","TemplateParameters","OP_EQ","Initializer"];
     types_children["BlockStatement"] = ["DeclarationsAndStatements","OP_BRACES_RIGHT","OP_BRACES_LEFT"];
     types_children["BodyStatement"] = ["KW_BODY",  "BlockStatement"];
     types_children["BreakStatement"] = ["KW_BREAK","Identifier","OP_SCOLON"];
     types_children["BaseClass"] = ["TypeofExpression","OP_DOT","IdentifierOrTemplateChain"];
     types_children["BaseClassList"] = ["BaseClass*","OP_COMMA*"];
     types_children["CaseRangeStatement"] = ["KW_CASE*","OP_TRIPLEDOT","OP_COLON*","AssignExpression", "DeclarationsAndStatements"];
-    types_children["CaseStatement"] = ["KW_CASE","OP_COLON","ArgumentList","DeclarationAndStatement"];
+    types_children["CaseStatement"] = ["KW_CASE","OP_COLON","ArgumentList","DeclarationsAndStatements"];
     types_children["CastExpression"] = ["CastQualifier", "Type","UnaryExpression","KW_CAST","OP_PAR_LEFT","OP_PAR_RIGHT"];
     types_children["CastQualifier"] = ["KW_IMMUTABLE","KW_CONST","KW_SHARED","KW_INOUT"];
     named_children["Catch"] = ["KW_CATCH","OP_PAR_LEFT","OP_PAR_RIGHT","Type","Identifier","DeclarationOrStatement"];
@@ -119,7 +119,7 @@ static this() {
     types_children["ImportExpression"] = ["ImportExpression","AssignExpression","OP_PAR_RIGHT","OP_PAR_LEFT"];
     types_children["Index"] = ["AssignExpression"];
     types_children["IndexExpression"] = ["OP_BRACKET_LEFT","OP_BRACKET_RIGHT","ArgumentList","UnaryExpression"];
-    types_children["InExpression"] = ["ShiftExpression*","KW_IN","KW_NOT"];
+    types_children["InExpression"] = ["ShiftExpression*","KW_IN","OP_NOT"];
     types_children["Initializer"] = ["KW_VOID","NonVoidInitializer"];
     types_children["InStatement"] = ["KW_IN","BlockStatement"];
 //    types_children["Initialize"] = [];
@@ -155,7 +155,7 @@ static this() {
     types_children["PowExpression"] = ["PowExpression","UnaryExpression","OP_POW"];
     types_children["PragmaDeclaration"] = ["PragmaExpression", "OP_SCOLON"];
     types_children["PragmaExpression"] = ["Identifier","ArgumentList","OP_PAR_LEFT","OP_PAR_RIGHT","OP_COMMA","KW_PRAGMA"];
-    types_children["PrimaryExpression"] = ["Type","Arguments","FunctionLiteralExpression","TypeofExpression", "TypeidExpression","Vector","AssocArrayLiteral","ArrayLiteral","Expression","OP_PAR_LEFT","OP_PAR_RIGHT","IsExpression","LambdaExpression","TraitsExpression","MixinExpression","ImportExpression","KW_SUPER","KW_THIS","OP_DOLLAR","KW_TRUE","KW_FALSE","KW___DATE__","KW___EOF__","KW___FILE__","KW___FILE_FULL_PATH__","KW___FUNCTION__","KW___GSHARED","KW___LINE__","KW___MODULE__","KW___PARAMETERS","KW___PRETTY_FUNCTION__","KW___TIME__","KW___TIMESTAMP__","KW___TRAITS","KW___VECTOR","KW___VENDOR__","KW___VERSION__ ","IntegerLiteral","FloatLiteral","StringLiteral*","CharacterLiteral","IdentifierOrTemplateInstance","OP_DOT","TypeConstructor"/*todo add basicTypes*/];
+    types_children["PrimaryExpression"] = ["Type","Arguments","FunctionLiteralExpression","TypeofExpression", "TypeidExpression","Vector","AssocArrayLiteral","ArrayLiteral","Expression","OP_PAR_LEFT","OP_PAR_RIGHT","IsExpression","LambdaExpression","TraitsExpression","MixinExpression","ImportExpression","KW_SUPER","KW_THIS","OP_DOLLAR","KW_TRUE","KW_FALSE","KW___DATE__","KW___EOF__","KW___FILE__","KW___FILE_FULL_PATH__","KW___FUNCTION__","KW___GSHARED","KW___LINE__","KW___MODULE__","KW___PARAMETERS","KW___PRETTY_FUNCTION__","KW___TIME__","KW___TIMESTAMP__","KW___TRAITS","KW___VECTOR","KW___VENDOR__","KW___VERSION__ ","INTEGER_LITERAL","FLOAT_LITERAL","DOUBLE_QUOTED_STRING*","CHARACTER_LITERAL","IdentifierOrTemplateInstance","OP_DOT","TypeConstructor"/*todo add basicTypes*/];
     types_children["Register"] = ["Identifier","INTEGER_LITERAL", "OP_PAR_RIGHT", "OP_PAR_LEFT"];
     types_children["RelExpression"] = ["RelExpression", "ShiftExpression","OP_GT","OP_GT_EQ","OP_LESS","OP_LESS_EQ","OP_LESS_GR","OP_LESS_GR_EQ","OP_NOT_GR","OP_NOT_GR_EQ","OP_NOT_LESS","OP_NOT_LESS_EQ","OP_UNORD","OP_UNORD_EQ"];
     types_children["ReturnStatement"] = ["KW_RETURN","Expression","OP_SCOLON"];
@@ -164,6 +164,7 @@ static this() {
     stub_children["SharedStaticDestructor"] = ["OP_TILDA","KW_STATIC","KW_SHARED","KW_THIS","OP_PAR_LEFT","OP_PAR_RIGHT","FunctionBody"];
     types_children["ShiftExpression"] = ["ShiftExpression","AddExpression","OP_SH_RIGHT","OP_SH_LEFT","OP_USH_RIGHT"];
     named_children["SingleImport"] = ["Identifier","OP_EQ","IdentifierChain"];
+    types_children["SliceExpression"] = ["UnaryExpression","AssignExpression*","OP_BRACKET_LEFT","OP_BRACKET_RIGHT","OP_DDOT"];
     types_children["UnaryExpression"] = ["UnaryExpresion","OP_BRACKET_LEFT","OP_BRACKET_RIGHT","AssignExpression*","OP_DDOT"];
     types_children["Statement"] = ["DefaultStatement","StatementNoCaseNoDefault","CaseStatement","CaseRangeStatement"];
     types_children["StatementNoCaseNoDefault"] = ["LabeledStatement","BlockStatement","IfStatement","WhileStatement","DoStatement","ForStatement","ForeachStatement","SwitchStatement","FinalSwitchStatement","ContinueStatement","BreakStatement","ReturnStatement","GotoStatement","WithStatement","SynchronizedStatement","TryStatement","ThrowStatement","ScopeGuardStatement","AsmStatement","DebugSpecification", "ConditionalStatement", "VersionSpecification","StaticAssertStatement","ExpressionStatement"];
@@ -173,12 +174,13 @@ static this() {
     stub_children["StaticDestructor"] = ["OP_TILDA","KW_STATIC","KW_THIS","OP_PAR_LEFT","OP_PAR_RIGHT","FunctionBody"];
     types_children["StaticCtorDtorCommon"] = ["FunctionBody"];
     types_children["StaticIfCondition"] = ["StaticIfCondition","AssignExpression","OP_PAR_RIGHT","OP_PAR_LEFT"];
-    types_children["StorageClass"] = ["AtAttribute","Deprecated","AlignAttribute","LinkageAttribute",   "KW_SYNCHRONIZED","TypeConstructor","KW_ABSTRACT","KW_AUTO","KW_ENUM","KW_EXTERN","KW_FINAL","KW_VIRTUAL","KW_NOTHROW","KW_OVERRIDE","KW_PURE","KW_REF","KW___GSHARED","KW_SCOPE","KW_STATIC"];
+    types_children["StorageClass"] = ["AtAttribute","Deprecated","AlignAttribute","LinkageAttribute",   "KW_SYNCHRONIZED","TypeConstructor","KW_ABSTRACT","KW_AUTO","KW_ENUM","KW_EXTERN","KW_FINAL","KW_INOUT","KW_NOTHROW","KW_OVERRIDE","KW_PURE","KW_REF","KW___GSHARED","KW_SCOPE","KW_STATIC"];
     types_children["StructBody"] = ["OP_BRACES_RIGHT","OP_BRACES_LEFT","Declaration*"];
     named_children["StructDeclaration"] = [ "KW_STRUCT","Identifier",  "TemplateParameters",  "Constraint", "StructBody", "OP_SCOLON"];
     types_children["StructInitializer"] = ["StructMemberInitializers*","OP_BRACES_RIGHT","OP_BRACES_LEFT"];
     types_children["StructMemberInitializer"] = ["Identifier","OP_COLON","NonVoidInitializer"];
     types_children["StructMemberInitializers"] = ["StructMemberInitializer*","OP_COMMA*"];
+    types_children["String"] = ["DOUBLE_QUOTED_STRING*"];
     types_children["SwitchStatement"] = ["KW_SWITCH","OP_PAR_RIGHT","OP_PAR_LEFT","Expression","Statement"];
     types_children["Symbol"] = ["OP_DOT","IdentifierOrTemplateChain"];
     types_children["SynchronizedStatement"] = ["OP_PAR_RIGHT","OP_PAR_LEFT","Expression","StatementNoCaseNoDefault","KW_SYNCHRONIZED"];
@@ -193,7 +195,7 @@ static this() {
     named_children["TemplateParameter"] = ["TemplateAliasParameter","TemplateTupleParameter","TemplateTypeParameter","TemplateThisParameter","TemplateValueParameter"];
     types_children["TemplateParameterList"] = ["TemplateParameter*","OP_COMMA*"];
     types_children["TemplateParameters"] = ["TemplateParameterList","OP_PAR_RIGHT","OP_PAR_LEFT"];
-    types_children["TemplateSingleArgument"] = ["Identifier","Type",/*todo builtin Types*/"KW_SUPER","KW_THIS","OP_DOLLAR","KW_TRUE","KW_FALSE","KW___DATE__","KW___EOF__","KW___FILE__","KW___FILE_FULL_PATH__","KW___FUNCTION__","KW___GSHARED","KW___LINE__","KW___MODULE__","KW___PARAMETERS","KW___PRETTY_FUNCTION__","KW___TIME__","KW___TIMESTAMP__","KW___TRAITS","KW___VECTOR","KW___VENDOR__","KW___VERSION__ ","IntegerLiteral","FloatLiteral","StringLiteral","CharacterLiteral"];
+    types_children["TemplateSingleArgument"] = ["Identifier","Type",/*todo builtin Types*/"KW_SUPER","KW_THIS","OP_DOLLAR","KW_TRUE","KW_FALSE","KW___DATE__","KW___EOF__","KW___FILE__","KW___FILE_FULL_PATH__","KW___FUNCTION__","KW___GSHARED","KW___LINE__","KW___MODULE__","KW___PARAMETERS","KW___PRETTY_FUNCTION__","KW___TIME__","KW___TIMESTAMP__","KW___TRAITS","KW___VECTOR","KW___VENDOR__","KW___VERSION__ ","INTEGER_LITERAL","FLOAT_LITERAL","DOUBLE_QUOTED_STRING","CHARACTER_LITERAL"];
     types_children["TemplateThisParameter"] = ["KW_THIS","TemplateTypeParameter"];
     types_children["TemplateTupleParameter"] = ["Identifier","OP_TRIPLEDOT"];
     types_children["TemplateTypeParameter"] = ["Identifier","Type*","OP_COLON","OP_EQ"];
@@ -266,7 +268,9 @@ public class %s extends ASTWrapperPsiElement implements %s{
     import java.util.List;
     import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
     import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
-
+    import com.intellij.psi.StubBasedPsiElement;
+    import net.masterthought.dlanguage.stubs.interfaces.*;
+    import net.masterthought.dlanguage.stubs.*;
 
 
 
@@ -387,7 +391,7 @@ void main(string[] args){
         import std.algorithm;
         import std.string;
         string interfaceClassName = "DLanguage" ~ key;
-        string interfaceFile = interfaceFileTemplate(["DNamedElement"]).format(interfaceClassName);
+        string interfaceFile = interfaceFileTemplate(["DNamedElement","StubBasedPsiElement<%sStub>".format(interfaceClassName)]).format(interfaceClassName);
         foreach(string toget; named_children[key]){
             interfaceFile ~= getterMethodInterface(toget);
         }
@@ -400,7 +404,7 @@ void main(string[] args){
             import std.algorithm;
             import std.string;
             string interfaceClassName = "DLanguage" ~ key;
-            string interfaceFile = interfaceFileTemplate(["DCompositeElement"]).format(interfaceClassName);
+            string interfaceFile = interfaceFileTemplate(["DCompositeElement","StubBasedPsiElement<%sStub>".format(interfaceClassName)]).format(interfaceClassName);
             foreach(string toget; stub_children[key]){
                 interfaceFile ~= getterMethodInterface(toget);
             }

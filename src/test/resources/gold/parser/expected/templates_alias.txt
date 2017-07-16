@@ -17,15 +17,15 @@ D Language File
       DLanguageDeclarationImpl(DECLARATION)
         DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
           PsiElement(DLanguageTokenType.alias)('alias')
-          ALIAS_DECLARATION_Y
+          ALIAS_INITIALIZER
             IDENTIFIER
               PsiElement(DLanguageTokenType.ID)('Sequence')
             PsiElement(DLanguageTokenType.=)('=')
             DLanguageTypeImpl(TYPE)
-              DLanguageTypeImpl(TYPE)
+              DLanguageType_2Impl(TYPE_2)
                 DLanguageSymbolImpl(SYMBOL)
-                  DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-                    DLanguageIdentifierListImpl(IDENTIFIER_LIST)
+                  DLanguageIdentifierOrTemplateChainImpl(IDENTIFIER_OR_TEMPLATE_CHAIN)
+                    DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
                       IDENTIFIER
                         PsiElement(DLanguageTokenType.ID)('TL')
           PsiElement(DLanguageTokenType.;)(';')

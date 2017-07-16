@@ -377,8 +377,8 @@ HEX_EXPONENT = [pP][\+\-]? [0-9]+
 <YYINITIAL> "<="                       { return OP_LESS_EQ; }
 <YYINITIAL> ">"                        { return OP_GT; }
 <YYINITIAL> ">="                       { return OP_GT_EQ; }
-<YYINITIAL> "!<>="                     { return OP_UNORD; }
-<YYINITIAL> "!<>"                      { return OP_UNORD_EQ; }
+<YYINITIAL> "!<>"                      { return OP_UNORD; }
+<YYINITIAL> "!<>="                     { return OP_UNORD_EQ; }
 <YYINITIAL> "<>"                       { return OP_LESS_GR; }
 <YYINITIAL> "<>="                      { return OP_LESS_GR_EQ; }
 <YYINITIAL> "!>"                       { return OP_NOT_GR; }

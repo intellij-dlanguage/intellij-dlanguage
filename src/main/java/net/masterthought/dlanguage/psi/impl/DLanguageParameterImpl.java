@@ -1,162 +1,148 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi.impl;
 
-import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.PsiFile;
-import net.masterthought.dlanguage.icons.DLanguageIcons;
-import net.masterthought.dlanguage.psi.references.DReference;
-import org.jetbrains.annotations.*;
 import com.intellij.lang.ASTNode;
+import com.intellij.navigation.ItemPresentation;
+import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.util.PsiTreeUtil;
-import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
-import net.masterthought.dlanguage.stubs.DLanguageParameterStub;
-import net.masterthought.dlanguage.psi.*;
-import com.intellij.navigation.ItemPresentation;
+import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiReference;
-import net.masterthought.dlanguage.psi.interfaces.containers.Container;
 import com.intellij.psi.stubs.IStubElementType;
+import com.intellij.psi.util.PsiTreeUtil;
+import net.masterthought.dlanguage.icons.DLanguageIcons;
+import net.masterthought.dlanguage.psi.*;
+import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
+import net.masterthought.dlanguage.psi.references.DReference;
+import net.masterthought.dlanguage.stubs.DLanguageParameterStub;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.util.List;
+
+import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
 
 public class DLanguageParameterImpl extends DNamedStubbedPsiElementBase<DLanguageParameterStub> implements DLanguageParameter {
 
-  public DLanguageParameterImpl(DLanguageParameterStub stub, IStubElementType type) {
-    super(stub, type);
-  }
+    public DLanguageParameterImpl(DLanguageParameterStub stub, IStubElementType type) {
+        super(stub, type);
+    }
 
-  public DLanguageParameterImpl(ASTNode node) {
-    super(node);
-  }
+    public DLanguageParameterImpl(ASTNode node) {
+        super(node);
+    }
 
-  public void accept(@NotNull DLanguageVisitor visitor) {
-    visitor.visitParameter(this);
-  }
+    public void accept(@NotNull DLanguageVisitor visitor) {
+        visitor.visitParameter(this);
+    }
 
-  public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
-    else super.accept(visitor);
-  }
+    public void accept(@NotNull PsiElementVisitor visitor) {
+        if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor) visitor);
+        else super.accept(visitor);
+    }
 
-  @Override
-  @Nullable
-  public DLanguageAssignExpression getAssignExpression() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageAssignExpression.class);
-  }
+    @Override
+    @Nullable
+    public DLanguageAssignExpression getAssignExpression() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageAssignExpression.class);
+    }
 
-  @Override
-  @Nullable
-  public DLanguageBasicType getBasicType() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageBasicType.class);
-  }
+    @Nullable
+    @Override
+    public PsiElement getOP_EQ() {
+        return findChildByType(OP_EQ);
+    }
 
-  @Override
-  @Nullable
-  public DLanguageDeclarator getDeclarator() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageDeclarator.class);
-  }
+    @Override
+    @Nullable
+    public DLanguageIdentifier getIdentifier() {
+        return PsiTreeUtil.getStubChildOfType(this, DLanguageIdentifier.class);
+    }
 
-  @Override
-  @Nullable
-  public DLanguageIdentifier getIdentifier() {
-    return PsiTreeUtil.getStubChildOfType(this, DLanguageIdentifier.class);
-  }
+    @NotNull
+    @Override
+    public List<DLanguageTypeSuffix> getTypeSuffixs() {
+        return PsiTreeUtil.getChildrenOfTypeAsList(this,DLanguageTypeSuffix.class);
+    }
 
-  @Override
-  @Nullable
-  public DLanguageInOut getInOut() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageInOut.class);
-  }
+    @Nullable
+    @Override
+    public PsiElement getOP_TRIPLEDOT() {
+        return null;
+    }
 
-  @Override
-  @Nullable
-  public DLanguageType getType() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageType.class);
-  }
+    @NotNull
+    @Override
+    public List<DLanguageParameterAttribute> getParameterAttributes() {
+        return PsiTreeUtil.getChildrenOfTypeAsList(this,DLanguageParameterAttribute.class);
+    }
 
-  @Override
-  @Nullable
-  public PsiElement getKwAlias() {
-    return findChildByType(KW_ALIAS);
-  }
+    @Override
+    @Nullable
+    public DLanguageType getType() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageType.class);
+    }
 
-  @Override
-  @Nullable
-  public PsiElement getOpEq() {
-    return findChildByType(OP_EQ);
-  }
+    @NotNull
+    public String getName() {
+        return getIdentifier().getName();
+    }
 
-  @Override
-  @Nullable
-  public PsiElement getOpTripledot() {
-    return findChildByType(OP_TRIPLEDOT);
-  }
+//    public String getFullName() {
+//        return DPsiImplUtil.getFullName(this);
+//    }
 
-  @NotNull
-  public String getName() {
-    return DPsiImplUtil.getName(this);
-  }
+    @Nullable
+    public PsiElement getNameIdentifier() {
+        ASTNode keyNode = getNode();
+        return keyNode != null ? keyNode.getPsi() : null;
+    }
 
-  public String getFullName() {
-    return DPsiImplUtil.getFullName(this);
-  }
+    @NotNull
+    public PsiReference getReference() {
+        return new DReference(this, TextRange.from(0, (this).getName().length()));
+    }
 
-  @Nullable
-  public PsiElement getNameIdentifier() {
-      ASTNode keyNode = getNode();
-      return keyNode != null ? keyNode.getPsi() : null;
-  }
+    @NotNull
+    public PsiElement setName(String newName) {
+        if (getIdentifier() == null) {
+            throw new IllegalStateException("cannot rename");
+        }
 
-  @NotNull
-  public PsiReference getReference() {
-      return new DReference(this, TextRange.from(0, DPsiImplUtil.getName(this).length()));
-  }
+        getIdentifier().setName(newName);
+        return this;
+    }
 
-  @NotNull
-  public PsiElement setName(String newName) {
-      if (DPsiImplUtil.getIdentifier(this) == null) {
-          throw new IllegalStateException("cannot rename");
-      }
-      DPsiImplUtil.getIdentifier(this).setName(newName);
-      return this;
-  }
+    @NotNull
+    public ItemPresentation getPresentation() {
+        return new ItemPresentation() {
+            @NotNull
+            @Override
+            public String getPresentableText() {
+                return getName();
+            }
 
-  @NotNull
-  public ItemPresentation getPresentation() {
-      return new ItemPresentation() {
-          @NotNull
-          @Override
-          public String getPresentableText() {
-              return getName();
-          }
+            /**
+             * This is needed to decipher between files when resolving multiple references.
+             */
+            @Nullable
+            @Override
+            public String getLocationString() {
+                final PsiFile psiFile = getContainingFile();
+                return psiFile instanceof DLanguageFile ? ((DLanguageFile) psiFile).getModuleOrFileName() : null;
+            }
 
-          /**
-           * This is needed to decipher between files when resolving multiple references.
-           */
-          @Nullable
-          @Override
-          public String getLocationString() {
-              final PsiFile psiFile = getContainingFile();
-              return psiFile instanceof DLanguageFile ? ((DLanguageFile) psiFile).getModuleOrFileName() : null;
-          }
+            @Nullable
+            @Override
+            public Icon getIcon(boolean unused) {
+                return DLanguageIcons.FILE;
+            }
+        };
+    }
 
-          @Nullable
-          @Override
-          public Icon getIcon(boolean unused) {
-              return DLanguageIcons.FILE;
-          }
-      };
-  }
-
-  public boolean isSomeVisibility(Visibility visibility, Class<? extends Container> containerType) {
-      //todo fix
-      return false;
-  }
-
-  public boolean isSomeVisibility(Visibility visibility) {
-      //todo fix
-      return false;
-  }
+    public boolean isSomeVisibility(Visibility visibility) {
+        //todo fix
+        return false;
+    }
 
 }

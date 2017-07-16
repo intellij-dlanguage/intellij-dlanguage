@@ -1,10 +1,10 @@
 D Language File
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageTypeImpl(TYPE)
-      DLanguageTypeImpl(TYPE)
+      DLanguageType_2Impl(TYPE_2)
         PsiElement(DLanguageTokenType.int)('int')
-    DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
-      DLanguageDeclaratorImpl(DECLARATOR)
+    DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
+      DECLARATOR
         IDENTIFIER
           PsiElement(DLanguageTokenType.ID)('a')
       PsiElement(DLanguageTokenType.;)(';')
@@ -14,18 +14,18 @@ D Language File
       PsiElement(DLanguageTokenType.struct)('struct')
       IDENTIFIER
         PsiElement(DLanguageTokenType.ID)('S')
-      DLanguageAggregateBodyImpl(AGGREGATE_BODY)
+      DLanguageStructBodyImpl(STRUCT_BODY)
         PsiElement(DLanguageTokenType.{)('{')
         PsiElement(DLanguageTokenType.})('}')
   PsiComment(DLanguageTokenType.LINE_COMMENT)('// declare struct s')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
       PsiElement(DLanguageTokenType.alias)('alias')
-      ALIAS_DECLARATION_Y
+      ALIAS_INITIALIZER
         IDENTIFIER
           PsiElement(DLanguageTokenType.ID)('myint')
         PsiElement(DLanguageTokenType.=)('=')
         DLanguageTypeImpl(TYPE)
-          DLanguageTypeImpl(TYPE)
+          DLanguageType_2Impl(TYPE_2)
             PsiElement(DLanguageTokenType.int)('int')
       PsiElement(DLanguageTokenType.;)(';')

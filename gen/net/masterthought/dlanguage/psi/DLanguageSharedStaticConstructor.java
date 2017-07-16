@@ -1,34 +1,28 @@
+package net.masterthought.dlanguage.psi;
 
-    package net.masterthought.dlanguage.psi;
-
-    import com.intellij.psi.PsiElement;
-    import org.jetbrains.annotations.NotNull;
-    import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
-    import org.jetbrains.annotations.Nullable;
-    import com.intellij.psi.util.PsiTreeUtil;
-    import java.util.List;
-    import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
-    import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.StubBasedPsiElement;
+import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
+import net.masterthought.dlanguage.stubs.DLanguageSharedStaticConstructorStub;
+import org.jetbrains.annotations.Nullable;
 
 
+public interface DLanguageSharedStaticConstructor extends PsiElement, DCompositeElement, StubBasedPsiElement<DLanguageSharedStaticConstructorStub> {
+    @Nullable
+    public PsiElement getKW_STATIC();
 
+    @Nullable
+    public PsiElement getKW_SHARED();
 
-    public interface DLanguageSharedStaticConstructor extends PsiElement , DCompositeElement{
-            @Nullable
-            public PsiElement getKW_STATIC();
-        
-            @Nullable
-            public PsiElement getKW_SHARED();
-        
-            @Nullable
-            public PsiElement getKW_THIS();
-        
-            @Nullable
-            public PsiElement getOP_PAR_LEFT();
-        
-            @Nullable
-            public PsiElement getOP_PAR_RIGHT();
-        
-            @Nullable
-            public DLanguageFunctionBody getFunctionBody();
+    @Nullable
+    public PsiElement getKW_THIS();
+
+    @Nullable
+    public PsiElement getOP_PAR_LEFT();
+
+    @Nullable
+    public PsiElement getOP_PAR_RIGHT();
+
+    @Nullable
+    public DLanguageFunctionBody getFunctionBody();
 }

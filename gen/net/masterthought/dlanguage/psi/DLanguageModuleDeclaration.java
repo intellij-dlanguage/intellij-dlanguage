@@ -1,25 +1,20 @@
+package net.masterthought.dlanguage.psi;
 
-    package net.masterthought.dlanguage.psi;
-
-    import com.intellij.psi.PsiElement;
-    import org.jetbrains.annotations.NotNull;
-    import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
-    import org.jetbrains.annotations.Nullable;
-    import com.intellij.psi.util.PsiTreeUtil;
-    import java.util.List;
-    import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
-    import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.StubBasedPsiElement;
+import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+import net.masterthought.dlanguage.stubs.DLanguageModuleDeclarationStub;
+import org.jetbrains.annotations.Nullable;
 
 
+public interface DLanguageModuleDeclaration extends PsiElement, DNamedElement, StubBasedPsiElement<DLanguageModuleDeclarationStub> {
+    @Nullable
+    public PsiElement getKW_MODULE();
 
+    @Nullable
+    public DLanguageIdentifierChain getIdentifierChain();
 
-    public interface DLanguageModuleDeclaration extends PsiElement , DNamedElement{
-            @Nullable
-            public PsiElement getKW_MODULE();
-        
-            @Nullable
-            public DLanguageIdentifierChain getIdentifierChain();
-            @Nullable
-            public PsiElement getOP_SCOLON();
-        
+    @Nullable
+    public PsiElement getOP_SCOLON();
+
 }

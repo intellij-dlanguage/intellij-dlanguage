@@ -17,7 +17,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 import static com.intellij.psi.util.PsiTreeUtil.*;
-import static net.masterthought.dlanguage.utils.DUtil.getEndOfIdentifierList;
 
 
 /**
@@ -26,10 +25,11 @@ import static net.masterthought.dlanguage.utils.DUtil.getEndOfIdentifierList;
  */
 public class DPsiImplUtil {
 
+
     // ------------- Identifier ------------------ //
     @NotNull
     public static String getName(@NotNull DLanguageIdentifier o) {
-        DLanguageIdentifierStub stub = o.getStub();
+        DLanguageIdentifierStub stub = ((DLanguageIdentifierImpl)o).getStub();
         if (stub != null) return StringUtil.notNullize(stub.getName());
         return o.getText();
     }
@@ -55,7 +55,7 @@ public class DPsiImplUtil {
         }
 
     }
-
+/*
     // ------------- Identifier ------------------ //
 
     // ------------- Function Definition ------------------ //
@@ -78,7 +78,7 @@ public class DPsiImplUtil {
     // ------------- Class Definition ------------------ //
     @NotNull
     public static String getName(@NotNull DLanguageClassDeclaration o) {
-        DLanguageInterfaceOrClassDeclarationStub stub = o.getStub();
+        DLanguageInterfaceOrClassStub stub = o.getStub();
         if (stub != null) return StringUtil.notNullize(stub.getName());
 
         return o.getIdentifier().getText();
@@ -378,7 +378,7 @@ public class DPsiImplUtil {
             else
                 result = getIdentifier(altDeclarator1.getAltDeclaratorX());
             result1 = result;
-        } else /*if (o.getVarDeclarator() != null) */ {
+        } else /*if (o.getVarDeclarator() != null) *\/ {
             final DLanguageVarDeclarator varDeclarator1 = o.getVarDeclarator();
             assert varDeclarator1 != null;
             result1 = varDeclarator1.getIdentifier();
@@ -392,7 +392,7 @@ public class DPsiImplUtil {
                 else
                     result2 = getIdentifier(altDeclarator.getAltDeclaratorX());
                 result = result2;
-            } else /*if (o.getVarDeclarator() != null) */ {
+            } else /*if (o.getVarDeclarator() != null) *\/ {
                 final DLanguageVarDeclarator varDeclarator = o.getVarDeclarator();
                 assert varDeclarator != null;
                 result = varDeclarator.getIdentifier();
@@ -422,7 +422,7 @@ public class DPsiImplUtil {
             else
                 result = getIdentifier(altDeclarator1.getAltDeclaratorX());
             result1 = result;
-        } else /*if (o.getVarDeclarator() != null) */ {
+        } else /*if (o.getVarDeclarator() != null) *\/ {
             final DLanguageVarDeclarator varDeclarator1 = o.getVarDeclarator();
             assert varDeclarator1 != null;
             result1 = varDeclarator1.getIdentifier();
@@ -437,7 +437,7 @@ public class DPsiImplUtil {
             else
                 result2 = getIdentifier(altDeclarator.getAltDeclaratorX());
             result = result2;
-        } else /*if (o.getVarDeclarator() != null) */ {
+        } else /*if (o.getVarDeclarator() != null) *\/ {
             final DLanguageVarDeclarator varDeclarator = o.getVarDeclarator();
             assert varDeclarator != null;
             result = varDeclarator.getIdentifier();
@@ -625,7 +625,7 @@ public class DPsiImplUtil {
 
     @NotNull
     public static String getName(@NotNull DLanguageConditionVariableDeclaration o) {
-        DLanguageConditionVariableDeclarationStub stub = o.getStub();
+        DLanguageIfConditionStub stub = o.getStub();
         if (stub != null) return StringUtil.notNullize(stub.getName());
         return getIdentifier(o).getName();
     }
@@ -647,7 +647,7 @@ public class DPsiImplUtil {
 
     @NotNull
     public static String getName(@NotNull DLanguageVarFuncDeclaration o) {
-        DLanguageVarFuncDeclarationStub stub = o.getStub();
+        DLanguageEponymousTemplateDeclarationStub stub = o.getStub();
         if (stub != null) return StringUtil.notNullize(stub.getName());
         return o.getIdentifier().getName();
     }
@@ -801,7 +801,7 @@ public class DPsiImplUtil {
      * @param lastParent todo make use of this do determine if scope statements/decldefs contained inside a element should be processed or not.
      * @param place
      * @return
-     */
+     *\/
     public static boolean processDeclarations(DLanguageDeclDefs element,
                                               @NotNull PsiScopeProcessor processor,
                                               @NotNull ResolveState state,
@@ -1104,5 +1104,6 @@ public class DPsiImplUtil {
         return getFullName(e.getParentContainer()) + "." + e.getName();
     }
     // -------------------- Misc --------------------- //
+*/
 }
 

@@ -9,8 +9,6 @@ import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.util.IncorrectOperationException
 import net.masterthought.dlanguage.index.DModuleIndex
 import net.masterthought.dlanguage.psi.*
-import net.masterthought.dlanguage.psi.impl.DPsiImplUtil
-import net.masterthought.dlanguage.psi.impl.DPsiImplUtil.getIdentifier
 import net.masterthought.dlanguage.psi.interfaces.Declaration
 import net.masterthought.dlanguage.resolve.DCompletionProcessor
 import net.masterthought.dlanguage.resolve.DImportScopeProcessor
@@ -143,7 +141,7 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
         PsiTreeUtil.treeWalkUp(importScopeProcessor, myElement, myElement.containingFile, ResolveState.initial())
         val potentialModules = HashSet<String>()
         for (dLanguageImport in importScopeProcessor.imports) {
-            potentialModules.add(DPsiImplUtil.getName(dLanguageImport))
+            potentialModules.add(dLanguageImport.name!!)
         }
 
         val completionProcessor = DCompletionProcessor()
@@ -295,7 +293,7 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
     override fun handleElementRename(newName: String): PsiElement {
         val element: PsiElement?
         if (myElement is DLanguageIdentifier) {
-            element = DPsiImplUtil.setName(myElement, newName)
+            element = myElement.setName(newName)
             return element
         }
         return super.handleElementRename(newName)

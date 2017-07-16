@@ -57,12 +57,12 @@ public class DLanguageLabeledStatementImpl extends DNamedStubbedPsiElementBase<D
 
     @NotNull
     public String getName() {
-        return DPsiImplUtil.getName(this);
+        return getIdentifier().getName();
     }
 
-    public String getFullName() {
-        return DPsiImplUtil.getFullName(this);
-    }
+//    public String getFullName() {
+//        return DPsiImplUtil.getFullName(this);
+//    }
 
     @Nullable
     public PsiElement getNameIdentifier() {
@@ -72,7 +72,7 @@ public class DLanguageLabeledStatementImpl extends DNamedStubbedPsiElementBase<D
 
     @NotNull
     public PsiReference getReference() {
-        return new DReference(this, TextRange.from(0, DPsiImplUtil.getName(this).length()));
+        return new DReference(this, TextRange.from(0, (this).getName().length()));
     }
 
     @NotNull
@@ -108,8 +108,8 @@ public class DLanguageLabeledStatementImpl extends DNamedStubbedPsiElementBase<D
         };
     }
 
-    public boolean processDeclarations(PsiScopeProcessor processor, ResolveState state, PsiElement lastParent, PsiElement place) {
-        return DPsiImplUtil.processDeclarations(this, processor, state, lastParent, place);
-    }
+//    public boolean processDeclarations(PsiScopeProcessor processor, ResolveState state, PsiElement lastParent, PsiElement place) {
+//        return DPsiImplUtil.processDeclarations(this, processor, state, lastParent, place);
+//    }
 
 }

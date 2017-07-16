@@ -19,10 +19,6 @@ class DLanguageParameterStubElementType(debugName: String) : DNamedStubElementTy
         return DLanguageParameterImpl(stub, this)
     }
 
-    override fun shouldCreateStub(node: ASTNode?): Boolean {
-        return DUtil.definitionNode(node!!)
-    }
-
     override fun createStub(psi: DLanguageParameter, parentStub: StubElement<*>): DLanguageParameterStub {
         return DLanguageParameterStub(parentStub, this, psi.name)
     }

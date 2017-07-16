@@ -11,7 +11,7 @@ import net.masterthought.dlanguage.stubs.index.DAllNameIndex;
 import net.masterthought.dlanguage.stubs.index.DModuleDeclarationIndex;
 import net.masterthought.dlanguage.stubs.index.DTopLevelDeclarationIndex;
 import net.masterthought.dlanguage.stubs.index.DTopLevelDeclarationsByModule;
-import net.masterthought.dlanguage.stubs.interfaces.UnitTestingStub;
+import net.masterthought.dlanguage.stubs.interfaces.DLanguageUnittestStub;
 import org.jetbrains.annotations.NotNull;
 
 
@@ -60,7 +60,7 @@ public abstract class DNamedStubElementType<S extends NamedStubBase<T>, T extend
             if (stubParent instanceof DLanguageConstructorStub || stubParent instanceof DLanguageSharedStaticConstructorStub || stubParent instanceof DLanguageStaticConstructorStub || stubParent instanceof DLanguageDestructorStub || stubParent instanceof DLanguageSharedStaticDestructorStub || stubParent instanceof DLanguageStaticDestructorStub) {
                 return false;
             }
-            if (stubParent instanceof UnitTestingStub) {
+            if (stubParent instanceof DLanguageUnittestStub) {
                 return false;
             }
         }

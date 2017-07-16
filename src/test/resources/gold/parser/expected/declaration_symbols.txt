@@ -1,47 +1,47 @@
 D Language File
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageTypeImpl(TYPE)
-      DLanguageTypeImpl(TYPE)
+      DLanguageType_2Impl(TYPE_2)
         PsiElement(DLanguageTokenType.int)('int')
-    DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
-      DLanguageDeclaratorImpl(DECLARATOR)
+    DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
+      DECLARATOR
         IDENTIFIER
           PsiElement(DLanguageTokenType.ID)('x')
       PsiElement(DLanguageTokenType.,)(',')
-      DLanguageDeclaratorImpl(DECLARATOR)
+      DECLARATOR
         IDENTIFIER
           PsiElement(DLanguageTokenType.ID)('y')
       PsiElement(DLanguageTokenType.;)(';')
   PsiComment(DLanguageTokenType.LINE_COMMENT)('// x and y are ints')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageTypeImpl(TYPE)
-      DLanguageTypeImpl(TYPE)
+      DLanguageType_2Impl(TYPE_2)
         PsiElement(DLanguageTokenType.int)('int')
-      DLanguageTypeCtorImpl(TYPE_CTOR)
+      DLanguageTypeSuffixImpl(TYPE_SUFFIX)
         PsiElement(DLanguageTokenType.*)('*')
-    DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
-      DLanguageDeclaratorImpl(DECLARATOR)
+    DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
+      DECLARATOR
         IDENTIFIER
           PsiElement(DLanguageTokenType.ID)('x')
       PsiElement(DLanguageTokenType.,)(',')
-      DLanguageDeclaratorImpl(DECLARATOR)
+      DECLARATOR
         IDENTIFIER
           PsiElement(DLanguageTokenType.ID)('y')
       PsiElement(DLanguageTokenType.;)(';')
   PsiComment(DLanguageTokenType.LINE_COMMENT)('// x and y are pointers to ints')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageTypeImpl(TYPE)
-      DLanguageTypeImpl(TYPE)
+      DLanguageType_2Impl(TYPE_2)
         PsiElement(DLanguageTokenType.int)('int')
-      DLanguageTypeCtorImpl(TYPE_CTOR)
+      DLanguageTypeSuffixImpl(TYPE_SUFFIX)
         PsiElement(DLanguageTokenType.[)('[')
         PsiElement(DLanguageTokenType.])(']')
-    DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
-      DLanguageDeclaratorImpl(DECLARATOR)
+    DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
+      DECLARATOR
         IDENTIFIER
           PsiElement(DLanguageTokenType.ID)('x')
       PsiElement(DLanguageTokenType.,)(',')
-      DLanguageDeclaratorImpl(DECLARATOR)
+      DECLARATOR
         IDENTIFIER
           PsiElement(DLanguageTokenType.ID)('y')
       PsiElement(DLanguageTokenType.;)(';')

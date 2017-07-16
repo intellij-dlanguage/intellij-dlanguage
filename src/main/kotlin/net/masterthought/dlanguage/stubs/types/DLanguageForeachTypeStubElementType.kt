@@ -19,10 +19,6 @@ class DLanguageForeachTypeStubElementType(debugName: String) : DNamedStubElement
         return DLanguageForeachTypeImpl(stub, this)
     }
 
-    override fun shouldCreateStub(node: ASTNode?): Boolean {
-        return DUtil.definitionNode(node!!)
-    }
-
     override fun createStub(psi: DLanguageForeachType, parentStub: StubElement<*>): DLanguageForeachTypeStub {
         return DLanguageForeachTypeStub(parentStub, this, psi.name)
     }

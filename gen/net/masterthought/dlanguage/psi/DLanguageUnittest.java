@@ -1,21 +1,16 @@
+package net.masterthought.dlanguage.psi;
 
-    package net.masterthought.dlanguage.psi;
-
-    import com.intellij.psi.PsiElement;
-    import org.jetbrains.annotations.NotNull;
-    import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
-    import org.jetbrains.annotations.Nullable;
-    import com.intellij.psi.util.PsiTreeUtil;
-    import java.util.List;
-    import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
-    import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.StubBasedPsiElement;
+import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
+import net.masterthought.dlanguage.stubs.interfaces.DLanguageUnittestStub;
+import org.jetbrains.annotations.Nullable;
 
 
+public interface DLanguageUnittest extends PsiElement, DCompositeElement, StubBasedPsiElement<DLanguageUnittestStub> {
+    @Nullable
+    public DLanguageUnittest getUnittest();
 
-
-    public interface DLanguageUnittest extends PsiElement , DCompositeElement{
-            @Nullable
-            public DLanguageUnittest getUnittest();
-            @Nullable
-            public DLanguageBlockStatement getBlockStatement();
+    @Nullable
+    public DLanguageBlockStatement getBlockStatement();
 }

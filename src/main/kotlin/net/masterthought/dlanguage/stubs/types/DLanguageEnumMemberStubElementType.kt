@@ -19,10 +19,6 @@ class DLanguageEnumMemberStubElementType(debugName: String) : DNamedStubElementT
         return DLanguageEnumMemberImpl(stub, this)
     }
 
-    override fun shouldCreateStub(node: ASTNode?): Boolean {
-        return DUtil.definitionNode(node!!)
-    }
-
     override fun createStub(psi: DLanguageEnumMember, parentStub: StubElement<*>): DLanguageEnumMemberStub {
         return DLanguageEnumMemberStub(parentStub, this, psi.name)
     }

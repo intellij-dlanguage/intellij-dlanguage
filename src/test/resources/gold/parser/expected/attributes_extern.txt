@@ -7,13 +7,13 @@ D Language File
         IDENTIFIER
           PsiElement(DLanguageTokenType.ID)('C')
         PsiElement(DLanguageTokenType.))(')')
-    DLanguageAttributeSpecifierImpl(ATTRIBUTE_SPECIFIER)
+    DLanguageAttributeDeclarationImpl(ATTRIBUTE_DECLARATION)
       PsiElement(DLanguageTokenType.:)(':')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageTypeImpl(TYPE)
-      DLanguageTypeImpl(TYPE)
+      DLanguageType_2Impl(TYPE_2)
         PsiElement(DLanguageTokenType.int)('int')
-    FUNC_DECLARATION
+    FUNCTION_DECLARATION
       IDENTIFIER
         PsiElement(DLanguageTokenType.ID)('foo')
       DLanguageParametersImpl(PARAMETERS)
@@ -29,7 +29,7 @@ D Language File
         IDENTIFIER
           PsiElement(DLanguageTokenType.ID)('D')
         PsiElement(DLanguageTokenType.))(')')
-    DLanguageAttributeSpecifierImpl(ATTRIBUTE_SPECIFIER)
+    DLanguageAttributeDeclarationImpl(ATTRIBUTE_DECLARATION)
       PsiElement(DLanguageTokenType.:)(':')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageAttributeImpl(ATTRIBUTE)
@@ -39,45 +39,45 @@ D Language File
         IDENTIFIER
           PsiElement(DLanguageTokenType.ID)('Windows')
         PsiElement(DLanguageTokenType.))(')')
-    DLanguageAttributeSpecifierImpl(ATTRIBUTE_SPECIFIER)
+    DLanguageAttributeDeclarationImpl(ATTRIBUTE_DECLARATION)
       PsiElement(DLanguageTokenType.:)(':')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageTypeImpl(TYPE)
-      DLanguageTypeImpl(TYPE)
+      DLanguageType_2Impl(TYPE_2)
         PsiElement(DLanguageTokenType.void)('void')
-      DLanguageTypeCtorImpl(TYPE_CTOR)
+      DLanguageTypeSuffixImpl(TYPE_SUFFIX)
         PsiElement(DLanguageTokenType.*)('*')
-    FUNC_DECLARATION
+    FUNCTION_DECLARATION
       IDENTIFIER
         PsiElement(DLanguageTokenType.ID)('VirtualAlloc')
       DLanguageParametersImpl(PARAMETERS)
         PsiElement(DLanguageTokenType.()('(')
         PARAMETER
           DLanguageTypeImpl(TYPE)
-            DLanguageTypeImpl(TYPE)
+            DLanguageType_2Impl(TYPE_2)
               PsiElement(DLanguageTokenType.void)('void')
-            DLanguageTypeCtorImpl(TYPE_CTOR)
+            DLanguageTypeSuffixImpl(TYPE_SUFFIX)
               PsiElement(DLanguageTokenType.*)('*')
           IDENTIFIER
             PsiElement(DLanguageTokenType.ID)('lpAddress')
         PsiElement(DLanguageTokenType.,)(',')
         PARAMETER
           DLanguageTypeImpl(TYPE)
-            DLanguageTypeImpl(TYPE)
+            DLanguageType_2Impl(TYPE_2)
               PsiElement(DLanguageTokenType.uint)('uint')
           IDENTIFIER
             PsiElement(DLanguageTokenType.ID)('dwSize')
         PsiElement(DLanguageTokenType.,)(',')
         PARAMETER
           DLanguageTypeImpl(TYPE)
-            DLanguageTypeImpl(TYPE)
+            DLanguageType_2Impl(TYPE_2)
               PsiElement(DLanguageTokenType.uint)('uint')
           IDENTIFIER
             PsiElement(DLanguageTokenType.ID)('flAllocationType')
         PsiElement(DLanguageTokenType.,)(',')
         PARAMETER
           DLanguageTypeImpl(TYPE)
-            DLanguageTypeImpl(TYPE)
+            DLanguageType_2Impl(TYPE_2)
               PsiElement(DLanguageTokenType.uint)('uint')
           IDENTIFIER
             PsiElement(DLanguageTokenType.ID)('flProtect')

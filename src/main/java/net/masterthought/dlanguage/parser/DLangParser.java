@@ -4097,14 +4097,17 @@ class DLangParser{
             return false;
         }
         if (currentIs(tok("auto"))) {
+            final Marker ifCondition = enter_section_(builder);
             advance();
             Token i = expect(tok("identifier"));
             if (i != null)
                 expect(tok("="));
             if (!parseNodeQ("Expression")) {
+                cleanup(ifCondition, IF_CONDITION);
                 cleanup(m, IF_STATEMENT);
                 return false;
             }
+            exit_section_(builder,ifCondition,IF_CONDITION,true);
         } else {
             // consume for TypeCtors = identifier
             if (isTypeCtor(current().type)) {
@@ -4134,18 +4137,23 @@ class DLangParser{
                 }
             } else {
                 abandonBookmark(b);
+                final Marker ifCondition = enter_section_(builder);
                 if (!tokenCheck("identifier")) {
+                    cleanup(ifCondition,IF_CONDITION);
                     cleanup(m, IF_STATEMENT);
                     return false;
                 }
                 if (!tokenCheck("=")) {
+                    cleanup(ifCondition,IF_CONDITION);
                     cleanup(m, IF_STATEMENT);
                     return false;
                 }
                 if (!parseNodeQ("Expression")) {
+                    cleanup(ifCondition,IF_CONDITION);
                     cleanup(m, IF_STATEMENT);
                     return false;
                 }
+                exit_section_(builder,ifCondition,IF_CONDITION,true);
             }
         }
 
@@ -5824,7 +5832,7 @@ class DLangParser{
             advance(); // =
         }
         if (!parseNodeQ("IdentifierChain")) {
-            cleanup(m, IMPORT);
+            cleanup(m, SINGLE_IMPORT);
             return false;
         }
         exit_section_modified(builder, m, SINGLE_IMPORT, true);
@@ -7655,7 +7663,7 @@ class DLangParser{
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         final Marker marker = enter_section_modified(builder);
         final boolean b = simpleParse("Unittest", tok("unittest"), "blockStatement|parseBlockStatement");
-        exit_section_modified(builder, marker, UNIT_TESTING, b);
+        exit_section_modified(builder, marker, UNITTEST, b);
         return b;
     }
 
@@ -8377,7 +8385,7 @@ class DLangParser{
                 builder.advanceLexer();
                 index++;
             }
-            exit_section_(builder,tokenStringMarker,STRING,true);
+            exit_section_(builder,tokenStringMarker,STRING_LIT,true);
             //todo this is not necessary in expect but may be necessary in the future.
         }
         return tokens[index - 1];
@@ -8482,84 +8490,97 @@ class DLangParser{
     }
 
     boolean parseInterfaceOrClass() {
+        final Marker m = enter_section_(builder);
         Token ident = expect(tok("identifier"));
         if (ident == null) {
+            cleanup(m,INTERFACE_OR_CLASS);
             return false;
         }
 //            node.name = *ident;
 //            node.comment = comment;
 //            comment = null;
         if (currentIs(tok(";"))) {
-            return emptyBody();
+            return emptyBody(m);
         }
         if (currentIs(tok("{"))) {
-            return structBody();
+            return structBody(m);
         }
         if (currentIs(tok("("))) {
             if (!parseNodeQ("TemplateParameters")) {
+                cleanup(m,INTERFACE_OR_CLASS);
                 return false;
             }
             if (currentIs(tok(";"))) {
-                return emptyBody();
+                return emptyBody(m);
             }
-            return constraint(false);
+            return constraint(m,false);
         }
         if (currentIs(tok(":"))) {
-            return baseClassList();
+            return baseClassList(m);
         }
-        return structBody();
+        return structBody(m);
 
     }
 
-    private boolean emptyBody() {
+    private boolean emptyBody(Marker m) {
         advance();
+        exit_section_(builder,m,INTERFACE_OR_CLASS,true);
         return true;
     }
 
-    private boolean structBody() {
-        return parseNodeQ("StructBody");
+    private boolean structBody(Marker m) {
+        boolean res = parseNodeQ("StructBody");
+        if(res){
+            exit_section_(builder,m,INTERFACE_OR_CLASS,true);
+        }
+        else
+            cleanup(m,INTERFACE_OR_CLASS);
+        return res;
     }
 
-    private boolean baseClassList() {
+    private boolean baseClassList(Marker m) {
         advance(); // :
         if (!parseBaseClassList()) {
+            cleanup(m,INTERFACE_OR_CLASS);
             return false;
         }
         if (currentIs(tok("if"))) {
-            return constraint(true);
+            return constraint(m,true);
         }
-        return structBody();
+        return structBody(m);
     }
 
-    private boolean constraint(boolean baseClassListQ) {
+    private boolean constraint(Marker m,boolean baseClassListQ) {
         if (currentIs(tok("if"))) {
             if (!parseNodeQ("Constraint")) {
+                cleanup(m,INTERFACE_OR_CLASS);
                 return false;
             }
         }
         if (baseClassListQ) {
             if (currentIs(tok("{"))) {
-                return structBody();
+                return structBody(m);
             } else if (currentIs(tok(";"))) {
-                return emptyBody();
+                return emptyBody(m);
             } else {
                 error("Struct body or ';' expected");
+                cleanup(m,INTERFACE_OR_CLASS);
                 return false;
             }
         }
         if (currentIs(tok(":"))) {
-            return baseClassList();
+            return baseClassList(m);
         }
         if (currentIs(tok("if"))) {
-            return constraint(baseClassListQ);
+            return constraint(m,baseClassListQ);
         }
         if (currentIs(tok(";"))) {
-            return emptyBody();
+            return emptyBody(m);
         }
         if (currentIs(tok(":"))) {
-            return baseClassList();
+            return baseClassList(m);
         }
-        return structBody();
+        return structBody(m);
     }
 
     //todo inline as many of these as possible

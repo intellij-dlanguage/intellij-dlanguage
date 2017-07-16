@@ -13,7 +13,7 @@ import java.io.IOException
  * Created by francis on 6/13/2017.
  */
 
-class DLanguageCatchParameterStubElementType(debugName: String) : DNamedStubElementType<DLanguageCatchStub, DLanguageCatch>(debugName) {
+class CatchStubElementType(debugName: String) : DNamedStubElementType<DLanguageCatchStub, DLanguageCatch>(debugName) {
     override fun createPsi(stub: DLanguageCatchStub): DLanguageCatch {
         return DLanguageCatchImpl(stub, this)
     }

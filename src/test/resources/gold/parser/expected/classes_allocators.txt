@@ -5,39 +5,40 @@ D Language File
   PsiComment(DLanguageTokenType.LINE_COMMENT)('//')
   PsiComment(DLanguageTokenType.LINE_COMMENT)('//}')
   DLanguageDeclarationImpl(DECLARATION)
-    CLASS_DECLARATION
+    DLanguageClassDeclarationImpl(CLASS_DECLARATION)
       PsiElement(DLanguageTokenType.class)('class')
-      IDENTIFIER
-        PsiElement(DLanguageTokenType.ID)('Foo')
-      DLanguageAggregateBodyImpl(AGGREGATE_BODY)
-        PsiElement(DLanguageTokenType.{)('{')
-        DLanguageDeclarationImpl(DECLARATION)
-          CONSTRUCTOR
-            PsiElement(DLanguageTokenType.this)('this')
-            DLanguageParametersImpl(PARAMETERS)
-              PsiElement(DLanguageTokenType.()('(')
-              PARAMETER
-                DLanguageTypeImpl(TYPE)
+      INTERFACE_OR_CLASS
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('Foo')
+        DLanguageStructBodyImpl(STRUCT_BODY)
+          PsiElement(DLanguageTokenType.{)('{')
+          DLanguageDeclarationImpl(DECLARATION)
+            CONSTRUCTOR
+              PsiElement(DLanguageTokenType.this)('this')
+              DLanguageParametersImpl(PARAMETERS)
+                PsiElement(DLanguageTokenType.()('(')
+                PARAMETER
                   DLanguageTypeImpl(TYPE)
-                    PsiElement(DLanguageTokenType.char)('char')
-                  DLanguageTypeCtorImpl(TYPE_CTOR)
-                    PsiElement(DLanguageTokenType.[)('[')
-                    PsiElement(DLanguageTokenType.])(']')
-                IDENTIFIER
-                  PsiElement(DLanguageTokenType.ID)('a')
-              PsiElement(DLanguageTokenType.))(')')
-            DLanguageFunctionBodyImpl(FUNCTION_BODY)
-              DLanguageBlockStatementImpl(BLOCK_STATEMENT)
-                PsiElement(DLanguageTokenType.{)('{')
-                PsiElement(DLanguageTokenType.})('}')
-        PsiComment(DLanguageTokenType.LINE_COMMENT)('//    new(uint size, int x, int y)')
-        PsiComment(DLanguageTokenType.LINE_COMMENT)('//    {')
-        PsiComment(DLanguageTokenType.LINE_COMMENT)('//')
-        PsiComment(DLanguageTokenType.LINE_COMMENT)('//    }')
-        PsiElement(DLanguageTokenType.})('}')
+                    DLanguageType_2Impl(TYPE_2)
+                      PsiElement(DLanguageTokenType.char)('char')
+                    DLanguageTypeSuffixImpl(TYPE_SUFFIX)
+                      PsiElement(DLanguageTokenType.[)('[')
+                      PsiElement(DLanguageTokenType.])(']')
+                  IDENTIFIER
+                    PsiElement(DLanguageTokenType.ID)('a')
+                PsiElement(DLanguageTokenType.))(')')
+              DLanguageFunctionBodyImpl(FUNCTION_BODY)
+                DLanguageBlockStatementImpl(BLOCK_STATEMENT)
+                  PsiElement(DLanguageTokenType.{)('{')
+                  PsiElement(DLanguageTokenType.})('}')
+          PsiComment(DLanguageTokenType.LINE_COMMENT)('//    new(uint size, int x, int y)')
+          PsiComment(DLanguageTokenType.LINE_COMMENT)('//    {')
+          PsiComment(DLanguageTokenType.LINE_COMMENT)('//')
+          PsiComment(DLanguageTokenType.LINE_COMMENT)('//    }')
+          PsiElement(DLanguageTokenType.})('}')
   DLanguageDeclarationImpl(DECLARATION)
-    UNIT_TESTING
-      UNIT_TESTING
+    UNITTEST
+      UNITTEST
         PsiElement(DLanguageTokenType.unittest)('unittest')
         DLanguageBlockStatementImpl(BLOCK_STATEMENT)
           PsiElement(DLanguageTokenType.{)('{')

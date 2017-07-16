@@ -4,28 +4,23 @@ import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
-import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.icons.DLanguageIcons;
 import net.masterthought.dlanguage.psi.*;
-import net.masterthought.dlanguage.psi.interfaces.CanInherit;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
-import net.masterthought.dlanguage.psi.interfaces.containers.Container;
 import net.masterthought.dlanguage.psi.references.DReference;
-import net.masterthought.dlanguage.stubs.DLanguageInterfaceOrClassDeclarationStub;
+import net.masterthought.dlanguage.stubs.DLanguageInterfaceOrClassStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.util.List;
-import java.util.Map;
 
 import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_COLON;
 
-public class DLanguageInterfaceOrClassImpl extends DNamedStubbedPsiElementBase<DLanguageInterfaceOrClassDeclarationStub> implements DLanguageInterfaceOrClass {
+public class DLanguageInterfaceOrClassImpl extends DNamedStubbedPsiElementBase<DLanguageInterfaceOrClassStub> implements DLanguageInterfaceOrClass {
 
-    public DLanguageInterfaceOrClassImpl(DLanguageInterfaceOrClassDeclarationStub stub, IStubElementType type) {
+    public DLanguageInterfaceOrClassImpl(DLanguageInterfaceOrClassStub stub, IStubElementType type) {
         super(stub, type);
     }
 
@@ -34,7 +29,7 @@ public class DLanguageInterfaceOrClassImpl extends DNamedStubbedPsiElementBase<D
     }
 
     public void accept(@NotNull DLanguageVisitor visitor) {
-        visitor.visitClassDeclaration(this);
+        visitor.visitInterfaceOrClass(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
@@ -80,12 +75,12 @@ public class DLanguageInterfaceOrClassImpl extends DNamedStubbedPsiElementBase<D
 
     @NotNull
     public String getName() {
-        return DPsiImplUtil.getName(this);
+        return this.getIdentifier().getName();
     }
 
-    public String getFullName() {
-        return DPsiImplUtil.getFullName(this);
-    }
+//    public String getFullName() {
+//        return DPsiImplUtil.getFullName(this);
+//    }
 
     @Nullable
     public PsiElement getNameIdentifier() {
@@ -95,7 +90,7 @@ public class DLanguageInterfaceOrClassImpl extends DNamedStubbedPsiElementBase<D
 
     @NotNull
     public PsiReference getReference() {
-        return new DReference(this, TextRange.from(0, DPsiImplUtil.getName(this).length()));
+        return new DReference(this, TextRange.from(0, (this).getName().length()));
     }
 
     @NotNull
@@ -131,26 +126,21 @@ public class DLanguageInterfaceOrClassImpl extends DNamedStubbedPsiElementBase<D
         };
     }
 
-    public boolean isSomeVisibility(HasVisibility.Visibility visibility, Class<? extends Container> containerType) {
-        //todo fix
-        return false;
-    }
-
     public boolean isSomeVisibility(HasVisibility.Visibility visibility) {
         //todo fix
         return false;
     }
 
-    public List<CanInherit> whatInheritsFrom() {
-        return DPsiImplUtil.whatInheritsFrom(this);
-    }
-
-    public Map<String, DLanguageIdentifier> getSuperClassNames() {
-        return DPsiImplUtil.getSuperClassNames(this);
-    }
-
-    public boolean processDeclarations(PsiScopeProcessor processor, ResolveState state, PsiElement lastParent, PsiElement place) {
-        return DPsiImplUtil.processDeclarations(this, processor, state, lastParent, place);
-    }
+//    public List<CanInherit> whatInheritsFrom() {
+//        return DPsiImplUtil.whatInheritsFrom(this);
+//    }
+//
+//    public Map<String, DLanguageIdentifier> getSuperClassNames() {
+//        return DPsiImplUtil.getSuperClassNames(this);
+//    }
+//
+//    public boolean processDeclarations(PsiScopeProcessor processor, ResolveState state, PsiElement lastParent, PsiElement place) {
+//        return DPsiImplUtil.processDeclarations(this, processor, state, lastParent, place);
+//    }
 
 }

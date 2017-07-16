@@ -1,36 +1,31 @@
+package net.masterthought.dlanguage.psi;
 
-    package net.masterthought.dlanguage.psi;
-
-    import com.intellij.psi.PsiElement;
-    import org.jetbrains.annotations.NotNull;
-    import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
-    import org.jetbrains.annotations.Nullable;
-    import com.intellij.psi.util.PsiTreeUtil;
-    import java.util.List;
-    import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
-    import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
+import com.intellij.psi.PsiElement;
+import org.jetbrains.annotations.Nullable;
 
 
+public interface DLanguageClassDeclaration extends PsiElement {
+    @Nullable
+    public PsiElement getKW_CLASS();
 
+    @Nullable
+    public DLanguageIdentifier getIdentifier();
 
-    public interface DLanguageClassDeclaration extends PsiElement {
-            @Nullable
-            public PsiElement getKW_CLASS();
-        
-            @Nullable
-            public DLanguageIdentifier getIdentifier();
-            @Nullable
-            public PsiElement getOP_SCOLON();
-        
-            @Nullable
-            public PsiElement getOP_COLON();
-        
-            @Nullable
-            public DLanguageStructBody getStructBody();
-            @Nullable
-            public DLanguageTemplateParameters getTemplateParameters();
-            @Nullable
-            public DLanguageConstraint getConstraint();
-            @Nullable
-            public DLanguageBaseClassList getBaseClassList();
+    @Nullable
+    public PsiElement getOP_SCOLON();
+
+    @Nullable
+    public PsiElement getOP_COLON();
+
+    @Nullable
+    public DLanguageStructBody getStructBody();
+
+    @Nullable
+    public DLanguageTemplateParameters getTemplateParameters();
+
+    @Nullable
+    public DLanguageConstraint getConstraint();
+
+    @Nullable
+    public DLanguageBaseClassList getBaseClassList();
 }

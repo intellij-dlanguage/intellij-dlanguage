@@ -1,27 +1,25 @@
+package net.masterthought.dlanguage.psi;
 
-    package net.masterthought.dlanguage.psi;
-
-    import com.intellij.psi.PsiElement;
-    import org.jetbrains.annotations.NotNull;
-    import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
-    import org.jetbrains.annotations.Nullable;
-    import com.intellij.psi.util.PsiTreeUtil;
-    import java.util.List;
-    import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
-    import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.StubBasedPsiElement;
+import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+import net.masterthought.dlanguage.stubs.DLanguageTemplateParameterStub;
+import org.jetbrains.annotations.Nullable;
 
 
+public interface DLanguageTemplateParameter extends PsiElement, DNamedElement, StubBasedPsiElement<DLanguageTemplateParameterStub> {
+    @Nullable
+    public DLanguageTemplateAliasParameter getTemplateAliasParameter();
 
+    @Nullable
+    public DLanguageTemplateTupleParameter getTemplateTupleParameter();
 
-    public interface DLanguageTemplateParameter extends PsiElement , DNamedElement{
-            @Nullable
-            public DLanguageTemplateAliasParameter getTemplateAliasParameter();
-            @Nullable
-            public DLanguageTemplateTupleParameter getTemplateTupleParameter();
-            @Nullable
-            public DLanguageTemplateTypeParameter getTemplateTypeParameter();
-            @Nullable
-            public DLanguageTemplateThisParameter getTemplateThisParameter();
-            @Nullable
-            public DLanguageTemplateValueParameter getTemplateValueParameter();
+    @Nullable
+    public DLanguageTemplateTypeParameter getTemplateTypeParameter();
+
+    @Nullable
+    public DLanguageTemplateThisParameter getTemplateThisParameter();
+
+    @Nullable
+    public DLanguageTemplateValueParameter getTemplateValueParameter();
 }

@@ -73,10 +73,6 @@ public class DLanguageAliasInitializerImpl extends DNamedStubbedPsiElementBase<D
         return getIdentifier().getText();
     }
 
-    public String getFullName() {
-        return DPsiImplUtil.getFullName(this);
-    }
-
     @Nullable
     public PsiElement getNameIdentifier() {
         ASTNode keyNode = getNode();
@@ -125,8 +121,8 @@ public class DLanguageAliasInitializerImpl extends DNamedStubbedPsiElementBase<D
         return true;
     }
 
-    public boolean processDeclarations(PsiScopeProcessor processor, ResolveState state, PsiElement lastParent, PsiElement place) {
-        return DPsiImplUtil.processDeclarations(this, processor, state, lastParent, place);
-    }
+//    public boolean processDeclarations(PsiScopeProcessor processor, ResolveState state, PsiElement lastParent, PsiElement place) {
+//        return DPsiImplUtil.processDeclarations(this, processor, state, lastParent, place);
+//    }
 
 }

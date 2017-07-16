@@ -1,9 +1,9 @@
 D Language File
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageTypeImpl(TYPE)
-      DLanguageTypeImpl(TYPE)
+      DLanguageType_2Impl(TYPE_2)
         PsiElement(DLanguageTokenType.int)('int')
-    FUNC_DECLARATION
+    FUNCTION_DECLARATION
       IDENTIFIER
         PsiElement(DLanguageTokenType.ID)('gethardware')
       DLanguageParametersImpl(PARAMETERS)
@@ -12,8 +12,8 @@ D Language File
       DLanguageFunctionBodyImpl(FUNCTION_BODY)
         DLanguageBlockStatementImpl(BLOCK_STATEMENT)
           PsiElement(DLanguageTokenType.{)('{')
-          DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
-            DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
+          DLanguageDeclarationsAndStatementsImpl(DECLARATIONS_AND_STATEMENTS)
+            DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
               DLanguageStatementImpl(STATEMENT)
                 DLanguageStatementNoCaseNoDefaultImpl(STATEMENT_NO_CASE_NO_DEFAULT)
                   DLanguageAsmStatementImpl(ASM_STATEMENT)
@@ -27,7 +27,7 @@ D Language File
                           DLanguageAsmBrExpImpl(ASM_BR_EXP)
                             DLanguageAsmUnaExpImpl(ASM_UNA_EXP)
                               DLanguageAsmPrimaryExpImpl(ASM_PRIMARY_EXP)
-                                DLanguageIdentifierListImpl(IDENTIFIER_LIST)
+                                DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)
                                   IDENTIFIER
                                     PsiElement(DLanguageTokenType.ID)('EAX')
                         PsiElement(DLanguageTokenType.,)(',')

@@ -1,30 +1,32 @@
 D Language File
   DLanguageDeclarationImpl(DECLARATION)
-    CLASS_DECLARATION
+    DLanguageClassDeclarationImpl(CLASS_DECLARATION)
       PsiElement(DLanguageTokenType.class)('class')
-      IDENTIFIER
-        PsiElement(DLanguageTokenType.ID)('Foo')
-      DLanguageAggregateBodyImpl(AGGREGATE_BODY)
-        PsiElement(DLanguageTokenType.{)('{')
-        PsiElement(DLanguageTokenType.})('}')
+      INTERFACE_OR_CLASS
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('Foo')
+        DLanguageStructBodyImpl(STRUCT_BODY)
+          PsiElement(DLanguageTokenType.{)('{')
+          PsiElement(DLanguageTokenType.})('}')
   DLanguageDeclarationImpl(DECLARATION)
-    CLASS_DECLARATION
+    DLanguageClassDeclarationImpl(CLASS_DECLARATION)
       PsiElement(DLanguageTokenType.class)('class')
-      IDENTIFIER
-        PsiElement(DLanguageTokenType.ID)('Foo')
-      DLanguageAggregateBodyImpl(AGGREGATE_BODY)
-        PsiElement(DLanguageTokenType.{)('{')
-        PsiElement(DLanguageTokenType.})('}')
+      INTERFACE_OR_CLASS
+        IDENTIFIER
+          PsiElement(DLanguageTokenType.ID)('Foo')
+        DLanguageStructBodyImpl(STRUCT_BODY)
+          PsiElement(DLanguageTokenType.{)('{')
+          PsiElement(DLanguageTokenType.})('}')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageTypeImpl(TYPE)
-      DLanguageTypeImpl(TYPE)
+      DLanguageType_2Impl(TYPE_2)
         DLanguageSymbolImpl(SYMBOL)
-          DLanguageIdentifierListImpl(IDENTIFIER_LIST)
-            DLanguageIdentifierListImpl(IDENTIFIER_LIST)
+          DLanguageIdentifierOrTemplateChainImpl(IDENTIFIER_OR_TEMPLATE_CHAIN)
+            DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
               IDENTIFIER
                 PsiElement(DLanguageTokenType.ID)('Foo')
-    DLanguageVarDeclarationsImpl(VAR_DECLARATIONS)
-      DLanguageDeclaratorImpl(DECLARATOR)
+    DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
+      DECLARATOR
         IDENTIFIER
           PsiElement(DLanguageTokenType.ID)('var')
       PsiElement(DLanguageTokenType.;)(';')

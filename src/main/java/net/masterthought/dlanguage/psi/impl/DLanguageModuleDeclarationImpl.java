@@ -45,12 +45,12 @@ public class DLanguageModuleDeclarationImpl extends DNamedStubbedPsiElementBase<
 
     @NotNull
     public String getName() {
-        return DPsiImplUtil.getName(this);
+        return getIdentifierChain().getText();
     }
 
-    public String getFullName() {
-        return DPsiImplUtil.getFullName(this);
-    }
+//    public String getFullName() {
+//        return DPsiImplUtil.getFullName(this);
+//    }
 
     @Nullable
     public PsiElement getNameIdentifier() {
@@ -60,12 +60,14 @@ public class DLanguageModuleDeclarationImpl extends DNamedStubbedPsiElementBase<
 
     @NotNull
     public PsiReference getReference() {
-        return new DReference(this, TextRange.from(0, DPsiImplUtil.getName(this).length()));
+        return new DReference(this, TextRange.from(0, (this).getName().length()));
     }
 
     @NotNull
     public PsiElement setName(String newName) {
-        return DPsiImplUtil.setName(this, newName);
+        //todo
+        return null;
+//        return DPsiImplUtil.setName(this, newName);
     }
 
     @NotNull
