@@ -1,4 +1,4 @@
-package net.masterthought.dlanguage.psi.impl;
+package net.masterthought.dlanguage.psi.impl.named;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
@@ -7,6 +7,7 @@ import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
 import net.masterthought.dlanguage.psi.*;
+import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import net.masterthought.dlanguage.stubs.DLanguageDeclaratorStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -50,6 +51,15 @@ public class DLanguageDeclaratorImpl extends DNamedStubbedPsiElementBase<DLangua
     @Nullable
     public DLanguageInitializer getInitializer() {
         return PsiTreeUtil.getChildOfType(this, DLanguageInitializer.class);
+    }
+
+    @NotNull
+    @Override
+    public String getName() {
+        if(getStub() != null){
+            return getStub().getName();
+        }
+        return getIdentifier().getName();
     }
 
     @Override

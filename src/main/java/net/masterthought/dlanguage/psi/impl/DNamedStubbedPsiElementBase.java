@@ -14,5 +14,11 @@ public abstract class DNamedStubbedPsiElementBase<T extends StubElement<?>> exte
     public DNamedStubbedPsiElementBase(ASTNode node) {
         super(node);
     }
+
+    @Override
+    @NotNull
+    public String getName() {
+        return super.getName();
+    }
 }
 

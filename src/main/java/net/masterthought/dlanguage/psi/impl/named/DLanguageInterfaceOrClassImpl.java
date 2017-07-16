@@ -1,36 +1,36 @@
-package net.masterthought.dlanguage.psi.impl;
+package net.masterthought.dlanguage.psi.impl.named;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiReference;
+import com.intellij.psi.*;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.icons.DLanguageIcons;
 import net.masterthought.dlanguage.psi.*;
+import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
 import net.masterthought.dlanguage.psi.references.DReference;
-import net.masterthought.dlanguage.stubs.DLanguageTemplateParameterStub;
+import net.masterthought.dlanguage.stubs.DLanguageInterfaceOrClassStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
-public class DLanguageTemplateParameterImpl extends DNamedStubbedPsiElementBase<DLanguageTemplateParameterStub> implements DLanguageTemplateParameter {
+import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_COLON;
 
-    public DLanguageTemplateParameterImpl(DLanguageTemplateParameterStub stub, IStubElementType type) {
+public class DLanguageInterfaceOrClassImpl extends DNamedStubbedPsiElementBase<DLanguageInterfaceOrClassStub> implements DLanguageInterfaceOrClass {
+
+    public DLanguageInterfaceOrClassImpl(DLanguageInterfaceOrClassStub stub, IStubElementType type) {
         super(stub, type);
     }
 
-    public DLanguageTemplateParameterImpl(ASTNode node) {
+    public DLanguageInterfaceOrClassImpl(ASTNode node) {
         super(node);
     }
 
     public void accept(@NotNull DLanguageVisitor visitor) {
-        visitor.visitTemplateParameter(this);
+        visitor.visitInterfaceOrClass(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
@@ -40,62 +40,52 @@ public class DLanguageTemplateParameterImpl extends DNamedStubbedPsiElementBase<
 
     @Override
     @Nullable
-    public DLanguageTemplateAliasParameter getTemplateAliasParameter() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageTemplateAliasParameter.class);
+    public DLanguageBaseClassList getBaseClassList() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageBaseClassList.class);
     }
 
     @Override
     @Nullable
-    public DLanguageTemplateThisParameter getTemplateThisParameter() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageTemplateThisParameter.class);
+    public DLanguageConstraint getConstraint() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageConstraint.class);
+    }
+
+    @Override
+    @NotNull
+    public DLanguageIdentifier getIdentifier() {
+        return notNullChild(PsiTreeUtil.getStubChildOfType(this, DLanguageIdentifier.class));
     }
 
     @Override
     @Nullable
-    public DLanguageTemplateTupleParameter getTemplateTupleParameter() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageTemplateTupleParameter.class);
+    public DLanguageTemplateParameters getTemplateParameters() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageTemplateParameters.class);
+    }
+
+    @Nullable
+    @Override
+    public PsiElement getOP_COLON() {
+        return notNullChild(findChildByType(OP_COLON));
+    }
+
+    @Nullable
+    @Override
+    public DLanguageStructBody getStructBody() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageStructBody.class);
     }
 
     @Override
-    @Nullable
-    public DLanguageTemplateTypeParameter getTemplateTypeParameter() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageTemplateTypeParameter.class);
-    }
-
-    @Override
-    @Nullable
-    public DLanguageTemplateValueParameter getTemplateValueParameter() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageTemplateValueParameter.class);
-    }
-
-    private DLanguageIdentifier getIdentifier(){
-        if(getTemplateAliasParameter() != null){
-            return getTemplateAliasParameter().getIdentifier();
-        }
-        if(getTemplateThisParameter() != null){
-            return getTemplateThisParameter().getTemplateTypeParameter().getIdentifier();
-        }
-        if(getTemplateTupleParameter() != null){
-            return getTemplateTupleParameter().getIdentifier();
-        }
-        if(getTemplateTypeParameter() != null){
-            return getTemplateTypeParameter().getIdentifier();
-        }
-        if(getTemplateValueParameter() != null){
-            return getTemplateValueParameter().getIdentifier();
-        }
-        throw new IllegalStateException("this shouoldn't happen. Apparently theres some kind of template parameter that is neither, alias,this,tuple,type,or value");
-    }
-
-
     @NotNull
     public String getName() {
+        if(getStub() != null){
+            return getStub().getName();
+        }
         return getIdentifier().getName();
     }
 
-//  public String getFullName() {
-//    return DPsiImplUtil.getFullName(this);
-//  }
+//    public String getFullName() {
+//        return DPsiImplUtil.getFullName(this);
+//    }
 
     @Nullable
     public PsiElement getNameIdentifier() {
@@ -110,7 +100,7 @@ public class DLanguageTemplateParameterImpl extends DNamedStubbedPsiElementBase<
 
     @NotNull
     public PsiElement setName(String newName) {
-        this.getIdentifier().setName(newName);
+        getIdentifier().setName(newName);
         return this;
     }
 
@@ -145,5 +135,17 @@ public class DLanguageTemplateParameterImpl extends DNamedStubbedPsiElementBase<
         //todo fix
         return false;
     }
+
+//    public List<CanInherit> whatInheritsFrom() {
+//        return DPsiImplUtil.whatInheritsFrom(this);
+//    }
+//
+//    public Map<String, DLanguageIdentifier> getSuperClassNames() {
+//        return DPsiImplUtil.getSuperClassNames(this);
+//    }
+//
+//    public boolean processDeclarations(PsiScopeProcessor processor, ResolveState state, PsiElement lastParent, PsiElement place) {
+//        return DPsiImplUtil.processDeclarations(this, processor, state, lastParent, place);
+//    }
 
 }

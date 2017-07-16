@@ -5,7 +5,7 @@ import com.intellij.psi.stubs.StubElement
 import com.intellij.psi.stubs.StubInputStream
 import com.intellij.psi.stubs.StubOutputStream
 import net.masterthought.dlanguage.psi.DLanguageCatch
-import net.masterthought.dlanguage.psi.impl.DLanguageCatchImpl
+import net.masterthought.dlanguage.psi.impl.named.DLanguageCatchImpl
 import net.masterthought.dlanguage.stubs.DLanguageCatchStub
 import java.io.IOException
 

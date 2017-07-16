@@ -5,8 +5,7 @@ import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubInputStream;
 import com.intellij.psi.stubs.StubOutputStream;
 import net.masterthought.dlanguage.psi.DLanguageAutoDeclarationPart;
-import net.masterthought.dlanguage.psi.impl.DLanguageAutoDeclarationImpl;
-import net.masterthought.dlanguage.psi.impl.DLanguageAutoDeclarationPartImpl;
+import net.masterthought.dlanguage.psi.impl.named.DLanguageAutoDeclarationPartImpl;
 import net.masterthought.dlanguage.stubs.DLanguageAutoDeclarationPartStub;
 import org.jetbrains.annotations.NotNull;
 

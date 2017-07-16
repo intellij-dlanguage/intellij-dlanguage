@@ -1,4 +1,4 @@
-package net.masterthought.dlanguage.psi.impl;
+package net.masterthought.dlanguage.psi.impl.named;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
@@ -8,6 +8,7 @@ import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.icons.DLanguageIcons;
 import net.masterthought.dlanguage.psi.*;
+import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
 import net.masterthought.dlanguage.psi.interfaces.Type;
 import net.masterthought.dlanguage.psi.references.DReference;
@@ -64,6 +65,9 @@ public class DLanguageAutoDeclarationPartImpl extends DNamedStubbedPsiElementBas
 
     @NotNull
     public String getName() {
+        if(getStub() != null){
+            return getStub().getName();
+        }
         return getIdentifier().getName();
     }
 

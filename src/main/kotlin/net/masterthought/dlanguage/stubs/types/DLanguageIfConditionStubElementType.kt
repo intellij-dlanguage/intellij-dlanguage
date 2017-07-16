@@ -5,7 +5,7 @@ import com.intellij.psi.stubs.StubElement
 import com.intellij.psi.stubs.StubInputStream
 import com.intellij.psi.stubs.StubOutputStream
 import net.masterthought.dlanguage.psi.DLanguageIfCondition
-import net.masterthought.dlanguage.psi.impl.DLanguageIfConditionImpl
+import net.masterthought.dlanguage.psi.impl.named.DLanguageIfConditionImpl
 import net.masterthought.dlanguage.stubs.DLanguageIfConditionStub
 import java.io.IOException
 

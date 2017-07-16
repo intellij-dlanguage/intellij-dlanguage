@@ -1,9 +1,11 @@
-package net.masterthought.dlanguage.psi.impl;
+package net.masterthought.dlanguage.psi.impl.named;
 
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.*;
 import net.masterthought.dlanguage.icons.DLanguageIcons;
+import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
+import net.masterthought.dlanguage.psi.impl.DPsiImplUtil;
 import net.masterthought.dlanguage.psi.references.DReference;
 import net.masterthought.dlanguage.resolve.DResolveUtil;
 import org.jetbrains.annotations.*;

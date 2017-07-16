@@ -1,37 +1,36 @@
-package net.masterthought.dlanguage.psi.impl;
+package net.masterthought.dlanguage.psi.impl.named;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
+import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.icons.DLanguageIcons;
 import net.masterthought.dlanguage.psi.*;
-import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
+import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import net.masterthought.dlanguage.psi.references.DReference;
-import net.masterthought.dlanguage.stubs.DLanguageConstructorStub;
-import net.masterthought.dlanguage.utils.DUtil;
+import net.masterthought.dlanguage.stubs.DLanguageLabeledStatementStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.util.List;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
+import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_COLON;
 
-public class DLanguageConstructorImpl extends DNamedStubbedPsiElementBase<DLanguageConstructorStub> implements DLanguageConstructor {
+public class DLanguageLabeledStatementImpl extends DNamedStubbedPsiElementBase<DLanguageLabeledStatementStub> implements DLanguageLabeledStatement {
 
-    public DLanguageConstructorImpl(DLanguageConstructorStub stub, IStubElementType type) {
+    public DLanguageLabeledStatementImpl(DLanguageLabeledStatementStub stub, IStubElementType type) {
         super(stub, type);
     }
 
-    public DLanguageConstructorImpl(ASTNode node) {
+    public DLanguageLabeledStatementImpl(ASTNode node) {
         super(node);
     }
 
     public void accept(@NotNull DLanguageVisitor visitor) {
-        visitor.visitConstructor(this);
+        visitor.visitLabeledStatement(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
@@ -40,45 +39,34 @@ public class DLanguageConstructorImpl extends DNamedStubbedPsiElementBase<DLangu
     }
 
     @Override
-    @Nullable
-    public DLanguageFunctionBody getFunctionBody() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageFunctionBody.class);
-    }
-
-    @Nullable
-    @Override
-    public PsiElement getOP_SCOLON() {
-        return findChildByType(OP_SCOLON);
-    }
-
-    @Nullable
-    @Override
-    public PsiElement getOP_PAR_RIGHT() {
-        return findChildByType(OP_PAR_RIGHT);
-    }
-
-    @Nullable
-    @Override
-    public PsiElement getOP_PAR_LEFT() {
-        return findChildByType(OP_PAR_LEFT);
-    }
-
-    @Nullable
-    @Override
-    public PsiElement getKW_THIS() {
-        return findChildByType(KW_THIS);
-    }
-
-    @Override
     @NotNull
-    public List<DLanguageMemberFunctionAttribute> getMemberFunctionAttributes() {
-        return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageMemberFunctionAttribute.class);
+    public DLanguageIdentifier getIdentifier() {
+        return notNullChild(PsiTreeUtil.getStubChildOfType(this, DLanguageIdentifier.class));
+    }
+
+    @Nullable
+    @Override
+    public PsiElement getOP_COLON() {
+        return notNullChild(findChildByType(OP_COLON));
+    }
+
+    @Nullable
+    @Override
+    public DLanguageDeclarationOrStatement getDeclarationOrStatement() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageDeclarationOrStatement.class);
     }
 
     @NotNull
     public String getName() {
-        return DUtil.getParentClassOrStruct(this).getName();
+        if(getStub() != null){
+            return getStub().getName();
+        }
+        return getIdentifier().getName();
     }
+
+//    public String getFullName() {
+//        return DPsiImplUtil.getFullName(this);
+//    }
 
     @Nullable
     public PsiElement getNameIdentifier() {
@@ -93,7 +81,7 @@ public class DLanguageConstructorImpl extends DNamedStubbedPsiElementBase<DLangu
 
     @NotNull
     public PsiElement setName(String newName) {
-        DUtil.getParentClassOrStruct(this).setName(newName);
+        getIdentifier().setName(newName);
         return this;
     }
 
@@ -103,12 +91,7 @@ public class DLanguageConstructorImpl extends DNamedStubbedPsiElementBase<DLangu
             @NotNull
             @Override
             public String getPresentableText() {
-                String string = "";
-                for (PsiElement psiElement : getChildren()) {
-                    if (psiElement instanceof DLanguageParametersImpl)
-                        string += psiElement.getText();
-                }
-                return getName() + string;
+                return getName();
             }
 
             /**
@@ -127,11 +110,6 @@ public class DLanguageConstructorImpl extends DNamedStubbedPsiElementBase<DLangu
                 return DLanguageIcons.FILE;
             }
         };
-    }
-
-    public boolean isSomeVisibility(HasVisibility.Visibility visibility) {
-        //todo fix
-        return false;
     }
 
 //    public boolean processDeclarations(PsiScopeProcessor processor, ResolveState state, PsiElement lastParent, PsiElement place) {

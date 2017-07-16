@@ -1,4 +1,4 @@
-package net.masterthought.dlanguage.psi.impl;
+package net.masterthought.dlanguage.psi.impl.named;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
@@ -11,27 +11,29 @@ import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.icons.DLanguageIcons;
 import net.masterthought.dlanguage.psi.*;
+import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
+import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
 import net.masterthought.dlanguage.psi.references.DReference;
-import net.masterthought.dlanguage.stubs.DLanguageEnumMemberStub;
+import net.masterthought.dlanguage.stubs.DLanguageCatchStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_EQ;
+import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
 
-public class DLanguageEnumMemberImpl extends DNamedStubbedPsiElementBase<DLanguageEnumMemberStub> implements DLanguageEnumMember {
+public class DLanguageCatchImpl extends DNamedStubbedPsiElementBase<DLanguageCatchStub> implements DLanguageCatch {
 
-    public DLanguageEnumMemberImpl(DLanguageEnumMemberStub stub, IStubElementType type) {
+    public DLanguageCatchImpl(DLanguageCatchStub stub, IStubElementType type) {
         super(stub, type);
     }
 
-    public DLanguageEnumMemberImpl(ASTNode node) {
+    public DLanguageCatchImpl(ASTNode node) {
         super(node);
     }
 
     public void accept(@NotNull DLanguageVisitor visitor) {
-        visitor.visitEnumMember(this);
+        visitor.visitCatch(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
@@ -39,39 +41,52 @@ public class DLanguageEnumMemberImpl extends DNamedStubbedPsiElementBase<DLangua
         else super.accept(visitor);
     }
 
-    @Override
     @Nullable
-    public DLanguageAssignExpression getAssignExpression() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageAssignExpression.class);
-    }
-
     @Override
-    @NotNull
-    public DLanguageIdentifier getIdentifier() {
-        return notNullChild(PsiTreeUtil.getStubChildOfType(this, DLanguageIdentifier.class));
+    public PsiElement getKW_CATCH() {
+        return findChildByType(KW_CATCH);
     }
 
     @Nullable
     @Override
-    public PsiElement getOP_EQ() {
-        return findChildByType(OP_EQ);
+    public PsiElement getOP_PAR_LEFT() {
+        return findChildByType(OP_PAR_LEFT);
     }
 
-    @Override
     @Nullable
+    @Override
+    public PsiElement getOP_PAR_RIGHT() {
+        return findChildByType(OP_PAR_RIGHT);
+    }
+
+    @Nullable
+    @Override
     public DLanguageType getType() {
         return PsiTreeUtil.getChildOfType(this, DLanguageType.class);
     }
 
+    @Override
+    @Nullable
+    public DLanguageIdentifier getIdentifier() {
+        return PsiTreeUtil.getStubChildOfType(this, DLanguageIdentifier.class);
+    }
+
+    @Nullable
+    @Override
+    public DLanguageDeclarationOrStatement getDeclarationOrStatement() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageDeclarationOrStatement.class);
+    }
 
     @NotNull
     public String getName() {
-        return (this).getIdentifier().getName();
+        if(getStub() != null){
+            return getStub().getName();
+        }
+        if(getIdentifier() == null){
+            return "this catch parameter has no name";
+        }
+        return getIdentifier().getName();
     }
-
-//    public String getFullName() {
-//        return DPsiImplUtil.getFullName(this);
-//    }
 
     @Nullable
     public PsiElement getNameIdentifier() {
@@ -81,12 +96,16 @@ public class DLanguageEnumMemberImpl extends DNamedStubbedPsiElementBase<DLangua
 
     @NotNull
     public PsiReference getReference() {
-        return new DReference(this, TextRange.from(0, this.getName().length()));
+        return new DReference(this, TextRange.from(0, (this).getName().length()));
     }
 
     @NotNull
     public PsiElement setName(String newName) {
-        getIdentifier().setName(newName);
+        if (getIdentifier() != null) {
+            getIdentifier().setName(newName);
+        } else {
+            throw new IllegalStateException("renaming a catch parameter withouta name");
+        }
         return this;
     }
 
@@ -115,6 +134,11 @@ public class DLanguageEnumMemberImpl extends DNamedStubbedPsiElementBase<DLangua
                 return DLanguageIcons.FILE;
             }
         };
+    }
+
+    public boolean isSomeVisibility(HasVisibility.Visibility visibility) {
+        //todo fix
+        return false;
     }
 
 }

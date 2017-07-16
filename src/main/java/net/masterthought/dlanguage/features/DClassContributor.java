@@ -7,7 +7,7 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.stubs.StubIndex;
 import com.intellij.util.ArrayUtil;
 import com.intellij.util.containers.ContainerUtil;
-import net.masterthought.dlanguage.psi.impl.DLanguageInterfaceOrClassImpl;
+import net.masterthought.dlanguage.psi.impl.named.DLanguageInterfaceOrClassImpl;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 import net.masterthought.dlanguage.stubs.index.DAllNameIndex;
 import org.jetbrains.annotations.NotNull;

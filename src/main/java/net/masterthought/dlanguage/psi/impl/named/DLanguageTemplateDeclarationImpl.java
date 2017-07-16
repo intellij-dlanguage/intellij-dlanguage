@@ -1,35 +1,37 @@
-package net.masterthought.dlanguage.psi.impl;
+package net.masterthought.dlanguage.psi.impl.named;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
-import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.icons.DLanguageIcons;
 import net.masterthought.dlanguage.psi.*;
+import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
+import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
 import net.masterthought.dlanguage.psi.references.DReference;
-import net.masterthought.dlanguage.stubs.DLanguageLabeledStatementStub;
+import net.masterthought.dlanguage.stubs.DLanguageTemplateDeclarationStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.util.List;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_COLON;
+import static net.masterthought.dlanguage.psi.DLanguageTypes.KW_TEMPLATE;
 
-public class DLanguageLabeledStatementImpl extends DNamedStubbedPsiElementBase<DLanguageLabeledStatementStub> implements DLanguageLabeledStatement {
+public class DLanguageTemplateDeclarationImpl extends DNamedStubbedPsiElementBase<DLanguageTemplateDeclarationStub> implements DLanguageTemplateDeclaration {
 
-    public DLanguageLabeledStatementImpl(DLanguageLabeledStatementStub stub, IStubElementType type) {
+    public DLanguageTemplateDeclarationImpl(DLanguageTemplateDeclarationStub stub, IStubElementType type) {
         super(stub, type);
     }
 
-    public DLanguageLabeledStatementImpl(ASTNode node) {
+    public DLanguageTemplateDeclarationImpl(ASTNode node) {
         super(node);
     }
 
     public void accept(@NotNull DLanguageVisitor visitor) {
-        visitor.visitLabeledStatement(this);
+        visitor.visitTemplateDeclaration(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
@@ -38,25 +40,58 @@ public class DLanguageLabeledStatementImpl extends DNamedStubbedPsiElementBase<D
     }
 
     @Override
+    @Nullable
+    public DLanguageConstraint getConstraint() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageConstraint.class);
+    }
+
+    @Nullable
+    @Override
+    public PsiElement getOP_BRACES_RIGHT() {
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public PsiElement getOP_BRACES_LEFT() {
+        return null;
+    }
+
+    @NotNull
+    @Override
+    public List<DLanguageDeclaration> getDeclarations() {
+        return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageDeclaration.class);
+    }
+
+    @Nullable
+    @Override
+    public DLanguageEponymousTemplateDeclaration getEponymousTemplateDeclaration() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageEponymousTemplateDeclaration.class);
+    }
+
+    @Nullable
+    @Override
+    public PsiElement getKW_TEMPLATE() {
+        return notNullChild(findChildByType(KW_TEMPLATE));
+    }
+
+    @Override
     @NotNull
     public DLanguageIdentifier getIdentifier() {
         return notNullChild(PsiTreeUtil.getStubChildOfType(this, DLanguageIdentifier.class));
     }
 
-    @Nullable
     @Override
-    public PsiElement getOP_COLON() {
-        return notNullChild(findChildByType(OP_COLON));
-    }
-
     @Nullable
-    @Override
-    public DLanguageDeclarationOrStatement getDeclarationOrStatement() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageDeclarationOrStatement.class);
+    public DLanguageTemplateParameters getTemplateParameters() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageTemplateParameters.class);
     }
 
     @NotNull
     public String getName() {
+        if(getStub() != null){
+            return getStub().getName();
+        }
         return getIdentifier().getName();
     }
 
@@ -106,6 +141,11 @@ public class DLanguageLabeledStatementImpl extends DNamedStubbedPsiElementBase<D
                 return DLanguageIcons.FILE;
             }
         };
+    }
+
+    public boolean isSomeVisibility(HasVisibility.Visibility visibility) {
+        //todo fix
+        return false;
     }
 
 //    public boolean processDeclarations(PsiScopeProcessor processor, ResolveState state, PsiElement lastParent, PsiElement place) {

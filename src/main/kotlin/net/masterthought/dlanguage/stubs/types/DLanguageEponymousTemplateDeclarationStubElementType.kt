@@ -5,7 +5,7 @@ import com.intellij.psi.stubs.StubElement
 import com.intellij.psi.stubs.StubInputStream
 import com.intellij.psi.stubs.StubOutputStream
 import net.masterthought.dlanguage.psi.DLanguageEponymousTemplateDeclaration
-import net.masterthought.dlanguage.psi.impl.DLanguageEponymousTemplateDeclarationImpl
+import net.masterthought.dlanguage.psi.impl.named.DLanguageEponymousTemplateDeclarationImpl
 import net.masterthought.dlanguage.stubs.DLanguageEponymousTemplateDeclarationStub
 import java.io.IOException
 

@@ -1,13 +1,11 @@
 package net.masterthought.dlanguage.stubs.types
 
-import com.intellij.lang.ASTNode
 import com.intellij.psi.stubs.StubElement
 import com.intellij.psi.stubs.StubInputStream
 import com.intellij.psi.stubs.StubOutputStream
 import net.masterthought.dlanguage.psi.DLanguageEnumMember
-import net.masterthought.dlanguage.psi.impl.DLanguageEnumMemberImpl
+import net.masterthought.dlanguage.psi.impl.named.DLanguageEnumMemberImpl
 import net.masterthought.dlanguage.stubs.DLanguageEnumMemberStub
-import net.masterthought.dlanguage.utils.DUtil
 import java.io.IOException
 
 /**

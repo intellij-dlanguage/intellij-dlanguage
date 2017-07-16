@@ -5,7 +5,7 @@ import com.intellij.psi.stubs.StubElement
 import com.intellij.psi.stubs.StubInputStream
 import com.intellij.psi.stubs.StubOutputStream
 import net.masterthought.dlanguage.psi.DLanguageUnionDeclaration
-import net.masterthought.dlanguage.psi.impl.DLanguageUnionDeclarationImpl
+import net.masterthought.dlanguage.psi.impl.named.DLanguageUnionDeclarationImpl
 import net.masterthought.dlanguage.stubs.DLanguageUnionDeclarationStub
 import net.masterthought.dlanguage.utils.DUtil
 

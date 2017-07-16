@@ -1,9 +1,8 @@
-package net.masterthought.dlanguage.psi.impl;
+package net.masterthought.dlanguage.psi.impl.named;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.openapi.util.TextRange;
-import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiFile;
@@ -11,26 +10,33 @@ import com.intellij.psi.PsiReference;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.icons.DLanguageIcons;
-import net.masterthought.dlanguage.psi.*;
+import net.masterthought.dlanguage.psi.DLanguageFile;
+import net.masterthought.dlanguage.psi.DLanguageIdentifierChain;
+import net.masterthought.dlanguage.psi.DLanguageModuleDeclaration;
+import net.masterthought.dlanguage.psi.DLanguageVisitor;
+import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import net.masterthought.dlanguage.psi.references.DReference;
-import net.masterthought.dlanguage.stubs.DLanguageForeachTypeStub;
+import net.masterthought.dlanguage.stubs.DLanguageModuleDeclarationStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
-public class DLanguageForeachTypeImpl extends DNamedStubbedPsiElementBase<DLanguageForeachTypeStub> implements DLanguageForeachType {
+import static net.masterthought.dlanguage.psi.DLanguageTypes.KW_MODULE;
+import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_SCOLON;
 
-    public DLanguageForeachTypeImpl(DLanguageForeachTypeStub stub, IStubElementType type) {
+public class DLanguageModuleDeclarationImpl extends DNamedStubbedPsiElementBase<DLanguageModuleDeclarationStub> implements DLanguageModuleDeclaration {
+
+    public DLanguageModuleDeclarationImpl(DLanguageModuleDeclarationStub stub, IStubElementType type) {
         super(stub, type);
     }
 
-    public DLanguageForeachTypeImpl(ASTNode node) {
+    public DLanguageModuleDeclarationImpl(ASTNode node) {
         super(node);
     }
 
     public void accept(@NotNull DLanguageVisitor visitor) {
-        visitor.visitForeachType(this);
+        visitor.visitModuleDeclaration(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
@@ -38,29 +44,12 @@ public class DLanguageForeachTypeImpl extends DNamedStubbedPsiElementBase<DLangu
         else super.accept(visitor);
     }
 
-    @Override
-    @NotNull
-    public DLanguageIdentifier getIdentifier() {
-        return notNullChild(PsiTreeUtil.getStubChildOfType(this, DLanguageIdentifier.class));
-    }
-
-    @Nullable
-    @Override
-    public DLanguageTypeConstructors getTypeConstructors() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageTypeConstructors.class);
-    }
-
-    @Override
-    @Nullable
-    public DLanguageType getType() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageType.class);
-    }
-
     @NotNull
     public String getName() {
-        DLanguageForeachTypeStub stub = (this).getStub();
-        if (stub != null) return StringUtil.notNullize(stub.getName());
-        return getIdentifier().getName();
+        if(getStub() != null){
+            return getStub().getName();
+        }
+        return getIdentifierChain().getText();
     }
 
 //    public String getFullName() {
@@ -80,8 +69,9 @@ public class DLanguageForeachTypeImpl extends DNamedStubbedPsiElementBase<DLangu
 
     @NotNull
     public PsiElement setName(String newName) {
-        getIdentifier().setName(newName);
-        return this;
+        //todo
+        return null;
+//        return DPsiImplUtil.setName(this, newName);
     }
 
     @NotNull
@@ -111,4 +101,21 @@ public class DLanguageForeachTypeImpl extends DNamedStubbedPsiElementBase<DLangu
         };
     }
 
+    @Nullable
+    @Override
+    public PsiElement getKW_MODULE() {
+        return notNullChild(findChildByType(KW_MODULE));
+    }
+
+    @Nullable
+    @Override
+    public DLanguageIdentifierChain getIdentifierChain() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageIdentifierChain.class);
+    }
+
+    @Nullable
+    @Override
+    public PsiElement getOP_SCOLON() {
+        return findChildByType(OP_SCOLON);
+    }
 }

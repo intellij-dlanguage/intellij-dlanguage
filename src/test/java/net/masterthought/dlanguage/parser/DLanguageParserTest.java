@@ -341,6 +341,16 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
         doTest(true, true);
     }
 
+    //dmd source
+
+    public void  testexpression(){
+        doTest(true,true);
+    }
+
+    //below test errors waiting on libdparse
+//    public void testobject(){
+//        doTest(true,true);
+//    }
 
 }
 

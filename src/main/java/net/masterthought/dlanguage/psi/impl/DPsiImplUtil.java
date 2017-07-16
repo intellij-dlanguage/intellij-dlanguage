@@ -2,21 +2,11 @@ package net.masterthought.dlanguage.psi.impl;
 
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.*;
-import com.intellij.psi.scope.PsiScopeProcessor;
-import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.psi.*;
-import net.masterthought.dlanguage.psi.interfaces.*;
-import net.masterthought.dlanguage.resolve.DResolveUtil;
-import net.masterthought.dlanguage.resolve.ScopeProcessorImpl;
+import net.masterthought.dlanguage.psi.impl.named.DLanguageIdentifierImpl;
 import net.masterthought.dlanguage.stubs.*;
-import net.masterthought.dlanguage.utils.DUtil;
-import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.*;
-
-import static com.intellij.psi.util.PsiTreeUtil.*;
 
 
 /**

@@ -4,6 +4,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.navigation.NavigationItem;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiNameIdentifierOwner;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -16,6 +17,11 @@ public interface DNamedElement extends DCompositeElement, PsiNameIdentifierOwner
 //    default String getFullName() {
 //        return DPsiImplUtil.getFullName(this);
 //    }
+
+
+    @NotNull
+    @Override
+    String getName();
 
     @Nullable
     @Override

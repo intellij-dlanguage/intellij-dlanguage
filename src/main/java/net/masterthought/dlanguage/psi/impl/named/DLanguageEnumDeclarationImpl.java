@@ -1,36 +1,40 @@
-package net.masterthought.dlanguage.psi.impl;
+package net.masterthought.dlanguage.psi.impl.named;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.*;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiReference;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.icons.DLanguageIcons;
 import net.masterthought.dlanguage.psi.*;
+import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
 import net.masterthought.dlanguage.psi.references.DReference;
-import net.masterthought.dlanguage.stubs.DLanguageStructDeclarationStub;
+import net.masterthought.dlanguage.stubs.DLanguageEnumDeclarationStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.KW_STRUCT;
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_SCOLON;
+import static net.masterthought.dlanguage.psi.DLanguageTypes.KW_ENUM;
+import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_COLON;
 
-public class DLanguageStructDeclarationImpl extends DNamedStubbedPsiElementBase<DLanguageStructDeclarationStub> implements DLanguageStructDeclaration {
+public class DLanguageEnumDeclarationImpl extends DNamedStubbedPsiElementBase<DLanguageEnumDeclarationStub> implements DLanguageEnumDeclaration {
 
-    public DLanguageStructDeclarationImpl(DLanguageStructDeclarationStub stub, IStubElementType type) {
+    public DLanguageEnumDeclarationImpl(DLanguageEnumDeclarationStub stub, IStubElementType type) {
         super(stub, type);
     }
 
-    public DLanguageStructDeclarationImpl(ASTNode node) {
+    public DLanguageEnumDeclarationImpl(ASTNode node) {
         super(node);
     }
 
     public void accept(@NotNull DLanguageVisitor visitor) {
-        visitor.visitStructDeclaration(this);
+        visitor.visitEnumDeclaration(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
@@ -40,26 +44,8 @@ public class DLanguageStructDeclarationImpl extends DNamedStubbedPsiElementBase<
 
     @Override
     @Nullable
-    public DLanguageConstraint getConstraint() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageConstraint.class);
-    }
-
-    @Nullable
-    @Override
-    public DLanguageStructBody getStructBody() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageStructBody.class);
-    }
-
-    @Nullable
-    @Override
-    public PsiElement getOP_SCOLON() {
-        return findChildByType(OP_SCOLON);
-    }
-
-    @Nullable
-    @Override
-    public PsiElement getKW_STRUCT() {
-        return notNullChild(findChildByType(KW_STRUCT));
+    public DLanguageEnumBody getEnumBody() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageEnumBody.class);
     }
 
     @Override
@@ -68,20 +54,31 @@ public class DLanguageStructDeclarationImpl extends DNamedStubbedPsiElementBase<
         return PsiTreeUtil.getStubChildOfType(this, DLanguageIdentifier.class);
     }
 
-    @Override
     @Nullable
-    public DLanguageTemplateParameters getTemplateParameters() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageTemplateParameters.class);
+    @Override
+    public PsiElement getOP_COLON() {
+        return findChildByType(OP_COLON);
+    }
+
+    @Nullable
+    @Override
+    public PsiElement getKW_ENUM() {
+        return findChildByType(KW_ENUM);
+    }
+
+    @Nullable
+    @Override
+    public DLanguageType getType() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageType.class);
     }
 
     @NotNull
     public String getName() {
-        return (this).getIdentifier().getName();
+        if(getStub() != null){
+            return getStub().getName();
+        }
+        return getIdentifier().getName();
     }
-
-//    public String getFullName() {
-//        return DPsiImplUtil.getFullName(this);
-//    }
 
     @Nullable
     public PsiElement getNameIdentifier() {
@@ -129,10 +126,7 @@ public class DLanguageStructDeclarationImpl extends DNamedStubbedPsiElementBase<
     public boolean isSomeVisibility(HasVisibility.Visibility visibility) {
         //todo fix
         return false;
-    }
 
-//    public boolean processDeclarations(PsiScopeProcessor processor, ResolveState state, PsiElement lastParent, PsiElement place) {
-//        return DPsiImplUtil.processDeclarations(this, processor, state, lastParent, place);
-//    }
+    }
 
 }

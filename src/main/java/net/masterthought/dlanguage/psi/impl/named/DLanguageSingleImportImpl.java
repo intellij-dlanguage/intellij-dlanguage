@@ -1,4 +1,4 @@
-package net.masterthought.dlanguage.psi.impl;
+package net.masterthought.dlanguage.psi.impl.named;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
@@ -8,6 +8,7 @@ import com.intellij.util.IncorrectOperationException;
 import net.masterthought.dlanguage.psi.DLanguageIdentifier;
 import net.masterthought.dlanguage.psi.DLanguageIdentifierChain;
 import net.masterthought.dlanguage.psi.DLanguageSingleImport;
+import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import net.masterthought.dlanguage.stubs.DLanguageSingleImportStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -43,6 +44,14 @@ public class DLanguageSingleImportImpl extends DNamedStubbedPsiElementBase<DLang
     @Override
     public DLanguageIdentifierChain getIdentifierChain() {
         return PsiTreeUtil.getChildOfType(this,DLanguageIdentifierChain.class);
+    }
+
+    @Override
+    public String getName() {
+        if(getStub() != null){
+            return getStub().getName();
+        }
+        return getIdentifier().getName();
     }
 
     @Override

@@ -28,6 +28,7 @@ public class ParserWrapper implements LightPsiParser, PsiParser {
         exit_section_(b, 0, m, t, r, true, TRUE_CONDITION);
     }
 
+
     @NotNull
     @Override
     public ASTNode parse(@NotNull IElementType root, @NotNull PsiBuilder builder) {

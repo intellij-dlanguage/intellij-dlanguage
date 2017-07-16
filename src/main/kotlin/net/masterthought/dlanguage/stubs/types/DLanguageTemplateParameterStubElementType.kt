@@ -5,7 +5,7 @@ import com.intellij.psi.stubs.StubElement
 import com.intellij.psi.stubs.StubInputStream
 import com.intellij.psi.stubs.StubOutputStream
 import net.masterthought.dlanguage.psi.DLanguageTemplateParameter
-import net.masterthought.dlanguage.psi.impl.DLanguageTemplateParameterImpl
+import net.masterthought.dlanguage.psi.impl.named.DLanguageTemplateParameterImpl
 import net.masterthought.dlanguage.stubs.DLanguageTemplateParameterStub
 import net.masterthought.dlanguage.utils.DUtil
 import java.io.IOException

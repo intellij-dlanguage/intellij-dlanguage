@@ -1,4 +1,4 @@
-package net.masterthought.dlanguage.psi.impl;
+package net.masterthought.dlanguage.psi.impl.named;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
@@ -9,6 +9,7 @@ import net.masterthought.dlanguage.psi.DLanguageExpression;
 import net.masterthought.dlanguage.psi.DLanguageIdentifier;
 import net.masterthought.dlanguage.psi.DLanguageIfCondition;
 import net.masterthought.dlanguage.psi.DLanguageType;
+import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import net.masterthought.dlanguage.stubs.DLanguageIdentifierStub;
 import net.masterthought.dlanguage.stubs.DLanguageIfConditionStub;
 import org.jetbrains.annotations.NotNull;
@@ -59,6 +60,15 @@ public class DLanguageIfConditionImpl extends DNamedStubbedPsiElementBase<DLangu
     @Override
     public PsiElement getOP_EQ() {
         return findChildByType(OP_EQ);
+    }
+
+    @NotNull
+    @Override
+    public String getName() {
+        if(getStub() != null){
+            return getStub().getName();
+        }
+        return getIdentifier().getName();
     }
 
     @Override

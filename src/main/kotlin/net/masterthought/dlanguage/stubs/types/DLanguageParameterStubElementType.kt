@@ -1,13 +1,11 @@
 package net.masterthought.dlanguage.stubs.types
 
-import com.intellij.lang.ASTNode
 import com.intellij.psi.stubs.StubElement
 import com.intellij.psi.stubs.StubInputStream
 import com.intellij.psi.stubs.StubOutputStream
 import net.masterthought.dlanguage.psi.DLanguageParameter
-import net.masterthought.dlanguage.psi.impl.DLanguageParameterImpl
+import net.masterthought.dlanguage.psi.impl.named.DLanguageParameterImpl
 import net.masterthought.dlanguage.stubs.DLanguageParameterStub
-import net.masterthought.dlanguage.utils.DUtil
 import java.io.IOException
 
 /**

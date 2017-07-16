@@ -5,9 +5,8 @@ import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubInputStream;
 import com.intellij.psi.stubs.StubOutputStream;
 import net.masterthought.dlanguage.psi.DLanguageStructDeclaration;
-import net.masterthought.dlanguage.psi.impl.DLanguageStructDeclarationImpl;
+import net.masterthought.dlanguage.psi.impl.named.DLanguageStructDeclarationImpl;
 import net.masterthought.dlanguage.stubs.DLanguageStructDeclarationStub;
-import net.masterthought.dlanguage.utils.DUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;

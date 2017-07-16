@@ -111,8 +111,8 @@ public class DUtil {
      * @param namedElement constructor, or method contained within a class or struct
      * @return the class or struct containing this constructor/method. returns null if not found
      */
-    public static DNamedElement getParentClassOrStruct(PsiElement namedElement) {
-        return PsiTreeUtil.getParentOfType(namedElement, DLanguageInterfaceOrClass.class, DLanguageStructDeclaration.class);
+    public static DNamedElement getParentClassOrStructOrTemplateOrInterface(PsiElement namedElement) {
+        return PsiTreeUtil.getParentOfType(namedElement, DLanguageInterfaceOrClass.class, DLanguageStructDeclaration.class, DLanguageTemplateDeclaration.class);
     }
 
     public static DLanguageFunctionDeclaration getParentFunction(PsiElement namedElement){
@@ -246,6 +246,15 @@ public class DUtil {
         if (text.equals("protected"))
             return protected_;
         throw new IllegalArgumentException(text);
+
+    }
+
+    public static DLanguageIdentifier getEndOfIdentifierList(DLanguageIdentifierOrTemplateChain chain) {
+        final List<DLanguageIdentifierOrTemplateInstance> list = chain.getIdentifierOrTemplateInstances();
+        if(list.get(list.size() - 1).getIdentifier() != null)
+            return list.get(list.size() - 1).getIdentifier();
+        else
+            throw new IllegalStateException();
 
     }
 }

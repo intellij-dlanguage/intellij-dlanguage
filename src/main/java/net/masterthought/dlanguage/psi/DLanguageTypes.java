@@ -4,6 +4,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
 import net.masterthought.dlanguage.psi.impl.*;
+import net.masterthought.dlanguage.psi.impl.named.*;
 
 public interface DLanguageTypes {
     IElementType KEYWORD = new DLanguageElementType("KEYWORD");

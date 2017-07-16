@@ -5,7 +5,7 @@ import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubInputStream;
 import com.intellij.psi.stubs.StubOutputStream;
 import net.masterthought.dlanguage.psi.DLanguageEnumDeclaration;
-import net.masterthought.dlanguage.psi.impl.DLanguageEnumDeclarationImpl;
+import net.masterthought.dlanguage.psi.impl.named.DLanguageEnumDeclarationImpl;
 import net.masterthought.dlanguage.stubs.DLanguageEnumDeclarationStub;
 import net.masterthought.dlanguage.utils.DUtil;
 import org.jetbrains.annotations.NotNull;

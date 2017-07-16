@@ -2,6 +2,7 @@
 package net.masterthought.dlanguage.psi;
 
 import net.masterthought.dlanguage.psi.impl.*;
+import net.masterthought.dlanguage.psi.impl.named.*;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiElement;

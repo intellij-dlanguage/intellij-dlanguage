@@ -5,7 +5,7 @@ import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubInputStream;
 import com.intellij.psi.stubs.StubOutputStream;
 import net.masterthought.dlanguage.psi.DLanguageIdentifier;
-import net.masterthought.dlanguage.psi.impl.DLanguageIdentifierImpl;
+import net.masterthought.dlanguage.psi.impl.named.DLanguageIdentifierImpl;
 import net.masterthought.dlanguage.stubs.DLanguageIdentifierStub;
 import net.masterthought.dlanguage.utils.DUtil;
 import org.jetbrains.annotations.NotNull;

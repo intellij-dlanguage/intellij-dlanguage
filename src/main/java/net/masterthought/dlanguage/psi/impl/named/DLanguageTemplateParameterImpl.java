@@ -1,4 +1,4 @@
-package net.masterthought.dlanguage.psi.impl;
+package net.masterthought.dlanguage.psi.impl.named;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
@@ -11,28 +11,27 @@ import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.icons.DLanguageIcons;
 import net.masterthought.dlanguage.psi.*;
+import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
 import net.masterthought.dlanguage.psi.references.DReference;
-import net.masterthought.dlanguage.stubs.DLanguageCatchStub;
+import net.masterthought.dlanguage.stubs.DLanguageTemplateParameterStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
+public class DLanguageTemplateParameterImpl extends DNamedStubbedPsiElementBase<DLanguageTemplateParameterStub> implements DLanguageTemplateParameter {
 
-public class DLanguageCatchImpl extends DNamedStubbedPsiElementBase<DLanguageCatchStub> implements DLanguageCatch {
-
-    public DLanguageCatchImpl(DLanguageCatchStub stub, IStubElementType type) {
+    public DLanguageTemplateParameterImpl(DLanguageTemplateParameterStub stub, IStubElementType type) {
         super(stub, type);
     }
 
-    public DLanguageCatchImpl(ASTNode node) {
+    public DLanguageTemplateParameterImpl(ASTNode node) {
         super(node);
     }
 
     public void accept(@NotNull DLanguageVisitor visitor) {
-        visitor.visitCatch(this);
+        visitor.visitTemplateParameter(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
@@ -40,46 +39,67 @@ public class DLanguageCatchImpl extends DNamedStubbedPsiElementBase<DLanguageCat
         else super.accept(visitor);
     }
 
-    @Nullable
     @Override
-    public PsiElement getKW_CATCH() {
-        return findChildByType(KW_CATCH);
-    }
-
     @Nullable
-    @Override
-    public PsiElement getOP_PAR_LEFT() {
-        return findChildByType(OP_PAR_LEFT);
-    }
-
-    @Nullable
-    @Override
-    public PsiElement getOP_PAR_RIGHT() {
-        return findChildByType(OP_PAR_RIGHT);
-    }
-
-    @Nullable
-    @Override
-    public DLanguageType getType() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageType.class);
+    public DLanguageTemplateAliasParameter getTemplateAliasParameter() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageTemplateAliasParameter.class);
     }
 
     @Override
     @Nullable
-    public DLanguageIdentifier getIdentifier() {
-        return PsiTreeUtil.getStubChildOfType(this, DLanguageIdentifier.class);
+    public DLanguageTemplateThisParameter getTemplateThisParameter() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageTemplateThisParameter.class);
     }
 
-    @Nullable
     @Override
-    public DLanguageDeclarationOrStatement getDeclarationOrStatement() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageDeclarationOrStatement.class);
+    @Nullable
+    public DLanguageTemplateTupleParameter getTemplateTupleParameter() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageTemplateTupleParameter.class);
     }
+
+    @Override
+    @Nullable
+    public DLanguageTemplateTypeParameter getTemplateTypeParameter() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageTemplateTypeParameter.class);
+    }
+
+    @Override
+    @Nullable
+    public DLanguageTemplateValueParameter getTemplateValueParameter() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageTemplateValueParameter.class);
+    }
+
+    private DLanguageIdentifier getIdentifier(){
+        if(getTemplateAliasParameter() != null){
+            return getTemplateAliasParameter().getIdentifier();
+        }
+        if(getTemplateThisParameter() != null){
+            return getTemplateThisParameter().getTemplateTypeParameter().getIdentifier();
+        }
+        if(getTemplateTupleParameter() != null){
+            return getTemplateTupleParameter().getIdentifier();
+        }
+        if(getTemplateTypeParameter() != null){
+            return getTemplateTypeParameter().getIdentifier();
+        }
+        if(getTemplateValueParameter() != null){
+            return getTemplateValueParameter().getIdentifier();
+        }
+        throw new IllegalStateException("this shouoldn't happen. Apparently theres some kind of template parameter that is neither, alias,this,tuple,type,or value");
+    }
+
 
     @NotNull
     public String getName() {
+        if(getStub() != null){
+            return getStub().getName();
+        }
         return getIdentifier().getName();
     }
+
+//  public String getFullName() {
+//    return DPsiImplUtil.getFullName(this);
+//  }
 
     @Nullable
     public PsiElement getNameIdentifier() {
@@ -94,11 +114,7 @@ public class DLanguageCatchImpl extends DNamedStubbedPsiElementBase<DLanguageCat
 
     @NotNull
     public PsiElement setName(String newName) {
-        if (getIdentifier() != null) {
-            getIdentifier().setName(newName);
-        } else {
-            throw new IllegalStateException("renaming a catch parameter withouta name");
-        }
+        this.getIdentifier().setName(newName);
         return this;
     }
 

@@ -1,4 +1,4 @@
-package net.masterthought.dlanguage.psi.impl;
+package net.masterthought.dlanguage.psi.impl.named;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
@@ -11,9 +11,11 @@ import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.icons.DLanguageIcons;
 import net.masterthought.dlanguage.psi.*;
+import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 import net.masterthought.dlanguage.psi.references.DReference;
 import net.masterthought.dlanguage.stubs.DLanguageParameterStub;
+import net.masterthought.dlanguage.utils.DUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -68,7 +70,7 @@ public class DLanguageParameterImpl extends DNamedStubbedPsiElementBase<DLanguag
     @Nullable
     @Override
     public PsiElement getOP_TRIPLEDOT() {
-        return null;
+        return findChildByType(OP_TRIPLEDOT);
     }
 
     @NotNull
@@ -85,6 +87,18 @@ public class DLanguageParameterImpl extends DNamedStubbedPsiElementBase<DLanguag
 
     @NotNull
     public String getName() {
+        if(getStub() != null){
+            return getStub().getName();
+        }
+        if(getIdentifier() == null){
+            return "this parameter has no name";
+//            final DLanguageType_2 type_2 = getType().getType_2();
+//            if(type_2.getSymbol() != null){
+//                return DUtil.getEndOfIdentifierList(type_2.getSymbol().getIdentifierOrTemplateChain()).getName();
+//            }
+//            else
+//                throw new IllegalStateException();
+        }
         return getIdentifier().getName();
     }
 
