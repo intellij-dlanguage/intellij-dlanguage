@@ -8,7 +8,6 @@ import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NotNull;
 
 import static com.intellij.lang.parser.GeneratedParserUtilBase.*;
-import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
 
 /**
  * Created by francis on 7/2/2017.
@@ -19,7 +18,7 @@ public class ParserWrapper implements LightPsiParser, PsiParser {
         boolean r = false;
         b = adapt_builder_(t, b, this, null);
         PsiBuilder.Marker m = enter_section_(b, 0, _COLLAPSE_, null);
-        if(false){
+        if (false) {
             //todo re-add incremental re-parse
         } else {
             final DLangParser dLangParser = new DLangParser(b);

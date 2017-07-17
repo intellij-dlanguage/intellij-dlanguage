@@ -36,13 +36,11 @@ import java.util.regex.Pattern;
 
 public class DUnitTestRunProcessHandler extends ProcessHandler {
     private static final Logger LOG = Logger.getInstance(DUnitTestRunProcessHandler.class);
-    private Map<String, Set<String>> testClassToTestMethodNames = new HashMap<>();
-
     private final Map<String, Integer> nodeIdsByFullTestName = new HashMap<>();
-    private int nextNodeId = 0;
-
     private final Project project;
     private final DUnitTestRunConfiguration configuration;
+    private Map<String, Set<String>> testClassToTestMethodNames = new HashMap<>();
+    private int nextNodeId = 0;
 
 
     public DUnitTestRunProcessHandler(Project project, DUnitTestRunConfiguration configuration) {
@@ -119,7 +117,7 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
         if (dunitPath == null) {
             String message = "Please add d-unit to your dub.json/dub.sdl and run Tools > Process D Libraries";
             Notifications.Bus.notify(new Notification(
-                    "Execute Tests", "No d-unit dependency found", message, NotificationType.ERROR), project);
+                "Execute Tests", "No d-unit dependency found", message, NotificationType.ERROR), project);
             LOG.warn(message);
         } else {
             // Actually run tests in separate runnable to avoid blocking the GUI
@@ -198,10 +196,10 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
         final String dubPath = ToolKey.DUB_KEY.getPath(project);
         if (dubPath == null || dubPath.isEmpty()) {
             Notifications.Bus.notify(
-                    new Notification("Dunit Test Runner", "Dub path must be specified",
-                            "Dub executable path is empty" +
-                                    "<br/><a href='configureDLanguageTools'>Configure</a>",
-                            NotificationType.WARNING, new DToolsNotificationListener(project)), project);
+                new Notification("Dunit Test Runner", "Dub path must be specified",
+                    "Dub executable path is empty" +
+                        "<br/><a href='configureDLanguageTools'>Configure</a>",
+                    NotificationType.WARNING, new DToolsNotificationListener(project)), project);
             return;
         }
 
@@ -316,11 +314,11 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
             @Override
             public void run() {
                 notifyTextAvailable(ServiceMessageBuilder
-                                .testStdOut(testClassName)
-                                .addAttribute("out", output)
-                                .addAttribute("nodeId", String.valueOf(getNodeId(testClassName)))
-                                .toString() + "\n",
-                        ProcessOutputTypes.STDOUT);
+                        .testStdOut(testClassName)
+                        .addAttribute("out", output)
+                        .addAttribute("nodeId", String.valueOf(getNodeId(testClassName)))
+                        .toString() + "\n",
+                    ProcessOutputTypes.STDOUT);
             }
         });
     }
@@ -331,12 +329,12 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
             public void run() {
                 String fullTestMethodName = testClassName + "." + testMethodName;
                 notifyTextAvailable(ServiceMessageBuilder
-                                .testStdOut(testMethodName)
-                                .addAttribute("out", output)
-                                .addAttribute("parentNodeId", String.valueOf(getNodeId(testClassName)))
-                                .addAttribute("nodeId", String.valueOf(getNodeId(fullTestMethodName)))
-                                .toString() + "\n",
-                        ProcessOutputTypes.STDOUT);
+                        .testStdOut(testMethodName)
+                        .addAttribute("out", output)
+                        .addAttribute("parentNodeId", String.valueOf(getNodeId(testClassName)))
+                        .addAttribute("nodeId", String.valueOf(getNodeId(fullTestMethodName)))
+                        .toString() + "\n",
+                    ProcessOutputTypes.STDOUT);
             }
         });
     }
@@ -346,14 +344,14 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
             @Override
             public void run() {
                 notifyTextAvailable(ServiceMessageBuilder
-                                .testSuiteStarted(testClassName)
-                                .addAttribute("isSuite", String.valueOf(true))
-                                .addAttribute("parentNodeId", String.valueOf(getNodeId("")))
-                                .addAttribute("nodeId", String.valueOf(getNodeId(testClassName)))
-                                .addAttribute("count", String.valueOf(numTestMethods))
-                                .addAttribute("locationHint", DUnitTestLocationProvider.PROTOCOL_PREFIX + testClassName)
-                                .toString() + "\n",
-                        ProcessOutputTypes.STDOUT);
+                        .testSuiteStarted(testClassName)
+                        .addAttribute("isSuite", String.valueOf(true))
+                        .addAttribute("parentNodeId", String.valueOf(getNodeId("")))
+                        .addAttribute("nodeId", String.valueOf(getNodeId(testClassName)))
+                        .addAttribute("count", String.valueOf(numTestMethods))
+                        .addAttribute("locationHint", DUnitTestLocationProvider.PROTOCOL_PREFIX + testClassName)
+                        .toString() + "\n",
+                    ProcessOutputTypes.STDOUT);
             }
         });
     }
@@ -363,14 +361,14 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
             @Override
             public void run() {
                 notifyTextAvailable(ServiceMessageBuilder
-                                .testSuiteFinished(testClassName)
-                                .addAttribute("isSuite", String.valueOf(true))
-                                .addAttribute("parentNodeId", String.valueOf(getNodeId("")))
-                                .addAttribute("nodeId", String.valueOf(getNodeId(testClassName)))
-                                .addAttribute("duration", String.valueOf(duration))
-                                .addAttribute("locationHint", DUnitTestLocationProvider.PROTOCOL_PREFIX + testClassName)
-                                .toString() + "\n",
-                        ProcessOutputTypes.STDOUT);
+                        .testSuiteFinished(testClassName)
+                        .addAttribute("isSuite", String.valueOf(true))
+                        .addAttribute("parentNodeId", String.valueOf(getNodeId("")))
+                        .addAttribute("nodeId", String.valueOf(getNodeId(testClassName)))
+                        .addAttribute("duration", String.valueOf(duration))
+                        .addAttribute("locationHint", DUnitTestLocationProvider.PROTOCOL_PREFIX + testClassName)
+                        .toString() + "\n",
+                    ProcessOutputTypes.STDOUT);
             }
         });
     }
@@ -381,13 +379,13 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
             public void run() {
                 String fullTestMethodName = testClassName + "." + testMethodName;
                 notifyTextAvailable(ServiceMessageBuilder
-                                .testStarted(testMethodName)
-                                .addAttribute("isSuite", String.valueOf(false))
-                                .addAttribute("parentNodeId", String.valueOf(getNodeId(testClassName)))
-                                .addAttribute("nodeId", String.valueOf(getNodeId(fullTestMethodName)))
-                                .addAttribute("locationHint", DUnitTestLocationProvider.PROTOCOL_PREFIX + testClassName + "/" + testMethodName)
-                                .toString() + "\n",
-                        ProcessOutputTypes.STDOUT);
+                        .testStarted(testMethodName)
+                        .addAttribute("isSuite", String.valueOf(false))
+                        .addAttribute("parentNodeId", String.valueOf(getNodeId(testClassName)))
+                        .addAttribute("nodeId", String.valueOf(getNodeId(fullTestMethodName)))
+                        .addAttribute("locationHint", DUnitTestLocationProvider.PROTOCOL_PREFIX + testClassName + "/" + testMethodName)
+                        .toString() + "\n",
+                    ProcessOutputTypes.STDOUT);
             }
         });
     }
@@ -398,14 +396,14 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
             public void run() {
                 String fullTestMethodName = testClassName + "." + testMethodName;
                 notifyTextAvailable(ServiceMessageBuilder
-                                .testFinished(testMethodName)
-                                .addAttribute("isSuite", String.valueOf(false))
-                                .addAttribute("parentNodeId", String.valueOf(getNodeId(testClassName)))
-                                .addAttribute("nodeId", String.valueOf(getNodeId(fullTestMethodName)))
-                                .addAttribute("duration", String.valueOf(duration))
-                                .addAttribute("locationHint", DUnitTestLocationProvider.PROTOCOL_PREFIX + testClassName + "/" + testMethodName)
-                                .toString() + "\n",
-                        ProcessOutputTypes.STDOUT);
+                        .testFinished(testMethodName)
+                        .addAttribute("isSuite", String.valueOf(false))
+                        .addAttribute("parentNodeId", String.valueOf(getNodeId(testClassName)))
+                        .addAttribute("nodeId", String.valueOf(getNodeId(fullTestMethodName)))
+                        .addAttribute("duration", String.valueOf(duration))
+                        .addAttribute("locationHint", DUnitTestLocationProvider.PROTOCOL_PREFIX + testClassName + "/" + testMethodName)
+                        .toString() + "\n",
+                    ProcessOutputTypes.STDOUT);
             }
         });
     }
@@ -416,16 +414,16 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
             public void run() {
                 String fullTestMethodName = testClassName + "." + testMethodName;
                 notifyTextAvailable(ServiceMessageBuilder
-                                .testFailed(testMethodName)
-                                .addAttribute("isSuite", String.valueOf(false))
-                                .addAttribute("parentNodeId", String.valueOf(getNodeId(testClassName)))
-                                .addAttribute("nodeId", String.valueOf(getNodeId(fullTestMethodName)))
-                                .addAttribute("duration", String.valueOf(duration))
-                                .addAttribute("message", message)
-                                .addAttribute("details", stackTrace)
-                                .addAttribute("locationHint", DUnitTestLocationProvider.PROTOCOL_PREFIX + testClassName + "/" + testMethodName)
-                                .toString() + "\n",
-                        ProcessOutputTypes.STDOUT);
+                        .testFailed(testMethodName)
+                        .addAttribute("isSuite", String.valueOf(false))
+                        .addAttribute("parentNodeId", String.valueOf(getNodeId(testClassName)))
+                        .addAttribute("nodeId", String.valueOf(getNodeId(fullTestMethodName)))
+                        .addAttribute("duration", String.valueOf(duration))
+                        .addAttribute("message", message)
+                        .addAttribute("details", stackTrace)
+                        .addAttribute("locationHint", DUnitTestLocationProvider.PROTOCOL_PREFIX + testClassName + "/" + testMethodName)
+                        .toString() + "\n",
+                    ProcessOutputTypes.STDOUT);
             }
         });
     }
@@ -436,13 +434,13 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
             public void run() {
                 String fullTestMethodName = testClassName + "." + testMethodName;
                 notifyTextAvailable(ServiceMessageBuilder
-                                .testIgnored(testMethodName)
-                                .addAttribute("isSuite", String.valueOf(false))
-                                .addAttribute("parentNodeId", String.valueOf(getNodeId(testClassName)))
-                                .addAttribute("nodeId", String.valueOf(getNodeId(fullTestMethodName)))
-                                .addAttribute("locationHint", DUnitTestLocationProvider.PROTOCOL_PREFIX + testClassName + "/" + testMethodName)
-                                .toString() + "\n",
-                        ProcessOutputTypes.STDOUT);
+                        .testIgnored(testMethodName)
+                        .addAttribute("isSuite", String.valueOf(false))
+                        .addAttribute("parentNodeId", String.valueOf(getNodeId(testClassName)))
+                        .addAttribute("nodeId", String.valueOf(getNodeId(fullTestMethodName)))
+                        .addAttribute("locationHint", DUnitTestLocationProvider.PROTOCOL_PREFIX + testClassName + "/" + testMethodName)
+                        .toString() + "\n",
+                    ProcessOutputTypes.STDOUT);
             }
         });
     }

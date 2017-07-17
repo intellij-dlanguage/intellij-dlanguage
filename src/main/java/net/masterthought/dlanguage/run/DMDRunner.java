@@ -15,7 +15,7 @@ public class DMDRunner {
     public boolean isValidModule(@NotNull Module module) {
         ModuleRootManager moduleRootManager = ModuleRootManager.getInstance(module);
         Sdk sdk = moduleRootManager.getSdk();
-        return sdk!=null && (sdk.getSdkType() instanceof DLanguageSdkType);
+        return sdk != null && (sdk.getSdkType() instanceof DLanguageSdkType);
     }
 
     public boolean ensureRunnerConfigured(@Nullable Module module, RunProfile profile, Executor executor, Project project) throws ExecutionException {

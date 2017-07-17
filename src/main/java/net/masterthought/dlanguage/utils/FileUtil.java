@@ -64,7 +64,8 @@ public class FileUtil {
         return null;
     }
 
-    public static @Nullable VirtualFile getSourceRoot(Project project, VirtualFile file) {
+    public static @Nullable
+    VirtualFile getSourceRoot(Project project, VirtualFile file) {
         if (project == null || file == null) {
             return null;
         }

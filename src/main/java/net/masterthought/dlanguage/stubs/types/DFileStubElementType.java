@@ -29,7 +29,7 @@ public class DFileStubElementType extends IStubFileElementType<DLanguageFileStub
             @Override
             protected StubElement createStubForFile(@NotNull PsiFile file) {
                 if (file instanceof DLanguageFile) {
-                    return new DLanguageFileStub((DLanguageFile)file);
+                    return new DLanguageFileStub((DLanguageFile) file);
                 }
                 return super.createStubForFile(file);
             }

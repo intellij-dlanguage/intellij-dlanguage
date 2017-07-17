@@ -33,14 +33,8 @@ import java.util.Collection;
 import java.util.List;
 
 public class ProcessDLibs extends AnAction implements DumbAware {
-    private static final Logger LOG = Logger.getInstance(ProcessDLibs.class);
-
     public static final String MENU_PATH = "Tools > Process D Libraries";
-
-    @Override
-    public void update(@NotNull AnActionEvent e) {
-        e.getPresentation().setEnabled(enabled(e));
-    }
+    private static final Logger LOG = Logger.getInstance(ProcessDLibs.class);
 
     private static boolean enabled(@NotNull AnActionEvent e) {
         final Project project = getEventProject(e);
@@ -49,28 +43,13 @@ public class ProcessDLibs extends AnAction implements DumbAware {
         return dubPath != null && !dubPath.isEmpty() && DLanguageModuleType.findModules(project).size() > 0;
     }
 
-    @Override
-    public void actionPerformed(@NotNull AnActionEvent e) {
-        final String prefix = "Unable to process D libraries - ";
-        final Project project = e.getProject();
-        if (project == null) {
-            displayError(e, prefix + "No active project.");
-            return;
-        }
-        final Collection<Module> modules = DLanguageModuleType.findModules(project);
-        int size = modules.size();
-        if (size == 0) displayError(e, prefix + "No DLanguage modules are used in this project.");
-        else if (size == 1) processDLibs(e, modules.iterator().next());
-        else showModuleChoicePopup(e, project, modules);
-    }
-
     private static void showModuleChoicePopup(@NotNull AnActionEvent e, Project project, Collection<Module> modules) {
         final JList list = new JBList(JBList.createDefaultListModel(modules.toArray()));
         JBPopup popup = JBPopupFactory.getInstance()
-                .createListPopupBuilder(list)
-                .setTitle("Process D libraries for module")
-                .setItemChoosenCallback(makeModuleChoiceCallback(e, list))
-                .createPopup();
+            .createListPopupBuilder(list)
+            .setTitle("Process D libraries for module")
+            .setItemChoosenCallback(makeModuleChoiceCallback(e, list))
+            .createPopup();
         popup.showCenteredInCurrentWindow(project);
     }
 
@@ -94,17 +73,17 @@ public class ProcessDLibs extends AnAction implements DumbAware {
 
         if (dubPath == null) {
             Notifications.Bus.notify(
-                    new Notification(e.getPresentation().getText(), "Process D Libraries",
-                            "DUB executable path is empty"+
-                                    "<br/><a href='configureDLanguageTools'>Configure</a>",
-                            NotificationType.WARNING, new DToolsNotificationListener(project)), project);
+                new Notification(e.getPresentation().getText(), "Process D Libraries",
+                    "DUB executable path is empty" +
+                        "<br/><a href='configureDLanguageTools'>Configure</a>",
+                    NotificationType.WARNING, new DToolsNotificationListener(project)), project);
             return;
         }
 
         final DubConfigurationParser dubParser = new DubConfigurationParser(project, dubPath);
-        if(dubParser.canUseDub()) {
+        if (dubParser.canUseDub()) {
             final List<DubPackage> dependencies = dubParser.getDubPackageDependencies();
-            for(final DubPackage pkg : dependencies){
+            for (final DubPackage pkg : dependencies) {
                 final String fullName = pkg.getName() + "-" + pkg.getVersion();
                 createLibraryDependency(module, project, fullName, pkg.getPath());
             }
@@ -113,9 +92,9 @@ public class ProcessDLibs extends AnAction implements DumbAware {
         }
 
         Notifications.Bus.notify(
-                new Notification(e.getPresentation().getText(), "Process D Libraries",
-                        "Added your dub dependency libraries",
-                        NotificationType.INFORMATION, new DToolsNotificationListener(project)), project);
+            new Notification(e.getPresentation().getText(), "Process D Libraries",
+                "Added your dub dependency libraries",
+                NotificationType.INFORMATION, new DToolsNotificationListener(project)), project);
 
     }
 
@@ -138,10 +117,10 @@ public class ProcessDLibs extends AnAction implements DumbAware {
         }
     }
 
-    private static void removeDLibs(Module module, Project project){
+    private static void removeDLibs(Module module, Project project) {
         LibraryTable projectLibraryTable = LibraryTablesRegistrar.getInstance().getLibraryTable(project);
-        for(Library lib : projectLibraryTable.getLibraries()){
-            removeLibraryIfNeeded(module,lib.getName());
+        for (Library lib : projectLibraryTable.getLibraries()) {
+            removeLibraryIfNeeded(module, lib.getName());
         }
     }
 
@@ -161,13 +140,11 @@ public class ProcessDLibs extends AnAction implements DumbAware {
                         model.removeOrderEntry(dLibraryEntry);
                         modelsProvider.commitModuleModifiableModel(model);
                     }
-                }
-                else {
+                } else {
                     modelsProvider.disposeModuleModifiableModel(model);
                 }
             });
-        }
-        else {
+        } else {
             ApplicationManager.getApplication().runWriteAction(() -> modelsProvider.disposeModuleModifiableModel(model));
         }
     }
@@ -175,8 +152,28 @@ public class ProcessDLibs extends AnAction implements DumbAware {
     private static void displayError(@NotNull AnActionEvent e, @NotNull String message) {
         final String groupId = e.getPresentation().getText();
         Notifications.Bus.notify(new Notification(
-                groupId, "Process D libs", message, NotificationType.ERROR), getEventProject(e));
+            groupId, "Process D libs", message, NotificationType.ERROR), getEventProject(e));
         LOG.warn(message);
+    }
+
+    @Override
+    public void update(@NotNull AnActionEvent e) {
+        e.getPresentation().setEnabled(enabled(e));
+    }
+
+    @Override
+    public void actionPerformed(@NotNull AnActionEvent e) {
+        final String prefix = "Unable to process D libraries - ";
+        final Project project = e.getProject();
+        if (project == null) {
+            displayError(e, prefix + "No active project.");
+            return;
+        }
+        final Collection<Module> modules = DLanguageModuleType.findModules(project);
+        int size = modules.size();
+        if (size == 0) displayError(e, prefix + "No DLanguage modules are used in this project.");
+        else if (size == 1) processDLibs(e, modules.iterator().next());
+        else showModuleChoicePopup(e, project, modules);
     }
 
 }

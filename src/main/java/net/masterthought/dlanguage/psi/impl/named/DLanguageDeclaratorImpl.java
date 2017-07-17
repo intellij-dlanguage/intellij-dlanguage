@@ -56,7 +56,7 @@ public class DLanguageDeclaratorImpl extends DNamedStubbedPsiElementBase<DLangua
     @NotNull
     @Override
     public String getName() {
-        if(getStub() != null){
+        if (getStub() != null) {
             return getStub().getName();
         }
         return getIdentifier().getName();

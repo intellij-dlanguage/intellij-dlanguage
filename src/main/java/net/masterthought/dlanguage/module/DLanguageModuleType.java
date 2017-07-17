@@ -83,7 +83,7 @@ public class DLanguageModuleType extends ModuleType<DLanguageModuleBuilder> {
 
         steps.add(setCompiler);
 
-        if((moduleBuilder.getBuilderId() != null && moduleBuilder.getBuilderId().equals("DLangDubApp"))){
+        if ((moduleBuilder.getBuilderId() != null && moduleBuilder.getBuilderId().equals("DLangDubApp"))) {
             steps.add(setDubBinary);
             steps.add(setDubInit);
         }

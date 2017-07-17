@@ -3,7 +3,11 @@ package net.masterthought.dlanguage.resolve
 import com.intellij.psi.PsiElement
 import com.intellij.psi.ResolveState
 import com.intellij.psi.scope.PsiScopeProcessor
+import net.masterthought.dlanguage.psi.DLanguageFunctionLiteralExpression
+import net.masterthought.dlanguage.psi.DLanguageLambdaExpression
+import net.masterthought.dlanguage.resolve.ScopeProcessorImplUtil.processDeclaration
 import net.masterthought.dlanguage.utils.*
+
 
 /**
  * implements processDeclarations for various statements
@@ -26,113 +30,34 @@ object ScopeProcessorImpl {
      * *
      * @return
      */
-    /**
-    fun processDeclarations(element: DeclDefs,
+
+    fun processDeclarations(element: DLanguageFunctionLiteralExpression,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
                             lastParent: PsiElement,
                             place: PsiElement): Boolean {
-        var result: Boolean = true
-        //don't replace this loop with kotlin's any. This applies to any loop on this file.
-        for (def in element.declDefList) {
-            if (!(def.processDeclarations(processor, state, lastParent, place))) {
-                result = false
-            }
-        }
-        return result
-    }
-
-    fun processDeclarations(element: StatementList,
-                            processor: PsiScopeProcessor,
-                            state: ResolveState,
-                            lastParent: PsiElement,
-                            place: PsiElement): Boolean {
-        var result: Boolean = true
-        //todo handle place and iterate backwards from place
-        for (statement in element.statementList) {
-            if (!(statement.processDeclarations(processor, state, lastParent, place))) {
-                result = false//todo use statement processDeclartions
-            }
-        }
-        return result
-    }
-
-
-    fun processDeclarations(element: FunctionLiteral,
-                            processor: PsiScopeProcessor,
-                            state: ResolveState,
-                            lastParent: PsiElement,
-                            place: PsiElement): Boolean {
-        var result: Boolean = true//idk if this should be a thing
-        if (element.parameterAttributes?.parameters != null) {
-            if (!ScopeProcessorImplUtil.processParameters(element.parameterAttributes!!.parameters, processor, state, lastParent, place)) {
-                result = false
-            }
-        }
-        if (element.parameterMemberAttributes?.parameters != null) {
-            if (!ScopeProcessorImplUtil.processParameters(element.parameterMemberAttributes!!.parameters, processor, state, lastParent, place)) {
-                result = false
-            }
-        }
-        if (element.lambda != null) {
-            if (element.lambda!!.parameterAttributes?.parameters != null) {
-                if (!ScopeProcessorImplUtil.processParameters(element.lambda!!.parameterAttributes!!.parameters, processor, state, lastParent, place)) {
-                    result = false
-                }
-            }
-            if (element.lambda!!.parameterMemberAttributes?.parameters != null) {
-                if (!ScopeProcessorImplUtil.processParameters(element.lambda!!.parameterMemberAttributes!!.parameters, processor, state, lastParent, place)) {
-                    result = false
-                }
-            }
-        }
-        return result
-    }
-
-    fun processDeclarations(element: Lambda,
-                            processor: PsiScopeProcessor,
-                            state: ResolveState,
-                            lastParent: PsiElement,
-                            place: PsiElement): Boolean {
-        if (element.parameterAttributes?.parameters != null) {
-            if (!ScopeProcessorImplUtil.processParameters(element.parameterAttributes!!.parameters, processor, state, lastParent, place)) {
-                return false
-            }
-        }
-        if (element.parameterMemberAttributes?.parameters != null) {
-            if (!ScopeProcessorImplUtil.processParameters(element.parameterMemberAttributes!!.parameters, processor, state, lastParent, place)) {
+        if (element.parameters != null) {
+            if (!ScopeProcessorImplUtil.processParameters(element.parameters!!, processor, state, lastParent, place)) {
                 return false
             }
         }
         return true
     }
-*/
 
-    fun processDeclarations(element: Parameters,
+    fun processDeclarations(element: DLanguageLambdaExpression,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
                             lastParent: PsiElement,
                             place: PsiElement): Boolean {
-        return ScopeProcessorImplUtil.processParameters(element, processor, state, lastParent, place);
-    }
-
-    /*fun processDeclarations(element: VarFuncDeclaration,
-                            processor: PsiScopeProcessor,
-                            state: ResolveState,
-                            lastParent: PsiElement,
-                            place: PsiElement): Boolean {
-        if (!ScopeProcessorImplUtil.processParameters(element.parameters, processor, state, lastParent, place)) {
-            return false
-        }
-        if (element.templateParameters != null) {
-            if (!ScopeProcessorImplUtil.processTemplateParameters(element.templateParameters!!, processor, state, lastParent, place)) {
+        if (element.parameters != null) {
+            if (!ScopeProcessorImplUtil.processParameters(element.parameters!!, processor, state, lastParent, place)) {
                 return false
             }
         }
         return true
-    }*/
+    }
 
-    fun processDeclarations(element: ClassDeclaration,
+    fun processDeclarations(element: InterfaceOrClass,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
                             lastParent: PsiElement,
@@ -158,6 +83,19 @@ object ScopeProcessorImpl {
         return true
     }
 
+    fun processDeclarations(element: MixinTemplateDeclaration,
+                            processor: PsiScopeProcessor,
+                            state: ResolveState,
+                            lastParent: PsiElement,
+                            place: PsiElement): Boolean {
+        if (element.templateDeclaration?.templateParameters != null) {
+            if (!ScopeProcessorImplUtil.processTemplateParameters(element.templateDeclaration!!.templateParameters!!, processor, state, lastParent, place)) {
+                return false
+            }
+        }
+        return true
+    }
+
     fun processDeclarations(element: TemplateMixinDeclaration,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
@@ -165,6 +103,19 @@ object ScopeProcessorImpl {
                             place: PsiElement): Boolean {
         if (element.templateDeclaration?.templateParameters != null) {
             if (!ScopeProcessorImplUtil.processTemplateParameters(element.templateDeclaration!!.templateParameters!!, processor, state, lastParent, place)) {
+                return false
+            }
+        }
+        return true
+    }
+
+    fun processDeclarations(element: EponymousTemplateDeclaration,
+                            processor: PsiScopeProcessor,
+                            state: ResolveState,
+                            lastParent: PsiElement,
+                            place: PsiElement): Boolean {
+        if (element.templateParameters != null) {
+            if (!ScopeProcessorImplUtil.processTemplateParameters(element.templateParameters!!, processor, state, lastParent, place)) {
                 return false
             }
         }
@@ -215,67 +166,7 @@ object ScopeProcessorImpl {
         }
         return true
     }
-/*
-    fun processDeclarations(element: AliasDeclarationY,
-                            processor: PsiScopeProcessor,
-                            state: ResolveState,
-                            lastParent: PsiElement,
-                            place: PsiElement): Boolean {
-        //todo handle place
-        if (element.templateParameters != null) {
-            if (!ScopeProcessorImplUtil.processTemplateParameters(element.templateParameters!!, processor, state, lastParent, place)) {
-                return false
-            }
-        }
-        return true
-    }
 
-    fun processDeclarations(element: AutoDeclarationY,
-                            processor: PsiScopeProcessor,
-                            state: ResolveState,
-                            lastParent: PsiElement,
-                            place: PsiElement): Boolean {
-        //todo handle place
-        if (element.templateParameters != null) {
-            if (!ScopeProcessorImplUtil.processTemplateParameters(element.templateParameters!!, processor, state, lastParent, place)) {
-                return false
-            }
-        }
-        return true
-    }
-
-    fun processDeclarations(element: AliasDeclarationSingle,
-                            processor: PsiScopeProcessor,
-                            state: ResolveState,
-                            lastParent: PsiElement,
-                            place: PsiElement): Boolean {
-        if (element.parameters != null) {
-            if (!ScopeProcessorImplUtil.processParameters(element.parameters!!, processor, state, lastParent, place)) {
-                return false
-            }
-        }
-        if (element.templateParameters != null) {
-            if (!ScopeProcessorImplUtil.processTemplateParameters(element.templateParameters!!, processor, state, lastParent, place)) {
-                return false
-            }
-        }
-        return true
-    }
-
-    fun processDeclarations(element: DeclaratorInitializer,
-                            processor: PsiScopeProcessor,
-                            state: ResolveState,
-                            lastParent: PsiElement,
-                            place: PsiElement): Boolean {
-        //todo handle place
-        if (element.templateParameters != null) {
-            if (!ScopeProcessorImplUtil.processTemplateParameters(element.templateParameters!!, processor, state, lastParent, place)) {
-                return false
-            }
-        }
-        return true
-    }
-    */
     fun processDeclarations(element: ForeachStatement,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
@@ -283,7 +174,7 @@ object ScopeProcessorImpl {
                             place: PsiElement): Boolean {
         //todo handle place
         var shouldContinue = true
-        if(element.foreachType != null){
+        if (element.foreachType != null) {
             if (!processor.execute(element.foreachType!!, state)) {
                 shouldContinue = false
             }
@@ -307,12 +198,12 @@ object ScopeProcessorImpl {
         return true//todo check that while statement's can/can't contain truthy/falsy variable declarations or casts
     }
 
-    fun processDeclarations(element: LabeledStatement,
+    fun processDeclarations(element: LabeledStatement, //todo
                             processor: PsiScopeProcessor,
                             state: ResolveState,
                             lastParent: PsiElement,
                             place: PsiElement): Boolean {
-        return processor.execute(element,state);
+        return processor.execute(element, state);
     }
 
     fun processDeclarations(element: ForStatement,
@@ -323,16 +214,16 @@ object ScopeProcessorImpl {
         //todo handle place
         val init = element.declarationOrStatements[0]
         var shouldContinue = true;
-        if(init.declaration?.variableDeclaration?.autoDeclaration?.autoDeclarationParts != null){
+        if (init.declaration?.variableDeclaration?.autoDeclaration?.autoDeclarationParts != null) {
             for (initializer in init.declaration!!.variableDeclaration!!.autoDeclaration!!.autoDeclarationParts) {
-                if(!processor.execute(initializer,state)){
+                if (!processor.execute(initializer, state)) {
                     shouldContinue = false;
                 }
             }
         }
-        if(init.declaration?.variableDeclaration?.declarators != null){
+        if (init.declaration?.variableDeclaration?.declarators != null) {
             for (declarator in init.declaration!!.variableDeclaration!!.declarators) {
-                if(!processor.execute(declarator,state)){
+                if (!processor.execute(declarator, state)) {
                     shouldContinue = false;
                 }
             }
@@ -355,10 +246,20 @@ object ScopeProcessorImpl {
                             lastParent: PsiElement,
                             place: PsiElement): Boolean {
         //todo check for an else if
+        var toContinue = true;
         if (element.ifCondition?.identifier != null) {
-            return processor.execute(element.ifCondition!!, state)
+            if(!processor.execute(element.ifCondition!!, state)){
+                toContinue = false
+            }
         }
-        return true
+        for (declarationOrStatement in element.declarationOrStatements) {
+            if(declarationOrStatement.declaration != null){
+                if(!processDeclaration(declarationOrStatement.declaration!!,processor,state,lastParent,place)){
+                    toContinue = false
+                }
+            }
+        }
+        return toContinue
     }
 
     fun processDeclarations(element: SwitchStatement,
@@ -393,6 +294,7 @@ object ScopeProcessorImpl {
                             place: PsiElement): Boolean {
         return true //how does scope work in synchronized D statements
     }
+
     fun processDeclarations(element: EnumDeclaration,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
@@ -406,7 +308,7 @@ object ScopeProcessorImpl {
                 }
             }
         }
-        if(!processor.execute(element,state)){
+        if (!processor.execute(element, state)) {
             toContinue = false
         }
         return toContinue
@@ -423,216 +325,31 @@ object ScopeProcessorImpl {
         return true
     }
 
-    fun processDeclarations(def: Declaration,
-                            processor: PsiScopeProcessor,
-                            state: ResolveState,
-                            lastParent: PsiElement,
-                            place: PsiElement): Boolean
-    {
-        //todo attributes should be passed to scope processor to determine publicness
-        var toContinue = true;
-        def.attributes
-        if (def.aliasDeclaration?.aliasInitializers != null) {
-            for(varDeclaration in def.aliasDeclaration?.aliasInitializers!!) {
-                toContinue = processor.execute(varDeclaration, state)
+
+
+
+    /*
+        //todo convert all calls of this method to direct
+        fun processDeclarations(element: ParameterList,
+                                processor: PsiScopeProcessor,
+                                state: ResolveState,
+                                lastParent: PsiElement,
+                                place: PsiElement): Boolean {
+            for (parameter in element.parameterList) {
+                if (!processor.execute(parameter, state)) {
+                    return false
+                }
             }
-            return toContinue
-        }
-        if(def.aliasThisDeclaration != null){
             return true
         }
-        if(def.classDeclaration?.structBody?.declarations != null){
-            for (declaration in def.classDeclaration!!.structBody!!.declarations) {
-                if(!declaration.processDeclarations(processor, state, lastParent, place)){
-                    toContinue = false
-                }
-            }
-            if(!processor.execute(def.classDeclaration!!,state)){
-                return false
-            }
-            return  toContinue;
-        }
-        if(def.conditionalDeclaration != null){
-            return ScopeProcessorImplUtil.processConditionalDeclaration(def.conditionalDeclaration!!,processor,state,lastParent,place)
-        }
-        if(def.constructor != null){
-            return processor.execute(def.constructor!!,state);
-        }
-        if(def.destructor != null){
-
-        }
-        if(def.enumDeclaration != null) {
-            if (def.enumDeclaration?.enumBody?.enumMembers != null) {
-                for (enumMember in def.enumDeclaration!!.enumBody!!.enumMembers) {
-                    if(!processor.execute(enumMember,state)){
-                        toContinue = false
-                    }
-                }
-            }
-            if(!processor.execute(def.enumDeclaration!!,state)){
-                toContinue = false
-            }
-            return toContinue;
-        }
-        if(def.functionDeclaration != null){
-            return processor.execute(def.functionDeclaration!!,state)
-        }
-        if(def.importDeclaration != null){
-            for (singleImport in def.importDeclaration!!.singleImports) {
-                if(!processor.execute(singleImport,state)){
-                    toContinue = false;
-                }
-            }
-            return toContinue
-        }
-        if (def.interfaceDeclaration != null) {
-            if(def.interfaceDeclaration!!.interfaceOrClass?.structBody != null){
-                for (d in def.interfaceDeclaration!!.interfaceOrClass?.structBody!!.declarations) {
-                    if(!d.processDeclarations(processor,state,lastParent,place)){
-                        toContinue = false
-                    }
-                }
-            }
-            if(!processor.execute(def.interfaceDeclaration!!,state)){
-                toContinue = false;
-            }
-            return toContinue
-        }
-        if(def.mixinDeclaration != null){
-
-        }
-        if(def.mixinTemplateDeclaration != null){
-            for (declaration in def.mixinTemplateDeclaration!!.templateDeclaration!!.declarations) {
-                if(!declaration.processDeclarations(processor, state, lastParent, place)){
-                    toContinue = false
-                }
-            }
-            if(!processor.execute(def.mixinTemplateDeclaration!!.templateDeclaration!!,state)){
-                return false
-            }
-            return  toContinue;
-        }
-        if(def.sharedStaticConstructor != null){
-
-        }
-        if(def.sharedStaticDestructor != null){
-
-        }
-        if(def.staticAssertDeclaration != null){
-
-        }
-        if(def.staticConstructor != null){
-
-        }
-        if(def.staticDestructor != null){
-
-        }
-        if(def.structDeclaration != null){
-            if (def.structDeclaration!!.structBody?.declarations != null){
-                for (declaration in def.structDeclaration!!.structBody!!.declarations) {
-                    if(!declaration.processDeclarations(processor, state, lastParent, place)){
-                        toContinue = false
-                    }
-                }
-            }
-            if(!processor.execute(def.structDeclaration!!,state)){
-                return false
-            }
-            return  toContinue;
-        }
-        if (def.templateDeclaration != null) {
-            if (def.templateDeclaration!!.declarations != null) {
-                for (declaration in def.templateDeclaration!!.declarations) {
-                    if(!declaration.processDeclarations(processor, state, lastParent, place)){
-                        toContinue = false
-                    }
-                }
-            }
-            if(!processor.execute(def.templateDeclaration!!,state)){
-                return false
-            }
-            return  toContinue;
-        }
-        if (def.unionDeclaration != null) {
-            if (def.unionDeclaration!!.structBody?.declarations != null) {
-                for (declaration in def.unionDeclaration!!.structBody!!.declarations) {
-                    if(!declaration.processDeclarations(processor, state, lastParent, place)){
-                        toContinue = false
-                    }
-                }
-            }
-            if(!processor.execute(def.unionDeclaration!!,state)){
-                return false
-            }
-            return  toContinue;
-        }
-        if(def.unittest != null){
-
-        }
-        if(def.variableDeclaration?.autoDeclaration?.autoDeclarationParts != null){
-            for (initializer in def.variableDeclaration!!.autoDeclaration!!.autoDeclarationParts) {
-                if(!processor.execute(initializer,state)){
-                    toContinue = false
-                }
-            }
-            return toContinue
-        }
-        if(def.variableDeclaration?.declarators != null){
-            for (declarator in def.variableDeclaration!!.declarators) {
-                if(!processor.execute(declarator,state)){
-                    toContinue = false
-                }
-            }
-            return toContinue
-        }
-        if(def.attributeDeclaration != null){
-
-        }
-        if(def.invariant != null){
-
-        }
-        if(def.versionSpecification != null){
-
-        }
-        if(def.debugSpecification != null){
-
-        }
-        if (def.declarations != null) {
-            for (decl in def.declarations) {
-                if(!decl.processDeclarations(processor, state, lastParent, place)){
-                    toContinue = false
-                }
-            }
-            return toContinue
-        }
-        throw IllegalStateException("this should never happen")
-    }
-
-
-
-
-/*
-    //todo convert all calls of this method to direct
-    fun processDeclarations(element: ParameterList,
-                            processor: PsiScopeProcessor,
-                            state: ResolveState,
-                            lastParent: PsiElement,
-                            place: PsiElement): Boolean {
-        for (parameter in element.parameterList) {
-            if (!processor.execute(parameter, state)) {
-                return false
-            }
-        }
-        return true
-    }
-
+    */
     fun processDeclarations(element: Constructor,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
                             lastParent: PsiElement,
                             place: PsiElement): Boolean {
 
-        if (!ScopeProcessorImplUtil.processParameters(element.parameters, processor, state, lastParent, place)) {
+        if (!ScopeProcessorImplUtil.processParameters(element.parameters!!, processor, state, lastParent, place)) {
             return false
         }
         if (element.templateParameters != null) {
@@ -644,6 +361,40 @@ object ScopeProcessorImpl {
 
     }
 
+    fun processDeclarations(element: ConditionalStatement,
+                            processor: PsiScopeProcessor,
+                            state: ResolveState,
+                            lastParent: PsiElement,
+                            place: PsiElement): Boolean {
+        var toContinue = true
+        for (declarationOrStatement in element.declarationOrStatements) {
+            if(declarationOrStatement.declaration != null){
+                if(!processDeclaration(declarationOrStatement.declaration!!,processor,state,lastParent,place)){
+                    toContinue = false
+                }
+            }
+        }
+        return toContinue
+    }
+
+    fun processDeclarations(element: DeclarationsAndStatements,
+                            processor: PsiScopeProcessor,
+                            state: ResolveState,
+                            lastParent: PsiElement,
+                            place: PsiElement) : Boolean {
+        var toContinue = true
+        for (declarationOrStatement in element.declarationOrStatements) {
+            if(declarationOrStatement.declaration != null){
+                if(!processDeclaration(declarationOrStatement.declaration!!,processor,state,lastParent,place)){
+                    toContinue = false
+                }
+            }
+        }
+        return toContinue
+    }
+
+
+/*
     fun processDeclarations(element: Statement,
                             processor: PsiScopeProcessor,
                             state: ResolveState,

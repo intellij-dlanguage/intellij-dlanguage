@@ -4,7 +4,6 @@ import com.intellij.ide.util.BrowseFilesListener;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.fileChooser.FileChooserFactory;
-import com.intellij.openapi.module.ModuleConfigurationEditor;
 import com.intellij.openapi.project.ProjectBundle;
 import com.intellij.openapi.roots.CompilerModuleExtension;
 import com.intellij.openapi.roots.ui.configuration.ModuleConfigurationState;
@@ -28,7 +27,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-public class OutputElementsEditor  extends ModuleElementsEditor {
+public class OutputElementsEditor extends ModuleElementsEditor {
 
     private JRadioButton myInheritCompilerOutput;
     @SuppressWarnings({"FieldCanBeLocal"})
@@ -89,27 +88,27 @@ public class OutputElementsEditor  extends ModuleElementsEditor {
 
 
         outputPathsPanel.add(myInheritCompilerOutput, new GridBagConstraints(0, GridBagConstraints.RELATIVE, 2, 1, 1.0, 0.0,
-                GridBagConstraints.WEST, GridBagConstraints.NONE,
-                new Insets(6, 0, 0, 4), 0, 0));
+            GridBagConstraints.WEST, GridBagConstraints.NONE,
+            new Insets(6, 0, 0, 4), 0, 0));
         outputPathsPanel.add(myPerModuleCompilerOutput, new GridBagConstraints(0, GridBagConstraints.RELATIVE, 2, 1, 1.0, 0.0,
-                GridBagConstraints.WEST, GridBagConstraints.NONE,
-                new Insets(6, 0, 0, 4), 0, 0));
+            GridBagConstraints.WEST, GridBagConstraints.NONE,
+            new Insets(6, 0, 0, 4), 0, 0));
 
         myOutputLabel = new JLabel(ProjectBundle.message("module.paths.output.label"));
         outputPathsPanel.add(myOutputLabel, new GridBagConstraints(0, GridBagConstraints.RELATIVE, 1, 1, 0.0, 0.0, GridBagConstraints.EAST,
-                GridBagConstraints.NONE, new Insets(6, 12, 0, 4), 0, 0));
+            GridBagConstraints.NONE, new Insets(6, 12, 0, 4), 0, 0));
         outputPathsPanel.add(myOutputPathPanel, new GridBagConstraints(1, GridBagConstraints.RELATIVE, 2, 1, 1.0, 0.0, GridBagConstraints.WEST,
-                GridBagConstraints.HORIZONTAL, new Insets(6, 4, 0, 0), 0, 0));
+            GridBagConstraints.HORIZONTAL, new Insets(6, 4, 0, 0), 0, 0));
 
         myTestOutputLabel = new JLabel(ProjectBundle.message("module.paths.test.output.label"));
         outputPathsPanel.add(myTestOutputLabel, new GridBagConstraints(0, GridBagConstraints.RELATIVE, 1, 1, 0.0, 0.0, GridBagConstraints.EAST,
-                GridBagConstraints.NONE, new Insets(6, 16, 0, 4), 0, 0));
+            GridBagConstraints.NONE, new Insets(6, 16, 0, 4), 0, 0));
         outputPathsPanel.add(myTestsOutputPathPanel, new GridBagConstraints(1, GridBagConstraints.RELATIVE, 2, 1, 1.0, 0.0,
-                GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL,
-                new Insets(6, 4, 0, 0), 0, 0));
+            GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL,
+            new Insets(6, 4, 0, 0), 0, 0));
 
         outputPathsPanel.add(myCbExcludeOutput, new GridBagConstraints(0, GridBagConstraints.RELATIVE, 2, 1, 1.0, 0.0, GridBagConstraints.WEST,
-                GridBagConstraints.NONE, new Insets(6, 16, 0, 0), 0, 0));
+            GridBagConstraints.NONE, new Insets(6, 16, 0, 0), 0, 0));
 
         // fill with data
         updateOutputPathPresentation();
@@ -122,7 +121,7 @@ public class OutputElementsEditor  extends ModuleElementsEditor {
 
         final JPanel panel = new JPanel(new BorderLayout());
         panel.setBorder(IdeBorderFactory.createTitledBorder(ProjectBundle.message("project.roots.output.compiler.title"),
-                true));
+            true));
         panel.add(outputPathsPanel, BorderLayout.NORTH);
         return panel;
     }
@@ -135,8 +134,7 @@ public class OutputElementsEditor  extends ModuleElementsEditor {
             final VirtualFile compilerOutputPath = getCompilerExtension().getCompilerOutputPath();
             if (compilerOutputPath != null) {
                 myOutputPathPanel.setText(FileUtil.toSystemDependentName(compilerOutputPath.getPath()));
-            }
-            else {
+            } else {
                 final String compilerOutputUrl = getCompilerExtension().getCompilerOutputUrl();
                 if (compilerOutputUrl != null) {
                     myOutputPathPanel.setText(FileUtil.toSystemDependentName(VfsUtilCore.urlToPath(compilerOutputUrl)));
@@ -145,8 +143,7 @@ public class OutputElementsEditor  extends ModuleElementsEditor {
             final VirtualFile testsOutputPath = getCompilerExtension().getCompilerOutputPathForTests();
             if (testsOutputPath != null) {
                 myTestsOutputPathPanel.setText(FileUtil.toSystemDependentName(testsOutputPath.getPath()));
-            }
-            else {
+            } else {
                 final String testsOutputUrl = getCompilerExtension().getCompilerOutputUrlForTests();
                 if (testsOutputUrl != null) {
                     myTestsOutputPathPanel.setText(FileUtil.toSystemDependentName(VfsUtilCore.urlToPath(testsOutputUrl)));
@@ -180,14 +177,12 @@ public class OutputElementsEditor  extends ModuleElementsEditor {
                 final String path = textField.getText().trim();
                 if (path.length() == 0) {
                     commitPathRunnable.saveUrl(null);
-                }
-                else {
+                } else {
                     // should set only absolute paths
                     String canonicalPath;
                     try {
                         canonicalPath = FileUtil.resolveShortWindowsName(path);
-                    }
-                    catch (IOException e) {
+                    } catch (IOException e) {
                         canonicalPath = path;
                     }
                     commitPathRunnable.saveUrl(VfsUtilCore.pathToUrl(FileUtil.toSystemIndependentName(canonicalPath)));
@@ -242,11 +237,10 @@ public class OutputElementsEditor  extends ModuleElementsEditor {
         if (getCompilerExtension().isCompilerOutputPathInherited()) {
             if (baseUrl != null) {
                 myOutputPathPanel.setText(FileUtil.toSystemDependentName(VfsUtilCore.urlToPath(baseUrl + "/" + CompilerModuleExtension
-                        .PRODUCTION + "/" + moduleName)));
+                    .PRODUCTION + "/" + moduleName)));
                 myTestsOutputPathPanel.setText(FileUtil.toSystemDependentName(VfsUtilCore.urlToPath(baseUrl + "/" + CompilerModuleExtension
-                        .TEST + "/" + moduleName)));
-            }
-            else {
+                    .TEST + "/" + moduleName)));
+            } else {
                 myOutputPathPanel.setText(null);
                 myTestsOutputPathPanel.setText(null);
             }

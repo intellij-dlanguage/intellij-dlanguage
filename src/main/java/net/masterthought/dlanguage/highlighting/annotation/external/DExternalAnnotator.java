@@ -22,6 +22,19 @@ public class DExternalAnnotator extends ExternalAnnotator<PsiFile, DExternalAnno
     @SuppressWarnings("UnusedDeclaration")
     private static final Logger LOG = Logger.getInstance(DExternalAnnotator.class);
 
+    public static void apply(@NotNull PsiFile file, State state, @NotNull DAnnotationHolder holder) {
+        createAnnotations(file, state.syntaxProblems, holder);
+        createAnnotations(file, state.dScannerProblems, holder);
+    }
+
+    public static void createAnnotations(@NotNull PsiFile file, @Nullable Problems problems,
+                                         @NotNull DAnnotationHolder holder) {
+        if (problems == null || problems.isEmpty() || !file.isValid()) return;
+        for (DProblem problem : problems) {
+            problem.createAnnotations(file, holder);
+        }
+    }
+
     /**
      * The default implementation here is to not annotate files that have lexer/parser errors.  This is kind
      * of lame since the error may be invalid.
@@ -61,19 +74,6 @@ public class DExternalAnnotator extends ExternalAnnotator<PsiFile, DExternalAnno
     @Override
     public void apply(@NotNull PsiFile file, State state, @NotNull AnnotationHolder holder) {
         apply(file, state, new DAnnotationHolder(holder));
-    }
-
-    public static void apply(@NotNull PsiFile file, State state, @NotNull DAnnotationHolder holder) {
-        createAnnotations(file, state.syntaxProblems, holder);
-        createAnnotations(file, state.dScannerProblems, holder);
-    }
-
-    public static void createAnnotations(@NotNull PsiFile file, @Nullable Problems problems,
-                                         @NotNull DAnnotationHolder holder) {
-        if (problems == null || problems.isEmpty() || !file.isValid()) return;
-        for (DProblem problem : problems) {
-            problem.createAnnotations(file, holder);
-        }
     }
 
     public static class State {

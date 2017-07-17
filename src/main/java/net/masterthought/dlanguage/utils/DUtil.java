@@ -6,10 +6,15 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.psi.*;
-import net.masterthought.dlanguage.psi.interfaces.*;
+import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+import net.masterthought.dlanguage.psi.interfaces.Declaration;
+import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 import static net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility.*;
 
@@ -115,8 +120,8 @@ public class DUtil {
         return PsiTreeUtil.getParentOfType(namedElement, DLanguageInterfaceOrClass.class, DLanguageStructDeclaration.class, DLanguageTemplateDeclaration.class);
     }
 
-    public static DLanguageFunctionDeclaration getParentFunction(PsiElement namedElement){
-        return PsiTreeUtil.getParentOfType(namedElement,DLanguageFunctionDeclaration.class);
+    public static DLanguageFunctionDeclaration getParentFunction(PsiElement namedElement) {
+        return PsiTreeUtil.getParentOfType(namedElement, DLanguageFunctionDeclaration.class);
     }
 
 //    public static boolean isPublic(DNamedElement symbol) {
@@ -251,7 +256,7 @@ public class DUtil {
 
     public static DLanguageIdentifier getEndOfIdentifierList(DLanguageIdentifierOrTemplateChain chain) {
         final List<DLanguageIdentifierOrTemplateInstance> list = chain.getIdentifierOrTemplateInstances();
-        if(list.get(list.size() - 1).getIdentifier() != null)
+        if (list.get(list.size() - 1).getIdentifier() != null)
             return list.get(list.size() - 1).getIdentifier();
         else
             throw new IllegalStateException();

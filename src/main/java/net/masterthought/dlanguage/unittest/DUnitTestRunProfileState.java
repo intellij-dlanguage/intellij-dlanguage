@@ -19,36 +19,30 @@ import net.masterthought.dlanguage.DLanguage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class DUnitTestRunProfileState implements RunProfileState
-{
+public class DUnitTestRunProfileState implements RunProfileState {
     private final ExecutionEnvironment environment;
 
-    public DUnitTestRunProfileState(ExecutionEnvironment environment)
-    {
+    public DUnitTestRunProfileState(ExecutionEnvironment environment) {
         this.environment = environment;
     }
 
     @Nullable
     @Override
-    public ExecutionResult execute(Executor executor, @NotNull ProgramRunner programRunner) throws ExecutionException
-    {
+    public ExecutionResult execute(Executor executor, @NotNull ProgramRunner programRunner) throws ExecutionException {
         Project project = environment.getProject();
-        if (project == null)
-        {
+        if (project == null) {
 //            handleError("No project found.");
             return null;
         }
 
         RunnerAndConfigurationSettings settings = environment.getRunnerAndConfigurationSettings();
-        if (settings == null)
-        {
+        if (settings == null) {
 //            handleError(project, "No runner and configuration settings found.");
             return null;
         }
 
         final RunConfiguration configuration = settings.getConfiguration();
-        if (!(configuration instanceof DUnitTestRunConfiguration))
-        {
+        if (!(configuration instanceof DUnitTestRunConfiguration)) {
 //            handleError(project, "The supplied configuration is not a " + DUnitTestRunConfiguration.class.getSimpleName() + ".");
             return null;
         }
@@ -56,7 +50,7 @@ public class DUnitTestRunProfileState implements RunProfileState
 
         // Create the test runner
         final DUnitTestRunProcessHandler processHandler = new DUnitTestRunProcessHandler(project, unitTestRunConfiguration);
-        
+
         final SMTRunnerConsoleProperties properties = new SMTRunnerConsoleProperties(configuration, DLanguage.INSTANCE.getDisplayName(), executor) {
             @Override
             public SMTestLocator getTestLocator() {
@@ -78,11 +72,9 @@ public class DUnitTestRunProfileState implements RunProfileState
         // Register an action to re-run failed tests
         DUnitTestRerunFailedTestsAction rerunFailedTestsAction = new DUnitTestRerunFailedTestsAction(project, consoleView);
         rerunFailedTestsAction.init(((BaseTestsOutputConsoleView) consoleView).getProperties());
-        rerunFailedTestsAction.setModelProvider(new Getter<TestFrameworkRunningModel>()
-        {
+        rerunFailedTestsAction.setModelProvider(new Getter<TestFrameworkRunningModel>() {
             @Override
-            public TestFrameworkRunningModel get()
-            {
+            public TestFrameworkRunningModel get() {
                 return consoleView.getResultsViewer();
             }
         });
@@ -91,11 +83,9 @@ public class DUnitTestRunProfileState implements RunProfileState
         executionResult.setRestartActions(rerunFailedTestsAction);
 
         // Start the process handler
-        ApplicationManager.getApplication().invokeLater(new Runnable()
-        {
+        ApplicationManager.getApplication().invokeLater(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 processHandler.startProcessing();
             }
         });

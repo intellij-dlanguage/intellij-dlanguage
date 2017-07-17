@@ -97,7 +97,9 @@ public class DModuleIndex extends ScalarIndexExtension<String> {
             } else {
                 moduleName = null;
             }
-            if (moduleName == null) { return Collections.emptyMap(); }
+            if (moduleName == null) {
+                return Collections.emptyMap();
+            }
             return Collections.singletonMap(moduleName, null);
         }
     }

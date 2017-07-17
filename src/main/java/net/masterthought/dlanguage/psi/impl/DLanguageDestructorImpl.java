@@ -1,6 +1,5 @@
 package net.masterthought.dlanguage.psi.impl;
 
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
@@ -10,7 +9,6 @@ import net.masterthought.dlanguage.psi.DLanguageDestructor;
 import net.masterthought.dlanguage.psi.DLanguageFunctionBody;
 import net.masterthought.dlanguage.psi.DLanguageMemberFunctionAttribute;
 import net.masterthought.dlanguage.psi.DLanguageVisitor;
-import net.masterthought.dlanguage.stubs.DLanguageAliasInitializerStub;
 import net.masterthought.dlanguage.stubs.DLanguageDestructorStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

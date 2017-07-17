@@ -1,25 +1,25 @@
 package net.masterthought.dlanguage.jps.model;
 
 
-        import com.intellij.util.xmlb.SkipDefaultValuesSerializationFilters;
-        import com.intellij.util.xmlb.XmlSerializer;
-        import org.jdom.Element;
-        import org.jetbrains.annotations.NotNull;
-        import org.jetbrains.annotations.Nullable;
-        import org.jetbrains.jps.model.JpsDummyElement;
-        import org.jetbrains.jps.model.JpsElement;
-        import org.jetbrains.jps.model.JpsElementFactory;
-        import org.jetbrains.jps.model.module.JpsModule;
-        import org.jetbrains.jps.model.serialization.JpsModelSerializerExtension;
-        import org.jetbrains.jps.model.serialization.JpsProjectExtensionSerializer;
-        import org.jetbrains.jps.model.serialization.facet.JpsFacetConfigurationSerializer;
-        import org.jetbrains.jps.model.serialization.library.JpsSdkPropertiesSerializer;
-        import org.jetbrains.jps.model.serialization.module.JpsModulePropertiesSerializer;
-        import org.jetbrains.jps.model.serialization.module.JpsModuleSourceRootDummyPropertiesSerializer;
-        import org.jetbrains.jps.model.serialization.module.JpsModuleSourceRootPropertiesSerializer;
+import com.intellij.util.xmlb.SkipDefaultValuesSerializationFilters;
+import com.intellij.util.xmlb.XmlSerializer;
+import org.jdom.Element;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.jps.model.JpsDummyElement;
+import org.jetbrains.jps.model.JpsElement;
+import org.jetbrains.jps.model.JpsElementFactory;
+import org.jetbrains.jps.model.module.JpsModule;
+import org.jetbrains.jps.model.serialization.JpsModelSerializerExtension;
+import org.jetbrains.jps.model.serialization.JpsProjectExtensionSerializer;
+import org.jetbrains.jps.model.serialization.facet.JpsFacetConfigurationSerializer;
+import org.jetbrains.jps.model.serialization.library.JpsSdkPropertiesSerializer;
+import org.jetbrains.jps.model.serialization.module.JpsModulePropertiesSerializer;
+import org.jetbrains.jps.model.serialization.module.JpsModuleSourceRootDummyPropertiesSerializer;
+import org.jetbrains.jps.model.serialization.module.JpsModuleSourceRootPropertiesSerializer;
 
-        import java.util.Collections;
-        import java.util.List;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Main entry point for the serializer server.

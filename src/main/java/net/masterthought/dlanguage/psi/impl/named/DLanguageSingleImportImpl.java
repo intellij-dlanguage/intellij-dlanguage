@@ -13,7 +13,7 @@ import net.masterthought.dlanguage.stubs.DLanguageSingleImportStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
+import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_EQ;
 
 /**
  * Created by francis on 7/14/2017.
@@ -31,7 +31,7 @@ public class DLanguageSingleImportImpl extends DNamedStubbedPsiElementBase<DLang
     @Nullable
     @Override
     public DLanguageIdentifier getIdentifier() {
-        return PsiTreeUtil.getChildOfType(this,DLanguageIdentifier.class);
+        return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
     }
 
     @Nullable
@@ -43,15 +43,15 @@ public class DLanguageSingleImportImpl extends DNamedStubbedPsiElementBase<DLang
     @Nullable
     @Override
     public DLanguageIdentifierChain getIdentifierChain() {
-        return PsiTreeUtil.getChildOfType(this,DLanguageIdentifierChain.class);
+        return PsiTreeUtil.getChildOfType(this, DLanguageIdentifierChain.class);
     }
 
     @Override
     public String getName() {
-        if(getStub() != null){
+        if (getStub() != null) {
             return getStub().getName();
         }
-        return getIdentifier().getName();
+        return getIdentifierChain().getText();
     }
 
     @Override

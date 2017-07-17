@@ -15,8 +15,8 @@ import java.util.Map;
 
 public class DubInitForModuleStep extends ModuleWizardStep {
 
-    private final JPanel myPanel;
     protected final WizardContext myWizardContext;
+    private final JPanel myPanel;
     private final ProjectFormatPanel myFormatPanel = new ProjectFormatPanel();
     private final ComboBox dubFormat;
     private final ComboBox dubType;

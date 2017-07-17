@@ -8,7 +8,8 @@ import java.util.Map;
 /**
  * Created by francis on 3/6/2017.
  */
-@Deprecated public interface CanInherit extends DNamedElement{
+@Deprecated
+public interface CanInherit extends DNamedElement {
     List<CanInherit> whatInheritsFrom();
 
     Map<String, DLanguageIdentifier> getSuperClassNames();

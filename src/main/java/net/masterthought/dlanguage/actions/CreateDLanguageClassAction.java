@@ -46,8 +46,8 @@ public class CreateDLanguageClassAction extends CreateFileFromTemplateAction imp
     @Override
     protected void buildDialog(Project project, PsiDirectory directory, CreateFileFromTemplateDialog.Builder builder) {
         builder.setTitle(NEW_D_CLASS)
-                .addKind("Empty module", DLanguageIcons.CLASS, EMPTY_CLASS_TEMPLATE)
-                .setValidator(new CreateDLanguageClassAction.ClassNameValidator());
+            .addKind("Empty module", DLanguageIcons.CLASS, EMPTY_CLASS_TEMPLATE)
+            .setValidator(new CreateDLanguageClassAction.ClassNameValidator());
     }
 
     @Override
@@ -106,15 +106,12 @@ public class CreateDLanguageClassAction extends CreateFileFromTemplateAction imp
                 }
                 return psiFile;
             }
-        }
-        catch (ParseException e) {
+        } catch (ParseException e) {
             Messages.showErrorDialog(project, String.format("Error parsing Velocity template: %s", e.getMessage()), "Create File from Template");
-        }
-        catch (IncorrectOperationException e) {
+        } catch (IncorrectOperationException e) {
             LOG.error(e);
             throw e;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             LOG.error(e);
         }
 
@@ -129,6 +126,7 @@ public class CreateDLanguageClassAction extends CreateFileFromTemplateAction imp
     public class ClassNameValidator implements InputValidatorEx {
 
         private final Pattern VALID_MODULE_NAME_REGEX = Pattern.compile("[A-z_.]+");
+
         @Nullable
         @Override
         public String getErrorText(final String inputString) {

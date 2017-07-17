@@ -36,14 +36,30 @@ public class DLanguageSdkType extends SdkType {
     private static final File DEFAULT_SDK_PATH_OSX = new File("/usr/local/opt/dmd");
     private static final File DEFAULT_SDK_PATH_LINUX = new File("/usr/bin");
 
+    public DLanguageSdkType() {
+        super(SDK_TYPE_ID);
+    }
+
     @NotNull
     public static DLanguageSdkType getInstance() {
         final DLanguageSdkType sdkType = SdkType.findInstance(DLanguageSdkType.class);
-        return sdkType != null? sdkType : new DLanguageSdkType();
+        return sdkType != null ? sdkType : new DLanguageSdkType();
     }
 
-    public DLanguageSdkType() {
-        super(SDK_TYPE_ID);
+    /* Returns full path to DMD compiler executable */
+    public static String getDmdPath(Sdk sdk) {
+        String sdkHome = sdk.getHomePath();
+        String executableName = SystemInfo.isWindows ? "dmd.exe" : "dmd";
+        File dmdCompilerFile = new File(sdkHome, executableName);
+        return dmdCompilerFile.getAbsolutePath();
+    }
+
+    /* Returns full path to DMD compiler sources */
+    public static String getDmdSourcesPaths(Sdk sdk) {
+        String sdkHome = sdk.getHomePath();
+        String executableName = SystemInfo.isWindows ? "dmd.exe" : "dmd";
+        File dmdCompilerFile = new File(sdkHome, executableName);
+        return dmdCompilerFile.getAbsolutePath();
     }
 
     @NotNull
@@ -88,7 +104,7 @@ public class DLanguageSdkType extends SdkType {
     @Override
     public String suggestSdkName(String currentSdkName, String sdkHome) {
         final String version = getDmdVersion(sdkHome);
-        return version != null? version : SDK_NAME;
+        return version != null ? version : SDK_NAME;
     }
 
     @Nullable
@@ -96,9 +112,9 @@ public class DLanguageSdkType extends SdkType {
     public String getVersionString(@NotNull String sdkHome) {
         final String version = getDmdVersion(sdkHome);
 
-        if(version != null) {
+        if (version != null) {
             final Matcher m = Pattern.compile(".*v(\\d+\\.\\d+).*").matcher(version);
-            if(m.matches()) {
+            if (m.matches()) {
                 return m.group(1);
             }
         }
@@ -129,6 +145,7 @@ public class DLanguageSdkType extends SdkType {
 
     /**
      * Try to execute 'dmd --version' and return first line of the output.
+     *
      * @param sdkHome path to dmd home directory
      * @return String containing DMD version or null
      */
@@ -151,7 +168,7 @@ public class DLanguageSdkType extends SdkType {
 
             //Parse output of a DMD compiler
             final List<String> outputLines = output.getStdoutLines();
-            if(outputLines != null && !outputLines.isEmpty()) {
+            if (outputLines != null && !outputLines.isEmpty()) {
                 final String version = outputLines.get(0).trim();
                 LOG.debug(String.format("Found version: %s", version));
                 return version;
@@ -160,22 +177,6 @@ public class DLanguageSdkType extends SdkType {
             return null;
         }
         return null;
-    }
-
-    /* Returns full path to DMD compiler executable */
-    public static String getDmdPath(Sdk sdk) {
-        String sdkHome = sdk.getHomePath();
-        String executableName = SystemInfo.isWindows ? "dmd.exe" : "dmd";
-        File dmdCompilerFile = new File(sdkHome, executableName);
-        return dmdCompilerFile.getAbsolutePath();
-    }
-
-    /* Returns full path to DMD compiler sources */
-    public static String getDmdSourcesPaths(Sdk sdk) {
-        String sdkHome = sdk.getHomePath();
-        String executableName = SystemInfo.isWindows ? "dmd.exe" : "dmd";
-        File dmdCompilerFile = new File(sdkHome, executableName);
-        return dmdCompilerFile.getAbsolutePath();
     }
 }
 

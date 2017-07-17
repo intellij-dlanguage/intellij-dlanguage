@@ -21,23 +21,19 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Set;
 
-public class DUnitTestRerunFailedTestsAction extends AbstractRerunFailedTestsAction
-{
+public class DUnitTestRerunFailedTestsAction extends AbstractRerunFailedTestsAction {
     private final Project project;
 
-    public DUnitTestRerunFailedTestsAction(Project project, ComponentContainer componentContainer)
-    {
+    public DUnitTestRerunFailedTestsAction(Project project, ComponentContainer componentContainer) {
         super(componentContainer);
         this.project = project;
     }
 
     @Nullable
     @Override
-    protected MyRunProfile getRunProfile(@NotNull ExecutionEnvironment environment)
-    {
+    protected MyRunProfile getRunProfile(@NotNull ExecutionEnvironment environment) {
         Project project = environment.getProject();
-        if (project == null)
-        {
+        if (project == null) {
             return null;
         }
 
@@ -45,46 +41,38 @@ public class DUnitTestRerunFailedTestsAction extends AbstractRerunFailedTestsAct
     }
 
     @Nullable
-    private MyRunProfile getRunProfile(final Project project)
-    {
+    private MyRunProfile getRunProfile(final Project project) {
         List<AbstractTestProxy> failedTests = getFailedTests(project);
-        if (ContainerUtil.isEmpty(failedTests))
-        {
+        if (ContainerUtil.isEmpty(failedTests)) {
             return null;
         }
 
         final MultiMap<Module, String> moduleToFailedTestNames = new LinkedMultiMap<Module, String>();
         GlobalSearchScope searchScope = GlobalSearchScope.projectScope(project);
-        for (AbstractTestProxy failedTest : failedTests)
-        {
+        for (AbstractTestProxy failedTest : failedTests) {
             Location location = failedTest.getLocation(project, searchScope);
-            if (location != null)
-            {
+            if (location != null) {
                 PsiElement psiElement = location.getPsiElement();
                 // TODO: Use the associated element to determine the failed test method/class
 //                moduleToFailedTestNames.putValue(module, failedTestName);
             }
         }
 
-        if (moduleToFailedTestNames.isEmpty())
-        {
+        if (moduleToFailedTestNames.isEmpty()) {
             return null;
         }
 
-        return new MyRunProfile(new DUnitTestRunConfiguration(project))
-        {
+        return new MyRunProfile(new DUnitTestRunConfiguration(project)) {
             @NotNull
             @Override
-            public Module[] getModules()
-            {
+            public Module[] getModules() {
                 Set<Module> modules = moduleToFailedTestNames.keySet();
                 return modules.toArray(new Module[modules.size()]);
             }
 
             @Nullable
             @Override
-            public RunProfileState getState(@NotNull Executor executor, @NotNull ExecutionEnvironment environment) throws ExecutionException
-            {
+            public RunProfileState getState(@NotNull Executor executor, @NotNull ExecutionEnvironment environment) throws ExecutionException {
                 return new DUnitTestRunProfileState(environment);
 //                return new DUnitTestRunProfileState(environment, moduleToFailedTestNames);
             }

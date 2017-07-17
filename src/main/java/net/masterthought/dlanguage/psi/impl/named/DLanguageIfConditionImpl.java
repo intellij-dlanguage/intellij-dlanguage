@@ -10,7 +10,6 @@ import net.masterthought.dlanguage.psi.DLanguageIdentifier;
 import net.masterthought.dlanguage.psi.DLanguageIfCondition;
 import net.masterthought.dlanguage.psi.DLanguageType;
 import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
-import net.masterthought.dlanguage.stubs.DLanguageIdentifierStub;
 import net.masterthought.dlanguage.stubs.DLanguageIfConditionStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -35,13 +34,13 @@ public class DLanguageIfConditionImpl extends DNamedStubbedPsiElementBase<DLangu
     @Nullable
     @Override
     public DLanguageIdentifier getIdentifier() {
-        return PsiTreeUtil.getChildOfType(this,DLanguageIdentifier.class);
+        return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
     }
 
     @Nullable
     @Override
     public DLanguageExpression getExpression() {
-        return PsiTreeUtil.getChildOfType(this,DLanguageExpression.class);
+        return PsiTreeUtil.getChildOfType(this, DLanguageExpression.class);
     }
 
     @Nullable
@@ -53,7 +52,7 @@ public class DLanguageIfConditionImpl extends DNamedStubbedPsiElementBase<DLangu
     @Nullable
     @Override
     public DLanguageType getType() {
-        return PsiTreeUtil.getChildOfType(this,DLanguageType.class);
+        return PsiTreeUtil.getChildOfType(this, DLanguageType.class);
     }
 
     @Nullable
@@ -65,7 +64,7 @@ public class DLanguageIfConditionImpl extends DNamedStubbedPsiElementBase<DLangu
     @NotNull
     @Override
     public String getName() {
-        if(getStub() != null){
+        if (getStub() != null) {
             return getStub().getName();
         }
         return getIdentifier().getName();

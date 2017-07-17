@@ -94,7 +94,7 @@ public class ExecUtil {
         }
 
         List<String> lines = output.getStdoutLines();
-        StringBuilder sb = new StringBuilder(100*lines.size());
+        StringBuilder sb = new StringBuilder(100 * lines.size());
         for (String line : lines) {
             sb.append(line);
         }

@@ -1,12 +1,5 @@
 package net.masterthought.dlanguage.psi.interfaces;
 
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.util.PsiTreeUtil;
-import net.masterthought.dlanguage.psi.*;
-
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by francis on 3/12/2017.
  */

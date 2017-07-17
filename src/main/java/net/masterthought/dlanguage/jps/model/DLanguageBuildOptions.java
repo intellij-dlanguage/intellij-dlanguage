@@ -8,6 +8,10 @@ import com.intellij.util.xmlb.annotations.Tag;
 public class DLanguageBuildOptions {
     public static final String DEFAULT_DMD_PATH = "dmd";
     public static final String DEFAULT_RDMD_PATH = "rdmd";
+    @Tag("dmdPath")
+    public String myDmdPath = DEFAULT_DMD_PATH;
+    @Tag("rdmdPath")
+    public String myrDmdPath = DEFAULT_RDMD_PATH;
 
     public DLanguageBuildOptions() {
     }
@@ -17,18 +21,12 @@ public class DLanguageBuildOptions {
         myrDmdPath = options.myrDmdPath;
     }
 
-    @Tag("dmdPath")
-    public String myDmdPath = DEFAULT_DMD_PATH;
-
-    @Tag("rdmdPath")
-    public String myrDmdPath = DEFAULT_RDMD_PATH;
-
     @Override
     public String toString() {
         return "DLanguageBuildOptions{" +
-                "myDmdPath=" + myDmdPath +
-                ", myrDmdPath=" + myrDmdPath +
-                '}';
+            "myDmdPath=" + myDmdPath +
+            ", myrDmdPath=" + myrDmdPath +
+            '}';
     }
 }
 

@@ -16,8 +16,8 @@ import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.Pair;
 import com.intellij.packaging.artifacts.ModifiableArtifactModel;
 import com.intellij.projectImport.ProjectImportBuilder;
-import net.masterthought.dlanguage.icons.DLanguageIcons;
 import net.masterthought.dlanguage.DLanguageSdkType;
+import net.masterthought.dlanguage.icons.DLanguageIcons;
 import net.masterthought.dlanguage.module.DLanguageDubModuleBuilder;
 import org.jdom.JDOMException;
 import org.jetbrains.annotations.NotNull;
@@ -33,18 +33,11 @@ import java.util.List;
 public class DubProjectImportBuilder extends ProjectImportBuilder<DubPackage> {
 
     private static final Logger LOG = Logger.getInstance("#" + DubProjectImportBuilder.class.getName());
+    public Parameters parameters;
 
     public void setRootDirectory(String path) {
 
     }
-
-    public static class Parameters {
-        public List<DubPackage> packages;
-        public boolean openModuleSettings = false;
-        public String dubBinary;
-    }
-
-    public Parameters parameters;
 
     @NotNull
     public Parameters getParameters() {
@@ -87,7 +80,6 @@ public class DubProjectImportBuilder extends ProjectImportBuilder<DubPackage> {
     public boolean isMarked(DubPackage s) {
         return getList().contains(s);
     }
-
 
     @Nullable
     @Override
@@ -149,5 +141,11 @@ public class DubProjectImportBuilder extends ProjectImportBuilder<DubPackage> {
             }
         };
         return SdkConfigurationUtil.findOrCreateSdk(sdkComparator, sdkType);
+    }
+
+    public static class Parameters {
+        public List<DubPackage> packages;
+        public boolean openModuleSettings = false;
+        public String dubBinary;
     }
 }

@@ -17,8 +17,7 @@ import java.util.List;
 
 public class DLanguageDmdConfigToArgsConverter {
     public static List<String> getDmdParameters(DLanguageRunDmdConfiguration config, Module module)
-            throws NoSourcesException, ExecutionException
-    {
+        throws NoSourcesException, ExecutionException {
         VirtualFile sourcesRoot = getSourceRoot(module);
         VirtualFile[] excludedRoots = getExcludedRoots(module);
         List<String> dmdParameters = new LinkedList<String>();
@@ -52,21 +51,20 @@ public class DLanguageDmdConfigToArgsConverter {
     private static String getOutputPathArgument(Module module) {
         String outputDirUrl = getOutputDir(module);
         File outputDir = new File(VfsUtilCore.urlToPath(outputDirUrl), "obj");
-        return "-od"+outputDir.getPath();
+        return "-od" + outputDir.getPath();
     }
 
     @NotNull
     private static String getOutputFileArgument(Module module, DLanguageRunDmdConfiguration config) {
-        return "-of"+getOutputFilePath(module, config);
+        return "-of" + getOutputFilePath(module, config);
     }
 
     @NotNull
     private static String getOutputFilePath(Module module, DLanguageRunDmdConfiguration config) {
         String filename = module.getName();
-        if(config.isLibrary()) {
+        if (config.isLibrary()) {
             filename += ".lib";
-        }
-        else if(SystemInfo.isWindows) {
+        } else if (SystemInfo.isWindows) {
             filename += ".exe";
         }
         String outputDirUrl = getOutputDir(module);
@@ -89,148 +87,147 @@ public class DLanguageDmdConfigToArgsConverter {
     }
 
     private static void buildCompilerParameters(DLanguageRunDmdConfiguration config, List<String> parameters) {
-        if(config.isRelease()) {
+        if (config.isRelease()) {
             parameters.add("-release");
         }
-        if(config.isDebug()) {
+        if (config.isDebug()) {
             parameters.add("-debug");
         }
-        if(config.isUnitTest()) {
+        if (config.isUnitTest()) {
             parameters.add("-unittest");
         }
-        if(config.isLink()) {
+        if (config.isLink()) {
             parameters.add("-link");
         }
-        if(config.isCoverageAnalysis()) {
+        if (config.isCoverageAnalysis()) {
             parameters.add("-cov");
         }
-        if(config.isAllowDeprecated()) {
+        if (config.isAllowDeprecated()) {
             parameters.add("-d");
         }
-        if(config.isIgnorePragmas()) {
+        if (config.isIgnorePragmas()) {
             parameters.add("-ignore");
         }
-        if(config.isFunctionInlining()) {
+        if (config.isFunctionInlining()) {
             parameters.add("-inline");
         }
-        if(config.isLibrary()) {
+        if (config.isLibrary()) {
             parameters.add("-lib");
         }
-        if(config.isNoArrayBoundsCheck()) {
+        if (config.isNoArrayBoundsCheck()) {
             parameters.add("-noboundscheck");
         }
-        if(config.isNoFloatingPointReferences()) {
+        if (config.isNoFloatingPointReferences()) {
             parameters.add("-nofloat");
         }
-        if(config.isOptimize()) {
+        if (config.isOptimize()) {
             parameters.add("-O");
         }
-        if(config.isEnforcePropertySyntax()) {
+        if (config.isEnforcePropertySyntax()) {
             parameters.add("-property");
         }
-        if(config.isQuiet()) {
+        if (config.isQuiet()) {
             parameters.add("-quiet");
         }
-        if(config.isVerbose()) {
+        if (config.isVerbose()) {
             parameters.add("-v");
         }
-        if(config.isListThreadLocalStorage()) {
+        if (config.isListThreadLocalStorage()) {
             parameters.add("-vtls");
         }
-        if(config.isWarnings()) {
+        if (config.isWarnings()) {
             parameters.add("-w");
         }
-        if(config.isInfoWarnings()) {
+        if (config.isInfoWarnings()) {
             parameters.add("-wi");
         }
-        if ( !StringUtil.isEmptyOrSpaces(config.getDefaultLibrary()) ) {
+        if (!StringUtil.isEmptyOrSpaces(config.getDefaultLibrary())) {
             parameters.add("-defaultlib=" + config.getDefaultLibrary());
         }
-        if ( !StringUtil.isEmptyOrSpaces(config.getImportsPath()) ) {
+        if (!StringUtil.isEmptyOrSpaces(config.getImportsPath())) {
             parameters.add("-I" + config.getImportsPath());
         }
-        if ( !StringUtil.isEmptyOrSpaces(config.getStringImportsPath()) ) {
+        if (!StringUtil.isEmptyOrSpaces(config.getStringImportsPath())) {
             parameters.add("-J" + config.getStringImportsPath());
         }
-        if ( !StringUtil.isEmptyOrSpaces(config.getLinkerArgs()) ) {
+        if (!StringUtil.isEmptyOrSpaces(config.getLinkerArgs())) {
             parameters.add("-L" + config.getLinkerArgs());
         }
     }
 
     private static void buildOutputParameters(DLanguageRunDmdConfiguration config, List<String> parameters) {
-        if(config.isGenerateDocs()) {
+        if (config.isGenerateDocs()) {
             parameters.add("-D");
-            if( !StringUtil.isEmptyOrSpaces(config.getDocsPath())) {
-                parameters.add("-Dd"+config.getDocsPath());
+            if (!StringUtil.isEmptyOrSpaces(config.getDocsPath())) {
+                parameters.add("-Dd" + config.getDocsPath());
             }
-            if( !StringUtil.isEmptyOrSpaces(config.getDocsFilename())) {
-                parameters.add("-Df"+config.getDocsFilename());
+            if (!StringUtil.isEmptyOrSpaces(config.getDocsFilename())) {
+                parameters.add("-Df" + config.getDocsFilename());
             }
         }
 
-        if( !StringUtil.isEmptyOrSpaces(config.getModuleDepsFilename())) {
-            parameters.add("-deps="+config.getModuleDepsFilename());
+        if (!StringUtil.isEmptyOrSpaces(config.getModuleDepsFilename())) {
+            parameters.add("-deps=" + config.getModuleDepsFilename());
         }
 
-        if(config.isGenerateHeader()) {
+        if (config.isGenerateHeader()) {
             parameters.add("-H");
-            if( !StringUtil.isEmptyOrSpaces(config.getHeaderDir())) {
-                parameters.add("-Hd"+config.getHeaderDir());
+            if (!StringUtil.isEmptyOrSpaces(config.getHeaderDir())) {
+                parameters.add("-Hd" + config.getHeaderDir());
             }
-            if( !StringUtil.isEmptyOrSpaces(config.getHeaderFilename())) {
-                parameters.add("-Hf"+config.getHeaderFilename());
+            if (!StringUtil.isEmptyOrSpaces(config.getHeaderFilename())) {
+                parameters.add("-Hf" + config.getHeaderFilename());
             }
         }
 
-        if(config.isGenerateMap()) {
+        if (config.isGenerateMap()) {
             parameters.add("-map");
         }
 
-        if(config.isNoObjectFiles()) {
+        if (config.isNoObjectFiles()) {
             parameters.add("-o-");
         }
 
-        if(config.isNoStripPaths()) {
+        if (config.isNoStripPaths()) {
             parameters.add("-op");
         }
 
-        if(config.isGenerateJson()) {
+        if (config.isGenerateJson()) {
             parameters.add("-X");
-            if( !StringUtil.isEmptyOrSpaces(config.getJsonFilename())) {
-                parameters.add("-Xf"+config.getJsonFilename());
+            if (!StringUtil.isEmptyOrSpaces(config.getJsonFilename())) {
+                parameters.add("-Xf" + config.getJsonFilename());
             }
         }
     }
 
     private static void buildDebugParameters(DLanguageRunDmdConfiguration config, List<String> parameters) {
-        if(config.isAddSymbolicDebugInfo()) {
+        if (config.isAddSymbolicDebugInfo()) {
             parameters.add("-g");
         }
-        if(config.isAddSymbolicDebugInfoC()) {
+        if (config.isAddSymbolicDebugInfoC()) {
             parameters.add("-gc");
         }
-        if(config.isGenerateStandardStackFrame()) {
+        if (config.isGenerateStandardStackFrame()) {
             parameters.add("-gs");
         }
-        if(config.isProfile()) {
+        if (config.isProfile()) {
             parameters.add("-profile");
         }
 
-        if( !StringUtil.isEmptyOrSpaces(config.getSymbolicLibrary()) ) {
-            parameters.add("-debuglib="+config.getSymbolicLibrary());
+        if (!StringUtil.isEmptyOrSpaces(config.getSymbolicLibrary())) {
+            parameters.add("-debuglib=" + config.getSymbolicLibrary());
         }
     }
 
     @NotNull
     private static List<String> getAllDLangSources(final VirtualFile sourcesRoot, final VirtualFile[] excludedRoots)
-            throws NoSourcesException, ExecutionException
-    {
+        throws NoSourcesException, ExecutionException {
         DLanguageVirtualFileVisitor visitor = new DLanguageVirtualFileVisitor(sourcesRoot, excludedRoots);
         VfsUtilCore.visitChildrenRecursively(sourcesRoot, visitor);
 
         //Build list of *.D source files
         List<String> sources = visitor.getdLangSources();
-        if(sources.isEmpty()) {
+        if (sources.isEmpty()) {
             throw new NoSourcesException(sourcesRoot.getCanonicalPath());
         }
         return sources;

@@ -793,15 +793,15 @@ public interface DLanguageTypes {
                 return new DLanguageAddExpressionImpl(node);
             } else if (type == CLASS_DECLARATION) {
                 return new DLanguageClassDeclarationImpl(node);
-            } else if (type == UNITTEST){
+            } else if (type == UNITTEST) {
                 return new DLanguageUnittestImpl(node);
-            } else if (type == INTERFACE_OR_CLASS){
+            } else if (type == INTERFACE_OR_CLASS) {
                 return new DLanguageInterfaceOrClassImpl(node);
-            } else if (type == INTERFACE_DECLARATION){
+            } else if (type == INTERFACE_DECLARATION) {
                 return new DLanguageInterfaceDeclarationImpl(node);
-            } else if (type == STRING_LIT){
+            } else if (type == STRING_LIT) {
                 return new DLanguageStringImpl(node);
-            } else if (type == IF_CONDITION){
+            } else if (type == IF_CONDITION) {
                 return new DLanguageIfConditionImpl(node);
             }
 

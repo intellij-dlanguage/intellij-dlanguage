@@ -39,7 +39,7 @@ public class DLanguageModuleBuilder extends JavaModuleBuilder {
     private final String myDescription;
     private final Icon myBigIcon;
 
-    private List<Pair<String,String>> sourcePaths;
+    private List<Pair<String, String>> sourcePaths;
 
     public DLanguageModuleBuilder() {
         this("DLangDmdApp", DLanguageBundle.INSTANCE.message("module.title"), DLanguageBundle.INSTANCE.message("module.description"), null);
@@ -99,7 +99,7 @@ public class DLanguageModuleBuilder extends JavaModuleBuilder {
 
         //Create "Compile with DMD" configuration
         RunnerAndConfigurationSettings runDmdSettings = runManager.findConfigurationByName(COMPILE_CONFIG_NAME);
-        if(runDmdSettings == null) {
+        if (runDmdSettings == null) {
             final DLanguageRunDmdConfigurationType configurationType
                 = Extensions.findExtension(ConfigurationType.CONFIGURATION_TYPE_EP, DLanguageRunDmdConfigurationType.class);
             final ConfigurationFactory factory = configurationType.getConfigurationFactories()[0];
@@ -111,9 +111,9 @@ public class DLanguageModuleBuilder extends JavaModuleBuilder {
 
         //Create "Run D App" configuration
         RunnerAndConfigurationSettings runAppSettings = runManager.findConfigurationByName(RUN_CONFIG_NAME);
-        if(runAppSettings == null) {
+        if (runAppSettings == null) {
             final DLanguageRunAppConfigurationType configurationType
-                    = Extensions.findExtension(ConfigurationType.CONFIGURATION_TYPE_EP, DLanguageRunAppConfigurationType.class);
+                = Extensions.findExtension(ConfigurationType.CONFIGURATION_TYPE_EP, DLanguageRunAppConfigurationType.class);
             final ConfigurationFactory factory = configurationType.getConfigurationFactories()[0];
             runAppSettings = runManager.createRunConfiguration(RUN_CONFIG_NAME, factory);
             ((ModuleBasedConfiguration) runAppSettings.getConfiguration()).setModule(rootModel.getModule());
@@ -125,7 +125,7 @@ public class DLanguageModuleBuilder extends JavaModuleBuilder {
         //Add dependency to exec "runDmdSettings" before running "runAppSettings".
         //XXX: next code doesn't add BeforeRunTask. I don't know why.
         BeforeRunTaskProvider provider = RunConfigurationBeforeRunProvider.getProvider(project, RunConfigurationBeforeRunProvider.ID);
-        if(provider != null) {
+        if (provider != null) {
             BeforeRunTask runDmdTask = provider.createTask(runDmdSettings.getConfiguration());
             List<BeforeRunTask> beforeRunTasks = new ArrayList<BeforeRunTask>(1);
             beforeRunTasks.add(runDmdTask);
@@ -136,7 +136,7 @@ public class DLanguageModuleBuilder extends JavaModuleBuilder {
     /* By default sources are located in {WORKING_DIR}/source folder. */
     @NotNull
     @Override
-    public List<Pair<String,String>> getSourcePaths() {
+    public List<Pair<String, String>> getSourcePaths() {
         if (sourcePaths == null) {
             final List<Pair<String, String>> paths = new ArrayList<Pair<String, String>>();
             @NonNls final String path = getContentEntryPath() + File.separator + "source";

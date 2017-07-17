@@ -3,7 +3,10 @@ package net.masterthought.dlanguage.psi.impl.named;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.*;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiReference;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.icons.DLanguageIcons;
@@ -70,10 +73,10 @@ public class DLanguageUnionDeclarationImpl extends DNamedStubbedPsiElementBase<D
 
     @NotNull
     public String getName() {
-        if(getStub() != null){
+        if (getStub() != null) {
             return getStub().getName();
         }
-        if(getIdentifier() == null){
+        if (getIdentifier() == null) {
             return "this union has no name";
 //            throw new IllegalStateException();
         }

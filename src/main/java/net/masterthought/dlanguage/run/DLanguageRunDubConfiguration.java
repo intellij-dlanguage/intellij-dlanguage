@@ -24,6 +24,40 @@ public class DLanguageRunDubConfiguration extends ModuleBasedConfiguration<RunCo
 
     //General tab
     private int generalDubOptions = 1;
+    //Build tab
+    private boolean cbRdmd = false;
+    private String tfBuild;
+    private String tfCompiler;
+    private String tfConfig;
+    private String tfArch;
+    private String tfDebug;
+    private int buildMode = 0;
+    private boolean cbForce = false;
+    private boolean cbNoDeps = false;
+    private boolean cbForceRemove = false;
+    private boolean cbCombined = false;
+    private boolean cbParallel = false;
+    private boolean cbTempBuild;
+    // Test tab
+    private String tfMainFile;
+    private boolean cbCoverage;
+    //DUB properties
+    private String workingDir;
+    private boolean quiet = false;
+    private boolean verbose = false;
+    private String additionalParams;
+    private Map<String, String> envVars;
+
+    public DLanguageRunDubConfiguration(String name, Project project, ConfigurationFactory factory) {
+        super(name, new RunConfigurationModule(project), factory);
+
+        Collection<Module> modules = this.getValidModules();
+        if (!modules.isEmpty()) {
+            //Get first valid module and use it
+            this.setModule(modules.iterator().next());
+        }
+        envVars = new HashMap<String, String>();
+    }
 
     public int getGeneralDubOptions() {
         return this.generalDubOptions;
@@ -32,9 +66,6 @@ public class DLanguageRunDubConfiguration extends ModuleBasedConfiguration<RunCo
     public void setGeneralDubOptions(int generalDubOptions) {
         this.generalDubOptions = generalDubOptions;
     }
-
-    //Build tab
-    private boolean cbRdmd = false;
 
     public boolean isCbForce() {
         return cbForce;
@@ -76,8 +107,6 @@ public class DLanguageRunDubConfiguration extends ModuleBasedConfiguration<RunCo
         this.cbParallel = cbParallel;
     }
 
-    private String tfBuild;
-
     public String getTfBuild() {
         return tfBuild;
     }
@@ -85,8 +114,6 @@ public class DLanguageRunDubConfiguration extends ModuleBasedConfiguration<RunCo
     public void setTfBuild(String tfBuild) {
         this.tfBuild = tfBuild;
     }
-
-    private String tfCompiler;
 
     public String getTfCompiler() {
         return tfCompiler;
@@ -99,6 +126,8 @@ public class DLanguageRunDubConfiguration extends ModuleBasedConfiguration<RunCo
     public String getTfConfig() {
         return tfConfig;
     }
+
+    // Run tab
 
     public void setTfConfig(String tfConfig) {
         this.tfConfig = tfConfig;
@@ -128,17 +157,6 @@ public class DLanguageRunDubConfiguration extends ModuleBasedConfiguration<RunCo
         this.buildMode = buildMode;
     }
 
-    private String tfConfig;
-    private String tfArch;
-    private String tfDebug;
-    private int buildMode = 0;
-
-    private boolean cbForce = false;
-    private boolean cbNoDeps = false;
-    private boolean cbForceRemove = false;
-    private boolean cbCombined = false;
-    private boolean cbParallel = false;
-
     public boolean isCbRdmd() {
         return cbRdmd;
     }
@@ -146,8 +164,6 @@ public class DLanguageRunDubConfiguration extends ModuleBasedConfiguration<RunCo
     public void setCbRdmd(boolean cbRdmd) {
         this.cbRdmd = cbRdmd;
     }
-
-    // Run tab
 
     public boolean isCbTempBuild() {
         return cbTempBuild;
@@ -171,31 +187,6 @@ public class DLanguageRunDubConfiguration extends ModuleBasedConfiguration<RunCo
 
     public void setCbCoverage(boolean cbCoverage) {
         this.cbCoverage = cbCoverage;
-    }
-
-    private boolean cbTempBuild;
-
-    // Test tab
-    private String tfMainFile;
-    private boolean cbCoverage;
-
-    //DUB properties
-    private String workingDir;
-    private boolean quiet = false;
-    private boolean verbose = false;
-    private String additionalParams;
-    private Map<String, String> envVars;
-
-
-    public DLanguageRunDubConfiguration(String name, Project project, ConfigurationFactory factory) {
-        super(name, new RunConfigurationModule(project), factory);
-
-        Collection<Module> modules = this.getValidModules();
-        if (!modules.isEmpty()) {
-            //Get first valid module and use it
-            this.setModule(modules.iterator().next());
-        }
-        envVars = new HashMap<String, String>();
     }
 
     @Override

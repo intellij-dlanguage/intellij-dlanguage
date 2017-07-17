@@ -48,10 +48,10 @@ public class DubConfigurationParserTest extends LightPlatformTestCase {
 
         final Enumeration enumeration = packageTree.children();
         while (enumeration.hasMoreElements()) {
-            DefaultMutableTreeNode node =  (DefaultMutableTreeNode)enumeration.nextElement();
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) enumeration.nextElement();
             final DubPackage dubPackage = DubPackage.class.cast(node.getUserObject());
 
-            if("vibe-d:utils".equals(dubPackage.getName())) {
+            if ("vibe-d:utils".equals(dubPackage.getName())) {
                 assertTrue(dubPackage.getName(), dubPackage.getDependencies().isEmpty()); // utils module has no dependencies
             } else {
                 assertFalse(dubPackage.getName(), dubPackage.getDependencies().isEmpty());
@@ -92,7 +92,7 @@ public class DubConfigurationParserTest extends LightPlatformTestCase {
         final URL testResource = this.getClass().getClassLoader().getResource(resourceLocation);
         final Path resourcePath = Paths.get(testResource.toURI());
         final String baseDir = ourProject.getBaseDir().getCanonicalPath();
-        if(destination.contains("/")) {
+        if (destination.contains("/")) {
             final String[] path = destination.split("/");
             final File subFolder = new File(baseDir, path[0]);
             subFolder.mkdir();

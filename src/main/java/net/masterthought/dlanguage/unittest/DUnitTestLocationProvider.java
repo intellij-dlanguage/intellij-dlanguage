@@ -10,12 +10,10 @@ import org.jetbrains.annotations.NotNull;
 import java.util.LinkedList;
 import java.util.List;
 
-public class DUnitTestLocationProvider implements SMTestLocator
-{
-    private static final DUnitTestLocationProvider INSTANCE = new DUnitTestLocationProvider();
-
+public class DUnitTestLocationProvider implements SMTestLocator {
     public static final String PROTOCOL_ID = "D";
     public static final String PROTOCOL_PREFIX = PROTOCOL_ID + "://";
+    private static final DUnitTestLocationProvider INSTANCE = new DUnitTestLocationProvider();
 
     public static DUnitTestLocationProvider getInstance() {
         return INSTANCE;
@@ -23,12 +21,10 @@ public class DUnitTestLocationProvider implements SMTestLocator
 
     @NotNull
     @Override
-    public List<Location> getLocation(@NotNull String protocol, @NotNull String path, @NotNull Project project, @NotNull GlobalSearchScope scope)
-    {
+    public List<Location> getLocation(@NotNull String protocol, @NotNull String path, @NotNull Project project, @NotNull GlobalSearchScope scope) {
         final List<Location> locations = new LinkedList<Location>();
 
-        if (!StringUtil.equals(PROTOCOL_ID, protocol) || StringUtil.isEmpty(path))
-        {
+        if (!StringUtil.equals(PROTOCOL_ID, protocol) || StringUtil.isEmpty(path)) {
             return locations;
         }
 

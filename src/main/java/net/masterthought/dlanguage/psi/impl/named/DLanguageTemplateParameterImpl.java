@@ -69,20 +69,20 @@ public class DLanguageTemplateParameterImpl extends DNamedStubbedPsiElementBase<
         return PsiTreeUtil.getChildOfType(this, DLanguageTemplateValueParameter.class);
     }
 
-    private DLanguageIdentifier getIdentifier(){
-        if(getTemplateAliasParameter() != null){
+    private DLanguageIdentifier getIdentifier() {
+        if (getTemplateAliasParameter() != null) {
             return getTemplateAliasParameter().getIdentifier();
         }
-        if(getTemplateThisParameter() != null){
+        if (getTemplateThisParameter() != null) {
             return getTemplateThisParameter().getTemplateTypeParameter().getIdentifier();
         }
-        if(getTemplateTupleParameter() != null){
+        if (getTemplateTupleParameter() != null) {
             return getTemplateTupleParameter().getIdentifier();
         }
-        if(getTemplateTypeParameter() != null){
+        if (getTemplateTypeParameter() != null) {
             return getTemplateTypeParameter().getIdentifier();
         }
-        if(getTemplateValueParameter() != null){
+        if (getTemplateValueParameter() != null) {
             return getTemplateValueParameter().getIdentifier();
         }
         throw new IllegalStateException("this shouoldn't happen. Apparently theres some kind of template parameter that is neither, alias,this,tuple,type,or value");
@@ -91,7 +91,7 @@ public class DLanguageTemplateParameterImpl extends DNamedStubbedPsiElementBase<
 
     @NotNull
     public String getName() {
-        if(getStub() != null){
+        if (getStub() != null) {
             return getStub().getName();
         }
         return getIdentifier().getName();

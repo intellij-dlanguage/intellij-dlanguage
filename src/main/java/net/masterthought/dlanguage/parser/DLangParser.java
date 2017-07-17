@@ -42,7 +42,7 @@ class DLangParser {
     };
     static HashMap<String, Token.IdType> tokenTypeIndex = new HashMap<String, Token.IdType>();
 
-    static{
+    static {
         tokenTypeIndex.put("scriptLine", new Token.IdType(SHEBANG));
         tokenTypeIndex.put("identifier", new Token.IdType(ID));
         tokenTypeIndex.put("__DATE__", new Token.IdType(KW___DATE__));//todo
@@ -136,8 +136,8 @@ class DLangParser {
             }
             return false;
         });
-        if(tok.equals("identifier")){
-            tokenTypeIndex.put("identifier",new Token.IdType(ID));
+        if (tok.equals("identifier")) {
+            tokenTypeIndex.put("identifier", new Token.IdType(ID));
             return tokenTypeIndex.get("identifier");
         }
 
@@ -2786,7 +2786,7 @@ class DLangParser {
                         break;
                     }
                     goToBookmark(b);
-                }else
+                } else
                     abandonBookmark(b);
             }
 //                c = allocator.setCheckpoint();

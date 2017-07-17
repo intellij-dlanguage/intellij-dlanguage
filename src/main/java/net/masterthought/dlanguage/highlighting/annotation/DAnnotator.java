@@ -5,15 +5,20 @@ import com.intellij.lang.annotation.Annotator;
 import com.intellij.openapi.editor.colors.EditorColorsManager;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.psi.PsiElement;
-import net.masterthought.dlanguage.highlighting.DHighlighter;
-import net.masterthought.dlanguage.psi.*;
+import net.masterthought.dlanguage.psi.DLanguageVisitor;
 import org.jetbrains.annotations.NotNull;
 
 /**
-* Annotator that:
-* adds extra syntax highlighting
-*/
+ * Annotator that:
+ * adds extra syntax highlighting
+ */
 public class DAnnotator implements Annotator {
+
+    private static void setHighlighting(@NotNull PsiElement element, @NotNull AnnotationHolder holder,
+                                        @NotNull TextAttributesKey key) {
+        holder.createInfoAnnotation(element, null).setEnforcedTextAttributes(
+            EditorColorsManager.getInstance().getGlobalScheme().getAttributes(key));
+    }
 
     @Override
     public void annotate(@NotNull final PsiElement element, @NotNull final AnnotationHolder holder) {
@@ -96,12 +101,6 @@ public class DAnnotator implements Annotator {
 //            }
 
         });
-    }
-
-    private static void setHighlighting(@NotNull PsiElement element, @NotNull AnnotationHolder holder,
-                                        @NotNull TextAttributesKey key) {
-        holder.createInfoAnnotation(element, null).setEnforcedTextAttributes(
-                EditorColorsManager.getInstance().getGlobalScheme().getAttributes(key));
     }
 }
 

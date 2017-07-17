@@ -40,13 +40,13 @@ public class CreateDLanguageFileAction extends CreateFileFromTemplateAction impl
     @Override
     protected void buildDialog(Project project, PsiDirectory directory, CreateFileFromTemplateDialog.Builder builder) {
         builder.setTitle(NEW_D_FILE)
-                .addKind("Empty module", DLanguageIcons.FILE, EMPTY_MODULE_TEMPLATE)
-                .setValidator(new ModuleNameValidator());
+            .addKind("Empty module", DLanguageIcons.FILE, EMPTY_MODULE_TEMPLATE)
+            .setValidator(new ModuleNameValidator());
     }
 
     @Override
     protected PsiFile createFileFromTemplate(@NotNull String name, @NotNull FileTemplate template, @NotNull PsiDirectory dir) {
-        final String validName = name.endsWith(".d")? name.substring(0, name.lastIndexOf('.')) : name;
+        final String validName = name.endsWith(".d") ? name.substring(0, name.lastIndexOf('.')) : name;
 
         final List<String> pathParts = StringUtil.split(validName, ".");
         // Create any intermediate subdirectories.
@@ -61,9 +61,9 @@ public class CreateDLanguageFileAction extends CreateFileFromTemplateAction impl
     @SuppressWarnings("DialogTitleCapitalization")
     @Nullable
     private PsiFile createFileFromTemplate(@SuppressWarnings("NullableProblems") @NotNull String name,
-                                             @NotNull FileTemplate template,
-                                             @NotNull PsiDirectory dir,
-                                             @Nullable String defaultTemplateProperty) {
+                                           @NotNull FileTemplate template,
+                                           @NotNull PsiDirectory dir,
+                                           @Nullable String defaultTemplateProperty) {
         // TODO: Do we *have* to hack the IntelliJ source?
         // This is a roughly a copy/paste then slight adaptation from the IntelliJ definition of this method.
         // We can't override it directly, and more importantly we can't override its call to
@@ -98,15 +98,12 @@ public class CreateDLanguageFileAction extends CreateFileFromTemplateAction impl
                 }
                 return psiFile;
             }
-        }
-        catch (ParseException e) {
+        } catch (ParseException e) {
             Messages.showErrorDialog(project, String.format("Error parsing Velocity template: %s", e.getMessage()), "Create File from Template");
-        }
-        catch (IncorrectOperationException e) {
+        } catch (IncorrectOperationException e) {
             LOG.error(e);
             throw e;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             LOG.error(e);
         }
 

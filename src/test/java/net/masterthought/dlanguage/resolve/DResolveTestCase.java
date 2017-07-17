@@ -90,10 +90,10 @@ public abstract class DResolveTestCase extends DLightPlatformCodeInsightFixtureT
         if (succeed) {
             /*if (resolvedElement instanceof DL) {
                 assertEquals("Could not resolve expected reference.", resolvedElement, referencedElement.resolve().getParent().getParent());
-            }*/ if (resolvedElement instanceof DLanguageConstructor) {
+            }*/
+            if (resolvedElement instanceof DLanguageConstructor) {
                 assertEquals("Could not resolve expected reference.", resolvedElement, referencedElement.resolve());
-            }
-            else
+            } else
                 assertEquals("Could not resolve expected reference.", resolvedElement, referencedElement.resolve().getParent());
         } else {
             assertFalse("Resolved unexpected reference.", resolvedElement.equals(referencedElement.resolve().getParent()));

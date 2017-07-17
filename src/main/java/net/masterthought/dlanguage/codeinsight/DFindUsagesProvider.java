@@ -56,7 +56,7 @@ public class DFindUsagesProvider implements FindUsagesProvider {
         } else if (element instanceof DLanguageInterfaceDeclaration) {
             return "Interface";
         } else if (element instanceof DLanguageInterfaceOrClass) {
-            if(element.getParent() instanceof DLanguageInterfaceDeclaration){
+            if (element.getParent() instanceof DLanguageInterfaceDeclaration) {
                 return "Interface";
             }
             return "Class";

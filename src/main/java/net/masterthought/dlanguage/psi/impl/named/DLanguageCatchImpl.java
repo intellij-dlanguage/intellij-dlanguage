@@ -79,10 +79,10 @@ public class DLanguageCatchImpl extends DNamedStubbedPsiElementBase<DLanguageCat
 
     @NotNull
     public String getName() {
-        if(getStub() != null){
+        if (getStub() != null) {
             return getStub().getName();
         }
-        if(getIdentifier() == null){
+        if (getIdentifier() == null) {
             return "this catch parameter has no name";
         }
         return getIdentifier().getName();

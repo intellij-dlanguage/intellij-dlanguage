@@ -74,7 +74,7 @@ public class DLanguageEnumDeclarationImpl extends DNamedStubbedPsiElementBase<DL
 
     @NotNull
     public String getName() {
-        if(getStub() != null){
+        if (getStub() != null) {
             return getStub().getName();
         }
         return getIdentifier().getName();

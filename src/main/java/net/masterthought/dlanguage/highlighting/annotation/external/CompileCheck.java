@@ -26,45 +26,6 @@ import java.util.regex.Pattern;
 
 public class CompileCheck {
 
-    public Problems checkFileSyntax(@NotNull PsiFile file) {
-        final String dubPath = ToolKey.DUB_KEY.getPath(file.getProject());
-               if (dubPath == null) return new Problems();
-
-        String result = processFile(file, dubPath);
-        return findProblems(result, file);
-    }
-
-    private String processFile(PsiFile file, String dubPath) {
-        final String workingDirectory = file.getProject().getBasePath();
-
-        GeneralCommandLine commandLine = new GeneralCommandLine();
-        commandLine.setWorkDirectory(workingDirectory);
-        commandLine.setExePath(dubPath);
-        ParametersList parametersList = commandLine.getParametersList();
-        parametersList.addParametersString("build");
-        parametersList.addParametersString("--combined");
-        parametersList.addParametersString("-q");
-
-        final StringBuilder builder = new StringBuilder();
-        try {
-            final OSProcessHandler process = new OSProcessHandler(commandLine.createProcess(), commandLine.getCommandLineString());
-            process.addProcessListener(new ProcessAdapter() {
-                @Override
-                public void onTextAvailable(ProcessEvent event, Key outputType) {
-                    builder.append(event.getText());
-                }
-            });
-
-            process.startNotify();
-            process.waitFor();
-
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        return builder.toString();
-    }
-
-
     @NotNull
     public static Problems findProblems(String stdout, PsiFile file) {
         final List<String> lints = StringUtil.split(stdout, "\n");
@@ -100,7 +61,7 @@ public class CompileCheck {
         }
     }
 
-    private static int getValidLineNumber(int line, Document document){
+    private static int getValidLineNumber(int line, Document document) {
         int lineCount = getDocumentLineCount(document);
         line = line - 1;
         if (line <= 0) {
@@ -152,6 +113,44 @@ public class CompileCheck {
         } else {
             return null;
         }
+    }
+
+    public Problems checkFileSyntax(@NotNull PsiFile file) {
+        final String dubPath = ToolKey.DUB_KEY.getPath(file.getProject());
+        if (dubPath == null) return new Problems();
+
+        String result = processFile(file, dubPath);
+        return findProblems(result, file);
+    }
+
+    private String processFile(PsiFile file, String dubPath) {
+        final String workingDirectory = file.getProject().getBasePath();
+
+        GeneralCommandLine commandLine = new GeneralCommandLine();
+        commandLine.setWorkDirectory(workingDirectory);
+        commandLine.setExePath(dubPath);
+        ParametersList parametersList = commandLine.getParametersList();
+        parametersList.addParametersString("build");
+        parametersList.addParametersString("--combined");
+        parametersList.addParametersString("-q");
+
+        final StringBuilder builder = new StringBuilder();
+        try {
+            final OSProcessHandler process = new OSProcessHandler(commandLine.createProcess(), commandLine.getCommandLineString());
+            process.addProcessListener(new ProcessAdapter() {
+                @Override
+                public void onTextAvailable(ProcessEvent event, Key outputType) {
+                    builder.append(event.getText());
+                }
+            });
+
+            process.startNotify();
+            process.waitFor();
+
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return builder.toString();
     }
 
     public static class Problem extends DProblem {

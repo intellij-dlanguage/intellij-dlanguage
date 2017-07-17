@@ -30,58 +30,6 @@ public class DScanner {
 
     private static final Logger LOG = Logger.getInstance(DScanner.class);
 
-    Problems checkFileSyntax(@NotNull PsiFile file) {
-        final String dscannerPath = ToolKey.DSCANNER_KEY.getPath(file.getProject());
-        if (dscannerPath == null) return new Problems();
-
-        final Problems problems = new Problems();
-        problems.addAllNotNull(processFile(file, dscannerPath));
-        return problems;
-    }
-
-    private List<Problem> processFile(final PsiFile file, final String dscannerPath) {
-        final String filePath = file.getVirtualFile().getCanonicalPath();
-        final String workingDirectory = file.getProject().getBasePath();
-
-        final GeneralCommandLine cmd = new GeneralCommandLine();
-        cmd.setWorkDirectory(workingDirectory);
-        cmd.setExePath(dscannerPath);
-
-        final ParametersList args = cmd.getParametersList();
-        args.addParametersString("-S");
-        args.addParametersString(filePath);
-
-        final List<Problem> problems = new ArrayList<>();
-
-        try {
-            final OSProcessHandler process = new OSProcessHandler(cmd.createProcess(), cmd.getCommandLineString());
-            process.addProcessListener(new ProcessAdapter() {
-                @Override
-                public void onTextAvailable(ProcessEvent event, Key outputType) {
-                    // we don't care about "system" or "stderr"
-                    if(ProcessOutputTypes.STDOUT.equals(outputType)) {
-                        parseProblem(event.getText(), file)
-                            .ifPresent(problems::add);
-                    } else if(ProcessOutputTypes.STDERR.equals(outputType)) {
-                        LOG.error(event.getText());
-                    }
-                }
-            });
-
-            process.startNotify();
-            process.waitFor();
-
-            final Integer exitCode = process.getExitCode(); // 0 or 1 depending on whether DScanner found problems
-
-            if(Integer.valueOf(1).equals(exitCode)) {
-                LOG.debug("DScanner found lint problems");
-            }
-        } catch (final ExecutionException e) {
-            LOG.error("There was a problem running DScanner", e);
-        }
-        return problems;
-    }
-
     private static int getOffsetStart(final PsiFile file, int startLine, int startColumn) {
         Document document = PsiDocumentManager.getInstance(file.getProject()).getDocument(file);
         int line = getValidLineNumber(startLine, document);
@@ -144,6 +92,58 @@ public class DScanner {
         final int startOffset = getOffsetStart(file, line, column);
         final int endOffset = getOffsetEnd(file, startOffset, line);
         return new TextRange(startOffset, endOffset);
+    }
+
+    Problems checkFileSyntax(@NotNull PsiFile file) {
+        final String dscannerPath = ToolKey.DSCANNER_KEY.getPath(file.getProject());
+        if (dscannerPath == null) return new Problems();
+
+        final Problems problems = new Problems();
+        problems.addAllNotNull(processFile(file, dscannerPath));
+        return problems;
+    }
+
+    private List<Problem> processFile(final PsiFile file, final String dscannerPath) {
+        final String filePath = file.getVirtualFile().getCanonicalPath();
+        final String workingDirectory = file.getProject().getBasePath();
+
+        final GeneralCommandLine cmd = new GeneralCommandLine();
+        cmd.setWorkDirectory(workingDirectory);
+        cmd.setExePath(dscannerPath);
+
+        final ParametersList args = cmd.getParametersList();
+        args.addParametersString("-S");
+        args.addParametersString(filePath);
+
+        final List<Problem> problems = new ArrayList<>();
+
+        try {
+            final OSProcessHandler process = new OSProcessHandler(cmd.createProcess(), cmd.getCommandLineString());
+            process.addProcessListener(new ProcessAdapter() {
+                @Override
+                public void onTextAvailable(ProcessEvent event, Key outputType) {
+                    // we don't care about "system" or "stderr"
+                    if (ProcessOutputTypes.STDOUT.equals(outputType)) {
+                        parseProblem(event.getText(), file)
+                            .ifPresent(problems::add);
+                    } else if (ProcessOutputTypes.STDERR.equals(outputType)) {
+                        LOG.error(event.getText());
+                    }
+                }
+            });
+
+            process.startNotify();
+            process.waitFor();
+
+            final Integer exitCode = process.getExitCode(); // 0 or 1 depending on whether DScanner found problems
+
+            if (Integer.valueOf(1).equals(exitCode)) {
+                LOG.debug("DScanner found lint problems");
+            }
+        } catch (final ExecutionException e) {
+            LOG.error("There was a problem running DScanner", e);
+        }
+        return problems;
     }
 
     // hello.d(1:7)[error]: Expected identifier instead of ;

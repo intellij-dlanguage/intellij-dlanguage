@@ -22,18 +22,17 @@ object DResolveUtil {
      * definitions are found when name is null.
      */
     fun findDefinitionNode(project: Project, e: PsiNamedElement): List<PsiNamedElement> {
-        fun inModuleName(e: Identifier): IdentifierChain? {
-            return PsiTreeUtil.getTopmostParentOfType(e, IdentifierChain::class.java)
+        fun inSingleImport(e: Identifier): SingleImport? {
+            return PsiTreeUtil.getTopmostParentOfType(e, SingleImport::class.java)
         }
-
 
         // Guess where the name could be defined by lookup up potential modules.
         if (e !is Identifier) {
             return emptyList()
         }
 
-        if (inModuleName(e) != null) {
-            return getFilesByModuleName(project, inModuleName(e)!!.text, GlobalSearchScope.allScope(project))
+        if (inSingleImport(e) != null) {
+            return getFilesByModuleName(project, inSingleImport(e)!!.name, GlobalSearchScope.allScope(project))
         }
 
         val nameProcessor = DNameScopeProcessor(e)

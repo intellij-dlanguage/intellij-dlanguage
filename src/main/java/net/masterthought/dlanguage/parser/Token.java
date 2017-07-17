@@ -15,7 +15,7 @@ public class Token {
         this.type = type;
     }
 
-    static class IdType{
+    static class IdType {
         final IElementType type;
 
         public IdType(IElementType matchingType) {
@@ -34,9 +34,9 @@ public class Token {
 
         @Override
         public boolean equals(Object obj) {
-            if(!(obj instanceof IdType))
+            if (!(obj instanceof IdType))
                 return false;
-            return type.getIndex() == ((IdType)obj).type.getIndex();
+            return type.getIndex() == ((IdType) obj).type.getIndex();
         }
     }
 }

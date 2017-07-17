@@ -1,6 +1,5 @@
 package net.masterthought.dlanguage.codeinsight.dcd;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.configurations.ParametersList;
@@ -17,7 +16,6 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -61,18 +59,16 @@ public class DCDCompletionClient {
 
                 String flags = ToolKey.DCD_CLIENT_KEY.getFlags(module.getProject());
 
-                if (isNotNullOrEmpty(flags))
-                {
+                if (isNotNullOrEmpty(flags)) {
                     String[] importList = flags.split(",");
-                    for (int i = 0; i < importList.length; i++)
-                    {
+                    for (int i = 0; i < importList.length; i++) {
                         parametersList.addParametersString("-I");
                         parametersList.addParametersString(importList[i]);
                     }
                 }
 
                 try {
-                    if(process == null) {
+                    if (process == null) {
                         process = commandLine.createProcess();
                         output = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
                         output.write(file.getText());
@@ -83,14 +79,11 @@ public class DCDCompletionClient {
 
                 String result = ExecUtil.readCommandLine(commandLine, file.getText());
 
-                if (result != null && !result.isEmpty())
-                {
+                if (result != null && !result.isEmpty()) {
                     String[] tokens = result.split("\\n");
                     String firstLine = tokens[0];
-                    if (firstLine.contains("identifiers"))
-                    {
-                        for (int i = 0; i < tokens.length; i++)
-                        {
+                    if (firstLine.contains("identifiers")) {
+                        for (int i = 0; i < tokens.length; i++) {
                             String token = tokens[i];
                             if (!token.contains("identifiers")) {
                                 String[] parts = token.split("\\s");

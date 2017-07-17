@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 public class DLanguageFileTypeFactory extends FileTypeFactory {
 
     @Override
-    public void createFileTypes(@NotNull FileTypeConsumer fileTypeConsumer){
+    public void createFileTypes(@NotNull FileTypeConsumer fileTypeConsumer) {
         fileTypeConsumer.consume(DLanguageFileType.INSTANCE, "d");
     }
 }

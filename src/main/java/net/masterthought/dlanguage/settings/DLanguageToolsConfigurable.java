@@ -24,10 +24,8 @@ import java.util.List;
  */
 public class DLanguageToolsConfigurable implements SearchableConfigurable {
 
-    private static final Logger LOG = Logger.getInstance(DLanguageToolsConfigurable.class);
-
     public static final String D_TOOLS_ID = "D Tools";
-
+    private static final Logger LOG = Logger.getInstance(DLanguageToolsConfigurable.class);
     private PropertiesComponent propertiesComponent;
 
     // Swing components.
@@ -62,19 +60,124 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
     public DLanguageToolsConfigurable(@NotNull Project project) {
         this.propertiesComponent = PropertiesComponent.getInstance(project);
         properties = Arrays.asList(
-                new Tool(project, "dub", ToolKey.DUB_KEY, dubPath, dubFlags,
-                        dubAutoFind, dubVersion),
-                new Tool(project, "dscanner", ToolKey.DSCANNER_KEY, dscannerPath, dscannerFlags,
-                        dscannerAutoFind, dscannerVersion),
-                new Tool(project, "dcd-server", ToolKey.DCD_SERVER_KEY, dcdPath, dcdFlags,
-                        dcdAutoFind, dcdVersion, "--version",SettingsChangeNotifier.DCD_TOPIC),
-                new Tool(project, "dcd-client", ToolKey.DCD_CLIENT_KEY, dcdClientPath, dcdClientFlags,
-                        dcdClientAutoFind, dcdClientVersion),
-                new Tool(project, "dfmt", ToolKey.DFORMAT_KEY, dFormatPath, dFormatFlags,
-                        dFormatAutoFind, dFormatVersion),
-                new Tool(project, "dfix", ToolKey.DFIX_KEY, dFixPath, dFixFlags,
-                        dFixAutoFind, dFixVersion)
+            new Tool(project, "dub", ToolKey.DUB_KEY, dubPath, dubFlags,
+                dubAutoFind, dubVersion),
+            new Tool(project, "dscanner", ToolKey.DSCANNER_KEY, dscannerPath, dscannerFlags,
+                dscannerAutoFind, dscannerVersion),
+            new Tool(project, "dcd-server", ToolKey.DCD_SERVER_KEY, dcdPath, dcdFlags,
+                dcdAutoFind, dcdVersion, "--version", SettingsChangeNotifier.DCD_TOPIC),
+            new Tool(project, "dcd-client", ToolKey.DCD_CLIENT_KEY, dcdClientPath, dcdClientFlags,
+                dcdClientAutoFind, dcdClientVersion),
+            new Tool(project, "dfmt", ToolKey.DFORMAT_KEY, dFormatPath, dFormatFlags,
+                dFormatAutoFind, dFormatVersion),
+            new Tool(project, "dfix", ToolKey.DFIX_KEY, dFixPath, dFixFlags,
+                dFixAutoFind, dFixVersion)
         );
+    }
+
+    /**
+     * Heuristically finds the version number. Current implementation is the
+     * identity function since cabal plays nice.
+     */
+    private static String getVersion(String cmd, String versionFlag) {
+        return ExecUtil.readCommandLine(null, cmd, versionFlag);
+    }
+
+    @NotNull
+    @Override
+    public String getId() {
+        return D_TOOLS_ID;
+    }
+
+    @Nullable
+    @Override
+    public Runnable enableSearch(String s) {
+        // TODO
+        return null;
+    }
+
+    @Nls
+    @Override
+    public String getDisplayName() {
+        return D_TOOLS_ID;
+    }
+
+    @Nullable
+    @Override
+    public String getHelpTopic() {
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public JComponent createComponent() {
+        return mainPanel;
+    }
+
+    /**
+     * Enables the apply button if anything changed.
+     */
+    @Override
+    public boolean isModified() {
+        for (Property property : properties) {
+            if (property.isModified()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Triggered when the user pushes the apply button.
+     */
+    @Override
+    public void apply() throws ConfigurationException {
+        updateVersionInfoFields();
+        saveState();
+    }
+
+    /**
+     * Triggered when the user pushes the cancel button.
+     */
+    @Override
+    public void reset() {
+        restoreState();
+    }
+
+    @Override
+    public void disposeUIResources() {
+
+    }
+
+    /**
+     * Updates the version info fields for all files configured.
+     */
+    private void updateVersionInfoFields() {
+        for (Property property : properties) {
+            if (property instanceof Versioned) {
+                ((Versioned) property).updateVersion();
+            }
+        }
+    }
+
+    /**
+     * Persistent save of the current state.
+     */
+    private void saveState() {
+        LOG.info("Saving D Tools Config");
+        for (Property property : properties) {
+            property.saveState();
+        }
+    }
+
+    /**
+     * Restore components to the initial state.
+     */
+    private void restoreState() {
+        LOG.info("Restore D Tools Config");
+        for (Property property : properties) {
+            property.restoreState();
+        }
     }
 
     interface Property {
@@ -93,9 +196,9 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
      * Manages the state of a PropertyComponent and its respective field.
      */
     class PropertyField implements Property {
+        public final TextAccessor field;
         public String oldValue;
         public String propertyKey;
-        public final TextAccessor field;
 
         PropertyField(@NotNull String propertyKey, @NotNull TextAccessor field) {
             this(propertyKey, field, "");
@@ -166,8 +269,8 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
             this.publisher = topic == null ? null : project.getMessageBus().syncPublisher(topic);
 
             this.propertyFields = Arrays.asList(
-                    new PropertyField(key.pathKey, pathField),
-                    new PropertyField(key.flagsKey, flagsField));
+                new PropertyField(key.pathKey, pathField),
+                new PropertyField(key.flagsKey, flagsField));
 
             GuiUtil.addFolderListener(pathField, command);
             GuiUtil.addApplyPathAction(autoFindButton, pathField, command);
@@ -205,111 +308,6 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
             for (PropertyField propertyField : propertyFields) {
                 propertyField.restoreState();
             }
-        }
-    }
-
-    @NotNull
-    @Override
-    public String getId() {
-        return D_TOOLS_ID;
-    }
-
-    @Nullable
-    @Override
-    public Runnable enableSearch(String s) {
-        // TODO
-        return null;
-    }
-
-    @Nls
-    @Override
-    public String getDisplayName() {
-        return D_TOOLS_ID;
-    }
-
-    @Nullable
-    @Override
-    public String getHelpTopic() {
-        return null;
-    }
-
-    @Nullable
-    @Override
-    public JComponent createComponent() {
-        return mainPanel;
-    }
-
-    /**
-     * Enables the apply button if anything changed.
-     */
-    @Override
-    public boolean isModified() {
-        for (Property property : properties) {
-            if (property.isModified()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Triggered when the user pushes the apply button.
-     */
-    @Override
-    public void apply() throws ConfigurationException {
-        updateVersionInfoFields();
-        saveState();
-    }
-
-    /**
-     * Triggered when the user pushes the cancel button.
-     */
-    @Override
-    public void reset() {
-        restoreState();
-    }
-
-    @Override
-    public void disposeUIResources() {
-
-    }
-
-    /**
-     * Heuristically finds the version number. Current implementation is the
-     * identity function since cabal plays nice.
-     */
-    private static String getVersion(String cmd, String versionFlag) {
-        return ExecUtil.readCommandLine(null, cmd, versionFlag);
-    }
-
-    /**
-     * Updates the version info fields for all files configured.
-     */
-    private void updateVersionInfoFields() {
-        for (Property property : properties) {
-            if (property instanceof Versioned) {
-                ((Versioned) property).updateVersion();
-            }
-        }
-    }
-
-    /**
-     * Persistent save of the current state.
-     */
-    private void saveState() {
-        LOG.info("Saving D Tools Config");
-        for (Property property : properties) {
-            property.saveState();
-        }
-    }
-
-    /**
-     * Restore components to the initial state.
-     */
-    private void restoreState() {
-        LOG.info("Restore D Tools Config");
-        for (Property property : properties) {
-            property.restoreState();
         }
     }
 }

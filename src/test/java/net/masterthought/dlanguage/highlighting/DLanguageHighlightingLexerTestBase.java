@@ -39,7 +39,7 @@ public class DLanguageHighlightingLexerTestBase extends LexerTestCase {
         String result = printTokens(text, 0);
         try {
             doCheckResult(myExpectPath + File.separator + "expected",
-                    getTestName(false) + ".txt", result);
+                getTestName(false) + ".txt", result);
         } catch (IOException e) {
             fail("Unexpected IO Exception: " + e.getMessage());
         }

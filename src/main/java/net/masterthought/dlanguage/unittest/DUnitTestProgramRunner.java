@@ -15,6 +15,6 @@ public class DUnitTestProgramRunner extends DefaultProgramRunner {
     @Override
     public boolean canRun(@NotNull String executorId, @NotNull RunProfile profile) {
         return (DefaultRunExecutor.EXECUTOR_ID.equals(executorId))
-                && (profile instanceof DUnitTestRunConfiguration);
+            && (profile instanceof DUnitTestRunConfiguration);
     }
 }

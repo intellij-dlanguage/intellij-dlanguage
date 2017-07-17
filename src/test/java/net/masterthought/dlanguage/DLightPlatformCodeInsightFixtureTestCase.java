@@ -35,6 +35,13 @@ public abstract class DLightPlatformCodeInsightFixtureTestCase extends LightPlat
         expectPath = String.format("%s/%s", getDirPath(), expectName);
     }
 
+    /**
+     * Base path to the test files.
+     */
+    protected static String getDirPath() {
+        return "gold";
+    }
+
     @Override
     protected void setUp() throws Exception {
         super.setUp();
@@ -51,14 +58,7 @@ public abstract class DLightPlatformCodeInsightFixtureTestCase extends LightPlat
     }
 
     protected String getTestDataPath(String... names) {
-        return this.getClass().getClassLoader().getResource(String.format("%s/%s", srcPath, StringUtil.join(names, "/"))).getPath().replace("/C:","");
-    }
-
-    /**
-     * Base path to the test files.
-     */
-    protected static String getDirPath() {
-        return "gold";
+        return this.getClass().getClassLoader().getResource(String.format("%s/%s", srcPath, StringUtil.join(names, "/"))).getPath().replace("/C:", "");
     }
 
     /**

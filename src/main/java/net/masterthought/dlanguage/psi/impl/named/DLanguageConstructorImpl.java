@@ -3,7 +3,10 @@ package net.masterthought.dlanguage.psi.impl.named;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.*;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiReference;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.icons.DLanguageIcons;
@@ -77,9 +80,22 @@ public class DLanguageConstructorImpl extends DNamedStubbedPsiElementBase<DLangu
         return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageMemberFunctionAttribute.class);
     }
 
+    @Nullable
+    @Override
+    public DLanguageParameters getParameters() {
+        return PsiTreeUtil.getChildOfType(this,DLanguageParameters.class);
+    }
+
+    @Nullable
+    @Override
+    public DLanguageTemplateParameters getTemplateParameters() {
+        return PsiTreeUtil.getChildOfType(this,DLanguageTemplateParameters.class);
+    }
+
+
     @NotNull
     public String getName() {
-        if(DUtil.getParentClassOrStructOrTemplateOrInterface(this) == null){
+        if (DUtil.getParentClassOrStructOrTemplateOrInterface(this) == null) {
             throw new IllegalStateException();
         }
         return DUtil.getParentClassOrStructOrTemplateOrInterface(this).getName();

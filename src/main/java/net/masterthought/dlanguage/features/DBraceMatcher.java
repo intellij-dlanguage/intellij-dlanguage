@@ -12,9 +12,9 @@ import org.jetbrains.annotations.Nullable;
 
 public class DBraceMatcher implements PairedBraceMatcher {
     private static final BracePair[] PAIRS = new BracePair[]{
-            new BracePair(DLanguageTypes.OP_PAR_LEFT, DLanguageTypes.OP_PAR_RIGHT, false),
-            new BracePair(DLanguageTypes.OP_BRACES_LEFT, DLanguageTypes.OP_BRACES_RIGHT, true),
-            new BracePair(DLanguageTypes.OP_BRACKET_LEFT, DLanguageTypes.OP_BRACKET_RIGHT, false),
+        new BracePair(DLanguageTypes.OP_PAR_LEFT, DLanguageTypes.OP_PAR_RIGHT, false),
+        new BracePair(DLanguageTypes.OP_BRACES_LEFT, DLanguageTypes.OP_BRACES_RIGHT, true),
+        new BracePair(DLanguageTypes.OP_BRACKET_LEFT, DLanguageTypes.OP_BRACKET_RIGHT, false),
     };
 
     private static final TokenSet alwaysMatch = TokenSet.create(DLanguageTypes.OP_BRACES_LEFT);
@@ -27,11 +27,11 @@ public class DBraceMatcher implements PairedBraceMatcher {
     @Override
     public boolean isPairedBracesAllowedBeforeType(@NotNull IElementType lbraceType, @Nullable IElementType contextType) {
         return alwaysMatch.contains(lbraceType)
-                || DTokenSets.WHITESPACES.contains(contextType)
-                || DTokenSets.LINE_COMMENTS.contains(contextType)
-                || DTokenSets.BLOCK_COMMENTS.contains(contextType)
-                || DLanguageTypes.OP_PAR_RIGHT == contextType
-                || null == contextType;
+            || DTokenSets.WHITESPACES.contains(contextType)
+            || DTokenSets.LINE_COMMENTS.contains(contextType)
+            || DTokenSets.BLOCK_COMMENTS.contains(contextType)
+            || DLanguageTypes.OP_PAR_RIGHT == contextType
+            || null == contextType;
     }
 
     @Override

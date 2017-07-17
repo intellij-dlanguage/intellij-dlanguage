@@ -15,6 +15,190 @@ import net.masterthought.dlanguage.utils.*
 
 object ScopeProcessorImplUtil {
 
+    fun processDeclaration(def: Declaration,
+                           processor: PsiScopeProcessor,
+                           state: ResolveState,
+                           lastParent: PsiElement,
+                           place: PsiElement): Boolean {
+        //todo attributes should be passed to scope processor to determine publicness
+        var toContinue = true;
+        def.attributes
+        if (def.aliasDeclaration?.aliasInitializers != null) {
+            for (varDeclaration in def.aliasDeclaration?.aliasInitializers!!) {
+                toContinue = processor.execute(varDeclaration, state)
+            }
+            return toContinue
+        }
+        if (def.aliasThisDeclaration != null) {
+            return true
+        }
+        if (def.classDeclaration?.structBody?.declarations != null) {
+            for (declaration in def.classDeclaration!!.structBody!!.declarations) {
+                if (!declaration.processDeclarations(processor, state, lastParent, place)) {
+                    toContinue = false
+                }
+            }
+            if (!processor.execute(def.classDeclaration!!, state)) {
+                return false
+            }
+            return toContinue;
+        }
+        if (def.conditionalDeclaration != null) {
+            return ScopeProcessorImplUtil.processConditionalDeclaration(def.conditionalDeclaration!!, processor, state, lastParent, place)
+        }
+        if (def.constructor != null) {
+            return processor.execute(def.constructor!!, state);
+        }
+        if (def.destructor != null) {
+
+        }
+        if (def.enumDeclaration != null) {
+            if (def.enumDeclaration?.enumBody?.enumMembers != null) {
+                for (enumMember in def.enumDeclaration!!.enumBody!!.enumMembers) {
+                    if (!processor.execute(enumMember, state)) {
+                        toContinue = false
+                    }
+                }
+            }
+            if (!processor.execute(def.enumDeclaration!!, state)) {
+                toContinue = false
+            }
+            return toContinue;
+        }
+        if (def.functionDeclaration != null) {
+            return processor.execute(def.functionDeclaration!!, state)
+        }
+        if (def.importDeclaration != null) {
+            for (singleImport in def.importDeclaration!!.singleImports) {
+                if (!processor.execute(singleImport, state)) {
+                    toContinue = false;
+                }
+            }
+            return toContinue
+        }
+        if (def.interfaceDeclaration != null) {
+            if (def.interfaceDeclaration!!.interfaceOrClass?.structBody != null) {
+                for (d in def.interfaceDeclaration!!.interfaceOrClass?.structBody!!.declarations) {
+                    if (!d.processDeclarations(processor, state, lastParent, place)) {
+                        toContinue = false
+                    }
+                }
+            }
+            if (!processor.execute(def.interfaceDeclaration!!, state)) {
+                toContinue = false;
+            }
+            return toContinue
+        }
+        if (def.mixinDeclaration != null) {
+
+        }
+        if (def.mixinTemplateDeclaration != null) {
+            for (declaration in def.mixinTemplateDeclaration!!.templateDeclaration!!.declarations) {
+                if (!declaration.processDeclarations(processor, state, lastParent, place)) {
+                    toContinue = false
+                }
+            }
+            if (!processor.execute(def.mixinTemplateDeclaration!!.templateDeclaration!!, state)) {
+                return false
+            }
+            return toContinue;
+        }
+        if (def.sharedStaticConstructor != null) {
+
+        }
+        if (def.sharedStaticDestructor != null) {
+
+        }
+        if (def.staticAssertDeclaration != null) {
+
+        }
+        if (def.staticConstructor != null) {
+
+        }
+        if (def.staticDestructor != null) {
+
+        }
+        if (def.structDeclaration != null) {
+            if (def.structDeclaration!!.structBody?.declarations != null) {
+                for (declaration in def.structDeclaration!!.structBody!!.declarations) {
+                    if (!declaration.processDeclarations(processor, state, lastParent, place)) {
+                        toContinue = false
+                    }
+                }
+            }
+            if (!processor.execute(def.structDeclaration!!, state)) {
+                return false
+            }
+            return toContinue;
+        }
+        if (def.templateDeclaration != null) {
+            if (def.templateDeclaration!!.declarations != null) {
+                for (declaration in def.templateDeclaration!!.declarations) {
+                    if (!declaration.processDeclarations(processor, state, lastParent, place)) {
+                        toContinue = false
+                    }
+                }
+            }
+            if (!processor.execute(def.templateDeclaration!!, state)) {
+                return false
+            }
+            return toContinue;
+        }
+        if (def.unionDeclaration != null) {
+            if (def.unionDeclaration!!.structBody?.declarations != null) {
+                for (declaration in def.unionDeclaration!!.structBody!!.declarations) {
+                    if (!declaration.processDeclarations(processor, state, lastParent, place)) {
+                        toContinue = false
+                    }
+                }
+            }
+            if (!processor.execute(def.unionDeclaration!!, state)) {
+                return false
+            }
+            return toContinue;
+        }
+        if (def.unittest != null) {
+
+        }
+        if (def.variableDeclaration?.autoDeclaration?.autoDeclarationParts != null) {
+            for (initializer in def.variableDeclaration!!.autoDeclaration!!.autoDeclarationParts) {
+                if (!processor.execute(initializer, state)) {
+                    toContinue = false
+                }
+            }
+            return toContinue
+        }
+        if (def.variableDeclaration?.declarators != null) {
+            for (declarator in def.variableDeclaration!!.declarators) {
+                if (!processor.execute(declarator, state)) {
+                    toContinue = false
+                }
+            }
+            return toContinue
+        }
+        if (def.attributeDeclaration != null) {
+
+        }
+        if (def.invariant != null) {
+
+        }
+        if (def.versionSpecification != null) {
+
+        }
+        if (def.debugSpecification != null) {
+
+        }
+        if (def.declarations != null) {
+            for (decl in def.declarations) {
+                if (!decl.processDeclarations(processor, state, lastParent, place)) {
+                    toContinue = false
+                }
+            }
+            return toContinue
+        }
+        throw IllegalStateException("this should never happen")
+    }
+
     fun processConditionalDeclaration(element: ConditionalDeclaration,
                                       processor: PsiScopeProcessor,
                                       state: ResolveState,
@@ -23,7 +207,7 @@ object ScopeProcessorImplUtil {
 
         var defNotFound = true
         for (declaration in element.declarations) {
-            if(!ScopeProcessorImpl.processDeclarations(declaration, processor, state, lastParent, place)){
+            if(!ScopeProcessorImplUtil.processDeclaration(declaration, processor, state, lastParent, place)){
                 defNotFound = false;
             }
         }

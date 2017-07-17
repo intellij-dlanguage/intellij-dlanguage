@@ -32,8 +32,8 @@ public class ToolKey {
     }
 
     @NotNull
-    public void setPath(@NotNull Project project, String newValue){
-       PropertiesComponent.getInstance(project).setValue(pathKey, newValue);
+    public void setPath(@NotNull Project project, String newValue) {
+        PropertiesComponent.getInstance(project).setValue(pathKey, newValue);
     }
 
     @NotNull

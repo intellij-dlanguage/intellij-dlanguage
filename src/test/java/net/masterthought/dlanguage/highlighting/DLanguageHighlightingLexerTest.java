@@ -10,7 +10,9 @@ public class DLanguageHighlightingLexerTest extends DLanguageHighlightingLexerTe
     }
 
     // shebang
-    public void testsyntax_highlighting() { doTest(true, true); }
+    public void testsyntax_highlighting() {
+        doTest(true, true);
+    }
 
     // keywords
 //    public void testkeyword_abstract() { doTestModule(true, true); }

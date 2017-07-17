@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DLanguageVirtualFileVisitor extends VirtualFileVisitor {
+    private final char separator = File.separatorChar;
     private List<String> dLangSources;
     private VirtualFile sourcesRoot;
     private VirtualFile[] excludedRoots;
-    private final char separator = File.separatorChar;
 
 
     public DLanguageVirtualFileVisitor(VirtualFile sourcesRoot, VirtualFile[] excludedRoots) {
@@ -24,15 +24,15 @@ public class DLanguageVirtualFileVisitor extends VirtualFileVisitor {
 
     @Override
     public boolean visitFile(@NotNull VirtualFile file) {
-        if(!file.isDirectory() && "d".equals(file.getExtension()) && !isExcluded(file)) {
+        if (!file.isDirectory() && "d".equals(file.getExtension()) && !isExcluded(file)) {
             dLangSources.add(VfsUtilCore.getRelativePath(file, sourcesRoot, separator));
         }
         return super.visitFile(file);
     }
 
     private boolean isExcluded(VirtualFile srcFile) {
-        for(VirtualFile excludeDir : excludedRoots) {
-            if(VfsUtilCore.isAncestor(excludeDir, srcFile, false)) {
+        for (VirtualFile excludeDir : excludedRoots) {
+            if (VfsUtilCore.isAncestor(excludeDir, srcFile, false)) {
                 return true;
             }
         }

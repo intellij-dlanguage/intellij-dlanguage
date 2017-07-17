@@ -13,9 +13,9 @@ public class DReferenceContributor extends PsiReferenceContributor {
     @Override
     public void registerReferenceProviders(PsiReferenceRegistrar registrar) {
         PsiElementPattern.Capture<PsiNamedElement> variableCapture =
-                PlatformPatterns.psiElement(PsiNamedElement.class).withParent(DLanguageIdentifier.class).withParent(DLanguageFunctionDeclaration.class).withLanguage(DLanguage.INSTANCE);
+            PlatformPatterns.psiElement(PsiNamedElement.class).withParent(DLanguageIdentifier.class).withParent(DLanguageFunctionDeclaration.class).withLanguage(DLanguage.INSTANCE);
         registrar.registerReferenceProvider(variableCapture,
-                new DReferenceProvider());
+            new DReferenceProvider());
     }
 }
 

@@ -1,14 +1,14 @@
 // This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiElementVisitor;
 import net.masterthought.dlanguage.psi.impl.*;
 import net.masterthought.dlanguage.psi.impl.named.*;
-import org.jetbrains.annotations.*;
-import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.PsiElement;
-import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
+import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 import net.masterthought.dlanguage.psi.interfaces.Mixin;
+import org.jetbrains.annotations.NotNull;
 
 
 public class DLanguageVisitor extends PsiElementVisitor {

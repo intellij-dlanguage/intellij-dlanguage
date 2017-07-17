@@ -29,6 +29,15 @@ import java.util.Map;
 
 public class DUnitTestRunConfiguration extends LocatableConfigurationBase {
 
+    private String dFilePath;
+    private String workingDir;
+    private Map<String, String> envVars;
+
+    public DUnitTestRunConfiguration(Project project) {
+        super(project, new DUnitTestRunConfigurationFactory(DUnitTestRunConfigurationType.getInstance()), DLanguage.INSTANCE.getDisplayName());
+        envVars = new HashMap<>();
+    }
+
     public String getdFilePath() {
         return dFilePath;
     }
@@ -53,48 +62,32 @@ public class DUnitTestRunConfiguration extends LocatableConfigurationBase {
         this.envVars = envVars;
     }
 
-    private String dFilePath;
-    private String workingDir;
-    private Map<String, String> envVars;
-
-    public DUnitTestRunConfiguration(Project project)
-    {
-        super(project, new DUnitTestRunConfigurationFactory(DUnitTestRunConfigurationType.getInstance()), DLanguage.INSTANCE.getDisplayName());
-        envVars = new HashMap<>();
-    }
-
-
     @Override
-    public void readExternal(Element element) throws InvalidDataException
-    {
+    public void readExternal(Element element) throws InvalidDataException {
         super.readExternal(element);
         XmlSerializer.deserializeInto(this, element);
     }
 
     @Override
-    public void writeExternal(Element element) throws WriteExternalException
-    {
+    public void writeExternal(Element element) throws WriteExternalException {
         super.writeExternal(element);
         XmlSerializer.serializeInto(this, element);
     }
 
     @NotNull
     @Override
-    public SettingsEditor<DUnitTestRunConfiguration> getConfigurationEditor()
-    {
+    public SettingsEditor<DUnitTestRunConfiguration> getConfigurationEditor() {
         return new DUnitTestRunConfigurationEditor(getProject());
     }
 
     @Override
-    public void checkConfiguration() throws RuntimeConfigurationException
-    {
+    public void checkConfiguration() throws RuntimeConfigurationException {
         // TODO: Fill this in
     }
 
     @Nullable
     @Override
-    public RunProfileState getState(@NotNull Executor executor, @NotNull ExecutionEnvironment environment) throws ExecutionException
-    {
+    public RunProfileState getState(@NotNull Executor executor, @NotNull ExecutionEnvironment environment) throws ExecutionException {
         return new DUnitTestRunProfileState(environment);
     }
 

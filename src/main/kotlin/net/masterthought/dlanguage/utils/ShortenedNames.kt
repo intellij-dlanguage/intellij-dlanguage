@@ -5,7 +5,8 @@ import net.masterthought.dlanguage.psi.*
 /**
  * Created by francis on 6/13/2017.
  */
-//typealias AliasDeclaration = DLanguageAliasDeclaration
+//typealias AliasDeclaration = DLanguageAliasDeclaration\
+typealias InterfaceOrClass = DLanguageInterfaceOrClass
 typealias ClassDeclaration = DLanguageClassDeclaration
 typealias Constructor = DLanguageConstructor
 typealias Destructor = DLanguageDestructor

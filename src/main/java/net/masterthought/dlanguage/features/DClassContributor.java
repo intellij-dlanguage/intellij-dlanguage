@@ -32,7 +32,7 @@ public class DClassContributor implements ChooseByNameContributor {
         Collection<DNamedElement> result = StubIndex.getElements(DAllNameIndex.KEY, name, project, scope, DNamedElement.class);
         List<NavigationItem> items = ContainerUtil.newArrayListWithCapacity(result.size());
         for (DNamedElement element : result) {
-            if(element.getParent().getClass() == DLanguageInterfaceOrClassImpl.class) {
+            if (element.getParent().getClass() == DLanguageInterfaceOrClassImpl.class) {
                 items.add(element);
             }
         }

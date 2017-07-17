@@ -4,7 +4,6 @@ import com.intellij.execution.ExecutionException;
 import com.intellij.execution.ExecutionResult;
 import com.intellij.execution.Executor;
 import com.intellij.execution.configurations.CommandLineState;
-import com.intellij.execution.configurations.CommandLineTokenizer;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.filters.TextConsoleBuilder;
 import com.intellij.execution.filters.TextConsoleBuilderImpl;
@@ -25,8 +24,6 @@ import net.masterthought.dlanguage.utils.DToolsNotificationListener;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 
 import static net.masterthought.dlanguage.utils.DUtil.isNotNullOrEmpty;
 
@@ -36,7 +33,7 @@ public class DLanguageRunDubState extends CommandLineState {
     private Executor executor;
 
     protected DLanguageRunDubState(@NotNull ExecutionEnvironment environment, @NotNull DLanguageRunDubConfiguration
-            config) {
+        config) {
         super(environment);
         this.config = config;
     }
@@ -64,10 +61,10 @@ public class DLanguageRunDubState extends CommandLineState {
             boolean notCorrect = message.startsWith("Cannot run program");
             if (isEmpty || notCorrect) {
                 Notifications.Bus.notify(
-                        new Notification("DUB run configuration", "DUB settings",
-                                "DUB executable is " + (isEmpty ? "not specified" : "not specified correctly") +
-                                        "<br/><a href='configureDLanguageTools'>Configure</a> executable",
-                                NotificationType.ERROR, new DToolsNotificationListener(project)), project);
+                    new Notification("DUB run configuration", "DUB settings",
+                        "DUB executable is " + (isEmpty ? "not specified" : "not specified correctly") +
+                            "<br/><a href='configureDLanguageTools'>Configure</a> executable",
+                        NotificationType.ERROR, new DToolsNotificationListener(project)), project);
             }
             throw e;
         }
@@ -76,7 +73,7 @@ public class DLanguageRunDubState extends CommandLineState {
     /* Build command line to start DUB executable
      */
     private GeneralCommandLine getExecutableCommandLine(DLanguageRunDubConfiguration config)
-            throws ExecutionException {
+        throws ExecutionException {
         Module module = config.getConfigurationModule().getModule();
         if (module == null) {
             throw new ExecutionException("Run configuration has no module selected.");

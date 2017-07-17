@@ -15,6 +15,8 @@ string[][string] named_children;
 
 string[][string] stub_children;
 
+bool[string] has_processDeclaration;
+
 static this() {
     types_children["AddExpression"] = ["AddExpression", "MulExpression","OP_TILDA", "OP_PLUS" , "OP_MINUS"];//todo insert from MulExpression
     types_children["AliasDeclaration"] = ["IdentifierList","OP_COMMA","StorageClass*","KW_ALIAS", "Type", "OP_SCOLON", "AliasInitializer*"];
@@ -72,7 +74,7 @@ static this() {
     types_children["ConditionalDeclaration"] = ["CompileCondition", "Declaration*","OP_COLON","KW_ELSE"];
     types_children["ConditionalStatement"] = ["CompileCondition", "DeclarationOrStatement*", "KW_ELSE"];
     types_children["Constraint"] = ["KW_IF","Expression", "OP_PAR_RIGHT","OP_PAR_LEFT"];
-    named_children["Constructor"] = ["FunctionBody","OP_SCOLON","OP_PAR_RIGHT","OP_PAR_LEFT","KW_THIS","MemberFunctionAttribute*"];
+    named_children["Constructor"] = ["FunctionBody","OP_SCOLON","OP_PAR_RIGHT","OP_PAR_LEFT","KW_THIS","MemberFunctionAttribute*","Parameters","TemplateParameters"];
     types_children["ContinueStatement"] = ["KW_CONTINUE", "Identifier", "OP_SCOLON"];
     types_children["DebugCondition"] = ["KW_DEBUG","INTEGER_LITERAL", "Identifier", "OP_PAR_RIGHT","OP_PAR_LEFT"];
     types_children["DebugSpecification"] = ["KW_DEBUG","OP_EQ","Identifier", "INTEGER_LITERAL", "OP_SCOLON"];
@@ -84,7 +86,7 @@ static this() {
     types_children["DeleteExpression"] = ["KW_DELETE","UnaryExpression"];
     types_children["DeleteStatement"] = ["KW_DELETE"];
     types_children["Deprecated"] = ["AssignExpression","Deprecated","OP_PAR_RIGHT","OP_PAR_LEFT"];
-    stub_children["Destructor"] = ["FunctionBody","OP_SCOLON","OP_PAR_RIGHT","OP_PAR_LEFT","KW_THIS","OP_TILDA","MemberFunctionAttribute*"];
+    stub_children ["Destructor"] = ["FunctionBody","OP_SCOLON","OP_PAR_RIGHT","OP_PAR_LEFT","KW_THIS","OP_TILDA","MemberFunctionAttribute*"];
     types_children["DoStatement"] = ["KW_DO","KW_WHILE","StatementNoCaseNoDefault","Expression","OP_SCOLON","OP_PAR_RIGHT","OP_PAR_LEFT"];
     types_children["EnumBody"] = [ "Identifier","OP_BRACES_RIGHT", "OP_BRACES_LEFT", "EnumMember*","OP_COMMA*","OP_SCOLON"];
     named_children["EnumDeclaration"] = ["Identifier","OP_COLON","KW_ENUM","Type","EnumBody"];
@@ -105,7 +107,6 @@ static this() {
     named_children["FunctionDeclaration"] = ["Type", "Identifier",  "TemplateParameters", "Parameters",  "Constraint",  "FunctionBody"];
     types_children["FunctionLiteralExpression"] = ["Type","KW_FUNCTION","KW_DELEGATE","Parameters","FunctionAttribute*","FunctionBody"];
     types_children["GotoStatement"] = ["Identifier","Expression","KW_DEFAULT","KW_CASE","KW_GOTO","OP_SCOLON"];
-//    named_children["Identifier"] = ["ID"];
     types_children["IdentifierChain"] = ["Identifier*", "OP_DOT*"];
     types_children["IdentifierList"] = ["Identifier*", "OP_COMMA*"];
     types_children["IdentifierOrTemplateChain"] = ["OP_DOT*","IdentifierOrTemplateInstance*"];
@@ -122,12 +123,11 @@ static this() {
     types_children["InExpression"] = ["ShiftExpression*","KW_IN","OP_NOT"];
     types_children["Initializer"] = ["KW_VOID","NonVoidInitializer"];
     types_children["InStatement"] = ["KW_IN","BlockStatement"];
-//    types_children["Initialize"] = [];
     types_children["Initializer"] = ["KW_VOID","NonVoidInitializer"];
     types_children["InterfaceDeclaration"] = ["KW_INTERFACE","InterfaceOrClass"];
     named_children["InterfaceOrClass"] = ["Identifier","TemplateParameters","OP_COLON","StructBody","Constraint","BaseClassList"];
     types_children["Invariant"] = ["BlockStatement","KW_INVARIANT","OP_PAR_RIGHT","OP_PAR_LEFT"];
-    types_children["IsExpression"] = ["OP_PAR_RIGHT","OP_PAR_LEFT","Type","Identifier","TypeSpecialization",  "TemplateParameterList","OP_COMMA","OP_COLON","OP_EQ","KW_IS"];
+    types_children["IsExpression"] = ["OP_PAR_RIGHT","OP_PAR_LEFT","Type","Identifier","TypeSpecialization",  "TemplateParameterList","OP_COMMA","OP_COLON","OP_EQ","KW_IS"];//todo technically this should be named
     types_children["KeyValuePair"] = ["AssignExpression*","OP_COLON"];
     types_children["KeyValuePairs"] = ["OP_COMMA*","KeyValuePair*"];
     types_children["LambdaExpression"] = ["Identifier","KW_FUNCTION","KW_DELEGATE","OP_LAMBDA_ARROW","AssignExpression","Parameters","FunctionAttribute*"];
@@ -160,8 +160,8 @@ static this() {
     types_children["RelExpression"] = ["RelExpression", "ShiftExpression","OP_GT","OP_GT_EQ","OP_LESS","OP_LESS_EQ","OP_LESS_GR","OP_LESS_GR_EQ","OP_NOT_GR","OP_NOT_GR_EQ","OP_NOT_LESS","OP_NOT_LESS_EQ","OP_UNORD","OP_UNORD_EQ"];
     types_children["ReturnStatement"] = ["KW_RETURN","Expression","OP_SCOLON"];
     types_children["ScopeGuardStatement"] = ["KW_SCOPE","Identifier","StatementNoCaseNoDefault","OP_PAR_LEFT","OP_PAR_RIGHT"];
-    stub_children["SharedStaticConstructor"] = ["KW_STATIC","KW_SHARED","KW_THIS","OP_PAR_LEFT","OP_PAR_RIGHT","FunctionBody"];
-    stub_children["SharedStaticDestructor"] = ["OP_TILDA","KW_STATIC","KW_SHARED","KW_THIS","OP_PAR_LEFT","OP_PAR_RIGHT","FunctionBody"];
+    stub_children ["SharedStaticConstructor"] = ["KW_STATIC","KW_SHARED","KW_THIS","OP_PAR_LEFT","OP_PAR_RIGHT","FunctionBody"];
+    stub_children ["SharedStaticDestructor"] = ["OP_TILDA","KW_STATIC","KW_SHARED","KW_THIS","OP_PAR_LEFT","OP_PAR_RIGHT","FunctionBody"];
     types_children["ShiftExpression"] = ["ShiftExpression","AddExpression","OP_SH_RIGHT","OP_SH_LEFT","OP_USH_RIGHT"];
     named_children["SingleImport"] = ["Identifier","OP_EQ","IdentifierChain"];
     types_children["SliceExpression"] = ["UnaryExpression","AssignExpression*","OP_BRACKET_LEFT","OP_BRACKET_RIGHT","OP_DDOT"];
@@ -170,8 +170,8 @@ static this() {
     types_children["StatementNoCaseNoDefault"] = ["LabeledStatement","BlockStatement","IfStatement","WhileStatement","DoStatement","ForStatement","ForeachStatement","SwitchStatement","FinalSwitchStatement","ContinueStatement","BreakStatement","ReturnStatement","GotoStatement","WithStatement","SynchronizedStatement","TryStatement","ThrowStatement","ScopeGuardStatement","AsmStatement","DebugSpecification", "ConditionalStatement", "VersionSpecification","StaticAssertStatement","ExpressionStatement"];
     types_children["StaticAssertDeclaration"] = ["StaticAssertStatement"];
     types_children["StaticAssertStatement"] = ["KW_STATIC","AssertExpression","OP_SCOLON"];
-    stub_children["StaticConstructor"] = ["KW_STATIC","KW_THIS","OP_PAR_LEFT","OP_PAR_RIGHT","FunctionBody"];
-    stub_children["StaticDestructor"] = ["OP_TILDA","KW_STATIC","KW_THIS","OP_PAR_LEFT","OP_PAR_RIGHT","FunctionBody"];
+    stub_children ["StaticConstructor"] = ["KW_STATIC","KW_THIS","OP_PAR_LEFT","OP_PAR_RIGHT","FunctionBody"];
+    stub_children ["StaticDestructor"] = ["OP_TILDA","KW_STATIC","KW_THIS","OP_PAR_LEFT","OP_PAR_RIGHT","FunctionBody"];
     types_children["StaticCtorDtorCommon"] = ["FunctionBody"];
     types_children["StaticIfCondition"] = ["StaticIfCondition","AssignExpression","OP_PAR_RIGHT","OP_PAR_LEFT"];
     types_children["StorageClass"] = ["AtAttribute","Deprecated","AlignAttribute","LinkageAttribute",   "KW_SYNCHRONIZED","TypeConstructor","KW_ABSTRACT","KW_AUTO","KW_ENUM","KW_EXTERN","KW_FINAL","KW_INOUT","KW_NOTHROW","KW_OVERRIDE","KW_PURE","KW_REF","KW___GSHARED","KW_SCOPE","KW_STATIC"];
@@ -215,7 +215,7 @@ static this() {
     types_children["TypeSuffix"] = ["AssignExpression*","OP_TRIPLEDOT","KW_FUNCTION","KW_DELEGATE","OP_ASTERISK","MemberFunctionAttribute*","Parameters","OP_BRACKET_LEFT","OP_BRACKET_RIGHT"];
     types_children["UnaryExpression"] = ["PrimaryExpression","FunctionCallExpression","UnaryExpression",  "NewExpression","DeleteExpression","CastExpression","AssertExpression","IdentifierOrTemplateInstance","OP_PAR_RIGHT","OP_PAR_LEFT","SliceExpression","IndexExpression","Type","OP_DOT","OP_AND","OP_ASTERISK","OP_MINUS","OP_MINUS_MINUS","OP_NOT","OP_PLUS","OP_PLUS_PLUS","OP_TILDA"];
     named_children["UnionDeclaration"] = ["Identifier","TemplateParameters","Constraint","StructBody","OP_SCOLON"];
-    stub_children["Unittest"] = ["Unittest",  "BlockStatement"];
+    stub_children ["Unittest"] = ["Unittest",  "BlockStatement"];
     types_children["VariableDeclaration"] = ["AutoDeclaration",  "OP_SCOLON","Type","Declarator*","OP_COMMA*","OP_EQ","FunctionBody"];
     types_children["Vector"] = ["KW___VECTOR", "Type", "OP_PAR_RIGHT","OP_PAR_LEFT"];
     types_children["VersionCondition"] = ["KW_VERSION","KW_UNITTEST","KW_ASSERT","INTEGER_LITERAL","Identifier","OP_PAR_RIGHT","OP_PAR_LEFT"];
@@ -223,6 +223,214 @@ static this() {
     types_children["WhileStatement"] = ["KW_WHILE","Expression","DeclarationOrStatement","OP_PAR_RIGHT","OP_PAR_LEFT"];
     types_children["WithStatement"] = ["KW_WITH","Expression","OP_PAR_RIGHT","OP_PAR_LEFT","StatementNoCaseNoDefault"];
     types_children["XorExpression"] = ["XorExpression", "AndExpression", "OP_XOR"];
+
+
+
+    has_processDeclaration["AddExpression"] = false;
+    has_processDeclaration["AliasDeclaration"] = false;
+    has_processDeclaration["AliasInitializer"] = false;
+    has_processDeclaration["AliasThisDeclaration"] = false;
+    has_processDeclaration["AlignAttribute"] = false;
+    has_processDeclaration["AndAndExpression"] = false;
+    has_processDeclaration["AndExpression"] = false;
+    has_processDeclaration["AnonymousEnumDeclaration"] = false;
+    has_processDeclaration["AnonymousEnumMember"] = false;
+    has_processDeclaration["ArgumentList"] = false;
+    has_processDeclaration["Arguments"] = false;
+    has_processDeclaration["ArrayInitializer"] = false;
+    has_processDeclaration["ArrayLiteral"] = false;
+    has_processDeclaration["ArrayMemberInitialization"] = false;
+    has_processDeclaration["AsmAddExp"] = false;
+    has_processDeclaration["AsmAndExp"] = false;
+    has_processDeclaration["AsmBrExp"] = false;
+    has_processDeclaration["AsmEqualExp"] = false;
+    has_processDeclaration["AsmExp"] = false;
+    has_processDeclaration["AsmInstruction"] = false;
+    has_processDeclaration["AsmLogAndExp"] = false;
+    has_processDeclaration["AsmLogOrExp"] = false;
+    has_processDeclaration["AsmMulExp"] = false;
+    has_processDeclaration["AsmOrExp"] = false;
+    has_processDeclaration["AsmPrimaryExp"] = false;
+    has_processDeclaration["AsmRelExp"] = false;
+    has_processDeclaration["AsmShiftExp"] = false;
+    has_processDeclaration["AsmStatement"] = false;
+    has_processDeclaration["AsmTypePrefix"] = false;
+    has_processDeclaration["AsmUnaExp"] = false;
+    has_processDeclaration["AsmXorExp"] = false;
+    has_processDeclaration["AssertExpression"] = false;
+    has_processDeclaration["AssignExpression"] = false;
+    has_processDeclaration["AssocArrayLiteral"] = false;
+    has_processDeclaration["AtAttribute"] = false;
+    has_processDeclaration["Attribute"] = false;
+    has_processDeclaration["AttributeDeclaration"] = false;
+    has_processDeclaration["AutoDeclaration"] = false;
+    has_processDeclaration["AutoDeclarationPart"] = false;
+    has_processDeclaration["BlockStatement"] = false;
+    has_processDeclaration["BodyStatement"] = false;
+    has_processDeclaration["BreakStatement"] = false;
+    has_processDeclaration["BaseClass"] = false;
+    has_processDeclaration["BaseClassList"] = false;
+    has_processDeclaration["CaseRangeStatement"] = false;
+    has_processDeclaration["CaseStatement"] = false;
+    has_processDeclaration["CastExpression"] = false;
+    has_processDeclaration["CastQualifier"] = false;
+    has_processDeclaration["Catch"] = true;
+    has_processDeclaration["Catches"] = false;
+    has_processDeclaration["ClassDeclaration"] = false;
+    has_processDeclaration["CmpExpression"] = false;
+    has_processDeclaration["CompileCondition"] = false;
+    has_processDeclaration["ConditionalDeclaration"] = false;
+    has_processDeclaration["ConditionalStatement"] = false;
+    has_processDeclaration["Constraint"] = false;
+    has_processDeclaration["Constructor"] = true;
+    has_processDeclaration["ContinueStatement"] = false;
+    has_processDeclaration["DebugCondition"] = false;
+    has_processDeclaration["DebugSpecification"] = false;
+    has_processDeclaration["Declaration"] = false;
+    has_processDeclaration["DeclarationOrStatement"] = false;
+    has_processDeclaration["DeclarationsAndStatements"] = true;
+    has_processDeclaration["Declarator"] = false;
+    has_processDeclaration["DefaultStatement"] = false;
+    has_processDeclaration["DeleteExpression"] = false;
+    has_processDeclaration["DeleteStatement"] = false;
+    has_processDeclaration["Deprecated"] = false;
+    has_processDeclaration["Destructor"] = false;
+    has_processDeclaration["DoStatement"] = false;
+    has_processDeclaration["EnumBody"] = false;
+    has_processDeclaration["EnumDeclaration"] = true;
+    has_processDeclaration["EnumMember"] = false;
+    has_processDeclaration["EponymousTemplateDeclaration"] = true;
+    has_processDeclaration["EqualExpression"] = false;
+    has_processDeclaration["Expression"] = false;
+    has_processDeclaration["ExpressionStatement"] = false;
+    has_processDeclaration["Finally"] = false;
+    has_processDeclaration["FinalSwitchStatement"] = false;
+    has_processDeclaration["ForStatement"] = true;
+    has_processDeclaration["ForeachStatement"] = true;
+    has_processDeclaration["ForeachTypeList"] = false;
+    has_processDeclaration["ForeachType"] = false;
+    has_processDeclaration["FunctionAttribute"] = false;
+    has_processDeclaration["FunctionBody"] = false;
+    has_processDeclaration["FunctionCallExpression"] = false;
+    has_processDeclaration["FunctionDeclaration"] = true;
+    has_processDeclaration["FunctionLiteralExpression"] = false;
+    has_processDeclaration["GotoStatement"] = false;
+    has_processDeclaration["IdentifierChain"] = false;
+    has_processDeclaration["IdentifierList"] = false;
+    has_processDeclaration["IdentifierOrTemplateChain"] = false;
+    has_processDeclaration["IdentifierOrTemplateInstance"] = false;
+    has_processDeclaration["IdentityExpression"] = false;
+    has_processDeclaration["IfStatement"] = true;
+    has_processDeclaration["IfCondition"] = false;
+    has_processDeclaration["ImportBind"] = false;
+    has_processDeclaration["ImportBindings"] = false;
+    has_processDeclaration["ImportDeclaration"] = false;
+    has_processDeclaration["ImportExpression"] = false;
+    has_processDeclaration["Index"] = false;
+    has_processDeclaration["IndexExpression"] = false;
+    has_processDeclaration["InExpression"] = false;
+    has_processDeclaration["Initializer"] = false;
+    has_processDeclaration["InStatement"] = false;
+    has_processDeclaration["Initializer"] = false;
+    has_processDeclaration["InterfaceDeclaration"] = false;
+    has_processDeclaration["InterfaceOrClass"] = true;
+    has_processDeclaration["Invariant"] = false;
+    has_processDeclaration["IsExpression"] = false;
+    has_processDeclaration["KeyValuePair"] = false;
+    has_processDeclaration["KeyValuePairs"] = false;
+    has_processDeclaration["LambdaExpression"] = false;
+    has_processDeclaration["LabeledStatement"] = false;
+    has_processDeclaration["LastCatch"] = false;
+    has_processDeclaration["LinkageAttribute"] = false;
+    has_processDeclaration["MemberFunctionAttribute"] = false;
+    has_processDeclaration["MixinDeclaration"] = false;
+    has_processDeclaration["MixinExpression"] = false;
+    has_processDeclaration["MixinTemplateDeclaration"] = true;
+    has_processDeclaration["MixinTemplateName"] = false;
+    has_processDeclaration["ModuleDeclaration"] = false;
+    has_processDeclaration["MulExpression"] = false;
+    has_processDeclaration["NewAnonClassExpression"] = false;
+    has_processDeclaration["NewExpression"] = false;
+    has_processDeclaration["NonVoidInitializer"] = false;
+    has_processDeclaration["Operands"] = false;
+    has_processDeclaration["OrExpression"] = false;
+    has_processDeclaration["OrOrExpression"] = false;
+    has_processDeclaration["OutStatement"] = false;
+    has_processDeclaration["Parameter"] = false;
+    has_processDeclaration["ParameterAttribute"] = false;
+    has_processDeclaration["Parameters"] = false;
+    has_processDeclaration["Postblit"] = false;
+    has_processDeclaration["PowExpression"] = false;
+    has_processDeclaration["PragmaDeclaration"] = false;
+    has_processDeclaration["PragmaExpression"] = false;
+    has_processDeclaration["PrimaryExpression"] = false;
+    has_processDeclaration["Register"] = false;
+    has_processDeclaration["RelExpression"] = false;
+    has_processDeclaration["ReturnStatement"] = false;
+    has_processDeclaration["ScopeGuardStatement"] = false;
+    has_processDeclaration["SharedStaticConstructor"] = false;
+    has_processDeclaration["SharedStaticDestructor"] = false;
+    has_processDeclaration["ShiftExpression"] = false;
+    has_processDeclaration["SingleImport"] = false;
+    has_processDeclaration["SliceExpression"] = false;
+    has_processDeclaration["UnaryExpression"] = false;
+    has_processDeclaration["Statement"] = false;
+    has_processDeclaration["StatementNoCaseNoDefault"] = false;
+    has_processDeclaration["StaticAssertDeclaration"] = false;
+    has_processDeclaration["StaticAssertStatement"] = false;
+    has_processDeclaration["StaticConstructor"] = false;
+    has_processDeclaration["StaticDestructor"] = false;
+    has_processDeclaration["StaticCtorDtorCommon"] = false;
+    has_processDeclaration["StaticIfCondition"] = false;
+    has_processDeclaration["StorageClass"] = false;
+    has_processDeclaration["StructBody"] = false;
+    has_processDeclaration["StructDeclaration"] = true;
+    has_processDeclaration["StructInitializer"] = false;
+    has_processDeclaration["StructMemberInitializer"] = false;
+    has_processDeclaration["StructMemberInitializers"] = false;
+    has_processDeclaration["String"] = false;
+    has_processDeclaration["SwitchStatement"] = false;
+    has_processDeclaration["Symbol"] = false;
+    has_processDeclaration["SynchronizedStatement"] = false;
+    has_processDeclaration["TemplateAliasParameter"] = false;
+    has_processDeclaration["TemplateArgument"] = false;
+    has_processDeclaration["TemplateArgumentList"] = false;
+    has_processDeclaration["TemplateArguments"] = false;
+    has_processDeclaration["TemplateDeclaration"] = true;
+    has_processDeclaration["TemplateInstance"] = false;
+    has_processDeclaration["TemplateMixinExpression"] = false;
+    has_processDeclaration["TemplateMixinDeclaration"] = true;
+    has_processDeclaration["TemplateParameter"] = false;
+    has_processDeclaration["TemplateParameterList"] = false;
+    has_processDeclaration["TemplateParameters"] = false;
+    has_processDeclaration["TemplateSingleArgument"] = false;
+    has_processDeclaration["TemplateThisParameter"] = false;
+    has_processDeclaration["TemplateTupleParameter"] = false;
+    has_processDeclaration["TemplateTypeParameter"] = false;
+    has_processDeclaration["TemplateValueParameter"] = false;
+    has_processDeclaration["TemplateValueParameterDefault"] = false;
+    has_processDeclaration["TernaryExpression"] = false;
+    has_processDeclaration["ThrowStatement"] = false;
+    has_processDeclaration["TraitsExpression"] = false;
+    has_processDeclaration["TryStatement"] = false;
+    has_processDeclaration["Type"] = false;
+    has_processDeclaration["Type_2"] = false;
+    has_processDeclaration["TypeConstructor"] = false;
+    has_processDeclaration["TypeConstructors"] = false;
+    has_processDeclaration["TypeidExpression"] = false;
+    has_processDeclaration["TypeofExpression"] = false;
+    has_processDeclaration["TypeSpecialization"] = false;
+    has_processDeclaration["TypeSuffix"] = false;
+    has_processDeclaration["UnaryExpression"] = false;
+    has_processDeclaration["UnionDeclaration"] = true;
+    has_processDeclaration["Unittest"] = false;
+    has_processDeclaration["VariableDeclaration"] = false;
+    has_processDeclaration["Vector"] = false;
+    has_processDeclaration["VersionCondition"] = false;
+    has_processDeclaration["VersionSpecification"] = false;
+    has_processDeclaration["WhileStatement"] = false;
+    has_processDeclaration["WithStatement"] = false;
+    has_processDeclaration["XorExpression"] = false;
 }
 
 
@@ -240,6 +448,10 @@ import org.jetbrains.annotations.Nullable;
 import net.masterthought.dlanguage.psi.*;
 import java.util.List;
 import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
+import com.intellij.psi.ResolveState;
+import com.intellij.psi.scope.PsiScopeProcessor;
+import net.masterthought.dlanguage.resolve.ScopeProcessorImpl;
+
 
 
 public class %s extends ASTWrapperPsiElement implements %s{
@@ -271,6 +483,10 @@ public class %s extends ASTWrapperPsiElement implements %s{
     import com.intellij.psi.StubBasedPsiElement;
     import net.masterthought.dlanguage.stubs.interfaces.*;
     import net.masterthought.dlanguage.stubs.*;
+    import com.intellij.psi.ResolveState;
+    import com.intellij.psi.scope.PsiScopeProcessor;
+    import net.masterthought.dlanguage.resolve.ScopeProcessorImpl;
+
 
 
 
@@ -336,7 +552,6 @@ string getterMethodInterface(string toget){
             return `
                 @NotNull
                 public List<DLanguage%s> get%ss();`.format(toget,toget);
-
         }
     }
 
@@ -351,9 +566,7 @@ string getterMethodInterface(string toget){
         return `
             @Nullable
             public DLanguage%s get%s();`.format(toget,toget);
-
     }
-
 }
 
 
@@ -367,6 +580,16 @@ void main(string[] args){
         string implFile = implFileTemplate.format(implClassName,implClassName.replace("Impl",""),implClassName,implClassName.replace("DLanguage","").replace("Impl",""));
         foreach(string toget; types_children[key]){
             implFile ~= getterMethod(toget);
+        }
+        if(has_processDeclaration[key]){
+            implFile ~= `
+            @Override
+            public boolean processDeclarations(@NotNull PsiScopeProcessor processor,
+                                             @NotNull ResolveState state,
+                                             PsiElement lastParent,
+                                             @NotNull PsiElement place) {
+                return ScopeProcessorImpl.INSTANCE.processDeclarations(this,processor,state,lastParent,place);
+            }`;
         }
         implFile ~= "\n}";
         string interfaceFile = interfaceFileTemplate.format(interfaceClassName);
@@ -395,6 +618,16 @@ void main(string[] args){
         foreach(string toget; named_children[key]){
             interfaceFile ~= getterMethodInterface(toget);
         }
+        if(has_processDeclaration[key]){
+            interfaceFile ~= `
+            @Override
+            default public boolean processDeclarations(@NotNull PsiScopeProcessor processor,
+                                             @NotNull ResolveState state,
+                                             PsiElement lastParent,
+                                             @NotNull PsiElement place) {
+                return ScopeProcessorImpl.INSTANCE.processDeclarations(this,processor,state,lastParent,place);
+            }`;
+        }
         interfaceFile ~= "\n}";
         File f = File(interfaceClassName ~".java","w");
         f.write(interfaceFile);
@@ -407,6 +640,16 @@ void main(string[] args){
             string interfaceFile = interfaceFileTemplate(["DCompositeElement","StubBasedPsiElement<%sStub>".format(interfaceClassName)]).format(interfaceClassName);
             foreach(string toget; stub_children[key]){
                 interfaceFile ~= getterMethodInterface(toget);
+            }
+            if(has_processDeclaration[key]){
+                interfaceFile ~= `
+                @Override
+                default public boolean processDeclarations(@NotNull PsiScopeProcessor processor,
+                                                 @NotNull ResolveState state,
+                                                 PsiElement lastParent,
+                                                 @NotNull PsiElement place) {
+                    return ScopeProcessorImpl.INSTANCE.processDeclarations(this,processor,state,lastParent,place);
+                }`;
             }
             interfaceFile ~= "\n}";
             File f = File(interfaceClassName ~".java","w");

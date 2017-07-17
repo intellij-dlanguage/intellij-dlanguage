@@ -1,7 +1,5 @@
 package net.masterthought.dlanguage.psi.interfaces;
 
-import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
-
 /**
  * Created by francis on 3/19/2017.
  */

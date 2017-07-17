@@ -1,10 +1,10 @@
 package net.masterthought.dlanguage.psi.impl;
 
 import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.psi.*;
-import net.masterthought.dlanguage.psi.*;
+import com.intellij.psi.PsiElement;
+import net.masterthought.dlanguage.psi.DLanguageIdentifier;
 import net.masterthought.dlanguage.psi.impl.named.DLanguageIdentifierImpl;
-import net.masterthought.dlanguage.stubs.*;
+import net.masterthought.dlanguage.stubs.DLanguageIdentifierStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,7 +19,7 @@ public class DPsiImplUtil {
     // ------------- Identifier ------------------ //
     @NotNull
     public static String getName(@NotNull DLanguageIdentifier o) {
-        DLanguageIdentifierStub stub = ((DLanguageIdentifierImpl)o).getStub();
+        DLanguageIdentifierStub stub = ((DLanguageIdentifierImpl) o).getStub();
         if (stub != null) return StringUtil.notNullize(stub.getName());
         return o.getText();
     }

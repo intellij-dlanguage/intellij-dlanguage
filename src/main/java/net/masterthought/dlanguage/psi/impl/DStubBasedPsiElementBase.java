@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Created by francis on 4/14/2017.
  */
-public class DStubBasedPsiElementBase<T extends StubElement<? extends PsiElement>> extends StubBasedPsiElementBase<T>{
+public class DStubBasedPsiElementBase<T extends StubElement<? extends PsiElement>> extends StubBasedPsiElementBase<T> {
     public DStubBasedPsiElementBase(@NotNull T stub, @NotNull IStubElementType nodeType) {
         super(stub, nodeType);
     }
