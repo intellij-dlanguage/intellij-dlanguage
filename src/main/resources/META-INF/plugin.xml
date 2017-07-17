@@ -123,8 +123,8 @@
         <lang.foldingBuilder language="D" implementationClass="net.masterthought.dlanguage.features.DFoldingBuilder"/>
         <completion.contributor language="D"
                                 implementationClass="net.masterthought.dlanguage.codeinsight.DCompletionContributor"/>
-        <completion.contributor language="D"
-                                implementationClass="net.masterthought.dlanguage.codeinsight.DCompletionContributorImports"/>
+        <!--  <completion.contributor language="D"
+                                  implementationClass="net.masterthought.dlanguage.codeinsight.DCompletionContributorImports"/>-->
 
 
         <!-- dunit support -->

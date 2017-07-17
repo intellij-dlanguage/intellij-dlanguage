@@ -116,8 +116,8 @@ public class DUtil {
      * @param namedElement constructor, or method contained within a class or struct
      * @return the class or struct containing this constructor/method. returns null if not found
      */
-    public static DNamedElement getParentClassOrStructOrTemplateOrInterface(PsiElement namedElement) {
-        return PsiTreeUtil.getParentOfType(namedElement, DLanguageInterfaceOrClass.class, DLanguageStructDeclaration.class, DLanguageTemplateDeclaration.class);
+    public static DNamedElement getParentClassOrStructOrTemplateOrInterfaceOrUnion(PsiElement namedElement) {
+        return PsiTreeUtil.getParentOfType(namedElement, DLanguageInterfaceOrClass.class, DLanguageStructDeclaration.class, DLanguageTemplateDeclaration.class, DLanguageUnionDeclaration.class);
     }
 
     public static DLanguageFunctionDeclaration getParentFunction(PsiElement namedElement) {

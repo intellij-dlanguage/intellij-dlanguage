@@ -9,7 +9,7 @@ import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.util.IncorrectOperationException
 import net.masterthought.dlanguage.index.DModuleIndex
 import net.masterthought.dlanguage.psi.*
-import net.masterthought.dlanguage.psi.interfaces.Declaration
+import net.masterthought.dlanguage.psi.interfaces.DNamedElement
 import net.masterthought.dlanguage.resolve.DCompletionProcessor
 import net.masterthought.dlanguage.resolve.DImportScopeProcessor
 import net.masterthought.dlanguage.resolve.DResolveUtil
@@ -156,7 +156,7 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
         for (potentialModule in potentialModules) {
             val files = DModuleIndex.getFilesByModuleName(project, potentialModule, GlobalSearchScope.allScope(project))
             files.parallelStream().forEach { f ->
-                val elements: MutableCollection<Declaration> = StubIndex.getInstance().get(DTopLevelDeclarationsByModule.KEY, f.moduleOrFileName, project, GlobalSearchScope.fileScope(f)/*, Declaration::class.java*/)
+                val elements: MutableCollection<DNamedElement> = StubIndex.getElements(DTopLevelDeclarationsByModule.KEY, f.moduleOrFileName, project, GlobalSearchScope.fileScope(f), DNamedElement::class.java/*, Declaration::class.java*/)
 //                result.ensureCapacity(elements.size);
                 val startNames = System.currentTimeMillis()
                 for (declaration in elements) {

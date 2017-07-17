@@ -3,10 +3,6 @@ package net.masterthought.dlanguage.resolve
 import com.intellij.psi.PsiElement
 import com.intellij.psi.ResolveState
 import com.intellij.psi.scope.PsiScopeProcessor
-import com.intellij.psi.util.PsiTreeUtil
-import net.masterthought.dlanguage.psi.interfaces.HasParameters
-import net.masterthought.dlanguage.psi.interfaces.HasTemplateParameters
-import net.masterthought.dlanguage.psi.interfaces.VariableDeclaration
 import net.masterthought.dlanguage.utils.*
 
 /**
@@ -21,7 +17,7 @@ object ScopeProcessorImplUtil {
                            lastParent: PsiElement,
                            place: PsiElement): Boolean {
         //todo attributes should be passed to scope processor to determine publicness
-        var toContinue = true;
+        var toContinue = true
         def.attributes
         if (def.aliasDeclaration?.aliasInitializers != null) {
             for (varDeclaration in def.aliasDeclaration?.aliasInitializers!!) {
@@ -41,13 +37,13 @@ object ScopeProcessorImplUtil {
             if (!processor.execute(def.classDeclaration!!, state)) {
                 return false
             }
-            return toContinue;
+            return toContinue
         }
         if (def.conditionalDeclaration != null) {
             return ScopeProcessorImplUtil.processConditionalDeclaration(def.conditionalDeclaration!!, processor, state, lastParent, place)
         }
         if (def.constructor != null) {
-            return processor.execute(def.constructor!!, state);
+            return processor.execute(def.constructor!!, state)
         }
         if (def.destructor != null) {
 
@@ -63,7 +59,7 @@ object ScopeProcessorImplUtil {
             if (!processor.execute(def.enumDeclaration!!, state)) {
                 toContinue = false
             }
-            return toContinue;
+            return toContinue
         }
         if (def.functionDeclaration != null) {
             return processor.execute(def.functionDeclaration!!, state)
@@ -71,7 +67,7 @@ object ScopeProcessorImplUtil {
         if (def.importDeclaration != null) {
             for (singleImport in def.importDeclaration!!.singleImports) {
                 if (!processor.execute(singleImport, state)) {
-                    toContinue = false;
+                    toContinue = false
                 }
             }
             return toContinue
@@ -85,7 +81,7 @@ object ScopeProcessorImplUtil {
                 }
             }
             if (!processor.execute(def.interfaceDeclaration!!, state)) {
-                toContinue = false;
+                toContinue = false
             }
             return toContinue
         }
@@ -101,7 +97,7 @@ object ScopeProcessorImplUtil {
             if (!processor.execute(def.mixinTemplateDeclaration!!.templateDeclaration!!, state)) {
                 return false
             }
-            return toContinue;
+            return toContinue
         }
         if (def.sharedStaticConstructor != null) {
 
@@ -129,7 +125,7 @@ object ScopeProcessorImplUtil {
             if (!processor.execute(def.structDeclaration!!, state)) {
                 return false
             }
-            return toContinue;
+            return toContinue
         }
         if (def.templateDeclaration != null) {
             if (def.templateDeclaration!!.declarations != null) {
@@ -142,7 +138,7 @@ object ScopeProcessorImplUtil {
             if (!processor.execute(def.templateDeclaration!!, state)) {
                 return false
             }
-            return toContinue;
+            return toContinue
         }
         if (def.unionDeclaration != null) {
             if (def.unionDeclaration!!.structBody?.declarations != null) {
@@ -155,7 +151,7 @@ object ScopeProcessorImplUtil {
             if (!processor.execute(def.unionDeclaration!!, state)) {
                 return false
             }
-            return toContinue;
+            return toContinue
         }
         if (def.unittest != null) {
 
@@ -188,14 +184,12 @@ object ScopeProcessorImplUtil {
         if (def.debugSpecification != null) {
 
         }
-        if (def.declarations != null) {
-            for (decl in def.declarations) {
-                if (!decl.processDeclarations(processor, state, lastParent, place)) {
-                    toContinue = false
-                }
+        for (decl in def.declarations) {
+            if (!decl.processDeclarations(processor, state, lastParent, place)) {
+                toContinue = false
             }
-            return toContinue
         }
+        return toContinue
         throw IllegalStateException("this should never happen")
     }
 
@@ -207,11 +201,11 @@ object ScopeProcessorImplUtil {
 
         var defNotFound = true
         for (declaration in element.declarations) {
-            if(!ScopeProcessorImplUtil.processDeclaration(declaration, processor, state, lastParent, place)){
-                defNotFound = false;
+            if (!ScopeProcessorImplUtil.processDeclaration(declaration, processor, state, lastParent, place)) {
+                defNotFound = false
             }
         }
-        return defNotFound;
+        return defNotFound
     }
 
 
@@ -222,7 +216,7 @@ object ScopeProcessorImplUtil {
                                     place: PsiElement): Boolean {
         //always recurse in since this is a compile time condition
         //handle place and lastParent
-        var toContinue = true;
+        var toContinue = true
         for (dLangStatement in element.declarationOrStatements) {
             if (!dLangStatement.processDeclarations(processor, state, lastParent, place)) {
                 toContinue = false
@@ -230,6 +224,7 @@ object ScopeProcessorImplUtil {
         }
         return toContinue
     }
+
     /*
 
     /**
@@ -428,7 +423,7 @@ object ScopeProcessorImplUtil {
                           state: ResolveState,
                           lastParent: PsiElement,
                           place: PsiElement): Boolean {
-        for (p in element?.parameters ?: listOf()) {
+        for (p in element.parameters) {
             if (!processor.execute(p, state)) {
                 return false
             }

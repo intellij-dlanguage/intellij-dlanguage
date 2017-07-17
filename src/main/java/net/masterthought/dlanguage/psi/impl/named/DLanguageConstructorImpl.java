@@ -3,10 +3,8 @@ package net.masterthought.dlanguage.psi.impl.named;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiReference;
+import com.intellij.psi.*;
+import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.icons.DLanguageIcons;
@@ -15,8 +13,8 @@ import net.masterthought.dlanguage.psi.impl.DLanguageParametersImpl;
 import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
 import net.masterthought.dlanguage.psi.references.DReference;
+import net.masterthought.dlanguage.resolve.ScopeProcessorImpl;
 import net.masterthought.dlanguage.stubs.DLanguageConstructorStub;
-import net.masterthought.dlanguage.utils.DUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,6 +22,7 @@ import javax.swing.*;
 import java.util.List;
 
 import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
+import static net.masterthought.dlanguage.utils.DUtil.getParentClassOrStructOrTemplateOrInterfaceOrUnion;
 
 public class DLanguageConstructorImpl extends DNamedStubbedPsiElementBase<DLanguageConstructorStub> implements DLanguageConstructor {
 
@@ -95,10 +94,10 @@ public class DLanguageConstructorImpl extends DNamedStubbedPsiElementBase<DLangu
 
     @NotNull
     public String getName() {
-        if (DUtil.getParentClassOrStructOrTemplateOrInterface(this) == null) {
-            throw new IllegalStateException();
+        if (getParentClassOrStructOrTemplateOrInterfaceOrUnion(this) == null) {
+            return "this constructor doesn't have a name";
         }
-        return DUtil.getParentClassOrStructOrTemplateOrInterface(this).getName();
+        return getParentClassOrStructOrTemplateOrInterfaceOrUnion(this).getName();
     }
 
     @Nullable
@@ -114,7 +113,7 @@ public class DLanguageConstructorImpl extends DNamedStubbedPsiElementBase<DLangu
 
     @NotNull
     public PsiElement setName(@NotNull String newName) {
-        DUtil.getParentClassOrStructOrTemplateOrInterface(this).setName(newName);
+        getParentClassOrStructOrTemplateOrInterfaceOrUnion(this).setName(newName);
         return this;
     }
 
@@ -155,8 +154,8 @@ public class DLanguageConstructorImpl extends DNamedStubbedPsiElementBase<DLangu
         return false;
     }
 
-//    public boolean processDeclarations(PsiScopeProcessor processor, ResolveState state, PsiElement lastParent, PsiElement place) {
-//        return DPsiImplUtil.processDeclarations(this, processor, state, lastParent, place);
-//    }
+    public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(this, processor, state, lastParent, place);
+    }
 
 }
