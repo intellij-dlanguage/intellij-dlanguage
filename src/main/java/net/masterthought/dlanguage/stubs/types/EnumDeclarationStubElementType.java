@@ -7,7 +7,6 @@ import com.intellij.psi.stubs.StubOutputStream;
 import net.masterthought.dlanguage.psi.DLanguageEnumDeclaration;
 import net.masterthought.dlanguage.psi.impl.named.DLanguageEnumDeclarationImpl;
 import net.masterthought.dlanguage.stubs.DLanguageEnumDeclarationStub;
-import net.masterthought.dlanguage.utils.DUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -27,7 +26,7 @@ public class EnumDeclarationStubElementType extends DNamedStubElementType<DLangu
 
     @Override
     public boolean shouldCreateStub(ASTNode node) {
-        return DUtil.definitionNode(node);
+        return true;
     }
 
     @Override

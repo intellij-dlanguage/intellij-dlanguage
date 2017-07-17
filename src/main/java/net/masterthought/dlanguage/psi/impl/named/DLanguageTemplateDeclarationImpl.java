@@ -113,7 +113,7 @@ public class DLanguageTemplateDeclarationImpl extends DNamedStubbedPsiElementBas
     }
 
     @NotNull
-    public PsiElement setName(String newName) {
+    public PsiElement setName(@NotNull String newName) {
         getIdentifier().setName(newName);
         return this;
     }
@@ -150,7 +150,7 @@ public class DLanguageTemplateDeclarationImpl extends DNamedStubbedPsiElementBas
         return false;
     }
 
-    public boolean processDeclarations(PsiScopeProcessor processor, ResolveState state, PsiElement lastParent, PsiElement place) {
+    public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
         return ScopeProcessorImpl.INSTANCE.processDeclarations(this, processor, state, lastParent, place);
     }
 

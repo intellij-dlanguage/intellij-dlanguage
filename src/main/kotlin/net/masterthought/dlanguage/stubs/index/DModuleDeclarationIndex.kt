@@ -18,7 +18,7 @@ class DModuleDeclarationIndex : StringStubIndexExtension<ModuleDeclaration>() {
 
     companion object {
         val KEY = StubIndexKey.createIndexKey<String, ModuleDeclaration>("d.module")
-        val VERSION = 1
+        val VERSION = 2
     }
 }
 

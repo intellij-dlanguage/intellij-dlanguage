@@ -68,7 +68,7 @@ public class DLanguageModuleDeclarationImpl extends DNamedStubbedPsiElementBase<
     }
 
     @NotNull
-    public PsiElement setName(String newName) {
+    public PsiElement setName(@NotNull String newName) {
         //todo
         return null;
 //        return DPsiImplUtil.setName(this, newName);

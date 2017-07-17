@@ -1,6 +1,5 @@
 package net.masterthought.dlanguage.stubs.types;
 
-import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubInputStream;
 import com.intellij.psi.stubs.StubOutputStream;
@@ -21,11 +20,7 @@ public class InterfaceOrClassStubElementType extends DNamedStubElementType<DLang
         return new DLanguageInterfaceOrClassImpl(stub, this);
     }
 
-    @Override
-    public boolean shouldCreateStub(ASTNode node) {
-        return true;
-    }
-
+    @NotNull
     @Override
     public DLanguageInterfaceOrClassStub createStub(@NotNull DLanguageInterfaceOrClass psi, StubElement parentStub) {
         return new DLanguageInterfaceOrClassStub(parentStub, this, psi.getName());

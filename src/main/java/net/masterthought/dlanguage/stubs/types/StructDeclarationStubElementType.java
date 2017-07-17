@@ -1,6 +1,5 @@
 package net.masterthought.dlanguage.stubs.types;
 
-import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubInputStream;
 import com.intellij.psi.stubs.StubOutputStream;
@@ -19,11 +18,6 @@ public class StructDeclarationStubElementType extends DNamedStubElementType<DLan
     @Override
     public DLanguageStructDeclaration createPsi(@NotNull DLanguageStructDeclarationStub stub) {
         return new DLanguageStructDeclarationImpl(stub, this);
-    }
-
-    @Override
-    public boolean shouldCreateStub(ASTNode node) {
-        return true;
     }
 
     @NotNull

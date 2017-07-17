@@ -118,7 +118,7 @@ public class DLanguageParameterImpl extends DNamedStubbedPsiElementBase<DLanguag
     }
 
     @NotNull
-    public PsiElement setName(String newName) {
+    public PsiElement setName(@NotNull String newName) {
         if (getIdentifier() == null) {
             throw new IllegalStateException("cannot rename");
         }

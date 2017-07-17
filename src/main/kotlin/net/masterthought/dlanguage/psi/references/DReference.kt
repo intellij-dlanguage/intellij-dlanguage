@@ -54,7 +54,7 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
                 if (namedElement.identifier != null) {
                     identifiers.add(namedElement.identifier!!)
                 }else{
-                    identifiers.add(namedElement.eponymousTemplateDeclaration!!.identifier!!);
+                    identifiers.add(namedElement.eponymousTemplateDeclaration!!.identifier!!)
                 }
             } else if (namedElement is DLanguageClassDeclaration) {
                 identifiers.add(namedElement.identifier!!)
@@ -141,7 +141,7 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
         PsiTreeUtil.treeWalkUp(importScopeProcessor, myElement, myElement.containingFile, ResolveState.initial())
         val potentialModules = HashSet<String>()
         for (dLanguageImport in importScopeProcessor.imports) {
-            potentialModules.add(dLanguageImport.name!!)
+            potentialModules.add(dLanguageImport.name)
         }
 
         val completionProcessor = DCompletionProcessor()
@@ -156,11 +156,11 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
         for (potentialModule in potentialModules) {
             val files = DModuleIndex.getFilesByModuleName(project, potentialModule, GlobalSearchScope.allScope(project))
             files.parallelStream().forEach { f ->
-                val elements: MutableCollection<Declaration> = StubIndex.getElements(DTopLevelDeclarationsByModule.KEY, f.moduleOrFileName, project, GlobalSearchScope.fileScope(f), Declaration::class.java)
+                val elements: MutableCollection<Declaration> = StubIndex.getInstance().get(DTopLevelDeclarationsByModule.KEY, f.moduleOrFileName, project, GlobalSearchScope.fileScope(f)/*, Declaration::class.java*/)
 //                result.ensureCapacity(elements.size);
                 val startNames = System.currentTimeMillis()
                 for (declaration in elements) {
-                    result.add(declaration.name!!)
+                    result.add(declaration.name)
                 }
                 val endNames = System.currentTimeMillis()
                 log.info("names:" + (endNames - startNames))

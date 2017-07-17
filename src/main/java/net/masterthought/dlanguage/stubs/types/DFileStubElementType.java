@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 
 public class DFileStubElementType extends IStubFileElementType<DLanguageFileStub> {
-    public static final int VERSION = 0;
+    public static final int VERSION = 1;
     public static final DFileStubElementType INSTANCE = new DFileStubElementType();
 
     public DFileStubElementType() {

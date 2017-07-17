@@ -8,6 +8,7 @@ import com.intellij.psi.*;
 import com.intellij.psi.stubs.IStubElementType;
 import net.masterthought.dlanguage.icons.DLanguageIcons;
 import net.masterthought.dlanguage.psi.*;
+import net.masterthought.dlanguage.psi.impl.DElementFactory;
 import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import net.masterthought.dlanguage.psi.impl.DPsiImplUtil;
 import net.masterthought.dlanguage.psi.references.DReference;
@@ -59,8 +60,11 @@ public class DLanguageIdentifierImpl extends DNamedStubbedPsiElementBase<DLangua
     }
 
     @NotNull
-    public PsiElement setName(String newName) {
-        return DPsiImplUtil.setName(this, newName);
+    public PsiElement setName(@NotNull String newName) {
+        PsiElement e = DElementFactory.createDLanguageIdentifierFromText(getProject(), newName);
+        if (e == null) return null;
+        replace(e);
+        return this;
     }
 
     @NotNull

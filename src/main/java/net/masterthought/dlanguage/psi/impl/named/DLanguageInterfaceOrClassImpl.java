@@ -10,7 +10,6 @@ import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.icons.DLanguageIcons;
 import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
-import net.masterthought.dlanguage.psi.impl.DPsiImplUtil;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
 import net.masterthought.dlanguage.psi.references.DReference;
 import net.masterthought.dlanguage.resolve.ScopeProcessorImpl;
@@ -102,7 +101,7 @@ public class DLanguageInterfaceOrClassImpl extends DNamedStubbedPsiElementBase<D
     }
 
     @NotNull
-    public PsiElement setName(String newName) {
+    public PsiElement setName(@NotNull String newName) {
         getIdentifier().setName(newName);
         return this;
     }
@@ -147,7 +146,7 @@ public class DLanguageInterfaceOrClassImpl extends DNamedStubbedPsiElementBase<D
 //        return DPsiImplUtil.getSuperClassNames(this);
 //    }
 //
-    public boolean processDeclarations(PsiScopeProcessor processor, ResolveState state, PsiElement lastParent, PsiElement place) {
+public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
         return ScopeProcessorImpl.INSTANCE.processDeclarations(this, processor, state, lastParent, place);
     }
 

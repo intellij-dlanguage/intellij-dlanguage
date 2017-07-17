@@ -46,6 +46,7 @@ public class DLanguageSingleImportImpl extends DNamedStubbedPsiElementBase<DLang
         return PsiTreeUtil.getChildOfType(this, DLanguageIdentifierChain.class);
     }
 
+    @NotNull
     @Override
     public String getName() {
         if (getStub() != null) {

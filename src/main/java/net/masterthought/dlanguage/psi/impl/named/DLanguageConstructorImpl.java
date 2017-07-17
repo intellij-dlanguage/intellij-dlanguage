@@ -113,7 +113,7 @@ public class DLanguageConstructorImpl extends DNamedStubbedPsiElementBase<DLangu
     }
 
     @NotNull
-    public PsiElement setName(String newName) {
+    public PsiElement setName(@NotNull String newName) {
         DUtil.getParentClassOrStructOrTemplateOrInterface(this).setName(newName);
         return this;
     }

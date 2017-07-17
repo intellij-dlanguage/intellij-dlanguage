@@ -113,7 +113,7 @@ public class DLanguageTemplateParameterImpl extends DNamedStubbedPsiElementBase<
     }
 
     @NotNull
-    public PsiElement setName(String newName) {
+    public PsiElement setName(@NotNull String newName) {
         this.getIdentifier().setName(newName);
         return this;
     }

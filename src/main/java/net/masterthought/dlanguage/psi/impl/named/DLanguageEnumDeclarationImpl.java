@@ -92,7 +92,7 @@ public class DLanguageEnumDeclarationImpl extends DNamedStubbedPsiElementBase<DL
     }
 
     @Nullable
-    public PsiElement setName(String newName) {
+    public PsiElement setName(@NotNull String newName) {
         return getIdentifier().setName(newName);
     }
 

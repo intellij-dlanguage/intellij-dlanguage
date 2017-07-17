@@ -80,7 +80,7 @@ public class DLanguageForeachTypeImpl extends DNamedStubbedPsiElementBase<DLangu
     }
 
     @NotNull
-    public PsiElement setName(String newName) {
+    public PsiElement setName(@NotNull String newName) {
         getIdentifier().setName(newName);
         return this;
     }

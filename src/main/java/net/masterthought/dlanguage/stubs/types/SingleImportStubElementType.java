@@ -1,13 +1,11 @@
 package net.masterthought.dlanguage.stubs.types;
 
-import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubInputStream;
 import com.intellij.psi.stubs.StubOutputStream;
 import net.masterthought.dlanguage.psi.DLanguageSingleImport;
 import net.masterthought.dlanguage.psi.impl.named.DLanguageSingleImportImpl;
 import net.masterthought.dlanguage.stubs.DLanguageSingleImportStub;
-import net.masterthought.dlanguage.utils.DUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -23,11 +21,6 @@ public class SingleImportStubElementType extends DNamedStubElementType<DLanguage
     @Override
     public DLanguageSingleImport createPsi(@NotNull DLanguageSingleImportStub stub) {
         return new DLanguageSingleImportImpl(stub, this);
-    }
-
-    @Override
-    public boolean shouldCreateStub(ASTNode node) {
-        return DUtil.definitionNode(node);
     }
 
     @NotNull

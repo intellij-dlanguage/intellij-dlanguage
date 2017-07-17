@@ -1,13 +1,11 @@
 package net.masterthought.dlanguage.stubs.types;
 
-import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubInputStream;
 import com.intellij.psi.stubs.StubOutputStream;
 import net.masterthought.dlanguage.psi.DLanguageIdentifier;
 import net.masterthought.dlanguage.psi.impl.named.DLanguageIdentifierImpl;
 import net.masterthought.dlanguage.stubs.DLanguageIdentifierStub;
-import net.masterthought.dlanguage.utils.DUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -22,11 +20,7 @@ public class IdentifierStubElementType extends DNamedStubElementType<DLanguageId
         return new DLanguageIdentifierImpl(stub, this);
     }
 
-    @Override
-    public boolean shouldCreateStub(ASTNode node) {
-        return DUtil.definitionNode(node);
-    }
-
+    @NotNull
     @Override
     public DLanguageIdentifierStub createStub(@NotNull DLanguageIdentifier psi, StubElement parentStub) {
         return new DLanguageIdentifierStub(parentStub, this, psi.getName());

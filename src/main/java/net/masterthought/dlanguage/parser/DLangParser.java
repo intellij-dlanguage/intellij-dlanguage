@@ -21,11 +21,11 @@ import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
  * interesting. For example, DCD skips over function bodies when caching symbols
  * from imported files.
  */
-@SuppressWarnings({"WeakerAccess", "SameParameterValue", "ConstantConditions"})
+//@SuppressWarnings({"WeakerAccess", "SameParameterValue", "ConstantConditions"})
 class DLangParser {
 
     // This list MUST BE MAINTAINED IN SORTED ORDER.
-    static final String[] REGISTER_NAMES = {
+    private static final String[] REGISTER_NAMES = {
         "AH", "AL", "AX", "BH", "BL", "BP", "BPL", "BX", "CH", "CL", "CR0", "CR2",
         "CR3", "CR4", "CS", "CX", "DH", "DI", "DIL", "DL", "DR0", "DR1", "DR2",
         "DR3", "DR6", "DR7", "DS", "DX", "EAX", "EBP", "EBX", "ECX", "EDI", "EDX",
@@ -40,7 +40,7 @@ class DLangParser {
         "YMM1", "YMM10", "YMM11", "YMM12", "YMM13", "YMM14", "YMM15", "YMM2",
         "YMM3", "YMM4", "YMM5", "YMM6", "YMM7", "YMM8", "YMM9"
     };
-    static HashMap<String, Token.IdType> tokenTypeIndex = new HashMap<String, Token.IdType>();
+    private static HashMap<String, Token.IdType> tokenTypeIndex = new HashMap<String, Token.IdType>();
 
     static {
         tokenTypeIndex.put("scriptLine", new Token.IdType(SHEBANG));
@@ -82,38 +82,39 @@ class DLangParser {
 
 //    final Set<Token.IdType> stringLiteralsSet = Sets.newHashSet(tok("stringLiteral"), tok("wstringLiteral"), tok("dstringLiteral"), tok("tokenstringLiteral"));
 
-    final Token.IdType[] stringLiteralsArray = {tok("stringLiteral"), tok("wstringLiteral"), tok("dstringLiteral"), tok("tokenstringLiteral")};
+    private final Token.IdType[] stringLiteralsArray = {tok("stringLiteral"), tok("wstringLiteral"), tok("dstringLiteral"), tok("tokenstringLiteral")};
 
-    final Set<Token.IdType> literals = Sets.newHashSet(tok("dstringLiteral"), tok("stringLiteral"), tok("wstringLiteral"), tok("tokenstringLiteral"), tok("characterLiteral"), tok("true"), tok("false"), tok("null"), tok("$"), tok("doubleLiteral"), tok("floatLiteral"), tok("idoubleLiteral"), tok("ifloatLiteral"), tok("intLiteral"), tok("longLiteral"), tok("realLiteral"), tok("irealLiteral"), tok("uintLiteral"), tok("ulongLiteral"), tok("__DATE__"), tok("__TIME__"), tok("__TIMESTAMP__"), tok("__VENDOR__"), tok("__VERSION__"), tok("__FILE__"), tok("__FILE_FULL_PATH__"), tok("__LINE__"), tok("__MODULE__"), tok("__FUNCTION__"), tok("__PRETTY_FUNCTION__"));
-    final Set<Token.IdType> basicTypes = Sets.newHashSet(tok("int"), tok("bool"), tok("byte"), tok("cdouble"), tok("cent"), tok("cfloat"), tok("char"), tok("creal"), tok("dchar"), tok("double"), tok("float"), tok("idouble"), tok("ifloat"), tok("ireal"), tok("long"), tok("real"), tok("short"), tok("ubyte"), tok("ucent"), tok("uint"), tok("ulong"), tok("ushort"), tok("void"), tok("wchar"));
-    public Token.IdType[] Protections = {tok("export"), tok("package"),
-        tok("private"), tok("public"), tok("protected")};
+    private final Set<Token.IdType> literals = Sets.newHashSet(tok("dstringLiteral"), tok("stringLiteral"), tok("wstringLiteral"), tok("tokenstringLiteral"), tok("characterLiteral"), tok("true"), tok("false"), tok("null"), tok("$"), tok("doubleLiteral"), tok("floatLiteral"), tok("idoubleLiteral"), tok("ifloatLiteral"), tok("intLiteral"), tok("longLiteral"), tok("realLiteral"), tok("irealLiteral"), tok("uintLiteral"), tok("ulongLiteral"), tok("__DATE__"), tok("__TIME__"), tok("__TIMESTAMP__"), tok("__VENDOR__"), tok("__VERSION__"), tok("__FILE__"), tok("__FILE_FULL_PATH__"), tok("__LINE__"), tok("__MODULE__"), tok("__FUNCTION__"), tok("__PRETTY_FUNCTION__"));
+    private final Set<Token.IdType> basicTypes = Sets.newHashSet(tok("int"), tok("bool"), tok("byte"), tok("cdouble"), tok("cent"), tok("cfloat"), tok("char"), tok("creal"), tok("dchar"), tok("double"), tok("float"), tok("idouble"), tok("ifloat"), tok("ireal"), tok("long"), tok("real"), tok("short"), tok("ubyte"), tok("ucent"), tok("uint"), tok("ulong"), tok("ushort"), tok("void"), tok("wchar"));
     Bookmark debugBookmark = null;//used to be able to eval expressions while debugging and then rollback side effects
+    @Deprecated
+    int MAX_ERRORS = 200;
+    private Token.IdType[] Protections = {tok("export"), tok("package"),
+        tok("private"), tok("public"), tok("protected")};
     @NotNull
+    private
     PsiBuilder builder;
     /**
      * Current error count
      */
-    int errorCount;
+    private int errorCount;
     /**
      * Current warning count
      */
-    int warningCount;
+    private int warningCount;
     /**
      * Name used when reporting warnings and errors
      */
-    String fileName;
+    private String fileName;
     /**
      * Tokens to parse
      */
-    Token[] tokens;
-    int suppressedErrorCount;
-    @Deprecated
-    int MAX_ERRORS = 200;
-    Map<Integer, Boolean> cachedAAChecks = new HashMap<>();
-    int suppressMessages;
-    int index;
-    HashMap<Marker, Integer> beginnings = new HashMap<>();
+    private Token[] tokens;
+    private int suppressedErrorCount;
+    private Map<Integer, Boolean> cachedAAChecks = new HashMap<>();
+    private int suppressMessages;
+    private int index;
+    private HashMap<Marker, Integer> beginnings = new HashMap<>();
 
     public DLangParser(@NotNull PsiBuilder builder) {
         this.errorCount = 0;
@@ -126,16 +127,291 @@ class DLangParser {
         this.builder = builder;
     }
 
+    private static IElementType nodeTypeToIElementType(String nodeType) {
+        switch (nodeType) {
+            case "AlignAttribute":
+                return ALIGN_ATTRIBUTE;
+            case "ArgumentList":
+                return ARGUMENT_LIST;
+            case "ArrayInitializer":
+                return ARRAY_INITIALIZER;
+            case "ArrayLiteral":
+                return ARRAY_LITERAL;
+            case "ArrayMemberInitialization":
+                return ARRAY_MEMBER_INITIALIZATION;
+            case "AsmInstruction":
+                return ASM_INSTRUCTION;
+            case "AsmPrimaryExp":
+                return ASM_PRIMARY_EXP;
+            case "AsmStatement":
+                return ASM_STATEMENT;
+            case "AsmTypePrefix":
+                return ASM_TYPE_PREFIX;
+            case "AssocArrayLiteral":
+                return ASSOC_ARRAY_LITERAL;
+            case "Attribute":
+                return ATTRIBUTE;
+            case "AutoDeclaration":
+                return AUTO_DECLARATION;
+            case "BlockStatement":
+                return BLOCK_STATEMENT;
+            case "BodyStatement":
+                return BODY_STATEMENT;
+            case "BreakStatement":
+                return BREAK_STATEMENT;
+            case "BaseClassList":
+                return BASE_CLASS_LIST;
+            case "CastExpression":
+                return CAST_EXPRESSION;
+            case "Catch":
+                return CATCH;
+            case "Catches":
+                return CATCHES;
+            case "ConditionalStatement":
+                return CONDITIONAL_STATEMENT;
+            case "Constraint":
+                return CONSTRAINT;
+            case "Constructor":
+                return CONSTRUCTOR;
+            case "ContinueStatement":
+                return CONTINUE_STATEMENT;
+            case "DebugCondition":
+                return DEBUG_CONDITION;
+            case "DebugSpecification":
+                return DEBUG_SPECIFICATION;
+            case "Declaration":
+                return DECLARATION;
+            case "Declarator":
+                return DECLARATOR;
+            case "DefaultStatement":
+                return DEFAULT_STATEMENT;
+            case "Destructor":
+                return DESTRUCTOR;
+            case "DoStatement":
+                return DO_STATEMENT;
+            case "EnumBody":
+                return ENUM_BODY;
+            case "AnonymousEnumMember":
+                return ANONYMOUS_ENUM_DECLARATION;
+            case "AnonymousEnumDeclaration":
+                return ANONYMOUS_ENUM_DECLARATION;
+            case "EnumDeclaration":
+                return ENUM_DECLARATION;
+            case "EnumMember":
+                return ENUM_MEMBER;
+            case "FinalSwitchStatement":
+                return FINAL_SWITCH_STATEMENT;
+            case "ForStatement":
+                return FOR_STATEMENT;
+            case "ForeachStatement":
+                return FOREACH_STATEMENT;
+            case "ForeachType":
+                return FOREACH_TYPE;
+            case "ForeachTypeList":
+                return FOREACH_TYPE_LIST;
+            case "FunctionBody":
+                return FUNCTION_BODY;
+            case "GotoStatement":
+                return GOTO_STATEMENT;
+            case "IdentifierList":
+                return IDENTIFIER_LIST;
+            case "IfStatement":
+                return IF_STATEMENT;
+            case "ImportBind":
+                return IMPORT_BIND;
+            case "ImportDeclaration":
+                return IMPORT_DECLARATION;
+            case "InStatement":
+                return IN_STATEMENT;
+            case "Initializer":
+                return INITIALIZER;
+            case "Invariant":
+                return INVARIANT;
+            case "KeyValuePair":
+                return KEY_VALUE_PAIR;
+            case "KeyValuePairs":
+                return KEY_VALUE_PAIRS;
+            case "LabeledStatement":
+                return LABELED_STATEMENT;
+            case "LastCatch":
+                return LAST_CATCH;
+            case "LinkageAttribute":
+                return LINKAGE_ATTRIBUTE;
+            case "MemberFunctionAttribute":
+                return MEMBER_FUNCTION_ATTRIBUTE;
+            case "MixinDeclaration":
+                return MIXIN_DECLARATION;
+            case "ModuleDeclaration":
+                return MODULE_DECLARATION;
+            case "NonVoidInitializer":
+                return NON_VOID_INITIALIZER;
+            case "Operands":
+                return OPERANDS;
+            case "OutStatement":
+                return OUT_STATEMENT;
+            case "Parameter":
+                return PARAMETER;
+            case "Parameters":
+                return PARAMETERS;
+            case "Postblit":
+                return POSTBLIT;
+            case "Register":
+                return REGISTER;
+            case "ReturnStatement":
+                return RETURN_STATEMENT;
+            case "ScopeGuardStatement":
+                return SCOPE_GUARD_STATEMENT;
+            case "SharedStaticConstructor":
+                return SHARED_STATIC_CONSTRUCTOR;
+            case "SharedStaticDestructor":
+                return SHARED_STATIC_DESTRUCTOR;
+            case "Statement":
+                return STATEMENT;
+            case "StatementNoCaseNoDefault":
+                return STATEMENT_NO_CASE_NO_DEFAULT;
+            case "StaticConstructor":
+                return STATIC_CONSTRUCTOR;
+            case "StaticDestructor":
+                return STATIC_DESTRUCTOR;
+            case "StaticIfCondition":
+                return STATIC_IF_CONDITION;
+            case "StorageClass":
+                return STORAGE_CLASS;
+            case "StructDeclaration":
+                return STRUCT_DECLARATION;
+            case "StructInitializer":
+                return STRUCT_INITIALIZER;
+            case "StructMemberInitializer":
+                return STRUCT_MEMBER_INITIALIZER;
+            case "StructMemberInitializers":
+                return STRUCT_MEMBER_INITIALIZERS;
+            case "SwitchStatement":
+                return SWITCH_STATEMENT;
+            case "Symbol":
+                return SYMBOL;
+            case "SynchronizedStatement":
+                return SYNCHRONIZED_STATEMENT;
+            case "TemplateAliasParameter":
+                return TEMPLATE_ALIAS_PARAMETER;
+            case "TemplateArgument":
+                return TEMPLATE_ARGUMENT;
+            case "TemplateArgumentList":
+                return TEMPLATE_ARGUMENT_LIST;
+            case "TemplateArguments":
+                return TEMPLATE_ARGUMENTS;
+            case "TemplateDeclaration":
+                return TEMPLATE_DECLARATION;
+            case "TemplateInstance":
+                return TEMPLATE_INSTANCE;
+            case "TemplateParameter":
+                return TEMPLATE_PARAMETER;
+            case "TemplateParameterList":
+                return TEMPLATE_PARAMETER_LIST;
+            case "TemplateParameters":
+                return TEMPLATE_PARAMETERS;
+            case "TemplateSingleArgument":
+                return TEMPLATE_SINGLE_ARGUMENT;
+            case "TemplateThisParameter":
+                return TEMPLATE_THIS_PARAMETER;
+            case "TemplateTupleParameter":
+                return TEMPLATE_TUPLE_PARAMETER;
+            case "TemplateTypeParameter":
+                return TEMPLATE_TYPE_PARAMETER;
+            case "TemplateValueParameter":
+                return TEMPLATE_VALUE_PARAMETER;
+            case "ThrowStatement":
+                return THROW_STATEMENT;
+            case "TryStatement":
+                return TRY_STATEMENT;
+            case "Type":
+                return TYPE;
+            case "TypeSpecialization":
+                return TYPE_SPECIALIZATION;
+            case "UnionDeclaration":
+                return UNION_DECLARATION;
+            case "VersionCondition":
+                return VERSION_CONDITION;
+            case "VersionSpecification":
+                return VERSION_SPECIFICATION;
+            case "WhileStatement":
+                return WHILE_STATEMENT;
+            case "WithStatement":
+                return WITH_STATEMENT;
+            case "AsmAddExp":
+                return ASM_ADD_EXP;
+            case "AsmAndExp":
+                return ASM_AND_EXP;
+            case "AsmBrExp":
+                return ASM_BR_EXP;
+            case "AsmExp":
+                return ASM_EXP;
+            case "AsmEqualExp":
+                return ASM_EQUAL_EXP;
+            case "AsmLogAndExp":
+                return ASM_LOG_AND_EXP;
+            case "AsmLogOrExp":
+                return ASM_LOG_OR_EXP;
+            case "AsmMulExp":
+                return ASM_MUL_EXP;
+            case "AsmOrExp":
+                return ASM_OR_EXP;
+            case "AsmRelExp":
+                return ASM_REL_EXP;
+            case "AsmUnaExp":
+                return ASM_UNA_EXP;
+            case "AsmShiftExp":
+                return ASM_SHIFT_EXP;
+            case "AsmXorExp":
+                return ASM_XOR_EXP;
+            case "AssertExpression":
+                return ASSERT_EXPRESSION;
+            case "AssignExpression":
+                return ASSIGN_EXPRESSION;
+            case "DeleteExpression":
+                return DELETE_EXPRESSION;
+            case "IdentityExpression":
+                return IDENTITY_EXPRESSION;
+            case "ImportExpression":
+                return IMPORT_EXPRESSION;
+            case "IndexExpression":
+                return INDEX_EXPRESSION;
+            case "IsExpression":
+                return IS_EXPRESSION;
+            case "MixinExpression":
+                return MIXIN_EXPRESSION;
+            case "NewAnonClassExpression":
+                return NEW_ANON_CLASS_EXPRESSION;
+            case "NewExpression":
+                return NEW_EXPRESSION;
+            case "OrExpression":
+            case "PrimaryExpression":
+                return PRIMARY_EXPRESSION;
+            case "PragmaDeclaration":
+                return PRAGMA_DECLARATION;
+            case "RelExpression":
+                return REL_EXPRESSION;
+            case "StaticAssertStatement":
+                return STATIC_ASSERT_STATEMENT;
+            case "StaticAssertDeclaration":
+                return STATIC_ASSERT_DECLARATION;
+            case "TraitsExpression":
+                return TRAITS_EXPRESSION;
+            case "TypeidExpression":
+                return TYPEID_EXPRESSION;
+            case "Unittest":
+                return UNITTEST;
+            case "Vector":
+                return VECTOR;
+            default:
+                throw new IllegalArgumentException("unrecognized thing to parse:" + nodeType);
+        }
+    }
+
     private Token.IdType tok(String tok) {
         if (tokenTypeIndex.get(tok) != null) {
             return tokenTypeIndex.get(tok);
         }
-        final IElementType[] matchingTypes = IElementType.enumerate((IElementType type) -> {
-            if (type instanceof DLanguageTokenType) {
-                return ((DLanguageTokenType) type).getDebugName().equals(tok);
-            }
-            return false;
-        });
+        final IElementType[] matchingTypes = IElementType.enumerate((IElementType type) -> type instanceof DLanguageTokenType && ((DLanguageTokenType) type).getDebugName().equals(tok));
         if (tok.equals("identifier")) {
             tokenTypeIndex.put("identifier", new Token.IdType(ID));
             return tokenTypeIndex.get("identifier");
@@ -170,7 +446,7 @@ class DLangParser {
         return tokenArray;
     }
 
-    public void cleanup(@NotNull Marker marker, IElementType element) {
+    private void cleanup(@NotNull Marker marker, IElementType element) {
 //        index = beginnings.get(marker);
 //        beginnings.remove(marker);
         exit_section_modified(builder, marker, element, true);
@@ -438,7 +714,7 @@ class DLangParser {
      * $(RULE assignExpression) ($(LITERAL ',') $(RULE assignExpression)?)*
      * ;)
      */
-    Pair<Boolean, Integer> parseArgumentList() {
+    private Pair<Boolean, Integer> parseArgumentList() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         if (!moreTokens()) {
             error("argument list expected instead of EOF");
@@ -906,9 +1182,6 @@ class DLangParser {
         return result;
     }
 
-    void trace(String ignored) {
-    }
-
     /**
      * Parses an AsmPrimaryExp
      * <p>
@@ -931,7 +1204,7 @@ class DLangParser {
             advance();
         } else if (i.equals(tok("identifier"))) {
             if ((Sets.newHashSet(Arrays.asList(REGISTER_NAMES))).contains(current().text)) {
-                trace("Found register");
+//                trace("Found register");
                 if (!parseRegister()) {
                     cleanup(m, ASM_PRIMARY_EXP);
                     return false;
@@ -1293,23 +1566,15 @@ class DLangParser {
         return result;
     }
 
-    /**
-     * moove and document these
-     * todo check this
-     *
-     * @param nodeType
-     * @param parts
-     * @return
-     */
     private boolean simpleParse(String nodeType, Object... parts) {
         //open marker for type
         final Marker m = enter_section_modified(builder);
         final boolean result = simpleParseItems(parts);
-        exit_section_modified(builder, m, ParserPreliminaryJavaWriteUp.nodeTypeToIElementType(nodeType), result);
+        exit_section_modified(builder, m, nodeTypeToIElementType(nodeType), result);
         return result;
     }
 
-    boolean simpleParseItems(Object... items) {
+    private boolean simpleParseItems(Object... items) {
         for (Object item : items) {
             if (item instanceof Token.IdType) {
                 if (!simpleParseItemsSingle((Token.IdType) item)) {
@@ -1329,7 +1594,7 @@ class DLangParser {
 
     }
 
-    boolean simpleParseItemsSingle(String item) {
+    private boolean simpleParseItemsSingle(String item) {
         final int i = item.indexOf("|");
         final String first = item.substring(0, i);//unneeded, libdparse uses for building it's ast, but we don't need to
         final String second = item.substring(i + 1);
@@ -1338,7 +1603,7 @@ class DLangParser {
 
     }
 
-    boolean simpleParseItemsSingle(Token.IdType item) {
+    private boolean simpleParseItemsSingle(Token.IdType item) {
         return expect(item) != null;
     }
 
@@ -1497,7 +1762,7 @@ class DLangParser {
      * $(RULE attribute) $(LITERAL ':')
      * ;)
      */
-    boolean parseAttributeDeclaration(boolean parseAttribute)//(Attribute attribute = null)
+    private boolean parseAttributeDeclaration(boolean parseAttribute)//(Attribute attribute = null)
     {
         Marker m = enter_section_modified(builder);
         if (parseAttribute) {
@@ -1599,10 +1864,6 @@ class DLangParser {
             }
         }
         Token closeBrace = expect(tok("}"));
-        if (closeBrace != null) {
-        } else {
-            trace("Could not find end of block statement.");
-        }
         exit_section_modified(builder, m, BLOCK_STATEMENT, true);
         return true;
     }
@@ -1651,13 +1912,7 @@ class DLangParser {
         return true;
     }
 
-    /**
-     * todo document and move
-     *
-     * @param type
-     * @return
-     */
-    public boolean isProtection(Token.IdType type) {
+    private boolean isProtection(Token.IdType type) {
         for (Token.IdType t : Protections) {//todo use a set
             if (t.equals(type)) {
                 return true;
@@ -1731,7 +1986,7 @@ class DLangParser {
      * | $(LITERAL 'void')
      * ;)
      */
-    Token.IdType parseBuiltinType() {
+    private Token.IdType parseBuiltinType() {
 //            mixin(traceEnterAndExit!(__FUNCTION__));
         return advance().type;//todo add markers etc.
     }
@@ -3570,7 +3825,7 @@ class DLangParser {
         }
         if (currentIsOneOf(tok("const"), tok("immutable"),
             tok("inout"), tok("shared")) && !peekIs(tok("("))) {
-            trace("\033[01;36mType constructor");
+//            trace("\033[01;36mType constructor");
             if (!parseNodeQ("TypeConstructors")) {
                 cleanup(m, FOREACH_TYPE);
                 return false;
@@ -8098,7 +8353,7 @@ class DLangParser {
         return currentIsOneOf(tok(","), tok(")"), tok("="));
     }
 
-    boolean isStorageClass() {
+    private boolean isStorageClass() {
         if (!moreTokens()) return false;
         Token.IdType i = current().type;
         if (i.equals(tok("const")) || i.equals(tok("immutable")) || i.equals(tok("inout")) || i.equals(tok("shared"))) {
@@ -8130,23 +8385,23 @@ class DLangParser {
             return i.equals(tok("deprecated")) || i.equals(tok("private")) || i.equals(tok("package")) || i.equals(tok("protected")) || i.equals(tok("public")) || i.equals(tok("export")) || i.equals(tok("final")) || i.equals(tok("synchronized")) || i.equals(tok("override")) || i.equals(tok("abstract")) || i.equals(tok("auto")) || i.equals(tok("__gshared")) || i.equals(tok("pure")) || i.equals(tok("nothrow")) || i.equals(tok("@")) || i.equals(tok("ref")) || i.equals(tok("extern")) || i.equals(tok("align"));
     }
 
-    boolean isMemberFunctionAttribute(Token.IdType t) {
+    private boolean isMemberFunctionAttribute(Token.IdType t) {
         return t.equals(tok("const")) || t.equals(tok("immutable")) || t.equals(tok("inout")) || t.equals(tok("shared")) || t.equals(tok("@")) || t.equals(tok("pure")) || t.equals(tok("nothrow")) || t.equals(tok("return")) || t.equals(tok("scope"));
     }
 
-    boolean isTypeCtor(Token.IdType t) {
+    private boolean isTypeCtor(Token.IdType t) {
         return t.equals(tok("const")) || t.equals(tok("immutable")) || t.equals(tok("inout")) || t.equals(tok("shared"));
     }
 
-    boolean currentIsMemberFunctionAttribute() {
+    private boolean currentIsMemberFunctionAttribute() {
         return moreTokens() && isMemberFunctionAttribute(current().type);
     }
 
-    boolean parseLeftAssocBinaryExpression(Ref.BooleanRef operatorWasMatched, String ExpressionType, String ExpressionPartType, Token.IdType... operators) {
+    private boolean parseLeftAssocBinaryExpression(Ref.BooleanRef operatorWasMatched, String ExpressionType, String ExpressionPartType, Token.IdType... operators) {
         return parseLeftAssocBinaryExpression(operatorWasMatched, ExpressionType, ExpressionPartType, false, operators);
     }
 
-    boolean parseLeftAssocBinaryExpression(Ref.BooleanRef operatorWasMatched, String ExpressionType, String ExpressionPartType, boolean part, Token.IdType... operators)//(alias ExpressionType, alias ExpressionPartType, Operators ...)(ExpressionNode part = null)
+    private boolean parseLeftAssocBinaryExpression(Ref.BooleanRef operatorWasMatched, String ExpressionType, String ExpressionPartType, boolean part, Token.IdType... operators)//(alias ExpressionType, alias ExpressionPartType, Operators ...)(ExpressionNode part = null)
     {
         operatorWasMatched.element = false;
         boolean node;
@@ -8166,12 +8421,12 @@ class DLangParser {
         return true;
     }
 
-    boolean parseCommaSeparatedRule(String listType, String itemType) {
+    private boolean parseCommaSeparatedRule(String listType, String itemType) {
         return parseCommaSeparatedRule(new Ref.IntRef(), listType, itemType);
     }
 
 
-    boolean parseCommaSeparatedRule(Ref.IntRef foreachTypeRefLength, String listType, String itemType)//(alias ListType, alias ItemType,)
+    private boolean parseCommaSeparatedRule(Ref.IntRef foreachTypeRefLength, String listType, String itemType)//(alias ListType, alias ItemType,)
     {
 //            final boolean setLineAndColumn = false;
 //        Marker m = enter_section_(builder);
@@ -8194,8 +8449,6 @@ class DLangParser {
                 advance();
                 if (currentIsOneOf(tok(")"), tok("}"), tok("]")))
                     break;
-                else
-                    continue;
             } else
                 break;
         }
@@ -8203,7 +8456,7 @@ class DLangParser {
         return true;
     }
 
-    void warn(String message) {
+    private void warn(String message) {
         if (suppressMessages > 0)
             return;
         ++warningCount;
@@ -8216,7 +8469,7 @@ class DLangParser {
 //            messageFunction(fileName, line, column, message, false);
     }
 
-    void error(String message) {
+    private void error(String message) {
         if (suppressMessages == 0) {
             ++errorCount;
 //                auto column = index < tokens.length ? tokens[index].column : tokens[$ - 1].column;
@@ -8238,7 +8491,7 @@ class DLangParser {
         }
     }
 
-    void skip(Token.IdType o, Token.IdType c)//(alias O, alias C)
+    private void skip(Token.IdType o, Token.IdType c)//(alias O, alias C)
     {
         assert (currentIs(o));
         advance();
@@ -8262,11 +8515,11 @@ class DLangParser {
         skip(tok("{"), tok("}"));
     }
 
-    void skipParens() {
+    private void skipParens() {
         skip(tok("("), tok(")"));
     }
 
-    void skipBrackets() {
+    private void skipBrackets() {
         skip(tok("["), tok("]"));
     }
 
@@ -8274,7 +8527,7 @@ class DLangParser {
         return index + 1 < tokens.length ? tokens[index + 1] : null;
     }
 
-    Token peekPast(Token.IdType o, Token.IdType c)//(alias O, alias C)
+    private Token peekPast(Token.IdType o, Token.IdType c)//(alias O, alias C)
     {
         if (index >= tokens.length)
             return null;
@@ -8296,23 +8549,23 @@ class DLangParser {
         return i >= tokens.length ? null : depth == 0 ? tokens[i] : null;
     }
 
-    Token peekPastParens() {
+    private Token peekPastParens() {
         return peekPast(tok("("), tok(")"));
     }
 
-    Token peekPastBrackets() {
+    private Token peekPastBrackets() {
         return peekPast(tok("["), tok("]"));
     }
 
-    Token peekPastBraces() {
+    private Token peekPastBraces() {
         return peekPast(tok("{"), tok("}"));
     }
 
-    boolean peekIs(Token.IdType t) {
+    private boolean peekIs(Token.IdType t) {
         return index + 1 < tokens.length && tokens[index + 1].type.equals(t);
     }
 
-    boolean peekIsOneOf(Token.IdType... types) {
+    private boolean peekIsOneOf(Token.IdType... types) {
         if (index + 1 >= tokens.length) return false;
         final Token.IdType needle = tokens[index + 1].type;
         for (Token.IdType type : types) {
@@ -8329,7 +8582,7 @@ class DLangParser {
      * Returns a token of the specified type if it was the next token, otherwise
      * calls the error function and returns null. Advances the lexer by one token.
      */
-    Token expect(Token.IdType type) {
+    private Token expect(Token.IdType type) {
         if (index < tokens.length && tokens[index].type.equals(type)) {
 //            assert (builder.getTokenType().equals(tokens[index].type.type));
             if (!builder.getTokenType().equals(tokens[index].type.type)) {
@@ -8361,7 +8614,7 @@ class DLangParser {
     /**
      * Returns: the _current token
      */
-    Token current() {
+    private Token current() {
         return tokens[index];
     }
 
@@ -8375,7 +8628,7 @@ class DLangParser {
     /**
      * Advances to the next token and returns the current token
      */
-    Token advance() {
+    private Token advance() {
         if (!builder.getTokenType().equals(tokens[index].type.type)) {
             throw new AssertionError();
         }
@@ -8406,14 +8659,14 @@ class DLangParser {
     /**
      * Returns: true if the current token has the given type
      */
-    boolean currentIs(Token.IdType type) {
+    private boolean currentIs(Token.IdType type) {
         return index < tokens.length && tokens[index].type.equals(type);
     }
 
     /**
      * Returns: true if the current token is one of the given types
      */
-    boolean currentIsOneOf(Token.IdType... types) {
+    private boolean currentIsOneOf(Token.IdType... types) {
         if (index >= tokens.length)
             return false;
         for (Token.IdType type : types) {
@@ -8426,7 +8679,7 @@ class DLangParser {
 //        return canFind(types, current().type);
     }
 
-    boolean startsWith(Token.IdType... types) {
+    private boolean startsWith(Token.IdType... types) {
         if (index + types.length >= tokens.length)
             return false;
         for (int i = 0; (i < types.length) && ((index + i) < tokens.length); ++i) {
@@ -8436,14 +8689,14 @@ class DLangParser {
         return true;
     }
 
-    Bookmark setBookmark() {
+    private Bookmark setBookmark() {
 ////        mixin(traceEnterAndExit!(__FUNCTION__));
         ++suppressMessages;
         final Marker m = enter_section_modified(builder);
         return new Bookmark(index, m);
     }
 
-    void abandonBookmark(Bookmark bookmark) {
+    private void abandonBookmark(Bookmark bookmark) {
         --suppressMessages;
         if (suppressMessages == 0)
             suppressedErrorCount = 0;
@@ -8453,7 +8706,7 @@ class DLangParser {
         }
     }
 
-    void goToBookmark(Bookmark bookmark) {
+    private void goToBookmark(Bookmark bookmark) {
         --suppressMessages;
         if (suppressMessages == 0)
             suppressedErrorCount = 0;
@@ -8463,19 +8716,15 @@ class DLangParser {
         bookmark.dropped = true;
     }
 
-    boolean parseNodeQ(String NodeName) {
-        if (!parseName(NodeName)) {
-            return false;
-        }
-        //we can ignore VarName, since that is aside effect not strictly necessary for parsing
-        return true;
+    private boolean parseNodeQ(String NodeName) {
+        return parseName(NodeName);
     }
 
-    boolean tokenCheck(String Tok) {
+    private boolean tokenCheck(String Tok) {
         return expect(tok(Tok)) != null;
     }
 
-    boolean parseStaticCtorDtorCommon() {
+    private boolean parseStaticCtorDtorCommon() {
 //            node.line = current().line;
 //            node.column = current().column;
         if (!tokenCheck("this")) {

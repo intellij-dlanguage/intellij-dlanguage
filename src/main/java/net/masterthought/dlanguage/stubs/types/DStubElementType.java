@@ -17,12 +17,6 @@ public abstract class DStubElementType<S extends StubElement<T>, T extends DComp
         super(debugName, DLanguage.INSTANCE);
     }
 
-    @NotNull
-    @Override
-    public String getExternalId() {
-        return "d." + super.toString();
-    }
-
     @Override
     public void indexStub(@NotNull S stub, @NotNull IndexSink sink) {
 
@@ -31,6 +25,12 @@ public abstract class DStubElementType<S extends StubElement<T>, T extends DComp
     @Override
     public void serialize(@NotNull S stub, @NotNull StubOutputStream dataStream) throws IOException {
 
+    }
+
+    @NotNull
+    @Override
+    public String getExternalId() {
+        return "d." + super.toString();
     }
 
     @Override

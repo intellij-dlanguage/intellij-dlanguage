@@ -1,6 +1,5 @@
 package net.masterthought.dlanguage.stubs.types;
 
-import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubInputStream;
 import com.intellij.psi.stubs.StubOutputStream;
@@ -19,11 +18,6 @@ public class AliasInitializerStubElementType extends DNamedStubElementType<DLang
     @Override
     public DLanguageAliasInitializer createPsi(@NotNull DLanguageAliasInitializerStub stub) {
         return new DLanguageAliasInitializerImpl(stub, this);
-    }
-
-    @Override
-    public boolean shouldCreateStub(ASTNode node) {
-        return true;
     }
 
     @NotNull
