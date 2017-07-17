@@ -69,10 +69,15 @@ public class DHighlighter extends SyntaxHighlighterBase {
         if (DHighlightingTokenSets.OPERATOR.contains(type)) {
             return pack(OPERATOR);
         }
-        if (DHighlightingTokenSets.PARENTHESES.contains(type)) {
+        if (DHighlightingTokenSets.PARENTHESES_RIGHT.contains(type)) {
             return pack(PARENTHESES);
         }
-        if (DHighlightingTokenSets.BRACES.contains(type)) {
+        if (DHighlightingTokenSets.PARENTHESES_LEFT.contains(type)) {
+            return pack(PARENTHESES);
+        }
+        if (DHighlightingTokenSets.BRACES_RTGHT.contains(type)) {
+            return pack(BRACES);
+        }if (DHighlightingTokenSets.BRACES_LEFT.contains(type)) {
             return pack(BRACES);
         }
         if (DHighlightingTokenSets.SEMICOLON.contains(type)) {
@@ -84,7 +89,10 @@ public class DHighlighter extends SyntaxHighlighterBase {
         if (DHighlightingTokenSets.DOT.contains(type)) {
             return pack(DOT);
         }
-        if (DHighlightingTokenSets.BRACKETS.contains(type)) {
+        if (DHighlightingTokenSets.BRACKETS_RIGHT.contains(type)) {
+            return pack(BRACKETS);
+        }
+        if (DHighlightingTokenSets.BRACKETS_LEFT.contains(type)) {
             return pack(BRACKETS);
         }
         if (DHighlightingTokenSets.MODULE_DEFINITION.contains(type)) {
