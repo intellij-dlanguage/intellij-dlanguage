@@ -111,10 +111,10 @@ public class CompileCheck {
         return line;
     }
 
-    public static int getOffsetStart(final PsiFile file, int line) {
+    public static int getOffsetStart(final PsiFile file, int line, int column) {
         Document document = PsiDocumentManager.getInstance(file.getProject()).getDocument(file);
         line = getValidLineNumber(line, document);
-        return getLineStartOffset(document, line);
+        return getLineStartOffset(document, line) + column;
     }
 
     public static int getOffsetEnd(final PsiFile file, int line) {
@@ -123,8 +123,8 @@ public class CompileCheck {
         return getLineEndOffset(document, line);
     }
 
-    private static TextRange calculateTextRange(PsiFile file, int line) {
-        final int startOffset = getOffsetStart(file, line);
+    private static TextRange calculateTextRange(PsiFile file, int line, int column) {
+        final int startOffset = getOffsetStart(file, line, column);
         final int endOffset = getOffsetEnd(file, line);
         return new TextRange(startOffset, endOffset);
     }
@@ -132,24 +132,26 @@ public class CompileCheck {
     @Nullable
     public static Problem parseProblem(String lint, PsiFile file) {
         // Example DUB error:
-        // src/hello.d(3, 1): Error: only one main allowed
+        // src/hello.d(3,1): Error: only one main allowed
         Pattern p = Pattern.compile("([\\w\\\\/]+\\.d)\\((\\d+),(\\d+)\\):\\s(\\w+):(.+)");
         Matcher m = p.matcher(lint);
 
         String sourceFile = "";
         String message = "";
         int line = 0;
+        int column = 0;
         String severity = "";
 
         while (m.find()) {
             sourceFile = m.group(1);
             line = Integer.valueOf(m.group(2));
+            column = Integer.valueOf(m.group(3)) - 1;
             severity = m.group(4);
             message = m.group(5);
         }
 
         if (isSameFile(file, sourceFile)) {
-            TextRange range = calculateTextRange(file, line);
+            TextRange range = calculateTextRange(file, line, column);
             return new Problem(range, message, severity);
         } else {
             return null;
