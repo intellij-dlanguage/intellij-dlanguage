@@ -1,26 +1,22 @@
-# IntelliJ Plugin to provide support for the [D Programming Language](http://dlang.org/)
+Intellij D Language
+===================
 
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/kingsleyh/DLanguage?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![ZenHub](https://raw.githubusercontent.com/ZenHubIO/support/master/zenhub-badge.png)](https://zenhub.io)
-
+Support for the [D Programming Language](http://dlang.org/) within IntelliJ IDEA
 
 | Branch | Status |
 | :--- | :--- |
 | Master | [![Build Status](https://travis-ci.org/intellij-dlanguage/intellij-dlanguage.svg?branch=master)](https://travis-ci.org/intellij-dlanguage/intellij-dlanguage) |
 | Develop | [![Build Status](https://travis-ci.org/intellij-dlanguage/intellij-dlanguage.svg?branch=develop)](https://travis-ci.org/intellij-dlanguage/intellij-dlanguage) |
 
-This plugin brings D Language support to IntelliJ IDEA.
-
-## Supported versions of IntelliJ / JDK
+## Supported versions of IntelliJ
 
 | Plugin Version | IntelliJ Versions |
 | :--- | :--- |
+| 1.13-SNAPSHOT | 2017.1.* |
 | 1.12 | 2017.1 |
 | 1.11 | 2016.3 |
 
-JetBrains create downloadable releases with or without a bundled JRE. If you download a release without a
-bundled JRE you will need to have a JRE installed. Since IntelliJ 16 (the 2016.* versions) JRE 8 is required
-to run the IDE.
+JetBrains create downloadable releases with or without a bundled JRE. If you download a release without a bundled JRE you will need to have a JRE installed. Since IntelliJ 16 (the 2016.* versions) JRE 8 is required to run the IDE.
 
 ## A few caveats, etc.
 
@@ -28,47 +24,23 @@ This is an early stage work in progress. The feature set is likely lacking in ma
 support, debugging and the full reference support that provides go to declaration and go to implementation
 etc. There are certainly more.
 
-This plugin is being developed for IntelliJ IDEA. JetBrains assert that the plugin should also be able to
-work in CLion. However currently the plugin assumes Dub as the build support, whereas CLion requires
-CMake. Work is planned but all help will be welcome.
+This plugin is being developed for IntelliJ IDEA however it should be able to work in other Jetbrains IDE's including CLion (although you may need to compile from source with a few minor code changes). We do intend to support CLion in a future release.
 
-This plugin is being developed purely by a few volunteers in their spare time – unless someone can provide
-some better funded resource to work on this. It is a project that will span years not weeks. Please support
-the project by using the plugin and feeding back your experiences by raising issues for feedback, feature
-requests and bugs. Even better get involved and submit pull requests.
+This plugin is being developed purely by a few volunteers in their spare time – unless someone can provide some better funded resource to work on this. It is a project that will span years not weeks. Please support the project by using the plugin and feeding back your experiences by raising issues for feedback, feature requests and bugs. Even better get involved and submit pull requests.
 
 ## Latest Updates
 
+* July 2017 - v1.13 is about to be released and will likely be the last version to support IntelliJ 2017.1.*, future releases will be for IntelliJ 2017.2 and above
 * March 2017 – Released v1.12 to add compatibility with IntelliJ 2017.1 (#139)
-* December 2016 – New features are in progress. In the meantime version 1.11 of the plugin adds
-  compatibility with IntelliJ 2016.3.
+* December 2016 – v1.11 of the plugin adds compatibility with IntelliJ 2016.3.
 * 9th January 2016 – Fixed some bugs and working towards getting more of the IntelliJ features working.
-* 27th December 2015 – Fixed DCD bugs and added dub init wizard to dub project creation.
-* 25th December 2015 – Added code formatting with DFmt.
-* 24th December 2015 – Added Syntax highlighting, DCD autocompletion, dub compile checking and Dscanner
-  annotation.
-* 23rd December 2015 – Released an early test version to the IntelliJ plugin repository.
-* 9th December 2015 – First pass of the BNF grammar complete with extensive tests – the next step is to move
-  onto basic syntax highlighting.
-* 21st October 2015 – Work has begun to re-organize and track the upcoming work as well as initial work on
-  the BNF grammar.
-* 7th October 2015 – A complete re-write of the parser using the grammarkit plugin for IntelliJ has been
-  started. This will overcome the terrible performance issues caused by the integration of the DDT parser
-  and will enable a longer term view of complete language support and lots of cool features that are just
-  not possible to add in any other way.
-* 29th March 2015 – Using the DDT parser/lexer with IntelliJ has to jump through many hoops to work
-  correctly, or efficiently, IntelliJ doesn't make it easy to use external parsers directly. The only option
-  is to write a BNF grammer and JFlex lexer.
 
 ## Installation
 
 [Download](https://www.jetbrains.com/idea/) and install IntelliJ Community Edition (Free) or Ultimate (Paid)
-From IntelliJ go to Preferences > Plugins > Browse Repositories and search For "D Language" – you will see 2
-plugins – Choose the *DLanguage* one and click install and then click restart IntelliJ
+From IntelliJ go to Preferences > Plugins > Browse Repositories and search For "D Language" (**you will see 2 plugins, Choose the DLanguage one**) then click install and restart IntelliJ
 
-You can also download the plugin jar to your local disk
-here: [Jetbrains plugin repository](https://plugins.jetbrains.com/plugin/8115?pr=) and then in IntelliJ go
-to Preferences > Plugins > Install plugin from disk and choose the jar you downloaded
+You can also download the plugin jar to your local disk directly from the [Jetbrains plugin repository](https://plugins.jetbrains.com/plugin/8115?pr=) and then in IntelliJ go to Preferences > Plugins > Install plugin from disk and choose the jar you downloaded
 
 ![installation](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/master/.README/install.png)
 
@@ -78,15 +50,11 @@ to Preferences > Plugins > Install plugin from disk and choose the jar you downl
 
 If you have an existing dub project you can import it via File > Import Project
 
- ![Import](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/master/.README/import-dub-project.png)
+![Import](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/master/.README/import-dub-project.png)
 
 ### New Project with DUB
 
-When you select this to create a new project with dub – if dub is on your path it will attempt to use _dub
-init_ to create a new dub project for you. If dub is not on your path it will create a source directory
-and you will have to create your sdl/json dub file manually or rename/delete the source folder and then
-use _dub init_ to recreate it, or you can open an existing dub project by doing File -> Open,
-
+When you select this to create a new project with dub, if dub is on your path, it will attempt to use _dub init_ to create a new dub project for you. If dub is not on your path it will create a source directory and you will have to create your sdl/json dub file manually or rename/delete the source folder and then use _dub init_ to recreate it. Alternatively you can open an existing dub project by doing: File -> Open
 
 Once a dub project is loaded there is right click menu option to run with dub, or you can use the run config
 – run with Dub.
@@ -104,8 +72,7 @@ It reads the dub dependencies and loads the libraries into the External Librarie
 
 #### Basic D-Unit Test Runner Support
 
-If you add the d-unit dependency to your dub.json [d-unit](http://code.dlang.org/packages/d-unit)
-and then run Process D Libraries you will be able to run d-unit tests
+If you add the d-unit dependency to your dub.json [d-unit](http://code.dlang.org/packages/d-unit) and then run Process D Libraries you will be able to run d-unit tests
 
   ![Test Support](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/master/.README/d-unit-support.png)
 
@@ -113,64 +80,44 @@ and then run Process D Libraries you will be able to run d-unit tests
 
 The best option is to do and get the following tools and build them according to their GitHub page instructions:
 
-  * [dub](http://code.dlang.org/download)
-  * [DCD](https://github.com/Hackerpilot/DCD)
-  * [DScanner](https://github.com/Hackerpilot/Dscanner)
-  * [Dfmt](https://github.com/Hackerpilot/dfmt)
+ * [dub](http://code.dlang.org/download)
+ * [DCD](https://github.com/Hackerpilot/DCD)
+ * [DScanner](https://github.com/Hackerpilot/Dscanner)
+ * [Dfmt](https://github.com/Hackerpilot/dfmt)
 
-If you put these tools on your path you can go to Preferences -> Other Settings -> D Tools and just click
-autofind on each of the tools and it will find them. Otherwise you will need to select the correct path to
-the tool for each one.
+If you put these tools on your path you can go to Preferences -> Other Settings -> D Tools and just click autofind on each of the tools and it will find them. Otherwise you will need to select the correct path to the tool for each one.
 
-There is a nice blog post about setting up the tools
-at: [www.samael.me.uk](http://www.samael.me.uk/2015/12/d-plugin-for-intellij-idea.html)
+There is a nice blog post about setting up the tools at: [www.samael.me.uk](http://www.samael.me.uk/2015/12/d-plugin-for-intellij-idea.html)
 
 ### Configuring DCD
 
-To configure DCD in the dcd-server add a comma separated list of paths that point to your libraries that you
-want to include in autocompletion.
+To configure DCD in the dcd-server add a comma separated list of paths that point to your libraries that you want to include in autocompletion.
 
 For example:
 
         /Library/D/dmd/src/phobos,/Library/D/dmd/src/druntime/import,/Users/hendriki/.dub/packages/rainbow-master/src
 
-This will add the phobos and druntime/import as well as my rainbow dub project. You can add other dub
-packages by adding the path to them. I should be able to autoconfigure this stuff in a future release.
+This will add the phobos and druntime/import as well as my rainbow dub project. You can add other dub packages by adding the path to them. I should be able to autoconfigure this stuff in a future release.
 
-**UPDATE**: all project files are now automatically added to DCD and if on MacOS/OSX/macOS the D sources are
-also added automatically. The position on Linux and Windows is not currently clear since this work was done
-on OSX.
+**UPDATE**: all project files are now automatically added to DCD and if on MacOS/OSX/macOS the D sources are also added automatically. The position on Linux and Windows is not currently clear since this work was done on OSX.
 
 ### DCD Server Restart Action
 
-I noticed that after a while the auto completion seemed to cause the editor to hang. As a first step I have
-added a menu action in Tools as the last option to Restart the DCD Server. This action will just kill the
-running process and restart it again which seems to fix the hanging issue. I will investigate further to
-find a way to prevent the hanging in the first place but this is a helpful restart action.
+I noticed that after a while the auto completion seemed to cause the editor to hang. As a first step I have added a menu action in Tools as the last option to Restart the DCD Server. This action will just kill the running process and restart it again which seems to fix the hanging issue. I will investigate further to find a way to prevent the hanging in the first place but this is a helpful restart action.
 
 ### DFormat
 
-To reformat D code use the shortcut or the menu item – Code -> Reformat Code with D Format (ctrl+alt+K) or
-on mac (cmd+alt+K)
+To reformat D code use the shortcut or the menu item - Code -> Reformat Code with D Format (ctrl+alt+K) or on mac (cmd+alt+K)
 
 ### DFix
 
-To apply DFix to the a file use the shortcut or the menu item – Code -> Fix D code with DFi (ctrl+alt+M) or
-on mac (cmd+alt+M)
+To apply DFix to the a file use the shortcut or the menu item - Code -> Fix D code with DFi (ctrl+alt+M) or on mac (cmd+alt+M)
 
 ### Syntax Highlighting
 
 Go to Preferences -> Editor -> Colors and Fonts -> D File
 
-You can customize the syntax highlighting colours here. Save as a new theme – and then untick the inherit
-from checkbox and this will allow you to choose a colour for each item.  Only the native items will show as
-changing in the code example. From function definition downwards the options are related to annotated
-highlighting which is based on the grammar and not the lexer. So these don't show as changing the code
-example but they do work.
-
-## Progress
-
-Please see the development status on [DLanguage ZenBoard](https://github.com/intellij-dlanguage/intellij-dlanguage#boards)
+You can customize the syntax highlighting colours here. Save as a new theme - and then untick the inherit from checkbox and this will allow you to choose a colour for each item. Only the native items will show as changing in the code example. From function definition downwards the options are related to annotated highlighting which is based on the grammar and not the lexer. So these don't show as changing the code example but they do work.
 
 ## Screenshots
 
@@ -267,10 +214,7 @@ this one is also helpful: [make a plugin in less than 30 mins](http://bjorn.tipl
 
 ### Setup
 
-The project uses Gradle with
-the [gradle-intellij-plugin](https://github.com/JetBrains/gradle-intellij-plugin). If you do not have Gradle
-already installed, simply use the Gradle wrapper in the root of the project to build the plugin using the
-following:
+The project uses Gradle with the [gradle-intellij-plugin](https://github.com/JetBrains/gradle-intellij-plugin). Simply use the Gradle wrapper in the root of the project to build the plugin using the following:
 
 ```bash
 ./gradlew buildPlugin
