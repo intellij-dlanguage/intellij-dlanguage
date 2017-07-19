@@ -48,8 +48,8 @@ jobs:
       deploy:
         provider: script
         skip_cleanup: true
-        script: ORG_GRADLE_PROJECT_version=$TRAVIS_TAG ./gradlew :publishPlugin
+        script: ./gradlew :publishPlugin
         on:
-          tags: true
+          branch: release
   allow_failures:
     - env: ORG_GRADLE_PROJECT_ideaVersion=LATEST-EAP-SNAPSHOT
