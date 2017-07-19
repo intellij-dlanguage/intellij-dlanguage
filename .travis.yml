@@ -2,6 +2,8 @@ language: java
 
 jdk: oraclejdk8
 
+dist: trusty
+
 before_install:
   - sudo wget http://master.dl.sourceforge.net/project/d-apt/files/d-apt.list -O /etc/apt/sources.list.d/d-apt.list
   - wget -qO - https://dlang.org/d-keyring.gpg | sudo apt-key add -
@@ -13,6 +15,7 @@ env:
   - ORG_GRADLE_PROJECT_downloadIdeaSources=false
   matrix:
   - ORG_GRADLE_PROJECT_ideaVersion=LATEST-EAP-SNAPSHOT
+  - ORG_GRADLE_PROJECT_ideaVersion=2017.2
   - ORG_GRADLE_PROJECT_ideaVersion=2017.1.5
   - ORG_GRADLE_PROJECT_ideaVersion=2017.1.4
   - ORG_GRADLE_PROJECT_ideaVersion=2017.1.3
@@ -37,4 +40,4 @@ jobs:
       script: ORG_GRADLE_PROJECT_version=$TRAVIS_TAG ./gradlew publishPlugin
       on:
         tags: true
-      
+
