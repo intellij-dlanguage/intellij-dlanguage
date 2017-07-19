@@ -66,7 +66,7 @@ public class CompileCheck {
 
 
     @NotNull
-    public Problems findProblems(String stdout, PsiFile file) {
+    private Problems findProblems(String stdout, PsiFile file) {
         final List<String> lints = StringUtil.split(stdout, "\n");
         Problems problems = new Problems();
         for (String lint : lints) {
@@ -111,13 +111,13 @@ public class CompileCheck {
         return line;
     }
 
-    public int getOffsetStart(final PsiFile file, int line, int column) {
+    private int getOffsetStart(final PsiFile file, int line, int column) {
         Document document = PsiDocumentManager.getInstance(file.getProject()).getDocument(file);
         line = getValidLineNumber(line, document);
         return getLineStartOffset(document, line) + column;
     }
 
-    public int getOffsetEnd(final PsiFile file, int line) {
+    private int getOffsetEnd(final PsiFile file, int line) {
         Document document = PsiDocumentManager.getInstance(file.getProject()).getDocument(file);
         line = getValidLineNumber(line, document);
         return getLineEndOffset(document, line);
@@ -130,7 +130,7 @@ public class CompileCheck {
     }
 
     @Nullable
-    public Problem parseProblem(String lint, PsiFile file) {
+    private Problem parseProblem(String lint, PsiFile file) {
         // Example DUB error:
         // src/hello.d(3,1): Error: only one main allowed
         Pattern p = Pattern.compile("([\\w\\\\/]+\\.d)\\((\\d+),(\\d+)\\):\\s(\\w+):(.+)");
