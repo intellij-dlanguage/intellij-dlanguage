@@ -12,17 +12,15 @@ Support for the [D Programming Language](http://dlang.org/) within IntelliJ IDEA
 
 | Plugin Version | IntelliJ Versions |
 | :--- | :--- |
-| 1.13-SNAPSHOT | 2017.1.* |
-| 1.12 | 2017.1 |
+| 1.13-SNAPSHOT | 2017.1.* - 2017.2 |
+| 1.12 | 2017.1 - 2017.5 |
 | 1.11 | 2016.3 |
 
 JetBrains create downloadable releases with or without a bundled JRE. If you download a release without a bundled JRE you will need to have a JRE installed. Since IntelliJ 16 (the 2016.* versions) JRE 8 is required to run the IDE.
 
 ## A few caveats, etc.
 
-This is an early stage work in progress. The feature set is likely lacking in many areas: refactoring
-support, debugging and the full reference support that provides go to declaration and go to implementation
-etc. There are certainly more.
+This is an early stage work in progress. The feature set is likely lacking in many areas: refactoring support, debugging and the full reference support that provides go to declaration and go to implementation etc. There are certainly more.
 
 This plugin is being developed for IntelliJ IDEA however it should be able to work in other Jetbrains IDE's including CLion (although you may need to compile from source with a few minor code changes). We do intend to support CLion in a future release.
 
@@ -30,7 +28,7 @@ This plugin is being developed purely by a few volunteers in their spare time �
 
 ## Latest Updates
 
-* July 2017 - v1.13 is about to be released and will likely be the last version to support IntelliJ 2017.1.*, future releases will be for IntelliJ 2017.2 and above
+* July 2017 - v1.13 is about to be released and will add support for IntelliJ 2017.2
 * March 2017 – Released v1.12 to add compatibility with IntelliJ 2017.1 (#139)
 * December 2016 – v1.11 of the plugin adds compatibility with IntelliJ 2016.3.
 * 9th January 2016 – Fixed some bugs and working towards getting more of the IntelliJ features working.

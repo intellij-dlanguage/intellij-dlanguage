@@ -14,7 +14,7 @@
     <change-notes><![CDATA[
         <b>v1.13</b><br/>
         <ul>
-            <li>Compatibility IntelliJ 2017.1.*</li>
+            <li>Compatibility IntelliJ 2017.1.* &amp; 2017.1</li>
             <li>No longer requires DCD client/server</li>
         </ul>
         <b>v1.12</b><br/>
@@ -29,7 +29,7 @@
     </change-notes>
 
     <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
-    <idea-version since-build="171"/>
+    <idea-version since-build="171" until-build="172.*"/>
 
     <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
          on how to target different products -->

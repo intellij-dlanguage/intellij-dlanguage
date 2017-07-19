@@ -28,16 +28,16 @@ matrix:
   - env: ORG_GRADLE_PROJECT_ideaVersion=LATEST-EAP-SNAPSHOT
 
 ## pull requests skip the deployment step
-jobs:
-  include:
-    - stage: Deploy EAP
-      env: ORG_GRADLE_PROJECT_ideaVersion=2017.1
-      script: ORG_GRADLE_PROJECT_publishChannels=eap ORG_GRADLE_PROJECT_version=1.13-eap$TRAVIS_BUILD_NUMBER ./gradlew publishPlugin
-      on:
-        branch: master
-    - stage: Release
-      env: ORG_GRADLE_PROJECT_ideaVersion=2017.1
-      script: ORG_GRADLE_PROJECT_version=$TRAVIS_TAG ./gradlew publishPlugin
-      on:
-        tags: true
-
+deploy:
+  # deploy master to eap channel
+  - provider: script
+    script: ORG_GRADLE_PROJECT_publishChannels=eap ORG_GRADLE_PROJECT_version=1.13-eap$TRAVIS_BUILD_NUMBER ./gradlew publishPlugin
+    on:
+      branch: master
+      condition: $ORG_GRADLE_PROJECT_ideaVersion=2017.1
+  # deploy tags to default channel
+  - provider: script
+    script: ORG_GRADLE_PROJECT_version=$TRAVIS_TAG ./gradlew publishPlugin
+    on:
+      tags: true
+      condition: $ORG_GRADLE_PROJECT_ideaVersion=2017.1
