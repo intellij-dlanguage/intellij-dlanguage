@@ -28,7 +28,7 @@ public class CompileCheck {
 
     public Problems checkFileSyntax(@NotNull PsiFile file) {
         final String dubPath = ToolKey.DUB_KEY.getPath(file.getProject());
-               if (dubPath == null) return new Problems();
+        if (dubPath == null) return new Problems();
 
         String result = processFile(file, dubPath);
         return findProblems(result, file);
@@ -100,7 +100,7 @@ public class CompileCheck {
         }
     }
 
-    private static int getValidLineNumber(int line, Document document){
+    private static int getValidLineNumber(int line, Document document) {
         int lineCount = getDocumentLineCount(document);
         line = line - 1;
         if (line <= 0) {
@@ -132,7 +132,7 @@ public class CompileCheck {
     // hello.d(3): Error: only one main allowed
     @Nullable
     public static Problem parseProblem(String lint, PsiFile file) {
-        Pattern p = Pattern.compile("(\\w+\\.d)\\((\\d+)\\):\\s(\\w+):(.+)");
+        Pattern p = Pattern.compile("([\\w\\\\/]+\\.d)\\((\\d+),(\\d+)\\):\\s(\\w+):(.+)");
         Matcher m = p.matcher(lint);
 
         String sourceFile = "";
@@ -143,9 +143,10 @@ public class CompileCheck {
         while (m.find()) {
             sourceFile = m.group(1);
             line = Integer.valueOf(m.group(2));
-            severity = m.group(3);
-            message = m.group(4);
+            severity = m.group(4);
+            message = m.group(5);
         }
+
         if (sourceFile.equals(file.getName())) {
             TextRange range = calculateTextRange(file, line);
             return new Problem(range, message, severity);
