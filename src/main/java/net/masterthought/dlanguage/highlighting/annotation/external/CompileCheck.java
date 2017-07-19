@@ -66,7 +66,7 @@ public class CompileCheck {
 
 
     @NotNull
-    public static Problems findProblems(String stdout, PsiFile file) {
+    public Problems findProblems(String stdout, PsiFile file) {
         final List<String> lints = StringUtil.split(stdout, "\n");
         Problems problems = new Problems();
         for (String lint : lints) {
@@ -75,7 +75,7 @@ public class CompileCheck {
         return problems;
     }
 
-    private static int getDocumentLineCount(Document document) {
+    private int getDocumentLineCount(Document document) {
         try {
             int lineCount = document.getLineCount();
             return lineCount == 0 ? 1 : lineCount;
@@ -84,7 +84,7 @@ public class CompileCheck {
         }
     }
 
-    private static int getLineStartOffset(Document document, int line) {
+    private int getLineStartOffset(Document document, int line) {
         try {
             return document.getLineStartOffset(line);
         } catch (Exception e) {
@@ -92,7 +92,7 @@ public class CompileCheck {
         }
     }
 
-    private static int getLineEndOffset(Document document, int line) {
+    private int getLineEndOffset(Document document, int line) {
         try {
             return document.getLineEndOffset(line);
         } catch (Exception e) {
@@ -100,7 +100,7 @@ public class CompileCheck {
         }
     }
 
-    private static int getValidLineNumber(int line, Document document) {
+    private int getValidLineNumber(int line, Document document) {
         int lineCount = getDocumentLineCount(document);
         line = line - 1;
         if (line <= 0) {
@@ -111,26 +111,26 @@ public class CompileCheck {
         return line;
     }
 
-    public static int getOffsetStart(final PsiFile file, int line, int column) {
+    public int getOffsetStart(final PsiFile file, int line, int column) {
         Document document = PsiDocumentManager.getInstance(file.getProject()).getDocument(file);
         line = getValidLineNumber(line, document);
         return getLineStartOffset(document, line) + column;
     }
 
-    public static int getOffsetEnd(final PsiFile file, int line) {
+    public int getOffsetEnd(final PsiFile file, int line) {
         Document document = PsiDocumentManager.getInstance(file.getProject()).getDocument(file);
         line = getValidLineNumber(line, document);
         return getLineEndOffset(document, line);
     }
 
-    private static TextRange calculateTextRange(PsiFile file, int line, int column) {
+    private TextRange calculateTextRange(PsiFile file, int line, int column) {
         final int startOffset = getOffsetStart(file, line, column);
         final int endOffset = getOffsetEnd(file, line);
         return new TextRange(startOffset, endOffset);
     }
 
     @Nullable
-    public static Problem parseProblem(String lint, PsiFile file) {
+    public Problem parseProblem(String lint, PsiFile file) {
         // Example DUB error:
         // src/hello.d(3,1): Error: only one main allowed
         Pattern p = Pattern.compile("([\\w\\\\/]+\\.d)\\((\\d+),(\\d+)\\):\\s(\\w+):(.+)");
@@ -158,7 +158,7 @@ public class CompileCheck {
         }
     }
 
-    private static boolean isSameFile(PsiFile file, String relativeOtherFilePath) {
+    private boolean isSameFile(PsiFile file, String relativeOtherFilePath) {
         String filePath = file.getVirtualFile().getPath();
         String unixRelativeOtherFilePath = relativeOtherFilePath.replace('\\', '/');
         return filePath.endsWith(unixRelativeOtherFilePath);
