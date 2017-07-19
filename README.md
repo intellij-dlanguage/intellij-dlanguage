@@ -12,7 +12,7 @@ Support for the [D Programming Language](http://dlang.org/) within IntelliJ IDEA
 
 | Plugin Version | IntelliJ Versions |
 | :--- | :--- |
-| 1.13-SNAPSHOT | 2017.1.* - 2017.2 |
+| 1.13 | 2017.1.* - 2017.2 |
 | 1.12 | 2017.1 - 2017.5 |
 | 1.11 | 2016.3 |
 
@@ -28,7 +28,7 @@ This plugin is being developed purely by a few volunteers in their spare time �
 
 ## Latest Updates
 
-* July 2017 - v1.13 is about to be released and will add support for IntelliJ 2017.2
+* July 2017 - Released v1.13 to add support for IntelliJ 2017.2 and remove the need for DCD
 * March 2017 – Released v1.12 to add compatibility with IntelliJ 2017.1 (#139)
 * December 2016 – v1.11 of the plugin adds compatibility with IntelliJ 2016.3.
 * 9th January 2016 – Fixed some bugs and working towards getting more of the IntelliJ features working.

@@ -24,14 +24,14 @@ env:
 
 jobs:
   include:
-#    - stage: Build and Test
-#      env: ORG_GRADLE_PROJECT_ideaVersion=LATEST-EAP-SNAPSHOT
-#    - env: ORG_GRADLE_PROJECT_ideaVersion=2017.2
-#    - env: ORG_GRADLE_PROJECT_ideaVersion=2017.1.5
-#    - env: ORG_GRADLE_PROJECT_ideaVersion=2017.1.4
-#    - env: ORG_GRADLE_PROJECT_ideaVersion=2017.1.3
-#    - env: ORG_GRADLE_PROJECT_ideaVersion=2017.1.2
-#    - env: ORG_GRADLE_PROJECT_ideaVersion=2017.1.1
+    - stage: Build and Test
+      env: ORG_GRADLE_PROJECT_ideaVersion=LATEST-EAP-SNAPSHOT
+    - env: ORG_GRADLE_PROJECT_ideaVersion=2017.2
+    - env: ORG_GRADLE_PROJECT_ideaVersion=2017.1.5
+    - env: ORG_GRADLE_PROJECT_ideaVersion=2017.1.4
+    - env: ORG_GRADLE_PROJECT_ideaVersion=2017.1.3
+    - env: ORG_GRADLE_PROJECT_ideaVersion=2017.1.2
+    - env: ORG_GRADLE_PROJECT_ideaVersion=2017.1.1
     - env: ORG_GRADLE_PROJECT_ideaVersion=2017.1
     - stage: Deploy EAP
       script: skip
