@@ -129,9 +129,10 @@ public class CompileCheck {
         return new TextRange(startOffset, endOffset);
     }
 
-    // hello.d(3): Error: only one main allowed
     @Nullable
     public static Problem parseProblem(String lint, PsiFile file) {
+        // Example DUB error:
+        // src/hello.d(3, 1): Error: only one main allowed
         Pattern p = Pattern.compile("([\\w\\\\/]+\\.d)\\((\\d+),(\\d+)\\):\\s(\\w+):(.+)");
         Matcher m = p.matcher(lint);
 
@@ -147,12 +148,18 @@ public class CompileCheck {
             message = m.group(5);
         }
 
-        if (sourceFile.equals(file.getName())) {
+        if (isSameFile(file, sourceFile)) {
             TextRange range = calculateTextRange(file, line);
             return new Problem(range, message, severity);
         } else {
             return null;
         }
+    }
+
+    private static boolean isSameFile(PsiFile file, String relativeOtherFilePath) {
+        String filePath = file.getVirtualFile().getPath();
+        String unixRelativeOtherFilePath = relativeOtherFilePath.replace('\\', '/');
+        return filePath.endsWith(unixRelativeOtherFilePath);
     }
 
     public static class Problem extends DProblem {
