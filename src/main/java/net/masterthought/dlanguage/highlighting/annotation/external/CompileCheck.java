@@ -141,8 +141,10 @@ public class CompileCheck {
         int line = 0;
         int column = 0;
         String severity = "";
+        boolean hasMatch = false;
 
         while (m.find()) {
+            hasMatch = true;
             sourceFile = m.group(1);
             line = Integer.valueOf(m.group(2));
             column = Integer.valueOf(m.group(3)) - 1;
@@ -150,7 +152,7 @@ public class CompileCheck {
             message = m.group(5);
         }
 
-        if (isSameFile(file, sourceFile)) {
+        if (hasMatch && isSameFile(file, sourceFile)) {
             TextRange range = calculateTextRange(file, line, column);
             return new Problem(range, message, severity);
         } else {
