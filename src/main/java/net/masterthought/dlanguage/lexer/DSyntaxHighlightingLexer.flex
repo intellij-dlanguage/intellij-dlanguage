@@ -1,6 +1,7 @@
 package net.masterthought.dlanguage;
 import com.intellij.lexer.*;
 import com.intellij.psi.tree.IElementType;
+import net.masterthought.dlanguage.psi.DLanguageTypes;
 import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
 
 %%
@@ -30,10 +31,14 @@ DIGIT = [:digit:]
 ID = (_|{LETTER}) (_|{DIGIT}|{LETTER})*
 
 LINE_COMMENT="//".*
+LINE_DOC="///".*
 //BLOCK_COMMENT="/"\*(.|\n)*\*"/"
 
 BLOCK_COMMENT_START = "/*"
 BLOCK_COMMENT_END = "*/"
+
+DOC_COMMENT_START = "/**"
+DOC_COMMENT_END = "*/"
 
 SHEBANG = "#!" ([^\r\n])* (\r|\n|\r\n)?
 
@@ -301,7 +306,7 @@ OPERATOR = (":"    |
 
 FUNCTION_DEFINITION = {ID}\(.*\)([^;]|[\s]*|[\r]*|[\n]*)
 
-%state WAITING_VALUE, NESTING_COMMENT_CONTENT BLOCK_COMMENT_CONTENT MODULE_VALUE FUNCTION_VALUE
+%state WAITING_VALUE, NESTING_COMMENT_CONTENT BLOCK_COMMENT_CONTENT DOC_COMMENT_CONTENT MODULE_VALUE FUNCTION_VALUE
 
 
 %%
@@ -319,6 +324,12 @@ FUNCTION_DEFINITION = {ID}\(.*\)([^;]|[\s]*|[\r]*|[\n]*)
 		yybegin(BLOCK_COMMENT_CONTENT);
 		blockCommentDepth = 1;
 		return DLanguageTypes.BLOCK_COMMENT;
+	}
+
+<YYINITIAL> {DOC_COMMENT_START} {
+		yybegin(DOC_COMMENT_CONTENT);
+		blockCommentDepth = 1;
+		return DLanguageTypes.DOC_COMMENT;
 	}
 
 //<YYINITIAL> {CHARACTER_LITERAL} { return CHARACTER_LITERAL; }
@@ -356,6 +367,23 @@ FUNCTION_DEFINITION = {ID}\(.*\)([^;]|[\s]*|[\r]*|[\n]*)
 	}
 	\n|\/|\*	{return DLanguageTypes.BLOCK_COMMENT;}
 	[^/*\n]+	{return DLanguageTypes.BLOCK_COMMENT;}
+}
+
+<DOC_COMMENT_CONTENT> {
+	{DOC_COMMENT_START}	{
+		blockCommentDepth += 1;
+		return DLanguageTypes.DOC_COMMENT;
+	}
+
+	{DOC_COMMENT_END}	{
+		blockCommentDepth -= 1;
+		if(blockCommentDepth == 0) {
+			yybegin(YYINITIAL); //Exit nesting comment block
+		}
+		return DLanguageTypes.DOC_COMMENT;
+	}
+	\n|\/|\*	{return DLanguageTypes.DOC_COMMENT;}
+	[^/**\n]+	{return DLanguageTypes.DOC_COMMENT;}
 }
 
 // module import
@@ -414,6 +442,7 @@ FUNCTION_DEFINITION = {ID}\(.*\)([^;]|[\s]*|[\r]*|[\n]*)
 
 
 
+<YYINITIAL> {CHARACTER_LITERAL} { return CHARACTER_LITERAL; }
 <YYINITIAL> {STRING} { return STRING; }
 <YYINITIAL> {NUMBER} { return NUMBER; }
 <YYINITIAL> {KEYWORD} { return KEYWORD; }
@@ -436,6 +465,7 @@ FUNCTION_DEFINITION = {ID}\(.*\)([^;]|[\s]*|[\r]*|[\n]*)
       {ID} { yybegin(YYINITIAL); return DLanguageTypes.FUNCTION_DEFINITION; }
       }
 
+<YYINITIAL> {LINE_DOC}                 { return LINE_DOC; }
 <YYINITIAL> {LINE_COMMENT}             { return LINE_COMMENT; }
 <YYINITIAL> {SHEBANG}                  { return SHEBANG; }
 

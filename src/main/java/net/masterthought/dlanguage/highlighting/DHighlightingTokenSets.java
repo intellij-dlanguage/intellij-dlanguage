@@ -9,6 +9,7 @@ public class DHighlightingTokenSets {
     public static final TokenSet KEYWORD = TokenSet.create(DLanguageTypes.KEYWORD);
     public static final TokenSet NUMBER = TokenSet.create(DLanguageTypes.NUMBER);
     public static final TokenSet STRING = TokenSet.create(DLanguageTypes.STRING);
+    public static final TokenSet CHAR = TokenSet.create(DLanguageTypes.CHARACTER_LITERAL);
     public static final TokenSet OPERATOR = TokenSet.create(DLanguageTypes.OPERATOR);
     public static final TokenSet PARENTHESES_LEFT = TokenSet.create(DLanguageTypes.PARENTHESES_LEFT);
     public static final TokenSet PARENTHESES_RIGHT = TokenSet.create(DLanguageTypes.PARENTHESES_RIGHT);
@@ -20,7 +21,9 @@ public class DHighlightingTokenSets {
     public static final TokenSet SEMICOLON = TokenSet.create(DLanguageTypes.SEMICOLON);
     public static final TokenSet DOT = TokenSet.create(DLanguageTypes.DOT);
     public static final TokenSet LINE_COMMENT = TokenSet.create(DLanguageTypes.LINE_COMMENT);
+    public static final TokenSet LINE_DOC = TokenSet.create(DLanguageTypes.LINE_DOC);
     public static final TokenSet BLOCK_COMMENT = TokenSet.create(DLanguageTypes.BLOCK_COMMENT);
+    public static final TokenSet DOC_COMMENT = TokenSet.create(DLanguageTypes.DOC_COMMENT);
     public static final TokenSet MODULE_DEFINITION = TokenSet.create(DLanguageTypes.MODULE_DEFINITION);
     public static final TokenSet FUNCTION_DEFINITION = TokenSet.create(DLanguageTypes.FUNCTION_DEFINITION);
 
