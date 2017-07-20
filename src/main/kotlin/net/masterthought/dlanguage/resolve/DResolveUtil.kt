@@ -9,6 +9,8 @@ import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.stubs.StubIndex
 import com.intellij.psi.util.PsiTreeUtil
 import net.masterthought.dlanguage.index.DModuleIndex.getFilesByModuleName
+import net.masterthought.dlanguage.processors.DImportScopeProcessor
+import net.masterthought.dlanguage.processors.DNameScopeProcessor
 import net.masterthought.dlanguage.psi.DLanguageNewExpression
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement
 import net.masterthought.dlanguage.stubs.index.DTopLevelDeclarationIndex
@@ -21,17 +23,12 @@ import net.masterthought.dlanguage.utils.SingleImport
  * Created by francis on 5/12/17.
  */
 object DResolveUtil {
-    /**
-     * Finds name definition across all Haskell files in the project. All
-     * definitions are found when name is null.
-     */
     fun findDefinitionNode(project: Project, e: PsiNamedElement): List<PsiNamedElement> {
         //todo fix templated functions return type bug
         fun inSingleImport(e: Identifier): SingleImport? {
             return PsiTreeUtil.getTopmostParentOfType(e, SingleImport::class.java)
         }
 
-        // Guess where the name could be defined by lookup up potential modules.
         if (e !is Identifier) {
             return emptyList()
         }
@@ -63,7 +60,7 @@ object DResolveUtil {
                 }
             }
         }
-        val finalResult = mutableListOf<PsiNamedElement>()
+        val finalResult = mutableSetOf<PsiNamedElement>()
         for (element in result) {
             if (element is Constructor) {
                 if (resolvingConstructor(e)) {
@@ -74,7 +71,7 @@ object DResolveUtil {
                 finalResult.add(element)
             }
         }
-        return finalResult
+        return finalResult.toList()
     }
 
     fun resolvingConstructor(e: PsiElement): Boolean {

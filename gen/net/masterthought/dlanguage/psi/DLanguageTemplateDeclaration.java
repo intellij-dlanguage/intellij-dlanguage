@@ -15,34 +15,34 @@ import java.util.List;
 
 public interface DLanguageTemplateDeclaration extends PsiElement, DNamedElement, StubBasedPsiElement<DLanguageTemplateDeclarationStub> {
     @Nullable
-    public PsiElement getKW_TEMPLATE();
+    PsiElement getKW_TEMPLATE();
 
     @Nullable
-    public DLanguageIdentifier getIdentifier();
+    DLanguageIdentifier getIdentifier();
 
     @Nullable
-    public DLanguageTemplateParameters getTemplateParameters();
+    DLanguageTemplateParameters getTemplateParameters();
 
     @Nullable
-    public DLanguageConstraint getConstraint();
+    DLanguageConstraint getConstraint();
 
     @Nullable
-    public PsiElement getOP_BRACES_RIGHT();
+    PsiElement getOP_BRACES_RIGHT();
 
     @Nullable
-    public PsiElement getOP_BRACES_LEFT();
+    PsiElement getOP_BRACES_LEFT();
 
     @NotNull
-    public List<DLanguageDeclaration> getDeclarations();
+    List<DLanguageDeclaration> getDeclarations();
 
     @Nullable
-    public DLanguageEponymousTemplateDeclaration getEponymousTemplateDeclaration();
+    DLanguageEponymousTemplateDeclaration getEponymousTemplateDeclaration();
 
     @Override
-    default public boolean processDeclarations(@NotNull PsiScopeProcessor processor,
-                                               @NotNull ResolveState state,
-                                               PsiElement lastParent,
-                                               @NotNull PsiElement place) {
+    default boolean processDeclarations(@NotNull PsiScopeProcessor processor,
+                                        @NotNull ResolveState state,
+                                        PsiElement lastParent,
+                                        @NotNull PsiElement place) {
         return ScopeProcessorImpl.INSTANCE.processDeclarations(this, processor, state, lastParent, place);
     }
 }

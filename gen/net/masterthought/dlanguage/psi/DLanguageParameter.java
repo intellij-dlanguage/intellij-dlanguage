@@ -12,24 +12,24 @@ import java.util.List;
 
 public interface DLanguageParameter extends PsiElement, DNamedElement, StubBasedPsiElement<DLanguageParameterStub> {
     @NotNull
-    public List<DLanguageParameterAttribute> getParameterAttributes();
+    List<DLanguageParameterAttribute> getParameterAttributes();
 
     @Nullable
-    public DLanguageType getType();
+    DLanguageType getType();
 
     @Nullable
-    public DLanguageIdentifier getIdentifier();
+    DLanguageIdentifier getIdentifier();
 
     @NotNull
-    public List<DLanguageTypeSuffix> getTypeSuffixs();
+    List<DLanguageTypeSuffix> getTypeSuffixs();
 
     @Nullable
-    public PsiElement getOP_TRIPLEDOT();
+    PsiElement getOP_TRIPLEDOT();
 
     @Nullable
-    public DLanguageAssignExpression getAssignExpression();
+    DLanguageAssignExpression getAssignExpression();
 
     @Nullable
-    public PsiElement getOP_EQ();
+    PsiElement getOP_EQ();
 
 }

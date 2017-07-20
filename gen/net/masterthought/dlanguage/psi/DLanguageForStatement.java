@@ -9,21 +9,21 @@ import java.util.List;
 
 public interface DLanguageForStatement extends PsiElement {
     @NotNull
-    public List<DLanguageDeclarationOrStatement> getDeclarationOrStatements();
+    List<DLanguageDeclarationOrStatement> getDeclarationOrStatements();
 
     @NotNull
-    public List<DLanguageExpression> getExpressions();
+    List<DLanguageExpression> getExpressions();
 
     @Nullable
-    public PsiElement getOP_BRACES_RIGHT();
+    PsiElement getOP_BRACES_RIGHT();
 
     @Nullable
-    public PsiElement getOP_BRACES_LEFT();
+    PsiElement getOP_BRACES_LEFT();
 
     @Nullable
-    public PsiElement getKW_FOR();
+    PsiElement getKW_FOR();
 
     @Nullable
-    public PsiElement getOP_SCOLON();
+    PsiElement getOP_SCOLON();
 
 }

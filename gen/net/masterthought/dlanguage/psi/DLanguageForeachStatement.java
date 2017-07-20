@@ -9,33 +9,33 @@ import java.util.List;
 
 public interface DLanguageForeachStatement extends PsiElement {
     @Nullable
-    public PsiElement getKW_FOREACH();
+    PsiElement getKW_FOREACH();
 
     @Nullable
-    public PsiElement getKW_FOREACH_REVERSE();
+    PsiElement getKW_FOREACH_REVERSE();
 
     @Nullable
-    public DLanguageDeclarationOrStatement getDeclarationOrStatement();
+    DLanguageDeclarationOrStatement getDeclarationOrStatement();
 
     @NotNull
-    public List<DLanguageExpression> getExpressions();
+    List<DLanguageExpression> getExpressions();
 
     @Nullable
-    public PsiElement getOP_BRACES_RIGHT();
+    PsiElement getOP_BRACES_RIGHT();
 
     @Nullable
-    public PsiElement getOP_BRACES_LEFT();
+    PsiElement getOP_BRACES_LEFT();
 
     @Nullable
-    public PsiElement getOP_DDOT();
+    PsiElement getOP_DDOT();
 
     @Nullable
-    public DLanguageForeachType getForeachType();
+    DLanguageForeachType getForeachType();
 
     @Nullable
-    public DLanguageForeachTypeList getForeachTypeList();
+    DLanguageForeachTypeList getForeachTypeList();
 
     @Nullable
-    public PsiElement getOP_SCOLON();
+    PsiElement getOP_SCOLON();
 
 }

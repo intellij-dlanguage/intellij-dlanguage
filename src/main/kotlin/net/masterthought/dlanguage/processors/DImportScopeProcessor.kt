@@ -1,4 +1,4 @@
-package net.masterthought.dlanguage.resolve
+package net.masterthought.dlanguage.processors
 
 import com.intellij.openapi.util.Key
 import com.intellij.psi.PsiElement

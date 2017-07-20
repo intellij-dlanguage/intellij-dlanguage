@@ -6,20 +6,20 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageAtAttribute extends PsiElement {
     @Nullable
-    public PsiElement getOP_AT();
+    PsiElement getOP_AT();
 
     @Nullable
-    public PsiElement getOP_PAR_LEFT();
+    PsiElement getOP_PAR_LEFT();
 
     @Nullable
-    public PsiElement getOP_PAR_RIGHT();
+    PsiElement getOP_PAR_RIGHT();
 
     @Nullable
-    public DLanguageIdentifier getIdentifier();
+    DLanguageIdentifier getIdentifier();
 
     @Nullable
-    public DLanguageArgumentList getArgumentList();
+    DLanguageArgumentList getArgumentList();
 
     @Nullable
-    public DLanguageFunctionCallExpression getFunctionCallExpression();
+    DLanguageFunctionCallExpression getFunctionCallExpression();
 }

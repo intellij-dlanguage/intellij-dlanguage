@@ -9,23 +9,23 @@ import java.util.List;
 
 public interface DLanguageLambdaExpression extends PsiElement {
     @Nullable
-    public DLanguageIdentifier getIdentifier();
+    DLanguageIdentifier getIdentifier();
 
     @Nullable
-    public PsiElement getKW_FUNCTION();
+    PsiElement getKW_FUNCTION();
 
     @Nullable
-    public PsiElement getKW_DELEGATE();
+    PsiElement getKW_DELEGATE();
 
     @Nullable
-    public PsiElement getOP_LAMBDA_ARROW();
+    PsiElement getOP_LAMBDA_ARROW();
 
     @Nullable
-    public DLanguageAssignExpression getAssignExpression();
+    DLanguageAssignExpression getAssignExpression();
 
     @Nullable
-    public DLanguageParameters getParameters();
+    DLanguageParameters getParameters();
 
     @NotNull
-    public List<DLanguageFunctionAttribute> getFunctionAttributes();
+    List<DLanguageFunctionAttribute> getFunctionAttributes();
 }

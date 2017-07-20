@@ -6,21 +6,21 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguagePragmaExpression extends PsiElement {
     @Nullable
-    public DLanguageIdentifier getIdentifier();
+    DLanguageIdentifier getIdentifier();
 
     @Nullable
-    public DLanguageArgumentList getArgumentList();
+    DLanguageArgumentList getArgumentList();
 
     @Nullable
-    public PsiElement getOP_PAR_LEFT();
+    PsiElement getOP_PAR_LEFT();
 
     @Nullable
-    public PsiElement getOP_PAR_RIGHT();
+    PsiElement getOP_PAR_RIGHT();
 
     @Nullable
-    public PsiElement getOP_COMMA();
+    PsiElement getOP_COMMA();
 
     @Nullable
-    public PsiElement getKW_PRAGMA();
+    PsiElement getKW_PRAGMA();
 
 }

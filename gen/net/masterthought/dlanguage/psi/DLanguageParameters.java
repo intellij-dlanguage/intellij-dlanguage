@@ -9,18 +9,18 @@ import java.util.List;
 
 public interface DLanguageParameters extends PsiElement {
     @NotNull
-    public List<PsiElement> getOP_COMMAs();
+    List<PsiElement> getOP_COMMAs();
 
     @Nullable
-    public PsiElement getOP_TRIPLEDOT();
+    PsiElement getOP_TRIPLEDOT();
 
     @NotNull
-    public List<DLanguageParameter> getParameters();
+    List<DLanguageParameter> getParameters();
 
     @Nullable
-    public PsiElement getOP_PAR_LEFT();
+    PsiElement getOP_PAR_LEFT();
 
     @Nullable
-    public PsiElement getOP_PAR_RIGHT();
+    PsiElement getOP_PAR_RIGHT();
 
 }

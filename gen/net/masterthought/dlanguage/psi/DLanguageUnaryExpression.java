@@ -6,69 +6,69 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageUnaryExpression extends PsiElement {
     @Nullable
-    public DLanguagePrimaryExpression getPrimaryExpression();
+    DLanguagePrimaryExpression getPrimaryExpression();
 
     @Nullable
-    public DLanguageFunctionCallExpression getFunctionCallExpression();
+    DLanguageFunctionCallExpression getFunctionCallExpression();
 
     @Nullable
-    public DLanguageUnaryExpression getUnaryExpression();
+    DLanguageUnaryExpression getUnaryExpression();
 
     @Nullable
-    public DLanguageNewExpression getNewExpression();
+    DLanguageNewExpression getNewExpression();
 
     @Nullable
-    public DLanguageDeleteExpression getDeleteExpression();
+    DLanguageDeleteExpression getDeleteExpression();
 
     @Nullable
-    public DLanguageCastExpression getCastExpression();
+    DLanguageCastExpression getCastExpression();
 
     @Nullable
-    public DLanguageAssertExpression getAssertExpression();
+    DLanguageAssertExpression getAssertExpression();
 
     @Nullable
-    public DLanguageIdentifierOrTemplateInstance getIdentifierOrTemplateInstance();
+    DLanguageIdentifierOrTemplateInstance getIdentifierOrTemplateInstance();
 
     @Nullable
-    public PsiElement getOP_PAR_RIGHT();
+    PsiElement getOP_PAR_RIGHT();
 
     @Nullable
-    public PsiElement getOP_PAR_LEFT();
+    PsiElement getOP_PAR_LEFT();
 
     @Nullable
-    public DLanguageSliceExpression getSliceExpression();
+    DLanguageSliceExpression getSliceExpression();
 
     @Nullable
-    public DLanguageIndexExpression getIndexExpression();
+    DLanguageIndexExpression getIndexExpression();
 
     @Nullable
-    public DLanguageType getType();
+    DLanguageType getType();
 
     @Nullable
-    public PsiElement getOP_DOT();
+    PsiElement getOP_DOT();
 
     @Nullable
-    public PsiElement getOP_AND();
+    PsiElement getOP_AND();
 
     @Nullable
-    public PsiElement getOP_ASTERISK();
+    PsiElement getOP_ASTERISK();
 
     @Nullable
-    public PsiElement getOP_MINUS();
+    PsiElement getOP_MINUS();
 
     @Nullable
-    public PsiElement getOP_MINUS_MINUS();
+    PsiElement getOP_MINUS_MINUS();
 
     @Nullable
-    public PsiElement getOP_NOT();
+    PsiElement getOP_NOT();
 
     @Nullable
-    public PsiElement getOP_PLUS();
+    PsiElement getOP_PLUS();
 
     @Nullable
-    public PsiElement getOP_PLUS_PLUS();
+    PsiElement getOP_PLUS_PLUS();
 
     @Nullable
-    public PsiElement getOP_TILDA();
+    PsiElement getOP_TILDA();
 
 }

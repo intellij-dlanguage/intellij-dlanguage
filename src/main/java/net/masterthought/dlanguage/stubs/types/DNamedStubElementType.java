@@ -48,6 +48,10 @@ public abstract class DNamedStubElementType<S extends NamedStubBase<T>, T extend
             return false;
         }
 
+        if(stub instanceof DLanguageSingleImportStub){
+            return false;
+        }
+
         StubElement stubParent = stub;
         while (true) {
             stubParent = stubParent.getParentStub();

@@ -16,9 +16,7 @@ object ScopeProcessorImplUtil {
                            state: ResolveState,
                            lastParent: PsiElement,
                            place: PsiElement): Boolean {
-        //todo attributes should be passed to scope processor to determine publicness
         var toContinue = true
-        def.attributes
         if (def.aliasDeclaration?.aliasInitializers != null) {
             for (varDeclaration in def.aliasDeclaration?.aliasInitializers!!) {
                 toContinue = processor.execute(varDeclaration, state)
@@ -28,13 +26,13 @@ object ScopeProcessorImplUtil {
         if (def.aliasThisDeclaration != null) {
             return true
         }
-        if (def.classDeclaration?.structBody?.declarations != null) {
-            for (declaration in def.classDeclaration!!.structBody!!.declarations) {
+        if (def.classDeclaration?.interfaceOrClass?.structBody?.declarations != null) {
+            for (declaration in def.classDeclaration!!.interfaceOrClass!!.structBody!!.declarations) {
                 if (!declaration.processDeclarations(processor, state, lastParent, place)) {
                     toContinue = false
                 }
             }
-            if (!processor.execute(def.classDeclaration!!, state)) {
+            if (!processor.execute(def.classDeclaration!!.interfaceOrClass!!, state)) {
                 return false
             }
             return toContinue
@@ -80,7 +78,7 @@ object ScopeProcessorImplUtil {
                     }
                 }
             }
-            if (!processor.execute(def.interfaceDeclaration!!, state)) {
+            if (!processor.execute(def.interfaceDeclaration!!.interfaceOrClass!!, state)) {
                 toContinue = false
             }
             return toContinue
@@ -182,7 +180,6 @@ object ScopeProcessorImplUtil {
 
         }
         if (def.debugSpecification != null) {
-
         }
         for (decl in def.declarations) {
             if (!decl.processDeclarations(processor, state, lastParent, place)) {

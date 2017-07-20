@@ -6,12 +6,12 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageFunctionAttribute extends PsiElement {
     @Nullable
-    public DLanguageAtAttribute getAtAttribute();
+    DLanguageAtAttribute getAtAttribute();
 
     @Nullable
-    public PsiElement getKW_PURE();
+    PsiElement getKW_PURE();
 
     @Nullable
-    public PsiElement getKW_NOTHROW();
+    PsiElement getKW_NOTHROW();
 
 }

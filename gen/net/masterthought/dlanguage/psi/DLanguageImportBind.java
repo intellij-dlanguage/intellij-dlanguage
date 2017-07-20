@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface DLanguageImportBind extends PsiElement {
     @NotNull
-    public List<DLanguageIdentifier> getIdentifiers();
+    List<DLanguageIdentifier> getIdentifiers();
 
     @Nullable
-    public PsiElement getOP_EQ();
+    PsiElement getOP_EQ();
 
 }

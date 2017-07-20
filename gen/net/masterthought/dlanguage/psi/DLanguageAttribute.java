@@ -6,24 +6,77 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageAttribute extends PsiElement {
     @Nullable
-    public DLanguagePragmaExpression getPragmaExpression();
+    DLanguagePragmaExpression getPragmaExpression();
 
     @Nullable
-    public DLanguageStorageClass getStorageClass();
+    PsiElement getKW_SYNCHRONIZED();
 
     @Nullable
-    public PsiElement getKW_EXPORT();
+    PsiElement getKW_ABSTRACT();
 
     @Nullable
-    public PsiElement getKW_PACKAGE();
+    PsiElement getKW_AUTO();
 
     @Nullable
-    public PsiElement getKW_PRIVATE();
+    PsiElement getKW_ENUM();
 
     @Nullable
-    public PsiElement getKW_PROTECTED();
+    PsiElement getKW_EXTERN();
 
     @Nullable
-    public PsiElement getKW_PUBLIC();
+    PsiElement getKW_FINAL();
 
+    @Nullable
+    PsiElement getKW_INOUT();
+
+    @Nullable
+    PsiElement getKW_NOTHROW();
+
+    @Nullable
+    PsiElement getKW_OVERRIDE();
+
+    @Nullable
+    PsiElement getKW_PURE();
+
+    @Nullable
+    PsiElement getKW_REF();
+
+    @Nullable
+    PsiElement getKW___GSHARED();
+
+    @Nullable
+    PsiElement getKW_SCOPE();
+
+    @Nullable
+    PsiElement getKW_STATIC();
+
+    @Nullable
+    PsiElement getKW_EXPORT();
+
+    @Nullable
+    PsiElement getKW_PRIVATE();
+
+    @Nullable
+    PsiElement getKW_PROTECTED();
+
+    @Nullable
+    PsiElement getKW_PUBLIC();
+
+    @Nullable
+    DLanguageAlignAttribute getAlignAttribute();
+
+    @Nullable
+    DLanguageDeprecated getDeprecated();
+
+    @Nullable
+    DLanguageAtAttribute getAtAttribute();
+
+    @Nullable
+    PsiElement getKW_PACKAGE();
+
+    @Nullable
+    DLanguageIdentifierChain getIdentifierChain();
+
+    @Nullable
+    DLanguageLinkageAttribute getLinkageAttribute();
 }

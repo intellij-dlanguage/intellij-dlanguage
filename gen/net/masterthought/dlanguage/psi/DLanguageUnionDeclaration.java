@@ -13,25 +13,25 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageUnionDeclaration extends PsiElement, DNamedElement, StubBasedPsiElement<DLanguageUnionDeclarationStub> {
     @Nullable
-    public DLanguageIdentifier getIdentifier();
+    DLanguageIdentifier getIdentifier();
 
     @Nullable
-    public DLanguageTemplateParameters getTemplateParameters();
+    DLanguageTemplateParameters getTemplateParameters();
 
     @Nullable
-    public DLanguageConstraint getConstraint();
+    DLanguageConstraint getConstraint();
 
     @Nullable
-    public DLanguageStructBody getStructBody();
+    DLanguageStructBody getStructBody();
 
     @Nullable
-    public PsiElement getOP_SCOLON();
+    PsiElement getOP_SCOLON();
 
     @Override
-    default public boolean processDeclarations(@NotNull PsiScopeProcessor processor,
-                                               @NotNull ResolveState state,
-                                               PsiElement lastParent,
-                                               @NotNull PsiElement place) {
+    default boolean processDeclarations(@NotNull PsiScopeProcessor processor,
+                                        @NotNull ResolveState state,
+                                        PsiElement lastParent,
+                                        @NotNull PsiElement place) {
         return ScopeProcessorImpl.INSTANCE.processDeclarations(this, processor, state, lastParent, place);
     }
 }

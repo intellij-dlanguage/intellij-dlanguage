@@ -9,12 +9,12 @@ import java.util.List;
 
 public interface DLanguageConditionalStatement extends PsiElement {
     @Nullable
-    public DLanguageCompileCondition getCompileCondition();
+    DLanguageCompileCondition getCompileCondition();
 
     @NotNull
-    public List<DLanguageDeclarationOrStatement> getDeclarationOrStatements();
+    List<DLanguageDeclarationOrStatement> getDeclarationOrStatements();
 
     @Nullable
-    public PsiElement getKW_ELSE();
+    PsiElement getKW_ELSE();
 
 }

@@ -9,21 +9,21 @@ import java.util.List;
 
 public interface DLanguageTemplateAliasParameter extends PsiElement {
     @Nullable
-    public PsiElement getKW_ALIAS();
+    PsiElement getKW_ALIAS();
 
     @Nullable
-    public DLanguageIdentifier getIdentifier();
+    DLanguageIdentifier getIdentifier();
 
     @NotNull
-    public List<DLanguageType> getTypes();
+    List<DLanguageType> getTypes();
 
     @NotNull
-    public List<DLanguageAssignExpression> getAssignExpressions();
+    List<DLanguageAssignExpression> getAssignExpressions();
 
     @Nullable
-    public PsiElement getOP_COLON();
+    PsiElement getOP_COLON();
 
     @Nullable
-    public PsiElement getOP_EQ();
+    PsiElement getOP_EQ();
 
 }

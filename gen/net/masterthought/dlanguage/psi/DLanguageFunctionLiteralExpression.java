@@ -9,20 +9,20 @@ import java.util.List;
 
 public interface DLanguageFunctionLiteralExpression extends PsiElement {
     @Nullable
-    public DLanguageType getType();
+    DLanguageType getType();
 
     @Nullable
-    public PsiElement getKW_FUNCTION();
+    PsiElement getKW_FUNCTION();
 
     @Nullable
-    public PsiElement getKW_DELEGATE();
+    PsiElement getKW_DELEGATE();
 
     @Nullable
-    public DLanguageParameters getParameters();
+    DLanguageParameters getParameters();
 
     @NotNull
-    public List<DLanguageFunctionAttribute> getFunctionAttributes();
+    List<DLanguageFunctionAttribute> getFunctionAttributes();
 
     @Nullable
-    public DLanguageFunctionBody getFunctionBody();
+    DLanguageFunctionBody getFunctionBody();
 }

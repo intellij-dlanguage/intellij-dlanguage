@@ -6,24 +6,24 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageLinkageAttribute extends PsiElement {
     @Nullable
-    public DLanguageIdentifierChain getIdentifierChain();
+    DLanguageIdentifierChain getIdentifierChain();
 
     @Nullable
-    public DLanguageIdentifier getIdentifier();
+    DLanguageIdentifier getIdentifier();
 
     @Nullable
-    public PsiElement getOP_PAR_RIGHT();
+    PsiElement getOP_PAR_RIGHT();
 
     @Nullable
-    public PsiElement getOP_PAR_LEFT();
+    PsiElement getOP_PAR_LEFT();
 
     @Nullable
-    public PsiElement getOP_PLUS_PLUS();
+    PsiElement getOP_PLUS_PLUS();
 
     @Nullable
-    public PsiElement getKW_EXTERN();
+    PsiElement getKW_EXTERN();
 
     @Nullable
-    public PsiElement getOP_COMMA();
+    PsiElement getOP_COMMA();
 
 }

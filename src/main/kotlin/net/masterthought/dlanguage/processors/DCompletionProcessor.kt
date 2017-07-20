@@ -1,4 +1,4 @@
-package net.masterthought.dlanguage.resolve
+package net.masterthought.dlanguage.processors
 
 import com.intellij.openapi.util.Key
 import com.intellij.psi.PsiElement
@@ -25,7 +25,7 @@ class DCompletionProcessor : PsiScopeProcessor {
 
     override fun execute(element: PsiElement, state: ResolveState): Boolean {
         if (element is Declaration && element is DNamedElement) {
-            completions.add(element.name!!)
+            completions.add(element.name)
         }
         return true
     }

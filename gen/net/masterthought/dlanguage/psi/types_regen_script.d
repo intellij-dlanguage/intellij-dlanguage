@@ -53,7 +53,7 @@ static this() {
     types_children["AssignExpression"] = ["TernaryExpression","AssignExpression","OP_AND_EQ","OP_DIV_EQ","OP_EQ","OP_EQ_EQ","OP_GT_EQ","OP_LESS_EQ","OP_LESS_GR_EQ","OP_MINUS_EQ","OP_MOD_EQ","OP_MUL_EQ","OP_NOT_EQ","OP_NOT_GR_EQ","OP_NOT_LESS_EQ","OP_OR_EQ","OP_PLUS_EQ","OP_POW_EQ","OP_SH_LEFT_EQ","OP_SH_RIGHT_EQ","OP_TILDA_EQ","OP_UNORD_EQ","OP_USH_RIGHT_EQ","OP_XOR_EQ"];
     types_children["AssocArrayLiteral"] = ["KeyValuePairs","OP_BRACKET_RIGHT","OP_BRACKET_LEFT"];
     types_children["AtAttribute"] = ["OP_AT","OP_PAR_LEFT","OP_PAR_RIGHT","Identifier", "ArgumentList","FunctionCallExpression"];
-    types_children["Attribute"] = [   "PragmaExpression", "StorageClass", "KW_EXPORT","KW_PACKAGE", "KW_PRIVATE","KW_PROTECTED","KW_PUBLIC"];
+    types_children["Attribute"] = [   "PragmaExpression", "KW_SYNCHRONIZED","KW_ABSTRACT","KW_AUTO","KW_ENUM","KW_EXTERN","KW_FINAL","KW_INOUT","KW_NOTHROW","KW_OVERRIDE","KW_PURE","KW_REF","KW___GSHARED","KW_SCOPE","KW_STATIC","KW_EXPORT", "KW_PRIVATE","KW_PROTECTED","KW_PUBLIC","AlignAttribute","Deprecated","AtAttribute","KW_PACKAGE","IdentifierChain","LinkageAttribute"];
     types_children["AttributeDeclaration"] = ["OP_COLON","Attribute"];
     types_children["AutoDeclaration"] = ["StorageClass","OP_COMMA*","OP_SCOLON","AutoDeclarationPart*"];
     named_children["AutoDeclarationPart"] = ["Identifier","TemplateParameters","OP_EQ","Initializer"];
@@ -68,7 +68,7 @@ static this() {
     types_children["CastQualifier"] = ["KW_IMMUTABLE","KW_CONST","KW_SHARED","KW_INOUT"];
     named_children["Catch"] = ["KW_CATCH","OP_PAR_LEFT","OP_PAR_RIGHT","Type","Identifier","DeclarationOrStatement"];
     types_children["Catches"] = ["LastCatch","Catch"];
-    types_children["ClassDeclaration"] = ["KW_CLASS","Identifier","OP_SCOLON","OP_COLON","StructBody","TemplateParameters","Constraint","BaseClassList"];
+    types_children["ClassDeclaration"] = ["KW_CLASS","InterfaceOrClass"/*"Identifier","OP_SCOLON","OP_COLON","StructBody","TemplateParameters","Constraint","BaseClassList"*/];
     types_children["CmpExpression"] = ["ShiftExpression","EqualExpression","IdentityExpression","RelExpression","InExpression"];
     types_children["CompileCondition"] = [ "VersionCondition",  "DebugCondition",  "StaticIfCondition"];
     types_children["ConditionalDeclaration"] = ["CompileCondition", "Declaration*","OP_COLON","KW_ELSE"];
@@ -286,7 +286,7 @@ static this() {
     has_processDeclaration["ContinueStatement"] = false;
     has_processDeclaration["DebugCondition"] = false;
     has_processDeclaration["DebugSpecification"] = false;
-    has_processDeclaration["Declaration"] = false;
+    has_processDeclaration["Declaration"] = true;
     has_processDeclaration["DeclarationOrStatement"] = false;
     has_processDeclaration["DeclarationsAndStatements"] = true;
     has_processDeclaration["Declarator"] = false;
@@ -383,7 +383,7 @@ static this() {
     has_processDeclaration["StaticCtorDtorCommon"] = false;
     has_processDeclaration["StaticIfCondition"] = false;
     has_processDeclaration["StorageClass"] = false;
-    has_processDeclaration["StructBody"] = false;
+    has_processDeclaration["StructBody"] = true;
     has_processDeclaration["StructDeclaration"] = true;
     has_processDeclaration["StructInitializer"] = false;
     has_processDeclaration["StructMemberInitializer"] = false;

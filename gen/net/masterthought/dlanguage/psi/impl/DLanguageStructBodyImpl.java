@@ -4,10 +4,13 @@ import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.ResolveState;
+import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.psi.DLanguageDeclaration;
 import net.masterthought.dlanguage.psi.DLanguageStructBody;
 import net.masterthought.dlanguage.psi.DLanguageVisitor;
+import net.masterthought.dlanguage.resolve.ScopeProcessorImpl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -44,5 +47,13 @@ public class DLanguageStructBodyImpl extends ASTWrapperPsiElement implements DLa
     @NotNull
     public List<DLanguageDeclaration> getDeclarations() {
         return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageDeclaration.class);
+    }
+
+    @Override
+    public boolean processDeclarations(@NotNull PsiScopeProcessor processor,
+                                       @NotNull ResolveState state,
+                                       PsiElement lastParent,
+                                       @NotNull PsiElement place) {
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(this, processor, state, lastParent, place);
     }
 }

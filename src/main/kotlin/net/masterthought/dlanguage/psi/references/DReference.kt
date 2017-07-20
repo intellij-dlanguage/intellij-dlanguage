@@ -8,10 +8,10 @@ import com.intellij.psi.stubs.StubIndex
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.util.IncorrectOperationException
 import net.masterthought.dlanguage.index.DModuleIndex
+import net.masterthought.dlanguage.processors.DCompletionProcessor
+import net.masterthought.dlanguage.processors.DImportScopeProcessor
 import net.masterthought.dlanguage.psi.*
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement
-import net.masterthought.dlanguage.resolve.DCompletionProcessor
-import net.masterthought.dlanguage.resolve.DImportScopeProcessor
 import net.masterthought.dlanguage.resolve.DResolveUtil
 import net.masterthought.dlanguage.stubs.index.DTopLevelDeclarationsByModule
 import java.util.*
@@ -57,7 +57,7 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
                     identifiers.add(namedElement.eponymousTemplateDeclaration!!.identifier!!)
                 }
             } else if (namedElement is DLanguageClassDeclaration) {
-                identifiers.add(namedElement.identifier!!)
+                identifiers.add(namedElement.interfaceOrClass!!.identifier!!)
             } else if (namedElement is DLanguageUnionDeclaration) {
                 if (namedElement.identifier != null) {
                     identifiers.add(namedElement.identifier!!)
@@ -134,7 +134,7 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
         //        return variants.toArray();
 
 
-        val startProcessors = System.currentTimeMillis()
+//        val startProcessors = System.currentTimeMillis()
         val project = myElement.project
         val result = Collections.synchronizedList(ArrayList<String>())
         val importScopeProcessor = DImportScopeProcessor()
@@ -147,27 +147,35 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
         val completionProcessor = DCompletionProcessor()
         PsiTreeUtil.treeWalkUp(completionProcessor, myElement, myElement.containingFile, ResolveState.initial())
         result.addAll(completionProcessor.completions)
-        val endProcessors = System.currentTimeMillis()
-        log.info("processors " + (endProcessors - startProcessors))
+        val decls = StubIndex.getElements(DTopLevelDeclarationsByModule.KEY, (element.containingFile as DLanguageFile).moduleOrFileName, project, GlobalSearchScope.fileScope(
+            element.containingFile), DNamedElement::class.java)
+        for (decl in decls) {
+            result.add(decl.name)
+        }
 
 
-        val start = System.currentTimeMillis()
+
+//        val endProcessors = System.currentTimeMillis()
+//        log.info("processors " + (endProcessors - startProcessors))
+
+
+//        val start = System.currentTimeMillis()
         // find definition in imported files
         for (potentialModule in potentialModules) {
             val files = DModuleIndex.getFilesByModuleName(project, potentialModule, GlobalSearchScope.allScope(project))
             files.parallelStream().forEach { f ->
-                val elements: MutableCollection<DNamedElement> = StubIndex.getElements(DTopLevelDeclarationsByModule.KEY, f.moduleOrFileName, project, GlobalSearchScope.fileScope(f), DNamedElement::class.java/*, Declaration::class.java*/)
+                val elements: MutableCollection<DNamedElement> = StubIndex.getElements(DTopLevelDeclarationsByModule.KEY, f.moduleOrFileName, project, GlobalSearchScope.fileScope(f), DNamedElement::class.java)
 //                result.ensureCapacity(elements.size);
-                val startNames = System.currentTimeMillis()
+//                val startNames = System.currentTimeMillis()
                 for (declaration in elements) {
                     result.add(declaration.name)
                 }
-                val endNames = System.currentTimeMillis()
-                log.info("names:" + (endNames - startNames))
+//                val endNames = System.currentTimeMillis()
+//                log.info("names:" + (endNames - startNames))
             }
         }
-        val end = System.currentTimeMillis()
-        log.info("other files:" + (end - start))
+//        val end = System.currentTimeMillis()
+//        log.info("other files:" + (end - start))
         result.add("abstract")
         result.add("alias")
         result.add("align")

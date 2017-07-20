@@ -6,11 +6,11 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageOperands extends PsiElement {
     @Nullable
-    public PsiElement getOP_COMMA();
+    PsiElement getOP_COMMA();
 
     @Nullable
-    public DLanguageOperands getOperands();
+    DLanguageOperands getOperands();
 
     @Nullable
-    public DLanguageAsmExp getAsmExp();
+    DLanguageAsmExp getAsmExp();
 }

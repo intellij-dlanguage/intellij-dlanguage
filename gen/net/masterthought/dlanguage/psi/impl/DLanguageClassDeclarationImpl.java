@@ -5,11 +5,13 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
-import net.masterthought.dlanguage.psi.*;
+import net.masterthought.dlanguage.psi.DLanguageClassDeclaration;
+import net.masterthought.dlanguage.psi.DLanguageInterfaceOrClass;
+import net.masterthought.dlanguage.psi.DLanguageVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
+import static net.masterthought.dlanguage.psi.DLanguageTypes.KW_CLASS;
 
 
 public class DLanguageClassDeclarationImpl extends ASTWrapperPsiElement implements DLanguageClassDeclaration {
@@ -32,37 +34,7 @@ public class DLanguageClassDeclarationImpl extends ASTWrapperPsiElement implemen
     }
 
     @Nullable
-    public DLanguageIdentifier getIdentifier() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
-    }
-
-    @Nullable
-    public PsiElement getOP_SCOLON() {
-        return findChildByType(OP_SCOLON);
-    }
-
-    @Nullable
-    public PsiElement getOP_COLON() {
-        return findChildByType(OP_COLON);
-    }
-
-    @Nullable
-    public DLanguageStructBody getStructBody() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageStructBody.class);
-    }
-
-    @Nullable
-    public DLanguageTemplateParameters getTemplateParameters() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageTemplateParameters.class);
-    }
-
-    @Nullable
-    public DLanguageConstraint getConstraint() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageConstraint.class);
-    }
-
-    @Nullable
-    public DLanguageBaseClassList getBaseClassList() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageBaseClassList.class);
+    public DLanguageInterfaceOrClass getInterfaceOrClass() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageInterfaceOrClass.class);
     }
 }

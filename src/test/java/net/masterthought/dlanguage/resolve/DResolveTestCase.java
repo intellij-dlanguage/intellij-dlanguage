@@ -8,9 +8,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.impl.source.resolve.reference.impl.PsiMultiReference;
 import net.masterthought.dlanguage.DLightPlatformCodeInsightFixtureTestCase;
-import net.masterthought.dlanguage.psi.DLanguageClassDeclaration;
-import net.masterthought.dlanguage.psi.DLanguageConstructor;
-import net.masterthought.dlanguage.psi.DLanguageIdentifier;
+import net.masterthought.dlanguage.psi.*;
 
 import java.io.File;
 
@@ -88,15 +86,15 @@ public abstract class DResolveTestCase extends DLightPlatformCodeInsightFixtureT
             fail("Could not find resolved element.");
         }
         if (succeed) {
-            /*if (resolvedElement instanceof DL) {
-                assertEquals("Could not resolve expected reference.", resolvedElement, referencedElement.resolve().getParent().getParent());
-            }*/
-            if (resolvedElement instanceof DLanguageConstructor) {
-                assertEquals("Could not resolve expected reference.", resolvedElement, referencedElement.resolve());
-            } else
+            //function,class,constructor
+            if (resolvedElement instanceof DLanguageTemplateDeclaration || resolvedElement instanceof DLanguageFunctionDeclaration || resolvedElement instanceof DLanguageInterfaceOrClass) {
                 assertEquals("Could not resolve expected reference.", resolvedElement, referencedElement.resolve().getParent());
+            }/* else if (resolvedElement instanceof DLanguageConstructor) {
+                assertTrue(referencedElement.resolve() instanceof DLanguageConstructor);
+            }*/ else
+                assertEquals("Could not resolve expected reference.", resolvedElement, referencedElement.resolve());
         } else {
-            assertFalse("Resolved unexpected reference.", resolvedElement.equals(referencedElement.resolve().getParent()));
+            assertFalse("Resolved unexpected reference.", resolvedElement.equals(referencedElement.resolve()));
         }
     }
 }

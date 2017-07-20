@@ -5,10 +5,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
-import net.masterthought.dlanguage.psi.DLanguageAttribute;
-import net.masterthought.dlanguage.psi.DLanguagePragmaExpression;
-import net.masterthought.dlanguage.psi.DLanguageStorageClass;
-import net.masterthought.dlanguage.psi.DLanguageVisitor;
+import net.masterthought.dlanguage.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -35,18 +32,78 @@ public class DLanguageAttributeImpl extends ASTWrapperPsiElement implements DLan
     }
 
     @Nullable
-    public DLanguageStorageClass getStorageClass() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageStorageClass.class);
+    public PsiElement getKW_SYNCHRONIZED() {
+        return findChildByType(KW_SYNCHRONIZED);
+    }
+
+    @Nullable
+    public PsiElement getKW_ABSTRACT() {
+        return findChildByType(KW_ABSTRACT);
+    }
+
+    @Nullable
+    public PsiElement getKW_AUTO() {
+        return findChildByType(KW_AUTO);
+    }
+
+    @Nullable
+    public PsiElement getKW_ENUM() {
+        return findChildByType(KW_ENUM);
+    }
+
+    @Nullable
+    public PsiElement getKW_EXTERN() {
+        return findChildByType(KW_EXTERN);
+    }
+
+    @Nullable
+    public PsiElement getKW_FINAL() {
+        return findChildByType(KW_FINAL);
+    }
+
+    @Nullable
+    public PsiElement getKW_INOUT() {
+        return findChildByType(KW_INOUT);
+    }
+
+    @Nullable
+    public PsiElement getKW_NOTHROW() {
+        return findChildByType(KW_NOTHROW);
+    }
+
+    @Nullable
+    public PsiElement getKW_OVERRIDE() {
+        return findChildByType(KW_OVERRIDE);
+    }
+
+    @Nullable
+    public PsiElement getKW_PURE() {
+        return findChildByType(KW_PURE);
+    }
+
+    @Nullable
+    public PsiElement getKW_REF() {
+        return findChildByType(KW_REF);
+    }
+
+    @Nullable
+    public PsiElement getKW___GSHARED() {
+        return findChildByType(KW___GSHARED);
+    }
+
+    @Nullable
+    public PsiElement getKW_SCOPE() {
+        return findChildByType(KW_SCOPE);
+    }
+
+    @Nullable
+    public PsiElement getKW_STATIC() {
+        return findChildByType(KW_STATIC);
     }
 
     @Nullable
     public PsiElement getKW_EXPORT() {
         return findChildByType(KW_EXPORT);
-    }
-
-    @Nullable
-    public PsiElement getKW_PACKAGE() {
-        return findChildByType(KW_PACKAGE);
     }
 
     @Nullable
@@ -64,4 +121,33 @@ public class DLanguageAttributeImpl extends ASTWrapperPsiElement implements DLan
         return findChildByType(KW_PUBLIC);
     }
 
+    @Nullable
+    public DLanguageAlignAttribute getAlignAttribute() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageAlignAttribute.class);
+    }
+
+    @Nullable
+    public DLanguageDeprecated getDeprecated() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageDeprecated.class);
+    }
+
+    @Nullable
+    public DLanguageAtAttribute getAtAttribute() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageAtAttribute.class);
+    }
+
+    @Nullable
+    public PsiElement getKW_PACKAGE() {
+        return findChildByType(KW_PACKAGE);
+    }
+
+    @Nullable
+    public DLanguageIdentifierChain getIdentifierChain() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageIdentifierChain.class);
+    }
+
+    @Nullable
+    public DLanguageLinkageAttribute getLinkageAttribute() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageLinkageAttribute.class);
+    }
 }

@@ -6,5 +6,5 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageIndex extends PsiElement {
     @Nullable
-    public DLanguageAssignExpression getAssignExpression();
+    DLanguageAssignExpression getAssignExpression();
 }

@@ -9,14 +9,14 @@ import java.util.List;
 
 public interface DLanguageAsmStatement extends PsiElement {
     @Nullable
-    public PsiElement getKW_ASM();
+    PsiElement getKW_ASM();
 
     @Nullable
-    public PsiElement getOP_BRACES_LEFT();
+    PsiElement getOP_BRACES_LEFT();
 
     @Nullable
-    public PsiElement getOP_BRACES_RIGHT();
+    PsiElement getOP_BRACES_RIGHT();
 
     @NotNull
-    public List<DLanguageAsmInstruction> getAsmInstructions();
+    List<DLanguageAsmInstruction> getAsmInstructions();
 }

@@ -7,7 +7,7 @@ import com.intellij.psi.ResolveState;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.ProcessingContext;
 import net.masterthought.dlanguage.DLanguage;
-import net.masterthought.dlanguage.resolve.DImportScopeProcessor;
+import net.masterthought.dlanguage.processors.DImportScopeProcessor;
 import org.jetbrains.annotations.NotNull;
 
 /**

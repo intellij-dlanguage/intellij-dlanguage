@@ -3,11 +3,14 @@ package net.masterthought.dlanguage.psi.impl.named;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.ResolveState;
+import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
 import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
+import net.masterthought.dlanguage.resolve.ScopeProcessorImpl;
 import net.masterthought.dlanguage.stubs.DLanguageDeclaratorStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -59,11 +62,19 @@ public class DLanguageDeclaratorImpl extends DNamedStubbedPsiElementBase<DLangua
         if (getStub() != null) {
             return getStub().getName();
         }
+        if(getIdentifier() == null){
+            return "this declarator has no name";
+        }
         return getIdentifier().getName();
     }
 
     @Override
     public PsiElement setName(@NotNull String name) throws IncorrectOperationException {
         return getIdentifier().setName(name);
+    }
+
+    @Override
+    public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(this,processor, state, lastParent, place);
     }
 }
