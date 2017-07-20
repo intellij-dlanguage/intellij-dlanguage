@@ -1,0 +1,6 @@
+ void main()
+ {
+    scope (success)
+     {
+     }
+ }

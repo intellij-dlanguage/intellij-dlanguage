@@ -1,0 +1,6 @@
+class C
+{
+
+	int foo;
+
+}

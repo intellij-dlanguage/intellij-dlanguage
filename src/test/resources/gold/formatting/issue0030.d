@@ -1,0 +1,2 @@
+unittest {
+	tolower( * p);        }
