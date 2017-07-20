@@ -43,31 +43,39 @@ public class DDocumentationProvider extends AbstractDocumentationProvider implem
     @Override
     public String generateDoc(PsiElement element, @Nullable PsiElement originalElement) {
 
-        DAttributesFinder a;
-        a = new DAttributesFinder(element);
-        a.recurseUp();
-        final ResolveResult[] resolveResults = ((DReference) element.getReference()).multiResolve(true);
-        final Set<DAttributesFinder> attributesFinders = new HashSet<>(resolveResults.length);
-        if(resolveResults.length > 1){
-            for (ResolveResult resolveResult : resolveResults) {
-                final DAttributesFinder dAttributesFinder = new DAttributesFinder(resolveResult.getElement());
-                dAttributesFinder.recurseUp();
-                attributesFinders.add(dAttributesFinder);
+        try {
+            DAttributesFinder a;
+            a = new DAttributesFinder(element);
+            a.recurseUp();
+            if (element.getReference() != null) {
+                final ResolveResult[] resolveResults = ((DReference) element.getReference()).multiResolve(true);
+                final Set<DAttributesFinder> attributesFinders = new HashSet<>(resolveResults.length);
+                if (resolveResults.length > 1) {
+                    for (ResolveResult resolveResult : resolveResults) {
+                        final DAttributesFinder dAttributesFinder = new DAttributesFinder(resolveResult.getElement());
+                        dAttributesFinder.recurseUp();
+                        attributesFinders.add(dAttributesFinder);
+                    }
+                    if (attributesFinders.size() == 1) {
+                        a = (DAttributesFinder) attributesFinders.toArray()[0];
+                    } else
+                        return "Unable to resolve symbol to one declaration";
+                }
             }
-            if(attributesFinders.size() == 1){
-                a = (DAttributesFinder) attributesFinders.toArray()[0];
-            }
+            String blurb = "This symbol is:";//todo
+            blurb += String.format("%10s%n", a.isStatic() ? "static " : "");
+            blurb += String.format("%10s%n", a.isPrivate() ? "private " : "");
+            blurb += String.format("%10s%n", a.isPublic() ? "public " : "");
+            blurb += String.format("%10s%n", a.isProperty() ? "property " : "");
+            blurb += String.format("%10s%n", a.isProtected() ? "protected " : "");
+            blurb += String.format("%10s%n", a.isExtern() ? "extern " : "");
+            blurb += String.format("%10s%n", a.isNoGC() ? "nogc" : "");
+            blurb += String.format("%10s%n", a.isLocal() ? "local" : "");
+            return blurb;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        String blurb = "";//todo
-        blurb += (a.isStatic() ? "static, " : "");
-        blurb += (a.isPrivate() ? "private, " : "");
-        blurb += (a.isPublic() ? "public, " : "");
-        blurb += (a.isProperty() ? "property, " : "");
-        blurb += (a.isProtected() ? "protected, " : "");
-        blurb += (a.isExtern() ? "extern, " : "");
-        blurb += (a.isNoGC() ? "nogc" : "");
-        blurb += (a.isLocal() ? "local" : "");
-        return blurb;
+        return null;
     }
 
     @Nullable

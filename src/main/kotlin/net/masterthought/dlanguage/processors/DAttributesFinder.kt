@@ -67,9 +67,11 @@ class DAttributesFinder {
             return false
         }
         if (element is FunctionDeclaration || element is DLanguageUnittest || element is Parameters || element is TemplateParameters) {
-            if (element is FunctionDeclaration && element.functionBody != null && (isAncestor(element.functionBody!!, startingPoint, false) || isAncestor(element.parameters!!, startingPoint, false) || isAncestor(element.templateParameters!!, startingPoint, false))) {
-                visibility = Visibility.LOCAL
-                return false
+            if (element is FunctionDeclaration) {
+                if ((element.functionBody != null && isAncestor(element.functionBody!!, startingPoint, false)) || (element.parameters != null && isAncestor(element.parameters!!, startingPoint, false)) || (element.templateParameters != null && isAncestor(element.templateParameters!!, startingPoint, false))) {
+                    visibility = Visibility.LOCAL
+                    return false
+                }
             }
             return true
         }
