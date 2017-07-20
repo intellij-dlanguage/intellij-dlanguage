@@ -9,7 +9,6 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
-import com.intellij.psi.impl.source.tree.LeafPsiElement;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 import com.intellij.util.containers.ContainerUtil;
@@ -39,8 +38,7 @@ public class DFormattingModelBuilder implements FormattingModelBuilder {
             .beforeInside(OP_PAR_RIGHT, ARGUMENT_LIST).none()
             .afterInside(OP_PAR_LEFT, PARAMETERS).none()
             .beforeInside(OP_PAR_RIGHT, PARAMETERS).none()
-            .after(IMPORT).spaces(1)
-            .after(INTERFACE).spaces(1)
+            .after(INTERFACE_DECLARATION).spaces(1)
             .after(KW_RETURN).spaces(1)
             .after(KW_CONTINUE).spaces(1)
             .after(KW_BREAK).spaces(1)
@@ -48,11 +46,9 @@ public class DFormattingModelBuilder implements FormattingModelBuilder {
             .after(KW_FOR).spaces(1)
             .after(KW_IF).spaces(1)
             .after(KW_ELSE).spaces(1)
-            .before(ELSE_STATEMENT).spaces(1)
             .after(KW_CASE).spaces(1)
             .after(KW_SWITCH).spaces(1)
             .after(LINE_COMMENT).lineBreakInCode()
-            .after(BLOCK_COMMENT).lineBreakInCode()
             ;
     }
 
@@ -118,8 +114,8 @@ public class DFormattingModelBuilder implements FormattingModelBuilder {
 
         private static boolean isTopLevelDeclaration(@NotNull PsiElement element) {
             return element instanceof DLanguageModuleDeclaration
-                || element instanceof DLanguageImportList
-                || element instanceof DLanguageDeclDefs
+                || element instanceof DLanguageImportDeclaration
+                || element instanceof DLanguageDeclaration
                 || element instanceof DLanguageStatement
                 && element.getParent() instanceof DLanguageFile;
         }
@@ -209,9 +205,18 @@ public class DFormattingModelBuilder implements FormattingModelBuilder {
         private Indent calcIndent(@NotNull ASTNode child) {
             IElementType parentType = myNode.getElementType();
             IElementType type = child.getElementType();
-            if (parentType == IMPORT_DECLARATION) return indentOfMultipleDeclarationChild(type, DECLARATION);
-            if (parentType == FUNC_DECLARATION) return indentOfMultipleDeclarationChild(type, DECLARATION);
-            if (parentType == BLOCK_STATEMENT) return indentOfMultipleDeclarationChild(type, STATEMENT_LIST);
+            if (parentType == BLOCK_STATEMENT)
+                return indentOfMultipleDeclarationChild(type, DECLARATIONS_AND_STATEMENTS);
+            else if (parentType == STRUCT_BODY)
+                return indentOfMultipleDeclarationChild(type, DECLARATION);
+            else if (parentType == CONDITIONAL_DECLARATION)
+                return indentOfMultipleDeclarationChild(type, DECLARATION);
+            else if (parentType == CONDITIONAL_STATEMENT)
+                return indentOfMultipleDeclarationChild(type, DECLARATION_OR_STATEMENT);
+            else if (parentType == ENUM_BODY)
+                return indentOfMultipleDeclarationChild(type, ENUM_MEMBER);//todo are the commas indented?
+            else if (parentType == DECLARATION)
+                return indentOfMultipleDeclarationChild(type, DECLARATION);//todo are the commas indented?
             return Indent.getNoneIndent();
         }
 
@@ -224,39 +229,37 @@ public class DFormattingModelBuilder implements FormattingModelBuilder {
 
         @Override
         public Spacing getSpacing(@Nullable Block child1, @NotNull Block child2) {
-             if (child1 instanceof DFormattingBlock && child2 instanceof DFormattingBlock) {
+            if (child1 instanceof DFormattingBlock && child2 instanceof DFormattingBlock) {
                 ASTNode n1 = ((DFormattingBlock) child1).getNode();
                 ASTNode n2 = ((DFormattingBlock) child2).getNode();
                 PsiElement psi1 = n1.getPsi();
                 PsiElement psi2 = n2.getPsi();
-//                if (n1.getElementType() == DECL_DEF && psi2 instanceof DLanguageType) return one();
 
-//                if (psi1 instanceof DLanguageDeclaration && psi2 instanceof DLanguageStatement) {
-//                    return lineBreak();
-//                }
+                if (psi1 instanceof DLanguageDeclaration && psi2 instanceof DLanguageDeclaration) {
+                    return lineBreak();
+                } else if (psi1.getText().equals("{") && psi2 instanceof DLanguageDeclarationsAndStatements) {
+                    return lineBreak();
+                } else if (psi1.getText().equals("{") && psi2 instanceof DLanguageDeclaration) {
+                    return lineBreak();
+                } else if (psi2.getText().equals("}") && psi1 instanceof DLanguageDeclarationsAndStatements) {
+                    return lineBreak();
+                } else if (psi2.getText().equals("}") && psi1 instanceof DLanguageDeclaration) {
+                    return lineBreak();
+                } else if (psi1 instanceof DLanguageModuleDeclaration && psi2 instanceof DLanguageDeclaration) {
+                    return lineBreak();
+                }
+
 //
-                if (psi1 instanceof DLanguageDeclDef && psi2 instanceof DLanguageDeclDefs) {
-                    return lineBreak(1, true);
+                if (n1.getElementType() == OP_BRACES_LEFT && psi2 instanceof DLanguageStatement) {
+                    return lineBreak();
                 }
-
-                 if (psi1 instanceof DLanguageDeclDefs && psi2 instanceof DLanguageDeclDef) {
-                     return lineBreak(1, true);
-                 }
-
-                 if (n1.getElementType() == OP_BRACES_LEFT && psi2 instanceof DLanguageStatementList) {
-                     return lineBreak();
-                 }
-
-                 if (psi1 instanceof DLanguageStatementList && n2.getElementType() == OP_BRACES_RIGHT) {
-                     return lineBreak();
-                 }
-
-                 if (isTopLevelDeclaration(psi2) && (isTopLevelDeclaration(psi1) || n1.getElementType() == SEMICOLON)) {
-                    // Different declarations should be separated by blank line
-                    boolean sameKind = psi1.getClass().equals(psi2.getClass())
-                        || psi1 instanceof DLanguageDeclDefs && psi2 instanceof DLanguageDeclDefs;
-                    return sameKind ? lineBreak() : lineBreak(1, true);
-                }
+//
+//                 if (isTopLevelDeclaration(psi2) && (isTopLevelDeclaration(psi1) || n1.getElementType() == SEMICOLON)) {
+//                     Different declarations should be separated by blank line
+//                    boolean sameKind = psi1.getClass().equals(psi2.getClass())
+//                        || psi1 instanceof DLanguageDeclDefs && psi2 instanceof DLanguageDeclDefs;
+//                    return sameKind ? lineBreak() : lineBreak(1, true);
+//                }
             }
             return mySpacingBuilder.getSpacing(this, child1, child2);
         }
