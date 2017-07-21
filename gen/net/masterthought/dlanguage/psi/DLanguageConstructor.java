@@ -15,34 +15,34 @@ import java.util.List;
 
 public interface DLanguageConstructor extends PsiElement, DNamedElement, StubBasedPsiElement<DLanguageConstructorStub> {
     @Nullable
-    DLanguageFunctionBody getFunctionBody();
+    public DLanguageFunctionBody getFunctionBody();
 
     @Nullable
-    PsiElement getOP_SCOLON();
+    public PsiElement getOP_SCOLON();
 
     @Nullable
-    PsiElement getOP_PAR_RIGHT();
+    public PsiElement getOP_PAR_RIGHT();
 
     @Nullable
-    PsiElement getOP_PAR_LEFT();
+    public PsiElement getOP_PAR_LEFT();
 
     @Nullable
-    PsiElement getKW_THIS();
+    public PsiElement getKW_THIS();
 
     @NotNull
-    List<DLanguageMemberFunctionAttribute> getMemberFunctionAttributes();
+    public List<DLanguageMemberFunctionAttribute> getMemberFunctionAttributes();
 
     @Nullable
-    DLanguageParameters getParameters();
+    public DLanguageParameters getParameters();
 
     @Nullable
-    DLanguageTemplateParameters getTemplateParameters();
+    public DLanguageTemplateParameters getTemplateParameters();
 
     @Override
-    default boolean processDeclarations(@NotNull PsiScopeProcessor processor,
-                                        @NotNull ResolveState state,
-                                        PsiElement lastParent,
-                                        @NotNull PsiElement place) {
+    default public boolean processDeclarations(@NotNull PsiScopeProcessor processor,
+                                               @NotNull ResolveState state,
+                                               PsiElement lastParent,
+                                               @NotNull PsiElement place) {
         return ScopeProcessorImpl.INSTANCE.processDeclarations(this, processor, state, lastParent, place);
     }
 }

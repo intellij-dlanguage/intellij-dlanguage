@@ -6,21 +6,21 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageAsmInstruction extends PsiElement {
     @Nullable
-    PsiElement getINTEGER_LITERAL();
+    public PsiElement getINTEGER_LITERAL();
 
     @Nullable
-    DLanguageIdentifier getIdentifier();
+    public DLanguageIdentifier getIdentifier();
 
     @Nullable
-    DLanguageAsmInstruction getAsmInstruction();
+    public DLanguageAsmInstruction getAsmInstruction();
 
     @Nullable
-    DLanguageOperands getOperands();
+    public DLanguageOperands getOperands();
 
     @Nullable
-    PsiElement getKW_ALIGN();
+    public PsiElement getKW_ALIGN();
 
     @Nullable
-    PsiElement getOP_COLON();
+    public PsiElement getOP_COLON();
 
 }

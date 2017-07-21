@@ -9,7 +9,8 @@ D Language File
         DLanguageDeclarationImpl(DECLARATION)
           DLanguageTypeImpl(TYPE)
             DLanguageType_2Impl(TYPE_2)
-              PsiElement(DLanguageTokenType.int)('int')
+              DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
+                PsiElement(DLanguageTokenType.int)('int')
           DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
             DECLARATOR
               IDENTIFIER
@@ -18,7 +19,8 @@ D Language File
         DLanguageDeclarationImpl(DECLARATION)
           DLanguageTypeImpl(TYPE)
             DLanguageType_2Impl(TYPE_2)
-              PsiElement(DLanguageTokenType.double)('double')
+              DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
+                PsiElement(DLanguageTokenType.double)('double')
           DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
             DECLARATOR
               IDENTIFIER
@@ -50,11 +52,10 @@ D Language File
                     PsiElement(DLanguageTokenType.ID)('b')
                   PsiElement(DLanguageTokenType.:)(':')
                   DLanguageNonVoidInitializerImpl(NON_VOID_INITIALIZER)
-                    DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
-                      DLanguageCmpExpressionImpl(CMP_EXPRESSION)
-                        DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
-                          DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                            PsiElement(DLanguageTokenType.FLOAT_LITERAL)('5.0')
+                    DLanguageCmpExpressionImpl(CMP_EXPRESSION)
+                      DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
+                        DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
+                          PsiElement(DLanguageTokenType.FLOAT_LITERAL)('5.0')
               PsiElement(DLanguageTokenType.})('}')
       PsiElement(DLanguageTokenType.;)(';')
   PsiComment(DLanguageTokenType.LINE_COMMENT)('// u.b = 5.0')

@@ -12,23 +12,23 @@ import java.util.List;
 
 public interface DLanguageDestructor extends PsiElement, DCompositeElement, StubBasedPsiElement<DLanguageDestructorStub> {
     @Nullable
-    DLanguageFunctionBody getFunctionBody();
+    public DLanguageFunctionBody getFunctionBody();
 
     @Nullable
-    PsiElement getOP_SCOLON();
+    public PsiElement getOP_SCOLON();
 
     @Nullable
-    PsiElement getOP_PAR_RIGHT();
+    public PsiElement getOP_PAR_RIGHT();
 
     @Nullable
-    PsiElement getOP_PAR_LEFT();
+    public PsiElement getOP_PAR_LEFT();
 
     @Nullable
-    PsiElement getKW_THIS();
+    public PsiElement getKW_THIS();
 
     @Nullable
-    PsiElement getOP_TILDA();
+    public PsiElement getOP_TILDA();
 
     @NotNull
-    List<DLanguageMemberFunctionAttribute> getMemberFunctionAttributes();
+    public List<DLanguageMemberFunctionAttribute> getMemberFunctionAttributes();
 }

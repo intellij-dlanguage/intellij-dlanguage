@@ -6,74 +6,74 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageStatementNoCaseNoDefault extends PsiElement {
     @Nullable
-    DLanguageLabeledStatement getLabeledStatement();
+    public DLanguageLabeledStatement getLabeledStatement();
 
     @Nullable
-    DLanguageBlockStatement getBlockStatement();
+    public DLanguageBlockStatement getBlockStatement();
 
     @Nullable
-    DLanguageIfStatement getIfStatement();
+    public DLanguageIfStatement getIfStatement();
 
     @Nullable
-    DLanguageWhileStatement getWhileStatement();
+    public DLanguageWhileStatement getWhileStatement();
 
     @Nullable
-    DLanguageDoStatement getDoStatement();
+    public DLanguageDoStatement getDoStatement();
 
     @Nullable
-    DLanguageForStatement getForStatement();
+    public DLanguageForStatement getForStatement();
 
     @Nullable
-    DLanguageForeachStatement getForeachStatement();
+    public DLanguageForeachStatement getForeachStatement();
 
     @Nullable
-    DLanguageSwitchStatement getSwitchStatement();
+    public DLanguageSwitchStatement getSwitchStatement();
 
     @Nullable
-    DLanguageFinalSwitchStatement getFinalSwitchStatement();
+    public DLanguageFinalSwitchStatement getFinalSwitchStatement();
 
     @Nullable
-    DLanguageContinueStatement getContinueStatement();
+    public DLanguageContinueStatement getContinueStatement();
 
     @Nullable
-    DLanguageBreakStatement getBreakStatement();
+    public DLanguageBreakStatement getBreakStatement();
 
     @Nullable
-    DLanguageReturnStatement getReturnStatement();
+    public DLanguageReturnStatement getReturnStatement();
 
     @Nullable
-    DLanguageGotoStatement getGotoStatement();
+    public DLanguageGotoStatement getGotoStatement();
 
     @Nullable
-    DLanguageWithStatement getWithStatement();
+    public DLanguageWithStatement getWithStatement();
 
     @Nullable
-    DLanguageSynchronizedStatement getSynchronizedStatement();
+    public DLanguageSynchronizedStatement getSynchronizedStatement();
 
     @Nullable
-    DLanguageTryStatement getTryStatement();
+    public DLanguageTryStatement getTryStatement();
 
     @Nullable
-    DLanguageThrowStatement getThrowStatement();
+    public DLanguageThrowStatement getThrowStatement();
 
     @Nullable
-    DLanguageScopeGuardStatement getScopeGuardStatement();
+    public DLanguageScopeGuardStatement getScopeGuardStatement();
 
     @Nullable
-    DLanguageAsmStatement getAsmStatement();
+    public DLanguageAsmStatement getAsmStatement();
 
     @Nullable
-    DLanguageDebugSpecification getDebugSpecification();
+    public DLanguageDebugSpecification getDebugSpecification();
 
     @Nullable
-    DLanguageConditionalStatement getConditionalStatement();
+    public DLanguageConditionalStatement getConditionalStatement();
 
     @Nullable
-    DLanguageVersionSpecification getVersionSpecification();
+    public DLanguageVersionSpecification getVersionSpecification();
 
     @Nullable
-    DLanguageStaticAssertStatement getStaticAssertStatement();
+    public DLanguageStaticAssertStatement getStaticAssertStatement();
 
     @Nullable
-    DLanguageExpressionStatement getExpressionStatement();
+    public DLanguageExpressionStatement getExpressionStatement();
 }

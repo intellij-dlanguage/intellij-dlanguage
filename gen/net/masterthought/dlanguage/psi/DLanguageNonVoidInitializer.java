@@ -6,14 +6,14 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageNonVoidInitializer extends PsiElement {
     @Nullable
-    DLanguageAssignExpression getAssignExpression();
+    public DLanguageAssignExpression getAssignExpression();
 
     @Nullable
-    DLanguageArrayInitializer getArrayInitializer();
+    public DLanguageArrayInitializer getArrayInitializer();
 
     @Nullable
-    DLanguageStructInitializer getStructInitializer();
+    public DLanguageStructInitializer getStructInitializer();
 
     @Nullable
-    DLanguageFunctionBody getFunctionBody();
+    public DLanguageFunctionBody getFunctionBody();
 }

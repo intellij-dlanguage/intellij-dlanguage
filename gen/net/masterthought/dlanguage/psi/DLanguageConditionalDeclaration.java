@@ -9,15 +9,15 @@ import java.util.List;
 
 public interface DLanguageConditionalDeclaration extends PsiElement {
     @Nullable
-    DLanguageCompileCondition getCompileCondition();
+    public DLanguageCompileCondition getCompileCondition();
 
     @NotNull
-    List<DLanguageDeclaration> getDeclarations();
+    public List<DLanguageDeclaration> getDeclarations();
 
     @Nullable
-    PsiElement getOP_COLON();
+    public PsiElement getOP_COLON();
 
     @Nullable
-    PsiElement getKW_ELSE();
+    public PsiElement getKW_ELSE();
 
 }

@@ -9,18 +9,18 @@ import java.util.List;
 
 public interface DLanguageSliceExpression extends PsiElement {
     @Nullable
-    DLanguageUnaryExpression getUnaryExpression();
+    public DLanguageUnaryExpression getUnaryExpression();
 
     @NotNull
-    List<DLanguageAssignExpression> getAssignExpressions();
+    public List<DLanguageAssignExpression> getAssignExpressions();
 
     @Nullable
-    PsiElement getOP_BRACKET_LEFT();
+    public PsiElement getOP_BRACKET_LEFT();
 
     @Nullable
-    PsiElement getOP_BRACKET_RIGHT();
+    public PsiElement getOP_BRACKET_RIGHT();
 
     @Nullable
-    PsiElement getOP_DDOT();
+    public PsiElement getOP_DDOT();
 
 }

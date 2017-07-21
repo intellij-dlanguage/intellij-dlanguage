@@ -9,21 +9,21 @@ import java.util.List;
 
 public interface DLanguageEnumBody extends PsiElement {
     @Nullable
-    DLanguageIdentifier getIdentifier();
+    public DLanguageIdentifier getIdentifier();
 
     @Nullable
-    PsiElement getOP_BRACES_RIGHT();
+    public PsiElement getOP_BRACES_RIGHT();
 
     @Nullable
-    PsiElement getOP_BRACES_LEFT();
+    public PsiElement getOP_BRACES_LEFT();
 
     @NotNull
-    List<DLanguageEnumMember> getEnumMembers();
+    public List<DLanguageEnumMember> getEnumMembers();
 
     @NotNull
-    List<PsiElement> getOP_COMMAs();
+    public List<PsiElement> getOP_COMMAs();
 
     @Nullable
-    PsiElement getOP_SCOLON();
+    public PsiElement getOP_SCOLON();
 
 }

@@ -12,7 +12,8 @@ D Language File
               PsiElement(DLanguageTokenType.alias)('alias')
               DLanguageTypeImpl(TYPE)
                 DLanguageType_2Impl(TYPE_2)
-                  PsiElement(DLanguageTokenType.int)('int')
+                  DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
+                    PsiElement(DLanguageTokenType.int)('int')
               IDENTIFIER
                 PsiElement(DLanguageTokenType.ID)('x')
         PsiElement(DLanguageTokenType.))(')')
@@ -21,7 +22,8 @@ D Language File
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageTypeImpl(TYPE)
       DLanguageType_2Impl(TYPE_2)
-        PsiElement(DLanguageTokenType.int)('int')
+        DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
+          PsiElement(DLanguageTokenType.int)('int')
     DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
       DECLARATOR
         IDENTIFIER
@@ -30,7 +32,8 @@ D Language File
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageTypeImpl(TYPE)
       DLanguageType_2Impl(TYPE_2)
-        PsiElement(DLanguageTokenType.float)('float')
+        DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
+          PsiElement(DLanguageTokenType.float)('float')
     DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
       DECLARATOR
         IDENTIFIER
@@ -48,19 +51,18 @@ D Language File
                 DLanguageStatementNoCaseNoDefaultImpl(STATEMENT_NO_CASE_NO_DEFAULT)
                   DLanguageExpressionStatementImpl(EXPRESSION_STATEMENT)
                     DLanguageExpressionImpl(EXPRESSION)
-                      DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
-                        DLanguageCmpExpressionImpl(CMP_EXPRESSION)
-                          DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
-                            DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                              DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
-                                DLanguageTemplateInstanceImpl(TEMPLATE_INSTANCE)
-                                  IDENTIFIER
-                                    PsiElement(DLanguageTokenType.ID)('Foo')
-                                  DLanguageTemplateArgumentsImpl(TEMPLATE_ARGUMENTS)
-                                    PsiElement(DLanguageTokenType.!)('!')
-                                    DLanguageTemplateSingleArgumentImpl(TEMPLATE_SINGLE_ARGUMENT)
-                                      IDENTIFIER
-                                        PsiElement(DLanguageTokenType.ID)('x')
+                      DLanguageCmpExpressionImpl(CMP_EXPRESSION)
+                        DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
+                          DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
+                            DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
+                              DLanguageTemplateInstanceImpl(TEMPLATE_INSTANCE)
+                                IDENTIFIER
+                                  PsiElement(DLanguageTokenType.ID)('Foo')
+                                DLanguageTemplateArgumentsImpl(TEMPLATE_ARGUMENTS)
+                                  PsiElement(DLanguageTokenType.!)('!')
+                                  DLanguageTemplateSingleArgumentImpl(TEMPLATE_SINGLE_ARGUMENT)
+                                    IDENTIFIER
+                                      PsiElement(DLanguageTokenType.ID)('x')
                     PsiElement(DLanguageTokenType.;)(';')
             PsiComment(DLanguageTokenType.LINE_COMMENT)('// ok')
             DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
@@ -68,19 +70,18 @@ D Language File
                 DLanguageStatementNoCaseNoDefaultImpl(STATEMENT_NO_CASE_NO_DEFAULT)
                   DLanguageExpressionStatementImpl(EXPRESSION_STATEMENT)
                     DLanguageExpressionImpl(EXPRESSION)
-                      DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
-                        DLanguageCmpExpressionImpl(CMP_EXPRESSION)
-                          DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
-                            DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                              DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
-                                DLanguageTemplateInstanceImpl(TEMPLATE_INSTANCE)
-                                  IDENTIFIER
-                                    PsiElement(DLanguageTokenType.ID)('Foo')
-                                  DLanguageTemplateArgumentsImpl(TEMPLATE_ARGUMENTS)
-                                    PsiElement(DLanguageTokenType.!)('!')
-                                    DLanguageTemplateSingleArgumentImpl(TEMPLATE_SINGLE_ARGUMENT)
-                                      IDENTIFIER
-                                        PsiElement(DLanguageTokenType.ID)('f')
+                      DLanguageCmpExpressionImpl(CMP_EXPRESSION)
+                        DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
+                          DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
+                            DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
+                              DLanguageTemplateInstanceImpl(TEMPLATE_INSTANCE)
+                                IDENTIFIER
+                                  PsiElement(DLanguageTokenType.ID)('Foo')
+                                DLanguageTemplateArgumentsImpl(TEMPLATE_ARGUMENTS)
+                                  PsiElement(DLanguageTokenType.!)('!')
+                                  DLanguageTemplateSingleArgumentImpl(TEMPLATE_SINGLE_ARGUMENT)
+                                    IDENTIFIER
+                                      PsiElement(DLanguageTokenType.ID)('f')
                     PsiElement(DLanguageTokenType.;)(';')
           PsiComment(DLanguageTokenType.LINE_COMMENT)('// fails to instantiate')
           PsiElement(DLanguageTokenType.})('}')

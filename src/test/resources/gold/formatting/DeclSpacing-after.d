@@ -1,14 +1,8 @@
 import std.stdio;
-
-class Foo {
-}
-
+class Foo {}
 import std.conv;
-
 void main() {
-    return;
+    return ;
 }
-
 const baz = 11;
-class Foo2 : Foo {
-}
+class Foo2:Foo {}

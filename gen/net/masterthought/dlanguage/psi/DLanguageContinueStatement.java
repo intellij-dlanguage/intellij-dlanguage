@@ -6,12 +6,12 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageContinueStatement extends PsiElement {
     @Nullable
-    PsiElement getKW_CONTINUE();
+    public PsiElement getKW_CONTINUE();
 
     @Nullable
-    DLanguageIdentifier getIdentifier();
+    public DLanguageIdentifier getIdentifier();
 
     @Nullable
-    PsiElement getOP_SCOLON();
+    public PsiElement getOP_SCOLON();
 
 }

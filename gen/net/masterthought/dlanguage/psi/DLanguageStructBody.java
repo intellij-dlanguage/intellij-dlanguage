@@ -9,11 +9,11 @@ import java.util.List;
 
 public interface DLanguageStructBody extends PsiElement {
     @Nullable
-    PsiElement getOP_BRACES_RIGHT();
+    public PsiElement getOP_BRACES_RIGHT();
 
     @Nullable
-    PsiElement getOP_BRACES_LEFT();
+    public PsiElement getOP_BRACES_LEFT();
 
     @NotNull
-    List<DLanguageDeclaration> getDeclarations();
+    public List<DLanguageDeclaration> getDeclarations();
 }

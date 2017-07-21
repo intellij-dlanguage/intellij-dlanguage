@@ -9,23 +9,23 @@ import java.util.List;
 
 public interface DLanguageAliasDeclaration extends PsiElement {
     @Nullable
-    DLanguageIdentifierList getIdentifierList();
+    public DLanguageIdentifierList getIdentifierList();
 
     @Nullable
-    PsiElement getOP_COMMA();
+    public PsiElement getOP_COMMA();
 
     @NotNull
-    List<DLanguageStorageClass> getStorageClasss();
+    public List<DLanguageStorageClass> getStorageClasss();
 
     @Nullable
-    PsiElement getKW_ALIAS();
+    public PsiElement getKW_ALIAS();
 
     @Nullable
-    DLanguageType getType();
+    public DLanguageType getType();
 
     @Nullable
-    PsiElement getOP_SCOLON();
+    public PsiElement getOP_SCOLON();
 
     @NotNull
-    List<DLanguageAliasInitializer> getAliasInitializers();
+    public List<DLanguageAliasInitializer> getAliasInitializers();
 }

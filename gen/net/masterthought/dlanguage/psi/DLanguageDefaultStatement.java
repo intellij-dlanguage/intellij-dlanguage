@@ -6,11 +6,11 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageDefaultStatement extends PsiElement {
     @Nullable
-    PsiElement getKW_DEFAULT();
+    public PsiElement getKW_DEFAULT();
 
     @Nullable
-    PsiElement getOP_COLON();
+    public PsiElement getOP_COLON();
 
     @Nullable
-    DLanguageDeclarationsAndStatements getDeclarationsAndStatements();
+    public DLanguageDeclarationsAndStatements getDeclarationsAndStatements();
 }

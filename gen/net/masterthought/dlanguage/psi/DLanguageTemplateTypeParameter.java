@@ -9,15 +9,15 @@ import java.util.List;
 
 public interface DLanguageTemplateTypeParameter extends PsiElement {
     @Nullable
-    DLanguageIdentifier getIdentifier();
+    public DLanguageIdentifier getIdentifier();
 
     @NotNull
-    List<DLanguageType> getTypes();
+    public List<DLanguageType> getTypes();
 
     @Nullable
-    PsiElement getOP_COLON();
+    public PsiElement getOP_COLON();
 
     @Nullable
-    PsiElement getOP_EQ();
+    public PsiElement getOP_EQ();
 
 }

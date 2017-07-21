@@ -6,75 +6,75 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageAssignExpression extends PsiElement {
     @Nullable
-    DLanguageTernaryExpression getTernaryExpression();
+    public DLanguageTernaryExpression getTernaryExpression();
 
     @Nullable
-    DLanguageAssignExpression getAssignExpression();
+    public DLanguageAssignExpression getAssignExpression();
 
     @Nullable
-    PsiElement getOP_AND_EQ();
+    public PsiElement getOP_AND_EQ();
 
     @Nullable
-    PsiElement getOP_DIV_EQ();
+    public PsiElement getOP_DIV_EQ();
 
     @Nullable
-    PsiElement getOP_EQ();
+    public PsiElement getOP_EQ();
 
     @Nullable
-    PsiElement getOP_EQ_EQ();
+    public PsiElement getOP_EQ_EQ();
 
     @Nullable
-    PsiElement getOP_GT_EQ();
+    public PsiElement getOP_GT_EQ();
 
     @Nullable
-    PsiElement getOP_LESS_EQ();
+    public PsiElement getOP_LESS_EQ();
 
     @Nullable
-    PsiElement getOP_LESS_GR_EQ();
+    public PsiElement getOP_LESS_GR_EQ();
 
     @Nullable
-    PsiElement getOP_MINUS_EQ();
+    public PsiElement getOP_MINUS_EQ();
 
     @Nullable
-    PsiElement getOP_MOD_EQ();
+    public PsiElement getOP_MOD_EQ();
 
     @Nullable
-    PsiElement getOP_MUL_EQ();
+    public PsiElement getOP_MUL_EQ();
 
     @Nullable
-    PsiElement getOP_NOT_EQ();
+    public PsiElement getOP_NOT_EQ();
 
     @Nullable
-    PsiElement getOP_NOT_GR_EQ();
+    public PsiElement getOP_NOT_GR_EQ();
 
     @Nullable
-    PsiElement getOP_NOT_LESS_EQ();
+    public PsiElement getOP_NOT_LESS_EQ();
 
     @Nullable
-    PsiElement getOP_OR_EQ();
+    public PsiElement getOP_OR_EQ();
 
     @Nullable
-    PsiElement getOP_PLUS_EQ();
+    public PsiElement getOP_PLUS_EQ();
 
     @Nullable
-    PsiElement getOP_POW_EQ();
+    public PsiElement getOP_POW_EQ();
 
     @Nullable
-    PsiElement getOP_SH_LEFT_EQ();
+    public PsiElement getOP_SH_LEFT_EQ();
 
     @Nullable
-    PsiElement getOP_SH_RIGHT_EQ();
+    public PsiElement getOP_SH_RIGHT_EQ();
 
     @Nullable
-    PsiElement getOP_TILDA_EQ();
+    public PsiElement getOP_TILDA_EQ();
 
     @Nullable
-    PsiElement getOP_UNORD_EQ();
+    public PsiElement getOP_UNORD_EQ();
 
     @Nullable
-    PsiElement getOP_USH_RIGHT_EQ();
+    public PsiElement getOP_USH_RIGHT_EQ();
 
     @Nullable
-    PsiElement getOP_XOR_EQ();
+    public PsiElement getOP_XOR_EQ();
 
 }

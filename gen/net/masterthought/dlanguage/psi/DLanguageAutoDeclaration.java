@@ -9,14 +9,14 @@ import java.util.List;
 
 public interface DLanguageAutoDeclaration extends PsiElement {
     @Nullable
-    DLanguageStorageClass getStorageClass();
+    public DLanguageStorageClass getStorageClass();
 
     @NotNull
-    List<PsiElement> getOP_COMMAs();
+    public List<PsiElement> getOP_COMMAs();
 
     @Nullable
-    PsiElement getOP_SCOLON();
+    public PsiElement getOP_SCOLON();
 
     @NotNull
-    List<DLanguageAutoDeclarationPart> getAutoDeclarationParts();
+    public List<DLanguageAutoDeclarationPart> getAutoDeclarationParts();
 }

@@ -9,11 +9,11 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageForeachType extends PsiElement, DNamedElement, StubBasedPsiElement<DLanguageForeachTypeStub> {
     @Nullable
-    DLanguageType getType();
+    public DLanguageType getType();
 
     @Nullable
-    DLanguageIdentifier getIdentifier();
+    public DLanguageIdentifier getIdentifier();
 
     @Nullable
-    DLanguageTypeConstructors getTypeConstructors();
+    public DLanguageTypeConstructors getTypeConstructors();
 }

@@ -6,12 +6,12 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageOrExpression extends PsiElement {
     @Nullable
-    DLanguageOrExpression getOrExpression();
+    public DLanguageOrExpression getOrExpression();
 
     @Nullable
-    DLanguageXorExpression getXorExpression();
+    public DLanguageXorExpression getXorExpression();
 
     @Nullable
-    PsiElement getOP_OR();
+    public PsiElement getOP_OR();
 
 }

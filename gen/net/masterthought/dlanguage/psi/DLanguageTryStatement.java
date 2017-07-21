@@ -6,14 +6,14 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageTryStatement extends PsiElement {
     @Nullable
-    PsiElement getKW_TRY();
+    public PsiElement getKW_TRY();
 
     @Nullable
-    DLanguageDeclarationOrStatement getDeclarationOrStatement();
+    public DLanguageDeclarationOrStatement getDeclarationOrStatement();
 
     @Nullable
-    DLanguageCatches getCatches();
+    public DLanguageCatches getCatches();
 
     @Nullable
-    DLanguageFinally getFinally();
+    public DLanguageFinally getFinally();
 }

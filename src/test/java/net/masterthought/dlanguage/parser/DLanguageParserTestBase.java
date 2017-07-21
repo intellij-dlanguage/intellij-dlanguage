@@ -65,7 +65,7 @@ public abstract class DLanguageParserTestBase extends ParsingTestCase {
         doCheckResult(myFullDataPath, file, checkAllPsiRoots(),
             "expected" + File.separator + targetDataName, skipSpaces(),
             includeRanges());
-/* TODO: Re-enable if we return to parser-helper.
+/* Re-enable if we return to parser-helper.
         String phPath = ExecUtil.locateExecutableByGuessing("parser-helper");
         if (phPath != null && !phPath.isEmpty()) {
             String expectedFile = myFullDataPath + File.separator +

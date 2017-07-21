@@ -6,15 +6,15 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageAliasThisDeclaration extends PsiElement {
     @Nullable
-    PsiElement getKW_ALIAS();
+    public PsiElement getKW_ALIAS();
 
     @Nullable
-    DLanguageIdentifier getIdentifier();
+    public DLanguageIdentifier getIdentifier();
 
     @Nullable
-    PsiElement getKW_THIS();
+    public PsiElement getKW_THIS();
 
     @Nullable
-    PsiElement getOP_SCOLON();
+    public PsiElement getOP_SCOLON();
 
 }

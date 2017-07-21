@@ -854,4 +854,8 @@ public class DLanguageVisitor extends PsiElementVisitor {
     public void visitString(DLanguageStringImpl o) {
         visitPsiElement(o);
     }
+
+    public void visitBuiltinType(DLanguageBuiltinTypeImpl o) {
+        visitPsiElement(o);
+    }
 }

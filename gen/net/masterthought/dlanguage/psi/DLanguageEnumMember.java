@@ -9,14 +9,14 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageEnumMember extends PsiElement, DNamedElement, StubBasedPsiElement<DLanguageEnumMemberStub> {
     @Nullable
-    DLanguageIdentifier getIdentifier();
+    public DLanguageIdentifier getIdentifier();
 
     @Nullable
-    PsiElement getOP_EQ();
+    public PsiElement getOP_EQ();
 
     @Nullable
-    DLanguageType getType();
+    public DLanguageType getType();
 
     @Nullable
-    DLanguageAssignExpression getAssignExpression();
+    public DLanguageAssignExpression getAssignExpression();
 }

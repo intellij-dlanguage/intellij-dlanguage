@@ -9,17 +9,17 @@ import java.util.List;
 
 public interface DLanguageCaseRangeStatement extends PsiElement {
     @NotNull
-    List<PsiElement> getKW_CASEs();
+    public List<PsiElement> getKW_CASEs();
 
     @Nullable
-    PsiElement getOP_TRIPLEDOT();
+    public PsiElement getOP_TRIPLEDOT();
 
     @NotNull
-    List<PsiElement> getOP_COLONs();
+    public List<PsiElement> getOP_COLONs();
 
     @Nullable
-    DLanguageAssignExpression getAssignExpression();
+    public DLanguageAssignExpression getAssignExpression();
 
     @Nullable
-    DLanguageDeclarationsAndStatements getDeclarationsAndStatements();
+    public DLanguageDeclarationsAndStatements getDeclarationsAndStatements();
 }

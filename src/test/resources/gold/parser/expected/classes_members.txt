@@ -10,7 +10,8 @@ D Language File
           DLanguageDeclarationImpl(DECLARATION)
             DLanguageTypeImpl(TYPE)
               DLanguageType_2Impl(TYPE_2)
-                PsiElement(DLanguageTokenType.int)('int')
+                DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
+                  PsiElement(DLanguageTokenType.int)('int')
             DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
               DECLARATOR
                 IDENTIFIER
@@ -21,7 +22,8 @@ D Language File
               PsiElement(DLanguageTokenType.const)('const')
             DLanguageTypeImpl(TYPE)
               DLanguageType_2Impl(TYPE_2)
-                PsiElement(DLanguageTokenType.void)('void')
+                DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
+                  PsiElement(DLanguageTokenType.void)('void')
             FUNCTION_DECLARATION
               IDENTIFIER
                 PsiElement(DLanguageTokenType.ID)('foo')
@@ -45,18 +47,18 @@ D Language File
                                         IDENTIFIER
                                           PsiElement(DLanguageTokenType.ID)('a')
                                 PsiElement(DLanguageTokenType.=)('=')
-                                DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
-                                  DLanguageCmpExpressionImpl(CMP_EXPRESSION)
-                                    DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
-                                      DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                                        PsiElement(DLanguageTokenType.INTEGER_LITERAL)('3')
+                                DLanguageCmpExpressionImpl(CMP_EXPRESSION)
+                                  DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
+                                    DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
+                                      PsiElement(DLanguageTokenType.INTEGER_LITERAL)('3')
                             PsiElement(DLanguageTokenType.;)(';')
                   PsiComment(DLanguageTokenType.LINE_COMMENT)('// error, 'this' is const')
                   PsiElement(DLanguageTokenType.})('}')
           DLanguageDeclarationImpl(DECLARATION)
             DLanguageTypeImpl(TYPE)
               DLanguageType_2Impl(TYPE_2)
-                PsiElement(DLanguageTokenType.void)('void')
+                DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
+                  PsiElement(DLanguageTokenType.void)('void')
             FUNCTION_DECLARATION
               IDENTIFIER
                 PsiElement(DLanguageTokenType.ID)('foo')
@@ -82,11 +84,10 @@ D Language File
                                         IDENTIFIER
                                           PsiElement(DLanguageTokenType.ID)('a')
                                 PsiElement(DLanguageTokenType.=)('=')
-                                DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
-                                  DLanguageCmpExpressionImpl(CMP_EXPRESSION)
-                                    DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
-                                      DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                                        PsiElement(DLanguageTokenType.INTEGER_LITERAL)('3')
+                                DLanguageCmpExpressionImpl(CMP_EXPRESSION)
+                                  DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
+                                    DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
+                                      PsiElement(DLanguageTokenType.INTEGER_LITERAL)('3')
                             PsiElement(DLanguageTokenType.;)(';')
                   PsiComment(DLanguageTokenType.LINE_COMMENT)('// error, 'this' is immutable')
                   PsiElement(DLanguageTokenType.})('}')

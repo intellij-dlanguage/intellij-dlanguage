@@ -6,11 +6,11 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageStructMemberInitializer extends PsiElement {
     @Nullable
-    DLanguageIdentifier getIdentifier();
+    public DLanguageIdentifier getIdentifier();
 
     @Nullable
-    PsiElement getOP_COLON();
+    public PsiElement getOP_COLON();
 
     @Nullable
-    DLanguageNonVoidInitializer getNonVoidInitializer();
+    public DLanguageNonVoidInitializer getNonVoidInitializer();
 }

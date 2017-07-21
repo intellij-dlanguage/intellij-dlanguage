@@ -9,20 +9,20 @@ import java.util.List;
 
 public interface DLanguagePostblit extends PsiElement {
     @Nullable
-    DLanguageFunctionBody getFunctionBody();
+    public DLanguageFunctionBody getFunctionBody();
 
     @Nullable
-    PsiElement getOP_SCOLON();
+    public PsiElement getOP_SCOLON();
 
     @NotNull
-    List<PsiElement> getKW_THISs();
+    public List<PsiElement> getKW_THISs();
 
     @Nullable
-    PsiElement getOP_PAR_LEFT();
+    public PsiElement getOP_PAR_LEFT();
 
     @Nullable
-    PsiElement getOP_PAR_RIGHT();
+    public PsiElement getOP_PAR_RIGHT();
 
     @Nullable
-    DLanguageMemberFunctionAttribute getMemberFunctionAttribute();
+    public DLanguageMemberFunctionAttribute getMemberFunctionAttribute();
 }

@@ -62,6 +62,7 @@ static this() {
     types_children["BreakStatement"] = ["KW_BREAK","Identifier","OP_SCOLON"];
     types_children["BaseClass"] = ["TypeofExpression","OP_DOT","IdentifierOrTemplateChain"];
     types_children["BaseClassList"] = ["BaseClass*","OP_COMMA*"];
+    types_children["BuiltinType"] = [/*todo add the types*/];
     types_children["CaseRangeStatement"] = ["KW_CASE*","OP_TRIPLEDOT","OP_COLON*","AssignExpression", "DeclarationsAndStatements"];
     types_children["CaseStatement"] = ["KW_CASE","OP_COLON","ArgumentList","DeclarationsAndStatements"];
     types_children["CastExpression"] = ["CastQualifier", "Type","UnaryExpression","KW_CAST","OP_PAR_LEFT","OP_PAR_RIGHT"];
@@ -270,6 +271,7 @@ static this() {
     has_processDeclaration["BreakStatement"] = false;
     has_processDeclaration["BaseClass"] = false;
     has_processDeclaration["BaseClassList"] = false;
+    has_processDeclaration["BuiltinType"] = false;
     has_processDeclaration["CaseRangeStatement"] = false;
     has_processDeclaration["CaseStatement"] = false;
     has_processDeclaration["CastExpression"] = false;
@@ -286,7 +288,7 @@ static this() {
     has_processDeclaration["ContinueStatement"] = false;
     has_processDeclaration["DebugCondition"] = false;
     has_processDeclaration["DebugSpecification"] = false;
-    has_processDeclaration["Declaration"] = true;
+    has_processDeclaration["Declaration"] = false;
     has_processDeclaration["DeclarationOrStatement"] = false;
     has_processDeclaration["DeclarationsAndStatements"] = true;
     has_processDeclaration["Declarator"] = false;

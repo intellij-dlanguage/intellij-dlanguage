@@ -6,33 +6,33 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageIsExpression extends PsiElement {
     @Nullable
-    PsiElement getOP_PAR_RIGHT();
+    public PsiElement getOP_PAR_RIGHT();
 
     @Nullable
-    PsiElement getOP_PAR_LEFT();
+    public PsiElement getOP_PAR_LEFT();
 
     @Nullable
-    DLanguageType getType();
+    public DLanguageType getType();
 
     @Nullable
-    DLanguageIdentifier getIdentifier();
+    public DLanguageIdentifier getIdentifier();
 
     @Nullable
-    DLanguageTypeSpecialization getTypeSpecialization();
+    public DLanguageTypeSpecialization getTypeSpecialization();
 
     @Nullable
-    DLanguageTemplateParameterList getTemplateParameterList();
+    public DLanguageTemplateParameterList getTemplateParameterList();
 
     @Nullable
-    PsiElement getOP_COMMA();
+    public PsiElement getOP_COMMA();
 
     @Nullable
-    PsiElement getOP_COLON();
+    public PsiElement getOP_COLON();
 
     @Nullable
-    PsiElement getOP_EQ();
+    public PsiElement getOP_EQ();
 
     @Nullable
-    PsiElement getKW_IS();
+    public PsiElement getKW_IS();
 
 }

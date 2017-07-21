@@ -6,14 +6,14 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageCaseStatement extends PsiElement {
     @Nullable
-    PsiElement getKW_CASE();
+    public PsiElement getKW_CASE();
 
     @Nullable
-    PsiElement getOP_COLON();
+    public PsiElement getOP_COLON();
 
     @Nullable
-    DLanguageArgumentList getArgumentList();
+    public DLanguageArgumentList getArgumentList();
 
     @Nullable
-    DLanguageDeclarationsAndStatements getDeclarationsAndStatements();
+    public DLanguageDeclarationsAndStatements getDeclarationsAndStatements();
 }

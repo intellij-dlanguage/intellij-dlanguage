@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface DLanguageKeyValuePair extends PsiElement {
     @NotNull
-    List<DLanguageAssignExpression> getAssignExpressions();
+    public List<DLanguageAssignExpression> getAssignExpressions();
 
     @Nullable
-    PsiElement getOP_COLON();
+    public PsiElement getOP_COLON();
 
 }

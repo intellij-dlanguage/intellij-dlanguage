@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface DLanguageKeyValuePairs extends PsiElement {
     @NotNull
-    List<PsiElement> getOP_COMMAs();
+    public List<PsiElement> getOP_COMMAs();
 
     @NotNull
-    List<DLanguageKeyValuePair> getKeyValuePairs();
+    public List<DLanguageKeyValuePair> getKeyValuePairs();
 }

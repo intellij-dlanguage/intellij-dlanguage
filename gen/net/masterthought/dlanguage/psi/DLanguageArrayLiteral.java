@@ -6,12 +6,12 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageArrayLiteral extends PsiElement {
     @Nullable
-    DLanguageArgumentList getArgumentList();
+    public DLanguageArgumentList getArgumentList();
 
     @Nullable
-    PsiElement getOP_BRACKET_RIGHT();
+    public PsiElement getOP_BRACKET_RIGHT();
 
     @Nullable
-    PsiElement getOP_BRACKET_LEFT();
+    public PsiElement getOP_BRACKET_LEFT();
 
 }

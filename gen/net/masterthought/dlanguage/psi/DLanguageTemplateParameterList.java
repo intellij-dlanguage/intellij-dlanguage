@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface DLanguageTemplateParameterList extends PsiElement {
     @NotNull
-    List<DLanguageTemplateParameter> getTemplateParameters();
+    public List<DLanguageTemplateParameter> getTemplateParameters();
 
     @NotNull
-    List<PsiElement> getOP_COMMAs();
+    public List<PsiElement> getOP_COMMAs();
 
 }

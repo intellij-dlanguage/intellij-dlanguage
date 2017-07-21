@@ -9,11 +9,11 @@ import java.util.List;
 
 public interface DLanguageType extends PsiElement {
     @Nullable
-    DLanguageAttribute getAttribute();
+    public DLanguageAttribute getAttribute();
 
     @Nullable
-    DLanguageType_2 getType_2();
+    public DLanguageType_2 getType_2();
 
     @NotNull
-    List<DLanguageTypeSuffix> getTypeSuffixs();
+    public List<DLanguageTypeSuffix> getTypeSuffixs();
 }

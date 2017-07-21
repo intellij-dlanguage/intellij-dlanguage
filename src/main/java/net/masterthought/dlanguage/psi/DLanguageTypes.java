@@ -218,6 +218,7 @@ public interface DLanguageTypes {
     IElementType WITH_STATEMENT = new DLanguageElementType("WITH_STATEMENT");
     IElementType XOR_EXPRESSION = new DLanguageElementType("XOR_EXPRESSION");
     IElementType ADD_EXPRESSION = new DLanguageElementType("ADD_EXPRESSION");
+    IElementType BUILTIN_TYPE = new DLanguageElementType("BUILTIN_TYPE");
 
     IElementType ALTERNATE_WYSIWYG_STRING = new DLanguageTokenType("ALTERNATE_WYSIWYG_STRING");
     IElementType BLOCK_COMMENT = new DLanguageTokenType("BLOCK_COMMENT");
@@ -806,6 +807,8 @@ public interface DLanguageTypes {
                 return new DLanguageStringImpl(node);
             } else if (type == IF_CONDITION) {
                 return new DLanguageIfConditionImpl(node);
+            } else if (type == BUILTIN_TYPE) {
+                return new DLanguageBuiltinTypeImpl(node);
             }
 
 

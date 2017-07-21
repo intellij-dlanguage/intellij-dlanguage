@@ -6,8 +6,8 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageSymbol extends PsiElement {
     @Nullable
-    PsiElement getOP_DOT();
+    public PsiElement getOP_DOT();
 
     @Nullable
-    DLanguageIdentifierOrTemplateChain getIdentifierOrTemplateChain();
+    public DLanguageIdentifierOrTemplateChain getIdentifierOrTemplateChain();
 }

@@ -6,8 +6,8 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageDeclarationOrStatement extends PsiElement {
     @Nullable
-    DLanguageStatement getStatement();
+    public DLanguageStatement getStatement();
 
     @Nullable
-    DLanguageDeclaration getDeclaration();
+    public DLanguageDeclaration getDeclaration();
 }

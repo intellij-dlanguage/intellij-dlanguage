@@ -2,7 +2,8 @@ D Language File
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageTypeImpl(TYPE)
       DLanguageType_2Impl(TYPE_2)
-        PsiElement(DLanguageTokenType.int)('int')
+        DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
+          PsiElement(DLanguageTokenType.int)('int')
       DLanguageTypeSuffixImpl(TYPE_SUFFIX)
         PsiElement(DLanguageTokenType.function)('function')
         DLanguageParametersImpl(PARAMETERS)
@@ -10,7 +11,8 @@ D Language File
           PARAMETER
             DLanguageTypeImpl(TYPE)
               DLanguageType_2Impl(TYPE_2)
-                PsiElement(DLanguageTokenType.int)('int')
+                DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
+                  PsiElement(DLanguageTokenType.int)('int')
           PsiElement(DLanguageTokenType.))(')')
     DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
       DECLARATOR
@@ -21,7 +23,8 @@ D Language File
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageTypeImpl(TYPE)
       DLanguageType_2Impl(TYPE_2)
-        PsiElement(DLanguageTokenType.int)('int')
+        DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
+          PsiElement(DLanguageTokenType.int)('int')
       DLanguageTypeSuffixImpl(TYPE_SUFFIX)
         PsiElement(DLanguageTokenType.delegate)('delegate')
         DLanguageParametersImpl(PARAMETERS)
@@ -29,7 +32,8 @@ D Language File
           PARAMETER
             DLanguageTypeImpl(TYPE)
               DLanguageType_2Impl(TYPE_2)
-                PsiElement(DLanguageTokenType.int)('int')
+                DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
+                  PsiElement(DLanguageTokenType.int)('int')
           PsiElement(DLanguageTokenType.))(')')
     DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
       DECLARATOR

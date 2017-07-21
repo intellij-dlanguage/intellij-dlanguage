@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface DLanguageIdentifierChain extends PsiElement {
     @NotNull
-    List<DLanguageIdentifier> getIdentifiers();
+    public List<DLanguageIdentifier> getIdentifiers();
 
     @NotNull
-    List<PsiElement> getOP_DOTs();
+    public List<PsiElement> getOP_DOTs();
 
 }

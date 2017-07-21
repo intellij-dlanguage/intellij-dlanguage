@@ -6,24 +6,24 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageNewExpression extends PsiElement {
     @Nullable
-    PsiElement getKW_NEW();
+    public PsiElement getKW_NEW();
 
     @Nullable
-    DLanguageNewAnonClassExpression getNewAnonClassExpression();
+    public DLanguageNewAnonClassExpression getNewAnonClassExpression();
 
     @Nullable
-    DLanguageType getType();
+    public DLanguageType getType();
 
     @Nullable
-    DLanguageAssignExpression getAssignExpression();
+    public DLanguageAssignExpression getAssignExpression();
 
     @Nullable
-    DLanguageArguments getArguments();
+    public DLanguageArguments getArguments();
 
     @Nullable
-    PsiElement getOP_BRACKET_LEFT();
+    public PsiElement getOP_BRACKET_LEFT();
 
     @Nullable
-    PsiElement getOP_BRACKET_RIGHT();
+    public PsiElement getOP_BRACKET_RIGHT();
 
 }

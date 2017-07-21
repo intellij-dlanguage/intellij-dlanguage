@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface DLanguageStructMemberInitializers extends PsiElement {
     @NotNull
-    List<DLanguageStructMemberInitializer> getStructMemberInitializers();
+    public List<DLanguageStructMemberInitializer> getStructMemberInitializers();
 
     @NotNull
-    List<PsiElement> getOP_COMMAs();
+    public List<PsiElement> getOP_COMMAs();
 
 }

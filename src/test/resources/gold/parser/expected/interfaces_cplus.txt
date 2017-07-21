@@ -18,7 +18,8 @@ D Language File
           DLanguageDeclarationImpl(DECLARATION)
             DLanguageTypeImpl(TYPE)
               DLanguageType_2Impl(TYPE_2)
-                PsiElement(DLanguageTokenType.void)('void')
+                DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
+                  PsiElement(DLanguageTokenType.void)('void')
             FUNCTION_DECLARATION
               IDENTIFIER
                 PsiElement(DLanguageTokenType.ID)('foo')
@@ -29,7 +30,8 @@ D Language File
           DLanguageDeclarationImpl(DECLARATION)
             DLanguageTypeImpl(TYPE)
               DLanguageType_2Impl(TYPE_2)
-                PsiElement(DLanguageTokenType.void)('void')
+                DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
+                  PsiElement(DLanguageTokenType.void)('void')
             FUNCTION_DECLARATION
               IDENTIFIER
                 PsiElement(DLanguageTokenType.ID)('bar')

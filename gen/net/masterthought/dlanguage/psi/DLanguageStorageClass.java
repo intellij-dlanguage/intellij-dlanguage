@@ -6,60 +6,60 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageStorageClass extends PsiElement {
     @Nullable
-    DLanguageAtAttribute getAtAttribute();
+    public DLanguageAtAttribute getAtAttribute();
 
     @Nullable
-    DLanguageDeprecated getDeprecated();
+    public DLanguageDeprecated getDeprecated();
 
     @Nullable
-    DLanguageAlignAttribute getAlignAttribute();
+    public DLanguageAlignAttribute getAlignAttribute();
 
     @Nullable
-    DLanguageLinkageAttribute getLinkageAttribute();
+    public DLanguageLinkageAttribute getLinkageAttribute();
 
     @Nullable
-    PsiElement getKW_SYNCHRONIZED();
+    public PsiElement getKW_SYNCHRONIZED();
 
     @Nullable
-    DLanguageTypeConstructor getTypeConstructor();
+    public DLanguageTypeConstructor getTypeConstructor();
 
     @Nullable
-    PsiElement getKW_ABSTRACT();
+    public PsiElement getKW_ABSTRACT();
 
     @Nullable
-    PsiElement getKW_AUTO();
+    public PsiElement getKW_AUTO();
 
     @Nullable
-    PsiElement getKW_ENUM();
+    public PsiElement getKW_ENUM();
 
     @Nullable
-    PsiElement getKW_EXTERN();
+    public PsiElement getKW_EXTERN();
 
     @Nullable
-    PsiElement getKW_FINAL();
+    public PsiElement getKW_FINAL();
 
     @Nullable
-    PsiElement getKW_INOUT();
+    public PsiElement getKW_INOUT();
 
     @Nullable
-    PsiElement getKW_NOTHROW();
+    public PsiElement getKW_NOTHROW();
 
     @Nullable
-    PsiElement getKW_OVERRIDE();
+    public PsiElement getKW_OVERRIDE();
 
     @Nullable
-    PsiElement getKW_PURE();
+    public PsiElement getKW_PURE();
 
     @Nullable
-    PsiElement getKW_REF();
+    public PsiElement getKW_REF();
 
     @Nullable
-    PsiElement getKW___GSHARED();
+    public PsiElement getKW___GSHARED();
 
     @Nullable
-    PsiElement getKW_SCOPE();
+    public PsiElement getKW_SCOPE();
 
     @Nullable
-    PsiElement getKW_STATIC();
+    public PsiElement getKW_STATIC();
 
 }

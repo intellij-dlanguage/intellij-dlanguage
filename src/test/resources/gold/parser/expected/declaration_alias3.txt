@@ -110,7 +110,8 @@ D Language File
             PsiElement(DLanguageTokenType.static)('static')
           DLanguageTypeImpl(TYPE)
             DLanguageType_2Impl(TYPE_2)
-              PsiElement(DLanguageTokenType.int)('int')
+              DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
+                PsiElement(DLanguageTokenType.int)('int')
           DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
             DECLARATOR
               IDENTIFIER
@@ -190,11 +191,10 @@ D Language File
                                 IDENTIFIER
                                   PsiElement(DLanguageTokenType.ID)('b')
                         PsiElement(DLanguageTokenType.=)('=')
-                        DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
-                          DLanguageCmpExpressionImpl(CMP_EXPRESSION)
-                            DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
-                              DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                                PsiElement(DLanguageTokenType.INTEGER_LITERAL)('4')
+                        DLanguageCmpExpressionImpl(CMP_EXPRESSION)
+                          DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
+                            DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
+                              PsiElement(DLanguageTokenType.INTEGER_LITERAL)('4')
                     PsiElement(DLanguageTokenType.;)(';')
           PsiComment(DLanguageTokenType.LINE_COMMENT)('// sets S.i to 4')
           PsiElement(DLanguageTokenType.})('}')

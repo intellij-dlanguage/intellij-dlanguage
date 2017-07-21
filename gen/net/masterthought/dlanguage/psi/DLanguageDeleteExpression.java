@@ -6,8 +6,8 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageDeleteExpression extends PsiElement {
     @Nullable
-    PsiElement getKW_DELETE();
+    public PsiElement getKW_DELETE();
 
     @Nullable
-    DLanguageUnaryExpression getUnaryExpression();
+    public DLanguageUnaryExpression getUnaryExpression();
 }

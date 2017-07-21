@@ -6,18 +6,18 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageTypeConstructor extends PsiElement {
     @Nullable
-    PsiElement getKW_CONST();
+    public PsiElement getKW_CONST();
 
     @Nullable
-    PsiElement getKW_IMMUTABLE();
+    public PsiElement getKW_IMMUTABLE();
 
     @Nullable
-    PsiElement getKW_INOUT();
+    public PsiElement getKW_INOUT();
 
     @Nullable
-    PsiElement getKW_SHARED();
+    public PsiElement getKW_SHARED();
 
     @Nullable
-    PsiElement getKW_SCOPE();
+    public PsiElement getKW_SCOPE();
 
 }

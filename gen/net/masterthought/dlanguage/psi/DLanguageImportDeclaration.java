@@ -9,18 +9,18 @@ import java.util.List;
 
 public interface DLanguageImportDeclaration extends PsiElement {
     @Nullable
-    PsiElement getKW_IMPORT();
+    public PsiElement getKW_IMPORT();
 
     @NotNull
-    List<DLanguageSingleImport> getSingleImports();
+    public List<DLanguageSingleImport> getSingleImports();
 
     @Nullable
-    DLanguageImportBindings getImportBindings();
+    public DLanguageImportBindings getImportBindings();
 
     @NotNull
-    List<PsiElement> getOP_COMMAs();
+    public List<PsiElement> getOP_COMMAs();
 
     @Nullable
-    PsiElement getOP_SCOLON();
+    public PsiElement getOP_SCOLON();
 
 }

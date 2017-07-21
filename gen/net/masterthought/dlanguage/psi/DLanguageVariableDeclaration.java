@@ -9,23 +9,23 @@ import java.util.List;
 
 public interface DLanguageVariableDeclaration extends PsiElement {
     @Nullable
-    DLanguageAutoDeclaration getAutoDeclaration();
+    public DLanguageAutoDeclaration getAutoDeclaration();
 
     @Nullable
-    PsiElement getOP_SCOLON();
+    public PsiElement getOP_SCOLON();
 
     @Nullable
-    DLanguageType getType();
+    public DLanguageType getType();
 
     @NotNull
-    List<DLanguageDeclarator> getDeclarators();
+    public List<DLanguageDeclarator> getDeclarators();
 
     @NotNull
-    List<PsiElement> getOP_COMMAs();
+    public List<PsiElement> getOP_COMMAs();
 
     @Nullable
-    PsiElement getOP_EQ();
+    public PsiElement getOP_EQ();
 
     @Nullable
-    DLanguageFunctionBody getFunctionBody();
+    public DLanguageFunctionBody getFunctionBody();
 }

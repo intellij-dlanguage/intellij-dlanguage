@@ -9,12 +9,12 @@ import java.util.List;
 
 public interface DLanguageInExpression extends PsiElement {
     @NotNull
-    List<DLanguageShiftExpression> getShiftExpressions();
+    public List<DLanguageShiftExpression> getShiftExpressions();
 
     @Nullable
-    PsiElement getKW_IN();
+    public PsiElement getKW_IN();
 
     @Nullable
-    PsiElement getOP_NOT();
+    public PsiElement getOP_NOT();
 
 }

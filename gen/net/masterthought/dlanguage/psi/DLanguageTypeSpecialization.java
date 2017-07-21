@@ -6,48 +6,48 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageTypeSpecialization extends PsiElement {
     @Nullable
-    DLanguageType getType();
+    public DLanguageType getType();
 
     @Nullable
-    PsiElement getKW___PARAMETERS();
+    public PsiElement getKW___PARAMETERS();
 
     @Nullable
-    PsiElement getKW_STRUCT();
+    public PsiElement getKW_STRUCT();
 
     @Nullable
-    PsiElement getKW_UNION();
+    public PsiElement getKW_UNION();
 
     @Nullable
-    PsiElement getKW_CLASS();
+    public PsiElement getKW_CLASS();
 
     @Nullable
-    PsiElement getKW_INTERFACE();
+    public PsiElement getKW_INTERFACE();
 
     @Nullable
-    PsiElement getKW_ENUM();
+    public PsiElement getKW_ENUM();
 
     @Nullable
-    PsiElement getKW_FUNCTION();
+    public PsiElement getKW_FUNCTION();
 
     @Nullable
-    PsiElement getKW_DELEGATE();
+    public PsiElement getKW_DELEGATE();
 
     @Nullable
-    PsiElement getKW_SUPER();
+    public PsiElement getKW_SUPER();
 
     @Nullable
-    PsiElement getKW_CONST();
+    public PsiElement getKW_CONST();
 
     @Nullable
-    PsiElement getKW_IMMUTABLE();
+    public PsiElement getKW_IMMUTABLE();
 
     @Nullable
-    PsiElement getKW_INOUT();
+    public PsiElement getKW_INOUT();
 
     @Nullable
-    PsiElement getKW_SHARED();
+    public PsiElement getKW_SHARED();
 
     @Nullable
-    PsiElement getKW_RETURN();
+    public PsiElement getKW_RETURN();
 
 }

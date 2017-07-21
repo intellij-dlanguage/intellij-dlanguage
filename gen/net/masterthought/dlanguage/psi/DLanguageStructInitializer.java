@@ -9,12 +9,12 @@ import java.util.List;
 
 public interface DLanguageStructInitializer extends PsiElement {
     @NotNull
-    List<DLanguageStructMemberInitializers> getStructMemberInitializerss();
+    public List<DLanguageStructMemberInitializers> getStructMemberInitializerss();
 
     @Nullable
-    PsiElement getOP_BRACES_RIGHT();
+    public PsiElement getOP_BRACES_RIGHT();
 
     @Nullable
-    PsiElement getOP_BRACES_LEFT();
+    public PsiElement getOP_BRACES_LEFT();
 
 }

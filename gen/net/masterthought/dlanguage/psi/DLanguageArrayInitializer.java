@@ -9,15 +9,15 @@ import java.util.List;
 
 public interface DLanguageArrayInitializer extends PsiElement {
     @NotNull
-    List<PsiElement> getOP_COMMAs();
+    public List<PsiElement> getOP_COMMAs();
 
     @NotNull
-    List<DLanguageArrayMemberInitialization> getArrayMemberInitializations();
+    public List<DLanguageArrayMemberInitialization> getArrayMemberInitializations();
 
     @Nullable
-    PsiElement getOP_BRACKET_RIGHT();
+    public PsiElement getOP_BRACKET_RIGHT();
 
     @Nullable
-    PsiElement getOP_BRACKET_LEFT();
+    public PsiElement getOP_BRACKET_LEFT();
 
 }

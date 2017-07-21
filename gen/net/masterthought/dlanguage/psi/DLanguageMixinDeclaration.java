@@ -6,12 +6,12 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageMixinDeclaration extends PsiElement {
     @Nullable
-    DLanguageTemplateMixinExpression getTemplateMixinExpression();
+    public DLanguageTemplateMixinExpression getTemplateMixinExpression();
 
     @Nullable
-    DLanguageMixinExpression getMixinExpression();
+    public DLanguageMixinExpression getMixinExpression();
 
     @Nullable
-    PsiElement getOP_SCOLON();
+    public PsiElement getOP_SCOLON();
 
 }

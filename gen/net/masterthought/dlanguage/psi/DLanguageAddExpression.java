@@ -6,18 +6,18 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageAddExpression extends PsiElement {
     @Nullable
-    DLanguageAddExpression getAddExpression();
+    public DLanguageAddExpression getAddExpression();
 
     @Nullable
-    DLanguageMulExpression getMulExpression();
+    public DLanguageMulExpression getMulExpression();
 
     @Nullable
-    PsiElement getOP_TILDA();
+    public PsiElement getOP_TILDA();
 
     @Nullable
-    PsiElement getOP_PLUS();
+    public PsiElement getOP_PLUS();
 
     @Nullable
-    PsiElement getOP_MINUS();
+    public PsiElement getOP_MINUS();
 
 }
