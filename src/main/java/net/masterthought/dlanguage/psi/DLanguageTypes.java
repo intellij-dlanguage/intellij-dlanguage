@@ -23,6 +23,10 @@ public interface DLanguageTypes {
     IElementType MODULE_DEFINITION = new DLanguageElementType("MODULE_DEFINITION");
     IElementType FUNCTION_DEFINITION = new DLanguageElementType("FUNCTION_DEFINITION");
 
+    IElementType DOC_COMMENT = new DLanguageTokenType("DOC_COMMENT");
+    IElementType LINE_DOC = new DLanguageTokenType("LINE_DOC");
+
+
     IElementType IDENTIFIER = DElementTypeFactory.factory("IDENTIFIER");
     IElementType FUNCTION_DECLARATION = DElementTypeFactory.factory("FUNCTION_DECLARATION");
     IElementType INTERFACE_OR_CLASS = DElementTypeFactory.factory("INTERFACE_OR_CLASS");
