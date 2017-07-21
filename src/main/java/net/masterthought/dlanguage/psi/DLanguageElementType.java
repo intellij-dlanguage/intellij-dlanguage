@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class DLanguageElementType extends IElementType {
 
-    public DLanguageElementType(@NotNull @NonNls String debugName) {
+    public DLanguageElementType(@NotNull @NonNls final String debugName) {
         super(debugName, DLanguage.INSTANCE);
     }
 }

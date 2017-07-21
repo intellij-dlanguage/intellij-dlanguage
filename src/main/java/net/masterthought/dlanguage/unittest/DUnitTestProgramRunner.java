@@ -6,6 +6,7 @@ import com.intellij.execution.runners.DefaultProgramRunner;
 import org.jetbrains.annotations.NotNull;
 
 public class DUnitTestProgramRunner extends DefaultProgramRunner {
+
     @NotNull
     @Override
     public String getRunnerId() {

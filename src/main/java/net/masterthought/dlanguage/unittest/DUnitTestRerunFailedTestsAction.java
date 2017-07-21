@@ -33,11 +33,8 @@ public class DUnitTestRerunFailedTestsAction extends AbstractRerunFailedTestsAct
     @Override
     protected MyRunProfile getRunProfile(@NotNull final ExecutionEnvironment environment) {
         final Project project = environment.getProject();
-        if (project == null) {
-            return null;
-        }
 
-        return getRunProfile(project);
+        return project != null? getRunProfile(project) : null;
     }
 
     @Nullable
@@ -60,8 +57,7 @@ public class DUnitTestRerunFailedTestsAction extends AbstractRerunFailedTestsAct
             }
         }
 
-        if (moduleToFailedTestNames.isEmpty())
-        {
+        if (moduleToFailedTestNames.isEmpty()) {
             return null;
         }
 

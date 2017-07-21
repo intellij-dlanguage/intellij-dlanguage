@@ -57,8 +57,7 @@ public class DUnitTestRunConfiguration extends LocatableConfigurationBase {
     private String workingDir;
     private Map<String, String> envVars;
 
-    public DUnitTestRunConfiguration(final Project project)
-    {
+    public DUnitTestRunConfiguration(final Project project) {
         super(project, new DUnitTestRunConfigurationFactory(DUnitTestRunConfigurationType.getInstance()), DLanguage.INSTANCE.getDisplayName());
         envVars = new HashMap<>();
     }

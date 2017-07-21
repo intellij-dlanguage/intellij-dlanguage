@@ -295,21 +295,13 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
     }
 
     private void testRunStarted() {
-        ApplicationManager.getApplication().invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                notifyTextAvailable(new ServiceMessageBuilder("enteredTheMatrix").toString() + "\n", ProcessOutputTypes.STDOUT);
-            }
-        });
+        ApplicationManager.getApplication()
+            .invokeLater(() -> notifyTextAvailable(new ServiceMessageBuilder("enteredTheMatrix").toString() + "\n", ProcessOutputTypes.STDOUT));
     }
 
     private void testRunFinished() {
-        ApplicationManager.getApplication().invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                destroyProcess();
-            }
-        });
+        ApplicationManager.getApplication()
+            .invokeLater(this::destroyProcess);
     }
 
     private void testRunCanceled() {
@@ -317,138 +309,116 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
     }
 
     private void testStdOut(final String testClassName, final String output) {
-        ApplicationManager.getApplication().invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                notifyTextAvailable(ServiceMessageBuilder
-                                .testStdOut(testClassName)
-                                .addAttribute("out", output)
-                                .addAttribute("nodeId", String.valueOf(getNodeId(testClassName)))
-                                .toString() + "\n",
-                        ProcessOutputTypes.STDOUT);
-            }
-        });
+        ApplicationManager.getApplication()
+            .invokeLater(() -> notifyTextAvailable(ServiceMessageBuilder
+                        .testStdOut(testClassName)
+                        .addAttribute("out", output)
+                        .addAttribute("nodeId", String.valueOf(getNodeId(testClassName)))
+                        .toString() + "\n",
+                ProcessOutputTypes.STDOUT));
     }
 
     private void testStdOut(final String testClassName, final String testMethodName, final String output) {
-        ApplicationManager.getApplication().invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                final String fullTestMethodName = testClassName + "." + testMethodName;
-                notifyTextAvailable(ServiceMessageBuilder
-                                .testStdOut(testMethodName)
-                                .addAttribute("out", output)
-                                .addAttribute("parentNodeId", String.valueOf(getNodeId(testClassName)))
-                                .addAttribute("nodeId", String.valueOf(getNodeId(fullTestMethodName)))
-                                .toString() + "\n",
-                        ProcessOutputTypes.STDOUT);
-            }
+        ApplicationManager.getApplication()
+            .invokeLater(() -> {
+            final String fullTestMethodName = testClassName + "." + testMethodName;
+            notifyTextAvailable(ServiceMessageBuilder
+                            .testStdOut(testMethodName)
+                            .addAttribute("out", output)
+                            .addAttribute("parentNodeId", String.valueOf(getNodeId(testClassName)))
+                            .addAttribute("nodeId", String.valueOf(getNodeId(fullTestMethodName)))
+                            .toString() + "\n",
+                    ProcessOutputTypes.STDOUT);
         });
     }
 
     private void testSuiteStarted(final String testClassName, final int numTestMethods) {
-        ApplicationManager.getApplication().invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                notifyTextAvailable(ServiceMessageBuilder
-                                .testSuiteStarted(testClassName)
-                                .addAttribute("isSuite", String.valueOf(true))
-                                .addAttribute("parentNodeId", String.valueOf(getNodeId("")))
-                                .addAttribute("nodeId", String.valueOf(getNodeId(testClassName)))
-                                .addAttribute("count", String.valueOf(numTestMethods))
-                                .addAttribute("locationHint", DUnitTestLocationProvider.PROTOCOL_PREFIX + testClassName)
-                                .toString() + "\n",
-                        ProcessOutputTypes.STDOUT);
-            }
-        });
+        ApplicationManager.getApplication()
+            .invokeLater(() -> notifyTextAvailable(ServiceMessageBuilder
+                        .testSuiteStarted(testClassName)
+                        .addAttribute("isSuite", String.valueOf(true))
+                        .addAttribute("parentNodeId", String.valueOf(getNodeId("")))
+                        .addAttribute("nodeId", String.valueOf(getNodeId(testClassName)))
+                        .addAttribute("count", String.valueOf(numTestMethods))
+                        .addAttribute("locationHint", DUnitTestLocationProvider.PROTOCOL_PREFIX + testClassName)
+                        .toString() + "\n",
+                ProcessOutputTypes.STDOUT));
     }
 
     private void testSuiteFinished(final String testClassName, final long duration) {
-        ApplicationManager.getApplication().invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                notifyTextAvailable(ServiceMessageBuilder
-                                .testSuiteFinished(testClassName)
-                                .addAttribute("isSuite", String.valueOf(true))
-                                .addAttribute("parentNodeId", String.valueOf(getNodeId("")))
-                                .addAttribute("nodeId", String.valueOf(getNodeId(testClassName)))
-                                .addAttribute("duration", String.valueOf(duration))
-                                .addAttribute("locationHint", DUnitTestLocationProvider.PROTOCOL_PREFIX + testClassName)
-                                .toString() + "\n",
-                        ProcessOutputTypes.STDOUT);
-            }
-        });
+        ApplicationManager.getApplication()
+            .invokeLater(() -> notifyTextAvailable(ServiceMessageBuilder
+                        .testSuiteFinished(testClassName)
+                        .addAttribute("isSuite", String.valueOf(true))
+                        .addAttribute("parentNodeId", String.valueOf(getNodeId("")))
+                        .addAttribute("nodeId", String.valueOf(getNodeId(testClassName)))
+                        .addAttribute("duration", String.valueOf(duration))
+                        .addAttribute("locationHint", DUnitTestLocationProvider.PROTOCOL_PREFIX + testClassName)
+                        .toString() + "\n",
+                ProcessOutputTypes.STDOUT));
     }
 
     private void testStarted(final String testClassName, final String testMethodName) {
-        ApplicationManager.getApplication().invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                String fullTestMethodName = testClassName + "." + testMethodName;
-                notifyTextAvailable(ServiceMessageBuilder
-                                .testStarted(testMethodName)
-                                .addAttribute("isSuite", String.valueOf(false))
-                                .addAttribute("parentNodeId", String.valueOf(getNodeId(testClassName)))
-                                .addAttribute("nodeId", String.valueOf(getNodeId(fullTestMethodName)))
-                                .addAttribute("locationHint", DUnitTestLocationProvider.PROTOCOL_PREFIX + testClassName + "/" + testMethodName)
-                                .toString() + "\n",
-                        ProcessOutputTypes.STDOUT);
-            }
+        ApplicationManager.getApplication()
+            .invokeLater(() -> {
+            String fullTestMethodName = testClassName + "." + testMethodName;
+            notifyTextAvailable(ServiceMessageBuilder
+                            .testStarted(testMethodName)
+                            .addAttribute("isSuite", String.valueOf(false))
+                            .addAttribute("parentNodeId", String.valueOf(getNodeId(testClassName)))
+                            .addAttribute("nodeId", String.valueOf(getNodeId(fullTestMethodName)))
+                            .addAttribute("locationHint", DUnitTestLocationProvider.PROTOCOL_PREFIX + testClassName + "/" + testMethodName)
+                            .toString() + "\n",
+                    ProcessOutputTypes.STDOUT);
         });
     }
 
     private void testFinished(final String testClassName, final String testMethodName, final long duration) {
-        ApplicationManager.getApplication().invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                final String fullTestMethodName = testClassName + "." + testMethodName;
-                notifyTextAvailable(ServiceMessageBuilder
-                                .testFinished(testMethodName)
-                                .addAttribute("isSuite", String.valueOf(false))
-                                .addAttribute("parentNodeId", String.valueOf(getNodeId(testClassName)))
-                                .addAttribute("nodeId", String.valueOf(getNodeId(fullTestMethodName)))
-                                .addAttribute("duration", String.valueOf(duration))
-                                .addAttribute("locationHint", DUnitTestLocationProvider.PROTOCOL_PREFIX + testClassName + "/" + testMethodName)
-                                .toString() + "\n",
-                        ProcessOutputTypes.STDOUT);
-            }
+        ApplicationManager.getApplication()
+            .invokeLater(() -> {
+            final String fullTestMethodName = testClassName + "." + testMethodName;
+            notifyTextAvailable(ServiceMessageBuilder
+                            .testFinished(testMethodName)
+                            .addAttribute("isSuite", String.valueOf(false))
+                            .addAttribute("parentNodeId", String.valueOf(getNodeId(testClassName)))
+                            .addAttribute("nodeId", String.valueOf(getNodeId(fullTestMethodName)))
+                            .addAttribute("duration", String.valueOf(duration))
+                            .addAttribute("locationHint", DUnitTestLocationProvider.PROTOCOL_PREFIX + testClassName + "/" + testMethodName)
+                            .toString() + "\n",
+                    ProcessOutputTypes.STDOUT);
         });
     }
 
     private void testFailed(final String testClassName, final String testMethodName, final long duration, final String message, final String stackTrace) {
-        ApplicationManager.getApplication().invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                final String fullTestMethodName = testClassName + "." + testMethodName;
-                notifyTextAvailable(ServiceMessageBuilder
-                                .testFailed(testMethodName)
-                                .addAttribute("isSuite", String.valueOf(false))
-                                .addAttribute("parentNodeId", String.valueOf(getNodeId(testClassName)))
-                                .addAttribute("nodeId", String.valueOf(getNodeId(fullTestMethodName)))
-                                .addAttribute("duration", String.valueOf(duration))
-                                .addAttribute("message", message)
-                                .addAttribute("details", stackTrace)
-                                .addAttribute("locationHint", DUnitTestLocationProvider.PROTOCOL_PREFIX + testClassName + "/" + testMethodName)
-                                .toString() + "\n",
-                        ProcessOutputTypes.STDOUT);
-            }
+        ApplicationManager.getApplication()
+            .invokeLater(() -> {
+            final String fullTestMethodName = testClassName + "." + testMethodName;
+            notifyTextAvailable(ServiceMessageBuilder
+                            .testFailed(testMethodName)
+                            .addAttribute("isSuite", String.valueOf(false))
+                            .addAttribute("parentNodeId", String.valueOf(getNodeId(testClassName)))
+                            .addAttribute("nodeId", String.valueOf(getNodeId(fullTestMethodName)))
+                            .addAttribute("duration", String.valueOf(duration))
+                            .addAttribute("message", message)
+                            .addAttribute("details", stackTrace)
+                            .addAttribute("locationHint", DUnitTestLocationProvider.PROTOCOL_PREFIX + testClassName + "/" + testMethodName)
+                            .toString() + "\n",
+                    ProcessOutputTypes.STDOUT);
         });
     }
 
     private void testIgnored(final String testClassName, final String testMethodName) {
-        ApplicationManager.getApplication().invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                final String fullTestMethodName = testClassName + "." + testMethodName;
-                notifyTextAvailable(ServiceMessageBuilder
-                                .testIgnored(testMethodName)
-                                .addAttribute("isSuite", String.valueOf(false))
-                                .addAttribute("parentNodeId", String.valueOf(getNodeId(testClassName)))
-                                .addAttribute("nodeId", String.valueOf(getNodeId(fullTestMethodName)))
-                                .addAttribute("locationHint", DUnitTestLocationProvider.PROTOCOL_PREFIX + testClassName + "/" + testMethodName)
-                                .toString() + "\n",
-                        ProcessOutputTypes.STDOUT);
-            }
+        ApplicationManager.getApplication()
+            .invokeLater(() -> {
+            final String fullTestMethodName = testClassName + "." + testMethodName;
+            notifyTextAvailable(ServiceMessageBuilder
+                            .testIgnored(testMethodName)
+                            .addAttribute("isSuite", String.valueOf(false))
+                            .addAttribute("parentNodeId", String.valueOf(getNodeId(testClassName)))
+                            .addAttribute("nodeId", String.valueOf(getNodeId(fullTestMethodName)))
+                            .addAttribute("locationHint", DUnitTestLocationProvider.PROTOCOL_PREFIX + testClassName + "/" + testMethodName)
+                            .toString() + "\n",
+                    ProcessOutputTypes.STDOUT);
         });
     }
 

@@ -63,17 +63,18 @@ public class DUnitTestRunConfigurationEditor extends SettingsEditor<DUnitTestRun
     }
 
     @Override
-    protected void resetEditorFrom(final DUnitTestRunConfiguration config) {
+    protected void resetEditorFrom(@NotNull final DUnitTestRunConfiguration config) {
         myWorkingDirectory.setText(config.getWorkingDir());
         myFileField.setText(config.getdFilePath());
-        Map<String, String> envVars = config.getEnvVars();
+
+        final Map<String, String> envVars = config.getEnvVars();
         if (envVars != null) {
             envVariables.setEnvs(config.getEnvVars());
         }
     }
 
     @Override
-    protected void applyEditorTo(final DUnitTestRunConfiguration config) throws ConfigurationException {
+    protected void applyEditorTo(@NotNull final DUnitTestRunConfiguration config) throws ConfigurationException {
         config.setEnvVars(envVariables.getEnvs());
         config.setWorkingDir(myWorkingDirectory.getText());
         config.setdFilePath(FileUtil.toSystemIndependentName(myFileField.getText().trim()));

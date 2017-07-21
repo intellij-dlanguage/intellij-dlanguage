@@ -4,7 +4,6 @@ import com.intellij.ide.util.BrowseFilesListener;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.fileChooser.FileChooserFactory;
-import com.intellij.openapi.module.ModuleConfigurationEditor;
 import com.intellij.openapi.project.ProjectBundle;
 import com.intellij.openapi.roots.CompilerModuleExtension;
 import com.intellij.openapi.roots.ui.configuration.ModuleConfigurationState;
@@ -48,42 +47,29 @@ public class OutputElementsEditor  extends ModuleElementsEditor {
     public JComponent createComponentImpl() {
         myInheritCompilerOutput = new JRadioButton(ProjectBundle.message("project.inherit.compile.output.path"));
         myPerModuleCompilerOutput = new JRadioButton(ProjectBundle.message("project.module.compile.output.path"));
-        ButtonGroup group = new ButtonGroup();
+
+        final ButtonGroup group = new ButtonGroup();
         group.add(myInheritCompilerOutput);
         group.add(myPerModuleCompilerOutput);
 
-        final ActionListener listener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                enableCompilerSettings(!myInheritCompilerOutput.isSelected());
-            }
-        };
+        final ActionListener listener = e -> enableCompilerSettings(!myInheritCompilerOutput.isSelected());
 
         myInheritCompilerOutput.addActionListener(listener);
         myPerModuleCompilerOutput.addActionListener(listener);
 
-        myOutputPathPanel = createOutputPathPanel(ProjectBundle.message("module.paths.output.title"), new CommitPathRunnable() {
-            @Override
-            public void saveUrl(String url) {
-                if (getCompilerExtension().isCompilerOutputPathInherited()) return;  //do not override settings if any
-                getCompilerExtension().setCompilerOutputPath(url);
-            }
+        myOutputPathPanel = createOutputPathPanel(ProjectBundle.message("module.paths.output.title"), url -> {
+            if (getCompilerExtension().isCompilerOutputPathInherited()) return;  //do not override settings if any
+            getCompilerExtension().setCompilerOutputPath(url);
         });
-        myTestsOutputPathPanel = createOutputPathPanel(ProjectBundle.message("module.paths.test.output.title"), new CommitPathRunnable() {
-            @Override
-            public void saveUrl(String url) {
-                if (getCompilerExtension().isCompilerOutputPathInherited()) return; //do not override settings if any
-                getCompilerExtension().setCompilerOutputPathForTests(url);
-            }
+
+        myTestsOutputPathPanel = createOutputPathPanel(ProjectBundle.message("module.paths.test.output.title"), url -> {
+            if (getCompilerExtension().isCompilerOutputPathInherited()) return; //do not override settings if any
+            getCompilerExtension().setCompilerOutputPathForTests(url);
         });
 
         myCbExcludeOutput = new JCheckBox(ProjectBundle.message("module.paths.exclude.output.checkbox"), getCompilerExtension().isExcludeOutput());
-        myCbExcludeOutput.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                getCompilerExtension().setExcludeOutput(myCbExcludeOutput.isSelected());
-            }
-        });
+
+        myCbExcludeOutput.addActionListener(e -> getCompilerExtension().setExcludeOutput(myCbExcludeOutput.isSelected()));
 
         final JPanel outputPathsPanel = new JPanel(new GridBagLayout());
 
@@ -91,19 +77,24 @@ public class OutputElementsEditor  extends ModuleElementsEditor {
         outputPathsPanel.add(myInheritCompilerOutput, new GridBagConstraints(0, GridBagConstraints.RELATIVE, 2, 1, 1.0, 0.0,
                 GridBagConstraints.WEST, GridBagConstraints.NONE,
                 new Insets(6, 0, 0, 4), 0, 0));
+
         outputPathsPanel.add(myPerModuleCompilerOutput, new GridBagConstraints(0, GridBagConstraints.RELATIVE, 2, 1, 1.0, 0.0,
                 GridBagConstraints.WEST, GridBagConstraints.NONE,
                 new Insets(6, 0, 0, 4), 0, 0));
 
         myOutputLabel = new JLabel(ProjectBundle.message("module.paths.output.label"));
+
         outputPathsPanel.add(myOutputLabel, new GridBagConstraints(0, GridBagConstraints.RELATIVE, 1, 1, 0.0, 0.0, GridBagConstraints.EAST,
                 GridBagConstraints.NONE, new Insets(6, 12, 0, 4), 0, 0));
+
         outputPathsPanel.add(myOutputPathPanel, new GridBagConstraints(1, GridBagConstraints.RELATIVE, 2, 1, 1.0, 0.0, GridBagConstraints.WEST,
                 GridBagConstraints.HORIZONTAL, new Insets(6, 4, 0, 0), 0, 0));
 
         myTestOutputLabel = new JLabel(ProjectBundle.message("module.paths.test.output.label"));
+
         outputPathsPanel.add(myTestOutputLabel, new GridBagConstraints(0, GridBagConstraints.RELATIVE, 1, 1, 0.0, 0.0, GridBagConstraints.EAST,
                 GridBagConstraints.NONE, new Insets(6, 16, 0, 4), 0, 0));
+
         outputPathsPanel.add(myTestsOutputPathPanel, new GridBagConstraints(1, GridBagConstraints.RELATIVE, 2, 1, 1.0, 0.0,
                 GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL,
                 new Insets(6, 4, 0, 0), 0, 0));
@@ -121,8 +112,7 @@ public class OutputElementsEditor  extends ModuleElementsEditor {
         enableCompilerSettings(!outputPathInherited);
 
         final JPanel panel = new JPanel(new BorderLayout());
-        panel.setBorder(IdeBorderFactory.createTitledBorder(ProjectBundle.message("project.roots.output.compiler.title"),
-                true));
+        panel.setBorder(IdeBorderFactory.createTitledBorder(ProjectBundle.message("project.roots.output.compiler.title"),true));
         panel.add(outputPathsPanel, BorderLayout.NORTH);
         return panel;
     }
@@ -171,27 +161,25 @@ public class OutputElementsEditor  extends ModuleElementsEditor {
         outputPathsChooserDescriptor.setHideIgnored(false);
         InsertPathAction.addTo(textField, outputPathsChooserDescriptor);
         FileChooserFactory.getInstance().installFileCompletion(textField, outputPathsChooserDescriptor, true, null);
-        final Runnable commitRunnable = new Runnable() {
-            @Override
-            public void run() {
-                if (!getModel().isWritable()) {
-                    return;
+
+        final Runnable commitRunnable = () -> {
+            if (!getModel().isWritable()) {
+                return;
+            }
+            final String path = textField.getText().trim();
+            if (path.length() == 0) {
+                commitPathRunnable.saveUrl(null);
+            }
+            else {
+                // should set only absolute paths
+                String canonicalPath;
+                try {
+                    canonicalPath = FileUtil.resolveShortWindowsName(path);
                 }
-                final String path = textField.getText().trim();
-                if (path.length() == 0) {
-                    commitPathRunnable.saveUrl(null);
+                catch (IOException e) {
+                    canonicalPath = path;
                 }
-                else {
-                    // should set only absolute paths
-                    String canonicalPath;
-                    try {
-                        canonicalPath = FileUtil.resolveShortWindowsName(path);
-                    }
-                    catch (IOException e) {
-                        canonicalPath = path;
-                    }
-                    commitPathRunnable.saveUrl(VfsUtilCore.pathToUrl(FileUtil.toSystemIndependentName(canonicalPath)));
-                }
+                commitPathRunnable.saveUrl(VfsUtilCore.pathToUrl(FileUtil.toSystemIndependentName(canonicalPath)));
             }
         };
 
@@ -204,7 +192,7 @@ public class OutputElementsEditor  extends ModuleElementsEditor {
 
         return new CommitableFieldPanel(textField, null, null, new BrowseFilesListener(textField, title, "", outputPathsChooserDescriptor) {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(final ActionEvent e) {
                 super.actionPerformed(e);
                 commitRunnable.run();
             }
@@ -243,6 +231,7 @@ public class OutputElementsEditor  extends ModuleElementsEditor {
             if (baseUrl != null) {
                 myOutputPathPanel.setText(FileUtil.toSystemDependentName(VfsUtilCore.urlToPath(baseUrl + "/" + CompilerModuleExtension
                         .PRODUCTION + "/" + moduleName)));
+
                 myTestsOutputPathPanel.setText(FileUtil.toSystemDependentName(VfsUtilCore.urlToPath(baseUrl + "/" + CompilerModuleExtension
                         .TEST + "/" + moduleName)));
             }
@@ -265,9 +254,9 @@ public class OutputElementsEditor  extends ModuleElementsEditor {
         private final Runnable myCommitRunnable;
 
         public CommitableFieldPanel(final JTextField textField,
-                                    String labelText,
+                                    final String labelText,
                                     final String viewerDialogTitle,
-                                    ActionListener browseButtonActionListener,
+                                    final ActionListener browseButtonActionListener,
                                     final Runnable documentListener,
                                     final Runnable commitPathRunnable) {
             super(textField, labelText, viewerDialogTitle, browseButtonActionListener, documentListener);

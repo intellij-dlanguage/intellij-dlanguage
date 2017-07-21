@@ -37,48 +37,50 @@ public class DPsiImplUtil {
 
     // ------------- Identifier ------------------ //
     @NotNull
-    public static String getName(@NotNull DLanguageIdentifier o) {
-        DLanguageIdentifierStub stub = o.getStub();
+    public static String getName(@NotNull final DLanguageIdentifier identifier) {
+        final DLanguageIdentifierStub stub = identifier.getStub();
         if (stub != null) return StringUtil.notNullize(stub.getName());
-        return o.getText();
+        return identifier.getText();
     }
 
     @Nullable
-    public static PsiElement getNameIdentifier(@NotNull DLanguageIdentifier o) {
-        ASTNode keyNode = o.getNode();
+    public static PsiElement getNameIdentifier(@NotNull final DLanguageIdentifier identifier) {
+        final ASTNode keyNode = identifier.getNode();
         return keyNode != null ? keyNode.getPsi() : null;
     }
 
     @Nullable
-    public static PsiElement setName(@NotNull DLanguageIdentifier o, @NotNull String newName) {
-        PsiElement e = DElementFactory.createDLanguageIdentifierFromText(o.getProject(), newName);
+    public static PsiElement setName(@NotNull final DLanguageIdentifier identifier,
+                                     @NotNull final String newName) {
+        final PsiElement e = DElementFactory.createDLanguageIdentifierFromText(identifier.getProject(), newName);
         if (e == null) return null;
-        o.replace(e);
-        return o;
+        identifier.replace(e);
+        return identifier;
     }
 
     @NotNull
-    public static PsiReference getReference(@NotNull DLanguageIdentifier o) {
+    public static PsiReference getReference(@NotNull final DLanguageIdentifier o) {
         return new DReference(o, TextRange.from(0, getName(o).length()));
     }
 
     @Nullable
-    public static PsiElement findParentOfType(PsiElement element, Class className) {
+    public static PsiElement findParentOfType(final PsiElement element, final Class className) {
         if (className.isInstance(element)) {
             return element;
         } else {
             try {
                 return findParentOfType(element.getParent(), className);
-            } catch(Exception e){
+            } catch(final Exception e){
                 return null;
             }
         }
 
     }
 
-    private static String getParentDeclarationDescription(DLanguageIdentifier o) {
-        PsiNamedElement funcDecl = (PsiNamedElement) findParentOfType(o, DLanguageFuncDeclaration.class);
-        PsiNamedElement classDecl = (PsiNamedElement) findParentOfType(o, DLanguageClassDeclaration.class);
+    private static String getParentDeclarationDescription(final DLanguageIdentifier identifier) {
+        final PsiNamedElement funcDecl = (PsiNamedElement) findParentOfType(identifier, DLanguageFuncDeclaration.class);
+        final PsiNamedElement classDecl = (PsiNamedElement) findParentOfType(identifier, DLanguageClassDeclaration.class);
+
         String description = "";
         if(funcDecl != null){
             description = " [Function] (" + funcDecl.getName() + ")";
@@ -90,12 +92,12 @@ public class DPsiImplUtil {
     }
 
     @NotNull
-    public static ItemPresentation getPresentation(final DLanguageIdentifier o) {
+    public static ItemPresentation getPresentation(final DLanguageIdentifier identifier) {
         return new ItemPresentation() {
             @Nullable
             @Override
             public String getPresentableText() {
-                return o.getName() + getParentDeclarationDescription(o);
+                return identifier.getName() + getParentDeclarationDescription(identifier);
             }
 
             /**
@@ -104,7 +106,7 @@ public class DPsiImplUtil {
             @Nullable
             @Override
             public String getLocationString() {
-                final PsiFile psiFile = o.getContainingFile();
+                final PsiFile psiFile = identifier.getContainingFile();
                 return psiFile instanceof DLanguageFile ? ((DLanguageFile) psiFile).getModuleOrFileName() : null;
             }
 
@@ -116,10 +118,11 @@ public class DPsiImplUtil {
         };
     }
 
-    public static void delete(DLanguageIdentifier identifier) {
+    public static void delete(final DLanguageIdentifier identifier) {
         final List<PsiNamedElement> definitionNode = DResolveUtil.findDefinitionNode(identifier.getProject(), identifier.getName(), identifier);
-        if (definitionNode.size() != 1)
+        if (definitionNode.size() != 1) {
             throw new IllegalStateException();
+        }
         definitionNode.get(0).delete();
     }
     // ------------- Identifier ------------------ //
@@ -130,27 +133,28 @@ public class DPsiImplUtil {
 //    }
 
     @NotNull
-    public static String getName(@NotNull DLanguageFuncDeclaration o) {
-        DLanguageFuncDeclarationStub stub = o.getStub();
+    public static String getName(@NotNull final DLanguageFuncDeclaration funcDeclaration) {
+        final DLanguageFuncDeclarationStub stub = funcDeclaration.getStub();
         if (stub != null) return StringUtil.notNullize(stub.getName());
-        return o.getIdentifier().getText();
+        return funcDeclaration.getIdentifier().getText();
     }
 
     @Nullable
-    public static PsiElement getNameIdentifier(@NotNull DLanguageFuncDeclaration o) {
-        ASTNode keyNode = o.getNode();
+    public static PsiElement getNameIdentifier(@NotNull final DLanguageFuncDeclaration funcDeclaration) {
+        final ASTNode keyNode = funcDeclaration.getNode();
         return keyNode != null ? keyNode.getPsi() : null;
     }
 
     @Nullable
-    public static PsiElement setName(@NotNull DLanguageFuncDeclaration o, @NotNull String newName) {
-        o.getIdentifier().setName(newName);
-        return o;
+    public static PsiElement setName(@NotNull final DLanguageFuncDeclaration funcDeclaration,
+                                     @NotNull final String newName) {
+        funcDeclaration.getIdentifier().setName(newName);
+        return funcDeclaration;
     }
 
     @NotNull
-    public static PsiReference getReference(@NotNull DLanguageFuncDeclaration o) {
-        return new DReference(o, TextRange.from(0, getName(o).length()));
+    public static PsiReference getReference(@NotNull final DLanguageFuncDeclaration funcDeclaration) {
+        return new DReference(funcDeclaration, TextRange.from(0, getName(funcDeclaration).length()));
     }
 
     @NotNull
@@ -185,9 +189,10 @@ public class DPsiImplUtil {
         return Arrays.asList(getChildrenOfType(o.getFuncDeclaratorSuffix().getParameters(), DLanguageParameter.class));
     }
 
-    public static List<DLanguageTemplateParameter> getTemplateArguments(DLanguageFuncDeclaration o) {
-        if (o.getFuncDeclaratorSuffix().getTemplateParameters() != null)
-            return Arrays.asList(getChildrenOfType(o.getFuncDeclaratorSuffix().getTemplateParameters(), DLanguageTemplateParameter.class));
+    public static List<DLanguageTemplateParameter> getTemplateArguments(final DLanguageFuncDeclaration funcDeclaration) {
+        if (funcDeclaration.getFuncDeclaratorSuffix().getTemplateParameters() != null)
+            return Arrays.asList(getChildrenOfType(funcDeclaration.getFuncDeclaratorSuffix().getTemplateParameters(), DLanguageTemplateParameter.class));
+
         return new ArrayList<>();
     }
 
