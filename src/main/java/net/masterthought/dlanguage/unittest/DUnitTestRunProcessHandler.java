@@ -35,6 +35,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DUnitTestRunProcessHandler extends ProcessHandler {
+
     private static final Logger LOG = Logger.getInstance(DUnitTestRunProcessHandler.class);
     private Map<String, Set<String>> testClassToTestMethodNames = new HashMap<>();
 
@@ -45,7 +46,7 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
     private final DUnitTestRunConfiguration configuration;
 
 
-    public DUnitTestRunProcessHandler(Project project, DUnitTestRunConfiguration configuration) {
+    public DUnitTestRunProcessHandler(final Project project, final DUnitTestRunConfiguration configuration) {
         this.project = project;
         this.configuration = configuration;
     }
@@ -59,19 +60,20 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
                 testRunStarted();
 
                 // NOTE: This creates the tree in the UI by sending testSuiteStarted() and testStarted() messages
-                DUnitTestFramework unitTestFramework = new DUnitTestFramework();
+                final DUnitTestFramework unitTestFramework = new DUnitTestFramework();
 
                 try {
-                    PsiFile psiFile = PsiManager.getInstance(project).findFile(configuration.getDFile());
-                    Collection<DLanguageClassDeclaration> cds = PsiTreeUtil.findChildrenOfType(psiFile, DLanguageClassDeclaration.class);
-                    for (DLanguageClassDeclaration cd : cds) {
+                    final PsiFile psiFile = PsiManager.getInstance(project).findFile(configuration.getDFile());
+                    final Collection<DLanguageClassDeclaration> cds = PsiTreeUtil.findChildrenOfType(psiFile, DLanguageClassDeclaration.class);
+
+                    for (final DLanguageClassDeclaration cd : cds) {
 
                         // if a class contains the UnitTest mixin assume its a valid d-unit test class
                         String testClassName = null;
-                        Collection<DLanguageTemplateMixin> tmis = PsiTreeUtil.findChildrenOfType(cd, DLanguageTemplateMixin.class);
-                        for (DLanguageTemplateMixin tmi : tmis) {
+                        final Collection<DLanguageTemplateMixin> tmis = PsiTreeUtil.findChildrenOfType(cd, DLanguageTemplateMixin.class);
+                        for (final DLanguageTemplateMixin tmi : tmis) {
                             if (tmi.getText().contains("UnitTest")) {
-                                DLanguageIdentifier classIdentifier = cd.getIdentifier();
+                                final DLanguageIdentifier classIdentifier = cd.getIdentifier();
                                 if (classIdentifier != null) {
                                     testClassName = classIdentifier.getText();
                                 }
@@ -79,9 +81,10 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
                         }
 
                         // find methods for the class
-                        Set<String> testMethodNames = new LinkedHashSet<>();
-                        Collection<DLanguageFuncDeclaration> fds = PsiTreeUtil.findChildrenOfType(cd, DLanguageFuncDeclaration.class);
-                        for (DLanguageFuncDeclaration fd : fds) {
+                        final Set<String> testMethodNames = new LinkedHashSet<>();
+                        final Collection<DLanguageFuncDeclaration> fds = PsiTreeUtil.findChildrenOfType(cd, DLanguageFuncDeclaration.class);
+
+                        for (final DLanguageFuncDeclaration fd : fds) {
                             if (testClassName != null) {
                                 // only add methods with @Test
                                 if (isTestMethod(fd) || isIgnoreMethod(fd)) {
@@ -96,7 +99,7 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
                         }
                     }
 
-                } catch (RuntimeConfigurationError runtimeConfigurationError) {
+                } catch (final RuntimeConfigurationError runtimeConfigurationError) {
                     runtimeConfigurationError.printStackTrace();
                 }
             }
@@ -117,7 +120,7 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
         final String dunitPath = getDUnitPath();
 
         if (dunitPath == null) {
-            String message = "Please add d-unit to your dub.json/dub.sdl and run Tools > Process D Libraries";
+            final String message = "Please add d-unit to your dub.json/dub.sdl and run Tools > Process D Libraries";
             Notifications.Bus.notify(new Notification(
                     "Execute Tests", "No d-unit dependency found", message, NotificationType.ERROR), project);
             LOG.warn(message);
@@ -127,14 +130,14 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
 
                 @Override
                 public void run() {
-                    for (Object o : testClassToTestMethodNames.entrySet()) {
-                        Map.Entry pair = (Map.Entry) o;
-                        String className = (String) pair.getKey();
-                        Set<String> methodNames = (Set<String>) pair.getValue();
+                    for (final Object o : testClassToTestMethodNames.entrySet()) {
+                        final Map.Entry pair = (Map.Entry) o;
+                        final String className = (String) pair.getKey();
+                        final Set<String> methodNames = (Set<String>) pair.getValue();
 
                         testSuiteStarted(className, methodNames.size());
 
-                        for (String testMethodName : methodNames) {
+                        for (final String testMethodName : methodNames) {
                             testStarted(className, testMethodName);
                             executeTest(className, testMethodName, dunitPath);
                         }
@@ -150,12 +153,14 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
     }
 
     private String getDUnitPath() {
-        LibraryTable projectLibraryTable = LibraryTablesRegistrar.getInstance().getLibraryTable(project);
-        for (Library lib : projectLibraryTable.getLibraries()) {
-            String name = lib.getName();
+        final LibraryTable projectLibraryTable = LibraryTablesRegistrar.getInstance().getLibraryTable(project);
+
+        for (final Library lib : projectLibraryTable.getLibraries()) {
+            final String name = lib.getName();
+
             if (name != null) {
                 if (name.contains("d-unit-")) {
-                    VirtualFile[] files = lib.getFiles(OrderRootType.CLASSES);
+                    final VirtualFile[] files = lib.getFiles(OrderRootType.CLASSES);
                     if (files.length > 0) {
                         return dubImportPath(files[0].getCanonicalPath());
                     }
@@ -165,16 +170,16 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
         return null;
     }
 
-    private String dubImportPath(String rootPath) {
-        String pathUrl = VirtualFileManager.constructUrl(LocalFileSystem.PROTOCOL, rootPath);
-        VirtualFile file = VirtualFileManager.getInstance().findFileByUrl(pathUrl);
+    private String dubImportPath(final String rootPath) {
+        final String pathUrl = VirtualFileManager.constructUrl(LocalFileSystem.PROTOCOL, rootPath);
+        final VirtualFile file = VirtualFileManager.getInstance().findFileByUrl(pathUrl);
         if (file == null) {
             return null;
         }
         final List<String> sourcesDir = new ArrayList<>();
         VfsUtilCore.visitChildrenRecursively(file, new VirtualFileVisitor() {
             @Override
-            public boolean visitFile(@NotNull VirtualFile file) {
+            public boolean visitFile(@NotNull final VirtualFile file) {
                 if (file.isDirectory()) {
                     if (file.getName().equals("source")) {
                         sourcesDir.add("source");
@@ -190,8 +195,8 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
     }
 
 
-    private void executeTest(String className, String testMethodName, String dunitPath) {
-        String testPath = className + "." + testMethodName;
+    private void executeTest(final String className, final String testMethodName, final String dunitPath) {
+        final String testPath = className + "." + testMethodName;
         final String workingDirectory = project.getBasePath();
         //            final String testFile = configuration.getDFile().getCanonicalPath();
 
@@ -205,10 +210,10 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
             return;
         }
 
-        GeneralCommandLine commandLine = new GeneralCommandLine();
+        final GeneralCommandLine commandLine = new GeneralCommandLine();
         commandLine.setWorkDirectory(workingDirectory);
         commandLine.setExePath(dubPath);
-        ParametersList parametersList = commandLine.getParametersList();
+        final ParametersList parametersList = commandLine.getParametersList();
         parametersList.addParametersString("--");
         parametersList.addParametersString("-v");
         parametersList.addParametersString("--filter");
@@ -216,7 +221,7 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
 
         final StringBuilder builder = new StringBuilder();
         try {
-            OSProcessHandler process = new OSProcessHandler(commandLine.createProcess(), commandLine.getCommandLineString());
+            final OSProcessHandler process = new OSProcessHandler(commandLine.createProcess(), commandLine.getCommandLineString());
             process.addProcessListener(new ProcessAdapter() {
                 @Override
                 public void onTextAvailable(ProcessEvent event, Key outputType) {
@@ -228,15 +233,15 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
             process.waitFor();
 
 
-        } catch (ExecutionException e) {
+        } catch (final ExecutionException e) {
             e.printStackTrace();
         }
 
-        String result = builder.toString();
+        final String result = builder.toString();
         // call either finished(success) or failed
-        String successPatternString = ".*OK:.*";
-        Pattern successPattern = Pattern.compile(successPatternString);
-        Matcher successMatcher = successPattern.matcher(result);
+        final String successPatternString = ".*OK:.*";
+        final Pattern successPattern = Pattern.compile(successPatternString);
+        final Matcher successMatcher = successPattern.matcher(result);
 
         if (successMatcher.find()) {
             testFinished(className, testMethodName, 0);
@@ -253,22 +258,22 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
 
     }
 
-    private boolean isTestMethod(DLanguageFuncDeclaration fd) {
-        PsiElement ele = findElementUpstream(fd, DLanguageUserDefinedAttribute.class);
+    private boolean isTestMethod(final DLanguageFuncDeclaration fd) {
+        final PsiElement ele = findElementUpstream(fd, DLanguageUserDefinedAttribute.class);
         return (ele != null && ele.getText().contains("@Test"));
     }
 
-    private boolean isIgnoreMethod(DLanguageFuncDeclaration fd) {
-        PsiElement ele = findElementUpstream(fd, DLanguageUserDefinedAttribute.class);
+    private boolean isIgnoreMethod(final DLanguageFuncDeclaration fd) {
+        final PsiElement ele = findElementUpstream(fd, DLanguageUserDefinedAttribute.class);
         return (ele != null && ele.getText().contains("@Ignore"));
     }
 
-    private PsiElement findElementUpstream(PsiElement startingElement, Class className) {
-        PsiElement parent = startingElement.getParent();
+    private PsiElement findElementUpstream(final PsiElement startingElement, final Class className) {
+        final PsiElement parent = startingElement.getParent();
         if (parent == null) {
             return null;
         }
-        PsiElement element = PsiTreeUtil.findChildOfType(parent, className);
+        final PsiElement element = PsiTreeUtil.findChildOfType(parent, className);
         if (className.isInstance(element)) {
             return element;
         } else {
@@ -280,7 +285,7 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
         }
     }
 
-    private synchronized int getNodeId(String fullTestName) {
+    private synchronized int getNodeId(final String fullTestName) {
         Integer nodeId = nodeIdsByFullTestName.get(fullTestName);
         if (nodeId == null) {
             nodeId = nextNodeId++;
@@ -329,7 +334,7 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
         ApplicationManager.getApplication().invokeLater(new Runnable() {
             @Override
             public void run() {
-                String fullTestMethodName = testClassName + "." + testMethodName;
+                final String fullTestMethodName = testClassName + "." + testMethodName;
                 notifyTextAvailable(ServiceMessageBuilder
                                 .testStdOut(testMethodName)
                                 .addAttribute("out", output)
@@ -396,7 +401,7 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
         ApplicationManager.getApplication().invokeLater(new Runnable() {
             @Override
             public void run() {
-                String fullTestMethodName = testClassName + "." + testMethodName;
+                final String fullTestMethodName = testClassName + "." + testMethodName;
                 notifyTextAvailable(ServiceMessageBuilder
                                 .testFinished(testMethodName)
                                 .addAttribute("isSuite", String.valueOf(false))
@@ -414,7 +419,7 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
         ApplicationManager.getApplication().invokeLater(new Runnable() {
             @Override
             public void run() {
-                String fullTestMethodName = testClassName + "." + testMethodName;
+                final String fullTestMethodName = testClassName + "." + testMethodName;
                 notifyTextAvailable(ServiceMessageBuilder
                                 .testFailed(testMethodName)
                                 .addAttribute("isSuite", String.valueOf(false))
@@ -434,7 +439,7 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
         ApplicationManager.getApplication().invokeLater(new Runnable() {
             @Override
             public void run() {
-                String fullTestMethodName = testClassName + "." + testMethodName;
+                final String fullTestMethodName = testClassName + "." + testMethodName;
                 notifyTextAvailable(ServiceMessageBuilder
                                 .testIgnored(testMethodName)
                                 .addAttribute("isSuite", String.valueOf(false))

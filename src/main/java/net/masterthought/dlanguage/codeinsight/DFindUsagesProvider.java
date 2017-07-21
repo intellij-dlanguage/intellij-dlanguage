@@ -30,20 +30,20 @@ public class DFindUsagesProvider implements FindUsagesProvider {
     }
 
     @Override
-    public boolean canFindUsagesFor(@NotNull PsiElement psiElement) {
+    public boolean canFindUsagesFor(@NotNull final PsiElement psiElement) {
         return psiElement instanceof PsiNamedElement;
     }
 
     @Nullable
     @Override
-    public String getHelpId(@NotNull PsiElement psiElement) {
+    public String getHelpId(@NotNull final PsiElement psiElement) {
         // TODO: Use HelpID after 13.1.
         return "reference.dialogs.findUsages.other";
     }
 
     @NotNull
     @Override
-    public String getType(@NotNull PsiElement element) {
+    public String getType(@NotNull final PsiElement element) {
 //        return ElementDescriptionUtil.getElementDescription(element, UsageViewTypeLocation.INSTANCE);
 //        return "woops";
 
@@ -61,14 +61,14 @@ public class DFindUsagesProvider implements FindUsagesProvider {
 
     @NotNull
     @Override
-    public String getDescriptiveName(@NotNull PsiElement element) {
+    public String getDescriptiveName(@NotNull final PsiElement element) {
         return ElementDescriptionUtil.getElementDescription(element, UsageViewLongNameLocation.INSTANCE);
 //        return "Totally rocks!";
     }
 
     @NotNull
     @Override
-    public String getNodeText(@NotNull PsiElement element, boolean useFullName) {
+    public String getNodeText(@NotNull final PsiElement element, final boolean useFullName) {
         return ElementDescriptionUtil.getElementDescription(element, UsageViewNodeTextLocation.INSTANCE);
     }
 }

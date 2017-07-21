@@ -31,7 +31,7 @@ public class DUnitTestFramework implements TestFramework {
     }
 
     @Override
-    public boolean isLibraryAttached(@NotNull Module module) {
+    public boolean isLibraryAttached(@NotNull final Module module) {
         return false;
     }
 
@@ -48,13 +48,13 @@ public class DUnitTestFramework implements TestFramework {
     }
 
     @Override
-    public boolean isTestClass(@NotNull PsiElement clazz) {
+    public boolean isTestClass(@NotNull final PsiElement clazz) {
 //        return new ApexUnitTestFinder().isTest(clazz);
         return true;
     }
 
     @Override
-    public boolean isPotentialTestClass(@NotNull PsiElement clazz) {
+    public boolean isPotentialTestClass(@NotNull final PsiElement clazz) {
         return isTestClass(clazz);
     }
 
@@ -67,15 +67,15 @@ public class DUnitTestFramework implements TestFramework {
 
     @Nullable
     @Override
-    public PsiElement findTearDownMethod(@NotNull PsiElement clazz) {
+    public PsiElement findTearDownMethod(@NotNull final PsiElement clazz) {
         // TODO: However you find a teardown method, if applicable.  Apex doesn’t have that notion.
         return null;
     }
 
     @Nullable
     @Override
-    public PsiElement findOrCreateSetUpMethod(@NotNull PsiElement clazz) throws IncorrectOperationException {
-        PsiElement setUpMethod = findSetUpMethod(clazz);
+    public PsiElement findOrCreateSetUpMethod(@NotNull final PsiElement clazz) throws IncorrectOperationException {
+        final PsiElement setUpMethod = findSetUpMethod(clazz);
         if (setUpMethod != null) {
             return setUpMethod;
         } else {
@@ -102,7 +102,7 @@ public class DUnitTestFramework implements TestFramework {
     }
 
     @Override
-    public boolean isIgnoredMethod(PsiElement element) {
+    public boolean isIgnoredMethod(final PsiElement element) {
         return false;
     }
 
@@ -111,7 +111,7 @@ public class DUnitTestFramework implements TestFramework {
         // TODO: However you determine whether a method is a test method.  For example, in mine they’re annotated with @Test or the testMethod modifier
 
         if(element.getClass() == DLanguageFile.class) {
-            Collection<DLanguageUserDefinedAttribute> udas = PsiTreeUtil.findChildrenOfType(element, DLanguageUserDefinedAttribute.class);
+            final Collection<DLanguageUserDefinedAttribute> udas = PsiTreeUtil.findChildrenOfType(element, DLanguageUserDefinedAttribute.class);
             return !udas.isEmpty();
         } else {
             return false;

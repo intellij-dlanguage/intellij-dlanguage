@@ -2,10 +2,10 @@ package net.masterthought.dlanguage.codeinsight.dcd.completions;
 
 public class TextCompletion implements Completion {
 
-    private String completionType;
-    private String completionText;
+    private final String completionType;
+    private final String completionText;
 
-    public TextCompletion(String completionType, String completionText) {
+    public TextCompletion(final String completionType, final String completionText) {
         this.completionType = completionType;
         this.completionText = completionText;
     }

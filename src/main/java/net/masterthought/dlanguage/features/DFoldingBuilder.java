@@ -21,20 +21,22 @@ public class DFoldingBuilder extends FoldingBuilderEx implements DumbAware {
     @NotNull
 
     @Override
-    public FoldingDescriptor[] buildFoldRegions(@NotNull PsiElement root, @NotNull Document document, boolean quick) {
+    public FoldingDescriptor[] buildFoldRegions(@NotNull final PsiElement root,
+                                                @NotNull final Document document,
+                                                final boolean quick) {
         if (!(root instanceof DLanguageFile)) return FoldingDescriptor.EMPTY;
-        DLanguageFile file = (DLanguageFile) root;
+        final DLanguageFile file = (DLanguageFile) root;
 
         final List<FoldingDescriptor> result = ContainerUtil.newArrayList();
 
         // add all functions
-        for (DLanguageFuncDeclaration function : PsiTreeUtil.findChildrenOfType(file, DLanguageFuncDeclaration.class)) {
+        for (final DLanguageFuncDeclaration function : PsiTreeUtil.findChildrenOfType(file, DLanguageFuncDeclaration.class)) {
             if (function.isPhysical() && function.isValid() && function.isWritable() && !function.getText().equals(""))//required in case the psi element has been deleted
                 result.add(new FoldingDescriptor(function, function.getTextRange()));
         }
 
         // add all aggregates
-        for (DLanguageAggregateDeclaration aggregateDefinition : PsiTreeUtil.findChildrenOfType(file, DLanguageAggregateDeclaration.class)) {
+        for (final DLanguageAggregateDeclaration aggregateDefinition : PsiTreeUtil.findChildrenOfType(file, DLanguageAggregateDeclaration.class)) {
             if (aggregateDefinition.isPhysical() && aggregateDefinition.isValid() && aggregateDefinition.isWritable() && !aggregateDefinition.getText().equals(""))//required in case the psi element has been deleted
                 result.add(new FoldingDescriptor(aggregateDefinition, aggregateDefinition.getTextRange()));
         }
@@ -77,8 +79,8 @@ public class DFoldingBuilder extends FoldingBuilderEx implements DumbAware {
 
     @Nullable
     @Override
-    public String getPlaceholderText(@NotNull ASTNode node) {
-        PsiElement psi = node.getPsi();
+    public String getPlaceholderText(@NotNull final ASTNode node) {
+        final PsiElement psi = node.getPsi();
 
         if (psi instanceof DLanguageFuncDeclaration) {
             return ((DLanguageFuncDeclaration) psi).getName() + " (Function) ...";
@@ -87,7 +89,7 @@ public class DFoldingBuilder extends FoldingBuilderEx implements DumbAware {
             return "import ...";
         }
         if (psi instanceof DLanguageAggregateDeclaration) {
-            DLanguageAggregateDeclaration declaration = (DLanguageAggregateDeclaration) psi;
+            final DLanguageAggregateDeclaration declaration = (DLanguageAggregateDeclaration) psi;
             if(declaration.getClassDeclaration() != null){
                 return declaration.getClassDeclaration().getName() + " (Class) ...";
             }
@@ -96,8 +98,8 @@ public class DFoldingBuilder extends FoldingBuilderEx implements DumbAware {
     }
 
     @Override
-    public boolean isCollapsedByDefault(@NotNull ASTNode node) {
-        PsiElement psi = node.getPsi();
+    public boolean isCollapsedByDefault(@NotNull final ASTNode node) {
+        final PsiElement psi = node.getPsi();
         return psi instanceof DLanguageImportDeclaration;
     }
 }

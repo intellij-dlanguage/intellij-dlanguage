@@ -26,11 +26,11 @@ public class RestartDCD extends AnAction implements DumbAware {
     public static final String MENU_PATH = "Tools > Restart DCD Server";
 
     @Override
-    public void update(@NotNull AnActionEvent e) {
+    public void update(@NotNull final AnActionEvent e) {
         e.getPresentation().setEnabled(enabled(e));
     }
 
-    private static boolean enabled(@NotNull AnActionEvent e) {
+    private static boolean enabled(@NotNull final AnActionEvent e) {
         final Project project = getEventProject(e);
         if (project == null) return false;
         final String cdcServerPath = ToolKey.DCD_SERVER_KEY.getPath(project);
@@ -38,20 +38,20 @@ public class RestartDCD extends AnAction implements DumbAware {
     }
 
     @Override
-    public void actionPerformed(@NotNull AnActionEvent e) {
+    public void actionPerformed(@NotNull final AnActionEvent e) {
         final String prefix = "Unable to restart dcd-server - ";
-        Project project = e.getProject();
+        final Project project = e.getProject();
         if (project == null) { displayError(e, prefix + "No active project."); return; }
-        Collection<Module> modules = DLanguageModuleType.findModules(project);
-        int size = modules.size();
+        final Collection<Module> modules = DLanguageModuleType.findModules(project);
+        final int size = modules.size();
         if (size == 0) displayError(e, prefix + "No DLanguage modules are used in this project.");
         else if (size == 1) restartDcdServer(e, modules.iterator().next());
         else showModuleChoicePopup(e, project, modules);
     }
 
-    private static void showModuleChoicePopup(@NotNull AnActionEvent e, Project project, Collection<Module> modules) {
+    private static void showModuleChoicePopup(@NotNull final AnActionEvent e, final Project project, final Collection<Module> modules) {
         final JList list = new JBList(JBList.createDefaultListModel(modules.toArray()));
-        JBPopup popup = JBPopupFactory.getInstance()
+        final JBPopup popup = JBPopupFactory.getInstance()
                 .createListPopupBuilder(list)
                 .setTitle("Restart dcd-server for module")
                 .setItemChoosenCallback(makeModuleChoiceCallback(e, list))
@@ -59,17 +59,17 @@ public class RestartDCD extends AnAction implements DumbAware {
         popup.showCenteredInCurrentWindow(project);
     }
 
-    private static Runnable makeModuleChoiceCallback(final @NotNull AnActionEvent e, final @NotNull JList list) {
+    private static Runnable makeModuleChoiceCallback(@NotNull final AnActionEvent e, @NotNull final JList list) {
         return () -> restartDcdServer(e, (Module) list.getSelectedValue());
     }
 
-    private static void restartDcdServer(@NotNull AnActionEvent e, @NotNull Module module) {
-        DCDCompletionServer dcdServer = module.getComponent(DCDCompletionServer.class);
+    private static void restartDcdServer(@NotNull final AnActionEvent e, @NotNull final Module module) {
+        final DCDCompletionServer dcdServer = module.getComponent(DCDCompletionServer.class);
         if (dcdServer == null) displayError(e, "Could not find module component for dcd-server.");
         else dcdServer.restart();
     }
 
-    private static void displayError(@NotNull AnActionEvent e, @NotNull String message) {
+    private static void displayError(@NotNull final AnActionEvent e, @NotNull final String message) {
         final String groupId = e.getPresentation().getText();
         Notifications.Bus.notify(new Notification(
                 groupId, "Restart dcd-server", message, NotificationType.ERROR), getEventProject(e));

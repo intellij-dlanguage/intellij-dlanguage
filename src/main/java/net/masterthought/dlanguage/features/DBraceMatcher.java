@@ -25,7 +25,8 @@ public class DBraceMatcher implements PairedBraceMatcher {
     }
 
     @Override
-    public boolean isPairedBracesAllowedBeforeType(@NotNull IElementType lbraceType, @Nullable IElementType contextType) {
+    public boolean isPairedBracesAllowedBeforeType(@NotNull final IElementType lbraceType,
+                                                   @Nullable final IElementType contextType) {
         return alwaysMatch.contains(lbraceType)
                 || DTokenSets.WHITESPACES.contains(contextType)
                 || DTokenSets.LINE_COMMENTS.contains(contextType)
@@ -35,7 +36,7 @@ public class DBraceMatcher implements PairedBraceMatcher {
     }
 
     @Override
-    public int getCodeConstructStart(PsiFile file, int openingBraceOffset) {
+    public int getCodeConstructStart(final PsiFile file, final int openingBraceOffset) {
         return openingBraceOffset;
     }
 }

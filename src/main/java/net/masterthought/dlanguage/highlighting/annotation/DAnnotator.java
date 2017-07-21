@@ -98,8 +98,9 @@ public class DAnnotator implements Annotator {
         });
     }
 
-    private static void setHighlighting(@NotNull PsiElement element, @NotNull AnnotationHolder holder,
-                                        @NotNull TextAttributesKey key) {
+    private static void setHighlighting(@NotNull final PsiElement element,
+                                        @NotNull final AnnotationHolder holder,
+                                        @NotNull final TextAttributesKey key) {
         holder.createInfoAnnotation(element, null).setEnforcedTextAttributes(
                 EditorColorsManager.getInstance().getGlobalScheme().getAttributes(key));
     }

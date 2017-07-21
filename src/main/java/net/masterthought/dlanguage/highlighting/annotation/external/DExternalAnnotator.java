@@ -28,28 +28,25 @@ public class DExternalAnnotator extends ExternalAnnotator<PsiFile, DExternalAnno
      */
     @Nullable
     @Override
-    public PsiFile collectInformation(@NotNull PsiFile file, @NotNull Editor editor, boolean hasErrors) {
+    public PsiFile collectInformation(@NotNull final PsiFile file, @NotNull final Editor editor, final boolean hasErrors) {
         return collectInformation(file);
     }
 
     @NotNull
     @Override
-    public PsiFile collectInformation(@NotNull PsiFile file) {
+    public PsiFile collectInformation(@NotNull final PsiFile file) {
         return file;
     }
 
     @Nullable
     @Override
-    public State doAnnotate(@NotNull PsiFile file) {
+    public State doAnnotate(@NotNull final PsiFile file) {
         // Force all files to save to ensure annotations are in sync with the file system.
-        ApplicationManager.getApplication().invokeAndWait(new Runnable() {
-            @Override
-            public void run() {
-                FileDocumentManager.getInstance().saveAllDocuments();
-            }
-        }, ModalityState.NON_MODAL);
+        ApplicationManager
+            .getApplication()
+            .invokeAndWait(() -> FileDocumentManager.getInstance().saveAllDocuments(), ModalityState.NON_MODAL);
 
-        State state = new State();
+        final State state = new State();
         state.dScannerProblems = new DScanner().checkFileSyntax(file);
         state.syntaxProblems = new CompileCheck().checkFileSyntax(file);
         return state;
@@ -59,19 +56,19 @@ public class DExternalAnnotator extends ExternalAnnotator<PsiFile, DExternalAnno
      * Wrapper to simplify adding annotations to an AnnotationHolder.
      */
     @Override
-    public void apply(@NotNull PsiFile file, State state, @NotNull AnnotationHolder holder) {
+    public void apply(@NotNull final PsiFile file, final State state, @NotNull final AnnotationHolder holder) {
         apply(file, state, new DAnnotationHolder(holder));
     }
 
-    public static void apply(@NotNull PsiFile file, State state, @NotNull DAnnotationHolder holder) {
+    public static void apply(@NotNull final PsiFile file, final State state, @NotNull final DAnnotationHolder holder) {
         createAnnotations(file, state.syntaxProblems, holder);
         createAnnotations(file, state.dScannerProblems, holder);
     }
 
-    public static void createAnnotations(@NotNull PsiFile file, @Nullable Problems problems,
-                                         @NotNull DAnnotationHolder holder) {
+    public static void createAnnotations(@NotNull final PsiFile file, @Nullable final Problems problems,
+                                         @NotNull final DAnnotationHolder holder) {
         if (problems == null || problems.isEmpty() || !file.isValid()) return;
-        for (DProblem problem : problems) {
+        for (final DProblem problem : problems) {
             problem.createAnnotations(file, holder);
         }
     }
