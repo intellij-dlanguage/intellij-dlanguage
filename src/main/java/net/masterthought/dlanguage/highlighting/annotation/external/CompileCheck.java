@@ -26,21 +26,21 @@ import java.util.regex.Pattern;
 
 public class CompileCheck {
 
-    public Problems checkFileSyntax(@NotNull PsiFile file) {
+    public Problems checkFileSyntax(@NotNull final PsiFile file) {
         final String dubPath = ToolKey.DUB_KEY.getPath(file.getProject());
         if (dubPath == null) return new Problems();
 
-        String result = processFile(file, dubPath);
+        final String result = processFile(file, dubPath);
         return findProblems(result, file);
     }
 
-    private String processFile(PsiFile file, String dubPath) {
+    private String processFile(final PsiFile file, final String dubPath) {
         final String workingDirectory = file.getProject().getBasePath();
 
-        GeneralCommandLine commandLine = new GeneralCommandLine();
+        final GeneralCommandLine commandLine = new GeneralCommandLine();
         commandLine.setWorkDirectory(workingDirectory);
         commandLine.setExePath(dubPath);
-        ParametersList parametersList = commandLine.getParametersList();
+        final ParametersList parametersList = commandLine.getParametersList();
         parametersList.addParametersString("build");
         parametersList.addParametersString("--combined");
         parametersList.addParametersString("-q");
@@ -58,7 +58,7 @@ public class CompileCheck {
             process.startNotify();
             process.waitFor();
 
-        } catch (ExecutionException e) {
+        } catch (final ExecutionException e) {
             e.printStackTrace();
         }
         return builder.toString();
@@ -66,33 +66,33 @@ public class CompileCheck {
 
 
     @NotNull
-    private Problems findProblems(String stdout, PsiFile file) {
+    private Problems findProblems(final String stdout, final PsiFile file) {
         final List<String> lints = StringUtil.split(stdout, "\n");
-        Problems problems = new Problems();
-        for (String lint : lints) {
+        final Problems problems = new Problems();
+        for (final String lint : lints) {
             ContainerUtil.addIfNotNull(problems, parseProblem(lint, file));
         }
         return problems;
     }
 
-    private int getDocumentLineCount(Document document) {
+    private int getDocumentLineCount(final Document document) {
         try {
-            int lineCount = document.getLineCount();
+            final int lineCount = document.getLineCount();
             return lineCount == 0 ? 1 : lineCount;
-        } catch (NullPointerException e) {
+        } catch (final NullPointerException e) {
             return 1;
         }
     }
 
-    private int getLineStartOffset(Document document, int line) {
+    private int getLineStartOffset(final Document document, final int line) {
         try {
             return document.getLineStartOffset(line);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             return 1;
         }
     }
 
-    private int getLineEndOffset(Document document, int line) {
+    private int getLineEndOffset(final Document document, final int line) {
         try {
             return document.getLineEndOffset(line);
         } catch (Exception e) {
@@ -100,8 +100,8 @@ public class CompileCheck {
         }
     }
 
-    private int getValidLineNumber(int line, Document document) {
-        int lineCount = getDocumentLineCount(document);
+    private int getValidLineNumber(int line, final Document document) {
+        final int lineCount = getDocumentLineCount(document);
         line = line - 1;
         if (line <= 0) {
             line = 1;
@@ -111,30 +111,30 @@ public class CompileCheck {
         return line;
     }
 
-    private int getOffsetStart(final PsiFile file, int line, int column) {
-        Document document = PsiDocumentManager.getInstance(file.getProject()).getDocument(file);
+    private int getOffsetStart(final PsiFile file, int line, final int column) {
+        final Document document = PsiDocumentManager.getInstance(file.getProject()).getDocument(file);
         line = getValidLineNumber(line, document);
         return getLineStartOffset(document, line) + column;
     }
 
     private int getOffsetEnd(final PsiFile file, int line) {
-        Document document = PsiDocumentManager.getInstance(file.getProject()).getDocument(file);
+        final Document document = PsiDocumentManager.getInstance(file.getProject()).getDocument(file);
         line = getValidLineNumber(line, document);
         return getLineEndOffset(document, line);
     }
 
-    private TextRange calculateTextRange(PsiFile file, int line, int column) {
+    private TextRange calculateTextRange(final PsiFile file, final int line, final int column) {
         final int startOffset = getOffsetStart(file, line, column);
         final int endOffset = getOffsetEnd(file, line);
         return new TextRange(startOffset, endOffset);
     }
 
     @Nullable
-    private Problem parseProblem(String lint, PsiFile file) {
+    private Problem parseProblem(final String lint, final PsiFile file) {
         // Example DUB error:
         // src/hello.d(3,1): Error: only one main allowed
-        Pattern p = Pattern.compile("([\\w\\\\/]+\\.d)\\((\\d+),(\\d+)\\):\\s(\\w+):(.+)");
-        Matcher m = p.matcher(lint);
+        final Pattern p = Pattern.compile("([\\w\\\\/]+\\.d)\\((\\d+),(\\d+)\\):\\s(\\w+):(.+)");
+        final Matcher m = p.matcher(lint);
 
         String sourceFile = "";
         String message = "";
@@ -153,16 +153,16 @@ public class CompileCheck {
         }
 
         if (hasMatch && isSameFile(file, sourceFile)) {
-            TextRange range = calculateTextRange(file, line, column);
+            final TextRange range = calculateTextRange(file, line, column);
             return new Problem(range, message, severity);
         } else {
             return null;
         }
     }
 
-    private boolean isSameFile(PsiFile file, String relativeOtherFilePath) {
-        String filePath = file.getVirtualFile().getPath();
-        String unixRelativeOtherFilePath = relativeOtherFilePath.replace('\\', '/');
+    private boolean isSameFile(final PsiFile file, final String relativeOtherFilePath) {
+        final String filePath = file.getVirtualFile().getPath();
+        final String unixRelativeOtherFilePath = relativeOtherFilePath.replace('\\', '/');
         return filePath.endsWith(unixRelativeOtherFilePath);
     }
 
@@ -171,14 +171,14 @@ public class CompileCheck {
         public TextRange range;
         public String message;
 
-        public Problem(TextRange range, String message, String severity) {
+        public Problem(final TextRange range, final String message, final String severity) {
             this.range = range;
             this.severity = severity;
             this.message = message;
         }
 
         @Override
-        public void createAnnotations(@NotNull PsiFile file, @NotNull DAnnotationHolder holder) {
+        public void createAnnotations(@NotNull final PsiFile file, @NotNull final DAnnotationHolder holder) {
             if (severity.equals("Error")) {
                 holder.createErrorAnnotation(range, message);
             } else {

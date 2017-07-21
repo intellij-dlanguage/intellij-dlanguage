@@ -22,7 +22,7 @@ import java.util.*;
  */
 public class DResolveUtil {
     /**
-     * Finds name definition across all Haskell files in the project. All
+     * Finds name definition across all DLanguage files in the project. All
      * definitions are found when name is null.
      */
     @NotNull

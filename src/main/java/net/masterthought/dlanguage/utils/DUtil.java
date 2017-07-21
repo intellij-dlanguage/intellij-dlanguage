@@ -38,7 +38,7 @@ public class DUtil {
     /**
      * Tells whether a named node is a definition node based on its context.
      * <p/>
-     * Precondition: Element is in a Haskell file.
+     * Precondition: Element is in a DLanguage file.
      */
     public static boolean definitionNode(@NotNull PsiNamedElement e) {
         if (e instanceof DLanguageIdentifier) return definitionNode((DLanguageIdentifier) e);

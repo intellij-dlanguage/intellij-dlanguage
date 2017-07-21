@@ -14,14 +14,16 @@ import java.util.List;
 
 /* DLang Module settings editor. It contains of multiple tabs: Common, Output, Libraries. */
 public class DLanguageModuleEditorsProvider implements ModuleConfigurationEditorProvider {
-    public ModuleConfigurationEditor[] createEditors(ModuleConfigurationState state) {
+
+    @Override
+    public ModuleConfigurationEditor[] createEditors(final ModuleConfigurationState state) {
         final Module module = state.getRootModel().getModule();
         if (ModuleType.get(module) != DLanguageModuleType.getInstance()) {
             return ModuleConfigurationEditor.EMPTY;
         }
 
         final DefaultModuleConfigurationEditorFactory editorFactory = DefaultModuleConfigurationEditorFactory.getInstance();
-        List<ModuleConfigurationEditor> editors = new ArrayList<>();
+        final List<ModuleConfigurationEditor> editors = new ArrayList<>();
         editors.add(new CommonContentEntriesEditor(module.getName(), state, JavaSourceRootType.SOURCE, JavaSourceRootType.TEST_SOURCE));
         editors.add(new OutputElementsEditor(state));
         editors.add(editorFactory.createClasspathEditor(state));

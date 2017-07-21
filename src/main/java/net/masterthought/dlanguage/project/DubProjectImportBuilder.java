@@ -34,7 +34,7 @@ public class DubProjectImportBuilder extends ProjectImportBuilder<DubPackage> {
 
     private static final Logger LOG = Logger.getInstance("#" + DubProjectImportBuilder.class.getName());
 
-    public void setRootDirectory(String path) {
+    public void setRootDirectory(final String path) {
 
     }
 
@@ -71,7 +71,7 @@ public class DubProjectImportBuilder extends ProjectImportBuilder<DubPackage> {
     }
 
     @Override
-    public void setList(List<DubPackage> list) throws ConfigurationException {
+    public void setList(final List<DubPackage> list) throws ConfigurationException {
         getParameters().packages = list;
     }
 
@@ -79,19 +79,22 @@ public class DubProjectImportBuilder extends ProjectImportBuilder<DubPackage> {
         return getParameters().openModuleSettings;
     }
 
-    public void setOpenProjectSettingsAfter(boolean on) {
+    public void setOpenProjectSettingsAfter(final boolean on) {
         getParameters().openModuleSettings = on;
     }
 
     @Override
-    public boolean isMarked(DubPackage s) {
-        return getList().contains(s);
+    public boolean isMarked(final DubPackage dubPackage) {
+        return getList().contains(dubPackage);
     }
 
 
     @Nullable
     @Override
-    public List<Module> commit(Project project, ModifiableModuleModel modifiableModuleModel, ModulesProvider modulesProvider, ModifiableArtifactModel modifiableArtifactModel) {
+    public List<Module> commit(final Project project,
+                               final ModifiableModuleModel modifiableModuleModel,
+                               final ModulesProvider modulesProvider,
+                               final ModifiableArtifactModel modifiableArtifactModel) {
         final List<Module> modules = new ArrayList<>();
         final Project myProject = project;
         ModifiableModuleModel moduleModelCandidate = modifiableModuleModel;
@@ -109,9 +112,10 @@ public class DubProjectImportBuilder extends ProjectImportBuilder<DubPackage> {
         return modules;
     }
 
-    private List<Module> buildModules(Project project, ModifiableModuleModel moduleModel) {
-        List<Module> moduleList = new ArrayList<>();
-        DubConfigurationParser dubConfigurationParser = new DubConfigurationParser(project, getParameters().dubBinary);
+    private List<Module> buildModules(final Project project,
+                                      final ModifiableModuleModel moduleModel) {
+        final List<Module> moduleList = new ArrayList<>();
+        final DubConfigurationParser dubConfigurationParser = new DubConfigurationParser(project, getParameters().dubBinary);
         final DubPackage pkg = dubConfigurationParser.getDubPackage().get();
 
         final DLanguageDubModuleBuilder builder = new DLanguageDubModuleBuilder();
@@ -130,22 +134,20 @@ public class DubProjectImportBuilder extends ProjectImportBuilder<DubPackage> {
         return moduleList;
     }
 
-    private void commitSdk(Project project) {
+    private void commitSdk(final Project project) {
         ProjectRootManager.getInstance(project).setProjectSdk(findOrCreateSdk());
     }
 
     private Sdk findOrCreateSdk() {
         final DLanguageSdkType sdkType = DLanguageSdkType.getInstance();
 
-        Comparator<Sdk> sdkComparator = new Comparator<Sdk>() {
-            public int compare(Sdk s1, Sdk s2) {
-                if (s1.getSdkType() == sdkType) {
-                    return -1;
-                } else if (s2.getSdkType() == sdkType) {
-                    return 1;
-                } else {
-                    return 0;
-                }
+        final Comparator<Sdk> sdkComparator = (sdk1, sdk2) -> {
+            if (sdk1.getSdkType() == sdkType) {
+                return -1;
+            } else if (sdk2.getSdkType() == sdkType) {
+                return 1;
+            } else {
+                return 0;
             }
         };
         return SdkConfigurationUtil.findOrCreateSdk(sdkComparator, sdkType);

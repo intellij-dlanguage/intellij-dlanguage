@@ -33,7 +33,7 @@ public class DUnitTestRunConfiguration extends LocatableConfigurationBase {
         return dFilePath;
     }
 
-    public void setdFilePath(String dFilePath) {
+    public void setdFilePath(final String dFilePath) {
         this.dFilePath = dFilePath;
     }
 
@@ -41,7 +41,7 @@ public class DUnitTestRunConfiguration extends LocatableConfigurationBase {
         return workingDir;
     }
 
-    public void setWorkingDir(String workingDir) {
+    public void setWorkingDir(final String workingDir) {
         this.workingDir = workingDir;
     }
 
@@ -49,7 +49,7 @@ public class DUnitTestRunConfiguration extends LocatableConfigurationBase {
         return envVars;
     }
 
-    public void setEnvVars(Map<String, String> envVars) {
+    public void setEnvVars(final Map<String, String> envVars) {
         this.envVars = envVars;
     }
 
@@ -57,31 +57,27 @@ public class DUnitTestRunConfiguration extends LocatableConfigurationBase {
     private String workingDir;
     private Map<String, String> envVars;
 
-    public DUnitTestRunConfiguration(Project project)
-    {
+    public DUnitTestRunConfiguration(final Project project) {
         super(project, new DUnitTestRunConfigurationFactory(DUnitTestRunConfigurationType.getInstance()), DLanguage.INSTANCE.getDisplayName());
         envVars = new HashMap<>();
     }
 
 
     @Override
-    public void readExternal(Element element) throws InvalidDataException
-    {
+    public void readExternal(final Element element) throws InvalidDataException {
         super.readExternal(element);
         XmlSerializer.deserializeInto(this, element);
     }
 
     @Override
-    public void writeExternal(Element element) throws WriteExternalException
-    {
+    public void writeExternal(final Element element) throws WriteExternalException {
         super.writeExternal(element);
         XmlSerializer.serializeInto(this, element);
     }
 
     @NotNull
     @Override
-    public SettingsEditor<DUnitTestRunConfiguration> getConfigurationEditor()
-    {
+    public SettingsEditor<DUnitTestRunConfiguration> getConfigurationEditor() {
         return new DUnitTestRunConfigurationEditor(getProject());
     }
 
@@ -93,8 +89,7 @@ public class DUnitTestRunConfiguration extends LocatableConfigurationBase {
 
     @Nullable
     @Override
-    public RunProfileState getState(@NotNull Executor executor, @NotNull ExecutionEnvironment environment) throws ExecutionException
-    {
+    public RunProfileState getState(@NotNull final Executor executor, @NotNull final ExecutionEnvironment environment) throws ExecutionException {
         return new DUnitTestRunProfileState(environment);
     }
 

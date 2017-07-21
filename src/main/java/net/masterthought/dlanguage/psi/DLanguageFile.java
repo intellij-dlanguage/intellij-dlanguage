@@ -3,11 +3,9 @@ package net.masterthought.dlanguage.psi;
 import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.psi.FileViewProvider;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.stubs.StubElement;
 import net.masterthought.dlanguage.DLanguage;
 import net.masterthought.dlanguage.DLanguageFileType;
-import net.masterthought.dlanguage.psi.interfaces.containers.GlobalDeclarationContainer;
 import net.masterthought.dlanguage.stubs.DLanguageFileStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -16,7 +14,7 @@ import javax.swing.*;
 
 public class DLanguageFile extends PsiFileBase {
 
-    public DLanguageFile(@NotNull FileViewProvider viewProvider) {
+    public DLanguageFile(@NotNull final FileViewProvider viewProvider) {
         super(viewProvider, DLanguage.INSTANCE);
     }
 
@@ -32,7 +30,7 @@ public class DLanguageFile extends PsiFileBase {
     }
 
     @Override
-    public Icon getIcon(int flags) {
+    public Icon getIcon(final int flags) {
         return super.getIcon(flags);
     }
 

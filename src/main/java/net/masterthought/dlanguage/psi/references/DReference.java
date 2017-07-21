@@ -21,10 +21,10 @@ import static net.masterthought.dlanguage.utils.DResolveUtil.findDefinitionNode;
  * Resolves references to elements.
  */
 public class DReference extends PsiReferenceBase<PsiNamedElement> implements PsiPolyVariantReference {
-    public static final ResolveResult[] EMPTY_RESOLVE_RESULT = new ResolveResult[0];
+    //public static final ResolveResult[] EMPTY_RESOLVE_RESULT = new ResolveResult[0];
     private String name;
 
-    public DReference(@NotNull PsiNamedElement element, TextRange textRange) {
+    public DReference(@NotNull final PsiNamedElement element, final TextRange textRange) {
         super(element, textRange);
         name = element.getName();
     }
@@ -34,24 +34,13 @@ public class DReference extends PsiReferenceBase<PsiNamedElement> implements Psi
      */
     @NotNull
     @Override
-    public ResolveResult[] multiResolve(boolean incompleteCode) {
-//        // We should only be resolving ddfunction_definition.
-//        if (!(myElement instanceof DDefinitionFunction)) {
-//            return EMPTY_RESOLVE_RESULT;
-//        }
-//        // Make sure that we only complete the last conid in a qualified expression.
-//        if (myElement instanceof HaskellConid) {
-//            // Don't resolve a module import to a constructor.
-//            if (PsiTreeUtil.getParentOfType(myElement, HaskellImpdecl.class) != null) { return EMPTY_RESOLVE_RESULT; }
-//            HaskellQconid qconid = PsiTreeUtil.getParentOfType(myElement, HaskellQconid.class);
-//            if (qconid == null) { return EMPTY_RESOLVE_RESULT; }
-//            if (!myElement.equals(Iterables.getLast(qconid.getConidList()))) { return EMPTY_RESOLVE_RESULT; }
-//        }
-        Project project = myElement.getProject();
+    public ResolveResult[] multiResolve(final boolean incompleteCode) {
+        final Project project = myElement.getProject();
         final List<PsiNamedElement> namedElements = findDefinitionNode(project, name, myElement);
         // Guess 20 variants tops most of the time in any real code base.
         final Collection<PsiElement> identifiers = new HashSet<>();
-        for (PsiElement namedElement : namedElements) {
+
+        for (final PsiElement namedElement : namedElements) {
             if(namedElement instanceof DLanguageFuncDeclaration){
                 identifiers.add(((DLanguageFuncDeclaration) namedElement).getIdentifier());
             }
@@ -120,8 +109,9 @@ public class DReference extends PsiReferenceBase<PsiNamedElement> implements Psi
 
         identifiers.remove(myElement);
 
-        List<ResolveResult> results = new ArrayList<ResolveResult>(20);
-        for (PsiElement property : identifiers) {
+        final List<ResolveResult> results = new ArrayList<>(20);
+
+        for (final PsiElement property : identifiers) {
             //noinspection ObjectAllocationInLoop
             results.add(new PsiElementResolveResult(property));
         }
@@ -134,7 +124,7 @@ public class DReference extends PsiReferenceBase<PsiNamedElement> implements Psi
     @Nullable
     @Override
     public PsiElement resolve() {
-        ResolveResult[] resolveResults = multiResolve(false);
+        final ResolveResult[] resolveResults = multiResolve(false);
         return resolveResults.length == 1 ? resolveResults[0].getElement() : null;
     }
 
@@ -174,28 +164,30 @@ public class DReference extends PsiReferenceBase<PsiNamedElement> implements Psi
 //            variants.add(namedElement.getName());
 //        }
 //        return variants.toArray();
-        PsiNamedElement e = getElement();
-        Project project = e.getProject();
-        final Set<String> potentialModules =
-            DPsiUtil.parseImports(e.getContainingFile());
+        final PsiNamedElement element = getElement();
+        final Project project = element.getProject();
+        final Set<String> potentialModules = DPsiUtil.parseImports(element.getContainingFile());
 
-        List<PsiNamedElement> declarations = ContainerUtil.newArrayList();
-        final PsiFile psiFile = e.getContainingFile().getOriginalFile();
+        final List<PsiNamedElement> declarations = ContainerUtil.newArrayList();
+        final PsiFile psiFile = element.getContainingFile().getOriginalFile();
+
         // find definition in current file
         if (psiFile instanceof DLanguageFile) {
-            findDefinitionNode((DLanguageFile) psiFile, null, e, declarations);
+            findDefinitionNode((DLanguageFile) psiFile, null, element, declarations);
             declarations.addAll(PsiTreeUtil.findChildrenOfType(psiFile, DLanguageIdentifier.class));
         }
+
         // find definition in imported files
-        for (String potentialModule : potentialModules) {
-            List<DLanguageFile> files = DModuleIndex.getFilesByModuleName(project, potentialModule, GlobalSearchScope.allScope(project));
-            for (DLanguageFile f : files) {
-                findDefinitionNode(f, null, e, declarations);
+        for (final String potentialModule : potentialModules) {
+            final List<DLanguageFile> files = DModuleIndex.getFilesByModuleName(project, potentialModule, GlobalSearchScope.allScope(project));
+            for (final DLanguageFile f : files) {
+                findDefinitionNode(f, null, element, declarations);
             }
         }
-        ArrayList<String> result = new ArrayList<>();
-        int i = 0;
-        for (PsiNamedElement declaration : declarations) {
+
+        final ArrayList<String> result = new ArrayList<>();
+
+        for (final PsiNamedElement declaration : declarations) {
             result.add(declaration.getName());
         }
         result.add("abstract");

@@ -44,11 +44,11 @@ public class DLanguageRunDubConfigurationType  implements ConfigurationType {
     }
 
     private static class DLanguageFactory extends ConfigurationFactory {
-        public DLanguageFactory(ConfigurationType type) {
+        public DLanguageFactory(final ConfigurationType type) {
             super(type);
         }
 
-        public RunConfiguration createTemplateConfiguration(Project project) {
+        public RunConfiguration createTemplateConfiguration(final Project project) {
             return new DLanguageRunDubConfiguration("Build with DUB", project, this);
         }
     }

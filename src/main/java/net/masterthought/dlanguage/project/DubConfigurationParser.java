@@ -40,7 +40,7 @@ public class DubConfigurationParser {
     private final Project project;
     private final String dubBinaryPath;
 
-    public DubConfigurationParser(Project project, String dubBinaryPath) {
+    public DubConfigurationParser(final Project project, final String dubBinaryPath) {
         this.project = project;
         this.dubBinaryPath = dubBinaryPath;
 
@@ -159,7 +159,7 @@ public class DubConfigurationParser {
 
             process.addProcessListener(new ProcessAdapter() {
                 @Override
-                public void onTextAvailable(ProcessEvent event, Key outputType) {
+                public void onTextAvailable(final ProcessEvent event, final Key outputType) {
                     switch (outputType.toString()) {
                         case "stdout":
                             builder.append(event.getText());

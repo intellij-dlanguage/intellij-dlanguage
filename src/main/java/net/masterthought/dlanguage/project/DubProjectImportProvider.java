@@ -19,14 +19,15 @@ public class DubProjectImportProvider extends ProjectImportProvider {
     }
 
     @Override
-    public ModuleWizardStep[] createSteps(WizardContext wizardContext) {
+    public ModuleWizardStep[] createSteps(final WizardContext wizardContext) {
         final ModuleWizardStep setDubBinary = new DubBinaryForModuleStep(wizardContext);
 
         return new ModuleWizardStep[] { setDubBinary };
     }
 
     @Override
-    public boolean canImport(@NotNull final VirtualFile fileOrDirectory, @Nullable Project project) {
+    public boolean canImport(@NotNull final VirtualFile fileOrDirectory,
+                             @Nullable final Project project) {
         // If we're not importing a directory, validate it as a file.
         if (!fileOrDirectory.isDirectory()) return canImportFromFile(fileOrDirectory);
 

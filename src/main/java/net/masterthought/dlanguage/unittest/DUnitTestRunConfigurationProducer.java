@@ -22,7 +22,9 @@ public class DUnitTestRunConfigurationProducer extends RunConfigurationProducer<
     }
 
     @Override
-    protected boolean setupConfigurationFromContext(DUnitTestRunConfiguration configuration, ConfigurationContext context, Ref<PsiElement> sourceElement) {
+    protected boolean setupConfigurationFromContext(final DUnitTestRunConfiguration configuration,
+                                                    final ConfigurationContext context,
+                                                    final Ref<PsiElement> sourceElement) {
         final VirtualFile dFile = getRunnableDFileFromContext(context);
         if (dFile != null) {
             configuration.setdFilePath(dFile.getPath());
@@ -72,7 +74,7 @@ public class DUnitTestRunConfigurationProducer extends RunConfigurationProducer<
         return psiFile instanceof DLanguageFile && virtualFile != null ? virtualFile : null;
     }
 
-    public static VirtualFile getRealVirtualFile(PsiFile psiFile) {
+    public static VirtualFile getRealVirtualFile(final PsiFile psiFile) {
         return psiFile != null ? psiFile.getOriginalFile().getVirtualFile() : null;
     }
 

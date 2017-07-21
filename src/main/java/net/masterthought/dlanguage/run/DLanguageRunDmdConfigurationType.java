@@ -48,7 +48,7 @@ public class DLanguageRunDmdConfigurationType implements ConfigurationType {
             super(type);
         }
 
-        public RunConfiguration createTemplateConfiguration(Project project) {
+        public RunConfiguration createTemplateConfiguration(final Project project) {
             return new DLanguageRunDmdConfiguration("Compile with DMD", project, this);
         }
     }

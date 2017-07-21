@@ -19,44 +19,42 @@ import net.masterthought.dlanguage.DLanguage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class DUnitTestRunProfileState implements RunProfileState
-{
+public class DUnitTestRunProfileState implements RunProfileState {
+
     private final ExecutionEnvironment environment;
 
-    public DUnitTestRunProfileState(ExecutionEnvironment environment)
+    public DUnitTestRunProfileState(final ExecutionEnvironment environment)
     {
         this.environment = environment;
     }
 
     @Nullable
     @Override
-    public ExecutionResult execute(Executor executor, @NotNull ProgramRunner programRunner) throws ExecutionException
-    {
-        Project project = environment.getProject();
-        if (project == null)
-        {
+    public ExecutionResult execute(final Executor executor, @NotNull final ProgramRunner programRunner) throws ExecutionException {
+        final Project project = environment.getProject();
+        if (project == null) {
 //            handleError("No project found.");
             return null;
         }
 
-        RunnerAndConfigurationSettings settings = environment.getRunnerAndConfigurationSettings();
-        if (settings == null)
-        {
+        final RunnerAndConfigurationSettings settings = environment.getRunnerAndConfigurationSettings();
+
+        if (settings == null) {
 //            handleError(project, "No runner and configuration settings found.");
             return null;
         }
 
         final RunConfiguration configuration = settings.getConfiguration();
-        if (!(configuration instanceof DUnitTestRunConfiguration))
-        {
+        if (!(configuration instanceof DUnitTestRunConfiguration)) {
 //            handleError(project, "The supplied configuration is not a " + DUnitTestRunConfiguration.class.getSimpleName() + ".");
             return null;
         }
-        DUnitTestRunConfiguration unitTestRunConfiguration = (DUnitTestRunConfiguration) configuration;
+
+        final DUnitTestRunConfiguration unitTestRunConfiguration = (DUnitTestRunConfiguration) configuration;
 
         // Create the test runner
         final DUnitTestRunProcessHandler processHandler = new DUnitTestRunProcessHandler(project, unitTestRunConfiguration);
-        
+
         final SMTRunnerConsoleProperties properties = new SMTRunnerConsoleProperties(configuration, DLanguage.INSTANCE.getDisplayName(), executor) {
             @Override
             public SMTestLocator getTestLocator() {
@@ -76,29 +74,17 @@ public class DUnitTestRunProfileState implements RunProfileState
 //        CoverageHelper.attachToProcess(unitTestRunConfiguration, processHandler, getRunnerSettings());
 
         // Register an action to re-run failed tests
-        DUnitTestRerunFailedTestsAction rerunFailedTestsAction = new DUnitTestRerunFailedTestsAction(project, consoleView);
+        final DUnitTestRerunFailedTestsAction rerunFailedTestsAction = new DUnitTestRerunFailedTestsAction(project, consoleView);
         rerunFailedTestsAction.init(((BaseTestsOutputConsoleView) consoleView).getProperties());
-        rerunFailedTestsAction.setModelProvider(new Getter<TestFrameworkRunningModel>()
-        {
-            @Override
-            public TestFrameworkRunningModel get()
-            {
-                return consoleView.getResultsViewer();
-            }
-        });
+        rerunFailedTestsAction.setModelProvider(() -> consoleView.getResultsViewer());
 
-        DefaultExecutionResult executionResult = new DefaultExecutionResult(consoleView, processHandler);
+        final DefaultExecutionResult executionResult = new DefaultExecutionResult(consoleView, processHandler);
         executionResult.setRestartActions(rerunFailedTestsAction);
 
         // Start the process handler
-        ApplicationManager.getApplication().invokeLater(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                processHandler.startProcessing();
-            }
-        });
+        ApplicationManager
+            .getApplication()
+            .invokeLater(() -> processHandler.startProcessing());
 
         return executionResult;
     }

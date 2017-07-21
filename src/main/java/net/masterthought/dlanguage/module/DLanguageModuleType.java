@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class DLanguageModuleType extends ModuleType<DLanguageModuleBuilder> {
+
     @NonNls
     private static final String ID = "DLANGUAGE_MODULE";
 
@@ -32,7 +33,7 @@ public class DLanguageModuleType extends ModuleType<DLanguageModuleBuilder> {
         return (DLanguageModuleType) ModuleTypeManager.getInstance().findByID(ID);
     }
 
-    public static Collection<Module> findModules(Project project) {
+    public static Collection<Module> findModules(final Project project) {
         return ModuleUtil.getModulesOfType(project, DLanguageModuleType.getInstance());
     }
 
@@ -60,30 +61,30 @@ public class DLanguageModuleType extends ModuleType<DLanguageModuleBuilder> {
     }
 
     @Override
-    public Icon getNodeIcon(@Deprecated boolean b) {
+    public Icon getNodeIcon(@Deprecated final boolean b) {
         return DLanguageIcons.FILE;
     }
 
     @NotNull
     @Override
-    public ModuleWizardStep[] createWizardSteps(@NotNull WizardContext wizardContext,
+    public ModuleWizardStep[] createWizardSteps(@NotNull final WizardContext wizardContext,
                                                 @NotNull final DLanguageModuleBuilder moduleBuilder,
-                                                @NotNull ModulesProvider modulesProvider) {
+                                                @NotNull final ModulesProvider modulesProvider) {
 
-        List<ModuleWizardStep> steps = new ArrayList<>();
+        final List<ModuleWizardStep> steps = new ArrayList<>();
 
-        ModuleWizardStep setCompiler = new ProjectJdkForModuleStep(wizardContext, DLanguageSdkType.getInstance()) {
+        final ModuleWizardStep setCompiler = new ProjectJdkForModuleStep(wizardContext, DLanguageSdkType.getInstance()) {
             public void updateDataModel() {
                 super.updateDataModel();
                 moduleBuilder.setModuleJdk(getJdk());
             }
         };
-        ModuleWizardStep setDubBinary = new DubBinaryForModuleStep(wizardContext);
-        ModuleWizardStep setDubInit = new DubInitForModuleStep(wizardContext);
+        final ModuleWizardStep setDubBinary = new DubBinaryForModuleStep(wizardContext);
+        final ModuleWizardStep setDubInit = new DubInitForModuleStep(wizardContext);
 
         steps.add(setCompiler);
 
-        if((moduleBuilder.getBuilderId() != null && moduleBuilder.getBuilderId().equals("DLangDubApp"))){
+        if((moduleBuilder.getBuilderId() != null && moduleBuilder.getBuilderId().equals("DLangDubApp"))) {
             steps.add(setDubBinary);
             steps.add(setDubInit);
         }

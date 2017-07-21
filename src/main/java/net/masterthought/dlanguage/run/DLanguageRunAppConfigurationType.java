@@ -49,7 +49,7 @@ public class DLanguageRunAppConfigurationType implements ConfigurationType {
             super(type);
         }
 
-        public RunConfiguration createTemplateConfiguration(Project project) {
+        public RunConfiguration createTemplateConfiguration(final Project project) {
             return new DLanguageRunAppConfiguration("Run D App", project, this);
         }
     }

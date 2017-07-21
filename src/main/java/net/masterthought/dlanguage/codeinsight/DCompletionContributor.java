@@ -26,12 +26,12 @@ public class DCompletionContributor extends CompletionContributor {
         extend(CompletionType.BASIC,
                 PlatformPatterns.psiElement().withLanguage(DLanguage.INSTANCE),
                 new CompletionProvider<CompletionParameters>() {
-                    public void addCompletions(@NotNull CompletionParameters parameters,
-                                               ProcessingContext context,
-                                               @NotNull CompletionResultSet result) {
-                        int position = parameters.getEditor().getCaretModel().getOffset();
+                    public void addCompletions(@NotNull final CompletionParameters parameters,
+                                               final ProcessingContext context,
+                                               @NotNull final CompletionResultSet result) {
+                        final int position = parameters.getEditor().getCaretModel().getOffset();
 //                        PsiElement position = parameters.getPosition();
-                        PsiFile file = parameters.getOriginalFile();
+                        final PsiFile file = parameters.getOriginalFile();
 
                         List<Completion> completions = null;
                         try {
@@ -40,7 +40,7 @@ public class DCompletionContributor extends CompletionContributor {
                             for (final Completion completion : completions) {
                                 result.addElement(createLookupElement(completion.completionText(),"",completion.completionType()));
                             }
-                        } catch (DCDCompletionServer.DCDError dcdError) {
+                        } catch (final DCDCompletionServer.DCDError dcdError) {
                             dcdError.printStackTrace();
                         }
                     }
@@ -54,21 +54,16 @@ public class DCompletionContributor extends CompletionContributor {
      */
     @Nullable
     @Override
-    public String handleEmptyLookup(@NotNull CompletionParameters parameters, final Editor editor) {
+    public String handleEmptyLookup(@NotNull final CompletionParameters parameters, final Editor editor) {
         return "DLanguage: no completion found.";
     }
 
-    public static LookupElement createLookupElement(@NotNull String name, @NotNull String module, @NotNull String type) {
+    public static LookupElement createLookupElement(@NotNull final String name, @NotNull final String module, @NotNull final String type) {
         return LookupElementBuilder.create(name).withIcon(DLanguageIcons.FILE)
 //                .withTailText(" (" + module + ')', true)
                 .withTypeText(type);
     }
 
-    public static final Function<String, LookupElement> stringToLookupElement = new Function<String, LookupElement>() {
-        @Override
-        public LookupElement fun(String s) {
-            return LookupElementBuilder.create(s).withIcon(DLanguageIcons.FILE);
-        }
-    };
+    public static final Function<String, LookupElement> stringToLookupElement = s -> LookupElementBuilder.create(s).withIcon(DLanguageIcons.FILE);
 
 }

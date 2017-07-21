@@ -26,19 +26,19 @@ public class DubBinaryForModuleStep extends ModuleWizardStep {
     private final JButton autoFindButton;
 
 
-    public DubBinaryForModuleStep(WizardContext wizardContext) {
+    public DubBinaryForModuleStep(final WizardContext wizardContext) {
         this.myWizardContext = wizardContext;
         this.myPanel = new JPanel(new GridBagLayout());
         this.myPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // Title label
-        JLabel titletextLabel = new JLabel("Please choose the location of your dub binary");
+        final JLabel titletextLabel = new JLabel("Please choose the location of your dub binary");
         this.myPanel.add(titletextLabel, new GridBagConstraints(0, -1, 1, 1, 1.0D, 0.0D, 18, 2, new Insets(8, 10, 8, 10), 0, 0));
 
         this.dubBinary = new TextFieldWithBrowseButton();
         this.autoFindButton = new JButton("Auto find");
 
-        JLabel dubFormatLabel = new JLabel("Dub binary location (auto find if dub binary is on your path)");
+        final JLabel dubFormatLabel = new JLabel("Dub binary location (auto find if dub binary is on your path)");
         dubFormatLabel.setLabelFor(dubBinary);
 
         GuiUtil.addFolderListener(dubBinary, "dub");
@@ -60,11 +60,11 @@ public class DubBinaryForModuleStep extends ModuleWizardStep {
     }
 
     public void updateDataModel() {
-        ProjectBuilder moduleBuilder = this.myWizardContext.getProjectBuilder();
+        final ProjectBuilder moduleBuilder = this.myWizardContext.getProjectBuilder();
         if (moduleBuilder != null) {
             this.myWizardContext.setProjectBuilder(moduleBuilder);
             if (moduleBuilder instanceof ModuleBuilder) {
-                ModuleBuilder builder = (ModuleBuilder) moduleBuilder;
+                final ModuleBuilder builder = (ModuleBuilder) moduleBuilder;
 
                 if (builder.getBuilderId() != null && builder.getBuilderId().equals("DLangDubApp")) {
                     DLanguageDubModuleBuilder dubBuilder = (DLanguageDubModuleBuilder) builder;

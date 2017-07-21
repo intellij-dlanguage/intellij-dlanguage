@@ -16,7 +16,13 @@ public class DubPackage {
     private final String version;
     private final boolean isRootPackage;
 
-    public DubPackage(String name, String path, List<String> dependencies, String sourcesDir, List<String> resources, String version, boolean isRootPackage) {
+    public DubPackage(final String name,
+                      final String path,
+                      final List<String> dependencies,
+                      final String sourcesDir,
+                      final List<String> resources,
+                      final String version,
+                      final boolean isRootPackage) {
         this.name = name;
         this.path = path;
         this.dependencies = dependencies;
@@ -55,10 +61,10 @@ public class DubPackage {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        DubPackage that = (DubPackage) o;
+        final DubPackage that = (DubPackage) o;
         return isRootPackage == that.isRootPackage &&
             Objects.equals(name, that.name) &&
             Objects.equals(path, that.path) &&
