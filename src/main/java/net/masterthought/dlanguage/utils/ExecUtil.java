@@ -36,10 +36,11 @@ public class ExecUtil {
     @Nullable
     public static String exec(@NotNull final String command) {
         // Find some valid working directory, doesn't matter which one.
-        ProjectManager pm = ProjectManager.getInstance();
-        Project[] projects = pm == null ? null : pm.getOpenProjects();
+        final ProjectManager pm = ProjectManager.getInstance();
+        final Project[] projects = pm == null ? null : pm.getOpenProjects();
         final String defaultWorkDir = ".";
         final String workDir;
+
         // Set the working directory if there is an open project.
         if (pm == null || projects.length == 0) {
             LOG.info("No open projects so cannot find a valid path. Using '.'.");
@@ -56,14 +57,6 @@ public class ExecUtil {
     @Nullable
     public static String exec(@NotNull final String workDir, @NotNull final String command) {
         // Setup shell and the GeneralCommandLine.
-        //
-        // Getting the right PATH among other things is apparently tricky,
-        // but this works regardless if I start IntelliJ through Spotlight or
-        // a terminal.
-        //
-        // WARNING: Running the plugin in IntelliJ directly gives a different
-        //          environment. Install the plugin and make sure that adding
-        //          an Haskell SDK still autodetects things right.
         final GeneralCommandLine commandLine = new GeneralCommandLine();
         commandLine.setWorkDirectory(workDir);
         commandLine.withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE);
