@@ -101,7 +101,7 @@ allprojects {
 
     task testCompilation(type: Test, group: 'Verification', dependsOn: [classes, testClasses]) {
         useJUnit {
-            include 'net/masterthought/dlanguage/build/**', 'net/masterthought/dlanguage/jps/**'
+            include 'net/masterthought/dlanguage/build/**'
         }
         testLogging {
             exceptionFormat = 'full'
@@ -114,8 +114,6 @@ repositories {
 }
 
 dependencies {
-    compile project('jps-shared')
-    compile project('jps-plugin')
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
     compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     testCompile 'io.kotlintest:kotlintest:2+'

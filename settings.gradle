@@ -1,4 +1,1 @@
 rootProject.name = 'DLanguage'
-include 'jps-shared'
-include 'jps-plugin'
-
