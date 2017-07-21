@@ -9,7 +9,7 @@ buildscript {
 }
 
 plugins {
-    id 'org.jetbrains.intellij' version '0.2.11'
+    id 'org.jetbrains.intellij' version '0.2.14'
 }
 
 
@@ -25,8 +25,9 @@ sourceSets {
 
 version = "${version}"
 
+apply plugin: 'kotlin'
+
 allprojects {
-    apply plugin: 'kotlin'
     sourceCompatibility = javaVersion
     targetCompatibility = javaVersion
 
@@ -115,7 +116,7 @@ repositories {
 dependencies {
     compile project('jps-shared')
     compile project('jps-plugin')
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
     compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     testCompile 'io.kotlintest:kotlintest:2+'
 }

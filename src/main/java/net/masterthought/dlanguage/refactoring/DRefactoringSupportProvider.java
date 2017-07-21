@@ -20,4 +20,6 @@ public class DRefactoringSupportProvider extends RefactoringSupportProvider {
         final List<PsiNamedElement> resolve = DResolveUtil.INSTANCE.findDefinitionNode(element.getProject(), (PsiNamedElement) element);
         return resolve.size() == 1;
     }
+
+
 }

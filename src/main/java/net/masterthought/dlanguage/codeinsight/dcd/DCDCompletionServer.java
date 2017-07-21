@@ -96,6 +96,10 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
     }
 
     private void spawnProcess() throws DCDError {
+        if(path == null || path.isEmpty()) {
+            LOG.warn("request made to spawn process for DCD Server but path is not set");
+            return;
+        }
         final GeneralCommandLine commandLine = new GeneralCommandLine(path);
         commandLine.setWorkDirectory(workingDirectory);
         commandLine.setRedirectErrorStream(true);
@@ -206,12 +210,16 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
         output = null;
     }
 
-    // Implemented methods for SettingsChangeNotifieer
+    // Implemented methods for SettingsChangeNotifier
     @Override
     public void onSettingsChanged(@NotNull ToolSettings settings) {
+        LOG.debug("DCD Server settings changed");
+        kill();
         this.path = settings.getPath();
         this.flags = settings.getFlags();
-        restart();
+        if(isNotNullOrEmpty(this.path)) {
+            restart();
+        }
     }
 
     /**
@@ -219,13 +227,15 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
      */
     public synchronized void restart() {
         kill();
-        try {
-            Thread.sleep(1500);
-            spawnProcess();
-        } catch (DCDError e) {
-            displayError(e.message);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        if(isNotNullOrEmpty(path)) {
+            try {
+                Thread.sleep(1500);
+                spawnProcess();
+            } catch (final DCDError e) {
+                displayError(e.message);
+            } catch (final InterruptedException e) {
+                LOG.error(e);
+            }
         }
     }
 
