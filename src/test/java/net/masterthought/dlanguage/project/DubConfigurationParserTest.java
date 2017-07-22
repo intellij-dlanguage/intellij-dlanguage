@@ -15,6 +15,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
  * @author singingbush
@@ -26,9 +27,26 @@ public class DubConfigurationParserTest extends LightPlatformTestCase {
         super.setUp();
     }
 
+    @Override
+    public void tearDown() throws Exception {
+        final String baseDir = ourProject.getBaseDir().getCanonicalPath();
+        if(baseDir != null && !baseDir.isEmpty()) {
+            final File directory = new File(Paths.get(baseDir).toUri());
+            if(directory.isDirectory()) {
+                final File[] files = directory.listFiles();
+                if(files != null && files.length > 0) {
+                    //noinspection ResultOfMethodCallIgnored
+                    Stream.of(files).forEach(File::delete);
+                }
+            }
+        }
+        super.tearDown();
+    }
+
     public void testDubParserWithVibed() throws Exception {
         loadVibedTestFiles();
 
+        System.out.println(" ----------------" + ourProject.getProjectFilePath());
         final DubConfigurationParser dubConfigurationParser = new DubConfigurationParser(ourProject, "dub");
 
         final Optional<DubPackage> optRootPackage = dubConfigurationParser.getDubPackage();
