@@ -94,6 +94,9 @@ public class DLanguageTemplateParameterImpl extends DNamedStubbedPsiElementBase<
         if (getStub() != null) {
             return getStub().getName();
         }
+        if(getIdentifier() == null){
+            return "";
+        }
         return getIdentifier().getName();
     }
 

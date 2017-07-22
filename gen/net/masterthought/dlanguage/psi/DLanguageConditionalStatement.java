@@ -17,4 +17,10 @@ public interface DLanguageConditionalStatement extends PsiElement {
     @Nullable
     public PsiElement getKW_ELSE();
 
+    @Nullable
+    public PsiElement getOP_BRACES_RIGHT();
+
+    @Nullable
+    public PsiElement getOP_BRACES_LEFT();
+
 }

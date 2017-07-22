@@ -1,5 +1,6 @@
 package net.masterthought.dlanguage.features.formatter
 
+import com.google.common.collect.Sets.newHashSet
 import com.intellij.formatting.*
 import com.intellij.formatting.alignment.AlignmentStrategy
 import com.intellij.lang.ASTNode
@@ -11,13 +12,12 @@ import com.intellij.psi.TokenType
 import com.intellij.psi.codeStyle.CodeStyleSettings
 import com.intellij.psi.tree.IElementType
 import com.intellij.psi.tree.TokenSet
-import com.intellij.psi.util.PsiTreeUtil.isAncestor
 import com.intellij.util.containers.ContainerUtil
 import net.masterthought.dlanguage.DLanguage
 import net.masterthought.dlanguage.psi.*
 import net.masterthought.dlanguage.psi.DLanguageTypes.*
-import net.masterthought.dlanguage.utils.ForeachStatement
-import net.masterthought.dlanguage.utils.IfStatement
+import net.masterthought.dlanguage.utils.DUtil.getPrevSiblingOfType
+import net.masterthought.dlanguage.utils.DeclarationOrStatement
 import java.util.*
 
 
@@ -120,54 +120,45 @@ class DFormattingModelBuilder : FormattingModelBuilder {
             return DFormattingBlock(child, alignment, indent, null, mySettings, mySpacingBuilder)
         }
 
-
         private fun calcIndent(child: ASTNode): Indent {
             val parentType = myNode.elementType
             val type = child.elementType
-            if (parentType === BLOCK_STATEMENT)
-                return indentOfMultipleDeclarationChild(type, DECLARATIONS_AND_STATEMENTS, LINE_COMMENT, BLOCK_COMMENT)
-            else if (parentType === STRUCT_BODY)
-                return indentOfMultipleDeclarationChild(type, DECLARATION, LINE_COMMENT, BLOCK_COMMENT)
-            else if (parentType === CONDITIONAL_DECLARATION)
-                return indentOfMultipleDeclarationChild(type, DECLARATION, LINE_COMMENT, BLOCK_COMMENT)
-            else if (parentType === CONDITIONAL_STATEMENT) {
-                if ((myNode.psi as DLanguageConditionalStatement).declarationOrStatements[0].declaration?.oP_BRACES_LEFT != null) {
+            if (type == DECLARATION_OR_STATEMENT) {
+                if ((child.psi as DeclarationOrStatement).declaration?.oP_BRACES_LEFT != null) {
                     return Indent.getNoneIndent()
                 }
-                if ((myNode.psi as DLanguageConditionalStatement).declarationOrStatements[0].statement?.statementNoCaseNoDefault?.blockStatement != null) {
+                if ((child.psi as DeclarationOrStatement).statement?.statementNoCaseNoDefault?.blockStatement != null) {
                     return Indent.getNoneIndent()
                 }
-                return indentOfMultipleDeclarationChild(type, DECLARATION_OR_STATEMENT, LINE_COMMENT, BLOCK_COMMENT)
-            } else if (parentType == IF_STATEMENT || parentType == FOR_STATEMENT || parentType == FOREACH_STATEMENT || parentType == WHILE_STATEMENT || parentType == DO_STATEMENT || parentType == CASE_RANGE_STATEMENT || parentType == CASE_STATEMENT || parentType == SWITCH_STATEMENT) {
                 if (parentType == IF_STATEMENT) {
-                    if ((myNode.psi as DLanguageIfStatement).declarationOrStatements[0].declaration?.oP_BRACES_LEFT != null) {
-                        return Indent.getNoneIndent()
-                    }
-                    if ((myNode.psi as DLanguageIfStatement).declarationOrStatements[0].statement?.statementNoCaseNoDefault?.blockStatement != null) {
-                        return Indent.getNoneIndent()
-                    }
-                    if ((myNode.psi as IfStatement).kW_ELSE != null) {
-                        if ((myNode.psi as DLanguageIfStatement).declarationOrStatements[1].declaration?.oP_BRACES_LEFT != null && isAncestor((myNode.psi as DLanguageIfStatement).declarationOrStatements[1], child.psi, true)) {
-                            return Indent.getNoneIndent()
-                        }
-                        if ((myNode.psi as DLanguageIfStatement).declarationOrStatements[1].statement?.statementNoCaseNoDefault?.blockStatement != null && isAncestor((myNode.psi as DLanguageIfStatement).declarationOrStatements[1], child.psi, true)) {
-                            return Indent.getNoneIndent()
-                        }
-                    }
+                    return indentOfMultipleDeclarationChild(type, DECLARATION_OR_STATEMENT, LINE_COMMENT, BLOCK_COMMENT)
+                } else if (parentType == FOREACH_STATEMENT) {
+                    return indentOfMultipleDeclarationChild(type, DECLARATION_OR_STATEMENT, LINE_COMMENT, BLOCK_COMMENT)
+                } else if (parentType == FOR_STATEMENT) {
+                    return indentOfMultipleDeclarationChild(type, DECLARATION_OR_STATEMENT, LINE_COMMENT, BLOCK_COMMENT)
+                } else if (parentType == WHILE_STATEMENT) {
+                    return indentOfMultipleDeclarationChild(type, DECLARATION_OR_STATEMENT, LINE_COMMENT, BLOCK_COMMENT)
+                } else if (parentType == CONDITIONAL_STATEMENT) {
+                    return indentOfMultipleDeclarationChild(type, DECLARATION_OR_STATEMENT, LINE_COMMENT, BLOCK_COMMENT)
                 }
-                if (parentType == FOREACH_STATEMENT) {
-                    if ((myNode.psi as ForeachStatement).declarationOrStatement?.declaration?.oP_BRACES_LEFT != null) {
-                        return Indent.getNoneIndent()
-                    }
-                    if ((myNode.psi as ForeachStatement).declarationOrStatement?.statement?.statementNoCaseNoDefault?.blockStatement != null) {
-                        return Indent.getNoneIndent()
-                    }
+            } else if (type == DECLARATION) {
+                if (parentType == CONDITIONAL_DECLARATION) {
+                    return indentOfMultipleDeclarationChild(type, DECLARATION, LINE_COMMENT, BLOCK_COMMENT)
                 }
-                return indentOfMultipleDeclarationChild(type, DECLARATION_OR_STATEMENT, LINE_COMMENT, BLOCK_COMMENT)
-            } else if (parentType === ENUM_BODY)
-                return indentOfMultipleDeclarationChild(type, ENUM_MEMBER, LINE_COMMENT, BLOCK_COMMENT)//todo are the commas indented?
-            else if (parentType === DECLARATION)
-                return indentOfMultipleDeclarationChild(type, DECLARATION, LINE_COMMENT, BLOCK_COMMENT)//todo are the commas indented?
+            }
+            if (type == OP_BRACES_RIGHT || type == OP_BRACES_LEFT) {
+                return Indent.getNoneIndent()
+            }
+            if (getPrevSiblingOfType(child, newHashSet(OP_BRACES_LEFT), newHashSet(/*OP_BRACES_RIGHT,*/ KW_ELSE)) != null) {
+                return Indent.getNormalIndent()
+            }
+//            if(type == TEMPLATE_PARAMETERS){
+//                return Indent.getContinuationIndent()
+//            }
+//            if(parentType == EXPRESSION){
+//                return Indent.getContinuationIndent()
+//            }
+            //todo continuation indent
             return Indent.getNoneIndent()
         }
 
@@ -220,24 +211,19 @@ class DFormattingModelBuilder : FormattingModelBuilder {
             val childIndent = Indent.getNoneIndent()
 
             val parentType = myNode.elementType
-            //
-            //            if (BLOCKS_TOKEN_SET.contains(parentType) ||
-            //                parentType == IMPORT_DECLARATION ||
-            //                parentType == BLOCK_STATEMENT ||
-            //                parentType == STRUCT_DECLARATION ||
-            //                parentType == ARGUMENT_LIST) {
-            //                childIndent = Indent.getNormalIndent();
-            //            }
+            if(parentType == BLOCK_STATEMENT || parentType == STRUCT_BODY || parentType == TEMPLATE_DECLARATION || parentType == CONDITIONAL_DECLARATION || parentType == CONDITIONAL_STATEMENT){
+                return ChildAttributes(Indent.getNormalIndent(),null)
+            }
 
             return ChildAttributes(childIndent, null)
         }
 
         override fun isIncomplete(): Boolean {
-            return false
+            return false//todo implement
         }
 
         override fun isLeaf(): Boolean {
-            return false
+            return false//todo implement
         }
 
         companion object {

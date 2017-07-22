@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.KW_ELSE;
+import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
 
 
 public class DLanguageConditionalStatementImpl extends ASTWrapperPsiElement implements DLanguageConditionalStatement {
@@ -44,6 +44,16 @@ public class DLanguageConditionalStatementImpl extends ASTWrapperPsiElement impl
     @Nullable
     public PsiElement getKW_ELSE() {
         return findChildByType(KW_ELSE);
+    }
+
+    @Nullable
+    public PsiElement getOP_BRACES_RIGHT() {
+        return findChildByType(OP_BRACES_RIGHT);
+    }
+
+    @Nullable
+    public PsiElement getOP_BRACES_LEFT() {
+        return findChildByType(OP_BRACES_LEFT);
     }
 
 }

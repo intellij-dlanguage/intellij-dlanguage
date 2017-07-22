@@ -4,17 +4,16 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiNamedElement;
+import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 import net.masterthought.dlanguage.psi.interfaces.Declaration;
 import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility.*;
 
@@ -261,6 +260,29 @@ public class DUtil {
         else
             throw new IllegalStateException();
 
+    }
+
+
+    public static ASTNode getPrevSiblingOfType(@Nullable ASTNode child, @Nullable IElementType type) {
+        if (child == null)
+            return null;
+        if (child.getElementType() == type) {
+            return child.getTreePrev();
+        }
+        return getPrevSiblingOfType(child.getTreePrev(), type);
+    }
+
+    @Nullable
+    public static ASTNode getPrevSiblingOfType(@Nullable ASTNode child, @NotNull HashSet<IElementType> newHashSet, @NotNull HashSet<IElementType> excluded) {
+        if (child == null)
+            return null;
+        if (newHashSet.contains(child.getElementType())) {
+            return child;
+        }
+        if(excluded.contains(child.getElementType())){
+            return null;
+        }
+        return getPrevSiblingOfType(child.getTreePrev(), newHashSet,excluded);
     }
 }
 
