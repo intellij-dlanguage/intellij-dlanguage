@@ -39,27 +39,26 @@ public class DFormatAction extends AnAction implements DumbAware {
      * Enable the action for D files.
      */
     @Override
-    public void update(AnActionEvent e) {
-        PsiFile psiFile = e.getData(CommonDataKeys.PSI_FILE);
-        boolean isHaskell = psiFile instanceof DLanguageFile;
-        e.getPresentation().setEnabled(isHaskell);
+    public void update(final AnActionEvent e) {
+        final PsiFile psiFile = e.getData(CommonDataKeys.PSI_FILE);
+        e.getPresentation().setEnabled(DLanguageFile.class.isAssignableFrom(psiFile.getClass()));
     }
 
     /**
      * Main entry point. Calls Dfmt
      */
     @Override
-    public void actionPerformed(AnActionEvent e) {
+    public void actionPerformed(final AnActionEvent e) {
         final PsiFile psiFile = e.getData(CommonDataKeys.PSI_FILE);
         final Project project = getEventProject(e);
         if (project == null) return;
         if (!(psiFile instanceof DLanguageFile)) return;
-        VirtualFile virtualFile = psiFile.getVirtualFile();
+        final VirtualFile virtualFile = psiFile.getVirtualFile();
         if (virtualFile == null) return;
 
         final String groupId = e.getPresentation().getText();
         try {
-            GeneralCommandLine commandLine = new GeneralCommandLine();
+            final GeneralCommandLine commandLine = new GeneralCommandLine();
             final String stylishPath = ToolKey.DFORMAT_KEY.getPath(project);
             final String stylishFlags = ToolKey.DFORMAT_KEY.getFlags(project);
             if (stylishPath == null || stylishPath.isEmpty()) {
@@ -75,7 +74,7 @@ public class DFormatAction extends AnAction implements DumbAware {
 
             final VirtualFile backingFile = psiFile.getVirtualFile();
             if (backingFile == null) return;
-            String backingFilePath = backingFile.getCanonicalPath();
+            final String backingFilePath = backingFile.getCanonicalPath();
             if (backingFilePath == null) return;
             commandLine.addParameter(backingFilePath);
             // Set the work dir so stylish can pick up the user config, if it exists.
@@ -84,18 +83,18 @@ public class DFormatAction extends AnAction implements DumbAware {
             ApplicationManager.getApplication().saveAll();
 
             final String commandLineString = commandLine.getCommandLineString();
-            OSProcessHandler handler = new OSProcessHandler(commandLine.createProcess(), commandLineString);
+            final OSProcessHandler handler = new OSProcessHandler(commandLine.createProcess(), commandLineString);
             handler.addProcessListener(new CapturingProcessAdapter() {
                 @Override
                 public void processTerminated(@NotNull final ProcessEvent event) {
-                    List<String> errorDetection = getOutput().getStderrLines();
+                    final List<String> errorDetection = getOutput().getStderrLines();
                     if (!errorDetection.isEmpty()) {
-                        String firstLine = errorDetection.get(0);
+                        final String firstLine = errorDetection.get(0);
                         if (firstLine.startsWith("Language.D.DFormat.Parse.parseModule:")) {
                             // Filter out the left part and keep the interesting stuff.
                             // Error message is on the format:
                             // moduleName: interesting stuff.
-                            String output = firstLine.split(":", 2)[1];
+                            final String output = firstLine.split(":", 2)[1];
                             Notifications.Bus.notify(new Notification(groupId,
                                 "DFormat error.", output,
                                 NotificationType.ERROR), project);
@@ -126,7 +125,7 @@ public class DFormatAction extends AnAction implements DumbAware {
                                     psiFile.getName() + " formatted with DFormat.",
                                     NotificationType.INFORMATION), project);
 
-                            } catch (Exception ex) {
+                            } catch (final Exception ex) {
                                 Notifications.Bus.notify(new Notification(groupId,
                                     "Formatting " + psiFile.getName() + "  with DFormat failed.", ExceptionUtil.getUserStackTrace(ex, LOG),
                                     NotificationType.ERROR), project);
@@ -137,7 +136,7 @@ public class DFormatAction extends AnAction implements DumbAware {
                 }
             });
             handler.startNotify();
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             Notifications.Bus.notify(new Notification(groupId,
                 "Formatting " + psiFile.getName() + " with DFormat failed", ExceptionUtil.getUserStackTrace(ex, LOG),
                 NotificationType.ERROR), project);

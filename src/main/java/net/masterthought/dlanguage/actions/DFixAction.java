@@ -32,27 +32,26 @@ public class DFixAction extends AnAction implements DumbAware {
      * Enable the action for D files.
      */
     @Override
-    public void update(AnActionEvent e) {
-        PsiFile psiFile = e.getData(CommonDataKeys.PSI_FILE);
-        boolean isHaskell = psiFile instanceof DLanguageFile;
-        e.getPresentation().setEnabled(isHaskell);
+    public void update(final AnActionEvent e) {
+        final PsiFile psiFile = e.getData(CommonDataKeys.PSI_FILE);
+        e.getPresentation().setEnabled(DLanguageFile.class.isAssignableFrom(psiFile.getClass()));
     }
 
     /**
      * Main entry point. Calls DFix.
      */
     @Override
-    public void actionPerformed(AnActionEvent e) {
+    public void actionPerformed(final AnActionEvent e) {
         final PsiFile psiFile = e.getData(CommonDataKeys.PSI_FILE);
         final Project project = getEventProject(e);
         if (project == null) return;
         if (!(psiFile instanceof DLanguageFile)) return;
-        VirtualFile virtualFile = psiFile.getVirtualFile();
+        final VirtualFile virtualFile = psiFile.getVirtualFile();
         if (virtualFile == null) return;
 
         final String groupId = e.getPresentation().getText();
         try {
-            GeneralCommandLine commandLine = new GeneralCommandLine();
+            final GeneralCommandLine commandLine = new GeneralCommandLine();
             final String stylishPath = ToolKey.DFIX_KEY.getPath(project);
             final String stylishFlags = ToolKey.DFIX_KEY.getFlags(project);
             if (stylishPath == null || stylishPath.isEmpty()) {
@@ -68,7 +67,7 @@ public class DFixAction extends AnAction implements DumbAware {
 
             final VirtualFile backingFile = psiFile.getVirtualFile();
             if (backingFile == null) return;
-            String backingFilePath = backingFile.getCanonicalPath();
+            final String backingFilePath = backingFile.getCanonicalPath();
             if (backingFilePath == null) return;
             commandLine.addParameter(backingFilePath);
             // Set the work dir so stylish can pick up the user config, if it exists.
@@ -87,14 +86,14 @@ public class DFixAction extends AnAction implements DumbAware {
                     psiFile.getName() + " fixed with DFix.(Load filesystem changes)",
                     NotificationType.INFORMATION), project);
 
-            } catch (ExecutionException ex) {
+            } catch (final ExecutionException ex) {
                 ex.printStackTrace();
                 Notifications.Bus.notify(new Notification(groupId,
                     "Fixing " + psiFile.getName() + "  with DFix failed.", ExceptionUtil.getUserStackTrace(ex, LOG),
                     NotificationType.ERROR), project);
                 LOG.error(ex);
             }
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             Notifications.Bus.notify(new Notification(groupId,
                 "Fixing " + psiFile.getName() + " with DFix failed", ExceptionUtil.getUserStackTrace(ex, LOG),
                 NotificationType.ERROR), project);

@@ -36,10 +36,11 @@ object DLanguageBundle {
 
     var dLangBundle: Reference<ResourceBundle>? = null
 
-    @NonNls private const val BUNDLE_ID: String = "messages.Dlanguage"
+    @NonNls private const val BUNDLE_ID: String = "i18n"
 
     init {
-        log.info("initialising D Language Bundle")
+        val locale = Locale.getDefault()
+        log.info("initialising D Language Bundle for locale: ${locale.toLanguageTag()}")
     }
 
     fun message(@PropertyKey(resourceBundle = BUNDLE_ID) key: String, vararg params: Any ): String {

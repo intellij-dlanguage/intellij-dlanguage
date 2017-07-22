@@ -7,9 +7,15 @@ import com.intellij.ide.util.projectWizard.WizardContext;
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.projectImport.ProjectFormatPanel;
 
-import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
+import javax.swing.BorderFactory;
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,39 +28,30 @@ public class DubInitForModuleStep extends ModuleWizardStep {
     private final ComboBox dubType;
     private final JTextField dubParams;
 
-    public DubInitForModuleStep(WizardContext wizardContext) {
+    public DubInitForModuleStep(final WizardContext wizardContext) {
         this.myWizardContext = wizardContext;
         this.myPanel = new JPanel(new GridBagLayout());
         this.myPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // Title label
-        JLabel titletextLabel = new JLabel("Please choose the dub init options you prefer");
+        final JLabel titletextLabel = new JLabel("Please choose the dub init options you prefer");
         this.myPanel.add(titletextLabel, new GridBagConstraints(0, -1, 1, 1, 1.0D, 0.0D, 18, 2, new Insets(8, 10, 8, 10), 0, 0));
 
         // add combo to choose --format sdl/json for init
-        java.util.List<String> options = new ArrayList<>();
-        options.add("sdl");
-        options.add("json");
-        String[] opts = options.toArray(new String[options.size()]);
-        this.dubFormat = new ComboBox(opts);
-        dubFormat.setSelectedItem("json");
+        this.dubFormat = new ComboBox<>(new String[] {"sdl", "json"});
+        this.dubFormat.setSelectedItem("json");
 
-        JLabel dubFormatLabel = new JLabel("Dub format");
+        final JLabel dubFormatLabel = new JLabel("Dub format");
         dubFormatLabel.setLabelFor(dubFormat);
 
         this.myPanel.add(dubFormatLabel, new GridBagConstraints(0, -1, 1, 1, 0.0D, 0.0D, 17, 0, new Insets(0, 0, 5, 4), 0, 0));
         this.myPanel.add(dubFormat, new GridBagConstraints(0, -1, 1, 1, 1.0D, 0.0D, 18, 2, new Insets(10, 0, 20, 0), 0, 0));
 
         // add combo to choose --type minimal, vibe.d, deimos
-        java.util.List<String> typeOptions = new ArrayList<>();
-        typeOptions.add("minimal");
-        typeOptions.add("vibe.d");
-        typeOptions.add("deimos");
-        String[] typeOpts = typeOptions.toArray(new String[typeOptions.size()]);
-        this.dubType = new ComboBox(typeOpts);
+        this.dubType = new ComboBox<>(new String[] {"minimal", "vibe.d", "deimos"});
         dubType.setSelectedItem("minimal");
 
-        JLabel dubTypeLabel = new JLabel("Dub project type");
+        final JLabel dubTypeLabel = new JLabel("Dub project type");
         dubTypeLabel.setLabelFor(dubType);
 
         this.myPanel.add(dubTypeLabel, new GridBagConstraints(0, -1, 1, 1, 0.0D, 0.0D, 17, 0, new Insets(0, 0, 5, 4), 0, 0));
@@ -62,7 +59,7 @@ public class DubInitForModuleStep extends ModuleWizardStep {
 
         // add text field to add params instead of using combo boxes as fallback
         this.dubParams = new JTextField();
-        JLabel dubParamsLabel = new JLabel("Dub params override - supply space separated params here instead and it will use these e.g --format=json");
+        final JLabel dubParamsLabel = new JLabel("Dub params override - supply space separated params here instead and it will use these e.g --format=json");
         dubParamsLabel.setLabelFor(dubParams);
         this.myPanel.add(dubParamsLabel, new GridBagConstraints(0, -1, 1, 1, 1.0D, 0.0D, 18, 2, new Insets(10, 0, 20, 0), 0, 0));
         this.myPanel.add(dubParams, new GridBagConstraints(0, -1, 1, 1, 1.0D, 0.0D, 18, 2, new Insets(10, 0, 20, 0), 0, 0));
@@ -78,11 +75,12 @@ public class DubInitForModuleStep extends ModuleWizardStep {
     }
 
     public void updateDataModel() {
-        ProjectBuilder moduleBuilder = this.myWizardContext.getProjectBuilder();
+        final ProjectBuilder moduleBuilder = this.myWizardContext.getProjectBuilder();
         if (moduleBuilder != null) {
             this.myWizardContext.setProjectBuilder(moduleBuilder);
+
             if (moduleBuilder instanceof ModuleBuilder) {
-                ModuleBuilder builder = (ModuleBuilder) moduleBuilder;
+                final ModuleBuilder builder = (ModuleBuilder) moduleBuilder;
 
                 if ("DLangDubApp".equals(builder.getBuilderId())) {
                     final DLanguageDubModuleBuilder dubBuilder = (DLanguageDubModuleBuilder) builder;

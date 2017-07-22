@@ -10,7 +10,7 @@ public class DLanguageTokenType extends IElementType {
 
     private String debugName;
 
-    public DLanguageTokenType(@NotNull @NonNls String debugName) {
+    public DLanguageTokenType(@NotNull @NonNls final String debugName) {
         super(debugName, DLanguage.INSTANCE);
         this.debugName = debugName;
     }

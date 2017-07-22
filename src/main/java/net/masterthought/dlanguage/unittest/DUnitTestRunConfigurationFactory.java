@@ -7,13 +7,15 @@ import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 
 public class DUnitTestRunConfigurationFactory extends ConfigurationFactory {
-    protected DUnitTestRunConfigurationFactory(ConfigurationType type) {
+
+    protected DUnitTestRunConfigurationFactory(final ConfigurationType type)
+    {
         super(type);
     }
 
     @NotNull
     @Override
-    public RunConfiguration createTemplateConfiguration(@NotNull Project project) {
+    public RunConfiguration createTemplateConfiguration(@NotNull final Project project) {
         return new DUnitTestRunConfiguration(project);
     }
 }

@@ -12,7 +12,7 @@ import net.masterthought.dlanguage.psi.DLanguageFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static net.masterthought.dlanguage.utils.DUtil.isDunitTestFile;
+import static net.masterthought.dlanguage.utils.DUtil.*;
 
 public class DUnitTestRunConfigurationProducer extends RunConfigurationProducer<DUnitTestRunConfiguration> {
 
@@ -21,42 +21,10 @@ public class DUnitTestRunConfigurationProducer extends RunConfigurationProducer<
         super(DUnitTestRunConfigurationType.getInstance());
     }
 
-    @Nullable
-    public static VirtualFile getRunnableDFileFromContext(final @NotNull ConfigurationContext context) {
-        final PsiElement psiLocation = context.getPsiLocation();
-        final PsiFile psiFile = psiLocation == null ? null : psiLocation.getContainingFile();
-        final VirtualFile virtualFile = getRealVirtualFile(psiFile);
-
-        if ((psiFile instanceof DLanguageFile) &&
-            virtualFile != null &&
-            ProjectRootManager.getInstance(context.getProject()).getFileIndex().isInContent(virtualFile) &&
-            !DLanguageWritingAccessProvider.isInDLanguageSdkOrDLanguagePackagesFolder(psiFile.getProject(), virtualFile)) {
-
-            // only run this producer if is test file
-            if (isDunitTestFile(psiFile)) {
-                return virtualFile;
-            } else {
-                return null;
-            }
-        }
-
-        return null;
-    }
-
-    @Nullable
-    private static VirtualFile getDFileFromContext(final @NotNull ConfigurationContext context) {
-        final PsiElement psiLocation = context.getPsiLocation();
-        final PsiFile psiFile = psiLocation == null ? null : psiLocation.getContainingFile();
-        final VirtualFile virtualFile = getRealVirtualFile(psiFile);
-        return psiFile instanceof DLanguageFile && virtualFile != null ? virtualFile : null;
-    }
-
-    public static VirtualFile getRealVirtualFile(PsiFile psiFile) {
-        return psiFile != null ? psiFile.getOriginalFile().getVirtualFile() : null;
-    }
-
     @Override
-    protected boolean setupConfigurationFromContext(DUnitTestRunConfiguration configuration, ConfigurationContext context, Ref<PsiElement> sourceElement) {
+    protected boolean setupConfigurationFromContext(final DUnitTestRunConfiguration configuration,
+                                                    final ConfigurationContext context,
+                                                    final Ref<PsiElement> sourceElement) {
         final VirtualFile dFile = getRunnableDFileFromContext(context);
         if (dFile != null) {
             configuration.setdFilePath(dFile.getPath());
@@ -69,11 +37,45 @@ public class DUnitTestRunConfigurationProducer extends RunConfigurationProducer<
         return false;
     }
 
+    @Nullable
+    public static VirtualFile getRunnableDFileFromContext(final @NotNull ConfigurationContext context) {
+        final PsiElement psiLocation = context.getPsiLocation();
+        final PsiFile psiFile = psiLocation == null ? null : psiLocation.getContainingFile();
+        final VirtualFile virtualFile = getRealVirtualFile(psiFile);
+
+        if ((psiFile instanceof DLanguageFile) &&
+                virtualFile != null &&
+                ProjectRootManager.getInstance(context.getProject()).getFileIndex().isInContent(virtualFile) &&
+                !DLanguageWritingAccessProvider.isInDLanguageSdkOrDLanguagePackagesFolder(psiFile.getProject(), virtualFile)) {
+
+            // only run this producer if is test file
+            if (isDunitTestFile(psiFile)) {
+                return virtualFile;
+            } else {
+                return null;
+            }
+        }
+
+        return null;
+    }
+
     @Override
     public boolean isConfigurationFromContext(final @NotNull DUnitTestRunConfiguration configuration,
                                               final @NotNull ConfigurationContext context) {
         final VirtualFile dartFile = getDFileFromContext(context);
         return dartFile != null && dartFile.getPath().equals(configuration.getdFilePath());
+    }
+
+    @Nullable
+    private static VirtualFile getDFileFromContext(final @NotNull ConfigurationContext context) {
+        final PsiElement psiLocation = context.getPsiLocation();
+        final PsiFile psiFile = psiLocation == null ? null : psiLocation.getContainingFile();
+        final VirtualFile virtualFile = getRealVirtualFile(psiFile);
+        return psiFile instanceof DLanguageFile && virtualFile != null ? virtualFile : null;
+    }
+
+    public static VirtualFile getRealVirtualFile(final PsiFile psiFile) {
+        return psiFile != null ? psiFile.getOriginalFile().getVirtualFile() : null;
     }
 
 

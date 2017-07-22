@@ -19,7 +19,7 @@ import javax.swing.*;
 
 public class DLanguageFile extends PsiFileBase {
 
-    public DLanguageFile(@NotNull FileViewProvider viewProvider) {
+    public DLanguageFile(@NotNull final FileViewProvider viewProvider) {
         super(viewProvider, DLanguage.INSTANCE);
     }
 
@@ -35,7 +35,7 @@ public class DLanguageFile extends PsiFileBase {
     }
 
     @Override
-    public Icon getIcon(int flags) {
+    public Icon getIcon(final int flags) {
         return super.getIcon(flags);
     }
 

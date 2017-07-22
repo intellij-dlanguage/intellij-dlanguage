@@ -33,20 +33,20 @@ public class DModuleIndex extends ScalarIndexExtension<String> {
     private static final MyDataIndexer INDEXER = new MyDataIndexer();
 
     @NotNull
-    public static List<DLanguageFile> getFilesByModuleName(@NotNull Project project, @NotNull String moduleName, @NotNull GlobalSearchScope searchScope) {
+    public static List<DLanguageFile> getFilesByModuleName(@NotNull final Project project,
+                                                           @NotNull final String moduleName,
+                                                           @NotNull final GlobalSearchScope searchScope) {
         final PsiManager psiManager = PsiManager.getInstance(project);
-        Collection<VirtualFile> virtualFiles = getVirtualFilesByModuleName(moduleName, searchScope);
-        return ContainerUtil.mapNotNull(virtualFiles, new Function<VirtualFile, DLanguageFile>() {
-            @Override
-            public DLanguageFile fun(VirtualFile virtualFile) {
-                final PsiFile psiFile = psiManager.findFile(virtualFile);
-                return psiFile instanceof DLanguageFile ? (DLanguageFile) psiFile : null;
-            }
+        final Collection<VirtualFile> virtualFiles = getVirtualFilesByModuleName(moduleName, searchScope);
+        return ContainerUtil.mapNotNull(virtualFiles, virtualFile -> {
+            final PsiFile psiFile = psiManager.findFile(virtualFile);
+            return psiFile instanceof DLanguageFile ? (DLanguageFile) psiFile : null;
         });
     }
 
     @NotNull
-    public static Collection<VirtualFile> getVirtualFilesByModuleName(@NotNull String moduleName, @NotNull GlobalSearchScope searchScope) {
+    public static Collection<VirtualFile> getVirtualFilesByModuleName(@NotNull final String moduleName,
+                                                                      @NotNull final GlobalSearchScope searchScope) {
         return FileBasedIndex.getInstance().getContainingFiles(D_MODULE_INDEX, moduleName, searchScope);
     }
 
@@ -87,7 +87,7 @@ public class DModuleIndex extends ScalarIndexExtension<String> {
     private static class MyDataIndexer implements DataIndexer<String, Void, FileContent> {
         @NotNull
         @Override
-        public Map<String, Void> map(FileContent inputData) {
+        public Map<String, Void> map(final FileContent inputData) {
             final PsiFile psiFile = inputData.getPsiFile();
             String moduleName;
             if (psiFile instanceof DLanguageFile) {

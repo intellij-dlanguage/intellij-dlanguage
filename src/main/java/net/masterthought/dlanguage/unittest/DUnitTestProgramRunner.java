@@ -6,6 +6,7 @@ import com.intellij.execution.runners.DefaultProgramRunner;
 import org.jetbrains.annotations.NotNull;
 
 public class DUnitTestProgramRunner extends DefaultProgramRunner {
+
     @NotNull
     @Override
     public String getRunnerId() {
@@ -13,7 +14,7 @@ public class DUnitTestProgramRunner extends DefaultProgramRunner {
     }
 
     @Override
-    public boolean canRun(@NotNull String executorId, @NotNull RunProfile profile) {
+    public boolean canRun(@NotNull final String executorId, @NotNull final RunProfile profile) {
         return (DefaultRunExecutor.EXECUTOR_ID.equals(executorId))
             && (profile instanceof DUnitTestRunConfiguration);
     }

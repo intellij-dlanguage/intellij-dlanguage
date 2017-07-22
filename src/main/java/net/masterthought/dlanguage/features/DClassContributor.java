@@ -7,7 +7,7 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.stubs.StubIndex;
 import com.intellij.util.ArrayUtil;
 import com.intellij.util.containers.ContainerUtil;
-import net.masterthought.dlanguage.psi.impl.named.DLanguageInterfaceOrClassImpl;
+import net.masterthought.dlanguage.psi.impl.DLanguageClassDeclarationImpl;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 import net.masterthought.dlanguage.stubs.index.DAllNameIndex;
 import org.jetbrains.annotations.NotNull;
@@ -21,18 +21,19 @@ import java.util.List;
 public class DClassContributor implements ChooseByNameContributor {
     @NotNull
     @Override
-    public String[] getNames(Project project, boolean includeNonProjectItems) {
+    public String[] getNames(final Project project, final boolean includeNonProjectItems) {
         return ArrayUtil.toStringArray(StubIndex.getInstance().getAllKeys(DAllNameIndex.KEY, project));
     }
 
     @NotNull
     @Override
-    public NavigationItem[] getItemsByName(String name, String pattern, Project project, boolean includeNonProjectItems) {
-        GlobalSearchScope scope = includeNonProjectItems ? GlobalSearchScope.allScope(project) : GlobalSearchScope.projectScope(project);
-        Collection<DNamedElement> result = StubIndex.getElements(DAllNameIndex.KEY, name, project, scope, DNamedElement.class);
-        List<NavigationItem> items = ContainerUtil.newArrayListWithCapacity(result.size());
-        for (DNamedElement element : result) {
-            if (element.getParent().getClass() == DLanguageInterfaceOrClassImpl.class) {
+    public NavigationItem[] getItemsByName(final String name, final String pattern,
+                                           final Project project, final boolean includeNonProjectItems) {
+        final GlobalSearchScope scope = includeNonProjectItems ? GlobalSearchScope.allScope(project) : GlobalSearchScope.projectScope(project);
+        final Collection<DNamedElement> result = StubIndex.getElements(DAllNameIndex.KEY, name, project, scope, DNamedElement.class);
+        final List<NavigationItem> items = ContainerUtil.newArrayListWithCapacity(result.size());
+        for (final DNamedElement element : result) {
+            if(element.getParent().getClass() == DLanguageClassDeclarationImpl.class) {
                 items.add(element);
             }
         }

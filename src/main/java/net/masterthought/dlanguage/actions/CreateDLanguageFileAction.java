@@ -38,15 +38,15 @@ public class CreateDLanguageFileAction extends CreateFileFromTemplateAction impl
     }
 
     @Override
-    protected void buildDialog(Project project, PsiDirectory directory, CreateFileFromTemplateDialog.Builder builder) {
+    protected void buildDialog(final Project project, final PsiDirectory directory, final CreateFileFromTemplateDialog.Builder builder) {
         builder.setTitle(NEW_D_FILE)
-            .addKind("Empty module", DLanguageIcons.FILE, EMPTY_MODULE_TEMPLATE)
-            .setValidator(new ModuleNameValidator());
+                .addKind("Empty module", DLanguageIcons.FILE, EMPTY_MODULE_TEMPLATE)
+                .setValidator(new ModuleNameValidator());
     }
 
     @Override
-    protected PsiFile createFileFromTemplate(@NotNull String name, @NotNull FileTemplate template, @NotNull PsiDirectory dir) {
-        final String validName = name.endsWith(".d") ? name.substring(0, name.lastIndexOf('.')) : name;
+    protected PsiFile createFileFromTemplate(@NotNull final String name, @NotNull final FileTemplate template, @NotNull final PsiDirectory dir) {
+        final String validName = name.endsWith(".d")? name.substring(0, name.lastIndexOf('.')) : name;
 
         final List<String> pathParts = StringUtil.split(validName, ".");
         // Create any intermediate subdirectories.
@@ -54,21 +54,21 @@ public class CreateDLanguageFileAction extends CreateFileFromTemplateAction impl
         for (int i = 0; i < pathParts.size() - 1; ++i) {
             subDir = subDir.createSubdirectory(pathParts.get(i));
         }
-        String moduleName = pathParts.get(pathParts.size() - 1);
+        final String moduleName = pathParts.get(pathParts.size() - 1);
         return createFileFromTemplate(moduleName, template, subDir, getDefaultTemplateProperty());
     }
 
     @SuppressWarnings("DialogTitleCapitalization")
     @Nullable
     private PsiFile createFileFromTemplate(@SuppressWarnings("NullableProblems") @NotNull String name,
-                                           @NotNull FileTemplate template,
-                                           @NotNull PsiDirectory dir,
-                                           @Nullable String defaultTemplateProperty) {
+                                             @NotNull final FileTemplate template,
+                                             @NotNull PsiDirectory dir,
+                                             @Nullable final String defaultTemplateProperty) {
         // TODO: Do we *have* to hack the IntelliJ source?
         // This is a roughly a copy/paste then slight adaptation from the IntelliJ definition of this method.
         // We can't override it directly, and more importantly we can't override its call to
         // FileTemplateUtil.createFromTemplate()
-        List<String> pathItems = FileUtil.getPathFromSourceRoot(dir.getProject(), dir.getVirtualFile());
+        final List<String> pathItems = FileUtil.getPathFromSourceRoot(dir.getProject(), dir.getVirtualFile());
         // modulePrefix is the empty string if the module is either in the top
         // level directory or one of the subdirectories start with a lower-case
         // letter.
@@ -98,12 +98,15 @@ public class CreateDLanguageFileAction extends CreateFileFromTemplateAction impl
                 }
                 return psiFile;
             }
-        } catch (ParseException e) {
+        }
+        catch (final ParseException e) {
             Messages.showErrorDialog(project, String.format("Error parsing Velocity template: %s", e.getMessage()), "Create File from Template");
-        } catch (IncorrectOperationException e) {
+        }
+        catch (final IncorrectOperationException e) {
             LOG.error(e);
             throw e;
-        } catch (Exception e) {
+        }
+        catch (final Exception e) {
             LOG.error(e);
         }
 
@@ -111,7 +114,7 @@ public class CreateDLanguageFileAction extends CreateFileFromTemplateAction impl
     }
 
     @Override
-    protected String getActionName(PsiDirectory directory, String newName, String templateName) {
+    protected String getActionName(final PsiDirectory directory, final String newName, final String templateName) {
         return NEW_D_FILE;
     }
 
@@ -132,12 +135,12 @@ public class CreateDLanguageFileAction extends CreateFileFromTemplateAction impl
         }
 
         @Override
-        public boolean checkInput(String inputString) {
+        public boolean checkInput(final String inputString) {
             return true;
         }
 
         @Override
-        public boolean canClose(String inputString) {
+        public boolean canClose(final String inputString) {
             return getErrorText(inputString) == null;
         }
     }

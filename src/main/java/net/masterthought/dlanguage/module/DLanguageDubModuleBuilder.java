@@ -45,11 +45,11 @@ public class DLanguageDubModuleBuilder extends DLanguageModuleBuilder {
     }
 
     @Override
-    public void setupRootModel(ModifiableRootModel rootModel) throws ConfigurationException {
+    public void setupRootModel(final ModifiableRootModel rootModel) throws ConfigurationException {
         setJavaRootModel(rootModel);
 
-        Project project = rootModel.getProject();
-        RunManagerImpl runManager = RunManagerImpl.getInstanceImpl(project);
+        final Project project = rootModel.getProject();
+        final RunManagerImpl runManager = RunManagerImpl.getInstanceImpl(project);
 
         if (dubBinary != null) {
             ToolKey.DUB_KEY.setPath(project, dubBinary);
@@ -77,7 +77,7 @@ public class DLanguageDubModuleBuilder extends DLanguageModuleBuilder {
             @NonNls final String path = getContentEntryPath() + File.separator + "source";
             try {
                 createDub(getContentEntryPath());
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 new File(path).mkdirs();
             }
             paths.add(Pair.create(path, ""));
@@ -130,20 +130,20 @@ public class DLanguageDubModuleBuilder extends DLanguageModuleBuilder {
             // would have been nice to log an event but the new project hasn't been loaded yet so this is the
             // only way I could think to notify the user that dub init failed.
             if (errors.get()) {
-                Path dubInitErrorLog = Paths.get(getContentEntryPath() + File.separator + "dub_init_error_log.txt");
+                final Path dubInitErrorLog = Paths.get(getContentEntryPath() + File.separator + "dub_init_error_log.txt");
                 try {
                     Files.write(dubInitErrorLog, builder.toString().getBytes());
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     e.printStackTrace();
                 }
             }
 
-        } catch (ExecutionException e) {
+        } catch (final ExecutionException e) {
             e.printStackTrace();
         }
     }
 
-    public void setDubBinary(String dubBinary) {
+    public void setDubBinary(final String dubBinary) {
         this.dubBinary = dubBinary;
     }
 }

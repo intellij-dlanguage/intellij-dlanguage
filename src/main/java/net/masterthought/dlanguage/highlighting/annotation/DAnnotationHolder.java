@@ -12,46 +12,47 @@ import org.jetbrains.annotations.Nullable;
 import java.util.regex.Pattern;
 
 public class DAnnotationHolder {
-    private static final Pattern NEWLINE_REGEX = Pattern.compile("\n");
-    private static final Pattern SPACE_REGEX = Pattern.compile(" ");
     public final AnnotationHolder holder;
 
-    public DAnnotationHolder(@NotNull AnnotationHolder holder) {
+    public DAnnotationHolder(@NotNull final AnnotationHolder holder) {
         this.holder = holder;
     }
 
-    private static Annotation createAnnotation(@NotNull AnnotationHolderImpl holder, @NotNull HighlightSeverity severity, @NotNull TextRange range, @Nullable String message) {
-        String tooltip = message == null ? null : XmlStringUtil.wrapInHtml(escapeSpacesForHtml(XmlStringUtil.escapeString(message)));
-        Annotation annotation = new Annotation(range.getStartOffset(), range.getEndOffset(), severity, message, tooltip);
+    public Annotation createInfoAnnotation(@NotNull final TextRange range, @Nullable final String message) {
+        return holder instanceof AnnotationHolderImpl ?
+                createAnnotation((AnnotationHolderImpl)holder, HighlightSeverity.INFORMATION, range, message)
+                : holder.createInfoAnnotation(range, message);
+    }
+
+    public Annotation createWeakWarningAnnotation(@NotNull final TextRange range, @Nullable final String message) {
+        return holder instanceof AnnotationHolderImpl ?
+                createAnnotation((AnnotationHolderImpl)holder, HighlightSeverity.WEAK_WARNING, range, message)
+                : holder.createWeakWarningAnnotation(range, message);
+    }
+
+    public Annotation createWarningAnnotation(@NotNull final TextRange range, @Nullable final String message) {
+        return holder instanceof AnnotationHolderImpl ?
+                createAnnotation((AnnotationHolderImpl)holder, HighlightSeverity.WARNING, range, message)
+                : holder.createWarningAnnotation(range, message);
+    }
+
+    public Annotation createErrorAnnotation(@NotNull final TextRange range, @Nullable final String message) {
+        return holder instanceof AnnotationHolderImpl ?
+                createAnnotation((AnnotationHolderImpl)holder, HighlightSeverity.ERROR, range, message)
+                : holder.createErrorAnnotation(range, message);
+    }
+
+    private static Annotation createAnnotation(@NotNull final AnnotationHolderImpl holder, @NotNull HighlightSeverity severity, @NotNull TextRange range, @Nullable String message) {
+        final String tooltip = message == null ? null : XmlStringUtil.wrapInHtml(escapeSpacesForHtml(XmlStringUtil.escapeString(message)));
+        final Annotation annotation = new Annotation(range.getStartOffset(), range.getEndOffset(), severity, message, tooltip);
         holder.add(annotation);
         return annotation;
     }
 
-    public static String escapeSpacesForHtml(String string) {
+    private static final Pattern NEWLINE_REGEX = Pattern.compile("\n");
+    private static final Pattern SPACE_REGEX = Pattern.compile(" ");
+
+    public static String escapeSpacesForHtml(final String string) {
         return string == null ? null : SPACE_REGEX.matcher(NEWLINE_REGEX.matcher(string).replaceAll("<br/>")).replaceAll("&nbsp;");
-    }
-
-    public Annotation createInfoAnnotation(@NotNull TextRange range, @Nullable String message) {
-        return holder instanceof AnnotationHolderImpl ?
-            createAnnotation((AnnotationHolderImpl) holder, HighlightSeverity.INFORMATION, range, message)
-            : holder.createInfoAnnotation(range, message);
-    }
-
-    public Annotation createWeakWarningAnnotation(@NotNull TextRange range, @Nullable String message) {
-        return holder instanceof AnnotationHolderImpl ?
-            createAnnotation((AnnotationHolderImpl) holder, HighlightSeverity.WEAK_WARNING, range, message)
-            : holder.createWeakWarningAnnotation(range, message);
-    }
-
-    public Annotation createWarningAnnotation(@NotNull TextRange range, @Nullable String message) {
-        return holder instanceof AnnotationHolderImpl ?
-            createAnnotation((AnnotationHolderImpl) holder, HighlightSeverity.WARNING, range, message)
-            : holder.createWarningAnnotation(range, message);
-    }
-
-    public Annotation createErrorAnnotation(@NotNull TextRange range, @Nullable String message) {
-        return holder instanceof AnnotationHolderImpl ?
-            createAnnotation((AnnotationHolderImpl) holder, HighlightSeverity.ERROR, range, message)
-            : holder.createErrorAnnotation(range, message);
     }
 }

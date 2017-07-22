@@ -45,7 +45,10 @@ public class DLanguageModuleBuilder extends JavaModuleBuilder {
         this("DLangDmdApp", DLanguageBundle.INSTANCE.message("module.title"), DLanguageBundle.INSTANCE.message("module.description"), null);
     }
 
-    protected DLanguageModuleBuilder(String builderId, String presentableName, String description, Icon bigIcon) {
+    protected DLanguageModuleBuilder(final String builderId,
+                                     final String presentableName,
+                                     final String description,
+                                     final Icon bigIcon) {
         myBuilderId = builderId;
         myPresentableName = presentableName;
         myDescription = description;
@@ -87,15 +90,15 @@ public class DLanguageModuleBuilder extends JavaModuleBuilder {
         return DLANG_GROUP_NAME;
     }
 
-    protected void setJavaRootModel(ModifiableRootModel rootModel) throws ConfigurationException {
+    protected void setJavaRootModel(final ModifiableRootModel rootModel) throws ConfigurationException {
         super.setupRootModel(rootModel);
     }
 
     @Override
-    public void setupRootModel(ModifiableRootModel rootModel) throws ConfigurationException {
+    public void setupRootModel(final ModifiableRootModel rootModel) throws ConfigurationException {
         setJavaRootModel(rootModel);
-        Project project = rootModel.getProject();
-        RunManagerImpl runManager = RunManagerImpl.getInstanceImpl(project);
+        final Project project = rootModel.getProject();
+        final RunManagerImpl runManager = RunManagerImpl.getInstanceImpl(project);
 
         //Create "Compile with DMD" configuration
         RunnerAndConfigurationSettings runDmdSettings = runManager.findConfigurationByName(COMPILE_CONFIG_NAME);
@@ -124,10 +127,11 @@ public class DLanguageModuleBuilder extends JavaModuleBuilder {
 
         //Add dependency to exec "runDmdSettings" before running "runAppSettings".
         //XXX: next code doesn't add BeforeRunTask. I don't know why.
-        BeforeRunTaskProvider provider = RunConfigurationBeforeRunProvider.getProvider(project, RunConfigurationBeforeRunProvider.ID);
-        if (provider != null) {
-            BeforeRunTask runDmdTask = provider.createTask(runDmdSettings.getConfiguration());
-            List<BeforeRunTask> beforeRunTasks = new ArrayList<BeforeRunTask>(1);
+        final BeforeRunTaskProvider provider = RunConfigurationBeforeRunProvider.getProvider(project, RunConfigurationBeforeRunProvider.ID);
+
+        if(provider != null) {
+            final BeforeRunTask runDmdTask = provider.createTask(runDmdSettings.getConfiguration());
+            final List<BeforeRunTask> beforeRunTasks = new ArrayList<>(1);
             beforeRunTasks.add(runDmdTask);
             runManager.setBeforeRunTasks(runAppSettings.getConfiguration(), beforeRunTasks, false);
         }
@@ -148,7 +152,7 @@ public class DLanguageModuleBuilder extends JavaModuleBuilder {
     }
 
     @Override
-    public boolean isSuitableSdkType(SdkTypeId sdkType) {
+    public boolean isSuitableSdkType(final SdkTypeId sdkType) {
         return sdkType == DLanguageSdkType.getInstance();
     }
 

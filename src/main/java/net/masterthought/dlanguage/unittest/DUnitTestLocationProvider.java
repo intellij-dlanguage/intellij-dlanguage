@@ -11,9 +11,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class DUnitTestLocationProvider implements SMTestLocator {
+    private static final DUnitTestLocationProvider INSTANCE = new DUnitTestLocationProvider();
+
     public static final String PROTOCOL_ID = "D";
     public static final String PROTOCOL_PREFIX = PROTOCOL_ID + "://";
-    private static final DUnitTestLocationProvider INSTANCE = new DUnitTestLocationProvider();
 
     public static DUnitTestLocationProvider getInstance() {
         return INSTANCE;
@@ -21,10 +22,14 @@ public class DUnitTestLocationProvider implements SMTestLocator {
 
     @NotNull
     @Override
-    public List<Location> getLocation(@NotNull String protocol, @NotNull String path, @NotNull Project project, @NotNull GlobalSearchScope scope) {
-        final List<Location> locations = new LinkedList<Location>();
+    public List<Location> getLocation(@NotNull final String protocol,
+                                      @NotNull final String path,
+                                      @NotNull final Project project,
+                                      @NotNull final GlobalSearchScope scope) {
+        final List<Location> locations = new LinkedList<>();
 
-        if (!StringUtil.equals(PROTOCOL_ID, protocol) || StringUtil.isEmpty(path)) {
+        if (!StringUtil.equals(PROTOCOL_ID, protocol) || StringUtil.isEmpty(path))
+        {
             return locations;
         }
 

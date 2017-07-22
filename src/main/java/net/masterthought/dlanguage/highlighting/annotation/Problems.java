@@ -11,11 +11,11 @@ public class Problems extends ArrayList<DProblem> {
         super();
     }
 
-    public Problems(@NotNull DProblem[] problems) {
+    public Problems(@NotNull final DProblem[] problems) {
         super(Arrays.asList(problems));
     }
 
-    public void addAllNotNull(Iterable<? extends DProblem> elements) {
+    public void addAllNotNull(final Iterable<? extends DProblem> elements) {
         if (elements != null) {
             ContainerUtil.addAllNotNull(this, elements);
         }

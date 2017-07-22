@@ -41,33 +41,33 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
 
     private static final Logger LOG = Logger.getInstance(DCDCompletionServer.class);
 
-    public
     @NotNull
-    final Module module;
-    public
+    public final Module module;
+
     @NotNull
-    String workingDirectory;
-    public
+    private final String workingDirectory;
+
     @Nullable
-    String path;
-    public
+    public String path;
+
     @NotNull
-    String flags;
-    private
+    public String flags;
+
     @Nullable
-    Process process;
-    private
+    private Process process;
+
     @Nullable
-    BufferedReader input;
-    private
+    private BufferedReader input;
+
     @Nullable
-    BufferedWriter output;
-    private ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private BufferedWriter output;
+
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     /**
      * Private constructor used during module component initialization.
      */
-    public DCDCompletionServer(@NotNull Module module) {
+    public DCDCompletionServer(@NotNull final Module module) {
         this.module = module;
         this.path = lookupPath();
         this.flags = lookupFlags();
@@ -76,12 +76,11 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
         module.getProject().getMessageBus().connect().subscribe(SettingsChangeNotifier.DCD_TOPIC, this);
     }
 
-    private static void displayError(@NotNull Project project, @NotNull String message) {
+    private static void displayError(@NotNull final Project project, @NotNull final String message) {
         NotificationUtil.displayToolsNotification(NotificationType.ERROR, project, "dcd error", message);
     }
 
-    @Nullable
-    public synchronized void exec() throws DCDError {
+    synchronized void exec() throws DCDError {
         if (path != null) {
             if (process == null) {
                 spawnProcess();
@@ -202,17 +201,17 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
         process = null;
         try {
             if (input != null) input.close();
-        } catch (IOException e) { /* Ignored */ }
+        } catch (final IOException e) { /* Ignored */ }
         input = null;
         try {
             if (output != null) output.close();
-        } catch (IOException e) { /* Ignored */ }
+        } catch (final IOException e) { /* Ignored */ }
         output = null;
     }
 
     // Implemented methods for SettingsChangeNotifier
     @Override
-    public void onSettingsChanged(@NotNull ToolSettings settings) {
+    public void onSettingsChanged(@NotNull final ToolSettings settings) {
         LOG.debug("DCD Server settings changed");
         kill();
         this.path = settings.getPath();
@@ -239,7 +238,7 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
         }
     }
 
-    private void displayError(@NotNull String message) {
+    private void displayError(@NotNull final String message) {
         displayError(module.getProject(), message);
     }
 
@@ -278,7 +277,7 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
         String message;
         final boolean killProcess;
 
-        DCDError(@NotNull String error, @NotNull String message, boolean killProcess) {
+        DCDError(@NotNull final String error, @NotNull final String message, final boolean killProcess) {
             this.error = error;
             this.message = message;
             this.killProcess = killProcess;
@@ -286,7 +285,7 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
     }
 
     public static class InitError extends DCDError {
-        InitError(@NotNull String error) {
+        InitError(@NotNull final String error) {
             super(error, "Initializing dcd server failed with error: " + error, true);
         }
     }

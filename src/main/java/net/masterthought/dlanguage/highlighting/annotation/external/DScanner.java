@@ -30,70 +30,6 @@ public class DScanner {
 
     private static final Logger LOG = Logger.getInstance(DScanner.class);
 
-    private static int getOffsetStart(final PsiFile file, int startLine, int startColumn) {
-        Document document = PsiDocumentManager.getInstance(file.getProject()).getDocument(file);
-        int line = getValidLineNumber(startLine, document);
-        int offset = StringUtil.lineColToOffset(file.getText(), line, startColumn - 1);
-        return offset <= 1 ? 1 : offset;
-    }
-
-    private static int getLineEndOffset(Document document, int line) {
-        try {
-            return document.getLineEndOffset(line);
-        } catch (Exception e) {
-            return 1;
-        }
-    }
-
-    private static int getDocumentLineCount(Document document) {
-        try {
-            int lineCount = document.getLineCount();
-            return lineCount == 0 ? 1 : lineCount;
-        } catch (Exception e) {
-            return 1;
-        }
-    }
-
-    private static int getValidLineNumber(int line, Document document) {
-        int lineCount = getDocumentLineCount(document);
-        line = line - 1;
-        if (line <= 0) {
-            line = 1;
-        } else if (line >= lineCount) {
-            line = lineCount - 1;
-        }
-        return line;
-    }
-
-    private static int getOffsetEndFallback(final PsiFile file, int line) {
-        Document document = PsiDocumentManager.getInstance(file.getProject()).getDocument(file);
-        line = getValidLineNumber(line, document);
-        return getLineEndOffset(document, line);
-    }
-
-    private static int getOffsetEnd(PsiFile file, int offsetStart, int line) {
-        try {
-            String fileText = file.getText();
-            int width = 0;
-            while (offsetStart + width < fileText.length()) {
-                final char c = fileText.charAt(offsetStart + width);
-                if (StringUtil.isLineBreak(c)) {
-                    break;
-                }
-                ++width;
-            }
-            return offsetStart + width;
-        } catch (Exception e) {
-            return getOffsetEndFallback(file, line);
-        }
-    }
-
-    private static TextRange calculateTextRange(PsiFile file, int line, int column) {
-        final int startOffset = getOffsetStart(file, line, column);
-        final int endOffset = getOffsetEnd(file, startOffset, line);
-        return new TextRange(startOffset, endOffset);
-    }
-
     Problems checkFileSyntax(@NotNull PsiFile file) {
         final String dscannerPath = ToolKey.DSCANNER_KEY.getPath(file.getProject());
         if (dscannerPath == null) return new Problems();
@@ -123,10 +59,10 @@ public class DScanner {
                 @Override
                 public void onTextAvailable(ProcessEvent event, Key outputType) {
                     // we don't care about "system" or "stderr"
-                    if (ProcessOutputTypes.STDOUT.equals(outputType)) {
+                    if(ProcessOutputTypes.STDOUT.equals(outputType)) {
                         parseProblem(event.getText(), file)
                             .ifPresent(problems::add);
-                    } else if (ProcessOutputTypes.STDERR.equals(outputType)) {
+                    } else if(ProcessOutputTypes.STDERR.equals(outputType)) {
                         LOG.error(event.getText());
                     }
                 }
@@ -137,7 +73,7 @@ public class DScanner {
 
             final Integer exitCode = process.getExitCode(); // 0 or 1 depending on whether DScanner found problems
 
-            if (Integer.valueOf(1).equals(exitCode)) {
+            if(Integer.valueOf(1).equals(exitCode)) {
                 LOG.debug("DScanner found lint problems");
             }
         } catch (final ExecutionException e) {
@@ -146,8 +82,72 @@ public class DScanner {
         return problems;
     }
 
+    private static int getOffsetStart(final PsiFile file, final int startLine, final int startColumn) {
+        final Document document = PsiDocumentManager.getInstance(file.getProject()).getDocument(file);
+        final int line = getValidLineNumber(startLine, document);
+        final int offset = StringUtil.lineColToOffset(file.getText(), line, startColumn - 1);
+        return offset <= 1 ? 1 : offset;
+    }
+
+    private static int getLineEndOffset(final Document document, final int line) {
+        try {
+            return document.getLineEndOffset(line);
+        } catch (final Exception e) {
+            return 1;
+        }
+    }
+
+    private static int getDocumentLineCount(final Document document) {
+        try {
+            final int lineCount = document.getLineCount();
+            return lineCount == 0 ? 1 : lineCount;
+        } catch (Exception e) {
+            return 1;
+        }
+    }
+
+    private static int getValidLineNumber(int line, final Document document) {
+        final int lineCount = getDocumentLineCount(document);
+        line = line - 1;
+        if (line <= 0) {
+            line = 1;
+        } else if (line >= lineCount) {
+            line = lineCount - 1;
+        }
+        return line;
+    }
+
+    private static int getOffsetEndFallback(final PsiFile file, int line) {
+        final Document document = PsiDocumentManager.getInstance(file.getProject()).getDocument(file);
+        line = getValidLineNumber(line, document);
+        return getLineEndOffset(document, line);
+    }
+
+    private static int getOffsetEnd(final PsiFile file, final int offsetStart, final int line) {
+        try {
+            final String fileText = file.getText();
+            int width = 0;
+            while (offsetStart + width < fileText.length()) {
+                final char c = fileText.charAt(offsetStart + width);
+                if (StringUtil.isLineBreak(c)) {
+                    break;
+                }
+                ++width;
+            }
+            return offsetStart + width;
+        } catch (final Exception e) {
+            return getOffsetEndFallback(file, line);
+        }
+    }
+
+    private static TextRange calculateTextRange(final PsiFile file, final int line, final int column) {
+        final int startOffset = getOffsetStart(file, line, column);
+        final int endOffset = getOffsetEnd(file, startOffset, line);
+        return new TextRange(startOffset, endOffset);
+    }
+
     // hello.d(1:7)[error]: Expected identifier instead of ;
-    private Optional<Problem> parseProblem(String lint, PsiFile file) {
+    private Optional<Problem> parseProblem(final String lint, final PsiFile file) {
         final Pattern p = Pattern.compile("\\w+\\.d\\((\\d+):(\\d+)\\)\\[(\\w+)\\]:(.+)");
         final Matcher m = p.matcher(lint);
 
@@ -176,7 +176,7 @@ public class DScanner {
         }
 
         @Override
-        public void createAnnotations(@NotNull PsiFile file, @NotNull DAnnotationHolder holder) {
+        public void createAnnotations(@NotNull final PsiFile file, @NotNull final DAnnotationHolder holder) {
             if ("error".equals(severity)) {
                 holder.createErrorAnnotation(range, message);
             } else if (message.contains("undocumented")) {

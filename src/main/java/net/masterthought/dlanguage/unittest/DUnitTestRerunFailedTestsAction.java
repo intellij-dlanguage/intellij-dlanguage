@@ -24,35 +24,34 @@ import java.util.Set;
 public class DUnitTestRerunFailedTestsAction extends AbstractRerunFailedTestsAction {
     private final Project project;
 
-    public DUnitTestRerunFailedTestsAction(Project project, ComponentContainer componentContainer) {
+    public DUnitTestRerunFailedTestsAction(final Project project, final ComponentContainer componentContainer) {
         super(componentContainer);
         this.project = project;
     }
 
     @Nullable
     @Override
-    protected MyRunProfile getRunProfile(@NotNull ExecutionEnvironment environment) {
-        Project project = environment.getProject();
-        if (project == null) {
-            return null;
-        }
+    protected MyRunProfile getRunProfile(@NotNull final ExecutionEnvironment environment) {
+        final Project project = environment.getProject();
 
-        return getRunProfile(project);
+        return project != null? getRunProfile(project) : null;
     }
 
     @Nullable
     private MyRunProfile getRunProfile(final Project project) {
-        List<AbstractTestProxy> failedTests = getFailedTests(project);
-        if (ContainerUtil.isEmpty(failedTests)) {
+        final List<AbstractTestProxy> failedTests = getFailedTests(project);
+        if (ContainerUtil.isEmpty(failedTests))
+        {
             return null;
         }
 
-        final MultiMap<Module, String> moduleToFailedTestNames = new LinkedMultiMap<Module, String>();
-        GlobalSearchScope searchScope = GlobalSearchScope.projectScope(project);
-        for (AbstractTestProxy failedTest : failedTests) {
-            Location location = failedTest.getLocation(project, searchScope);
+        final MultiMap<Module, String> moduleToFailedTestNames = new LinkedMultiMap<>();
+        final GlobalSearchScope searchScope = GlobalSearchScope.projectScope(project);
+
+        for (final AbstractTestProxy failedTest : failedTests) {
+            final Location location = failedTest.getLocation(project, searchScope);
             if (location != null) {
-                PsiElement psiElement = location.getPsiElement();
+                final PsiElement psiElement = location.getPsiElement();
                 // TODO: Use the associated element to determine the failed test method/class
 //                moduleToFailedTestNames.putValue(module, failedTestName);
             }
@@ -66,13 +65,14 @@ public class DUnitTestRerunFailedTestsAction extends AbstractRerunFailedTestsAct
             @NotNull
             @Override
             public Module[] getModules() {
-                Set<Module> modules = moduleToFailedTestNames.keySet();
+                final Set<Module> modules = moduleToFailedTestNames.keySet();
                 return modules.toArray(new Module[modules.size()]);
             }
 
             @Nullable
             @Override
-            public RunProfileState getState(@NotNull Executor executor, @NotNull ExecutionEnvironment environment) throws ExecutionException {
+            public RunProfileState getState(@NotNull final Executor executor,
+                                            @NotNull final ExecutionEnvironment environment) throws ExecutionException {
                 return new DUnitTestRunProfileState(environment);
 //                return new DUnitTestRunProfileState(environment, moduleToFailedTestNames);
             }

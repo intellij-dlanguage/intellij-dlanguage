@@ -13,7 +13,6 @@ import net.masterthought.dlanguage.utils.ExecUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedWriter;
-import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,26 +24,25 @@ public class DCDCompletionClient {
 
     private Map<String, String> completionTypeMap = getCompletionTypeMap();
 
-    private
     @Nullable
-    Process process;
-    private
+    private Process process;
+
     @Nullable
-    BufferedWriter output;
+    private BufferedWriter output;
 
     private List<Completion> completions = new ArrayList<>();
 
-    public List<Completion> autoComplete(int position, PsiFile file) throws DCDCompletionServer.DCDError {
+    public List<Completion> autoComplete(final int position, final PsiFile file) throws DCDCompletionServer.DCDError {
         final Module module = ModuleUtilCore.findModuleForPsiElement(file);
 
         completions.clear();
         if (module != null) {
-            String path = lookupPath(module);
+            final String path = lookupPath(module);
             if (path != null) {
-                DCDCompletionServer dcdCompletionServer = module.getComponent(DCDCompletionServer.class);
+                final DCDCompletionServer dcdCompletionServer = module.getComponent(DCDCompletionServer.class);
                 try {
                     dcdCompletionServer.exec();
-                } catch (DCDCompletionServer.DCDError dcdError) {
+                } catch (final DCDCompletionServer.DCDError dcdError) {
                     dcdError.printStackTrace();
                 }
 //                System.out.println("position: " + String.valueOf(position));
@@ -53,14 +51,14 @@ public class DCDCompletionClient {
                 final GeneralCommandLine commandLine = new GeneralCommandLine();
                 commandLine.setWorkDirectory(workingDirectory);
                 commandLine.setExePath(path);
-                ParametersList parametersList = commandLine.getParametersList();
+                final ParametersList parametersList = commandLine.getParametersList();
                 parametersList.addParametersString("-c");
                 parametersList.addParametersString(String.valueOf(position));
 
-                String flags = ToolKey.DCD_CLIENT_KEY.getFlags(module.getProject());
+                final String flags = ToolKey.DCD_CLIENT_KEY.getFlags(module.getProject());
 
                 if (isNotNullOrEmpty(flags)) {
-                    String[] importList = flags.split(",");
+                    final String[] importList = flags.split(",");
                     for (int i = 0; i < importList.length; i++) {
                         parametersList.addParametersString("-I");
                         parametersList.addParametersString(importList[i]);
@@ -68,28 +66,29 @@ public class DCDCompletionClient {
                 }
 
                 try {
-                    if (process == null) {
+                    if(process == null) {
                         process = commandLine.createProcess();
                         output = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
                         output.write(file.getText());
                     }
-                } catch (Exception e) {
+                } catch (final Exception e) {
                     e.printStackTrace();
                 }
 
-                String result = ExecUtil.readCommandLine(commandLine, file.getText());
+                final String result = ExecUtil.readCommandLine(commandLine, file.getText());
 
                 if (result != null && !result.isEmpty()) {
-                    String[] tokens = result.split("\\n");
-                    String firstLine = tokens[0];
+                    final String[] tokens = result.split("\\n");
+                    final String firstLine = tokens[0];
                     if (firstLine.contains("identifiers")) {
                         for (int i = 0; i < tokens.length; i++) {
-                            String token = tokens[i];
+                            final String token = tokens[i];
+
                             if (!token.contains("identifiers")) {
-                                String[] parts = token.split("\\s");
-                                String completionType = getCompletionType(parts);
-                                String completionText = getCompletionText(parts);
-                                Completion completion = new TextCompletion(completionType, completionText);
+                                final String[] parts = token.split("\\s");
+                                final String completionType = getCompletionType(parts);
+                                final String completionText = getCompletionText(parts);
+                                final Completion completion = new TextCompletion(completionType, completionText);
                                 completions.add(completion);
                             }
                         }
@@ -102,30 +101,28 @@ public class DCDCompletionClient {
             }
         }
 
-
-
         return completions;
     }
 
     @Nullable
-    private String lookupPath(Module module) {
+    private String lookupPath(final Module module) {
         return ToolKey.DCD_CLIENT_KEY.getPath(module.getProject());
     }
 
-    private String getType(String[] parts) {
-        String type = parts[parts.length - 1];
+    private String getType(final String[] parts) {
+        final String type = parts[parts.length - 1];
         return type.isEmpty() ? "U" : type.trim();
     }
 
-    private String getCompletionType(String[] parts) {
-        String mapping = completionTypeMap.get(getType(parts));
+    private String getCompletionType(final String[] parts) {
+        final String mapping = completionTypeMap.get(getType(parts));
         return mapping == null ? "Unknown" : mapping;
     }
 
-    private String getCompletionText(String[] parts) {
-        String text = parts[0];
-        String result = text.isEmpty() ? "" : text.trim();
-        String type = getType(parts);
+    private String getCompletionText(final String[] parts) {
+        final String text = parts[0];
+        final String result = text.isEmpty() ? "" : text.trim();
+        final String type = getType(parts);
         if (type.equals("f")) {
             return result + "()";
         }
@@ -133,7 +130,7 @@ public class DCDCompletionClient {
     }
 
     private Map<String, String> getCompletionTypeMap() {
-        Map<String, String> map = Maps.newTreeMap();
+        final Map<String, String> map = Maps.newTreeMap();
         map.put("c", "Class");
         map.put("i", "Interface");
         map.put("s", "Struct");
@@ -158,13 +155,13 @@ public class DCDCompletionClient {
     /**
      * Kills the existing process and closes input and output if they exist.
      */
-    private synchronized void kill() {
-        if (process != null) process.destroy();
-        process = null;
-        try {
-            if (output != null) output.close();
-        } catch (IOException e) { /* Ignored */ }
-        output = null;
-    }
+//    private synchronized void kill() {
+//        if (process != null) process.destroy();
+//        process = null;
+//        try {
+//            if (output != null) output.close();
+//        } catch (final IOException e) { /* Ignored */ }
+//        output = null;
+//    }
 
 }

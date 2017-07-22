@@ -14,9 +14,9 @@ import java.util.Set;
 
 public class DPsiUtil {
     @NotNull
-    public static <T extends PsiElement> String[] getTexts(@NotNull List<T> psiElements) {
+    public static <T extends PsiElement> String[] getTexts(@NotNull final List<T> psiElements) {
         final int size = psiElements.size();
-        String[] result = new String[size];
+        final String[] result = new String[size];
         for (int i = 0; i < size; ++i) {
             result[i] = psiElements.get(i).getText();
         }
@@ -24,8 +24,8 @@ public class DPsiUtil {
     }
 
     @Deprecated
-    private static List<DLanguageDeclaration> getDeclDefs(PsiElement defs, List<DLanguageDeclaration> declDefsList) {
-        DLanguageDeclaration declDefs = PsiTreeUtil.getChildOfType(defs, DLanguageDeclaration.class);
+    private static List<DLanguageDeclaration> getDeclDefs(final PsiElement defs,final List<DLanguageDeclaration> declDefsList) {
+        final DLanguageDeclaration declDefs = PsiTreeUtil.getChildOfType(defs, DLanguageDeclaration.class);
         if (declDefs != null) {
             declDefsList.add(declDefs);
             getDeclDefs(declDefs, declDefsList);
@@ -41,12 +41,12 @@ public class DPsiUtil {
 
     @NotNull
     public static Set<String> parseImports(@NotNull final PsiFile file) {
-        Set<String> imports = Sets.newHashSet();
-        List<DLanguageDeclaration> declDefList = Lists.newArrayList();
+        final Set<String> imports = Sets.newHashSet();
+        final List<DLanguageDeclaration> declDefList = Lists.newArrayList();
         declDefList.addAll(PsiTreeUtil.findChildrenOfType(file, DLanguageDeclaration.class));
-        for (DLanguageDeclaration declDef : declDefList) {
-            Collection<DLanguageSingleImport> importDecls = PsiTreeUtil.findChildrenOfType(declDef, DLanguageSingleImport.class);
-            for (DLanguageSingleImport importDecl : importDecls) {
+        for (final DLanguageDeclaration declDef : declDefList) {
+            final Collection<DLanguageSingleImport> importDecls = PsiTreeUtil.findChildrenOfType(declDef, DLanguageSingleImport.class);
+            for (final DLanguageSingleImport importDecl : importDecls) {
                 imports.add(importDecl.getIdentifierChain().getText());
             }
         }
