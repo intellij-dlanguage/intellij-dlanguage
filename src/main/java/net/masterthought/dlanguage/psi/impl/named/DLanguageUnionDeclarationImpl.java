@@ -76,7 +76,7 @@ public class DLanguageUnionDeclarationImpl extends DNamedStubbedPsiElementBase<D
             return getStub().getName();
         }
         if (getIdentifier() == null) {
-            return "this union has no name";
+            return DReference.Companion.getNAME_NOT_FOUND_STRING();
 //            throw new IllegalStateException();
         }
         return getIdentifier().getName();

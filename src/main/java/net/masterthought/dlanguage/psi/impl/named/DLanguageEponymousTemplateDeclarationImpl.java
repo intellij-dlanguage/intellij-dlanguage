@@ -41,9 +41,9 @@ public class DLanguageEponymousTemplateDeclarationImpl extends DNamedStubbedPsiE
 
 
     @Override
-    @NotNull
+    @Nullable
     public DLanguageIdentifier getIdentifier() {
-        return notNullChild(PsiTreeUtil.getStubChildOfType(this, DLanguageIdentifier.class));
+        return PsiTreeUtil.getStubChildOfType(this, DLanguageIdentifier.class);
     }
 
 
@@ -87,6 +87,9 @@ public class DLanguageEponymousTemplateDeclarationImpl extends DNamedStubbedPsiE
     public String getName() {
         if (getStub() != null) {
             return getStub().getName();
+        }
+        if (getIdentifier() == null) {
+            return DReference.Companion.getNAME_NOT_FOUND_STRING();
         }
         return getIdentifier().getName();
     }

@@ -9,6 +9,7 @@ import net.masterthought.dlanguage.psi.DLanguageIdentifier;
 import net.masterthought.dlanguage.psi.DLanguageIdentifierChain;
 import net.masterthought.dlanguage.psi.DLanguageSingleImport;
 import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
+import net.masterthought.dlanguage.psi.references.DReference;
 import net.masterthought.dlanguage.stubs.DLanguageSingleImportStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -51,6 +52,9 @@ public class DLanguageSingleImportImpl extends DNamedStubbedPsiElementBase<DLang
     public String getName() {
         if (getStub() != null) {
             return getStub().getName();
+        }
+        if (getIdentifierChain() == null) {
+            return DReference.Companion.getNAME_NOT_FOUND_STRING();
         }
         return getIdentifierChain().getText();
     }

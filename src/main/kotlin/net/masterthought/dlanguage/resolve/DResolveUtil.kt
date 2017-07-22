@@ -25,8 +25,8 @@ import net.masterthought.dlanguage.utils.SingleImport
 object DResolveUtil {
     fun findDefinitionNode(project: Project, e: PsiNamedElement): List<PsiNamedElement> {
         //todo fix templated functions return type bug
-        fun inSingleImport(e: Identifier): SingleImport? {
-            return PsiTreeUtil.getTopmostParentOfType(e, SingleImport::class.java)
+        fun inSingleImport(identifier: Identifier): SingleImport? {
+            return PsiTreeUtil.getTopmostParentOfType(identifier, SingleImport::class.java)
         }
 
         if (e !is Identifier) {

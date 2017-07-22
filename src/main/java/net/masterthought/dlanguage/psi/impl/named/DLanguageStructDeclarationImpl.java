@@ -83,7 +83,7 @@ public class DLanguageStructDeclarationImpl extends DNamedStubbedPsiElementBase<
             return getStub().getName();
         }
         if (getIdentifier() == null) {
-            return "this struct doesn't have a name";
+            return DReference.Companion.getNAME_NOT_FOUND_STRING();
 //            throw new IllegalStateException();
         }
         return getIdentifier().getName();

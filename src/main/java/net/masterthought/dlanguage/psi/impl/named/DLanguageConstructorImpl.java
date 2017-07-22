@@ -95,7 +95,7 @@ public class DLanguageConstructorImpl extends DNamedStubbedPsiElementBase<DLangu
     @NotNull
     public String getName() {
         if (getParentClassOrStructOrTemplateOrInterfaceOrUnion(this) == null) {
-            return "this constructor doesn't have a name";
+            return DReference.Companion.getNAME_NOT_FOUND_STRING();
         }
         return getParentClassOrStructOrTemplateOrInterfaceOrUnion(this).getName();
     }

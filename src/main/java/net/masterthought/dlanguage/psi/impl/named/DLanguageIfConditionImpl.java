@@ -10,6 +10,7 @@ import net.masterthought.dlanguage.psi.DLanguageIdentifier;
 import net.masterthought.dlanguage.psi.DLanguageIfCondition;
 import net.masterthought.dlanguage.psi.DLanguageType;
 import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
+import net.masterthought.dlanguage.psi.references.DReference;
 import net.masterthought.dlanguage.stubs.DLanguageIfConditionStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -66,6 +67,9 @@ public class DLanguageIfConditionImpl extends DNamedStubbedPsiElementBase<DLangu
     public String getName() {
         if (getStub() != null) {
             return getStub().getName();
+        }
+        if (getIdentifier() == null) {
+            return DReference.Companion.getNAME_NOT_FOUND_STRING();
         }
         return getIdentifier().getName();
     }

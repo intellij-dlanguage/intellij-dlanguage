@@ -10,6 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
 import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
+import net.masterthought.dlanguage.psi.references.DReference;
 import net.masterthought.dlanguage.resolve.ScopeProcessorImpl;
 import net.masterthought.dlanguage.stubs.DLanguageDeclaratorStub;
 import org.jetbrains.annotations.NotNull;
@@ -63,7 +64,7 @@ public class DLanguageDeclaratorImpl extends DNamedStubbedPsiElementBase<DLangua
             return getStub().getName();
         }
         if(getIdentifier() == null){
-            return "this declarator has no name";
+            return DReference.Companion.getNAME_NOT_FOUND_STRING();
         }
         return getIdentifier().getName();
     }

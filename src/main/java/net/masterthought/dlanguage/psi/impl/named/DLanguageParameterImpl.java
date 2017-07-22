@@ -91,7 +91,7 @@ public class DLanguageParameterImpl extends DNamedStubbedPsiElementBase<DLanguag
             return getStub().getName();
         }
         if (getIdentifier() == null) {
-            return "this parameter has no name";
+            return DReference.Companion.getNAME_NOT_FOUND_STRING();
 //            final DLanguageType_2 type_2 = getType().getType_2();
 //            if(type_2.getSymbol() != null){
 //                return DUtil.getEndOfIdentifierList(type_2.getSymbol().getIdentifierOrTemplateChain()).getName();

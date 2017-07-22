@@ -40,7 +40,7 @@ public class DLanguageForeachTypeImpl extends DNamedStubbedPsiElementBase<DLangu
     }
 
     @Override
-    @NotNull
+    @Nullable
     public DLanguageIdentifier getIdentifier() {
         return PsiTreeUtil.getStubChildOfType(this, DLanguageIdentifier.class);
     }
@@ -61,6 +61,9 @@ public class DLanguageForeachTypeImpl extends DNamedStubbedPsiElementBase<DLangu
     public String getName() {
         DLanguageForeachTypeStub stub = (this).getStub();
         if (stub != null) return StringUtil.notNullize(stub.getName());
+        if (getIdentifier() == null) {
+            return DReference.Companion.getNAME_NOT_FOUND_STRING();
+        }
         return getIdentifier().getName();
     }
 

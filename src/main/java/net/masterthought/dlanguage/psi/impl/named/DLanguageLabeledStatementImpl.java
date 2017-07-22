@@ -40,9 +40,9 @@ public class DLanguageLabeledStatementImpl extends DNamedStubbedPsiElementBase<D
     }
 
     @Override
-    @NotNull
+    @Nullable
     public DLanguageIdentifier getIdentifier() {
-        return notNullChild(PsiTreeUtil.getStubChildOfType(this, DLanguageIdentifier.class));
+        return PsiTreeUtil.getStubChildOfType(this, DLanguageIdentifier.class);
     }
 
     @Nullable
@@ -61,6 +61,9 @@ public class DLanguageLabeledStatementImpl extends DNamedStubbedPsiElementBase<D
     public String getName() {
         if (getStub() != null) {
             return getStub().getName();
+        }
+        if (getIdentifier() == null) {
+            return DReference.Companion.getNAME_NOT_FOUND_STRING();
         }
         return getIdentifier().getName();
     }

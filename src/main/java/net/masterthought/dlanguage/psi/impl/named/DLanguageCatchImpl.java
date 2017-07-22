@@ -82,7 +82,7 @@ public class DLanguageCatchImpl extends DNamedStubbedPsiElementBase<DLanguageCat
             return getStub().getName();
         }
         if (getIdentifier() == null) {
-            return "this catch parameter has no name";
+            return DReference.Companion.getNAME_NOT_FOUND_STRING();
         }
         return getIdentifier().getName();
     }

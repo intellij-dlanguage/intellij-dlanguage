@@ -21,6 +21,7 @@ import java.util.*
  * Resolves references to elements.
  */
 class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceBase<PsiNamedElement>(element, textRange), PsiPolyVariantReference {
+
     private val name: String
 
     init {
@@ -309,6 +310,7 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
 
     companion object {
         val EMPTY_RESOLVE_RESULT = arrayOfNulls<ResolveResult>(0)
+        val NAME_NOT_FOUND_STRING: String = ""
     }
 }
 

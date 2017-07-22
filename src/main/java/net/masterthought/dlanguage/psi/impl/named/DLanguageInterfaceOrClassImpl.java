@@ -82,6 +82,9 @@ public class DLanguageInterfaceOrClassImpl extends DNamedStubbedPsiElementBase<D
         if (getStub() != null) {
             return getStub().getName();
         }
+        if (getIdentifier() == null) {
+            return DReference.Companion.getNAME_NOT_FOUND_STRING();
+        }
         return getIdentifier().getName();
     }
 
