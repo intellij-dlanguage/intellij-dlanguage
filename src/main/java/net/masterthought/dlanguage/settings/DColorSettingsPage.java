@@ -42,7 +42,7 @@ public class DColorSettingsPage implements ColorSettingsPage {
 //            new AttributesDescriptor("User defined attribute", USER_DEFINED_ATTRIBUTE)
     };
 
-    private static Map<String, TextAttributesKey> ATTRIBUTES_KEY_MAP = ContainerUtil.newHashMap();
+    private static final Map<String, TextAttributesKey> ATTRIBUTES_KEY_MAP = ContainerUtil.newHashMap();
 
     static {
         ATTRIBUTES_KEY_MAP.put("k", KEYWORD);

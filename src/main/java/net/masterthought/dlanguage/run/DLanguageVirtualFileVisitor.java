@@ -11,9 +11,9 @@ import java.util.List;
 
 public class DLanguageVirtualFileVisitor extends VirtualFileVisitor {
     private final char separator = File.separatorChar;
-    private List<String> dLangSources;
-    private VirtualFile sourcesRoot;
-    private VirtualFile[] excludedRoots;
+    private final List<String> dLangSources;
+    private final VirtualFile sourcesRoot;
+    private final VirtualFile[] excludedRoots;
 
 
     public DLanguageVirtualFileVisitor(VirtualFile sourcesRoot, VirtualFile[] excludedRoots) {

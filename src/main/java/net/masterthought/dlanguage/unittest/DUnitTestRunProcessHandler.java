@@ -40,7 +40,7 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
     private final Map<String, Integer> nodeIdsByFullTestName = new HashMap<>();
     private final Project project;
     private final DUnitTestRunConfiguration configuration;
-    private Map<String, Set<String>> testClassToTestMethodNames = new HashMap<>();
+    private final Map<String, Set<String>> testClassToTestMethodNames = new HashMap<>();
     private int nextNodeId = 0;
 
 

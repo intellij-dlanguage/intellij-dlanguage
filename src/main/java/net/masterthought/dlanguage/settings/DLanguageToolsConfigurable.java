@@ -26,8 +26,8 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
 
     public static final String D_TOOLS_ID = "D Tools";
     private static final Logger LOG = Logger.getInstance(DLanguageToolsConfigurable.class);
-    private PropertiesComponent propertiesComponent;
-
+    private final PropertiesComponent propertiesComponent;
+    private final List<Tool> properties;
     // Swing components.
     private JPanel mainPanel;
     private TextFieldWithBrowseButton dubPath;
@@ -54,8 +54,6 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
     private RawCommandLineEditor dFixFlags;
     private JButton dFixAutoFind;
     private JTextField dFixVersion;
-
-    private List<Tool> properties;
 
     public DLanguageToolsConfigurable(@NotNull Project project) {
         this.propertiesComponent = PropertiesComponent.getInstance(project);
@@ -181,15 +179,15 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
     }
 
     interface Property {
-        public boolean isModified();
+        boolean isModified();
 
-        public void saveState();
+        void saveState();
 
-        public void restoreState();
+        void restoreState();
     }
 
     interface Versioned {
-        public void updateVersion();
+        void updateVersion();
     }
 
     /**
@@ -197,8 +195,8 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
      */
     class PropertyField implements Property {
         public final TextAccessor field;
+        public final String propertyKey;
         public String oldValue;
-        public String propertyKey;
 
         PropertyField(@NotNull String propertyKey, @NotNull TextAccessor field) {
             this(propertyKey, field, "");

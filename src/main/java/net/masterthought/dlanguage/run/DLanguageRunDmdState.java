@@ -35,7 +35,7 @@ public class DLanguageRunDmdState extends CommandLineState implements ProcessLis
 
     private static final Logger LOG = Logger.getInstance(DLanguageRunDmdState.class);
 
-    private DLanguageRunDmdConfiguration config;
+    private final DLanguageRunDmdConfiguration config;
     private Executor executor;
 
     protected DLanguageRunDmdState(@NotNull ExecutionEnvironment environment, @NotNull DLanguageRunDmdConfiguration config) {

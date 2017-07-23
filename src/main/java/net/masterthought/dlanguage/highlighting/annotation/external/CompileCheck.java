@@ -167,9 +167,9 @@ public class CompileCheck {
     }
 
     public static class Problem extends DProblem {
-        public String severity;
-        public TextRange range;
-        public String message;
+        public final String severity;
+        public final TextRange range;
+        public final String message;
 
         public Problem(final TextRange range, final String message, final String severity) {
             this.range = range;

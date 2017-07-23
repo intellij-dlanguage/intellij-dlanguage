@@ -1,9 +1,7 @@
 package net.masterthought.dlanguage.processors
 
-import com.intellij.openapi.util.Key
 import com.intellij.psi.PsiElement
 import com.intellij.psi.ResolveState
-import com.intellij.psi.scope.PsiScopeProcessor
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement
 import net.masterthought.dlanguage.psi.interfaces.VariableDeclaration
 import net.masterthought.dlanguage.utils.Identifier
@@ -11,17 +9,12 @@ import net.masterthought.dlanguage.utils.Identifier
 /**
  * Created by francis on 6/15/2017.
  */
-class DNameScopeProcessor(var start: Identifier) : PsiScopeProcessor {
-
-    val result = mutableSetOf<DNamedElement>()//todo technically should be Declaration
-
-    override fun handleEvent(event: PsiScopeProcessor.Event, associated: Any?) {
-        return
+class DNameScopeProcessor(var start: Identifier) : DResolveProcessor<DNamedElement, DNamedElement> {
+    override fun matches(call: DNamedElement, decl: DNamedElement): Boolean {
+        return true
     }
 
-    override fun <T : Any?> getHint(hintKey: Key<T>): T? {
-        return null
-    }
+    override val result = mutableSetOf<DNamedElement>()
 
     override fun execute(element: PsiElement, state: ResolveState): Boolean {
         if (element is DNamedElement) {

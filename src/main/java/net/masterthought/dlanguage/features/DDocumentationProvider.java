@@ -62,12 +62,17 @@ public class DDocumentationProvider extends AbstractDocumentationProvider implem
                         return "Unable to resolve symbol to one declaration";
                 }
             }
+            if (element.equals(originalElement) && element.getReference() != null) {
+                return "Unable to resolve symbol to one declaration";
+            }
             String blurb = "This symbol is:";//todo
-            blurb += String.format("%10s%n", a.isStatic() ? "static " : "");
-            blurb += String.format("%10s%n", a.isPrivate() ? "private " : "");
-            blurb += String.format("%10s%n", a.isPublic() ? "public " : "");
+            if (!a.isLocal()) {
+                blurb += String.format("%10s%n", a.isPrivate() ? "private " : "");
+                blurb += String.format("%10s%n", a.isPublic() ? "public " : "");
+                blurb += String.format("%10s%n", a.isProtected() ? "protected " : "");
+            }
             blurb += String.format("%10s%n", a.isProperty() ? "property " : "");
-            blurb += String.format("%10s%n", a.isProtected() ? "protected " : "");
+            blurb += String.format("%10s%n", a.isStatic() ? "static " : "");
             blurb += String.format("%10s%n", a.isExtern() ? "extern " : "");
             blurb += String.format("%10s%n", a.isNoGC() ? "nogc" : "");
             blurb += String.format("%10s%n", a.isLocal() ? "local" : "");

@@ -4,6 +4,7 @@ package net.masterthought.dlanguage.psi.interfaces;
  * Created by francis on 3/1/2017.
  * Contains methods common to auto declarations and variable declarations
  */
+@Deprecated
 public interface VariableDeclaration extends HasVisibility {
 
     /**

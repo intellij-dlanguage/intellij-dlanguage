@@ -29,7 +29,7 @@ import static net.masterthought.dlanguage.utils.DUtil.isNotNullOrEmpty;
 
 
 public class DLanguageRunDubState extends CommandLineState {
-    private DLanguageRunDubConfiguration config;
+    private final DLanguageRunDubConfiguration config;
     private Executor executor;
 
     protected DLanguageRunDubState(@NotNull ExecutionEnvironment environment, @NotNull DLanguageRunDubConfiguration

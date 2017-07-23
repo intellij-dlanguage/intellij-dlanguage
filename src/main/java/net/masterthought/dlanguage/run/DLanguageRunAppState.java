@@ -34,7 +34,7 @@ import java.util.List;
 
 
 public class DLanguageRunAppState extends CommandLineState {
-    private DLanguageRunAppConfiguration config;
+    private final DLanguageRunAppConfiguration config;
     private Executor executor;
 
     protected DLanguageRunAppState(@NotNull ExecutionEnvironment environment, @NotNull DLanguageRunAppConfiguration config) {

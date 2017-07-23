@@ -28,7 +28,10 @@ class DAttributesFinder {
     private var isProperty: Boolean? = null
     private var isNoGC: Boolean? = null
     private var isExtern: Boolean? = null
-//    private var isLocal: Boolean? = null
+    private var isPure: Boolean? = null
+    private var isNothrow: Boolean? = null
+    private var isConst: Boolean? = null
+    private var isImmutable: Boolean? = null
 
     var defaultsToStatic: Boolean = true
     var defaultsToPrivate: Boolean = false
@@ -38,6 +41,11 @@ class DAttributesFinder {
     var defaultsToNoGC: Boolean = false
     var defaultsToExtern: Boolean = false
     var defaultsToLocal: Boolean = false
+    var defaultsToPure: Boolean = false
+    var defaultsToNothrow: Boolean = false
+    var defaultsToConst: Boolean = false
+    var defaultsToImmutable: Boolean = false
+
 
     fun recurseUp() {
         var point = startingPoint
@@ -124,8 +132,14 @@ class DAttributesFinder {
             } else if (attribute.kW_FINAL != null) {
             } else if (attribute.kW_INOUT != null) {
             } else if (attribute.kW_NOTHROW != null) {
+                if (isNothrow == null) {
+                    isNothrow = true
+                }
             } else if (attribute.kW_OVERRIDE != null) {
             } else if (attribute.kW_PURE != null) {
+                if (isPure == null) {
+                    isPure = true
+                }
             } else if (attribute.kW_REF != null) {
             } else if (attribute.kW___GSHARED != null) {
             } else if (attribute.kW_SCOPE != null) {
@@ -186,6 +200,14 @@ class DAttributesFinder {
         return visibility == Visibility.LOCAL
     }
 
+    fun isPure(): Boolean {
+        return isPure ?: defaultsToPure
+    }
+
+    fun isNothrow(): Boolean {
+        return isNothrow ?: defaultsToNothrow
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other?.javaClass != javaClass) return false
@@ -198,6 +220,10 @@ class DAttributesFinder {
         if (isProperty != other.isProperty) return false
         if (isNoGC != other.isNoGC) return false
         if (isExtern != other.isExtern) return false
+        if (isPure != other.isPure) return false
+        if (isNothrow != other.isNothrow) return false
+        if (isConst != other.isConst) return false
+        if (isImmutable != other.isImmutable) return false
         if (defaultsToStatic != other.defaultsToStatic) return false
         if (defaultsToPrivate != other.defaultsToPrivate) return false
         if (defaultsToProtected != other.defaultsToProtected) return false
@@ -206,6 +232,10 @@ class DAttributesFinder {
         if (defaultsToNoGC != other.defaultsToNoGC) return false
         if (defaultsToExtern != other.defaultsToExtern) return false
         if (defaultsToLocal != other.defaultsToLocal) return false
+        if (defaultsToPure != other.defaultsToPure) return false
+        if (defaultsToNothrow != other.defaultsToNothrow) return false
+        if (defaultsToConst != other.defaultsToConst) return false
+        if (defaultsToImmutable != other.defaultsToImmutable) return false
 
         return true
     }
@@ -217,6 +247,10 @@ class DAttributesFinder {
         result = 31 * result + (isProperty?.hashCode() ?: 0)
         result = 31 * result + (isNoGC?.hashCode() ?: 0)
         result = 31 * result + (isExtern?.hashCode() ?: 0)
+        result = 31 * result + (isPure?.hashCode() ?: 0)
+        result = 31 * result + (isNothrow?.hashCode() ?: 0)
+        result = 31 * result + (isConst?.hashCode() ?: 0)
+        result = 31 * result + (isImmutable?.hashCode() ?: 0)
         result = 31 * result + defaultsToStatic.hashCode()
         result = 31 * result + defaultsToPrivate.hashCode()
         result = 31 * result + defaultsToProtected.hashCode()
@@ -225,6 +259,10 @@ class DAttributesFinder {
         result = 31 * result + defaultsToNoGC.hashCode()
         result = 31 * result + defaultsToExtern.hashCode()
         result = 31 * result + defaultsToLocal.hashCode()
+        result = 31 * result + defaultsToPure.hashCode()
+        result = 31 * result + defaultsToNothrow.hashCode()
+        result = 31 * result + defaultsToConst.hashCode()
+        result = 31 * result + defaultsToImmutable.hashCode()
         return result
     }
 

@@ -20,8 +20,8 @@ import java.net.URISyntaxException;
  * Lightweight test case base.
  */
 public abstract class DLightPlatformCodeInsightFixtureTestCase extends LightPlatformCodeInsightFixtureTestCase {
-    private String srcPath;
-    private String expectPath;
+    private final String srcPath;
+    private final String expectPath;
 
     /**
      * Sets the expected input and outputs and calls the constructor of the parent.

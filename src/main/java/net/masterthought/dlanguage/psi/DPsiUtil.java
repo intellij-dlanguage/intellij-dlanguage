@@ -4,7 +4,9 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
+import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.util.PsiTreeUtil;
+import net.masterthought.dlanguage.resolve.ParameterCountRange;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -24,7 +26,7 @@ public class DPsiUtil {
     }
 
     @Deprecated
-    private static List<DLanguageDeclaration> getDeclDefs(final PsiElement defs,final List<DLanguageDeclaration> declDefsList) {
+    private static List<DLanguageDeclaration> getDeclDefs(final PsiElement defs, final List<DLanguageDeclaration> declDefsList) {
         final DLanguageDeclaration declDefs = PsiTreeUtil.getChildOfType(defs, DLanguageDeclaration.class);
         if (declDefs != null) {
             declDefsList.add(declDefs);
@@ -53,5 +55,39 @@ public class DPsiUtil {
         return imports;
     }
 
+    public static PsiElement getParent(final @NotNull PsiElement element, final @NotNull Set<IElementType> targetType, final @NotNull Set<IElementType> excludedType) {
+        if (element.getParent() == null || element instanceof DLanguageFile) {
+            return null;
+        }
+
+        if (targetType.contains(element.getNode().getElementType())) {
+            return element;
+        }
+
+        if (excludedType.contains(element.getNode().getElementType())) {
+            return null;
+        }
+
+        return getParent(element.getParent(), targetType, excludedType);
+
+    }
+
+    public static ParameterCountRange getNumParameters(@NotNull DLanguageParameters parameters) {
+        int min = 0;
+        int max = 0;
+        for (DLanguageParameter parameter : parameters.getParameters()) {
+            if (parameter.getOP_EQ() != null) {
+                max++;
+                continue;
+            }
+            min++;
+            max++;
+        }
+        if (parameters.getOP_TRIPLEDOT() != null) {
+            max = Integer.MAX_VALUE;
+        }
+        return new ParameterCountRange(min, max);
+
+    }
 }
 
