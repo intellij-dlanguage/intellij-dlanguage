@@ -1512,7 +1512,7 @@ class DLangParser {
         }
         boolean ternary = parseTernaryExpression();
         if (!ternary) {
-            m.drop();
+            cleanup(m, ASSIGN_EXPRESSION);
             return false;
         }
         if (currentIsOneOf(tok("="), tok(">>>="), tok(">>="), tok("<<="), tok("+="), tok("-="), tok("*="), tok("%="), tok("&="), tok("/="), tok("|="), tok("^^="), tok("^="), tok("~="))) {
@@ -1524,7 +1524,7 @@ class DLangParser {
             exit_section_modified(builder, m, ASSIGN_EXPRESSION, true);
             return true;
         }
-        m.drop();
+        exit_section_modified(builder, m, ASSIGN_EXPRESSION, true);
         return true;
     }
 

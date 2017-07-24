@@ -70,20 +70,21 @@ D Language File
                                 IDENTIFIER
                                   PsiElement(DLanguageTokenType.ID)('o')
                         PsiElement(DLanguageTokenType.=)('=')
-                        DLanguageCmpExpressionImpl(CMP_EXPRESSION)
-                          DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
-                            DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
+                        DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
+                          DLanguageCmpExpressionImpl(CMP_EXPRESSION)
+                            DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
+                              DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
+                                DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
+                                  IDENTIFIER
+                                    PsiElement(DLanguageTokenType.ID)('Foo')
+                              PsiElement(DLanguageTokenType..)('.')
                               DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
                                 IDENTIFIER
-                                  PsiElement(DLanguageTokenType.ID)('Foo')
-                            PsiElement(DLanguageTokenType..)('.')
-                            DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
-                              IDENTIFIER
-                                PsiElement(DLanguageTokenType.ID)('x')
-                            PsiElement(DLanguageTokenType..)('.')
-                            DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
-                              IDENTIFIER
-                                PsiElement(DLanguageTokenType.ID)('offsetof')
+                                  PsiElement(DLanguageTokenType.ID)('x')
+                              PsiElement(DLanguageTokenType..)('.')
+                              DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
+                                IDENTIFIER
+                                  PsiElement(DLanguageTokenType.ID)('offsetof')
                     PsiElement(DLanguageTokenType.;)(';')
             PsiComment(DLanguageTokenType.LINE_COMMENT)('// error, Foo.x needs a 'this' reference')
             DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
@@ -99,20 +100,21 @@ D Language File
                                 IDENTIFIER
                                   PsiElement(DLanguageTokenType.ID)('o')
                         PsiElement(DLanguageTokenType.=)('=')
-                        DLanguageCmpExpressionImpl(CMP_EXPRESSION)
-                          DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
-                            DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
+                        DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
+                          DLanguageCmpExpressionImpl(CMP_EXPRESSION)
+                            DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
+                              DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
+                                DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
+                                  IDENTIFIER
+                                    PsiElement(DLanguageTokenType.ID)('foo')
+                              PsiElement(DLanguageTokenType..)('.')
                               DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
                                 IDENTIFIER
-                                  PsiElement(DLanguageTokenType.ID)('foo')
-                            PsiElement(DLanguageTokenType..)('.')
-                            DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
-                              IDENTIFIER
-                                PsiElement(DLanguageTokenType.ID)('x')
-                            PsiElement(DLanguageTokenType..)('.')
-                            DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
-                              IDENTIFIER
-                                PsiElement(DLanguageTokenType.ID)('offsetof')
+                                  PsiElement(DLanguageTokenType.ID)('x')
+                              PsiElement(DLanguageTokenType..)('.')
+                              DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
+                                IDENTIFIER
+                                  PsiElement(DLanguageTokenType.ID)('offsetof')
                     PsiElement(DLanguageTokenType.;)(';')
           PsiComment(DLanguageTokenType.LINE_COMMENT)('// ok')
           PsiElement(DLanguageTokenType.})('}')
