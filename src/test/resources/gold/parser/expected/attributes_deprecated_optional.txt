@@ -34,11 +34,12 @@ D Language File
                     DLanguageExpressionImpl(EXPRESSION)
                       DLanguageCmpExpressionImpl(CMP_EXPRESSION)
                         DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
-                          DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                            DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
-                              IDENTIFIER
-                                PsiElement(DLanguageTokenType.ID)('oldBar')
                           DLanguageFunctionCallExpressionImpl(FUNCTION_CALL_EXPRESSION)
+                            DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
+                              DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
+                                DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
+                                  IDENTIFIER
+                                    PsiElement(DLanguageTokenType.ID)('oldBar')
                             DLanguageArgumentsImpl(ARGUMENTS)
                               PsiElement(DLanguageTokenType.()('(')
                               PsiElement(DLanguageTokenType.))(')')

@@ -660,15 +660,16 @@ D Language File
                     DLanguageExpressionImpl(EXPRESSION)
                       DLanguageCmpExpressionImpl(CMP_EXPRESSION)
                         DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
-                          DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                            DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
-                              IDENTIFIER
-                                PsiElement(DLanguageTokenType.ID)('oi')
-                          PsiElement(DLanguageTokenType..)('.')
-                          DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
-                            IDENTIFIER
-                              PsiElement(DLanguageTokenType.ID)('foo')
                           DLanguageFunctionCallExpressionImpl(FUNCTION_CALL_EXPRESSION)
+                            DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
+                              DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
+                                DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
+                                  IDENTIFIER
+                                    PsiElement(DLanguageTokenType.ID)('oi')
+                              PsiElement(DLanguageTokenType..)('.')
+                              DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
+                                IDENTIFIER
+                                  PsiElement(DLanguageTokenType.ID)('foo')
                             DLanguageArgumentsImpl(ARGUMENTS)
                               PsiElement(DLanguageTokenType.()('(')
                               PsiElement(DLanguageTokenType.))(')')
@@ -786,15 +787,16 @@ D Language File
                                       DLanguageEqualExpressionImpl(EQUAL_EXPRESSION)
                                         PsiElement(DLanguageTokenType.==)('==')
                                         DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
-                                          DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                                            DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
-                                              IDENTIFIER
-                                                PsiElement(DLanguageTokenType.ID)('i')
-                                          PsiElement(DLanguageTokenType..)('.')
-                                          DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
-                                            IDENTIFIER
-                                              PsiElement(DLanguageTokenType.ID)('foo')
                                           DLanguageFunctionCallExpressionImpl(FUNCTION_CALL_EXPRESSION)
+                                            DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
+                                              DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
+                                                DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
+                                                  IDENTIFIER
+                                                    PsiElement(DLanguageTokenType.ID)('i')
+                                              PsiElement(DLanguageTokenType..)('.')
+                                              DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
+                                                IDENTIFIER
+                                                  PsiElement(DLanguageTokenType.ID)('foo')
                                             DLanguageArgumentsImpl(ARGUMENTS)
                                               PsiElement(DLanguageTokenType.()('(')
                                               PsiElement(DLanguageTokenType.))(')')
@@ -852,15 +854,16 @@ D Language File
                     DLanguageExpressionImpl(EXPRESSION)
                       DLanguageCmpExpressionImpl(CMP_EXPRESSION)
                         DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
-                          DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                            DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
-                              IDENTIFIER
-                                PsiElement(DLanguageTokenType.ID)('o')
-                          PsiElement(DLanguageTokenType..)('.')
-                          DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
-                            IDENTIFIER
-                              PsiElement(DLanguageTokenType.ID)('bar')
                           DLanguageFunctionCallExpressionImpl(FUNCTION_CALL_EXPRESSION)
+                            DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
+                              DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
+                                DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
+                                  IDENTIFIER
+                                    PsiElement(DLanguageTokenType.ID)('o')
+                              PsiElement(DLanguageTokenType..)('.')
+                              DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
+                                IDENTIFIER
+                                  PsiElement(DLanguageTokenType.ID)('bar')
                             DLanguageArgumentsImpl(ARGUMENTS)
                               PsiElement(DLanguageTokenType.()('(')
                               PsiElement(DLanguageTokenType.))(')')

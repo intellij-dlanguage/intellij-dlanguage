@@ -1951,7 +1951,7 @@ class DLangParser {
     private Token.IdType parseBuiltinType() {
         final Marker marker = enter_section_(builder);
         final Token.IdType type = advance().type;
-        exit_section_(builder,marker,BUILTIN_TYPE,true);
+        exit_section_(builder, marker, BUILTIN_TYPE, true);
         return type;
     }
 
@@ -3881,7 +3881,8 @@ class DLangParser {
     }
 
     boolean parseFunctionCallExpression() {
-        return parseFunctionCallExpression(true);
+        final Pair<Boolean, Marker> booleanMarkerPair = parseFunctionCallExpression(null);
+        return booleanMarkerPair.first;
     }
 
     /**
@@ -3893,38 +3894,43 @@ class DLangParser {
      * | $(RULE type) $(RULE arguments)
      * ;)
      */
-    boolean parseFunctionCallExpression(boolean parseUnary)//(UnaryExpression unary = null)
+    private Pair<Boolean, Marker> parseFunctionCallExpression(Marker unary)//(UnaryExpression unary = null)
     {
-        Marker m = enter_section_modified(builder);
+        Marker m;
+        if (unary != null) {
+            m = unary.precede();
+        } else {
+            m = enter_section_modified(builder);
+        }
         Token.IdType i = current().type;
         if (i.equals(tok("const")) || i.equals(tok("immutable")) || i.equals(tok("inout")) || i.equals(tok("shared")) || i.equals(tok("scope")) || i.equals(tok("pure")) || i.equals(tok("nothrow"))) {
             if (!parseType()) {
                 cleanup(m, FUNCTION_CALL_EXPRESSION);
-                return false;
+                return new Pair<>(false, m);
             }
             if (!parseArguments()) {
                 cleanup(m, FUNCTION_CALL_EXPRESSION);
-                return false;
+                return new Pair<>(false, m);
             }
         } else {
-            if (!parseUnary) {
+            if (unary != null) {
             } else if (!parseUnaryExpression()) {
                 cleanup(m, FUNCTION_CALL_EXPRESSION);
-                return false;
+                return new Pair<>(false, m);
             }
             if (currentIs(tok("!")))
                 if (!parseTemplateArguments()) {
                     cleanup(m, FUNCTION_CALL_EXPRESSION);
-                    return false;
+                    return new Pair<>(false, m);
                 }
-            if (!parseUnary)
+            if (unary != null)
                 if (!parseArguments()) {
                     cleanup(m, FUNCTION_CALL_EXPRESSION);
-                    return false;
+                    return new Pair<>(false, m);
                 }
         }
         exit_section_modified(builder, m, FUNCTION_CALL_EXPRESSION, true);
-        return true;
+        return new Pair<>(true, m);
     }
 
     boolean parseFunctionDeclaration() {
@@ -7584,73 +7590,71 @@ class DLangParser {
                     return false;
                 }
             }
-        } else {
-            if (i.equals(tok("scope")) || i.equals(tok("pure")) || i.equals(tok("nothrow"))) {
-                if (!parseFunctionCallExpression()) {
-                    cleanup(m, UNARY_EXPRESSION);
-                    return false;
-                }
-            } else if (i.equals(tok("&")) || i.equals(tok("!")) || i.equals(tok("*")) || i.equals(tok("+")) || i.equals(tok("-")) || i.equals(tok("~")) || i.equals(tok("++")) || i.equals(tok("--"))) {
+        } else if (i.equals(tok("scope")) || i.equals(tok("pure")) || i.equals(tok("nothrow"))) {
+            if (!parseFunctionCallExpression()) {
+                cleanup(m, UNARY_EXPRESSION);
+                return false;
+            }
+        } else if (i.equals(tok("&")) || i.equals(tok("!")) || i.equals(tok("*")) || i.equals(tok("+")) || i.equals(tok("-")) || i.equals(tok("~")) || i.equals(tok("++")) || i.equals(tok("--"))) {
+            advance();
+            if (!parseUnaryExpression()) {
+                cleanup(m, UNARY_EXPRESSION);
+                return false;
+            }
+        } else if (i.equals(tok("new"))) {
+            if (!parseNewExpression()) {
+                cleanup(m, UNARY_EXPRESSION);
+                return false;
+            }
+        } else if (i.equals(tok("delete"))) {
+            if (!parseDeleteExpression()) {
+                cleanup(m, UNARY_EXPRESSION);
+                return false;
+            }
+        } else if (i.equals(tok("cast"))) {
+            if (!parseCastExpression()) {
+                cleanup(m, UNARY_EXPRESSION);
+                return false;
+            }
+        } else if (i.equals(tok("assert"))) {
+            if (!parseAssertExpression()) {
+                cleanup(m, UNARY_EXPRESSION);
+                return false;
+            }
+        } else if (i.equals(tok("("))) {
+            Bookmark b = setBookmark();
+            skipParens();
+            if (startsWith(tok("."), tok("identifier"))) {
+                // go back to the (
+                goToBookmark(b);
+                Bookmark b2 = setBookmark();
                 advance();
-                if (!parseUnaryExpression()) {
-                    cleanup(m, UNARY_EXPRESSION);
-                    return false;
-                }
-            } else if (i.equals(tok("new"))) {
-                if (!parseNewExpression()) {
-                    cleanup(m, UNARY_EXPRESSION);
-                    return false;
-                }
-            } else if (i.equals(tok("delete"))) {
-                if (!parseDeleteExpression()) {
-                    cleanup(m, UNARY_EXPRESSION);
-                    return false;
-                }
-            } else if (i.equals(tok("cast"))) {
-                if (!parseCastExpression()) {
-                    cleanup(m, UNARY_EXPRESSION);
-                    return false;
-                }
-            } else if (i.equals(tok("assert"))) {
-                if (!parseAssertExpression()) {
-                    cleanup(m, UNARY_EXPRESSION);
-                    return false;
-                }
-            } else if (i.equals(tok("("))) {
-                Bookmark b = setBookmark();
-                skipParens();
-                if (startsWith(tok("."), tok("identifier"))) {
-                    // go back to the (
-                    goToBookmark(b);
-                    Bookmark b2 = setBookmark();
-                    advance();
-                    boolean t = parseType();
-                    if (!t || !currentIs(tok(")"))) {
-                        goToBookmark(b);//todo investigate the possible going to the same bookmark twice
-                        if (!unaryExpressionSwitchDefault(m)) {
-                            abandonBookmark(b2);
-                            return false;//no cleanup needed
-                        }
-                    } else {
+                boolean t = parseType();
+                if (!t || !currentIs(tok(")"))) {
+                    goToBookmark(b);//todo investigate the possible going to the same bookmark twice
+                    if (!unaryExpressionSwitchDefault(m)) {
                         abandonBookmark(b2);
-                        advance(); // )
-                        advance(); // .
-                        if (!parseIdentifierOrTemplateInstance()) {
-                            cleanup(m, UNARY_EXPRESSION);
-                            return false;
-                        }
+                        return false;//no cleanup needed
                     }
                 } else {
-                    // not (type).identifier, so treat as primary expression
-                    goToBookmark(b);
-                    if (!unaryExpressionSwitchDefault(m)) {
-                        return false;//no cleanup needed
+                    abandonBookmark(b2);
+                    advance(); // )
+                    advance(); // .
+                    if (!parseIdentifierOrTemplateInstance()) {
+                        cleanup(m, UNARY_EXPRESSION);
+                        return false;
                     }
                 }
             } else {
+                // not (type).identifier, so treat as primary expression
+                goToBookmark(b);
                 if (!unaryExpressionSwitchDefault(m)) {
                     return false;//no cleanup needed
                 }
+            }
+        } else {
+            if (!unaryExpressionSwitchDefault(m)) {
+                return false;//no cleanup needed
             }
         }
 
@@ -7664,7 +7668,11 @@ class DLangParser {
                     boolean jump = (currentIs(tok("(")) && p != null && p.type.equals(tok("("))) || peekIs(tok("("));
                     goToBookmark(b);
                     if (jump) {
-                        if (!parseFunctionCallExpression(false)) {
+                        //todo fix this duplication
+                        exit_section_modified(builder, m, UNARY_EXPRESSION, true);
+                        final Pair<Boolean, Marker> booleanMarkerPair = parseFunctionCallExpression(m);
+                        m = booleanMarkerPair.second.precede();
+                        if (!booleanMarkerPair.first) {
                             cleanup(m, UNARY_EXPRESSION);
                             return false;
                         }
@@ -7672,12 +7680,12 @@ class DLangParser {
                         break loop;
                 } else
                     break loop;
-                if (!parseFunctionCallExpression(false)) {
-                    cleanup(m, UNARY_EXPRESSION);
-                    return false;
-                }
             } else if (i1.equals(tok("("))) {
-                if (!parseFunctionCallExpression(false)) {
+                //todo fix this duplication
+                exit_section_modified(builder, m, UNARY_EXPRESSION, true);
+                final Pair<Boolean, Marker> booleanMarkerPair = parseFunctionCallExpression(m);
+                m = booleanMarkerPair.second.precede();
+                if (!booleanMarkerPair.first) {
                     cleanup(m, UNARY_EXPRESSION);
                     return false;
                 }
@@ -8072,8 +8080,7 @@ class DLangParser {
                 break loop;
             }
         }
-        if (index <= b.intValue())
-        {
+        if (index <= b.intValue()) {
             goToBookmark(b);
             return new Pair<>(DecType.other, beginIndex);
         }
@@ -9059,7 +9066,7 @@ class DLangParser {
         }
     }
 
-    class Bookmark  {
+    class Bookmark {
         final int num;
         final Marker m;
         private boolean dropped = false;

@@ -80,15 +80,16 @@ D Language File
                     DLanguageExpressionImpl(EXPRESSION)
                       DLanguageCmpExpressionImpl(CMP_EXPRESSION)
                         DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
-                          DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                            DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
-                              IDENTIFIER
-                                PsiElement(DLanguageTokenType.ID)('t')
-                          PsiElement(DLanguageTokenType..)('.')
-                          DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
-                            IDENTIFIER
-                              PsiElement(DLanguageTokenType.ID)('opAssign')
                           DLanguageFunctionCallExpressionImpl(FUNCTION_CALL_EXPRESSION)
+                            DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
+                              DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
+                                DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
+                                  IDENTIFIER
+                                    PsiElement(DLanguageTokenType.ID)('t')
+                              PsiElement(DLanguageTokenType..)('.')
+                              DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
+                                IDENTIFIER
+                                  PsiElement(DLanguageTokenType.ID)('opAssign')
                             DLanguageArgumentsImpl(ARGUMENTS)
                               PsiElement(DLanguageTokenType.()('(')
                               DLanguageArgumentListImpl(ARGUMENT_LIST)
@@ -179,15 +180,16 @@ D Language File
                     DLanguageExpressionImpl(EXPRESSION)
                       DLanguageCmpExpressionImpl(CMP_EXPRESSION)
                         DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
-                          DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                            DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
-                              IDENTIFIER
-                                PsiElement(DLanguageTokenType.ID)('tmp')
-                          PsiElement(DLanguageTokenType..)('.')
-                          DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
-                            IDENTIFIER
-                              PsiElement(DLanguageTokenType.ID)('__dtor')
                           DLanguageFunctionCallExpressionImpl(FUNCTION_CALL_EXPRESSION)
+                            DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
+                              DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
+                                DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
+                                  IDENTIFIER
+                                    PsiElement(DLanguageTokenType.ID)('tmp')
+                              PsiElement(DLanguageTokenType..)('.')
+                              DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
+                                IDENTIFIER
+                                  PsiElement(DLanguageTokenType.ID)('__dtor')
                             DLanguageArgumentsImpl(ARGUMENTS)
                               PsiElement(DLanguageTokenType.()('(')
                               PsiElement(DLanguageTokenType.))(')')

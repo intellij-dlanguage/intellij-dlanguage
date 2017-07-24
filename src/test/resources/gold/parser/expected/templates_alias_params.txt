@@ -416,15 +416,16 @@ D Language File
                     DLanguageExpressionImpl(EXPRESSION)
                       DLanguageCmpExpressionImpl(CMP_EXPRESSION)
                         DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
-                          DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                            DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
-                              IDENTIFIER
-                                PsiElement(DLanguageTokenType.ID)('bar')
-                          PsiElement(DLanguageTokenType..)('.')
-                          DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
-                            IDENTIFIER
-                              PsiElement(DLanguageTokenType.ID)('y')
                           DLanguageFunctionCallExpressionImpl(FUNCTION_CALL_EXPRESSION)
+                            DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
+                              DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
+                                DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
+                                  IDENTIFIER
+                                    PsiElement(DLanguageTokenType.ID)('bar')
+                              PsiElement(DLanguageTokenType..)('.')
+                              DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
+                                IDENTIFIER
+                                  PsiElement(DLanguageTokenType.ID)('y')
                             DLanguageArgumentsImpl(ARGUMENTS)
                               PsiElement(DLanguageTokenType.()('(')
                               DLanguageArgumentListImpl(ARGUMENT_LIST)
@@ -916,11 +917,12 @@ D Language File
                     DLanguageExpressionImpl(EXPRESSION)
                       DLanguageCmpExpressionImpl(CMP_EXPRESSION)
                         DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
-                          DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                            DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
-                              IDENTIFIER
-                                PsiElement(DLanguageTokenType.ID)('writeln')
                           DLanguageFunctionCallExpressionImpl(FUNCTION_CALL_EXPRESSION)
+                            DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
+                              DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
+                                DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
+                                  IDENTIFIER
+                                    PsiElement(DLanguageTokenType.ID)('writeln')
                             DLanguageArgumentsImpl(ARGUMENTS)
                               PsiElement(DLanguageTokenType.()('(')
                               DLanguageArgumentListImpl(ARGUMENT_LIST)
