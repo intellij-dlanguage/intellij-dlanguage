@@ -7627,17 +7627,19 @@ class DLangParser {
             if (startsWith(tok("."), tok("identifier"))) {
                 // go back to the (
                 goToBookmark(b);
+//                b = setBookmark();
                 Bookmark b2 = setBookmark();
                 advance();
                 boolean t = parseType();
                 if (!t || !currentIs(tok(")"))) {
-                    goToBookmark(b);//todo investigate the possible going to the same bookmark twice
+                    goToBookmark(b);//todo investigate the possible going to the same bookmark twice. for some reason if I prevent going to the same bookmark twice I get lots of index out of bounds from idea-core
                     if (!unaryExpressionSwitchDefault(m)) {
                         abandonBookmark(b2);
                         return false;//no cleanup needed
                     }
                 } else {
                     abandonBookmark(b2);
+//                    abandonBookmark(b);
                     advance(); // )
                     advance(); // .
                     if (!parseIdentifierOrTemplateInstance()) {

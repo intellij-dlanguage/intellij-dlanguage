@@ -1,10 +1,12 @@
-package net.masterthought.dlanguage.processors
+package net.masterthought.dlanguage.resolve.processors.parameters
 
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.PsiTreeUtil.isAncestor
 import net.masterthought.dlanguage.psi.DLanguageAttribute
+import net.masterthought.dlanguage.psi.DLanguageIfCondition
 import net.masterthought.dlanguage.psi.DLanguageSingleImport
 import net.masterthought.dlanguage.psi.DLanguageUnittest
+import net.masterthought.dlanguage.psi.interfaces.DNamedElement
 import net.masterthought.dlanguage.utils.*
 
 /**
@@ -48,6 +50,42 @@ class DAttributesFinder {
 
 
     fun recurseUp() {
+        if (startingPoint is DNamedElement) {
+            if (startingPoint is Constructor) {
+                recurseUpImpl(startingPoint.kW_THIS!!)
+            } else if (startingPoint is FunctionDeclaration) {
+                recurseUpImpl(startingPoint.identifier!!)
+            } else if (startingPoint is InterfaceOrClass) {
+                recurseUpImpl(startingPoint.identifier!!)
+            } else if (startingPoint is UnionDeclaration) {
+                recurseUpImpl(startingPoint.identifier!!)
+            } else if (startingPoint is StructDeclaration) {
+                recurseUpImpl(startingPoint.identifier!!)
+            } else if (startingPoint is LabeledStatement) {
+                recurseUpImpl(startingPoint.identifier!!)
+            } else if (startingPoint is AutoDeclarationPart) {
+                recurseUpImpl(startingPoint.identifier!!)
+            } else if (startingPoint is EnumDeclaration) {
+                recurseUpImpl(startingPoint.identifier!!)
+            } else if (startingPoint is Catch) {
+                recurseUpImpl(startingPoint.identifier!!)
+            } else if (startingPoint is Declarator) {
+                recurseUpImpl(startingPoint.identifier!!)
+            } else if (startingPoint is EponymousTemplateDeclaration) {
+                recurseUpImpl(startingPoint.identifier!!)
+            } else if (startingPoint is ForeachType) {
+                recurseUpImpl(startingPoint.identifier!!)
+            } else if (startingPoint is DLanguageIfCondition) {
+                recurseUpImpl(startingPoint.identifier!!)
+            } else if (startingPoint is SingleImport) {
+                recurseUpImpl(startingPoint.identifier!!)
+            } else if (startingPoint is TemplateDeclaration) {
+                recurseUpImpl(startingPoint.identifier!!)
+            }
+        }
+    }
+
+    private fun recurseUpImpl(startingPoint: PsiElement) {
         var point = startingPoint
         while (true) {
             while (true) {
@@ -58,7 +96,6 @@ class DAttributesFinder {
                     break
                 }
                 point = point.prevSibling
-
             }
             if (point.parent == null) {
                 break
@@ -72,6 +109,7 @@ class DAttributesFinder {
         if (element is DLanguageSingleImport && isAncestor(startingPoint, element, true)) {
             defaultsToPrivate = true
             defaultsToPublic = false
+            defaultsToStatic = false
             return false
         }
         if (element is FunctionDeclaration || element is DLanguageUnittest || element is Parameters || element is TemplateParameters) {
@@ -92,8 +130,8 @@ class DAttributesFinder {
         if (element is Attribute) {
             updateFromAttribute(element)
         }
-        if(element is Declaration){
-            if(element.attributeDeclaration != null){
+        if (element is Declaration) {
+            if (element.attributeDeclaration != null) {
                 for (attribute in element.attributes) {
                     updateFromAttribute(attribute)
                 }
@@ -195,7 +233,7 @@ class DAttributesFinder {
     }
 
     fun isLocal(): Boolean {
-        if(visibility == null)
+        if (visibility == null)
             return defaultsToLocal
         return visibility == Visibility.LOCAL
     }

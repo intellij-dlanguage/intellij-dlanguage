@@ -87,7 +87,7 @@ public abstract class DResolveTestCase extends DLightPlatformCodeInsightFixtureT
         }
         if (succeed) {
             //function,class,constructor
-            if (resolvedElement instanceof DLanguageTemplateDeclaration || resolvedElement instanceof DLanguageFunctionDeclaration || resolvedElement instanceof DLanguageInterfaceOrClass) {
+            if (resolvedElement instanceof DLanguageTemplateDeclaration || resolvedElement instanceof DLanguageFunctionDeclaration || resolvedElement instanceof DLanguageInterfaceOrClass || resolvedElement instanceof DLanguageStructDeclaration) {
                 assertEquals("Could not resolve expected reference.", resolvedElement, referencedElement.resolve().getParent());
             }/* else if (resolvedElement instanceof DLanguageConstructor) {
                 assertTrue(referencedElement.resolve() instanceof DLanguageConstructor);

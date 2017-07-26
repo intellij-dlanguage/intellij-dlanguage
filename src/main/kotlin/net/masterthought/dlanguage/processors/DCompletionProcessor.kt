@@ -5,7 +5,6 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.ResolveState
 import com.intellij.psi.scope.PsiScopeProcessor
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement
-import net.masterthought.dlanguage.psi.interfaces.Declaration
 
 /**
  * Created by francis on 6/17/2017.
@@ -24,7 +23,7 @@ class DCompletionProcessor : PsiScopeProcessor {
     }
 
     override fun execute(element: PsiElement, state: ResolveState): Boolean {
-        if (element is Declaration && element is DNamedElement) {
+        if (element is DNamedElement) {
             completions.add(element.name)
         }
         return true

@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.util.List;
+import java.util.Set;
 
 import static net.masterthought.dlanguage.psi.DLanguageTypes.ID;
 
@@ -194,10 +194,10 @@ public class DLanguageIdentifierImpl extends DNamedStubbedPsiElementBase<DLangua
     }
 
     public void delete() {
-        final List<PsiNamedElement> definitionNode = DResolveUtil.INSTANCE.findDefinitionNode(getProject(), this);
+        final Set<PsiNamedElement> definitionNode = DResolveUtil.INSTANCE.findDefinitionNode(getProject(), this);
         if (definitionNode.size() != 1)
             throw new IllegalStateException();
-        definitionNode.get(0).delete();
+        ((PsiElement) definitionNode.toArray()[0]).delete();
     }
 
     @Nullable

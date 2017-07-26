@@ -281,14 +281,14 @@ static this() {
     has_processDeclaration["ClassDeclaration"] = false;
     has_processDeclaration["CmpExpression"] = false;
     has_processDeclaration["CompileCondition"] = false;
-    has_processDeclaration["ConditionalDeclaration"] = false;
+    has_processDeclaration["ConditionalDeclaration"] = true;
     has_processDeclaration["ConditionalStatement"] = false;
     has_processDeclaration["Constraint"] = false;
     has_processDeclaration["Constructor"] = true;
     has_processDeclaration["ContinueStatement"] = false;
     has_processDeclaration["DebugCondition"] = false;
     has_processDeclaration["DebugSpecification"] = false;
-    has_processDeclaration["Declaration"] = false;
+    has_processDeclaration["Declaration"] = true;
     has_processDeclaration["DeclarationOrStatement"] = false;
     has_processDeclaration["DeclarationsAndStatements"] = true;
     has_processDeclaration["Declarator"] = false;
@@ -326,7 +326,7 @@ static this() {
     has_processDeclaration["IfCondition"] = false;
     has_processDeclaration["ImportBind"] = false;
     has_processDeclaration["ImportBindings"] = false;
-    has_processDeclaration["ImportDeclaration"] = false;
+    has_processDeclaration["ImportDeclaration"] = true;
     has_processDeclaration["ImportExpression"] = false;
     has_processDeclaration["Index"] = false;
     has_processDeclaration["IndexExpression"] = false;

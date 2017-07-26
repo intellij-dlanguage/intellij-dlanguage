@@ -1,9 +1,9 @@
-package net.masterthought.dlanguage.processors
+package net.masterthought.dlanguage.resolve.processors
 
 import com.intellij.psi.PsiElement
 import com.intellij.psi.ResolveState
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement
-import net.masterthought.dlanguage.psi.interfaces.VariableDeclaration
+import net.masterthought.dlanguage.utils.Constructor
 import net.masterthought.dlanguage.utils.Identifier
 
 /**
@@ -19,13 +19,10 @@ class DNameScopeProcessor(var start: Identifier) : DResolveProcessor<DNamedEleme
     override fun execute(element: PsiElement, state: ResolveState): Boolean {
         if (element is DNamedElement) {
             if (element.name == start.name) {
-                if (element is VariableDeclaration) {
-                    if (!element.actuallyIsDeclaration()) {
-                        return true
-                    }
+                if (element !is Constructor) {//todo this class should be renamed because of this
+                    result.add(element)
+                    return false
                 }
-                result.add(element)
-                return false
             }
         }
         else{

@@ -7,7 +7,7 @@ import net.masterthought.dlanguage.psi.DLanguageIdentifier;
 import net.masterthought.dlanguage.resolve.DResolveUtil;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * Created by francis on 4/18/2017.
@@ -17,7 +17,7 @@ public class DRefactoringSupportProvider extends RefactoringSupportProvider {
     public boolean isSafeDeleteAvailable(@NotNull PsiElement element) {
         if (!(element instanceof DLanguageIdentifier))
             return false;
-        final List<PsiNamedElement> resolve = DResolveUtil.INSTANCE.findDefinitionNode(element.getProject(), (PsiNamedElement) element);
+        final Set<PsiNamedElement> resolve = DResolveUtil.INSTANCE.findDefinitionNode(element.getProject(), (PsiNamedElement) element);
         return resolve.size() == 1;
     }
 

@@ -10,6 +10,7 @@ import net.masterthought.dlanguage.psi.DLanguageIdentifierChain;
 import net.masterthought.dlanguage.psi.DLanguageSingleImport;
 import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import net.masterthought.dlanguage.psi.references.DReference;
+import net.masterthought.dlanguage.resolve.processors.parameters.DAttributesFinder;
 import net.masterthought.dlanguage.stubs.DLanguageSingleImportStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -63,5 +64,13 @@ public class DLanguageSingleImportImpl extends DNamedStubbedPsiElementBase<DLang
     public PsiElement setName(@NotNull String name) throws IncorrectOperationException {
         getIdentifier().setName(name);//todo check
         return this;
+    }
+
+    public boolean isPublic() {
+        if (getStub() != null)
+            return getStub().isPublic();
+        final DAttributesFinder finder = new DAttributesFinder(getIdentifierChain().getIdentifiers().get(0));
+        finder.recurseUp();
+        return finder.isPublic();
     }
 }

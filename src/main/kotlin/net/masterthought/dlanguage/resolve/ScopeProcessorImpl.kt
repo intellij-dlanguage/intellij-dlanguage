@@ -5,12 +5,16 @@ import com.intellij.psi.ResolveState
 import com.intellij.psi.scope.PsiScopeProcessor
 import net.masterthought.dlanguage.psi.*
 import net.masterthought.dlanguage.resolve.ScopeProcessorImplUtil.processDeclaration
+import net.masterthought.dlanguage.resolve.ScopeProcessorImplUtil.processParameters
+import net.masterthought.dlanguage.resolve.ScopeProcessorImplUtil.processTemplateParameters
 import net.masterthought.dlanguage.utils.*
 
 
 /**
  * implements processDeclarations for various statements
  * todo make cases named for when someone goto's case
+ * todo make is expressions named
+ * todo refactor processDeclerations to process children
  */
 object ScopeProcessorImpl {
     /**
@@ -39,7 +43,7 @@ object ScopeProcessorImpl {
                             place: PsiElement): Boolean {
         var toContinue = true
         for (declaration in element.declarations) {
-            if (!ScopeProcessorImplUtil.processDeclaration(declaration, processor, state, lastParent, place)) {
+            if (!processDeclaration(declaration, processor, state, lastParent, place)) {
                 toContinue = false
             }
         }
@@ -54,7 +58,7 @@ object ScopeProcessorImpl {
                             lastParent: PsiElement,
                             place: PsiElement): Boolean {
         if (element.templateParameters != null) {
-            if (!ScopeProcessorImplUtil.processTemplateParameters(element.templateParameters!!, processor, state, lastParent, place)) {
+            if (!processTemplateParameters(element.templateParameters!!, processor, state, lastParent, place)) {
                 return false
             }
         }
@@ -68,7 +72,7 @@ object ScopeProcessorImpl {
                             lastParent: PsiElement,
                             place: PsiElement): Boolean {
         if (element.templateParameters != null) {
-            if (!ScopeProcessorImplUtil.processTemplateParameters(element.templateParameters!!, processor, state, lastParent, place)) {
+            if (!processTemplateParameters(element.templateParameters!!, processor, state, lastParent, place)) {
                 return false
             }
         }
@@ -82,7 +86,7 @@ object ScopeProcessorImpl {
                             lastParent: PsiElement,
                             place: PsiElement): Boolean {
         if (element.templateParameters != null) {
-            if (!ScopeProcessorImplUtil.processTemplateParameters(element.templateParameters!!, processor, state, lastParent, place)) {
+            if (!processTemplateParameters(element.templateParameters!!, processor, state, lastParent, place)) {
                 return false
             }
         }
@@ -96,7 +100,7 @@ object ScopeProcessorImpl {
                             lastParent: PsiElement,
                             place: PsiElement): Boolean {
         if (element.parameters != null) {
-            if (!ScopeProcessorImplUtil.processParameters(element.parameters!!, processor, state, lastParent, place)) {
+            if (!processParameters(element.parameters!!, processor, state, lastParent, place)) {
                 return false
             }
         }
@@ -110,7 +114,7 @@ object ScopeProcessorImpl {
                             lastParent: PsiElement,
                             place: PsiElement): Boolean {
         if (element.parameters != null) {
-            if (!ScopeProcessorImplUtil.processParameters(element.parameters!!, processor, state, lastParent, place)) {
+            if (!processParameters(element.parameters!!, processor, state, lastParent, place)) {
                 return false
             }
         }
@@ -123,12 +127,20 @@ object ScopeProcessorImpl {
                             state: ResolveState,
                             lastParent: PsiElement,
                             place: PsiElement): Boolean {
+        var toContinue = true
         if (element.templateParameters != null) {
-            if (!ScopeProcessorImplUtil.processTemplateParameters(element.templateParameters!!, processor, state, lastParent, place)) {
-                return false
+            if (!processTemplateParameters(element.templateParameters!!, processor, state, lastParent, place)) {
+                toContinue = false
             }
         }
-        return true
+        if (element.structBody?.declarations != null) {
+            for (declaration in element.structBody?.declarations!!) {
+                if (!processDeclaration(declaration, processor, state, lastParent, place)) {
+                    toContinue = false
+                }
+            }
+        }
+        return toContinue
     }
 
     @Suppress("UNUSED_PARAMETER")
@@ -137,12 +149,20 @@ object ScopeProcessorImpl {
                             state: ResolveState,
                             lastParent: PsiElement,
                             place: PsiElement): Boolean {
+        var toContinue = true
         if (element.templateParameters != null) {
-            if (!ScopeProcessorImplUtil.processTemplateParameters(element.templateParameters!!, processor, state, lastParent, place)) {
-                return false
+            if (!processTemplateParameters(element.templateParameters!!, processor, state, lastParent, place)) {
+                toContinue = false
             }
         }
-        return true
+        if (element.structBody?.declarations != null) {
+            for (declaration in element.structBody?.declarations!!) {
+                if (!processDeclaration(declaration, processor, state, lastParent, place)) {
+                    toContinue = false
+                }
+            }
+        }
+        return toContinue
     }
 
     @Suppress("UNUSED_PARAMETER")
@@ -151,11 +171,11 @@ object ScopeProcessorImpl {
                             state: ResolveState,
                             lastParent: PsiElement,
                             place: PsiElement): Boolean {
-        if (element.templateDeclaration?.templateParameters != null) {
-            if (!ScopeProcessorImplUtil.processTemplateParameters(element.templateDeclaration!!.templateParameters!!, processor, state, lastParent, place)) {
-                return false
-            }
-        }
+//        if (element.templateDeclaration?.templateParameters != null) {
+//            if (!processTemplateParameters(element.templateDeclaration!!.templateParameters!!, processor, state, lastParent, place)) {
+//                return false
+//            }
+//        }
         return true
     }
 
@@ -165,11 +185,11 @@ object ScopeProcessorImpl {
                             state: ResolveState,
                             lastParent: PsiElement,
                             place: PsiElement): Boolean {
-        if (element.templateDeclaration?.templateParameters != null) {
-            if (!ScopeProcessorImplUtil.processTemplateParameters(element.templateDeclaration!!.templateParameters!!, processor, state, lastParent, place)) {
-                return false
-            }
-        }
+//        if (element.templateDeclaration?.templateParameters != null) {
+//            if (!processTemplateParameters(element.templateDeclaration!!.templateParameters!!, processor, state, lastParent, place)) {
+//                return false
+//            }
+//        }
         return true
     }
 
@@ -180,7 +200,7 @@ object ScopeProcessorImpl {
                             lastParent: PsiElement,
                             place: PsiElement): Boolean {
         if (element.templateParameters != null) {
-            if (!ScopeProcessorImplUtil.processTemplateParameters(element.templateParameters!!, processor, state, lastParent, place)) {
+            if (!processTemplateParameters(element.templateParameters!!, processor, state, lastParent, place)) {
                 return false
             }
         }
@@ -193,12 +213,20 @@ object ScopeProcessorImpl {
                             state: ResolveState,
                             lastParent: PsiElement,
                             place: PsiElement): Boolean {
+        var toContinue = true
         if (element.templateParameters != null) {
-            if (!ScopeProcessorImplUtil.processTemplateParameters(element.templateParameters!!, processor, state, lastParent, place)) {
-                return false
+            if (!processTemplateParameters(element.templateParameters!!, processor, state, lastParent, place)) {
+                toContinue = false
             }
         }
-        return true
+        if (element.declarations != null) {
+            for (declaration in element.declarations) {
+                if (!processDeclaration(declaration, processor, state, lastParent, place)) {
+                    toContinue = false
+                }
+            }
+        }
+        return toContinue
     }
 
     @Suppress("UNUSED_PARAMETER")
@@ -207,12 +235,20 @@ object ScopeProcessorImpl {
                             state: ResolveState,
                             lastParent: PsiElement,
                             place: PsiElement): Boolean {
+        var toContinue = true
         if (element.templateParameters != null) {
-            if (!ScopeProcessorImplUtil.processTemplateParameters(element.templateParameters!!, processor, state, lastParent, place)) {
-                return false
+            if (!processTemplateParameters(element.templateParameters!!, processor, state, lastParent, place)) {
+                toContinue = false
             }
         }
-        return true
+        if (element.structBody?.declarations != null) {
+            for (declaration in element.structBody?.declarations!!) {
+                if (!processDeclaration(declaration, processor, state, lastParent, place)) {
+                    toContinue = false
+                }
+            }
+        }
+        return toContinue
     }
 
     @Suppress("UNUSED_PARAMETER")
@@ -223,12 +259,12 @@ object ScopeProcessorImpl {
                             place: PsiElement): Boolean {
         //todo handle place
         if (element.parameters != null) {
-            if (!ScopeProcessorImplUtil.processParameters(element.parameters!!, processor, state, lastParent, place)) {
+            if (!processParameters(element.parameters!!, processor, state, lastParent, place)) {
                 return false
             }
         }
         if (element.templateParameters != null) {
-            if (!ScopeProcessorImplUtil.processTemplateParameters(element.templateParameters!!, processor, state, lastParent, place)) {
+            if (!processTemplateParameters(element.templateParameters!!, processor, state, lastParent, place)) {
                 return false
             }
         }
@@ -406,6 +442,18 @@ object ScopeProcessorImpl {
         return true
     }
 
+    @Suppress("UNUSED_PARAMETER")
+    fun processDeclarations(element: ImportDeclaration,
+                            processor: PsiScopeProcessor,
+                            state: ResolveState,
+                            lastParent: PsiElement,
+                            place: PsiElement): Boolean {
+        for (singleImport in element.singleImports) {
+            processor.execute(singleImport, state)
+        }
+        return true
+    }
+
 
     /*
         //todo convert all calls of this method to direct
@@ -430,11 +478,11 @@ object ScopeProcessorImpl {
                             lastParent: PsiElement,
                             place: PsiElement): Boolean {
 
-        if (!ScopeProcessorImplUtil.processParameters(element.parameters!!, processor, state, lastParent, place)) {
+        if (!processParameters(element.parameters!!, processor, state, lastParent, place)) {
             return false
         }
         if (element.templateParameters != null) {
-            if (!ScopeProcessorImplUtil.processTemplateParameters(element.templateParameters!!, processor, state, lastParent, place)) {
+            if (!processTemplateParameters(element.templateParameters!!, processor, state, lastParent, place)) {
                 return false
             }
         }
@@ -460,6 +508,21 @@ object ScopeProcessorImpl {
     }
 
     @Suppress("UNUSED_PARAMETER")
+    fun processDeclarations(element: ConditionalDeclaration,
+                            processor: PsiScopeProcessor,
+                            state: ResolveState,
+                            lastParent: PsiElement,
+                            place: PsiElement): Boolean {
+        var toContinue = true
+        for (decl in element.declarations) {
+            if (!processDeclaration(decl, processor, state, lastParent, place)) {
+                toContinue = false
+            }
+        }
+        return toContinue
+    }
+
+    @Suppress("UNUSED_PARAMETER")
     fun processDeclarations(element: DeclarationsAndStatements,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
@@ -469,6 +532,24 @@ object ScopeProcessorImpl {
         for (declarationOrStatement in element.declarationOrStatements) {
             if (declarationOrStatement.declaration != null) {
                 if (!processDeclaration(declarationOrStatement.declaration!!, processor, state, lastParent, place)) {
+                    toContinue = false
+                }
+            }
+        }
+        return toContinue
+    }
+
+
+    @Suppress("UNUSED_PARAMETER")
+    fun processDeclarations(element: Declaration,
+                            processor: PsiScopeProcessor,
+                            state: ResolveState,
+                            lastParent: PsiElement,
+                            place: PsiElement): Boolean {
+        var toContinue = true
+        if (element.oP_BRACES_LEFT != null) {
+            for (declaration in element.declarations) {
+                if (!processDeclaration(declaration, processor, state, lastParent, place)) {
                     toContinue = false
                 }
             }

@@ -26,17 +26,18 @@ public class SingleImportStubElementType extends DNamedStubElementType<DLanguage
     @NotNull
     @Override
     public DLanguageSingleImportStub createStub(@NotNull DLanguageSingleImport psi, StubElement parentStub) {
-        return new DLanguageSingleImportStub(parentStub, this, psi.getName());
+        return new DLanguageSingleImportStub(parentStub, this, psi.getName(), ((DLanguageSingleImportImpl) psi).isPublic());
     }
 
     @Override
     public void serialize(@NotNull DLanguageSingleImportStub stub, @NotNull StubOutputStream dataStream) throws IOException {
         dataStream.writeName(stub.getName());
+        dataStream.writeBoolean(stub.isPublic());
     }
 
     @NotNull
     @Override
     public DLanguageSingleImportStub deserialize(@NotNull StubInputStream dataStream, StubElement parentStub) throws IOException {
-        return new DLanguageSingleImportStub(parentStub, this, dataStream.readName());
+        return new DLanguageSingleImportStub(parentStub, this, dataStream.readName(), dataStream.readBoolean());
     }
 }

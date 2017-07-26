@@ -1,9 +1,11 @@
-package net.masterthought.dlanguage.processors
+package net.masterthought.dlanguage.resolve.processors
 
 import com.intellij.openapi.util.Key
+import com.intellij.psi.PsiElement
 import com.intellij.psi.scope.PsiScopeProcessor
+import net.masterthought.dlanguage.psi.interfaces.DNamedElement
 
-interface DResolveProcessor<Call, Declaration> : PsiScopeProcessor {
+interface DResolveProcessor<Call : PsiElement, Declaration : DNamedElement> : PsiScopeProcessor {
     fun matches(call: Call, decl: Declaration): Boolean
     val result: MutableSet<Declaration>
     override fun handleEvent(event: PsiScopeProcessor.Event, associated: Any?) {

@@ -5,8 +5,8 @@ import com.intellij.lang.documentation.DocumentationProvider;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.ResolveResult;
-import net.masterthought.dlanguage.processors.DAttributesFinder;
 import net.masterthought.dlanguage.psi.references.DReference;
+import net.masterthought.dlanguage.resolve.processors.parameters.DAttributesFinder;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
