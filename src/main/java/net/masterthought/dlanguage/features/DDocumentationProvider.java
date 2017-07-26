@@ -41,7 +41,7 @@ public class DDocumentationProvider extends AbstractDocumentationProvider implem
 
     @Nullable
     @Override
-    public String generateDoc(PsiElement element, @Nullable PsiElement originalElement) {
+    public String generateDoc(final PsiElement element, @Nullable final PsiElement originalElement) {
 
         try {
             DAttributesFinder a;
@@ -51,7 +51,7 @@ public class DDocumentationProvider extends AbstractDocumentationProvider implem
                 final ResolveResult[] resolveResults = ((DReference) element.getReference()).multiResolve(true);
                 final Set<DAttributesFinder> attributesFinders = new HashSet<>(resolveResults.length);
                 if (resolveResults.length > 1) {
-                    for (ResolveResult resolveResult : resolveResults) {
+                    for (final ResolveResult resolveResult : resolveResults) {
                         final DAttributesFinder dAttributesFinder = new DAttributesFinder(resolveResult.getElement());
                         dAttributesFinder.recurseUp();
                         attributesFinders.add(dAttributesFinder);

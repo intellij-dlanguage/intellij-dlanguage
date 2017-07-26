@@ -1,11 +1,7 @@
 package net.masterthought.dlanguage.resolve.processors.parameters
 
 import com.intellij.psi.PsiElement
-import com.intellij.psi.util.PsiTreeUtil.isAncestor
-import net.masterthought.dlanguage.psi.DLanguageAttribute
-import net.masterthought.dlanguage.psi.DLanguageIfCondition
-import net.masterthought.dlanguage.psi.DLanguageSingleImport
-import net.masterthought.dlanguage.psi.DLanguageUnittest
+import net.masterthought.dlanguage.psi.*
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement
 import net.masterthought.dlanguage.utils.*
 
@@ -77,12 +73,13 @@ class DAttributesFinder {
                 recurseUpImpl(startingPoint.identifier!!)
             } else if (startingPoint is DLanguageIfCondition) {
                 recurseUpImpl(startingPoint.identifier!!)
-            } else if (startingPoint is SingleImport) {
+            } /*else if (startingPoint is SingleImport) {
                 recurseUpImpl(startingPoint.identifier!!)
-            } else if (startingPoint is TemplateDeclaration) {
+            }*/ else if (startingPoint is TemplateDeclaration) {
                 recurseUpImpl(startingPoint.identifier!!)
             }
         }
+        recurseUpImpl(startingPoint)
     }
 
     private fun recurseUpImpl(startingPoint: PsiElement) {
@@ -104,17 +101,24 @@ class DAttributesFinder {
         }
     }
 
+    fun isParent(parent: PsiElement, child: PsiElement): Boolean {
+        if (child == parent)
+            return true
+        if (child is DLanguageFile)
+            return false
+        return isParent(parent, child.parent)
+    }
+
 
     fun execute(element: PsiElement): Boolean {
-        if (element is DLanguageSingleImport && isAncestor(startingPoint, element, true)) {
+        if (element is DLanguageSingleImport && isParent(element, startingPoint)) {
             defaultsToPrivate = true
             defaultsToPublic = false
             defaultsToStatic = false
-            return false
         }
         if (element is FunctionDeclaration || element is DLanguageUnittest || element is Parameters || element is TemplateParameters) {
             if (element is FunctionDeclaration) {
-                if ((element.functionBody != null && isAncestor(element.functionBody!!, startingPoint, false)) || (element.parameters != null && isAncestor(element.parameters!!, startingPoint, false)) || (element.templateParameters != null && isAncestor(element.templateParameters!!, startingPoint, false))) {
+                if ((element.functionBody != null && isParent(element.functionBody!!, startingPoint)) || (element.parameters != null && isParent(element.parameters!!, startingPoint)) || (element.templateParameters != null && isParent(element.templateParameters!!, startingPoint))) {
                     visibility = Visibility.LOCAL
                     return false
                 }
@@ -122,7 +126,7 @@ class DAttributesFinder {
             return true
         }
         if (element is StructBody) {
-            if (isAncestor(element, startingPoint, false)) {
+            if (isParent(element, startingPoint)) {
                 defaultsToStatic = false
                 return false
             }

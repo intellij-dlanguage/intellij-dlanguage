@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 
 
 public abstract class DNamedStubElementType<S extends NamedStubBase<T>, T extends DNamedElement> extends DStubElementType<S, T> {
-    public DNamedStubElementType(String debugName) {
+    public DNamedStubElementType(final String debugName) {
         super(debugName);
     }
 //todo reanable this:
@@ -23,7 +23,7 @@ public abstract class DNamedStubElementType<S extends NamedStubBase<T>, T extend
 //    }
 
     @Override
-    public void indexStub(@NotNull S stub, @NotNull IndexSink sink) {
+    public void indexStub(@NotNull final S stub, @NotNull final IndexSink sink) {
         final String name = stub.getName();
         if (name == null) {
             return;
@@ -47,7 +47,7 @@ public abstract class DNamedStubElementType<S extends NamedStubBase<T>, T extend
         }
     }
 
-    private boolean topLevelDeclaration(S stub) {
+    private boolean topLevelDeclaration(final S stub) {
         //stuff within unittests does not count as top level
         //stuff within func declarations does not count as top level b/c not globally accessible todo check if this is true for all declaration types
         //todo switch the topLevel declaration to a file gist maybe

@@ -4,7 +4,6 @@ import com.intellij.openapi.util.Key
 import com.intellij.psi.PsiElement
 import com.intellij.psi.ResolveState
 import com.intellij.psi.scope.PsiScopeProcessor
-import net.masterthought.dlanguage.resolve.processors.parameters.DAttributesFinder
 import net.masterthought.dlanguage.utils.SingleImport
 
 /**
@@ -23,14 +22,8 @@ class DImportScopeProcessor : PsiScopeProcessor {
         return null
     }
 
-    //todo for getting public imports this scope processor is not necessary and stub indexes should be used instead
     override fun execute(element: PsiElement, state: ResolveState): Boolean {
         if (element is SingleImport) {
-            val finder = DAttributesFinder(element.identifierChain!!)
-            finder.recurseUp()
-            if (finder.isPublic()) {
-                publicImports.add(element)
-            }
             imports.add(element)
         }
         return true

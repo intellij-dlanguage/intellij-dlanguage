@@ -41,18 +41,24 @@ object DResolveUtil {
         return DPsiUtil.getParent(e, setOf(NEW_EXPRESSION), setOf(BLOCK_STATEMENT, STRUCT_BODY, DECLARATION)) as NewExpression?
     }
 
-    fun getAllImportedModules(start: PsiElement): MutableSet<SingleImport> {
-        val alreadyProcessed = mutableSetOf<SingleImport>()
-        val toProcess = mutableSetOf<SingleImport>()
+    fun getAllImportedModules(start: PsiElement): MutableSet<String> {
         val importScopeProcessor = DImportScopeProcessor()
         PsiTreeUtil.treeWalkUp(importScopeProcessor, start, start.containingFile, ResolveState.initial())
-        toProcess.addAll(importScopeProcessor.imports)
 
+        val toProcess = mutableSetOf<String>()
+        for (import in importScopeProcessor.imports) {
+            toProcess.add(import.name)
+        }
+
+        val alreadyProcessed = mutableSetOf<String>()
+        val project = start.project
         while (true) {
-            val tempSet = mutableSetOf<SingleImport>()
+            val tempSet = mutableSetOf<String>()
             for (import in toProcess) {
                 if (!alreadyProcessed.contains(import)) {
-                    tempSet.addAll(StubIndex.getElements(DPublicImportIndex.KEY, import.name, import.project, GlobalSearchScope.everythingScope(import.project), SingleImport::class.java))
+                    for (foundModule in StubIndex.getElements(DPublicImportIndex.KEY, import, project, GlobalSearchScope.everythingScope(project), SingleImport::class.java)) {
+                        tempSet.add(foundModule.name)
+                    }
                 }
             }
             alreadyProcessed.addAll(toProcess)
@@ -61,12 +67,6 @@ object DResolveUtil {
                 break
         }
         return toProcess
-    }
-
-    private fun getAllPublicModules(start: PsiElement): MutableSet<SingleImport> {
-        val importScopeProcessor = DImportScopeProcessor()
-        PsiTreeUtil.treeWalkUp(importScopeProcessor, start, start.containingFile, ResolveState.initial())
-        return importScopeProcessor.publicImports
     }
 
 

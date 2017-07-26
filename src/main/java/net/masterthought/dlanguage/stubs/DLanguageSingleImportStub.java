@@ -7,14 +7,14 @@ import com.intellij.util.io.StringRef;
 import net.masterthought.dlanguage.psi.DLanguageSingleImport;
 
 public class DLanguageSingleImportStub extends NamedStubBase<DLanguageSingleImport> {
-    private boolean isPublic;
+    private final boolean isPublic;
 
-    public DLanguageSingleImportStub(StubElement parent, IStubElementType elementType, StringRef name, boolean isPublic) {
+    public DLanguageSingleImportStub(final StubElement parent, final IStubElementType elementType, final StringRef name, final boolean isPublic) {
         super(parent, elementType, name);
         this.isPublic = isPublic;
     }
 
-    public DLanguageSingleImportStub(StubElement parent, IStubElementType elementType, String name, boolean isPublic) {
+    public DLanguageSingleImportStub(final StubElement parent, final IStubElementType elementType, final String name, final boolean isPublic) {
         super(parent, elementType, name);
         this.isPublic = isPublic;
     }

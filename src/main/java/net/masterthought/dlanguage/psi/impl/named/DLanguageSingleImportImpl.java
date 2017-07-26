@@ -22,11 +22,11 @@ import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_EQ;
  */
 public class DLanguageSingleImportImpl extends DNamedStubbedPsiElementBase<DLanguageSingleImportStub> implements DLanguageSingleImport {
 
-    public DLanguageSingleImportImpl(@NotNull DLanguageSingleImportStub stub, IStubElementType nodeType) {
+    public DLanguageSingleImportImpl(@NotNull final DLanguageSingleImportStub stub, final IStubElementType nodeType) {
         super(stub, nodeType);
     }
 
-    public DLanguageSingleImportImpl(ASTNode node) {
+    public DLanguageSingleImportImpl(final ASTNode node) {
         super(node);
     }
 

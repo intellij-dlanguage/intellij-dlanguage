@@ -379,7 +379,8 @@ object ScopeProcessorImpl {
                             state: ResolveState,
                             lastParent: PsiElement,
                             place: PsiElement): Boolean {
-        //todo truthy types in switch statement???//should declarations in the switch scope statementbe processed or do they go out of scope
+//        element.statement?.statementNoCaseNoDefault?.blockStatement?.declarationsAndStatements?.declarationOrStatements
+        //todo truthy types in switch statement???//should declarations in the switch scope statement be processed or do they go out of scope
         return true
     }
 

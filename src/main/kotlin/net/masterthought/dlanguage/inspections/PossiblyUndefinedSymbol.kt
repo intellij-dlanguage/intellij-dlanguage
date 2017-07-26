@@ -2,12 +2,14 @@ package net.masterthought.dlanguage.inspections
 
 import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.openapi.diagnostic.Logger
 import com.intellij.psi.PsiElementVisitor
 import net.masterthought.dlanguage.psi.DLanguageVisitor
 import net.masterthought.dlanguage.psi.impl.named.DLanguageIdentifierImpl
-import net.masterthought.dlanguage.psi.references.DReference
 import net.masterthought.dlanguage.resolve.DResolveUtil.shouldNotResolveToAnything
+import net.masterthought.dlanguage.resolve.processors.basic.BasicResolve
 import net.masterthought.dlanguage.utils.Identifier
+
 
 /**
  * Created by francis on 7/25/2017.
@@ -22,17 +24,23 @@ fun symbolIsDefinedByDefault(identifier: Identifier): Boolean {
 }
 
 class PossiblyUndefinedSymbol : LocalInspectionTool() {
-
-
     class UndefinedSymbolVisitor(val holder: ProblemsHolder) : DLanguageVisitor() {
+
+        val log: Logger = Logger.getInstance(this::class.java)
         override fun visitIdentifier(identifier: DLanguageIdentifierImpl?) {
             if (identifier != null) {
+//                val start = System.currentTimeMillis()
                 if (shouldNotResolveToAnything(identifier)) {
                     return
                 }
-                if ((identifier.reference as DReference).multiResolve(false).isEmpty() && !symbolIsDefinedByDefault(identifier)) {
-                    holder.registerProblem(identifier, "Possibly undefined symbol")//todo add quick fix, and use stubs
+                if (BasicResolve.findDefinitionNode(identifier.project, identifier).isEmpty() && !symbolIsDefinedByDefault(identifier)) {
+                    holder.registerProblem(identifier, "Possibly undefined symbol")
                 }
+//                val end = System.currentTimeMillis()
+//                log.info("time to resolve in inspection:" + (end-start))
+//                if ((identifier.reference as DReference).multiResolve(false).isEmpty() && !symbolIsDefinedByDefault(identifier)) {
+//                    holder.registerProblem(identifier, "Possibly undefined symbol")//todo add quick fix, and use stubs
+//                }
             }
         }
     }

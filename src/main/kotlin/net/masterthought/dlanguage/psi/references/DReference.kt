@@ -10,7 +10,8 @@ import com.intellij.util.IncorrectOperationException
 import net.masterthought.dlanguage.index.DModuleIndex
 import net.masterthought.dlanguage.processors.DCompletionProcessor
 import net.masterthought.dlanguage.processors.DImportScopeProcessor
-import net.masterthought.dlanguage.psi.*
+import net.masterthought.dlanguage.psi.DLanguageFile
+import net.masterthought.dlanguage.psi.DLanguageIdentifier
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement
 import net.masterthought.dlanguage.resolve.DResolveUtil
 import net.masterthought.dlanguage.stubs.index.DTopLevelDeclarationsByModule
@@ -48,42 +49,41 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
         val namedElements = DResolveUtil.findDefinitionNode(project, myElement)
         // Guess 20 variants tops most of the time in any real code base.
         val identifiers = HashSet<PsiElement>()
-        for (namedElement in namedElements) {
-            if (namedElement is DLanguageFunctionDeclaration) {
-                identifiers.add(namedElement.identifier!!)
-            } else if (namedElement is DLanguageTemplateDeclaration) {
-                if (namedElement.identifier != null) {
-                    identifiers.add(namedElement.identifier!!)
-                }else{
-                    identifiers.add(namedElement.eponymousTemplateDeclaration!!.identifier!!)
-                }
-            } else if (namedElement is DLanguageClassDeclaration) {
-                identifiers.add(namedElement.interfaceOrClass!!.identifier!!)
-            } else if (namedElement is DLanguageUnionDeclaration) {
-                if (namedElement.identifier != null) {
-                    identifiers.add(namedElement.identifier!!)
-                }
-            } else if (namedElement is DLanguageInterfaceOrClass) {
-                identifiers.add(namedElement.identifier!!)
-            } else if (namedElement is DLanguageStructDeclaration) {
-                if (namedElement.identifier != null) {
-                    identifiers.add(namedElement.identifier!!)
-                }
-            } else if (namedElement is DLanguageEnumDeclaration) {
-                identifiers.add(namedElement.identifier!!)
-            } else if (namedElement is DLanguageAutoDeclarationPart) {
-                identifiers.add(namedElement.identifier!!)
-            }
-            else {
-                identifiers.add(namedElement)
-            }
-        }
-
-        identifiers.remove(myElement)
-
+//        for (namedElement in namedElements) {
+//            if (namedElement is DLanguageFunctionDeclaration) {
+//                identifiers.add(namedElement.identifier!!)
+//            } else if (namedElement is DLanguageTemplateDeclaration) {
+//                if (namedElement.identifier != null) {
+//                    identifiers.add(namedElement.identifier!!)
+//                }else{
+//                    identifiers.add(namedElement.eponymousTemplateDeclaration!!.identifier!!)
+//                }
+//            } else if (namedElement is DLanguageClassDeclaration) {
+//                identifiers.add(namedElement.interfaceOrClass!!.identifier!!)
+//            } else if (namedElement is DLanguageUnionDeclaration) {
+//                if (namedElement.identifier != null) {
+//                    identifiers.add(namedElement.identifier!!)
+//                }
+//            } else if (namedElement is DLanguageInterfaceOrClass) {
+//                identifiers.add(namedElement.identifier!!)
+//            } else if (namedElement is DLanguageStructDeclaration) {
+//                if (namedElement.identifier != null) {
+//                    identifiers.add(namedElement.identifier!!)
+//                }
+//            } else if (namedElement is DLanguageEnumDeclaration) {
+//                identifiers.add(namedElement.identifier!!)
+//            } else if (namedElement is DLanguageAutoDeclarationPart) {
+//                identifiers.add(namedElement.identifier!!)
+//            }
+//            else {
+//                identifiers.add(namedElement)
+//            }
+//        }
+//
+//        identifiers.remove(myElement)
+//
         val results = ArrayList<ResolveResult>(20)
-        for (property in identifiers) {
-
+        for (property in namedElements) {
             results.add(PsiElementResolveResult(property))
         }
         return results.toTypedArray()

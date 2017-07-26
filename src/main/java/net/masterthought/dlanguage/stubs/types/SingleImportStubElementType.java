@@ -14,30 +14,30 @@ import java.io.IOException;
  * Created by francis on 3/15/2017.
  */
 public class SingleImportStubElementType extends DNamedStubElementType<DLanguageSingleImportStub, DLanguageSingleImport> {
-    public SingleImportStubElementType(String debugName) {
+    public SingleImportStubElementType(final String debugName) {
         super(debugName);
     }
 
     @Override
-    public DLanguageSingleImport createPsi(@NotNull DLanguageSingleImportStub stub) {
+    public DLanguageSingleImport createPsi(@NotNull final DLanguageSingleImportStub stub) {
         return new DLanguageSingleImportImpl(stub, this);
     }
 
     @NotNull
     @Override
-    public DLanguageSingleImportStub createStub(@NotNull DLanguageSingleImport psi, StubElement parentStub) {
+    public DLanguageSingleImportStub createStub(@NotNull final DLanguageSingleImport psi, final StubElement parentStub) {
         return new DLanguageSingleImportStub(parentStub, this, psi.getName(), ((DLanguageSingleImportImpl) psi).isPublic());
     }
 
     @Override
-    public void serialize(@NotNull DLanguageSingleImportStub stub, @NotNull StubOutputStream dataStream) throws IOException {
+    public void serialize(@NotNull final DLanguageSingleImportStub stub, @NotNull final StubOutputStream dataStream) throws IOException {
         dataStream.writeName(stub.getName());
         dataStream.writeBoolean(stub.isPublic());
     }
 
     @NotNull
     @Override
-    public DLanguageSingleImportStub deserialize(@NotNull StubInputStream dataStream, StubElement parentStub) throws IOException {
+    public DLanguageSingleImportStub deserialize(@NotNull final StubInputStream dataStream, final StubElement parentStub) throws IOException {
         return new DLanguageSingleImportStub(parentStub, this, dataStream.readName(), dataStream.readBoolean());
     }
 }
