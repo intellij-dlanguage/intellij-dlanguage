@@ -22,7 +22,7 @@ import java.util.List;
 import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_COMMA;
 
 public class DLanguageAliasInitializerImpl extends DNamedStubbedPsiElementBase<DLanguageAliasInitializerStub> implements DLanguageAliasInitializer {
-
+//todo doesn't cover all alias declarations possible
     public DLanguageAliasInitializerImpl(DLanguageAliasInitializerStub stub, IStubElementType type) {
         super(stub, type);
     }

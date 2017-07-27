@@ -72,8 +72,8 @@ public class DLanguageFile extends PsiFileBase {
     }
 
     @Override
-    public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
-        for (PsiElement element : getChildren()) {
+    public boolean processDeclarations(@NotNull final PsiScopeProcessor processor, @NotNull final ResolveState state, final PsiElement lastParent, @NotNull final PsiElement place) {
+        for (final PsiElement element : getChildren()) {
             if (element instanceof DLanguageDeclaration) {
                 if (!ScopeProcessorImplUtil.INSTANCE.processDeclaration((DLanguageDeclaration) element, processor, state, lastParent, place)) {
                     return false;

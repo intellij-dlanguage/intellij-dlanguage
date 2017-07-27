@@ -25,7 +25,7 @@ static this() {
     types_children["AlignAttribute"] = ["KW_ALIGN", "AssignExpression", "OP_PAR_RIGHT", "OP_PAR_LEFT"];
     types_children["AndAndExpression"] = ["AndAndExpression", "OrExpression", "OP_BOOL_AND"];
     types_children["AndExpression"] = ["AndExpression", "CmpExpression", "OP_AND"];
-    types_children["AnonymousEnumDeclaration"] = ["AssignExpression","Type","OP_BRACES_RIGHT"];
+    types_children["AnonymousEnumDeclaration"] = ["AssignExpression","OP_COLON","KW_ENUM","Type","EnumMember*"];
     types_children["AnonymousEnumMember"] = [];
     types_children["ArgumentList"] = ["AssignExpression*", "OP_COMMA*"];
     types_children["Arguments"] = ["ArgumentList","OP_PAR_RIGHT", "OP_PAR_LEFT"];

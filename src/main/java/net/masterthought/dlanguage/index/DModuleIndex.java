@@ -87,7 +87,7 @@ public class DModuleIndex extends ScalarIndexExtension<String> {
     private static class MyDataIndexer implements DataIndexer<String, Void, FileContent> {
         @NotNull
         @Override
-        public Map<String, Void> map(final FileContent inputData) {
+        public Map<String, Void> map(@NotNull final FileContent inputData) {
             final PsiFile psiFile = inputData.getPsiFile();
             String moduleName;
             if (psiFile instanceof DLanguageFile) {

@@ -27,23 +27,10 @@ object BasicResolve {
 
     fun findDefinitionNode(project: Project, e: PsiNamedElement): Set<PsiNamedElement> {
         //todo fix templated functions return type bug
-        fun inSingleImport(identifier: Identifier): SingleImport? {
-            return PsiTreeUtil.getTopmostParentOfType(identifier, SingleImport::class.java)
-        }
+
 
         if (e !is Identifier) {
             return emptySet()
-        }
-
-        if (inSingleImport(e) != null) {
-            if (inSingleImport(e)?.identifier == e) {
-                var scope = EMPTY_SCOPE
-                for (file in getFilesByModuleName(project, inSingleImport(e)!!.name, GlobalSearchScope.allScope(project))) {
-                    scope = scope.uniteWith(fileScope(file))
-                }
-                return Sets.newHashSet(StubIndex.getElements(DTopLevelDeclarationIndex.KEY, e.name, e.project, scope, DNamedElement::class.java))
-            }
-            return Sets.newHashSet(getFilesByModuleName(project, inSingleImport(e)!!.name, GlobalSearchScope.allScope(project)))
         }
 
         val nameProcessor = DNameScopeProcessor(e)
@@ -52,10 +39,10 @@ object BasicResolve {
             return nameProcessor.result
         }
 
-        val start = System.currentTimeMillis()
+//        val start = System.currentTimeMillis()
         val modules = DResolveUtil.getAllImportedModules(e)
-        val end = System.currentTimeMillis()
-        Logger.getInstance(this::class.java).info("modules took:" + (end - start))
+//        val end = System.currentTimeMillis()
+//        Logger.getInstance(this::class.java).info("modules took:" + (end - start))
 
         val result = mutableSetOf<PsiNamedElement>()
         // find definition in imported files
@@ -64,7 +51,6 @@ object BasicResolve {
             for (file in getFilesByModuleName(project, module, GlobalSearchScope.allScope(project))) {
                 scope = scope.uniteWith(fileScope(file))
             }
-
         }
         result.addAll(StubIndex.getElements(DTopLevelDeclarationIndex.KEY, e.name, e.project, scope, DNamedElement::class.java))
         val finalResult = mutableSetOf<PsiNamedElement>()

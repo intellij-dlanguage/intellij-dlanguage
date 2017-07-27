@@ -21,8 +21,17 @@ import net.masterthought.dlanguage.utils.*
 object DResolveUtil {
 
     fun findDefinitionNode(project: Project, e: PsiNamedElement): Set<PsiNamedElement> {
+        if (e !is Identifier) {
+            return emptySet()
+        }
+
+
         if (shouldNotResolveToAnything(e)) {
             return emptySet()
+        }
+
+        if (SpecialCaseResolve.isApplicable(e)) {
+            return SpecialCaseResolve.findDefinitionNode(e)
         }
 
         val basicResolveResult = BasicResolve.findDefinitionNode(project, e)
@@ -41,7 +50,7 @@ object DResolveUtil {
         return DPsiUtil.getParent(e, setOf(NEW_EXPRESSION), setOf(BLOCK_STATEMENT, STRUCT_BODY, DECLARATION)) as NewExpression?
     }
 
-    fun getAllImportedModules(start: PsiElement): MutableSet<String> {
+    fun getAllImportedModules(start: PsiElement): /*Pair<*/MutableSet<String>/*, MutableSet<SingleImport>> */{
         val importScopeProcessor = DImportScopeProcessor()
         PsiTreeUtil.treeWalkUp(importScopeProcessor, start, start.containingFile, ResolveState.initial())
 
@@ -69,12 +78,18 @@ object DResolveUtil {
         return toProcess
     }
 
+    val versionIdentifiers = setOf("DigitalMars", "GNU", "LDC", "SDC", "Windows", "Win32", "Win64", "linux", "OSX", "FreeBSD", "OpenBSD", "NetBSD", "DragonFlyBSD", "BSD", "Solaris", "Posix", "AIX", "Haiku", "SkyOS", "SysV3", "SysV4", "Hurd", "Android", "PlayStation", "PlayStation4", "Cygwin", "MinGW", "FreeStanding", "CRuntime_Bionic", "CRuntime_DigitalMars", "CRuntime_Glibc", "CRuntime_Microsoft", "CRuntime_Musl", "CRuntime_UClibc", "X86", "X86_64", "ARM", "ARM_Thumb", "ARM_SoftFloat", "ARM_SoftFP", "ARM_HardFloat", "AArch64", "Epiphany", "PPC", "PPC_SoftFloat", "PPC_HardFloat", "PPC64", "IA64", "MIPS32", "MIPS64", "MIPS_O32", "MIPS_N32", "MIPS_O64", "MIPS_N64", "MIPS_EABI", "MIPS_SoftFloat", "MIPS_HardFloat", "NVPTX", "NVPTX64", "RISCV32", "RISCV64", "SPARC", "SPARC_V8Plus", "SPARC_SoftFloat", "SPARC_HardFloat", "SPARC64", "S390", "SystemZ", "HPPA", "HPPA64", "SH", "Alpha", "Alpha_SoftFloat", "Alpha_HardFloat", "LittleEndian", "BigEndian", "ELFv1", "ELFv2", "D_Coverage", "D_Ddoc", "D_InlineAsm_X86", "D_InlineAsm_X86_64", "D_LP64", "D_X32", "D_HardFloat", "D_SoftFloat", "D_PIC", "D_SIMD", "D_AVX", "D_AVX2", "D_Version2", "D_NoBoundsChecks", "D_ObjectiveC", "unittest", "assert", "none", "all")
+
+    val traitsIdentifiers = setOf("isAbstractClass", "isArithmetic", "isAssociativeArray", "isFinalClass", "isPOD", "isNested", "isFloating", "isIntegral", "isScalar", "isStaticArray", "isUnsigned", "isVirtualFunction", "isVirtualMethod", "isAbstractFunction", "isFinalFunction", "isStaticFunction", "isOverrideFunction", "isTemplate", "isRef", "isOut", "isLazy", "hasMember", "identifier", "getAliasThis", "getAttributes", "getFunctionAttributes", "getFunctionVariadicStyle", "getLinkage", "getMember", "getOverloads", "getParameterStorageClasses", "getPointerBitmap", "getProtection", "getVirtualFunctions", "getVirtualMethods", "getUnitTests", "parent", "classInstanceSize", "getVirtualIndex", "allMembers", "derivedMembers", "isSame", "compiles")
+
+    val pragmaIdentifiers = setOf("lib", "inline", "mangle", "msg", "startaddress")
+
+    val atAttributeIdentifiers = setOf("safe", "trusted", "nogc", "disable","property")
+
+    val externAttributeIdentifiers = setOf("C","D","Windows","System","Pascal","Objective-C")
+
 
     fun shouldNotResolveToAnything(e: PsiNamedElement): Boolean {
-        fun inModuleDeclaration(e: DNamedElement): ModuleDeclaration? {
-            return PsiTreeUtil.getTopmostParentOfType(e, ModuleDeclaration::class.java)
-        }
-
         if (e !is DNamedElement) {
             return true
         }
@@ -83,30 +98,24 @@ object DResolveUtil {
         }
         val name = e.name
         val parent = e.parent
-        if (e is Identifier) {
-            if (name == "string" || name == "size_t" || name == "ptrdiff_t" || name == "dstring" || name == "wstring")     //todo this might be  defined in runtime
+        if (name == "string" || name == "size_t" || name == "ptrdiff_t" || name == "dstring" || name == "wstring")     //todo this might be  defined in runtime
+            return true
+        if (parent is AtAttribute && atAttributeIdentifiers.contains(name)) return true
+        if (parent is ScopeGuardStatement)
+            if (name == "exit" || name == "success" || name == "failure")
                 return true
-            if (parent is AtAttribute)
-                if (name == "safe" || name == "trusted" || name == "nogc" || name == "disable" || name == "property")
-                    return true
-            if (parent is ScopeGuardStatement)
-                if (name == "exit" || name == "success" || name == "failure")
-                    return true
-            if (parent is VersionCondition)
-                if (name == "DigitalMars" || name == "GNU" || name == "LDC" || name == "SDC" || name == "Windows" || name == "Win32" || name == "Win64" || name == "linux" || name == "OSX" || name == "FreeBSD" || name == "OpenBSD" || name == "NetBSD" || name == "DragonFlyBSD" || name == "BSD" || name == "Solaris" || name == "Posix" || name == "AIX" || name == "Haiku" || name == "SkyOS" || name == "SysV3" || name == "SysV4" || name == "Hurd" || name == "Android" || name == "PlayStation" || name == "PlayStation4" || name == "Cygwin" || name == "MinGW" || name == "FreeStanding" || name == "CRuntime_Bionic" || name == "CRuntime_DigitalMars" || name == "CRuntime_Glibc" || name == "CRuntime_Microsoft" || name == "CRuntime_Musl" || name == "CRuntime_UClibc" || name == "X86" || name == "X86_64" || name == "ARM" || name == "ARM_Thumb" || name == "ARM_SoftFloat" || name == "ARM_SoftFP" || name == "ARM_HardFloat" || name == "AArch64" || name == "Epiphany" || name == "PPC" || name == "PPC_SoftFloat" || name == "PPC_HardFloat" || name == "PPC64" || name == "IA64" || name == "MIPS32" || name == "MIPS64" || name == "MIPS_O32" || name == "MIPS_N32" || name == "MIPS_O64" || name == "MIPS_N64" || name == "MIPS_EABI" || name == "MIPS_SoftFloat" || name == "MIPS_HardFloat" || name == "NVPTX" || name == "NVPTX64" || name == "RISCV32" || name == "RISCV64" || name == "SPARC" || name == "SPARC_V8Plus" || name == "SPARC_SoftFloat" || name == "SPARC_HardFloat" || name == "SPARC64" || name == "S390" || name == "SystemZ" || name == "HPPA" || name == "HPPA64" || name == "SH" || name == "Alpha" || name == "Alpha_SoftFloat" || name == "Alpha_HardFloat" || name == "LittleEndian" || name == "BigEndian" || name == "ELFv1" || name == "ELFv2" || name == "D_Coverage" || name == "D_Ddoc" || name == "D_InlineAsm_X86" || name == "D_InlineAsm_X86_64" || name == "D_LP64" || name == "D_X32" || name == "D_HardFloat" || name == "D_SoftFloat" || name == "D_PIC" || name == "D_SIMD" || name == "D_AVX" || name == "D_AVX2" || name == "D_Version2" || name == "D_NoBoundsChecks" || name == "D_ObjectiveC" || name == "unittest" || name == "assert" || name == "none" || name == "all")
-                    return true
-            if (parent is TraitsExpression)
-                if (name == "isAbstractClass" || name == "isArithmetic" || name == "isAssociativeArray" || name == "isFinalClass" || name == "isPOD" || name == "isNested" || name == "isFloating" || name == "isIntegral" || name == "isScalar" || name == "isStaticArray" || name == "isUnsigned" || name == "isVirtualFunction" || name == "isVirtualMethod" || name == "isAbstractFunction" || name == "isFinalFunction" || name == "isStaticFunction" || name == "isOverrideFunction" || name == "isTemplate" || name == "isRef" || name == "isOut" || name == "isLazy" || name == "hasMember" || name == "identifier" || name == "getAliasThis" || name == "getAttributes" || name == "getFunctionAttributes" || name == "getFunctionVariadicStyle" || name == "getLinkage" || name == "getMember" || name == "getOverloads" || name == "getParameterStorageClasses" || name == "getPointerBitmap" || name == "getProtection" || name == "getVirtualFunctions" || name == "getVirtualMethods" || name == "getUnitTests" || name == "parent" || name == "classInstanceSize" || name == "getVirtualIndex" || name == "allMembers" || name == "derivedMembers" || name == "isSame" || name == "compiles")
-                    return true
-        }
-        if (parent is FunctionDeclaration || parent is InterfaceOrClass || parent is StructDeclaration || parent is UnionDeclaration || parent is EnumDeclaration || parent is EnumMember || parent is AutoDeclarationPart || parent is Declarator || parent is TemplateDeclaration || parent is Catch) {
-            return true
-        }
-        if (inModuleDeclaration(e) != null) {
-            return true
-        }
+        if (parent is VersionCondition && versionIdentifiers.contains(name)) return true
+        if (parent is LinkageAttribute && externAttributeIdentifiers.contains(name)) return true
+        if (parent is TraitsExpression && traitsIdentifiers.contains(name)) return true
+        if (parent is FunctionDeclaration || parent is InterfaceOrClass || parent is StructDeclaration || parent is UnionDeclaration || parent is EnumDeclaration || parent is EnumMember || parent is AutoDeclarationPart || parent is Declarator || parent is TemplateDeclaration || parent is Catch) return true
+        if (parent is PragmaExpression && pragmaIdentifiers.contains(name)) return true
+        if (parent is IdentifierList && parent.parent is AliasDeclaration) return true
+        if (parent is AsmInstruction || parent.parent is AsmPrimaryExp) return true
         return false
     }
 
-
 }
+
+class Resolver(val project: Project,val checkParametersFunction: Boolean = true, val checkParametersConstructor: Boolean = true, val searchScope: GlobalSearchScope = GlobalSearchScope.everythingScope(project)) {
+}
+

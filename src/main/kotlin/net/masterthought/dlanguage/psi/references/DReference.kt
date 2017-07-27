@@ -1,6 +1,7 @@
 package net.masterthought.dlanguage.psi.references
 
 import com.intellij.openapi.diagnostic.Logger
+import com.intellij.openapi.roots.impl.DirectoryIndex
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.*
 import com.intellij.psi.search.GlobalSearchScope
@@ -86,6 +87,7 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
         for (property in namedElements) {
             results.add(PsiElementResolveResult(property))
         }
+//        DirectoryIndex.getInstance(project).getDirectoriesByPackageName()
         return results.toTypedArray()
     }
 

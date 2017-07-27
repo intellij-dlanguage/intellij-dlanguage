@@ -59,6 +59,16 @@ object ScopeProcessorImplUtil {
             }
             return toContinue
         }
+        if (def.anonymousEnumDeclaration != null) {
+            if (def.anonymousEnumDeclaration?.enumMembers != null) {
+                for (enumMember in def.anonymousEnumDeclaration!!.enumMembers) {
+                    if (!processor.execute(enumMember, state)) {
+                        toContinue = false
+                    }
+                }
+            }
+            return toContinue
+        }
         if (def.functionDeclaration != null) {
             return processor.execute(def.functionDeclaration!!, state)
         }

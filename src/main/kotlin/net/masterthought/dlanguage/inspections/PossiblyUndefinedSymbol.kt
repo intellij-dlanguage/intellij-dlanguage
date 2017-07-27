@@ -6,7 +6,9 @@ import com.intellij.openapi.diagnostic.Logger
 import com.intellij.psi.PsiElementVisitor
 import net.masterthought.dlanguage.psi.DLanguageVisitor
 import net.masterthought.dlanguage.psi.impl.named.DLanguageIdentifierImpl
+import net.masterthought.dlanguage.psi.references.DReference
 import net.masterthought.dlanguage.resolve.DResolveUtil.shouldNotResolveToAnything
+import net.masterthought.dlanguage.resolve.SpecialCaseResolve
 import net.masterthought.dlanguage.resolve.processors.basic.BasicResolve
 import net.masterthought.dlanguage.utils.Identifier
 
@@ -18,7 +20,7 @@ import net.masterthought.dlanguage.utils.Identifier
 
 fun symbolIsDefinedByDefault(identifier: Identifier): Boolean {
     val name = identifier.name
-    if (name == "length" || name == "Exception" || name == "Throwable" || name == "popFront" || name == "Object" || name == "dup")//todo remove these when the runtime is added by defualt
+    if (name == "length" || name == "Exception" || name == "Throwable" || name == "popFront" || name == "Object" || name == "dup" || name == "ptr" || name == "TypeInfo" || name == "idup")//todo remove these when the runtime is added by default
         return true
     return name == "sizeof" || name == "nan" || name == "init" || name == "mangleof" || name == "stringof" || name == "alignof" || name == "max" || name == "min" || name == "inifinity" || name == "dig" || name == "epsilon" || name == "mant_dig" || name == "max_10_exp" || name == "max_exp" || name == "min_10_exp" || name == "min_exp" || name == "min_normal" || name == "re" || name == "im" || name == "classinfo"
 }
@@ -33,7 +35,12 @@ class PossiblyUndefinedSymbol : LocalInspectionTool() {
                 if (shouldNotResolveToAnything(identifier)) {
                     return
                 }
-                if (BasicResolve.findDefinitionNode(identifier.project, identifier).isEmpty() && !symbolIsDefinedByDefault(identifier)) {
+                if(SpecialCaseResolve.isApplicable(identifier)){
+                    if(SpecialCaseResolve.findDefinitionNode(identifier).isEmpty() && !symbolIsDefinedByDefault(identifier)){
+                        holder.registerProblem(identifier, "Possibly undefined symbol")
+                    }
+                }
+                else if (BasicResolve.findDefinitionNode(identifier.project, identifier).isEmpty() && !symbolIsDefinedByDefault(identifier)) {
                     holder.registerProblem(identifier, "Possibly undefined symbol")
                 }
 //                val end = System.currentTimeMillis()
