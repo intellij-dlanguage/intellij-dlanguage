@@ -22,8 +22,8 @@ import net.masterthought.dlanguage.utils.*
  * Created by francis on 7/24/2017.
  */
 
-
-object ParameterCountingResolve {
+//this isn't actually deprecated, just too difficult  to do without a functioning type deduction system.
+@Deprecated("") object ParameterCountingResolve {
     enum class ResolveType {
         FUNCTION, CONSTRUCTOR, ALL
     }

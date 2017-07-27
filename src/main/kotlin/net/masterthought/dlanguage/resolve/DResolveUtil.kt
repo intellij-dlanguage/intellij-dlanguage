@@ -11,7 +11,6 @@ import net.masterthought.dlanguage.processors.DImportScopeProcessor
 import net.masterthought.dlanguage.psi.DLanguageTypes.*
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement
 import net.masterthought.dlanguage.resolve.processors.basic.BasicResolve
-import net.masterthought.dlanguage.resolve.processors.parameters.ParameterCountingResolve
 import net.masterthought.dlanguage.stubs.index.DPublicImportIndex
 import net.masterthought.dlanguage.utils.*
 
@@ -35,14 +34,12 @@ object DResolveUtil {
         }
 
         val basicResolveResult = BasicResolve.findDefinitionNode(project, e)
-        if (basicResolveResult.size == 1) {
-            return basicResolveResult
-        }
-        val parameterCountingResult = ParameterCountingResolve.findDefinitionNode(project, e)
-        if (parameterCountingResult.isEmpty()) {
-            return basicResolveResult
-        }
-        return parameterCountingResult
+        return basicResolveResult
+//        val parameterCountingResult = ParameterCountingResolve.findDefinitionNode(project, e)
+//        if (parameterCountingResult.isEmpty()) {
+//            return basicResolveResult
+//        }
+//        return parameterCountingResult
     }
 
 
@@ -116,6 +113,7 @@ object DResolveUtil {
 
 }
 
-class Resolver(val project: Project,val checkParametersFunction: Boolean = true, val checkParametersConstructor: Boolean = true, val searchScope: GlobalSearchScope = GlobalSearchScope.everythingScope(project)) {
-}
 
+//class Resolver(val project: Project,val checkParametersFunction: Boolean = true, val checkParametersConstructor: Boolean = true, val searchScope: GlobalSearchScope = GlobalSearchScope.everythingScope(project)) {
+//}
+//
