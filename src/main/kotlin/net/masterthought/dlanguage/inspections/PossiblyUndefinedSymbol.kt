@@ -8,8 +8,6 @@ import net.masterthought.dlanguage.psi.DLanguageVisitor
 import net.masterthought.dlanguage.psi.impl.named.DLanguageIdentifierImpl
 import net.masterthought.dlanguage.psi.references.DReference
 import net.masterthought.dlanguage.resolve.DResolveUtil.shouldNotResolveToAnything
-import net.masterthought.dlanguage.resolve.SpecialCaseResolve
-import net.masterthought.dlanguage.resolve.processors.basic.BasicResolve
 import net.masterthought.dlanguage.utils.Identifier
 
 
@@ -35,19 +33,19 @@ class PossiblyUndefinedSymbol : LocalInspectionTool() {
                 if (shouldNotResolveToAnything(identifier)) {
                     return
                 }
-                if(SpecialCaseResolve.isApplicable(identifier)){
-                    if(SpecialCaseResolve.findDefinitionNode(identifier).isEmpty() && !symbolIsDefinedByDefault(identifier)){
-                        holder.registerProblem(identifier, "Possibly undefined symbol")
-                    }
-                }
-                else if (BasicResolve.findDefinitionNode(identifier.project, identifier).isEmpty() && !symbolIsDefinedByDefault(identifier)) {
-                    holder.registerProblem(identifier, "Possibly undefined symbol")
-                }
+//                if(SpecialCaseResolve.isApplicable(identifier)){
+//                    if(SpecialCaseResolve.findDefinitionNode(identifier).isEmpty() && !symbolIsDefinedByDefault(identifier)){
+//                        holder.registerProblem(identifier, "Possibly undefined symbol")
+//                    }
+//                }
+//                else if (BasicResolve.findDefinitionNode(identifier.project, identifier).isEmpty() && !symbolIsDefinedByDefault(identifier)) {
+//                    holder.registerProblem(identifier, "Possibly undefined symbol")
+//                }
 //                val end = System.currentTimeMillis()
 //                log.info("time to resolve in inspection:" + (end-start))
-//                if ((identifier.reference as DReference).multiResolve(false).isEmpty() && !symbolIsDefinedByDefault(identifier)) {
-//                    holder.registerProblem(identifier, "Possibly undefined symbol")//todo add quick fix, and use stubs
-//                }
+                if ((identifier.reference as DReference).multiResolve(false).isEmpty() && !symbolIsDefinedByDefault(identifier)) {
+                    holder.registerProblem(identifier, "Possibly undefined symbol")//todo add quick fix, and use stubs
+                }
             }
         }
     }
