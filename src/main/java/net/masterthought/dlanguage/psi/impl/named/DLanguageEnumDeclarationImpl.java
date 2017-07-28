@@ -12,7 +12,6 @@ import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.icons.DLanguageIcons;
 import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
-import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
 import net.masterthought.dlanguage.psi.references.DReference;
 import net.masterthought.dlanguage.stubs.DLanguageEnumDeclarationStub;
 import org.jetbrains.annotations.NotNull;
@@ -25,19 +24,19 @@ import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_COLON;
 
 public class DLanguageEnumDeclarationImpl extends DNamedStubbedPsiElementBase<DLanguageEnumDeclarationStub> implements DLanguageEnumDeclaration {
 
-    public DLanguageEnumDeclarationImpl(DLanguageEnumDeclarationStub stub, IStubElementType type) {
+    public DLanguageEnumDeclarationImpl(final DLanguageEnumDeclarationStub stub, final IStubElementType type) {
         super(stub, type);
     }
 
-    public DLanguageEnumDeclarationImpl(ASTNode node) {
+    public DLanguageEnumDeclarationImpl(final ASTNode node) {
         super(node);
     }
 
-    public void accept(@NotNull DLanguageVisitor visitor) {
+    public void accept(@NotNull final DLanguageVisitor visitor) {
         visitor.visitEnumDeclaration(this);
     }
 
-    public void accept(@NotNull PsiElementVisitor visitor) {
+    public void accept(@NotNull final PsiElementVisitor visitor) {
         if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor) visitor);
         else super.accept(visitor);
     }
@@ -85,8 +84,8 @@ public class DLanguageEnumDeclarationImpl extends DNamedStubbedPsiElementBase<DL
 
     @Nullable
     public PsiElement getNameIdentifier() {
-        ASTNode keyNode = getNode();
-        return keyNode != null ? keyNode.getPsi() : null;
+        final ASTNode keyNode = getNode();
+        return keyNode.getPsi();
     }
 
     @NotNull
@@ -95,7 +94,7 @@ public class DLanguageEnumDeclarationImpl extends DNamedStubbedPsiElementBase<DL
     }
 
     @Nullable
-    public PsiElement setName(@NotNull String newName) {
+    public PsiElement setName(@NotNull final String newName) {
         return getIdentifier().setName(newName);
     }
 
@@ -120,16 +119,9 @@ public class DLanguageEnumDeclarationImpl extends DNamedStubbedPsiElementBase<DL
 
             @Nullable
             @Override
-            public Icon getIcon(boolean unused) {
+            public Icon getIcon(final boolean unused) {
                 return DLanguageIcons.FILE;
             }
         };
     }
-
-    public boolean isSomeVisibility(HasVisibility.Visibility visibility) {
-        //todo fix
-        return false;
-
-    }
-
 }

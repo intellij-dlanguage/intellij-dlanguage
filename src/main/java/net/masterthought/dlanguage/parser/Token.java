@@ -7,7 +7,7 @@ import com.intellij.psi.tree.IElementType;
  * a class that emulates the behavior of tokens in libdparse
  */
 public class Token {
-    public final String text;//todo this is pretty much useless, needs remobving
+    public final String text;//this is unused but could be used to make getTokenText lookaheads
     public final IdType type;
 
     public Token(IdType type) {
@@ -18,7 +18,7 @@ public class Token {
     static class IdType {
         final IElementType type;
 
-        public IdType(IElementType matchingType) {
+        public IdType(final IElementType matchingType) {
             type = matchingType;
         }
 
@@ -33,7 +33,7 @@ public class Token {
         }
 
         @Override
-        public boolean equals(Object obj) {
+        public boolean equals(final Object obj) {
             if (!(obj instanceof IdType))
                 return false;
             return type.getIndex() == ((IdType) obj).type.getIndex();

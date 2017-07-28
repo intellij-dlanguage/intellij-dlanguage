@@ -42,8 +42,8 @@ public class DFileStubElementType extends IStubFileElementType<DLanguageFileStub
     }
 
     @Override
-    public void serialize(@NotNull DLanguageFileStub stub, @NotNull StubOutputStream dataStream) throws IOException {
-        // TODO
+    public void serialize(@NotNull final DLanguageFileStub stub, @NotNull final StubOutputStream dataStream) throws IOException {
+        // todo make files named?
     }
 
     @NotNull

@@ -1,7 +1,6 @@
 package net.masterthought.dlanguage.psi.references
 
 import com.intellij.openapi.diagnostic.Logger
-import com.intellij.openapi.roots.impl.DirectoryIndex
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.*
 import com.intellij.psi.search.GlobalSearchScope
@@ -49,7 +48,7 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
         val project = myElement.project
         val namedElements = DResolveUtil.findDefinitionNode(project, myElement)
         // Guess 20 variants tops most of the time in any real code base.
-        val identifiers = HashSet<PsiElement>()
+//        val identifiers = HashSet<PsiElement>()
 //        for (namedElement in namedElements) {
 //            if (namedElement is DLanguageFunctionDeclaration) {
 //                identifiers.add(namedElement.identifier!!)

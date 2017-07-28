@@ -10,7 +10,6 @@ import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.icons.DLanguageIcons;
 import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
-import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
 import net.masterthought.dlanguage.psi.references.DReference;
 import net.masterthought.dlanguage.resolve.ScopeProcessorImpl;
 import net.masterthought.dlanguage.stubs.DLanguageStructDeclarationStub;
@@ -24,19 +23,19 @@ import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_SCOLON;
 
 public class DLanguageStructDeclarationImpl extends DNamedStubbedPsiElementBase<DLanguageStructDeclarationStub> implements DLanguageStructDeclaration {
 
-    public DLanguageStructDeclarationImpl(DLanguageStructDeclarationStub stub, IStubElementType type) {
+    public DLanguageStructDeclarationImpl(final DLanguageStructDeclarationStub stub, final IStubElementType type) {
         super(stub, type);
     }
 
-    public DLanguageStructDeclarationImpl(ASTNode node) {
+    public DLanguageStructDeclarationImpl(final ASTNode node) {
         super(node);
     }
 
-    public void accept(@NotNull DLanguageVisitor visitor) {
+    public void accept(@NotNull final DLanguageVisitor visitor) {
         visitor.visitStructDeclaration(this);
     }
 
-    public void accept(@NotNull PsiElementVisitor visitor) {
+    public void accept(@NotNull final PsiElementVisitor visitor) {
         if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor) visitor);
         else super.accept(visitor);
     }
@@ -62,7 +61,7 @@ public class DLanguageStructDeclarationImpl extends DNamedStubbedPsiElementBase<
     @Nullable
     @Override
     public PsiElement getKW_STRUCT() {
-        return notNullChild(findChildByType(KW_STRUCT));
+        return findChildByType(KW_STRUCT);
     }
 
     @Override
@@ -89,14 +88,10 @@ public class DLanguageStructDeclarationImpl extends DNamedStubbedPsiElementBase<
         return getIdentifier().getName();
     }
 
-//    public String getFullName() {
-//        return DPsiImplUtil.getFullName(this);
-//    }
-
     @Nullable
     public PsiElement getNameIdentifier() {
-        ASTNode keyNode = getNode();
-        return keyNode != null ? keyNode.getPsi() : null;
+        final ASTNode keyNode = getNode();
+        return keyNode.getPsi();
     }
 
     @NotNull
@@ -105,7 +100,7 @@ public class DLanguageStructDeclarationImpl extends DNamedStubbedPsiElementBase<
     }
 
     @Nullable
-    public PsiElement setName(@NotNull String newName) {
+    public PsiElement setName(@NotNull final String newName) {
         return getIdentifier().setName(newName);
     }
 
@@ -130,18 +125,13 @@ public class DLanguageStructDeclarationImpl extends DNamedStubbedPsiElementBase<
 
             @Nullable
             @Override
-            public Icon getIcon(boolean unused) {
+            public Icon getIcon(final boolean unused) {
                 return DLanguageIcons.FILE;
             }
         };
     }
 
-    public boolean isSomeVisibility(HasVisibility.Visibility visibility) {
-        //todo fix
-        return false;
-    }
-
-    public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
+    public boolean processDeclarations(@NotNull final PsiScopeProcessor processor, @NotNull final ResolveState state, final PsiElement lastParent, @NotNull final PsiElement place) {
         return ScopeProcessorImpl.INSTANCE.processDeclarations(this, processor, state, lastParent, place);
     }
 

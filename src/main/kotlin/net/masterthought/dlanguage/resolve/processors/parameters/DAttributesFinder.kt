@@ -9,7 +9,6 @@ import net.masterthought.dlanguage.utils.*
  * Created by francis on 7/17/2017.
  */
 class DAttributesFinder {
-    //todo should this be in resolve state?
 
     val startingPoint: PsiElement
 

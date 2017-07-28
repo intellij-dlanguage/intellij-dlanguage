@@ -12,7 +12,6 @@ import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.icons.DLanguageIcons;
 import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
-import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 import net.masterthought.dlanguage.psi.references.DReference;
 import net.masterthought.dlanguage.stubs.DLanguageParameterStub;
 import org.jetbrains.annotations.NotNull;
@@ -26,19 +25,19 @@ import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_TRIPLEDOT;
 
 public class DLanguageParameterImpl extends DNamedStubbedPsiElementBase<DLanguageParameterStub> implements DLanguageParameter {
 
-    public DLanguageParameterImpl(DLanguageParameterStub stub, IStubElementType type) {
+    public DLanguageParameterImpl(final DLanguageParameterStub stub, final IStubElementType type) {
         super(stub, type);
     }
 
-    public DLanguageParameterImpl(ASTNode node) {
+    public DLanguageParameterImpl(final ASTNode node) {
         super(node);
     }
 
-    public void accept(@NotNull DLanguageVisitor visitor) {
+    public void accept(@NotNull final DLanguageVisitor visitor) {
         visitor.visitParameter(this);
     }
 
-    public void accept(@NotNull PsiElementVisitor visitor) {
+    public void accept(@NotNull final PsiElementVisitor visitor) {
         if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor) visitor);
         else super.accept(visitor);
     }
@@ -108,8 +107,8 @@ public class DLanguageParameterImpl extends DNamedStubbedPsiElementBase<DLanguag
 
     @Nullable
     public PsiElement getNameIdentifier() {
-        ASTNode keyNode = getNode();
-        return keyNode != null ? keyNode.getPsi() : null;
+        final ASTNode keyNode = getNode();
+        return keyNode.getPsi();
     }
 
     @NotNull
@@ -118,7 +117,7 @@ public class DLanguageParameterImpl extends DNamedStubbedPsiElementBase<DLanguag
     }
 
     @NotNull
-    public PsiElement setName(@NotNull String newName) {
+    public PsiElement setName(@NotNull final String newName) {
         if (getIdentifier() == null) {
             throw new IllegalStateException("cannot rename");
         }
@@ -148,15 +147,9 @@ public class DLanguageParameterImpl extends DNamedStubbedPsiElementBase<DLanguag
 
             @Nullable
             @Override
-            public Icon getIcon(boolean unused) {
+            public Icon getIcon(final boolean unused) {
                 return DLanguageIcons.FILE;
             }
         };
     }
-
-    public boolean isSomeVisibility(Visibility visibility) {
-        //todo fix
-        return false;
-    }
-
 }

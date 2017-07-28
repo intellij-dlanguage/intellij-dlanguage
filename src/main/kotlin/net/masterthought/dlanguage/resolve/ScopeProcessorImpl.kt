@@ -14,7 +14,6 @@ import net.masterthought.dlanguage.utils.*
  * implements processDeclarations for various statements
  * todo make cases named for when someone goto's case
  * todo make is expressions named
- * todo refactor processDeclerations to process children
  */
 object ScopeProcessorImpl {
     /**
@@ -225,11 +224,9 @@ object ScopeProcessorImpl {
                 toContinue = false
             }
         }
-        if (element.declarations != null) {
-            for (declaration in element.declarations) {
-                if (!processDeclaration(declaration, processor, state, lastParent, place)) {
-                    toContinue = false
-                }
+        for (declaration in element.declarations) {
+            if (!processDeclaration(declaration, processor, state, lastParent, place)) {
+                toContinue = false
             }
         }
         return toContinue
@@ -311,7 +308,7 @@ object ScopeProcessorImpl {
     }
 
     @Suppress("UNUSED_PARAMETER")
-    fun processDeclarations(element: LabeledStatement, //todo
+    fun processDeclarations(element: LabeledStatement, //todo this should probably not be scope processor based
                             processor: PsiScopeProcessor,
                             state: ResolveState,
                             lastParent: PsiElement,
@@ -462,22 +459,6 @@ object ScopeProcessorImpl {
     }
 
 
-    /*
-        //todo convert all calls of this method to direct
-        @Suppress("UNUSED_PARAMETER")
-        fun processDeclarations(element: ParameterList,
-                                processor: PsiScopeProcessor,
-                                state: ResolveState,
-                                lastParent: PsiElement,
-                                place: PsiElement): Boolean {
-            for (parameter in element.parameterList) {
-                if (!processor.execute(parameter, state)) {
-                    return false
-                }
-            }
-            return true
-        }
-    */
     @Suppress("UNUSED_PARAMETER")
     fun processDeclarations(element: Constructor,
                             processor: PsiScopeProcessor,
@@ -564,6 +545,7 @@ object ScopeProcessorImpl {
         return toContinue
     }
 
+    @Suppress("UNUSED_PARAMETER")
     fun processDeclarations(element: IsExpression,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
@@ -637,15 +619,12 @@ object ScopeProcessorImpl {
         }
         if (element.doStatement != null) {
             return true//same as while statement
-            //todo needs declaration process statement
         }
         if (element.forStatement != null) {
             return true
-            //todo needs declaration process statement
         }
         if (element.foreachStatement != null) {
             return true
-            //todo needs declaration process statement
         }
         if (element.switchStatement != null) {
             return true
@@ -666,13 +645,13 @@ object ScopeProcessorImpl {
             return true
         }
         if (element.withStatement != null) {
-            return true//idk how with statements work todo
+            return true
         }
         if (element.synchronizedStatement != null) {
             return true//they have there own scope
         }
         if (element.tryStatement != null) {
-            return true//todo declaration process needed for catches
+            return true
         }
         if (element.scopeGuardStatement != null) {
             return true
@@ -696,7 +675,6 @@ object ScopeProcessorImpl {
         if (element.conditionalStatement != null) {
             //version, static if etc. Needs to process into these
             //descends into block statements that are hidden inside statement
-            //todo when to use result and not
             var result: Boolean = true
             for (statement in element.conditionalStatement!!.statementList) {
                 if (!(statement.processDeclarations(processor, state, lastParent, place))) {

@@ -27,19 +27,19 @@ import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_SCOLON;
 
 public class DLanguageModuleDeclarationImpl extends DNamedStubbedPsiElementBase<DLanguageModuleDeclarationStub> implements DLanguageModuleDeclaration {
 
-    public DLanguageModuleDeclarationImpl(DLanguageModuleDeclarationStub stub, IStubElementType type) {
+    public DLanguageModuleDeclarationImpl(final DLanguageModuleDeclarationStub stub, final IStubElementType type) {
         super(stub, type);
     }
 
-    public DLanguageModuleDeclarationImpl(ASTNode node) {
+    public DLanguageModuleDeclarationImpl(final ASTNode node) {
         super(node);
     }
 
-    public void accept(@NotNull DLanguageVisitor visitor) {
+    public void accept(@NotNull final DLanguageVisitor visitor) {
         visitor.visitModuleDeclaration(this);
     }
 
-    public void accept(@NotNull PsiElementVisitor visitor) {
+    public void accept(@NotNull final PsiElementVisitor visitor) {
         if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor) visitor);
         else super.accept(visitor);
     }
@@ -61,8 +61,8 @@ public class DLanguageModuleDeclarationImpl extends DNamedStubbedPsiElementBase<
 
     @Nullable
     public PsiElement getNameIdentifier() {
-        ASTNode keyNode = getNode();
-        return keyNode != null ? keyNode.getPsi() : null;
+        final ASTNode keyNode = getNode();
+        return keyNode.getPsi();
     }
 
     @NotNull
@@ -71,10 +71,9 @@ public class DLanguageModuleDeclarationImpl extends DNamedStubbedPsiElementBase<
     }
 
     @NotNull
-    public PsiElement setName(@NotNull String newName) {
+    public PsiElement setName(@NotNull final String newName) {
         //todo
         return null;
-//        return DPsiImplUtil.setName(this, newName);
     }
 
     @NotNull
@@ -98,7 +97,7 @@ public class DLanguageModuleDeclarationImpl extends DNamedStubbedPsiElementBase<
 
             @Nullable
             @Override
-            public Icon getIcon(boolean unused) {
+            public Icon getIcon(final boolean unused) {
                 return DLanguageIcons.FILE;
             }
         };
@@ -107,7 +106,7 @@ public class DLanguageModuleDeclarationImpl extends DNamedStubbedPsiElementBase<
     @Nullable
     @Override
     public PsiElement getKW_MODULE() {
-        return notNullChild(findChildByType(KW_MODULE));
+        return findChildByType(KW_MODULE);
     }
 
     @Nullable

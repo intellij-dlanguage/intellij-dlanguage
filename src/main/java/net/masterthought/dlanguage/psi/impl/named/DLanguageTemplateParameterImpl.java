@@ -12,7 +12,6 @@ import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.icons.DLanguageIcons;
 import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
-import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
 import net.masterthought.dlanguage.psi.references.DReference;
 import net.masterthought.dlanguage.stubs.DLanguageTemplateParameterStub;
 import org.jetbrains.annotations.NotNull;
@@ -22,19 +21,19 @@ import javax.swing.*;
 
 public class DLanguageTemplateParameterImpl extends DNamedStubbedPsiElementBase<DLanguageTemplateParameterStub> implements DLanguageTemplateParameter {
 
-    public DLanguageTemplateParameterImpl(DLanguageTemplateParameterStub stub, IStubElementType type) {
+    public DLanguageTemplateParameterImpl(final DLanguageTemplateParameterStub stub, final IStubElementType type) {
         super(stub, type);
     }
 
-    public DLanguageTemplateParameterImpl(ASTNode node) {
+    public DLanguageTemplateParameterImpl(final ASTNode node) {
         super(node);
     }
 
-    public void accept(@NotNull DLanguageVisitor visitor) {
+    public void accept(@NotNull final DLanguageVisitor visitor) {
         visitor.visitTemplateParameter(this);
     }
 
-    public void accept(@NotNull PsiElementVisitor visitor) {
+    public void accept(@NotNull final PsiElementVisitor visitor) {
         if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor) visitor);
         else super.accept(visitor);
     }
@@ -85,7 +84,7 @@ public class DLanguageTemplateParameterImpl extends DNamedStubbedPsiElementBase<
         if (getTemplateValueParameter() != null) {
             return getTemplateValueParameter().getIdentifier();
         }
-        throw new IllegalStateException("this shouoldn't happen. Apparently theres some kind of template parameter that is neither, alias,this,tuple,type,or value");
+        throw new IllegalStateException("this shouldn't happen. Apparently theres some kind of template parameter that is neither, alias,this,tuple,type,or value");
     }
 
 
@@ -106,8 +105,8 @@ public class DLanguageTemplateParameterImpl extends DNamedStubbedPsiElementBase<
 
     @Nullable
     public PsiElement getNameIdentifier() {
-        ASTNode keyNode = getNode();
-        return keyNode != null ? keyNode.getPsi() : null;
+        final ASTNode keyNode = getNode();
+        return keyNode.getPsi();
     }
 
     @NotNull
@@ -116,7 +115,7 @@ public class DLanguageTemplateParameterImpl extends DNamedStubbedPsiElementBase<
     }
 
     @NotNull
-    public PsiElement setName(@NotNull String newName) {
+    public PsiElement setName(@NotNull final String newName) {
         this.getIdentifier().setName(newName);
         return this;
     }
@@ -142,15 +141,10 @@ public class DLanguageTemplateParameterImpl extends DNamedStubbedPsiElementBase<
 
             @Nullable
             @Override
-            public Icon getIcon(boolean unused) {
+            public Icon getIcon(final boolean unused) {
                 return DLanguageIcons.FILE;
             }
         };
-    }
-
-    public boolean isSomeVisibility(HasVisibility.Visibility visibility) {
-        //todo fix
-        return false;
     }
 
 }

@@ -284,5 +284,19 @@ public class DUtil {
         }
         return getPrevSiblingOfType(child.getTreePrev(), newHashSet,excluded);
     }
+
+    @Nullable
+    public static PsiElement findParentOfType(final PsiElement element, final Class className) {
+        if (className.isInstance(element)) {
+            return element;
+        } else {
+            try {
+                return findParentOfType(element.getParent(), className);
+            } catch (Exception e) {
+                return null;
+            }
+        }
+
+    }
 }
 

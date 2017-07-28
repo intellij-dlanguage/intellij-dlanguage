@@ -10,7 +10,6 @@ import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.icons.DLanguageIcons;
 import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
-import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
 import net.masterthought.dlanguage.psi.references.DReference;
 import net.masterthought.dlanguage.resolve.ScopeProcessorImpl;
 import net.masterthought.dlanguage.stubs.DLanguageCatchStub;
@@ -23,19 +22,19 @@ import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
 
 public class DLanguageCatchImpl extends DNamedStubbedPsiElementBase<DLanguageCatchStub> implements DLanguageCatch {
 
-    public DLanguageCatchImpl(DLanguageCatchStub stub, IStubElementType type) {
+    public DLanguageCatchImpl(final DLanguageCatchStub stub, final IStubElementType type) {
         super(stub, type);
     }
 
-    public DLanguageCatchImpl(ASTNode node) {
+    public DLanguageCatchImpl(final ASTNode node) {
         super(node);
     }
 
-    public void accept(@NotNull DLanguageVisitor visitor) {
+    public void accept(@NotNull final DLanguageVisitor visitor) {
         visitor.visitCatch(this);
     }
 
-    public void accept(@NotNull PsiElementVisitor visitor) {
+    public void accept(@NotNull final PsiElementVisitor visitor) {
         if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor) visitor);
         else super.accept(visitor);
     }
@@ -89,8 +88,8 @@ public class DLanguageCatchImpl extends DNamedStubbedPsiElementBase<DLanguageCat
 
     @Nullable
     public PsiElement getNameIdentifier() {
-        ASTNode keyNode = getNode();
-        return keyNode != null ? keyNode.getPsi() : null;
+        final ASTNode keyNode = getNode();
+        return keyNode.getPsi();
     }
 
     @NotNull
@@ -99,7 +98,7 @@ public class DLanguageCatchImpl extends DNamedStubbedPsiElementBase<DLanguageCat
     }
 
     @NotNull
-    public PsiElement setName(String newName) {
+    public PsiElement setName(@NotNull final String newName) {
         if (getIdentifier() != null) {
             getIdentifier().setName(newName);
         } else {
@@ -129,19 +128,14 @@ public class DLanguageCatchImpl extends DNamedStubbedPsiElementBase<DLanguageCat
 
             @Nullable
             @Override
-            public Icon getIcon(boolean unused) {
+            public Icon getIcon(final boolean unused) {
                 return DLanguageIcons.FILE;
             }
         };
     }
 
-    public boolean isSomeVisibility(HasVisibility.Visibility visibility) {
-        //todo fix
-        return false;
-    }
-
     @Override
-    public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
+    public boolean processDeclarations(@NotNull final PsiScopeProcessor processor, @NotNull final ResolveState state, final PsiElement lastParent, @NotNull final PsiElement place) {
         return ScopeProcessorImpl.INSTANCE.processDeclarations(this,processor, state, lastParent, place);
     }
 }

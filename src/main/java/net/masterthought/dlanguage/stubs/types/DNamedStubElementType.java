@@ -50,7 +50,7 @@ public abstract class DNamedStubElementType<S extends NamedStubBase<T>, T extend
     private boolean topLevelDeclaration(final S stub) {
         //stuff within unittests does not count as top level
         //stuff within func declarations does not count as top level b/c not globally accessible todo check if this is true for all declaration types
-        //todo switch the topLevel declaration to a file gist maybe
+        //switch the topLevel declaration to a file gist maybe
 
         if (stub instanceof DLanguageParameterStub || stub instanceof DLanguageForeachTypeStub || stub instanceof DLanguageTemplateParameterStub) {
             return false;
