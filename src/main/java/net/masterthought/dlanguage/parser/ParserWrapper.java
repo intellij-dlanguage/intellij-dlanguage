@@ -380,7 +380,7 @@ public class ParserWrapper implements LightPsiParser, PsiParser {
         } else if (t == TRY_STATEMENT) {
             r = parser.parseTryStatement();
         } else if (t == TYPE) {
-            r = parser.parseType();
+            r = false;
         } else if (t == TYPE_2) {
             r = parser.parseType2();
         } else if (t == TYPE_SPECIALIZATION) {

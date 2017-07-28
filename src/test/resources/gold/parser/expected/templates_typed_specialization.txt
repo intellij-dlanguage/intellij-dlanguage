@@ -61,11 +61,11 @@ D Language File
         PsiElement(DLanguageTokenType.{)('{')
         PsiElement(DLanguageTokenType.})('}')
   DLanguageDeclarationImpl(DECLARATION)
-    DLanguageTypeImpl(TYPE)
-      DLanguageType_2Impl(TYPE_2)
-        DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
-          PsiElement(DLanguageTokenType.int)('int')
     DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
+      DLanguageTypeImpl(TYPE)
+        DLanguageType_2Impl(TYPE_2)
+          DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
+            PsiElement(DLanguageTokenType.int)('int')
       DECLARATOR
         IDENTIFIER
           PsiElement(DLanguageTokenType.ID)('var')

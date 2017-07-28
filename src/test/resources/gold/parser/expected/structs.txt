@@ -8,14 +8,14 @@ D Language File
           DLanguageDeclarationsAndStatementsImpl(DECLARATIONS_AND_STATEMENTS)
             DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
               DLanguageDeclarationImpl(DECLARATION)
-                DLanguageTypeImpl(TYPE)
-                  DLanguageType_2Impl(TYPE_2)
-                    DLanguageSymbolImpl(SYMBOL)
-                      DLanguageIdentifierOrTemplateChainImpl(IDENTIFIER_OR_TEMPLATE_CHAIN)
-                        DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
-                          IDENTIFIER
-                            PsiElement(DLanguageTokenType.ID)('ABC')
                 DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
+                  DLanguageTypeImpl(TYPE)
+                    DLanguageType_2Impl(TYPE_2)
+                      DLanguageSymbolImpl(SYMBOL)
+                        DLanguageIdentifierOrTemplateChainImpl(IDENTIFIER_OR_TEMPLATE_CHAIN)
+                          DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
+                            IDENTIFIER
+                              PsiElement(DLanguageTokenType.ID)('ABC')
                   DECLARATOR
                     IDENTIFIER
                       PsiElement(DLanguageTokenType.ID)('x')
@@ -61,14 +61,14 @@ D Language File
             PsiComment(DLanguageTokenType.LINE_COMMENT)('// error, size is not known')
             DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
               DLanguageDeclarationImpl(DECLARATION)
-                DLanguageTypeImpl(TYPE)
-                  DLanguageType_2Impl(TYPE_2)
-                    DLanguageSymbolImpl(SYMBOL)
-                      DLanguageIdentifierOrTemplateChainImpl(IDENTIFIER_OR_TEMPLATE_CHAIN)
-                        DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
-                          IDENTIFIER
-                            PsiElement(DLanguageTokenType.ID)('S')
                 DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
+                  DLanguageTypeImpl(TYPE)
+                    DLanguageType_2Impl(TYPE_2)
+                      DLanguageSymbolImpl(SYMBOL)
+                        DLanguageIdentifierOrTemplateChainImpl(IDENTIFIER_OR_TEMPLATE_CHAIN)
+                          DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
+                            IDENTIFIER
+                              PsiElement(DLanguageTokenType.ID)('S')
                   DECLARATOR
                     IDENTIFIER
                       PsiElement(DLanguageTokenType.ID)('s')
@@ -76,16 +76,16 @@ D Language File
             PsiComment(DLanguageTokenType.LINE_COMMENT)('// error, cannot initialize unknown contents')
             DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
               DLanguageDeclarationImpl(DECLARATION)
-                DLanguageTypeImpl(TYPE)
-                  DLanguageType_2Impl(TYPE_2)
-                    DLanguageSymbolImpl(SYMBOL)
-                      DLanguageIdentifierOrTemplateChainImpl(IDENTIFIER_OR_TEMPLATE_CHAIN)
-                        DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
-                          IDENTIFIER
-                            PsiElement(DLanguageTokenType.ID)('S')
-                  DLanguageTypeSuffixImpl(TYPE_SUFFIX)
-                    PsiElement(DLanguageTokenType.*)('*')
                 DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
+                  DLanguageTypeImpl(TYPE)
+                    DLanguageType_2Impl(TYPE_2)
+                      DLanguageSymbolImpl(SYMBOL)
+                        DLanguageIdentifierOrTemplateChainImpl(IDENTIFIER_OR_TEMPLATE_CHAIN)
+                          DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
+                            IDENTIFIER
+                              PsiElement(DLanguageTokenType.ID)('S')
+                    DLanguageTypeSuffixImpl(TYPE_SUFFIX)
+                      PsiElement(DLanguageTokenType.*)('*')
                   DECLARATOR
                     IDENTIFIER
                       PsiElement(DLanguageTokenType.ID)('p')

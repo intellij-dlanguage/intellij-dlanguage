@@ -1,10 +1,10 @@
 D Language File
   DLanguageDeclarationImpl(DECLARATION)
-    DLanguageTypeImpl(TYPE)
-      DLanguageType_2Impl(TYPE_2)
-        DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
-          PsiElement(DLanguageTokenType.void)('void')
     FUNCTION_DECLARATION
+      DLanguageTypeImpl(TYPE)
+        DLanguageType_2Impl(TYPE_2)
+          DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
+            PsiElement(DLanguageTokenType.void)('void')
       IDENTIFIER
         PsiElement(DLanguageTokenType.ID)('foo')
       DLanguageParametersImpl(PARAMETERS)
@@ -74,11 +74,11 @@ D Language File
             PsiComment(DLanguageTokenType.LINE_COMMENT)('// same as foo(4, 3);')
             DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
               DLanguageDeclarationImpl(DECLARATION)
-                DLanguageTypeImpl(TYPE)
-                  DLanguageType_2Impl(TYPE_2)
-                    DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
-                      PsiElement(DLanguageTokenType.int)('int')
                 FUNCTION_DECLARATION
+                  DLanguageTypeImpl(TYPE)
+                    DLanguageType_2Impl(TYPE_2)
+                      DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
+                        PsiElement(DLanguageTokenType.int)('int')
                   IDENTIFIER
                     PsiElement(DLanguageTokenType.ID)('foo')
                   DLanguageParametersImpl(PARAMETERS)

@@ -12,11 +12,11 @@ D Language File
         DLanguageDeclarationImpl(DECLARATION)
           DLanguageAttributeImpl(ATTRIBUTE)
             PsiElement(DLanguageTokenType.const)('const')
-          DLanguageTypeImpl(TYPE)
-            DLanguageType_2Impl(TYPE_2)
-              DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
-                PsiElement(DLanguageTokenType.int)('int')
           FUNCTION_DECLARATION
+            DLanguageTypeImpl(TYPE)
+              DLanguageType_2Impl(TYPE_2)
+                DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
+                  PsiElement(DLanguageTokenType.int)('int')
             IDENTIFIER
               PsiElement(DLanguageTokenType.ID)('func')
             DLanguageParametersImpl(PARAMETERS)

@@ -35,32 +35,32 @@ D Language File
             PsiElement(DLanguageTokenType.ID)('B')
       PsiElement(DLanguageTokenType.;)(';')
   DLanguageDeclarationImpl(DECLARATION)
-    DLanguageTypeImpl(TYPE)
-      DLanguageType_2Impl(TYPE_2)
-        DLanguageSymbolImpl(SYMBOL)
-          DLanguageIdentifierOrTemplateChainImpl(IDENTIFIER_OR_TEMPLATE_CHAIN)
-            DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
-              IDENTIFIER
-                PsiElement(DLanguageTokenType.ID)('Foo')
     DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
+      DLanguageTypeImpl(TYPE)
+        DLanguageType_2Impl(TYPE_2)
+          DLanguageSymbolImpl(SYMBOL)
+            DLanguageIdentifierOrTemplateChainImpl(IDENTIFIER_OR_TEMPLATE_CHAIN)
+              DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
+                IDENTIFIER
+                  PsiElement(DLanguageTokenType.ID)('Foo')
       DECLARATOR
         IDENTIFIER
           PsiElement(DLanguageTokenType.ID)('f1')
       PsiElement(DLanguageTokenType.;)(';')
   PsiComment(DLanguageTokenType.LINE_COMMENT)('// error, could be either A.Foo or B.Foo')
   DLanguageDeclarationImpl(DECLARATION)
-    DLanguageTypeImpl(TYPE)
-      DLanguageType_2Impl(TYPE_2)
-        DLanguageSymbolImpl(SYMBOL)
-          DLanguageIdentifierOrTemplateChainImpl(IDENTIFIER_OR_TEMPLATE_CHAIN)
-            DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
-              IDENTIFIER
-                PsiElement(DLanguageTokenType.ID)('B')
-            PsiElement(DLanguageTokenType..)('.')
-            DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
-              IDENTIFIER
-                PsiElement(DLanguageTokenType.ID)('Foo')
     DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
+      DLanguageTypeImpl(TYPE)
+        DLanguageType_2Impl(TYPE_2)
+          DLanguageSymbolImpl(SYMBOL)
+            DLanguageIdentifierOrTemplateChainImpl(IDENTIFIER_OR_TEMPLATE_CHAIN)
+              DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
+                IDENTIFIER
+                  PsiElement(DLanguageTokenType.ID)('B')
+              PsiElement(DLanguageTokenType..)('.')
+              DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
+                IDENTIFIER
+                  PsiElement(DLanguageTokenType.ID)('Foo')
       DECLARATOR
         IDENTIFIER
           PsiElement(DLanguageTokenType.ID)('f2')

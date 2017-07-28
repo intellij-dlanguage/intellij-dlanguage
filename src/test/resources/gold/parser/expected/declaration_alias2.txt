@@ -120,60 +120,60 @@ D Language File
                     PsiElement(DLanguageTokenType.ID)('t2')
       PsiElement(DLanguageTokenType.;)(';')
   DLanguageDeclarationImpl(DECLARATION)
-    DLanguageTypeImpl(TYPE)
-      DLanguageType_2Impl(TYPE_2)
-        DLanguageSymbolImpl(SYMBOL)
-          DLanguageIdentifierOrTemplateChainImpl(IDENTIFIER_OR_TEMPLATE_CHAIN)
-            DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
-              IDENTIFIER
-                PsiElement(DLanguageTokenType.ID)('t1')
-            PsiElement(DLanguageTokenType..)('.')
-            DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
-              IDENTIFIER
-                PsiElement(DLanguageTokenType.ID)('t')
     DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
+      DLanguageTypeImpl(TYPE)
+        DLanguageType_2Impl(TYPE_2)
+          DLanguageSymbolImpl(SYMBOL)
+            DLanguageIdentifierOrTemplateChainImpl(IDENTIFIER_OR_TEMPLATE_CHAIN)
+              DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
+                IDENTIFIER
+                  PsiElement(DLanguageTokenType.ID)('t1')
+              PsiElement(DLanguageTokenType..)('.')
+              DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
+                IDENTIFIER
+                  PsiElement(DLanguageTokenType.ID)('t')
       DECLARATOR
         IDENTIFIER
           PsiElement(DLanguageTokenType.ID)('v1')
       PsiElement(DLanguageTokenType.;)(';')
   PsiComment(DLanguageTokenType.LINE_COMMENT)('// v1 is type int')
   DLanguageDeclarationImpl(DECLARATION)
-    DLanguageTypeImpl(TYPE)
-      DLanguageType_2Impl(TYPE_2)
-        DLanguageSymbolImpl(SYMBOL)
-          DLanguageIdentifierOrTemplateChainImpl(IDENTIFIER_OR_TEMPLATE_CHAIN)
-            DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
-              IDENTIFIER
-                PsiElement(DLanguageTokenType.ID)('t2')
     DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
+      DLanguageTypeImpl(TYPE)
+        DLanguageType_2Impl(TYPE_2)
+          DLanguageSymbolImpl(SYMBOL)
+            DLanguageIdentifierOrTemplateChainImpl(IDENTIFIER_OR_TEMPLATE_CHAIN)
+              DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
+                IDENTIFIER
+                  PsiElement(DLanguageTokenType.ID)('t2')
       DECLARATOR
         IDENTIFIER
           PsiElement(DLanguageTokenType.ID)('v2')
       PsiElement(DLanguageTokenType.;)(';')
   PsiComment(DLanguageTokenType.LINE_COMMENT)('// v2 is type int')
   DLanguageDeclarationImpl(DECLARATION)
-    DLanguageTypeImpl(TYPE)
-      DLanguageType_2Impl(TYPE_2)
-        DLanguageSymbolImpl(SYMBOL)
-          DLanguageIdentifierOrTemplateChainImpl(IDENTIFIER_OR_TEMPLATE_CHAIN)
-            DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
-              IDENTIFIER
-                PsiElement(DLanguageTokenType.ID)('t3')
     DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
+      DLanguageTypeImpl(TYPE)
+        DLanguageType_2Impl(TYPE_2)
+          DLanguageSymbolImpl(SYMBOL)
+            DLanguageIdentifierOrTemplateChainImpl(IDENTIFIER_OR_TEMPLATE_CHAIN)
+              DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
+                IDENTIFIER
+                  PsiElement(DLanguageTokenType.ID)('t3')
       DECLARATOR
         IDENTIFIER
           PsiElement(DLanguageTokenType.ID)('v3')
       PsiElement(DLanguageTokenType.;)(';')
   PsiComment(DLanguageTokenType.LINE_COMMENT)('// v3 is type int')
   DLanguageDeclarationImpl(DECLARATION)
-    DLanguageTypeImpl(TYPE)
-      DLanguageType_2Impl(TYPE_2)
-        DLanguageSymbolImpl(SYMBOL)
-          DLanguageIdentifierOrTemplateChainImpl(IDENTIFIER_OR_TEMPLATE_CHAIN)
-            DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
-              IDENTIFIER
-                PsiElement(DLanguageTokenType.ID)('t4')
     DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
+      DLanguageTypeImpl(TYPE)
+        DLanguageType_2Impl(TYPE_2)
+          DLanguageSymbolImpl(SYMBOL)
+            DLanguageIdentifierOrTemplateChainImpl(IDENTIFIER_OR_TEMPLATE_CHAIN)
+              DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
+                IDENTIFIER
+                  PsiElement(DLanguageTokenType.ID)('t4')
       DECLARATOR
         IDENTIFIER
           PsiElement(DLanguageTokenType.ID)('v4')

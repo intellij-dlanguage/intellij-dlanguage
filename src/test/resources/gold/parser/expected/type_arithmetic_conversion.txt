@@ -1,10 +1,10 @@
 D Language File
   DLanguageDeclarationImpl(DECLARATION)
-    DLanguageTypeImpl(TYPE)
-      DLanguageType_2Impl(TYPE_2)
-        DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
-          PsiElement(DLanguageTokenType.ubyte)('ubyte')
     DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
+      DLanguageTypeImpl(TYPE)
+        DLanguageType_2Impl(TYPE_2)
+          DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
+            PsiElement(DLanguageTokenType.ubyte)('ubyte')
       DECLARATOR
         IDENTIFIER
           PsiElement(DLanguageTokenType.ID)('u1')
@@ -30,11 +30,11 @@ D Language File
       PsiElement(DLanguageTokenType.;)(';')
   PsiComment(DLanguageTokenType.LINE_COMMENT)('// error, -1 cannot be represented in a ubyte')
   DLanguageDeclarationImpl(DECLARATION)
-    DLanguageTypeImpl(TYPE)
-      DLanguageType_2Impl(TYPE_2)
-        DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
-          PsiElement(DLanguageTokenType.ushort)('ushort')
     DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
+      DLanguageTypeImpl(TYPE)
+        DLanguageType_2Impl(TYPE_2)
+          DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
+            PsiElement(DLanguageTokenType.ushort)('ushort')
       DECLARATOR
         IDENTIFIER
           PsiElement(DLanguageTokenType.ID)('u2')
@@ -60,11 +60,11 @@ D Language File
       PsiElement(DLanguageTokenType.;)(';')
   PsiComment(DLanguageTokenType.LINE_COMMENT)('// error, -1 cannot be represented in a ushort')
   DLanguageDeclarationImpl(DECLARATION)
-    DLanguageTypeImpl(TYPE)
-      DLanguageType_2Impl(TYPE_2)
-        DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
-          PsiElement(DLanguageTokenType.uint)('uint')
     DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
+      DLanguageTypeImpl(TYPE)
+        DLanguageType_2Impl(TYPE_2)
+          DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
+            PsiElement(DLanguageTokenType.uint)('uint')
       DECLARATOR
         IDENTIFIER
           PsiElement(DLanguageTokenType.ID)('u3')
@@ -90,11 +90,11 @@ D Language File
       PsiElement(DLanguageTokenType.;)(';')
   PsiComment(DLanguageTokenType.LINE_COMMENT)('// ok, -1 can be represented in a uint')
   DLanguageDeclarationImpl(DECLARATION)
-    DLanguageTypeImpl(TYPE)
-      DLanguageType_2Impl(TYPE_2)
-        DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
-          PsiElement(DLanguageTokenType.ulong)('ulong')
     DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
+      DLanguageTypeImpl(TYPE)
+        DLanguageType_2Impl(TYPE_2)
+          DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
+            PsiElement(DLanguageTokenType.ulong)('ulong')
       DECLARATOR
         IDENTIFIER
           PsiElement(DLanguageTokenType.ID)('u4')

@@ -45,11 +45,11 @@ D Language File
     DLanguageAttributeDeclarationImpl(ATTRIBUTE_DECLARATION)
       PsiElement(DLanguageTokenType.:)(':')
   DLanguageDeclarationImpl(DECLARATION)
-    DLanguageTypeImpl(TYPE)
-      DLanguageType_2Impl(TYPE_2)
-        DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
-          PsiElement(DLanguageTokenType.int)('int')
     FUNCTION_DECLARATION
+      DLanguageTypeImpl(TYPE)
+        DLanguageType_2Impl(TYPE_2)
+          DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
+            PsiElement(DLanguageTokenType.int)('int')
       IDENTIFIER
         PsiElement(DLanguageTokenType.ID)('foo')
       DLanguageParametersImpl(PARAMETERS)

@@ -160,14 +160,14 @@ D Language File
                     PsiElement(DLanguageTokenType.))(')')
                   PsiElement(DLanguageTokenType.{)('{')
                   DLanguageDeclarationImpl(DECLARATION)
-                    DLanguageTypeImpl(TYPE)
-                      DLanguageType_2Impl(TYPE_2)
-                        DLanguageSymbolImpl(SYMBOL)
-                          DLanguageIdentifierOrTemplateChainImpl(IDENTIFIER_OR_TEMPLATE_CHAIN)
-                            DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
-                              IDENTIFIER
-                                PsiElement(DLanguageTokenType.ID)('T')
                     DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
+                      DLanguageTypeImpl(TYPE)
+                        DLanguageType_2Impl(TYPE_2)
+                          DLanguageSymbolImpl(SYMBOL)
+                            DLanguageIdentifierOrTemplateChainImpl(IDENTIFIER_OR_TEMPLATE_CHAIN)
+                              DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
+                                IDENTIFIER
+                                  PsiElement(DLanguageTokenType.ID)('T')
                       DECLARATOR
                         IDENTIFIER
                           PsiElement(DLanguageTokenType.ID)('Foo')
@@ -176,11 +176,11 @@ D Language File
                   PsiElement(DLanguageTokenType.})('}')
             DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
               DLanguageDeclarationImpl(DECLARATION)
-                DLanguageTypeImpl(TYPE)
-                  DLanguageType_2Impl(TYPE_2)
-                    DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
-                      PsiElement(DLanguageTokenType.void)('void')
                 FUNCTION_DECLARATION
+                  DLanguageTypeImpl(TYPE)
+                    DLanguageType_2Impl(TYPE_2)
+                      DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
+                        PsiElement(DLanguageTokenType.void)('void')
                   IDENTIFIER
                     PsiElement(DLanguageTokenType.ID)('test')
                   DLanguageParametersImpl(PARAMETERS)
@@ -246,14 +246,14 @@ D Language File
                         DLanguageStructBodyImpl(STRUCT_BODY)
                           PsiElement(DLanguageTokenType.{)('{')
                           DLanguageDeclarationImpl(DECLARATION)
-                            DLanguageTypeImpl(TYPE)
-                              DLanguageType_2Impl(TYPE_2)
-                                DLanguageSymbolImpl(SYMBOL)
-                                  DLanguageIdentifierOrTemplateChainImpl(IDENTIFIER_OR_TEMPLATE_CHAIN)
-                                    DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
-                                      IDENTIFIER
-                                        PsiElement(DLanguageTokenType.ID)('T')
                             DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
+                              DLanguageTypeImpl(TYPE)
+                                DLanguageType_2Impl(TYPE_2)
+                                  DLanguageSymbolImpl(SYMBOL)
+                                    DLanguageIdentifierOrTemplateChainImpl(IDENTIFIER_OR_TEMPLATE_CHAIN)
+                                      DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
+                                        IDENTIFIER
+                                          PsiElement(DLanguageTokenType.ID)('T')
                               DECLARATOR
                                 IDENTIFIER
                                   PsiElement(DLanguageTokenType.ID)('member')
@@ -278,14 +278,14 @@ D Language File
                     DLanguageStructBodyImpl(STRUCT_BODY)
                       PsiElement(DLanguageTokenType.{)('{')
                       DLanguageDeclarationImpl(DECLARATION)
-                        DLanguageTypeImpl(TYPE)
-                          DLanguageType_2Impl(TYPE_2)
-                            DLanguageSymbolImpl(SYMBOL)
-                              DLanguageIdentifierOrTemplateChainImpl(IDENTIFIER_OR_TEMPLATE_CHAIN)
-                                DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
-                                  IDENTIFIER
-                                    PsiElement(DLanguageTokenType.ID)('T')
                         DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
+                          DLanguageTypeImpl(TYPE)
+                            DLanguageType_2Impl(TYPE_2)
+                              DLanguageSymbolImpl(SYMBOL)
+                                DLanguageIdentifierOrTemplateChainImpl(IDENTIFIER_OR_TEMPLATE_CHAIN)
+                                  DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
+                                    IDENTIFIER
+                                      PsiElement(DLanguageTokenType.ID)('T')
                           DECLARATOR
                             IDENTIFIER
                               PsiElement(DLanguageTokenType.ID)('member')
