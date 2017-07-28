@@ -52,6 +52,9 @@ public class DLanguageSingleImportImpl extends DNamedStubbedPsiElementBase<DLang
     @Override
     public String getName() {
         if (getStub() != null) {
+            if(getStub().getName() == null){
+                throw new NullPointerException();
+            }
             return getStub().getName();
         }
         if (getIdentifierChain() == null) {
@@ -61,9 +64,9 @@ public class DLanguageSingleImportImpl extends DNamedStubbedPsiElementBase<DLang
     }
 
     @Override
-    public PsiElement setName(@NotNull String name) throws IncorrectOperationException {
-        getIdentifier().setName(name);//todo check
-        return this;
+    public PsiElement setName(@NotNull final String name) throws IncorrectOperationException {
+        getIdentifier().setName(name);//todo this is not correct
+        throw new IllegalStateException();
     }
 
     public boolean isPublic() {

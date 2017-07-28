@@ -5,17 +5,16 @@ import com.intellij.openapi.roots.impl.DirectoryIndex
 import com.intellij.psi.PsiNamedElement
 import com.intellij.psi.impl.file.PsiDirectoryFactory
 import com.intellij.psi.search.GlobalSearchScope
+import com.intellij.psi.stubs.StubIndex
 import com.intellij.psi.util.PsiTreeUtil
-import net.masterthought.dlanguage.DLanguage
 import net.masterthought.dlanguage.index.DModuleIndex
 import net.masterthought.dlanguage.psi.DLanguageFile
 import net.masterthought.dlanguage.psi.DLanguageIdentifier
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement
 import net.masterthought.dlanguage.psi.references.DReference
-import net.masterthought.dlanguage.utils.Identifier
-import net.masterthought.dlanguage.utils.IdentifierChain
-import net.masterthought.dlanguage.utils.ModuleDeclaration
-import net.masterthought.dlanguage.utils.SingleImport
+import net.masterthought.dlanguage.resolve.DResolveUtil.getAllImportedModulesAsFiles
+import net.masterthought.dlanguage.stubs.index.DTopLevelDeclarationIndex
+import net.masterthought.dlanguage.utils.*
 
 object SpecialCaseResolve {
     /**
@@ -39,14 +38,14 @@ object SpecialCaseResolve {
         }
         if (inSingleImport(e) != null) {
             val identifiers = inSingleImport(e)!!.identifierChain!!.identifiers
-            val scope = inSingleImport(e)?.identifier
-            if (scope != null && scope == e) {
-                return resolveScopedSymbol(inSingleImport(e)!!, scope)
-            }
             if (identifiers.last() == e) {
                 return resolveModule(inSingleImport(e)!!.identifierChain!!)
             }
             return resolvePackage(identifiers.subList(0, identifiers.indexOf(e) + 1))
+        }
+        if (inImportBind(e) != null) {
+            return (inImportBind(e)!!.parent as ImportDeclaration).singleImports.flatMap { resolveScopedSymbol(it, e) }.toSet()
+
         }
         return emptySet()
     }
@@ -68,36 +67,23 @@ object SpecialCaseResolve {
                         .findAll()
                         .map { PsiDirectoryFactory.getInstance(last.project).createDirectory(it) }
                         .toSet()
-//        return resolvePackageImpl(parents.subList(0, parents.size - 1), candidates, last.project)
     }
 
-//    private fun resolvePackageImpl(parents: MutableList<DLanguageIdentifier>, candidates: MutableCollection<VirtualFile>, project: Project): Set<PsiNamedElement> {
-//
-//        val candidatesPsi = candidates
-//            .map { PsiDirectoryFactory.getInstance(project).createDirectory(it) }
-//        if (candidates.isEmpty() || candidates.size == 1 || parents.size == 0) {
-//            return candidatesPsi
-//                .toSet()
-//        }
-//        val last = parents.last()
-//        val filtered = candidatesPsi.filter { it.parentDirectory?.name == last.name }
-//        if (filtered.isEmpty()) {
-//            return candidatesPsi.toSet()
-//        } else {
-//            return resolvePackageImpl(parents.subList(0, parents.lastIndex - 1), Sets.newHashSet(filtered.map { it.virtualFile }), project)
-//        }
-//    }
 
     private fun resolveModule(path: IdentifierChain): Set<PsiNamedElement> {
         return Sets.newHashSet(DModuleIndex.getFilesByModuleName(path.project, path.text, GlobalSearchScope.allScope(path.project)))
     }
 
     private fun resolveScopedSymbol(singleImport: SingleImport, scope: DLanguageIdentifier): Set<PsiNamedElement> {
+        val resolved = mutableSetOf<PsiNamedElement>()
         for (resolveResult in (singleImport.identifierChain!!.identifiers.last().reference as DReference).multiResolve(false)) {
             assert(resolveResult.element is DLanguageFile)
-
+            for (file in getAllImportedModulesAsFiles(resolveResult.element as DLanguageFile)) {
+                resolved.addAll(StubIndex.getElements(DTopLevelDeclarationIndex.KEY, scope.name, scope.project, GlobalSearchScope.fileScope(file), DNamedElement::class.java))
+            }
+            resolved.addAll(StubIndex.getElements(DTopLevelDeclarationIndex.KEY, scope.name, scope.project, GlobalSearchScope.fileScope(resolveResult.element as DLanguageFile), DNamedElement::class.java))
         }
-        TODO()
+        return resolved;
     }
 
     fun inModuleDeclaration(e: DNamedElement): ModuleDeclaration? {
@@ -113,8 +99,11 @@ object SpecialCaseResolve {
         if (e !is Identifier) {
             return false
         }
-        return (inModuleDeclaration(e) != null || inSingleImport(e) != null)
+        return (inModuleDeclaration(e) != null || inSingleImport(e) != null || inImportBind(e) != null)
+    }
 
+    private fun inImportBind(identifier: Identifier): ImportBindings? {
+        return PsiTreeUtil.getTopmostParentOfType(identifier, ImportBindings::class.java)
     }
 
 }

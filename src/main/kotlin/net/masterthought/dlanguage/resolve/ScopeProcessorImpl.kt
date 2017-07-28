@@ -99,12 +99,18 @@ object ScopeProcessorImpl {
                             state: ResolveState,
                             lastParent: PsiElement,
                             place: PsiElement): Boolean {
-        if (element.parameters != null) {
-            if (!processParameters(element.parameters!!, processor, state, lastParent, place)) {
-                return false
+        var toContinue = true
+        if (element.identifier != null) {
+            if (!processor.execute(element.identifier!!, state)) {
+                toContinue = false
             }
         }
-        return true
+        if (element.parameters != null) {
+            if (!processParameters(element.parameters!!, processor, state, lastParent, place)) {
+                toContinue = false
+            }
+        }
+        return toContinue
     }
 
     @Suppress("UNUSED_PARAMETER")
@@ -556,6 +562,18 @@ object ScopeProcessorImpl {
             }
         }
         return toContinue
+    }
+
+    fun processDeclarations(element: IsExpression,
+                            processor: PsiScopeProcessor,
+                            state: ResolveState,
+                            lastParent: PsiElement,
+                            place: PsiElement): Boolean {
+
+        if (element.identifier != null) {
+            return processor.execute(element.identifier!!, state)
+        }
+        return true
     }
 
 

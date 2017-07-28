@@ -106,7 +106,7 @@ static this() {
     types_children["FunctionBody"] = ["BlockStatement","InStatement","OutStatement","BodyStatement"];
     types_children["FunctionCallExpression"] = ["Type", "Arguments", "UnaryExpression",  "TemplateArguments"];
     named_children["FunctionDeclaration"] = ["Type", "Identifier",  "TemplateParameters", "Parameters",  "Constraint",  "FunctionBody"];
-    types_children["FunctionLiteralExpression"] = ["Type","KW_FUNCTION","KW_DELEGATE","Parameters","FunctionAttribute*","FunctionBody"];
+    types_children["FunctionLiteralExpression"] = ["Type","KW_FUNCTION","KW_DELEGATE","Parameters","FunctionAttribute*","FunctionBody","Identifier"];
     types_children["GotoStatement"] = ["Identifier","Expression","KW_DEFAULT","KW_CASE","KW_GOTO","OP_SCOLON"];
     types_children["IdentifierChain"] = ["Identifier*", "OP_DOT*"];
     types_children["IdentifierList"] = ["Identifier*", "OP_COMMA*"];
@@ -128,7 +128,7 @@ static this() {
     types_children["InterfaceDeclaration"] = ["KW_INTERFACE","InterfaceOrClass"];
     named_children["InterfaceOrClass"] = ["Identifier","TemplateParameters","OP_COLON","StructBody","Constraint","BaseClassList"];
     types_children["Invariant"] = ["BlockStatement","KW_INVARIANT","OP_PAR_RIGHT","OP_PAR_LEFT"];
-    types_children["IsExpression"] = ["OP_PAR_RIGHT","OP_PAR_LEFT","Type","Identifier","TypeSpecialization",  "TemplateParameterList","OP_COMMA","OP_COLON","OP_EQ","KW_IS"];//todo technically this should be named
+    types_children["IsExpression"] = ["OP_PAR_RIGHT","OP_PAR_LEFT","Type","Identifier","TypeSpecialization","TemplateParameterList","OP_COMMA","OP_COLON","OP_EQ","KW_IS"];//todo technically this should be named
     types_children["KeyValuePair"] = ["AssignExpression*","OP_COLON"];
     types_children["KeyValuePairs"] = ["OP_COMMA*","KeyValuePair*"];
     types_children["LambdaExpression"] = ["Identifier","KW_FUNCTION","KW_DELEGATE","OP_LAMBDA_ARROW","AssignExpression","Parameters","FunctionAttribute*"];
@@ -315,7 +315,7 @@ static this() {
     has_processDeclaration["FunctionBody"] = false;
     has_processDeclaration["FunctionCallExpression"] = false;
     has_processDeclaration["FunctionDeclaration"] = true;
-    has_processDeclaration["FunctionLiteralExpression"] = false;
+    has_processDeclaration["FunctionLiteralExpression"] = true;
     has_processDeclaration["GotoStatement"] = false;
     has_processDeclaration["IdentifierChain"] = false;
     has_processDeclaration["IdentifierList"] = false;
@@ -337,10 +337,10 @@ static this() {
     has_processDeclaration["InterfaceDeclaration"] = false;
     has_processDeclaration["InterfaceOrClass"] = true;
     has_processDeclaration["Invariant"] = false;
-    has_processDeclaration["IsExpression"] = false;
+    has_processDeclaration["IsExpression"] = true;
     has_processDeclaration["KeyValuePair"] = false;
     has_processDeclaration["KeyValuePairs"] = false;
-    has_processDeclaration["LambdaExpression"] = false;
+    has_processDeclaration["LambdaExpression"] = true;
     has_processDeclaration["LabeledStatement"] = false;
     has_processDeclaration["LastCatch"] = false;
     has_processDeclaration["LinkageAttribute"] = false;

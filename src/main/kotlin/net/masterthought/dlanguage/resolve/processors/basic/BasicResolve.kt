@@ -27,44 +27,13 @@ object BasicResolve {
 
     fun findDefinitionNode(project: Project, e: PsiNamedElement): Set<PsiNamedElement> {
         //todo fix templated functions return type bug
-
-
         if (e !is Identifier) {
             return emptySet()
         }
 
         val nameProcessor = DNameScopeProcessor(e)
         PsiTreeUtil.treeWalkUp(nameProcessor, e, e.containingFile, ResolveState.initial())
-        if (nameProcessor.result.size != 0) {
-            return nameProcessor.result
-        }
-
-//        val start = System.currentTimeMillis()
-        val modules = DResolveUtil.getAllImportedModules(e)
-//        val end = System.currentTimeMillis()
-//        Logger.getInstance(this::class.java).info("modules took:" + (end - start))
-
-        val result = mutableSetOf<PsiNamedElement>()
-        // find definition in imported files
-        var scope = EMPTY_SCOPE
-        for (module in modules) {
-            for (file in getFilesByModuleName(project, module, GlobalSearchScope.allScope(project))) {
-                scope = scope.uniteWith(fileScope(file))
-            }
-        }
-        result.addAll(StubIndex.getElements(DTopLevelDeclarationIndex.KEY, e.name, e.project, scope, DNamedElement::class.java))
-        val finalResult = mutableSetOf<PsiNamedElement>()
-        for (element in result) {
-            if (element is Constructor) {
-                if (DResolveUtil.resolvingConstructor(e) != null) {
-                    finalResult.add(element)
-                } else continue
-            }
-            if (DResolveUtil.resolvingConstructor(e) == null) {
-                finalResult.add(element)
-            }
-        }
-        return finalResult
+        return nameProcessor.result
     }
 
 }
