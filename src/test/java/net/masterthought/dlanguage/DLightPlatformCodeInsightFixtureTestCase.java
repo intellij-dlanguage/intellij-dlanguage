@@ -79,7 +79,7 @@ public abstract class DLightPlatformCodeInsightFixtureTestCase extends LightPlat
         ApplicationManager.getApplication().runWriteAction(new Runnable() {
             @Override
             public void run() {
-                Sdk sdk = getProjectDescriptor().getSdk();
+                final Sdk sdk = getProjectDescriptor().getSdk();
                 ProjectJdkTable.getInstance().addJdk(sdk);
                 ProjectRootManager.getInstance(myFixture.getProject()).setProjectSdk(sdk);
             }

@@ -1,0 +1,6 @@
+DLanguageTokenType.NESTING_BLOCK_COMMENT ('/+')
+DLanguageTokenType.NESTING_BLOCK_COMMENT ('\n')
+DLanguageTokenType.NESTING_BLOCK_COMMENT (' hello')
+DLanguageTokenType.NESTING_BLOCK_COMMENT ('\n')
+DLanguageTokenType.NESTING_BLOCK_COMMENT (' ')
+DLanguageTokenType.NESTING_BLOCK_COMMENT ('+/')

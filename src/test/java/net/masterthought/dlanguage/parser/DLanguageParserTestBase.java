@@ -32,7 +32,7 @@ public abstract class DLanguageParserTestBase extends ParsingTestCase {
      * Perform a test. Add tests that should work but does not work yet with
      * doTestModule(false, false).
      */
-    protected void doTest(boolean checkResult, boolean shouldPass) {
+    protected void doTest(final boolean checkResult, final boolean shouldPass) {
 //        String name = getTestName();
 //        try {
 //            String text = loadFile(name + "." + myFileExt);

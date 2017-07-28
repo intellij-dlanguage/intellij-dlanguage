@@ -1,0 +1,6 @@
+KEYWORD ('shared')
+WHITE_SPACE (' ')
+KEYWORD ('int')
+WHITE_SPACE (' ')
+DLanguageTokenType.ID ('flag')
+SEMICOLON (';')

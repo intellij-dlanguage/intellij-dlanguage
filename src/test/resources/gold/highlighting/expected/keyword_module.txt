@@ -1,0 +1,4 @@
+KEYWORD ('module')
+WHITE_SPACE (' ')
+MODULE_DEFINITION ('net.masterthought.dlanguage')
+SEMICOLON (';')

@@ -1,0 +1,3 @@
+DLanguageTokenType.DOC_COMMENT ('/**')
+DLanguageTokenType.DOC_COMMENT (' So is this. ')
+DLanguageTokenType.DOC_COMMENT ('*/')
