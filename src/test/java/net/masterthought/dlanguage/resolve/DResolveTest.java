@@ -16,9 +16,9 @@ public class DResolveTest extends DResolveTestCase {
         doTest();
     }
 
-    public void testOverloadedParameterCount() {
-        doTest();
-    }
+//    public void testOverloadedParameterCount() {
+//        doTest();
+//    }
 
     //test dos not pass for reasons not clear to me. The feature in question does work thought. todo
 //    public void testClassConstructorToConstructorDefinition() {

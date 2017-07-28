@@ -36,7 +36,12 @@ object DResolveUtil {
             return SpecialCaseResolve.findDefinitionNode(e)
         }
 
-        val basicResolveResult = BasicResolve.findDefinitionNode(project, e)
+        var basicResolveResult = BasicResolve.findDefinitionNode(project, e)
+        if(resolvingConstructor(e) == null){
+            basicResolveResult = basicResolveResult.filter { it !is Constructor }.toSet()
+        }
+        else
+            basicResolveResult = basicResolveResult.filter { it is Constructor }.toSet()
         return basicResolveResult
 //        val parameterCountingResult = ParameterCountingResolve.findDefinitionNode(project, e)
 //        if (parameterCountingResult.isEmpty()) {

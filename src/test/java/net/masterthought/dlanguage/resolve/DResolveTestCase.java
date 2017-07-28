@@ -78,7 +78,7 @@ public abstract class DResolveTestCase extends DLightPlatformCodeInsightFixtureT
         doTest(true);
     }
 
-    protected void doTest(boolean succeed) {
+    protected void doTest(final boolean succeed) {
         if (succeed && referencedElement == null) {
             fail("Could not find reference at caret.");
         }
@@ -87,11 +87,11 @@ public abstract class DResolveTestCase extends DLightPlatformCodeInsightFixtureT
         }
         if (succeed) {
             //function,class,constructor
-            if (resolvedElement instanceof DLanguageTemplateDeclaration || resolvedElement instanceof DLanguageFunctionDeclaration || resolvedElement instanceof DLanguageInterfaceOrClass || resolvedElement instanceof DLanguageStructDeclaration) {
+            /*if (resolvedElement instanceof DLanguageInterfaceOrClass ) {
                 assertEquals("Could not resolve expected reference.", resolvedElement, referencedElement.resolve().getParent());
-            }/* else if (resolvedElement instanceof DLanguageConstructor) {
+            }*//* else if (resolvedElement instanceof DLanguageConstructor) {
                 assertTrue(referencedElement.resolve() instanceof DLanguageConstructor);
-            }*/ else
+            }*/ /*else*/
                 assertEquals("Could not resolve expected reference.", resolvedElement, referencedElement.resolve());
         } else {
             assertFalse("Resolved unexpected reference.", resolvedElement.equals(referencedElement.resolve()));
