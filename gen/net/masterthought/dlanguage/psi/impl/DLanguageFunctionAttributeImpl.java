@@ -1,47 +1,47 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi.impl;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
-import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
-import net.masterthought.dlanguage.psi.*;
+import net.masterthought.dlanguage.psi.DLanguageAtAttribute;
+import net.masterthought.dlanguage.psi.DLanguageFunctionAttribute;
+import net.masterthought.dlanguage.psi.DLanguageVisitor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import static net.masterthought.dlanguage.psi.DLanguageTypes.KW_NOTHROW;
+import static net.masterthought.dlanguage.psi.DLanguageTypes.KW_PURE;
+
 
 public class DLanguageFunctionAttributeImpl extends ASTWrapperPsiElement implements DLanguageFunctionAttribute {
+    public DLanguageFunctionAttributeImpl(ASTNode node) {
+        super(node);
+    }
 
-  public DLanguageFunctionAttributeImpl(ASTNode node) {
-    super(node);
-  }
+    public void accept(@NotNull DLanguageVisitor visitor) {
+        visitor.visitFunctionAttribute(this);
+    }
 
-  public void accept(@NotNull DLanguageVisitor visitor) {
-    visitor.visitFunctionAttribute(this);
-  }
+    public void accept(@NotNull PsiElementVisitor visitor) {
+        if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor) visitor);
+        else super.accept(visitor);
+    }
 
-  public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
-    else super.accept(visitor);
-  }
+    @Nullable
+    public DLanguageAtAttribute getAtAttribute() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageAtAttribute.class);
+    }
 
-  @Override
-  @Nullable
-  public DLanguageProperty getProperty() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageProperty.class);
-  }
+    @Nullable
+    public PsiElement getKW_PURE() {
+        return findChildByType(KW_PURE);
+    }
 
-  @Override
-  @Nullable
-  public PsiElement getKwNothrow() {
-    return findChildByType(KW_NOTHROW);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKwPure() {
-    return findChildByType(KW_PURE);
-  }
+    @Nullable
+    public PsiElement getKW_NOTHROW() {
+        return findChildByType(KW_NOTHROW);
+    }
 
 }

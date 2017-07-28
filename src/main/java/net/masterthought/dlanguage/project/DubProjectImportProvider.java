@@ -22,7 +22,7 @@ public class DubProjectImportProvider extends ProjectImportProvider {
     public ModuleWizardStep[] createSteps(final WizardContext wizardContext) {
         final ModuleWizardStep setDubBinary = new DubBinaryForModuleStep(wizardContext);
 
-        return new ModuleWizardStep[] { setDubBinary };
+        return new ModuleWizardStep[]{setDubBinary};
     }
 
     @Override
@@ -33,16 +33,16 @@ public class DubProjectImportProvider extends ProjectImportProvider {
 
         // check for dub.json
         final VirtualFile dubJson = fileOrDirectory.findChild("dub.json");
-        if(dubJson != null) {
-            if(canImportFromFile(dubJson)) {
+        if (dubJson != null) {
+            if (canImportFromFile(dubJson)) {
                 return true;
             }
         }
 
         // check for dub.sdl
         final VirtualFile dubSdl = fileOrDirectory.findChild("dub.sdl");
-        if(dubSdl != null) {
-            if(canImportFromFile(dubSdl)) {
+        if (dubSdl != null) {
+            if (canImportFromFile(dubSdl)) {
                 return true;
             }
         }

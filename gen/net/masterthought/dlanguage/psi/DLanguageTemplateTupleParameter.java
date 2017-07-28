@@ -1,16 +1,14 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import org.jetbrains.annotations.Nullable;
+
 
 public interface DLanguageTemplateTupleParameter extends PsiElement {
+    @Nullable
+    public DLanguageIdentifier getIdentifier();
 
-  @NotNull
-  DLanguageIdentifier getIdentifier();
-
-  @NotNull
-  PsiElement getOpTripledot();
+    @Nullable
+    public PsiElement getOP_TRIPLEDOT();
 
 }

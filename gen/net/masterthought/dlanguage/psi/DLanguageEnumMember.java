@@ -1,22 +1,22 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.StubBasedPsiElement;
+import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+import net.masterthought.dlanguage.stubs.DLanguageEnumMemberStub;
+import org.jetbrains.annotations.Nullable;
 
-public interface DLanguageEnumMember extends PsiElement {
 
-  @Nullable
-  DLanguageAssignExpression getAssignExpression();
+public interface DLanguageEnumMember extends PsiElement, DNamedElement, StubBasedPsiElement<DLanguageEnumMemberStub> {
+    @Nullable
+    public DLanguageIdentifier getIdentifier();
 
-  @NotNull
-  DLanguageIdentifier getIdentifier();
+    @Nullable
+    public PsiElement getOP_EQ();
 
-  @Nullable
-  DLanguageType getType();
+    @Nullable
+    public DLanguageType getType();
 
-  @Nullable
-  PsiElement getOpEq();
-
+    @Nullable
+    public DLanguageAssignExpression getAssignExpression();
 }

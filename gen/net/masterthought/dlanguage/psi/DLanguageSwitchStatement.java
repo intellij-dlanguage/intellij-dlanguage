@@ -1,29 +1,22 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import org.jetbrains.annotations.Nullable;
+
 
 public interface DLanguageSwitchStatement extends PsiElement {
+    @Nullable
+    public PsiElement getKW_SWITCH();
 
-  @Nullable
-  DLanguageCommaExpression getCommaExpression();
+    @Nullable
+    public PsiElement getOP_PAR_RIGHT();
 
-  @Nullable
-  DLanguageScopeStatement getScopeStatement();
+    @Nullable
+    public PsiElement getOP_PAR_LEFT();
 
-  @NotNull
-  PsiElement getKwSwitch();
+    @Nullable
+    public DLanguageExpression getExpression();
 
-  @Nullable
-  PsiElement getOpParLeft();
-
-  @Nullable
-  PsiElement getOpParRight();
-
-  //WARNING: processDeclarations(...) is skipped
-  //matching processDeclarations(DLanguageSwitchStatement, ...)
-  //methods are not found in DPsiImplUtil
-
+    @Nullable
+    public DLanguageStatement getStatement();
 }

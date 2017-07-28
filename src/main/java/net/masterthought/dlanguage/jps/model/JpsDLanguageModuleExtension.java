@@ -29,6 +29,11 @@ public class JpsDLanguageModuleExtension extends JpsCompositeElementBase<JpsDLan
         myProperties = new DLanguageModuleExtensionProperties(moduleExtension.myProperties);
     }
 
+    @Nullable
+    public static JpsDLanguageModuleExtension getExtension(@Nullable JpsModule module) {
+        return module != null ? module.getContainer().getChild(ROLE) : null;
+    }
+
     @NotNull
     @Override
     public JpsDLanguageModuleExtension createCopy() {
@@ -41,10 +46,5 @@ public class JpsDLanguageModuleExtension extends JpsCompositeElementBase<JpsDLan
 
     public List<String> getParseTransforms() {
         return Collections.unmodifiableList(myProperties.myParseTransforms);
-    }
-
-    @Nullable
-    public static JpsDLanguageModuleExtension getExtension(@Nullable JpsModule module) {
-        return module != null ? module.getContainer().getChild(ROLE) : null;
     }
 }

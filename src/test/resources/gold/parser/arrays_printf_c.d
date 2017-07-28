@@ -1,3 +1,5 @@
+unittest
+{
 str ~= "\0";
 printf("the string is '%s'\n", cast(char*)str);
 
@@ -10,3 +12,4 @@ printf("the string is '%.*s'\n", str.length, str.ptr);
 
 import std.stdio;
 writefln("the string is '%s'", str);
+}

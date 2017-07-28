@@ -1,53 +1,52 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi.impl;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
-import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
-import net.masterthought.dlanguage.psi.*;
+import net.masterthought.dlanguage.psi.DLanguageArgumentList;
+import net.masterthought.dlanguage.psi.DLanguageIndexExpression;
+import net.masterthought.dlanguage.psi.DLanguageUnaryExpression;
+import net.masterthought.dlanguage.psi.DLanguageVisitor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_BRACKET_LEFT;
+import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_BRACKET_RIGHT;
+
 
 public class DLanguageIndexExpressionImpl extends ASTWrapperPsiElement implements DLanguageIndexExpression {
+    public DLanguageIndexExpressionImpl(ASTNode node) {
+        super(node);
+    }
 
-  public DLanguageIndexExpressionImpl(ASTNode node) {
-    super(node);
-  }
+    public void accept(@NotNull DLanguageVisitor visitor) {
+        visitor.visitIndexExpression(this);
+    }
 
-  public void accept(@NotNull DLanguageVisitor visitor) {
-    visitor.visitIndexExpression(this);
-  }
+    public void accept(@NotNull PsiElementVisitor visitor) {
+        if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor) visitor);
+        else super.accept(visitor);
+    }
 
-  public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
-    else super.accept(visitor);
-  }
+    @Nullable
+    public PsiElement getOP_BRACKET_LEFT() {
+        return findChildByType(OP_BRACKET_LEFT);
+    }
 
-  @Override
-  @NotNull
-  public DLanguageArgumentList getArgumentList() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageArgumentList.class));
-  }
+    @Nullable
+    public PsiElement getOP_BRACKET_RIGHT() {
+        return findChildByType(OP_BRACKET_RIGHT);
+    }
 
-  @Override
-  @Nullable
-  public DLanguagePostfixExpression getPostfixExpression() {
-    return PsiTreeUtil.getChildOfType(this, DLanguagePostfixExpression.class);
-  }
+    @Nullable
+    public DLanguageArgumentList getArgumentList() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageArgumentList.class);
+    }
 
-  @Override
-  @NotNull
-  public PsiElement getOpBracketLeft() {
-    return notNullChild(findChildByType(OP_BRACKET_LEFT));
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getOpBracketRight() {
-    return notNullChild(findChildByType(OP_BRACKET_RIGHT));
-  }
-
+    @Nullable
+    public DLanguageUnaryExpression getUnaryExpression() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageUnaryExpression.class);
+    }
 }

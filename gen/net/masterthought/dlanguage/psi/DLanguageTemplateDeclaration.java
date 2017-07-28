@@ -1,70 +1,48 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
-import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
-import net.masterthought.dlanguage.psi.interfaces.containers.StatementContainer;
-import net.masterthought.dlanguage.psi.interfaces.containers.MixinContainer;
-import net.masterthought.dlanguage.psi.interfaces.containers.GlobalDeclarationContainer;
-import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
-import net.masterthought.dlanguage.psi.interfaces.HasTemplateArguments;
-import net.masterthought.dlanguage.psi.interfaces.Mixinable;
-import net.masterthought.dlanguage.psi.interfaces.Declaration;
+import com.intellij.psi.ResolveState;
 import com.intellij.psi.StubBasedPsiElement;
+import com.intellij.psi.scope.PsiScopeProcessor;
+import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+import net.masterthought.dlanguage.resolve.ScopeProcessorImpl;
 import net.masterthought.dlanguage.stubs.DLanguageTemplateDeclarationStub;
-import com.intellij.navigation.ItemPresentation;
-import com.intellij.psi.PsiReference;
-import net.masterthought.dlanguage.psi.interfaces.containers.Container;
-import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public interface DLanguageTemplateDeclaration extends DNamedElement, StatementContainer, MixinContainer, GlobalDeclarationContainer, HasVisibility, HasTemplateArguments, Mixinable, Declaration, StubBasedPsiElement<DLanguageTemplateDeclarationStub> {
+import java.util.List;
 
-  @Nullable
-  DLanguageConstraint getConstraint();
 
-  @Nullable
-  DLanguageDeclDefs getDeclDefs();
+public interface DLanguageTemplateDeclaration extends PsiElement, DNamedElement, StubBasedPsiElement<DLanguageTemplateDeclarationStub> {
+    @Nullable
+    public PsiElement getKW_TEMPLATE();
 
-  @NotNull
-  DLanguageIdentifier getIdentifier();
+    @Nullable
+    public DLanguageIdentifier getIdentifier();
 
-  @Nullable
-  DLanguageTemplateParameters getTemplateParameters();
+    @Nullable
+    public DLanguageTemplateParameters getTemplateParameters();
 
-  @NotNull
-  PsiElement getKwTemplate();
+    @Nullable
+    public DLanguageConstraint getConstraint();
 
-  @Nullable
-  PsiElement getOpBracesLeft();
+    @Nullable
+    public PsiElement getOP_BRACES_RIGHT();
 
-  @Nullable
-  PsiElement getOpBracesRight();
+    @Nullable
+    public PsiElement getOP_BRACES_LEFT();
 
-  @NotNull
-  String getName();
+    @NotNull
+    public List<DLanguageDeclaration> getDeclarations();
 
-  String getFullName();
+    @Nullable
+    public DLanguageEponymousTemplateDeclaration getEponymousTemplateDeclaration();
 
-  @Nullable
-  PsiElement getNameIdentifier();
-
-  @NotNull
-  PsiReference getReference();
-
-  @Nullable
-  PsiElement setName(String newName);
-
-  @NotNull
-  ItemPresentation getPresentation();
-
-  //WARNING: getTemplateArguments(...) is skipped
-  //matching getTemplateArguments(DLanguageTemplateDeclaration, ...)
-  //methods are not found in DPsiImplUtil
-
-  boolean isSomeVisibility(Visibility visibility, Class<? extends Container> containerType);
-
-  boolean isSomeVisibility(Visibility visibility);
-
+    @Override
+    default public boolean processDeclarations(@NotNull PsiScopeProcessor processor,
+                                               @NotNull ResolveState state,
+                                               PsiElement lastParent,
+                                               @NotNull PsiElement place) {
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(this, processor, state, lastParent, place);
+    }
 }

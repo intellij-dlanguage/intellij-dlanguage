@@ -1,53 +1,52 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi.impl;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
-import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
-import net.masterthought.dlanguage.psi.*;
+import net.masterthought.dlanguage.psi.DLanguageArgumentList;
+import net.masterthought.dlanguage.psi.DLanguageCaseStatement;
+import net.masterthought.dlanguage.psi.DLanguageDeclarationsAndStatements;
+import net.masterthought.dlanguage.psi.DLanguageVisitor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import static net.masterthought.dlanguage.psi.DLanguageTypes.KW_CASE;
+import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_COLON;
+
 
 public class DLanguageCaseStatementImpl extends ASTWrapperPsiElement implements DLanguageCaseStatement {
+    public DLanguageCaseStatementImpl(ASTNode node) {
+        super(node);
+    }
 
-  public DLanguageCaseStatementImpl(ASTNode node) {
-    super(node);
-  }
+    public void accept(@NotNull DLanguageVisitor visitor) {
+        visitor.visitCaseStatement(this);
+    }
 
-  public void accept(@NotNull DLanguageVisitor visitor) {
-    visitor.visitCaseStatement(this);
-  }
+    public void accept(@NotNull PsiElementVisitor visitor) {
+        if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor) visitor);
+        else super.accept(visitor);
+    }
 
-  public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
-    else super.accept(visitor);
-  }
+    @Nullable
+    public PsiElement getKW_CASE() {
+        return findChildByType(KW_CASE);
+    }
 
-  @Override
-  @NotNull
-  public DLanguageArgumentList getArgumentList() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageArgumentList.class));
-  }
+    @Nullable
+    public PsiElement getOP_COLON() {
+        return findChildByType(OP_COLON);
+    }
 
-  @Override
-  @Nullable
-  public DLanguageScopeStatementList getScopeStatementList() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageScopeStatementList.class);
-  }
+    @Nullable
+    public DLanguageArgumentList getArgumentList() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageArgumentList.class);
+    }
 
-  @Override
-  @NotNull
-  public PsiElement getKwCase() {
-    return notNullChild(findChildByType(KW_CASE));
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getOpColon() {
-    return notNullChild(findChildByType(OP_COLON));
-  }
-
+    @Nullable
+    public DLanguageDeclarationsAndStatements getDeclarationsAndStatements() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageDeclarationsAndStatements.class);
+    }
 }

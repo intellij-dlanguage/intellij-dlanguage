@@ -1,22 +1,20 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+
 
 public interface DLanguageStructInitializer extends PsiElement {
+    @NotNull
+    public List<DLanguageStructMemberInitializers> getStructMemberInitializerss();
 
-  @Nullable
-  DLanguageStructMemberInitializers getStructMemberInitializers();
+    @Nullable
+    public PsiElement getOP_BRACES_RIGHT();
 
-  @NotNull
-  PsiElement getOpBracesLeft();
-
-  @NotNull
-  PsiElement getOpBracesRight();
-
-  @Nullable
-  PsiElement getOpComma();
+    @Nullable
+    public PsiElement getOP_BRACES_LEFT();
 
 }

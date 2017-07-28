@@ -66,8 +66,8 @@ public class DSdkUtil {
     private static String runCompiler(GeneralCommandLine command) {
         try {
             ProcessOutput output = new CapturingProcessHandler(command.createProcess(),
-                    Charset.defaultCharset(),
-                    command.getCommandLineString()).runProcess();
+                Charset.defaultCharset(),
+                command.getCommandLineString()).runProcess();
 
             if (output.getExitCode() != 0) {
                 return output.getStdout();
@@ -75,8 +75,8 @@ public class DSdkUtil {
                 LOG.warn("compiler returned exit code " + output.getExitCode());
             }
 
-        } catch(ExecutionException e) {
-            LOG.warn("compiler execution failed. " +e.getMessage());
+        } catch (ExecutionException e) {
+            LOG.warn("compiler execution failed. " + e.getMessage());
         }
         return null;
     }
@@ -96,7 +96,7 @@ public class DSdkUtil {
     /**
      * Gets the filename for compiler executable (result is OS specific)
      *
-     * @return  Compiler executable filename
+     * @return Compiler executable filename
      */
     public static String getCompilerExecutableFileName() {
         return SystemInfo.isWindows ? "dmd.exe" : "dmd";

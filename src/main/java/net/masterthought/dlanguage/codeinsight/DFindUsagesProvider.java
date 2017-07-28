@@ -25,8 +25,8 @@ public class DFindUsagesProvider implements FindUsagesProvider {
     @Override
     public WordsScanner getWordsScanner() {
         return new DefaultWordsScanner(new DLanguageLexerAdapter(),
-                TokenSet.create(DLanguageTypes.IDENTIFIER),
-                DTokenSets.LINE_COMMENTS, DTokenSets.BLOCK_COMMENTS, DTokenSets.STRING_LITERALS);
+            TokenSet.create(DLanguageTypes.IDENTIFIER),
+            DTokenSets.LINE_COMMENTS, DTokenSets.BLOCK_COMMENTS, DTokenSets.STRING_LITERALS);
     }
 
     @Override
@@ -47,12 +47,35 @@ public class DFindUsagesProvider implements FindUsagesProvider {
 //        return ElementDescriptionUtil.getElementDescription(element, UsageViewTypeLocation.INSTANCE);
 //        return "woops";
 
-        if (element instanceof DLanguageFuncDeclaration) {
+        if (element instanceof DLanguageFunctionDeclaration) {
             return "Function";
         } else if (element instanceof DLanguageIdentifier) {
             return "Identifier";
         } else if (element instanceof DLanguageClassDeclaration) {
             return "Class";
+        } else if (element instanceof DLanguageInterfaceDeclaration) {
+            return "Interface";
+        } else if (element instanceof DLanguageInterfaceOrClass) {
+            if (element.getParent() instanceof DLanguageInterfaceDeclaration) {
+                return "Interface";
+            }
+            return "Class";
+        } else if (element instanceof DLanguageEnumDeclaration) {
+            return "Enum";
+        } else if (element instanceof DLanguageTemplateParameter) {
+            return "Template Parameter";
+        } else if (element instanceof DLanguageTemplateDeclaration) {
+            return "Template";
+        } else if (element instanceof DLanguageParameter) {
+            return "Parameter";
+        } else if (element instanceof DLanguageUnionDeclaration) {
+            return "Union";
+        } else if (element instanceof DLanguageIfCondition) {
+            return "Variable";
+        } else if (element instanceof DLanguageCatch) {
+            return "Catch";
+        } else if (element instanceof DLanguageVariableDeclaration) {
+            return "Variable";
         } else {
             return "";
         }

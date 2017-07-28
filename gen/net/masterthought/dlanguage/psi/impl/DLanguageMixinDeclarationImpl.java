@@ -1,70 +1,47 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi.impl;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
-import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
-import net.masterthought.dlanguage.psi.*;
+import net.masterthought.dlanguage.psi.DLanguageMixinDeclaration;
+import net.masterthought.dlanguage.psi.DLanguageMixinExpression;
+import net.masterthought.dlanguage.psi.DLanguageTemplateMixinExpression;
+import net.masterthought.dlanguage.psi.DLanguageVisitor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_SCOLON;
+
 
 public class DLanguageMixinDeclarationImpl extends ASTWrapperPsiElement implements DLanguageMixinDeclaration {
+    public DLanguageMixinDeclarationImpl(ASTNode node) {
+        super(node);
+    }
 
-  public DLanguageMixinDeclarationImpl(ASTNode node) {
-    super(node);
-  }
+    public void accept(@NotNull DLanguageVisitor visitor) {
+        visitor.visitMixinDeclaration(this);
+    }
 
-  public void accept(@NotNull DLanguageVisitor visitor) {
-    visitor.visitMixinDeclaration(this);
-  }
+    public void accept(@NotNull PsiElementVisitor visitor) {
+        if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor) visitor);
+        else super.accept(visitor);
+    }
 
-  public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
-    else super.accept(visitor);
-  }
+    @Nullable
+    public DLanguageTemplateMixinExpression getTemplateMixinExpression() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageTemplateMixinExpression.class);
+    }
 
-  @Override
-  @Nullable
-  public DLanguageAssignExpression getAssignExpression() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageAssignExpression.class);
-  }
+    @Nullable
+    public DLanguageMixinExpression getMixinExpression() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageMixinExpression.class);
+    }
 
-  @Override
-  @Nullable
-  public DLanguageTemplateInstance getTemplateInstance() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateInstance.class);
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getKwMixin() {
-    return notNullChild(findChildByType(KW_MIXIN));
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getOpParLeft() {
-    return notNullChild(findChildByType(OP_PAR_LEFT));
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getOpParRight() {
-    return notNullChild(findChildByType(OP_PAR_RIGHT));
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getOpScolon() {
-    return notNullChild(findChildByType(OP_SCOLON));
-  }
-
-  @Nullable
-  public String getName() {
-    return DPsiImplUtil.getName(this);
-  }
+    @Nullable
+    public PsiElement getOP_SCOLON() {
+        return findChildByType(OP_SCOLON);
+    }
 
 }

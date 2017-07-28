@@ -1,88 +1,50 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import org.jetbrains.annotations.Nullable;
+
 
 public interface DLanguageRelExpression extends PsiElement {
+    @Nullable
+    public DLanguageRelExpression getRelExpression();
 
-  @Nullable
-  DLanguageAddExpression_ getAddExpression_();
+    @Nullable
+    public DLanguageShiftExpression getShiftExpression();
 
-  @Nullable
-  DLanguageCastExpression getCastExpression();
+    @Nullable
+    public PsiElement getOP_GT();
 
-  @Nullable
-  DLanguageDeleteExpression getDeleteExpression();
+    @Nullable
+    public PsiElement getOP_GT_EQ();
 
-  @Nullable
-  DLanguageIdentifier getIdentifier();
+    @Nullable
+    public PsiElement getOP_LESS();
 
-  @Nullable
-  DLanguageMulExpression_ getMulExpression_();
+    @Nullable
+    public PsiElement getOP_LESS_EQ();
 
-  @Nullable
-  DLanguagePostfixExpression getPostfixExpression();
+    @Nullable
+    public PsiElement getOP_LESS_GR();
 
-  @Nullable
-  DLanguagePowExpression_ getPowExpression_();
+    @Nullable
+    public PsiElement getOP_LESS_GR_EQ();
 
-  @Nullable
-  DLanguageShiftExpression_ getShiftExpression_();
+    @Nullable
+    public PsiElement getOP_NOT_GR();
 
-  @Nullable
-  DLanguageTemplateInstance getTemplateInstance();
+    @Nullable
+    public PsiElement getOP_NOT_GR_EQ();
 
-  @Nullable
-  DLanguageType getType();
+    @Nullable
+    public PsiElement getOP_NOT_LESS();
 
-  @Nullable
-  DLanguageTypeCtor getTypeCtor();
+    @Nullable
+    public PsiElement getOP_NOT_LESS_EQ();
 
-  @Nullable
-  PsiElement getOpDot();
+    @Nullable
+    public PsiElement getOP_UNORD();
 
-  @Nullable
-  PsiElement getOpGt();
-
-  @Nullable
-  PsiElement getOpGtEq();
-
-  @Nullable
-  PsiElement getOpLess();
-
-  @Nullable
-  PsiElement getOpLessEq();
-
-  @Nullable
-  PsiElement getOpLessGr();
-
-  @Nullable
-  PsiElement getOpLessGrEq();
-
-  @Nullable
-  PsiElement getOpNotGr();
-
-  @Nullable
-  PsiElement getOpNotGrEq();
-
-  @Nullable
-  PsiElement getOpNotLess();
-
-  @Nullable
-  PsiElement getOpNotLessEq();
-
-  @Nullable
-  PsiElement getOpParLeft();
-
-  @Nullable
-  PsiElement getOpParRight();
-
-  @Nullable
-  PsiElement getOpUnord();
-
-  @Nullable
-  PsiElement getOpUnordEq();
+    @Nullable
+    public PsiElement getOP_UNORD_EQ();
 
 }

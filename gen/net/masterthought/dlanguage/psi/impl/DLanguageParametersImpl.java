@@ -1,47 +1,58 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi.impl;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
+import net.masterthought.dlanguage.psi.DLanguageParameter;
+import net.masterthought.dlanguage.psi.DLanguageParameters;
+import net.masterthought.dlanguage.psi.DLanguageVisitor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+
 import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
-import net.masterthought.dlanguage.psi.*;
+
 
 public class DLanguageParametersImpl extends ASTWrapperPsiElement implements DLanguageParameters {
+    public DLanguageParametersImpl(ASTNode node) {
+        super(node);
+    }
 
-  public DLanguageParametersImpl(ASTNode node) {
-    super(node);
-  }
+    public void accept(@NotNull DLanguageVisitor visitor) {
+        visitor.visitParameters(this);
+    }
 
-  public void accept(@NotNull DLanguageVisitor visitor) {
-    visitor.visitParameters(this);
-  }
+    public void accept(@NotNull PsiElementVisitor visitor) {
+        if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor) visitor);
+        else super.accept(visitor);
+    }
 
-  public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
-    else super.accept(visitor);
-  }
+    @NotNull
+    public List<PsiElement> getOP_COMMAs() {
+        return findChildrenByType(OP_COMMA);
+    }
 
-  @Override
-  @Nullable
-  public DLanguageParameterList getParameterList() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageParameterList.class);
-  }
+    @Nullable
+    public PsiElement getOP_TRIPLEDOT() {
+        return findChildByType(OP_TRIPLEDOT);
+    }
 
-  @Override
-  @NotNull
-  public PsiElement getOpParLeft() {
-    return notNullChild(findChildByType(OP_PAR_LEFT));
-  }
+    @NotNull
+    public List<DLanguageParameter> getParameters() {
+        return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageParameter.class);
+    }
 
-  @Override
-  @NotNull
-  public PsiElement getOpParRight() {
-    return notNullChild(findChildByType(OP_PAR_RIGHT));
-  }
+    @Nullable
+    public PsiElement getOP_PAR_LEFT() {
+        return findChildByType(OP_PAR_LEFT);
+    }
+
+    @Nullable
+    public PsiElement getOP_PAR_RIGHT() {
+        return findChildByType(OP_PAR_RIGHT);
+    }
 
 }

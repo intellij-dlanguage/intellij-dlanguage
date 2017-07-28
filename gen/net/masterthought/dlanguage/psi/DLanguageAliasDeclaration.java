@@ -1,84 +1,31 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
-import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
-import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
-import net.masterthought.dlanguage.psi.interfaces.Declaration;
-import com.intellij.psi.StubBasedPsiElement;
-import net.masterthought.dlanguage.stubs.DLanguageAliasDeclarationStub;
-import com.intellij.navigation.ItemPresentation;
-import com.intellij.psi.PsiReference;
-import net.masterthought.dlanguage.psi.interfaces.containers.Container;
-import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
-import net.masterthought.dlanguage.psi.interfaces.Type;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public interface DLanguageAliasDeclaration extends DNamedElement, HasVisibility, Declaration, StubBasedPsiElement<DLanguageAliasDeclarationStub> {
+import java.util.List;
 
-  @Nullable
-  DLanguageAliasDeclarationX getAliasDeclarationX();
 
-  @Nullable
-  DLanguageBasicType getBasicType();
+public interface DLanguageAliasDeclaration extends PsiElement {
+    @Nullable
+    public DLanguageIdentifierList getIdentifierList();
 
-  @Nullable
-  DLanguageBasicType2 getBasicType2();
+    @Nullable
+    public PsiElement getOP_COMMA();
 
-  @Nullable
-  DLanguageDeclarator getDeclarator();
+    @NotNull
+    public List<DLanguageStorageClass> getStorageClasss();
 
-  @Nullable
-  DLanguageFuncDeclaratorSuffix getFuncDeclaratorSuffix();
+    @Nullable
+    public PsiElement getKW_ALIAS();
 
-  @Nullable
-  DLanguageIdentifier getIdentifier();
+    @Nullable
+    public DLanguageType getType();
 
-  @Nullable
-  DLanguageInitializer getInitializer();
+    @Nullable
+    public PsiElement getOP_SCOLON();
 
-  @Nullable
-  DLanguageStorageClasses getStorageClasses();
-
-  @Nullable
-  DLanguageTemplateArguments getTemplateArguments();
-
-  @Nullable
-  DLanguageType getType();
-
-  @NotNull
-  PsiElement getKwAlias();
-
-  @Nullable
-  PsiElement getOpEq();
-
-  @NotNull
-  PsiElement getOpScolon();
-
-  @NotNull
-  String getName();
-
-  String getFullName();
-
-  @Nullable
-  PsiElement getNameIdentifier();
-
-  @NotNull
-  PsiReference getReference();
-
-  @Nullable
-  PsiElement setName(String newName);
-
-  @NotNull
-  ItemPresentation getPresentation();
-
-  boolean isSomeVisibility(Visibility visibility);
-
-  boolean isSomeVisibility(Visibility visibility, Class<? extends Container> containerType);
-
-  boolean actuallyIsDeclaration();
-
-  Type getDeclarationType();
-
+    @NotNull
+    public List<DLanguageAliasInitializer> getAliasInitializers();
 }

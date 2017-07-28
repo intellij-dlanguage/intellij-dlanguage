@@ -1,19 +1,20 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import org.jetbrains.annotations.Nullable;
+
 
 public interface DLanguageMixinTemplateName extends PsiElement {
+    @Nullable
+    public DLanguageTypeofExpression getTypeofExpression();
 
-  @NotNull
-  DLanguageQualifiedIdentifierList getQualifiedIdentifierList();
+    @Nullable
+    public DLanguageIdentifierOrTemplateChain getIdentifierOrTemplateChain();
 
-  @Nullable
-  DLanguageTypeof getTypeof();
+    @Nullable
+    public DLanguageSymbol getSymbol();
 
-  @Nullable
-  PsiElement getOpDot();
+    @Nullable
+    public PsiElement getOP_DOT();
 
 }

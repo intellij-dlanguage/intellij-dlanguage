@@ -33,7 +33,7 @@ public class DUnitTestRunConfigurationEditor extends SettingsEditor<DUnitTestRun
         initDFileTextWithBrowse(project, myFileField);
 
         myWorkingDirectory.addBrowseFolderListener(ExecutionBundle.message("select.working.directory.message"), null, project,
-                FileChooserDescriptorFactory.createSingleFolderDescriptor());
+            FileChooserDescriptorFactory.createSingleFolderDescriptor());
 
     }
 
@@ -45,10 +45,10 @@ public class DUnitTestRunConfigurationEditor extends SettingsEditor<DUnitTestRun
             final PsiFile initialPsiFile = initialFile == null ? null : PsiManager.getInstance(project).findFile(initialFile);
 
             final TreeFileChooser fileChooser = TreeFileChooserFactory.getInstance(project).createFileChooser(
-                    DLanguageBundle.INSTANCE.message("choose.dlanguage.main.file"),
-                    initialPsiFile,
-                    DLanguageFileType.INSTANCE,
-                    file -> !DLanguageWritingAccessProvider.isInDLanguageSdkOrDLanguagePackagesFolder(file)
+                DLanguageBundle.INSTANCE.message("choose.dlanguage.main.file"),
+                initialPsiFile,
+                DLanguageFileType.INSTANCE,
+                file -> !DLanguageWritingAccessProvider.isInDLanguageSdkOrDLanguagePackagesFolder(file)
             );
 
             fileChooser.showDialog();

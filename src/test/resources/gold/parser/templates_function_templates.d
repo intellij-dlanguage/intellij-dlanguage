@@ -1,36 +1,39 @@
-T Square(T)(T t)
-{
-    return t * t;
-}
+unittest{
 
-void Foo(T : T*)(T t) {  }
+    T Square(T)(T t)
+    {
+        return t * t;
+    }
 
-int x,y;
-Foo!(int*)(x);   // ok, T is not deduced from function argument
-Foo(&y);         // error, T has specialization
+    void Foo(T : T*)(T t) {  }
 
-void Foo(T, U=T*)(T t) { U p;  }
+    int x,y;
+    Foo!(int*)(x);   // ok, T is not deduced from function argument
+    Foo(&y);         // error, T has specialization
 
-int x;
-Foo(x);    // T is int, U is int*
+    void Foo(T, U=T*)(T t) { U p;  }
 
-void foo(T)(T arg) { pragma(msg, T); }
+    int x;
+    Foo(x);    // T is int, U is int*
 
-int[] marr;
-const(int[]) carr;
-immutable(int[]) iarr;
-foo(marr);  // T == int[]
-foo(carr);  // T == const(int)[]
-foo(iarr);  // T == immutable(int)[]
+    void foo(T)(T arg) { pragma(msg, T); }
 
-int* mptr;
-const(int*) cptr;
-immutable(int*) iptr;
-foo(mptr);  // T == int*
-foo(cptr);  // T == const(int)*
-foo(iptr);  // T == immutable(int)*
+    int[] marr;
+    const(int[]) carr;
+    immutable(int[]) iarr;
+    foo(marr);  // T == int[]
+    foo(carr);  // T == const(int)[]
+    foo(iarr);  // T == immutable(int)[]
 
-auto Square(T)(T t)
-{
-    return t * t;
+    int* mptr;
+    const(int*) cptr;
+    immutable(int*) iptr;
+    foo(mptr);  // T == int*
+    foo(cptr);  // T == const(int)*
+    foo(iptr);  // T == immutable(int)*
+
+    auto Square(T)(T t)
+    {
+        return t * t;
+    }
 }

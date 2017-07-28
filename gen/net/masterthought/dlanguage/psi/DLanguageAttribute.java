@@ -1,76 +1,82 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import org.jetbrains.annotations.Nullable;
+
 
 public interface DLanguageAttribute extends PsiElement {
+    @Nullable
+    public DLanguagePragmaExpression getPragmaExpression();
 
-  @Nullable
-  DLanguageAlignAttribute getAlignAttribute();
+    @Nullable
+    public PsiElement getKW_SYNCHRONIZED();
 
-  @Nullable
-  DLanguageDeprecatedAttribute getDeprecatedAttribute();
+    @Nullable
+    public PsiElement getKW_ABSTRACT();
 
-  @Nullable
-  DLanguageLinkageAttribute getLinkageAttribute();
+    @Nullable
+    public PsiElement getKW_AUTO();
 
-  @Nullable
-  DLanguagePragma getPragma();
+    @Nullable
+    public PsiElement getKW_ENUM();
 
-  @Nullable
-  DLanguageProperty getProperty();
+    @Nullable
+    public PsiElement getKW_EXTERN();
 
-  @Nullable
-  DLanguageProtectionAttribute getProtectionAttribute();
+    @Nullable
+    public PsiElement getKW_FINAL();
 
-  @Nullable
-  PsiElement getKwAbstract();
+    @Nullable
+    public PsiElement getKW_INOUT();
 
-  @Nullable
-  PsiElement getKwAuto();
+    @Nullable
+    public PsiElement getKW_NOTHROW();
 
-  @Nullable
-  PsiElement getKwConst();
+    @Nullable
+    public PsiElement getKW_OVERRIDE();
 
-  @Nullable
-  PsiElement getKwExtern();
+    @Nullable
+    public PsiElement getKW_PURE();
 
-  @Nullable
-  PsiElement getKwFinal();
+    @Nullable
+    public PsiElement getKW_REF();
 
-  @Nullable
-  PsiElement getKwImmutable();
+    @Nullable
+    public PsiElement getKW___GSHARED();
 
-  @Nullable
-  PsiElement getKwInout();
+    @Nullable
+    public PsiElement getKW_SCOPE();
 
-  @Nullable
-  PsiElement getKwNothrow();
+    @Nullable
+    public PsiElement getKW_STATIC();
 
-  @Nullable
-  PsiElement getKwOverride();
+    @Nullable
+    public PsiElement getKW_EXPORT();
 
-  @Nullable
-  PsiElement getKwPure();
+    @Nullable
+    public PsiElement getKW_PRIVATE();
 
-  @Nullable
-  PsiElement getKwRef();
+    @Nullable
+    public PsiElement getKW_PROTECTED();
 
-  @Nullable
-  PsiElement getKwScope();
+    @Nullable
+    public PsiElement getKW_PUBLIC();
 
-  @Nullable
-  PsiElement getKwShared();
+    @Nullable
+    public DLanguageAlignAttribute getAlignAttribute();
 
-  @Nullable
-  PsiElement getKwStatic();
+    @Nullable
+    public DLanguageDeprecated getDeprecated();
 
-  @Nullable
-  PsiElement getKwSynchronized();
+    @Nullable
+    public DLanguageAtAttribute getAtAttribute();
 
-  @Nullable
-  PsiElement getKwGshared();
+    @Nullable
+    public PsiElement getKW_PACKAGE();
 
+    @Nullable
+    public DLanguageIdentifierChain getIdentifierChain();
+
+    @Nullable
+    public DLanguageLinkageAttribute getLinkageAttribute();
 }

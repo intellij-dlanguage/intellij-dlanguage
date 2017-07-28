@@ -1,25 +1,25 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.StubBasedPsiElement;
+import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+import net.masterthought.dlanguage.stubs.DLanguageTemplateParameterStub;
+import org.jetbrains.annotations.Nullable;
 
-public interface DLanguageTemplateParameter extends PsiElement {
 
-  @Nullable
-  DLanguageTemplateAliasParameter getTemplateAliasParameter();
+public interface DLanguageTemplateParameter extends PsiElement, DNamedElement, StubBasedPsiElement<DLanguageTemplateParameterStub> {
+    @Nullable
+    public DLanguageTemplateAliasParameter getTemplateAliasParameter();
 
-  @Nullable
-  DLanguageTemplateThisParameter getTemplateThisParameter();
+    @Nullable
+    public DLanguageTemplateTupleParameter getTemplateTupleParameter();
 
-  @Nullable
-  DLanguageTemplateTupleParameter getTemplateTupleParameter();
+    @Nullable
+    public DLanguageTemplateTypeParameter getTemplateTypeParameter();
 
-  @Nullable
-  DLanguageTemplateTypeParameter getTemplateTypeParameter();
+    @Nullable
+    public DLanguageTemplateThisParameter getTemplateThisParameter();
 
-  @Nullable
-  DLanguageTemplateValueParameter getTemplateValueParameter();
-
+    @Nullable
+    public DLanguageTemplateValueParameter getTemplateValueParameter();
 }

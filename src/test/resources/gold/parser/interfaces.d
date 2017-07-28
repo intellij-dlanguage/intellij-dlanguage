@@ -59,7 +59,8 @@ class B : A
     int foo() { return 2; }
 }
 
-
+unittest
+{
 
 B b = new B();
 b.foo();            // returns 2
@@ -106,3 +107,4 @@ class B : A, D
 {
 }       // error, no foo() for interface D
 
+}

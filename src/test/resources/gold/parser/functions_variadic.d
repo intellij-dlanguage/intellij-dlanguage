@@ -1,9 +1,9 @@
 extern (C) void foo(int x, int y, ...);
-
-foo(3, 4);      // ok
-foo(3, 4, 6.8); // ok, one variadic argument
-foo(2);         // error, y is a required argument
-
+unittest{
+    foo(3, 4);      // ok
+    foo(3, 4, 6.8); // ok, one variadic argument
+    foo(2);         // error, y is a required argument
+}
 extern (C) int def(...); // error, must have at least one parameter
 
 import core.stdc.stdarg;

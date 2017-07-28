@@ -46,8 +46,8 @@ public class CreateDLanguageClassAction extends CreateFileFromTemplateAction imp
     @Override
     protected void buildDialog(final Project project, final PsiDirectory directory, final CreateFileFromTemplateDialog.Builder builder) {
         builder.setTitle(NEW_D_CLASS)
-                .addKind("Empty module", DLanguageIcons.CLASS, EMPTY_CLASS_TEMPLATE)
-                .setValidator(new CreateDLanguageClassAction.ClassNameValidator());
+            .addKind("Empty module", DLanguageIcons.CLASS, EMPTY_CLASS_TEMPLATE)
+            .setValidator(new CreateDLanguageClassAction.ClassNameValidator());
     }
 
     @Override
@@ -127,6 +127,7 @@ public class CreateDLanguageClassAction extends CreateFileFromTemplateAction imp
     public class ClassNameValidator implements InputValidatorEx {
 
         private final Pattern VALID_MODULE_NAME_REGEX = Pattern.compile("[A-z_.]+");
+
         @Nullable
         @Override
         public String getErrorText(final String inputString) {

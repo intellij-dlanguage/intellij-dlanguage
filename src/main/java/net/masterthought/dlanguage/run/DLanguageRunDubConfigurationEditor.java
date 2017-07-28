@@ -83,7 +83,7 @@ public class DLanguageRunDubConfigurationEditor extends SettingsEditor<DLanguage
         fcd.setHideIgnored(false);
 
         pathWorkingDir.addActionListener(new TextFieldWithBrowseButton.BrowseFolderActionListener<>(fcd.getTitle(), fcd.getDescription(),
-                        pathWorkingDir, null, fcd, TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT));
+            pathWorkingDir, null, fcd, TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT));
 
         return myMainPanel;
     }

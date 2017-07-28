@@ -1,3 +1,5 @@
+unittest
+{
 try
 {
     for (i = 0; ; i++)
@@ -19,3 +21,4 @@ for (i = 0; i < array.length; i++)
 
 int[3] foo;
 int x = foo[3]; // error, out of bounds
+}

@@ -1,28 +1,26 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import org.jetbrains.annotations.Nullable;
+
 
 public interface DLanguageAsmRelExp extends PsiElement {
+    @Nullable
+    public DLanguageAsmRelExp getAsmRelExp();
 
-  @Nullable
-  DLanguageAsmRelExp getAsmRelExp();
+    @Nullable
+    public DLanguageAsmShiftExp getAsmShiftExp();
 
-  @NotNull
-  DLanguageAsmShiftExp getAsmShiftExp();
+    @Nullable
+    public PsiElement getOP_GT_EQ();
 
-  @Nullable
-  PsiElement getOpGt();
+    @Nullable
+    public PsiElement getOP_GT();
 
-  @Nullable
-  PsiElement getOpGtEq();
+    @Nullable
+    public PsiElement getOP_LESS();
 
-  @Nullable
-  PsiElement getOpLess();
-
-  @Nullable
-  PsiElement getOpLessEq();
+    @Nullable
+    public PsiElement getOP_LESS_EQ();
 
 }

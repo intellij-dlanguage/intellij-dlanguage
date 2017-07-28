@@ -1,53 +1,58 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi.impl;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
+import net.masterthought.dlanguage.psi.DLanguageAssignExpression;
+import net.masterthought.dlanguage.psi.DLanguageCaseRangeStatement;
+import net.masterthought.dlanguage.psi.DLanguageDeclarationsAndStatements;
+import net.masterthought.dlanguage.psi.DLanguageVisitor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+
 import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
-import net.masterthought.dlanguage.psi.*;
+
 
 public class DLanguageCaseRangeStatementImpl extends ASTWrapperPsiElement implements DLanguageCaseRangeStatement {
+    public DLanguageCaseRangeStatementImpl(ASTNode node) {
+        super(node);
+    }
 
-  public DLanguageCaseRangeStatementImpl(ASTNode node) {
-    super(node);
-  }
+    public void accept(@NotNull DLanguageVisitor visitor) {
+        visitor.visitCaseRangeStatement(this);
+    }
 
-  public void accept(@NotNull DLanguageVisitor visitor) {
-    visitor.visitCaseRangeStatement(this);
-  }
+    public void accept(@NotNull PsiElementVisitor visitor) {
+        if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor) visitor);
+        else super.accept(visitor);
+    }
 
-  public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
-    else super.accept(visitor);
-  }
+    @NotNull
+    public List<PsiElement> getKW_CASEs() {
+        return findChildrenByType(KW_CASE);
+    }
 
-  @Override
-  @NotNull
-  public DLanguageFirstExp getFirstExp() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, DLanguageFirstExp.class));
-  }
+    @Nullable
+    public PsiElement getOP_TRIPLEDOT() {
+        return findChildByType(OP_TRIPLEDOT);
+    }
 
-  @Override
-  @Nullable
-  public DLanguageLastExp getLastExp() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageLastExp.class);
-  }
+    @NotNull
+    public List<PsiElement> getOP_COLONs() {
+        return findChildrenByType(OP_COLON);
+    }
 
-  @Override
-  @Nullable
-  public DLanguageStatementList getStatementList() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageStatementList.class);
-  }
+    @Nullable
+    public DLanguageAssignExpression getAssignExpression() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageAssignExpression.class);
+    }
 
-  @Override
-  @NotNull
-  public PsiElement getOpDdot() {
-    return notNullChild(findChildByType(OP_DDOT));
-  }
-
+    @Nullable
+    public DLanguageDeclarationsAndStatements getDeclarationsAndStatements() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageDeclarationsAndStatements.class);
+    }
 }

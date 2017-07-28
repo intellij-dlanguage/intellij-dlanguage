@@ -3,4 +3,7 @@ deprecated
     void oldFoo();
 }
 
-oldFoo();   // Deprecated: function test.oldFoo is deprecated
+unittest
+{
+    oldFoo();   // Deprecated: function test.oldFoo is deprecated
+}

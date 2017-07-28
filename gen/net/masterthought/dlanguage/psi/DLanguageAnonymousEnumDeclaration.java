@@ -1,31 +1,25 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+
 
 public interface DLanguageAnonymousEnumDeclaration extends PsiElement {
+    @Nullable
+    public DLanguageAssignExpression getAssignExpression();
 
-  @Nullable
-  DLanguageEnumBaseType getEnumBaseType();
+    @Nullable
+    public PsiElement getOP_COLON();
 
-  @Nullable
-  DLanguageEnumMembers getEnumMembers();
+    @Nullable
+    public PsiElement getKW_ENUM();
 
-  @NotNull
-  PsiElement getKwEnum();
+    @Nullable
+    public DLanguageType getType();
 
-  @Nullable
-  PsiElement getOpBracesLeft();
-
-  @Nullable
-  PsiElement getOpBracesRight();
-
-  @Nullable
-  PsiElement getOpColon();
-
-  @Nullable
-  PsiElement getOpComma();
-
+    @NotNull
+    public List<DLanguageEnumMember> getEnumMembers();
 }

@@ -37,13 +37,11 @@ import java.util.regex.Pattern;
 public class DUnitTestRunProcessHandler extends ProcessHandler {
 
     private static final Logger LOG = Logger.getInstance(DUnitTestRunProcessHandler.class);
-    private Map<String, Set<String>> testClassToTestMethodNames = new HashMap<>();
-
     private final Map<String, Integer> nodeIdsByFullTestName = new HashMap<>();
-    private int nextNodeId = 0;
-
     private final Project project;
     private final DUnitTestRunConfiguration configuration;
+    private final Map<String, Set<String>> testClassToTestMethodNames = new HashMap<>();
+    private int nextNodeId = 0;
 
 
     public DUnitTestRunProcessHandler(final Project project, final DUnitTestRunConfiguration configuration) {
@@ -70,10 +68,10 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
 
                         // if a class contains the UnitTest mixin assume its a valid d-unit test class
                         String testClassName = null;
-                        final Collection<DLanguageTemplateMixin> tmis = PsiTreeUtil.findChildrenOfType(cd, DLanguageTemplateMixin.class);
-                        for (final DLanguageTemplateMixin tmi : tmis) {
+                        Collection<DLanguageTemplateMixinExpression> tmis = PsiTreeUtil.findChildrenOfType(cd, DLanguageTemplateMixinExpression.class);
+                        for (DLanguageTemplateMixinExpression tmi : tmis) {
                             if (tmi.getText().contains("UnitTest")) {
-                                final DLanguageIdentifier classIdentifier = cd.getIdentifier();
+                                DLanguageIdentifier classIdentifier = cd.getInterfaceOrClass().getIdentifier();
                                 if (classIdentifier != null) {
                                     testClassName = classIdentifier.getText();
                                 }
@@ -81,10 +79,9 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
                         }
 
                         // find methods for the class
-                        final Set<String> testMethodNames = new LinkedHashSet<>();
-                        final Collection<DLanguageFuncDeclaration> fds = PsiTreeUtil.findChildrenOfType(cd, DLanguageFuncDeclaration.class);
-
-                        for (final DLanguageFuncDeclaration fd : fds) {
+                        Set<String> testMethodNames = new LinkedHashSet<>();
+                        Collection<DLanguageFunctionDeclaration> fds = PsiTreeUtil.findChildrenOfType(cd, DLanguageFunctionDeclaration.class);
+                        for (DLanguageFunctionDeclaration fd : fds) {
                             if (testClassName != null) {
                                 // only add methods with @Test
                                 if (isTestMethod(fd) || isIgnoreMethod(fd)) {
@@ -122,7 +119,7 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
         if (dunitPath == null) {
             final String message = "Please add d-unit to your dub.json/dub.sdl and run Tools > Process D Libraries";
             Notifications.Bus.notify(new Notification(
-                    "Execute Tests", "No d-unit dependency found", message, NotificationType.ERROR), project);
+                "Execute Tests", "No d-unit dependency found", message, NotificationType.ERROR), project);
             LOG.warn(message);
         } else {
             // Actually run tests in separate runnable to avoid blocking the GUI
@@ -203,10 +200,10 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
         final String dubPath = ToolKey.DUB_KEY.getPath(project);
         if (dubPath == null || dubPath.isEmpty()) {
             Notifications.Bus.notify(
-                    new Notification("Dunit Test Runner", "Dub path must be specified",
-                            "Dub executable path is empty" +
-                                    "<br/><a href='configureDLanguageTools'>Configure</a>",
-                            NotificationType.WARNING, new DToolsNotificationListener(project)), project);
+                new Notification("Dunit Test Runner", "Dub path must be specified",
+                    "Dub executable path is empty" +
+                        "<br/><a href='configureDLanguageTools'>Configure</a>",
+                    NotificationType.WARNING, new DToolsNotificationListener(project)), project);
             return;
         }
 
@@ -258,13 +255,13 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
 
     }
 
-    private boolean isTestMethod(final DLanguageFuncDeclaration fd) {
-        final PsiElement ele = findElementUpstream(fd, DLanguageUserDefinedAttribute.class);
+    private boolean isTestMethod(DLanguageFunctionDeclaration fd) {
+        PsiElement ele = findElementUpstream(fd, DLanguageAtAttribute.class);
         return (ele != null && ele.getText().contains("@Test"));
     }
 
-    private boolean isIgnoreMethod(final DLanguageFuncDeclaration fd) {
-        final PsiElement ele = findElementUpstream(fd, DLanguageUserDefinedAttribute.class);
+    private boolean isIgnoreMethod(DLanguageFunctionDeclaration fd) {
+        PsiElement ele = findElementUpstream(fd, DLanguageAtAttribute.class);
         return (ele != null && ele.getText().contains("@Ignore"));
     }
 

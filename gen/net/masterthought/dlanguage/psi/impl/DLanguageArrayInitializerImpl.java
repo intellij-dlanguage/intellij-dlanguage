@@ -1,53 +1,53 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi.impl;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
+import net.masterthought.dlanguage.psi.DLanguageArrayInitializer;
+import net.masterthought.dlanguage.psi.DLanguageArrayMemberInitialization;
+import net.masterthought.dlanguage.psi.DLanguageVisitor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+
 import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
-import net.masterthought.dlanguage.psi.*;
+
 
 public class DLanguageArrayInitializerImpl extends ASTWrapperPsiElement implements DLanguageArrayInitializer {
+    public DLanguageArrayInitializerImpl(ASTNode node) {
+        super(node);
+    }
 
-  public DLanguageArrayInitializerImpl(ASTNode node) {
-    super(node);
-  }
+    public void accept(@NotNull DLanguageVisitor visitor) {
+        visitor.visitArrayInitializer(this);
+    }
 
-  public void accept(@NotNull DLanguageVisitor visitor) {
-    visitor.visitArrayInitializer(this);
-  }
+    public void accept(@NotNull PsiElementVisitor visitor) {
+        if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor) visitor);
+        else super.accept(visitor);
+    }
 
-  public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
-    else super.accept(visitor);
-  }
+    @NotNull
+    public List<PsiElement> getOP_COMMAs() {
+        return findChildrenByType(OP_COMMA);
+    }
 
-  @Override
-  @Nullable
-  public DLanguageArrayMemberInitializations getArrayMemberInitializations() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageArrayMemberInitializations.class);
-  }
+    @NotNull
+    public List<DLanguageArrayMemberInitialization> getArrayMemberInitializations() {
+        return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageArrayMemberInitialization.class);
+    }
 
-  @Override
-  @NotNull
-  public PsiElement getOpBracketLeft() {
-    return notNullChild(findChildByType(OP_BRACKET_LEFT));
-  }
+    @Nullable
+    public PsiElement getOP_BRACKET_RIGHT() {
+        return findChildByType(OP_BRACKET_RIGHT);
+    }
 
-  @Override
-  @NotNull
-  public PsiElement getOpBracketRight() {
-    return notNullChild(findChildByType(OP_BRACKET_RIGHT));
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpComma() {
-    return findChildByType(OP_COMMA);
-  }
+    @Nullable
+    public PsiElement getOP_BRACKET_LEFT() {
+        return findChildByType(OP_BRACKET_LEFT);
+    }
 
 }

@@ -1,8 +1,13 @@
 package net.masterthought.dlanguage.settings;
 
 public class ToolSettings {
-    private String path;
-    private String flags;
+    private final String path;
+    private final String flags;
+
+    public ToolSettings(String path, String flags) {
+        this.path = path;
+        this.flags = flags;
+    }
 
     public String getPath() {
         return path;
@@ -10,10 +15,5 @@ public class ToolSettings {
 
     public String getFlags() {
         return flags;
-    }
-
-    public ToolSettings(String path, String flags) {
-        this.path = path;
-        this.flags = flags;
     }
 }

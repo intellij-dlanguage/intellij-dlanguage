@@ -35,7 +35,7 @@ public class DLanguageRunDmdState extends CommandLineState implements ProcessLis
 
     private static final Logger LOG = Logger.getInstance(DLanguageRunDmdState.class);
 
-    private DLanguageRunDmdConfiguration config;
+    private final DLanguageRunDmdConfiguration config;
     private Executor executor;
 
     protected DLanguageRunDmdState(@NotNull ExecutionEnvironment environment, @NotNull DLanguageRunDmdConfiguration config) {
@@ -60,55 +60,52 @@ public class DLanguageRunDmdState extends CommandLineState implements ProcessLis
             OSProcessHandler handler = new OSProcessHandler(dmdCommandLine.createProcess(), dmdCommandLine.getCommandLineString());
             handler.addProcessListener(this);
             return handler;
-        }
-        catch (NoValidDLanguageSdkFound e) {
+        } catch (NoValidDLanguageSdkFound e) {
             throw new ExecutionException("No valid DMD SDK found!");
-        }
-        catch(NoSourcesException e) {
-            throw new ExecutionException("No D Language source files found in directory: "+e.getSourcesRoot());
-        }
-        catch(ModuleNotFoundException e) {
-                throw new ExecutionException("Run configuration has no module selected.");
+        } catch (NoSourcesException e) {
+            throw new ExecutionException("No D Language source files found in directory: " + e.getSourcesRoot());
+        } catch (ModuleNotFoundException e) {
+            throw new ExecutionException("Run configuration has no module selected.");
         } catch (ExecutionException e) {
             String message = e.getMessage();
             boolean isEmpty = message.equals("Executable is not specified");
             boolean notCorrect = message.startsWith("Cannot run program");
             if (isEmpty || notCorrect) {
                 Notifications.Bus.notify(
-                        new Notification("DMD run configuration", "DMD settings",
-                                "DMD executable path is " + (isEmpty ? "empty" : "not specified correctly") +
-                                        "<br/><a href='configure'>Configure</a>",
-                                NotificationType.ERROR), config.getProject());
+                    new Notification("DMD run configuration", "DMD settings",
+                        "DMD executable path is " + (isEmpty ? "empty" : "not specified correctly") +
+                            "<br/><a href='configure'>Configure</a>",
+                        NotificationType.ERROR), config.getProject());
             }
             throw e;
         }
     }
 
-    /** Build command line:
-    <code>
-    dmd @compilerArguments.txt
-    </code>
+    /**
+     * Build command line:
+     * <code>
+     * dmd @compilerArguments.txt
+     * </code>
      * "compilerArguments.txt" is temporary file with DMD compiler arguments separated with '\n'. E.g.
-    <code>
-    -release
-    -unittest
-    -od{objFilesDir}
-    -of{outputFilePath}
-    sourceFile1.d
-    sourceFile2.d
-    </code>
+     * <code>
+     * -release
+     * -unittest
+     * -od{objFilesDir}
+     * -of{outputFilePath}
+     * sourceFile1.d
+     * sourceFile2.d
+     * </code>
      */
     private GeneralCommandLine getDmdCommandLine(DLanguageRunDmdConfiguration config)
-            throws ModuleNotFoundException, NoValidDLanguageSdkFound, NoSourcesException, ExecutionException
-    {
+        throws ModuleNotFoundException, NoValidDLanguageSdkFound, NoSourcesException, ExecutionException {
         Module module = config.getConfigurationModule().getModule();
-        if(module == null) {
+        if (module == null) {
             throw new ModuleNotFoundException();
         }
         ModuleRootManager moduleRootManager = ModuleRootManager.getInstance(module);
         Sdk sdk = moduleRootManager.getSdk();
 
-        if(sdk==null || !(sdk.getSdkType() instanceof DLanguageSdkType)) {
+        if (sdk == null || !(sdk.getSdkType() instanceof DLanguageSdkType)) {
             LOG.error("No valid D compiler found");
             throw new NoValidDLanguageSdkFound();
         }
@@ -129,19 +126,18 @@ public class DLanguageRunDmdState extends CommandLineState implements ProcessLis
         String sep = System.lineSeparator();
         File tmpFile;
         try {
-            tmpFile =  FileUtil.createTempFile("dmd", "src");
+            tmpFile = FileUtil.createTempFile("dmd", "src");
             OutputStreamWriter output = new OutputStreamWriter(new FileOutputStream(tmpFile), "UTF-8");
-            for(String srcFilePath : dmdParameters) {
+            for (String srcFilePath : dmdParameters) {
                 output.write(srcFilePath);
                 output.write(sep);
             }
             output.close();
-        }
-        catch(IOException exc) {
+        } catch (IOException exc) {
             throw new ExecutionException("Can't create temporary file with arguments", exc);
         }
 
-        return "@"+tmpFile.getAbsolutePath();
+        return "@" + tmpFile.getAbsolutePath();
 
     }
 
@@ -153,10 +149,9 @@ public class DLanguageRunDmdState extends CommandLineState implements ProcessLis
 
     @Override
     public void processTerminated(ProcessEvent event) {
-        if(event.getExitCode() == 0) {
+        if (event.getExitCode() == 0) {
             event.getProcessHandler().notifyTextAvailable("* Compilation successful", ProcessOutputTypes.SYSTEM);
-        }
-        else {
+        } else {
             event.getProcessHandler().notifyTextAvailable("* Compilation finished with errors", ProcessOutputTypes.SYSTEM);
         }
     }

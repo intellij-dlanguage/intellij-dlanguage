@@ -1,25 +1,23 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import org.jetbrains.annotations.Nullable;
+
 
 public interface DLanguageTypeidExpression extends PsiElement {
+    @Nullable
+    public DLanguageExpression getExpression();
 
-  @Nullable
-  DLanguageCommaExpression getCommaExpression();
+    @Nullable
+    public PsiElement getKW_TYPEID();
 
-  @Nullable
-  DLanguageType getType();
+    @Nullable
+    public DLanguageType getType();
 
-  @NotNull
-  PsiElement getKwTypeid();
+    @Nullable
+    public PsiElement getOP_PAR_RIGHT();
 
-  @NotNull
-  PsiElement getOpParLeft();
-
-  @Nullable
-  PsiElement getOpParRight();
+    @Nullable
+    public PsiElement getOP_PAR_LEFT();
 
 }

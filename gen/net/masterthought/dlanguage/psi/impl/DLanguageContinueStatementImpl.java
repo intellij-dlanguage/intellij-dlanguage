@@ -1,47 +1,47 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi.impl;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
-import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
-import net.masterthought.dlanguage.psi.*;
+import net.masterthought.dlanguage.psi.DLanguageContinueStatement;
+import net.masterthought.dlanguage.psi.DLanguageIdentifier;
+import net.masterthought.dlanguage.psi.DLanguageVisitor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import static net.masterthought.dlanguage.psi.DLanguageTypes.KW_CONTINUE;
+import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_SCOLON;
+
 
 public class DLanguageContinueStatementImpl extends ASTWrapperPsiElement implements DLanguageContinueStatement {
+    public DLanguageContinueStatementImpl(ASTNode node) {
+        super(node);
+    }
 
-  public DLanguageContinueStatementImpl(ASTNode node) {
-    super(node);
-  }
+    public void accept(@NotNull DLanguageVisitor visitor) {
+        visitor.visitContinueStatement(this);
+    }
 
-  public void accept(@NotNull DLanguageVisitor visitor) {
-    visitor.visitContinueStatement(this);
-  }
+    public void accept(@NotNull PsiElementVisitor visitor) {
+        if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor) visitor);
+        else super.accept(visitor);
+    }
 
-  public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
-    else super.accept(visitor);
-  }
+    @Nullable
+    public PsiElement getKW_CONTINUE() {
+        return findChildByType(KW_CONTINUE);
+    }
 
-  @Override
-  @Nullable
-  public DLanguageIdentifier getIdentifier() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
-  }
+    @Nullable
+    public DLanguageIdentifier getIdentifier() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
+    }
 
-  @Override
-  @NotNull
-  public PsiElement getKwContinue() {
-    return notNullChild(findChildByType(KW_CONTINUE));
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpScolon() {
-    return findChildByType(OP_SCOLON);
-  }
+    @Nullable
+    public PsiElement getOP_SCOLON() {
+        return findChildByType(OP_SCOLON);
+    }
 
 }

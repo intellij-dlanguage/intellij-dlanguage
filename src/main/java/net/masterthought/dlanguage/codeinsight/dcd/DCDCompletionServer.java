@@ -128,9 +128,9 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
 
         // try to auto add dub dependencies
         final DubConfigurationParser dubParser = new DubConfigurationParser(module.getProject(), ToolKey.DUB_KEY.getPath(module.getProject()));
-        if(dubParser.canUseDub()) {
+        if (dubParser.canUseDub()) {
             final List<DubPackage> dependencies = dubParser.getDubPackageDependencies();
-            for(final DubPackage pkg : dependencies) {
+            for (final DubPackage pkg : dependencies) {
                 parametersList.addParametersString("-I");
                 final String pkgSource = String.format("%s%s", pkg.getPath(), pkg.getSourcesDir());
                 LOG.debug("adding source for ", pkg.getName());

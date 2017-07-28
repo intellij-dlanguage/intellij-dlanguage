@@ -34,7 +34,7 @@ import java.util.List;
 
 
 public class DLanguageRunAppState extends CommandLineState {
-    private DLanguageRunAppConfiguration config;
+    private final DLanguageRunAppConfiguration config;
     private Executor executor;
 
     protected DLanguageRunAppState(@NotNull ExecutionEnvironment environment, @NotNull DLanguageRunAppConfiguration config) {
@@ -57,23 +57,20 @@ public class DLanguageRunAppState extends CommandLineState {
         try {
             GeneralCommandLine appCommandLine = getExecutableCommandLine(config);
             return new OSProcessHandler(appCommandLine.createProcess(), appCommandLine.getCommandLineString());
-        }
-        catch (NoValidDLanguageSdkFound e) {
+        } catch (NoValidDLanguageSdkFound e) {
             throw new ExecutionException("No valid DMD SDK found!");
-        }
-        catch (ModuleNotFoundException e) {
+        } catch (ModuleNotFoundException e) {
             throw new ExecutionException("Run configuration has no module selected.");
-        }
-        catch (ExecutionException e) {
+        } catch (ExecutionException e) {
             String message = e.getMessage();
             boolean isEmpty = message.equals("Executable is not specified");
             boolean notCorrect = message.startsWith("Cannot run program");
             if (isEmpty || notCorrect) {
                 Notifications.Bus.notify(
-                        new Notification("D App run configuration", "D App settings",
-                                "D application executable path is " + (isEmpty ? "empty" : "not specified correctly") +
-                                        "<br/><a href='configure'>Configure</a> output folder",
-                                NotificationType.ERROR), config.getProject());
+                    new Notification("D App run configuration", "D App settings",
+                        "D application executable path is " + (isEmpty ? "empty" : "not specified correctly") +
+                            "<br/><a href='configure'>Configure</a> output folder",
+                        NotificationType.ERROR), config.getProject());
             }
             throw e;
         }
@@ -82,16 +79,15 @@ public class DLanguageRunAppState extends CommandLineState {
     /* Build command line to start compiled executable
      **/
     private GeneralCommandLine getExecutableCommandLine(DLanguageRunAppConfiguration config)
-            throws ModuleNotFoundException, NoValidDLanguageSdkFound
-    {
+        throws ModuleNotFoundException, NoValidDLanguageSdkFound {
         Module module = config.getConfigurationModule().getModule();
-        if(module == null) {
+        if (module == null) {
             throw new ModuleNotFoundException();
         }
 
         ModuleRootManager moduleRootManager = ModuleRootManager.getInstance(module);
         Sdk sdk = moduleRootManager.getSdk();
-        if(sdk==null || !(sdk.getSdkType() instanceof DLanguageSdkType) ){
+        if (sdk == null || !(sdk.getSdkType() instanceof DLanguageSdkType)) {
             throw new NoValidDLanguageSdkFound();
         }
 
@@ -99,14 +95,13 @@ public class DLanguageRunAppState extends CommandLineState {
         GeneralCommandLine commandLine = new GeneralCommandLine();
         commandLine.setExePath(getOutputFilePath(module));
 
-        if( StringUtil.isEmptyOrSpaces(config.getWorkDir()) ) {
+        if (StringUtil.isEmptyOrSpaces(config.getWorkDir())) {
             commandLine.withWorkDirectory(config.getWorkDir());
-        }
-        else {
+        } else {
             commandLine.withWorkDirectory(sourcesRoot.getPath());
         }
 
-        if( StringUtil.isEmptyOrSpaces(config.getAdditionalParams()) ) {
+        if (StringUtil.isEmptyOrSpaces(config.getAdditionalParams())) {
             commandLine.addParameters(splitArguments(config.getAdditionalParams()));
         }
 
@@ -116,13 +111,12 @@ public class DLanguageRunAppState extends CommandLineState {
     private String[] splitArguments(String arguments) {
         List<String> argsLst = new LinkedList<String>();
         CommandLineTokenizer tokenizer = new CommandLineTokenizer(arguments);
-        while(tokenizer.hasMoreTokens()) {
+        while (tokenizer.hasMoreTokens()) {
             argsLst.add(tokenizer.nextToken());
         }
-        if(argsLst.size()>0) {
+        if (argsLst.size() > 0) {
             return (String[]) argsLst.toArray();
-        }
-        else {
+        } else {
             return new String[0];
         }
     }
@@ -140,7 +134,7 @@ public class DLanguageRunAppState extends CommandLineState {
     @NotNull
     private String getOutputFilePath(Module module) {
         String filename = module.getName();
-        if(SystemInfo.isWindows) {
+        if (SystemInfo.isWindows) {
             filename += ".exe";
         }
         String outputDirUrl = getOutputDir(module);

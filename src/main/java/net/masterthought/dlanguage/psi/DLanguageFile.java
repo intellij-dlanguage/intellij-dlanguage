@@ -3,9 +3,14 @@ package net.masterthought.dlanguage.psi;
 import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.psi.FileViewProvider;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.ResolveState;
+import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.StubElement;
 import net.masterthought.dlanguage.DLanguage;
 import net.masterthought.dlanguage.DLanguageFileType;
+import net.masterthought.dlanguage.resolve.ScopeProcessorImpl;
+import net.masterthought.dlanguage.resolve.ScopeProcessorImplUtil;
 import net.masterthought.dlanguage.stubs.DLanguageFileStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -43,7 +48,7 @@ public class DLanguageFile extends PsiFileBase {
         if (module == null) {
             return null;
         }
-        return module.getText().replaceAll(";","").replaceAll("^module\\s+","");
+        return module.getText().replaceAll(";", "").replaceAll("^module\\s+", "");
     }
 
     /**
@@ -63,6 +68,24 @@ public class DLanguageFile extends PsiFileBase {
     public DLanguageFileStub getStub() {
         final StubElement stub = super.getStub();
         if (stub == null) return null;
-        return (DLanguageFileStub)stub;
+        return (DLanguageFileStub) stub;
+    }
+
+    @Override
+    public boolean processDeclarations(@NotNull final PsiScopeProcessor processor, @NotNull final ResolveState state, final PsiElement lastParent, @NotNull final PsiElement place) {
+        boolean toContinue = true;
+        for (final PsiElement element : getChildren()) {
+            if (element instanceof DLanguageDeclaration) {
+                if (!ScopeProcessorImplUtil.INSTANCE.processDeclaration((DLanguageDeclaration) element, processor, state, lastParent, place)) {
+                    toContinue = false;
+                }
+            }
+            if (element instanceof DLanguageModuleDeclaration) {
+                if (!processor.execute(element, state)) {
+                    toContinue = false;
+                }
+            }
+        }
+        return toContinue;
     }
 }

@@ -1,47 +1,47 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi.impl;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
-import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
-import net.masterthought.dlanguage.psi.*;
+import net.masterthought.dlanguage.psi.DLanguageBlockStatement;
+import net.masterthought.dlanguage.psi.DLanguageDeclarationsAndStatements;
+import net.masterthought.dlanguage.psi.DLanguageVisitor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_BRACES_LEFT;
+import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_BRACES_RIGHT;
+
 
 public class DLanguageBlockStatementImpl extends ASTWrapperPsiElement implements DLanguageBlockStatement {
+    public DLanguageBlockStatementImpl(ASTNode node) {
+        super(node);
+    }
 
-  public DLanguageBlockStatementImpl(ASTNode node) {
-    super(node);
-  }
+    public void accept(@NotNull DLanguageVisitor visitor) {
+        visitor.visitBlockStatement(this);
+    }
 
-  public void accept(@NotNull DLanguageVisitor visitor) {
-    visitor.visitBlockStatement(this);
-  }
+    public void accept(@NotNull PsiElementVisitor visitor) {
+        if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor) visitor);
+        else super.accept(visitor);
+    }
 
-  public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
-    else super.accept(visitor);
-  }
+    @Nullable
+    public DLanguageDeclarationsAndStatements getDeclarationsAndStatements() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageDeclarationsAndStatements.class);
+    }
 
-  @Override
-  @Nullable
-  public DLanguageStatementList getStatementList() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageStatementList.class);
-  }
+    @Nullable
+    public PsiElement getOP_BRACES_RIGHT() {
+        return findChildByType(OP_BRACES_RIGHT);
+    }
 
-  @Override
-  @NotNull
-  public PsiElement getOpBracesLeft() {
-    return notNullChild(findChildByType(OP_BRACES_LEFT));
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getOpBracesRight() {
-    return notNullChild(findChildByType(OP_BRACES_RIGHT));
-  }
+    @Nullable
+    public PsiElement getOP_BRACES_LEFT() {
+        return findChildByType(OP_BRACES_LEFT);
+    }
 
 }

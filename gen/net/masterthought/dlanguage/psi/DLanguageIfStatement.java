@@ -1,35 +1,28 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+
 
 public interface DLanguageIfStatement extends PsiElement {
+    @NotNull
+    public List<DLanguageDeclarationOrStatement> getDeclarationOrStatements();
 
-  @Nullable
-  DLanguageElseStatement getElseStatement();
+    @Nullable
+    public PsiElement getKW_ELSE();
 
-  @Nullable
-  DLanguageIfCondition getIfCondition();
+    @Nullable
+    public PsiElement getKW_IF();
 
-  @Nullable
-  DLanguageThenStatement getThenStatement();
+    @Nullable
+    public PsiElement getOP_PAR_LEFT();
 
-  @Nullable
-  PsiElement getKwElse();
+    @Nullable
+    public PsiElement getOP_PAR_RIGHT();
 
-  @NotNull
-  PsiElement getKwIf();
-
-  @Nullable
-  PsiElement getOpParLeft();
-
-  @Nullable
-  PsiElement getOpParRight();
-
-  //WARNING: processDeclarations(...) is skipped
-  //matching processDeclarations(DLanguageIfStatement, ...)
-  //methods are not found in DPsiImplUtil
-
+    @Nullable
+    public DLanguageIfCondition getIfCondition();
 }

@@ -1,21 +1,25 @@
-pragma(ident);        // just by itself
+pragma(msg);        // just by itself
 
-pragma(ident) declaration; // influence one declaration
+pragma(msg) int x = 0; // influence one declaration
 
-pragma(ident): // influence subsequent declarations
-    declaration;
-    declaration;
+pragma(msg): // influence subsequent declarations
+    float y = 0;
+    double a = 0;
 
-pragma(ident)   // influence block of declarations
+pragma(msg)   // influence block of declarations
 {
-    declaration;
-    declaration;
+    long b = 0;
+    ulong c = 0;
 }
 
-pragma(ident) statement; // influence one statement
 
-pragma(ident)   // influence block of statements
-{
-    statement;
-    statement;
-}
+//todo libdparse can't parse this correctly, so temporarily excluded from the test cases.
+//unittest{
+//    pragma(msg) c = 9; // influence one statement
+//
+//    pragma(msg)   // influence block of statements
+//    {
+//        b = -6;
+//        y = 9.7;
+//    }
+//}

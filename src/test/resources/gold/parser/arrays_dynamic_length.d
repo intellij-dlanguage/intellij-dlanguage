@@ -2,6 +2,8 @@ char[] a = new char[20];
 char[] b = a[0..10];
 char[] c = a[10..20];
 char[] d = a;
+unittest
+{
 
 b.length = 15; // always reallocates because extending in place would
                // overwrite other data in a.
@@ -53,3 +55,4 @@ size_t cap = array.reserve(10); // request
 array ~= [1, 2, 3, 4, 5];
 assert(cap >= 10); // allocated may be more than request
 assert(cap == array.capacity);
+}

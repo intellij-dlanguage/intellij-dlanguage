@@ -20,6 +20,17 @@ public class DLanguageLibRootDetector extends RootDetector {
         super(rootType, false, presentableRootTypeName);
     }
 
+    private static boolean containsDLangFiles(final VirtualFile dir) {
+        final VirtualFileVisitor.Result result = VfsUtilCore.visitChildrenRecursively(dir, new VirtualFileVisitor() {
+            @NotNull
+            @Override
+            public Result visitFileEx(@NotNull VirtualFile file) {
+                return !file.isDirectory() && DLanguageFileType.DEFAULT_EXTENSION.equalsIgnoreCase(file.getExtension()) ? skipTo(dir) : CONTINUE;
+            }
+        });
+        return result.skipToParent != null;
+    }
+
     @NotNull
     @Override
     public Collection<VirtualFile> detectRoots(@NotNull VirtualFile rootCandidate, @NotNull ProgressIndicator progressIndicator) {
@@ -62,16 +73,5 @@ public class DLanguageLibRootDetector extends RootDetector {
                 return true;
             }
         });
-    }
-
-    private static boolean containsDLangFiles(final VirtualFile dir) {
-        final VirtualFileVisitor.Result result = VfsUtilCore.visitChildrenRecursively(dir, new VirtualFileVisitor() {
-            @NotNull
-            @Override
-            public Result visitFileEx(@NotNull VirtualFile file) {
-                return !file.isDirectory() && DLanguageFileType.DEFAULT_EXTENSION.equalsIgnoreCase(file.getExtension()) ? skipTo(dir) : CONTINUE;
-            }
-        });
-        return result.skipToParent != null;
     }
 }

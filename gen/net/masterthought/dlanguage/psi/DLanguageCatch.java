@@ -1,29 +1,40 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.ResolveState;
+import com.intellij.psi.StubBasedPsiElement;
+import com.intellij.psi.scope.PsiScopeProcessor;
+import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+import net.masterthought.dlanguage.resolve.ScopeProcessorImpl;
+import net.masterthought.dlanguage.stubs.DLanguageCatchStub;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public interface DLanguageCatch extends PsiElement {
 
-  @NotNull
-  DLanguageCatchParameter getCatchParameter();
+public interface DLanguageCatch extends PsiElement, DNamedElement, StubBasedPsiElement<DLanguageCatchStub> {
+    @Nullable
+    public PsiElement getKW_CATCH();
 
-  @Nullable
-  DLanguageStatement getStatement();
+    @Nullable
+    public PsiElement getOP_PAR_LEFT();
 
-  @NotNull
-  PsiElement getKwCatch();
+    @Nullable
+    public PsiElement getOP_PAR_RIGHT();
 
-  @NotNull
-  PsiElement getOpParLeft();
+    @Nullable
+    public DLanguageType getType();
 
-  @Nullable
-  PsiElement getOpParRight();
+    @Nullable
+    public DLanguageIdentifier getIdentifier();
 
-  //WARNING: processDeclarations(...) is skipped
-  //matching processDeclarations(DLanguageCatch, ...)
-  //methods are not found in DPsiImplUtil
+    @Nullable
+    public DLanguageDeclarationOrStatement getDeclarationOrStatement();
 
+    @Override
+    default public boolean processDeclarations(@NotNull PsiScopeProcessor processor,
+                                               @NotNull ResolveState state,
+                                               PsiElement lastParent,
+                                               @NotNull PsiElement place) {
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(this, processor, state, lastParent, place);
+    }
 }

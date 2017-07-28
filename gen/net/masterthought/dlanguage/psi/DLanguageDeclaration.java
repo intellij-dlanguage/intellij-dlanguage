@@ -1,38 +1,109 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+
 
 public interface DLanguageDeclaration extends PsiElement {
+    @Nullable
+    public DLanguageAliasThisDeclaration getAliasThisDeclaration();
 
-  @Nullable
-  DLanguageAggregateDeclaration getAggregateDeclaration();
+    @Nullable
+    public DLanguageAliasDeclaration getAliasDeclaration();
 
-  @Nullable
-  DLanguageAliasDeclaration getAliasDeclaration();
+    @Nullable
+    public DLanguageClassDeclaration getClassDeclaration();
 
-  @Nullable
-  DLanguageEnumDeclaration getEnumDeclaration();
+    @Nullable
+    public DLanguageConditionalDeclaration getConditionalDeclaration();
 
-  @Nullable
-  DLanguageEnumFuncDeclaration getEnumFuncDeclaration();
+    @Nullable
+    public DLanguageConstructor getConstructor();
 
-  @Nullable
-  DLanguageFuncDeclaration getFuncDeclaration();
+    @Nullable
+    public DLanguageDestructor getDestructor();
 
-  @Nullable
-  DLanguageImportDeclaration getImportDeclaration();
+    @Nullable
+    public DLanguageAnonymousEnumDeclaration getAnonymousEnumDeclaration();
 
-  @Nullable
-  DLanguageTemplateDeclaration getTemplateDeclaration();
+    @Nullable
+    public DLanguageEponymousTemplateDeclaration getEponymousTemplateDeclaration();
 
-  @Nullable
-  DLanguageVarDeclarations getVarDeclarations();
+    @Nullable
+    public DLanguageEnumDeclaration getEnumDeclaration();
 
-  //WARNING: processDeclarations(...) is skipped
-  //matching processDeclarations(DLanguageDeclaration, ...)
-  //methods are not found in DPsiImplUtil
+    @Nullable
+    public DLanguageImportDeclaration getImportDeclaration();
 
+    @Nullable
+    public DLanguageInterfaceDeclaration getInterfaceDeclaration();
+
+    @Nullable
+    public DLanguageMixinTemplateDeclaration getMixinTemplateDeclaration();
+
+    @Nullable
+    public DLanguageMixinDeclaration getMixinDeclaration();
+
+    @Nullable
+    public DLanguagePragmaDeclaration getPragmaDeclaration();
+
+    @Nullable
+    public DLanguageSharedStaticConstructor getSharedStaticConstructor();
+
+    @Nullable
+    public DLanguageSharedStaticDestructor getSharedStaticDestructor();
+
+    @Nullable
+    public DLanguageStaticConstructor getStaticConstructor();
+
+    @Nullable
+    public DLanguageStaticDestructor getStaticDestructor();
+
+    @Nullable
+    public DLanguageStaticAssertDeclaration getStaticAssertDeclaration();
+
+    @Nullable
+    public DLanguageStructDeclaration getStructDeclaration();
+
+    @Nullable
+    public DLanguageTemplateDeclaration getTemplateDeclaration();
+
+    @Nullable
+    public DLanguageUnionDeclaration getUnionDeclaration();
+
+    @Nullable
+    public DLanguageInvariant getInvariant();
+
+    @Nullable
+    public DLanguageUnittest getUnittest();
+
+    @Nullable
+    public DLanguageVersionSpecification getVersionSpecification();
+
+    @Nullable
+    public DLanguageDebugSpecification getDebugSpecification();
+
+    @NotNull
+    public List<DLanguageAttribute> getAttributes();
+
+    @NotNull
+    public List<DLanguageDeclaration> getDeclarations();
+
+    @Nullable
+    public PsiElement getOP_BRACES_RIGHT();
+
+    @Nullable
+    public PsiElement getOP_BRACES_LEFT();
+
+    @Nullable
+    public DLanguageFunctionDeclaration getFunctionDeclaration();
+
+    @Nullable
+    public DLanguageVariableDeclaration getVariableDeclaration();
+
+    @Nullable
+    public DLanguageAttributeDeclaration getAttributeDeclaration();
 }

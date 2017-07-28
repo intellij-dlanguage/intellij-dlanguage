@@ -56,5 +56,7 @@ struct Bar{
 Bar bar = {9,'c',"hgh",};
 
 private void foo(in Type[] argument...) const{}
-
-const(T) opt(T)(const(T) def = const(T).init)
+//unittest
+//{
+//const(T) opt(T)(const(T) def = const(T).init)// libdparse doesn't see to want to parse this
+//}

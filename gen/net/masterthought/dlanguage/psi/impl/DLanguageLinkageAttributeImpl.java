@@ -1,77 +1,67 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi.impl;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
+import net.masterthought.dlanguage.psi.DLanguageIdentifier;
+import net.masterthought.dlanguage.psi.DLanguageIdentifierChain;
+import net.masterthought.dlanguage.psi.DLanguageLinkageAttribute;
+import net.masterthought.dlanguage.psi.DLanguageVisitor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
-import net.masterthought.dlanguage.psi.*;
+
 
 public class DLanguageLinkageAttributeImpl extends ASTWrapperPsiElement implements DLanguageLinkageAttribute {
+    public DLanguageLinkageAttributeImpl(ASTNode node) {
+        super(node);
+    }
 
-  public DLanguageLinkageAttributeImpl(ASTNode node) {
-    super(node);
-  }
+    public void accept(@NotNull DLanguageVisitor visitor) {
+        visitor.visitLinkageAttribute(this);
+    }
 
-  public void accept(@NotNull DLanguageVisitor visitor) {
-    visitor.visitLinkageAttribute(this);
-  }
+    public void accept(@NotNull PsiElementVisitor visitor) {
+        if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor) visitor);
+        else super.accept(visitor);
+    }
 
-  public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
-    else super.accept(visitor);
-  }
+    @Nullable
+    public DLanguageIdentifierChain getIdentifierChain() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageIdentifierChain.class);
+    }
 
-  @Override
-  @Nullable
-  public DLanguageIdentifier getIdentifier() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
-  }
+    @Nullable
+    public DLanguageIdentifier getIdentifier() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
+    }
 
-  @Override
-  @Nullable
-  public DLanguageIdentifierList getIdentifierList() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageIdentifierList.class);
-  }
+    @Nullable
+    public PsiElement getOP_PAR_RIGHT() {
+        return findChildByType(OP_PAR_RIGHT);
+    }
 
-  @Override
-  @Nullable
-  public DLanguageLinkageType getLinkageType() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageLinkageType.class);
-  }
+    @Nullable
+    public PsiElement getOP_PAR_LEFT() {
+        return findChildByType(OP_PAR_LEFT);
+    }
 
-  @Override
-  @NotNull
-  public PsiElement getKwExtern() {
-    return notNullChild(findChildByType(KW_EXTERN));
-  }
+    @Nullable
+    public PsiElement getOP_PLUS_PLUS() {
+        return findChildByType(OP_PLUS_PLUS);
+    }
 
-  @Override
-  @Nullable
-  public PsiElement getOpComma() {
-    return findChildByType(OP_COMMA);
-  }
+    @Nullable
+    public PsiElement getKW_EXTERN() {
+        return findChildByType(KW_EXTERN);
+    }
 
-  @Override
-  @NotNull
-  public PsiElement getOpParLeft() {
-    return notNullChild(findChildByType(OP_PAR_LEFT));
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getOpParRight() {
-    return notNullChild(findChildByType(OP_PAR_RIGHT));
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpPlusPlus() {
-    return findChildByType(OP_PLUS_PLUS);
-  }
+    @Nullable
+    public PsiElement getOP_COMMA() {
+        return findChildByType(OP_COMMA);
+    }
 
 }

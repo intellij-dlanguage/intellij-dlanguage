@@ -28,11 +28,11 @@ public class DBraceMatcher implements PairedBraceMatcher {
     public boolean isPairedBracesAllowedBeforeType(@NotNull final IElementType lbraceType,
                                                    @Nullable final IElementType contextType) {
         return alwaysMatch.contains(lbraceType)
-                || DTokenSets.WHITESPACES.contains(contextType)
-                || DTokenSets.LINE_COMMENTS.contains(contextType)
-                || DTokenSets.BLOCK_COMMENTS.contains(contextType)
-                || DLanguageTypes.OP_PAR_RIGHT == contextType
-                || null == contextType;
+            || DTokenSets.WHITESPACES.contains(contextType)
+            || DTokenSets.LINE_COMMENTS.contains(contextType)
+            || DTokenSets.BLOCK_COMMENTS.contains(contextType)
+            || DLanguageTypes.OP_PAR_RIGHT == contextType
+            || null == contextType;
     }
 
     @Override

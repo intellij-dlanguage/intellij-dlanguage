@@ -1,25 +1,26 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+
 
 public interface DLanguageAssertExpression extends PsiElement {
+    @Nullable
+    public PsiElement getKW_ASSERT();
 
-  @NotNull
-  List<DLanguageAssignExpression> getAssignExpressionList();
+    @Nullable
+    public PsiElement getOP_BRACES_LEFT();
 
-  @NotNull
-  PsiElement getKwAssert();
+    @Nullable
+    public PsiElement getOP_BRACES_RIGHT();
 
-  @Nullable
-  PsiElement getOpComma();
+    @NotNull
+    public List<DLanguageAssignExpression> getAssignExpressions();
 
-  @Nullable
-  PsiElement getOpParLeft();
-
-  @Nullable
-  PsiElement getOpParRight();
+    @NotNull
+    public List<PsiElement> getOP_COMMAs();
 
 }

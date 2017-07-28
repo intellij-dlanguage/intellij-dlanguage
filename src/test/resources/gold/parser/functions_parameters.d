@@ -7,6 +7,8 @@ void foo(out int x)
 }
 
 int a = 3;
+unittest
+{
 foo(a);
 // a is now 0
 
@@ -38,4 +40,5 @@ void test()
 {
     int x;
     dotimes(3, writeln(x++));
+}
 }

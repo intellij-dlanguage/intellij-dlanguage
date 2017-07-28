@@ -1,22 +1,26 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+
 
 public interface DLanguageImportDeclaration extends PsiElement {
+    @Nullable
+    public PsiElement getKW_IMPORT();
 
-  @Nullable
-  DLanguageImportList getImportList();
+    @NotNull
+    public List<DLanguageSingleImport> getSingleImports();
 
-  @NotNull
-  PsiElement getKwImport();
+    @Nullable
+    public DLanguageImportBindings getImportBindings();
 
-  @Nullable
-  PsiElement getKwStatic();
+    @NotNull
+    public List<PsiElement> getOP_COMMAs();
 
-  @Nullable
-  PsiElement getOpScolon();
+    @Nullable
+    public PsiElement getOP_SCOLON();
 
 }

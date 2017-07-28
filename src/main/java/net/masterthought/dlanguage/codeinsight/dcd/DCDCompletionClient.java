@@ -22,15 +22,12 @@ import static net.masterthought.dlanguage.utils.DUtil.isNotNullOrEmpty;
 
 public class DCDCompletionClient {
 
-    private Map<String, String> completionTypeMap = getCompletionTypeMap();
-
+    private final Map<String, String> completionTypeMap = getCompletionTypeMap();
+    private final List<Completion> completions = new ArrayList<>();
     @Nullable
     private Process process;
-
     @Nullable
     private BufferedWriter output;
-
-    private List<Completion> completions = new ArrayList<>();
 
     public List<Completion> autoComplete(final int position, final PsiFile file) throws DCDCompletionServer.DCDError {
         final Module module = ModuleUtilCore.findModuleForPsiElement(file);

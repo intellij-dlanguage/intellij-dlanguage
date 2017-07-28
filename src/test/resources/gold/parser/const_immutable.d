@@ -1,3 +1,5 @@
+unittest
+{
 immutable int x = 3;  // x is set to 3
 x = 4;        // error, x is immutable
 char[x] s;    // s is an array of 3 char's
@@ -105,4 +107,5 @@ void main()
 
     immutable int y;
     immutable int** r = new immutable(int)*(&y); // ok, y is immutable
+}
 }

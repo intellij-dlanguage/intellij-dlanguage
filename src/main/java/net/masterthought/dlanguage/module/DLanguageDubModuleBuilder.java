@@ -51,7 +51,7 @@ public class DLanguageDubModuleBuilder extends DLanguageModuleBuilder {
         final Project project = rootModel.getProject();
         final RunManagerImpl runManager = RunManagerImpl.getInstanceImpl(project);
 
-        if(dubBinary != null){
+        if (dubBinary != null) {
             ToolKey.DUB_KEY.setPath(project, dubBinary);
         }
 
@@ -59,7 +59,7 @@ public class DLanguageDubModuleBuilder extends DLanguageModuleBuilder {
         RunnerAndConfigurationSettings runDubSettings = runManager.findConfigurationByName(RUN_DUB_CONFIG_NAME);
         if (runDubSettings == null) {
             final DLanguageRunDubConfigurationType configurationType
-                    = Extensions.findExtension(ConfigurationType.CONFIGURATION_TYPE_EP, DLanguageRunDubConfigurationType.class);
+                = Extensions.findExtension(ConfigurationType.CONFIGURATION_TYPE_EP, DLanguageRunDubConfigurationType.class);
             final ConfigurationFactory factory = configurationType.getConfigurationFactories()[0];
             runDubSettings = runManager.createRunConfiguration(RUN_DUB_CONFIG_NAME, factory);
             ((ModuleBasedConfiguration) runDubSettings.getConfiguration()).setModule(rootModel.getModule());
@@ -116,7 +116,7 @@ public class DLanguageDubModuleBuilder extends DLanguageModuleBuilder {
             process.addProcessListener(new ProcessAdapter() {
                 @Override
                 public void onTextAvailable(ProcessEvent event, Key outputType) {
-                    if(ProcessOutputTypes.STDERR.equals(outputType)) {
+                    if (ProcessOutputTypes.STDERR.equals(outputType)) {
                         errors.set(true);
                     }
                     builder.append(LocalTime.now()).append(" [").append(outputType).append("] ").append(event.getText());

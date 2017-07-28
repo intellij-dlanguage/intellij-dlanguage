@@ -9,7 +9,6 @@ import com.intellij.ui.TextFieldWithHistory;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
@@ -21,14 +20,14 @@ public class GuiUtil {
      * window.
      *
      * @param settings Panel to add components to.
-     * @param tool Which tool to configure.
+     * @param tool     Which tool to configure.
      * @return The TextFieldWithBrowseButton created.
      */
     public static TextFieldWithBrowseButton createExecutableOption(JPanel settings, String tool, Object constraints) {
         // Create UI elements.
         TextFieldWithBrowseButton tf = new TextFieldWithBrowseButton();
         tf.addBrowseFolderListener("Select " + tool + " path", "", null,
-                FileChooserDescriptorFactory.createSingleLocalFileDescriptor());
+            FileChooserDescriptorFactory.createSingleLocalFileDescriptor());
 
         // Add elements to Panel.
         JPanel subPanel = new JPanel(new GridBagLayout());
@@ -47,7 +46,7 @@ public class GuiUtil {
      * Creates a label and text field input and adds them to the configuration
      * window.
      *
-     * @param settings Panel to add components to.
+     * @param settings  Panel to add components to.
      * @param labelText Which text to show to the left of the field.
      * @return The TextFieldWithBrowseButton created.
      */
@@ -72,7 +71,7 @@ public class GuiUtil {
      * Creates two labels adds them to the configuration window.
      *
      * @param settings Panel to add components to.
-     * @param tool Which tool to display version for.
+     * @param tool     Which tool to display version for.
      * @return The label with dynamic content.
      */
     public static JLabel createDisplayVersion(JPanel settings, String tool, Object constraints) {
@@ -95,7 +94,7 @@ public class GuiUtil {
      * Create a check box and add to the configuration window.
      *
      * @param settings Panel to add checkbox to.
-     * @param text Checkbox text.
+     * @param text     Checkbox text.
      * @return The checkbox.
      */
     public static JCheckBox createCheckBoxOption(JPanel settings, String text, Object constraints) {
@@ -111,7 +110,7 @@ public class GuiUtil {
 
     public static void addFolderListener(final TextFieldWithBrowseButton textField, final String executable) {
         textField.addBrowseFolderListener("Select " + executable + " path", "", null,
-                FileChooserDescriptorFactory.createSingleLocalFileDescriptor());
+            FileChooserDescriptorFactory.createSingleLocalFileDescriptor());
     }
 
     public static ActionListener createApplyPathAction(final TextAccessor textField, final String executable) {

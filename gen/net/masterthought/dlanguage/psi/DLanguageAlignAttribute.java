@@ -1,22 +1,20 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import org.jetbrains.annotations.Nullable;
+
 
 public interface DLanguageAlignAttribute extends PsiElement {
+    @Nullable
+    public PsiElement getKW_ALIGN();
 
-  @Nullable
-  PsiElement getIntegerLiteral();
+    @Nullable
+    public DLanguageAssignExpression getAssignExpression();
 
-  @NotNull
-  PsiElement getKwAlign();
+    @Nullable
+    public PsiElement getOP_PAR_RIGHT();
 
-  @Nullable
-  PsiElement getOpParLeft();
-
-  @Nullable
-  PsiElement getOpParRight();
+    @Nullable
+    public PsiElement getOP_PAR_LEFT();
 
 }

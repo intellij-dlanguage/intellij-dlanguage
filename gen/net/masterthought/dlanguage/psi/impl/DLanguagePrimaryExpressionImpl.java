@@ -1,209 +1,250 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi.impl;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
-import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import net.masterthought.dlanguage.psi.*;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+
+import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
+
 
 public class DLanguagePrimaryExpressionImpl extends ASTWrapperPsiElement implements DLanguagePrimaryExpression {
+    public DLanguagePrimaryExpressionImpl(ASTNode node) {
+        super(node);
+    }
 
-  public DLanguagePrimaryExpressionImpl(ASTNode node) {
-    super(node);
-  }
+    public void accept(@NotNull DLanguageVisitor visitor) {
+        visitor.visitPrimaryExpression(this);
+    }
 
-  public void accept(@NotNull DLanguageVisitor visitor) {
-    visitor.visitPrimaryExpression(this);
-  }
+    public void accept(@NotNull PsiElementVisitor visitor) {
+        if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor) visitor);
+        else super.accept(visitor);
+    }
 
-  public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
-    else super.accept(visitor);
-  }
+    @Nullable
+    public DLanguageType getType() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageType.class);
+    }
 
-  @Override
-  @Nullable
-  public DLanguageArrayLiteral getArrayLiteral() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageArrayLiteral.class);
-  }
+    @Nullable
+    public DLanguageArguments getArguments() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageArguments.class);
+    }
 
-  @Override
-  @Nullable
-  public DLanguageAssertExpression getAssertExpression() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageAssertExpression.class);
-  }
+    @Nullable
+    public DLanguageFunctionLiteralExpression getFunctionLiteralExpression() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageFunctionLiteralExpression.class);
+    }
 
-  @Override
-  @Nullable
-  public DLanguageAssocArrayLiteral getAssocArrayLiteral() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageAssocArrayLiteral.class);
-  }
+    @Nullable
+    public DLanguageTypeofExpression getTypeofExpression() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageTypeofExpression.class);
+    }
 
-  @Override
-  @Nullable
-  public DLanguageBasicTypeX getBasicTypeX() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageBasicTypeX.class);
-  }
+    @Nullable
+    public DLanguageTypeidExpression getTypeidExpression() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageTypeidExpression.class);
+    }
 
-  @Override
-  @Nullable
-  public DLanguageCommaExpression getCommaExpression() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageCommaExpression.class);
-  }
+    @Nullable
+    public DLanguageVector getVector() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageVector.class);
+    }
 
-  @Override
-  @Nullable
-  public DLanguageFunctionLiteral getFunctionLiteral() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageFunctionLiteral.class);
-  }
+    @Nullable
+    public DLanguageAssocArrayLiteral getAssocArrayLiteral() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageAssocArrayLiteral.class);
+    }
 
-  @Override
-  @Nullable
-  public DLanguageIdentifier getIdentifier() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
-  }
+    @Nullable
+    public DLanguageArrayLiteral getArrayLiteral() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageArrayLiteral.class);
+    }
 
-  @Override
-  @Nullable
-  public DLanguageImportExpression getImportExpression() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageImportExpression.class);
-  }
+    @Nullable
+    public DLanguageExpression getExpression() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageExpression.class);
+    }
 
-  @Override
-  @Nullable
-  public DLanguageIsExpression getIsExpression() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageIsExpression.class);
-  }
+    @Nullable
+    public PsiElement getOP_PAR_LEFT() {
+        return findChildByType(OP_PAR_LEFT);
+    }
 
-  @Override
-  @Nullable
-  public DLanguageMixinExpression getMixinExpression() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageMixinExpression.class);
-  }
+    @Nullable
+    public PsiElement getOP_PAR_RIGHT() {
+        return findChildByType(OP_PAR_RIGHT);
+    }
 
-  @Override
-  @Nullable
-  public DLanguageNewExpressionWithArgs getNewExpressionWithArgs() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageNewExpressionWithArgs.class);
-  }
+    @Nullable
+    public DLanguageIsExpression getIsExpression() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageIsExpression.class);
+    }
 
-  @Override
-  @Nullable
-  public DLanguageSpecialKeyword getSpecialKeyword() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageSpecialKeyword.class);
-  }
+    @Nullable
+    public DLanguageLambdaExpression getLambdaExpression() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageLambdaExpression.class);
+    }
 
-  @Override
-  @Nullable
-  public DLanguageStringLiterals getStringLiterals() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageStringLiterals.class);
-  }
+    @Nullable
+    public DLanguageTraitsExpression getTraitsExpression() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageTraitsExpression.class);
+    }
 
-  @Override
-  @Nullable
-  public DLanguageTemplateInstance getTemplateInstance() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageTemplateInstance.class);
-  }
+    @Nullable
+    public DLanguageMixinExpression getMixinExpression() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageMixinExpression.class);
+    }
 
-  @Override
-  @Nullable
-  public DLanguageTraitsExpression getTraitsExpression() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageTraitsExpression.class);
-  }
+    @Nullable
+    public DLanguageImportExpression getImportExpression() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageImportExpression.class);
+    }
 
-  @Override
-  @Nullable
-  public DLanguageType getType() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageType.class);
-  }
+    @Nullable
+    public PsiElement getKW_SUPER() {
+        return findChildByType(KW_SUPER);
+    }
 
-  @Override
-  @Nullable
-  public DLanguageTypeidExpression getTypeidExpression() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageTypeidExpression.class);
-  }
+    @Nullable
+    public PsiElement getKW_THIS() {
+        return findChildByType(KW_THIS);
+    }
 
-  @Override
-  @Nullable
-  public DLanguageTypeof getTypeof() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageTypeof.class);
-  }
+    @Nullable
+    public PsiElement getOP_DOLLAR() {
+        return findChildByType(OP_DOLLAR);
+    }
 
-  @Override
-  @Nullable
-  public PsiElement getCharacterLiteral() {
-    return findChildByType(CHARACTER_LITERAL);
-  }
+    @Nullable
+    public PsiElement getKW_TRUE() {
+        return findChildByType(KW_TRUE);
+    }
 
-  @Override
-  @Nullable
-  public PsiElement getFloatLiteral() {
-    return findChildByType(FLOAT_LITERAL);
-  }
+    @Nullable
+    public PsiElement getKW_FALSE() {
+        return findChildByType(KW_FALSE);
+    }
 
-  @Override
-  @Nullable
-  public PsiElement getIntegerLiteral() {
-    return findChildByType(INTEGER_LITERAL);
-  }
+    @Nullable
+    public PsiElement getKW___DATE__() {
+        return findChildByType(KW___DATE__);
+    }
 
-  @Override
-  @Nullable
-  public PsiElement getKwFalse() {
-    return findChildByType(KW_FALSE);
-  }
+    @Nullable
+    public PsiElement getKW___EOF__() {
+        return findChildByType(KW___EOF__);
+    }
 
-  @Override
-  @Nullable
-  public PsiElement getKwNull() {
-    return findChildByType(KW_NULL);
-  }
+    @Nullable
+    public PsiElement getKW___FILE__() {
+        return findChildByType(KW___FILE__);
+    }
 
-  @Override
-  @Nullable
-  public PsiElement getKwSuper() {
-    return findChildByType(KW_SUPER);
-  }
+    @Nullable
+    public PsiElement getKW___FILE_FULL_PATH__() {
+        return findChildByType(KW___FILE_FULL_PATH__);
+    }
 
-  @Override
-  @Nullable
-  public PsiElement getKwThis() {
-    return findChildByType(KW_THIS);
-  }
+    @Nullable
+    public PsiElement getKW___FUNCTION__() {
+        return findChildByType(KW___FUNCTION__);
+    }
 
-  @Override
-  @Nullable
-  public PsiElement getKwTrue() {
-    return findChildByType(KW_TRUE);
-  }
+    @Nullable
+    public PsiElement getKW___GSHARED() {
+        return findChildByType(KW___GSHARED);
+    }
 
-  @Override
-  @Nullable
-  public PsiElement getOpDollar() {
-    return findChildByType(OP_DOLLAR);
-  }
+    @Nullable
+    public PsiElement getKW___LINE__() {
+        return findChildByType(KW___LINE__);
+    }
 
-  @Override
-  @Nullable
-  public PsiElement getOpDot() {
-    return findChildByType(OP_DOT);
-  }
+    @Nullable
+    public PsiElement getKW___MODULE__() {
+        return findChildByType(KW___MODULE__);
+    }
 
-  @Override
-  @Nullable
-  public PsiElement getOpParLeft() {
-    return findChildByType(OP_PAR_LEFT);
-  }
+    @Nullable
+    public PsiElement getKW___PARAMETERS() {
+        return findChildByType(KW___PARAMETERS);
+    }
 
-  @Override
-  @Nullable
-  public PsiElement getOpParRight() {
-    return findChildByType(OP_PAR_RIGHT);
-  }
+    @Nullable
+    public PsiElement getKW___PRETTY_FUNCTION__() {
+        return findChildByType(KW___PRETTY_FUNCTION__);
+    }
 
+    @Nullable
+    public PsiElement getKW___TIME__() {
+        return findChildByType(KW___TIME__);
+    }
+
+    @Nullable
+    public PsiElement getKW___TIMESTAMP__() {
+        return findChildByType(KW___TIMESTAMP__);
+    }
+
+    @Nullable
+    public PsiElement getKW___TRAITS() {
+        return findChildByType(KW___TRAITS);
+    }
+
+    @Nullable
+    public PsiElement getKW___VECTOR() {
+        return findChildByType(KW___VECTOR);
+    }
+
+    @Nullable
+    public PsiElement getKW___VENDOR__() {
+        return findChildByType(KW___VENDOR__);
+    }
+
+    @Nullable
+    public PsiElement getKW___VERSION__() {
+        return findChildByType(KW___VERSION__);
+    }
+
+    @Nullable
+    public PsiElement getINTEGER_LITERAL() {
+        return findChildByType(INTEGER_LITERAL);
+    }
+
+    @Nullable
+    public PsiElement getFLOAT_LITERAL() {
+        return findChildByType(FLOAT_LITERAL);
+    }
+
+    @NotNull
+    public List<PsiElement> getDOUBLE_QUOTED_STRINGs() {
+        return findChildrenByType(DOUBLE_QUOTED_STRING);
+    }
+
+    @Nullable
+    public PsiElement getCHARACTER_LITERAL() {
+        return findChildByType(CHARACTER_LITERAL);
+    }
+
+    @Nullable
+    public DLanguageIdentifierOrTemplateInstance getIdentifierOrTemplateInstance() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageIdentifierOrTemplateInstance.class);
+    }
+
+    @Nullable
+    public PsiElement getOP_DOT() {
+        return findChildByType(OP_DOT);
+    }
+
+    @Nullable
+    public DLanguageTypeConstructor getTypeConstructor() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageTypeConstructor.class);
+    }
 }

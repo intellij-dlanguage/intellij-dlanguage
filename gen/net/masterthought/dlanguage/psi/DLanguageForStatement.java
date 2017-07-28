@@ -1,38 +1,29 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+
 
 public interface DLanguageForStatement extends PsiElement {
+    @NotNull
+    public List<DLanguageDeclarationOrStatement> getDeclarationOrStatements();
 
-  @Nullable
-  DLanguageIncrement getIncrement();
+    @NotNull
+    public List<DLanguageExpression> getExpressions();
 
-  @Nullable
-  DLanguageInitialize getInitialize();
+    @Nullable
+    public PsiElement getOP_BRACES_RIGHT();
 
-  @Nullable
-  DLanguageScopeStatement getScopeStatement();
+    @Nullable
+    public PsiElement getOP_BRACES_LEFT();
 
-  @Nullable
-  DLanguageTest getTest();
+    @Nullable
+    public PsiElement getKW_FOR();
 
-  @NotNull
-  PsiElement getKwFor();
-
-  @Nullable
-  PsiElement getOpParLeft();
-
-  @Nullable
-  PsiElement getOpParRight();
-
-  @Nullable
-  PsiElement getOpScolon();
-
-  //WARNING: processDeclarations(...) is skipped
-  //matching processDeclarations(DLanguageForStatement, ...)
-  //methods are not found in DPsiImplUtil
+    @Nullable
+    public PsiElement getOP_SCOLON();
 
 }

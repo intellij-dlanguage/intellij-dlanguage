@@ -1,22 +1,19 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import org.jetbrains.annotations.Nullable;
+
 
 public interface DLanguageIndexExpression extends PsiElement {
+    @Nullable
+    public PsiElement getOP_BRACKET_LEFT();
 
-  @NotNull
-  DLanguageArgumentList getArgumentList();
+    @Nullable
+    public PsiElement getOP_BRACKET_RIGHT();
 
-  @Nullable
-  DLanguagePostfixExpression getPostfixExpression();
+    @Nullable
+    public DLanguageArgumentList getArgumentList();
 
-  @NotNull
-  PsiElement getOpBracketLeft();
-
-  @NotNull
-  PsiElement getOpBracketRight();
-
+    @Nullable
+    public DLanguageUnaryExpression getUnaryExpression();
 }

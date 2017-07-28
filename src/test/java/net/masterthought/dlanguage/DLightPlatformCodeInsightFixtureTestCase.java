@@ -20,8 +20,8 @@ import java.net.URISyntaxException;
  * Lightweight test case base.
  */
 public abstract class DLightPlatformCodeInsightFixtureTestCase extends LightPlatformCodeInsightFixtureTestCase {
-    private String srcPath;
-    private String expectPath;
+    private final String srcPath;
+    private final String expectPath;
 
     /**
      * Sets the expected input and outputs and calls the constructor of the parent.
@@ -33,6 +33,13 @@ public abstract class DLightPlatformCodeInsightFixtureTestCase extends LightPlat
         super();
         srcPath = String.format("%s/%s", getDirPath(), srcName);
         expectPath = String.format("%s/%s", getDirPath(), expectName);
+    }
+
+    /**
+     * Base path to the test files.
+     */
+    protected static String getDirPath() {
+        return "gold";
     }
 
     @Override
@@ -51,14 +58,7 @@ public abstract class DLightPlatformCodeInsightFixtureTestCase extends LightPlat
     }
 
     protected String getTestDataPath(String... names) {
-        return this.getClass().getClassLoader().getResource(String.format("%s/%s", srcPath, StringUtil.join(names, "/"))).getPath().replace("/C:","");
-    }
-
-    /**
-     * Base path to the test files.
-     */
-    protected static String getDirPath() {
-        return "gold";
+        return this.getClass().getClassLoader().getResource(String.format("%s/%s", srcPath, StringUtil.join(names, "/"))).getPath().replace("/C:", "");
     }
 
     /**
@@ -79,7 +79,7 @@ public abstract class DLightPlatformCodeInsightFixtureTestCase extends LightPlat
         ApplicationManager.getApplication().runWriteAction(new Runnable() {
             @Override
             public void run() {
-                Sdk sdk = getProjectDescriptor().getSdk();
+                final Sdk sdk = getProjectDescriptor().getSdk();
                 ProjectJdkTable.getInstance().addJdk(sdk);
                 ProjectRootManager.getInstance(myFixture.getProject()).setProjectSdk(sdk);
             }

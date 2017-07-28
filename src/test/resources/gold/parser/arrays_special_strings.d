@@ -1,3 +1,5 @@
+unittest
+{
 char[] str1 = "abc";                // error, "abc" is not mutable
 char[] str2 = "abc".dup;            // ok, make mutable copy
 immutable(char)[] str3 = "abc";     // ok
@@ -30,3 +32,4 @@ w = 'b';     // w is assigned the wchar character 'b'
 w = "b"[0];  // w is assigned the wchar character 'b'
 w = "\r"[0]; // w is assigned the carriage return wchar character
 d = 'd';     // d is assigned the character 'd'
+}

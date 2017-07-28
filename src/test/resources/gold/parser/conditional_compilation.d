@@ -1,3 +1,5 @@
+unittest
+{
 int k;
 version (Demo) // compile in this code block for the demo version
 {
@@ -133,4 +135,5 @@ void foo()
     {
         static assert(0); // trips when version BAR is not defined
     }
+}
 }

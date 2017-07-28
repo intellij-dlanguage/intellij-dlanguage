@@ -1,3 +1,5 @@
+unittest
+{
 string[int] aa;
 string s;
 s = aa[1];          // throws RangeError in runtime
@@ -45,3 +47,4 @@ import std.bigint;
 BigInt[string] aa;
 aa["a"] = 10;   // construct BigInt(10) and move it in AA
 aa["a"] = 20;   // call aa["a"].opAssign(20)
+}

@@ -32,7 +32,7 @@ public abstract class DLanguageParserTestBase extends ParsingTestCase {
      * Perform a test. Add tests that should work but does not work yet with
      * doTestModule(false, false).
      */
-    protected void doTest(boolean checkResult, boolean shouldPass) {
+    protected void doTest(final boolean checkResult, final boolean shouldPass) {
 //        String name = getTestName();
 //        try {
 //            String text = loadFile(name + "." + myFileExt);
@@ -52,8 +52,8 @@ public abstract class DLanguageParserTestBase extends ParsingTestCase {
         doTest(checkResult);
         if (shouldPass) {
             assertFalse(
-                    "PsiFile contains error elements",
-                    toParseTreeText(myFile, skipSpaces(), includeRanges()).contains("PsiErrorElement")
+                "PsiFile contains error elements",
+                toParseTreeText(myFile, skipSpaces(), includeRanges()).contains("PsiErrorElement")
             );
         }
     }
@@ -63,9 +63,9 @@ public abstract class DLanguageParserTestBase extends ParsingTestCase {
     protected void checkResult(@NonNls @TestDataFile String targetDataName,
                                final PsiFile file) throws IOException {
         doCheckResult(myFullDataPath, file, checkAllPsiRoots(),
-                "expected" + File.separator + targetDataName, skipSpaces(),
-                includeRanges());
-/* TODO: Re-enable if we return to parser-helper.
+            "expected" + File.separator + targetDataName, skipSpaces(),
+            includeRanges());
+/* Re-enable if we return to parser-helper.
         String phPath = ExecUtil.locateExecutableByGuessing("parser-helper");
         if (phPath != null && !phPath.isEmpty()) {
             String expectedFile = myFullDataPath + File.separator +
@@ -81,7 +81,7 @@ public abstract class DLanguageParserTestBase extends ParsingTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        VirtualFile m = new MockVirtualFile(true,myFullDataPath);
+        VirtualFile m = new MockVirtualFile(true, myFullDataPath);
         myProject.setBaseDir(m);
     }
 

@@ -1,34 +1,26 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import org.jetbrains.annotations.Nullable;
+
 
 public interface DLanguageAsmInstruction extends PsiElement {
+    @Nullable
+    public PsiElement getINTEGER_LITERAL();
 
-  @Nullable
-  DLanguageAsmBrExp getAsmBrExp();
+    @Nullable
+    public DLanguageIdentifier getIdentifier();
 
-  @Nullable
-  DLanguageAsmInstruction getAsmInstruction();
+    @Nullable
+    public DLanguageAsmInstruction getAsmInstruction();
 
-  @Nullable
-  DLanguageIdentifier getIdentifier();
+    @Nullable
+    public DLanguageOperands getOperands();
 
-  @Nullable
-  DLanguageIntegerExpression getIntegerExpression();
+    @Nullable
+    public PsiElement getKW_ALIGN();
 
-  @Nullable
-  DLanguageOpcode getOpcode();
-
-  @Nullable
-  DLanguageOperands getOperands();
-
-  @Nullable
-  PsiElement getKwAlign();
-
-  @Nullable
-  PsiElement getOpColon();
+    @Nullable
+    public PsiElement getOP_COLON();
 
 }

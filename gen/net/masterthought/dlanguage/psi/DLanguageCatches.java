@@ -1,16 +1,13 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import org.jetbrains.annotations.Nullable;
+
 
 public interface DLanguageCatches extends PsiElement {
+    @Nullable
+    public DLanguageLastCatch getLastCatch();
 
-  @NotNull
-  List<DLanguageCatch> getCatchList();
-
-  @Nullable
-  DLanguageLastCatch getLastCatch();
-
+    @Nullable
+    public DLanguageCatch getCatch();
 }

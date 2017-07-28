@@ -1,64 +1,48 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
-import net.masterthought.dlanguage.psi.interfaces.containers.StatementContainer;
-import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
-import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
-import net.masterthought.dlanguage.psi.interfaces.HasTemplateArguments;
-import net.masterthought.dlanguage.psi.interfaces.HasArguments;
-import net.masterthought.dlanguage.psi.interfaces.Declaration;
+import com.intellij.psi.ResolveState;
 import com.intellij.psi.StubBasedPsiElement;
+import com.intellij.psi.scope.PsiScopeProcessor;
+import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+import net.masterthought.dlanguage.resolve.ScopeProcessorImpl;
 import net.masterthought.dlanguage.stubs.DLanguageConstructorStub;
-import com.intellij.navigation.ItemPresentation;
-import com.intellij.psi.PsiReference;
-import net.masterthought.dlanguage.psi.interfaces.containers.Container;
-import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public interface DLanguageConstructor extends StatementContainer, DNamedElement, HasVisibility, HasTemplateArguments, HasArguments, Declaration, StubBasedPsiElement<DLanguageConstructorStub> {
+import java.util.List;
 
-  @Nullable
-  DLanguageConstructorTemplate getConstructorTemplate();
 
-  @Nullable
-  DLanguageFunctionBody getFunctionBody();
+public interface DLanguageConstructor extends PsiElement, DNamedElement, StubBasedPsiElement<DLanguageConstructorStub> {
+    @Nullable
+    public DLanguageFunctionBody getFunctionBody();
 
-  @Nullable
-  DLanguageMemberFunctionAttributes getMemberFunctionAttributes();
+    @Nullable
+    public PsiElement getOP_SCOLON();
 
-  @Nullable
-  DLanguageParameters getParameters();
+    @Nullable
+    public PsiElement getOP_PAR_RIGHT();
 
-  @Nullable
-  PsiElement getKwThis();
+    @Nullable
+    public PsiElement getOP_PAR_LEFT();
 
-  @Nullable
-  PsiElement getOpScolon();
+    @Nullable
+    public PsiElement getKW_THIS();
 
-  @NotNull
-  String getName();
+    @NotNull
+    public List<DLanguageMemberFunctionAttribute> getMemberFunctionAttributes();
 
-  String getFullName();
+    @Nullable
+    public DLanguageParameters getParameters();
 
-  @Nullable
-  PsiElement getNameIdentifier();
+    @Nullable
+    public DLanguageTemplateParameters getTemplateParameters();
 
-  @NotNull
-  PsiReference getReference();
-
-  @Nullable
-  PsiElement setName(String newName);
-
-  @NotNull
-  ItemPresentation getPresentation();
-
-  boolean isSomeVisibility(Visibility visibility, Class<? extends Container> containerType);
-
-  boolean isSomeVisibility(Visibility visibility);
-
-  @NotNull
-  List<DLanguageParameter> getArguments();
-
+    @Override
+    default public boolean processDeclarations(@NotNull PsiScopeProcessor processor,
+                                               @NotNull ResolveState state,
+                                               PsiElement lastParent,
+                                               @NotNull PsiElement place) {
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(this, processor, state, lastParent, place);
+    }
 }

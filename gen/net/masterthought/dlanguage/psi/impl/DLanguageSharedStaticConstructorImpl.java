@@ -1,123 +1,65 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi.impl;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.util.PsiTreeUtil;
-import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
-import com.intellij.extapi.psi.StubBasedPsiElementBase;
-import net.masterthought.dlanguage.stubs.DLanguageSharedStaticConstructorStub;
-import net.masterthought.dlanguage.psi.*;
-import com.intellij.navigation.ItemPresentation;
-import com.intellij.psi.PsiReference;
-import net.masterthought.dlanguage.psi.interfaces.containers.Container;
-import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
 import com.intellij.psi.stubs.IStubElementType;
-import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.util.PsiTreeUtil;
+import net.masterthought.dlanguage.psi.DLanguageFunctionBody;
+import net.masterthought.dlanguage.psi.DLanguageSharedStaticConstructor;
+import net.masterthought.dlanguage.psi.DLanguageVisitor;
+import net.masterthought.dlanguage.stubs.DLanguageSharedStaticConstructorStub;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class DLanguageSharedStaticConstructorImpl extends StubBasedPsiElementBase<DLanguageSharedStaticConstructorStub> implements DLanguageSharedStaticConstructor {
+import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
 
-  public DLanguageSharedStaticConstructorImpl(DLanguageSharedStaticConstructorStub stub, IStubElementType type) {
-    super(stub, type);
-  }
 
-  public DLanguageSharedStaticConstructorImpl(ASTNode node) {
-    super(node);
-  }
+public class DLanguageSharedStaticConstructorImpl extends DStubbedPsiElementBase<DLanguageSharedStaticConstructorStub> implements DLanguageSharedStaticConstructor {
+    public DLanguageSharedStaticConstructorImpl(ASTNode node) {
+        super(node);
+    }
 
-  public DLanguageSharedStaticConstructorImpl(DLanguageSharedStaticConstructorStub stub, IElementType type, ASTNode node) {
-    super(stub, type, node);
-  }
+    public DLanguageSharedStaticConstructorImpl(DLanguageSharedStaticConstructorStub stub, IStubElementType nodeType) {
+        super(stub, nodeType);
+    }
 
-  public void accept(@NotNull DLanguageVisitor visitor) {
-    visitor.visitSharedStaticConstructor(this);
-  }
+    public void accept(@NotNull DLanguageVisitor visitor) {
+        visitor.visitSharedStaticConstructor(this);
+    }
 
-  public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
-    else super.accept(visitor);
-  }
+    public void accept(@NotNull PsiElementVisitor visitor) {
+        if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor) visitor);
+        else super.accept(visitor);
+    }
 
-  @Override
-  @Nullable
-  public DLanguageFunctionBody getFunctionBody() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageFunctionBody.class);
-  }
+    @Nullable
+    public PsiElement getKW_STATIC() {
+        return findChildByType(KW_STATIC);
+    }
 
-  @Override
-  @NotNull
-  public PsiElement getKwShared() {
-    return notNullChild(findChildByType(KW_SHARED));
-  }
+    @Nullable
+    public PsiElement getKW_SHARED() {
+        return findChildByType(KW_SHARED);
+    }
 
-  @Override
-  @NotNull
-  public PsiElement getKwStatic() {
-    return notNullChild(findChildByType(KW_STATIC));
-  }
+    @Nullable
+    public PsiElement getKW_THIS() {
+        return findChildByType(KW_THIS);
+    }
 
-  @Override
-  @NotNull
-  public PsiElement getKwThis() {
-    return notNullChild(findChildByType(KW_THIS));
-  }
+    @Nullable
+    public PsiElement getOP_PAR_LEFT() {
+        return findChildByType(OP_PAR_LEFT);
+    }
 
-  @Override
-  @NotNull
-  public PsiElement getOpParLeft() {
-    return notNullChild(findChildByType(OP_PAR_LEFT));
-  }
+    @Nullable
+    public PsiElement getOP_PAR_RIGHT() {
+        return findChildByType(OP_PAR_RIGHT);
+    }
 
-  @Override
-  @NotNull
-  public PsiElement getOpParRight() {
-    return notNullChild(findChildByType(OP_PAR_RIGHT));
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpScolon() {
-    return findChildByType(OP_SCOLON);
-  }
-
-  @NotNull
-  public String getName() {
-    return DPsiImplUtil.getName(this);
-  }
-
-  public String getFullName() {
-    return DPsiImplUtil.getFullName(this);
-  }
-
-  @Nullable
-  public PsiElement getNameIdentifier() {
-    return DPsiImplUtil.getNameIdentifier(this);
-  }
-
-  @NotNull
-  public PsiReference getReference() {
-    return DPsiImplUtil.getReference(this);
-  }
-
-  @Nullable
-  public PsiElement setName(String newName) {
-    return DPsiImplUtil.setName(this, newName);
-  }
-
-  @NotNull
-  public ItemPresentation getPresentation() {
-    return DPsiImplUtil.getPresentation(this);
-  }
-
-  public boolean isSomeVisibility(Visibility visibility, Class<? extends Container> containerType) {
-    return DPsiImplUtil.isSomeVisibility(this, visibility, containerType);
-  }
-
-  public boolean isSomeVisibility(Visibility visibility) {
-    return DPsiImplUtil.isSomeVisibility(this, visibility);
-  }
-
+    @Nullable
+    public DLanguageFunctionBody getFunctionBody() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageFunctionBody.class);
+    }
 }

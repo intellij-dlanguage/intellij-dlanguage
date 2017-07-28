@@ -12,5 +12,7 @@ struct C
 
     typeof(super) q; // error, no super struct for C
 }
-
+unittest
+{
 typeof(this) r;   // error, no enclosing struct or class
+}

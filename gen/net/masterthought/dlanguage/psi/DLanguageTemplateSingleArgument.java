@@ -1,46 +1,89 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import org.jetbrains.annotations.Nullable;
+
 
 public interface DLanguageTemplateSingleArgument extends PsiElement {
+    @Nullable
+    public DLanguageIdentifier getIdentifier();
 
-  @Nullable
-  DLanguageAssignExpression getAssignExpression();
+    @Nullable
+    public DLanguageType getType();
 
-  @Nullable
-  DLanguageBasicTypeX getBasicTypeX();
+    @Nullable
+    public PsiElement getKW_SUPER();
 
-  @Nullable
-  DLanguageIdentifierList getIdentifierList();
+    @Nullable
+    public PsiElement getKW_THIS();
 
-  @Nullable
-  DLanguageSpecialKeyword getSpecialKeyword();
+    @Nullable
+    public PsiElement getOP_DOLLAR();
 
-  @Nullable
-  DLanguageStringLiteral getStringLiteral();
+    @Nullable
+    public PsiElement getKW_TRUE();
 
-  @Nullable
-  PsiElement getCharacterLiteral();
+    @Nullable
+    public PsiElement getKW_FALSE();
 
-  @Nullable
-  PsiElement getFloatLiteral();
+    @Nullable
+    public PsiElement getKW___DATE__();
 
-  @Nullable
-  PsiElement getIntegerLiteral();
+    @Nullable
+    public PsiElement getKW___EOF__();
 
-  @Nullable
-  PsiElement getKwFalse();
+    @Nullable
+    public PsiElement getKW___FILE__();
 
-  @Nullable
-  PsiElement getKwNull();
+    @Nullable
+    public PsiElement getKW___FILE_FULL_PATH__();
 
-  @Nullable
-  PsiElement getKwThis();
+    @Nullable
+    public PsiElement getKW___FUNCTION__();
 
-  @Nullable
-  PsiElement getKwTrue();
+    @Nullable
+    public PsiElement getKW___GSHARED();
+
+    @Nullable
+    public PsiElement getKW___LINE__();
+
+    @Nullable
+    public PsiElement getKW___MODULE__();
+
+    @Nullable
+    public PsiElement getKW___PARAMETERS();
+
+    @Nullable
+    public PsiElement getKW___PRETTY_FUNCTION__();
+
+    @Nullable
+    public PsiElement getKW___TIME__();
+
+    @Nullable
+    public PsiElement getKW___TIMESTAMP__();
+
+    @Nullable
+    public PsiElement getKW___TRAITS();
+
+    @Nullable
+    public PsiElement getKW___VECTOR();
+
+    @Nullable
+    public PsiElement getKW___VENDOR__();
+
+    @Nullable
+    public PsiElement getKW___VERSION__();
+
+    @Nullable
+    public PsiElement getINTEGER_LITERAL();
+
+    @Nullable
+    public PsiElement getFLOAT_LITERAL();
+
+    @Nullable
+    public PsiElement getDOUBLE_QUOTED_STRING();
+
+    @Nullable
+    public PsiElement getCHARACTER_LITERAL();
 
 }

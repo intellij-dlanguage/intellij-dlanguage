@@ -19,16 +19,20 @@ import javax.swing.*;
 public class DLanguageLibraryType extends LibraryType<DummyLibraryProperties> {
 
     public static final PersistentLibraryKind<DummyLibraryProperties> DLANG_LIBRARY =
-            new PersistentLibraryKind<DummyLibraryProperties>("DLangLib") {
-                @NotNull
-                @Override
-                public DummyLibraryProperties createDefaultProperties() {
-                    return new DummyLibraryProperties();
-                }
-            };
+        new PersistentLibraryKind<DummyLibraryProperties>("DLangLib") {
+            @NotNull
+            @Override
+            public DummyLibraryProperties createDefaultProperties() {
+                return new DummyLibraryProperties();
+            }
+        };
 
     public DLanguageLibraryType() {
         super(DLANG_LIBRARY);
+    }
+
+    public static DLanguageLibraryType getInstance() {
+        return LibraryType.EP_NAME.findExtension(DLanguageLibraryType.class);
     }
 
     @NotNull
@@ -48,7 +52,7 @@ public class DLanguageLibraryType extends LibraryType<DummyLibraryProperties> {
                                                     @NotNull Project project) {
 
         return LibraryTypeService.getInstance()
-                .createLibraryFromFiles(createLibraryRootsComponentDescriptor(), parentComponent, contextDirectory, this, project);
+            .createLibraryFromFiles(createLibraryRootsComponentDescriptor(), parentComponent, contextDirectory, this, project);
     }
 
     @NotNull
@@ -65,9 +69,5 @@ public class DLanguageLibraryType extends LibraryType<DummyLibraryProperties> {
     @Override
     public Icon getIcon(@Nullable DummyLibraryProperties properties) {
         return DLanguageIcons.FILE;
-    }
-
-    public static DLanguageLibraryType getInstance() {
-        return LibraryType.EP_NAME.findExtension(DLanguageLibraryType.class);
     }
 }

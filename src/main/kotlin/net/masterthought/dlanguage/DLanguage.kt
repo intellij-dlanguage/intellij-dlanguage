@@ -15,7 +15,7 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.TokenType
 import com.intellij.psi.tree.TokenSet
 import net.masterthought.dlanguage.dlanguage.DLanguageLexer
-import net.masterthought.dlanguage.parser.DLanguageParser
+import net.masterthought.dlanguage.parser.ParserWrapper
 import net.masterthought.dlanguage.psi.DLanguageFile
 import net.masterthought.dlanguage.psi.DLanguageTypes
 import net.masterthought.dlanguage.stubs.types.DFileStubElementType
@@ -69,7 +69,7 @@ class DLangParserDefinition : ParserDefinition {
     val COMMENTS: TokenSet = TokenSet.create(DLanguageTypes.LINE_COMMENT, DLanguageTypes.BLOCK_COMMENT, DLanguageTypes.NESTING_BLOCK_COMMENT)
 
     @NotNull
-    override fun createParser(project: Project?): PsiParser = DLanguageParser()
+    override fun createParser(project: Project?): PsiParser = ParserWrapper()
 
     override fun createFile(viewProvider: FileViewProvider): PsiFile? = DLanguageFile(viewProvider)
 

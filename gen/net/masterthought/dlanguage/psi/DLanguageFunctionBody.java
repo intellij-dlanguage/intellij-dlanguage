@@ -1,19 +1,19 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import org.jetbrains.annotations.Nullable;
+
 
 public interface DLanguageFunctionBody extends PsiElement {
+    @Nullable
+    public DLanguageBlockStatement getBlockStatement();
 
-  @Nullable
-  DLanguageBlockStatement getBlockStatement();
+    @Nullable
+    public DLanguageInStatement getInStatement();
 
-  @Nullable
-  DLanguageBodyStatement getBodyStatement();
+    @Nullable
+    public DLanguageOutStatement getOutStatement();
 
-  @Nullable
-  DLanguageFunctionContracts getFunctionContracts();
-
+    @Nullable
+    public DLanguageBodyStatement getBodyStatement();
 }

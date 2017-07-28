@@ -5,38 +5,6 @@
     <version>@version@</version>
     <vendor email="kingsley.hendrickse@gmail.com" url="http://www.masterthought.net">MasterThought</vendor>
 
-    <description><![CDATA[
-     <p>Support for the <a href="http://dlang.org/">D Language</a>.</p>
-     <p>Also adds support for using the <a href="https://code.dlang.org/">dub</a> build tool.</p>
-     <p>Project available on <a href="https://github.com/intellij-dlanguage/intellij-dlanguage/">Github</a>.</p>
-    ]]></description>
-
-    <change-notes><![CDATA[
-        <b>v1.13</b><br/>
-        <ul>
-            <li>Compatibility IntelliJ 2017.1.* &amp; 2017.1</li>
-            <li>No longer requires DCD client/server</li>
-        </ul>
-        <b>v1.12</b><br/>
-        <ul>
-            <li>Compatibility IntelliJ 2017.1</li>
-        </ul>
-        <b>v1.11</b><br/>
-        <ul>
-            <li>Compatibility IntelliJ 2016.3</li>
-        </ul>
-    ]]>
-    </change-notes>
-
-    <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
-    <idea-version since-build="171" until-build="172.*"/>
-
-    <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
-         on how to target different products -->
-    <!-- uncomment to enable plugin in all products
-    <depends>com.intellij.modules.lang</depends>
-    -->
-
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
         <stubElementTypeHolder class="net.masterthought.dlanguage.psi.DLanguageTypes"/>
@@ -47,6 +15,8 @@
         <annotator language="D" implementationClass="net.masterthought.dlanguage.highlighting.annotation.DAnnotator"/>
         <externalAnnotator language="D"
                            implementationClass="net.masterthought.dlanguage.highlighting.annotation.external.DExternalAnnotator"/>
+        <lang.documentationProvider language="D"
+                                    implementationClass="net.masterthought.dlanguage.features.DDocumentationProvider"/>
         <!-- Refactoring -->
 
         <lang.refactoringSupport language="D"
@@ -73,7 +43,7 @@
         <moduleBuilder id="DLangDubModuleBuilder"
                        builderClass="net.masterthought.dlanguage.module.DLanguageDubModuleBuilder"/>
         <moduleConfigurationEditorProvider
-                implementation="net.masterthought.dlanguage.module.DLanguageModuleEditorsProvider"/>
+            implementation="net.masterthought.dlanguage.module.DLanguageModuleEditorsProvider"/>
 
         <!-- library -->
         <library.type implementation="net.masterthought.dlanguage.library.DLanguageLibraryType"/>
@@ -85,6 +55,10 @@
         <!-- Indexes -->
         <fileBasedIndex implementation="net.masterthought.dlanguage.index.DModuleIndex"/>
         <stubIndex implementation="net.masterthought.dlanguage.stubs.index.DAllNameIndex"/>
+        <stubIndex implementation="net.masterthought.dlanguage.stubs.index.DTopLevelDeclarationIndex"/>
+        <stubIndex implementation="net.masterthought.dlanguage.stubs.index.DModuleDeclarationIndex"/>
+        <stubIndex implementation="net.masterthought.dlanguage.stubs.index.DTopLevelDeclarationsByModule"/>
+        <stubIndex implementation="net.masterthought.dlanguage.stubs.index.DPublicImportIndex"/>
         <gotoSymbolContributor implementation="net.masterthought.dlanguage.features.DChooseByNameContributor"/>
         <gotoClassContributor implementation="net.masterthought.dlanguage.features.DClassContributor"/>
         <!-- Project settings -->
@@ -112,7 +86,14 @@
         <lang.foldingBuilder language="D" implementationClass="net.masterthought.dlanguage.features.DFoldingBuilder"/>
         <completion.contributor language="D"
                                 implementationClass="net.masterthought.dlanguage.codeinsight.DCompletionContributor"/>
+        <!--  <completion.contributor language="D"
+                                  implementationClass="net.masterthought.dlanguage.codeinsight.DCompletionContributorImports"/>-->
 
+
+        <!--formatter-->
+        <lang.formatter language="D" implementationClass="net.masterthought.dlanguage.features.formatter.DFormattingModelBuilder"/>
+        <codeStyleSettingsProvider implementation="net.masterthought.dlanguage.features.formatter.settings.DCodeStyleSettingsProvider"/>
+        <langCodeStyleSettingsProvider implementation="net.masterthought.dlanguage.features.formatter.settings.DLanguageCodeStyleSettingsProvider"/>
 
         <!-- dunit support -->
         <configurationType implementation="net.masterthought.dlanguage.unittest.DUnitTestRunConfigurationType"/>
@@ -122,7 +103,45 @@
         <!--<testFinder implementation="net.masterthought.dlanguage.unittest.DUnitTestFinder"/>-->
         <!--<consoleFilterProvider implementation="net.masterthought.dlanguage.unittest.DStackTraceFilter"/>-->
         <!--<analyzeStacktraceFilter implementation="net.masterthought.dlanguage.unittest.DStackTraceFilter"/>-->
+
+        <!--inspections-->
+        <localInspection language="D" shortName="PossiblyUndefinedSymbol" bundle="messages.PropertiesBundle"
+                         enabledByDefault="true" level="WARNING"
+                         implementationClass="net.masterthought.dlanguage.inspections.PossiblyUndefinedSymbol"/>
     </extensions>
+    <!--key="references" groupKey="references"-->
+
+    <description><![CDATA[
+     <p>Support for the <a href="http://dlang.org/">D Language</a>.</p>
+     <p>Also adds support for using the <a href="https://code.dlang.org/">dub</a> build tool.</p>
+     <p>Project available on <a href="https://github.com/intellij-dlanguage/intellij-dlanguage/">Github</a>.</p>
+    ]]></description>
+
+    <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
+    <change-notes><![CDATA[
+        <b>v1.13</b><br/>
+        <ul>
+            <li>Compatibility IntelliJ 2017.1.* &amp; 2017.1</li>
+            <li>No longer requires DCD client/server</li>
+        </ul>
+        <b>v1.12</b><br/>
+        <ul>
+            <li>Compatibility IntelliJ 2017.1</li>
+        </ul>
+        <b>v1.11</b><br/>
+        <ul>
+            <li>Compatibility IntelliJ 2016.3</li>
+        </ul>
+    ]]>
+    </change-notes>
+
+    <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
+         on how to target different products -->
+    <!-- uncomment to enable plugin in all products
+    <depends>com.intellij.modules.lang</depends>
+    -->
+
+    <idea-version since-build="171" until-build="172.*"/>
 
     <application-components>
         <!-- Add your application components here -->

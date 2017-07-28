@@ -1,25 +1,29 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+
 
 public interface DLanguageConditionalDeclaration extends PsiElement {
+    @Nullable
+    public DLanguageCompileCondition getCompileCondition();
 
-  @NotNull
-  DLanguageCondition getCondition();
+    @NotNull
+    public List<DLanguageDeclaration> getDeclarations();
 
-  @Nullable
-  DLanguageDeclDefs getDeclDefs();
+    @Nullable
+    public PsiElement getOP_COLON();
 
-  @Nullable
-  DLanguageDeclarationBlock getDeclarationBlock();
+    @Nullable
+    public PsiElement getKW_ELSE();
 
-  @Nullable
-  PsiElement getKwElse();
+    @Nullable
+    public PsiElement getOP_BRACES_RIGHT();
 
-  @Nullable
-  PsiElement getOpColon();
+    @Nullable
+    public PsiElement getOP_BRACES_LEFT();
 
 }

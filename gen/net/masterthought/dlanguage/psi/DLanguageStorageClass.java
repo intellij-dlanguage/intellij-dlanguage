@@ -1,73 +1,65 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import org.jetbrains.annotations.Nullable;
+
 
 public interface DLanguageStorageClass extends PsiElement {
+    @Nullable
+    public DLanguageAtAttribute getAtAttribute();
 
-  @Nullable
-  DLanguageAlignAttribute getAlignAttribute();
+    @Nullable
+    public DLanguageDeprecated getDeprecated();
 
-  @Nullable
-  DLanguageLinkageAttribute getLinkageAttribute();
+    @Nullable
+    public DLanguageAlignAttribute getAlignAttribute();
 
-  @Nullable
-  DLanguageProperty getProperty();
+    @Nullable
+    public DLanguageLinkageAttribute getLinkageAttribute();
 
-  @Nullable
-  PsiElement getKwAbstract();
+    @Nullable
+    public PsiElement getKW_SYNCHRONIZED();
 
-  @Nullable
-  PsiElement getKwAuto();
+    @Nullable
+    public DLanguageTypeConstructor getTypeConstructor();
 
-  @Nullable
-  PsiElement getKwConst();
+    @Nullable
+    public PsiElement getKW_ABSTRACT();
 
-  @Nullable
-  PsiElement getKwDeprecated();
+    @Nullable
+    public PsiElement getKW_AUTO();
 
-  @Nullable
-  PsiElement getKwEnum();
+    @Nullable
+    public PsiElement getKW_ENUM();
 
-  @Nullable
-  PsiElement getKwExtern();
+    @Nullable
+    public PsiElement getKW_EXTERN();
 
-  @Nullable
-  PsiElement getKwFinal();
+    @Nullable
+    public PsiElement getKW_FINAL();
 
-  @Nullable
-  PsiElement getKwImmutable();
+    @Nullable
+    public PsiElement getKW_INOUT();
 
-  @Nullable
-  PsiElement getKwInout();
+    @Nullable
+    public PsiElement getKW_NOTHROW();
 
-  @Nullable
-  PsiElement getKwNothrow();
+    @Nullable
+    public PsiElement getKW_OVERRIDE();
 
-  @Nullable
-  PsiElement getKwOverride();
+    @Nullable
+    public PsiElement getKW_PURE();
 
-  @Nullable
-  PsiElement getKwPure();
+    @Nullable
+    public PsiElement getKW_REF();
 
-  @Nullable
-  PsiElement getKwRef();
+    @Nullable
+    public PsiElement getKW___GSHARED();
 
-  @Nullable
-  PsiElement getKwScope();
+    @Nullable
+    public PsiElement getKW_SCOPE();
 
-  @Nullable
-  PsiElement getKwShared();
-
-  @Nullable
-  PsiElement getKwStatic();
-
-  @Nullable
-  PsiElement getKwSynchronized();
-
-  @Nullable
-  PsiElement getKwGshared();
+    @Nullable
+    public PsiElement getKW_STATIC();
 
 }

@@ -1,3 +1,6 @@
+
+unittest
+{
 ABC x;
 
 struct S;
@@ -7,3 +10,4 @@ struct S;
 S.sizeof; // error, size is not known
 S s;      // error, cannot initialize unknown contents
 S* p;     // ok, knowledge of members is not necessary
+}

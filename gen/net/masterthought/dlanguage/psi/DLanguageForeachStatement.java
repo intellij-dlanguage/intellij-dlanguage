@@ -1,35 +1,41 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+
 
 public interface DLanguageForeachStatement extends PsiElement {
+    @Nullable
+    public PsiElement getKW_FOREACH();
 
-  @NotNull
-  DLanguageForeach getForeach();
+    @Nullable
+    public PsiElement getKW_FOREACH_REVERSE();
 
-  @NotNull
-  DLanguageForeachAggregate getForeachAggregate();
+    @Nullable
+    public DLanguageDeclarationOrStatement getDeclarationOrStatement();
 
-  @NotNull
-  DLanguageForeachTypeList getForeachTypeList();
+    @NotNull
+    public List<DLanguageExpression> getExpressions();
 
-  @NotNull
-  DLanguageStatement getStatement();
+    @Nullable
+    public PsiElement getOP_BRACES_RIGHT();
 
-  @NotNull
-  PsiElement getOpParLeft();
+    @Nullable
+    public PsiElement getOP_BRACES_LEFT();
 
-  @NotNull
-  PsiElement getOpParRight();
+    @Nullable
+    public PsiElement getOP_DDOT();
 
-  @NotNull
-  PsiElement getOpScolon();
+    @Nullable
+    public DLanguageForeachType getForeachType();
 
-  //WARNING: processDeclarations(...) is skipped
-  //matching processDeclarations(DLanguageForeachStatement, ...)
-  //methods are not found in DPsiImplUtil
+    @Nullable
+    public DLanguageForeachTypeList getForeachTypeList();
+
+    @Nullable
+    public PsiElement getOP_SCOLON();
 
 }

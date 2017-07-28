@@ -223,3 +223,4 @@ You can also use the plugin to boot up a stand alone instance of IntelliJ with t
 ```bash
 ./gradlew runIde
 ```
+

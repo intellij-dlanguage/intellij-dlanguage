@@ -1,58 +1,37 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
-import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
-import net.masterthought.dlanguage.psi.interfaces.HasVisibility;
-import net.masterthought.dlanguage.psi.interfaces.Declaration;
+import com.intellij.psi.ResolveState;
 import com.intellij.psi.StubBasedPsiElement;
+import com.intellij.psi.scope.PsiScopeProcessor;
+import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+import net.masterthought.dlanguage.resolve.ScopeProcessorImpl;
 import net.masterthought.dlanguage.stubs.DLanguageEnumDeclarationStub;
-import com.intellij.navigation.ItemPresentation;
-import com.intellij.psi.PsiReference;
-import net.masterthought.dlanguage.psi.interfaces.containers.Container;
-import net.masterthought.dlanguage.psi.interfaces.HasVisibility.Visibility;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public interface DLanguageEnumDeclaration extends DNamedElement, HasVisibility, Declaration, StubBasedPsiElement<DLanguageEnumDeclarationStub> {
 
-  @Nullable
-  DLanguageAnonymousEnumDeclaration getAnonymousEnumDeclaration();
+public interface DLanguageEnumDeclaration extends PsiElement, DNamedElement, StubBasedPsiElement<DLanguageEnumDeclarationStub> {
+    @Nullable
+    public DLanguageIdentifier getIdentifier();
 
-  @Nullable
-  DLanguageEnumBaseType getEnumBaseType();
+    @Nullable
+    public PsiElement getOP_COLON();
 
-  @Nullable
-  DLanguageEnumBody getEnumBody();
+    @Nullable
+    public PsiElement getKW_ENUM();
 
-  @Nullable
-  DLanguageIdentifier getIdentifier();
+    @Nullable
+    public DLanguageType getType();
 
-  @Nullable
-  PsiElement getKwEnum();
+    @Nullable
+    public DLanguageEnumBody getEnumBody();
 
-  @Nullable
-  PsiElement getOpColon();
-
-  @NotNull
-  String getName();
-
-  String getFullName();
-
-  @Nullable
-  PsiElement getNameIdentifier();
-
-  @NotNull
-  PsiReference getReference();
-
-  @Nullable
-  PsiElement setName(String newName);
-
-  @NotNull
-  ItemPresentation getPresentation();
-
-  boolean isSomeVisibility(Visibility visibility);
-
-  boolean isSomeVisibility(Visibility visibility, Class<? extends Container> containerType);
-
+    @Override
+    default public boolean processDeclarations(@NotNull PsiScopeProcessor processor,
+                                               @NotNull ResolveState state,
+                                               PsiElement lastParent,
+                                               @NotNull PsiElement place) {
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(this, processor, state, lastParent, place);
+    }
 }

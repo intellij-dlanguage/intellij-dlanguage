@@ -81,19 +81,21 @@ public class DLanguageRunDmdConfigurationEditor extends SettingsEditor<DLanguage
     private JTextField filenameJson;
 
     //"Debug" tab
-    private JCheckBox  cbAddSymbolicDebugInfo;
-    private JCheckBox  cbAddSymbolicDebugInfoC;
-    private JCheckBox  cbGenerateStandardStackFrame;
+    private JCheckBox cbAddSymbolicDebugInfo;
+    private JCheckBox cbAddSymbolicDebugInfoC;
+    private JCheckBox cbGenerateStandardStackFrame;
     private JTextField textSymbolicLibrary;
-    private JCheckBox  cbProfile;
+    private JCheckBox cbProfile;
 
     //"Arguments" tab
     private JLabel linkDmdDoc;
     private JTextPane textArgsPane;
     private JBScrollPane textArgsScrollPane;
 
-    /** Update editor UI with data of DLangRunDmdConfiguration.
-     * All components must be changed according to "config" data. */
+    /**
+     * Update editor UI with data of DLangRunDmdConfiguration.
+     * All components must be changed according to "config" data.
+     */
     @Override
     protected void resetEditorFrom(DLanguageRunDmdConfiguration config) {
         resetCompilerTabForm(config);
@@ -102,7 +104,9 @@ public class DLanguageRunDmdConfigurationEditor extends SettingsEditor<DLanguage
         fillArguments(config);
     }
 
-    /** Save state of editor UI to DLangRunDmdConfiguration instance. */
+    /**
+     * Save state of editor UI to DLangRunDmdConfiguration instance.
+     */
     @Override
     protected void applyEditorTo(DLanguageRunDmdConfiguration config) throws ConfigurationException {
         applyCompilerTabForm(config);
@@ -120,19 +124,19 @@ public class DLanguageRunDmdConfigurationEditor extends SettingsEditor<DLanguage
         fcd.setHideIgnored(false);
 
         pathImports.addActionListener(new TextFieldWithBrowseButton.BrowseFolderActionListener<>(fcd.getTitle(), fcd.getDescription(),
-                        pathImports, null, fcd, TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT) );
+            pathImports, null, fcd, TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT));
 
         //XXX: fix title and description
         pathStringImports.addActionListener(new TextFieldWithBrowseButton.BrowseFolderActionListener<>(fcd.getTitle(), fcd.getDescription(),
-                        pathStringImports, null, fcd, TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT) );
+            pathStringImports, null, fcd, TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT));
 
         //XXX: fix title and description
         pathDocumentation.addActionListener(new TextFieldWithBrowseButton.BrowseFolderActionListener<>(fcd.getTitle(), fcd.getDescription(),
-                        pathDocumentation, null, fcd, TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT) );
+            pathDocumentation, null, fcd, TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT));
 
         //XXX: fix title and description
         pathHeaderDir.addActionListener(new TextFieldWithBrowseButton.BrowseFolderActionListener<>(fcd.getTitle(), fcd.getDescription(),
-                        pathHeaderDir, null, fcd, TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT) );
+            pathHeaderDir, null, fcd, TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT));
 
         cbGenerateDocumentation.addChangeListener(e -> {
             final boolean enabled = cbGenerateDocumentation.isSelected();
@@ -154,26 +158,25 @@ public class DLanguageRunDmdConfigurationEditor extends SettingsEditor<DLanguage
         /* Each time settings are changed "Arguments" tab must be updated.
          * Add listener here. */
         final DLanguageRunDmdConfigurationType configurationType
-                = Extensions.findExtension(ConfigurationType.CONFIGURATION_TYPE_EP, DLanguageRunDmdConfigurationType.class);
+            = Extensions.findExtension(ConfigurationType.CONFIGURATION_TYPE_EP, DLanguageRunDmdConfigurationType.class);
         final ConfigurationFactory factory = configurationType.getConfigurationFactories()[0];
 
         addSettingsEditorListener(editor -> {
             try {
                 Module module = comboModules.getSelectedModule();
-                if(module!=null) {
+                if (module != null) {
                     DLanguageRunDmdConfiguration config = (DLanguageRunDmdConfiguration) factory.createTemplateConfiguration(module.getProject());
                     applyEditorTo(config); //Save current editor state to "config"
                     fillArguments(config); //Convert "config" to DMD arguments to display on "Arguments" tab.
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 //pass
             }
         });
 
         //wrap "textArgsPane" with JBScrollPane to allow scrolling.
         Container tabContent = textArgsPane.getParent();
-        GridLayoutManager layout = (GridLayoutManager)tabContent.getLayout();
+        GridLayoutManager layout = (GridLayoutManager) tabContent.getLayout();
         GridConstraints constraints = layout.getConstraintsForComponent(textArgsPane);
 
         textArgsScrollPane = new JBScrollPane(textArgsPane);
@@ -309,10 +312,12 @@ public class DLanguageRunDmdConfigurationEditor extends SettingsEditor<DLanguage
         config.setProfile(cbProfile.isSelected());
     }
 
-    /** Update "textArgsPane" text area with actual DMD command line arguments */
+    /**
+     * Update "textArgsPane" text area with actual DMD command line arguments
+     */
     private void fillArguments(DLanguageRunDmdConfiguration config) {
         final Module module = comboModules.getSelectedModule();
-        if(module == null) {
+        if (module == null) {
             return;
         }
         try {

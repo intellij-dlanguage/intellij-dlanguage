@@ -1,4 +1,9 @@
 extern (C++, N.M) { extern (C++) { extern (C++, R) { void foo(); } } }
-N.M.R.foo();
+unittest
+{
 
-namespace N { namespace M { namespace R { void foo(); } } }
+N.M.R.foo();
+}
+
+//not valid:
+//namespace N { namespace M { namespace R { void foo(); } } }

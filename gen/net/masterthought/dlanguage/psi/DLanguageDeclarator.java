@@ -1,16 +1,22 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.StubBasedPsiElement;
+import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+import net.masterthought.dlanguage.stubs.DLanguageDeclaratorStub;
+import org.jetbrains.annotations.Nullable;
 
-public interface DLanguageDeclarator extends PsiElement {
 
-  @Nullable
-  DLanguageAltDeclarator getAltDeclarator();
+public interface DLanguageDeclarator extends PsiElement, DNamedElement, StubBasedPsiElement<DLanguageDeclaratorStub> {
+    @Nullable
+    public DLanguageIdentifier getIdentifier();
 
-  @Nullable
-  DLanguageVarDeclarator getVarDeclarator();
+    @Nullable
+    public PsiElement getOP_EQ();
 
+    @Nullable
+    public DLanguageTemplateParameters getTemplateParameters();
+
+    @Nullable
+    public DLanguageInitializer getInitializer();
 }

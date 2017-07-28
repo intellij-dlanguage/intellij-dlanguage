@@ -1,25 +1,28 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+
 
 public interface DLanguagePostblit extends PsiElement {
+    @Nullable
+    public DLanguageFunctionBody getFunctionBody();
 
-  @Nullable
-  DLanguageFunctionBody getFunctionBody();
+    @Nullable
+    public PsiElement getOP_SCOLON();
 
-  @Nullable
-  DLanguageMemberFunctionAttributes getMemberFunctionAttributes();
+    @NotNull
+    public List<PsiElement> getKW_THISs();
 
-  @NotNull
-  PsiElement getOpParLeft();
+    @Nullable
+    public PsiElement getOP_PAR_LEFT();
 
-  @NotNull
-  PsiElement getOpParRight();
+    @Nullable
+    public PsiElement getOP_PAR_RIGHT();
 
-  @Nullable
-  PsiElement getOpScolon();
-
+    @Nullable
+    public DLanguageMemberFunctionAttribute getMemberFunctionAttribute();
 }

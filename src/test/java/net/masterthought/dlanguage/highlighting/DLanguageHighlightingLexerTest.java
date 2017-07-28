@@ -1,8 +1,5 @@
 package net.masterthought.dlanguage.highlighting;
 
-import org.junit.Ignore;
-
-@Ignore
 public class DLanguageHighlightingLexerTest extends DLanguageHighlightingLexerTestBase {
 
     public DLanguageHighlightingLexerTest() {
@@ -10,183 +7,185 @@ public class DLanguageHighlightingLexerTest extends DLanguageHighlightingLexerTe
     }
 
     // shebang
-    public void testsyntax_highlighting() { doTest(true, true); }
+    public void testsyntax_highlighting() {
+        doTest(true, true);
+    }
 
     // keywords
-//    public void testkeyword_abstract() { doTestModule(true, true); }
-//    public void testkeyword_deprecated() { doTestModule(true, true); }
-//    public void testkeyword_final() { doTestModule(true, true); }
-//    public void testkeyword_nothrow() { doTestModule(true, true); }
-//    public void testkeyword_override() { doTestModule(true, true); }
-//    public void testkeyword_pure() { doTestModule(true, true); }
-//    public void testkeyword_scope() { doTestModule(true, true); }
-//    public void testkeyword_static() { doTestModule(true, true); }
-//    public void testkeyword_synchronized() { doTestModule(true, true); }
-//    public void testkeyword_ref() { doTestModule(true, true); }
-//    public void testkeyword_const() { doTestModule(true, true); }
-//    public void testkeyword_immutable() { doTestModule(true, true); }
-//    public void testkeyword_inout() { doTestModule(true, true); }
-//    public void testkeyword_shared() { doTestModule(true, true); }
-//    public void testkeyword_auto() { doTestModule(true, true); }
-//    public void testkeyword_alias() { doTestModule(true, true); }
-//    public void testkeyword_align() { doTestModule(true, true); }
-//    public void testkeyword_asm() { doTestModule(true, true); }
-//    public void testkeyword_assert() { doTestModule(true, true); }
-//    public void testkeyword_body() { doTestModule(true, true); }
-//    public void testkeyword_break() { doTestModule(true, true); }
-//    public void testkeyword_case() { doTestModule(true, true); }
-//    public void testkeyword_cast() { doTestModule(true, true); }
-//    public void testkeyword_catch() { doTestModule(true, true); }
-//    public void testkeyword_class() { doTestModule(true, true); }
-//    public void testkeyword_continue() { doTestModule(true, true); }
-//    public void testkeyword_debug() { doTestModule(true, true); }
-//    public void testkeyword_default() { doTestModule(true, true); }
-//    public void testkeyword_delegate() { doTestModule(true, true); }
-//    public void testkeyword_delete() { doTestModule(true, true); }
-//    public void testkeyword_do() { doTestModule(true, true); }
-//    public void testkeyword_else() { doTestModule(true, true); }
-//    public void testkeyword_enum() { doTestModule(true, true); }
-//    public void testkeyword_extern() { doTestModule(true, true); }
-//    public void testkeyword_false() { doTestModule(true, true); }
-//    public void testkeyword_finally() { doTestModule(true, true); }
-//    public void testkeyword_for() { doTestModule(true, true); }
-//    public void testkeyword_foreach() { doTestModule(true, true); }
-//    public void testkeyword_foreach_reverse() { doTestModule(true, true); }
-//    public void testkeyword_function() { doTestModule(true, true); }
-//    public void testkeyword_goto() { doTestModule(true, true); }
-//    public void testkeyword_if() { doTestModule(true, true); }
-//    public void testkeyword_import() { doTestModule(true, true); }
-//    public void testkeyword_in() { doTestModule(true, true); }
-//    public void testkeyword_interface() { doTestModule(true, true); }
-//    public void testkeyword_invariant() { doTestModule(true, true); }
-//    public void testkeyword_is() { doTestModule(true, true); }
-//    public void testkeyword_lazy() { doTestModule(true, true); }
-//    public void testkeyword_macro() { doTestModule(true, true); }
-//    public void testkeyword_mixin() { doTestModule(true, true); }
-//    public void testkeyword_module() { doTestModule(true, true); }
-//    public void testkeyword_new() { doTestModule(true, true); }
-//    public void testkeyword_null() { doTestModule(true, true); }
-//    public void testkeyword_out() { doTestModule(true, true); }
-//    public void testkeyword_pragma() { doTestModule(true, true); }
-//    public void testkeyword_return() { doTestModule(true, true); }
-//    public void testkeyword_struct() { doTestModule(true, true); }
-//    public void testkeyword_super() { doTestModule(true, true); }
-//    public void testkeyword_switch() { doTestModule(true, true); }
-//    public void testkeyword_template() { doTestModule(true, true); }
-//    public void testkeyword_this() { doTestModule(true, true); }
-//    public void testkeyword_throw() { doTestModule(true, true); }
-//    public void testkeyword_true() { doTestModule(true, true); }
-//    public void testkeyword_try() { doTestModule(true, true); }
-//    public void testkeyword_typedef() { doTestModule(true, true); }
-//    public void testkeyword_typeid() { doTestModule(true, true); }
-//    public void testkeyword_typeof() { doTestModule(true, true); }
-//    public void testkeyword_union() { doTestModule(true, true); }
-//    public void testkeyword_unittest() { doTestModule(true, true); }
-//    public void testkeyword_version() { doTestModule(true, true); }
-//    public void testkeyword_volatile() { doTestModule(true, true); }
-//    public void testkeyword_while() { doTestModule(true, true); }
-//    public void testkeyword_with() { doTestModule(true, true); }
-//    public void testkeyword___traits() { doTestModule(true, true); }
-//    public void testkeyword___gshared() { doTestModule(true, true); }
-//    public void testkeyword___thread() { doTestModule(true, true); }
-//    public void testkeyword___vector() { doTestModule(true, true); }
-//    public void testkeyword___file__() { doTestModule(true, true); }
-//    public void testkeyword___line__() { doTestModule(true, true); }
-//    public void testkeyword___module__() { doTestModule(true, true); }
-//    public void testkeyword___function__() { doTestModule(true, true); }
-//    public void testkeyword___pretty_function__() { doTestModule(true, true); }
-//    public void testkeyword___date__() { doTestModule(true, true); }
-//    public void testkeyword___time__() { doTestModule(true, true); }
-//    public void testkeyword___timestamp__() { doTestModule(true, true); }
-//    public void testkeyword___vendor__() { doTestModule(true, true); }
-//    public void testkeyword___version__() { doTestModule(true, true); }
-//
-//    // comments
-////    public void testcomment_doc_line() { doTestModule(true, true); }
-////    public void testcomment_doc_multi() { doTestModule(true, true); }
-////    public void testcomment_doc_nested() { doTestModule(true, true); }
-//    public void testcomment_line() { doTestModule(true, true); }
-////    public void testcomment_mulit() { doTestModule(true, true); }
-////    public void testcomment_nested() { doTestModule(true, true); }
-//
-//    // floats
-//    public void testfloat_decimal() { doTestModule(true, true); }
-//    public void testfloat_hex() { doTestModule(true, true); }
-//
-//    // integers
-//    public void testinteger_binary() { doTestModule(true, true); }
-//    public void testinteger_decimal() { doTestModule(true, true); }
-//    public void testinteger_hex() { doTestModule(true, true); }
-//    public void testinteger_octal() { doTestModule(true, true); }
-//
-//    // strings
-//    public void teststring_delim() { doTestModule(true, true); }
-//    public void teststring_dq() { doTestModule(true, true); }
-//    public void teststring_hex() { doTestModule(true, true); }
-//    public void teststring_tokens() { doTestModule(true, true); }
-//    public void teststring_wysiwyg() { doTestModule(true, true); }
-//
-//    // tokens
-//    public void testtokens_and() { doTestModule(true, true); }
-//    public void testtokens_and_assign() { doTestModule(true, true); }
-//    public void testtokens_assign() { doTestModule(true, true); }
-//    public void testtokens_at() { doTestModule(true, true); }
-//    public void testtokens_close_brace() { doTestModule(true, true); }
-//    public void testtokens_close_bracket() { doTestModule(true, true); }
-//    public void testtokens_close_parens() { doTestModule(true, true); }
-//    public void testtokens_colon() { doTestModule(true, true); }
-//    public void testtokens_comma() { doTestModule(true, true); }
-//    public void testtokens_concat() { doTestModule(true, true); }
-//    public void testtokens_concat_assign() { doTestModule(true, true); }
-//    public void testtokens_decrement() { doTestModule(true, true); }
-//    public void testtokens_div() { doTestModule(true, true); }
-//    public void testtokens_div_assign() { doTestModule(true, true); }
-//    public void testtokens_dollar() { doTestModule(true, true); }
-//    public void testtokens_dot() { doTestModule(true, true); }
-//    public void testtokens_double_dot() { doTestModule(true, true); }
-//    public void testtokens_equals() { doTestModule(true, true); }
-//    public void testtokens_greater_equal() { doTestModule(true, true); }
-//    public void testtokens_greater_than() { doTestModule(true, true); }
-//    public void testtokens_increment() { doTestModule(true, true); }
-//    public void testtokens_lambda() { doTestModule(true, true); }
-//    public void testtokens_left_shift() { doTestModule(true, true); }
-//    public void testtokens_left_shift_assign() { doTestModule(true, true); }
-//    public void testtokens_less_equal() { doTestModule(true, true); }
-//    public void testtokens_less_greater() { doTestModule(true, true); }
-//    public void testtokens_less_greater_equal() { doTestModule(true, true); }
-//    public void testtokens_less_than() { doTestModule(true, true); }
-//    public void testtokens_logical_and() { doTestModule(true, true); }
-//    public void testtokens_logical_or() { doTestModule(true, true); }
-//    public void testtokens_minus() { doTestModule(true, true); }
-//    public void testtokens_minus_assign() { doTestModule(true, true); }
-//    public void testtokens_mod() { doTestModule(true, true); }
-//    public void testtokens_mod_assign() { doTestModule(true, true); }
-//    public void testtokens_mult_assign() { doTestModule(true, true); }
-//    public void testtokens_not() { doTestModule(true, true); }
-//    public void testtokens_not_equal() { doTestModule(true, true); }
-//    public void testtokens_open_brace() { doTestModule(true, true); }
-//    public void testtokens_open_bracket() { doTestModule(true, true); }
-//    public void testtokens_open_parens() { doTestModule(true, true); }
-//    public void testtokens_or() { doTestModule(true, true); }
-//    public void testtokens_or_assign() { doTestModule(true, true); }
-//    public void testtokens_plus() { doTestModule(true, true); }
-//    public void testtokens_plus_assign() { doTestModule(true, true); }
-//    public void testtokens_pow() { doTestModule(true, true); }
-//    public void testtokens_pow_assign() { doTestModule(true, true); }
-//    public void testtokens_question() { doTestModule(true, true); }
-//    public void testtokens_right_shift() { doTestModule(true, true); }
-//    public void testtokens_right_shift_assign() { doTestModule(true, true); }
-//    public void testtokens_semicolon() { doTestModule(true, true); }
-//    public void testtokens_star() { doTestModule(true, true); }
-//    public void testtokens_triple_dot() { doTestModule(true, true); }
-//    public void testtokens_triple_rshift() { doTestModule(true, true); }
-//    public void testtokens_triple_rshift_assign() { doTestModule(true, true); }
-//    public void testtokens_unordered() { doTestModule(true, true); }
-//    public void testtokens_unordered_e() { doTestModule(true, true); }
-//    public void testtokens_unordered_g() { doTestModule(true, true); }
-//    public void testtokens_unordered_ge() { doTestModule(true, true); }
-//    public void testtokens_unordered_l() { doTestModule(true, true); }
-//    public void testtokens_unordered_le() { doTestModule(true, true); }
-//    public void testtokens_xor() { doTestModule(true, true); }
-//    public void testtokens_xor_assign() { doTestModule(true, true); }
+    public void testkeyword_abstract() { doTest(true, true); }
+    public void testkeyword_deprecated() { doTest(true, true); }
+    public void testkeyword_final() { doTest(true, true); }
+    public void testkeyword_nothrow() { doTest(true, true); }
+    public void testkeyword_override() { doTest(true, true); }
+    public void testkeyword_pure() { doTest(true, true); }
+    public void testkeyword_scope() { doTest(true, true); }
+    public void testkeyword_static() { doTest(true, true); }
+    public void testkeyword_synchronized() { doTest(true, true); }
+    public void testkeyword_ref() { doTest(true, true); }
+    public void testkeyword_const() { doTest(true, true); }
+    public void testkeyword_immutable() { doTest(true, true); }
+    public void testkeyword_inout() { doTest(true, true); }
+    public void testkeyword_shared() { doTest(true, true); }
+    public void testkeyword_auto() { doTest(true, true); }
+    public void testkeyword_alias() { doTest(true, true); }
+    public void testkeyword_align() { doTest(true, true); }
+    public void testkeyword_asm() { doTest(true, true); }
+    public void testkeyword_assert() { doTest(true, true); }
+    public void testkeyword_body() { doTest(true, true); }
+    public void testkeyword_break() { doTest(true, true); }
+    public void testkeyword_case() { doTest(true, true); }
+    public void testkeyword_cast() { doTest(true, true); }
+    public void testkeyword_catch() { doTest(true, true); }
+    public void testkeyword_class() { doTest(true, true); }
+    public void testkeyword_continue() { doTest(true, true); }
+    public void testkeyword_debug() { doTest(true, true); }
+    public void testkeyword_default() { doTest(true, true); }
+    public void testkeyword_delegate() { doTest(true, true); }
+    public void testkeyword_delete() { doTest(true, true); }
+    public void testkeyword_do() { doTest(true, true); }
+    public void testkeyword_else() { doTest(true, true); }
+    public void testkeyword_enum() { doTest(true, true); }
+    public void testkeyword_extern() { doTest(true, true); }
+    public void testkeyword_false() { doTest(true, true); }
+    public void testkeyword_finally() { doTest(true, true); }
+    public void testkeyword_for() { doTest(true, true); }
+    public void testkeyword_foreach() { doTest(true, true); }
+    public void testkeyword_foreach_reverse() { doTest(true, true); }
+    public void testkeyword_function() { doTest(true, true); }
+    public void testkeyword_goto() { doTest(true, true); }
+    public void testkeyword_if() { doTest(true, true); }
+    public void testkeyword_import() { doTest(true, true); }
+    public void testkeyword_in() { doTest(true, true); }
+    public void testkeyword_interface() { doTest(true, true); }
+    public void testkeyword_invariant() { doTest(true, true); }
+    public void testkeyword_is() { doTest(true, true); }
+    public void testkeyword_lazy() { doTest(true, true); }
+    public void testkeyword_macro() { doTest(true, true); }
+    public void testkeyword_mixin() { doTest(true, true); }
+    public void testkeyword_module() { doTest(true, true); }
+    public void testkeyword_new() { doTest(true, true); }
+    public void testkeyword_null() { doTest(true, true); }
+    public void testkeyword_out() { doTest(true, true); }
+    public void testkeyword_pragma() { doTest(true, true); }
+    public void testkeyword_return() { doTest(true, true); }
+    public void testkeyword_struct() { doTest(true, true); }
+    public void testkeyword_super() { doTest(true, true); }
+    public void testkeyword_switch() { doTest(true, true); }
+    public void testkeyword_template() { doTest(true, true); }
+    public void testkeyword_this() { doTest(true, true); }
+    public void testkeyword_throw() { doTest(true, true); }
+    public void testkeyword_true() { doTest(true, true); }
+    public void testkeyword_try() { doTest(true, true); }
+    public void testkeyword_typedef() { doTest(true, true); }
+    public void testkeyword_typeid() { doTest(true, true); }
+    public void testkeyword_typeof() { doTest(true, true); }
+    public void testkeyword_union() { doTest(true, true); }
+    public void testkeyword_unittest() { doTest(true, true); }
+    public void testkeyword_version() { doTest(true, true); }
+    public void testkeyword_volatile() { doTest(true, true); }
+    public void testkeyword_while() { doTest(true, true); }
+    public void testkeyword_with() { doTest(true, true); }
+    public void testkeyword___traits() { doTest(true, true); }
+    public void testkeyword___gshared() { doTest(true, true); }
+    public void testkeyword___thread() { doTest(true, true); }
+    public void testkeyword___vector() { doTest(true, true); }
+    public void testkeyword___file__() { doTest(true, true); }
+    public void testkeyword___line__() { doTest(true, true); }
+    public void testkeyword___module__() { doTest(true, true); }
+    public void testkeyword___function__() { doTest(true, true); }
+    public void testkeyword___pretty_function__() { doTest(true, true); }
+    public void testkeyword___date__() { doTest(true, true); }
+    public void testkeyword___time__() { doTest(true, true); }
+    public void testkeyword___timestamp__() { doTest(true, true); }
+    public void testkeyword___vendor__() { doTest(true, true); }
+    public void testkeyword___version__() { doTest(true, true); }
+
+    // comments
+    public void testcomment_doc_line() { doTest(true, true); }
+    public void testcomment_doc_multi() { doTest(true, true); }
+    public void testcomment_doc_nested() { doTest(true, true); }
+    public void testcomment_line() { doTest(true, true); }
+    public void testcomment_mulit() { doTest(true, true); }
+    public void testcomment_nested() { doTest(true, true); }
+
+    // floats
+    public void testfloat_decimal() { doTest(true, true); }
+    public void testfloat_hex() { doTest(true, true); }
+
+    // integers
+    public void testinteger_binary() { doTest(true, true); }
+    public void testinteger_decimal() { doTest(true, true); }
+    public void testinteger_hex() { doTest(true, true); }
+    public void testinteger_octal() { doTest(true, true); }
+
+    // strings
+    public void teststring_delim() { doTest(true, true); }
+    public void teststring_dq() { doTest(true, true); }
+    public void teststring_hex() { doTest(true, true); }
+    public void teststring_tokens() { doTest(true, true); }
+    public void teststring_wysiwyg() { doTest(true, true); }
+
+    // tokens
+    public void testtokens_and() { doTest(true, true); }
+    public void testtokens_and_assign() { doTest(true, true); }
+    public void testtokens_assign() { doTest(true, true); }
+    public void testtokens_at() { doTest(true, true); }
+    public void testtokens_close_brace() { doTest(true, true); }
+    public void testtokens_close_bracket() { doTest(true, true); }
+    public void testtokens_close_parens() { doTest(true, true); }
+    public void testtokens_colon() { doTest(true, true); }
+    public void testtokens_comma() { doTest(true, true); }
+    public void testtokens_concat() { doTest(true, true); }
+    public void testtokens_concat_assign() { doTest(true, true); }
+    public void testtokens_decrement() { doTest(true, true); }
+    public void testtokens_div() { doTest(true, true); }
+    public void testtokens_div_assign() { doTest(true, true); }
+    public void testtokens_dollar() { doTest(true, true); }
+    public void testtokens_dot() { doTest(true, true); }
+    public void testtokens_double_dot() { doTest(true, true); }
+    public void testtokens_equals() { doTest(true, true); }
+    public void testtokens_greater_equal() { doTest(true, true); }
+    public void testtokens_greater_than() { doTest(true, true); }
+    public void testtokens_increment() { doTest(true, true); }
+    public void testtokens_lambda() { doTest(true, true); }
+    public void testtokens_left_shift() { doTest(true, true); }
+    public void testtokens_left_shift_assign() { doTest(true, true); }
+    public void testtokens_less_equal() { doTest(true, true); }
+    public void testtokens_less_greater() { doTest(true, true); }
+    public void testtokens_less_greater_equal() { doTest(true, true); }
+    public void testtokens_less_than() { doTest(true, true); }
+    public void testtokens_logical_and() { doTest(true, true); }
+    public void testtokens_logical_or() { doTest(true, true); }
+    public void testtokens_minus() { doTest(true, true); }
+    public void testtokens_minus_assign() { doTest(true, true); }
+    public void testtokens_mod() { doTest(true, true); }
+    public void testtokens_mod_assign() { doTest(true, true); }
+    public void testtokens_mult_assign() { doTest(true, true); }
+    public void testtokens_not() { doTest(true, true); }
+    public void testtokens_not_equal() { doTest(true, true); }
+    public void testtokens_open_brace() { doTest(true, true); }
+    public void testtokens_open_bracket() { doTest(true, true); }
+    public void testtokens_open_parens() { doTest(true, true); }
+    public void testtokens_or() { doTest(true, true); }
+    public void testtokens_or_assign() { doTest(true, true); }
+    public void testtokens_plus() { doTest(true, true); }
+    public void testtokens_plus_assign() { doTest(true, true); }
+    public void testtokens_pow() { doTest(true, true); }
+    public void testtokens_pow_assign() { doTest(true, true); }
+    public void testtokens_question() { doTest(true, true); }
+    public void testtokens_right_shift() { doTest(true, true); }
+    public void testtokens_right_shift_assign() { doTest(true, true); }
+    public void testtokens_semicolon() { doTest(true, true); }
+    public void testtokens_star() { doTest(true, true); }
+    public void testtokens_triple_dot() { doTest(true, true); }
+    public void testtokens_triple_rshift() { doTest(true, true); }
+    public void testtokens_triple_rshift_assign() { doTest(true, true); }
+    public void testtokens_unordered() { doTest(true, true); }
+    public void testtokens_unordered_e() { doTest(true, true); }
+    public void testtokens_unordered_g() { doTest(true, true); }
+    public void testtokens_unordered_ge() { doTest(true, true); }
+    public void testtokens_unordered_l() { doTest(true, true); }
+    public void testtokens_unordered_le() { doTest(true, true); }
+    public void testtokens_xor() { doTest(true, true); }
+    public void testtokens_xor_assign() { doTest(true, true); }
 }

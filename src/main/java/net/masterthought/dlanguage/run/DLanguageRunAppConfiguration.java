@@ -36,7 +36,7 @@ public class DLanguageRunAppConfiguration extends ModuleBasedConfiguration<RunCo
         super(name, new RunConfigurationModule(project), factory);
 
         Collection<Module> modules = this.getValidModules();
-        if(!modules.isEmpty()) {
+        if (!modules.isEmpty()) {
             //Get first valid module and use it
             this.setModule(modules.iterator().next());
         }
@@ -47,7 +47,7 @@ public class DLanguageRunAppConfiguration extends ModuleBasedConfiguration<RunCo
 
     public String getExecutablePath() {
         Module module = getConfigurationModule().getModule();
-        if(module != null) {
+        if (module != null) {
             ModuleRootManager moduleRootManager = ModuleRootManager.getInstance(module);
             String outputPath = moduleRootManager.getModuleExtension(CompilerModuleExtension.class).getCompilerOutputUrl();
             String filename = module.getName();
@@ -56,8 +56,7 @@ public class DLanguageRunAppConfiguration extends ModuleBasedConfiguration<RunCo
             }
             File outputFile = new File(VfsUtilCore.urlToPath(outputPath), filename);
             return outputFile.getPath();
-        }
-        else {
+        } else {
             return "";
         }
     }
@@ -89,7 +88,7 @@ public class DLanguageRunAppConfiguration extends ModuleBasedConfiguration<RunCo
 
     @Override
     public void writeExternal(@NotNull Element element) throws WriteExternalException {
-        if(envVars == null) {
+        if (envVars == null) {
             envVars = new HashMap<>();
         }
 

@@ -1,6 +1,6 @@
-module A;
-void foo() { }
-void foo(long i) { }
+//module A;
+//void foo() { }
+//void foo(long i) { }
 
 module B;
 class C { }

@@ -1,19 +1,16 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import org.jetbrains.annotations.Nullable;
+
 
 public interface DLanguageOperands extends PsiElement {
+    @Nullable
+    public PsiElement getOP_COMMA();
 
-  @NotNull
-  DLanguageOperand getOperand();
+    @Nullable
+    public DLanguageOperands getOperands();
 
-  @Nullable
-  DLanguageOperands getOperands();
-
-  @Nullable
-  PsiElement getOpComma();
-
+    @Nullable
+    public DLanguageAsmExp getAsmExp();
 }

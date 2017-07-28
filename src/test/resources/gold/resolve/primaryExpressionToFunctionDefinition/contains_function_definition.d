@@ -1,5 +1,5 @@
 module foo;
 
-<resolved>string myFunction(){
+string <resolved>myFunction(){
   return "my function";
 }

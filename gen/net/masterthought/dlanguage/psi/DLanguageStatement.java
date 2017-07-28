@@ -1,23 +1,19 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import org.jetbrains.annotations.Nullable;
+
 
 public interface DLanguageStatement extends PsiElement {
+    @Nullable
+    public DLanguageDefaultStatement getDefaultStatement();
 
-  @Nullable
-  DLanguageBlockStatement getBlockStatement();
+    @Nullable
+    public DLanguageStatementNoCaseNoDefault getStatementNoCaseNoDefault();
 
-  @Nullable
-  DLanguageNonEmptyStatement getNonEmptyStatement();
+    @Nullable
+    public DLanguageCaseStatement getCaseStatement();
 
-  @Nullable
-  PsiElement getOpScolon();
-
-  //WARNING: processDeclarations(...) is skipped
-  //matching processDeclarations(DLanguageStatement, ...)
-  //methods are not found in DPsiImplUtil
-
+    @Nullable
+    public DLanguageCaseRangeStatement getCaseRangeStatement();
 }

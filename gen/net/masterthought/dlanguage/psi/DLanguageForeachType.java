@@ -1,22 +1,19 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.StubBasedPsiElement;
+import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+import net.masterthought.dlanguage.stubs.DLanguageForeachTypeStub;
+import org.jetbrains.annotations.Nullable;
 
-public interface DLanguageForeachType extends PsiElement {
 
-  @Nullable
-  DLanguageForeachTypeAttribute getForeachTypeAttribute();
+public interface DLanguageForeachType extends PsiElement, DNamedElement, StubBasedPsiElement<DLanguageForeachTypeStub> {
+    @Nullable
+    public DLanguageType getType();
 
-  @Nullable
-  DLanguageForeachTypeAttributes getForeachTypeAttributes();
+    @Nullable
+    public DLanguageIdentifier getIdentifier();
 
-  @NotNull
-  DLanguageIdentifier getIdentifier();
-
-  @Nullable
-  DLanguageType getType();
-
+    @Nullable
+    public DLanguageTypeConstructors getTypeConstructors();
 }

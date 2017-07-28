@@ -1,37 +1,35 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.StubBasedPsiElement;
+import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+import net.masterthought.dlanguage.stubs.DLanguageParameterStub;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public interface DLanguageParameter extends PsiElement {
+import java.util.List;
 
-  @Nullable
-  DLanguageAssignExpression getAssignExpression();
 
-  @Nullable
-  DLanguageBasicType getBasicType();
+public interface DLanguageParameter extends PsiElement, DNamedElement, StubBasedPsiElement<DLanguageParameterStub> {
+    @NotNull
+    public List<DLanguageParameterAttribute> getParameterAttributes();
 
-  @Nullable
-  DLanguageDeclarator getDeclarator();
+    @Nullable
+    public DLanguageType getType();
 
-  @Nullable
-  DLanguageIdentifier getIdentifier();
+    @Nullable
+    public DLanguageIdentifier getIdentifier();
 
-  @Nullable
-  DLanguageInOut getInOut();
+    @NotNull
+    public List<DLanguageTypeSuffix> getTypeSuffixs();
 
-  @Nullable
-  DLanguageType getType();
+    @Nullable
+    public PsiElement getOP_TRIPLEDOT();
 
-  @Nullable
-  PsiElement getKwAlias();
+    @Nullable
+    public DLanguageAssignExpression getAssignExpression();
 
-  @Nullable
-  PsiElement getOpEq();
-
-  @Nullable
-  PsiElement getOpTripledot();
+    @Nullable
+    public PsiElement getOP_EQ();
 
 }

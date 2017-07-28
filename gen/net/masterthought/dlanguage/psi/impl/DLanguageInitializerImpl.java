@@ -1,41 +1,40 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi.impl;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
-import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
-import net.masterthought.dlanguage.psi.*;
+import net.masterthought.dlanguage.psi.DLanguageInitializer;
+import net.masterthought.dlanguage.psi.DLanguageNonVoidInitializer;
+import net.masterthought.dlanguage.psi.DLanguageVisitor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import static net.masterthought.dlanguage.psi.DLanguageTypes.KW_VOID;
+
 
 public class DLanguageInitializerImpl extends ASTWrapperPsiElement implements DLanguageInitializer {
+    public DLanguageInitializerImpl(ASTNode node) {
+        super(node);
+    }
 
-  public DLanguageInitializerImpl(ASTNode node) {
-    super(node);
-  }
+    public void accept(@NotNull DLanguageVisitor visitor) {
+        visitor.visitInitializer(this);
+    }
 
-  public void accept(@NotNull DLanguageVisitor visitor) {
-    visitor.visitInitializer(this);
-  }
+    public void accept(@NotNull PsiElementVisitor visitor) {
+        if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor) visitor);
+        else super.accept(visitor);
+    }
 
-  public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
-    else super.accept(visitor);
-  }
+    @Nullable
+    public PsiElement getKW_VOID() {
+        return findChildByType(KW_VOID);
+    }
 
-  @Override
-  @Nullable
-  public DLanguageNonVoidInitializer getNonVoidInitializer() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageNonVoidInitializer.class);
-  }
-
-  @Override
-  @Nullable
-  public DLanguageVoidInitializer getVoidInitializer() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageVoidInitializer.class);
-  }
-
+    @Nullable
+    public DLanguageNonVoidInitializer getNonVoidInitializer() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageNonVoidInitializer.class);
+    }
 }

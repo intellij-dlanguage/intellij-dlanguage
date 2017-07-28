@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
-public class DLanguageRunDubConfigurationType  implements ConfigurationType {
+public class DLanguageRunDubConfigurationType implements ConfigurationType {
     private final DLanguageFactory myConfigurationFactory;
 
     public DLanguageRunDubConfigurationType() {

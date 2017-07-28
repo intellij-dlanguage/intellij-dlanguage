@@ -1,32 +1,17 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
-import net.masterthought.dlanguage.psi.interfaces.Mixin;
+import org.jetbrains.annotations.Nullable;
 
-public interface DLanguageMixinDeclaration extends Mixin {
 
-  @Nullable
-  DLanguageAssignExpression getAssignExpression();
+public interface DLanguageMixinDeclaration extends PsiElement {
+    @Nullable
+    public DLanguageTemplateMixinExpression getTemplateMixinExpression();
 
-  @Nullable
-  DLanguageTemplateInstance getTemplateInstance();
+    @Nullable
+    public DLanguageMixinExpression getMixinExpression();
 
-  @NotNull
-  PsiElement getKwMixin();
-
-  @NotNull
-  PsiElement getOpParLeft();
-
-  @NotNull
-  PsiElement getOpParRight();
-
-  @NotNull
-  PsiElement getOpScolon();
-
-  @Nullable
-  String getName();
+    @Nullable
+    public PsiElement getOP_SCOLON();
 
 }

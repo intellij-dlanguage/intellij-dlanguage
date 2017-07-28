@@ -1,58 +1,53 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import org.jetbrains.annotations.Nullable;
+
 
 public interface DLanguageTypeSpecialization extends PsiElement {
+    @Nullable
+    public DLanguageType getType();
 
-  @Nullable
-  DLanguageType getType();
+    @Nullable
+    public PsiElement getKW___PARAMETERS();
 
-  @Nullable
-  DLanguageTypeVector getTypeVector();
+    @Nullable
+    public PsiElement getKW_STRUCT();
 
-  @Nullable
-  PsiElement getKwClass();
+    @Nullable
+    public PsiElement getKW_UNION();
 
-  @Nullable
-  PsiElement getKwConst();
+    @Nullable
+    public PsiElement getKW_CLASS();
 
-  @Nullable
-  PsiElement getKwDelegate();
+    @Nullable
+    public PsiElement getKW_INTERFACE();
 
-  @Nullable
-  PsiElement getKwEnum();
+    @Nullable
+    public PsiElement getKW_ENUM();
 
-  @Nullable
-  PsiElement getKwFunction();
+    @Nullable
+    public PsiElement getKW_FUNCTION();
 
-  @Nullable
-  PsiElement getKwImmutable();
+    @Nullable
+    public PsiElement getKW_DELEGATE();
 
-  @Nullable
-  PsiElement getKwInout();
+    @Nullable
+    public PsiElement getKW_SUPER();
 
-  @Nullable
-  PsiElement getKwInterface();
+    @Nullable
+    public PsiElement getKW_CONST();
 
-  @Nullable
-  PsiElement getKwReturn();
+    @Nullable
+    public PsiElement getKW_IMMUTABLE();
 
-  @Nullable
-  PsiElement getKwShared();
+    @Nullable
+    public PsiElement getKW_INOUT();
 
-  @Nullable
-  PsiElement getKwStruct();
+    @Nullable
+    public PsiElement getKW_SHARED();
 
-  @Nullable
-  PsiElement getKwSuper();
-
-  @Nullable
-  PsiElement getKwUnion();
-
-  @Nullable
-  PsiElement getKwParameters();
+    @Nullable
+    public PsiElement getKW_RETURN();
 
 }

@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public class DAllNameIndex extends StringStubIndexExtension<DNamedElement> {
     public static final StubIndexKey<String, DNamedElement> KEY = StubIndexKey.createIndexKey("d.all.name");
-    public static final int VERSION = 0;
+    public static final int VERSION = 1;
 
     @Override
     public int getVersion() {

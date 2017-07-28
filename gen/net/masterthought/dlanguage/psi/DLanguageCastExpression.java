@@ -1,43 +1,26 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import org.jetbrains.annotations.Nullable;
+
 
 public interface DLanguageCastExpression extends PsiElement {
+    @Nullable
+    public DLanguageCastQualifier getCastQualifier();
 
-  @Nullable
-  DLanguageCastExpression getCastExpression();
+    @Nullable
+    public DLanguageType getType();
 
-  @Nullable
-  DLanguageDeleteExpression getDeleteExpression();
+    @Nullable
+    public DLanguageUnaryExpression getUnaryExpression();
 
-  @Nullable
-  DLanguageIdentifier getIdentifier();
+    @Nullable
+    public PsiElement getKW_CAST();
 
-  @Nullable
-  DLanguagePostfixExpression getPostfixExpression();
+    @Nullable
+    public PsiElement getOP_PAR_LEFT();
 
-  @Nullable
-  DLanguagePowExpression_ getPowExpression_();
-
-  @Nullable
-  DLanguageTemplateInstance getTemplateInstance();
-
-  @NotNull
-  List<DLanguageType> getTypeList();
-
-  @Nullable
-  DLanguageTypeCtor getTypeCtor();
-
-  @Nullable
-  DLanguageTypeCtors getTypeCtors();
-
-  @NotNull
-  PsiElement getKwCast();
-
-  @Nullable
-  PsiElement getOpDot();
+    @Nullable
+    public PsiElement getOP_PAR_RIGHT();
 
 }

@@ -1,53 +1,69 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi.impl;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.ResolveState;
+import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.util.PsiTreeUtil;
+import net.masterthought.dlanguage.psi.DLanguageImportBindings;
+import net.masterthought.dlanguage.psi.DLanguageImportDeclaration;
+import net.masterthought.dlanguage.psi.DLanguageSingleImport;
+import net.masterthought.dlanguage.psi.DLanguageVisitor;
+import net.masterthought.dlanguage.resolve.ScopeProcessorImpl;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+
 import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
-import net.masterthought.dlanguage.psi.*;
+
 
 public class DLanguageImportDeclarationImpl extends ASTWrapperPsiElement implements DLanguageImportDeclaration {
+    public DLanguageImportDeclarationImpl(ASTNode node) {
+        super(node);
+    }
 
-  public DLanguageImportDeclarationImpl(ASTNode node) {
-    super(node);
-  }
+    public void accept(@NotNull DLanguageVisitor visitor) {
+        visitor.visitImportDeclaration(this);
+    }
 
-  public void accept(@NotNull DLanguageVisitor visitor) {
-    visitor.visitImportDeclaration(this);
-  }
+    public void accept(@NotNull PsiElementVisitor visitor) {
+        if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor) visitor);
+        else super.accept(visitor);
+    }
 
-  public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
-    else super.accept(visitor);
-  }
+    @Nullable
+    public PsiElement getKW_IMPORT() {
+        return findChildByType(KW_IMPORT);
+    }
 
-  @Override
-  @Nullable
-  public DLanguageImportList getImportList() {
-    return PsiTreeUtil.getChildOfType(this, DLanguageImportList.class);
-  }
+    @NotNull
+    public List<DLanguageSingleImport> getSingleImports() {
+        return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageSingleImport.class);
+    }
 
-  @Override
-  @NotNull
-  public PsiElement getKwImport() {
-    return notNullChild(findChildByType(KW_IMPORT));
-  }
+    @Nullable
+    public DLanguageImportBindings getImportBindings() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageImportBindings.class);
+    }
 
-  @Override
-  @Nullable
-  public PsiElement getKwStatic() {
-    return findChildByType(KW_STATIC);
-  }
+    @NotNull
+    public List<PsiElement> getOP_COMMAs() {
+        return findChildrenByType(OP_COMMA);
+    }
 
-  @Override
-  @Nullable
-  public PsiElement getOpScolon() {
-    return findChildByType(OP_SCOLON);
-  }
+    @Nullable
+    public PsiElement getOP_SCOLON() {
+        return findChildByType(OP_SCOLON);
+    }
 
+    @Override
+    public boolean processDeclarations(@NotNull PsiScopeProcessor processor,
+                                       @NotNull ResolveState state,
+                                       PsiElement lastParent,
+                                       @NotNull PsiElement place) {
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(this, processor, state, lastParent, place);
+    }
 }

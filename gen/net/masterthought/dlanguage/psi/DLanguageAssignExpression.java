@@ -1,112 +1,80 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import org.jetbrains.annotations.Nullable;
+
 
 public interface DLanguageAssignExpression extends PsiElement {
+    @Nullable
+    public DLanguageTernaryExpression getTernaryExpression();
 
-  @NotNull
-  List<DLanguageAddExpression_> getAddExpression_List();
+    @Nullable
+    public DLanguageAssignExpression getAssignExpression();
 
-  @NotNull
-  List<DLanguageAndExxpression_> getAndExxpression_List();
+    @Nullable
+    public PsiElement getOP_AND_EQ();
 
-  @Nullable
-  DLanguageAssignExpression getAssignExpression();
+    @Nullable
+    public PsiElement getOP_DIV_EQ();
 
-  @NotNull
-  List<DLanguageCastExpression> getCastExpressionList();
+    @Nullable
+    public PsiElement getOP_EQ();
 
-  @Nullable
-  DLanguageConditionalExpression_ getConditionalExpression_();
+    @Nullable
+    public PsiElement getOP_EQ_EQ();
 
-  @NotNull
-  List<DLanguageDeleteExpression> getDeleteExpressionList();
+    @Nullable
+    public PsiElement getOP_GT_EQ();
 
-  @NotNull
-  List<DLanguageEqualExpression> getEqualExpressionList();
+    @Nullable
+    public PsiElement getOP_LESS_EQ();
 
-  @NotNull
-  List<DLanguageIdentifier> getIdentifierList();
+    @Nullable
+    public PsiElement getOP_LESS_GR_EQ();
 
-  @NotNull
-  List<DLanguageIdentityExpression> getIdentityExpressionList();
+    @Nullable
+    public PsiElement getOP_MINUS_EQ();
 
-  @NotNull
-  List<DLanguageInExpression> getInExpressionList();
+    @Nullable
+    public PsiElement getOP_MOD_EQ();
 
-  @NotNull
-  List<DLanguageMulExpression_> getMulExpression_List();
+    @Nullable
+    public PsiElement getOP_MUL_EQ();
 
-  @Nullable
-  DLanguageOrOrExpression getOrOrExpression();
+    @Nullable
+    public PsiElement getOP_NOT_EQ();
 
-  @NotNull
-  List<DLanguagePostfixExpression> getPostfixExpressionList();
+    @Nullable
+    public PsiElement getOP_NOT_GR_EQ();
 
-  @NotNull
-  List<DLanguagePowExpression_> getPowExpression_List();
+    @Nullable
+    public PsiElement getOP_NOT_LESS_EQ();
 
-  @NotNull
-  List<DLanguageRelExpression> getRelExpressionList();
+    @Nullable
+    public PsiElement getOP_OR_EQ();
 
-  @NotNull
-  List<DLanguageShiftExpression_> getShiftExpression_List();
+    @Nullable
+    public PsiElement getOP_PLUS_EQ();
 
-  @NotNull
-  List<DLanguageTemplateInstance> getTemplateInstanceList();
+    @Nullable
+    public PsiElement getOP_POW_EQ();
 
-  @NotNull
-  List<DLanguageType> getTypeList();
+    @Nullable
+    public PsiElement getOP_SH_LEFT_EQ();
 
-  @NotNull
-  List<DLanguageTypeCtor> getTypeCtorList();
+    @Nullable
+    public PsiElement getOP_SH_RIGHT_EQ();
 
-  @NotNull
-  List<DLanguageXorExpression_> getXorExpression_List();
+    @Nullable
+    public PsiElement getOP_TILDA_EQ();
 
-  @Nullable
-  PsiElement getOpAndEq();
+    @Nullable
+    public PsiElement getOP_UNORD_EQ();
 
-  @Nullable
-  PsiElement getOpDivEq();
+    @Nullable
+    public PsiElement getOP_USH_RIGHT_EQ();
 
-  @Nullable
-  PsiElement getOpEq();
-
-  @Nullable
-  PsiElement getOpMinusEq();
-
-  @Nullable
-  PsiElement getOpModEq();
-
-  @Nullable
-  PsiElement getOpMulEq();
-
-  @Nullable
-  PsiElement getOpOrEq();
-
-  @Nullable
-  PsiElement getOpPlusEq();
-
-  @Nullable
-  PsiElement getOpPowEq();
-
-  @Nullable
-  PsiElement getOpShLeftEq();
-
-  @Nullable
-  PsiElement getOpShRightEq();
-
-  @Nullable
-  PsiElement getOpTildaEq();
-
-  @Nullable
-  PsiElement getOpUshRightEq();
-
-  @Nullable
-  PsiElement getOpXorEq();
+    @Nullable
+    public PsiElement getOP_XOR_EQ();
 
 }

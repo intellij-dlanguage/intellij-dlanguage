@@ -24,7 +24,10 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 import java.io.File;
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class DubConfigurationParser {
@@ -32,19 +35,19 @@ public class DubConfigurationParser {
     private static final Logger LOG = Logger.getInstance(DubConfigurationParser.class);
 
     private static final Gson GSON = new Gson();
-    private static final Type LIST_STRING = new TypeToken<List<String>>() {}.getType();
-
-    private List<DubPackage> packages = new ArrayList<>();
-//    private Map<String, List<String>> targets = new HashMap<>();
-    private TreeNode packageTree;
+    private static final Type LIST_STRING = new TypeToken<List<String>>() {
+    }.getType();
     private final Project project;
     private final String dubBinaryPath;
+    private List<DubPackage> packages = new ArrayList<>();
+    //    private Map<String, List<String>> targets = new HashMap<>();
+    private TreeNode packageTree;
 
     public DubConfigurationParser(final Project project, final String dubBinaryPath) {
         this.project = project;
         this.dubBinaryPath = dubBinaryPath;
 
-        if(canUseDub()) {
+        if (canUseDub()) {
             parseDubConfiguration().ifPresent(this::parseDubDescription);
         }
     }
@@ -66,7 +69,6 @@ public class DubConfigurationParser {
     }
 
     /**
-     *
      * @return a list of DubPackage that the root DubPackage depends on. These may be sub-packages, libs, or other dub packages
      */
     public List<DubPackage> getDubPackageDependencies() {
@@ -85,7 +87,7 @@ public class DubConfigurationParser {
     }
 
     private void parseDubDescription(final JsonObject dubProjectDescription) {
-        if(dubProjectDescription == null) {
+        if (dubProjectDescription == null) {
             return;
         }
 
@@ -179,7 +181,7 @@ public class DubConfigurationParser {
             if (exitCode == 0) {
                 if (errors.isEmpty()) {
                     LOG.info(String.format("%s exited without errors", dubCommand));
-                    if(LOG.isDebugEnabled()) {
+                    if (LOG.isDebugEnabled()) {
                         Notifications.Bus.notify(new Notification(
                                 "DubNotification",
                                 "DUB Import",

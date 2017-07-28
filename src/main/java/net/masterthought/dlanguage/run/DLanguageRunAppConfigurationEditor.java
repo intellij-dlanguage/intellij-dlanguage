@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 import java.util.Map;
 
-public class DLanguageRunAppConfigurationEditor  extends SettingsEditor<DLanguageRunAppConfiguration>{
+public class DLanguageRunAppConfigurationEditor extends SettingsEditor<DLanguageRunAppConfiguration> {
     private JPanel myMainPanel;
     private ModulesComboBox comboModule;
     private RawCommandLineEditor textParameters;
@@ -25,23 +25,27 @@ public class DLanguageRunAppConfigurationEditor  extends SettingsEditor<DLanguag
     private TextFieldWithBrowseButton pathWorkingDir;
     private JLabel appPathLabel;
 
-    /** Update editor UI with data of DLangRunAppConfiguration.
-     * All components must be changed according to "config" data. */
+    /**
+     * Update editor UI with data of DLangRunAppConfiguration.
+     * All components must be changed according to "config" data.
+     */
     @Override
     protected void resetEditorFrom(DLanguageRunAppConfiguration config) {
         comboModule.fillModules(config.getProject(), DLanguageModuleType.getInstance());
         comboModule.setSelectedModule(config.getConfigurationModule().getModule());
         pathWorkingDir.setText(config.getWorkDir());
         textParameters.setText(config.getAdditionalParams());
-        Map<String,String> envVars = config.getEnvVars();
-        if(envVars != null) {
+        Map<String, String> envVars = config.getEnvVars();
+        if (envVars != null) {
             envVariables.setEnvs(config.getEnvVars());
         }
         appPathLabel.setText(config.getExecutablePath());
     }
 
 
-    /** Save state of editor UI to DLangRunAppConfiguration instance. */
+    /**
+     * Save state of editor UI to DLangRunAppConfiguration instance.
+     */
     @Override
     protected void applyEditorTo(DLanguageRunAppConfiguration config) throws ConfigurationException {
         config.setModule(comboModule.getSelectedModule());
@@ -60,7 +64,7 @@ public class DLanguageRunAppConfigurationEditor  extends SettingsEditor<DLanguag
         fcd.setHideIgnored(false);
 
         pathWorkingDir.addActionListener(new TextFieldWithBrowseButton.BrowseFolderActionListener<>(fcd.getTitle(), fcd.getDescription(),
-                        pathWorkingDir, null, fcd, TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT) );
+            pathWorkingDir, null, fcd, TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT));
 
         return myMainPanel;
     }

@@ -1,25 +1,23 @@
-// This is a generated file. Not intended for manual editing.
 package net.masterthought.dlanguage.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import org.jetbrains.annotations.Nullable;
+
 
 public interface DLanguageTemplateArguments extends PsiElement {
+    @Nullable
+    public DLanguageTemplateArgumentList getTemplateArgumentList();
 
-  @Nullable
-  DLanguageTemplateArgumentList getTemplateArgumentList();
+    @Nullable
+    public DLanguageTemplateSingleArgument getTemplateSingleArgument();
 
-  @Nullable
-  DLanguageTemplateSingleArgument getTemplateSingleArgument();
+    @Nullable
+    public PsiElement getOP_PAR_RIGHT();
 
-  @NotNull
-  PsiElement getOpNot();
+    @Nullable
+    public PsiElement getOP_PAR_LEFT();
 
-  @Nullable
-  PsiElement getOpParLeft();
-
-  @Nullable
-  PsiElement getOpParRight();
+    @Nullable
+    public PsiElement getOP_NOT();
 
 }
