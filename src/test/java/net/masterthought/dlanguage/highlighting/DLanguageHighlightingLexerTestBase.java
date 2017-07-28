@@ -23,24 +23,24 @@ public class DLanguageHighlightingLexerTestBase extends LexerTestCase {
     private final String srcPath = getDirPath() + File.separator + "highlighting";
     private final String myExpectPath;
 
-    public DLanguageHighlightingLexerTestBase(String expectPath) {
+    public DLanguageHighlightingLexerTestBase(final String expectPath) {
         super();
         myExpectPath = getDirPath() + File.separator + expectPath;
     }
 
-    public void doTest(boolean checkResult, boolean shouldPass) {
-        String fileName = getTestName(false) + ".d";
+    public void doTest(final boolean checkResult, final boolean shouldPass) {
+        final String fileName = getTestName(false) + ".d";
         String text = "";
         try {
             text = loadFile(fileName);
         } catch (IOException | URISyntaxException e) {
             fail("can't load file " + fileName + ": " + e.getMessage());
         }
-        String result = printTokens(text, 0);
+        final String result = printTokens(text, 0);
         try {
             doCheckResult(myExpectPath + File.separator + "expected",
                 getTestName(false) + ".txt", result);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             fail("Unexpected IO Exception: " + e.getMessage());
         }
     }
@@ -63,12 +63,17 @@ public class DLanguageHighlightingLexerTestBase extends LexerTestCase {
     /**
      * Loads the test data file from the right place.
      */
-    protected String loadFile(@NonNls @TestDataFile String name) throws IOException, URISyntaxException {
+    protected String loadFile(@NonNls @TestDataFile final String name) throws IOException, URISyntaxException {
         return doLoadFile(srcPath, name);
     }
 
     private String doLoadFile(final String myFullDataPath, final String name) throws IOException, URISyntaxException {
-        final URI resource = this.getClass().getClassLoader().getResource(String.format("%s/%s", myFullDataPath, name)).toURI();
+        final URI resource;
+        try {
+            resource = this.getClass().getClassLoader().getResource(String.format("%s/%s", myFullDataPath, name)).toURI();
+        } catch (NullPointerException e) {
+            throw new IOException(e);
+        }
         String text = FileUtil.loadFile(new File(resource), CharsetToolkit.UTF8).trim();
         text = StringUtil.convertLineSeparators(text);
         return text;
@@ -78,15 +83,15 @@ public class DLanguageHighlightingLexerTestBase extends LexerTestCase {
      * Check the result against a plain text file. Creates file if missing.
      * Avoids the default sandboxing in IntelliJ.
      */
-    public void doCheckResult(String fullPath, String targetDataName, String text) throws IOException {
+    public void doCheckResult(final String fullPath, final String targetDataName, String text) throws IOException {
         text = text.trim();
-        String expectedFileName = fullPath + File.separator + targetDataName;
+        final String expectedFileName = fullPath + File.separator + targetDataName;
         if (OVERWRITE_TESTDATA) {
             VfsTestUtil.overwriteTestData(expectedFileName, text);
             System.out.println("File " + expectedFileName + " created.");
         }
         try {
-            String expectedText = doLoadFile(fullPath, targetDataName);
+            final String expectedText = doLoadFile(fullPath, targetDataName);
             if (!Comparing.equal(expectedText, text)) {
                 throw new FileComparisonFailure(targetDataName, expectedText, text, expectedFileName);
             }

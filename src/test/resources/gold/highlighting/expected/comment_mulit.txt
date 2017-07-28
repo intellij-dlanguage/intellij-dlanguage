@@ -1,0 +1,8 @@
+DLanguageTokenType.BLOCK_COMMENT ('/*')
+DLanguageTokenType.BLOCK_COMMENT ('\n')
+DLanguageTokenType.BLOCK_COMMENT (' multiline comment')
+DLanguageTokenType.BLOCK_COMMENT ('\n')
+DLanguageTokenType.BLOCK_COMMENT (' is here')
+DLanguageTokenType.BLOCK_COMMENT ('\n')
+DLanguageTokenType.BLOCK_COMMENT (' ')
+DLanguageTokenType.BLOCK_COMMENT ('*/')

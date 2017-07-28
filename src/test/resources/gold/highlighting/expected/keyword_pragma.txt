@@ -1,0 +1,5 @@
+KEYWORD ('pragma')
+PARENTHESES_LEFT ('(')
+NUMBER ('1')
+PARENTHESES_RIGHT (')')
+SEMICOLON (';')
