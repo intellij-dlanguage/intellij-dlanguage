@@ -13,12 +13,12 @@ import java.io.IOException;
 
 
 public abstract class DStubElementType<S extends StubElement<T>, T extends DCompositeElement> extends IStubElementType<S, T> {
-    public DStubElementType(String debugName) {
+    public DStubElementType(final String debugName) {
         super(debugName, DLanguage.INSTANCE);
     }
 
     @Override
-    public void indexStub(@NotNull S stub, @NotNull IndexSink sink) {
+    public void indexStub(@NotNull final S stub, @NotNull IndexSink sink) {
 
     }
 
