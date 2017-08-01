@@ -1,7 +1,9 @@
 package net.masterthought.dlanguage.resolve
 
 import com.google.common.collect.Sets
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.roots.impl.DirectoryIndex
+import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiNamedElement
 import com.intellij.psi.impl.file.PsiDirectoryFactory
 import com.intellij.psi.search.GlobalSearchScope
@@ -62,11 +64,16 @@ object SpecialCaseResolve {
                 name += parent.name
             }
         }
-        return DirectoryIndex.getInstance(last.project)
-                        .getDirectoriesByPackageName(name, true)
-                        .findAll()
-                        .map { PsiDirectoryFactory.getInstance(last.project).createDirectory(it) }
-                        .toSet()
+        val project = last.project
+        return resolvePackageFromName(project, name)
+    }
+
+    private fun resolvePackageFromName(project: Project, name: String): Set<PsiDirectory> {
+        return DirectoryIndex.getInstance(project)
+            .getDirectoriesByPackageName(name, true)
+            .findAll()
+            .map { PsiDirectoryFactory.getInstance(project).createDirectory(it) }
+            .toSet()
     }
 
 
@@ -83,7 +90,7 @@ object SpecialCaseResolve {
             }
             resolved.addAll(StubIndex.getElements(DTopLevelDeclarationIndex.KEY, scope.name, scope.project, GlobalSearchScope.fileScope(resolveResult.element as DLanguageFile), DNamedElement::class.java))
         }
-        return resolved;
+        return resolved
     }
 
     fun inModuleDeclaration(e: DNamedElement): ModuleDeclaration? {
@@ -104,6 +111,39 @@ object SpecialCaseResolve {
 
     private fun inImportBind(identifier: Identifier): ImportBindings? {
         return PsiTreeUtil.getTopmostParentOfType(identifier, ImportBindings::class.java)
+    }
+
+    fun tryPackageResolve(e: Identifier): Set<PsiNamedElement> {
+        fun inIdentifierOrTemplateChain(identifier: Identifier): IdentifierOrTemplateChain? {
+            return PsiTreeUtil.getTopmostParentOfType(identifier, IdentifierOrTemplateChain::class.java)
+        }
+
+        fun inIdentifierOrTemplateInstance(identifier: Identifier): IdentifierOrTemplateInstance? {
+            return PsiTreeUtil.getTopmostParentOfType(identifier, IdentifierOrTemplateInstance::class.java)
+        }
+
+        if (inIdentifierOrTemplateChain(e) != null) {
+            val instances = inIdentifierOrTemplateChain(e)!!.identifierOrTemplateInstances
+            val endIndex = instances.indexOf(inIdentifierOrTemplateInstance(e))
+            val parents = instances.subList(0, endIndex + 1)
+            if (parents.size == 0) {
+                return emptySet()
+            }
+            val last = parents.last()
+            var name = ""
+            for (parent in parents) {
+                if (parent != last) {
+                    name += (parent.text + ".")
+                } else {
+                    name += parent.text
+                }
+            }
+            val directoryResolve = resolvePackageFromName(e.project, name)
+            return directoryResolve//todo do a file resolve as well
+        }
+        return emptySet()
+
+
     }
 
 }

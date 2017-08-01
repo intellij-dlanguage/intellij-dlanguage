@@ -55,10 +55,6 @@ public class DLanguageModuleDeclarationImpl extends DNamedStubbedPsiElementBase<
         return getIdentifierChain().getText();
     }
 
-//    public String getFullName() {
-//        return DPsiImplUtil.getFullName(this);
-//    }
-
     @Nullable
     public PsiElement getNameIdentifier() {
         final ASTNode keyNode = getNode();

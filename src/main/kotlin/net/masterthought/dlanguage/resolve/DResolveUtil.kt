@@ -27,7 +27,6 @@ object DResolveUtil {
             return emptySet()
         }
 
-
         if (shouldNotResolveToAnything(e)) {
             return emptySet()
         }
@@ -36,12 +35,17 @@ object DResolveUtil {
             return SpecialCaseResolve.findDefinitionNode(e)
         }
 
-        var basicResolveResult = BasicResolve.findDefinitionNode(project, e)
+        var basicResolveResult = BasicResolve(project).findDefinitionNode(e)
         if(resolvingConstructor(e) == null){
             basicResolveResult = basicResolveResult.filter { it !is Constructor }.toSet()
+
+        } else {
+            val constructorsOnly = basicResolveResult.filter { it is Constructor }.toSet()
+            if (!constructorsOnly.isEmpty())
+                return constructorsOnly
         }
-        else
-            basicResolveResult = basicResolveResult.filter { it is Constructor }.toSet()
+        if (basicResolveResult.isEmpty())
+            return SpecialCaseResolve.tryPackageResolve(e)
         return basicResolveResult
 //        val parameterCountingResult = ParameterCountingResolve.findDefinitionNode(project, e)
 //        if (parameterCountingResult.isEmpty()) {
@@ -106,7 +110,7 @@ object DResolveUtil {
 
     val pragmaIdentifiers = setOf("lib", "inline", "mangle", "msg", "startaddress")
 
-    val atAttributeIdentifiers = setOf("safe", "trusted", "nogc", "disable","property")
+    val atAttributeIdentifiers = setOf("safe", "trusted", "nogc", "disable", "property", "system")
 
     val externAttributeIdentifiers = setOf("C","D","Windows","System","Pascal","Objective-C")
 
@@ -123,7 +127,7 @@ object DResolveUtil {
         if (name.length > 2)
             if (name.substring(0, 2) == "__")
                 return true
-        if (name == "string" || name == "size_t" || name == "ptrdiff_t" || name == "dstring" || name == "wstring")     //todo this might be  defined in runtime
+        if (/*name == "string" || */name == "size_t" || name == "ptrdiff_t" || name == "dstring" || name == "wstring")     //todo this might be  defined in runtime
             return true
         if (parent is AtAttribute && atAttributeIdentifiers.contains(name)) return true
         if (parent is ScopeGuardStatement)
@@ -133,12 +137,14 @@ object DResolveUtil {
         if (parent is LinkageAttribute && externAttributeIdentifiers.contains(name)) return true
         if (parent is TraitsExpression && traitsIdentifiers.contains(name)) return true
         if (parent is FunctionDeclaration || parent is InterfaceOrClass || parent is StructDeclaration || parent is UnionDeclaration || parent is EnumDeclaration || parent is EnumMember || parent is AutoDeclarationPart || parent is Declarator || parent is TemplateDeclaration || parent is Catch) return true
+        if (parent is Parameter)
+            if (parent.identifier == e)
+                return true
         if (parent is PragmaExpression && pragmaIdentifiers.contains(name)) return true
         if (parent is IdentifierList && parent.parent is AliasDeclaration) return true
         if (parent is AsmInstruction || parent.parent is AsmPrimaryExp) return true
         return false
     }
-
 }
 
 

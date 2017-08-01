@@ -503,7 +503,7 @@ class DLangParser {
                 cleanup(m, ALIAS_DECLARATION);
                 return false;
             }
-            if (!parseIdentifierList()) {
+            if (!parseIdentifierListAliasDeclaration()) {
                 cleanup(m, ALIAS_DECLARATION);
                 return false;
             }
@@ -542,6 +542,33 @@ class DLangParser {
         }
         return false;
     }
+
+    boolean parseIdentifierListAliasDeclaration() {
+//        Marker m = enter_section_modified(builder);
+        while (moreTokens()) {
+            Marker fakeAliasInitializer = enter_section_modified(builder);
+            //so let's explain whats going on here
+            // there  are two ways of creating an alias in d:
+            // alias x = int;
+            // alias int x;//designed to sorta look like a typedef
+            //the first way is covered by the alias initializer named element.
+            //libdparse does not however parse the second way with an alias initializer which leads to no named element
+            //therefore this modified version also needs to include an alias initializer.
+            Token ident = expect(tok("identifier"));
+            exit_section_modified(builder, fakeAliasInitializer, ALIAS_INITIALIZER, true);
+            if (ident == null) {
+//                cleanup(m, IDENTIFIER_LIST);
+                return false;
+            }
+            if (currentIs(tok(","))) {
+                advance();
+            } else
+                break;
+        }
+//        exit_section_modified(builder, m, IDENTIFIER_LIST, true);
+        return true;
+    }
+
 
     /**
      * Parses an AliasInitializer.

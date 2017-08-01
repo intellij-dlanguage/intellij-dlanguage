@@ -192,11 +192,11 @@ object ScopeProcessorImplUtil {
         }
         if (def.debugSpecification != null) {
         }
-//        for (decl in def.declarations) {
-//            if (!decl.processDeclarations(processor, state, lastParent, place)) {
-//                toContinue = false
-//            }
-//        }
+        for (decl in def.declarations) {
+            if (!processDeclaration(decl, processor, state, lastParent, place)) {
+                toContinue = false
+            }
+        }
         return toContinue
     }
 
