@@ -51,10 +51,8 @@ public class DLanguageIdentifierImpl extends DNamedStubbedPsiElementBase<DLangua
     }
 
     @Nullable
-    public PsiElement getNameIdentifier() {
-        //todo basically none of these are implmented correctly
-        final ASTNode keyNode = getNode();
-        return keyNode.getPsi();
+    public DLanguageIdentifier getNameIdentifier() {
+        return this;
     }
 
     @NotNull

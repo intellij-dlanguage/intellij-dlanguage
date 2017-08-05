@@ -15,6 +15,8 @@ import net.masterthought.dlanguage.psi.DLanguageIdentifier
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement
 import net.masterthought.dlanguage.resolve.DResolveUtil
 import net.masterthought.dlanguage.stubs.index.DTopLevelDeclarationsByModule
+import net.masterthought.dlanguage.utils.ModuleDeclaration
+import net.masterthought.dlanguage.utils.SingleImport
 import java.util.*
 
 
@@ -46,43 +48,8 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
         //            if (!myElement.equals(Iterables.getLast(qconid.getConidList()))) { return EMPTY_RESOLVE_RESULT; }
         //        }
         val project = myElement.project
-        val namedElements = DResolveUtil.findDefinitionNode(project, myElement)
-        // Guess 20 variants tops most of the time in any real code base.
-//        val identifiers = HashSet<PsiElement>()
-//        for (namedElement in namedElements) {
-//            if (namedElement is DLanguageFunctionDeclaration) {
-//                identifiers.add(namedElement.identifier!!)
-//            } else if (namedElement is DLanguageTemplateDeclaration) {
-//                if (namedElement.identifier != null) {
-//                    identifiers.add(namedElement.identifier!!)
-//                }else{
-//                    identifiers.add(namedElement.eponymousTemplateDeclaration!!.identifier!!)
-//                }
-//            } else if (namedElement is DLanguageClassDeclaration) {
-//                identifiers.add(namedElement.interfaceOrClass!!.identifier!!)
-//            } else if (namedElement is DLanguageUnionDeclaration) {
-//                if (namedElement.identifier != null) {
-//                    identifiers.add(namedElement.identifier!!)
-//                }
-//            } else if (namedElement is DLanguageInterfaceOrClass) {
-//                identifiers.add(namedElement.identifier!!)
-//            } else if (namedElement is DLanguageStructDeclaration) {
-//                if (namedElement.identifier != null) {
-//                    identifiers.add(namedElement.identifier!!)
-//                }
-//            } else if (namedElement is DLanguageEnumDeclaration) {
-//                identifiers.add(namedElement.identifier!!)
-//            } else if (namedElement is DLanguageAutoDeclarationPart) {
-//                identifiers.add(namedElement.identifier!!)
-//            }
-//            else {
-//                identifiers.add(namedElement)
-//            }
-//        }
-//
-//        identifiers.remove(myElement)
-//
-        val results = ArrayList<ResolveResult>(20)
+        val namedElements = DResolveUtil.findDefinitionNode(project, myElement).map { if (it is PsiNameIdentifierOwner && it !is ModuleDeclaration && it !is SingleImport) it.nameIdentifier!! else it }
+        val results = mutableListOf<PsiElementResolveResult>()
         for (property in namedElements) {
             results.add(PsiElementResolveResult(property))
         }

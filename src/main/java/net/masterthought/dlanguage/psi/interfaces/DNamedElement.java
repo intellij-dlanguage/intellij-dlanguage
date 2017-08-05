@@ -1,9 +1,8 @@
 package net.masterthought.dlanguage.psi.interfaces;
 
-import com.intellij.lang.ASTNode;
 import com.intellij.navigation.NavigationItem;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiNameIdentifierOwner;
+import net.masterthought.dlanguage.psi.DLanguageIdentifier;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,15 +17,11 @@ public interface DNamedElement extends DCompositeElement, PsiNameIdentifierOwner
 //        return DPsiImplUtil.getFullName(this);
 //    }
 
-
     @NotNull
     @Override
     String getName();
 
     @Nullable
     @Override
-    default PsiElement getNameIdentifier() {
-        ASTNode keyNode = getNode();
-        return keyNode != null ? keyNode.getPsi() : null;
-    }
+    DLanguageIdentifier getNameIdentifier();
 }
