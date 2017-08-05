@@ -12,6 +12,7 @@ import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import net.masterthought.dlanguage.psi.references.DReference;
 import net.masterthought.dlanguage.resolve.processors.parameters.DAttributesFinder;
 import net.masterthought.dlanguage.stubs.DLanguageSingleImportStub;
+import net.masterthought.dlanguage.utils.DUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -65,8 +66,13 @@ public class DLanguageSingleImportImpl extends DNamedStubbedPsiElementBase<DLang
 
     @Override
     public PsiElement setName(@NotNull final String name) throws IncorrectOperationException {
-        getIdentifier().setName(name);//todo this is not correct
-        throw new IllegalStateException();
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public DLanguageIdentifier getNameIdentifier() {
+        return DUtil.getEndOfIdentifierList(getIdentifierChain());
     }
 
     public boolean isPublic() {

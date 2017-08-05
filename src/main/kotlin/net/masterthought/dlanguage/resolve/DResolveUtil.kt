@@ -127,7 +127,7 @@ object DResolveUtil {
         if (name.length > 2)
             if (name.substring(0, 2) == "__")
                 return true
-        if (/*name == "string" || */name == "size_t" || name == "ptrdiff_t" || name == "dstring" || name == "wstring")     //todo this might be  defined in runtime
+        if (name == "sizeof" || name == "alignof" || name == "tupleof" || name == "offsetof" || name == "init")     //todo this might be  defined in runtime
             return true
         if (parent is AtAttribute && atAttributeIdentifiers.contains(name)) return true
         if (parent is ScopeGuardStatement)

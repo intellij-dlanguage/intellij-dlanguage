@@ -142,8 +142,6 @@ object SpecialCaseResolve {
             return directoryResolve//todo do a file resolve as well
         }
         return emptySet()
-
-
     }
 
 }

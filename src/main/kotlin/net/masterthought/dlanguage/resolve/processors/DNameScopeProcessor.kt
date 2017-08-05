@@ -3,9 +3,11 @@ package net.masterthought.dlanguage.resolve.processors
 import com.intellij.psi.PsiElement
 import com.intellij.psi.ResolveState
 import com.intellij.psi.search.GlobalSearchScope
+import com.intellij.psi.stubs.NamedStubBase
 import com.intellij.psi.stubs.StubIndex
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement
-import net.masterthought.dlanguage.psi.references.DReference
+import net.masterthought.dlanguage.psi.interfaces.HasMembers
+import net.masterthought.dlanguage.resolve.DResolveUtil
 import net.masterthought.dlanguage.resolve.DResolveUtil.getAllPubliclyImportedAsFiles
 import net.masterthought.dlanguage.stubs.index.DTopLevelDeclarationIndex
 import net.masterthought.dlanguage.utils.Constructor
@@ -40,11 +42,13 @@ class DNameScopeProcessor(var start: Identifier) : DResolveProcessor<DNamedEleme
                     }
                 } else {
                     for (bind in (element.parent as ImportDeclaration).importBindings?.importBinds!!) {
-                        if (bind.identifiers.last().name == start.name) {
-                            result.addAll(
-                                (bind.identifiers.last().reference as DReference)
-                                    .multiResolve(false)
-                                    .map { it.element as DNamedElement })
+                        for (resolveResult in DResolveUtil.findDefinitionNode(element.project, bind.identifiers.last())) {
+                            if ((resolveResult as DNamedElement).name == start.name) {
+                                result.add(resolveResult)
+                            }
+                            if (resolveResult is HasMembers<*>) {
+                                getMembersOfBind(resolveResult as DNamedElement)
+                            }
                         }
                     }
                 }
@@ -54,6 +58,14 @@ class DNameScopeProcessor(var start: Identifier) : DResolveProcessor<DNamedEleme
             throw IllegalStateException()
         }
         return true
+    }
+
+    private fun getMembersOfBind(resolveResult: DNamedElement) {
+        for (member: NamedStubBase<*> in (resolveResult as HasMembers<*>).members) {
+            if (member.name == start.name) {
+                result.add((member.psi as DNamedElement))
+            }
+        }
     }
 
 }

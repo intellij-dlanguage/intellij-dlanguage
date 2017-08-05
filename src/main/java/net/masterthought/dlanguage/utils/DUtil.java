@@ -298,5 +298,13 @@ public class DUtil {
         }
 
     }
+
+    public static DLanguageIdentifier getEndOfIdentifierList(DLanguageIdentifierChain chain) {
+        final List<DLanguageIdentifier> list = chain.getIdentifiers();
+        if (list.get(list.size() - 1) != null)
+            return list.get(list.size() - 1);
+        else
+            throw new IllegalStateException();
+    }
 }
 

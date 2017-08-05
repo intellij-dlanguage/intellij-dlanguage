@@ -2,8 +2,10 @@ package net.masterthought.dlanguage.psi.impl.named;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.*;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
@@ -11,7 +13,6 @@ import net.masterthought.dlanguage.icons.DLanguageIcons;
 import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.impl.DLanguageParametersImpl;
 import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
-import net.masterthought.dlanguage.psi.references.DReference;
 import net.masterthought.dlanguage.resolve.ScopeProcessorImpl;
 import net.masterthought.dlanguage.stubs.DLanguageConstructorStub;
 import org.jetbrains.annotations.NotNull;
@@ -90,30 +91,11 @@ public class DLanguageConstructorImpl extends DNamedStubbedPsiElementBase<DLangu
         return PsiTreeUtil.getChildOfType(this,DLanguageTemplateParameters.class);
     }
 
-
-    @NotNull
-    public String getName() {
-        if (getParentClassOrStructOrTemplateOrInterfaceOrUnion(this) == null) {
-            return DReference.Companion.getNAME_NOT_FOUND_STRING();
-        }
-        return getParentClassOrStructOrTemplateOrInterfaceOrUnion(this).getName();
-    }
-
     @Nullable
-    public PsiElement getNameIdentifier() {
-        final ASTNode keyNode = getNode();
-        return keyNode.getPsi();
-    }
-
-    @NotNull
-    public PsiReference getReference() {
-        return new DReference(this, TextRange.from(0, (this).getName().length()));
-    }
-
-    @NotNull
-    public PsiElement setName(@NotNull final String newName) {
-        getParentClassOrStructOrTemplateOrInterfaceOrUnion(this).setName(newName);
-        return this;
+    public DLanguageIdentifier getNameIdentifier() {
+        if (getParentClassOrStructOrTemplateOrInterfaceOrUnion(this) == null)
+            return null;
+        return getParentClassOrStructOrTemplateOrInterfaceOrUnion(this).getNameIdentifier();
     }
 
     @NotNull
