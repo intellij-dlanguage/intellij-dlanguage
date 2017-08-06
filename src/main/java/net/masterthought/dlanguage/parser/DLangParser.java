@@ -107,7 +107,7 @@ class DLangParser {
     private int suppressMessages;
     private int index;
 
-    public DLangParser(@NotNull final PsiBuilder builder) {
+    DLangParser(@NotNull final PsiBuilder builder) {
         this.errorCount = 0;
         this.warningCount = 0;
         this.tokens = getTokens(builder);
@@ -543,7 +543,7 @@ class DLangParser {
         return false;
     }
 
-    boolean parseIdentifierListAliasDeclaration() {
+    private boolean parseIdentifierListAliasDeclaration() {
 //        Marker m = enter_section_modified(builder);
         while (moreTokens()) {
             Marker fakeAliasInitializer = enter_section_modified(builder);
@@ -750,7 +750,6 @@ class DLangParser {
      */
     boolean parseArguments() {
         Marker m = enter_section_(builder);
-//			Runnable cleanup =() ->  exit_section_modified(builder,m,DLanguageTypes.Arguments,false);
         if (!tokenCheck("(")) {
             cleanup(m, ARGUMENTS);
             return false;
@@ -778,7 +777,6 @@ class DLangParser {
      */
     boolean parseArrayInitializer() {
 //        Marker m = enter_section_(builder);
-//			Runnable cleanup =() ->  exit_section_modified(builder,m,DLanguageTypes.ArrayInitializer,false);
         final Marker arrayInit = enter_section_modified(builder);
         Token open = expect(tok("["));
         if (open == null) {
@@ -3403,7 +3401,6 @@ class DLangParser {
 //                    if (last != null && last.comment == null)
 //                    last.comment = current().trailingComment;
                 advance();
-                continue;
             } else if (currentIs(tok("}"))) {
 //                    if (last != null && last.comment == null)
 //                    last.comment = tokens[index - 1].trailingComment;
@@ -4160,7 +4157,6 @@ class DLangParser {
             }
             if (currentIs(tok("."))) {
                 advance();
-                continue;
             } else
                 break;
         }
@@ -4185,7 +4181,6 @@ class DLangParser {
             }
             if (currentIs(tok(","))) {
                 advance();
-                continue;
             } else
                 break;
         }
@@ -4204,10 +4199,8 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
         int identifiersOrTemplateInstancesLength = 0;
         while (moreTokens()) {
-//                auto c = allocator.setCheckpoint();
             if (!parseIdentifierOrTemplateInstance()) {
                 identifiersOrTemplateInstancesLength++;
-//                    allocator.rollback(c);
                 if (identifiersOrTemplateInstancesLength == 0) {
                     cleanup(m, IDENTIFIER_OR_TEMPLATE_CHAIN);
                     return false;
@@ -4337,11 +4330,9 @@ class DLangParser {
                 }
             }
             Bookmark b = setBookmark();
-//                c = allocator.setCheckpoint();
             boolean type = parseType().first;
             if (!type || !currentIs(tok("identifier"))
                 || !peekIs(tok("="))) {
-//                    allocator.rollback(c);
                 goToBookmark(b);
                 if (!parseExpression()) {
                     cleanup(m, IF_STATEMENT);
@@ -4440,14 +4431,12 @@ class DLangParser {
             return false;
         }
         while (moreTokens()) {
-//                c = allocator.setCheckpoint();
             if (parseImportBind()) {
                 if (currentIs(tok(",")))
                     advance();
                 else
                     break;
             } else {
-//                    allocator.rollback(c);
                 break;
             }
         }
@@ -7686,7 +7675,6 @@ class DLangParser {
             }
         }
 
-        loop:
         while (moreTokens()) {
             Token.IdType i1 = current().type;
             if (i1.equals(tok("!"))) {
@@ -7705,9 +7693,9 @@ class DLangParser {
                             return false;
                         }
                     } else
-                        break loop;
+                        break;
                 } else
-                    break loop;
+                    break;
             } else if (i1.equals(tok("("))) {
                 //todo fix this duplication
                 exit_section_modified(builder, m, UNARY_EXPRESSION, true);
@@ -7731,7 +7719,7 @@ class DLangParser {
                 } else
                     parseIdentifierOrTemplateInstance();
             } else {
-                break loop;
+                break;
             }
         }
         exit_section_modified(builder, m, UNARY_EXPRESSION, true);
@@ -8205,8 +8193,6 @@ class DLangParser {
     boolean isType() {
         if (!moreTokens()) return false;
         Bookmark b = setBookmark();
-//            auto c = allocator.setCheckpoint();
-//            scope (exit) allocator.rollback(c);
         if (!parseType().first) {
             goToBookmark(b);
             return false;
@@ -9104,12 +9090,12 @@ class DLangParser {
         final Marker m;
         private boolean dropped = false;
 
-        public Bookmark(int num, Marker m) {
+        Bookmark(int num, Marker m) {
             this.num = num;
             this.m = m;
         }
 
-        public int intValue() {
+        int intValue() {
             return num;
         }
     }
