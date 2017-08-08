@@ -1,5 +1,6 @@
 package net.masterthought.dlanguage.stubs.types;
 
+import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubInputStream;
 import com.intellij.psi.stubs.StubOutputStream;
@@ -29,6 +30,11 @@ public class IdentifierStubElementType extends DNamedStubElementType<DLanguageId
     @Override
     public void serialize(@NotNull DLanguageIdentifierStub stub, @NotNull StubOutputStream dataStream) throws IOException {
         dataStream.writeName(stub.getName());
+    }
+
+    @Override
+    public boolean shouldCreateStub(ASTNode node) {
+        return false;
     }
 
     @NotNull

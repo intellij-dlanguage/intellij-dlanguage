@@ -22,4 +22,3 @@ class DPublicImportIndex : StringStubIndexExtension<SingleImport>() {
         val VERSION = 1
     }
 }
-

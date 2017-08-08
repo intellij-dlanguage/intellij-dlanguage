@@ -29,7 +29,7 @@ class PossiblyUndefinedSymbol : LocalInspectionTool() {
         val log: Logger = Logger.getInstance(this::class.java)
         override fun visitIdentifier(identifier: DLanguageIdentifierImpl?) {
             if (identifier != null) {
-//                val start = System.currentTimeMillis()
+                val start = System.currentTimeMillis()
                 if (shouldNotResolveToAnything(identifier)) {
                     return
                 }
@@ -41,11 +41,14 @@ class PossiblyUndefinedSymbol : LocalInspectionTool() {
 //                else if (BasicResolve.findDefinitionNode(identifier.project, identifier).isEmpty() && !symbolIsDefinedByDefault(identifier)) {
 //                    holder.registerProblem(identifier, "Possibly undefined symbol")
 //                }
-//                val end = System.currentTimeMillis()
-//                log.info("time to resolve in inspection:" + (end-start))
                 if ((identifier.reference as DReference).multiResolve(false).isEmpty() && !symbolIsDefinedByDefault(identifier)) {
                     holder.registerProblem(identifier, "Possibly undefined symbol")//todo add quick fix, and use stubs
                 }
+                val end = System.currentTimeMillis()
+                if (end - start > 50) {
+                    log.info("resolve took a while" + (end - start))
+                }
+//                log.info("time to resolve in inspection:" + (end - start))
             }
         }
     }
