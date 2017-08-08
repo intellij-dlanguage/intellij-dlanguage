@@ -313,6 +313,10 @@ object ScopeProcessorImpl {
                             state: ResolveState,
                             lastParent: PsiElement,
                             place: PsiElement): Boolean {
+        if (element.declarationOrStatement?.declaration != null) {
+            if (!ScopeProcessorImplUtil.processDeclaration(element.declarationOrStatement!!.declaration!!, processor, state, lastParent, place))
+                return false
+        }
         return processor.execute(element, state)
     }
 
@@ -366,12 +370,8 @@ object ScopeProcessorImpl {
                 toContinue = false
             }
         }
-        for (declarationOrStatement in element.declarationOrStatements) {
-            if (declarationOrStatement.declaration != null) {
-                if (!processDeclaration(declarationOrStatement.declaration!!, processor, state, lastParent, place)) {
-                    toContinue = false
-                }
-            }
+        if (!ScopeProcessorImplUtil.processDeclarationsOrStatements(element.declarationOrStatements, processor, state, lastParent, place)) {
+            toContinue = false
         }
         return toContinue
     }
@@ -516,15 +516,9 @@ object ScopeProcessorImpl {
                             state: ResolveState,
                             lastParent: PsiElement,
                             place: PsiElement): Boolean {
-        var toContinue = true
-        for (declarationOrStatement in element.declarationOrStatements) {
-            if (declarationOrStatement.declaration != null) {
-                if (!processDeclaration(declarationOrStatement.declaration!!, processor, state, lastParent, place)) {
-                    toContinue = false
-                }
-            }
-        }
-        return toContinue
+        if (!ScopeProcessorImplUtil.processDeclarationsOrStatements(element.declarationOrStatements, processor, state, lastParent, place))
+            return false
+        return true
     }
 
 

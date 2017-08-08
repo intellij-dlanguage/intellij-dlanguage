@@ -260,4 +260,19 @@ object ScopeProcessorImplUtil {
         return true
     }
 
+    fun processDeclarationsOrStatements(declarationOrStatements: List<DeclarationOrStatement>, processor: PsiScopeProcessor, state: ResolveState, lastParent: PsiElement, place: PsiElement): Boolean {
+        var toContinue = true
+        for (declarationOrStatement in declarationOrStatements) {
+            if (declarationOrStatement.declaration != null) {
+                if (!ScopeProcessorImplUtil.processDeclaration(declarationOrStatement.declaration!!, processor, state, lastParent, place)) {
+                    toContinue = false
+                }
+            }
+            if (declarationOrStatement.statement?.statementNoCaseNoDefault?.labeledStatement != null) {
+                toContinue = declarationOrStatement.statement!!.statementNoCaseNoDefault!!.labeledStatement!!.processDeclarations(processor, state, lastParent, place)
+            }
+        }
+        return toContinue
+    }
+
 }
