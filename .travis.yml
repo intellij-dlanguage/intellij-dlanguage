@@ -40,7 +40,7 @@ jobs:
       deploy:
         provider: script
         skip_cleanup: true
-        script: ORG_GRADLE_PROJECT_publishChannels=eap ORG_GRADLE_PROJECT_version=1.14-eap$TRAVIS_BUILD_NUMBER ./gradlew :publishPlugin
+        script: ORG_GRADLE_PROJECT_publishChannels=eap ORG_GRADLE_PROJECT_version=1.13.1-eap$TRAVIS_BUILD_NUMBER ./gradlew :publishPlugin
         on:
           branch: master
     - stage: Deploy new Release
