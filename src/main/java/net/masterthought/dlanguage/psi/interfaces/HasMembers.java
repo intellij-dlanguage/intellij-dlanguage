@@ -19,14 +19,14 @@ import java.util.Set;
  */
 public interface HasMembers<T extends StubElement> extends StubBasedPsiElement<T>, DNamedElement {
     default Set<NamedStubBase> getMembers() {
-        Set<NamedStubBase> res = new HashSet<>();
+        final Set<NamedStubBase> res = new HashSet<>();
         ((DLanguageFile) getContainingFile()).calcStubTree();
         getMembersImpl(((StubBasedPsiElementBase) this).getGreenStub(), res);
         return res;
     }
 
-    default void getMembersImpl(Stub stub, Set<NamedStubBase> result) {
-        for (Stub childStub : stub.getChildrenStubs()) {
+    default void getMembersImpl(final Stub stub, final Set<NamedStubBase> result) {
+        for (final Stub childStub : stub.getChildrenStubs()) {
             if (childStub instanceof NamedStubBase && !(childStub instanceof DLanguageIdentifierStub)) {
                 result.add((NamedStubBase) childStub);
             }
