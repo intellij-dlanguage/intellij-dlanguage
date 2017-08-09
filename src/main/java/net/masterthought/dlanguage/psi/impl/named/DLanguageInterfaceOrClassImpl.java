@@ -51,7 +51,7 @@ public class DLanguageInterfaceOrClassImpl extends DNamedStubbedPsiElementBase<D
     }
 
     @Override
-    @NotNull
+    @Nullable
     public DLanguageIdentifier getIdentifier() {
         return PsiTreeUtil.getStubChildOfType(this, DLanguageIdentifier.class);
     }
@@ -86,13 +86,6 @@ public class DLanguageInterfaceOrClassImpl extends DNamedStubbedPsiElementBase<D
     public PsiReference getReference() {
         return new DReference(this, TextRange.from(0, (this).getName().length()));
     }
-
-    @NotNull
-    public PsiElement setName(@NotNull final String newName) {
-        getIdentifier().setName(newName);
-        return this;
-    }
-
 
     public boolean processDeclarations(@NotNull final PsiScopeProcessor processor, @NotNull final ResolveState state, final PsiElement lastParent, @NotNull final PsiElement place) {
         return ScopeProcessorImpl.INSTANCE.processDeclarations(this, processor, state, lastParent, place);

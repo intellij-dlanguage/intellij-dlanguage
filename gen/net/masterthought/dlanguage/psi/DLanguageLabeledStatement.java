@@ -9,11 +9,11 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageLabeledStatement extends PsiElement, DNamedElement, StubBasedPsiElement<DLanguageLabeledStatementStub> {
     @Nullable
-    public DLanguageIdentifier getIdentifier();
+    DLanguageIdentifier getIdentifier();
 
     @Nullable
-    public PsiElement getOP_COLON();
+    PsiElement getOP_COLON();
 
     @Nullable
-    public DLanguageDeclarationOrStatement getDeclarationOrStatement();
+    DLanguageDeclarationOrStatement getDeclarationOrStatement();
 }

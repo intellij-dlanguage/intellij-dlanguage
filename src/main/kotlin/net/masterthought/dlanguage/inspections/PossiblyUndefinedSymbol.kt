@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElementVisitor
 import net.masterthought.dlanguage.psi.DLanguageVisitor
 import net.masterthought.dlanguage.psi.impl.named.DLanguageIdentifierImpl
 import net.masterthought.dlanguage.psi.references.DReference
-import net.masterthought.dlanguage.resolve.DResolveUtil.shouldNotResolveToAnything
+import net.masterthought.dlanguage.resolve.DResolveUtil
 import net.masterthought.dlanguage.utils.Identifier
 
 
@@ -30,7 +30,7 @@ class PossiblyUndefinedSymbol : LocalInspectionTool() {
         override fun visitIdentifier(identifier: DLanguageIdentifierImpl?) {
             if (identifier != null) {
                 val start = System.currentTimeMillis()
-                if (shouldNotResolveToAnything(identifier)) {
+                if (DResolveUtil.getInstance(identifier.project).shouldNotResolveToAnything(identifier)) {
                     return
                 }
 //                if(SpecialCaseResolve.isApplicable(identifier)){
@@ -42,11 +42,12 @@ class PossiblyUndefinedSymbol : LocalInspectionTool() {
 //                    holder.registerProblem(identifier, "Possibly undefined symbol")
 //                }
                 if ((identifier.reference as DReference).multiResolve(false).isEmpty() && !symbolIsDefinedByDefault(identifier)) {
-                    holder.registerProblem(identifier, "Possibly undefined symbol")//todo add quick fix, and use stubs
+                    holder.registerProblem(identifier, "Possibly undefined symbol")//todo add quick fix
                 }
                 val end = System.currentTimeMillis()
                 if (end - start > 50) {
                     log.info("resolve took a while" + (end - start))
+                    DResolveUtil.getInstance(identifier.project).findDefinitionNode(identifier, true)
                 }
 //                log.info("time to resolve in inspection:" + (end - start))
             }

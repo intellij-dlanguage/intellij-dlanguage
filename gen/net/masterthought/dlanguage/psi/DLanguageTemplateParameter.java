@@ -9,17 +9,17 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageTemplateParameter extends PsiElement, DNamedElement, StubBasedPsiElement<DLanguageTemplateParameterStub> {
     @Nullable
-    public DLanguageTemplateAliasParameter getTemplateAliasParameter();
+    DLanguageTemplateAliasParameter getTemplateAliasParameter();
 
     @Nullable
-    public DLanguageTemplateTupleParameter getTemplateTupleParameter();
+    DLanguageTemplateTupleParameter getTemplateTupleParameter();
 
     @Nullable
-    public DLanguageTemplateTypeParameter getTemplateTypeParameter();
+    DLanguageTemplateTypeParameter getTemplateTypeParameter();
 
     @Nullable
-    public DLanguageTemplateThisParameter getTemplateThisParameter();
+    DLanguageTemplateThisParameter getTemplateThisParameter();
 
     @Nullable
-    public DLanguageTemplateValueParameter getTemplateValueParameter();
+    DLanguageTemplateValueParameter getTemplateValueParameter();
 }

@@ -6,8 +6,8 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageLastCatch extends PsiElement {
     @Nullable
-    public PsiElement getKW_CATCH();
+    PsiElement getKW_CATCH();
 
     @Nullable
-    public DLanguageStatementNoCaseNoDefault getStatementNoCaseNoDefault();
+    DLanguageStatementNoCaseNoDefault getStatementNoCaseNoDefault();
 }

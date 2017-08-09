@@ -38,6 +38,7 @@ public class DElementTypeFactory {
         if (name.equals("EPONYMOUS_TEMPLATE_DECLARATION"))
             return new DLanguageEponymousTemplateDeclarationStubElementType(name);
         if (name.equals("ENUM_MEMBER")) return new DLanguageEnumMemberStubElementType(name);
+        if (name.equals("NAMED_IMPORT_BIND")) return new DLanguageNamedImportBindStubElementType(name);
         throw new RuntimeException("Unknown element type: " + name);
     }
 }

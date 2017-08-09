@@ -6,11 +6,11 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageCompileCondition extends PsiElement {
     @Nullable
-    public DLanguageVersionCondition getVersionCondition();
+    DLanguageVersionCondition getVersionCondition();
 
     @Nullable
-    public DLanguageDebugCondition getDebugCondition();
+    DLanguageDebugCondition getDebugCondition();
 
     @Nullable
-    public DLanguageStaticIfCondition getStaticIfCondition();
+    DLanguageStaticIfCondition getStaticIfCondition();
 }

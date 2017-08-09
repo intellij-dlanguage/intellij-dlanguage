@@ -62,7 +62,7 @@ D Language File
                                 PsiElement(DLanguageTokenType.ID)('y')
                             PsiElement(DLanguageTokenType.;)(';')
                     PsiElement(DLanguageTokenType.})('}')
-            PsiComment(DLanguageTokenType.LINE_COMMENT)('// illegal, y shadows enclosing scope's y')
+            PsiComment(DLanguageTokenType.LINE_COMMENT)('// illegal, y shadows enclosing hasBind's y')
             DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
               DLanguageDeclarationImpl(DECLARATION)
                 DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)

@@ -9,8 +9,8 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageUnittest extends PsiElement, DCompositeElement, StubBasedPsiElement<DLanguageUnittestStub> {
     @Nullable
-    public DLanguageUnittest getUnittest();
+    DLanguageUnittest getUnittest();
 
     @Nullable
-    public DLanguageBlockStatement getBlockStatement();
+    DLanguageBlockStatement getBlockStatement();
 }

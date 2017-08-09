@@ -6,18 +6,18 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageTypeofExpression extends PsiElement {
     @Nullable
-    public DLanguageExpression getExpression();
+    DLanguageExpression getExpression();
 
     @Nullable
-    public PsiElement getKW_TYPEOF();
+    PsiElement getKW_TYPEOF();
 
     @Nullable
-    public PsiElement getOP_PAR_RIGHT();
+    PsiElement getOP_PAR_RIGHT();
 
     @Nullable
-    public PsiElement getOP_PAR_LEFT();
+    PsiElement getOP_PAR_LEFT();
 
     @Nullable
-    public PsiElement getKW_RETURN();
+    PsiElement getKW_RETURN();
 
 }

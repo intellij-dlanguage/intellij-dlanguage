@@ -13,28 +13,28 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageCatch extends PsiElement, DNamedElement, StubBasedPsiElement<DLanguageCatchStub> {
     @Nullable
-    public PsiElement getKW_CATCH();
+    PsiElement getKW_CATCH();
 
     @Nullable
-    public PsiElement getOP_PAR_LEFT();
+    PsiElement getOP_PAR_LEFT();
 
     @Nullable
-    public PsiElement getOP_PAR_RIGHT();
+    PsiElement getOP_PAR_RIGHT();
 
     @Nullable
-    public DLanguageType getType();
+    DLanguageType getType();
 
     @Nullable
-    public DLanguageIdentifier getIdentifier();
+    DLanguageIdentifier getIdentifier();
 
     @Nullable
-    public DLanguageDeclarationOrStatement getDeclarationOrStatement();
+    DLanguageDeclarationOrStatement getDeclarationOrStatement();
 
     @Override
-    default public boolean processDeclarations(@NotNull PsiScopeProcessor processor,
-                                               @NotNull ResolveState state,
-                                               PsiElement lastParent,
-                                               @NotNull PsiElement place) {
+    default boolean processDeclarations(@NotNull PsiScopeProcessor processor,
+                                        @NotNull ResolveState state,
+                                        PsiElement lastParent,
+                                        @NotNull PsiElement place) {
         return ScopeProcessorImpl.INSTANCE.processDeclarations(this, processor, state, lastParent, place);
     }
 }

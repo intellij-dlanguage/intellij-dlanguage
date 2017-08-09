@@ -6,12 +6,12 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageTemplateParameters extends PsiElement {
     @Nullable
-    public DLanguageTemplateParameterList getTemplateParameterList();
+    DLanguageTemplateParameterList getTemplateParameterList();
 
     @Nullable
-    public PsiElement getOP_PAR_RIGHT();
+    PsiElement getOP_PAR_RIGHT();
 
     @Nullable
-    public PsiElement getOP_PAR_LEFT();
+    PsiElement getOP_PAR_LEFT();
 
 }

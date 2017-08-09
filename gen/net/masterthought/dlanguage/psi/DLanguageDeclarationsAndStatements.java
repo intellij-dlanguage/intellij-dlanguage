@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface DLanguageDeclarationsAndStatements extends PsiElement {
     @NotNull
-    public List<DLanguageDeclarationOrStatement> getDeclarationOrStatements();
+    List<DLanguageDeclarationOrStatement> getDeclarationOrStatements();
 }

@@ -6,8 +6,8 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageTemplateArgument extends PsiElement {
     @Nullable
-    public DLanguageType getType();
+    DLanguageType getType();
 
     @Nullable
-    public DLanguageAssignExpression getAssignExpression();
+    DLanguageAssignExpression getAssignExpression();
 }

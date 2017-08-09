@@ -14,7 +14,6 @@ import net.masterthought.dlanguage.psi.DLanguageFile
 import net.masterthought.dlanguage.psi.DLanguageIdentifier
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement
 import net.masterthought.dlanguage.psi.references.DReference
-import net.masterthought.dlanguage.resolve.DResolveUtil.getAllImportedModulesAsFiles
 import net.masterthought.dlanguage.stubs.index.DTopLevelDeclarationIndex
 import net.masterthought.dlanguage.utils.*
 
@@ -82,13 +81,14 @@ object SpecialCaseResolve {
     }
 
     private fun resolveScopedSymbol(singleImport: SingleImport, scope: DLanguageIdentifier): Set<PsiNamedElement> {
+        val project = scope.project
         val resolved = mutableSetOf<PsiNamedElement>()
         for (resolveResult in (singleImport.identifierChain!!.identifiers.last().reference as DReference).multiResolve(false)) {
             assert(resolveResult.element is DLanguageFile)
-            for (file in getAllImportedModulesAsFiles(resolveResult.element as DLanguageFile)) {
-                resolved.addAll(StubIndex.getElements(DTopLevelDeclarationIndex.KEY, scope.name, scope.project, GlobalSearchScope.fileScope(file), DNamedElement::class.java))
+            for (file in DResolveUtil.getInstance(project).getAllImportedModulesAsFiles(resolveResult.element as DLanguageFile)) {
+                resolved.addAll(StubIndex.getElements(DTopLevelDeclarationIndex.KEY, scope.name, project, GlobalSearchScope.fileScope(file), DNamedElement::class.java))
             }
-            resolved.addAll(StubIndex.getElements(DTopLevelDeclarationIndex.KEY, scope.name, scope.project, GlobalSearchScope.fileScope(resolveResult.element as DLanguageFile), DNamedElement::class.java))
+            resolved.addAll(StubIndex.getElements(DTopLevelDeclarationIndex.KEY, scope.name, project, GlobalSearchScope.fileScope(resolveResult.element as DLanguageFile), DNamedElement::class.java))
         }
         return resolved
     }
@@ -113,7 +113,7 @@ object SpecialCaseResolve {
         return PsiTreeUtil.getTopmostParentOfType(identifier, ImportBindings::class.java)
     }
 
-    fun tryPackageResolve(e: Identifier): Set<PsiNamedElement> {
+    fun tryPackageResolve(e: Identifier, profile: Boolean = false): Set<PsiNamedElement> {
         fun inIdentifierOrTemplateChain(identifier: Identifier): IdentifierOrTemplateChain? {
             return PsiTreeUtil.getTopmostParentOfType(identifier, IdentifierOrTemplateChain::class.java)
         }

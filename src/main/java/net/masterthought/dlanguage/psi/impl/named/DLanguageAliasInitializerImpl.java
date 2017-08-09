@@ -38,7 +38,7 @@ public class DLanguageAliasInitializerImpl extends DNamedStubbedPsiElementBase<D
     }
 
     @Override
-    @NotNull
+    @Nullable
     public DLanguageIdentifier getIdentifier() {
         return PsiTreeUtil.getStubChildOfType(this, DLanguageIdentifier.class);
     }

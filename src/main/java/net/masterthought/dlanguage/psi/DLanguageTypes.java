@@ -54,6 +54,7 @@ public interface DLanguageTypes {
     IElementType TEMPLATE_PARAMETER = DElementTypeFactory.factory("TEMPLATE_PARAMETER");
     IElementType EPONYMOUS_TEMPLATE_DECLARATION = DElementTypeFactory.factory("EPONYMOUS_TEMPLATE_DECLARATION");
     IElementType ENUM_MEMBER = DElementTypeFactory.factory("ENUM_MEMBER");
+    IElementType NAMED_IMPORT_BIND = DElementTypeFactory.factory("NAMED_IMPORT_BIND");
     IElementType ALIAS_DECLARATION = new DLanguageElementType("ALIAS_DECLARATION");
     IElementType ALIAS_THIS_DECLARATION = new DLanguageElementType("ALIAS_THIS_DECLARATION");
     IElementType ALIGN_ATTRIBUTE = new DLanguageElementType("ALIGN_ATTRIBUTE");

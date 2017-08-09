@@ -552,6 +552,19 @@ object ScopeProcessorImpl {
         return true
     }
 
+    @Suppress("UNUSED_PARAMETER")
+    fun processDeclarations(element: OutStatement,
+                            processor: PsiScopeProcessor,
+                            state: ResolveState,
+                            lastParent: PsiElement,
+                            place: PsiElement): Boolean {
+
+        if (element.identifier != null) {
+            return processor.execute(element.identifier!!, state)
+        }
+        return true
+    }
+
 
 /*
     @Suppress("UNUSED_PARAMETER")
