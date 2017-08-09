@@ -704,8 +704,8 @@ class DLangParser {
      * ;)
      */
     boolean parseAndExpression() {
-        Marker m = enter_section_modified(builder);
-        Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
+        final Marker m = enter_section_modified(builder);
+        final Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
         toParseExpression.element = false;
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AndExpression", "CmpExpression", tok("&"));
         if (!toParseExpression.element) {
@@ -778,7 +778,7 @@ class DLangParser {
     boolean parseArrayInitializer() {
 //        Marker m = enter_section_(builder);
         final Marker arrayInit = enter_section_modified(builder);
-        Token open = expect(tok("["));
+        final Token open = expect(tok("["));
         if (open == null) {
             cleanup(arrayInit, ARRAY_INITIALIZER);
             return false;
@@ -873,7 +873,7 @@ class DLangParser {
             exit_section_modified(builder, m, ARRAY_MEMBER_INITIALIZATION, true);
             return true;
         } else {
-            boolean assignExpression = parseAssignExpression();
+            final boolean assignExpression = parseAssignExpression();
             if (!assignExpression) {
                 cleanup(m, ARRAY_MEMBER_INITIALIZATION);
                 return false;
@@ -902,7 +902,7 @@ class DLangParser {
     boolean parseAsmAddExp() {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
         final Marker m = enter_section_modified(builder);
-        Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
+        final Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
         toParseExpression.element = false;
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmAddExp", "AsmMulExp", tok("+"), tok("-"));
         if (!toParseExpression.element) {
@@ -925,7 +925,7 @@ class DLangParser {
     boolean parseAsmAndExp() {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
         final Marker m = enter_section_modified(builder);
-        Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
+        final Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
         toParseExpression.element = false;
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmAndExp", "AsmEqualExp", tok("&"));
         if (!toParseExpression.element) {
@@ -1002,7 +1002,7 @@ class DLangParser {
      */
     boolean parseAsmEqualExp() {
         final Marker m = enter_section_modified(builder);
-        Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
+        final Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
         toParseExpression.element = false;
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmEqualExp", "AsmRelExp", tok("=="), tok("!="));
         if (!toParseExpression.element) {
@@ -1102,7 +1102,7 @@ class DLangParser {
     boolean parseAsmLogAndExp() {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
         final Marker m = enter_section_modified(builder);
-        Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
+        final Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
         toParseExpression.element = false;
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmLogAndExp", "AsmOrExp", tok("&&"));
         if (!toParseExpression.element) {
@@ -1124,7 +1124,7 @@ class DLangParser {
      */
     boolean parseAsmLogOrExp() {
         final Marker m = enter_section_modified(builder);
-        Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
+        final Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
         toParseExpression.element = false;
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmLogOrExp", "AsmLogAndExp", tok("||"));
         if (!toParseExpression.element) {
@@ -1146,7 +1146,7 @@ class DLangParser {
      */
     boolean parseAsmMulExp() {
         final Marker m = enter_section_modified(builder);
-        Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
+        final Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
         toParseExpression.element = false;
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmMulExp", "AsmBrExp", tok("*"), tok("/"), tok("%"));
         if (!toParseExpression.element) {
@@ -1169,7 +1169,7 @@ class DLangParser {
     boolean parseAsmOrExp() {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
         final Marker m = enter_section_modified(builder);
-        Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
+        final Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
         toParseExpression.element = false;
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmOrExp", "AsmXorExp", tok("|"));
         if (!toParseExpression.element) {
@@ -1198,7 +1198,7 @@ class DLangParser {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
 //            AsmPrimaryExp node = allocator.make!AsmPrimaryExp();
         final Marker m = enter_section_modified(builder);
-        Token.IdType i = current().type;
+        final Token.IdType i = current().type;
         if (i.equals(tok("doubleLiteral")) || i.equals(tok("floatLiteral")) || i.equals(tok("intLiteral")) || i.equals(tok("longLiteral")) || i.equals(tok("stringLiteral")) || i.equals(tok("$"))) {
             advance();
         } else if (i.equals(tok("identifier"))) {
@@ -1241,7 +1241,7 @@ class DLangParser {
     boolean parseAsmRelExp() {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
         final Marker m = enter_section_modified(builder);
-        Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
+        final Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
         toParseExpression.element = false;
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmRelExp", "AsmShiftExp", tok("<"), tok("<="), tok(">"), tok(">="));//todo refactor this to make this shorter
         if (!toParseExpression.element) {
@@ -1264,7 +1264,7 @@ class DLangParser {
     boolean parseAsmShiftExp() {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
         final Marker m = enter_section_modified(builder);
-        Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
+        final Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
         toParseExpression.element = false;
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmShiftExp", "AsmAddExp", tok("<<"), tok(">>"), tok(">>>"));
         if (!toParseExpression.element) {
@@ -1327,10 +1327,10 @@ class DLangParser {
     boolean parseAsmTypePrefix() {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
         final Marker m = enter_section_modified(builder);
-        Token.IdType i = current().type;
+        final Token.IdType i = current().type;
         if (i.equals(tok("identifier")) || i.equals(tok("byte")) || i.equals(tok("short")) || i.equals(tok("int")) || i.equals(tok("float")) || i.equals(tok("double")) || i.equals(tok("real"))) {
-            String tokenText = builder.getTokenText();
-            Token t = advance();
+            final String tokenText = builder.getTokenText();
+            final Token t = advance();
             if (t.type.equals(tok("identifier")))
                 switch (tokenText) {
                     case "near":
@@ -1842,8 +1842,8 @@ class DLangParser {
      * ;)
      */
     boolean parseBlockStatement() {
-        Marker m = enter_section_modified(builder);
-        Token openBrace = expect(tok("{"));
+        final Marker m = enter_section_modified(builder);
+        final Token openBrace = expect(tok("{"));
         if (openBrace == null) {
             cleanup(m, BLOCK_STATEMENT);
             return false;
@@ -1854,7 +1854,7 @@ class DLangParser {
                 return false;
             }
         }
-        Token closeBrace = expect(tok("}"));
+        final Token closeBrace = expect(tok("}"));
         exit_section_modified(builder, m, BLOCK_STATEMENT, true);
         return true;
     }
@@ -1881,9 +1881,9 @@ class DLangParser {
      * ;)
      */
     boolean parseBreakStatement() {
-        Marker m = enter_section_modified(builder);
+        final Marker m = enter_section_modified(builder);
         expect(tok("break"));
-        Token.IdType i = current().type;
+        final Token.IdType i = current().type;
         if (i.equals(tok("identifier"))) {
             advance();
             if (!tokenCheck(";")) {
@@ -1901,7 +1901,7 @@ class DLangParser {
         return true;
     }
 
-    private boolean isProtection(Token.IdType type) {
+    private boolean isProtection(final Token.IdType type) {
         return Protections.contains(type);
     }
 
@@ -1913,7 +1913,7 @@ class DLangParser {
      * ;)
      */
     boolean parseBaseClass() {
-        Marker m = enter_section_modified(builder);
+        final Marker m = enter_section_modified(builder);
         if (isProtection(current().type)) {
             warn("Use of base class protection == deprecated.");
             advance();
@@ -1934,7 +1934,7 @@ class DLangParser {
      * ;)
      */
     boolean parseBaseClassList() {
-        Marker m = enter_section_modified(builder);
+        final Marker m = enter_section_modified(builder);
         final boolean result = parseCommaSeparatedRule("BaseClassList", "BaseClass");
         exit_section_modified(builder, m, BASE_CLASS_LIST, result);
         return result;
@@ -1983,7 +1983,7 @@ class DLangParser {
      * ;)
      */
     boolean parseCaseRangeStatement() {
-        Marker m = enter_section_modified(builder);
+        final Marker m = enter_section_modified(builder);
 //            assert (low != null);
 //            node.low = low;
         if (!tokenCheck(":")) {
@@ -1999,7 +1999,7 @@ class DLangParser {
             cleanup(m, CASE_RANGE_STATEMENT);
             return false;
         }
-        Token colon = expect(tok(":"));
+        final Token colon = expect(tok(":"));
         if (colon == null) {
             cleanup(m, CASE_RANGE_STATEMENT);
             return false;
@@ -2020,8 +2020,8 @@ class DLangParser {
      * ;)
      */
     boolean parseCaseStatement() {
-        Marker m = enter_section_modified(builder);
-        Token colon = expect(tok(":"));
+        final Marker m = enter_section_modified(builder);
+        final Token colon = expect(tok(":"));
         if (colon == null) {
             cleanup(m, CASE_STATEMENT);
             return false;
