@@ -814,6 +814,8 @@ public interface DLanguageTypes {
                 return new DLanguageIfConditionImpl(node);
             } else if (type == BUILTIN_TYPE) {
                 return new DLanguageBuiltinTypeImpl(node);
+            } else if (type == NAMED_IMPORT_BIND) {
+                return new DLanguageNamedImportBindImpl(node);
             }
 
 

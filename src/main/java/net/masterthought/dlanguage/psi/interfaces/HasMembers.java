@@ -17,7 +17,7 @@ import java.util.Set;
 /**
  * Created by francis on 8/5/2017.
  */
-public interface HasMembers<T extends StubElement> extends StubBasedPsiElement<T> {
+public interface HasMembers<T extends StubElement> extends StubBasedPsiElement<T>, DNamedElement {
     default Set<NamedStubBase> getMembers() {
         Set<NamedStubBase> res = new HashSet<>();
         ((DLanguageFile) getContainingFile()).calcStubTree();

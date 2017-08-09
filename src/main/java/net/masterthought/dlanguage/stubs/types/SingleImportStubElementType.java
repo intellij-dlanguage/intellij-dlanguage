@@ -33,7 +33,7 @@ public class SingleImportStubElementType extends DNamedStubElementType<DLanguage
 
         Set<StringRef> binds = new HashSet<>();
         for (DLanguageImportBind bind : psi.getApplicableImportBinds()) {
-            binds.add(StringRef.fromString(bind.getIdentifiers().get(0).getName()));
+            binds.add(StringRef.fromString(bind.getIdentifier().getName()));
         }
         return new DLanguageSingleImportStub(parentStub, this, psi.getName(), ((DLanguageSingleImportImpl) psi).isPublic(), psi.getApplicableImportBinds().size(), binds, psi.getName(), psi.getIdentifier() != null, psi.getIdentifier() != null ? psi.getIdentifier().getName() : "");
     }
