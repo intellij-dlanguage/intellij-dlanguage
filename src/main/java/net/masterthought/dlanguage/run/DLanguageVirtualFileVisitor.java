@@ -4,34 +4,32 @@ import com.intellij.openapi.vfs.VfsUtilCore;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileVisitor;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DLanguageVirtualFileVisitor extends VirtualFileVisitor {
-    private final char separator = File.separatorChar;
+
     private final List<String> dLangSources;
-    private final VirtualFile sourcesRoot;
     private final VirtualFile[] excludedRoots;
 
 
-    public DLanguageVirtualFileVisitor(VirtualFile sourcesRoot, VirtualFile[] excludedRoots) {
-        dLangSources = new ArrayList<String>();
-        this.sourcesRoot = sourcesRoot;
+    public DLanguageVirtualFileVisitor(final VirtualFile[] excludedRoots) {
+        dLangSources = new ArrayList<>();
         this.excludedRoots = excludedRoots;
     }
 
     @Override
-    public boolean visitFile(@NotNull VirtualFile file) {
+    public boolean visitFile(@NotNull final VirtualFile file) {
         if (!file.isDirectory() && "d".equals(file.getExtension()) && !isExcluded(file)) {
-            dLangSources.add(VfsUtilCore.getRelativePath(file, sourcesRoot, separator));
+            dLangSources.add(file.getCanonicalPath()); // dLangSources.add(VfsUtilCore.getRelativePath(file, sourcesRoot, File.separatorChar));
         }
         return super.visitFile(file);
     }
 
-    private boolean isExcluded(VirtualFile srcFile) {
-        for (VirtualFile excludeDir : excludedRoots) {
+    private boolean isExcluded(final VirtualFile srcFile) {
+        for (final VirtualFile excludeDir : excludedRoots) {
             if (VfsUtilCore.isAncestor(excludeDir, srcFile, false)) {
                 return true;
             }
@@ -39,7 +37,8 @@ public class DLanguageVirtualFileVisitor extends VirtualFileVisitor {
         return false;
     }
 
-    public List<String> getdLangSources() {
+    @Nullable
+    public List<String> getDlangSources() {
         return dLangSources;
     }
 }
