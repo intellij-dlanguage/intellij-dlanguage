@@ -7,7 +7,11 @@ import com.intellij.execution.process.ProcessOutput;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.projectRoots.*;
 import com.intellij.openapi.roots.OrderRootType;
+import com.intellij.openapi.roots.PersistentOrderRootType;
 import com.intellij.openapi.util.SystemInfo;
+import com.intellij.openapi.vfs.LocalFileSystem;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VirtualFileManager;
 import net.masterthought.dlanguage.icons.DLanguageIcons;
 import net.masterthought.dlanguage.library.LibFileRootType;
 import org.jdom.Element;
@@ -33,7 +37,7 @@ public class DLanguageSdkType extends SdkType {
     private static final String SDK_TYPE_ID = "DMD2 SDK";
     private static final String SDK_NAME = "DMD v2 SDK";
 
-    private static final File DEFAULT_SDK_PATH_WINDOWS = new File("c:/D/DMD2/windows/");
+    private static final File DEFAULT_SDK_PATH_WINDOWS = new File("C:/D/DMD2/");
     private static final File DEFAULT_SDK_PATH_OSX = new File("/usr/local/opt/dmd");
     private static final File DEFAULT_SDK_PATH_LINUX = new File("/usr/bin");
 
@@ -91,7 +95,7 @@ public class DLanguageSdkType extends SdkType {
         if(SystemInfo.isWindows) {
             final File dmdHome = new File(sdkHome);
             if(dmdHome.exists() && dmdHome.isDirectory()) {
-                dmdBinary = Paths.get(sdkHome, "bin", executableName).toFile(); // C:\D\dmd2\windows\bin\dmd.exe
+                dmdBinary = Paths.get(sdkHome, "windows", "bin", executableName).toFile(); // C:\D\dmd2\windows\bin\dmd.exe
             }
         }
 
@@ -106,6 +110,36 @@ public class DLanguageSdkType extends SdkType {
     public String suggestSdkName(final String currentSdkName, final String sdkHome) {
         final String version = getDmdVersion(sdkHome);
         return version != null? version : SDK_NAME;
+    }
+
+    /**
+     * Windows has docs in 'C:\D\dmd2\html\d' and sources in 'C:\D\dmd2\src\phobos'
+     * @param sdk The D
+     */
+    @Override
+    public void setupSdkPaths(@NotNull final Sdk sdk) {
+        final String dmdHomePath = sdk.getHomePath();
+
+        final SdkModificator sdkModificator = sdk.getSdkModificator();
+
+        // documentation paths (todo: find out why using 'OrderRootType.DOCUMENTATION' didn't work)
+//        final File docDir = Paths.get(dmdHomePath, "html", "d").toFile();
+//        final VirtualFile docs = docDir.isDirectory() ? LocalFileSystem.getInstance().findFileByPath(docDir.getAbsolutePath()) : null;
+//        if (docs != null) {
+//            sdkModificator.addRoot(docs, OrderRootType.DOCUMENTATION);
+//        } else {
+//            final VirtualFile fxDocUrl = VirtualFileManager.getInstance().findFileByUrl("http://dlang.org/spec/spec.html");
+//            sdkModificator.addRoot(fxDocUrl, OrderRootType.DOCUMENTATION);
+//        }
+
+        // add phobos to sources root
+        final File srcDir = Paths.get(dmdHomePath, "src", "phobos").toFile();
+        final VirtualFile src = srcDir.isDirectory() ? LocalFileSystem.getInstance().findFileByPath(srcDir.getAbsolutePath()) : null;
+        if (src != null) {
+            sdkModificator.addRoot(src, OrderRootType.SOURCES);
+        }
+
+        sdkModificator.commitChanges();
     }
 
     @Nullable
@@ -125,8 +159,7 @@ public class DLanguageSdkType extends SdkType {
 
     @Nullable
     @Override
-    public AdditionalDataConfigurable createAdditionalDataConfigurable(final SdkModel sdkModel,
-                                                                       final SdkModificator sdkModificator) {
+    public AdditionalDataConfigurable createAdditionalDataConfigurable(final SdkModel sdkModel, final SdkModificator sdkModificator) {
         return null;
     }
 
@@ -153,30 +186,29 @@ public class DLanguageSdkType extends SdkType {
      */
     @Nullable
     private String getDmdVersion(final String sdkHome) {
-        final File compilerFolder = new File(sdkHome);
-        final File compilerFile = new File(sdkHome, SystemInfo.isWindows ? "dmd.exe" : "dmd");
+        if(isValidSdkHome(sdkHome)) {
+            final GeneralCommandLine cmd = new GeneralCommandLine();
+            //cmd.withWorkDirectory(sdkHome.getAbsolutePath());
+            cmd.setExePath(dmdBinary.getAbsolutePath());
+            cmd.addParameter("--version");
 
-        final GeneralCommandLine commandLine = new GeneralCommandLine();
-        commandLine.withWorkDirectory(compilerFolder.getAbsolutePath());
-        commandLine.setExePath(compilerFile.getAbsolutePath());
-        commandLine.addParameter("--version");
+            try {
+                final ProcessOutput output = new CapturingProcessHandler(
+                    cmd.createProcess(),
+                    Charset.defaultCharset(),
+                    cmd.getCommandLineString()
+                ).runProcess();
 
-        try {
-            final ProcessOutput output = new CapturingProcessHandler(
-                commandLine.createProcess(),
-                Charset.defaultCharset(),
-                commandLine.getCommandLineString()
-            ).runProcess();
-
-            //Parse output of a DMD compiler
-            final List<String> outputLines = output.getStdoutLines();
-            if(outputLines != null && !outputLines.isEmpty()) {
-                final String version = outputLines.get(0).trim();
-                LOG.debug(String.format("Found version: %s", version));
-                return version;
+                //Parse output of a DMD compiler
+                final List<String> outputLines = output.getStdoutLines();
+                if(outputLines != null && !outputLines.isEmpty()) {
+                    final String version = outputLines.get(0).trim();
+                    LOG.debug(String.format("Found version: %s", version));
+                    return version;
+                }
+            } catch (final ExecutionException e) {
+                LOG.error("There was a problem running 'dmd --version'", e);
             }
-        } catch (final ExecutionException e) {
-            LOG.error("There was a problem running 'dmd --version'", e);
         }
         return null;
     }
