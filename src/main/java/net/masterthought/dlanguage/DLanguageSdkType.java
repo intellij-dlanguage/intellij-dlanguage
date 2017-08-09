@@ -113,7 +113,7 @@ public class DLanguageSdkType extends SdkType {
     }
 
     /**
-     * Windows has docs in 'C:\D\dmd2\html\d' and sources in 'C:\D\dmd2\src\phobos'
+     * Windows has docs in 'C:\D\dmd2\html\d' and sources in ['C:\D\dmd2\src\phobos', 'C:\D\dmd2\src\druntime']
      * @param sdk The D
      */
     @Override
@@ -133,10 +133,17 @@ public class DLanguageSdkType extends SdkType {
 //        }
 
         // add phobos to sources root
-        final File srcDir = Paths.get(dmdHomePath, "src", "phobos").toFile();
-        final VirtualFile src = srcDir.isDirectory() ? LocalFileSystem.getInstance().findFileByPath(srcDir.getAbsolutePath()) : null;
-        if (src != null) {
-            sdkModificator.addRoot(src, OrderRootType.SOURCES);
+        final File phobosDir = Paths.get(dmdHomePath, "src", "phobos").toFile();
+        final VirtualFile phobosSource = phobosDir.isDirectory() ? LocalFileSystem.getInstance().findFileByPath(phobosDir.getAbsolutePath()) : null;
+        if (phobosSource != null) {
+            sdkModificator.addRoot(phobosSource, OrderRootType.SOURCES);
+        }
+
+        // add druntime to sources root
+        final File druntimeDir = Paths.get(dmdHomePath, "src", "druntime").toFile();
+        final VirtualFile druntimeSource = druntimeDir.isDirectory() ? LocalFileSystem.getInstance().findFileByPath(druntimeDir.getAbsolutePath()) : null;
+        if (druntimeSource != null) {
+            sdkModificator.addRoot(druntimeSource, OrderRootType.SOURCES);
         }
 
         sdkModificator.commitChanges();
