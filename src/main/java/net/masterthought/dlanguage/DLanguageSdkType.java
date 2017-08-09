@@ -8,8 +8,6 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.projectRoots.*;
 import com.intellij.openapi.roots.OrderRootType;
 import com.intellij.openapi.util.SystemInfo;
-import com.intellij.openapi.vfs.LocalFileSystem;
-import com.intellij.openapi.vfs.VirtualFile;
 import net.masterthought.dlanguage.icons.DLanguageIcons;
 import net.masterthought.dlanguage.library.LibFileRootType;
 import org.jdom.Element;
@@ -184,8 +182,14 @@ public class DLanguageSdkType extends SdkType {
     }
 
     /* Returns full path to DMD compiler executable */
-    public String getDmdPath() {
-        return dmdBinary.getAbsolutePath();
+    public String getDmdPath(@NotNull final Sdk sdk) {
+        final String homePath = sdk.getHomePath();
+
+        if(isValidSdkHome(homePath)) {
+            return dmdBinary.getAbsolutePath();
+        }
+
+        return "dmd"; // it may just be on the PATH
     }
 
     /* Returns full path to DMD compiler sources */
