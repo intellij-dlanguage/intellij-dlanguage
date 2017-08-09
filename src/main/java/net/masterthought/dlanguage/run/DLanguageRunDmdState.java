@@ -96,44 +96,45 @@ public class DLanguageRunDmdState extends CommandLineState implements ProcessLis
      * sourceFile2.d
      * </code>
      */
-    private GeneralCommandLine getDmdCommandLine(DLanguageRunDmdConfiguration config)
+    private GeneralCommandLine getDmdCommandLine(final DLanguageRunDmdConfiguration config)
         throws ModuleNotFoundException, NoValidDLanguageSdkFound, NoSourcesException, ExecutionException {
-        Module module = config.getConfigurationModule().getModule();
+        final Module module = config.getConfigurationModule().getModule();
         if (module == null) {
             throw new ModuleNotFoundException();
         }
-        ModuleRootManager moduleRootManager = ModuleRootManager.getInstance(module);
-        Sdk sdk = moduleRootManager.getSdk();
 
-        if (sdk == null || !(sdk.getSdkType() instanceof DLanguageSdkType)) {
+        final ModuleRootManager moduleRootManager = ModuleRootManager.getInstance(module);
+        final Sdk sdk = moduleRootManager.getSdk();
+
+        if(sdk != null && DLanguageSdkType.class.isAssignableFrom(sdk.getClass())) {
+            final DLanguageSdkType dlangSdk = DLanguageSdkType.class.cast(sdk);
+            final List<String> dmdParameters = DLanguageDmdConfigToArgsConverter.getDmdParameters(config, module);
+
+            final GeneralCommandLine cmd = new GeneralCommandLine();
+            cmd.withWorkDirectory(config.getProject().getBasePath());
+            cmd.setExePath(dlangSdk.getDmdPath());
+            cmd.addParameter(tempFileWithParameters(dmdParameters));
+            LOG.debug(String.format("dmd command: %s", cmd.getCommandLineString()));
+            return cmd;
+        } else {
             LOG.error("No valid D compiler found");
             throw new NoValidDLanguageSdkFound();
         }
-
-
-        List<String> dmdParameters = DLanguageDmdConfigToArgsConverter.getDmdParameters(config, module);
-
-        GeneralCommandLine commandLine = new GeneralCommandLine();
-        commandLine.withWorkDirectory(config.getProject().getBasePath());
-        commandLine.setExePath(DLanguageSdkType.getDmdPath(sdk));
-        commandLine.addParameter(tempFileWithParameters(dmdParameters));
-        LOG.debug(String.format("dmd command: %s", commandLine.getCommandLineString()));
-        return commandLine;
     }
 
     //Create file with the list of all dmdParameters
-    private String tempFileWithParameters(List<String> dmdParameters) throws ExecutionException {
-        String sep = System.lineSeparator();
+    private String tempFileWithParameters(final List<String> dmdParameters) throws ExecutionException {
+        final String sep = System.lineSeparator();
         File tmpFile;
         try {
             tmpFile = FileUtil.createTempFile("dmd", "src");
-            OutputStreamWriter output = new OutputStreamWriter(new FileOutputStream(tmpFile), "UTF-8");
-            for (String srcFilePath : dmdParameters) {
+            final OutputStreamWriter output = new OutputStreamWriter(new FileOutputStream(tmpFile), "UTF-8");
+            for (final String srcFilePath : dmdParameters) {
                 output.write(srcFilePath);
                 output.write(sep);
             }
             output.close();
-        } catch (IOException exc) {
+        } catch (final IOException exc) {
             throw new ExecutionException("Can't create temporary file with arguments", exc);
         }
 

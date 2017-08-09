@@ -8,6 +8,8 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.projectRoots.*;
 import com.intellij.openapi.roots.OrderRootType;
 import com.intellij.openapi.util.SystemInfo;
+import com.intellij.openapi.vfs.LocalFileSystem;
+import com.intellij.openapi.vfs.VirtualFile;
 import net.masterthought.dlanguage.icons.DLanguageIcons;
 import net.masterthought.dlanguage.library.LibFileRootType;
 import org.jdom.Element;
@@ -17,6 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import java.io.File;
 import java.nio.charset.Charset;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -35,6 +38,8 @@ public class DLanguageSdkType extends SdkType {
     private static final File DEFAULT_SDK_PATH_WINDOWS = new File("c:/D/DMD2/windows/");
     private static final File DEFAULT_SDK_PATH_OSX = new File("/usr/local/opt/dmd");
     private static final File DEFAULT_SDK_PATH_LINUX = new File("/usr/bin");
+
+    private File dmdBinary = null;
 
     @NotNull
     public static DLanguageSdkType getInstance() {
@@ -77,8 +82,26 @@ public class DLanguageSdkType extends SdkType {
     @Override
     public boolean isValidSdkHome(final String sdkHome) {
         final String executableName = SystemInfo.isWindows ? "dmd.exe" : "dmd";
-        final File dmdCompilerFile = new File(sdkHome, executableName);
-        return dmdCompilerFile.canExecute();
+
+        File dmdBinary = new File(sdkHome, executableName);
+
+        if(dmdBinary.exists() && dmdBinary.canExecute()) {
+            this.dmdBinary = dmdBinary;
+            return true;
+        }
+
+        if(SystemInfo.isWindows) {
+            final File dmdHome = new File(sdkHome);
+            if(dmdHome.exists() && dmdHome.isDirectory()) {
+                dmdBinary = Paths.get(sdkHome, "bin", executableName).toFile(); // C:\D\dmd2\windows\bin\dmd.exe
+            }
+        }
+
+        if(dmdBinary.exists() && dmdBinary.canExecute()) {
+            this.dmdBinary = dmdBinary;
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -155,26 +178,23 @@ public class DLanguageSdkType extends SdkType {
                 return version;
             }
         } catch (final ExecutionException e) {
-            return null;
+            LOG.error("There was a problem running 'dmd --version'", e);
         }
         return null;
     }
 
     /* Returns full path to DMD compiler executable */
-    public static String getDmdPath(final Sdk sdk) {
-        final String sdkHome = sdk.getHomePath();
-        final String executableName = SystemInfo.isWindows ? "dmd.exe" : "dmd";
-        final File dmdCompilerFile = new File(sdkHome, executableName);
-        return dmdCompilerFile.getAbsolutePath();
+    public String getDmdPath() {
+        return dmdBinary.getAbsolutePath();
     }
 
     /* Returns full path to DMD compiler sources */
-    public static String getDmdSourcesPaths(final Sdk sdk) {
-        final String sdkHome = sdk.getHomePath();
-        final String executableName = SystemInfo.isWindows ? "dmd.exe" : "dmd";
-        final File dmdCompilerFile = new File(sdkHome, executableName);
-        return dmdCompilerFile.getAbsolutePath();
-    }
+//    public static String getDmdSourcesPaths(final Sdk sdk) {
+//        final String sdkHome = sdk.getHomePath();
+//        final String executableName = SystemInfo.isWindows ? "dmd.exe" : "dmd";
+//        final File dmdCompilerFile = new File(sdkHome, executableName);
+//        return dmdCompilerFile.getAbsolutePath();
+//    }
 }
 
 
