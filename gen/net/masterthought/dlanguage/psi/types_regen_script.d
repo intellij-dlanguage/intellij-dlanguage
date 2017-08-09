@@ -115,7 +115,7 @@ static this() {
     types_children["IdentityExpression"] = ["ShiftExpression*","KW_IS","OP_NOT"];
     types_children["IfStatement"] = [/*"Identifier","Expression",*/"DeclarationOrStatement*","KW_ELSE","KW_IF","OP_PAR_LEFT","OP_PAR_RIGHT"/*,"KW_AUTO","Type","OP_EQ"*/,"IfCondition"];
     named_children["IfCondition"] = ["Identifier","Expression","KW_AUTO","Type","OP_EQ"];
-    types_children["ImportBind"] = ["Identifier"];
+    types_children["ImportBind"] = ["Identifier","NamedImportBind"];
     types_children["ImportBindings"] = ["OP_COMMA*","ImportBind*","SingleImport","OP_COLON"];
     types_children["ImportDeclaration"] = ["KW_IMPORT","SingleImport*","ImportBindings","OP_COMMA*","OP_SCOLON"];
     types_children["ImportExpression"] = ["ImportExpression","AssignExpression","OP_PAR_RIGHT","OP_PAR_LEFT"];

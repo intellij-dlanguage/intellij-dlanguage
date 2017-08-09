@@ -1,17 +1,14 @@
 package net.masterthought.dlanguage.psi.impl.named;
 
+import com.google.common.collect.Sets;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.util.IncorrectOperationException;
 import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
-import net.masterthought.dlanguage.psi.references.DReference;
 import net.masterthought.dlanguage.resolve.processors.parameters.DAttributesFinder;
 import net.masterthought.dlanguage.stubs.DLanguageSingleImportStub;
-import net.masterthought.dlanguage.utils.DUtil;
-import org.fest.util.Sets;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,6 +19,7 @@ import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_EQ;
 
 /**
  * Created by francis on 7/14/2017.
+ * todo remove al references to a single imports name. This no longer means the same thing
  */
 public class DLanguageSingleImportImpl extends DNamedStubbedPsiElementBase<DLanguageSingleImportStub> implements DLanguageSingleImport {
 
@@ -60,30 +58,10 @@ public class DLanguageSingleImportImpl extends DNamedStubbedPsiElementBase<DLang
         return new HashSet<>();
     }
 
-    @NotNull
-    @Override
-    public String getName() {
-        if (getStub() != null) {
-            if(getStub().getName() == null){
-                throw new NullPointerException();
-            }
-            return getStub().getName();
-        }
-        if (getIdentifierChain() == null) {
-            return DReference.Companion.getNAME_NOT_FOUND_STRING();
-        }
-        return getIdentifierChain().getText();
-    }
-
-    @Override
-    public PsiElement setName(@NotNull final String name) throws IncorrectOperationException {
-        return null;
-    }
-
     @Nullable
     @Override
     public DLanguageIdentifier getNameIdentifier() {
-        return DUtil.getEndOfIdentifierList(getIdentifierChain());
+        return getIdentifier();
     }
 
     public boolean isPublic() {

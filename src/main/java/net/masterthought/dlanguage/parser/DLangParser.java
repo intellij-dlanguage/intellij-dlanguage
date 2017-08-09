@@ -4393,7 +4393,7 @@ class DLangParser {
      * ;)
      */
     boolean parseImportBind() {
-        Marker m = enter_section_modified(builder);
+        final Marker m = enter_section_modified(builder);
         boolean isNamedBind = false;
         final Bookmark bookmark = setBookmark();
         Token ident = expect(tok("identifier"));
@@ -4404,7 +4404,7 @@ class DLangParser {
         if (currentIs(tok("="))) {
             isNamedBind = true;
             advance();
-            Token id = expect(tok("identifier"));
+            final Token id = expect(tok("identifier"));
             if (id == null) {
                 cleanup(m, IMPORT_BIND);
                 return false;
@@ -4412,7 +4412,7 @@ class DLangParser {
         }
         goToBookmark(bookmark);
         if (isNamedBind) {
-            Marker namedImportBind = enter_section_modified(builder);
+            final Marker namedImportBind = enter_section_modified(builder);
             ident = expect(tok("identifier"));
             if (ident == null) {
                 cleanup(m, IMPORT_BIND);
@@ -4421,7 +4421,7 @@ class DLangParser {
             exit_section_modified(builder, namedImportBind, NAMED_IMPORT_BIND, true);
             if (currentIs(tok("="))) {
                 advance();
-                Token id = expect(tok("identifier"));
+                final Token id = expect(tok("identifier"));
                 if (id == null) {
                     cleanup(m, IMPORT_BIND);
                     return false;
@@ -4445,8 +4445,8 @@ class DLangParser {
      * $(RULE singleImport) $(LITERAL ':') $(RULE importBind) ($(LITERAL ',') $(RULE importBind))*
      * ;)
      */
-    boolean parseImportBindings(boolean parseSingleImport) {
-        Marker m = enter_section_modified(builder);
+    boolean parseImportBindings(final boolean parseSingleImport) {
+        final Marker m = enter_section_modified(builder);
         if (parseSingleImport) {
             if (!parseSingleImport()) {
                 cleanup(m, IMPORT_BINDINGS);
@@ -4480,12 +4480,12 @@ class DLangParser {
      * ;)
      */
     boolean parseImportDeclaration() {
-        Marker m = enter_section_modified(builder);
+        final Marker m = enter_section_modified(builder);
         if (!tokenCheck("import")) {
             cleanup(m, IMPORT_DECLARATION);
             return false;
         }
-        boolean si = parseSingleImport();
+        final boolean si = parseSingleImport();
         if (!si) {
             cleanup(m, IMPORT_DECLARATION);
             return false;
@@ -4496,7 +4496,7 @@ class DLangParser {
             if (currentIs(tok(","))) {
                 advance();
                 while (moreTokens()) {
-                    boolean single = parseSingleImport();
+                    final boolean single = parseSingleImport();
                     if (!single) {
                         cleanup(m, IMPORT_DECLARATION);
                         return false;
@@ -4545,7 +4545,7 @@ class DLangParser {
      * )
      */
     boolean parseIndex() {
-        Marker m = enter_section_modified(builder);
+        final Marker m = enter_section_modified(builder);
         if (!parseAssignExpression()) {
             cleanup(m, INDEX);
             return false;
@@ -4574,9 +4574,9 @@ class DLangParser {
      * ;
      * )
      */
-    boolean parseIndexExpression(boolean parseUnary)//(UnaryExpression unaryExpression = null)
+    boolean parseIndexExpression(final boolean parseUnary)//(UnaryExpression unaryExpression = null)
     {
-        Marker m = enter_section_modified(builder);
+        final Marker m = enter_section_modified(builder);
         if (parseUnary) {
             if (!parseUnaryExpression()) {
                 cleanup(m, INDEX_EXPRESSION);
@@ -4620,7 +4620,7 @@ class DLangParser {
      * $(RULE shiftExpression) ($(LITERAL 'in') | ($(LITERAL '!') $(LITERAL 'in'))) $(RULE shiftExpression)
      * ;)
      */
-    boolean parseInExpression(boolean parseShift)//(ExpressionNode shift = null)
+    boolean parseInExpression(final boolean parseShift)//(ExpressionNode shift = null)
     {
         Marker m = enter_section_modified(builder);
         if (parseShift) {
@@ -6020,7 +6020,7 @@ class DLangParser {
      * ;)
      */
     boolean parseSingleImport() {
-        Marker m = enter_section_modified(builder);
+        final Marker m = enter_section_modified(builder);
         if (startsWith(tok("identifier"), tok("="))) {
             advance(); // identifier
             advance(); // =
@@ -8239,7 +8239,7 @@ class DLangParser {
 
     boolean isAttribute() {
         if (!moreTokens()) return false;
-        Token.IdType i = current().type;
+        final Token.IdType i = current().type;
         if (i.equals(tok("const")) || i.equals(tok("immutable")) || i.equals(tok("inout")) || i.equals(tok("scope"))) {
             return !peekIs(tok("("));
         } else if (i.equals(tok("static"))) {
@@ -8247,9 +8247,9 @@ class DLangParser {
         } else if (i.equals(tok("shared"))) {
             return !(startsWith(tok("shared"), tok("static"), tok("this")) || startsWith(tok("shared"), tok("static"), tok("~")) || peekIs(tok("(")));
         } else if (i.equals(tok("pragma"))) {
-            Bookmark b = setBookmark();
+            final Bookmark b = setBookmark();
             advance();
-            Token past = peekPastParens();
+            final Token past = peekPastParens();
             if (past == null || past.type.equals(tok(";"))) {
                 goToBookmark(b);
                 return false;

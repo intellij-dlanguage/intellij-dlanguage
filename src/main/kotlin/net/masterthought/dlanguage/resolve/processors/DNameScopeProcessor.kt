@@ -23,6 +23,7 @@ class DNameScopeProcessor(var start: Identifier, val profile: Boolean = false) :
         return true
     }
 
+    val project = start.project
     val log: Logger = Logger.getInstance(this::class.java)
 
     override val result = mutableSetOf<DNamedElement>()
@@ -45,13 +46,13 @@ class DNameScopeProcessor(var start: Identifier, val profile: Boolean = false) :
                             log.info("getting imported:" + (end - startTime))
                         }
                         for (file in imported) {
-                            result.addAll(StubIndex.getElements(DTopLevelDeclarationIndex.KEY, start.name, element.project, GlobalSearchScope.fileScope(file), DNamedElement::class.java))
+                            result.addAll(StubIndex.getElements(DTopLevelDeclarationIndex.KEY, start.name, project, GlobalSearchScope.fileScope(file), DNamedElement::class.java))
                         }
                     }
                 } else {
                     for (bind in (element.parent as ImportDeclaration).importBindings?.importBinds!!) {
                         val startTime = System.currentTimeMillis()
-                        val bindSymbolDeclarations = DResolveUtil.getInstance(element.project).findDefinitionNode(bind.identifiers.last(), profile)
+                        val bindSymbolDeclarations = DResolveUtil.getInstance(project).findDefinitionNode(bind.identifier!!, profile)
                         val end = System.currentTimeMillis()
                         if (profile) {
                             log.info("getting bind symbol declaration:" + (end - startTime))

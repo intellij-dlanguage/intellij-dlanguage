@@ -2,14 +2,19 @@ package net.masterthought.dlanguage.stubs.types;
 
 import com.intellij.psi.stubs.IndexSink;
 import com.intellij.psi.stubs.NamedStubBase;
+import com.intellij.psi.stubs.Stub;
 import com.intellij.psi.stubs.StubElement;
 import net.masterthought.dlanguage.psi.DLanguageFile;
 import net.masterthought.dlanguage.psi.DLanguageModuleDeclaration;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
+import net.masterthought.dlanguage.psi.interfaces.HasMembers;
 import net.masterthought.dlanguage.stubs.*;
 import net.masterthought.dlanguage.stubs.index.*;
 import net.masterthought.dlanguage.stubs.interfaces.DLanguageUnittestStub;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.HashSet;
+import java.util.Set;
 
 
 public abstract class DNamedStubElementType<S extends NamedStubBase<T>, T extends DNamedElement> extends DStubElementType<S, T> {
@@ -45,6 +50,10 @@ public abstract class DNamedStubElementType<S extends NamedStubBase<T>, T extend
                 sink.occurrence(DPublicImportIndex.Companion.getKEY(), fileName);
             }
         }
+        for (final HasMembers hasMembers : getParentHasMembers(stub)) {
+            sink.occurrence(DMembersIndex.Companion.getKEY(), hasMembers.getName());
+        }
+
     }
 
     private boolean topLevelDeclaration(final S stub) {
@@ -72,6 +81,27 @@ public abstract class DNamedStubElementType<S extends NamedStubBase<T>, T extend
             if (stubParent instanceof DLanguageUnittestStub) {
                 return false;
             }
+        }
+    }
+
+    private Set<HasMembers> getParentHasMembers(final Stub stub) {
+        final HashSet<HasMembers> result = new HashSet<>();
+        getParentHasMembersImpl(stub, result);
+        return result;
+    }
+
+    private void getParentHasMembersImpl(final Stub stub, final Set<HasMembers> result) {
+
+        if (stub instanceof HasMembers) {
+            result.add((HasMembers) stub);
+        }
+        if (stub.getParentStub() == null) {
+            return;
+        }
+        getParentHasMembersImpl(stub.getParentStub(), result);
+        if (stub instanceof DLanguageUnittestStub || stub instanceof DLanguageFunctionDeclarationStub || stub instanceof DLanguageConstructorStub || stub instanceof DLanguageSharedStaticConstructorStub || stub instanceof DLanguageStaticConstructorStub || stub instanceof DLanguageDestructorStub || stub instanceof DLanguageSharedStaticDestructorStub || stub instanceof DLanguageStaticDestructorStub) {
+            result.clear();
+            return;
         }
     }
 

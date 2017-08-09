@@ -6,6 +6,7 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.psi.DLanguageIdentifier;
 import net.masterthought.dlanguage.psi.DLanguageImportBind;
+import net.masterthought.dlanguage.psi.DLanguageNamedImportBind;
 import net.masterthought.dlanguage.psi.DLanguageVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -28,5 +29,10 @@ public class DLanguageImportBindImpl extends ASTWrapperPsiElement implements DLa
     @Nullable
     public DLanguageIdentifier getIdentifier() {
         return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
+    }
+
+    @Nullable
+    public DLanguageNamedImportBind getNamedImportBind() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageNamedImportBind.class);
     }
 }

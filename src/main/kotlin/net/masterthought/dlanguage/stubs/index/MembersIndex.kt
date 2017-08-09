@@ -6,6 +6,7 @@ import net.masterthought.dlanguage.psi.interfaces.DNamedElement
 
 /**
  * Created by francis on 8/8/2017.
+ * index contains members of string key. Does not handle inheritance/mixins
  */
 class DMembersIndex : StringStubIndexExtension<DNamedElement>() {
 
