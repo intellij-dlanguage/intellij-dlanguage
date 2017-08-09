@@ -9,20 +9,20 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageStaticDestructor extends PsiElement, DCompositeElement, StubBasedPsiElement<DLanguageStaticDestructorStub> {
     @Nullable
-    public PsiElement getOP_TILDA();
+    PsiElement getOP_TILDA();
 
     @Nullable
-    public PsiElement getKW_STATIC();
+    PsiElement getKW_STATIC();
 
     @Nullable
-    public PsiElement getKW_THIS();
+    PsiElement getKW_THIS();
 
     @Nullable
-    public PsiElement getOP_PAR_LEFT();
+    PsiElement getOP_PAR_LEFT();
 
     @Nullable
-    public PsiElement getOP_PAR_RIGHT();
+    PsiElement getOP_PAR_RIGHT();
 
     @Nullable
-    public DLanguageFunctionBody getFunctionBody();
+    DLanguageFunctionBody getFunctionBody();
 }

@@ -5,6 +5,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import net.masterthought.dlanguage.psi.impl.*;
 import net.masterthought.dlanguage.psi.impl.named.*;
+import net.masterthought.dlanguage.psi.impl.named.DLanguageNamedImportBindImpl;
 import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 import net.masterthought.dlanguage.psi.interfaces.Mixin;
@@ -857,5 +858,9 @@ public class DLanguageVisitor extends PsiElementVisitor {
 
     public void visitBuiltinType(DLanguageBuiltinTypeImpl o) {
         visitPsiElement(o);
+    }
+
+    public void visitNamedImportBind(DLanguageNamedImportBindImpl dLanguageNamedImportBind) {
+        visitPsiElement(dLanguageNamedImportBind);
     }
 }

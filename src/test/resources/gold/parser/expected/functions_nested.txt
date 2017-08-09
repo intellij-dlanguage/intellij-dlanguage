@@ -281,7 +281,7 @@ D Language File
                                             PsiElement(DLanguageTokenType.()('(')
                                             PsiElement(DLanguageTokenType.))(')')
                                 PsiElement(DLanguageTokenType.;)(';')
-                        PsiComment(DLanguageTokenType.LINE_COMMENT)('// ok, in scope')
+                        PsiComment(DLanguageTokenType.LINE_COMMENT)('// ok, in hasBind')
                         DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
                           DLanguageDeclarationImpl(DECLARATION)
                             FUNCTION_DECLARATION

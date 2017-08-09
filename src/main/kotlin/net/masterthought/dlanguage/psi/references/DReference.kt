@@ -47,8 +47,10 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
         //            if (qconid == null) { return EMPTY_RESOLVE_RESULT; }
         //            if (!myElement.equals(Iterables.getLast(qconid.getConidList()))) { return EMPTY_RESOLVE_RESULT; }
         //        }
+
+
         val project = myElement.project
-        val namedElements = DResolveUtil.findDefinitionNode(project, myElement).map { if (it is PsiNameIdentifierOwner && it !is ModuleDeclaration && it !is SingleImport) it.nameIdentifier!! else it }
+        val namedElements = DResolveUtil.getInstance(project).findDefinitionNode(myElement, false).map { if (it is PsiNameIdentifierOwner && it !is ModuleDeclaration && it !is SingleImport) if (it.nameIdentifier != null) it.nameIdentifier!! else it else it }
         val results = mutableListOf<PsiElementResolveResult>()
         for (property in namedElements) {
             results.add(PsiElementResolveResult(property))

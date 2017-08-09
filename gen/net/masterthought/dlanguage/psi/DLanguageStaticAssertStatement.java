@@ -6,12 +6,12 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageStaticAssertStatement extends PsiElement {
     @Nullable
-    public PsiElement getKW_STATIC();
+    PsiElement getKW_STATIC();
 
     @Nullable
-    public DLanguageAssertExpression getAssertExpression();
+    DLanguageAssertExpression getAssertExpression();
 
     @Nullable
-    public PsiElement getOP_SCOLON();
+    PsiElement getOP_SCOLON();
 
 }

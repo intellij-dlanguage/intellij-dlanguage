@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface DLanguageAsmTypePrefix extends PsiElement {
     @NotNull
-    public List<DLanguageIdentifier> getIdentifiers();
+    List<DLanguageIdentifier> getIdentifiers();
 }

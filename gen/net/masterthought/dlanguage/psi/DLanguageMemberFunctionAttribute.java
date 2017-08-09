@@ -6,18 +6,18 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageMemberFunctionAttribute extends PsiElement {
     @Nullable
-    public DLanguageFunctionAttribute getFunctionAttribute();
+    DLanguageFunctionAttribute getFunctionAttribute();
 
     @Nullable
-    public PsiElement getKW_IMMUTABLE();
+    PsiElement getKW_IMMUTABLE();
 
     @Nullable
-    public PsiElement getKW_INOUT();
+    PsiElement getKW_INOUT();
 
     @Nullable
-    public PsiElement getKW_SHARED();
+    PsiElement getKW_SHARED();
 
     @Nullable
-    public PsiElement getKW_CONST();
+    PsiElement getKW_CONST();
 
 }

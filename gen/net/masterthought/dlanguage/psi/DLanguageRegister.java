@@ -6,15 +6,15 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageRegister extends PsiElement {
     @Nullable
-    public DLanguageIdentifier getIdentifier();
+    DLanguageIdentifier getIdentifier();
 
     @Nullable
-    public PsiElement getINTEGER_LITERAL();
+    PsiElement getINTEGER_LITERAL();
 
     @Nullable
-    public PsiElement getOP_PAR_RIGHT();
+    PsiElement getOP_PAR_RIGHT();
 
     @Nullable
-    public PsiElement getOP_PAR_LEFT();
+    PsiElement getOP_PAR_LEFT();
 
 }

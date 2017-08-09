@@ -9,17 +9,17 @@ import java.util.List;
 
 public interface DLanguageNewAnonClassExpression extends PsiElement {
     @Nullable
-    public PsiElement getKW_NEW();
+    PsiElement getKW_NEW();
 
     @Nullable
-    public PsiElement getKW_CLASS();
+    PsiElement getKW_CLASS();
 
     @NotNull
-    public List<DLanguageArguments> getArgumentss();
+    List<DLanguageArguments> getArgumentss();
 
     @Nullable
-    public DLanguageBaseClassList getBaseClassList();
+    DLanguageBaseClassList getBaseClassList();
 
     @Nullable
-    public DLanguageStructBody getStructBody();
+    DLanguageStructBody getStructBody();
 }

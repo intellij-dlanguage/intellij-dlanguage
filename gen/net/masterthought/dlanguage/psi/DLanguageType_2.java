@@ -6,30 +6,30 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageType_2 extends PsiElement {
     @Nullable
-    public DLanguageSymbol getSymbol();
+    DLanguageSymbol getSymbol();
 
     @Nullable
-    public DLanguageTypeofExpression getTypeofExpression();
+    DLanguageTypeofExpression getTypeofExpression();
 
     @Nullable
-    public DLanguageTypeConstructor getTypeConstructor();
+    DLanguageTypeConstructor getTypeConstructor();
 
     @Nullable
-    public DLanguageVector getVector();
+    DLanguageVector getVector();
 
     @Nullable
-    public DLanguageType getType();
+    DLanguageType getType();
 
     @Nullable
-    public DLanguageIdentifierOrTemplateChain getIdentifierOrTemplateChain();
+    DLanguageIdentifierOrTemplateChain getIdentifierOrTemplateChain();
 
     @Nullable
-    public PsiElement getOP_DOT();
+    PsiElement getOP_DOT();
 
     @Nullable
-    public PsiElement getOP_PAR_RIGHT();
+    PsiElement getOP_PAR_RIGHT();
 
     @Nullable
-    public PsiElement getOP_PAR_LEFT();
+    PsiElement getOP_PAR_LEFT();
 
 }

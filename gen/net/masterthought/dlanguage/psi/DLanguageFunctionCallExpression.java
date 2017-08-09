@@ -6,14 +6,14 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageFunctionCallExpression extends PsiElement {
     @Nullable
-    public DLanguageType getType();
+    DLanguageType getType();
 
     @Nullable
-    public DLanguageArguments getArguments();
+    DLanguageArguments getArguments();
 
     @Nullable
-    public DLanguageUnaryExpression getUnaryExpression();
+    DLanguageUnaryExpression getUnaryExpression();
 
     @Nullable
-    public DLanguageTemplateArguments getTemplateArguments();
+    DLanguageTemplateArguments getTemplateArguments();
 }

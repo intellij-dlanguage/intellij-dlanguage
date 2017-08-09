@@ -9,20 +9,20 @@ import java.util.List;
 
 public interface DLanguageIfStatement extends PsiElement {
     @NotNull
-    public List<DLanguageDeclarationOrStatement> getDeclarationOrStatements();
+    List<DLanguageDeclarationOrStatement> getDeclarationOrStatements();
 
     @Nullable
-    public PsiElement getKW_ELSE();
+    PsiElement getKW_ELSE();
 
     @Nullable
-    public PsiElement getKW_IF();
+    PsiElement getKW_IF();
 
     @Nullable
-    public PsiElement getOP_PAR_LEFT();
+    PsiElement getOP_PAR_LEFT();
 
     @Nullable
-    public PsiElement getOP_PAR_RIGHT();
+    PsiElement getOP_PAR_RIGHT();
 
     @Nullable
-    public DLanguageIfCondition getIfCondition();
+    DLanguageIfCondition getIfCondition();
 }

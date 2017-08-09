@@ -192,7 +192,7 @@ public class DLanguageIdentifierImpl extends DNamedStubbedPsiElementBase<DLangua
     }
 
     public void delete() {
-        final Set<PsiNamedElement> definitionNode = DResolveUtil.INSTANCE.findDefinitionNode(getProject(), this);
+        final Set<PsiNamedElement> definitionNode = DResolveUtil.Companion.getInstance(getProject()).findDefinitionNode(this, false);
         if (definitionNode.size() != 1)
             throw new IllegalStateException();
         ((PsiElement) definitionNode.toArray()[0]).delete();

@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface DLanguageForeachTypeList extends PsiElement {
     @NotNull
-    public List<DLanguageForeachType> getForeachTypes();
+    List<DLanguageForeachType> getForeachTypes();
 
     @NotNull
-    public List<PsiElement> getOP_COMMAs();
+    List<PsiElement> getOP_COMMAs();
 
 }

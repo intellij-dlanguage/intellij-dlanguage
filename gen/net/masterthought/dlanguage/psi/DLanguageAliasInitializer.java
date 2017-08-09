@@ -12,17 +12,17 @@ import java.util.List;
 
 public interface DLanguageAliasInitializer extends PsiElement, DNamedElement, StubBasedPsiElement<DLanguageAliasInitializerStub> {
     @Nullable
-    public DLanguageIdentifier getIdentifier();
+    DLanguageIdentifier getIdentifier();
 
     @Nullable
-    public PsiElement getOP_EQ();
+    PsiElement getOP_EQ();
 
     @NotNull
-    public List<DLanguageStorageClass> getStorageClasss();
+    List<DLanguageStorageClass> getStorageClasss();
 
     @Nullable
-    public DLanguageTemplateParameters getTemplateParameters();
+    DLanguageTemplateParameters getTemplateParameters();
 
     @Nullable
-    public DLanguageType getType();
+    DLanguageType getType();
 }

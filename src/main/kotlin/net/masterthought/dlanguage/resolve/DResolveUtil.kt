@@ -3,6 +3,7 @@ package net.masterthought.dlanguage.resolve
 import com.google.common.collect.Sets
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiNamedElement
 import com.intellij.psi.ResolveState
 import com.intellij.psi.search.GlobalSearchScope
@@ -20,9 +21,39 @@ import net.masterthought.dlanguage.utils.*
 /**
  * Created by francis on 5/12/17.
  */
-object DResolveUtil {
 
-    fun findDefinitionNode(project: Project, e: PsiNamedElement): Set<PsiNamedElement> {
+
+class DResolveUtil private constructor(val project: Project) {
+
+
+    //todo use the official intellij way of doing this using ResolveCache.java
+    //also should use a weak  reference or psi file gist
+    //also this won't invalidate if a external file is editted but should
+    companion object {
+        private val resolveUtils: MutableMap<Project, DResolveUtil> = mutableMapOf()
+
+        fun getInstance(project: Project): DResolveUtil {
+            return resolveUtils.getOrPut(project, { DResolveUtil(project) })
+        }
+    }
+
+    private val resolveCache: MutableMap<PsiFile, Pair<Long, MutableMap<PsiNamedElement, Set<PsiNamedElement>>>> = mutableMapOf()
+
+    fun findDefinitionNode(e: PsiNamedElement, profile: Boolean): Set<PsiNamedElement> {
+        fun invalidateCache(file: PsiFile) {
+            resolveCache.remove(file)
+        }
+
+        val fileResolveCache = resolveCache.getOrPut(e.containingFile, { Pair(e.containingFile.modificationStamp, mutableMapOf<PsiNamedElement, Set<PsiNamedElement>>()) })
+        val oldFileStamp = fileResolveCache.first
+        if (oldFileStamp != e.containingFile.modificationStamp) {
+            invalidateCache(e.containingFile)
+            return findDefinitionNode(e, profile)
+        }
+        return fileResolveCache.second.getOrPut(e, { findDefinitionNodeImpl(e, profile) })
+    }
+
+    fun findDefinitionNodeImpl(e: PsiNamedElement, profile: Boolean): Set<PsiNamedElement> {
         if (e !is Identifier) {
             return emptySet()
         }
@@ -35,23 +66,17 @@ object DResolveUtil {
             return SpecialCaseResolve.findDefinitionNode(e)
         }
 
-        var basicResolveResult = BasicResolve(project).findDefinitionNode(e)
+        var basicResolveResult = BasicResolve(project, profile).findDefinitionNode(e)
         if(resolvingConstructor(e) == null){
             basicResolveResult = basicResolveResult.filter { it !is Constructor }.toSet()
-
         } else {
             val constructorsOnly = basicResolveResult.filter { it is Constructor }.toSet()
             if (!constructorsOnly.isEmpty())
                 return constructorsOnly
         }
         if (basicResolveResult.isEmpty())
-            return SpecialCaseResolve.tryPackageResolve(e)
+            return SpecialCaseResolve.tryPackageResolve(e, profile)
         return basicResolveResult
-//        val parameterCountingResult = ParameterCountingResolve.findDefinitionNode(project, e)
-//        if (parameterCountingResult.isEmpty()) {
-//            return basicResolveResult
-//        }
-//        return parameterCountingResult
     }
 
 
@@ -92,7 +117,7 @@ object DResolveUtil {
         return toProcess
     }
 
-    fun getAllPubliclyImportedAsFiles(modulesIn: Set<String>, project: Project): Set<DLanguageFile> {
+    fun getAllPubliclyImportedAsFiles(modulesIn: Set<String>): Set<DLanguageFile> {
         return getAllPubliclyImported(modulesIn, project).flatMap { DModuleIndex.getFilesByModuleName(project,it,GlobalSearchScope.everythingScope(project)) }.toSet()
     }
 

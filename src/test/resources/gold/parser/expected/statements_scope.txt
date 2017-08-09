@@ -64,7 +64,7 @@ D Language File
                         DLanguageStatementImpl(STATEMENT)
                           DLanguageStatementNoCaseNoDefaultImpl(STATEMENT_NO_CASE_NO_DEFAULT)
                             DLanguageScopeGuardStatementImpl(SCOPE_GUARD_STATEMENT)
-                              PsiElement(DLanguageTokenType.scope)('scope')
+                              PsiElement(DLanguageTokenType.hasBind)('hasBind')
                               PsiElement(DLanguageTokenType.()('(')
                               IDENTIFIER
                                 PsiElement(DLanguageTokenType.ID)('exit')
@@ -95,7 +95,7 @@ D Language File
                         DLanguageStatementImpl(STATEMENT)
                           DLanguageStatementNoCaseNoDefaultImpl(STATEMENT_NO_CASE_NO_DEFAULT)
                             DLanguageScopeGuardStatementImpl(SCOPE_GUARD_STATEMENT)
-                              PsiElement(DLanguageTokenType.scope)('scope')
+                              PsiElement(DLanguageTokenType.hasBind)('hasBind')
                               PsiElement(DLanguageTokenType.()('(')
                               IDENTIFIER
                                 PsiElement(DLanguageTokenType.ID)('exit')
@@ -175,7 +175,7 @@ D Language File
                         DLanguageStatementImpl(STATEMENT)
                           DLanguageStatementNoCaseNoDefaultImpl(STATEMENT_NO_CASE_NO_DEFAULT)
                             DLanguageScopeGuardStatementImpl(SCOPE_GUARD_STATEMENT)
-                              PsiElement(DLanguageTokenType.scope)('scope')
+                              PsiElement(DLanguageTokenType.hasBind)('hasBind')
                               PsiElement(DLanguageTokenType.()('(')
                               IDENTIFIER
                                 PsiElement(DLanguageTokenType.ID)('exit')
@@ -206,7 +206,7 @@ D Language File
                         DLanguageStatementImpl(STATEMENT)
                           DLanguageStatementNoCaseNoDefaultImpl(STATEMENT_NO_CASE_NO_DEFAULT)
                             DLanguageScopeGuardStatementImpl(SCOPE_GUARD_STATEMENT)
-                              PsiElement(DLanguageTokenType.scope)('scope')
+                              PsiElement(DLanguageTokenType.hasBind)('hasBind')
                               PsiElement(DLanguageTokenType.()('(')
                               IDENTIFIER
                                 PsiElement(DLanguageTokenType.ID)('success')
@@ -237,7 +237,7 @@ D Language File
                         DLanguageStatementImpl(STATEMENT)
                           DLanguageStatementNoCaseNoDefaultImpl(STATEMENT_NO_CASE_NO_DEFAULT)
                             DLanguageScopeGuardStatementImpl(SCOPE_GUARD_STATEMENT)
-                              PsiElement(DLanguageTokenType.scope)('scope')
+                              PsiElement(DLanguageTokenType.hasBind)('hasBind')
                               PsiElement(DLanguageTokenType.()('(')
                               IDENTIFIER
                                 PsiElement(DLanguageTokenType.ID)('exit')
@@ -268,7 +268,7 @@ D Language File
                         DLanguageStatementImpl(STATEMENT)
                           DLanguageStatementNoCaseNoDefaultImpl(STATEMENT_NO_CASE_NO_DEFAULT)
                             DLanguageScopeGuardStatementImpl(SCOPE_GUARD_STATEMENT)
-                              PsiElement(DLanguageTokenType.scope)('scope')
+                              PsiElement(DLanguageTokenType.hasBind)('hasBind')
                               PsiElement(DLanguageTokenType.()('(')
                               IDENTIFIER
                                 PsiElement(DLanguageTokenType.ID)('success')
@@ -420,7 +420,7 @@ D Language File
                                 DLanguageStatementImpl(STATEMENT)
                                   DLanguageStatementNoCaseNoDefaultImpl(STATEMENT_NO_CASE_NO_DEFAULT)
                                     DLanguageScopeGuardStatementImpl(SCOPE_GUARD_STATEMENT)
-                                      PsiElement(DLanguageTokenType.scope)('scope')
+                                      PsiElement(DLanguageTokenType.hasBind)('hasBind')
                                       PsiElement(DLanguageTokenType.()('(')
                                       IDENTIFIER
                                         PsiElement(DLanguageTokenType.ID)('exit')
@@ -451,7 +451,7 @@ D Language File
                                 DLanguageStatementImpl(STATEMENT)
                                   DLanguageStatementNoCaseNoDefaultImpl(STATEMENT_NO_CASE_NO_DEFAULT)
                                     DLanguageScopeGuardStatementImpl(SCOPE_GUARD_STATEMENT)
-                                      PsiElement(DLanguageTokenType.scope)('scope')
+                                      PsiElement(DLanguageTokenType.hasBind)('hasBind')
                                       PsiElement(DLanguageTokenType.()('(')
                                       IDENTIFIER
                                         PsiElement(DLanguageTokenType.ID)('success')
@@ -517,7 +517,7 @@ D Language File
                                 DLanguageStatementImpl(STATEMENT)
                                   DLanguageStatementNoCaseNoDefaultImpl(STATEMENT_NO_CASE_NO_DEFAULT)
                                     DLanguageScopeGuardStatementImpl(SCOPE_GUARD_STATEMENT)
-                                      PsiElement(DLanguageTokenType.scope)('scope')
+                                      PsiElement(DLanguageTokenType.hasBind)('hasBind')
                                       PsiElement(DLanguageTokenType.()('(')
                                       IDENTIFIER
                                         PsiElement(DLanguageTokenType.ID)('failure')
@@ -576,7 +576,7 @@ D Language File
                                 DLanguageStatementImpl(STATEMENT)
                                   DLanguageStatementNoCaseNoDefaultImpl(STATEMENT_NO_CASE_NO_DEFAULT)
                                     DLanguageScopeGuardStatementImpl(SCOPE_GUARD_STATEMENT)
-                                      PsiElement(DLanguageTokenType.scope)('scope')
+                                      PsiElement(DLanguageTokenType.hasBind)('hasBind')
                                       PsiElement(DLanguageTokenType.()('(')
                                       IDENTIFIER
                                         PsiElement(DLanguageTokenType.ID)('exit')
@@ -607,7 +607,7 @@ D Language File
                                 DLanguageStatementImpl(STATEMENT)
                                   DLanguageStatementNoCaseNoDefaultImpl(STATEMENT_NO_CASE_NO_DEFAULT)
                                     DLanguageScopeGuardStatementImpl(SCOPE_GUARD_STATEMENT)
-                                      PsiElement(DLanguageTokenType.scope)('scope')
+                                      PsiElement(DLanguageTokenType.hasBind)('hasBind')
                                       PsiElement(DLanguageTokenType.()('(')
                                       IDENTIFIER
                                         PsiElement(DLanguageTokenType.ID)('success')
@@ -638,7 +638,7 @@ D Language File
                                 DLanguageStatementImpl(STATEMENT)
                                   DLanguageStatementNoCaseNoDefaultImpl(STATEMENT_NO_CASE_NO_DEFAULT)
                                     DLanguageScopeGuardStatementImpl(SCOPE_GUARD_STATEMENT)
-                                      PsiElement(DLanguageTokenType.scope)('scope')
+                                      PsiElement(DLanguageTokenType.hasBind)('hasBind')
                                       PsiElement(DLanguageTokenType.()('(')
                                       IDENTIFIER
                                         PsiElement(DLanguageTokenType.ID)('failure')

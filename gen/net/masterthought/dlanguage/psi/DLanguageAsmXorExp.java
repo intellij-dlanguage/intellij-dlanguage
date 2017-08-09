@@ -6,12 +6,12 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageAsmXorExp extends PsiElement {
     @Nullable
-    public DLanguageAsmXorExp getAsmXorExp();
+    DLanguageAsmXorExp getAsmXorExp();
 
     @Nullable
-    public DLanguageAsmAndExp getAsmAndExp();
+    DLanguageAsmAndExp getAsmAndExp();
 
     @Nullable
-    public PsiElement getOP_XOR();
+    PsiElement getOP_XOR();
 
 }

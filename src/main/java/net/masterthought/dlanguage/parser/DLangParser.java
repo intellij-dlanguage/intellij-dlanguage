@@ -4394,15 +4394,42 @@ class DLangParser {
      */
     boolean parseImportBind() {
         Marker m = enter_section_modified(builder);
+        boolean isNamedBind = false;
+        final Bookmark bookmark = setBookmark();
         Token ident = expect(tok("identifier"));
         if (ident == null) {
             cleanup(m, IMPORT_BIND);
             return false;
         }
         if (currentIs(tok("="))) {
+            isNamedBind = true;
             advance();
             Token id = expect(tok("identifier"));
             if (id == null) {
+                cleanup(m, IMPORT_BIND);
+                return false;
+            }
+        }
+        goToBookmark(bookmark);
+        if (isNamedBind) {
+            Marker namedImportBind = enter_section_modified(builder);
+            ident = expect(tok("identifier"));
+            if (ident == null) {
+                cleanup(m, IMPORT_BIND);
+                return false;
+            }
+            exit_section_modified(builder, namedImportBind, NAMED_IMPORT_BIND, true);
+            if (currentIs(tok("="))) {
+                advance();
+                Token id = expect(tok("identifier"));
+                if (id == null) {
+                    cleanup(m, IMPORT_BIND);
+                    return false;
+                }
+            }
+        } else {
+            ident = expect(tok("identifier"));
+            if (ident == null) {
                 cleanup(m, IMPORT_BIND);
                 return false;
             }

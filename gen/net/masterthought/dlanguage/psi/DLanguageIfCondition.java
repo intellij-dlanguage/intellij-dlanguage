@@ -9,18 +9,18 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageIfCondition extends PsiElement, DNamedElement, StubBasedPsiElement<DLanguageIfConditionStub> {
     @Nullable
-    public DLanguageIdentifier getIdentifier();
+    DLanguageIdentifier getIdentifier();
 
     @Nullable
-    public DLanguageExpression getExpression();
+    DLanguageExpression getExpression();
 
     @Nullable
-    public PsiElement getKW_AUTO();
+    PsiElement getKW_AUTO();
 
     @Nullable
-    public DLanguageType getType();
+    DLanguageType getType();
 
     @Nullable
-    public PsiElement getOP_EQ();
+    PsiElement getOP_EQ();
 
 }
