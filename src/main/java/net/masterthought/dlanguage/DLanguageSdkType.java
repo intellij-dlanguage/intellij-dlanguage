@@ -37,9 +37,10 @@ public class DLanguageSdkType extends SdkType {
     private static final String SDK_TYPE_ID = "DMD2 SDK";
     private static final String SDK_NAME = "DMD v2 SDK";
 
-    private static final File DEFAULT_SDK_PATH_WINDOWS = new File("C:/D/DMD2/");
-    private static final File DEFAULT_SDK_PATH_OSX = new File("/usr/local/opt/dmd");
-    private static final File DEFAULT_SDK_PATH_LINUX = new File("/usr/bin");
+    @Nullable private File DEFAULT_DMD_PATH = null;
+    @Nullable private File DEFAULT_DOCUMENTATION_PATH = null;
+    @Nullable private File DEFAULT_PHOBOS_PATH = null;
+    @Nullable private File DEFAULT_DRUNTIME_PATH = null;
 
     private File dmdBinary = null;
 
@@ -51,6 +52,25 @@ public class DLanguageSdkType extends SdkType {
 
     public DLanguageSdkType() {
         super(SDK_TYPE_ID);
+
+        if(SystemInfo.isWindows) {
+            DEFAULT_DMD_PATH = new File("C:/D/dmd2/windows/bin/dmd.exe");
+            DEFAULT_DOCUMENTATION_PATH = new File("C:/D/dmd2/html/d");
+            DEFAULT_PHOBOS_PATH = new File("C:/D/dmd2/src/phobos");
+            DEFAULT_DRUNTIME_PATH = new File("C:/D/dmd2/src/druntime/import");
+        } else if(SystemInfo.isMac) {
+            DEFAULT_DMD_PATH = new File("/usr/local/opt/dmd"); // correct for Homebrew, standard maybe '/usr/local/bin'
+            //DEFAULT_DOCUMENTATION_PATH = new File("");
+            DEFAULT_PHOBOS_PATH = new File("/Library/D/dmd/src/phobos");
+            DEFAULT_DRUNTIME_PATH = new File("/Library/D/dmd/src/druntime/import");
+        } else if(SystemInfo.isLinux) {
+            DEFAULT_DMD_PATH = new File("/usr/bin/dmd");
+            DEFAULT_DOCUMENTATION_PATH = new File("/usr/share/dmd/html/d");
+            DEFAULT_PHOBOS_PATH = new File("/usr/include/dmd/phobos");
+            DEFAULT_DRUNTIME_PATH = new File("/usr/include/dmd/druntime/import");
+        } else {
+            LOG.warn(String.format("We didn't cater for %s", SystemInfo.getOsNameAndVersion()));
+        }
     }
 
     @NotNull
@@ -68,16 +88,7 @@ public class DLanguageSdkType extends SdkType {
     @Nullable
     @Override
     public String suggestHomePath() {
-        String homePath = null;
-        if (SystemInfo.isWindows && DEFAULT_SDK_PATH_WINDOWS.exists()) {
-            homePath = DEFAULT_SDK_PATH_WINDOWS.getAbsolutePath();
-        } else if (SystemInfo.isMac && DEFAULT_SDK_PATH_OSX.exists()) {
-            homePath = DEFAULT_SDK_PATH_OSX.getAbsolutePath();
-        } else if (SystemInfo.isLinux && DEFAULT_SDK_PATH_LINUX.exists()) {
-            homePath = DEFAULT_SDK_PATH_LINUX.getAbsolutePath();
-        }
-        LOG.debug(String.format("Suggested DMD path: %s", homePath));
-        return homePath;
+        return DEFAULT_DMD_PATH != null && DEFAULT_DMD_PATH.exists() ? DEFAULT_DMD_PATH.getAbsolutePath() : null;
     }
 
     /* When user set up DMD SDK path this method checks if specified path contains DMD compiler executable. */
@@ -113,13 +124,13 @@ public class DLanguageSdkType extends SdkType {
     }
 
     /**
-     * Windows has docs in 'C:\D\dmd2\html\d' and sources in ['C:\D\dmd2\src\phobos', 'C:\D\dmd2\src\druntime']
-     * @param sdk The D
+     * Windows has docs in 'C:\D\dmd2\html\d' and sources in ['C:\D\dmd2\src\phobos', 'C:\D\dmd2\src\druntime\import']
+     * OSX has docs in ??? and sources in ['/Library/D/dmd/src/phobos', '/Library/D/dmd/src/druntime/import']
+     * Linux has docs in '/usr/share/dmd/html/d' and sources in ['/usr/include/dmd/phobos', '/usr/include/dmd/druntime/import']
+     * @param sdk The DMD installation
      */
     @Override
     public void setupSdkPaths(@NotNull final Sdk sdk) {
-        final String dmdHomePath = sdk.getHomePath();
-
         final SdkModificator sdkModificator = sdk.getSdkModificator();
 
         // documentation paths (todo: find out why using 'OrderRootType.DOCUMENTATION' didn't work)
@@ -133,17 +144,19 @@ public class DLanguageSdkType extends SdkType {
 //        }
 
         // add phobos to sources root
-        final File phobosDir = Paths.get(dmdHomePath, "src", "phobos").toFile();
-        final VirtualFile phobosSource = phobosDir.isDirectory() ? LocalFileSystem.getInstance().findFileByPath(phobosDir.getAbsolutePath()) : null;
-        if (phobosSource != null) {
-            sdkModificator.addRoot(phobosSource, OrderRootType.SOURCES);
+        if(DEFAULT_PHOBOS_PATH != null) {
+            final VirtualFile phobosSource = DEFAULT_PHOBOS_PATH.isDirectory() ? LocalFileSystem.getInstance().findFileByPath(DEFAULT_PHOBOS_PATH.getAbsolutePath()) : null;
+            if (phobosSource != null) {
+                sdkModificator.addRoot(phobosSource, OrderRootType.SOURCES);
+            }
         }
 
         // add druntime to sources root
-        final File druntimeDir = Paths.get(dmdHomePath, "src", "druntime").toFile();
-        final VirtualFile druntimeSource = druntimeDir.isDirectory() ? LocalFileSystem.getInstance().findFileByPath(druntimeDir.getAbsolutePath()) : null;
-        if (druntimeSource != null) {
-            sdkModificator.addRoot(druntimeSource, OrderRootType.SOURCES);
+        if(DEFAULT_DRUNTIME_PATH != null) {
+            final VirtualFile druntimeSource = DEFAULT_DRUNTIME_PATH.isDirectory() ? LocalFileSystem.getInstance().findFileByPath(DEFAULT_DRUNTIME_PATH.getAbsolutePath()) : null;
+            if (druntimeSource != null) {
+                sdkModificator.addRoot(druntimeSource, OrderRootType.SOURCES);
+            }
         }
 
         sdkModificator.commitChanges();
