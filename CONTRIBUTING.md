@@ -24,6 +24,8 @@ The IntelliJ API can feel pretty horrible at times and [their documentation](htt
  - [go-lang-idea-plugin](https://github.com/go-lang-plugin-org/go-lang-idea-plugin)
  - [intellij-rust](https://github.com/intellij-rust/intellij-rust)
 
+Any problems with the Intellij SDK should be reported to Jetbrains: https://youtrack.jetbrains.com/issue/IJSDK
+
 #Tour of our code base
 
 
