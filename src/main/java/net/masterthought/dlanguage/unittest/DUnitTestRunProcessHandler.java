@@ -22,6 +22,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.util.PsiTreeUtil;
+import net.masterthought.dlanguage.DLanguageBundle;
 import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.settings.ToolKey;
 import net.masterthought.dlanguage.utils.DToolsNotificationListener;
@@ -50,100 +51,92 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
     }
 
     public void startProcessing() {
-        ApplicationManager.getApplication().runReadAction(new Runnable() {
-            @Override
-            public void run() {
+        // NOTE: After this, actual run your tests and, as results come back, call:
+//   testFinished() when a test method finishes successfully
+//   testFailed() when a test method finishes with a failure
+//   testIgnored() when a test method is skipped for any reason
+//   testSuiteFinished() when all methods in a test class finish
+//   testRunFinished() when all tests have completed
+//   testRunCanceled() if the user has canceled the run if you need to clean up anything
+//   testStdOut() to print the output from a test class/method to the console view for review
+//            }
+        ApplicationManager.getApplication().runReadAction(() -> {
 
-                // NOTE: This tells the test runner that we’re actually going to do something
-                testRunStarted();
+            // NOTE: This tells the test runner that we’re actually going to do something
+            testRunStarted();
 
-                // NOTE: This creates the tree in the UI by sending testSuiteStarted() and testStarted() messages
-                final DUnitTestFramework unitTestFramework = new DUnitTestFramework();
+            // NOTE: This creates the tree in the UI by sending testSuiteStarted() and testStarted() messages
+            final DUnitTestFramework unitTestFramework = new DUnitTestFramework();
 
-                try {
-                    final PsiFile psiFile = PsiManager.getInstance(project).findFile(configuration.getDFile());
-                    final Collection<DLanguageClassDeclaration> cds = PsiTreeUtil.findChildrenOfType(psiFile, DLanguageClassDeclaration.class);
+            try {
+                final PsiFile psiFile = PsiManager.getInstance(project).findFile(configuration.getDFile());
+                final Collection<DLanguageClassDeclaration> cds = PsiTreeUtil.findChildrenOfType(psiFile, DLanguageClassDeclaration.class);
 
-                    for (final DLanguageClassDeclaration cd : cds) {
+                for (final DLanguageClassDeclaration cd : cds) {
 
-                        // if a class contains the UnitTest mixin assume its a valid d-unit test class
-                        String testClassName = null;
-                        Collection<DLanguageTemplateMixinExpression> tmis = PsiTreeUtil.findChildrenOfType(cd, DLanguageTemplateMixinExpression.class);
-                        for (DLanguageTemplateMixinExpression tmi : tmis) {
-                            if (tmi.getText().contains("UnitTest")) {
-                                DLanguageIdentifier classIdentifier = cd.getInterfaceOrClass().getIdentifier();
-                                if (classIdentifier != null) {
-                                    testClassName = classIdentifier.getText();
-                                }
+                    // if a class contains the UnitTest mixin assume its a valid d-unit test class
+                    String testClassName = null;
+                    final Collection<DLanguageTemplateMixinExpression> tmis = PsiTreeUtil.findChildrenOfType(cd, DLanguageTemplateMixinExpression.class);
+                    for (final DLanguageTemplateMixinExpression tmi : tmis) {
+                        if (tmi.getText().contains("UnitTest")) {
+                            final DLanguageIdentifier classIdentifier = cd.getInterfaceOrClass().getIdentifier();
+                            if (classIdentifier != null) {
+                                testClassName = classIdentifier.getText();
                             }
-                        }
-
-                        // find methods for the class
-                        Set<String> testMethodNames = new LinkedHashSet<>();
-                        Collection<DLanguageFunctionDeclaration> fds = PsiTreeUtil.findChildrenOfType(cd, DLanguageFunctionDeclaration.class);
-                        for (DLanguageFunctionDeclaration fd : fds) {
-                            if (testClassName != null) {
-                                // only add methods with @Test
-                                if (isTestMethod(fd) || isIgnoreMethod(fd)) {
-                                    testMethodNames.add(fd.getIdentifier().getText());
-                                }
-                            }
-                        }
-
-                        // add class and corresponding methods to the map
-                        if (testClassName != null && !testMethodNames.isEmpty()) {
-                            testClassToTestMethodNames.put(testClassName, testMethodNames);
                         }
                     }
 
-                } catch (final RuntimeConfigurationError runtimeConfigurationError) {
-                    runtimeConfigurationError.printStackTrace();
+                    // find methods for the class
+                    final Set<String> testMethodNames = new LinkedHashSet<>();
+                    final Collection<DLanguageFunctionDeclaration> fds = PsiTreeUtil.findChildrenOfType(cd, DLanguageFunctionDeclaration.class);
+                    for (final DLanguageFunctionDeclaration fd : fds) {
+                        if (testClassName != null) {
+                            // only add methods with @Test
+                            if (isTestMethod(fd) || isIgnoreMethod(fd)) {
+                                testMethodNames.add(fd.getIdentifier().getText());
+                            }
+                        }
+                    }
+
+                    // add class and corresponding methods to the map
+                    if (testClassName != null && !testMethodNames.isEmpty()) {
+                        testClassToTestMethodNames.put(testClassName, testMethodNames);
+                    }
                 }
+
+            } catch (final RuntimeConfigurationError runtimeConfigurationError) {
+                runtimeConfigurationError.printStackTrace();
             }
-
-
-            // NOTE: After this, actual run your tests and, as results come back, call:
-            //   testFinished() when a test method finishes successfully
-            //   testFailed() when a test method finishes with a failure
-            //   testIgnored() when a test method is skipped for any reason
-            //   testSuiteFinished() when all methods in a test class finish
-            //   testRunFinished() when all tests have completed
-            //   testRunCanceled() if the user has canceled the run if you need to clean up anything
-            //   testStdOut() to print the output from a test class/method to the console view for review
-//            }
         });
 
         // get d-unit path
         final String dunitPath = getDUnitPath();
 
         if (dunitPath == null) {
-            final String message = "Please add d-unit to your dub.json/dub.sdl and run Tools > Process D Libraries";
-            Notifications.Bus.notify(new Notification(
-                "Execute Tests", "No d-unit dependency found", message, NotificationType.ERROR), project);
+            final String message = DLanguageBundle.INSTANCE.message("d.ui.unittest.notification.content.d-unit-missing");
+            Notifications.Bus.notify(new Notification("Execute Tests",
+                DLanguageBundle.INSTANCE.message("d.ui.unittest.notification.title.d-unit-missing"),
+                message, NotificationType.ERROR), project);
             LOG.warn(message);
         } else {
             // Actually run tests in separate runnable to avoid blocking the GUI
-            ApplicationManager.getApplication().executeOnPooledThread(new Runnable() {
+            ApplicationManager.getApplication().executeOnPooledThread(() -> {
+                for (final Object o : testClassToTestMethodNames.entrySet()) {
+                    final Map.Entry pair = (Map.Entry) o;
+                    final String className = (String) pair.getKey();
+                    final Set<String> methodNames = (Set<String>) pair.getValue();
 
-                @Override
-                public void run() {
-                    for (final Object o : testClassToTestMethodNames.entrySet()) {
-                        final Map.Entry pair = (Map.Entry) o;
-                        final String className = (String) pair.getKey();
-                        final Set<String> methodNames = (Set<String>) pair.getValue();
+                    testSuiteStarted(className, methodNames.size());
 
-                        testSuiteStarted(className, methodNames.size());
-
-                        for (final String testMethodName : methodNames) {
-                            testStarted(className, testMethodName);
-                            executeTest(className, testMethodName, dunitPath);
-                        }
-
-                        testSuiteFinished(className, 0);
+                    for (final String testMethodName : methodNames) {
+                        testStarted(className, testMethodName);
+                        executeTest(className, testMethodName, dunitPath);
                     }
 
-                    testRunFinished();
+                    testSuiteFinished(className, 0);
                 }
+
+                testRunFinished();
             });
         }
 
@@ -200,9 +193,9 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
         final String dubPath = ToolKey.DUB_KEY.getPath(project);
         if (dubPath == null || dubPath.isEmpty()) {
             Notifications.Bus.notify(
-                new Notification("Dunit Test Runner", "Dub path must be specified",
-                    "Dub executable path is empty" +
-                        "<br/><a href='configureDLanguageTools'>Configure</a>",
+                new Notification("Dunit Test Runner",
+                    DLanguageBundle.INSTANCE.message("d.ui.unittest.notification.title.dub-path-missing"),
+                    DLanguageBundle.INSTANCE.message("d.ui.unittest.notification.content.dub-path-missing"),
                     NotificationType.WARNING, new DToolsNotificationListener(project)), project);
             return;
         }
@@ -255,13 +248,13 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
 
     }
 
-    private boolean isTestMethod(DLanguageFunctionDeclaration fd) {
-        PsiElement ele = findElementUpstream(fd, DLanguageAtAttribute.class);
+    private boolean isTestMethod(final DLanguageFunctionDeclaration fd) {
+        final PsiElement ele = findElementUpstream(fd, DLanguageAtAttribute.class);
         return (ele != null && ele.getText().contains("@Test"));
     }
 
-    private boolean isIgnoreMethod(DLanguageFunctionDeclaration fd) {
-        PsiElement ele = findElementUpstream(fd, DLanguageAtAttribute.class);
+    private boolean isIgnoreMethod(final DLanguageFunctionDeclaration fd) {
+        final PsiElement ele = findElementUpstream(fd, DLanguageAtAttribute.class);
         return (ele != null && ele.getText().contains("@Ignore"));
     }
 
@@ -276,7 +269,7 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
         } else {
             try {
                 return findElementUpstream(parent, className);
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 return null;
             }
         }
