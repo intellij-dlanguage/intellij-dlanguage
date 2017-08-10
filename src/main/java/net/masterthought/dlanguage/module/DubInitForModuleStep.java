@@ -6,6 +6,7 @@ import com.intellij.ide.util.projectWizard.ProjectBuilder;
 import com.intellij.ide.util.projectWizard.WizardContext;
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.projectImport.ProjectFormatPanel;
+import net.masterthought.dlanguage.DLanguageBundle;
 
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
@@ -34,14 +35,14 @@ public class DubInitForModuleStep extends ModuleWizardStep {
         this.myPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // Title label
-        final JLabel titletextLabel = new JLabel("Please choose the dub init options you prefer");
+        final JLabel titletextLabel = new JLabel(DLanguageBundle.INSTANCE.message("d.ui.dub.config.label.choosedubinitoptions"));
         this.myPanel.add(titletextLabel, new GridBagConstraints(0, -1, 1, 1, 1.0D, 0.0D, 18, 2, new Insets(8, 10, 8, 10), 0, 0));
 
         // add combo to choose --format sdl/json for init
         this.dubFormat = new ComboBox<>(new String[] {"sdl", "json"});
         this.dubFormat.setSelectedItem("json");
 
-        final JLabel dubFormatLabel = new JLabel("Dub format");
+        final JLabel dubFormatLabel = new JLabel(DLanguageBundle.INSTANCE.message("d.ui.dub.config.label.dubformat"));
         dubFormatLabel.setLabelFor(dubFormat);
 
         this.myPanel.add(dubFormatLabel, new GridBagConstraints(0, -1, 1, 1, 0.0D, 0.0D, 17, 0, new Insets(0, 0, 5, 4), 0, 0));
@@ -51,7 +52,7 @@ public class DubInitForModuleStep extends ModuleWizardStep {
         this.dubType = new ComboBox<>(new String[] {"minimal", "vibe.d", "deimos"});
         dubType.setSelectedItem("minimal");
 
-        final JLabel dubTypeLabel = new JLabel("Dub project type");
+        final JLabel dubTypeLabel = new JLabel(DLanguageBundle.INSTANCE.message("d.ui.dub.config.label.dubprojecttype"));
         dubTypeLabel.setLabelFor(dubType);
 
         this.myPanel.add(dubTypeLabel, new GridBagConstraints(0, -1, 1, 1, 0.0D, 0.0D, 17, 0, new Insets(0, 0, 5, 4), 0, 0));
@@ -59,7 +60,7 @@ public class DubInitForModuleStep extends ModuleWizardStep {
 
         // add text field to add params instead of using combo boxes as fallback
         this.dubParams = new JTextField();
-        final JLabel dubParamsLabel = new JLabel("Dub params override - supply space separated params here instead and it will use these e.g --format=json");
+        final JLabel dubParamsLabel = new JLabel(DLanguageBundle.INSTANCE.message("d.ui.dub.config.label.dubparamsoverride"));
         dubParamsLabel.setLabelFor(dubParams);
         this.myPanel.add(dubParamsLabel, new GridBagConstraints(0, -1, 1, 1, 1.0D, 0.0D, 18, 2, new Insets(10, 0, 20, 0), 0, 0));
         this.myPanel.add(dubParams, new GridBagConstraints(0, -1, 1, 1, 1.0D, 0.0D, 18, 2, new Insets(10, 0, 20, 0), 0, 0));
