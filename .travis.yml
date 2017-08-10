@@ -35,7 +35,7 @@ jobs:
     - env: ORG_GRADLE_PROJECT_ideaVersion=2017.1.1
     - env: ORG_GRADLE_PROJECT_ideaVersion=2017.1
     - stage: Test Coverage
-      ./gradlew cobertura coveralls
+      script: ./gradlew cobertura coveralls
     - stage: Deploy EAP
       script: skip
       env: ORG_GRADLE_PROJECT_ideaVersion=2017.1
@@ -51,7 +51,7 @@ jobs:
       deploy:
         provider: script
         skip_cleanup: true
-        script: ./gradlew :publishPlugin
+        script: ./gradlew publishPlugin
         on:
           branch: release
   allow_failures:
