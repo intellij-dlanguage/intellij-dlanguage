@@ -7,7 +7,11 @@ import com.intellij.execution.process.ProcessOutput;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.projectRoots.*;
 import com.intellij.openapi.roots.OrderRootType;
+import com.intellij.openapi.roots.PersistentOrderRootType;
 import com.intellij.openapi.util.SystemInfo;
+import com.intellij.openapi.vfs.LocalFileSystem;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VirtualFileManager;
 import net.masterthought.dlanguage.icons.DLanguageIcons;
 import net.masterthought.dlanguage.library.LibFileRootType;
 import org.jdom.Element;
@@ -17,6 +21,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import java.io.File;
 import java.nio.charset.Charset;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,9 +37,12 @@ public class DLanguageSdkType extends SdkType {
     private static final String SDK_TYPE_ID = "DMD2 SDK";
     private static final String SDK_NAME = "DMD v2 SDK";
 
-    private static final File DEFAULT_SDK_PATH_WINDOWS = new File("c:/D/DMD2/windows/");
-    private static final File DEFAULT_SDK_PATH_OSX = new File("/usr/local/opt/dmd");
-    private static final File DEFAULT_SDK_PATH_LINUX = new File("/usr/bin");
+    @Nullable private File DEFAULT_DMD_PATH = null;
+    @Nullable private File DEFAULT_DOCUMENTATION_PATH = null;
+    @Nullable private File DEFAULT_PHOBOS_PATH = null;
+    @Nullable private File DEFAULT_DRUNTIME_PATH = null;
+
+    private File dmdBinary = null;
 
     @NotNull
     public static DLanguageSdkType getInstance() {
@@ -44,6 +52,25 @@ public class DLanguageSdkType extends SdkType {
 
     public DLanguageSdkType() {
         super(SDK_TYPE_ID);
+
+        if(SystemInfo.isWindows) {
+            DEFAULT_DMD_PATH = new File("C:/D/dmd2/windows/bin/dmd.exe");
+            DEFAULT_DOCUMENTATION_PATH = new File("C:/D/dmd2/html/d");
+            DEFAULT_PHOBOS_PATH = new File("C:/D/dmd2/src/phobos");
+            DEFAULT_DRUNTIME_PATH = new File("C:/D/dmd2/src/druntime/import");
+        } else if(SystemInfo.isMac) {
+            DEFAULT_DMD_PATH = new File("/usr/local/opt/dmd"); // correct for Homebrew, standard maybe '/usr/local/bin'
+            //DEFAULT_DOCUMENTATION_PATH = new File("");
+            DEFAULT_PHOBOS_PATH = new File("/Library/D/dmd/src/phobos");
+            DEFAULT_DRUNTIME_PATH = new File("/Library/D/dmd/src/druntime/import");
+        } else if(SystemInfo.isLinux) {
+            DEFAULT_DMD_PATH = new File("/usr/bin/dmd");
+            DEFAULT_DOCUMENTATION_PATH = new File("/usr/share/dmd/html/d");
+            DEFAULT_PHOBOS_PATH = new File("/usr/include/dmd/phobos");
+            DEFAULT_DRUNTIME_PATH = new File("/usr/include/dmd/druntime/import");
+        } else {
+            LOG.warn(String.format("We didn't cater for %s", SystemInfo.getOsNameAndVersion()));
+        }
     }
 
     @NotNull
@@ -61,30 +88,78 @@ public class DLanguageSdkType extends SdkType {
     @Nullable
     @Override
     public String suggestHomePath() {
-        String homePath = null;
-        if (SystemInfo.isWindows && DEFAULT_SDK_PATH_WINDOWS.exists()) {
-            homePath = DEFAULT_SDK_PATH_WINDOWS.getAbsolutePath();
-        } else if (SystemInfo.isMac && DEFAULT_SDK_PATH_OSX.exists()) {
-            homePath = DEFAULT_SDK_PATH_OSX.getAbsolutePath();
-        } else if (SystemInfo.isLinux && DEFAULT_SDK_PATH_LINUX.exists()) {
-            homePath = DEFAULT_SDK_PATH_LINUX.getAbsolutePath();
-        }
-        LOG.debug(String.format("Suggested DMD path: %s", homePath));
-        return homePath;
+        return DEFAULT_DMD_PATH != null && DEFAULT_DMD_PATH.exists() ? DEFAULT_DMD_PATH.getAbsolutePath() : null;
     }
 
     /* When user set up DMD SDK path this method checks if specified path contains DMD compiler executable. */
     @Override
     public boolean isValidSdkHome(final String sdkHome) {
         final String executableName = SystemInfo.isWindows ? "dmd.exe" : "dmd";
-        final File dmdCompilerFile = new File(sdkHome, executableName);
-        return dmdCompilerFile.canExecute();
+
+        File dmdBinary = new File(sdkHome, executableName);
+
+        if(dmdBinary.exists() && dmdBinary.canExecute()) {
+            this.dmdBinary = dmdBinary;
+            return true;
+        }
+
+        if(SystemInfo.isWindows) {
+            final File dmdHome = new File(sdkHome);
+            if(dmdHome.exists() && dmdHome.isDirectory()) {
+                dmdBinary = Paths.get(sdkHome, "windows", "bin", executableName).toFile(); // C:\D\dmd2\windows\bin\dmd.exe
+            }
+        }
+
+        if(dmdBinary.exists() && dmdBinary.canExecute()) {
+            this.dmdBinary = dmdBinary;
+            return true;
+        }
+        return false;
     }
 
     @Override
     public String suggestSdkName(final String currentSdkName, final String sdkHome) {
         final String version = getDmdVersion(sdkHome);
         return version != null? version : SDK_NAME;
+    }
+
+    /**
+     * Windows has docs in 'C:\D\dmd2\html\d' and sources in ['C:\D\dmd2\src\phobos', 'C:\D\dmd2\src\druntime\import']
+     * OSX has docs in ??? and sources in ['/Library/D/dmd/src/phobos', '/Library/D/dmd/src/druntime/import']
+     * Linux has docs in '/usr/share/dmd/html/d' and sources in ['/usr/include/dmd/phobos', '/usr/include/dmd/druntime/import']
+     * @param sdk The DMD installation
+     */
+    @Override
+    public void setupSdkPaths(@NotNull final Sdk sdk) {
+        final SdkModificator sdkModificator = sdk.getSdkModificator();
+
+        // documentation paths (todo: find out why using 'OrderRootType.DOCUMENTATION' didn't work)
+//        final File docDir = Paths.get(dmdHomePath, "html", "d").toFile();
+//        final VirtualFile docs = docDir.isDirectory() ? LocalFileSystem.getInstance().findFileByPath(docDir.getAbsolutePath()) : null;
+//        if (docs != null) {
+//            sdkModificator.addRoot(docs, OrderRootType.DOCUMENTATION);
+//        } else {
+//            final VirtualFile fxDocUrl = VirtualFileManager.getInstance().findFileByUrl("http://dlang.org/spec/spec.html");
+//            sdkModificator.addRoot(fxDocUrl, OrderRootType.DOCUMENTATION);
+//        }
+
+        // add phobos to sources root
+        if(DEFAULT_PHOBOS_PATH != null) {
+            final VirtualFile phobosSource = DEFAULT_PHOBOS_PATH.isDirectory() ? LocalFileSystem.getInstance().findFileByPath(DEFAULT_PHOBOS_PATH.getAbsolutePath()) : null;
+            if (phobosSource != null) {
+                sdkModificator.addRoot(phobosSource, OrderRootType.SOURCES);
+            }
+        }
+
+        // add druntime to sources root
+        if(DEFAULT_DRUNTIME_PATH != null) {
+            final VirtualFile druntimeSource = DEFAULT_DRUNTIME_PATH.isDirectory() ? LocalFileSystem.getInstance().findFileByPath(DEFAULT_DRUNTIME_PATH.getAbsolutePath()) : null;
+            if (druntimeSource != null) {
+                sdkModificator.addRoot(druntimeSource, OrderRootType.SOURCES);
+            }
+        }
+
+        sdkModificator.commitChanges();
     }
 
     @Nullable
@@ -104,8 +179,7 @@ public class DLanguageSdkType extends SdkType {
 
     @Nullable
     @Override
-    public AdditionalDataConfigurable createAdditionalDataConfigurable(final SdkModel sdkModel,
-                                                                       final SdkModificator sdkModificator) {
+    public AdditionalDataConfigurable createAdditionalDataConfigurable(final SdkModel sdkModel, final SdkModificator sdkModificator) {
         return null;
     }
 
@@ -132,49 +206,51 @@ public class DLanguageSdkType extends SdkType {
      */
     @Nullable
     private String getDmdVersion(final String sdkHome) {
-        final File compilerFolder = new File(sdkHome);
-        final File compilerFile = new File(sdkHome, SystemInfo.isWindows ? "dmd.exe" : "dmd");
+        if(isValidSdkHome(sdkHome)) {
+            final GeneralCommandLine cmd = new GeneralCommandLine();
+            //cmd.withWorkDirectory(sdkHome.getAbsolutePath());
+            cmd.setExePath(dmdBinary.getAbsolutePath());
+            cmd.addParameter("--version");
 
-        final GeneralCommandLine commandLine = new GeneralCommandLine();
-        commandLine.withWorkDirectory(compilerFolder.getAbsolutePath());
-        commandLine.setExePath(compilerFile.getAbsolutePath());
-        commandLine.addParameter("--version");
+            try {
+                final ProcessOutput output = new CapturingProcessHandler(
+                    cmd.createProcess(),
+                    Charset.defaultCharset(),
+                    cmd.getCommandLineString()
+                ).runProcess();
 
-        try {
-            final ProcessOutput output = new CapturingProcessHandler(
-                commandLine.createProcess(),
-                Charset.defaultCharset(),
-                commandLine.getCommandLineString()
-            ).runProcess();
-
-            //Parse output of a DMD compiler
-            final List<String> outputLines = output.getStdoutLines();
-            if(outputLines != null && !outputLines.isEmpty()) {
-                final String version = outputLines.get(0).trim();
-                LOG.debug(String.format("Found version: %s", version));
-                return version;
+                //Parse output of a DMD compiler
+                final List<String> outputLines = output.getStdoutLines();
+                if(outputLines != null && !outputLines.isEmpty()) {
+                    final String version = outputLines.get(0).trim();
+                    LOG.debug(String.format("Found version: %s", version));
+                    return version;
+                }
+            } catch (final ExecutionException e) {
+                LOG.error("There was a problem running 'dmd --version'", e);
             }
-        } catch (final ExecutionException e) {
-            return null;
         }
         return null;
     }
 
     /* Returns full path to DMD compiler executable */
-    public static String getDmdPath(final Sdk sdk) {
-        final String sdkHome = sdk.getHomePath();
-        final String executableName = SystemInfo.isWindows ? "dmd.exe" : "dmd";
-        final File dmdCompilerFile = new File(sdkHome, executableName);
-        return dmdCompilerFile.getAbsolutePath();
+    public String getDmdPath(@NotNull final Sdk sdk) {
+        final String homePath = sdk.getHomePath();
+
+        if(isValidSdkHome(homePath)) {
+            return dmdBinary.getAbsolutePath();
+        }
+
+        return "dmd"; // it may just be on the PATH
     }
 
     /* Returns full path to DMD compiler sources */
-    public static String getDmdSourcesPaths(final Sdk sdk) {
-        final String sdkHome = sdk.getHomePath();
-        final String executableName = SystemInfo.isWindows ? "dmd.exe" : "dmd";
-        final File dmdCompilerFile = new File(sdkHome, executableName);
-        return dmdCompilerFile.getAbsolutePath();
-    }
+//    public static String getDmdSourcesPaths(final Sdk sdk) {
+//        final String sdkHome = sdk.getHomePath();
+//        final String executableName = SystemInfo.isWindows ? "dmd.exe" : "dmd";
+//        final File dmdCompilerFile = new File(sdkHome, executableName);
+//        return dmdCompilerFile.getAbsolutePath();
+//    }
 }
 
 

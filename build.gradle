@@ -10,6 +10,8 @@ buildscript {
 
 plugins {
     id 'org.jetbrains.intellij' version '0.2.14'
+    id 'net.saliman.cobertura' version '2.3.1'
+    id 'com.github.kt3k.coveralls' version '2.8.1'
 }
 
 
@@ -26,6 +28,10 @@ sourceSets {
 version = "${version}"
 
 apply plugin: 'kotlin'
+
+apply plugin: 'cobertura'
+cobertura.coverageFormats = ['html', 'xml'] // coveralls plugin depends on xml format report
+cobertura.coverageSourceDirs = sourceSets.main.kotlin.srcDirs
 
 allprojects {
     sourceCompatibility = javaVersion

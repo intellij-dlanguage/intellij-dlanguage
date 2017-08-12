@@ -32,16 +32,16 @@ public class DLanguageRunDubState extends CommandLineState {
     private final DLanguageRunDubConfiguration config;
     private Executor executor;
 
-    protected DLanguageRunDubState(@NotNull ExecutionEnvironment environment, @NotNull DLanguageRunDubConfiguration
-        config) {
+    DLanguageRunDubState(@NotNull final ExecutionEnvironment environment,
+                         @NotNull final DLanguageRunDubConfiguration config) {
         super(environment);
         this.config = config;
     }
 
     @NotNull
     @Override
-    public ExecutionResult execute(@NotNull Executor executor, @NotNull ProgramRunner runner) throws ExecutionException {
-        TextConsoleBuilder consoleBuilder = new TextConsoleBuilderImpl(config.getProject());
+    public ExecutionResult execute(@NotNull final Executor executor, @NotNull final ProgramRunner runner) throws ExecutionException {
+        final TextConsoleBuilder consoleBuilder = new TextConsoleBuilderImpl(config.getProject());
         setConsoleBuilder(consoleBuilder);
         this.executor = executor;
         return super.execute(executor, runner);
@@ -51,10 +51,10 @@ public class DLanguageRunDubState extends CommandLineState {
     @Override
     protected ProcessHandler startProcess() throws ExecutionException {
         try {
-            GeneralCommandLine dubCommandLine = getExecutableCommandLine(config);
+            final GeneralCommandLine dubCommandLine = getExecutableCommandLine(config);
             return new OSProcessHandler(dubCommandLine.createProcess(), dubCommandLine.getCommandLineString());
-        } catch (ExecutionException e) {
-            String message = e.getMessage();
+        } catch (final ExecutionException e) {
+            final String message = e.getMessage();
             final Project project = config.getProject();
 
             boolean isEmpty = message.equals("DUB executable is not specified");
@@ -72,26 +72,26 @@ public class DLanguageRunDubState extends CommandLineState {
 
     /* Build command line to start DUB executable
      */
-    private GeneralCommandLine getExecutableCommandLine(DLanguageRunDubConfiguration config)
+    private GeneralCommandLine getExecutableCommandLine(final DLanguageRunDubConfiguration config)
         throws ExecutionException {
-        Module module = config.getConfigurationModule().getModule();
+        final Module module = config.getConfigurationModule().getModule();
         if (module == null) {
             throw new ExecutionException("Run configuration has no module selected.");
         }
 
-        String dubPath = ToolKey.DUB_KEY.getPath(config.getProject());
+        final String dubPath = ToolKey.DUB_KEY.getPath(config.getProject());
         if (StringUtil.isEmptyOrSpaces(dubPath)) {
             throw new ExecutionException("DUB executable is not specified");
         }
 
-        VirtualFile sourcesRoot = getSourceRoot(module);
-        GeneralCommandLine commandLine = new GeneralCommandLine();
-        commandLine.setExePath(dubPath);
+        final VirtualFile sourcesRoot = getSourceRoot(module);
+        final GeneralCommandLine cmd = new GeneralCommandLine();
+        cmd.setExePath(dubPath);
 
-        if (!StringUtil.isEmptyOrSpaces(config.getWorkingDir())) {
-            commandLine.withWorkDirectory(config.getWorkingDir());
+        if (StringUtil.isNotEmpty(config.getWorkingDir())) {
+            cmd.withWorkDirectory(config.getWorkingDir());
         } else {
-            commandLine.withWorkDirectory(config.getProject().getBasePath());
+            cmd.withWorkDirectory(config.getProject().getBasePath());
         }
 
         // Add command line parameters
@@ -101,73 +101,73 @@ public class DLanguageRunDubState extends CommandLineState {
         boolean toTest = config.getGeneralDubOptions() == 2;
 
         if (toBuild) {
-            commandLine.addParameter("build");
+            cmd.addParameter("build");
         } else if (toTest) {
-            commandLine.addParameter("test");
+            cmd.addParameter("test");
         } else if (toRun) {
-            commandLine.addParameter("run");
+            cmd.addParameter("run");
         }
 
         if (toRun) {
             if (config.isCbTempBuild()) {
-                commandLine.addParameter("--temp-build");
+                cmd.addParameter("--temp-build");
             }
         }
 
         if (toTest) {
             if (config.isCbCoverage()) {
-                commandLine.addParameter("--coverage");
+                cmd.addParameter("--coverage");
             }
             if (config.getTfMainFile() != null) {
-                commandLine.addParameter("--main-file");
-                commandLine.addParameter(config.getTfMainFile());
+                cmd.addParameter("--main-file");
+                cmd.addParameter(config.getTfMainFile());
             }
         }
 
         if (config.isCbRdmd()) {
-            commandLine.addParameter("--rdmd");
+            cmd.addParameter("--rdmd");
         }
         if (config.isCbForce()) {
-            commandLine.addParameter("--force");
+            cmd.addParameter("--force");
         }
         if (config.isCbNoDeps()) {
-            commandLine.addParameter("--nodeps");
+            cmd.addParameter("--nodeps");
         }
         if (config.isCbForceRemove()) {
-            commandLine.addParameter("--force-remove");
+            cmd.addParameter("--force-remove");
         }
         if (config.isCbCombined()) {
-            commandLine.addParameter("--combined");
+            cmd.addParameter("--combined");
         }
         if (config.isCbParallel()) {
-            commandLine.addParameter("--parallel");
+            cmd.addParameter("--parallel");
         }
         if (config.isQuiet()) {
-            commandLine.addParameter("-q");
+            cmd.addParameter("-q");
         }
         if (config.isVerbose()) {
-            commandLine.addParameter("-v");
+            cmd.addParameter("-v");
         }
 
         if (isNotNullOrEmpty(config.getTfArch())) {
-            commandLine.addParameter("--arch");
-            commandLine.addParameter(config.getTfArch());
+            cmd.addParameter("--arch");
+            cmd.addParameter(config.getTfArch());
         }
         if (isNotNullOrEmpty(config.getTfBuild())) {
-            commandLine.addParameter("--build");
-            commandLine.addParameter(config.getTfBuild());
+            cmd.addParameter("--build");
+            cmd.addParameter(config.getTfBuild());
         }
         if (isNotNullOrEmpty(config.getTfConfig())) {
-            commandLine.addParameter("--config");
-            commandLine.addParameter(config.getTfConfig());
+            cmd.addParameter("--config");
+            cmd.addParameter(config.getTfConfig());
         }
         if (isNotNullOrEmpty(config.getTfDebug())) {
-            commandLine.addParameter("--debug");
-            commandLine.addParameter(config.getTfDebug());
+            cmd.addParameter("--debug");
+            cmd.addParameter(config.getTfDebug());
         }
         if (isNotNullOrEmpty(config.getTfCompiler())) {
-            commandLine.addParameter("--compiler");
-            commandLine.addParameter(config.getTfCompiler());
+            cmd.addParameter("--compiler");
+            cmd.addParameter(config.getTfCompiler());
         }
 
         boolean bmSeparate = config.getBuildMode() == 0;
@@ -175,23 +175,23 @@ public class DLanguageRunDubState extends CommandLineState {
         boolean bmSingle = config.getBuildMode() == 2;
 
         if (bmSeparate) {
-            commandLine.addParameter("--build-mode");
-            commandLine.addParameter("separate");
+            cmd.addParameter("--build-mode");
+            cmd.addParameter("separate");
         }
         if (bmAll) {
-            commandLine.addParameter("--build-mode");
-            commandLine.addParameter("allAtOnce");
+            cmd.addParameter("--build-mode");
+            cmd.addParameter("allAtOnce");
         }
         if (bmSingle) {
-            commandLine.addParameter("--build-mode");
-            commandLine.addParameter("singleFile");
+            cmd.addParameter("--build-mode");
+            cmd.addParameter("singleFile");
         }
 
         if (isNotNullOrEmpty(config.getAdditionalParams())) {
-            commandLine.addParameters(Arrays.asList(config.getAdditionalParams().split("\\s")));
+            cmd.addParameters(Arrays.asList(config.getAdditionalParams().split("\\s")));
         }
 
-        return commandLine;
+        return cmd;
     }
 
     private VirtualFile getSourceRoot(Module module) {

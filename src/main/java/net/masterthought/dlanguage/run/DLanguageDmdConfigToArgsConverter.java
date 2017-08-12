@@ -16,11 +16,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class DLanguageDmdConfigToArgsConverter {
-    public static List<String> getDmdParameters(DLanguageRunDmdConfiguration config, Module module)
+
+    public static List<String> getDmdParameters(final DLanguageRunDmdConfiguration config, final Module module)
         throws NoSourcesException, ExecutionException {
-        VirtualFile sourcesRoot = getSourceRoot(module);
-        VirtualFile[] excludedRoots = getExcludedRoots(module);
-        List<String> dmdParameters = new LinkedList<String>();
+        final VirtualFile sourcesRoot = getSourceRoot(module);
+        final VirtualFile[] excludedRoots = getExcludedRoots(module);
+        final List<String> dmdParameters = new LinkedList<>();
 
         dmdParameters.addAll(configToParameters(config));
         dmdParameters.add(getOutputPathArgument(module));
@@ -30,9 +31,9 @@ public class DLanguageDmdConfigToArgsConverter {
         return dmdParameters;
     }
 
-    private static VirtualFile getSourceRoot(Module module) {
+    private static VirtualFile getSourceRoot(final Module module) {
         if (module != null) {
-            VirtualFile[] sourcesRoots = ModuleRootManager.getInstance(module).getSourceRoots();
+            final VirtualFile[] sourcesRoots = ModuleRootManager.getInstance(module).getSourceRoots();
             if (sourcesRoots.length >= 1) {
                 return sourcesRoots[0];
             }
@@ -40,7 +41,7 @@ public class DLanguageDmdConfigToArgsConverter {
         return null;
     }
 
-    private static VirtualFile[] getExcludedRoots(Module module) {
+    private static VirtualFile[] getExcludedRoots(final Module module) {
         if (module != null) {
             return ModuleRootManager.getInstance(module).getExcludeRoots();
         }
@@ -48,37 +49,37 @@ public class DLanguageDmdConfigToArgsConverter {
     }
 
     @NotNull
-    private static String getOutputPathArgument(Module module) {
-        String outputDirUrl = getOutputDir(module);
-        File outputDir = new File(VfsUtilCore.urlToPath(outputDirUrl), "obj");
+    private static String getOutputPathArgument(final Module module) {
+        final String outputDirUrl = getOutputDir(module);
+        final File outputDir = new File(VfsUtilCore.urlToPath(outputDirUrl), "obj");
         return "-od" + outputDir.getPath();
     }
 
     @NotNull
-    private static String getOutputFileArgument(Module module, DLanguageRunDmdConfiguration config) {
+    private static String getOutputFileArgument(final Module module, final DLanguageRunDmdConfiguration config) {
         return "-of" + getOutputFilePath(module, config);
     }
 
     @NotNull
-    private static String getOutputFilePath(Module module, DLanguageRunDmdConfiguration config) {
+    private static String getOutputFilePath(final Module module, final DLanguageRunDmdConfiguration config) {
         String filename = module.getName();
         if (config.isLibrary()) {
             filename += ".lib";
         } else if (SystemInfo.isWindows) {
             filename += ".exe";
         }
-        String outputDirUrl = getOutputDir(module);
-        File outputFile = new File(VfsUtilCore.urlToPath(outputDirUrl), filename);
+        final String outputDirUrl = getOutputDir(module);
+        final File outputFile = new File(VfsUtilCore.urlToPath(outputDirUrl), filename);
         return outputFile.getPath();
     }
 
-    private static String getOutputDir(Module module) {
+    private static String getOutputDir(final Module module) {
         return ModuleRootManager.getInstance(module).getModuleExtension(CompilerModuleExtension.class).getCompilerOutputUrl();
     }
 
 
-    private static List<String> configToParameters(DLanguageRunDmdConfiguration config) {
-        LinkedList<String> result = new LinkedList<String>();
+    private static List<String> configToParameters(final DLanguageRunDmdConfiguration config) {
+        final LinkedList<String> result = new LinkedList<>();
         buildCompilerParameters(config, result);
         buildOutputParameters(config, result);
         buildDebugParameters(config, result);
@@ -86,7 +87,7 @@ public class DLanguageDmdConfigToArgsConverter {
         return result;
     }
 
-    private static void buildCompilerParameters(DLanguageRunDmdConfiguration config, List<String> parameters) {
+    private static void buildCompilerParameters(final DLanguageRunDmdConfiguration config, final List<String> parameters) {
         if (config.isRelease()) {
             parameters.add("-release");
         }
@@ -155,7 +156,7 @@ public class DLanguageDmdConfigToArgsConverter {
         }
     }
 
-    private static void buildOutputParameters(DLanguageRunDmdConfiguration config, List<String> parameters) {
+    private static void buildOutputParameters(final DLanguageRunDmdConfiguration config, final List<String> parameters) {
         if (config.isGenerateDocs()) {
             parameters.add("-D");
             if (!StringUtil.isEmptyOrSpaces(config.getDocsPath())) {
@@ -200,7 +201,7 @@ public class DLanguageDmdConfigToArgsConverter {
         }
     }
 
-    private static void buildDebugParameters(DLanguageRunDmdConfiguration config, List<String> parameters) {
+    private static void buildDebugParameters(final DLanguageRunDmdConfiguration config, final List<String> parameters) {
         if (config.isAddSymbolicDebugInfo()) {
             parameters.add("-g");
         }
@@ -222,11 +223,11 @@ public class DLanguageDmdConfigToArgsConverter {
     @NotNull
     private static List<String> getAllDLangSources(final VirtualFile sourcesRoot, final VirtualFile[] excludedRoots)
         throws NoSourcesException, ExecutionException {
-        DLanguageVirtualFileVisitor visitor = new DLanguageVirtualFileVisitor(sourcesRoot, excludedRoots);
+        final DLanguageVirtualFileVisitor visitor = new DLanguageVirtualFileVisitor(excludedRoots);
         VfsUtilCore.visitChildrenRecursively(sourcesRoot, visitor);
 
         //Build list of *.D source files
-        List<String> sources = visitor.getdLangSources();
+        final List<String> sources = visitor.getDlangSources();
         if (sources.isEmpty()) {
             throw new NoSourcesException(sourcesRoot.getCanonicalPath());
         }

@@ -27,6 +27,7 @@ import net.masterthought.dlanguage.DLanguageSdkType;
 import net.masterthought.dlanguage.run.exception.ModuleNotFoundException;
 import net.masterthought.dlanguage.run.exception.NoValidDLanguageSdkFound;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.LinkedList;
@@ -37,15 +38,15 @@ public class DLanguageRunAppState extends CommandLineState {
     private final DLanguageRunAppConfiguration config;
     private Executor executor;
 
-    protected DLanguageRunAppState(@NotNull ExecutionEnvironment environment, @NotNull DLanguageRunAppConfiguration config) {
+    protected DLanguageRunAppState(@NotNull final ExecutionEnvironment environment, @NotNull final DLanguageRunAppConfiguration config) {
         super(environment);
         this.config = config;
     }
 
     @NotNull
     @Override
-    public ExecutionResult execute(@NotNull Executor executor, @NotNull ProgramRunner runner) throws ExecutionException {
-        TextConsoleBuilder consoleBuilder = new TextConsoleBuilderImpl(config.getProject());
+    public ExecutionResult execute(@NotNull final Executor executor, @NotNull final ProgramRunner runner) throws ExecutionException {
+        final TextConsoleBuilder consoleBuilder = new TextConsoleBuilderImpl(config.getProject());
         setConsoleBuilder(consoleBuilder);
         this.executor = executor;
         return super.execute(executor, runner);
@@ -55,16 +56,17 @@ public class DLanguageRunAppState extends CommandLineState {
     @Override
     protected ProcessHandler startProcess() throws ExecutionException {
         try {
-            GeneralCommandLine appCommandLine = getExecutableCommandLine(config);
+            final GeneralCommandLine appCommandLine = getExecutableCommandLine(config);
             return new OSProcessHandler(appCommandLine.createProcess(), appCommandLine.getCommandLineString());
-        } catch (NoValidDLanguageSdkFound e) {
+        } catch (final NoValidDLanguageSdkFound e) {
             throw new ExecutionException("No valid DMD SDK found!");
-        } catch (ModuleNotFoundException e) {
+        } catch (final ModuleNotFoundException e) {
             throw new ExecutionException("Run configuration has no module selected.");
-        } catch (ExecutionException e) {
-            String message = e.getMessage();
-            boolean isEmpty = message.equals("Executable is not specified");
-            boolean notCorrect = message.startsWith("Cannot run program");
+        } catch (final ExecutionException e) {
+            final String message = e.getMessage();
+            final boolean isEmpty = message.equals("Executable is not specified");
+            final boolean notCorrect = message.startsWith("Cannot run program");
+
             if (isEmpty || notCorrect) {
                 Notifications.Bus.notify(
                     new Notification("D App run configuration", "D App settings",
@@ -78,52 +80,55 @@ public class DLanguageRunAppState extends CommandLineState {
 
     /* Build command line to start compiled executable
      **/
-    private GeneralCommandLine getExecutableCommandLine(DLanguageRunAppConfiguration config)
+    private GeneralCommandLine getExecutableCommandLine(final DLanguageRunAppConfiguration config)
         throws ModuleNotFoundException, NoValidDLanguageSdkFound {
-        Module module = config.getConfigurationModule().getModule();
+        final Module module = config.getConfigurationModule().getModule();
         if (module == null) {
             throw new ModuleNotFoundException();
         }
 
-        ModuleRootManager moduleRootManager = ModuleRootManager.getInstance(module);
-        Sdk sdk = moduleRootManager.getSdk();
+        final ModuleRootManager moduleRootManager = ModuleRootManager.getInstance(module);
+        final Sdk sdk = moduleRootManager.getSdk();
         if (sdk == null || !(sdk.getSdkType() instanceof DLanguageSdkType)) {
             throw new NoValidDLanguageSdkFound();
         }
 
-        VirtualFile sourcesRoot = getSourceRoot(module);
-        GeneralCommandLine commandLine = new GeneralCommandLine();
-        commandLine.setExePath(getOutputFilePath(module));
+        final VirtualFile sourcesRoot = getSourceRoot(module);
+        final GeneralCommandLine cmd = new GeneralCommandLine();
+        cmd.setExePath(getOutputFilePath(module));
 
-        if (StringUtil.isEmptyOrSpaces(config.getWorkDir())) {
-            commandLine.withWorkDirectory(config.getWorkDir());
+        if (StringUtil.isNotEmpty(config.getWorkDir())) {
+            cmd.withWorkDirectory(config.getWorkDir());
         } else {
-            commandLine.withWorkDirectory(sourcesRoot.getPath());
+            cmd.withWorkDirectory(sourcesRoot.getPath());
         }
 
-        if (StringUtil.isEmptyOrSpaces(config.getAdditionalParams())) {
-            commandLine.addParameters(splitArguments(config.getAdditionalParams()));
+        if (StringUtil.isNotEmpty(config.getAdditionalParams())) {
+            cmd.addParameters(splitArguments(config.getAdditionalParams()));
         }
 
-        return commandLine;
+        return cmd;
     }
 
-    private String[] splitArguments(String arguments) {
-        List<String> argsLst = new LinkedList<String>();
-        CommandLineTokenizer tokenizer = new CommandLineTokenizer(arguments);
-        while (tokenizer.hasMoreTokens()) {
-            argsLst.add(tokenizer.nextToken());
+    @NotNull
+    private String[] splitArguments(@Nullable final String arguments) {
+        if(arguments != null) {
+            final List<String> argsLst = new LinkedList<>();
+            final CommandLineTokenizer tokenizer = new CommandLineTokenizer(arguments);
+            while (tokenizer.hasMoreTokens()) {
+                argsLst.add(tokenizer.nextToken());
+            }
+            if (argsLst.size() > 0) {
+                return (String[]) argsLst.toArray();
+            }
         }
-        if (argsLst.size() > 0) {
-            return (String[]) argsLst.toArray();
-        } else {
-            return new String[0];
-        }
+        return new String[0];
     }
 
-    private VirtualFile getSourceRoot(Module module) {
+    @Nullable
+    private VirtualFile getSourceRoot(@Nullable final Module module) {
         if (module != null) {
-            VirtualFile[] sourcesRoots = ModuleRootManager.getInstance(module).getSourceRoots();
+            final VirtualFile[] sourcesRoots = ModuleRootManager.getInstance(module).getSourceRoots();
             if (sourcesRoots.length >= 1) {
                 return sourcesRoots[0];
             }
@@ -132,17 +137,17 @@ public class DLanguageRunAppState extends CommandLineState {
     }
 
     @NotNull
-    private String getOutputFilePath(Module module) {
+    private String getOutputFilePath(final Module module) {
         String filename = module.getName();
         if (SystemInfo.isWindows) {
             filename += ".exe";
         }
-        String outputDirUrl = getOutputDir(module);
-        File outputFile = new File(VfsUtilCore.urlToPath(outputDirUrl), filename);
+        final String outputDirUrl = getOutputDir(module);
+        final File outputFile = new File(VfsUtilCore.urlToPath(outputDirUrl), filename);
         return outputFile.getPath();
     }
 
-    private String getOutputDir(Module module) {
+    private String getOutputDir(final Module module) {
         return ModuleRootManager.getInstance(module).getModuleExtension(CompilerModuleExtension.class).getCompilerOutputUrl();
     }
 }
