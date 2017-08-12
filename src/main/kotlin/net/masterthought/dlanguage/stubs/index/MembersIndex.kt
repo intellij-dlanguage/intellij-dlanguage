@@ -1,10 +1,13 @@
 package net.masterthought.dlanguage.stubs.index
 
+import com.intellij.openapi.project.Project
+import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.stubs.*
+import net.masterthought.dlanguage.index.DModuleIndex
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement
-import net.masterthought.dlanguage.psi.interfaces.HasMembers
 import net.masterthought.dlanguage.stubs.*
 import net.masterthought.dlanguage.stubs.interfaces.DLanguageUnittestStub
+import net.masterthought.dlanguage.stubs.interfaces.HasMembersStub
 import java.util.*
 
 /**
@@ -17,40 +20,50 @@ class DMembersIndex : StringStubIndexExtension<DNamedElement>() {
         return super.getVersion() + VERSION
     }
 
+    //use with caution, prefer static methods
     override fun getKey(): StubIndexKey<String, DNamedElement> {
         return KEY
     }
 
     companion object {
-        val KEY: StubIndexKey<String, DNamedElement> = StubIndexKey.createIndexKey<String, DNamedElement>("d.members")
+        private val KEY: StubIndexKey<String, DNamedElement> = StubIndexKey.createIndexKey<String, DNamedElement>("d.globally.members")
         val VERSION = 1
         fun <S : NamedStubBase<*>> indexMembers(stub: S, sink: IndexSink) {
+            if (getParentHasMembers(stub).size > 1)
+                return
             for (hasMembers in getParentHasMembers(stub)) {
+                if (hasMembers.name == null) {
+                    throw IllegalStateException()
+                }
                 sink.occurrence(DMembersIndex.KEY, hasMembers.name)
             }
         }
 
-        private fun getParentHasMembers(stub: Stub): Set<HasMembers<*>> {
-            val result = HashSet<HasMembers<*>>()
+        fun getMemberSymbols(name: String, module: String, project: Project): Set<DNamedElement> {
+            val elements = mutableSetOf<DNamedElement>()
+            for (file in DModuleIndex.getFilesByModuleName(project, module, GlobalSearchScope.everythingScope(project))) {
+                elements.addAll(StubIndex.getElements(DTopLevelDeclarationIndex.KEY, name, project, GlobalSearchScope.fileScope(file), DNamedElement::class.java))//todp assert that this should only be called once
+            }
+            return elements
+        }
+
+        private fun getParentHasMembers(stub: Stub): Set<HasMembersStub> {
+            val result = HashSet<HasMembersStub>()
             getParentHasMembersImpl(stub, result)
             return result
         }
 
-        private fun getParentHasMembersImpl(stub: Stub, result: MutableSet<HasMembers<*>>) {
-
-            if (stub is HasMembers<*>) {
-                result.add(stub as HasMembers<*>)
+        private fun getParentHasMembersImpl(stub: Stub, result: MutableSet<HasMembersStub>) {
+            if (stub is HasMembersStub) {
+                result.add(stub as HasMembersStub)
             }
             if (stub.parentStub == null) {
                 return
             }
             getParentHasMembersImpl(stub.parentStub, result)
-            if (stub is DLanguageUnittestStub || stub is DLanguageFunctionDeclarationStub || stub is DLanguageConstructorStub || stub is DLanguageSharedStaticConstructorStub || stub is DLanguageStaticConstructorStub || stub is DLanguageDestructorStub || stub is DLanguageSharedStaticDestructorStub || stub is DLanguageStaticDestructorStub) {
+            if (stub.parentStub is DLanguageUnittestStub || stub.parentStub is DLanguageFunctionDeclarationStub || stub.parentStub is DLanguageConstructorStub || stub.parentStub is DLanguageSharedStaticConstructorStub || stub.parentStub is DLanguageStaticConstructorStub || stub.parentStub is DLanguageDestructorStub || stub.parentStub is DLanguageSharedStaticDestructorStub || stub.parentStub is DLanguageStaticDestructorStub) {
                 result.clear()
-                return
             }
         }
-
     }
-
 }

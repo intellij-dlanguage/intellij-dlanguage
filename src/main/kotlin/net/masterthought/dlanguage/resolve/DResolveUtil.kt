@@ -1,21 +1,11 @@
 package net.masterthought.dlanguage.resolve
 
-import com.google.common.collect.Sets
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiNamedElement
-import com.intellij.psi.ResolveState
-import com.intellij.psi.search.GlobalSearchScope
-import com.intellij.psi.stubs.StubIndex
-import com.intellij.psi.util.PsiTreeUtil
-import net.masterthought.dlanguage.index.DModuleIndex
-import net.masterthought.dlanguage.processors.DImportScopeProcessor
-import net.masterthought.dlanguage.psi.DLanguageFile
 import net.masterthought.dlanguage.psi.DLanguageTypes.*
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement
 import net.masterthought.dlanguage.resolve.processors.basic.BasicResolve
-import net.masterthought.dlanguage.stubs.index.DPublicImportIndex
 import net.masterthought.dlanguage.utils.*
 
 /**
@@ -31,26 +21,26 @@ class DResolveUtil private constructor(val project: Project) {
     //also this won't invalidate if a external file is editted but should
     companion object {
         private val resolveUtils: MutableMap<Project, DResolveUtil> = mutableMapOf()
-
+        //
         fun getInstance(project: Project): DResolveUtil {
             return resolveUtils.getOrPut(project, { DResolveUtil(project) })
         }
     }
 
-    private val resolveCache: MutableMap<PsiFile, Pair<Long, MutableMap<PsiNamedElement, Set<PsiNamedElement>>>> = mutableMapOf()
+//    private val resolveCache: MutableMap<PsiFile, Pair<Long, MutableMap<PsiNamedElement, Set<PsiNamedElement>>>> = mutableMapOf()
 
     fun findDefinitionNode(e: PsiNamedElement, profile: Boolean): Set<PsiNamedElement> {
-        fun invalidateCache(file: PsiFile) {
-            resolveCache.remove(file)
-        }
+//        fun invalidateCache(file: PsiFile) {
+//            resolveCache.remove(file)
+//        }
 
-        val fileResolveCache = resolveCache.getOrPut(e.containingFile, { Pair(e.containingFile.modificationStamp, mutableMapOf<PsiNamedElement, Set<PsiNamedElement>>()) })
-        val oldFileStamp = fileResolveCache.first
-        if (oldFileStamp != e.containingFile.modificationStamp) {
-            invalidateCache(e.containingFile)
-            return findDefinitionNode(e, profile)
-        }
-        return fileResolveCache.second.getOrPut(e, { findDefinitionNodeImpl(e, profile) })
+//        val fileResolveCache = resolveCache.getOrPut(e.containingFile, { Pair(e.containingFile.modificationStamp, mutableMapOf<PsiNamedElement, Set<PsiNamedElement>>()) })
+//        val oldFileStamp = fileResolveCache.first
+//        if (oldFileStamp != e.containingFile.modificationStamp) {
+//            invalidateCache(e.containingFile)
+        return findDefinitionNodeImpl(e, profile)
+//        }
+//        return fileResolveCache.second.getOrPut(e, { findDefinitionNodeImpl(e, profile) })
     }
 
     fun findDefinitionNodeImpl(e: PsiNamedElement, profile: Boolean): Set<PsiNamedElement> {
@@ -66,7 +56,7 @@ class DResolveUtil private constructor(val project: Project) {
             return SpecialCaseResolve.findDefinitionNode(e)
         }
 
-        var basicResolveResult = BasicResolve(project, profile).findDefinitionNode(e)
+        var basicResolveResult = BasicResolve.getInstance(project, profile).findDefinitionNode(e)
         if(resolvingConstructor(e) == null){
             basicResolveResult = basicResolveResult.filter { it !is Constructor }.toSet()
         } else {
@@ -82,51 +72,6 @@ class DResolveUtil private constructor(val project: Project) {
 
     fun resolvingConstructor(e: PsiElement): NewExpression? {
         return DPsiUtil.getParent(e, setOf(NEW_EXPRESSION), setOf(BLOCK_STATEMENT, STRUCT_BODY, DECLARATION)) as NewExpression?
-    }
-
-    fun getAllImportedModules(start: PsiElement): /*Pair<*/MutableSet<String>/*, MutableSet<SingleImport>> */{
-        val importScopeProcessor = DImportScopeProcessor()
-        PsiTreeUtil.treeWalkUp(importScopeProcessor, start, start.containingFile, ResolveState.initial())
-
-        val toProcess = mutableSetOf<String>()
-        for (import in importScopeProcessor.imports) {
-            toProcess.add(import.name)
-        }
-
-        return getAllPubliclyImported(toProcess, start.project)
-    }
-
-    fun getAllPubliclyImported(modulesIn: Set<String>, project: Project): MutableSet<String> {
-        val alreadyProcessed = mutableSetOf<String>()
-
-        val toProcess = Sets.newHashSet<String>(modulesIn)
-        while (true) {
-            val tempSet = mutableSetOf<String>()
-            for (import in toProcess) {
-                if (!alreadyProcessed.contains(import)) {
-                    for (foundModule in StubIndex.getElements(DPublicImportIndex.KEY, import, project, GlobalSearchScope.everythingScope(project), SingleImport::class.java)) {
-                        tempSet.add(foundModule.name)
-                    }
-                }
-            }
-            alreadyProcessed.addAll(toProcess)
-            toProcess.addAll(tempSet)
-            if (alreadyProcessed == toProcess)
-                break
-        }
-        return toProcess
-    }
-
-    fun getAllPubliclyImportedAsFiles(modulesIn: Set<String>): Set<DLanguageFile> {
-        return getAllPubliclyImported(modulesIn, project).flatMap { DModuleIndex.getFilesByModuleName(project,it,GlobalSearchScope.everythingScope(project)) }.toSet()
-    }
-
-    fun getAllImportedModulesAsFiles(start : DLanguageFile) : Set<DLanguageFile>{
-        val out = mutableSetOf<DLanguageFile>()
-        for (module in getAllImportedModules(start)) {
-            out.addAll(DModuleIndex.getFilesByModuleName(start.project,module,GlobalSearchScope.everythingScope(start.project)))
-        }
-        return out
     }
 
     val versionIdentifiers = setOf("DigitalMars", "GNU", "LDC", "SDC", "Windows", "Win32", "Win64", "linux", "OSX", "FreeBSD", "OpenBSD", "NetBSD", "DragonFlyBSD", "BSD", "Solaris", "Posix", "AIX", "Haiku", "SkyOS", "SysV3", "SysV4", "Hurd", "Android", "PlayStation", "PlayStation4", "Cygwin", "MinGW", "FreeStanding", "CRuntime_Bionic", "CRuntime_DigitalMars", "CRuntime_Glibc", "CRuntime_Microsoft", "CRuntime_Musl", "CRuntime_UClibc", "X86", "X86_64", "ARM", "ARM_Thumb", "ARM_SoftFloat", "ARM_SoftFP", "ARM_HardFloat", "AArch64", "Epiphany", "PPC", "PPC_SoftFloat", "PPC_HardFloat", "PPC64", "IA64", "MIPS32", "MIPS64", "MIPS_O32", "MIPS_N32", "MIPS_O64", "MIPS_N64", "MIPS_EABI", "MIPS_SoftFloat", "MIPS_HardFloat", "NVPTX", "NVPTX64", "RISCV32", "RISCV64", "SPARC", "SPARC_V8Plus", "SPARC_SoftFloat", "SPARC_HardFloat", "SPARC64", "S390", "SystemZ", "HPPA", "HPPA64", "SH", "Alpha", "Alpha_SoftFloat", "Alpha_HardFloat", "LittleEndian", "BigEndian", "ELFv1", "ELFv2", "D_Coverage", "D_Ddoc", "D_InlineAsm_X86", "D_InlineAsm_X86_64", "D_LP64", "D_X32", "D_HardFloat", "D_SoftFloat", "D_PIC", "D_SIMD", "D_AVX", "D_AVX2", "D_Version2", "D_NoBoundsChecks", "D_ObjectiveC", "unittest", "assert", "none", "all","None")

@@ -1,11 +1,13 @@
 package net.masterthought.dlanguage.psi.impl.named;
 
-import com.google.common.collect.Sets;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
-import net.masterthought.dlanguage.psi.*;
+import net.masterthought.dlanguage.psi.DLanguageIdentifier;
+import net.masterthought.dlanguage.psi.DLanguageIdentifierChain;
+import net.masterthought.dlanguage.psi.DLanguageImportDeclaration;
+import net.masterthought.dlanguage.psi.DLanguageSingleImport;
 import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import net.masterthought.dlanguage.resolve.processors.parameters.DAttributesFinder;
 import net.masterthought.dlanguage.stubs.DLanguageSingleImportStub;
@@ -14,6 +16,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_EQ;
 
@@ -49,13 +52,23 @@ public class DLanguageSingleImportImpl extends DNamedStubbedPsiElementBase<DLang
         return PsiTreeUtil.getChildOfType(this, DLanguageIdentifierChain.class);
     }
 
+    //todo these need to be backed up by stubs to prevent psi loading
     @NotNull
     @Override
-    public Set<DLanguageImportBind> getApplicableImportBinds() {
+    public Set<String> getApplicableImportBinds() {
+        if (getStub() != null) {
+            return getStub().getApplicableImportBinds();
+        }
         if (((DLanguageImportDeclaration) getParent()).getImportBindings() != null) {
-            return Sets.newHashSet(((DLanguageImportDeclaration) getParent()).getImportBindings().getImportBinds());
+            return ((DLanguageImportDeclaration) getParent()).getImportBindings().getImportBinds().stream().map(dLanguageImportBind -> dLanguageImportBind.getIdentifier().getName()).collect(Collectors.toSet());
         }
         return new HashSet<>();
+    }
+
+    @NotNull
+    @Override
+    public String getImportedModuleName() {
+        return getIdentifierChain().getText();
     }
 
     @Nullable

@@ -7,13 +7,11 @@ import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiNamedElement
 import com.intellij.psi.impl.file.PsiDirectoryFactory
 import com.intellij.psi.search.GlobalSearchScope
-import com.intellij.psi.stubs.StubIndex
 import com.intellij.psi.util.PsiTreeUtil
 import net.masterthought.dlanguage.index.DModuleIndex
-import net.masterthought.dlanguage.psi.DLanguageFile
 import net.masterthought.dlanguage.psi.DLanguageIdentifier
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement
-import net.masterthought.dlanguage.psi.references.DReference
+import net.masterthought.dlanguage.stubs.index.DPublicImportIndex
 import net.masterthought.dlanguage.stubs.index.DTopLevelDeclarationIndex
 import net.masterthought.dlanguage.utils.*
 
@@ -45,7 +43,7 @@ object SpecialCaseResolve {
             return resolvePackage(identifiers.subList(0, identifiers.indexOf(e) + 1))
         }
         if (inImportBind(e) != null) {
-            return (inImportBind(e)!!.parent as ImportDeclaration).singleImports.flatMap { resolveScopedSymbol(it, e) }.toSet()
+            return (inImportBind(e)!!.parent as ImportDeclaration).singleImports.flatMap { resolveScopedSymbol(it, e.name, e.project) }.toSet()
 
         }
         return emptySet()
@@ -80,17 +78,12 @@ object SpecialCaseResolve {
         return Sets.newHashSet(DModuleIndex.getFilesByModuleName(path.project, path.text, GlobalSearchScope.allScope(path.project)))
     }
 
-    private fun resolveScopedSymbol(singleImport: SingleImport, scope: DLanguageIdentifier): Set<PsiNamedElement> {
-        val project = scope.project
-        val resolved = mutableSetOf<PsiNamedElement>()
-        for (resolveResult in (singleImport.identifierChain!!.identifiers.last().reference as DReference).multiResolve(false)) {
-            assert(resolveResult.element is DLanguageFile)
-            for (file in DResolveUtil.getInstance(project).getAllImportedModulesAsFiles(resolveResult.element as DLanguageFile)) {
-                resolved.addAll(StubIndex.getElements(DTopLevelDeclarationIndex.KEY, scope.name, project, GlobalSearchScope.fileScope(file), DNamedElement::class.java))
-            }
-            resolved.addAll(StubIndex.getElements(DTopLevelDeclarationIndex.KEY, scope.name, project, GlobalSearchScope.fileScope(resolveResult.element as DLanguageFile), DNamedElement::class.java))
+    private fun resolveScopedSymbol(singleImport: SingleImport, scope: String, project: Project): Set<PsiNamedElement> {
+        val res = DTopLevelDeclarationIndex.getTopLevelSymbols(scope, singleImport.importedModuleName, project)
+        for (publicImport in DPublicImportIndex.recursivelyGetAllPublicImports(singleImport)) {
+            res.addAll(DTopLevelDeclarationIndex.getTopLevelSymbols(scope, publicImport.importedModuleName, project))
         }
-        return resolved
+        return res
     }
 
     fun inModuleDeclaration(e: DNamedElement): ModuleDeclaration? {

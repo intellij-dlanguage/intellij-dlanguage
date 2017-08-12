@@ -17,11 +17,11 @@ public class DLanguageSingleImportStub extends NamedStubBase<DLanguageSingleImpo
     private final boolean hasName;
     private final String importName;
 
-    public DLanguageSingleImportStub(final StubElement parent, final IStubElementType elementType, final String name, final boolean isPublic, int numBinds, Set<StringRef> binds, String importedModule, boolean hasName, String importName) {
+    public DLanguageSingleImportStub(final StubElement parent, final IStubElementType elementType, final String name, final boolean isPublic, final int numBinds, final Set<StringRef> binds, final String importedModule, final boolean hasName, final String importName) {
         super(parent, elementType, name);
         this.isPublic = isPublic;
         this.numBinds = numBinds;
-        for (StringRef bind : binds) {
+        for (final StringRef bind : binds) {
             this.binds.add(bind.getString());
         }
         this.importedModule = importedModule;
@@ -29,7 +29,7 @@ public class DLanguageSingleImportStub extends NamedStubBase<DLanguageSingleImpo
         this.importName = importName;
     }
 
-    public DLanguageSingleImportStub(final StubElement parent, final IStubElementType elementType, final StringRef name, final boolean isPublic, int numBinds, Set<StringRef> binds, StringRef importedModule, boolean hasName, StringRef importName) {
+    public DLanguageSingleImportStub(final StubElement parent, final IStubElementType elementType, final StringRef name, final boolean isPublic, final int numBinds, final Set<StringRef> binds, final StringRef importedModule, final boolean hasName, final StringRef importName) {
         this(parent, elementType, name.getString(), isPublic, numBinds, binds, importedModule.getString(), hasName, importName.getString());
     }
 
@@ -55,5 +55,9 @@ public class DLanguageSingleImportStub extends NamedStubBase<DLanguageSingleImpo
 
     public String getName() {
         return importName;
+    }
+
+    public Set<String> getApplicableImportBinds() {
+        return binds;
     }
 }

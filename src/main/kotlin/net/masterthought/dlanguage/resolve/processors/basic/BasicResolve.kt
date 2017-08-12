@@ -11,10 +11,19 @@ import net.masterthought.dlanguage.psi.DLanguageFile
 import net.masterthought.dlanguage.resolve.processors.DNameScopeProcessor
 import net.masterthought.dlanguage.utils.Identifier
 
+
 /**
  * Created by francis on 7/24/2017.
  */
-class BasicResolve(val project: Project, val profile: Boolean = false) {
+class BasicResolve private constructor(val project: Project, val profile: Boolean = false) {
+
+    companion object {
+        private val basicResolves: MutableMap<Project, BasicResolve> = mutableMapOf()
+        //
+        fun getInstance(project: Project, profile: Boolean = false): BasicResolve {
+            return basicResolves.getOrPut(project, { BasicResolve(project, profile) })
+        }
+    }
 
     val log: Logger = Logger.getInstance(this::class.java)
 

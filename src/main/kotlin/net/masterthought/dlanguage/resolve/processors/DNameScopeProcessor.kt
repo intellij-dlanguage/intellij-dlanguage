@@ -1,18 +1,17 @@
 package net.masterthought.dlanguage.resolve.processors
 
 import com.intellij.openapi.diagnostic.Logger
+import com.intellij.openapi.util.Key
 import com.intellij.psi.PsiElement
 import com.intellij.psi.ResolveState
-import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.stubs.NamedStubBase
-import com.intellij.psi.stubs.StubIndex
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement
 import net.masterthought.dlanguage.psi.interfaces.HasMembers
-import net.masterthought.dlanguage.resolve.DResolveUtil
+import net.masterthought.dlanguage.stubs.index.DMembersIndex
+import net.masterthought.dlanguage.stubs.index.DPublicImportIndex
 import net.masterthought.dlanguage.stubs.index.DTopLevelDeclarationIndex
 import net.masterthought.dlanguage.utils.Constructor
 import net.masterthought.dlanguage.utils.Identifier
-import net.masterthought.dlanguage.utils.ImportDeclaration
 import net.masterthought.dlanguage.utils.SingleImport
 
 /**
@@ -29,50 +28,63 @@ class DNameScopeProcessor(var start: Identifier, val profile: Boolean = false) :
     override val result = mutableSetOf<DNamedElement>()
 
     override fun execute(element: PsiElement, state: ResolveState): Boolean {
+        var toContinue = true
+        val startTime = System.currentTimeMillis()
         if (element is DNamedElement) {
             if (element.name == start.name) {
                 if (element !is Constructor) {//todo this class should be renamed because of this
                     result.add(element)
-                    return false
+                    toContinue = false
                 }
             }
             if (element is SingleImport) {
-                if ((element.parent as ImportDeclaration).importBindings?.importBinds?.size == 0 || (element.parent as ImportDeclaration).importBindings?.importBinds == null) {
-                    for (import in (element.parent as ImportDeclaration).singleImports) {
-                        val startTime = System.currentTimeMillis()
-                        val imported = DResolveUtil.getInstance(element.project).getAllPubliclyImportedAsFiles(mutableSetOf(import.identifierChain!!.text))
-                        val end = System.currentTimeMillis()
-                        if (profile) {
-                            log.info("getting imported:" + (end - startTime))
-                        }
-                        for (file in imported) {
-                            result.addAll(StubIndex.getElements(DTopLevelDeclarationIndex.KEY, start.name, project, GlobalSearchScope.fileScope(file), DNamedElement::class.java))
-                        }
-                    }
-                } else {
-                    for (bind in (element.parent as ImportDeclaration).importBindings?.importBinds!!) {
-                        val startTime = System.currentTimeMillis()
-                        val bindSymbolDeclarations = DResolveUtil.getInstance(project).findDefinitionNode(bind.identifier!!, profile)
-                        val end = System.currentTimeMillis()
-                        if (profile) {
-                            log.info("getting bind symbol declaration:" + (end - startTime))
-                        }
-                        for (resolveResult in bindSymbolDeclarations) {
-                            if ((resolveResult as DNamedElement).name == start.name) {
-                                result.add(resolveResult)
-                            }
-                            if (resolveResult is HasMembers<*>) {
-                                getMembersOfBind(resolveResult as DNamedElement)
-                            }
-                        }
-                    }
-                }
+                return handleImport(element, state, setOf())
             }
         }
         else{
-            throw IllegalStateException()
+            throw IllegalArgumentException()
         }
-        return true
+        val endTime = System.currentTimeMillis()
+        if ((endTime - startTime) > 1)
+            if (profile)
+                log.info("execute took:" + (endTime - startTime))
+        return toContinue
+    }
+
+    val importsDoneKey = Key.create<MutableSet<SingleImport>>("currentlyProcessedImports")
+
+    private fun handleImport(element: SingleImport, state: ResolveState, alreadyDone: Set<SingleImport>): Boolean {
+        val currentlyAlreadyDone = mutableSetOf<SingleImport>()
+        currentlyAlreadyDone.addAll(alreadyDone)
+        if (state.get(importsDoneKey) != null) {
+            currentlyAlreadyDone.addAll(state.get(importsDoneKey))
+        }
+        val imports = DPublicImportIndex.recursivelyGetAllPublicImports(element)
+        val startSize = result.size
+        if (currentlyAlreadyDone.contains(element))
+            return true
+        if (element.applicableImportBinds.size == 0) {
+            result.addAll(DTopLevelDeclarationIndex.getTopLevelSymbols(start.name, element.importedModuleName, project))
+        } else {
+            val bindDecls = element.applicableImportBinds.flatMap { DTopLevelDeclarationIndex.getTopLevelSymbols(it, element.importedModuleName, project) }
+            if (!bindDecls.filter { it.name == start.name }.isEmpty()) {
+                result.addAll(bindDecls.filter { it.name == start.name })
+                return false
+            }
+            val bindDeclsMembers = element.applicableImportBinds.flatMap { DMembersIndex.getMemberSymbols(it, element.importedModuleName, project) }
+            if (!bindDeclsMembers.filter { it.name == start.name }.isEmpty()) {
+                result.addAll(bindDecls.filter { it.name == start.name })
+                return false
+            }
+        }
+        currentlyAlreadyDone.add(element)
+        for (import in imports) {
+            if (!currentlyAlreadyDone.contains(import))
+                handleImport(import, state, currentlyAlreadyDone)
+            currentlyAlreadyDone.add(import)
+        }
+        state.put(importsDoneKey, currentlyAlreadyDone)
+        return result.size == startSize
     }
 
     private fun getMembersOfBind(resolveResult: DNamedElement) {

@@ -21,5 +21,8 @@ public interface DLanguageSingleImport extends PsiElement, DNamedElement, StubBa
     DLanguageIdentifierChain getIdentifierChain();
 
     @NotNull
-    Set<DLanguageImportBind> getApplicableImportBinds();
+    Set<String> getApplicableImportBinds();
+
+    @NotNull
+    String getImportedModuleName();
 }

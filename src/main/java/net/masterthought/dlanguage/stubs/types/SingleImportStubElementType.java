@@ -4,7 +4,6 @@ import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubInputStream;
 import com.intellij.psi.stubs.StubOutputStream;
 import com.intellij.util.io.StringRef;
-import net.masterthought.dlanguage.psi.DLanguageImportBind;
 import net.masterthought.dlanguage.psi.DLanguageSingleImport;
 import net.masterthought.dlanguage.psi.impl.named.DLanguageSingleImportImpl;
 import net.masterthought.dlanguage.stubs.DLanguageSingleImportStub;
@@ -30,12 +29,11 @@ public class SingleImportStubElementType extends DNamedStubElementType<DLanguage
     @NotNull
     @Override
     public DLanguageSingleImportStub createStub(@NotNull final DLanguageSingleImport psi, final StubElement parentStub) {
-
-        Set<StringRef> binds = new HashSet<>();
-        for (DLanguageImportBind bind : psi.getApplicableImportBinds()) {
-            binds.add(StringRef.fromString(bind.getIdentifier().getName()));
+        final Set<StringRef> binds = new HashSet<>();
+        for (final String bind : psi.getApplicableImportBinds()) {
+            binds.add(StringRef.fromString(bind));
         }
-        return new DLanguageSingleImportStub(parentStub, this, psi.getName(), ((DLanguageSingleImportImpl) psi).isPublic(), psi.getApplicableImportBinds().size(), binds, psi.getName(), psi.getIdentifier() != null, psi.getIdentifier() != null ? psi.getIdentifier().getName() : "");
+        return new DLanguageSingleImportStub(parentStub, this, psi.getName(), ((DLanguageSingleImportImpl) psi).isPublic(), psi.getApplicableImportBinds().size(), binds, psi.getImportedModuleName(), psi.getIdentifier() != null, psi.getIdentifier() != null ? psi.getIdentifier().getName() : "");
     }
 
     @Override
@@ -43,7 +41,7 @@ public class SingleImportStubElementType extends DNamedStubElementType<DLanguage
         dataStream.writeName(stub.getName());
         dataStream.writeBoolean(stub.isPublic());
         dataStream.writeInt(stub.numBinds());
-        for (String s : stub.getBinds()) {
+        for (final String s : stub.getBinds()) {
             dataStream.writeName(s);
         }
         dataStream.writeName(stub.getName());
