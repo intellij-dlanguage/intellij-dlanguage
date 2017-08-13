@@ -40,5 +40,21 @@ public class DResolveTest extends DResolveTestCase {
     public void testAliasUsageToAliasDeclaration() {
         doTest();
     }
+
+    public void testScopedImportsFail() {
+        doTest(false);
+    }
+
+    public void testScopedImportsPass() {
+        doTest();
+    }
+
+    public void testScopedImportsMembers() {
+        doTest();
+    }
+
+    public void testImportBindResolve() {
+        doTest();
+    }
 }
 

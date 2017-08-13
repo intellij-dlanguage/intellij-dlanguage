@@ -42,7 +42,7 @@ class DMembersIndex : StringStubIndexExtension<DNamedElement>() {
         fun getMemberSymbols(name: String, module: String, project: Project): Set<DNamedElement> {
             val elements = mutableSetOf<DNamedElement>()
             for (file in DModuleIndex.getFilesByModuleName(project, module, GlobalSearchScope.everythingScope(project))) {
-                elements.addAll(StubIndex.getElements(DTopLevelDeclarationIndex.KEY, name, project, GlobalSearchScope.fileScope(file), DNamedElement::class.java))//todp assert that this should only be called once
+                elements.addAll(StubIndex.getElements(KEY, name, project, GlobalSearchScope.fileScope(file), DNamedElement::class.java))//todp assert that this should only be called once
             }
             return elements
         }

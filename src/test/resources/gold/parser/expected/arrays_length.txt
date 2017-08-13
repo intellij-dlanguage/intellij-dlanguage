@@ -246,7 +246,7 @@ D Language File
                               DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                                 PsiElement(DLanguageTokenType.$)('$')
                     PsiElement(DLanguageTokenType.;)(';')
-            PsiComment(DLanguageTokenType.LINE_COMMENT)('// '$' is not defined, out of hasBind of [ ]')
+            PsiComment(DLanguageTokenType.LINE_COMMENT)('// '$' is not defined, out of scope of [ ]')
             DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
               DLanguageStatementImpl(STATEMENT)
                 DLanguageStatementNoCaseNoDefaultImpl(STATEMENT_NO_CASE_NO_DEFAULT)

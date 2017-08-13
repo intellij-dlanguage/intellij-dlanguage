@@ -74,7 +74,7 @@ class DNameScopeProcessor(var start: Identifier, val profile: Boolean = false) :
             }
             val bindDeclsMembers = element.applicableImportBinds.flatMap { DMembersIndex.getMemberSymbols(it, element.importedModuleName, project) }
             if (!bindDeclsMembers.filter { it.name == start.name }.isEmpty()) {
-                result.addAll(bindDecls.filter { it.name == start.name })
+                result.addAll(bindDeclsMembers.filter { it.name == start.name })
                 return false
             }
         }

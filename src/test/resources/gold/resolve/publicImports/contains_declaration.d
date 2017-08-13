@@ -1,5 +1,5 @@
 module contains_declaration;
 
-<resolved>struct test_symbol{
+struct <resolved>test_symbol{
 
 }

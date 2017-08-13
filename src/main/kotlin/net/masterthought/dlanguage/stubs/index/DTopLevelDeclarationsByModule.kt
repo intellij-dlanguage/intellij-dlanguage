@@ -4,11 +4,13 @@ import com.intellij.extapi.psi.StubBasedPsiElementBase
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.stubs.*
 import net.masterthought.dlanguage.psi.DLanguageFile
+import net.masterthought.dlanguage.psi.DLanguageSingleImport
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement
 import net.masterthought.dlanguage.psi.interfaces.HasMembers
 import net.masterthought.dlanguage.stubs.DLanguageIdentifierStub
 import net.masterthought.dlanguage.stubs.DLanguageSingleImportStub
 import net.masterthought.dlanguage.stubs.index.DTopLevelDeclarationIndex.Companion.getTopLevelSymbols
+import net.masterthought.dlanguage.stubs.interfaces.HasMembersStub
 
 /**
  * Created by francis on 6/17/2017.
@@ -33,16 +35,16 @@ class DTopLevelDeclarationsByModule : StringStubIndexExtension<DNamedElement>() 
         }
 
         //todo better name/stop repeating type signature?
-        fun getSymbolsFromImport(import: DLanguageSingleImportStub): MutableSet<NamedStub<*>> {
-            if (import.numBinds() == 0) {
-                return StubIndex.getElements(KEY, import.importedModule, import.project, GlobalSearchScope.everythingScope(import.project), DNamedElement::class.java).map { (it as StubBasedPsiElementBase<*>).stub as NamedStub<*> }.toMutableSet()//this is yuck todo
+        fun getSymbolsFromImport(import: DLanguageSingleImport): MutableSet<DNamedElement> {
+            if (import.applicableImportBinds.size == 0) {
+                return StubIndex.getElements(KEY, import.importedModuleName, import.project, GlobalSearchScope.everythingScope(import.project), DNamedElement::class.java).toMutableSet()
             }
-            val symbols = mutableSetOf<NamedStub<*>>()
-            for (bind in import.binds) {
-                for (resolvedBind in getTopLevelSymbols(bind, import.importedModule, import.project)) {
-                    symbols.add((resolvedBind as StubBasedPsiElementBase<*>).stub as NamedStub<*>)//this is also yuck todo
+            val symbols = mutableSetOf<DNamedElement>()
+            for (bind in import.applicableImportBinds) {
+                for (resolvedBind in getTopLevelSymbols(bind, import.importedModuleName, import.project)) {
+                    symbols.add(resolvedBind)
                     if (resolvedBind is HasMembers<*>) {
-                        symbols.addAll(resolvedBind.members)
+                        symbols.addAll(resolvedBind.members.map { it.psi as DNamedElement })
                     }
                 }
             }

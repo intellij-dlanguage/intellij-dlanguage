@@ -1,7 +1,7 @@
 D Language File
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageAttributeImpl(ATTRIBUTE)
-      PsiElement(DLanguageTokenType.hasBind)('hasBind')
+      PsiElement(DLanguageTokenType.scope)('scope')
     DLanguageClassDeclarationImpl(CLASS_DECLARATION)
       PsiElement(DLanguageTokenType.class)('class')
       INTERFACE_OR_CLASS
@@ -39,11 +39,11 @@ D Language File
                     IDENTIFIER
                       PsiElement(DLanguageTokenType.ID)('f')
                   PsiElement(DLanguageTokenType.;)(';')
-            PsiComment(DLanguageTokenType.LINE_COMMENT)('// error, reference to hasBind class must be hasBind')
+            PsiComment(DLanguageTokenType.LINE_COMMENT)('// error, reference to scope class must be scope')
             DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
               DLanguageDeclarationImpl(DECLARATION)
                 DLanguageAttributeImpl(ATTRIBUTE)
-                  PsiElement(DLanguageTokenType.hasBind)('hasBind')
+                  PsiElement(DLanguageTokenType.scope)('scope')
                 DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
                   DLanguageTypeImpl(TYPE)
                     DLanguageType_2Impl(TYPE_2)

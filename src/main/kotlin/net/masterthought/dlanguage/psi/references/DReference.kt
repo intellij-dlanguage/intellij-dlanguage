@@ -108,45 +108,13 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
 //        val startProcessors = System.currentTimeMillis()
         val project = myElement.project
         val result = Collections.synchronizedList(ArrayList<String>())
-        val importScopeProcessor = DImportScopeProcessor()
-        PsiTreeUtil.treeWalkUp(importScopeProcessor, myElement, myElement.containingFile, ResolveState.initial())
-        val potentialModules = HashSet<String>()
-        for (dLanguageImport in importScopeProcessor.imports) {
-            potentialModules.add(dLanguageImport.name)
-        }
-
         val completionProcessor = DCompletionProcessor()
         PsiTreeUtil.treeWalkUp(completionProcessor, myElement, myElement.containingFile, ResolveState.initial())
-        result.addAll(completionProcessor.completions)
+        result.addAll(completionProcessor.completions)//todo this could be more efficiently implmented
         val decls = StubIndex.getElements(DTopLevelDeclarationsByModule.KEY, (element.containingFile as DLanguageFile).moduleOrFileName, project, GlobalSearchScope.fileScope(element.containingFile), DNamedElement::class.java)
         for (decl in decls) {
             result.add(decl.name)
         }
-
-
-
-//        val endProcessors = System.currentTimeMillis()
-//        log.info("processors " + (endProcessors - startProcessors))
-
-
-//        val start = System.currentTimeMillis()
-        // find definition in imported files
-        for (potentialModule in potentialModules) {
-            //todo add public imports
-            val files = DModuleIndex.getFilesByModuleName(project, potentialModule, GlobalSearchScope.allScope(project))
-            files.parallelStream().forEach { f ->
-                val elements: MutableCollection<DNamedElement> = StubIndex.getElements(DTopLevelDeclarationsByModule.KEY, f.moduleOrFileName, project, GlobalSearchScope.fileScope(f), DNamedElement::class.java)
-//                result.ensureCapacity(elements.size);
-//                val startNames = System.currentTimeMillis()
-                for (declaration in elements) {
-                    result.add(declaration.name)
-                }
-//                val endNames = System.currentTimeMillis()
-//                log.info("names:" + (endNames - startNames))
-            }
-        }
-//        val end = System.currentTimeMillis()
-//        log.info("other files:" + (end - start))
         result.add("abstract")
         result.add("alias")
         result.add("align")

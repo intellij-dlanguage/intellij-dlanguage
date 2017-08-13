@@ -91,6 +91,6 @@ D Language File
                               IDENTIFIER
                                 PsiElement(DLanguageTokenType.ID)('z')
                             PsiElement(DLanguageTokenType.;)(';')
-                    PsiComment(DLanguageTokenType.LINE_COMMENT)('// legal, previous z is out of hasBind')
+                    PsiComment(DLanguageTokenType.LINE_COMMENT)('// legal, previous z is out of scope')
                     PsiElement(DLanguageTokenType.})('}')
           PsiElement(DLanguageTokenType.})('}')

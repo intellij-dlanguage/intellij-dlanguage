@@ -42,7 +42,7 @@ D Language File
             DLanguageParametersImpl(PARAMETERS)
               PsiElement(DLanguageTokenType.()('(')
               PARAMETER
-                PsiElement(DLanguageTokenType.hasBind)('hasBind')
+                PsiElement(DLanguageTokenType.scope)('scope')
                 DLanguageTypeImpl(TYPE)
                   DLanguageType_2Impl(TYPE_2)
                     DLanguageSymbolImpl(SYMBOL)
@@ -117,7 +117,7 @@ D Language File
             DLanguageParametersImpl(PARAMETERS)
               PsiElement(DLanguageTokenType.()('(')
               PARAMETER
-                PsiElement(DLanguageTokenType.hasBind)('hasBind')
+                PsiElement(DLanguageTokenType.scope)('scope')
                 DLanguageTypeImpl(TYPE)
                   DLanguageType_2Impl(TYPE_2)
                     DLanguageSymbolImpl(SYMBOL)

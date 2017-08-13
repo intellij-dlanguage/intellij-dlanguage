@@ -68,7 +68,7 @@ D Language File
                                                   PsiElement(DLanguageTokenType.INTEGER_LITERAL)('1')
                                       PsiElement(DLanguageTokenType.;)(';')
                             PsiElement(DLanguageTokenType.})('}')
-                    PsiComment(DLanguageTokenType.LINE_COMMENT)('// access a variable in enclosing hasBind')
+                    PsiComment(DLanguageTokenType.LINE_COMMENT)('// access a variable in enclosing scope')
                     PsiElement(DLanguageTokenType.})('}')
             DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
               DLanguageDeclarationImpl(DECLARATION)

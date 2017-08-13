@@ -431,7 +431,7 @@ D Language File
                                 PsiElement(DLanguageTokenType.))(')')
                     PsiElement(DLanguageTokenType.;)(';')
             PsiComment(DLanguageTokenType.LINE_COMMENT)('// OK, calls b.baz, because it is declared at the')
-            PsiComment(DLanguageTokenType.LINE_COMMENT)('// top level hasBind of module b')
+            PsiComment(DLanguageTokenType.LINE_COMMENT)('// top level scope of module b')
             DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
               DLanguageDeclarationImpl(DECLARATION)
                 DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
@@ -443,8 +443,9 @@ D Language File
                   DLanguageImportBindingsImpl(IMPORT_BINDINGS)
                     PsiElement(DLanguageTokenType.:)(':')
                     DLanguageImportBindImpl(IMPORT_BIND)
-                      IDENTIFIER
-                        PsiElement(DLanguageTokenType.ID)('boo')
+                      NAMED_IMPORT_BIND
+                        IDENTIFIER
+                          PsiElement(DLanguageTokenType.ID)('boo')
                       PsiElement(DLanguageTokenType.=)('=')
                       IDENTIFIER
                         PsiElement(DLanguageTokenType.ID)('baz')
@@ -472,8 +473,8 @@ D Language File
                                 PsiElement(DLanguageTokenType.))(')')
                     PsiElement(DLanguageTokenType.;)(';')
           PsiComment(DLanguageTokenType.LINE_COMMENT)('// OK, calls aliased b.baz instead of a.boo (== a.foo),')
-          PsiComment(DLanguageTokenType.LINE_COMMENT)('// because the declared alias name 'boo' in local hasBind')
-          PsiComment(DLanguageTokenType.LINE_COMMENT)('// overrides module hasBind name')
+          PsiComment(DLanguageTokenType.LINE_COMMENT)('// because the declared alias name 'boo' in local scope')
+          PsiComment(DLanguageTokenType.LINE_COMMENT)('// overrides module scope name')
           PsiElement(DLanguageTokenType.})('}')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageClassDeclarationImpl(CLASS_DECLARATION)
@@ -535,8 +536,9 @@ D Language File
               DLanguageImportBindingsImpl(IMPORT_BINDINGS)
                 PsiElement(DLanguageTokenType.:)(':')
                 DLanguageImportBindImpl(IMPORT_BIND)
-                  IDENTIFIER
-                    PsiElement(DLanguageTokenType.ID)('ibaz')
+                  NAMED_IMPORT_BIND
+                    IDENTIFIER
+                      PsiElement(DLanguageTokenType.ID)('ibaz')
                   PsiElement(DLanguageTokenType.=)('=')
                   IDENTIFIER
                     PsiElement(DLanguageTokenType.ID)('baz')
@@ -596,7 +598,7 @@ D Language File
                                         PsiElement(DLanguageTokenType.))(')')
                             PsiElement(DLanguageTokenType.;)(';')
                   PsiComment(DLanguageTokenType.LINE_COMMENT)('// OK, ibaz is an alias of baz which declared at')
-                  PsiComment(DLanguageTokenType.LINE_COMMENT)('//     the top level hasBind of module b')
+                  PsiComment(DLanguageTokenType.LINE_COMMENT)('//     the top level scope of module b')
                   PsiElement(DLanguageTokenType.})('}')
           PsiElement(DLanguageTokenType.})('}')
   DLanguageDeclarationImpl(DECLARATION)

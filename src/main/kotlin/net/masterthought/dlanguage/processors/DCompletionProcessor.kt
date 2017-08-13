@@ -5,6 +5,8 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.ResolveState
 import com.intellij.psi.scope.PsiScopeProcessor
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement
+import net.masterthought.dlanguage.stubs.index.DTopLevelDeclarationsByModule
+import net.masterthought.dlanguage.utils.SingleImport
 
 /**
  * Created by francis on 6/17/2017.
@@ -12,7 +14,7 @@ import net.masterthought.dlanguage.psi.interfaces.DNamedElement
 
 class DCompletionProcessor : PsiScopeProcessor {
 
-    val completions: MutableSet<String> = mutableSetOf()
+    val completions: MutableSet<String> = mutableSetOf()//todo a list might improve performance
 
     override fun handleEvent(event: PsiScopeProcessor.Event, associated: Any?) {
         return
@@ -26,7 +28,11 @@ class DCompletionProcessor : PsiScopeProcessor {
         if (element is DNamedElement) {
             completions.add(element.name)
         }
+        if(element is SingleImport){
+            completions.addAll(DTopLevelDeclarationsByModule.getSymbolsFromImport(element).map { it.name })
+        }
         return true
     }
+
 
 }
