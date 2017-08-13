@@ -19,5 +19,7 @@ public abstract class DStubbedPsiElementBase<T extends StubElement<?>> extends S
     public String toString() {
         return getElementType().toString();
     }
+
+    //todo getNameIdentifier needs to use stubs
 }
 

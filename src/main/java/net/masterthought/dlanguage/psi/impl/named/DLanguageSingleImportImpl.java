@@ -52,12 +52,16 @@ public class DLanguageSingleImportImpl extends DNamedStubbedPsiElementBase<DLang
         return PsiTreeUtil.getChildOfType(this, DLanguageIdentifierChain.class);
     }
 
-    //todo these need to be backed up by stubs to prevent psi loading
     @NotNull
     @Override
     public Set<String> getApplicableImportBinds() {
         if (getStub() != null) {
-            return getStub().getApplicableImportBinds();
+            assert getStub() != null;
+            try {
+                return getStub().getApplicableImportBinds();
+            } catch (final NullPointerException e) {
+                e.printStackTrace();
+            }
         }
         if (((DLanguageImportDeclaration) getParent()).getImportBindings() != null) {
             return ((DLanguageImportDeclaration) getParent()).getImportBindings().getImportBinds().stream().map(dLanguageImportBind -> dLanguageImportBind.getIdentifier().getName()).collect(Collectors.toSet());
@@ -68,6 +72,14 @@ public class DLanguageSingleImportImpl extends DNamedStubbedPsiElementBase<DLang
     @NotNull
     @Override
     public String getImportedModuleName() {
+        if (getStub() != null) {
+            assert getStub() != null;
+            try {
+                return getStub().getImportedModule();
+            } catch (final NullPointerException e) {
+                e.printStackTrace();
+            }
+        }
         return getIdentifierChain().getText();
     }
 

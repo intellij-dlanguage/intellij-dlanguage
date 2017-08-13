@@ -89,7 +89,7 @@ class DLangParser {
     private final
     PsiBuilder builder;
     private final Map<Integer, Boolean> cachedAAChecks = new HashMap<>();
-    private final HashMap<Marker, Integer> beginnings = new HashMap<>();
+    ////    private final HashMap<Marker, Integer> beginnings = new HashMap<>();//todo this maybe useful in the future but commented out for now
     Bookmark debugBookmark = null;//used to be able to eval expressions while debugging and then rollback side effects
     /**
      * Current error count
@@ -437,8 +437,8 @@ class DLangParser {
     }
 
     private void cleanup(@NotNull final Marker marker, final IElementType element) {
-//        index = beginnings.get(marker);
-//        beginnings.remove(marker);
+////        index = beginnings.get(marker);
+////        beginnings.remove(marker);
         exit_section_modified(builder, marker, element, true);
     }
 
@@ -459,7 +459,7 @@ class DLangParser {
             exit_section_modified(builder, section, ADD_EXPRESSION, result);
         } else {
             section.drop();
-            beginnings.remove(section);
+//            beginnings.remove(section);
         }
         return result;
     }
@@ -690,7 +690,7 @@ class DLangParser {
             exit_section_modified(builder, m, AND_AND_EXPRESSION, result);
         } else {
             m.drop();
-            beginnings.remove(m);
+//            beginnings.remove(m);
         }
         return result;
     }
@@ -710,7 +710,7 @@ class DLangParser {
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AndExpression", "CmpExpression", tok("&"));
         if (!toParseExpression.element) {
             m.drop();
-            beginnings.remove(m);
+//            beginnings.remove(m);
             return result;
         }
         exit_section_modified(builder, m, AND_EXPRESSION, result);
@@ -907,7 +907,7 @@ class DLangParser {
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmAddExp", "AsmMulExp", tok("+"), tok("-"));
         if (!toParseExpression.element) {
             m.drop();
-            beginnings.remove(m);
+//            beginnings.remove(m);
             return result;
         }
         exit_section_modified(builder, m, ASM_ADD_EXP, result);
@@ -930,7 +930,7 @@ class DLangParser {
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmAndExp", "AsmEqualExp", tok("&"));
         if (!toParseExpression.element) {
             m.drop();
-            beginnings.remove(m);
+//            beginnings.remove(m);
             return result;
         }
         exit_section_modified(builder, m, ASM_AND_EXP, result);
@@ -1007,7 +1007,7 @@ class DLangParser {
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmEqualExp", "AsmRelExp", tok("=="), tok("!="));
         if (!toParseExpression.element) {
             m.drop();
-            beginnings.remove(m);
+//            beginnings.remove(m);
             return result;
         }
         exit_section_modified(builder, m, ASM_EQUAL_EXP, result);
@@ -1107,7 +1107,7 @@ class DLangParser {
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmLogAndExp", "AsmOrExp", tok("&&"));
         if (!toParseExpression.element) {
             m.drop();
-            beginnings.remove(m);
+//            beginnings.remove(m);
             return result;
         }
         exit_section_modified(builder, m, ASM_LOG_AND_EXP, result);
@@ -1129,7 +1129,7 @@ class DLangParser {
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmLogOrExp", "AsmLogAndExp", tok("||"));
         if (!toParseExpression.element) {
             m.drop();
-            beginnings.remove(m);
+//            beginnings.remove(m);
             return result;
         }
         exit_section_modified(builder, m, ASM_LOG_OR_EXP, result);
@@ -1151,7 +1151,7 @@ class DLangParser {
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmMulExp", "AsmBrExp", tok("*"), tok("/"), tok("%"));
         if (!toParseExpression.element) {
             m.drop();
-            beginnings.remove(m);
+//            beginnings.remove(m);
             return result;
         }
         exit_section_modified(builder, m, ASM_MUL_EXP, result);
@@ -1174,7 +1174,7 @@ class DLangParser {
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmOrExp", "AsmXorExp", tok("|"));
         if (!toParseExpression.element) {
             m.drop();
-            beginnings.remove(m);
+//            beginnings.remove(m);
             return result;
         }
         exit_section_modified(builder, m, ASM_OR_EXP, result);
@@ -1246,7 +1246,7 @@ class DLangParser {
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmRelExp", "AsmShiftExp", tok("<"), tok("<="), tok(">"), tok(">="));//todo refactor this to make this shorter
         if (!toParseExpression.element) {
             m.drop();
-            beginnings.remove(m);
+//            beginnings.remove(m);
             return result;
         }
         exit_section_modified(builder, m, ASM_REL_EXP, result);
@@ -1269,7 +1269,7 @@ class DLangParser {
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmShiftExp", "AsmAddExp", tok("<<"), tok(">>"), tok(">>>"));
         if (!toParseExpression.element) {
             m.drop();
-            beginnings.remove(m);
+//            beginnings.remove(m);
             return result;
         }
         exit_section_modified(builder, m, ASM_SHIFT_EXP, result);
@@ -1452,7 +1452,7 @@ class DLangParser {
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmXorExp", "AsmAndExp", tok("^"));
         if (!toParseExpression.element) {
             m.drop();
-            beginnings.remove(m);
+//            beginnings.remove(m);
             return result;
         }
         exit_section_modified(builder, m, ASM_XOR_EXP, result);
@@ -2266,7 +2266,7 @@ class DLangParser {
 
     private Marker enter_section_modified(PsiBuilder builder) {
         final Marker marker = enter_section_(builder);
-        beginnings.put(marker, index);
+//        beginnings.put(marker, index);
         return marker;
     }
 
@@ -3025,7 +3025,7 @@ class DLangParser {
 
     private void exit_section_modified(PsiBuilder builder, Marker m, IElementType type, boolean b) {
         //there is no incorrect parsing aka, markers should only be dropped in case of bookmarks
-        beginnings.remove(m);
+//        beginnings.remove(m);
         exit_section_(builder, m, type, true);
 
     }
@@ -5133,7 +5133,7 @@ class DLangParser {
             tok("*"), tok("/"), tok("%"));
         if (!toParseExpression.element) {
             marker.drop();
-            beginnings.remove(marker);
+//            beginnings.remove(marker);
             return b;
         }
         exit_section_modified(builder, marker, MUL_EXPRESSION, b);
@@ -5327,7 +5327,7 @@ class DLangParser {
             tok("|"));
         if (!toParseExpression.element) {
             marker.drop();
-            beginnings.remove(marker);
+//            beginnings.remove(marker);
             return b;
         }
         exit_section_modified(builder, marker, OR_EXPRESSION, b);
@@ -5355,7 +5355,7 @@ class DLangParser {
             tokens);
         if (!toParseExpression.element) {
             marker.drop();
-            beginnings.remove(marker);
+//            beginnings.remove(marker);
             return b;
         }
         exit_section_modified(builder, marker, type, b);
@@ -5578,7 +5578,7 @@ class DLangParser {
             tok("^^"));
         if (!toParseExpression.element) {
             marker.drop();
-            beginnings.remove(marker);
+//            beginnings.remove(marker);
             return b;
         }
         exit_section_modified(builder, marker, POW_EXPRESSION, b);
@@ -5882,7 +5882,7 @@ class DLangParser {
         final boolean b = parseLeftAssocBinaryExpression(toParseExpression, "RelExpression", "ShiftExpression", !parseShift, tok("<"), tok("<="), tok(">"), tok(">="), tok("!<>="), tok("!<>"), tok("<>"), tok("<>="), tok("!>"), tok("!>="), tok("!>="), tok("!<"), tok("!<="));
         if (!toParseExpression.element) {
             marker.drop();
-            beginnings.remove(marker);
+//            beginnings.remove(marker);
             return b;
         }
         exit_section_modified(builder, marker, REL_EXPRESSION, b);
@@ -6005,7 +6005,7 @@ class DLangParser {
         final boolean b = parseLeftAssocBinaryExpression(toParseExpression, "ShiftExpression", "AddExpression", tok("<<"), tok(">>"), tok(">>>"));
         if (!toParseExpression.element) {
             marker.drop();
-            beginnings.remove(marker);
+//            beginnings.remove(marker);
             return b;
         }
         exit_section_modified(builder, marker, SHIFT_EXPRESSION, b);
@@ -8015,7 +8015,7 @@ class DLangParser {
             tok("^"));
         if (!toParseExpression.element) {
             marker.drop();
-            beginnings.remove(marker);
+//            beginnings.remove(marker);
             return b;
         }
         exit_section_modified(builder, marker, XOR_EXPRESSION, b);

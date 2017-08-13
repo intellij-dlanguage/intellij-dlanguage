@@ -50,7 +50,7 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
 
 
         val project = myElement.project
-        val namedElements = DResolveUtil.getInstance(project).findDefinitionNode(myElement, false).map { if (it is PsiNameIdentifierOwner && it !is ModuleDeclaration && it !is SingleImport) if (it.nameIdentifier != null) it.nameIdentifier!! else it else it }
+        val namedElements = DResolveUtil.getInstance(project).findDefinitionNode(myElement, true).map { if (it is PsiNameIdentifierOwner && it !is ModuleDeclaration && it !is SingleImport) if (it.nameIdentifier != null) it.nameIdentifier!! else it else it }
         val results = mutableListOf<PsiElementResolveResult>()
         for (property in namedElements) {
             results.add(PsiElementResolveResult(property))
@@ -118,8 +118,7 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
         val completionProcessor = DCompletionProcessor()
         PsiTreeUtil.treeWalkUp(completionProcessor, myElement, myElement.containingFile, ResolveState.initial())
         result.addAll(completionProcessor.completions)
-        val decls = StubIndex.getElements(DTopLevelDeclarationsByModule.KEY, (element.containingFile as DLanguageFile).moduleOrFileName, project, GlobalSearchScope.fileScope(
-            element.containingFile), DNamedElement::class.java)
+        val decls = StubIndex.getElements(DTopLevelDeclarationsByModule.KEY, (element.containingFile as DLanguageFile).moduleOrFileName, project, GlobalSearchScope.fileScope(element.containingFile), DNamedElement::class.java)
         for (decl in decls) {
             result.add(decl.name)
         }
@@ -133,6 +132,7 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
 //        val start = System.currentTimeMillis()
         // find definition in imported files
         for (potentialModule in potentialModules) {
+            //todo add public imports
             val files = DModuleIndex.getFilesByModuleName(project, potentialModule, GlobalSearchScope.allScope(project))
             files.parallelStream().forEach { f ->
                 val elements: MutableCollection<DNamedElement> = StubIndex.getElements(DTopLevelDeclarationsByModule.KEY, f.moduleOrFileName, project, GlobalSearchScope.fileScope(f), DNamedElement::class.java)

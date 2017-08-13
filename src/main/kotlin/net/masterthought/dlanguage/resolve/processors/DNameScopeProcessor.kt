@@ -24,6 +24,7 @@ class DNameScopeProcessor(var start: Identifier, val profile: Boolean = false) :
 
     val project = start.project
     val log: Logger = Logger.getInstance(this::class.java)
+    val name = start.name
 
     override val result = mutableSetOf<DNamedElement>()
 
@@ -31,7 +32,7 @@ class DNameScopeProcessor(var start: Identifier, val profile: Boolean = false) :
         var toContinue = true
         val startTime = System.currentTimeMillis()
         if (element is DNamedElement) {
-            if (element.name == start.name) {
+            if (element.name == name) {
                 if (element !is Constructor) {//todo this class should be renamed because of this
                     result.add(element)
                     toContinue = false
@@ -45,7 +46,7 @@ class DNameScopeProcessor(var start: Identifier, val profile: Boolean = false) :
             throw IllegalArgumentException()
         }
         val endTime = System.currentTimeMillis()
-        if ((endTime - startTime) > 1)
+        if ((endTime - startTime) > 30)
             if (profile)
                 log.info("execute took:" + (endTime - startTime))
         return toContinue
@@ -67,7 +68,7 @@ class DNameScopeProcessor(var start: Identifier, val profile: Boolean = false) :
             result.addAll(DTopLevelDeclarationIndex.getTopLevelSymbols(start.name, element.importedModuleName, project))
         } else {
             val bindDecls = element.applicableImportBinds.flatMap { DTopLevelDeclarationIndex.getTopLevelSymbols(it, element.importedModuleName, project) }
-            if (!bindDecls.filter { it.name == start.name }.isEmpty()) {
+            if (!bindDecls.filter { it.name == start.name }.isEmpty()) {//todo it appears that for some of these psi is being loaded
                 result.addAll(bindDecls.filter { it.name == start.name })
                 return false
             }

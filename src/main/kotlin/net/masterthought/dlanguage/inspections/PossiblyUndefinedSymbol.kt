@@ -7,7 +7,6 @@ import com.intellij.psi.PsiElementVisitor
 import net.masterthought.dlanguage.DLanguageBundle
 import net.masterthought.dlanguage.psi.DLanguageVisitor
 import net.masterthought.dlanguage.psi.impl.named.DLanguageIdentifierImpl
-import net.masterthought.dlanguage.psi.references.DReference
 import net.masterthought.dlanguage.resolve.DResolveUtil
 import net.masterthought.dlanguage.utils.Identifier
 
@@ -42,7 +41,7 @@ class PossiblyUndefinedSymbol : LocalInspectionTool() {
 //                else if (BasicResolve.findDefinitionNode(identifier.project, identifier).isEmpty() && !symbolIsDefinedByDefault(identifier)) {
 //                    holder.registerProblem(identifier, "Possibly undefined symbol")
 //                }
-                if ((identifier.reference as DReference).multiResolve(false).isEmpty() && !symbolIsDefinedByDefault(identifier)) {
+                if (DResolveUtil.getInstance(identifier.project).findDefinitionNode(identifier, true).isEmpty() && !symbolIsDefinedByDefault(identifier)) {
                     holder.registerProblem(identifier, "Possibly undefined symbol")//todo add quick fix
                 }
                 val end = System.currentTimeMillis()
