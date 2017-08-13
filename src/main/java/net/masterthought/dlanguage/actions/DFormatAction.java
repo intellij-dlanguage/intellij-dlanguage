@@ -41,7 +41,9 @@ public class DFormatAction extends AnAction implements DumbAware {
     @Override
     public void update(final AnActionEvent e) {
         final PsiFile psiFile = e.getData(CommonDataKeys.PSI_FILE);
-        e.getPresentation().setEnabled(DLanguageFile.class.isAssignableFrom(psiFile.getClass()));
+        if(psiFile != null) {
+            e.getPresentation().setEnabled(DLanguageFile.class.isAssignableFrom(psiFile.getClass()));
+        }
     }
 
     /**
