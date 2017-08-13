@@ -53,7 +53,7 @@ public class DResolveTest extends DResolveTestCase {
         doTest();
     }
 
-    public void testImportBindResolve() {
+    public void testImportBindresolve() {
         doTest();
     }
 }
