@@ -56,8 +56,8 @@ import net.masterthought.dlanguage.utils.*
             processor = DFunctionProcessor(e, inFunctionUsage(e)!!) as DResolveProcessor<PsiElement, DNamedElement>
             PsiTreeUtil.treeWalkUp(processor, e, e.containingFile, ResolveState.initial())
             resolveType = ResolveType.FUNCTION
-        } else if (DResolveUtil.resolvingConstructor(e) != null) {
-            processor = DConstructorProcessor(e, DResolveUtil.resolvingConstructor(e)!!) as DResolveProcessor<PsiElement, DNamedElement>
+        } else if (DResolveUtil.getInstance(project).resolvingConstructor(e) != null) {
+            processor = DConstructorProcessor(e, DResolveUtil.getInstance(project).resolvingConstructor(e)!!) as DResolveProcessor<PsiElement, DNamedElement>
             PsiTreeUtil.treeWalkUp(processor, e, e.containingFile, ResolveState.initial())
             resolveType = ResolveType.CONSTRUCTOR
         } else {
@@ -95,7 +95,7 @@ import net.masterthought.dlanguage.utils.*
                         }
                         ResolveType.CONSTRUCTOR -> {
                             if (element is Constructor) {
-                                if (DConstructorProcessor(e, DResolveUtil.resolvingConstructor(e)!!).matches(DResolveUtil.resolvingConstructor(e)!!, element)) {
+                                if (DConstructorProcessor(e, DResolveUtil.getInstance(project).resolvingConstructor(e)!!).matches(DResolveUtil.getInstance(project).resolvingConstructor(e)!!, element)) {
                                     result.add(element)
                                 }
                             }

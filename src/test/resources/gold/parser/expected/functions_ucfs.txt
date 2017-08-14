@@ -443,8 +443,9 @@ D Language File
                   DLanguageImportBindingsImpl(IMPORT_BINDINGS)
                     PsiElement(DLanguageTokenType.:)(':')
                     DLanguageImportBindImpl(IMPORT_BIND)
-                      IDENTIFIER
-                        PsiElement(DLanguageTokenType.ID)('boo')
+                      NAMED_IMPORT_BIND
+                        IDENTIFIER
+                          PsiElement(DLanguageTokenType.ID)('boo')
                       PsiElement(DLanguageTokenType.=)('=')
                       IDENTIFIER
                         PsiElement(DLanguageTokenType.ID)('baz')
@@ -535,8 +536,9 @@ D Language File
               DLanguageImportBindingsImpl(IMPORT_BINDINGS)
                 PsiElement(DLanguageTokenType.:)(':')
                 DLanguageImportBindImpl(IMPORT_BIND)
-                  IDENTIFIER
-                    PsiElement(DLanguageTokenType.ID)('ibaz')
+                  NAMED_IMPORT_BIND
+                    IDENTIFIER
+                      PsiElement(DLanguageTokenType.ID)('ibaz')
                   PsiElement(DLanguageTokenType.=)('=')
                   IDENTIFIER
                     PsiElement(DLanguageTokenType.ID)('baz')

@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface DLanguageIdentifierOrTemplateChain extends PsiElement {
     @NotNull
-    public List<PsiElement> getOP_DOTs();
+    List<PsiElement> getOP_DOTs();
 
     @NotNull
-    public List<DLanguageIdentifierOrTemplateInstance> getIdentifierOrTemplateInstances();
+    List<DLanguageIdentifierOrTemplateInstance> getIdentifierOrTemplateInstances();
 }

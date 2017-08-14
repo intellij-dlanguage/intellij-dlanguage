@@ -6,8 +6,8 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageFinalSwitchStatement extends PsiElement {
     @Nullable
-    public PsiElement getKW_FINAL();
+    PsiElement getKW_FINAL();
 
     @Nullable
-    public DLanguageSwitchStatement getSwitchStatement();
+    DLanguageSwitchStatement getSwitchStatement();
 }

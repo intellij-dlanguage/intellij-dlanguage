@@ -89,7 +89,7 @@ class DLangParser {
     private final
     PsiBuilder builder;
     private final Map<Integer, Boolean> cachedAAChecks = new HashMap<>();
-    private final HashMap<Marker, Integer> beginnings = new HashMap<>();
+    ////    private final HashMap<Marker, Integer> beginnings = new HashMap<>();//todo this maybe useful in the future but commented out for now
     Bookmark debugBookmark = null;//used to be able to eval expressions while debugging and then rollback side effects
     /**
      * Current error count
@@ -107,7 +107,7 @@ class DLangParser {
     private int suppressMessages;
     private int index;
 
-    public DLangParser(@NotNull final PsiBuilder builder) {
+    DLangParser(@NotNull final PsiBuilder builder) {
         this.errorCount = 0;
         this.warningCount = 0;
         this.tokens = getTokens(builder);
@@ -437,8 +437,8 @@ class DLangParser {
     }
 
     private void cleanup(@NotNull final Marker marker, final IElementType element) {
-//        index = beginnings.get(marker);
-//        beginnings.remove(marker);
+////        index = beginnings.get(marker);
+////        beginnings.remove(marker);
         exit_section_modified(builder, marker, element, true);
     }
 
@@ -459,7 +459,7 @@ class DLangParser {
             exit_section_modified(builder, section, ADD_EXPRESSION, result);
         } else {
             section.drop();
-            beginnings.remove(section);
+//            beginnings.remove(section);
         }
         return result;
     }
@@ -503,7 +503,7 @@ class DLangParser {
                 cleanup(m, ALIAS_DECLARATION);
                 return false;
             }
-            if (!parseIdentifierList()) {
+            if (!parseIdentifierListAliasDeclaration()) {
                 cleanup(m, ALIAS_DECLARATION);
                 return false;
             }
@@ -542,6 +542,33 @@ class DLangParser {
         }
         return false;
     }
+
+    private boolean parseIdentifierListAliasDeclaration() {
+//        Marker m = enter_section_modified(builder);
+        while (moreTokens()) {
+            Marker fakeAliasInitializer = enter_section_modified(builder);
+            //so let's explain whats going on here
+            // there  are two ways of creating an alias in d:
+            // alias x = int;
+            // alias int x;//designed to sorta look like a typedef
+            //the first way is covered by the alias initializer named element.
+            //libdparse does not however parse the second way with an alias initializer which leads to no named element
+            //therefore this modified version also needs to include an alias initializer.
+            Token ident = expect(tok("identifier"));
+            exit_section_modified(builder, fakeAliasInitializer, ALIAS_INITIALIZER, true);
+            if (ident == null) {
+//                cleanup(m, IDENTIFIER_LIST);
+                return false;
+            }
+            if (currentIs(tok(","))) {
+                advance();
+            } else
+                break;
+        }
+//        exit_section_modified(builder, m, IDENTIFIER_LIST, true);
+        return true;
+    }
+
 
     /**
      * Parses an AliasInitializer.
@@ -663,7 +690,7 @@ class DLangParser {
             exit_section_modified(builder, m, AND_AND_EXPRESSION, result);
         } else {
             m.drop();
-            beginnings.remove(m);
+//            beginnings.remove(m);
         }
         return result;
     }
@@ -677,13 +704,13 @@ class DLangParser {
      * ;)
      */
     boolean parseAndExpression() {
-        Marker m = enter_section_modified(builder);
-        Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
+        final Marker m = enter_section_modified(builder);
+        final Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
         toParseExpression.element = false;
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AndExpression", "CmpExpression", tok("&"));
         if (!toParseExpression.element) {
             m.drop();
-            beginnings.remove(m);
+//            beginnings.remove(m);
             return result;
         }
         exit_section_modified(builder, m, AND_EXPRESSION, result);
@@ -723,7 +750,6 @@ class DLangParser {
      */
     boolean parseArguments() {
         Marker m = enter_section_(builder);
-//			Runnable cleanup =() ->  exit_section_modified(builder,m,DLanguageTypes.Arguments,false);
         if (!tokenCheck("(")) {
             cleanup(m, ARGUMENTS);
             return false;
@@ -751,9 +777,8 @@ class DLangParser {
      */
     boolean parseArrayInitializer() {
 //        Marker m = enter_section_(builder);
-//			Runnable cleanup =() ->  exit_section_modified(builder,m,DLanguageTypes.ArrayInitializer,false);
         final Marker arrayInit = enter_section_modified(builder);
-        Token open = expect(tok("["));
+        final Token open = expect(tok("["));
         if (open == null) {
             cleanup(arrayInit, ARRAY_INITIALIZER);
             return false;
@@ -848,7 +873,7 @@ class DLangParser {
             exit_section_modified(builder, m, ARRAY_MEMBER_INITIALIZATION, true);
             return true;
         } else {
-            boolean assignExpression = parseAssignExpression();
+            final boolean assignExpression = parseAssignExpression();
             if (!assignExpression) {
                 cleanup(m, ARRAY_MEMBER_INITIALIZATION);
                 return false;
@@ -877,12 +902,12 @@ class DLangParser {
     boolean parseAsmAddExp() {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
         final Marker m = enter_section_modified(builder);
-        Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
+        final Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
         toParseExpression.element = false;
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmAddExp", "AsmMulExp", tok("+"), tok("-"));
         if (!toParseExpression.element) {
             m.drop();
-            beginnings.remove(m);
+//            beginnings.remove(m);
             return result;
         }
         exit_section_modified(builder, m, ASM_ADD_EXP, result);
@@ -900,12 +925,12 @@ class DLangParser {
     boolean parseAsmAndExp() {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
         final Marker m = enter_section_modified(builder);
-        Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
+        final Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
         toParseExpression.element = false;
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmAndExp", "AsmEqualExp", tok("&"));
         if (!toParseExpression.element) {
             m.drop();
-            beginnings.remove(m);
+//            beginnings.remove(m);
             return result;
         }
         exit_section_modified(builder, m, ASM_AND_EXP, result);
@@ -977,12 +1002,12 @@ class DLangParser {
      */
     boolean parseAsmEqualExp() {
         final Marker m = enter_section_modified(builder);
-        Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
+        final Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
         toParseExpression.element = false;
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmEqualExp", "AsmRelExp", tok("=="), tok("!="));
         if (!toParseExpression.element) {
             m.drop();
-            beginnings.remove(m);
+//            beginnings.remove(m);
             return result;
         }
         exit_section_modified(builder, m, ASM_EQUAL_EXP, result);
@@ -1077,12 +1102,12 @@ class DLangParser {
     boolean parseAsmLogAndExp() {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
         final Marker m = enter_section_modified(builder);
-        Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
+        final Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
         toParseExpression.element = false;
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmLogAndExp", "AsmOrExp", tok("&&"));
         if (!toParseExpression.element) {
             m.drop();
-            beginnings.remove(m);
+//            beginnings.remove(m);
             return result;
         }
         exit_section_modified(builder, m, ASM_LOG_AND_EXP, result);
@@ -1099,12 +1124,12 @@ class DLangParser {
      */
     boolean parseAsmLogOrExp() {
         final Marker m = enter_section_modified(builder);
-        Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
+        final Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
         toParseExpression.element = false;
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmLogOrExp", "AsmLogAndExp", tok("||"));
         if (!toParseExpression.element) {
             m.drop();
-            beginnings.remove(m);
+//            beginnings.remove(m);
             return result;
         }
         exit_section_modified(builder, m, ASM_LOG_OR_EXP, result);
@@ -1121,12 +1146,12 @@ class DLangParser {
      */
     boolean parseAsmMulExp() {
         final Marker m = enter_section_modified(builder);
-        Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
+        final Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
         toParseExpression.element = false;
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmMulExp", "AsmBrExp", tok("*"), tok("/"), tok("%"));
         if (!toParseExpression.element) {
             m.drop();
-            beginnings.remove(m);
+//            beginnings.remove(m);
             return result;
         }
         exit_section_modified(builder, m, ASM_MUL_EXP, result);
@@ -1144,12 +1169,12 @@ class DLangParser {
     boolean parseAsmOrExp() {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
         final Marker m = enter_section_modified(builder);
-        Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
+        final Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
         toParseExpression.element = false;
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmOrExp", "AsmXorExp", tok("|"));
         if (!toParseExpression.element) {
             m.drop();
-            beginnings.remove(m);
+//            beginnings.remove(m);
             return result;
         }
         exit_section_modified(builder, m, ASM_OR_EXP, result);
@@ -1173,7 +1198,7 @@ class DLangParser {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
 //            AsmPrimaryExp node = allocator.make!AsmPrimaryExp();
         final Marker m = enter_section_modified(builder);
-        Token.IdType i = current().type;
+        final Token.IdType i = current().type;
         if (i.equals(tok("doubleLiteral")) || i.equals(tok("floatLiteral")) || i.equals(tok("intLiteral")) || i.equals(tok("longLiteral")) || i.equals(tok("stringLiteral")) || i.equals(tok("$"))) {
             advance();
         } else if (i.equals(tok("identifier"))) {
@@ -1216,12 +1241,12 @@ class DLangParser {
     boolean parseAsmRelExp() {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
         final Marker m = enter_section_modified(builder);
-        Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
+        final Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
         toParseExpression.element = false;
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmRelExp", "AsmShiftExp", tok("<"), tok("<="), tok(">"), tok(">="));//todo refactor this to make this shorter
         if (!toParseExpression.element) {
             m.drop();
-            beginnings.remove(m);
+//            beginnings.remove(m);
             return result;
         }
         exit_section_modified(builder, m, ASM_REL_EXP, result);
@@ -1239,12 +1264,12 @@ class DLangParser {
     boolean parseAsmShiftExp() {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
         final Marker m = enter_section_modified(builder);
-        Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
+        final Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
         toParseExpression.element = false;
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmShiftExp", "AsmAddExp", tok("<<"), tok(">>"), tok(">>>"));
         if (!toParseExpression.element) {
             m.drop();
-            beginnings.remove(m);
+//            beginnings.remove(m);
             return result;
         }
         exit_section_modified(builder, m, ASM_SHIFT_EXP, result);
@@ -1302,10 +1327,10 @@ class DLangParser {
     boolean parseAsmTypePrefix() {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
         final Marker m = enter_section_modified(builder);
-        Token.IdType i = current().type;
+        final Token.IdType i = current().type;
         if (i.equals(tok("identifier")) || i.equals(tok("byte")) || i.equals(tok("short")) || i.equals(tok("int")) || i.equals(tok("float")) || i.equals(tok("double")) || i.equals(tok("real"))) {
-            String tokenText = builder.getTokenText();
-            Token t = advance();
+            final String tokenText = builder.getTokenText();
+            final Token t = advance();
             if (t.type.equals(tok("identifier")))
                 switch (tokenText) {
                     case "near":
@@ -1427,7 +1452,7 @@ class DLangParser {
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmXorExp", "AsmAndExp", tok("^"));
         if (!toParseExpression.element) {
             m.drop();
-            beginnings.remove(m);
+//            beginnings.remove(m);
             return result;
         }
         exit_section_modified(builder, m, ASM_XOR_EXP, result);
@@ -1817,8 +1842,8 @@ class DLangParser {
      * ;)
      */
     boolean parseBlockStatement() {
-        Marker m = enter_section_modified(builder);
-        Token openBrace = expect(tok("{"));
+        final Marker m = enter_section_modified(builder);
+        final Token openBrace = expect(tok("{"));
         if (openBrace == null) {
             cleanup(m, BLOCK_STATEMENT);
             return false;
@@ -1829,7 +1854,7 @@ class DLangParser {
                 return false;
             }
         }
-        Token closeBrace = expect(tok("}"));
+        final Token closeBrace = expect(tok("}"));
         exit_section_modified(builder, m, BLOCK_STATEMENT, true);
         return true;
     }
@@ -1856,9 +1881,9 @@ class DLangParser {
      * ;)
      */
     boolean parseBreakStatement() {
-        Marker m = enter_section_modified(builder);
+        final Marker m = enter_section_modified(builder);
         expect(tok("break"));
-        Token.IdType i = current().type;
+        final Token.IdType i = current().type;
         if (i.equals(tok("identifier"))) {
             advance();
             if (!tokenCheck(";")) {
@@ -1876,7 +1901,7 @@ class DLangParser {
         return true;
     }
 
-    private boolean isProtection(Token.IdType type) {
+    private boolean isProtection(final Token.IdType type) {
         return Protections.contains(type);
     }
 
@@ -1888,7 +1913,7 @@ class DLangParser {
      * ;)
      */
     boolean parseBaseClass() {
-        Marker m = enter_section_modified(builder);
+        final Marker m = enter_section_modified(builder);
         if (isProtection(current().type)) {
             warn("Use of base class protection == deprecated.");
             advance();
@@ -1909,7 +1934,7 @@ class DLangParser {
      * ;)
      */
     boolean parseBaseClassList() {
-        Marker m = enter_section_modified(builder);
+        final Marker m = enter_section_modified(builder);
         final boolean result = parseCommaSeparatedRule("BaseClassList", "BaseClass");
         exit_section_modified(builder, m, BASE_CLASS_LIST, result);
         return result;
@@ -1958,7 +1983,7 @@ class DLangParser {
      * ;)
      */
     boolean parseCaseRangeStatement() {
-        Marker m = enter_section_modified(builder);
+        final Marker m = enter_section_modified(builder);
 //            assert (low != null);
 //            node.low = low;
         if (!tokenCheck(":")) {
@@ -1974,7 +1999,7 @@ class DLangParser {
             cleanup(m, CASE_RANGE_STATEMENT);
             return false;
         }
-        Token colon = expect(tok(":"));
+        final Token colon = expect(tok(":"));
         if (colon == null) {
             cleanup(m, CASE_RANGE_STATEMENT);
             return false;
@@ -1995,8 +2020,8 @@ class DLangParser {
      * ;)
      */
     boolean parseCaseStatement() {
-        Marker m = enter_section_modified(builder);
-        Token colon = expect(tok(":"));
+        final Marker m = enter_section_modified(builder);
+        final Token colon = expect(tok(":"));
         if (colon == null) {
             cleanup(m, CASE_STATEMENT);
             return false;
@@ -2241,7 +2266,7 @@ class DLangParser {
 
     private Marker enter_section_modified(PsiBuilder builder) {
         final Marker marker = enter_section_(builder);
-        beginnings.put(marker, index);
+//        beginnings.put(marker, index);
         return marker;
     }
 
@@ -3000,7 +3025,7 @@ class DLangParser {
 
     private void exit_section_modified(PsiBuilder builder, Marker m, IElementType type, boolean b) {
         //there is no incorrect parsing aka, markers should only be dropped in case of bookmarks
-        beginnings.remove(m);
+//        beginnings.remove(m);
         exit_section_(builder, m, type, true);
 
     }
@@ -3376,7 +3401,6 @@ class DLangParser {
 //                    if (last != null && last.comment == null)
 //                    last.comment = current().trailingComment;
                 advance();
-                continue;
             } else if (currentIs(tok("}"))) {
 //                    if (last != null && last.comment == null)
 //                    last.comment = tokens[index - 1].trailingComment;
@@ -4133,7 +4157,6 @@ class DLangParser {
             }
             if (currentIs(tok("."))) {
                 advance();
-                continue;
             } else
                 break;
         }
@@ -4158,7 +4181,6 @@ class DLangParser {
             }
             if (currentIs(tok(","))) {
                 advance();
-                continue;
             } else
                 break;
         }
@@ -4177,10 +4199,8 @@ class DLangParser {
         Marker m = enter_section_modified(builder);
         int identifiersOrTemplateInstancesLength = 0;
         while (moreTokens()) {
-//                auto c = allocator.setCheckpoint();
             if (!parseIdentifierOrTemplateInstance()) {
                 identifiersOrTemplateInstancesLength++;
-//                    allocator.rollback(c);
                 if (identifiersOrTemplateInstancesLength == 0) {
                     cleanup(m, IDENTIFIER_OR_TEMPLATE_CHAIN);
                     return false;
@@ -4310,11 +4330,9 @@ class DLangParser {
                 }
             }
             Bookmark b = setBookmark();
-//                c = allocator.setCheckpoint();
             boolean type = parseType().first;
             if (!type || !currentIs(tok("identifier"))
                 || !peekIs(tok("="))) {
-//                    allocator.rollback(c);
                 goToBookmark(b);
                 if (!parseExpression()) {
                     cleanup(m, IF_STATEMENT);
@@ -4375,16 +4393,43 @@ class DLangParser {
      * ;)
      */
     boolean parseImportBind() {
-        Marker m = enter_section_modified(builder);
+        final Marker m = enter_section_modified(builder);
+        boolean isNamedBind = false;
+        final Bookmark bookmark = setBookmark();
         Token ident = expect(tok("identifier"));
         if (ident == null) {
             cleanup(m, IMPORT_BIND);
             return false;
         }
         if (currentIs(tok("="))) {
+            isNamedBind = true;
             advance();
-            Token id = expect(tok("identifier"));
+            final Token id = expect(tok("identifier"));
             if (id == null) {
+                cleanup(m, IMPORT_BIND);
+                return false;
+            }
+        }
+        goToBookmark(bookmark);
+        if (isNamedBind) {
+            final Marker namedImportBind = enter_section_modified(builder);
+            ident = expect(tok("identifier"));
+            if (ident == null) {
+                cleanup(m, IMPORT_BIND);
+                return false;
+            }
+            exit_section_modified(builder, namedImportBind, NAMED_IMPORT_BIND, true);
+            if (currentIs(tok("="))) {
+                advance();
+                final Token id = expect(tok("identifier"));
+                if (id == null) {
+                    cleanup(m, IMPORT_BIND);
+                    return false;
+                }
+            }
+        } else {
+            ident = expect(tok("identifier"));
+            if (ident == null) {
                 cleanup(m, IMPORT_BIND);
                 return false;
             }
@@ -4400,8 +4445,8 @@ class DLangParser {
      * $(RULE singleImport) $(LITERAL ':') $(RULE importBind) ($(LITERAL ',') $(RULE importBind))*
      * ;)
      */
-    boolean parseImportBindings(boolean parseSingleImport) {
-        Marker m = enter_section_modified(builder);
+    boolean parseImportBindings(final boolean parseSingleImport) {
+        final Marker m = enter_section_modified(builder);
         if (parseSingleImport) {
             if (!parseSingleImport()) {
                 cleanup(m, IMPORT_BINDINGS);
@@ -4413,14 +4458,12 @@ class DLangParser {
             return false;
         }
         while (moreTokens()) {
-//                c = allocator.setCheckpoint();
             if (parseImportBind()) {
                 if (currentIs(tok(",")))
                     advance();
                 else
                     break;
             } else {
-//                    allocator.rollback(c);
                 break;
             }
         }
@@ -4437,12 +4480,12 @@ class DLangParser {
      * ;)
      */
     boolean parseImportDeclaration() {
-        Marker m = enter_section_modified(builder);
+        final Marker m = enter_section_modified(builder);
         if (!tokenCheck("import")) {
             cleanup(m, IMPORT_DECLARATION);
             return false;
         }
-        boolean si = parseSingleImport();
+        final boolean si = parseSingleImport();
         if (!si) {
             cleanup(m, IMPORT_DECLARATION);
             return false;
@@ -4453,7 +4496,7 @@ class DLangParser {
             if (currentIs(tok(","))) {
                 advance();
                 while (moreTokens()) {
-                    boolean single = parseSingleImport();
+                    final boolean single = parseSingleImport();
                     if (!single) {
                         cleanup(m, IMPORT_DECLARATION);
                         return false;
@@ -4502,7 +4545,7 @@ class DLangParser {
      * )
      */
     boolean parseIndex() {
-        Marker m = enter_section_modified(builder);
+        final Marker m = enter_section_modified(builder);
         if (!parseAssignExpression()) {
             cleanup(m, INDEX);
             return false;
@@ -4531,9 +4574,9 @@ class DLangParser {
      * ;
      * )
      */
-    boolean parseIndexExpression(boolean parseUnary)//(UnaryExpression unaryExpression = null)
+    boolean parseIndexExpression(final boolean parseUnary)//(UnaryExpression unaryExpression = null)
     {
-        Marker m = enter_section_modified(builder);
+        final Marker m = enter_section_modified(builder);
         if (parseUnary) {
             if (!parseUnaryExpression()) {
                 cleanup(m, INDEX_EXPRESSION);
@@ -4577,7 +4620,7 @@ class DLangParser {
      * $(RULE shiftExpression) ($(LITERAL 'in') | ($(LITERAL '!') $(LITERAL 'in'))) $(RULE shiftExpression)
      * ;)
      */
-    boolean parseInExpression(boolean parseShift)//(ExpressionNode shift = null)
+    boolean parseInExpression(final boolean parseShift)//(ExpressionNode shift = null)
     {
         Marker m = enter_section_modified(builder);
         if (parseShift) {
@@ -5090,7 +5133,7 @@ class DLangParser {
             tok("*"), tok("/"), tok("%"));
         if (!toParseExpression.element) {
             marker.drop();
-            beginnings.remove(marker);
+//            beginnings.remove(marker);
             return b;
         }
         exit_section_modified(builder, marker, MUL_EXPRESSION, b);
@@ -5284,7 +5327,7 @@ class DLangParser {
             tok("|"));
         if (!toParseExpression.element) {
             marker.drop();
-            beginnings.remove(marker);
+//            beginnings.remove(marker);
             return b;
         }
         exit_section_modified(builder, marker, OR_EXPRESSION, b);
@@ -5312,7 +5355,7 @@ class DLangParser {
             tokens);
         if (!toParseExpression.element) {
             marker.drop();
-            beginnings.remove(marker);
+//            beginnings.remove(marker);
             return b;
         }
         exit_section_modified(builder, marker, type, b);
@@ -5535,7 +5578,7 @@ class DLangParser {
             tok("^^"));
         if (!toParseExpression.element) {
             marker.drop();
-            beginnings.remove(marker);
+//            beginnings.remove(marker);
             return b;
         }
         exit_section_modified(builder, marker, POW_EXPRESSION, b);
@@ -5839,7 +5882,7 @@ class DLangParser {
         final boolean b = parseLeftAssocBinaryExpression(toParseExpression, "RelExpression", "ShiftExpression", !parseShift, tok("<"), tok("<="), tok(">"), tok(">="), tok("!<>="), tok("!<>"), tok("<>"), tok("<>="), tok("!>"), tok("!>="), tok("!>="), tok("!<"), tok("!<="));
         if (!toParseExpression.element) {
             marker.drop();
-            beginnings.remove(marker);
+//            beginnings.remove(marker);
             return b;
         }
         exit_section_modified(builder, marker, REL_EXPRESSION, b);
@@ -5962,7 +6005,7 @@ class DLangParser {
         final boolean b = parseLeftAssocBinaryExpression(toParseExpression, "ShiftExpression", "AddExpression", tok("<<"), tok(">>"), tok(">>>"));
         if (!toParseExpression.element) {
             marker.drop();
-            beginnings.remove(marker);
+//            beginnings.remove(marker);
             return b;
         }
         exit_section_modified(builder, marker, SHIFT_EXPRESSION, b);
@@ -5977,7 +6020,7 @@ class DLangParser {
      * ;)
      */
     boolean parseSingleImport() {
-        Marker m = enter_section_modified(builder);
+        final Marker m = enter_section_modified(builder);
         if (startsWith(tok("identifier"), tok("="))) {
             advance(); // identifier
             advance(); // =
@@ -7659,7 +7702,6 @@ class DLangParser {
             }
         }
 
-        loop:
         while (moreTokens()) {
             Token.IdType i1 = current().type;
             if (i1.equals(tok("!"))) {
@@ -7678,9 +7720,9 @@ class DLangParser {
                             return false;
                         }
                     } else
-                        break loop;
+                        break;
                 } else
-                    break loop;
+                    break;
             } else if (i1.equals(tok("("))) {
                 //todo fix this duplication
                 exit_section_modified(builder, m, UNARY_EXPRESSION, true);
@@ -7704,7 +7746,7 @@ class DLangParser {
                 } else
                     parseIdentifierOrTemplateInstance();
             } else {
-                break loop;
+                break;
             }
         }
         exit_section_modified(builder, m, UNARY_EXPRESSION, true);
@@ -7973,7 +8015,7 @@ class DLangParser {
             tok("^"));
         if (!toParseExpression.element) {
             marker.drop();
-            beginnings.remove(marker);
+//            beginnings.remove(marker);
             return b;
         }
         exit_section_modified(builder, marker, XOR_EXPRESSION, b);
@@ -8178,8 +8220,6 @@ class DLangParser {
     boolean isType() {
         if (!moreTokens()) return false;
         Bookmark b = setBookmark();
-//            auto c = allocator.setCheckpoint();
-//            scope (exit) allocator.rollback(c);
         if (!parseType().first) {
             goToBookmark(b);
             return false;
@@ -8199,7 +8239,7 @@ class DLangParser {
 
     boolean isAttribute() {
         if (!moreTokens()) return false;
-        Token.IdType i = current().type;
+        final Token.IdType i = current().type;
         if (i.equals(tok("const")) || i.equals(tok("immutable")) || i.equals(tok("inout")) || i.equals(tok("scope"))) {
             return !peekIs(tok("("));
         } else if (i.equals(tok("static"))) {
@@ -8207,9 +8247,9 @@ class DLangParser {
         } else if (i.equals(tok("shared"))) {
             return !(startsWith(tok("shared"), tok("static"), tok("this")) || startsWith(tok("shared"), tok("static"), tok("~")) || peekIs(tok("(")));
         } else if (i.equals(tok("pragma"))) {
-            Bookmark b = setBookmark();
+            final Bookmark b = setBookmark();
             advance();
-            Token past = peekPastParens();
+            final Token past = peekPastParens();
             if (past == null || past.type.equals(tok(";"))) {
                 goToBookmark(b);
                 return false;
@@ -9077,12 +9117,12 @@ class DLangParser {
         final Marker m;
         private boolean dropped = false;
 
-        public Bookmark(int num, Marker m) {
+        Bookmark(int num, Marker m) {
             this.num = num;
             this.m = m;
         }
 
-        public int intValue() {
+        int intValue() {
             return num;
         }
     }

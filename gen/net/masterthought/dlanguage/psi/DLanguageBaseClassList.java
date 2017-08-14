@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface DLanguageBaseClassList extends PsiElement {
     @NotNull
-    public List<DLanguageBaseClass> getBaseClasss();
+    List<DLanguageBaseClass> getBaseClasss();
 
     @NotNull
-    public List<PsiElement> getOP_COMMAs();
+    List<PsiElement> getOP_COMMAs();
 
 }

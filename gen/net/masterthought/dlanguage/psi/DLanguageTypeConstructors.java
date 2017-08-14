@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface DLanguageTypeConstructors extends PsiElement {
     @NotNull
-    public List<DLanguageTypeConstructor> getTypeConstructors();
+    List<DLanguageTypeConstructor> getTypeConstructors();
 }

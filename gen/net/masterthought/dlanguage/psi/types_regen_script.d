@@ -90,7 +90,7 @@ static this() {
     stub_children ["Destructor"] = ["FunctionBody","OP_SCOLON","OP_PAR_RIGHT","OP_PAR_LEFT","KW_THIS","OP_TILDA","MemberFunctionAttribute*"];
     types_children["DoStatement"] = ["KW_DO","KW_WHILE","StatementNoCaseNoDefault","Expression","OP_SCOLON","OP_PAR_RIGHT","OP_PAR_LEFT"];
     types_children["EnumBody"] = [ "Identifier","OP_BRACES_RIGHT", "OP_BRACES_LEFT", "EnumMember*","OP_COMMA*","OP_SCOLON"];
-    named_children["EnumDeclaration"] = ["Identifier","OP_COLON","KW_ENUM","Type","EnumBody"];
+//    named_children["EnumDeclaration"] = ["Identifier","OP_COLON","KW_ENUM","Type","EnumBody"];
     named_children["EnumMember"] = ["Identifier","OP_EQ","Type","AssignExpression"];
     named_children["EponymousTemplateDeclaration"] = ["Identifier", "TemplateParameters","OP_EQ","Type","OP_SCOLON","KW_ENUM","KW_ALIAS"];
     types_children["EqualExpression"] = ["ShiftExpression*","OP_EQ_EQ","OP_NOT_EQ"];
@@ -115,7 +115,7 @@ static this() {
     types_children["IdentityExpression"] = ["ShiftExpression*","KW_IS","OP_NOT"];
     types_children["IfStatement"] = [/*"Identifier","Expression",*/"DeclarationOrStatement*","KW_ELSE","KW_IF","OP_PAR_LEFT","OP_PAR_RIGHT"/*,"KW_AUTO","Type","OP_EQ"*/,"IfCondition"];
     named_children["IfCondition"] = ["Identifier","Expression","KW_AUTO","Type","OP_EQ"];
-    types_children["ImportBind"] = ["Identifier*", "OP_EQ"];
+    types_children["ImportBind"] = ["Identifier","NamedImportBind"];
     types_children["ImportBindings"] = ["OP_COMMA*","ImportBind*","SingleImport","OP_COLON"];
     types_children["ImportDeclaration"] = ["KW_IMPORT","SingleImport*","ImportBindings","OP_COMMA*","OP_SCOLON"];
     types_children["ImportExpression"] = ["ImportExpression","AssignExpression","OP_PAR_RIGHT","OP_PAR_LEFT"];
@@ -126,7 +126,7 @@ static this() {
     types_children["InStatement"] = ["KW_IN","BlockStatement"];
     types_children["Initializer"] = ["KW_VOID","NonVoidInitializer"];
     types_children["InterfaceDeclaration"] = ["KW_INTERFACE","InterfaceOrClass"];
-    named_children["InterfaceOrClass"] = ["Identifier","TemplateParameters","OP_COLON","StructBody","Constraint","BaseClassList"];
+//    named_children["InterfaceOrClass"] = ["Identifier","TemplateParameters","OP_COLON","StructBody","Constraint","BaseClassList"];
     types_children["Invariant"] = ["BlockStatement","KW_INVARIANT","OP_PAR_RIGHT","OP_PAR_LEFT"];
     types_children["IsExpression"] = ["OP_PAR_RIGHT","OP_PAR_LEFT","Type","Identifier","TypeSpecialization","TemplateParameterList","OP_COMMA","OP_COLON","OP_EQ","KW_IS"];//todo technically this should be named
     types_children["KeyValuePair"] = ["AssignExpression*","OP_COLON"];
@@ -142,6 +142,7 @@ static this() {
     types_children["MixinTemplateName"] = ["TypeofExpression", "IdentifierOrTemplateChain", "Symbol","OP_DOT"];
     named_children["ModuleDeclaration"] = ["KW_MODULE", "IdentifierChain","OP_SCOLON"];
     types_children["MulExpression"] = ["MulExpression","PowExpression","OP_MOD","OP_DIV","OP_ASTERISK"];
+    named_children["NamedImportBind"] = ["Identifier", "OP_EQ"];
     types_children["NewAnonClassExpression"] = ["KW_NEW","KW_CLASS","Arguments*","BaseClassList", "StructBody"];
     types_children["NewExpression"] = ["KW_NEW","NewAnonClassExpression","Type", "AssignExpression", "Arguments","OP_BRACKET_LEFT","OP_BRACKET_RIGHT"];
     types_children["NonVoidInitializer"] = ["AssignExpression","ArrayInitializer","StructInitializer","FunctionBody"];
@@ -164,7 +165,7 @@ static this() {
     stub_children ["SharedStaticConstructor"] = ["KW_STATIC","KW_SHARED","KW_THIS","OP_PAR_LEFT","OP_PAR_RIGHT","FunctionBody"];
     stub_children ["SharedStaticDestructor"] = ["OP_TILDA","KW_STATIC","KW_SHARED","KW_THIS","OP_PAR_LEFT","OP_PAR_RIGHT","FunctionBody"];
     types_children["ShiftExpression"] = ["ShiftExpression","AddExpression","OP_SH_RIGHT","OP_SH_LEFT","OP_USH_RIGHT"];
-    named_children["SingleImport"] = ["Identifier","OP_EQ","IdentifierChain"];
+//    named_children["SingleImport"] = ["Identifier","OP_EQ","IdentifierChain"];
     types_children["SliceExpression"] = ["UnaryExpression","AssignExpression*","OP_BRACKET_LEFT","OP_BRACKET_RIGHT","OP_DDOT"];
     types_children["UnaryExpression"] = ["UnaryExpresion","OP_BRACKET_LEFT","OP_BRACKET_RIGHT","AssignExpression*","OP_DDOT"];
     types_children["Statement"] = ["DefaultStatement","StatementNoCaseNoDefault","CaseStatement","CaseRangeStatement"];
@@ -177,7 +178,7 @@ static this() {
     types_children["StaticIfCondition"] = ["StaticIfCondition","AssignExpression","OP_PAR_RIGHT","OP_PAR_LEFT"];
     types_children["StorageClass"] = ["AtAttribute","Deprecated","AlignAttribute","LinkageAttribute",   "KW_SYNCHRONIZED","TypeConstructor","KW_ABSTRACT","KW_AUTO","KW_ENUM","KW_EXTERN","KW_FINAL","KW_INOUT","KW_NOTHROW","KW_OVERRIDE","KW_PURE","KW_REF","KW___GSHARED","KW_SCOPE","KW_STATIC"];
     types_children["StructBody"] = ["OP_BRACES_RIGHT","OP_BRACES_LEFT","Declaration*"];
-    named_children["StructDeclaration"] = [ "KW_STRUCT","Identifier",  "TemplateParameters",  "Constraint", "StructBody", "OP_SCOLON"];
+//    named_children["StructDeclaration"] = [ "KW_STRUCT","Identifier",  "TemplateParameters",  "Constraint", "StructBody", "OP_SCOLON"];
     types_children["StructInitializer"] = ["StructMemberInitializers*","OP_BRACES_RIGHT","OP_BRACES_LEFT"];
     types_children["StructMemberInitializer"] = ["Identifier","OP_COLON","NonVoidInitializer"];
     types_children["StructMemberInitializers"] = ["StructMemberInitializer*","OP_COMMA*"];
@@ -189,7 +190,7 @@ static this() {
     types_children["TemplateArgument"] = ["Type","AssignExpression"];
     types_children["TemplateArgumentList"] = ["OP_COMMA*","TemplateArgument*"];
     types_children["TemplateArguments"] = ["TemplateArgumentList","TemplateSingleArgument","OP_PAR_RIGHT","OP_PAR_LEFT","OP_NOT"];
-    named_children["TemplateDeclaration"] = ["KW_TEMPLATE","Identifier","TemplateParameters","Constraint","OP_BRACES_RIGHT","OP_BRACES_LEFT","Declaration*","EponymousTemplateDeclaration"];
+//    named_children["TemplateDeclaration"] = ["KW_TEMPLATE","Identifier","TemplateParameters","Constraint","OP_BRACES_RIGHT","OP_BRACES_LEFT","Declaration*","EponymousTemplateDeclaration"];
     types_children["TemplateInstance"] = ["Identifier", "TemplateArguments"];
     types_children["TemplateMixinExpression"] = ["KW_MIXIN","MixinTemplateName","TemplateArguments","Identifier"];
     types_children["TemplateMixinDeclaration"] = ["KW_MIXIN","TemplateDeclaration"];
@@ -215,7 +216,7 @@ static this() {
     types_children["TypeSpecialization"] = ["Type","KW___PARAMETERS","KW_STRUCT","KW_UNION","KW_CLASS","KW_INTERFACE","KW_ENUM","KW_FUNCTION","KW_DELEGATE","KW_SUPER","KW_CONST","KW_IMMUTABLE","KW_INOUT","KW_SHARED","KW_RETURN"];
     types_children["TypeSuffix"] = ["AssignExpression*","OP_TRIPLEDOT","KW_FUNCTION","KW_DELEGATE","OP_ASTERISK","MemberFunctionAttribute*","Parameters","OP_BRACKET_LEFT","OP_BRACKET_RIGHT"];
     types_children["UnaryExpression"] = ["PrimaryExpression","FunctionCallExpression","UnaryExpression",  "NewExpression","DeleteExpression","CastExpression","AssertExpression","IdentifierOrTemplateInstance","OP_PAR_RIGHT","OP_PAR_LEFT","SliceExpression","IndexExpression","Type","OP_DOT","OP_AND","OP_ASTERISK","OP_MINUS","OP_MINUS_MINUS","OP_NOT","OP_PLUS","OP_PLUS_PLUS","OP_TILDA"];
-    named_children["UnionDeclaration"] = ["Identifier","TemplateParameters","Constraint","StructBody","OP_SCOLON"];
+//    named_children["UnionDeclaration"] = ["Identifier","TemplateParameters","Constraint","StructBody","OP_SCOLON"];
     stub_children ["Unittest"] = ["Unittest",  "BlockStatement"];
     types_children["VariableDeclaration"] = ["AutoDeclaration",  "OP_SCOLON","Type","Declarator*","OP_COMMA*","OP_EQ","FunctionBody"];
     types_children["Vector"] = ["KW___VECTOR", "Type", "OP_PAR_RIGHT","OP_PAR_LEFT"];
@@ -299,7 +300,7 @@ static this() {
     has_processDeclaration["Destructor"] = false;
     has_processDeclaration["DoStatement"] = false;
     has_processDeclaration["EnumBody"] = false;
-    has_processDeclaration["EnumDeclaration"] = true;
+//    has_processDeclaration["EnumDeclaration"] = true;
     has_processDeclaration["EnumMember"] = false;
     has_processDeclaration["EponymousTemplateDeclaration"] = true;
     has_processDeclaration["EqualExpression"] = false;
@@ -335,7 +336,7 @@ static this() {
     has_processDeclaration["InStatement"] = false;
     has_processDeclaration["Initializer"] = false;
     has_processDeclaration["InterfaceDeclaration"] = false;
-    has_processDeclaration["InterfaceOrClass"] = true;
+//    has_processDeclaration["InterfaceOrClass"] = true;
     has_processDeclaration["Invariant"] = false;
     has_processDeclaration["IsExpression"] = true;
     has_processDeclaration["KeyValuePair"] = false;
@@ -351,13 +352,14 @@ static this() {
     has_processDeclaration["MixinTemplateName"] = false;
     has_processDeclaration["ModuleDeclaration"] = false;
     has_processDeclaration["MulExpression"] = false;
+    has_processDeclaration["NamedImportBind"] = false;
     has_processDeclaration["NewAnonClassExpression"] = false;
     has_processDeclaration["NewExpression"] = false;
     has_processDeclaration["NonVoidInitializer"] = false;
     has_processDeclaration["Operands"] = false;
     has_processDeclaration["OrExpression"] = false;
     has_processDeclaration["OrOrExpression"] = false;
-    has_processDeclaration["OutStatement"] = false;
+    has_processDeclaration["OutStatement"] = true;
     has_processDeclaration["Parameter"] = false;
     has_processDeclaration["ParameterAttribute"] = false;
     has_processDeclaration["Parameters"] = false;
@@ -373,7 +375,7 @@ static this() {
     has_processDeclaration["SharedStaticConstructor"] = false;
     has_processDeclaration["SharedStaticDestructor"] = false;
     has_processDeclaration["ShiftExpression"] = false;
-    has_processDeclaration["SingleImport"] = false;
+//    has_processDeclaration["SingleImport"] = false;
     has_processDeclaration["SliceExpression"] = false;
     has_processDeclaration["UnaryExpression"] = false;
     has_processDeclaration["Statement"] = false;
@@ -386,7 +388,7 @@ static this() {
     has_processDeclaration["StaticIfCondition"] = false;
     has_processDeclaration["StorageClass"] = false;
     has_processDeclaration["StructBody"] = true;
-    has_processDeclaration["StructDeclaration"] = true;
+//    has_processDeclaration["StructDeclaration"] = true;
     has_processDeclaration["StructInitializer"] = false;
     has_processDeclaration["StructMemberInitializer"] = false;
     has_processDeclaration["StructMemberInitializers"] = false;
@@ -398,7 +400,7 @@ static this() {
     has_processDeclaration["TemplateArgument"] = false;
     has_processDeclaration["TemplateArgumentList"] = false;
     has_processDeclaration["TemplateArguments"] = false;
-    has_processDeclaration["TemplateDeclaration"] = true;
+//    has_processDeclaration["TemplateDeclaration"] = true;
     has_processDeclaration["TemplateInstance"] = false;
     has_processDeclaration["TemplateMixinExpression"] = false;
     has_processDeclaration["TemplateMixinDeclaration"] = true;
@@ -424,7 +426,7 @@ static this() {
     has_processDeclaration["TypeSpecialization"] = false;
     has_processDeclaration["TypeSuffix"] = false;
     has_processDeclaration["UnaryExpression"] = false;
-    has_processDeclaration["UnionDeclaration"] = true;
+//    has_processDeclaration["UnionDeclaration"] = true;
     has_processDeclaration["Unittest"] = false;
     has_processDeclaration["VariableDeclaration"] = false;
     has_processDeclaration["Vector"] = false;

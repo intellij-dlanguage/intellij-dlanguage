@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface DLanguageTemplateArgumentList extends PsiElement {
     @NotNull
-    public List<PsiElement> getOP_COMMAs();
+    List<PsiElement> getOP_COMMAs();
 
     @NotNull
-    public List<DLanguageTemplateArgument> getTemplateArguments();
+    List<DLanguageTemplateArgument> getTemplateArguments();
 }

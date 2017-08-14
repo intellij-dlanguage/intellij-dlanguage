@@ -77,8 +77,9 @@ D Language File
             PsiElement(DLanguageTokenType.ID)('writeln')
         PsiElement(DLanguageTokenType.,)(',')
         DLanguageImportBindImpl(IMPORT_BIND)
-          IDENTIFIER
-            PsiElement(DLanguageTokenType.ID)('foo')
+          NAMED_IMPORT_BIND
+            IDENTIFIER
+              PsiElement(DLanguageTokenType.ID)('foo')
           PsiElement(DLanguageTokenType.=)('=')
           IDENTIFIER
             PsiElement(DLanguageTokenType.ID)('write')
@@ -99,8 +100,9 @@ D Language File
       DLanguageImportBindingsImpl(IMPORT_BINDINGS)
         PsiElement(DLanguageTokenType.:)(':')
         DLanguageImportBindImpl(IMPORT_BIND)
-          IDENTIFIER
-            PsiElement(DLanguageTokenType.ID)('foo')
+          NAMED_IMPORT_BIND
+            IDENTIFIER
+              PsiElement(DLanguageTokenType.ID)('foo')
           PsiElement(DLanguageTokenType.=)('=')
           IDENTIFIER
             PsiElement(DLanguageTokenType.ID)('writeln')

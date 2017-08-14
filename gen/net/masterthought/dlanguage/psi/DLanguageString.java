@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface DLanguageString extends PsiElement {
     @NotNull
-    public List<PsiElement> getDOUBLE_QUOTED_STRINGs();
+    List<PsiElement> getDOUBLE_QUOTED_STRINGs();
 
 }

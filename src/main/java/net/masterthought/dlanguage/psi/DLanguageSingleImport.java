@@ -4,16 +4,25 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.StubBasedPsiElement;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 import net.masterthought.dlanguage.stubs.DLanguageSingleImportStub;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Set;
 
 
 public interface DLanguageSingleImport extends PsiElement, DNamedElement, StubBasedPsiElement<DLanguageSingleImportStub> {
     @Nullable
-    public DLanguageIdentifier getIdentifier();
+    DLanguageIdentifier getIdentifier();
 
     @Nullable
-    public PsiElement getOP_EQ();
+    PsiElement getOP_EQ();
 
     @Nullable
-    public DLanguageIdentifierChain getIdentifierChain();
+    DLanguageIdentifierChain getIdentifierChain();
+
+    @NotNull
+    Set<String> getApplicableImportBinds();
+
+    @NotNull
+    String getImportedModuleName();
 }

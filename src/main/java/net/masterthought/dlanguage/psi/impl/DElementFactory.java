@@ -23,7 +23,7 @@ public class DElementFactory {
      */
     @Nullable
     public static DLanguageIdentifier createDLanguageIdentifierFromText(@NotNull Project project, @NotNull String name) {
-        DLanguageIdentifier e = findChildOfType(createExpressionFromText(project, name + " uniq = " + name), DLanguageIdentifier.class);
+        DLanguageIdentifier e = findChildOfType(createExpressionFromText(project, name), DLanguageIdentifier.class);
         if (e != null && e.getName().equals(name)) return e;
         return null;
     }
@@ -52,7 +52,7 @@ public class DElementFactory {
         return null;
     }
 
-    public static PsiElement createDLanguageImportFromText(Project project, String name) {
+    public static PsiElement createDLanguageSingleImportFromText(Project project, String name) {
         PsiElement e = createExpressionFromText(project, "import " + name + ";").getFirstChild();
         if (e instanceof DLanguageImportDeclaration) return e;
         return null;

@@ -6,7 +6,7 @@ D Language File
         DLanguageType_2Impl(TYPE_2)
           DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
             PsiElement(DLanguageTokenType.int)('int')
-      DLanguageIdentifierListImpl(IDENTIFIER_LIST)
+      ALIAS_INITIALIZER
         IDENTIFIER
           PsiElement(DLanguageTokenType.ID)('func')
       DLanguageParametersImpl(PARAMETERS)

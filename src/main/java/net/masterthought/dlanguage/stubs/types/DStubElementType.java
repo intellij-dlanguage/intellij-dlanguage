@@ -18,7 +18,7 @@ public abstract class DStubElementType<S extends StubElement<T>, T extends DComp
     }
 
     @Override
-    public void indexStub(@NotNull final S stub, @NotNull IndexSink sink) {
+    public void indexStub(@NotNull S stub, @NotNull IndexSink sink) {
 
     }
 

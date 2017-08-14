@@ -192,11 +192,11 @@ object ScopeProcessorImplUtil {
         }
         if (def.debugSpecification != null) {
         }
-//        for (decl in def.declarations) {
-//            if (!decl.processDeclarations(processor, state, lastParent, place)) {
-//                toContinue = false
-//            }
-//        }
+        for (decl in def.declarations) {
+            if (!processDeclaration(decl, processor, state, lastParent, place)) {
+                toContinue = false
+            }
+        }
         return toContinue
     }
 
@@ -258,6 +258,21 @@ object ScopeProcessorImplUtil {
             }
         }
         return true
+    }
+
+    fun processDeclarationsOrStatements(declarationOrStatements: List<DeclarationOrStatement>, processor: PsiScopeProcessor, state: ResolveState, lastParent: PsiElement, place: PsiElement): Boolean {
+        var toContinue = true
+        for (declarationOrStatement in declarationOrStatements) {
+            if (declarationOrStatement.declaration != null) {
+                if (!ScopeProcessorImplUtil.processDeclaration(declarationOrStatement.declaration!!, processor, state, lastParent, place)) {
+                    toContinue = false
+                }
+            }
+            if (declarationOrStatement.statement?.statementNoCaseNoDefault?.labeledStatement != null) {
+                toContinue = declarationOrStatement.statement!!.statementNoCaseNoDefault!!.labeledStatement!!.processDeclarations(processor, state, lastParent, place)
+            }
+        }
+        return toContinue
     }
 
 }

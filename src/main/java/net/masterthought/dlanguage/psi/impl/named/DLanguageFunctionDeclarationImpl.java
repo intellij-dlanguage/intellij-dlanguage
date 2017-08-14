@@ -6,10 +6,8 @@ import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.util.IncorrectOperationException;
 import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
-import net.masterthought.dlanguage.psi.references.DReference;
 import net.masterthought.dlanguage.resolve.ScopeProcessorImpl;
 import net.masterthought.dlanguage.stubs.DLanguageFunctionDeclarationStub;
 import org.jetbrains.annotations.NotNull;
@@ -26,6 +24,12 @@ public class DLanguageFunctionDeclarationImpl extends DNamedStubbedPsiElementBas
 
     public DLanguageFunctionDeclarationImpl(ASTNode node) {
         super(node);
+    }
+
+    @Nullable
+    @Override
+    public DLanguageIdentifier getNameIdentifier() {
+        return getIdentifier();
     }
 
     @Nullable
@@ -62,23 +66,6 @@ public class DLanguageFunctionDeclarationImpl extends DNamedStubbedPsiElementBas
     @Override
     public DLanguageFunctionBody getFunctionBody() {
         return PsiTreeUtil.getChildOfType(this, DLanguageFunctionBody.class);
-    }
-
-    @NotNull
-    @Override
-    public String getName() {
-        if (getStub() != null) {
-            return getStub().getName();
-        }
-        if (getIdentifier() == null) {
-            return DReference.Companion.getNAME_NOT_FOUND_STRING();
-        }
-        return getIdentifier().getName();
-    }
-
-    @Override
-    public PsiElement setName(@NotNull String name) throws IncorrectOperationException {
-        return getIdentifier().setName(name);
     }
 
     @Override

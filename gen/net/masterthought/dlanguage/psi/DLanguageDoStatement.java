@@ -6,24 +6,24 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageDoStatement extends PsiElement {
     @Nullable
-    public PsiElement getKW_DO();
+    PsiElement getKW_DO();
 
     @Nullable
-    public PsiElement getKW_WHILE();
+    PsiElement getKW_WHILE();
 
     @Nullable
-    public DLanguageStatementNoCaseNoDefault getStatementNoCaseNoDefault();
+    DLanguageStatementNoCaseNoDefault getStatementNoCaseNoDefault();
 
     @Nullable
-    public DLanguageExpression getExpression();
+    DLanguageExpression getExpression();
 
     @Nullable
-    public PsiElement getOP_SCOLON();
+    PsiElement getOP_SCOLON();
 
     @Nullable
-    public PsiElement getOP_PAR_RIGHT();
+    PsiElement getOP_PAR_RIGHT();
 
     @Nullable
-    public PsiElement getOP_PAR_LEFT();
+    PsiElement getOP_PAR_LEFT();
 
 }

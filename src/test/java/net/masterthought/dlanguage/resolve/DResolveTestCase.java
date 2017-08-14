@@ -32,14 +32,14 @@ public abstract class DResolveTestCase extends DLightPlatformCodeInsightFixtureT
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        for (File file : getTestDataFiles()) {
+        for (final File file : getTestDataFiles()) {
             String text = FileUtil.loadFile(file, CharsetToolkit.UTF8);
             text = StringUtil.convertLineSeparators(text);
-            int referencedOffset = text.indexOf("<ref>");
+            final int referencedOffset = text.indexOf("<ref>");
             text = text.replace("<ref>", "");
-            int resolvedOffset = text.indexOf("<resolved>");
+            final int resolvedOffset = text.indexOf("<resolved>");
             text = text.replace("<resolved>", "");
-            PsiFile psiFile = myFixture.configureByText(file.getName(), text);
+            final PsiFile psiFile = myFixture.configureByText(file.getName(), text);
             if (referencedOffset != -1) {
                 referencedElement = psiFile.findReferenceAt(referencedOffset);
             }
@@ -56,7 +56,7 @@ public abstract class DResolveTestCase extends DLightPlatformCodeInsightFixtureT
                 }
                 //if we're resolving something within a class don't resolve the class
                 if (ref instanceof PsiMultiReference && resolvedElement instanceof DLanguageClassDeclaration) {
-                    for (PsiReference psiReference : ((PsiMultiReference) ref).getReferences()) {
+                    for (final PsiReference psiReference : ((PsiMultiReference) ref).getReferences()) {
                         if (!(psiReference.getElement() instanceof DLanguageClassDeclaration)) {
                             resolvedElement = psiReference.getElement();
                         }
@@ -68,7 +68,7 @@ public abstract class DResolveTestCase extends DLightPlatformCodeInsightFixtureT
         }
     }
 
-    private void ensureNotNull(File file) {
+    private void ensureNotNull(final File file) {
         if (resolvedElement == null) {
             fail("Reference returned null element in " + file.getName());
         }
@@ -92,7 +92,12 @@ public abstract class DResolveTestCase extends DLightPlatformCodeInsightFixtureT
             }*//* else if (resolvedElement instanceof DLanguageConstructor) {
                 assertTrue(referencedElement.resolve() instanceof DLanguageConstructor);
             }*/ /*else*/
+            if(resolvedElement instanceof DLanguageConstructor)
                 assertEquals("Could not resolve expected reference.", resolvedElement, referencedElement.resolve());
+            else if(super.getTestName(true).equals("scopedImportsMembers"))
+                assertEquals("Could not resolve expected reference.", "struct_member", ((DLanguageFunctionDeclaration)referencedElement.resolve().getParent()).getName());
+            else
+                assertEquals("Could not resolve expected reference.", resolvedElement, referencedElement.resolve().getParent());
         } else {
             assertFalse("Resolved unexpected reference.", resolvedElement.equals(referencedElement.resolve()));
         }

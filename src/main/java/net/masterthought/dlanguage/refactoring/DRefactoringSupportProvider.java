@@ -17,7 +17,7 @@ public class DRefactoringSupportProvider extends RefactoringSupportProvider {
     public boolean isSafeDeleteAvailable(@NotNull PsiElement element) {
         if (!(element instanceof DLanguageIdentifier))
             return false;
-        final Set<PsiNamedElement> resolve = DResolveUtil.INSTANCE.findDefinitionNode(element.getProject(), (PsiNamedElement) element);
+        final Set<PsiNamedElement> resolve = DResolveUtil.Companion.getInstance(element.getProject()).findDefinitionNode((PsiNamedElement) element, false);
         return resolve.size() == 1;
     }
 

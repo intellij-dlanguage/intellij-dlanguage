@@ -6,17 +6,17 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageTernaryExpression extends PsiElement {
     @Nullable
-    public PsiElement getOP_QUEST();
+    PsiElement getOP_QUEST();
 
     @Nullable
-    public PsiElement getOP_COLON();
+    PsiElement getOP_COLON();
 
     @Nullable
-    public DLanguageOrOrExpression getOrOrExpression();
+    DLanguageOrOrExpression getOrOrExpression();
 
     @Nullable
-    public DLanguageExpression getExpression();
+    DLanguageExpression getExpression();
 
     @Nullable
-    public DLanguageTernaryExpression getTernaryExpression();
+    DLanguageTernaryExpression getTernaryExpression();
 }

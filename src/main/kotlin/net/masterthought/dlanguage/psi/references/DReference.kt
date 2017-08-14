@@ -15,6 +15,8 @@ import net.masterthought.dlanguage.psi.DLanguageIdentifier
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement
 import net.masterthought.dlanguage.resolve.DResolveUtil
 import net.masterthought.dlanguage.stubs.index.DTopLevelDeclarationsByModule
+import net.masterthought.dlanguage.utils.ModuleDeclaration
+import net.masterthought.dlanguage.utils.SingleImport
 import java.util.*
 
 
@@ -45,44 +47,11 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
         //            if (qconid == null) { return EMPTY_RESOLVE_RESULT; }
         //            if (!myElement.equals(Iterables.getLast(qconid.getConidList()))) { return EMPTY_RESOLVE_RESULT; }
         //        }
+
+
         val project = myElement.project
-        val namedElements = DResolveUtil.findDefinitionNode(project, myElement)
-        // Guess 20 variants tops most of the time in any real code base.
-//        val identifiers = HashSet<PsiElement>()
-//        for (namedElement in namedElements) {
-//            if (namedElement is DLanguageFunctionDeclaration) {
-//                identifiers.add(namedElement.identifier!!)
-//            } else if (namedElement is DLanguageTemplateDeclaration) {
-//                if (namedElement.identifier != null) {
-//                    identifiers.add(namedElement.identifier!!)
-//                }else{
-//                    identifiers.add(namedElement.eponymousTemplateDeclaration!!.identifier!!)
-//                }
-//            } else if (namedElement is DLanguageClassDeclaration) {
-//                identifiers.add(namedElement.interfaceOrClass!!.identifier!!)
-//            } else if (namedElement is DLanguageUnionDeclaration) {
-//                if (namedElement.identifier != null) {
-//                    identifiers.add(namedElement.identifier!!)
-//                }
-//            } else if (namedElement is DLanguageInterfaceOrClass) {
-//                identifiers.add(namedElement.identifier!!)
-//            } else if (namedElement is DLanguageStructDeclaration) {
-//                if (namedElement.identifier != null) {
-//                    identifiers.add(namedElement.identifier!!)
-//                }
-//            } else if (namedElement is DLanguageEnumDeclaration) {
-//                identifiers.add(namedElement.identifier!!)
-//            } else if (namedElement is DLanguageAutoDeclarationPart) {
-//                identifiers.add(namedElement.identifier!!)
-//            }
-//            else {
-//                identifiers.add(namedElement)
-//            }
-//        }
-//
-//        identifiers.remove(myElement)
-//
-        val results = ArrayList<ResolveResult>(20)
+        val namedElements = DResolveUtil.getInstance(project).findDefinitionNode(myElement, true).map { if (it is PsiNameIdentifierOwner && it !is ModuleDeclaration && it !is SingleImport) if (it.nameIdentifier != null) it.nameIdentifier!! else it else it }
+        val results = mutableListOf<PsiElementResolveResult>()
         for (property in namedElements) {
             results.add(PsiElementResolveResult(property))
         }
@@ -139,45 +108,13 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
 //        val startProcessors = System.currentTimeMillis()
         val project = myElement.project
         val result = Collections.synchronizedList(ArrayList<String>())
-        val importScopeProcessor = DImportScopeProcessor()
-        PsiTreeUtil.treeWalkUp(importScopeProcessor, myElement, myElement.containingFile, ResolveState.initial())
-        val potentialModules = HashSet<String>()
-        for (dLanguageImport in importScopeProcessor.imports) {
-            potentialModules.add(dLanguageImport.name)
-        }
-
         val completionProcessor = DCompletionProcessor()
         PsiTreeUtil.treeWalkUp(completionProcessor, myElement, myElement.containingFile, ResolveState.initial())
-        result.addAll(completionProcessor.completions)
-        val decls = StubIndex.getElements(DTopLevelDeclarationsByModule.KEY, (element.containingFile as DLanguageFile).moduleOrFileName, project, GlobalSearchScope.fileScope(
-            element.containingFile), DNamedElement::class.java)
+        result.addAll(completionProcessor.completions)//todo this could be more efficiently implmented
+        val decls = StubIndex.getElements(DTopLevelDeclarationsByModule.KEY, (element.containingFile as DLanguageFile).moduleOrFileName, project, GlobalSearchScope.fileScope(element.containingFile), DNamedElement::class.java)
         for (decl in decls) {
             result.add(decl.name)
         }
-
-
-
-//        val endProcessors = System.currentTimeMillis()
-//        log.info("processors " + (endProcessors - startProcessors))
-
-
-//        val start = System.currentTimeMillis()
-        // find definition in imported files
-        for (potentialModule in potentialModules) {
-            val files = DModuleIndex.getFilesByModuleName(project, potentialModule, GlobalSearchScope.allScope(project))
-            files.parallelStream().forEach { f ->
-                val elements: MutableCollection<DNamedElement> = StubIndex.getElements(DTopLevelDeclarationsByModule.KEY, f.moduleOrFileName, project, GlobalSearchScope.fileScope(f), DNamedElement::class.java)
-//                result.ensureCapacity(elements.size);
-//                val startNames = System.currentTimeMillis()
-                for (declaration in elements) {
-                    result.add(declaration.name)
-                }
-//                val endNames = System.currentTimeMillis()
-//                log.info("names:" + (endNames - startNames))
-            }
-        }
-//        val end = System.currentTimeMillis()
-//        log.info("other files:" + (end - start))
         result.add("abstract")
         result.add("alias")
         result.add("align")

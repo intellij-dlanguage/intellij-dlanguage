@@ -5,7 +5,6 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.util.Function;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.indexing.*;
 import com.intellij.util.io.EnumeratorStringDescriptor;
@@ -49,6 +48,12 @@ public class DModuleIndex extends ScalarIndexExtension<String> {
                                                                       @NotNull final GlobalSearchScope searchScope) {
         return FileBasedIndex.getInstance().getContainingFiles(D_MODULE_INDEX, moduleName, searchScope);
     }
+
+//    @NotNull
+//    public static Collection<Void> getVirtualFilesByModuleNameFast(@NotNull final String moduleName,
+//                                                                      @NotNull final GlobalSearchScope searchScope) {
+//        return FileBasedIndex.getInstance().getValues(D_MODULE_INDEX, moduleName, searchScope);
+//    }
 
     @NotNull
     @Override

@@ -13,31 +13,31 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageEponymousTemplateDeclaration extends PsiElement, DNamedElement, StubBasedPsiElement<DLanguageEponymousTemplateDeclarationStub> {
     @Nullable
-    public DLanguageIdentifier getIdentifier();
+    DLanguageIdentifier getIdentifier();
 
     @Nullable
-    public DLanguageTemplateParameters getTemplateParameters();
+    DLanguageTemplateParameters getTemplateParameters();
 
     @Nullable
-    public PsiElement getOP_EQ();
+    PsiElement getOP_EQ();
 
     @Nullable
-    public DLanguageType getType();
+    DLanguageType getType();
 
     @Nullable
-    public PsiElement getOP_SCOLON();
+    PsiElement getOP_SCOLON();
 
     @Nullable
-    public PsiElement getKW_ENUM();
+    PsiElement getKW_ENUM();
 
     @Nullable
-    public PsiElement getKW_ALIAS();
+    PsiElement getKW_ALIAS();
 
     @Override
-    default public boolean processDeclarations(@NotNull PsiScopeProcessor processor,
-                                               @NotNull ResolveState state,
-                                               PsiElement lastParent,
-                                               @NotNull PsiElement place) {
+    default boolean processDeclarations(@NotNull PsiScopeProcessor processor,
+                                        @NotNull ResolveState state,
+                                        PsiElement lastParent,
+                                        @NotNull PsiElement place) {
         return ScopeProcessorImpl.INSTANCE.processDeclarations(this, processor, state, lastParent, place);
     }
 }

@@ -6,17 +6,17 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageTemplateValueParameter extends PsiElement {
     @Nullable
-    public DLanguageType getType();
+    DLanguageType getType();
 
     @Nullable
-    public DLanguageIdentifier getIdentifier();
+    DLanguageIdentifier getIdentifier();
 
     @Nullable
-    public PsiElement getOP_COLON();
+    PsiElement getOP_COLON();
 
     @Nullable
-    public DLanguageAssignExpression getAssignExpression();
+    DLanguageAssignExpression getAssignExpression();
 
     @Nullable
-    public DLanguageTemplateValueParameterDefault getTemplateValueParameterDefault();
+    DLanguageTemplateValueParameterDefault getTemplateValueParameterDefault();
 }

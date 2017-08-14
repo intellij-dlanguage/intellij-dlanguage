@@ -9,18 +9,18 @@ import java.util.List;
 
 public interface DLanguageAssertExpression extends PsiElement {
     @Nullable
-    public PsiElement getKW_ASSERT();
+    PsiElement getKW_ASSERT();
 
     @Nullable
-    public PsiElement getOP_BRACES_LEFT();
+    PsiElement getOP_BRACES_LEFT();
 
     @Nullable
-    public PsiElement getOP_BRACES_RIGHT();
+    PsiElement getOP_BRACES_RIGHT();
 
     @NotNull
-    public List<DLanguageAssignExpression> getAssignExpressions();
+    List<DLanguageAssignExpression> getAssignExpressions();
 
     @NotNull
-    public List<PsiElement> getOP_COMMAs();
+    List<PsiElement> getOP_COMMAs();
 
 }

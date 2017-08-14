@@ -10,13 +10,12 @@ import com.intellij.psi.PsiReference;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.icons.DLanguageIcons;
-import net.masterthought.dlanguage.psi.DLanguageFile;
-import net.masterthought.dlanguage.psi.DLanguageIdentifierChain;
-import net.masterthought.dlanguage.psi.DLanguageModuleDeclaration;
-import net.masterthought.dlanguage.psi.DLanguageVisitor;
+import net.masterthought.dlanguage.psi.*;
+import net.masterthought.dlanguage.psi.impl.DElementFactory;
 import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import net.masterthought.dlanguage.psi.references.DReference;
 import net.masterthought.dlanguage.stubs.DLanguageModuleDeclarationStub;
+import net.masterthought.dlanguage.utils.DUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -55,14 +54,9 @@ public class DLanguageModuleDeclarationImpl extends DNamedStubbedPsiElementBase<
         return getIdentifierChain().getText();
     }
 
-//    public String getFullName() {
-//        return DPsiImplUtil.getFullName(this);
-//    }
-
     @Nullable
-    public PsiElement getNameIdentifier() {
-        final ASTNode keyNode = getNode();
-        return keyNode.getPsi();
+    public DLanguageIdentifier getNameIdentifier() {
+        return DUtil.getEndOfIdentifierList(getIdentifierChain());
     }
 
     @NotNull
@@ -72,8 +66,7 @@ public class DLanguageModuleDeclarationImpl extends DNamedStubbedPsiElementBase<
 
     @NotNull
     public PsiElement setName(@NotNull final String newName) {
-        //todo
-        return null;
+        return this.replace(DElementFactory.createDLanguageModuleFromText(this.getProject(), newName));
     }
 
     @NotNull

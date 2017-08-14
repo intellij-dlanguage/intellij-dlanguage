@@ -6,18 +6,18 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageAsmMulExp extends PsiElement {
     @Nullable
-    public DLanguageAsmMulExp getAsmMulExp();
+    DLanguageAsmMulExp getAsmMulExp();
 
     @Nullable
-    public DLanguageAsmBrExp getAsmBrExp();
+    DLanguageAsmBrExp getAsmBrExp();
 
     @Nullable
-    public PsiElement getOP_MOD();
+    PsiElement getOP_MOD();
 
     @Nullable
-    public PsiElement getOP_DIV();
+    PsiElement getOP_DIV();
 
     @Nullable
-    public PsiElement getOP_ASTERISK();
+    PsiElement getOP_ASTERISK();
 
 }

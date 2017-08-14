@@ -9,30 +9,30 @@ import java.util.List;
 
 public interface DLanguageTypeSuffix extends PsiElement {
     @NotNull
-    public List<DLanguageAssignExpression> getAssignExpressions();
+    List<DLanguageAssignExpression> getAssignExpressions();
 
     @Nullable
-    public PsiElement getOP_TRIPLEDOT();
+    PsiElement getOP_TRIPLEDOT();
 
     @Nullable
-    public PsiElement getKW_FUNCTION();
+    PsiElement getKW_FUNCTION();
 
     @Nullable
-    public PsiElement getKW_DELEGATE();
+    PsiElement getKW_DELEGATE();
 
     @Nullable
-    public PsiElement getOP_ASTERISK();
+    PsiElement getOP_ASTERISK();
 
     @NotNull
-    public List<DLanguageMemberFunctionAttribute> getMemberFunctionAttributes();
+    List<DLanguageMemberFunctionAttribute> getMemberFunctionAttributes();
 
     @Nullable
-    public DLanguageParameters getParameters();
+    DLanguageParameters getParameters();
 
     @Nullable
-    public PsiElement getOP_BRACKET_LEFT();
+    PsiElement getOP_BRACKET_LEFT();
 
     @Nullable
-    public PsiElement getOP_BRACKET_RIGHT();
+    PsiElement getOP_BRACKET_RIGHT();
 
 }
