@@ -164,6 +164,13 @@ public class DLanguageSdkType extends SdkType {
     }
 
     @Nullable
+    @Override // takes precedence over getVersionString(String)
+    public String getVersionString(@NotNull final Sdk sdk) {
+        final String sdkName = sdk.getName();
+        return StringUtil.isNotEmpty(sdkName) ? sdkName.substring(sdkName.indexOf('v') + 1) : null;
+    }
+
+    @Nullable
     @Override
     public String getVersionString(@NotNull final String sdkHome) {
         final String version = getDmdVersion(sdkHome);
@@ -185,7 +192,7 @@ public class DLanguageSdkType extends SdkType {
     @NotNull
     @Override
     public String getPresentableName() {
-        return "Digital Mars D compiler";
+        return DLanguageBundle.INSTANCE.message("compilers.dmd.presentableName");
     }
 
     @Override
