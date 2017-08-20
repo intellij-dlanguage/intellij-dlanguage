@@ -6,6 +6,7 @@ import com.intellij.psi.ResolveState
 import com.intellij.psi.scope.PsiScopeProcessor
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement
 import net.masterthought.dlanguage.stubs.index.DTopLevelDeclarationsByModule
+import net.masterthought.dlanguage.utils.FunctionDeclaration
 import net.masterthought.dlanguage.utils.SingleImport
 
 /**
@@ -26,10 +27,13 @@ class DCompletionProcessor : PsiScopeProcessor {
 
     override fun execute(element: PsiElement, state: ResolveState): Boolean {
         if (element is DNamedElement) {
-            completions.add(element.name)
+            if (element is FunctionDeclaration) {
+                completions.add(element.name + "(" + ")")
+            } else
+                completions.add(element.name)
         }
         if(element is SingleImport){
-            completions.addAll(DTopLevelDeclarationsByModule.getSymbolsFromImport(element).map { it.name })
+            completions.addAll(DTopLevelDeclarationsByModule.getSymbolsFromImport(element).map { if (it is FunctionDeclaration) it.name + "()" else it.name })
         }
         return true
     }

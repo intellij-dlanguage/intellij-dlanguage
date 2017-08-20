@@ -7,10 +7,9 @@ import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.stubs.StubIndex
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.util.IncorrectOperationException
-import net.masterthought.dlanguage.index.DModuleIndex
 import net.masterthought.dlanguage.processors.DCompletionProcessor
-import net.masterthought.dlanguage.processors.DImportScopeProcessor
 import net.masterthought.dlanguage.psi.DLanguageFile
+import net.masterthought.dlanguage.psi.DLanguageFunctionDeclaration
 import net.masterthought.dlanguage.psi.DLanguageIdentifier
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement
 import net.masterthought.dlanguage.resolve.DResolveUtil
@@ -50,7 +49,7 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
 
 
         val project = myElement.project
-        val namedElements = DResolveUtil.getInstance(project).findDefinitionNode(myElement, true).map { if (it is PsiNameIdentifierOwner && it !is ModuleDeclaration && it !is SingleImport) if (it.nameIdentifier != null) it.nameIdentifier!! else it else it }
+        val namedElements = DResolveUtil.getInstance(project).findDefinitionNode(myElement, false).map { if (it is PsiNameIdentifierOwner && it !is ModuleDeclaration && it !is SingleImport) if (it.nameIdentifier != null) it.nameIdentifier!! else it else it }
         val results = mutableListOf<PsiElementResolveResult>()
         for (property in namedElements) {
             results.add(PsiElementResolveResult(property))
@@ -113,7 +112,10 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
         result.addAll(completionProcessor.completions)//todo this could be more efficiently implmented
         val decls = StubIndex.getElements(DTopLevelDeclarationsByModule.KEY, (element.containingFile as DLanguageFile).moduleOrFileName, project, GlobalSearchScope.fileScope(element.containingFile), DNamedElement::class.java)
         for (decl in decls) {
-            result.add(decl.name)
+            if (decl is DLanguageFunctionDeclaration) {
+                result.add(decl.name + "(" + ")")
+            } else
+                result.add(decl.name)
         }
         result.add("abstract")
         result.add("alias")

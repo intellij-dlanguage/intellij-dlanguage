@@ -41,7 +41,7 @@ class PossiblyUndefinedSymbol : LocalInspectionTool() {
 //                else if (BasicResolve.findDefinitionNode(identifier.project, identifier).isEmpty() && !symbolIsDefinedByDefault(identifier)) {
 //                    holder.registerProblem(identifier, "Possibly undefined symbol")
 //                }
-                if (DResolveUtil.getInstance(identifier.project).findDefinitionNode(identifier, true).isEmpty() && !symbolIsDefinedByDefault(identifier)) {
+                if (DResolveUtil.getInstance(identifier.project).findDefinitionNode(identifier, false).isEmpty() && !symbolIsDefinedByDefault(identifier)) {
                     holder.registerProblem(identifier, "Possibly undefined symbol")//todo add quick fix
                 }
                 val end = System.currentTimeMillis()
