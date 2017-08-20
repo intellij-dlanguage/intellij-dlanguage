@@ -3,7 +3,6 @@ package net.masterthought.dlanguage.highlighting.annotation.external;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.ExternalAnnotator;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.application.ModalityState;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
@@ -42,9 +41,10 @@ public class DExternalAnnotator extends ExternalAnnotator<PsiFile, DExternalAnno
     @Override
     public State doAnnotate(@NotNull final PsiFile file) {
         // Force all files to save to ensure annotations are in sync with the file system.
-        ApplicationManager
-            .getApplication()
-            .invokeAndWait(() -> FileDocumentManager.getInstance().saveAllDocuments(), ModalityState.NON_MODAL);
+        if (FileDocumentManager.getInstance().getUnsavedDocuments().length != 0)
+            ApplicationManager
+                .getApplication()
+                .invokeAndWait(() -> FileDocumentManager.getInstance().saveAllDocuments(), ApplicationManager.getApplication().getDefaultModalityState());
 
         final State state = new State();
         state.dScannerProblems = new DScanner().checkFileSyntax(file);
