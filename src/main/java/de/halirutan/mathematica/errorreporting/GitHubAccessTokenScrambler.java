@@ -42,49 +42,49 @@ public class GitHubAccessTokenScrambler {
     private static final String myInitVector = "RandomInitVector";
     private static final String myKey = "GitHubErrorToken";
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         if (args.length != 2) {
             return;
         }
-        String horse = args[0];
-        String outputFile = args[1];
+        final String horse = args[0];
+        final String outputFile = args[1];
         try {
             final String e = encrypt(horse);
             final ObjectOutputStream o = new ObjectOutputStream(new FileOutputStream(outputFile));
             o.writeObject(e);
             o.close();
-        } catch (Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
         }
     }
 
-    private static String encrypt(String value) {
+    private static String encrypt(final String value) {
         try {
-            IvParameterSpec iv = new IvParameterSpec(myInitVector.getBytes("UTF-8"));
-            SecretKeySpec keySpec = new SecretKeySpec(myKey.getBytes("UTF-8"), "AES");
+            final IvParameterSpec iv = new IvParameterSpec(myInitVector.getBytes("UTF-8"));
+            final SecretKeySpec keySpec = new SecretKeySpec(myKey.getBytes("UTF-8"), "AES");
 
-            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
+            final Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
             cipher.init(Cipher.ENCRYPT_MODE, keySpec, iv);
 
-            byte[] encrypted = cipher.doFinal(value.getBytes());
+            final byte[] encrypted = cipher.doFinal(value.getBytes());
             return Base64.encodeBase64String(encrypted);
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             ex.printStackTrace();
         }
         return null;
     }
 
-    static String decrypt(String file) throws Exception {
-        String in;
+    static String decrypt(final String file) throws Exception {
+        final String in;
         final ObjectInputStream o = new ObjectInputStream(new FileInputStream(file));
         in = (String) o.readObject();
-        IvParameterSpec iv = new IvParameterSpec(myInitVector.getBytes("UTF-8"));
-        SecretKeySpec keySpec = new SecretKeySpec(myKey.getBytes("UTF-8"), "AES");
+        final IvParameterSpec iv = new IvParameterSpec(myInitVector.getBytes("UTF-8"));
+        final SecretKeySpec keySpec = new SecretKeySpec(myKey.getBytes("UTF-8"), "AES");
 
-        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
+        final Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
         cipher.init(Cipher.DECRYPT_MODE, keySpec, iv);
 
-        byte[] original = cipher.doFinal(Base64.decodeBase64(in));
+        final byte[] original = cipher.doFinal(Base64.decodeBase64(in));
         return new String(original);
     }
 }

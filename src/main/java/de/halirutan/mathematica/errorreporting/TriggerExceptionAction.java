@@ -28,7 +28,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
  * functions. Don't forget to register the action in plugin.xml to make it work.
  */
 public class TriggerExceptionAction extends AnAction {
-    public void actionPerformed(AnActionEvent e) {
+    public void actionPerformed(final AnActionEvent e) {
         throw new RuntimeException("I'm an artificial exception!");
     }
 }

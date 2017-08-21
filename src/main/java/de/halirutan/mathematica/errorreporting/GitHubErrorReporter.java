@@ -45,6 +45,7 @@ import com.intellij.openapi.progress.EmptyProgressIndicator;
 import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.util.Consumer;
+import net.masterthought.dlanguage.DLanguageBundle;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -96,7 +97,7 @@ public class GitHubErrorReporter extends ErrorReportSubmitter {
 
         final CallbackWithNotification notifyingCallback = new CallbackWithNotification(callback, project);
         AnonymousFeedbackTask task =
-            new AnonymousFeedbackTask(project, ErrorReportBundle.message("report.error.progress.dialog.text"), true, reportValues, notifyingCallback);
+            new AnonymousFeedbackTask(project, DLanguageBundle.INSTANCE.message("report.error.progress.dialog.text"), true, reportValues, notifyingCallback);
         if (project == null) {
             task.run(new EmptyProgressIndicator());
         } else {
@@ -114,7 +115,7 @@ public class GitHubErrorReporter extends ErrorReportSubmitter {
     @NotNull
     @Override
     public String getReportActionText() {
-        return ErrorReportBundle.message("report.error.to.plugin.vendor");
+        return DLanguageBundle.INSTANCE.message("report.error.to.plugin.vendor");
     }
 
     /**
