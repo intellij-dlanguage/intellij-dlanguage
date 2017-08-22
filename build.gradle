@@ -31,7 +31,7 @@ apply plugin: 'kotlin'
 
 apply plugin: 'cobertura'
 cobertura.coverageFormats = ['html', 'xml'] // coveralls plugin depends on xml format report
-cobertura.coverageSourceDirs = sourceSets.main.kotlin.srcDirs
+cobertura.coverageSourceDirs = [sourceSets.main.java.srcDirs, sourceSets.main.kotlin.srcDirs, 'gen']
 
 allprojects {
     sourceCompatibility = javaVersion
