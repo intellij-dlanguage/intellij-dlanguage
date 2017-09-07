@@ -127,8 +127,13 @@ public class CompileCheck {
         final int startOffset = getOffsetStart(file, line, column);
         final int endOffset = getOffsetEnd(file, line);
         try {
-            return new TextRange(startOffset, endOffset);
-        } catch (final Exception e) {
+            class IgnoresInvalidTextRange extends TextRange {
+                private IgnoresInvalidTextRange(final int startOffset, final int endOffset) {
+                    super(startOffset, endOffset, false);
+                }
+            }
+            return new IgnoresInvalidTextRange(startOffset, endOffset);
+        } catch (final Throwable e) {
             if (e.getMessage().contains("Invalid range")) {
                 //do nothing.
                 return null;
@@ -193,5 +198,4 @@ public class CompileCheck {
             }
         }
     }
-
 }
