@@ -4,7 +4,9 @@ package net.masterthought.dlanguage.formatting;
 import com.intellij.psi.formatter.FormatterTestCase;
 import net.masterthought.dlanguage.DLanguageFileType;
 import org.jetbrains.annotations.NotNull;
+import org.junit.Ignore;
 
+@Ignore
 public class DFormatterTest extends FormatterTestCase {
     @NotNull
     @Override
