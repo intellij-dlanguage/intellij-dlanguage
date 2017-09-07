@@ -13,6 +13,7 @@ import net.masterthought.dlanguage.psi.DLanguageFunctionDeclaration
 import net.masterthought.dlanguage.psi.DLanguageIdentifier
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement
 import net.masterthought.dlanguage.resolve.DResolveUtil
+import net.masterthought.dlanguage.resolve.processors.basic.BasicResolve
 import net.masterthought.dlanguage.stubs.index.DTopLevelDeclarationsByModule
 import net.masterthought.dlanguage.utils.ModuleDeclaration
 import net.masterthought.dlanguage.utils.SingleImport
@@ -109,13 +110,17 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
         val result = Collections.synchronizedList(ArrayList<String>())
         val completionProcessor = DCompletionProcessor()
         PsiTreeUtil.treeWalkUp(completionProcessor, myElement, myElement.containingFile, ResolveState.initial())
-        result.addAll(completionProcessor.completions)//todo this could be more efficiently implmented
+        result.addAll(completionProcessor.completions)//todo this could be more efficiently implemented
         val decls = StubIndex.getElements(DTopLevelDeclarationsByModule.KEY, (element.containingFile as DLanguageFile).moduleOrFileName, project, GlobalSearchScope.fileScope(element.containingFile), DNamedElement::class.java)
         for (decl in decls) {
             if (decl is DLanguageFunctionDeclaration) {
                 result.add(decl.name + "(" + ")")
             } else
                 result.add(decl.name)
+        }
+        val objectDotD = BasicResolve.getInstance(project).`object`
+        if (objectDotD != null) {
+            result.addAll(StubIndex.getElements(DTopLevelDeclarationsByModule.KEY, objectDotD.moduleOrFileName, project, GlobalSearchScope.fileScope(objectDotD), DNamedElement::class.java).map { it.name })
         }
         result.add("abstract")
         result.add("alias")

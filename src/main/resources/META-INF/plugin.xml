@@ -128,7 +128,7 @@
 
 
         <!--formatter-->
-        <lang.formatter language="D" implementationClass="net.masterthought.dlanguage.features.formatter.DFormattingModelBuilder"/>
+        <!--&lt;!&ndash;<lang.formatter language="D" implementationClass="net.masterthought.dlanguage.features.formatter.DFormattingModelBuilder"/>&ndash;&gt;re-enable when formatting with syntax errors improves-->
         <codeStyleSettingsProvider implementation="net.masterthought.dlanguage.features.formatter.settings.DCodeStyleSettingsProvider"/>
         <langCodeStyleSettingsProvider implementation="net.masterthought.dlanguage.features.formatter.settings.DLanguageCodeStyleSettingsProvider"/>
 

@@ -14,9 +14,6 @@ import net.masterthought.dlanguage.utils.*
 
 
 class DResolveUtil private constructor(val project: Project) {
-
-
-    //todo use the official intellij way of doing this using ResolveCache.java
     //also should use a weak  reference or psi file gist
     //also this won't invalidate if a external file is editted but should
     companion object {
