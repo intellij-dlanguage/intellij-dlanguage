@@ -14,7 +14,7 @@ public class DCodeStyleSettingsProvider extends CodeStyleSettingsProvider {
 
     @NotNull
     @Override
-    public Configurable createSettingsPage(@NotNull CodeStyleSettings settings, CodeStyleSettings originalSettings) {
+    public Configurable createSettingsPage(@NotNull final CodeStyleSettings settings, final CodeStyleSettings originalSettings) {
         return new DCodeStyleConfigurable(settings, originalSettings);
     }
 }

@@ -20,11 +20,11 @@ import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_EQ;
  * Created by francis on 7/14/2017.
  */
 public class DLanguageIfConditionImpl extends DNamedStubbedPsiElementBase<DLanguageIfConditionStub> implements DLanguageIfCondition {
-    public DLanguageIfConditionImpl(@NotNull DLanguageIfConditionStub stub, IStubElementType nodeType) {
+    public DLanguageIfConditionImpl(@NotNull final DLanguageIfConditionStub stub, final IStubElementType nodeType) {
         super(stub, nodeType);
     }
 
-    public DLanguageIfConditionImpl(ASTNode node) {
+    public DLanguageIfConditionImpl(final ASTNode node) {
         super(node);
     }
 

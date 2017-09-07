@@ -27,7 +27,7 @@ public class DFileStubElementType extends IStubFileElementType<DLanguageFileStub
         return new DefaultStubBuilder() {
             @NotNull
             @Override
-            protected StubElement createStubForFile(@NotNull PsiFile file) {
+            protected StubElement createStubForFile(@NotNull final PsiFile file) {
                 if (file instanceof DLanguageFile) {
                     return new DLanguageFileStub((DLanguageFile) file);
                 }
@@ -48,7 +48,7 @@ public class DFileStubElementType extends IStubFileElementType<DLanguageFileStub
 
     @NotNull
     @Override
-    public DLanguageFileStub deserialize(@NotNull StubInputStream dataStream, StubElement parentStub) throws IOException {
+    public DLanguageFileStub deserialize(@NotNull final StubInputStream dataStream, final StubElement parentStub) throws IOException {
         return new DLanguageFileStub(null);
     }
 

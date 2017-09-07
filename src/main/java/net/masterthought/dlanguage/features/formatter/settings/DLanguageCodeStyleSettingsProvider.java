@@ -27,7 +27,7 @@ public class DLanguageCodeStyleSettingsProvider extends LanguageCodeStyleSetting
 
     @NotNull
     @Override
-    public String getCodeSample(@NotNull SettingsType settingsType) {
+    public String getCodeSample(@NotNull final SettingsType settingsType) {
         return DEFAULT_CODE_SAMPLE;
     }
 
@@ -38,8 +38,8 @@ public class DLanguageCodeStyleSettingsProvider extends LanguageCodeStyleSetting
 
     @Override
     public CommonCodeStyleSettings getDefaultCommonSettings() {
-        CommonCodeStyleSettings defaultSettings = new CommonCodeStyleSettings(getLanguage());
-        CommonCodeStyleSettings.IndentOptions indentOptions = defaultSettings.initIndentOptions();
+        final CommonCodeStyleSettings defaultSettings = new CommonCodeStyleSettings(getLanguage());
+        final CommonCodeStyleSettings.IndentOptions indentOptions = defaultSettings.initIndentOptions();
         indentOptions.INDENT_SIZE = 4;
         indentOptions.CONTINUATION_INDENT_SIZE = 4;
         indentOptions.TAB_SIZE = 4;

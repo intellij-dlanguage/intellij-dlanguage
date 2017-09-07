@@ -20,24 +20,24 @@ public class ToolKey {
     public final String pathKey;
     public final String flagsKey;
 
-    public ToolKey(String name) {
+    public ToolKey(final String name) {
         this.pathKey = name + "Path";
         this.flagsKey = name + "Flags";
     }
 
     @Nullable
-    public String getPath(@NotNull Project project) {
+    public String getPath(@NotNull final Project project) {
         final String path = PropertiesComponent.getInstance(project).getValue(pathKey);
         return path == null || path.isEmpty() ? null : path;
     }
 
     @NotNull
-    public void setPath(@NotNull Project project, String newValue) {
+    public void setPath(@NotNull final Project project, final String newValue) {
         PropertiesComponent.getInstance(project).setValue(pathKey, newValue);
     }
 
     @NotNull
-    public String getFlags(@NotNull Project project) {
+    public String getFlags(@NotNull final Project project) {
         final String flags = PropertiesComponent.getInstance(project).getValue(flagsKey);
         return flags == null ? "" : flags;
     }

@@ -97,7 +97,7 @@ public class DLanguageRunDmdConfigurationEditor extends SettingsEditor<DLanguage
      * All components must be changed according to "config" data.
      */
     @Override
-    protected void resetEditorFrom(DLanguageRunDmdConfiguration config) {
+    protected void resetEditorFrom(final DLanguageRunDmdConfiguration config) {
         resetCompilerTabForm(config);
         resetOutputTabForm(config);
         resetDebugTabForm(config);
@@ -108,7 +108,7 @@ public class DLanguageRunDmdConfigurationEditor extends SettingsEditor<DLanguage
      * Save state of editor UI to DLangRunDmdConfiguration instance.
      */
     @Override
-    protected void applyEditorTo(DLanguageRunDmdConfiguration config) throws ConfigurationException {
+    protected void applyEditorTo(final DLanguageRunDmdConfiguration config) throws ConfigurationException {
         applyCompilerTabForm(config);
         applyOutputTabForm(config);
         applyDebugTabForm(config);
@@ -117,7 +117,7 @@ public class DLanguageRunDmdConfigurationEditor extends SettingsEditor<DLanguage
     @NotNull
     @Override
     protected JComponent createEditor() {
-        FileChooserDescriptor fcd = FileChooserDescriptorFactory.createSingleFolderDescriptor();
+        final FileChooserDescriptor fcd = FileChooserDescriptorFactory.createSingleFolderDescriptor();
         fcd.setShowFileSystemRoots(true);
         fcd.setTitle(DLanguageBundle.INSTANCE.message("dmd.run.config.selectimportfolder.title"));
         fcd.setDescription(DLanguageBundle.INSTANCE.message("dmd.run.config.selectimportfolder.description"));
@@ -163,21 +163,21 @@ public class DLanguageRunDmdConfigurationEditor extends SettingsEditor<DLanguage
 
         addSettingsEditorListener(editor -> {
             try {
-                Module module = comboModules.getSelectedModule();
+                final Module module = comboModules.getSelectedModule();
                 if (module != null) {
-                    DLanguageRunDmdConfiguration config = (DLanguageRunDmdConfiguration) factory.createTemplateConfiguration(module.getProject());
+                    final DLanguageRunDmdConfiguration config = (DLanguageRunDmdConfiguration) factory.createTemplateConfiguration(module.getProject());
                     applyEditorTo(config); //Save current editor state to "config"
                     fillArguments(config); //Convert "config" to DMD arguments to display on "Arguments" tab.
                 }
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 //pass
             }
         });
 
         //wrap "textArgsPane" with JBScrollPane to allow scrolling.
-        Container tabContent = textArgsPane.getParent();
-        GridLayoutManager layout = (GridLayoutManager) tabContent.getLayout();
-        GridConstraints constraints = layout.getConstraintsForComponent(textArgsPane);
+        final Container tabContent = textArgsPane.getParent();
+        final GridLayoutManager layout = (GridLayoutManager) tabContent.getLayout();
+        final GridConstraints constraints = layout.getConstraintsForComponent(textArgsPane);
 
         textArgsScrollPane = new JBScrollPane(textArgsPane);
         tabContent.add(textArgsScrollPane, constraints);
@@ -191,7 +191,7 @@ public class DLanguageRunDmdConfigurationEditor extends SettingsEditor<DLanguage
     }
 
     /* I hope there is no misprints in next methods :) */
-    private void resetCompilerTabForm(DLanguageRunDmdConfiguration config) {
+    private void resetCompilerTabForm(final DLanguageRunDmdConfiguration config) {
         comboModules.fillModules(config.getProject(), DLanguageModuleType.getInstance());
         comboModules.setSelectedModule(config.getConfigurationModule().getModule());
         cbRelease.setSelected(config.isRelease());
@@ -218,7 +218,7 @@ public class DLanguageRunDmdConfigurationEditor extends SettingsEditor<DLanguage
         linkerArgs.setText(config.getLinkerArgs());
     }
 
-    private void resetOutputTabForm(DLanguageRunDmdConfiguration config) {
+    private void resetOutputTabForm(final DLanguageRunDmdConfiguration config) {
         cbGenerateDocumentation.setSelected(config.isGenerateDocs());
         filenameDocumentation.setText(config.getDocsFilename());
         pathDocumentation.setText(config.getDocsPath());
@@ -233,7 +233,7 @@ public class DLanguageRunDmdConfigurationEditor extends SettingsEditor<DLanguage
         filenameJson.setText(config.getJsonFilename());
     }
 
-    private void resetDebugTabForm(DLanguageRunDmdConfiguration config) {
+    private void resetDebugTabForm(final DLanguageRunDmdConfiguration config) {
         cbAddSymbolicDebugInfo.setSelected(config.isAddSymbolicDebugInfo());
         cbAddSymbolicDebugInfoC.setSelected(config.isAddSymbolicDebugInfoC());
         cbGenerateStandardStackFrame.setSelected(config.isGenerateStandardStackFrame());
@@ -247,12 +247,12 @@ public class DLanguageRunDmdConfigurationEditor extends SettingsEditor<DLanguage
         linkDmdDoc.setCursor(new Cursor(Cursor.HAND_CURSOR));
         linkDmdDoc.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseClicked(final MouseEvent e) {
                 if (e.getClickCount() > 0) {
                     if (Desktop.isDesktopSupported()) {
-                        Desktop desktop = Desktop.getDesktop();
+                        final Desktop desktop = Desktop.getDesktop();
                         try {
-                            URI uri = new URI("http://dlang.org/dmd-linux.html#switches");
+                            final URI uri = new URI("http://dlang.org/dmd-linux.html#switches");
                             desktop.browse(uri);
                         } catch (final IOException | URISyntaxException ex) {
                             //do nothing
@@ -263,7 +263,7 @@ public class DLanguageRunDmdConfigurationEditor extends SettingsEditor<DLanguage
         });
     }
 
-    private void applyCompilerTabForm(DLanguageRunDmdConfiguration config) {
+    private void applyCompilerTabForm(final DLanguageRunDmdConfiguration config) {
         config.setModule(comboModules.getSelectedModule());
         config.setRelease(cbRelease.isSelected());
         config.setDebug(cbDebug.isSelected());
@@ -289,7 +289,7 @@ public class DLanguageRunDmdConfigurationEditor extends SettingsEditor<DLanguage
         config.setLinkerArgs(linkerArgs.getText());
     }
 
-    private void applyOutputTabForm(DLanguageRunDmdConfiguration config) {
+    private void applyOutputTabForm(final DLanguageRunDmdConfiguration config) {
         config.setGenerateDocs(cbGenerateDocumentation.isSelected());
         config.setDocsFilename(filenameDocumentation.getText());
         config.setDocsPath(pathDocumentation.getText());
@@ -304,7 +304,7 @@ public class DLanguageRunDmdConfigurationEditor extends SettingsEditor<DLanguage
         config.setJsonFilename(filenameJson.getText());
     }
 
-    private void applyDebugTabForm(DLanguageRunDmdConfiguration config) {
+    private void applyDebugTabForm(final DLanguageRunDmdConfiguration config) {
         config.setAddSymbolicDebugInfo(cbAddSymbolicDebugInfo.isSelected());
         config.setAddSymbolicDebugInfoC(cbAddSymbolicDebugInfoC.isSelected());
         config.setGenerateStandardStackFrame(cbGenerateStandardStackFrame.isSelected());
@@ -315,7 +315,7 @@ public class DLanguageRunDmdConfigurationEditor extends SettingsEditor<DLanguage
     /**
      * Update "textArgsPane" text area with actual DMD command line arguments
      */
-    private void fillArguments(DLanguageRunDmdConfiguration config) {
+    private void fillArguments(final DLanguageRunDmdConfiguration config) {
         final Module module = comboModules.getSelectedModule();
         if (module == null) {
             return;

@@ -17,7 +17,7 @@ public class DCompletionContributorImports extends CompletionContributor {
     public DCompletionContributorImports() {
         extend(CompletionType.BASIC, PlatformPatterns.psiElement().withLanguage(DLanguage.INSTANCE), new CompletionProvider<CompletionParameters>() {
             @Override
-            protected void addCompletions(@NotNull CompletionParameters parameters, ProcessingContext context, @NotNull CompletionResultSet result) {
+            protected void addCompletions(@NotNull final CompletionParameters parameters, final ProcessingContext context, @NotNull final CompletionResultSet result) {
                 final PsiElement position = parameters.getPosition();
                 final DImportScopeProcessor importScopeProcessor = new DImportScopeProcessor();
                 PsiTreeUtil.treeWalkUp(importScopeProcessor, position, position.getContainingFile(), ResolveState.initial());

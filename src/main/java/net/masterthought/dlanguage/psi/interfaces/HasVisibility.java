@@ -4,7 +4,7 @@ package net.masterthought.dlanguage.psi.interfaces;
  * Created by francis on 2/28/2017.
  */
 public interface HasVisibility extends DNamedElement {
-    default boolean isSomeVisibility(Visibility visibility) {
+    default boolean isSomeVisibility(final Visibility visibility) {
         return visibility == Visibility.public_;
     }
 

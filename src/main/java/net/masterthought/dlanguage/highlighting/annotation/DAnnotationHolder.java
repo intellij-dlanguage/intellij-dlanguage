@@ -42,7 +42,7 @@ public class DAnnotationHolder {
                 : holder.createErrorAnnotation(range, message);
     }
 
-    private static Annotation createAnnotation(@NotNull final AnnotationHolderImpl holder, @NotNull HighlightSeverity severity, @NotNull TextRange range, @Nullable String message) {
+    private static Annotation createAnnotation(@NotNull final AnnotationHolderImpl holder, @NotNull final HighlightSeverity severity, @NotNull final TextRange range, @Nullable final String message) {
         final String tooltip = message == null ? null : XmlStringUtil.wrapInHtml(escapeSpacesForHtml(XmlStringUtil.escapeString(message)));
         final Annotation annotation = new Annotation(range.getStartOffset(), range.getEndOffset(), severity, message, tooltip);
         holder.add(annotation);

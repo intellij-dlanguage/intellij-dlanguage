@@ -52,15 +52,15 @@ public class DLanguageRunDubConfigurationProducer extends RunConfigurationProduc
         return psiFile instanceof DLanguageFile && virtualFile != null ? virtualFile : null;
     }
 
-    public static VirtualFile getRealVirtualFile(PsiFile psiFile) {
+    public static VirtualFile getRealVirtualFile(final PsiFile psiFile) {
         return psiFile != null ? psiFile.getOriginalFile().getVirtualFile() : null;
     }
 
     @Override
-    protected boolean setupConfigurationFromContext(DLanguageRunDubConfiguration configuration, ConfigurationContext context, Ref<PsiElement> sourceElement) {
+    protected boolean setupConfigurationFromContext(final DLanguageRunDubConfiguration configuration, final ConfigurationContext context, final Ref<PsiElement> sourceElement) {
         final VirtualFile dFile = getRunnableDFileFromContext(context);
         if (dFile != null) {
-            Module module = context.getModule();
+            final Module module = context.getModule();
             if (module != null) {
                 configuration.setModule(module);
             }

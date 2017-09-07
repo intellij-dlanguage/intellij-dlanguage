@@ -18,19 +18,19 @@ import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
 
 public class DLanguageEponymousTemplateDeclarationImpl extends DNamedStubbedPsiElementBase<DLanguageEponymousTemplateDeclarationStub> implements DLanguageEponymousTemplateDeclaration {
 
-    public DLanguageEponymousTemplateDeclarationImpl(DLanguageEponymousTemplateDeclarationStub stub, IStubElementType type) {
+    public DLanguageEponymousTemplateDeclarationImpl(final DLanguageEponymousTemplateDeclarationStub stub, final IStubElementType type) {
         super(stub, type);
     }
 
-    public DLanguageEponymousTemplateDeclarationImpl(ASTNode node) {
+    public DLanguageEponymousTemplateDeclarationImpl(final ASTNode node) {
         super(node);
     }
 
-    public void accept(@NotNull DLanguageVisitor visitor) {
+    public void accept(@NotNull final DLanguageVisitor visitor) {
         visitor.visitEponymousTemplateDeclaration(this);
     }
 
-    public void accept(@NotNull PsiElementVisitor visitor) {
+    public void accept(@NotNull final PsiElementVisitor visitor) {
         if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor) visitor);
         else super.accept(visitor);
     }
@@ -84,7 +84,7 @@ public class DLanguageEponymousTemplateDeclarationImpl extends DNamedStubbedPsiE
         return getIdentifier();
     }
 
-    public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
+    public boolean processDeclarations(@NotNull final PsiScopeProcessor processor, @NotNull final ResolveState state, final PsiElement lastParent, @NotNull final PsiElement place) {
         return ScopeProcessorImpl.INSTANCE.processDeclarations(this, processor, state, lastParent, place);
     }
 

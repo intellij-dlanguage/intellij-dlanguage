@@ -420,8 +420,8 @@ public interface DLanguageTypes {
     IElementType SPECIAL_EMPTY_TOKEN = new DLanguageTokenType("SPECIAL_EMPTY_TOKEN");
 
     class Factory {
-        public static PsiElement createElement(ASTNode node) {
-            IElementType type = node.getElementType();
+        public static PsiElement createElement(final ASTNode node) {
+            final IElementType type = node.getElementType();
             if (type == CONSTRUCTOR) {
                 return new DLanguageConstructorImpl(node);
             } else if (type == DESTRUCTOR) {

@@ -18,19 +18,19 @@ import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_EQ;
 
 
 public class DLanguageDeclaratorImpl extends DNamedStubbedPsiElementBase<DLanguageDeclaratorStub> implements DLanguageDeclarator {
-    public DLanguageDeclaratorImpl(ASTNode node) {
+    public DLanguageDeclaratorImpl(final ASTNode node) {
         super(node);
     }
 
-    public DLanguageDeclaratorImpl(@NotNull DLanguageDeclaratorStub stub, IStubElementType nodeType) {
+    public DLanguageDeclaratorImpl(@NotNull final DLanguageDeclaratorStub stub, final IStubElementType nodeType) {
         super(stub, nodeType);
     }
 
-    public void accept(@NotNull DLanguageVisitor visitor) {
+    public void accept(@NotNull final DLanguageVisitor visitor) {
         visitor.visitDeclarator(this);
     }
 
-    public void accept(@NotNull PsiElementVisitor visitor) {
+    public void accept(@NotNull final PsiElementVisitor visitor) {
         if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor) visitor);
         else super.accept(visitor);
     }
@@ -62,7 +62,7 @@ public class DLanguageDeclaratorImpl extends DNamedStubbedPsiElementBase<DLangua
     }
 
     @Override
-    public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
+    public boolean processDeclarations(@NotNull final PsiScopeProcessor processor, @NotNull final ResolveState state, final PsiElement lastParent, @NotNull final PsiElement place) {
         return ScopeProcessorImpl.INSTANCE.processDeclarations(this,processor, state, lastParent, place);
     }
 }

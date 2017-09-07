@@ -14,7 +14,7 @@ import java.io.IOException;
 
 public abstract class DLanguageParserTestBase extends ParsingTestCase {
 
-    public DLanguageParserTestBase(String dataPath, String fileExt, ParserDefinition... definitions) {
+    public DLanguageParserTestBase(final String dataPath, final String fileExt, final ParserDefinition... definitions) {
         super(dataPath, fileExt, definitions);
     }
 
@@ -60,7 +60,7 @@ public abstract class DLanguageParserTestBase extends ParsingTestCase {
 
 
     @Override
-    protected void checkResult(@NonNls @TestDataFile String targetDataName,
+    protected void checkResult(@NonNls @TestDataFile final String targetDataName,
                                final PsiFile file) throws IOException {
         doCheckResult(myFullDataPath, file, checkAllPsiRoots(),
             "expected" + File.separator + targetDataName, skipSpaces(),
@@ -81,7 +81,7 @@ public abstract class DLanguageParserTestBase extends ParsingTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        VirtualFile m = new MockVirtualFile(true, myFullDataPath);
+        final VirtualFile m = new MockVirtualFile(true, myFullDataPath);
         myProject.setBaseDir(m);
     }
 

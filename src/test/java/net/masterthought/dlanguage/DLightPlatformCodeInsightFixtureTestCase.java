@@ -29,7 +29,7 @@ public abstract class DLightPlatformCodeInsightFixtureTestCase extends LightPlat
      * @param srcName    Directory name of test inputs.
      * @param expectName Directory name of expected outputs.
      */
-    protected DLightPlatformCodeInsightFixtureTestCase(String srcName, String expectName) {
+    protected DLightPlatformCodeInsightFixtureTestCase(final String srcName, final String expectName) {
         super();
         srcPath = String.format("%s/%s", getDirPath(), srcName);
         expectPath = String.format("%s/%s", getDirPath(), expectName);
@@ -57,14 +57,14 @@ public abstract class DLightPlatformCodeInsightFixtureTestCase extends LightPlat
         return srcPath;
     }
 
-    protected String getTestDataPath(String... names) {
+    protected String getTestDataPath(final String... names) {
         return this.getClass().getClassLoader().getResource(String.format("%s/%s", srcPath, StringUtil.join(names, "/"))).getPath().replace("/C:", "");
     }
 
     /**
      * Loads the test data file from the right place.
      */
-    protected String loadFile(@NonNls @TestDataFile String name) throws IOException, URISyntaxException {
+    protected String loadFile(@NonNls @TestDataFile final String name) throws IOException, URISyntaxException {
         return doLoadFile(srcPath, name);
     }
 

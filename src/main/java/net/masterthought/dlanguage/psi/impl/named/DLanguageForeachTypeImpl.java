@@ -12,19 +12,19 @@ import org.jetbrains.annotations.Nullable;
 
 public class DLanguageForeachTypeImpl extends DNamedStubbedPsiElementBase<DLanguageForeachTypeStub> implements DLanguageForeachType {
 
-    public DLanguageForeachTypeImpl(DLanguageForeachTypeStub stub, IStubElementType type) {
+    public DLanguageForeachTypeImpl(final DLanguageForeachTypeStub stub, final IStubElementType type) {
         super(stub, type);
     }
 
-    public DLanguageForeachTypeImpl(ASTNode node) {
+    public DLanguageForeachTypeImpl(final ASTNode node) {
         super(node);
     }
 
-    public void accept(@NotNull DLanguageVisitor visitor) {
+    public void accept(@NotNull final DLanguageVisitor visitor) {
         visitor.visitForeachType(this);
     }
 
-    public void accept(@NotNull PsiElementVisitor visitor) {
+    public void accept(@NotNull final PsiElementVisitor visitor) {
         if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor) visitor);
         else super.accept(visitor);
     }

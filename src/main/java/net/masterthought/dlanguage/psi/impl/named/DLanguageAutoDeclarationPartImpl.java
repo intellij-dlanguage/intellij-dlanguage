@@ -18,19 +18,19 @@ import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_EQ;
 
 public class DLanguageAutoDeclarationPartImpl extends DNamedStubbedPsiElementBase<DLanguageAutoDeclarationPartStub> implements DLanguageAutoDeclarationPart {
 
-    public DLanguageAutoDeclarationPartImpl(DLanguageAutoDeclarationPartStub stub, IStubElementType type) {
+    public DLanguageAutoDeclarationPartImpl(final DLanguageAutoDeclarationPartStub stub, final IStubElementType type) {
         super(stub, type);
     }
 
-    public DLanguageAutoDeclarationPartImpl(ASTNode node) {
+    public DLanguageAutoDeclarationPartImpl(final ASTNode node) {
         super(node);
     }
 
-    public void accept(@NotNull DLanguageVisitor visitor) {
+    public void accept(@NotNull final DLanguageVisitor visitor) {
         visitor.visitAutoDeclarationPart(this);
     }
 
-    public void accept(@NotNull PsiElementVisitor visitor) {
+    public void accept(@NotNull final PsiElementVisitor visitor) {
         if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor) visitor);
         else super.accept(visitor);
     }

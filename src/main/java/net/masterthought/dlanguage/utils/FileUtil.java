@@ -46,13 +46,13 @@ public class FileUtil {
      * For example, given file "project/src/foo/bar/baz.d" the result would be `{"foo", "bar"}`.
      */
     public static @Nullable
-    List<String> getPathFromSourceRoot(Project project, VirtualFile file) {
-        VirtualFile root = getSourceRoot(project, file);
+    List<String> getPathFromSourceRoot(final Project project, final VirtualFile file) {
+        final VirtualFile root = getSourceRoot(project, file);
         final String rootPath;
         if (root == null || (rootPath = root.getCanonicalPath()) == null) {
             return null;
         }
-        ArrayList<String> result = new ArrayList<String>(0);
+        final ArrayList<String> result = new ArrayList<String>(0);
         VirtualFile directory = file;
         while (directory != null) {
             if (rootPath.equals(directory.getCanonicalPath())) {
@@ -65,12 +65,12 @@ public class FileUtil {
     }
 
     public static @Nullable
-    VirtualFile getSourceRoot(Project project, VirtualFile file) {
+    VirtualFile getSourceRoot(final Project project, final VirtualFile file) {
         if (project == null || file == null) {
             return null;
         }
-        VirtualFile[] roots = ProjectRootManager.getInstance(project).getContentSourceRoots();
-        for (VirtualFile root : roots) {
+        final VirtualFile[] roots = ProjectRootManager.getInstance(project).getContentSourceRoots();
+        for (final VirtualFile root : roots) {
             final String rootPath = root.getCanonicalPath();
             if (rootPath == null) {
                 continue;

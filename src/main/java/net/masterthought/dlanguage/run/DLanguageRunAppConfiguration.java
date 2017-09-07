@@ -32,10 +32,10 @@ public class DLanguageRunAppConfiguration extends ModuleBasedConfiguration<RunCo
     private String additionalParams;
     private Map<String, String> envVars;
 
-    public DLanguageRunAppConfiguration(String name, Project project, ConfigurationFactory factory) {
+    public DLanguageRunAppConfiguration(final String name, final Project project, final ConfigurationFactory factory) {
         super(name, new RunConfigurationModule(project), factory);
 
-        Collection<Module> modules = this.getValidModules();
+        final Collection<Module> modules = this.getValidModules();
         if (!modules.isEmpty()) {
             //Get first valid module and use it
             this.setModule(modules.iterator().next());
@@ -46,15 +46,15 @@ public class DLanguageRunAppConfiguration extends ModuleBasedConfiguration<RunCo
     }
 
     public String getExecutablePath() {
-        Module module = getConfigurationModule().getModule();
+        final Module module = getConfigurationModule().getModule();
         if (module != null) {
-            ModuleRootManager moduleRootManager = ModuleRootManager.getInstance(module);
-            String outputPath = moduleRootManager.getModuleExtension(CompilerModuleExtension.class).getCompilerOutputUrl();
+            final ModuleRootManager moduleRootManager = ModuleRootManager.getInstance(module);
+            final String outputPath = moduleRootManager.getModuleExtension(CompilerModuleExtension.class).getCompilerOutputUrl();
             String filename = module.getName();
             if (SystemInfo.isWindows) {
                 filename += ".exe";
             }
-            File outputFile = new File(VfsUtilCore.urlToPath(outputPath), filename);
+            final File outputFile = new File(VfsUtilCore.urlToPath(outputPath), filename);
             return outputFile.getPath();
         } else {
             return "";
@@ -63,11 +63,11 @@ public class DLanguageRunAppConfiguration extends ModuleBasedConfiguration<RunCo
 
     @Override
     public Collection<Module> getValidModules() {
-        Module[] modules = ModuleManager.getInstance(getProject()).getModules();
+        final Module[] modules = ModuleManager.getInstance(getProject()).getModules();
         final DMDRunner appRunner = new DMDRunner();
 
-        ArrayList<Module> res = new ArrayList<>();
-        for (Module module : modules) {
+        final ArrayList<Module> res = new ArrayList<>();
+        for (final Module module : modules) {
             if (appRunner.isValidModule(module)) {
                 res.add(module);
             }
@@ -82,12 +82,12 @@ public class DLanguageRunAppConfiguration extends ModuleBasedConfiguration<RunCo
 
     @Nullable
     @Override
-    public RunProfileState getState(@NotNull Executor executor, @NotNull ExecutionEnvironment env) throws ExecutionException {
+    public RunProfileState getState(@NotNull final Executor executor, @NotNull final ExecutionEnvironment env) throws ExecutionException {
         return new DLanguageRunAppState(env, this);
     }
 
     @Override
-    public void writeExternal(@NotNull Element element) throws WriteExternalException {
+    public void writeExternal(@NotNull final Element element) throws WriteExternalException {
         if (envVars == null) {
             envVars = new HashMap<>();
         }
@@ -98,7 +98,7 @@ public class DLanguageRunAppConfiguration extends ModuleBasedConfiguration<RunCo
     }
 
     @Override
-    public void readExternal(@NotNull Element element) throws InvalidDataException {
+    public void readExternal(@NotNull final Element element) throws InvalidDataException {
         super.readExternal(element);
         readModule(element);
         XmlSerializer.deserializeInto(this, element);
@@ -109,7 +109,7 @@ public class DLanguageRunAppConfiguration extends ModuleBasedConfiguration<RunCo
         return workDir;
     }
 
-    public void setWorkDir(String workDir) {
+    public void setWorkDir(final String workDir) {
         this.workDir = workDir;
     }
 
@@ -117,7 +117,7 @@ public class DLanguageRunAppConfiguration extends ModuleBasedConfiguration<RunCo
         return additionalParams;
     }
 
-    public void setAdditionalParams(String additionalParams) {
+    public void setAdditionalParams(final String additionalParams) {
         this.additionalParams = additionalParams;
     }
 
@@ -125,7 +125,7 @@ public class DLanguageRunAppConfiguration extends ModuleBasedConfiguration<RunCo
         return envVars;
     }
 
-    public void setEnvVars(Map<String, String> envVars) {
+    public void setEnvVars(final Map<String, String> envVars) {
         this.envVars = envVars;
     }
 }

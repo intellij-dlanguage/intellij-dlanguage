@@ -55,7 +55,7 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
     private JButton dFixAutoFind;
     private JTextField dFixVersion;
 
-    public DLanguageToolsConfigurable(@NotNull Project project) {
+    public DLanguageToolsConfigurable(@NotNull final Project project) {
         this.propertiesComponent = PropertiesComponent.getInstance(project);
         properties = Arrays.asList(
             new Tool(project, "dub", ToolKey.DUB_KEY, dubPath, dubFlags,
@@ -77,7 +77,7 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
      * Heuristically finds the version number. Current implementation is the
      * identity function since cabal plays nice.
      */
-    private static String getVersion(String cmd, String versionFlag) {
+    private static String getVersion(final String cmd, final String versionFlag) {
         return ExecUtil.readCommandLine(null, cmd, versionFlag);
     }
 
@@ -89,7 +89,7 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
 
     @Nullable
     @Override
-    public Runnable enableSearch(String s) {
+    public Runnable enableSearch(final String s) {
         // TODO
         return null;
     }
@@ -117,7 +117,7 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
      */
     @Override
     public boolean isModified() {
-        for (Property property : properties) {
+        for (final Property property : properties) {
             if (property.isModified()) {
                 return true;
             }
@@ -151,7 +151,7 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
      * Updates the version info fields for all files configured.
      */
     private void updateVersionInfoFields() {
-        for (Property property : properties) {
+        for (final Property property : properties) {
             if (property instanceof Versioned) {
                 ((Versioned) property).updateVersion();
             }
@@ -163,7 +163,7 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
      */
     private void saveState() {
         LOG.info("Saving D Tools Config");
-        for (Property property : properties) {
+        for (final Property property : properties) {
             property.saveState();
         }
     }
@@ -173,7 +173,7 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
      */
     private void restoreState() {
         LOG.info("Restore D Tools Config");
-        for (Property property : properties) {
+        for (final Property property : properties) {
             property.restoreState();
         }
     }
@@ -198,11 +198,11 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
         public final String propertyKey;
         public String oldValue;
 
-        PropertyField(@NotNull String propertyKey, @NotNull TextAccessor field) {
+        PropertyField(@NotNull final String propertyKey, @NotNull final TextAccessor field) {
             this(propertyKey, field, "");
         }
 
-        PropertyField(@NotNull String propertyKey, @NotNull TextAccessor field, @NotNull String defaultValue) {
+        PropertyField(@NotNull final String propertyKey, @NotNull final TextAccessor field, @NotNull final String defaultValue) {
             this.propertyKey = propertyKey;
             this.field = field;
             this.oldValue = propertiesComponent.getValue(propertyKey, defaultValue);
@@ -242,19 +242,19 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
         @Nullable
         SettingsChangeNotifier publisher;
 
-        Tool(Project project, String command, ToolKey key, TextFieldWithBrowseButton pathField,
-             RawCommandLineEditor flagsField, JButton autoFindButton, JTextField versionField) {
+        Tool(final Project project, final String command, final ToolKey key, final TextFieldWithBrowseButton pathField,
+             final RawCommandLineEditor flagsField, final JButton autoFindButton, final JTextField versionField) {
             this(project, command, key, pathField, flagsField, autoFindButton, versionField, "--version");
         }
 
-        Tool(Project project, String command, ToolKey key, TextFieldWithBrowseButton pathField,
-             RawCommandLineEditor flagsField, JButton autoFindButton, JTextField versionField, String versionParam) {
+        Tool(final Project project, final String command, final ToolKey key, final TextFieldWithBrowseButton pathField,
+             final RawCommandLineEditor flagsField, final JButton autoFindButton, final JTextField versionField, final String versionParam) {
             this(project, command, key, pathField, flagsField, autoFindButton, versionField, versionParam, null);
         }
 
-        Tool(Project project, String command, ToolKey key, TextFieldWithBrowseButton pathField,
-             RawCommandLineEditor flagsField, JButton autoFindButton, JTextField versionField, String versionParam,
-             @Nullable Topic<SettingsChangeNotifier> topic) {
+        Tool(final Project project, final String command, final ToolKey key, final TextFieldWithBrowseButton pathField,
+             final RawCommandLineEditor flagsField, final JButton autoFindButton, final JTextField versionField, final String versionParam,
+             @Nullable final Topic<SettingsChangeNotifier> topic) {
             this.project = project;
             this.command = command;
             this.key = key;
@@ -276,7 +276,7 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
         }
 
         public void updateVersion() {
-            String pathText = pathField.getText();
+            final String pathText = pathField.getText();
             if (pathText.isEmpty()) {
                 versionField.setText("");
             } else {
@@ -285,7 +285,7 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
         }
 
         public boolean isModified() {
-            for (PropertyField propertyField : propertyFields) {
+            for (final PropertyField propertyField : propertyFields) {
                 if (propertyField.isModified()) {
                     return true;
                 }
@@ -297,13 +297,13 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
             if (isModified() && publisher != null) {
                 publisher.onSettingsChanged(new ToolSettings(pathField.getText(), flagsField.getText()));
             }
-            for (PropertyField propertyField : propertyFields) {
+            for (final PropertyField propertyField : propertyFields) {
                 propertyField.saveState();
             }
         }
 
         public void restoreState() {
-            for (PropertyField propertyField : propertyFields) {
+            for (final PropertyField propertyField : propertyFields) {
                 propertyField.restoreState();
             }
         }

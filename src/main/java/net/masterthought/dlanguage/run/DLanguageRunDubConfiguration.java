@@ -48,10 +48,10 @@ public class DLanguageRunDubConfiguration extends ModuleBasedConfiguration<RunCo
     private String additionalParams;
     private Map<String, String> envVars;
 
-    public DLanguageRunDubConfiguration(String name, Project project, ConfigurationFactory factory) {
+    public DLanguageRunDubConfiguration(final String name, final Project project, final ConfigurationFactory factory) {
         super(name, new RunConfigurationModule(project), factory);
 
-        Collection<Module> modules = this.getValidModules();
+        final Collection<Module> modules = this.getValidModules();
         if (!modules.isEmpty()) {
             //Get first valid module and use it
             this.setModule(modules.iterator().next());
@@ -63,7 +63,7 @@ public class DLanguageRunDubConfiguration extends ModuleBasedConfiguration<RunCo
         return this.generalDubOptions;
     }
 
-    public void setGeneralDubOptions(int generalDubOptions) {
+    public void setGeneralDubOptions(final int generalDubOptions) {
         this.generalDubOptions = generalDubOptions;
     }
 
@@ -71,7 +71,7 @@ public class DLanguageRunDubConfiguration extends ModuleBasedConfiguration<RunCo
         return cbForce;
     }
 
-    public void setCbForce(boolean cbForce) {
+    public void setCbForce(final boolean cbForce) {
         this.cbForce = cbForce;
     }
 
@@ -79,7 +79,7 @@ public class DLanguageRunDubConfiguration extends ModuleBasedConfiguration<RunCo
         return cbNoDeps;
     }
 
-    public void setCbNoDeps(boolean cbNoDeps) {
+    public void setCbNoDeps(final boolean cbNoDeps) {
         this.cbNoDeps = cbNoDeps;
     }
 
@@ -87,7 +87,7 @@ public class DLanguageRunDubConfiguration extends ModuleBasedConfiguration<RunCo
         return cbForceRemove;
     }
 
-    public void setCbForceRemove(boolean cbForceRemove) {
+    public void setCbForceRemove(final boolean cbForceRemove) {
         this.cbForceRemove = cbForceRemove;
     }
 
@@ -95,7 +95,7 @@ public class DLanguageRunDubConfiguration extends ModuleBasedConfiguration<RunCo
         return cbCombined;
     }
 
-    public void setCbCombined(boolean cbCombined) {
+    public void setCbCombined(final boolean cbCombined) {
         this.cbCombined = cbCombined;
     }
 
@@ -103,7 +103,7 @@ public class DLanguageRunDubConfiguration extends ModuleBasedConfiguration<RunCo
         return cbParallel;
     }
 
-    public void setCbParallel(boolean cbParallel) {
+    public void setCbParallel(final boolean cbParallel) {
         this.cbParallel = cbParallel;
     }
 
@@ -111,7 +111,7 @@ public class DLanguageRunDubConfiguration extends ModuleBasedConfiguration<RunCo
         return tfBuild;
     }
 
-    public void setTfBuild(String tfBuild) {
+    public void setTfBuild(final String tfBuild) {
         this.tfBuild = tfBuild;
     }
 
@@ -119,7 +119,7 @@ public class DLanguageRunDubConfiguration extends ModuleBasedConfiguration<RunCo
         return tfCompiler;
     }
 
-    public void setTfCompiler(String tfCompiler) {
+    public void setTfCompiler(final String tfCompiler) {
         this.tfCompiler = tfCompiler;
     }
 
@@ -129,7 +129,7 @@ public class DLanguageRunDubConfiguration extends ModuleBasedConfiguration<RunCo
 
     // Run tab
 
-    public void setTfConfig(String tfConfig) {
+    public void setTfConfig(final String tfConfig) {
         this.tfConfig = tfConfig;
     }
 
@@ -137,7 +137,7 @@ public class DLanguageRunDubConfiguration extends ModuleBasedConfiguration<RunCo
         return tfArch;
     }
 
-    public void setTfArch(String tfArch) {
+    public void setTfArch(final String tfArch) {
         this.tfArch = tfArch;
     }
 
@@ -145,7 +145,7 @@ public class DLanguageRunDubConfiguration extends ModuleBasedConfiguration<RunCo
         return tfDebug;
     }
 
-    public void setTfDebug(String tfDebug) {
+    public void setTfDebug(final String tfDebug) {
         this.tfDebug = tfDebug;
     }
 
@@ -153,7 +153,7 @@ public class DLanguageRunDubConfiguration extends ModuleBasedConfiguration<RunCo
         return buildMode;
     }
 
-    public void setBuildMode(int buildMode) {
+    public void setBuildMode(final int buildMode) {
         this.buildMode = buildMode;
     }
 
@@ -161,7 +161,7 @@ public class DLanguageRunDubConfiguration extends ModuleBasedConfiguration<RunCo
         return cbRdmd;
     }
 
-    public void setCbRdmd(boolean cbRdmd) {
+    public void setCbRdmd(final boolean cbRdmd) {
         this.cbRdmd = cbRdmd;
     }
 
@@ -169,7 +169,7 @@ public class DLanguageRunDubConfiguration extends ModuleBasedConfiguration<RunCo
         return cbTempBuild;
     }
 
-    public void setCbTempBuild(boolean cbTempBuild) {
+    public void setCbTempBuild(final boolean cbTempBuild) {
         this.cbTempBuild = cbTempBuild;
     }
 
@@ -177,7 +177,7 @@ public class DLanguageRunDubConfiguration extends ModuleBasedConfiguration<RunCo
         return tfMainFile;
     }
 
-    public void setTfMainFile(String tfMainFile) {
+    public void setTfMainFile(final String tfMainFile) {
         this.tfMainFile = tfMainFile;
     }
 
@@ -185,17 +185,17 @@ public class DLanguageRunDubConfiguration extends ModuleBasedConfiguration<RunCo
         return cbCoverage;
     }
 
-    public void setCbCoverage(boolean cbCoverage) {
+    public void setCbCoverage(final boolean cbCoverage) {
         this.cbCoverage = cbCoverage;
     }
 
     @Override
     public Collection<Module> getValidModules() {
-        Module[] modules = ModuleManager.getInstance(getProject()).getModules();
+        final Module[] modules = ModuleManager.getInstance(getProject()).getModules();
         final DMDRunner appRunner = new DMDRunner();
 
-        ArrayList<Module> res = new ArrayList<Module>();
-        for (Module module : modules) {
+        final ArrayList<Module> res = new ArrayList<Module>();
+        for (final Module module : modules) {
             if (appRunner.isValidModule(module)) {
                 res.add(module);
             }
@@ -210,12 +210,12 @@ public class DLanguageRunDubConfiguration extends ModuleBasedConfiguration<RunCo
 
     @Nullable
     @Override
-    public RunProfileState getState(@NotNull Executor executor, @NotNull ExecutionEnvironment env) throws ExecutionException {
+    public RunProfileState getState(@NotNull final Executor executor, @NotNull final ExecutionEnvironment env) throws ExecutionException {
         return new DLanguageRunDubState(env, this);
     }
 
     @Override
-    public void writeExternal(@NotNull Element element) throws WriteExternalException {
+    public void writeExternal(@NotNull final Element element) throws WriteExternalException {
         if (envVars == null) {
             envVars = new HashMap<String, String>();
         }
@@ -226,7 +226,7 @@ public class DLanguageRunDubConfiguration extends ModuleBasedConfiguration<RunCo
     }
 
     @Override
-    public void readExternal(@NotNull Element element) throws InvalidDataException {
+    public void readExternal(@NotNull final Element element) throws InvalidDataException {
         super.readExternal(element);
         readModule(element);
         XmlSerializer.deserializeInto(this, element);
@@ -239,7 +239,7 @@ public class DLanguageRunDubConfiguration extends ModuleBasedConfiguration<RunCo
         return workingDir;
     }
 
-    public void setWorkingDir(String workingDir) {
+    public void setWorkingDir(final String workingDir) {
         this.workingDir = workingDir;
     }
 
@@ -247,7 +247,7 @@ public class DLanguageRunDubConfiguration extends ModuleBasedConfiguration<RunCo
         return quiet;
     }
 
-    public void setQuiet(boolean quiet) {
+    public void setQuiet(final boolean quiet) {
         this.quiet = quiet;
     }
 
@@ -255,7 +255,7 @@ public class DLanguageRunDubConfiguration extends ModuleBasedConfiguration<RunCo
         return verbose;
     }
 
-    public void setVerbose(boolean verbose) {
+    public void setVerbose(final boolean verbose) {
         this.verbose = verbose;
     }
 
@@ -263,7 +263,7 @@ public class DLanguageRunDubConfiguration extends ModuleBasedConfiguration<RunCo
         return additionalParams;
     }
 
-    public void setAdditionalParams(String additionalParams) {
+    public void setAdditionalParams(final String additionalParams) {
         this.additionalParams = additionalParams;
     }
 
@@ -271,7 +271,7 @@ public class DLanguageRunDubConfiguration extends ModuleBasedConfiguration<RunCo
         return envVars;
     }
 
-    public void setEnvVars(Map<String, String> envVars) {
+    public void setEnvVars(final Map<String, String> envVars) {
         this.envVars = envVars;
     }
 }

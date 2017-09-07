@@ -18,12 +18,12 @@ public abstract class DStubElementType<S extends StubElement<T>, T extends DComp
     }
 
     @Override
-    public void indexStub(@NotNull S stub, @NotNull IndexSink sink) {
+    public void indexStub(@NotNull final S stub, @NotNull final IndexSink sink) {
 
     }
 
     @Override
-    public void serialize(@NotNull S stub, @NotNull StubOutputStream dataStream) throws IOException {
+    public void serialize(@NotNull final S stub, @NotNull final StubOutputStream dataStream) throws IOException {
 
     }
 
@@ -34,7 +34,7 @@ public abstract class DStubElementType<S extends StubElement<T>, T extends DComp
     }
 
     @Override
-    public boolean shouldCreateStub(ASTNode node) {
+    public boolean shouldCreateStub(final ASTNode node) {
         return true;
     }
 }

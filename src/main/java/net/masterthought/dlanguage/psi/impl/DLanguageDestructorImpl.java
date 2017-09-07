@@ -19,20 +19,20 @@ import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
 
 
 public class DLanguageDestructorImpl extends DStubbedPsiElementBase<DLanguageDestructorStub> implements DLanguageDestructor {
-    public DLanguageDestructorImpl(DLanguageDestructorStub stub, IStubElementType nodeType) {
+    public DLanguageDestructorImpl(final DLanguageDestructorStub stub, final IStubElementType nodeType) {
         super(stub, nodeType);
     }
 
-    public DLanguageDestructorImpl(ASTNode node) {
+    public DLanguageDestructorImpl(final ASTNode node) {
         super(node);
 
     }
 
-    public void accept(@NotNull DLanguageVisitor visitor) {
+    public void accept(@NotNull final DLanguageVisitor visitor) {
         visitor.visitDestructor(this);
     }
 
-    public void accept(@NotNull PsiElementVisitor visitor) {
+    public void accept(@NotNull final PsiElementVisitor visitor) {
         if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor) visitor);
         else super.accept(visitor);
     }

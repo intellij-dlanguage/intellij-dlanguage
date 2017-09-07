@@ -67,10 +67,10 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
     private boolean profile;
 
 
-    public DLanguageRunDmdConfiguration(String name, Project project, ConfigurationFactory factory) {
+    public DLanguageRunDmdConfiguration(final String name, final Project project, final ConfigurationFactory factory) {
         super(name, new RunConfigurationModule(project), factory);
 
-        Collection<Module> modules = this.getValidModules();
+        final Collection<Module> modules = this.getValidModules();
         if (!modules.isEmpty()) {
             //Get first valid module and use it
             this.setModule(modules.iterator().next());
@@ -79,11 +79,11 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
 
     @Override
     public Collection<Module> getValidModules() {
-        Module[] modules = ModuleManager.getInstance(getProject()).getModules();
+        final Module[] modules = ModuleManager.getInstance(getProject()).getModules();
         final DMDRunner appRunner = new DMDRunner();
 
-        ArrayList<Module> res = new ArrayList<>();
-        for (Module module : modules) {
+        final ArrayList<Module> res = new ArrayList<>();
+        for (final Module module : modules) {
             if (appRunner.isValidModule(module)) {
                 res.add(module);
             }
@@ -99,19 +99,19 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
 
     @Nullable
     @Override
-    public RunProfileState getState(@NotNull Executor executor, @NotNull ExecutionEnvironment env) throws ExecutionException {
+    public RunProfileState getState(@NotNull final Executor executor, @NotNull final ExecutionEnvironment env) throws ExecutionException {
         return new DLanguageRunDmdState(env, this);
     }
 
     @Override
-    public void writeExternal(@NotNull Element element) throws WriteExternalException {
+    public void writeExternal(@NotNull final Element element) throws WriteExternalException {
         super.writeExternal(element);
         writeModule(element);
         XmlSerializer.serializeInto(this, element);
     }
 
     @Override
-    public void readExternal(@NotNull Element element) throws InvalidDataException {
+    public void readExternal(@NotNull final Element element) throws InvalidDataException {
         super.readExternal(element);
         readModule(element);
         XmlSerializer.deserializeInto(this, element);
@@ -124,7 +124,7 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
         return release;
     }
 
-    public void setRelease(boolean release) {
+    public void setRelease(final boolean release) {
         this.release = release;
     }
 
@@ -132,7 +132,7 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
         return debug;
     }
 
-    public void setDebug(boolean debug) {
+    public void setDebug(final boolean debug) {
         this.debug = debug;
     }
 
@@ -140,7 +140,7 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
         return unitTest;
     }
 
-    public void setUnitTest(boolean unitTest) {
+    public void setUnitTest(final boolean unitTest) {
         this.unitTest = unitTest;
     }
 
@@ -148,7 +148,7 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
         return link;
     }
 
-    public void setLink(boolean link) {
+    public void setLink(final boolean link) {
         this.link = link;
     }
 
@@ -156,7 +156,7 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
         return coverageAnalysis;
     }
 
-    public void setCoverageAnalysis(boolean coverageAnalysis) {
+    public void setCoverageAnalysis(final boolean coverageAnalysis) {
         this.coverageAnalysis = coverageAnalysis;
     }
 
@@ -164,7 +164,7 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
         return allowDeprecated;
     }
 
-    public void setAllowDeprecated(boolean allowDeprecated) {
+    public void setAllowDeprecated(final boolean allowDeprecated) {
         this.allowDeprecated = allowDeprecated;
     }
 
@@ -172,7 +172,7 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
         return ignorePragmas;
     }
 
-    public void setIgnorePragmas(boolean ignorePragmas) {
+    public void setIgnorePragmas(final boolean ignorePragmas) {
         this.ignorePragmas = ignorePragmas;
     }
 
@@ -180,7 +180,7 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
         return functionInlining;
     }
 
-    public void setFunctionInlining(boolean functionInlining) {
+    public void setFunctionInlining(final boolean functionInlining) {
         this.functionInlining = functionInlining;
     }
 
@@ -188,7 +188,7 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
         return library;
     }
 
-    public void setLibrary(boolean library) {
+    public void setLibrary(final boolean library) {
         this.library = library;
     }
 
@@ -196,7 +196,7 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
         return noArrayBoundsCheck;
     }
 
-    public void setNoArrayBoundsCheck(boolean noArrayBoundsCheck) {
+    public void setNoArrayBoundsCheck(final boolean noArrayBoundsCheck) {
         this.noArrayBoundsCheck = noArrayBoundsCheck;
     }
 
@@ -204,7 +204,7 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
         return noFloatingPointReferences;
     }
 
-    public void setNoFloatingPointReferences(boolean noFloatingPointReferences) {
+    public void setNoFloatingPointReferences(final boolean noFloatingPointReferences) {
         this.noFloatingPointReferences = noFloatingPointReferences;
     }
 
@@ -212,7 +212,7 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
         return optimize;
     }
 
-    public void setOptimize(boolean optimize) {
+    public void setOptimize(final boolean optimize) {
         this.optimize = optimize;
     }
 
@@ -220,7 +220,7 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
         return enforcePropertySyntax;
     }
 
-    public void setEnforcePropertySyntax(boolean enforcePropertySyntax) {
+    public void setEnforcePropertySyntax(final boolean enforcePropertySyntax) {
         this.enforcePropertySyntax = enforcePropertySyntax;
     }
 
@@ -228,7 +228,7 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
         return quiet;
     }
 
-    public void setQuiet(boolean quiet) {
+    public void setQuiet(final boolean quiet) {
         this.quiet = quiet;
     }
 
@@ -236,7 +236,7 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
         return verbose;
     }
 
-    public void setVerbose(boolean verbose) {
+    public void setVerbose(final boolean verbose) {
         this.verbose = verbose;
     }
 
@@ -244,7 +244,7 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
         return listThreadLocalStorage;
     }
 
-    public void setListThreadLocalStorage(boolean listThreadLocalStorage) {
+    public void setListThreadLocalStorage(final boolean listThreadLocalStorage) {
         this.listThreadLocalStorage = listThreadLocalStorage;
     }
 
@@ -252,7 +252,7 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
         return warnings;
     }
 
-    public void setWarnings(boolean warnings) {
+    public void setWarnings(final boolean warnings) {
         this.warnings = warnings;
     }
 
@@ -260,7 +260,7 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
         return infoWarnings;
     }
 
-    public void setInfoWarnings(boolean infoWarnings) {
+    public void setInfoWarnings(final boolean infoWarnings) {
         this.infoWarnings = infoWarnings;
     }
 
@@ -268,7 +268,7 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
         return defaultLibrary;
     }
 
-    public void setDefaultLibrary(String defaultLibrary) {
+    public void setDefaultLibrary(final String defaultLibrary) {
         this.defaultLibrary = defaultLibrary;
     }
 
@@ -276,7 +276,7 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
         return importsPath;
     }
 
-    public void setImportsPath(String importsPath) {
+    public void setImportsPath(final String importsPath) {
         this.importsPath = importsPath;
     }
 
@@ -284,7 +284,7 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
         return stringImportsPath;
     }
 
-    public void setStringImportsPath(String stringImportsPath) {
+    public void setStringImportsPath(final String stringImportsPath) {
         this.stringImportsPath = stringImportsPath;
     }
 
@@ -292,7 +292,7 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
         return linkerArgs;
     }
 
-    public void setLinkerArgs(String linkerArgs) {
+    public void setLinkerArgs(final String linkerArgs) {
         this.linkerArgs = linkerArgs;
     }
 
@@ -300,7 +300,7 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
         return jsonFilename;
     }
 
-    public void setJsonFilename(String jsonFilename) {
+    public void setJsonFilename(final String jsonFilename) {
         this.jsonFilename = jsonFilename;
     }
 
@@ -308,7 +308,7 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
         return generateJson;
     }
 
-    public void setGenerateJson(boolean generateJson) {
+    public void setGenerateJson(final boolean generateJson) {
         this.generateJson = generateJson;
     }
 
@@ -316,7 +316,7 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
         return noStripPaths;
     }
 
-    public void setNoStripPaths(boolean noStripPaths) {
+    public void setNoStripPaths(final boolean noStripPaths) {
         this.noStripPaths = noStripPaths;
     }
 
@@ -324,7 +324,7 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
         return noObjectFiles;
     }
 
-    public void setNoObjectFiles(boolean noObjectFiles) {
+    public void setNoObjectFiles(final boolean noObjectFiles) {
         this.noObjectFiles = noObjectFiles;
     }
 
@@ -332,7 +332,7 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
         return generateMap;
     }
 
-    public void setGenerateMap(boolean generateMap) {
+    public void setGenerateMap(final boolean generateMap) {
         this.generateMap = generateMap;
     }
 
@@ -340,7 +340,7 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
         return headerFilename;
     }
 
-    public void setHeaderFilename(String headerFilename) {
+    public void setHeaderFilename(final String headerFilename) {
         this.headerFilename = headerFilename;
     }
 
@@ -348,7 +348,7 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
         return headerDir;
     }
 
-    public void setHeaderDir(String headerDir) {
+    public void setHeaderDir(final String headerDir) {
         this.headerDir = headerDir;
     }
 
@@ -356,7 +356,7 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
         return generateHeader;
     }
 
-    public void setGenerateHeader(boolean generateHeader) {
+    public void setGenerateHeader(final boolean generateHeader) {
         this.generateHeader = generateHeader;
     }
 
@@ -364,7 +364,7 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
         return moduleDepsFilename;
     }
 
-    public void setModuleDepsFilename(String moduleDepsFilename) {
+    public void setModuleDepsFilename(final String moduleDepsFilename) {
         this.moduleDepsFilename = moduleDepsFilename;
     }
 
@@ -372,7 +372,7 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
         return docsPath;
     }
 
-    public void setDocsPath(String docsPath) {
+    public void setDocsPath(final String docsPath) {
         this.docsPath = docsPath;
     }
 
@@ -380,7 +380,7 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
         return docsFilename;
     }
 
-    public void setDocsFilename(String docsFilename) {
+    public void setDocsFilename(final String docsFilename) {
         this.docsFilename = docsFilename;
     }
 
@@ -388,7 +388,7 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
         return generateDocs;
     }
 
-    public void setGenerateDocs(boolean generateDocs) {
+    public void setGenerateDocs(final boolean generateDocs) {
         this.generateDocs = generateDocs;
     }
 
@@ -396,7 +396,7 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
         return addSymbolicDebugInfo;
     }
 
-    public void setAddSymbolicDebugInfo(boolean addSymbolicDebugInfo) {
+    public void setAddSymbolicDebugInfo(final boolean addSymbolicDebugInfo) {
         this.addSymbolicDebugInfo = addSymbolicDebugInfo;
     }
 
@@ -404,7 +404,7 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
         return addSymbolicDebugInfoC;
     }
 
-    public void setAddSymbolicDebugInfoC(boolean addSymbolicDebugInfoC) {
+    public void setAddSymbolicDebugInfoC(final boolean addSymbolicDebugInfoC) {
         this.addSymbolicDebugInfoC = addSymbolicDebugInfoC;
     }
 
@@ -412,7 +412,7 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
         return generateStandardStackFrame;
     }
 
-    public void setGenerateStandardStackFrame(boolean generateStandardStackFrame) {
+    public void setGenerateStandardStackFrame(final boolean generateStandardStackFrame) {
         this.generateStandardStackFrame = generateStandardStackFrame;
     }
 
@@ -420,7 +420,7 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
         return symbolicLibrary;
     }
 
-    public void setSymbolicLibrary(String symbolicLibrary) {
+    public void setSymbolicLibrary(final String symbolicLibrary) {
         this.symbolicLibrary = symbolicLibrary;
     }
 
@@ -428,7 +428,7 @@ public class DLanguageRunDmdConfiguration extends ModuleBasedConfiguration<RunCo
         return profile;
     }
 
-    public void setProfile(boolean profile) {
+    public void setProfile(final boolean profile) {
         this.profile = profile;
     }
 }

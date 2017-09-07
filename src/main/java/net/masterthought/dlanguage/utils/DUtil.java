@@ -29,11 +29,11 @@ public class DUtil {
 //        return map;
 //    }
 
-    public static Boolean elementHasParentFor(Map<Boolean, PsiElement> result) {
+    public static Boolean elementHasParentFor(final Map<Boolean, PsiElement> result) {
         return result.containsKey(true);
     }
 
-    public static PsiElement getElementFor(Map<Boolean, PsiElement> result) {
+    public static PsiElement getElementFor(final Map<Boolean, PsiElement> result) {
         return (PsiElement) result.values().toArray()[0];
     }
 
@@ -43,12 +43,12 @@ public class DUtil {
      * <p/>
      * Precondition: Element is in a DLanguage file.
      */
-    public static boolean definitionNode(@NotNull PsiNamedElement e) {
+    public static boolean definitionNode(@NotNull final PsiNamedElement e) {
         if (e instanceof DLanguageIdentifier) return definitionNode((DLanguageIdentifier) e);
         return e instanceof Declaration;
     }
 
-    public static boolean definitionNode(@NotNull DLanguageIdentifier e) {
+    public static boolean definitionNode(@NotNull final DLanguageIdentifier e) {
         return true;
     }
 
@@ -60,12 +60,12 @@ public class DUtil {
     /**
      * Tells whether a node is a definition node based on its context.
      */
-    public static boolean definitionNode(@NotNull ASTNode node) {
+    public static boolean definitionNode(@NotNull final ASTNode node) {
         final PsiElement element = node.getPsi();
         return element instanceof PsiNamedElement && definitionNode((PsiNamedElement) element);
     }
 
-    public static boolean isNotNullOrEmpty(String str) {
+    public static boolean isNotNullOrEmpty(final String str) {
         return (str != null && !str.isEmpty());
     }
 
@@ -97,12 +97,12 @@ public class DUtil {
 //    }
 
 
-    public static boolean isDunitTestFile(PsiFile psiFile) {
-        Collection<DLanguageClassDeclaration> cds = PsiTreeUtil.findChildrenOfType(psiFile, DLanguageClassDeclaration.class);
-        for (DLanguageClassDeclaration cd : cds) {
+    public static boolean isDunitTestFile(final PsiFile psiFile) {
+        final Collection<DLanguageClassDeclaration> cds = PsiTreeUtil.findChildrenOfType(psiFile, DLanguageClassDeclaration.class);
+        for (final DLanguageClassDeclaration cd : cds) {
             // if a class contains the UnitTest mixin assume its a valid d-unit test class
-            Collection<DLanguageTemplateMixinExpression> tmis = PsiTreeUtil.findChildrenOfType(cd, DLanguageTemplateMixinExpression.class);
-            for (DLanguageTemplateMixinExpression tmi : tmis) {
+            final Collection<DLanguageTemplateMixinExpression> tmis = PsiTreeUtil.findChildrenOfType(cd, DLanguageTemplateMixinExpression.class);
+            for (final DLanguageTemplateMixinExpression tmi : tmis) {
                 if (tmi.getText().contains("UnitTest")) {
                     return true;
                 }
@@ -115,11 +115,11 @@ public class DUtil {
      * @param namedElement constructor, or method contained within a class or struct
      * @return the class or struct containing this constructor/method. returns null if not found
      */
-    public static DNamedElement getParentClassOrStructOrTemplateOrInterfaceOrUnion(PsiElement namedElement) {
+    public static DNamedElement getParentClassOrStructOrTemplateOrInterfaceOrUnion(final PsiElement namedElement) {
         return PsiTreeUtil.getParentOfType(namedElement, DLanguageInterfaceOrClass.class, DLanguageStructDeclaration.class, DLanguageTemplateDeclaration.class, DLanguageUnionDeclaration.class);
     }
 
-    public static DLanguageFunctionDeclaration getParentFunction(PsiElement namedElement) {
+    public static DLanguageFunctionDeclaration getParentFunction(final PsiElement namedElement) {
         return PsiTreeUtil.getParentOfType(namedElement, DLanguageFunctionDeclaration.class);
     }
 
@@ -152,9 +152,9 @@ public class DUtil {
 //        return searchForPublic(symbol.getParent());
 //    }
 
-    public static <T extends HasVisibility> List<T> getPublicElements(List<T> elements) {
-        List<T> res = new ArrayList<>();
-        for (T element : elements) {
+    public static <T extends HasVisibility> List<T> getPublicElements(final List<T> elements) {
+        final List<T> res = new ArrayList<>();
+        for (final T element : elements) {
             if (element.isPublic()) {
                 res.add(element);
             }
@@ -162,9 +162,9 @@ public class DUtil {
         return res;
     }
 
-    public static <T extends HasVisibility> List<T> getProtectedElements(List<T> elements) {
-        List<T> res = new ArrayList<>();
-        for (T element : elements) {
+    public static <T extends HasVisibility> List<T> getProtectedElements(final List<T> elements) {
+        final List<T> res = new ArrayList<>();
+        for (final T element : elements) {
             if (element.isPublic()) {
                 res.add(element);
             }
@@ -172,9 +172,9 @@ public class DUtil {
         return res;
     }
 
-    public static <T extends HasVisibility> List<T> getPrivateElements(List<T> elements) {
-        List<T> res = new ArrayList<>();
-        for (T element : elements) {
+    public static <T extends HasVisibility> List<T> getPrivateElements(final List<T> elements) {
+        final List<T> res = new ArrayList<>();
+        for (final T element : elements) {
             if (element.isPublic()) {
                 res.add(element);
             }
@@ -183,7 +183,7 @@ public class DUtil {
     }
 
     @NotNull
-    public static PsiElement getTopLevelOfRecursiveElement(PsiElement element, Class<? extends PsiElement> tClass) {
+    public static PsiElement getTopLevelOfRecursiveElement(final PsiElement element, final Class<? extends PsiElement> tClass) {
         if (!tClass.isInstance(element.getParent()))
             return element;
         return getTopLevelOfRecursiveElement(element.getParent(), tClass);
@@ -231,7 +231,7 @@ public class DUtil {
 //        return mixins;
 //    }
 
-    public static HasVisibility.Visibility protectionToVisibilty(DLanguageAttribute protectionAttribute) {
+    public static HasVisibility.Visibility protectionToVisibilty(final DLanguageAttribute protectionAttribute) {
         final String text = protectionAttribute.getText();
         if (text.equals("private"))
             return private_;
@@ -242,7 +242,7 @@ public class DUtil {
         throw new IllegalArgumentException(protectionAttribute.toString() + protectionAttribute.getText());
     }
 
-    public static HasVisibility.Visibility protectionToVisibilty(String text) {
+    public static HasVisibility.Visibility protectionToVisibilty(final String text) {
         if (text.equals("private"))
             return private_;
         if (text.equals("public"))
@@ -253,7 +253,7 @@ public class DUtil {
 
     }
 
-    public static DLanguageIdentifier getEndOfIdentifierList(DLanguageIdentifierOrTemplateChain chain) {
+    public static DLanguageIdentifier getEndOfIdentifierList(final DLanguageIdentifierOrTemplateChain chain) {
         final List<DLanguageIdentifierOrTemplateInstance> list = chain.getIdentifierOrTemplateInstances();
         if (list.get(list.size() - 1).getIdentifier() != null)
             return list.get(list.size() - 1).getIdentifier();
@@ -263,7 +263,7 @@ public class DUtil {
     }
 
 
-    public static ASTNode getPrevSiblingOfType(@Nullable ASTNode child, @Nullable IElementType type) {
+    public static ASTNode getPrevSiblingOfType(@Nullable final ASTNode child, @Nullable final IElementType type) {
         if (child == null)
             return null;
         if (child.getElementType() == type) {
@@ -273,7 +273,7 @@ public class DUtil {
     }
 
     @Nullable
-    public static ASTNode getPrevSiblingOfType(@Nullable ASTNode child, @NotNull HashSet<IElementType> newHashSet, @NotNull HashSet<IElementType> excluded) {
+    public static ASTNode getPrevSiblingOfType(@Nullable final ASTNode child, @NotNull final HashSet<IElementType> newHashSet, @NotNull final HashSet<IElementType> excluded) {
         if (child == null)
             return null;
         if (newHashSet.contains(child.getElementType())) {
@@ -292,14 +292,14 @@ public class DUtil {
         } else {
             try {
                 return findParentOfType(element.getParent(), className);
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 return null;
             }
         }
 
     }
 
-    public static DLanguageIdentifier getEndOfIdentifierList(DLanguageIdentifierChain chain) {
+    public static DLanguageIdentifier getEndOfIdentifierList(final DLanguageIdentifierChain chain) {
         final List<DLanguageIdentifier> list = chain.getIdentifiers();
         if (list.get(list.size() - 1) != null)
             return list.get(list.size() - 1);

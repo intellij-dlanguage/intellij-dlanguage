@@ -11,12 +11,12 @@ public class JpsDLanguageBuildOptionsExtension extends JpsCompositeElementBase<J
 
     private DLanguageBuildOptions myOptions;
 
-    public JpsDLanguageBuildOptionsExtension(DLanguageBuildOptions options) {
+    public JpsDLanguageBuildOptionsExtension(final DLanguageBuildOptions options) {
         myOptions = options;
     }
 
     @NotNull
-    public static JpsDLanguageBuildOptionsExtension getOrCreateExtension(@NotNull JpsProject project) {
+    public static JpsDLanguageBuildOptionsExtension getOrCreateExtension(@NotNull final JpsProject project) {
         JpsDLanguageBuildOptionsExtension extension = project.getContainer().getChild(ROLE);
         if (extension == null) {
             extension = project.getContainer().setChild(ROLE, new JpsDLanguageBuildOptionsExtension(new DLanguageBuildOptions()));
@@ -34,7 +34,7 @@ public class JpsDLanguageBuildOptionsExtension extends JpsCompositeElementBase<J
         return myOptions;
     }
 
-    public void setOptions(DLanguageBuildOptions options) {
+    public void setOptions(final DLanguageBuildOptions options) {
         myOptions = options;
     }
 

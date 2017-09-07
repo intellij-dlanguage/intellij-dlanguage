@@ -21,16 +21,16 @@ public class JpsDLanguageModuleExtension extends JpsCompositeElementBase<JpsDLan
         myProperties = new DLanguageModuleExtensionProperties();
     }
 
-    public JpsDLanguageModuleExtension(DLanguageModuleExtensionProperties properties) {
+    public JpsDLanguageModuleExtension(final DLanguageModuleExtensionProperties properties) {
         myProperties = properties;
     }
 
-    public JpsDLanguageModuleExtension(JpsDLanguageModuleExtension moduleExtension) {
+    public JpsDLanguageModuleExtension(final JpsDLanguageModuleExtension moduleExtension) {
         myProperties = new DLanguageModuleExtensionProperties(moduleExtension.myProperties);
     }
 
     @Nullable
-    public static JpsDLanguageModuleExtension getExtension(@Nullable JpsModule module) {
+    public static JpsDLanguageModuleExtension getExtension(@Nullable final JpsModule module) {
         return module != null ? module.getContainer().getChild(ROLE) : null;
     }
 

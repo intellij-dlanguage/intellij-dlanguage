@@ -16,7 +16,7 @@ public class DLanguageBuildOptions {
     public DLanguageBuildOptions() {
     }
 
-    public DLanguageBuildOptions(DLanguageBuildOptions options) {
+    public DLanguageBuildOptions(final DLanguageBuildOptions options) {
         myDmdPath = options.myDmdPath;
         myrDmdPath = options.myrDmdPath;
     }

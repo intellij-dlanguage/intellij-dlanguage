@@ -10,7 +10,7 @@ import net.masterthought.dlanguage.psi.DLanguageSharedStaticConstructor;
  */
 public class DLanguageSharedStaticConstructorStub extends StubBase<DLanguageSharedStaticConstructor> implements StubElement<DLanguageSharedStaticConstructor> {
 
-    public DLanguageSharedStaticConstructorStub(StubElement parent, IStubElementType elementType) {
+    public DLanguageSharedStaticConstructorStub(final StubElement parent, final IStubElementType elementType) {
         super(parent, elementType);
     }
 }

@@ -21,7 +21,7 @@ import java.util.Map;
 public class DModuleIndex extends ScalarIndexExtension<String> {
     public static final FileBasedIndex.InputFilter D_MODULE_FILTER = new FileBasedIndex.InputFilter() {
         @Override
-        public boolean acceptInput(@NotNull VirtualFile file) {
+        public boolean acceptInput(@NotNull final VirtualFile file) {
             //noinspection ObjectEquality
             return file.getFileType() == DLanguageFileType.INSTANCE;
         }

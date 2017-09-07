@@ -10,7 +10,7 @@ import javax.swing.*;
 
 public class LibFileRootTypeUIFactory implements OrderRootTypeUIFactory {
     @Override
-    public SdkPathEditor createPathEditor(Sdk sdk) {
+    public SdkPathEditor createPathEditor(final Sdk sdk) {
         return new SdkPathEditor(getNodeText(), LibFileRootType.getInstance(),
             FileChooserDescriptorFactory.createSingleLocalFileDescriptor());
     }

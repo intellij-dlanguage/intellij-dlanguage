@@ -11,29 +11,29 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 
 public class AliasInitializerStubElementType extends DNamedStubElementType<DLanguageAliasInitializerStub, DLanguageAliasInitializer> {
-    public AliasInitializerStubElementType(String debugName) {
+    public AliasInitializerStubElementType(final String debugName) {
         super(debugName);
     }
 
     @Override
-    public DLanguageAliasInitializer createPsi(@NotNull DLanguageAliasInitializerStub stub) {
+    public DLanguageAliasInitializer createPsi(@NotNull final DLanguageAliasInitializerStub stub) {
         return new DLanguageAliasInitializerImpl(stub, this);
     }
 
     @NotNull
     @Override
-    public DLanguageAliasInitializerStub createStub(@NotNull DLanguageAliasInitializer psi, StubElement parentStub) {
+    public DLanguageAliasInitializerStub createStub(@NotNull final DLanguageAliasInitializer psi, final StubElement parentStub) {
         return new DLanguageAliasInitializerStub(parentStub, this, psi.getName());
     }
 
     @Override
-    public void serialize(@NotNull DLanguageAliasInitializerStub stub, @NotNull StubOutputStream dataStream) throws IOException {
+    public void serialize(@NotNull final DLanguageAliasInitializerStub stub, @NotNull final StubOutputStream dataStream) throws IOException {
         dataStream.writeName(stub.getName());
     }
 
     @NotNull
     @Override
-    public DLanguageAliasInitializerStub deserialize(@NotNull StubInputStream dataStream, StubElement parentStub) throws IOException {
+    public DLanguageAliasInitializerStub deserialize(@NotNull final StubInputStream dataStream, final StubElement parentStub) throws IOException {
         return new DLanguageAliasInitializerStub(parentStub, this, dataStream.readName());
     }
 }

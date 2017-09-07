@@ -38,12 +38,12 @@ public class JpsDLanguageModelSerializerExtension extends JpsModelSerializerExte
     public List<? extends JpsModulePropertiesSerializer<?>> getModulePropertiesSerializers() {
         return Collections.singletonList(new JpsModulePropertiesSerializer<JpsDummyElement>(JpsDLanguageModuleType.INSTANCE, "DLANGUAGE_MODULE", null) {
             @Override
-            public JpsDummyElement loadProperties(@Nullable Element componentElement) {
+            public JpsDummyElement loadProperties(@Nullable final Element componentElement) {
                 return JpsElementFactory.getInstance().createDummyElement();
             }
 
             @Override
-            public void saveProperties(@NotNull JpsDummyElement properties, @NotNull Element componentElement) {
+            public void saveProperties(@NotNull final JpsDummyElement properties, @NotNull final Element componentElement) {
             }
         });
     }
@@ -54,12 +54,12 @@ public class JpsDLanguageModelSerializerExtension extends JpsModelSerializerExte
         return Collections.singletonList(new JpsSdkPropertiesSerializer<JpsDummyElement>(DLANGUAGE_SDK_TYPE_ID, JpsDLanguageSdkType.INSTANCE) {
             @NotNull
             @Override
-            public JpsDummyElement loadProperties(@Nullable Element propertiesElement) {
+            public JpsDummyElement loadProperties(@Nullable final Element propertiesElement) {
                 return JpsElementFactory.getInstance().createDummyElement();
             }
 
             @Override
-            public void saveProperties(@NotNull JpsDummyElement properties, @NotNull Element element) {
+            public void saveProperties(@NotNull final JpsDummyElement properties, @NotNull final Element element) {
             }
         });
     }
@@ -69,13 +69,13 @@ public class JpsDLanguageModelSerializerExtension extends JpsModelSerializerExte
     public List<? extends JpsFacetConfigurationSerializer<?>> getFacetConfigurationSerializers() {
         return Collections.singletonList(new JpsFacetConfigurationSerializer<JpsDLanguageModuleExtension>(JpsDLanguageModuleExtension.ROLE, DLanguageFacetConstants.ID, DLanguageFacetConstants.NAME) {
             @Override
-            protected JpsDLanguageModuleExtension loadExtension(@NotNull Element facetConfigurationElement, String name, JpsElement parent, JpsModule module) {
-                DLanguageModuleExtensionProperties props = XmlSerializer.deserialize(facetConfigurationElement, DLanguageModuleExtensionProperties.class);
+            protected JpsDLanguageModuleExtension loadExtension(@NotNull final Element facetConfigurationElement, final String name, final JpsElement parent, final JpsModule module) {
+                final DLanguageModuleExtensionProperties props = XmlSerializer.deserialize(facetConfigurationElement, DLanguageModuleExtensionProperties.class);
                 return new JpsDLanguageModuleExtension(props == null ? new DLanguageModuleExtensionProperties() : props);
             }
 
             @Override
-            protected void saveExtension(JpsDLanguageModuleExtension extension, Element facetConfigurationTag, JpsModule module) {
+            protected void saveExtension(final JpsDLanguageModuleExtension extension, final Element facetConfigurationTag, final JpsModule module) {
                 XmlSerializer.serializeInto(extension.getProperties(), facetConfigurationTag, new SkipDefaultValuesSerializationFilters());
             }
         });

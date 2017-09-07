@@ -15,33 +15,33 @@ import java.io.IOException;
  * Created by francis on 3/9/2017.
  */
 public class EnumDeclarationStubElementType extends DNamedStubElementType<DLanguageEnumDeclarationStub, DLanguageEnumDeclaration> {
-    public EnumDeclarationStubElementType(String debugName) {
+    public EnumDeclarationStubElementType(final String debugName) {
         super(debugName);
     }
 
     @Override
-    public DLanguageEnumDeclaration createPsi(@NotNull DLanguageEnumDeclarationStub stub) {
+    public DLanguageEnumDeclaration createPsi(@NotNull final DLanguageEnumDeclarationStub stub) {
         return new DLanguageEnumDeclarationImpl(stub, this);
     }
 
     @Override
-    public boolean shouldCreateStub(ASTNode node) {
+    public boolean shouldCreateStub(final ASTNode node) {
         return true;
     }
 
     @Override
-    public DLanguageEnumDeclarationStub createStub(@NotNull DLanguageEnumDeclaration psi, StubElement parentStub) {
+    public DLanguageEnumDeclarationStub createStub(@NotNull final DLanguageEnumDeclaration psi, final StubElement parentStub) {
         return new DLanguageEnumDeclarationStub(parentStub, this, psi.getName());
     }
 
     @Override
-    public void serialize(@NotNull DLanguageEnumDeclarationStub stub, @NotNull StubOutputStream dataStream) throws IOException {
+    public void serialize(@NotNull final DLanguageEnumDeclarationStub stub, @NotNull final StubOutputStream dataStream) throws IOException {
         dataStream.writeName(stub.getName());
     }
 
     @NotNull
     @Override
-    public DLanguageEnumDeclarationStub deserialize(@NotNull StubInputStream dataStream, StubElement parentStub) throws IOException {
+    public DLanguageEnumDeclarationStub deserialize(@NotNull final StubInputStream dataStream, final StubElement parentStub) throws IOException {
         return new DLanguageEnumDeclarationStub(parentStub, this, dataStream.readName());
     }
 }

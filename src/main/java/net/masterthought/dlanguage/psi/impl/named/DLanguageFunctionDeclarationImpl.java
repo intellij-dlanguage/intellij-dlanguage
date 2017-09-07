@@ -18,11 +18,11 @@ import org.jetbrains.annotations.Nullable;
  */
 public class DLanguageFunctionDeclarationImpl extends DNamedStubbedPsiElementBase<DLanguageFunctionDeclarationStub> implements DLanguageFunctionDeclaration {
 
-    public DLanguageFunctionDeclarationImpl(@NotNull DLanguageFunctionDeclarationStub stub, IStubElementType nodeType) {
+    public DLanguageFunctionDeclarationImpl(@NotNull final DLanguageFunctionDeclarationStub stub, final IStubElementType nodeType) {
         super(stub, nodeType);
     }
 
-    public DLanguageFunctionDeclarationImpl(ASTNode node) {
+    public DLanguageFunctionDeclarationImpl(final ASTNode node) {
         super(node);
     }
 
@@ -69,7 +69,7 @@ public class DLanguageFunctionDeclarationImpl extends DNamedStubbedPsiElementBas
     }
 
     @Override
-    public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
+    public boolean processDeclarations(@NotNull final PsiScopeProcessor processor, @NotNull final ResolveState state, final PsiElement lastParent, @NotNull final PsiElement place) {
         return ScopeProcessorImpl.INSTANCE.processDeclarations(this,processor, state, lastParent, place);
     }
 }

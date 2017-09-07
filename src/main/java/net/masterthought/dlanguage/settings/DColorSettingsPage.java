@@ -64,7 +64,7 @@ public class DColorSettingsPage implements ColorSettingsPage {
     @Override
     public String getDemoText() {
         // Example from dlang.org
-        String code = "/*\n" +
+        final String code = "/*\n" +
             "  Some block commments\n" +
             "  go here\n" +
             "*/\n" +

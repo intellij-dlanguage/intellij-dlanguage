@@ -11,29 +11,29 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 
 public class ModuleDeclarationStubElementType extends DNamedStubElementType<DLanguageModuleDeclarationStub, DLanguageModuleDeclaration> {
-    public ModuleDeclarationStubElementType(String debugName) {
+    public ModuleDeclarationStubElementType(final String debugName) {
         super(debugName);
     }
 
     @Override
-    public DLanguageModuleDeclaration createPsi(@NotNull DLanguageModuleDeclarationStub stub) {
+    public DLanguageModuleDeclaration createPsi(@NotNull final DLanguageModuleDeclarationStub stub) {
         return new DLanguageModuleDeclarationImpl(stub, this);
     }
 
     @NotNull
     @Override
-    public DLanguageModuleDeclarationStub createStub(@NotNull DLanguageModuleDeclaration psi, StubElement parentStub) {
+    public DLanguageModuleDeclarationStub createStub(@NotNull final DLanguageModuleDeclaration psi, final StubElement parentStub) {
         return new DLanguageModuleDeclarationStub(parentStub, this, psi.getName());
     }
 
     @Override
-    public void serialize(@NotNull DLanguageModuleDeclarationStub stub, @NotNull StubOutputStream dataStream) throws IOException {
+    public void serialize(@NotNull final DLanguageModuleDeclarationStub stub, @NotNull final StubOutputStream dataStream) throws IOException {
         dataStream.writeName(stub.getName());
     }
 
     @NotNull
     @Override
-    public DLanguageModuleDeclarationStub deserialize(@NotNull StubInputStream dataStream, StubElement parentStub) throws IOException {
+    public DLanguageModuleDeclarationStub deserialize(@NotNull final StubInputStream dataStream, final StubElement parentStub) throws IOException {
         return new DLanguageModuleDeclarationStub(parentStub, this, dataStream.readName());
     }
 }

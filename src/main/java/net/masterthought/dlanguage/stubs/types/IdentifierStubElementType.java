@@ -12,34 +12,34 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 
 public class IdentifierStubElementType extends DNamedStubElementType<DLanguageIdentifierStub, DLanguageIdentifier> {
-    public IdentifierStubElementType(String debugName) {
+    public IdentifierStubElementType(final String debugName) {
         super(debugName);
     }
 
     @Override
-    public DLanguageIdentifier createPsi(@NotNull DLanguageIdentifierStub stub) {
+    public DLanguageIdentifier createPsi(@NotNull final DLanguageIdentifierStub stub) {
         return new DLanguageIdentifierImpl(stub, this);
     }
 
     @NotNull
     @Override
-    public DLanguageIdentifierStub createStub(@NotNull DLanguageIdentifier psi, StubElement parentStub) {
+    public DLanguageIdentifierStub createStub(@NotNull final DLanguageIdentifier psi, final StubElement parentStub) {
         return new DLanguageIdentifierStub(parentStub, this, psi.getName());
     }
 
     @Override
-    public void serialize(@NotNull DLanguageIdentifierStub stub, @NotNull StubOutputStream dataStream) throws IOException {
+    public void serialize(@NotNull final DLanguageIdentifierStub stub, @NotNull final StubOutputStream dataStream) throws IOException {
         dataStream.writeName(stub.getName());
     }
 
     @Override
-    public boolean shouldCreateStub(ASTNode node) {
+    public boolean shouldCreateStub(final ASTNode node) {
         return false;
     }
 
     @NotNull
     @Override
-    public DLanguageIdentifierStub deserialize(@NotNull StubInputStream dataStream, StubElement parentStub) throws IOException {
+    public DLanguageIdentifierStub deserialize(@NotNull final StubInputStream dataStream, final StubElement parentStub) throws IOException {
         return new DLanguageIdentifierStub(parentStub, this, dataStream.readName());
     }
 }

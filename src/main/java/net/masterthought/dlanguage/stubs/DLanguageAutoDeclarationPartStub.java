@@ -7,11 +7,11 @@ import com.intellij.util.io.StringRef;
 import net.masterthought.dlanguage.psi.DLanguageAutoDeclarationPart;
 
 public class DLanguageAutoDeclarationPartStub extends NamedStubBase<DLanguageAutoDeclarationPart> {
-    public DLanguageAutoDeclarationPartStub(StubElement parent, IStubElementType elementType, StringRef name) {
+    public DLanguageAutoDeclarationPartStub(final StubElement parent, final IStubElementType elementType, final StringRef name) {
         super(parent, elementType, name);
     }
 
-    public DLanguageAutoDeclarationPartStub(StubElement parent, IStubElementType elementType, String name) {
+    public DLanguageAutoDeclarationPartStub(final StubElement parent, final IStubElementType elementType, final String name) {
         super(parent, elementType, name);
     }
 }

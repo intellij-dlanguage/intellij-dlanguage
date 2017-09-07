@@ -10,7 +10,7 @@ import net.masterthought.dlanguage.psi.DLanguageDestructor;
  */
 public class DLanguageDestructorStub extends StubBase<DLanguageDestructor> implements StubElement<DLanguageDestructor> {
 
-    public DLanguageDestructorStub(StubElement parent, IStubElementType elementType) {
+    public DLanguageDestructorStub(final StubElement parent, final IStubElementType elementType) {
         super(parent, elementType);
     }
 }

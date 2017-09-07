@@ -175,8 +175,7 @@ public class OutputElementsEditor  extends ModuleElementsEditor {
                 String canonicalPath;
                 try {
                     canonicalPath = FileUtil.resolveShortWindowsName(path);
-                }
-                catch (IOException e) {
+                } catch (final IOException e) {
                     canonicalPath = path;
                 }
                 commitPathRunnable.saveUrl(VfsUtilCore.pathToUrl(FileUtil.toSystemIndependentName(canonicalPath)));
@@ -185,7 +184,7 @@ public class OutputElementsEditor  extends ModuleElementsEditor {
 
         textField.getDocument().addDocumentListener(new DocumentAdapter() {
             @Override
-            protected void textChanged(DocumentEvent e) {
+            protected void textChanged(final DocumentEvent e) {
                 commitRunnable.run();
             }
         });

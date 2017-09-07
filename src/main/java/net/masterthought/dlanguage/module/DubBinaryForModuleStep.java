@@ -63,7 +63,7 @@ public class DubBinaryForModuleStep extends ModuleWizardStep {
                 final ModuleBuilder builder = (ModuleBuilder) moduleBuilder;
 
                 if (builder.getBuilderId() != null && builder.getBuilderId().equals("DLangDubApp")) {
-                    DLanguageDubModuleBuilder dubBuilder = (DLanguageDubModuleBuilder) builder;
+                    final DLanguageDubModuleBuilder dubBuilder = (DLanguageDubModuleBuilder) builder;
 
                     dubBuilder.setDubBinary(this.dubBinary.getText());
                 }

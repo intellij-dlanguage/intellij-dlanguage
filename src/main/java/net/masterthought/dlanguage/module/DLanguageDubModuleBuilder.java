@@ -115,7 +115,7 @@ public class DLanguageDubModuleBuilder extends DLanguageModuleBuilder {
 
             process.addProcessListener(new ProcessAdapter() {
                 @Override
-                public void onTextAvailable(ProcessEvent event, Key outputType) {
+                public void onTextAvailable(final ProcessEvent event, final Key outputType) {
                     if (ProcessOutputTypes.STDERR.equals(outputType)) {
                         errors.set(true);
                     }
