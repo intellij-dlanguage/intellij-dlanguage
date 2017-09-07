@@ -89,9 +89,11 @@ public class DLanguageSingleImportImpl extends DNamedStubbedPsiElementBase<DLang
         return getIdentifier();
     }
 
-    public boolean isPublic() {
-        if (getStub() != null)
-            return getStub().isPublic();
+    public Boolean isPublic() {
+        if (getGreenStub() != null)
+            return getGreenStub().isPublic();
+        if (getIdentifierChain() == null || getIdentifierChain().getIdentifiers().isEmpty())
+            return false;
         final DAttributesFinder finder = new DAttributesFinder(getIdentifierChain().getIdentifiers().get(0));
         finder.recurseUp();
         return finder.isPublic();
