@@ -122,6 +122,7 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
         if (objectDotD != null) {
             result.addAll(StubIndex.getElements(DTopLevelDeclarationsByModule.KEY, objectDotD.moduleOrFileName, project, GlobalSearchScope.fileScope(objectDotD), DNamedElement::class.java).map { it.name })
         }
+        result.addAll(StubIndex.getInstance().getAllKeys(DTopLevelDeclarationsByModule.KEY, project))
         result.add("abstract")
         result.add("alias")
         result.add("align")
