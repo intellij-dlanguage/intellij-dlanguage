@@ -9,13 +9,13 @@ import org.jetbrains.annotations.NotNull;
 
 
 public class DCodeStyleConfigurable extends CodeStyleAbstractConfigurable {
-    public DCodeStyleConfigurable(@NotNull CodeStyleSettings settings, CodeStyleSettings cloneSettings) {
+    public DCodeStyleConfigurable(@NotNull final CodeStyleSettings settings, final CodeStyleSettings cloneSettings) {
         super(settings, cloneSettings, "D");
     }
 
     @NotNull
     @Override
-    protected CodeStyleAbstractPanel createPanel(CodeStyleSettings settings) {
+    protected CodeStyleAbstractPanel createPanel(final CodeStyleSettings settings) {
         return new DCodeStyleMainPanel(getCurrentSettings(), settings);
     }
 
@@ -25,20 +25,20 @@ public class DCodeStyleConfigurable extends CodeStyleAbstractConfigurable {
     }
 
     private static class DCodeStyleMainPanel extends TabbedLanguageCodeStylePanel {
-        private DCodeStyleMainPanel(CodeStyleSettings currentSettings, CodeStyleSettings settings) {
+        private DCodeStyleMainPanel(final CodeStyleSettings currentSettings, final CodeStyleSettings settings) {
             super(DLanguage.INSTANCE, currentSettings, settings);
         }
 
         @Override
-        protected void addSpacesTab(CodeStyleSettings settings) {
+        protected void addSpacesTab(final CodeStyleSettings settings) {
         }
 
         @Override
-        protected void addBlankLinesTab(CodeStyleSettings settings) {
+        protected void addBlankLinesTab(final CodeStyleSettings settings) {
         }
 
         @Override
-        protected void addWrappingAndBracesTab(CodeStyleSettings settings) {
+        protected void addWrappingAndBracesTab(final CodeStyleSettings settings) {
         }
     }
 }

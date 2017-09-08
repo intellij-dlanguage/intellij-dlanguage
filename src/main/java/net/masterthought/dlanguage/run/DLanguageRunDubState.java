@@ -57,8 +57,8 @@ public class DLanguageRunDubState extends CommandLineState {
             final String message = e.getMessage();
             final Project project = config.getProject();
 
-            boolean isEmpty = message.equals("DUB executable is not specified");
-            boolean notCorrect = message.startsWith("Cannot run program");
+            final boolean isEmpty = message.equals("DUB executable is not specified");
+            final boolean notCorrect = message.startsWith("Cannot run program");
             if (isEmpty || notCorrect) {
                 Notifications.Bus.notify(
                     new Notification("DUB run configuration", "DUB settings",
@@ -96,9 +96,9 @@ public class DLanguageRunDubState extends CommandLineState {
 
         // Add command line parameters
 
-        boolean toBuild = config.getGeneralDubOptions() == 0;
-        boolean toRun = config.getGeneralDubOptions() == 1;
-        boolean toTest = config.getGeneralDubOptions() == 2;
+        final boolean toBuild = config.getGeneralDubOptions() == 0;
+        final boolean toRun = config.getGeneralDubOptions() == 1;
+        final boolean toTest = config.getGeneralDubOptions() == 2;
 
         if (toBuild) {
             cmd.addParameter("build");
@@ -170,9 +170,9 @@ public class DLanguageRunDubState extends CommandLineState {
             cmd.addParameter(config.getTfCompiler());
         }
 
-        boolean bmSeparate = config.getBuildMode() == 0;
-        boolean bmAll = config.getBuildMode() == 1;
-        boolean bmSingle = config.getBuildMode() == 2;
+        final boolean bmSeparate = config.getBuildMode() == 0;
+        final boolean bmAll = config.getBuildMode() == 1;
+        final boolean bmSingle = config.getBuildMode() == 2;
 
         if (bmSeparate) {
             cmd.addParameter("--build-mode");
@@ -194,9 +194,9 @@ public class DLanguageRunDubState extends CommandLineState {
         return cmd;
     }
 
-    private VirtualFile getSourceRoot(Module module) {
+    private VirtualFile getSourceRoot(final Module module) {
         if (module != null) {
-            VirtualFile[] sourcesRoots = ModuleRootManager.getInstance(module).getSourceRoots();
+            final VirtualFile[] sourcesRoots = ModuleRootManager.getInstance(module).getSourceRoots();
             if (sourcesRoots.length >= 1) {
                 return sourcesRoots[0];
             }

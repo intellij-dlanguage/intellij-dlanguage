@@ -27,13 +27,28 @@ public class DFoldingBuilder extends FoldingBuilderEx implements DumbAware {
         final List<FoldingDescriptor> result = ContainerUtil.newArrayList();
 
         // add all functions
-        for (final DLanguageFunctionDeclaration function : PsiTreeUtil.findChildrenOfType(file, DLanguageFunctionDeclaration.class)) {
+        for (final DLanguageBlockStatement function : PsiTreeUtil.findChildrenOfType(file, DLanguageBlockStatement.class)) {
             if (function.isPhysical() && function.isValid() && function.isWritable() && !function.getText().equals(""))//required in case the psi element has been deleted
                 result.add(new FoldingDescriptor(function, function.getTextRange()));
         }
 
         // add all aggregates
-        for (final DLanguageInterfaceOrClass aggregateDefinition : PsiTreeUtil.findChildrenOfType(file, DLanguageInterfaceOrClass.class)) {
+        for (final DLanguageStructBody aggregateDefinition : PsiTreeUtil.findChildrenOfType(file, DLanguageStructBody.class)) {
+            if (aggregateDefinition.isPhysical() && aggregateDefinition.isValid() && aggregateDefinition.isWritable() && !aggregateDefinition.getText().equals(""))//required in case the psi element has been deleted
+                result.add(new FoldingDescriptor(aggregateDefinition, aggregateDefinition.getTextRange()));
+        }
+
+        for (final DLanguageTemplateDeclaration aggregateDefinition : PsiTreeUtil.findChildrenOfType(file, DLanguageTemplateDeclaration.class)) {
+            if (aggregateDefinition.isPhysical() && aggregateDefinition.isValid() && aggregateDefinition.isWritable() && !aggregateDefinition.getText().equals(""))//required in case the psi element has been deleted
+                result.add(new FoldingDescriptor(aggregateDefinition, aggregateDefinition.getTextRange()));
+        }
+
+        for (final DLanguageArrayInitializer aggregateDefinition : PsiTreeUtil.findChildrenOfType(file, DLanguageArrayInitializer.class)) {
+            if (aggregateDefinition.isPhysical() && aggregateDefinition.isValid() && aggregateDefinition.isWritable() && !aggregateDefinition.getText().equals(""))//required in case the psi element has been deleted
+                result.add(new FoldingDescriptor(aggregateDefinition, aggregateDefinition.getTextRange()));
+        }
+
+        for (final DLanguageStructInitializer aggregateDefinition : PsiTreeUtil.findChildrenOfType(file, DLanguageStructInitializer.class)) {
             if (aggregateDefinition.isPhysical() && aggregateDefinition.isValid() && aggregateDefinition.isWritable() && !aggregateDefinition.getText().equals(""))//required in case the psi element has been deleted
                 result.add(new FoldingDescriptor(aggregateDefinition, aggregateDefinition.getTextRange()));
         }

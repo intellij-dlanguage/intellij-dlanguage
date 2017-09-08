@@ -23,14 +23,14 @@ public class GuiUtil {
      * @param tool     Which tool to configure.
      * @return The TextFieldWithBrowseButton created.
      */
-    public static TextFieldWithBrowseButton createExecutableOption(JPanel settings, String tool, Object constraints) {
+    public static TextFieldWithBrowseButton createExecutableOption(final JPanel settings, final String tool, final Object constraints) {
         // Create UI elements.
-        TextFieldWithBrowseButton tf = new TextFieldWithBrowseButton();
+        final TextFieldWithBrowseButton tf = new TextFieldWithBrowseButton();
         tf.addBrowseFolderListener("Select " + tool + " path", "", null,
             FileChooserDescriptorFactory.createSingleLocalFileDescriptor());
 
         // Add elements to Panel.
-        JPanel subPanel = new JPanel(new GridBagLayout());
+        final JPanel subPanel = new JPanel(new GridBagLayout());
         subPanel.add(new JLabel(tool + " executable path:"));
         subPanel.add(tf, ExternalSystemUiUtil.getFillLineConstraints(0));
         settings.add(subPanel, constraints);
@@ -38,7 +38,7 @@ public class GuiUtil {
         return tf;
     }
 
-    public static TextFieldWithBrowseButton createExecutableOption(JPanel settings, String tool) {
+    public static TextFieldWithBrowseButton createExecutableOption(final JPanel settings, final String tool) {
         return createExecutableOption(settings, tool, ExternalSystemUiUtil.getFillLineConstraints(0));
     }
 
@@ -50,12 +50,12 @@ public class GuiUtil {
      * @param labelText Which text to show to the left of the field.
      * @return The TextFieldWithBrowseButton created.
      */
-    public static TextFieldWithHistory createTextfield(JPanel settings, String labelText, Object constraints) {
+    public static TextFieldWithHistory createTextfield(final JPanel settings, final String labelText, final Object constraints) {
         // Create UI elements.
-        TextFieldWithHistory tf = new TextFieldWithHistory();
+        final TextFieldWithHistory tf = new TextFieldWithHistory();
 
         // Add elements to Panel.
-        JPanel subPanel = new JPanel(new GridBagLayout());
+        final JPanel subPanel = new JPanel(new GridBagLayout());
         subPanel.add(new JLabel(labelText + ':'));
         subPanel.add(tf, ExternalSystemUiUtil.getFillLineConstraints(0));
         settings.add(subPanel, constraints);
@@ -63,7 +63,7 @@ public class GuiUtil {
         return tf;
     }
 
-    public static TextFieldWithHistory createTextfield(JPanel settings, String labelText) {
+    public static TextFieldWithHistory createTextfield(final JPanel settings, final String labelText) {
         return createTextfield(settings, labelText, ExternalSystemUiUtil.getFillLineConstraints(0));
     }
 
@@ -74,11 +74,11 @@ public class GuiUtil {
      * @param tool     Which tool to display version for.
      * @return The label with dynamic content.
      */
-    public static JLabel createDisplayVersion(JPanel settings, String tool, Object constraints) {
-        JLabel tf = new JLabel("");
+    public static JLabel createDisplayVersion(final JPanel settings, final String tool, final Object constraints) {
+        final JLabel tf = new JLabel("");
 
         // Add elements to Panel.
-        JPanel subPanel = new JPanel(new GridBagLayout());
+        final JPanel subPanel = new JPanel(new GridBagLayout());
         subPanel.add(new JLabel(tool + " version:"));
         subPanel.add(tf, ExternalSystemUiUtil.getFillLineConstraints(0));
         settings.add(subPanel, constraints);
@@ -86,7 +86,7 @@ public class GuiUtil {
         return tf;
     }
 
-    public static JLabel createDisplayVersion(JPanel settings, String tool) {
+    public static JLabel createDisplayVersion(final JPanel settings, final String tool) {
         return createDisplayVersion(settings, tool, ExternalSystemUiUtil.getFillLineConstraints(0));
     }
 
@@ -97,14 +97,14 @@ public class GuiUtil {
      * @param text     Checkbox text.
      * @return The checkbox.
      */
-    public static JCheckBox createCheckBoxOption(JPanel settings, String text, Object constraints) {
-        JCheckBox tf = new JCheckBox(text);
+    public static JCheckBox createCheckBoxOption(final JPanel settings, final String text, final Object constraints) {
+        final JCheckBox tf = new JCheckBox(text);
         settings.add(tf, constraints);
 
         return tf;
     }
 
-    public static JCheckBox createCheckBoxOption(JPanel settings, String text) {
+    public static JCheckBox createCheckBoxOption(final JPanel settings, final String text) {
         return createCheckBoxOption(settings, text, ExternalSystemUiUtil.getFillLineConstraints(0));
     }
 

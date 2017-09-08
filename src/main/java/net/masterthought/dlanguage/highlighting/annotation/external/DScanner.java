@@ -30,13 +30,37 @@ public class DScanner {
 
     private static final Logger LOG = Logger.getInstance(DScanner.class);
 
-    Problems checkFileSyntax(@NotNull PsiFile file) {
+    private static int getDocumentLineCount(final Document document) {
+        try {
+            final int lineCount = document.getLineCount();
+            return lineCount == 0 ? 1 : lineCount;
+        } catch (final Exception e) {
+            return 1;
+        }
+    }
+
+    Problems checkFileSyntax(@NotNull final PsiFile file) {
         final String dscannerPath = ToolKey.DSCANNER_KEY.getPath(file.getProject());
         if (dscannerPath == null) return new Problems();
 
         final Problems problems = new Problems();
         problems.addAllNotNull(processFile(file, dscannerPath));
         return problems;
+    }
+
+    private static int getOffsetStart(final PsiFile file, final int startLine, final int startColumn) {
+        final Document document = PsiDocumentManager.getInstance(file.getProject()).getDocument(file);
+        final int line = getValidLineNumber(startLine, document);
+        final int offset = StringUtil.lineColToOffset(file.getText(), line, startColumn - 1);
+        return offset <= 1 ? 1 : offset;
+    }
+
+    private static int getLineEndOffset(final Document document, final int line) {
+        try {
+            return document.getLineEndOffset(line);
+        } catch (final Exception e) {
+            return 1;
+        }
     }
 
     private List<Problem> processFile(final PsiFile file, final String dscannerPath) {
@@ -57,7 +81,7 @@ public class DScanner {
             final OSProcessHandler process = new OSProcessHandler(cmd.createProcess(), cmd.getCommandLineString());
             process.addProcessListener(new ProcessAdapter() {
                 @Override
-                public void onTextAvailable(ProcessEvent event, Key outputType) {
+                public void onTextAvailable(final ProcessEvent event, final Key outputType) {
                     // we don't care about "system" or "stderr"
                     if(ProcessOutputTypes.STDOUT.equals(outputType)) {
                         parseProblem(event.getText(), file)
@@ -80,30 +104,6 @@ public class DScanner {
             LOG.error("There was a problem running DScanner", e);
         }
         return problems;
-    }
-
-    private static int getOffsetStart(final PsiFile file, final int startLine, final int startColumn) {
-        final Document document = PsiDocumentManager.getInstance(file.getProject()).getDocument(file);
-        final int line = getValidLineNumber(startLine, document);
-        final int offset = StringUtil.lineColToOffset(file.getText(), line, startColumn - 1);
-        return offset <= 1 ? 1 : offset;
-    }
-
-    private static int getLineEndOffset(final Document document, final int line) {
-        try {
-            return document.getLineEndOffset(line);
-        } catch (final Exception e) {
-            return 1;
-        }
-    }
-
-    private static int getDocumentLineCount(final Document document) {
-        try {
-            final int lineCount = document.getLineCount();
-            return lineCount == 0 ? 1 : lineCount;
-        } catch (Exception e) {
-            return 1;
-        }
     }
 
     private static int getValidLineNumber(int line, final Document document) {

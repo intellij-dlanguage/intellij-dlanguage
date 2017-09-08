@@ -19,11 +19,11 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 
 public abstract class DNamedStubbedPsiElementBase<T extends NamedStubBase<?>> extends DStubbedPsiElementBase<T> implements DNamedElement {
-    public DNamedStubbedPsiElementBase(@NotNull T stub, IStubElementType nodeType) {
+    public DNamedStubbedPsiElementBase(@NotNull final T stub, final IStubElementType nodeType) {
         super(stub, nodeType);
     }
 
-    public DNamedStubbedPsiElementBase(ASTNode node) {
+    public DNamedStubbedPsiElementBase(final ASTNode node) {
         super(node);
     }
 

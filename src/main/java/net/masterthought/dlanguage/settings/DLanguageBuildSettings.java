@@ -22,7 +22,7 @@ public class DLanguageBuildSettings implements PersistentStateComponent<DLanguag
     private DLanguageBuildOptions myBuildOptions = new DLanguageBuildOptions();
 
     @NotNull
-    public static DLanguageBuildSettings getInstance(@NotNull Project project) {
+    public static DLanguageBuildSettings getInstance(@NotNull final Project project) {
         final DLanguageBuildSettings persisted = ServiceManager.getService(project, DLanguageBuildSettings.class);
         return persisted != null ? persisted : new DLanguageBuildSettings();
     }
@@ -34,7 +34,7 @@ public class DLanguageBuildSettings implements PersistentStateComponent<DLanguag
     }
 
     @Override
-    public void loadState(DLanguageBuildOptions state) {
+    public void loadState(final DLanguageBuildOptions state) {
         LOG.info("loading build options : " + state);
         myBuildOptions = state;
     }
@@ -44,7 +44,7 @@ public class DLanguageBuildSettings implements PersistentStateComponent<DLanguag
         return myBuildOptions.myDmdPath;
     }
 
-    public void setDmdPath(@NotNull String path) {
+    public void setDmdPath(@NotNull final String path) {
         myBuildOptions.myDmdPath = path;
     }
 
@@ -53,7 +53,7 @@ public class DLanguageBuildSettings implements PersistentStateComponent<DLanguag
         return myBuildOptions.myrDmdPath;
     }
 
-    public void setrDmdPath(@NotNull String path) {
+    public void setrDmdPath(@NotNull final String path) {
         myBuildOptions.myrDmdPath = path;
     }
 }

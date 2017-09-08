@@ -11,14 +11,14 @@ import org.jetbrains.annotations.NotNull;
 public class DReferenceProvider extends PsiReferenceProvider {
     @NotNull
     @Override
-    public PsiReference[] getReferencesByElement(@NotNull PsiElement element,
-                                                 @NotNull ProcessingContext context) {
+    public PsiReference[] getReferencesByElement(@NotNull final PsiElement element,
+                                                 @NotNull final ProcessingContext context) {
         if (!element.getLanguage().is(DLanguage.INSTANCE)) {
             return PsiReference.EMPTY_ARRAY;
         }
 
         if (element instanceof PsiNamedElement) {
-            PsiNamedElement se = (PsiNamedElement) element;
+            final PsiNamedElement se = (PsiNamedElement) element;
             return new PsiReference[]{new net.masterthought.dlanguage.psi.references.DReference(se, se.getTextRange())};
         }
         return PsiReference.EMPTY_ARRAY;

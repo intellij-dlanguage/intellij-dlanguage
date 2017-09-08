@@ -10,7 +10,7 @@ public class Token {
     public final String text;//this is unused but could be used to make getTokenText lookaheads
     public final IdType type;
 
-    public Token(IdType type) {
+    public Token(final IdType type) {
         text = type.type.toString();
         this.type = type;
     }

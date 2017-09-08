@@ -8,15 +8,8 @@ import com.intellij.openapi.ui.ComboBox;
 import com.intellij.projectImport.ProjectFormatPanel;
 import net.masterthought.dlanguage.DLanguageBundle;
 
-import javax.swing.BorderFactory;
-import javax.swing.Icon;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import javax.swing.*;
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 

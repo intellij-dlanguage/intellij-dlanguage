@@ -15,19 +15,19 @@ import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_EQ;
 
 public class DLanguageEnumMemberImpl extends DNamedStubbedPsiElementBase<DLanguageEnumMemberStub> implements DLanguageEnumMember {
 
-    public DLanguageEnumMemberImpl(DLanguageEnumMemberStub stub, IStubElementType type) {
+    public DLanguageEnumMemberImpl(final DLanguageEnumMemberStub stub, final IStubElementType type) {
         super(stub, type);
     }
 
-    public DLanguageEnumMemberImpl(ASTNode node) {
+    public DLanguageEnumMemberImpl(final ASTNode node) {
         super(node);
     }
 
-    public void accept(@NotNull DLanguageVisitor visitor) {
+    public void accept(@NotNull final DLanguageVisitor visitor) {
         visitor.visitEnumMember(this);
     }
 
-    public void accept(@NotNull PsiElementVisitor visitor) {
+    public void accept(@NotNull final PsiElementVisitor visitor) {
         if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor) visitor);
         else super.accept(visitor);
     }

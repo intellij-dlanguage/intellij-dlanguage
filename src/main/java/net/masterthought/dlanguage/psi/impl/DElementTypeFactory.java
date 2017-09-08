@@ -9,7 +9,7 @@ public class DElementTypeFactory {
     }
 
     @NotNull
-    public static IElementType factory(@NotNull String name) {
+    public static IElementType factory(@NotNull final String name) {
         if (name.equals("IDENTIFIER")) return new IdentifierStubElementType(name);
         if (name.equals("FUNCTION_DECLARATION")) return new FunctionDeclarationStubElementType(name);
         if (name.equals("INTERFACE_OR_CLASS")) return new InterfaceOrClassStubElementType(name);

@@ -4,7 +4,7 @@ public class ToolSettings {
     private final String path;
     private final String flags;
 
-    public ToolSettings(String path, String flags) {
+    public ToolSettings(final String path, final String flags) {
         this.path = path;
         this.flags = flags;
     }

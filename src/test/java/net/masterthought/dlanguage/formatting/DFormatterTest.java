@@ -4,7 +4,9 @@ package net.masterthought.dlanguage.formatting;
 import com.intellij.psi.formatter.FormatterTestCase;
 import net.masterthought.dlanguage.DLanguageFileType;
 import org.jetbrains.annotations.NotNull;
+import org.junit.Ignore;
 
+@Ignore
 public class DFormatterTest extends FormatterTestCase {
     @NotNull
     @Override
@@ -21,8 +23,8 @@ public class DFormatterTest extends FormatterTestCase {
         return DLanguageFileType.DEFAULT_EXTENSION;
     }
 
-    protected void doTest(String resultNumber) throws Exception {
-        String testName = getTestName(false);
+    protected void doTest(final String resultNumber) throws Exception {
+        final String testName = getTestName(false);
         doTest(testName + "." + getFileExtension(), testName + "-after." + getFileExtension(), resultNumber);
     }
 

@@ -119,8 +119,8 @@ public class ProcessDLibs extends AnAction implements DumbAware {
 
     }
 
-    private static void createLibraryDependency(final Module module, final Project project, final String libraryName, String libraryPath) {
-        LibraryTable projectLibraryTable = LibraryTablesRegistrar.getInstance().getLibraryTable(project);
+    private static void createLibraryDependency(final Module module, final Project project, final String libraryName, final String libraryPath) {
+        final LibraryTable projectLibraryTable = LibraryTablesRegistrar.getInstance().getLibraryTable(project);
         final LibraryTable.ModifiableModel projectLibraryModel = projectLibraryTable.getModifiableModel();
 
         final Library library = projectLibraryModel.createLibrary(libraryName);

@@ -80,7 +80,7 @@ public class CreateDLanguageClassAction extends CreateFileFromTemplateAction imp
 
 
         // Adapted from super definition.
-        CreateFileAction.MkDirs mkdirs = new CreateFileAction.MkDirs(name, dir);
+        final CreateFileAction.MkDirs mkdirs = new CreateFileAction.MkDirs(name, dir);
         name = mkdirs.newName;
         dir = mkdirs.directory;
 

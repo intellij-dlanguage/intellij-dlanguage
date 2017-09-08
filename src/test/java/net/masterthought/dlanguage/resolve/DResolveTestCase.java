@@ -8,7 +8,10 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.impl.source.resolve.reference.impl.PsiMultiReference;
 import net.masterthought.dlanguage.DLightPlatformCodeInsightFixtureTestCase;
-import net.masterthought.dlanguage.psi.*;
+import net.masterthought.dlanguage.psi.DLanguageClassDeclaration;
+import net.masterthought.dlanguage.psi.DLanguageConstructor;
+import net.masterthought.dlanguage.psi.DLanguageFunctionDeclaration;
+import net.masterthought.dlanguage.psi.DLanguageIdentifier;
 
 import java.io.File;
 

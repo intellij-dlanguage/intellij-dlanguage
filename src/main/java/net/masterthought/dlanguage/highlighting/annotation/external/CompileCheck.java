@@ -50,7 +50,7 @@ public class CompileCheck {
             final OSProcessHandler process = new OSProcessHandler(commandLine.createProcess(), commandLine.getCommandLineString());
             process.addProcessListener(new ProcessAdapter() {
                 @Override
-                public void onTextAvailable(ProcessEvent event, Key outputType) {
+                public void onTextAvailable(final ProcessEvent event, final Key outputType) {
                     builder.append(event.getText());
                 }
             });
@@ -95,7 +95,7 @@ public class CompileCheck {
     private int getLineEndOffset(final Document document, final int line) {
         try {
             return document.getLineEndOffset(line);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             return 1;
         }
     }
@@ -127,8 +127,13 @@ public class CompileCheck {
         final int startOffset = getOffsetStart(file, line, column);
         final int endOffset = getOffsetEnd(file, line);
         try {
-            return new TextRange(startOffset, endOffset);
-        } catch (final Exception e) {
+            class IgnoresInvalidTextRange extends TextRange {
+                private IgnoresInvalidTextRange(final int startOffset, final int endOffset) {
+                    super(startOffset, endOffset, false);
+                }
+            }
+            return new IgnoresInvalidTextRange(startOffset, endOffset);
+        } catch (final Throwable e) {
             if (e.getMessage().contains("Invalid range")) {
                 //do nothing.
                 return null;
@@ -193,5 +198,4 @@ public class CompileCheck {
             }
         }
     }
-
 }

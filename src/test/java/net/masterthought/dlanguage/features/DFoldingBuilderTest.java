@@ -16,7 +16,7 @@ public class DFoldingBuilderTest extends DLightPlatformCodeInsightFixtureTestCas
     // Fold00001 should really result in "  ". OPENCOM and CLOSECOM remains in
     // the text, but the rest gets collapsed to "  ".
     public void testFold00001() throws Throwable {
-        doTest("main (Function) ...");
+        doTest(/*"main (Function) */"...");
     }
 //    public void testFold00002() throws Throwable { doTestModule("--"); }
 
@@ -27,11 +27,11 @@ public class DFoldingBuilderTest extends DLightPlatformCodeInsightFixtureTestCas
      * There is supposedly support in the base class for testing folding but
      * I had little luck when following the tutorial verbatim.
      */
-    private void doTest(String collapsedText) {
+    private void doTest(final String collapsedText) {
         myFixture.configureByFile(getTestDataPath(getTestName(false) + ".d"));
         myFixture.performEditorAction("CollapseAllRegions");
-        FoldRegion[] all = myFixture.getEditor().getFoldingModel().getAllFoldRegions();
-        for (FoldRegion region : all) {
+        final FoldRegion[] all = myFixture.getEditor().getFoldingModel().getAllFoldRegions();
+        for (final FoldRegion region : all) {
             assertEquals(collapsedText, region.getPlaceholderText());
             assertFalse(region.isExpanded());
         }

@@ -59,7 +59,7 @@ public class DLanguageRunDubConfigurationEditor extends SettingsEditor<DLanguage
      * All components must be changed according to "config" data.
      */
     @Override
-    protected void resetEditorFrom(DLanguageRunDubConfiguration config) {
+    protected void resetEditorFrom(final DLanguageRunDubConfiguration config) {
         resetGeneralTabForm(config);
     }
 
@@ -68,7 +68,7 @@ public class DLanguageRunDubConfigurationEditor extends SettingsEditor<DLanguage
      * Save state of editor UI to DLangRunDubConfiguration instance.
      */
     @Override
-    protected void applyEditorTo(DLanguageRunDubConfiguration config) throws ConfigurationException {
+    protected void applyEditorTo(final DLanguageRunDubConfiguration config) throws ConfigurationException {
         applyGeneralTabForm(config);
     }
 
@@ -76,7 +76,7 @@ public class DLanguageRunDubConfigurationEditor extends SettingsEditor<DLanguage
     @NotNull
     @Override
     protected JComponent createEditor() {
-        FileChooserDescriptor fcd = FileChooserDescriptorFactory.createSingleFolderDescriptor();
+        final FileChooserDescriptor fcd = FileChooserDescriptorFactory.createSingleFolderDescriptor();
         fcd.setShowFileSystemRoots(true);
         fcd.setTitle(DLanguageBundle.INSTANCE.message("dmd.run.config.selectworkingdir.title"));
         fcd.setDescription(DLanguageBundle.INSTANCE.message("dmd.run.config.selectworkingdir.description"));
@@ -96,13 +96,13 @@ public class DLanguageRunDubConfigurationEditor extends SettingsEditor<DLanguage
         // TODO: place custom component creation code here
     }
 
-    private void applyGeneralTabForm(DLanguageRunDubConfiguration config) {
+    private void applyGeneralTabForm(final DLanguageRunDubConfiguration config) {
         config.setModule(comboModules.getSelectedModule());
         config.setGeneralDubOptions(comboGeneralDubOptions.getSelectedIndex());
 
-        boolean inBuildState = comboGeneralDubOptions.getSelectedIndex() == 0;
-        boolean inRunState = comboGeneralDubOptions.getSelectedIndex() == 1;
-        boolean inTestState = comboGeneralDubOptions.getSelectedIndex() == 2;
+        final boolean inBuildState = comboGeneralDubOptions.getSelectedIndex() == 0;
+        final boolean inRunState = comboGeneralDubOptions.getSelectedIndex() == 1;
+        final boolean inTestState = comboGeneralDubOptions.getSelectedIndex() == 2;
 
         cbTempBuild.setEnabled(inRunState);
         cbCoverage.setEnabled(inTestState);
@@ -134,7 +134,7 @@ public class DLanguageRunDubConfigurationEditor extends SettingsEditor<DLanguage
         config.setEnvVars(envVariables.getEnvs());
     }
 
-    private void resetGeneralTabForm(DLanguageRunDubConfiguration config) {
+    private void resetGeneralTabForm(final DLanguageRunDubConfiguration config) {
         comboModules.fillModules(config.getProject(), DLanguageModuleType.getInstance());
         comboModules.setSelectedModule(config.getConfigurationModule().getModule());
 
@@ -162,7 +162,7 @@ public class DLanguageRunDubConfigurationEditor extends SettingsEditor<DLanguage
 
         pathWorkingDir.setText(config.getWorkingDir());
         textParameters.setText(config.getAdditionalParams());
-        Map<String, String> envVars = config.getEnvVars();
+        final Map<String, String> envVars = config.getEnvVars();
         if (envVars != null) {
             envVariables.setEnvs(config.getEnvVars());
         }

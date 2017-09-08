@@ -10,24 +10,24 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 
 public class SharedStaticConstructorStubElementType extends DStubElementType<DLanguageSharedStaticConstructorStub, DLanguageSharedStaticConstructor> {
-    public SharedStaticConstructorStubElementType(String debugName) {
+    public SharedStaticConstructorStubElementType(final String debugName) {
         super(debugName);
     }
 
     @Override
-    public DLanguageSharedStaticConstructor createPsi(@NotNull DLanguageSharedStaticConstructorStub stub) {
+    public DLanguageSharedStaticConstructor createPsi(@NotNull final DLanguageSharedStaticConstructorStub stub) {
         return new DLanguageSharedStaticConstructorImpl(stub, this);
     }
 
     @NotNull
     @Override
-    public DLanguageSharedStaticConstructorStub createStub(@NotNull DLanguageSharedStaticConstructor psi, StubElement parentStub) {
+    public DLanguageSharedStaticConstructorStub createStub(@NotNull final DLanguageSharedStaticConstructor psi, final StubElement parentStub) {
         return new DLanguageSharedStaticConstructorStub(parentStub, this);
     }
 
     @NotNull
     @Override
-    public DLanguageSharedStaticConstructorStub deserialize(@NotNull StubInputStream dataStream, StubElement parentStub) throws IOException {
+    public DLanguageSharedStaticConstructorStub deserialize(@NotNull final StubInputStream dataStream, final StubElement parentStub) throws IOException {
         return new DLanguageSharedStaticConstructorStub(parentStub, this);
     }
 }

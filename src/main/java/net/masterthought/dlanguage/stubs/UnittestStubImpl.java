@@ -11,7 +11,7 @@ import net.masterthought.dlanguage.stubs.interfaces.DLanguageUnittestStub;
  */
 public class UnittestStubImpl extends StubBase<DLanguageUnittest> implements DLanguageUnittestStub {
 
-    public UnittestStubImpl(StubElement parent, IStubElementType elementType) {
+    public UnittestStubImpl(final StubElement parent, final IStubElementType elementType) {
         super(parent, elementType);
     }
 

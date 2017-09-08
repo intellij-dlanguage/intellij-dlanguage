@@ -10,24 +10,24 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 
 public class StaticDestructorStubElementType extends DStubElementType<DLanguageStaticDestructorStub, DLanguageStaticDestructor> {
-    public StaticDestructorStubElementType(String debugName) {
+    public StaticDestructorStubElementType(final String debugName) {
         super(debugName);
     }
 
     @Override
-    public DLanguageStaticDestructor createPsi(@NotNull DLanguageStaticDestructorStub stub) {
+    public DLanguageStaticDestructor createPsi(@NotNull final DLanguageStaticDestructorStub stub) {
         return new DLanguageStaticDestructorImpl(stub, this);
     }
 
     @NotNull
     @Override
-    public DLanguageStaticDestructorStub createStub(@NotNull DLanguageStaticDestructor psi, StubElement parentStub) {
+    public DLanguageStaticDestructorStub createStub(@NotNull final DLanguageStaticDestructor psi, final StubElement parentStub) {
         return new DLanguageStaticDestructorStub(parentStub, this);
     }
 
     @NotNull
     @Override
-    public DLanguageStaticDestructorStub deserialize(@NotNull StubInputStream dataStream, StubElement parentStub) throws IOException {
+    public DLanguageStaticDestructorStub deserialize(@NotNull final StubInputStream dataStream, final StubElement parentStub) throws IOException {
         return new DLanguageStaticDestructorStub(parentStub, this);
     }
 }

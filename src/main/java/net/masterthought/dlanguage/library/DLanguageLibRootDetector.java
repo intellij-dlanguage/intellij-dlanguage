@@ -16,7 +16,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class DLanguageLibRootDetector extends RootDetector {
-    protected DLanguageLibRootDetector(OrderRootType rootType, String presentableRootTypeName) {
+    protected DLanguageLibRootDetector(final OrderRootType rootType, final String presentableRootTypeName) {
         super(rootType, false, presentableRootTypeName);
     }
 
@@ -24,7 +24,7 @@ public class DLanguageLibRootDetector extends RootDetector {
         final VirtualFileVisitor.Result result = VfsUtilCore.visitChildrenRecursively(dir, new VirtualFileVisitor() {
             @NotNull
             @Override
-            public Result visitFileEx(@NotNull VirtualFile file) {
+            public Result visitFileEx(@NotNull final VirtualFile file) {
                 return !file.isDirectory() && DLanguageFileType.DEFAULT_EXTENSION.equalsIgnoreCase(file.getExtension()) ? skipTo(dir) : CONTINUE;
             }
         });
@@ -33,13 +33,13 @@ public class DLanguageLibRootDetector extends RootDetector {
 
     @NotNull
     @Override
-    public Collection<VirtualFile> detectRoots(@NotNull VirtualFile rootCandidate, @NotNull ProgressIndicator progressIndicator) {
-        List<VirtualFile> result = new ArrayList<VirtualFile>();
+    public Collection<VirtualFile> detectRoots(@NotNull final VirtualFile rootCandidate, @NotNull final ProgressIndicator progressIndicator) {
+        final List<VirtualFile> result = new ArrayList<VirtualFile>();
         collectRoots(rootCandidate, result, progressIndicator);
         return result;
     }
 
-    public void collectRoots(VirtualFile file, final List<VirtualFile> result, @Nullable final ProgressIndicator progressIndicator) {
+    public void collectRoots(final VirtualFile file, final List<VirtualFile> result, @Nullable final ProgressIndicator progressIndicator) {
         if (file.getFileSystem() instanceof JarFileSystem) {
             return;
         }
@@ -48,7 +48,7 @@ public class DLanguageLibRootDetector extends RootDetector {
 
         VfsUtilCore.visitChildrenRecursively(file, new VirtualFileVisitor() {
             @Override
-            public boolean visitFile(@NotNull VirtualFile file) {
+            public boolean visitFile(@NotNull final VirtualFile file) {
                 if (progressIndicator != null) {
                     progressIndicator.checkCanceled();
                 }

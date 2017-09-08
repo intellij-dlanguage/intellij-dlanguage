@@ -29,10 +29,10 @@ public interface DLanguageUnionDeclaration extends PsiElement, DNamedElement, St
     PsiElement getOP_SCOLON();
 
     @Override
-    default boolean processDeclarations(@NotNull PsiScopeProcessor processor,
-                                        @NotNull ResolveState state,
-                                        PsiElement lastParent,
-                                        @NotNull PsiElement place) {
+    default boolean processDeclarations(@NotNull final PsiScopeProcessor processor,
+                                        @NotNull final ResolveState state,
+                                        final PsiElement lastParent,
+                                        @NotNull final PsiElement place) {
         return ScopeProcessorImpl.INSTANCE.processDeclarations(this, processor, state, lastParent, place);
     }
 }

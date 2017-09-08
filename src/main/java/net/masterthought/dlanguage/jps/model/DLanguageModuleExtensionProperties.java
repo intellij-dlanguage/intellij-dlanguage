@@ -16,7 +16,7 @@ public class DLanguageModuleExtensionProperties {
     public DLanguageModuleExtensionProperties() {
     }
 
-    public DLanguageModuleExtensionProperties(@NotNull DLanguageModuleExtensionProperties props) {
+    public DLanguageModuleExtensionProperties(@NotNull final DLanguageModuleExtensionProperties props) {
         myParseTransforms = ContainerUtil.newArrayList(props.myParseTransforms);
     }
 }

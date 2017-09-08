@@ -22,8 +22,8 @@ public class DElementFactory {
      * Takes a name and returns a Psi node of that name, or null.
      */
     @Nullable
-    public static DLanguageIdentifier createDLanguageIdentifierFromText(@NotNull Project project, @NotNull String name) {
-        DLanguageIdentifier e = findChildOfType(createExpressionFromText(project, name), DLanguageIdentifier.class);
+    public static DLanguageIdentifier createDLanguageIdentifierFromText(@NotNull final Project project, @NotNull final String name) {
+        final DLanguageIdentifier e = findChildOfType(createExpressionFromText(project, name), DLanguageIdentifier.class);
         if (e != null && e.getName().equals(name)) return e;
         return null;
     }
@@ -32,7 +32,7 @@ public class DElementFactory {
      * Takes an expression in text and returns a Psi tree of that program.
      */
     @NotNull
-    private static PsiElement createExpressionFromText(@NotNull Project project, @NotNull String name) {
+    private static PsiElement createExpressionFromText(@NotNull final Project project, @NotNull final String name) {
         final DLanguageFile fileFromText = createFileFromText(project, name);
         final PsiElement rhs = fileFromText.getFirstChild().getFirstChild().getLastChild();
         return rhs.getLastChild().getLastChild().getLastChild();
@@ -42,18 +42,18 @@ public class DElementFactory {
      * Create a file containing text.
      */
     @NotNull
-    private static DLanguageFile createFileFromText(@NotNull Project project, @NotNull String text) {
+    private static DLanguageFile createFileFromText(@NotNull final Project project, @NotNull final String text) {
         return (DLanguageFile) PsiFileFactory.getInstance(project).createFileFromText("A.hs", DLanguage.INSTANCE, text);
     }
 
-    public static PsiElement createDLanguageModuleFromText(Project project, String name) {
-        PsiElement e = createExpressionFromText(project, "module " + name + ";").getFirstChild();
+    public static PsiElement createDLanguageModuleFromText(final Project project, final String name) {
+        final PsiElement e = createExpressionFromText(project, "module " + name + ";").getFirstChild();
         if (e instanceof DLanguageModuleDeclaration) return e;
         return null;
     }
 
-    public static PsiElement createDLanguageSingleImportFromText(Project project, String name) {
-        PsiElement e = createExpressionFromText(project, "import " + name + ";").getFirstChild();
+    public static PsiElement createDLanguageSingleImportFromText(final Project project, final String name) {
+        final PsiElement e = createExpressionFromText(project, "import " + name + ";").getFirstChild();
         if (e instanceof DLanguageImportDeclaration) return e;
         return null;
     }

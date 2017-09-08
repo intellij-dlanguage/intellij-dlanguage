@@ -7,11 +7,11 @@ import com.intellij.util.io.StringRef;
 import net.masterthought.dlanguage.psi.DLanguageIdentifier;
 
 public class DLanguageIdentifierStub extends NamedStubBase<DLanguageIdentifier> {
-    public DLanguageIdentifierStub(StubElement parent, IStubElementType elementType, StringRef name) {
+    public DLanguageIdentifierStub(final StubElement parent, final IStubElementType elementType, final StringRef name) {
         super(parent, elementType, name);
     }
 
-    public DLanguageIdentifierStub(StubElement parent, IStubElementType elementType, String name) {
+    public DLanguageIdentifierStub(final StubElement parent, final IStubElementType elementType, final String name) {
         super(parent, elementType, name);
     }
 }

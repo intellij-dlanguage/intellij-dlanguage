@@ -30,12 +30,12 @@ public class DLanguageRunAppConfigurationEditor extends SettingsEditor<DLanguage
      * All components must be changed according to "config" data.
      */
     @Override
-    protected void resetEditorFrom(DLanguageRunAppConfiguration config) {
+    protected void resetEditorFrom(final DLanguageRunAppConfiguration config) {
         comboModule.fillModules(config.getProject(), DLanguageModuleType.getInstance());
         comboModule.setSelectedModule(config.getConfigurationModule().getModule());
         pathWorkingDir.setText(config.getWorkDir());
         textParameters.setText(config.getAdditionalParams());
-        Map<String, String> envVars = config.getEnvVars();
+        final Map<String, String> envVars = config.getEnvVars();
         if (envVars != null) {
             envVariables.setEnvs(config.getEnvVars());
         }
@@ -47,7 +47,7 @@ public class DLanguageRunAppConfigurationEditor extends SettingsEditor<DLanguage
      * Save state of editor UI to DLangRunAppConfiguration instance.
      */
     @Override
-    protected void applyEditorTo(DLanguageRunAppConfiguration config) throws ConfigurationException {
+    protected void applyEditorTo(final DLanguageRunAppConfiguration config) throws ConfigurationException {
         config.setModule(comboModule.getSelectedModule());
         config.setWorkDir(pathWorkingDir.getText());
         config.setAdditionalParams(textParameters.getText());
@@ -57,7 +57,7 @@ public class DLanguageRunAppConfigurationEditor extends SettingsEditor<DLanguage
     @NotNull
     @Override
     protected JComponent createEditor() {
-        FileChooserDescriptor fcd = FileChooserDescriptorFactory.createSingleFolderDescriptor();
+        final FileChooserDescriptor fcd = FileChooserDescriptorFactory.createSingleFolderDescriptor();
         fcd.setShowFileSystemRoots(true);
         fcd.setTitle(DLanguageBundle.INSTANCE.message("dmd.run.config.selectworkingdir.title"));
         fcd.setDescription(DLanguageBundle.INSTANCE.message("dmd.run.config.selectworkingdir.description"));

@@ -66,7 +66,7 @@ public class DubConfigurationParserTest extends LightPlatformTestCase {
 
         final Enumeration enumeration = packageTree.children();
         while (enumeration.hasMoreElements()) {
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode) enumeration.nextElement();
+            final DefaultMutableTreeNode node = (DefaultMutableTreeNode) enumeration.nextElement();
             final DubPackage dubPackage = DubPackage.class.cast(node.getUserObject());
 
             if ("vibe-d:utils".equals(dubPackage.getName())) {

@@ -14,7 +14,7 @@ import java.util.Set;
  */
 public class DRefactoringSupportProvider extends RefactoringSupportProvider {
     @Override
-    public boolean isSafeDeleteAvailable(@NotNull PsiElement element) {
+    public boolean isSafeDeleteAvailable(@NotNull final PsiElement element) {
         if (!(element instanceof DLanguageIdentifier))
             return false;
         final Set<PsiNamedElement> resolve = DResolveUtil.Companion.getInstance(element.getProject()).findDefinitionNode((PsiNamedElement) element, false);

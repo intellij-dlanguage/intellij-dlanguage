@@ -16,10 +16,10 @@ import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
 public class ParserWrapper implements LightPsiParser, PsiParser {
 
     @Override
-    public void parseLight(IElementType t, PsiBuilder b) {
+    public void parseLight(final IElementType t, PsiBuilder b) {
         boolean r = false;
         b = adapt_builder_(t, b, this, null);
-        PsiBuilder.Marker m = enter_section_(b, 0, _COLLAPSE_, null);
+        final PsiBuilder.Marker m = enter_section_(b, 0, _COLLAPSE_, null);
         final DLangParser parser = new DLangParser(b);
         if (t == FUNCTION_DECLARATION) {
             r = parser.parseFunctionDeclaration();
@@ -418,7 +418,7 @@ public class ParserWrapper implements LightPsiParser, PsiParser {
 
     @NotNull
     @Override
-    public ASTNode parse(@NotNull IElementType root, @NotNull PsiBuilder builder) {
+    public ASTNode parse(@NotNull final IElementType root, @NotNull final PsiBuilder builder) {
         parseLight(root, builder);
         return builder.getTreeBuilt();
     }

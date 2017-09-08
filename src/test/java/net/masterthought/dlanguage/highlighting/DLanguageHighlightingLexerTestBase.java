@@ -71,7 +71,7 @@ public class DLanguageHighlightingLexerTestBase extends LexerTestCase {
         final URI resource;
         try {
             resource = this.getClass().getClassLoader().getResource(String.format("%s/%s", myFullDataPath, name)).toURI();
-        } catch (NullPointerException e) {
+        } catch (final NullPointerException e) {
             throw new IOException(e);
         }
         String text = FileUtil.loadFile(new File(resource), CharsetToolkit.UTF8).trim();

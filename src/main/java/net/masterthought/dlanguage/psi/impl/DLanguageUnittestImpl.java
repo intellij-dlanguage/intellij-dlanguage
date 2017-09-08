@@ -13,19 +13,19 @@ import org.jetbrains.annotations.Nullable;
 
 
 public class DLanguageUnittestImpl extends DStubbedPsiElementBase<DLanguageUnittestStub> implements DLanguageUnittest {
-    public DLanguageUnittestImpl(ASTNode node) {
+    public DLanguageUnittestImpl(final ASTNode node) {
         super(node);
     }
 
-    public DLanguageUnittestImpl(DLanguageUnittestStub stub, IStubElementType nodeType) {
+    public DLanguageUnittestImpl(final DLanguageUnittestStub stub, final IStubElementType nodeType) {
         super(stub, nodeType);
     }
 
-    public void accept(@NotNull DLanguageVisitor visitor) {
+    public void accept(@NotNull final DLanguageVisitor visitor) {
         visitor.visitUnittest(this);
     }
 
-    public void accept(@NotNull PsiElementVisitor visitor) {
+    public void accept(@NotNull final PsiElementVisitor visitor) {
         if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor) visitor);
         else super.accept(visitor);
     }

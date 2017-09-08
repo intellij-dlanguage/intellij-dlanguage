@@ -42,14 +42,14 @@ public class DLanguageLibraryType extends LibraryType<DummyLibraryProperties> {
     }
 
     @Override
-    public boolean isSuitableModule(@NotNull Module module, @NotNull FacetsProvider facetsProvider) {
+    public boolean isSuitableModule(@NotNull final Module module, @NotNull final FacetsProvider facetsProvider) {
         return ModuleType.get(module).equals(DLanguageModuleType.getInstance());
     }
 
     @Override
-    public NewLibraryConfiguration createNewLibrary(@NotNull JComponent parentComponent,
-                                                    @Nullable VirtualFile contextDirectory,
-                                                    @NotNull Project project) {
+    public NewLibraryConfiguration createNewLibrary(@NotNull final JComponent parentComponent,
+                                                    @Nullable final VirtualFile contextDirectory,
+                                                    @NotNull final Project project) {
 
         return LibraryTypeService.getInstance()
             .createLibraryFromFiles(createLibraryRootsComponentDescriptor(), parentComponent, contextDirectory, this, project);
@@ -62,12 +62,12 @@ public class DLanguageLibraryType extends LibraryType<DummyLibraryProperties> {
     }
 
     @Override
-    public LibraryPropertiesEditor createPropertiesEditor(@NotNull LibraryEditorComponent<DummyLibraryProperties> component) {
+    public LibraryPropertiesEditor createPropertiesEditor(@NotNull final LibraryEditorComponent<DummyLibraryProperties> component) {
         return null;
     }
 
     @Override
-    public Icon getIcon(@Nullable DummyLibraryProperties properties) {
+    public Icon getIcon(@Nullable final DummyLibraryProperties properties) {
         return DLanguageIcons.FILE;
     }
 }

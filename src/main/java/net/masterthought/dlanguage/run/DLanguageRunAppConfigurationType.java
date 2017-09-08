@@ -45,7 +45,7 @@ public class DLanguageRunAppConfigurationType implements ConfigurationType {
     }
 
     private static class DLanguageFactory extends ConfigurationFactory {
-        public DLanguageFactory(ConfigurationType type) {
+        public DLanguageFactory(final ConfigurationType type) {
             super(type);
         }
 

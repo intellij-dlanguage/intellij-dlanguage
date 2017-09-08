@@ -5,7 +5,6 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import net.masterthought.dlanguage.psi.impl.*;
 import net.masterthought.dlanguage.psi.impl.named.*;
-import net.masterthought.dlanguage.psi.impl.named.DLanguageNamedImportBindImpl;
 import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 import net.masterthought.dlanguage.psi.interfaces.Mixin;
@@ -14,283 +13,283 @@ import org.jetbrains.annotations.NotNull;
 
 public class DLanguageVisitor extends PsiElementVisitor {
 
-    public void visitAliasDeclaration(@NotNull DLanguageAliasDeclarationImpl o) {
+    public void visitAliasDeclaration(@NotNull final DLanguageAliasDeclarationImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitAliasInitializer(@NotNull DLanguageAliasInitializerImpl o) {
+    public void visitAliasInitializer(@NotNull final DLanguageAliasInitializerImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitAliasThisDeclaration(@NotNull DLanguageAliasThisDeclarationImpl o) {
+    public void visitAliasThisDeclaration(@NotNull final DLanguageAliasThisDeclarationImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitAndExpression(@NotNull DLanguageAndExpressionImpl o) {
+    public void visitAndExpression(@NotNull final DLanguageAndExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitAnonymousEnumDeclaration(@NotNull DLanguageAnonymousEnumDeclarationImpl o) {
+    public void visitAnonymousEnumDeclaration(@NotNull final DLanguageAnonymousEnumDeclarationImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitAnonymousEnumMember(@NotNull DLanguageAnonymousEnumMemberImpl o) {
+    public void visitAnonymousEnumMember(@NotNull final DLanguageAnonymousEnumMemberImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitArgumentList(@NotNull DLanguageArgumentListImpl o) {
+    public void visitArgumentList(@NotNull final DLanguageArgumentListImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitArguments(@NotNull DLanguageArgumentsImpl o) {
+    public void visitArguments(@NotNull final DLanguageArgumentsImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitArrayInitializer(@NotNull DLanguageArrayInitializerImpl o) {
+    public void visitArrayInitializer(@NotNull final DLanguageArrayInitializerImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitArrayLiteral(@NotNull DLanguageArrayLiteralImpl o) {
+    public void visitArrayLiteral(@NotNull final DLanguageArrayLiteralImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitArrayMemberInitialization(@NotNull DLanguageArrayMemberInitializationImpl o) {
+    public void visitArrayMemberInitialization(@NotNull final DLanguageArrayMemberInitializationImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitAsmAddExp(@NotNull DLanguageAsmAddExpImpl o) {
+    public void visitAsmAddExp(@NotNull final DLanguageAsmAddExpImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitAsmAndExp(@NotNull DLanguageAsmAndExpImpl o) {
+    public void visitAsmAndExp(@NotNull final DLanguageAsmAndExpImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitAsmBrExp(@NotNull DLanguageAsmBrExpImpl o) {
+    public void visitAsmBrExp(@NotNull final DLanguageAsmBrExpImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitAsmEqualExp(@NotNull DLanguageAsmEqualExpImpl o) {
+    public void visitAsmEqualExp(@NotNull final DLanguageAsmEqualExpImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitAsmExp(@NotNull DLanguageAsmExpImpl o) {
+    public void visitAsmExp(@NotNull final DLanguageAsmExpImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitAsmInstruction(@NotNull DLanguageAsmInstructionImpl o) {
+    public void visitAsmInstruction(@NotNull final DLanguageAsmInstructionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitAsmLogAndExp(@NotNull DLanguageAsmLogAndExpImpl o) {
+    public void visitAsmLogAndExp(@NotNull final DLanguageAsmLogAndExpImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitAsmLogOrExp(@NotNull DLanguageAsmLogOrExpImpl o) {
+    public void visitAsmLogOrExp(@NotNull final DLanguageAsmLogOrExpImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitAsmMulExp(@NotNull DLanguageAsmMulExpImpl o) {
+    public void visitAsmMulExp(@NotNull final DLanguageAsmMulExpImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitAsmOrExp(@NotNull DLanguageAsmOrExpImpl o) {
+    public void visitAsmOrExp(@NotNull final DLanguageAsmOrExpImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitAsmPrimaryExp(@NotNull DLanguageAsmPrimaryExpImpl o) {
+    public void visitAsmPrimaryExp(@NotNull final DLanguageAsmPrimaryExpImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitAsmRelExp(@NotNull DLanguageAsmRelExpImpl o) {
+    public void visitAsmRelExp(@NotNull final DLanguageAsmRelExpImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitAsmShiftExp(@NotNull DLanguageAsmShiftExpImpl o) {
+    public void visitAsmShiftExp(@NotNull final DLanguageAsmShiftExpImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitAsmStatement(@NotNull DLanguageAsmStatementImpl o) {
+    public void visitAsmStatement(@NotNull final DLanguageAsmStatementImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitAsmTypePrefix(@NotNull DLanguageAsmTypePrefixImpl o) {
+    public void visitAsmTypePrefix(@NotNull final DLanguageAsmTypePrefixImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitAsmUnaExp(@NotNull DLanguageAsmUnaExpImpl o) {
+    public void visitAsmUnaExp(@NotNull final DLanguageAsmUnaExpImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitAsmXorExp(@NotNull DLanguageAsmXorExpImpl o) {
+    public void visitAsmXorExp(@NotNull final DLanguageAsmXorExpImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitAssertExpression(@NotNull DLanguageAssertExpressionImpl o) {
+    public void visitAssertExpression(@NotNull final DLanguageAssertExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitAssignExpression(@NotNull DLanguageAssignExpressionImpl o) {
+    public void visitAssignExpression(@NotNull final DLanguageAssignExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitAssocArrayLiteral(@NotNull DLanguageAssocArrayLiteralImpl o) {
+    public void visitAssocArrayLiteral(@NotNull final DLanguageAssocArrayLiteralImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitAtAttribute(@NotNull DLanguageAtAttributeImpl o) {
+    public void visitAtAttribute(@NotNull final DLanguageAtAttributeImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitAttribute(@NotNull DLanguageAttributeImpl o) {
+    public void visitAttribute(@NotNull final DLanguageAttributeImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitAttributeDeclaration(@NotNull DLanguageAttributeDeclarationImpl o) {
+    public void visitAttributeDeclaration(@NotNull final DLanguageAttributeDeclarationImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitAutoDeclaration(@NotNull DLanguageAutoDeclarationImpl o) {
+    public void visitAutoDeclaration(@NotNull final DLanguageAutoDeclarationImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitAutoDeclarationPart(@NotNull DLanguageAutoDeclarationPartImpl o) {
+    public void visitAutoDeclarationPart(@NotNull final DLanguageAutoDeclarationPartImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitBlockStatement(@NotNull DLanguageBlockStatementImpl o) {
+    public void visitBlockStatement(@NotNull final DLanguageBlockStatementImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitBodyStatement(@NotNull DLanguageBodyStatementImpl o) {
+    public void visitBodyStatement(@NotNull final DLanguageBodyStatementImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitBreakStatement(@NotNull DLanguageBreakStatementImpl o) {
+    public void visitBreakStatement(@NotNull final DLanguageBreakStatementImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitBaseClass(@NotNull DLanguageBaseClassImpl o) {
+    public void visitBaseClass(@NotNull final DLanguageBaseClassImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitBaseClassList(@NotNull DLanguageBaseClassListImpl o) {
+    public void visitBaseClassList(@NotNull final DLanguageBaseClassListImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitCaseRangeStatement(@NotNull DLanguageCaseRangeStatementImpl o) {
+    public void visitCaseRangeStatement(@NotNull final DLanguageCaseRangeStatementImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitCaseStatement(@NotNull DLanguageCaseStatementImpl o) {
+    public void visitCaseStatement(@NotNull final DLanguageCaseStatementImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitCastExpression(@NotNull DLanguageCastExpressionImpl o) {
+    public void visitCastExpression(@NotNull final DLanguageCastExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitCastQualifier(@NotNull DLanguageCastQualifierImpl o) {
+    public void visitCastQualifier(@NotNull final DLanguageCastQualifierImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitCatch(@NotNull DLanguageCatchImpl o) {
+    public void visitCatch(@NotNull final DLanguageCatchImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitCatches(@NotNull DLanguageCatchesImpl o) {
+    public void visitCatches(@NotNull final DLanguageCatchesImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitClassDeclaration(@NotNull DLanguageClassDeclarationImpl o) {
+    public void visitClassDeclaration(@NotNull final DLanguageClassDeclarationImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitCmpExpression(@NotNull DLanguageCmpExpressionImpl o) {
+    public void visitCmpExpression(@NotNull final DLanguageCmpExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitCompileCondition(@NotNull DLanguageCompileConditionImpl o) {
+    public void visitCompileCondition(@NotNull final DLanguageCompileConditionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitConditionalDeclaration(@NotNull DLanguageConditionalDeclarationImpl o) {
+    public void visitConditionalDeclaration(@NotNull final DLanguageConditionalDeclarationImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitConditionalStatement(@NotNull DLanguageConditionalStatementImpl o) {
+    public void visitConditionalStatement(@NotNull final DLanguageConditionalStatementImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitConstraint(@NotNull DLanguageConstraintImpl o) {
+    public void visitConstraint(@NotNull final DLanguageConstraintImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitConstructor(@NotNull DLanguageConstructorImpl o) {
+    public void visitConstructor(@NotNull final DLanguageConstructorImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitContinueStatement(@NotNull DLanguageContinueStatementImpl o) {
+    public void visitContinueStatement(@NotNull final DLanguageContinueStatementImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitDebugCondition(@NotNull DLanguageDebugConditionImpl o) {
+    public void visitDebugCondition(@NotNull final DLanguageDebugConditionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitDebugSpecification(@NotNull DLanguageDebugSpecificationImpl o) {
+    public void visitDebugSpecification(@NotNull final DLanguageDebugSpecificationImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitDeclaration(@NotNull DLanguageDeclarationImpl o) {
+    public void visitDeclaration(@NotNull final DLanguageDeclarationImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitDeclarationOrStatement(@NotNull DLanguageDeclarationOrStatementImpl o) {
+    public void visitDeclarationOrStatement(@NotNull final DLanguageDeclarationOrStatementImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitDeclarationsAndStatements(@NotNull DLanguageDeclarationsAndStatementsImpl o) {
+    public void visitDeclarationsAndStatements(@NotNull final DLanguageDeclarationsAndStatementsImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitDeclarator(@NotNull DLanguageDeclaratorImpl o) {
+    public void visitDeclarator(@NotNull final DLanguageDeclaratorImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitDefaultStatement(@NotNull DLanguageDefaultStatementImpl o) {
+    public void visitDefaultStatement(@NotNull final DLanguageDefaultStatementImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitDeleteExpression(@NotNull DLanguageDeleteExpressionImpl o) {
+    public void visitDeleteExpression(@NotNull final DLanguageDeleteExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitDeleteStatement(@NotNull DLanguageDeleteStatementImpl o) {
+    public void visitDeleteStatement(@NotNull final DLanguageDeleteStatementImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitDeprecated(@NotNull DLanguageDeprecatedImpl o) {
+    public void visitDeprecated(@NotNull final DLanguageDeprecatedImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitDestructor(@NotNull DLanguageDestructorImpl o) {
+    public void visitDestructor(@NotNull final DLanguageDestructorImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitDoStatement(@NotNull DLanguageDoStatementImpl o) {
+    public void visitDoStatement(@NotNull final DLanguageDoStatementImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitEnumBody(@NotNull DLanguageEnumBodyImpl o) {
+    public void visitEnumBody(@NotNull final DLanguageEnumBodyImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitEnumDeclaration(@NotNull DLanguageEnumDeclarationImpl o) {
+    public void visitEnumDeclaration(@NotNull final DLanguageEnumDeclarationImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitEnumMember(@NotNull DLanguageEnumMemberImpl o) {
+    public void visitEnumMember(@NotNull final DLanguageEnumMemberImpl o) {
         visitPsiElement(o);
     }
 
@@ -298,115 +297,115 @@ public class DLanguageVisitor extends PsiElementVisitor {
 //        visitPsiElement(o);
 //    }
 
-    public void visitEqualExpression(@NotNull DLanguageEqualExpressionImpl o) {
+    public void visitEqualExpression(@NotNull final DLanguageEqualExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitExpression(@NotNull DLanguageExpressionImpl o) {
+    public void visitExpression(@NotNull final DLanguageExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitExpressionStatement(@NotNull DLanguageExpressionStatementImpl o) {
+    public void visitExpressionStatement(@NotNull final DLanguageExpressionStatementImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitFinalSwitchStatement(@NotNull DLanguageFinalSwitchStatementImpl o) {
+    public void visitFinalSwitchStatement(@NotNull final DLanguageFinalSwitchStatementImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitFinally(@NotNull DLanguageFinallyImpl o) {
+    public void visitFinally(@NotNull final DLanguageFinallyImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitForStatement(@NotNull DLanguageForStatementImpl o) {
+    public void visitForStatement(@NotNull final DLanguageForStatementImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitForeachStatement(@NotNull DLanguageForeachStatementImpl o) {
+    public void visitForeachStatement(@NotNull final DLanguageForeachStatementImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitForeachType(@NotNull DLanguageForeachTypeImpl o) {
+    public void visitForeachType(@NotNull final DLanguageForeachTypeImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitForeachTypeList(@NotNull DLanguageForeachTypeListImpl o) {
+    public void visitForeachTypeList(@NotNull final DLanguageForeachTypeListImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitFunctionAttribute(@NotNull DLanguageFunctionAttributeImpl o) {
+    public void visitFunctionAttribute(@NotNull final DLanguageFunctionAttributeImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitFunctionBody(@NotNull DLanguageFunctionBodyImpl o) {
+    public void visitFunctionBody(@NotNull final DLanguageFunctionBodyImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitFunctionCallExpression(@NotNull DLanguageFunctionCallExpressionImpl o) {
+    public void visitFunctionCallExpression(@NotNull final DLanguageFunctionCallExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitFunctionDeclaration(@NotNull DLanguageFunctionDeclarationImpl o) {
+    public void visitFunctionDeclaration(@NotNull final DLanguageFunctionDeclarationImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitFunctionLiteralExpression(@NotNull DLanguageFunctionLiteralExpressionImpl o) {
+    public void visitFunctionLiteralExpression(@NotNull final DLanguageFunctionLiteralExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitGotoStatement(@NotNull DLanguageGotoStatementImpl o) {
+    public void visitGotoStatement(@NotNull final DLanguageGotoStatementImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitIdentifierChain(@NotNull DLanguageIdentifierChainImpl o) {
+    public void visitIdentifierChain(@NotNull final DLanguageIdentifierChainImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitIdentifierList(@NotNull DLanguageIdentifierListImpl o) {
+    public void visitIdentifierList(@NotNull final DLanguageIdentifierListImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitIdentifierOrTemplateChain(@NotNull DLanguageIdentifierOrTemplateChainImpl o) {
+    public void visitIdentifierOrTemplateChain(@NotNull final DLanguageIdentifierOrTemplateChainImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitIdentifierOrTemplateInstance(@NotNull DLanguageIdentifierOrTemplateInstanceImpl o) {
+    public void visitIdentifierOrTemplateInstance(@NotNull final DLanguageIdentifierOrTemplateInstanceImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitIdentityExpression(@NotNull DLanguageIdentityExpressionImpl o) {
+    public void visitIdentityExpression(@NotNull final DLanguageIdentityExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitIfStatement(@NotNull DLanguageIfStatementImpl o) {
+    public void visitIfStatement(@NotNull final DLanguageIfStatementImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitImportBind(@NotNull DLanguageImportBindImpl o) {
+    public void visitImportBind(@NotNull final DLanguageImportBindImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitImportBindings(@NotNull DLanguageImportBindingsImpl o) {
+    public void visitImportBindings(@NotNull final DLanguageImportBindingsImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitImportDeclaration(@NotNull DLanguageImportDeclarationImpl o) {
+    public void visitImportDeclaration(@NotNull final DLanguageImportDeclarationImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitImportExpression(@NotNull DLanguageImportExpressionImpl o) {
+    public void visitImportExpression(@NotNull final DLanguageImportExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitIndexExpression(@NotNull DLanguageIndexExpressionImpl o) {
+    public void visitIndexExpression(@NotNull final DLanguageIndexExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitInExpression(@NotNull DLanguageInExpressionImpl o) {
+    public void visitInExpression(@NotNull final DLanguageInExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitInStatement(@NotNull DLanguageInStatementImpl o) {
+    public void visitInStatement(@NotNull final DLanguageInStatementImpl o) {
         visitPsiElement(o);
     }
 
@@ -414,59 +413,59 @@ public class DLanguageVisitor extends PsiElementVisitor {
 //        visitPsiElement(o);
 //    }
 
-    public void visitInitializer(@NotNull DLanguageInitializerImpl o) {
+    public void visitInitializer(@NotNull final DLanguageInitializerImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitInterfaceDeclaration(@NotNull DLanguageInterfaceDeclarationImpl o) {
+    public void visitInterfaceDeclaration(@NotNull final DLanguageInterfaceDeclarationImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitInvariant(@NotNull DLanguageInvariantImpl o) {
+    public void visitInvariant(@NotNull final DLanguageInvariantImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitIsExpression(@NotNull DLanguageIsExpressionImpl o) {
+    public void visitIsExpression(@NotNull final DLanguageIsExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitKeyValuePair(@NotNull DLanguageKeyValuePairImpl o) {
+    public void visitKeyValuePair(@NotNull final DLanguageKeyValuePairImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitKeyValuePairs(@NotNull DLanguageKeyValuePairsImpl o) {
+    public void visitKeyValuePairs(@NotNull final DLanguageKeyValuePairsImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitLabeledStatement(@NotNull DLanguageLabeledStatementImpl o) {
+    public void visitLabeledStatement(@NotNull final DLanguageLabeledStatementImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitLastCatch(@NotNull DLanguageLastCatchImpl o) {
+    public void visitLastCatch(@NotNull final DLanguageLastCatchImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitLinkageAttribute(@NotNull DLanguageLinkageAttributeImpl o) {
+    public void visitLinkageAttribute(@NotNull final DLanguageLinkageAttributeImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitMemberFunctionAttribute(@NotNull DLanguageMemberFunctionAttributeImpl o) {
+    public void visitMemberFunctionAttribute(@NotNull final DLanguageMemberFunctionAttributeImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitMixinDeclaration(@NotNull DLanguageMixinDeclarationImpl o) {
+    public void visitMixinDeclaration(@NotNull final DLanguageMixinDeclarationImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitMixinExpression(@NotNull DLanguageMixinExpressionImpl o) {
+    public void visitMixinExpression(@NotNull final DLanguageMixinExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitMixinTemplateDeclaration(@NotNull DLanguageMixinTemplateDeclarationImpl o) {
+    public void visitMixinTemplateDeclaration(@NotNull final DLanguageMixinTemplateDeclarationImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitMixinTemplateName(@NotNull DLanguageMixinTemplateNameImpl o) {
+    public void visitMixinTemplateName(@NotNull final DLanguageMixinTemplateNameImpl o) {
         visitPsiElement(o);
     }
 
@@ -474,95 +473,95 @@ public class DLanguageVisitor extends PsiElementVisitor {
 //        visitPsiElement(o);
 //    }
 
-    public void visitModuleDeclaration(@NotNull DLanguageModuleDeclarationImpl o) {
+    public void visitModuleDeclaration(@NotNull final DLanguageModuleDeclarationImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitMulExpression(@NotNull DLanguageMulExpressionImpl o) {
+    public void visitMulExpression(@NotNull final DLanguageMulExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitNewAnonClassExpression(@NotNull DLanguageNewAnonClassExpressionImpl o) {
+    public void visitNewAnonClassExpression(@NotNull final DLanguageNewAnonClassExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitNewExpression(@NotNull DLanguageNewExpressionImpl o) {
+    public void visitNewExpression(@NotNull final DLanguageNewExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitNonVoidInitializer(@NotNull DLanguageNonVoidInitializerImpl o) {
+    public void visitNonVoidInitializer(@NotNull final DLanguageNonVoidInitializerImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitOperands(@NotNull DLanguageOperandsImpl o) {
+    public void visitOperands(@NotNull final DLanguageOperandsImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitOrExpression(@NotNull DLanguageOrExpressionImpl o) {
+    public void visitOrExpression(@NotNull final DLanguageOrExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitOrOrExpression(@NotNull DLanguageOrOrExpressionImpl o) {
+    public void visitOrOrExpression(@NotNull final DLanguageOrOrExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitOutStatement(@NotNull DLanguageOutStatementImpl o) {
+    public void visitOutStatement(@NotNull final DLanguageOutStatementImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitParameter(@NotNull DLanguageParameterImpl o) {
+    public void visitParameter(@NotNull final DLanguageParameterImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitParameters(@NotNull DLanguageParametersImpl o) {
+    public void visitParameters(@NotNull final DLanguageParametersImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitPostblit(@NotNull DLanguagePostblitImpl o) {
+    public void visitPostblit(@NotNull final DLanguagePostblitImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitPowExpression(@NotNull DLanguagePowExpressionImpl o) {
+    public void visitPowExpression(@NotNull final DLanguagePowExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitPragmaDeclaration(@NotNull DLanguagePragmaDeclarationImpl o) {
+    public void visitPragmaDeclaration(@NotNull final DLanguagePragmaDeclarationImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitPragmaExpression(@NotNull DLanguagePragmaExpressionImpl o) {
+    public void visitPragmaExpression(@NotNull final DLanguagePragmaExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitPrimaryExpression(@NotNull DLanguagePrimaryExpressionImpl o) {
+    public void visitPrimaryExpression(@NotNull final DLanguagePrimaryExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitRegister(@NotNull DLanguageRegisterImpl o) {
+    public void visitRegister(@NotNull final DLanguageRegisterImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitRelExpression(@NotNull DLanguageRelExpressionImpl o) {
+    public void visitRelExpression(@NotNull final DLanguageRelExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitReturnStatement(@NotNull DLanguageReturnStatementImpl o) {
+    public void visitReturnStatement(@NotNull final DLanguageReturnStatementImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitScopeGuardStatement(@NotNull DLanguageScopeGuardStatementImpl o) {
+    public void visitScopeGuardStatement(@NotNull final DLanguageScopeGuardStatementImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitSharedStaticConstructor(@NotNull DLanguageSharedStaticConstructorImpl o) {
+    public void visitSharedStaticConstructor(@NotNull final DLanguageSharedStaticConstructorImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitSharedStaticDestructor(@NotNull DLanguageSharedStaticDestructorImpl o) {
+    public void visitSharedStaticDestructor(@NotNull final DLanguageSharedStaticDestructorImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitShiftExpression(@NotNull DLanguageShiftExpressionImpl o) {
+    public void visitShiftExpression(@NotNull final DLanguageShiftExpressionImpl o) {
         visitPsiElement(o);
     }
 
@@ -570,297 +569,297 @@ public class DLanguageVisitor extends PsiElementVisitor {
 //        visitPsiElement(o);
 //    }
 
-    public void visitIndex(@NotNull DLanguageIndexImpl o) {
+    public void visitIndex(@NotNull final DLanguageIndexImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitStatement(@NotNull DLanguageStatementImpl o) {
+    public void visitStatement(@NotNull final DLanguageStatementImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitStatementNoCaseNoDefault(@NotNull DLanguageStatementNoCaseNoDefaultImpl o) {
+    public void visitStatementNoCaseNoDefault(@NotNull final DLanguageStatementNoCaseNoDefaultImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitStaticAssertDeclaration(@NotNull DLanguageStaticAssertDeclarationImpl o) {
+    public void visitStaticAssertDeclaration(@NotNull final DLanguageStaticAssertDeclarationImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitStaticAssertStatement(@NotNull DLanguageStaticAssertStatementImpl o) {
+    public void visitStaticAssertStatement(@NotNull final DLanguageStaticAssertStatementImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitStaticConstructor(@NotNull DLanguageStaticConstructorImpl o) {
+    public void visitStaticConstructor(@NotNull final DLanguageStaticConstructorImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitStaticDestructor(@NotNull DLanguageStaticDestructorImpl o) {
+    public void visitStaticDestructor(@NotNull final DLanguageStaticDestructorImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitStaticIfCondition(@NotNull DLanguageStaticIfConditionImpl o) {
+    public void visitStaticIfCondition(@NotNull final DLanguageStaticIfConditionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitStorageClass(@NotNull DLanguageStorageClassImpl o) {
+    public void visitStorageClass(@NotNull final DLanguageStorageClassImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitStructBody(@NotNull DLanguageStructBodyImpl o) {
+    public void visitStructBody(@NotNull final DLanguageStructBodyImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitStructDeclaration(@NotNull DLanguageStructDeclarationImpl o) {
+    public void visitStructDeclaration(@NotNull final DLanguageStructDeclarationImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitStructInitializer(@NotNull DLanguageStructInitializerImpl o) {
+    public void visitStructInitializer(@NotNull final DLanguageStructInitializerImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitStructMemberInitializer(@NotNull DLanguageStructMemberInitializerImpl o) {
+    public void visitStructMemberInitializer(@NotNull final DLanguageStructMemberInitializerImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitStructMemberInitializers(@NotNull DLanguageStructMemberInitializersImpl o) {
+    public void visitStructMemberInitializers(@NotNull final DLanguageStructMemberInitializersImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitSwitchStatement(@NotNull DLanguageSwitchStatementImpl o) {
+    public void visitSwitchStatement(@NotNull final DLanguageSwitchStatementImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitSymbol(@NotNull DLanguageSymbolImpl o) {
+    public void visitSymbol(@NotNull final DLanguageSymbolImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitSynchronizedStatement(@NotNull DLanguageSynchronizedStatementImpl o) {
+    public void visitSynchronizedStatement(@NotNull final DLanguageSynchronizedStatementImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitTemplateAliasParameter(@NotNull DLanguageTemplateAliasParameterImpl o) {
+    public void visitTemplateAliasParameter(@NotNull final DLanguageTemplateAliasParameterImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitTemplateArgument(@NotNull DLanguageTemplateArgumentImpl o) {
+    public void visitTemplateArgument(@NotNull final DLanguageTemplateArgumentImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitTemplateArgumentList(@NotNull DLanguageTemplateArgumentListImpl o) {
+    public void visitTemplateArgumentList(@NotNull final DLanguageTemplateArgumentListImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitTemplateArguments(@NotNull DLanguageTemplateArgumentsImpl o) {
+    public void visitTemplateArguments(@NotNull final DLanguageTemplateArgumentsImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitTemplateDeclaration(@NotNull DLanguageTemplateDeclarationImpl o) {
+    public void visitTemplateDeclaration(@NotNull final DLanguageTemplateDeclarationImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitTemplateInstance(@NotNull DLanguageTemplateInstanceImpl o) {
+    public void visitTemplateInstance(@NotNull final DLanguageTemplateInstanceImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitTemplateMixinExpression(@NotNull DLanguageTemplateMixinExpressionImpl o) {
+    public void visitTemplateMixinExpression(@NotNull final DLanguageTemplateMixinExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitTemplateParameter(@NotNull DLanguageTemplateParameterImpl o) {
+    public void visitTemplateParameter(@NotNull final DLanguageTemplateParameterImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitTemplateParameterList(@NotNull DLanguageTemplateParameterListImpl o) {
+    public void visitTemplateParameterList(@NotNull final DLanguageTemplateParameterListImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitTemplateParameters(@NotNull DLanguageTemplateParametersImpl o) {
+    public void visitTemplateParameters(@NotNull final DLanguageTemplateParametersImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitTemplateSingleArgument(@NotNull DLanguageTemplateSingleArgumentImpl o) {
+    public void visitTemplateSingleArgument(@NotNull final DLanguageTemplateSingleArgumentImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitTemplateThisParameter(@NotNull DLanguageTemplateThisParameterImpl o) {
+    public void visitTemplateThisParameter(@NotNull final DLanguageTemplateThisParameterImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitTemplateTupleParameter(@NotNull DLanguageTemplateTupleParameterImpl o) {
+    public void visitTemplateTupleParameter(@NotNull final DLanguageTemplateTupleParameterImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitTemplateTypeParameter(@NotNull DLanguageTemplateTypeParameterImpl o) {
+    public void visitTemplateTypeParameter(@NotNull final DLanguageTemplateTypeParameterImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitTemplateValueParameter(@NotNull DLanguageTemplateValueParameterImpl o) {
+    public void visitTemplateValueParameter(@NotNull final DLanguageTemplateValueParameterImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitTemplateValueParameterDefault(@NotNull DLanguageTemplateValueParameterDefaultImpl o) {
+    public void visitTemplateValueParameterDefault(@NotNull final DLanguageTemplateValueParameterDefaultImpl o) {
         visitPsiElement(o);
     }
 
 
-    public void visitDCompositeElement(@NotNull DCompositeElement o) {
+    public void visitDCompositeElement(@NotNull final DCompositeElement o) {
         visitElement(o);
     }
 
-    public void visitDNamedElement(@NotNull DNamedElement o) {
+    public void visitDNamedElement(@NotNull final DNamedElement o) {
         visitElement(o);
     }
 
-    public void visitMixin(@NotNull Mixin o) {
+    public void visitMixin(@NotNull final Mixin o) {
         visitElement(o);
     }
 
-    public void visitPsiElement(@NotNull PsiElement o) {
+    public void visitPsiElement(@NotNull final PsiElement o) {
         visitElement(o);
     }
 
-    public void visitXorExpression(DLanguageXorExpressionImpl o) {
+    public void visitXorExpression(final DLanguageXorExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitWithStatement(DLanguageWithStatementImpl o) {
+    public void visitWithStatement(final DLanguageWithStatementImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitWhileStatement(DLanguageWhileStatementImpl o) {
+    public void visitWhileStatement(final DLanguageWhileStatementImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitVersionSpecification(DLanguageVersionSpecificationImpl o) {
+    public void visitVersionSpecification(final DLanguageVersionSpecificationImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitVersionCondition(DLanguageVersionConditionImpl o) {
+    public void visitVersionCondition(final DLanguageVersionConditionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitVector(DLanguageVectorImpl o) {
+    public void visitVector(final DLanguageVectorImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitVariableDeclaration(DLanguageVariableDeclarationImpl o) {
+    public void visitVariableDeclaration(final DLanguageVariableDeclarationImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitUnionDeclaration(DLanguageUnionDeclarationImpl o) {
+    public void visitUnionDeclaration(final DLanguageUnionDeclarationImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitUnaryExpression(DLanguageUnaryExpressionImpl o) {
+    public void visitUnaryExpression(final DLanguageUnaryExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitTypeSuffix(DLanguageTypeSuffixImpl o) {
+    public void visitTypeSuffix(final DLanguageTypeSuffixImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitTypeSpecialization(DLanguageTypeSpecializationImpl o) {
+    public void visitTypeSpecialization(final DLanguageTypeSpecializationImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitTypeofExpression(DLanguageTypeofExpressionImpl o) {
+    public void visitTypeofExpression(final DLanguageTypeofExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitType(DLanguageTypeImpl o) {
+    public void visitType(final DLanguageTypeImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitTypeidExpression(DLanguageTypeidExpressionImpl o) {
+    public void visitTypeidExpression(final DLanguageTypeidExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitTryStatement(DLanguageTryStatementImpl o) {
+    public void visitTryStatement(final DLanguageTryStatementImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitTraitsExpression(DLanguageTraitsExpressionImpl o) {
+    public void visitTraitsExpression(final DLanguageTraitsExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitThrowStatement(DLanguageThrowStatementImpl o) {
+    public void visitThrowStatement(final DLanguageThrowStatementImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitTernaryExpression(DLanguageTernaryExpressionImpl o) {
+    public void visitTernaryExpression(final DLanguageTernaryExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitStaticCtorDtorCommon(DLanguageStaticCtorDtorCommonImpl o) {
+    public void visitStaticCtorDtorCommon(final DLanguageStaticCtorDtorCommonImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitAddExpression(DLanguageAddExpressionImpl o) {
+    public void visitAddExpression(final DLanguageAddExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitIdentifier(DLanguageIdentifierImpl identifier) {
+    public void visitIdentifier(final DLanguageIdentifierImpl identifier) {
         visitPsiElement(identifier);
     }
 
-    public void visitType_2(DLanguageType_2Impl o) {
+    public void visitType_2(final DLanguageType_2Impl o) {
         visitPsiElement(o);
     }
 
-    public void visitParameterAttribute(DLanguageParameterAttributeImpl o) {
+    public void visitParameterAttribute(final DLanguageParameterAttributeImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitTypeConstructors(DLanguageTypeConstructorsImpl o) {
+    public void visitTypeConstructors(final DLanguageTypeConstructorsImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitEponymousTemplateDeclaration(DLanguageEponymousTemplateDeclarationImpl o) {
+    public void visitEponymousTemplateDeclaration(final DLanguageEponymousTemplateDeclarationImpl o) {
         visitPsiElement(o);
     }
 
 
-    public void visitUnittest(DLanguageUnittestImpl o) {
+    public void visitUnittest(final DLanguageUnittestImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitTypeConstructor(DLanguageTypeConstructorImpl o) {
+    public void visitTypeConstructor(final DLanguageTypeConstructorImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitTemplateMixinDeclaration(DLanguageTemplateMixinDeclarationImpl o) {
+    public void visitTemplateMixinDeclaration(final DLanguageTemplateMixinDeclarationImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitSliceExpression(DLanguageSliceExpressionImpl o) {
+    public void visitSliceExpression(final DLanguageSliceExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitAndAndExpression(DLanguageAndAndExpressionImpl o) {
+    public void visitAndAndExpression(final DLanguageAndAndExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitAlignAttribute(DLanguageAlignAttributeImpl o) {
+    public void visitAlignAttribute(final DLanguageAlignAttributeImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitLambdaExpression(DLanguageLambdaExpressionImpl o) {
+    public void visitLambdaExpression(final DLanguageLambdaExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitInterfaceOrClass(DLanguageInterfaceOrClassImpl o) {
+    public void visitInterfaceOrClass(final DLanguageInterfaceOrClassImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitString(DLanguageStringImpl o) {
+    public void visitString(final DLanguageStringImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitBuiltinType(DLanguageBuiltinTypeImpl o) {
+    public void visitBuiltinType(final DLanguageBuiltinTypeImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitNamedImportBind(DLanguageNamedImportBindImpl dLanguageNamedImportBind) {
+    public void visitNamedImportBind(final DLanguageNamedImportBindImpl dLanguageNamedImportBind) {
         visitPsiElement(dLanguageNamedImportBind);
     }
 }

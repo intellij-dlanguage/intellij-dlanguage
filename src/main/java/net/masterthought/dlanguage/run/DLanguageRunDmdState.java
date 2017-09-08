@@ -38,15 +38,15 @@ public class DLanguageRunDmdState extends CommandLineState implements ProcessLis
     private final DLanguageRunDmdConfiguration config;
     private Executor executor;
 
-    protected DLanguageRunDmdState(@NotNull ExecutionEnvironment environment, @NotNull DLanguageRunDmdConfiguration config) {
+    protected DLanguageRunDmdState(@NotNull final ExecutionEnvironment environment, @NotNull final DLanguageRunDmdConfiguration config) {
         super(environment);
         this.config = config;
     }
 
     @NotNull
     @Override
-    public ExecutionResult execute(@NotNull Executor executor, @NotNull ProgramRunner runner) throws ExecutionException {
-        TextConsoleBuilder consoleBuilder = new TextConsoleBuilderImpl(config.getProject());
+    public ExecutionResult execute(@NotNull final Executor executor, @NotNull final ProgramRunner runner) throws ExecutionException {
+        final TextConsoleBuilder consoleBuilder = new TextConsoleBuilderImpl(config.getProject());
         setConsoleBuilder(consoleBuilder);
         this.executor = executor;
         return super.execute(executor, runner);
@@ -125,7 +125,7 @@ public class DLanguageRunDmdState extends CommandLineState implements ProcessLis
     //Create file with the list of all dmdParameters
     private String tempFileWithParameters(final List<String> dmdParameters) throws ExecutionException {
         final String sep = System.lineSeparator();
-        File tmpFile;
+        final File tmpFile;
         try {
             tmpFile = FileUtil.createTempFile("dmd", "src");
             final OutputStreamWriter output = new OutputStreamWriter(new FileOutputStream(tmpFile), "UTF-8");
@@ -144,12 +144,12 @@ public class DLanguageRunDmdState extends CommandLineState implements ProcessLis
 
     /* Implementations of ProcessListener interface methods */
     @Override
-    public void startNotified(ProcessEvent event) {
+    public void startNotified(final ProcessEvent event) {
         //skip
     }
 
     @Override
-    public void processTerminated(ProcessEvent event) {
+    public void processTerminated(final ProcessEvent event) {
         if (event.getExitCode() == 0) {
             event.getProcessHandler().notifyTextAvailable("* Compilation successful", ProcessOutputTypes.SYSTEM);
         } else {
@@ -158,12 +158,12 @@ public class DLanguageRunDmdState extends CommandLineState implements ProcessLis
     }
 
     @Override
-    public void processWillTerminate(ProcessEvent event, boolean willBeDestroyed) {
+    public void processWillTerminate(final ProcessEvent event, final boolean willBeDestroyed) {
         LOG.debug("Run DMD process terminating");
     }
 
     @Override
-    public void onTextAvailable(ProcessEvent event, Key outputType) {
+    public void onTextAvailable(final ProcessEvent event, final Key outputType) {
         //skip
     }
 

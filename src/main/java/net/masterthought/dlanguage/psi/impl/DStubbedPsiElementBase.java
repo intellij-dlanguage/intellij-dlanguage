@@ -7,11 +7,11 @@ import com.intellij.psi.stubs.StubElement;
 import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
 
 public abstract class DStubbedPsiElementBase<T extends StubElement<?>> extends StubBasedPsiElementBase<T> implements DCompositeElement {
-    public DStubbedPsiElementBase(T stub, IStubElementType nodeType) {
+    public DStubbedPsiElementBase(final T stub, final IStubElementType nodeType) {
         super(stub, nodeType);
     }
 
-    public DStubbedPsiElementBase(ASTNode node) {
+    public DStubbedPsiElementBase(final ASTNode node) {
         super(node);
     }
 

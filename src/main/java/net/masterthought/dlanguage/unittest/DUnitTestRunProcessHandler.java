@@ -214,7 +214,7 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
             final OSProcessHandler process = new OSProcessHandler(commandLine.createProcess(), commandLine.getCommandLineString());
             process.addProcessListener(new ProcessAdapter() {
                 @Override
-                public void onTextAvailable(ProcessEvent event, Key outputType) {
+                public void onTextAvailable(final ProcessEvent event, final Key outputType) {
                     builder.append(event.getText());
                 }
             });
@@ -351,7 +351,7 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
     private void testStarted(final String testClassName, final String testMethodName) {
         ApplicationManager.getApplication()
             .invokeLater(() -> {
-            String fullTestMethodName = testClassName + "." + testMethodName;
+                final String fullTestMethodName = testClassName + "." + testMethodName;
             notifyTextAvailable(ServiceMessageBuilder
                             .testStarted(testMethodName)
                             .addAttribute("isSuite", String.valueOf(false))

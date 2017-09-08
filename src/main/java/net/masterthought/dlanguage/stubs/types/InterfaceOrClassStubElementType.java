@@ -11,29 +11,29 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 
 public class InterfaceOrClassStubElementType extends DNamedStubElementType<DLanguageInterfaceOrClassStub, DLanguageInterfaceOrClass> {
-    public InterfaceOrClassStubElementType(String debugName) {
+    public InterfaceOrClassStubElementType(final String debugName) {
         super(debugName);
     }
 
     @Override
-    public DLanguageInterfaceOrClass createPsi(@NotNull DLanguageInterfaceOrClassStub stub) {
+    public DLanguageInterfaceOrClass createPsi(@NotNull final DLanguageInterfaceOrClassStub stub) {
         return new DLanguageInterfaceOrClassImpl(stub, this);
     }
 
     @NotNull
     @Override
-    public DLanguageInterfaceOrClassStub createStub(@NotNull DLanguageInterfaceOrClass psi, StubElement parentStub) {
+    public DLanguageInterfaceOrClassStub createStub(@NotNull final DLanguageInterfaceOrClass psi, final StubElement parentStub) {
         return new DLanguageInterfaceOrClassStub(parentStub, this, psi.getName());
     }
 
     @Override
-    public void serialize(@NotNull DLanguageInterfaceOrClassStub stub, @NotNull StubOutputStream dataStream) throws IOException {
+    public void serialize(@NotNull final DLanguageInterfaceOrClassStub stub, @NotNull final StubOutputStream dataStream) throws IOException {
         dataStream.writeName(stub.getName());
     }
 
     @NotNull
     @Override
-    public DLanguageInterfaceOrClassStub deserialize(@NotNull StubInputStream dataStream, StubElement parentStub) throws IOException {
+    public DLanguageInterfaceOrClassStub deserialize(@NotNull final StubInputStream dataStream, final StubElement parentStub) throws IOException {
         return new DLanguageInterfaceOrClassStub(parentStub, this, dataStream.readName());
     }
 }
