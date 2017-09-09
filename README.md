@@ -16,7 +16,7 @@ Support for the [D Programming Language](http://dlang.org/) within IntelliJ IDEA
 | 1.13.1 | 2017.1.* - 2017.3.* |
 | 1.13 | 2017.1.* - 2017.2.* |
 | 1.12 | 2017.1 - 2017.1.5 |
-| 1.11 | 2016.3 |
+| 1.11 | 2016.3 - 2016.3.* |
 
 JetBrains create downloadable releases with or without a bundled JRE. If you download a release without a bundled JRE you will need to have a JRE installed. Since IntelliJ 16 (the 2016.* versions) JRE 8 is required to run the IDE.
 
@@ -30,10 +30,10 @@ This plugin is being developed purely by a few volunteers in their spare time �
 
 ## Latest Updates
 
+* September 2017 - Released v1.13.1 to add support for IntelliJ 2017.3 and fix various bugs
 * July 2017 - Released v1.13 to add support for IntelliJ 2017.2 and remove the need for DCD
 * March 2017 – Released v1.12 to add compatibility with IntelliJ 2017.1 (#139)
-* December 2016 – v1.11 of the plugin adds compatibility with IntelliJ 2016.3.
-* 9th January 2016 – Fixed some bugs and working towards getting more of the IntelliJ features working.
+* December 2016 – v1.11 of the plugin adds compatibility with IntelliJ 2016.3
 
 ## Installation
 
