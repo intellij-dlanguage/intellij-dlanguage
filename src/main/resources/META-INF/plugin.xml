@@ -133,6 +133,12 @@
         <localInspection language="D" shortName="PossiblyUndefinedSymbol" bundle="messages.PropertiesBundle"
                          enabledByDefault="true" level="WARNING"
                          implementationClass="net.masterthought.dlanguage.inspections.PossiblyUndefinedSymbol"/>
+
+
+        <!--debugger-->
+        <configurationType implementation="uk.co.cwspencer.ideagdb.run.GoGdbRunConfigurationType"/>
+        <programRunner implementation="uk.co.cwspencer.ideagdb.run.GdbRunner"/>
+        <xdebugger.breakpointType implementation="uk.co.cwspencer.ideagdb.debug.breakpoints.GdbBreakpointType"/>
     </extensions>
 
     <application-components>
@@ -181,6 +187,7 @@
 
     <project-components>
         <!-- Add your project components here -->
+
     </project-components>
 
 
