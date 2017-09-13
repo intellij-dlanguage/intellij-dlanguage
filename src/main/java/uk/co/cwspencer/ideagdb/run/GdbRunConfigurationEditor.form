@@ -3,7 +3,7 @@
   <grid id="27dc6" binding="component" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="20" y="20" width="891" height="461"/>
+      <xy x="20" y="20" width="1082" height="461"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -22,7 +22,7 @@
             </constraints>
             <properties>
               <labelFor value="5363"/>
-              <text resource-bundle="ro/redeul/google/go/GoBundle" key="go.run.script"/>
+              <text value="Run Script"/>
             </properties>
           </component>
           <component id="5363" class="com.intellij.openapi.ui.TextFieldWithBrowseButton" binding="applicationName">
@@ -37,7 +37,7 @@
             </constraints>
             <properties>
               <labelFor value="c0788"/>
-              <text resource-bundle="ro/redeul/google/go/GoBundle" key="go.run.parameters"/>
+              <text value="Parameters"/>
             </properties>
           </component>
           <component id="c0788" class="com.intellij.ui.RawCommandLineEditor" binding="appArguments">
@@ -154,6 +154,9 @@
               <component id="75cb2" class="javax.swing.JTextArea" binding="m_startupCommands">
                 <constraints/>
                 <properties/>
+                <clientProperties>
+                  <caretAspectRatio class="java.lang.Float" value="0.04"/>
+                </clientProperties>
               </component>
             </children>
           </scrollpane>
