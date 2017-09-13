@@ -6,8 +6,8 @@ import com.intellij.execution.configurations.RunConfiguration;
 import com.intellij.openapi.extensions.Extensions;
 import com.intellij.openapi.project.Project;
 import com.intellij.util.containers.ContainerUtil;
+import net.masterthought.dlanguage.icons.DLanguageIcons;
 import org.jetbrains.annotations.NotNull;
-import ro.redeul.google.go.GoIcons;
 
 import javax.swing.*;
 
@@ -39,7 +39,7 @@ public class GoGdbRunConfigurationType implements ConfigurationType {
 
     @Override
     public Icon getIcon() {
-        return GoIcons.GO_ICON_16x16;
+        return DLanguageIcons.FILE;
     }
 
     @NotNull

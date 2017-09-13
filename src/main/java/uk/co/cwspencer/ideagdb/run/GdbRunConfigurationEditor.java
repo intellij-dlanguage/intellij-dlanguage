@@ -11,9 +11,9 @@ import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.ui.RawCommandLineEditor;
+import net.masterthought.dlanguage.DLanguageFileType;
+import net.masterthought.dlanguage.psi.DLanguageFile;
 import org.jetbrains.annotations.NotNull;
-import ro.redeul.google.go.GoFileType;
-import ro.redeul.google.go.lang.psi.GoFile;
 import uk.co.cwspencer.ideagdb.debug.go.GoGdbUtil;
 
 import javax.swing.*;
@@ -45,15 +45,15 @@ public class GdbRunConfigurationEditor<T extends GdbRunConfiguration> extends Se
                     TreeFileChooser fileChooser =
                         TreeFileChooserFactory.getInstance(project).createFileChooser(
                             "Go Application Chooser", null,
-                            GoFileType.INSTANCE,
+                            DLanguageFileType.INSTANCE,
                             new TreeFileChooser.PsiFileFilter() {
                                 public boolean accept(PsiFile file) {
 
-                                    if (!(file instanceof GoFile)) {
+                                    if (!(file instanceof DLanguageFile)) {
                                         return false;
                                     }
 
-                                    return ((GoFile) file).getMainFunction() != null;
+                                    return ((DLanguageFile) file).getMainFunction() != null;
                                 }
                             }, true, false);
 

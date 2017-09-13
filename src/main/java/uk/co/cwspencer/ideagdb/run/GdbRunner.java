@@ -16,10 +16,10 @@ import com.intellij.xdebugger.XDebugProcess;
 import com.intellij.xdebugger.XDebugProcessStarter;
 import com.intellij.xdebugger.XDebugSession;
 import com.intellij.xdebugger.XDebuggerManager;
+import net.masterthought.dlanguage.GoSdkData;
+import net.masterthought.dlanguage.GoSdkUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ro.redeul.google.go.config.sdk.GoSdkData;
-import ro.redeul.google.go.sdk.GoSdkUtil;
 import uk.co.cwspencer.gdb.Gdb;
 import uk.co.cwspencer.gdb.messages.GdbEvent;
 import uk.co.cwspencer.ideagdb.debug.GdbDebugProcess;
@@ -68,12 +68,11 @@ public class GdbRunner extends DefaultProgramRunner {
             execName = execName.concat(".exe");
         }
 
-        final XDebugSession debugSession = XDebuggerManager.getInstance(project).startSession(this,
-            env, contentToReuse, new XDebugProcessStarter() {
+        final XDebugSession debugSession = XDebuggerManager.getInstance(project).startSession(env,
+            new XDebugProcessStarter() {
                 @NotNull
                 @Override
                 public XDebugProcess start(@NotNull XDebugSession session) throws ExecutionException {
-                    session.setAutoInitBreakpoints(false);
                     return new GdbDebugProcess(project, session, (GdbExecutionResult) result);
                 }
             });

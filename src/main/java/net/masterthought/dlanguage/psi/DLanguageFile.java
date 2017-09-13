@@ -2,6 +2,7 @@ package net.masterthought.dlanguage.psi;
 
 import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.openapi.fileTypes.FileType;
+import com.intellij.openapi.util.Key;
 import com.intellij.psi.FileViewProvider;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.ResolveState;
@@ -9,6 +10,7 @@ import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.StubElement;
 import net.masterthought.dlanguage.DLanguage;
 import net.masterthought.dlanguage.DLanguageFileType;
+import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 import net.masterthought.dlanguage.resolve.ScopeProcessorImplUtil;
 import net.masterthought.dlanguage.stubs.DLanguageFileStub;
 import org.jetbrains.annotations.NotNull;
@@ -86,5 +88,36 @@ public class DLanguageFile extends PsiFileBase {
             }
         }
         return toContinue;
+    }
+
+    public DLanguageFunctionDeclaration getMainFunction() {
+        final DLanguageFunctionDeclaration[] res = new DLanguageFunctionDeclaration[1];
+        PsiScopeProcessor mainFunctionProcessor = new PsiScopeProcessor() {
+
+            @Override
+            public boolean execute(@NotNull PsiElement element, @NotNull ResolveState state) {
+                if (element instanceof DLanguageFunctionDeclaration) {
+                    if (((DNamedElement) element).getName().equals("main")) {
+                        res[0] = (DLanguageFunctionDeclaration) element;
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            @Nullable
+            @Override
+            public <T> T getHint(@NotNull Key<T> hintKey) {
+                return null;
+            }
+
+            @Override
+            public void handleEvent(@NotNull Event event, @Nullable Object associated) {
+
+            }
+        };
+        this.processDeclarations(mainFunctionProcessor, ResolveState.initial(), null, this);
+        return res[0];
+
     }
 }

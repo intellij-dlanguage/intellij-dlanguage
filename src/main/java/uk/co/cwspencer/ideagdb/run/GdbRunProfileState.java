@@ -28,11 +28,11 @@ import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 import com.intellij.xdebugger.DefaultDebugProcessHandler;
+import net.masterthought.dlanguage.GoSdkData;
+import net.masterthought.dlanguage.GoSdkUtil;
+import net.masterthought.dlanguage.icons.DLanguageIcons;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ro.redeul.google.go.GoIcons;
-import ro.redeul.google.go.config.sdk.GoSdkData;
-import ro.redeul.google.go.sdk.GoSdkUtil;
 
 import java.io.File;
 import java.util.Map;
@@ -94,7 +94,7 @@ public class GdbRunProfileState implements RunProfileState {
                     ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
                     Content content = contentFactory.createContent(consoleView.getComponent(), "", false);
                     window.getContentManager().addContent(content);
-                    window.setIcon(GoIcons.GO_ICON_13x13);
+                    window.setIcon(DLanguageIcons.FILE);
                     window.setToHideOnEmptyContent(true);
                     window.setTitle(TITLE);
 
@@ -156,7 +156,7 @@ public class GdbRunProfileState implements RunProfileState {
                 ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
                 Content content = contentFactory.createContent(consoleView.getComponent(), "", false);
                 window.getContentManager().addContent(content);
-                window.setIcon(GoIcons.GO_ICON_13x13);
+                window.setIcon(DLanguageIcons.FILE);
                 window.setToHideOnEmptyContent(true);
                 window.setTitle(TITLE);
 

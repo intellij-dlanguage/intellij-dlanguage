@@ -3,8 +3,8 @@ package uk.co.cwspencer.ideagdb.debug;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.xdebugger.frame.XExecutionStack;
 import com.intellij.xdebugger.frame.XStackFrame;
+import net.masterthought.dlanguage.icons.DLanguageIcons;
 import org.jetbrains.annotations.Nullable;
-import ro.redeul.google.go.GoIcons;
 import uk.co.cwspencer.gdb.Gdb;
 import uk.co.cwspencer.gdb.messages.*;
 
@@ -31,7 +31,7 @@ public class GdbExecutionStack extends XExecutionStack {
      * @param thread The thread.
      */
     public GdbExecutionStack(Gdb gdb, GdbThread thread) {
-        super(thread.formatName(), GoIcons.GO_ICON_13x13);
+        super(thread.formatName(), DLanguageIcons.FILE);
 
         m_gdb = gdb;
         m_thread = thread;
