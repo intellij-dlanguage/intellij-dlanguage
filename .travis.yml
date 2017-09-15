@@ -38,9 +38,9 @@ jobs:
       deploy:
         provider: script
         skip_cleanup: true
-        script: ORG_GRADLE_PROJECT_publishChannels=eap ORG_GRADLE_PROJECT_version=1.13.1-eap$TRAVIS_BUILD_NUMBER ./gradlew :publishPlugin
+        script: ORG_GRADLE_PROJECT_publishChannels=eap ORG_GRADLE_PROJECT_version=1.14-eap$TRAVIS_BUILD_NUMBER ./gradlew :publishPlugin
         on:
-          branch: master
+          branch: develop
     - stage: Deploy new Release
       script: skip
       env: ORG_GRADLE_PROJECT_ideaVersion=2017.1
@@ -49,6 +49,6 @@ jobs:
         skip_cleanup: true
         script: ./gradlew publishPlugin
         on:
-          branch: release
+          branch: master
   allow_failures:
     - env: ORG_GRADLE_PROJECT_ideaVersion=LATEST-EAP-SNAPSHOT
