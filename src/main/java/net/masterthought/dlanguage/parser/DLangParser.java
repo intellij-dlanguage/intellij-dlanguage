@@ -8524,6 +8524,9 @@ class DLangParser {
             while (builder.getTokenType().equals(TOKEN_STRING)) {
                 builder.advanceLexer();
                 index++;
+                if (builder.getTokenType() == null) {
+                    break;
+                }
             }
             exit_section_(builder, tokenStringMarker, STRING_LIT, true);
             //todo this is not necessary in expect but may be necessary in the future.
