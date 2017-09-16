@@ -88,7 +88,7 @@ public class GoGdbUtil {
             // TODO maybe we should warn the user that his GDB version is not the latest at time of writing (7.6.2)
             return output.getStdout().contains("GDB");
         } catch (Exception e) {
-            LOG.error("Exception while executing the process:", e);
+//            LOG.error("Exception while executing the process:", e);
             return false;
         }
     }

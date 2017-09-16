@@ -109,7 +109,9 @@ public class GdbRunner extends DefaultProgramRunner {
 
         gdbProcess.sendCommand("file " + execName);
 
-        debugSession.initBreakpoints();
+//        if (debugProcess.checkCanInitBreakpoints()) {
+//            debugSession.initBreakpoints(); //should have already been done by intellij source
+//        }
 
         // Send startup commands
         String[] commandsArray = configuration.STARTUP_COMMANDS.split("\\r?\\n");
