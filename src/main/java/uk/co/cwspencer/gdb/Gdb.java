@@ -2,9 +2,6 @@ package uk.co.cwspencer.gdb;
 
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.projectRoots.Sdk;
-import net.masterthought.dlanguage.GoSdkData;
-import net.masterthought.dlanguage.GoSdkUtil;
 import uk.co.cwspencer.gdb.gdbmi.*;
 import uk.co.cwspencer.gdb.messages.*;
 import uk.co.cwspencer.ideagdb.debug.GdbDebugProcess;
@@ -242,15 +239,15 @@ public class Gdb {
 
             Project project = ((GdbDebugProcess) m_listener).m_project;
 
-            Sdk sdk = GoSdkUtil.getGoogleGoSdkForProject(project);
-            if (sdk == null) {
-                return;
-            }
+//            Sdk sdk = GoSdkUtil.getGoogleGoSdkForProject(project);
+//            if (sdk == null) {
+//                return;
+//            }
 
-            final GoSdkData sdkData = (GoSdkData) sdk.getSdkAdditionalData();
-            if (sdkData == null) {
-                return;
-            }
+//            final GoSdkData sdkData = (GoSdkData) sdk.getSdkAdditionalData();
+//            if (sdkData == null) {
+//                return;
+//            }
 
             String projectDir = project.getBasePath();
 
@@ -258,9 +255,9 @@ public class Gdb {
                 return;
             }
 
-            String[] goEnv = GoSdkUtil.getExtendedGoEnv(sdkData, projectDir, "");
+//            String[] goEnv = GoSdkUtil.getExtendedGoEnv(sdkData, projectDir, "");
 
-            Process process = Runtime.getRuntime().exec(commandLine, goEnv, workingDirectoryFile);
+            Process process = Runtime.getRuntime().exec(commandLine, new String[]{}, workingDirectoryFile);
             InputStream stream = process.getInputStream();
 
             // Save a reference to the process and launch the writer thread

@@ -11,12 +11,10 @@ import com.intellij.execution.runners.ExecutionEnvironment;
 import com.intellij.execution.ui.RunContentDescriptor;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.xdebugger.XDebugProcess;
 import com.intellij.xdebugger.XDebugProcessStarter;
 import com.intellij.xdebugger.XDebugSession;
 import com.intellij.xdebugger.XDebuggerManager;
-import net.masterthought.dlanguage.GoSdkData;
 import net.masterthought.dlanguage.GoSdkUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -24,14 +22,11 @@ import uk.co.cwspencer.gdb.Gdb;
 import uk.co.cwspencer.gdb.messages.GdbEvent;
 import uk.co.cwspencer.ideagdb.debug.GdbDebugProcess;
 
-import java.io.File;
-import java.io.IOException;
-
 public class GdbRunner extends DefaultProgramRunner {
     @NotNull
     @Override
     public String getRunnerId() {
-        return "GdbRunner";
+        return GdbRunner.class.getSimpleName();
     }
 
     @Override
@@ -40,20 +35,17 @@ public class GdbRunner extends DefaultProgramRunner {
             profile instanceof GdbRunConfiguration;
     }
 
-    protected RunContentDescriptor doExecute(Project project,
-                                             RunProfileState state,
-                                             RunContentDescriptor contentToReuse,
+    protected RunContentDescriptor doExecute(RunProfileState state,
                                              ExecutionEnvironment env) throws ExecutionException {
         FileDocumentManager.getInstance().saveAllDocuments();
 
-        return createContentDescriptor(project, env.getExecutor(), state, contentToReuse, env);
+        return createContentDescriptor(env.getProject(), env.getExecutor(), state, env);
     }
 
     @Nullable
     protected RunContentDescriptor createContentDescriptor(final Project project,
                                                            final Executor executor,
                                                            final RunProfileState state,
-                                                           RunContentDescriptor contentToReuse,
                                                            ExecutionEnvironment env) throws ExecutionException {
 
         final ExecutionResult result = state.execute(executor, GdbRunner.this);
@@ -62,7 +54,7 @@ public class GdbRunner extends DefaultProgramRunner {
         }
 
         GdbRunConfiguration configuration = ((GdbExecutionResult) result).m_configuration;
-        String execName = configuration.goOutputDir.concat("/").concat(project.getName());
+        String execName = project.getBasePath().concat("/").concat(project.getName());
 
         if (GoSdkUtil.isHostOsWindows()) {
             execName = execName.concat(".exe");
@@ -77,27 +69,27 @@ public class GdbRunner extends DefaultProgramRunner {
                 }
             });
 
-        Sdk sdk = GoSdkUtil.getGoogleGoSdkForProject(project);
-        if (sdk == null) {
-            debugSession.stop();
-            return null;
-        }
-
-        final GoSdkData sdkData = (GoSdkData) sdk.getSdkAdditionalData();
-        if (sdkData == null) {
-            debugSession.stop();
-            return null;
-        }
+//        Sdk sdk = GoSdkUtil.getGoogleGoSdkForProject(project);
+//        if (sdk == null) {
+//            debugSession.stop();
+//            return null;
+//        }
+//
+//        final GoSdkData sdkData = (GoSdkData) sdk.getSdkAdditionalData();
+//        if (sdkData == null) {
+//            debugSession.stop();
+//            return null;
+//        }
 
         GdbDebugProcess debugProcess = ((GdbDebugProcess) debugSession.getDebugProcess());
 
-        String goRootPath;
-        try {
-            goRootPath = (new File(sdkData.GO_GOROOT_PATH)).getCanonicalPath();
-        } catch (IOException ignored) {
-            debugSession.stop();
-            return null;
-        }
+//        String goRootPath;
+//        try {
+//            goRootPath = (new File(sdkData.GO_GOROOT_PATH)).getCanonicalPath();
+//        } catch (IOException ignored) {
+//            debugSession.stop();
+//            return null;
+//        }
 
         final Gdb gdbProcess = debugProcess.m_gdb;
 
@@ -108,12 +100,12 @@ public class GdbRunner extends DefaultProgramRunner {
                 gdbProcess.onGdbCapabilitiesReady(event);
             }
         });
-        gdbProcess.sendCommand("add-auto-load-safe-path " + goRootPath);
+//        gdbProcess.sendCommand("add-auto-load-safe-path " + goRootPath);
 
-        String pythonRuntime = goRootPath + "/src/pkg/runtime/runtime-gdb.py";
-        if (GoSdkUtil.checkFileExists(pythonRuntime)) {
-            gdbProcess.sendCommand("source " + pythonRuntime);
-        }
+//        String pythonRuntime = goRootPath + "/src/pkg/runtime/runtime-gdb.py";
+//        if (GoSdkUtil.checkFileExists(pythonRuntime)) {
+//            gdbProcess.sendCommand("source " + pythonRuntime);
+//        }
 
         gdbProcess.sendCommand("file " + execName);
 

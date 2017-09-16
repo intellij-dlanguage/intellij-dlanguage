@@ -68,7 +68,7 @@ public class GdbDebugProcess extends XDebugProcess implements GdbListener {
         debugSession = session;
 
         // Prepare GDB
-        m_gdb = new Gdb(m_configuration.GDB_PATH, m_configuration.workingDir, this);
+        m_gdb = new Gdb(m_configuration.GDB_PATH, project.getBasePath(), this);
 
         // Create the GDB console
         m_gdbConsole = new GdbConsoleView(m_gdb, session.getProject());

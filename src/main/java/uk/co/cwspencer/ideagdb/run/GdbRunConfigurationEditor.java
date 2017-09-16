@@ -12,6 +12,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.ui.RawCommandLineEditor;
 import net.masterthought.dlanguage.DLanguageFileType;
+import net.masterthought.dlanguage.GoSdkUtil;
 import net.masterthought.dlanguage.psi.DLanguageFile;
 import org.jetbrains.annotations.NotNull;
 import uk.co.cwspencer.ideagdb.debug.go.GoGdbUtil;
@@ -24,18 +25,14 @@ public class GdbRunConfigurationEditor<T extends GdbRunConfiguration> extends Se
     private static final Logger m_log =
         Logger.getInstance("#uk.co.cwspencer.ideagdb.run.GdbRunConfigurationEditor");
 
-    private TextFieldWithBrowseButton m_gdbPath;
-    private JTextArea m_startupCommands;
-    private JPanel component;
-    private RawCommandLineEditor appArguments;
     private TextFieldWithBrowseButton applicationName;
-    private JCheckBox buildBeforeRunCheckBox;
-    private TextFieldWithBrowseButton buildDirectoryPathBrowser;
+    private RawCommandLineEditor appArguments;
+    private TextFieldWithBrowseButton m_gdbPath;
     private RawCommandLineEditor builderArguments;
-    private TextFieldWithBrowseButton workingDirectoryBrowser;
     private RawCommandLineEditor envVars;
-    private JCheckBox runGoVetBeforeCheckBox;
+    private JTextArea m_startupCommands;
     private JCheckBox autoStartGdb;
+    private JPanel component;
     private JLabel gdbVersionWarning;
 
     public GdbRunConfigurationEditor(final Project project) {
@@ -66,11 +63,11 @@ public class GdbRunConfigurationEditor<T extends GdbRunConfiguration> extends Se
                 }
             });
 
-        buildDirectoryPathBrowser.addBrowseFolderListener("Go executable build path", "Go executable build path",
-            project, new FileChooserDescriptor(false, true, false, false, false, false));
+//        buildDirectoryPathBrowser.addBrowseFolderListener("Go executable build path", "Go executable build path",
+//            project, new FileChooserDescriptor(false, true, false, false, false, false));
 
-        workingDirectoryBrowser.addBrowseFolderListener("Application working directory", "Application working directory",
-            project, new FileChooserDescriptor(false, true, false, false, false, false));
+//        workingDirectoryBrowser.addBrowseFolderListener("Application working directory", "Application working directory",
+//            project, new FileChooserDescriptor(false, true, false, false, false, false));
 
         m_gdbPath.addBrowseFolderListener("GDB executable path", "GDB executable path",
             project, new FileChooserDescriptor(true, false, false, false, false, false));
@@ -85,19 +82,19 @@ public class GdbRunConfigurationEditor<T extends GdbRunConfiguration> extends Se
         applicationName.setText(configuration.scriptName);
         appArguments.setText(configuration.scriptArguments);
         if (configuration.builderArguments.isEmpty()) {
-            configuration.builderArguments = "-gcflags \"-N -l\"";
+            configuration.builderArguments = GoSdkUtil.defualtBuilderArguments;
         }
         builderArguments.setText(configuration.builderArguments);
-        buildBeforeRunCheckBox.setSelected(true);
-        buildDirectoryPathBrowser.setEnabled(true);
-        buildDirectoryPathBrowser.setText(configuration.goOutputDir);
-        workingDirectoryBrowser.setText(configuration.workingDir);
-        if (workingDirectoryBrowser.getText().isEmpty()) {
-            workingDirectoryBrowser.setText(configuration.getProject().getBasePath());
-        }
+//        buildBeforeRunCheckBox.setSelected(true);
+//        buildDirectoryPathBrowser.setEnabled(true);
+//        buildDirectoryPathBrowser.setText(configuration.goOutputDir);
+//        workingDirectoryBrowser.setText(configuration.workingDir);
+//        if (workingDirectoryBrowser.getText().isEmpty()) {
+//            workingDirectoryBrowser.setText(configuration.getProject().getBasePath());
+//        }
 
         envVars.setText(configuration.envVars);
-        runGoVetBeforeCheckBox.setSelected(configuration.goVetEnabled);
+//        runGoVetBeforeCheckBox.setSelected(configuration.goVetEnabled);
     }
 
     @Override
@@ -113,21 +110,22 @@ public class GdbRunConfigurationEditor<T extends GdbRunConfiguration> extends Se
 
         if (applicationName.getText().length() == 0)
             throw new ConfigurationException("Please select the file to run.");
-        if (!buildBeforeRunCheckBox.isSelected() || buildDirectoryPathBrowser.getText().equals("")) {
-            throw new ConfigurationException("Please select the directory for the executable.");
-        }
+//        if (!buildBeforeRunCheckBox.isSelected() || buildDirectoryPathBrowser.getText().equals("")) {
+//            throw new ConfigurationException("Please select the directory for the executable.");
+//        }
 
         configuration.GDB_PATH = m_gdbPath.getText();
-        configuration.STARTUP_COMMANDS = m_startupCommands.getText();
+        if (m_startupCommands != null && m_startupCommands.getText().length() != 0)
+            configuration.STARTUP_COMMANDS = m_startupCommands.getText();
         configuration.autoStartGdb = autoStartGdb.isSelected();
 
         configuration.scriptName = applicationName.getText();
         configuration.scriptArguments = appArguments.getText();
         configuration.builderArguments = builderArguments.getText();
-        configuration.goOutputDir = buildDirectoryPathBrowser.getText();
-        configuration.workingDir = workingDirectoryBrowser.getText();
+//        configuration.goOutputDir = buildDirectoryPathBrowser.getText();
+//        configuration.workingDir = workingDirectoryBrowser.getText();
         configuration.envVars = envVars.getText();
-        configuration.goVetEnabled = runGoVetBeforeCheckBox.isSelected();
+//        configuration.goVetEnabled = runGoVetBeforeCheckBox.isSelected();
     }
 
     private void setChosenFile(VirtualFile virtualFile) {
@@ -143,5 +141,9 @@ public class GdbRunConfigurationEditor<T extends GdbRunConfiguration> extends Se
     @Override
     protected void disposeEditor() {
         component.setVisible(false);
+    }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
     }
 }

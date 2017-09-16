@@ -14,7 +14,7 @@ object ScopeProcessorImplUtil {
     fun processDeclaration(def: Declaration,
                            processor: PsiScopeProcessor,
                            state: ResolveState,
-                           lastParent: PsiElement,
+                           lastParent: PsiElement?,
                            place: PsiElement): Boolean {
         var toContinue = true
         if (def.aliasDeclaration?.aliasInitializers != null) {
@@ -203,7 +203,7 @@ object ScopeProcessorImplUtil {
     fun processConditionalDeclaration(element: ConditionalDeclaration,
                                       processor: PsiScopeProcessor,
                                       state: ResolveState,
-                                      lastParent: PsiElement,
+                                      lastParent: PsiElement?,
                                       place: PsiElement): Boolean {
 
         var defNotFound = true
@@ -219,7 +219,7 @@ object ScopeProcessorImplUtil {
     fun processConditionalStatement(element: ConditionalStatement,
                                     processor: PsiScopeProcessor,
                                     state: ResolveState,
-                                    lastParent: PsiElement,
+                                    lastParent: PsiElement?,
                                     place: PsiElement): Boolean {
         //always recurse in since this is a compile time condition
         //handle place and lastParent
@@ -236,7 +236,7 @@ object ScopeProcessorImplUtil {
     fun processParameters(element: Parameters,
                           processor: PsiScopeProcessor,
                           state: ResolveState,
-                          lastParent: PsiElement,
+                          lastParent: PsiElement?,
                           place: PsiElement): Boolean {
         for (p in element.parameters) {
             if (!processor.execute(p, state)) {
@@ -250,7 +250,7 @@ object ScopeProcessorImplUtil {
     fun processTemplateParameters(element: TemplateParameters,
                                   processor: PsiScopeProcessor,
                                   state: ResolveState,
-                                  lastParent: PsiElement,
+                                  lastParent: PsiElement?,
                                   place: PsiElement): Boolean {
         for (p in element.templateParameterList?.templateParameters ?: listOf()) {
             if (!processor.execute(p, state)) {
@@ -260,7 +260,7 @@ object ScopeProcessorImplUtil {
         return true
     }
 
-    fun processDeclarationsOrStatements(declarationOrStatements: List<DeclarationOrStatement>, processor: PsiScopeProcessor, state: ResolveState, lastParent: PsiElement, place: PsiElement): Boolean {
+    fun processDeclarationsOrStatements(declarationOrStatements: List<DeclarationOrStatement>, processor: PsiScopeProcessor, state: ResolveState, lastParent: PsiElement?, place: PsiElement): Boolean {
         var toContinue = true
         for (declarationOrStatement in declarationOrStatements) {
             if (declarationOrStatement.declaration != null) {

@@ -13,12 +13,12 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.WriteExternalException;
 import com.intellij.util.xmlb.XmlSerializer;
+import net.masterthought.dlanguage.GoSdkUtil;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import uk.co.cwspencer.ideagdb.debug.go.GoGdbUtil;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -33,11 +33,11 @@ public class GdbRunConfiguration extends ModuleBasedConfiguration<GdbRunConfigur
     public Boolean autoStartGdb = true;
     public String scriptName = "";
     public String scriptArguments = "";
-    public String builderArguments = "";
-    public String goOutputDir = "";
-    public String workingDir = "";
+    public String builderArguments = GoSdkUtil.defualtBuilderArguments;
+    //    public String goOutputDir = "";
+//    public String workingDir = "";
     public String envVars = "";
-    public Boolean goVetEnabled = false;
+//    public Boolean goVetEnabled = false;
 
     public GdbRunConfiguration(String name, Project project, ConfigurationFactory factory) {
         super(name, new GdbRunConfigurationModule(project), factory);
@@ -71,29 +71,31 @@ public class GdbRunConfiguration extends ModuleBasedConfiguration<GdbRunConfigur
 
     @Override
     public void checkConfiguration() throws RuntimeConfigurationException {
-        if (scriptName == null || scriptName.length() == 0)
+
+        if (scriptName == null || scriptName.length() == 0) {
             throw new RuntimeConfigurationException("Please select the file to run.");
-        if (goOutputDir == null || goOutputDir.isEmpty()) {
-            throw new RuntimeConfigurationException("Please select the directory for the executable.");
         }
-        if (workingDir == null || workingDir.isEmpty()) {
-            throw new RuntimeConfigurationException("Please select the application working directory.");
-        } else {
-            File dir = new File(workingDir);
-
-            if (!dir.exists()) {
-                throw new RuntimeConfigurationException("The selected application working directory does not appear to exist.");
-            }
-
-            if (!dir.isDirectory()) {
-                throw new RuntimeConfigurationException("The selected application working directory does not appear to be a directory.");
-            }
-        }
+//        if (goOutputDir == null || goOutputDir.isEmpty()) {
+//            throw new RuntimeConfigurationException("Please select the directory for the executable.");
+//        }
+//        if (workingDir == null || workingDir.isEmpty()) {
+//            throw new RuntimeConfigurationException("Please select the application working directory.");
+//        } else {
+//            File dir = new File(workingDir);
+//
+//            if (!dir.exists()) {
+//                throw new RuntimeConfigurationException("The selected application working directory does not appear to exist.");
+//            }
+//
+//            if (!dir.isDirectory()) {
+//                throw new RuntimeConfigurationException("The selected application working directory does not appear to be a directory.");
+//            }
+//        }
         if (!GoGdbUtil.isValidGdbPath(GDB_PATH)) {
             throw new RuntimeConfigurationException("Please select a valid path to gdb.");
         }
         if (builderArguments.isEmpty()) {
-            builderArguments = "-gcflags \"-N -l\"";
+            this.builderArguments = GoSdkUtil.defualtBuilderArguments;
         }
 
         super.checkConfiguration();

@@ -6,7 +6,8 @@ import com.intellij.openapi.projectRoots.Sdk;
 import java.util.Map;
 
 public class GoSdkUtil {
-    private static boolean hostOsWindows;
+    public final static String defualtBuilderArguments = "--build=debug";
+    private static boolean hostOsWindows = false;
 
     public static Sdk getGoogleGoSdkForProject(Project project) {
         return null;

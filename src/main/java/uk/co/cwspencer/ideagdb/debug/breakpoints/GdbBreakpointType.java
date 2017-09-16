@@ -32,6 +32,6 @@ public class GdbBreakpointType extends XLineBreakpointType<GdbBreakpointProperti
         // TODO: We can't just always return true because otherwise it prevents Java breakpoints
         // being set. It seems like there should be a better way to do this though..
         String extension = file.getExtension();
-        return extension != null && extension.equals("go");
+        return extension != null && extension.equals("d");
     }
 }

@@ -17,7 +17,6 @@ import com.intellij.execution.ui.ConsoleView;
 import com.intellij.execution.ui.ConsoleViewContentType;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.EmptyRunnable;
 import com.intellij.openapi.util.text.StringUtil;
@@ -28,14 +27,12 @@ import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 import com.intellij.xdebugger.DefaultDebugProcessHandler;
-import net.masterthought.dlanguage.GoSdkData;
 import net.masterthought.dlanguage.GoSdkUtil;
 import net.masterthought.dlanguage.icons.DLanguageIcons;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.util.Map;
 
 public class GdbRunProfileState implements RunProfileState {
     private static final Logger m_log = Logger.getInstance("#uk.co.cwspencer.ideagdb.run.GdbRunProfileState");
@@ -59,84 +56,84 @@ public class GdbRunProfileState implements RunProfileState {
     public ExecutionResult execute(Executor executor, @NotNull ProgramRunner runner)
         throws ExecutionException {
 
-        Sdk sdk = GoSdkUtil.getGoogleGoSdkForProject(project);
-        if (sdk == null) {
-            throw new CantRunException("No Go Sdk defined for this project");
-        }
-
-        final GoSdkData sdkData = (GoSdkData) sdk.getSdkAdditionalData();
-        if (sdkData == null) {
-            throw new CantRunException("No Go Sdk defined for this project");
-        }
-
-        String goExecName = sdkData.GO_BIN_PATH;
-
+//        Sdk sdk = GoSdkUtil.getGoogleGoSdkForProject(project);
+//        if (sdk == null) {
+//            throw new CantRunException("No Go Sdk defined for this project");
+//        }
+//
+//        final GoSdkData sdkData = (GoSdkData) sdk.getSdkAdditionalData();
+//        if (sdkData == null) {
+//            throw new CantRunException("No Go Sdk defined for this project");
+//        }
+//
+//        String goExecName = sdkData.GO_BIN_PATH;
+//
         String projectDir = project.getBasePath();
-
-        if (projectDir == null) {
-            throw new CantRunException("Could not retrieve the project directory");
-        }
-
-        Map<String, String> sysEnv = GoSdkUtil.getExtendedSysEnv(sdkData, projectDir, m_configuration.envVars);
-
-        if (m_configuration.goVetEnabled) {
-            try {
-                ToolWindowManager manager = ToolWindowManager.getInstance(project);
-                ToolWindow window = manager.getToolWindow(ID);
-
-                if (consoleView == null) {
-                    consoleView = TextConsoleBuilderFactory.getInstance().createBuilder(project).getConsole();
-                }
-
-                if (window == null) {
-                    window = manager.registerToolWindow(ID, false, ToolWindowAnchor.BOTTOM);
-
-                    ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
-                    Content content = contentFactory.createContent(consoleView.getComponent(), "", false);
-                    window.getContentManager().addContent(content);
-                    window.setIcon(DLanguageIcons.FILE);
-                    window.setToHideOnEmptyContent(true);
-                    window.setTitle(TITLE);
-
-                }
-
-                window.show(EmptyRunnable.getInstance());
-
-                String[] goEnv = GoSdkUtil.convertEnvMapToArray(sysEnv);
-
-                String command = String.format(
-                    "%s vet ./...",
-                    goExecName
-                );
-
-                Runtime rt = Runtime.getRuntime();
-                Process proc = rt.exec(command, goEnv, new File(projectDir));
-                OSProcessHandler handler = new OSProcessHandler(proc, null);
-                consoleView.attachToProcess(handler);
-                consoleView.print(String.format("%s%n", command), ConsoleViewContentType.NORMAL_OUTPUT);
-                handler.startNotify();
-
-                if (proc.waitFor() == 0) {
-                    VirtualFileManager.getInstance().syncRefresh();
-
-                    consoleView.print(String.format("%nFinished running go vet on project %s%n", projectDir), ConsoleViewContentType.NORMAL_OUTPUT);
-                } else {
-                    consoleView.print(String.format("%nCouldn't vet project %s%n", projectDir), ConsoleViewContentType.ERROR_OUTPUT);
-
-                    throw new CantRunException(String.format("Error while processing %s vet command.", goExecName));
-                }
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                Messages.showErrorDialog(String.format("Error while processing %s vet command.", goExecName), "Error on Google Go Plugin");
-
-                throw new CantRunException(String.format("Error while processing %s vet command.", goExecName));
-            }
-        }
+//
+//        if (projectDir == null) {
+//            throw new CantRunException("Could not retrieve the project directory");
+//        }
+//
+//        Map<String, String> sysEnv = GoSdkUtil.getExtendedSysEnv(sdkData, projectDir, m_configuration.envVars);
+//
+//        if (m_configuration.goVetEnabled) {
+//            try {
+//                ToolWindowManager manager = ToolWindowManager.getInstance(project);
+//                ToolWindow window = manager.getToolWindow(ID);
+//
+//                if (consoleView == null) {
+//                    consoleView = TextConsoleBuilderFactory.getInstance().createBuilder(project).getConsole();
+//                }
+//
+//                if (window == null) {
+//                    window = manager.registerToolWindow(ID, false, ToolWindowAnchor.BOTTOM);
+//
+//                    ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
+//                    Content content = contentFactory.createContent(consoleView.getComponent(), "", false);
+//                    window.getContentManager().addContent(content);
+//                    window.setIcon(DLanguageIcons.FILE);
+//                    window.setToHideOnEmptyContent(true);
+//                    window.setTitle(TITLE);
+//
+//                }
+//
+//                window.show(EmptyRunnable.getInstance());
+//
+//                String[] goEnv = GoSdkUtil.convertEnvMapToArray(sysEnv);
+//
+//                String command = String.format(
+//                    "%s vet ./...",
+//                    goExecName
+//                );
+//
+//                Runtime rt = Runtime.getRuntime();
+//                Process proc = rt.exec(command, goEnv, new File(projectDir));
+//                OSProcessHandler handler = new OSProcessHandler(proc, null);
+//                consoleView.attachToProcess(handler);
+//                consoleView.print(String.format("%s%n", command), ConsoleViewContentType.NORMAL_OUTPUT);
+//                handler.startNotify();
+//
+//                if (proc.waitFor() == 0) {
+//                    VirtualFileManager.getInstance().syncRefresh();
+//
+//                    consoleView.print(String.format("%nFinished running go vet on project %s%n", projectDir), ConsoleViewContentType.NORMAL_OUTPUT);
+//                } else {
+//                    consoleView.print(String.format("%nCouldn't vet project %s%n", projectDir), ConsoleViewContentType.ERROR_OUTPUT);
+//
+//                    throw new CantRunException(String.format("Error while processing %s vet command.", goExecName));
+//                }
+//
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//                Messages.showErrorDialog(String.format("Error while processing %s vet command.", goExecName), "Error on Google Go Plugin");
+//
+//                throw new CantRunException(String.format("Error while processing %s vet command.", goExecName));
+//            }
+//        }
 
         // Build and run
-        String execName = m_configuration.goOutputDir.concat("/").concat(project.getName());
+        String execName = projectDir.concat("/").concat(project.getName());
 
         if (GoSdkUtil.isHostOsWindows()) {
             execName = execName.concat(".exe");
@@ -164,12 +161,13 @@ public class GdbRunProfileState implements RunProfileState {
 
             window.show(EmptyRunnable.getInstance());
 
-            String[] goEnv = GoSdkUtil.convertEnvMapToArray(sysEnv);
-            String[] command = GoSdkUtil.computeGoBuildCommand(goExecName, m_configuration.builderArguments, execName, m_configuration.scriptName);
+//            String[] goEnv = GoSdkUtil.convertEnvMapToArray(sysEnv);
+//            String[] command = GoSdkUtil.computeGoBuildCommand(goExecName, m_configuration.builderArguments, execName, m_configuration.scriptName);
 
+            String[] command = new String[]{"dub", "build", "--build=debug"};
             Runtime rt = Runtime.getRuntime();
-            Process proc = rt.exec(command, goEnv);
-            OSProcessHandler handler = new OSProcessHandler(proc, null);
+            Process proc = rt.exec(command, new String[0], new File(projectDir));
+            OSProcessHandler handler = new OSProcessHandler(proc, StringUtil.join(command, " "));
             consoleView.attachToProcess(handler);
             consoleView.print(String.format("%s%n", StringUtil.join(command, " ")), ConsoleViewContentType.NORMAL_OUTPUT);
             handler.startNotify();
@@ -185,9 +183,9 @@ public class GdbRunProfileState implements RunProfileState {
 
         } catch (Exception e) {
             e.printStackTrace();
-            Messages.showErrorDialog(String.format("Error while processing %s build command.", goExecName), "Error on Google Go Plugin");
+            Messages.showErrorDialog(String.format("Error while processing %s build command.", ""), "Error on Google Go Plugin");
 
-            throw new CantRunException(String.format("Error while processing %s build command.", goExecName));
+            throw new CantRunException(String.format("Error while processing %s build command.", ""));
         }
 
 
