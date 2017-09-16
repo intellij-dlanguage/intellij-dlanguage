@@ -49,11 +49,11 @@ public class GdbRunConfiguration extends ModuleBasedConfiguration<GdbRunConfigur
         return Arrays.asList(modules);
     }
 
-    @Override
-    protected ModuleBasedConfiguration createInstance() {
-        return new GdbRunConfiguration(getName(), getProject(),
-            GoGdbRunConfigurationType.getInstance().getFactory());
-    }
+//    @Override
+//    protected ModuleBasedConfiguration createInstance() {
+//        return new GdbRunConfiguration(getName(), getProject(),
+//            GoGdbRunConfigurationType.getInstance().getFactory());
+//    }
 
     @NotNull
     @Override

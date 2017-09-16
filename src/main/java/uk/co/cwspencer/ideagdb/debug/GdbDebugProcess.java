@@ -19,6 +19,7 @@ import com.intellij.xdebugger.XSourcePosition;
 import com.intellij.xdebugger.breakpoints.XBreakpoint;
 import com.intellij.xdebugger.breakpoints.XBreakpointHandler;
 import com.intellij.xdebugger.evaluation.XDebuggerEditorsProvider;
+import com.intellij.xdebugger.frame.XSuspendContext;
 import com.intellij.xdebugger.ui.XDebugTabLayouter;
 import org.jetbrains.annotations.NotNull;
 import uk.co.cwspencer.gdb.Gdb;
@@ -100,7 +101,7 @@ public class GdbDebugProcess extends XDebugProcess implements GdbListener {
      * Steps over the next line.
      */
     @Override
-    public void startStepOver() {
+    public void startStepOver(XSuspendContext context) {
         m_gdb.sendCommand("-exec-next");
     }
 
@@ -116,7 +117,7 @@ public class GdbDebugProcess extends XDebugProcess implements GdbListener {
      * Steps into the next line.
      */
     @Override
-    public void startStepInto() {
+    public void startStepInto(XSuspendContext context) {
         m_gdb.sendCommand("-exec-step");
     }
 
@@ -124,7 +125,7 @@ public class GdbDebugProcess extends XDebugProcess implements GdbListener {
      * Steps out of the current function.
      */
     @Override
-    public void startStepOut() {
+    public void startStepOut(XSuspendContext context) {
         m_gdb.sendCommand("-exec-finish");
     }
 
@@ -140,12 +141,12 @@ public class GdbDebugProcess extends XDebugProcess implements GdbListener {
      * Resumes program execution.
      */
     @Override
-    public void resume() {
+    public void resume(XSuspendContext context) {
         m_gdb.sendCommand("-exec-continue --all");
     }
 
     @Override
-    public void runToPosition(@NotNull XSourcePosition position) {
+    public void runToPosition(@NotNull XSourcePosition position, XSuspendContext context) {
         m_gdb.sendCommand(String.format("%s %s:%s", "-exec-until", position.getFile().getPath(), (position.getLine() + 1)));
     }
 
@@ -374,7 +375,7 @@ public class GdbDebugProcess extends XDebugProcess implements GdbListener {
                 suspendContext);
             if (!suspendProcess) {
                 // Resume execution
-                resume();
+                getSession().resume();
             }
         } else {
             getSession().positionReached(suspendContext);
