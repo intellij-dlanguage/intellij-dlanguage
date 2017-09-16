@@ -54,6 +54,10 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
     private RawCommandLineEditor dFixFlags;
     private JButton dFixAutoFind;
     private JTextField dFixVersion;
+    private TextFieldWithBrowseButton GDBPath;
+    private JButton GDBAutoFind;
+    private RawCommandLineEditor GDBFlags;
+    private JTextField GDBVersion;
 
     public DLanguageToolsConfigurable(@NotNull final Project project) {
         this.propertiesComponent = PropertiesComponent.getInstance(project);
@@ -69,7 +73,9 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
             new Tool(project, "dfmt", ToolKey.DFORMAT_KEY, dFormatPath, dFormatFlags,
                 dFormatAutoFind, dFormatVersion),
             new Tool(project, "dfix", ToolKey.DFIX_KEY, dFixPath, dFixFlags,
-                dFixAutoFind, dFixVersion)
+                dFixAutoFind, dFixVersion),
+            new Tool(project, "gdb", ToolKey.GDB_KEY, GDBPath, GDBFlags,
+                GDBAutoFind, GDBVersion)
         );
     }
 
@@ -78,7 +84,11 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
      * identity function since cabal plays nice.
      */
     private static String getVersion(final String cmd, final String versionFlag) {
-        return ExecUtil.readCommandLine(null, cmd, versionFlag);
+        String versionOutput = ExecUtil.readCommandLine(null, cmd, versionFlag);
+        final int endOfFirstLine = versionOutput.indexOf('\n');
+        if (endOfFirstLine < 0)
+            return versionOutput;
+        return versionOutput.substring(0, endOfFirstLine);
     }
 
     @NotNull
@@ -276,7 +286,7 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
         }
 
         public void updateVersion() {
-            final String pathText = pathField.getText();
+            String pathText = pathField.getText();
             if (pathText.isEmpty()) {
                 versionField.setText("");
             } else {

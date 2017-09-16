@@ -21,6 +21,7 @@ import com.intellij.xdebugger.breakpoints.XBreakpointHandler;
 import com.intellij.xdebugger.evaluation.XDebuggerEditorsProvider;
 import com.intellij.xdebugger.frame.XSuspendContext;
 import com.intellij.xdebugger.ui.XDebugTabLayouter;
+import net.masterthought.dlanguage.settings.ToolKey;
 import org.jetbrains.annotations.NotNull;
 import uk.co.cwspencer.gdb.Gdb;
 import uk.co.cwspencer.gdb.GdbListener;
@@ -69,14 +70,14 @@ public class GdbDebugProcess extends XDebugProcess implements GdbListener {
         debugSession = session;
 
         // Prepare GDB
-        m_gdb = new Gdb(m_configuration.GDB_PATH, project.getBasePath(), this);
+        m_gdb = new Gdb(ToolKey.GDB_KEY.getPath(project), project.getBasePath(), this);
 
         // Create the GDB console
         m_gdbConsole = new GdbConsoleView(m_gdb, session.getProject());
         m_gdbRawConsole = new ConsoleViewImpl(session.getProject(), true);
 
         m_gdbConsole.getConsole().print(m_timeFormat.format(new Date()) + " 0> " +
-            m_configuration.GDB_PATH + " --interpreter=mi2\n", ConsoleViewContentType.USER_INPUT);
+            ToolKey.GDB_KEY.getPath(project) + " --interpreter=mi2\n", ConsoleViewContentType.USER_INPUT);
 
         // Create the breakpoint handler
         m_breakpointHandler = new GdbBreakpointHandler(m_gdb, this);

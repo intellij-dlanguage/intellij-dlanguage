@@ -14,6 +14,7 @@ import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.WriteExternalException;
 import com.intellij.util.xmlb.XmlSerializer;
 import net.masterthought.dlanguage.GoSdkUtil;
+import net.masterthought.dlanguage.settings.ToolKey;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -28,7 +29,7 @@ public class GdbRunConfiguration extends ModuleBasedConfiguration<GdbRunConfigur
     private static final Logger m_log =
         Logger.getInstance("#uk.co.cwspencer.ideagdb.run.GdbRunConfiguration");
 
-    public String GDB_PATH = "gdb";
+    //    public String GDB_PATH = "gdb";
     public String STARTUP_COMMANDS = "";
     public Boolean autoStartGdb = true;
     public String scriptName = "";
@@ -91,8 +92,11 @@ public class GdbRunConfiguration extends ModuleBasedConfiguration<GdbRunConfigur
 //                throw new RuntimeConfigurationException("The selected application working directory does not appear to be a directory.");
 //            }
 //        }
-        if (!GoGdbUtil.isValidGdbPath(GDB_PATH)) {
-            throw new RuntimeConfigurationException("Please select a valid path to gdb.");
+//        if (!GoGdbUtil.isValidGdbPath(GDB_PATH)) {
+//            throw new RuntimeConfigurationException("Please select a valid path to gdb.");
+//        }
+        if (!GoGdbUtil.isValidGdbPath(ToolKey.GDB_KEY.getPath(getProject()))) {
+            throw new RuntimeConfigurationException("Please select a valid path to gdb, using Settings > Other Settings > D Tools");
         }
         if (builderArguments.isEmpty()) {
             this.builderArguments = GoSdkUtil.defualtBuilderArguments;

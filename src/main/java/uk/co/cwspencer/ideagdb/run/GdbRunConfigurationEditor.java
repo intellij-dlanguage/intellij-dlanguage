@@ -3,7 +3,6 @@ package uk.co.cwspencer.ideagdb.run;
 import com.intellij.ide.util.TreeFileChooser;
 import com.intellij.ide.util.TreeFileChooserFactory;
 import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SettingsEditor;
 import com.intellij.openapi.project.Project;
@@ -15,7 +14,6 @@ import net.masterthought.dlanguage.DLanguageFileType;
 import net.masterthought.dlanguage.GoSdkUtil;
 import net.masterthought.dlanguage.psi.DLanguageFile;
 import org.jetbrains.annotations.NotNull;
-import uk.co.cwspencer.ideagdb.debug.go.GoGdbUtil;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -27,13 +25,13 @@ public class GdbRunConfigurationEditor<T extends GdbRunConfiguration> extends Se
 
     private TextFieldWithBrowseButton applicationName;
     private RawCommandLineEditor appArguments;
-    private TextFieldWithBrowseButton m_gdbPath;
+    //    private TextFieldWithBrowseButton m_gdbPath;
     private RawCommandLineEditor builderArguments;
     private RawCommandLineEditor envVars;
     private JTextArea m_startupCommands;
     private JCheckBox autoStartGdb;
     private JPanel component;
-    private JLabel gdbVersionWarning;
+//    private JLabel gdbVersionWarning;
 
     public GdbRunConfigurationEditor(final Project project) {
         applicationName.getButton().addActionListener(
@@ -69,13 +67,13 @@ public class GdbRunConfigurationEditor<T extends GdbRunConfiguration> extends Se
 //        workingDirectoryBrowser.addBrowseFolderListener("Application working directory", "Application working directory",
 //            project, new FileChooserDescriptor(false, true, false, false, false, false));
 
-        m_gdbPath.addBrowseFolderListener("GDB executable path", "GDB executable path",
-            project, new FileChooserDescriptor(true, false, false, false, false, false));
+//        m_gdbPath.addBrowseFolderListener("GDB executable path", "GDB executable path",
+//            project, new FileChooserDescriptor(true, false, false, false, false, false));
     }
 
     @Override
     protected void resetEditorFrom(T configuration) {
-        m_gdbPath.setText(configuration.GDB_PATH);
+//        m_gdbPath.setText(configuration.GDB_PATH);
         m_startupCommands.setText(configuration.STARTUP_COMMANDS);
         autoStartGdb.setSelected(configuration.autoStartGdb);
 
@@ -99,14 +97,14 @@ public class GdbRunConfigurationEditor<T extends GdbRunConfiguration> extends Se
 
     @Override
     protected void applyEditorTo(T configuration) throws ConfigurationException {
-        String gdbPath = m_gdbPath.getText();
-        if (gdbPath.isEmpty()) {
-            throw new ConfigurationException("Please select the path to gdb.");
-        } else if (!GoGdbUtil.isValidGdbPath(gdbPath)) {
-            throw new ConfigurationException("Please select a valid path to gdb.");
-        } else {
-            gdbVersionWarning.setVisible(!GoGdbUtil.isKnownGdb(gdbPath));
-        }
+//        String gdbPath = m_gdbPath.getText();
+//        if (gdbPath.isEmpty()) {
+//            throw new ConfigurationException("Please select the path to gdb.");
+//        } else if (!GoGdbUtil.isValidGdbPath(gdbPath)) {
+//            throw new ConfigurationException("Please select a valid path to gdb.");
+//        } else {
+//            gdbVersionWarning.setVisible(!GoGdbUtil.isKnownGdb(gdbPath));
+//        }
 
         if (applicationName.getText().length() == 0)
             throw new ConfigurationException("Please select the file to run.");
@@ -114,7 +112,7 @@ public class GdbRunConfigurationEditor<T extends GdbRunConfiguration> extends Se
 //            throw new ConfigurationException("Please select the directory for the executable.");
 //        }
 
-        configuration.GDB_PATH = m_gdbPath.getText();
+//        configuration.GDB_PATH = m_gdbPath.getText();
         if (m_startupCommands != null && m_startupCommands.getText().length() != 0)
             configuration.STARTUP_COMMANDS = m_startupCommands.getText();
         configuration.autoStartGdb = autoStartGdb.isSelected();
