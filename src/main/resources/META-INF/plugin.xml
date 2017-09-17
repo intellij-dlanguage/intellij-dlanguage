@@ -145,8 +145,8 @@
 
 
         <!--debugger-->
-        <configurationType implementation="uk.co.cwspencer.ideagdb.run.GoGdbRunConfigurationType"/>
-        <programRunner implementation="uk.co.cwspencer.ideagdb.run.GdbRunner"/>
+        <!--<configurationType implementation="uk.co.cwspencer.ideagdb.run.GoGdbRunConfigurationType"/>-->
+        <!--<programRunner implementation="uk.co.cwspencer.ideagdb.run.GdbRunner"/>-->
         <xdebugger.breakpointType implementation="uk.co.cwspencer.ideagdb.debug.breakpoints.GdbBreakpointType"/>
     </extensions>
 

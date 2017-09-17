@@ -31,8 +31,6 @@ import uk.co.cwspencer.gdb.gdbmi.GdbMiStreamRecord;
 import uk.co.cwspencer.gdb.messages.*;
 import uk.co.cwspencer.ideagdb.debug.breakpoints.GdbBreakpointHandler;
 import uk.co.cwspencer.ideagdb.debug.breakpoints.GdbBreakpointProperties;
-import uk.co.cwspencer.ideagdb.run.GdbExecutionResult;
-import uk.co.cwspencer.ideagdb.run.GdbRunConfiguration;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -42,8 +40,6 @@ public class GdbDebugProcess extends XDebugProcess implements GdbListener {
     private static final Logger m_log =
         Logger.getInstance("#uk.co.cwspencer.ideagdb.debug.GdbDebugProcess");
     public ConsoleView m_console;
-    // The run configuration
-    public GdbRunConfiguration m_configuration;
     // The GDB console
     public GdbConsoleView m_gdbConsole;
     public ConsoleViewImpl m_gdbRawConsole;
@@ -63,16 +59,8 @@ public class GdbDebugProcess extends XDebugProcess implements GdbListener {
     /**
      * Constructor; launches GDB.
      */
-    public GdbDebugProcess(Project project, XDebugSession session, GdbExecutionResult executionResult) {
-        super(session);
-        m_configuration = executionResult.getConfiguration();
-        m_console = (ConsoleView) executionResult.getExecutionConsole();
-        init(session);
-    }
-
     public GdbDebugProcess(Project project, XDebugSession session, ExecutionResult result) {
         super(session);
-        m_configuration = null;//todo
         m_console = (ConsoleView) result.getExecutionConsole();
         init(session);
     }
