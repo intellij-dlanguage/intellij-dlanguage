@@ -54,7 +54,7 @@ public class DLanguageRunAppState extends CommandLineState {
 
     @NotNull
     @Override
-    protected ProcessHandler startProcess() throws ExecutionException {
+    public ProcessHandler startProcess() throws ExecutionException {
         try {
             final GeneralCommandLine appCommandLine = getExecutableCommandLine(config);
             return new OSProcessHandler(appCommandLine.createProcess(), appCommandLine.getCommandLineString());
@@ -80,7 +80,7 @@ public class DLanguageRunAppState extends CommandLineState {
 
     /* Build command line to start compiled executable
      **/
-    private GeneralCommandLine getExecutableCommandLine(final DLanguageRunAppConfiguration config)
+    public GeneralCommandLine getExecutableCommandLine(final DLanguageRunAppConfiguration config)
         throws ModuleNotFoundException, NoValidDLanguageSdkFound {
         final Module module = config.getConfigurationModule().getModule();
         if (module == null) {
@@ -149,5 +149,9 @@ public class DLanguageRunAppState extends CommandLineState {
 
     private String getOutputDir(final Module module) {
         return ModuleRootManager.getInstance(module).getModuleExtension(CompilerModuleExtension.class).getCompilerOutputUrl();
+    }
+
+    public DLanguageRunAppConfiguration getConfig() {
+        return config;
     }
 }

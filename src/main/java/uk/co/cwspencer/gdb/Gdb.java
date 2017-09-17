@@ -2,6 +2,7 @@ package uk.co.cwspencer.gdb;
 
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
+import org.jetbrains.annotations.NotNull;
 import uk.co.cwspencer.gdb.gdbmi.*;
 import uk.co.cwspencer.gdb.messages.*;
 import uk.co.cwspencer.ideagdb.debug.GdbDebugProcess;
@@ -54,7 +55,7 @@ public class Gdb {
      * @param workingDirectory Working directory to launch the GDB process in. May be null.
      * @param listener         Listener that is to receive GDB events.
      */
-    public Gdb(final String gdbPath, final String workingDirectory, GdbListener listener) {
+    public Gdb(@NotNull final String gdbPath, final String workingDirectory, GdbListener listener) {
         // Prepare GDB
         m_listener = listener;
         m_readThread = new Thread(new Runnable() {

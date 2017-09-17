@@ -9,10 +9,12 @@ import com.intellij.execution.executors.DefaultRunExecutor;
 import com.intellij.execution.runners.DefaultProgramRunner;
 import com.intellij.execution.runners.ExecutionEnvironment;
 import com.intellij.execution.ui.RunContentDescriptor;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
+import net.masterthought.dlanguage.run.exception.ModuleNotFoundException;
+import net.masterthought.dlanguage.run.exception.NoValidDLanguageSdkFound;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import uk.co.cwspencer.ideagdb.run.GdbRunConfiguration;
 
 public class RunAppRunner extends DefaultProgramRunner {
     @NotNull
@@ -24,7 +26,7 @@ public class RunAppRunner extends DefaultProgramRunner {
     @Override
     public boolean canRun(@NotNull String executorId, @NotNull RunProfile profile) {
         return (DefaultDebugExecutor.EXECUTOR_ID.equals(executorId) || DefaultRunExecutor.EXECUTOR_ID.equals(executorId)) &&
-            profile instanceof GdbRunConfiguration;
+            profile instanceof DLanguageRunAppConfiguration;
     }
 
     @Nullable
@@ -34,8 +36,17 @@ public class RunAppRunner extends DefaultProgramRunner {
             Project project = env.getProject();
 
             Executor executor = env.getExecutor();
-            return RunUtil.startDebugger(this, state, env, project, executor);
+            Logger logger = Logger.getInstance(this.getClass());
+            try {
+                return RunUtil.startDebugger(this, state, env, project, executor, ((DLanguageRunAppState) state).getExecutableCommandLine(((DLanguageRunAppState) state).getConfig()).getExePath());//todo this is yucky
+            } catch (ModuleNotFoundException e) {
+                e.printStackTrace();
+                logger.error(e.toString());
+            } catch (NoValidDLanguageSdkFound noValidDLanguageSdkFound) {
+                noValidDLanguageSdkFound.printStackTrace();
+                logger.error(noValidDLanguageSdkFound.toString());
+            }
         }
-        return doExecute(state, env);
+        return super.doExecute(state, env);
     }
 }

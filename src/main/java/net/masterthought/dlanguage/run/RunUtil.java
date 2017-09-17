@@ -21,14 +21,14 @@ import uk.co.cwspencer.ideagdb.debug.GdbDebugProcess;
 
 public class RunUtil {
     @Nullable
-    static RunContentDescriptor startDebugger(DefaultProgramRunner buildRunner, RunProfileState state, ExecutionEnvironment env, Project project, Executor executor) throws ExecutionException {
+    static RunContentDescriptor startDebugger(DefaultProgramRunner buildRunner, RunProfileState state, ExecutionEnvironment env, Project project, Executor executor, String execName) throws ExecutionException {
         final ExecutionResult result = state.execute(executor, buildRunner);
         if (result == null) {
             return null;
         }
 
 //        GdbRunConfiguration configuration = ((GdbExecutionResult) result).m_configuration;
-        String execName = project.getBasePath().concat("/").concat(project.getName());
+
 
         if (GoSdkUtil.isHostOsWindows()) {
             execName = execName.concat(".exe");

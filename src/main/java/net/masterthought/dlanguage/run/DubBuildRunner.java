@@ -33,9 +33,9 @@ public class DubBuildRunner extends DefaultProgramRunner {
             Project project = env.getProject();
 
             Executor executor = env.getExecutor();
-            return RunUtil.startDebugger(this, state, env, project, executor);
+            return RunUtil.startDebugger(this, state, env, project, executor, project.getBasePath().concat("/").concat(project.getName()));
         }
-        return doExecute(state, env);
+        return super.doExecute(state, env);
     }
 
 }

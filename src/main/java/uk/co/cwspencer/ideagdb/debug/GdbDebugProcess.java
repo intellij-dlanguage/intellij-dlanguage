@@ -75,7 +75,6 @@ public class GdbDebugProcess extends XDebugProcess implements GdbListener {
         m_configuration = null;//todo
         m_console = (ConsoleView) result.getExecutionConsole();
         init(session);
-
     }
 
     private void init(XDebugSession session) {
