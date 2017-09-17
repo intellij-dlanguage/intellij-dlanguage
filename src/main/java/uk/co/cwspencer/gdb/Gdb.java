@@ -240,7 +240,7 @@ public class Gdb {
 
             Project project = ((GdbDebugProcess) m_listener).m_project;
 
-//            Sdk sdk = GoSdkUtil.getGoogleGoSdkForProject(project);
+//            Sdk sdk = SdkUtil.getGoogleGoSdkForProject(project);
 //            if (sdk == null) {
 //                return;
 //            }
@@ -256,7 +256,7 @@ public class Gdb {
                 return;
             }
 
-//            String[] goEnv = GoSdkUtil.getExtendedGoEnv(sdkData, projectDir, "");
+//            String[] goEnv = SdkUtil.getExtendedGoEnv(sdkData, projectDir, "");
 
             Process process = Runtime.getRuntime().exec(commandLine, new String[]{}, workingDirectoryFile);
             InputStream stream = process.getInputStream();

@@ -110,7 +110,6 @@ public class GdbMiParser2 {
                 frameVal.tuple.add(parseArgsLine(m.group(matchGroup)));
             }
 
-            // file="/var/www/personal/untitled4/src/untitled4.go"
             if (m.group(++matchGroup) != null) {
                 GdbMiResult fileVal = new GdbMiResult("file");
                 fileVal.value.type = GdbMiValue.Type.String;
@@ -118,7 +117,6 @@ public class GdbMiParser2 {
                 frameVal.tuple.add(fileVal);
             }
 
-            // fullname="/var/www/personal/untitled4/src/untitled4.go"
             if (m.group(++matchGroup) != null) {
                 GdbMiResult fullnameVal = new GdbMiResult("fullname");
                 fullnameVal.value.type = GdbMiValue.Type.String;
@@ -448,7 +446,7 @@ public class GdbMiParser2 {
      */
     public void process(byte[] data, int length) {
         // Run the data through the lexer first
-        String[] buffer = convertGoOutput(data);
+        String[] buffer = convertOutput(data);
 
         for (String line : buffer) {
             if (line.isEmpty() ||
@@ -465,7 +463,7 @@ public class GdbMiParser2 {
         }
     }
 
-    private String[] convertGoOutput(byte[] data) {
+    private String[] convertOutput(byte[] data) {
         String buff;
 
         try {
@@ -532,7 +530,7 @@ public class GdbMiParser2 {
 
     private void printUnhandledLine(String line) {
         if (rawConsole != null) {
-            rawConsole.print("[[[ go.gdb.internal ]]] " + line + "\n", ConsoleViewContentType.ERROR_OUTPUT);
+            rawConsole.print("[[[ d.gdb.internal ]]] " + line + "\n", ConsoleViewContentType.ERROR_OUTPUT);
         }
     }
 
@@ -823,13 +821,11 @@ public class GdbMiParser2 {
         funcVal.value.string = m.group(++matchGroup);
         bkptVal.tuple.add(funcVal);
 
-        // file="/var/www/personal/untitled4/src/untitled4.go"
         GdbMiResult fileVal = new GdbMiResult("file");
         fileVal.value.type = GdbMiValue.Type.String;
         fileVal.value.string = m.group(++matchGroup);
         bkptVal.tuple.add(fileVal);
 
-        // fullname="/var/www/personal/untitled4/src/untitled4.go"
         GdbMiResult fullnameVal = new GdbMiResult("fullname");
         fullnameVal.value.type = GdbMiValue.Type.String;
         fullnameVal.value.string = m.group(++matchGroup);
@@ -868,7 +864,6 @@ public class GdbMiParser2 {
         timesVal.value.string = m.group(++matchGroup);
         bkptVal.tuple.add(timesVal);
 
-        // original-location="/var/www/personal/untitled4/src/untitled4.go:17"
         GdbMiResult originalLocationVal = new GdbMiResult("original-location");
         originalLocationVal.value.type = GdbMiValue.Type.String;
         originalLocationVal.value.string = m.group(++matchGroup);
@@ -931,7 +926,6 @@ public class GdbMiParser2 {
         addrVal.value.string = m.group(++matchGroup);
         bkptVal.tuple.add(addrVal);
 
-        // pending="/var/www/personal/untitled4/src/untitled4.go:45"
         GdbMiResult pendingVal = new GdbMiResult("pending");
         pendingVal.value.type = GdbMiValue.Type.String;
         pendingVal.value.string = m.group(++matchGroup);
@@ -943,7 +937,6 @@ public class GdbMiParser2 {
         timesVal.value.string = m.group(++matchGroup);
         bkptVal.tuple.add(timesVal);
 
-        // original-location="/var/www/personal/untitled4/src/untitled4.go:17"
         GdbMiResult originalLocationVal = new GdbMiResult("original-location");
         originalLocationVal.value.type = GdbMiValue.Type.String;
         originalLocationVal.value.string = m.group(++matchGroup);
@@ -1016,7 +1009,6 @@ public class GdbMiParser2 {
         timesVal.value.string = m.group(++matchGroup);
         bkptVal.tuple.add(timesVal);
 
-        // original-location="/var/www/personal/untitled4/src/untitled4.go:17"
         GdbMiResult originalLocationVal = new GdbMiResult("original-location");
         originalLocationVal.value.type = GdbMiValue.Type.String;
         originalLocationVal.value.string = m.group(++matchGroup);
@@ -1031,8 +1023,6 @@ public class GdbMiParser2 {
         //      enabled="y",
         //      addr="0x0000000000400f2a",
         //      func="main.main",
-        //      file="/var/www/personal/untitled4/src/untitled4.go",
-        //      fullname="/var/www/personal/untitled4/src/untitled4.go",
         //      line="44",
         //      thread-groups=["i1"]
         // }
@@ -1100,13 +1090,11 @@ public class GdbMiParser2 {
             funcVal.value.string = m.group(++matchGroup);
             bkptVal.tuple.add(funcVal);
 
-            // file="/var/www/personal/untitled4/src/untitled4.go"
             GdbMiResult fileVal = new GdbMiResult("file");
             fileVal.value.type = GdbMiValue.Type.String;
             fileVal.value.string = m.group(++matchGroup);
             bkptVal.tuple.add(fileVal);
 
-            // fullname="/var/www/personal/untitled4/src/untitled4.go"
             GdbMiResult fullnameVal = new GdbMiResult("fullname");
             fullnameVal.value.type = GdbMiValue.Type.String;
             fullnameVal.value.string = m.group(++matchGroup);
@@ -1596,13 +1584,6 @@ public class GdbMiParser2 {
     }
 
     private Collection<GdbMiResult> parseThreadsLine(String line) {
-        // threads=[
-        //      {id="4",target-id="Thread 0x7fffe67e7700 (LWP 25320)",name="seraph",frame={level="0",addr="0x00000000004356e3",func="runtime.futex",args=[],file="/usr/local/go/src/pkg/runtime/sys_linux_amd64.s",fullname="/usr/lib/go1.2/src/pkg/runtime/sys_linux_amd64.s",line="267"},state="stopped",core="7"},
-        //      {id="3",target-id="Thread 0x7fffe6fe8700 (LWP 25319)",name="seraph",frame={level="0",addr="0x00000000004356e3",func="runtime.futex",args=[],file="/usr/local/go/src/pkg/runtime/sys_linux_amd64.s",fullname="/usr/lib/go1.2/src/pkg/runtime/sys_linux_amd64.s",line="267"},state="stopped",core="2"},
-        //      {id="2",target-id="Thread 0x7fffe77e9700 (LWP 25318)",name="seraph",frame={level="0",addr="0x000000000043541d",func="runtime.usleep",args=[{name="usec",value="void"}],file="/usr/local/go/src/pkg/runtime/sys_linux_amd64.s",fullname="/usr/lib/go1.2/src/pkg/runtime/sys_linux_amd64.s",line="76"},state="stopped",core="5"},
-        //      {id="1",target-id="Thread 0x7ffff7fd0740 (LWP 25314)",name="seraph",frame={level="0",addr="0x0000000000408462",func="main.checkAudioConfigStream",args=[{name="langChan",value="0xc2000c2060"}],file="/var/www/fork/seraph/src/seraph.go",fullname="/var/www/fork/seraph/src/seraph.go",line="984"},state="stopped",core="7"}
-        // ],
-        // current-thread-id="1"
         Collection<GdbMiResult> result = new ArrayList<GdbMiResult>();
 
         if (line.equals("threads=[]")) {

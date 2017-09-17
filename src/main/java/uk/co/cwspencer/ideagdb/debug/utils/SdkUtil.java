@@ -1,8 +1,8 @@
-package uk.co.cwspencer.ideagdb.debug.go;
+package uk.co.cwspencer.ideagdb.debug.utils;
 
 import com.intellij.openapi.util.SystemInfo;
 
-public class GoSdkUtil {
+public class SdkUtil {
     public static boolean isHostOsWindows() {
         return SystemInfo.isWindows;
     }

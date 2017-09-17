@@ -12,7 +12,7 @@ import uk.co.cwspencer.gdb.messages.GdbErrorEvent;
 import uk.co.cwspencer.gdb.messages.GdbEvent;
 import uk.co.cwspencer.gdb.messages.GdbVariableObject;
 import uk.co.cwspencer.gdb.messages.GdbVariableObjects;
-import uk.co.cwspencer.ideagdb.debug.go.GoGdbUtil;
+import uk.co.cwspencer.ideagdb.debug.utils.GdbUtil;
 
 /**
  * Class for providing information about a value from GDB.
@@ -46,7 +46,7 @@ public class GdbValue extends XValue {
      */
     @Override
     public void computePresentation(@NotNull final XValueNode node, @NotNull XValuePlace place) {
-        final String goType = GoGdbUtil.getGoObjectType(m_variableObject.type);
+        final String goType = GdbUtil.getGoObjectType(m_variableObject.type);
         final Boolean hasChildren = m_variableObject.numChildren != null && m_variableObject.numChildren > 0;
 
         if (goType.equals("string")) {
@@ -65,7 +65,7 @@ public class GdbValue extends XValue {
     @Nullable
     @Override
     public XValueModifier getModifier() {
-        if (!GoGdbUtil.supportsEditing(m_variableObject.type)) {
+        if (!GdbUtil.supportsEditing(m_variableObject.type)) {
             return null;
         }
 

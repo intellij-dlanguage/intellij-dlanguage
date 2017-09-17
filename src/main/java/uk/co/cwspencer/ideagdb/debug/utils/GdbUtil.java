@@ -3,7 +3,7 @@ Copyright 2013 Florin Patan. All rights reserved.
 Use of this source code is governed by a MIT-style
 license that can be found in the LICENSE file.
 */
-package uk.co.cwspencer.ideagdb.debug.go;
+package uk.co.cwspencer.ideagdb.debug.utils;
 
 import com.google.common.collect.ImmutableMap;
 import com.intellij.execution.configurations.GeneralCommandLine;
@@ -19,8 +19,8 @@ import java.util.Map;
  * <p>
  * 1/14/14
  */
-public class GoGdbUtil {
-    private static final Logger LOG = Logger.getInstance("uk.co.cwspencer.ideagdb.debug.go.gogdbutil");
+public class GdbUtil {
+    private static final Logger LOG = Logger.getInstance(GdbUtil.class);
 
     // TODO properly add only types that work here
     private static final Map<String, Boolean> editingSupport = ImmutableMap.<String, Boolean>builder()

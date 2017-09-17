@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 import uk.co.cwspencer.gdb.Gdb;
 import uk.co.cwspencer.gdb.messages.GdbEvent;
 import uk.co.cwspencer.ideagdb.debug.GdbDebugProcess;
-import uk.co.cwspencer.ideagdb.debug.go.GoSdkUtil;
+import uk.co.cwspencer.ideagdb.debug.utils.SdkUtil;
 
 public class RunUtil {
     @Nullable
@@ -30,7 +30,7 @@ public class RunUtil {
 //        GdbRunConfiguration configuration = ((GdbExecutionResult) result).m_configuration;
 
 
-        if (GoSdkUtil.isHostOsWindows()) {
+        if (SdkUtil.isHostOsWindows()) {
             execName = execName.concat(".exe");
         }
 
