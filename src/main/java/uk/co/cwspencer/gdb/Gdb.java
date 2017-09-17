@@ -1,24 +1,25 @@
 /*
- * Files adapted from the go-lang-idea-plugin project at,
- *  https://github.com/go-lang-plugin-org/go-lang-idea-plugin
- * Original copyright from the golang idea plugin:
+ * (These files where modified from: https://bitbucket.org/spencercw/ideagdb/src
+ * Original Copyright:
+ * Copyright (c) 2013 Chris Spencer <spencercw@gmail.com>
  *
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.)
  */
 
 package uk.co.cwspencer.gdb;
@@ -43,9 +44,9 @@ public class Gdb {
     private static final Logger m_log = Logger.getInstance("#uk.co.cwspencer.gdb.Gdb");
 
     // Size in KB for the buffer
-    private static Integer BUFFER_SIZE = 256 * 1024;
+    private static final Integer BUFFER_SIZE = 256 * 1024;
     // Handle to the ASCII character set
-    private static Charset m_ascii = Charset.forName("US-ASCII");
+    private static final Charset m_ascii = Charset.forName("US-ASCII");
     // Commands that have been sent to GDB and are awaiting a response
     private final Map<Long, CommandData> m_pendingCommands = new HashMap<Long, CommandData>();
     // GDB variable objects
@@ -54,11 +55,11 @@ public class Gdb {
     private final Map<String, GdbVariableObject> m_variableObjectsByName =
         new HashMap<String, GdbVariableObject>();
     // The listener
-    private GdbListener m_listener;
+    private final GdbListener m_listener;
     // Handle for the GDB process
     private Process m_process;
     // Threads which read/write data from GDB
-    private Thread m_readThread;
+    private final Thread m_readThread;
     private Thread m_writeThread;
     // Flag indicating whether we are stopping
     private Boolean m_stopping = false;
@@ -651,7 +652,7 @@ public class Gdb {
          *
          * @param event The event.
          */
-        public void onGdbCommandCompleted(GdbEvent event);
+        void onGdbCommandCompleted(GdbEvent event);
     }
 
     // Information about a command that is awaiting processing
