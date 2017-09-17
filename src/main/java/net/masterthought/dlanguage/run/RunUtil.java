@@ -12,12 +12,12 @@ import com.intellij.xdebugger.XDebugProcess;
 import com.intellij.xdebugger.XDebugProcessStarter;
 import com.intellij.xdebugger.XDebugSession;
 import com.intellij.xdebugger.XDebuggerManager;
-import net.masterthought.dlanguage.GoSdkUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import uk.co.cwspencer.gdb.Gdb;
 import uk.co.cwspencer.gdb.messages.GdbEvent;
 import uk.co.cwspencer.ideagdb.debug.GdbDebugProcess;
+import uk.co.cwspencer.ideagdb.debug.go.GoSdkUtil;
 
 public class RunUtil {
     @Nullable
