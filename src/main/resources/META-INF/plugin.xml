@@ -59,9 +59,18 @@
         <!-- module -->
         <internalFileTemplate name="D Language Module"/>
         <moduleType id="DLANGUAGE_MODULE" implementationClass="net.masterthought.dlanguage.module.DLanguageModuleType"/>
+
+
         <configurationType implementation="net.masterthought.dlanguage.run.DLanguageRunDubConfigurationType"/>
+        <programRunner implementation="net.masterthought.dlanguage.run.DubBuildRunner"/>
+
         <configurationType implementation="net.masterthought.dlanguage.run.DLanguageRunDmdConfigurationType"/>
+        <programRunner implementation="net.masterthought.dlanguage.run.DmdBuildRunner"/>
+
         <configurationType implementation="net.masterthought.dlanguage.run.DLanguageRunAppConfigurationType"/>
+        <programRunner implementation="net.masterthought.dlanguage.run.RunAppRunner"/>
+
+
         <moduleBuilder id="DLangModuleBuilder"
                        builderClass="net.masterthought.dlanguage.module.DLanguageModuleBuilder"/>
         <moduleBuilder id="DLangDubModuleBuilder"

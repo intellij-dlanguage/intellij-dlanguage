@@ -1,5 +1,6 @@
 package uk.co.cwspencer.ideagdb.debug;
 
+import com.intellij.execution.ExecutionResult;
 import com.intellij.execution.impl.ConsoleViewImpl;
 import com.intellij.execution.ui.ConsoleView;
 import com.intellij.execution.ui.ConsoleViewContentType;
@@ -66,6 +67,19 @@ public class GdbDebugProcess extends XDebugProcess implements GdbListener {
         super(session);
         m_configuration = executionResult.getConfiguration();
         m_console = (ConsoleView) executionResult.getExecutionConsole();
+        init(session);
+    }
+
+    public GdbDebugProcess(Project project, XDebugSession session, ExecutionResult result) {
+        super(session);
+        m_configuration = null;//todo
+        m_console = (ConsoleView) result.getExecutionConsole();
+        init(session);
+
+    }
+
+    private void init(XDebugSession session) {
+        Project project = session.getProject();
         m_project = project;
         debugSession = session;
 

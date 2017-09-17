@@ -5,6 +5,7 @@ import com.intellij.execution.ExecutionResult;
 import com.intellij.execution.Executor;
 import com.intellij.execution.configurations.CommandLineState;
 import com.intellij.execution.configurations.GeneralCommandLine;
+import com.intellij.execution.executors.DefaultDebugExecutor;
 import com.intellij.execution.filters.TextConsoleBuilder;
 import com.intellij.execution.filters.TextConsoleBuilderImpl;
 import com.intellij.execution.process.OSProcessHandler;
@@ -74,6 +75,9 @@ public class DLanguageRunDubState extends CommandLineState {
      */
     private GeneralCommandLine getExecutableCommandLine(final DLanguageRunDubConfiguration config)
         throws ExecutionException {
+        if (executor.getActionName().equals(DefaultDebugExecutor.EXECUTOR_ID)) {
+            //todo add custom option overrides
+        }
         final Module module = config.getConfigurationModule().getModule();
         if (module == null) {
             throw new ExecutionException("Run configuration has no module selected.");
@@ -192,6 +196,7 @@ public class DLanguageRunDubState extends CommandLineState {
         }
 
         return cmd;
+
     }
 
     private VirtualFile getSourceRoot(final Module module) {
