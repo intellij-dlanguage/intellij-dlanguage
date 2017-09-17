@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="net.masterthought.dlanguage.settings.DLanguageToolsConfigurable">
-  <grid id="27dc6" binding="mainPanel" layout-manager="GridLayoutManager" row-count="24" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+  <grid id="27dc6" binding="mainPanel" layout-manager="GridLayoutManager" row-count="28" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="20" y="20" width="525" height="755"/>
+      <xy x="20" y="20" width="525" height="818"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -42,6 +42,9 @@
           <enabled value="false"/>
           <text value=""/>
         </properties>
+        <clientProperties>
+          <caretAspectRatio class="java.lang.Float" value="0.04"/>
+        </clientProperties>
       </component>
       <component id="113f9" class="javax.swing.JLabel">
         <constraints>
@@ -77,6 +80,9 @@
           <enabled value="false"/>
           <text value=""/>
         </properties>
+        <clientProperties>
+          <caretAspectRatio class="java.lang.Float" value="0.04"/>
+        </clientProperties>
       </component>
       <component id="92c4b" class="javax.swing.JLabel">
         <constraints>
@@ -111,6 +117,9 @@
           <enabled value="false"/>
           <text value=""/>
         </properties>
+        <clientProperties>
+          <caretAspectRatio class="java.lang.Float" value="0.04"/>
+        </clientProperties>
       </component>
       <component id="375f0" class="com.intellij.ui.TitledSeparator">
         <constraints>
@@ -258,6 +267,9 @@
           <enabled value="false"/>
           <text value=""/>
         </properties>
+        <clientProperties>
+          <caretAspectRatio class="java.lang.Float" value="0.04"/>
+        </clientProperties>
       </component>
       <component id="2911b" class="javax.swing.JLabel">
         <constraints>
@@ -340,6 +352,9 @@
           <enabled value="false"/>
           <text value=""/>
         </properties>
+        <clientProperties>
+          <caretAspectRatio class="java.lang.Float" value="0.04"/>
+        </clientProperties>
       </component>
       <component id="291ee" class="com.intellij.ui.TitledSeparator">
         <constraints>
@@ -398,6 +413,9 @@
           <enabled value="false"/>
           <text value=""/>
         </properties>
+        <clientProperties>
+          <caretAspectRatio class="java.lang.Float" value="0.04"/>
+        </clientProperties>
       </component>
       <component id="5cf79" class="javax.swing.JButton" binding="dFormatAutoFind">
         <constraints>
@@ -406,6 +424,75 @@
         <properties>
           <text value="Auto Find"/>
         </properties>
+      </component>
+      <component id="d7654" class="com.intellij.ui.TitledSeparator">
+        <constraints>
+          <grid row="24" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="GDB"/>
+        </properties>
+      </component>
+      <component id="a7923" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="25" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Path:"/>
+        </properties>
+      </component>
+      <component id="c6ba6" class="com.intellij.openapi.ui.TextFieldWithBrowseButton" binding="GDBPath">
+        <constraints>
+          <grid row="25" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="9cbbc" class="javax.swing.JButton" binding="GDBAutoFind">
+        <constraints>
+          <grid row="25" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Auto Find"/>
+        </properties>
+      </component>
+      <component id="f9410" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="26" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Flags:"/>
+        </properties>
+      </component>
+      <component id="36bd3" class="com.intellij.ui.RawCommandLineEditor" binding="GDBFlags">
+        <constraints>
+          <grid row="26" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="17611" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="27" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Version:"/>
+        </properties>
+      </component>
+      <component id="7768c" class="javax.swing.JTextField" binding="GDBVersion">
+        <constraints>
+          <grid row="27" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <editable value="false"/>
+          <enabled value="false"/>
+          <text value=""/>
+        </properties>
+        <clientProperties>
+          <caretAspectRatio class="java.lang.Float" value="0.04"/>
+        </clientProperties>
       </component>
     </children>
   </grid>
