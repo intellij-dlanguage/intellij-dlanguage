@@ -4,8 +4,8 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFileFactory;
 import net.masterthought.dlanguage.DLanguage;
-import net.masterthought.dlanguage.psi.DLanguageFile;
-import net.masterthought.dlanguage.psi.DLanguageIdentifier;
+import net.masterthought.dlanguage.psi.DlangFile;
+import net.masterthought.dlanguage.psi.DlangIdentifier;
 import net.masterthought.dlanguage.psi.DLanguageImportDeclaration;
 import net.masterthought.dlanguage.psi.DLanguageModuleDeclaration;
 import org.jetbrains.annotations.NotNull;
@@ -22,8 +22,8 @@ public class DElementFactory {
      * Takes a name and returns a Psi node of that name, or null.
      */
     @Nullable
-    public static DLanguageIdentifier createDLanguageIdentifierFromText(@NotNull final Project project, @NotNull final String name) {
-        final DLanguageIdentifier e = findChildOfType(createExpressionFromText(project, name), DLanguageIdentifier.class);
+    public static DlangIdentifier createDLanguageIdentifierFromText(@NotNull final Project project, @NotNull final String name) {
+        final DlangIdentifier e = findChildOfType(createExpressionFromText(project, name), DlangIdentifier.class);
         if (e != null && e.getName().equals(name)) return e;
         return null;
     }
@@ -33,7 +33,7 @@ public class DElementFactory {
      */
     @NotNull
     private static PsiElement createExpressionFromText(@NotNull final Project project, @NotNull final String name) {
-        final DLanguageFile fileFromText = createFileFromText(project, name);
+        final DlangFile fileFromText = createFileFromText(project, name);
         final PsiElement rhs = fileFromText.getFirstChild().getFirstChild().getLastChild();
         return rhs.getLastChild().getLastChild().getLastChild();
     }
@@ -42,8 +42,8 @@ public class DElementFactory {
      * Create a file containing text.
      */
     @NotNull
-    private static DLanguageFile createFileFromText(@NotNull final Project project, @NotNull final String text) {
-        return (DLanguageFile) PsiFileFactory.getInstance(project).createFileFromText("A.hs", DLanguage.INSTANCE, text);
+    private static DlangFile createFileFromText(@NotNull final Project project, @NotNull final String text) {
+        return (DlangFile) PsiFileFactory.getInstance(project).createFileFromText("A.hs", DLanguage.INSTANCE, text);
     }
 
     public static PsiElement createDLanguageModuleFromText(final Project project, final String name) {

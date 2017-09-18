@@ -3,7 +3,7 @@ package net.masterthought.dlanguage.resolve
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiNamedElement
-import net.masterthought.dlanguage.psi.DLanguageTypes.*
+import net.masterthought.dlanguage.psi.DlangTypes.*
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement
 import net.masterthought.dlanguage.resolve.processors.basic.BasicResolve
 import net.masterthought.dlanguage.utils.*

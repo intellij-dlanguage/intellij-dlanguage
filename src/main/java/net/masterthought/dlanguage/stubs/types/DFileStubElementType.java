@@ -8,7 +8,7 @@ import com.intellij.psi.stubs.StubInputStream;
 import com.intellij.psi.stubs.StubOutputStream;
 import com.intellij.psi.tree.IStubFileElementType;
 import net.masterthought.dlanguage.DLanguage;
-import net.masterthought.dlanguage.psi.DLanguageFile;
+import net.masterthought.dlanguage.psi.DlangFile;
 import net.masterthought.dlanguage.stubs.DLanguageFileStub;
 import org.jetbrains.annotations.NotNull;
 
@@ -28,8 +28,8 @@ public class DFileStubElementType extends IStubFileElementType<DLanguageFileStub
             @NotNull
             @Override
             protected StubElement createStubForFile(@NotNull final PsiFile file) {
-                if (file instanceof DLanguageFile) {
-                    return new DLanguageFileStub((DLanguageFile) file);
+                if (file instanceof DlangFile) {
+                    return new DLanguageFileStub((DlangFile) file);
                 }
                 return super.createStubForFile(file);
             }

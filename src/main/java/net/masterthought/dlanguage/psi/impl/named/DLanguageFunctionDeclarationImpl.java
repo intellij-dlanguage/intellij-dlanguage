@@ -28,7 +28,7 @@ public class DLanguageFunctionDeclarationImpl extends DNamedStubbedPsiElementBas
 
     @Nullable
     @Override
-    public DLanguageIdentifier getNameIdentifier() {
+    public DlangIdentifier getNameIdentifier() {
         return getIdentifier();
     }
 
@@ -40,8 +40,8 @@ public class DLanguageFunctionDeclarationImpl extends DNamedStubbedPsiElementBas
 
     @Nullable
     @Override
-    public DLanguageIdentifier getIdentifier() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
+    public DlangIdentifier getIdentifier() {
+        return PsiTreeUtil.getChildOfType(this, DlangIdentifier.class);
     }
 
     @Nullable

@@ -14,7 +14,7 @@ import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
-import net.masterthought.dlanguage.DLanguageSdkType;
+import net.masterthought.dlanguage.DlangSdkType;
 import net.masterthought.dlanguage.project.DubConfigurationParser;
 import net.masterthought.dlanguage.project.DubPackage;
 import net.masterthought.dlanguage.settings.SettingsChangeNotifier;
@@ -164,13 +164,13 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
         final ModuleRootManager moduleRootManager = ModuleRootManager.getInstance(module);
         final Sdk sdk = moduleRootManager.getSdk();
 
-        if (sdk != null && (sdk.getSdkType() instanceof DLanguageSdkType)) {
+        if (sdk != null && (sdk.getSdkType() instanceof DlangSdkType)) {
             final String path = sdk.getHomePath();
             if (isNotNullOrEmpty(path)) {
                 if (SystemInfo.isMac) {
                     final String root = path.replaceAll("bin", "src");
                     compilerSources.add(root + "/phobos");
-                    compilerSources.add(root + "/druntime/import");
+                    compilerSources.add(root + "/druntime/singleImport");
                 }
                 // add linux and windows here once I know how
             }

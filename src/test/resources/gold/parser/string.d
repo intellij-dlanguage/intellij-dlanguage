@@ -600,7 +600,7 @@ ptrdiff_t indexOf(Range)(auto ref Range s, in dchar c, in size_t startIdx,
         assert(indexOf(to!S("def"), cast(dchar)'a', No.caseSensitive) == -1);
         assert(indexOf(to!S("Abba"), cast(dchar)'a', No.caseSensitive) == 0);
         assert(indexOf(to!S("def"), cast(dchar)'F', No.caseSensitive) == 2);
-        assert(indexOf(to!S("ödef"), 'ö', No.caseSensitive) == 0);
+        assert(indexOf(to!S("??def"), '??', No.caseSensitive) == 0);
 
         S sPlts = "Mars: the fourth Rock (Planet) from the Sun.";
         assert(indexOf("def", cast(char)'f', No.caseSensitive) == 2);
@@ -925,8 +925,8 @@ unittest
             assert(indexOf(to!S("def"), to!T("f"), 1, No.caseSensitive) == 2);
             assert(indexOf(to!S("dfefffg"), to!T("fff"), 2, No.caseSensitive) == 3);
             assert(indexOf(to!S("dfeffgfff"), to!T("fff"), 4, No.caseSensitive) == 6);
-            assert(indexOf(to!S("dfeffgffföä"), to!T("öä"), 9, No.caseSensitive) == 9,
-                to!string(indexOf(to!S("dfeffgffföä"), to!T("öä"), 9, No.caseSensitive))
+            assert(indexOf(to!S("dfeffgfff????"), to!T("????"), 9, No.caseSensitive) == 9,
+                to!string(indexOf(to!S("dfeffgfff????"), to!T("????"), 9, No.caseSensitive))
                 ~ " " ~ S.stringof ~ " " ~ T.stringof);
 
             S sPlts = "Mars: the fourth Rock (Planet) from the Sun.";
@@ -1089,13 +1089,13 @@ ptrdiff_t lastIndexOf(Char)(const(Char)[] s, in dchar c, in size_t startIdx,
         assert(lastIndexOf(to!S("def"), 'a') == -1);
         assert(lastIndexOf(to!S("abba"), 'a') == 3);
         assert(lastIndexOf(to!S("def"), 'f') == 2);
-        assert(lastIndexOf(to!S("ödef"), 'ö') == 0);
+        assert(lastIndexOf(to!S("??def"), '??') == 0);
 
         assert(lastIndexOf(cast(S) null, 'a', No.caseSensitive) == -1);
         assert(lastIndexOf(to!S("def"), 'a', No.caseSensitive) == -1);
         assert(lastIndexOf(to!S("AbbA"), 'a', No.caseSensitive) == 3);
         assert(lastIndexOf(to!S("def"), 'F', No.caseSensitive) == 2);
-        assert(lastIndexOf(to!S("ödef"), 'ö', No.caseSensitive) == 0);
+        assert(lastIndexOf(to!S("??def"), '??', No.caseSensitive) == 0);
         assert(lastIndexOf(to!S("i\u0100def"), to!dchar("\u0100"),
             No.caseSensitive) == 1);
 
@@ -1321,7 +1321,7 @@ ptrdiff_t lastIndexOf(Char1, Char2)(const(Char1)[] s, const(Char2)[] sub,
             assert(lastIndexOf(to!S("abcdefcdef"), to!T("x")) == -1, typeStr);
             assert(lastIndexOf(to!S("abcdefcdef"), to!T("xy")) == -1, typeStr);
             assert(lastIndexOf(to!S("abcdefcdef"), to!T("")) == -1, typeStr);
-            assert(lastIndexOf(to!S("öabcdefcdef"), to!T("ö")) == 0, typeStr);
+            assert(lastIndexOf(to!S("??abcdefcdef"), to!T("??")) == 0, typeStr);
 
             assert(lastIndexOf(cast(S)null, to!T("a"), No.caseSensitive) == -1, typeStr);
             assert(lastIndexOf(to!S("abcdefCdef"), to!T("c"), No.caseSensitive) == 6, typeStr);
@@ -1329,13 +1329,13 @@ ptrdiff_t lastIndexOf(Char1, Char2)(const(Char1)[] s, const(Char2)[] sub,
             assert(lastIndexOf(to!S("abcdefcdef"), to!T("x"), No.caseSensitive) == -1, typeStr);
             assert(lastIndexOf(to!S("abcdefcdef"), to!T("xy"), No.caseSensitive) == -1, typeStr);
             assert(lastIndexOf(to!S("abcdefcdef"), to!T(""), No.caseSensitive) == -1, typeStr);
-            assert(lastIndexOf(to!S("öabcdefcdef"), to!T("ö"), No.caseSensitive) == 0, typeStr);
+            assert(lastIndexOf(to!S("??abcdefcdef"), to!T("??"), No.caseSensitive) == 0, typeStr);
 
             assert(lastIndexOf(to!S("abcdefcdef"), to!T("c"), No.caseSensitive) == 6, typeStr);
             assert(lastIndexOf(to!S("abcdefcdef"), to!T("cd"), No.caseSensitive) == 6, typeStr);
             assert(lastIndexOf(to!S("abcdefcdef"), to!T("def"), No.caseSensitive) == 7, typeStr);
 
-            assert(lastIndexOf(to!S("ödfeffgfff"), to!T("ö"), Yes.caseSensitive) == 0);
+            assert(lastIndexOf(to!S("??dfeffgfff"), to!T("??"), Yes.caseSensitive) == 0);
 
             S sPlts = "Mars: the fourth Rock (Planet) from the Sun.";
             S sMars = "Who\'s \'My Favorite Maritian?\'";
@@ -1366,10 +1366,10 @@ ptrdiff_t lastIndexOf(Char1, Char2)(const(Char1)[] s, const(Char2)[] sub,
         foreach (T; AliasSeq!(string, wstring, dstring))
         {
             enum typeStr = S.stringof ~ " " ~ T.stringof;
-            auto idx = lastIndexOf(to!T("Hällö Wörldö ö"),to!S("ö ö"));
+            auto idx = lastIndexOf(to!T("H??ll?? W??rld?? ??"),to!S("?? ??"));
             assert(idx != -1, to!string(idx) ~ " " ~ typeStr);
 
-            idx = lastIndexOf(to!T("Hällö Wörldö ö"),to!S("ö öd"));
+            idx = lastIndexOf(to!T("H??ll?? W??rld?? ??"),to!S("?? ??d"));
             assert(idx == -1, to!string(idx) ~ " " ~ typeStr);
         }
     }
@@ -1398,8 +1398,8 @@ ptrdiff_t lastIndexOf(Char1, Char2)(const(Char1)[] s, const(Char2)[] sub,
             assert(lastIndexOf(to!S("abcdefcdefx"), to!T("x"), 1) == -1, typeStr);
             assert(lastIndexOf(to!S("abcdefcdefxy"), to!T("xy"), 6) == -1, typeStr);
             assert(lastIndexOf(to!S("abcdefcdef"), to!T(""), 8) == -1, typeStr);
-            assert(lastIndexOf(to!S("öafö"), to!T("ö"), 3) == 0, typeStr ~
-                    to!string(lastIndexOf(to!S("öafö"), to!T("ö"), 3))); //BUG 10472
+            assert(lastIndexOf(to!S("??af??"), to!T("??"), 3) == 0, typeStr ~
+                    to!string(lastIndexOf(to!S("??af??"), to!T("??"), 3))); //BUG 10472
 
             assert(lastIndexOf(cast(S)null, to!T("a"), 1, No.caseSensitive) == -1, typeStr);
             assert(lastIndexOf(to!S("abcdefCdef"), to!T("c"), 5, No.caseSensitive) == 2, typeStr);
@@ -1590,7 +1590,7 @@ ptrdiff_t indexOfAny(Char,Char2)(const(Char)[] haystack, const(Char2)[] needles,
 
     ptrdiff_t i = "helloWorld".indexOfAny("Wr");
     assert(i == 5);
-    i = "öällo world".indexOfAny("lo ");
+    i = "????llo world".indexOfAny("lo ");
     assert(i == 4, to!string(i));
 }
 
@@ -1602,7 +1602,7 @@ ptrdiff_t indexOfAny(Char,Char2)(const(Char)[] haystack, const(Char2)[] needles,
     ptrdiff_t i = "helloWorld".indexOfAny("Wr", 4);
     assert(i == 5);
 
-    i = "Foo öällo world".indexOfAny("lh", 3);
+    i = "Foo ????llo world".indexOfAny("lh", 3);
     assert(i == 8, to!string(i));
 }
 
@@ -1654,7 +1654,7 @@ ptrdiff_t indexOfAny(Char,Char2)(const(Char)[] haystack, const(Char2)[] needles,
                 == -1);
             assert(indexOfAny(to!S("dfeffgfff"), to!T("BND"),
                 No.caseSensitive) == 0);
-            assert(indexOfAny(to!S("dfeffgfff"), to!T("BNDabCHIJKQEPÖÖSYXÄ??ß"),
+            assert(indexOfAny(to!S("dfeffgfff"), to!T("BNDabCHIJKQEP????SYX??????"),
                 No.caseSensitive) == 0);
 
             assert(indexOfAny("\u0100", to!T("\u0100"), No.caseSensitive) == 0);
@@ -1694,7 +1694,7 @@ ptrdiff_t indexOfAny(Char,Char2)(const(Char)[] haystack, const(Char2)[] needles,
                 No.caseSensitive) == 3);
             assert(indexOfAny(to!S("dfeffgfff"), to!T("fEe"), 4,
                 No.caseSensitive) == 4);
-            assert(indexOfAny(to!S("dfeffgffföä"), to!T("föä"), 9,
+            assert(indexOfAny(to!S("dfeffgfff????"), to!T("f????"), 9,
                 No.caseSensitive) == 9);
 
             assert(indexOfAny("\u0100", to!T("\u0100"), 0,
@@ -1758,7 +1758,7 @@ ptrdiff_t lastIndexOfAny(Char,Char2)(const(Char)[] haystack,
     ptrdiff_t i = "helloWorld".lastIndexOfAny("Wlo");
     assert(i == 8);
 
-    i = "Foo öäöllo world".lastIndexOfAny("öF");
+    i = "Foo ??????llo world".lastIndexOfAny("??F");
     assert(i == 8);
 }
 
@@ -1770,7 +1770,7 @@ ptrdiff_t lastIndexOfAny(Char,Char2)(const(Char)[] haystack,
     ptrdiff_t i = "helloWorld".lastIndexOfAny("Wlo", 4);
     assert(i == 3);
 
-    i = "Foo öäöllo world".lastIndexOfAny("öF", 3);
+    i = "Foo ??????llo world".lastIndexOfAny("??F", 3);
     assert(i == 0);
 }
 
@@ -1816,7 +1816,7 @@ ptrdiff_t lastIndexOfAny(Char,Char2)(const(Char)[] haystack,
                 oeIdx = 8;
             }
 
-            auto foundOeIdx = lastIndexOfAny(to!S("dfeffgföf"), to!T("feg"));
+            auto foundOeIdx = lastIndexOfAny(to!S("dfeffgf??f"), to!T("feg"));
             assert(foundOeIdx == oeIdx, to!string(foundOeIdx));
 
             assert(lastIndexOfAny(to!S("zfeffgfff"), to!T("ACDC"),
@@ -1835,7 +1835,7 @@ ptrdiff_t lastIndexOfAny(Char,Char2)(const(Char)[] haystack,
             {
                 oeIdx = 1;
             }
-            assert(lastIndexOfAny(to!S("ödfeffgfff"), to!T("BND"),
+            assert(lastIndexOfAny(to!S("??dfeffgfff"), to!T("BND"),
                 No.caseSensitive) == oeIdx);
 
             assert(lastIndexOfAny("\u0100", to!T("\u0100"),
@@ -1875,7 +1875,7 @@ ptrdiff_t lastIndexOfAny(Char,Char2)(const(Char)[] haystack,
                 typeStr);
             assert(lastIndexOfAny(to!S("abcdefcdef"), to!T("xy"), 4) == -1,
                 typeStr);
-            assert(lastIndexOfAny(to!S("öabcdefcdef"), to!T("ö"), 2) == 0,
+            assert(lastIndexOfAny(to!S("??abcdefcdef"), to!T("??"), 2) == 0,
                 typeStr);
 
             assert(lastIndexOfAny(cast(S)null, to!T("a"), 1337,
@@ -1892,7 +1892,7 @@ ptrdiff_t lastIndexOfAny(Char,Char2)(const(Char)[] haystack,
                 No.caseSensitive) == -1, typeStr);
             assert(lastIndexOfAny(to!S("abCdefcdef"), to!T("XY"), 4,
                 No.caseSensitive) == -1, typeStr);
-            assert(lastIndexOfAny(to!S("ÖABCDEFCDEF"), to!T("ö"), 2,
+            assert(lastIndexOfAny(to!S("??ABCDEFCDEF"), to!T("??"), 2,
                 No.caseSensitive) == 0, typeStr);
         }();
     }
@@ -2001,16 +2001,16 @@ ptrdiff_t indexOfNeither(Char,Char2)(const(Char)[] haystack,
                 No.caseSensitive) == 6);
             if (is(S == string))
             {
-                assert(indexOfNeither(to!S("äDfEfffg"), to!T("ädFe"),
+                assert(indexOfNeither(to!S("??DfEfffg"), to!T("??dFe"),
                     No.caseSensitive) == 8,
-                    to!string(indexOfNeither(to!S("äDfEfffg"), to!T("ädFe"),
+                    to!string(indexOfNeither(to!S("??DfEfffg"), to!T("??dFe"),
                     No.caseSensitive)));
             }
             else
             {
-                assert(indexOfNeither(to!S("äDfEfffg"), to!T("ädFe"),
+                assert(indexOfNeither(to!S("??DfEfffg"), to!T("??dFe"),
                     No.caseSensitive) == 7,
-                    to!string(indexOfNeither(to!S("äDfEfffg"), to!T("ädFe"),
+                    to!string(indexOfNeither(to!S("??DfEfffg"), to!T("??dFe"),
                     No.caseSensitive)));
             }
         }();
@@ -2048,15 +2048,15 @@ ptrdiff_t indexOfNeither(Char,Char2)(const(Char)[] haystack,
                 No.caseSensitive) == 6);
             if (is(S == string))
             {
-                assert(indexOfNeither(to!S("öDfEfffg"), to!T("äDi"), 2,
+                assert(indexOfNeither(to!S("??DfEfffg"), to!T("??Di"), 2,
                     No.caseSensitive) == 3, to!string(indexOfNeither(
-                    to!S("öDfEfffg"), to!T("äDi"), 2, No.caseSensitive)));
+                    to!S("??DfEfffg"), to!T("??Di"), 2, No.caseSensitive)));
             }
             else
             {
-                assert(indexOfNeither(to!S("öDfEfffg"), to!T("äDi"), 2,
+                assert(indexOfNeither(to!S("??DfEfffg"), to!T("??Di"), 2,
                     No.caseSensitive) == 2, to!string(indexOfNeither(
-                    to!S("öDfEfffg"), to!T("äDi"), 2, No.caseSensitive)));
+                    to!S("??DfEfffg"), to!T("??Di"), 2, No.caseSensitive)));
             }
         }();
     }
@@ -2154,7 +2154,7 @@ ptrdiff_t lastIndexOfNeither(Char,Char2)(const(Char)[] haystack,
                 oeIdx = 9;
             }
 
-            auto foundOeIdx = lastIndexOfNeither(to!S("ödfefegff"), to!T("zeg"));
+            auto foundOeIdx = lastIndexOfNeither(to!S("??dfefegff"), to!T("zeg"));
             assert(foundOeIdx == oeIdx, to!string(foundOeIdx));
 
             assert(lastIndexOfNeither(to!S("zfeffgfsb"), to!T("FSB"),
@@ -2169,9 +2169,9 @@ ptrdiff_t lastIndexOfNeither(Char,Char2)(const(Char)[] haystack,
                 No.caseSensitive) == 1);
             assert(lastIndexOfNeither(to!S("dfefffg"), to!T("NSA"),
                 No.caseSensitive) == 6);
-            assert(lastIndexOfNeither(to!S("dfeffgfffö"), to!T("BNDabCHIJKQEPÖÖSYXÄ??ß"),
-                No.caseSensitive) == 8, to!string(lastIndexOfNeither(to!S("dfeffgfffö"),
-                to!T("BNDabCHIJKQEPÖÖSYXÄ??ß"), No.caseSensitive)));
+            assert(lastIndexOfNeither(to!S("dfeffgfff??"), to!T("BNDabCHIJKQEP????SYX??????"),
+                No.caseSensitive) == 8, to!string(lastIndexOfNeither(to!S("dfeffgfff??"),
+                to!T("BNDabCHIJKQEP????SYX??????"), No.caseSensitive)));
         }();
     }
     }
@@ -2201,7 +2201,7 @@ ptrdiff_t lastIndexOfNeither(Char,Char2)(const(Char)[] haystack,
                 oeIdx = 5;
             }
 
-            auto foundOeIdx = lastIndexOfNeither(to!S("ödfefegff"), to!T("zeg"),
+            auto foundOeIdx = lastIndexOfNeither(to!S("??dfefegff"), to!T("zeg"),
                 7);
             assert(foundOeIdx == oeIdx, to!string(foundOeIdx));
 
@@ -3149,21 +3149,21 @@ auto strip(Range)(auto ref Range str)
     {
         assert(equal(stripLeft(to!S("  foo\t ")), "foo\t "));
         assert(equal(stripLeft(to!S("\u2008  foo\t \u2007")), "foo\t \u2007"));
-        assert(equal(stripLeft(to!S("\u0085 μ \u0085 \u00BB \r")), "μ \u0085 \u00BB \r"));
+        assert(equal(stripLeft(to!S("\u0085 ?? \u0085 \u00BB \r")), "?? \u0085 \u00BB \r"));
         assert(equal(stripLeft(to!S("1")), "1"));
         assert(equal(stripLeft(to!S("\U0010FFFE")), "\U0010FFFE"));
         assert(equal(stripLeft(to!S("")), ""));
 
         assert(equal(stripRight(to!S("  foo\t ")), "  foo"));
         assert(equal(stripRight(to!S("\u2008  foo\t \u2007")), "\u2008  foo"));
-        assert(equal(stripRight(to!S("\u0085 μ \u0085 \u00BB \r")), "\u0085 μ \u0085 \u00BB"));
+        assert(equal(stripRight(to!S("\u0085 ?? \u0085 \u00BB \r")), "\u0085 ?? \u0085 \u00BB"));
         assert(equal(stripRight(to!S("1")), "1"));
         assert(equal(stripRight(to!S("\U0010FFFE")), "\U0010FFFE"));
         assert(equal(stripRight(to!S("")), ""));
 
         assert(equal(strip(to!S("  foo\t ")), "foo"));
         assert(equal(strip(to!S("\u2008  foo\t \u2007")), "foo"));
-        assert(equal(strip(to!S("\u0085 μ \u0085 \u00BB \r")), "μ \u0085 \u00BB"));
+        assert(equal(strip(to!S("\u0085 ?? \u0085 \u00BB \r")), "?? \u0085 \u00BB"));
         assert(equal(strip(to!S("\U0010FFFE")), "\U0010FFFE"));
         assert(equal(strip(to!S("")), ""));
     }
@@ -3608,9 +3608,9 @@ StringTypeOf!Range chop(Range)(auto ref Range str)
     assert(chop("Walter Bright"d.byDchar).array == "Walter Brigh"d);
     assert(chop("".byChar).array == "");
 
-    assert(chop(`ミツバチと科学者` .byCodeUnit).array == "ミツバチと科学");
-    assert(chop(`ミツバチと科学者`w.byCodeUnit).array == "ミツバチと科学"w);
-    assert(chop(`ミツバチと科学者`d.byCodeUnit).array == "ミツバチと科学"d);
+    assert(chop(`????????????????????????` .byCodeUnit).array == "?????????????????????");
+    assert(chop(`????????????????????????`w.byCodeUnit).array == "?????????????????????"w);
+    assert(chop(`????????????????????????`d.byCodeUnit).array == "?????????????????????"d);
 
     auto ca = invalidUTFstrings!char();
     foreach (s; ca)
@@ -3645,9 +3645,9 @@ StringTypeOf!Range chop(Range)(auto ref Range str)
         assert(equal(chop(to!S("hello")), "hell"));
         assert(equal(chop(to!S("hello\r\n")), "hello"));
         assert(equal(chop(to!S("hello\n\r")), "hello\n"));
-        assert(equal(chop(to!S("Verité")), "Verit"));
-        assert(equal(chop(to!S(`さいごの果実`)), "さいごの果"));
-        assert(equal(chop(to!S(`ミツバチと科学者`)), "ミツバチと科学"));
+        assert(equal(chop(to!S("Verit??")), "Verit"));
+        assert(equal(chop(to!S(`??????????????????`)), "???????????????"));
+        assert(equal(chop(to!S(`????????????????????????`)), "?????????????????????"));
     }
     });
 }
@@ -4051,9 +4051,9 @@ unittest
         assert(rightJustify(s, 8, '\u0100') == "\u0100\u0100\u0100hello");
         assert(center(s, 8, '\u0100') == "\u0100hello\u0100\u0100");
 
-        assert(leftJustify(s, 8, 'ö') == "helloööö");
-        assert(rightJustify(s, 8, 'ö') == "öööhello");
-        assert(center(s, 8, 'ö') == "öhelloöö");
+        assert(leftJustify(s, 8, '??') == "hello??????");
+        assert(rightJustify(s, 8, '??') == "??????hello");
+        assert(center(s, 8, '??') == "??hello????");
     }
     });
 }
@@ -5518,13 +5518,13 @@ S1 munch(S1, S2)(ref S1 s, S2 pattern) @safe pure @nogc
 
 @safe pure @nogc unittest
 {
-    string s = "123€abc";
+    string s = "123???abc";
     string t = munch(s, "0123456789");
-    assert(t == "123" && s == "€abc");
+    assert(t == "123" && s == "???abc");
     t = munch(s, "0123456789");
-    assert(t == "" && s == "€abc");
-    t = munch(s, "£$€¥");
-    assert(t == "€" && s == "abc");
+    assert(t == "" && s == "???abc");
+    t = munch(s, "??$?????");
+    assert(t == "???" && s == "abc");
 }
 
 
@@ -6929,7 +6929,7 @@ auto assumeUTF(T)(T[] arr) pure
 ///
 @safe pure unittest
 {
-    string a = "Hölo World";
+    string a = "H??lo World";
     immutable(ubyte)[] b = a.representation;
     string c = b.assumeUTF;
 

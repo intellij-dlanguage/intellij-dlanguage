@@ -6,9 +6,9 @@ import com.intellij.openapi.options.colors.AttributesDescriptor;
 import com.intellij.openapi.options.colors.ColorDescriptor;
 import com.intellij.openapi.options.colors.ColorSettingsPage;
 import com.intellij.util.containers.ContainerUtil;
-import net.masterthought.dlanguage.DLanguageFileType;
+import net.masterthought.dlanguage.DlangFileType;
 import net.masterthought.dlanguage.highlighting.DHighlighter;
-import net.masterthought.dlanguage.icons.DLanguageIcons;
+import net.masterthought.dlanguage.icons.DlangIcons;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -51,7 +51,7 @@ public class DColorSettingsPage implements ColorSettingsPage {
     @Nullable
     @Override
     public Icon getIcon() {
-        return DLanguageIcons.FILE;
+        return DlangIcons.FILE;
     }
 
     @NotNull
@@ -154,7 +154,7 @@ public class DColorSettingsPage implements ColorSettingsPage {
     @NotNull
     @Override
     public String getDisplayName() {
-        return DLanguageFileType.INSTANCE.getName();
+        return DlangFileType.INSTANCE.getName();
     }
 }
 

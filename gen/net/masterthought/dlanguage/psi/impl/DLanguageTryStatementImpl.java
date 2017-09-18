@@ -9,7 +9,7 @@ import net.masterthought.dlanguage.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.KW_TRY;
+import static net.masterthought.dlanguage.psi.DlangTypes.KW_TRY;
 
 
 public class DLanguageTryStatementImpl extends ASTWrapperPsiElement implements DLanguageTryStatement {

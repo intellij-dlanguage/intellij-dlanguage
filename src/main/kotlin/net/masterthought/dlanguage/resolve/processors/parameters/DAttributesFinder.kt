@@ -103,14 +103,14 @@ class DAttributesFinder {
     fun isParent(parent: PsiElement, child: PsiElement): Boolean {
         if (child == parent)
             return true
-        if (child is DLanguageFile)
+        if (child is DlangFile)
             return false
         return isParent(parent, child.parent)
     }
 
 
     fun execute(element: PsiElement): Boolean {
-        if (element is DLanguageSingleImport && isParent(element, startingPoint)) {
+        if (element is DlangSingleImport && isParent(element, startingPoint)) {
             defaultsToPrivate = true
             defaultsToPublic = false
             defaultsToStatic = false

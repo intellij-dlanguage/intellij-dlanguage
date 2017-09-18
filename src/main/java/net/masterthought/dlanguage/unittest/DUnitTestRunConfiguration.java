@@ -19,7 +19,7 @@ import com.intellij.util.PathUtil;
 import com.intellij.util.xmlb.XmlSerializer;
 import net.masterthought.dlanguage.DLanguage;
 import net.masterthought.dlanguage.DLanguageBundle;
-import net.masterthought.dlanguage.DLanguageFileType;
+import net.masterthought.dlanguage.DlangFileType;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -105,7 +105,7 @@ public class DUnitTestRunConfiguration extends LocatableConfigurationBase {
             throw new RuntimeConfigurationError(DLanguageBundle.INSTANCE.message("dlanguage.file.not.found", FileUtil.toSystemDependentName(filePath)));
         }
 
-        if (dFile.getFileType() != DLanguageFileType.INSTANCE) {
+        if (dFile.getFileType() != DlangFileType.INSTANCE) {
             throw new RuntimeConfigurationError(DLanguageBundle.INSTANCE.message("not.a.dlanguage.file", FileUtil.toSystemDependentName(filePath)));
         }
 

@@ -12,7 +12,7 @@ import net.masterthought.dlanguage.stubs.DLanguageSharedStaticConstructorStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
+import static net.masterthought.dlanguage.psi.DlangTypes.*;
 
 
 public class DLanguageSharedStaticConstructorImpl extends DStubbedPsiElementBase<DLanguageSharedStaticConstructorStub> implements DLanguageSharedStaticConstructor {

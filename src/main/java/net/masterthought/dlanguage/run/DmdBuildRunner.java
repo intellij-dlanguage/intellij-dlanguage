@@ -20,7 +20,7 @@ public class DmdBuildRunner extends DefaultProgramRunner {
     @Override
     public boolean canRun(@NotNull String executorId, @NotNull RunProfile profile) {
         return (/*DefaultDebugExecutor.EXECUTOR_ID.equals(executorId) ||*/ DefaultRunExecutor.EXECUTOR_ID.equals(executorId)) &&
-            profile instanceof DLanguageRunDmdConfiguration;
+            profile instanceof DlangRunDmdConfiguration;
     }
 
     @Nullable

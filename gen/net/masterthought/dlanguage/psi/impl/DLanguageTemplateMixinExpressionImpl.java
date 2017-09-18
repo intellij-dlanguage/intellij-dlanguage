@@ -9,7 +9,7 @@ import net.masterthought.dlanguage.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.KW_MIXIN;
+import static net.masterthought.dlanguage.psi.DlangTypes.KW_MIXIN;
 
 
 public class DLanguageTemplateMixinExpressionImpl extends ASTWrapperPsiElement implements DLanguageTemplateMixinExpression {
@@ -42,7 +42,7 @@ public class DLanguageTemplateMixinExpressionImpl extends ASTWrapperPsiElement i
     }
 
     @Nullable
-    public DLanguageIdentifier getIdentifier() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
+    public DlangIdentifier getIdentifier() {
+        return PsiTreeUtil.getChildOfType(this, DlangIdentifier.class);
     }
 }

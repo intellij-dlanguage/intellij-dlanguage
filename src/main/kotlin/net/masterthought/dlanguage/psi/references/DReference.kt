@@ -8,9 +8,9 @@ import com.intellij.psi.stubs.StubIndex
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.util.IncorrectOperationException
 import net.masterthought.dlanguage.processors.DCompletionProcessor
-import net.masterthought.dlanguage.psi.DLanguageFile
+import net.masterthought.dlanguage.psi.DlangFile
 import net.masterthought.dlanguage.psi.DLanguageFunctionDeclaration
-import net.masterthought.dlanguage.psi.DLanguageIdentifier
+import net.masterthought.dlanguage.psi.DlangIdentifier
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement
 import net.masterthought.dlanguage.resolve.DResolveUtil
 import net.masterthought.dlanguage.resolve.processors.basic.BasicResolve
@@ -85,7 +85,7 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
         //        }
 
         //        final PsiFile containingFile = myElement.getContainingFile();
-        //               if (!(containingFile instanceof DLanguageFile)) {
+        //               if (!(containingFile instanceof DlangFile)) {
         //                   return new Object[]{};
         //               }
         //        int offset = myElement.getTextOffset();
@@ -94,10 +94,10 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
         //        return dcdCompletion.autoComplete(offset,containingFile).toArray();
 
         //        final PsiFile containingFile = myElement.getContainingFile();
-        //        if (!(containingFile instanceof DLanguageFile)) {
+        //        if (!(containingFile instanceof DlangFile)) {
         //            return new Object[]{};
         //        }
-        //        List<PsiNamedElement> namedNodes = DUtil.findDefinitionNodes((DLanguageFile)containingFile);
+        //        List<PsiNamedElement> namedNodes = DUtil.findDefinitionNodes((DlangFile)containingFile);
         //        List<String> variants = new ArrayList<String>(20);
         //        for (final PsiNamedElement namedElement : namedNodes) {
         //            variants.add(namedElement.getName());
@@ -111,7 +111,7 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
         val completionProcessor = DCompletionProcessor()
         PsiTreeUtil.treeWalkUp(completionProcessor, myElement, myElement.containingFile, ResolveState.initial())
         result.addAll(completionProcessor.completions)//todo this could be more efficiently implemented
-        val decls = StubIndex.getElements(DTopLevelDeclarationsByModule.KEY, (element.containingFile as DLanguageFile).moduleOrFileName, project, GlobalSearchScope.fileScope(element.containingFile), DNamedElement::class.java)
+        val decls = StubIndex.getElements(DTopLevelDeclarationsByModule.KEY, (element.containingFile as DlangFile).moduleOrFileName, project, GlobalSearchScope.fileScope(element.containingFile), DNamedElement::class.java)
         for (decl in decls) {
             if (decl is DLanguageFunctionDeclaration) {
                 result.add(decl.name + "(" + ")")
@@ -247,7 +247,7 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
     @Throws(IncorrectOperationException::class)
     override fun handleElementRename(newName: String): PsiElement {
         val element: PsiElement?
-        if (myElement is DLanguageIdentifier) {
+        if (myElement is DlangIdentifier) {
             element = myElement.setName(newName)
             return element
         }

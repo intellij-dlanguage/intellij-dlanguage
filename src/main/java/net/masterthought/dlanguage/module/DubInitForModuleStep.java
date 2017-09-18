@@ -77,7 +77,7 @@ public class DubInitForModuleStep extends ModuleWizardStep {
                 final ModuleBuilder builder = (ModuleBuilder) moduleBuilder;
 
                 if ("DLangDubApp".equals(builder.getBuilderId())) {
-                    final DLanguageDubModuleBuilder dubBuilder = (DLanguageDubModuleBuilder) builder;
+                    final DlangDubModuleBuilder dubBuilder = (DlangDubModuleBuilder) builder;
 
                     final Map<String, String> options = new HashMap<>(3);
                     options.put("dubFormat", this.dubFormat.getSelectedItem().toString());

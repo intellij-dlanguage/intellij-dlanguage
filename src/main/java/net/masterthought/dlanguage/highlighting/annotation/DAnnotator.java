@@ -94,7 +94,7 @@ public class DAnnotator implements Annotator {
 //                super.visitNewExpressionWithArgs(o);
 //                try {
 //                    // try catch this
-//                    DLanguageIdentifier identifier = o.getType().getBasicType().getIdentifierList().getIdentifier();
+//                    DlangIdentifier identifier = o.getType().getBasicType().getIdentifierList().getIdentifier();
 //                    setHighlighting(identifier, holder, DHighlighter.AGGREGATE_DEFINITION);
 //                } catch(Exception e){
 //                   // do nothing

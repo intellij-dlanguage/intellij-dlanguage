@@ -11,8 +11,8 @@ import net.masterthought.dlanguage.psi.DLanguageVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_EQ_EQ;
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_NOT_EQ;
+import static net.masterthought.dlanguage.psi.DlangTypes.OP_EQ_EQ;
+import static net.masterthought.dlanguage.psi.DlangTypes.OP_NOT_EQ;
 
 
 public class DLanguageAsmEqualExpImpl extends ASTWrapperPsiElement implements DLanguageAsmEqualExp {

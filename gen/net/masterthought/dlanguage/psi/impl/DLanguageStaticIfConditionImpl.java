@@ -11,8 +11,8 @@ import net.masterthought.dlanguage.psi.DLanguageVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_PAR_LEFT;
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_PAR_RIGHT;
+import static net.masterthought.dlanguage.psi.DlangTypes.OP_PAR_LEFT;
+import static net.masterthought.dlanguage.psi.DlangTypes.OP_PAR_RIGHT;
 
 
 public class DLanguageStaticIfConditionImpl extends ASTWrapperPsiElement implements DLanguageStaticIfCondition {

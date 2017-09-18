@@ -9,7 +9,7 @@ public interface DLanguageAsmInstruction extends PsiElement {
     PsiElement getINTEGER_LITERAL();
 
     @Nullable
-    DLanguageIdentifier getIdentifier();
+    DlangIdentifier getIdentifier();
 
     @Nullable
     DLanguageAsmInstruction getAsmInstruction();

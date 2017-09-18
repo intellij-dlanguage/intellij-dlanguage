@@ -3,7 +3,7 @@ package net.masterthought.dlanguage.features;
 import com.intellij.lang.CodeDocumentationAwareCommenter;
 import com.intellij.psi.PsiComment;
 import com.intellij.psi.tree.IElementType;
-import net.masterthought.dlanguage.psi.DLanguageTypes;
+import net.masterthought.dlanguage.psi.DlangTypes;
 import org.jetbrains.annotations.Nullable;
 
 
@@ -30,12 +30,12 @@ public class DCommenter implements CodeDocumentationAwareCommenter {
 
     @Nullable
     public IElementType getLineCommentTokenType() {
-        return DLanguageTypes.LINE_COMMENT;
+        return DlangTypes.LINE_COMMENT;
     }
 
     @Nullable
     public IElementType getBlockCommentTokenType() {
-        return DLanguageTypes.BLOCK_COMMENT;
+        return DlangTypes.BLOCK_COMMENT;
     }
 
     public String getDocumentationCommentPrefix() {
@@ -59,6 +59,6 @@ public class DCommenter implements CodeDocumentationAwareCommenter {
 
     @Nullable
     public IElementType getDocumentationCommentTokenType() {
-        return DLanguageTypes.LINE_COMMENT;
+        return DlangTypes.LINE_COMMENT;
     }
 }

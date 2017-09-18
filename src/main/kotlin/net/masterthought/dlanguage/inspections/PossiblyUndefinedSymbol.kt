@@ -6,7 +6,7 @@ import com.intellij.openapi.diagnostic.Logger
 import com.intellij.psi.PsiElementVisitor
 import net.masterthought.dlanguage.DLanguageBundle
 import net.masterthought.dlanguage.psi.DLanguageVisitor
-import net.masterthought.dlanguage.psi.impl.named.DLanguageIdentifierImpl
+import net.masterthought.dlanguage.psi.impl.named.DlangIdentifierImpl
 import net.masterthought.dlanguage.resolve.DResolveUtil
 import net.masterthought.dlanguage.utils.Identifier
 
@@ -27,7 +27,7 @@ class PossiblyUndefinedSymbol : LocalInspectionTool() {
     class UndefinedSymbolVisitor(val holder: ProblemsHolder) : DLanguageVisitor() {
 
         val log: Logger = Logger.getInstance(this::class.java)
-        override fun visitIdentifier(identifier: DLanguageIdentifierImpl?) {
+        override fun visitIdentifier(identifier: DlangIdentifierImpl?) {
             if (identifier != null) {
                 val start = System.currentTimeMillis()
                 if (DResolveUtil.getInstance(identifier.project).shouldNotResolveToAnything(identifier)) {

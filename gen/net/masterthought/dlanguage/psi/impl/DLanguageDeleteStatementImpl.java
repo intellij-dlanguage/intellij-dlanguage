@@ -9,7 +9,7 @@ import net.masterthought.dlanguage.psi.DLanguageVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.KW_DELETE;
+import static net.masterthought.dlanguage.psi.DlangTypes.KW_DELETE;
 
 
 public class DLanguageDeleteStatementImpl extends ASTWrapperPsiElement implements DLanguageDeleteStatement {

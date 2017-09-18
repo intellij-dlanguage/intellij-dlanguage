@@ -9,7 +9,7 @@ import net.masterthought.dlanguage.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_DOT;
+import static net.masterthought.dlanguage.psi.DlangTypes.OP_DOT;
 
 
 public class DLanguageMixinTemplateNameImpl extends ASTWrapperPsiElement implements DLanguageMixinTemplateName {

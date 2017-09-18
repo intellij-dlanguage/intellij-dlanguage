@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageNamedImportBind extends PsiElement, DNamedElement, StubBasedPsiElement<DLanguageNamedImportBindStub> {
     @Nullable
-    DLanguageIdentifier getIdentifier();
+    DlangIdentifier getIdentifier();
 
     @Nullable
     PsiElement getOP_EQ();

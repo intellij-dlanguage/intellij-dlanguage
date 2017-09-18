@@ -21,8 +21,8 @@ public class DFoldingBuilder extends FoldingBuilderEx implements DumbAware {
     public FoldingDescriptor[] buildFoldRegions(@NotNull final PsiElement root,
                                                 @NotNull final Document document,
                                                 final boolean quick) {
-        if (!(root instanceof DLanguageFile)) return FoldingDescriptor.EMPTY;
-        final DLanguageFile file = (DLanguageFile) root;
+        if (!(root instanceof DlangFile)) return FoldingDescriptor.EMPTY;
+        final DlangFile file = (DlangFile) root;
 
         final List<FoldingDescriptor> result = ContainerUtil.newArrayList();
 
@@ -38,7 +38,7 @@ public class DFoldingBuilder extends FoldingBuilderEx implements DumbAware {
                 result.add(new FoldingDescriptor(aggregateDefinition, aggregateDefinition.getTextRange()));
         }
 
-        for (final DLanguageTemplateDeclaration aggregateDefinition : PsiTreeUtil.findChildrenOfType(file, DLanguageTemplateDeclaration.class)) {
+        for (final DlangTemplateDeclaration aggregateDefinition : PsiTreeUtil.findChildrenOfType(file, DlangTemplateDeclaration.class)) {
             if (aggregateDefinition.isPhysical() && aggregateDefinition.isValid() && aggregateDefinition.isWritable() && !aggregateDefinition.getText().equals(""))//required in case the psi element has been deleted
                 result.add(new FoldingDescriptor(aggregateDefinition, aggregateDefinition.getTextRange()));
         }
@@ -63,7 +63,7 @@ public class DFoldingBuilder extends FoldingBuilderEx implements DumbAware {
 //            if (count == 0) {
 //                imports.add(importer);
 //            } else {
-//                // only add the next one if the previous one was also an import
+//                // only add the next one if the previous one was also an singleImport
 //                if (importer.getPrevSibling().getPrevSibling() instanceof DDeclarationImport) {
 //                    imports.add(importer);
 //                }
@@ -100,8 +100,8 @@ public class DFoldingBuilder extends FoldingBuilderEx implements DumbAware {
         if (psi instanceof DLanguageImportDeclaration) {
             return "import ...";
         }
-        if (psi instanceof DLanguageInterfaceOrClass) {
-            final DLanguageInterfaceOrClass declaration = (DLanguageInterfaceOrClass) psi;
+        if (psi instanceof DlangInterfaceOrClass) {
+            final DlangInterfaceOrClass declaration = (DlangInterfaceOrClass) psi;
             if(declaration.getParent() instanceof DLanguageClassDeclaration) {
                 return declaration.getName() + " (Class) ...";
             }

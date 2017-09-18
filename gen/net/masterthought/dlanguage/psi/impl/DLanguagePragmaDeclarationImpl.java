@@ -11,7 +11,7 @@ import net.masterthought.dlanguage.psi.DLanguageVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_SCOLON;
+import static net.masterthought.dlanguage.psi.DlangTypes.OP_SCOLON;
 
 
 public class DLanguagePragmaDeclarationImpl extends ASTWrapperPsiElement implements DLanguagePragmaDeclaration {

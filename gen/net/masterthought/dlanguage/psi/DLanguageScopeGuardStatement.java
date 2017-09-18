@@ -9,7 +9,7 @@ public interface DLanguageScopeGuardStatement extends PsiElement {
     PsiElement getKW_SCOPE();
 
     @Nullable
-    DLanguageIdentifier getIdentifier();
+    DlangIdentifier getIdentifier();
 
     @Nullable
     DLanguageStatementNoCaseNoDefault getStatementNoCaseNoDefault();

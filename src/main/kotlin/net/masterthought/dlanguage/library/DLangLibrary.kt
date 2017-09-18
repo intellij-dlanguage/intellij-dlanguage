@@ -13,7 +13,7 @@ import com.intellij.openapi.roots.ui.configuration.libraryEditor.DefaultLibraryR
 import com.intellij.openapi.roots.ui.configuration.libraryEditor.LibraryEditor
 import com.intellij.openapi.vfs.VirtualFile
 import net.masterthought.dlanguage.DLanguageBundle
-import net.masterthought.dlanguage.icons.DLanguageIcons
+import net.masterthought.dlanguage.icons.DlangIcons
 import java.util.*
 import javax.swing.JComponent
 
@@ -22,7 +22,7 @@ class DLanguageLibraryRootsComponentDescriptor : LibraryRootsComponentDescriptor
 
     override fun getRootTypePresentation(type: OrderRootType): OrderRootTypePresentation? {
         if (type == LibFileRootType.getInstance()) {
-            return OrderRootTypePresentation("Lib File", DLanguageIcons.FILE)
+            return OrderRootTypePresentation("Lib File", DlangIcons.FILE)
         } else {
             return DefaultLibraryRootsComponentDescriptor.getDefaultPresentation(type)
         }
@@ -30,8 +30,8 @@ class DLanguageLibraryRootsComponentDescriptor : LibraryRootsComponentDescriptor
 
     override fun getRootDetectors(): List<RootDetector> {
         return Arrays.asList(
-                DLanguageLibRootDetector(OrderRootType.CLASSES, DLanguageBundle.message("sources.root.detector.sources.name")),
-                DLanguageLibRootDetector(LibFileRootType.getInstance(), DLanguageBundle.message("sources.root.detector.lib.name")))
+            DlangLibRootDetector(OrderRootType.CLASSES, DLanguageBundle.message("sources.root.detector.sources.name")),
+            DlangLibRootDetector(LibFileRootType.getInstance(), DLanguageBundle.message("sources.root.detector.lib.name")))
     }
 
     override fun createAttachButtons(): List<AttachRootButtonDescriptor> {

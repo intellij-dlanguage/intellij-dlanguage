@@ -1,8 +1,8 @@
 package net.masterthought.dlanguage;
 import com.intellij.lexer.*;
 import com.intellij.psi.tree.IElementType;
-import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
-import net.masterthought.dlanguage.psi.DLanguageTypes;
+import static net.masterthought.dlanguage.psi.DlangTypes.*;
+import net.masterthought.dlanguage.psi.DlangTypes;
 
 %%
 
@@ -114,27 +114,27 @@ HEX_EXPONENT = [pP][\+\-]? [0-9]+
 <TOKEN_STRING_CONTENT> {
     {TOKEN_OPEN_CURLY} {
         tokenStringDepth++;
-         return DLanguageTypes.TOKEN_STRING;
+         return DlangTypes.TOKEN_STRING;
     }
     {TOKEN_CLOSE_CURLY} {
         tokenStringDepth--;
         if(tokenStringDepth == 0){
             yybegin(YYINITIAL);
         }
-        return DLanguageTypes.TOKEN_STRING;
+        return DlangTypes.TOKEN_STRING;
     }
     {TOKEN_STRING_START} {
         tokenStringDepth++;
-        return DLanguageTypes.TOKEN_STRING;
+        return DlangTypes.TOKEN_STRING;
     }
     {TOKEN_STRING_CONTENT} {
-        return DLanguageTypes.TOKEN_STRING;
+        return DlangTypes.TOKEN_STRING;
     }
 }
 <YYINITIAL> {TOKEN_STRING_START} {
     yybegin(TOKEN_STRING_CONTENT);
     tokenStringDepth = 1;
-    return DLanguageTypes.TOKEN_STRING;
+    return DlangTypes.TOKEN_STRING;
 }
 
 
@@ -142,13 +142,13 @@ HEX_EXPONENT = [pP][\+\-]? [0-9]+
 <YYINITIAL> {NESTING_BLOCK_COMMENT_START} {
 		yybegin(NESTING_COMMENT_CONTENT);
 		nestedCommentDepth = 1;
-		return DLanguageTypes.NESTING_BLOCK_COMMENT;
+		return DlangTypes.NESTING_BLOCK_COMMENT;
 	}
 
 <YYINITIAL> {BLOCK_COMMENT_START} {
 		yybegin(BLOCK_COMMENT_CONTENT);
 		blockCommentDepth = 1;
-		return DLanguageTypes.BLOCK_COMMENT;
+		return DlangTypes.BLOCK_COMMENT;
 	}
 
 <YYINITIAL> {CHARACTER_LITERAL} { return CHARACTER_LITERAL; }
@@ -166,7 +166,7 @@ HEX_EXPONENT = [pP][\+\-]? [0-9]+
 <NESTING_COMMENT_CONTENT> {
 	{NESTING_BLOCK_COMMENT_START}	{
 		nestedCommentDepth += 1;
-		return DLanguageTypes.NESTING_BLOCK_COMMENT;
+		return DlangTypes.NESTING_BLOCK_COMMENT;
 	}
 
 	{NESTING_BLOCK_COMMENT_END}	{
@@ -174,16 +174,16 @@ HEX_EXPONENT = [pP][\+\-]? [0-9]+
 		if(nestedCommentDepth == 0) {
 			yybegin(YYINITIAL); //Exit nesting comment block
 		}
-		return DLanguageTypes.NESTING_BLOCK_COMMENT;
+		return DlangTypes.NESTING_BLOCK_COMMENT;
 	}
-	\n|\/|\+	{return DLanguageTypes.NESTING_BLOCK_COMMENT;}
-	[^/+\n]+	{return DLanguageTypes.NESTING_BLOCK_COMMENT;}
+	\n|\/|\+	{return DlangTypes.NESTING_BLOCK_COMMENT;}
+	[^/+\n]+	{return DlangTypes.NESTING_BLOCK_COMMENT;}
 }
 
 <BLOCK_COMMENT_CONTENT> {
 	{BLOCK_COMMENT_START}	{
 		blockCommentDepth += 1;
-		return DLanguageTypes.BLOCK_COMMENT;
+		return DlangTypes.BLOCK_COMMENT;
 	}
 
 	{BLOCK_COMMENT_END}	{
@@ -191,16 +191,16 @@ HEX_EXPONENT = [pP][\+\-]? [0-9]+
 		if(blockCommentDepth == 0) {
 			yybegin(YYINITIAL); //Exit nesting comment block
 		}
-		return DLanguageTypes.BLOCK_COMMENT;
+		return DlangTypes.BLOCK_COMMENT;
 	}
-	\n|\/|\*	{return DLanguageTypes.BLOCK_COMMENT;}
-	[^/*\n]+	{return DLanguageTypes.BLOCK_COMMENT;}
+	\n|\/|\*	{return DlangTypes.BLOCK_COMMENT;}
+	[^/*\n]+	{return DlangTypes.BLOCK_COMMENT;}
 }
 
 //todo add typedef
 
 <YYINITIAL> "module"                   { return KW_MODULE; }
-<YYINITIAL> "import"                   { return KW_IMPORT; }
+<YYINITIAL> "singleImport"                   { return KW_IMPORT; }
 <YYINITIAL> "static"                   { return KW_STATIC; }
 <YYINITIAL> "bool"                     { return KW_BOOL; }
 <YYINITIAL> "byte"                     { return KW_BYTE; }

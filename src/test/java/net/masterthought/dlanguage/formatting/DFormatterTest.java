@@ -2,7 +2,7 @@ package net.masterthought.dlanguage.formatting;
 
 
 import com.intellij.psi.formatter.FormatterTestCase;
-import net.masterthought.dlanguage.DLanguageFileType;
+import net.masterthought.dlanguage.DlangFileType;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Ignore;
 
@@ -20,7 +20,7 @@ public class DFormatterTest extends FormatterTestCase {
 
     @Override
     protected String getFileExtension() {
-        return DLanguageFileType.DEFAULT_EXTENSION;
+        return DlangFileType.DEFAULT_EXTENSION;
     }
 
     protected void doTest(final String resultNumber) throws Exception {

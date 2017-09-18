@@ -5,7 +5,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.psi.DLanguageAsmTypePrefix;
-import net.masterthought.dlanguage.psi.DLanguageIdentifier;
+import net.masterthought.dlanguage.psi.DlangIdentifier;
 import net.masterthought.dlanguage.psi.DLanguageVisitor;
 import org.jetbrains.annotations.NotNull;
 
@@ -27,7 +27,7 @@ public class DLanguageAsmTypePrefixImpl extends ASTWrapperPsiElement implements 
     }
 
     @NotNull
-    public List<DLanguageIdentifier> getIdentifiers() {
-        return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageIdentifier.class);
+    public List<DlangIdentifier> getIdentifiers() {
+        return PsiTreeUtil.getChildrenOfTypeAsList(this, DlangIdentifier.class);
     }
 }

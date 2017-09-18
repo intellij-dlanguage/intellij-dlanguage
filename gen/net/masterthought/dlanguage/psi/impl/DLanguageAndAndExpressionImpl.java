@@ -11,7 +11,7 @@ import net.masterthought.dlanguage.psi.DLanguageVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_BOOL_AND;
+import static net.masterthought.dlanguage.psi.DlangTypes.OP_BOOL_AND;
 
 
 public class DLanguageAndAndExpressionImpl extends ASTWrapperPsiElement implements DLanguageAndAndExpression {

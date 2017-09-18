@@ -14,8 +14,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.KW_DELEGATE;
-import static net.masterthought.dlanguage.psi.DLanguageTypes.KW_FUNCTION;
+import static net.masterthought.dlanguage.psi.DlangTypes.KW_DELEGATE;
+import static net.masterthought.dlanguage.psi.DlangTypes.KW_FUNCTION;
 
 
 public class DLanguageFunctionLiteralExpressionImpl extends ASTWrapperPsiElement implements DLanguageFunctionLiteralExpression {
@@ -63,8 +63,8 @@ public class DLanguageFunctionLiteralExpressionImpl extends ASTWrapperPsiElement
     }
 
     @Nullable
-    public DLanguageIdentifier getIdentifier() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
+    public DlangIdentifier getIdentifier() {
+        return PsiTreeUtil.getChildOfType(this, DlangIdentifier.class);
     }
 
     @Override

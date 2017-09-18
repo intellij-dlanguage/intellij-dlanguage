@@ -9,7 +9,7 @@ import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.psi.DLanguageImportBindings;
 import net.masterthought.dlanguage.psi.DLanguageImportDeclaration;
-import net.masterthought.dlanguage.psi.DLanguageSingleImport;
+import net.masterthought.dlanguage.psi.DlangSingleImport;
 import net.masterthought.dlanguage.psi.DLanguageVisitor;
 import net.masterthought.dlanguage.resolve.ScopeProcessorImpl;
 import org.jetbrains.annotations.NotNull;
@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
+import static net.masterthought.dlanguage.psi.DlangTypes.*;
 
 
 public class DLanguageImportDeclarationImpl extends ASTWrapperPsiElement implements DLanguageImportDeclaration {
@@ -40,8 +40,8 @@ public class DLanguageImportDeclarationImpl extends ASTWrapperPsiElement impleme
     }
 
     @NotNull
-    public List<DLanguageSingleImport> getSingleImports() {
-        return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageSingleImport.class);
+    public List<DlangSingleImport> getSingleImports() {
+        return PsiTreeUtil.getChildrenOfTypeAsList(this, DlangSingleImport.class);
     }
 
     @Nullable

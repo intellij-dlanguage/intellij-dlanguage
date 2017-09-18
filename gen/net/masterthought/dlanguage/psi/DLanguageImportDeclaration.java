@@ -12,7 +12,7 @@ public interface DLanguageImportDeclaration extends PsiElement {
     PsiElement getKW_IMPORT();
 
     @NotNull
-    List<DLanguageSingleImport> getSingleImports();
+    List<DlangSingleImport> getSingleImports();
 
     @Nullable
     DLanguageImportBindings getImportBindings();

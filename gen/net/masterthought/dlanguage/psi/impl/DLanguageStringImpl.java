@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.DOUBLE_QUOTED_STRING;
+import static net.masterthought.dlanguage.psi.DlangTypes.DOUBLE_QUOTED_STRING;
 
 
 public class DLanguageStringImpl extends ASTWrapperPsiElement implements DLanguageString {

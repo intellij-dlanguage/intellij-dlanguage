@@ -9,7 +9,7 @@ import net.masterthought.dlanguage.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
+import static net.masterthought.dlanguage.psi.DlangTypes.*;
 
 
 public class DLanguageAtAttributeImpl extends ASTWrapperPsiElement implements DLanguageAtAttribute {
@@ -42,8 +42,8 @@ public class DLanguageAtAttributeImpl extends ASTWrapperPsiElement implements DL
     }
 
     @Nullable
-    public DLanguageIdentifier getIdentifier() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
+    public DlangIdentifier getIdentifier() {
+        return PsiTreeUtil.getChildOfType(this, DlangIdentifier.class);
     }
 
     @Nullable

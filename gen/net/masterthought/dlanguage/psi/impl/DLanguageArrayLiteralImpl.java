@@ -11,8 +11,8 @@ import net.masterthought.dlanguage.psi.DLanguageVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_BRACKET_LEFT;
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_BRACKET_RIGHT;
+import static net.masterthought.dlanguage.psi.DlangTypes.OP_BRACKET_LEFT;
+import static net.masterthought.dlanguage.psi.DlangTypes.OP_BRACKET_RIGHT;
 
 
 public class DLanguageArrayLiteralImpl extends ASTWrapperPsiElement implements DLanguageArrayLiteral {

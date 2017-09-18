@@ -8,13 +8,13 @@ import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.psi.DLanguageMixinTemplateDeclaration;
-import net.masterthought.dlanguage.psi.DLanguageTemplateDeclaration;
+import net.masterthought.dlanguage.psi.DlangTemplateDeclaration;
 import net.masterthought.dlanguage.psi.DLanguageVisitor;
 import net.masterthought.dlanguage.resolve.ScopeProcessorImpl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.KW_MIXIN;
+import static net.masterthought.dlanguage.psi.DlangTypes.KW_MIXIN;
 
 
 public class DLanguageMixinTemplateDeclarationImpl extends ASTWrapperPsiElement implements DLanguageMixinTemplateDeclaration {
@@ -32,8 +32,8 @@ public class DLanguageMixinTemplateDeclarationImpl extends ASTWrapperPsiElement 
     }
 
     @Nullable
-    public DLanguageTemplateDeclaration getTemplateDeclaration() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageTemplateDeclaration.class);
+    public DlangTemplateDeclaration getTemplateDeclaration() {
+        return PsiTreeUtil.getChildOfType(this, DlangTemplateDeclaration.class);
     }
 
     @Nullable

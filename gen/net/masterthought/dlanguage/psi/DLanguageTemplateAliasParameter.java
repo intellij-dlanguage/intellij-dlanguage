@@ -12,7 +12,7 @@ public interface DLanguageTemplateAliasParameter extends PsiElement {
     PsiElement getKW_ALIAS();
 
     @Nullable
-    DLanguageIdentifier getIdentifier();
+    DlangIdentifier getIdentifier();
 
     @NotNull
     List<DLanguageType> getTypes();

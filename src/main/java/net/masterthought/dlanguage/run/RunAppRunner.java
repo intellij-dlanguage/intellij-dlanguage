@@ -12,7 +12,7 @@ import com.intellij.execution.ui.RunContentDescriptor;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import net.masterthought.dlanguage.run.exception.ModuleNotFoundException;
-import net.masterthought.dlanguage.run.exception.NoValidDLanguageSdkFound;
+import net.masterthought.dlanguage.run.exception.NoValidDlangSdkFound;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,7 +26,7 @@ public class RunAppRunner extends DefaultProgramRunner {
     @Override
     public boolean canRun(@NotNull String executorId, @NotNull RunProfile profile) {
         return (DefaultDebugExecutor.EXECUTOR_ID.equals(executorId) || DefaultRunExecutor.EXECUTOR_ID.equals(executorId)) &&
-            profile instanceof DLanguageRunAppConfiguration;
+            profile instanceof DlangRunAppConfiguration;
     }
 
     @Nullable
@@ -38,13 +38,13 @@ public class RunAppRunner extends DefaultProgramRunner {
             Executor executor = env.getExecutor();
             Logger logger = Logger.getInstance(this.getClass());
             try {
-                return RunUtil.startDebugger(this, state, env, project, executor, ((DLanguageRunAppState) state).getExecutableCommandLine(((DLanguageRunAppState) state).getConfig()).getExePath());//todo this is yucky
+                return RunUtil.startDebugger(this, state, env, project, executor, ((DlangRunAppState) state).getExecutableCommandLine(((DlangRunAppState) state).getConfig()).getExePath());//todo this is yucky
             } catch (ModuleNotFoundException e) {
                 e.printStackTrace();
                 logger.error(e.toString());
-            } catch (NoValidDLanguageSdkFound noValidDLanguageSdkFound) {
-                noValidDLanguageSdkFound.printStackTrace();
-                logger.error(noValidDLanguageSdkFound.toString());
+            } catch (NoValidDlangSdkFound NoValidDlangSdkFound) {
+                NoValidDlangSdkFound.printStackTrace();
+                logger.error(NoValidDlangSdkFound.toString());
             }
         }
         return super.doExecute(state, env);

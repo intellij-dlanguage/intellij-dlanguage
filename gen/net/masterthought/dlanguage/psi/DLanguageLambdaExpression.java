@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface DLanguageLambdaExpression extends PsiElement {
     @Nullable
-    DLanguageIdentifier getIdentifier();
+    DlangIdentifier getIdentifier();
 
     @Nullable
     PsiElement getKW_FUNCTION();

@@ -9,5 +9,5 @@ public interface DLanguageTemplateMixinDeclaration extends PsiElement {
     PsiElement getKW_MIXIN();
 
     @Nullable
-    DLanguageTemplateDeclaration getTemplateDeclaration();
+    DlangTemplateDeclaration getTemplateDeclaration();
 }

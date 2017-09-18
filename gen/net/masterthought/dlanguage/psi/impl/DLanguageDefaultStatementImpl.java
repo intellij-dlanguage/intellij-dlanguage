@@ -11,8 +11,8 @@ import net.masterthought.dlanguage.psi.DLanguageVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.KW_DEFAULT;
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_COLON;
+import static net.masterthought.dlanguage.psi.DlangTypes.KW_DEFAULT;
+import static net.masterthought.dlanguage.psi.DlangTypes.OP_COLON;
 
 
 public class DLanguageDefaultStatementImpl extends ASTWrapperPsiElement implements DLanguageDefaultStatement {

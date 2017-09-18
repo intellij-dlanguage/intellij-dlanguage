@@ -11,8 +11,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.KW_CLASS;
-import static net.masterthought.dlanguage.psi.DLanguageTypes.KW_NEW;
+import static net.masterthought.dlanguage.psi.DlangTypes.KW_CLASS;
+import static net.masterthought.dlanguage.psi.DlangTypes.KW_NEW;
 
 
 public class DLanguageNewAnonClassExpressionImpl extends ASTWrapperPsiElement implements DLanguageNewAnonClassExpression {

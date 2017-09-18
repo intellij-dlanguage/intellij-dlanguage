@@ -7,15 +7,15 @@ import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
-import net.masterthought.dlanguage.stubs.DLanguageEnumMemberStub;
+import net.masterthought.dlanguage.stubs.DlangEnumMemberStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_EQ;
+import static net.masterthought.dlanguage.psi.DlangTypes.OP_EQ;
 
-public class DLanguageEnumMemberImpl extends DNamedStubbedPsiElementBase<DLanguageEnumMemberStub> implements DLanguageEnumMember {
+public class DLanguageEnumMemberImpl extends DNamedStubbedPsiElementBase<DlangEnumMemberStub> implements DLanguageEnumMember {
 
-    public DLanguageEnumMemberImpl(final DLanguageEnumMemberStub stub, final IStubElementType type) {
+    public DLanguageEnumMemberImpl(final DlangEnumMemberStub stub, final IStubElementType type) {
         super(stub, type);
     }
 
@@ -40,8 +40,8 @@ public class DLanguageEnumMemberImpl extends DNamedStubbedPsiElementBase<DLangua
 
     @Override
     @Nullable
-    public DLanguageIdentifier getIdentifier() {
-        return PsiTreeUtil.getStubChildOfType(this, DLanguageIdentifier.class);
+    public DlangIdentifier getIdentifier() {
+        return PsiTreeUtil.getStubChildOfType(this, DlangIdentifier.class);
     }
 
     @Nullable
@@ -61,7 +61,7 @@ public class DLanguageEnumMemberImpl extends DNamedStubbedPsiElementBase<DLangua
 //    }
 
     @Nullable
-    public DLanguageIdentifier getNameIdentifier() {
+    public DlangIdentifier getNameIdentifier() {
         return getIdentifier();
     }
 }

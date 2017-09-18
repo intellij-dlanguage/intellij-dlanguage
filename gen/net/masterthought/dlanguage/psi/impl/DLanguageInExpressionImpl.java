@@ -13,8 +13,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.KW_IN;
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_NOT;
+import static net.masterthought.dlanguage.psi.DlangTypes.KW_IN;
+import static net.masterthought.dlanguage.psi.DlangTypes.OP_NOT;
 
 
 public class DLanguageInExpressionImpl extends ASTWrapperPsiElement implements DLanguageInExpression {

@@ -11,8 +11,8 @@ import net.masterthought.dlanguage.psi.DLanguageVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_MINUS;
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_PLUS;
+import static net.masterthought.dlanguage.psi.DlangTypes.OP_MINUS;
+import static net.masterthought.dlanguage.psi.DlangTypes.OP_PLUS;
 
 
 public class DLanguageAsmAddExpImpl extends ASTWrapperPsiElement implements DLanguageAsmAddExp {

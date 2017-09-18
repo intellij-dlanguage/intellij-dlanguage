@@ -5,7 +5,7 @@ import com.intellij.psi.StubBasedPsiElement;
 import com.intellij.psi.stubs.NamedStubBase;
 import com.intellij.psi.stubs.Stub;
 import com.intellij.psi.stubs.StubElement;
-import net.masterthought.dlanguage.psi.DLanguageFile;
+import net.masterthought.dlanguage.psi.DlangFile;
 import net.masterthought.dlanguage.psi.DLanguageSharedStaticConstructor;
 import net.masterthought.dlanguage.psi.DLanguageSharedStaticDestructor;
 import net.masterthought.dlanguage.stubs.*;
@@ -20,17 +20,17 @@ import java.util.Set;
 public interface HasMembers<T extends StubElement> extends StubBasedPsiElement<T>, DNamedElement {
     default Set<NamedStubBase> getMembers() {
         final Set<NamedStubBase> res = new HashSet<>();
-        ((DLanguageFile) getContainingFile()).calcStubTree();
+        ((DlangFile) getContainingFile()).calcStubTree();
         getMembersImpl(((StubBasedPsiElementBase) this).getGreenStub(), res);
         return res;
     }
 
     default void getMembersImpl(final Stub stub, final Set<NamedStubBase> result) {
         for (final Stub childStub : stub.getChildrenStubs()) {
-            if (childStub instanceof NamedStubBase && !(childStub instanceof DLanguageIdentifierStub)) {
+            if (childStub instanceof NamedStubBase && !(childStub instanceof DlangIdentifierStub)) {
                 result.add((NamedStubBase) childStub);
             }
-            if (childStub instanceof DLanguageUnittestStub || (childStub instanceof DLanguageDestructorStub) || (childStub instanceof DLanguageStaticDestructorStub) || (childStub instanceof DLanguageSharedStaticDestructor) || (childStub instanceof DLanguageConstructorStub) || (childStub instanceof DLanguageStaticConstructorStub) || (childStub instanceof DLanguageSharedStaticConstructor) || (childStub instanceof DLanguageFunctionDeclarationStub) || (childStub instanceof DLanguageIdentifierStub)) {
+            if (childStub instanceof DLanguageUnittestStub || (childStub instanceof DLanguageDestructorStub) || (childStub instanceof DLanguageStaticDestructorStub) || (childStub instanceof DLanguageSharedStaticDestructor) || (childStub instanceof DLanguageConstructorStub) || (childStub instanceof DLanguageStaticConstructorStub) || (childStub instanceof DLanguageSharedStaticConstructor) || (childStub instanceof DLanguageFunctionDeclarationStub) || (childStub instanceof DlangIdentifierStub)) {
             } else {
                 getMembersImpl(childStub, result);
             }

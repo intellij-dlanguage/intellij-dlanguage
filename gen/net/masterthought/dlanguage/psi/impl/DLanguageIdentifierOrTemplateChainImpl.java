@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_DOT;
+import static net.masterthought.dlanguage.psi.DlangTypes.OP_DOT;
 
 
 public class DLanguageIdentifierOrTemplateChainImpl extends ASTWrapperPsiElement implements DLanguageIdentifierOrTemplateChain {

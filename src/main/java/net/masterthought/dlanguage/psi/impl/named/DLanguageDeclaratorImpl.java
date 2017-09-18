@@ -14,7 +14,7 @@ import net.masterthought.dlanguage.stubs.DLanguageDeclaratorStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_EQ;
+import static net.masterthought.dlanguage.psi.DlangTypes.OP_EQ;
 
 
 public class DLanguageDeclaratorImpl extends DNamedStubbedPsiElementBase<DLanguageDeclaratorStub> implements DLanguageDeclarator {
@@ -36,8 +36,8 @@ public class DLanguageDeclaratorImpl extends DNamedStubbedPsiElementBase<DLangua
     }
 
     @Nullable
-    public DLanguageIdentifier getIdentifier() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
+    public DlangIdentifier getIdentifier() {
+        return PsiTreeUtil.getChildOfType(this, DlangIdentifier.class);
     }
 
     @Nullable
@@ -57,7 +57,7 @@ public class DLanguageDeclaratorImpl extends DNamedStubbedPsiElementBase<DLangua
 
     @Nullable
     @Override
-    public DLanguageIdentifier getNameIdentifier() {
+    public DlangIdentifier getNameIdentifier() {
         return getIdentifier();
     }
 

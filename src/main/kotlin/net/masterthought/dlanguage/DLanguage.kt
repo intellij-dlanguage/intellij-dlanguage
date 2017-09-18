@@ -12,25 +12,25 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.TokenType
 import com.intellij.psi.tree.TokenSet
-import net.masterthought.dlanguage.dlanguage.DLanguageLexer
+import net.masterthought.dlanguage.dlanguage.DlangLexer
 import net.masterthought.dlanguage.parser.ParserWrapper
-import net.masterthought.dlanguage.psi.DLanguageFile
-import net.masterthought.dlanguage.psi.DLanguageTypes
+import net.masterthought.dlanguage.psi.DlangFile
+import net.masterthought.dlanguage.psi.DlangTypes
 import net.masterthought.dlanguage.stubs.types.DFileStubElementType
 import org.jetbrains.annotations.NotNull
 
 object DLanguage : Language("D")
 
-class DLanguageLexerAdapter : FlexAdapter(DLanguageLexer())
+class DLanguageLexerAdapter : FlexAdapter(DlangLexer())
 
 class DLangParserDefinition : ParserDefinition {
     val WHITE_SPACES: TokenSet = TokenSet.create(TokenType.WHITE_SPACE)
-    val COMMENTS: TokenSet = TokenSet.create(DLanguageTypes.LINE_COMMENT, DLanguageTypes.BLOCK_COMMENT, DLanguageTypes.NESTING_BLOCK_COMMENT)
+    val COMMENTS: TokenSet = TokenSet.create(DlangTypes.LINE_COMMENT, DlangTypes.BLOCK_COMMENT, DlangTypes.NESTING_BLOCK_COMMENT)
 
     @NotNull
     override fun createParser(project: Project?): PsiParser = ParserWrapper()
 
-    override fun createFile(viewProvider: FileViewProvider): PsiFile? = DLanguageFile(viewProvider)
+    override fun createFile(viewProvider: FileViewProvider): PsiFile? = DlangFile(viewProvider)
 
     override fun spaceExistanceTypeBetweenTokens(left: ASTNode?, right: ASTNode?): ParserDefinition.SpaceRequirements? = ParserDefinition.SpaceRequirements.MAY
 
@@ -43,10 +43,10 @@ class DLangParserDefinition : ParserDefinition {
     override fun getWhitespaceTokens(): TokenSet = WHITE_SPACES
 
     @NotNull
-    override fun createLexer(project: Project?): Lexer = FlexAdapter(DLanguageLexer(null))
+    override fun createLexer(project: Project?): Lexer = FlexAdapter(DlangLexer(null))
 
     @NotNull
-    override fun createElement(node: ASTNode?): PsiElement = DLanguageTypes.Factory.createElement(node)
+    override fun createElement(node: ASTNode?): PsiElement = DlangTypes.Factory.createElement(node)
 
     @NotNull
     override fun getCommentTokens(): TokenSet = COMMENTS

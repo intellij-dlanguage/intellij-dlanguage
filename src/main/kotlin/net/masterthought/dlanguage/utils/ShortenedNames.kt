@@ -6,15 +6,15 @@ import net.masterthought.dlanguage.psi.*
  * Created by francis on 6/13/2017.
  */
 //typealias AliasDeclaration = DLanguageAliasDeclaration\
-typealias InterfaceOrClass = DLanguageInterfaceOrClass
+typealias InterfaceOrClass = DlangInterfaceOrClass
 typealias ClassDeclaration = DLanguageClassDeclaration
 typealias Constructor = DLanguageConstructor
 typealias Destructor = DLanguageDestructor
-typealias EnumDeclaration = DLanguageEnumDeclaration
+typealias EnumDeclaration = DlangEnumDeclaration
 typealias EnumMember = DLanguageEnumMember
 typealias ForeachType = DLanguageForeachType
-typealias Identifier = DLanguageIdentifier
-typealias SingleImport = DLanguageSingleImport
+typealias Identifier = DlangIdentifier
+typealias SingleImport = DlangSingleImport
 typealias InterfaceDeclaration = DLanguageInterfaceDeclaration
 typealias LabeledStatement = DLanguageLabeledStatement
 typealias ModuleDeclaration = DLanguageModuleDeclaration
@@ -23,11 +23,11 @@ typealias SharedStaticConstructor = DLanguageSharedStaticConstructor
 typealias SharedStaticDestructor = DLanguageSharedStaticDestructor
 typealias StaticConstructor = DLanguageStaticConstructor
 typealias StaticDestructor = DLanguageStaticDestructor
-typealias StructDeclaration = DLanguageStructDeclaration
-typealias TemplateDeclaration = DLanguageTemplateDeclaration
+typealias StructDeclaration = DlangStructDeclaration
+typealias TemplateDeclaration = DlangTemplateDeclaration
 typealias TemplateMixinDeclaration = DLanguageTemplateMixinDeclaration
 typealias TemplateParameter = DLanguageTemplateParameter
-typealias UnionDeclaration = DLanguageUnionDeclaration
+typealias UnionDeclaration = DlangUnionDeclaration
 typealias Unittest = DLanguageUnittest
 typealias AliasDeclaration = DLanguageAliasDeclaration
 typealias AliasInitializer = DLanguageAliasInitializer

@@ -14,7 +14,7 @@ import net.masterthought.dlanguage.stubs.DLanguageEponymousTemplateDeclarationSt
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
+import static net.masterthought.dlanguage.psi.DlangTypes.*;
 
 public class DLanguageEponymousTemplateDeclarationImpl extends DNamedStubbedPsiElementBase<DLanguageEponymousTemplateDeclarationStub> implements DLanguageEponymousTemplateDeclaration {
 
@@ -38,8 +38,8 @@ public class DLanguageEponymousTemplateDeclarationImpl extends DNamedStubbedPsiE
 
     @Override
     @Nullable
-    public DLanguageIdentifier getIdentifier() {
-        return PsiTreeUtil.getStubChildOfType(this, DLanguageIdentifier.class);
+    public DlangIdentifier getIdentifier() {
+        return PsiTreeUtil.getStubChildOfType(this, DlangIdentifier.class);
     }
 
 
@@ -80,7 +80,7 @@ public class DLanguageEponymousTemplateDeclarationImpl extends DNamedStubbedPsiE
     }
 
     @Nullable
-    public DLanguageIdentifier getNameIdentifier() {
+    public DlangIdentifier getNameIdentifier() {
         return getIdentifier();
     }
 

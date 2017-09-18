@@ -9,7 +9,7 @@ import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
-import net.masterthought.dlanguage.icons.DLanguageIcons;
+import net.masterthought.dlanguage.icons.DlangIcons;
 import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.impl.DLanguageParametersImpl;
 import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import java.util.List;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
+import static net.masterthought.dlanguage.psi.DlangTypes.*;
 import static net.masterthought.dlanguage.utils.DUtil.getParentClassOrStructOrTemplateOrInterfaceOrUnion;
 
 public class DLanguageConstructorImpl extends DNamedStubbedPsiElementBase<DLanguageConstructorStub> implements DLanguageConstructor {
@@ -92,7 +92,7 @@ public class DLanguageConstructorImpl extends DNamedStubbedPsiElementBase<DLangu
     }
 
     @Nullable
-    public DLanguageIdentifier getNameIdentifier() {
+    public DlangIdentifier getNameIdentifier() {
         if (getParentClassOrStructOrTemplateOrInterfaceOrUnion(this) == null)
             return null;
         return getParentClassOrStructOrTemplateOrInterfaceOrUnion(this).getNameIdentifier();
@@ -119,13 +119,13 @@ public class DLanguageConstructorImpl extends DNamedStubbedPsiElementBase<DLangu
             @Override
             public String getLocationString() {
                 final PsiFile psiFile = getContainingFile();
-                return psiFile instanceof DLanguageFile ? ((DLanguageFile) psiFile).getModuleOrFileName() : null;
+                return psiFile instanceof DlangFile ? ((DlangFile) psiFile).getModuleOrFileName() : null;
             }
 
             @Nullable
             @Override
             public Icon getIcon(final boolean unused) {
-                return DLanguageIcons.FILE;
+                return DlangIcons.FILE;
             }
         };
     }

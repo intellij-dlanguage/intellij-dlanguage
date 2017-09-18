@@ -285,7 +285,7 @@ public class DLanguageVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
-    public void visitEnumDeclaration(@NotNull final DLanguageEnumDeclarationImpl o) {
+    public void visitEnumDeclaration(@NotNull final DlangEnumDeclarationImpl o) {
         visitPsiElement(o);
     }
 
@@ -565,7 +565,7 @@ public class DLanguageVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
-//    public void visitSingleImport(@NotNull DLanguageSingleImportImpl o) {
+//    public void visitSingleImport(@NotNull DlangSingleImportImpl o) {
 //        visitPsiElement(o);
 //    }
 
@@ -609,7 +609,7 @@ public class DLanguageVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
-    public void visitStructDeclaration(@NotNull final DLanguageStructDeclarationImpl o) {
+    public void visitStructDeclaration(@NotNull final DlangStructDeclarationImpl o) {
         visitPsiElement(o);
     }
 
@@ -653,7 +653,7 @@ public class DLanguageVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
-    public void visitTemplateDeclaration(@NotNull final DLanguageTemplateDeclarationImpl o) {
+    public void visitTemplateDeclaration(@NotNull final DlangTemplateDeclarationImpl o) {
         visitPsiElement(o);
     }
 
@@ -746,7 +746,7 @@ public class DLanguageVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
-    public void visitUnionDeclaration(final DLanguageUnionDeclarationImpl o) {
+    public void visitUnionDeclaration(final DlangUnionDeclarationImpl o) {
         visitPsiElement(o);
     }
 
@@ -798,7 +798,7 @@ public class DLanguageVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
-    public void visitIdentifier(final DLanguageIdentifierImpl identifier) {
+    public void visitIdentifier(final DlangIdentifierImpl identifier) {
         visitPsiElement(identifier);
     }
 
@@ -847,7 +847,7 @@ public class DLanguageVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
-    public void visitInterfaceOrClass(final DLanguageInterfaceOrClassImpl o) {
+    public void visitInterfaceOrClass(final DlangInterfaceOrClassImpl o) {
         visitPsiElement(o);
     }
 

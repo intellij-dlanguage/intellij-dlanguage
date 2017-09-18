@@ -14,8 +14,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_BRACES_LEFT;
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_BRACES_RIGHT;
+import static net.masterthought.dlanguage.psi.DlangTypes.OP_BRACES_LEFT;
+import static net.masterthought.dlanguage.psi.DlangTypes.OP_BRACES_RIGHT;
 
 
 public class DLanguageDeclarationImpl extends ASTWrapperPsiElement implements DLanguageDeclaration {
@@ -73,8 +73,8 @@ public class DLanguageDeclarationImpl extends ASTWrapperPsiElement implements DL
     }
 
     @Nullable
-    public DLanguageEnumDeclaration getEnumDeclaration() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageEnumDeclaration.class);
+    public DlangEnumDeclaration getEnumDeclaration() {
+        return PsiTreeUtil.getChildOfType(this, DlangEnumDeclaration.class);
     }
 
     @Nullable
@@ -128,18 +128,18 @@ public class DLanguageDeclarationImpl extends ASTWrapperPsiElement implements DL
     }
 
     @Nullable
-    public DLanguageStructDeclaration getStructDeclaration() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageStructDeclaration.class);
+    public DlangStructDeclaration getStructDeclaration() {
+        return PsiTreeUtil.getChildOfType(this, DlangStructDeclaration.class);
     }
 
     @Nullable
-    public DLanguageTemplateDeclaration getTemplateDeclaration() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageTemplateDeclaration.class);
+    public DlangTemplateDeclaration getTemplateDeclaration() {
+        return PsiTreeUtil.getChildOfType(this, DlangTemplateDeclaration.class);
     }
 
     @Nullable
-    public DLanguageUnionDeclaration getUnionDeclaration() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageUnionDeclaration.class);
+    public DlangUnionDeclaration getUnionDeclaration() {
+        return PsiTreeUtil.getChildOfType(this, DlangUnionDeclaration.class);
     }
 
     @Nullable

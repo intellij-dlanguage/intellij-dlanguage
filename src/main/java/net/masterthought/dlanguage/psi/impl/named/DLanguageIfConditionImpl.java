@@ -5,7 +5,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.psi.DLanguageExpression;
-import net.masterthought.dlanguage.psi.DLanguageIdentifier;
+import net.masterthought.dlanguage.psi.DlangIdentifier;
 import net.masterthought.dlanguage.psi.DLanguageIfCondition;
 import net.masterthought.dlanguage.psi.DLanguageType;
 import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
@@ -13,8 +13,8 @@ import net.masterthought.dlanguage.stubs.DLanguageIfConditionStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.KW_AUTO;
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_EQ;
+import static net.masterthought.dlanguage.psi.DlangTypes.KW_AUTO;
+import static net.masterthought.dlanguage.psi.DlangTypes.OP_EQ;
 
 /**
  * Created by francis on 7/14/2017.
@@ -30,14 +30,14 @@ public class DLanguageIfConditionImpl extends DNamedStubbedPsiElementBase<DLangu
 
     @Nullable
     @Override
-    public DLanguageIdentifier getNameIdentifier() {
+    public DlangIdentifier getNameIdentifier() {
         return getIdentifier();
     }
 
     @Nullable
     @Override
-    public DLanguageIdentifier getIdentifier() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
+    public DlangIdentifier getIdentifier() {
+        return PsiTreeUtil.getChildOfType(this, DlangIdentifier.class);
     }
 
     @Nullable

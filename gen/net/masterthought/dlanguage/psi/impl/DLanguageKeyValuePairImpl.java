@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_COLON;
+import static net.masterthought.dlanguage.psi.DlangTypes.OP_COLON;
 
 
 public class DLanguageKeyValuePairImpl extends ASTWrapperPsiElement implements DLanguageKeyValuePair {

@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface DLanguageTemplateTypeParameter extends PsiElement {
     @Nullable
-    DLanguageIdentifier getIdentifier();
+    DlangIdentifier getIdentifier();
 
     @NotNull
     List<DLanguageType> getTypes();

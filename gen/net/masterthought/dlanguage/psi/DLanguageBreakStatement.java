@@ -9,7 +9,7 @@ public interface DLanguageBreakStatement extends PsiElement {
     PsiElement getKW_BREAK();
 
     @Nullable
-    DLanguageIdentifier getIdentifier();
+    DlangIdentifier getIdentifier();
 
     @Nullable
     PsiElement getOP_SCOLON();

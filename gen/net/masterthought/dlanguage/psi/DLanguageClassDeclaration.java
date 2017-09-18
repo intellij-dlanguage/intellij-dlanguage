@@ -9,5 +9,5 @@ public interface DLanguageClassDeclaration extends PsiElement {
     PsiElement getKW_CLASS();
 
     @Nullable
-    DLanguageInterfaceOrClass getInterfaceOrClass();
+    DlangInterfaceOrClass getInterfaceOrClass();
 }

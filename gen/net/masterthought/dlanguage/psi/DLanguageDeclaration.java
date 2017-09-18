@@ -33,7 +33,7 @@ public interface DLanguageDeclaration extends PsiElement {
     DLanguageEponymousTemplateDeclaration getEponymousTemplateDeclaration();
 
     @Nullable
-    DLanguageEnumDeclaration getEnumDeclaration();
+    DlangEnumDeclaration getEnumDeclaration();
 
     @Nullable
     DLanguageImportDeclaration getImportDeclaration();
@@ -66,13 +66,13 @@ public interface DLanguageDeclaration extends PsiElement {
     DLanguageStaticAssertDeclaration getStaticAssertDeclaration();
 
     @Nullable
-    DLanguageStructDeclaration getStructDeclaration();
+    DlangStructDeclaration getStructDeclaration();
 
     @Nullable
-    DLanguageTemplateDeclaration getTemplateDeclaration();
+    DlangTemplateDeclaration getTemplateDeclaration();
 
     @Nullable
-    DLanguageUnionDeclaration getUnionDeclaration();
+    DlangUnionDeclaration getUnionDeclaration();
 
     @Nullable
     DLanguageInvariant getInvariant();

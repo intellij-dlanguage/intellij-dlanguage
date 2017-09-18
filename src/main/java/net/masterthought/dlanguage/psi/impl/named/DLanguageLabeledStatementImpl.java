@@ -8,7 +8,7 @@ import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.psi.DLanguageDeclarationOrStatement;
-import net.masterthought.dlanguage.psi.DLanguageIdentifier;
+import net.masterthought.dlanguage.psi.DlangIdentifier;
 import net.masterthought.dlanguage.psi.DLanguageLabeledStatement;
 import net.masterthought.dlanguage.psi.DLanguageVisitor;
 import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
@@ -17,7 +17,7 @@ import net.masterthought.dlanguage.stubs.DLanguageLabeledStatementStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_COLON;
+import static net.masterthought.dlanguage.psi.DlangTypes.OP_COLON;
 
 public class DLanguageLabeledStatementImpl extends DNamedStubbedPsiElementBase<DLanguageLabeledStatementStub> implements DLanguageLabeledStatement {
 
@@ -40,8 +40,8 @@ public class DLanguageLabeledStatementImpl extends DNamedStubbedPsiElementBase<D
 
     @Override
     @Nullable
-    public DLanguageIdentifier getIdentifier() {
-        return PsiTreeUtil.getStubChildOfType(this, DLanguageIdentifier.class);
+    public DlangIdentifier getIdentifier() {
+        return PsiTreeUtil.getStubChildOfType(this, DlangIdentifier.class);
     }
 
     @Nullable
@@ -58,7 +58,7 @@ public class DLanguageLabeledStatementImpl extends DNamedStubbedPsiElementBase<D
 
     @Nullable
     @Override
-    public DLanguageIdentifier getNameIdentifier() {
+    public DlangIdentifier getNameIdentifier() {
         return getIdentifier();
     }
 

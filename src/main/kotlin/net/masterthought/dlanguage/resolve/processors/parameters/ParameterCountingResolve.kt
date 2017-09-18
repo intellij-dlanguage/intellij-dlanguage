@@ -10,7 +10,7 @@ import com.intellij.psi.stubs.StubIndex
 import com.intellij.psi.util.PsiTreeUtil
 import net.masterthought.dlanguage.index.DModuleIndex
 import net.masterthought.dlanguage.processors.DImportScopeProcessor
-import net.masterthought.dlanguage.psi.DLanguageTypes
+import net.masterthought.dlanguage.psi.DlangTypes
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement
 import net.masterthought.dlanguage.resolve.DResolveUtil
 import net.masterthought.dlanguage.resolve.processors.DNameScopeProcessor
@@ -34,7 +34,7 @@ import net.masterthought.dlanguage.utils.*
     }
 
     fun inFunctionUsage(identifier: Identifier): FunctionCallExpression? {
-        return DPsiUtil.getParent(identifier, setOf(DLanguageTypes.FUNCTION_CALL_EXPRESSION), setOf(DLanguageTypes.EXPRESSION, DLanguageTypes.ARGUMENTS)) as FunctionCallExpression?
+        return DPsiUtil.getParent(identifier, setOf(DlangTypes.FUNCTION_CALL_EXPRESSION), setOf(DlangTypes.EXPRESSION, DlangTypes.ARGUMENTS)) as FunctionCallExpression?
     }
 
 

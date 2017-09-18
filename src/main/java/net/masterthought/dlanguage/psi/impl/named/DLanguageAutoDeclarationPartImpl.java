@@ -14,7 +14,7 @@ import net.masterthought.dlanguage.stubs.DLanguageAutoDeclarationPartStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_EQ;
+import static net.masterthought.dlanguage.psi.DlangTypes.OP_EQ;
 
 public class DLanguageAutoDeclarationPartImpl extends DNamedStubbedPsiElementBase<DLanguageAutoDeclarationPartStub> implements DLanguageAutoDeclarationPart {
 
@@ -37,8 +37,8 @@ public class DLanguageAutoDeclarationPartImpl extends DNamedStubbedPsiElementBas
 
     @Override
     @Nullable
-    public DLanguageIdentifier getIdentifier() {
-        return PsiTreeUtil.getStubChildOfType(this, DLanguageIdentifier.class);
+    public DlangIdentifier getIdentifier() {
+        return PsiTreeUtil.getStubChildOfType(this, DlangIdentifier.class);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class DLanguageAutoDeclarationPartImpl extends DNamedStubbedPsiElementBas
     }
 
     @Nullable
-    public DLanguageIdentifier getNameIdentifier() {
+    public DlangIdentifier getNameIdentifier() {
         return getIdentifier();
     }
 

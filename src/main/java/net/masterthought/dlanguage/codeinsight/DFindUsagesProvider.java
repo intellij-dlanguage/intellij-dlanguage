@@ -25,7 +25,7 @@ public class DFindUsagesProvider implements FindUsagesProvider {
     @Override
     public WordsScanner getWordsScanner() {
         return new DefaultWordsScanner(new DLanguageLexerAdapter(),
-            TokenSet.create(DLanguageTypes.IDENTIFIER),
+            TokenSet.create(DlangTypes.IDENTIFIER),
             DTokenSets.LINE_COMMENTS, DTokenSets.BLOCK_COMMENTS, DTokenSets.STRING_LITERALS);
     }
 
@@ -49,26 +49,26 @@ public class DFindUsagesProvider implements FindUsagesProvider {
 
         if (element instanceof DLanguageFunctionDeclaration) {
             return "Function";
-        } else if (element instanceof DLanguageIdentifier) {
+        } else if (element instanceof DlangIdentifier) {
             return "Identifier";
         } else if (element instanceof DLanguageClassDeclaration) {
             return "Class";
         } else if (element instanceof DLanguageInterfaceDeclaration) {
             return "Interface";
-        } else if (element instanceof DLanguageInterfaceOrClass) {
+        } else if (element instanceof DlangInterfaceOrClass) {
             if (element.getParent() instanceof DLanguageInterfaceDeclaration) {
                 return "Interface";
             }
             return "Class";
-        } else if (element instanceof DLanguageEnumDeclaration) {
+        } else if (element instanceof DlangEnumDeclaration) {
             return "Enum";
         } else if (element instanceof DLanguageTemplateParameter) {
             return "Template Parameter";
-        } else if (element instanceof DLanguageTemplateDeclaration) {
+        } else if (element instanceof DlangTemplateDeclaration) {
             return "Template";
         } else if (element instanceof DLanguageParameter) {
             return "Parameter";
-        } else if (element instanceof DLanguageUnionDeclaration) {
+        } else if (element instanceof DlangUnionDeclaration) {
             return "Union";
         } else if (element instanceof DLanguageIfCondition) {
             return "Variable";

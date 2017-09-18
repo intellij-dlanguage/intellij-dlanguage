@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageIfCondition extends PsiElement, DNamedElement, StubBasedPsiElement<DLanguageIfConditionStub> {
     @Nullable
-    DLanguageIdentifier getIdentifier();
+    DlangIdentifier getIdentifier();
 
     @Nullable
     DLanguageExpression getExpression();

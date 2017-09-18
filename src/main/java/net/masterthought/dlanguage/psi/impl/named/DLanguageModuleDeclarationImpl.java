@@ -9,7 +9,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
-import net.masterthought.dlanguage.icons.DLanguageIcons;
+import net.masterthought.dlanguage.icons.DlangIcons;
 import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.impl.DElementFactory;
 import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
@@ -21,8 +21,8 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.KW_MODULE;
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_SCOLON;
+import static net.masterthought.dlanguage.psi.DlangTypes.KW_MODULE;
+import static net.masterthought.dlanguage.psi.DlangTypes.OP_SCOLON;
 
 public class DLanguageModuleDeclarationImpl extends DNamedStubbedPsiElementBase<DLanguageModuleDeclarationStub> implements DLanguageModuleDeclaration {
 
@@ -55,7 +55,7 @@ public class DLanguageModuleDeclarationImpl extends DNamedStubbedPsiElementBase<
     }
 
     @Nullable
-    public DLanguageIdentifier getNameIdentifier() {
+    public DlangIdentifier getNameIdentifier() {
         return DUtil.getEndOfIdentifierList(getIdentifierChain());
     }
 
@@ -85,13 +85,13 @@ public class DLanguageModuleDeclarationImpl extends DNamedStubbedPsiElementBase<
             @Override
             public String getLocationString() {
                 final PsiFile psiFile = getContainingFile();
-                return psiFile instanceof DLanguageFile ? ((DLanguageFile) psiFile).getModuleOrFileName() : null;
+                return psiFile instanceof DlangFile ? ((DlangFile) psiFile).getModuleOrFileName() : null;
             }
 
             @Nullable
             @Override
             public Icon getIcon(final boolean unused) {
-                return DLanguageIcons.FILE;
+                return DlangIcons.FILE;
             }
         };
     }

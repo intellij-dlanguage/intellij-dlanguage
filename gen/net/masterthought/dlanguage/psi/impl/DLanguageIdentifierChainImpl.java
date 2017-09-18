@@ -5,14 +5,14 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
-import net.masterthought.dlanguage.psi.DLanguageIdentifier;
+import net.masterthought.dlanguage.psi.DlangIdentifier;
 import net.masterthought.dlanguage.psi.DLanguageIdentifierChain;
 import net.masterthought.dlanguage.psi.DLanguageVisitor;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_DOT;
+import static net.masterthought.dlanguage.psi.DlangTypes.OP_DOT;
 
 
 public class DLanguageIdentifierChainImpl extends ASTWrapperPsiElement implements DLanguageIdentifierChain {
@@ -30,8 +30,8 @@ public class DLanguageIdentifierChainImpl extends ASTWrapperPsiElement implement
     }
 
     @NotNull
-    public List<DLanguageIdentifier> getIdentifiers() {
-        return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageIdentifier.class);
+    public List<DlangIdentifier> getIdentifiers() {
+        return PsiTreeUtil.getChildrenOfTypeAsList(this, DlangIdentifier.class);
     }
 
     @NotNull

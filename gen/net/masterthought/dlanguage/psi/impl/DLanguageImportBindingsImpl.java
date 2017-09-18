@@ -7,15 +7,15 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.psi.DLanguageImportBind;
 import net.masterthought.dlanguage.psi.DLanguageImportBindings;
-import net.masterthought.dlanguage.psi.DLanguageSingleImport;
+import net.masterthought.dlanguage.psi.DlangSingleImport;
 import net.masterthought.dlanguage.psi.DLanguageVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_COLON;
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_COMMA;
+import static net.masterthought.dlanguage.psi.DlangTypes.OP_COLON;
+import static net.masterthought.dlanguage.psi.DlangTypes.OP_COMMA;
 
 
 public class DLanguageImportBindingsImpl extends ASTWrapperPsiElement implements DLanguageImportBindings {
@@ -43,8 +43,8 @@ public class DLanguageImportBindingsImpl extends ASTWrapperPsiElement implements
     }
 
     @Nullable
-    public DLanguageSingleImport getSingleImport() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageSingleImport.class);
+    public DlangSingleImport getSingleImport() {
+        return PsiTreeUtil.getChildOfType(this, DlangSingleImport.class);
     }
 
     @Nullable

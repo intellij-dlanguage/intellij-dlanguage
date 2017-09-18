@@ -13,8 +13,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_BRACES_LEFT;
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_BRACES_RIGHT;
+import static net.masterthought.dlanguage.psi.DlangTypes.OP_BRACES_LEFT;
+import static net.masterthought.dlanguage.psi.DlangTypes.OP_BRACES_RIGHT;
 
 
 public class DLanguageStructInitializerImpl extends ASTWrapperPsiElement implements DLanguageStructInitializer {

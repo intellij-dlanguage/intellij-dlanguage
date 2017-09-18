@@ -12,7 +12,7 @@ string generateFixedLengthCases() {
         "const", "continue", "creal", "dchar", "debug", "default", "delegate", "delete", "deprecated",
         "do", "double", "else", "enum", "export", "extern", "false", "final", "finally", "float",
         "for", "foreach", "foreach_reverse", "function", "goto", "idouble", "if", "ifloat", "immutable",
-        "import", "in", "inout", "int", "interface", "invariant", "ireal", "is",
+        "singleImport", "in", "inout", "int", "interface", "invariant", "ireal", "is",
         "lazy", "long", "macro", "mixin", "module", "new", "nothrow", "null", "out", "override",
         "package", "pragma", "private", "protected", "public", "pure", "real", "ref", "return", "scope",
         "shared", "short", "static", "struct", "super", "switch", "synchronized", "template", "this",

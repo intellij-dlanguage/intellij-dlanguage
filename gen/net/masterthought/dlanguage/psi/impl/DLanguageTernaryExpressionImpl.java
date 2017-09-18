@@ -12,8 +12,8 @@ import net.masterthought.dlanguage.psi.DLanguageVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_COLON;
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_QUEST;
+import static net.masterthought.dlanguage.psi.DlangTypes.OP_COLON;
+import static net.masterthought.dlanguage.psi.DlangTypes.OP_QUEST;
 
 
 public class DLanguageTernaryExpressionImpl extends ASTWrapperPsiElement implements DLanguageTernaryExpression {

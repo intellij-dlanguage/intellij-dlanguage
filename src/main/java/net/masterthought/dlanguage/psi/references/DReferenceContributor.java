@@ -7,13 +7,13 @@ import com.intellij.psi.PsiReferenceContributor;
 import com.intellij.psi.PsiReferenceRegistrar;
 import net.masterthought.dlanguage.DLanguage;
 import net.masterthought.dlanguage.psi.DLanguageFunctionDeclaration;
-import net.masterthought.dlanguage.psi.DLanguageIdentifier;
+import net.masterthought.dlanguage.psi.DlangIdentifier;
 
 public class DReferenceContributor extends PsiReferenceContributor {
     @Override
     public void registerReferenceProviders(final PsiReferenceRegistrar registrar) {
         final PsiElementPattern.Capture<PsiNamedElement> variableCapture =
-            PlatformPatterns.psiElement(PsiNamedElement.class).withParent(DLanguageIdentifier.class).withParent(DLanguageFunctionDeclaration.class).withLanguage(DLanguage.INSTANCE);
+            PlatformPatterns.psiElement(PsiNamedElement.class).withParent(DlangIdentifier.class).withParent(DLanguageFunctionDeclaration.class).withLanguage(DLanguage.INSTANCE);
         registrar.registerReferenceProvider(variableCapture,
             new DReferenceProvider());
     }

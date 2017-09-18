@@ -60,7 +60,7 @@ public class DLanguageTemplateParameterImpl extends DNamedStubbedPsiElementBase<
     }
 
     @Nullable
-    public DLanguageIdentifier getNameIdentifier() {
+    public DlangIdentifier getNameIdentifier() {
         if (getTemplateAliasParameter() != null) {
             return getTemplateAliasParameter().getIdentifier();
         }

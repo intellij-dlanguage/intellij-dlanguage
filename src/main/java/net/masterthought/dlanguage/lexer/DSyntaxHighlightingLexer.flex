@@ -1,8 +1,8 @@
 package net.masterthought.dlanguage;
 import com.intellij.lexer.*;
 import com.intellij.psi.tree.IElementType;
-import net.masterthought.dlanguage.psi.DLanguageTypes;
-import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
+import net.masterthought.dlanguage.psi.DlangTypes;
+import static net.masterthought.dlanguage.psi.DlangTypes.*;
 
 %%
 
@@ -317,19 +317,19 @@ FUNCTION_DEFINITION = {ID}\(.*\)([^;]|[\s]*|[\r]*|[\n]*)
 <YYINITIAL> {NESTING_BLOCK_COMMENT_START} {
 		yybegin(NESTING_COMMENT_CONTENT);
 		nestedCommentDepth = 1;
-		return DLanguageTypes.NESTING_BLOCK_COMMENT;
+		return DlangTypes.NESTING_BLOCK_COMMENT;
 	}
 
 <YYINITIAL> {BLOCK_COMMENT_START} {
 		yybegin(BLOCK_COMMENT_CONTENT);
 		blockCommentDepth = 1;
-		return DLanguageTypes.BLOCK_COMMENT;
+		return DlangTypes.BLOCK_COMMENT;
 	}
 
 <YYINITIAL> {DOC_COMMENT_START} {
 		yybegin(DOC_COMMENT_CONTENT);
 		blockCommentDepth = 1;
-		return DLanguageTypes.DOC_COMMENT;
+		return DlangTypes.DOC_COMMENT;
 	}
 
 //<YYINITIAL> {CHARACTER_LITERAL} { return CHARACTER_LITERAL; }
@@ -338,7 +338,7 @@ FUNCTION_DEFINITION = {ID}\(.*\)([^;]|[\s]*|[\r]*|[\n]*)
 <NESTING_COMMENT_CONTENT> {
 	{NESTING_BLOCK_COMMENT_START}	{
 		nestedCommentDepth += 1;
-		return DLanguageTypes.NESTING_BLOCK_COMMENT;
+		return DlangTypes.NESTING_BLOCK_COMMENT;
 	}
 
 	{NESTING_BLOCK_COMMENT_END}	{
@@ -346,16 +346,16 @@ FUNCTION_DEFINITION = {ID}\(.*\)([^;]|[\s]*|[\r]*|[\n]*)
 		if(nestedCommentDepth == 0) {
 			yybegin(YYINITIAL); //Exit nesting comment block
 		}
-		return DLanguageTypes.NESTING_BLOCK_COMMENT;
+		return DlangTypes.NESTING_BLOCK_COMMENT;
 	}
-	\n|\/|\+	{return DLanguageTypes.NESTING_BLOCK_COMMENT;}
-	[^/+\n]+	{return DLanguageTypes.NESTING_BLOCK_COMMENT;}
+	\n|\/|\+	{return DlangTypes.NESTING_BLOCK_COMMENT;}
+	[^/+\n]+	{return DlangTypes.NESTING_BLOCK_COMMENT;}
 }
 
 <BLOCK_COMMENT_CONTENT> {
 	{BLOCK_COMMENT_START}	{
 		blockCommentDepth += 1;
-		return DLanguageTypes.BLOCK_COMMENT;
+		return DlangTypes.BLOCK_COMMENT;
 	}
 
 	{BLOCK_COMMENT_END}	{
@@ -363,16 +363,16 @@ FUNCTION_DEFINITION = {ID}\(.*\)([^;]|[\s]*|[\r]*|[\n]*)
 		if(blockCommentDepth == 0) {
 			yybegin(YYINITIAL); //Exit nesting comment block
 		}
-		return DLanguageTypes.BLOCK_COMMENT;
+		return DlangTypes.BLOCK_COMMENT;
 	}
-	\n|\/|\*	{return DLanguageTypes.BLOCK_COMMENT;}
-	[^/*\n]+	{return DLanguageTypes.BLOCK_COMMENT;}
+	\n|\/|\*	{return DlangTypes.BLOCK_COMMENT;}
+	[^/*\n]+	{return DlangTypes.BLOCK_COMMENT;}
 }
 
 <DOC_COMMENT_CONTENT> {
 	{DOC_COMMENT_START}	{
 		blockCommentDepth += 1;
-		return DLanguageTypes.DOC_COMMENT;
+		return DlangTypes.DOC_COMMENT;
 	}
 
 	{DOC_COMMENT_END}	{
@@ -380,21 +380,21 @@ FUNCTION_DEFINITION = {ID}\(.*\)([^;]|[\s]*|[\r]*|[\n]*)
 		if(blockCommentDepth == 0) {
 			yybegin(YYINITIAL); //Exit nesting comment block
 		}
-		return DLanguageTypes.DOC_COMMENT;
+		return DlangTypes.DOC_COMMENT;
 	}
-	\n|\/|\*	{return DLanguageTypes.DOC_COMMENT;}
-	[^/**\n]+	{return DLanguageTypes.DOC_COMMENT;}
+	\n|\/|\*	{return DlangTypes.DOC_COMMENT;}
+	[^/**\n]+	{return DlangTypes.DOC_COMMENT;}
 }
 
-// module import
+// module singleImport
 <YYINITIAL> module {
 		yybegin(MODULE_VALUE);
-		return DLanguageTypes.KEYWORD;
+		return DlangTypes.KEYWORD;
 	}
 
 <MODULE_VALUE> {
    {WHITE_SPACE_CHAR}* { return com.intellij.psi.TokenType.WHITE_SPACE; }
-   {MODULE_DEFINITION} { yybegin(YYINITIAL); return DLanguageTypes.MODULE_DEFINITION; }
+   {MODULE_DEFINITION} { yybegin(YYINITIAL); return DlangTypes.MODULE_DEFINITION; }
    [\n\r]    { yybegin(YYINITIAL); return com.intellij.psi.TokenType.WHITE_SPACE; }
 }
 
@@ -412,7 +412,7 @@ FUNCTION_DEFINITION = {ID}\(.*\)([^;]|[\s]*|[\r]*|[\n]*)
 //	}
 //
 //<FUNCTION_VALUE> {
-//      {ID} { yybegin(YYINITIAL); return DLanguageTypes.FUNCTION_DEFINITION; }
+//      {ID} { yybegin(YYINITIAL); return DlangTypes.FUNCTION_DEFINITION; }
 //      [\n\r]    { yybegin(YYINITIAL); return com.intellij.psi.TokenType.WHITE_SPACE; }
 //}
 
@@ -427,7 +427,7 @@ FUNCTION_DEFINITION = {ID}\(.*\)([^;]|[\s]*|[\r]*|[\n]*)
 //          yybegin(YYINITIAL);
 //            String theMatch = yytext().toString();
 //           if(theMatch.contains("){")){
-//             return DLanguageTypes.FUNCTION_DEFINITION;
+//             return DlangTypes.FUNCTION_DEFINITION;
 //           }
 //          }
 
@@ -437,7 +437,7 @@ FUNCTION_DEFINITION = {ID}\(.*\)([^;]|[\s]*|[\r]*|[\n]*)
 //<FUNCTION_VALUE>{
 //  ({WHITE_SPACE_CHAR}*|{NEW_LINE}*)* { yybegin(YYINITIAL); return com.intellij.psi.TokenType.WHITE_SPACE; }
 //  \(\) {}
-// {ID} { yybegin(YYINITIAL); return DLanguageTypes.FUNCTION_DEFINITION; }
+// {ID} { yybegin(YYINITIAL); return DlangTypes.FUNCTION_DEFINITION; }
 //}
 
 
@@ -462,7 +462,7 @@ FUNCTION_DEFINITION = {ID}\(.*\)([^;]|[\s]*|[\r]*|[\n]*)
 
 <YYINITIAL> {ID}{PARENTHESES_RIGHT}{PARENTHESES_RIGHT}{BRACES_RIGHT}{PARENTHESES_LEFT}{PARENTHESES_LEFT}{BRACES_LEFT} {  yypushback(yylength()); yybegin(FUNCTION_VALUE); }
 <FUNCTION_VALUE> {
-      {ID} { yybegin(YYINITIAL); return DLanguageTypes.FUNCTION_DEFINITION; }
+      {ID} { yybegin(YYINITIAL); return DlangTypes.FUNCTION_DEFINITION; }
       }
 
 <YYINITIAL> {LINE_DOC}                 { return LINE_DOC; }

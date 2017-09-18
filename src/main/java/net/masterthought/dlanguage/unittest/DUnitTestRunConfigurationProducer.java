@@ -7,8 +7,8 @@ import com.intellij.openapi.util.Ref;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import net.masterthought.dlanguage.DLanguageWritingAccessProvider;
-import net.masterthought.dlanguage.psi.DLanguageFile;
+import net.masterthought.dlanguage.DlangWritingAccessProvider;
+import net.masterthought.dlanguage.psi.DlangFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -43,10 +43,10 @@ public class DUnitTestRunConfigurationProducer extends RunConfigurationProducer<
         final PsiFile psiFile = psiLocation == null ? null : psiLocation.getContainingFile();
         final VirtualFile virtualFile = getRealVirtualFile(psiFile);
 
-        if ((psiFile instanceof DLanguageFile) &&
+        if ((psiFile instanceof DlangFile) &&
                 virtualFile != null &&
                 ProjectRootManager.getInstance(context.getProject()).getFileIndex().isInContent(virtualFile) &&
-                !DLanguageWritingAccessProvider.isInDLanguageSdkOrDLanguagePackagesFolder(psiFile.getProject(), virtualFile)) {
+                !DlangWritingAccessProvider.isInDLanguageSdkOrDLanguagePackagesFolder(psiFile.getProject(), virtualFile)) {
 
             // only run this producer if is test file
             if (isDunitTestFile(psiFile)) {
@@ -71,7 +71,7 @@ public class DUnitTestRunConfigurationProducer extends RunConfigurationProducer<
         final PsiElement psiLocation = context.getPsiLocation();
         final PsiFile psiFile = psiLocation == null ? null : psiLocation.getContainingFile();
         final VirtualFile virtualFile = getRealVirtualFile(psiFile);
-        return psiFile instanceof DLanguageFile && virtualFile != null ? virtualFile : null;
+        return psiFile instanceof DlangFile && virtualFile != null ? virtualFile : null;
     }
 
     public static VirtualFile getRealVirtualFile(final PsiFile psiFile) {

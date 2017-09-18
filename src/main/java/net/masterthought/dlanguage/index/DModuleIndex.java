@@ -9,8 +9,8 @@ import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.indexing.*;
 import com.intellij.util.io.EnumeratorStringDescriptor;
 import com.intellij.util.io.KeyDescriptor;
-import net.masterthought.dlanguage.DLanguageFileType;
-import net.masterthought.dlanguage.psi.DLanguageFile;
+import net.masterthought.dlanguage.DlangFileType;
+import net.masterthought.dlanguage.psi.DlangFile;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -23,7 +23,7 @@ public class DModuleIndex extends ScalarIndexExtension<String> {
         @Override
         public boolean acceptInput(@NotNull final VirtualFile file) {
             //noinspection ObjectEquality
-            return file.getFileType() == DLanguageFileType.INSTANCE;
+            return file.getFileType() == DlangFileType.INSTANCE;
         }
     };
     private static final ID<String, Void> D_MODULE_INDEX = ID.create("DModuleIndex");
@@ -32,14 +32,14 @@ public class DModuleIndex extends ScalarIndexExtension<String> {
     private static final MyDataIndexer INDEXER = new MyDataIndexer();
 
     @NotNull
-    public static List<DLanguageFile> getFilesByModuleName(@NotNull final Project project,
-                                                           @NotNull final String moduleName,
-                                                           @NotNull final GlobalSearchScope searchScope) {
+    public static List<DlangFile> getFilesByModuleName(@NotNull final Project project,
+                                                       @NotNull final String moduleName,
+                                                       @NotNull final GlobalSearchScope searchScope) {
         final PsiManager psiManager = PsiManager.getInstance(project);
         final Collection<VirtualFile> virtualFiles = getVirtualFilesByModuleName(moduleName, searchScope);
         return ContainerUtil.mapNotNull(virtualFiles, virtualFile -> {
             final PsiFile psiFile = psiManager.findFile(virtualFile);
-            return psiFile instanceof DLanguageFile ? (DLanguageFile) psiFile : null;
+            return psiFile instanceof DlangFile ? (DlangFile) psiFile : null;
         });
     }
 
@@ -95,8 +95,8 @@ public class DModuleIndex extends ScalarIndexExtension<String> {
         public Map<String, Void> map(@NotNull final FileContent inputData) {
             final PsiFile psiFile = inputData.getPsiFile();
             String moduleName;
-            if (psiFile instanceof DLanguageFile) {
-                moduleName = ((DLanguageFile) psiFile).getModuleName();
+            if (psiFile instanceof DlangFile) {
+                moduleName = ((DlangFile) psiFile).getModuleName();
                 if (moduleName == null)
                     moduleName = psiFile.getName().replace(".d", "");
             } else {

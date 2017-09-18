@@ -11,7 +11,7 @@ import net.masterthought.dlanguage.psi.DLanguageXorExpression;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_OR;
+import static net.masterthought.dlanguage.psi.DlangTypes.OP_OR;
 
 
 public class DLanguageOrExpressionImpl extends ASTWrapperPsiElement implements DLanguageOrExpression {

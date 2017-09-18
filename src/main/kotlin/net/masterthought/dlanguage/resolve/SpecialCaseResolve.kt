@@ -9,7 +9,7 @@ import com.intellij.psi.impl.file.PsiDirectoryFactory
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.util.PsiTreeUtil
 import net.masterthought.dlanguage.index.DModuleIndex
-import net.masterthought.dlanguage.psi.DLanguageIdentifier
+import net.masterthought.dlanguage.psi.DlangIdentifier
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement
 import net.masterthought.dlanguage.stubs.index.DPublicImportIndex
 import net.masterthought.dlanguage.stubs.index.DTopLevelDeclarationIndex
@@ -49,7 +49,7 @@ object SpecialCaseResolve {
         return emptySet()
     }
 
-    private fun resolvePackage(parents: MutableList<DLanguageIdentifier>): Set<PsiNamedElement> {
+    private fun resolvePackage(parents: MutableList<DlangIdentifier>): Set<PsiNamedElement> {
         if (parents.size == 0)
             return emptySet()
         val last = parents.last()

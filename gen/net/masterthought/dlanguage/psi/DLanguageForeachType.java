@@ -12,7 +12,7 @@ public interface DLanguageForeachType extends PsiElement, DNamedElement, StubBas
     DLanguageType getType();
 
     @Nullable
-    DLanguageIdentifier getIdentifier();
+    DlangIdentifier getIdentifier();
 
     @Nullable
     DLanguageTypeConstructors getTypeConstructors();

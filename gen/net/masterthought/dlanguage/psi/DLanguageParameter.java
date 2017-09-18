@@ -18,7 +18,7 @@ public interface DLanguageParameter extends PsiElement, DNamedElement, StubBased
     DLanguageType getType();
 
     @Nullable
-    DLanguageIdentifier getIdentifier();
+    DlangIdentifier getIdentifier();
 
     @NotNull
     List<DLanguageTypeSuffix> getTypeSuffixs();

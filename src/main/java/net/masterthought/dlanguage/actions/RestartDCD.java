@@ -13,7 +13,7 @@ import com.intellij.openapi.ui.popup.JBPopup;
 import com.intellij.openapi.ui.popup.JBPopupFactory;
 import com.intellij.ui.components.JBList;
 import net.masterthought.dlanguage.codeinsight.dcd.DCDCompletionServer;
-import net.masterthought.dlanguage.module.DLanguageModuleType;
+import net.masterthought.dlanguage.module.DlangModuleType;
 import net.masterthought.dlanguage.settings.ToolKey;
 import org.jetbrains.annotations.NotNull;
 
@@ -34,7 +34,7 @@ public class RestartDCD extends AnAction implements DumbAware {
         final Project project = getEventProject(e);
         if (project == null) return false;
         final String cdcServerPath = ToolKey.DCD_SERVER_KEY.getPath(project);
-        return cdcServerPath != null && !cdcServerPath.isEmpty() && DLanguageModuleType.findModules(project).size() > 0;
+        return cdcServerPath != null && !cdcServerPath.isEmpty() && DlangModuleType.findModules(project).size() > 0;
     }
 
     @Override
@@ -42,7 +42,7 @@ public class RestartDCD extends AnAction implements DumbAware {
         final String prefix = "Unable to restart dcd-server - ";
         final Project project = e.getProject();
         if (project == null) { displayError(e, prefix + "No active project."); return; }
-        final Collection<Module> modules = DLanguageModuleType.findModules(project);
+        final Collection<Module> modules = DlangModuleType.findModules(project);
         final int size = modules.size();
         if (size == 0) displayError(e, prefix + "No DLanguage modules are used in this project.");
         else if (size == 1) restartDcdServer(e, modules.iterator().next());

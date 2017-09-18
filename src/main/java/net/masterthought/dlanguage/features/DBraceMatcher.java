@@ -5,19 +5,19 @@ import com.intellij.lang.PairedBraceMatcher;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
-import net.masterthought.dlanguage.psi.DLanguageTypes;
+import net.masterthought.dlanguage.psi.DlangTypes;
 import net.masterthought.dlanguage.psi.DTokenSets;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class DBraceMatcher implements PairedBraceMatcher {
     private static final BracePair[] PAIRS = new BracePair[]{
-            new BracePair(DLanguageTypes.PARENTHESES_LEFT, DLanguageTypes.PARENTHESES_RIGHT, false),
-            new BracePair(DLanguageTypes.BRACES_LEFT, DLanguageTypes.BRACES_RIGHT, true),
-            new BracePair(DLanguageTypes.BRACKETS_LEFT, DLanguageTypes.BRACKETS_RIGHT, false),
+            new BracePair(DlangTypes.PARENTHESES_LEFT, DlangTypes.PARENTHESES_RIGHT, false),
+            new BracePair(DlangTypes.BRACES_LEFT, DlangTypes.BRACES_RIGHT, true),
+            new BracePair(DlangTypes.BRACKETS_LEFT, DlangTypes.BRACKETS_RIGHT, false),
     };
 
-    private static final TokenSet alwaysMatch = TokenSet.create(DLanguageTypes.OP_BRACES_LEFT);
+    private static final TokenSet alwaysMatch = TokenSet.create(DlangTypes.OP_BRACES_LEFT);
 
     @Override
     public BracePair[] getPairs() {
@@ -31,7 +31,7 @@ public class DBraceMatcher implements PairedBraceMatcher {
             || DTokenSets.WHITESPACES.contains(contextType)
             || DTokenSets.LINE_COMMENTS.contains(contextType)
             || DTokenSets.BLOCK_COMMENTS.contains(contextType)
-            || DLanguageTypes.OP_PAR_RIGHT == contextType
+            || DlangTypes.OP_PAR_RIGHT == contextType
             || null == contextType;
     }
 

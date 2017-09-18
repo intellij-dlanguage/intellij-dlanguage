@@ -13,8 +13,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_EQ;
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_TRIPLEDOT;
+import static net.masterthought.dlanguage.psi.DlangTypes.OP_EQ;
+import static net.masterthought.dlanguage.psi.DlangTypes.OP_TRIPLEDOT;
 
 public class DLanguageParameterImpl extends DNamedStubbedPsiElementBase<DLanguageParameterStub> implements DLanguageParameter {
 
@@ -49,8 +49,8 @@ public class DLanguageParameterImpl extends DNamedStubbedPsiElementBase<DLanguag
 
     @Override
     @Nullable
-    public DLanguageIdentifier getIdentifier() {
-        return PsiTreeUtil.getStubChildOfType(this, DLanguageIdentifier.class);
+    public DlangIdentifier getIdentifier() {
+        return PsiTreeUtil.getStubChildOfType(this, DlangIdentifier.class);
     }
 
     @NotNull
@@ -82,7 +82,7 @@ public class DLanguageParameterImpl extends DNamedStubbedPsiElementBase<DLanguag
 //    }
 
     @Nullable
-    public DLanguageIdentifier getNameIdentifier() {
+    public DlangIdentifier getNameIdentifier() {
         return getIdentifier();
     }
 }

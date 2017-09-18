@@ -14,8 +14,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_COMMA;
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_SCOLON;
+import static net.masterthought.dlanguage.psi.DlangTypes.OP_COMMA;
+import static net.masterthought.dlanguage.psi.DlangTypes.OP_SCOLON;
 
 
 public class DLanguageAutoDeclarationImpl extends ASTWrapperPsiElement implements DLanguageAutoDeclaration {

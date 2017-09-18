@@ -2,7 +2,7 @@ package net.masterthought.dlanguage.unittest;
 
 import com.intellij.execution.configurations.ConfigurationTypeBase;
 import com.intellij.openapi.extensions.Extensions;
-import net.masterthought.dlanguage.icons.DLanguageIcons;
+import net.masterthought.dlanguage.icons.DlangIcons;
 
 public class DUnitTestRunConfigurationType extends ConfigurationTypeBase {
 
@@ -14,7 +14,7 @@ public class DUnitTestRunConfigurationType extends ConfigurationTypeBase {
         super("D",
                 "dUnit Unit Tests",
                 "dUnit unit tests run configuration",
-                DLanguageIcons.RUN);
+                DlangIcons.RUN);
         addFactory(new DUnitTestRunConfigurationFactory(this));
     }
 }

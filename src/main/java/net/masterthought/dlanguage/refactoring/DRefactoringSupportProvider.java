@@ -3,7 +3,7 @@ package net.masterthought.dlanguage.refactoring;
 import com.intellij.lang.refactoring.RefactoringSupportProvider;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiNamedElement;
-import net.masterthought.dlanguage.psi.DLanguageIdentifier;
+import net.masterthought.dlanguage.psi.DlangIdentifier;
 import net.masterthought.dlanguage.resolve.DResolveUtil;
 import org.jetbrains.annotations.NotNull;
 
@@ -15,7 +15,7 @@ import java.util.Set;
 public class DRefactoringSupportProvider extends RefactoringSupportProvider {
     @Override
     public boolean isSafeDeleteAvailable(@NotNull final PsiElement element) {
-        if (!(element instanceof DLanguageIdentifier))
+        if (!(element instanceof DlangIdentifier))
             return false;
         final Set<PsiNamedElement> resolve = DResolveUtil.Companion.getInstance(element.getProject()).findDefinitionNode((PsiNamedElement) element, false);
         return resolve.size() == 1;

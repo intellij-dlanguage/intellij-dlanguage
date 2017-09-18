@@ -13,7 +13,7 @@ public class DElementTypeFactory {
         if (name.equals("IDENTIFIER")) return new IdentifierStubElementType(name);
         if (name.equals("FUNCTION_DECLARATION")) return new FunctionDeclarationStubElementType(name);
         if (name.equals("INTERFACE_OR_CLASS")) return new InterfaceOrClassStubElementType(name);
-        if (name.equals("TEMPLATE_DECLARATION")) return new DLanguageTemplateDeclarationStubElementType(name);
+        if (name.equals("TEMPLATE_DECLARATION")) return new DlangTemplateDeclarationStubElementType(name);
         if (name.equals("CONSTRUCTOR")) return new ConstructorStubElementType(name);
         if (name.equals("DESTRUCTOR")) return new DestructorStubElementType(name);
         if (name.equals("STRUCT_DECLARATION")) return new StructDeclarationStubElementType(name);
@@ -27,7 +27,7 @@ public class DElementTypeFactory {
         if (name.equals("STATIC_DESTRUCTOR")) return new StaticDestructorStubElementType(name);
         if (name.equals("AUTO_DECLARATION_PART")) return new AutoDeclarationPartStubElementType(name);
         if (name.equals("ENUM_DECLARATION")) return new EnumDeclarationStubElementType(name);
-        if (name.equals("UNION_DECLARATION")) return new DLanguageUnionDeclarationStubElementType(name);
+        if (name.equals("UNION_DECLARATION")) return new DlangUnionDeclarationStubElementType(name);
         if (name.equals("SINGLE_IMPORT")) return new SingleImportStubElementType(name);
         if (name.equals("UNITTEST")) return new UnittestStubElementType(name);
         if (name.equals("CATCH")) return new CatchStubElementType(name);
@@ -37,7 +37,7 @@ public class DElementTypeFactory {
         if (name.equals("TEMPLATE_PARAMETER")) return new DLanguageTemplateParameterStubElementType(name);
         if (name.equals("EPONYMOUS_TEMPLATE_DECLARATION"))
             return new DLanguageEponymousTemplateDeclarationStubElementType(name);
-        if (name.equals("ENUM_MEMBER")) return new DLanguageEnumMemberStubElementType(name);
+        if (name.equals("ENUM_MEMBER")) return new DlangEnumMemberStubElementType(name);
         if (name.equals("NAMED_IMPORT_BIND")) return new DLanguageNamedImportBindStubElementType(name);
         throw new RuntimeException("Unknown element type: " + name);
     }

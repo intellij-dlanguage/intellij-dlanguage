@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface DLanguageEnumBody extends PsiElement {
     @Nullable
-    DLanguageIdentifier getIdentifier();
+    DlangIdentifier getIdentifier();
 
     @Nullable
     PsiElement getOP_BRACES_RIGHT();

@@ -5,14 +5,15 @@ import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiBuilder.Marker;
 import com.intellij.psi.tree.IElementType;
 import kotlin.jvm.internal.Ref;
-import net.masterthought.dlanguage.psi.DLanguageTokenType;
+import net.masterthought.dlanguage.psi.DlangTokenType;
+import net.masterthought.dlanguage.psi.DlangTokenType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
 import static com.intellij.lang.parser.GeneratedParserUtilBase.enter_section_;
 import static com.intellij.lang.parser.GeneratedParserUtilBase.exit_section_;
-import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
+import static net.masterthought.dlanguage.psi.DlangTypes.*;
 
 /**
  * This parser is very closely based on libdparse, so that we can get bug fixes and new features from libdparse.
@@ -401,7 +402,7 @@ class DLangParser {
         if (tokenTypeIndex.get(tok) != null) {
             return tokenTypeIndex.get(tok);
         }
-        final IElementType[] matchingTypes = IElementType.enumerate((IElementType type) -> type instanceof DLanguageTokenType && ((DLanguageTokenType) type).getDebugName().equals(tok));
+        final IElementType[] matchingTypes = IElementType.enumerate((IElementType type) -> type instanceof DlangTokenType && ((DlangTokenType) type).getDebugName().equals(tok));
         if (tok.equals("identifier")) {
             tokenTypeIndex.put("identifier", new Token.IdType(ID));
             return tokenTypeIndex.get("identifier");
@@ -624,7 +625,7 @@ class DLangParser {
      */
     boolean parseAliasThisDeclaration() {
         final Marker m = enter_section_modified(builder);
-//			Runnable cleanup =() ->  exit_section_modified(builder,m,DLanguageTypes.AliasThisDeclaration,false);
+//			Runnable cleanup =() ->  exit_section_modified(builder,m,DlangTypes.AliasThisDeclaration,false);
         if (!tokenCheck("alias")) {
             cleanup(m, ALIAS_THIS_DECLARATION);
             return false;
@@ -813,7 +814,7 @@ class DLangParser {
      */
     boolean parseArrayLiteral() {
         final Marker m = enter_section_modified(builder);
-//			Runnable cleanup =() ->  exit_section_modified(builder,m,DLanguageTypes.ArrayLiteral,false);
+//			Runnable cleanup =() ->  exit_section_modified(builder,m,DlangTypes.ArrayLiteral,false);
         if (!tokenCheck("[")) {
             cleanup(m, ARRAY_LITERAL);
             return false;
@@ -842,7 +843,7 @@ class DLangParser {
     boolean parseArrayMemberInitialization() {
 //            mixin(traceEnterAndExit!(__FUNCTION__))
         final Marker m = enter_section_modified(builder);
-//			Runnable cleanup =() ->  exit_section_modified(builder,m,DLanguageTypes.ArrayMemberInitialization,false);
+//			Runnable cleanup =() ->  exit_section_modified(builder,m,DlangTypes.ArrayMemberInitialization,false);
         if (current().type.equals(tok("["))) {
             final Bookmark b = setBookmark();
             skipBrackets();
@@ -2806,7 +2807,7 @@ class DLangParser {
                         return false;
                     }
                 }
-            } else if (idType.equals(tok("import"))) {
+            } else if (idType.equals(tok("singleImport"))) {
                 if (!parseImportDeclaration()) {
                     cleanup(m, DECLARATION);
                     return false;
@@ -4475,13 +4476,13 @@ class DLangParser {
      * Parses an ImportDeclaration
      * <p>
      * $(GRAMMAR $(RULEDEF importDeclaration):
-     * $(LITERAL 'import') $(RULE singleImport) ($(LITERAL ',') $(RULE singleImport))* ($(LITERAL ',') $(RULE importBindings))? $(LITERAL ';')
-     * | $(LITERAL 'import') $(RULE importBindings) $(LITERAL ';')
+     * $(LITERAL 'singleImport') $(RULE singleImport) ($(LITERAL ',') $(RULE singleImport))* ($(LITERAL ',') $(RULE importBindings))? $(LITERAL ';')
+     * | $(LITERAL 'singleImport') $(RULE importBindings) $(LITERAL ';')
      * ;)
      */
     boolean parseImportDeclaration() {
         final Marker m = enter_section_modified(builder);
-        if (!tokenCheck("import")) {
+        if (!tokenCheck("singleImport")) {
             cleanup(m, IMPORT_DECLARATION);
             return false;
         }
@@ -4525,12 +4526,12 @@ class DLangParser {
      * Parses an ImportExpression
      * <p>
      * $(GRAMMAR $(RULEDEF importExpression):
-     * $(LITERAL 'import') $(LITERAL '$(LPAREN)') $(RULE assignExpression) $(LITERAL '$(RPAREN)')
+     * $(LITERAL 'singleImport') $(LITERAL '$(LPAREN)') $(RULE assignExpression) $(LITERAL '$(RPAREN)')
      * ;)
      */
     boolean parseImportExpression() {
         final Marker marker = enter_section_modified(builder);
-        final boolean b = simpleParse("ImportExpression", tok("import"), tok("("),
+        final boolean b = simpleParse("ImportExpression", tok("singleImport"), tok("("),
             "assignExpression|parseAssignExpression", tok(")"));
         exit_section_modified(builder, marker, IMPORT_EXPRESSION, b);
         return b;
@@ -5771,7 +5772,7 @@ class DLangParser {
                 cleanup(m, PRIMARY_EXPRESSION);
                 return false;
             }
-        } else if (i.equals(tok("import"))) {
+        } else if (i.equals(tok("singleImport"))) {
             if (!parseImportExpression()) {
                 cleanup(m, PRIMARY_EXPRESSION);
                 return false;
@@ -6327,7 +6328,7 @@ class DLangParser {
      */
     boolean parseStaticDestructor() {
         final Marker m = enter_section_modified(builder);
-//			Runnable cleanup =() ->  exit_section_modified(builder,m,DLanguageTypes.StaticDestructor,false);
+//			Runnable cleanup =() ->  exit_section_modified(builder,m,DlangTypes.StaticDestructor,false);
 //            node.location = current().index;
         if (!tokenCheck("static")) {
             cleanup(m, STATIC_DESTRUCTOR);
@@ -8305,7 +8306,7 @@ class DLangParser {
     {
 //            final boolean setLineAndColumn = false;
 //        Marker m = enter_section_(builder);
-//			Runnable cleanup =() ->  exit_section_modified(builder,m,DLanguageTypes.ListType,false);
+//			Runnable cleanup =() ->  exit_section_modified(builder,m,DlangTypes.ListType,false);
 //            if (setLineAndColumn)
 //            {
 ////                node.line = current().line;

@@ -8,9 +8,9 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.stubs.NamedStubBase;
-import net.masterthought.dlanguage.icons.DLanguageIcons;
-import net.masterthought.dlanguage.psi.DLanguageFile;
-import net.masterthought.dlanguage.psi.DLanguageIdentifier;
+import net.masterthought.dlanguage.icons.DlangIcons;
+import net.masterthought.dlanguage.psi.DlangFile;
+import net.masterthought.dlanguage.psi.DlangIdentifier;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 import net.masterthought.dlanguage.psi.references.DReference;
 import org.jetbrains.annotations.NotNull;
@@ -28,7 +28,7 @@ public abstract class DNamedStubbedPsiElementBase<T extends NamedStubBase<?>> ex
     }
 
     @Nullable
-    public abstract DLanguageIdentifier getNameIdentifier();
+    public abstract DlangIdentifier getNameIdentifier();
 
     @NotNull
     public String getName() {
@@ -64,13 +64,13 @@ public abstract class DNamedStubbedPsiElementBase<T extends NamedStubBase<?>> ex
             @Override
             public String getLocationString() {
                 final PsiFile psiFile = getContainingFile();
-                return psiFile instanceof DLanguageFile ? ((DLanguageFile) psiFile).getModuleOrFileName() : null;
+                return psiFile instanceof DlangFile ? ((DlangFile) psiFile).getModuleOrFileName() : null;
             }
 
             @Nullable
             @Override
             public Icon getIcon(final boolean unused) {
-                return DLanguageIcons.FILE;
+                return DlangIcons.FILE;
             }
         };
     }

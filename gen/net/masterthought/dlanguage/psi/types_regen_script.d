@@ -451,7 +451,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import net.masterthought.dlanguage.psi.*;
 import java.util.List;
-import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
+import static net.masterthought.dlanguage.psi.DlangTypes.*;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import net.masterthought.dlanguage.resolve.ScopeProcessorImpl;
@@ -478,7 +478,7 @@ public class %s extends ASTWrapperPsiElement implements %s{
 
     import com.intellij.psi.PsiElement;
     import org.jetbrains.annotations.NotNull;
-    import static net.masterthought.dlanguage.psi.DLanguageTypes.*;
+    import static net.masterthought.dlanguage.psi.DlangTypes.*;
     import org.jetbrains.annotations.Nullable;
     import com.intellij.psi.util.PsiTreeUtil;
     import java.util.List;

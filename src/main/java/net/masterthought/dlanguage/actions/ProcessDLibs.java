@@ -21,7 +21,7 @@ import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.ui.components.JBList;
-import net.masterthought.dlanguage.module.DLanguageModuleType;
+import net.masterthought.dlanguage.module.DlangModuleType;
 import net.masterthought.dlanguage.project.DubConfigurationParser;
 import net.masterthought.dlanguage.project.DubPackage;
 import net.masterthought.dlanguage.settings.ToolKey;
@@ -46,7 +46,7 @@ public class ProcessDLibs extends AnAction implements DumbAware {
         final Project project = getEventProject(e);
         if (project == null) return false;
         final String dubPath = ToolKey.DUB_KEY.getPath(project);
-        return dubPath != null && !dubPath.isEmpty() && DLanguageModuleType.findModules(project).size() > 0;
+        return dubPath != null && !dubPath.isEmpty() && DlangModuleType.findModules(project).size() > 0;
     }
 
     @Override
@@ -57,7 +57,7 @@ public class ProcessDLibs extends AnAction implements DumbAware {
             displayError(e, prefix + "No active project.");
             return;
         }
-        final Collection<Module> modules = DLanguageModuleType.findModules(project);
+        final Collection<Module> modules = DlangModuleType.findModules(project);
         final int size = modules.size();
         if (size == 0) displayError(e, prefix + "No DLanguage modules are used in this project.");
         else if (size == 1) processDLibs(e, modules.iterator().next());

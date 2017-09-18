@@ -6,12 +6,12 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.psi.DLanguageClassDeclaration;
-import net.masterthought.dlanguage.psi.DLanguageInterfaceOrClass;
+import net.masterthought.dlanguage.psi.DlangInterfaceOrClass;
 import net.masterthought.dlanguage.psi.DLanguageVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.KW_CLASS;
+import static net.masterthought.dlanguage.psi.DlangTypes.KW_CLASS;
 
 
 public class DLanguageClassDeclarationImpl extends ASTWrapperPsiElement implements DLanguageClassDeclaration {
@@ -34,7 +34,7 @@ public class DLanguageClassDeclarationImpl extends ASTWrapperPsiElement implemen
     }
 
     @Nullable
-    public DLanguageInterfaceOrClass getInterfaceOrClass() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageInterfaceOrClass.class);
+    public DlangInterfaceOrClass getInterfaceOrClass() {
+        return PsiTreeUtil.getChildOfType(this, DlangInterfaceOrClass.class);
     }
 }

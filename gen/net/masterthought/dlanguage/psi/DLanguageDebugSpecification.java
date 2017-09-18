@@ -12,7 +12,7 @@ public interface DLanguageDebugSpecification extends PsiElement {
     PsiElement getOP_EQ();
 
     @Nullable
-    DLanguageIdentifier getIdentifier();
+    DlangIdentifier getIdentifier();
 
     @Nullable
     PsiElement getINTEGER_LITERAL();

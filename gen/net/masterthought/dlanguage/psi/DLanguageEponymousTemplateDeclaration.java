@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageEponymousTemplateDeclaration extends PsiElement, DNamedElement, StubBasedPsiElement<DLanguageEponymousTemplateDeclarationStub> {
     @Nullable
-    DLanguageIdentifier getIdentifier();
+    DlangIdentifier getIdentifier();
 
     @Nullable
     DLanguageTemplateParameters getTemplateParameters();

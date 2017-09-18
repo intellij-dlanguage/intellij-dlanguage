@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_COMMA;
+import static net.masterthought.dlanguage.psi.DlangTypes.OP_COMMA;
 
 public class DLanguageAliasInitializerImpl extends DNamedStubbedPsiElementBase<DLanguageAliasInitializerStub> implements DLanguageAliasInitializer {
 //todo doesn't cover all alias declarations possible
@@ -39,8 +39,8 @@ public DLanguageAliasInitializerImpl(final DLanguageAliasInitializerStub stub, f
 
     @Override
     @Nullable
-    public DLanguageIdentifier getIdentifier() {
-        return PsiTreeUtil.getStubChildOfType(this, DLanguageIdentifier.class);
+    public DlangIdentifier getIdentifier() {
+        return PsiTreeUtil.getStubChildOfType(this, DlangIdentifier.class);
     }
 
     @Nullable
@@ -68,7 +68,7 @@ public DLanguageAliasInitializerImpl(final DLanguageAliasInitializerStub stub, f
     }
 
     @Nullable
-    public DLanguageIdentifier getNameIdentifier() {
+    public DlangIdentifier getNameIdentifier() {
         return getIdentifier();
     }
 

@@ -5,7 +5,7 @@ import org.jetbrains.jps.model.ex.JpsElementTypeWithDummyProperties;
 import org.jetbrains.jps.model.module.JpsModuleType;
 
 /**
- * Empty shell DLanguageModuleType-alike.
+ * Empty shell DlangModuleType-alike.
  */
 public class JpsDLanguageModuleType extends JpsElementTypeWithDummyProperties implements JpsModuleType<JpsDummyElement> {
     public static final JpsDLanguageModuleType INSTANCE = new JpsDLanguageModuleType();

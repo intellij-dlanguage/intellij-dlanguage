@@ -7,9 +7,9 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.tree.IElementType
 import com.intellij.psi.util.PsiTreeUtil
 import net.masterthought.dlanguage.psi.DLanguageDeclaration
-import net.masterthought.dlanguage.psi.DLanguageFile
+import net.masterthought.dlanguage.psi.DlangFile
 import net.masterthought.dlanguage.psi.DLanguageParameters
-import net.masterthought.dlanguage.psi.DLanguageSingleImport
+import net.masterthought.dlanguage.psi.DlangSingleImport
 import net.masterthought.dlanguage.resolve.ParameterCountRange
 import net.masterthought.dlanguage.resolve.processors.parameters.DAttributesFinder
 
@@ -44,7 +44,7 @@ object DPsiUtil {
         val declDefList = Lists.newArrayList<DLanguageDeclaration>()
         declDefList.addAll(PsiTreeUtil.findChildrenOfType(file, DLanguageDeclaration::class.java))
         for (declDef in declDefList) {
-            val importDecls = PsiTreeUtil.findChildrenOfType(declDef, DLanguageSingleImport::class.java)
+            val importDecls = PsiTreeUtil.findChildrenOfType(declDef, DlangSingleImport::class.java)
             for (importDecl in importDecls) {
                 imports.add(importDecl.identifierChain!!.text)
             }
@@ -53,7 +53,7 @@ object DPsiUtil {
     }
 
     fun getParent(element: PsiElement, targetType: Set<IElementType>, excludedType: Set<IElementType>): PsiElement? {
-        if (element.parent == null || element is DLanguageFile) {
+        if (element.parent == null || element is DlangFile) {
             return null
         }
 

@@ -11,7 +11,7 @@ import net.masterthought.dlanguage.DLightPlatformCodeInsightFixtureTestCase;
 import net.masterthought.dlanguage.psi.DLanguageClassDeclaration;
 import net.masterthought.dlanguage.psi.DLanguageConstructor;
 import net.masterthought.dlanguage.psi.DLanguageFunctionDeclaration;
-import net.masterthought.dlanguage.psi.DLanguageIdentifier;
+import net.masterthought.dlanguage.psi.DlangIdentifier;
 
 import java.io.File;
 
@@ -54,7 +54,7 @@ public abstract class DResolveTestCase extends DLightPlatformCodeInsightFixtureT
                 resolvedElement = ref.getElement();
                 ensureNotNull(file);
                 // container elements like DEFINITION_FUNCTION need to be looked up by .getElement().getParent()
-                if (resolvedElement instanceof DLanguageIdentifier) {
+                if (resolvedElement instanceof DlangIdentifier) {
                     resolvedElement = ref.getElement().getParent();
                 }
                 //if we're resolving something within a class don't resolve the class
@@ -90,7 +90,7 @@ public abstract class DResolveTestCase extends DLightPlatformCodeInsightFixtureT
         }
         if (succeed) {
             //function,class,constructor
-            /*if (resolvedElement instanceof DLanguageInterfaceOrClass ) {
+            /*if (resolvedElement instanceof DlangInterfaceOrClass ) {
                 assertEquals("Could not resolve expected reference.", resolvedElement, referencedElement.resolve().getParent());
             }*//* else if (resolvedElement instanceof DLanguageConstructor) {
                 assertTrue(referencedElement.resolve() instanceof DLanguageConstructor);

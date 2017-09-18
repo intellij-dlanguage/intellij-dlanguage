@@ -9,7 +9,7 @@ public interface DLanguageAliasThisDeclaration extends PsiElement {
     PsiElement getKW_ALIAS();
 
     @Nullable
-    DLanguageIdentifier getIdentifier();
+    DlangIdentifier getIdentifier();
 
     @Nullable
     PsiElement getKW_THIS();

@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface DLanguageIdentifierList extends PsiElement {
     @NotNull
-    List<DLanguageIdentifier> getIdentifiers();
+    List<DlangIdentifier> getIdentifiers();
 
     @NotNull
     List<PsiElement> getOP_COMMAs();

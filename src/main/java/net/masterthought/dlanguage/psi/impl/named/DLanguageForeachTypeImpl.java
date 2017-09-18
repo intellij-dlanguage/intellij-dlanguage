@@ -31,8 +31,8 @@ public class DLanguageForeachTypeImpl extends DNamedStubbedPsiElementBase<DLangu
 
     @Override
     @Nullable
-    public DLanguageIdentifier getIdentifier() {
-        return PsiTreeUtil.getStubChildOfType(this, DLanguageIdentifier.class);
+    public DlangIdentifier getIdentifier() {
+        return PsiTreeUtil.getStubChildOfType(this, DlangIdentifier.class);
     }
 
     @Nullable
@@ -48,7 +48,7 @@ public class DLanguageForeachTypeImpl extends DNamedStubbedPsiElementBase<DLangu
     }
 
     @Nullable
-    public DLanguageIdentifier getNameIdentifier() {
+    public DlangIdentifier getNameIdentifier() {
         return getIdentifier();
     }
 

@@ -15,5 +15,5 @@ public interface DLanguageTemplateMixinExpression extends PsiElement {
     DLanguageTemplateArguments getTemplateArguments();
 
     @Nullable
-    DLanguageIdentifier getIdentifier();
+    DlangIdentifier getIdentifier();
 }

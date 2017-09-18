@@ -1,7 +1,7 @@
 D Language File
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
-      PsiElement(DLanguageTokenType.import)('import')
+      PsiElement(DLanguageTokenType.singleImport)('singleImport')
       SINGLE_IMPORT
         DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)
           IDENTIFIER
@@ -12,7 +12,7 @@ D Language File
       PsiElement(DLanguageTokenType.;)(';')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
-      PsiElement(DLanguageTokenType.import)('import')
+      PsiElement(DLanguageTokenType.singleImport)('singleImport')
       SINGLE_IMPORT
         DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)
           IDENTIFIER
@@ -27,7 +27,7 @@ D Language File
     DLanguageAttributeImpl(ATTRIBUTE)
       PsiElement(DLanguageTokenType.public)('public')
     DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
-      PsiElement(DLanguageTokenType.import)('import')
+      PsiElement(DLanguageTokenType.singleImport)('singleImport')
       SINGLE_IMPORT
         DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)
           IDENTIFIER
@@ -37,7 +37,7 @@ D Language File
     DLanguageAttributeImpl(ATTRIBUTE)
       PsiElement(DLanguageTokenType.static)('static')
     DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
-      PsiElement(DLanguageTokenType.import)('import')
+      PsiElement(DLanguageTokenType.singleImport)('singleImport')
       SINGLE_IMPORT
         DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)
           IDENTIFIER
@@ -48,7 +48,7 @@ D Language File
       PsiElement(DLanguageTokenType.;)(';')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
-      PsiElement(DLanguageTokenType.import)('import')
+      PsiElement(DLanguageTokenType.singleImport)('singleImport')
       SINGLE_IMPORT
         IDENTIFIER
           PsiElement(DLanguageTokenType.ID)('io')
@@ -62,7 +62,7 @@ D Language File
       PsiElement(DLanguageTokenType.;)(';')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
-      PsiElement(DLanguageTokenType.import)('import')
+      PsiElement(DLanguageTokenType.singleImport)('singleImport')
       SINGLE_IMPORT
         DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)
           IDENTIFIER
@@ -86,7 +86,7 @@ D Language File
       PsiElement(DLanguageTokenType.;)(';')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
-      PsiElement(DLanguageTokenType.import)('import')
+      PsiElement(DLanguageTokenType.singleImport)('singleImport')
       SINGLE_IMPORT
         IDENTIFIER
           PsiElement(DLanguageTokenType.ID)('io')
@@ -125,7 +125,7 @@ D Language File
             DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
               DLanguageDeclarationImpl(DECLARATION)
                 DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
-                  PsiElement(DLanguageTokenType.import)('import')
+                  PsiElement(DLanguageTokenType.singleImport)('singleImport')
                   SINGLE_IMPORT
                     DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)
                       IDENTIFIER

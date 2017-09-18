@@ -44,11 +44,11 @@ public class DUtil {
      * Precondition: Element is in a DLanguage file.
      */
     public static boolean definitionNode(@NotNull final PsiNamedElement e) {
-        if (e instanceof DLanguageIdentifier) return definitionNode((DLanguageIdentifier) e);
+        if (e instanceof DlangIdentifier) return definitionNode((DlangIdentifier) e);
         return e instanceof Declaration;
     }
 
-    public static boolean definitionNode(@NotNull final DLanguageIdentifier e) {
+    public static boolean definitionNode(@NotNull final DlangIdentifier e) {
         return true;
     }
 
@@ -116,7 +116,7 @@ public class DUtil {
      * @return the class or struct containing this constructor/method. returns null if not found
      */
     public static DNamedElement getParentClassOrStructOrTemplateOrInterfaceOrUnion(final PsiElement namedElement) {
-        return PsiTreeUtil.getParentOfType(namedElement, DLanguageInterfaceOrClass.class, DLanguageStructDeclaration.class, DLanguageTemplateDeclaration.class, DLanguageUnionDeclaration.class);
+        return PsiTreeUtil.getParentOfType(namedElement, DlangInterfaceOrClass.class, DlangStructDeclaration.class, DlangTemplateDeclaration.class, DlangUnionDeclaration.class);
     }
 
     public static DLanguageFunctionDeclaration getParentFunction(final PsiElement namedElement) {
@@ -143,7 +143,7 @@ public class DUtil {
 //        if (symbol instanceof DLanguageAttributeSpecifier)
 //            if (((DLanguageAttributeSpecifier) symbol).getAttribute().getProtectionAttribute() != null && ((DLanguageAttributeSpecifier) symbol).getAttribute().getProtectionAttribute().getText().equals("public"))
 //                return true;
-//        if (symbol instanceof DLanguageClassDeclaration || symbol instanceof DLanguageTemplateInstance || symbol instanceof DLanguageModuleDeclaration || symbol instanceof DLanguageFunctionDeclaration || symbol instanceof DLanguageInterface || symbol instanceof DLanguageStructDeclaration)
+//        if (symbol instanceof DLanguageClassDeclaration || symbol instanceof DLanguageTemplateInstance || symbol instanceof DLanguageModuleDeclaration || symbol instanceof DLanguageFunctionDeclaration || symbol instanceof DLanguageInterface || symbol instanceof DlangStructDeclaration)
 //            return false;
 //        if (symbol == null)
 //            return false;
@@ -190,12 +190,12 @@ public class DUtil {
     }
 
 //    @NotNull
-//    public static DLanguageIdentifier getEndOfIdentifierList(DLanguageQualifiedIdentifierList list) {
-//        return (DLanguageIdentifier) (list.getChildren()[list.getChildren().length - 1]);//if not identifier through
+//    public static DlangIdentifier getEndOfIdentifierList(DLanguageQualifiedIdentifierList list) {
+//        return (DlangIdentifier) (list.getChildren()[list.getChildren().length - 1]);//if not identifier through
 //    }
 //
 //    @NotNull
-//    public static DLanguageIdentifier getEndOfIdentifierList(DLanguageModuleFullyQualifiedName list) {
+//    public static DlangIdentifier getEndOfIdentifierList(DLanguageModuleFullyQualifiedName list) {
 //        if (list.getModuleFullyQualifiedName() == null) {
 //            return list.getIdentifier();
 //        }
@@ -203,7 +203,7 @@ public class DUtil {
 //    }
 //
 //    @NotNull
-//    public static DLanguageIdentifier getEndOfIdentifierList(DLanguageIdentifierList list) {
+//    public static DlangIdentifier getEndOfIdentifierList(DLanguageIdentifierList list) {
 //        if (list.getIdentifierList() == null) {
 //            return list.getIdentifier();
 //        }
@@ -253,7 +253,7 @@ public class DUtil {
 
     }
 
-    public static DLanguageIdentifier getEndOfIdentifierList(final DLanguageIdentifierOrTemplateChain chain) {
+    public static DlangIdentifier getEndOfIdentifierList(final DLanguageIdentifierOrTemplateChain chain) {
         final List<DLanguageIdentifierOrTemplateInstance> list = chain.getIdentifierOrTemplateInstances();
         if (list.get(list.size() - 1).getIdentifier() != null)
             return list.get(list.size() - 1).getIdentifier();
@@ -299,8 +299,8 @@ public class DUtil {
 
     }
 
-    public static DLanguageIdentifier getEndOfIdentifierList(final DLanguageIdentifierChain chain) {
-        final List<DLanguageIdentifier> list = chain.getIdentifiers();
+    public static DlangIdentifier getEndOfIdentifierList(final DLanguageIdentifierChain chain) {
+        final List<DlangIdentifier> list = chain.getIdentifiers();
         if (list.get(list.size() - 1) != null)
             return list.get(list.size() - 1);
         else

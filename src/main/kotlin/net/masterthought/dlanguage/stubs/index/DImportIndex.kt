@@ -4,9 +4,9 @@ import com.google.common.collect.Sets
 import com.intellij.openapi.project.Project
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.stubs.*
-import net.masterthought.dlanguage.psi.DLanguageFile
+import net.masterthought.dlanguage.psi.DlangFile
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement
-import net.masterthought.dlanguage.stubs.DLanguageSingleImportStub
+import net.masterthought.dlanguage.stubs.DlangSingleImportStub
 import net.masterthought.dlanguage.utils.SingleImport
 
 /**
@@ -31,9 +31,9 @@ class DPublicImportIndex : StringStubIndexExtension<SingleImport>() {
         private val KEY: StubIndexKey<String, SingleImport> = StubIndexKey.createIndexKey<String, SingleImport>("d.globally.accessible.import.public")
         val VERSION = 2
         fun <S : NamedStubBase<T>, T : DNamedElement> indexPublicImports(stub: S, sink: IndexSink) {
-            if (stub is DLanguageSingleImportStub && topLevelDeclaration<S, T>(stub)) {
-                if ((stub as DLanguageSingleImportStub).isPublic) {
-                    val fileName = (stub.psi.containingFile as DLanguageFile).moduleOrFileName
+            if (stub is DlangSingleImportStub && topLevelDeclaration<S, T>(stub)) {
+                if ((stub as DlangSingleImportStub).isPublic) {
+                    val fileName = (stub.psi.containingFile as DlangFile).moduleOrFileName
                     sink.occurrence<SingleImport, String>(DPublicImportIndex.KEY, fileName)
                 }
             }

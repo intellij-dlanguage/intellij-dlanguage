@@ -13,8 +13,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_EQ_EQ;
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_NOT_EQ;
+import static net.masterthought.dlanguage.psi.DlangTypes.OP_EQ_EQ;
+import static net.masterthought.dlanguage.psi.DlangTypes.OP_NOT_EQ;
 
 
 public class DLanguageEqualExpressionImpl extends ASTWrapperPsiElement implements DLanguageEqualExpression {

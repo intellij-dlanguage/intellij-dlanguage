@@ -11,8 +11,8 @@ import net.masterthought.dlanguage.psi.DLanguageVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.KW_RETURN;
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_SCOLON;
+import static net.masterthought.dlanguage.psi.DlangTypes.KW_RETURN;
+import static net.masterthought.dlanguage.psi.DlangTypes.OP_SCOLON;
 
 
 public class DLanguageReturnStatementImpl extends ASTWrapperPsiElement implements DLanguageReturnStatement {

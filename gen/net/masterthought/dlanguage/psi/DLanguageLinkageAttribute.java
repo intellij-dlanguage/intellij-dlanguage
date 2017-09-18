@@ -9,7 +9,7 @@ public interface DLanguageLinkageAttribute extends PsiElement {
     DLanguageIdentifierChain getIdentifierChain();
 
     @Nullable
-    DLanguageIdentifier getIdentifier();
+    DlangIdentifier getIdentifier();
 
     @Nullable
     PsiElement getOP_PAR_RIGHT();

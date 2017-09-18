@@ -11,7 +11,7 @@ import net.masterthought.dlanguage.psi.DLanguageVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.KW_VOID;
+import static net.masterthought.dlanguage.psi.DlangTypes.KW_VOID;
 
 
 public class DLanguageInitializerImpl extends ASTWrapperPsiElement implements DLanguageInitializer {

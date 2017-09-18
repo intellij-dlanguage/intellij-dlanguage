@@ -5,7 +5,7 @@ import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.stubs.*
 import net.masterthought.dlanguage.index.DModuleIndex
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement
-import net.masterthought.dlanguage.stubs.DLanguageIdentifierStub
+import net.masterthought.dlanguage.stubs.DlangIdentifierStub
 
 class DTopLevelDeclarationIndex : StringStubIndexExtension<DNamedElement>() {
 
@@ -21,7 +21,7 @@ class DTopLevelDeclarationIndex : StringStubIndexExtension<DNamedElement>() {
         val KEY: StubIndexKey<String, DNamedElement> = StubIndexKey.createIndexKey<String, DNamedElement>("d.globally.accessible.name")
         val VERSION = 6
         fun <S : NamedStubBase<T>, T : DNamedElement> indexTopLevelDeclarations(stub: S, sink: IndexSink, name: String) {
-            if (stub !is DLanguageIdentifierStub && topLevelDeclaration<S, T>(stub)) {
+            if (stub !is DlangIdentifierStub && topLevelDeclaration<S, T>(stub)) {
                 sink.occurrence(DTopLevelDeclarationIndex.KEY, name)
             }
         }

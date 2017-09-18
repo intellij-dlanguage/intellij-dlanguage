@@ -4,7 +4,7 @@ import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.projectRoots.ui.SdkPathEditor;
 import com.intellij.openapi.roots.ui.OrderRootTypeUIFactory;
-import net.masterthought.dlanguage.icons.DLanguageIcons;
+import net.masterthought.dlanguage.icons.DlangIcons;
 
 import javax.swing.*;
 
@@ -17,7 +17,7 @@ public class LibFileRootTypeUIFactory implements OrderRootTypeUIFactory {
 
     @Override
     public Icon getIcon() {
-        return DLanguageIcons.FILE;
+        return DlangIcons.FILE;
     }
 
     @Override

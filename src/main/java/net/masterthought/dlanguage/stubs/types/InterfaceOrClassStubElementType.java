@@ -3,26 +3,26 @@ package net.masterthought.dlanguage.stubs.types;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubInputStream;
 import com.intellij.psi.stubs.StubOutputStream;
-import net.masterthought.dlanguage.psi.DLanguageInterfaceOrClass;
-import net.masterthought.dlanguage.psi.impl.named.DLanguageInterfaceOrClassImpl;
+import net.masterthought.dlanguage.psi.DlangInterfaceOrClass;
+import net.masterthought.dlanguage.psi.impl.named.DlangInterfaceOrClassImpl;
 import net.masterthought.dlanguage.stubs.DLanguageInterfaceOrClassStub;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
-public class InterfaceOrClassStubElementType extends DNamedStubElementType<DLanguageInterfaceOrClassStub, DLanguageInterfaceOrClass> {
+public class InterfaceOrClassStubElementType extends DNamedStubElementType<DLanguageInterfaceOrClassStub, DlangInterfaceOrClass> {
     public InterfaceOrClassStubElementType(final String debugName) {
         super(debugName);
     }
 
     @Override
-    public DLanguageInterfaceOrClass createPsi(@NotNull final DLanguageInterfaceOrClassStub stub) {
-        return new DLanguageInterfaceOrClassImpl(stub, this);
+    public DlangInterfaceOrClass createPsi(@NotNull final DLanguageInterfaceOrClassStub stub) {
+        return new DlangInterfaceOrClassImpl(stub, this);
     }
 
     @NotNull
     @Override
-    public DLanguageInterfaceOrClassStub createStub(@NotNull final DLanguageInterfaceOrClass psi, final StubElement parentStub) {
+    public DLanguageInterfaceOrClassStub createStub(@NotNull final DlangInterfaceOrClass psi, final StubElement parentStub) {
         return new DLanguageInterfaceOrClassStub(parentStub, this, psi.getName());
     }
 

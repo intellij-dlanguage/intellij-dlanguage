@@ -16,7 +16,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.ExceptionUtil;
-import net.masterthought.dlanguage.psi.DLanguageFile;
+import net.masterthought.dlanguage.psi.DlangFile;
 import net.masterthought.dlanguage.settings.ToolKey;
 import net.masterthought.dlanguage.utils.DToolsNotificationListener;
 
@@ -34,7 +34,7 @@ public class DFixAction extends AnAction implements DumbAware {
     @Override
     public void update(final AnActionEvent e) {
         final PsiFile psiFile = e.getData(CommonDataKeys.PSI_FILE);
-        e.getPresentation().setEnabled(DLanguageFile.class.isAssignableFrom(psiFile.getClass()));
+        e.getPresentation().setEnabled(DlangFile.class.isAssignableFrom(psiFile.getClass()));
     }
 
     /**
@@ -45,7 +45,7 @@ public class DFixAction extends AnAction implements DumbAware {
         final PsiFile psiFile = e.getData(CommonDataKeys.PSI_FILE);
         final Project project = getEventProject(e);
         if (project == null) return;
-        if (!(psiFile instanceof DLanguageFile)) return;
+        if (!(psiFile instanceof DlangFile)) return;
         final VirtualFile virtualFile = psiFile.getVirtualFile();
         if (virtualFile == null) return;
 

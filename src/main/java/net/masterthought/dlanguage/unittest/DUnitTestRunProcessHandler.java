@@ -79,7 +79,7 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
                     final Collection<DLanguageTemplateMixinExpression> tmis = PsiTreeUtil.findChildrenOfType(cd, DLanguageTemplateMixinExpression.class);
                     for (final DLanguageTemplateMixinExpression tmi : tmis) {
                         if (tmi.getText().contains("UnitTest")) {
-                            final DLanguageIdentifier classIdentifier = cd.getInterfaceOrClass().getIdentifier();
+                            final DlangIdentifier classIdentifier = cd.getInterfaceOrClass().getIdentifier();
                             if (classIdentifier != null) {
                                 testClassName = classIdentifier.getText();
                             }

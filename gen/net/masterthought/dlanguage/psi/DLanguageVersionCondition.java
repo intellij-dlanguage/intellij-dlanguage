@@ -18,7 +18,7 @@ public interface DLanguageVersionCondition extends PsiElement {
     PsiElement getINTEGER_LITERAL();
 
     @Nullable
-    DLanguageIdentifier getIdentifier();
+    DlangIdentifier getIdentifier();
 
     @Nullable
     PsiElement getOP_PAR_RIGHT();

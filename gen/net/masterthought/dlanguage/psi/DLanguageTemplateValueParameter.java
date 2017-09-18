@@ -9,7 +9,7 @@ public interface DLanguageTemplateValueParameter extends PsiElement {
     DLanguageType getType();
 
     @Nullable
-    DLanguageIdentifier getIdentifier();
+    DlangIdentifier getIdentifier();
 
     @Nullable
     PsiElement getOP_COLON();

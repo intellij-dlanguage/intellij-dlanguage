@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DLanguageAutoDeclarationPart extends PsiElement, DNamedElement, StubBasedPsiElement<DLanguageAutoDeclarationPartStub> {
     @Nullable
-    DLanguageIdentifier getIdentifier();
+    DlangIdentifier getIdentifier();
 
     @Nullable
     DLanguageTemplateParameters getTemplateParameters();

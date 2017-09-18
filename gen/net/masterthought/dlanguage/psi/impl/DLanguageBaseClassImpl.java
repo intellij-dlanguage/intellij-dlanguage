@@ -12,7 +12,7 @@ import net.masterthought.dlanguage.psi.DLanguageVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_DOT;
+import static net.masterthought.dlanguage.psi.DlangTypes.OP_DOT;
 
 
 public class DLanguageBaseClassImpl extends ASTWrapperPsiElement implements DLanguageBaseClass {

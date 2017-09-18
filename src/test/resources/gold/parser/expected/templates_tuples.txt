@@ -309,7 +309,7 @@ D Language File
           PsiElement(DLanguageTokenType.})('}')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
-      PsiElement(DLanguageTokenType.import)('import')
+      PsiElement(DLanguageTokenType.singleImport)('singleImport')
       SINGLE_IMPORT
         DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)
           IDENTIFIER
@@ -781,7 +781,7 @@ D Language File
   PsiComment(DLanguageTokenType.LINE_COMMENT)('// #4')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
-      PsiElement(DLanguageTokenType.import)('import')
+      PsiElement(DLanguageTokenType.singleImport)('singleImport')
       SINGLE_IMPORT
         DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)
           IDENTIFIER

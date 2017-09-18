@@ -9,7 +9,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.util.Function;
 import com.intellij.util.ProcessingContext;
 import net.masterthought.dlanguage.DLanguage;
-import net.masterthought.dlanguage.icons.DLanguageIcons;
+import net.masterthought.dlanguage.icons.DlangIcons;
 import net.masterthought.dlanguage.codeinsight.dcd.DCDCompletionClient;
 import net.masterthought.dlanguage.codeinsight.dcd.DCDCompletionServer;
 import net.masterthought.dlanguage.codeinsight.dcd.completions.Completion;
@@ -59,11 +59,11 @@ public class DCompletionContributor extends CompletionContributor {
     }
 
     public static LookupElement createLookupElement(@NotNull final String name, @NotNull final String module, @NotNull final String type) {
-        return LookupElementBuilder.create(name).withIcon(DLanguageIcons.FILE)
+        return LookupElementBuilder.create(name).withIcon(DlangIcons.FILE)
 //                .withTailText(" (" + module + ')', true)
                 .withTypeText(type);
     }
 
-    public static final Function<String, LookupElement> stringToLookupElement = s -> LookupElementBuilder.create(s).withIcon(DLanguageIcons.FILE);
+    public static final Function<String, LookupElement> stringToLookupElement = s -> LookupElementBuilder.create(s).withIcon(DlangIcons.FILE);
 
 }

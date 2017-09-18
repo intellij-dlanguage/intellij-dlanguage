@@ -9,7 +9,7 @@ public interface DLanguageContinueStatement extends PsiElement {
     PsiElement getKW_CONTINUE();
 
     @Nullable
-    DLanguageIdentifier getIdentifier();
+    DlangIdentifier getIdentifier();
 
     @Nullable
     PsiElement getOP_SCOLON();

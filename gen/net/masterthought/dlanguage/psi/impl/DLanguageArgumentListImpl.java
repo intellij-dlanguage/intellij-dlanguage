@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.OP_COMMA;
+import static net.masterthought.dlanguage.psi.DlangTypes.OP_COMMA;
 
 
 public class DLanguageArgumentListImpl extends ASTWrapperPsiElement implements DLanguageArgumentList {

@@ -27,5 +27,5 @@ public interface DLanguageFunctionLiteralExpression extends PsiElement {
     DLanguageFunctionBody getFunctionBody();
 
     @Nullable
-    DLanguageIdentifier getIdentifier();
+    DlangIdentifier getIdentifier();
 }

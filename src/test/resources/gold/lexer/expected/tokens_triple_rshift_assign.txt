@@ -1,4 +1,4 @@
-DLanguageTokenType.import ('import')
+DLanguageTokenType.import ('singleImport')
 WHITE_SPACE (' ')
 DLanguageTokenType.ID ('std')
 DLanguageTokenType.. ('.')

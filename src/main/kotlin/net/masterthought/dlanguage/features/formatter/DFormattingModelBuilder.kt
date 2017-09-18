@@ -15,7 +15,7 @@ import com.intellij.psi.tree.TokenSet
 import com.intellij.util.containers.ContainerUtil
 import net.masterthought.dlanguage.DLanguage
 import net.masterthought.dlanguage.psi.*
-import net.masterthought.dlanguage.psi.DLanguageTypes.*
+import net.masterthought.dlanguage.psi.DlangTypes.*
 import net.masterthought.dlanguage.utils.DUtil.getPrevSiblingOfType
 import net.masterthought.dlanguage.utils.DeclarationOrStatement
 import java.util.*
@@ -248,7 +248,7 @@ class DFormattingModelBuilder : FormattingModelBuilder {
                 return element is DLanguageModuleDeclaration
                     || element is DLanguageImportDeclaration
                     || element is DLanguageDeclaration
-                    || element is DLanguageStatement && element.getParent() is DLanguageFile
+                    || element is DLanguageStatement && element.getParent() is DlangFile
             }
 
             private fun lineBreak(keepLineBreaks: Boolean = true): Spacing {

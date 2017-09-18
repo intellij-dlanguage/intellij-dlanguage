@@ -15,7 +15,7 @@ public interface DLanguageImportBindings extends PsiElement {
     List<DLanguageImportBind> getImportBinds();
 
     @Nullable
-    DLanguageSingleImport getSingleImport();
+    DlangSingleImport getSingleImport();
 
     @Nullable
     PsiElement getOP_COLON();

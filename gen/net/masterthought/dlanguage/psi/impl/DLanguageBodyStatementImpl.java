@@ -11,7 +11,7 @@ import net.masterthought.dlanguage.psi.DLanguageVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static net.masterthought.dlanguage.psi.DLanguageTypes.KW_BODY;
+import static net.masterthought.dlanguage.psi.DlangTypes.KW_BODY;
 
 
 public class DLanguageBodyStatementImpl extends ASTWrapperPsiElement implements DLanguageBodyStatement {

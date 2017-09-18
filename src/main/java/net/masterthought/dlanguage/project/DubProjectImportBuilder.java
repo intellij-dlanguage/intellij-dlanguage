@@ -16,9 +16,9 @@ import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.Pair;
 import com.intellij.packaging.artifacts.ModifiableArtifactModel;
 import com.intellij.projectImport.ProjectImportBuilder;
-import net.masterthought.dlanguage.DLanguageSdkType;
-import net.masterthought.dlanguage.icons.DLanguageIcons;
-import net.masterthought.dlanguage.module.DLanguageDubModuleBuilder;
+import net.masterthought.dlanguage.DlangSdkType;
+import net.masterthought.dlanguage.icons.DlangIcons;
+import net.masterthought.dlanguage.module.DlangDubModuleBuilder;
 import org.jdom.JDOMException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -55,7 +55,7 @@ public class DubProjectImportBuilder extends ProjectImportBuilder<DubPackage> {
 
     @Override
     public Icon getIcon() {
-        return DLanguageIcons.MODULE;
+        return DlangIcons.MODULE;
     }
 
     @Override
@@ -110,7 +110,7 @@ public class DubProjectImportBuilder extends ProjectImportBuilder<DubPackage> {
         final DubConfigurationParser dubConfigurationParser = new DubConfigurationParser(project, getParameters().dubBinary);
         final DubPackage pkg = dubConfigurationParser.getDubPackage().get();
 
-        final DLanguageDubModuleBuilder builder = new DLanguageDubModuleBuilder();
+        final DlangDubModuleBuilder builder = new DlangDubModuleBuilder();
         builder.setModuleFilePath(pkg.getPath() + pkg.getName() + ".iml");
         builder.setContentEntryPath(pkg.getPath());
         builder.setName(pkg.getName());
@@ -131,7 +131,7 @@ public class DubProjectImportBuilder extends ProjectImportBuilder<DubPackage> {
     }
 
     private Sdk findOrCreateSdk() {
-        final DLanguageSdkType sdkType = DLanguageSdkType.getInstance();
+        final DlangSdkType sdkType = DlangSdkType.getInstance();
 
         final Comparator<Sdk> sdkComparator = (sdk1, sdk2) -> {
             if (sdk1.getSdkType() == sdkType) {
