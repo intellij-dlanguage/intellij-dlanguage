@@ -9,8 +9,8 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Created by francis on 1/14/2017.
  */
-public class DLanguageStaticConstructorStub extends StubBase<DLanguageStaticConstructor> implements StubElement<DLanguageStaticConstructor> {
-    public DLanguageStaticConstructorStub(final StubElement parent, @NotNull final IStubElementType elementType) {
+public class DlangStaticConstructorStub extends StubBase<DLanguageStaticConstructor> implements StubElement<DLanguageStaticConstructor> {
+    public DlangStaticConstructorStub(final StubElement parent, @NotNull final IStubElementType elementType) {
         super(parent, elementType);
     }
 

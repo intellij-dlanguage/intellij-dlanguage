@@ -6,14 +6,14 @@ import com.intellij.psi.StubBasedPsiElement;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 import net.masterthought.dlanguage.resolve.ScopeProcessorImpl;
-import net.masterthought.dlanguage.stubs.DLanguageConstructorStub;
+import net.masterthought.dlanguage.stubs.DlangConstructorStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 
-public interface DLanguageConstructor extends PsiElement, DNamedElement, StubBasedPsiElement<DLanguageConstructorStub> {
+public interface DLanguageConstructor extends PsiElement, DNamedElement, StubBasedPsiElement<DlangConstructorStub> {
     @Nullable
     DLanguageFunctionBody getFunctionBody();
 

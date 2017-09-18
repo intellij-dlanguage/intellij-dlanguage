@@ -13,15 +13,15 @@ import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import net.masterthought.dlanguage.psi.references.DReference;
 import net.masterthought.dlanguage.resolve.ScopeProcessorImpl;
-import net.masterthought.dlanguage.stubs.DLanguageInterfaceOrClassStub;
+import net.masterthought.dlanguage.stubs.DlangInterfaceOrClassStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import static net.masterthought.dlanguage.psi.DlangTypes.OP_COLON;
 
-public class DlangInterfaceOrClassImpl extends DNamedStubbedPsiElementBase<DLanguageInterfaceOrClassStub> implements DlangInterfaceOrClass {
+public class DlangInterfaceOrClassImpl extends DNamedStubbedPsiElementBase<DlangInterfaceOrClassStub> implements DlangInterfaceOrClass {
 
-    public DlangInterfaceOrClassImpl(final DLanguageInterfaceOrClassStub stub, final IStubElementType type) {
+    public DlangInterfaceOrClassImpl(final DlangInterfaceOrClassStub stub, final IStubElementType type) {
         super(stub, type);
     }
 

@@ -6,12 +6,12 @@ import com.intellij.psi.StubBasedPsiElement;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 import net.masterthought.dlanguage.resolve.ScopeProcessorImpl;
-import net.masterthought.dlanguage.stubs.DLanguageCatchStub;
+import net.masterthought.dlanguage.stubs.DlangCatchStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 
-public interface DLanguageCatch extends PsiElement, DNamedElement, StubBasedPsiElement<DLanguageCatchStub> {
+public interface DLanguageCatch extends PsiElement, DNamedElement, StubBasedPsiElement<DlangCatchStub> {
     @Nullable
     PsiElement getKW_CATCH();
 

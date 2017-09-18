@@ -9,7 +9,7 @@ import com.intellij.openapi.options.SettingsEditor;
 import com.intellij.openapi.ui.TextComponentAccessor;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.ui.RawCommandLineEditor;
-import net.masterthought.dlanguage.DLanguageBundle;
+import net.masterthought.dlanguage.DlangBundle;
 import net.masterthought.dlanguage.module.DlangModuleType;
 import org.jetbrains.annotations.NotNull;
 
@@ -78,8 +78,8 @@ public class DlangRunDubConfigurationEditor extends SettingsEditor<DlangRunDubCo
     protected JComponent createEditor() {
         final FileChooserDescriptor fcd = FileChooserDescriptorFactory.createSingleFolderDescriptor();
         fcd.setShowFileSystemRoots(true);
-        fcd.setTitle(DLanguageBundle.INSTANCE.message("dmd.run.config.selectworkingdir.title"));
-        fcd.setDescription(DLanguageBundle.INSTANCE.message("dmd.run.config.selectworkingdir.description"));
+        fcd.setTitle(DlangBundle.INSTANCE.message("dmd.run.config.selectworkingdir.title"));
+        fcd.setDescription(DlangBundle.INSTANCE.message("dmd.run.config.selectworkingdir.description"));
         fcd.setHideIgnored(false);
 
         pathWorkingDir.addActionListener(new TextFieldWithBrowseButton.BrowseFolderActionListener<>(fcd.getTitle(), fcd.getDescription(),

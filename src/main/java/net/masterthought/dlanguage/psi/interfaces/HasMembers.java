@@ -30,7 +30,7 @@ public interface HasMembers<T extends StubElement> extends StubBasedPsiElement<T
             if (childStub instanceof NamedStubBase && !(childStub instanceof DlangIdentifierStub)) {
                 result.add((NamedStubBase) childStub);
             }
-            if (childStub instanceof DLanguageUnittestStub || (childStub instanceof DLanguageDestructorStub) || (childStub instanceof DLanguageStaticDestructorStub) || (childStub instanceof DLanguageSharedStaticDestructor) || (childStub instanceof DLanguageConstructorStub) || (childStub instanceof DLanguageStaticConstructorStub) || (childStub instanceof DLanguageSharedStaticConstructor) || (childStub instanceof DLanguageFunctionDeclarationStub) || (childStub instanceof DlangIdentifierStub)) {
+            if (childStub instanceof DLanguageUnittestStub || (childStub instanceof DlangDestructorStub) || (childStub instanceof DlangStaticDestructorStub) || (childStub instanceof DLanguageSharedStaticDestructor) || (childStub instanceof DlangConstructorStub) || (childStub instanceof DlangStaticConstructorStub) || (childStub instanceof DLanguageSharedStaticConstructor) || (childStub instanceof DlangFunctionDeclarationStub) || (childStub instanceof DlangIdentifierStub)) {
             } else {
                 getMembersImpl(childStub, result);
             }

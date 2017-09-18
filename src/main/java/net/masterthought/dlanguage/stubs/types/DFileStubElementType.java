@@ -9,12 +9,12 @@ import com.intellij.psi.stubs.StubOutputStream;
 import com.intellij.psi.tree.IStubFileElementType;
 import net.masterthought.dlanguage.DLanguage;
 import net.masterthought.dlanguage.psi.DlangFile;
-import net.masterthought.dlanguage.stubs.DLanguageFileStub;
+import net.masterthought.dlanguage.stubs.DlangFileStub;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
-public class DFileStubElementType extends IStubFileElementType<DLanguageFileStub> {
+public class DFileStubElementType extends IStubFileElementType<DlangFileStub> {
     public static final int VERSION = 1;
     public static final DFileStubElementType INSTANCE = new DFileStubElementType();
 
@@ -29,7 +29,7 @@ public class DFileStubElementType extends IStubFileElementType<DLanguageFileStub
             @Override
             protected StubElement createStubForFile(@NotNull final PsiFile file) {
                 if (file instanceof DlangFile) {
-                    return new DLanguageFileStub((DlangFile) file);
+                    return new DlangFileStub((DlangFile) file);
                 }
                 return super.createStubForFile(file);
             }
@@ -42,14 +42,14 @@ public class DFileStubElementType extends IStubFileElementType<DLanguageFileStub
     }
 
     @Override
-    public void serialize(@NotNull final DLanguageFileStub stub, @NotNull final StubOutputStream dataStream) throws IOException {
+    public void serialize(@NotNull final DlangFileStub stub, @NotNull final StubOutputStream dataStream) throws IOException {
         // todo make files named?
     }
 
     @NotNull
     @Override
-    public DLanguageFileStub deserialize(@NotNull final StubInputStream dataStream, final StubElement parentStub) throws IOException {
-        return new DLanguageFileStub(null);
+    public DlangFileStub deserialize(@NotNull final StubInputStream dataStream, final StubElement parentStub) throws IOException {
+        return new DlangFileStub(null);
     }
 
     @NotNull

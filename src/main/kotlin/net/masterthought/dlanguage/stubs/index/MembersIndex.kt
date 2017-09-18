@@ -61,7 +61,7 @@ class DMembersIndex : StringStubIndexExtension<DNamedElement>() {
                 return
             }
             getParentHasMembersImpl(stub.parentStub, result)
-            if (stub.parentStub is DLanguageUnittestStub || stub.parentStub is DLanguageFunctionDeclarationStub || stub.parentStub is DLanguageConstructorStub || stub.parentStub is DLanguageSharedStaticConstructorStub || stub.parentStub is DLanguageStaticConstructorStub || stub.parentStub is DLanguageDestructorStub || stub.parentStub is DLanguageSharedStaticDestructorStub || stub.parentStub is DLanguageStaticDestructorStub) {
+            if (stub.parentStub is DLanguageUnittestStub || stub.parentStub is DlangFunctionDeclarationStub || stub.parentStub is DlangConstructorStub || stub.parentStub is DlangSharedStaticConstructorStub || stub.parentStub is DlangStaticConstructorStub || stub.parentStub is DlangDestructorStub || stub.parentStub is DlangSharedStaticDestructorStub || stub.parentStub is DlangStaticDestructorStub) {
                 result.clear()
             }
         }

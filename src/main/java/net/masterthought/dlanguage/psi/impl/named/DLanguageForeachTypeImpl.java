@@ -6,13 +6,13 @@ import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
-import net.masterthought.dlanguage.stubs.DLanguageForeachTypeStub;
+import net.masterthought.dlanguage.stubs.DlangForeachTypeStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class DLanguageForeachTypeImpl extends DNamedStubbedPsiElementBase<DLanguageForeachTypeStub> implements DLanguageForeachType {
+public class DLanguageForeachTypeImpl extends DNamedStubbedPsiElementBase<DlangForeachTypeStub> implements DLanguageForeachType {
 
-    public DLanguageForeachTypeImpl(final DLanguageForeachTypeStub stub, final IStubElementType type) {
+    public DLanguageForeachTypeImpl(final DlangForeachTypeStub stub, final IStubElementType type) {
         super(stub, type);
     }
 

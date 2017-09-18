@@ -8,19 +8,19 @@ import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.psi.DLanguageFunctionBody;
 import net.masterthought.dlanguage.psi.DLanguageStaticDestructor;
 import net.masterthought.dlanguage.psi.DLanguageVisitor;
-import net.masterthought.dlanguage.stubs.DLanguageStaticDestructorStub;
+import net.masterthought.dlanguage.stubs.DlangStaticDestructorStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import static net.masterthought.dlanguage.psi.DlangTypes.*;
 
 
-public class DLanguageStaticDestructorImpl extends DStubbedPsiElementBase<DLanguageStaticDestructorStub> implements DLanguageStaticDestructor {
+public class DLanguageStaticDestructorImpl extends DStubbedPsiElementBase<DlangStaticDestructorStub> implements DLanguageStaticDestructor {
     public DLanguageStaticDestructorImpl(ASTNode node) {
         super(node);
     }
 
-    public DLanguageStaticDestructorImpl(DLanguageStaticDestructorStub stub, IStubElementType nodeType) {
+    public DLanguageStaticDestructorImpl(DlangStaticDestructorStub stub, IStubElementType nodeType) {
         super(stub, nodeType);
     }
 

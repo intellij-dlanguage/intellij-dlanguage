@@ -3,11 +3,11 @@ package net.masterthought.dlanguage.psi;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.StubBasedPsiElement;
 import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
-import net.masterthought.dlanguage.stubs.DLanguageStaticDestructorStub;
+import net.masterthought.dlanguage.stubs.DlangStaticDestructorStub;
 import org.jetbrains.annotations.Nullable;
 
 
-public interface DLanguageStaticDestructor extends PsiElement, DCompositeElement, StubBasedPsiElement<DLanguageStaticDestructorStub> {
+public interface DLanguageStaticDestructor extends PsiElement, DCompositeElement, StubBasedPsiElement<DlangStaticDestructorStub> {
     @Nullable
     PsiElement getOP_TILDA();
 

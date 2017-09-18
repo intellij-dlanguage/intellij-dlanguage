@@ -6,15 +6,15 @@ import com.intellij.psi.stubs.StubInputStream
 import com.intellij.psi.stubs.StubOutputStream
 import net.masterthought.dlanguage.psi.DLanguageEponymousTemplateDeclaration
 import net.masterthought.dlanguage.psi.impl.named.DLanguageEponymousTemplateDeclarationImpl
-import net.masterthought.dlanguage.stubs.DLanguageEponymousTemplateDeclarationStub
+import net.masterthought.dlanguage.stubs.DlangEponymousTemplateDeclarationStub
 import java.io.IOException
 
 /**
  * Created by francis on 6/13/2017.
  */
-class DLanguageEponymousTemplateDeclarationStubElementType(debugName: String) : DNamedStubElementType<DLanguageEponymousTemplateDeclarationStub, DLanguageEponymousTemplateDeclaration>(debugName) {
+class DLanguageEponymousTemplateDeclarationStubElementType(debugName: String) : DNamedStubElementType<DlangEponymousTemplateDeclarationStub, DLanguageEponymousTemplateDeclaration>(debugName) {
 
-    override fun createPsi(stub: DLanguageEponymousTemplateDeclarationStub): DLanguageEponymousTemplateDeclaration {
+    override fun createPsi(stub: DlangEponymousTemplateDeclarationStub): DLanguageEponymousTemplateDeclaration {
         return DLanguageEponymousTemplateDeclarationImpl(stub, this)
     }
 
@@ -22,17 +22,17 @@ class DLanguageEponymousTemplateDeclarationStubElementType(debugName: String) : 
         return true
     }
 
-    override fun createStub(psi: DLanguageEponymousTemplateDeclaration, parentStub: StubElement<*>): DLanguageEponymousTemplateDeclarationStub {
-        return DLanguageEponymousTemplateDeclarationStub(parentStub, this, psi.name)
+    override fun createStub(psi: DLanguageEponymousTemplateDeclaration, parentStub: StubElement<*>): DlangEponymousTemplateDeclarationStub {
+        return DlangEponymousTemplateDeclarationStub(parentStub, this, psi.name)
     }
 
     @Throws(IOException::class)
-    override fun serialize(stub: DLanguageEponymousTemplateDeclarationStub, dataStream: StubOutputStream) {
+    override fun serialize(stub: DlangEponymousTemplateDeclarationStub, dataStream: StubOutputStream) {
         dataStream.writeName(stub.name)
     }
 
     @Throws(IOException::class)
-    override fun deserialize(dataStream: StubInputStream, parentStub: StubElement<*>): DLanguageEponymousTemplateDeclarationStub {
-        return DLanguageEponymousTemplateDeclarationStub(parentStub, this, dataStream.readName()!!)
+    override fun deserialize(dataStream: StubInputStream, parentStub: StubElement<*>): DlangEponymousTemplateDeclarationStub {
+        return DlangEponymousTemplateDeclarationStub(parentStub, this, dataStream.readName()!!)
     }
 }

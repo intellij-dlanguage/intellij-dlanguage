@@ -3,11 +3,11 @@ package net.masterthought.dlanguage.psi;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.StubBasedPsiElement;
 import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
-import net.masterthought.dlanguage.stubs.DLanguageSharedStaticConstructorStub;
+import net.masterthought.dlanguage.stubs.DlangSharedStaticConstructorStub;
 import org.jetbrains.annotations.Nullable;
 
 
-public interface DLanguageSharedStaticConstructor extends PsiElement, DCompositeElement, StubBasedPsiElement<DLanguageSharedStaticConstructorStub> {
+public interface DLanguageSharedStaticConstructor extends PsiElement, DCompositeElement, StubBasedPsiElement<DlangSharedStaticConstructorStub> {
     @Nullable
     PsiElement getKW_STATIC();
 

@@ -18,7 +18,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.PathUtil;
 import com.intellij.util.xmlb.XmlSerializer;
 import net.masterthought.dlanguage.DLanguage;
-import net.masterthought.dlanguage.DLanguageBundle;
+import net.masterthought.dlanguage.DlangBundle;
 import net.masterthought.dlanguage.DlangFileType;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
@@ -97,16 +97,16 @@ public class DUnitTestRunConfiguration extends LocatableConfigurationBase {
     public VirtualFile getDFile() throws RuntimeConfigurationError {
         final String filePath = getdFilePath();
         if (StringUtil.isEmptyOrSpaces(filePath)) {
-            throw new RuntimeConfigurationError(DLanguageBundle.INSTANCE.message("path.to.dlanguage.file.not.set"));
+            throw new RuntimeConfigurationError(DlangBundle.INSTANCE.message("path.to.dlanguage.file.not.set"));
         }
 
         final VirtualFile dFile = LocalFileSystem.getInstance().findFileByPath(filePath);
         if (dFile == null || dFile.isDirectory()) {
-            throw new RuntimeConfigurationError(DLanguageBundle.INSTANCE.message("dlanguage.file.not.found", FileUtil.toSystemDependentName(filePath)));
+            throw new RuntimeConfigurationError(DlangBundle.INSTANCE.message("dlanguage.file.not.found", FileUtil.toSystemDependentName(filePath)));
         }
 
         if (dFile.getFileType() != DlangFileType.INSTANCE) {
-            throw new RuntimeConfigurationError(DLanguageBundle.INSTANCE.message("not.a.dlanguage.file", FileUtil.toSystemDependentName(filePath)));
+            throw new RuntimeConfigurationError(DlangBundle.INSTANCE.message("not.a.dlanguage.file", FileUtil.toSystemDependentName(filePath)));
         }
 
         return dFile;

@@ -17,7 +17,7 @@ import com.intellij.ui.RawCommandLineEditor;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import net.masterthought.dlanguage.DLanguageBundle;
+import net.masterthought.dlanguage.DlangBundle;
 import net.masterthought.dlanguage.module.DlangModuleType;
 import net.masterthought.dlanguage.run.exception.NoSourcesException;
 import org.apache.commons.lang.StringUtils;
@@ -119,8 +119,8 @@ public class DlangRunDmdConfigurationEditor extends SettingsEditor<DlangRunDmdCo
     protected JComponent createEditor() {
         final FileChooserDescriptor fcd = FileChooserDescriptorFactory.createSingleFolderDescriptor();
         fcd.setShowFileSystemRoots(true);
-        fcd.setTitle(DLanguageBundle.INSTANCE.message("dmd.run.config.selectimportfolder.title"));
-        fcd.setDescription(DLanguageBundle.INSTANCE.message("dmd.run.config.selectimportfolder.description"));
+        fcd.setTitle(DlangBundle.INSTANCE.message("dmd.run.config.selectimportfolder.title"));
+        fcd.setDescription(DlangBundle.INSTANCE.message("dmd.run.config.selectimportfolder.description"));
         fcd.setHideIgnored(false);
 
         pathImports.addActionListener(new TextFieldWithBrowseButton.BrowseFolderActionListener<>(fcd.getTitle(), fcd.getDescription(),

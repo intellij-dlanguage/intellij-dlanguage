@@ -10,15 +10,15 @@ import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import net.masterthought.dlanguage.resolve.ScopeProcessorImpl;
-import net.masterthought.dlanguage.stubs.DLanguageEponymousTemplateDeclarationStub;
+import net.masterthought.dlanguage.stubs.DlangEponymousTemplateDeclarationStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import static net.masterthought.dlanguage.psi.DlangTypes.*;
 
-public class DLanguageEponymousTemplateDeclarationImpl extends DNamedStubbedPsiElementBase<DLanguageEponymousTemplateDeclarationStub> implements DLanguageEponymousTemplateDeclaration {
+public class DLanguageEponymousTemplateDeclarationImpl extends DNamedStubbedPsiElementBase<DlangEponymousTemplateDeclarationStub> implements DLanguageEponymousTemplateDeclaration {
 
-    public DLanguageEponymousTemplateDeclarationImpl(final DLanguageEponymousTemplateDeclarationStub stub, final IStubElementType type) {
+    public DLanguageEponymousTemplateDeclarationImpl(final DlangEponymousTemplateDeclarationStub stub, final IStubElementType type) {
         super(stub, type);
     }
 

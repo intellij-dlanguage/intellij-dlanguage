@@ -6,15 +6,15 @@ import com.intellij.psi.stubs.StubInputStream
 import com.intellij.psi.stubs.StubOutputStream
 import net.masterthought.dlanguage.psi.DLanguageCatch
 import net.masterthought.dlanguage.psi.impl.named.DLanguageCatchImpl
-import net.masterthought.dlanguage.stubs.DLanguageCatchStub
+import net.masterthought.dlanguage.stubs.DlangCatchStub
 import java.io.IOException
 
 /**
  * Created by francis on 6/13/2017.
  */
 
-class CatchStubElementType(debugName: String) : DNamedStubElementType<DLanguageCatchStub, DLanguageCatch>(debugName) {
-    override fun createPsi(stub: DLanguageCatchStub): DLanguageCatch {
+class CatchStubElementType(debugName: String) : DNamedStubElementType<DlangCatchStub, DLanguageCatch>(debugName) {
+    override fun createPsi(stub: DlangCatchStub): DLanguageCatch {
         return DLanguageCatchImpl(stub, this)
     }
 
@@ -22,18 +22,18 @@ class CatchStubElementType(debugName: String) : DNamedStubElementType<DLanguageC
         return true
     }
 
-    override fun createStub(psi: DLanguageCatch, parentStub: StubElement<*>): DLanguageCatchStub {
-        return DLanguageCatchStub(parentStub, this, psi.name)
+    override fun createStub(psi: DLanguageCatch, parentStub: StubElement<*>): DlangCatchStub {
+        return DlangCatchStub(parentStub, this, psi.name)
     }
 
     @Throws(IOException::class)
-    override fun serialize(stub: DLanguageCatchStub, dataStream: StubOutputStream) {
+    override fun serialize(stub: DlangCatchStub, dataStream: StubOutputStream) {
         dataStream.writeName(stub.name)
     }
 
     @Throws(IOException::class)
-    override fun deserialize(dataStream: StubInputStream, parentStub: StubElement<*>): DLanguageCatchStub {
-        return DLanguageCatchStub(parentStub, this, dataStream.readName()!!)
+    override fun deserialize(dataStream: StubInputStream, parentStub: StubElement<*>): DlangCatchStub {
+        return DlangCatchStub(parentStub, this, dataStream.readName()!!)
     }
 
 }

@@ -4,7 +4,7 @@ import com.intellij.execution.configurations.ConfigurationFactory;
 import com.intellij.execution.configurations.ConfigurationType;
 import com.intellij.execution.configurations.RunConfiguration;
 import com.intellij.openapi.project.Project;
-import net.masterthought.dlanguage.DLanguageBundle;
+import net.masterthought.dlanguage.DlangBundle;
 import net.masterthought.dlanguage.icons.DlangIcons;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,12 +19,12 @@ public class DlangRunDmdConfigurationType implements ConfigurationType {
 
     @Override
     public String getDisplayName() {
-        return DLanguageBundle.INSTANCE.message("run.dmd.text");
+        return DlangBundle.INSTANCE.message("run.dmd.text");
     }
 
     @Override
     public String getConfigurationTypeDescription() {
-        return DLanguageBundle.INSTANCE.message("run.dmd.descr");
+        return DlangBundle.INSTANCE.message("run.dmd.descr");
     }
 
     @Override

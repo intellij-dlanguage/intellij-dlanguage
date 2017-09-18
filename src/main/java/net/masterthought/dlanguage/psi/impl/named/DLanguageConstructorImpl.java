@@ -14,7 +14,7 @@ import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.impl.DLanguageParametersImpl;
 import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import net.masterthought.dlanguage.resolve.ScopeProcessorImpl;
-import net.masterthought.dlanguage.stubs.DLanguageConstructorStub;
+import net.masterthought.dlanguage.stubs.DlangConstructorStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,9 +24,9 @@ import java.util.List;
 import static net.masterthought.dlanguage.psi.DlangTypes.*;
 import static net.masterthought.dlanguage.utils.DUtil.getParentClassOrStructOrTemplateOrInterfaceOrUnion;
 
-public class DLanguageConstructorImpl extends DNamedStubbedPsiElementBase<DLanguageConstructorStub> implements DLanguageConstructor {
+public class DLanguageConstructorImpl extends DNamedStubbedPsiElementBase<DlangConstructorStub> implements DLanguageConstructor {
 
-    public DLanguageConstructorImpl(final DLanguageConstructorStub stub, final IStubElementType type) {
+    public DLanguageConstructorImpl(final DlangConstructorStub stub, final IStubElementType type) {
         super(stub, type);
     }
 

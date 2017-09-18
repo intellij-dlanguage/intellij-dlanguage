@@ -14,7 +14,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ModifiableRootModel;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.Pair;
-import net.masterthought.dlanguage.DLanguageBundle;
+import net.masterthought.dlanguage.DlangBundle;
 import net.masterthought.dlanguage.run.DlangRunDubConfigurationType;
 import net.masterthought.dlanguage.settings.ToolKey;
 import org.jetbrains.annotations.NonNls;
@@ -41,7 +41,7 @@ public class DlangDubModuleBuilder extends DlangModuleBuilder {
     private String dubBinary;
 
     public DlangDubModuleBuilder() {
-        super("DLangDubApp", DLanguageBundle.INSTANCE.message("module.dub.title"), DLanguageBundle.INSTANCE.message("module.dub.description"), null);
+        super("DLangDubApp", DlangBundle.INSTANCE.message("module.dub.title"), DlangBundle.INSTANCE.message("module.dub.description"), null);
     }
 
     @Override

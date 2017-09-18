@@ -6,7 +6,7 @@ import com.intellij.ide.util.projectWizard.ProjectBuilder;
 import com.intellij.ide.util.projectWizard.WizardContext;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.projectImport.ProjectFormatPanel;
-import net.masterthought.dlanguage.DLanguageBundle;
+import net.masterthought.dlanguage.DlangBundle;
 import net.masterthought.dlanguage.project.DubProjectImportBuilder;
 import net.masterthought.dlanguage.utils.GuiUtil;
 
@@ -28,13 +28,13 @@ public class DubBinaryForModuleStep extends ModuleWizardStep {
         this.myPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // Title label
-        final JLabel titletextLabel = new JLabel(DLanguageBundle.INSTANCE.message("d.ui.dub.config.label.choosedublocation"));
+        final JLabel titletextLabel = new JLabel(DlangBundle.INSTANCE.message("d.ui.dub.config.label.choosedublocation"));
         this.myPanel.add(titletextLabel, new GridBagConstraints(0, -1, 1, 1, 1.0D, 0.0D, 18, 2, new Insets(8, 10, 8, 10), 0, 0));
 
         this.dubBinary = new TextFieldWithBrowseButton();
-        this.autoFindButton = new JButton(DLanguageBundle.INSTANCE.message("d.ui.dub.config.label.autofind"));
+        this.autoFindButton = new JButton(DlangBundle.INSTANCE.message("d.ui.dub.config.label.autofind"));
 
-        final JLabel dubFormatLabel = new JLabel(DLanguageBundle.INSTANCE.message("d.ui.dub.config.label.dubbinarylocation"));
+        final JLabel dubFormatLabel = new JLabel(DlangBundle.INSTANCE.message("d.ui.dub.config.label.dubbinarylocation"));
         dubFormatLabel.setLabelFor(dubBinary);
 
         GuiUtil.addFolderListener(dubBinary, "dub");

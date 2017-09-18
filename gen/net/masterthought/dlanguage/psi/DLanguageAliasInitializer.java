@@ -3,14 +3,14 @@ package net.masterthought.dlanguage.psi;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.StubBasedPsiElement;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
-import net.masterthought.dlanguage.stubs.DLanguageAliasInitializerStub;
+import net.masterthought.dlanguage.stubs.DlangAliasInitializerStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 
-public interface DLanguageAliasInitializer extends PsiElement, DNamedElement, StubBasedPsiElement<DLanguageAliasInitializerStub> {
+public interface DLanguageAliasInitializer extends PsiElement, DNamedElement, StubBasedPsiElement<DlangAliasInitializerStub> {
     @Nullable
     DlangIdentifier getIdentifier();
 

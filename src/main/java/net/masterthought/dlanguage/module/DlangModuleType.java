@@ -9,7 +9,7 @@ import com.intellij.openapi.module.ModuleTypeManager;
 import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
-import net.masterthought.dlanguage.DLanguageBundle;
+import net.masterthought.dlanguage.DlangBundle;
 import net.masterthought.dlanguage.DlangSdkType;
 import net.masterthought.dlanguage.icons.DlangIcons;
 import org.jetbrains.annotations.NonNls;
@@ -46,13 +46,13 @@ public class DlangModuleType extends ModuleType<DlangModuleBuilder> {
     @NotNull
     @Override
     public String getName() {
-        return DLanguageBundle.INSTANCE.message("module.title");
+        return DlangBundle.INSTANCE.message("module.title");
     }
 
     @NotNull
     @Override
     public String getDescription() {
-        return DLanguageBundle.INSTANCE.message("module.description");
+        return DlangBundle.INSTANCE.message("module.description");
     }
 
     //    @Override

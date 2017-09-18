@@ -10,15 +10,15 @@ import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import net.masterthought.dlanguage.resolve.ScopeProcessorImpl;
-import net.masterthought.dlanguage.stubs.DLanguageCatchStub;
+import net.masterthought.dlanguage.stubs.DlangCatchStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import static net.masterthought.dlanguage.psi.DlangTypes.*;
 
-public class DLanguageCatchImpl extends DNamedStubbedPsiElementBase<DLanguageCatchStub> implements DLanguageCatch {
+public class DLanguageCatchImpl extends DNamedStubbedPsiElementBase<DlangCatchStub> implements DLanguageCatch {
 
-    public DLanguageCatchImpl(final DLanguageCatchStub stub, final IStubElementType type) {
+    public DLanguageCatchImpl(final DlangCatchStub stub, final IStubElementType type) {
         super(stub, type);
     }
 

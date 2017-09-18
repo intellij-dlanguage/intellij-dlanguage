@@ -9,16 +9,16 @@ import net.masterthought.dlanguage.psi.DlangIdentifier;
 import net.masterthought.dlanguage.psi.DLanguageNamedImportBind;
 import net.masterthought.dlanguage.psi.DLanguageVisitor;
 import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
-import net.masterthought.dlanguage.stubs.DLanguageNamedImportBindStub;
+import net.masterthought.dlanguage.stubs.DlangNamedImportBindStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import static net.masterthought.dlanguage.psi.DlangTypes.OP_EQ;
 
 
-public class DLanguageNamedImportBindImpl extends DNamedStubbedPsiElementBase<DLanguageNamedImportBindStub> implements DLanguageNamedImportBind {
+public class DLanguageNamedImportBindImpl extends DNamedStubbedPsiElementBase<DlangNamedImportBindStub> implements DLanguageNamedImportBind {
 
-    public DLanguageNamedImportBindImpl(final DLanguageNamedImportBindStub stub, final IStubElementType type) {
+    public DLanguageNamedImportBindImpl(final DlangNamedImportBindStub stub, final IStubElementType type) {
         super(stub, type);
     }
 

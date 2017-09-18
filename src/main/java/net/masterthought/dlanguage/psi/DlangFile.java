@@ -12,7 +12,7 @@ import net.masterthought.dlanguage.DLanguage;
 import net.masterthought.dlanguage.DlangFileType;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 import net.masterthought.dlanguage.resolve.ScopeProcessorImplUtil;
-import net.masterthought.dlanguage.stubs.DLanguageFileStub;
+import net.masterthought.dlanguage.stubs.DlangFileStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -66,10 +66,10 @@ public class DlangFile extends PsiFileBase {
      */
     @Nullable
     @Override
-    public DLanguageFileStub getStub() {
+    public DlangFileStub getStub() {
         final StubElement stub = super.getStub();
         if (stub == null) return null;
-        return (DLanguageFileStub) stub;
+        return (DlangFileStub) stub;
     }
 
     @Override

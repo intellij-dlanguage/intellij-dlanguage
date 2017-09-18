@@ -7,12 +7,12 @@ import com.intellij.psi.scope.PsiScopeProcessor;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 import net.masterthought.dlanguage.psi.interfaces.HasMembers;
 import net.masterthought.dlanguage.resolve.ScopeProcessorImpl;
-import net.masterthought.dlanguage.stubs.DLanguageInterfaceOrClassStub;
+import net.masterthought.dlanguage.stubs.DlangInterfaceOrClassStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 
-public interface DlangInterfaceOrClass extends PsiElement, DNamedElement, StubBasedPsiElement<DLanguageInterfaceOrClassStub>, HasMembers<DLanguageInterfaceOrClassStub> {
+public interface DlangInterfaceOrClass extends PsiElement, DNamedElement, StubBasedPsiElement<DlangInterfaceOrClassStub>, HasMembers<DlangInterfaceOrClassStub> {
     @Nullable
     DlangIdentifier getIdentifier();
 

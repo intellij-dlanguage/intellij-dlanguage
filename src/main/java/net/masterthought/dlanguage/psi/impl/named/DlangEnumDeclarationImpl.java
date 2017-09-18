@@ -7,16 +7,16 @@ import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
-import net.masterthought.dlanguage.stubs.DLanguageEnumDeclarationStub;
+import net.masterthought.dlanguage.stubs.DlangEnumDeclarationStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import static net.masterthought.dlanguage.psi.DlangTypes.KW_ENUM;
 import static net.masterthought.dlanguage.psi.DlangTypes.OP_COLON;
 
-public class DlangEnumDeclarationImpl extends DNamedStubbedPsiElementBase<DLanguageEnumDeclarationStub> implements DlangEnumDeclaration {
+public class DlangEnumDeclarationImpl extends DNamedStubbedPsiElementBase<DlangEnumDeclarationStub> implements DlangEnumDeclaration {
 
-    public DlangEnumDeclarationImpl(final DLanguageEnumDeclarationStub stub, final IStubElementType type) {
+    public DlangEnumDeclarationImpl(final DlangEnumDeclarationStub stub, final IStubElementType type) {
         super(stub, type);
     }
 

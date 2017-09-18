@@ -9,7 +9,7 @@ import net.masterthought.dlanguage.psi.DLanguageDestructor;
 import net.masterthought.dlanguage.psi.DLanguageFunctionBody;
 import net.masterthought.dlanguage.psi.DLanguageMemberFunctionAttribute;
 import net.masterthought.dlanguage.psi.DLanguageVisitor;
-import net.masterthought.dlanguage.stubs.DLanguageDestructorStub;
+import net.masterthought.dlanguage.stubs.DlangDestructorStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,8 +18,8 @@ import java.util.List;
 import static net.masterthought.dlanguage.psi.DlangTypes.*;
 
 
-public class DLanguageDestructorImpl extends DStubbedPsiElementBase<DLanguageDestructorStub> implements DLanguageDestructor {
-    public DLanguageDestructorImpl(final DLanguageDestructorStub stub, final IStubElementType nodeType) {
+public class DLanguageDestructorImpl extends DStubbedPsiElementBase<DlangDestructorStub> implements DLanguageDestructor {
+    public DLanguageDestructorImpl(final DlangDestructorStub stub, final IStubElementType nodeType) {
         super(stub, nodeType);
     }
 

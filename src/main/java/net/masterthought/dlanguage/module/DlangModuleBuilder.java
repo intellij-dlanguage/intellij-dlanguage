@@ -16,7 +16,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.projectRoots.SdkTypeId;
 import com.intellij.openapi.roots.ModifiableRootModel;
 import com.intellij.openapi.util.Pair;
-import net.masterthought.dlanguage.DLanguageBundle;
+import net.masterthought.dlanguage.DlangBundle;
 import net.masterthought.dlanguage.DlangSdkType;
 import net.masterthought.dlanguage.icons.DlangIcons;
 import net.masterthought.dlanguage.run.DlangRunAppConfigurationType;
@@ -42,7 +42,7 @@ public class DlangModuleBuilder extends JavaModuleBuilder {
     private List<Pair<String, String>> sourcePaths;
 
     public DlangModuleBuilder() {
-        this("DLangDmdApp", DLanguageBundle.INSTANCE.message("module.title"), DLanguageBundle.INSTANCE.message("module.description"), null);
+        this("DLangDmdApp", DlangBundle.INSTANCE.message("module.title"), DlangBundle.INSTANCE.message("module.description"), null);
     }
 
     protected DlangModuleBuilder(final String builderId,

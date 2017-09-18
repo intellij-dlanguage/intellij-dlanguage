@@ -10,12 +10,12 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Created by franc on 1/14/2017.
  */
-public class DLanguageConstructorStub extends NamedStubBase<DLanguageConstructor> {
-    public DLanguageConstructorStub(final StubElement parent, @NotNull final IStubElementType elementType, final StringRef name) {
+public class DlangConstructorStub extends NamedStubBase<DLanguageConstructor> {
+    public DlangConstructorStub(final StubElement parent, @NotNull final IStubElementType elementType, final StringRef name) {
         super(parent, elementType, name);
     }
 
-    public DLanguageConstructorStub(final StubElement parent, @NotNull final IStubElementType elementType, final String name) {
+    public DlangConstructorStub(final StubElement parent, @NotNull final IStubElementType elementType, final String name) {
         super(parent, elementType, name);
     }
 }

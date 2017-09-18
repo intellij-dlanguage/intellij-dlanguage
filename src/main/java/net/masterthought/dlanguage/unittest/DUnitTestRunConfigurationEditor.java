@@ -14,7 +14,7 @@ import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
-import net.masterthought.dlanguage.DLanguageBundle;
+import net.masterthought.dlanguage.DlangBundle;
 import net.masterthought.dlanguage.DlangFileType;
 import net.masterthought.dlanguage.DlangWritingAccessProvider;
 import org.jetbrains.annotations.NotNull;
@@ -45,7 +45,7 @@ public class DUnitTestRunConfigurationEditor extends SettingsEditor<DUnitTestRun
             final PsiFile initialPsiFile = initialFile == null ? null : PsiManager.getInstance(project).findFile(initialFile);
 
             final TreeFileChooser fileChooser = TreeFileChooserFactory.getInstance(project).createFileChooser(
-                DLanguageBundle.INSTANCE.message("choose.dlanguage.main.file"),
+                DlangBundle.INSTANCE.message("choose.dlanguage.main.file"),
                 initialPsiFile,
                 DlangFileType.INSTANCE,
                 file -> !DlangWritingAccessProvider.isInDLanguageSdkOrDLanguagePackagesFolder(file)

@@ -6,7 +6,7 @@ import com.intellij.psi.stubs.StubInputStream;
 import com.intellij.psi.stubs.StubOutputStream;
 import net.masterthought.dlanguage.psi.DlangEnumDeclaration;
 import net.masterthought.dlanguage.psi.impl.named.DlangEnumDeclarationImpl;
-import net.masterthought.dlanguage.stubs.DLanguageEnumDeclarationStub;
+import net.masterthought.dlanguage.stubs.DlangEnumDeclarationStub;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -14,13 +14,13 @@ import java.io.IOException;
 /**
  * Created by francis on 3/9/2017.
  */
-public class EnumDeclarationStubElementType extends DNamedStubElementType<DLanguageEnumDeclarationStub, DlangEnumDeclaration> {
+public class EnumDeclarationStubElementType extends DNamedStubElementType<DlangEnumDeclarationStub, DlangEnumDeclaration> {
     public EnumDeclarationStubElementType(final String debugName) {
         super(debugName);
     }
 
     @Override
-    public DlangEnumDeclaration createPsi(@NotNull final DLanguageEnumDeclarationStub stub) {
+    public DlangEnumDeclaration createPsi(@NotNull final DlangEnumDeclarationStub stub) {
         return new DlangEnumDeclarationImpl(stub, this);
     }
 
@@ -30,18 +30,18 @@ public class EnumDeclarationStubElementType extends DNamedStubElementType<DLangu
     }
 
     @Override
-    public DLanguageEnumDeclarationStub createStub(@NotNull final DlangEnumDeclaration psi, final StubElement parentStub) {
-        return new DLanguageEnumDeclarationStub(parentStub, this, psi.getName());
+    public DlangEnumDeclarationStub createStub(@NotNull final DlangEnumDeclaration psi, final StubElement parentStub) {
+        return new DlangEnumDeclarationStub(parentStub, this, psi.getName());
     }
 
     @Override
-    public void serialize(@NotNull final DLanguageEnumDeclarationStub stub, @NotNull final StubOutputStream dataStream) throws IOException {
+    public void serialize(@NotNull final DlangEnumDeclarationStub stub, @NotNull final StubOutputStream dataStream) throws IOException {
         dataStream.writeName(stub.getName());
     }
 
     @NotNull
     @Override
-    public DLanguageEnumDeclarationStub deserialize(@NotNull final StubInputStream dataStream, final StubElement parentStub) throws IOException {
-        return new DLanguageEnumDeclarationStub(parentStub, this, dataStream.readName());
+    public DlangEnumDeclarationStub deserialize(@NotNull final StubInputStream dataStream, final StubElement parentStub) throws IOException {
+        return new DlangEnumDeclarationStub(parentStub, this, dataStream.readName());
     }
 }

@@ -14,7 +14,7 @@ import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.impl.DElementFactory;
 import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import net.masterthought.dlanguage.psi.references.DReference;
-import net.masterthought.dlanguage.stubs.DLanguageModuleDeclarationStub;
+import net.masterthought.dlanguage.stubs.DlangModuleDeclarationStub;
 import net.masterthought.dlanguage.utils.DUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -24,9 +24,9 @@ import javax.swing.*;
 import static net.masterthought.dlanguage.psi.DlangTypes.KW_MODULE;
 import static net.masterthought.dlanguage.psi.DlangTypes.OP_SCOLON;
 
-public class DLanguageModuleDeclarationImpl extends DNamedStubbedPsiElementBase<DLanguageModuleDeclarationStub> implements DLanguageModuleDeclaration {
+public class DLanguageModuleDeclarationImpl extends DNamedStubbedPsiElementBase<DlangModuleDeclarationStub> implements DLanguageModuleDeclaration {
 
-    public DLanguageModuleDeclarationImpl(final DLanguageModuleDeclarationStub stub, final IStubElementType type) {
+    public DLanguageModuleDeclarationImpl(final DlangModuleDeclarationStub stub, final IStubElementType type) {
         super(stub, type);
     }
 

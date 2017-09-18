@@ -10,12 +10,12 @@ import net.masterthought.dlanguage.stubs.interfaces.HasMembersStub;
 /**
  * Created by francis on 3/9/2017.
  */
-public class DLanguageEnumDeclarationStub extends NamedStubBase<DlangEnumDeclaration> implements HasMembersStub {
-    public DLanguageEnumDeclarationStub(final StubElement parent, final IStubElementType elementType, final StringRef name) {
+public class DlangEnumDeclarationStub extends NamedStubBase<DlangEnumDeclaration> implements HasMembersStub {
+    public DlangEnumDeclarationStub(final StubElement parent, final IStubElementType elementType, final StringRef name) {
         super(parent, elementType, name);
     }
 
-    public DLanguageEnumDeclarationStub(final StubElement parent, final IStubElementType elementType, final String name) {
+    public DlangEnumDeclarationStub(final StubElement parent, final IStubElementType elementType, final String name) {
         super(parent, elementType, name);
     }
 }

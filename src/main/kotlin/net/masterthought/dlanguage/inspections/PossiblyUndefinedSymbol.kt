@@ -4,7 +4,7 @@ import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.psi.PsiElementVisitor
-import net.masterthought.dlanguage.DLanguageBundle
+import net.masterthought.dlanguage.DlangBundle
 import net.masterthought.dlanguage.psi.DLanguageVisitor
 import net.masterthought.dlanguage.psi.impl.named.DlangIdentifierImpl
 import net.masterthought.dlanguage.resolve.DResolveUtil
@@ -57,7 +57,7 @@ class PossiblyUndefinedSymbol : LocalInspectionTool() {
 
     override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = UndefinedSymbolVisitor(holder)
 
-    override fun getDisplayName(): String = DLanguageBundle.message("d.inspections.symbol.possiblyundefined.displayname")
+    override fun getDisplayName(): String = DlangBundle.message("d.inspections.symbol.possiblyundefined.displayname")
 
-    override fun getGroupDisplayName(): String = DLanguageBundle.message("d.inspections.symbol.possiblyundefined.groupname")
+    override fun getGroupDisplayName(): String = DlangBundle.message("d.inspections.symbol.possiblyundefined.groupname")
 }

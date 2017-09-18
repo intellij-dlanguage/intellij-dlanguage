@@ -6,12 +6,12 @@ import com.intellij.psi.stubs.StubElement;
 import com.intellij.util.io.StringRef;
 import net.masterthought.dlanguage.psi.DLanguageModuleDeclaration;
 
-public class DLanguageModuleDeclarationStub extends NamedStubBase<DLanguageModuleDeclaration> {
-    public DLanguageModuleDeclarationStub(final StubElement parent, final IStubElementType elementType, final StringRef name) {
+public class DlangModuleDeclarationStub extends NamedStubBase<DLanguageModuleDeclaration> {
+    public DlangModuleDeclarationStub(final StubElement parent, final IStubElementType elementType, final StringRef name) {
         super(parent, elementType, name);
     }
 
-    public DLanguageModuleDeclarationStub(final StubElement parent, final IStubElementType elementType, final String name) {
+    public DlangModuleDeclarationStub(final StubElement parent, final IStubElementType elementType, final String name) {
         super(parent, elementType, name);
     }
 }

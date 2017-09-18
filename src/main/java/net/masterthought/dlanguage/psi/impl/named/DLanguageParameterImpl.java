@@ -7,7 +7,7 @@ import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
-import net.masterthought.dlanguage.stubs.DLanguageParameterStub;
+import net.masterthought.dlanguage.stubs.DlangParameterStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -16,9 +16,9 @@ import java.util.List;
 import static net.masterthought.dlanguage.psi.DlangTypes.OP_EQ;
 import static net.masterthought.dlanguage.psi.DlangTypes.OP_TRIPLEDOT;
 
-public class DLanguageParameterImpl extends DNamedStubbedPsiElementBase<DLanguageParameterStub> implements DLanguageParameter {
+public class DLanguageParameterImpl extends DNamedStubbedPsiElementBase<DlangParameterStub> implements DLanguageParameter {
 
-    public DLanguageParameterImpl(final DLanguageParameterStub stub, final IStubElementType type) {
+    public DLanguageParameterImpl(final DlangParameterStub stub, final IStubElementType type) {
         super(stub, type);
     }
 

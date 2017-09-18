@@ -10,7 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import net.masterthought.dlanguage.resolve.ScopeProcessorImpl;
-import net.masterthought.dlanguage.stubs.DLanguageAliasInitializerStub;
+import net.masterthought.dlanguage.stubs.DlangAliasInitializerStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,9 +18,9 @@ import java.util.List;
 
 import static net.masterthought.dlanguage.psi.DlangTypes.OP_COMMA;
 
-public class DLanguageAliasInitializerImpl extends DNamedStubbedPsiElementBase<DLanguageAliasInitializerStub> implements DLanguageAliasInitializer {
+public class DLanguageAliasInitializerImpl extends DNamedStubbedPsiElementBase<DlangAliasInitializerStub> implements DLanguageAliasInitializer {
 //todo doesn't cover all alias declarations possible
-public DLanguageAliasInitializerImpl(final DLanguageAliasInitializerStub stub, final IStubElementType type) {
+public DLanguageAliasInitializerImpl(final DlangAliasInitializerStub stub, final IStubElementType type) {
         super(stub, type);
     }
 

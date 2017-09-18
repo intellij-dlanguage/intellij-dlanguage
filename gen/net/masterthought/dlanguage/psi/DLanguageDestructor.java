@@ -3,14 +3,14 @@ package net.masterthought.dlanguage.psi;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.StubBasedPsiElement;
 import net.masterthought.dlanguage.psi.interfaces.DCompositeElement;
-import net.masterthought.dlanguage.stubs.DLanguageDestructorStub;
+import net.masterthought.dlanguage.stubs.DlangDestructorStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 
-public interface DLanguageDestructor extends PsiElement, DCompositeElement, StubBasedPsiElement<DLanguageDestructorStub> {
+public interface DLanguageDestructor extends PsiElement, DCompositeElement, StubBasedPsiElement<DlangDestructorStub> {
     @Nullable
     DLanguageFunctionBody getFunctionBody();
 

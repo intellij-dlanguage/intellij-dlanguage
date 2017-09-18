@@ -10,19 +10,19 @@ import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import net.masterthought.dlanguage.resolve.ScopeProcessorImpl;
-import net.masterthought.dlanguage.stubs.DLanguageDeclaratorStub;
+import net.masterthought.dlanguage.stubs.DlangDeclaratorStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import static net.masterthought.dlanguage.psi.DlangTypes.OP_EQ;
 
 
-public class DLanguageDeclaratorImpl extends DNamedStubbedPsiElementBase<DLanguageDeclaratorStub> implements DLanguageDeclarator {
+public class DLanguageDeclaratorImpl extends DNamedStubbedPsiElementBase<DlangDeclaratorStub> implements DLanguageDeclarator {
     public DLanguageDeclaratorImpl(final ASTNode node) {
         super(node);
     }
 
-    public DLanguageDeclaratorImpl(@NotNull final DLanguageDeclaratorStub stub, final IStubElementType nodeType) {
+    public DLanguageDeclaratorImpl(@NotNull final DlangDeclaratorStub stub, final IStubElementType nodeType) {
         super(stub, nodeType);
     }
 

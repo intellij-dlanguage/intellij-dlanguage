@@ -5,35 +5,35 @@ import com.intellij.psi.stubs.StubInputStream;
 import com.intellij.psi.stubs.StubOutputStream;
 import net.masterthought.dlanguage.psi.DLanguageAliasInitializer;
 import net.masterthought.dlanguage.psi.impl.named.DLanguageAliasInitializerImpl;
-import net.masterthought.dlanguage.stubs.DLanguageAliasInitializerStub;
+import net.masterthought.dlanguage.stubs.DlangAliasInitializerStub;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
-public class AliasInitializerStubElementType extends DNamedStubElementType<DLanguageAliasInitializerStub, DLanguageAliasInitializer> {
+public class AliasInitializerStubElementType extends DNamedStubElementType<DlangAliasInitializerStub, DLanguageAliasInitializer> {
     public AliasInitializerStubElementType(final String debugName) {
         super(debugName);
     }
 
     @Override
-    public DLanguageAliasInitializer createPsi(@NotNull final DLanguageAliasInitializerStub stub) {
+    public DLanguageAliasInitializer createPsi(@NotNull final DlangAliasInitializerStub stub) {
         return new DLanguageAliasInitializerImpl(stub, this);
     }
 
     @NotNull
     @Override
-    public DLanguageAliasInitializerStub createStub(@NotNull final DLanguageAliasInitializer psi, final StubElement parentStub) {
-        return new DLanguageAliasInitializerStub(parentStub, this, psi.getName());
+    public DlangAliasInitializerStub createStub(@NotNull final DLanguageAliasInitializer psi, final StubElement parentStub) {
+        return new DlangAliasInitializerStub(parentStub, this, psi.getName());
     }
 
     @Override
-    public void serialize(@NotNull final DLanguageAliasInitializerStub stub, @NotNull final StubOutputStream dataStream) throws IOException {
+    public void serialize(@NotNull final DlangAliasInitializerStub stub, @NotNull final StubOutputStream dataStream) throws IOException {
         dataStream.writeName(stub.getName());
     }
 
     @NotNull
     @Override
-    public DLanguageAliasInitializerStub deserialize(@NotNull final StubInputStream dataStream, final StubElement parentStub) throws IOException {
-        return new DLanguageAliasInitializerStub(parentStub, this, dataStream.readName());
+    public DlangAliasInitializerStub deserialize(@NotNull final StubInputStream dataStream, final StubElement parentStub) throws IOException {
+        return new DlangAliasInitializerStub(parentStub, this, dataStream.readName());
     }
 }

@@ -9,7 +9,7 @@ import net.masterthought.dlanguage.psi.DlangIdentifier;
 import net.masterthought.dlanguage.psi.DLanguageIfCondition;
 import net.masterthought.dlanguage.psi.DLanguageType;
 import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
-import net.masterthought.dlanguage.stubs.DLanguageIfConditionStub;
+import net.masterthought.dlanguage.stubs.DlangIfConditionStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,8 +19,8 @@ import static net.masterthought.dlanguage.psi.DlangTypes.OP_EQ;
 /**
  * Created by francis on 7/14/2017.
  */
-public class DLanguageIfConditionImpl extends DNamedStubbedPsiElementBase<DLanguageIfConditionStub> implements DLanguageIfCondition {
-    public DLanguageIfConditionImpl(@NotNull final DLanguageIfConditionStub stub, final IStubElementType nodeType) {
+public class DLanguageIfConditionImpl extends DNamedStubbedPsiElementBase<DlangIfConditionStub> implements DLanguageIfCondition {
+    public DLanguageIfConditionImpl(@NotNull final DlangIfConditionStub stub, final IStubElementType nodeType) {
         super(stub, nodeType);
     }
 

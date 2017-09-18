@@ -9,7 +9,7 @@ import net.masterthought.dlanguage.psi.DLanguageTemplateParameter
 /**
  * Created by francis on 6/13/2017.
  */
-class DLanguageTemplateParameterStub : NamedStubBase<DLanguageTemplateParameter> {
+class DlangTemplateParameterStub : NamedStubBase<DLanguageTemplateParameter> {
     constructor(parent: StubElement<*>, elementType: IStubElementType<*, *>, name: StringRef?) : super(parent, elementType, name)
 
     constructor(parent: StubElement<*>, elementType: IStubElementType<*, *>, name: String?) : super(parent, elementType, name)

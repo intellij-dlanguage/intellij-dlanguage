@@ -7,14 +7,14 @@ import com.intellij.psi.scope.PsiScopeProcessor;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 import net.masterthought.dlanguage.psi.interfaces.HasMembers;
 import net.masterthought.dlanguage.resolve.ScopeProcessorImpl;
-import net.masterthought.dlanguage.stubs.DLanguageEnumDeclarationStub;
+import net.masterthought.dlanguage.stubs.DlangEnumDeclarationStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 //import net.masterthought.dlanguage.types.Type;
 
 
-public interface DlangEnumDeclaration extends PsiElement, DNamedElement, StubBasedPsiElement<DLanguageEnumDeclarationStub>, HasMembers<DLanguageEnumDeclarationStub> {
+public interface DlangEnumDeclaration extends PsiElement, DNamedElement, StubBasedPsiElement<DlangEnumDeclarationStub>, HasMembers<DlangEnumDeclarationStub> {
     @Nullable
     DlangIdentifier getIdentifier();
 

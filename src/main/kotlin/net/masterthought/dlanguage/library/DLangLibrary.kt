@@ -12,7 +12,7 @@ import com.intellij.openapi.roots.libraries.ui.RootDetector
 import com.intellij.openapi.roots.ui.configuration.libraryEditor.DefaultLibraryRootsComponentDescriptor
 import com.intellij.openapi.roots.ui.configuration.libraryEditor.LibraryEditor
 import com.intellij.openapi.vfs.VirtualFile
-import net.masterthought.dlanguage.DLanguageBundle
+import net.masterthought.dlanguage.DlangBundle
 import net.masterthought.dlanguage.icons.DlangIcons
 import java.util.*
 import javax.swing.JComponent
@@ -30,8 +30,8 @@ class DLanguageLibraryRootsComponentDescriptor : LibraryRootsComponentDescriptor
 
     override fun getRootDetectors(): List<RootDetector> {
         return Arrays.asList(
-            DlangLibRootDetector(OrderRootType.CLASSES, DLanguageBundle.message("sources.root.detector.sources.name")),
-            DlangLibRootDetector(LibFileRootType.getInstance(), DLanguageBundle.message("sources.root.detector.lib.name")))
+            DlangLibRootDetector(OrderRootType.CLASSES, DlangBundle.message("sources.root.detector.sources.name")),
+            DlangLibRootDetector(LibFileRootType.getInstance(), DlangBundle.message("sources.root.detector.lib.name")))
     }
 
     override fun createAttachButtons(): List<AttachRootButtonDescriptor> {

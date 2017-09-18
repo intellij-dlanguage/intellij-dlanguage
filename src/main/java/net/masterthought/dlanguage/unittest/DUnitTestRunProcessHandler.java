@@ -22,7 +22,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.util.PsiTreeUtil;
-import net.masterthought.dlanguage.DLanguageBundle;
+import net.masterthought.dlanguage.DlangBundle;
 import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.settings.ToolKey;
 import net.masterthought.dlanguage.utils.DToolsNotificationListener;
@@ -113,9 +113,9 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
         final String dunitPath = getDUnitPath();
 
         if (dunitPath == null) {
-            final String message = DLanguageBundle.INSTANCE.message("d.ui.unittest.notification.content.d-unit-missing");
+            final String message = DlangBundle.INSTANCE.message("d.ui.unittest.notification.content.d-unit-missing");
             Notifications.Bus.notify(new Notification("Execute Tests",
-                DLanguageBundle.INSTANCE.message("d.ui.unittest.notification.title.d-unit-missing"),
+                DlangBundle.INSTANCE.message("d.ui.unittest.notification.title.d-unit-missing"),
                 message, NotificationType.ERROR), project);
             LOG.warn(message);
         } else {
@@ -194,8 +194,8 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
         if (dubPath == null || dubPath.isEmpty()) {
             Notifications.Bus.notify(
                 new Notification("Dunit Test Runner",
-                    DLanguageBundle.INSTANCE.message("d.ui.unittest.notification.title.dub-path-missing"),
-                    DLanguageBundle.INSTANCE.message("d.ui.unittest.notification.content.dub-path-missing"),
+                    DlangBundle.INSTANCE.message("d.ui.unittest.notification.title.dub-path-missing"),
+                    DlangBundle.INSTANCE.message("d.ui.unittest.notification.content.dub-path-missing"),
                     NotificationType.WARNING, new DToolsNotificationListener(project)), project);
             return;
         }

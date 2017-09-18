@@ -190,7 +190,7 @@ public class DlangSdkType extends SdkType {
     @NotNull
     @Override
     public String getPresentableName() {
-        return DLanguageBundle.INSTANCE.message("compilers.dmd.presentableName");
+        return DlangBundle.INSTANCE.message("compilers.dmd.presentableName");
     }
 
     @Override

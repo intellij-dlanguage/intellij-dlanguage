@@ -6,12 +6,12 @@ import com.intellij.psi.StubBasedPsiElement;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement;
 import net.masterthought.dlanguage.resolve.ScopeProcessorImpl;
-import net.masterthought.dlanguage.stubs.DLanguageFunctionDeclarationStub;
+import net.masterthought.dlanguage.stubs.DlangFunctionDeclarationStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 
-public interface DLanguageFunctionDeclaration extends PsiElement, DNamedElement, StubBasedPsiElement<DLanguageFunctionDeclarationStub> {
+public interface DLanguageFunctionDeclaration extends PsiElement, DNamedElement, StubBasedPsiElement<DlangFunctionDeclarationStub> {
     @Nullable
     DLanguageType getType();
 

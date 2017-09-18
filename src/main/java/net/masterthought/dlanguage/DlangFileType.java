@@ -25,7 +25,7 @@ public class DlangFileType extends LanguageFileType {
     @NotNull
     @Override
     public String getDescription() {
-        return DLanguageBundle.INSTANCE.message("dlang.filetype");
+        return DlangBundle.INSTANCE.message("dlang.filetype");
     }
 
     @NotNull

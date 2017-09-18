@@ -8,7 +8,7 @@ import java.lang.ref.Reference
 import java.lang.ref.SoftReference
 import java.util.*
 
-object DLanguageBundle {
+object DlangBundle {
 
     val log: Logger = Logger.getInstance(javaClass)
 

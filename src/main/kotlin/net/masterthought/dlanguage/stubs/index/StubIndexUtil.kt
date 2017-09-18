@@ -14,7 +14,7 @@ fun <S : NamedStubBase<T>, T : DNamedElement> topLevelDeclaration(stub: S): Bool
     //stuff within func declarations does not count as top level b/c not globally accessible todo check if this is true for all declaration types
     //switch the topLevel declaration to a file gist maybe
 
-    if (stub is DLanguageParameterStub || stub is DLanguageForeachTypeStub || stub is DLanguageTemplateParameterStub) {
+    if (stub is DlangParameterStub || stub is DlangForeachTypeStub || stub is DlangTemplateParameterStub) {
         return false
     }
 
@@ -25,10 +25,10 @@ fun <S : NamedStubBase<T>, T : DNamedElement> topLevelDeclaration(stub: S): Bool
         if (stubParent == null) {
             return true
         }
-        if (stubParent is DLanguageFunctionDeclarationStub) {
+        if (stubParent is DlangFunctionDeclarationStub) {
             return false
         }
-        if (stubParent is DLanguageConstructorStub || stubParent is DLanguageSharedStaticConstructorStub || stubParent is DLanguageStaticConstructorStub || stubParent is DLanguageDestructorStub || stubParent is DLanguageSharedStaticDestructorStub || stubParent is DLanguageStaticDestructorStub) {
+        if (stubParent is DlangConstructorStub || stubParent is DlangSharedStaticConstructorStub || stubParent is DlangStaticConstructorStub || stubParent is DlangDestructorStub || stubParent is DlangSharedStaticDestructorStub || stubParent is DlangStaticDestructorStub) {
             return false
         }
         if (stubParent is DLanguageUnittestStub) {

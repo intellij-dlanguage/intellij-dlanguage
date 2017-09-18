@@ -10,12 +10,12 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Created by francis on 8/8/2017.
  */
-public class DLanguageNamedImportBindStub extends NamedStubBase<DLanguageNamedImportBind> {
-    public DLanguageNamedImportBindStub(final StubElement parent, @NotNull final IStubElementType elementType, final StringRef name) {
+public class DlangNamedImportBindStub extends NamedStubBase<DLanguageNamedImportBind> {
+    public DlangNamedImportBindStub(final StubElement parent, @NotNull final IStubElementType elementType, final StringRef name) {
         super(parent, elementType, name);
     }
 
-    public DLanguageNamedImportBindStub(final StubElement parent, @NotNull final IStubElementType elementType, final String name) {
+    public DlangNamedImportBindStub(final StubElement parent, @NotNull final IStubElementType elementType, final String name) {
         super(parent, elementType, name);
     }
 }

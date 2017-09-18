@@ -10,15 +10,15 @@ import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.psi.*;
 import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import net.masterthought.dlanguage.resolve.ScopeProcessorImpl;
-import net.masterthought.dlanguage.stubs.DLanguageAutoDeclarationPartStub;
+import net.masterthought.dlanguage.stubs.DlangAutoDeclarationPartStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import static net.masterthought.dlanguage.psi.DlangTypes.OP_EQ;
 
-public class DLanguageAutoDeclarationPartImpl extends DNamedStubbedPsiElementBase<DLanguageAutoDeclarationPartStub> implements DLanguageAutoDeclarationPart {
+public class DLanguageAutoDeclarationPartImpl extends DNamedStubbedPsiElementBase<DlangAutoDeclarationPartStub> implements DLanguageAutoDeclarationPart {
 
-    public DLanguageAutoDeclarationPartImpl(final DLanguageAutoDeclarationPartStub stub, final IStubElementType type) {
+    public DLanguageAutoDeclarationPartImpl(final DlangAutoDeclarationPartStub stub, final IStubElementType type) {
         super(stub, type);
     }
 
