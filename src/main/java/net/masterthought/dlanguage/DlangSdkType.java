@@ -56,17 +56,17 @@ public class DlangSdkType extends SdkType {
             DEFAULT_DMD_PATH = new File("C:/D/dmd2/windows/bin/dmd.exe");
             DEFAULT_DOCUMENTATION_PATH = new File("C:/D/dmd2/html/d");
             DEFAULT_PHOBOS_PATH = new File("C:/D/dmd2/src/phobos");
-            DEFAULT_DRUNTIME_PATH = new File("C:/D/dmd2/src/druntime/singleImport");
+            DEFAULT_DRUNTIME_PATH = new File("C:/D/dmd2/src/druntime/import");
         } else if(SystemInfo.isMac) {
             DEFAULT_DMD_PATH = new File("/usr/local/opt/dmd"); // correct for Homebrew, standard maybe '/usr/local/bin'
             //DEFAULT_DOCUMENTATION_PATH = new File("");
             DEFAULT_PHOBOS_PATH = new File("/Library/D/dmd/src/phobos");
-            DEFAULT_DRUNTIME_PATH = new File("/Library/D/dmd/src/druntime/singleImport");
+            DEFAULT_DRUNTIME_PATH = new File("/Library/D/dmd/src/druntime/import");
         } else if(SystemInfo.isLinux) {
             DEFAULT_DMD_PATH = new File("/usr/bin/dmd");
             DEFAULT_DOCUMENTATION_PATH = new File("/usr/share/dmd/html/d");
             DEFAULT_PHOBOS_PATH = new File("/usr/include/dmd/phobos");
-            DEFAULT_DRUNTIME_PATH = new File("/usr/include/dmd/druntime/singleImport");
+            DEFAULT_DRUNTIME_PATH = new File("/usr/include/dmd/druntime/import");
         } else {
             LOG.warn(String.format("We didn't cater for %s", SystemInfo.getOsNameAndVersion()));
         }
@@ -123,9 +123,9 @@ public class DlangSdkType extends SdkType {
     }
 
     /**
-     * Windows has docs in 'C:\D\dmd2\html\d' and sources in ['C:\D\dmd2\src\phobos', 'C:\D\dmd2\src\druntime\singleImport']
-     * OSX has docs in ??? and sources in ['/Library/D/dmd/src/phobos', '/Library/D/dmd/src/druntime/singleImport']
-     * Linux has docs in '/usr/share/dmd/html/d' and sources in ['/usr/include/dmd/phobos', '/usr/include/dmd/druntime/singleImport']
+     * Windows has docs in 'C:\D\dmd2\html\d' and sources in ['C:\D\dmd2\src\phobos', 'C:\D\dmd2\src\druntime\import']
+     * OSX has docs in ??? and sources in ['/Library/D/dmd/src/phobos', '/Library/D/dmd/src/druntime/import']
+     * Linux has docs in '/usr/share/dmd/html/d' and sources in ['/usr/include/dmd/phobos', '/usr/include/dmd/druntime/import']
      * @param sdk The DMD installation
      */
     @Override

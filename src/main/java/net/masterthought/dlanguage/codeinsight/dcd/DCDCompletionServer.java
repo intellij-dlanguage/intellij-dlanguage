@@ -170,7 +170,7 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
                 if (SystemInfo.isMac) {
                     final String root = path.replaceAll("bin", "src");
                     compilerSources.add(root + "/phobos");
-                    compilerSources.add(root + "/druntime/singleImport");
+                    compilerSources.add(root + "/druntime/import");
                 }
                 // add linux and windows here once I know how
             }

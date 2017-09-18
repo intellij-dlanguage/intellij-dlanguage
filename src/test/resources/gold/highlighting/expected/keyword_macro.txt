@@ -1,1 +1,1 @@
-DLanguageTokenType.ID ('macro')
+DlangTokenType.ID ('macro')

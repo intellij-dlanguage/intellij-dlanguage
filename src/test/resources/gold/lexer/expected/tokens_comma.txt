@@ -1,1 +1,1 @@
-DLanguageTokenType., (',')
+DlangTokenType., (',')

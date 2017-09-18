@@ -281,7 +281,7 @@ public interface DlangTypes {
     IElementType KW_IF = new DlangTokenType("if");
     IElementType KW_IFLOAT = new DlangTokenType("ifloat");
     IElementType KW_IMMUTABLE = new DlangTokenType("immutable");
-    IElementType KW_IMPORT = new DlangTokenType("singleImport");
+    IElementType KW_IMPORT = new DlangTokenType("import");
     IElementType KW_IN = new DlangTokenType("in");
     IElementType KW_INOUT = new DlangTokenType("inout");
     IElementType KW_INT = new DlangTokenType("int");

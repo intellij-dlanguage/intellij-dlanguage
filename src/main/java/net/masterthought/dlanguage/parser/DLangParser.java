@@ -2807,7 +2807,7 @@ class DLangParser {
                         return false;
                     }
                 }
-            } else if (idType.equals(tok("singleImport"))) {
+            } else if (idType.equals(tok("import"))) {
                 if (!parseImportDeclaration()) {
                     cleanup(m, DECLARATION);
                     return false;
@@ -4443,7 +4443,7 @@ class DLangParser {
      * Parses ImportBindings
      * <p>
      * $(GRAMMAR $(RULEDEF importBindings):
-     * $(RULE singleImport) $(LITERAL ':') $(RULE importBind) ($(LITERAL ',') $(RULE importBind))*
+     * $(RULE import) $(LITERAL ':') $(RULE importBind) ($(LITERAL ',') $(RULE importBind))*
      * ;)
      */
     boolean parseImportBindings(final boolean parseSingleImport) {
@@ -4476,13 +4476,13 @@ class DLangParser {
      * Parses an ImportDeclaration
      * <p>
      * $(GRAMMAR $(RULEDEF importDeclaration):
-     * $(LITERAL 'singleImport') $(RULE singleImport) ($(LITERAL ',') $(RULE singleImport))* ($(LITERAL ',') $(RULE importBindings))? $(LITERAL ';')
-     * | $(LITERAL 'singleImport') $(RULE importBindings) $(LITERAL ';')
+     * $(LITERAL 'import') $(RULE import) ($(LITERAL ',') $(RULE import))* ($(LITERAL ',') $(RULE importBindings))? $(LITERAL ';')
+     * | $(LITERAL 'import') $(RULE importBindings) $(LITERAL ';')
      * ;)
      */
     boolean parseImportDeclaration() {
         final Marker m = enter_section_modified(builder);
-        if (!tokenCheck("singleImport")) {
+        if (!tokenCheck("import")) {
             cleanup(m, IMPORT_DECLARATION);
             return false;
         }
@@ -4526,12 +4526,12 @@ class DLangParser {
      * Parses an ImportExpression
      * <p>
      * $(GRAMMAR $(RULEDEF importExpression):
-     * $(LITERAL 'singleImport') $(LITERAL '$(LPAREN)') $(RULE assignExpression) $(LITERAL '$(RPAREN)')
+     * $(LITERAL 'import') $(LITERAL '$(LPAREN)') $(RULE assignExpression) $(LITERAL '$(RPAREN)')
      * ;)
      */
     boolean parseImportExpression() {
         final Marker marker = enter_section_modified(builder);
-        final boolean b = simpleParse("ImportExpression", tok("singleImport"), tok("("),
+        final boolean b = simpleParse("ImportExpression", tok("import"), tok("("),
             "assignExpression|parseAssignExpression", tok(")"));
         exit_section_modified(builder, marker, IMPORT_EXPRESSION, b);
         return b;
@@ -5772,7 +5772,7 @@ class DLangParser {
                 cleanup(m, PRIMARY_EXPRESSION);
                 return false;
             }
-        } else if (i.equals(tok("singleImport"))) {
+        } else if (i.equals(tok("import"))) {
             if (!parseImportExpression()) {
                 cleanup(m, PRIMARY_EXPRESSION);
                 return false;
@@ -6016,7 +6016,7 @@ class DLangParser {
     /**
      * Parses a SingleImport
      * <p>
-     * $(GRAMMAR $(RULEDEF singleImport):
+     * $(GRAMMAR $(RULEDEF import):
      * ($(LITERAL Identifier) $(LITERAL '='))? $(RULE identifierChain)
      * ;)
      */

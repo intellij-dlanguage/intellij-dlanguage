@@ -386,7 +386,7 @@ FUNCTION_DEFINITION = {ID}\(.*\)([^;]|[\s]*|[\r]*|[\n]*)
 	[^/**\n]+	{return DlangTypes.DOC_COMMENT;}
 }
 
-// module singleImport
+// module import
 <YYINITIAL> module {
 		yybegin(MODULE_VALUE);
 		return DlangTypes.KEYWORD;

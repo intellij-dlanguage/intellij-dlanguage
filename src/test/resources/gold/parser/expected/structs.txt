@@ -2,9 +2,9 @@ D Language File
   DLanguageDeclarationImpl(DECLARATION)
     UNITTEST
       UNITTEST
-        PsiElement(DLanguageTokenType.unittest)('unittest')
+        PsiElement(DlangTokenType.unittest)('unittest')
         DLanguageBlockStatementImpl(BLOCK_STATEMENT)
-          PsiElement(DLanguageTokenType.{)('{')
+          PsiElement(DlangTokenType.{)('{')
           DLanguageDeclarationsAndStatementsImpl(DECLARATIONS_AND_STATEMENTS)
             DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
               DLanguageDeclarationImpl(DECLARATION)
@@ -15,32 +15,32 @@ D Language File
                         DLanguageIdentifierOrTemplateChainImpl(IDENTIFIER_OR_TEMPLATE_CHAIN)
                           DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
                             IDENTIFIER
-                              PsiElement(DLanguageTokenType.ID)('ABC')
+                              PsiElement(DlangTokenType.ID)('ABC')
                   DECLARATOR
                     IDENTIFIER
-                      PsiElement(DLanguageTokenType.ID)('x')
-                  PsiElement(DLanguageTokenType.;)(';')
+                      PsiElement(DlangTokenType.ID)('x')
+                  PsiElement(DlangTokenType.;)(';')
             DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
               DLanguageDeclarationImpl(DECLARATION)
                 STRUCT_DECLARATION
-                  PsiElement(DLanguageTokenType.struct)('struct')
+                  PsiElement(DlangTokenType.struct)('struct')
                   IDENTIFIER
-                    PsiElement(DLanguageTokenType.ID)('S')
-                  PsiElement(DLanguageTokenType.;)(';')
+                    PsiElement(DlangTokenType.ID)('S')
+                  PsiElement(DlangTokenType.;)(';')
             DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
               DLanguageDeclarationImpl(DECLARATION)
                 UNION_DECLARATION
-                  PsiElement(DLanguageTokenType.union)('union')
+                  PsiElement(DlangTokenType.union)('union')
                   IDENTIFIER
-                    PsiElement(DLanguageTokenType.ID)('U')
-                  PsiElement(DLanguageTokenType.;)(';')
+                    PsiElement(DlangTokenType.ID)('U')
+                  PsiElement(DlangTokenType.;)(';')
             DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
               DLanguageDeclarationImpl(DECLARATION)
                 STRUCT_DECLARATION
-                  PsiElement(DLanguageTokenType.struct)('struct')
+                  PsiElement(DlangTokenType.struct)('struct')
                   IDENTIFIER
-                    PsiElement(DLanguageTokenType.ID)('S')
-                  PsiElement(DLanguageTokenType.;)(';')
+                    PsiElement(DlangTokenType.ID)('S')
+                  PsiElement(DlangTokenType.;)(';')
             DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
               DLanguageStatementImpl(STATEMENT)
                 DLanguageStatementNoCaseNoDefaultImpl(STATEMENT_NO_CASE_NO_DEFAULT)
@@ -52,13 +52,13 @@ D Language File
                             DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                               DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
                                 IDENTIFIER
-                                  PsiElement(DLanguageTokenType.ID)('S')
-                            PsiElement(DLanguageTokenType..)('.')
+                                  PsiElement(DlangTokenType.ID)('S')
+                            PsiElement(DlangTokenType..)('.')
                             DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
                               IDENTIFIER
-                                PsiElement(DLanguageTokenType.ID)('sizeof')
-                    PsiElement(DLanguageTokenType.;)(';')
-            PsiComment(DLanguageTokenType.LINE_COMMENT)('// error, size is not known')
+                                PsiElement(DlangTokenType.ID)('sizeof')
+                    PsiElement(DlangTokenType.;)(';')
+            PsiComment(DlangTokenType.LINE_COMMENT)('// error, size is not known')
             DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
               DLanguageDeclarationImpl(DECLARATION)
                 DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
@@ -68,12 +68,12 @@ D Language File
                         DLanguageIdentifierOrTemplateChainImpl(IDENTIFIER_OR_TEMPLATE_CHAIN)
                           DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
                             IDENTIFIER
-                              PsiElement(DLanguageTokenType.ID)('S')
+                              PsiElement(DlangTokenType.ID)('S')
                   DECLARATOR
                     IDENTIFIER
-                      PsiElement(DLanguageTokenType.ID)('s')
-                  PsiElement(DLanguageTokenType.;)(';')
-            PsiComment(DLanguageTokenType.LINE_COMMENT)('// error, cannot initialize unknown contents')
+                      PsiElement(DlangTokenType.ID)('s')
+                  PsiElement(DlangTokenType.;)(';')
+            PsiComment(DlangTokenType.LINE_COMMENT)('// error, cannot initialize unknown contents')
             DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
               DLanguageDeclarationImpl(DECLARATION)
                 DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
@@ -83,12 +83,12 @@ D Language File
                         DLanguageIdentifierOrTemplateChainImpl(IDENTIFIER_OR_TEMPLATE_CHAIN)
                           DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
                             IDENTIFIER
-                              PsiElement(DLanguageTokenType.ID)('S')
+                              PsiElement(DlangTokenType.ID)('S')
                     DLanguageTypeSuffixImpl(TYPE_SUFFIX)
-                      PsiElement(DLanguageTokenType.*)('*')
+                      PsiElement(DlangTokenType.*)('*')
                   DECLARATOR
                     IDENTIFIER
-                      PsiElement(DLanguageTokenType.ID)('p')
-                  PsiElement(DLanguageTokenType.;)(';')
-          PsiComment(DLanguageTokenType.LINE_COMMENT)('// ok, knowledge of members is not necessary')
-          PsiElement(DLanguageTokenType.})('}')
+                      PsiElement(DlangTokenType.ID)('p')
+                  PsiElement(DlangTokenType.;)(';')
+          PsiComment(DlangTokenType.LINE_COMMENT)('// ok, knowledge of members is not necessary')
+          PsiElement(DlangTokenType.})('}')

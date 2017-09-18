@@ -1,1 +1,1 @@
-DLanguageTokenType.shebang ('#!/usr/bin/env rdmd -unittest -Isrc')
+DlangTokenType.shebang ('#!/usr/bin/env rdmd -unittest -Isrc')

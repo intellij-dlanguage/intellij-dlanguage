@@ -73,8 +73,8 @@ object ScopeProcessorImplUtil {
             return processor.execute(def.functionDeclaration!!, state)
         }
         if (def.importDeclaration != null) {
-            for (singleImport in def.importDeclaration!!.singleImports) {
-                if (!processor.execute(singleImport, state)) {
+            for (import in def.importDeclaration!!.singleImports) {
+                if (!processor.execute(import, state)) {
                     toContinue = false
                 }
             }

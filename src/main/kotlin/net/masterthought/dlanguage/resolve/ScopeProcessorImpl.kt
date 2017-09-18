@@ -452,8 +452,8 @@ object ScopeProcessorImpl {
                             state: ResolveState,
                             lastParent: PsiElement,
                             place: PsiElement): Boolean {
-        for (singleImport in element.singleImports) {
-            processor.execute(singleImport, state)
+        for (import in element.singleImports) {
+            processor.execute(import, state)
         }
         return true
     }

@@ -200,7 +200,7 @@ HEX_EXPONENT = [pP][\+\-]? [0-9]+
 //todo add typedef
 
 <YYINITIAL> "module"                   { return KW_MODULE; }
-<YYINITIAL> "singleImport"                   { return KW_IMPORT; }
+<YYINITIAL> "import"                   { return KW_IMPORT; }
 <YYINITIAL> "static"                   { return KW_STATIC; }
 <YYINITIAL> "bool"                     { return KW_BOOL; }
 <YYINITIAL> "byte"                     { return KW_BYTE; }

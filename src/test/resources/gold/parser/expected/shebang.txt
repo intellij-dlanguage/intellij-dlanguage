@@ -1,2 +1,2 @@
 D Language File
-  PsiElement(DLanguageTokenType.shebang)('#!/usr/bin/env rdmd -unittest -Isrc')
+  PsiElement(DlangTokenType.shebang)('#!/usr/bin/env rdmd -unittest -Isrc')

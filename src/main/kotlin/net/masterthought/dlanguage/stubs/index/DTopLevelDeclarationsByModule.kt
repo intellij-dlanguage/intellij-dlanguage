@@ -32,13 +32,13 @@ class DTopLevelDeclarationsByModule : StringStubIndexExtension<DNamedElement>() 
         }
 
         //todo better name/stop repeating type signature?
-        fun getSymbolsFromImport(singleImport: DlangSingleImport): MutableSet<DNamedElement> {
-            if (singleImport.applicableImportBinds.size == 0) {
-                return StubIndex.getElements(KEY, singleImport.importedModuleName, singleImport.project, GlobalSearchScope.everythingScope(singleImport.project), DNamedElement::class.java).toMutableSet()
+        fun getSymbolsFromImport(import: DlangSingleImport): MutableSet<DNamedElement> {
+            if (import.applicableImportBinds.size == 0) {
+                return StubIndex.getElements(KEY, import.importedModuleName, import.project, GlobalSearchScope.everythingScope(import.project), DNamedElement::class.java).toMutableSet()
             }
             val symbols = mutableSetOf<DNamedElement>()
-            for (bind in singleImport.applicableImportBinds) {
-                for (resolvedBind in getTopLevelSymbols(bind, singleImport.importedModuleName, singleImport.project)) {
+            for (bind in import.applicableImportBinds) {
+                for (resolvedBind in getTopLevelSymbols(bind, import.importedModuleName, import.project)) {
                     symbols.add(resolvedBind)
                     if (resolvedBind is HasMembers<*>) {
                         symbols.addAll(resolvedBind.members.map { it.psi as DNamedElement })

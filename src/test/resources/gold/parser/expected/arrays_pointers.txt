@@ -4,10 +4,10 @@ D Language File
       DLanguageTypeImpl(TYPE)
         DLanguageType_2Impl(TYPE_2)
           DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
-            PsiElement(DLanguageTokenType.int)('int')
+            PsiElement(DlangTokenType.int)('int')
         DLanguageTypeSuffixImpl(TYPE_SUFFIX)
-          PsiElement(DLanguageTokenType.*)('*')
+          PsiElement(DlangTokenType.*)('*')
       DECLARATOR
         IDENTIFIER
-          PsiElement(DLanguageTokenType.ID)('p')
-      PsiElement(DLanguageTokenType.;)(';')
+          PsiElement(DlangTokenType.ID)('p')
+      PsiElement(DlangTokenType.;)(';')

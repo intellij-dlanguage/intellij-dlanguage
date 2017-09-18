@@ -1,1 +1,1 @@
-DLanguageTokenType.LINE_DOC ('/// This is a one line documentation comment.')
+DlangTokenType.LINE_DOC ('/// This is a one line documentation comment.')

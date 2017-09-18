@@ -1,39 +1,39 @@
 D Language File
-  PsiComment(DLanguageTokenType.LINE_COMMENT)('//module A;')
-  PsiComment(DLanguageTokenType.LINE_COMMENT)('//private class Foo {}')
+  PsiComment(DlangTokenType.LINE_COMMENT)('//module A;')
+  PsiComment(DlangTokenType.LINE_COMMENT)('//private class Foo {}')
   MODULE_DECLARATION
-    PsiElement(DLanguageTokenType.module)('module')
+    PsiElement(DlangTokenType.module)('module')
     DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)
       IDENTIFIER
-        PsiElement(DLanguageTokenType.ID)('B')
-    PsiElement(DLanguageTokenType.;)(';')
+        PsiElement(DlangTokenType.ID)('B')
+    PsiElement(DlangTokenType.;)(';')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageAttributeImpl(ATTRIBUTE)
-      PsiElement(DLanguageTokenType.public)('public')
+      PsiElement(DlangTokenType.public)('public')
     DLanguageClassDeclarationImpl(CLASS_DECLARATION)
-      PsiElement(DLanguageTokenType.class)('class')
+      PsiElement(DlangTokenType.class)('class')
       INTERFACE_OR_CLASS
         IDENTIFIER
-          PsiElement(DLanguageTokenType.ID)('Foo')
+          PsiElement(DlangTokenType.ID)('Foo')
         DLanguageStructBodyImpl(STRUCT_BODY)
-          PsiElement(DLanguageTokenType.{)('{')
-          PsiElement(DLanguageTokenType.})('}')
+          PsiElement(DlangTokenType.{)('{')
+          PsiElement(DlangTokenType.})('}')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
-      PsiElement(DLanguageTokenType.singleImport)('singleImport')
+      PsiElement(DlangTokenType.import)('import')
       SINGLE_IMPORT
         DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)
           IDENTIFIER
-            PsiElement(DLanguageTokenType.ID)('A')
-      PsiElement(DLanguageTokenType.;)(';')
+            PsiElement(DlangTokenType.ID)('A')
+      PsiElement(DlangTokenType.;)(';')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
-      PsiElement(DLanguageTokenType.singleImport)('singleImport')
+      PsiElement(DlangTokenType.import)('import')
       SINGLE_IMPORT
         DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)
           IDENTIFIER
-            PsiElement(DLanguageTokenType.ID)('B')
-      PsiElement(DLanguageTokenType.;)(';')
+            PsiElement(DlangTokenType.ID)('B')
+      PsiElement(DlangTokenType.;)(';')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
       DLanguageTypeImpl(TYPE)
@@ -42,12 +42,12 @@ D Language File
             DLanguageIdentifierOrTemplateChainImpl(IDENTIFIER_OR_TEMPLATE_CHAIN)
               DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
                 IDENTIFIER
-                  PsiElement(DLanguageTokenType.ID)('Foo')
+                  PsiElement(DlangTokenType.ID)('Foo')
       DECLARATOR
         IDENTIFIER
-          PsiElement(DLanguageTokenType.ID)('f1')
-      PsiElement(DLanguageTokenType.;)(';')
-  PsiComment(DLanguageTokenType.LINE_COMMENT)('// error, could be either A.Foo or B.Foo')
+          PsiElement(DlangTokenType.ID)('f1')
+      PsiElement(DlangTokenType.;)(';')
+  PsiComment(DlangTokenType.LINE_COMMENT)('// error, could be either A.Foo or B.Foo')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
       DLanguageTypeImpl(TYPE)
@@ -56,13 +56,13 @@ D Language File
             DLanguageIdentifierOrTemplateChainImpl(IDENTIFIER_OR_TEMPLATE_CHAIN)
               DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
                 IDENTIFIER
-                  PsiElement(DLanguageTokenType.ID)('B')
-              PsiElement(DLanguageTokenType..)('.')
+                  PsiElement(DlangTokenType.ID)('B')
+              PsiElement(DlangTokenType..)('.')
               DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
                 IDENTIFIER
-                  PsiElement(DLanguageTokenType.ID)('Foo')
+                  PsiElement(DlangTokenType.ID)('Foo')
       DECLARATOR
         IDENTIFIER
-          PsiElement(DLanguageTokenType.ID)('f2')
-      PsiElement(DLanguageTokenType.;)(';')
-  PsiComment(DLanguageTokenType.LINE_COMMENT)('// ok')
+          PsiElement(DlangTokenType.ID)('f2')
+      PsiElement(DlangTokenType.;)(';')
+  PsiComment(DlangTokenType.LINE_COMMENT)('// ok')

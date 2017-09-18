@@ -63,7 +63,7 @@ public class DFoldingBuilder extends FoldingBuilderEx implements DumbAware {
 //            if (count == 0) {
 //                imports.add(importer);
 //            } else {
-//                // only add the next one if the previous one was also an singleImport
+//                // only add the next one if the previous one was also an import
 //                if (importer.getPrevSibling().getPrevSibling() instanceof DDeclarationImport) {
 //                    imports.add(importer);
 //                }

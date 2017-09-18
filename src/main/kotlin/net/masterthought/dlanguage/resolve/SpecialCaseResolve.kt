@@ -78,9 +78,9 @@ object SpecialCaseResolve {
         return Sets.newHashSet(DModuleIndex.getFilesByModuleName(path.project, path.text, GlobalSearchScope.allScope(path.project)))
     }
 
-    private fun resolveScopedSymbol(singleImport: SingleImport, scope: String, project: Project): Set<PsiNamedElement> {
-        val res = DTopLevelDeclarationIndex.getTopLevelSymbols(scope, singleImport.importedModuleName, project)
-        for (publicImport in DPublicImportIndex.recursivelyGetAllPublicImports(singleImport)) {
+    private fun resolveScopedSymbol(import: SingleImport, scope: String, project: Project): Set<PsiNamedElement> {
+        val res = DTopLevelDeclarationIndex.getTopLevelSymbols(scope, import.importedModuleName, project)
+        for (publicImport in DPublicImportIndex.recursivelyGetAllPublicImports(import)) {
             res.addAll(DTopLevelDeclarationIndex.getTopLevelSymbols(scope, publicImport.importedModuleName, project))
         }
         return res

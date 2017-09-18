@@ -1,6 +1,6 @@
 KEYWORD ('class')
 WHITE_SPACE (' ')
-DLanguageTokenType.ID ('Apple')
+DlangTokenType.ID ('Apple')
 PARENTHESES_LEFT ('(')
 PARENTHESES_RIGHT (')')
 BRACES_LEFT ('{')
