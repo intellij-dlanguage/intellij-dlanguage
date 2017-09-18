@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.psi.DLanguageType;
 import net.masterthought.dlanguage.psi.DLanguageTypeSpecialization;
-import net.masterthought.dlanguage.psi.DLanguageVisitor;
+import net.masterthought.dlanguage.psi.DlangVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,12 +19,12 @@ public class DLanguageTypeSpecializationImpl extends ASTWrapperPsiElement implem
         super(node);
     }
 
-    public void accept(@NotNull DLanguageVisitor visitor) {
+    public void accept(@NotNull DlangVisitor visitor) {
         visitor.visitTypeSpecialization(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor) visitor);
+        if (visitor instanceof DlangVisitor) accept((DlangVisitor) visitor);
         else super.accept(visitor);
     }
 

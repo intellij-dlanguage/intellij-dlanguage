@@ -6,27 +6,28 @@ import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.psi.DLanguageBlockStatement;
 import net.masterthought.dlanguage.psi.DLanguageUnittest;
-import net.masterthought.dlanguage.psi.DLanguageVisitor;
-import net.masterthought.dlanguage.stubs.interfaces.DLanguageUnittestStub;
+import net.masterthought.dlanguage.psi.DlangVisitor;
+import net.masterthought.dlanguage.stubs.interfaces.DlangUnittestStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 
-public class DLanguageUnittestImpl extends DStubbedPsiElementBase<DLanguageUnittestStub> implements DLanguageUnittest {
-    public DLanguageUnittestImpl(final ASTNode node) {
+public class DlangUnittestImpl extends DStubbedPsiElementBase<DlangUnittestStub> implements DLanguageUnittest {
+
+    public DlangUnittestImpl(final ASTNode node) {
         super(node);
     }
 
-    public DLanguageUnittestImpl(final DLanguageUnittestStub stub, final IStubElementType nodeType) {
+    public DlangUnittestImpl(final DlangUnittestStub stub, final IStubElementType nodeType) {
         super(stub, nodeType);
     }
 
-    public void accept(@NotNull final DLanguageVisitor visitor) {
+    public void accept(@NotNull final DlangVisitor visitor) {
         visitor.visitUnittest(this);
     }
 
     public void accept(@NotNull final PsiElementVisitor visitor) {
-        if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor) visitor);
+        if (visitor instanceof DlangVisitor) accept((DlangVisitor) visitor);
         else super.accept(visitor);
     }
 

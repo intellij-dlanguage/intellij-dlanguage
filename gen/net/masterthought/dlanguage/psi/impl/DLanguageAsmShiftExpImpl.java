@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.psi.DLanguageAsmAddExp;
 import net.masterthought.dlanguage.psi.DLanguageAsmShiftExp;
-import net.masterthought.dlanguage.psi.DLanguageVisitor;
+import net.masterthought.dlanguage.psi.DlangVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,12 +19,12 @@ public class DLanguageAsmShiftExpImpl extends ASTWrapperPsiElement implements DL
         super(node);
     }
 
-    public void accept(@NotNull DLanguageVisitor visitor) {
+    public void accept(@NotNull DlangVisitor visitor) {
         visitor.visitAsmShiftExp(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor) visitor);
+        if (visitor instanceof DlangVisitor) accept((DlangVisitor) visitor);
         else super.accept(visitor);
     }
 

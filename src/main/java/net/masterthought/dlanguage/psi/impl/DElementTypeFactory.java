@@ -31,12 +31,12 @@ public class DElementTypeFactory {
         if (name.equals("SINGLE_IMPORT")) return new SingleImportStubElementType(name);
         if (name.equals("UNITTEST")) return new UnittestStubElementType(name);
         if (name.equals("CATCH")) return new CatchStubElementType(name);
-        if (name.equals("IF_CONDITION")) return new DLanguageIfConditionStubElementType(name);
-        if (name.equals("FOREACH_TYPE")) return new DLanguageForeachTypeStubElementType(name);
-        if (name.equals("PARAMETER")) return new DLanguageParameterStubElementType(name);
-        if (name.equals("TEMPLATE_PARAMETER")) return new DLanguageTemplateParameterStubElementType(name);
+        if (name.equals("IF_CONDITION")) return new DlangIfConditionStubElementType(name);
+        if (name.equals("FOREACH_TYPE")) return new DlangForeachTypeStubElementType(name);
+        if (name.equals("PARAMETER")) return new DlangParameterStubElementType(name);
+        if (name.equals("TEMPLATE_PARAMETER")) return new DlangTemplateParameterStubElementType(name);
         if (name.equals("EPONYMOUS_TEMPLATE_DECLARATION"))
-            return new DLanguageEponymousTemplateDeclarationStubElementType(name);
+            return new DlangEponymousTemplateDeclarationStubElementType(name);
         if (name.equals("ENUM_MEMBER")) return new DlangEnumMemberStubElementType(name);
         if (name.equals("NAMED_IMPORT_BIND")) return new DLanguageNamedImportBindStubElementType(name);
         throw new RuntimeException("Unknown element type: " + name);

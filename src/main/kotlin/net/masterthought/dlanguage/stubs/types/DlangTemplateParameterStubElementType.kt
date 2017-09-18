@@ -13,7 +13,7 @@ import java.io.IOException
 /**
  * Created by francis on 6/13/2017.
  */
-class DLanguageTemplateParameterStubElementType(debugName: String) : DNamedStubElementType<DlangTemplateParameterStub, DLanguageTemplateParameter>(debugName) {
+class DlangTemplateParameterStubElementType(debugName: String) : DNamedStubElementType<DlangTemplateParameterStub, DLanguageTemplateParameter>(debugName) {
 
     override fun createPsi(stub: DlangTemplateParameterStub): DLanguageTemplateParameter {
         return DLanguageTemplateParameterImpl(stub, this)

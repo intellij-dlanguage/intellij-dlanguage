@@ -10,7 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.psi.DLanguageDeclarationOrStatement;
 import net.masterthought.dlanguage.psi.DLanguageExpression;
 import net.masterthought.dlanguage.psi.DLanguageForStatement;
-import net.masterthought.dlanguage.psi.DLanguageVisitor;
+import net.masterthought.dlanguage.psi.DlangVisitor;
 import net.masterthought.dlanguage.resolve.ScopeProcessorImpl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -25,12 +25,12 @@ public class DLanguageForStatementImpl extends ASTWrapperPsiElement implements D
         super(node);
     }
 
-    public void accept(@NotNull DLanguageVisitor visitor) {
+    public void accept(@NotNull DlangVisitor visitor) {
         visitor.visitForStatement(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor) visitor);
+        if (visitor instanceof DlangVisitor) accept((DlangVisitor) visitor);
         else super.accept(visitor);
     }
 

@@ -6,7 +6,7 @@ import com.intellij.psi.stubs.*
 import net.masterthought.dlanguage.index.DModuleIndex
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement
 import net.masterthought.dlanguage.stubs.*
-import net.masterthought.dlanguage.stubs.interfaces.DLanguageUnittestStub
+import net.masterthought.dlanguage.stubs.interfaces.DlangUnittestStub
 import net.masterthought.dlanguage.stubs.interfaces.HasMembersStub
 import java.util.*
 
@@ -61,7 +61,7 @@ class DMembersIndex : StringStubIndexExtension<DNamedElement>() {
                 return
             }
             getParentHasMembersImpl(stub.parentStub, result)
-            if (stub.parentStub is DLanguageUnittestStub || stub.parentStub is DlangFunctionDeclarationStub || stub.parentStub is DlangConstructorStub || stub.parentStub is DlangSharedStaticConstructorStub || stub.parentStub is DlangStaticConstructorStub || stub.parentStub is DlangDestructorStub || stub.parentStub is DlangSharedStaticDestructorStub || stub.parentStub is DlangStaticDestructorStub) {
+            if (stub.parentStub is DlangUnittestStub || stub.parentStub is DlangFunctionDeclarationStub || stub.parentStub is DlangConstructorStub || stub.parentStub is DlangSharedStaticConstructorStub || stub.parentStub is DlangStaticConstructorStub || stub.parentStub is DlangDestructorStub || stub.parentStub is DlangSharedStaticDestructorStub || stub.parentStub is DlangStaticDestructorStub) {
                 result.clear()
             }
         }

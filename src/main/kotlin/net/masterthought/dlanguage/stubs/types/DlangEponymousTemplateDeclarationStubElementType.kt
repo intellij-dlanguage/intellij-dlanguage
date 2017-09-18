@@ -12,7 +12,7 @@ import java.io.IOException
 /**
  * Created by francis on 6/13/2017.
  */
-class DLanguageEponymousTemplateDeclarationStubElementType(debugName: String) : DNamedStubElementType<DlangEponymousTemplateDeclarationStub, DLanguageEponymousTemplateDeclaration>(debugName) {
+class DlangEponymousTemplateDeclarationStubElementType(debugName: String) : DNamedStubElementType<DlangEponymousTemplateDeclarationStub, DLanguageEponymousTemplateDeclaration>(debugName) {
 
     override fun createPsi(stub: DlangEponymousTemplateDeclarationStub): DLanguageEponymousTemplateDeclaration {
         return DLanguageEponymousTemplateDeclarationImpl(stub, this)

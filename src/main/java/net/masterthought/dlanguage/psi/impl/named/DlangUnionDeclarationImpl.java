@@ -26,12 +26,12 @@ public class DlangUnionDeclarationImpl extends DNamedStubbedPsiElementBase<Dlang
         super(node);
     }
 
-    public void accept(@NotNull final DLanguageVisitor visitor) {
+    public void accept(@NotNull final DlangVisitor visitor) {
         visitor.visitUnionDeclaration(this);
     }
 
     public void accept(@NotNull final PsiElementVisitor visitor) {
-        if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor) visitor);
+        if (visitor instanceof DlangVisitor) accept((DlangVisitor) visitor);
         else super.accept(visitor);
     }
 

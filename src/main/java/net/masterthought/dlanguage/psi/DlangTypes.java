@@ -803,7 +803,7 @@ public interface DlangTypes {
             } else if (type == CLASS_DECLARATION) {
                 return new DLanguageClassDeclarationImpl(node);
             } else if (type == UNITTEST) {
-                return new DLanguageUnittestImpl(node);
+                return new DlangUnittestImpl(node);
             } else if (type == INTERFACE_OR_CLASS) {
                 return new DlangInterfaceOrClassImpl(node);
             } else if (type == INTERFACE_DECLARATION) {

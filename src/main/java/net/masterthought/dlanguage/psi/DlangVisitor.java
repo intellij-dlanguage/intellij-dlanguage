@@ -11,7 +11,7 @@ import net.masterthought.dlanguage.psi.interfaces.Mixin;
 import org.jetbrains.annotations.NotNull;
 
 
-public class DLanguageVisitor extends PsiElementVisitor {
+public class DlangVisitor extends PsiElementVisitor {
 
     public void visitAliasDeclaration(@NotNull final DLanguageAliasDeclarationImpl o) {
         visitPsiElement(o);
@@ -819,7 +819,7 @@ public class DLanguageVisitor extends PsiElementVisitor {
     }
 
 
-    public void visitUnittest(final DLanguageUnittestImpl o) {
+    public void visitUnittest(final DlangUnittestImpl o) {
         visitPsiElement(o);
     }
 

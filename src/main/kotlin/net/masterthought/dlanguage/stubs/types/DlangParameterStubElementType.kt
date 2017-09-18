@@ -11,7 +11,7 @@ import java.io.IOException
 /**
  * Created by francis on 6/13/2017.
  */
-class DLanguageParameterStubElementType(debugName: String) : DNamedStubElementType<DlangParameterStub, DLanguageParameter>(debugName) {
+class DlangParameterStubElementType(debugName: String) : DNamedStubElementType<DlangParameterStub, DLanguageParameter>(debugName) {
 
     override fun createPsi(stub: DlangParameterStub): DLanguageParameter {
         return DLanguageParameterImpl(stub, this)

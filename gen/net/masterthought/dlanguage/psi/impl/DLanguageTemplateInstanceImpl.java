@@ -7,7 +7,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.psi.DlangIdentifier;
 import net.masterthought.dlanguage.psi.DLanguageTemplateArguments;
 import net.masterthought.dlanguage.psi.DLanguageTemplateInstance;
-import net.masterthought.dlanguage.psi.DLanguageVisitor;
+import net.masterthought.dlanguage.psi.DlangVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,12 +17,12 @@ public class DLanguageTemplateInstanceImpl extends ASTWrapperPsiElement implemen
         super(node);
     }
 
-    public void accept(@NotNull DLanguageVisitor visitor) {
+    public void accept(@NotNull DlangVisitor visitor) {
         visitor.visitTemplateInstance(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor) visitor);
+        if (visitor instanceof DlangVisitor) accept((DlangVisitor) visitor);
         else super.accept(visitor);
     }
 

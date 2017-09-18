@@ -5,7 +5,7 @@ import com.intellij.lang.annotation.Annotator;
 import com.intellij.openapi.editor.colors.EditorColorsManager;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.psi.PsiElement;
-import net.masterthought.dlanguage.psi.DLanguageVisitor;
+import net.masterthought.dlanguage.psi.DlangVisitor;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -23,7 +23,7 @@ public class DAnnotator implements Annotator {
 
     @Override
     public void annotate(@NotNull final PsiElement element, @NotNull final AnnotationHolder holder) {
-        element.accept(new DLanguageVisitor() {
+        element.accept(new DlangVisitor() {
 //            @Override
 //            public void visitModuleFullyQualifiedName(@NotNull DLanguageModuleFullyQualifiedName o) {
 //                super.visitModuleFullyQualifiedName(o);

@@ -4,7 +4,7 @@ import com.intellij.psi.stubs.NamedStubBase
 import com.intellij.psi.stubs.StubElement
 import net.masterthought.dlanguage.psi.interfaces.DNamedElement
 import net.masterthought.dlanguage.stubs.*
-import net.masterthought.dlanguage.stubs.interfaces.DLanguageUnittestStub
+import net.masterthought.dlanguage.stubs.interfaces.DlangUnittestStub
 
 /**
  * Created by francis on 8/8/2017.
@@ -31,7 +31,7 @@ fun <S : NamedStubBase<T>, T : DNamedElement> topLevelDeclaration(stub: S): Bool
         if (stubParent is DlangConstructorStub || stubParent is DlangSharedStaticConstructorStub || stubParent is DlangStaticConstructorStub || stubParent is DlangDestructorStub || stubParent is DlangSharedStaticDestructorStub || stubParent is DlangStaticDestructorStub) {
             return false
         }
-        if (stubParent is DLanguageUnittestStub) {
+        if (stubParent is DlangUnittestStub) {
             return false
         }
     }

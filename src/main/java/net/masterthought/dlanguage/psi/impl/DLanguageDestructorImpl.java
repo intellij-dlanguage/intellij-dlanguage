@@ -8,7 +8,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.psi.DLanguageDestructor;
 import net.masterthought.dlanguage.psi.DLanguageFunctionBody;
 import net.masterthought.dlanguage.psi.DLanguageMemberFunctionAttribute;
-import net.masterthought.dlanguage.psi.DLanguageVisitor;
+import net.masterthought.dlanguage.psi.DlangVisitor;
 import net.masterthought.dlanguage.stubs.DlangDestructorStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -28,12 +28,12 @@ public class DLanguageDestructorImpl extends DStubbedPsiElementBase<DlangDestruc
 
     }
 
-    public void accept(@NotNull final DLanguageVisitor visitor) {
+    public void accept(@NotNull final DlangVisitor visitor) {
         visitor.visitDestructor(this);
     }
 
     public void accept(@NotNull final PsiElementVisitor visitor) {
-        if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor) visitor);
+        if (visitor instanceof DlangVisitor) accept((DlangVisitor) visitor);
         else super.accept(visitor);
     }
 

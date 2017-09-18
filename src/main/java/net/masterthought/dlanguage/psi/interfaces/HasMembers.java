@@ -9,7 +9,7 @@ import net.masterthought.dlanguage.psi.DlangFile;
 import net.masterthought.dlanguage.psi.DLanguageSharedStaticConstructor;
 import net.masterthought.dlanguage.psi.DLanguageSharedStaticDestructor;
 import net.masterthought.dlanguage.stubs.*;
-import net.masterthought.dlanguage.stubs.interfaces.DLanguageUnittestStub;
+import net.masterthought.dlanguage.stubs.interfaces.DlangUnittestStub;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -30,7 +30,7 @@ public interface HasMembers<T extends StubElement> extends StubBasedPsiElement<T
             if (childStub instanceof NamedStubBase && !(childStub instanceof DlangIdentifierStub)) {
                 result.add((NamedStubBase) childStub);
             }
-            if (childStub instanceof DLanguageUnittestStub || (childStub instanceof DlangDestructorStub) || (childStub instanceof DlangStaticDestructorStub) || (childStub instanceof DLanguageSharedStaticDestructor) || (childStub instanceof DlangConstructorStub) || (childStub instanceof DlangStaticConstructorStub) || (childStub instanceof DLanguageSharedStaticConstructor) || (childStub instanceof DlangFunctionDeclarationStub) || (childStub instanceof DlangIdentifierStub)) {
+            if (childStub instanceof DlangUnittestStub || (childStub instanceof DlangDestructorStub) || (childStub instanceof DlangStaticDestructorStub) || (childStub instanceof DLanguageSharedStaticDestructor) || (childStub instanceof DlangConstructorStub) || (childStub instanceof DlangStaticConstructorStub) || (childStub instanceof DLanguageSharedStaticConstructor) || (childStub instanceof DlangFunctionDeclarationStub) || (childStub instanceof DlangIdentifierStub)) {
             } else {
                 getMembersImpl(childStub, result);
             }

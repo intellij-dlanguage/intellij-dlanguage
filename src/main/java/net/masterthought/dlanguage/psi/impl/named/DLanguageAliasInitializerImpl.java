@@ -19,8 +19,9 @@ import java.util.List;
 import static net.masterthought.dlanguage.psi.DlangTypes.OP_COMMA;
 
 public class DLanguageAliasInitializerImpl extends DNamedStubbedPsiElementBase<DlangAliasInitializerStub> implements DLanguageAliasInitializer {
-//todo doesn't cover all alias declarations possible
-public DLanguageAliasInitializerImpl(final DlangAliasInitializerStub stub, final IStubElementType type) {
+
+    //todo doesn't cover all alias declarations possible
+    public DLanguageAliasInitializerImpl(final DlangAliasInitializerStub stub, final IStubElementType type) {
         super(stub, type);
     }
 
@@ -28,12 +29,12 @@ public DLanguageAliasInitializerImpl(final DlangAliasInitializerStub stub, final
         super(node);
     }
 
-    public void accept(@NotNull final DLanguageVisitor visitor) {
+    public void accept(@NotNull final DlangVisitor visitor) {
         visitor.visitAliasInitializer(this);
     }
 
     public void accept(@NotNull final PsiElementVisitor visitor) {
-        if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor) visitor);
+        if (visitor instanceof DlangVisitor) accept((DlangVisitor) visitor);
         else super.accept(visitor);
     }
 

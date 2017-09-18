@@ -6,5 +6,5 @@ import net.masterthought.dlanguage.psi.DLanguageUnittest;
 /**
  * Created by francis on 4/8/2017.
  */
-public interface DLanguageUnittestStub extends StubElement<DLanguageUnittest> {
+public interface DlangUnittestStub extends StubElement<DLanguageUnittest> {
 }

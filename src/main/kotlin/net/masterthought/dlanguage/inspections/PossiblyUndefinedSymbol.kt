@@ -5,7 +5,7 @@ import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.psi.PsiElementVisitor
 import net.masterthought.dlanguage.DlangBundle
-import net.masterthought.dlanguage.psi.DLanguageVisitor
+import net.masterthought.dlanguage.psi.DlangVisitor
 import net.masterthought.dlanguage.psi.impl.named.DlangIdentifierImpl
 import net.masterthought.dlanguage.resolve.DResolveUtil
 import net.masterthought.dlanguage.utils.Identifier
@@ -24,7 +24,7 @@ fun symbolIsDefinedByDefault(identifier: Identifier): Boolean {
 }
 
 class PossiblyUndefinedSymbol : LocalInspectionTool() {
-    class UndefinedSymbolVisitor(val holder: ProblemsHolder) : DLanguageVisitor() {
+    class UndefinedSymbolVisitor(val holder: ProblemsHolder) : DlangVisitor() {
 
         val log: Logger = Logger.getInstance(this::class.java)
         override fun visitIdentifier(identifier: DlangIdentifierImpl?) {

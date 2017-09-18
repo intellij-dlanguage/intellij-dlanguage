@@ -7,7 +7,7 @@ import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import net.masterthought.dlanguage.psi.DlangIdentifier;
 import net.masterthought.dlanguage.psi.DLanguageNamedImportBind;
-import net.masterthought.dlanguage.psi.DLanguageVisitor;
+import net.masterthought.dlanguage.psi.DlangVisitor;
 import net.masterthought.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import net.masterthought.dlanguage.stubs.DlangNamedImportBindStub;
 import org.jetbrains.annotations.NotNull;
@@ -26,12 +26,12 @@ public class DLanguageNamedImportBindImpl extends DNamedStubbedPsiElementBase<Dl
         super(node);
     }
 
-    public void accept(@NotNull final DLanguageVisitor visitor) {
+    public void accept(@NotNull final DlangVisitor visitor) {
         visitor.visitNamedImportBind(this);
     }
 
     public void accept(@NotNull final PsiElementVisitor visitor) {
-        if (visitor instanceof DLanguageVisitor) accept((DLanguageVisitor) visitor);
+        if (visitor instanceof DlangVisitor) accept((DlangVisitor) visitor);
         else super.accept(visitor);
     }
 
