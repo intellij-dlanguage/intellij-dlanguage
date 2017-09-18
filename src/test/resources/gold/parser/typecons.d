@@ -3510,7 +3510,7 @@ Note:
 
 Generated code is inserted in the scope of $(D std.typecons) module.  Thus,
 any useful functions outside $(D std.typecons) cannot be used in the generated
-code.  To workaround this problem, you may $(D singleImport) necessary things in a
+code.  To workaround this problem, you may $(D import) necessary things in a
 local struct, as done in the $(D generateLogger()) template in the above
 example.
 

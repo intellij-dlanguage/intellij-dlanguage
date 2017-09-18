@@ -18,12 +18,12 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class DlangHighlightingLexerTestBase extends LexerTestCase {
+public abstract class DlangHighlightingLexerTestBase extends LexerTestCase {
 
     private final String srcPath = getDirPath() + File.separator + "highlighting";
     private final String myExpectPath;
 
-    public DlangHighlightingLexerTestBase(final String expectPath) {
+    DlangHighlightingLexerTestBase(final String expectPath) {
         super();
         myExpectPath = getDirPath() + File.separator + expectPath;
     }

@@ -18,7 +18,7 @@ import java.io.File
 import java.io.IOException
 import java.net.URISyntaxException
 
-open class DlangLexerTestBase(expectPath: String) : LexerTestCase() {
+open abstract class DlangLexerTestBase(expectPath: String) : LexerTestCase() {
 
     private val srcPath = dirPath + File.separator + "lexer"
     private val myExpectPath: String

@@ -371,7 +371,7 @@ template packageName(alias T)
     static assert(packageName!packageName == "std");      // symbol in this module
     static assert(packageName!(std.array) == "std");  // other module from same package
 
-    import core.sync.barrier;  // local singleImport
+    import core.sync.barrier;  // local import
     static assert(packageName!core == "core");
     static assert(packageName!(core.sync) == "core.sync");
     static assert(packageName!Barrier == "core.sync");
@@ -382,7 +382,7 @@ template packageName(alias T)
 
 version (none) version(unittest) //Please uncomment me when changing packageName to test global imports
 {
-    import core.sync.barrier;  // global singleImport
+    import core.sync.barrier;  // global import
     static assert(packageName!core == "core");
     static assert(packageName!(core.sync) == "core.sync");
     static assert(packageName!Barrier == "core.sync");
@@ -427,7 +427,7 @@ template moduleName(alias T)
     static assert(moduleName!(std.array) == "std.array");      // other module
     static assert(moduleName!(std.array.array) == "std.array");  // symbol in other module
 
-    import core.sync.barrier;  // local singleImport
+    import core.sync.barrier;  // local import
     static assert(!__traits(compiles, moduleName!(core.sync)));
     static assert(moduleName!(core.sync.barrier) == "core.sync.barrier");
     static assert(moduleName!Barrier == "core.sync.barrier");
@@ -438,7 +438,7 @@ template moduleName(alias T)
 
 version (none) version(unittest) //Please uncomment me when changing moduleName to test global imports
 {
-    import core.sync.barrier;  // global singleImport
+    import core.sync.barrier;  // global import
     static assert(!__traits(compiles, moduleName!(core.sync)));
     static assert(moduleName!(core.sync.barrier) == "core.sync.barrier");
     static assert(moduleName!Barrier == "core.sync.barrier");
