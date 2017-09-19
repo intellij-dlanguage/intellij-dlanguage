@@ -1,1 +1,1 @@
-module net.masterthought.dlanguage;
+module my.test.project;

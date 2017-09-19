@@ -27,7 +27,7 @@ package uk.co.cwspencer.ideagdb.debug;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.xdebugger.frame.XExecutionStack;
 import com.intellij.xdebugger.frame.XStackFrame;
-import net.masterthought.dlanguage.icons.DlangIcons;
+import io.github.intellij.dlanguage.icons.DlangIcons;
 import org.jetbrains.annotations.Nullable;
 import uk.co.cwspencer.gdb.Gdb;
 import uk.co.cwspencer.gdb.messages.*;

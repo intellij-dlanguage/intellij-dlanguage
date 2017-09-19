@@ -107,7 +107,7 @@ allprojects {
 
     task testCompilation(type: Test, group: 'Verification', dependsOn: [classes, testClasses]) {
         useJUnit {
-            include 'net/masterthought/dlanguage/build/**'
+            include 'io/github/intellij/dlanguage/build/**'
         }
         testLogging {
             exceptionFormat = 'full'

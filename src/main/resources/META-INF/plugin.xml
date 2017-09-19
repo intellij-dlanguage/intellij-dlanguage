@@ -12,7 +12,11 @@
     ]]></description>
 
     <change-notes><![CDATA[
-        <b>v1.13.1</b><br/>
+        <b>v1.14</b><br/>
+        <ul>
+            <li>GDB support</li>
+        </ul>
+        <b>v1.13.2</b><br/>
         <ul>
             <li>Compatibility IntelliJ 2017.3</li>
             <li>Bug fixes on Windows</li>
@@ -31,117 +35,117 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
-        <stubElementTypeHolder class="net.masterthought.dlanguage.psi.DlangTypes"/>
-        <fileTypeFactory implementation="net.masterthought.dlanguage.DlangFileTypeFactory"/>
-        <lang.parserDefinition language="D" implementationClass="net.masterthought.dlanguage.DLangParserDefinition"/>
-        <lang.syntaxHighlighterFactory language="D" implementationClass="net.masterthought.dlanguage.highlighting.DHighlighterFactory"/>
-        <colorSettingsPage implementation="net.masterthought.dlanguage.settings.DColorSettingsPage"/>
-        <annotator language="D" implementationClass="net.masterthought.dlanguage.highlighting.annotation.DAnnotator"/>
+        <stubElementTypeHolder class="io.github.intellij.dlanguage.psi.DlangTypes"/>
+        <fileTypeFactory implementation="io.github.intellij.dlanguage.DlangFileTypeFactory"/>
+        <lang.parserDefinition language="D" implementationClass="io.github.intellij.dlanguage.DLangParserDefinition"/>
+        <lang.syntaxHighlighterFactory language="D" implementationClass="io.github.intellij.dlanguage.highlighting.DHighlighterFactory"/>
+        <colorSettingsPage implementation="io.github.intellij.dlanguage.settings.DColorSettingsPage"/>
+        <annotator language="D" implementationClass="io.github.intellij.dlanguage.highlighting.annotation.DAnnotator"/>
         <externalAnnotator language="D"
-                           implementationClass="net.masterthought.dlanguage.highlighting.annotation.external.DExternalAnnotator"/>
+                           implementationClass="io.github.intellij.dlanguage.highlighting.annotation.external.DExternalAnnotator"/>
         <lang.documentationProvider language="D"
-                                    implementationClass="net.masterthought.dlanguage.features.DDocumentationProvider"/>
+                                    implementationClass="io.github.intellij.dlanguage.features.DDocumentationProvider"/>
         <!-- Refactoring -->
 
         <lang.refactoringSupport language="D"
-                                 implementationClass="net.masterthought.dlanguage.refactoring.DRefactoringSupportProvider"/>
+                                 implementationClass="io.github.intellij.dlanguage.refactoring.DRefactoringSupportProvider"/>
 
 
         <!-- D Language support -->
-        <sdkType implementation="net.masterthought.dlanguage.DlangSdkType"/>
-        <runConfigurationProducer implementation="net.masterthought.dlanguage.run.DlangRunDubConfigurationProducer"/>
+        <sdkType implementation="io.github.intellij.dlanguage.DlangSdkType"/>
+        <runConfigurationProducer implementation="io.github.intellij.dlanguage.run.DlangRunDubConfigurationProducer"/>
 
         <!-- project open and import -->
-        <projectImportProvider implementation="net.masterthought.dlanguage.project.DubProjectImportProvider"/>
-        <projectImportBuilder implementation="net.masterthought.dlanguage.project.DubProjectImportBuilder"/>
-        <!--<projectOpenProcessor id="DubProjectOpenProcessor" implementation="net.masterthought.dlanguage.project.DubProjectOpenProcessor"/>-->
+        <projectImportProvider implementation="io.github.intellij.dlanguage.project.DubProjectImportProvider"/>
+        <projectImportBuilder implementation="io.github.intellij.dlanguage.project.DubProjectImportBuilder"/>
+        <!--<projectOpenProcessor id="DubProjectOpenProcessor" implementation="io.github.intellij.dlanguage.project.DubProjectOpenProcessor"/>-->
 
         <!-- module -->
         <internalFileTemplate name="D Language Module"/>
-        <moduleType id="DLANGUAGE_MODULE" implementationClass="net.masterthought.dlanguage.module.DlangModuleType"/>
+        <moduleType id="DLANGUAGE_MODULE" implementationClass="io.github.intellij.dlanguage.module.DlangModuleType"/>
 
 
-        <configurationType implementation="net.masterthought.dlanguage.run.DlangRunDubConfigurationType"/>
-        <programRunner implementation="net.masterthought.dlanguage.run.DubBuildRunner"/>
+        <configurationType implementation="io.github.intellij.dlanguage.run.DlangRunDubConfigurationType"/>
+        <programRunner implementation="io.github.intellij.dlanguage.run.DubBuildRunner"/>
 
-        <configurationType implementation="net.masterthought.dlanguage.run.DlangRunDmdConfigurationType"/>
-        <programRunner implementation="net.masterthought.dlanguage.run.DmdBuildRunner"/>
+        <configurationType implementation="io.github.intellij.dlanguage.run.DlangRunDmdConfigurationType"/>
+        <programRunner implementation="io.github.intellij.dlanguage.run.DmdBuildRunner"/>
 
-        <configurationType implementation="net.masterthought.dlanguage.run.DlangRunAppConfigurationType"/>
-        <programRunner implementation="net.masterthought.dlanguage.run.RunAppRunner"/>
+        <configurationType implementation="io.github.intellij.dlanguage.run.DlangRunAppConfigurationType"/>
+        <programRunner implementation="io.github.intellij.dlanguage.run.RunAppRunner"/>
 
 
         <moduleBuilder id="DLangModuleBuilder"
-                       builderClass="net.masterthought.dlanguage.module.DlangModuleBuilder"/>
+                       builderClass="io.github.intellij.dlanguage.module.DlangModuleBuilder"/>
         <moduleBuilder id="DLangDubModuleBuilder"
-                       builderClass="net.masterthought.dlanguage.module.DlangDubModuleBuilder"/>
+                       builderClass="io.github.intellij.dlanguage.module.DlangDubModuleBuilder"/>
         <moduleConfigurationEditorProvider
-            implementation="net.masterthought.dlanguage.module.DlangModuleEditorsProvider"/>
+            implementation="io.github.intellij.dlanguage.module.DlangModuleEditorsProvider"/>
 
         <!-- library -->
-        <library.type implementation="net.masterthought.dlanguage.library.DlangLibraryType"/>
-        <orderRootType implementation="net.masterthought.dlanguage.library.LibFileRootType" id="LIBRARY_FILE"
+        <library.type implementation="io.github.intellij.dlanguage.library.DlangLibraryType"/>
+        <orderRootType implementation="io.github.intellij.dlanguage.library.LibFileRootType" id="LIBRARY_FILE"
                        order="FIRST"/>
         <OrderRootTypeUI key="LIBRARY_FILE"
-                         implementationClass="net.masterthought.dlanguage.library.LibFileRootTypeUIFactory"/>
+                         implementationClass="io.github.intellij.dlanguage.library.LibFileRootTypeUIFactory"/>
 
         <!-- Indexes -->
-        <fileBasedIndex implementation="net.masterthought.dlanguage.index.DModuleIndex"/>
-        <stubIndex implementation="net.masterthought.dlanguage.stubs.index.DAllNameIndex"/>
-        <stubIndex implementation="net.masterthought.dlanguage.stubs.index.DTopLevelDeclarationIndex"/>
-        <stubIndex implementation="net.masterthought.dlanguage.stubs.index.DModuleDeclarationIndex"/>
-        <stubIndex implementation="net.masterthought.dlanguage.stubs.index.DTopLevelDeclarationsByModule"/>
-        <stubIndex implementation="net.masterthought.dlanguage.stubs.index.DPublicImportIndex"/>
-        <stubIndex implementation="net.masterthought.dlanguage.stubs.index.DMembersIndex"/>
-        <gotoSymbolContributor implementation="net.masterthought.dlanguage.features.DChooseByNameContributor"/>
-        <gotoClassContributor implementation="net.masterthought.dlanguage.features.DClassContributor"/>
+        <fileBasedIndex implementation="io.github.intellij.dlanguage.index.DModuleIndex"/>
+        <stubIndex implementation="io.github.intellij.dlanguage.stubs.index.DAllNameIndex"/>
+        <stubIndex implementation="io.github.intellij.dlanguage.stubs.index.DTopLevelDeclarationIndex"/>
+        <stubIndex implementation="io.github.intellij.dlanguage.stubs.index.DModuleDeclarationIndex"/>
+        <stubIndex implementation="io.github.intellij.dlanguage.stubs.index.DTopLevelDeclarationsByModule"/>
+        <stubIndex implementation="io.github.intellij.dlanguage.stubs.index.DPublicImportIndex"/>
+        <stubIndex implementation="io.github.intellij.dlanguage.stubs.index.DMembersIndex"/>
+        <gotoSymbolContributor implementation="io.github.intellij.dlanguage.features.DChooseByNameContributor"/>
+        <gotoClassContributor implementation="io.github.intellij.dlanguage.features.DClassContributor"/>
         <!-- Project settings -->
 
         <!-- Tab under compiler in IntelliJ -> Preferences -->
-        <!--<projectConfigurable instance="net.masterthought.dlanguage.DLanguageCompilerConfigurable"-->
+        <!--<projectConfigurable instance="io.github.intellij.dlanguage.DLanguageCompilerConfigurable"-->
         <!--parentId="project.propCompiler" id="DMD compiler"-->
         <!--displayName="DMD Compiler"/>-->
         <!-- Persistent data + build server communication for compiler settings -->
-        <projectService serviceImplementation="net.masterthought.dlanguage.settings.DLanguageBuildSettings"/>
+        <projectService serviceImplementation="io.github.intellij.dlanguage.settings.DLanguageBuildSettings"/>
         <!-- Tab in IntelliJ -> Preferences -->
-        <projectConfigurable instance="net.masterthought.dlanguage.settings.DLanguageToolsConfigurable"/>
+        <projectConfigurable instance="io.github.intellij.dlanguage.settings.DLanguageToolsConfigurable"/>
         <!-- File -> Project Structure dialogue. -->
-        <!--<moduleConfigurationEditorProvider implementation="net.masterthought.dlanguage.settings.DLanguageModuleConfigurationEditor" order="first"/>-->
+        <!--<moduleConfigurationEditorProvider implementation="io.github.intellij.dlanguage.settings.DLanguageModuleConfigurationEditor" order="first"/>-->
         <!-- Tab in IntelliJ -> Preferences -->
 
         <!-- References/navigation -->
-        <psi.referenceContributor implementation="net.masterthought.dlanguage.psi.references.DReferenceContributor"/>
+        <psi.referenceContributor implementation="io.github.intellij.dlanguage.psi.references.DReferenceContributor"/>
         <lang.findUsagesProvider language="D"
-                                 implementationClass="net.masterthought.dlanguage.codeinsight.DFindUsagesProvider"/>
+                                 implementationClass="io.github.intellij.dlanguage.codeinsight.DFindUsagesProvider"/>
 
         <!-- Editing utils -->
-        <lang.braceMatcher language="D" implementationClass="net.masterthought.dlanguage.features.DBraceMatcher"/>
-        <lang.commenter language="D" implementationClass="net.masterthought.dlanguage.features.DCommenter"/>
-        <lang.foldingBuilder language="D" implementationClass="net.masterthought.dlanguage.features.DFoldingBuilder"/>
+        <lang.braceMatcher language="D" implementationClass="io.github.intellij.dlanguage.features.DBraceMatcher"/>
+        <lang.commenter language="D" implementationClass="io.github.intellij.dlanguage.features.DCommenter"/>
+        <lang.foldingBuilder language="D" implementationClass="io.github.intellij.dlanguage.features.DFoldingBuilder"/>
         <completion.contributor language="D"
-                                implementationClass="net.masterthought.dlanguage.codeinsight.DCompletionContributor"/>
+                                implementationClass="io.github.intellij.dlanguage.codeinsight.DCompletionContributor"/>
         <!--  <completion.contributor language="D"
-                                  implementationClass="net.masterthought.dlanguage.codeinsight.DCompletionContributorImports"/>-->
+                                  implementationClass="io.github.intellij.dlanguage.codeinsight.DCompletionContributorImports"/>-->
 
 
         <!--formatter-->
-        <!--&lt;!&ndash;<lang.formatter language="D" implementationClass="net.masterthought.dlanguage.features.formatter.DFormattingModelBuilder"/>&ndash;&gt;re-enable when formatting with syntax errors improves-->
-        <codeStyleSettingsProvider implementation="net.masterthought.dlanguage.features.formatter.settings.DCodeStyleSettingsProvider"/>
-        <langCodeStyleSettingsProvider implementation="net.masterthought.dlanguage.features.formatter.settings.DLanguageCodeStyleSettingsProvider"/>
+        <!--&lt;!&ndash;<lang.formatter language="D" implementationClass="io.github.intellij.dlanguage.features.formatter.DFormattingModelBuilder"/>&ndash;&gt;re-enable when formatting with syntax errors improves-->
+        <codeStyleSettingsProvider implementation="io.github.intellij.dlanguage.features.formatter.settings.DCodeStyleSettingsProvider"/>
+        <langCodeStyleSettingsProvider implementation="io.github.intellij.dlanguage.features.formatter.settings.DLanguageCodeStyleSettingsProvider"/>
 
         <!-- dunit support -->
-        <configurationType implementation="net.masterthought.dlanguage.unittest.DUnitTestRunConfigurationType"/>
-        <runConfigurationProducer implementation="net.masterthought.dlanguage.unittest.DUnitTestRunConfigurationProducer"/>
-        <programRunner implementation="net.masterthought.dlanguage.unittest.DUnitTestProgramRunner"/>
-        <!--<testFramework implementation="net.masterthought.dlanguage.unittest.DUnitTestFramework"/>-->
-        <!--<testFinder implementation="net.masterthought.dlanguage.unittest.DUnitTestFinder"/>-->
-        <!--<consoleFilterProvider implementation="net.masterthought.dlanguage.unittest.DStackTraceFilter"/>-->
-        <!--<analyzeStacktraceFilter implementation="net.masterthought.dlanguage.unittest.DStackTraceFilter"/>-->
+        <configurationType implementation="io.github.intellij.dlanguage.unittest.DUnitTestRunConfigurationType"/>
+        <runConfigurationProducer implementation="io.github.intellij.dlanguage.unittest.DUnitTestRunConfigurationProducer"/>
+        <programRunner implementation="io.github.intellij.dlanguage.unittest.DUnitTestProgramRunner"/>
+        <!--<testFramework implementation="io.github.intellij.dlanguage.unittest.DUnitTestFramework"/>-->
+        <!--<testFinder implementation="io.github.intellij.dlanguage.unittest.DUnitTestFinder"/>-->
+        <!--<consoleFilterProvider implementation="io.github.intellij.dlanguage.unittest.DStackTraceFilter"/>-->
+        <!--<analyzeStacktraceFilter implementation="io.github.intellij.dlanguage.unittest.DStackTraceFilter"/>-->
 
         <!--inspections-->
         <localInspection language="D" shortName="PossiblyUndefinedSymbol" bundle="messages.PropertiesBundle"
                          enabledByDefault="true" level="WARNING"
-                         implementationClass="net.masterthought.dlanguage.inspections.PossiblyUndefinedSymbol"/>
+                         implementationClass="io.github.intellij.dlanguage.inspections.PossiblyUndefinedSymbol"/>
 
 
         <!--debugger-->
@@ -155,33 +159,33 @@
     </application-components>
 
     <actions>
-        <action id="DLanguage.NewDLanguageClass" class="net.masterthought.dlanguage.actions.CreateDlangClassAction"
+        <action id="DLanguage.NewDLanguageClass" class="io.github.intellij.dlanguage.actions.CreateDlangClassAction"
                 text="D Class" description="Create new D Class">
             <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFile"/>
         </action>
-        <action id="DLanguage.NewDLanguageFile" class="net.masterthought.dlanguage.actions.CreateDlangFileAction"
+        <action id="DLanguage.NewDLanguageFile" class="io.github.intellij.dlanguage.actions.CreateDlangFileAction"
                 text="D File" description="Create new D file">
             <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFile"/>
         </action>
         <action id="DLanguage.DFormat"
-                class="net.masterthought.dlanguage.actions.DFormatAction"
+                class="io.github.intellij.dlanguage.actions.DFormatAction"
                 text="Reformat code with DFormat"
                 description="Format current file with DFormat formatter">
             <add-to-group group-id="CodeFormatGroup" anchor="last"/>
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt K"/>
         </action>
         <action id="DLanguage.DFix"
-                class="net.masterthought.dlanguage.actions.DFixAction"
+                class="io.github.intellij.dlanguage.actions.DFixAction"
                 text="Fix D code with DFix"
                 description="Fix current file with DFix">
             <add-to-group group-id="CodeFormatGroup" anchor="last"/>
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt M"/>
         </action>
-        <action id="net.masterthought.dlanguage.RestartDCD" class="net.masterthought.dlanguage.actions.RestartDCD"
+        <action id="io.github.intellij.dlanguage.RestartDCD" class="io.github.intellij.dlanguage.actions.RestartDCD"
                    text="Restart DCD Server" description="Restarts the DCD server">
              <add-to-group group-id="ToolsMenu" anchor="last"/>
            </action>
-        <action id="net.masterthought.dlanguage.ProcessDLibs" class="net.masterthought.dlanguage.actions.ProcessDLibs"
+        <action id="io.github.intellij.dlanguage.ProcessDLibs" class="io.github.intellij.dlanguage.actions.ProcessDLibs"
                 text="Process D Libraries" description="Processes the D Libraries">
             <add-to-group group-id="ToolsMenu" anchor="last"/>
         </action>
@@ -189,8 +193,8 @@
 
     <module-components>
         <component>
-            <implementation-class>net.masterthought.dlanguage.codeinsight.dcd.DCDCompletionServer</implementation-class>
-            <interface-class>net.masterthought.dlanguage.codeinsight.dcd.DCDCompletionServer</interface-class>
+            <implementation-class>io.github.intellij.dlanguage.codeinsight.dcd.DCDCompletionServer</implementation-class>
+            <interface-class>io.github.intellij.dlanguage.codeinsight.dcd.DCDCompletionServer</interface-class>
         </component>
     </module-components>
 
