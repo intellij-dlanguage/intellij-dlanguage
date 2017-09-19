@@ -1059,13 +1059,13 @@ private template isInputRangeOrConvertible(E)
     {
 
         auto l = to!T("hello");
-        auto r = to!U(" ???????????????");
+        auto r = to!U(" વિશ્વ");
 
-        enforce(test(l, 0, r, " ???????????????hello"),
+        enforce(test(l, 0, r, " વિશ્વhello"),
                 new AssertError("testStr failure 1", file, line));
-        enforce(test(l, 3, r, "hel ???????????????lo"),
+        enforce(test(l, 3, r, "hel વિશ્વlo"),
                 new AssertError("testStr failure 2", file, line));
-        enforce(test(l, l.length, r, "hello ???????????????"),
+        enforce(test(l, l.length, r, "hello વિશ્વ"),
                 new AssertError("testStr failure 3", file, line));
     }
 
@@ -1395,8 +1395,8 @@ if (isSomeString!S)
             makeEntry!S("  h  e  l  l  o ", ["h", "e", "l", "l", "o"]),
             makeEntry!S("peter\t\npaul\rjerry", ["peter", "paul", "jerry"]),
             makeEntry!S(" \t\npeter paul\tjerry \n", ["peter", "paul", "jerry"]),
-            makeEntry!S("\u2000???\u202F???\u205F???\u3000", ["???", "???", "???"]),
-            makeEntry!S("???????????????????????????????????????___??????", ["?????????????????????", "___??????"])
+            makeEntry!S("\u2000日\u202F本\u205F語\u3000", ["日", "本", "語"]),
+            makeEntry!S("　　哈・郎博尔德｝　　　　___一个", ["哈・郎博尔德｝", "___一个"])
         ];
         foreach (entry; entries)
             assert(entry[0].split() == entry[1], format("got: %s, expected: %s.", entry[0].split(), entry[1]));
@@ -1783,9 +1783,9 @@ ElementEncodingType!(ElementType!RoR)[] join(RoR)(RoR ror)
 
     foreach (T; AliasSeq!(string,wstring,dstring))
     {
-        auto arr2 = "???????????????????? ?????? Unicode".to!(T);
-        auto arr = ["????????????????????", "??????", "Unicode"].to!(T[]);
-        assert(join(arr) == "??????????????????????????Unicode");
+        auto arr2 = "Здравствуй Мир Unicode".to!(T);
+        auto arr = ["Здравствуй", "Мир", "Unicode"].to!(T[]);
+        assert(join(arr) == "ЗдравствуйМирUnicode");
         foreach (S; AliasSeq!(char,wchar,dchar))
         {
             auto jarr = arr.join(to!S(' '));
@@ -1802,8 +1802,8 @@ ElementEncodingType!(ElementType!RoR)[] join(RoR)(RoR ror)
 
     foreach (T; AliasSeq!(string,wstring,dstring))
     {
-        auto arr2 = "????????????????????\u047C??????\u047CUnicode".to!(T);
-        auto arr = ["????????????????????", "??????", "Unicode"].to!(T[]);
+        auto arr2 = "Здравствуй\u047CМир\u047CUnicode".to!(T);
+        auto arr = ["Здравствуй", "Мир", "Unicode"].to!(T[]);
         foreach (S; AliasSeq!(wchar,dchar))
         {
             auto jarr = arr.join(to!S('\u047C'));
@@ -1826,7 +1826,7 @@ ElementEncodingType!(ElementType!RoR)[] join(RoR)(RoR ror)
 
     foreach (R; AliasSeq!(string, wstring, dstring))
     {
-        R word1 = "?????????";
+        R word1 = "日本語";
         R word2 = "paul";
         R word3 = "jerry";
         R[] words = [word1, word2, word3];
@@ -1843,52 +1843,52 @@ ElementEncodingType!(ElementType!RoR)[] join(RoR)(RoR ror)
 
         foreach (S; AliasSeq!(string, wstring, dstring))
         (){ // avoid slow optimizations for large functions @@@BUG@@@ 2396
-            assert(join(filteredWords, to!S(", ")) == "?????????, paul, jerry");
-            assert(join(filteredWords, to!(ElementType!S)(',')) == "?????????,paul,jerry");
-            assert(join(filteredWordsArr, to!(ElementType!(S))(',')) == "?????????,paul,jerry");
-            assert(join(filteredWordsArr, to!S(", ")) == "?????????, paul, jerry");
-            assert(join(filteredWordsArr, to!(ElementType!(S))(',')) == "?????????,paul,jerry");
-            assert(join(filteredLenWordsArr, to!S(", ")) == "?????????, paul, jerry");
-            assert(join(filter!"true"(words), to!S(", ")) == "?????????, paul, jerry");
-            assert(join(words, to!S(", ")) == "?????????, paul, jerry");
+            assert(join(filteredWords, to!S(", ")) == "日本語, paul, jerry");
+            assert(join(filteredWords, to!(ElementType!S)(',')) == "日本語,paul,jerry");
+            assert(join(filteredWordsArr, to!(ElementType!(S))(',')) == "日本語,paul,jerry");
+            assert(join(filteredWordsArr, to!S(", ")) == "日本語, paul, jerry");
+            assert(join(filteredWordsArr, to!(ElementType!(S))(',')) == "日本語,paul,jerry");
+            assert(join(filteredLenWordsArr, to!S(", ")) == "日本語, paul, jerry");
+            assert(join(filter!"true"(words), to!S(", ")) == "日本語, paul, jerry");
+            assert(join(words, to!S(", ")) == "日本語, paul, jerry");
 
-            assert(join(filteredWords, to!S("")) == "?????????pauljerry");
-            assert(join(filteredWordsArr, to!S("")) == "?????????pauljerry");
-            assert(join(filteredLenWordsArr, to!S("")) == "?????????pauljerry");
-            assert(join(filter!"true"(words), to!S("")) == "?????????pauljerry");
-            assert(join(words, to!S("")) == "?????????pauljerry");
+            assert(join(filteredWords, to!S("")) == "日本語pauljerry");
+            assert(join(filteredWordsArr, to!S("")) == "日本語pauljerry");
+            assert(join(filteredLenWordsArr, to!S("")) == "日本語pauljerry");
+            assert(join(filter!"true"(words), to!S("")) == "日本語pauljerry");
+            assert(join(words, to!S("")) == "日本語pauljerry");
 
-            assert(join(filter!"true"([word1]), to!S(", ")) == "?????????");
-            assert(join([filteredWord1], to!S(", ")) == "?????????");
-            assert(join([filteredLenWord1], to!S(", ")) == "?????????");
-            assert(join(filter!"true"([filteredWord1]), to!S(", ")) == "?????????");
-            assert(join([word1], to!S(", ")) == "?????????");
+            assert(join(filter!"true"([word1]), to!S(", ")) == "日本語");
+            assert(join([filteredWord1], to!S(", ")) == "日本語");
+            assert(join([filteredLenWord1], to!S(", ")) == "日本語");
+            assert(join(filter!"true"([filteredWord1]), to!S(", ")) == "日本語");
+            assert(join([word1], to!S(", ")) == "日本語");
 
-            assert(join(filteredWords, to!S(word1)) == "??????????????????paul?????????jerry");
-            assert(join(filteredWordsArr, to!S(word1)) == "??????????????????paul?????????jerry");
-            assert(join(filteredLenWordsArr, to!S(word1)) == "??????????????????paul?????????jerry");
-            assert(join(filter!"true"(words), to!S(word1)) == "??????????????????paul?????????jerry");
-            assert(join(words, to!S(word1)) == "??????????????????paul?????????jerry");
+            assert(join(filteredWords, to!S(word1)) == "日本語日本語paul日本語jerry");
+            assert(join(filteredWordsArr, to!S(word1)) == "日本語日本語paul日本語jerry");
+            assert(join(filteredLenWordsArr, to!S(word1)) == "日本語日本語paul日本語jerry");
+            assert(join(filter!"true"(words), to!S(word1)) == "日本語日本語paul日本語jerry");
+            assert(join(words, to!S(word1)) == "日本語日本語paul日本語jerry");
 
             auto filterComma = filter!"true"(to!S(", "));
-            assert(join(filteredWords, filterComma) == "?????????, paul, jerry");
-            assert(join(filteredWordsArr, filterComma) == "?????????, paul, jerry");
-            assert(join(filteredLenWordsArr, filterComma) == "?????????, paul, jerry");
-            assert(join(filter!"true"(words), filterComma) == "?????????, paul, jerry");
-            assert(join(words, filterComma) == "?????????, paul, jerry");
+            assert(join(filteredWords, filterComma) == "日本語, paul, jerry");
+            assert(join(filteredWordsArr, filterComma) == "日本語, paul, jerry");
+            assert(join(filteredLenWordsArr, filterComma) == "日本語, paul, jerry");
+            assert(join(filter!"true"(words), filterComma) == "日本語, paul, jerry");
+            assert(join(words, filterComma) == "日本語, paul, jerry");
         }();
 
-        assert(join(filteredWords) == "?????????pauljerry");
-        assert(join(filteredWordsArr) == "?????????pauljerry");
-        assert(join(filteredLenWordsArr) == "?????????pauljerry");
-        assert(join(filter!"true"(words)) == "?????????pauljerry");
-        assert(join(words) == "?????????pauljerry");
+        assert(join(filteredWords) == "日本語pauljerry");
+        assert(join(filteredWordsArr) == "日本語pauljerry");
+        assert(join(filteredLenWordsArr) == "日本語pauljerry");
+        assert(join(filter!"true"(words)) == "日本語pauljerry");
+        assert(join(words) == "日本語pauljerry");
 
-        assert(join(filteredWords, filter!"true"(", ")) == "?????????, paul, jerry");
-        assert(join(filteredWordsArr, filter!"true"(", ")) == "?????????, paul, jerry");
-        assert(join(filteredLenWordsArr, filter!"true"(", ")) == "?????????, paul, jerry");
-        assert(join(filter!"true"(words), filter!"true"(", ")) == "?????????, paul, jerry");
-        assert(join(words, filter!"true"(", ")) == "?????????, paul, jerry");
+        assert(join(filteredWords, filter!"true"(", ")) == "日本語, paul, jerry");
+        assert(join(filteredWordsArr, filter!"true"(", ")) == "日本語, paul, jerry");
+        assert(join(filteredLenWordsArr, filter!"true"(", ")) == "日本語, paul, jerry");
+        assert(join(filter!"true"(words), filter!"true"(", ")) == "日本語, paul, jerry");
+        assert(join(words, filter!"true"(", ")) == "日本語, paul, jerry");
 
         assert(join(filter!"true"(cast(typeof(filteredWordsArr))[]), ", ").empty);
         assert(join(cast(typeof(filteredWordsArr))[], ", ").empty);
@@ -1982,8 +1982,8 @@ if (isDynamicArray!(E[]) && isForwardRange!R1 && isForwardRange!R2
 ///
 @safe unittest
 {
-    assert("Hello W??rld".replace("o W??", "o Wo") == "Hello World");
-    assert("Hello W??rld".replace("l", "h") == "Hehho W??rhd");
+    assert("Hello Wörld".replace("o Wö", "o Wo") == "Hello World");
+    assert("Hello Wörld".replace("l", "h") == "Hehho Wörhd");
 }
 
 /++
@@ -2178,8 +2178,8 @@ T[] replace(T, Range)(T[] subject, size_t from, size_t to, Range stuff)
     testStr!(dstring, dstring)();
 
     enum s = "0123456789";
-    enum w = "???????????????????????????"w;
-    enum d = "???????????????????????????"d;
+    enum w = "⁰¹²³⁴⁵⁶⁷⁸⁹"w;
+    enum d = "⁰¹²³⁴⁵⁶⁷⁸⁹"d;
 
     assert(replace(s, 0, 0, "***") == "***0123456789");
     assert(replace(s, 10, 10, "***") == "0123456789***");
@@ -2187,17 +2187,17 @@ T[] replace(T, Range)(T[] subject, size_t from, size_t to, Range stuff)
     assert(replace(s, 0, 5, "43210") == "4321056789");
     assert(replace(s, 5, 10, "43210") == "0123443210");
 
-    assert(replace(w, 0, 0, "***"w) == "***???????????????????????????"w);
-    assert(replace(w, 10, 10, "***"w) == "???????????????????????????***"w);
-    assert(replace(w, 3, 8, "?????????"w) == "??????????????????????"w);
-    assert(replace(w, 0, 5, "????????????"w) == "???????????????????????????"w);
-    assert(replace(w, 5, 10, "????????????"w) == "????????????????????????"w);
+    assert(replace(w, 0, 0, "***"w) == "***⁰¹²³⁴⁵⁶⁷⁸⁹"w);
+    assert(replace(w, 10, 10, "***"w) == "⁰¹²³⁴⁵⁶⁷⁸⁹***"w);
+    assert(replace(w, 3, 8, "¹⁰¹²"w) == "⁰¹²¹⁰¹²⁸⁹"w);
+    assert(replace(w, 0, 5, "⁴³²¹⁰"w) == "⁴³²¹⁰⁵⁶⁷⁸⁹"w);
+    assert(replace(w, 5, 10, "⁴³²¹⁰"w) == "⁰¹²³⁴⁴³²¹⁰"w);
 
-    assert(replace(d, 0, 0, "***"d) == "***???????????????????????????"d);
-    assert(replace(d, 10, 10, "***"d) == "???????????????????????????***"d);
-    assert(replace(d, 3, 8, "?????????"d) == "??????????????????????"d);
-    assert(replace(d, 0, 5, "????????????"d) == "???????????????????????????"d);
-    assert(replace(d, 5, 10, "????????????"d) == "????????????????????????"d);
+    assert(replace(d, 0, 0, "***"d) == "***⁰¹²³⁴⁵⁶⁷⁸⁹"d);
+    assert(replace(d, 10, 10, "***"d) == "⁰¹²³⁴⁵⁶⁷⁸⁹***"d);
+    assert(replace(d, 3, 8, "¹⁰¹²"d) == "⁰¹²¹⁰¹²⁸⁹"d);
+    assert(replace(d, 0, 5, "⁴³²¹⁰"d) == "⁴³²¹⁰⁵⁶⁷⁸⁹"d);
+    assert(replace(d, 5, 10, "⁴³²¹⁰"d) == "⁰¹²³⁴⁴³²¹⁰"d);
 }
 
 /++
@@ -2466,17 +2466,17 @@ if (isDynamicArray!(E[]) &&
                               const(char[]), immutable(char[])))
         (){ // avoid slow optimizations for large functions @@@BUG@@@ 2396
             auto s = to!S("This is a foo foo list");
-            auto s2 = to!S("Th??s is a ?????? foo list");
+            auto s2 = to!S("Thüs is a ßöö foo list");
             auto from = to!T("foo");
-            auto from2 = to!T("??????");
+            auto from2 = to!T("ßöö");
             auto into = to!T("silly");
-            auto into2 = to!T("s??lly");
+            auto into2 = to!T("sälly");
 
             S r1 = replaceFirst(s, from, into);
             assert(cmp(r1, "This is a silly foo list") == 0);
 
             S r11 = replaceFirst(s2, from2, into2);
-            assert(cmp(r11, "Th??s is a s??lly foo list") == 0,
+            assert(cmp(r11, "Thüs is a sälly foo list") == 0,
                 to!string(r11) ~ " : " ~ S.stringof ~ " " ~ T.stringof);
 
             S r2 = replaceFirst(r1, from, into);
@@ -2574,17 +2574,17 @@ if (isDynamicArray!(E[]) &&
                               const(char[]), immutable(char[])))
         (){ // avoid slow optimizations for large functions @@@BUG@@@ 2396
             auto s = to!S("This is a foo foo list");
-            auto s2 = to!S("Th??s is a ?????? ?????? list");
+            auto s2 = to!S("Thüs is a ßöö ßöö list");
             auto from = to!T("foo");
-            auto from2 = to!T("??????");
+            auto from2 = to!T("ßöö");
             auto into = to!T("silly");
-            auto into2 = to!T("s??lly");
+            auto into2 = to!T("sälly");
 
             S r1 = replaceLast(s, from, into);
             assert(cmp(r1, "This is a foo silly list") == 0, to!string(r1));
 
             S r11 = replaceLast(s2, from2, into2);
-            assert(cmp(r11, "Th??s is a ?????? s??lly list") == 0,
+            assert(cmp(r11, "Thüs is a ßöö sälly list") == 0,
                 to!string(r11) ~ " : " ~ S.stringof ~ " " ~ T.stringof);
 
             S r2 = replaceLast(r1, from, into);
