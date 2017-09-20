@@ -36,10 +36,31 @@ public class DlangSdkType extends SdkType {
     private static final String SDK_TYPE_ID = "DMD2 SDK";
     private static final String SDK_NAME = "DMD v2 SDK";
 
-    @Nullable private File DEFAULT_DMD_PATH = null;
-    @Nullable private File DEFAULT_DOCUMENTATION_PATH = null;
-    @Nullable private File DEFAULT_PHOBOS_PATH = null;
-    @Nullable private File DEFAULT_DRUNTIME_PATH = null;
+    @Nullable private static File DEFAULT_DMD_PATH = null;
+    @Nullable private static File DEFAULT_DOCUMENTATION_PATH = null;
+    @Nullable private static File DEFAULT_PHOBOS_PATH = null;
+    @Nullable private static File DEFAULT_DRUNTIME_PATH = null;
+
+    static {
+        if(SystemInfo.isWindows) {
+            DEFAULT_DMD_PATH = new File("C:/D/dmd2/windows/bin/dmd.exe");
+            DEFAULT_DOCUMENTATION_PATH = new File("C:/D/dmd2/html/d");
+            DEFAULT_PHOBOS_PATH = new File("C:/D/dmd2/src/phobos");
+            DEFAULT_DRUNTIME_PATH = new File("C:/D/dmd2/src/druntime/import");
+        } else if(SystemInfo.isMac) {
+            DEFAULT_DMD_PATH = new File("/usr/local/opt/dmd"); // correct for Homebrew, standard maybe '/usr/local/bin'
+            //DEFAULT_DOCUMENTATION_PATH = new File("");
+            DEFAULT_PHOBOS_PATH = new File("/Library/D/dmd/src/phobos");
+            DEFAULT_DRUNTIME_PATH = new File("/Library/D/dmd/src/druntime/import");
+        } else if(SystemInfo.isUnix) {
+            DEFAULT_DMD_PATH = new File("/usr/bin/dmd");
+            DEFAULT_DOCUMENTATION_PATH = new File("/usr/share/dmd/html/d");
+            DEFAULT_PHOBOS_PATH = new File("/usr/include/dmd/phobos");
+            DEFAULT_DRUNTIME_PATH = new File("/usr/include/dmd/druntime/import");
+        } else {
+            LOG.warn(String.format("We didn't cater for %s", SystemInfo.getOsNameAndVersion()));
+        }
+    }
 
     private File dmdBinary = null;
 
@@ -51,25 +72,6 @@ public class DlangSdkType extends SdkType {
 
     public DlangSdkType() {
         super(SDK_TYPE_ID);
-
-        if(SystemInfo.isWindows) {
-            DEFAULT_DMD_PATH = new File("C:/D/dmd2/windows/bin/dmd.exe");
-            DEFAULT_DOCUMENTATION_PATH = new File("C:/D/dmd2/html/d");
-            DEFAULT_PHOBOS_PATH = new File("C:/D/dmd2/src/phobos");
-            DEFAULT_DRUNTIME_PATH = new File("C:/D/dmd2/src/druntime/import");
-        } else if(SystemInfo.isMac) {
-            DEFAULT_DMD_PATH = new File("/usr/local/opt/dmd"); // correct for Homebrew, standard maybe '/usr/local/bin'
-            //DEFAULT_DOCUMENTATION_PATH = new File("");
-            DEFAULT_PHOBOS_PATH = new File("/Library/D/dmd/src/phobos");
-            DEFAULT_DRUNTIME_PATH = new File("/Library/D/dmd/src/druntime/import");
-        } else if(SystemInfo.isLinux) {
-            DEFAULT_DMD_PATH = new File("/usr/bin/dmd");
-            DEFAULT_DOCUMENTATION_PATH = new File("/usr/share/dmd/html/d");
-            DEFAULT_PHOBOS_PATH = new File("/usr/include/dmd/phobos");
-            DEFAULT_DRUNTIME_PATH = new File("/usr/include/dmd/druntime/import");
-        } else {
-            LOG.warn(String.format("We didn't cater for %s", SystemInfo.getOsNameAndVersion()));
-        }
     }
 
     @NotNull
