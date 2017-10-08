@@ -1,6 +1,7 @@
 package io.github.intellij.dlanguage.psi.references
 
 import com.intellij.openapi.diagnostic.Logger
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.*
 import com.intellij.psi.search.GlobalSearchScope
@@ -8,13 +9,14 @@ import com.intellij.psi.stubs.StubIndex
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.util.IncorrectOperationException
 import io.github.intellij.dlanguage.processors.DCompletionProcessor
-import io.github.intellij.dlanguage.psi.DlangFile
 import io.github.intellij.dlanguage.psi.DLanguageFunctionDeclaration
-import io.github.intellij.dlanguage.psi.DlangIdentifier
+import io.github.intellij.dlanguage.psi.DlangFile
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
 import io.github.intellij.dlanguage.resolve.DResolveUtil
 import io.github.intellij.dlanguage.resolve.processors.basic.BasicResolve
 import io.github.intellij.dlanguage.stubs.index.DTopLevelDeclarationsByModule
+import io.github.intellij.dlanguage.utils.IdentifierChain
+import io.github.intellij.dlanguage.utils.ImportDeclaration
 import io.github.intellij.dlanguage.utils.ModuleDeclaration
 import io.github.intellij.dlanguage.utils.SingleImport
 import java.util.*
@@ -108,21 +110,52 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
 //        val startProcessors = System.currentTimeMillis()
         val project = myElement.project
         val result = Collections.synchronizedList(ArrayList<String>())
-        val completionProcessor = DCompletionProcessor()
-        PsiTreeUtil.treeWalkUp(completionProcessor, myElement, myElement.containingFile, ResolveState.initial())
-        result.addAll(completionProcessor.completions)//todo this could be more efficiently implemented
-        val decls = StubIndex.getElements(DTopLevelDeclarationsByModule.KEY, (element.containingFile as io.github.intellij.dlanguage.psi.DlangFile).moduleOrFileName, project, GlobalSearchScope.fileScope(element.containingFile), io.github.intellij.dlanguage.psi.interfaces.DNamedElement::class.java)
+        //todo a lot of these would be best implemented with a completion contributor
+        addSymbolsFromFile(result)
+        addSymbolsFromImports(project, result)
+        addDRuntimeSymbols(project, result)
+        val inImportOrModuleDeclaration: Boolean = PsiTreeUtil.getParentOfType(element, ImportDeclaration::class.java, ModuleDeclaration::class.java) != null
+        if (!inImportOrModuleDeclaration) {
+            addAllModules(result, project)
+        } else {
+            addModuleVariants(result, element)
+        }
+        addKeywords(result)
+        return result.toTypedArray()
+    }
+
+    private fun addModuleVariants(result: MutableList<String>, element: PsiNamedElement) {
+        val moduleSoFar: IdentifierChain
+        if (element is SingleImport) {
+            moduleSoFar = element.identifierChain!!
+        } else
+            moduleSoFar = element.parent as IdentifierChain
+        val moduleNameSoFar: String = moduleSoFar.text.replace(".IntellijIdeaRulezzz", "")
+        val matchingModules = StubIndex.getInstance().getAllKeys(DTopLevelDeclarationsByModule.KEY, element.project).filter { it.startsWith(moduleNameSoFar) }
+        val suggestedCompletions = matchingModules.map { it.removePrefix(moduleNameSoFar + ".") }
+        result += suggestedCompletions
+
+    }
+
+    private fun addSymbolsFromImports(project: Project, result: MutableList<String>) {
+        val decls = StubIndex.getElements(DTopLevelDeclarationsByModule.KEY, (element.containingFile as DlangFile).moduleOrFileName, project, GlobalSearchScope.fileScope(element.containingFile), DNamedElement::class.java)
         for (decl in decls) {
-            if (decl is io.github.intellij.dlanguage.psi.DLanguageFunctionDeclaration) {
+            if (decl is DLanguageFunctionDeclaration) {
                 result.add(decl.name + "(" + ")")
             } else
                 result.add(decl.name)
         }
-        val objectDotD = BasicResolve.getInstance(project).`object`
-        if (objectDotD != null) {
-            result.addAll(StubIndex.getElements(DTopLevelDeclarationsByModule.KEY, objectDotD.moduleOrFileName, project, GlobalSearchScope.fileScope(objectDotD), io.github.intellij.dlanguage.psi.interfaces.DNamedElement::class.java).map { it.name })
-        }
-        result.addAll(StubIndex.getInstance().getAllKeys(DTopLevelDeclarationsByModule.KEY, project))
+    }
+
+    private fun addSymbolsFromFile(result: MutableList<String>) {
+        val completionProcessor = DCompletionProcessor()
+        PsiTreeUtil.treeWalkUp(completionProcessor, myElement, myElement.containingFile, ResolveState.initial())
+        val elementsWithModuleNames = completionProcessor.completions
+        elementsWithModuleNames.removeAll(HashSet(StubIndex.getInstance().getAllKeys(DTopLevelDeclarationsByModule.KEY, myElement.project)))//this should be fixed in the index getSymbolsFromImports
+        result.addAll(elementsWithModuleNames)//todo this could be more efficiently implemented
+    }
+
+    private fun addKeywords(result: MutableList<String>) {
         result.add("abstract")
         result.add("alias")
         result.add("align")
@@ -234,7 +267,17 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
         result.add("__traits")
         result.add("__vector")
         result.add("__parameters")
-        return result.toTypedArray()
+    }
+
+    private fun addDRuntimeSymbols(project: Project, result: MutableList<String>) {
+        val objectDotD = BasicResolve.getInstance(project).`object`
+        if (objectDotD != null) {
+            result.addAll(StubIndex.getElements(DTopLevelDeclarationsByModule.KEY, objectDotD.moduleOrFileName, project, GlobalSearchScope.fileScope(objectDotD), DNamedElement::class.java).map { it.name })
+        }
+    }
+
+    private fun addAllModules(result: MutableList<String>, project: Project) {
+        result.addAll(StubIndex.getInstance().getAllKeys(DTopLevelDeclarationsByModule.KEY, project))
     }
 
     override fun getRangeInElement(): TextRange {

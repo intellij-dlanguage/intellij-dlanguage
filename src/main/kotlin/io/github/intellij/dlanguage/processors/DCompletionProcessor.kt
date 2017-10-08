@@ -26,7 +26,7 @@ class DCompletionProcessor : PsiScopeProcessor {
     }
 
     override fun execute(element: PsiElement, state: ResolveState): Boolean {
-        if (element is io.github.intellij.dlanguage.psi.interfaces.DNamedElement) {
+        if (element is DNamedElement) {
             if (element is FunctionDeclaration) {
                 completions.add(element.name + "(" + ")")
             } else
