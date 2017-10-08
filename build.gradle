@@ -1,3 +1,5 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
 buildscript {
     repositories {
         mavenCentral()
@@ -60,16 +62,16 @@ allprojects {
                 switch (result.resultType) {
                     case 'SUCCESS':
                     case 'PASSED':
-                        logger.lifecycle("\t✔ {}", descriptor.name)
+                        logger.info(" {} {}", Os.isFamily(Os.FAMILY_WINDOWS)? "√":"✔", descriptor.name)
                         break
                     case TestResult.ResultType.SKIPPED.name():
-                        logger.lifecycle("\t⛔ {}", descriptor.name)
+                        logger.warn(" {} {}", Os.isFamily(Os.FAMILY_WINDOWS)? "!":"⛔", descriptor.name)
                         break
                     case TestResult.ResultType.FAILURE.name():
-                        logger.lifecycle("\t✘ {}", descriptor.name)
+                        logger.error(" {} {}", Os.isFamily(Os.FAMILY_WINDOWS)? "×":"✘", descriptor.name)
                         break
                     default:
-                        logger.lifecycle("\t? {} {}", descriptor.name, result.resultType)
+                        logger.lifecycle(" ? {} {}", descriptor.name, result.resultType)
                 }
             }
 
