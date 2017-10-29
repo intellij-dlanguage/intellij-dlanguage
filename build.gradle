@@ -125,6 +125,7 @@ dependencies {
     compile group: 'org.eclipse.mylyn.github', name: "org.eclipse.egit.github.core", version: '2.1.5'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
     compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    compile 'io.sentry:sentry:1.6.1'
     testCompile 'io.kotlintest:kotlintest:2+'
 }
 

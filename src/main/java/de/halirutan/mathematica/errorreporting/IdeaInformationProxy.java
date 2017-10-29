@@ -32,12 +32,12 @@ import java.util.LinkedHashMap;
 /**
  * Collects information about the running IDEA and the error
  */
-class IdeaInformationProxy {
-    static LinkedHashMap<String, String> getKeyValuePairs(GitHubErrorBean error,
+public class IdeaInformationProxy {
+    public static LinkedHashMap<String, String> getKeyValuePairs(GitHubErrorBean error,
                                                           Application application,
                                                           ApplicationInfoEx appInfo,
                                                           ApplicationNamesInfo namesInfo) {
-        LinkedHashMap<String, String> params = new LinkedHashMap<>(21);
+        final LinkedHashMap<String, String> params = new LinkedHashMap<>(21);
 
         params.put("error.description", error.getDescription());
 

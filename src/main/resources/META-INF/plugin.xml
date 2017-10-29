@@ -35,13 +35,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
-        <errorHandler implementation="de.halirutan.mathematica.errorreporting.GitHubErrorReporter"/>
-        <stubElementTypeHolder class="net.masterthought.dlanguage.psi.DLanguageTypes"/>
-        <fileTypeFactory implementation="net.masterthought.dlanguage.DLanguageFileTypeFactory"/>
-        <lang.parserDefinition language="D" implementationClass="net.masterthought.dlanguage.DLangParserDefinition"/>
-        <lang.syntaxHighlighterFactory language="D" implementationClass="net.masterthought.dlanguage.highlighting.DHighlighterFactory"/>
-        <colorSettingsPage implementation="net.masterthought.dlanguage.settings.DColorSettingsPage"/>
-        <annotator language="D" implementationClass="net.masterthought.dlanguage.highlighting.annotation.DAnnotator"/>
+        <errorHandler implementation="io.github.intellij.dlanguage.errorreporting.ErrorReporter"/>
         <stubElementTypeHolder class="io.github.intellij.dlanguage.psi.DlangTypes"/>
         <fileTypeFactory implementation="io.github.intellij.dlanguage.DlangFileTypeFactory"/>
         <lang.parserDefinition language="D" implementationClass="io.github.intellij.dlanguage.DLangParserDefinition"/>
@@ -195,9 +189,6 @@
         <action id="io.github.intellij.dlanguage.ProcessDLibs" class="io.github.intellij.dlanguage.actions.ProcessDLibs"
                 text="Process D Libraries" description="Processes the D Libraries">
             <add-to-group group-id="ToolsMenu" anchor="last"/>
-        </action>
-        <action id="de.halirutan.mathematica.errorreporting.TriggerExceptionAction"
-                class="de.halirutan.mathematica.errorreporting.TriggerExceptionAction" text="FireArtificialException">
         </action>
     </actions>
 

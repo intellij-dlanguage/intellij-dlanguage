@@ -30,11 +30,11 @@ import java.util.Arrays;
  *
  * @author patrick (17.06.17).
  */
-class GitHubErrorBean extends ErrorBean {
+public class GitHubErrorBean extends ErrorBean {
 
     private final String myExceptionHash;
 
-    GitHubErrorBean(Throwable throwable, String lastAction) {
+    public GitHubErrorBean(final Throwable throwable, final String lastAction) {
         super(throwable, lastAction);
         final int hashCode = Arrays.hashCode(throwable.getStackTrace());
         myExceptionHash = String.valueOf(hashCode);
