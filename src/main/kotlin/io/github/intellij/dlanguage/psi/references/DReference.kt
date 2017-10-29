@@ -121,6 +121,7 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
             addModuleVariants(result, element)
         }
         addKeywords(result)
+        throw IllegalArgumentException()
         return result.toTypedArray()
     }
 

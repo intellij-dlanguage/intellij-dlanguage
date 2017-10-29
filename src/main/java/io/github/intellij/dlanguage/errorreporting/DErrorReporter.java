@@ -23,11 +23,7 @@ import java.util.LinkedHashMap;
 /**
  * Created by francis on 10/29/2017.
  */
-public class ErrorReporter extends ErrorReportSubmitter {
-
-    static {
-        Sentry.init("https://f0a6a71038a645db865befe4d197def8@sentry.io/237092");
-    }
+public class DErrorReporter extends ErrorReportSubmitter {
 
     /**
      * @return an action text to be used in Error Reporter user interface, e.g. "Report to JetBrains".
@@ -43,6 +39,11 @@ public class ErrorReporter extends ErrorReportSubmitter {
                           @Nullable final String additionalInfo,
                           @NotNull final Component parentComponent,
                           @NotNull final Consumer<SubmittedReportInfo> consumer) {
+        try {
+            Sentry.init("https://f0a6a71038a645db865befe4d197def8:0df5947c823e4c2cab13ce2ace621f21@sentry.io/237092");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         for (final IdeaLoggingEvent event : events) {
             Sentry.getContext().addExtra("Additional info:", additionalInfo);
             try {
