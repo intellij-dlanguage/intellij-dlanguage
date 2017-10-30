@@ -35,6 +35,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
+        <errorHandler implementation="io.github.intellij.dlanguage.errorreporting.DErrorReporter"/>
         <stubElementTypeHolder class="io.github.intellij.dlanguage.psi.DlangTypes"/>
         <fileTypeFactory implementation="io.github.intellij.dlanguage.DlangFileTypeFactory"/>
         <lang.parserDefinition language="D" implementationClass="io.github.intellij.dlanguage.DLangParserDefinition"/>
