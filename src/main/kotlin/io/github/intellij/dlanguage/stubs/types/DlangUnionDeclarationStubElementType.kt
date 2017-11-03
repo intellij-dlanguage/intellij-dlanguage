@@ -8,20 +8,17 @@ import io.github.intellij.dlanguage.psi.DlangUnionDeclaration
 import io.github.intellij.dlanguage.psi.impl.named.DlangUnionDeclarationImpl
 import io.github.intellij.dlanguage.stubs.DlangUnionDeclarationStub
 import io.github.intellij.dlanguage.utils.DUtil
+import io.github.intellij.dlanguage.utils.DUtil.definitionNode
 
 import java.io.IOException
 
-class DlangUnionDeclarationStubElementType(debugName: String) : io.github.intellij.dlanguage.stubs.types.DNamedStubElementType<DlangUnionDeclarationStub, io.github.intellij.dlanguage.psi.DlangUnionDeclaration>(debugName) {
+class DlangUnionDeclarationStubElementType(debugName: String) : DNamedStubElementType<DlangUnionDeclarationStub, DlangUnionDeclaration>(debugName) {
 
-    override fun createPsi(stub: DlangUnionDeclarationStub): io.github.intellij.dlanguage.psi.DlangUnionDeclaration {
-        return io.github.intellij.dlanguage.psi.impl.named.DlangUnionDeclarationImpl(stub, this)
+    override fun createPsi(stub: DlangUnionDeclarationStub): DlangUnionDeclaration {
+        return DlangUnionDeclarationImpl(stub, this)
     }
 
-    override fun shouldCreateStub(node: ASTNode?): Boolean {
-        return io.github.intellij.dlanguage.utils.DUtil.definitionNode(node!!)
-    }
-
-    override fun createStub(psi: io.github.intellij.dlanguage.psi.DlangUnionDeclaration, parentStub: StubElement<*>): DlangUnionDeclarationStub {
+    override fun createStub(psi: DlangUnionDeclaration, parentStub: StubElement<*>): DlangUnionDeclarationStub {
         return DlangUnionDeclarationStub(parentStub, this, psi.name)
     }
 

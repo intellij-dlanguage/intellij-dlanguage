@@ -17,8 +17,8 @@ import io.github.intellij.dlanguage.utils.SingleImport
 /**
  * Created by francis on 6/15/2017.
  */
-class DNameScopeProcessor(var start: Identifier, val profile: Boolean = false) : DResolveProcessor<io.github.intellij.dlanguage.psi.interfaces.DNamedElement, io.github.intellij.dlanguage.psi.interfaces.DNamedElement> {
-    override fun matches(call: io.github.intellij.dlanguage.psi.interfaces.DNamedElement, decl: io.github.intellij.dlanguage.psi.interfaces.DNamedElement): Boolean {
+class DNameScopeProcessor(var start: Identifier, val profile: Boolean = false) : DResolveProcessor<DNamedElement, DNamedElement> {
+    override fun matches(call: DNamedElement, decl: DNamedElement): Boolean {
         return true
     }
 
@@ -26,12 +26,12 @@ class DNameScopeProcessor(var start: Identifier, val profile: Boolean = false) :
     val log: Logger = Logger.getInstance(this::class.java)
     val name = start.name
 
-    override val result = mutableSetOf<io.github.intellij.dlanguage.psi.interfaces.DNamedElement>()
+    override val result = mutableSetOf<DNamedElement>()
 
     override fun execute(element: PsiElement, state: ResolveState): Boolean {
         var toContinue = true
         val startTime = System.currentTimeMillis()
-        if (element is io.github.intellij.dlanguage.psi.interfaces.DNamedElement) {
+        if (element is DNamedElement) {
             if (element.name == name) {
                 if (element !is Constructor) {//todo this class should be renamed because of this
                     result.add(element)
@@ -88,10 +88,10 @@ class DNameScopeProcessor(var start: Identifier, val profile: Boolean = false) :
         return result.size == startSize
     }
 
-    private fun getMembersOfBind(resolveResult: io.github.intellij.dlanguage.psi.interfaces.DNamedElement) {
+    private fun getMembersOfBind(resolveResult: DNamedElement) {
         for (member: NamedStubBase<*> in (resolveResult as io.github.intellij.dlanguage.psi.interfaces.HasMembers<*>).members) {
             if (member.name == start.name) {
-                result.add((member.psi as io.github.intellij.dlanguage.psi.interfaces.DNamedElement))
+                result.add((member.psi as DNamedElement))
             }
         }
     }
