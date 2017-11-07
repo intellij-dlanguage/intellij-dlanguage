@@ -6,11 +6,10 @@ import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SearchableConfigurable;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.ui.RawCommandLineEditor;
 import com.intellij.ui.TextAccessor;
 import com.intellij.util.messages.Topic;
-import io.github.intellij.dlanguage.utils.ExecUtil;
-import io.github.intellij.dlanguage.utils.GuiUtil;
 import io.github.intellij.dlanguage.utils.ExecUtil;
 import io.github.intellij.dlanguage.utils.GuiUtil;
 import org.jetbrains.annotations.Nls;
@@ -85,12 +84,15 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
      * Heuristically finds the version number. Current implementation is the
      * identity function since cabal plays nice.
      */
-    private static String getVersion(final String cmd, final String versionFlag) {
-        String versionOutput = ExecUtil.readCommandLine(null, cmd, versionFlag);
-        final int endOfFirstLine = versionOutput.indexOf('\n');
-        if (endOfFirstLine < 0)
-            return versionOutput;
-        return versionOutput.substring(0, endOfFirstLine);
+    private String getVersion(final String cmd, final String versionFlag) {
+        final @Nullable String versionOutput = ExecUtil.readCommandLine(null, cmd, versionFlag);
+
+        if(StringUtil.isNotEmpty(versionOutput)) {
+            final String version = versionOutput.split("\n")[0].trim();
+            LOG.info(String.format("%s [%s]", cmd, version));
+            return version;
+        }
+        return "";
     }
 
     @NotNull
@@ -288,21 +290,13 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
         }
 
         public void updateVersion() {
-            String pathText = pathField.getText();
-            if (pathText.isEmpty()) {
-                versionField.setText("");
-            } else {
-                versionField.setText(getVersion(pathText, versionParam));
-            }
+            final String pathText = pathField.getText();
+            final String version = StringUtil.isEmpty(pathText) ? "" : getVersion(pathText, versionParam);
+            versionField.setText(version);
         }
 
         public boolean isModified() {
-            for (final PropertyField propertyField : propertyFields) {
-                if (propertyField.isModified()) {
-                    return true;
-                }
-            }
-            return false;
+            return propertyFields.parallelStream().anyMatch(PropertyField::isModified);
         }
 
         public void saveState() {
