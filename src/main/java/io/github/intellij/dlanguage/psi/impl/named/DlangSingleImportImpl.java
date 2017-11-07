@@ -8,21 +8,12 @@ import io.github.intellij.dlanguage.psi.*;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributesFinder;
 import io.github.intellij.dlanguage.stubs.DlangSingleImportStub;
-import io.github.intellij.dlanguage.psi.DlangIdentifier;
-import io.github.intellij.dlanguage.psi.DLanguageIdentifierChain;
-import io.github.intellij.dlanguage.psi.DLanguageImportDeclaration;
-import io.github.intellij.dlanguage.psi.DlangSingleImport;
-import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
-import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributesFinder;
-import io.github.intellij.dlanguage.stubs.DlangSingleImportStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static io.github.intellij.dlanguage.psi.DlangTypes.OP_EQ;
 
 /**
  * Created by francis on 7/14/2017.
@@ -76,14 +67,11 @@ public class DlangSingleImportImpl extends DNamedStubbedPsiElementBase<DlangSing
     @NotNull
     @Override
     public String getImportedModuleName() {
-        if (getStub() != null) {
-            assert getStub() != null;
-            try {
-                return getStub().getImportedModule();
-            } catch (final NullPointerException e) {
-                e.printStackTrace();
-            }
+        if (getGreenStub() != null) {
+            return getGreenStub().getImportedModule();
         }
+        if (getIdentifierChain().getText().equals(""))
+            throw new IllegalStateException();
         return getIdentifierChain().getText();
     }
 

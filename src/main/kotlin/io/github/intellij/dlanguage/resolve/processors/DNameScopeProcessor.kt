@@ -1,12 +1,10 @@
 package io.github.intellij.dlanguage.resolve.processors
 
 import com.intellij.openapi.diagnostic.Logger
-import com.intellij.openapi.util.Key
 import com.intellij.psi.PsiElement
 import com.intellij.psi.ResolveState
 import com.intellij.psi.stubs.NamedStubBase
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
-import io.github.intellij.dlanguage.psi.interfaces.HasMembers
 import io.github.intellij.dlanguage.stubs.index.DMembersIndex
 import io.github.intellij.dlanguage.stubs.index.DPublicImportIndex
 import io.github.intellij.dlanguage.stubs.index.DTopLevelDeclarationIndex
@@ -39,10 +37,9 @@ class DNameScopeProcessor(var start: Identifier, val profile: Boolean = false) :
                 }
             }
             if (element is SingleImport) {
-                return handleImport(element, state, setOf())
+                return handleImport(element)
             }
-        }
-        else{
+        } else {
             throw IllegalArgumentException()
         }
         val endTime = System.currentTimeMillis()
@@ -52,39 +49,37 @@ class DNameScopeProcessor(var start: Identifier, val profile: Boolean = false) :
         return toContinue
     }
 
-    val importsDoneKey = Key.create<MutableSet<SingleImport>>("currentlyProcessedImports")
+//    val importsDoneKey = Key.create<MutableSet<SingleImport>>("currentlyProcessedImports")
 
-    private fun handleImport(element: SingleImport, state: ResolveState, alreadyDone: Set<SingleImport>): Boolean {
-        val currentlyAlreadyDone = mutableSetOf<SingleImport>()
-        currentlyAlreadyDone.addAll(alreadyDone)
-        if (state.get(importsDoneKey) != null) {
-            currentlyAlreadyDone.addAll(state.get(importsDoneKey))
-        }
-        val imports = DPublicImportIndex.recursivelyGetAllPublicImports(element)
-        val startSize = result.size
-        if (currentlyAlreadyDone.contains(element))
+    val currentlyAlreadyDone: MutableSet<SingleImport> = mutableSetOf()
+
+    //returns false if results are found, true if more searching is needed b/c nothing was found
+    private fun handleImport(import: SingleImport): Boolean {
+        if (currentlyAlreadyDone.contains(import))
             return true
-        if (element.applicableImportBinds.size == 0) {
-            result.addAll(DTopLevelDeclarationIndex.getTopLevelSymbols(start.name, element.importedModuleName, project))
+        if (import.importedModuleName == "")
+            throw IllegalArgumentException()
+        val startSize = result.size
+        val imports = DPublicImportIndex.recursivelyGetAllPublicImports(import)
+        if (import.applicableImportBinds.size == 0) {
+            result.addAll(DTopLevelDeclarationIndex.getTopLevelSymbols(start.name, import.importedModuleName, project))
         } else {
-            val bindDecls = element.applicableImportBinds.flatMap { DTopLevelDeclarationIndex.getTopLevelSymbols(it, element.importedModuleName, project) }
-            if (!bindDecls.filter { it.name == start.name }.isEmpty()) {//todo it appears that for some of these psi is being loaded
+            //todo this can be done better:
+            val bindDecls = import.applicableImportBinds.flatMap { DTopLevelDeclarationIndex.getTopLevelSymbols(it, import.importedModuleName, project) }
+            if (!bindDecls.filter { it.name == start.name }.isEmpty()) {
                 result.addAll(bindDecls.filter { it.name == start.name })
                 return false
             }
-            val bindDeclsMembers = element.applicableImportBinds.flatMap { DMembersIndex.getMemberSymbols(it, element.importedModuleName, project) }
+            val bindDeclsMembers = import.applicableImportBinds.flatMap { DMembersIndex.getMemberSymbols(it, import.importedModuleName, project) }
             if (!bindDeclsMembers.filter { it.name == start.name }.isEmpty()) {
                 result.addAll(bindDeclsMembers.filter { it.name == start.name })
                 return false
             }
         }
-        currentlyAlreadyDone.add(element)
-        for (import in imports) {
-            if (!currentlyAlreadyDone.contains(import))
-                handleImport(import, state, currentlyAlreadyDone)
-            currentlyAlreadyDone.add(import)
+        currentlyAlreadyDone.add(import)//needs to be before for imports loop in case of an infinite import loop
+        for (recursivelyImported in imports) {
+            handleImport(recursivelyImported)
         }
-        state.put(importsDoneKey, currentlyAlreadyDone)
         return result.size == startSize
     }
 

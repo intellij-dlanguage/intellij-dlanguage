@@ -29,6 +29,8 @@ public class DlangSingleImportStub extends NamedStubBase<DlangSingleImport> {
             this.binds.add(bind.getString());
         }
         this.importedModule = importedModule;
+        if (importedModule.equals(""))
+            throw new IllegalStateException();
         this.hasName = hasName;
         this.importName = importName;
     }

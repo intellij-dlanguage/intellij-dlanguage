@@ -52,7 +52,7 @@ class DPublicImportIndex : StringStubIndexExtension<SingleImport>() {
                 val tempSet = mutableSetOf<SingleImport>()
                 for (import in toProcess) {
                     if (!alreadyProcessed.contains(import)) {
-                        tempSet += StubIndex.getElements(DPublicImportIndex.KEY, import.importedModuleName, project, GlobalSearchScope.everythingScope(project), SingleImport::class.java)
+                        tempSet += StubIndex.getElements(DPublicImportIndex.KEY, import.importedModuleName, project, GlobalSearchScope.allScope(project), SingleImport::class.java)
                     }
                 }
                 alreadyProcessed.addAll(toProcess)
