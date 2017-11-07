@@ -48,7 +48,7 @@ public class DlangIdentifierImpl extends DNamedStubbedPsiElementBase<DlangIdenti
 
     @NotNull
     public String getName() {
-        final DlangIdentifierStub stub = this.getStub();
+        final DlangIdentifierStub stub = this.getGreenStub();
         if (stub != null) return StringUtil.notNullize(stub.getName());
         return getText();
     }

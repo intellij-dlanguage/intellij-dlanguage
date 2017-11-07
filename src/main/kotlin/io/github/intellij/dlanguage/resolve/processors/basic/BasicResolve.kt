@@ -4,9 +4,8 @@ import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiNamedElement
 import com.intellij.psi.ResolveState
-import com.intellij.psi.search.GlobalSearchScope.everythingScope
+import com.intellij.psi.search.GlobalSearchScope.allScope
 import com.intellij.psi.util.PsiTreeUtil
-import io.github.intellij.dlanguage.index.DModuleIndex
 import io.github.intellij.dlanguage.psi.DlangFile
 import io.github.intellij.dlanguage.resolve.processors.DNameScopeProcessor
 import io.github.intellij.dlanguage.utils.Identifier
@@ -27,7 +26,7 @@ class BasicResolve private constructor(val project: Project, val profile: Boolea
 
     val log: Logger = Logger.getInstance(this::class.java)
 
-    val `object`: io.github.intellij.dlanguage.psi.DlangFile? = io.github.intellij.dlanguage.index.DModuleIndex.getFilesByModuleName(project, "object", everythingScope(project)).toSet().singleOrNull()?.containingFile as io.github.intellij.dlanguage.psi.DlangFile?
+    val `object`: DlangFile? = io.github.intellij.dlanguage.index.DModuleIndex.getFilesByModuleName(project, "object", allScope(project)).toSet().singleOrNull()?.containingFile as DlangFile?
 
     fun findDefinitionNode(e: PsiNamedElement): Set<PsiNamedElement> {
         //todo fix templated functions return type bug

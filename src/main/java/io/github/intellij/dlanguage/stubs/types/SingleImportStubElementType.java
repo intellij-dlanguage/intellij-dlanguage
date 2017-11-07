@@ -47,6 +47,8 @@ public class SingleImportStubElementType extends DNamedStubElementType<DlangSing
         }
         dataStream.writeName(stub.getName());
         dataStream.writeBoolean(stub.hasName());
+        if (stub.getImportedModule().equals(""))
+            throw new IllegalStateException();
         dataStream.writeName(stub.getImportedModule());
     }
 
@@ -63,6 +65,6 @@ public class SingleImportStubElementType extends DNamedStubElementType<DlangSing
         final StringRef importedModule = dataStream.readName();
         final boolean hasName = dataStream.readBoolean();
         final StringRef importName = dataStream.readName();
-        return new DlangSingleImportStub(parentStub, this, name, isPublic, numBinds, binds, importedModule, hasName, importName);
+        return new DlangSingleImportStub(parentStub, this, name, isPublic, numBinds, binds, importName, hasName, importName);
     }
 }
