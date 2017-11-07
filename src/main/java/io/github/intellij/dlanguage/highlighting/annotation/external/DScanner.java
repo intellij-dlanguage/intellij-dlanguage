@@ -7,6 +7,9 @@ import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.execution.process.ProcessAdapter;
 import com.intellij.execution.process.ProcessEvent;
 import com.intellij.execution.process.ProcessOutputTypes;
+import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationType;
+import com.intellij.notification.Notifications;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.util.Key;
@@ -87,7 +90,9 @@ public class DScanner {
                         parseProblem(event.getText(), file)
                             .ifPresent(problems::add);
                     } else if(ProcessOutputTypes.STDERR.equals(outputType)) {
-                        LOG.error(event.getText());
+                        LOG.warn(event.getText());
+                        final Notification notification = new Notification("DScanner Error", "DScanner Error", event.getText(), NotificationType.ERROR);
+                        Notifications.Bus.notify(notification, file.getProject());
                     }
                 }
             });
