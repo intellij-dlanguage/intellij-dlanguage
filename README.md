@@ -13,6 +13,8 @@ Support for the [D Programming Language](http://dlang.org/) within IntelliJ IDEA
 | Plugin Version | IntelliJ Versions |
 | :--- | :--- |
 | future version | ?? |
+| 1.15 | 2017.1.* - 2017.3.* |
+| 1.14 | 2017.1.* - 2017.3.* |
 | 1.13.1 | 2017.1.* - 2017.3.* |
 | 1.13 | 2017.1.* - 2017.2.* |
 | 1.12 | 2017.1 - 2017.1.5 |
