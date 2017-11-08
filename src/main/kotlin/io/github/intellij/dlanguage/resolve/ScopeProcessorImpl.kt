@@ -1,5 +1,6 @@
 package io.github.intellij.dlanguage.resolve
 
+import com.intellij.openapi.diagnostic.Logger
 import com.intellij.psi.PsiElement
 import com.intellij.psi.ResolveState
 import com.intellij.psi.scope.PsiScopeProcessor
@@ -16,6 +17,8 @@ import io.github.intellij.dlanguage.utils.*
  * todo make is expressions named
  */
 object ScopeProcessorImpl {
+    val logger = Logger.getInstance("io.github.intellij.dlanguage.resolve.ScopeProcessorImpl")
+
     /**
      * takes the elements declared in the given psi and passes them to the scope processor via the execute method. The scope processor will return false if it has found what it is "looking for". Note that certain declarations processors will not process child block statement/aggregate bodies since those have their own processor.
      * Some of the process declarations methods may return early while others will search throught the entire scope
@@ -328,6 +331,11 @@ object ScopeProcessorImpl {
                             lastParent: PsiElement,
                             place: PsiElement): Boolean {
         //todo handle place
+        if (element.declarationOrStatements.size == 0) {
+            //this for statement is incomplete/malformed
+            logger.debug("bad for statement: " + element.text)
+            return true
+        }
         val init = element.declarationOrStatements[0]
         var shouldContinue = true
         if (init.declaration?.variableDeclaration?.autoDeclaration?.autoDeclarationParts != null) {
