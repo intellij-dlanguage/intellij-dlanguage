@@ -35,7 +35,7 @@ public class DlangSingleImportStub extends NamedStubBase<DlangSingleImport> {
         this.importName = importName;
     }
 
-    public DlangSingleImportStub(final StubElement parent, final IStubElementType elementType, final StringRef name, final boolean isPublic, final int numBinds, final Set<StringRef> binds, final @NotNull StringRef importedModule, final boolean hasName, final StringRef importName) {
+    public DlangSingleImportStub(final StubElement parent, final IStubElementType elementType, final StringRef name, final boolean isPublic, final int numBinds, final Set<StringRef> binds, final @NotNull StringRef importName, final boolean hasName, final StringRef importedModule) {
         this(parent, elementType, name.getString(), isPublic, numBinds, binds, importedModule.getString(), hasName, importName.getString());
     }
 
