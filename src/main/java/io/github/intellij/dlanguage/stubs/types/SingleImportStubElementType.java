@@ -62,9 +62,9 @@ public class SingleImportStubElementType extends DNamedStubElementType<DlangSing
         for (int i = 0; i < numBinds; i++) {
             binds.add(dataStream.readName());
         }
-        final StringRef importedModule = dataStream.readName();
-        final boolean hasName = dataStream.readBoolean();
         final StringRef importName = dataStream.readName();
-        return new DlangSingleImportStub(parentStub, this, name, isPublic, numBinds, binds, importName, hasName, importName);
+        final boolean hasName = dataStream.readBoolean();
+        final StringRef importedModule = dataStream.readName();
+        return new DlangSingleImportStub(parentStub, this, name, isPublic, numBinds, binds, importName, hasName, importedModule);
     }
 }
