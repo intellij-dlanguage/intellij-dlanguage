@@ -3,7 +3,6 @@ package io.github.intellij.dlanguage.resolve
 import com.intellij.psi.PsiElement
 import com.intellij.psi.ResolveState
 import com.intellij.psi.scope.PsiScopeProcessor
-import io.github.intellij.dlanguage.psi.*
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil.processDeclaration
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil.processParameters
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil.processTemplateParameters
@@ -30,23 +29,15 @@ object ScopeProcessorImpl {
      * *
      * @param place
      * *
-     * @return
+     * @return true is should continue
      */
-
-
     @Suppress("UNUSED_PARAMETER")
     fun processDeclarations(element: StructBody,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
-                            lastParent: PsiElement,
+                            lastParent: PsiElement?,
                             place: PsiElement): Boolean {
-        var toContinue = true
-        for (declaration in element.declarations) {
-            if (!processDeclaration(declaration, processor, state, lastParent, place)) {
-                toContinue = false
-            }
-        }
-        return toContinue
+        return element.declarations.none { !processDeclaration(it, processor, state, lastParent, place) }
     }
 
 
