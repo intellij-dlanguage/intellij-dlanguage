@@ -29,7 +29,7 @@ class DPublicImportIndex : StringStubIndexExtension<SingleImport>() {
 
     companion object {
         private val KEY: StubIndexKey<String, SingleImport> = StubIndexKey.createIndexKey<String, SingleImport>("d.globally.accessible.import.public")
-        val VERSION = 2
+        val VERSION = 3
         fun <S : NamedStubBase<T>, T : io.github.intellij.dlanguage.psi.interfaces.DNamedElement> indexPublicImports(stub: S, sink: IndexSink) {
             if (stub is io.github.intellij.dlanguage.stubs.DlangSingleImportStub && topLevelDeclaration<S, T>(stub)) {
                 if ((stub as io.github.intellij.dlanguage.stubs.DlangSingleImportStub).isPublic) {

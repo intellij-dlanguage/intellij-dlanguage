@@ -28,7 +28,7 @@ class DMembersIndex : StringStubIndexExtension<DNamedElement>() {
 
     companion object {
         private val KEY: StubIndexKey<String, DNamedElement> = StubIndexKey.createIndexKey<String, DNamedElement>("d.globally.members")
-        val VERSION = 1
+        val VERSION = 2
         fun <S : NamedStubBase<*>> indexMembers(stub: S, sink: IndexSink) {
             if (getParentHasMembers(stub).size > 1)
                 return

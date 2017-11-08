@@ -21,7 +21,7 @@ class DModuleDeclarationIndex : StringStubIndexExtension<ModuleDeclaration>() {
 
     companion object {
         val KEY = StubIndexKey.createIndexKey<String, ModuleDeclaration>("d.module")
-        val VERSION = 2
+        val VERSION = 3
         fun <S : NamedStubBase<*>> indexModuleDeclarations(stub: S, sink: IndexSink, name: String) {
             if (stub is io.github.intellij.dlanguage.psi.DLanguageModuleDeclaration) {
                 sink.occurrence(DModuleDeclarationIndex.KEY, name)

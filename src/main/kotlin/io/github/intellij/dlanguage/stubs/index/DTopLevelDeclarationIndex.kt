@@ -20,7 +20,7 @@ class DTopLevelDeclarationIndex : StringStubIndexExtension<DNamedElement>() {
 
     companion object {
         val KEY: StubIndexKey<String, DNamedElement> = StubIndexKey.createIndexKey<String, DNamedElement>("d.globally.accessible.name")
-        val VERSION = 6
+        val VERSION = 7
         fun <S : NamedStubBase<T>, T : DNamedElement> indexTopLevelDeclarations(stub: S, sink: IndexSink, name: String) {
             if (stub !is io.github.intellij.dlanguage.stubs.DlangIdentifierStub && topLevelDeclaration<S, T>(stub)) {
                 sink.occurrence(DTopLevelDeclarationIndex.KEY, name)
