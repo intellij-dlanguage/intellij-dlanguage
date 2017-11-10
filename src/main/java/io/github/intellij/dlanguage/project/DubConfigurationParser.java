@@ -59,7 +59,7 @@ public class DubConfigurationParser {
     }
 
     public boolean canUseDub() {
-        final boolean dubPathValid = StringUtil.isNotEmpty(this.dubBinaryPath) && StringUtil.trimExtensions(dubBinaryPath).endsWith("dub");
+        final boolean dubPathValid = StringUtil.isNotEmpty(this.dubBinaryPath) && (dubBinaryPath.endsWith("dub") || dubBinaryPath.endsWith("dub.exe"));
 
         final VirtualFile baseDir = project.getBaseDir();
 
