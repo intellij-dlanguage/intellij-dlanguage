@@ -12,6 +12,10 @@
     ]]></description>
 
     <change-notes><![CDATA[
+        <b>v1.15 - v1.15.2</b><br/>
+        <ul>
+            <li>various bug fixes</li>
+        </ul>
         <b>v1.14</b><br/>
         <ul>
             <li>GDB support</li>
