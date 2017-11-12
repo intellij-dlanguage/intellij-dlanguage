@@ -28,6 +28,7 @@ import io.github.intellij.dlanguage.utils.DToolsNotificationListener;
  * Action that calls Dfmt on the buffer it is invoked for.
  */
 public class DFixAction extends AnAction implements DumbAware {
+    private static final String NOTIFICATION_GROUPID = "DFix";
     private static final String NOTIFICATION_TITLE = "Fix code with DFix";
     private static final Logger LOG = Logger.getInstance(DFixAction.class);
 
@@ -52,14 +53,14 @@ public class DFixAction extends AnAction implements DumbAware {
         final VirtualFile virtualFile = psiFile.getVirtualFile();
         if (virtualFile == null) return;
 
-        final String groupId = e.getPresentation().getText();
+        //final String groupId = e.getPresentation().getText();
         try {
             final GeneralCommandLine commandLine = new GeneralCommandLine();
             final String stylishPath = ToolKey.DFIX_KEY.getPath(project);
             final String stylishFlags = ToolKey.DFIX_KEY.getFlags(project);
             if (stylishPath == null || stylishPath.isEmpty()) {
                 Notifications.Bus.notify(
-                    new Notification(groupId, NOTIFICATION_TITLE,
+                    new Notification(NOTIFICATION_GROUPID, NOTIFICATION_TITLE,
                         "DFix executable path is empty" +
                             "<br/><a href='configureDLanguageTools'>Configure</a>",
                         NotificationType.WARNING, new DToolsNotificationListener(project)), project);
@@ -85,19 +86,19 @@ public class DFixAction extends AnAction implements DumbAware {
                 process.waitFor();
                 backingFile.refresh(true, true);
 
-                Notifications.Bus.notify(new Notification(groupId, NOTIFICATION_TITLE,
+                Notifications.Bus.notify(new Notification(NOTIFICATION_GROUPID, NOTIFICATION_TITLE,
                     psiFile.getName() + " fixed with DFix.(Load filesystem changes)",
                     NotificationType.INFORMATION), project);
 
             } catch (final ExecutionException ex) {
                 ex.printStackTrace();
-                Notifications.Bus.notify(new Notification(groupId,
+                Notifications.Bus.notify(new Notification(NOTIFICATION_GROUPID,
                     "Fixing " + psiFile.getName() + "  with DFix failed.", ExceptionUtil.getUserStackTrace(ex, LOG),
                     NotificationType.ERROR), project);
                 LOG.error(ex);
             }
         } catch (final Exception ex) {
-            Notifications.Bus.notify(new Notification(groupId,
+            Notifications.Bus.notify(new Notification(NOTIFICATION_GROUPID,
                 "Fixing " + psiFile.getName() + " with DFix failed", ExceptionUtil.getUserStackTrace(ex, LOG),
                 NotificationType.ERROR), project);
             LOG.error(ex);
