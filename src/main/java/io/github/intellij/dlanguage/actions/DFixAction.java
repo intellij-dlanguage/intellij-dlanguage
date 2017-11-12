@@ -38,7 +38,8 @@ public class DFixAction extends AnAction implements DumbAware {
     @Override
     public void update(final AnActionEvent e) {
         final PsiFile psiFile = e.getData(CommonDataKeys.PSI_FILE);
-        e.getPresentation().setEnabled(DlangFile.class.isAssignableFrom(psiFile.getClass()));
+        final Class<? extends PsiFile> clazz = psiFile.getClass();
+        e.getPresentation().setEnabled(clazz != null && DlangFile.class.isAssignableFrom(clazz));
     }
 
     /**
