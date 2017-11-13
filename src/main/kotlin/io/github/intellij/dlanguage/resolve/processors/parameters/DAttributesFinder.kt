@@ -189,11 +189,9 @@ class DAttributesFinder {
                     isStatic = true
                 }
             } else if (attribute.alignAttribute != null) {
-            } else if (attribute.atAttribute != null) {
-                if (attribute.atAttribute!!.identifier!!.name == "property") {
-                    if (isProperty == null) {
-                        isProperty = true
-                    }
+            } else if (attribute.atAttribute?.identifier?.name == "property") {
+                if (isProperty == null) {
+                    isProperty = true
                 }
             } else if (attribute.linkageAttribute != null) {
             } //else if (attribute.typeConstructor != null) {
