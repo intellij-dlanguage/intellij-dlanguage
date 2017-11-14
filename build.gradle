@@ -12,7 +12,7 @@ buildscript {
 
 plugins {
     id 'org.jetbrains.intellij' version '0.2.17'
-    id 'net.saliman.cobertura' version '2.3.1'
+    id 'net.saliman.cobertura' version '2.5.1'
     id 'com.github.kt3k.coveralls' version '2.8.1'
 }
 
@@ -34,6 +34,8 @@ apply plugin: 'kotlin'
 apply plugin: 'cobertura'
 cobertura.coverageFormats = ['html', 'xml'] // coveralls plugin depends on xml format report
 cobertura.coverageSourceDirs = [sourceSets.main.java.srcDirs, sourceSets.main.kotlin.srcDirs, 'gen']
+cobertura.coverageEncoding = 'UTF-8'
+cobertura.coverageExcludes = [ '.*de.halirutan.mathematica.*', '.*uk.co.cwspencer.*' ]
 
 allprojects {
     sourceCompatibility = javaVersion
