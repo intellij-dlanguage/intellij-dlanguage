@@ -48,8 +48,8 @@ public class DLanguageModuleDeclarationImpl extends DNamedStubbedPsiElementBase<
 
     @NotNull
     public String getName() {
-        if (getStub() != null) {
-            return getStub().getName();
+        if (getGreenStub() != null) {
+            return getGreenStub().getName();
         }
         if (getIdentifierChain() == null) {
             return DReference.Companion.getNAME_NOT_FOUND_STRING();
