@@ -37,9 +37,10 @@ public abstract class DNamedStubbedPsiElementBase<T extends NamedStubBase<?>> ex
 
     @NotNull
     public String getName() {
-        if (getStub() != null) {
-            if (getStub().getName() != null)
-                return getStub().getName();
+        if (getGreenStub() != null) {
+            if (getGreenStub().getName() != null) {
+                return getGreenStub().getName();
+            }
         }
         if (getNameIdentifier() == null) {
             return DReference.Companion.getNAME_NOT_FOUND_STRING();
