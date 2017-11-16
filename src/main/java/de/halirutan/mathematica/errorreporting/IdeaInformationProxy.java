@@ -67,13 +67,33 @@ public class IdeaInformationProxy {
 
         params.put("Last Action", error.getLastAction());
 
-//        final String dubVersion = DLanguageToolsConfigurable
-//            .getVersion(ToolKey.DUB_KEY.getPath(), "--version");
-//        params.put("Dub Version", dubVersion);
-//
-//        final String dcdVersion = DLanguageToolsConfigurable
-//            .getVersion(ToolKey.DUB_KEY.getPath(), "--version");
-//        params.put("Dub Version", dcdVersion);
+        final String dubVersion = DLanguageToolsConfigurable
+            .getVersion(ToolKey.DUB_KEY.getPath(), "--version");
+        params.put("Dub Version", dubVersion);
+
+        final String dcdServerVersion = DLanguageToolsConfigurable
+            .getVersion(ToolKey.DCD_SERVER_KEY.getPath(), "--version");
+        params.put("DCD Server Version", dcdServerVersion);
+
+        final String dcdClientVersion = DLanguageToolsConfigurable
+            .getVersion(ToolKey.DCD_CLIENT_KEY.getPath(), "--version");
+        params.put("DCD Client Version", dcdClientVersion);
+
+        final String DScannerVersion = DLanguageToolsConfigurable
+            .getVersion(ToolKey.DSCANNER_KEY.getPath(), "--version");
+        params.put("DScanner Version", DScannerVersion);
+
+        final String GDBVersion = DLanguageToolsConfigurable
+            .getVersion(ToolKey.GDB_KEY.getPath(), "--version");
+        params.put("GDB Version", GDBVersion);
+
+        final String DFormatVersion = DLanguageToolsConfigurable
+            .getVersion(ToolKey.DFORMAT_KEY.getPath(), "--version");
+        params.put("D Format Version", DFormatVersion);
+
+        final String DFixVersion = DLanguageToolsConfigurable
+            .getVersion(ToolKey.DFIX_KEY.getPath(), "--version");
+        params.put("DFix Version", DFixVersion);
 
         params.put("error.message", error.getMessage());
         params.put("error.stacktrace", error.getStackTrace());
