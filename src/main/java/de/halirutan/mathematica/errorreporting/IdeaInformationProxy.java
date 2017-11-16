@@ -25,19 +25,29 @@ import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationNamesInfo;
 import com.intellij.openapi.application.ex.ApplicationInfoEx;
 import com.intellij.openapi.diagnostic.Attachment;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectCoreUtil;
+import com.intellij.projectImport.ProjectImportBuilder;
+import com.intellij.psi.PsiManager;
 import com.intellij.util.SystemProperties;
 
+import io.github.intellij.dlanguage.settings.DLanguageToolsConfigurable;
+import io.github.intellij.dlanguage.settings.ToolKey;
 import java.util.LinkedHashMap;
 
 /**
  * Collects information about the running IDEA and the error
  */
 public class IdeaInformationProxy {
-    public static LinkedHashMap<String, String> getKeyValuePairs(GitHubErrorBean error,
-                                                          Application application,
-                                                          ApplicationInfoEx appInfo,
-                                                          ApplicationNamesInfo namesInfo) {
-        final LinkedHashMap<String, String> params = new LinkedHashMap<>(21);
+
+    public static LinkedHashMap<String, String> getKeyValuePairs(final GitHubErrorBean error,
+        final Application application,
+        final ApplicationInfoEx appInfo,
+        final ApplicationNamesInfo namesInfo) {
+        final LinkedHashMap<String, String> params = new LinkedHashMap<>(30);
+
+        final Project project = ProjectCoreUtil.theOnlyOpenProject();
+
 
         params.put("error.description", error.getDescription());
 
@@ -57,11 +67,19 @@ public class IdeaInformationProxy {
 
         params.put("Last Action", error.getLastAction());
 
+//        final String dubVersion = DLanguageToolsConfigurable
+//            .getVersion(ToolKey.DUB_KEY.getPath(), "--version");
+//        params.put("Dub Version", dubVersion);
+//
+//        final String dcdVersion = DLanguageToolsConfigurable
+//            .getVersion(ToolKey.DUB_KEY.getPath(), "--version");
+//        params.put("Dub Version", dcdVersion);
+
         params.put("error.message", error.getMessage());
         params.put("error.stacktrace", error.getStackTrace());
         params.put("error.hash", error.getExceptionHash());
 
-        for (Attachment attachment : error.getAttachments()) {
+        for (final Attachment attachment : error.getAttachments()) {
             params.put("attachment.name", attachment.getName());
             params.put("attachment.value", attachment.getEncodedBytes());
         }

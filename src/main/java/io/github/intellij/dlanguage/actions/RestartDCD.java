@@ -15,9 +15,6 @@ import com.intellij.ui.components.JBList;
 import io.github.intellij.dlanguage.codeinsight.dcd.DCDCompletionServer;
 import io.github.intellij.dlanguage.module.DlangModuleType;
 import io.github.intellij.dlanguage.settings.ToolKey;
-import io.github.intellij.dlanguage.codeinsight.dcd.DCDCompletionServer;
-import io.github.intellij.dlanguage.module.DlangModuleType;
-import io.github.intellij.dlanguage.settings.ToolKey;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -36,7 +33,7 @@ public class RestartDCD extends AnAction implements DumbAware {
     private static boolean enabled(@NotNull final AnActionEvent e) {
         final Project project = getEventProject(e);
         if (project == null) return false;
-        final String cdcServerPath = ToolKey.DCD_SERVER_KEY.getPath(project);
+        final String cdcServerPath = ToolKey.DCD_SERVER_KEY.getPath();
         return cdcServerPath != null && !cdcServerPath.isEmpty() && DlangModuleType.findModules(project).size() > 0;
     }
 

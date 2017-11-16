@@ -52,7 +52,7 @@ public class DlangDubModuleBuilder extends DlangModuleBuilder {
         final RunManagerImpl runManager = RunManagerImpl.getInstanceImpl(project);
 
         if (dubBinary != null) {
-            ToolKey.DUB_KEY.setPath(project, dubBinary);
+            ToolKey.DUB_KEY.setPath(dubBinary);
         }
 
         //Create "Run dub" configuration

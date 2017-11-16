@@ -86,7 +86,7 @@ public class DlangRunDubState extends CommandLineState {
             throw new ExecutionException("Run configuration has no module selected.");
         }
 
-        final String dubPath = ToolKey.DUB_KEY.getPath(config.getProject());
+        final String dubPath = ToolKey.DUB_KEY.getPath();
         if (StringUtil.isEmptyOrSpaces(dubPath)) {
             throw new ExecutionException("DUB executable is not specified");
         }

@@ -130,7 +130,8 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
         }
 
         // try to auto add dub dependencies
-        final DubConfigurationParser dubParser = new DubConfigurationParser(module.getProject(), ToolKey.DUB_KEY.getPath(module.getProject()));
+        final DubConfigurationParser dubParser = new DubConfigurationParser(module.getProject(),
+            ToolKey.DUB_KEY.getPath());
         if (dubParser.canUseDub()) {
             final List<DubPackage> dependencies = dubParser.getDubPackageDependencies();
             for (final DubPackage pkg : dependencies) {
@@ -188,12 +189,12 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
 
     @Nullable
     private String lookupPath() {
-        return ToolKey.DCD_SERVER_KEY.getPath(module.getProject());
+        return ToolKey.DCD_SERVER_KEY.getPath();
     }
 
     @NotNull
     private String lookupFlags() {
-        return ToolKey.DCD_SERVER_KEY.getFlags(module.getProject());
+        return ToolKey.DCD_SERVER_KEY.getFlags();
     }
 
     /**

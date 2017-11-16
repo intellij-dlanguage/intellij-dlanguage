@@ -43,7 +43,7 @@ public class DScanner {
     }
 
     Problems checkFileSyntax(@NotNull final PsiFile file) {
-        final String dscannerPath = ToolKey.DSCANNER_KEY.getPath(file.getProject());
+        final String dscannerPath = ToolKey.DSCANNER_KEY.getPath();
         if (dscannerPath == null) return new Problems();
 
         final Problems problems = new Problems();

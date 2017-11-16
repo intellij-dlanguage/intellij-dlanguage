@@ -24,7 +24,6 @@ import com.intellij.psi.PsiManager;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.*;
 import io.github.intellij.dlanguage.DlangBundle;
-import io.github.intellij.dlanguage.psi.*;
 import io.github.intellij.dlanguage.settings.ToolKey;
 import io.github.intellij.dlanguage.utils.DToolsNotificationListener;
 import org.jetbrains.annotations.NotNull;
@@ -191,7 +190,7 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
         final String workingDirectory = project.getBasePath();
         //            final String testFile = configuration.getDFile().getCanonicalPath();
 
-        final String dubPath = ToolKey.DUB_KEY.getPath(project);
+        final String dubPath = ToolKey.DUB_KEY.getPath();
         if (dubPath == null || dubPath.isEmpty()) {
             Notifications.Bus.notify(
                 new Notification("Dunit Test Runner",

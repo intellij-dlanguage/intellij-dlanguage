@@ -84,7 +84,7 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
      * Heuristically finds the version number. Current implementation is the
      * identity function since cabal plays nice.
      */
-    private String getVersion(final String cmd, final String versionFlag) {
+    public static String getVersion(final String cmd, final String versionFlag) {
         final @Nullable String versionOutput = ExecUtil.readCommandLine(null, cmd, versionFlag);
 
         if(StringUtil.isNotEmpty(versionOutput)) {

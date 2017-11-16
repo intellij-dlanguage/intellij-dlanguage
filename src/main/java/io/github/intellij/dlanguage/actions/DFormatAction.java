@@ -62,8 +62,8 @@ public class DFormatAction extends AnAction implements DumbAware {
         //final String groupId = e.getPresentation().getText();
         try {
             final GeneralCommandLine commandLine = new GeneralCommandLine();
-            final String stylishPath = ToolKey.DFORMAT_KEY.getPath(project);
-            final String stylishFlags = ToolKey.DFORMAT_KEY.getFlags(project);
+            final String stylishPath = ToolKey.DFORMAT_KEY.getPath();
+            final String stylishFlags = ToolKey.DFORMAT_KEY.getFlags();
             if (stylishPath == null || stylishPath.isEmpty()) {
 
                 Notifications.Bus.notify(

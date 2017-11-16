@@ -50,7 +50,7 @@ public class ProcessDLibs extends AnAction implements DumbAware {
     private static boolean enabled(@NotNull final AnActionEvent e) {
         final Project project = getEventProject(e);
         if (project == null) return false;
-        final String dubPath = ToolKey.DUB_KEY.getPath(project);
+        final String dubPath = ToolKey.DUB_KEY.getPath();
         return dubPath != null && !dubPath.isEmpty() && DlangModuleType.findModules(project).size() > 0;
     }
 
@@ -81,7 +81,7 @@ public class ProcessDLibs extends AnAction implements DumbAware {
 //        removeDLibs(module, project);//this is not necissary since intellij filters out duplicate libraries.
 
         // ask dub for required libs
-        final String dubPath = ToolKey.DUB_KEY.getPath(project);
+        final String dubPath = ToolKey.DUB_KEY.getPath();
 
         //final String groupId = e.getPresentation().getText();
         if (dubPath == null) {
@@ -111,7 +111,7 @@ public class ProcessDLibs extends AnAction implements DumbAware {
     }
 
     private static void createLibraryDependency(final Module module, final Project project, final String libraryName, final DubPackage dubPackage) {
-        final VirtualFile sources = getSourcesVirtualFile(dubPackage, project);
+        final VirtualFile sources = getSourcesVirtualFile(dubPackage);
         final LibraryTable projectLibraryTable = LibraryTablesRegistrar.getInstance().getLibraryTable(project);
         final LibraryTable.ModifiableModel projectLibraryModel = projectLibraryTable.getModifiableModel();
 
@@ -129,7 +129,7 @@ public class ProcessDLibs extends AnAction implements DumbAware {
         }
     }
 
-    private static VirtualFile getSourcesVirtualFile(final DubPackage dubPackage, final Project project) {
+    private static VirtualFile getSourcesVirtualFile(final DubPackage dubPackage) {
         final String sourcesPathUrl;
         if (SystemInfo.isWindows) {
             sourcesPathUrl = VirtualFileManager.constructUrl(LocalFileSystem.PROTOCOL, dubPackage.getPath() + dubPackage.getSourcesDir().replace("/", "\\"));
@@ -140,7 +140,7 @@ public class ProcessDLibs extends AnAction implements DumbAware {
         if (sources == null) {
             LOG.info("sources not found, fetching them");
             final GeneralCommandLine commandLine = new GeneralCommandLine();
-            final String dubBinaryPath = ToolKey.DUB_KEY.getPath(project);
+            final String dubBinaryPath = ToolKey.DUB_KEY.getPath();
             if (dubBinaryPath == null) {
                 LOG.error("dub executable should be configured");
                 return null;

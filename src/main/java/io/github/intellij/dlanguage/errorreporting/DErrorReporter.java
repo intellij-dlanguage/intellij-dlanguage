@@ -14,6 +14,7 @@ import com.intellij.util.Consumer;
 import de.halirutan.mathematica.errorreporting.GitHubErrorBean;
 import de.halirutan.mathematica.errorreporting.IdeaInformationProxy;
 import io.sentry.Sentry;
+import org.eclipse.core.internal.resources.Project;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
