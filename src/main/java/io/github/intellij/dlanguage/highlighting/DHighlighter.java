@@ -1,5 +1,6 @@
 package io.github.intellij.dlanguage.highlighting;
 
+import com.intellij.lexer.FlexAdapter;
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
@@ -48,7 +49,7 @@ public class DHighlighter extends SyntaxHighlighterBase {
     @NotNull
     @Override
     public Lexer getHighlightingLexer() {
-        return new DHighlightingLexer();
+        return new FlexAdapter(new DHighlightingLexer());
     }
 
     @NotNull
