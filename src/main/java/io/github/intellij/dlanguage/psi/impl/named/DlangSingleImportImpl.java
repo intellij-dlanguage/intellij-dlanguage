@@ -50,10 +50,9 @@ public class DlangSingleImportImpl extends DNamedStubbedPsiElementBase<DlangSing
     @NotNull
     @Override
     public Set<String> getApplicableImportBinds() {
-        if (getStub() != null) {
-            assert getStub() != null;
+        if (getGreenStub() != null) {
             try {
-                return getStub().getApplicableImportBinds();
+                return getGreenStub().getApplicableImportBinds();
             } catch (final NullPointerException e) {
                 e.printStackTrace();
             }

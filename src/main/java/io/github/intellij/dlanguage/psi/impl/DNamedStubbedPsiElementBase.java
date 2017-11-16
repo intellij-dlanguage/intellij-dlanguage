@@ -37,14 +37,14 @@ public abstract class DNamedStubbedPsiElementBase<T extends NamedStubBase<?>> ex
 
     @NotNull
     public String getName() {
-        if (getStub() != null) {
-            if (getStub().getName() != null)
-                return getStub().getName();
+        final T stub = getGreenStub();
+        final String name = stub != null ? stub.getName() : null;
+        if (name != null) {
+            return name;
         }
-        if (getNameIdentifier() == null) {
-            return DReference.Companion.getNAME_NOT_FOUND_STRING();
-        }
-        return getNameIdentifier().getName();
+
+        final DlangIdentifier identifier = getNameIdentifier();
+        return identifier != null ? identifier.getName() : DReference.Companion.getNAME_NOT_FOUND_STRING();
     }
 
     @NotNull
