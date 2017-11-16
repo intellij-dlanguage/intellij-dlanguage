@@ -15,6 +15,13 @@ public class Token {
         this.type = type;
     }
 
+    public String toPrettyString() {
+        if (type != null) {
+            return type.toPrettyString();
+        }
+        return ("\"" + text + "\"").replace("DlangTokenType.", "").replace("ID", "an identifier");
+    }
+
     static class IdType {
         final IElementType type;
 
@@ -37,6 +44,10 @@ public class Token {
             if (!(obj instanceof IdType))
                 return false;
             return type.getIndex() == ((IdType) obj).type.getIndex();
+        }
+
+        public String toPrettyString() {
+            return type.toString().replace("DlangTokenType.", "").replace("ID", "an identifier");
         }
     }
 }

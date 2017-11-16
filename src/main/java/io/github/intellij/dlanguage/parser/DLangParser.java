@@ -8475,18 +8475,14 @@ class DLangParser {
             }
             return tokens[index - 1];
         } else {
-            final String tokenString = type.toString();
-            final boolean shouldNotAdvance = index < tokens.length && (tokens[index].type.equals(tok(")")) || tokens[index].type.equals(tok(";")) || tokens[index].type.equals(tok("}")));
-            final String token = (index < tokens.length ? (tokens[index].text == null ? str(tokens[index].type) : tokens[index].text) : "EOF");
+            final String tokenString = type.toPrettyString();
+//            final boolean shouldNotAdvance = index < tokens.length && (tokens[index].type.equals(tok(")")) || tokens[index].type.equals(tok(";")) || tokens[index].type.equals(tok("}")));
+            final String token = (index < tokens.length ? (tokens[index].text == null
+                ? tokens[index].toPrettyString() : tokens[index].toPrettyString()) : "EOF");
             error("Expected " + tokenString + " instead of " + token/*,!shouldNotAdvance*/);
             return null;
         }
     }
-
-    public String str(final Object o) {
-        return o.toString();
-    }
-
     /**
      * Returns: the _current token
      */
