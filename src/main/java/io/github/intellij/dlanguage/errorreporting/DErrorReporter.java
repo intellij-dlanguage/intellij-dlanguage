@@ -52,7 +52,7 @@ public class DErrorReporter extends ErrorReportSubmitter {
                 final GitHubErrorBean errorBean = new GitHubErrorBean(event.getThrowable(), IdeaLogger.ourLastActionId);
                 final LinkedHashMap<String, String> keyValuePairs = IdeaInformationProxy.getKeyValuePairs(errorBean, ApplicationManager.getApplication(),
                     (ApplicationInfoEx) ApplicationInfo.getInstance(),
-                    ApplicationNamesInfo.getInstance());
+                    ApplicationNamesInfo.getInstance(), super.getPluginDescriptor());
                 for (final String key : keyValuePairs.keySet()) {
                     Sentry.getContext().addExtra(key, keyValuePairs.get(key));
                 }

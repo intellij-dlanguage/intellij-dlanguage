@@ -25,6 +25,7 @@ import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationNamesInfo;
 import com.intellij.openapi.application.ex.ApplicationInfoEx;
 import com.intellij.openapi.diagnostic.Attachment;
+import com.intellij.openapi.extensions.PluginDescriptor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectCoreUtil;
 import com.intellij.projectImport.ProjectImportBuilder;
@@ -43,16 +44,17 @@ public class IdeaInformationProxy {
     public static LinkedHashMap<String, String> getKeyValuePairs(final GitHubErrorBean error,
         final Application application,
         final ApplicationInfoEx appInfo,
-        final ApplicationNamesInfo namesInfo) {
+        final ApplicationNamesInfo namesInfo,
+        final PluginDescriptor pluginDescriptor) {
         final LinkedHashMap<String, String> params = new LinkedHashMap<>(30);
-
-        final Project project = ProjectCoreUtil.theOnlyOpenProject();
 
 
         params.put("error.description", error.getDescription());
 
         params.put("Plugin Name", error.getPluginName());
         params.put("Plugin Version", error.getPluginVersion());
+
+        params.put("Plugin Id", pluginDescriptor.getPluginId().getIdString());
 
         params.put("OS Name", SystemProperties.getOsName());
         params.put("Java version", SystemProperties.getJavaVersion());
