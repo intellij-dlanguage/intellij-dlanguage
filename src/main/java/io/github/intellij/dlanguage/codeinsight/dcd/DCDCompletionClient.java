@@ -11,9 +11,6 @@ import io.github.intellij.dlanguage.settings.ToolKey;
 import io.github.intellij.dlanguage.utils.DUtil;
 import io.github.intellij.dlanguage.utils.ExecUtil;
 import io.github.intellij.dlanguage.codeinsight.dcd.completions.Completion;
-import io.github.intellij.dlanguage.codeinsight.dcd.completions.TextCompletion;
-import io.github.intellij.dlanguage.settings.ToolKey;
-import io.github.intellij.dlanguage.utils.ExecUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedWriter;
@@ -21,8 +18,6 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import static io.github.intellij.dlanguage.utils.DUtil.isNotNullOrEmpty;
 
 public class DCDCompletionClient {
 
@@ -38,7 +33,7 @@ public class DCDCompletionClient {
 
         completions.clear();
         if (module != null) {
-            final String path = lookupPath(module);
+            final String path = lookupPath();
             if (path != null) {
                 final DCDCompletionServer dcdCompletionServer = module.getComponent(DCDCompletionServer.class);
                 try {
@@ -56,7 +51,7 @@ public class DCDCompletionClient {
                 parametersList.addParametersString("-c");
                 parametersList.addParametersString(String.valueOf(position));
 
-                final String flags = ToolKey.DCD_CLIENT_KEY.getFlags(module.getProject());
+                final String flags = ToolKey.DCD_CLIENT_KEY.getFlags();
 
                 if (DUtil.isNotNullOrEmpty(flags)) {
                     final String[] importList = flags.split(",");
@@ -106,8 +101,8 @@ public class DCDCompletionClient {
     }
 
     @Nullable
-    private String lookupPath(final Module module) {
-        return ToolKey.DCD_CLIENT_KEY.getPath(module.getProject());
+    private String lookupPath() {
+        return ToolKey.DCD_CLIENT_KEY.getPath();
     }
 
     private String getType(final String[] parts) {

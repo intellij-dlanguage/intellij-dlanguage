@@ -95,14 +95,14 @@ public class GdbDebugProcess extends XDebugProcess implements GdbListener {
         debugSession = session;
 
         // Prepare GDB
-        m_gdb = new Gdb(ToolKey.GDB_KEY.getPath(project), project.getBasePath(), this);
+        m_gdb = new Gdb(ToolKey.GDB_KEY.getPath(), project.getBasePath(), this);
 
         // Create the GDB console
         m_gdbConsole = new GdbConsoleView(m_gdb, session.getProject());
         m_gdbRawConsole = new ConsoleViewImpl(session.getProject(), true);
 
         m_gdbConsole.getConsole().print(m_timeFormat.format(new Date()) + " 0> " +
-            ToolKey.GDB_KEY.getPath(project) + " --interpreter=mi2\n", ConsoleViewContentType.USER_INPUT);
+            ToolKey.GDB_KEY.getPath() + " --interpreter=mi2\n", ConsoleViewContentType.USER_INPUT);
 
         // Create the breakpoint handler
         m_breakpointHandler = new GdbBreakpointHandler(m_gdb, this);

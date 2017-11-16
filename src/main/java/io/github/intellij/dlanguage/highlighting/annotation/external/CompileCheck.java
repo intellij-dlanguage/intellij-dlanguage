@@ -16,10 +16,7 @@ import com.intellij.util.containers.ContainerUtil;
 import io.github.intellij.dlanguage.highlighting.annotation.DAnnotationHolder;
 import io.github.intellij.dlanguage.highlighting.annotation.Problems;
 import io.github.intellij.dlanguage.settings.ToolKey;
-import io.github.intellij.dlanguage.highlighting.annotation.DAnnotationHolder;
 import io.github.intellij.dlanguage.highlighting.annotation.DProblem;
-import io.github.intellij.dlanguage.highlighting.annotation.Problems;
-import io.github.intellij.dlanguage.settings.ToolKey;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -30,7 +27,7 @@ import java.util.regex.Pattern;
 public class CompileCheck {
 
     public Problems checkFileSyntax(@NotNull final PsiFile file) {
-        final String dubPath = ToolKey.DUB_KEY.getPath(file.getProject());
+        final String dubPath = ToolKey.DUB_KEY.getPath();
         if (dubPath == null) return new Problems();
 
         final String result = processFile(file, dubPath);

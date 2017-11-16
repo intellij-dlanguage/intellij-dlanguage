@@ -27,19 +27,19 @@ public class ToolKey {
     }
 
     @Nullable
-    public String getPath(@NotNull final Project project) {
-        final String path = PropertiesComponent.getInstance(project).getValue(pathKey);
+    public String getPath() {
+        final String path = PropertiesComponent.getInstance().getValue(pathKey);
         return path == null || path.isEmpty() ? null : path;
     }
 
     @NotNull
-    public void setPath(@NotNull final Project project, final String newValue) {
-        PropertiesComponent.getInstance(project).setValue(pathKey, newValue);
+    public void setPath(final String newValue) {
+        PropertiesComponent.getInstance().setValue(pathKey, newValue);
     }
 
     @NotNull
-    public String getFlags(@NotNull final Project project) {
-        final String flags = PropertiesComponent.getInstance(project).getValue(flagsKey);
+    public String getFlags() {
+        final String flags = PropertiesComponent.getInstance().getValue(flagsKey);
         return flags == null ? "" : flags;
     }
 }

@@ -19,9 +19,6 @@ import com.intellij.util.ExceptionUtil;
 import io.github.intellij.dlanguage.psi.DlangFile;
 import io.github.intellij.dlanguage.settings.ToolKey;
 import io.github.intellij.dlanguage.utils.DToolsNotificationListener;
-import io.github.intellij.dlanguage.psi.DlangFile;
-import io.github.intellij.dlanguage.settings.ToolKey;
-import io.github.intellij.dlanguage.utils.DToolsNotificationListener;
 
 
 /**
@@ -57,8 +54,8 @@ public class DFixAction extends AnAction implements DumbAware {
         //final String groupId = e.getPresentation().getText();
         try {
             final GeneralCommandLine commandLine = new GeneralCommandLine();
-            final String stylishPath = ToolKey.DFIX_KEY.getPath(project);
-            final String stylishFlags = ToolKey.DFIX_KEY.getFlags(project);
+            final String stylishPath = ToolKey.DFIX_KEY.getPath();
+            final String stylishFlags = ToolKey.DFIX_KEY.getFlags();
             if (stylishPath == null || stylishPath.isEmpty()) {
                 Notifications.Bus.notify(
                     new Notification(NOTIFICATION_GROUPID, NOTIFICATION_TITLE,
