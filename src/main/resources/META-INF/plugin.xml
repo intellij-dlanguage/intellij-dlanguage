@@ -157,6 +157,9 @@
         <!--<configurationType implementation="uk.co.cwspencer.ideagdb.run.GoGdbRunConfigurationType"/>-->
         <!--<programRunner implementation="uk.co.cwspencer.ideagdb.run.GdbRunner"/>-->
         <xdebugger.breakpointType implementation="uk.co.cwspencer.ideagdb.debug.breakpoints.GdbBreakpointType"/>
+
+        <!-- Structure View -->
+        <lang.psiStructureViewFactory language="D" implementationClass="io.github.intellij.dlanguage.structure.DStructureViewFactory"/>
     </extensions>
 
     <application-components>
