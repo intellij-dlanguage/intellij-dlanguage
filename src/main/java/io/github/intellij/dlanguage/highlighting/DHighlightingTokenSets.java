@@ -26,6 +26,7 @@ public class DHighlightingTokenSets {
     public static final TokenSet DOC_COMMENT = TokenSet.create(DlangTypes.DOC_COMMENT);
     public static final TokenSet MODULE_DEFINITION = TokenSet.create(DlangTypes.MODULE_DEFINITION);
     public static final TokenSet FUNCTION_DEFINITION = TokenSet.create(DlangTypes.FUNCTION_DEFINITION);
+    public static final TokenSet AT_ATTRIBUTE = TokenSet.create(DlangTypes.AT_ATTRIBUTE);
 
 //    public static final TokenSet WHITESPACES = TokenSet.create(TokenType.WHITE_SPACE);
 //

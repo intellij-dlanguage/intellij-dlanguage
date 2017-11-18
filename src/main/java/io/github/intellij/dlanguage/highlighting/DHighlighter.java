@@ -1,5 +1,6 @@
 package io.github.intellij.dlanguage.highlighting;
 
+import com.intellij.ide.highlighter.JavaHighlightingColors;
 import com.intellij.lexer.FlexAdapter;
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
@@ -24,6 +25,7 @@ public class DHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey LINE_DOC = createTextAttributesKey("D_LINE_DOC", DefaultLanguageHighlighterColors.DOC_COMMENT);
     public static final TextAttributesKey BLOCK_COMMENT = createTextAttributesKey("D_BLOCK_COMMENT", DefaultLanguageHighlighterColors.BLOCK_COMMENT);
     public static final TextAttributesKey DOC_COMMENT = createTextAttributesKey("D_DOC_COMMENT", DefaultLanguageHighlighterColors.DOC_COMMENT);
+    public static final TextAttributesKey AT_ATTRIBUTE = createTextAttributesKey("D_AT_ATTRIBUTE", JavaHighlightingColors.ANNOTATION_NAME_ATTRIBUTES);
     public static final TextAttributesKey CHAR = createTextAttributesKey("D_STRING", DefaultLanguageHighlighterColors.STRING);
     public static final TextAttributesKey STRING = createTextAttributesKey("D_STRING", DefaultLanguageHighlighterColors.STRING);
     public static final TextAttributesKey NUMBER = createTextAttributesKey("D_NUMBER", DefaultLanguageHighlighterColors.NUMBER);
@@ -69,6 +71,9 @@ public class DHighlighter extends SyntaxHighlighterBase {
         }
         if (DHighlightingTokenSets.DOC_COMMENT.contains(type)) {
             return pack(DOC_COMMENT);
+        }
+        if (DHighlightingTokenSets.AT_ATTRIBUTE.contains(type)) {
+            return pack(AT_ATTRIBUTE);
         }
         if (DHighlightingTokenSets.STRING.contains(type)) {
             return pack(STRING);

@@ -35,6 +35,7 @@ public class DColorSettingsPage implements ColorSettingsPage {
         new AttributesDescriptor("Brackets", BRACKETS),
         new AttributesDescriptor("Operation sign", OPERATOR),
         new AttributesDescriptor("Function definition", FUNCTION_DEFINITION),
+        new AttributesDescriptor("Attribute", AT_ATTRIBUTE),
 //            new AttributesDescriptor("Std Imports", STD_IMPORT),
         new AttributesDescriptor("Module definition", MODULE_DEFINITION),
 //            new AttributesDescriptor("Basic type", BASIC_TYPE),
@@ -84,6 +85,9 @@ public class DColorSettingsPage implements ColorSettingsPage {
             "\n" +
             "  string runId;\n" +
             "  Feature[] features;\n" +
+            "\n"+
+            "  private string m_name;\n" +
+            "  @property string name() { return m_name; }\n" +
             "\n" +
             "  this(ReportParser parser){\n" +
             "  \tthis.runId = parser.getRunId();\n" +
