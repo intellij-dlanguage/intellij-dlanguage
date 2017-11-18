@@ -117,7 +117,6 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement,
 
         var icon = getPresentationIcon(element)
 
-//        if (element is FunctionDeclaration || element is Constructor || element is VariableDeclaration) {
         if (icon == null)
             return PresentationData(presentation, null, icon, null)
 
@@ -125,7 +124,6 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement,
 
         if (visibility != Visibility.NONE)
             icon = addVisibilityToIcon(icon, visibility)
-//        }
 
         return PresentationData(presentation, null, icon, null)
     }
