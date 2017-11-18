@@ -16,7 +16,8 @@ import io.github.intellij.dlanguage.utils.Constructor
 import io.github.intellij.dlanguage.utils.FunctionDeclaration
 
 class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement,
-    Navigatable by (element as NavigatablePsiElement) {
+    Navigatable by (element as NavigatablePsiElement)
+{
     override fun getPresentation(): ItemPresentation {
         val presentation = buildString {
             fun appendCommaList(xs: List<String>?) {
@@ -46,15 +47,14 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement,
 
         var icon = getPresentationIcon(element)
 
-        when (element) {
-            is FunctionDeclaration -> {
-                if (icon != null) {
-                    val visibility = psiElementGetVisibility(element)
+        if (element is FunctionDeclaration || element is Constructor) {
+            if (icon == null)
+                return PresentationData(presentation, null, icon, null)
 
-                    if (visibility != Visibility.NONE)
-                        icon = addVisibilityToIcon(icon, visibility)
-                }
-            }
+            val visibility = psiElementGetVisibility(element)
+
+            if (visibility != Visibility.NONE)
+                icon = addVisibilityToIcon(icon, visibility)
         }
 
         return PresentationData(presentation, null, icon, null)
@@ -78,6 +78,7 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement,
         is DLanguageClassDeclaration -> psi.interfaceOrClass?.structBody
         is DLanguageInterfaceDeclaration -> psi.interfaceOrClass?.structBody
         is FunctionDeclaration -> psi
+        is Constructor -> psi
         else -> null
     }
 
