@@ -10,19 +10,37 @@ import com.intellij.psi.PsiElement
 import io.github.intellij.dlanguage.presentation.getPresentationIcon
 import io.github.intellij.dlanguage.presentation.presentableName
 import io.github.intellij.dlanguage.psi.*
+import io.github.intellij.dlanguage.utils.Constructor
 import io.github.intellij.dlanguage.utils.FunctionDeclaration
 
 class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement,
-    Navigatable by (element as NavigatablePsiElement) {
+    Navigatable by (element as NavigatablePsiElement)
+{
     override fun getPresentation(): ItemPresentation {
         val presentation = buildString {
-            fun appendCommaList(xs: List<String>) {
+            fun appendCommaList(xs: List<String>?) {
+                if (xs == null) {
+                    return
+                }
+
                 append('(')
                 append(xs.joinToString(", "))
                 append(')')
             }
 
             append(presentableName(element))
+
+            when (element) {
+                is FunctionDeclaration -> {
+                    val parametersNode = element.parameters
+                    appendCommaList(parametersNode?.parameters?.mapNotNull { it.type?.text })
+                    append(" : ${element.type?.text}")
+                }
+                is Constructor -> {
+                    val parametersNode = element.parameters
+                    appendCommaList(parametersNode?.parameters?.mapNotNull { it.type?.text })
+                }
+            }
         }
 
         val icon = getPresentationIcon(element);

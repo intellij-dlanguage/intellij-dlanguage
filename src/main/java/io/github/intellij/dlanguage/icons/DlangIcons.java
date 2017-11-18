@@ -18,6 +18,6 @@ public class DlangIcons {
     public static final Icon NODE_CLASS = AllIcons.Nodes.Class;
     public static final Icon NODE_INTERFACE = AllIcons.Nodes.Interface;
     public static final Icon NODE_ENUM = AllIcons.Nodes.Enum;
-    public static final Icon NODE_FUNCTION = AllIcons.Nodes.Function;
+    public static final Icon NODE_FUNCTION = IconLoader.getIcon("/icons/nodes/function.png");
     public static final Icon NODE_METHOD = AllIcons.Nodes.Method;
 }
