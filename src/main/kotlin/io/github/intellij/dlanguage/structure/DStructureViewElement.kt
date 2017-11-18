@@ -13,11 +13,12 @@ import io.github.intellij.dlanguage.presentation.presentableName
 import io.github.intellij.dlanguage.presentation.psiElementGetVisibility
 import io.github.intellij.dlanguage.psi.*
 import io.github.intellij.dlanguage.utils.Constructor
+import io.github.intellij.dlanguage.utils.EnumDeclaration
 import io.github.intellij.dlanguage.utils.FunctionDeclaration
+import io.github.intellij.dlanguage.utils.StructDeclaration
 
 class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement,
-    Navigatable by (element as NavigatablePsiElement)
-{
+    Navigatable by (element as NavigatablePsiElement) {
     override fun getPresentation(): ItemPresentation {
         val presentation = buildString {
             fun appendCommaList(xs: List<String>?) {
@@ -78,6 +79,8 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement,
         is DLanguageClassDeclaration -> psi.interfaceOrClass?.structBody
         is DLanguageInterfaceDeclaration -> psi.interfaceOrClass?.structBody
         is FunctionDeclaration -> psi
+        is EnumDeclaration -> psi
+        is StructDeclaration -> psi.structBody
         is Constructor -> psi
         else -> null
     }

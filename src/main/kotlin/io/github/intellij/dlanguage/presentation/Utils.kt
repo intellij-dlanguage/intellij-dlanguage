@@ -6,9 +6,7 @@ import io.github.intellij.dlanguage.icons.DlangIcons
 import io.github.intellij.dlanguage.psi.*
 import io.github.intellij.dlanguage.structure.Visibility
 import io.github.intellij.dlanguage.structure.fromPsiAttribute
-import io.github.intellij.dlanguage.utils.Constructor
-import io.github.intellij.dlanguage.utils.FunctionDeclaration
-import io.github.intellij.dlanguage.utils.InterfaceOrClass
+import io.github.intellij.dlanguage.utils.*
 import javax.swing.Icon
 
 fun presentableName(psi: PsiElement?): String? = when (psi) {
@@ -31,6 +29,8 @@ fun getPresentationIcon(psi: PsiElement?): Icon? = when (psi) {
     }
     is Constructor -> DlangIcons.NODE_METHOD
     is InterfaceOrClass -> getPresentationIcon(psi.parent)
+    is EnumDeclaration -> DlangIcons.NODE_ENUM
+    is StructDeclaration -> DlangIcons.NODE_STRUCT
     is DLanguageStructBody -> getPresentationIcon(psi.parent)
     is DlangFile -> DlangIcons.FILE
     else -> null
