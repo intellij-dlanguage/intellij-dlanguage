@@ -62,27 +62,35 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement,
     }
 
     override fun getChildren(): Array<TreeElement> {
-        val treeElements = element.children
-            .sortedBy { it.textOffset }
-            .mapNotNull { findContentNode(it) }
-            .map { DStructureViewElement(it) }
+        val treeElements = ArrayList<TreeElement>()
+
+        element.children.forEach {
+            val nodes = findContentNode(it).filterNotNull()
+            nodes.forEach {
+                treeElements.add(DStructureViewElement(it))
+            }
+        }
 
         return treeElements.toTypedArray()
     }
 
-    private fun findContentNode(psi: PsiElement?): PsiElement? = when (psi) {
+    private fun findContentNode(psi: PsiElement?): List<PsiElement?> = when (psi) {
         is DLanguageDeclaration -> {
-            psi.children
-                .map { findContentNode(it) }
-                .firstOrNull { it != null }
+            val res = ArrayList<PsiElement?>()
+
+            psi.children.forEach {
+                res.addAll(findContentNode(it).filterNotNull())
+            }
+
+            res
         }
-        is DLanguageClassDeclaration -> psi.interfaceOrClass?.structBody
-        is DLanguageInterfaceDeclaration -> psi.interfaceOrClass?.structBody
-        is FunctionDeclaration -> psi
-        is EnumDeclaration -> psi
-        is StructDeclaration -> psi.structBody
-        is Constructor -> psi
-        else -> null
+        is DLanguageClassDeclaration -> listOf(psi.interfaceOrClass?.structBody)
+        is DLanguageInterfaceDeclaration -> listOf(psi.interfaceOrClass?.structBody)
+        is FunctionDeclaration -> listOf(psi)
+        is EnumDeclaration -> listOf(psi)
+        is StructDeclaration -> listOf(psi.structBody)
+        is Constructor -> listOf(psi)
+        else -> emptyList()
     }
 
     override fun getValue(): Any = element
