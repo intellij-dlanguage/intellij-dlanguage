@@ -21,4 +21,6 @@ public class DlangIcons {
     public static final Icon NODE_ENUM = AllIcons.Nodes.Enum;
     public static final Icon NODE_FUNCTION = IconLoader.getIcon("/icons/nodes/function.png");
     public static final Icon NODE_METHOD = AllIcons.Nodes.Method;
+    public static final Icon NODE_FIELD = AllIcons.Nodes.Field;
+    public static final Icon NODE_PROPERTY = AllIcons.Nodes.Property;
 }

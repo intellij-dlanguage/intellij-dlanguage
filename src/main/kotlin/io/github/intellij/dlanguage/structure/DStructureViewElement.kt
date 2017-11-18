@@ -8,47 +8,111 @@ import com.intellij.pom.Navigatable
 import com.intellij.psi.NavigatablePsiElement
 import com.intellij.psi.PsiElement
 import io.github.intellij.dlanguage.icons.addVisibilityToIcon
-import io.github.intellij.dlanguage.presentation.getPresentationIcon
-import io.github.intellij.dlanguage.presentation.presentableName
-import io.github.intellij.dlanguage.presentation.psiElementGetVisibility
+import io.github.intellij.dlanguage.presentation.*
 import io.github.intellij.dlanguage.psi.*
-import io.github.intellij.dlanguage.utils.Constructor
-import io.github.intellij.dlanguage.utils.EnumDeclaration
-import io.github.intellij.dlanguage.utils.FunctionDeclaration
-import io.github.intellij.dlanguage.utils.StructDeclaration
+import io.github.intellij.dlanguage.utils.*
 
 class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement,
-    Navigatable by (element as NavigatablePsiElement) {
+    Navigatable by (element as NavigatablePsiElement)
+{
+    private fun variableDeclarationAttributes(element: VariableDeclaration): String? {
+        val allowedAttributes = arrayOf("const", "enum", "immutable")
+
+        if (element.autoDeclaration != null) {
+            val attribute = element.autoDeclaration?.storageClass?.text
+
+            if (attribute in allowedAttributes) {
+                return attribute
+            }
+        } else {
+            var attributes = ""
+
+            (element.parent as? DLanguageDeclaration)?.attributes?.forEach {
+                if (it.text in allowedAttributes) {
+                    attributes += it.text + " "
+                }
+            }
+
+            return attributes.trim()
+        }
+
+        return null
+    }
+
     override fun getPresentation(): ItemPresentation {
         val presentation = buildString {
-            fun appendCommaList(xs: List<String>?) {
+            fun appendCommaList(xs: List<String>?, bl: Char = '(', br: Char = ')') {
                 if (xs == null) {
                     return
                 }
 
-                append('(')
+                append(bl)
                 append(xs.joinToString(", "))
-                append(')')
+                append(br)
+            }
+
+            // Insert variables attributes
+            if (element is VariableDeclaration) {
+                val attributes = variableDeclarationAttributes(element)
+
+                if (attributes != null) {
+                    append(attributes)
+
+                    if (attributes.isNotEmpty())
+                        append(" ")
+                }
             }
 
             append(presentableName(element))
 
+            // Additional information
             when (element) {
                 is FunctionDeclaration -> {
-                    val parametersNode = element.parameters
-                    appendCommaList(parametersNode?.parameters?.mapNotNull { it.type?.text })
-                    append(" : ${element.type?.text}")
+                    when {
+                        psiElementIsGetter(element) -> append(" : ${element.type?.text}")
+                        psiElementIsSetter(element) -> {
+                            val parametersNode = element.parameters
+                            appendCommaList(parametersNode?.parameters?.mapNotNull { it.type?.text })
+                        }
+                        else -> {
+                            val parametersNode = element.parameters
+                            appendCommaList(parametersNode?.parameters?.mapNotNull { it.type?.text })
+                            append(" : ${element.type?.text}")
+                        }
+                    }
                 }
                 is Constructor -> {
                     val parametersNode = element.parameters
                     appendCommaList(parametersNode?.parameters?.mapNotNull { it.type?.text })
+                }
+                is VariableDeclaration -> {
+                    if (element.autoDeclaration == null) {
+                        append(" : ${element.type?.text}")
+
+                        val initializer = element.declarators.firstOrNull()?.initializer
+
+                        if (initializer != null) {
+                            append(" = ${psiElementShortText(initializer)}")
+                        }
+                    } else {
+                        val parts = element.autoDeclaration?.autoDeclarationParts
+                        val declPart = parts?.firstOrNull()
+
+                        if (declPart != null) {
+                            val initializer = declPart.initializer
+
+                            if (initializer != null) {
+                                append(" = ${psiElementShortText(initializer)}")
+                            }
+                        }
+                    }
                 }
             }
         }
 
         var icon = getPresentationIcon(element)
 
-        if (element is FunctionDeclaration || element is Constructor) {
+        if (element is FunctionDeclaration || element is Constructor || element is VariableDeclaration) {
             if (icon == null)
                 return PresentationData(presentation, null, icon, null)
 
@@ -90,6 +154,7 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement,
         is EnumDeclaration -> listOf(psi)
         is StructDeclaration -> listOf(psi.structBody)
         is Constructor -> listOf(psi)
+        is VariableDeclaration -> listOf(psi)
         else -> emptyList()
     }
 
