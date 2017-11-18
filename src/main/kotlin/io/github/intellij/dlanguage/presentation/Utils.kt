@@ -4,6 +4,8 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiNamedElement
 import io.github.intellij.dlanguage.icons.DlangIcons
 import io.github.intellij.dlanguage.psi.*
+import io.github.intellij.dlanguage.structure.Visibility
+import io.github.intellij.dlanguage.structure.fromPsiAttribute
 import io.github.intellij.dlanguage.utils.FunctionDeclaration
 import io.github.intellij.dlanguage.utils.InterfaceOrClass
 import javax.swing.Icon
@@ -53,4 +55,49 @@ fun psiElementIsMethod(psi: PsiElement?): Boolean {
     }
 
     return false
+}
+
+fun psiElementGetVisibility(psi: PsiElement?): Visibility {
+    if (psi == null || !psiElementIsMethod(psi)) {
+        return Visibility.NONE
+    }
+
+    fun extractNodeVisibility(psi: PsiElement?): Visibility {
+        if (psi == null) {
+            return Visibility.NONE
+        }
+
+        when (psi) {
+            is DLanguageDeclaration -> {
+                psi.attributes
+                    .map { fromPsiAttribute(it) }
+                    .filter { it != Visibility.NONE }
+                    .forEach { return it }
+
+                var sibling = psi.prevSibling
+
+                while (sibling != null) {
+                    if (sibling is DLanguageDeclaration && sibling.attributeDeclaration != null) {
+                        sibling.attributes
+                            .map { fromPsiAttribute(it) }
+                            .filter { it != Visibility.NONE }
+                            .forEach { return it }
+                    }
+
+                    sibling = sibling.prevSibling
+                }
+
+                return extractNodeVisibility(psi.parent)
+            }
+            is DLanguageClassDeclaration -> {
+                return Visibility.PUBLIC
+            }
+            is DlangStructDeclaration -> {
+                return Visibility.PUBLIC
+            }
+            else -> return extractNodeVisibility(psi.parent)
+        }
+    }
+
+    return extractNodeVisibility(psi)
 }

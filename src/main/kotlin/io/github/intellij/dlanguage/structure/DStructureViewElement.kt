@@ -7,15 +7,16 @@ import com.intellij.navigation.ItemPresentation
 import com.intellij.pom.Navigatable
 import com.intellij.psi.NavigatablePsiElement
 import com.intellij.psi.PsiElement
+import io.github.intellij.dlanguage.icons.addVisibilityToIcon
 import io.github.intellij.dlanguage.presentation.getPresentationIcon
 import io.github.intellij.dlanguage.presentation.presentableName
+import io.github.intellij.dlanguage.presentation.psiElementGetVisibility
 import io.github.intellij.dlanguage.psi.*
 import io.github.intellij.dlanguage.utils.Constructor
 import io.github.intellij.dlanguage.utils.FunctionDeclaration
 
 class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement,
-    Navigatable by (element as NavigatablePsiElement)
-{
+    Navigatable by (element as NavigatablePsiElement) {
     override fun getPresentation(): ItemPresentation {
         val presentation = buildString {
             fun appendCommaList(xs: List<String>?) {
@@ -43,7 +44,19 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement,
             }
         }
 
-        val icon = getPresentationIcon(element);
+        var icon = getPresentationIcon(element)
+
+        when (element) {
+            is FunctionDeclaration -> {
+                if (icon != null) {
+                    val visibility = psiElementGetVisibility(element)
+
+                    if (visibility != Visibility.NONE)
+                        icon = addVisibilityToIcon(icon, visibility)
+                }
+            }
+        }
+
         return PresentationData(presentation, null, icon, null)
     }
 
@@ -57,7 +70,11 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement,
     }
 
     private fun findContentNode(psi: PsiElement?): PsiElement? = when (psi) {
-        is DLanguageDeclaration -> findContentNode(psi.children[0])
+        is DLanguageDeclaration -> {
+            psi.children
+                .map { findContentNode(it) }
+                .firstOrNull { it != null }
+        }
         is DLanguageClassDeclaration -> psi.interfaceOrClass?.structBody
         is DLanguageInterfaceDeclaration -> psi.interfaceOrClass?.structBody
         is FunctionDeclaration -> psi
