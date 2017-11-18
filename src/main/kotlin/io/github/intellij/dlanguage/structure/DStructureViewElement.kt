@@ -107,20 +107,25 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement,
                         }
                     }
                 }
+                is AliasDeclaration -> {
+                    if (element.type != null) {
+                        append(" = ${psiElementShortText(element.type!!)}")
+                    }
+                }
             }
         }
 
         var icon = getPresentationIcon(element)
 
-        if (element is FunctionDeclaration || element is Constructor || element is VariableDeclaration) {
-            if (icon == null)
-                return PresentationData(presentation, null, icon, null)
+//        if (element is FunctionDeclaration || element is Constructor || element is VariableDeclaration) {
+        if (icon == null)
+            return PresentationData(presentation, null, icon, null)
 
-            val visibility = psiElementGetVisibility(element)
+        val visibility = psiElementGetVisibility(element)
 
-            if (visibility != Visibility.NONE)
-                icon = addVisibilityToIcon(icon, visibility)
-        }
+        if (visibility != Visibility.NONE)
+            icon = addVisibilityToIcon(icon, visibility)
+//        }
 
         return PresentationData(presentation, null, icon, null)
     }
@@ -155,6 +160,7 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement,
         is StructDeclaration -> listOf(psi.structBody)
         is Constructor -> listOf(psi)
         is VariableDeclaration -> listOf(psi)
+        is AliasDeclaration -> listOf(psi)
         else -> emptyList()
     }
 

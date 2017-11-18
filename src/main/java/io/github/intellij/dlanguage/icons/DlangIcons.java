@@ -23,4 +23,5 @@ public class DlangIcons {
     public static final Icon NODE_METHOD = AllIcons.Nodes.Method;
     public static final Icon NODE_FIELD = AllIcons.Nodes.Field;
     public static final Icon NODE_PROPERTY = AllIcons.Nodes.Property;
+    public static final Icon NODE_ALIAS = AllIcons.Nodes.Annotationtype;
 }

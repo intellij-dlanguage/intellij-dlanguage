@@ -21,6 +21,9 @@ fun presentableName(psi: PsiElement?): String? = when (psi) {
             psi.autoDeclaration?.autoDeclarationParts?.firstOrNull()?.name
         }
     }
+    is AliasDeclaration -> {
+        psi.aliasInitializers.joinToString(", ") { it.name }
+    }
     else -> psi.toString()
 }
 
@@ -40,6 +43,7 @@ fun getPresentationIcon(psi: PsiElement?): Icon? = when (psi) {
     is StructDeclaration -> DlangIcons.NODE_STRUCT
     is DLanguageStructBody -> getPresentationIcon(psi.parent)
     is VariableDeclaration -> DlangIcons.NODE_FIELD
+    is AliasDeclaration -> DlangIcons.NODE_ALIAS
     is DlangFile -> DlangIcons.FILE
     else -> null
 }
@@ -85,12 +89,12 @@ fun psiElementIsMethod(psi: PsiElement?): Boolean {
     return false
 }
 
-// TODO: rm hardcode - 15 and 11
 fun psiElementShortText(psi: PsiElement): String {
     val text = psi.text.trim()
+    val maxLength = 40
 
-    return if (text.length > 15) {
-        text.subSequence(0, 11).toString() + " ..."
+    return if (text.length > maxLength) {
+        text.subSequence(0, maxLength - 3).toString() + " ..."
     } else {
         text
     }
@@ -128,7 +132,7 @@ fun psiElementGetVisibility(psi: PsiElement?): Visibility {
 
                 return extractNodeVisibility(psi.parent)
             }
-            is DLanguageClassDeclaration -> {
+            is InterfaceOrClass -> {
                 return Visibility.PUBLIC
             }
             is DlangStructDeclaration -> {
