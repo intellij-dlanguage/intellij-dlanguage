@@ -111,6 +111,7 @@ HEX_FLOAT = 0[xX] ([0-9a-fA-F]* \.)? [0-9a-fA-F]+ {HEX_EXPONENT}
 HEX_EXPONENT = [pP][\+\-]? [0-9]+
 
 MODULE_DEFINITION = ([a-z_][a-zA-Z_0-9']+(\.[a-zA-Z_0-9']*)*)|[a-z]|[A-Z][a-zA-Z_0-9']*(\.[A-Z][a-zA-Z_0-9']*)*\.[a-z][a-zA-Z_0-9']*
+AT_ATTRIBUTE = "@" {ID}
 
 STRING = ({WYSIWYG_STRING} |
           {ALTERNATE_WYSIWYG_STRING} |
@@ -465,6 +466,7 @@ FUNCTION_DEFINITION = {ID}\(.*\)([^;]|[\s]*|[\r]*|[\n]*)
 <YYINITIAL> {COMMA} { return COMMA; }
 <YYINITIAL> {SEMICOLON} { return SEMICOLON; }
 <YYINITIAL> {DOT} { return DOT; }
+<YYINITIAL> {AT_ATTRIBUTE} { return AT_ATTRIBUTE; }
 
 
 <YYINITIAL> {ID}                       { return ID; }
