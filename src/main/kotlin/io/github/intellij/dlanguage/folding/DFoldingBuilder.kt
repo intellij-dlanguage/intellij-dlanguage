@@ -22,6 +22,7 @@ import io.github.intellij.dlanguage.psi.ext.*
 import io.github.intellij.dlanguage.psi.impl.*
 import io.github.intellij.dlanguage.psi.impl.named.DlangEnumDeclarationImpl
 import io.github.intellij.dlanguage.psi.impl.named.DlangTemplateDeclarationImpl
+import io.github.intellij.dlanguage.utils.DeclarationOrStatement
 import io.github.intellij.dlanguage.utils.FunctionBody
 import io.github.intellij.dlanguage.utils.StructBody
 import java.util.ArrayList
@@ -141,19 +142,36 @@ class DFoldingBuilder : FoldingBuilderEx(), DumbAware {
         }
 
         override fun visitImportDeclaration(importDecl: DLanguageImportDeclarationImpl) {
+            val decl = importDecl.parent as? DLanguageDeclaration ?: return
+            val insideBody = decl.parent is DeclarationOrStatement
+
             // Skip if previous line is import declaration
-            val prevSibling = importDecl.parent.getPrevNonCommentSibling()
+            val prevSibling = if (insideBody) {
+                val prev = importDecl.parent?.parent?.getPrevNonCommentSibling() as? DeclarationOrStatement
+                prev?.declaration
+            } else {
+                importDecl.parent?.getPrevNonCommentSibling()
+            }
+
             val prevDecl = prevSibling as? DLanguageDeclaration
             if (prevDecl?.importDeclaration != null) return
 
             // Fold trailing imports
-            val decl = importDecl.parent as? DLanguageDeclaration ?: return
             if (decl.importDeclaration == null) return
             var lastTrailing = decl
 
             while (true) {
-                val nextSibling = lastTrailing.getNextNonCommentSibling()
-                val nextDecl = nextSibling as? DLanguageDeclaration ?: break
+                val nextSibling = if (insideBody) {
+                    lastTrailing.parent.getNextNonCommentSibling()
+                } else {
+                    lastTrailing.getNextNonCommentSibling()
+                }
+
+                val nextDecl = if (insideBody) {
+                    (nextSibling as? DeclarationOrStatement)?.declaration ?: break
+                } else {
+                    nextSibling as? DLanguageDeclaration ?: break
+                }
                 if (nextDecl.importDeclaration == null) break
 
                 lastTrailing = nextDecl
