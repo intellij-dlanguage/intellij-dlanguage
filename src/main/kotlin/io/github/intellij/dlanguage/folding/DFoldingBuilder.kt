@@ -1,5 +1,6 @@
 package io.github.intellij.dlanguage.folding
 
+import com.intellij.codeInsight.folding.CodeFoldingSettings
 import com.intellij.lang.ASTNode
 import com.intellij.lang.folding.FoldingBuilderEx
 import com.intellij.lang.folding.FoldingDescriptor
@@ -12,6 +13,7 @@ import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiWhiteSpace
 import com.intellij.psi.codeStyle.CodeStyleSettingsManager
+import com.intellij.psi.tree.TokenSet
 import com.intellij.psi.util.PsiTreeUtil
 import io.github.intellij.dlanguage.DLanguage
 import io.github.intellij.dlanguage.psi.*
@@ -69,9 +71,16 @@ class DFoldingBuilder : FoldingBuilderEx(), DumbAware {
         return descriptors.toTypedArray()
     }
 
-    override fun isCollapsedByDefault(node: ASTNode): Boolean {
-        return false
-    }
+    override fun isCollapsedByDefault(node: ASTNode): Boolean =
+        when {
+            node.psi is DLanguageImportDeclaration ->
+                CodeFoldingSettings.getInstance().COLLAPSE_IMPORTS
+
+            node.elementType in TokenSet.create(OP_BRACES_LEFT, OP_BRACES_RIGHT) ->
+                DCodeFoldingSettings.instance.collapsibleOneLineMethods
+
+            else -> false
+        }
 
     private class FoldingVisitor(
         private val descriptors: MutableList<FoldingDescriptor>,
@@ -152,7 +161,7 @@ class DFoldingBuilder : FoldingBuilderEx(), DumbAware {
 
             val offset = decl.importDeclaration?.kW_IMPORT?.textRange?.endOffset ?: return
             val range = TextRange(offset + 1, lastTrailing.textRange.endOffset)
-            descriptors += FoldingDescriptor(decl.node, range)
+            descriptors += FoldingDescriptor(importDecl, range)
         }
 
         private fun tryFoldBlockWhitespaces(block: DLanguageBlockStatement): Boolean {

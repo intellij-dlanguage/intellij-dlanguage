@@ -126,9 +126,15 @@
         <!-- Editing utils -->
         <lang.braceMatcher language="D" implementationClass="io.github.intellij.dlanguage.features.DBraceMatcher"/>
         <lang.commenter language="D" implementationClass="io.github.intellij.dlanguage.features.DCommenter"/>
-        <lang.foldingBuilder language="D" implementationClass="io.github.intellij.dlanguage.folding.DFoldingBuilder"/>
+
         <completion.contributor language="D"
                                 implementationClass="io.github.intellij.dlanguage.codeinsight.DCompletionContributor"/>
+
+        <!-- folding -->
+        <lang.foldingBuilder language="D" implementationClass="io.github.intellij.dlanguage.folding.DFoldingBuilder"/>
+        <codeFoldingOptionsProvider instance="io.github.intellij.dlanguage.folding.DCodeFoldingOptionsProvider"/>
+        <applicationService serviceInterface="io.github.intellij.dlanguage.folding.DCodeFoldingSettings"
+                            serviceImplementation="io.github.intellij.dlanguage.folding.impl.DCodeFoldingSettingsImpl"/>
         <!--  <completion.contributor language="D"
                                   implementationClass="io.github.intellij.dlanguage.codeinsight.DCompletionContributorImports"/>-->
 
