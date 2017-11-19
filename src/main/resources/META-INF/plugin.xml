@@ -126,7 +126,7 @@
         <!-- Editing utils -->
         <lang.braceMatcher language="D" implementationClass="io.github.intellij.dlanguage.features.DBraceMatcher"/>
         <lang.commenter language="D" implementationClass="io.github.intellij.dlanguage.features.DCommenter"/>
-        <lang.foldingBuilder language="D" implementationClass="io.github.intellij.dlanguage.features.DFoldingBuilder"/>
+        <lang.foldingBuilder language="D" implementationClass="io.github.intellij.dlanguage.folding.DFoldingBuilder"/>
         <completion.contributor language="D"
                                 implementationClass="io.github.intellij.dlanguage.codeinsight.DCompletionContributor"/>
         <!--  <completion.contributor language="D"
