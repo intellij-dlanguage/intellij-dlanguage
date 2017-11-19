@@ -4404,6 +4404,7 @@ class DLangParser {
         final Bookmark bookmark = setBookmark();
         Token ident = expect(tok("identifier"));
         if (ident == null) {
+            abandonBookmark(bookmark);
             cleanup(m, IMPORT_BIND);
             return false;
         }
@@ -4412,6 +4413,7 @@ class DLangParser {
             advance();
             final Token id = expect(tok("identifier"));
             if (id == null) {
+                abandonBookmark(bookmark);
                 cleanup(m, IMPORT_BIND);
                 return false;
             }
