@@ -1,5 +1,6 @@
 package io.github.intellij.dlanguage.stubs.types;
 
+import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubInputStream;
 import com.intellij.psi.stubs.StubOutputStream;
@@ -66,5 +67,10 @@ public class SingleImportStubElementType extends DNamedStubElementType<DlangSing
         final boolean hasName = dataStream.readBoolean();
         final StringRef importedModule = dataStream.readName();
         return new DlangSingleImportStub(parentStub, this, name, isPublic, numBinds, binds, importName, hasName, importedModule);
+    }
+
+    @Override
+    public boolean shouldCreateStub(final ASTNode node) {
+        return true;
     }
 }
