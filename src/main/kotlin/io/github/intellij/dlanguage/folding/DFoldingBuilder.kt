@@ -67,7 +67,15 @@ class DFoldingBuilder : FoldingBuilderEx(), DumbAware {
         val descriptors: MutableList<FoldingDescriptor> = ArrayList()
         val rightMargin = CodeStyleSettingsManager.getSettings(root.project).getRightMargin(DLanguage)
         val visitor = FoldingVisitor(descriptors, rightMargin)
-        PsiTreeUtil.processElements(root) { it.accept(visitor); true }
+        PsiTreeUtil.processElements(root) {
+            // required in case the psi element has been deleted
+            if (it.isPhysical && it.isValid && it.isWritable && it.text != "") {
+                it.accept(visitor)
+                true
+            } else {
+                false
+            }
+        }
 
         return descriptors.toTypedArray()
     }
