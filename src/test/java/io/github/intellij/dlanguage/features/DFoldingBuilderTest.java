@@ -15,9 +15,9 @@ public class DFoldingBuilderTest extends DLightPlatformCodeInsightFixtureTestCas
 
     // Fold00001 should really result in "  ". OPENCOM and CLOSECOM remains in
     // the text, but the rest gets collapsed to "  ".
-    public void testFold00001() throws Throwable {
-        doTest(/*"main (Function) */"{...}");
-    }
+//    public void testFold00001() throws Throwable {
+//        doTest(/*"main (Function) */"{...}");
+//    }
 //    public void testFold00002() throws Throwable { doTestModule("--"); }
 
     /**
