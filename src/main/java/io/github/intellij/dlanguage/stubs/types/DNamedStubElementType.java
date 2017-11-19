@@ -1,5 +1,6 @@
 package io.github.intellij.dlanguage.stubs.types;
 
+import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.IndexSink;
 import com.intellij.psi.stubs.NamedStubBase;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
@@ -35,5 +36,9 @@ public abstract class DNamedStubElementType<S extends NamedStubBase<T>, T extend
 
     }
 
+    @Override
+    public boolean shouldCreateStub(final ASTNode node) {
+        return ((DNamedElement) node.getPsi()).hasAName();
+    }
 }
 

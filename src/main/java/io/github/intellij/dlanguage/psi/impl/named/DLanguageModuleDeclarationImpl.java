@@ -48,8 +48,9 @@ public class DLanguageModuleDeclarationImpl extends DNamedStubbedPsiElementBase<
 
     @NotNull
     public String getName() {
-        if (getGreenStub() != null) {
-            return getGreenStub().getName();
+        final DlangModuleDeclarationStub greenStub = getGreenStub();
+        if (greenStub != null) {
+            return greenStub.getName();
         }
         if (getIdentifierChain() == null) {
             return DReference.Companion.getNAME_NOT_FOUND_STRING();
@@ -97,6 +98,14 @@ public class DLanguageModuleDeclarationImpl extends DNamedStubbedPsiElementBase<
                 return DlangIcons.FILE;
             }
         };
+    }
+
+    public boolean hasAName() {
+        try {
+            return getIdentifierChain().getIdentifiers().size() > 0;
+        } catch (final NullPointerException e) {
+            return false;
+        }
     }
 
     @Nullable

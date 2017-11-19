@@ -140,7 +140,7 @@ static this() {
     types_children["MixinExpression"] = ["AssignExpression","OP_PAR_RIGHT","OP_PAR_LEFT","KW_MIXIN"];
     types_children["MixinTemplateDeclaration"] = ["TemplateDeclaration","KW_MIXIN"];
     types_children["MixinTemplateName"] = ["TypeofExpression", "IdentifierOrTemplateChain", "Symbol","OP_DOT"];
-    named_children["ModuleDeclaration"] = ["KW_MODULE", "IdentifierChain","OP_SCOLON"];
+    //named_children["ModuleDeclaration"] = ["KW_MODULE", "IdentifierChain","OP_SCOLON"];
     types_children["MulExpression"] = ["MulExpression","PowExpression","OP_MOD","OP_DIV","OP_ASTERISK"];
     named_children["NamedImportBind"] = ["Identifier", "OP_EQ"];
     types_children["NewAnonClassExpression"] = ["KW_NEW","KW_CLASS","Arguments*","BaseClassList", "StructBody"];
@@ -350,7 +350,7 @@ static this() {
     has_processDeclaration["MixinExpression"] = false;
     has_processDeclaration["MixinTemplateDeclaration"] = true;
     has_processDeclaration["MixinTemplateName"] = false;
-    has_processDeclaration["ModuleDeclaration"] = false;
+    //has_processDeclaration["ModuleDeclaration"] = false;
     has_processDeclaration["MulExpression"] = false;
     has_processDeclaration["NamedImportBind"] = false;
     has_processDeclaration["NewAnonClassExpression"] = false;

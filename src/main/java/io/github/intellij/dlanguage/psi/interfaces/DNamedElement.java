@@ -24,4 +24,8 @@ public interface DNamedElement extends DCompositeElement, PsiNameIdentifierOwner
     @Nullable
     @Override
     DlangIdentifier getNameIdentifier();
+
+    default boolean hasAName() {
+        return true;
+    }
 }

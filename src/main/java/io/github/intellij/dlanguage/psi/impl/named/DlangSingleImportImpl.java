@@ -89,4 +89,12 @@ public class DlangSingleImportImpl extends DNamedStubbedPsiElementBase<DlangSing
         finder.recurseUp();
         return finder.isPublic();
     }
+
+    public boolean hasAName() {
+        try {
+            return getIdentifier() != null;
+        } catch (final NullPointerException e) {
+            return false;
+        }
+    }
 }
