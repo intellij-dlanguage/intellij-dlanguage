@@ -12,15 +12,14 @@ import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiWhiteSpace
 import com.intellij.psi.codeStyle.CodeStyleSettingsManager
-import com.intellij.psi.tree.TokenSet
 import com.intellij.psi.util.PsiTreeUtil
 import io.github.intellij.dlanguage.DLanguage
 import io.github.intellij.dlanguage.psi.*
 import io.github.intellij.dlanguage.psi.DlangTypes.*
 import io.github.intellij.dlanguage.psi.ext.*
-import io.github.intellij.dlanguage.psi.impl.DLanguageBlockStatementImpl
-import io.github.intellij.dlanguage.psi.impl.DLanguageImportDeclarationImpl
-import io.github.intellij.dlanguage.psi.impl.DLanguageStructBodyImpl
+import io.github.intellij.dlanguage.psi.impl.*
+import io.github.intellij.dlanguage.psi.impl.named.DlangEnumDeclarationImpl
+import io.github.intellij.dlanguage.psi.impl.named.DlangTemplateDeclarationImpl
 import io.github.intellij.dlanguage.utils.FunctionBody
 import io.github.intellij.dlanguage.utils.StructBody
 import java.util.ArrayList
@@ -30,16 +29,32 @@ class DFoldingBuilder : FoldingBuilderEx(), DumbAware {
         val ONE_LINER_PLACEHOLDERS_EXTRA_LENGTH = 4
     }
 
+    private fun getPlaceholderTextForPsi(psi: PsiElement): String? =
+        when (psi) {
+            is PsiComment -> {
+                "/* ... */"
+            }
+            is DLanguageArrayInitializer -> "[...]"
+            is StructBody,
+            is DLanguageBlockStatement,
+            is DlangTemplateDeclaration,
+            is DLanguageStructInitializer,
+            is DLanguageAnonymousEnumDeclarationImpl,
+            is DlangEnumDeclaration -> "{...}"
+            is DLanguageLinkageAttribute -> {
+                when {
+                    psi.isExternal -> "{...}"
+                    else -> "..."
+                }
+            }
+            else -> "..."
+        }
+
     override fun getPlaceholderText(node: ASTNode): String? =
         when {
             node.elementType == OP_BRACES_LEFT -> " { "
             node.elementType == OP_BRACES_RIGHT -> " }"
-            node.psi is PsiComment -> {
-                "/* ... */"
-            }
-            node.psi is StructBody -> "{...}"
-            node.psi is DLanguageBlockStatement -> "{...}"
-            else -> "..."
+            else -> getPlaceholderTextForPsi(node.psi)
         }
 
     override fun buildFoldRegions(root: PsiElement, document: Document, quick: Boolean): Array<FoldingDescriptor> {
@@ -71,7 +86,33 @@ class DFoldingBuilder : FoldingBuilderEx(), DumbAware {
             fold(o)
         }
 
-        override fun visitStructBody(o: DLanguageStructBodyImpl) {
+        override fun visitStructBody(o: DLanguageStructBodyImpl) = fold(o)
+
+        override fun visitTemplateDeclaration(o: DlangTemplateDeclarationImpl) =
+            foldBetween(o, o.leftBraces, o.rightBraces)
+
+        override fun visitArrayInitializer(o: DLanguageArrayInitializerImpl) = fold(o)
+
+        override fun visitStructInitializer(o: DLanguageStructInitializerImpl) = fold(o)
+
+        private fun foldBetween(element: PsiElement, left: PsiElement?, right: PsiElement?) {
+            if (left != null && right != null) {
+                val range = TextRange(left.textOffset, right.textOffset + 1)
+                descriptors += FoldingDescriptor(element.node, range)
+            }
+        }
+
+        override fun visitLinkageAttribute(o: DLanguageLinkageAttributeImpl) {
+            if (o.isExternal) {
+                val decl = o.parent.parent as? DLanguageDeclaration ?: return
+                foldBetween(o, decl.leftBraces, decl.rightBraces)
+            }
+        }
+
+        override fun visitAnonymousEnumDeclaration(o: DLanguageAnonymousEnumDeclarationImpl) =
+            foldBetween(o, o.leftBraces, o.rightBraces)
+
+        override fun visitEnumDeclaration(o: DlangEnumDeclarationImpl) {
             fold(o)
         }
 
@@ -91,8 +132,12 @@ class DFoldingBuilder : FoldingBuilderEx(), DumbAware {
         }
 
         override fun visitImportDeclaration(importDecl: DLanguageImportDeclarationImpl) {
+            // Skip if previous line is import declaration
             val prevSibling = importDecl.parent.getPrevNonCommentSibling()
-            if (prevSibling is DLanguageDeclaration) return
+            val prevDecl = prevSibling as? DLanguageDeclaration
+            if (prevDecl?.importDeclaration != null) return
+
+            // Fold trailing imports
             val decl = importDecl.parent as? DLanguageDeclaration ?: return
             if (decl.importDeclaration == null) return
             var lastTrailing = decl
@@ -153,3 +198,12 @@ private fun DLanguageBlockStatement.isSingleLine(doc: Document, maxLength: Int):
 
     return doc.getLineNumber(startContents.textOffset) == doc.getLineNumber(endContents.textRange.endOffset)
 }
+
+private val PsiElement.leftBraces: PsiElement?
+    get() = node.findChildByType(DlangTypes.OP_BRACES_LEFT)?.psi
+
+private val PsiElement.rightBraces: PsiElement?
+    get() = node.findChildByType(DlangTypes.OP_BRACES_RIGHT)?.psi
+
+private val DLanguageLinkageAttribute.isExternal: Boolean
+    get() = node.findChildByType(DlangTypes.KW_EXTERN) != null
