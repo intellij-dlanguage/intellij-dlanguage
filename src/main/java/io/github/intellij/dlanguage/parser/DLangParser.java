@@ -4118,6 +4118,11 @@ class DLangParser {
             cleanup(m, GOTO_STATEMENT);
             return false;
         }
+        if (!moreTokens()) {
+            error("Expected something after goto instead of EOF");
+            cleanup(m, GOTO_STATEMENT);
+            return false;
+        }
         final Token.IdType i = current().type;
         if (i.equals(tok("identifier")) || i.equals(tok("default"))) {
             advance();
