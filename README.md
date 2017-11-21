@@ -10,33 +10,26 @@ Support for the [D Programming Language](http://dlang.org/) within IntelliJ IDEA
 
 ## Supported versions of IntelliJ
 
-| Plugin Version | IntelliJ Versions |
-| :--- | :--- |
-| 1.15.2 | 2017.1.* - 2017.3.* |
-| 1.15.1 | 2017.1.* - 2017.3.* |
-| 1.15 | 2017.1.* - 2017.3.* |
-| 1.14 | 2017.1.* - 2017.3.* |
-| 1.13.1 | 2017.1.* - 2017.3.* |
-| 1.13 | 2017.1.* - 2017.2.* |
-| 1.12 | 2017.1 - 2017.1.5 |
-| 1.11 | 2016.3 - 2016.3.* |
+| Plugin Version | IntelliJ Versions | release notes |
+| :--- | :--- | :--- |
+| 1.15.2 | 2017.1.* - 2017.3.* | added Structure View, code folding, bug fixes |
+| 1.15.1 | 2017.1.* - 2017.3.* | bug fixes |
+| 1.15 | 2017.1.* - 2017.3.* | bug fixes |
+| 1.14 | 2017.1.* - 2017.3.* | added support for debugging via GDB and error reporting via [sentry.io](https://sentry.io) |
+| 1.13.1 | 2017.1.* - 2017.3.* | support for IntelliJ 2017.3 and fix various bugs |
+| 1.13 | 2017.1.* - 2017.2.* | support for IntelliJ 2017.2 and remove the need for DCD |
+| 1.12 | 2017.1 - 2017.1.5 | support for IntelliJ 2017.1 |
+| 1.11 | 2016.3 - 2016.3.* | support for IntelliJ 2016.3 |
 
 JetBrains create downloadable releases with or without a bundled JRE. If you download a release without a bundled JRE you will need to have a JRE installed. Since IntelliJ 16 (the 2016.* versions) JRE 8 is required to run the IDE.
 
 ## A few caveats, etc.
 
-This is an early stage work in progress. The feature set is likely lacking in many areas: refactoring support, debugging and the full reference support that provides go to declaration and go to implementation etc. There are certainly more.
+This plugin is being developed by a small team of volunteers in their spare time. Currently we only support IntelliJ IDEA however we intend to support other Jetbrains IDE's in the future, especially CLion (help with #57 would be appreciated). The feature set is continually evolving.
 
-This plugin is being developed for IntelliJ IDEA however it should be able to work in other Jetbrains IDE's including CLion (although you may need to compile from source with a few minor code changes). We do intend to support CLion in a future release.
+As the project relies on the good will of its contributors, progress can sometimes take a while. It is a project that will span years not weeks. 
 
-This plugin is being developed purely by a few volunteers in their spare time – unless someone can provide some better funded resource to work on this. It is a project that will span years not weeks. Please support the project by using the plugin and feeding back your experiences by raising issues for feedback, feature requests and bugs. Even better get involved and submit pull requests.
-
-## Latest Updates
-
-* September 2017 - Released v1.13.1 to add support for IntelliJ 2017.3 and fix various bugs
-* July 2017 - Released v1.13 to add support for IntelliJ 2017.2 and remove the need for DCD
-* March 2017 – Released v1.12 to add compatibility with IntelliJ 2017.1 (#139)
-* December 2016 – v1.11 of the plugin adds compatibility with IntelliJ 2016.3
+You can help by using the plugin and raising issues for feature requests and bugs. Even better get involved and submit pull requests.
 
 ## Installation
 
