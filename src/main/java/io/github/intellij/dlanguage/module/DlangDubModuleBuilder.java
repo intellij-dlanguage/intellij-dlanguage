@@ -46,7 +46,7 @@ public class DlangDubModuleBuilder extends DlangModuleBuilder {
 
     @Override
     public void setupRootModel(final ModifiableRootModel rootModel) throws ConfigurationException {
-        setJavaRootModel(rootModel);
+        super.setupRootModel(rootModel);
 
         final Project project = rootModel.getProject();
         final RunManagerImpl runManager = RunManagerImpl.getInstanceImpl(project);

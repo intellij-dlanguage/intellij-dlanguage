@@ -61,7 +61,7 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
     private JTextField GDBVersion;
 
     public DLanguageToolsConfigurable(@NotNull final Project project) {
-        this.propertiesComponent = PropertiesComponent.getInstance(project);
+        this.propertiesComponent = PropertiesComponent.getInstance();
         properties = Arrays.asList(
             new Tool(project, "dub", ToolKey.DUB_KEY, dubPath, dubFlags,
                 dubAutoFind, dubVersion),

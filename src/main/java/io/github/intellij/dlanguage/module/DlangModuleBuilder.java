@@ -94,13 +94,9 @@ public class DlangModuleBuilder extends JavaModuleBuilder {
         return DLANG_GROUP_NAME;
     }
 
-    protected void setJavaRootModel(final ModifiableRootModel rootModel) throws ConfigurationException {
-        super.setupRootModel(rootModel);
-    }
-
     @Override
     public void setupRootModel(final ModifiableRootModel rootModel) throws ConfigurationException {
-        setJavaRootModel(rootModel);
+        super.setupRootModel(rootModel);
         final Project project = rootModel.getProject();
         final RunManagerImpl runManager = RunManagerImpl.getInstanceImpl(project);
 
@@ -146,7 +142,7 @@ public class DlangModuleBuilder extends JavaModuleBuilder {
     @Override
     public List<Pair<String, String>> getSourcePaths() {
         if (sourcePaths == null) {
-            final List<Pair<String, String>> paths = new ArrayList<Pair<String, String>>();
+            final List<Pair<String, String>> paths = new ArrayList<>();
             @NonNls final String path = getContentEntryPath() + File.separator + "source";
             new File(path).mkdirs();
             paths.add(Pair.create(path, ""));

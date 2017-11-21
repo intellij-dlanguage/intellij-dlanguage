@@ -12,13 +12,12 @@ import com.intellij.testFramework.TestDataFile
 import com.intellij.testFramework.UsefulTestCase
 import com.intellij.testFramework.VfsTestUtil
 import junit.framework.TestCase
-import io.github.intellij.dlanguage.dlanguage.DlangLexer
 import org.jetbrains.annotations.NonNls
 import java.io.File
 import java.io.IOException
 import java.net.URISyntaxException
 
-open abstract class DlangLexerTestBase(expectPath: String) : LexerTestCase() {
+abstract class DlangLexerTestBase(expectPath: String) : LexerTestCase() {
 
     private val srcPath = dirPath + File.separator + "lexer"
     private val myExpectPath: String
@@ -43,13 +42,9 @@ open abstract class DlangLexerTestBase(expectPath: String) : LexerTestCase() {
         super.setUp()
     }
 
-    override fun createLexer(): Lexer {
-        return FlexAdapter(io.github.intellij.dlanguage.dlanguage.DlangLexer(null))
-    }
+    override fun createLexer(): Lexer = FlexAdapter(io.github.intellij.dlanguage.dlanguage.DlangLexer(null))
 
-    override fun getDirPath(): String {
-        return "gold"
-    }
+    override fun getDirPath(): String = "gold"
 
     // Loads the test data file from the right place.
     @Throws(IOException::class, URISyntaxException::class)
