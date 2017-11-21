@@ -12,8 +12,8 @@ import javax.swing.Icon
 fun presentableName(psi: PsiElement?): String? = when (psi) {
     is Constructor -> "this"
     is PsiNamedElement -> psi.name
-    is DLanguageDeclaration -> presentableName(psi.functionDeclaration)
-    is DLanguageStructBody -> presentableName(psi.parent)
+    is Declaration -> presentableName(psi.functionDeclaration)
+    is StructBody -> presentableName(psi.parent)
     is VariableDeclaration -> {
         if (psi.autoDeclaration == null) {
             psi.declarators.firstOrNull()?.identifier?.name
@@ -28,10 +28,12 @@ fun presentableName(psi: PsiElement?): String? = when (psi) {
 }
 
 fun getPresentationIcon(psi: PsiElement?): Icon? = when (psi) {
-    is DLanguageClassDeclaration -> DlangIcons.NODE_CLASS
-    is DLanguageInterfaceDeclaration -> DlangIcons.NODE_INTERFACE
+    is ClassDeclaration -> DlangIcons.NODE_CLASS
+    is InterfaceDeclaration -> DlangIcons.NODE_INTERFACE
     is FunctionDeclaration -> {
         when {
+            psiElementIsGetter(psi) -> DlangIcons.NODE_PROPERTY_GETTER
+            psiElementIsSetter(psi) -> DlangIcons.NODE_PROPERTY_SETTER
             psiElementIsProperty(psi) -> DlangIcons.NODE_PROPERTY
             psiElementIsMethod(psi) -> DlangIcons.NODE_METHOD
             else -> DlangIcons.NODE_FUNCTION
@@ -41,7 +43,8 @@ fun getPresentationIcon(psi: PsiElement?): Icon? = when (psi) {
     is InterfaceOrClass -> getPresentationIcon(psi.parent)
     is EnumDeclaration -> DlangIcons.NODE_ENUM
     is StructDeclaration -> DlangIcons.NODE_STRUCT
-    is DLanguageStructBody -> getPresentationIcon(psi.parent)
+    is UnionDeclaration -> DlangIcons.NODE_UNION
+    is StructBody -> getPresentationIcon(psi.parent)
     is VariableDeclaration -> DlangIcons.NODE_FIELD
     is AliasDeclaration -> DlangIcons.NODE_ALIAS
     is DlangFile -> DlangIcons.FILE
@@ -74,8 +77,9 @@ fun psiElementIsMethod(psi: PsiElement?): Boolean {
 
     while (parent != null) {
         val isMethod = when (parent) {
-            is DlangInterfaceOrClass -> true
-            is DlangStructDeclaration -> true
+            is InterfaceOrClass -> true
+            is StructDeclaration -> true
+            is UnionDeclaration -> true
             else -> false
         }
 
@@ -101,7 +105,7 @@ fun psiElementShortText(psi: PsiElement): String {
 }
 
 fun psiElementGetVisibility(psi: PsiElement?): Visibility {
-    if (psi == null || !psiElementIsMethod(psi)) {
+    if (psi == null) {
         return Visibility.NONE
     }
 
@@ -111,7 +115,11 @@ fun psiElementGetVisibility(psi: PsiElement?): Visibility {
         }
 
         when (psi) {
-            is DLanguageDeclaration -> {
+            is InterfaceOrClass -> return Visibility.PUBLIC
+            is StructDeclaration -> return Visibility.PUBLIC
+            is EnumDeclaration -> return Visibility.PUBLIC
+            is UnionDeclaration -> return Visibility.PUBLIC
+            is Declaration -> {
                 psi.attributes
                     .map { fromPsiAttribute(it) }
                     .filter { it != Visibility.NONE }
@@ -120,7 +128,7 @@ fun psiElementGetVisibility(psi: PsiElement?): Visibility {
                 var sibling = psi.prevSibling
 
                 while (sibling != null) {
-                    if (sibling is DLanguageDeclaration && sibling.attributeDeclaration != null) {
+                    if (sibling is Declaration && sibling.attributeDeclaration != null) {
                         sibling.attributes
                             .map { fromPsiAttribute(it) }
                             .filter { it != Visibility.NONE }
@@ -131,12 +139,6 @@ fun psiElementGetVisibility(psi: PsiElement?): Visibility {
                 }
 
                 return extractNodeVisibility(psi.parent)
-            }
-            is InterfaceOrClass -> {
-                return Visibility.PUBLIC
-            }
-            is DlangStructDeclaration -> {
-                return Visibility.PUBLIC
             }
             else -> return extractNodeVisibility(psi.parent)
         }

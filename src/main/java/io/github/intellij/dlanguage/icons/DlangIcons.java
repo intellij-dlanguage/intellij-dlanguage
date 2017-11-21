@@ -17,11 +17,14 @@ public class DlangIcons {
 
     public static final Icon NODE_CLASS = AllIcons.Nodes.Class;
     public static final Icon NODE_INTERFACE = AllIcons.Nodes.Interface;
-    public static final Icon NODE_STRUCT = AllIcons.Nodes.Static;
+    public static final Icon NODE_STRUCT = IconLoader.getIcon("/icons/nodes/struct.png");
+    public static final Icon NODE_UNION = IconLoader.getIcon("/icons/nodes/union.png");
     public static final Icon NODE_ENUM = AllIcons.Nodes.Enum;
     public static final Icon NODE_FUNCTION = IconLoader.getIcon("/icons/nodes/function.png");
     public static final Icon NODE_METHOD = AllIcons.Nodes.Method;
     public static final Icon NODE_FIELD = AllIcons.Nodes.Field;
     public static final Icon NODE_PROPERTY = AllIcons.Nodes.Property;
-    public static final Icon NODE_ALIAS = AllIcons.Nodes.Annotationtype;
+    public static final Icon NODE_PROPERTY_GETTER = IconLoader.getIcon("/icons/nodes/propertyGetter.png");
+    public static final Icon NODE_PROPERTY_SETTER = IconLoader.getIcon("/icons/nodes/propertySetter.png");
+    public static final Icon NODE_ALIAS = IconLoader.getIcon("/icons/nodes/alias.png");
 }
