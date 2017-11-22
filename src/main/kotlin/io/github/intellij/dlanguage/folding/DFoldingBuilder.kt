@@ -38,12 +38,13 @@ class DFoldingBuilder : FoldingBuilderEx(), DumbAware {
                 "/* ... */"
             }
             is DLanguageArrayInitializer -> "[...]"
-            is StructBody,
+            is DLanguageStructBody,
             is DLanguageBlockStatement,
             is DlangTemplateDeclaration,
             is DLanguageStructInitializer,
             is DLanguageAnonymousEnumDeclarationImpl,
-            is DlangEnumDeclaration -> "{...}"
+            is DLanguageEnumBody,
+            is DLanguageConditionalDeclaration -> "{...}"
             is DLanguageLinkageAttribute -> {
                 when {
                     psi.isExternal -> "{...}"
@@ -130,9 +131,12 @@ class DFoldingBuilder : FoldingBuilderEx(), DumbAware {
         override fun visitAnonymousEnumDeclaration(o: DLanguageAnonymousEnumDeclarationImpl) =
             foldBetween(o, o.leftBraces, o.rightBraces)
 
-        override fun visitEnumDeclaration(o: DlangEnumDeclarationImpl) {
+        override fun visitEnumBody(o: DLanguageEnumBodyImpl) =
             fold(o)
-        }
+
+        // version statement
+        override fun visitConditionalDeclaration(o: DLanguageConditionalDeclarationImpl) =
+            foldBetween(o, o.leftBraces, o.rightBraces)
 
         override fun visitComment(comment: PsiComment) {
             if (comment.prevSibling is PsiComment) return
@@ -200,6 +204,11 @@ class DFoldingBuilder : FoldingBuilderEx(), DumbAware {
 
             val leftBrace = block.oP_BRACES_LEFT ?: return false
             val rightBrace = block.oP_BRACES_RIGHT ?: return false
+
+            // void foo() { \n
+            //     writeln("Hello world"); \n
+            // }
+            if (block.text.split('\n').size - 1 > 2) return false;
 
             /// Get previous  whitespace if exist as start region
             val leftEl = leftBrace.parent?.parent?.prevSibling as? PsiWhiteSpace ?: leftBrace
