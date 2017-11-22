@@ -1,4 +1,4 @@
-package io.github.intellij.dlanguage.highlighting
+package io.github.intellij.dlanguage.highlighting.exitpoint
 
 import com.intellij.codeInsight.highlighting.HighlightUsagesHandlerBase
 import com.intellij.codeInsight.highlighting.HighlightUsagesHandlerFactoryBase

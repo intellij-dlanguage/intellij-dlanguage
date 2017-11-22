@@ -46,7 +46,7 @@
         <lang.parserDefinition language="D" implementationClass="io.github.intellij.dlanguage.DLangParserDefinition"/>
 
         <lang.syntaxHighlighterFactory language="D" implementationClass="io.github.intellij.dlanguage.highlighting.DHighlighterFactory"/>
-        <highlightUsagesHandlerFactory implementation="io.github.intellij.dlanguage.highlighting.DHighlightExitPointsHandlerFactory"/>
+        <highlightUsagesHandlerFactory implementation="io.github.intellij.dlanguage.highlighting.exitpoint.DHighlightExitPointsHandlerFactory"/>
 
         <colorSettingsPage implementation="io.github.intellij.dlanguage.settings.DColorSettingsPage"/>
         <annotator language="D" implementationClass="io.github.intellij.dlanguage.highlighting.annotation.DAnnotator"/>

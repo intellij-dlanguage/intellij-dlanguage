@@ -1,13 +1,13 @@
-package io.github.intellij.dlanguage.highlighting
+package io.github.intellij.dlanguage.highlighting.exitpoint
 
 import com.intellij.codeInsight.highlighting.HighlightUsagesHandlerBase
 import com.intellij.openapi.editor.Editor
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.util.Consumer
-import io.github.intellij.dlanguage.core.ExitPoint
 import io.github.intellij.dlanguage.psi.ext.ancestors
 import io.github.intellij.dlanguage.utils.FunctionDeclaration
+import io.github.intellij.dlanguage.utils.FunctionLiteralExpression
 
 class DHighlightExitPointsHandler(
     editor: Editor,
@@ -29,10 +29,13 @@ class DHighlightExitPointsHandler(
             }
         }
 
-        val functionOrLambda = target.ancestors.firstOrNull { it is FunctionDeclaration }
+        val functionOrFunctionLiteral = target.ancestors.firstOrNull {
+            it is FunctionDeclaration || it is FunctionLiteralExpression
+        }
 
-        when (functionOrLambda) {
-            is FunctionDeclaration -> ExitPoint.process(functionOrLambda, sink)
+        when (functionOrFunctionLiteral) {
+            is FunctionDeclaration -> ExitPoint.process(functionOrFunctionLiteral, sink)
+            is FunctionLiteralExpression -> ExitPoint.process(functionOrFunctionLiteral, sink)
         }
     }
 }
