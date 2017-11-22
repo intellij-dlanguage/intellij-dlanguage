@@ -44,7 +44,10 @@
         <stubElementTypeHolder class="io.github.intellij.dlanguage.psi.DlangTypes"/>
         <fileTypeFactory implementation="io.github.intellij.dlanguage.DlangFileTypeFactory"/>
         <lang.parserDefinition language="D" implementationClass="io.github.intellij.dlanguage.DLangParserDefinition"/>
+
         <lang.syntaxHighlighterFactory language="D" implementationClass="io.github.intellij.dlanguage.highlighting.DHighlighterFactory"/>
+        <highlightUsagesHandlerFactory implementation="io.github.intellij.dlanguage.highlighting.DHighlightExitPointsHandlerFactory"/>
+
         <colorSettingsPage implementation="io.github.intellij.dlanguage.settings.DColorSettingsPage"/>
         <annotator language="D" implementationClass="io.github.intellij.dlanguage.highlighting.annotation.DAnnotator"/>
         <externalAnnotator language="D"
