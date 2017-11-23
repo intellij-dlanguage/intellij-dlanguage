@@ -59,5 +59,5 @@ class PossiblyUndefinedSymbol : LocalInspectionTool() {
 
     override fun getDisplayName(): String = DlangBundle.message("d.inspections.symbol.possiblyundefined.displayname")
 
-    override fun getGroupDisplayName(): String = DlangBundle.message("d.inspections.symbol.possiblyundefined.groupname")
+    override fun getGroupDisplayName(): String = DlangBundle.message("d.inspections.groupname")
 }

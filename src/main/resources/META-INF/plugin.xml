@@ -162,6 +162,14 @@
         <localInspection language="D" shortName="PossiblyUndefinedSymbol" bundle="messages.PropertiesBundle"
                          enabledByDefault="true" level="WARNING"
                          implementationClass="io.github.intellij.dlanguage.inspections.PossiblyUndefinedSymbol"/>
+        <localInspection bundle="messages.PropertiesBundle" enabledByDefault="true"
+            implementationClass="io.github.intellij.dlanguage.inspections.ImplicitlyConcatenatedStrings"
+            language="D" level="WARNING"
+            shortName="ImplicitlyConcatenatedStrings"/>
+        <localInspection bundle="messages.PropertiesBundle" enabledByDefault="true"
+            implementationClass="io.github.intellij.dlanguage.inspections.OldAliasSyntax"
+            language="D" level="WARNING"
+            shortName="OldAliasSyntax"/>
 
 
         <!--debugger-->
