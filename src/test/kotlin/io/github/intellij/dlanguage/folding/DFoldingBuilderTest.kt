@@ -2,13 +2,7 @@ package io.github.intellij.dlanguage.folding
 
 import io.github.intellij.dlanguage.DLightPlatformCodeInsightFixtureTestCase
 
-class DFoldingBuilderTest : DLightPlatformCodeInsightFixtureTestCase("folding", "folding") {
-    private val fileName: String
-        get() = "$testName.d"
-
-    private val testName: String
-        get() = camelOrWordsToSnake(getTestName(true))
-
+class DFoldingBuilderTest : DLightPlatformCodeInsightFixtureTestCase("folding") {
     private fun doTest() {
         myFixture.testFolding(getTestDataPath(fileName))
     }
@@ -23,10 +17,4 @@ class DFoldingBuilderTest : DLightPlatformCodeInsightFixtureTestCase("folding", 
     fun testOneLinerFunction() = doTest()
     fun testStruct() = doTest()
     fun testVersion() = doTest()
-}
-
-fun camelOrWordsToSnake(name: String): String {
-    if (' ' in name) return name.replace(" ", "_")
-
-    return name.split("(?=[A-Z])".toRegex()).joinToString("_", transform = String::toLowerCase)
 }
