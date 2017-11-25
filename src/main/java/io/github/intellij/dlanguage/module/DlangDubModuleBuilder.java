@@ -41,7 +41,7 @@ public class DlangDubModuleBuilder extends DlangModuleBuilder {
     private String dubBinary;
 
     public DlangDubModuleBuilder() {
-        super("DLangDubApp", DlangBundle.INSTANCE.message("module.dub.title"), DlangBundle.INSTANCE.message("module.dub.description"), null);
+        super("DLangDubApp", DlangBundle.INSTANCE.message("module.dub.title"), DlangBundle.INSTANCE.message("module.dub.description"));
     }
 
     @Override

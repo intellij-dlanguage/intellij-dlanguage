@@ -35,38 +35,31 @@ import java.util.List;
 
 public class DlangModuleBuilder extends JavaModuleBuilder {
 
-    public static final String DLANG_GROUP_NAME = "D Language";
-    public static final String RUN_CONFIG_NAME = "Run D App";
-    public static final String COMPILE_CONFIG_NAME = "Compile with DMD";
+    private static final String DLANG_GROUP_NAME = "D Language";
+    private static final String RUN_CONFIG_NAME = "Run D App";
+    private static final String COMPILE_CONFIG_NAME = "Compile with DMD";
+
     private final String myBuilderId;
     private final String myPresentableName;
     private final String myDescription;
-    private final Icon myBigIcon;
 
     private List<Pair<String, String>> sourcePaths;
 
     public DlangModuleBuilder() {
-        this("DLangDmdApp", DlangBundle.INSTANCE.message("module.title"), DlangBundle.INSTANCE.message("module.description"), null);
+        this("DLangDmdApp", DlangBundle.INSTANCE.message("module.title"), DlangBundle.INSTANCE.message("module.description"));
     }
 
     protected DlangModuleBuilder(final String builderId,
                                  final String presentableName,
-                                 final String description,
-                                 final Icon bigIcon) {
+                                 final String description) {
         myBuilderId = builderId;
         myPresentableName = presentableName;
         myDescription = description;
-        myBigIcon = bigIcon;
     }
 
     @Override
     public String getBuilderId() {
         return myBuilderId;
-    }
-
-    //    @Override
-    public Icon getBigIcon() {
-        return myBigIcon;
     }
 
     @Override
