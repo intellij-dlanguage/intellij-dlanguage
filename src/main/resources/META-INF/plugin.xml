@@ -170,6 +170,10 @@
             implementationClass="io.github.intellij.dlanguage.inspections.OldAliasSyntax"
             language="D" level="WARNING"
             shortName="OldAliasSyntax"/>
+        <localInspection bundle="messages.PropertiesBundle" enabledByDefault="true"
+            implementationClass="io.github.intellij.dlanguage.inspections.EmptyStatement"
+            language="D" level="WARNING"
+            shortName="EmptyStatement"/>
 
 
         <!--debugger-->
