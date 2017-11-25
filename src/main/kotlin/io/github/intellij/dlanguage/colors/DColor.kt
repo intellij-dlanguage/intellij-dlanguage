@@ -27,7 +27,7 @@ enum class DColor(humanName: String, val default: TextAttributesKey) {
     MODULE_DEFINITION("Module definition", Default.GLOBAL_VARIABLE),
     FUNCTION_DEFINITION("Function definition", Default.GLOBAL_VARIABLE),
     IDENTIFIER("Identifier", Default.IDENTIFIER),
-    TYPE_PARAMETER("Type parameter", Default.IDENTIFIER),
+    TYPE_PARAMETER("Type parameter", JavaHighlightingColors.TYPE_PARAMETER_NAME_ATTRIBUTES),
     ;
 
     val textAttributesKey = TextAttributesKey.createTextAttributesKey("io.github.intellij.dlanguage.$name", default)
