@@ -2,8 +2,11 @@ package io.github.intellij.dlanguage.psi.impl;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiFileFactory;
+import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.DLanguage;
+import io.github.intellij.dlanguage.psi.DLanguageAliasDeclaration;
 import io.github.intellij.dlanguage.psi.DLanguageImportDeclaration;
 import io.github.intellij.dlanguage.psi.DLanguageModuleDeclaration;
 import io.github.intellij.dlanguage.psi.DlangFile;
@@ -61,6 +64,13 @@ public class DElementFactory {
         final PsiElement e = createExpressionFromText(project, "import " + name + ";").getFirstChild();
         if (e instanceof DLanguageImportDeclaration) return e;
         return null;
+    }
+
+    public static DLanguageAliasDeclaration createAliasDeclarationFromText(final Project project,
+        final String text) {
+        final PsiFile fileFromText = PsiFileFactory.getInstance(project)
+            .createFileFromText("A.d", DLanguage.INSTANCE, text);
+        return PsiTreeUtil.findChildOfType(fileFromText, DLanguageAliasDeclaration.class);
     }
 }
 

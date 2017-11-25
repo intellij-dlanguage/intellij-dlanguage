@@ -18,9 +18,7 @@ import io.github.intellij.dlanguage.utils.PrimaryExpression
  */
 class ExplicitlyConcatenateStrings(elem: PrimaryExpression) : LocalQuickFixOnPsiElement(elem, elem) {
 
-    override fun getText(): String {
-        return "Explicitly concatenate strings"
-    }
+    override fun getText(): String = "Explicitly concatenate strings"
 
     override fun invoke(project: Project, file: PsiFile, startElement: PsiElement, endElement: PsiElement) {
         ApplicationManager.getApplication().runWriteAction {
@@ -49,28 +47,6 @@ class ExplicitlyConcatenateStrings(elem: PrimaryExpression) : LocalQuickFixOnPsi
      * @return the intention family name.
      * @see IntentionManager.registerIntentionAndMetaData
      */
-    override fun getFamilyName(): String {
-        return "DLang"//todo idk what to put here
-    }
-
-    /**
-     * Checks whether this intention is available at a caret offset in file.
-     * If this method returns true, a light bulb for this intention is shown.
-     *
-     * @param project the project in which the availability is checked.
-     * @param editor the editor in which the intention will be invoked.
-     * @param file the file open in the editor.
-     * @return true if the intention is available, false otherwise.
-     */
-    fun isAvailable(project: Project, editor: Editor, file: PsiFile): Boolean {
-        val element = file.findElementAt(editor.caretModel.currentCaret.offset)
-        val primaryExpression = PsiTreeUtil.findFirstParent(element, { t -> t is PrimaryExpression }) as PrimaryExpression?
-        if (primaryExpression == null)
-            return false
-        if (primaryExpression.doublE_QUOTED_STRINGs.size > 1) {
-            return true
-        }
-        return false
-    }
+    override fun getFamilyName(): String = "DLang"//todo idk what to put here
 
 }

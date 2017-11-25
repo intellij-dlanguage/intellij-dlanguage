@@ -7,6 +7,7 @@ import io.github.intellij.dlanguage.DlangBundle
 import io.github.intellij.dlanguage.psi.DlangVisitor
 import io.github.intellij.dlanguage.psi.impl.DLanguageAliasDeclarationImpl
 import io.github.intellij.dlanguage.psi.impl.named.DLanguageAliasInitializerImpl
+import io.github.intellij.dlanguage.quickfix.SwitchToNewAliasSyntax
 
 /**
  * Created by francis on 11/23/2017.
@@ -14,6 +15,8 @@ import io.github.intellij.dlanguage.psi.impl.named.DLanguageAliasInitializerImpl
 class OldAliasSyntax : LocalInspectionTool() {
     override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor =
         OldAliasSyntaxVisitor(holder)
+
+    override fun getDescriptionFileName(): String = "OldAliasSyntax.html"
 
     override fun getDisplayName(): String = "Old Alias Syntax"//todo needs internationalization
 
@@ -24,7 +27,7 @@ class OldAliasSyntaxVisitor(val holder: ProblemsHolder) : DlangVisitor() {
     override fun visitAliasDeclaration(o: DLanguageAliasDeclarationImpl) {
         if (o.type == null)
             return
-        holder.registerProblem(o, "Old Alias Syntax in use.")
+        holder.registerProblem(o, "Old Alias Syntax in use.", SwitchToNewAliasSyntax(o))
     }
 }
 
