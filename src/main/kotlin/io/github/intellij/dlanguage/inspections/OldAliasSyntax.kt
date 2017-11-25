@@ -6,6 +6,7 @@ import com.intellij.psi.PsiElementVisitor
 import io.github.intellij.dlanguage.DlangBundle
 import io.github.intellij.dlanguage.psi.DlangVisitor
 import io.github.intellij.dlanguage.psi.impl.DLanguageAliasDeclarationImpl
+import io.github.intellij.dlanguage.psi.impl.named.DLanguageAliasInitializerImpl
 
 /**
  * Created by francis on 11/23/2017.
@@ -26,8 +27,9 @@ class OldAliasSyntax : LocalInspectionTool() {
 
 class OldAliasSyntaxVisitor(val holder: ProblemsHolder) : DlangVisitor() {
     override fun visitAliasDeclaration(o: DLanguageAliasDeclarationImpl) {
-        if (o.identifierList == null || o.identifierList!!.identifiers.size == 0)
+        if (o.type == null)
             return
+//        if(o.)
         holder.registerProblem(o, "Old Alias Syntax in use.")
     }
 }
