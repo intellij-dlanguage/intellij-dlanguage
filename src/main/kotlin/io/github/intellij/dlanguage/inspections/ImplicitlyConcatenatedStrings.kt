@@ -13,17 +13,15 @@ import io.github.intellij.dlanguage.quickfix.ExplicitlyConcatenateStrings
  * Created by francis on 11/23/2017.
  */
 class ImplicitlyConcatenatedStrings : LocalInspectionTool() {
-    override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor {
-        return ImplicitlyConcatenatedStringsVisitor(holder)
-    }
+    override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor =
+        ImplicitlyConcatenatedStringsVisitor(holder)
 
-    override fun getDisplayName(): String {
-        return "Implicitly Concatenated Strings"//todo needs internationalization
-    }
+    override fun getDescriptionFileName(): String = "ImplicitlyConcatenatedStrings.html"
 
-    override fun getGroupDisplayName(): String {
-        return DlangBundle.message("d.inspections.groupname")
-    }
+    override fun getDisplayName(): String =
+        "Implicitly Concatenated Strings"//todo needs internationalization
+
+    override fun getGroupDisplayName(): String = DlangBundle.message("d.inspections.groupname")
 }
 
 class ImplicitlyConcatenatedStringsVisitor(val holder: ProblemsHolder) : DlangVisitor() {
