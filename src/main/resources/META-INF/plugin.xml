@@ -48,8 +48,11 @@
         <lang.syntaxHighlighterFactory language="D" implementationClass="io.github.intellij.dlanguage.highlighting.DHighlighterFactory"/>
         <highlightUsagesHandlerFactory implementation="io.github.intellij.dlanguage.highlighting.exitpoint.DHighlightExitPointsHandlerFactory"/>
 
-        <colorSettingsPage implementation="io.github.intellij.dlanguage.settings.DColorSettingsPage"/>
-        <annotator language="D" implementationClass="io.github.intellij.dlanguage.highlighting.annotation.DAnnotator"/>
+        <colorSettingsPage implementation="io.github.intellij.dlanguage.colors.DColorSettingsPage"/>
+
+        <!-- Annotator -->
+
+        <annotator language="D" implementationClass="io.github.intellij.dlanguage.annotator.DHighlightingAnnotator"/>
         <externalAnnotator language="D"
                            implementationClass="io.github.intellij.dlanguage.highlighting.annotation.external.DExternalAnnotator"/>
         <lang.documentationProvider language="D"
