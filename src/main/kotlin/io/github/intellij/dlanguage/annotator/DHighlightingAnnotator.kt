@@ -5,24 +5,28 @@ import com.intellij.lang.annotation.Annotator
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
 import io.github.intellij.dlanguage.colors.DColor
-import io.github.intellij.dlanguage.psi.DLanguageIdentifierOrTemplateInstance
-import io.github.intellij.dlanguage.psi.DLanguageTemplateTypeParameter
 import io.github.intellij.dlanguage.resolve.processors.basic.BasicResolve
-import io.github.intellij.dlanguage.utils.TemplateParameter
+import io.github.intellij.dlanguage.utils.*
 
 class DHighlightingAnnotator : Annotator {
     override fun annotate(element: PsiElement, holder: AnnotationHolder) {
         val (partToHighlight, color) = when (element) {
-            is DLanguageIdentifierOrTemplateInstance -> highlightReference(element)
-            is DLanguageTemplateTypeParameter -> highlightNotReference(element)
+            is IdentifierOrTemplateInstance -> highlightReference(element)
+            is TemplateSingleArgument -> highlightReference(element)
+            is TemplateParameter -> highlightNotReference(element)
             else -> null
         } ?: return
 
         holder.createInfoAnnotation(partToHighlight, null).textAttributes = color.textAttributesKey
     }
 
-    private fun highlightReference(element: DLanguageIdentifierOrTemplateInstance): Pair<TextRange, DColor>? {
-        val identifier = element.identifier ?: return null
+    private fun highlightReference(element: PsiElement): Pair<TextRange, DColor>? {
+        val identifier = when (element) {
+            is IdentifierOrTemplateInstance -> element.identifier
+            is TemplateSingleArgument -> element.identifier
+            else -> null
+        } ?: return null
+
         val basicResolveResult = BasicResolve.getInstance(element.project, false)
             .findDefinitionNode(identifier)
 
@@ -42,14 +46,26 @@ class DHighlightingAnnotator : Annotator {
     }
 
     private fun colorFor(element: PsiElement): DColor? = when (element) {
-        is DLanguageTemplateTypeParameter,
+        is TemplateTypeParameter,
         is TemplateParameter -> DColor.TYPE_PARAMETER
         else -> null
     }
 
     private fun partToHighlight(element: PsiElement): TextRange? {
         val name = when (element) {
-            is DLanguageTemplateTypeParameter -> element.identifier
+            is TemplateParameter -> {
+                when {
+                    element.templateTypeParameter != null -> return partToHighlight(element.templateTypeParameter!!)
+                    element.templateValueParameter != null -> return partToHighlight(element.templateValueParameter!!)
+                    element.templateAliasParameter != null -> return partToHighlight(element.templateAliasParameter!!)
+                    element.templateThisParameter != null -> return partToHighlight(element.templateThisParameter!!)
+                    else -> element
+                }
+            }
+            is TemplateTypeParameter -> element.identifier
+            is TemplateValueParameter -> element.identifier
+            is TemplateAliasParameter -> element.identifier
+            is TemplateThisParameter -> element.templateTypeParameter?.identifier
             else -> element
         }
 
