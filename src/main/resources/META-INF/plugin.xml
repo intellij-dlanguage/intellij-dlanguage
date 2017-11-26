@@ -180,7 +180,11 @@
         <localInspection bundle="messages.PropertiesBundle" enabledByDefault="true"
             implementationClass="io.github.intellij.dlanguage.inspections.DeleteStatementsAreDeprecated"
             language="D" level="WARNING"
-            shortName="EmptyStatement"/>
+            shortName="DeleteStatementsAreDeprecated"/>
+        <localInspection bundle="messages.PropertiesBundle" enabledByDefault="true"
+            implementationClass="io.github.intellij.dlanguage.inspections.FunctionShouldBeConst"
+            language="D" level="WARNING"
+            shortName="FunctionShouldBeConst"/>
 
 
         <!--debugger-->

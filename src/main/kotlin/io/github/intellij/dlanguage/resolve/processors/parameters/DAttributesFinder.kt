@@ -199,6 +199,10 @@ class DAttributesFinder {
         }
     }
 
+    fun isConst(): Boolean {
+        return isConst ?: defaultsToConst
+    }
+
     fun isStatic(): Boolean {
         return isStatic ?: defaultsToStatic
     }
