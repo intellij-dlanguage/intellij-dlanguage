@@ -54,6 +54,9 @@ public interface DLanguageAttribute extends PsiElement {
     PsiElement getKW_EXPORT();
 
     @Nullable
+    PsiElement getKW_CONST();
+
+    @Nullable
     PsiElement getKW_PRIVATE();
 
     @Nullable

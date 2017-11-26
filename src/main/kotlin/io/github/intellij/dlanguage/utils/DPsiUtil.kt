@@ -69,7 +69,7 @@ object DPsiUtil {
 
     }
 
-    fun getNumParameters(parameters: io.github.intellij.dlanguage.psi.DLanguageParameters, parameterContainer: PsiElement): ParameterCountRange {
+    fun getNumParameters(parameters: DLanguageParameters, parameterContainer: PsiElement): ParameterCountRange {
         var min = 0
         var max = 0
         val finder = DAttributesFinder(parameterContainer)

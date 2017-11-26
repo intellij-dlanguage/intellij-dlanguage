@@ -7,6 +7,7 @@ import com.intellij.psi.scope.PsiScopeProcessor;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import io.github.intellij.dlanguage.stubs.DlangFunctionDeclarationStub;
+import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -29,6 +30,8 @@ public interface DLanguageFunctionDeclaration extends PsiElement, DNamedElement,
 
     @Nullable
     DLanguageFunctionBody getFunctionBody();
+
+    List<DLanguageMemberFunctionAttribute> getMemberFunctionAttributes();
 
     @Override
     default boolean processDeclarations(@NotNull PsiScopeProcessor processor,

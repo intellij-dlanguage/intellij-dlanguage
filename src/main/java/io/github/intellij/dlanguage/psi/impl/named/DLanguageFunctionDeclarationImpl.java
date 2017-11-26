@@ -2,6 +2,7 @@ package io.github.intellij.dlanguage.psi.impl.named;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
@@ -12,6 +13,7 @@ import io.github.intellij.dlanguage.psi.*;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import io.github.intellij.dlanguage.stubs.DlangFunctionDeclarationStub;
+import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,6 +28,18 @@ public class DLanguageFunctionDeclarationImpl extends DNamedStubbedPsiElementBas
 
     public DLanguageFunctionDeclarationImpl(final ASTNode node) {
         super(node);
+    }
+
+    public void accept(@NotNull DlangVisitor visitor) {
+        visitor.visitFunctionDeclaration(this);
+    }
+
+    public void accept(@NotNull PsiElementVisitor visitor) {
+        if (visitor instanceof DlangVisitor) {
+            accept((DlangVisitor) visitor);
+        } else {
+            super.accept(visitor);
+        }
     }
 
     @Nullable
@@ -68,6 +82,11 @@ public class DLanguageFunctionDeclarationImpl extends DNamedStubbedPsiElementBas
     @Override
     public DLanguageFunctionBody getFunctionBody() {
         return PsiTreeUtil.getChildOfType(this, DLanguageFunctionBody.class);
+    }
+
+    @Override
+    public List<DLanguageMemberFunctionAttribute> getMemberFunctionAttributes() {
+        return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageMemberFunctionAttribute.class);
     }
 
     @Override

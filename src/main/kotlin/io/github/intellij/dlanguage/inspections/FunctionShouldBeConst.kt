@@ -6,6 +6,7 @@ import com.intellij.psi.PsiElementVisitor
 import io.github.intellij.dlanguage.DlangBundle
 import io.github.intellij.dlanguage.psi.DlangVisitor
 import io.github.intellij.dlanguage.psi.impl.named.DLanguageFunctionDeclarationImpl
+import io.github.intellij.dlanguage.quickfix.MakeFunctionConst
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributesFinder
 
 /**
@@ -20,11 +21,12 @@ class FunctionShouldBeConst : LocalInspectionTool() {
 
 class FunctionShouldBeConstVisitor(val holder: ProblemsHolder) : DlangVisitor() {
     override fun visitFunctionDeclaration(o: DLanguageFunctionDeclarationImpl) {
-        if (o.name == "opCmp" || o.name == "opEquals" || o.name == "toHash") {
+        val name = o.name
+        if (name == "opCmp" || name == "opEquals" || name == "toHash") {
             val finder = DAttributesFinder(o)//todo make function declarations have an isConst method.
             finder.recurseUp()
             if (!finder.isConst()) {
-                holder.registerProblem(o, "opCmp or opEquals, or toHash not declared \"const\"")
+                holder.registerProblem(o, "opCmp or opEquals, or toHash not declared \"const\"", MakeFunctionConst(o))
             }
         }
     }

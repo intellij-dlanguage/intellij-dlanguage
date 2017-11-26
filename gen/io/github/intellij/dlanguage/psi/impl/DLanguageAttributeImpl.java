@@ -108,6 +108,12 @@ public class DLanguageAttributeImpl extends ASTWrapperPsiElement implements DLan
     }
 
     @Nullable
+    @Override
+    public PsiElement getKW_CONST() {
+        return findChildByType(DlangTypes.KW_CONST);
+    }
+
+    @Nullable
     public PsiElement getKW_PRIVATE() {
         return findChildByType(DlangTypes.KW_PRIVATE);
     }

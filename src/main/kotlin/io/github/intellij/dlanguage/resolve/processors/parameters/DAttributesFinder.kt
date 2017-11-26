@@ -103,23 +103,29 @@ class DAttributesFinder {
     fun isParent(parent: PsiElement, child: PsiElement): Boolean {
         if (child == parent)
             return true
-        if (child is io.github.intellij.dlanguage.psi.DlangFile)
+        if (child is DlangFile) {
             return false
+        }
         return isParent(parent, child.parent)
     }
 
 
     fun execute(element: PsiElement): Boolean {
-        if (element is io.github.intellij.dlanguage.psi.DlangSingleImport && isParent(element, startingPoint)) {
+        if (element is DlangSingleImport && isParent(element, startingPoint)) {
             defaultsToPrivate = true
             defaultsToPublic = false
             defaultsToStatic = false
         }
-        if (element is FunctionDeclaration || element is io.github.intellij.dlanguage.psi.DLanguageUnittest || element is Parameters || element is TemplateParameters) {
+        if (element is FunctionDeclaration || element is DLanguageUnittest || element is Parameters || element is TemplateParameters) {
             if (element is FunctionDeclaration) {
-                if ((element.functionBody != null && isParent(element.functionBody!!, startingPoint)) || (element.parameters != null && isParent(element.parameters!!, startingPoint)) || (element.templateParameters != null && isParent(element.templateParameters!!, startingPoint))) {
+                if (element.memberFunctionAttributes != null) {
+                    execute(element.memberFunctionAttributes)
+                }
+                if ((element.functionBody != null && isParent(element.functionBody!!, startingPoint))
+                    || (element.parameters != null && isParent(element.parameters!!, startingPoint))
+                    || (element.templateParameters != null && isParent(element.templateParameters!!, startingPoint))) {
                     visibility = Visibility.LOCAL
-                    return false
+                    return false//todo this false should be local to the visibility side of things e.g this entire class needs reworking
                 }
             }
             return true
@@ -146,8 +152,16 @@ class DAttributesFinder {
         return true
     }
 
+    private fun execute(elements: List<DLanguageMemberFunctionAttribute>) {
+        for (element in elements) {
+            if (element.text.equals("const")) {
+                isConst = true
+            }
+        }
+    }
 
-    fun updateFromAttribute(attribute: io.github.intellij.dlanguage.psi.DLanguageAttribute) {
+
+    fun updateFromAttribute(attribute: DLanguageAttribute) {
         if (attribute.textOffset < startingPoint.textOffset) {
 
             if (attribute.kW_EXPORT != null) {
@@ -194,18 +208,17 @@ class DAttributesFinder {
                     isProperty = true
                 }
             } else if (attribute.linkageAttribute != null) {
-            } //else if (attribute.typeConstructor != null) {
+            } else if (attribute.kW_CONST != null) {
+                isConst = true
+            }
+            //else if (attribute.typeConstructor != null) {
 //            }
         }
     }
 
-    fun isConst(): Boolean {
-        return isConst ?: defaultsToConst
-    }
+    fun isConst(): Boolean = isConst ?: defaultsToConst
 
-    fun isStatic(): Boolean {
-        return isStatic ?: defaultsToStatic
-    }
+    fun isStatic(): Boolean = isStatic ?: defaultsToStatic
 
     fun isPrivate(): Boolean {
         if (visibility == null)
@@ -225,17 +238,11 @@ class DAttributesFinder {
         return visibility == Visibility.PUBLIC
     }
 
-    fun isProperty(): Boolean {
-        return isProperty ?: defaultsToProperty
-    }
+    fun isProperty(): Boolean = isProperty ?: defaultsToProperty
 
-    fun isNoGC(): Boolean {
-        return isNoGC ?: defaultsToNoGC
-    }
+    fun isNoGC(): Boolean = isNoGC ?: defaultsToNoGC
 
-    fun isExtern(): Boolean {
-        return isExtern ?: defaultsToExtern
-    }
+    fun isExtern(): Boolean = isExtern ?: defaultsToExtern
 
     fun isLocal(): Boolean {
         if (visibility == null)
@@ -243,13 +250,9 @@ class DAttributesFinder {
         return visibility == Visibility.LOCAL
     }
 
-    fun isPure(): Boolean {
-        return isPure ?: defaultsToPure
-    }
+    fun isPure(): Boolean = isPure ?: defaultsToPure
 
-    fun isNothrow(): Boolean {
-        return isNothrow ?: defaultsToNothrow
-    }
+    fun isNothrow(): Boolean = isNothrow ?: defaultsToNothrow
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
