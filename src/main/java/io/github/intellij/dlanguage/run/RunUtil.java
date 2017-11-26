@@ -12,6 +12,7 @@ import com.intellij.xdebugger.XDebugProcess;
 import com.intellij.xdebugger.XDebugProcessStarter;
 import com.intellij.xdebugger.XDebugSession;
 import com.intellij.xdebugger.XDebuggerManager;
+import io.github.intellij.dlanguage.settings.ToolKey;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import uk.co.cwspencer.gdb.Gdb;
@@ -29,6 +30,10 @@ public class RunUtil {
 
 //        GdbRunConfiguration configuration = ((GdbExecutionResult) result).m_configuration;
 
+        // check if path to debugger is defined
+        if (ToolKey.GDB_KEY.getPath() == null){
+            throw new ExecutionException("Error launching debugger: path to GDB was not defined in settings.");
+        }
 
         if (SdkUtil.isHostOsWindows()) {
             execName = execName.concat(".exe");
