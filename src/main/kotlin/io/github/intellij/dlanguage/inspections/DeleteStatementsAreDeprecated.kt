@@ -3,7 +3,6 @@ package io.github.intellij.dlanguage.inspections
 import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiElementVisitor
 import io.github.intellij.dlanguage.DlangBundle
 import io.github.intellij.dlanguage.psi.DlangVisitor
 import io.github.intellij.dlanguage.psi.impl.DLanguageDeleteExpressionImpl
@@ -16,10 +15,10 @@ class DeleteStatementsAreDeprecated : LocalInspectionTool() {
     override fun getDescriptionFileName(): String = "DeleteStatementsAreDeprecated.html"
     override fun getDisplayName(): String = "Delete Statements are Deprecated"
     override fun getGroupDisplayName(): String = DlangBundle.message("d.inspections.groupname")
-    override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): DlangVisitor = DeleteStatementsVistor(holder)
+    override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): DlangVisitor = DeleteStatementsVisitor(holder)
 }
 
-class DeleteStatementsVistor(val holder: ProblemsHolder) : DlangVisitor() {
+class DeleteStatementsVisitor(val holder: ProblemsHolder) : DlangVisitor() {
     override fun visitDeleteExpression(o: DLanguageDeleteExpressionImpl) {
         register(o)
     }
