@@ -46,7 +46,7 @@ public class RunUtil {
                         "<br/><a href='configureDLanguageTools'>Configure</a>",
                     NotificationType.ERROR, new DToolsNotificationListener(project)), project);
 
-            throw new ExecutionException("path to gdb is not defined");
+            return null;
         }
 
         if (SdkUtil.isHostOsWindows()) {
