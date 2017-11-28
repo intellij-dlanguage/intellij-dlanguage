@@ -159,6 +159,7 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement,
         is Constructor -> listOf(psi)
         is VariableDeclaration -> listOf(psi)
         is AliasDeclaration -> listOf(psi)
+        is MixinTemplateDeclaration -> listOf(psi.templateDeclaration)
         else -> emptyList()
     }
 
