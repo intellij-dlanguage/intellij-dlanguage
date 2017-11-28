@@ -7,10 +7,10 @@ package io.github.intellij.dlanguage.types
  * @param base: list of base types e.g.: class TypeName: BaseType1, BaseType2
  * @param isFinal: if class have final modifier
  */
-class TypeClass(
+class DTypeClass(
     val name: String,
-    val base: List<Type>,
+    val base: List<DType>,
     val isFinal: Boolean = false
-) : Type() {
+) : DType() {
     override fun typeToString(): String = name
 }

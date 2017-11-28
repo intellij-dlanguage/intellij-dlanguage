@@ -9,44 +9,44 @@
 // * Created by francis on 7/29/2017.
 // */
 //
-//val tvoid: Type? = null
-//val tint8: Type? = null
-//val tuns8: Type? = null
-//val tint16: Type? = null
-//val tuns16: Type? = null
-//val tint32: Type? = null
-//val tuns32: Type? = null
-//val tint64: Type? = null
-//val tuns64: Type? = null
-//val tint128: Type? = null
-//val tuns128: Type? = null
-//val tfloat32: Type? = null
-//val tfloat64: Type? = null
-//val tfloat80: Type? = null
-//val timaginary32: Type? = null
-//val timaginary64: Type? = null
-//val timaginary80: Type? = null
-//val tcomplex32: Type? = null
-//val tcomplex64: Type? = null
-//val tcomplex80: Type? = null
-//val tbool: Type? = null
-//val tchar: Type? = null
-//val twchar: Type? = null
-//val tdchar: Type? = null
+//val tvoid: DType? = null
+//val tint8: DType? = null
+//val tuns8: DType? = null
+//val tint16: DType? = null
+//val tuns16: DType? = null
+//val tint32: DType? = null
+//val tuns32: DType? = null
+//val tint64: DType? = null
+//val tuns64: DType? = null
+//val tint128: DType? = null
+//val tuns128: DType? = null
+//val tfloat32: DType? = null
+//val tfloat64: DType? = null
+//val tfloat80: DType? = null
+//val timaginary32: DType? = null
+//val timaginary64: DType? = null
+//val timaginary80: DType? = null
+//val tcomplex32: DType? = null
+//val tcomplex64: DType? = null
+//val tcomplex80: DType? = null
+//val tbool: DType? = null
+//val tchar: DType? = null
+//val twchar: DType? = null
+//val tdchar: DType? = null
 //
 //// Some special types
-//val tshiftcnt: Type? = null
-//val tvoidptr: Type? = null    // void*
-//val tstring: Type? = null     // immutable(char)[]
-//val twstring: Type? = null    // immutable(wchar)[]
-//val tdstring: Type? = null    // immutable(dchar)[]
-//val tvalist: Type? = null     // va_list alias
-//val terror: Type? = null      // for error recovery
-//val tnull: Type? = null       // for null type
+//val tshiftcnt: DType? = null
+//val tvoidptr: DType? = null    // void*
+//val tstring: DType? = null     // immutable(char)[]
+//val twstring: DType? = null    // immutable(wchar)[]
+//val tdstring: DType? = null    // immutable(dchar)[]
+//val tvalist: DType? = null     // va_list alias
+//val terror: DType? = null      // for error recovery
+//val tnull: DType? = null       // for null type
 //
-//val tsize_t: Type? = null     // matches size_t alias
-//val tptrdiff_t: Type? = null  // matches ptrdiff_t alias
-//val thash_t: Type? = null     // matches hash_t alias
+//val tsize_t: DType? = null     // matches size_t alias
+//val tptrdiff_t: DType? = null  // matches ptrdiff_t alias
+//val thash_t: DType? = null     // matches hash_t alias
 //
 //
 //val dtypeinfo: ClassDeclaration? = null
@@ -69,7 +69,7 @@
 //
 //val rtinfo: TemplateDeclaration? = null
 //
-////Type[TMAX] basic;
+////DType[TMAX] basic;
 ////StringTable stringtable;
 ////todo check transative const
 //
@@ -83,12 +83,12 @@
 //
 //
 //abstract class ResolvableType {
-//    abstract fun resolve(): Type
+//    abstract fun resolve(): DType
 //    abstract fun actuallyIsType(): Boolean
 //    //todo
 //}
 //
-//abstract class Type {
+//abstract class DType {
 //    //shared immutable should not be allowed
 //    var MODconst: Boolean;
 //    var MODimmutable: Boolean;
@@ -96,12 +96,12 @@
 //    var MODwild: Boolean;
 //    var MODwildconst: Boolean;
 //    var MODmutable: Boolean;
-//    var vtinfo: TypeInfoDeclaration? = null     // TypeInfo object for this Type
-//    open fun implicitlyConvertibleTo(to: Type): Match {
+//    var vtinfo: TypeInfoDeclaration? = null     // TypeInfo object for this DType
+//    open fun implicitlyConvertibleTo(to: DType): Match {
 //        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 //    }
 //
-//    open fun toBaseType(): Type {
+//    open fun toBaseType(): DType {
 //        return this
 //    }
 //
@@ -116,8 +116,8 @@
 //    /************************************
 //     * Apply modifiers to existing type.
 //     */
-//    fun castMod(MODconst: Boolean? = null, MODimmutable: Boolean? = null, MODshared: Boolean? = null, MODwild: Boolean? = null, MODwildconst: Boolean? = null, MODmutable: Boolean? = null): Type {
-//        val t: Type = this
+//    fun castMod(MODconst: Boolean? = null, MODimmutable: Boolean? = null, MODshared: Boolean? = null, MODwild: Boolean? = null, MODwildconst: Boolean? = null, MODmutable: Boolean? = null): DType {
+//        val t: DType = this
 //
 //        return t
 //    }
@@ -125,28 +125,28 @@
 //    /**
 //     * this family of functions change the type, and do not create a copy
 //     */
-//    abstract fun constOf(): Type
+//    abstract fun constOf(): DType
 //
-//    abstract fun unSharedOf(): Type
-//    abstract fun mutableOf(): Type
-//    abstract fun wildOf(): Type
-//    abstract fun wildConstOf(): Type
-//    abstract fun sharedOf(): Type
-//    abstract fun sharedConstOf(): Type
-//    abstract fun sharedWildOf(): Type
-//    abstract fun sharedWildConstOf(): Type
-//    abstract fun immutableOf(): Type
+//    abstract fun unSharedOf(): DType
+//    abstract fun mutableOf(): DType
+//    abstract fun wildOf(): DType
+//    abstract fun wildConstOf(): DType
+//    abstract fun sharedOf(): DType
+//    abstract fun sharedConstOf(): DType
+//    abstract fun sharedWildOf(): DType
+//    abstract fun sharedWildConstOf(): DType
+//    abstract fun immutableOf(): DType
 //
 //}
 //
-//class TypeNull : Type() {
-//    override fun implicitlyConvertibleTo(to: Type): Match {
+//class TypeNull : DType() {
+//    override fun implicitlyConvertibleTo(to: DType): Match {
 //        val match = super.implicitlyConvertibleTo(to)
 //        if (match != Match.nomatch)
 //            return match
 //
-//        val tb: Type = to.toBaseType()
-//        if (tb is TypeNull || tb is TypePointer || tb is TypeArray /*|| tb is TypeAarray todo*/ || tb is TypeClass || tb is TypeDelegate)
+//        val tb: DType = to.toBaseType()
+//        if (tb is TypeNull || tb is DTypePointer || tb is DTypeArray /*|| tb is TypeAarray todo*/ || tb is DTypeClass || tb is DTypeDelegate)
 //            return Match.constant
 //        return Match.nomatch
 //    }
@@ -154,27 +154,27 @@
 //
 //
 //class TypeSlice : TypeNext() {
-//    override fun implicitlyConvertibleTo(to: Type): Match {
+//    override fun implicitlyConvertibleTo(to: DType): Match {
 //        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 //    }
 //}
 //
 //
-//class TypeTuple : Type() {
-//    override fun implicitlyConvertibleTo(to: Type): Match {
+//class TypeTuple : DType() {
+//    override fun implicitlyConvertibleTo(to: DType): Match {
 //        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 //    }
 //}
 //
 //
-//class TypeClass : Type() {
-//    override fun implicitlyConvertibleTo(to: Type): Match {
+//class DTypeClass : DType() {
+//    override fun implicitlyConvertibleTo(to: DType): Match {
 //        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 //    }
 //}
 //
 //
-//class TypeEnum : Type() {
+//class DTypeEnum : DType() {
 //    val sym: EnumDeclaration
 //
 //    constructor(sym: EnumDeclaration) : super() {
@@ -182,11 +182,11 @@
 //    }
 //
 //
-//    override fun implicitlyConvertibleTo(to: Type): Match {
+//    override fun implicitlyConvertibleTo(to: DType): Match {
 //        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 //    }
 //
-//    override fun toBaseType(): Type {
+//    override fun toBaseType(): DType {
 //        if (sym.enumBody?.enumMembers != null && !sym.enumBody!!.enumMembers.isEmpty() && sym.memtype != null)
 //            return this
 //        val tb = sym.getMemtype().toBaseType()
@@ -195,15 +195,15 @@
 //}
 //
 //
-//class TypeStruct : Type() {
-//    override fun implicitlyConvertibleTo(to: Type): Match {
+//class TypeStruct : DType() {
+//    override fun implicitlyConvertibleTo(to: DType): Match {
 //        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 //    }
 //}
 //
 //
 //class TypeReturn : TypeQualified() {
-//    override fun implicitlyConvertibleTo(to: Type): Match {
+//    override fun implicitlyConvertibleTo(to: DType): Match {
 //        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 //    }
 //
@@ -211,7 +211,7 @@
 //
 //
 //class TypeTypeof : TypeQualified() {
-//    override fun implicitlyConvertibleTo(to: Type): Match {
+//    override fun implicitlyConvertibleTo(to: DType): Match {
 //        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 //    }
 //
@@ -219,71 +219,71 @@
 //
 //
 //class TypeInstance : TypeQualified() {
-//    override fun implicitlyConvertibleTo(to: Type): Match {
+//    override fun implicitlyConvertibleTo(to: DType): Match {
 //        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 //    }
 //}
 //
 //class TypeIdentifier : TypeQualified() {
-//    override fun implicitlyConvertibleTo(to: Type): Match {
+//    override fun implicitlyConvertibleTo(to: DType): Match {
 //        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 //    }
 //}
 //
-//abstract class TypeQualified : Type()
+//abstract class TypeQualified : DType()
 //
-//class TypeFunction : TypeNext() {
-//    override fun implicitlyConvertibleTo(to: Type): Match {
+//class DTypeFunction : TypeNext() {
+//    override fun implicitlyConvertibleTo(to: DType): Match {
 //        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 //    }
 //}
 //
 //
-//class TypeDelegate : TypeNext() {
-//    override fun implicitlyConvertibleTo(to: Type): Match {
+//class DTypeDelegate : TypeNext() {
+//    override fun implicitlyConvertibleTo(to: DType): Match {
 //        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 //    }
 //}
 //
 //
 //class TypeReference : TypeNext() {
-//    override fun implicitlyConvertibleTo(to: Type): Match {
+//    override fun implicitlyConvertibleTo(to: DType): Match {
 //        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 //    }
 //}
 //
 //
-//class TypePointer : TypeNext() {
-//    override fun implicitlyConvertibleTo(to: Type): Match {
+//class DTypePointer : TypeNext() {
+//    override fun implicitlyConvertibleTo(to: DType): Match {
 //        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 //    }
 //}
 //
 //
-//open class TypeArray : TypeNext() {
-//    override fun implicitlyConvertibleTo(to: Type): Match {
+//open class DTypeArray : TypeNext() {
+//    override fun implicitlyConvertibleTo(to: DType): Match {
 //        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 //    }
 //}
 //
 //
-//class TypeDArray : TypeArray() {
-//    override fun implicitlyConvertibleTo(to: Type): Match {
+//class TypeDArray : DTypeArray() {
+//    override fun implicitlyConvertibleTo(to: DType): Match {
 //        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 //    }
 //}
 //
 //
-//class TypeSArray : TypeArray() {
-//    override fun implicitlyConvertibleTo(to: Type): Match {
+//class TypeSArray : DTypeArray() {
+//    override fun implicitlyConvertibleTo(to: DType): Match {
 //        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 //    }
 //}
 //
-//class TypeVector : Type() {
-//    val baseType: Type? = null
+//class TypeVector : DType() {
+//    val baseType: DType? = null
 //
-//    override fun implicitlyConvertibleTo(to: Type): Match {
+//    override fun implicitlyConvertibleTo(to: DType): Match {
 //        if (this == to) {//todo override .equals
 //            return Match.exact
 //        }
@@ -294,7 +294,7 @@
 //    }
 //}
 //
-//abstract class TypeBasic : Type() {
+//abstract class TypeBasic : DType() {
 //    enum class TypeOf {
 //        UINT, INT, CHAR//...todo
 //    }
@@ -303,15 +303,15 @@
 ///**
 // * represents types with some kind of type modifier. Not modifiers like const,immutable etc. Modifiers like int *, int[], int function(), ref int
 // */
-//abstract class TypeNext : Type() {
-//    val next: Type? = null
+//abstract class TypeNext : DType() {
+//    val next: DType? = null
 //    fun transitive() {
 //        next!!.mods.addAll(next.mods)
 //    }
 //}
 //
 //
-////class TypeError : Type() {
+////class TypeError : DType() {
 ////    override fun implicitlyConvertibleTo(): Boolean {
 ////        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 ////    }

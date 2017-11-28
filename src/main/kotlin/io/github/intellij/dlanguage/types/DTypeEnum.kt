@@ -1,5 +1,5 @@
 package io.github.intellij.dlanguage.types
 
-abstract class TypePrimitive(val name: String) : Type() {
+class DTypeEnum(val name: String) : DType() {
     override fun typeToString(): String = name
 }

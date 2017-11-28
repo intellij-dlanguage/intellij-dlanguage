@@ -1,11 +1,11 @@
 package io.github.intellij.dlanguage.types
 
-class TypeFunction(val returnType: Type, val argumentsTypes: List<Type>) : Type() {
+class DTypeFunction(val returnType: DType, val argumentsTypes: List<DType>) : DType() {
     override fun typeToString(): String =
         "$returnType function(${argumentsTypes.joinToString(",") { it.typeToString() }})"
 }
 
-class TypeDelegate(val returnType: Type, val argumentsTypes: List<Type>) : Type() {
+class DTypeDelegate(val returnType: DType, val argumentsTypes: List<DType>) : DType() {
     override fun typeToString(): String =
         "$returnType delegate(${argumentsTypes.joinToString(",") { it.typeToString() }})"
 }

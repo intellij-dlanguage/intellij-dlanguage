@@ -6,9 +6,9 @@ package io.github.intellij.dlanguage.types
  * @param name: class name
  * @param base: list of base types e.g.: class TypeName: BaseType1, BaseType2
  */
-class TypeInterface(
+class DTypeInterface(
     val name: String,
-    val base: List<Type>
-) : Type() {
+    val base: List<DType>
+) : DType() {
     override fun typeToString(): String = name
 }

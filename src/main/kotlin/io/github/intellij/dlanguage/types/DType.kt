@@ -3,15 +3,15 @@ package io.github.intellij.dlanguage.types
 /**
  * Base class for all types
  */
-abstract class Type {
+abstract class DType {
     abstract fun typeToString(): String
     override fun toString(): String = typeToString()
 }
 
-class TypeConst(val ty: Type) : Type() {
+class DTypeConst(val ty: DType) : DType() {
     override fun typeToString(): String = "const($ty)"
 }
 
-open class TypeImmutable(val ty: Type) : Type() {
+open class DTypeImmutable(val ty: DType) : DType() {
     override fun typeToString(): String = "immutable($ty)"
 }

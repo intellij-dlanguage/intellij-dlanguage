@@ -1,5 +1,5 @@
 package io.github.intellij.dlanguage.types
 
-class TypeAlias(val name: String, val alias: Type) : Type() {
+class DTypeAlias(val name: String, val alias: DType) : DType() {
     override fun typeToString(): String = alias.typeToString()
 }
