@@ -29,11 +29,9 @@ public class DChooseByNameContributor implements ChooseByNameContributor {
     public NavigationItem[] getItemsByName(final String name, final String pattern,
                                            final Project project, final boolean includeNonProjectItems) {
         final GlobalSearchScope scope = includeNonProjectItems ? GlobalSearchScope.allScope(project) : GlobalSearchScope.projectScope(project);
-        final Collection<DNamedElement> result = StubIndex.getElements(DAllNameIndex.KEY, name, project, scope, DNamedElement.class);
-        final List<NavigationItem> items = ContainerUtil.newArrayListWithCapacity(result.size());
-        for (final DNamedElement element : result) {
-            items.add(element);
-        }
+        final Collection<DNamedElement> classes = StubIndex.getElements(DAllNameIndex.KEY, name, project, scope, DNamedElement.class);
+        final List<NavigationItem> items = ContainerUtil.newArrayListWithCapacity(classes.size());
+        items.addAll(classes);
         return items.toArray(new NavigationItem[items.size()]);
     }
 }
