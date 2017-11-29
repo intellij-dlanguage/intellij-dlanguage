@@ -8,8 +8,8 @@ import com.intellij.psi.stubs.StubIndex;
 import com.intellij.util.ArrayUtil;
 import com.intellij.util.containers.ContainerUtil;
 import io.github.intellij.dlanguage.psi.impl.DLanguageClassDeclarationImpl;
-import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
-import io.github.intellij.dlanguage.psi.impl.DLanguageClassDeclarationImpl;
+import io.github.intellij.dlanguage.psi.impl.named.DlangEnumDeclarationImpl;
+import io.github.intellij.dlanguage.psi.impl.named.DlangStructDeclarationImpl;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
 import io.github.intellij.dlanguage.stubs.index.DAllNameIndex;
 import org.jetbrains.annotations.NotNull;
@@ -35,7 +35,9 @@ public class DClassContributor implements ChooseByNameContributor {
         final Collection<DNamedElement> result = StubIndex.getElements(DAllNameIndex.KEY, name, project, scope, DNamedElement.class);
         final List<NavigationItem> items = ContainerUtil.newArrayListWithCapacity(result.size());
         for (final DNamedElement element : result) {
-            if(element.getParent().getClass() == DLanguageClassDeclarationImpl.class) {
+            if(element.getParent().getClass() == DLanguageClassDeclarationImpl.class
+                        || element.getClass() == DlangEnumDeclarationImpl.class
+                        || element.getClass() == DlangStructDeclarationImpl.class) {
                 items.add(element);
             }
         }
