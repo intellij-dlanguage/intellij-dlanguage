@@ -47,6 +47,8 @@ fun getPresentationIcon(psi: PsiElement?): Icon? = when (psi) {
     is StructBody -> getPresentationIcon(psi.parent)
     is VariableDeclaration -> DlangIcons.NODE_FIELD
     is AliasDeclaration -> DlangIcons.NODE_ALIAS
+    is MixinTemplateDeclaration -> DlangIcons.NODE_MIXIN
+    is TemplateDeclaration -> getPresentationIcon(psi.parent)
     is DlangFile -> DlangIcons.FILE
     else -> null
 }

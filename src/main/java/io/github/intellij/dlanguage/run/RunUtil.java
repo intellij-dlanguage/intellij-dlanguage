@@ -7,11 +7,16 @@ import com.intellij.execution.configurations.RunProfileState;
 import com.intellij.execution.runners.DefaultProgramRunner;
 import com.intellij.execution.runners.ExecutionEnvironment;
 import com.intellij.execution.ui.RunContentDescriptor;
+import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationType;
+import com.intellij.notification.Notifications;
 import com.intellij.openapi.project.Project;
 import com.intellij.xdebugger.XDebugProcess;
 import com.intellij.xdebugger.XDebugProcessStarter;
 import com.intellij.xdebugger.XDebugSession;
 import com.intellij.xdebugger.XDebuggerManager;
+import io.github.intellij.dlanguage.settings.ToolKey;
+import io.github.intellij.dlanguage.utils.DToolsNotificationListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import uk.co.cwspencer.gdb.Gdb;
@@ -20,6 +25,10 @@ import uk.co.cwspencer.ideagdb.debug.GdbDebugProcess;
 import uk.co.cwspencer.ideagdb.debug.utils.SdkUtil;
 
 public class RunUtil {
+
+    private static final String NOTIFICATION_GROUPID = "Debugger";
+    private static final String NOTIFICATION_TITLE = "Debugging Error";
+
     @Nullable
     static RunContentDescriptor startDebugger(DefaultProgramRunner buildRunner, RunProfileState state, ExecutionEnvironment env, Project project, Executor executor, String execName) throws ExecutionException {
         final ExecutionResult result = state.execute(executor, buildRunner);
@@ -29,6 +38,16 @@ public class RunUtil {
 
 //        GdbRunConfiguration configuration = ((GdbExecutionResult) result).m_configuration;
 
+        // check if path to debugger is defined
+        if (ToolKey.GDB_KEY.getPath() == null){
+            Notifications.Bus.notify(
+                new Notification(NOTIFICATION_GROUPID, NOTIFICATION_TITLE,
+                    "GDB executable path is empty" +
+                        "<br/><a href='configureDLanguageTools'>Configure</a>",
+                    NotificationType.ERROR, new DToolsNotificationListener(project)), project);
+
+            return null;
+        }
 
         if (SdkUtil.isHostOsWindows()) {
             execName = execName.concat(".exe");
