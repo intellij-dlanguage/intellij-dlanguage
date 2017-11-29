@@ -2,7 +2,6 @@ package io.github.intellij.dlanguage.resolve.processors.parameters
 
 import com.intellij.psi.PsiElement
 import io.github.intellij.dlanguage.psi.*
-import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
 import io.github.intellij.dlanguage.utils.*
 
 /**
@@ -14,6 +13,50 @@ class DAttributesFinder {
 
     constructor(startingPoint: PsiElement) {
         this.startingPoint = startingPoint
+        if (startingPoint is Constructor) {
+            handleConstructor()
+//                recurseUpImpl(startingPoint.kW_THIS!!)
+        } else if (startingPoint is FunctionDeclaration) {
+            handleFunctionDeclaration()
+//                recurseUpImpl(startingPoint.identifier!!)
+        } else if (startingPoint is InterfaceOrClass) {
+            handleInterfaceOrClass()
+//                recurseUpImpl(startingPoint.identifier!!)
+        } else if (startingPoint is UnionDeclaration) {
+            handleUnionDeclaration()
+//                recurseUpImpl(startingPoint.identifier!!)
+        } else if (startingPoint is StructDeclaration) {
+            handleStructDeclaration()
+//                recurseUpImpl(startingPoint.identifier!!)
+        } else if (startingPoint is LabeledStatement) {
+            handleLabeledStatement()
+//                recurseUpImpl(startingPoint.identifier!!)
+        } else if (startingPoint is AutoDeclarationPart) {
+            handleAutoDeclarationPart()
+//                recurseUpImpl(startingPoint.identifier!!)
+        } else if (startingPoint is EnumDeclaration) {
+            handleEnumDeclaration()
+//                recurseUpImpl(startingPoint.identifier!!)
+        } else if (startingPoint is Catch) {
+            handleCatch()
+//                recurseUpImpl(startingPoint.identifier!!)
+        } else if (startingPoint is Declarator) {
+            handleDeclarator()
+//                recurseUpImpl(startingPoint.identifier!!)
+        } else if (startingPoint is EponymousTemplateDeclaration) {
+            handleEponymousTemplateDeclaration()
+//                recurseUpImpl(startingPoint.identifier!!)
+        } else if (startingPoint is ForeachType) {
+            handleForeachType()
+//                recurseUpImpl(startingPoint.identifier!!)
+        } else if (startingPoint is DLanguageIfCondition) {
+            handleDLanguageIfCondition()
+//                recurseUpImpl(startingPoint.identifier!!)
+        } else if (startingPoint is TemplateDeclaration) {
+            handleTemplateDeclaration()
+//                recurseUpImpl(startingPoint.identifier!!)
+        }
+
     }
 
     enum class Visibility {
@@ -30,10 +73,18 @@ class DAttributesFinder {
     private var isConst: Boolean? = null
     private var isImmutable: Boolean? = null
 
+    private var visibilityByBulkAttributeApplication: Visibility? = null
+    private var isStaticByBulkAttributeApplication: Boolean? = null
+    private var isPropertyByBulkAttributeApplication: Boolean? = null
+    private var isNoGCByBulkAttributeApplication: Boolean? = null
+    private var isExternByBulkAttributeApplication: Boolean? = null
+    private var isPureByBulkAttributeApplication: Boolean? = null
+    private var isNothrowByBulkAttributeApplication: Boolean? = null
+    private var isConstByBulkAttributeApplication: Boolean? = null
+    private var isImmutableByBulkAttributeApplication: Boolean? = null
+
     var defaultsToStatic: Boolean = true
-    var defaultsToPrivate: Boolean = false
-    var defaultsToProtected: Boolean = false
-    var defaultsToPublic: Boolean = true
+    var defualtVisibility = Visibility.PUBLIC
     var defaultsToProperty: Boolean = false
     var defaultsToNoGC: Boolean = false
     var defaultsToExtern: Boolean = false
@@ -45,39 +96,8 @@ class DAttributesFinder {
 
 
     fun recurseUp() {
-        if (startingPoint is io.github.intellij.dlanguage.psi.interfaces.DNamedElement) {
-            if (startingPoint is Constructor) {
-                recurseUpImpl(startingPoint.kW_THIS!!)
-            } else if (startingPoint is FunctionDeclaration) {
-                recurseUpImpl(startingPoint.identifier!!)
-            } else if (startingPoint is InterfaceOrClass) {
-                recurseUpImpl(startingPoint.identifier!!)
-            } else if (startingPoint is UnionDeclaration) {
-                recurseUpImpl(startingPoint.identifier!!)
-            } else if (startingPoint is StructDeclaration) {
-                recurseUpImpl(startingPoint.identifier!!)
-            } else if (startingPoint is LabeledStatement) {
-                recurseUpImpl(startingPoint.identifier!!)
-            } else if (startingPoint is AutoDeclarationPart) {
-                recurseUpImpl(startingPoint.identifier!!)
-            } else if (startingPoint is EnumDeclaration) {
-                recurseUpImpl(startingPoint.identifier!!)
-            } else if (startingPoint is Catch) {
-                recurseUpImpl(startingPoint.identifier!!)
-            } else if (startingPoint is Declarator) {
-                recurseUpImpl(startingPoint.identifier!!)
-            } else if (startingPoint is EponymousTemplateDeclaration) {
-                recurseUpImpl(startingPoint.identifier!!)
-            } else if (startingPoint is ForeachType) {
-                recurseUpImpl(startingPoint.identifier!!)
-            } else if (startingPoint is io.github.intellij.dlanguage.psi.DLanguageIfCondition) {
-                recurseUpImpl(startingPoint.identifier!!)
-            } /*else if (startingPoint is SingleImport) {
-                recurseUpImpl(startingPoint.identifier!!)
-            }*/ else if (startingPoint is TemplateDeclaration) {
-                recurseUpImpl(startingPoint.identifier!!)
-            }
-        }
+        // make sure that the starting point is an identifier
+
         recurseUpImpl(startingPoint)
     }
 
@@ -109,11 +129,8 @@ class DAttributesFinder {
         return isParent(parent, child.parent)
     }
 
-
     fun execute(element: PsiElement): Boolean {
         if (element is DlangSingleImport && isParent(element, startingPoint)) {
-            defaultsToPrivate = true
-            defaultsToPublic = false
             defaultsToStatic = false
         }
         if (element is FunctionDeclaration || element is DLanguageUnittest || element is Parameters || element is TemplateParameters) {
@@ -125,7 +142,7 @@ class DAttributesFinder {
                     || (element.parameters != null && isParent(element.parameters!!, startingPoint))
                     || (element.templateParameters != null && isParent(element.templateParameters!!, startingPoint))) {
                     visibility = Visibility.LOCAL
-                    return false//todo this false should be local to the visibility side of things e.g this entire class needs reworking
+                    return false
                 }
             }
             return true
@@ -159,7 +176,6 @@ class DAttributesFinder {
             }
         }
     }
-
 
     fun updateFromAttribute(attribute: DLanguageAttribute) {
         if (attribute.textOffset < startingPoint.textOffset) {
@@ -211,105 +227,115 @@ class DAttributesFinder {
             } else if (attribute.kW_CONST != null) {
                 isConst = true
             }
-            //else if (attribute.typeConstructor != null) {
-//            }
         }
     }
 
-    fun isConst(): Boolean = isConst ?: defaultsToConst
+    fun handleConstructor() {
+        val constructor = startingPoint as Constructor
+        //a member of a class so not static:
+        defaultsToStatic = false
+        //publicly acsessible by defualt
+        defualtVisibility = Visibility.PUBLIC
+        //a poperty constructor sounds really weird
+        defaultsToProperty = false
+        //I believe this is false
+        defaultsToNoGC = false
+        //Not extern by default I believe
+        // todo need to distinguish between extern(C) and other kinds of extern
+        defaultsToExtern = false
+        //not really applicable
+        defaultsToLocal = false
+        //constructors are like the exact opposite of a pure function
+        defaultsToPure = false
+        //I'm pretty sure constructors are not nothrow by default
+        defaultsToNothrow = false
+        // what does it mean for a constructor to be const. I'm betting that since constructors can't be overridden they are const?
+        defaultsToConst = true
+        //it doesn't make sense for  either:
+        defaultsToImmutable = false
+        val decl = constructor.parent as Declaration
+        for (attribute in decl.attributes) {
+            if (attribute.kW_CONST != null) {
+                isConst = true
+            }
+            if (attribute.kW_EXTERN != null) {
+                isExtern = true
+            }
+            if (attribute.kW_NOTHROW != null) {
+                isNothrow = true
+            }
+            if (attribute.kW_PURE != null) {
+                isPure = true
+            }
+            if (attribute.kW_PRIVATE != null) {
+                visibility = Visibility.PRIVATE
+            }
+            if (attribute.kW_PROTECTED != null) {
+                visibility = Visibility.PROTECTED
+            }
+            if (attribute.kW_PUBLIC != null) {
+                visibility = Visibility.PUBLIC
+            }
+//            if (attribute.kW_FINAL != null) {
+//
+//            }
+            if (attribute.kW_STATIC != null) {
+                isStatic = true
+            }
+        }
 
-    fun isStatic(): Boolean = isStatic ?: defaultsToStatic
-
-    fun isPrivate(): Boolean {
-        if (visibility == null)
-            return defaultsToPrivate
-        return visibility == Visibility.PRIVATE
     }
 
-    fun isProtected(): Boolean {
-        if (visibility == null)
-            return defaultsToProtected
-        return visibility == Visibility.PROTECTED
+    fun handleFunctionDeclaration() {
+
     }
 
-    fun isPublic(): Boolean {
-        if (visibility == null)
-            return defaultsToPublic
-        return visibility == Visibility.PUBLIC
+    fun handleInterfaceOrClass() {
+
     }
 
-    fun isProperty(): Boolean = isProperty ?: defaultsToProperty
+    fun handleUnionDeclaration() {
 
-    fun isNoGC(): Boolean = isNoGC ?: defaultsToNoGC
-
-    fun isExtern(): Boolean = isExtern ?: defaultsToExtern
-
-    fun isLocal(): Boolean {
-        if (visibility == null)
-            return defaultsToLocal
-        return visibility == Visibility.LOCAL
     }
 
-    fun isPure(): Boolean = isPure ?: defaultsToPure
+    fun handleStructDeclaration() {
 
-    fun isNothrow(): Boolean = isNothrow ?: defaultsToNothrow
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other?.javaClass != javaClass) return false
-
-        other as DAttributesFinder
-
-        if (startingPoint != other.startingPoint) return false
-        if (visibility != other.visibility) return false
-        if (isStatic != other.isStatic) return false
-        if (isProperty != other.isProperty) return false
-        if (isNoGC != other.isNoGC) return false
-        if (isExtern != other.isExtern) return false
-        if (isPure != other.isPure) return false
-        if (isNothrow != other.isNothrow) return false
-        if (isConst != other.isConst) return false
-        if (isImmutable != other.isImmutable) return false
-        if (defaultsToStatic != other.defaultsToStatic) return false
-        if (defaultsToPrivate != other.defaultsToPrivate) return false
-        if (defaultsToProtected != other.defaultsToProtected) return false
-        if (defaultsToPublic != other.defaultsToPublic) return false
-        if (defaultsToProperty != other.defaultsToProperty) return false
-        if (defaultsToNoGC != other.defaultsToNoGC) return false
-        if (defaultsToExtern != other.defaultsToExtern) return false
-        if (defaultsToLocal != other.defaultsToLocal) return false
-        if (defaultsToPure != other.defaultsToPure) return false
-        if (defaultsToNothrow != other.defaultsToNothrow) return false
-        if (defaultsToConst != other.defaultsToConst) return false
-        if (defaultsToImmutable != other.defaultsToImmutable) return false
-
-        return true
     }
 
-    override fun hashCode(): Int {
-        var result = startingPoint.hashCode()
-        result = 31 * result + (visibility?.hashCode() ?: 0)
-        result = 31 * result + (isStatic?.hashCode() ?: 0)
-        result = 31 * result + (isProperty?.hashCode() ?: 0)
-        result = 31 * result + (isNoGC?.hashCode() ?: 0)
-        result = 31 * result + (isExtern?.hashCode() ?: 0)
-        result = 31 * result + (isPure?.hashCode() ?: 0)
-        result = 31 * result + (isNothrow?.hashCode() ?: 0)
-        result = 31 * result + (isConst?.hashCode() ?: 0)
-        result = 31 * result + (isImmutable?.hashCode() ?: 0)
-        result = 31 * result + defaultsToStatic.hashCode()
-        result = 31 * result + defaultsToPrivate.hashCode()
-        result = 31 * result + defaultsToProtected.hashCode()
-        result = 31 * result + defaultsToPublic.hashCode()
-        result = 31 * result + defaultsToProperty.hashCode()
-        result = 31 * result + defaultsToNoGC.hashCode()
-        result = 31 * result + defaultsToExtern.hashCode()
-        result = 31 * result + defaultsToLocal.hashCode()
-        result = 31 * result + defaultsToPure.hashCode()
-        result = 31 * result + defaultsToNothrow.hashCode()
-        result = 31 * result + defaultsToConst.hashCode()
-        result = 31 * result + defaultsToImmutable.hashCode()
-        return result
+    fun handleLabeledStatement() {
+
+    }
+
+    fun handleAutoDeclarationPart() {
+
+    }
+
+    fun handleEnumDeclaration() {
+
+    }
+
+    fun handleCatch() {
+
+    }
+
+    fun handleDeclarator() {
+
+    }
+
+    fun handleEponymousTemplateDeclaration() {
+
+    }
+
+    fun handleForeachType() {
+
+    }
+
+    fun handleDLanguageIfCondition() {
+
+    }
+
+    fun handleTemplateDeclaration() {
+
     }
 
 
