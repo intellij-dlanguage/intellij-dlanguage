@@ -4,6 +4,7 @@ import com.intellij.codeInsight.daemon.impl.AnnotationHolderImpl;
 import com.intellij.lang.annotation.Annotation;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.HighlightSeverity;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.xml.util.XmlStringUtil;
 import org.jetbrains.annotations.NotNull;
@@ -44,7 +45,16 @@ public class DAnnotationHolder {
 
     private static Annotation createAnnotation(@NotNull final AnnotationHolderImpl holder, @NotNull final HighlightSeverity severity, @NotNull final TextRange range, @Nullable final String message) {
         final String tooltip = message == null ? null : XmlStringUtil.wrapInHtml(escapeSpacesForHtml(XmlStringUtil.escapeString(message)));
-        final Annotation annotation = new Annotation(range.getStartOffset(), range.getEndOffset(), severity, message, tooltip);
+        final Annotation annotation;
+        try {
+            annotation = new Annotation(range.getStartOffset(), range.getEndOffset(), severity,
+                message, tooltip);
+        } catch (final AssertionError e) {
+            Logger.getInstance(DAnnotationHolder.class).warn(
+                "Could not create annotation. Most likely cuased by someone/typing/deleting the applicable range:"
+                    + e);
+            return null;
+        }
         holder.add(annotation);
         return annotation;
     }

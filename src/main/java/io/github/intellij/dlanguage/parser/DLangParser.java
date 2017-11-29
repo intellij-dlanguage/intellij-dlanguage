@@ -4,6 +4,7 @@ import com.google.common.collect.Sets;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiBuilder.Marker;
 import com.intellij.psi.tree.IElementType;
+import io.github.intellij.dlanguage.parser.Token.IdType;
 import kotlin.jvm.internal.Ref;
 import io.github.intellij.dlanguage.psi.DlangTokenType;
 import io.github.intellij.dlanguage.psi.DlangTokenType;
@@ -398,23 +399,7 @@ class DLangParser {
         }
     }
 
-    private Token.IdType tok(final String tok) {
-        if (tokenTypeIndex.get(tok) != null) {
-            return tokenTypeIndex.get(tok);
-        }
-        final IElementType[] matchingTypes = IElementType.enumerate((IElementType type) -> type instanceof DlangTokenType && ((DlangTokenType) type).getDebugName().equals(tok));
-        if (tok.equals("identifier")) {
-            tokenTypeIndex.put("identifier", new Token.IdType(ID));
-            return tokenTypeIndex.get("identifier");
-        }
-
-        if (matchingTypes.length != 1) {
-            throw new IllegalArgumentException("string:" + tok);
-        }
-        final Token.IdType result = new Token.IdType(matchingTypes[0]);
-        tokenTypeIndex.put(tok, result);
-        return result;
-    }
+    private final IdType tokenstringLiteralTok = tok("tokenstringLiteral");
 
     private Token[] getTokens(final PsiBuilder builder) {
         final Marker tokenRollBackMark = builder.mark();
@@ -8504,6 +8489,30 @@ class DLangParser {
         return tokens[index - 1];
     }
 
+    private Token.IdType tok(final String tok) {
+        if (tokenTypeIndex.get(tok) != null) {
+            return tokenTypeIndex.get(tok);
+        }
+        final IElementType[] matchingTypes = IElementType.enumerate(
+            (IElementType type) -> type instanceof DlangTokenType && ((DlangTokenType) type)
+                .getDebugName().equals(tok));
+        if (tok.equals("identifier")) {
+            tokenTypeIndex.put("identifier", new Token.IdType(ID));
+            return tokenTypeIndex.get("identifier");
+        }
+        if (tok.equals("tokenstringLiteral")) {
+            tokenTypeIndex.put("tokenstringLiteral", new Token.IdType(ID));
+            return tokenTypeIndex.get("tokenstringLiteral");
+        }
+
+        if (matchingTypes.length != 1) {
+            throw new IllegalArgumentException("string:" + tok);
+        }
+        final Token.IdType result = new Token.IdType(matchingTypes[0]);
+        tokenTypeIndex.put(tok, result);
+        return result;
+    }
+
     /**
      * Advances to the next token and returns the current token
      */
@@ -8516,7 +8525,7 @@ class DLangParser {
         if (currentIs(tok("identifier"))) {
             identifierMarker = enter_section_(builder);
         }
-        if (currentIs(tok("tokenstringLiteral"))) {
+        if (currentIs(tokenstringLiteralTok)) {
             tokenStringMarker = enter_section_modified(builder);
         }
         builder.advanceLexer();
