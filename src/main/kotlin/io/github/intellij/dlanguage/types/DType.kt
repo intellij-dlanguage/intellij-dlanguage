@@ -1,9 +1,10 @@
 package io.github.intellij.dlanguage.types
 
 /**
- * Base class for all types
+ * Base class for all types.
+ * @param module: module where type is placed.
  */
-abstract class DType {
+abstract class DType(val module: String? = null) {
     abstract fun typeToString(): String
     override fun toString(): String = typeToString()
 }

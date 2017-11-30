@@ -1,17 +1,12 @@
 package io.github.intellij.dlanguage.types.infer
 
 import com.intellij.psi.PsiElement
-import io.github.intellij.dlanguage.psi.DLanguagePrimaryExpression
-import io.github.intellij.dlanguage.psi.DLanguageUnaryExpression
+import io.github.intellij.dlanguage.psi.*
 import io.github.intellij.dlanguage.types.*
-import java.lang.Long.parseLong
 
-/**
- * Literals:
- *   1; 'a'; "Hello"; true; -1; 1.2f; 1.3; q{asdasda aaa}; `asdas`;
- */
-private fun inferLiteralExprType(literal: PsiElement?): DType = when (literal) {
-    is DLanguageUnaryExpression -> inferLiteralExprType(literal.primaryExpression)  // ignore unary operator
+fun inferExprType(literal: PsiElement?): DType = when (literal) {
+    is DLanguageInitializer -> inferAssignType(literal.nonVoidInitializer?.assignExpression)
+    is DLanguageUnaryExpression -> inferExprType(literal.primaryExpression)  // ignore unary operator
     is DLanguagePrimaryExpression -> inferPrimaryExprType(literal)
     else -> DTypeUnknown
 }
@@ -24,6 +19,13 @@ private fun inferPrimaryExprType(literal: DLanguagePrimaryExpression): DType = w
     literal.kW_TRUE != null -> DTypeBool
     literal.kW_FALSE != null -> DTypeBool
     else -> DTypeUnknown
+}
+
+private fun inferAssignType(assignExpression: DLanguageAssignExpression?): DType {
+    if (assignExpression == null)
+        return DTypeUnknown
+
+    return DTypeUnknown
 }
 
 private fun inferIntegerLiteral(literal: PsiElement): DType {

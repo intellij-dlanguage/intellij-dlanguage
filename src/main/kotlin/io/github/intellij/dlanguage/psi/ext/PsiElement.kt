@@ -24,3 +24,6 @@ fun PsiElement?.getPrevNonCommentSibling(): PsiElement? =
  */
 fun PsiElement?.getNextNonCommentSibling(): PsiElement? =
     PsiTreeUtil.skipSiblingsForward(this, PsiWhiteSpace::class.java, PsiComment::class.java)
+
+inline fun <reified T : PsiElement> PsiElement.parentOfType(strict: Boolean = true, minStartOffset: Int = -1): T? =
+    PsiTreeUtil.getParentOfType(this, T::class.java, strict, minStartOffset)
