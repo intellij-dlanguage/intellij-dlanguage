@@ -88,7 +88,7 @@ class DAttributesFinder {
     var defaultsToProperty: Boolean = false
     var defaultsToNoGC: Boolean = false
     var defaultsToExtern: Boolean = false
-    var defaultsToLocal: Boolean = false
+    var defaultsToLocal: Boolean = false // idk what this does since nothing is local by default. consistency I guess
     var defaultsToPure: Boolean = false
     var defaultsToNothrow: Boolean = false
     var defaultsToConst: Boolean = false
@@ -243,17 +243,47 @@ class DAttributesFinder {
         //Not extern by default I believe
         // todo need to distinguish between extern(C) and other kinds of extern
         defaultsToExtern = false
-        //not really applicable
-        defaultsToLocal = false
         //constructors are like the exact opposite of a pure function
         defaultsToPure = false
         //I'm pretty sure constructors are not nothrow by default
         defaultsToNothrow = false
         // what does it mean for a constructor to be const. I'm betting that since constructors can't be overridden they are const?
         defaultsToConst = true
-        //it doesn't make sense for  either:
+        //it doesn't make sense for constructors to be immutable either:
         defaultsToImmutable = false
         val decl = constructor.parent as Declaration
+        updateFromParentDecl(decl)
+
+    }
+
+    fun handleFunctionDeclaration() {
+        val function = startingPoint as FunctionDeclaration
+        //functions are static by default
+        defaultsToStatic = true
+        //publicly accessible by default
+        defualtVisibility = Visibility.PUBLIC
+        //functions that are properties by default sounds kind of like haskell in the sense that there would be an uncomfortable lack of parentheses
+        defaultsToProperty = false
+        //I believe this is false
+        defaultsToNoGC = false
+        //Not extern by default I believe
+        // todo need to distinguish between extern(C) and other kinds of extern
+        defaultsToExtern = false
+        //not really applicable
+        defaultsToLocal = false
+        //functions are not pure by default
+        defaultsToPure = false
+        //I'm pretty sure functions are not nothrow by default
+        defaultsToNothrow = false
+        // functions can be overriden by default
+        defaultsToConst = false
+        //it doesn't make sense for functions to be immutable either:
+        defaultsToImmutable = false
+        val decl = function.parent as Declaration
+        updateFromParentDecl(decl)
+    }
+
+    private fun updateFromParentDecl(decl: Declaration) {
         for (attribute in decl.attributes) {
             if (attribute.kW_CONST != null) {
                 isConst = true
@@ -276,18 +306,13 @@ class DAttributesFinder {
             if (attribute.kW_PUBLIC != null) {
                 visibility = Visibility.PUBLIC
             }
-//            if (attribute.kW_FINAL != null) {
-//
-//            }
+            //            if (attribute.kW_FINAL != null) {
+            //
+            //            }
             if (attribute.kW_STATIC != null) {
                 isStatic = true
             }
         }
-
-    }
-
-    fun handleFunctionDeclaration() {
-
     }
 
     fun handleInterfaceOrClass() {
