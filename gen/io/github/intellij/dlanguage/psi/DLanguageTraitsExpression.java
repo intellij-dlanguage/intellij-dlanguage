@@ -13,7 +13,7 @@ public interface DLanguageTraitsExpression extends PsiElement {
     public DLanguageTemplateArgumentList getTemplateArgumentList();
 
     @Nullable
-    public DLanguageIdentifier getIdentifier();
+    public DlangIdentifier getIdentifier();
 
     @Nullable
     public PsiElement getOP_PAR_RIGHT();

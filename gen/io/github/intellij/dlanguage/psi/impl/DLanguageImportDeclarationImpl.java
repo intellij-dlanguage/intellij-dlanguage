@@ -13,6 +13,7 @@ import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.DLanguageImportBindings;
 import io.github.intellij.dlanguage.psi.DLanguageImportDeclaration;
+import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
@@ -26,13 +27,13 @@ public class DLanguageImportDeclarationImpl extends ASTWrapperPsiElement impleme
         super(node);
     }
 
-    public void accept(@NotNull DLanguageVisitor visitor) {
+    public void accept(@NotNull DlangVisitor visitor) {
         visitor.visitImportDeclaration(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor instanceof DLanguageVisitor) {
-            accept((DLanguageVisitor) visitor);
+        if (visitor instanceof DlangVisitor) {
+            accept((DlangVisitor) visitor);
         } else {
             super.accept(visitor);
         }

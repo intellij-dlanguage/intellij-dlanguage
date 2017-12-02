@@ -7,18 +7,18 @@ import org.jetbrains.annotations.Nullable;
 public interface DLanguageTypeidExpression extends PsiElement {
 
     @Nullable
-    DLanguageExpression getExpression();
+    public DLanguageExpression getExpression();
 
     @Nullable
-    PsiElement getKW_TYPEID();
+    public PsiElement getKW_TYPEID();
 
     @Nullable
-    DLanguageType getType();
+    public DLanguageType getType();
 
     @Nullable
-    PsiElement getOP_PAR_RIGHT();
+    public PsiElement getOP_PAR_RIGHT();
 
     @Nullable
-    PsiElement getOP_PAR_LEFT();
+    public PsiElement getOP_PAR_LEFT();
 
 }

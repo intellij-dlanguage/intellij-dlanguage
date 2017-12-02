@@ -13,6 +13,7 @@ import io.github.intellij.dlanguage.psi.DLanguageAsmExp;
 import io.github.intellij.dlanguage.psi.DLanguageAsmPrimaryExp;
 import io.github.intellij.dlanguage.psi.DLanguageIdentifierChain;
 import io.github.intellij.dlanguage.psi.DLanguageRegister;
+import io.github.intellij.dlanguage.psi.DlangVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,13 +25,13 @@ public class DLanguageAsmPrimaryExpImpl extends ASTWrapperPsiElement implements
         super(node);
     }
 
-    public void accept(@NotNull DLanguageVisitor visitor) {
+    public void accept(@NotNull DlangVisitor visitor) {
         visitor.visitAsmPrimaryExp(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor instanceof DLanguageVisitor) {
-            accept((DLanguageVisitor) visitor);
+        if (visitor instanceof DlangVisitor) {
+            accept((DlangVisitor) visitor);
         } else {
             super.accept(visitor);
         }

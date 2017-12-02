@@ -10,6 +10,8 @@ import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.DLanguageMixinTemplateName;
 import io.github.intellij.dlanguage.psi.DLanguageTemplateArguments;
 import io.github.intellij.dlanguage.psi.DLanguageTemplateMixinExpression;
+import io.github.intellij.dlanguage.psi.DlangIdentifier;
+import io.github.intellij.dlanguage.psi.DlangVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,13 +23,13 @@ public class DLanguageTemplateMixinExpressionImpl extends ASTWrapperPsiElement i
         super(node);
     }
 
-    public void accept(@NotNull DLanguageVisitor visitor) {
+    public void accept(@NotNull DlangVisitor visitor) {
         visitor.visitTemplateMixinExpression(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor instanceof DLanguageVisitor) {
-            accept((DLanguageVisitor) visitor);
+        if (visitor instanceof DlangVisitor) {
+            accept((DlangVisitor) visitor);
         } else {
             super.accept(visitor);
         }
@@ -49,7 +51,7 @@ public class DLanguageTemplateMixinExpressionImpl extends ASTWrapperPsiElement i
     }
 
     @Nullable
-    public DLanguageIdentifier getIdentifier() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
+    public DlangIdentifier getIdentifier() {
+        return PsiTreeUtil.getChildOfType(this, DlangIdentifier.class);
     }
 }

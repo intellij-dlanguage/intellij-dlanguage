@@ -51,6 +51,7 @@ import io.github.intellij.dlanguage.psi.DLanguageTypeConstructor;
 import io.github.intellij.dlanguage.psi.DLanguageTypeidExpression;
 import io.github.intellij.dlanguage.psi.DLanguageTypeofExpression;
 import io.github.intellij.dlanguage.psi.DLanguageVector;
+import io.github.intellij.dlanguage.psi.DlangVisitor;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -63,13 +64,13 @@ public class DLanguagePrimaryExpressionImpl extends ASTWrapperPsiElement impleme
         super(node);
     }
 
-    public void accept(@NotNull DLanguageVisitor visitor) {
+    public void accept(@NotNull DlangVisitor visitor) {
         visitor.visitPrimaryExpression(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor instanceof DLanguageVisitor) {
-            accept((DLanguageVisitor) visitor);
+        if (visitor instanceof DlangVisitor) {
+            accept((DlangVisitor) visitor);
         } else {
             super.accept(visitor);
         }

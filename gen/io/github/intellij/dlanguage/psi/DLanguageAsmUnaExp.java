@@ -10,7 +10,7 @@ public interface DLanguageAsmUnaExp extends PsiElement {
     public DLanguageAsmUnaExp getAsmUnaExp();
 
     @Nullable
-    public DLanguageIdentifier getIdentifier();
+    public DlangIdentifier getIdentifier();
 
     @Nullable
     public DLanguageAsmExp getAsmExp();

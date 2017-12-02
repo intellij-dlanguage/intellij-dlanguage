@@ -7,5 +7,5 @@ import org.jetbrains.annotations.Nullable;
 public interface DLanguageStaticAssertDeclaration extends PsiElement {
 
     @Nullable
-    DLanguageStaticAssertStatement getStaticAssertStatement();
+    public DLanguageStaticAssertStatement getStaticAssertStatement();
 }

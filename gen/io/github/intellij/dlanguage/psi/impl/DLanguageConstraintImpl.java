@@ -11,6 +11,7 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.DLanguageConstraint;
 import io.github.intellij.dlanguage.psi.DLanguageExpression;
+import io.github.intellij.dlanguage.psi.DlangVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,13 +22,13 @@ public class DLanguageConstraintImpl extends ASTWrapperPsiElement implements DLa
         super(node);
     }
 
-    public void accept(@NotNull DLanguageVisitor visitor) {
+    public void accept(@NotNull DlangVisitor visitor) {
         visitor.visitConstraint(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor instanceof DLanguageVisitor) {
-            accept((DLanguageVisitor) visitor);
+        if (visitor instanceof DlangVisitor) {
+            accept((DlangVisitor) visitor);
         } else {
             super.accept(visitor);
         }

@@ -10,7 +10,7 @@ public interface DLanguageEnumMember extends PsiElement, DNamedElement,
     StubBasedPsiElement<DLanguageEnumMemberStub> {
 
     @Nullable
-    public DLanguageIdentifier getIdentifier();
+    public DlangIdentifier getIdentifier();
 
     @Nullable
     public PsiElement getOP_EQ();

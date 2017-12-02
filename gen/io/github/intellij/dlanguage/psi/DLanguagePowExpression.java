@@ -7,12 +7,12 @@ import org.jetbrains.annotations.Nullable;
 public interface DLanguagePowExpression extends PsiElement {
 
     @Nullable
-    DLanguagePowExpression getPowExpression();
+    public DLanguagePowExpression getPowExpression();
 
     @Nullable
-    DLanguageUnaryExpression getUnaryExpression();
+    public DLanguageUnaryExpression getUnaryExpression();
 
     @Nullable
-    PsiElement getOP_POW();
+    public PsiElement getOP_POW();
 
 }

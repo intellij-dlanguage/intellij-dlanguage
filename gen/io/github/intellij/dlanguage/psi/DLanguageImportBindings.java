@@ -9,15 +9,15 @@ import org.jetbrains.annotations.Nullable;
 public interface DLanguageImportBindings extends PsiElement {
 
     @NotNull
-    List<PsiElement> getOP_COMMAs();
+    public List<PsiElement> getOP_COMMAs();
 
     @NotNull
-    List<DLanguageImportBind> getImportBinds();
+    public List<DLanguageImportBind> getImportBinds();
 
     @Nullable
-    DLanguageSingleImport getSingleImport();
+    public DLanguageSingleImport getSingleImport();
 
     @Nullable
-    PsiElement getOP_COLON();
+    public PsiElement getOP_COLON();
 
 }

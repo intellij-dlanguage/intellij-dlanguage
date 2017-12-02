@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 public interface DLanguageGotoStatement extends PsiElement {
 
     @Nullable
-    public DLanguageIdentifier getIdentifier();
+    public DlangIdentifier getIdentifier();
 
     @Nullable
     public DLanguageExpression getExpression();

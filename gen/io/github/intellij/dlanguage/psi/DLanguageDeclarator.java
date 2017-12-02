@@ -10,14 +10,14 @@ public interface DLanguageDeclarator extends PsiElement, DNamedElement,
     StubBasedPsiElement<DLanguageDeclaratorStub> {
 
     @Nullable
-    DLanguageIdentifier getIdentifier();
+    public DlangIdentifier getIdentifier();
 
     @Nullable
-    PsiElement getOP_EQ();
+    public PsiElement getOP_EQ();
 
     @Nullable
-    DLanguageTemplateParameters getTemplateParameters();
+    public DLanguageTemplateParameters getTemplateParameters();
 
     @Nullable
-    DLanguageInitializer getInitializer();
+    public DLanguageInitializer getInitializer();
 }

@@ -9,18 +9,18 @@ import org.jetbrains.annotations.Nullable;
 public interface DLanguageParameters extends PsiElement {
 
     @NotNull
-    List<PsiElement> getOP_COMMAs();
+    public List<PsiElement> getOP_COMMAs();
 
     @Nullable
-    PsiElement getOP_TRIPLEDOT();
+    public PsiElement getOP_TRIPLEDOT();
 
     @NotNull
-    List<DLanguageParameter> getParameters();
+    public List<DLanguageParameter> getParameters();
 
     @Nullable
-    PsiElement getOP_PAR_LEFT();
+    public PsiElement getOP_PAR_LEFT();
 
     @Nullable
-    PsiElement getOP_PAR_RIGHT();
+    public PsiElement getOP_PAR_RIGHT();
 
 }

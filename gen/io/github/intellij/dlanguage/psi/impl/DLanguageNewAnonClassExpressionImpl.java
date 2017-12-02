@@ -12,6 +12,7 @@ import io.github.intellij.dlanguage.psi.DLanguageArguments;
 import io.github.intellij.dlanguage.psi.DLanguageBaseClassList;
 import io.github.intellij.dlanguage.psi.DLanguageNewAnonClassExpression;
 import io.github.intellij.dlanguage.psi.DLanguageStructBody;
+import io.github.intellij.dlanguage.psi.DlangVisitor;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -24,13 +25,13 @@ public class DLanguageNewAnonClassExpressionImpl extends ASTWrapperPsiElement im
         super(node);
     }
 
-    public void accept(@NotNull DLanguageVisitor visitor) {
+    public void accept(@NotNull DlangVisitor visitor) {
         visitor.visitNewAnonClassExpression(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor instanceof DLanguageVisitor) {
-            accept((DLanguageVisitor) visitor);
+        if (visitor instanceof DlangVisitor) {
+            accept((DlangVisitor) visitor);
         } else {
             super.accept(visitor);
         }

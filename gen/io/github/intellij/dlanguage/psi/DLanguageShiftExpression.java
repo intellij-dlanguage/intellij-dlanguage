@@ -7,18 +7,18 @@ import org.jetbrains.annotations.Nullable;
 public interface DLanguageShiftExpression extends PsiElement {
 
     @Nullable
-    DLanguageShiftExpression getShiftExpression();
+    public DLanguageShiftExpression getShiftExpression();
 
     @Nullable
-    DLanguageAddExpression getAddExpression();
+    public DLanguageAddExpression getAddExpression();
 
     @Nullable
-    PsiElement getOP_SH_RIGHT();
+    public PsiElement getOP_SH_RIGHT();
 
     @Nullable
-    PsiElement getOP_SH_LEFT();
+    public PsiElement getOP_SH_LEFT();
 
     @Nullable
-    PsiElement getOP_USH_RIGHT();
+    public PsiElement getOP_USH_RIGHT();
 
 }

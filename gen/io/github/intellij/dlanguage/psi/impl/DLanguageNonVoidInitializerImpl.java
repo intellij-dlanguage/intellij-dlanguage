@@ -9,6 +9,7 @@ import io.github.intellij.dlanguage.psi.DLanguageAssignExpression;
 import io.github.intellij.dlanguage.psi.DLanguageFunctionBody;
 import io.github.intellij.dlanguage.psi.DLanguageNonVoidInitializer;
 import io.github.intellij.dlanguage.psi.DLanguageStructInitializer;
+import io.github.intellij.dlanguage.psi.DlangVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,13 +21,13 @@ public class DLanguageNonVoidInitializerImpl extends ASTWrapperPsiElement implem
         super(node);
     }
 
-    public void accept(@NotNull DLanguageVisitor visitor) {
+    public void accept(@NotNull DlangVisitor visitor) {
         visitor.visitNonVoidInitializer(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor instanceof DLanguageVisitor) {
-            accept((DLanguageVisitor) visitor);
+        if (visitor instanceof DlangVisitor) {
+            accept((DlangVisitor) visitor);
         } else {
             super.accept(visitor);
         }

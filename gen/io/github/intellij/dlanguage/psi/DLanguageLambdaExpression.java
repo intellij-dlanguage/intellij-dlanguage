@@ -9,23 +9,23 @@ import org.jetbrains.annotations.Nullable;
 public interface DLanguageLambdaExpression extends PsiElement {
 
     @Nullable
-    DLanguageIdentifier getIdentifier();
+    public DlangIdentifier getIdentifier();
 
     @Nullable
-    PsiElement getKW_FUNCTION();
+    public PsiElement getKW_FUNCTION();
 
     @Nullable
-    PsiElement getKW_DELEGATE();
+    public PsiElement getKW_DELEGATE();
 
     @Nullable
-    PsiElement getOP_LAMBDA_ARROW();
+    public PsiElement getOP_LAMBDA_ARROW();
 
     @Nullable
-    DLanguageAssignExpression getAssignExpression();
+    public DLanguageAssignExpression getAssignExpression();
 
     @Nullable
-    DLanguageParameters getParameters();
+    public DLanguageParameters getParameters();
 
     @NotNull
-    List<DLanguageFunctionAttribute> getFunctionAttributes();
+    public List<DLanguageFunctionAttribute> getFunctionAttributes();
 }

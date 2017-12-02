@@ -7,5 +7,5 @@ import org.jetbrains.annotations.Nullable;
 public interface DLanguageStaticCtorDtorCommon extends PsiElement {
 
     @Nullable
-    DLanguageFunctionBody getFunctionBody();
+    public DLanguageFunctionBody getFunctionBody();
 }

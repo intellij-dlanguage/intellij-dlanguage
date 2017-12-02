@@ -10,9 +10,9 @@ public interface DLanguageNamedImportBind extends PsiElement, DNamedElement,
     StubBasedPsiElement<DLanguageNamedImportBindStub> {
 
     @Nullable
-    DLanguageIdentifier getIdentifier();
+    public DlangIdentifier getIdentifier();
 
     @Nullable
-    PsiElement getOP_EQ();
+    public PsiElement getOP_EQ();
 
 }

@@ -14,6 +14,7 @@ import io.github.intellij.dlanguage.psi.DLanguageAliasInitializer;
 import io.github.intellij.dlanguage.psi.DLanguageIdentifierList;
 import io.github.intellij.dlanguage.psi.DLanguageStorageClass;
 import io.github.intellij.dlanguage.psi.DLanguageType;
+import io.github.intellij.dlanguage.psi.DlangVisitor;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -26,13 +27,13 @@ public class DLanguageAliasDeclarationImpl extends ASTWrapperPsiElement implemen
         super(node);
     }
 
-    public void accept(@NotNull DLanguageVisitor visitor) {
+    public void accept(@NotNull DlangVisitor visitor) {
         visitor.visitAliasDeclaration(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor instanceof DLanguageVisitor) {
-            accept((DLanguageVisitor) visitor);
+        if (visitor instanceof DlangVisitor) {
+            accept((DlangVisitor) visitor);
         } else {
             super.accept(visitor);
         }

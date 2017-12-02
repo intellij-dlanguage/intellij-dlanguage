@@ -7,15 +7,15 @@ import org.jetbrains.annotations.Nullable;
 public interface DLanguageMixinTemplateName extends PsiElement {
 
     @Nullable
-    DLanguageTypeofExpression getTypeofExpression();
+    public DLanguageTypeofExpression getTypeofExpression();
 
     @Nullable
-    DLanguageIdentifierOrTemplateChain getIdentifierOrTemplateChain();
+    public DLanguageIdentifierOrTemplateChain getIdentifierOrTemplateChain();
 
     @Nullable
-    DLanguageSymbol getSymbol();
+    public DLanguageSymbol getSymbol();
 
     @Nullable
-    PsiElement getOP_DOT();
+    public PsiElement getOP_DOT();
 
 }

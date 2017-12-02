@@ -7,18 +7,18 @@ import org.jetbrains.annotations.Nullable;
 public interface DLanguageWhileStatement extends PsiElement {
 
     @Nullable
-    PsiElement getKW_WHILE();
+    public PsiElement getKW_WHILE();
 
     @Nullable
-    DLanguageExpression getExpression();
+    public DLanguageExpression getExpression();
 
     @Nullable
-    DLanguageDeclarationOrStatement getDeclarationOrStatement();
+    public DLanguageDeclarationOrStatement getDeclarationOrStatement();
 
     @Nullable
-    PsiElement getOP_PAR_RIGHT();
+    public PsiElement getOP_PAR_RIGHT();
 
     @Nullable
-    PsiElement getOP_PAR_LEFT();
+    public PsiElement getOP_PAR_LEFT();
 
 }

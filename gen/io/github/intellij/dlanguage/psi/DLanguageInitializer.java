@@ -7,8 +7,8 @@ import org.jetbrains.annotations.Nullable;
 public interface DLanguageInitializer extends PsiElement {
 
     @Nullable
-    PsiElement getKW_VOID();
+    public PsiElement getKW_VOID();
 
     @Nullable
-    DLanguageNonVoidInitializer getNonVoidInitializer();
+    public DLanguageNonVoidInitializer getNonVoidInitializer();
 }

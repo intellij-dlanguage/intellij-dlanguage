@@ -18,6 +18,8 @@ import io.github.intellij.dlanguage.psi.DLanguageIsExpression;
 import io.github.intellij.dlanguage.psi.DLanguageTemplateParameterList;
 import io.github.intellij.dlanguage.psi.DLanguageType;
 import io.github.intellij.dlanguage.psi.DLanguageTypeSpecialization;
+import io.github.intellij.dlanguage.psi.DlangIdentifier;
+import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -30,13 +32,13 @@ public class DLanguageIsExpressionImpl extends ASTWrapperPsiElement implements
         super(node);
     }
 
-    public void accept(@NotNull DLanguageVisitor visitor) {
+    public void accept(@NotNull DlangVisitor visitor) {
         visitor.visitIsExpression(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor instanceof DLanguageVisitor) {
-            accept((DLanguageVisitor) visitor);
+        if (visitor instanceof DlangVisitor) {
+            accept((DlangVisitor) visitor);
         } else {
             super.accept(visitor);
         }
@@ -58,8 +60,8 @@ public class DLanguageIsExpressionImpl extends ASTWrapperPsiElement implements
     }
 
     @Nullable
-    public DLanguageIdentifier getIdentifier() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
+    public DlangIdentifier getIdentifier() {
+        return PsiTreeUtil.getChildOfType(this, DlangIdentifier.class);
     }
 
     @Nullable

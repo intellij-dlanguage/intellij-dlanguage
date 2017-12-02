@@ -9,101 +9,101 @@ import org.jetbrains.annotations.Nullable;
 public interface DLanguageDeclaration extends PsiElement {
 
     @Nullable
-    DLanguageAliasThisDeclaration getAliasThisDeclaration();
+    public DLanguageAliasThisDeclaration getAliasThisDeclaration();
 
     @Nullable
-    DLanguageAliasDeclaration getAliasDeclaration();
+    public DLanguageAliasDeclaration getAliasDeclaration();
 
     @Nullable
-    DLanguageClassDeclaration getClassDeclaration();
+    public DLanguageClassDeclaration getClassDeclaration();
 
     @Nullable
-    DLanguageConditionalDeclaration getConditionalDeclaration();
+    public DLanguageConditionalDeclaration getConditionalDeclaration();
 
     @Nullable
-    DLanguageConstructor getConstructor();
+    public DLanguageConstructor getConstructor();
 
     @Nullable
-    DLanguageDestructor getDestructor();
+    public DLanguageDestructor getDestructor();
 
     @Nullable
-    DLanguageAnonymousEnumDeclaration getAnonymousEnumDeclaration();
+    public DLanguageAnonymousEnumDeclaration getAnonymousEnumDeclaration();
 
     @Nullable
-    DLanguageEponymousTemplateDeclaration getEponymousTemplateDeclaration();
+    public DLanguageEponymousTemplateDeclaration getEponymousTemplateDeclaration();
 
     @Nullable
-    DLanguageEnumDeclaration getEnumDeclaration();
+    public DLanguageEnumDeclaration getEnumDeclaration();
 
     @Nullable
-    DLanguageImportDeclaration getImportDeclaration();
+    public DLanguageImportDeclaration getImportDeclaration();
 
     @Nullable
-    DLanguageInterfaceDeclaration getInterfaceDeclaration();
+    public DLanguageInterfaceDeclaration getInterfaceDeclaration();
 
     @Nullable
-    DLanguageMixinTemplateDeclaration getMixinTemplateDeclaration();
+    public DLanguageMixinTemplateDeclaration getMixinTemplateDeclaration();
 
     @Nullable
-    DLanguageMixinDeclaration getMixinDeclaration();
+    public DLanguageMixinDeclaration getMixinDeclaration();
 
     @Nullable
-    DLanguagePragmaDeclaration getPragmaDeclaration();
+    public DLanguagePragmaDeclaration getPragmaDeclaration();
 
     @Nullable
-    DLanguageSharedStaticConstructor getSharedStaticConstructor();
+    public DLanguageSharedStaticConstructor getSharedStaticConstructor();
 
     @Nullable
-    DLanguageSharedStaticDestructor getSharedStaticDestructor();
+    public DLanguageSharedStaticDestructor getSharedStaticDestructor();
 
     @Nullable
-    DLanguageStaticConstructor getStaticConstructor();
+    public DLanguageStaticConstructor getStaticConstructor();
 
     @Nullable
-    DLanguageStaticDestructor getStaticDestructor();
+    public DLanguageStaticDestructor getStaticDestructor();
 
     @Nullable
-    DLanguageStaticAssertDeclaration getStaticAssertDeclaration();
+    public DLanguageStaticAssertDeclaration getStaticAssertDeclaration();
 
     @Nullable
-    DLanguageStructDeclaration getStructDeclaration();
+    public DLanguageStructDeclaration getStructDeclaration();
 
     @Nullable
-    DLanguageTemplateDeclaration getTemplateDeclaration();
+    public DLanguageTemplateDeclaration getTemplateDeclaration();
 
     @Nullable
-    DLanguageUnionDeclaration getUnionDeclaration();
+    public DLanguageUnionDeclaration getUnionDeclaration();
 
     @Nullable
-    DLanguageInvariant getInvariant();
+    public DLanguageInvariant getInvariant();
 
     @Nullable
-    DLanguageUnittest getUnittest();
+    public DLanguageUnittest getUnittest();
 
     @Nullable
-    DLanguageVersionSpecification getVersionSpecification();
+    public DLanguageVersionSpecification getVersionSpecification();
 
     @Nullable
-    DLanguageDebugSpecification getDebugSpecification();
+    public DLanguageDebugSpecification getDebugSpecification();
 
     @NotNull
-    List<DLanguageAttribute> getAttributes();
+    public List<DLanguageAttribute> getAttributes();
 
     @NotNull
-    List<DLanguageDeclaration> getDeclarations();
+    public List<DLanguageDeclaration> getDeclarations();
 
     @Nullable
-    PsiElement getOP_BRACES_RIGHT();
+    public PsiElement getOP_BRACES_RIGHT();
 
     @Nullable
-    PsiElement getOP_BRACES_LEFT();
+    public PsiElement getOP_BRACES_LEFT();
 
     @Nullable
-    DLanguageFunctionDeclaration getFunctionDeclaration();
+    public DLanguageFunctionDeclaration getFunctionDeclaration();
 
     @Nullable
-    DLanguageVariableDeclaration getVariableDeclaration();
+    public DLanguageVariableDeclaration getVariableDeclaration();
 
     @Nullable
-    DLanguageAttributeDeclaration getAttributeDeclaration();
+    public DLanguageAttributeDeclaration getAttributeDeclaration();
 }

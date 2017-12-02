@@ -7,81 +7,81 @@ import org.jetbrains.annotations.Nullable;
 public interface DLanguageAttribute extends PsiElement {
 
     @Nullable
-    DLanguagePragmaExpression getPragmaExpression();
+    public DLanguagePragmaExpression getPragmaExpression();
 
     @Nullable
-    PsiElement getKW_SYNCHRONIZED();
+    public PsiElement getKW_SYNCHRONIZED();
 
     @Nullable
-    PsiElement getKW_ABSTRACT();
+    public PsiElement getKW_ABSTRACT();
 
     @Nullable
-    PsiElement getKW_AUTO();
+    public PsiElement getKW_AUTO();
 
     @Nullable
-    PsiElement getKW_ENUM();
+    public PsiElement getKW_ENUM();
 
     @Nullable
-    PsiElement getKW_EXTERN();
+    public PsiElement getKW_EXTERN();
 
     @Nullable
-    PsiElement getKW_FINAL();
+    public PsiElement getKW_FINAL();
 
     @Nullable
-    PsiElement getKW_INOUT();
+    public PsiElement getKW_INOUT();
 
     @Nullable
-    PsiElement getKW_NOTHROW();
+    public PsiElement getKW_NOTHROW();
 
     @Nullable
-    PsiElement getKW_OVERRIDE();
+    public PsiElement getKW_OVERRIDE();
 
     @Nullable
-    PsiElement getKW_PURE();
+    public PsiElement getKW_PURE();
 
     @Nullable
-    PsiElement getKW_REF();
+    public PsiElement getKW_REF();
 
     @Nullable
-    PsiElement getKW___GSHARED();
+    public PsiElement getKW___GSHARED();
 
     @Nullable
-    PsiElement getKW_SCOPE();
+    public PsiElement getKW_SCOPE();
 
     @Nullable
-    PsiElement getKW_STATIC();
+    public PsiElement getKW_STATIC();
 
     @Nullable
-    PsiElement getKW_EXPORT();
+    public PsiElement getKW_EXPORT();
 
     @Nullable
-    PsiElement getKW_PRIVATE();
+    public PsiElement getKW_PRIVATE();
 
     @Nullable
-    PsiElement getKW_PROTECTED();
+    public PsiElement getKW_PROTECTED();
 
     @Nullable
-    PsiElement getKW_PUBLIC();
+    public PsiElement getKW_PUBLIC();
 
     @Nullable
-    DLanguageAlignAttribute getAlignAttribute();
+    public DLanguageAlignAttribute getAlignAttribute();
 
     @Nullable
-    DLanguageDeprecated getDeprecated();
+    public DLanguageDeprecated getDeprecated();
 
     @Nullable
-    DLanguageAtAttribute getAtAttribute();
+    public DLanguageAtAttribute getAtAttribute();
 
     @Nullable
-    PsiElement getKW_PACKAGE();
+    public PsiElement getKW_PACKAGE();
 
     @Nullable
-    DLanguageIdentifierChain getIdentifierChain();
+    public DLanguageIdentifierChain getIdentifierChain();
 
     @Nullable
-    DLanguageLinkageAttribute getLinkageAttribute();
+    public DLanguageLinkageAttribute getLinkageAttribute();
 
     @Nullable
-    PsiElement getKW_CONST();
+    public PsiElement getKW_CONST();
 
 }

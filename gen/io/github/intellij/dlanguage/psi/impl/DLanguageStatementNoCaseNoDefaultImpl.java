@@ -29,6 +29,7 @@ import io.github.intellij.dlanguage.psi.DLanguageTryStatement;
 import io.github.intellij.dlanguage.psi.DLanguageVersionSpecification;
 import io.github.intellij.dlanguage.psi.DLanguageWhileStatement;
 import io.github.intellij.dlanguage.psi.DLanguageWithStatement;
+import io.github.intellij.dlanguage.psi.DlangVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -40,13 +41,13 @@ public class DLanguageStatementNoCaseNoDefaultImpl extends ASTWrapperPsiElement 
         super(node);
     }
 
-    public void accept(@NotNull DLanguageVisitor visitor) {
+    public void accept(@NotNull DlangVisitor visitor) {
         visitor.visitStatementNoCaseNoDefault(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor instanceof DLanguageVisitor) {
-            accept((DLanguageVisitor) visitor);
+        if (visitor instanceof DlangVisitor) {
+            accept((DlangVisitor) visitor);
         } else {
             super.accept(visitor);
         }

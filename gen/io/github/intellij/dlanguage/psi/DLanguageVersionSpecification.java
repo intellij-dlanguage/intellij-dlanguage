@@ -13,7 +13,7 @@ public interface DLanguageVersionSpecification extends PsiElement {
     public PsiElement getOP_EQ();
 
     @Nullable
-    public DLanguageIdentifier getIdentifier();
+    public DlangIdentifier getIdentifier();
 
     @Nullable
     public PsiElement getOP_PAR_RIGHT();

@@ -9,18 +9,18 @@ import org.jetbrains.annotations.Nullable;
 public interface DLanguageAssertExpression extends PsiElement {
 
     @Nullable
-    PsiElement getKW_ASSERT();
+    public PsiElement getKW_ASSERT();
 
     @Nullable
-    PsiElement getOP_BRACES_LEFT();
+    public PsiElement getOP_BRACES_LEFT();
 
     @Nullable
-    PsiElement getOP_BRACES_RIGHT();
+    public PsiElement getOP_BRACES_RIGHT();
 
     @NotNull
-    List<DLanguageAssignExpression> getAssignExpressions();
+    public List<DLanguageAssignExpression> getAssignExpressions();
 
     @NotNull
-    List<PsiElement> getOP_COMMAs();
+    public List<PsiElement> getOP_COMMAs();
 
 }

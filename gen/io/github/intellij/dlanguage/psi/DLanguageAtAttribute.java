@@ -16,7 +16,7 @@ public interface DLanguageAtAttribute extends PsiElement {
     public PsiElement getOP_PAR_RIGHT();
 
     @Nullable
-    public DLanguageIdentifier getIdentifier();
+    public DlangIdentifier getIdentifier();
 
     @Nullable
     public DLanguageArgumentList getArgumentList();

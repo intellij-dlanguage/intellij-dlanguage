@@ -17,7 +17,7 @@ public interface DLanguageFunctionDeclaration extends PsiElement, DNamedElement,
     public DLanguageType getType();
 
     @Nullable
-    public DLanguageIdentifier getIdentifier();
+    public DlangIdentifier getIdentifier();
 
     @Nullable
     public DLanguageTemplateParameters getTemplateParameters();

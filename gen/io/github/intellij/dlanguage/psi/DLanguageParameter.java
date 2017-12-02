@@ -12,24 +12,24 @@ public interface DLanguageParameter extends PsiElement, DNamedElement,
     StubBasedPsiElement<DLanguageParameterStub> {
 
     @NotNull
-    List<DLanguageParameterAttribute> getParameterAttributes();
+    public List<DLanguageParameterAttribute> getParameterAttributes();
 
     @Nullable
-    DLanguageType getType();
+    public DLanguageType getType();
 
     @Nullable
-    DLanguageIdentifier getIdentifier();
+    public DlangIdentifier getIdentifier();
 
     @NotNull
-    List<DLanguageTypeSuffix> getTypeSuffixs();
+    public List<DLanguageTypeSuffix> getTypeSuffixs();
 
     @Nullable
-    PsiElement getOP_TRIPLEDOT();
+    public PsiElement getOP_TRIPLEDOT();
 
     @Nullable
-    DLanguageAssignExpression getAssignExpression();
+    public DLanguageAssignExpression getAssignExpression();
 
     @Nullable
-    PsiElement getOP_EQ();
+    public PsiElement getOP_EQ();
 
 }

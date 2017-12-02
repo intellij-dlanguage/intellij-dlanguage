@@ -10,11 +10,11 @@ public interface DLanguageForeachType extends PsiElement, DNamedElement,
     StubBasedPsiElement<DLanguageForeachTypeStub> {
 
     @Nullable
-    DLanguageType getType();
+    public DLanguageType getType();
 
     @Nullable
-    DLanguageIdentifier getIdentifier();
+    public DlangIdentifier getIdentifier();
 
     @Nullable
-    DLanguageTypeConstructors getTypeConstructors();
+    public DLanguageTypeConstructors getTypeConstructors();
 }

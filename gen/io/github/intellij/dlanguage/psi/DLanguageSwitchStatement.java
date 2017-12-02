@@ -7,17 +7,17 @@ import org.jetbrains.annotations.Nullable;
 public interface DLanguageSwitchStatement extends PsiElement {
 
     @Nullable
-    PsiElement getKW_SWITCH();
+    public PsiElement getKW_SWITCH();
 
     @Nullable
-    PsiElement getOP_PAR_RIGHT();
+    public PsiElement getOP_PAR_RIGHT();
 
     @Nullable
-    PsiElement getOP_PAR_LEFT();
+    public PsiElement getOP_PAR_LEFT();
 
     @Nullable
-    DLanguageExpression getExpression();
+    public DLanguageExpression getExpression();
 
     @Nullable
-    DLanguageStatement getStatement();
+    public DLanguageStatement getStatement();
 }

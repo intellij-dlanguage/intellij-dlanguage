@@ -7,84 +7,84 @@ import org.jetbrains.annotations.Nullable;
 public interface DLanguageTemplateSingleArgument extends PsiElement {
 
     @Nullable
-    DLanguageIdentifier getIdentifier();
+    public DlangIdentifier getIdentifier();
 
     @Nullable
-    DLanguageType getType();
+    public DLanguageType getType();
 
     @Nullable
-    PsiElement getKW_SUPER();
+    public PsiElement getKW_SUPER();
 
     @Nullable
-    PsiElement getKW_THIS();
+    public PsiElement getKW_THIS();
 
     @Nullable
-    PsiElement getOP_DOLLAR();
+    public PsiElement getOP_DOLLAR();
 
     @Nullable
-    PsiElement getKW_TRUE();
+    public PsiElement getKW_TRUE();
 
     @Nullable
-    PsiElement getKW_FALSE();
+    public PsiElement getKW_FALSE();
 
     @Nullable
-    PsiElement getKW___DATE__();
+    public PsiElement getKW___DATE__();
 
     @Nullable
-    PsiElement getKW___EOF__();
+    public PsiElement getKW___EOF__();
 
     @Nullable
-    PsiElement getKW___FILE__();
+    public PsiElement getKW___FILE__();
 
     @Nullable
-    PsiElement getKW___FILE_FULL_PATH__();
+    public PsiElement getKW___FILE_FULL_PATH__();
 
     @Nullable
-    PsiElement getKW___FUNCTION__();
+    public PsiElement getKW___FUNCTION__();
 
     @Nullable
-    PsiElement getKW___GSHARED();
+    public PsiElement getKW___GSHARED();
 
     @Nullable
-    PsiElement getKW___LINE__();
+    public PsiElement getKW___LINE__();
 
     @Nullable
-    PsiElement getKW___MODULE__();
+    public PsiElement getKW___MODULE__();
 
     @Nullable
-    PsiElement getKW___PARAMETERS();
+    public PsiElement getKW___PARAMETERS();
 
     @Nullable
-    PsiElement getKW___PRETTY_FUNCTION__();
+    public PsiElement getKW___PRETTY_FUNCTION__();
 
     @Nullable
-    PsiElement getKW___TIME__();
+    public PsiElement getKW___TIME__();
 
     @Nullable
-    PsiElement getKW___TIMESTAMP__();
+    public PsiElement getKW___TIMESTAMP__();
 
     @Nullable
-    PsiElement getKW___TRAITS();
+    public PsiElement getKW___TRAITS();
 
     @Nullable
-    PsiElement getKW___VECTOR();
+    public PsiElement getKW___VECTOR();
 
     @Nullable
-    PsiElement getKW___VENDOR__();
+    public PsiElement getKW___VENDOR__();
 
     @Nullable
-    PsiElement getKW___VERSION__();
+    public PsiElement getKW___VERSION__();
 
     @Nullable
-    PsiElement getINTEGER_LITERAL();
+    public PsiElement getINTEGER_LITERAL();
 
     @Nullable
-    PsiElement getFLOAT_LITERAL();
+    public PsiElement getFLOAT_LITERAL();
 
     @Nullable
-    PsiElement getDOUBLE_QUOTED_STRING();
+    public PsiElement getDOUBLE_QUOTED_STRING();
 
     @Nullable
-    PsiElement getCHARACTER_LITERAL();
+    public PsiElement getCHARACTER_LITERAL();
 
 }

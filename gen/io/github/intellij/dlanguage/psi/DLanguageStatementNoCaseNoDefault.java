@@ -64,17 +64,17 @@ public interface DLanguageStatementNoCaseNoDefault extends PsiElement {
     public DLanguageAsmStatement getAsmStatement();
 
     @Nullable
-    DLanguageDebugSpecification getDebugSpecification();
+    public DLanguageDebugSpecification getDebugSpecification();
 
     @Nullable
-    DLanguageConditionalStatement getConditionalStatement();
+    public DLanguageConditionalStatement getConditionalStatement();
 
     @Nullable
-    DLanguageVersionSpecification getVersionSpecification();
+    public DLanguageVersionSpecification getVersionSpecification();
 
     @Nullable
-    DLanguageStaticAssertStatement getStaticAssertStatement();
+    public DLanguageStaticAssertStatement getStaticAssertStatement();
 
     @Nullable
-    DLanguageExpressionStatement getExpressionStatement();
+    public DLanguageExpressionStatement getExpressionStatement();
 }

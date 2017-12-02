@@ -28,6 +28,7 @@ import io.github.intellij.dlanguage.psi.DLanguageDeprecated;
 import io.github.intellij.dlanguage.psi.DLanguageLinkageAttribute;
 import io.github.intellij.dlanguage.psi.DLanguageStorageClass;
 import io.github.intellij.dlanguage.psi.DLanguageTypeConstructor;
+import io.github.intellij.dlanguage.psi.DlangVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -39,13 +40,13 @@ public class DLanguageStorageClassImpl extends ASTWrapperPsiElement implements
         super(node);
     }
 
-    public void accept(@NotNull DLanguageVisitor visitor) {
+    public void accept(@NotNull DlangVisitor visitor) {
         visitor.visitStorageClass(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor instanceof DLanguageVisitor) {
-            accept((DLanguageVisitor) visitor);
+        if (visitor instanceof DlangVisitor) {
+            accept((DlangVisitor) visitor);
         } else {
             super.accept(visitor);
         }

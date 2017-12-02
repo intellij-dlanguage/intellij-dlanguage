@@ -10,7 +10,7 @@ public interface DLanguageIfCondition extends PsiElement, DNamedElement,
     StubBasedPsiElement<DLanguageIfConditionStub> {
 
     @Nullable
-    public DLanguageIdentifier getIdentifier();
+    public DlangIdentifier getIdentifier();
 
     @Nullable
     public DLanguageExpression getExpression();

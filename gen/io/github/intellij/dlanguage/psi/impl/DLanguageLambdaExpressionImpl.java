@@ -15,6 +15,8 @@ import io.github.intellij.dlanguage.psi.DLanguageAssignExpression;
 import io.github.intellij.dlanguage.psi.DLanguageFunctionAttribute;
 import io.github.intellij.dlanguage.psi.DLanguageLambdaExpression;
 import io.github.intellij.dlanguage.psi.DLanguageParameters;
+import io.github.intellij.dlanguage.psi.DlangIdentifier;
+import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
@@ -28,21 +30,21 @@ public class DLanguageLambdaExpressionImpl extends ASTWrapperPsiElement implemen
         super(node);
     }
 
-    public void accept(@NotNull DLanguageVisitor visitor) {
+    public void accept(@NotNull DlangVisitor visitor) {
         visitor.visitLambdaExpression(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor instanceof DLanguageVisitor) {
-            accept((DLanguageVisitor) visitor);
+        if (visitor instanceof DlangVisitor) {
+            accept((DlangVisitor) visitor);
         } else {
             super.accept(visitor);
         }
     }
 
     @Nullable
-    public DLanguageIdentifier getIdentifier() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
+    public DlangIdentifier getIdentifier() {
+        return PsiTreeUtil.getChildOfType(this, DlangIdentifier.class);
     }
 
     @Nullable

@@ -7,21 +7,21 @@ import org.jetbrains.annotations.Nullable;
 public interface DLanguageAsmRelExp extends PsiElement {
 
     @Nullable
-    DLanguageAsmRelExp getAsmRelExp();
+    public DLanguageAsmRelExp getAsmRelExp();
 
     @Nullable
-    DLanguageAsmShiftExp getAsmShiftExp();
+    public DLanguageAsmShiftExp getAsmShiftExp();
 
     @Nullable
-    PsiElement getOP_GT_EQ();
+    public PsiElement getOP_GT_EQ();
 
     @Nullable
-    PsiElement getOP_GT();
+    public PsiElement getOP_GT();
 
     @Nullable
-    PsiElement getOP_LESS();
+    public PsiElement getOP_LESS();
 
     @Nullable
-    PsiElement getOP_LESS_EQ();
+    public PsiElement getOP_LESS_EQ();
 
 }

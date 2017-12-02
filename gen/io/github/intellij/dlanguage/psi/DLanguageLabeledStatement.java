@@ -10,11 +10,11 @@ public interface DLanguageLabeledStatement extends PsiElement, DNamedElement,
     StubBasedPsiElement<DLanguageLabeledStatementStub> {
 
     @Nullable
-    DLanguageIdentifier getIdentifier();
+    public DlangIdentifier getIdentifier();
 
     @Nullable
-    PsiElement getOP_COLON();
+    public PsiElement getOP_COLON();
 
     @Nullable
-    DLanguageDeclarationOrStatement getDeclarationOrStatement();
+    public DLanguageDeclarationOrStatement getDeclarationOrStatement();
 }

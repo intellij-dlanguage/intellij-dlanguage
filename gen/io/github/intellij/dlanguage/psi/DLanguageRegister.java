@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 public interface DLanguageRegister extends PsiElement {
 
     @Nullable
-    public DLanguageIdentifier getIdentifier();
+    public DlangIdentifier getIdentifier();
 
     @Nullable
     public PsiElement getINTEGER_LITERAL();

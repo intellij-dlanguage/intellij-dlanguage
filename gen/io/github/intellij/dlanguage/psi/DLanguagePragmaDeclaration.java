@@ -7,9 +7,9 @@ import org.jetbrains.annotations.Nullable;
 public interface DLanguagePragmaDeclaration extends PsiElement {
 
     @Nullable
-    DLanguagePragmaExpression getPragmaExpression();
+    public DLanguagePragmaExpression getPragmaExpression();
 
     @Nullable
-    PsiElement getOP_SCOLON();
+    public PsiElement getOP_SCOLON();
 
 }

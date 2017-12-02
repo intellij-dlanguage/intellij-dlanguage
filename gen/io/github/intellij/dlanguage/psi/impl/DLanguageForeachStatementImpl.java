@@ -19,6 +19,7 @@ import io.github.intellij.dlanguage.psi.DLanguageExpression;
 import io.github.intellij.dlanguage.psi.DLanguageForeachStatement;
 import io.github.intellij.dlanguage.psi.DLanguageForeachType;
 import io.github.intellij.dlanguage.psi.DLanguageForeachTypeList;
+import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
@@ -32,13 +33,13 @@ public class DLanguageForeachStatementImpl extends ASTWrapperPsiElement implemen
         super(node);
     }
 
-    public void accept(@NotNull DLanguageVisitor visitor) {
+    public void accept(@NotNull DlangVisitor visitor) {
         visitor.visitForeachStatement(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor instanceof DLanguageVisitor) {
-            accept((DLanguageVisitor) visitor);
+        if (visitor instanceof DlangVisitor) {
+            accept((DlangVisitor) visitor);
         } else {
             super.accept(visitor);
         }

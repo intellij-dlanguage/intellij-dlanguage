@@ -8,8 +8,8 @@ import org.jetbrains.annotations.NotNull;
 public interface DLanguageIdentifierOrTemplateChain extends PsiElement {
 
     @NotNull
-    List<PsiElement> getOP_DOTs();
+    public List<PsiElement> getOP_DOTs();
 
     @NotNull
-    List<DLanguageIdentifierOrTemplateInstance> getIdentifierOrTemplateInstances();
+    public List<DLanguageIdentifierOrTemplateInstance> getIdentifierOrTemplateInstances();
 }

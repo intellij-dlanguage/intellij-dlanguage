@@ -10,20 +10,20 @@ public interface DLanguageSharedStaticConstructor extends PsiElement, DComposite
     StubBasedPsiElement<DLanguageSharedStaticConstructorStub> {
 
     @Nullable
-    PsiElement getKW_STATIC();
+    public PsiElement getKW_STATIC();
 
     @Nullable
-    PsiElement getKW_SHARED();
+    public PsiElement getKW_SHARED();
 
     @Nullable
-    PsiElement getKW_THIS();
+    public PsiElement getKW_THIS();
 
     @Nullable
-    PsiElement getOP_PAR_LEFT();
+    public PsiElement getOP_PAR_LEFT();
 
     @Nullable
-    PsiElement getOP_PAR_RIGHT();
+    public PsiElement getOP_PAR_RIGHT();
 
     @Nullable
-    DLanguageFunctionBody getFunctionBody();
+    public DLanguageFunctionBody getFunctionBody();
 }

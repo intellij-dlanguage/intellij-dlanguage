@@ -9,18 +9,18 @@ import org.jetbrains.annotations.Nullable;
 public interface DLanguageConditionalStatement extends PsiElement {
 
     @Nullable
-    DLanguageCompileCondition getCompileCondition();
+    public DLanguageCompileCondition getCompileCondition();
 
     @NotNull
-    List<DLanguageDeclarationOrStatement> getDeclarationOrStatements();
+    public List<DLanguageDeclarationOrStatement> getDeclarationOrStatements();
 
     @Nullable
-    PsiElement getKW_ELSE();
+    public PsiElement getKW_ELSE();
 
     @Nullable
-    PsiElement getOP_BRACES_RIGHT();
+    public PsiElement getOP_BRACES_RIGHT();
 
     @Nullable
-    PsiElement getOP_BRACES_LEFT();
+    public PsiElement getOP_BRACES_LEFT();
 
 }

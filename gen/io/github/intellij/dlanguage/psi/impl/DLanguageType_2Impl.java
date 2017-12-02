@@ -16,6 +16,7 @@ import io.github.intellij.dlanguage.psi.DLanguageTypeConstructor;
 import io.github.intellij.dlanguage.psi.DLanguageType_2;
 import io.github.intellij.dlanguage.psi.DLanguageTypeofExpression;
 import io.github.intellij.dlanguage.psi.DLanguageVector;
+import io.github.intellij.dlanguage.psi.DlangVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,13 +27,13 @@ public class DLanguageType_2Impl extends ASTWrapperPsiElement implements DLangua
         super(node);
     }
 
-    public void accept(@NotNull DLanguageVisitor visitor) {
+    public void accept(@NotNull DlangVisitor visitor) {
         visitor.visitType_2(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor instanceof DLanguageVisitor) {
-            accept((DLanguageVisitor) visitor);
+        if (visitor instanceof DlangVisitor) {
+            accept((DlangVisitor) visitor);
         } else {
             super.accept(visitor);
         }

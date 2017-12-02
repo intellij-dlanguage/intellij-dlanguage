@@ -12,17 +12,17 @@ public interface DLanguageAliasInitializer extends PsiElement, DNamedElement,
     StubBasedPsiElement<DLanguageAliasInitializerStub> {
 
     @Nullable
-    DLanguageIdentifier getIdentifier();
+    public DlangIdentifier getIdentifier();
 
     @Nullable
-    PsiElement getOP_EQ();
+    public PsiElement getOP_EQ();
 
     @NotNull
-    List<DLanguageStorageClass> getStorageClasss();
+    public List<DLanguageStorageClass> getStorageClasss();
 
     @Nullable
-    DLanguageTemplateParameters getTemplateParameters();
+    public DLanguageTemplateParameters getTemplateParameters();
 
     @Nullable
-    DLanguageType getType();
+    public DLanguageType getType();
 }

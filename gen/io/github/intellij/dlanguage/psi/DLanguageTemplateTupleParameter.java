@@ -7,9 +7,9 @@ import org.jetbrains.annotations.Nullable;
 public interface DLanguageTemplateTupleParameter extends PsiElement {
 
     @Nullable
-    DLanguageIdentifier getIdentifier();
+    public DlangIdentifier getIdentifier();
 
     @Nullable
-    PsiElement getOP_TRIPLEDOT();
+    public PsiElement getOP_TRIPLEDOT();
 
 }

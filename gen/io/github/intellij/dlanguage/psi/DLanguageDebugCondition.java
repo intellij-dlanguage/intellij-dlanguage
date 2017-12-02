@@ -7,18 +7,18 @@ import org.jetbrains.annotations.Nullable;
 public interface DLanguageDebugCondition extends PsiElement {
 
     @Nullable
-    PsiElement getKW_DEBUG();
+    public PsiElement getKW_DEBUG();
 
     @Nullable
-    PsiElement getINTEGER_LITERAL();
+    public PsiElement getINTEGER_LITERAL();
 
     @Nullable
-    DLanguageIdentifier getIdentifier();
+    public DlangIdentifier getIdentifier();
 
     @Nullable
-    PsiElement getOP_PAR_RIGHT();
+    public PsiElement getOP_PAR_RIGHT();
 
     @Nullable
-    PsiElement getOP_PAR_LEFT();
+    public PsiElement getOP_PAR_LEFT();
 
 }

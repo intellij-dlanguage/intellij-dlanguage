@@ -37,6 +37,7 @@ import io.github.intellij.dlanguage.psi.DLanguageStaticDestructor;
 import io.github.intellij.dlanguage.psi.DLanguageUnittest;
 import io.github.intellij.dlanguage.psi.DLanguageVariableDeclaration;
 import io.github.intellij.dlanguage.psi.DLanguageVersionSpecification;
+import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
@@ -49,13 +50,13 @@ public class DLanguageDeclarationImpl extends ASTWrapperPsiElement implements DL
         super(node);
     }
 
-    public void accept(@NotNull DLanguageVisitor visitor) {
+    public void accept(@NotNull DlangVisitor visitor) {
         visitor.visitDeclaration(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor instanceof DLanguageVisitor) {
-            accept((DLanguageVisitor) visitor);
+        if (visitor instanceof DlangVisitor) {
+            accept((DlangVisitor) visitor);
         } else {
             super.accept(visitor);
         }

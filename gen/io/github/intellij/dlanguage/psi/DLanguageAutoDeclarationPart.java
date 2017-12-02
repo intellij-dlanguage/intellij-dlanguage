@@ -10,7 +10,7 @@ public interface DLanguageAutoDeclarationPart extends PsiElement, DNamedElement,
     StubBasedPsiElement<DLanguageAutoDeclarationPartStub> {
 
     @Nullable
-    public DLanguageIdentifier getIdentifier();
+    public DlangIdentifier getIdentifier();
 
     @Nullable
     public DLanguageTemplateParameters getTemplateParameters();

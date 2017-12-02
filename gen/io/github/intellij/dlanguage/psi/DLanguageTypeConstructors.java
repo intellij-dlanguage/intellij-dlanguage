@@ -8,5 +8,5 @@ import org.jetbrains.annotations.NotNull;
 public interface DLanguageTypeConstructors extends PsiElement {
 
     @NotNull
-    List<DLanguageTypeConstructor> getTypeConstructors();
+    public List<DLanguageTypeConstructor> getTypeConstructors();
 }

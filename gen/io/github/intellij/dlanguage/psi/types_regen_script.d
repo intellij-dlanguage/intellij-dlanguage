@@ -462,11 +462,11 @@ public class %s extends ASTWrapperPsiElement implements %s{
        public %s (ASTNode node){
                super(node);
        }
-       public void accept(@NotNull DLanguageVisitor visitor){
+       public void accept(@NotNull DlangVisitor visitor){
            visitor.visit%s(this);
        }
        public void accept(@NotNull PsiElementVisitor visitor){
-           if(visitor instanceof DLanguageVisitor) accept((DLanguageVisitor)visitor);
+           if(visitor instanceof DlangVisitor) accept((DlangVisitor)visitor);
            else super.accept(visitor);
        }
 `;
@@ -533,11 +533,18 @@ string getterMethod(string toget){
         `.format(toget,toget);
     }
     else{
-        return `
-            @Nullable
-            public DLanguage%s get%s() {
-                return PsiTreeUtil.getChildOfType(this, DLanguage%s.class);
-            }`.format(toget,toget,toget);
+        if(toget != "Identifier")
+            return `
+                @Nullable
+                public DLanguage%s get%s() {
+                    return PsiTreeUtil.getChildOfType(this, DLanguage%s.class);
+                }`.format(toget,toget,toget);
+        else
+            return `
+                @Nullable
+                public Dlang%s get%s() {
+                    return PsiTreeUtil.getChildOfType(this, Dlang%s.class);
+                }`.format(toget,toget,toget);
     }
 }
 
@@ -567,9 +574,14 @@ string getterMethodInterface(string toget){
 
     }
     else{
-        return `
-            @Nullable
-            public DLanguage%s get%s();`.format(toget,toget);
+        if(toget != "Identifier")
+            return `
+                @Nullable
+                public DLanguage%s get%s();`.format(toget,toget);
+        else
+            return `
+                @Nullable
+                public Dlang%s get%s();`.format(toget,toget);
     }
 }
 

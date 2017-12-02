@@ -8,9 +8,9 @@ import org.jetbrains.annotations.NotNull;
 public interface DLanguageArgumentList extends PsiElement {
 
     @NotNull
-    List<DLanguageAssignExpression> getAssignExpressions();
+    public List<DLanguageAssignExpression> getAssignExpressions();
 
     @NotNull
-    List<PsiElement> getOP_COMMAs();
+    public List<PsiElement> getOP_COMMAs();
 
 }

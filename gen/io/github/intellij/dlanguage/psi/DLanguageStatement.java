@@ -7,14 +7,14 @@ import org.jetbrains.annotations.Nullable;
 public interface DLanguageStatement extends PsiElement {
 
     @Nullable
-    DLanguageDefaultStatement getDefaultStatement();
+    public DLanguageDefaultStatement getDefaultStatement();
 
     @Nullable
-    DLanguageStatementNoCaseNoDefault getStatementNoCaseNoDefault();
+    public DLanguageStatementNoCaseNoDefault getStatementNoCaseNoDefault();
 
     @Nullable
-    DLanguageCaseStatement getCaseStatement();
+    public DLanguageCaseStatement getCaseStatement();
 
     @Nullable
-    DLanguageCaseRangeStatement getCaseRangeStatement();
+    public DLanguageCaseRangeStatement getCaseRangeStatement();
 }

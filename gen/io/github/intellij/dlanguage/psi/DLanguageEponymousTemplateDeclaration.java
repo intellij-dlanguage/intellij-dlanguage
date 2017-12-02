@@ -14,7 +14,7 @@ public interface DLanguageEponymousTemplateDeclaration extends PsiElement, DName
     StubBasedPsiElement<DLanguageEponymousTemplateDeclarationStub> {
 
     @Nullable
-    public DLanguageIdentifier getIdentifier();
+    public DlangIdentifier getIdentifier();
 
     @Nullable
     public DLanguageTemplateParameters getTemplateParameters();
