@@ -1,18 +1,25 @@
 package io.github.intellij.dlanguage.types
 
-import io.github.intellij.dlanguage.psi.DLanguageAssignExpression
-import io.github.intellij.dlanguage.psi.DLanguageInitializer
-import io.github.intellij.dlanguage.psi.DLanguagePrimaryExpression
-import io.github.intellij.dlanguage.psi.DLanguageUnaryExpression
+import com.intellij.psi.util.CachedValueProvider
+import com.intellij.psi.util.CachedValuesManager
+import com.intellij.psi.util.PsiModificationTracker
+import io.github.intellij.dlanguage.psi.*
+import io.github.intellij.dlanguage.psi.ext.parentOfType
 import io.github.intellij.dlanguage.types.infer.DInferenceResult
+import io.github.intellij.dlanguage.types.infer.inferDeclarationType
 import io.github.intellij.dlanguage.types.infer.inferExprType
+import io.github.intellij.dlanguage.types.infer.inferTypesIn
 
-// TODO: caching
+val DLanguageFunctionDeclaration.dinference: DInferenceResult?
+    get() = CachedValuesManager.getCachedValue(this, {
+        CachedValueProvider.Result.create(inferTypesIn(this), PsiModificationTracker.MODIFICATION_COUNT)
+    })
+
 val DLanguageUnaryExpression.dinference: DInferenceResult?
-    get() = null
+    get() = parentOfType<DLanguageFunctionDeclaration>()?.dinference
 
 val DLanguagePrimaryExpression.dinference: DInferenceResult?
-    get() = null
+    get() = parentOfType<DLanguageFunctionDeclaration>()?.dinference
 
 val DLanguageUnaryExpression.dtype: DType
     get() = inferExprType(this)
@@ -25,3 +32,6 @@ val DLanguageAssignExpression.dtype: DType
 
 val DLanguageInitializer.dtype: DType
     get() = inferExprType(this)
+
+val DLanguageDeclaration.dtype: DType
+    get() = inferDeclarationType(this)

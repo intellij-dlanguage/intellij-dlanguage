@@ -25,7 +25,10 @@ private fun inferAssignType(assignExpression: DLanguageAssignExpression?): DType
     if (assignExpression == null)
         return DTypeUnknown
 
-    return DTypeUnknown
+    val cmpExpr = assignExpression.children.firstOrNull() as? DLanguageCmpExpression ?: return DTypeUnknown
+    val unary = cmpExpr.children.firstOrNull() as? DLanguageUnaryExpression ?: return DTypeUnknown
+
+    return inferExprType(unary)
 }
 
 private fun inferIntegerLiteral(literal: PsiElement): DType {

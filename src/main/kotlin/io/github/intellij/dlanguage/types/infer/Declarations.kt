@@ -1,23 +1,53 @@
 package io.github.intellij.dlanguage.types.infer
 
-import com.intellij.psi.PsiElement
 import io.github.intellij.dlanguage.psi.*
-import io.github.intellij.dlanguage.types.DType
-import io.github.intellij.dlanguage.types.DTypeUnknown
+import io.github.intellij.dlanguage.psi.ext.containsToken
+import io.github.intellij.dlanguage.types.*
 
-fun inferDeclarationType(psi: PsiElement): DType =
-    when (psi) {
-        is DLanguageVariableDeclaration -> inferDeclarationType(psi.type!!)
-        is DLanguageAutoDeclaration -> inferAutoDeclaration(psi)
-        is DLanguageType -> inferDeclarationType(psi.type_2!!)
-        is DLanguageType_2 -> inferType2(psi)
+fun inferDeclarationType(psi: DLanguageDeclaration): DType {
+    val type = when {
+        psi.variableDeclaration != null -> inferVariableDeclaration(psi.variableDeclaration!!)
         else -> DTypeUnknown
     }
 
-fun inferType2(psi: DLanguageType_2): DType {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    return when {
+        psi.attributes.containsToken(DlangTypes.KW_CONST) -> DTypeConst(type)
+        psi.attributes.containsToken(DlangTypes.KW_IMMUTABLE) -> DTypeImmutable(type)
+        else -> type
+    }
 }
 
-fun inferAutoDeclaration(psi: DLanguageAutoDeclaration): DType {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+private fun inferVariableDeclaration(psi: DLanguageVariableDeclaration): DType =
+    when {
+        psi.autoDeclaration != null -> inferAutoDeclaration(psi.autoDeclaration!!)
+        psi.type != null -> inferType2(psi.type!!.type_2!!)
+        else -> DTypeUnknown
+    }
+
+private fun inferType2(psi: DLanguageType_2): DType {
+    val type = psi.children.firstOrNull()
+
+    if (type is DLanguageBuiltinType) {
+        return DTypePrimitive.fromBuiltinPsiElement(type)
+    }
+
+    return DTypeUnknown
+}
+
+private fun inferAutoDeclaration(psi: DLanguageAutoDeclaration): DType {
+    var inferredType: DType = DTypeUnknown
+
+    psi.autoDeclarationParts.firstOrNull()?.let {
+        inferredType = inferExprType(it.initializer)
+        val storageClass = psi.storageClass ?: return inferredType
+
+        inferredType = when {
+            storageClass.containsToken(DlangTypes.KW_CONST) -> DTypeConst(inferredType)
+            storageClass.containsToken(DlangTypes.KW_IMMUTABLE) -> DTypeImmutable(inferredType)
+            storageClass.containsToken(DlangTypes.KW_SHARED) -> DTypeShared(inferredType)
+            else -> inferredType
+        }
+    }
+
+    return inferredType
 }

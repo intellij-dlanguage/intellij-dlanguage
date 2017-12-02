@@ -7,6 +7,8 @@ package io.github.intellij.dlanguage.types
 abstract class DType(val module: String? = null) {
     abstract fun typeToString(): String
     override fun toString(): String = typeToString()
+
+    open fun implicitConversionTo(toType: DType) = DTypeUnknown
 }
 
 class DTypeConst(val ty: DType) : DType() {
@@ -15,4 +17,8 @@ class DTypeConst(val ty: DType) : DType() {
 
 open class DTypeImmutable(val ty: DType) : DType() {
     override fun typeToString(): String = "immutable($ty)"
+}
+
+open class DTypeShared(val ty: DType) : DType() {
+    override fun typeToString(): String = "shared($ty)"
 }
