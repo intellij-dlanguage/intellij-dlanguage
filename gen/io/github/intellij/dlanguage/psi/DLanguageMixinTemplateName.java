@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageMixinTemplateName extends PsiElement {
+
     @Nullable
     DLanguageTypeofExpression getTypeofExpression();
 

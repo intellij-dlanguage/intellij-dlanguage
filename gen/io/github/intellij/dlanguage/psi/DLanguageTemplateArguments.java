@@ -5,19 +5,20 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageTemplateArguments extends PsiElement {
-    @Nullable
-    DLanguageTemplateArgumentList getTemplateArgumentList();
 
     @Nullable
-    DLanguageTemplateSingleArgument getTemplateSingleArgument();
+    public DLanguageTemplateArgumentList getTemplateArgumentList();
 
     @Nullable
-    PsiElement getOP_PAR_RIGHT();
+    public DLanguageTemplateSingleArgument getTemplateSingleArgument();
 
     @Nullable
-    PsiElement getOP_PAR_LEFT();
+    public PsiElement getOP_PAR_RIGHT();
 
     @Nullable
-    PsiElement getOP_NOT();
+    public PsiElement getOP_PAR_LEFT();
+
+    @Nullable
+    public PsiElement getOP_NOT();
 
 }

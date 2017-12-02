@@ -6,14 +6,14 @@ import com.intellij.psi.StubBasedPsiElement;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
-import io.github.intellij.dlanguage.stubs.DlangConstructorStub;
+import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 
+public interface DLanguageConstructor extends PsiElement, DNamedElement,
+    StubBasedPsiElement<DLanguageConstructorStub> {
 
-public interface DLanguageConstructor extends PsiElement, DNamedElement, StubBasedPsiElement<DlangConstructorStub> {
     @Nullable
     DLanguageFunctionBody getFunctionBody();
 
@@ -40,9 +40,10 @@ public interface DLanguageConstructor extends PsiElement, DNamedElement, StubBas
 
     @Override
     default boolean processDeclarations(@NotNull PsiScopeProcessor processor,
-                                        @NotNull ResolveState state,
-                                        PsiElement lastParent,
-                                        @NotNull PsiElement place) {
-        return ScopeProcessorImpl.INSTANCE.processDeclarations(this, processor, state, lastParent, place);
+        @NotNull ResolveState state,
+        PsiElement lastParent,
+        @NotNull PsiElement place) {
+        return ScopeProcessorImpl.INSTANCE
+            .processDeclarations(this, processor, state, lastParent, place);
     }
 }

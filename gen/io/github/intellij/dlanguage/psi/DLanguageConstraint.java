@@ -5,16 +5,17 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageConstraint extends PsiElement {
-    @Nullable
-    PsiElement getKW_IF();
 
     @Nullable
-    DLanguageExpression getExpression();
+    public PsiElement getKW_IF();
 
     @Nullable
-    PsiElement getOP_PAR_RIGHT();
+    public DLanguageExpression getExpression();
 
     @Nullable
-    PsiElement getOP_PAR_LEFT();
+    public PsiElement getOP_PAR_RIGHT();
+
+    @Nullable
+    public PsiElement getOP_PAR_LEFT();
 
 }

@@ -4,24 +4,33 @@ import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
-import io.github.intellij.dlanguage.psi.*;
-import io.github.intellij.dlanguage.psi.*;
+import io.github.intellij.dlanguage.psi.DLanguageCmpExpression;
+import io.github.intellij.dlanguage.psi.DLanguageEqualExpression;
+import io.github.intellij.dlanguage.psi.DLanguageIdentityExpression;
+import io.github.intellij.dlanguage.psi.DLanguageInExpression;
+import io.github.intellij.dlanguage.psi.DLanguageRelExpression;
+import io.github.intellij.dlanguage.psi.DLanguageShiftExpression;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 
-public class DLanguageCmpExpressionImpl extends ASTWrapperPsiElement implements DLanguageCmpExpression {
+public class DLanguageCmpExpressionImpl extends ASTWrapperPsiElement implements
+    DLanguageCmpExpression {
+
     public DLanguageCmpExpressionImpl(ASTNode node) {
         super(node);
     }
 
-    public void accept(@NotNull DlangVisitor visitor) {
+    public void accept(@NotNull DLanguageVisitor visitor) {
         visitor.visitCmpExpression(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor instanceof DlangVisitor) accept((DlangVisitor) visitor);
-        else super.accept(visitor);
+        if (visitor instanceof DLanguageVisitor) {
+            accept((DLanguageVisitor) visitor);
+        } else {
+            super.accept(visitor);
+        }
     }
 
     @Nullable

@@ -5,11 +5,12 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageScopeGuardStatement extends PsiElement {
+
     @Nullable
     PsiElement getKW_SCOPE();
 
     @Nullable
-    DlangIdentifier getIdentifier();
+    DLanguageIdentifier getIdentifier();
 
     @Nullable
     DLanguageStatementNoCaseNoDefault getStatementNoCaseNoDefault();

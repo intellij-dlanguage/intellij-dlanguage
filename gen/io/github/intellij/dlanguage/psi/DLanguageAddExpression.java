@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageAddExpression extends PsiElement {
+
     @Nullable
     DLanguageAddExpression getAddExpression();
 

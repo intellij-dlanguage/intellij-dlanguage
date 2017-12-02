@@ -5,11 +5,12 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageAsmInstruction extends PsiElement {
+
     @Nullable
     PsiElement getINTEGER_LITERAL();
 
     @Nullable
-    DlangIdentifier getIdentifier();
+    DLanguageIdentifier getIdentifier();
 
     @Nullable
     DLanguageAsmInstruction getAsmInstruction();

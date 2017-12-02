@@ -1,13 +1,13 @@
 package io.github.intellij.dlanguage.psi;
 
 import com.intellij.psi.PsiElement;
+import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
 
 public interface DLanguageImportBindings extends PsiElement {
+
     @NotNull
     List<PsiElement> getOP_COMMAs();
 
@@ -15,7 +15,7 @@ public interface DLanguageImportBindings extends PsiElement {
     List<DLanguageImportBind> getImportBinds();
 
     @Nullable
-    DlangSingleImport getSingleImport();
+    DLanguageSingleImport getSingleImport();
 
     @Nullable
     PsiElement getOP_COLON();

@@ -5,24 +5,24 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
-import io.github.intellij.dlanguage.psi.DlangTypes;
-import io.github.intellij.dlanguage.stubs.DlangStaticConstructorStub;
 import io.github.intellij.dlanguage.psi.DLanguageFunctionBody;
 import io.github.intellij.dlanguage.psi.DLanguageStaticConstructor;
+import io.github.intellij.dlanguage.psi.DlangTypes;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.stubs.DlangStaticConstructorStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static io.github.intellij.dlanguage.psi.DlangTypes.*;
 
+public class DLanguageStaticConstructorImpl extends
+    DStubbedPsiElementBase<DlangStaticConstructorStub> implements DLanguageStaticConstructor {
 
-public class DLanguageStaticConstructorImpl extends DStubbedPsiElementBase<DlangStaticConstructorStub> implements DLanguageStaticConstructor {
     public DLanguageStaticConstructorImpl(ASTNode node) {
         super(node);
     }
 
-    public DLanguageStaticConstructorImpl(DlangStaticConstructorStub stub, IStubElementType nodeType) {
+    public DLanguageStaticConstructorImpl(DlangStaticConstructorStub stub,
+        IStubElementType nodeType) {
         super(stub, nodeType);
     }
 
@@ -31,8 +31,11 @@ public class DLanguageStaticConstructorImpl extends DStubbedPsiElementBase<Dlang
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor instanceof DlangVisitor) accept((DlangVisitor) visitor);
-        else super.accept(visitor);
+        if (visitor instanceof DlangVisitor) {
+            accept((DlangVisitor) visitor);
+        } else {
+            super.accept(visitor);
+        }
     }
 
     @Nullable

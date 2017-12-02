@@ -5,15 +5,16 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageIndexExpression extends PsiElement {
-    @Nullable
-    PsiElement getOP_BRACKET_LEFT();
 
     @Nullable
-    PsiElement getOP_BRACKET_RIGHT();
+    public PsiElement getOP_BRACKET_LEFT();
 
     @Nullable
-    DLanguageArgumentList getArgumentList();
+    public PsiElement getOP_BRACKET_RIGHT();
 
     @Nullable
-    DLanguageUnaryExpression getUnaryExpression();
+    public DLanguageArgumentList getArgumentList();
+
+    @Nullable
+    public DLanguageUnaryExpression getUnaryExpression();
 }

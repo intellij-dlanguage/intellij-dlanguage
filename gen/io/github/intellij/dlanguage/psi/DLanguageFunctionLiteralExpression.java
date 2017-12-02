@@ -1,31 +1,31 @@
 package io.github.intellij.dlanguage.psi;
 
 import com.intellij.psi.PsiElement;
+import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
 
 public interface DLanguageFunctionLiteralExpression extends PsiElement {
-    @Nullable
-    DLanguageType getType();
 
     @Nullable
-    PsiElement getKW_FUNCTION();
+    public DLanguageType getType();
 
     @Nullable
-    PsiElement getKW_DELEGATE();
+    public PsiElement getKW_FUNCTION();
 
     @Nullable
-    DLanguageParameters getParameters();
+    public PsiElement getKW_DELEGATE();
+
+    @Nullable
+    public DLanguageParameters getParameters();
 
     @NotNull
-    List<DLanguageFunctionAttribute> getFunctionAttributes();
+    public List<DLanguageFunctionAttribute> getFunctionAttributes();
 
     @Nullable
-    DLanguageFunctionBody getFunctionBody();
+    public DLanguageFunctionBody getFunctionBody();
 
     @Nullable
-    DlangIdentifier getIdentifier();
+    public DLanguageIdentifier getIdentifier();
 }

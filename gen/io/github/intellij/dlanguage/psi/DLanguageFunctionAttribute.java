@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageFunctionAttribute extends PsiElement {
+
     @Nullable
     DLanguageAtAttribute getAtAttribute();
 

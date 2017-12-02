@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageType_2 extends PsiElement {
+
     @Nullable
     DLanguageSymbol getSymbol();
 

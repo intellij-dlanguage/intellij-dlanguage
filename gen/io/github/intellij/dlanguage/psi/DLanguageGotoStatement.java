@@ -5,22 +5,23 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageGotoStatement extends PsiElement {
-    @Nullable
-    DlangIdentifier getIdentifier();
 
     @Nullable
-    DLanguageExpression getExpression();
+    public DLanguageIdentifier getIdentifier();
 
     @Nullable
-    PsiElement getKW_DEFAULT();
+    public DLanguageExpression getExpression();
 
     @Nullable
-    PsiElement getKW_CASE();
+    public PsiElement getKW_DEFAULT();
 
     @Nullable
-    PsiElement getKW_GOTO();
+    public PsiElement getKW_CASE();
 
     @Nullable
-    PsiElement getOP_SCOLON();
+    public PsiElement getKW_GOTO();
+
+    @Nullable
+    public PsiElement getOP_SCOLON();
 
 }

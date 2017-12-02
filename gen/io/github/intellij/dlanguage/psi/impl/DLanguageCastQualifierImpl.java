@@ -1,29 +1,36 @@
 package io.github.intellij.dlanguage.psi.impl;
 
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW_CONST;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW_IMMUTABLE;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW_INOUT;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW_SHARED;
+
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import io.github.intellij.dlanguage.psi.DLanguageCastQualifier;
-import io.github.intellij.dlanguage.psi.DlangVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static io.github.intellij.dlanguage.psi.DlangTypes.*;
 
+public class DLanguageCastQualifierImpl extends ASTWrapperPsiElement implements
+    DLanguageCastQualifier {
 
-public class DLanguageCastQualifierImpl extends ASTWrapperPsiElement implements DLanguageCastQualifier {
     public DLanguageCastQualifierImpl(ASTNode node) {
         super(node);
     }
 
-    public void accept(@NotNull DlangVisitor visitor) {
+    public void accept(@NotNull DLanguageVisitor visitor) {
         visitor.visitCastQualifier(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor instanceof DlangVisitor) accept((DlangVisitor) visitor);
-        else super.accept(visitor);
+        if (visitor instanceof DLanguageVisitor) {
+            accept((DLanguageVisitor) visitor);
+        } else {
+            super.accept(visitor);
+        }
     }
 
     @Nullable

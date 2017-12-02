@@ -1,30 +1,54 @@
 package io.github.intellij.dlanguage.psi.impl;
 
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_AND;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_ASTERISK;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_DOT;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_MINUS;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_MINUS_MINUS;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_NOT;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_PAR_LEFT;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_PAR_RIGHT;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_PLUS;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_PLUS_PLUS;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_TILDA;
+
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
-import io.github.intellij.dlanguage.psi.*;
-import io.github.intellij.dlanguage.psi.*;
+import io.github.intellij.dlanguage.psi.DLanguageAssertExpression;
+import io.github.intellij.dlanguage.psi.DLanguageCastExpression;
+import io.github.intellij.dlanguage.psi.DLanguageDeleteExpression;
+import io.github.intellij.dlanguage.psi.DLanguageFunctionCallExpression;
+import io.github.intellij.dlanguage.psi.DLanguageIdentifierOrTemplateInstance;
+import io.github.intellij.dlanguage.psi.DLanguageIndexExpression;
+import io.github.intellij.dlanguage.psi.DLanguageNewExpression;
+import io.github.intellij.dlanguage.psi.DLanguagePrimaryExpression;
+import io.github.intellij.dlanguage.psi.DLanguageSliceExpression;
+import io.github.intellij.dlanguage.psi.DLanguageType;
+import io.github.intellij.dlanguage.psi.DLanguageUnaryExpression;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static io.github.intellij.dlanguage.psi.DlangTypes.*;
 
+public class DLanguageUnaryExpressionImpl extends ASTWrapperPsiElement implements
+    DLanguageUnaryExpression {
 
-public class DLanguageUnaryExpressionImpl extends ASTWrapperPsiElement implements DLanguageUnaryExpression {
     public DLanguageUnaryExpressionImpl(ASTNode node) {
         super(node);
     }
 
-    public void accept(@NotNull DlangVisitor visitor) {
+    public void accept(@NotNull DLanguageVisitor visitor) {
         visitor.visitUnaryExpression(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor instanceof DlangVisitor) accept((DlangVisitor) visitor);
-        else super.accept(visitor);
+        if (visitor instanceof DLanguageVisitor) {
+            accept((DLanguageVisitor) visitor);
+        } else {
+            super.accept(visitor);
+        }
     }
 
     @Nullable

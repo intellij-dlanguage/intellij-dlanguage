@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageArrayLiteral extends PsiElement {
+
     @Nullable
     DLanguageArgumentList getArgumentList();
 

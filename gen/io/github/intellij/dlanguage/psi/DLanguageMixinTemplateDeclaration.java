@@ -5,10 +5,11 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageMixinTemplateDeclaration extends PsiElement {
-    @Nullable
-    DlangTemplateDeclaration getTemplateDeclaration();
 
     @Nullable
-    PsiElement getKW_MIXIN();
+    public DLanguageTemplateDeclaration getTemplateDeclaration();
+
+    @Nullable
+    public PsiElement getKW_MIXIN();
 
 }

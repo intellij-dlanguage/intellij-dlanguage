@@ -5,19 +5,20 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageTraitsExpression extends PsiElement {
-    @Nullable
-    PsiElement getKW___TRAITS();
 
     @Nullable
-    DLanguageTemplateArgumentList getTemplateArgumentList();
+    public PsiElement getKW___TRAITS();
 
     @Nullable
-    DlangIdentifier getIdentifier();
+    public DLanguageTemplateArgumentList getTemplateArgumentList();
 
     @Nullable
-    PsiElement getOP_PAR_RIGHT();
+    public DLanguageIdentifier getIdentifier();
 
     @Nullable
-    PsiElement getOP_PAR_LEFT();
+    public PsiElement getOP_PAR_RIGHT();
+
+    @Nullable
+    public PsiElement getOP_PAR_LEFT();
 
 }

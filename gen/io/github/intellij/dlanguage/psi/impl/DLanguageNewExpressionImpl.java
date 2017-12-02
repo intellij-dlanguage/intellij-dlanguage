@@ -1,35 +1,45 @@
 package io.github.intellij.dlanguage.psi.impl;
 
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW_NEW;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_BRACKET_LEFT;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_BRACKET_RIGHT;
+
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
-import io.github.intellij.dlanguage.psi.*;
-import io.github.intellij.dlanguage.psi.*;
+import io.github.intellij.dlanguage.psi.DLanguageArguments;
+import io.github.intellij.dlanguage.psi.DLanguageAssignExpression;
+import io.github.intellij.dlanguage.psi.DLanguageNewAnonClassExpression;
+import io.github.intellij.dlanguage.psi.DLanguageNewExpression;
+import io.github.intellij.dlanguage.psi.DLanguageType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static io.github.intellij.dlanguage.psi.DlangTypes.*;
 
+public class DLanguageNewExpressionImpl extends ASTWrapperPsiElement implements
+    DLanguageNewExpression {
 
-public class DLanguageNewExpressionImpl extends ASTWrapperPsiElement implements DLanguageNewExpression {
     public DLanguageNewExpressionImpl(ASTNode node) {
         super(node);
     }
 
-    public void accept(@NotNull DlangVisitor visitor) {
+    public void accept(@NotNull DLanguageVisitor visitor) {
         visitor.visitNewExpression(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor instanceof DlangVisitor) accept((DlangVisitor) visitor);
-        else super.accept(visitor);
+        if (visitor instanceof DLanguageVisitor) {
+            accept((DLanguageVisitor) visitor);
+        } else {
+            super.accept(visitor);
+        }
     }
 
     @Nullable
     public PsiElement getKW_NEW() {
-        return findChildByType(DlangTypes.KW_NEW);
+        return findChildByType(KW_NEW);
     }
 
     @Nullable
@@ -54,12 +64,12 @@ public class DLanguageNewExpressionImpl extends ASTWrapperPsiElement implements 
 
     @Nullable
     public PsiElement getOP_BRACKET_LEFT() {
-        return findChildByType(DlangTypes.OP_BRACKET_LEFT);
+        return findChildByType(OP_BRACKET_LEFT);
     }
 
     @Nullable
     public PsiElement getOP_BRACKET_RIGHT() {
-        return findChildByType(DlangTypes.OP_BRACKET_RIGHT);
+        return findChildByType(OP_BRACKET_RIGHT);
     }
 
 }

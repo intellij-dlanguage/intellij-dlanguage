@@ -5,11 +5,12 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageLinkageAttribute extends PsiElement {
+
     @Nullable
     DLanguageIdentifierChain getIdentifierChain();
 
     @Nullable
-    DlangIdentifier getIdentifier();
+    DLanguageIdentifier getIdentifier();
 
     @Nullable
     PsiElement getOP_PAR_RIGHT();

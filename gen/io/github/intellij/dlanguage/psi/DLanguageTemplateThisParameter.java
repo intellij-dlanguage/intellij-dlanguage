@@ -5,9 +5,10 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageTemplateThisParameter extends PsiElement {
-    @Nullable
-    PsiElement getKW_THIS();
 
     @Nullable
-    DLanguageTemplateTypeParameter getTemplateTypeParameter();
+    public PsiElement getKW_THIS();
+
+    @Nullable
+    public DLanguageTemplateTypeParameter getTemplateTypeParameter();
 }

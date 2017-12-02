@@ -14,47 +14,35 @@ class DAttributesFinder {
     constructor(startingPoint: PsiElement) {
         this.startingPoint = startingPoint
         if (startingPoint is Constructor) {
-            handleConstructor()
-//                recurseUpImpl(startingPoint.kW_THIS!!)
+            defualts = handleConstructor(startingPoint)
         } else if (startingPoint is FunctionDeclaration) {
-            handleFunctionDeclaration()
-//                recurseUpImpl(startingPoint.identifier!!)
+            defualts = handleFunctionDeclaration(startingPoint)
         } else if (startingPoint is InterfaceOrClass) {
-            handleInterfaceOrClass()
-//                recurseUpImpl(startingPoint.identifier!!)
+            defualts = handleInterfaceOrClass(startingPoint)
         } else if (startingPoint is UnionDeclaration) {
-            handleUnionDeclaration()
-//                recurseUpImpl(startingPoint.identifier!!)
+            defualts = handleUnionDeclaration(startingPoint)
         } else if (startingPoint is StructDeclaration) {
-            handleStructDeclaration()
-//                recurseUpImpl(startingPoint.identifier!!)
+            defualts = handleStructDeclaration(startingPoint)
         } else if (startingPoint is LabeledStatement) {
-            handleLabeledStatement()
-//                recurseUpImpl(startingPoint.identifier!!)
+            defualts = handleLabeledStatement(startingPoint)
         } else if (startingPoint is AutoDeclarationPart) {
-            handleAutoDeclarationPart()
-//                recurseUpImpl(startingPoint.identifier!!)
+            defualts = handleAutoDeclarationPart(startingPoint)
         } else if (startingPoint is EnumDeclaration) {
-            handleEnumDeclaration()
-//                recurseUpImpl(startingPoint.identifier!!)
+            defualts = handleEnumDeclaration(startingPoint)
         } else if (startingPoint is Catch) {
-            handleCatch()
-//                recurseUpImpl(startingPoint.identifier!!)
+            defualts = handleCatch(startingPoint)
         } else if (startingPoint is Declarator) {
-            handleDeclarator()
-//                recurseUpImpl(startingPoint.identifier!!)
+            defualts = handleDeclarator(startingPoint)
         } else if (startingPoint is EponymousTemplateDeclaration) {
-            handleEponymousTemplateDeclaration()
-//                recurseUpImpl(startingPoint.identifier!!)
+            defualts = handleEponymousTemplateDeclaration(startingPoint)
         } else if (startingPoint is ForeachType) {
-            handleForeachType()
-//                recurseUpImpl(startingPoint.identifier!!)
+            defualts = handleForeachType(startingPoint)
         } else if (startingPoint is DLanguageIfCondition) {
-            handleDLanguageIfCondition()
-//                recurseUpImpl(startingPoint.identifier!!)
+            defualts = handleDLanguageIfCondition(startingPoint)
         } else if (startingPoint is TemplateDeclaration) {
-            handleTemplateDeclaration()
-//                recurseUpImpl(startingPoint.identifier!!)
+            defualts = handleTemplateDeclaration(startingPoint)
+        } else {
+            throw IllegalArgumentException("bad type sent to AttributesFinder")
         }
 
     }
@@ -63,36 +51,52 @@ class DAttributesFinder {
         PUBLIC, PRIVATE, PROTECTED, LOCAL
     }
 
-    private var visibility: Visibility? = null
-    private var isStatic: Boolean? = null
-    private var isProperty: Boolean? = null
-    private var isNoGC: Boolean? = null
-    private var isExtern: Boolean? = null
-    private var isPure: Boolean? = null
-    private var isNothrow: Boolean? = null
-    private var isConst: Boolean? = null
-    private var isImmutable: Boolean? = null
+    class DirectApplication (
+        val static: Boolean? = null,
+        val visibility: Visibility? = null,
+        val property: Boolean? = null,
+        val noGC: Boolean? = null,
+        val extern: Boolean? = null,
+        val pure: Boolean? = null,
+        val local: Boolean? = null,
+        val nothrow: Boolean? = null,
+        val const: Boolean? = null,
+        val immutable: Boolean? = null) {
 
-    private var visibilityByBulkAttributeApplication: Visibility? = null
-    private var isStaticByBulkAttributeApplication: Boolean? = null
-    private var isPropertyByBulkAttributeApplication: Boolean? = null
-    private var isNoGCByBulkAttributeApplication: Boolean? = null
-    private var isExternByBulkAttributeApplication: Boolean? = null
-    private var isPureByBulkAttributeApplication: Boolean? = null
-    private var isNothrowByBulkAttributeApplication: Boolean? = null
-    private var isConstByBulkAttributeApplication: Boolean? = null
-    private var isImmutableByBulkAttributeApplication: Boolean? = null
+    }
 
-    var defaultsToStatic: Boolean = true
-    var defualtVisibility = Visibility.PUBLIC
-    var defaultsToProperty: Boolean = false
-    var defaultsToNoGC: Boolean = false
-    var defaultsToExtern: Boolean = false
-    var defaultsToLocal: Boolean = false // idk what this does since nothing is local by default. consistency I guess
-    var defaultsToPure: Boolean = false
-    var defaultsToNothrow: Boolean = false
-    var defaultsToConst: Boolean = false
-    var defaultsToImmutable: Boolean = false
+    val directApplication : DirectApplication
+    val bulkAttributeApplied : BulkAttributeApplication
+
+    class BulkAttributeApplication(
+        val static: Boolean? = null,
+        val visibility: Visibility? = null,
+        val property: Boolean? = null,
+        val noGC: Boolean? = null,
+        val extern: Boolean? = null,
+        val pure: Boolean? = null,
+        val local: Boolean? = null,
+        val nothrow: Boolean? = null,
+        val const: Boolean? = null,
+        val immutable: Boolean? = null) {
+
+    }
+
+    val defualts: DefaultAttributes;
+
+    class DefaultAttributes(
+        val static: Boolean = true,
+        val visibility: Visibility = Visibility.PUBLIC,
+        val property: Boolean = false,
+        val noGC: Boolean = false,
+        val extern: Boolean = false,
+        val pure: Boolean = false,
+        val local: Boolean = false,
+        val nothrow: Boolean = false,
+        val const: Boolean = false,
+        val immutable: Boolean = false) {
+
+    }
 
 
     fun recurseUp() {
@@ -230,57 +234,52 @@ class DAttributesFinder {
         }
     }
 
-    fun handleConstructor() {
-        val constructor = startingPoint as Constructor
-        //a member of a class so not static:
-        defaultsToStatic = false
-        //publicly acsessible by defualt
-        defualtVisibility = Visibility.PUBLIC
-        //a poperty constructor sounds really weird
-        defaultsToProperty = false
-        //I believe this is false
-        defaultsToNoGC = false
-        //Not extern by default I believe
-        // todo need to distinguish between extern(C) and other kinds of extern
-        defaultsToExtern = false
-        //constructors are like the exact opposite of a pure function
-        defaultsToPure = false
-        //I'm pretty sure constructors are not nothrow by default
-        defaultsToNothrow = false
-        // what does it mean for a constructor to be const. I'm betting that since constructors can't be overridden they are const?
-        defaultsToConst = true
-        //it doesn't make sense for constructors to be immutable either:
-        defaultsToImmutable = false
+
+    //at some later date maybe make these membewrs of there respective functions to make things more object -oriented
+    fun handleConstructor(constructor: Constructor): DefaultAttributes {
         val decl = constructor.parent as Declaration
         updateFromParentDecl(decl)
+        return DefaultAttributes(
+            static = false,
+            visibility = Visibility.PUBLIC,
+            const = true,
+            pure = false,
+            extern = false,
+            noGC = false,
+            immutable = false,
+            nothrow = false,
+            property = false
+        )
 
     }
 
-    fun handleFunctionDeclaration() {
-        val function = startingPoint as FunctionDeclaration
-        //functions are static by default
-        defaultsToStatic = true
-        //publicly accessible by default
-        defualtVisibility = Visibility.PUBLIC
-        //functions that are properties by default sounds kind of like haskell in the sense that there would be an uncomfortable lack of parentheses
-        defaultsToProperty = false
-        //I believe this is false
-        defaultsToNoGC = false
-        //Not extern by default I believe
-        // todo need to distinguish between extern(C) and other kinds of extern
-        defaultsToExtern = false
-        //not really applicable
-        defaultsToLocal = false
-        //functions are not pure by default
-        defaultsToPure = false
-        //I'm pretty sure functions are not nothrow by default
-        defaultsToNothrow = false
-        // functions can be overriden by default
-        defaultsToConst = false
-        //it doesn't make sense for functions to be immutable either:
-        defaultsToImmutable = false
+    fun handleFunctionDeclaration(function: FunctionDeclaration): DefaultAttributes {
         val decl = function.parent as Declaration
         updateFromParentDecl(decl)
+        return DefaultAttributes(
+            //functions are static by default
+            static = true,
+            //publicly accessible by default
+            visibility = Visibility.PUBLIC,
+            //functions that are properties by default sounds kind of like haskell in the sense that there would be an uncomfortable lack of parentheses
+            property = false,
+            //I believe this is false
+            noGC = false,
+            //Not extern by default I believe
+            // todo need to distinguish between extern(C) and other kinds of extern
+            extern = false,
+            //not really applicable
+            local = false,
+            //functions are not pure by default
+            pure = false,
+            //I'm pretty sure functions are not nothrow by default
+            nothrow = false,
+            // functions can be overriden by default
+            const = false,
+            //it doesn't make sense for functions to be immutable either:
+            immutable = false
+        )
+
     }
 
     private fun updateFromParentDecl(decl: Declaration) {
@@ -315,52 +314,188 @@ class DAttributesFinder {
         }
     }
 
-    fun handleInterfaceOrClass() {
-
+    fun handleInterfaceOrClass(interfaceOrClass: InterfaceOrClass): DefaultAttributes {
+        val decl = interfaceOrClass.parent.parent as Declaration
+        updateFromParentDecl(decl)
+        return DefaultAttributes(
+            static = true,
+            visibility = Visibility.PUBLIC,
+            property = false,
+            noGC = false,
+            //Not extern by default I believe
+            extern = false,
+            pure = false,
+            nothrow = false,
+            const = false,
+            immutable = false
+        )
     }
 
-    fun handleUnionDeclaration() {
-
+    fun handleUnionDeclaration(union: UnionDeclaration): DefaultAttributes {
+        val decl = union.parent as Declaration
+        updateFromParentDecl(decl)
+        return DefaultAttributes(
+            static = true,
+            visibility = Visibility.PUBLIC,
+            property = false,
+            noGC = false,
+            //Not extern by default I believe todo check this
+            extern = false,
+            pure = false,
+            nothrow = false,
+            const = false,
+            immutable = false
+        )
     }
 
-    fun handleStructDeclaration() {
-
+    fun handleStructDeclaration(struct: StructDeclaration): DefaultAttributes {
+        val decl = struct.parent as Declaration
+        updateFromParentDecl(decl)
+        return DefaultAttributes(
+            static = true,
+            visibility = Visibility.PUBLIC,
+            property = false,
+            noGC = false,
+            //Not extern by default I believe todo check this
+            extern = false,
+            pure = false,
+            nothrow = false,
+            const = false,
+            immutable = false
+        )
     }
 
-    fun handleLabeledStatement() {
-
+    fun handleLabeledStatement(label: LabeledStatement): DefaultAttributes {
+        return DefaultAttributes(
+            static = true,
+            visibility = Visibility.PUBLIC,
+            property = false,
+            noGC = false,
+            //Not extern by default I believe todo check this
+            extern = false,
+            pure = false,
+            nothrow = false,
+            const = false,
+            local = true,//the one time this is sorta the case
+            immutable = false
+        )
     }
 
-    fun handleAutoDeclarationPart() {
-
+    fun handleAutoDeclarationPart(autoDeclPart: AutoDeclarationPart): DefaultAttributes {
+        val autoDecl = autoDeclPart.parent as AutoDeclaration
+        for (storageClasss in autoDecl.storageClasss) {
+            updateFromStorageClass(storageClasss)
+        }
+        val varDecl = autoDecl.parent as VariableDeclaration
+        for (storageClasss in varDecl.storageClasss) {
+            updateFromStorageClass(storageClasss)
+        }
+        val decl = varDecl.parent as Declaration
+        updateFromParentDecl(decl)
+        return DefaultAttributes(
+            static = true,
+            visibility = Visibility.PUBLIC,
+            property = false,
+            noGC = false,
+            //Not extern by default I believe todo check this
+            extern = false,
+            pure = false,
+            nothrow = false,
+            const = false,
+            immutable = false
+        )
     }
 
-    fun handleEnumDeclaration() {
-
+    private fun updateFromStorageClass(storageClasss: DLanguageStorageClass) {
+        if (storageClasss.kW_CONST != null) {
+            isConst = true
+        }
+        if (storageClasss.kW_EXTERN != null) {
+            isExtern = true
+        }
+        if (storageClasss.kW_NOTHROW != null) {
+            isNothrow = true
+        }
+        if (storageClasss.kW_PURE != null) {
+            isPure = true
+        }
+        if (storageClasss.kW_STATIC != null) {
+            isStatic = true
+        }
     }
 
-    fun handleCatch() {
-
+    fun handleEnumDeclaration(enumDecl: EnumDeclaration): DefaultAttributes {
+        updateFromParentDecl(enumDecl.parent as Declaration)
+        return DefaultAttributes(
+            static = true,
+            visibility = Visibility.PUBLIC,
+            property = false,
+            noGC = false,
+            //Not extern by default I believe todo check this
+            extern = false,
+            const = false,
+            immutable = false)
     }
 
-    fun handleDeclarator() {
-
+    fun handleCatch(catch: Catch): DefaultAttributes {
+        return DefaultAttributes(
+            static = true,
+            local = true,
+            visibility = Visibility.PUBLIC,
+            //Not extern by default I believe todo check this
+            extern = false,
+            const = false,//todo check this,
+            immutable = false)
+        //cannot be const/immutable etc, so no need to update from attributes
     }
 
-    fun handleEponymousTemplateDeclaration() {
-
+    fun handleDeclarator(decl: Declarator): DefaultAttributes {
+        val varDecls = decl.parent as VariableDeclaration
+        for (storageClasss in varDecls.storageClasss) {
+            updateFromStorageClass(storageClasss)
+        }
+        return DefaultAttributes(
+            static = true,
+            visibility = Visibility.PUBLIC,
+            property = false,
+            noGC = false,
+            //Not extern by default I believe todo check this
+            extern = false,
+            pure = false,
+            nothrow = false,
+            const = false,
+            immutable = false
+        )
     }
 
-    fun handleForeachType() {
-
+    fun handleEponymousTemplateDeclaration(decl: EponymousTemplateDeclaration): DefaultAttributes {
+        updateFromParentDecl(decl.parent as Declaration)
+        return DefaultAttributes(
+            static = true,
+            visibility = Visibility.PUBLIC,
+            property = false,
+            noGC = false,
+            //Not extern by default I believe todo check this
+            extern = false,
+            pure = false,
+            nothrow = false,
+            const = false,
+            immutable = false)
     }
 
-    fun handleDLanguageIfCondition() {
-
+    fun handleForeachType(): DefaultAttributes {
+        //todo get attributes
+        return DefaultAttributes(local = true,static = true)
     }
 
-    fun handleTemplateDeclaration() {
+    fun handleDLanguageIfCondition(): DefaultAttributes {
+        //todo get attributes
+        return DefaultAttributes(local = true)
+    }
 
+    fun handleTemplateDeclaration(): DefaultAttributes {
+        //todo get attribues
+        return DefaultAttributes()
     }
 
 

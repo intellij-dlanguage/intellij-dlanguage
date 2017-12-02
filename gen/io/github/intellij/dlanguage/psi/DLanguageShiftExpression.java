@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageShiftExpression extends PsiElement {
+
     @Nullable
     DLanguageShiftExpression getShiftExpression();
 

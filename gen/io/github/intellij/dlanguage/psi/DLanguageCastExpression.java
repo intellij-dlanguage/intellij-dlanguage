@@ -5,22 +5,23 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageCastExpression extends PsiElement {
-    @Nullable
-    DLanguageCastQualifier getCastQualifier();
 
     @Nullable
-    DLanguageType getType();
+    public DLanguageCastQualifier getCastQualifier();
 
     @Nullable
-    DLanguageUnaryExpression getUnaryExpression();
+    public DLanguageType getType();
 
     @Nullable
-    PsiElement getKW_CAST();
+    public DLanguageUnaryExpression getUnaryExpression();
 
     @Nullable
-    PsiElement getOP_PAR_LEFT();
+    public PsiElement getKW_CAST();
 
     @Nullable
-    PsiElement getOP_PAR_RIGHT();
+    public PsiElement getOP_PAR_LEFT();
+
+    @Nullable
+    public PsiElement getOP_PAR_RIGHT();
 
 }

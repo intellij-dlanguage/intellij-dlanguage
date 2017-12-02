@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageAsmShiftExp extends PsiElement {
+
     @Nullable
     DLanguageAsmShiftExp getAsmShiftExp();
 

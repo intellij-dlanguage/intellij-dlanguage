@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageSynchronizedStatement extends PsiElement {
+
     @Nullable
     PsiElement getOP_PAR_RIGHT();
 

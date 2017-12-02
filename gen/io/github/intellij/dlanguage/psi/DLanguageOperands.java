@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageOperands extends PsiElement {
+
     @Nullable
     PsiElement getOP_COMMA();
 

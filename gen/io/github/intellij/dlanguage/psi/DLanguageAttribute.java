@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageAttribute extends PsiElement {
+
     @Nullable
     DLanguagePragmaExpression getPragmaExpression();
 
@@ -54,9 +55,6 @@ public interface DLanguageAttribute extends PsiElement {
     PsiElement getKW_EXPORT();
 
     @Nullable
-    PsiElement getKW_CONST();
-
-    @Nullable
     PsiElement getKW_PRIVATE();
 
     @Nullable
@@ -82,4 +80,8 @@ public interface DLanguageAttribute extends PsiElement {
 
     @Nullable
     DLanguageLinkageAttribute getLinkageAttribute();
+
+    @Nullable
+    PsiElement getKW_CONST();
+
 }

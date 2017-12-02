@@ -6,38 +6,37 @@ import com.intellij.psi.StubBasedPsiElement;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
-import io.github.intellij.dlanguage.stubs.DlangFunctionDeclarationStub;
-import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 
-public interface DLanguageFunctionDeclaration extends PsiElement, DNamedElement, StubBasedPsiElement<DlangFunctionDeclarationStub> {
-    @Nullable
-    DLanguageType getType();
+public interface DLanguageFunctionDeclaration extends PsiElement, DNamedElement,
+    StubBasedPsiElement<DLanguageFunctionDeclarationStub> {
 
     @Nullable
-    DlangIdentifier getIdentifier();
+    public DLanguageType getType();
 
     @Nullable
-    DLanguageTemplateParameters getTemplateParameters();
+    public DLanguageIdentifier getIdentifier();
 
     @Nullable
-    DLanguageParameters getParameters();
+    public DLanguageTemplateParameters getTemplateParameters();
 
     @Nullable
-    DLanguageConstraint getConstraint();
+    public DLanguageParameters getParameters();
 
     @Nullable
-    DLanguageFunctionBody getFunctionBody();
+    public DLanguageConstraint getConstraint();
 
-    List<DLanguageMemberFunctionAttribute> getMemberFunctionAttributes();
+    @Nullable
+    public DLanguageFunctionBody getFunctionBody();
 
     @Override
-    default boolean processDeclarations(@NotNull PsiScopeProcessor processor,
-                                        @NotNull ResolveState state,
-                                        PsiElement lastParent,
-                                        @NotNull PsiElement place) {
-        return ScopeProcessorImpl.INSTANCE.processDeclarations(this, processor, state, lastParent, place);
+    default public boolean processDeclarations(@NotNull PsiScopeProcessor processor,
+        @NotNull ResolveState state,
+        PsiElement lastParent,
+        @NotNull PsiElement place) {
+        return ScopeProcessorImpl.INSTANCE
+            .processDeclarations(this, processor, state, lastParent, place);
     }
 }

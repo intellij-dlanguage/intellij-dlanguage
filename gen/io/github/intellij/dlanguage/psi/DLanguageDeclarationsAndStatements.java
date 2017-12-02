@@ -1,12 +1,12 @@
 package io.github.intellij.dlanguage.psi;
 
 import com.intellij.psi.PsiElement;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
 
 public interface DLanguageDeclarationsAndStatements extends PsiElement {
+
     @NotNull
-    List<DLanguageDeclarationOrStatement> getDeclarationOrStatements();
+    public List<DLanguageDeclarationOrStatement> getDeclarationOrStatements();
 }

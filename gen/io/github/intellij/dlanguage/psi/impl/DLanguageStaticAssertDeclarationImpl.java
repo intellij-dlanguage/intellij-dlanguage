@@ -6,26 +6,27 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.DLanguageStaticAssertDeclaration;
 import io.github.intellij.dlanguage.psi.DLanguageStaticAssertStatement;
-import io.github.intellij.dlanguage.psi.DlangVisitor;
-import io.github.intellij.dlanguage.psi.DLanguageStaticAssertDeclaration;
-import io.github.intellij.dlanguage.psi.DLanguageStaticAssertStatement;
-import io.github.intellij.dlanguage.psi.DlangVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 
-public class DLanguageStaticAssertDeclarationImpl extends ASTWrapperPsiElement implements DLanguageStaticAssertDeclaration {
+public class DLanguageStaticAssertDeclarationImpl extends ASTWrapperPsiElement implements
+    DLanguageStaticAssertDeclaration {
+
     public DLanguageStaticAssertDeclarationImpl(ASTNode node) {
         super(node);
     }
 
-    public void accept(@NotNull DlangVisitor visitor) {
+    public void accept(@NotNull DLanguageVisitor visitor) {
         visitor.visitStaticAssertDeclaration(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor instanceof DlangVisitor) accept((DlangVisitor) visitor);
-        else super.accept(visitor);
+        if (visitor instanceof DLanguageVisitor) {
+            accept((DLanguageVisitor) visitor);
+        } else {
+            super.accept(visitor);
+        }
     }
 
     @Nullable

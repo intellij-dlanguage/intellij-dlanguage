@@ -5,7 +5,8 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageDeleteStatement extends PsiElement {
+
     @Nullable
-    PsiElement getKW_DELETE();
+    public PsiElement getKW_DELETE();
 
 }

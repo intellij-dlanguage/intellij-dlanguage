@@ -5,11 +5,12 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageAliasThisDeclaration extends PsiElement {
+
     @Nullable
     PsiElement getKW_ALIAS();
 
     @Nullable
-    DlangIdentifier getIdentifier();
+    DLanguageIdentifier getIdentifier();
 
     @Nullable
     PsiElement getKW_THIS();

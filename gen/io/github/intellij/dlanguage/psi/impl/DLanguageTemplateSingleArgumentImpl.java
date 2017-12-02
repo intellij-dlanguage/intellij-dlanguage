@@ -1,37 +1,64 @@
 package io.github.intellij.dlanguage.psi.impl;
 
+import static io.github.intellij.dlanguage.psi.DlangTypes.CHARACTER_LITERAL;
+import static io.github.intellij.dlanguage.psi.DlangTypes.DOUBLE_QUOTED_STRING;
+import static io.github.intellij.dlanguage.psi.DlangTypes.FLOAT_LITERAL;
+import static io.github.intellij.dlanguage.psi.DlangTypes.INTEGER_LITERAL;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW_FALSE;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW_SUPER;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW_THIS;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW_TRUE;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW___DATE__;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW___EOF__;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW___FILE_FULL_PATH__;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW___FILE__;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW___FUNCTION__;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW___GSHARED;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW___LINE__;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW___MODULE__;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW___PARAMETERS;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW___PRETTY_FUNCTION__;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW___TIMESTAMP__;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW___TIME__;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW___TRAITS;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW___VECTOR;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW___VENDOR__;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW___VERSION__;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_DOLLAR;
+
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
-import io.github.intellij.dlanguage.psi.DlangIdentifier;
 import io.github.intellij.dlanguage.psi.DLanguageTemplateSingleArgument;
 import io.github.intellij.dlanguage.psi.DLanguageType;
-import io.github.intellij.dlanguage.psi.DlangVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static io.github.intellij.dlanguage.psi.DlangTypes.*;
 
+public class DLanguageTemplateSingleArgumentImpl extends ASTWrapperPsiElement implements
+    DLanguageTemplateSingleArgument {
 
-public class DLanguageTemplateSingleArgumentImpl extends ASTWrapperPsiElement implements DLanguageTemplateSingleArgument {
     public DLanguageTemplateSingleArgumentImpl(ASTNode node) {
         super(node);
     }
 
-    public void accept(@NotNull DlangVisitor visitor) {
+    public void accept(@NotNull DLanguageVisitor visitor) {
         visitor.visitTemplateSingleArgument(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor instanceof DlangVisitor) accept((DlangVisitor) visitor);
-        else super.accept(visitor);
+        if (visitor instanceof DLanguageVisitor) {
+            accept((DLanguageVisitor) visitor);
+        } else {
+            super.accept(visitor);
+        }
     }
 
     @Nullable
-    public DlangIdentifier getIdentifier() {
-        return PsiTreeUtil.getChildOfType(this, DlangIdentifier.class);
+    public DLanguageIdentifier getIdentifier() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageIdentifier.class);
     }
 
     @Nullable

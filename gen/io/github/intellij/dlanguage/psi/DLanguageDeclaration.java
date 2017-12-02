@@ -1,13 +1,13 @@
 package io.github.intellij.dlanguage.psi;
 
 import com.intellij.psi.PsiElement;
+import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
 
 public interface DLanguageDeclaration extends PsiElement {
+
     @Nullable
     DLanguageAliasThisDeclaration getAliasThisDeclaration();
 
@@ -33,7 +33,7 @@ public interface DLanguageDeclaration extends PsiElement {
     DLanguageEponymousTemplateDeclaration getEponymousTemplateDeclaration();
 
     @Nullable
-    DlangEnumDeclaration getEnumDeclaration();
+    DLanguageEnumDeclaration getEnumDeclaration();
 
     @Nullable
     DLanguageImportDeclaration getImportDeclaration();
@@ -66,13 +66,13 @@ public interface DLanguageDeclaration extends PsiElement {
     DLanguageStaticAssertDeclaration getStaticAssertDeclaration();
 
     @Nullable
-    DlangStructDeclaration getStructDeclaration();
+    DLanguageStructDeclaration getStructDeclaration();
 
     @Nullable
-    DlangTemplateDeclaration getTemplateDeclaration();
+    DLanguageTemplateDeclaration getTemplateDeclaration();
 
     @Nullable
-    DlangUnionDeclaration getUnionDeclaration();
+    DLanguageUnionDeclaration getUnionDeclaration();
 
     @Nullable
     DLanguageInvariant getInvariant();

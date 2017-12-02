@@ -3,34 +3,32 @@ package io.github.intellij.dlanguage.psi;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.StubBasedPsiElement;
 import io.github.intellij.dlanguage.psi.interfaces.DCompositeElement;
-import io.github.intellij.dlanguage.stubs.DlangDestructorStub;
-import io.github.intellij.dlanguage.psi.interfaces.DCompositeElement;
-import io.github.intellij.dlanguage.stubs.DlangDestructorStub;
+import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 
-
-public interface DLanguageDestructor extends PsiElement, DCompositeElement, StubBasedPsiElement<DlangDestructorStub> {
-    @Nullable
-    DLanguageFunctionBody getFunctionBody();
+public interface DLanguageDestructor extends PsiElement, DCompositeElement,
+    StubBasedPsiElement<DLanguageDestructorStub> {
 
     @Nullable
-    PsiElement getOP_SCOLON();
+    public DLanguageFunctionBody getFunctionBody();
 
     @Nullable
-    PsiElement getOP_PAR_RIGHT();
+    public PsiElement getOP_SCOLON();
 
     @Nullable
-    PsiElement getOP_PAR_LEFT();
+    public PsiElement getOP_PAR_RIGHT();
 
     @Nullable
-    PsiElement getKW_THIS();
+    public PsiElement getOP_PAR_LEFT();
 
     @Nullable
-    PsiElement getOP_TILDA();
+    public PsiElement getKW_THIS();
+
+    @Nullable
+    public PsiElement getOP_TILDA();
 
     @NotNull
-    List<DLanguageMemberFunctionAttribute> getMemberFunctionAttributes();
+    public List<DLanguageMemberFunctionAttribute> getMemberFunctionAttributes();
 }

@@ -1,30 +1,37 @@
 package io.github.intellij.dlanguage.psi.impl;
 
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_DOT;
+
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
-import io.github.intellij.dlanguage.psi.*;
-import io.github.intellij.dlanguage.psi.*;
+import io.github.intellij.dlanguage.psi.DLanguageIdentifierOrTemplateChain;
+import io.github.intellij.dlanguage.psi.DLanguageMixinTemplateName;
+import io.github.intellij.dlanguage.psi.DLanguageSymbol;
+import io.github.intellij.dlanguage.psi.DLanguageTypeofExpression;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static io.github.intellij.dlanguage.psi.DlangTypes.OP_DOT;
 
+public class DLanguageMixinTemplateNameImpl extends ASTWrapperPsiElement implements
+    DLanguageMixinTemplateName {
 
-public class DLanguageMixinTemplateNameImpl extends ASTWrapperPsiElement implements DLanguageMixinTemplateName {
     public DLanguageMixinTemplateNameImpl(ASTNode node) {
         super(node);
     }
 
-    public void accept(@NotNull DlangVisitor visitor) {
+    public void accept(@NotNull DLanguageVisitor visitor) {
         visitor.visitMixinTemplateName(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor instanceof DlangVisitor) accept((DlangVisitor) visitor);
-        else super.accept(visitor);
+        if (visitor instanceof DLanguageVisitor) {
+            accept((DLanguageVisitor) visitor);
+        } else {
+            super.accept(visitor);
+        }
     }
 
     @Nullable
@@ -44,7 +51,7 @@ public class DLanguageMixinTemplateNameImpl extends ASTWrapperPsiElement impleme
 
     @Nullable
     public PsiElement getOP_DOT() {
-        return findChildByType(DlangTypes.OP_DOT);
+        return findChildByType(OP_DOT);
     }
 
 }

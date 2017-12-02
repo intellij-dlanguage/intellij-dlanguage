@@ -5,18 +5,19 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageCmpExpression extends PsiElement {
-    @Nullable
-    DLanguageShiftExpression getShiftExpression();
 
     @Nullable
-    DLanguageEqualExpression getEqualExpression();
+    public DLanguageShiftExpression getShiftExpression();
 
     @Nullable
-    DLanguageIdentityExpression getIdentityExpression();
+    public DLanguageEqualExpression getEqualExpression();
 
     @Nullable
-    DLanguageRelExpression getRelExpression();
+    public DLanguageIdentityExpression getIdentityExpression();
 
     @Nullable
-    DLanguageInExpression getInExpression();
+    public DLanguageRelExpression getRelExpression();
+
+    @Nullable
+    public DLanguageInExpression getInExpression();
 }

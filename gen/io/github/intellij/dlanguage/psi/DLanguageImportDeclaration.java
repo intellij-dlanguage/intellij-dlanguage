@@ -1,26 +1,26 @@
 package io.github.intellij.dlanguage.psi;
 
 import com.intellij.psi.PsiElement;
+import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
 
 public interface DLanguageImportDeclaration extends PsiElement {
+
     @Nullable
-    PsiElement getKW_IMPORT();
+    public PsiElement getKW_IMPORT();
 
     @NotNull
-    List<DlangSingleImport> getSingleImports();
+    public List<DLanguageSingleImport> getSingleImports();
 
     @Nullable
-    DLanguageImportBindings getImportBindings();
+    public DLanguageImportBindings getImportBindings();
 
     @NotNull
-    List<PsiElement> getOP_COMMAs();
+    public List<PsiElement> getOP_COMMAs();
 
     @Nullable
-    PsiElement getOP_SCOLON();
+    public PsiElement getOP_SCOLON();
 
 }

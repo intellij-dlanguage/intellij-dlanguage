@@ -1,32 +1,41 @@
 package io.github.intellij.dlanguage.psi.impl;
 
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW_ALIAS;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_COMMA;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_SCOLON;
+
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
-import io.github.intellij.dlanguage.psi.*;
-import io.github.intellij.dlanguage.psi.*;
+import io.github.intellij.dlanguage.psi.DLanguageAliasDeclaration;
+import io.github.intellij.dlanguage.psi.DLanguageAliasInitializer;
+import io.github.intellij.dlanguage.psi.DLanguageIdentifierList;
+import io.github.intellij.dlanguage.psi.DLanguageStorageClass;
+import io.github.intellij.dlanguage.psi.DLanguageType;
+import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 
-import static io.github.intellij.dlanguage.psi.DlangTypes.*;
+public class DLanguageAliasDeclarationImpl extends ASTWrapperPsiElement implements
+    DLanguageAliasDeclaration {
 
-
-public class DLanguageAliasDeclarationImpl extends ASTWrapperPsiElement implements DLanguageAliasDeclaration {
     public DLanguageAliasDeclarationImpl(ASTNode node) {
         super(node);
     }
 
-    public void accept(@NotNull DlangVisitor visitor) {
+    public void accept(@NotNull DLanguageVisitor visitor) {
         visitor.visitAliasDeclaration(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor instanceof DlangVisitor) accept((DlangVisitor) visitor);
-        else super.accept(visitor);
+        if (visitor instanceof DLanguageVisitor) {
+            accept((DLanguageVisitor) visitor);
+        } else {
+            super.accept(visitor);
+        }
     }
 
     @Nullable
@@ -36,7 +45,7 @@ public class DLanguageAliasDeclarationImpl extends ASTWrapperPsiElement implemen
 
     @Nullable
     public PsiElement getOP_COMMA() {
-        return findChildByType(DlangTypes.OP_COMMA);
+        return findChildByType(OP_COMMA);
     }
 
     @NotNull
@@ -46,7 +55,7 @@ public class DLanguageAliasDeclarationImpl extends ASTWrapperPsiElement implemen
 
     @Nullable
     public PsiElement getKW_ALIAS() {
-        return findChildByType(DlangTypes.KW_ALIAS);
+        return findChildByType(KW_ALIAS);
     }
 
     @Nullable
@@ -56,7 +65,7 @@ public class DLanguageAliasDeclarationImpl extends ASTWrapperPsiElement implemen
 
     @Nullable
     public PsiElement getOP_SCOLON() {
-        return findChildByType(DlangTypes.OP_SCOLON);
+        return findChildByType(OP_SCOLON);
     }
 
     @NotNull

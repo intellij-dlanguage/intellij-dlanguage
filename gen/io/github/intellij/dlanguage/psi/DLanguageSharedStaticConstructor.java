@@ -3,13 +3,12 @@ package io.github.intellij.dlanguage.psi;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.StubBasedPsiElement;
 import io.github.intellij.dlanguage.psi.interfaces.DCompositeElement;
-import io.github.intellij.dlanguage.stubs.DlangSharedStaticConstructorStub;
-import io.github.intellij.dlanguage.psi.interfaces.DCompositeElement;
-import io.github.intellij.dlanguage.stubs.DlangSharedStaticConstructorStub;
 import org.jetbrains.annotations.Nullable;
 
 
-public interface DLanguageSharedStaticConstructor extends PsiElement, DCompositeElement, StubBasedPsiElement<DlangSharedStaticConstructorStub> {
+public interface DLanguageSharedStaticConstructor extends PsiElement, DCompositeElement,
+    StubBasedPsiElement<DLanguageSharedStaticConstructorStub> {
+
     @Nullable
     PsiElement getKW_STATIC();
 

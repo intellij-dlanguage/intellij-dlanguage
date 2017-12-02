@@ -3,16 +3,14 @@ package io.github.intellij.dlanguage.psi;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.StubBasedPsiElement;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
-import io.github.intellij.dlanguage.stubs.DlangParameterStub;
-import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
-import io.github.intellij.dlanguage.stubs.DlangParameterStub;
+import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 
+public interface DLanguageParameter extends PsiElement, DNamedElement,
+    StubBasedPsiElement<DLanguageParameterStub> {
 
-public interface DLanguageParameter extends PsiElement, DNamedElement, StubBasedPsiElement<DlangParameterStub> {
     @NotNull
     List<DLanguageParameterAttribute> getParameterAttributes();
 
@@ -20,7 +18,7 @@ public interface DLanguageParameter extends PsiElement, DNamedElement, StubBased
     DLanguageType getType();
 
     @Nullable
-    DlangIdentifier getIdentifier();
+    DLanguageIdentifier getIdentifier();
 
     @NotNull
     List<DLanguageTypeSuffix> getTypeSuffixs();

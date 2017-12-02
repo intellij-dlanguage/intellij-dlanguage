@@ -5,9 +5,10 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageImportBind extends PsiElement {
-    @Nullable
-    DlangIdentifier getIdentifier();
 
     @Nullable
-    DLanguageNamedImportBind getNamedImportBind();
+    public DLanguageIdentifier getIdentifier();
+
+    @Nullable
+    public DLanguageNamedImportBind getNamedImportBind();
 }

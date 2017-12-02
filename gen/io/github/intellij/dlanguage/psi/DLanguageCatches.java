@@ -5,9 +5,10 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageCatches extends PsiElement {
-    @Nullable
-    DLanguageLastCatch getLastCatch();
 
     @Nullable
-    DLanguageCatch getCatch();
+    public DLanguageLastCatch getLastCatch();
+
+    @Nullable
+    public DLanguageCatch getCatch();
 }

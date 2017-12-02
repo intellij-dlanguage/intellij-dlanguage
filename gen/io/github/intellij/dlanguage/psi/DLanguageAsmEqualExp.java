@@ -5,16 +5,17 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageAsmEqualExp extends PsiElement {
-    @Nullable
-    DLanguageAsmEqualExp getAsmEqualExp();
 
     @Nullable
-    DLanguageAsmRelExp getAsmRelExp();
+    public DLanguageAsmEqualExp getAsmEqualExp();
 
     @Nullable
-    PsiElement getOP_NOT_EQ();
+    public DLanguageAsmRelExp getAsmRelExp();
 
     @Nullable
-    PsiElement getOP_EQ_EQ();
+    public PsiElement getOP_NOT_EQ();
+
+    @Nullable
+    public PsiElement getOP_EQ_EQ();
 
 }

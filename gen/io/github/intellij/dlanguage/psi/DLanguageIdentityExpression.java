@@ -1,20 +1,20 @@
 package io.github.intellij.dlanguage.psi;
 
 import com.intellij.psi.PsiElement;
+import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
 
 public interface DLanguageIdentityExpression extends PsiElement {
+
     @NotNull
-    List<DLanguageShiftExpression> getShiftExpressions();
+    public List<DLanguageShiftExpression> getShiftExpressions();
 
     @Nullable
-    PsiElement getKW_IS();
+    public PsiElement getKW_IS();
 
     @Nullable
-    PsiElement getOP_NOT();
+    public PsiElement getOP_NOT();
 
 }

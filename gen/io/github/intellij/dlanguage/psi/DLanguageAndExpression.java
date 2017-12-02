@@ -5,13 +5,14 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageAndExpression extends PsiElement {
-    @Nullable
-    DLanguageAndExpression getAndExpression();
 
     @Nullable
-    DLanguageCmpExpression getCmpExpression();
+    public DLanguageAndExpression getAndExpression();
 
     @Nullable
-    PsiElement getOP_AND();
+    public DLanguageCmpExpression getCmpExpression();
+
+    @Nullable
+    public PsiElement getOP_AND();
 
 }

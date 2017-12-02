@@ -1,142 +1,142 @@
 package io.github.intellij.dlanguage.psi;
 
 import com.intellij.psi.PsiElement;
+import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
 
 public interface DLanguagePrimaryExpression extends PsiElement {
-    @Nullable
-    DLanguageType getType();
 
     @Nullable
-    DLanguageArguments getArguments();
+    public DLanguageType getType();
 
     @Nullable
-    DLanguageFunctionLiteralExpression getFunctionLiteralExpression();
+    public DLanguageArguments getArguments();
 
     @Nullable
-    DLanguageTypeofExpression getTypeofExpression();
+    public DLanguageFunctionLiteralExpression getFunctionLiteralExpression();
 
     @Nullable
-    DLanguageTypeidExpression getTypeidExpression();
+    public DLanguageTypeofExpression getTypeofExpression();
 
     @Nullable
-    DLanguageVector getVector();
+    public DLanguageTypeidExpression getTypeidExpression();
 
     @Nullable
-    DLanguageAssocArrayLiteral getAssocArrayLiteral();
+    public DLanguageVector getVector();
 
     @Nullable
-    DLanguageArrayLiteral getArrayLiteral();
+    public DLanguageAssocArrayLiteral getAssocArrayLiteral();
 
     @Nullable
-    DLanguageExpression getExpression();
+    public DLanguageArrayLiteral getArrayLiteral();
 
     @Nullable
-    PsiElement getOP_PAR_LEFT();
+    public DLanguageExpression getExpression();
 
     @Nullable
-    PsiElement getOP_PAR_RIGHT();
+    public PsiElement getOP_PAR_LEFT();
 
     @Nullable
-    DLanguageIsExpression getIsExpression();
+    public PsiElement getOP_PAR_RIGHT();
 
     @Nullable
-    DLanguageLambdaExpression getLambdaExpression();
+    public DLanguageIsExpression getIsExpression();
 
     @Nullable
-    DLanguageTraitsExpression getTraitsExpression();
+    public DLanguageLambdaExpression getLambdaExpression();
 
     @Nullable
-    DLanguageMixinExpression getMixinExpression();
+    public DLanguageTraitsExpression getTraitsExpression();
 
     @Nullable
-    DLanguageImportExpression getImportExpression();
+    public DLanguageMixinExpression getMixinExpression();
 
     @Nullable
-    PsiElement getKW_SUPER();
+    public DLanguageImportExpression getImportExpression();
 
     @Nullable
-    PsiElement getKW_THIS();
+    public PsiElement getKW_SUPER();
 
     @Nullable
-    PsiElement getOP_DOLLAR();
+    public PsiElement getKW_THIS();
 
     @Nullable
-    PsiElement getKW_TRUE();
+    public PsiElement getOP_DOLLAR();
 
     @Nullable
-    PsiElement getKW_FALSE();
+    public PsiElement getKW_TRUE();
 
     @Nullable
-    PsiElement getKW___DATE__();
+    public PsiElement getKW_FALSE();
 
     @Nullable
-    PsiElement getKW___EOF__();
+    public PsiElement getKW___DATE__();
 
     @Nullable
-    PsiElement getKW___FILE__();
+    public PsiElement getKW___EOF__();
 
     @Nullable
-    PsiElement getKW___FILE_FULL_PATH__();
+    public PsiElement getKW___FILE__();
 
     @Nullable
-    PsiElement getKW___FUNCTION__();
+    public PsiElement getKW___FILE_FULL_PATH__();
 
     @Nullable
-    PsiElement getKW___GSHARED();
+    public PsiElement getKW___FUNCTION__();
 
     @Nullable
-    PsiElement getKW___LINE__();
+    public PsiElement getKW___GSHARED();
 
     @Nullable
-    PsiElement getKW___MODULE__();
+    public PsiElement getKW___LINE__();
 
     @Nullable
-    PsiElement getKW___PARAMETERS();
+    public PsiElement getKW___MODULE__();
 
     @Nullable
-    PsiElement getKW___PRETTY_FUNCTION__();
+    public PsiElement getKW___PARAMETERS();
 
     @Nullable
-    PsiElement getKW___TIME__();
+    public PsiElement getKW___PRETTY_FUNCTION__();
 
     @Nullable
-    PsiElement getKW___TIMESTAMP__();
+    public PsiElement getKW___TIME__();
 
     @Nullable
-    PsiElement getKW___TRAITS();
+    public PsiElement getKW___TIMESTAMP__();
 
     @Nullable
-    PsiElement getKW___VECTOR();
+    public PsiElement getKW___TRAITS();
 
     @Nullable
-    PsiElement getKW___VENDOR__();
+    public PsiElement getKW___VECTOR();
 
     @Nullable
-    PsiElement getKW___VERSION__();
+    public PsiElement getKW___VENDOR__();
 
     @Nullable
-    PsiElement getINTEGER_LITERAL();
+    public PsiElement getKW___VERSION__();
 
     @Nullable
-    PsiElement getFLOAT_LITERAL();
+    public PsiElement getINTEGER_LITERAL();
+
+    @Nullable
+    public PsiElement getFLOAT_LITERAL();
 
     @NotNull
-    List<PsiElement> getDOUBLE_QUOTED_STRINGs();
+    public List<PsiElement> getDOUBLE_QUOTED_STRINGs();
 
     @Nullable
-    PsiElement getCHARACTER_LITERAL();
+    public PsiElement getCHARACTER_LITERAL();
 
     @Nullable
-    DLanguageIdentifierOrTemplateInstance getIdentifierOrTemplateInstance();
+    public DLanguageIdentifierOrTemplateInstance getIdentifierOrTemplateInstance();
 
     @Nullable
-    PsiElement getOP_DOT();
+    public PsiElement getOP_DOT();
 
     @Nullable
-    DLanguageTypeConstructor getTypeConstructor();
+    public DLanguageTypeConstructor getTypeConstructor();
 }

@@ -1,5 +1,9 @@
 package io.github.intellij.dlanguage.psi.impl;
 
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_SH_LEFT;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_SH_RIGHT;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_USH_RIGHT;
+
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
@@ -7,25 +11,27 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.DLanguageAddExpression;
 import io.github.intellij.dlanguage.psi.DLanguageShiftExpression;
-import io.github.intellij.dlanguage.psi.DlangVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static io.github.intellij.dlanguage.psi.DlangTypes.*;
 
+public class DLanguageShiftExpressionImpl extends ASTWrapperPsiElement implements
+    DLanguageShiftExpression {
 
-public class DLanguageShiftExpressionImpl extends ASTWrapperPsiElement implements DLanguageShiftExpression {
     public DLanguageShiftExpressionImpl(ASTNode node) {
         super(node);
     }
 
-    public void accept(@NotNull DlangVisitor visitor) {
+    public void accept(@NotNull DLanguageVisitor visitor) {
         visitor.visitShiftExpression(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor instanceof DlangVisitor) accept((DlangVisitor) visitor);
-        else super.accept(visitor);
+        if (visitor instanceof DLanguageVisitor) {
+            accept((DLanguageVisitor) visitor);
+        } else {
+            super.accept(visitor);
+        }
     }
 
     @Nullable

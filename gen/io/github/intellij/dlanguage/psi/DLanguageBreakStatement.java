@@ -5,13 +5,14 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageBreakStatement extends PsiElement {
-    @Nullable
-    PsiElement getKW_BREAK();
 
     @Nullable
-    DlangIdentifier getIdentifier();
+    public PsiElement getKW_BREAK();
 
     @Nullable
-    PsiElement getOP_SCOLON();
+    public DLanguageIdentifier getIdentifier();
+
+    @Nullable
+    public PsiElement getOP_SCOLON();
 
 }

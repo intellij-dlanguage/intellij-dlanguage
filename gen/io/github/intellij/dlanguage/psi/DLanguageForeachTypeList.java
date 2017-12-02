@@ -1,16 +1,16 @@
 package io.github.intellij.dlanguage.psi;
 
 import com.intellij.psi.PsiElement;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
 
 public interface DLanguageForeachTypeList extends PsiElement {
-    @NotNull
-    List<DLanguageForeachType> getForeachTypes();
 
     @NotNull
-    List<PsiElement> getOP_COMMAs();
+    public List<DLanguageForeachType> getForeachTypes();
+
+    @NotNull
+    public List<PsiElement> getOP_COMMAs();
 
 }

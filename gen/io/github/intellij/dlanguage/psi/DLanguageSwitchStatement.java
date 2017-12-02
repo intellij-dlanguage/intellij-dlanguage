@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageSwitchStatement extends PsiElement {
+
     @Nullable
     PsiElement getKW_SWITCH();
 

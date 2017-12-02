@@ -4,4 +4,5 @@ import com.intellij.psi.PsiElement;
 
 
 public interface DLanguageAnonymousEnumMember extends PsiElement {
+
 }

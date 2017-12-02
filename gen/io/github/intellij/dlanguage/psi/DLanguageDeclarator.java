@@ -3,13 +3,14 @@ package io.github.intellij.dlanguage.psi;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.StubBasedPsiElement;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
-import io.github.intellij.dlanguage.stubs.DlangDeclaratorStub;
 import org.jetbrains.annotations.Nullable;
 
 
-public interface DLanguageDeclarator extends PsiElement, DNamedElement, StubBasedPsiElement<DlangDeclaratorStub> {
+public interface DLanguageDeclarator extends PsiElement, DNamedElement,
+    StubBasedPsiElement<DLanguageDeclaratorStub> {
+
     @Nullable
-    DlangIdentifier getIdentifier();
+    DLanguageIdentifier getIdentifier();
 
     @Nullable
     PsiElement getOP_EQ();

@@ -3,22 +3,21 @@ package io.github.intellij.dlanguage.psi;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.StubBasedPsiElement;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
-import io.github.intellij.dlanguage.stubs.DlangEnumMemberStub;
-import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
-import io.github.intellij.dlanguage.stubs.DlangEnumMemberStub;
 import org.jetbrains.annotations.Nullable;
 
 
-public interface DLanguageEnumMember extends PsiElement, DNamedElement, StubBasedPsiElement<DlangEnumMemberStub> {
-    @Nullable
-    DlangIdentifier getIdentifier();
+public interface DLanguageEnumMember extends PsiElement, DNamedElement,
+    StubBasedPsiElement<DLanguageEnumMemberStub> {
 
     @Nullable
-    PsiElement getOP_EQ();
+    public DLanguageIdentifier getIdentifier();
 
     @Nullable
-    DLanguageType getType();
+    public PsiElement getOP_EQ();
 
     @Nullable
-    DLanguageAssignExpression getAssignExpression();
+    public DLanguageType getType();
+
+    @Nullable
+    public DLanguageAssignExpression getAssignExpression();
 }

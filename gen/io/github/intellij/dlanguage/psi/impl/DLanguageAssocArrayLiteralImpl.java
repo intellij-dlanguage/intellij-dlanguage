@@ -1,34 +1,36 @@
 package io.github.intellij.dlanguage.psi.impl;
 
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_BRACKET_LEFT;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_BRACKET_RIGHT;
+
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.DLanguageAssocArrayLiteral;
-import io.github.intellij.dlanguage.psi.DlangTypes;
-import io.github.intellij.dlanguage.psi.DLanguageAssocArrayLiteral;
 import io.github.intellij.dlanguage.psi.DLanguageKeyValuePairs;
-import io.github.intellij.dlanguage.psi.DlangVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static io.github.intellij.dlanguage.psi.DlangTypes.OP_BRACKET_LEFT;
-import static io.github.intellij.dlanguage.psi.DlangTypes.OP_BRACKET_RIGHT;
 
+public class DLanguageAssocArrayLiteralImpl extends ASTWrapperPsiElement implements
+    DLanguageAssocArrayLiteral {
 
-public class DLanguageAssocArrayLiteralImpl extends ASTWrapperPsiElement implements DLanguageAssocArrayLiteral {
     public DLanguageAssocArrayLiteralImpl(ASTNode node) {
         super(node);
     }
 
-    public void accept(@NotNull DlangVisitor visitor) {
+    public void accept(@NotNull DLanguageVisitor visitor) {
         visitor.visitAssocArrayLiteral(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor instanceof DlangVisitor) accept((DlangVisitor) visitor);
-        else super.accept(visitor);
+        if (visitor instanceof DLanguageVisitor) {
+            accept((DLanguageVisitor) visitor);
+        } else {
+            super.accept(visitor);
+        }
     }
 
     @Nullable
@@ -38,12 +40,12 @@ public class DLanguageAssocArrayLiteralImpl extends ASTWrapperPsiElement impleme
 
     @Nullable
     public PsiElement getOP_BRACKET_RIGHT() {
-        return findChildByType(DlangTypes.OP_BRACKET_RIGHT);
+        return findChildByType(OP_BRACKET_RIGHT);
     }
 
     @Nullable
     public PsiElement getOP_BRACKET_LEFT() {
-        return findChildByType(DlangTypes.OP_BRACKET_LEFT);
+        return findChildByType(OP_BRACKET_LEFT);
     }
 
 }

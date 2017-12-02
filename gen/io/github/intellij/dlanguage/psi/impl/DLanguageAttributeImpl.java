@@ -1,30 +1,58 @@
 package io.github.intellij.dlanguage.psi.impl;
 
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW_ABSTRACT;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW_AUTO;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW_CONST;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW_ENUM;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW_EXPORT;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW_EXTERN;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW_FINAL;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW_INOUT;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW_NOTHROW;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW_OVERRIDE;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW_PACKAGE;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW_PRIVATE;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW_PROTECTED;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW_PUBLIC;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW_PURE;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW_REF;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW_SCOPE;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW_STATIC;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW_SYNCHRONIZED;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW___GSHARED;
+
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
-import io.github.intellij.dlanguage.psi.*;
-import io.github.intellij.dlanguage.psi.*;
+import io.github.intellij.dlanguage.psi.DLanguageAlignAttribute;
+import io.github.intellij.dlanguage.psi.DLanguageAtAttribute;
+import io.github.intellij.dlanguage.psi.DLanguageAttribute;
+import io.github.intellij.dlanguage.psi.DLanguageDeprecated;
+import io.github.intellij.dlanguage.psi.DLanguageIdentifierChain;
+import io.github.intellij.dlanguage.psi.DLanguageLinkageAttribute;
+import io.github.intellij.dlanguage.psi.DLanguagePragmaExpression;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static io.github.intellij.dlanguage.psi.DlangTypes.*;
-
 
 public class DLanguageAttributeImpl extends ASTWrapperPsiElement implements DLanguageAttribute {
+
     public DLanguageAttributeImpl(ASTNode node) {
         super(node);
     }
 
-    public void accept(@NotNull DlangVisitor visitor) {
+    public void accept(@NotNull DLanguageVisitor visitor) {
         visitor.visitAttribute(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor instanceof DlangVisitor) accept((DlangVisitor) visitor);
-        else super.accept(visitor);
+        if (visitor instanceof DLanguageVisitor) {
+            accept((DLanguageVisitor) visitor);
+        } else {
+            super.accept(visitor);
+        }
     }
 
     @Nullable
@@ -34,98 +62,92 @@ public class DLanguageAttributeImpl extends ASTWrapperPsiElement implements DLan
 
     @Nullable
     public PsiElement getKW_SYNCHRONIZED() {
-        return findChildByType(DlangTypes.KW_SYNCHRONIZED);
+        return findChildByType(KW_SYNCHRONIZED);
     }
 
     @Nullable
     public PsiElement getKW_ABSTRACT() {
-        return findChildByType(DlangTypes.KW_ABSTRACT);
+        return findChildByType(KW_ABSTRACT);
     }
 
     @Nullable
     public PsiElement getKW_AUTO() {
-        return findChildByType(DlangTypes.KW_AUTO);
+        return findChildByType(KW_AUTO);
     }
 
     @Nullable
     public PsiElement getKW_ENUM() {
-        return findChildByType(DlangTypes.KW_ENUM);
+        return findChildByType(KW_ENUM);
     }
 
     @Nullable
     public PsiElement getKW_EXTERN() {
-        return findChildByType(DlangTypes.KW_EXTERN);
+        return findChildByType(KW_EXTERN);
     }
 
     @Nullable
     public PsiElement getKW_FINAL() {
-        return findChildByType(DlangTypes.KW_FINAL);
+        return findChildByType(KW_FINAL);
     }
 
     @Nullable
     public PsiElement getKW_INOUT() {
-        return findChildByType(DlangTypes.KW_INOUT);
+        return findChildByType(KW_INOUT);
     }
 
     @Nullable
     public PsiElement getKW_NOTHROW() {
-        return findChildByType(DlangTypes.KW_NOTHROW);
+        return findChildByType(KW_NOTHROW);
     }
 
     @Nullable
     public PsiElement getKW_OVERRIDE() {
-        return findChildByType(DlangTypes.KW_OVERRIDE);
+        return findChildByType(KW_OVERRIDE);
     }
 
     @Nullable
     public PsiElement getKW_PURE() {
-        return findChildByType(DlangTypes.KW_PURE);
+        return findChildByType(KW_PURE);
     }
 
     @Nullable
     public PsiElement getKW_REF() {
-        return findChildByType(DlangTypes.KW_REF);
+        return findChildByType(KW_REF);
     }
 
     @Nullable
     public PsiElement getKW___GSHARED() {
-        return findChildByType(DlangTypes.KW___GSHARED);
+        return findChildByType(KW___GSHARED);
     }
 
     @Nullable
     public PsiElement getKW_SCOPE() {
-        return findChildByType(DlangTypes.KW_SCOPE);
+        return findChildByType(KW_SCOPE);
     }
 
     @Nullable
     public PsiElement getKW_STATIC() {
-        return findChildByType(DlangTypes.KW_STATIC);
+        return findChildByType(KW_STATIC);
     }
 
     @Nullable
     public PsiElement getKW_EXPORT() {
-        return findChildByType(DlangTypes.KW_EXPORT);
-    }
-
-    @Nullable
-    @Override
-    public PsiElement getKW_CONST() {
-        return findChildByType(DlangTypes.KW_CONST);
+        return findChildByType(KW_EXPORT);
     }
 
     @Nullable
     public PsiElement getKW_PRIVATE() {
-        return findChildByType(DlangTypes.KW_PRIVATE);
+        return findChildByType(KW_PRIVATE);
     }
 
     @Nullable
     public PsiElement getKW_PROTECTED() {
-        return findChildByType(DlangTypes.KW_PROTECTED);
+        return findChildByType(KW_PROTECTED);
     }
 
     @Nullable
     public PsiElement getKW_PUBLIC() {
-        return findChildByType(DlangTypes.KW_PUBLIC);
+        return findChildByType(KW_PUBLIC);
     }
 
     @Nullable
@@ -145,7 +167,7 @@ public class DLanguageAttributeImpl extends ASTWrapperPsiElement implements DLan
 
     @Nullable
     public PsiElement getKW_PACKAGE() {
-        return findChildByType(DlangTypes.KW_PACKAGE);
+        return findChildByType(KW_PACKAGE);
     }
 
     @Nullable
@@ -157,4 +179,10 @@ public class DLanguageAttributeImpl extends ASTWrapperPsiElement implements DLan
     public DLanguageLinkageAttribute getLinkageAttribute() {
         return PsiTreeUtil.getChildOfType(this, DLanguageLinkageAttribute.class);
     }
+
+    @Nullable
+    public PsiElement getKW_CONST() {
+        return findChildByType(KW_CONST);
+    }
+
 }

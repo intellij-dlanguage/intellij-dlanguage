@@ -5,8 +5,9 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageTemplateInstance extends PsiElement {
+
     @Nullable
-    DlangIdentifier getIdentifier();
+    DLanguageIdentifier getIdentifier();
 
     @Nullable
     DLanguageTemplateArguments getTemplateArguments();

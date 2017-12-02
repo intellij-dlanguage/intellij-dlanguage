@@ -1,16 +1,16 @@
 package io.github.intellij.dlanguage.psi;
 
 import com.intellij.psi.PsiElement;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
 
 public interface DLanguageExpression extends PsiElement {
-    @NotNull
-    List<DLanguageAssignExpression> getAssignExpressions();
 
     @NotNull
-    List<PsiElement> getOP_COMMAs();
+    public List<DLanguageAssignExpression> getAssignExpressions();
+
+    @NotNull
+    public List<PsiElement> getOP_COMMAs();
 
 }

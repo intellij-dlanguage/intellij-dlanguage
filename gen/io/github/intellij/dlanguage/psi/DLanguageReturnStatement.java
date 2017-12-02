@@ -5,13 +5,14 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageReturnStatement extends PsiElement {
-    @Nullable
-    PsiElement getKW_RETURN();
 
     @Nullable
-    DLanguageExpression getExpression();
+    public PsiElement getKW_RETURN();
 
     @Nullable
-    PsiElement getOP_SCOLON();
+    public DLanguageExpression getExpression();
+
+    @Nullable
+    public PsiElement getOP_SCOLON();
 
 }

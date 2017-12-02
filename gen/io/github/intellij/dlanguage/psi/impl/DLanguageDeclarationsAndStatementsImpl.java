@@ -7,28 +7,30 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.util.PsiTreeUtil;
-import io.github.intellij.dlanguage.psi.DLanguageDeclarationsAndStatements;
 import io.github.intellij.dlanguage.psi.DLanguageDeclarationOrStatement;
 import io.github.intellij.dlanguage.psi.DLanguageDeclarationsAndStatements;
-import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
+import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
 
+public class DLanguageDeclarationsAndStatementsImpl extends ASTWrapperPsiElement implements
+    DLanguageDeclarationsAndStatements {
 
-public class DLanguageDeclarationsAndStatementsImpl extends ASTWrapperPsiElement implements DLanguageDeclarationsAndStatements {
     public DLanguageDeclarationsAndStatementsImpl(ASTNode node) {
         super(node);
     }
 
-    public void accept(@NotNull DlangVisitor visitor) {
+    public void accept(@NotNull DLanguageVisitor visitor) {
         visitor.visitDeclarationsAndStatements(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor instanceof DlangVisitor) accept((DlangVisitor) visitor);
-        else super.accept(visitor);
+        if (visitor instanceof DLanguageVisitor) {
+            accept((DLanguageVisitor) visitor);
+        } else {
+            super.accept(visitor);
+        }
     }
 
     @NotNull
@@ -38,9 +40,10 @@ public class DLanguageDeclarationsAndStatementsImpl extends ASTWrapperPsiElement
 
     @Override
     public boolean processDeclarations(@NotNull PsiScopeProcessor processor,
-                                       @NotNull ResolveState state,
-                                       PsiElement lastParent,
-                                       @NotNull PsiElement place) {
-        return ScopeProcessorImpl.INSTANCE.processDeclarations(this, processor, state, lastParent, place);
+        @NotNull ResolveState state,
+        PsiElement lastParent,
+        @NotNull PsiElement place) {
+        return ScopeProcessorImpl.INSTANCE
+            .processDeclarations(this, processor, state, lastParent, place);
     }
 }

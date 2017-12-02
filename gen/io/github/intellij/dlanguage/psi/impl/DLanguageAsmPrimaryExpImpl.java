@@ -1,30 +1,39 @@
 package io.github.intellij.dlanguage.psi.impl;
 
+import static io.github.intellij.dlanguage.psi.DlangTypes.FLOAT_LITERAL;
+import static io.github.intellij.dlanguage.psi.DlangTypes.INTEGER_LITERAL;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_DOLLAR;
+
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
-import io.github.intellij.dlanguage.psi.*;
-import io.github.intellij.dlanguage.psi.*;
+import io.github.intellij.dlanguage.psi.DLanguageAsmExp;
+import io.github.intellij.dlanguage.psi.DLanguageAsmPrimaryExp;
+import io.github.intellij.dlanguage.psi.DLanguageIdentifierChain;
+import io.github.intellij.dlanguage.psi.DLanguageRegister;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static io.github.intellij.dlanguage.psi.DlangTypes.*;
 
+public class DLanguageAsmPrimaryExpImpl extends ASTWrapperPsiElement implements
+    DLanguageAsmPrimaryExp {
 
-public class DLanguageAsmPrimaryExpImpl extends ASTWrapperPsiElement implements DLanguageAsmPrimaryExp {
     public DLanguageAsmPrimaryExpImpl(ASTNode node) {
         super(node);
     }
 
-    public void accept(@NotNull DlangVisitor visitor) {
+    public void accept(@NotNull DLanguageVisitor visitor) {
         visitor.visitAsmPrimaryExp(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor instanceof DlangVisitor) accept((DlangVisitor) visitor);
-        else super.accept(visitor);
+        if (visitor instanceof DLanguageVisitor) {
+            accept((DLanguageVisitor) visitor);
+        } else {
+            super.accept(visitor);
+        }
     }
 
     @Nullable

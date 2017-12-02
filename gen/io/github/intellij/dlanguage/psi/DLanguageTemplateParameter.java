@@ -3,23 +3,24 @@ package io.github.intellij.dlanguage.psi;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.StubBasedPsiElement;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
-import io.github.intellij.dlanguage.stubs.DlangTemplateParameterStub;
 import org.jetbrains.annotations.Nullable;
 
 
-public interface DLanguageTemplateParameter extends PsiElement, DNamedElement, StubBasedPsiElement<DlangTemplateParameterStub> {
-    @Nullable
-    DLanguageTemplateAliasParameter getTemplateAliasParameter();
+public interface DLanguageTemplateParameter extends PsiElement, DNamedElement,
+    StubBasedPsiElement<DLanguageTemplateParameterStub> {
 
     @Nullable
-    DLanguageTemplateTupleParameter getTemplateTupleParameter();
+    public DLanguageTemplateAliasParameter getTemplateAliasParameter();
 
     @Nullable
-    DLanguageTemplateTypeParameter getTemplateTypeParameter();
+    public DLanguageTemplateTupleParameter getTemplateTupleParameter();
 
     @Nullable
-    DLanguageTemplateThisParameter getTemplateThisParameter();
+    public DLanguageTemplateTypeParameter getTemplateTypeParameter();
 
     @Nullable
-    DLanguageTemplateValueParameter getTemplateValueParameter();
+    public DLanguageTemplateThisParameter getTemplateThisParameter();
+
+    @Nullable
+    public DLanguageTemplateValueParameter getTemplateValueParameter();
 }

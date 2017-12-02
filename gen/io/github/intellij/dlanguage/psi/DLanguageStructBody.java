@@ -1,13 +1,13 @@
 package io.github.intellij.dlanguage.psi;
 
 import com.intellij.psi.PsiElement;
+import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
 
 public interface DLanguageStructBody extends PsiElement {
+
     @Nullable
     PsiElement getOP_BRACES_RIGHT();
 

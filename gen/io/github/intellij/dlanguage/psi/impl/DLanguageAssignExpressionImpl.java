@@ -1,32 +1,56 @@
 package io.github.intellij.dlanguage.psi.impl;
 
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_AND_EQ;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_DIV_EQ;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_EQ;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_EQ_EQ;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_GT_EQ;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_LESS_EQ;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_LESS_GR_EQ;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_MINUS_EQ;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_MOD_EQ;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_MUL_EQ;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_NOT_EQ;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_NOT_GR_EQ;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_NOT_LESS_EQ;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_OR_EQ;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_PLUS_EQ;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_POW_EQ;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_SH_LEFT_EQ;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_SH_RIGHT_EQ;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_TILDA_EQ;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_UNORD_EQ;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_USH_RIGHT_EQ;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_XOR_EQ;
+
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.DLanguageAssignExpression;
-import io.github.intellij.dlanguage.psi.DLanguageAssignExpression;
 import io.github.intellij.dlanguage.psi.DLanguageTernaryExpression;
-import io.github.intellij.dlanguage.psi.DlangVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static io.github.intellij.dlanguage.psi.DlangTypes.*;
 
+public class DLanguageAssignExpressionImpl extends ASTWrapperPsiElement implements
+    DLanguageAssignExpression {
 
-public class DLanguageAssignExpressionImpl extends ASTWrapperPsiElement implements DLanguageAssignExpression {
     public DLanguageAssignExpressionImpl(ASTNode node) {
         super(node);
     }
 
-    public void accept(@NotNull DlangVisitor visitor) {
+    public void accept(@NotNull DLanguageVisitor visitor) {
         visitor.visitAssignExpression(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor instanceof DlangVisitor) accept((DlangVisitor) visitor);
-        else super.accept(visitor);
+        if (visitor instanceof DLanguageVisitor) {
+            accept((DLanguageVisitor) visitor);
+        } else {
+            super.accept(visitor);
+        }
     }
 
     @Nullable

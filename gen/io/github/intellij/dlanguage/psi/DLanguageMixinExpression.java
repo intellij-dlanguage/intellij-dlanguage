@@ -5,16 +5,17 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageMixinExpression extends PsiElement {
-    @Nullable
-    DLanguageAssignExpression getAssignExpression();
 
     @Nullable
-    PsiElement getOP_PAR_RIGHT();
+    public DLanguageAssignExpression getAssignExpression();
 
     @Nullable
-    PsiElement getOP_PAR_LEFT();
+    public PsiElement getOP_PAR_RIGHT();
 
     @Nullable
-    PsiElement getKW_MIXIN();
+    public PsiElement getOP_PAR_LEFT();
+
+    @Nullable
+    public PsiElement getKW_MIXIN();
 
 }

@@ -5,25 +5,26 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageVersionCondition extends PsiElement {
-    @Nullable
-    PsiElement getKW_VERSION();
 
     @Nullable
-    PsiElement getKW_UNITTEST();
+    public PsiElement getKW_VERSION();
 
     @Nullable
-    PsiElement getKW_ASSERT();
+    public PsiElement getKW_UNITTEST();
 
     @Nullable
-    PsiElement getINTEGER_LITERAL();
+    public PsiElement getKW_ASSERT();
 
     @Nullable
-    DlangIdentifier getIdentifier();
+    public PsiElement getINTEGER_LITERAL();
 
     @Nullable
-    PsiElement getOP_PAR_RIGHT();
+    public DLanguageIdentifier getIdentifier();
 
     @Nullable
-    PsiElement getOP_PAR_LEFT();
+    public PsiElement getOP_PAR_RIGHT();
+
+    @Nullable
+    public PsiElement getOP_PAR_LEFT();
 
 }

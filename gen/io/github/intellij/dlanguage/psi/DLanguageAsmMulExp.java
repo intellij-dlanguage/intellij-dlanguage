@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageAsmMulExp extends PsiElement {
+
     @Nullable
     DLanguageAsmMulExp getAsmMulExp();
 

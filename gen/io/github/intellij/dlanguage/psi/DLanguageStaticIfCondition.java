@@ -5,16 +5,17 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageStaticIfCondition extends PsiElement {
-    @Nullable
-    DLanguageStaticIfCondition getStaticIfCondition();
 
     @Nullable
-    DLanguageAssignExpression getAssignExpression();
+    public DLanguageStaticIfCondition getStaticIfCondition();
 
     @Nullable
-    PsiElement getOP_PAR_RIGHT();
+    public DLanguageAssignExpression getAssignExpression();
 
     @Nullable
-    PsiElement getOP_PAR_LEFT();
+    public PsiElement getOP_PAR_RIGHT();
+
+    @Nullable
+    public PsiElement getOP_PAR_LEFT();
 
 }

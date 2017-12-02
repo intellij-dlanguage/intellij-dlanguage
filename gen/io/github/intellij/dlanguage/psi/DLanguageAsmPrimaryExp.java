@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageAsmPrimaryExp extends PsiElement {
+
     @Nullable
     PsiElement getFLOAT_LITERAL();
 

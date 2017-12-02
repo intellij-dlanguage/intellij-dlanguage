@@ -5,15 +5,16 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageFunctionBody extends PsiElement {
-    @Nullable
-    DLanguageBlockStatement getBlockStatement();
 
     @Nullable
-    DLanguageInStatement getInStatement();
+    public DLanguageBlockStatement getBlockStatement();
 
     @Nullable
-    DLanguageOutStatement getOutStatement();
+    public DLanguageInStatement getInStatement();
 
     @Nullable
-    DLanguageBodyStatement getBodyStatement();
+    public DLanguageOutStatement getOutStatement();
+
+    @Nullable
+    public DLanguageBodyStatement getBodyStatement();
 }

@@ -5,61 +5,71 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageStorageClass extends PsiElement {
-    @Nullable
-    DLanguageAtAttribute getAtAttribute();
 
     @Nullable
-    DLanguageDeprecated getDeprecated();
+    public DLanguageAtAttribute getAtAttribute();
 
     @Nullable
-    DLanguageAlignAttribute getAlignAttribute();
+    public DLanguageDeprecated getDeprecated();
 
     @Nullable
-    DLanguageLinkageAttribute getLinkageAttribute();
+    public DLanguageAlignAttribute getAlignAttribute();
 
     @Nullable
-    PsiElement getKW_SYNCHRONIZED();
+    public DLanguageLinkageAttribute getLinkageAttribute();
 
     @Nullable
-    DLanguageTypeConstructor getTypeConstructor();
+    public PsiElement getKW_SYNCHRONIZED();
 
     @Nullable
-    PsiElement getKW_ABSTRACT();
+    public DLanguageTypeConstructor getTypeConstructor();
 
     @Nullable
-    PsiElement getKW_AUTO();
+    public PsiElement getKW_ABSTRACT();
 
     @Nullable
-    PsiElement getKW_ENUM();
+    public PsiElement getKW_CONST();
 
     @Nullable
-    PsiElement getKW_EXTERN();
+    public PsiElement getKW_IMMUTABLE();
 
     @Nullable
-    PsiElement getKW_FINAL();
+    public PsiElement getKW_SYNCHRONIZED();
 
     @Nullable
-    PsiElement getKW_INOUT();
+    public PsiElement getKW_AUTO();
 
     @Nullable
-    PsiElement getKW_NOTHROW();
+    public PsiElement getKW_ENUM();
 
     @Nullable
-    PsiElement getKW_OVERRIDE();
+    public PsiElement getKW_EXTERN();
 
     @Nullable
-    PsiElement getKW_PURE();
+    public PsiElement getKW_FINAL();
 
     @Nullable
-    PsiElement getKW_REF();
+    public PsiElement getKW_INOUT();
 
     @Nullable
-    PsiElement getKW___GSHARED();
+    public PsiElement getKW_NOTHROW();
 
     @Nullable
-    PsiElement getKW_SCOPE();
+    public PsiElement getKW_OVERRIDE();
 
     @Nullable
-    PsiElement getKW_STATIC();
+    public PsiElement getKW_PURE();
+
+    @Nullable
+    public PsiElement getKW_REF();
+
+    @Nullable
+    public PsiElement getKW___GSHARED();
+
+    @Nullable
+    public PsiElement getKW_SCOPE();
+
+    @Nullable
+    public PsiElement getKW_STATIC();
 
 }

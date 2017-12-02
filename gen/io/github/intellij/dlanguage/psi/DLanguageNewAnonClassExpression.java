@@ -1,25 +1,25 @@
 package io.github.intellij.dlanguage.psi;
 
 import com.intellij.psi.PsiElement;
+import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
 
 public interface DLanguageNewAnonClassExpression extends PsiElement {
-    @Nullable
-    PsiElement getKW_NEW();
 
     @Nullable
-    PsiElement getKW_CLASS();
+    public PsiElement getKW_NEW();
+
+    @Nullable
+    public PsiElement getKW_CLASS();
 
     @NotNull
-    List<DLanguageArguments> getArgumentss();
+    public List<DLanguageArguments> getArgumentss();
 
     @Nullable
-    DLanguageBaseClassList getBaseClassList();
+    public DLanguageBaseClassList getBaseClassList();
 
     @Nullable
-    DLanguageStructBody getStructBody();
+    public DLanguageStructBody getStructBody();
 }

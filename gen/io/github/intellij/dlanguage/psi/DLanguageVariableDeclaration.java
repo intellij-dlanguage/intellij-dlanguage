@@ -1,31 +1,34 @@
 package io.github.intellij.dlanguage.psi;
 
 import com.intellij.psi.PsiElement;
+import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
 
 public interface DLanguageVariableDeclaration extends PsiElement {
-    @Nullable
-    DLanguageAutoDeclaration getAutoDeclaration();
 
     @Nullable
-    PsiElement getOP_SCOLON();
+    public DLanguageAutoDeclaration getAutoDeclaration();
 
     @Nullable
-    DLanguageType getType();
+    public PsiElement getOP_SCOLON();
+
+    @Nullable
+    public DLanguageType getType();
 
     @NotNull
-    List<DLanguageDeclarator> getDeclarators();
+    public List<DLanguageDeclarator> getDeclarators();
 
     @NotNull
-    List<PsiElement> getOP_COMMAs();
+    public List<PsiElement> getOP_COMMAs();
 
     @Nullable
-    PsiElement getOP_EQ();
+    public PsiElement getOP_EQ();
 
     @Nullable
-    DLanguageFunctionBody getFunctionBody();
+    public DLanguageFunctionBody getFunctionBody();
+
+    @NotNull
+    public List<DLanguageStorageClass> getStorageClasss();
 }

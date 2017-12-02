@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageLastCatch extends PsiElement {
+
     @Nullable
     PsiElement getKW_CATCH();
 

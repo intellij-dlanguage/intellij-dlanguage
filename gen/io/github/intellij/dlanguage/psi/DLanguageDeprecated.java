@@ -5,16 +5,17 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageDeprecated extends PsiElement {
-    @Nullable
-    DLanguageAssignExpression getAssignExpression();
 
     @Nullable
-    DLanguageDeprecated getDeprecated();
+    public DLanguageAssignExpression getAssignExpression();
 
     @Nullable
-    PsiElement getOP_PAR_RIGHT();
+    public DLanguageDeprecated getDeprecated();
 
     @Nullable
-    PsiElement getOP_PAR_LEFT();
+    public PsiElement getOP_PAR_RIGHT();
+
+    @Nullable
+    public PsiElement getOP_PAR_LEFT();
 
 }

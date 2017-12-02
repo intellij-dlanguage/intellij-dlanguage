@@ -6,38 +6,40 @@ import com.intellij.psi.StubBasedPsiElement;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
-import io.github.intellij.dlanguage.stubs.DlangEponymousTemplateDeclarationStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 
-public interface DLanguageEponymousTemplateDeclaration extends PsiElement, DNamedElement, StubBasedPsiElement<DlangEponymousTemplateDeclarationStub> {
-    @Nullable
-    DlangIdentifier getIdentifier();
+public interface DLanguageEponymousTemplateDeclaration extends PsiElement, DNamedElement,
+    StubBasedPsiElement<DLanguageEponymousTemplateDeclarationStub> {
 
     @Nullable
-    DLanguageTemplateParameters getTemplateParameters();
+    public DLanguageIdentifier getIdentifier();
 
     @Nullable
-    PsiElement getOP_EQ();
+    public DLanguageTemplateParameters getTemplateParameters();
 
     @Nullable
-    DLanguageType getType();
+    public PsiElement getOP_EQ();
 
     @Nullable
-    PsiElement getOP_SCOLON();
+    public DLanguageType getType();
 
     @Nullable
-    PsiElement getKW_ENUM();
+    public PsiElement getOP_SCOLON();
 
     @Nullable
-    PsiElement getKW_ALIAS();
+    public PsiElement getKW_ENUM();
+
+    @Nullable
+    public PsiElement getKW_ALIAS();
 
     @Override
-    default boolean processDeclarations(@NotNull PsiScopeProcessor processor,
-                                        @NotNull ResolveState state,
-                                        PsiElement lastParent,
-                                        @NotNull PsiElement place) {
-        return ScopeProcessorImpl.INSTANCE.processDeclarations(this, processor, state, lastParent, place);
+    default public boolean processDeclarations(@NotNull PsiScopeProcessor processor,
+        @NotNull ResolveState state,
+        PsiElement lastParent,
+        @NotNull PsiElement place) {
+        return ScopeProcessorImpl.INSTANCE
+            .processDeclarations(this, processor, state, lastParent, place);
     }
 }

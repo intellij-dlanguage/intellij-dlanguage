@@ -1,5 +1,12 @@
 package io.github.intellij.dlanguage.psi.impl;
 
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW_SHARED;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW_STATIC;
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW_THIS;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_PAR_LEFT;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_PAR_RIGHT;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_TILDA;
+
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
@@ -12,15 +19,17 @@ import io.github.intellij.dlanguage.stubs.DlangSharedStaticDestructorStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static io.github.intellij.dlanguage.psi.DlangTypes.*;
 
+public class DLanguageSharedStaticDestructorImpl extends
+    DStubbedPsiElementBase<DlangSharedStaticDestructorStub> implements
+    DLanguageSharedStaticDestructor {
 
-public class DLanguageSharedStaticDestructorImpl extends DStubbedPsiElementBase<DlangSharedStaticDestructorStub> implements DLanguageSharedStaticDestructor {
     public DLanguageSharedStaticDestructorImpl(ASTNode node) {
         super(node);
     }
 
-    public DLanguageSharedStaticDestructorImpl(DlangSharedStaticDestructorStub stub, IStubElementType nodeType) {
+    public DLanguageSharedStaticDestructorImpl(DlangSharedStaticDestructorStub stub,
+        IStubElementType nodeType) {
         super(stub, nodeType);
     }
 
@@ -29,8 +38,11 @@ public class DLanguageSharedStaticDestructorImpl extends DStubbedPsiElementBase<
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor instanceof DlangVisitor) accept((DlangVisitor) visitor);
-        else super.accept(visitor);
+        if (visitor instanceof DlangVisitor) {
+            accept((DlangVisitor) visitor);
+        } else {
+            super.accept(visitor);
+        }
     }
 
     @Nullable

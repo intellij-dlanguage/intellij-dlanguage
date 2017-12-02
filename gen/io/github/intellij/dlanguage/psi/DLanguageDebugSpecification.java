@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageDebugSpecification extends PsiElement {
+
     @Nullable
     PsiElement getKW_DEBUG();
 
@@ -12,7 +13,7 @@ public interface DLanguageDebugSpecification extends PsiElement {
     PsiElement getOP_EQ();
 
     @Nullable
-    DlangIdentifier getIdentifier();
+    DLanguageIdentifier getIdentifier();
 
     @Nullable
     PsiElement getINTEGER_LITERAL();

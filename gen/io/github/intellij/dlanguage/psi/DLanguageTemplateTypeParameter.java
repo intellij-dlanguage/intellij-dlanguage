@@ -1,23 +1,23 @@
 package io.github.intellij.dlanguage.psi;
 
 import com.intellij.psi.PsiElement;
+import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
 
 public interface DLanguageTemplateTypeParameter extends PsiElement {
+
     @Nullable
-    DlangIdentifier getIdentifier();
+    public DLanguageIdentifier getIdentifier();
 
     @NotNull
-    List<DLanguageType> getTypes();
+    public List<DLanguageType> getTypes();
 
     @Nullable
-    PsiElement getOP_COLON();
+    public PsiElement getOP_COLON();
 
     @Nullable
-    PsiElement getOP_EQ();
+    public PsiElement getOP_EQ();
 
 }

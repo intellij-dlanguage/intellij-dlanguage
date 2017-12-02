@@ -5,13 +5,14 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageContinueStatement extends PsiElement {
-    @Nullable
-    PsiElement getKW_CONTINUE();
 
     @Nullable
-    DlangIdentifier getIdentifier();
+    public PsiElement getKW_CONTINUE();
 
     @Nullable
-    PsiElement getOP_SCOLON();
+    public DLanguageIdentifier getIdentifier();
+
+    @Nullable
+    public PsiElement getOP_SCOLON();
 
 }

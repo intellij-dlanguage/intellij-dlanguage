@@ -5,18 +5,19 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageWithStatement extends PsiElement {
-    @Nullable
-    PsiElement getKW_WITH();
 
     @Nullable
-    DLanguageExpression getExpression();
+    public PsiElement getKW_WITH();
 
     @Nullable
-    PsiElement getOP_PAR_RIGHT();
+    public DLanguageExpression getExpression();
 
     @Nullable
-    PsiElement getOP_PAR_LEFT();
+    public PsiElement getOP_PAR_RIGHT();
 
     @Nullable
-    DLanguageStatementNoCaseNoDefault getStatementNoCaseNoDefault();
+    public PsiElement getOP_PAR_LEFT();
+
+    @Nullable
+    public DLanguageStatementNoCaseNoDefault getStatementNoCaseNoDefault();
 }

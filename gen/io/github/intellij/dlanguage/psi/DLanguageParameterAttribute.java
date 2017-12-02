@@ -5,27 +5,28 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageParameterAttribute extends PsiElement {
-    @Nullable
-    PsiElement getKW_FINAL();
 
     @Nullable
-    PsiElement getKW_IN();
+    public PsiElement getKW_FINAL();
 
     @Nullable
-    PsiElement getKW_LAZY();
+    public PsiElement getKW_IN();
 
     @Nullable
-    PsiElement getKW_OUT();
+    public PsiElement getKW_LAZY();
 
     @Nullable
-    PsiElement getKW_REF();
+    public PsiElement getKW_OUT();
 
     @Nullable
-    PsiElement getKW_SCOPE();
+    public PsiElement getKW_REF();
 
     @Nullable
-    PsiElement getKW_AUTO();
+    public PsiElement getKW_SCOPE();
 
     @Nullable
-    DLanguageTypeConstructor getTypeConstructor();
+    public PsiElement getKW_AUTO();
+
+    @Nullable
+    public DLanguageTypeConstructor getTypeConstructor();
 }

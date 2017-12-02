@@ -5,13 +5,14 @@ import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageBlockStatement extends PsiElement {
-    @Nullable
-    DLanguageDeclarationsAndStatements getDeclarationsAndStatements();
 
     @Nullable
-    PsiElement getOP_BRACES_RIGHT();
+    public DLanguageDeclarationsAndStatements getDeclarationsAndStatements();
 
     @Nullable
-    PsiElement getOP_BRACES_LEFT();
+    public PsiElement getOP_BRACES_RIGHT();
+
+    @Nullable
+    public PsiElement getOP_BRACES_LEFT();
 
 }

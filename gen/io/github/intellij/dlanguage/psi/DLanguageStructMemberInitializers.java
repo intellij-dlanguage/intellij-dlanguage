@@ -1,16 +1,16 @@
 package io.github.intellij.dlanguage.psi;
 
 import com.intellij.psi.PsiElement;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
 
 public interface DLanguageStructMemberInitializers extends PsiElement {
-    @NotNull
-    List<DLanguageStructMemberInitializer> getStructMemberInitializers();
 
     @NotNull
-    List<PsiElement> getOP_COMMAs();
+    public List<DLanguageStructMemberInitializer> getStructMemberInitializers();
+
+    @NotNull
+    public List<PsiElement> getOP_COMMAs();
 
 }
