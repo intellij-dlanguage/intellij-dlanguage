@@ -2,6 +2,7 @@ package io.github.intellij.dlanguage.types.infer
 
 import com.intellij.psi.PsiElement
 import io.github.intellij.dlanguage.psi.*
+import io.github.intellij.dlanguage.psi.ext.containsToken
 import io.github.intellij.dlanguage.types.*
 
 fun inferExprType(literal: PsiElement?): DType = when (literal) {
@@ -12,13 +13,26 @@ fun inferExprType(literal: PsiElement?): DType = when (literal) {
 }
 
 private fun inferPrimaryExprType(literal: DLanguagePrimaryExpression): DType = when {
+    literal.containsToken(DlangTypes.WYSIWYG_STRING) -> inferStringLiteral(literal)
+    literal.containsToken(DlangTypes.ALTERNATE_WYSIWYG_STRING) -> inferStringLiteral(literal)
+    literal.firstChild is DLanguageString -> inferStringLiteral(literal)
     literal.integeR_LITERAL != null -> inferIntegerLiteral(literal.integeR_LITERAL!!)
     literal.floaT_LITERAL != null -> inferFloatLiteral(literal.floaT_LITERAL!!)
     literal.characteR_LITERAL != null -> DTypeChar
-    literal.doublE_QUOTED_STRINGs.size > 0 -> DTypeString
+    literal.doublE_QUOTED_STRINGs.size > 0 -> inferStringLiteral(literal)
     literal.kW_TRUE != null -> DTypeBool
     literal.kW_FALSE != null -> DTypeBool
     else -> DTypeUnknown
+}
+
+fun inferStringLiteral(literal: DLanguagePrimaryExpression): DType {
+    val text = literal.text
+
+    return when {
+        text.endsWith("\"d") -> DTypeDString
+        text.endsWith("\"w") -> DTypeWString
+        else -> DTypeString
+    }
 }
 
 private fun inferAssignType(assignExpression: DLanguageAssignExpression?): DType {

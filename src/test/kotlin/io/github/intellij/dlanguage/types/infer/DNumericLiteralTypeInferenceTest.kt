@@ -94,8 +94,18 @@ class DNumericLiteralTypeInferenceTest : DLightPlatformCodeInsightFixtureTestCas
            //^ wstring
     """)
 
-    fun `test delimiter string literal`() = doTest("""
+    fun `test wysiwyg string literal`() = doTest("""
         auto a = r"Hello world";
+           //^ string
+    """)
+
+    fun `test alternate wysiwyg string literal`() = doTest("""
+        auto a = `Hello world`;
+           //^ string
+    """)
+
+    fun `test delimiter string literal`() = doTest("""
+        auto a = q{Hello world};
            //^ string
     """)
 
@@ -129,22 +139,12 @@ class DNumericLiteralTypeInferenceTest : DLightPlatformCodeInsightFixtureTestCas
             //^ int
     """)
 
-    fun `test delimiter 2 string literal`() = doTest("""
-        auto a = q{Hello world};
-           //^ string
-    """)
-
-    fun `test wysiwyg string literal`() = doTest("""
-        auto a = `Hello world`;
-           //^ string
-    """)
-
-    fun `test infer rvalue from lvalue integer`() = doTest("""
+    fun `test infer explicit integer`() = doTest("""
         auto byte a = 127;
                 //^ byte
     """)
 
-    fun `test infer rvalue from lvalue float`() = doTest("""
+    fun `test infer explicit float`() = doTest("""
         auto float a = 1.0;
                  //^ float
     """)
