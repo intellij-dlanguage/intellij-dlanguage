@@ -1,10 +1,11 @@
-package io.github.intellij.dlanguage.resolve.processors
+package io.github.intellij.dlanguage.attributes
 
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.psi.PsiElement
 import com.intellij.psi.ResolveState
 import com.intellij.psi.stubs.NamedStubBase
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
+import io.github.intellij.dlanguage.resolve.processors.DResolveProcessor
 import io.github.intellij.dlanguage.stubs.index.DMembersIndex
 import io.github.intellij.dlanguage.stubs.index.DPublicImportIndex
 import io.github.intellij.dlanguage.stubs.index.DTopLevelDeclarationIndex

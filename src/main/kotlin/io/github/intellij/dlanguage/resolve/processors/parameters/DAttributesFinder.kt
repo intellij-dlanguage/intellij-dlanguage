@@ -169,7 +169,6 @@ class DAttributesFinder {
         }
         if (element is FunctionDeclaration || element is DLanguageUnittest || element is Parameters || element is TemplateParameters) {
             if (element is FunctionDeclaration) {
-                execute(element.memberFunctionAttributes)
                 if ((element.functionBody != null && isParent(element.functionBody!!, startingPoint))
                     || (element.parameters != null && isParent(element.parameters!!, startingPoint))
                     || (element.templateParameters != null && isParent(element.templateParameters!!, startingPoint))) {
@@ -201,14 +200,6 @@ class DAttributesFinder {
             updateFromAttribute(element.attribute!!)
         }
         return true
-    }
-
-    private fun execute(elements: List<DLanguageMemberFunctionAttribute>) {
-        for (element in elements) {
-            if (element.text.equals("const")) {
-                directApplication.const = true
-            }
-        }
     }
 
     fun updateFromAttribute(attribute: DLanguageAttribute) {
@@ -288,7 +279,20 @@ class DAttributesFinder {
 
     fun handleFunctionDeclaration(function: FunctionDeclaration): DirectApplication {
         val decl = function.parent as Declaration
-        return updateFromParentDecl(decl)
+        val attribs = updateFromParentDecl(decl)
+        handle(function.memberFunctionAttributes, attribs)
+        return attribs
+    }
+
+    private fun handle(memberFunctionAttributes: List<DLanguageMemberFunctionAttribute>, attribs: DirectApplication) {
+        for (memberFunctionAttribute in memberFunctionAttributes) {
+            if (memberFunctionAttribute.kW_CONST != null) {
+                attribs.const = true
+            }
+            if (memberFunctionAttribute.kW_IMMUTABLE != null) {
+                attribs.immutable = true
+            }
+        }
     }
 
     fun defaultFunctionDeclaration(function: FunctionDeclaration): DefaultAttributes {
@@ -619,5 +623,20 @@ class DAttributesFinder {
         return directApplication.immutable ?: (bulkAttributeApplied.immutable ?: defualts.immutable)
     }
 
+    val attributes: DAttributes
+
 
 }
+
+class DAttributes(
+    val static: Boolean,
+    val visibility: DAttributesFinder.Visibility,
+    val property: Boolean,
+    val noGC: Boolean,
+    val extern: Boolean,
+    val pure: Boolean,
+    val local: Boolean,
+    val nothrow: Boolean,
+    val const: Boolean,
+    val immutable: Boolean)
+
