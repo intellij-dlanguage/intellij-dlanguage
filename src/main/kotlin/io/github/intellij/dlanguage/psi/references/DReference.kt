@@ -124,8 +124,13 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
         val moduleSoFar: IdentifierChain
         if (element is SingleImport) {
             moduleSoFar = element.identifierChain!!
-        } else
-            moduleSoFar = element.parent as IdentifierChain
+        } else {
+            if (element.parent is IdentifierChain)
+                moduleSoFar = element.parent as IdentifierChain
+            else {
+                return
+            }
+        }
         val moduleNameSoFar: String = moduleSoFar.text.replace(".IntellijIdeaRulezzz", "")
         val matchingModules = StubIndex.getInstance().getAllKeys(DTopLevelDeclarationsByModule.KEY, element.project).filter { it.startsWith(moduleNameSoFar) }
         val suggestedCompletions = matchingModules.map { it.removePrefix(moduleNameSoFar + ".") }
