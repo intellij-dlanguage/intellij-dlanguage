@@ -1,9 +1,12 @@
 package io.github.intellij.dlanguage.resolve.processors.parameters
 
+import com.intellij.openapi.util.Condition
 import com.intellij.psi.PsiElement
 import com.intellij.psi.stubs.StubInputStream
 import com.intellij.psi.stubs.StubOutputStream
+import com.intellij.psi.util.PsiTreeUtil
 import io.github.intellij.dlanguage.psi.*
+import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
 import io.github.intellij.dlanguage.utils.*
 import java.io.IOException
 
@@ -16,59 +19,96 @@ class DAttributesFinder {
 
     constructor(startingPoint: PsiElement) {
         this.startingPoint = startingPoint
-        if (startingPoint is Constructor) {
-            defualts = defaultConstructor(startingPoint)
-            directApplication = handleConstructor(startingPoint)
-        } else if (startingPoint is FunctionDeclaration) {
-            defualts = defaultFunctionDeclaration(startingPoint)
-            directApplication = handleFunctionDeclaration(startingPoint)
-        } else if (startingPoint is InterfaceOrClass) {
-            defualts = defaultInterfaceOrClass(startingPoint)
-            directApplication = handleInterfaceOrClass(startingPoint)
-        } else if (startingPoint is UnionDeclaration) {
-            defualts = defaultUnionDeclaration(startingPoint)
-            directApplication = handleUnionDeclaration(startingPoint)
-        } else if (startingPoint is StructDeclaration) {
-            defualts = defaultStructDeclaration(startingPoint)
-            directApplication = handleStructDeclaration(startingPoint)
-        } else if (startingPoint is LabeledStatement) {
-            defualts = defaultLabeledStatement(startingPoint)
-            directApplication = handleLabeledStatement(startingPoint)
-        } else if (startingPoint is AutoDeclarationPart) {
-            defualts = defaultAutoDeclarationPart(startingPoint)
-            directApplication = handleAutoDeclarationPart(startingPoint)
-        } else if (startingPoint is EnumDeclaration) {
-            defualts = defaultEnumDeclaration(startingPoint)
-            directApplication = handleEnumDeclaration(startingPoint)
-        } else if (startingPoint is Catch) {
-            defualts = defaultCatch(startingPoint)
-            directApplication = handleCatch(startingPoint)
-        } else if (startingPoint is Declarator) {
-            defualts = defaultDeclarator(startingPoint)
-            directApplication = handleDeclarator(startingPoint)
-        } else if (startingPoint is EponymousTemplateDeclaration) {
-            defualts = defaultEponymousTemplateDeclaration(startingPoint)
-            directApplication = handleEponymousTemplateDeclaration(startingPoint)
-        } else if (startingPoint is ForeachType) {
-            defualts = defaultForeachType(startingPoint)
-            directApplication = handleForeachType(startingPoint)
-        } else if (startingPoint is DLanguageIfCondition) {
-            defualts = defaultIfCondition(startingPoint)
-            directApplication = handleIfCondition(startingPoint)
-        } else if (startingPoint is TemplateDeclaration) {
-            defualts = defaultTemplateDeclaration(startingPoint)
-            directApplication = handleTemplateDeclaration(startingPoint)
-        } else if (startingPoint is SingleImport) {
-            defualts = defaultSingleImport(startingPoint)
-            directApplication = handleSingleImport(startingPoint)
-        } else if (startingPoint is Parameter) {
-            defualts = defaultParameter(startingPoint)
-            directApplication = handleParameter(startingPoint)
+
+        val elem: DNamedElement
+        if (startingPoint !is DNamedElement || startingPoint is DlangIdentifier) {
+            elem = PsiTreeUtil.findFirstParent(startingPoint, Condition { it is DNamedElement }) as DNamedElement
+        } else {
+            elem = startingPoint
+        }
+        if (elem is Constructor) {
+            defualts = defaultConstructor(elem)
+            directApplication = handleConstructor(elem)
+        } else if (elem is FunctionDeclaration) {
+            defualts = defaultFunctionDeclaration(elem)
+            directApplication = handleFunctionDeclaration(elem)
+        } else if (elem is InterfaceOrClass) {
+            defualts = defaultInterfaceOrClass(elem)
+            directApplication = handleInterfaceOrClass(elem)
+        } else if (elem is UnionDeclaration) {
+            defualts = defaultUnionDeclaration(elem)
+            directApplication = handleUnionDeclaration(elem)
+        } else if (elem is StructDeclaration) {
+            defualts = defaultStructDeclaration(elem)
+            directApplication = handleStructDeclaration(elem)
+        } else if (elem is LabeledStatement) {
+            defualts = defaultLabeledStatement(elem)
+            directApplication = handleLabeledStatement(elem)
+        } else if (elem is AutoDeclarationPart) {
+            defualts = defaultAutoDeclarationPart(elem)
+            directApplication = handleAutoDeclarationPart(elem)
+        } else if (elem is EnumDeclaration) {
+            defualts = defaultEnumDeclaration(elem)
+            directApplication = handleEnumDeclaration(elem)
+        } else if (elem is Catch) {
+            defualts = defaultCatch(elem)
+            directApplication = handleCatch(elem)
+        } else if (elem is Declarator) {
+            defualts = defaultDeclarator(elem)
+            directApplication = handleDeclarator(elem)
+        } else if (elem is EponymousTemplateDeclaration) {
+            defualts = defaultEponymousTemplateDeclaration(elem)
+            directApplication = handleEponymousTemplateDeclaration(elem)
+        } else if (elem is ForeachType) {
+            defualts = defaultForeachType(elem)
+            directApplication = handleForeachType(elem)
+        } else if (elem is DLanguageIfCondition) {
+            defualts = defaultIfCondition(elem)
+            directApplication = handleIfCondition(elem)
+        } else if (elem is TemplateDeclaration) {
+            defualts = defaultTemplateDeclaration(elem)
+            directApplication = handleTemplateDeclaration(elem)
+        } else if (elem is SingleImport) {
+            defualts = defaultSingleImport(elem)
+            directApplication = handleSingleImport(elem)
+        } else if (elem is Parameter) {
+            defualts = defaultParameter(elem)
+            directApplication = handleParameter(elem)
+        } else if (elem is ModuleDeclaration) {
+            defualts = defaultModuleDecl(elem)
+            directApplication = handleModuleDecl(elem)
+        } else if (elem is AliasInitializer) {
+            defualts = defaultAliasInit(elem)
+            directApplication = handleAliasInit(elem)
         } else {
             throw IllegalArgumentException("bad type sent to AttributesFinder")
         }
         recurseUp()
 
+    }
+
+    private fun handleAliasInit(aliasInit: AliasInitializer): DirectApplication {
+        val aliasDecl = aliasInit.parent as AliasDeclaration
+        val attribs = updateFromParentDecl(aliasDecl.parent as Declaration)
+        for (storageClasss in aliasInit.storageClasss) {
+            updateFromStorageClass(storageClasss, attribs)
+        }
+        for (storageClasss in aliasDecl.storageClasss) {
+            updateFromStorageClass(storageClasss, attribs)
+        }
+        return attribs
+    }
+
+    private fun defaultAliasInit(startingPoint: AliasInitializer): DefaultAttributes {
+        return DefaultAttributes()
+    }
+
+    private fun handleModuleDecl(startingPoint: ModuleDeclaration): DirectApplication {
+        return DirectApplication()
+    }
+
+    private fun defaultModuleDecl(startingPoint: ModuleDeclaration): DefaultAttributes {
+        return DefaultAttributes()
     }
 
     private fun defaultParameter(parameter: Parameter): DefaultAttributes {
