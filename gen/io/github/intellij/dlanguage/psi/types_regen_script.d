@@ -718,7 +718,7 @@ shared static this(){
     renameMap["DLanguageForeachType"] = "DlangForeachType";
     renameMap["DLanguageFunctionDeclaration"] = "DlangFunctionDeclaration";
     renameMap["DLanguageParameter"] = "DlangParameter";
-    renameMap["DLanguageTemplateParameter"] = "DlangTemplateParameter";
+    //renameMap["DLanguageTemplateParameter"] = "DlangTemplateParameter";
     renameMap["DLanguageSharedStaticConstructor"] = "DlangSharedStaticConstructor";
     renameMap["DLanguageSharedStaticDestructor"] = "DlangSharedStaticDestructor";
     renameMap["DLanguageStaticConstructor"] = "DlangStaticConstructor";

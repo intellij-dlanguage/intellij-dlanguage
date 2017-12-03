@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 public interface DLanguageTemplateParameterList extends PsiElement {
 
     @NotNull
-    List<DlangTemplateParameter> getTemplateParameters();
+    List<DLanguageTemplateParameter> getTemplateParameters();
 
     @NotNull
     List<PsiElement> getOP_COMMAs();
