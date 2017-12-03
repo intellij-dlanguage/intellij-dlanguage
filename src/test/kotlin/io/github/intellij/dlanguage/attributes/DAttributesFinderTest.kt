@@ -9,6 +9,6 @@ import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributesFin
  */
 class DAttributesFinderTest : DAttributesFinderTestCase() {
     fun testPublicImport() {
-        return doTest(DAttributes(true, DAttributesFinder.Visibility.PUBLIC, false, false, false, false, false, false, false))
+        return doTest(DAttributes(false, DAttributesFinder.Visibility.PUBLIC, false, false, false, false, false, false, false))
     }
 }

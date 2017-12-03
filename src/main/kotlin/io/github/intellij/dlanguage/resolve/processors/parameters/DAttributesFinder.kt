@@ -22,7 +22,11 @@ class DAttributesFinder {
 
         val elem: DNamedElement
         if (startingPoint !is DNamedElement || startingPoint is DlangIdentifier) {
-            elem = PsiTreeUtil.findFirstParent(startingPoint, Condition { it is DNamedElement }) as DNamedElement
+            val parentNamedElement = PsiTreeUtil.findFirstParent(startingPoint, Condition { it is DNamedElement && it !is DlangIdentifier })
+            if (parentNamedElement == null) {
+                throw IllegalArgumentException("Asked for attributes of something that isn't a DNamedElement, or the child of a DNamedElement")
+            }
+            elem = parentNamedElement as DNamedElement
         } else {
             elem = startingPoint
         }

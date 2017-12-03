@@ -1,6 +1,6 @@
 module gold.attributes.publicImport;
 
-public <attrib>import std.stdio;
+public import <attrib>std.stdio;
 
 void main(string[] args){
 
