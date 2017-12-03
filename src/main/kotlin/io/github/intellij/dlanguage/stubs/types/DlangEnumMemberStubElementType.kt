@@ -24,8 +24,8 @@ class DlangEnumMemberStubElementType(debugName: String) : DNamedStubElementType<
 
     @Throws(IOException::class)
     override fun serialize(stub: DlangEnumMemberStub, dataStream: StubOutputStream) {
-        stub.attributes.write(dataStream)
         dataStream.writeName(stub.name)
+        stub.attributes.write(dataStream)
     }
 
     @Throws(IOException::class)

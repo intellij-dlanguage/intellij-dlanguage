@@ -7,10 +7,9 @@ import com.intellij.lang.annotation.HighlightSeverity;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.xml.util.XmlStringUtil;
+import java.util.regex.Pattern;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.regex.Pattern;
 
 public class DAnnotationHolder {
     public final AnnotationHolder holder;
@@ -51,7 +50,7 @@ public class DAnnotationHolder {
                 message, tooltip);
         } catch (final AssertionError e) {
             Logger.getInstance(DAnnotationHolder.class).warn(
-                "Could not create annotation. Most likely cuased by someone/typing/deleting the applicable range:"
+                "Could not create annotation. Most likely caused by someone/typing/deleting the applicable range:"
                     + e);
             return null;
         }

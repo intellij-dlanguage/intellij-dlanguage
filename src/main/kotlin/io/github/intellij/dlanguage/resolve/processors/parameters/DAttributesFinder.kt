@@ -84,11 +84,33 @@ class DAttributesFinder {
         } else if (elem is AliasInitializer) {
             defualts = defaultAliasInit(elem)
             directApplication = handleAliasInit(elem)
+        } else if (elem is EnumMember) {
+            defualts = defaultEnumMember(elem)
+            directApplication = handleEnumMember(elem)
+        } else if (elem is DLanguageNamedImportBind) {
+            defualts = defaultNamedImportBind(elem)
+            directApplication = handleNamedImportBind(elem)
         } else {
             throw IllegalArgumentException("bad type sent to AttributesFinder")
         }
         recurseUp()
 
+    }
+
+    private fun handleNamedImportBind(elem: DLanguageNamedImportBind): DirectApplication {
+        return DirectApplication()//perhaps check if private/public on mport also applies to this.
+    }
+
+    private fun defaultNamedImportBind(elem: DLanguageNamedImportBind): DefaultAttributes {
+        return DefaultAttributes()
+    }
+
+    private fun handleEnumMember(elem: EnumMember): DirectApplication {
+        return DirectApplication()
+    }
+
+    private fun defaultEnumMember(elem: EnumMember): DefaultAttributes {
+        return DefaultAttributes(static = false, visibility = Visibility.PUBLIC, const = true, immutable = true)
     }
 
     private fun handleAliasInit(aliasInit: AliasInitializer): DirectApplication {
@@ -347,7 +369,8 @@ class DAttributesFinder {
         return updateFromParentDecl(decl)
     }
 
-    //at some later date maybe make these membewrs of there respective functions to make things more object -oriented
+    //todo at some later date maybe make these membewrs of there respective functions to make things more object -oriented
+    @Suppress("UNUSED_PARAMETER")
     fun defaultConstructor(constructor: Constructor): DefaultAttributes {
         return DefaultAttributes(
             static = false,
@@ -381,6 +404,7 @@ class DAttributesFinder {
         }
     }
 
+    @Suppress("UNUSED_PARAMETER")
     fun defaultFunctionDeclaration(function: FunctionDeclaration): DefaultAttributes {
         return DefaultAttributes(
             //functions are static by default
@@ -497,10 +521,12 @@ class DAttributesFinder {
         )
     }
 
+    @Suppress("UNUSED_PARAMETER")
     fun handleLabeledStatement(label: LabeledStatement): DirectApplication {
         return DirectApplication()
     }
 
+    @Suppress("UNUSED_PARAMETER")
     fun defaultLabeledStatement(label: LabeledStatement): DefaultAttributes {
         return DefaultAttributes(
             static = true,
@@ -530,6 +556,7 @@ class DAttributesFinder {
         return attribs
     }
 
+    @Suppress("UNUSED_PARAMETER")
     fun defaultAutoDeclarationPart(autoDeclPart: AutoDeclarationPart): DefaultAttributes {
         return DefaultAttributes(
             static = true,
@@ -579,10 +606,12 @@ class DAttributesFinder {
             immutable = false)
     }
 
+    @Suppress("UNUSED_PARAMETER")
     fun handleCatch(catch: Catch): DirectApplication {
         return DirectApplication()
     }
 
+    @Suppress("UNUSED_PARAMETER")
     fun defaultCatch(catch: Catch): DefaultAttributes {
         return DefaultAttributes(
             static = true,
@@ -636,27 +665,33 @@ class DAttributesFinder {
             immutable = false)
     }
 
+    @Suppress("UNUSED_PARAMETER")
     fun handleForeachType(foreachType: ForeachType): DirectApplication {
         return DirectApplication()
     }
 
+    @Suppress("UNUSED_PARAMETER")
     fun defaultForeachType(foreachType: ForeachType): DefaultAttributes {
         return DefaultAttributes(visibility = Visibility.LOCAL, static = true)
     }
 
+    @Suppress("UNUSED_PARAMETER")
     fun handleIfCondition(ifCondition: DLanguageIfCondition): DirectApplication {
         return DirectApplication()
     }
 
+    @Suppress("UNUSED_PARAMETER")
     fun defaultIfCondition(ifCondition: DLanguageIfCondition): DefaultAttributes {
         //todo get attributes
         return DefaultAttributes(visibility = Visibility.LOCAL)
     }
 
+    @Suppress("UNUSED_PARAMETER")
     fun handleTemplateDeclaration(templateDecl: DlangTemplateDeclaration): DirectApplication {
         return DirectApplication()
     }
 
+    @Suppress("UNUSED_PARAMETER")
     fun defaultTemplateDeclaration(templateDecl: DlangTemplateDeclaration): DefaultAttributes {
         //todo get attribues
         return DefaultAttributes()
