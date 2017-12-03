@@ -4,8 +4,7 @@ import com.intellij.lang.ASTNode
 import com.intellij.psi.stubs.StubElement
 import com.intellij.psi.stubs.StubInputStream
 import com.intellij.psi.stubs.StubOutputStream
-import io.github.intellij.dlanguage.psi.DLanguageIfCondition
-import io.github.intellij.dlanguage.psi.impl.named.DLanguageIfConditionImpl
+import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributes
 import io.github.intellij.dlanguage.stubs.DlangIfConditionStub
 import java.io.IOException
 
@@ -23,16 +22,18 @@ class DlangIfConditionStubElementType(debugName: String) : io.github.intellij.dl
     }
 
     override fun createStub(psi: io.github.intellij.dlanguage.psi.DLanguageIfCondition, parentStub: StubElement<*>): DlangIfConditionStub {
-        return DlangIfConditionStub(parentStub, this, psi.name)
+        return DlangIfConditionStub(parentStub, this, psi.name, psi.attributes)
     }
 
     @Throws(IOException::class)
     override fun serialize(stub: DlangIfConditionStub, dataStream: StubOutputStream) {
         dataStream.writeName(stub.name)
+        stub.attributes.write(dataStream)
     }
 
     @Throws(IOException::class)
     override fun deserialize(dataStream: StubInputStream, parentStub: StubElement<*>): DlangIfConditionStub {
-        return DlangIfConditionStub(parentStub, this, dataStream.readName()!!)
+        return DlangIfConditionStub(parentStub, this, dataStream.readName()!!,
+            DAttributes.read(dataStream))
     }
 }

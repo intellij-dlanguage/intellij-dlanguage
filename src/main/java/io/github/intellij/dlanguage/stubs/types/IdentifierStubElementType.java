@@ -6,12 +6,10 @@ import com.intellij.psi.stubs.StubInputStream;
 import com.intellij.psi.stubs.StubOutputStream;
 import io.github.intellij.dlanguage.psi.DlangIdentifier;
 import io.github.intellij.dlanguage.psi.impl.named.DlangIdentifierImpl;
-import io.github.intellij.dlanguage.psi.DlangIdentifier;
-import io.github.intellij.dlanguage.psi.impl.named.DlangIdentifierImpl;
+import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributes;
 import io.github.intellij.dlanguage.stubs.DlangIdentifierStub;
-import org.jetbrains.annotations.NotNull;
-
 import java.io.IOException;
+import org.jetbrains.annotations.NotNull;
 
 public class IdentifierStubElementType extends DNamedStubElementType<DlangIdentifierStub, DlangIdentifier> {
     public IdentifierStubElementType(final String debugName) {
@@ -26,11 +24,12 @@ public class IdentifierStubElementType extends DNamedStubElementType<DlangIdenti
     @NotNull
     @Override
     public DlangIdentifierStub createStub(@NotNull final DlangIdentifier psi, final StubElement parentStub) {
-        return new DlangIdentifierStub(parentStub, this, psi.getName());
+        return new DlangIdentifierStub(parentStub, this, psi.getName(), psi.getAttributes());
     }
 
     @Override
     public void serialize(@NotNull final DlangIdentifierStub stub, @NotNull final StubOutputStream dataStream) throws IOException {
+        stub.getAttributes().write(dataStream);
         dataStream.writeName(stub.getName());
     }
 
@@ -42,7 +41,8 @@ public class IdentifierStubElementType extends DNamedStubElementType<DlangIdenti
     @NotNull
     @Override
     public DlangIdentifierStub deserialize(@NotNull final StubInputStream dataStream, final StubElement parentStub) throws IOException {
-        return new DlangIdentifierStub(parentStub, this, dataStream.readName());
+        return new DlangIdentifierStub(parentStub, this, dataStream.readName(),
+            DAttributes.Companion.read(dataStream));
     }
 }
 

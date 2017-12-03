@@ -5,6 +5,7 @@ import com.intellij.psi.stubs.StubInputStream;
 import com.intellij.psi.stubs.StubOutputStream;
 import io.github.intellij.dlanguage.psi.DlangDeclarator;
 import io.github.intellij.dlanguage.psi.impl.named.DLanguageDeclaratorImpl;
+import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributes;
 import io.github.intellij.dlanguage.stubs.DlangDeclaratorStub;
 import java.io.IOException;
 import org.jetbrains.annotations.NotNull;
@@ -24,17 +25,19 @@ public class DeclaratorStubElementType extends
     @Override
     public DlangDeclaratorStub createStub(@NotNull final DlangDeclarator psi,
         final StubElement parentStub) {
-        return new DlangDeclaratorStub(parentStub, this, psi.getName());
+        return new DlangDeclaratorStub(parentStub, this, psi.getName(), psi.getAttributes());
     }
 
     @Override
     public void serialize(@NotNull final DlangDeclaratorStub stub, @NotNull final StubOutputStream dataStream) throws IOException {
         dataStream.writeName(stub.getName());
+        stub.getAttributes().write(dataStream);
     }
 
     @NotNull
     @Override
     public DlangDeclaratorStub deserialize(@NotNull final StubInputStream dataStream, final StubElement parentStub) throws IOException {
-        return new DlangDeclaratorStub(parentStub, this, dataStream.readName());
+        return new DlangDeclaratorStub(parentStub, this, dataStream.readName(),
+            DAttributes.Companion.read(dataStream));
     }
 }

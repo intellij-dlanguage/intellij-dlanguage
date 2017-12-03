@@ -1,8 +1,11 @@
 package io.github.intellij.dlanguage.resolve.processors.parameters
 
 import com.intellij.psi.PsiElement
+import com.intellij.psi.stubs.StubInputStream
+import com.intellij.psi.stubs.StubOutputStream
 import io.github.intellij.dlanguage.psi.*
 import io.github.intellij.dlanguage.utils.*
+import java.io.IOException
 
 /**
  * Created by francis on 7/17/2017.
@@ -83,7 +86,28 @@ class DAttributesFinder {
     }
 
     enum class Visibility {
-        PUBLIC, PRIVATE, PROTECTED, LOCAL
+        PUBLIC, PRIVATE, PROTECTED, LOCAL;
+
+        fun write(stream: StubOutputStream) {
+            when (this) {
+                DAttributesFinder.Visibility.PUBLIC -> stream.writeInt(1)
+                DAttributesFinder.Visibility.PRIVATE -> stream.writeInt(2)
+                DAttributesFinder.Visibility.PROTECTED -> stream.writeInt(3)
+                DAttributesFinder.Visibility.LOCAL -> stream.writeInt(4)
+            }
+        }
+
+        companion object {
+            fun read(stream: StubInputStream): Visibility {
+                when (stream.readInt()) {
+                    1 -> return PUBLIC
+                    2 -> return PRIVATE
+                    3 -> return PROTECTED
+                    4 -> return LOCAL
+                }
+                throw IOException("read illegal int when deserializing Visibility")
+            }
+        }
     }
 
     val directApplication: DirectApplication
@@ -624,6 +648,7 @@ class DAttributesFinder {
     }
 
     val attributes: DAttributes
+        get() = DAttributes(isStatic(), visibility(), isProperty(), isNoGC(), isExtern(), isPure(), isLocal(), isNothrow(), isConst(), isImmutable())
 
 
 }
@@ -638,5 +663,34 @@ class DAttributes(
     val local: Boolean,
     val nothrow: Boolean,
     val const: Boolean,
-    val immutable: Boolean)
+    val immutable: Boolean) {
+    fun write(stream: StubOutputStream) {
+        stream.writeBoolean(static)
+        stream.writeBoolean(property)
+        stream.writeBoolean(noGC)
+        stream.writeBoolean(extern)
+        stream.writeBoolean(pure)
+        stream.writeBoolean(local)
+        stream.writeBoolean(nothrow)
+        stream.writeBoolean(const)
+        stream.writeBoolean(immutable)
+        visibility.write(stream)
+    }
+
+    companion object {
+        fun read(stream: StubInputStream): DAttributes {
+            val static = stream.readBoolean()
+            val property = stream.readBoolean()
+            val noGC = stream.readBoolean()
+            val extern = stream.readBoolean()
+            val pure = stream.readBoolean()
+            val local = stream.readBoolean()
+            val nothrow = stream.readBoolean()
+            val const = stream.readBoolean()
+            val immutable = stream.readBoolean()
+            val visibility = DAttributesFinder.Visibility.read(stream)
+            return DAttributes(static, visibility, property, noGC, extern, pure, local, nothrow, const, immutable)
+        }
+    }
+}
 

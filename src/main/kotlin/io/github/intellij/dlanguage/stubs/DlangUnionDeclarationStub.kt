@@ -1,13 +1,13 @@
 package io.github.intellij.dlanguage.stubs
 
 import com.intellij.psi.stubs.IStubElementType
-import com.intellij.psi.stubs.NamedStubBase
 import com.intellij.psi.stubs.StubElement
 import com.intellij.util.io.StringRef
 import io.github.intellij.dlanguage.psi.DlangUnionDeclaration
+import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributes
 
-class DlangUnionDeclarationStub : NamedStubBase<DlangUnionDeclaration> {
-    constructor(parent: StubElement<*>, elementType: IStubElementType<*, *>, name: StringRef?) : super(parent, elementType, name)
+class DlangUnionDeclarationStub : DNamedStubBase<DlangUnionDeclaration> {
+    constructor(parent: StubElement<*>, elementType: IStubElementType<*, *>, name: StringRef?, attributes: DAttributes) : super(parent, elementType, name, attributes)
 
-    constructor(parent: StubElement<*>, elementType: IStubElementType<*, *>, name: String?) : super(parent, elementType, name)
+    constructor(parent: StubElement<*>, elementType: IStubElementType<*, *>, name: String?, attributes: DAttributes) : super(parent, elementType, name, attributes)
 }

@@ -6,6 +6,7 @@ import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.stubs.*
 import io.github.intellij.dlanguage.psi.DlangFile
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
+import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributesFinder
 import io.github.intellij.dlanguage.stubs.DlangSingleImportStub
 import io.github.intellij.dlanguage.utils.SingleImport
 
@@ -30,10 +31,10 @@ class DPublicImportIndex : StringStubIndexExtension<SingleImport>() {
     companion object {
         private val KEY: StubIndexKey<String, SingleImport> = StubIndexKey.createIndexKey<String, SingleImport>("d.globally.accessible.import.public")
         val VERSION = 3
-        fun <S : NamedStubBase<T>, T : io.github.intellij.dlanguage.psi.interfaces.DNamedElement> indexPublicImports(stub: S, sink: IndexSink) {
-            if (stub is io.github.intellij.dlanguage.stubs.DlangSingleImportStub && topLevelDeclaration<S, T>(stub)) {
-                if ((stub as io.github.intellij.dlanguage.stubs.DlangSingleImportStub).isPublic) {
-                    val fileName = (stub.psi.containingFile as io.github.intellij.dlanguage.psi.DlangFile).moduleOrFileName
+        fun <S : NamedStubBase<T>, T : DNamedElement> indexPublicImports(stub: S, sink: IndexSink) {
+            if (stub is DlangSingleImportStub && topLevelDeclaration<S, T>(stub)) {
+                if ((stub as DlangSingleImportStub).attributes.visibility == DAttributesFinder.Visibility.PUBLIC) {
+                    val fileName = (stub.psi.containingFile as DlangFile).moduleOrFileName
                     sink.occurrence<SingleImport, String>(DPublicImportIndex.KEY, fileName)
                 }
             }

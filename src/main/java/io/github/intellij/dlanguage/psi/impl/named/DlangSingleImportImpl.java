@@ -10,7 +10,6 @@ import io.github.intellij.dlanguage.psi.DlangIdentifier;
 import io.github.intellij.dlanguage.psi.DlangSingleImport;
 import io.github.intellij.dlanguage.psi.DlangTypes;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
-import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributesFinder;
 import io.github.intellij.dlanguage.stubs.DlangSingleImportStub;
 import java.util.HashSet;
 import java.util.Set;
@@ -82,17 +81,6 @@ public class DlangSingleImportImpl extends DNamedStubbedPsiElementBase<DlangSing
     public DlangIdentifier getNameIdentifier() {
         return getIdentifier();
     }
-
-    public Boolean isPublic() {
-        if (getGreenStub() != null)
-            return getGreenStub().isPublic();
-        if (getIdentifierChain() == null || getIdentifierChain().getIdentifiers().isEmpty())
-            return false;
-        final DAttributesFinder finder = new DAttributesFinder(this);
-        finder.recurseUp();
-        return finder.isPublic();
-    }
-
     public boolean hasAName() {
         try {
             return getIdentifier() != null;

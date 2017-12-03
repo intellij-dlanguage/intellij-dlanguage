@@ -5,6 +5,7 @@ import com.intellij.psi.stubs.StubElement
 import com.intellij.psi.stubs.StubInputStream
 import com.intellij.psi.stubs.StubOutputStream
 import io.github.intellij.dlanguage.psi.impl.named.DLanguageCatchImpl
+import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributes
 import io.github.intellij.dlanguage.stubs.DlangCatchStub
 import io.github.intellij.dlanguage.utils.Catch
 import java.io.IOException
@@ -23,17 +24,19 @@ class CatchStubElementType(debugName: String) : io.github.intellij.dlanguage.stu
     }
 
     override fun createStub(psi: Catch, parentStub: StubElement<*>): DlangCatchStub {
-        return DlangCatchStub(parentStub, this, psi.name)
+        return DlangCatchStub(parentStub, this, psi.name, psi.attributes)
     }
 
     @Throws(IOException::class)
     override fun serialize(stub: DlangCatchStub, dataStream: StubOutputStream) {
         dataStream.writeName(stub.name)
+        stub.attributes.write(dataStream)
     }
 
     @Throws(IOException::class)
     override fun deserialize(dataStream: StubInputStream, parentStub: StubElement<*>): DlangCatchStub {
-        return DlangCatchStub(parentStub, this, dataStream.readName()!!)
+        return DlangCatchStub(parentStub, this, dataStream.readName()!!,
+            DAttributes.read(dataStream))
     }
 
 }

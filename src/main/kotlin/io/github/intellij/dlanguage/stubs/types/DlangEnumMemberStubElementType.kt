@@ -4,6 +4,7 @@ import com.intellij.psi.stubs.StubElement
 import com.intellij.psi.stubs.StubInputStream
 import com.intellij.psi.stubs.StubOutputStream
 import io.github.intellij.dlanguage.psi.impl.named.DLanguageEnumMemberImpl
+import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributes
 import io.github.intellij.dlanguage.stubs.DlangEnumMemberStub
 import io.github.intellij.dlanguage.utils.EnumMember
 import java.io.IOException
@@ -18,16 +19,18 @@ class DlangEnumMemberStubElementType(debugName: String) : DNamedStubElementType<
     }
 
     override fun createStub(psi: EnumMember, parentStub: StubElement<*>): DlangEnumMemberStub {
-        return DlangEnumMemberStub(parentStub, this, psi.name)
+        return DlangEnumMemberStub(parentStub, this, psi.name, psi.attributes)
     }
 
     @Throws(IOException::class)
     override fun serialize(stub: DlangEnumMemberStub, dataStream: StubOutputStream) {
+        stub.attributes.write(dataStream)
         dataStream.writeName(stub.name)
     }
 
     @Throws(IOException::class)
     override fun deserialize(dataStream: StubInputStream, parentStub: StubElement<*>): DlangEnumMemberStub {
-        return DlangEnumMemberStub(parentStub, this, dataStream.readName()!!)
+        return DlangEnumMemberStub(parentStub, this, dataStream.readName()!!,
+            DAttributes.read(dataStream))
     }
 }

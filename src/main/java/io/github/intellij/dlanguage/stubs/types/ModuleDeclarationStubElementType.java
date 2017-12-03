@@ -1,16 +1,14 @@
 package io.github.intellij.dlanguage.stubs.types;
 
-import com.intellij.lang.ASTNode;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubInputStream;
 import com.intellij.psi.stubs.StubOutputStream;
 import io.github.intellij.dlanguage.psi.DLanguageModuleDeclaration;
 import io.github.intellij.dlanguage.psi.impl.named.DLanguageModuleDeclarationImpl;
+import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributes;
 import io.github.intellij.dlanguage.stubs.DlangModuleDeclarationStub;
-import org.jetbrains.annotations.NotNull;
-
 import java.io.IOException;
+import org.jetbrains.annotations.NotNull;
 
 public class ModuleDeclarationStubElementType extends DNamedStubElementType<DlangModuleDeclarationStub, DLanguageModuleDeclaration> {
     public ModuleDeclarationStubElementType(final String debugName) {
@@ -25,17 +23,19 @@ public class ModuleDeclarationStubElementType extends DNamedStubElementType<Dlan
     @NotNull
     @Override
     public DlangModuleDeclarationStub createStub(@NotNull final DLanguageModuleDeclaration psi, final StubElement parentStub) {
-        return new DlangModuleDeclarationStub(parentStub, this, psi.getName());
+        return new DlangModuleDeclarationStub(parentStub, this, psi.getName(), psi.getAttributes());
     }
 
     @Override
     public void serialize(@NotNull final DlangModuleDeclarationStub stub, @NotNull final StubOutputStream dataStream) throws IOException {
         dataStream.writeName(stub.getName());
+        stub.getAttributes().write(dataStream);
     }
 
     @NotNull
     @Override
     public DlangModuleDeclarationStub deserialize(@NotNull final StubInputStream dataStream, final StubElement parentStub) throws IOException {
-        return new DlangModuleDeclarationStub(parentStub, this, dataStream.readName());
+        return new DlangModuleDeclarationStub(parentStub, this, dataStream.readName(),
+            DAttributes.Companion.read(dataStream));
     }
 }
