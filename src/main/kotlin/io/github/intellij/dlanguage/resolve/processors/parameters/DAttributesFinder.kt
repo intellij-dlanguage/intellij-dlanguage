@@ -677,6 +677,41 @@ class DAttributes(
         visibility.write(stream)
     }
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as DAttributes
+
+        if (static != other.static) return false
+        if (visibility != other.visibility) return false
+        if (property != other.property) return false
+        if (noGC != other.noGC) return false
+        if (extern != other.extern) return false
+        if (pure != other.pure) return false
+        if (local != other.local) return false
+        if (nothrow != other.nothrow) return false
+        if (const != other.const) return false
+        if (immutable != other.immutable) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = static.hashCode()
+        result = 31 * result + visibility.hashCode()
+        result = 31 * result + property.hashCode()
+        result = 31 * result + noGC.hashCode()
+        result = 31 * result + extern.hashCode()
+        result = 31 * result + pure.hashCode()
+        result = 31 * result + local.hashCode()
+        result = 31 * result + nothrow.hashCode()
+        result = 31 * result + const.hashCode()
+        result = 31 * result + immutable.hashCode()
+        return result
+    }
+
+
     companion object {
         fun read(stream: StubInputStream): DAttributes {
             val static = stream.readBoolean()
