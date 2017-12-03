@@ -1,7 +1,9 @@
 package io.github.intellij.dlanguage.resolve.processors.parameters
 
 import com.intellij.openapi.util.Condition
+import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiFile
 import com.intellij.psi.stubs.StubInputStream
 import com.intellij.psi.stubs.StubOutputStream
 import com.intellij.psi.util.PsiTreeUtil
@@ -255,7 +257,7 @@ class DAttributesFinder {
                 }
                 point = point.prevSibling
             }
-            if (point.parent == null) {
+            if (point.parent == null || point is PsiFile || point is PsiDirectory) {
                 break
             }
             point = point.parent
