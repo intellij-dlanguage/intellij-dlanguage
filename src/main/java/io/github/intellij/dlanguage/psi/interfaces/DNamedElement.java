@@ -49,8 +49,6 @@ public interface DNamedElement extends DCompositeElement, PsiNameIdentifierOwner
 
     boolean isPure();
 
-    boolean isLocal();
-
     boolean isNothrow();
 
     boolean isConst();

@@ -6,7 +6,6 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.util.PsiTreeUtil;
-import io.github.intellij.dlanguage.psi.DLanguageAttribute;
 import io.github.intellij.dlanguage.psi.DLanguageClassDeclaration;
 import io.github.intellij.dlanguage.psi.DLanguageIdentifierChain;
 import io.github.intellij.dlanguage.psi.DLanguageIdentifierOrTemplateChain;
@@ -20,8 +19,6 @@ import io.github.intellij.dlanguage.psi.DlangTemplateDeclaration;
 import io.github.intellij.dlanguage.psi.DlangUnionDeclaration;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
 import io.github.intellij.dlanguage.psi.interfaces.Declaration;
-import io.github.intellij.dlanguage.psi.interfaces.HasVisibility;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -164,35 +161,35 @@ public class DUtil {
 //        return searchForPublic(symbol.getParent());
 //    }
 
-    public static <T extends HasVisibility> List<T> getPublicElements(final List<T> elements) {
-        final List<T> res = new ArrayList<>();
-        for (final T element : elements) {
-            if (element.isPublic()) {
-                res.add(element);
-            }
-        }
-        return res;
-    }
+//    public static <T extends HasVisibility> List<T> getPublicElements(final List<T> elements) {
+//        final List<T> res = new ArrayList<>();
+//        for (final T element : elements) {
+//            if (element.isPublic()) {
+//                res.add(element);
+//            }
+//        }
+//        return res;
+//    }
 
-    public static <T extends HasVisibility> List<T> getProtectedElements(final List<T> elements) {
-        final List<T> res = new ArrayList<>();
-        for (final T element : elements) {
-            if (element.isPublic()) {
-                res.add(element);
-            }
-        }
-        return res;
-    }
-
-    public static <T extends HasVisibility> List<T> getPrivateElements(final List<T> elements) {
-        final List<T> res = new ArrayList<>();
-        for (final T element : elements) {
-            if (element.isPublic()) {
-                res.add(element);
-            }
-        }
-        return res;
-    }
+//    public static <T extends HasVisibility> List<T> getProtectedElements(final List<T> elements) {
+//        final List<T> res = new ArrayList<>();
+//        for (final T element : elements) {
+//            if (element.isPublic()) {
+//                res.add(element);
+//            }
+//        }
+//        return res;
+//    }
+//
+//    public static <T extends HasVisibility> List<T> getPrivateElements(final List<T> elements) {
+//        final List<T> res = new ArrayList<>();
+//        for (final T element : elements) {
+//            if (element.isPublic()) {
+//                res.add(element);
+//            }
+//        }
+//        return res;
+//    }
 
     @NotNull
     public static PsiElement getTopLevelOfRecursiveElement(final PsiElement element, final Class<? extends PsiElement> tClass) {
@@ -243,27 +240,27 @@ public class DUtil {
 //        return mixins;
 //    }
 
-    public static HasVisibility.Visibility protectionToVisibilty(final DLanguageAttribute protectionAttribute) {
-        final String text = protectionAttribute.getText();
-        if (text.equals("private"))
-            return HasVisibility.Visibility.private_;
-        if (text.equals("public"))
-            return HasVisibility.Visibility.public_;
-        if (text.equals("protected"))
-            return HasVisibility.Visibility.protected_;
-        throw new IllegalArgumentException(protectionAttribute.toString() + protectionAttribute.getText());
-    }
-
-    public static HasVisibility.Visibility protectionToVisibilty(final String text) {
-        if (text.equals("private"))
-            return HasVisibility.Visibility.private_;
-        if (text.equals("public"))
-            return HasVisibility.Visibility.public_;
-        if (text.equals("protected"))
-            return HasVisibility.Visibility.protected_;
-        throw new IllegalArgumentException(text);
-
-    }
+//    public static HasVisibility.Visibility protectionToVisibilty(final DLanguageAttribute protectionAttribute) {
+//        final String text = protectionAttribute.getText();
+//        if (text.equals("private"))
+//            return HasVisibility.Visibility.private_;
+//        if (text.equals("public"))
+//            return HasVisibility.Visibility.public_;
+//        if (text.equals("protected"))
+//            return HasVisibility.Visibility.protected_;
+//        throw new IllegalArgumentException(protectionAttribute.toString() + protectionAttribute.getText());
+//    }
+//
+//    public static HasVisibility.Visibility protectionToVisibilty(final String text) {
+//        if (text.equals("private"))
+//            return HasVisibility.Visibility.private_;
+//        if (text.equals("public"))
+//            return HasVisibility.Visibility.public_;
+//        if (text.equals("protected"))
+//            return HasVisibility.Visibility.protected_;
+//        throw new IllegalArgumentException(text);
+//
+//    }
 
     public static DlangIdentifier getEndOfIdentifierList(final DLanguageIdentifierOrTemplateChain chain) {
         final List<DLanguageIdentifierOrTemplateInstance> list = chain.getIdentifierOrTemplateInstances();

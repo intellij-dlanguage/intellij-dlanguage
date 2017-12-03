@@ -129,10 +129,6 @@ public abstract class DNamedStubbedPsiElementBase<T extends DNamedStubBase<?>> e
         return getAttributes().getPure();
     }
 
-    public boolean isLocal() {
-        return getAttributes().getLocal();
-    }
-
     public boolean isNothrow() {
         return getAttributes().getNothrow();
     }

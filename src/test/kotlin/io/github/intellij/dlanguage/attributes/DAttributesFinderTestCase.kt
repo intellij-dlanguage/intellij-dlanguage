@@ -16,7 +16,7 @@ abstract class DAttributesFinderTestCase : DLightPlatformCodeInsightFixtureTestC
     var elem: PsiElement? = null
 
     override fun getTestDataPath(): String {
-        return this.javaClass.classLoader.getResource("gold/resolve/" + testDirectoryName)!!.path
+        return this.javaClass.classLoader.getResource("gold/attributes/" + testDirectoryName)!!.path
     }
 
     private fun getTestDataFiles(): Array<File> {

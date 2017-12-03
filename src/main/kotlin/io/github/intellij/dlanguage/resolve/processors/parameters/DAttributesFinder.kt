@@ -61,11 +61,32 @@ class DAttributesFinder {
         } else if (startingPoint is SingleImport) {
             defualts = defaultSingleImport(startingPoint)
             directApplication = handleSingleImport(startingPoint)
+        } else if (startingPoint is Parameter) {
+            defualts = defaultParameter(startingPoint)
+            directApplication = handleParameter(startingPoint)
         } else {
             throw IllegalArgumentException("bad type sent to AttributesFinder")
         }
         recurseUp()
 
+    }
+
+    private fun defaultParameter(parameter: Parameter): DefaultAttributes {
+        return DefaultAttributes(visibility = Visibility.LOCAL)
+    }
+
+    private fun handleParameter(param: Parameter): DirectApplication {
+        val attributes = DirectApplication()
+        for (attribute in param.parameterAttributes) {
+//            attribute.kW_AUTO
+//            attribute.kW_FINAL
+//            attribute.kW_IN
+//            attribute.kW_LAZY
+//            attribute.kW_OUT
+//            attribute.kW_REF
+//            attribute.kW_SCOPE
+        }
+        return attributes
     }
 
     private fun handleSingleImport(startingPoint: SingleImport): DirectApplication {
@@ -119,7 +140,6 @@ class DAttributesFinder {
         var noGC: Boolean? = null,
         var extern: Boolean? = null,
         var pure: Boolean? = null,
-        var local: Boolean? = null,
         var nothrow: Boolean? = null,
         var const: Boolean? = null,
         var immutable: Boolean? = null)
@@ -133,7 +153,6 @@ class DAttributesFinder {
         var noGC: Boolean? = null,
         var extern: Boolean? = null,
         var pure: Boolean? = null,
-        var local: Boolean? = null,
         var nothrow: Boolean? = null,
         var const: Boolean? = null,
         var immutable: Boolean? = null)
@@ -147,7 +166,6 @@ class DAttributesFinder {
         val noGC: Boolean = false,
         val extern: Boolean = false,
         val pure: Boolean = false,
-        val local: Boolean = false,
         val nothrow: Boolean = false,
         val const: Boolean = false,
         val immutable: Boolean = false)
@@ -332,8 +350,6 @@ class DAttributesFinder {
             //Not extern by default I believe
             // todo need to distinguish between extern(C) and other kinds of extern
             extern = false,
-            //not really applicable
-            local = false,
             //functions are not pure by default
             pure = false,
             //I'm pretty sure functions are not nothrow by default
@@ -444,7 +460,7 @@ class DAttributesFinder {
     fun defaultLabeledStatement(label: LabeledStatement): DefaultAttributes {
         return DefaultAttributes(
             static = true,
-            visibility = Visibility.PUBLIC,
+            visibility = Visibility.LOCAL,
             property = false,
             noGC = false,
             //Not extern by default I believe todo check this
@@ -452,7 +468,6 @@ class DAttributesFinder {
             pure = false,
             nothrow = false,
             const = false,
-            local = true,//the one time this is sorta the case
             immutable = false
         )
     }
@@ -527,8 +542,7 @@ class DAttributesFinder {
     fun defaultCatch(catch: Catch): DefaultAttributes {
         return DefaultAttributes(
             static = true,
-            local = true,
-            visibility = Visibility.PUBLIC,
+            visibility = Visibility.LOCAL,
             //Not extern by default I believe todo check this
             extern = false,
             const = false,//todo check this,
@@ -583,7 +597,7 @@ class DAttributesFinder {
     }
 
     fun defaultForeachType(foreachType: ForeachType): DefaultAttributes {
-        return DefaultAttributes(local = true, static = true)
+        return DefaultAttributes(visibility = Visibility.LOCAL, static = true)
     }
 
     fun handleIfCondition(ifCondition: DLanguageIfCondition): DirectApplication {
@@ -592,7 +606,7 @@ class DAttributesFinder {
 
     fun defaultIfCondition(ifCondition: DLanguageIfCondition): DefaultAttributes {
         //todo get attributes
-        return DefaultAttributes(local = true)
+        return DefaultAttributes(visibility = Visibility.LOCAL)
     }
 
     fun handleTemplateDeclaration(templateDecl: DlangTemplateDeclaration): DirectApplication {
@@ -611,6 +625,7 @@ class DAttributesFinder {
     fun isPublic() = visibility() == Visibility.PUBLIC
     fun isProtected() = visibility() == Visibility.PROTECTED
     fun isPrivate() = visibility() == Visibility.PRIVATE
+    fun isLocal() = visibility() == Visibility.LOCAL
     fun visibility(): Visibility {
         return directApplication.visibility ?: (bulkAttributeApplied.visibility ?: defualts.visibility)
     }
@@ -631,10 +646,6 @@ class DAttributesFinder {
         return directApplication.pure ?: (bulkAttributeApplied.pure ?: defualts.pure)
     }
 
-    fun isLocal(): Boolean {
-        return directApplication.local ?: (bulkAttributeApplied.local ?: defualts.local)
-    }
-
     fun isNothrow(): Boolean {
         return directApplication.nothrow ?: (bulkAttributeApplied.nothrow ?: defualts.nothrow)
     }
@@ -648,7 +659,7 @@ class DAttributesFinder {
     }
 
     val attributes: DAttributes
-        get() = DAttributes(isStatic(), visibility(), isProperty(), isNoGC(), isExtern(), isPure(), isLocal(), isNothrow(), isConst(), isImmutable())
+        get() = DAttributes(isStatic(), visibility(), isProperty(), isNoGC(), isExtern(), isPure(), isNothrow(), isConst(), isImmutable())
 
 
 }
@@ -660,7 +671,6 @@ class DAttributes(
     val noGC: Boolean,
     val extern: Boolean,
     val pure: Boolean,
-    val local: Boolean,
     val nothrow: Boolean,
     val const: Boolean,
     val immutable: Boolean) {
@@ -670,7 +680,6 @@ class DAttributes(
         stream.writeBoolean(noGC)
         stream.writeBoolean(extern)
         stream.writeBoolean(pure)
-        stream.writeBoolean(local)
         stream.writeBoolean(nothrow)
         stream.writeBoolean(const)
         stream.writeBoolean(immutable)
@@ -689,7 +698,6 @@ class DAttributes(
         if (noGC != other.noGC) return false
         if (extern != other.extern) return false
         if (pure != other.pure) return false
-        if (local != other.local) return false
         if (nothrow != other.nothrow) return false
         if (const != other.const) return false
         if (immutable != other.immutable) return false
@@ -704,7 +712,6 @@ class DAttributes(
         result = 31 * result + noGC.hashCode()
         result = 31 * result + extern.hashCode()
         result = 31 * result + pure.hashCode()
-        result = 31 * result + local.hashCode()
         result = 31 * result + nothrow.hashCode()
         result = 31 * result + const.hashCode()
         result = 31 * result + immutable.hashCode()
@@ -719,12 +726,11 @@ class DAttributes(
             val noGC = stream.readBoolean()
             val extern = stream.readBoolean()
             val pure = stream.readBoolean()
-            val local = stream.readBoolean()
             val nothrow = stream.readBoolean()
             val const = stream.readBoolean()
             val immutable = stream.readBoolean()
             val visibility = DAttributesFinder.Visibility.read(stream)
-            return DAttributes(static, visibility, property, noGC, extern, pure, local, nothrow, const, immutable)
+            return DAttributes(static, visibility, property, noGC, extern, pure, nothrow, const, immutable)
         }
     }
 }
