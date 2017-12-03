@@ -10,6 +10,7 @@ import com.intellij.execution.process.ProcessOutputTypes;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
+import com.intellij.openapi.application.ReadAction;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.util.Key;
@@ -17,17 +18,17 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
+import com.intellij.util.ThrowableRunnable;
 import io.github.intellij.dlanguage.highlighting.annotation.DAnnotationHolder;
 import io.github.intellij.dlanguage.highlighting.annotation.DProblem;
 import io.github.intellij.dlanguage.highlighting.annotation.Problems;
 import io.github.intellij.dlanguage.settings.ToolKey;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.jetbrains.annotations.NotNull;
 
 public class DScanner {
 
@@ -52,10 +53,19 @@ public class DScanner {
     }
 
     private static int getOffsetStart(final PsiFile file, final int startLine, final int startColumn) {
-        final Document document = PsiDocumentManager.getInstance(file.getProject()).getDocument(file);
-        final int line = getValidLineNumber(startLine, document);
-        final int offset = StringUtil.lineColToOffset(file.getText(), line, startColumn - 1);
-        return offset <= 1 ? 1 : offset;
+        final int[] retVal = {-1};
+        final ThrowableRunnable getOffset = new ThrowableRunnable() {
+            public void run() {
+                final Document document = PsiDocumentManager.getInstance(file.getProject())
+                    .getDocument(file);
+                final int line = getValidLineNumber(startLine, document);
+                final int offset = StringUtil
+                    .lineColToOffset(file.getText(), line, startColumn - 1);
+                retVal[0] = offset <= 1 ? 1 : offset;
+            }
+        };
+        ReadAction.run(getOffset);
+        return retVal[0];
     }
 
     private static int getLineEndOffset(final Document document, final int line) {
