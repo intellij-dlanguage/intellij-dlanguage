@@ -13,6 +13,7 @@ import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.DLanguageImportBindings;
 import io.github.intellij.dlanguage.psi.DLanguageImportDeclaration;
+import io.github.intellij.dlanguage.psi.DlangSingleImport;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import java.util.List;
@@ -45,8 +46,8 @@ public class DLanguageImportDeclarationImpl extends ASTWrapperPsiElement impleme
     }
 
     @NotNull
-    public List<DLanguageSingleImport> getSingleImports() {
-        return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageSingleImport.class);
+    public List<DlangSingleImport> getSingleImports() {
+        return PsiTreeUtil.getChildrenOfTypeAsList(this, DlangSingleImport.class);
     }
 
     @Nullable

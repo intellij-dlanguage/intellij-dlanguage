@@ -8,17 +8,14 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.StubElement;
-import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
-import io.github.intellij.dlanguage.stubs.DlangFileStub;
 import io.github.intellij.dlanguage.DLanguage;
 import io.github.intellij.dlanguage.DlangFileType;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil;
 import io.github.intellij.dlanguage.stubs.DlangFileStub;
+import javax.swing.Icon;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.swing.*;
 
 public class DlangFile extends PsiFileBase {
 
@@ -92,15 +89,15 @@ public class DlangFile extends PsiFileBase {
         return toContinue;
     }
 
-    public DLanguageFunctionDeclaration getMainFunction() {
-        final DLanguageFunctionDeclaration[] res = new DLanguageFunctionDeclaration[1];
+    public DlangFunctionDeclaration getMainFunction() {
+        final DlangFunctionDeclaration[] res = new DlangFunctionDeclaration[1];
         PsiScopeProcessor mainFunctionProcessor = new PsiScopeProcessor() {
 
             @Override
             public boolean execute(@NotNull PsiElement element, @NotNull ResolveState state) {
-                if (element instanceof DLanguageFunctionDeclaration) {
+                if (element instanceof DlangFunctionDeclaration) {
                     if (((DNamedElement) element).getName().equals("main")) {
-                        res[0] = (DLanguageFunctionDeclaration) element;
+                        res[0] = (DlangFunctionDeclaration) element;
                         return false;
                     }
                 }

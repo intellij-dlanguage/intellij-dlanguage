@@ -18,11 +18,14 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement,
         val allowedAttributes = arrayOf("const", "enum", "immutable")
 
         if (element.autoDeclaration != null) {
-            val attribute = element.autoDeclaration?.storageClass?.text
+            val attributes = element.autoDeclaration?.storageClasss!!
 
-            if (attribute in allowedAttributes) {
-                return attribute
+            for (attribute in attributes) {
+                if (attribute.text in allowedAttributes) {
+                    return attribute.text
+                }
             }
+
         } else {
             var attributes = ""
 

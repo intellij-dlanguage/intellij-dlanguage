@@ -5,27 +5,48 @@ import com.intellij.navigation.ItemPresentation;
 import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.psi.*;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiNamedElement;
+import com.intellij.psi.PsiReference;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
-import io.github.intellij.dlanguage.psi.*;
-import io.github.intellij.dlanguage.psi.references.DReference;
-import io.github.intellij.dlanguage.utils.DUtil;
 import io.github.intellij.dlanguage.icons.DlangIcons;
-import io.github.intellij.dlanguage.psi.*;
+import io.github.intellij.dlanguage.psi.DLanguageClassDeclaration;
+import io.github.intellij.dlanguage.psi.DLanguageEponymousTemplateDeclaration;
+import io.github.intellij.dlanguage.psi.DLanguageIfCondition;
+import io.github.intellij.dlanguage.psi.DLanguageInterfaceDeclaration;
+import io.github.intellij.dlanguage.psi.DLanguageLabeledStatement;
+import io.github.intellij.dlanguage.psi.DLanguageParameter;
+import io.github.intellij.dlanguage.psi.DLanguageTemplateParameter;
+import io.github.intellij.dlanguage.psi.DlangAliasInitializer;
+import io.github.intellij.dlanguage.psi.DlangAutoDeclarationPart;
+import io.github.intellij.dlanguage.psi.DlangCatch;
+import io.github.intellij.dlanguage.psi.DlangConstructor;
+import io.github.intellij.dlanguage.psi.DlangDeclarator;
+import io.github.intellij.dlanguage.psi.DlangEnumDeclaration;
+import io.github.intellij.dlanguage.psi.DlangEnumMember;
+import io.github.intellij.dlanguage.psi.DlangFile;
+import io.github.intellij.dlanguage.psi.DlangForeachType;
+import io.github.intellij.dlanguage.psi.DlangFunctionDeclaration;
+import io.github.intellij.dlanguage.psi.DlangIdentifier;
+import io.github.intellij.dlanguage.psi.DlangInterfaceOrClass;
+import io.github.intellij.dlanguage.psi.DlangStructDeclaration;
+import io.github.intellij.dlanguage.psi.DlangTemplateDeclaration;
+import io.github.intellij.dlanguage.psi.DlangTypes;
+import io.github.intellij.dlanguage.psi.DlangUnionDeclaration;
+import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.psi.impl.DElementFactory;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import io.github.intellij.dlanguage.psi.references.DReference;
 import io.github.intellij.dlanguage.resolve.DResolveUtil;
 import io.github.intellij.dlanguage.stubs.DlangIdentifierStub;
 import io.github.intellij.dlanguage.utils.DUtil;
+import java.util.Set;
+import javax.swing.Icon;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.swing.*;
-import java.util.Set;
-
-import static io.github.intellij.dlanguage.psi.DlangTypes.ID;
 
 public class DlangIdentifierImpl extends DNamedStubbedPsiElementBase<DlangIdentifierStub> implements DlangIdentifier {
 
@@ -80,10 +101,21 @@ public class DlangIdentifierImpl extends DNamedStubbedPsiElementBase<DlangIdenti
                 final PsiNamedElement firstMatch = (PsiNamedElement) PsiTreeUtil.findFirstParent(DlangIdentifierImpl.this, new Condition<PsiElement>() {
                     @Override
                     public boolean value(final PsiElement element) {
-                        return element instanceof DLanguageFunctionDeclaration || element instanceof DlangInterfaceOrClass || element instanceof DlangTemplateDeclaration || element instanceof DlangUnionDeclaration || element instanceof DlangStructDeclaration || element instanceof DLanguageParameter || element instanceof DLanguageTemplateParameter || element instanceof DlangEnumDeclaration || element instanceof DLanguageEnumMember || element instanceof DLanguageCatch || element instanceof DLanguageForeachType || element instanceof DLanguageIfCondition;
+                        return element instanceof DlangFunctionDeclaration
+                            || element instanceof DlangInterfaceOrClass
+                            || element instanceof DlangTemplateDeclaration
+                            || element instanceof DlangUnionDeclaration
+                            || element instanceof DlangStructDeclaration
+                            || element instanceof DLanguageParameter
+                            || element instanceof DLanguageTemplateParameter
+                            || element instanceof DlangEnumDeclaration
+                            || element instanceof DlangEnumMember || element instanceof DlangCatch
+                            || element instanceof DlangForeachType
+                            || element instanceof DLanguageIfCondition;
                     }
                 });
-                final PsiNamedElement funcDecl = (PsiNamedElement) DUtil.findParentOfType(DlangIdentifierImpl.this, DLanguageFunctionDeclaration.class);
+                final PsiNamedElement funcDecl = (PsiNamedElement) DUtil
+                    .findParentOfType(DlangIdentifierImpl.this, DlangFunctionDeclaration.class);
                 final PsiNamedElement classDecl;
                 if (DUtil.findParentOfType(DlangIdentifierImpl.this, DLanguageClassDeclaration.class) == null) {
                     classDecl = null;
@@ -100,16 +132,23 @@ public class DlangIdentifierImpl extends DNamedStubbedPsiElementBase<DlangIdenti
                 final PsiNamedElement parameterDecl = (PsiNamedElement) DUtil.findParentOfType(DlangIdentifierImpl.this, DLanguageParameter.class);
                 final PsiNamedElement templateParameterDecl = (PsiNamedElement) DUtil.findParentOfType(DlangIdentifierImpl.this, DLanguageTemplateParameter.class);
                 final PsiNamedElement enumDeclarationDecl = (PsiNamedElement) DUtil.findParentOfType(DlangIdentifierImpl.this, DlangEnumDeclaration.class);
-                final PsiNamedElement enumMemberDecl = (PsiNamedElement) DUtil.findParentOfType(DlangIdentifierImpl.this, DLanguageEnumMember.class);
-                final PsiNamedElement catchDecl = (PsiNamedElement) DUtil.findParentOfType(DlangIdentifierImpl.this, DLanguageCatch.class);
+                final PsiNamedElement enumMemberDecl = (PsiNamedElement) DUtil
+                    .findParentOfType(DlangIdentifierImpl.this, DlangEnumMember.class);
+                final PsiNamedElement catchDecl = (PsiNamedElement) DUtil
+                    .findParentOfType(DlangIdentifierImpl.this, DlangCatch.class);
 
-                final PsiNamedElement autoDeclarationDecl = (PsiNamedElement) DUtil.findParentOfType(DlangIdentifierImpl.this, DLanguageAutoDeclarationPart.class);
+                final PsiNamedElement autoDeclarationDecl = (PsiNamedElement) DUtil
+                    .findParentOfType(DlangIdentifierImpl.this, DlangAutoDeclarationPart.class);
                 final PsiNamedElement ifConditionDecl = (PsiNamedElement) DUtil.findParentOfType(DlangIdentifierImpl.this, DLanguageIfCondition.class);
-                final PsiNamedElement foreachTypeDecl = (PsiNamedElement) DUtil.findParentOfType(DlangIdentifierImpl.this, DLanguageForeachType.class);
-                final PsiNamedElement declaratorDecl = (PsiNamedElement) DUtil.findParentOfType(DlangIdentifierImpl.this, DLanguageDeclarator.class);
-                final PsiNamedElement aliasInitializerDecl = (PsiNamedElement) DUtil.findParentOfType(DlangIdentifierImpl.this, DLanguageAliasInitializer.class);
+                final PsiNamedElement foreachTypeDecl = (PsiNamedElement) DUtil
+                    .findParentOfType(DlangIdentifierImpl.this, DlangForeachType.class);
+                final PsiNamedElement declaratorDecl = (PsiNamedElement) DUtil
+                    .findParentOfType(DlangIdentifierImpl.this, DlangDeclarator.class);
+                final PsiNamedElement aliasInitializerDecl = (PsiNamedElement) DUtil
+                    .findParentOfType(DlangIdentifierImpl.this, DlangAliasInitializer.class);
                 final PsiNamedElement labeledStatementDecl = (PsiNamedElement) DUtil.findParentOfType(DlangIdentifierImpl.this, DLanguageLabeledStatement.class);
-                final PsiNamedElement constructorDecl = (PsiNamedElement) DUtil.findParentOfType(DlangIdentifierImpl.this, DLanguageConstructor.class);
+                final PsiNamedElement constructorDecl = (PsiNamedElement) DUtil
+                    .findParentOfType(DlangIdentifierImpl.this, DlangConstructor.class);
                 final PsiNamedElement eponymousTemplateDeclarationDecl = (PsiNamedElement) DUtil.findParentOfType(DlangIdentifierImpl.this, DLanguageEponymousTemplateDeclaration.class);
 
 

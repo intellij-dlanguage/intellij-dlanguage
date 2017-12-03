@@ -4,25 +4,25 @@ import com.intellij.lang.ASTNode
 import com.intellij.psi.stubs.StubElement
 import com.intellij.psi.stubs.StubInputStream
 import com.intellij.psi.stubs.StubOutputStream
-import io.github.intellij.dlanguage.psi.DLanguageCatch
 import io.github.intellij.dlanguage.psi.impl.named.DLanguageCatchImpl
 import io.github.intellij.dlanguage.stubs.DlangCatchStub
+import io.github.intellij.dlanguage.utils.Catch
 import java.io.IOException
 
 /**
  * Created by francis on 6/13/2017.
  */
 
-class CatchStubElementType(debugName: String) : io.github.intellij.dlanguage.stubs.types.DNamedStubElementType<DlangCatchStub, io.github.intellij.dlanguage.psi.DLanguageCatch>(debugName) {
-    override fun createPsi(stub: DlangCatchStub): io.github.intellij.dlanguage.psi.DLanguageCatch {
-        return io.github.intellij.dlanguage.psi.impl.named.DLanguageCatchImpl(stub, this)
+class CatchStubElementType(debugName: String) : io.github.intellij.dlanguage.stubs.types.DNamedStubElementType<DlangCatchStub, Catch>(debugName) {
+    override fun createPsi(stub: DlangCatchStub): Catch {
+        return DLanguageCatchImpl(stub, this)
     }
 
     override fun shouldCreateStub(node: ASTNode?): Boolean {
         return true
     }
 
-    override fun createStub(psi: io.github.intellij.dlanguage.psi.DLanguageCatch, parentStub: StubElement<*>): DlangCatchStub {
+    override fun createStub(psi: Catch, parentStub: StubElement<*>): DlangCatchStub {
         return DlangCatchStub(parentStub, this, psi.name)
     }
 

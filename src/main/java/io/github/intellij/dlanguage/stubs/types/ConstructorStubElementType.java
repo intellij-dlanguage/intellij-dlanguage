@@ -3,29 +3,27 @@ package io.github.intellij.dlanguage.stubs.types;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubInputStream;
 import com.intellij.psi.stubs.StubOutputStream;
-import io.github.intellij.dlanguage.psi.DLanguageConstructor;
+import io.github.intellij.dlanguage.psi.DlangConstructor;
 import io.github.intellij.dlanguage.psi.impl.named.DLanguageConstructorImpl;
 import io.github.intellij.dlanguage.stubs.DlangConstructorStub;
-import io.github.intellij.dlanguage.psi.DLanguageConstructor;
-import io.github.intellij.dlanguage.psi.impl.named.DLanguageConstructorImpl;
-import io.github.intellij.dlanguage.stubs.DlangConstructorStub;
+import java.io.IOException;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
-
-public class ConstructorStubElementType extends DNamedStubElementType<DlangConstructorStub, DLanguageConstructor> {
+public class ConstructorStubElementType extends
+    DNamedStubElementType<DlangConstructorStub, DlangConstructor> {
     public ConstructorStubElementType(final String debugName) {
         super(debugName);
     }
 
     @Override
-    public DLanguageConstructor createPsi(@NotNull final DlangConstructorStub stub) {
+    public DlangConstructor createPsi(@NotNull final DlangConstructorStub stub) {
         return new DLanguageConstructorImpl(stub, this);
     }
 
     @NotNull
     @Override
-    public DlangConstructorStub createStub(@NotNull final DLanguageConstructor psi, final StubElement parentStub) {
+    public DlangConstructorStub createStub(@NotNull final DlangConstructor psi,
+        final StubElement parentStub) {
         return new DlangConstructorStub(parentStub, this, psi.getName());
     }
 

@@ -6,19 +6,28 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.util.PsiTreeUtil;
-import io.github.intellij.dlanguage.psi.*;
-import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
-import io.github.intellij.dlanguage.psi.interfaces.HasVisibility;
-import io.github.intellij.dlanguage.psi.*;
+import io.github.intellij.dlanguage.psi.DLanguageAttribute;
+import io.github.intellij.dlanguage.psi.DLanguageClassDeclaration;
+import io.github.intellij.dlanguage.psi.DLanguageIdentifierChain;
+import io.github.intellij.dlanguage.psi.DLanguageIdentifierOrTemplateChain;
+import io.github.intellij.dlanguage.psi.DLanguageIdentifierOrTemplateInstance;
+import io.github.intellij.dlanguage.psi.DLanguageTemplateMixinExpression;
+import io.github.intellij.dlanguage.psi.DlangFunctionDeclaration;
+import io.github.intellij.dlanguage.psi.DlangIdentifier;
+import io.github.intellij.dlanguage.psi.DlangInterfaceOrClass;
+import io.github.intellij.dlanguage.psi.DlangStructDeclaration;
+import io.github.intellij.dlanguage.psi.DlangTemplateDeclaration;
+import io.github.intellij.dlanguage.psi.DlangUnionDeclaration;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
 import io.github.intellij.dlanguage.psi.interfaces.Declaration;
 import io.github.intellij.dlanguage.psi.interfaces.HasVisibility;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.*;
-
-import static io.github.intellij.dlanguage.psi.interfaces.HasVisibility.Visibility.*;
 
 /**
  * General util class. Provides methods for finding named nodes in the Psi tree.
@@ -122,8 +131,8 @@ public class DUtil {
         return PsiTreeUtil.getParentOfType(namedElement, DlangInterfaceOrClass.class, DlangStructDeclaration.class, DlangTemplateDeclaration.class, DlangUnionDeclaration.class);
     }
 
-    public static DLanguageFunctionDeclaration getParentFunction(final PsiElement namedElement) {
-        return PsiTreeUtil.getParentOfType(namedElement, DLanguageFunctionDeclaration.class);
+    public static DlangFunctionDeclaration getParentFunction(final PsiElement namedElement) {
+        return PsiTreeUtil.getParentOfType(namedElement, DlangFunctionDeclaration.class);
     }
 
 //    public static boolean isPublic(DNamedElement symbol) {

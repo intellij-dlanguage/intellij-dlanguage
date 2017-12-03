@@ -8,6 +8,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.DLanguageIdentifierChain;
+import io.github.intellij.dlanguage.psi.DlangIdentifier;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
@@ -33,8 +34,8 @@ public class DLanguageIdentifierChainImpl extends ASTWrapperPsiElement implement
     }
 
     @NotNull
-    public List<DLanguageIdentifier> getIdentifiers() {
-        return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageIdentifier.class);
+    public List<DlangIdentifier> getIdentifiers() {
+        return PsiTreeUtil.getChildrenOfTypeAsList(this, DlangIdentifier.class);
     }
 
     @NotNull

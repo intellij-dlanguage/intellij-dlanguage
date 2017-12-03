@@ -17,8 +17,8 @@ import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.DLanguageDeclarationOrStatement;
 import io.github.intellij.dlanguage.psi.DLanguageExpression;
 import io.github.intellij.dlanguage.psi.DLanguageForeachStatement;
-import io.github.intellij.dlanguage.psi.DLanguageForeachType;
 import io.github.intellij.dlanguage.psi.DLanguageForeachTypeList;
+import io.github.intellij.dlanguage.psi.DlangForeachType;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import java.util.List;
@@ -81,8 +81,8 @@ public class DLanguageForeachStatementImpl extends ASTWrapperPsiElement implemen
     }
 
     @Nullable
-    public DLanguageForeachType getForeachType() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageForeachType.class);
+    public DlangForeachType getForeachType() {
+        return PsiTreeUtil.getChildOfType(this, DlangForeachType.class);
     }
 
     @Nullable

@@ -1,3 +1,4 @@
+
 package io.github.intellij.dlanguage.psi;
 
 import com.intellij.psi.PsiElement;
@@ -7,24 +8,24 @@ import org.jetbrains.annotations.Nullable;
 public interface DLanguageNewExpression extends PsiElement {
 
     @Nullable
-    public PsiElement getKW_NEW();
+    PsiElement getKW_NEW();
 
     @Nullable
-    public DLanguageNewAnonClassExpression getNewAnonClassExpression();
+    DLanguageNewAnonClassExpression getNewAnonClassExpression();
 
     @Nullable
-    public DLanguageType getType();
+    DLanguageType getType();
 
     @Nullable
-    public DLanguageAssignExpression getAssignExpression();
+    DLanguageAssignExpression getAssignExpression();
 
     @Nullable
-    public DLanguageArguments getArguments();
+    DLanguageArguments getArguments();
 
     @Nullable
-    public PsiElement getOP_BRACKET_LEFT();
+    PsiElement getOP_BRACKET_LEFT();
 
     @Nullable
-    public PsiElement getOP_BRACKET_RIGHT();
+    PsiElement getOP_BRACKET_RIGHT();
 
 }

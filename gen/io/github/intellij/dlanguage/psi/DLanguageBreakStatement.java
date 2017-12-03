@@ -1,3 +1,4 @@
+
 package io.github.intellij.dlanguage.psi;
 
 import com.intellij.psi.PsiElement;
@@ -7,12 +8,12 @@ import org.jetbrains.annotations.Nullable;
 public interface DLanguageBreakStatement extends PsiElement {
 
     @Nullable
-    public PsiElement getKW_BREAK();
+    PsiElement getKW_BREAK();
 
     @Nullable
-    public DlangIdentifier getIdentifier();
+    DlangIdentifier getIdentifier();
 
     @Nullable
-    public PsiElement getOP_SCOLON();
+    PsiElement getOP_SCOLON();
 
 }

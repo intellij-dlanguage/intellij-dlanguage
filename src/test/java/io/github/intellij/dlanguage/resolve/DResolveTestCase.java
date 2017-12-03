@@ -9,15 +9,9 @@ import com.intellij.psi.PsiReference;
 import com.intellij.psi.impl.source.resolve.reference.impl.PsiMultiReference;
 import io.github.intellij.dlanguage.DLightPlatformCodeInsightFixtureTestCase;
 import io.github.intellij.dlanguage.psi.DLanguageClassDeclaration;
-import io.github.intellij.dlanguage.psi.DLanguageConstructor;
-import io.github.intellij.dlanguage.psi.DLanguageFunctionDeclaration;
+import io.github.intellij.dlanguage.psi.DlangConstructor;
+import io.github.intellij.dlanguage.psi.DlangFunctionDeclaration;
 import io.github.intellij.dlanguage.psi.DlangIdentifier;
-import io.github.intellij.dlanguage.DLightPlatformCodeInsightFixtureTestCase;
-import io.github.intellij.dlanguage.psi.DLanguageClassDeclaration;
-import io.github.intellij.dlanguage.psi.DLanguageConstructor;
-import io.github.intellij.dlanguage.psi.DLanguageFunctionDeclaration;
-import io.github.intellij.dlanguage.psi.DlangIdentifier;
-
 import java.io.File;
 
 public abstract class DResolveTestCase extends DLightPlatformCodeInsightFixtureTestCase {
@@ -100,12 +94,14 @@ public abstract class DResolveTestCase extends DLightPlatformCodeInsightFixtureT
             }*//* else if (resolvedElement instanceof DLanguageConstructor) {
                 assertTrue(referencedElement.resolve() instanceof DLanguageConstructor);
             }*/ /*else*/
-            if(resolvedElement instanceof DLanguageConstructor)
+            if (resolvedElement instanceof DlangConstructor)
                 assertEquals("Could not resolve expected reference.", resolvedElement, referencedElement.resolve());
-            else if(super.getTestName(true).equals("scopedImportsMembers"))
-                assertEquals("Could not resolve expected reference.", "struct_member", ((DLanguageFunctionDeclaration)referencedElement.resolve().getParent()).getName());
-            else
-                assertEquals("Could not resolve expected reference.", resolvedElement, referencedElement.resolve().getParent());
+            else if (super.getTestName(true).equals("scopedImportsMembers")) {
+                assertEquals("Could not resolve expected reference.", "struct_member",
+                    ((DlangFunctionDeclaration) referencedElement.resolve().getParent()).getName());
+            } else
+                assertEquals("Could not resolve expected reference.", resolvedElement,
+                    referencedElement.resolve().getParent());
         } else {
             assertFalse("Resolved unexpected reference.", resolvedElement.equals(referencedElement.resolve()));
         }

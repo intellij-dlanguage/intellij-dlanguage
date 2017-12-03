@@ -10,8 +10,8 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.DLanguageAnonymousEnumDeclaration;
 import io.github.intellij.dlanguage.psi.DLanguageAssignExpression;
-import io.github.intellij.dlanguage.psi.DLanguageEnumMember;
 import io.github.intellij.dlanguage.psi.DLanguageType;
+import io.github.intellij.dlanguage.psi.DlangEnumMember;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
@@ -58,7 +58,7 @@ public class DLanguageAnonymousEnumDeclarationImpl extends ASTWrapperPsiElement 
     }
 
     @NotNull
-    public List<DLanguageEnumMember> getEnumMembers() {
-        return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageEnumMember.class);
+    public List<DlangEnumMember> getEnumMembers() {
+        return PsiTreeUtil.getChildrenOfTypeAsList(this, DlangEnumMember.class);
     }
 }

@@ -1,5 +1,11 @@
 package io.github.intellij.dlanguage.psi.impl.named;
 
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW_THIS;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_PAR_LEFT;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_PAR_RIGHT;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_SCOLON;
+import static io.github.intellij.dlanguage.utils.DUtil.getParentClassOrStructOrTemplateOrInterfaceOrUnion;
+
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiElement;
@@ -9,24 +15,26 @@ import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
-import io.github.intellij.dlanguage.psi.*;
-import io.github.intellij.dlanguage.psi.impl.DLanguageParametersImpl;
 import io.github.intellij.dlanguage.icons.DlangIcons;
-import io.github.intellij.dlanguage.psi.*;
+import io.github.intellij.dlanguage.psi.DLanguageFunctionBody;
+import io.github.intellij.dlanguage.psi.DLanguageMemberFunctionAttribute;
+import io.github.intellij.dlanguage.psi.DLanguageParameters;
+import io.github.intellij.dlanguage.psi.DLanguageTemplateParameters;
+import io.github.intellij.dlanguage.psi.DlangConstructor;
+import io.github.intellij.dlanguage.psi.DlangFile;
+import io.github.intellij.dlanguage.psi.DlangIdentifier;
+import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.psi.impl.DLanguageParametersImpl;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import io.github.intellij.dlanguage.stubs.DlangConstructorStub;
+import java.util.List;
+import javax.swing.Icon;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.swing.*;
-import java.util.List;
-
-import static io.github.intellij.dlanguage.psi.DlangTypes.*;
-import static io.github.intellij.dlanguage.utils.DUtil.getParentClassOrStructOrTemplateOrInterfaceOrUnion;
-
-public class DLanguageConstructorImpl extends DNamedStubbedPsiElementBase<DlangConstructorStub> implements DLanguageConstructor {
+public class DLanguageConstructorImpl extends
+    DNamedStubbedPsiElementBase<DlangConstructorStub> implements DlangConstructor {
 
     public DLanguageConstructorImpl(final DlangConstructorStub stub, final IStubElementType type) {
         super(stub, type);

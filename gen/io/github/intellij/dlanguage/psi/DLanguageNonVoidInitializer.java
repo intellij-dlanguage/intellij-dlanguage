@@ -1,3 +1,4 @@
+
 package io.github.intellij.dlanguage.psi;
 
 import com.intellij.psi.PsiElement;
@@ -7,14 +8,14 @@ import org.jetbrains.annotations.Nullable;
 public interface DLanguageNonVoidInitializer extends PsiElement {
 
     @Nullable
-    public DLanguageAssignExpression getAssignExpression();
+    DLanguageAssignExpression getAssignExpression();
 
     @Nullable
-    public DLanguageArrayInitializer getArrayInitializer();
+    DLanguageArrayInitializer getArrayInitializer();
 
     @Nullable
-    public DLanguageStructInitializer getStructInitializer();
+    DLanguageStructInitializer getStructInitializer();
 
     @Nullable
-    public DLanguageFunctionBody getFunctionBody();
+    DLanguageFunctionBody getFunctionBody();
 }

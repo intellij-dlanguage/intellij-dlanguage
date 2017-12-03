@@ -98,11 +98,6 @@ public class DLanguageStorageClassImpl extends ASTWrapperPsiElement implements
     }
 
     @Nullable
-    public PsiElement getKW_SYNCHRONIZED() {
-        return findChildByType(KW_SYNCHRONIZED);
-    }
-
-    @Nullable
     public PsiElement getKW_AUTO() {
         return findChildByType(KW_AUTO);
     }

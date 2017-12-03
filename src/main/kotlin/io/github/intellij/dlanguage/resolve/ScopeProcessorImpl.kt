@@ -45,7 +45,7 @@ object ScopeProcessorImpl {
 
 
     @Suppress("UNUSED_PARAMETER")
-    fun processDeclarations(element: io.github.intellij.dlanguage.psi.DLanguageAliasInitializer,
+    fun processDeclarations(element: AliasInitializer,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
                             lastParent: PsiElement,
@@ -59,7 +59,7 @@ object ScopeProcessorImpl {
     }
 
     @Suppress("UNUSED_PARAMETER")
-    fun processDeclarations(element: io.github.intellij.dlanguage.psi.DLanguageAutoDeclarationPart,
+    fun processDeclarations(element: AutoDeclarationPart,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
                             lastParent: PsiElement,
@@ -73,7 +73,7 @@ object ScopeProcessorImpl {
     }
 
     @Suppress("UNUSED_PARAMETER")
-    fun processDeclarations(element: io.github.intellij.dlanguage.psi.DLanguageDeclarator,
+    fun processDeclarations(element: Declarator,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
                             lastParent: PsiElement,

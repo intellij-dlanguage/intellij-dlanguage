@@ -1,3 +1,5 @@
+
+
 package io.github.intellij.dlanguage.psi.impl;
 
 import static io.github.intellij.dlanguage.psi.DlangTypes.OP_COMMA;
@@ -9,8 +11,8 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.DLanguageAutoDeclaration;
-import io.github.intellij.dlanguage.psi.DLanguageAutoDeclarationPart;
 import io.github.intellij.dlanguage.psi.DLanguageStorageClass;
+import io.github.intellij.dlanguage.psi.DlangAutoDeclarationPart;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
@@ -52,7 +54,7 @@ public class DLanguageAutoDeclarationImpl extends ASTWrapperPsiElement implement
     }
 
     @NotNull
-    public List<DLanguageAutoDeclarationPart> getAutoDeclarationParts() {
-        return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageAutoDeclarationPart.class);
+    public List<DlangAutoDeclarationPart> getAutoDeclarationParts() {
+        return PsiTreeUtil.getChildrenOfTypeAsList(this, DlangAutoDeclarationPart.class);
     }
 }

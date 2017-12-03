@@ -4,6 +4,7 @@
 
 import std.stdio;
 import std.format;
+import std.regex;
 
 string interface_imports = `import org.jetbrains.annotations.*;
                             import com.intellij.psi.PsiElement;
@@ -92,7 +93,7 @@ static this() {
     types_children["EnumBody"] = [ "Identifier","OP_BRACES_RIGHT", "OP_BRACES_LEFT", "EnumMember*","OP_COMMA*","OP_SCOLON"];
 //    named_children["EnumDeclaration"] = ["Identifier","OP_COLON","KW_ENUM","Type","EnumBody"];
     named_children["EnumMember"] = ["Identifier","OP_EQ","Type","AssignExpression"];
-    named_children["EponymousTemplateDeclaration"] = ["Identifier", "TemplateParameters","OP_EQ","Type","OP_SCOLON","KW_ENUM","KW_ALIAS"];
+    //named_children["EponymousTemplateDeclaration"] = ["Identifier", "TemplateParameters","OP_EQ","Type","OP_SCOLON","KW_ENUM","KW_ALIAS"];
     types_children["EqualExpression"] = ["ShiftExpression*","OP_EQ_EQ","OP_NOT_EQ"];
     types_children["Expression"] = ["AssignExpression*","OP_COMMA*"];
     types_children["ExpressionStatement"] = ["Expression","OP_SCOLON"];
@@ -105,7 +106,7 @@ static this() {
     types_children["FunctionAttribute"] = ["AtAttribute","KW_PURE","KW_NOTHROW"];
     types_children["FunctionBody"] = ["BlockStatement","InStatement","OutStatement","BodyStatement"];
     types_children["FunctionCallExpression"] = ["Type", "Arguments", "UnaryExpression",  "TemplateArguments"];
-    named_children["FunctionDeclaration"] = ["Type", "Identifier",  "TemplateParameters", "Parameters",  "Constraint",  "FunctionBody"];
+    named_children["FunctionDeclaration"] = ["Type", "Identifier",  "TemplateParameters", "Parameters",  "Constraint",  "FunctionBody","MemberFunctionAttribute*"];
     types_children["FunctionLiteralExpression"] = ["Type","KW_FUNCTION","KW_DELEGATE","Parameters","FunctionAttribute*","FunctionBody","Identifier"];
     types_children["GotoStatement"] = ["Identifier","Expression","KW_DEFAULT","KW_CASE","KW_GOTO","OP_SCOLON"];
     types_children["IdentifierChain"] = ["Identifier*", "OP_DOT*"];
@@ -132,7 +133,7 @@ static this() {
     types_children["KeyValuePair"] = ["AssignExpression*","OP_COLON"];
     types_children["KeyValuePairs"] = ["OP_COMMA*","KeyValuePair*"];
     types_children["LambdaExpression"] = ["Identifier","KW_FUNCTION","KW_DELEGATE","OP_LAMBDA_ARROW","AssignExpression","Parameters","FunctionAttribute*"];
-    named_children["LabeledStatement"] = ["Identifier","OP_COLON","DeclarationOrStatement"];
+    //named_children["LabeledStatement"] = ["Identifier","OP_COLON","DeclarationOrStatement"];
     types_children["LastCatch"] = ["KW_CATCH","StatementNoCaseNoDefault"];
     types_children["LinkageAttribute"] = ["IdentifierChain","Identifier","OP_PAR_RIGHT","OP_PAR_LEFT","OP_PLUS_PLUS","KW_EXTERN","OP_COMMA"];
     types_children["MemberFunctionAttribute"] = [ "FunctionAttribute","KW_IMMUTABLE","KW_INOUT","KW_SHARED","KW_CONST"];
@@ -176,7 +177,7 @@ static this() {
     stub_children ["StaticDestructor"] = ["OP_TILDA","KW_STATIC","KW_THIS","OP_PAR_LEFT","OP_PAR_RIGHT","FunctionBody"];
     types_children["StaticCtorDtorCommon"] = ["FunctionBody"];
     types_children["StaticIfCondition"] = ["StaticIfCondition","AssignExpression","OP_PAR_RIGHT","OP_PAR_LEFT"];
-    types_children["StorageClass"] = ["AtAttribute","Deprecated","AlignAttribute","LinkageAttribute",   "KW_SYNCHRONIZED","TypeConstructor","KW_ABSTRACT","KW_CONST","KW_IMMUTABLE","KW_SYNCHRONIZED","KW_AUTO","KW_ENUM","KW_EXTERN","KW_FINAL","KW_INOUT","KW_NOTHROW","KW_OVERRIDE","KW_PURE","KW_REF","KW___GSHARED","KW_SCOPE","KW_STATIC"];
+    types_children["StorageClass"] = ["AtAttribute","Deprecated","AlignAttribute","LinkageAttribute",   "KW_SYNCHRONIZED","TypeConstructor","KW_ABSTRACT","KW_CONST","KW_IMMUTABLE","KW_AUTO","KW_ENUM","KW_EXTERN","KW_FINAL","KW_INOUT","KW_NOTHROW","KW_OVERRIDE","KW_PURE","KW_REF","KW___GSHARED","KW_SCOPE","KW_STATIC"];
     types_children["StructBody"] = ["OP_BRACES_RIGHT","OP_BRACES_LEFT","Declaration*"];
 //    named_children["StructDeclaration"] = [ "KW_STRUCT","Identifier",  "TemplateParameters",  "Constraint", "StructBody", "OP_SCOLON"];
     types_children["StructInitializer"] = ["StructMemberInitializers*","OP_BRACES_RIGHT","OP_BRACES_LEFT"];
@@ -194,7 +195,7 @@ static this() {
     types_children["TemplateInstance"] = ["Identifier", "TemplateArguments"];
     types_children["TemplateMixinExpression"] = ["KW_MIXIN","MixinTemplateName","TemplateArguments","Identifier"];
     types_children["TemplateMixinDeclaration"] = ["KW_MIXIN","TemplateDeclaration"];
-    named_children["TemplateParameter"] = ["TemplateAliasParameter","TemplateTupleParameter","TemplateTypeParameter","TemplateThisParameter","TemplateValueParameter"];
+    //named_children["TemplateParameter"] = ["TemplateAliasParameter","TemplateTupleParameter","TemplateTypeParameter","TemplateThisParameter","TemplateValueParameter"];
     types_children["TemplateParameterList"] = ["TemplateParameter*","OP_COMMA*"];
     types_children["TemplateParameters"] = ["TemplateParameterList","OP_PAR_RIGHT","OP_PAR_LEFT"];
     types_children["TemplateSingleArgument"] = ["Identifier","Type",/*todo builtin Types*/"KW_SUPER","KW_THIS","OP_DOLLAR","KW_TRUE","KW_FALSE","KW___DATE__","KW___EOF__","KW___FILE__","KW___FILE_FULL_PATH__","KW___FUNCTION__","KW___GSHARED","KW___LINE__","KW___MODULE__","KW___PARAMETERS","KW___PRETTY_FUNCTION__","KW___TIME__","KW___TIMESTAMP__","KW___TRAITS","KW___VECTOR","KW___VENDOR__","KW___VERSION__ ","INTEGER_LITERAL","FLOAT_LITERAL","DOUBLE_QUOTED_STRING","CHARACTER_LITERAL"];
@@ -217,7 +218,7 @@ static this() {
     types_children["TypeSuffix"] = ["AssignExpression*","OP_TRIPLEDOT","KW_FUNCTION","KW_DELEGATE","OP_ASTERISK","MemberFunctionAttribute*","Parameters","OP_BRACKET_LEFT","OP_BRACKET_RIGHT"];
     types_children["UnaryExpression"] = ["PrimaryExpression","FunctionCallExpression","UnaryExpression",  "NewExpression","DeleteExpression","CastExpression","AssertExpression","IdentifierOrTemplateInstance","OP_PAR_RIGHT","OP_PAR_LEFT","SliceExpression","IndexExpression","Type","OP_DOT","OP_AND","OP_ASTERISK","OP_MINUS","OP_MINUS_MINUS","OP_NOT","OP_PLUS","OP_PLUS_PLUS","OP_TILDA"];
 //    named_children["UnionDeclaration"] = ["Identifier","TemplateParameters","Constraint","StructBody","OP_SCOLON"];
-    stub_children ["Unittest"] = ["Unittest",  "BlockStatement"];
+//    stub_children ["Unittest"] = ["Unittest",  "BlockStatement"];
     types_children["VariableDeclaration"] = ["AutoDeclaration",  "OP_SCOLON","Type","Declarator*","OP_COMMA*","OP_EQ","FunctionBody","StorageClass*"];
     types_children["Vector"] = ["KW___VECTOR", "Type", "OP_PAR_RIGHT","OP_PAR_LEFT"];
     types_children["VersionCondition"] = ["KW_VERSION","KW_UNITTEST","KW_ASSERT","INTEGER_LITERAL","Identifier","OP_PAR_RIGHT","OP_PAR_LEFT"];
@@ -615,11 +616,11 @@ void main(string[] args){
         interfaceFile ~= "\n}";
         import std.file;
         import std.path;
-        File f = File(chainPath("impl",implClassName ~ ".java"),"w");
-        f.write(implFile);
+        File f = File(chainPath("impl",(implClassName ~ ".java").renameMapApply()),"w");
+        f.write(implFile.renameMapApply());
         f.close();
-        f = File(interfaceClassName ~".java","w");
-        f.write(interfaceFile);
+        f = File((interfaceClassName ~".java").renameMapApply(),"w");
+        f.write(interfaceFile.renameMapApply());
         f.close();
 //        toFile(implFile,chainPath("impl",implClassName ~ ".java"));
 //        toFile(interfaceFile,interfaceClassName ~ ".java");
@@ -645,8 +646,8 @@ void main(string[] args){
             }`;
         }
         interfaceFile ~= "\n}";
-        File f = File(interfaceClassName ~".java","w");
-        f.write(interfaceFile);
+        File f = File((interfaceClassName ~".java").renameMapApply(),"w");
+        f.write(interfaceFile.renameMapApply());
         f.close();
     }
     foreach(string key;stub_children.keys){
@@ -668,12 +669,61 @@ void main(string[] args){
                 }`;
             }
             interfaceFile ~= "\n}";
-            File f = File(interfaceClassName ~".java","w");
-            f.write(interfaceFile);
+            File f = File((interfaceClassName ~".java").renameMapApply(),"w");
+            f.write(interfaceFile.renameMapApply());
             f.close();
 
         }
 }
 
+string renameMapApply(string thing){
+    foreach(reg;renameMap.keys){
+        auto re = regex(reg ~ "\\ ");
+        thing = thing.replaceAll(re,renameMap[reg] ~ " ");
+        re = regex(reg ~ "\\.");
+        thing = thing.replaceAll(re,renameMap[reg]~".");
+        re = regex(reg ~ ">");
+        thing = thing.replaceAll(re,renameMap[reg]~">");
+        re = regex(reg ~ "\\{");
+        thing = thing.replaceAll(re,renameMap[reg]~"{");
+        re = regex(reg ~ "Stub\\ ");
+        thing = thing.replaceAll(re,renameMap[reg] ~ "Stub ");
+        re = regex(reg ~ "Stub\\.");
+        thing = thing.replaceAll(re,renameMap[reg]~"Stub.");
+        re = regex(reg ~ "Stub>");
+        thing = thing.replaceAll(re,renameMap[reg]~"Stub>");
+    }
+    return thing;
+}
 
+
+
+string[string] renameMap;
+
+shared static this(){
+    renameMap["DLanguageIdentifier"] = "DlangIdentifier";
+    renameMap["DLanguageEnumDeclaration"] = "DlangEnumDeclaration";
+    renameMap["DLanguageSingleImport"] = "DlangSingleImport";
+    renameMap["DLanguageInterfaceOrClass"] = "DlangInterfaceOrClass";
+    renameMap["DLanguageTemplateDeclaration"] = "DlangTemplateDeclaration";
+    renameMap["DLanguageUnionDeclaration"] = "DlangUnionDeclaration";
+    renameMap["DLanguageStructDeclaration"] = "DlangStructDeclaration";
+    renameMap["DLanguageAliasInitializer"] = "DlangAliasInitializer";
+    renameMap["DLanguageAutoDeclarationPart"] = "DlangAutoDeclarationPart";
+    renameMap["DLanguageCatch"] = "DlangCatch";
+    renameMap["DLanguageConstructor"] = "DlangConstructor";
+    renameMap["DLanguageDeclarator"] = "DlangDeclarator";
+    renameMap["DLanguageDestructor"] = "DlangDestructor";
+    renameMap["DLanguageEnumMember"] = "DlangEnumMember";
+    renameMap["DLanguageForeachType"] = "DlangForeachType";
+    renameMap["DLanguageFunctionDeclaration"] = "DlangFunctionDeclaration";
+    renameMap["DLanguageParameter"] = "DlangParameter";
+    renameMap["DLanguageTemplateParameter"] = "DlangTemplateParameter";
+    renameMap["DLanguageSharedStaticConstructor"] = "DlangSharedStaticConstructor";
+    renameMap["DLanguageSharedStaticDestructor"] = "DlangSharedStaticDestructor";
+    renameMap["DLanguageStaticConstructor"] = "DlangStaticConstructor";
+    renameMap["DLanguageStaticDestructor"] = "DlangStaticDestructor";
+    renameMap["DLanguageLabeledStatement"] = "DlangLabeledStatement";
+
+}
 

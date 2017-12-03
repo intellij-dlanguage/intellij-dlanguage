@@ -3,21 +3,21 @@ package io.github.intellij.dlanguage.stubs.types
 import com.intellij.psi.stubs.StubElement
 import com.intellij.psi.stubs.StubInputStream
 import com.intellij.psi.stubs.StubOutputStream
-import io.github.intellij.dlanguage.psi.DLanguageForeachType
 import io.github.intellij.dlanguage.psi.impl.named.DLanguageForeachTypeImpl
 import io.github.intellij.dlanguage.stubs.DlangForeachTypeStub
+import io.github.intellij.dlanguage.utils.ForeachType
 import java.io.IOException
 
 /**
  * Created by francis on 6/13/2017.
  */
-class DlangForeachTypeStubElementType(debugName: String) : io.github.intellij.dlanguage.stubs.types.DNamedStubElementType<DlangForeachTypeStub, io.github.intellij.dlanguage.psi.DLanguageForeachType>(debugName) {
+class DlangForeachTypeStubElementType(debugName: String) : io.github.intellij.dlanguage.stubs.types.DNamedStubElementType<DlangForeachTypeStub, ForeachType>(debugName) {
 
-    override fun createPsi(stub: DlangForeachTypeStub): io.github.intellij.dlanguage.psi.DLanguageForeachType {
-        return io.github.intellij.dlanguage.psi.impl.named.DLanguageForeachTypeImpl(stub, this)
+    override fun createPsi(stub: DlangForeachTypeStub): ForeachType {
+        return DLanguageForeachTypeImpl(stub, this)
     }
 
-    override fun createStub(psi: io.github.intellij.dlanguage.psi.DLanguageForeachType, parentStub: StubElement<*>): DlangForeachTypeStub {
+    override fun createStub(psi: ForeachType, parentStub: StubElement<*>): DlangForeachTypeStub {
         return DlangForeachTypeStub(parentStub, this, psi.name)
     }
 

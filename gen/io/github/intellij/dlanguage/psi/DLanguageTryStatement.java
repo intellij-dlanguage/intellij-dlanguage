@@ -1,3 +1,4 @@
+
 package io.github.intellij.dlanguage.psi;
 
 import com.intellij.psi.PsiElement;
@@ -7,14 +8,14 @@ import org.jetbrains.annotations.Nullable;
 public interface DLanguageTryStatement extends PsiElement {
 
     @Nullable
-    public PsiElement getKW_TRY();
+    PsiElement getKW_TRY();
 
     @Nullable
-    public DLanguageDeclarationOrStatement getDeclarationOrStatement();
+    DLanguageDeclarationOrStatement getDeclarationOrStatement();
 
     @Nullable
-    public DLanguageCatches getCatches();
+    DLanguageCatches getCatches();
 
     @Nullable
-    public DLanguageFinally getFinally();
+    DLanguageFinally getFinally();
 }

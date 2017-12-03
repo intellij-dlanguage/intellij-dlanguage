@@ -17,7 +17,6 @@ import io.github.intellij.dlanguage.psi.DLanguageForStatement;
 import io.github.intellij.dlanguage.psi.DLanguageForeachStatement;
 import io.github.intellij.dlanguage.psi.DLanguageGotoStatement;
 import io.github.intellij.dlanguage.psi.DLanguageIfStatement;
-import io.github.intellij.dlanguage.psi.DLanguageLabeledStatement;
 import io.github.intellij.dlanguage.psi.DLanguageReturnStatement;
 import io.github.intellij.dlanguage.psi.DLanguageScopeGuardStatement;
 import io.github.intellij.dlanguage.psi.DLanguageStatementNoCaseNoDefault;
@@ -29,6 +28,7 @@ import io.github.intellij.dlanguage.psi.DLanguageTryStatement;
 import io.github.intellij.dlanguage.psi.DLanguageVersionSpecification;
 import io.github.intellij.dlanguage.psi.DLanguageWhileStatement;
 import io.github.intellij.dlanguage.psi.DLanguageWithStatement;
+import io.github.intellij.dlanguage.psi.DlangLabeledStatement;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -54,8 +54,8 @@ public class DLanguageStatementNoCaseNoDefaultImpl extends ASTWrapperPsiElement 
     }
 
     @Nullable
-    public DLanguageLabeledStatement getLabeledStatement() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageLabeledStatement.class);
+    public DlangLabeledStatement getLabeledStatement() {
+        return PsiTreeUtil.getChildOfType(this, DlangLabeledStatement.class);
     }
 
     @Nullable

@@ -11,7 +11,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.DLanguageEnumBody;
-import io.github.intellij.dlanguage.psi.DLanguageEnumMember;
+import io.github.intellij.dlanguage.psi.DlangEnumMember;
 import io.github.intellij.dlanguage.psi.DlangIdentifier;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import java.util.List;
@@ -53,8 +53,8 @@ public class DLanguageEnumBodyImpl extends ASTWrapperPsiElement implements DLang
     }
 
     @NotNull
-    public List<DLanguageEnumMember> getEnumMembers() {
-        return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageEnumMember.class);
+    public List<DlangEnumMember> getEnumMembers() {
+        return PsiTreeUtil.getChildrenOfTypeAsList(this, DlangEnumMember.class);
     }
 
     @NotNull

@@ -1,3 +1,4 @@
+
 package io.github.intellij.dlanguage.psi;
 
 import com.intellij.psi.PsiElement;
@@ -7,15 +8,15 @@ import org.jetbrains.annotations.Nullable;
 public interface DLanguageImportExpression extends PsiElement {
 
     @Nullable
-    public DLanguageImportExpression getImportExpression();
+    DLanguageImportExpression getImportExpression();
 
     @Nullable
-    public DLanguageAssignExpression getAssignExpression();
+    DLanguageAssignExpression getAssignExpression();
 
     @Nullable
-    public PsiElement getOP_PAR_RIGHT();
+    PsiElement getOP_PAR_RIGHT();
 
     @Nullable
-    public PsiElement getOP_PAR_LEFT();
+    PsiElement getOP_PAR_LEFT();
 
 }

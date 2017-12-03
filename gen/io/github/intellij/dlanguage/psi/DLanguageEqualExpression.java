@@ -9,12 +9,12 @@ import org.jetbrains.annotations.Nullable;
 public interface DLanguageEqualExpression extends PsiElement {
 
     @NotNull
-    public List<DLanguageShiftExpression> getShiftExpressions();
+    List<DLanguageShiftExpression> getShiftExpressions();
 
     @Nullable
-    public PsiElement getOP_EQ_EQ();
+    PsiElement getOP_EQ_EQ();
 
     @Nullable
-    public PsiElement getOP_NOT_EQ();
+    PsiElement getOP_NOT_EQ();
 
 }

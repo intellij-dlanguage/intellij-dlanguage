@@ -6,36 +6,37 @@ import com.intellij.psi.StubBasedPsiElement;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
+import io.github.intellij.dlanguage.stubs.DlangEponymousTemplateDeclarationStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageEponymousTemplateDeclaration extends PsiElement, DNamedElement,
-    StubBasedPsiElement<DLanguageEponymousTemplateDeclarationStub> {
+    StubBasedPsiElement<DlangEponymousTemplateDeclarationStub> {
 
     @Nullable
-    public DlangIdentifier getIdentifier();
+    DlangIdentifier getIdentifier();
 
     @Nullable
-    public DLanguageTemplateParameters getTemplateParameters();
+    DLanguageTemplateParameters getTemplateParameters();
 
     @Nullable
-    public PsiElement getOP_EQ();
+    PsiElement getOP_EQ();
 
     @Nullable
-    public DLanguageType getType();
+    DLanguageType getType();
 
     @Nullable
-    public PsiElement getOP_SCOLON();
+    PsiElement getOP_SCOLON();
 
     @Nullable
-    public PsiElement getKW_ENUM();
+    PsiElement getKW_ENUM();
 
     @Nullable
-    public PsiElement getKW_ALIAS();
+    PsiElement getKW_ALIAS();
 
     @Override
-    default public boolean processDeclarations(@NotNull PsiScopeProcessor processor,
+    default boolean processDeclarations(@NotNull PsiScopeProcessor processor,
         @NotNull ResolveState state,
         PsiElement lastParent,
         @NotNull PsiElement place) {

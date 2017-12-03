@@ -8,9 +8,9 @@ import org.jetbrains.annotations.NotNull;
 public interface DLanguageIdentifierChain extends PsiElement {
 
     @NotNull
-    public List<DLanguageIdentifier> getIdentifiers();
+    List<DlangIdentifier> getIdentifiers();
 
     @NotNull
-    public List<PsiElement> getOP_DOTs();
+    List<PsiElement> getOP_DOTs();
 
 }

@@ -9,101 +9,101 @@ import org.jetbrains.annotations.Nullable;
 public interface DLanguageDeclaration extends PsiElement {
 
     @Nullable
-    public DLanguageAliasThisDeclaration getAliasThisDeclaration();
+    DLanguageAliasThisDeclaration getAliasThisDeclaration();
 
     @Nullable
-    public DLanguageAliasDeclaration getAliasDeclaration();
+    DLanguageAliasDeclaration getAliasDeclaration();
 
     @Nullable
-    public DLanguageClassDeclaration getClassDeclaration();
+    DLanguageClassDeclaration getClassDeclaration();
 
     @Nullable
-    public DLanguageConditionalDeclaration getConditionalDeclaration();
+    DLanguageConditionalDeclaration getConditionalDeclaration();
 
     @Nullable
-    public DLanguageConstructor getConstructor();
+    DlangConstructor getConstructor();
 
     @Nullable
-    public DLanguageDestructor getDestructor();
+    DlangDestructor getDestructor();
 
     @Nullable
-    public DLanguageAnonymousEnumDeclaration getAnonymousEnumDeclaration();
+    DLanguageAnonymousEnumDeclaration getAnonymousEnumDeclaration();
 
     @Nullable
-    public DLanguageEponymousTemplateDeclaration getEponymousTemplateDeclaration();
+    DLanguageEponymousTemplateDeclaration getEponymousTemplateDeclaration();
 
     @Nullable
-    public DLanguageEnumDeclaration getEnumDeclaration();
+    DlangEnumDeclaration getEnumDeclaration();
 
     @Nullable
-    public DLanguageImportDeclaration getImportDeclaration();
+    DLanguageImportDeclaration getImportDeclaration();
 
     @Nullable
-    public DLanguageInterfaceDeclaration getInterfaceDeclaration();
+    DLanguageInterfaceDeclaration getInterfaceDeclaration();
 
     @Nullable
-    public DLanguageMixinTemplateDeclaration getMixinTemplateDeclaration();
+    DLanguageMixinTemplateDeclaration getMixinTemplateDeclaration();
 
     @Nullable
-    public DLanguageMixinDeclaration getMixinDeclaration();
+    DLanguageMixinDeclaration getMixinDeclaration();
 
     @Nullable
-    public DLanguagePragmaDeclaration getPragmaDeclaration();
+    DLanguagePragmaDeclaration getPragmaDeclaration();
 
     @Nullable
-    public DLanguageSharedStaticConstructor getSharedStaticConstructor();
+    DlangSharedStaticConstructor getSharedStaticConstructor();
 
     @Nullable
-    public DLanguageSharedStaticDestructor getSharedStaticDestructor();
+    DlangSharedStaticDestructor getSharedStaticDestructor();
 
     @Nullable
-    public DLanguageStaticConstructor getStaticConstructor();
+    DlangStaticConstructor getStaticConstructor();
 
     @Nullable
-    public DLanguageStaticDestructor getStaticDestructor();
+    DlangStaticDestructor getStaticDestructor();
 
     @Nullable
-    public DLanguageStaticAssertDeclaration getStaticAssertDeclaration();
+    DLanguageStaticAssertDeclaration getStaticAssertDeclaration();
 
     @Nullable
-    public DLanguageStructDeclaration getStructDeclaration();
+    DlangStructDeclaration getStructDeclaration();
 
     @Nullable
-    public DLanguageTemplateDeclaration getTemplateDeclaration();
+    DlangTemplateDeclaration getTemplateDeclaration();
 
     @Nullable
-    public DLanguageUnionDeclaration getUnionDeclaration();
+    DlangUnionDeclaration getUnionDeclaration();
 
     @Nullable
-    public DLanguageInvariant getInvariant();
+    DLanguageInvariant getInvariant();
 
     @Nullable
-    public DLanguageUnittest getUnittest();
+    DLanguageUnittest getUnittest();
 
     @Nullable
-    public DLanguageVersionSpecification getVersionSpecification();
+    DLanguageVersionSpecification getVersionSpecification();
 
     @Nullable
-    public DLanguageDebugSpecification getDebugSpecification();
+    DLanguageDebugSpecification getDebugSpecification();
 
     @NotNull
-    public List<DLanguageAttribute> getAttributes();
+    List<DLanguageAttribute> getAttributes();
 
     @NotNull
-    public List<DLanguageDeclaration> getDeclarations();
+    List<DLanguageDeclaration> getDeclarations();
 
     @Nullable
-    public PsiElement getOP_BRACES_RIGHT();
+    PsiElement getOP_BRACES_RIGHT();
 
     @Nullable
-    public PsiElement getOP_BRACES_LEFT();
+    PsiElement getOP_BRACES_LEFT();
 
     @Nullable
-    public DLanguageFunctionDeclaration getFunctionDeclaration();
+    DlangFunctionDeclaration getFunctionDeclaration();
 
     @Nullable
-    public DLanguageVariableDeclaration getVariableDeclaration();
+    DLanguageVariableDeclaration getVariableDeclaration();
 
     @Nullable
-    public DLanguageAttributeDeclaration getAttributeDeclaration();
+    DLanguageAttributeDeclaration getAttributeDeclaration();
 }

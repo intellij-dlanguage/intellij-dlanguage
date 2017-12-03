@@ -4,15 +4,18 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
-import io.github.intellij.dlanguage.psi.*;
-import io.github.intellij.dlanguage.stubs.DlangForeachTypeStub;
-import io.github.intellij.dlanguage.psi.*;
+import io.github.intellij.dlanguage.psi.DLanguageType;
+import io.github.intellij.dlanguage.psi.DLanguageTypeConstructors;
+import io.github.intellij.dlanguage.psi.DlangForeachType;
+import io.github.intellij.dlanguage.psi.DlangIdentifier;
+import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import io.github.intellij.dlanguage.stubs.DlangForeachTypeStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class DLanguageForeachTypeImpl extends DNamedStubbedPsiElementBase<DlangForeachTypeStub> implements DLanguageForeachType {
+public class DLanguageForeachTypeImpl extends
+    DNamedStubbedPsiElementBase<DlangForeachTypeStub> implements DlangForeachType {
 
     public DLanguageForeachTypeImpl(final DlangForeachTypeStub stub, final IStubElementType type) {
         super(stub, type);

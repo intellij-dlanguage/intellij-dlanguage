@@ -7,8 +7,8 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
-import io.github.intellij.dlanguage.psi.DLanguageForeachType;
 import io.github.intellij.dlanguage.psi.DLanguageForeachTypeList;
+import io.github.intellij.dlanguage.psi.DlangForeachType;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
@@ -34,8 +34,8 @@ public class DLanguageForeachTypeListImpl extends ASTWrapperPsiElement implement
     }
 
     @NotNull
-    public List<DLanguageForeachType> getForeachTypes() {
-        return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageForeachType.class);
+    public List<DlangForeachType> getForeachTypes() {
+        return PsiTreeUtil.getChildrenOfTypeAsList(this, DlangForeachType.class);
     }
 
     @NotNull

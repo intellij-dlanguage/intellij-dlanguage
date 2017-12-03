@@ -9,15 +9,15 @@ import org.jetbrains.annotations.Nullable;
 public interface DLanguageArrayInitializer extends PsiElement {
 
     @NotNull
-    public List<PsiElement> getOP_COMMAs();
+    List<PsiElement> getOP_COMMAs();
 
     @NotNull
-    public List<DLanguageArrayMemberInitialization> getArrayMemberInitializations();
+    List<DLanguageArrayMemberInitialization> getArrayMemberInitializations();
 
     @Nullable
-    public PsiElement getOP_BRACKET_RIGHT();
+    PsiElement getOP_BRACKET_RIGHT();
 
     @Nullable
-    public PsiElement getOP_BRACKET_LEFT();
+    PsiElement getOP_BRACKET_LEFT();
 
 }

@@ -10,10 +10,10 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.DLanguageAliasDeclaration;
-import io.github.intellij.dlanguage.psi.DLanguageAliasInitializer;
 import io.github.intellij.dlanguage.psi.DLanguageIdentifierList;
 import io.github.intellij.dlanguage.psi.DLanguageStorageClass;
 import io.github.intellij.dlanguage.psi.DLanguageType;
+import io.github.intellij.dlanguage.psi.DlangAliasInitializer;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
@@ -70,7 +70,7 @@ public class DLanguageAliasDeclarationImpl extends ASTWrapperPsiElement implemen
     }
 
     @NotNull
-    public List<DLanguageAliasInitializer> getAliasInitializers() {
-        return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageAliasInitializer.class);
+    public List<DlangAliasInitializer> getAliasInitializers() {
+        return PsiTreeUtil.getChildrenOfTypeAsList(this, DlangAliasInitializer.class);
     }
 }

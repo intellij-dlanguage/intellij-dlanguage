@@ -4,7 +4,11 @@ import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.configurations.ParametersList;
 import com.intellij.execution.configurations.RuntimeConfigurationError;
-import com.intellij.execution.process.*;
+import com.intellij.execution.process.OSProcessHandler;
+import com.intellij.execution.process.ProcessAdapter;
+import com.intellij.execution.process.ProcessEvent;
+import com.intellij.execution.process.ProcessHandler;
+import com.intellij.execution.process.ProcessOutputTypes;
 import com.intellij.execution.testframework.sm.ServiceMessageBuilder;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
@@ -17,23 +21,36 @@ import com.intellij.openapi.roots.libraries.Library;
 import com.intellij.openapi.roots.libraries.LibraryTable;
 import com.intellij.openapi.roots.libraries.LibraryTablesRegistrar;
 import com.intellij.openapi.util.Key;
-import com.intellij.openapi.vfs.*;
+import com.intellij.openapi.vfs.LocalFileSystem;
+import com.intellij.openapi.vfs.VfsUtilCore;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VirtualFileManager;
+import com.intellij.openapi.vfs.VirtualFileVisitor;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.util.PsiTreeUtil;
-import io.github.intellij.dlanguage.psi.*;
 import io.github.intellij.dlanguage.DlangBundle;
+import io.github.intellij.dlanguage.psi.DLanguageAtAttribute;
+import io.github.intellij.dlanguage.psi.DLanguageClassDeclaration;
+import io.github.intellij.dlanguage.psi.DLanguageTemplateMixinExpression;
+import io.github.intellij.dlanguage.psi.DlangFunctionDeclaration;
+import io.github.intellij.dlanguage.psi.DlangIdentifier;
 import io.github.intellij.dlanguage.settings.ToolKey;
 import io.github.intellij.dlanguage.utils.DToolsNotificationListener;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.io.File;
 import java.io.OutputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class DUnitTestRunProcessHandler extends ProcessHandler {
 
@@ -88,8 +105,9 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
 
                     // find methods for the class
                     final Set<String> testMethodNames = new LinkedHashSet<>();
-                    final Collection<DLanguageFunctionDeclaration> fds = PsiTreeUtil.findChildrenOfType(cd, DLanguageFunctionDeclaration.class);
-                    for (final DLanguageFunctionDeclaration fd : fds) {
+                    final Collection<DlangFunctionDeclaration> fds = PsiTreeUtil
+                        .findChildrenOfType(cd, DlangFunctionDeclaration.class);
+                    for (final DlangFunctionDeclaration fd : fds) {
                         if (testClassName != null) {
                             // only add methods with @Test
                             if (isTestMethod(fd) || isIgnoreMethod(fd)) {
@@ -248,12 +266,12 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
 
     }
 
-    private boolean isTestMethod(final DLanguageFunctionDeclaration fd) {
+    private boolean isTestMethod(final DlangFunctionDeclaration fd) {
         final PsiElement ele = findElementUpstream(fd, DLanguageAtAttribute.class);
         return (ele != null && ele.getText().contains("@Test"));
     }
 
-    private boolean isIgnoreMethod(final DLanguageFunctionDeclaration fd) {
+    private boolean isIgnoreMethod(final DlangFunctionDeclaration fd) {
         final PsiElement ele = findElementUpstream(fd, DLanguageAtAttribute.class);
         return (ele != null && ele.getText().contains("@Ignore"));
     }

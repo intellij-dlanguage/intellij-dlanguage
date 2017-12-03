@@ -10,11 +10,11 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.DLanguageAutoDeclaration;
-import io.github.intellij.dlanguage.psi.DLanguageDeclarator;
 import io.github.intellij.dlanguage.psi.DLanguageFunctionBody;
 import io.github.intellij.dlanguage.psi.DLanguageStorageClass;
 import io.github.intellij.dlanguage.psi.DLanguageType;
 import io.github.intellij.dlanguage.psi.DLanguageVariableDeclaration;
+import io.github.intellij.dlanguage.psi.DlangDeclarator;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
@@ -56,8 +56,8 @@ public class DLanguageVariableDeclarationImpl extends ASTWrapperPsiElement imple
     }
 
     @NotNull
-    public List<DLanguageDeclarator> getDeclarators() {
-        return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageDeclarator.class);
+    public List<DlangDeclarator> getDeclarators() {
+        return PsiTreeUtil.getChildrenOfTypeAsList(this, DlangDeclarator.class);
     }
 
     @NotNull

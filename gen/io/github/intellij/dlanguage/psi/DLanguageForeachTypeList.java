@@ -8,9 +8,9 @@ import org.jetbrains.annotations.NotNull;
 public interface DLanguageForeachTypeList extends PsiElement {
 
     @NotNull
-    public List<DLanguageForeachType> getForeachTypes();
+    List<DlangForeachType> getForeachTypes();
 
     @NotNull
-    public List<PsiElement> getOP_COMMAs();
+    List<PsiElement> getOP_COMMAs();
 
 }

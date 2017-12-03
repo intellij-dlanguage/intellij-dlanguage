@@ -8,5 +8,5 @@ import org.jetbrains.annotations.NotNull;
 public interface DLanguageAsmTypePrefix extends PsiElement {
 
     @NotNull
-    public List<DLanguageIdentifier> getIdentifiers();
+    List<DlangIdentifier> getIdentifiers();
 }

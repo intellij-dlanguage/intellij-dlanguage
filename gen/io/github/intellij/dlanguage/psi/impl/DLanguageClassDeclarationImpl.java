@@ -8,6 +8,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.DLanguageClassDeclaration;
+import io.github.intellij.dlanguage.psi.DlangInterfaceOrClass;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -38,7 +39,7 @@ public class DLanguageClassDeclarationImpl extends ASTWrapperPsiElement implemen
     }
 
     @Nullable
-    public DLanguageInterfaceOrClass getInterfaceOrClass() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageInterfaceOrClass.class);
+    public DlangInterfaceOrClass getInterfaceOrClass() {
+        return PsiTreeUtil.getChildOfType(this, DlangInterfaceOrClass.class);
     }
 }

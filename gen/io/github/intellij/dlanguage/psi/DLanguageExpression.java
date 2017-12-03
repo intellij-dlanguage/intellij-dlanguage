@@ -1,3 +1,4 @@
+
 package io.github.intellij.dlanguage.psi;
 
 import com.intellij.psi.PsiElement;
@@ -8,9 +9,9 @@ import org.jetbrains.annotations.NotNull;
 public interface DLanguageExpression extends PsiElement {
 
     @NotNull
-    public List<DLanguageAssignExpression> getAssignExpressions();
+    List<DLanguageAssignExpression> getAssignExpressions();
 
     @NotNull
-    public List<PsiElement> getOP_COMMAs();
+    List<PsiElement> getOP_COMMAs();
 
 }

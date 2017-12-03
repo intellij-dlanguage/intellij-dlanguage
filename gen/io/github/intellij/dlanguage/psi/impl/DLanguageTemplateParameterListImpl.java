@@ -7,8 +7,8 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
-import io.github.intellij.dlanguage.psi.DLanguageTemplateParameter;
 import io.github.intellij.dlanguage.psi.DLanguageTemplateParameterList;
+import io.github.intellij.dlanguage.psi.DlangTemplateParameter;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
@@ -34,8 +34,8 @@ public class DLanguageTemplateParameterListImpl extends ASTWrapperPsiElement imp
     }
 
     @NotNull
-    public List<DLanguageTemplateParameter> getTemplateParameters() {
-        return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageTemplateParameter.class);
+    public List<DlangTemplateParameter> getTemplateParameters() {
+        return PsiTreeUtil.getChildrenOfTypeAsList(this, DlangTemplateParameter.class);
     }
 
     @NotNull

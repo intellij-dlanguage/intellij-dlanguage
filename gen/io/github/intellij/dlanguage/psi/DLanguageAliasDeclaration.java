@@ -9,23 +9,23 @@ import org.jetbrains.annotations.Nullable;
 public interface DLanguageAliasDeclaration extends PsiElement {
 
     @Nullable
-    public DLanguageIdentifierList getIdentifierList();
+    DLanguageIdentifierList getIdentifierList();
 
     @Nullable
-    public PsiElement getOP_COMMA();
+    PsiElement getOP_COMMA();
 
     @NotNull
-    public List<DLanguageStorageClass> getStorageClasss();
+    List<DLanguageStorageClass> getStorageClasss();
 
     @Nullable
-    public PsiElement getKW_ALIAS();
+    PsiElement getKW_ALIAS();
 
     @Nullable
-    public DLanguageType getType();
+    DLanguageType getType();
 
     @Nullable
-    public PsiElement getOP_SCOLON();
+    PsiElement getOP_SCOLON();
 
     @NotNull
-    public List<DLanguageAliasInitializer> getAliasInitializers();
+    List<DlangAliasInitializer> getAliasInitializers();
 }

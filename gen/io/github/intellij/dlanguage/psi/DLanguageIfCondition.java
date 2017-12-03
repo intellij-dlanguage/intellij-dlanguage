@@ -3,25 +3,26 @@ package io.github.intellij.dlanguage.psi;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.StubBasedPsiElement;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
+import io.github.intellij.dlanguage.stubs.DlangIfConditionStub;
 import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageIfCondition extends PsiElement, DNamedElement,
-    StubBasedPsiElement<DLanguageIfConditionStub> {
+    StubBasedPsiElement<DlangIfConditionStub> {
 
     @Nullable
-    public DlangIdentifier getIdentifier();
+    DlangIdentifier getIdentifier();
 
     @Nullable
-    public DLanguageExpression getExpression();
+    DLanguageExpression getExpression();
 
     @Nullable
-    public PsiElement getKW_AUTO();
+    PsiElement getKW_AUTO();
 
     @Nullable
-    public DLanguageType getType();
+    DLanguageType getType();
 
     @Nullable
-    public PsiElement getOP_EQ();
+    PsiElement getOP_EQ();
 
 }

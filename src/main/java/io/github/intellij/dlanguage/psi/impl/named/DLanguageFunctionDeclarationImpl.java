@@ -7,9 +7,15 @@ import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
-import io.github.intellij.dlanguage.psi.*;
-import io.github.intellij.dlanguage.stubs.DlangFunctionDeclarationStub;
-import io.github.intellij.dlanguage.psi.*;
+import io.github.intellij.dlanguage.psi.DLanguageConstraint;
+import io.github.intellij.dlanguage.psi.DLanguageFunctionBody;
+import io.github.intellij.dlanguage.psi.DLanguageMemberFunctionAttribute;
+import io.github.intellij.dlanguage.psi.DLanguageParameters;
+import io.github.intellij.dlanguage.psi.DLanguageTemplateParameters;
+import io.github.intellij.dlanguage.psi.DLanguageType;
+import io.github.intellij.dlanguage.psi.DlangFunctionDeclaration;
+import io.github.intellij.dlanguage.psi.DlangIdentifier;
+import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import io.github.intellij.dlanguage.stubs.DlangFunctionDeclarationStub;
@@ -20,7 +26,8 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Created by francis on 7/14/2017.
  */
-public class DLanguageFunctionDeclarationImpl extends DNamedStubbedPsiElementBase<DlangFunctionDeclarationStub> implements DLanguageFunctionDeclaration {
+public class DLanguageFunctionDeclarationImpl extends
+    DNamedStubbedPsiElementBase<DlangFunctionDeclarationStub> implements DlangFunctionDeclaration {
 
     public DLanguageFunctionDeclarationImpl(@NotNull final DlangFunctionDeclarationStub stub, final IStubElementType nodeType) {
         super(stub, nodeType);

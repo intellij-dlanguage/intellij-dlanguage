@@ -3,33 +3,34 @@ package io.github.intellij.dlanguage.psi;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.StubBasedPsiElement;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
+import io.github.intellij.dlanguage.stubs.DlangParameterStub;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageParameter extends PsiElement, DNamedElement,
-    StubBasedPsiElement<DLanguageParameterStub> {
+    StubBasedPsiElement<DlangParameterStub> {
 
     @NotNull
-    public List<DLanguageParameterAttribute> getParameterAttributes();
+    List<DLanguageParameterAttribute> getParameterAttributes();
 
     @Nullable
-    public DLanguageType getType();
+    DLanguageType getType();
 
     @Nullable
-    public DlangIdentifier getIdentifier();
+    DlangIdentifier getIdentifier();
 
     @NotNull
-    public List<DLanguageTypeSuffix> getTypeSuffixs();
+    List<DLanguageTypeSuffix> getTypeSuffixs();
 
     @Nullable
-    public PsiElement getOP_TRIPLEDOT();
+    PsiElement getOP_TRIPLEDOT();
 
     @Nullable
-    public DLanguageAssignExpression getAssignExpression();
+    DLanguageAssignExpression getAssignExpression();
 
     @Nullable
-    public PsiElement getOP_EQ();
+    PsiElement getOP_EQ();
 
 }

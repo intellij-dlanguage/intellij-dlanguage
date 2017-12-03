@@ -3,27 +3,28 @@ package io.github.intellij.dlanguage.psi;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.StubBasedPsiElement;
 import io.github.intellij.dlanguage.psi.interfaces.DCompositeElement;
+import io.github.intellij.dlanguage.stubs.DlangSharedStaticConstructorStub;
 import org.jetbrains.annotations.Nullable;
 
 
 public interface DLanguageSharedStaticConstructor extends PsiElement, DCompositeElement,
-    StubBasedPsiElement<DLanguageSharedStaticConstructorStub> {
+    StubBasedPsiElement<DlangSharedStaticConstructorStub> {
 
     @Nullable
-    public PsiElement getKW_STATIC();
+    PsiElement getKW_STATIC();
 
     @Nullable
-    public PsiElement getKW_SHARED();
+    PsiElement getKW_SHARED();
 
     @Nullable
-    public PsiElement getKW_THIS();
+    PsiElement getKW_THIS();
 
     @Nullable
-    public PsiElement getOP_PAR_LEFT();
+    PsiElement getOP_PAR_LEFT();
 
     @Nullable
-    public PsiElement getOP_PAR_RIGHT();
+    PsiElement getOP_PAR_RIGHT();
 
     @Nullable
-    public DLanguageFunctionBody getFunctionBody();
+    DLanguageFunctionBody getFunctionBody();
 }

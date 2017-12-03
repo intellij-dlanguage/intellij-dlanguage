@@ -10,6 +10,7 @@ import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.DLanguageMixinTemplateDeclaration;
+import io.github.intellij.dlanguage.psi.DlangTemplateDeclaration;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import org.jetbrains.annotations.NotNull;
@@ -36,8 +37,8 @@ public class DLanguageMixinTemplateDeclarationImpl extends ASTWrapperPsiElement 
     }
 
     @Nullable
-    public DLanguageTemplateDeclaration getTemplateDeclaration() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageTemplateDeclaration.class);
+    public DlangTemplateDeclaration getTemplateDeclaration() {
+        return PsiTreeUtil.getChildOfType(this, DlangTemplateDeclaration.class);
     }
 
     @Nullable

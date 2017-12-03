@@ -1,3 +1,4 @@
+
 package io.github.intellij.dlanguage.psi;
 
 import com.intellij.psi.PsiElement;
@@ -6,33 +7,38 @@ import com.intellij.psi.StubBasedPsiElement;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
+import io.github.intellij.dlanguage.stubs.DlangFunctionDeclarationStub;
+import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 
-public interface DLanguageCatch extends PsiElement, DNamedElement,
-    StubBasedPsiElement<DLanguageCatchStub> {
+public interface DlangFunctionDeclaration extends PsiElement, DNamedElement,
+    StubBasedPsiElement<DlangFunctionDeclarationStub> {
 
     @Nullable
-    public PsiElement getKW_CATCH();
+    DLanguageType getType();
 
     @Nullable
-    public PsiElement getOP_PAR_LEFT();
+    DlangIdentifier getIdentifier();
 
     @Nullable
-    public PsiElement getOP_PAR_RIGHT();
+    DLanguageTemplateParameters getTemplateParameters();
 
     @Nullable
-    public DLanguageType getType();
+    DLanguageParameters getParameters();
 
     @Nullable
-    public DlangIdentifier getIdentifier();
+    DLanguageConstraint getConstraint();
 
     @Nullable
-    public DLanguageDeclarationOrStatement getDeclarationOrStatement();
+    DLanguageFunctionBody getFunctionBody();
+
+    @NotNull
+    List<DLanguageMemberFunctionAttribute> getMemberFunctionAttributes();
 
     @Override
-    default public boolean processDeclarations(@NotNull PsiScopeProcessor processor,
+    default boolean processDeclarations(@NotNull PsiScopeProcessor processor,
         @NotNull ResolveState state,
         PsiElement lastParent,
         @NotNull PsiElement place) {

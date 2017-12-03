@@ -55,19 +55,40 @@ class DAttributesFinder {
         } else if (startingPoint is TemplateDeclaration) {
             defualts = defaultTemplateDeclaration(startingPoint)
             directApplication = handleTemplateDeclaration(startingPoint)
+        } else if (startingPoint is SingleImport) {
+            defualts = defaultSingleImport(startingPoint)
+            directApplication = handleSingleImport(startingPoint)
         } else {
             throw IllegalArgumentException("bad type sent to AttributesFinder")
         }
+        recurseUp()
 
+    }
+
+    private fun handleSingleImport(startingPoint: SingleImport): DirectApplication {
+        val decl: Declaration
+        if (startingPoint.parent is ImportDeclaration) {
+            val importDecl = startingPoint.parent as ImportDeclaration
+            decl = importDecl.parent as Declaration
+        } else {
+            val bind = startingPoint.parent as ImportBindings
+            val importDecl = bind.parent as ImportDeclaration
+            decl = importDecl.parent as Declaration
+        }
+        return updateFromParentDecl(decl)
+    }
+
+    fun defaultSingleImport(startingPoint: SingleImport): DefaultAttributes {
+        return DefaultAttributes(visibility = Visibility.PRIVATE, static = true)
     }
 
     enum class Visibility {
         PUBLIC, PRIVATE, PROTECTED, LOCAL
     }
 
-    val directApplication : DirectApplication
+    val directApplication: DirectApplication
 
-    class DirectApplication (
+    class DirectApplication(
         var static: Boolean? = null,
         var visibility: Visibility? = null,
         var property: Boolean? = null,
@@ -77,26 +98,23 @@ class DAttributesFinder {
         var local: Boolean? = null,
         var nothrow: Boolean? = null,
         var const: Boolean? = null,
-        var immutable: Boolean? = null) {
+        var immutable: Boolean? = null)
 
-    }
-    val bulkAttributeApplied : BulkAttributeApplication
+    val bulkAttributeApplied: BulkAttributeApplication = BulkAttributeApplication()
 
     class BulkAttributeApplication(
-        val static: Boolean? = null,
-        val visibility: Visibility? = null,
-        val property: Boolean? = null,
-        val noGC: Boolean? = null,
-        val extern: Boolean? = null,
-        val pure: Boolean? = null,
-        val local: Boolean? = null,
-        val nothrow: Boolean? = null,
-        val const: Boolean? = null,
-        val immutable: Boolean? = null) {
+        var static: Boolean? = null,
+        var visibility: Visibility? = null,
+        var property: Boolean? = null,
+        var noGC: Boolean? = null,
+        var extern: Boolean? = null,
+        var pure: Boolean? = null,
+        var local: Boolean? = null,
+        var nothrow: Boolean? = null,
+        var const: Boolean? = null,
+        var immutable: Boolean? = null)
 
-    }
-
-    val defualts: DefaultAttributes;
+    val defualts: DefaultAttributes
 
     class DefaultAttributes(
         val static: Boolean = true,
@@ -108,9 +126,7 @@ class DAttributesFinder {
         val local: Boolean = false,
         val nothrow: Boolean = false,
         val const: Boolean = false,
-        val immutable: Boolean = false) {
-
-    }
+        val immutable: Boolean = false)
 
 
     fun recurseUp() {
@@ -149,17 +165,19 @@ class DAttributesFinder {
 
     fun execute(element: PsiElement): Boolean {
         if (element is DlangSingleImport && isParent(element, startingPoint)) {
-            defaultsToStatic = false
+            bulkAttributeApplied.static = false
         }
         if (element is FunctionDeclaration || element is DLanguageUnittest || element is Parameters || element is TemplateParameters) {
             if (element is FunctionDeclaration) {
-                if (element.memberFunctionAttributes != null) {
-                    execute(element.memberFunctionAttributes)
-                }
+//                if (element.memberFunctionAttributes != null) {
+//                    execute(element.memberFunctionAttributes)
+//                }
                 if ((element.functionBody != null && isParent(element.functionBody!!, startingPoint))
                     || (element.parameters != null && isParent(element.parameters!!, startingPoint))
                     || (element.templateParameters != null && isParent(element.templateParameters!!, startingPoint))) {
-                    visibility = Visibility.LOCAL
+                    if (bulkAttributeApplied.visibility == null) {
+                        bulkAttributeApplied.visibility = Visibility.LOCAL
+                    }
                     return false
                 }
             }
@@ -167,7 +185,7 @@ class DAttributesFinder {
         }
         if (element is StructBody) {
             if (isParent(element, startingPoint)) {
-                defaultsToStatic = false
+                bulkAttributeApplied.static = false
                 return false
             }
         }
@@ -190,7 +208,7 @@ class DAttributesFinder {
     private fun execute(elements: List<DLanguageMemberFunctionAttribute>) {
         for (element in elements) {
             if (element.text.equals("const")) {
-                isConst = true
+                bulkAttributeApplied.const = true
             }
         }
     }
@@ -201,16 +219,16 @@ class DAttributesFinder {
             if (attribute.kW_EXPORT != null) {
             } else if (attribute.kW_PACKAGE != null) {
             } else if (attribute.kW_PRIVATE != null) {
-                if (visibility == null) {
-                    visibility = Visibility.PRIVATE
+                if (bulkAttributeApplied.visibility == null) {
+                    bulkAttributeApplied.visibility = Visibility.PRIVATE
                 }
             } else if (attribute.kW_PROTECTED != null) {
-                if (visibility == null) {
-                    visibility = Visibility.PROTECTED
+                if (bulkAttributeApplied.visibility == null) {
+                    bulkAttributeApplied.visibility = Visibility.PROTECTED
                 }
             } else if (attribute.kW_PUBLIC != null) {
-                if (visibility == null) {
-                    visibility = Visibility.PUBLIC
+                if (bulkAttributeApplied.visibility == null) {
+                    bulkAttributeApplied.visibility = Visibility.PUBLIC
                 }
             } else if (attribute.pragmaExpression != null) {
             } else if (attribute.kW_SYNCHRONIZED != null) {
@@ -221,29 +239,29 @@ class DAttributesFinder {
             } else if (attribute.kW_FINAL != null) {
             } else if (attribute.kW_INOUT != null) {
             } else if (attribute.kW_NOTHROW != null) {
-                if (isNothrow == null) {
-                    isNothrow = true
+                if (bulkAttributeApplied.nothrow == null) {
+                    bulkAttributeApplied.nothrow = true
                 }
             } else if (attribute.kW_OVERRIDE != null) {
             } else if (attribute.kW_PURE != null) {
-                if (isPure == null) {
-                    isPure = true
+                if (bulkAttributeApplied.pure == null) {
+                    bulkAttributeApplied.pure = true
                 }
             } else if (attribute.kW_REF != null) {
             } else if (attribute.kW___GSHARED != null) {
             } else if (attribute.kW_SCOPE != null) {
             } else if (attribute.kW_STATIC != null) {
-                if (isStatic == null) {
-                    isStatic = true
+                if (bulkAttributeApplied.static == null) {
+                    bulkAttributeApplied.static = true
                 }
             } else if (attribute.alignAttribute != null) {
             } else if (attribute.atAttribute?.identifier?.name == "property") {
-                if (isProperty == null) {
-                    isProperty = true
+                if (bulkAttributeApplied.property == null) {
+                    bulkAttributeApplied.property = true
                 }
             } else if (attribute.linkageAttribute != null) {
             } else if (attribute.kW_CONST != null) {
-                isConst = true
+                bulkAttributeApplied.const = true
             }
         }
     }
@@ -302,7 +320,7 @@ class DAttributesFinder {
 
     }
 
-    private fun updateFromParentDecl(decl: Declaration) : DirectApplication{
+    private fun updateFromParentDecl(decl: Declaration): DirectApplication {
         val attribs = DirectApplication()
         for (attribute in decl.attributes) {
             if (attribute.kW_CONST != null) {
@@ -333,7 +351,7 @@ class DAttributesFinder {
         return attribs
     }
 
-    fun handleInterfaceOrClass(interfaceOrClass: InterfaceOrClass):DirectApplication{
+    fun handleInterfaceOrClass(interfaceOrClass: InterfaceOrClass): DirectApplication {
         val decl = interfaceOrClass.parent.parent as Declaration
         return updateFromParentDecl(decl)
     }
@@ -353,7 +371,7 @@ class DAttributesFinder {
         )
     }
 
-    fun handleUnionDeclaration(union: UnionDeclaration) : DirectApplication {
+    fun handleUnionDeclaration(union: UnionDeclaration): DirectApplication {
         val decl = union.parent as Declaration
         return updateFromParentDecl(decl)
     }
@@ -373,7 +391,7 @@ class DAttributesFinder {
         )
     }
 
-    fun handleStructDeclaration(struct: StructDeclaration) : DirectApplication {
+    fun handleStructDeclaration(struct: StructDeclaration): DirectApplication {
         val decl = struct.parent as Declaration
         return updateFromParentDecl(decl)
     }
@@ -393,7 +411,7 @@ class DAttributesFinder {
         )
     }
 
-    fun handleLabeledStatement(label: LabeledStatement) : DirectApplication {
+    fun handleLabeledStatement(label: LabeledStatement): DirectApplication {
         return DirectApplication()
     }
 
@@ -413,16 +431,16 @@ class DAttributesFinder {
         )
     }
 
-    fun handleAutoDeclarationPart(autoDeclPart: AutoDeclarationPart) : DirectApplication {
+    fun handleAutoDeclarationPart(autoDeclPart: AutoDeclarationPart): DirectApplication {
         val autoDecl = autoDeclPart.parent as AutoDeclaration
         val varDecl = autoDecl.parent as VariableDeclaration
         val decl = varDecl.parent as Declaration
         val attribs = updateFromParentDecl(decl)
         for (storageClasss in autoDecl.storageClasss) {
-            updateFromStorageClass(storageClasss,attribs)
+            updateFromStorageClass(storageClasss, attribs)
         }
         for (storageClasss in varDecl.storageClasss) {
-            updateFromStorageClass(storageClasss,attribs)
+            updateFromStorageClass(storageClasss, attribs)
         }
         return attribs
     }
@@ -460,7 +478,7 @@ class DAttributesFinder {
         }
     }
 
-    fun handleEnumDeclaration(enumDecl: EnumDeclaration) : DirectApplication {
+    fun handleEnumDeclaration(enumDecl: EnumDeclaration): DirectApplication {
         return updateFromParentDecl(enumDecl.parent as Declaration)
     }
 
@@ -476,7 +494,7 @@ class DAttributesFinder {
             immutable = false)
     }
 
-    fun handleCatch(catch: Catch) : DirectApplication {
+    fun handleCatch(catch: Catch): DirectApplication {
         return DirectApplication()
     }
 
@@ -492,7 +510,7 @@ class DAttributesFinder {
         //cannot be const/immutable etc, so no need to update from attributes
     }
 
-    fun handleDeclarator(decl: Declarator) : DirectApplication {
+    fun handleDeclarator(decl: Declarator): DirectApplication {
         val varDecls = decl.parent as VariableDeclaration
         val attribs = DirectApplication()
         for (storageClasss in varDecls.storageClasss) {
@@ -516,7 +534,7 @@ class DAttributesFinder {
         )
     }
 
-    fun handleEponymousTemplateDeclaration(decl: EponymousTemplateDeclaration) : DirectApplication {
+    fun handleEponymousTemplateDeclaration(decl: EponymousTemplateDeclaration): DirectApplication {
         return updateFromParentDecl(decl.parent as Declaration)
     }
 
@@ -534,15 +552,15 @@ class DAttributesFinder {
             immutable = false)
     }
 
-    fun handleForeachType(foreachType: DLanguageForeachType): DirectApplication {
+    fun handleForeachType(foreachType: ForeachType): DirectApplication {
         return DirectApplication()
     }
 
-    fun defaultForeachType(foreachType: DLanguageForeachType): DefaultAttributes {
-        return DefaultAttributes(local = true,static = true)
+    fun defaultForeachType(foreachType: ForeachType): DefaultAttributes {
+        return DefaultAttributes(local = true, static = true)
     }
 
-    fun handleIfCondition(ifCondition: DLanguageIfCondition) : DirectApplication {
+    fun handleIfCondition(ifCondition: DLanguageIfCondition): DirectApplication {
         return DirectApplication()
     }
 
@@ -558,6 +576,49 @@ class DAttributesFinder {
     fun defaultTemplateDeclaration(templateDecl: DlangTemplateDeclaration): DefaultAttributes {
         //todo get attribues
         return DefaultAttributes()
+    }
+
+    fun isStatic(): Boolean {
+        return directApplication.static ?: (bulkAttributeApplied.static ?: defualts.static)
+    }
+
+    fun isPublic() = visibility() == Visibility.PUBLIC
+    fun isProtected() = visibility() == Visibility.PROTECTED
+    fun isPrivate() = visibility() == Visibility.PRIVATE
+    fun visibility(): Visibility {
+        return directApplication.visibility ?: (bulkAttributeApplied.visibility ?: defualts.visibility)
+    }
+
+    fun isProperty(): Boolean {
+        return directApplication.property ?: (bulkAttributeApplied.property ?: defualts.property)
+    }
+
+    fun isNoGC(): Boolean {
+        return directApplication.noGC ?: (bulkAttributeApplied.noGC ?: defualts.noGC)
+    }
+
+    fun isExtern(): Boolean {
+        return directApplication.extern ?: (bulkAttributeApplied.extern ?: defualts.extern)
+    }
+
+    fun isPure(): Boolean {
+        return directApplication.pure ?: (bulkAttributeApplied.pure ?: defualts.pure)
+    }
+
+    fun isLocal(): Boolean {
+        return directApplication.local ?: (bulkAttributeApplied.local ?: defualts.local)
+    }
+
+    fun isNothrow(): Boolean {
+        return directApplication.nothrow ?: (bulkAttributeApplied.nothrow ?: defualts.nothrow)
+    }
+
+    fun isConst(): Boolean {
+        return directApplication.const ?: (bulkAttributeApplied.const ?: defualts.const)
+    }
+
+    fun isImmutable(): Boolean {
+        return directApplication.immutable ?: (bulkAttributeApplied.immutable ?: defualts.immutable)
     }
 
 

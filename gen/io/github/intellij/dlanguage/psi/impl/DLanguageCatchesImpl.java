@@ -4,9 +4,9 @@ import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
-import io.github.intellij.dlanguage.psi.DLanguageCatch;
 import io.github.intellij.dlanguage.psi.DLanguageCatches;
 import io.github.intellij.dlanguage.psi.DLanguageLastCatch;
+import io.github.intellij.dlanguage.psi.DlangCatch;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -36,7 +36,7 @@ public class DLanguageCatchesImpl extends ASTWrapperPsiElement implements DLangu
     }
 
     @Nullable
-    public DLanguageCatch getCatch() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageCatch.class);
+    public DlangCatch getCatch() {
+        return PsiTreeUtil.getChildOfType(this, DlangCatch.class);
     }
 }

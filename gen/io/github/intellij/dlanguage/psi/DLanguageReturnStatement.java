@@ -1,3 +1,4 @@
+
 package io.github.intellij.dlanguage.psi;
 
 import com.intellij.psi.PsiElement;
@@ -7,12 +8,12 @@ import org.jetbrains.annotations.Nullable;
 public interface DLanguageReturnStatement extends PsiElement {
 
     @Nullable
-    public PsiElement getKW_RETURN();
+    PsiElement getKW_RETURN();
 
     @Nullable
-    public DLanguageExpression getExpression();
+    DLanguageExpression getExpression();
 
     @Nullable
-    public PsiElement getOP_SCOLON();
+    PsiElement getOP_SCOLON();
 
 }

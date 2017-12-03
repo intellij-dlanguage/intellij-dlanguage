@@ -9,21 +9,21 @@ import org.jetbrains.annotations.Nullable;
 public interface DLanguageEnumBody extends PsiElement {
 
     @Nullable
-    public DlangIdentifier getIdentifier();
+    DlangIdentifier getIdentifier();
 
     @Nullable
-    public PsiElement getOP_BRACES_RIGHT();
+    PsiElement getOP_BRACES_RIGHT();
 
     @Nullable
-    public PsiElement getOP_BRACES_LEFT();
+    PsiElement getOP_BRACES_LEFT();
 
     @NotNull
-    public List<DLanguageEnumMember> getEnumMembers();
+    List<DlangEnumMember> getEnumMembers();
 
     @NotNull
-    public List<PsiElement> getOP_COMMAs();
+    List<PsiElement> getOP_COMMAs();
 
     @Nullable
-    public PsiElement getOP_SCOLON();
+    PsiElement getOP_SCOLON();
 
 }
