@@ -169,9 +169,7 @@ class DAttributesFinder {
         }
         if (element is FunctionDeclaration || element is DLanguageUnittest || element is Parameters || element is TemplateParameters) {
             if (element is FunctionDeclaration) {
-//                if (element.memberFunctionAttributes != null) {
-//                    execute(element.memberFunctionAttributes)
-//                }
+                execute(element.memberFunctionAttributes)
                 if ((element.functionBody != null && isParent(element.functionBody!!, startingPoint))
                     || (element.parameters != null && isParent(element.parameters!!, startingPoint))
                     || (element.templateParameters != null && isParent(element.templateParameters!!, startingPoint))) {
@@ -208,7 +206,7 @@ class DAttributesFinder {
     private fun execute(elements: List<DLanguageMemberFunctionAttribute>) {
         for (element in elements) {
             if (element.text.equals("const")) {
-                bulkAttributeApplied.const = true
+                directApplication.const = true
             }
         }
     }

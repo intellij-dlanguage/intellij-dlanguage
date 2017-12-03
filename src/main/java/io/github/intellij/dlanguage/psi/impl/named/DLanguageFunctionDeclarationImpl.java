@@ -91,6 +91,7 @@ public class DLanguageFunctionDeclarationImpl extends
         return PsiTreeUtil.getChildOfType(this, DLanguageFunctionBody.class);
     }
 
+    @NotNull
     @Override
     public List<DLanguageMemberFunctionAttribute> getMemberFunctionAttributes() {
         return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageMemberFunctionAttribute.class);
