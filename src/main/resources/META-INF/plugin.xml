@@ -12,8 +12,9 @@
     ]]></description>
 
     <change-notes><![CDATA[
-        <b>v1.15 - v1.15.2</b><br/>
+        <b>v1.15 - v1.15.3</b><br/>
         <ul>
+            <li>reworked code folding</li>
             <li>Structure View (1.15.2)</li>
             <li>various bug fixes</li>
         </ul>
