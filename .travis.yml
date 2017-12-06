@@ -29,6 +29,7 @@ jobs:
     - env: ORG_GRADLE_PROJECT_ideaVersion=2017.3
     - env: ORG_GRADLE_PROJECT_ideaVersion=2017.2.6
     - env: ORG_GRADLE_PROJECT_ideaVersion=2017.2.5
+    - env: ORG_GRADLE_PROJECT_ideaVersion=2017.2
     - stage: Test Coverage
       script: ./gradlew cobertura coveralls
     - stage: Deploy EAP
@@ -37,7 +38,7 @@ jobs:
       deploy:
         provider: script
         skip_cleanup: true
-        script: ORG_GRADLE_PROJECT_publishChannels=eap ORG_GRADLE_PROJECT_version=1.15.3-eap$TRAVIS_BUILD_NUMBER ./gradlew :publishPlugin
+        script: ORG_GRADLE_PROJECT_publishChannels=eap ORG_GRADLE_PROJECT_version=1.15.4-eap$TRAVIS_BUILD_NUMBER ./gradlew :publishPlugin
         on:
           branch: develop
     - stage: Deploy new Release
