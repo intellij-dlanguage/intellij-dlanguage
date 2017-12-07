@@ -1,48 +1,47 @@
 package io.github.intellij.dlanguage.types
 
 // Primitives
-object DTypeVoid : DTypePrimitive("void")
-
-object DTypeBool : DTypePrimitive("bool")
-object DTypeByte : DTypePrimitive("byte")
-object DTypeUByte : DTypePrimitive("ubyte")
-object DTypeShort : DTypePrimitive("short")
-object DTypeUShort : DTypePrimitive("ushort")
-object DTypeInt : DTypePrimitive("int")
-object DTypeUInt : DTypePrimitive("uint")
-object DTypeLong : DTypePrimitive("long")
-object DTypeULong : DTypePrimitive("ulong")
-object DTypeCent : DTypePrimitive("cent")
-object DTypeUCent : DTypePrimitive("ucent")
-object DTypeFloat : DTypePrimitive("float")
-object DTypeDouble : DTypePrimitive("double")
-object DTypeReal : DTypePrimitive("real")
-object DTypeIFloat : DTypePrimitive("ifloat")
-object DTypeIDouble : DTypePrimitive("idouble")
-object DTypeIReal : DTypePrimitive("ireal")
-object DTypeCFloat : DTypePrimitive("cfloat")
-object DTypeCDouble : DTypePrimitive("cdouble")
-object DTypeCReal : DTypePrimitive("creal")
-object DTypeChar : DTypePrimitive("char")
-object DTypeWChar : DTypePrimitive("wchar")
-object DTypeDChar : DTypePrimitive("dchar")
+class DTypeVoid : DTypePrimitive("void")
+class DTypeBool : DTypePrimitive("bool")
+class DTypeByte : DTypePrimitive("byte")
+class DTypeUByte : DTypePrimitive("ubyte")
+class DTypeShort : DTypePrimitive("short")
+class DTypeUShort : DTypePrimitive("ushort")
+class DTypeInt : DTypePrimitive("int")
+class DTypeUInt : DTypePrimitive("uint")
+class DTypeLong : DTypePrimitive("long")
+class DTypeULong : DTypePrimitive("ulong")
+class DTypeCent : DTypePrimitive("cent")
+class DTypeUCent : DTypePrimitive("ucent")
+class DTypeFloat : DTypePrimitive("float")
+class DTypeDouble : DTypePrimitive("double")
+class DTypeReal : DTypePrimitive("real")
+class DTypeIFloat : DTypePrimitive("ifloat")
+class DTypeIDouble : DTypePrimitive("idouble")
+class DTypeIReal : DTypePrimitive("ireal")
+class DTypeCFloat : DTypePrimitive("cfloat")
+class DTypeCDouble : DTypePrimitive("cdouble")
+class DTypeCReal : DTypePrimitive("creal")
+class DTypeChar : DTypePrimitive("char")
+class DTypeWChar : DTypePrimitive("wchar")
+class DTypeDChar : DTypePrimitive("dchar")
 
 // Special
-object DTypeSizeT : DTypePrimitive("size_t")
+class DTypeSizeT : DTypePrimitive("size_t")
 
-object DTypePtrDiffT : DTypePrimitive("ptrdiff_t")
-object DTypeHashT : DTypePrimitive("hash_t")
+class DTypePtrDiffT : DTypePrimitive("ptrdiff_t")
+class DTypeHashT : DTypePrimitive("hash_t")
 
 // String
-object DTypeString : DTypeArray(DTypeImmutable(DTypeChar)) {
+object DTypeString : DTypeArray(DTypeChar().toImmutable()) {
     override fun typeToString(): String = "string"
 }
 
-object DTypeWString : DTypeArray(DTypeImmutable(DTypeWChar)) {
+object DTypeWString : DTypeArray(DTypeWChar().toImmutable()) {
     override fun typeToString(): String = "wstring"
 }
 
-object DTypeDString : DTypeArray(DTypeImmutable(DTypeDChar)) {
+object DTypeDString : DTypeArray(DTypeDChar().toImmutable()) {
     override fun typeToString(): String = "dstring"
 }
 

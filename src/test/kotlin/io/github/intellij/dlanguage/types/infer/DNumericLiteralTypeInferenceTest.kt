@@ -140,12 +140,17 @@ class DNumericLiteralTypeInferenceTest : DLightPlatformCodeInsightFixtureTestCas
     """)
 
     fun `test infer explicit integer`() = doTest("""
-        auto byte a = 127;
-                //^ byte
+        byte a = 127;
+           //^ byte
+    """)
+
+    fun `test infer explicit const long`() = doTest("""
+        const long a = 127;
+                 //^ const(long)
     """)
 
     fun `test infer explicit float`() = doTest("""
-        auto float a = 1.0;
-                 //^ float
+        float a = 1.0;
+            //^ float
     """)
 }

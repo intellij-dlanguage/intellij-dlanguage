@@ -11,8 +11,9 @@ fun inferDeclarationType(psi: DLanguageDeclaration): DType {
     }
 
     return when {
-        psi.attributes.containsToken(DlangTypes.KW_CONST) -> DTypeConst(type)
-        psi.attributes.containsToken(DlangTypes.KW_IMMUTABLE) -> DTypeImmutable(type)
+        psi.attributes.containsToken(DlangTypes.KW_CONST) -> type.toConst()
+        psi.attributes.containsToken(DlangTypes.KW_IMMUTABLE) -> type.toImmutable()
+        psi.attributes.containsToken(DlangTypes.KW_SHARED) -> type.toShared()
         else -> type
     }
 }
@@ -42,9 +43,9 @@ private fun inferAutoDeclaration(psi: DLanguageAutoDeclaration): DType {
         val storageClass = psi.storageClass ?: return inferredType
 
         inferredType = when {
-            storageClass.containsToken(DlangTypes.KW_CONST) -> DTypeConst(inferredType)
-            storageClass.containsToken(DlangTypes.KW_IMMUTABLE) -> DTypeImmutable(inferredType)
-            storageClass.containsToken(DlangTypes.KW_SHARED) -> DTypeShared(inferredType)
+            storageClass.containsToken(DlangTypes.KW_CONST) -> inferredType.toConst()
+            storageClass.containsToken(DlangTypes.KW_IMMUTABLE) -> inferredType.toImmutable()
+            storageClass.containsToken(DlangTypes.KW_SHARED) -> inferredType.toShared()
             else -> inferredType
         }
     }

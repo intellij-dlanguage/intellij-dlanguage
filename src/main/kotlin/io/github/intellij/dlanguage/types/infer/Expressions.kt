@@ -18,10 +18,10 @@ private fun inferPrimaryExprType(literal: DLanguagePrimaryExpression): DType = w
     literal.firstChild is DLanguageString -> inferStringLiteral(literal)
     literal.integeR_LITERAL != null -> inferIntegerLiteral(literal.integeR_LITERAL!!)
     literal.floaT_LITERAL != null -> inferFloatLiteral(literal.floaT_LITERAL!!)
-    literal.characteR_LITERAL != null -> DTypeChar
+    literal.characteR_LITERAL != null -> DTypeChar()
     literal.doublE_QUOTED_STRINGs.size > 0 -> inferStringLiteral(literal)
-    literal.kW_TRUE != null -> DTypeBool
-    literal.kW_FALSE != null -> DTypeBool
+    literal.kW_TRUE != null -> DTypeBool()
+    literal.kW_FALSE != null -> DTypeBool()
     else -> DTypeUnknown
 }
 
@@ -49,11 +49,11 @@ private fun inferIntegerLiteral(literal: PsiElement): DType {
     val text = literal.text.toLowerCase()
 
     return when {
-        text.endsWith("lu") -> DTypeULong
-        text.endsWith("ul") -> DTypeULong
-        text.endsWith("l") -> DTypeLong
-        text.endsWith("u") -> DTypeUInt
-        else -> DTypeInt
+        text.endsWith("lu") -> DTypeULong()
+        text.endsWith("ul") -> DTypeULong()
+        text.endsWith("l") -> DTypeLong()
+        text.endsWith("u") -> DTypeUInt()
+        else -> DTypeInt()
     }
 }
 
@@ -61,13 +61,13 @@ private fun inferFloatLiteral(literal: PsiElement): DType {
     val text = literal.text.toLowerCase()
 
     return when {
-        text.endsWith("fi") -> DTypeIFloat
-        text.endsWith("if") -> DTypeIFloat
-        text.endsWith("li") -> DTypeIReal
-        text.endsWith("il") -> DTypeIReal
-        text.endsWith("f") -> DTypeFloat
-        text.endsWith("l") -> DTypeReal
-        text.endsWith("i") -> DTypeIDouble
-        else -> DTypeDouble
+        text.endsWith("fi") -> DTypeIFloat()
+        text.endsWith("if") -> DTypeIFloat()
+        text.endsWith("li") -> DTypeIReal()
+        text.endsWith("il") -> DTypeIReal()
+        text.endsWith("f") -> DTypeFloat()
+        text.endsWith("l") -> DTypeReal()
+        text.endsWith("i") -> DTypeIDouble()
+        else -> DTypeDouble()
     }
 }
