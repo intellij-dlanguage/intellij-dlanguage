@@ -10,16 +10,16 @@ import io.github.intellij.dlanguage.types.infer.inferDeclarationType
 import io.github.intellij.dlanguage.types.infer.inferExprType
 import io.github.intellij.dlanguage.types.infer.inferTypesIn
 
-val DLanguageFunctionDeclaration.dinference: DInferenceResult?
+val DlangFunctionDeclaration.dinference: DInferenceResult?
     get() = CachedValuesManager.getCachedValue(this, {
         CachedValueProvider.Result.create(inferTypesIn(this), PsiModificationTracker.MODIFICATION_COUNT)
     })
 
 val DLanguageUnaryExpression.dinference: DInferenceResult?
-    get() = parentOfType<DLanguageFunctionDeclaration>()?.dinference
+    get() = parentOfType<DlangFunctionDeclaration>()?.dinference
 
 val DLanguagePrimaryExpression.dinference: DInferenceResult?
-    get() = parentOfType<DLanguageFunctionDeclaration>()?.dinference
+    get() = parentOfType<DlangFunctionDeclaration>()?.dinference
 
 val DLanguageUnaryExpression.dtype: DType
     get() = inferExprType(this)
