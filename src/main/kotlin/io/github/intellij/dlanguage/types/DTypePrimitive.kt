@@ -6,7 +6,8 @@ import io.github.intellij.dlanguage.psi.ext.containsToken
 
 abstract class DTypePrimitive(val name: String) : DType() {
     override fun typeToString(): String = name
-
+    override val properties: Set<TypeProperty>
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
     companion object {
         fun fromBuiltinPsiElement(psi: DLanguageBuiltinType): DType =
             when {
