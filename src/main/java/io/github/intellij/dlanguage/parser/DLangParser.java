@@ -9,6 +9,7 @@ import kotlin.jvm.internal.Ref;
 import io.github.intellij.dlanguage.psi.DlangTokenType;
 import io.github.intellij.dlanguage.psi.DlangTokenType;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -8475,9 +8476,11 @@ class DLangParser {
             return null;
         }
     }
+
     /**
      * Returns: the _current token
      */
+    @Nullable
     private Token current() {
         return tokens[index];
     }
@@ -8558,13 +8561,18 @@ class DLangParser {
      * Returns: true if the current token is one of the given types
      */
     private boolean currentIsOneOf(final Token.IdType... types) {
-        if (index >= tokens.length)
-            return false;
-        for (final Token.IdType type : types) {
-            if (type.equals(current().type)) {
-                return true;
+        if (index >= tokens.length) return false;
+
+        final Token curr = current();
+
+        if(curr != null) {
+            for (final Token.IdType type : types) {
+                if (type.equals(curr.type)) {
+                    return true;
+                }
             }
         }
+
         return false;
 
 //        return canFind(types, current().type);
