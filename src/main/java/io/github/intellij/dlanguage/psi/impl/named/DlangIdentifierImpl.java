@@ -87,6 +87,11 @@ public class DlangIdentifierImpl extends DNamedStubbedPsiElementBase<DlangIdenti
     @NotNull
     public PsiElement setName(@NotNull final String newName) {
         final PsiElement e = DElementFactory.createDLanguageIdentifierFromText(getProject(), newName);
+        if (e == null) {
+            throw new IllegalStateException(
+                "Something went horribly wrong while renaming. Target nane:" + newName + " Project"
+                    + getProject().toString() + " e:" + e);
+        }
         replace(e);
         return this;
     }
