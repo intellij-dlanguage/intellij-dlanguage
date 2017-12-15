@@ -12,6 +12,7 @@ import io.github.intellij.dlanguage.psi.DlangIdentifier;
 import io.github.intellij.dlanguage.psi.DlangSingleImport;
 import io.github.intellij.dlanguage.psi.DlangTypes;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
+import io.github.intellij.dlanguage.psi.references.DReference;
 import io.github.intellij.dlanguage.stubs.DlangSingleImportStub;
 import java.util.HashSet;
 import java.util.Set;
@@ -80,6 +81,9 @@ public class DlangSingleImportImpl extends DNamedStubbedPsiElementBase<DlangSing
     public String getImportedModuleName() {
         if (getGreenStub() != null) {
             return getGreenStub().getImportedModule();
+        }
+        if (getIdentifierChain() == null) {
+            return DReference.Companion.getNAME_NOT_FOUND_STRING();
         }
         if (getIdentifierChain().getText().equals(""))
             throw new IllegalStateException();
