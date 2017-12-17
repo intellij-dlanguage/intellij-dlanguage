@@ -14,7 +14,6 @@ import io.github.intellij.dlanguage.DLanguageLexerAdapter;
 import io.github.intellij.dlanguage.psi.DLanguageClassDeclaration;
 import io.github.intellij.dlanguage.psi.DLanguageIfCondition;
 import io.github.intellij.dlanguage.psi.DLanguageInterfaceDeclaration;
-import io.github.intellij.dlanguage.psi.DLanguageParameter;
 import io.github.intellij.dlanguage.psi.DLanguageTemplateParameter;
 import io.github.intellij.dlanguage.psi.DLanguageVariableDeclaration;
 import io.github.intellij.dlanguage.psi.DTokenSets;
@@ -23,6 +22,7 @@ import io.github.intellij.dlanguage.psi.DlangEnumDeclaration;
 import io.github.intellij.dlanguage.psi.DlangFunctionDeclaration;
 import io.github.intellij.dlanguage.psi.DlangIdentifier;
 import io.github.intellij.dlanguage.psi.DlangInterfaceOrClass;
+import io.github.intellij.dlanguage.psi.DlangParameter;
 import io.github.intellij.dlanguage.psi.DlangTemplateDeclaration;
 import io.github.intellij.dlanguage.psi.DlangTypes;
 import io.github.intellij.dlanguage.psi.DlangUnionDeclaration;
@@ -80,7 +80,7 @@ public class DFindUsagesProvider implements FindUsagesProvider {
             return "Template Parameter";
         } else if (element instanceof DlangTemplateDeclaration) {
             return "Template";
-        } else if (element instanceof DLanguageParameter) {
+        } else if (element instanceof DlangParameter) {
             return "Parameter";
         } else if (element instanceof DlangUnionDeclaration) {
             return "Union";

@@ -5,19 +5,22 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
-import io.github.intellij.dlanguage.psi.*;
-import io.github.intellij.dlanguage.psi.*;
+import io.github.intellij.dlanguage.psi.DLanguageAssignExpression;
+import io.github.intellij.dlanguage.psi.DLanguageParameterAttribute;
+import io.github.intellij.dlanguage.psi.DLanguageType;
+import io.github.intellij.dlanguage.psi.DLanguageTypeSuffix;
+import io.github.intellij.dlanguage.psi.DlangIdentifier;
+import io.github.intellij.dlanguage.psi.DlangParameter;
+import io.github.intellij.dlanguage.psi.DlangTypes;
+import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import io.github.intellij.dlanguage.stubs.DlangParameterStub;
+import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
-import static io.github.intellij.dlanguage.psi.DlangTypes.OP_EQ;
-import static io.github.intellij.dlanguage.psi.DlangTypes.OP_TRIPLEDOT;
-
-public class DLanguageParameterImpl extends DNamedStubbedPsiElementBase<DlangParameterStub> implements DLanguageParameter {
+public class DLanguageParameterImpl extends
+    DNamedStubbedPsiElementBase<DlangParameterStub> implements DlangParameter {
 
     public DLanguageParameterImpl(final DlangParameterStub stub, final IStubElementType type) {
         super(stub, type);
