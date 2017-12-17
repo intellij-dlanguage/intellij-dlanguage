@@ -11,6 +11,7 @@ import io.github.intellij.dlanguage.psi.DLanguageConstraint;
 import io.github.intellij.dlanguage.psi.DLanguageFunctionBody;
 import io.github.intellij.dlanguage.psi.DLanguageMemberFunctionAttribute;
 import io.github.intellij.dlanguage.psi.DLanguageParameters;
+import io.github.intellij.dlanguage.psi.DLanguageStorageClass;
 import io.github.intellij.dlanguage.psi.DLanguageTemplateParameters;
 import io.github.intellij.dlanguage.psi.DLanguageType;
 import io.github.intellij.dlanguage.psi.DlangFunctionDeclaration;
@@ -95,6 +96,12 @@ public class DLanguageFunctionDeclarationImpl extends
     @Override
     public List<DLanguageMemberFunctionAttribute> getMemberFunctionAttributes() {
         return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageMemberFunctionAttribute.class);
+    }
+
+    @NotNull
+    @Override
+    public List<DLanguageStorageClass> getStorageClasses() {
+        return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageStorageClass.class);
     }
 
     @Override
