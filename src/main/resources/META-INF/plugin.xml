@@ -185,6 +185,10 @@
             implementationClass="io.github.intellij.dlanguage.inspections.FunctionShouldBeConst"
             language="D" level="WARNING"
             shortName="FunctionShouldBeConst"/>
+        <localInspection bundle="messages.PropertiesBundle" enabledByDefault="true"
+            implementationClass="io.github.intellij.dlanguage.inspections.AutoFunctionWithoutReturn"
+            language="D" level="WARNING"
+            shortName="AutoFunctionWithoutReturn"/>
 
 
         <!--debugger-->

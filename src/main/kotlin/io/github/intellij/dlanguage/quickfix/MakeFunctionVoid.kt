@@ -16,7 +16,7 @@ class MakeFunctionVoid(elem: FunctionDeclaration) : LocalQuickFixOnPsiElement(el
         val autoElem = funcDecl.getAutoElem()!!
         val range = autoElem.textRange
         val document = file.viewProvider.document!!
-        document.replaceString(range.startOffset, range.endOffset, "auto")
+        document.replaceString(range.startOffset, range.endOffset, "void")
     }
 
 }
