@@ -59,7 +59,7 @@ public class DlangIdentifierImpl extends DNamedStubbedPsiElementBase<DlangIdenti
     }
 
     public void accept(@NotNull final DlangVisitor visitor) {
-        visitor.visitIdentifier(this);
+        visitor.visitDNamedElement(this);visitor.visitIdentifier(this);
     }
 
     public void accept(@NotNull final PsiElementVisitor visitor) {

@@ -31,6 +31,7 @@ public class DLanguageParameterImpl extends
     }
 
     public void accept(@NotNull final DlangVisitor visitor) {
+        visitor.visitDNamedElement(this);
         visitor.visitParameter(this);
     }
 

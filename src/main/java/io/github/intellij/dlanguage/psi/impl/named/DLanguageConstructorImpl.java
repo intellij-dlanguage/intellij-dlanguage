@@ -45,6 +45,7 @@ public class DLanguageConstructorImpl extends
     }
 
     public void accept(@NotNull final DlangVisitor visitor) {
+        visitor.visitDNamedElement(this);
         visitor.visitConstructor(this);
     }
 

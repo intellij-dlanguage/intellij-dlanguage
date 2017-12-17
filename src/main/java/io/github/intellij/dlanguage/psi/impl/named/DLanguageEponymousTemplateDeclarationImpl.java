@@ -30,6 +30,7 @@ public class DLanguageEponymousTemplateDeclarationImpl extends DNamedStubbedPsiE
     }
 
     public void accept(@NotNull final DlangVisitor visitor) {
+        visitor.visitDNamedElement(this);
         visitor.visitEponymousTemplateDeclaration(this);
     }
 

@@ -1,4 +1,4 @@
-package io.github.intellij.dlanguage.beginningss
+package io.github.intellij.dlanguage.inspections
 
 import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.ProblemsHolder

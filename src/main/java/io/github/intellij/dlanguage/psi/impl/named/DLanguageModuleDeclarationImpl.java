@@ -38,6 +38,7 @@ public class DLanguageModuleDeclarationImpl extends DNamedStubbedPsiElementBase<
     }
 
     public void accept(@NotNull final DlangVisitor visitor) {
+        visitor.visitDNamedElement(this);
         visitor.visitModuleDeclaration(this);
     }
 

@@ -39,7 +39,7 @@ public class DLanguageFunctionDeclarationImpl extends
     }
 
     public void accept(@NotNull DlangVisitor visitor) {
-        visitor.visitFunctionDeclaration(this);
+        visitor.visitDNamedElement(this);visitor.visitFunctionDeclaration(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {

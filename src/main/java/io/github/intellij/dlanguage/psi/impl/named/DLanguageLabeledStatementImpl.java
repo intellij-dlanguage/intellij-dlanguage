@@ -30,6 +30,7 @@ public class DLanguageLabeledStatementImpl extends DNamedStubbedPsiElementBase<D
     }
 
     public void accept(@NotNull final DlangVisitor visitor) {
+        visitor.visitDNamedElement(this);
         visitor.visitLabeledStatement(this);
     }
 

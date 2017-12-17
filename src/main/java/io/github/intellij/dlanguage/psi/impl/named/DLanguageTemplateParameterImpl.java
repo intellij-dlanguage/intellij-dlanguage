@@ -24,6 +24,7 @@ public class DLanguageTemplateParameterImpl extends DNamedStubbedPsiElementBase<
     }
 
     public void accept(@NotNull final DlangVisitor visitor) {
+        visitor.visitDNamedElement(this);
         visitor.visitTemplateParameter(this);
     }
 

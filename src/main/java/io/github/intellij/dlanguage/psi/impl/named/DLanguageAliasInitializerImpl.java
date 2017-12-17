@@ -34,7 +34,7 @@ public class DLanguageAliasInitializerImpl extends
         super(node);
     }
 
-    public void accept(@NotNull final DlangVisitor visitor) {
+    public void accept(@NotNull final DlangVisitor visitor) {visitor.visitDNamedElement(this);
         visitor.visitAliasInitializer(this);
     }
 

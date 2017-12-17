@@ -863,4 +863,12 @@ public class DlangVisitor extends PsiElementVisitor {
     public void visitNamedImportBind(final DLanguageNamedImportBindImpl dLanguageNamedImportBind) {
         visitPsiElement(dLanguageNamedImportBind);
     }
+
+    public void visitIfCondition(DLanguageIfConditionImpl dLanguageIfCondition) {
+        visitPsiElement(dLanguageIfCondition);
+    }
+
+    public void visitSingleImport(DlangSingleImportImpl dlangSingleImport) {
+        visitPsiElement(dlangSingleImport);
+    }
 }

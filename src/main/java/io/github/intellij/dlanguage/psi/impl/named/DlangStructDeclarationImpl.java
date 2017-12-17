@@ -28,7 +28,7 @@ public class DlangStructDeclarationImpl extends DNamedStubbedPsiElementBase<Dlan
         super(node);
     }
 
-    public void accept(@NotNull final DlangVisitor visitor) {
+    public void accept(@NotNull final DlangVisitor visitor) {visitor.visitDNamedElement(this);
         visitor.visitStructDeclaration(this);
     }
 

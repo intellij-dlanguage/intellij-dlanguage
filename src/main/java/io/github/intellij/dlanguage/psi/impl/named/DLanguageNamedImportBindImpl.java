@@ -27,7 +27,7 @@ public class DLanguageNamedImportBindImpl extends DNamedStubbedPsiElementBase<Dl
     }
 
     public void accept(@NotNull final DlangVisitor visitor) {
-        visitor.visitNamedImportBind(this);
+        visitor.visitDNamedElement(this);visitor.visitNamedImportBind(this);
     }
 
     public void accept(@NotNull final PsiElementVisitor visitor) {

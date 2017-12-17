@@ -26,6 +26,7 @@ public class DLanguageForeachTypeImpl extends
     }
 
     public void accept(@NotNull final DlangVisitor visitor) {
+        visitor.visitDNamedElement(this);
         visitor.visitForeachType(this);
     }
 

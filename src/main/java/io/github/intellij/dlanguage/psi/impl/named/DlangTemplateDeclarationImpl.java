@@ -31,7 +31,7 @@ public class DlangTemplateDeclarationImpl extends DNamedStubbedPsiElementBase<Dl
         super(node);
     }
 
-    public void accept(@NotNull final DlangVisitor visitor) {
+    public void accept(@NotNull final DlangVisitor visitor) {visitor.visitDNamedElement(this);
         visitor.visitTemplateDeclaration(this);
     }
 
