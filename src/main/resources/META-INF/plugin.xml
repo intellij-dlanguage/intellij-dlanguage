@@ -189,6 +189,10 @@
             implementationClass="io.github.intellij.dlanguage.inspections.AutoFunctionWithoutReturn"
             language="D" level="WARNING"
             shortName="AutoFunctionWithoutReturn"/>
+        <localInspection bundle="messages.PropertiesBundle" enabledByDefault="true"
+            implementationClass="io.github.intellij.dlanguage.inspections.BuiltinPropertyName"
+            language="D" level="WARNING"
+            shortName="BuiltinPropertyName"/>
 
 
         <!--debugger-->

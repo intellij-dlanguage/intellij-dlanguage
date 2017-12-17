@@ -17,9 +17,12 @@ class BuiltinPropertyName : LocalInspectionTool() {
     }
 }
 
-class BuiltinPropertyNameVisitor(holder: ProblemsHolder) : DlangVisitor() {
+class BuiltinPropertyNameVisitor(val holder: ProblemsHolder) : DlangVisitor() {
+    val properties = setOf<String>("init", "sizeof", "mangleof", "alignof", "stringof")
     override fun visitDNamedElement(o: DNamedElement) {
-
+        if (properties.contains(o.name)) {
+            holder.registerProblem(o, String.format("Avoid naming members '%s'. This can confuse code that depends on the '.%s' property of a type.", o.name, o.name))
+        }
     }
 }
 
