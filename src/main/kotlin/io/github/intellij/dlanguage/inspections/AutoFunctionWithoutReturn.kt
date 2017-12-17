@@ -16,25 +16,27 @@ class AutoFunctionWithoutReturn : LocalInspectionTool() {
     override fun getGroupDisplayName(): String = DlangBundle.message("d.inspections.groupname")
 
     override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor {
-        return object : DlangVisitor() {
-            override fun visitFunctionDeclaration(o: DLanguageFunctionDeclarationImpl) {
-                if (shouldWarn(o)) {
-                    holder.registerProblem(o, "Don't create auto functions without return types", MakeFunctionVoid(o))
-                }
-            }
+        return AutoFunctionReturnVisitor(holder)
+    }
+}
 
-            private fun shouldWarn(o: DLanguageFunctionDeclarationImpl): Boolean {
-                if (!o.isAuto()) {
-                    return false
-                }
-                val returnStatements = findChildrenOfType(o, DLanguageReturnStatement::class.java)
-                for (returnStatement in returnStatements) {
-                    if (returnStatement.expression != null) {
-                        return false;
-                    }
-                }
-                return true;
+class AutoFunctionReturnVisitor(val holder: ProblemsHolder) : DlangVisitor() {
+    override fun visitFunctionDeclaration(o: DLanguageFunctionDeclarationImpl) {
+        if (shouldWarn(o)) {
+            holder.registerProblem(o, "Don't create auto functions without return types", MakeFunctionVoid(o))
+        }
+    }
+
+    private fun shouldWarn(o: DLanguageFunctionDeclarationImpl): Boolean {
+        if (!o.isAuto()) {
+            return false
+        }
+        val returnStatements = findChildrenOfType(o, DLanguageReturnStatement::class.java)
+        for (returnStatement in returnStatements) {
+            if (returnStatement.expression != null) {
+                return false;
             }
         }
+        return true;
     }
 }

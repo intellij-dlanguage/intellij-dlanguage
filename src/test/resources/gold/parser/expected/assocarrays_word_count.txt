@@ -10,7 +10,7 @@ D Language File
           IDENTIFIER
             PsiElement(DlangTokenType.ID)('file')
       PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// D file I/O')
+  PsiComment(DlangTokenType.LINE_COMMENT)('// D file I/AutoFunctionReturnVisitor')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
       PsiElement(DlangTokenType.import)('import')
