@@ -6,7 +6,6 @@ import com.intellij.psi.PsiElement
 import io.github.intellij.dlanguage.DLightPlatformCodeInsightFixtureTestCase
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributes
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributesFinder
-import junit.framework.Assert
 import java.io.File
 
 /**
@@ -43,14 +42,14 @@ abstract class DAttributesFinderTestCase : DLightPlatformCodeInsightFixtureTestC
 
     protected fun doTest(succeed: Boolean, attribs: DAttributes) {
         if (succeed && elem == null) {
-            Assert.fail("Could not find reference at caret.")
+            fail("Could not find reference at caret.")
         }
         val finder = DAttributesFinder(elem!!)
         finder.recurseUp()
         if (succeed) {
-            Assert.assertTrue("expected attribs and actual must be equal", attribs.equals(finder.attributes))
+            assertTrue("expected attribs and actual must be equal", attribs.equals(finder.attributes))
         } else {
-            Assert.assertFalse("Test should not have suceeded", attribs.equals(finder.attributes))
+            assertFalse("Test should not have suceeded", attribs.equals(finder.attributes))
         }
     }
 }
