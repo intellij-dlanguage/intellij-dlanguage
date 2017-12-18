@@ -31,7 +31,7 @@ public class DLanguageDeclaratorImpl extends
     }
 
     public void accept(@NotNull final DlangVisitor visitor) {
-        visitor.visitDeclarator(this);
+        visitor.visitDNamedElement(this);visitor.visitDeclarator(this);
     }
 
     public void accept(@NotNull final PsiElementVisitor visitor) {

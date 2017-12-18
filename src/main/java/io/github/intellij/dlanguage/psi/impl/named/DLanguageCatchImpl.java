@@ -34,7 +34,7 @@ public class DLanguageCatchImpl extends DNamedStubbedPsiElementBase<DlangCatchSt
     }
 
     public void accept(@NotNull final DlangVisitor visitor) {
-        visitor.visitCatch(this);
+        visitor.visitDNamedElement(this);visitor.visitCatch(this);
     }
 
     public void accept(@NotNull final PsiElementVisitor visitor) {

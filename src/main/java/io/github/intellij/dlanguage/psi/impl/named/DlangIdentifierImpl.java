@@ -18,7 +18,6 @@ import io.github.intellij.dlanguage.psi.DLanguageEponymousTemplateDeclaration;
 import io.github.intellij.dlanguage.psi.DLanguageIfCondition;
 import io.github.intellij.dlanguage.psi.DLanguageInterfaceDeclaration;
 import io.github.intellij.dlanguage.psi.DLanguageLabeledStatement;
-import io.github.intellij.dlanguage.psi.DLanguageParameter;
 import io.github.intellij.dlanguage.psi.DLanguageTemplateParameter;
 import io.github.intellij.dlanguage.psi.DlangAliasInitializer;
 import io.github.intellij.dlanguage.psi.DlangAutoDeclarationPart;
@@ -32,6 +31,7 @@ import io.github.intellij.dlanguage.psi.DlangForeachType;
 import io.github.intellij.dlanguage.psi.DlangFunctionDeclaration;
 import io.github.intellij.dlanguage.psi.DlangIdentifier;
 import io.github.intellij.dlanguage.psi.DlangInterfaceOrClass;
+import io.github.intellij.dlanguage.psi.DlangParameter;
 import io.github.intellij.dlanguage.psi.DlangStructDeclaration;
 import io.github.intellij.dlanguage.psi.DlangTemplateDeclaration;
 import io.github.intellij.dlanguage.psi.DlangTypes;
@@ -59,7 +59,7 @@ public class DlangIdentifierImpl extends DNamedStubbedPsiElementBase<DlangIdenti
     }
 
     public void accept(@NotNull final DlangVisitor visitor) {
-        visitor.visitIdentifier(this);
+        visitor.visitDNamedElement(this);visitor.visitIdentifier(this);
     }
 
     public void accept(@NotNull final PsiElementVisitor visitor) {
@@ -111,7 +111,7 @@ public class DlangIdentifierImpl extends DNamedStubbedPsiElementBase<DlangIdenti
                             || element instanceof DlangTemplateDeclaration
                             || element instanceof DlangUnionDeclaration
                             || element instanceof DlangStructDeclaration
-                            || element instanceof DLanguageParameter
+                            || element instanceof DlangParameter
                             || element instanceof DLanguageTemplateParameter
                             || element instanceof DlangEnumDeclaration
                             || element instanceof DlangEnumMember || element instanceof DlangCatch
@@ -134,7 +134,8 @@ public class DlangIdentifierImpl extends DNamedStubbedPsiElementBase<DlangIdenti
                     interfaceDecl = null;
                 } else
                     interfaceDecl = ((DLanguageInterfaceDeclaration) DUtil.findParentOfType(DlangIdentifierImpl.this, DLanguageInterfaceDeclaration.class)).getInterfaceOrClass();
-                final PsiNamedElement parameterDecl = (PsiNamedElement) DUtil.findParentOfType(DlangIdentifierImpl.this, DLanguageParameter.class);
+                final PsiNamedElement parameterDecl = (PsiNamedElement) DUtil
+                    .findParentOfType(DlangIdentifierImpl.this, DlangParameter.class);
                 final PsiNamedElement templateParameterDecl = (PsiNamedElement) DUtil.findParentOfType(DlangIdentifierImpl.this, DLanguageTemplateParameter.class);
                 final PsiNamedElement enumDeclarationDecl = (PsiNamedElement) DUtil.findParentOfType(DlangIdentifierImpl.this, DlangEnumDeclaration.class);
                 final PsiNamedElement enumMemberDecl = (PsiNamedElement) DUtil

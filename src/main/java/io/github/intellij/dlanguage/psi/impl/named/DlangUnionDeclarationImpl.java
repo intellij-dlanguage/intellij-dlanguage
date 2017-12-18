@@ -29,6 +29,7 @@ public class DlangUnionDeclarationImpl extends DNamedStubbedPsiElementBase<Dlang
     }
 
     public void accept(@NotNull final DlangVisitor visitor) {
+        visitor.visitDNamedElement(this);
         visitor.visitUnionDeclaration(this);
     }
 

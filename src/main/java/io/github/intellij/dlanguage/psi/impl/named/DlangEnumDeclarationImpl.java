@@ -27,7 +27,7 @@ public class DlangEnumDeclarationImpl extends DNamedStubbedPsiElementBase<DlangE
     }
 
     public void accept(@NotNull final DlangVisitor visitor) {
-        visitor.visitEnumDeclaration(this);
+        visitor.visitDNamedElement(this);visitor.visitEnumDeclaration(this);
     }
 
     public void accept(@NotNull final PsiElementVisitor visitor) {

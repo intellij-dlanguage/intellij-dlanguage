@@ -37,6 +37,9 @@ public interface DlangFunctionDeclaration extends PsiElement, DNamedElement,
     @NotNull
     List<DLanguageMemberFunctionAttribute> getMemberFunctionAttributes();
 
+    @NotNull
+    List<DLanguageStorageClass> getStorageClasses();
+
     @Override
     default boolean processDeclarations(@NotNull PsiScopeProcessor processor,
         @NotNull ResolveState state,
@@ -44,5 +47,18 @@ public interface DlangFunctionDeclaration extends PsiElement, DNamedElement,
         @NotNull PsiElement place) {
         return ScopeProcessorImpl.INSTANCE
             .processDeclarations(this, processor, state, lastParent, place);
+    }
+
+    default DLanguageStorageClass getAutoElem() {
+        for (DLanguageStorageClass storageClass : getStorageClasses()) {
+            if(storageClass.getKW_AUTO() != null)
+                return storageClass;
+        }
+        return null;
+    }
+
+    default public boolean isAuto() {
+        return getAutoElem() != null;
+
     }
 }

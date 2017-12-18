@@ -32,6 +32,7 @@ public class DlangInterfaceOrClassImpl extends DNamedStubbedPsiElementBase<Dlang
     }
 
     public void accept(@NotNull final DlangVisitor visitor) {
+        visitor.visitDNamedElement(this);
         visitor.visitInterfaceOrClass(this);
     }
 

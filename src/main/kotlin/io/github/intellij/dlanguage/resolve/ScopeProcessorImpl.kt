@@ -4,6 +4,8 @@ import com.intellij.openapi.diagnostic.Logger
 import com.intellij.psi.PsiElement
 import com.intellij.psi.ResolveState
 import com.intellij.psi.scope.PsiScopeProcessor
+import io.github.intellij.dlanguage.psi.DLanguageFunctionLiteralExpression
+import io.github.intellij.dlanguage.psi.DLanguageLambdaExpression
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil.processDeclaration
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil.processParameters
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil.processTemplateParameters
@@ -87,7 +89,7 @@ object ScopeProcessorImpl {
     }
 
     @Suppress("UNUSED_PARAMETER")
-    fun processDeclarations(element: io.github.intellij.dlanguage.psi.DLanguageFunctionLiteralExpression,
+    fun processDeclarations(element: DLanguageFunctionLiteralExpression,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
                             lastParent: PsiElement,
@@ -107,7 +109,7 @@ object ScopeProcessorImpl {
     }
 
     @Suppress("UNUSED_PARAMETER")
-    fun processDeclarations(element: io.github.intellij.dlanguage.psi.DLanguageLambdaExpression,
+    fun processDeclarations(element: DLanguageLambdaExpression,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
                             lastParent: PsiElement,

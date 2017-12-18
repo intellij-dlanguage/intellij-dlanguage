@@ -106,7 +106,7 @@ static this() {
     types_children["FunctionAttribute"] = ["AtAttribute","KW_PURE","KW_NOTHROW"];
     types_children["FunctionBody"] = ["BlockStatement","InStatement","OutStatement","BodyStatement"];
     types_children["FunctionCallExpression"] = ["Type", "Arguments", "UnaryExpression",  "TemplateArguments"];
-    named_children["FunctionDeclaration"] = ["Type", "Identifier",  "TemplateParameters", "Parameters",  "Constraint",  "FunctionBody","MemberFunctionAttribute*"];
+    named_children["FunctionDeclaration"] = ["Type", "Identifier",  "TemplateParameters", "Parameters",  "Constraint",  "FunctionBody","MemberFunctionAttribute*","StorageClass*"];
     types_children["FunctionLiteralExpression"] = ["Type","KW_FUNCTION","KW_DELEGATE","Parameters","FunctionAttribute*","FunctionBody","Identifier"];
     types_children["GotoStatement"] = ["Identifier","Expression","KW_DEFAULT","KW_CASE","KW_GOTO","OP_SCOLON"];
     types_children["IdentifierChain"] = ["Identifier*", "OP_DOT*"];

@@ -28,7 +28,7 @@ public class DLanguageEnumMemberImpl extends
     }
 
     public void accept(@NotNull final DlangVisitor visitor) {
-        visitor.visitEnumMember(this);
+        visitor.visitDNamedElement(this);visitor.visitEnumMember(this);
     }
 
     public void accept(@NotNull final PsiElementVisitor visitor) {
