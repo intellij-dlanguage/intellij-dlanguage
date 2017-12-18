@@ -1,5 +1,5 @@
 name "core"
-description "Basic I/AutoFunctionReturnVisitor and concurrency primitives, as well as low level utility functions"
+description "Basic I/O and concurrency primitives, as well as low level utility functions"
 
 dependency "vibe-d:data" version=">=0.0.0"
 dependency "vibe-d:utils" version=">=0.0.0"
