@@ -83,6 +83,7 @@ public abstract class DNamedStubbedPsiElementBase<T extends DNamedStubBase<?>> e
     }
 
     public DAttributes getAttributes() {
+        //todo this can be slow and have an O(n^2) complexity during indexing
         if (getGreenStub() != null) {
             return getGreenStub().getAttributes();
         }

@@ -16,7 +16,7 @@ class EmptyStatement : LocalInspectionTool() {
         return EmptyStatementVisitor(holder)
     }
 
-    override fun getDescriptionFileName(): String = "RenameStatement.html"
+    override fun getDescriptionFileName(): String = "EmptyStatement.html"
     override fun getDisplayName(): String = "Empty Statement"
     override fun getGroupDisplayName(): String = DlangBundle.message("d.inspections.groupname")
 }
