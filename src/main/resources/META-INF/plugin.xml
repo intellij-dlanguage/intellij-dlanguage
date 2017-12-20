@@ -197,7 +197,11 @@
         <localInspection bundle="messages.PropertiesBundle" enabledByDefault="true"
             implementationClass="io.github.intellij.dlanguage.inspections.FormatNumbersForReadability"
             language="D" level="WARNING"
-            shortName="BuiltinPropertyName"/>
+            shortName="FormatNumbersForReadability"/>
+        <localInspection bundle="messages.PropertiesBundle" enabledByDefault="true"
+            implementationClass="io.github.intellij.dlanguage.inspections.CatchingGeneralExceptions"
+            language="D" level="WARNING"
+            shortName="CatchingGeneralExceptions"/>
 
 
         <!--debugger-->
