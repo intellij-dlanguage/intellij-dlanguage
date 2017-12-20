@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED_PARAMETER")
+
 package io.github.intellij.dlanguage.resolve.processors.parameters
 
 import com.intellij.openapi.util.Condition
