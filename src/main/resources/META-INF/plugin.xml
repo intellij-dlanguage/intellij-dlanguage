@@ -12,8 +12,9 @@
     ]]></description>
 
     <change-notes><![CDATA[
-        <b>v1.15 - v1.15.2</b><br/>
+        <b>v1.15 - v1.15.4</b><br/>
         <ul>
+            <li>reworked code folding</li>
             <li>Structure View (1.15.2)</li>
             <li>various bug fixes</li>
         </ul>
@@ -30,7 +31,7 @@
     </change-notes>
 
     <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
-    <idea-version since-build="171" until-build="173.*"/>
+    <idea-version since-build="172" until-build="173.*"/>
 
     <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
          on how to target different products -->

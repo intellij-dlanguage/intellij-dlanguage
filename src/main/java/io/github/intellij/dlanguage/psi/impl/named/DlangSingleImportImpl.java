@@ -6,16 +6,18 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.DLanguageIdentifierChain;
+import io.github.intellij.dlanguage.psi.DLanguageImportBind;
+import io.github.intellij.dlanguage.psi.DLanguageImportBindings;
 import io.github.intellij.dlanguage.psi.DLanguageImportDeclaration;
 import io.github.intellij.dlanguage.psi.DlangIdentifier;
 import io.github.intellij.dlanguage.psi.DlangSingleImport;
 import io.github.intellij.dlanguage.psi.DlangTypes;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
+import io.github.intellij.dlanguage.psi.references.DReference;
 import io.github.intellij.dlanguage.stubs.DlangSingleImportStub;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -70,8 +72,17 @@ public class DlangSingleImportImpl extends DNamedStubbedPsiElementBase<DlangSing
                 e.printStackTrace();
             }
         }
-        if (((DLanguageImportDeclaration) getParent()).getImportBindings() != null) {
-            return ((DLanguageImportDeclaration) getParent()).getImportBindings().getImportBinds().stream().map(dLanguageImportBind -> dLanguageImportBind.getIdentifier().getName()).collect(Collectors.toSet());
+        final DLanguageImportBindings importBindings = ((DLanguageImportDeclaration) getParent())
+            .getImportBindings();
+        if (importBindings != null) {
+            final Set<String> set = new HashSet<>();
+            for (final DLanguageImportBind dLanguageImportBind : importBindings.getImportBinds()) {
+                if (dLanguageImportBind.getIdentifier() != null) {
+                    final String name = dLanguageImportBind.getIdentifier().getName();
+                    set.add(name);
+                }
+            }
+            return set;
         }
         return new HashSet<>();
     }
@@ -81,6 +92,9 @@ public class DlangSingleImportImpl extends DNamedStubbedPsiElementBase<DlangSing
     public String getImportedModuleName() {
         if (getGreenStub() != null) {
             return getGreenStub().getImportedModule();
+        }
+        if (getIdentifierChain() == null) {
+            return DReference.Companion.getNAME_NOT_FOUND_STRING();
         }
         if (getIdentifierChain().getText().equals(""))
             throw new IllegalStateException();

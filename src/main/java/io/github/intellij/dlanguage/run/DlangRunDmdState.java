@@ -18,18 +18,13 @@ import com.intellij.openapi.module.Module;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.util.Key;
-import com.intellij.openapi.util.io.FileUtil;
 import io.github.intellij.dlanguage.run.exception.NoSourcesException;
 import io.github.intellij.dlanguage.DlangSdkType;
 import io.github.intellij.dlanguage.run.exception.ModuleNotFoundException;
-import io.github.intellij.dlanguage.run.exception.NoSourcesException;
 import io.github.intellij.dlanguage.run.exception.NoValidDlangSdkFound;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
 import java.util.List;
 
 public class DlangRunDmdState extends CommandLineState implements ProcessListener {
@@ -37,9 +32,8 @@ public class DlangRunDmdState extends CommandLineState implements ProcessListene
     private static final Logger LOG = Logger.getInstance(DlangRunDmdState.class);
 
     private final DlangRunDmdConfiguration config;
-    private Executor executor;
 
-    protected DlangRunDmdState(@NotNull final ExecutionEnvironment environment, @NotNull final DlangRunDmdConfiguration config) {
+    DlangRunDmdState(@NotNull final ExecutionEnvironment environment, @NotNull final DlangRunDmdConfiguration config) {
         super(environment);
         this.config = config;
     }
@@ -49,7 +43,7 @@ public class DlangRunDmdState extends CommandLineState implements ProcessListene
     public ExecutionResult execute(@NotNull final Executor executor, @NotNull final ProgramRunner runner) throws ExecutionException {
         final TextConsoleBuilder consoleBuilder = new TextConsoleBuilderImpl(config.getProject());
         setConsoleBuilder(consoleBuilder);
-        this.executor = executor;
+
         return super.execute(executor, runner);
     }
 
@@ -57,8 +51,8 @@ public class DlangRunDmdState extends CommandLineState implements ProcessListene
     @Override
     protected ProcessHandler startProcess() throws ExecutionException {
         try {
-            final GeneralCommandLine dmdCommandLine = getDmdCommandLine(config);
-            final OSProcessHandler handler = new OSProcessHandler(dmdCommandLine.createProcess(), dmdCommandLine.getCommandLineString());
+            final GeneralCommandLine cmd = getDmdCommandLine(config);
+            final OSProcessHandler handler = new OSProcessHandler(cmd.createProcess(), cmd.getCommandLineString());
             handler.addProcessListener(this);
             return handler;
         } catch (final NoValidDlangSdkFound e) {
@@ -84,18 +78,7 @@ public class DlangRunDmdState extends CommandLineState implements ProcessListene
 
     /**
      * Build command line:
-     * <code>
-     * dmd @compilerArguments.txt
-     * </code>
-     * "compilerArguments.txt" is temporary file with DMD compiler arguments separated with '\n'. E.g.
-     * <code>
-     * -release
-     * -unittest
-     * -od{objFilesDir}
-     * -of{outputFilePath}
-     * sourceFile1.d
-     * sourceFile2.d
-     * </code>
+     * <code>dmd -release -unittest -od{objFilesDir} -of{outputFilePath} sourceFile1.d sourceFile2.d</code>
      */
     private GeneralCommandLine getDmdCommandLine(final DlangRunDmdConfiguration config)
         throws ModuleNotFoundException, NoValidDlangSdkFound, NoSourcesException, ExecutionException {
@@ -111,10 +94,12 @@ public class DlangRunDmdState extends CommandLineState implements ProcessListene
             final DlangSdkType dlangSdkType = DlangSdkType.class.cast(sdk.getSdkType());
             final List<String> dmdParameters = DlangDmdConfigToArgsConverter.getDmdParameters(config, module);
 
-            final GeneralCommandLine cmd = new GeneralCommandLine();
-            cmd.withWorkDirectory(config.getProject().getBasePath());
-            cmd.setExePath(dlangSdkType.getDmdPath(sdk));
-            cmd.addParameter(tempFileWithParameters(dmdParameters));
+            final GeneralCommandLine cmd = new GeneralCommandLine()
+                .withWorkDirectory(config.getProject().getBasePath())
+                .withCharset(Charset.defaultCharset())
+                .withExePath(dlangSdkType.getDmdPath(sdk))
+                .withParameters(dmdParameters);
+
             LOG.debug(String.format("dmd command: %s", cmd.getCommandLineString()));
             return cmd;
         } else {
@@ -123,27 +108,6 @@ public class DlangRunDmdState extends CommandLineState implements ProcessListene
         }
     }
 
-    //Create file with the list of all dmdParameters
-    private String tempFileWithParameters(final List<String> dmdParameters) throws ExecutionException {
-        final String sep = System.lineSeparator();
-        final File tmpFile;
-        try {
-            tmpFile = FileUtil.createTempFile("dmd", "src");
-            final OutputStreamWriter output = new OutputStreamWriter(new FileOutputStream(tmpFile), "UTF-8");
-            for (final String srcFilePath : dmdParameters) {
-                output.write(srcFilePath);
-                output.write(sep);
-            }
-            output.close();
-        } catch (final IOException exc) {
-            throw new ExecutionException("Can't create temporary file with arguments", exc);
-        }
-
-        return "@" + tmpFile.getAbsolutePath();
-
-    }
-
-    /* Implementations of ProcessListener interface methods */
     @Override
     public void startNotified(final ProcessEvent event) {
         //skip

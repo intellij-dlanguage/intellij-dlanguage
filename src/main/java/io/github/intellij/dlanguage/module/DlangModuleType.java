@@ -55,11 +55,6 @@ public class DlangModuleType extends ModuleType<DlangModuleBuilder> {
         return DlangBundle.INSTANCE.message("module.description");
     }
 
-    //    @Override
-    public Icon getBigIcon() {
-        return DlangIcons.FILE;
-    }
-
     @Override
     public Icon getNodeIcon(@Deprecated final boolean b) {
         return DlangIcons.FILE;

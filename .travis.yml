@@ -25,26 +25,25 @@ env:
 jobs:
   include:
     - stage: Build and Test
-      env: ORG_GRADLE_PROJECT_ideaVersion=LATEST-EAP-SNAPSHOT
-    - env: ORG_GRADLE_PROJECT_ideaVersion=173-SNAPSHOT
+      env: ORG_GRADLE_PROJECT_ideaVersion=181-SNAPSHOT
+    - env: ORG_GRADLE_PROJECT_ideaVersion=2017.3
     - env: ORG_GRADLE_PROJECT_ideaVersion=2017.2.6
     - env: ORG_GRADLE_PROJECT_ideaVersion=2017.2.5
-    - env: ORG_GRADLE_PROJECT_ideaVersion=2017.1.5
-    - env: ORG_GRADLE_PROJECT_ideaVersion=2017.1
+    - env: ORG_GRADLE_PROJECT_ideaVersion=2017.2
     - stage: Test Coverage
       script: ./gradlew cobertura coveralls
     - stage: Deploy EAP
       script: skip
-      env: ORG_GRADLE_PROJECT_ideaVersion=2017.1
+      env: ORG_GRADLE_PROJECT_ideaVersion=2017.2
       deploy:
         provider: script
         skip_cleanup: true
-        script: ORG_GRADLE_PROJECT_publishChannels=eap ORG_GRADLE_PROJECT_version=1.15.3-eap$TRAVIS_BUILD_NUMBER ./gradlew :publishPlugin
+        script: ORG_GRADLE_PROJECT_publishChannels=eap ORG_GRADLE_PROJECT_version=1.15.4-eap$TRAVIS_BUILD_NUMBER ./gradlew :publishPlugin
         on:
           branch: develop
     - stage: Deploy new Release
       script: skip
-      env: ORG_GRADLE_PROJECT_ideaVersion=2017.1
+      env: ORG_GRADLE_PROJECT_ideaVersion=2017.2
       deploy:
         provider: script
         skip_cleanup: true
@@ -52,4 +51,4 @@ jobs:
         on:
           branch: master
   allow_failures:
-    - env: ORG_GRADLE_PROJECT_ideaVersion=LATEST-EAP-SNAPSHOT
+    - env: ORG_GRADLE_PROJECT_ideaVersion=181-SNAPSHOT
