@@ -1,9 +1,16 @@
 package io.github.intellij.dlanguage.inspections
 
-import com.intellij.codeInspection.LocalInspectionTool
-import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.codeInsight.intention.HighPriorityAction
+import com.intellij.codeInspection.*
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.diagnostic.Logger
+import com.intellij.openapi.module.ModuleUtilCore
+import com.intellij.openapi.project.Project
+import com.intellij.openapi.roots.ModuleRootModificationUtil
+import com.intellij.openapi.roots.ui.configuration.ProjectSettingsService
+import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiElementVisitor
+import com.intellij.psi.PsiFile
 import io.github.intellij.dlanguage.DlangBundle
 import io.github.intellij.dlanguage.psi.DlangVisitor
 import io.github.intellij.dlanguage.resolve.DResolveUtil
@@ -41,7 +48,11 @@ class PossiblyUndefinedSymbol : LocalInspectionTool() {
 //                    holder.registerProblem(identifier, "Possibly undefined symbol")
 //                }
                 if (DResolveUtil.getInstance(identifier.project).findDefinitionNode(identifier, false).isEmpty() && !symbolIsDefinedByDefault(identifier)) {
-                    holder.registerProblem(identifier, "Possibly undefined symbol")//todo add quick fix
+                    val objectDotDContents = setOf<String>("string","size_t","ptrdiff_t","_d_newclass","rt_finalize","object","sizediff_t","hash_t","equals_t","wstring","dstring","selector","Object","toString","toHash","opCmp","opEquals","Monitor","lock","unlock","factory","opEquals","_d_setSameMutex","setSameMutex","Interface","classinfo","vtbl","offset","OffsetTypeInfo","ti","TypeInfo","getHash","equals","compare","tsize","swap","next","initializer","init","flags","offTi","destroy","postblit","talign","argTypes","rtInfo","TypeInfo_Typedef","base","name","m_init","TypeInfo_Enum","TypeInfo_Pointer","m_next","TypeInfo_Array","TypeInfo_StaticArray","value","len","TypeInfo_AssociativeArray","value","key","TypeInfo_Vector","TypeInfo_Function","deco","TypeInfo_Delegate","TypeInfo_Class","interfaces","ClassFlags","classInvariant","m_flags","deallocator","m_offTi","defaultConstructor","m_RTInfo","find","create","ClassInfo","TypeInfo_Interface","TypeInfo_Struct","xtoHash","xopEquals","xopCmp","xtoString","StructFlags","hasPointers","isDynamicType","m_flags","xdtor","xdtorti","xpostblit","m_align","TypeInfo_Tuple","elements","TypeInfo_Invariant","TypeInfo_Const","TypeInfo_Shared","TypeInfo_Inout","MIctorstart","MIctordone","MIstandalone","MItlsctor","MItlsdtor","MIctor","MIdtor","MIxgetMembers","MIictor","MIunitTest","MIimportedModules","MIlocalClasses","MIname","ModuleInfo","_flags","_index","opAssign","ctor","dtor","ictor","Throwable","TraceInfo","Exception","Error")//todo this isn't all public symbols in object.d
+                    if (objectDotDContents.contains(identifier.name))
+                        holder.registerProblem(identifier, "Possibly undefined symbol",SetupSDK(identifier.containingFile))
+                    else
+                        holder.registerProblem(identifier, "Possibly undefined symbol")//todo add quick fix
                 }
                 val end = System.currentTimeMillis()
                 if (end - start > 50) {
@@ -59,4 +70,27 @@ class PossiblyUndefinedSymbol : LocalInspectionTool() {
     override fun getDisplayName(): String = DlangBundle.message("d.inspections.symbol.possiblyundefined.displayname")
 
     override fun getGroupDisplayName(): String = DlangBundle.message("d.inspections.groupname")
+}
+
+class SetupSDK(file: PsiFile) : LocalQuickFixOnPsiElement(file),HighPriorityAction{
+    override fun getText(): String {
+        return "Setup SDK";//todo
+    }
+
+    override fun invoke(project: Project, file: PsiFile, startElement: PsiElement, endElement: PsiElement) {
+        val projectJdk = ProjectSettingsService.getInstance(project).chooseAndSetSdk() ?: return
+        ApplicationManager.getApplication().runWriteAction {
+            val module = ModuleUtilCore.findModuleForPsiElement(file)
+            if (module != null) {
+                ModuleRootModificationUtil.setSdkInherited(module)
+            }
+        }
+    }
+
+    override fun getFamilyName(): String {
+        return "DLang"//todo needs internationalization
+    }
+
+    override fun startInWriteAction(): Boolean = false
+
 }
