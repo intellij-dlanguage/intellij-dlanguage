@@ -193,6 +193,10 @@
             implementationClass="io.github.intellij.dlanguage.inspections.BuiltinPropertyName"
             language="D" level="WARNING"
             shortName="BuiltinPropertyName"/>
+        <localInspection bundle="messages.PropertiesBundle" enabledByDefault="true"
+            implementationClass="io.github.intellij.dlanguage.inspections.FormatNumbersForReadability"
+            language="D" level="WARNING"
+            shortName="BuiltinPropertyName"/>
 
 
         <!--debugger-->
