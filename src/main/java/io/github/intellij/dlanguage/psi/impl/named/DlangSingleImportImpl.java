@@ -1,6 +1,7 @@
 package io.github.intellij.dlanguage.psi.impl.named;
 
 import com.intellij.lang.ASTNode;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.stubs.IStubElementType;
@@ -16,6 +17,7 @@ import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import io.github.intellij.dlanguage.psi.references.DReference;
 import io.github.intellij.dlanguage.stubs.DlangSingleImportStub;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import org.jetbrains.annotations.NotNull;
@@ -65,26 +67,27 @@ public class DlangSingleImportImpl extends DNamedStubbedPsiElementBase<DlangSing
     @NotNull
     @Override
     public Set<String> getApplicableImportBinds() {
-        if (getGreenStub() != null) {
+        DlangSingleImportStub greenStub = getGreenStub();
+        if (greenStub != null) {
             try {
-                return getGreenStub().getApplicableImportBinds();
+                return greenStub.getApplicableImportBinds();
             } catch (final NullPointerException e) {
-                e.printStackTrace();
+                Logger.getInstance(DlangSingleImportImpl.class).error(e);
             }
         }
         final DLanguageImportBindings importBindings = ((DLanguageImportDeclaration) getParent())
             .getImportBindings();
         if (importBindings != null) {
             final Set<String> set = new HashSet<>();
-            for (final DLanguageImportBind dLanguageImportBind : importBindings.getImportBinds()) {
-                if (dLanguageImportBind.getIdentifier() != null) {
-                    final String name = dLanguageImportBind.getIdentifier().getName();
+            for (final DLanguageImportBind importBind : importBindings.getImportBinds()) {
+                if (importBind.getIdentifier() != null) {
+                    final @NotNull String name = importBind.getIdentifier().getName();
                     set.add(name);
                 }
             }
             return set;
         }
-        return new HashSet<>();
+        return Collections.emptySet();
     }
 
     @NotNull
