@@ -233,6 +233,8 @@ public class DlangSdkType extends SdkType {
                 if (line.contains("DFLAGS=")) {
                     final Matcher phobosMatcher = phobosPattern.matcher(line);
                     final Matcher druntimeMatcher = druntimePattern.matcher(line);
+                    phobosMatcher.find();
+                    druntimeMatcher.find();
                     phobos[0] = phobosMatcher.group(1);
                     druntime[0] = druntimeMatcher.group(1);
                 }

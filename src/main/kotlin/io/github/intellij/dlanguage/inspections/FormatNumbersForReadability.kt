@@ -10,6 +10,9 @@ import io.github.intellij.dlanguage.psi.DlangTypes
 import io.github.intellij.dlanguage.psi.DlangVisitor
 import io.github.intellij.dlanguage.quickfix.FormatNumber
 
+/**
+ * todo 100_000L is incorrectly flagged as wrong
+ */
 class FormatNumbersForReadability :LocalInspectionTool(){
     override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): DlangVisitor = FormatNumbersForReadabilityVisitor(holder)
     override fun getDescriptionFileName(): String = "NumbersReadability.html"
