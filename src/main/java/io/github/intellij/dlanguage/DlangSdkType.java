@@ -157,7 +157,7 @@ public class DlangSdkType extends SdkType {
         final SdkModificator sdkModificator = sdk.getSdkModificator();
 
         if (SystemInfo.isWindows) {
-            if (!setupSDKPathsFromConfigFile(sdk)) {
+            if (setupSDKPathsFromConfigFile(sdk)) {
                 return;
             }
         }
@@ -233,10 +233,12 @@ public class DlangSdkType extends SdkType {
                 if (line.contains("DFLAGS=")) {
                     final Matcher phobosMatcher = phobosPattern.matcher(line);
                     final Matcher druntimeMatcher = druntimePattern.matcher(line);
-                    phobosMatcher.find();
-                    druntimeMatcher.find();
-                    phobos[0] = phobosMatcher.group(1);
-                    druntime[0] = druntimeMatcher.group(1);
+                    if(phobosMatcher.find()){
+                        phobos[0] = phobosMatcher.group(1);
+                    }
+                    if(druntimeMatcher.find()){
+                        druntime[0] = druntimeMatcher.group(1);
+                    }
                 }
             });
             final String phobosPath = (new File(getDmdPath(sdk))).getParent() + phobos[0];
