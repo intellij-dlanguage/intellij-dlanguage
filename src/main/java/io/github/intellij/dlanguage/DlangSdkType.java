@@ -16,16 +16,10 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
-import com.intellij.openapi.vfs.VirtualFileSystem;
-import com.intellij.testFramework.LightVirtualFile;
-import gherkin.lexer.Fi;
 import io.github.intellij.dlanguage.icons.DlangIcons;
 import io.github.intellij.dlanguage.library.LibFileRootType;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -143,6 +137,42 @@ public class DlangSdkType extends SdkType {
         return version != null ? version : SDK_NAME;
     }
 
+    class SetupStatus{
+        private boolean runtime;
+        private boolean phobos;
+        private boolean documentation;
+
+        SetupStatus(final boolean runtime, final boolean phobos, final boolean documentation) {
+            this.runtime = runtime;
+            this.phobos = phobos;
+            this.documentation = documentation;
+        }
+
+        boolean getRuntimeStatus() {
+            return runtime;
+        }
+
+        boolean getPhobosStatus() {
+            return phobos;
+        }
+
+        boolean getDocumentationStatus() {
+            return documentation;
+        }
+
+        public void setRuntime(final boolean runtime) {
+            this.runtime = runtime;
+        }
+
+        public void setPhobos(final boolean phobos) {
+            this.phobos = phobos;
+        }
+
+        public void setDocumentation(final boolean documentation) {
+            this.documentation = documentation;
+        }
+    }
+
     /**
      * Windows has docs in 'C:\D\dmd2\html\d' and sources in ['C:\D\dmd2\src\phobos',
      * 'C:\D\dmd2\src\druntime\import'] OSX has docs in ??? and sources in
@@ -156,46 +186,79 @@ public class DlangSdkType extends SdkType {
     public void setupSdkPaths(@NotNull final Sdk sdk) {
         final SdkModificator sdkModificator = sdk.getSdkModificator();
 
+        SetupStatus status = new SetupStatus(false,false,false);
+
         if (SystemInfo.isWindows) {
-            if (setupSDKPathsFromConfigFile(sdk)) {
-                return;
-            }
+            status = setupSDKPathsFromWindowsConfigFile(sdk);
         }
 
         // documentation paths (todo: find out why using 'OrderRootType.DOCUMENTATION' didn't work)
-//        final File docDir = Paths.get(dmdHomePath, "html", "d").toFile();
-//        final VirtualFile docs = docDir.isDirectory() ? LocalFileSystem.getInstance().findFileByPath(docDir.getAbsolutePath()) : null;
-//        if (docs != null) {
-//            sdkModificator.addRoot(docs, OrderRootType.DOCUMENTATION);
-//        } else {
-//            final VirtualFile fxDocUrl = VirtualFileManager.getInstance().findFileByUrl("http://dlang.org/spec/spec.html");
-//            sdkModificator.addRoot(fxDocUrl, OrderRootType.DOCUMENTATION);
-//        }
+        if (!status.getDocumentationStatus()) {
+            setupDocumentationPath(sdk, sdkModificator, status);
+        }
 
         // add phobos to sources root
-        if (DEFAULT_PHOBOS_PATH != null) {
-            final VirtualFile phobosSource =
-                DEFAULT_PHOBOS_PATH.isDirectory() ? LocalFileSystem.getInstance()
-                    .findFileByPath(DEFAULT_PHOBOS_PATH.getAbsolutePath()) : null;
-            if (phobosSource != null) {
-                sdkModificator.addRoot(phobosSource, OrderRootType.SOURCES);
-            }
+        if (!status.getPhobosStatus()) {
+            setupPhobosPaths(sdkModificator, status);
         }
 
         // add druntime to sources root
+        if (!status.getRuntimeStatus()) {
+            setupRuntimePaths(sdkModificator, status);
+        }
+
+        sdkModificator.commitChanges();
+    }
+
+    private void setupRuntimePaths(final SdkModificator sdkModificator, final SetupStatus status) {
         if (DEFAULT_DRUNTIME_PATH != null) {
             final VirtualFile druntimeSource =
                 DEFAULT_DRUNTIME_PATH.isDirectory() ? LocalFileSystem.getInstance()
                     .findFileByPath(DEFAULT_DRUNTIME_PATH.getAbsolutePath()) : null;
             if (druntimeSource != null) {
                 sdkModificator.addRoot(druntimeSource, OrderRootType.SOURCES);
+            }else{
+                status.setRuntime(false);
+                return;
             }
         }
-
-        sdkModificator.commitChanges();
+        status.setRuntime(true);
     }
 
-    private boolean setupSDKPathsFromConfigFile(final Sdk sdk) {
+    private void setupPhobosPaths(final SdkModificator sdkModificator, final SetupStatus status) {
+        if (DEFAULT_PHOBOS_PATH != null) {
+            final VirtualFile phobosSource =
+                DEFAULT_PHOBOS_PATH.isDirectory() ? LocalFileSystem.getInstance()
+                    .findFileByPath(DEFAULT_PHOBOS_PATH.getAbsolutePath()) : null;
+            if (phobosSource != null) {
+                sdkModificator.addRoot(phobosSource, OrderRootType.SOURCES);
+            }else{
+                status.setPhobos(false);
+                return;
+            }
+        }
+        status.setPhobos(true);
+    }
+
+    private void setupDocumentationPath(@NotNull final Sdk sdk, final SdkModificator sdkModificator,
+        final SetupStatus status) {
+        final File docDir = DEFAULT_DOCUMENTATION_PATH;//Paths.get(getDmdPath(sdk), "html", "d").toFile();
+        final VirtualFile docs = docDir != null && docDir.isDirectory() ? LocalFileSystem.getInstance().findFileByPath(docDir.getAbsolutePath()) : null;
+        if (docs != null) {
+            sdkModificator.addRoot(docs, OrderRootType.DOCUMENTATION);
+        } else {
+            final VirtualFile fxDocUrl = VirtualFileManager.getInstance().findFileByUrl("http://dlang.org/spec/spec.html");
+            if(fxDocUrl == null){
+                status.setDocumentation(false);
+                return;
+            }
+            sdkModificator.addRoot(fxDocUrl, OrderRootType.DOCUMENTATION);
+        }
+        status.setDocumentation(true);
+
+    }
+
+    private SetupStatus setupSDKPathsFromWindowsConfigFile(final Sdk sdk) {
         final GeneralCommandLine commandLine = new GeneralCommandLine(getDmdPath(sdk));
         try {
             //this array works around some of the limitations of java
@@ -215,11 +278,11 @@ public class DlangSdkType extends SdkType {
             handler.waitFor();
             final String configFile = configFileArray[0];
             if (configFile == null) {
-                return false;
+                return new SetupStatus(false,false,false);
             }
             final File file = new File(configFile);
             if (!file.exists()) {
-                return false;
+                return new SetupStatus(false,false,false);
             }
             //DFLAGS="-I%@P%\..\..\src\phobos" "-I%@P%\..\..\src\druntime\import"
             final String[] phobos = new String[1];
@@ -249,18 +312,18 @@ public class DlangSdkType extends SdkType {
                 final SdkModificator sdkModificator = sdk.getSdkModificator();
                 final VirtualFile phobosVirtualFile = LocalFileSystem.getInstance().findFileByPath(phobosFile.getAbsolutePath());
                 final VirtualFile druntimeVirtualFile = LocalFileSystem.getInstance().findFileByPath(druntimeFile.getAbsolutePath());
-                if(phobosVirtualFile == null || druntimeVirtualFile == null) return false;
+                if(phobosVirtualFile == null || druntimeVirtualFile == null) return new SetupStatus(false, false,false);
                 sdkModificator.addRoot(phobosVirtualFile, OrderRootType.SOURCES);
                 sdkModificator.addRoot(druntimeVirtualFile, OrderRootType.SOURCES);
                 sdkModificator.commitChanges();
-                return true;
+                return new SetupStatus(true,true,false);
             } else {
-                return false;
+                return new SetupStatus(false, false,false);
             }
 
         } catch (final ExecutionException | IOException e) {
             Logger.getInstance(DlangSdkType.class).error(e);
-            return false;
+            return new SetupStatus(false, false,false);
         }
     }
 
@@ -286,8 +349,8 @@ public class DlangSdkType extends SdkType {
 
     @Nullable
     @Override
-    public AdditionalDataConfigurable createAdditionalDataConfigurable(final SdkModel sdkModel,
-        final SdkModificator sdkModificator) {
+    public AdditionalDataConfigurable createAdditionalDataConfigurable(@NotNull final SdkModel sdkModel,
+        @NotNull final SdkModificator sdkModificator) {
         return null;
     }
 
