@@ -1,6 +1,7 @@
 package io.github.intellij.dlanguage.resolve
 
 import com.google.common.collect.Sets
+import com.google.common.collect.Sets.newHashSet
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.roots.impl.DirectoryIndex
 import com.intellij.psi.PsiDirectory
@@ -49,7 +50,7 @@ object SpecialCaseResolve {
         return emptySet()
     }
 
-    private fun resolvePackage(parents: MutableList<io.github.intellij.dlanguage.psi.DlangIdentifier>): Set<PsiNamedElement> {
+    private fun resolvePackage(parents: MutableList<DlangIdentifier>): Set<PsiNamedElement> {
         if (parents.size == 0)
             return emptySet()
         val last = parents.last()
@@ -75,7 +76,7 @@ object SpecialCaseResolve {
 
 
     private fun resolveModule(path: IdentifierChain): Set<PsiNamedElement> {
-        return Sets.newHashSet(io.github.intellij.dlanguage.index.DModuleIndex.getFilesByModuleName(path.project, path.text, GlobalSearchScope.allScope(path.project)))
+        return newHashSet(DModuleIndex.getFilesByModuleName(path.project, path.text, GlobalSearchScope.allScope(path.project)))
     }
 
     private fun resolveScopedSymbol(import: SingleImport, scope: String, project: Project): Set<PsiNamedElement> {

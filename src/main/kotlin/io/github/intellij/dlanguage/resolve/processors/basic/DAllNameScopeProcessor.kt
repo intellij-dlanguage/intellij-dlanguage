@@ -9,15 +9,15 @@ import io.github.intellij.dlanguage.utils.Identifier
 /**
  * Created by francis on 6/15/2017.
  */
-class DAllNameScopeProcessor(var start: Identifier) : DResolveProcessor<io.github.intellij.dlanguage.psi.interfaces.DNamedElement, io.github.intellij.dlanguage.psi.interfaces.DNamedElement> {
-    override fun matches(call: io.github.intellij.dlanguage.psi.interfaces.DNamedElement, decl: io.github.intellij.dlanguage.psi.interfaces.DNamedElement): Boolean {
+class DAllNameScopeProcessor(var start: Identifier) : DResolveProcessor<DNamedElement, DNamedElement> {
+    override fun matches(call: DNamedElement, decl: DNamedElement): Boolean {
         return true
     }
 
-    override val result = mutableSetOf<io.github.intellij.dlanguage.psi.interfaces.DNamedElement>()
+    override val result = mutableSetOf<DNamedElement>()
 
     override fun execute(element: PsiElement, state: ResolveState): Boolean {
-        if (element is io.github.intellij.dlanguage.psi.interfaces.DNamedElement) {
+        if (element is DNamedElement) {
             if (element.name == start.name) {
                 result.add(element)
             }
