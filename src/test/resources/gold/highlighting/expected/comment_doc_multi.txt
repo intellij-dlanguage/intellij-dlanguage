@@ -1,3 +1,4 @@
-DlangTokenType.DOC_COMMENT ('/**')
-DlangTokenType.DOC_COMMENT (' So is this. ')
-DlangTokenType.DOC_COMMENT ('*/')
+DlangTokenType.BLOCK_COMMENT ('/*')
+DlangTokenType.BLOCK_COMMENT ('*')
+DlangTokenType.BLOCK_COMMENT (' So is this. ')
+DlangTokenType.BLOCK_COMMENT ('*/')
