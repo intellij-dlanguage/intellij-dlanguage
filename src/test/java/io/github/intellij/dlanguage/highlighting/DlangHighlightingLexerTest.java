@@ -1,6 +1,6 @@
 package io.github.intellij.dlanguage.highlighting;
 
-public class DlangHighlightingLexerTest extends DlangHighlightingLexerTestBase {
+public class DlangHighlightingLexerTest extends DHighlightingLexerTestBase {
 
     public DlangHighlightingLexerTest() {
         super("highlighting");
