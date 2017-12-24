@@ -11,13 +11,13 @@ import static io.github.intellij.dlanguage.psi.DlangTypes.*;
   private int nestedCommentDepth = 0;
   private int blockCommentDepth = 0;
 
-  public DLanguageHighlightingLexer() {
+  public DHighlightingLexer() {
     this((java.io.Reader)null);
   }
 %}
 
 %public
-%class DLanguageHighlightingLexer
+%class DHighlightingLexer
 %implements FlexLexer
 %function advance
 %type IElementType
@@ -358,6 +358,7 @@ FUNCTION_DEFINITION = {ID}\(.*\)([^;]|[\s]*|[\r]*|[\n]*)
 		}
 		return DlangTypes.NESTING_BLOCK_COMMENT;
 	}
+	\/\/        {return DlangTypes.NESTING_BLOCK_COMMENT;}
 	\n|\/|\+	{return DlangTypes.NESTING_BLOCK_COMMENT;}
 	[^/+\n]+	{return DlangTypes.NESTING_BLOCK_COMMENT;}
 }
@@ -393,6 +394,7 @@ FUNCTION_DEFINITION = {ID}\(.*\)([^;]|[\s]*|[\r]*|[\n]*)
 		}
 		return DlangTypes.DOC_COMMENT;
 	}
+	\/\/        {return DlangTypes.DOC_COMMENT;}
 	\n|\/|\*	{return DlangTypes.DOC_COMMENT;}
 	[^/**\n]+	{return DlangTypes.DOC_COMMENT;}
 }

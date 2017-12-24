@@ -176,6 +176,7 @@ HEX_EXPONENT = [pP][\+\-]? [0-9]+
 		}
 		return DlangTypes.NESTING_BLOCK_COMMENT;
 	}
+	\/\/        {return DlangTypes.NESTING_BLOCK_COMMENT;}
 	\n|\/|\+	{return DlangTypes.NESTING_BLOCK_COMMENT;}
 	[^/+\n]+	{return DlangTypes.NESTING_BLOCK_COMMENT;}
 }
