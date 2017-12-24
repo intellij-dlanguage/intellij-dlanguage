@@ -333,7 +333,6 @@ FUNCTION_DEFINITION = {ID}\(.*\)([^;]|[\s]*|[\r]*|[\n]*)
 
 <YYINITIAL> {BLOCK_COMMENT_START} {
 		yybegin(BLOCK_COMMENT_CONTENT);
-		blockCommentDepth = 1;
 		return DlangTypes.BLOCK_COMMENT;
 	}
 
@@ -366,15 +365,11 @@ FUNCTION_DEFINITION = {ID}\(.*\)([^;]|[\s]*|[\r]*|[\n]*)
 
 <BLOCK_COMMENT_CONTENT> {
 	{BLOCK_COMMENT_START}	{
-		blockCommentDepth += 1;
 		return DlangTypes.BLOCK_COMMENT;
 	}
 
 	\/? {BLOCK_COMMENT_END}	{
-		blockCommentDepth -= 1;
-		if(blockCommentDepth == 0) {
-			yybegin(YYINITIAL); //Exit nesting comment block
-		}
+    	yybegin(YYINITIAL);
 		return DlangTypes.BLOCK_COMMENT;
 	}
 	\/\/        {return DlangTypes.BLOCK_COMMENT;}

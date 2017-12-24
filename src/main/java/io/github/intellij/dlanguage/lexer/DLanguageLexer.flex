@@ -9,7 +9,6 @@ import io.github.intellij.dlanguage.psi.DlangTypes;
 %{
 
   private int nestedCommentDepth = 0;
-  private int blockCommentDepth = 0;
   private int tokenStringDepth = 0;
 
   public DlangLexer() {
@@ -104,7 +103,7 @@ DECIMAL_EXPONENT = [eE][\+\-]? [0-9_]+
 HEX_FLOAT = 0[xX] ([0-9a-fA-F]* \.)? [0-9a-fA-F]+ {HEX_EXPONENT}
 HEX_EXPONENT = [pP][\+\-]? [0-9]+
 
-%state WAITING_VALUE, NESTING_COMMENT_CONTENT BLOCK_COMMENT_CONTENT TOKEN_STRING_CONTENT
+%state WAITING_VALUE, NESTING_COMMENT_CONTENT, TOKEN_STRING_CONTENT, BLOCK_COMMENT_CONTENT
 
 %%
 
@@ -147,7 +146,6 @@ HEX_EXPONENT = [pP][\+\-]? [0-9]+
 
 <YYINITIAL> {BLOCK_COMMENT_START} {
 		yybegin(BLOCK_COMMENT_CONTENT);
-		blockCommentDepth = 1;
 		return DlangTypes.BLOCK_COMMENT;
 	}
 
@@ -183,15 +181,11 @@ HEX_EXPONENT = [pP][\+\-]? [0-9]+
 
 <BLOCK_COMMENT_CONTENT> {
 	{BLOCK_COMMENT_START}	{
-		blockCommentDepth += 1;
 		return DlangTypes.BLOCK_COMMENT;
 	}
 
 	\/? {BLOCK_COMMENT_END}	{
-		blockCommentDepth -= 1;
-		if(blockCommentDepth == 0) {
-			yybegin(YYINITIAL); //Exit nesting comment block
-		}
+		yybegin(YYINITIAL);
 		return DlangTypes.BLOCK_COMMENT;
 	}
 	\/\/        {return DlangTypes.BLOCK_COMMENT;}
