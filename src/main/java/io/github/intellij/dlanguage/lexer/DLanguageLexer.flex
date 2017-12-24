@@ -193,6 +193,7 @@ HEX_EXPONENT = [pP][\+\-]? [0-9]+
 		}
 		return DlangTypes.BLOCK_COMMENT;
 	}
+	\/\/        {return DlangTypes.BLOCK_COMMENT;}
 	\n|\/|\*	{return DlangTypes.BLOCK_COMMENT;}
 	[^/*\n]+	{return DlangTypes.BLOCK_COMMENT;}
 }
