@@ -37,8 +37,8 @@ LINE_DOC="///".*
 BLOCK_COMMENT_START = "/*"
 BLOCK_COMMENT_END = "*/"
 
-DOC_COMMENT_START = "/**"
-DOC_COMMENT_END = "*/"
+//DOC_COMMENT_START = "/**"
+//DOC_COMMENT_END = "*/"
 
 SHEBANG = "#!" ([^\r\n])* (\r|\n|\r\n)?
 
@@ -316,7 +316,8 @@ OPERATOR = (":"    |
 
 FUNCTION_DEFINITION = {ID}\(.*\)([^;]|[\s]*|[\r]*|[\n]*)
 
-%state WAITING_VALUE, NESTING_COMMENT_CONTENT BLOCK_COMMENT_CONTENT DOC_COMMENT_CONTENT MODULE_VALUE FUNCTION_VALUE
+%state WAITING_VALUE, NESTING_COMMENT_CONTENT BLOCK_COMMENT_CONTENT MODULE_VALUE FUNCTION_VALUE
+/*DOC_COMMENT_CONTENT */
 
 
 %%
@@ -336,11 +337,11 @@ FUNCTION_DEFINITION = {ID}\(.*\)([^;]|[\s]*|[\r]*|[\n]*)
 		return DlangTypes.BLOCK_COMMENT;
 	}
 
-<YYINITIAL> {DOC_COMMENT_START} {
-		yybegin(DOC_COMMENT_CONTENT);
-		blockCommentDepth = 1;
-		return DlangTypes.DOC_COMMENT;
-	}
+//<YYINITIAL> {DOC_COMMENT_START} {
+//		yybegin(DOC_COMMENT_CONTENT);
+//		blockCommentDepth = 1;
+//		return DlangTypes.DOC_COMMENT;
+//	}
 
 //<YYINITIAL> {CHARACTER_LITERAL} { return CHARACTER_LITERAL; }
 
@@ -351,7 +352,7 @@ FUNCTION_DEFINITION = {ID}\(.*\)([^;]|[\s]*|[\r]*|[\n]*)
 		return DlangTypes.NESTING_BLOCK_COMMENT;
 	}
 
-	{NESTING_BLOCK_COMMENT_END}	{
+	\/? {NESTING_BLOCK_COMMENT_END}	{
 		nestedCommentDepth -= 1;
 		if(nestedCommentDepth == 0) {
 			yybegin(YYINITIAL); //Exit nesting comment block
@@ -369,7 +370,7 @@ FUNCTION_DEFINITION = {ID}\(.*\)([^;]|[\s]*|[\r]*|[\n]*)
 		return DlangTypes.BLOCK_COMMENT;
 	}
 
-	{BLOCK_COMMENT_END}	{
+	\/? {BLOCK_COMMENT_END}	{
 		blockCommentDepth -= 1;
 		if(blockCommentDepth == 0) {
 			yybegin(YYINITIAL); //Exit nesting comment block
@@ -381,23 +382,23 @@ FUNCTION_DEFINITION = {ID}\(.*\)([^;]|[\s]*|[\r]*|[\n]*)
 	[^/*\n]+	{return DlangTypes.BLOCK_COMMENT;}
 }
 
-<DOC_COMMENT_CONTENT> {
-	{DOC_COMMENT_START}	{
-		blockCommentDepth += 1;
-		return DlangTypes.DOC_COMMENT;
-	}
-
-	{DOC_COMMENT_END}	{
-		blockCommentDepth -= 1;
-		if(blockCommentDepth == 0) {
-			yybegin(YYINITIAL); //Exit nesting comment block
-		}
-		return DlangTypes.DOC_COMMENT;
-	}
-	\/\/        {return DlangTypes.DOC_COMMENT;}
-	\n|\/|\*	{return DlangTypes.DOC_COMMENT;}
-	[^/**\n]+	{return DlangTypes.DOC_COMMENT;}
-}
+//<DOC_COMMENT_CONTENT> {
+//	{DOC_COMMENT_START}	{
+//		blockCommentDepth += 1;
+//		return DlangTypes.DOC_COMMENT;
+//	}
+//
+//	\/? {DOC_COMMENT_END}	{
+//		blockCommentDepth -= 1;
+//		if(blockCommentDepth == 0) {
+//			yybegin(YYINITIAL); //Exit nesting comment block
+//		}
+//		return DlangTypes.DOC_COMMENT;
+//	}
+//	\/\/        {return DlangTypes.DOC_COMMENT;}
+//	\n|\/|\*	{return DlangTypes.DOC_COMMENT;}
+//	[^/**\n]+	{return DlangTypes.DOC_COMMENT;}
+//}
 
 // module import
 <YYINITIAL> module {

@@ -10,8 +10,6 @@ import com.intellij.rt.execution.junit.FileComparisonFailure;
 import com.intellij.testFramework.LexerTestCase;
 import com.intellij.testFramework.TestDataFile;
 import com.intellij.testFramework.VfsTestUtil;
-import io.github.intellij.dlanguage.DlangHighlightingLexer;
-import io.github.intellij.dlanguage.DlangHighlightingLexer;
 import org.jetbrains.annotations.NonNls;
 
 import java.io.File;
@@ -19,12 +17,12 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public abstract class DlangHighlightingLexerTestBase extends LexerTestCase {
+public abstract class DHighlightingLexerTestBase extends LexerTestCase {
 
     private final String srcPath = getDirPath() + File.separator + "highlighting";
     private final String myExpectPath;
 
-    DlangHighlightingLexerTestBase(final String expectPath) {
+    DHighlightingLexerTestBase(final String expectPath) {
         super();
         myExpectPath = getDirPath() + File.separator + expectPath;
     }
@@ -53,7 +51,7 @@ public abstract class DlangHighlightingLexerTestBase extends LexerTestCase {
 
     @Override
     protected Lexer createLexer() {
-        return new FlexAdapter(new DlangHighlightingLexer(null));
+        return new FlexAdapter(new DHighlightingLexer(null));
     }
 
     @Override

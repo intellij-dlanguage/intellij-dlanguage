@@ -169,7 +169,7 @@ HEX_EXPONENT = [pP][\+\-]? [0-9]+
 		return DlangTypes.NESTING_BLOCK_COMMENT;
 	}
 
-	{NESTING_BLOCK_COMMENT_END}	{
+	\/? {NESTING_BLOCK_COMMENT_END}	{
 		nestedCommentDepth -= 1;
 		if(nestedCommentDepth == 0) {
 			yybegin(YYINITIAL); //Exit nesting comment block
@@ -187,7 +187,7 @@ HEX_EXPONENT = [pP][\+\-]? [0-9]+
 		return DlangTypes.BLOCK_COMMENT;
 	}
 
-	{BLOCK_COMMENT_END}	{
+	\/? {BLOCK_COMMENT_END}	{
 		blockCommentDepth -= 1;
 		if(blockCommentDepth == 0) {
 			yybegin(YYINITIAL); //Exit nesting comment block
