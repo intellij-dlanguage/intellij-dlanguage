@@ -189,7 +189,7 @@ public class DlangSdkType extends SdkType {
         SetupStatus status = new SetupStatus(false,false,false);
 
         if (SystemInfo.isWindows) {
-            status = setupSDKPathsFromWindowsConfigFile(sdk);
+            status = setupSDKPathsFromWindowsConfigFile(sdk,sdkModificator);
         }
 
         // documentation paths (todo: find out why using 'OrderRootType.DOCUMENTATION' didn't work)
@@ -242,23 +242,25 @@ public class DlangSdkType extends SdkType {
 
     private void setupDocumentationPath(@NotNull final Sdk sdk, final SdkModificator sdkModificator,
         final SetupStatus status) {
-        final File docDir = DEFAULT_DOCUMENTATION_PATH;//Paths.get(getDmdPath(sdk), "html", "d").toFile();
-        final VirtualFile docs = docDir != null && docDir.isDirectory() ? LocalFileSystem.getInstance().findFileByPath(docDir.getAbsolutePath()) : null;
-        if (docs != null) {
-            sdkModificator.addRoot(docs, OrderRootType.DOCUMENTATION);
-        } else {
-            final VirtualFile fxDocUrl = VirtualFileManager.getInstance().findFileByUrl("http://dlang.org/spec/spec.html");
-            if(fxDocUrl == null){
-                status.setDocumentation(false);
-                return;
-            }
-            sdkModificator.addRoot(fxDocUrl, OrderRootType.DOCUMENTATION);
-        }
-        status.setDocumentation(true);
+//        final File docDir = DEFAULT_DOCUMENTATION_PATH;//Paths.get(getDmdPath(sdk), "html", "d").toFile();
+//        final VirtualFile docs = docDir != null && docDir.isDirectory() ? LocalFileSystem.getInstance().findFileByPath(docDir.getAbsolutePath()) : null;
+//        if (docs != null) {
+//            sdkModificator.addRoot(docs, OrderRootType.DOCUMENTATION);
+//        } else {
+//            final VirtualFile fxDocUrl = VirtualFileManager.getInstance().findFileByUrl("http://dlang.org/spec/spec.html");
+//            if(fxDocUrl == null){
+//                status.setDocumentation(false);
+//                return;
+//            }
+//            sdkModificator.addRoot(fxDocUrl, OrderRootType.DOCUMENTATION);
+//        }
+        status.setDocumentation(true);//todo adding documentation doesn't work but its not clear why
 
     }
 
-    private SetupStatus setupSDKPathsFromWindowsConfigFile(final Sdk sdk) {
+    @NotNull
+    private SetupStatus setupSDKPathsFromWindowsConfigFile(final Sdk sdk,
+        final SdkModificator sdkModificator) {
         final GeneralCommandLine commandLine = new GeneralCommandLine(getDmdPath(sdk));
         try {
             //this array works around some of the limitations of java
@@ -309,13 +311,11 @@ public class DlangSdkType extends SdkType {
             final File phobosFile = new File(phobosPath);
             final File druntimeFile = new File(druntimePath);
             if (phobosFile.exists() && druntimeFile.exists()) {
-                final SdkModificator sdkModificator = sdk.getSdkModificator();
                 final VirtualFile phobosVirtualFile = LocalFileSystem.getInstance().findFileByPath(phobosFile.getAbsolutePath());
                 final VirtualFile druntimeVirtualFile = LocalFileSystem.getInstance().findFileByPath(druntimeFile.getAbsolutePath());
                 if(phobosVirtualFile == null || druntimeVirtualFile == null) return new SetupStatus(false, false,false);
                 sdkModificator.addRoot(phobosVirtualFile, OrderRootType.SOURCES);
                 sdkModificator.addRoot(druntimeVirtualFile, OrderRootType.SOURCES);
-                sdkModificator.commitChanges();
                 return new SetupStatus(true,true,false);
             } else {
                 return new SetupStatus(false, false,false);
