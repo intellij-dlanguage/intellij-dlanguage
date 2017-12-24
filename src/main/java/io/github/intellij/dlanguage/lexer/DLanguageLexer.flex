@@ -12,13 +12,13 @@ import io.github.intellij.dlanguage.psi.DlangTypes;
   private int blockCommentDepth = 0;
   private int tokenStringDepth = 0;
 
-  public DLanguageLexer() {
+  public DlangLexer() {
     this((java.io.Reader)null);
   }
 %}
 
 %public
-%class DLanguageLexer
+%class DlangLexer
 %implements FlexLexer
 %function advance
 %type IElementType
