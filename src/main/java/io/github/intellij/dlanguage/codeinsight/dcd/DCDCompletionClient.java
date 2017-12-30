@@ -69,7 +69,6 @@ public class DCDCompletionClient {
                 final String result = ExecUtil.readCommandLine(commandLine, file.getText());
 
                 if (result != null && !result.isEmpty()) {
-                    System.out.println("Result: \n" + result);
 
                     if (result.startsWith("identifiers")) {
                         final String[] tokens = result.split("\\n");
