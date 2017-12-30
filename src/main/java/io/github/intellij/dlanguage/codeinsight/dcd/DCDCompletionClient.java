@@ -30,12 +30,12 @@ public class DCDCompletionClient {
         if (module != null) {
             final String path = lookupPath();
             if (path != null) {
-                final DCDCompletionServer dcdCompletionServer = module.getComponent(DCDCompletionServer.class);
-                try {
-                    dcdCompletionServer.exec();
-                } catch (final DCDCompletionServer.DCDError dcdError) {
-                    dcdError.printStackTrace();
-                }
+               final DCDCompletionServer dcdCompletionServer = module.getComponent(DCDCompletionServer.class);
+               try {
+                   dcdCompletionServer.exec();
+               } catch (final DCDCompletionServer.DCDError dcdError) {
+                   dcdError.printStackTrace();
+               }
                 final String workingDirectory = file.getProject().getBasePath();
 
                 final GeneralCommandLine commandLine = new GeneralCommandLine();
@@ -102,6 +102,25 @@ public class DCDCompletionClient {
 
         return completions;
     }
+
+    public void shutdownServer()
+    {
+        final String path = lookupPath();
+        if(path == null) return;
+
+        final GeneralCommandLine commandLine = new GeneralCommandLine();
+        commandLine.setRedirectErrorStream(true);
+        commandLine.setExePath(path);
+        commandLine.addParameter("--shutdown");
+        Process process;
+        try {
+            process = commandLine.createProcess();
+            process.waitFor();
+        } catch (Exception e) {
+            // ignore
+        }
+    }
+
 
     @Nullable
     private String lookupPath() {

@@ -4,6 +4,7 @@ import com.intellij.codeInsight.completion.*;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.patterns.PlatformPatterns;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.Function;
@@ -25,6 +26,8 @@ public class DCompletionContributor extends CompletionContributor {
     private final DCDCompletionClient dcdCompletionClient = new DCDCompletionClient();
 
     public DCompletionContributor() {
+
+        ProgressManager.checkCanceled();
         extend(CompletionType.BASIC,
             PlatformPatterns.psiElement().withLanguage(DLanguage.INSTANCE),
             new CompletionProvider<CompletionParameters>() {

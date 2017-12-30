@@ -56,6 +56,8 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
     @NotNull
     public String flags;
 
+    public Process process;
+
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     /**
@@ -68,6 +70,13 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
         this.workingDirectory = lookupWorkingDirectory();
         // Ensure that we are notified of changes to the settings.
         module.getProject().getMessageBus().connect().subscribe(SettingsChangeNotifier.DCD_TOPIC, this);
+        try {
+            // kill in case there was a dead process
+            //kill();
+            spawnProcess();
+        } catch (DCDError dcdError) {
+            dcdError.printStackTrace();
+        }
     }
 
     private static void displayError(@NotNull final Project project, @NotNull final String message) {
@@ -75,11 +84,12 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
     }
 
     synchronized void exec() throws DCDError {
-        spawnProcess();
+        if(process == null || !process.isAlive())
+            spawnProcess();
     }
 
     private void spawnProcess() throws DCDError {
-        if(path == null || path.isEmpty()) {
+        if (path == null || path.isEmpty()) {
             LOG.warn("request made to spawn process for DCD Server but path is not set");
             return;
         }
@@ -91,6 +101,7 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
         if (isNotNullOrEmpty(flags)) {
             final List<String> importList = Arrays.asList(flags.split(","));
             for (final String item : importList) {
+                System.out.println("IMPORT: " + item);
                 parametersList.addParametersString("-I");
                 parametersList.addParametersString(item);
             }
@@ -126,7 +137,7 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
         }
 
         try {
-            commandLine.createProcess();
+            process = commandLine.createProcess();
             LOG.info("DCD process started");
         } catch (final ExecutionException e) {
             LOG.error("Error spawning DCD process", e);
@@ -149,13 +160,11 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
 
         if (sdk != null && (sdk.getSdkType() instanceof DlangSdkType)) {
             final String path = sdk.getHomePath();
+
             if (isNotNullOrEmpty(path)) {
-                if (SystemInfo.isMac) {
-                    final String root = path.replaceAll("bin", "src");
-                    compilerSources.add(root + "/phobos");
-                    compilerSources.add(root + "/druntime/import");
-                }
-                // add linux and windows here once I know how
+                final String root = path.replace("/bin", "") + "/src";
+                compilerSources.add(root + "/phobos");
+                compilerSources.add(root + "/druntime/import");
             }
         }
         return compilerSources;
@@ -180,18 +189,14 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
      * Kills the existing process.
      */
     private synchronized void kill() {
+        final DCDCompletionClient client = new DCDCompletionClient();
+        client.shutdownServer();
 
-        // in some case dead process might be created, so handling single process from IDE isn't best way
-        // what if IDE crash ?
-        // what if USER want to spawn the server manually from terminal?
-        // so let's just kill using the OS
-        try {
-            Runtime rt = Runtime.getRuntime();
-            if (System.getProperty("os.name").toLowerCase().contains("windows"))
-                rt.exec("taskkill " + "dcd-server.exe");
-            else
-                rt.exec("kill -9 " + "dcd-server");
-        } catch (final IOException e) { /* Ignored */ }
+        if (process != null) {
+            if (process.isAlive())
+                process.destroy();
+            process = null;
+        }
     }
 
     // Implemented methods for SettingsChangeNotifier
@@ -201,7 +206,7 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
         kill();
         this.path = settings.getPath();
         this.flags = settings.getFlags();
-        if(isNotNullOrEmpty(this.path)) {
+        if (isNotNullOrEmpty(this.path)) {
             restart();
         }
     }
@@ -211,14 +216,11 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
      */
     public synchronized void restart() {
         kill();
-        if(isNotNullOrEmpty(path)) {
+        if (isNotNullOrEmpty(path)) {
             try {
-                Thread.sleep(1500);
                 spawnProcess();
             } catch (final DCDError e) {
                 displayError(e.message);
-            } catch (final InterruptedException e) {
-                LOG.error(e);
             }
         }
     }
