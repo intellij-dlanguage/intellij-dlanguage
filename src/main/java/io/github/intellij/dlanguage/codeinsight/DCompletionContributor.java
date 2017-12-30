@@ -9,10 +9,11 @@ import com.intellij.psi.PsiFile;
 import com.intellij.util.Function;
 import com.intellij.util.ProcessingContext;
 import io.github.intellij.dlanguage.DLanguage;
-import io.github.intellij.dlanguage.icons.DlangIcons;
 import io.github.intellij.dlanguage.codeinsight.dcd.DCDCompletionClient;
 import io.github.intellij.dlanguage.codeinsight.dcd.DCDCompletionServer;
-import io.github.intellij.dlanguage.codeinsight.dcd.completions.Completion;
+import io.github.intellij.dlanguage.codeinsight.dcd.completions.DCDModel;
+import io.github.intellij.dlanguage.codeinsight.render.BasicRenderer;
+import io.github.intellij.dlanguage.icons.DlangIcons;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,31 +21,32 @@ import java.util.List;
 
 public class DCompletionContributor extends CompletionContributor {
 
+
     private final DCDCompletionClient dcdCompletionClient = new DCDCompletionClient();
 
     public DCompletionContributor() {
         extend(CompletionType.BASIC,
-                PlatformPatterns.psiElement().withLanguage(DLanguage.INSTANCE),
-                new CompletionProvider<CompletionParameters>() {
-                    public void addCompletions(@NotNull final CompletionParameters parameters,
-                                               final ProcessingContext context,
-                                               @NotNull final CompletionResultSet result) {
-                        final int position = parameters.getEditor().getCaretModel().getOffset();
-//                        PsiElement position = parameters.getPosition();
-                        final PsiFile file = parameters.getOriginalFile();
+            PlatformPatterns.psiElement().withLanguage(DLanguage.INSTANCE),
+            new CompletionProvider<CompletionParameters>() {
+                public void addCompletions(@NotNull final CompletionParameters parameters,
+                                           final ProcessingContext context,
+                                           @NotNull final CompletionResultSet result) {
+                    final int position = parameters.getEditor().getCaretModel().getOffset();
+                    final PsiFile file = parameters.getOriginalFile();
 
-                        List<Completion> completions = null;
-                        try {
-                            completions = dcdCompletionClient.autoComplete(position, file);
+                    List<DCDModel> completions = null;
+                    try {
+                        completions = dcdCompletionClient.autoComplete(position, file);
 
-                            for (final Completion completion : completions) {
-                                result.addElement(createLookupElement(completion.completionText(),"",completion.completionType()));
-                            }
-                        } catch (final DCDCompletionServer.DCDError dcdError) {
-                            dcdError.printStackTrace();
+                        for (final DCDModel model : completions) {
+                            result.addElement(new BasicRenderer(model));
+
                         }
+                    } catch (final DCDCompletionServer.DCDError dcdError) {
+                        dcdError.printStackTrace();
                     }
                 }
+            }
         );
     }
 
@@ -61,7 +63,7 @@ public class DCompletionContributor extends CompletionContributor {
     public static LookupElement createLookupElement(@NotNull final String name, @NotNull final String module, @NotNull final String type) {
         return LookupElementBuilder.create(name).withIcon(DlangIcons.FILE)
 //                .withTailText(" (" + module + ')', true)
-                .withTypeText(type);
+            .withTypeText(type);
     }
 
     public static final Function<String, LookupElement> stringToLookupElement = s -> LookupElementBuilder.create(s).withIcon(DlangIcons.FILE);

@@ -56,15 +56,6 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
     @NotNull
     public String flags;
 
-    @Nullable
-    private Process process;
-
-    @Nullable
-    private BufferedReader input;
-
-    @Nullable
-    private BufferedWriter output;
-
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     /**
@@ -84,17 +75,7 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
     }
 
     synchronized void exec() throws DCDError {
-        if (path != null) {
-            if (process == null) {
-                spawnProcess();
-            }
-            if (output == null) {
-                throw new InitError("Output stream was unexpectedly null.");
-            }
-            if (input == null) {
-                throw new InitError("Input stream was unexpectedly null.");
-            }
-        }
+        spawnProcess();
     }
 
     private void spawnProcess() throws DCDError {
@@ -145,14 +126,12 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
         }
 
         try {
-            process = commandLine.createProcess();
+            commandLine.createProcess();
             LOG.info("DCD process started");
         } catch (final ExecutionException e) {
             LOG.error("Error spawning DCD process", e);
             throw new InitError(e.toString());
         }
-        input = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        output = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
     }
 
     private String getRootSourceDir() {
@@ -198,19 +177,21 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
     }
 
     /**
-     * Kills the existing process and closes input and output if they exist.
+     * Kills the existing process.
      */
     private synchronized void kill() {
-        if (process != null) process.destroy();
-        process = null;
+
+        // in some case dead process might be created, so handling single process from IDE isn't best way
+        // what if IDE crash ?
+        // what if USER want to spawn the server manually from terminal?
+        // so let's just kill using the OS
         try {
-            if (input != null) input.close();
+            Runtime rt = Runtime.getRuntime();
+            if (System.getProperty("os.name").toLowerCase().contains("windows"))
+                rt.exec("taskkill " + "dcd-server.exe");
+            else
+                rt.exec("kill -9 " + "dcd-server");
         } catch (final IOException e) { /* Ignored */ }
-        input = null;
-        try {
-            if (output != null) output.close();
-        } catch (final IOException e) { /* Ignored */ }
-        output = null;
     }
 
     // Implemented methods for SettingsChangeNotifier
