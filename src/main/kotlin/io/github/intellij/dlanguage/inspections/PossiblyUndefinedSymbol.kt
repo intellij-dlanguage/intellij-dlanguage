@@ -11,10 +11,12 @@ import com.intellij.openapi.roots.ui.configuration.ProjectSettingsService
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.PsiFile
+import com.intellij.psi.util.PsiTreeUtil
 import io.github.intellij.dlanguage.DlangBundle
 import io.github.intellij.dlanguage.psi.DlangVisitor
 import io.github.intellij.dlanguage.resolve.DResolveUtil
 import io.github.intellij.dlanguage.utils.Identifier
+import io.github.intellij.dlanguage.utils.ModuleDeclaration
 
 
 /**
@@ -24,7 +26,7 @@ import io.github.intellij.dlanguage.utils.Identifier
 
 fun symbolIsDefinedByDefault(identifier: Identifier): Boolean {
     val name = identifier.name
-    if (name == "length" || name == "Exception" || name == "Throwable" || name == "popFront" || name == "Object" || name == "dup" || name == "ptr" || name == "TypeInfo" || name == "idup")//todo remove these when the runtime is added by default
+    if(PsiTreeUtil.getParentOfType(identifier,ModuleDeclaration::class.java) != null)
         return true
     return name == "sizeof" || name == "nan" || name == "init" || name == "mangleof" || name == "stringof" || name == "alignof" || name == "max" || name == "min" || name == "inifinity" || name == "dig" || name == "epsilon" || name == "mant_dig" || name == "max_10_exp" || name == "max_exp" || name == "min_10_exp" || name == "min_exp" || name == "min_normal" || name == "re" || name == "im" || name == "classinfo"
 }
@@ -59,7 +61,6 @@ class PossiblyUndefinedSymbol : LocalInspectionTool() {
                     log.info("resolve took a while" + (end - start))
                     DResolveUtil.getInstance(identifier.project).findDefinitionNode(identifier, true)
                 }
-//                log.info("time to resolve in inspection:" + (end - start))
             }
         }
     }
