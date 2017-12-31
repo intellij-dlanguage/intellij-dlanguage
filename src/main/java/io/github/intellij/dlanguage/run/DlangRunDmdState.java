@@ -103,7 +103,7 @@ public class DlangRunDmdState extends CommandLineState implements ProcessListene
             LOG.debug(String.format("dmd command: %s", cmd.getCommandLineString()));
             return cmd;
         } else {
-            LOG.debug("No valid D compiler found");
+            LOG.warn("No valid D compiler found");
             throw new NoValidDlangSdkFound();
         }
     }
