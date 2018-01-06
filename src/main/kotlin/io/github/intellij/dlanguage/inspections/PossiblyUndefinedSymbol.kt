@@ -6,6 +6,7 @@ import com.intellij.openapi.diagnostic.Logger
 import com.intellij.psi.PsiElementVisitor
 import io.github.intellij.dlanguage.DlangBundle
 import io.github.intellij.dlanguage.psi.DlangVisitor
+import io.github.intellij.dlanguage.psi.impl.named.DlangIdentifierImpl
 import io.github.intellij.dlanguage.resolve.DResolveUtil
 import io.github.intellij.dlanguage.utils.Identifier
 
@@ -26,7 +27,7 @@ class PossiblyUndefinedSymbol : LocalInspectionTool() {
     class UndefinedSymbolVisitor(val holder: ProblemsHolder) : DlangVisitor() {
 
         val log: Logger = Logger.getInstance(this::class.java)
-        override fun visitIdentifier(identifier: io.github.intellij.dlanguage.psi.impl.named.DlangIdentifierImpl?) {
+        override fun visitIdentifier(identifier: DlangIdentifierImpl) {
             if (identifier != null) {
                 val start = System.currentTimeMillis()
                 if (DResolveUtil.getInstance(identifier.project).shouldNotResolveToAnything(identifier)) {

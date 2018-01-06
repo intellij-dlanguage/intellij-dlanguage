@@ -12,6 +12,7 @@ import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
 import io.github.intellij.dlanguage.utils.*
 import java.io.IOException
 
+@Suppress("UNUSED_PARAMETER")
 /**
  * Created by francis on 7/17/2017.
  */
@@ -210,7 +211,8 @@ class DAttributesFinder {
         var pure: Boolean? = null,
         var nothrow: Boolean? = null,
         var const: Boolean? = null,
-        var immutable: Boolean? = null)
+        var immutable: Boolean? = null,
+        var enum: Boolean? = null)//enum refers to compile time not enum type
 
     val bulkAttributeApplied: BulkAttributeApplication = BulkAttributeApplication()
 
@@ -223,7 +225,8 @@ class DAttributesFinder {
         var pure: Boolean? = null,
         var nothrow: Boolean? = null,
         var const: Boolean? = null,
-        var immutable: Boolean? = null)
+        var immutable: Boolean? = null
+        /*var enum: Boolean? = null*/)
 
     val defualts: DefaultAttributes
 
@@ -236,7 +239,8 @@ class DAttributesFinder {
         val pure: Boolean = false,
         val nothrow: Boolean = false,
         val const: Boolean = false,
-        val immutable: Boolean = false)
+        val immutable: Boolean = false,
+        val enum: Boolean = false)
 
 
     fun recurseUp() {
@@ -334,6 +338,9 @@ class DAttributesFinder {
             } else if (attribute.kW_ABSTRACT != null) {
             } else if (attribute.kW_AUTO != null) {
             } else if (attribute.kW_ENUM != null) {
+                /*if(bulkAttributeApplied.enum == null){
+                    bulkAttributeApplied.enum = true
+                }*/
             } else if (attribute.kW_EXTERN != null) {
             } else if (attribute.kW_FINAL != null) {
             } else if (attribute.kW_INOUT != null) {
@@ -371,7 +378,7 @@ class DAttributesFinder {
         return updateFromParentDecl(decl)
     }
 
-    //todo at some later date maybe make these membewrs of there respective functions to make things more object -oriented
+    //todo at some later date maybe make these members of there respective functions to make things more object -oriented
     @Suppress("UNUSED_PARAMETER")
     fun defaultConstructor(constructor: Constructor): DefaultAttributes {
         return DefaultAttributes(
@@ -435,6 +442,9 @@ class DAttributesFinder {
     private fun updateFromParentDecl(decl: Declaration): DirectApplication {
         val attribs = DirectApplication()
         for (attribute in decl.attributes) {
+            if (attribute.kW_ENUM != null) {
+                attribs.enum = true
+            }
             if (attribute.kW_CONST != null) {
                 attribs.const = true
             }
@@ -575,6 +585,9 @@ class DAttributesFinder {
     }
 
     private fun updateFromStorageClass(storageClasss: DLanguageStorageClass, attribs: DirectApplication) {
+        if (storageClasss.kW_ENUM != null) {
+            attribs.enum = true
+        }
         if (storageClasss.kW_CONST != null) {
             attribs.const = true
         }
@@ -739,8 +752,12 @@ class DAttributesFinder {
         return directApplication.immutable ?: (bulkAttributeApplied.immutable ?: defualts.immutable)
     }
 
+    fun isEnum(): Boolean {
+        return directApplication.enum ?: defualts.enum
+    }
+
     val attributes: DAttributes
-        get() = DAttributes(isStatic(), visibility(), isProperty(), isNoGC(), isExtern(), isPure(), isNothrow(), isConst(), isImmutable())
+        get() = DAttributes(isStatic(), visibility(), isProperty(), isNoGC(), isExtern(), isPure(), isNothrow(), isConst(), isImmutable(), isEnum())
 
 
 }
@@ -754,7 +771,8 @@ class DAttributes(
     val pure: Boolean,
     val nothrow: Boolean,
     val const: Boolean,
-    val immutable: Boolean) {
+    val immutable: Boolean,
+    val enum: Boolean) {
     fun write(stream: StubOutputStream) {
         stream.writeBoolean(static)
         stream.writeBoolean(property)
@@ -764,14 +782,13 @@ class DAttributes(
         stream.writeBoolean(nothrow)
         stream.writeBoolean(const)
         stream.writeBoolean(immutable)
+        stream.writeBoolean(enum)
         visibility.write(stream)
     }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as DAttributes
+        if (other !is DAttributes) return false
 
         if (static != other.static) return false
         if (visibility != other.visibility) return false
@@ -782,6 +799,7 @@ class DAttributes(
         if (nothrow != other.nothrow) return false
         if (const != other.const) return false
         if (immutable != other.immutable) return false
+        if (enum != other.enum) return false
 
         return true
     }
@@ -796,6 +814,7 @@ class DAttributes(
         result = 31 * result + nothrow.hashCode()
         result = 31 * result + const.hashCode()
         result = 31 * result + immutable.hashCode()
+        result = 31 * result + enum.hashCode()
         return result
     }
 
@@ -810,9 +829,12 @@ class DAttributes(
             val nothrow = stream.readBoolean()
             val const = stream.readBoolean()
             val immutable = stream.readBoolean()
+            val enum = stream.readBoolean()
             val visibility = DAttributesFinder.Visibility.read(stream)
-            return DAttributes(static, visibility, property, noGC, extern, pure, nothrow, const, immutable)
+            return DAttributes(static, visibility, property, noGC, extern, pure, nothrow, const, immutable, enum)
         }
     }
+
+
 }
 

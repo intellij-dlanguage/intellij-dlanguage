@@ -141,5 +141,9 @@ public abstract class DNamedStubbedPsiElementBase<T extends DNamedStubBase<?>> e
         return getAttributes().getImmutable();
     }
 
+    public boolean isEnum() {
+        return getAttributes().getEnum();
+    }
+
 }
 

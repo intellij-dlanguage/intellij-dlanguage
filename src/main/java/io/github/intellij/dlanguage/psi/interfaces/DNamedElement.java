@@ -54,4 +54,6 @@ public interface DNamedElement extends DCompositeElement, PsiNameIdentifierOwner
     boolean isConst();
 
     boolean isImmutable();
+
+    boolean isEnum();
 }

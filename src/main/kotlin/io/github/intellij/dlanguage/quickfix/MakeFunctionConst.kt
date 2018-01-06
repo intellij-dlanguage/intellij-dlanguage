@@ -15,7 +15,7 @@ class MakeFunctionConst(elem: FunctionDeclaration) : LocalQuickFixOnPsiElement(e
      * if the name of the quickfix is "Create template &lt;filename&gt", the return value of getFamilyName() should be "Create template".
      * If the name of the quickfix does not depend on a specific element, simply return getName().
      */
-    override fun getFamilyName(): String = "DLang"
+    override fun getFamilyName(): String = "DLang"//todo fix, and read javadoc
 
     override fun getText(): String = "Make Function Const"
 
