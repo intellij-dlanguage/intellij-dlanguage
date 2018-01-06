@@ -206,6 +206,10 @@
             implementationClass="io.github.intellij.dlanguage.inspections.FishOperators"
             language="D" level="WARNING"
             shortName="FishOperators"/>
+        <localInspection bundle="messages.PropertiesBundle" enabledByDefault="false"
+            implementationClass="io.github.intellij.dlanguage.inspections.PhobosStyleGuidelines"
+            language="D" level="WARNING"
+            shortName="PhobosStyleGuidelines"/>
 
 
         <!--debugger-->
