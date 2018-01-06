@@ -202,6 +202,10 @@
             implementationClass="io.github.intellij.dlanguage.inspections.DeleteIsDeprecated"
             language="D" level="WARNING"
             shortName="DeleteIsDeprecated"/>
+        <localInspection bundle="messages.PropertiesBundle" enabledByDefault="true"
+            implementationClass="io.github.intellij.dlanguage.inspections.FishOperators"
+            language="D" level="WARNING"
+            shortName="FishOperators"/>
 
 
         <!--debugger-->
