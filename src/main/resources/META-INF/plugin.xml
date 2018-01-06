@@ -198,6 +198,10 @@
             implementationClass="io.github.intellij.dlanguage.inspections.EnumArrayLiteralsInClassDeclaration"
             language="D" level="WARNING"
             shortName="EnumArrayLiteralsInClassDeclaration"/>
+        <localInspection bundle="messages.PropertiesBundle" enabledByDefault="true"
+            implementationClass="io.github.intellij.dlanguage.inspections.DeleteIsDeprecated"
+            language="D" level="WARNING"
+            shortName="DeleteIsDeprecated"/>
 
 
         <!--debugger-->
