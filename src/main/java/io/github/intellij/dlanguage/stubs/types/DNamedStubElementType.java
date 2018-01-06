@@ -5,9 +5,11 @@ import com.intellij.psi.stubs.IndexSink;
 import com.intellij.psi.stubs.NamedStubBase;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
 import io.github.intellij.dlanguage.stubs.index.DAllNameIndex;
+import io.github.intellij.dlanguage.stubs.index.DMembersIndex;
 import io.github.intellij.dlanguage.stubs.index.DModuleDeclarationIndex;
-import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
-import io.github.intellij.dlanguage.stubs.index.*;
+import io.github.intellij.dlanguage.stubs.index.DPublicImportIndex;
+import io.github.intellij.dlanguage.stubs.index.DTopLevelDeclarationIndex;
+import io.github.intellij.dlanguage.stubs.index.DTopLevelDeclarationsByModule;
 import org.jetbrains.annotations.NotNull;
 
 

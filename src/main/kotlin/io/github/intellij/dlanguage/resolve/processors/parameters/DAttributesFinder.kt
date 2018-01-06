@@ -93,11 +93,22 @@ class DAttributesFinder {
         } else if (elem is DLanguageNamedImportBind) {
             defualts = defaultNamedImportBind(elem)
             directApplication = handleNamedImportBind(elem)
+        } else if (elem is VersionSpecification) {
+            defualts = defaultVersionSpecifcation(elem)
+            directApplication = handleVersionSpecification(elem)
         } else {
             throw IllegalArgumentException("bad type sent to AttributesFinder")
         }
         recurseUp()
 
+    }
+
+    private fun handleVersionSpecification(elem: VersionSpecification): DirectApplication {
+        return DirectApplication(visibility = Visibility.PUBLIC)
+    }
+
+    private fun defaultVersionSpecifcation(elem: VersionSpecification): DefaultAttributes {
+        return DefaultAttributes()
     }
 
     private fun handleNamedImportBind(elem: DLanguageNamedImportBind): DirectApplication {

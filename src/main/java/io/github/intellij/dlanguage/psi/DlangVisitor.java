@@ -182,7 +182,6 @@ import io.github.intellij.dlanguage.psi.impl.DLanguageUnaryExpressionImpl;
 import io.github.intellij.dlanguage.psi.impl.DLanguageVariableDeclarationImpl;
 import io.github.intellij.dlanguage.psi.impl.DLanguageVectorImpl;
 import io.github.intellij.dlanguage.psi.impl.DLanguageVersionConditionImpl;
-import io.github.intellij.dlanguage.psi.impl.DLanguageVersionSpecificationImpl;
 import io.github.intellij.dlanguage.psi.impl.DLanguageWhileStatementImpl;
 import io.github.intellij.dlanguage.psi.impl.DLanguageWithStatementImpl;
 import io.github.intellij.dlanguage.psi.impl.DLanguageXorExpressionImpl;
@@ -202,6 +201,7 @@ import io.github.intellij.dlanguage.psi.impl.named.DLanguageModuleDeclarationImp
 import io.github.intellij.dlanguage.psi.impl.named.DLanguageNamedImportBindImpl;
 import io.github.intellij.dlanguage.psi.impl.named.DLanguageParameterImpl;
 import io.github.intellij.dlanguage.psi.impl.named.DLanguageTemplateParameterImpl;
+import io.github.intellij.dlanguage.psi.impl.named.DLanguageVersionSpecificationImpl;
 import io.github.intellij.dlanguage.psi.impl.named.DlangEnumDeclarationImpl;
 import io.github.intellij.dlanguage.psi.impl.named.DlangIdentifierImpl;
 import io.github.intellij.dlanguage.psi.impl.named.DlangInterfaceOrClassImpl;

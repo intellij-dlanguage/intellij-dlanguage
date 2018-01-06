@@ -1,6 +1,6 @@
 
 
-package io.github.intellij.dlanguage.psi.impl;
+package io.github.intellij.dlanguage.psi.impl.named;
 
 import static io.github.intellij.dlanguage.psi.DlangTypes.INTEGER_LITERAL;
 import static io.github.intellij.dlanguage.psi.DlangTypes.KW_VERSION;
@@ -9,30 +9,45 @@ import static io.github.intellij.dlanguage.psi.DlangTypes.OP_PAR_LEFT;
 import static io.github.intellij.dlanguage.psi.DlangTypes.OP_PAR_RIGHT;
 import static io.github.intellij.dlanguage.psi.DlangTypes.OP_SCOLON;
 
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.DLanguageVersionSpecification;
 import io.github.intellij.dlanguage.psi.DlangIdentifier;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
+import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
+import io.github.intellij.dlanguage.stubs.VersionSpecificationStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 
-public class DLanguageVersionSpecificationImpl extends ASTWrapperPsiElement implements
+public class DLanguageVersionSpecificationImpl extends
+    DNamedStubbedPsiElementBase<VersionSpecificationStub> implements
     DLanguageVersionSpecification {
 
-    public DLanguageVersionSpecificationImpl(ASTNode node) {
+    public DLanguageVersionSpecificationImpl(
+        @NotNull final VersionSpecificationStub stub,
+        final IStubElementType nodeType) {
+        super(stub, nodeType);
+    }
+
+    public DLanguageVersionSpecificationImpl(final ASTNode node) {
         super(node);
     }
 
-    public void accept(@NotNull DlangVisitor visitor) {
+    @Nullable
+    @Override
+    public DlangIdentifier getNameIdentifier() {
+        return getIdentifier();
+    }
+
+    public void accept(@NotNull final DlangVisitor visitor) {
         visitor.visitVersionSpecification(this);
     }
 
-    public void accept(@NotNull PsiElementVisitor visitor) {
+    public void accept(@NotNull final PsiElementVisitor visitor) {
         if (visitor instanceof DlangVisitor) {
             accept((DlangVisitor) visitor);
         } else {

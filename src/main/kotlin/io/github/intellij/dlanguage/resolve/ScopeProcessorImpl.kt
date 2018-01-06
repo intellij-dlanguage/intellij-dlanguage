@@ -30,7 +30,7 @@ object ScopeProcessorImpl {
      * *
      * @param state
      * *
-     * @param lastParent todo make use of this do determine if scope statements/decldefs contained inside a element should be processed or not.
+     * @param lastParent todo make use of this to determine if scope statements/decldefs contained inside a element should be processed or not.
      * *
      * @param place
      * *

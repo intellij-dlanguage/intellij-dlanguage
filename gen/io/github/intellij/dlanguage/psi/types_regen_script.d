@@ -12,7 +12,7 @@ string interface_imports = `import org.jetbrains.annotations.*;
 
 string[][string] types_children;
 
-string[][string] named_children;
+deprecated string[][string] named_children;
 
 string[][string] stub_children;
 
@@ -21,7 +21,7 @@ bool[string] has_processDeclaration;
 static this() {
     types_children["AddExpression"] = ["AddExpression", "MulExpression","OP_TILDA", "OP_PLUS" , "OP_MINUS"];//todo insert from MulExpression
     types_children["AliasDeclaration"] = ["IdentifierList","OP_COMMA","StorageClass*","KW_ALIAS", "Type", "OP_SCOLON", "AliasInitializer*"];
-    named_children["AliasInitializer"] = ["Identifier","OP_EQ","StorageClass*","TemplateParameters", "Type"];
+    //named_children["AliasInitializer"] = ["Identifier","OP_EQ","StorageClass*","TemplateParameters", "Type"];
     types_children["AliasThisDeclaration"] = ["KW_ALIAS", "Identifier", "KW_THIS", "OP_SCOLON"];
     types_children["AlignAttribute"] = ["KW_ALIGN", "AssignExpression", "OP_PAR_RIGHT", "OP_PAR_LEFT"];
     types_children["AndAndExpression"] = ["AndAndExpression", "OrExpression", "OP_BOOL_AND"];
@@ -57,7 +57,7 @@ static this() {
     types_children["Attribute"] = [   "PragmaExpression", "KW_SYNCHRONIZED","KW_ABSTRACT","KW_AUTO","KW_ENUM","KW_EXTERN","KW_FINAL","KW_INOUT","KW_NOTHROW","KW_OVERRIDE","KW_PURE","KW_REF","KW___GSHARED","KW_SCOPE","KW_STATIC","KW_EXPORT", "KW_PRIVATE","KW_PROTECTED","KW_PUBLIC","AlignAttribute","Deprecated","AtAttribute","KW_PACKAGE","IdentifierChain","LinkageAttribute","KW_CONST"];
     types_children["AttributeDeclaration"] = ["OP_COLON","Attribute"];
     types_children["AutoDeclaration"] = ["StorageClass*","OP_COMMA*","OP_SCOLON","AutoDeclarationPart*"];
-    named_children["AutoDeclarationPart"] = ["Identifier","TemplateParameters","OP_EQ","Initializer"];
+    //named_children["AutoDeclarationPart"] = ["Identifier","TemplateParameters","OP_EQ","Initializer"];
     types_children["BlockStatement"] = ["DeclarationsAndStatements","OP_BRACES_RIGHT","OP_BRACES_LEFT"];
     types_children["BodyStatement"] = ["KW_BODY",  "BlockStatement"];
     types_children["BreakStatement"] = ["KW_BREAK","Identifier","OP_SCOLON"];
@@ -68,7 +68,7 @@ static this() {
     types_children["CaseStatement"] = ["KW_CASE","OP_COLON","ArgumentList","DeclarationsAndStatements"];
     types_children["CastExpression"] = ["CastQualifier", "Type","UnaryExpression","KW_CAST","OP_PAR_LEFT","OP_PAR_RIGHT"];
     types_children["CastQualifier"] = ["KW_IMMUTABLE","KW_CONST","KW_SHARED","KW_INOUT"];
-    named_children["Catch"] = ["KW_CATCH","OP_PAR_LEFT","OP_PAR_RIGHT","Type","Identifier","DeclarationOrStatement"];
+    //named_children["Catch"] = ["KW_CATCH","OP_PAR_LEFT","OP_PAR_RIGHT","Type","Identifier","DeclarationOrStatement"];
     types_children["Catches"] = ["LastCatch","Catch"];
     types_children["ClassDeclaration"] = ["KW_CLASS","InterfaceOrClass"/*"Identifier","OP_SCOLON","OP_COLON","StructBody","TemplateParameters","Constraint","BaseClassList"*/];
     types_children["CmpExpression"] = ["ShiftExpression","EqualExpression","IdentityExpression","RelExpression","InExpression"];
@@ -76,14 +76,14 @@ static this() {
     types_children["ConditionalDeclaration"] = ["CompileCondition", "Declaration*","OP_COLON","KW_ELSE","OP_BRACES_RIGHT","OP_BRACES_LEFT"];
     types_children["ConditionalStatement"] = ["CompileCondition", "DeclarationOrStatement*", "KW_ELSE","OP_BRACES_RIGHT","OP_BRACES_LEFT"];
     types_children["Constraint"] = ["KW_IF","Expression", "OP_PAR_RIGHT","OP_PAR_LEFT"];
-    named_children["Constructor"] = ["FunctionBody","OP_SCOLON","OP_PAR_RIGHT","OP_PAR_LEFT","KW_THIS","MemberFunctionAttribute*","Parameters","TemplateParameters"];
+    //named_children["Constructor"] = ["FunctionBody","OP_SCOLON","OP_PAR_RIGHT","OP_PAR_LEFT","KW_THIS","MemberFunctionAttribute*","Parameters","TemplateParameters"];
     types_children["ContinueStatement"] = ["KW_CONTINUE", "Identifier", "OP_SCOLON"];
     types_children["DebugCondition"] = ["KW_DEBUG","INTEGER_LITERAL", "Identifier", "OP_PAR_RIGHT","OP_PAR_LEFT"];
     types_children["DebugSpecification"] = ["KW_DEBUG","OP_EQ","Identifier", "INTEGER_LITERAL", "OP_SCOLON"];
     types_children["Declaration"] = ["AliasThisDeclaration","AliasDeclaration","ClassDeclaration","ConditionalDeclaration"/*,"Postblit"*/,"Constructor","Destructor","AnonymousEnumDeclaration","EponymousTemplateDeclaration","EnumDeclaration","ImportDeclaration","InterfaceDeclaration","MixinTemplateDeclaration","MixinDeclaration","PragmaDeclaration",  "SharedStaticConstructor", "SharedStaticDestructor","StaticConstructor","StaticDestructor","StaticAssertDeclaration","StructDeclaration","TemplateDeclaration","UnionDeclaration","Invariant","Unittest","VersionSpecification","DebugSpecification","Attribute*","Declaration*","OP_BRACES_RIGHT","OP_BRACES_LEFT","FunctionDeclaration","VariableDeclaration","AttributeDeclaration"];
     types_children["DeclarationOrStatement"] = ["Statement","Declaration"];
     types_children["DeclarationsAndStatements"] = ["DeclarationOrStatement*"];
-    named_children["Declarator"] = ["Identifier","OP_EQ","TemplateParameters","Initializer"];
+    //named_children["Declarator"] = ["Identifier","OP_EQ","TemplateParameters","Initializer"];
     types_children["DefaultStatement"] = ["KW_DEFAULT","OP_COLON","DeclarationsAndStatements"];
     types_children["DeleteExpression"] = ["KW_DELETE","UnaryExpression"];
     types_children["DeleteStatement"] = ["KW_DELETE"];
@@ -92,7 +92,7 @@ static this() {
     types_children["DoStatement"] = ["KW_DO","KW_WHILE","StatementNoCaseNoDefault","Expression","OP_SCOLON","OP_PAR_RIGHT","OP_PAR_LEFT"];
     types_children["EnumBody"] = [ "Identifier","OP_BRACES_RIGHT", "OP_BRACES_LEFT", "EnumMember*","OP_COMMA*","OP_SCOLON"];
 //    named_children["EnumDeclaration"] = ["Identifier","OP_COLON","KW_ENUM","Type","EnumBody"];
-    named_children["EnumMember"] = ["Identifier","OP_EQ","Type","AssignExpression"];
+//    named_children["EnumMember"] = ["Identifier","OP_EQ","Type","AssignExpression"];
     //named_children["EponymousTemplateDeclaration"] = ["Identifier", "TemplateParameters","OP_EQ","Type","OP_SCOLON","KW_ENUM","KW_ALIAS"];
     types_children["EqualExpression"] = ["ShiftExpression*","OP_EQ_EQ","OP_NOT_EQ"];
     types_children["Expression"] = ["AssignExpression*","OP_COMMA*"];
@@ -102,7 +102,7 @@ static this() {
     types_children["ForStatement"] = ["DeclarationOrStatement*", "Expression*","OP_BRACES_RIGHT","OP_BRACES_LEFT","KW_FOR","OP_SCOLON"];
     types_children["ForeachStatement"] = ["KW_FOREACH","KW_FOREACH_REVERSE","DeclarationOrStatement", "Expression*","OP_BRACES_RIGHT","OP_BRACES_LEFT","OP_DDOT","ForeachType","ForeachTypeList","OP_SCOLON"];
     types_children["ForeachTypeList"] = ["ForeachType*","OP_COMMA*"];
-    named_children["ForeachType"] = ["Type","Identifier","TypeConstructors"];
+    //named_children["ForeachType"] = ["Type","Identifier","TypeConstructors"];
     types_children["FunctionAttribute"] = ["AtAttribute","KW_PURE","KW_NOTHROW"];
     types_children["FunctionBody"] = ["BlockStatement","InStatement","OutStatement","BodyStatement"];
     types_children["FunctionCallExpression"] = ["Type", "Arguments", "UnaryExpression",  "TemplateArguments"];
@@ -143,7 +143,7 @@ static this() {
     types_children["MixinTemplateName"] = ["TypeofExpression", "IdentifierOrTemplateChain", "Symbol","OP_DOT"];
     //named_children["ModuleDeclaration"] = ["KW_MODULE", "IdentifierChain","OP_SCOLON"];
     types_children["MulExpression"] = ["MulExpression","PowExpression","OP_MOD","OP_DIV","OP_ASTERISK"];
-    named_children["NamedImportBind"] = ["Identifier", "OP_EQ"];
+    //named_children["NamedImportBind"] = ["Identifier", "OP_EQ"];
     types_children["NewAnonClassExpression"] = ["KW_NEW","KW_CLASS","Arguments*","BaseClassList", "StructBody"];
     types_children["NewExpression"] = ["KW_NEW","NewAnonClassExpression","Type", "AssignExpression", "Arguments","OP_BRACKET_LEFT","OP_BRACKET_RIGHT"];
     types_children["NonVoidInitializer"] = ["AssignExpression","ArrayInitializer","StructInitializer","FunctionBody"];
@@ -222,7 +222,7 @@ static this() {
     types_children["VariableDeclaration"] = ["AutoDeclaration",  "OP_SCOLON","Type","Declarator*","OP_COMMA*","OP_EQ","FunctionBody","StorageClass*"];
     types_children["Vector"] = ["KW___VECTOR", "Type", "OP_PAR_RIGHT","OP_PAR_LEFT"];
     types_children["VersionCondition"] = ["KW_VERSION","KW_UNITTEST","KW_ASSERT","INTEGER_LITERAL","Identifier","OP_PAR_RIGHT","OP_PAR_LEFT"];
-    types_children["VersionSpecification"] = ["KW_VERSION","OP_EQ","Identifier","OP_PAR_RIGHT","OP_PAR_LEFT","INTEGER_LITERAL","OP_SCOLON"];
+    //types_children["VersionSpecification"] = ["KW_VERSION","OP_EQ","Identifier","OP_PAR_RIGHT","OP_PAR_LEFT","INTEGER_LITERAL","OP_SCOLON"];
     types_children["WhileStatement"] = ["KW_WHILE","Expression","DeclarationOrStatement","OP_PAR_RIGHT","OP_PAR_LEFT"];
     types_children["WithStatement"] = ["KW_WITH","Expression","OP_PAR_RIGHT","OP_PAR_LEFT","StatementNoCaseNoDefault"];
     types_children["XorExpression"] = ["XorExpression", "AndExpression", "OP_XOR"];
@@ -432,7 +432,7 @@ static this() {
     has_processDeclaration["VariableDeclaration"] = false;
     has_processDeclaration["Vector"] = false;
     has_processDeclaration["VersionCondition"] = false;
-    has_processDeclaration["VersionSpecification"] = false;
+    //has_processDeclaration["VersionSpecification"] = false;
     has_processDeclaration["WhileStatement"] = false;
     has_processDeclaration["WithStatement"] = false;
     has_processDeclaration["XorExpression"] = false;

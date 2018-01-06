@@ -188,7 +188,9 @@ object ScopeProcessorImplUtil {
 
         }
         if (def.versionSpecification != null) {
-
+            if (!processor.execute(def.versionSpecification!!, state)) {
+                toContinue = false
+            }
         }
         if (def.debugSpecification != null) {
         }

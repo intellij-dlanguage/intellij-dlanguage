@@ -1,8 +1,35 @@
 package io.github.intellij.dlanguage.psi.impl;
 
 import com.intellij.psi.tree.IElementType;
-import io.github.intellij.dlanguage.stubs.types.*;
-import io.github.intellij.dlanguage.stubs.types.*;
+import io.github.intellij.dlanguage.stubs.types.AliasInitializerStubElementType;
+import io.github.intellij.dlanguage.stubs.types.AutoDeclarationPartStubElementType;
+import io.github.intellij.dlanguage.stubs.types.CatchStubElementType;
+import io.github.intellij.dlanguage.stubs.types.ConstructorStubElementType;
+import io.github.intellij.dlanguage.stubs.types.DLanguageNamedImportBindStubElementType;
+import io.github.intellij.dlanguage.stubs.types.DeclaratorStubElementType;
+import io.github.intellij.dlanguage.stubs.types.DestructorStubElementType;
+import io.github.intellij.dlanguage.stubs.types.DlangEnumMemberStubElementType;
+import io.github.intellij.dlanguage.stubs.types.DlangEponymousTemplateDeclarationStubElementType;
+import io.github.intellij.dlanguage.stubs.types.DlangForeachTypeStubElementType;
+import io.github.intellij.dlanguage.stubs.types.DlangIfConditionStubElementType;
+import io.github.intellij.dlanguage.stubs.types.DlangParameterStubElementType;
+import io.github.intellij.dlanguage.stubs.types.DlangTemplateDeclarationStubElementType;
+import io.github.intellij.dlanguage.stubs.types.DlangTemplateParameterStubElementType;
+import io.github.intellij.dlanguage.stubs.types.DlangUnionDeclarationStubElementType;
+import io.github.intellij.dlanguage.stubs.types.EnumDeclarationStubElementType;
+import io.github.intellij.dlanguage.stubs.types.FunctionDeclarationStubElementType;
+import io.github.intellij.dlanguage.stubs.types.IdentifierStubElementType;
+import io.github.intellij.dlanguage.stubs.types.InterfaceOrClassStubElementType;
+import io.github.intellij.dlanguage.stubs.types.LabeledStatementStubElementType;
+import io.github.intellij.dlanguage.stubs.types.ModuleDeclarationStubElementType;
+import io.github.intellij.dlanguage.stubs.types.SharedStaticConstructorStubElementType;
+import io.github.intellij.dlanguage.stubs.types.SharedStaticDestructorStubElementType;
+import io.github.intellij.dlanguage.stubs.types.SingleImportStubElementType;
+import io.github.intellij.dlanguage.stubs.types.StaticConstructorStubElementType;
+import io.github.intellij.dlanguage.stubs.types.StaticDestructorStubElementType;
+import io.github.intellij.dlanguage.stubs.types.StructDeclarationStubElementType;
+import io.github.intellij.dlanguage.stubs.types.UnittestStubElementType;
+import io.github.intellij.dlanguage.stubs.types.VersionSpecificationElementType;
 import org.jetbrains.annotations.NotNull;
 
 public class DElementTypeFactory {
@@ -40,6 +67,9 @@ public class DElementTypeFactory {
             return new DlangEponymousTemplateDeclarationStubElementType(name);
         if (name.equals("ENUM_MEMBER")) return new DlangEnumMemberStubElementType(name);
         if (name.equals("NAMED_IMPORT_BIND")) return new DLanguageNamedImportBindStubElementType(name);
+        if (name.equals("VERSION_SPECIFICATION")) {
+            return new VersionSpecificationElementType(name);
+        }
         throw new RuntimeException("Unknown element type: " + name);
     }
 }

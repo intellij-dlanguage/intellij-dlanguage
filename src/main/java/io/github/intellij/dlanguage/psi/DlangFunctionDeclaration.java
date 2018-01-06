@@ -57,7 +57,7 @@ public interface DlangFunctionDeclaration extends PsiElement, DNamedElement,
         return null;
     }
 
-    default public boolean isAuto() {
+    default boolean isAuto() {
         return getAutoElem() != null;
 
     }
