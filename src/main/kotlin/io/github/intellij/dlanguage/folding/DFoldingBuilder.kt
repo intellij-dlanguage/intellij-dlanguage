@@ -191,6 +191,8 @@ class DFoldingBuilder : FoldingBuilderEx(), DumbAware {
 
             val offset = decl.importDeclaration?.kW_IMPORT?.textRange?.endOffset ?: return
             val range = TextRange(offset + 1, lastTrailing.textRange.endOffset)
+            if(range.length == 0)
+                return;
             descriptors += FoldingDescriptor(importDecl, range)
         }
 
