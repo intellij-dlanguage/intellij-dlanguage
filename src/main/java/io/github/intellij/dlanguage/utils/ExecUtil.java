@@ -13,20 +13,20 @@ import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.containers.ContainerUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Helper class to perform execution related tasks, including locating programs.
  */
 public class ExecUtil {
+
     // Messages go to the log available in Help -> Show log in finder.
     private final static Logger LOG = Logger.getInstance(ExecUtil.class);
 
@@ -46,7 +46,11 @@ public class ExecUtil {
             LOG.info("No open projects so cannot find a valid path. Using '.'.");
             workDir = defaultWorkDir;
         } else {
-            workDir = projects[0].getBaseDir().getCanonicalPath();
+            if (projects[0].getBaseDir() == null) {
+                workDir = defaultWorkDir;//getBaseDir returns null for default project
+            } else {
+                workDir = projects[0].getBaseDir().getCanonicalPath();
+            }
         }
         return exec(workDir == null ? defaultWorkDir : workDir, command);
     }
@@ -112,9 +116,8 @@ public class ExecUtil {
     }
 
     /**
-     * Tries to get the absolute path for a command by defaulting to first
-     * trying to locate the command in path, and falling back to trying likely
-     * directories.
+     * Tries to get the absolute path for a command by defaulting to first trying to locate the
+     * command in path, and falling back to trying likely directories.
      */
     @Nullable
     public static String locateExecutableByGuessing(@NotNull final String command) {
@@ -138,13 +141,16 @@ public class ExecUtil {
             LOG.info(String.format("Looking for %s in %s", command, path));
             final String cmd = path + sep + command;
             //noinspection ObjectAllocationInLoop
-            if (new File(cmd).canExecute()) return cmd;
+            if (new File(cmd).canExecute()) {
+                return cmd;
+            }
         }
         return null;
     }
 
     @NotNull
-    public static String guessWorkDir(@NotNull final Project project, @NotNull final VirtualFile file) {
+    public static String guessWorkDir(@NotNull final Project project,
+        @NotNull final VirtualFile file) {
         final Module module = ModuleUtilCore.findModuleForFile(file, project);
         return module == null ? project.getBasePath() : guessWorkDir(module);
     }
@@ -165,12 +171,14 @@ public class ExecUtil {
      * Executes commandLine, optionally piping input to stdin, and return stdout.
      */
     @Nullable
-    public static String readCommandLine(@NotNull final GeneralCommandLine commandLine, @Nullable final String input) {
+    public static String readCommandLine(@NotNull final GeneralCommandLine commandLine,
+        @Nullable final String input) {
         String output = null;
         try {
             final Process process = commandLine.createProcess();
             if (input != null) {
-                final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
+                final BufferedWriter writer = new BufferedWriter(
+                    new OutputStreamWriter(process.getOutputStream()));
                 writer.write(input);
                 writer.flush();
                 writer.close();
@@ -195,7 +203,9 @@ public class ExecUtil {
     }
 
     @Nullable
-    public static String readCommandLine(@Nullable final String workingDirectory, @NotNull final String command, @NotNull final String[] params, @Nullable final String input) {
+    public static String readCommandLine(@Nullable final String workingDirectory,
+        @NotNull final String command, @NotNull final String[] params,
+        @Nullable final String input) {
         final GeneralCommandLine commandLine = new GeneralCommandLine(command);
         if (workingDirectory != null) {
             commandLine.setWorkDirectory(workingDirectory);
@@ -205,7 +215,8 @@ public class ExecUtil {
     }
 
     @Nullable
-    public static String readCommandLine(@Nullable final String workingDirectory, @NotNull final String command, @NotNull final String... params) {
+    public static String readCommandLine(@Nullable final String workingDirectory,
+        @NotNull final String command, @NotNull final String... params) {
         return readCommandLine(workingDirectory, command, params, null);
     }
 }
