@@ -8,14 +8,9 @@ import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.DLanguage;
 import io.github.intellij.dlanguage.psi.DLanguageAliasDeclaration;
 import io.github.intellij.dlanguage.psi.DLanguageImportDeclaration;
-import io.github.intellij.dlanguage.psi.DLanguageModuleDeclaration;
+import io.github.intellij.dlanguage.psi.named.DLanguageModuleDeclaration;
 import io.github.intellij.dlanguage.psi.DlangFile;
-import io.github.intellij.dlanguage.psi.DlangIdentifier;
-import io.github.intellij.dlanguage.DLanguage;
-import io.github.intellij.dlanguage.psi.DlangFile;
-import io.github.intellij.dlanguage.psi.DlangIdentifier;
-import io.github.intellij.dlanguage.psi.DLanguageImportDeclaration;
-import io.github.intellij.dlanguage.psi.DLanguageModuleDeclaration;
+import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

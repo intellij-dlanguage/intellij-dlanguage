@@ -1,36 +1,39 @@
-package io.github.intellij.dlanguage.psi;
+package io.github.intellij.dlanguage.psi.named;
 
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.StubBasedPsiElement;
 import com.intellij.psi.scope.PsiScopeProcessor;
+import io.github.intellij.dlanguage.psi.DLanguageEnumBody;
+import io.github.intellij.dlanguage.psi.DLanguageType;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
 import io.github.intellij.dlanguage.psi.interfaces.HasMembers;
+import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
+import io.github.intellij.dlanguage.stubs.DlangEnumDeclarationStub;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
-import io.github.intellij.dlanguage.stubs.DlangUnionDeclarationStub;
-import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
-import io.github.intellij.dlanguage.psi.interfaces.HasMembers;
-import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
-import io.github.intellij.dlanguage.stubs.DlangUnionDeclarationStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+//import io.github.intellij.dlanguage.types.Type;
 
-public interface DlangUnionDeclaration extends PsiElement, DNamedElement, StubBasedPsiElement<DlangUnionDeclarationStub>, HasMembers<DlangUnionDeclarationStub> {
+
+public interface DlangEnumDeclaration extends PsiElement, DNamedElement, StubBasedPsiElement<DlangEnumDeclarationStub>, HasMembers<DlangEnumDeclarationStub> {
     @Nullable
     DlangIdentifier getIdentifier();
 
     @Nullable
-    DLanguageTemplateParameters getTemplateParameters();
+    PsiElement getOP_COLON();
 
     @Nullable
-    DLanguageConstraint getConstraint();
+    PsiElement getKW_ENUM();
 
     @Nullable
-    DLanguageStructBody getStructBody();
+    DLanguageType getType();
 
     @Nullable
-    PsiElement getOP_SCOLON();
+    DLanguageEnumBody getEnumBody();
+
+
 
     @Override
     default boolean processDeclarations(@NotNull final PsiScopeProcessor processor,
@@ -39,4 +42,7 @@ public interface DlangUnionDeclaration extends PsiElement, DNamedElement, StubBa
                                         @NotNull final PsiElement place) {
         return ScopeProcessorImpl.INSTANCE.processDeclarations(this, processor, state, lastParent, place);
     }
+
+//    @NotNull
+//    Type getMemtype();
 }

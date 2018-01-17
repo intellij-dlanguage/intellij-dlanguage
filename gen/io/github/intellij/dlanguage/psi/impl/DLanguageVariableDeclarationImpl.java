@@ -14,7 +14,7 @@ import io.github.intellij.dlanguage.psi.DLanguageFunctionBody;
 import io.github.intellij.dlanguage.psi.DLanguageStorageClass;
 import io.github.intellij.dlanguage.psi.DLanguageType;
 import io.github.intellij.dlanguage.psi.DLanguageVariableDeclaration;
-import io.github.intellij.dlanguage.psi.DlangDeclarator;
+import io.github.intellij.dlanguage.psi.named.DlangDeclarator;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;

@@ -1,25 +1,22 @@
-package io.github.intellij.dlanguage.psi;
+package io.github.intellij.dlanguage.psi.named;
 
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.StubBasedPsiElement;
 import com.intellij.psi.scope.PsiScopeProcessor;
-import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
+import io.github.intellij.dlanguage.psi.DLanguageBaseClassList;
+import io.github.intellij.dlanguage.psi.DLanguageConstraint;
+import io.github.intellij.dlanguage.psi.DLanguageStructBody;
+import io.github.intellij.dlanguage.psi.DLanguageTemplateParameters;
 import io.github.intellij.dlanguage.psi.interfaces.HasMembers;
-import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
-import io.github.intellij.dlanguage.stubs.DlangStructDeclarationStub;
+import io.github.intellij.dlanguage.stubs.DlangInterfaceOrClassStub;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
-import io.github.intellij.dlanguage.psi.interfaces.HasMembers;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
-import io.github.intellij.dlanguage.stubs.DlangStructDeclarationStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 
-public interface DlangStructDeclaration extends PsiElement, DNamedElement, StubBasedPsiElement<DlangStructDeclarationStub>, HasMembers<DlangStructDeclarationStub> {
-    @Nullable
-    PsiElement getKW_STRUCT();
-
+public interface DlangInterfaceOrClass extends PsiElement, DNamedElement, StubBasedPsiElement<DlangInterfaceOrClassStub>, HasMembers<DlangInterfaceOrClassStub> {
     @Nullable
     DlangIdentifier getIdentifier();
 
@@ -27,13 +24,16 @@ public interface DlangStructDeclaration extends PsiElement, DNamedElement, StubB
     DLanguageTemplateParameters getTemplateParameters();
 
     @Nullable
-    DLanguageConstraint getConstraint();
+    PsiElement getOP_COLON();
 
     @Nullable
     DLanguageStructBody getStructBody();
 
     @Nullable
-    PsiElement getOP_SCOLON();
+    DLanguageConstraint getConstraint();
+
+    @Nullable
+    DLanguageBaseClassList getBaseClassList();
 
     @Override
     default boolean processDeclarations(@NotNull final PsiScopeProcessor processor,

@@ -4,7 +4,7 @@ import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
 import io.github.intellij.dlanguage.DlangBundle
-import io.github.intellij.dlanguage.psi.DlangIdentifier
+import io.github.intellij.dlanguage.psi.named.DlangIdentifier
 import io.github.intellij.dlanguage.psi.DlangVisitor
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
 
@@ -22,7 +22,7 @@ class BuiltinPropertyNameVisitor(val holder: ProblemsHolder) : DlangVisitor() {
     val properties = setOf<String>("init", "sizeof", "mangleof", "alignof", "stringof")
     override fun visitDNamedElement(o: DNamedElement) {
         if(o is DlangIdentifier){
-            return;
+            return
         }
         if (properties.contains(o.name)) {
             holder.registerProblem(o, String.format("Avoid naming members '%s'. This can confuse code that depends on the '.%s' property of a type.", o.name, o.name))

@@ -10,7 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil.findChildrenOfType
 import io.github.intellij.dlanguage.psi.DLanguageDeclaration
 import io.github.intellij.dlanguage.psi.DlangFile
 import io.github.intellij.dlanguage.psi.DLanguageParameters
-import io.github.intellij.dlanguage.psi.DlangSingleImport
+import io.github.intellij.dlanguage.psi.named.DlangSingleImport
 import io.github.intellij.dlanguage.resolve.ParameterCountRange
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributesFinder
 

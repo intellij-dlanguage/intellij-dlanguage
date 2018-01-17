@@ -10,7 +10,7 @@ import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.DLanguageMixinTemplateDeclaration;
-import io.github.intellij.dlanguage.psi.DlangTemplateDeclaration;
+import io.github.intellij.dlanguage.psi.named.DlangTemplateDeclaration;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import org.jetbrains.annotations.NotNull;

@@ -1,10 +1,17 @@
 
-package io.github.intellij.dlanguage.psi;
+package io.github.intellij.dlanguage.psi.named;
 
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.StubBasedPsiElement;
 import com.intellij.psi.scope.PsiScopeProcessor;
+import io.github.intellij.dlanguage.psi.DLanguageConstraint;
+import io.github.intellij.dlanguage.psi.DLanguageFunctionBody;
+import io.github.intellij.dlanguage.psi.DLanguageMemberFunctionAttribute;
+import io.github.intellij.dlanguage.psi.DLanguageParameters;
+import io.github.intellij.dlanguage.psi.DLanguageStorageClass;
+import io.github.intellij.dlanguage.psi.DLanguageTemplateParameters;
+import io.github.intellij.dlanguage.psi.DLanguageType;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import io.github.intellij.dlanguage.stubs.DlangFunctionDeclarationStub;

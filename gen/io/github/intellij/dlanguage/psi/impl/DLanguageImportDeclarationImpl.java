@@ -13,7 +13,7 @@ import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.DLanguageImportBindings;
 import io.github.intellij.dlanguage.psi.DLanguageImportDeclaration;
-import io.github.intellij.dlanguage.psi.DlangSingleImport;
+import io.github.intellij.dlanguage.psi.named.DlangSingleImport;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import java.util.List;

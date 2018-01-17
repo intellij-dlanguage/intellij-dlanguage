@@ -6,8 +6,8 @@ import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.PsiReferenceContributor;
 import com.intellij.psi.PsiReferenceRegistrar;
 import io.github.intellij.dlanguage.DLanguage;
-import io.github.intellij.dlanguage.psi.DlangFunctionDeclaration;
-import io.github.intellij.dlanguage.psi.DlangIdentifier;
+import io.github.intellij.dlanguage.psi.named.DlangFunctionDeclaration;
+import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 
 public class DReferenceContributor extends PsiReferenceContributor {
     @Override

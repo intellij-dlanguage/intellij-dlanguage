@@ -3,7 +3,7 @@ package io.github.intellij.dlanguage.stubs.types
 import com.intellij.psi.stubs.StubElement
 import com.intellij.psi.stubs.StubInputStream
 import com.intellij.psi.stubs.StubOutputStream
-import io.github.intellij.dlanguage.psi.DlangParameter
+import io.github.intellij.dlanguage.psi.named.DlangParameter
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributes
 import io.github.intellij.dlanguage.stubs.DlangParameterStub
 import java.io.IOException
@@ -17,7 +17,7 @@ class DlangParameterStubElementType(debugName: String) : DNamedStubElementType<D
         return io.github.intellij.dlanguage.psi.impl.named.DLanguageParameterImpl(stub, this)
     }
 
-    override fun createStub(psi: io.github.intellij.dlanguage.psi.DlangParameter, parentStub: StubElement<*>): DlangParameterStub {
+    override fun createStub(psi: DlangParameter, parentStub: StubElement<*>): DlangParameterStub {
         return DlangParameterStub(parentStub, this, psi.name, psi.attributes)
     }
 

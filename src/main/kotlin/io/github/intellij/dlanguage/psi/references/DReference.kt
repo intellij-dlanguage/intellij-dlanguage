@@ -12,6 +12,7 @@ import com.intellij.util.IncorrectOperationException
 import io.github.intellij.dlanguage.processors.DCompletionProcessor
 import io.github.intellij.dlanguage.psi.DlangFile
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
+import io.github.intellij.dlanguage.psi.named.DlangIdentifier
 import io.github.intellij.dlanguage.resolve.DResolveUtil
 import io.github.intellij.dlanguage.resolve.processors.basic.BasicResolve
 import io.github.intellij.dlanguage.stubs.index.DTopLevelDeclarationsByModule
@@ -263,7 +264,7 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
     @Throws(IncorrectOperationException::class)
     override fun handleElementRename(newName: String): PsiElement {
         val element: PsiElement?
-        if (myElement is io.github.intellij.dlanguage.psi.DlangIdentifier) {
+        if (myElement is DlangIdentifier) {
             element = myElement.setName(newName)
             return element
         }

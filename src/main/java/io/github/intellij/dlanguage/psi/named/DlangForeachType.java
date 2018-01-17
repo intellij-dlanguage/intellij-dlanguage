@@ -1,8 +1,10 @@
 
-package io.github.intellij.dlanguage.psi;
+package io.github.intellij.dlanguage.psi.named;
 
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.StubBasedPsiElement;
+import io.github.intellij.dlanguage.psi.DLanguageType;
+import io.github.intellij.dlanguage.psi.DLanguageTypeConstructors;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
 import io.github.intellij.dlanguage.stubs.DlangForeachTypeStub;
 import org.jetbrains.annotations.Nullable;

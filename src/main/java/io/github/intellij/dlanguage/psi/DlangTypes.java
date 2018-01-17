@@ -4,6 +4,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
 import io.github.intellij.dlanguage.psi.impl.DElementTypeFactory;
+import io.github.intellij.dlanguage.psi.impl.DLangStaticForeachStatementImpl;
 import io.github.intellij.dlanguage.psi.impl.DLanguageAddExpressionImpl;
 import io.github.intellij.dlanguage.psi.impl.DLanguageAliasDeclarationImpl;
 import io.github.intellij.dlanguage.psi.impl.DLanguageAliasThisDeclarationImpl;
@@ -420,6 +421,7 @@ public interface DlangTypes {
     IElementType XOR_EXPRESSION = new DlangElementType("XOR_EXPRESSION");
     IElementType ADD_EXPRESSION = new DlangElementType("ADD_EXPRESSION");
     IElementType BUILTIN_TYPE = new DlangElementType("BUILTIN_TYPE");
+    IElementType STATIC_FOREACH_STATEMENT = new DlangElementType("BUILTIN_TYPE");
 
     IElementType ALTERNATE_WYSIWYG_STRING = new DlangTokenType("ALTERNATE_WYSIWYG_STRING");
     IElementType BLOCK_COMMENT = new DlangTokenType("BLOCK_COMMENT");
@@ -1012,6 +1014,8 @@ public interface DlangTypes {
                 return new DLanguageBuiltinTypeImpl(node);
             } else if (type == NAMED_IMPORT_BIND) {
                 return new DLanguageNamedImportBindImpl(node);
+            } else if (type == STATIC_FOREACH_STATEMENT) {
+                return new DLangStaticForeachStatementImpl(node);
             }
 
 

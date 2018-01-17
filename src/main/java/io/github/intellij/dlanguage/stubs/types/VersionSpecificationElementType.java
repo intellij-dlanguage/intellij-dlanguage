@@ -4,7 +4,7 @@ import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubInputStream;
 import com.intellij.psi.stubs.StubOutputStream;
 import com.intellij.util.io.StringRef;
-import io.github.intellij.dlanguage.psi.DLanguageVersionSpecification;
+import io.github.intellij.dlanguage.psi.named.DLanguageVersionSpecification;
 import io.github.intellij.dlanguage.psi.impl.named.DLanguageVersionSpecificationImpl;
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributes;
 import io.github.intellij.dlanguage.stubs.VersionSpecificationStub;

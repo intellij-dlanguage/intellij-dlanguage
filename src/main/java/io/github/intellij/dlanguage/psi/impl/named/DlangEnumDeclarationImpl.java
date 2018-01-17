@@ -6,17 +6,16 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.*;
+import io.github.intellij.dlanguage.psi.named.DlangEnumDeclaration;
+import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.stubs.DlangEnumDeclarationStub;
-import io.github.intellij.dlanguage.psi.*;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
-import io.github.intellij.dlanguage.stubs.DlangEnumDeclarationStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_ENUM;
-import static io.github.intellij.dlanguage.psi.DlangTypes.OP_COLON;
-
-public class DlangEnumDeclarationImpl extends DNamedStubbedPsiElementBase<DlangEnumDeclarationStub> implements DlangEnumDeclaration {
+public class DlangEnumDeclarationImpl extends
+    DNamedStubbedPsiElementBase<DlangEnumDeclarationStub> implements
+    DlangEnumDeclaration {
 
     public DlangEnumDeclarationImpl(final DlangEnumDeclarationStub stub, final IStubElementType type) {
         super(stub, type);

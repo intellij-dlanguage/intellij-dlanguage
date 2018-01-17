@@ -3,7 +3,7 @@ package io.github.intellij.dlanguage.stubs.index
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.stubs.*
 import io.github.intellij.dlanguage.psi.DlangFile
-import io.github.intellij.dlanguage.psi.DlangSingleImport
+import io.github.intellij.dlanguage.psi.named.DlangSingleImport
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
 import io.github.intellij.dlanguage.psi.interfaces.HasMembers
 import io.github.intellij.dlanguage.stubs.index.DTopLevelDeclarationIndex.Companion.getTopLevelSymbols

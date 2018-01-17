@@ -3,6 +3,7 @@ package io.github.intellij.dlanguage.psi;
 
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
+import io.github.intellij.dlanguage.psi.impl.DLangStaticForeachStatementImpl;
 import io.github.intellij.dlanguage.psi.impl.DLanguageAddExpressionImpl;
 import io.github.intellij.dlanguage.psi.impl.DLanguageAliasDeclarationImpl;
 import io.github.intellij.dlanguage.psi.impl.DLanguageAliasThisDeclarationImpl;
@@ -1072,5 +1073,10 @@ public class DlangVisitor extends PsiElementVisitor {
 
     public void visitSingleImport(DlangSingleImportImpl dlangSingleImport) {
         visitPsiElement(dlangSingleImport);
+    }
+
+    public void visitStaticForeachStatement(
+        DLangStaticForeachStatementImpl dLangStaticForeachStatement) {
+        visitPsiElement(dLangStaticForeachStatement);
     }
 }

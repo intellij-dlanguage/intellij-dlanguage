@@ -1,21 +1,18 @@
 
-package io.github.intellij.dlanguage.psi;
+package io.github.intellij.dlanguage.psi.named;
 
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.StubBasedPsiElement;
 import io.github.intellij.dlanguage.psi.interfaces.DCompositeElement;
-import io.github.intellij.dlanguage.stubs.DlangSharedStaticConstructorStub;
+import io.github.intellij.dlanguage.stubs.DlangStaticConstructorStub;
 import org.jetbrains.annotations.Nullable;
 
 
-public interface DlangSharedStaticConstructor extends PsiElement, DCompositeElement,
-    StubBasedPsiElement<DlangSharedStaticConstructorStub> {
+public interface DlangStaticConstructor extends PsiElement, DCompositeElement,
+    StubBasedPsiElement<DlangStaticConstructorStub> {
 
     @Nullable
     PsiElement getKW_STATIC();
-
-    @Nullable
-    PsiElement getKW_SHARED();
 
     @Nullable
     PsiElement getKW_THIS();

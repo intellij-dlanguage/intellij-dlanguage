@@ -13,7 +13,7 @@ import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.DLanguageFunctionBody;
 import io.github.intellij.dlanguage.psi.DLanguageMemberFunctionAttribute;
-import io.github.intellij.dlanguage.psi.DlangDestructor;
+import io.github.intellij.dlanguage.psi.named.DlangDestructor;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.stubs.DlangDestructorStub;
 import java.util.List;

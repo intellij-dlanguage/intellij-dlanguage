@@ -1,7 +1,5 @@
 package io.github.intellij.dlanguage.resolve
 
-import com.google.common.collect.Sets
-import com.google.common.collect.Sets.newHashSet
 import com.google.common.collect.Sets.newHashSet
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.roots.impl.DirectoryIndex
@@ -11,8 +9,7 @@ import com.intellij.psi.impl.file.PsiDirectoryFactory
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.util.PsiTreeUtil
 import io.github.intellij.dlanguage.index.DModuleIndex
-import io.github.intellij.dlanguage.psi.DlangIdentifier
-import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
+import io.github.intellij.dlanguage.psi.named.DlangIdentifier
 import io.github.intellij.dlanguage.stubs.index.DPublicImportIndex
 import io.github.intellij.dlanguage.stubs.index.DTopLevelDeclarationIndex
 import io.github.intellij.dlanguage.utils.*

@@ -10,10 +10,10 @@ import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.*;
+import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
+import io.github.intellij.dlanguage.psi.named.DlangInterfaceOrClass;
 import io.github.intellij.dlanguage.psi.references.DReference;
-import io.github.intellij.dlanguage.psi.*;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
-import io.github.intellij.dlanguage.psi.references.DReference;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import io.github.intellij.dlanguage.stubs.DlangInterfaceOrClassStub;
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +21,9 @@ import org.jetbrains.annotations.Nullable;
 
 import static io.github.intellij.dlanguage.psi.DlangTypes.OP_COLON;
 
-public class DlangInterfaceOrClassImpl extends DNamedStubbedPsiElementBase<DlangInterfaceOrClassStub> implements DlangInterfaceOrClass {
+public class DlangInterfaceOrClassImpl extends
+    DNamedStubbedPsiElementBase<DlangInterfaceOrClassStub> implements
+    DlangInterfaceOrClass {
 
     public DlangInterfaceOrClassImpl(final DlangInterfaceOrClassStub stub, final IStubElementType type) {
         super(stub, type);

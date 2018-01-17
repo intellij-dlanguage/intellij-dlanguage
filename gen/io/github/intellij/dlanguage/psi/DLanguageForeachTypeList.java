@@ -1,6 +1,7 @@
 package io.github.intellij.dlanguage.psi;
 
 import com.intellij.psi.PsiElement;
+import io.github.intellij.dlanguage.psi.named.DlangForeachType;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 

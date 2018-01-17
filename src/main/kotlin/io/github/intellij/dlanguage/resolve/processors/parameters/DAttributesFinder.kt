@@ -11,6 +11,9 @@ import com.intellij.psi.stubs.StubOutputStream
 import com.intellij.psi.util.PsiTreeUtil
 import io.github.intellij.dlanguage.psi.*
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
+import io.github.intellij.dlanguage.psi.named.DlangIdentifier
+import io.github.intellij.dlanguage.psi.named.DlangSingleImport
+import io.github.intellij.dlanguage.psi.named.DlangTemplateDeclaration
 import io.github.intellij.dlanguage.utils.*
 import java.io.IOException
 

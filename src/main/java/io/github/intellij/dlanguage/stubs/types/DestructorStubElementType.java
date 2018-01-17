@@ -2,7 +2,7 @@ package io.github.intellij.dlanguage.stubs.types;
 
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubInputStream;
-import io.github.intellij.dlanguage.psi.DlangDestructor;
+import io.github.intellij.dlanguage.psi.named.DlangDestructor;
 import io.github.intellij.dlanguage.psi.impl.DLanguageDestructorImpl;
 import io.github.intellij.dlanguage.stubs.DlangDestructorStub;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package io.github.intellij.dlanguage.psi;
+package io.github.intellij.dlanguage.psi.named;
 
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.ResolveState;
@@ -6,22 +6,14 @@ import com.intellij.psi.StubBasedPsiElement;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
 import io.github.intellij.dlanguage.psi.interfaces.HasMembers;
+import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
-import io.github.intellij.dlanguage.stubs.DlangTemplateDeclarationStub;
-import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
-import io.github.intellij.dlanguage.psi.interfaces.HasMembers;
-import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
-import io.github.intellij.dlanguage.stubs.DlangTemplateDeclarationStub;
+import io.github.intellij.dlanguage.stubs.DlangUnionDeclarationStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 
-
-public interface DlangTemplateDeclaration extends PsiElement, DNamedElement, StubBasedPsiElement<DlangTemplateDeclarationStub>, HasMembers<DlangTemplateDeclarationStub> {
-    @Nullable
-    PsiElement getKW_TEMPLATE();
-
+public interface DlangUnionDeclaration extends PsiElement, DNamedElement, StubBasedPsiElement<DlangUnionDeclarationStub>, HasMembers<DlangUnionDeclarationStub> {
     @Nullable
     DlangIdentifier getIdentifier();
 
@@ -32,16 +24,10 @@ public interface DlangTemplateDeclaration extends PsiElement, DNamedElement, Stu
     DLanguageConstraint getConstraint();
 
     @Nullable
-    PsiElement getOP_BRACES_RIGHT();
+    DLanguageStructBody getStructBody();
 
     @Nullable
-    PsiElement getOP_BRACES_LEFT();
-
-    @NotNull
-    List<DLanguageDeclaration> getDeclarations();
-
-    @Nullable
-    DLanguageEponymousTemplateDeclaration getEponymousTemplateDeclaration();
+    PsiElement getOP_SCOLON();
 
     @Override
     default boolean processDeclarations(@NotNull final PsiScopeProcessor processor,

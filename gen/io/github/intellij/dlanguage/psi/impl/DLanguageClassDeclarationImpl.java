@@ -8,7 +8,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.DLanguageClassDeclaration;
-import io.github.intellij.dlanguage.psi.DlangInterfaceOrClass;
+import io.github.intellij.dlanguage.psi.named.DlangInterfaceOrClass;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

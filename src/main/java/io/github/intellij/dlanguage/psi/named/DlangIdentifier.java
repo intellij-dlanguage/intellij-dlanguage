@@ -1,4 +1,4 @@
-package io.github.intellij.dlanguage.psi;
+package io.github.intellij.dlanguage.psi.named;
 
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.StubBasedPsiElement;
@@ -10,6 +10,6 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DlangIdentifier extends PsiElement, DNamedElement, StubBasedPsiElement<DlangIdentifierStub> {
     @Nullable
-    public PsiElement getID();
+    PsiElement getID();
 
 }

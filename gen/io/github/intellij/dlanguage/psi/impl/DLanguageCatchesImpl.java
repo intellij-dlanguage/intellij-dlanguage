@@ -6,7 +6,7 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.DLanguageCatches;
 import io.github.intellij.dlanguage.psi.DLanguageLastCatch;
-import io.github.intellij.dlanguage.psi.DlangCatch;
+import io.github.intellij.dlanguage.psi.named.DlangCatch;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

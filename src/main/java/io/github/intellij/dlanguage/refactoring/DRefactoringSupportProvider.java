@@ -3,7 +3,7 @@ package io.github.intellij.dlanguage.refactoring;
 import com.intellij.lang.refactoring.RefactoringSupportProvider;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiNamedElement;
-import io.github.intellij.dlanguage.psi.DlangIdentifier;
+import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.resolve.DResolveUtil;
 import org.jetbrains.annotations.NotNull;
 

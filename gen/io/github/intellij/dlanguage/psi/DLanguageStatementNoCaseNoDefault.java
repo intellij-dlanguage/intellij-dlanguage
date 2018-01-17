@@ -1,6 +1,8 @@
 package io.github.intellij.dlanguage.psi;
 
 import com.intellij.psi.PsiElement;
+import io.github.intellij.dlanguage.psi.named.DLanguageVersionSpecification;
+import io.github.intellij.dlanguage.psi.named.DlangLabeledStatement;
 import org.jetbrains.annotations.Nullable;
 
 

@@ -523,8 +523,8 @@ class DLangParser {
         if (currentIs(tok("("))) {
             final Token t = peekPastParens();
             if (t != null) {
-                if (t.type.equals(tok("=>")) || t.type.equals(tok("{")) || isMemberFunctionAttribute(t.type))
-                    return true;
+                return t.type.equals(tok("=>")) || t.type.equals(tok("{"))
+                    || isMemberFunctionAttribute(t.type);
             }
         }
         return false;
@@ -3739,6 +3739,11 @@ class DLangParser {
         return true;
     }
 
+    boolean parseStaticForeachStatement() {
+        return simpleParse("StaticForeach", tok("static"),
+            "foreachStatement|parseForeachStatement");
+    }
+
     /**
      * Parses a ForeachType
      * <p>
@@ -6235,6 +6240,11 @@ class DLangParser {
                     cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
                     return false;
                 }
+            } else if (peekIs(tok("foreach")) || peekIs(tok("foreach_reverse"))) {
+                if (!parseStaticForeachStatement()) {
+                    cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
+                    return false;
+                }
             } else {
                 error("'if' or 'assert' expected.");
                 exit_section_modified(builder, m, STATEMENT_NO_CASE_NO_DEFAULT, true);
@@ -8641,8 +8651,8 @@ class DLangParser {
         }
         if (currentIs(tok(";")))
             advance();
-        else if (!parseFunctionBody()) {
-            return false;
+        else {
+            return parseFunctionBody();
         }
         return true;
     }

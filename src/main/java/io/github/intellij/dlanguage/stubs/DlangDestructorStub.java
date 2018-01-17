@@ -3,7 +3,7 @@ package io.github.intellij.dlanguage.stubs;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.stubs.StubBase;
 import com.intellij.psi.stubs.StubElement;
-import io.github.intellij.dlanguage.psi.DlangDestructor;
+import io.github.intellij.dlanguage.psi.named.DlangDestructor;
 
 /**
  * Created by franc on 1/14/2017.
