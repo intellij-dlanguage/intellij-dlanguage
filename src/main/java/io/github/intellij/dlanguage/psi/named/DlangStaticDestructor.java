@@ -3,6 +3,7 @@ package io.github.intellij.dlanguage.psi.named;
 
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.StubBasedPsiElement;
+import io.github.intellij.dlanguage.psi.DLanguageFunctionBody;
 import io.github.intellij.dlanguage.psi.interfaces.DCompositeElement;
 import io.github.intellij.dlanguage.stubs.DlangStaticDestructorStub;
 import org.jetbrains.annotations.Nullable;

@@ -395,6 +395,8 @@ class DLangParser {
                 return UNITTEST;
             case "Vector":
                 return VECTOR;
+            case "StaticForeachStatement":
+                return STATIC_FOREACH_STATEMENT;
             default:
                 throw new IllegalArgumentException("unrecognized thing to parse:" + nodeType);
         }
@@ -3740,7 +3742,7 @@ class DLangParser {
     }
 
     boolean parseStaticForeachStatement() {
-        return simpleParse("StaticForeach", tok("static"),
+        return simpleParse("StaticForeachStatement", tok("static"),
             "foreachStatement|parseForeachStatement");
     }
 
@@ -3853,7 +3855,7 @@ class DLangParser {
                 cleanup(m, FUNCTION_BODY);
                 return false;
             }
-        } else if (currentIsOneOf(tok("in"), tok("out"), tok("body"))) {
+        } else if (currentIsOneOf(tok("in"), tok("out"), tok("body"), tok("do"))) {
             if (currentIs(tok("in"))) {
                 if (!parseInStatement()) {
                     cleanup(m, FUNCTION_BODY);
@@ -3877,7 +3879,7 @@ class DLangParser {
             }
             // Allow function bodies without body statements because this is
             // valid inside of interfaces.
-            if (currentIs(tok("body")))
+            if (currentIs(tok("body")) || currentIs(tok("do")))
                 if (!parseBodyStatement()) {
                     cleanup(m, FUNCTION_BODY);
                     return false;
