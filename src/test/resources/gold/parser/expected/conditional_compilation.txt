@@ -127,21 +127,21 @@ D Language File
                       PsiElement(DlangTokenType.))(')')
                   PsiElement(DlangTokenType.{)('{')
                   DLanguageDeclarationImpl(DECLARATION)
-                    DLanguageVersionSpecificationImpl(VERSION_SPECIFICATION)
+                    VERSION_SPECIFICATION
                       PsiElement(DlangTokenType.version)('version')
                       PsiElement(DlangTokenType.=)('=')
                       IDENTIFIER
                         PsiElement(DlangTokenType.ID)('FeatureA')
                       PsiElement(DlangTokenType.;)(';')
                   DLanguageDeclarationImpl(DECLARATION)
-                    DLanguageVersionSpecificationImpl(VERSION_SPECIFICATION)
+                    VERSION_SPECIFICATION
                       PsiElement(DlangTokenType.version)('version')
                       PsiElement(DlangTokenType.=)('=')
                       IDENTIFIER
                         PsiElement(DlangTokenType.ID)('FeatureB')
                       PsiElement(DlangTokenType.;)(';')
                   DLanguageDeclarationImpl(DECLARATION)
-                    DLanguageVersionSpecificationImpl(VERSION_SPECIFICATION)
+                    VERSION_SPECIFICATION
                       PsiElement(DlangTokenType.version)('version')
                       PsiElement(DlangTokenType.=)('=')
                       IDENTIFIER
@@ -160,7 +160,7 @@ D Language File
                       PsiElement(DlangTokenType.))(')')
                   PsiElement(DlangTokenType.{)('{')
                   DLanguageDeclarationImpl(DECLARATION)
-                    DLanguageVersionSpecificationImpl(VERSION_SPECIFICATION)
+                    VERSION_SPECIFICATION
                       PsiElement(DlangTokenType.version)('version')
                       PsiElement(DlangTokenType.=)('=')
                       IDENTIFIER
@@ -203,7 +203,7 @@ D Language File
                   PsiElement(DlangTokenType.})('}')
             DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
               DLanguageDeclarationImpl(DECLARATION)
-                DLanguageVersionSpecificationImpl(VERSION_SPECIFICATION)
+                VERSION_SPECIFICATION
                   PsiElement(DlangTokenType.version)('version')
                   PsiElement(DlangTokenType.=)('=')
                   IDENTIFIER
