@@ -6,6 +6,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.tree.IElementType
 import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.psi.util.PsiTreeUtil.findChildrenOfType
 import io.github.intellij.dlanguage.psi.DLanguageDeclaration
 import io.github.intellij.dlanguage.psi.DlangFile
 import io.github.intellij.dlanguage.psi.DLanguageParameters
@@ -24,8 +25,8 @@ object DPsiUtil {
         return result
     }
 
-    private fun getDeclDefs(defs: PsiElement, declDefsList: MutableList<io.github.intellij.dlanguage.psi.DLanguageDeclaration>): List<io.github.intellij.dlanguage.psi.DLanguageDeclaration> {
-        val declDefs = PsiTreeUtil.getChildOfType(defs, io.github.intellij.dlanguage.psi.DLanguageDeclaration::class.java)
+    private fun getDeclDefs(defs: PsiElement, declDefsList: MutableList<DLanguageDeclaration>): List<DLanguageDeclaration> {
+        val declDefs = PsiTreeUtil.getChildOfType(defs, DLanguageDeclaration::class.java)
         if (declDefs != null) {
             declDefsList.add(declDefs)
             getDeclDefs(declDefs, declDefsList)
@@ -41,10 +42,10 @@ object DPsiUtil {
 
     fun parseImports(file: PsiFile): Set<String> {
         val imports = Sets.newHashSet<String>()
-        val declDefList = Lists.newArrayList<io.github.intellij.dlanguage.psi.DLanguageDeclaration>()
-        declDefList.addAll(PsiTreeUtil.findChildrenOfType(file, io.github.intellij.dlanguage.psi.DLanguageDeclaration::class.java))
+        val declDefList = Lists.newArrayList<DLanguageDeclaration>()
+        declDefList.addAll(findChildrenOfType(file, DLanguageDeclaration::class.java))
         for (declDef in declDefList) {
-            val importDecls = PsiTreeUtil.findChildrenOfType(declDef, io.github.intellij.dlanguage.psi.DlangSingleImport::class.java)
+            val importDecls = findChildrenOfType(declDef, DlangSingleImport::class.java)
             for (importDecl in importDecls) {
                 imports.add(importDecl.identifierChain!!.text)
             }
@@ -53,7 +54,7 @@ object DPsiUtil {
     }
 
     fun getParent(element: PsiElement, targetType: Set<IElementType>, excludedType: Set<IElementType>): PsiElement? {
-        if (element.parent == null || element is io.github.intellij.dlanguage.psi.DlangFile) {
+        if (element.parent == null || element is DlangFile) {
             return null
         }
 

@@ -26,6 +26,9 @@ import java.util.List;
 public class DLanguageToolsConfigurable implements SearchableConfigurable {
 
     public static final String D_TOOLS_ID = "D Tools";
+
+    public static boolean USE_NATIVE_CODE_COMPLETION = false;
+
     private static final Logger LOG = Logger.getInstance(DLanguageToolsConfigurable.class);
     private final PropertiesComponent propertiesComponent;
     private final List<Tool> properties;
@@ -59,6 +62,8 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
     private JButton GDBAutoFind;
     private RawCommandLineEditor GDBFlags;
     private JTextField GDBVersion;
+    private JTabbedPane tabbedPane1;
+    private JCheckBox chkNativeCodeCompletion;
 
     public DLanguageToolsConfigurable(@NotNull final Project project) {
         this.propertiesComponent = PropertiesComponent.getInstance();
@@ -180,6 +185,7 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
         for (final Property property : properties) {
             property.saveState();
         }
+        propertiesComponent.setValue("USE_NATIVE_CODE_COMPLETION", chkNativeCodeCompletion.isSelected());
     }
 
     /**

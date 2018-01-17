@@ -12,6 +12,10 @@
     ]]></description>
 
     <change-notes><![CDATA[
+        <b>v1.16</b><br/>
+        <ul>
+            <li>todo</li>
+        </ul>
         <b>v1.15 - v1.15.4</b><br/>
         <ul>
             <li>reworked code folding</li>
@@ -31,7 +35,7 @@
     </change-notes>
 
     <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
-    <idea-version since-build="171" until-build="173.*"/>
+    <idea-version since-build="173" until-build="173.*"/>
 
     <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
          on how to target different products -->
@@ -55,13 +59,13 @@
 
         <annotator language="D" implementationClass="io.github.intellij.dlanguage.annotator.DHighlightingAnnotator"/>
         <externalAnnotator language="D"
-            implementationClass="io.github.intellij.dlanguage.highlighting.annotation.external.DExternalAnnotator"/>
+                           implementationClass="io.github.intellij.dlanguage.highlighting.annotation.external.DExternalAnnotator"/>
         <lang.documentationProvider language="D"
-            implementationClass="io.github.intellij.dlanguage.features.DDocumentationProvider"/>
+                                    implementationClass="io.github.intellij.dlanguage.features.DDocumentationProvider"/>
         <!-- Refactoring -->
 
         <lang.refactoringSupport language="D"
-            implementationClass="io.github.intellij.dlanguage.refactoring.DRefactoringSupportProvider"/>
+                                 implementationClass="io.github.intellij.dlanguage.refactoring.DRefactoringSupportProvider"/>
 
 
         <!-- D Language support -->
@@ -90,18 +94,18 @@
 
 
         <moduleBuilder id="DLangModuleBuilder"
-            builderClass="io.github.intellij.dlanguage.module.DlangModuleBuilder"/>
+                       builderClass="io.github.intellij.dlanguage.module.DlangModuleBuilder"/>
         <moduleBuilder id="DLangDubModuleBuilder"
-            builderClass="io.github.intellij.dlanguage.module.DlangDubModuleBuilder"/>
+                       builderClass="io.github.intellij.dlanguage.module.DlangDubModuleBuilder"/>
         <moduleConfigurationEditorProvider
             implementation="io.github.intellij.dlanguage.module.DlangModuleEditorsProvider"/>
 
         <!-- library -->
         <library.type implementation="io.github.intellij.dlanguage.library.DlangLibraryType"/>
         <orderRootType implementation="io.github.intellij.dlanguage.library.LibFileRootType" id="LIBRARY_FILE"
-            order="FIRST"/>
+                       order="FIRST"/>
         <OrderRootTypeUI key="LIBRARY_FILE"
-            implementationClass="io.github.intellij.dlanguage.library.LibFileRootTypeUIFactory"/>
+                         implementationClass="io.github.intellij.dlanguage.library.LibFileRootTypeUIFactory"/>
 
         <!-- Indexes -->
         <fileBasedIndex implementation="io.github.intellij.dlanguage.index.DModuleIndex"/>
@@ -130,20 +134,20 @@
         <!-- References/navigation -->
         <psi.referenceContributor implementation="io.github.intellij.dlanguage.psi.references.DReferenceContributor"/>
         <lang.findUsagesProvider language="D"
-            implementationClass="io.github.intellij.dlanguage.codeinsight.DFindUsagesProvider"/>
+                                 implementationClass="io.github.intellij.dlanguage.codeinsight.DFindUsagesProvider"/>
 
         <!-- Editing utils -->
         <lang.braceMatcher language="D" implementationClass="io.github.intellij.dlanguage.features.DBraceMatcher"/>
         <lang.commenter language="D" implementationClass="io.github.intellij.dlanguage.features.DCommenter"/>
 
         <completion.contributor language="D"
-            implementationClass="io.github.intellij.dlanguage.codeinsight.DCompletionContributor"/>
+                                implementationClass="io.github.intellij.dlanguage.codeinsight.DCompletionContributor"/>
 
         <!-- folding -->
         <lang.foldingBuilder language="D" implementationClass="io.github.intellij.dlanguage.folding.DFoldingBuilder"/>
         <codeFoldingOptionsProvider instance="io.github.intellij.dlanguage.folding.DCodeFoldingOptionsProvider"/>
         <applicationService serviceInterface="io.github.intellij.dlanguage.folding.DCodeFoldingSettings"
-            serviceImplementation="io.github.intellij.dlanguage.folding.impl.DCodeFoldingSettingsImpl"/>
+                            serviceImplementation="io.github.intellij.dlanguage.folding.impl.DCodeFoldingSettingsImpl"/>
         <!--  <completion.contributor language="D"
                                   implementationClass="io.github.intellij.dlanguage.codeinsight.DCompletionContributorImports"/>-->
 
@@ -164,8 +168,8 @@
 
         <!--inspections-->
         <localInspection language="D" shortName="PossiblyUndefinedSymbol" bundle="messages.PropertiesBundle"
-            enabledByDefault="true" level="WARNING"
-            implementationClass="io.github.intellij.dlanguage.inspections.PossiblyUndefinedSymbol"/>
+                         enabledByDefault="true" level="WARNING"
+                         implementationClass="io.github.intellij.dlanguage.inspections.PossiblyUndefinedSymbol"/>
         <localInspection bundle="messages.PropertiesBundle" enabledByDefault="true"
             implementationClass="io.github.intellij.dlanguage.inspections.ImplicitlyConcatenatedStrings"
             language="D" level="WARNING"
@@ -194,26 +198,6 @@
             implementationClass="io.github.intellij.dlanguage.inspections.BuiltinPropertyName"
             language="D" level="WARNING"
             shortName="BuiltinPropertyName"/>
-        <localInspection bundle="messages.PropertiesBundle" enabledByDefault="true"
-            implementationClass="io.github.intellij.dlanguage.inspections.FormatNumbersForReadability"
-            language="D" level="WARNING"
-            shortName="BuiltinPropertyName"/>
-        <localInspection bundle="messages.PropertiesBundle" enabledByDefault="true"
-            implementationClass="io.github.intellij.dlanguage.inspections.EnumArrayLiteralsInClassDeclaration"
-            language="D" level="WARNING"
-            shortName="EnumArrayLiteralsInClassDeclaration"/>
-        <localInspection bundle="messages.PropertiesBundle" enabledByDefault="true"
-            implementationClass="io.github.intellij.dlanguage.inspections.DeleteIsDeprecated"
-            language="D" level="WARNING"
-            shortName="DeleteIsDeprecated"/>
-        <localInspection bundle="messages.PropertiesBundle" enabledByDefault="true"
-            implementationClass="io.github.intellij.dlanguage.inspections.FishOperators"
-            language="D" level="WARNING"
-            shortName="FishOperators"/>
-        <localInspection bundle="messages.PropertiesBundle" enabledByDefault="false"
-            implementationClass="io.github.intellij.dlanguage.inspections.PhobosStyleGuidelines"
-            language="D" level="WARNING"
-            shortName="PhobosStyleGuidelines"/>
 
 
         <!--debugger-->
@@ -231,33 +215,33 @@
 
     <actions>
         <action id="DLanguage.NewDLanguageClass" class="io.github.intellij.dlanguage.actions.CreateDlangClassAction"
-            text="D Class" description="Create new D Class">
+                text="D Class" description="Create new D Class">
             <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFile"/>
         </action>
         <action id="DLanguage.NewDLanguageFile" class="io.github.intellij.dlanguage.actions.CreateDlangFileAction"
-            text="D File" description="Create new D file">
+                text="D File" description="Create new D file">
             <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFile"/>
         </action>
         <action id="DLanguage.DFormat"
-            class="io.github.intellij.dlanguage.actions.DFormatAction"
-            text="Reformat code with DFormat"
-            description="Format current file with DFormat formatter">
+                class="io.github.intellij.dlanguage.actions.DFormatAction"
+                text="Reformat code with DFormat"
+                description="Format current file with DFormat formatter">
             <add-to-group group-id="CodeFormatGroup" anchor="last"/>
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt K"/>
         </action>
         <action id="DLanguage.DFix"
-            class="io.github.intellij.dlanguage.actions.DFixAction"
-            text="Fix D code with DFix"
-            description="Fix current file with DFix">
+                class="io.github.intellij.dlanguage.actions.DFixAction"
+                text="Fix D code with DFix"
+                description="Fix current file with DFix">
             <add-to-group group-id="CodeFormatGroup" anchor="last"/>
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt M"/>
         </action>
         <action id="io.github.intellij.dlanguage.RestartDCD" class="io.github.intellij.dlanguage.actions.RestartDCD"
-            text="Restart DCD Server" description="Restarts the DCD server">
-            <add-to-group group-id="ToolsMenu" anchor="last"/>
-        </action>
+                   text="Restart DCD Server" description="Restarts the DCD server">
+             <add-to-group group-id="ToolsMenu" anchor="last"/>
+           </action>
         <action id="io.github.intellij.dlanguage.ProcessDLibs" class="io.github.intellij.dlanguage.actions.ProcessDLibs"
-            text="Process D Libraries" description="Processes the D Libraries">
+                text="Process D Libraries" description="Processes the D Libraries">
             <add-to-group group-id="ToolsMenu" anchor="last"/>
         </action>
     </actions>

@@ -219,7 +219,7 @@ public interface DlangTypes {
     IElementType MODULE_DEFINITION = new DlangElementType("MODULE_DEFINITION");
     IElementType FUNCTION_DEFINITION = new DlangElementType("FUNCTION_DEFINITION");
 
-    IElementType DOC_COMMENT = new DlangTokenType("DOC_COMMENT");
+//    IElementType DOC_COMMENT = new DlangTokenType("DOC_COMMENT");
     IElementType LINE_DOC = new DlangTokenType("LINE_DOC");
 
 
