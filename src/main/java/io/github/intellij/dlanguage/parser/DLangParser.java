@@ -1857,7 +1857,10 @@ class DLangParser {
      */
     boolean parseBodyStatement() {
         final Marker m = enter_section_modified(builder);
-        final boolean result = simpleParse("BodyStatement", tok("body"), "blockStatement|parseBlockStatement");
+        if (currentIs(tok("body")) || currentIs(tok("do"))) {
+            advance();
+        }
+        final boolean result = simpleParse("BodyStatement", "blockStatement|parseBlockStatement");
         exit_section_modified(builder, m, BODY_STATEMENT, result);
         return result;
     }
@@ -3885,7 +3888,7 @@ class DLangParser {
                     return false;
                 }
         } else {
-            error("'in', 'out', 'body', or block statement expected");
+            error("'in', 'out', 'body', 'do' , or block statement expected");
             exit_section_modified(builder, m, FUNCTION_BODY, true);
             return false;
         }
@@ -4055,7 +4058,7 @@ class DLangParser {
         final Marker m = enter_section_modified(builder);
         if (currentIsOneOf(tok("function"), tok("delegate"))) {
             advance();
-            if (!currentIsOneOf(tok("("), tok("in"), tok("body"),
+            if (!currentIsOneOf(tok("("), tok("in"), tok("body"), tok("do"),
                 tok("out"), tok("{"), tok("=>")))
                 if (!parseType().first) {
                     cleanup(m, FUNCTION_LITERAL_EXPRESSION);
@@ -5704,7 +5707,9 @@ class DLangParser {
                     cleanup(m, PRIMARY_EXPRESSION);
                     return false;
                 }
-        } else if (i.equals(tok("function")) || i.equals(tok("delegate")) || i.equals(tok("{")) || i.equals(tok("in")) || i.equals(tok("out")) || i.equals(tok("body"))) {
+        } else if (i.equals(tok("function")) || i.equals(tok("delegate")) || i.equals(tok("{")) || i
+            .equals(tok("in")) || i.equals(tok("out")) || i.equals(tok("body")) || i
+            .equals(tok("do"))) {
             if (!parseFunctionLiteralExpression()) {
                 cleanup(m, PRIMARY_EXPRESSION);
                 return false;
@@ -8646,7 +8651,8 @@ class DLangParser {
         if (!tokenCheck(")")) {
             return false;
         }
-        while (moreTokens() && !currentIsOneOf(tok("{"), tok("in"), tok("out"), tok("body"), tok(";"))) {
+        while (moreTokens() && !currentIsOneOf(tok("{"), tok("in"), tok("out"), tok("body"),
+            tok("do"), tok(";"))) {
             if (!(parseMemberFunctionAttribute())) {
                 return false;
             }
