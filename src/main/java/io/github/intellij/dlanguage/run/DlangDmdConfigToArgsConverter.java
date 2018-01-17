@@ -9,37 +9,29 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VfsUtilCore;
 import com.intellij.openapi.vfs.VirtualFile;
 import io.github.intellij.dlanguage.run.exception.NoSourcesException;
-import io.github.intellij.dlanguage.run.exception.NoSourcesException;
-import org.jetbrains.annotations.NotNull;
-
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
 public class DlangDmdConfigToArgsConverter {
 
-    public static List<String> getDmdParameters(final DlangRunDmdConfiguration config, final Module module)
+    public static List<String> getDmdParameters(@NotNull final DlangRunDmdConfiguration config,
+        @NotNull final Module module)
         throws NoSourcesException, ExecutionException {
-        final VirtualFile sourcesRoot = getSourceRoot(module);
+        final VirtualFile[] sourcesRoots = ModuleRootManager.getInstance(module).getSourceRoots();
         final VirtualFile[] excludedRoots = getExcludedRoots(module);
         final List<String> dmdParameters = new LinkedList<>();
 
         dmdParameters.addAll(configToParameters(config));
         dmdParameters.add(getOutputPathArgument(module));
         dmdParameters.add(getOutputFileArgument(module, config));
-        dmdParameters.addAll(getAllDLangSources(sourcesRoot, excludedRoots));
+        for (final VirtualFile sourcesRoot : sourcesRoots) {
+            dmdParameters.addAll(getAllDLangSources(sourcesRoot, excludedRoots));
+        }
+
 
         return dmdParameters;
-    }
-
-    private static VirtualFile getSourceRoot(final Module module) {
-        if (module != null) {
-            final VirtualFile[] sourcesRoots = ModuleRootManager.getInstance(module).getSourceRoots();
-            if (sourcesRoots.length >= 1) {
-                return sourcesRoots[0];
-            }
-        }
-        return null;
     }
 
     private static VirtualFile[] getExcludedRoots(final Module module) {
@@ -57,12 +49,14 @@ public class DlangDmdConfigToArgsConverter {
     }
 
     @NotNull
-    private static String getOutputFileArgument(final Module module, final DlangRunDmdConfiguration config) {
+    private static String getOutputFileArgument(final Module module,
+        final DlangRunDmdConfiguration config) {
         return "-of" + getOutputFilePath(module, config);
     }
 
     @NotNull
-    private static String getOutputFilePath(final Module module, final DlangRunDmdConfiguration config) {
+    private static String getOutputFilePath(final Module module,
+        final DlangRunDmdConfiguration config) {
         String filename = module.getName();
         if (config.isLibrary()) {
             filename += ".lib";
@@ -75,7 +69,8 @@ public class DlangDmdConfigToArgsConverter {
     }
 
     private static String getOutputDir(final Module module) {
-        return ModuleRootManager.getInstance(module).getModuleExtension(CompilerModuleExtension.class).getCompilerOutputUrl();
+        return ModuleRootManager.getInstance(module)
+            .getModuleExtension(CompilerModuleExtension.class).getCompilerOutputUrl();
     }
 
 
@@ -88,7 +83,8 @@ public class DlangDmdConfigToArgsConverter {
         return result;
     }
 
-    private static void buildCompilerParameters(final DlangRunDmdConfiguration config, final List<String> parameters) {
+    private static void buildCompilerParameters(final DlangRunDmdConfiguration config,
+        final List<String> parameters) {
         if (config.isRelease()) {
             parameters.add("-release");
         }
@@ -157,7 +153,8 @@ public class DlangDmdConfigToArgsConverter {
         }
     }
 
-    private static void buildOutputParameters(final DlangRunDmdConfiguration config, final List<String> parameters) {
+    private static void buildOutputParameters(final DlangRunDmdConfiguration config,
+        final List<String> parameters) {
         if (config.isGenerateDocs()) {
             parameters.add("-D");
             if (!StringUtil.isEmptyOrSpaces(config.getDocsPath())) {
@@ -202,7 +199,8 @@ public class DlangDmdConfigToArgsConverter {
         }
     }
 
-    private static void buildDebugParameters(final DlangRunDmdConfiguration config, final List<String> parameters) {
+    private static void buildDebugParameters(final DlangRunDmdConfiguration config,
+        final List<String> parameters) {
         if (config.isAddSymbolicDebugInfo()) {
             parameters.add("-g");
         }
@@ -222,8 +220,9 @@ public class DlangDmdConfigToArgsConverter {
     }
 
     @NotNull
-    private static List<String> getAllDLangSources(final VirtualFile sourcesRoot, final VirtualFile[] excludedRoots)
-        throws NoSourcesException, ExecutionException {
+    private static List<String> getAllDLangSources(@NotNull final VirtualFile sourcesRoot,
+        final VirtualFile[] excludedRoots)
+        throws NoSourcesException {
         final DlangVirtualFileVisitor visitor = new DlangVirtualFileVisitor(excludedRoots);
         VfsUtilCore.visitChildrenRecursively(sourcesRoot, visitor);
 
