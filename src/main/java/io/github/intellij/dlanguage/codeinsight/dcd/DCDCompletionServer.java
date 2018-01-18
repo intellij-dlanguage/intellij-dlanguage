@@ -19,10 +19,7 @@ import io.github.intellij.dlanguage.settings.ToolKey;
 import io.github.intellij.dlanguage.settings.ToolSettings;
 import io.github.intellij.dlanguage.DlangSdkType;
 import io.github.intellij.dlanguage.project.DubConfigurationParser;
-import io.github.intellij.dlanguage.project.DubPackage;
 import io.github.intellij.dlanguage.settings.SettingsChangeNotifier;
-import io.github.intellij.dlanguage.settings.ToolKey;
-import io.github.intellij.dlanguage.settings.ToolSettings;
 import io.github.intellij.dlanguage.utils.ExecUtil;
 import io.github.intellij.dlanguage.utils.NotificationUtil;
 import org.jetbrains.annotations.NotNull;
@@ -131,7 +128,7 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
 
         // try to auto add dub dependencies
         final DubConfigurationParser dubParser = new DubConfigurationParser(module.getProject(),
-            ToolKey.DUB_KEY.getPath());
+            ToolKey.DUB_KEY.getPath(), false);
         if (dubParser.canUseDub()) {
             final List<DubPackage> dependencies = dubParser.getDubPackageDependencies();
             for (final DubPackage pkg : dependencies) {

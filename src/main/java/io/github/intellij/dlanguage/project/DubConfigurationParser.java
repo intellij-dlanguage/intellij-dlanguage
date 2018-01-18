@@ -43,7 +43,8 @@ public class DubConfigurationParser {
     //    private Map<String, List<String>> targets = new HashMap<>();
     private TreeNode packageTree;
 
-    public DubConfigurationParser(final Project project, final String dubBinaryPath) {
+    public DubConfigurationParser(final Project project, final String dubBinaryPath,
+        final boolean silentMode) {
         this.project = project;
         this.dubBinaryPath = dubBinaryPath;
 
@@ -145,6 +146,11 @@ public class DubConfigurationParser {
 //    }
 
     private Optional<JsonObject> parseDubConfiguration() {
+        return parseDubConfiguration(false);
+    }
+
+    private Optional<JsonObject> parseDubConfiguration(
+        final boolean silentMode) {
         try {
             final String baseDir = project.getBaseDir().getCanonicalPath();
             final GeneralCommandLine commandLine = new GeneralCommandLine();
@@ -196,15 +202,17 @@ public class DubConfigurationParser {
                     //   "No valid root package found - aborting."
                     //   "Package vibe-d declared a sub-package, definition file is missing: /path/to/package"
                     //   "Non-optional dependency vibe-d:core of vibe-d not found in dependency tree!?."
-                    errors.forEach(errorMessage -> Notifications.Bus.notify(
-                        new Notification(
-                            "DubNotification",
-                            "DUB Import Error",
-                            errorMessage,
-                            NotificationType.WARNING
-                        ),
-                        this.project)
-                    );
+                    if (!silentMode) {
+                        errors.forEach(errorMessage -> Notifications.Bus.notify(
+                            new Notification(
+                                "DubNotification",
+                                "DUB Import Error",
+                                errorMessage,
+                                NotificationType.WARNING
+                            ),
+                            this.project)
+                        );
+                    }
                 }
                 final JsonObject jsonObject = new JsonParser()
                     .parse(builder.toString())
@@ -213,7 +221,10 @@ public class DubConfigurationParser {
             } else {
                 errors.forEach(LOG::warn);
                 LOG.warn(String.format("%s exited with %s", dubCommand, exitCode));
-                SwingUtilities.invokeLater(() -> Messages.showErrorDialog(project, String.format("%s exited with %s", dubCommand, exitCode), "Dub Import"));
+                if (!silentMode) {
+                    SwingUtilities.invokeLater(() -> Messages.showErrorDialog(project,
+                        String.format("%s exited with %s", dubCommand, exitCode), "Dub Import"));
+                }
             }
         } catch (ExecutionException | JsonSyntaxException e) {
             LOG.error("Unable to parse dub configuration", e);
