@@ -14,7 +14,7 @@
     <change-notes><![CDATA[
         <b>v1.16</b><br/>
         <ul>
-            <li>todo</li>
+            <li>Compatibility IntelliJ 2018.*</li>
         </ul>
         <b>v1.15 - v1.15.4</b><br/>
         <ul>
@@ -35,7 +35,7 @@
     </change-notes>
 
     <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
-    <idea-version since-build="173" until-build="173.*"/>
+    <idea-version since-build="173" until-build="181.*"/>
 
     <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
          on how to target different products -->
