@@ -22,7 +22,7 @@ public class DHighlightingTokenSets {
     public static final TokenSet DOT = TokenSet.create(DlangTypes.DOT);
     public static final TokenSet LINE_COMMENT = TokenSet.create(DlangTypes.LINE_COMMENT);
     public static final TokenSet LINE_DOC = TokenSet.create(DlangTypes.LINE_DOC);
-    public static final TokenSet BLOCK_COMMENT = TokenSet.create(DlangTypes.BLOCK_COMMENT);
+    //    public static final TokenSet BLOCK_COMMENT = TokenSet.create(DlangTypes.BLOCK_COMMENT);
 //    public static final TokenSet DOC_COMMENT = TokenSet.create(DlangTypes.DOC_COMMENT);
     public static final TokenSet MODULE_DEFINITION = TokenSet.create(DlangTypes.MODULE_DEFINITION);
     public static final TokenSet FUNCTION_DEFINITION = TokenSet.create(DlangTypes.FUNCTION_DEFINITION);
@@ -32,7 +32,8 @@ public class DHighlightingTokenSets {
 //
 //    public static final TokenSet LINE_COMMENTS = TokenSet.create(DlangTypes.LINE_COMMENT);
 //
-//    public static final TokenSet BLOCK_COMMENTS = TokenSet.create(DlangTypes.BLOCK_COMMENT,DlangTypes.NESTING_BLOCK_COMMENT);
+public static final TokenSet BLOCK_COMMENT = TokenSet
+    .create(DlangTypes.BLOCK_COMMENT, DlangTypes.NESTING_BLOCK_COMMENT);
 //
 //    public static final TokenSet STRING_LITERALS = TokenSet.create(DlangTypes.DOUBLE_QUOTED_STRING,
 //            DlangTypes.KW_CHAR,
