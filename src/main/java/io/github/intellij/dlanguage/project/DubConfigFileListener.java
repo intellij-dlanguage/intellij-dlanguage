@@ -3,24 +3,17 @@ package io.github.intellij.dlanguage.project;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.application.ModalityState;
 import com.intellij.openapi.module.Module;
-import com.intellij.openapi.progress.DumbProgressIndicator;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.progress.Task.Backgroundable;
-import com.intellij.openapi.progress.impl.BackgroundableProcessIndicator;
+import com.intellij.openapi.project.ModuleListener;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.vfs.VirtualFileCopyEvent;
 import com.intellij.openapi.vfs.VirtualFileEvent;
 import com.intellij.openapi.vfs.VirtualFileListener;
-import com.intellij.openapi.vfs.VirtualFileMoveEvent;
-import com.intellij.openapi.vfs.VirtualFilePropertyEvent;
+import com.intellij.openapi.vfs.VirtualFileManager;
 import io.github.intellij.dlanguage.actions.ProcessDLibs;
 import io.github.intellij.dlanguage.utils.DToolsNotificationListener;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Created by francis on 1/18/2018.
@@ -40,6 +33,29 @@ public class DubConfigFileListener implements VirtualFileListener {
         this.module = module;
     }
 
+    static void addProcessDLibsListener(final VirtualFile dubConfigFile,
+        final Project project,
+        final Module module) {
+        if (dubConfigFile == null) {
+            return;
+        }
+        VirtualFileManager.getInstance()
+            .addVirtualFileListener(new DubConfigFileListener(dubConfigFile, project, module));
+
+    }
+
+    @Nullable
+    static VirtualFile getDubFileFromModule(final Module module) {
+        for (final VirtualFile file : module.getProject().getBaseDir().getChildren()) {
+            if (file.isValid() &&
+                (file.getName().equalsIgnoreCase("dub.json") ||
+                    file.getName().equalsIgnoreCase("dub.sdl"))) {
+                return file;
+            }
+        }
+        return null;
+    }
+
     /**
      * Fired when the contents of a virtual file is changed.
      *
@@ -48,20 +64,7 @@ public class DubConfigFileListener implements VirtualFileListener {
     @Override
     public void contentsChanged(@NotNull final VirtualFileEvent event) {
         if (event.getFile().equals(dubConfigFile)) {
-            ApplicationManager.getApplication().invokeAndWait(new Runnable() {
-                @Override
-                public void run() {
-                    final Backgroundable task = new Backgroundable(project,
-                        "Updating Dub Libraries") {
-                        @Override
-                        public void run(@NotNull final ProgressIndicator indicator) {
-                            ProcessDLibs.processDLibs(project, module);
-                        }
-                    };
-                    ProgressManager.getInstance().runProcessWithProgressAsynchronously(
-                        task, new BackgroundableProcessIndicator(task));
-                }
-            }, ModalityState.defaultModalityState());
+            ProcessDLibs.processDLibs(project, module, true, false);
         }
     }
 
@@ -80,4 +83,6 @@ public class DubConfigFileListener implements VirtualFileListener {
                 project);
         }
     }
+
+
 }

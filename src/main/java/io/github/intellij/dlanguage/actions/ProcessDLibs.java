@@ -12,9 +12,14 @@ import com.intellij.notification.Notifications;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.application.ModalityState;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
+import com.intellij.openapi.progress.ProgressIndicator;
+import com.intellij.openapi.progress.ProgressManager;
+import com.intellij.openapi.progress.Task.Backgroundable;
+import com.intellij.openapi.progress.impl.BackgroundableProcessIndicator;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.LibraryOrderEntry;
@@ -86,6 +91,24 @@ public class ProcessDLibs extends AnAction implements DumbAware {
 
     public static void processDLibs(final Project project,
         @NotNull final Module module, final boolean mostlySilentMode, final boolean buildBefore) {
+        ApplicationManager.getApplication().invokeAndWait(new Runnable() {
+            @Override
+            public void run() {
+                final Backgroundable task = new Backgroundable(project,
+                    "Updating Dub Libraries") {
+                    @Override
+                    public void run(@NotNull final ProgressIndicator indicator) {
+                        processDLibsImpl(project, module, mostlySilentMode, buildBefore);
+                    }
+                };
+                ProgressManager.getInstance().runProcessWithProgressAsynchronously(
+                    task, new BackgroundableProcessIndicator(task));
+            }
+        }, ModalityState.defaultModalityState());
+    }
+
+    public static void processDLibsImpl(final Project project, @NotNull final Module module,
+        final boolean mostlySilentMode, final boolean buildBefore) {
         final String prefix = "Unable to process D libraries - ";
         if (project == null) {
             displayError(project, prefix + "No active project.");
@@ -113,7 +136,7 @@ public class ProcessDLibs extends AnAction implements DumbAware {
         }
 
         final DubConfigurationParser dubParser = new DubConfigurationParser(project, dubPath,
-            false);
+            mostlySilentMode);
         if (dubParser.canUseDub()) {
             final List<DubPackage> dependencies = dubParser.getDubPackageDependencies();
             for (final DubPackage pkg : dependencies) {
@@ -183,6 +206,7 @@ public class ProcessDLibs extends AnAction implements DumbAware {
             commandLine.setExePath(dubBinaryPath);
             final ParametersList parametersList = commandLine.getParametersList();
             parametersList.addParametersString("fetch");
+            parametersList.addParametersString(dubPackage.getName());
             parametersList.addParametersString("--version=" + dubPackage.getVersion());
 
             final String dubCommand = commandLine.getCommandLineString();

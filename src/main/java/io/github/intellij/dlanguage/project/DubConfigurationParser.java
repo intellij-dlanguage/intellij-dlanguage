@@ -49,7 +49,7 @@ public class DubConfigurationParser {
         this.dubBinaryPath = dubBinaryPath;
 
         if (canUseDub()) {
-            parseDubConfiguration().ifPresent(this::parseDubDescription);
+            parseDubConfiguration(silentMode).ifPresent(this::parseDubDescription);
         }
     }
 
@@ -197,7 +197,13 @@ public class DubConfigurationParser {
                             this.project);
                     }
                 } else {
-                    LOG.warn(String.format("%s exited with %s errors", dubCommand, errors.size()));
+                    if (!silentMode) {
+                        LOG.warn(
+                            String.format("%s exited with %s errors", dubCommand, errors.size()));
+                    } else {
+                        LOG.info(
+                            String.format("%s exited with %s errors", dubCommand, errors.size()));
+                    }
                     // potential error messages are things like:
                     //   "No valid root package found - aborting."
                     //   "Package vibe-d declared a sub-package, definition file is missing: /path/to/package"
