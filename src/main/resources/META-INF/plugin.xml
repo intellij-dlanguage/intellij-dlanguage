@@ -199,7 +199,6 @@
             language="D" level="WARNING"
             shortName="BuiltinPropertyName"/>
 
-
         <!--debugger-->
         <!--<configurationType implementation="uk.co.cwspencer.ideagdb.run.GoGdbRunConfigurationType"/>-->
         <!--<programRunner implementation="uk.co.cwspencer.ideagdb.run.GdbRunner"/>-->
@@ -207,6 +206,10 @@
 
         <!-- Structure View -->
         <lang.psiStructureViewFactory language="D" implementationClass="io.github.intellij.dlanguage.structure.DStructureViewFactory"/>
+
+
+        <postStartupActivity
+            implementation="io.github.intellij.dlanguage.project.DubListenerComponent"/>
     </extensions>
 
     <application-components>
@@ -251,11 +254,11 @@
             <implementation-class>io.github.intellij.dlanguage.codeinsight.dcd.DCDCompletionServer</implementation-class>
             <interface-class>io.github.intellij.dlanguage.codeinsight.dcd.DCDCompletionServer</interface-class>
         </component>
+
     </module-components>
 
     <project-components>
         <!-- Add your project components here -->
-
     </project-components>
 
 
