@@ -64,6 +64,8 @@ public class DubConfigurationParser {
 
         final VirtualFile baseDir = project.getBaseDir();
 
+        baseDir.refresh(false, true);
+
         return dubPathValid && Arrays.stream(baseDir.getChildren())
             .filter(f -> !f.isDirectory())
             .anyMatch(file -> "dub.json".equalsIgnoreCase(file.getName()) || "dub.sdl".equalsIgnoreCase(file.getName()));
