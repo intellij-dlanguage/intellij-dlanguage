@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * The "D Tools" option in Preferences->Project Settings.
+ * The "D Tools" option in: Settings -> Languages & Frameworks -> D Tools.
  */
 public class DLanguageToolsConfigurable implements SearchableConfigurable {
 
