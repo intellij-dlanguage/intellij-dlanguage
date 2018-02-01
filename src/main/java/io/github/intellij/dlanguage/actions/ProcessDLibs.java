@@ -39,6 +39,7 @@ import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.ui.components.JBList;
+import io.github.intellij.dlanguage.icons.DlangIcons;
 import io.github.intellij.dlanguage.module.DlangModuleType;
 import io.github.intellij.dlanguage.project.DubConfigurationParser;
 import io.github.intellij.dlanguage.project.DubPackage;
@@ -51,11 +52,18 @@ import javax.swing.JList;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+// todo: this Action shouldn't really exist we should scan dub.json/sdl when opening/importing a project and process the dependencies immediately.
+// we could also watch both the dub.json/sdl & dub.selections.json for changes and then prompt the user to import changes. The same way that
+// the Maven/Gradle integration works
 public class ProcessDLibs extends AnAction implements DumbAware {
 
     public static final String MENU_PATH = "Tools > Process D Libraries";
     private static final String NOTIFICATION_GROUPID = "Process D Libs";
     private static final Logger LOG = Logger.getInstance(ProcessDLibs.class);
+
+    public ProcessDLibs() {
+        super("Process D Libraries", "Processes the D Libraries", DlangIcons.SDK);
+    }
 
     private static boolean enabled(@NotNull final AnActionEvent e) {
         final Project project = getEventProject(e);

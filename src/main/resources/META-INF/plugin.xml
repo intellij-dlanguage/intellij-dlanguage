@@ -69,6 +69,13 @@
 
 
         <!-- D Language support -->
+        <directoryProjectConfigurator id="sdk" implementation="io.github.intellij.dlanguage.DlangSdkConfigurator"
+                                      order="after PlatformProjectConfigurator"/>
+        <directoryProjectConfigurator id="sourceRoot" implementation="io.github.intellij.dlanguage.DlangSourceRootConfigurator"
+                                      order="after sdk"/>
+        <!--<directoryProjectConfigurator id="buildout" implementation="io.github.intellij.dlanguage.buildout.BuildoutFacetConfigurator"-->
+                                      <!--order="after sourceRoot"/>-->
+
         <sdkType implementation="io.github.intellij.dlanguage.DlangSdkType"/>
         <!--<projectSdkSetupValidator implementation="" />-->
         <runConfigurationProducer implementation="io.github.intellij.dlanguage.run.DlangRunDubConfigurationProducer"/>
@@ -257,11 +264,14 @@
             <implementation-class>io.github.intellij.dlanguage.codeinsight.dcd.DCDCompletionServer</implementation-class>
             <interface-class>io.github.intellij.dlanguage.codeinsight.dcd.DCDCompletionServer</interface-class>
         </component>
-
     </module-components>
 
     <project-components>
         <!-- Add your project components here -->
+
+        <component>
+            <implementation-class>io.github.intellij.dlanguage.DubImportNotifier</implementation-class>
+        </component>
     </project-components>
 
 

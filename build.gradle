@@ -124,9 +124,12 @@ repositories {
 }
 
 dependencies {
-    compile (group: 'org.eclipse.mylyn.github', name: "org.eclipse.egit.github.core", version: '2.1.5')
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
-    compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    // According to https://www.jetbrains.org/intellij/sdk/docs/tutorials/kotlin.html
+    // we should not include kotlin-runtime and kotlin-stdlib jars with your plugin
+    compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    compileOnly "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+
+    compile 'org.eclipse.mylyn.github:org.eclipse.egit.github.core:2.1.5'
     compile ('io.sentry:sentry:1.6.1'){
         exclude group: 'org.slf4j'
     }
@@ -146,6 +149,6 @@ idea {
 }
 compileKotlin {
     kotlinOptions {
-        apiVersion = "1.1"
+        apiVersion = "1.2"
     }
 }

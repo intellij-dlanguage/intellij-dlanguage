@@ -6,13 +6,27 @@ import com.intellij.lang.ParserDefinition
 import com.intellij.lang.PsiParser
 import com.intellij.lexer.FlexAdapter
 import com.intellij.lexer.Lexer
+import com.intellij.notification.Notification
+import com.intellij.notification.NotificationDisplayType
+import com.intellij.notification.NotificationType
+import com.intellij.notification.NotificationsConfiguration
+import com.intellij.openapi.Disposable
+import com.intellij.openapi.diagnostic.Logger
+import com.intellij.openapi.module.Module
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.project.ProjectBundle
+import com.intellij.openapi.projectRoots.Sdk
+import com.intellij.openapi.projectRoots.impl.SdkConfigurationUtil
+import com.intellij.openapi.util.Ref
+import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.platform.DirectoryProjectConfigurator
 import com.intellij.psi.FileViewProvider
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.TokenType
 import com.intellij.psi.tree.TokenSet
 import com.intellij.psi.tree.TokenSet.create
+import com.intellij.util.ui.update.MergingUpdateQueue
 import io.github.intellij.dlanguage.dlanguage.DlangLexer
 import io.github.intellij.dlanguage.parser.ParserWrapper
 import io.github.intellij.dlanguage.psi.DlangFile
@@ -51,4 +65,54 @@ class DLangParserDefinition : ParserDefinition {
 
     @NotNull
     override fun getCommentTokens(): TokenSet = COMMENTS
+}
+
+class DubImportNotifier(val project: Project) : Disposable {
+
+    private var notification: Notification? = null
+    private val queue: MergingUpdateQueue
+
+    init {
+        NotificationsConfiguration
+            .getNotificationsConfiguration()
+            .register("Dub Import", NotificationDisplayType.STICKY_BALLOON, true)
+
+        queue = MergingUpdateQueue("DubImportNotifier", 500, false, MergingUpdateQueue.ANY_COMPONENT, project)
+        queue.activate()
+
+        notification = Notification("Dub Import", ProjectBundle.message("dub.project.changed"), "", NotificationType.INFORMATION);
+    }
+
+
+    override fun dispose() {
+        notification?.expire()
+    }
+}
+
+class DlangSdkConfigurator : DirectoryProjectConfigurator {
+
+    val log: Logger = Logger.getInstance(javaClass)
+
+    override fun configureProject(project: Project?, baseDir: VirtualFile, moduleRef: Ref<Module>?) {
+        log.info("word up")
+        val dlangSdkType = DlangSdkType.getInstance()
+        val sdkComparator = Comparator<Sdk>( { sdk1, sdk2 -> if (sdk1.sdkType === dlangSdkType) {
+            -1
+        } else if (sdk2.sdkType === dlangSdkType) {
+            1
+        } else {
+            0
+        } })
+
+        SdkConfigurationUtil.configureDirectoryProjectSdk(project, sdkComparator, dlangSdkType)
+    }
+}
+
+class DlangSourceRootConfigurator : DirectoryProjectConfigurator {
+
+    val log: Logger = Logger.getInstance(javaClass)
+
+    override fun configureProject(project: Project?, baseDir: VirtualFile, moduleRef: Ref<Module>?) {
+        log.info("word up")
+    }
 }
