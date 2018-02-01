@@ -52,9 +52,9 @@ import javax.swing.JList;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-// todo: this Action shouldn't really exist we should scan dub.json/sdl when opening/importing a project and process the dependencies immediately.
-// we could also watch both the dub.json/sdl & dub.selections.json for changes and then prompt the user to import changes. The same way that
-// the Maven/Gradle integration works
+// todo: this Action shouldn't need to be called manually, we should scan dub.json/sdl when opening/importing a project
+// and process the dependencies immediately. We could also watch both the dub.json/sdl & dub.selections.json for
+// changes and then prompt the user to import changes. The same way that the Maven/Gradle integration works
 public class ProcessDLibs extends AnAction implements DumbAware {
 
     public static final String MENU_PATH = "Tools > Process D Libraries";
