@@ -52,3 +52,4 @@ class DLangParserDefinition : ParserDefinition {
     @NotNull
     override fun getCommentTokens(): TokenSet = COMMENTS
 }
+

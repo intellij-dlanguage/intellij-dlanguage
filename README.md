@@ -59,7 +59,7 @@ Once a dub project is loaded there is right click menu option to run with dub, o
 – run with Dub.
 
 
-Before running go and configure the DTools in Preferences -> Other Settings -> D Tools.
+Before running go and configure the DTools in _Settings_ -> _Languages &amp; Frameworks_ -> _D Tools_.
 
 ### Basic DUB Dependency Support
 
@@ -84,7 +84,7 @@ The best option is to do and get the following tools and build them according to
  * [DScanner](https://github.com/Hackerpilot/Dscanner)
  * [Dfmt](https://github.com/Hackerpilot/dfmt)
 
-If you put these tools on your path you can go to Preferences -> Other Settings -> D Tools and just click autofind on each of the tools and it will find them. Otherwise you will need to select the correct path to the tool for each one.
+If you put these tools on your path you can go to (_Settings_ -> _Languages &amp; Frameworks_ -> _D Tools_) and just click autofind on each of the tools and it will find them. Otherwise you will need to select the correct path to the tool for each one.
 
 There is a nice blog post about setting up the tools at: [www.samael.me.uk](http://www.samael.me.uk/2015/12/d-plugin-for-intellij-idea.html)
 

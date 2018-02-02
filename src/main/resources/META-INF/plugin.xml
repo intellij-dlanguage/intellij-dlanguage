@@ -132,8 +132,11 @@
         <!--displayName="DMD Compiler"/>-->
         <!-- Persistent data + build server communication for compiler settings -->
         <projectService serviceImplementation="io.github.intellij.dlanguage.settings.DLanguageBuildSettings"/>
-        <!-- Tab in IntelliJ -> Preferences -->
-        <projectConfigurable instance="io.github.intellij.dlanguage.settings.DLanguageToolsConfigurable"/>
+
+        <!-- plugin settings are now in: Settings -> Languages &amp; Frameworks -> D Tools -->
+        <projectConfigurable groupId="language" displayName="D Tools"
+                             instance="io.github.intellij.dlanguage.settings.DLanguageToolsConfigurable"/>
+
         <!-- File -> Project Structure dialogue. -->
         <!--<moduleConfigurationEditorProvider implementation="io.github.intellij.dlanguage.settings.DLanguageModuleConfigurationEditor" order="first"/>-->
         <!-- Tab in IntelliJ -> Preferences -->
@@ -262,7 +265,6 @@
             <implementation-class>io.github.intellij.dlanguage.codeinsight.dcd.DCDCompletionServer</implementation-class>
             <interface-class>io.github.intellij.dlanguage.codeinsight.dcd.DCDCompletionServer</interface-class>
         </component>
-
     </module-components>
 
     <project-components>
