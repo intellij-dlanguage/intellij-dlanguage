@@ -10,7 +10,7 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.DLanguageImportBind;
 import io.github.intellij.dlanguage.psi.DLanguageImportBindings;
-import io.github.intellij.dlanguage.psi.DlangSingleImport;
+import io.github.intellij.dlanguage.psi.named.DlangSingleImport;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;

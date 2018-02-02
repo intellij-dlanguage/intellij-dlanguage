@@ -115,7 +115,8 @@ public class DlangDubModuleBuilder extends DlangModuleBuilder {
 
             process.addProcessListener(new ProcessAdapter() {
                 @Override
-                public void onTextAvailable(final ProcessEvent event, final Key outputType) {
+                public void onTextAvailable(@NotNull final ProcessEvent event,
+                    @NotNull final Key outputType) {
                     if (ProcessOutputTypes.STDERR.equals(outputType)) {
                         errors.set(true);
                     }

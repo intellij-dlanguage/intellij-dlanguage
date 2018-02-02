@@ -15,7 +15,7 @@ import io.github.intellij.dlanguage.psi.DLanguageAssignExpression;
 import io.github.intellij.dlanguage.psi.DLanguageFunctionAttribute;
 import io.github.intellij.dlanguage.psi.DLanguageLambdaExpression;
 import io.github.intellij.dlanguage.psi.DLanguageParameters;
-import io.github.intellij.dlanguage.psi.DlangIdentifier;
+import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import java.util.List;

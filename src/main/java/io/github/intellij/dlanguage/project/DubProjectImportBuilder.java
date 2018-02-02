@@ -18,6 +18,7 @@ import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
 import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.packaging.artifacts.ModifiableArtifactModel;
 import com.intellij.projectImport.ProjectImportBuilder;
 import io.github.intellij.dlanguage.module.DlangDubModuleBuilder;
@@ -70,7 +71,7 @@ public class DubProjectImportBuilder extends ProjectImportBuilder<DubPackage> {
     }
 
     @Override
-    public void setList(final List<DubPackage> list) throws ConfigurationException {
+    public void setList(final List<DubPackage> list) {
         getParameters().packages = list;
     }
 
@@ -100,8 +101,23 @@ public class DubProjectImportBuilder extends ProjectImportBuilder<DubPackage> {
         ApplicationManager.getApplication().runWriteAction(() -> {
             commitSdk(project);
             modules.addAll(buildModules(project, model));
+
         });
+
         return modules;
+    }
+
+    private VirtualFile findDubConfigFile(final Module module) {
+        final VirtualFile file = DubConfigFileListener.getDubFileFromModule(module);
+        if (file != null) {
+            return file;
+        }
+        Notifications.Bus.notify(
+            new Notification("Dub Import", "Dub Import",
+                "Dub project does not seem to contain dub.json or dub.sdl.",
+                NotificationType.WARNING, new DToolsNotificationListener(module.getProject())),
+            module.getProject());
+        return null;
     }
 
     private List<Module> buildModules(final Project project,
@@ -115,7 +131,9 @@ public class DubProjectImportBuilder extends ProjectImportBuilder<DubPackage> {
                     NotificationType.WARNING, new DToolsNotificationListener(project)),
                 project);
         }
-        final DubConfigurationParser dubConfigurationParser = new DubConfigurationParser(project, getParameters().dubBinary);
+        final DubConfigurationParser dubConfigurationParser = new DubConfigurationParser(project,
+            getParameters().dubBinary,
+            false);
 
         final Optional<DubPackage> dubPackage = dubConfigurationParser.getDubPackage();
 
@@ -128,6 +146,8 @@ public class DubProjectImportBuilder extends ProjectImportBuilder<DubPackage> {
 
             try {
                 final Module module = builder.createModule(moduleModel);
+//                DubConfigFileListener
+//                    .addProcessDLibsListener(findDubConfigFile(module), project, module);
                 builder.commit(project);
                 moduleList.add(module);
             } catch (InvalidDataException | IOException | JDOMException | ModuleWithNameAlreadyExists | ConfigurationException e) {

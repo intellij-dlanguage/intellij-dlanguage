@@ -1,6 +1,6 @@
 package io.github.intellij.dlanguage.highlighting;
 
-public class DlangHighlightingLexerTest extends DlangHighlightingLexerTestBase {
+public class DlangHighlightingLexerTest extends DHighlightingLexerTestBase {
 
     public DlangHighlightingLexerTest() {
         super("highlighting");
@@ -188,4 +188,5 @@ public class DlangHighlightingLexerTest extends DlangHighlightingLexerTestBase {
     public void testtokens_unordered_le() { doTest(true, true); }
     public void testtokens_xor() { doTest(true, true); }
     public void testtokens_xor_assign() { doTest(true, true); }
+    public void testissue77() {doTest(true,true);}
 }

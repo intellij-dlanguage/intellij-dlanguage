@@ -18,7 +18,7 @@ import io.github.intellij.dlanguage.psi.DLanguageDeclarationOrStatement;
 import io.github.intellij.dlanguage.psi.DLanguageExpression;
 import io.github.intellij.dlanguage.psi.DLanguageForeachStatement;
 import io.github.intellij.dlanguage.psi.DLanguageForeachTypeList;
-import io.github.intellij.dlanguage.psi.DlangForeachType;
+import io.github.intellij.dlanguage.psi.named.DlangForeachType;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import java.util.List;

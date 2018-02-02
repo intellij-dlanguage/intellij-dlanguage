@@ -10,17 +10,11 @@ import io.github.intellij.dlanguage.psi.DLanguageIfCondition;
 import io.github.intellij.dlanguage.psi.DlangTypes;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.stubs.DlangIfConditionStub;
-import io.github.intellij.dlanguage.psi.DLanguageExpression;
-import io.github.intellij.dlanguage.psi.DlangIdentifier;
-import io.github.intellij.dlanguage.psi.DLanguageIfCondition;
+import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.psi.DLanguageType;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
-import io.github.intellij.dlanguage.stubs.DlangIfConditionStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_AUTO;
-import static io.github.intellij.dlanguage.psi.DlangTypes.OP_EQ;
 
 /**
  * Created by francis on 7/14/2017.

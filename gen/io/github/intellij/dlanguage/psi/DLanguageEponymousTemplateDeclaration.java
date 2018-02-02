@@ -5,6 +5,7 @@ import com.intellij.psi.ResolveState;
 import com.intellij.psi.StubBasedPsiElement;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
+import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import io.github.intellij.dlanguage.stubs.DlangEponymousTemplateDeclarationStub;
 import org.jetbrains.annotations.NotNull;

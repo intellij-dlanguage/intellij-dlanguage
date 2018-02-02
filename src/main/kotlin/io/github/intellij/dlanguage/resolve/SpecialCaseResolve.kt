@@ -1,6 +1,6 @@
 package io.github.intellij.dlanguage.resolve
 
-import com.google.common.collect.Sets
+import com.google.common.collect.Sets.newHashSet
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.roots.impl.DirectoryIndex
 import com.intellij.psi.PsiDirectory
@@ -9,8 +9,7 @@ import com.intellij.psi.impl.file.PsiDirectoryFactory
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.util.PsiTreeUtil
 import io.github.intellij.dlanguage.index.DModuleIndex
-import io.github.intellij.dlanguage.psi.DlangIdentifier
-import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
+import io.github.intellij.dlanguage.psi.named.DlangIdentifier
 import io.github.intellij.dlanguage.stubs.index.DPublicImportIndex
 import io.github.intellij.dlanguage.stubs.index.DTopLevelDeclarationIndex
 import io.github.intellij.dlanguage.utils.*
@@ -25,6 +24,8 @@ object SpecialCaseResolve {
      * in a module specification
      *  - a package in a module
      *  - a module in a module
+     * in a version condition
+     * need to resolve a label
      */
     fun findDefinitionNode(e: Identifier): Set<PsiNamedElement> {
 
@@ -46,10 +47,32 @@ object SpecialCaseResolve {
             return (inImportBind(e)!!.parent as ImportDeclaration).singleImports.flatMap { resolveScopedSymbol(it, e.name, e.project) }.toSet()
 
         }
+//        if(inVersionCondition(e) != null){
+//            return resolveVersion(e)
+//        }
+        if (resolvingLabel(e)) {
+            return resolveLabel(e)
+        }
         return emptySet()
     }
 
-    private fun resolvePackage(parents: MutableList<io.github.intellij.dlanguage.psi.DlangIdentifier>): Set<PsiNamedElement> {
+//    private fun inVersionCondition(identifier: Identifier): VersionCondition? {
+//        return PsiTreeUtil.getTopmostParentOfType(identifier, VersionCondition::class.java)
+//    }
+
+    private fun resolveLabel(e: Identifier): Set<PsiNamedElement> {
+        val functionDeclaration = PsiTreeUtil.getTopmostParentOfType(e, FunctionDeclaration::class.java)
+        if (functionDeclaration == null)
+            return emptySet()
+        val out = mutableSetOf<LabeledStatement>()
+        for (labeledStatement in PsiTreeUtil.findChildrenOfType(functionDeclaration, LabeledStatement::class.java)) {
+            if (labeledStatement.name.equals(e.name))
+                out.add(labeledStatement)
+        }
+        return out
+    }
+
+    private fun resolvePackage(parents: MutableList<DlangIdentifier>): Set<PsiNamedElement> {
         if (parents.size == 0)
             return emptySet()
         val last = parents.last()
@@ -75,7 +98,7 @@ object SpecialCaseResolve {
 
 
     private fun resolveModule(path: IdentifierChain): Set<PsiNamedElement> {
-        return Sets.newHashSet(io.github.intellij.dlanguage.index.DModuleIndex.getFilesByModuleName(path.project, path.text, GlobalSearchScope.allScope(path.project)))
+        return newHashSet(DModuleIndex.getFilesByModuleName(path.project, path.text, GlobalSearchScope.allScope(path.project)))
     }
 
     private fun resolveScopedSymbol(import: SingleImport, scope: String, project: Project): Set<PsiNamedElement> {
@@ -99,7 +122,17 @@ object SpecialCaseResolve {
         if (e !is Identifier) {
             return false
         }
-        return (inModuleDeclaration(e) != null || inSingleImport(e) != null || inImportBind(e) != null)
+        return (inModuleDeclaration(e) != null || inSingleImport(e) != null || inImportBind(e) != null) || resolvingLabel(e)
+    }
+
+    private fun resolvingLabel(e: Identifier): Boolean {
+        if (e.parent is GotoStatement) {
+            return true
+        }
+        if (e.parent is BreakStatement) {
+            return true
+        }
+        return false
     }
 
     private fun inImportBind(identifier: Identifier): ImportBindings? {

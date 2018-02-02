@@ -9,9 +9,9 @@ import com.intellij.psi.PsiReference;
 import com.intellij.psi.impl.source.resolve.reference.impl.PsiMultiReference;
 import io.github.intellij.dlanguage.DLightPlatformCodeInsightFixtureTestCase;
 import io.github.intellij.dlanguage.psi.DLanguageClassDeclaration;
-import io.github.intellij.dlanguage.psi.DlangConstructor;
-import io.github.intellij.dlanguage.psi.DlangFunctionDeclaration;
-import io.github.intellij.dlanguage.psi.DlangIdentifier;
+import io.github.intellij.dlanguage.psi.named.DlangConstructor;
+import io.github.intellij.dlanguage.psi.named.DlangFunctionDeclaration;
+import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import java.io.File;
 
 public abstract class DResolveTestCase extends DLightPlatformCodeInsightFixtureTestCase {

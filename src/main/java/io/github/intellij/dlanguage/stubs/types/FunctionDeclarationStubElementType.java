@@ -3,7 +3,7 @@ package io.github.intellij.dlanguage.stubs.types;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubInputStream;
 import com.intellij.psi.stubs.StubOutputStream;
-import io.github.intellij.dlanguage.psi.DlangFunctionDeclaration;
+import io.github.intellij.dlanguage.psi.named.DlangFunctionDeclaration;
 import io.github.intellij.dlanguage.psi.impl.named.DLanguageFunctionDeclarationImpl;
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributes;
 import io.github.intellij.dlanguage.stubs.DlangFunctionDeclarationStub;

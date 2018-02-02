@@ -3,13 +3,213 @@ package io.github.intellij.dlanguage.psi;
 
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import io.github.intellij.dlanguage.psi.impl.*;
-import io.github.intellij.dlanguage.psi.impl.named.*;
-import io.github.intellij.dlanguage.psi.interfaces.DCompositeElement;
-import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
-import io.github.intellij.dlanguage.psi.interfaces.Mixin;
-import io.github.intellij.dlanguage.psi.impl.*;
-import io.github.intellij.dlanguage.psi.impl.named.*;
+import io.github.intellij.dlanguage.psi.impl.DLangStaticForeachStatementImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageAddExpressionImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageAliasDeclarationImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageAliasThisDeclarationImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageAlignAttributeImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageAndAndExpressionImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageAndExpressionImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageAnonymousEnumDeclarationImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageAnonymousEnumMemberImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageArgumentListImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageArgumentsImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageArrayInitializerImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageArrayLiteralImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageArrayMemberInitializationImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageAsmAddExpImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageAsmAndExpImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageAsmBrExpImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageAsmEqualExpImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageAsmExpImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageAsmInstructionImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageAsmLogAndExpImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageAsmLogOrExpImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageAsmMulExpImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageAsmOrExpImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageAsmPrimaryExpImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageAsmRelExpImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageAsmShiftExpImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageAsmStatementImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageAsmTypePrefixImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageAsmUnaExpImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageAsmXorExpImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageAssertExpressionImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageAssignExpressionImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageAssocArrayLiteralImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageAtAttributeImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageAttributeDeclarationImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageAttributeImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageAutoDeclarationImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageBaseClassImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageBaseClassListImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageBlockStatementImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageBodyStatementImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageBreakStatementImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageBuiltinTypeImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageCaseRangeStatementImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageCaseStatementImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageCastExpressionImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageCastQualifierImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageCatchesImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageClassDeclarationImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageCmpExpressionImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageCompileConditionImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageConditionalDeclarationImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageConditionalStatementImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageConstraintImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageContinueStatementImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageDebugConditionImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageDebugSpecificationImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageDeclarationImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageDeclarationOrStatementImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageDeclarationsAndStatementsImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageDefaultStatementImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageDeleteExpressionImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageDeleteStatementImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageDeprecatedImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageDestructorImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageDoStatementImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageEnumBodyImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageEqualExpressionImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageExpressionImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageExpressionStatementImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageFinalSwitchStatementImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageFinallyImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageForStatementImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageForeachStatementImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageForeachTypeListImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageFunctionAttributeImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageFunctionBodyImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageFunctionCallExpressionImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageFunctionLiteralExpressionImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageGotoStatementImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageIdentifierChainImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageIdentifierListImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageIdentifierOrTemplateChainImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageIdentifierOrTemplateInstanceImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageIdentityExpressionImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageIfStatementImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageImportBindImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageImportBindingsImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageImportDeclarationImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageImportExpressionImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageInExpressionImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageInStatementImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageIndexExpressionImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageIndexImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageInitializerImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageInterfaceDeclarationImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageInvariantImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageIsExpressionImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageKeyValuePairImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageKeyValuePairsImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageLambdaExpressionImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageLastCatchImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageLinkageAttributeImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageMemberFunctionAttributeImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageMixinDeclarationImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageMixinExpressionImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageMixinTemplateDeclarationImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageMixinTemplateNameImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageMulExpressionImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageNewAnonClassExpressionImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageNewExpressionImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageNonVoidInitializerImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageOperandsImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageOrExpressionImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageOrOrExpressionImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageOutStatementImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageParameterAttributeImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageParametersImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguagePostblitImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguagePowExpressionImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguagePragmaDeclarationImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguagePragmaExpressionImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguagePrimaryExpressionImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageRegisterImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageRelExpressionImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageReturnStatementImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageScopeGuardStatementImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageSharedStaticConstructorImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageSharedStaticDestructorImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageShiftExpressionImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageSliceExpressionImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageStatementImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageStatementNoCaseNoDefaultImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageStaticAssertDeclarationImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageStaticAssertStatementImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageStaticConstructorImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageStaticCtorDtorCommonImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageStaticDestructorImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageStaticIfConditionImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageStorageClassImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageStringImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageStructBodyImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageStructInitializerImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageStructMemberInitializerImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageStructMemberInitializersImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageSwitchStatementImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageSymbolImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageSynchronizedStatementImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageTemplateAliasParameterImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageTemplateArgumentImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageTemplateArgumentListImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageTemplateArgumentsImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageTemplateInstanceImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageTemplateMixinDeclarationImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageTemplateMixinExpressionImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageTemplateParameterListImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageTemplateParametersImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageTemplateSingleArgumentImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageTemplateThisParameterImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageTemplateTupleParameterImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageTemplateTypeParameterImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageTemplateValueParameterDefaultImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageTemplateValueParameterImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageTernaryExpressionImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageThrowStatementImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageTraitsExpressionImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageTryStatementImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageTypeConstructorImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageTypeConstructorsImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageTypeImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageTypeSpecializationImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageTypeSuffixImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageType_2Impl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageTypeidExpressionImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageTypeofExpressionImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageUnaryExpressionImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageVariableDeclarationImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageVectorImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageVersionConditionImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageWhileStatementImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageWithStatementImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguageXorExpressionImpl;
+import io.github.intellij.dlanguage.psi.impl.DlangUnittestImpl;
+import io.github.intellij.dlanguage.psi.impl.named.DLanguageAliasInitializerImpl;
+import io.github.intellij.dlanguage.psi.impl.named.DLanguageAutoDeclarationPartImpl;
+import io.github.intellij.dlanguage.psi.impl.named.DLanguageCatchImpl;
+import io.github.intellij.dlanguage.psi.impl.named.DLanguageConstructorImpl;
+import io.github.intellij.dlanguage.psi.impl.named.DLanguageDeclaratorImpl;
+import io.github.intellij.dlanguage.psi.impl.named.DLanguageEnumMemberImpl;
+import io.github.intellij.dlanguage.psi.impl.named.DLanguageEponymousTemplateDeclarationImpl;
+import io.github.intellij.dlanguage.psi.impl.named.DLanguageForeachTypeImpl;
+import io.github.intellij.dlanguage.psi.impl.named.DLanguageFunctionDeclarationImpl;
+import io.github.intellij.dlanguage.psi.impl.named.DLanguageIfConditionImpl;
+import io.github.intellij.dlanguage.psi.impl.named.DLanguageLabeledStatementImpl;
+import io.github.intellij.dlanguage.psi.impl.named.DLanguageModuleDeclarationImpl;
+import io.github.intellij.dlanguage.psi.impl.named.DLanguageNamedImportBindImpl;
+import io.github.intellij.dlanguage.psi.impl.named.DLanguageParameterImpl;
+import io.github.intellij.dlanguage.psi.impl.named.DLanguageTemplateParameterImpl;
+import io.github.intellij.dlanguage.psi.impl.named.DLanguageVersionSpecificationImpl;
+import io.github.intellij.dlanguage.psi.impl.named.DlangEnumDeclarationImpl;
+import io.github.intellij.dlanguage.psi.impl.named.DlangIdentifierImpl;
+import io.github.intellij.dlanguage.psi.impl.named.DlangInterfaceOrClassImpl;
+import io.github.intellij.dlanguage.psi.impl.named.DlangSingleImportImpl;
+import io.github.intellij.dlanguage.psi.impl.named.DlangStructDeclarationImpl;
+import io.github.intellij.dlanguage.psi.impl.named.DlangTemplateDeclarationImpl;
+import io.github.intellij.dlanguage.psi.impl.named.DlangUnionDeclarationImpl;
 import io.github.intellij.dlanguage.psi.interfaces.DCompositeElement;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
 import io.github.intellij.dlanguage.psi.interfaces.Mixin;
@@ -719,148 +919,151 @@ public class DlangVisitor extends PsiElementVisitor {
         visitElement(o);
     }
 
-    public void visitXorExpression(final DLanguageXorExpressionImpl o) {
+    public void visitXorExpression(@NotNull final DLanguageXorExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitWithStatement(final DLanguageWithStatementImpl o) {
+    public void visitWithStatement(@NotNull final DLanguageWithStatementImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitWhileStatement(final DLanguageWhileStatementImpl o) {
+    public void visitWhileStatement(@NotNull final DLanguageWhileStatementImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitVersionSpecification(final DLanguageVersionSpecificationImpl o) {
+    public void visitVersionSpecification(@NotNull final DLanguageVersionSpecificationImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitVersionCondition(final DLanguageVersionConditionImpl o) {
+    public void visitVersionCondition(@NotNull final DLanguageVersionConditionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitVector(final DLanguageVectorImpl o) {
+    public void visitVector(@NotNull final DLanguageVectorImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitVariableDeclaration(final DLanguageVariableDeclarationImpl o) {
+    public void visitVariableDeclaration(@NotNull final DLanguageVariableDeclarationImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitUnionDeclaration(final DlangUnionDeclarationImpl o) {
+    public void visitUnionDeclaration(@NotNull final DlangUnionDeclarationImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitUnaryExpression(final DLanguageUnaryExpressionImpl o) {
+    public void visitUnaryExpression(@NotNull final DLanguageUnaryExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitTypeSuffix(final DLanguageTypeSuffixImpl o) {
+    public void visitTypeSuffix(@NotNull final DLanguageTypeSuffixImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitTypeSpecialization(final DLanguageTypeSpecializationImpl o) {
+    public void visitTypeSpecialization(@NotNull final DLanguageTypeSpecializationImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitTypeofExpression(final DLanguageTypeofExpressionImpl o) {
+    public void visitTypeofExpression(@NotNull final DLanguageTypeofExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitType(final DLanguageTypeImpl o) {
+    public void visitType(@NotNull final DLanguageTypeImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitTypeidExpression(final DLanguageTypeidExpressionImpl o) {
+    public void visitTypeidExpression(@NotNull final DLanguageTypeidExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitTryStatement(final DLanguageTryStatementImpl o) {
+    public void visitTryStatement(@NotNull final DLanguageTryStatementImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitTraitsExpression(final DLanguageTraitsExpressionImpl o) {
+    public void visitTraitsExpression(@NotNull final DLanguageTraitsExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitThrowStatement(final DLanguageThrowStatementImpl o) {
+    public void visitThrowStatement(@NotNull final DLanguageThrowStatementImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitTernaryExpression(final DLanguageTernaryExpressionImpl o) {
+    public void visitTernaryExpression(@NotNull final DLanguageTernaryExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitStaticCtorDtorCommon(final DLanguageStaticCtorDtorCommonImpl o) {
+    public void visitStaticCtorDtorCommon(@NotNull final DLanguageStaticCtorDtorCommonImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitAddExpression(final DLanguageAddExpressionImpl o) {
+    public void visitAddExpression(@NotNull final DLanguageAddExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitIdentifier(final DlangIdentifierImpl identifier) {
+    public void visitIdentifier(@NotNull final DlangIdentifierImpl identifier) {
         visitPsiElement(identifier);
     }
 
-    public void visitType_2(final DLanguageType_2Impl o) {
+    public void visitType_2(@NotNull final DLanguageType_2Impl o) {
         visitPsiElement(o);
     }
 
-    public void visitParameterAttribute(final DLanguageParameterAttributeImpl o) {
+    public void visitParameterAttribute(@NotNull final DLanguageParameterAttributeImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitTypeConstructors(final DLanguageTypeConstructorsImpl o) {
+    public void visitTypeConstructors(@NotNull final DLanguageTypeConstructorsImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitEponymousTemplateDeclaration(final DLanguageEponymousTemplateDeclarationImpl o) {
+    public void visitEponymousTemplateDeclaration(
+        @NotNull final DLanguageEponymousTemplateDeclarationImpl o) {
         visitPsiElement(o);
     }
 
 
-    public void visitUnittest(final DlangUnittestImpl o) {
+    public void visitUnittest(@NotNull final DlangUnittestImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitTypeConstructor(final DLanguageTypeConstructorImpl o) {
+    public void visitTypeConstructor(@NotNull final DLanguageTypeConstructorImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitTemplateMixinDeclaration(final DLanguageTemplateMixinDeclarationImpl o) {
+    public void visitTemplateMixinDeclaration(
+        @NotNull final DLanguageTemplateMixinDeclarationImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitSliceExpression(final DLanguageSliceExpressionImpl o) {
+    public void visitSliceExpression(@NotNull final DLanguageSliceExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitAndAndExpression(final DLanguageAndAndExpressionImpl o) {
+    public void visitAndAndExpression(@NotNull final DLanguageAndAndExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitAlignAttribute(final DLanguageAlignAttributeImpl o) {
+    public void visitAlignAttribute(@NotNull final DLanguageAlignAttributeImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitLambdaExpression(final DLanguageLambdaExpressionImpl o) {
+    public void visitLambdaExpression(@NotNull final DLanguageLambdaExpressionImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitInterfaceOrClass(final DlangInterfaceOrClassImpl o) {
+    public void visitInterfaceOrClass(@NotNull final DlangInterfaceOrClassImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitString(final DLanguageStringImpl o) {
+    public void visitString(@NotNull final DLanguageStringImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitBuiltinType(final DLanguageBuiltinTypeImpl o) {
+    public void visitBuiltinType(@NotNull final DLanguageBuiltinTypeImpl o) {
         visitPsiElement(o);
     }
 
-    public void visitNamedImportBind(final DLanguageNamedImportBindImpl dLanguageNamedImportBind) {
+    public void visitNamedImportBind(
+        @NotNull final DLanguageNamedImportBindImpl dLanguageNamedImportBind) {
         visitPsiElement(dLanguageNamedImportBind);
     }
 
@@ -870,5 +1073,10 @@ public class DlangVisitor extends PsiElementVisitor {
 
     public void visitSingleImport(DlangSingleImportImpl dlangSingleImport) {
         visitPsiElement(dlangSingleImport);
+    }
+
+    public void visitStaticForeachStatement(
+        DLangStaticForeachStatementImpl dLangStaticForeachStatement) {
+        visitPsiElement(dLangStaticForeachStatement);
     }
 }

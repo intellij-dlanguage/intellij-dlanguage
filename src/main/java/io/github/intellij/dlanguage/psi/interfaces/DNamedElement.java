@@ -2,7 +2,7 @@ package io.github.intellij.dlanguage.psi.interfaces;
 
 import com.intellij.navigation.NavigationItem;
 import com.intellij.psi.PsiNameIdentifierOwner;
-import io.github.intellij.dlanguage.psi.DlangIdentifier;
+import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributes;
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributesFinder;
 import org.jetbrains.annotations.NotNull;
@@ -54,4 +54,6 @@ public interface DNamedElement extends DCompositeElement, PsiNameIdentifierOwner
     boolean isConst();
 
     boolean isImmutable();
+
+    boolean isEnum();
 }

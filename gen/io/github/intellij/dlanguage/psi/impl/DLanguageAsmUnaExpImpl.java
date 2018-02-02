@@ -13,7 +13,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.DLanguageAsmExp;
 import io.github.intellij.dlanguage.psi.DLanguageAsmPrimaryExp;
 import io.github.intellij.dlanguage.psi.DLanguageAsmUnaExp;
-import io.github.intellij.dlanguage.psi.DlangIdentifier;
+import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

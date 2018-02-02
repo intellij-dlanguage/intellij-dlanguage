@@ -12,7 +12,7 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.DLanguageAutoDeclaration;
 import io.github.intellij.dlanguage.psi.DLanguageStorageClass;
-import io.github.intellij.dlanguage.psi.DlangAutoDeclarationPart;
+import io.github.intellij.dlanguage.psi.named.DlangAutoDeclarationPart;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;

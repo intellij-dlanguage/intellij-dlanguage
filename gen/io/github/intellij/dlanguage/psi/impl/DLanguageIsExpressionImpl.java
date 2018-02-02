@@ -18,7 +18,7 @@ import io.github.intellij.dlanguage.psi.DLanguageIsExpression;
 import io.github.intellij.dlanguage.psi.DLanguageTemplateParameterList;
 import io.github.intellij.dlanguage.psi.DLanguageType;
 import io.github.intellij.dlanguage.psi.DLanguageTypeSpecialization;
-import io.github.intellij.dlanguage.psi.DlangIdentifier;
+import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import org.jetbrains.annotations.NotNull;

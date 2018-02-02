@@ -12,6 +12,10 @@
     ]]></description>
 
     <change-notes><![CDATA[
+        <b>v1.16</b><br/>
+        <ul>
+            <li>Compatibility IntelliJ 2018.*</li>
+        </ul>
         <b>v1.15 - v1.15.4</b><br/>
         <ul>
             <li>reworked code folding</li>
@@ -31,7 +35,7 @@
     </change-notes>
 
     <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
-    <idea-version since-build="172" until-build="173.*"/>
+    <idea-version since-build="173" until-build="181.*"/>
 
     <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
          on how to target different products -->
@@ -202,15 +206,6 @@
             implementationClass="io.github.intellij.dlanguage.inspections.BuiltinPropertyName"
             language="D" level="WARNING"
             shortName="BuiltinPropertyName"/>
-        <localInspection bundle="messages.PropertiesBundle" enabledByDefault="true"
-            implementationClass="io.github.intellij.dlanguage.inspections.FormatNumbersForReadability"
-            language="D" level="WARNING"
-            shortName="FormatNumbersForReadability"/>
-        <localInspection bundle="messages.PropertiesBundle" enabledByDefault="true"
-            implementationClass="io.github.intellij.dlanguage.inspections.CatchingGeneralExceptions"
-            language="D" level="WARNING"
-            shortName="CatchingGeneralExceptions"/>
-
 
         <!--debugger-->
         <!--<configurationType implementation="uk.co.cwspencer.ideagdb.run.GoGdbRunConfigurationType"/>-->
@@ -219,6 +214,10 @@
 
         <!-- Structure View -->
         <lang.psiStructureViewFactory language="D" implementationClass="io.github.intellij.dlanguage.structure.DStructureViewFactory"/>
+
+
+        <postStartupActivity
+            implementation="io.github.intellij.dlanguage.project.DubListenerComponent"/>
     </extensions>
 
     <application-components>
@@ -263,11 +262,11 @@
             <implementation-class>io.github.intellij.dlanguage.codeinsight.dcd.DCDCompletionServer</implementation-class>
             <interface-class>io.github.intellij.dlanguage.codeinsight.dcd.DCDCompletionServer</interface-class>
         </component>
+
     </module-components>
 
     <project-components>
         <!-- Add your project components here -->
-
     </project-components>
 
 

@@ -43,12 +43,13 @@ public class DubConfigurationParser {
     //    private Map<String, List<String>> targets = new HashMap<>();
     private TreeNode packageTree;
 
-    public DubConfigurationParser(final Project project, final String dubBinaryPath) {
+    public DubConfigurationParser(final Project project, final String dubBinaryPath,
+        final boolean silentMode) {
         this.project = project;
         this.dubBinaryPath = dubBinaryPath;
 
         if (canUseDub()) {
-            parseDubConfiguration().ifPresent(this::parseDubDescription);
+            parseDubConfiguration(silentMode).ifPresent(this::parseDubDescription);
         }
     }
 
@@ -62,6 +63,8 @@ public class DubConfigurationParser {
         final boolean dubPathValid = StringUtil.isNotEmpty(this.dubBinaryPath) && (dubBinaryPath.endsWith("dub") || dubBinaryPath.endsWith("dub.exe"));
 
         final VirtualFile baseDir = project.getBaseDir();
+
+        baseDir.refresh(false, true);
 
         return dubPathValid && Arrays.stream(baseDir.getChildren())
             .filter(f -> !f.isDirectory())
@@ -145,6 +148,11 @@ public class DubConfigurationParser {
 //    }
 
     private Optional<JsonObject> parseDubConfiguration() {
+        return parseDubConfiguration(false);
+    }
+
+    private Optional<JsonObject> parseDubConfiguration(
+        final boolean silentMode) {
         try {
             final String baseDir = project.getBaseDir().getCanonicalPath();
             final GeneralCommandLine commandLine = new GeneralCommandLine();
@@ -191,20 +199,28 @@ public class DubConfigurationParser {
                             this.project);
                     }
                 } else {
-                    LOG.warn(String.format("%s exited with %s errors", dubCommand, errors.size()));
+                    if (!silentMode) {
+                        LOG.warn(
+                            String.format("%s exited with %s errors", dubCommand, errors.size()));
+                    } else {
+                        LOG.info(
+                            String.format("%s exited with %s errors", dubCommand, errors.size()));
+                    }
                     // potential error messages are things like:
                     //   "No valid root package found - aborting."
                     //   "Package vibe-d declared a sub-package, definition file is missing: /path/to/package"
                     //   "Non-optional dependency vibe-d:core of vibe-d not found in dependency tree!?."
-                    errors.forEach(errorMessage -> Notifications.Bus.notify(
-                        new Notification(
-                            "DubNotification",
-                            "DUB Import Error",
-                            errorMessage,
-                            NotificationType.WARNING
-                        ),
-                        this.project)
-                    );
+                    if (!silentMode) {
+                        errors.forEach(errorMessage -> Notifications.Bus.notify(
+                            new Notification(
+                                "DubNotification",
+                                "DUB Import Error",
+                                errorMessage,
+                                NotificationType.WARNING
+                            ),
+                            this.project)
+                        );
+                    }
                 }
                 final JsonObject jsonObject = new JsonParser()
                     .parse(builder.toString())
@@ -213,7 +229,10 @@ public class DubConfigurationParser {
             } else {
                 errors.forEach(LOG::warn);
                 LOG.warn(String.format("%s exited with %s", dubCommand, exitCode));
-                SwingUtilities.invokeLater(() -> Messages.showErrorDialog(project, String.format("%s exited with %s", dubCommand, exitCode), "Dub Import"));
+                if (!silentMode) {
+                    SwingUtilities.invokeLater(() -> Messages.showErrorDialog(project,
+                        String.format("%s exited with %s", dubCommand, exitCode), "Dub Import"));
+                }
             }
         } catch (ExecutionException | JsonSyntaxException e) {
             LOG.error("Unable to parse dub configuration", e);

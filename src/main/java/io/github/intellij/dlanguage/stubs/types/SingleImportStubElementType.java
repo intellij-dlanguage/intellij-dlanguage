@@ -5,7 +5,7 @@ import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubInputStream;
 import com.intellij.psi.stubs.StubOutputStream;
 import com.intellij.util.io.StringRef;
-import io.github.intellij.dlanguage.psi.DlangSingleImport;
+import io.github.intellij.dlanguage.psi.named.DlangSingleImport;
 import io.github.intellij.dlanguage.psi.impl.named.DlangSingleImportImpl;
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributes;
 import io.github.intellij.dlanguage.stubs.DlangSingleImportStub;

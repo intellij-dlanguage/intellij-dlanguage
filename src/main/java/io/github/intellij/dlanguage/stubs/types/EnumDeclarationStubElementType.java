@@ -4,7 +4,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubInputStream;
 import com.intellij.psi.stubs.StubOutputStream;
-import io.github.intellij.dlanguage.psi.DlangEnumDeclaration;
+import io.github.intellij.dlanguage.psi.named.DlangEnumDeclaration;
 import io.github.intellij.dlanguage.psi.impl.named.DlangEnumDeclarationImpl;
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributes;
 import io.github.intellij.dlanguage.stubs.DlangEnumDeclarationStub;

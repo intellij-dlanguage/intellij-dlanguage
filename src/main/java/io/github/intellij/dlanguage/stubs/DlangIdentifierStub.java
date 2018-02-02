@@ -3,7 +3,7 @@ package io.github.intellij.dlanguage.stubs;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.util.io.StringRef;
-import io.github.intellij.dlanguage.psi.DlangIdentifier;
+import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributes;
 
 public class DlangIdentifierStub extends DNamedStubBase<DlangIdentifier> {

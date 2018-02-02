@@ -1,34 +1,36 @@
 package io.github.intellij.dlanguage.utils
 
-/**
+import io.github.intellij.dlanguage.psi.named.*
+
+    /**
  * Created by francis on 6/13/2017.
  */
 //typealias AliasDeclaration = DLanguageAliasDeclaration\
-typealias InterfaceOrClass = io.github.intellij.dlanguage.psi.DlangInterfaceOrClass
+typealias InterfaceOrClass = DlangInterfaceOrClass
 typealias ClassDeclaration = io.github.intellij.dlanguage.psi.DLanguageClassDeclaration
-typealias Constructor = io.github.intellij.dlanguage.psi.DlangConstructor
-typealias Destructor = io.github.intellij.dlanguage.psi.DlangDestructor
-typealias EnumDeclaration = io.github.intellij.dlanguage.psi.DlangEnumDeclaration
-typealias EnumMember = io.github.intellij.dlanguage.psi.DlangEnumMember
-typealias ForeachType = io.github.intellij.dlanguage.psi.DlangForeachType
-typealias Identifier = io.github.intellij.dlanguage.psi.DlangIdentifier
-typealias SingleImport = io.github.intellij.dlanguage.psi.DlangSingleImport
+typealias Constructor = DlangConstructor
+typealias Destructor = DlangDestructor
+typealias EnumDeclaration = DlangEnumDeclaration
+typealias EnumMember = DlangEnumMember
+typealias ForeachType = DlangForeachType
+typealias Identifier = DlangIdentifier
+typealias SingleImport = DlangSingleImport
 typealias InterfaceDeclaration = io.github.intellij.dlanguage.psi.DLanguageInterfaceDeclaration
 typealias LabeledStatement = io.github.intellij.dlanguage.psi.DLanguageLabeledStatement
-typealias ModuleDeclaration = io.github.intellij.dlanguage.psi.DLanguageModuleDeclaration
-typealias Parameter = io.github.intellij.dlanguage.psi.DlangParameter
+typealias ModuleDeclaration = DLanguageModuleDeclaration
+typealias Parameter = DlangParameter
 typealias SharedStaticConstructor = io.github.intellij.dlanguage.psi.DLanguageSharedStaticConstructor
 typealias SharedStaticDestructor = io.github.intellij.dlanguage.psi.DLanguageSharedStaticDestructor
 typealias StaticConstructor = io.github.intellij.dlanguage.psi.DLanguageStaticConstructor
 typealias StaticDestructor = io.github.intellij.dlanguage.psi.DLanguageStaticDestructor
-typealias StructDeclaration = io.github.intellij.dlanguage.psi.DlangStructDeclaration
-typealias TemplateDeclaration = io.github.intellij.dlanguage.psi.DlangTemplateDeclaration
+typealias StructDeclaration = DlangStructDeclaration
+typealias TemplateDeclaration = DlangTemplateDeclaration
 typealias TemplateMixinDeclaration = io.github.intellij.dlanguage.psi.DLanguageTemplateMixinDeclaration
 typealias TemplateParameter = io.github.intellij.dlanguage.psi.DLanguageTemplateParameter
-typealias UnionDeclaration = io.github.intellij.dlanguage.psi.DlangUnionDeclaration
+typealias UnionDeclaration = DlangUnionDeclaration
 typealias Unittest = io.github.intellij.dlanguage.psi.DLanguageUnittest
 typealias AliasDeclaration = io.github.intellij.dlanguage.psi.DLanguageAliasDeclaration
-typealias AliasInitializer = io.github.intellij.dlanguage.psi.DlangAliasInitializer
+typealias AliasInitializer = DlangAliasInitializer
 typealias AliasThisDeclaration = io.github.intellij.dlanguage.psi.DLanguageAliasThisDeclaration
 typealias AlignAttribute = io.github.intellij.dlanguage.psi.DLanguageAlignAttribute
 typealias AndAndExpression = io.github.intellij.dlanguage.psi.DLanguageAndAndExpression
@@ -63,7 +65,7 @@ typealias AtAttribute = io.github.intellij.dlanguage.psi.DLanguageAtAttribute
 typealias Attribute = io.github.intellij.dlanguage.psi.DLanguageAttribute
 typealias AttributeDeclaration = io.github.intellij.dlanguage.psi.DLanguageAttributeDeclaration
 typealias AutoDeclaration = io.github.intellij.dlanguage.psi.DLanguageAutoDeclaration
-typealias AutoDeclarationPart = io.github.intellij.dlanguage.psi.DlangAutoDeclarationPart
+typealias AutoDeclarationPart = DlangAutoDeclarationPart
 typealias BaseClass = io.github.intellij.dlanguage.psi.DLanguageBaseClass
 typealias BaseClassList = io.github.intellij.dlanguage.psi.DLanguageBaseClassList
 typealias BlockStatement = io.github.intellij.dlanguage.psi.DLanguageBlockStatement
@@ -73,7 +75,7 @@ typealias CaseRangeStatement = io.github.intellij.dlanguage.psi.DLanguageCaseRan
 typealias CaseStatement = io.github.intellij.dlanguage.psi.DLanguageCaseStatement
 typealias CastExpression = io.github.intellij.dlanguage.psi.DLanguageCastExpression
 typealias CastQualifier = io.github.intellij.dlanguage.psi.DLanguageCastQualifier
-typealias Catch = io.github.intellij.dlanguage.psi.DlangCatch
+typealias Catch = DlangCatch
 typealias Catches = io.github.intellij.dlanguage.psi.DLanguageCatches
 typealias CmpExpression = io.github.intellij.dlanguage.psi.DLanguageCmpExpression
 typealias CompileCondition = io.github.intellij.dlanguage.psi.DLanguageCompileCondition
@@ -86,7 +88,7 @@ typealias DebugSpecification = io.github.intellij.dlanguage.psi.DLanguageDebugSp
 typealias Declaration = io.github.intellij.dlanguage.psi.DLanguageDeclaration
 typealias DeclarationOrStatement = io.github.intellij.dlanguage.psi.DLanguageDeclarationOrStatement
 typealias DeclarationsAndStatements = io.github.intellij.dlanguage.psi.DLanguageDeclarationsAndStatements
-typealias Declarator = io.github.intellij.dlanguage.psi.DlangDeclarator
+typealias Declarator = DlangDeclarator
 typealias DefaultStatement = io.github.intellij.dlanguage.psi.DLanguageDefaultStatement
 typealias DeleteExpression = io.github.intellij.dlanguage.psi.DLanguageDeleteExpression
 typealias Deprecated = io.github.intellij.dlanguage.psi.DLanguageDeprecated
@@ -104,7 +106,7 @@ typealias ForeachTypeList = io.github.intellij.dlanguage.psi.DLanguageForeachTyp
 typealias FunctionAttribute = io.github.intellij.dlanguage.psi.DLanguageFunctionAttribute
 typealias FunctionBody = io.github.intellij.dlanguage.psi.DLanguageFunctionBody
 typealias FunctionCallExpression = io.github.intellij.dlanguage.psi.DLanguageFunctionCallExpression
-typealias FunctionDeclaration = io.github.intellij.dlanguage.psi.DlangFunctionDeclaration
+typealias FunctionDeclaration = DlangFunctionDeclaration
 typealias FunctionLiteralExpression = io.github.intellij.dlanguage.psi.DLanguageFunctionLiteralExpression
 typealias GotoStatement = io.github.intellij.dlanguage.psi.DLanguageGotoStatement
 typealias IdentifierChain = io.github.intellij.dlanguage.psi.DLanguageIdentifierChain
@@ -193,7 +195,7 @@ typealias UnaryExpression = io.github.intellij.dlanguage.psi.DLanguageUnaryExpre
 typealias VariableDeclaration = io.github.intellij.dlanguage.psi.DLanguageVariableDeclaration
 typealias Vector = io.github.intellij.dlanguage.psi.DLanguageVector
 typealias VersionCondition = io.github.intellij.dlanguage.psi.DLanguageVersionCondition
-typealias VersionSpecification = io.github.intellij.dlanguage.psi.DLanguageVersionSpecification
+typealias VersionSpecification = DLanguageVersionSpecification
 typealias WhileStatement = io.github.intellij.dlanguage.psi.DLanguageWhileStatement
 typealias WithStatement = io.github.intellij.dlanguage.psi.DLanguageWithStatement
 typealias XorExpression = io.github.intellij.dlanguage.psi.DLanguageXorExpression

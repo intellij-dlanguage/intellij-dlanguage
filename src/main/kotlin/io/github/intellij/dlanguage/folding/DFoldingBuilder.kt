@@ -20,11 +20,10 @@ import io.github.intellij.dlanguage.psi.*
 import io.github.intellij.dlanguage.psi.DlangTypes.*
 import io.github.intellij.dlanguage.psi.ext.*
 import io.github.intellij.dlanguage.psi.impl.*
-import io.github.intellij.dlanguage.psi.impl.named.DlangEnumDeclarationImpl
 import io.github.intellij.dlanguage.psi.impl.named.DlangTemplateDeclarationImpl
+import io.github.intellij.dlanguage.psi.named.DlangTemplateDeclaration
 import io.github.intellij.dlanguage.utils.DeclarationOrStatement
 import io.github.intellij.dlanguage.utils.FunctionBody
-import io.github.intellij.dlanguage.utils.StructBody
 import java.util.ArrayList
 
 class DFoldingBuilder : FoldingBuilderEx(), DumbAware {
@@ -191,6 +190,8 @@ class DFoldingBuilder : FoldingBuilderEx(), DumbAware {
 
             val offset = decl.importDeclaration?.kW_IMPORT?.textRange?.endOffset ?: return
             val range = TextRange(offset + 1, lastTrailing.textRange.endOffset)
+            if(range.length == 0)
+                return
             descriptors += FoldingDescriptor(importDecl, range)
         }
 
@@ -208,7 +209,7 @@ class DFoldingBuilder : FoldingBuilderEx(), DumbAware {
             // void foo() { \n
             //     writeln("Hello world"); \n
             // }
-            if (block.text.split('\n').size - 1 > 2) return false;
+            if (block.text.split('\n').size - 1 > 2) return false
 
             /// Get previous  whitespace if exist as start region
             val leftEl = leftBrace.parent?.parent?.prevSibling as? PsiWhiteSpace ?: leftBrace

@@ -12,6 +12,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.TokenType
 import com.intellij.psi.tree.TokenSet
+import com.intellij.psi.tree.TokenSet.create
 import io.github.intellij.dlanguage.dlanguage.DlangLexer
 import io.github.intellij.dlanguage.parser.ParserWrapper
 import io.github.intellij.dlanguage.psi.DlangFile
@@ -21,32 +22,32 @@ import org.jetbrains.annotations.NotNull
 
 object DLanguage : Language("D")
 
-class DLanguageLexerAdapter : FlexAdapter(io.github.intellij.dlanguage.dlanguage.DlangLexer())
+class DLanguageLexerAdapter : FlexAdapter(DlangLexer())
 
 class DLangParserDefinition : ParserDefinition {
-    val WHITE_SPACES: TokenSet = TokenSet.create(TokenType.WHITE_SPACE)
-    val COMMENTS: TokenSet = TokenSet.create(io.github.intellij.dlanguage.psi.DlangTypes.LINE_COMMENT, io.github.intellij.dlanguage.psi.DlangTypes.BLOCK_COMMENT, io.github.intellij.dlanguage.psi.DlangTypes.NESTING_BLOCK_COMMENT)
+    val WHITE_SPACES: TokenSet = create(TokenType.WHITE_SPACE)
+    val COMMENTS: TokenSet = create(DlangTypes.LINE_COMMENT, DlangTypes.BLOCK_COMMENT, DlangTypes.NESTING_BLOCK_COMMENT)
 
     @NotNull
-    override fun createParser(project: Project?): PsiParser = io.github.intellij.dlanguage.parser.ParserWrapper()
+    override fun createParser(project: Project?): PsiParser = ParserWrapper()
 
-    override fun createFile(viewProvider: FileViewProvider): PsiFile? = io.github.intellij.dlanguage.psi.DlangFile(viewProvider)
+    override fun createFile(viewProvider: FileViewProvider): PsiFile? = DlangFile(viewProvider)
 
     override fun spaceExistanceTypeBetweenTokens(left: ASTNode?, right: ASTNode?): ParserDefinition.SpaceRequirements? = ParserDefinition.SpaceRequirements.MAY
 
     @NotNull
     override fun getStringLiteralElements(): TokenSet = TokenSet.EMPTY
 
-    override fun getFileNodeType(): io.github.intellij.dlanguage.stubs.types.DFileStubElementType = io.github.intellij.dlanguage.stubs.types.DFileStubElementType.INSTANCE
+    override fun getFileNodeType(): DFileStubElementType = DFileStubElementType.INSTANCE
 
     @NotNull
     override fun getWhitespaceTokens(): TokenSet = WHITE_SPACES
 
     @NotNull
-    override fun createLexer(project: Project?): Lexer = FlexAdapter(io.github.intellij.dlanguage.dlanguage.DlangLexer(null))
+    override fun createLexer(project: Project?): Lexer = FlexAdapter(DlangLexer(null))
 
     @NotNull
-    override fun createElement(node: ASTNode?): PsiElement = io.github.intellij.dlanguage.psi.DlangTypes.Factory.createElement(node)
+    override fun createElement(node: ASTNode?): PsiElement = DlangTypes.Factory.createElement(node)
 
     @NotNull
     override fun getCommentTokens(): TokenSet = COMMENTS

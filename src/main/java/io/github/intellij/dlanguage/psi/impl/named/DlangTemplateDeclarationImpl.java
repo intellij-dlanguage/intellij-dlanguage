@@ -8,20 +8,19 @@ import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.*;
+import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
+import io.github.intellij.dlanguage.psi.named.DlangTemplateDeclaration;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import io.github.intellij.dlanguage.stubs.DlangTemplateDeclarationStub;
-import io.github.intellij.dlanguage.psi.*;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
-import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
-import io.github.intellij.dlanguage.stubs.DlangTemplateDeclarationStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_TEMPLATE;
-
-public class DlangTemplateDeclarationImpl extends DNamedStubbedPsiElementBase<DlangTemplateDeclarationStub> implements DlangTemplateDeclaration {
+public class DlangTemplateDeclarationImpl extends
+    DNamedStubbedPsiElementBase<DlangTemplateDeclarationStub> implements
+    DlangTemplateDeclaration {
 
     public DlangTemplateDeclarationImpl(final DlangTemplateDeclarationStub stub, final IStubElementType type) {
         super(stub, type);
