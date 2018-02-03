@@ -28,10 +28,15 @@ import com.intellij.openapi.application.ApplicationNamesInfo;
 import com.intellij.openapi.application.ex.ApplicationInfoEx;
 import com.intellij.openapi.diagnostic.Attachment;
 import com.intellij.openapi.extensions.PluginDescriptor;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectManager;
 import com.intellij.util.SystemProperties;
 import io.github.intellij.dlanguage.settings.DLanguageToolsConfigurable;
 import io.github.intellij.dlanguage.settings.ToolKey;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Collects information about the running IDEA and the error
@@ -124,6 +129,20 @@ public class IdeaInformationProxy {
             params.put("attachment.name", attachment.getName());
             params.put("attachment.value", attachment.getEncodedBytes());
         }
+        final String userName = System.getProperty("user.name");
+        final List<String> projects = Arrays.stream(ProjectManager.getInstance().getOpenProjects())
+            .map(
+                Project::getName).collect(Collectors.toList());
+
+        for (final String key : params.keySet()) {
+            String val = params.get(key);
+            for (final String projectName : projects) {
+                val = val.replaceAll(projectName, "<removed>");
+            }
+            val = val.replaceAll(userName, "<removed>");
+            params.put(key, val);
+        }
+
         return params;
     }
 }

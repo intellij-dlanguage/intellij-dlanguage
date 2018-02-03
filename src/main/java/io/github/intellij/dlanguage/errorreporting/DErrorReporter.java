@@ -41,7 +41,7 @@ public class DErrorReporter extends ErrorReportSubmitter {
                           @NotNull final Consumer<SubmittedReportInfo> consumer) {
         try {
             Sentry.init("https://f0a6a71038a645db865befe4d197def8:0df5947c823e4c2cab13ce2ace621f21@sentry.io/237092");
-        } catch (Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
         }
         for (final IdeaLoggingEvent event : events) {
@@ -63,7 +63,7 @@ public class DErrorReporter extends ErrorReportSubmitter {
 
             try {
                 Sentry.capture(event.getThrowable());
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 return false;
             }
         }
