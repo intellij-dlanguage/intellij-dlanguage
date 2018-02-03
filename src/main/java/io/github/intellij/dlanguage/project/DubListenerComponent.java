@@ -1,13 +1,11 @@
 package io.github.intellij.dlanguage.project;
 
-import static io.github.intellij.dlanguage.project.DubConfigFileListener.addProcessDLibsListener;
-import static io.github.intellij.dlanguage.project.DubConfigFileListener.getDubFileFromModule;
-
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.startup.StartupActivity;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VirtualFileManager;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -18,9 +16,10 @@ public class DubListenerComponent implements StartupActivity {
     @Override
     public void runActivity(@NotNull final Project project) {
         for (final Module module : ModuleManager.getInstance(project).getModules()) {
-            final VirtualFile dubFile = getDubFileFromModule(module);
+            final VirtualFile dubFile = DubConfigFileListener.getDubFileFromModule(module);
             if (dubFile != null) {
-                addProcessDLibsListener(dubFile, project, module);
+                VirtualFileManager.getInstance()
+                    .addVirtualFileListener(new DubConfigFileListener(dubFile, project, module));
             }
         }
     }

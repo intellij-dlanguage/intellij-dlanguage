@@ -9,21 +9,22 @@ import com.intellij.util.messages.Topic
  *
  * All the potential Topics that we intend to use should be placed here for convenience
  */
-interface Topics {
+class Topics {
 
     companion object {
 
         // Topics provided by the Jetbrains API that we're likely to use
-        val PROJECT_ROOT_CHANGED = ProjectTopics.PROJECT_ROOTS
-        val MODULES_CHANGED = ProjectTopics.MODULES
+        @JvmField val PROJECT_ROOT_CHANGED = ProjectTopics.PROJECT_ROOTS
+        @JvmField val MODULES_CHANGED = ProjectTopics.MODULES
 
-        val DUB_FILE_CHANGE = Topic.create("dub file change", DubFileChangeNotifier::class.java)
+        // a dub change could be a change to the tool itself of a change to the dub.json/sdl file
+        @JvmField val DUB_CHANGE = Topic.create("dub change", DubChangeNotifier::class.java)
 
-        // Topics for the various D Tools
-        val DUB_TOOL_CHANGE = Topic.create("dub toolchain change", DubToolChangeListener::class.java)
-        val DCD_TOOL_CHANGE = Topic.create("dcd toolchain change", DcdToolChangeListener::class.java)
-        val DFMT_TOOL_CHANGE = Topic.create("dfmt toolchain change", DfmtToolChangeListener::class.java)
-        val DSCANNER_TOOL_CHANGE = Topic.create("dscanner toolchain change", DscannerToolChangeListener::class.java)
-        val GDB_TOOL_CHANGE = Topic.create("gdb toolchain change", GdbToolChangeListener::class.java)
+        // a DCD change can be either for the client or the server
+        @JvmField val DCD_TOOL_CHANGE = Topic.create("dcd change", DcdToolChangeListener::class.java)
+
+        @JvmField val DFMT_TOOL_CHANGE = Topic.create("dfmt change", DfmtToolChangeListener::class.java)
+        @JvmField val DSCANNER_TOOL_CHANGE = Topic.create("dscanner change", DscannerToolChangeListener::class.java)
+        @JvmField val GDB_TOOL_CHANGE = Topic.create("gdb change", GdbToolChangeListener::class.java)
     }
 }

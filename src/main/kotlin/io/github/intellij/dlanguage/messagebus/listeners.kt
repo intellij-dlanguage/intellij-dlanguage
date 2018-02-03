@@ -1,8 +1,13 @@
 package io.github.intellij.dlanguage.messagebus
 
+import com.intellij.openapi.module.Module
+import com.intellij.openapi.project.Project
+import com.intellij.openapi.vfs.VirtualFile
+
 
 interface DcdToolChangeListener {
-    fun onDcdToolChange()
+    fun onDcdClientChange()
+    fun onDcdServerChange()
 }
 
 interface DfmtToolChangeListener {
@@ -17,10 +22,14 @@ interface GdbToolChangeListener {
     fun onGdbToolChange()
 }
 
-interface DubToolChangeListener {
-    fun onDubToolChange()
-}
+interface DubChangeNotifier {
 
-interface DubFileChangeNotifier {
-    fun onDubFileChange()
+    fun onDubToolChange()
+
+    /**
+     * @param project
+     * @param module
+     * @param dubFile the dub.json or dub.sdl that has been changed
+     */
+    fun onDubFileChange(project: Project, module: Module, dubFile: VirtualFile)
 }
