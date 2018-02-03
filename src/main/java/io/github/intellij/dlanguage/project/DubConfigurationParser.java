@@ -63,8 +63,7 @@ public class DubConfigurationParser {
         final boolean dubPathValid = StringUtil.isNotEmpty(this.dubBinaryPath) && (dubBinaryPath.endsWith("dub") || dubBinaryPath.endsWith("dub.exe"));
 
         final VirtualFile baseDir = project.getBaseDir();
-
-        baseDir.refresh(false, true);
+        baseDir.refresh(true, true);
 
         return dubPathValid && Arrays.stream(baseDir.getChildren())
             .filter(f -> !f.isDirectory())

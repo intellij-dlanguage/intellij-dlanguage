@@ -47,6 +47,8 @@ public class DubConfigurationParserTest extends LightPlatformTestCase {
         loadVibedTestFiles();
 
         System.out.println(" ----------------" + ourProject.getProjectFilePath());
+        ourProject.getBaseDir()
+            .refresh(false, true);//this is needed under certain circumstances to make tests pass.
         final DubConfigurationParser dubConfigurationParser = new DubConfigurationParser(ourProject,
             "dub",
             false);
@@ -82,6 +84,8 @@ public class DubConfigurationParserTest extends LightPlatformTestCase {
     public void testDubParserWithHibernated() throws Exception {
         loadTestFile("dub/hibernated/dub.json", "dub.json");
 
+        ourProject.getBaseDir()
+            .refresh(false, true);//this is needed under certain circumstances to make tests pass.
         final DubConfigurationParser dubConfigurationParser = new DubConfigurationParser(ourProject,
             "dub",
             false);
