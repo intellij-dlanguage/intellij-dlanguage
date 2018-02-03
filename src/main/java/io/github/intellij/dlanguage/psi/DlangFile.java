@@ -8,6 +8,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.StubElement;
+import com.intellij.util.IncorrectOperationException;
 import io.github.intellij.dlanguage.DLanguage;
 import io.github.intellij.dlanguage.DlangFileType;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
@@ -59,7 +60,7 @@ public class DlangFile extends PsiFileBase {
     @NotNull
     public String getModuleOrFileName() {
         final String moduleName = getModuleName();
-        return moduleName == null ? getName() : moduleName;
+        return moduleName == null ? super.getName() : moduleName;
     }
 
     /**
@@ -119,6 +120,29 @@ public class DlangFile extends PsiFileBase {
         };
         this.processDeclarations(mainFunctionProcessor, ResolveState.initial(), null, this);
         return res[0];
+
+    }
+
+    @NotNull
+    @Override
+    public String getName() {
+        return getModuleOrFileName();
+    }
+
+    @Override
+    public PsiElement setName(@NotNull final String name) throws IncorrectOperationException {
+        final DLanguageModuleDeclaration module = findChildByClass(
+            DLanguageModuleDeclaration.class);
+        final String nameWithoutDotD;
+        if (name.endsWith(".d")) {
+            nameWithoutDotD = name.substring(0, name.length() - 2);
+        } else {
+            nameWithoutDotD = name;
+        }
+        if (module != null) {
+            module.setName(nameWithoutDotD);
+        }
+        return super.setName(nameWithoutDotD + ".d");
 
     }
 }
