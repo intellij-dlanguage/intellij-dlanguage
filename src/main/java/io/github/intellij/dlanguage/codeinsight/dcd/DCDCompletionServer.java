@@ -3,7 +3,9 @@ package io.github.intellij.dlanguage.codeinsight.dcd;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.configurations.ParametersList;
+import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
+import com.intellij.notification.Notifications;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleComponent;
@@ -94,7 +96,7 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
         }
     }
 
-    private void spawnProcess() throws DCDError {
+    private void spawnProcess() {
         if(path == null || path.isEmpty()) {
             LOG.warn("request made to spawn process for DCD Server but path is not set");
             return;
@@ -145,8 +147,11 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
             process = commandLine.createProcess();
             LOG.info("DCD process started");
         } catch (final ExecutionException e) {
+            Notifications.Bus.notify(new Notification("DCDNotification", "DCD Error",
+                "Unable to start a dcd server. Make sure that you have specified the path to the dcd-server and dcd-client executables correctly. You can specify executable paths under File > Settings > Languages & Frameworks > D Tools",
+                NotificationType.ERROR), module.getProject());
             LOG.error("Error spawning DCD process", e);
-            throw new InitError(e.toString());
+//            throw new InitError(e.toString());
         }
         input = new BufferedReader(new InputStreamReader(process.getInputStream()));
         output = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
@@ -231,9 +236,9 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
             try {
                 Thread.sleep(1500);
                 spawnProcess();
-            } catch (final DCDError e) {
+            } /*catch (final DCDError e) {
                 displayError(e.message);
-            } catch (final InterruptedException e) {
+            }*/ catch (final InterruptedException e) {
                 LOG.error(e);
             }
         }
