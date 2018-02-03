@@ -50,6 +50,7 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
 
 
         val project = myElement.project
+        throw NullPointerException("testing sentry. My username is francis/franc and untitled49")
         val namedElements = DResolveUtil.getInstance(project).findDefinitionNode(myElement, false).map { if (it is PsiNameIdentifierOwner && it !is ModuleDeclaration && it !is SingleImport) if (it.nameIdentifier != null) it.nameIdentifier!! else it else it }
         val results = mutableListOf<PsiElementResolveResult>()
         for (property in namedElements) {

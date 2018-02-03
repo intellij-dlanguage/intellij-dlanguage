@@ -136,11 +136,13 @@ public class IdeaInformationProxy {
 
         for (final String key : params.keySet()) {
             String val = params.get(key);
-            for (final String projectName : projects) {
-                val = val.replaceAll(projectName, "<removed>");
+            if (val != null) {
+                for (final String projectName : projects) {
+                    val = val.replaceAll(projectName, "<removed>");
+                }
+                val = val.replaceAll(userName, "<removed>");
+                params.put(key, val);
             }
-            val = val.replaceAll(userName, "<removed>");
-            params.put(key, val);
         }
 
         return params;
