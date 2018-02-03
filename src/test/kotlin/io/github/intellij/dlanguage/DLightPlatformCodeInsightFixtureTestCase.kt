@@ -60,7 +60,7 @@ open class DLightPlatformCodeInsightFixtureTestCase(srcName: String, expectName:
     protected fun getTestDataPath(vararg names: String): String {
         return this.javaClass.classLoader
             .getResource("$srcPath/${names.joinToString("/")}")!!
-            .path.replace("/C:", "")
+            .path.replace(Regex("/\\D:"), "")
     }
 
     /**
