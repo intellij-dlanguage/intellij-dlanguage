@@ -16,12 +16,13 @@ import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
+import io.github.intellij.dlanguage.messagebus.ToolChangeListener;
+import io.github.intellij.dlanguage.messagebus.Topics;
 import io.github.intellij.dlanguage.project.DubPackage;
 import io.github.intellij.dlanguage.settings.ToolKey;
 import io.github.intellij.dlanguage.settings.ToolSettings;
 import io.github.intellij.dlanguage.DlangSdkType;
 import io.github.intellij.dlanguage.project.DubConfigurationParser;
-import io.github.intellij.dlanguage.settings.SettingsChangeNotifier;
 import io.github.intellij.dlanguage.utils.ExecUtil;
 import io.github.intellij.dlanguage.utils.NotificationUtil;
 import org.jetbrains.annotations.NotNull;
@@ -39,7 +40,7 @@ import static io.github.intellij.dlanguage.utils.DUtil.isNotNullOrEmpty;
 /**
  * Process wrapper for DCD Server.  Implements ModuleComponent so destruction of processes coincides with closing projects.
  */
-public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotifier {
+public class DCDCompletionServer implements ModuleComponent, ToolChangeListener {
 
     private static final Logger LOG = Logger.getInstance(DCDCompletionServer.class);
 
@@ -75,7 +76,7 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
         this.flags = lookupFlags();
         this.workingDirectory = lookupWorkingDirectory();
         // Ensure that we are notified of changes to the settings.
-        module.getProject().getMessageBus().connect().subscribe(SettingsChangeNotifier.DCD_TOPIC, this);
+        module.getProject().getMessageBus().connect().subscribe(Topics.DCD_SERVER_TOOL_CHANGE, this);
     }
 
     private static void displayError(@NotNull final Project project, @NotNull final String message) {
@@ -215,18 +216,6 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
         output = null;
     }
 
-    // Implemented methods for SettingsChangeNotifier
-    @Override
-    public void onSettingsChanged(@NotNull final ToolSettings settings) {
-        LOG.debug("DCD Server settings changed");
-        kill();
-        this.path = settings.getPath();
-        this.flags = settings.getFlags();
-        if(isNotNullOrEmpty(this.path)) {
-            restart();
-        }
-    }
-
     /**
      * Restarts the dcd-server.
      */
@@ -270,6 +259,17 @@ public class DCDCompletionServer implements ModuleComponent, SettingsChangeNotif
     @Override
     public String getComponentName() {
         return "DCDCompletionServer";
+    }
+
+    @Override
+    public void onToolSettingsChanged(@NotNull final ToolSettings settings) {
+        LOG.debug("DCD Server settings changed");
+        kill();
+        this.path = settings.getPath();
+        this.flags = settings.getFlags();
+        if(isNotNullOrEmpty(this.path)) {
+            restart();
+        }
     }
 
     // Custom Exceptions

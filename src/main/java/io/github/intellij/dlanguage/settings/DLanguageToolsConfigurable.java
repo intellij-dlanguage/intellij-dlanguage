@@ -10,6 +10,8 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.ui.RawCommandLineEditor;
 import com.intellij.ui.TextAccessor;
 import com.intellij.util.messages.Topic;
+import io.github.intellij.dlanguage.messagebus.ToolChangeListener;
+import io.github.intellij.dlanguage.messagebus.Topics;
 import io.github.intellij.dlanguage.utils.ExecUtil;
 import io.github.intellij.dlanguage.utils.GuiUtil;
 import org.jetbrains.annotations.Nls;
@@ -67,21 +69,22 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
 
     public DLanguageToolsConfigurable(@NotNull final Project project) {
         this.propertiesComponent = PropertiesComponent.getInstance();
+
         properties = Arrays.asList(
             new Tool(project, "dub", ToolKey.DUB_KEY, dubPath, dubFlags,
-                dubAutoFind, dubVersion),
+                dubAutoFind, dubVersion, "--version", Topics.DUB_TOOL_CHANGE),
             new Tool(project, "dscanner", ToolKey.DSCANNER_KEY, dscannerPath, dscannerFlags,
-                dscannerAutoFind, dscannerVersion),
+                dscannerAutoFind, dscannerVersion, "--version", Topics.DSCANNER_TOOL_CHANGE),
             new Tool(project, "dcd-server", ToolKey.DCD_SERVER_KEY, dcdPath, dcdFlags,
-                dcdAutoFind, dcdVersion, "--version", SettingsChangeNotifier.DCD_TOPIC),
+                dcdAutoFind, dcdVersion, "--version", Topics.DCD_SERVER_TOOL_CHANGE),
             new Tool(project, "dcd-client", ToolKey.DCD_CLIENT_KEY, dcdClientPath, dcdClientFlags,
-                dcdClientAutoFind, dcdClientVersion),
+                dcdClientAutoFind, dcdClientVersion, "--version", Topics.DCD_CLIENT_TOOL_CHANGE),
             new Tool(project, "dfmt", ToolKey.DFORMAT_KEY, dFormatPath, dFormatFlags,
-                dFormatAutoFind, dFormatVersion),
+                dFormatAutoFind, dFormatVersion, "--version", Topics.DFMT_TOOL_CHANGE),
             new Tool(project, "dfix", ToolKey.DFIX_KEY, dFixPath, dFixFlags,
-                dFixAutoFind, dFixVersion),
+                dFixAutoFind, dFixVersion, "--version", Topics.DFIX_TOOL_CHANGE),
             new Tool(project, "gdb", ToolKey.GDB_KEY, GDBPath, GDBFlags,
-                GDBAutoFind, GDBVersion)
+                GDBAutoFind, GDBVersion, "--version", Topics.GDB_TOOL_CHANGE)
         );
     }
 
@@ -255,26 +258,12 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
         public final String versionParam;
         public final JButton autoFindButton;
         public final List<PropertyField> propertyFields;
-        public final
-        @Nullable
-        Topic<SettingsChangeNotifier> topic;
-        private final
-        @Nullable
-        SettingsChangeNotifier publisher;
+        public final Topic<ToolChangeListener> topic;
+        private final ToolChangeListener publisher;
 
         Tool(final Project project, final String command, final ToolKey key, final TextFieldWithBrowseButton pathField,
-             final RawCommandLineEditor flagsField, final JButton autoFindButton, final JTextField versionField) {
-            this(project, command, key, pathField, flagsField, autoFindButton, versionField, "--version");
-        }
-
-        Tool(final Project project, final String command, final ToolKey key, final TextFieldWithBrowseButton pathField,
-             final RawCommandLineEditor flagsField, final JButton autoFindButton, final JTextField versionField, final String versionParam) {
-            this(project, command, key, pathField, flagsField, autoFindButton, versionField, versionParam, null);
-        }
-
-        Tool(final Project project, final String command, final ToolKey key, final TextFieldWithBrowseButton pathField,
-             final RawCommandLineEditor flagsField, final JButton autoFindButton, final JTextField versionField, final String versionParam,
-             @Nullable final Topic<SettingsChangeNotifier> topic) {
+             final RawCommandLineEditor flagsField, final JButton autoFindButton, final JTextField versionField,
+             final String versionParam, final Topic<ToolChangeListener> topic) {
             this.project = project;
             this.command = command;
             this.key = key;
@@ -307,7 +296,7 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
 
         public void saveState() {
             if (isModified() && publisher != null) {
-                publisher.onSettingsChanged(new ToolSettings(pathField.getText(), flagsField.getText()));
+                publisher.onToolSettingsChanged(new ToolSettings(pathField.getText(), flagsField.getText()));
             }
             for (final PropertyField propertyField : propertyFields) {
                 propertyField.saveState();

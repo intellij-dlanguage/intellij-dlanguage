@@ -17,14 +17,16 @@ class Topics {
         @JvmField val PROJECT_ROOT_CHANGED = ProjectTopics.PROJECT_ROOTS
         @JvmField val MODULES_CHANGED = ProjectTopics.MODULES
 
-        // a dub change could be a change to the tool itself of a change to the dub.json/sdl file
-        @JvmField val DUB_CHANGE = Topic.create("dub change", DubChangeNotifier::class.java)
+        // a change to the dub.json or dub.sdl file
+        @JvmField val DUB_FILE_CHANGE = Topic.create("dub file change", DubChangeNotifier::class.java)
 
-        // a DCD change can be either for the client or the server
-        @JvmField val DCD_TOOL_CHANGE = Topic.create("dcd change", DcdToolChangeListener::class.java)
-
-        @JvmField val DFMT_TOOL_CHANGE = Topic.create("dfmt change", DfmtToolChangeListener::class.java)
-        @JvmField val DSCANNER_TOOL_CHANGE = Topic.create("dscanner change", DscannerToolChangeListener::class.java)
-        @JvmField val GDB_TOOL_CHANGE = Topic.create("gdb change", GdbToolChangeListener::class.java)
+        // ToolChangeListeners are for when the path or args for the various D Tools are changed
+        @JvmField val DUB_TOOL_CHANGE = Topic.create("dub tool change", ToolChangeListener::class.java)
+        @JvmField val DCD_CLIENT_TOOL_CHANGE = Topic.create("dcd client tool change", ToolChangeListener::class.java)
+        @JvmField val DCD_SERVER_TOOL_CHANGE = Topic.create("dcd server tool change", ToolChangeListener::class.java)
+        @JvmField val DSCANNER_TOOL_CHANGE = Topic.create("dscanner tool change", ToolChangeListener::class.java)
+        @JvmField val DFMT_TOOL_CHANGE = Topic.create("dfmt tool change", ToolChangeListener::class.java)
+        @JvmField val DFIX_TOOL_CHANGE = Topic.create("dfix tool change", ToolChangeListener::class.java)
+        @JvmField val GDB_TOOL_CHANGE = Topic.create("gdb tool change", ToolChangeListener::class.java)
     }
 }
