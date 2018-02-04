@@ -50,17 +50,13 @@ public class RestartDCD extends AnAction implements DumbAware {
     }
 
     private static void showModuleChoicePopup(@NotNull final AnActionEvent e, final Project project, final Collection<Module> modules) {
-        final JList list = new JBList(JBList.createDefaultListModel(modules.toArray()));
+        final JList<Module> list = new JBList<>(JBList.createDefaultListModel(modules));
         final JBPopup popup = JBPopupFactory.getInstance()
                 .createListPopupBuilder(list)
                 .setTitle("Restart dcd-server for module")
-                .setItemChoosenCallback(makeModuleChoiceCallback(e, list))
+                .setItemChoosenCallback(() -> restartDcdServer(e, (Module) list))
                 .createPopup();
         popup.showCenteredInCurrentWindow(project);
-    }
-
-    private static Runnable makeModuleChoiceCallback(@NotNull final AnActionEvent e, @NotNull final JList list) {
-        return () -> restartDcdServer(e, (Module) list.getSelectedValue());
     }
 
     private static void restartDcdServer(@NotNull final AnActionEvent e, @NotNull final Module module) {
