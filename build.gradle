@@ -103,8 +103,8 @@ allprojects {
         updateSinceUntilBuild false
 
         publishPlugin {
-            username System.getenv('JETBRAINS_USERNAME')
-            password System.getenv('JETBRAINS_PASSWORD')
+            username System.getenv('SB_JETBRAINS_USERNAME')
+            password System.getenv('SB_JETBRAINS_PASSWORD')
             channels publishChannels
         }
     }
