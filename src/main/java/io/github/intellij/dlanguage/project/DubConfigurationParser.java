@@ -17,6 +17,7 @@ import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -30,6 +31,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * This class is used to run 'dub describe' which outputs project info in json format. We parse the json
+ * to gather up information about the projects dependencies
+ */
 public class DubConfigurationParser {
 
     private static final Logger LOG = Logger.getInstance(DubConfigurationParser.class);
@@ -43,8 +48,23 @@ public class DubConfigurationParser {
     //    private Map<String, List<String>> targets = new HashMap<>();
     private TreeNode packageTree;
 
-    public DubConfigurationParser(final Project project, final String dubBinaryPath,
-        final boolean silentMode) {
+
+    /**
+     * DO NOT REMOVE - This is required for backward compatibility
+     * @param project A valid D project
+     * @param dubBinaryPath The location of the dub binary
+     */
+    public DubConfigurationParser(@NotNull final Project project, final String dubBinaryPath) {
+        this(project, dubBinaryPath, false);
+    }
+
+    /**
+     * @param project A valid D project
+     * @param dubBinaryPath The location of the dub binary
+     * @param silentMode When set to true notifications will not show in the UI
+     * @since v1.16
+     */
+    public DubConfigurationParser(@NotNull final Project project, final String dubBinaryPath, final boolean silentMode) {
         this.project = project;
         this.dubBinaryPath = dubBinaryPath;
 
@@ -150,8 +170,7 @@ public class DubConfigurationParser {
         return parseDubConfiguration(false);
     }
 
-    private Optional<JsonObject> parseDubConfiguration(
-        final boolean silentMode) {
+    private Optional<JsonObject> parseDubConfiguration(final boolean silentMode) {
         try {
             final String baseDir = project.getBaseDir().getCanonicalPath();
             final GeneralCommandLine commandLine = new GeneralCommandLine();
@@ -185,7 +204,7 @@ public class DubConfigurationParser {
 
             final Integer exitCode = process.getExitCode();
 
-            if (exitCode == 0) {
+            if (exitCode != null && exitCode == 0) {
                 if (errors.isEmpty()) {
                     LOG.info(String.format("%s exited without errors", dubCommand));
                     if (LOG.isDebugEnabled()) {
