@@ -52,9 +52,12 @@ import javax.swing.JList;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-// todo: this Action shouldn't need to be called manually, we should scan dub.json/sdl when opening/importing a project
-// and process the dependencies immediately. We could also watch both the dub.json/sdl & dub.selections.json for
-// changes and then prompt the user to import changes. The same way that the Maven/Gradle integration works
+/**
+ * todo: this class needs a rethink. It's currently tied to the user having dub configured. Also, the Action shouldn't
+ * need to be called manually. For dub projects we should scan dub.json/sdl for changes or when opening/importing
+ * a project (The same way that the Maven/Gradle integration works) and when not using dub we should just
+ * detect when the user adds/removes a library.
+ */
 public class ProcessDLibs extends AnAction implements DumbAware {
 
     public static final String MENU_PATH = "Tools > Process D Libraries";
@@ -93,33 +96,31 @@ public class ProcessDLibs extends AnAction implements DumbAware {
 
     private static boolean dubPathAlreadWarned = false;
 
-    public static void processDLibs(final Project project, @NotNull final Module module) {
+    private static void processDLibs(final Project project, @NotNull final Module module) {
         processDLibs(project, module, false, false);
     }
 
     public static void processDLibs(final Project project,
-        @NotNull final Module module, final boolean mostlySilentMode, final boolean buildBefore) {
-        ApplicationManager.getApplication().invokeAndWait(new Runnable() {
-            @Override
-            public void run() {
-                final Backgroundable task = new Backgroundable(project,
-                    "Updating Dub Libraries") {
-                    @Override
-                    public void run(@NotNull final ProgressIndicator indicator) {
-                        processDLibsImpl(project, module, mostlySilentMode, buildBefore);
-                    }
-                };
-                ProgressManager.getInstance().runProcessWithProgressAsynchronously(
-                    task, new BackgroundableProcessIndicator(task));
-            }
+                                    @NotNull final Module module,
+                                    final boolean mostlySilentMode,
+                                    final boolean buildBefore) {
+        ApplicationManager.getApplication().invokeAndWait(() -> {
+            final Backgroundable task = new Backgroundable(project, "Updating Dub Libraries") {
+                @Override
+                public void run(@NotNull final ProgressIndicator indicator) {
+                    processDLibsImpl(project, module, mostlySilentMode, buildBefore);
+                }
+            };
+            ProgressManager.getInstance().runProcessWithProgressAsynchronously(
+                task, new BackgroundableProcessIndicator(task));
         }, ModalityState.defaultModalityState());
     }
 
-    public static void processDLibsImpl(final Project project, @NotNull final Module module,
-        final boolean mostlySilentMode, final boolean buildBefore) {
-        final String prefix = "Unable to process D libraries - ";
+    private static void processDLibsImpl(final Project project, @NotNull final Module module,
+                                         final boolean mostlySilentMode, final boolean buildBefore) {
         if (project == null) {
-            displayError(project, prefix + "No active project.");
+            LOG.warn("Unable to process D libraries - No active D project.");
+            //displayError(project, "Unable to process D libraries - No active D project.");
             return;
         }
         //todo needs build/fetch before adding libs, also needs to keep track of libs
@@ -274,11 +275,10 @@ public class ProcessDLibs extends AnAction implements DumbAware {
     private static void removeLibraryIfNeeded(final Module module, final String libraryName) {
         ApplicationManager.getApplication().assertIsDispatchThread();
 
-        final ModifiableModelsProvider modelsProvider = ModifiableModelsProvider.SERVICE
-            .getInstance();
+        final ModifiableModelsProvider modelsProvider = ModifiableModelsProvider.SERVICE.getInstance();
         final ModifiableRootModel model = modelsProvider.getModuleModifiableModel(module);
-        final LibraryOrderEntry dLibraryEntry = OrderEntryUtil
-            .findLibraryOrderEntry(model, libraryName);
+        final LibraryOrderEntry dLibraryEntry = OrderEntryUtil.findLibraryOrderEntry(model, libraryName);
+
         if (dLibraryEntry != null) {
             ApplicationManager.getApplication().runWriteAction(() -> {
                 final Library library = dLibraryEntry.getLibrary();
@@ -299,17 +299,14 @@ public class ProcessDLibs extends AnAction implements DumbAware {
         }
     }
 
-    private static void displayError(@NotNull final AnActionEvent e,
-        @NotNull final String message) {
+    private static void displayError(@NotNull final AnActionEvent e, @NotNull final String message) {
         displayError(getEventProject(e), message);
     }
 
-    private static void displayError(final @Nullable Project project,
-        @NotNull final String message) {
+    private static void displayError(final @Nullable Project project, @NotNull final String message) {
         //final String groupId = e.getPresentation().getText();
         Notifications.Bus.notify(
-            new Notification(NOTIFICATION_GROUPID, "Process D libs", message,
-                NotificationType.ERROR),
+            new Notification(NOTIFICATION_GROUPID, "Process D libs", message, NotificationType.ERROR),
             project
         );
         LOG.warn(message);

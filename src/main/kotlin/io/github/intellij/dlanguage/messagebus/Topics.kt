@@ -7,6 +7,7 @@ import com.intellij.util.messages.Topic
  * @author Samael Bate (singingbush)
  * Created on 03/02/2018.
  *
+ * @since v1.16
  * All the potential Topics that we intend to use should be placed here for convenience
  */
 class Topics {
