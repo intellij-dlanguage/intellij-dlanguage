@@ -16,9 +16,10 @@ data class DubPackage(
     val name: String,
     val path: String,
     val version: String,
-    val description: String?,
-    val copyright: String?,
-    val license: String?,
+    // the following can potentially be empty
+    val description: String,
+    val copyright: String,
+    val license: String,
     val dependencies: List<String>,
     val sourcesDirs: List<String>, // importPaths
     val resources: List<String>, // stringImportPaths

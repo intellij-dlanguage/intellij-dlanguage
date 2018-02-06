@@ -1,0 +1,6456 @@
+{
+	"rootPackage": "SuperAwesomeApp",
+	"configuration": "default",
+	"buildType": "debug",
+	"compiler": "dmd",
+	"architecture": [
+		"x86_64"
+	],
+	"platform": [
+		"linux",
+		"posix"
+	],
+	"packages": [
+		{
+			"path": "/path/to/project/SuperAwesomeApp/",
+			"name": "SuperAwesomeApp",
+			"version": "~master",
+			"description": "SuperAwesomeApp is a test application written in D.",
+			"homepage": "http://singingbush.com",
+			"authors": [
+				"Samael"
+			],
+			"copyright": "Copyright © 2018, Samael",
+			"license": "GPL-2.0",
+			"dependencies": [
+				"consoled",
+				"poodinis",
+				"proper-d",
+				"vibe-d:core",
+				"hibernated",
+				"vibe-d:web",
+				"colourfulmoon"
+			],
+			"active": true,
+			"configuration": "default",
+			"targetType": "executable",
+			"targetPath": "",
+			"targetName": "SuperAwesomeApp",
+			"targetFileName": "SuperAwesomeApp",
+			"workingDirectory": "",
+			"mainSourceFile": "",
+			"dflags": [],
+			"lflags": [],
+			"libs": [],
+			"copyFiles": [],
+			"versions": [
+				"VibeDefaultMain",
+				"Have_vibe_d_core",
+				"VibeUseOpenSSL11",
+				"PRODUCTION",
+				"USE_MYSQL",
+				"USE_SQLITE",
+				"USE_PGSQL"
+			],
+			"debugVersions": [],
+			"importPaths": [
+				"source/"
+			],
+			"stringImportPaths": [
+				"views",
+				"i18n"
+			],
+			"preGenerateCommands": [
+				"if ! type \"npm\" > /dev/null; then echo -e \"You need to have Node.js and npm installed in order to build this project\nvisit https://nodejs.org for more info\"; exit 1; fi",
+				"if ! type \"yarn\" > /dev/null; then echo -e \"You need to have yarn installed in order to build this project\nvisit https://yarnpkg.com for more info\"; exit 1; fi",
+				"printf \"\\033[94mInstalling front end dependencies with yarn...\\033[0m\n\"",
+				"yarn install",
+				"mkdir -p ./public/js ./public/css ./public/fonts",
+				"rsync -u node_modules/jquery/dist/jquery.slim.min.js ./public/js/jquery.slim.min.js",
+				"rsync -u node_modules/popper.js/dist/popper.min.js ./public/js/popper.min.js",
+				"rsync -u node_modules/bootstrap/dist/css/bootstrap.min.css ./public/css/bootstrap.min.css",
+				"rsync -u node_modules/bootstrap/dist/js/bootstrap.min.js ./public/js/bootstrap.min.js",
+				"rsync -u node_modules/font-awesome/css/font-awesome.min.css ./public/css/font-awesome.min.css",
+				"rsync -u node_modules/font-awesome/fonts/fontawesome-webfont.* ./public/fonts/",
+				"echo client-side dependencies done."
+			],
+			"postGenerateCommands": [],
+			"preBuildCommands": [
+				"printf \"\\033[93mtodo\\033[0m get SASS compiler working as part of build\n\""
+			],
+			"postBuildCommands": [],
+			"buildRequirements": [
+				"allowWarnings",
+				"silenceWarnings"
+			],
+			"options": [],
+			"files": [
+				{
+					"role": "stringImport",
+					"path": "i18n/text.de_DE.po"
+				},
+				{
+					"role": "stringImport",
+					"path": "i18n/text.en_GB.po"
+				},
+				{
+					"role": "source",
+					"path": "source/app.d"
+				},
+				{
+					"role": "source",
+					"path": "source/config/context.d"
+				},
+				{
+					"role": "source",
+					"path": "source/config/database.d"
+				},
+				{
+					"role": "source",
+					"path": "source/config/logging.d"
+				},
+				{
+					"role": "source",
+					"path": "source/config/motd.d"
+				},
+				{
+					"role": "source",
+					"path": "source/config/properties.d"
+				},
+				{
+					"role": "source",
+					"path": "source/controllers/admincontroller.d"
+				},
+				{
+					"role": "source",
+					"path": "source/controllers/package.d"
+				},
+				{
+					"role": "source",
+					"path": "source/controllers/webappcontroller.d"
+				},
+				{
+					"role": "source",
+					"path": "source/model/blogpost.d"
+				},
+				{
+					"role": "source",
+					"path": "source/model/comment.d"
+				},
+				{
+					"role": "source",
+					"path": "source/model/package.d"
+				},
+				{
+					"role": "source",
+					"path": "source/model/user.d"
+				},
+				{
+					"role": "source",
+					"path": "source/services/blogservice.d"
+				},
+				{
+					"role": "source",
+					"path": "source/services/package.d"
+				},
+				{
+					"role": "source",
+					"path": "source/services/userservice.d"
+				},
+				{
+					"role": "stringImport",
+					"path": "views/admin_comments.dt"
+				},
+				{
+					"role": "stringImport",
+					"path": "views/admin_users.dt"
+				},
+				{
+					"role": "stringImport",
+					"path": "views/error.dt"
+				},
+				{
+					"role": "stringImport",
+					"path": "views/header.dt"
+				},
+				{
+					"role": "stringImport",
+					"path": "views/index.dt"
+				},
+				{
+					"role": "stringImport",
+					"path": "views/layout.dt"
+				},
+				{
+					"role": "stringImport",
+					"path": "views/login.dt"
+				},
+				{
+					"role": "stringImport",
+					"path": "views/profile.dt"
+				}
+			]
+		},
+		{
+			"path": "/home/username/.dub/packages/consoled-1.0.4/consoled/",
+			"name": "consoled",
+			"version": "1.0.4",
+			"description": "Because colors are awesome.",
+			"homepage": "",
+			"authors": [
+				"robik",
+				"quickfur",
+				"Adam D. Ruppe",
+				"Ianis G. Vasilev"
+			],
+			"copyright": "",
+			"license": "Boost License",
+			"dependencies": [],
+			"active": true,
+			"configuration": "library",
+			"targetType": "library",
+			"targetPath": "",
+			"targetName": "consoled",
+			"targetFileName": "libconsoled.a",
+			"workingDirectory": "",
+			"mainSourceFile": "",
+			"dflags": [],
+			"lflags": [],
+			"libs": [],
+			"copyFiles": [],
+			"versions": [],
+			"debugVersions": [],
+			"importPaths": [
+				"source/"
+			],
+			"stringImportPaths": [],
+			"preGenerateCommands": [],
+			"postGenerateCommands": [],
+			"preBuildCommands": [],
+			"postBuildCommands": [],
+			"buildRequirements": [],
+			"options": [],
+			"files": [
+				{
+					"role": "source",
+					"path": "source/consoled.d"
+				},
+				{
+					"role": "source",
+					"path": "source/terminal.d"
+				}
+			]
+		},
+		{
+			"path": "/home/username/.dub/packages/poodinis-8.0.1/poodinis/",
+			"name": "poodinis",
+			"version": "8.0.1",
+			"description": "A dependency injection framework with support for autowiring.",
+			"homepage": "http://lostmoment.com/open-source/poodinis",
+			"authors": [
+				"Mike Bierlee"
+			],
+			"copyright": "Copyright 2014-2017 Mike Bierlee",
+			"license": "MIT",
+			"dependencies": [],
+			"active": true,
+			"configuration": "library",
+			"targetType": "library",
+			"targetPath": "",
+			"targetName": "poodinis",
+			"targetFileName": "libpoodinis.a",
+			"workingDirectory": "",
+			"mainSourceFile": "",
+			"dflags": [],
+			"lflags": [],
+			"libs": [],
+			"copyFiles": [],
+			"versions": [],
+			"debugVersions": [],
+			"importPaths": [
+				"source/"
+			],
+			"stringImportPaths": [],
+			"preGenerateCommands": [],
+			"postGenerateCommands": [],
+			"preBuildCommands": [],
+			"postBuildCommands": [],
+			"buildRequirements": [],
+			"options": [],
+			"files": [
+				{
+					"role": "unusedSource",
+					"path": "example/annotations/app.d"
+				},
+				{
+					"role": "unusedSource",
+					"path": "example/applicationcontext/app.d"
+				},
+				{
+					"role": "unusedSource",
+					"path": "example/arraycompletion/app.d"
+				},
+				{
+					"role": "unusedSource",
+					"path": "example/constructorinjection/app.d"
+				},
+				{
+					"role": "unusedSource",
+					"path": "example/postconstructorpredestructor/app.d"
+				},
+				{
+					"role": "unusedSource",
+					"path": "example/qualifiers/app.d"
+				},
+				{
+					"role": "unusedSource",
+					"path": "example/quickstart/app.d"
+				},
+				{
+					"role": "unusedSource",
+					"path": "example/registeronresolve/app.d"
+				},
+				{
+					"role": "unusedSource",
+					"path": "example/valueinjection/app.d"
+				},
+				{
+					"role": "source",
+					"path": "source/poodinis/autowire.d"
+				},
+				{
+					"role": "source",
+					"path": "source/poodinis/container.d"
+				},
+				{
+					"role": "source",
+					"path": "source/poodinis/context.d"
+				},
+				{
+					"role": "source",
+					"path": "source/poodinis/factory.d"
+				},
+				{
+					"role": "source",
+					"path": "source/poodinis/imports.d"
+				},
+				{
+					"role": "source",
+					"path": "source/poodinis/package.d"
+				},
+				{
+					"role": "source",
+					"path": "source/poodinis/polyfill.d"
+				},
+				{
+					"role": "source",
+					"path": "source/poodinis/registration.d"
+				},
+				{
+					"role": "source",
+					"path": "source/poodinis/valueinjection.d"
+				},
+				{
+					"role": "unusedSource",
+					"path": "test/poodinis/autowiretest.d"
+				},
+				{
+					"role": "unusedSource",
+					"path": "test/poodinis/containertest.d"
+				},
+				{
+					"role": "unusedSource",
+					"path": "test/poodinis/contexttest.d"
+				},
+				{
+					"role": "unusedSource",
+					"path": "test/poodinis/factorytest.d"
+				},
+				{
+					"role": "unusedSource",
+					"path": "test/poodinis/foreigndependencies.d"
+				},
+				{
+					"role": "unusedSource",
+					"path": "test/poodinis/registrationtest.d"
+				},
+				{
+					"role": "unusedSource",
+					"path": "test/poodinis/testclasses.d"
+				},
+				{
+					"role": "unusedSource",
+					"path": "test/poodinis/testmain.d"
+				},
+				{
+					"role": "unusedSource",
+					"path": "test/poodinis/valueinjectiontest.d"
+				}
+			]
+		},
+		{
+			"path": "/home/username/.dub/packages/proper-d-0.0.2/",
+			"name": "proper-d",
+			"version": "0.0.2",
+			"description": "A simple library for reading simple property files.",
+			"homepage": "https://github.com/free-beer/proper-d",
+			"authors": [
+				"Peter Wood"
+			],
+			"copyright": "Copyright © 2013, Peter Wood.",
+			"license": "MIT",
+			"dependencies": [],
+			"active": true,
+			"configuration": "library",
+			"targetType": "library",
+			"targetPath": "",
+			"targetName": "proper-d",
+			"targetFileName": "libproper-d.a",
+			"workingDirectory": "",
+			"mainSourceFile": "",
+			"dflags": [],
+			"lflags": [],
+			"libs": [],
+			"copyFiles": [],
+			"versions": [],
+			"debugVersions": [],
+			"importPaths": [
+				"source/"
+			],
+			"stringImportPaths": [],
+			"preGenerateCommands": [],
+			"postGenerateCommands": [],
+			"preBuildCommands": [],
+			"postBuildCommands": [],
+			"buildRequirements": [],
+			"options": [],
+			"files": [
+				{
+					"role": "source",
+					"path": "source/properd.d"
+				}
+			]
+		},
+		{
+			"path": "/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/core/",
+			"name": "vibe-d:core",
+			"version": "0.8.1",
+			"description": "Basic I/O and concurrency primitives, as well as low level utility functions",
+			"homepage": "",
+			"authors": [],
+			"copyright": "",
+			"license": "",
+			"dependencies": [
+				"vibe-d:utils",
+				"vibe-d:data",
+				"vibe-core"
+			],
+			"active": true,
+			"configuration": "vibe-core",
+			"targetType": "none",
+			"targetPath": "",
+			"targetName": "vibe-d_core",
+			"targetFileName": "",
+			"workingDirectory": "",
+			"mainSourceFile": "vibe/appmain.d",
+			"dflags": [],
+			"lflags": [],
+			"libs": [],
+			"copyFiles": [],
+			"versions": [],
+			"debugVersions": [],
+			"importPaths": [
+				"."
+			],
+			"stringImportPaths": [],
+			"preGenerateCommands": [],
+			"postGenerateCommands": [],
+			"preBuildCommands": [],
+			"postBuildCommands": [],
+			"buildRequirements": [
+				"requireBoundsCheck"
+			],
+			"options": [],
+			"files": [
+				{
+					"role": "unusedSource",
+					"path": "../lib/win-amd64/event2.lib"
+				},
+				{
+					"role": "unusedSource",
+					"path": "../lib/win-i386/event2.lib"
+				},
+				{
+					"role": "unusedSource",
+					"path": "../lib/win-i386/runtimeobject.lib"
+				},
+				{
+					"role": "source",
+					"path": "vibe/appmain.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/core/args.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/core/concurrency.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/core/connectionpool.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/core/core.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/core/driver.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/core/drivers/libasync.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/core/drivers/libevent2.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/core/drivers/libevent2_tcp.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/core/drivers/native.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/core/drivers/threadedfile.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/core/drivers/timerqueue.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/core/drivers/utils.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/core/drivers/win32.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/core/drivers/winrt.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/core/file.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/core/log.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/core/net.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/core/path.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/core/stream.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/core/sync.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/core/task.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/internal/allocator.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/internal/freelistref.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/internal/interfaceproxy.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/internal/memory.d"
+				}
+			]
+		},
+		{
+			"path": "/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils/",
+			"name": "vibe-d:utils",
+			"version": "0.8.1",
+			"description": "Low level utility functionality",
+			"homepage": "",
+			"authors": [],
+			"copyright": "",
+			"license": "",
+			"dependencies": [],
+			"active": true,
+			"configuration": "library",
+			"targetType": "library",
+			"targetPath": "",
+			"targetName": "vibe-d_utils",
+			"targetFileName": "libvibe-d_utils.a",
+			"workingDirectory": "",
+			"mainSourceFile": "",
+			"dflags": [],
+			"lflags": [],
+			"libs": [],
+			"copyFiles": [],
+			"versions": [],
+			"debugVersions": [],
+			"importPaths": [
+				"."
+			],
+			"stringImportPaths": [],
+			"preGenerateCommands": [],
+			"postGenerateCommands": [],
+			"preBuildCommands": [],
+			"postBuildCommands": [],
+			"buildRequirements": [],
+			"options": [],
+			"files": [
+				{
+					"role": "source",
+					"path": "vibe/internal/memory_legacy.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/internal/meta/all.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/internal/meta/codegen.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/internal/meta/funcattr.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/internal/meta/traits.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/internal/meta/typetuple.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/internal/meta/uda.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/internal/rangeutil.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/internal/utilallocator.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/internal/win32.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/utils/array.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/utils/dictionarylist.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/utils/hashmap.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/utils/memory.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/utils/string.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/utils/validation.d"
+				}
+			]
+		},
+		{
+			"path": "/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/data/",
+			"name": "vibe-d:data",
+			"version": "0.8.1",
+			"description": "Data format and serialization support",
+			"homepage": "",
+			"authors": [],
+			"copyright": "",
+			"license": "",
+			"dependencies": [
+				"vibe-d:utils"
+			],
+			"active": true,
+			"configuration": "library",
+			"targetType": "library",
+			"targetPath": "",
+			"targetName": "vibe-d_data",
+			"targetFileName": "libvibe-d_data.a",
+			"workingDirectory": "",
+			"mainSourceFile": "",
+			"dflags": [],
+			"lflags": [],
+			"libs": [],
+			"copyFiles": [],
+			"versions": [],
+			"debugVersions": [],
+			"importPaths": [
+				"."
+			],
+			"stringImportPaths": [],
+			"preGenerateCommands": [],
+			"postGenerateCommands": [],
+			"preBuildCommands": [],
+			"postBuildCommands": [],
+			"buildRequirements": [],
+			"options": [],
+			"files": [
+				{
+					"role": "source",
+					"path": "vibe/data/bson.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/data/json.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/data/serialization.d"
+				}
+			]
+		},
+		{
+			"path": "/home/username/.dub/packages/libevent-2.0.2_2.0.16/libevent/",
+			"name": "libevent",
+			"version": "2.0.2+2.0.16",
+			"description": "Deimos bindings for libevent, a cross-platform asynchronous I/O library",
+			"homepage": "http://libevent.org/",
+			"authors": [],
+			"copyright": "",
+			"license": "BSD 3-clause",
+			"dependencies": [],
+			"active": false,
+			"configuration": "library",
+			"targetType": "sourceLibrary",
+			"targetPath": "",
+			"targetName": "libevent",
+			"targetFileName": "",
+			"workingDirectory": "",
+			"mainSourceFile": "",
+			"dflags": [],
+			"lflags": [],
+			"libs": [
+				"event",
+				"event_pthreads"
+			],
+			"copyFiles": [],
+			"versions": [],
+			"debugVersions": [],
+			"importPaths": [
+				"."
+			],
+			"stringImportPaths": [],
+			"preGenerateCommands": [],
+			"postGenerateCommands": [],
+			"preBuildCommands": [],
+			"postBuildCommands": [],
+			"buildRequirements": [],
+			"options": [],
+			"files": [
+				{
+					"role": "import_",
+					"path": "deimos/event2/_d_util.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/event2/_opaque_structs.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/event2/_tailq.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/event2/buffer.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/event2/bufferevent.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/event2/bufferevent_ssl.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/event2/dns.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/event2/dns_struct.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/event2/event.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/event2/event_struct.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/event2/http.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/event2/http_struct.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/event2/keyvalq_struct.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/event2/listener.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/event2/rpc.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/event2/rpc_struct.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/event2/tag.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/event2/thread.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/event2/util.d"
+				}
+			]
+		},
+		{
+			"path": "/home/username/.dub/packages/libasync-0.8.3/libasync/",
+			"name": "libasync",
+			"version": "0.8.3",
+			"description": "A cross-platform event loop library of asynchroneous objects.",
+			"homepage": "",
+			"authors": [
+				"Etienne Cimon",
+				"Sönke Ludwig"
+			],
+			"copyright": "",
+			"license": "MIT",
+			"dependencies": [
+				"memutils"
+			],
+			"active": false,
+			"configuration": "regular",
+			"targetType": "staticLibrary",
+			"targetPath": "build",
+			"targetName": "async",
+			"targetFileName": "libasync.a",
+			"workingDirectory": "build",
+			"mainSourceFile": "",
+			"dflags": [],
+			"lflags": [],
+			"libs": [
+				"rt"
+			],
+			"copyFiles": [],
+			"versions": [
+				"EnableDebugger"
+			],
+			"debugVersions": [],
+			"importPaths": [
+				"source/"
+			],
+			"stringImportPaths": [],
+			"preGenerateCommands": [],
+			"postGenerateCommands": [],
+			"preBuildCommands": [],
+			"postBuildCommands": [],
+			"buildRequirements": [],
+			"options": [],
+			"files": [
+				{
+					"role": "source",
+					"path": "source/libasync/bufferedtcp.d"
+				},
+				{
+					"role": "source",
+					"path": "source/libasync/dns.d"
+				},
+				{
+					"role": "source",
+					"path": "source/libasync/event.d"
+				},
+				{
+					"role": "source",
+					"path": "source/libasync/events.d"
+				},
+				{
+					"role": "source",
+					"path": "source/libasync/file.d"
+				},
+				{
+					"role": "source",
+					"path": "source/libasync/internals/epoll.d"
+				},
+				{
+					"role": "source",
+					"path": "source/libasync/internals/freelist.d"
+				},
+				{
+					"role": "source",
+					"path": "source/libasync/internals/hashmap.d"
+				},
+				{
+					"role": "source",
+					"path": "source/libasync/internals/kqueue.d"
+				},
+				{
+					"role": "source",
+					"path": "source/libasync/internals/logging.d"
+				},
+				{
+					"role": "source",
+					"path": "source/libasync/internals/memory.d"
+				},
+				{
+					"role": "source",
+					"path": "source/libasync/internals/path.d"
+				},
+				{
+					"role": "source",
+					"path": "source/libasync/internals/queue.d"
+				},
+				{
+					"role": "source",
+					"path": "source/libasync/internals/socket_compat.d"
+				},
+				{
+					"role": "source",
+					"path": "source/libasync/internals/validator.d"
+				},
+				{
+					"role": "source",
+					"path": "source/libasync/internals/win32.d"
+				},
+				{
+					"role": "source",
+					"path": "source/libasync/notifier.d"
+				},
+				{
+					"role": "source",
+					"path": "source/libasync/package.d"
+				},
+				{
+					"role": "source",
+					"path": "source/libasync/posix.d"
+				},
+				{
+					"role": "source",
+					"path": "source/libasync/posix2.d"
+				},
+				{
+					"role": "source",
+					"path": "source/libasync/signal.d"
+				},
+				{
+					"role": "source",
+					"path": "source/libasync/socket.d"
+				},
+				{
+					"role": "source",
+					"path": "source/libasync/tcp.d"
+				},
+				{
+					"role": "source",
+					"path": "source/libasync/test.d"
+				},
+				{
+					"role": "source",
+					"path": "source/libasync/threads.d"
+				},
+				{
+					"role": "source",
+					"path": "source/libasync/timer.d"
+				},
+				{
+					"role": "source",
+					"path": "source/libasync/types.d"
+				},
+				{
+					"role": "source",
+					"path": "source/libasync/udp.d"
+				},
+				{
+					"role": "source",
+					"path": "source/libasync/uds.d"
+				},
+				{
+					"role": "source",
+					"path": "source/libasync/watcher.d"
+				},
+				{
+					"role": "source",
+					"path": "source/libasync/windows.d"
+				},
+				{
+					"role": "unusedSource",
+					"path": "ws2_32_ex.lib"
+				}
+			]
+		},
+		{
+			"path": "/home/username/.dub/packages/memutils-0.4.9/memutils/",
+			"name": "memutils",
+			"version": "0.4.9",
+			"description": "Overhead allocators, allocator-aware containers and lifetime management for D objects.",
+			"homepage": "",
+			"authors": [
+				"Etienne Cimon",
+				"Sönke Ludwig",
+				"others..."
+			],
+			"copyright": "Copyright © 2018",
+			"license": "MIT",
+			"dependencies": [],
+			"active": false,
+			"configuration": "secure",
+			"targetType": "library",
+			"targetPath": "",
+			"targetName": "memutils",
+			"targetFileName": "libmemutils.a",
+			"workingDirectory": "",
+			"mainSourceFile": "",
+			"dflags": [],
+			"lflags": [],
+			"libs": [],
+			"copyFiles": [],
+			"versions": [
+				"CryptoSafe"
+			],
+			"debugVersions": [],
+			"importPaths": [
+				"source/"
+			],
+			"stringImportPaths": [],
+			"preGenerateCommands": [],
+			"postGenerateCommands": [],
+			"preBuildCommands": [],
+			"postBuildCommands": [],
+			"buildRequirements": [],
+			"options": [],
+			"files": [
+				{
+					"role": "source",
+					"path": "source/memutils/all.d"
+				},
+				{
+					"role": "source",
+					"path": "source/memutils/allocators.d"
+				},
+				{
+					"role": "source",
+					"path": "source/memutils/circularbuffer.d"
+				},
+				{
+					"role": "source",
+					"path": "source/memutils/constants.d"
+				},
+				{
+					"role": "source",
+					"path": "source/memutils/cryptosafe.d"
+				},
+				{
+					"role": "source",
+					"path": "source/memutils/debugger.d"
+				},
+				{
+					"role": "source",
+					"path": "source/memutils/dictionarylist.d"
+				},
+				{
+					"role": "source",
+					"path": "source/memutils/freelist.d"
+				},
+				{
+					"role": "source",
+					"path": "source/memutils/hashmap.d"
+				},
+				{
+					"role": "source",
+					"path": "source/memutils/helpers.d"
+				},
+				{
+					"role": "source",
+					"path": "source/memutils/memory.d"
+				},
+				{
+					"role": "source",
+					"path": "source/memutils/pool.d"
+				},
+				{
+					"role": "source",
+					"path": "source/memutils/rbtree.d"
+				},
+				{
+					"role": "source",
+					"path": "source/memutils/refcounted.d"
+				},
+				{
+					"role": "source",
+					"path": "source/memutils/scoped.d"
+				},
+				{
+					"role": "source",
+					"path": "source/memutils/securepool.d"
+				},
+				{
+					"role": "source",
+					"path": "source/memutils/tests.d"
+				},
+				{
+					"role": "source",
+					"path": "source/memutils/unique.d"
+				},
+				{
+					"role": "source",
+					"path": "source/memutils/utils.d"
+				},
+				{
+					"role": "source",
+					"path": "source/memutils/vector.d"
+				}
+			]
+		},
+		{
+			"path": "/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/",
+			"name": "vibe-core",
+			"version": "1.2.0",
+			"description": "The I/O core library of vibe.d.",
+			"homepage": "",
+			"authors": [
+				"Sönke Ludwig"
+			],
+			"copyright": "Copyright © 2016, rejectedsoftware e.K.",
+			"license": "MIT",
+			"dependencies": [
+				"eventcore"
+			],
+			"active": true,
+			"configuration": "epoll",
+			"targetType": "library",
+			"targetPath": "",
+			"targetName": "vibe_core",
+			"targetFileName": "libvibe_core.a",
+			"workingDirectory": "",
+			"mainSourceFile": "source/vibe/appmain.d",
+			"dflags": [],
+			"lflags": [],
+			"libs": [],
+			"copyFiles": [],
+			"versions": [],
+			"debugVersions": [],
+			"importPaths": [
+				"source/"
+			],
+			"stringImportPaths": [],
+			"preGenerateCommands": [],
+			"postGenerateCommands": [],
+			"preBuildCommands": [],
+			"postBuildCommands": [],
+			"buildRequirements": [],
+			"options": [],
+			"files": [
+				{
+					"role": "source",
+					"path": "source/vibe/appmain.d"
+				},
+				{
+					"role": "source",
+					"path": "source/vibe/core/args.d"
+				},
+				{
+					"role": "source",
+					"path": "source/vibe/core/concurrency.d"
+				},
+				{
+					"role": "source",
+					"path": "source/vibe/core/connectionpool.d"
+				},
+				{
+					"role": "source",
+					"path": "source/vibe/core/core.d"
+				},
+				{
+					"role": "source",
+					"path": "source/vibe/core/file.d"
+				},
+				{
+					"role": "source",
+					"path": "source/vibe/core/log.d"
+				},
+				{
+					"role": "source",
+					"path": "source/vibe/core/net.d"
+				},
+				{
+					"role": "source",
+					"path": "source/vibe/core/path.d"
+				},
+				{
+					"role": "source",
+					"path": "source/vibe/core/stream.d"
+				},
+				{
+					"role": "source",
+					"path": "source/vibe/core/sync.d"
+				},
+				{
+					"role": "source",
+					"path": "source/vibe/core/task.d"
+				},
+				{
+					"role": "source",
+					"path": "source/vibe/core/taskpool.d"
+				},
+				{
+					"role": "source",
+					"path": "source/vibe/internal/allocator.d"
+				},
+				{
+					"role": "source",
+					"path": "source/vibe/internal/array.d"
+				},
+				{
+					"role": "source",
+					"path": "source/vibe/internal/async.d"
+				},
+				{
+					"role": "source",
+					"path": "source/vibe/internal/freelistref.d"
+				},
+				{
+					"role": "source",
+					"path": "source/vibe/internal/hashmap.d"
+				},
+				{
+					"role": "source",
+					"path": "source/vibe/internal/interfaceproxy.d"
+				},
+				{
+					"role": "source",
+					"path": "source/vibe/internal/list.d"
+				},
+				{
+					"role": "source",
+					"path": "source/vibe/internal/string.d"
+				},
+				{
+					"role": "source",
+					"path": "source/vibe/internal/traits.d"
+				},
+				{
+					"role": "source",
+					"path": "source/vibe/internal/typetuple.d"
+				}
+			]
+		},
+		{
+			"path": "/home/username/.dub/packages/eventcore-0.8.19/eventcore/",
+			"name": "eventcore",
+			"version": "0.8.19",
+			"description": "Pro-actor based abstraction layer over operating system asynchronous I/O facilities.",
+			"homepage": "",
+			"authors": [],
+			"copyright": "Copyright © 2012-2016 rejectedsoftware e.K.",
+			"license": "MIT",
+			"dependencies": [
+				"taggedalgebraic"
+			],
+			"active": true,
+			"configuration": "epoll",
+			"targetType": "library",
+			"targetPath": "",
+			"targetName": "eventcore",
+			"targetFileName": "libeventcore.a",
+			"workingDirectory": "",
+			"mainSourceFile": "",
+			"dflags": [],
+			"lflags": [],
+			"libs": [
+				"anl"
+			],
+			"copyFiles": [],
+			"versions": [
+				"EventcoreEpollDriver"
+			],
+			"debugVersions": [],
+			"importPaths": [
+				"source/"
+			],
+			"stringImportPaths": [],
+			"preGenerateCommands": [],
+			"postGenerateCommands": [],
+			"preBuildCommands": [],
+			"postBuildCommands": [],
+			"buildRequirements": [],
+			"options": [],
+			"files": [
+				{
+					"role": "unusedSource",
+					"path": "lib/kernel32.lib"
+				},
+				{
+					"role": "unusedSource",
+					"path": "lib/ws2_32.lib"
+				},
+				{
+					"role": "source",
+					"path": "source/eventcore/core.d"
+				},
+				{
+					"role": "source",
+					"path": "source/eventcore/driver.d"
+				},
+				{
+					"role": "source",
+					"path": "source/eventcore/drivers/libasync.d"
+				},
+				{
+					"role": "source",
+					"path": "source/eventcore/drivers/posix/dns.d"
+				},
+				{
+					"role": "source",
+					"path": "source/eventcore/drivers/posix/driver.d"
+				},
+				{
+					"role": "source",
+					"path": "source/eventcore/drivers/posix/epoll.d"
+				},
+				{
+					"role": "source",
+					"path": "source/eventcore/drivers/posix/events.d"
+				},
+				{
+					"role": "source",
+					"path": "source/eventcore/drivers/posix/kqueue.d"
+				},
+				{
+					"role": "source",
+					"path": "source/eventcore/drivers/posix/select.d"
+				},
+				{
+					"role": "source",
+					"path": "source/eventcore/drivers/posix/signals.d"
+				},
+				{
+					"role": "source",
+					"path": "source/eventcore/drivers/posix/sockets.d"
+				},
+				{
+					"role": "source",
+					"path": "source/eventcore/drivers/posix/watchers.d"
+				},
+				{
+					"role": "source",
+					"path": "source/eventcore/drivers/threadedfile.d"
+				},
+				{
+					"role": "source",
+					"path": "source/eventcore/drivers/timer.d"
+				},
+				{
+					"role": "source",
+					"path": "source/eventcore/drivers/winapi/core.d"
+				},
+				{
+					"role": "source",
+					"path": "source/eventcore/drivers/winapi/dns.d"
+				},
+				{
+					"role": "source",
+					"path": "source/eventcore/drivers/winapi/driver.d"
+				},
+				{
+					"role": "source",
+					"path": "source/eventcore/drivers/winapi/events.d"
+				},
+				{
+					"role": "source",
+					"path": "source/eventcore/drivers/winapi/files.d"
+				},
+				{
+					"role": "source",
+					"path": "source/eventcore/drivers/winapi/signals.d"
+				},
+				{
+					"role": "source",
+					"path": "source/eventcore/drivers/winapi/sockets.d"
+				},
+				{
+					"role": "source",
+					"path": "source/eventcore/drivers/winapi/watchers.d"
+				},
+				{
+					"role": "source",
+					"path": "source/eventcore/internal/consumablequeue.d"
+				},
+				{
+					"role": "source",
+					"path": "source/eventcore/internal/dlist.d"
+				},
+				{
+					"role": "source",
+					"path": "source/eventcore/internal/utils.d"
+				},
+				{
+					"role": "source",
+					"path": "source/eventcore/internal/win32.d"
+				},
+				{
+					"role": "source",
+					"path": "source/eventcore/socket.d"
+				}
+			]
+		},
+		{
+			"path": "/home/username/.dub/packages/taggedalgebraic-0.10.7/taggedalgebraic/",
+			"name": "taggedalgebraic",
+			"version": "0.10.7",
+			"description": "A \"tagged union\" implementation with transparent operator forwarding.",
+			"homepage": "",
+			"authors": [
+				"Sönke Ludwig"
+			],
+			"copyright": "Copyright © 2018",
+			"license": "BSL-1.0",
+			"dependencies": [],
+			"active": true,
+			"configuration": "library",
+			"targetType": "library",
+			"targetPath": "",
+			"targetName": "taggedalgebraic",
+			"targetFileName": "libtaggedalgebraic.a",
+			"workingDirectory": "",
+			"mainSourceFile": "",
+			"dflags": [],
+			"lflags": [],
+			"libs": [],
+			"copyFiles": [],
+			"versions": [],
+			"debugVersions": [],
+			"importPaths": [
+				"source/"
+			],
+			"stringImportPaths": [],
+			"preGenerateCommands": [],
+			"postGenerateCommands": [],
+			"preBuildCommands": [],
+			"postBuildCommands": [],
+			"buildRequirements": [],
+			"options": [],
+			"files": [
+				{
+					"role": "source",
+					"path": "source/taggedalgebraic.d"
+				}
+			]
+		},
+		{
+			"path": "/home/username/.dub/packages/hibernated-0.3.2/hibernated/",
+			"name": "hibernated",
+			"version": "0.3.2",
+			"description": "ORM for D language, similar to Hibernate",
+			"homepage": "https://github.com/buggins/hibernated",
+			"authors": [
+				"Vadim Lopatin"
+			],
+			"copyright": "",
+			"license": "Boost Software License (BSL 1.0)",
+			"dependencies": [
+				"ddbc"
+			],
+			"active": true,
+			"configuration": "full",
+			"targetType": "staticLibrary",
+			"targetPath": "lib",
+			"targetName": "hibernated",
+			"targetFileName": "libhibernated.a",
+			"workingDirectory": "",
+			"mainSourceFile": "",
+			"dflags": [],
+			"lflags": [],
+			"libs": [],
+			"copyFiles": [],
+			"versions": [
+				"USE_MYSQL",
+				"USE_SQLITE",
+				"USE_PGSQL"
+			],
+			"debugVersions": [],
+			"importPaths": [
+				"source/"
+			],
+			"stringImportPaths": [],
+			"preGenerateCommands": [],
+			"postGenerateCommands": [],
+			"preBuildCommands": [],
+			"postBuildCommands": [],
+			"buildRequirements": [],
+			"options": [],
+			"files": [
+				{
+					"role": "source",
+					"path": "source/hibernated/annotations.d"
+				},
+				{
+					"role": "source",
+					"path": "source/hibernated/core.d"
+				},
+				{
+					"role": "source",
+					"path": "source/hibernated/dialect.d"
+				},
+				{
+					"role": "source",
+					"path": "source/hibernated/dialects/mysqldialect.d"
+				},
+				{
+					"role": "source",
+					"path": "source/hibernated/dialects/pgsqldialect.d"
+				},
+				{
+					"role": "source",
+					"path": "source/hibernated/dialects/sqlitedialect.d"
+				},
+				{
+					"role": "source",
+					"path": "source/hibernated/metadata.d"
+				},
+				{
+					"role": "source",
+					"path": "source/hibernated/query.d"
+				},
+				{
+					"role": "source",
+					"path": "source/hibernated/session.d"
+				},
+				{
+					"role": "source",
+					"path": "source/hibernated/tests.d"
+				},
+				{
+					"role": "source",
+					"path": "source/hibernated/type.d"
+				}
+			]
+		},
+		{
+			"path": "/home/username/.dub/packages/ddbc-0.3.7/ddbc/",
+			"name": "ddbc",
+			"version": "0.3.7",
+			"description": "DB Connector for D language, similar to JDBC (mysql, sqlite, postgresql, odbc)",
+			"homepage": "https://github.com/buggins/ddbc",
+			"authors": [
+				"Vadim Lopatin"
+			],
+			"copyright": "",
+			"license": "Boost Software License (BSL 1.0)",
+			"dependencies": [
+				"derelict-pq",
+				"mysql-native"
+			],
+			"active": true,
+			"configuration": "full",
+			"targetType": "staticLibrary",
+			"targetPath": "lib",
+			"targetName": "ddbc",
+			"targetFileName": "libddbc.a",
+			"workingDirectory": "",
+			"mainSourceFile": "",
+			"dflags": [],
+			"lflags": [],
+			"libs": [
+				"sqlite3"
+			],
+			"copyFiles": [],
+			"versions": [
+				"USE_MYSQL",
+				"USE_SQLITE",
+				"USE_PGSQL"
+			],
+			"debugVersions": [],
+			"importPaths": [
+				"source/"
+			],
+			"stringImportPaths": [],
+			"preGenerateCommands": [],
+			"postGenerateCommands": [],
+			"preBuildCommands": [],
+			"postBuildCommands": [],
+			"buildRequirements": [],
+			"options": [],
+			"files": [
+				{
+					"role": "unusedSource",
+					"path": "libs/win32/sqlite3.lib"
+				},
+				{
+					"role": "unusedSource",
+					"path": "libs/win64/sqlite3.lib"
+				},
+				{
+					"role": "source",
+					"path": "source/ddbc/all.d"
+				},
+				{
+					"role": "source",
+					"path": "source/ddbc/common.d"
+				},
+				{
+					"role": "source",
+					"path": "source/ddbc/core.d"
+				},
+				{
+					"role": "source",
+					"path": "source/ddbc/drivers/mysqlddbc.d"
+				},
+				{
+					"role": "source",
+					"path": "source/ddbc/drivers/odbcddbc.d"
+				},
+				{
+					"role": "source",
+					"path": "source/ddbc/drivers/pgsqlddbc.d"
+				},
+				{
+					"role": "source",
+					"path": "source/ddbc/drivers/sqliteddbc.d"
+				},
+				{
+					"role": "source",
+					"path": "source/ddbc/drivers/utils.d"
+				},
+				{
+					"role": "source",
+					"path": "source/ddbc/package.d"
+				},
+				{
+					"role": "source",
+					"path": "source/ddbc/pods.d"
+				},
+				{
+					"role": "unusedSource",
+					"path": "test/ddbctest/main.d"
+				}
+			]
+		},
+		{
+			"path": "/home/username/.dub/packages/derelict-pq-2.2.0/derelict-pq/",
+			"name": "derelict-pq",
+			"version": "2.2.0",
+			"description": "A dynamic binding to the libpq library.",
+			"homepage": "https://github.com/DerelictOrg/DerelictPQ",
+			"authors": [
+				"Anton Gushcha",
+				"Mike Parker"
+			],
+			"copyright": "",
+			"license": "Boost",
+			"dependencies": [
+				"derelict-util"
+			],
+			"active": true,
+			"configuration": "library",
+			"targetType": "library",
+			"targetPath": "lib",
+			"targetName": "DerelictPQ",
+			"targetFileName": "libDerelictPQ.a",
+			"workingDirectory": "",
+			"mainSourceFile": "",
+			"dflags": [],
+			"lflags": [],
+			"libs": [],
+			"copyFiles": [],
+			"versions": [],
+			"debugVersions": [],
+			"importPaths": [
+				"source/"
+			],
+			"stringImportPaths": [],
+			"preGenerateCommands": [],
+			"postGenerateCommands": [],
+			"preBuildCommands": [],
+			"postBuildCommands": [],
+			"buildRequirements": [],
+			"options": [],
+			"files": [
+				{
+					"role": "source",
+					"path": "source/derelict/pq/pq.d"
+				}
+			]
+		},
+		{
+			"path": "/home/username/.dub/packages/derelict-util-2.0.6/derelict-util/",
+			"name": "derelict-util",
+			"version": "2.0.6",
+			"description": "Cross-platform shared library loader and a number of utility modules used by the Derelict libraries.",
+			"homepage": "https://github.com/DerelictOrg/DerelictUtil",
+			"authors": [
+				"Mike Parker"
+			],
+			"copyright": "",
+			"license": "Boost",
+			"dependencies": [],
+			"active": true,
+			"configuration": "library",
+			"targetType": "library",
+			"targetPath": "lib",
+			"targetName": "DerelictUtil",
+			"targetFileName": "libDerelictUtil.a",
+			"workingDirectory": "",
+			"mainSourceFile": "",
+			"dflags": [],
+			"lflags": [],
+			"libs": [
+				"dl"
+			],
+			"copyFiles": [],
+			"versions": [],
+			"debugVersions": [],
+			"importPaths": [
+				"source/"
+			],
+			"stringImportPaths": [],
+			"preGenerateCommands": [],
+			"postGenerateCommands": [],
+			"preBuildCommands": [],
+			"postBuildCommands": [],
+			"buildRequirements": [],
+			"options": [],
+			"files": [
+				{
+					"role": "source",
+					"path": "source/derelict/util/exception.d"
+				},
+				{
+					"role": "source",
+					"path": "source/derelict/util/loader.d"
+				},
+				{
+					"role": "source",
+					"path": "source/derelict/util/sharedlib.d"
+				},
+				{
+					"role": "source",
+					"path": "source/derelict/util/system.d"
+				},
+				{
+					"role": "source",
+					"path": "source/derelict/util/wintypes.d"
+				},
+				{
+					"role": "source",
+					"path": "source/derelict/util/xtypes.d"
+				}
+			]
+		},
+		{
+			"path": "/home/username/.dub/packages/mysql-native-1.1.3/mysql-native/",
+			"name": "mysql-native",
+			"version": "1.1.3",
+			"description": "A native MySQL driver implementation based on Steve Teale's original",
+			"homepage": "",
+			"authors": [
+				"Steve Teale",
+				"James W. Oliphant",
+				"Simen Endsjø",
+				"Sönke Ludwig",
+				"Sergey Shamov",
+				"Nick Sabalausky"
+			],
+			"copyright": "Copyright (c) 2011-2017 Steve Teale, James W. Oliphant, Simen Endsjø, Sönke Ludwig, Sergey Shamov, and Nick Sabalausky",
+			"license": "BSL-1.0",
+			"dependencies": [
+				"vibe-d:core"
+			],
+			"active": true,
+			"configuration": "library",
+			"targetType": "library",
+			"targetPath": "",
+			"targetName": "mysql-native",
+			"targetFileName": "libmysql-native.a",
+			"workingDirectory": "",
+			"mainSourceFile": "",
+			"dflags": [],
+			"lflags": [],
+			"libs": [],
+			"copyFiles": [],
+			"versions": [],
+			"debugVersions": [],
+			"importPaths": [
+				"source/"
+			],
+			"stringImportPaths": [],
+			"preGenerateCommands": [],
+			"postGenerateCommands": [],
+			"preBuildCommands": [],
+			"postBuildCommands": [],
+			"buildRequirements": [],
+			"options": [],
+			"files": [
+				{
+					"role": "source",
+					"path": "source/mysql/commands.d"
+				},
+				{
+					"role": "source",
+					"path": "source/mysql/connection.d"
+				},
+				{
+					"role": "source",
+					"path": "source/mysql/db.d"
+				},
+				{
+					"role": "source",
+					"path": "source/mysql/escape.d"
+				},
+				{
+					"role": "source",
+					"path": "source/mysql/exceptions.d"
+				},
+				{
+					"role": "source",
+					"path": "source/mysql/metadata.d"
+				},
+				{
+					"role": "source",
+					"path": "source/mysql/package.d"
+				},
+				{
+					"role": "source",
+					"path": "source/mysql/pool.d"
+				},
+				{
+					"role": "source",
+					"path": "source/mysql/prepared.d"
+				},
+				{
+					"role": "source",
+					"path": "source/mysql/protocol/constants.d"
+				},
+				{
+					"role": "source",
+					"path": "source/mysql/protocol/extra_types.d"
+				},
+				{
+					"role": "source",
+					"path": "source/mysql/protocol/packet_helpers.d"
+				},
+				{
+					"role": "source",
+					"path": "source/mysql/protocol/packets.d"
+				},
+				{
+					"role": "source",
+					"path": "source/mysql/protocol/sockets.d"
+				},
+				{
+					"role": "source",
+					"path": "source/mysql/result.d"
+				},
+				{
+					"role": "source",
+					"path": "source/mysql/test/common.d"
+				},
+				{
+					"role": "source",
+					"path": "source/mysql/test/integration.d"
+				},
+				{
+					"role": "source",
+					"path": "source/mysql/test/regression.d"
+				},
+				{
+					"role": "source",
+					"path": "source/mysql/types.d"
+				}
+			]
+		},
+		{
+			"path": "/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/web/",
+			"name": "vibe-d:web",
+			"version": "0.8.1",
+			"description": "High level web and REST service framework",
+			"homepage": "",
+			"authors": [],
+			"copyright": "",
+			"license": "",
+			"dependencies": [
+				"vibe-d:http"
+			],
+			"active": true,
+			"configuration": "library",
+			"targetType": "library",
+			"targetPath": "",
+			"targetName": "vibe-d_web",
+			"targetFileName": "libvibe-d_web.a",
+			"workingDirectory": "",
+			"mainSourceFile": "",
+			"dflags": [],
+			"lflags": [],
+			"libs": [],
+			"copyFiles": [],
+			"versions": [],
+			"debugVersions": [],
+			"importPaths": [
+				"."
+			],
+			"stringImportPaths": [],
+			"preGenerateCommands": [],
+			"postGenerateCommands": [],
+			"preBuildCommands": [],
+			"postBuildCommands": [],
+			"buildRequirements": [],
+			"options": [],
+			"files": [
+				{
+					"role": "source",
+					"path": "vibe/web/auth.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/web/common.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/web/i18n.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/web/internal/rest/common.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/web/internal/rest/jsclient.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/web/rest.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/web/validation.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/web/web.d"
+				}
+			]
+		},
+		{
+			"path": "/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/http/",
+			"name": "vibe-d:http",
+			"version": "0.8.1",
+			"description": "HTTP server and client implementation and higher level HTTP functionality",
+			"homepage": "",
+			"authors": [],
+			"copyright": "",
+			"license": "",
+			"dependencies": [
+				"vibe-d:tls",
+				"vibe-d:crypto",
+				"vibe-d:inet",
+				"diet-ng",
+				"vibe-d:textfilter"
+			],
+			"active": true,
+			"configuration": "library",
+			"targetType": "library",
+			"targetPath": "",
+			"targetName": "vibe-d_http",
+			"targetFileName": "libvibe-d_http.a",
+			"workingDirectory": "",
+			"mainSourceFile": "",
+			"dflags": [],
+			"lflags": [],
+			"libs": [],
+			"copyFiles": [],
+			"versions": [],
+			"debugVersions": [],
+			"importPaths": [
+				"."
+			],
+			"stringImportPaths": [],
+			"preGenerateCommands": [],
+			"postGenerateCommands": [],
+			"preBuildCommands": [],
+			"postBuildCommands": [],
+			"buildRequirements": [],
+			"options": [],
+			"files": [
+				{
+					"role": "source",
+					"path": "vibe/http/auth/basic_auth.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/http/auth/digest_auth.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/http/client.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/http/common.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/http/dist.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/http/fileserver.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/http/form.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/http/log.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/http/proxy.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/http/router.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/http/server.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/http/session.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/http/status.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/http/websockets.d"
+				}
+			]
+		},
+		{
+			"path": "/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/tls/",
+			"name": "vibe-d:tls",
+			"version": "0.8.1",
+			"description": "TLS stream implementations",
+			"homepage": "",
+			"authors": [],
+			"copyright": "",
+			"license": "",
+			"dependencies": [
+				"vibe-d:stream",
+				"openssl"
+			],
+			"active": true,
+			"configuration": "openssl",
+			"targetType": "library",
+			"targetPath": "",
+			"targetName": "vibe-d_tls",
+			"targetFileName": "libvibe-d_tls.a",
+			"workingDirectory": "",
+			"mainSourceFile": "",
+			"dflags": [],
+			"lflags": [],
+			"libs": [],
+			"copyFiles": [],
+			"versions": [],
+			"debugVersions": [],
+			"importPaths": [
+				"."
+			],
+			"stringImportPaths": [],
+			"preGenerateCommands": [],
+			"postGenerateCommands": [],
+			"preBuildCommands": [],
+			"postBuildCommands": [],
+			"buildRequirements": [],
+			"options": [],
+			"files": [
+				{
+					"role": "unusedSource",
+					"path": "../lib/win-amd64/libeay32.lib"
+				},
+				{
+					"role": "unusedSource",
+					"path": "../lib/win-amd64/ssleay32.lib"
+				},
+				{
+					"role": "unusedSource",
+					"path": "../lib/win-i386-mscoff/libeay32.lib"
+				},
+				{
+					"role": "unusedSource",
+					"path": "../lib/win-i386-mscoff/ssleay32.lib"
+				},
+				{
+					"role": "unusedSource",
+					"path": "../lib/win-i386/eay.lib"
+				},
+				{
+					"role": "unusedSource",
+					"path": "../lib/win-i386/ssl.lib"
+				},
+				{
+					"role": "source",
+					"path": "vibe/stream/botan.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/stream/openssl.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/stream/tls.d"
+				}
+			]
+		},
+		{
+			"path": "/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/stream/",
+			"name": "vibe-d:stream",
+			"version": "0.8.1",
+			"description": "Library of various pluggable stream implementations",
+			"homepage": "",
+			"authors": [],
+			"copyright": "",
+			"license": "",
+			"dependencies": [
+				"vibe-d:core"
+			],
+			"active": true,
+			"configuration": "library",
+			"targetType": "library",
+			"targetPath": "",
+			"targetName": "vibe-d_stream",
+			"targetFileName": "libvibe-d_stream.a",
+			"workingDirectory": "",
+			"mainSourceFile": "",
+			"dflags": [],
+			"lflags": [],
+			"libs": [],
+			"copyFiles": [],
+			"versions": [],
+			"debugVersions": [],
+			"importPaths": [
+				"."
+			],
+			"stringImportPaths": [],
+			"preGenerateCommands": [],
+			"postGenerateCommands": [],
+			"preBuildCommands": [],
+			"postBuildCommands": [],
+			"buildRequirements": [],
+			"options": [],
+			"files": [
+				{
+					"role": "source",
+					"path": "vibe/stream/base64.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/stream/counting.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/stream/memory.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/stream/multicast.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/stream/operations.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/stream/stdio.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/stream/taskpipe.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/stream/wrapper.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/stream/zlib.d"
+				}
+			]
+		},
+		{
+			"path": "/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/",
+			"name": "openssl",
+			"version": "1.1.5+1.0.1g",
+			"description": "Deimos bindings for the OpenSSL cryptographic library",
+			"homepage": "http://www.openssl.org/",
+			"authors": [],
+			"copyright": "",
+			"license": "OpenSSL or SSLeay",
+			"dependencies": [],
+			"active": true,
+			"configuration": "library",
+			"targetType": "sourceLibrary",
+			"targetPath": "",
+			"targetName": "openssl",
+			"targetFileName": "",
+			"workingDirectory": "",
+			"mainSourceFile": "",
+			"dflags": [],
+			"lflags": [],
+			"libs": [
+				"ssl",
+				"crypto"
+			],
+			"copyFiles": [],
+			"versions": [],
+			"debugVersions": [],
+			"importPaths": [
+				"."
+			],
+			"stringImportPaths": [],
+			"preGenerateCommands": [],
+			"postGenerateCommands": [],
+			"preBuildCommands": [],
+			"postBuildCommands": [],
+			"buildRequirements": [],
+			"options": [],
+			"files": [
+				{
+					"role": "import_",
+					"path": "deimos/openssl/_d_util.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/aes.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/asn1.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/asn1_mac.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/asn1t.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/bio.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/blowfish.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/bn.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/buffer.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/camellia.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/cast_.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/cmac.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/cms.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/comp.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/conf.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/conf_api.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/crypto.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/des.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/des_old.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/dh.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/dsa.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/dso.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/dtls1.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/e_os2.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/ebcdic.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/ec.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/ecdh.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/ecdsa.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/engine.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/err.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/evp.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/hmac.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/idea.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/krb5_asn.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/kssl.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/lhash.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/md4.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/md5.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/mdc2.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/modes.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/obj_mac.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/objects.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/ocsp.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/opensslconf.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/opensslv.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/ossl_typ.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/pem.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/pem2.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/pkcs12.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/pkcs7.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/pqueue.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/rand.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/rc2.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/rc4.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/ripemd.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/rsa.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/safestack.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/seed.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/sha.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/srp.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/srtp.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/ssl.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/ssl2.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/ssl23.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/ssl3.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/stack.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/symhacks.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/tls1.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/ts.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/txt_db.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/ui.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/ui_compat.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/whrlpool.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/x509.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/x509_vfy.d"
+				},
+				{
+					"role": "import_",
+					"path": "deimos/openssl/x509v3.d"
+				}
+			]
+		},
+		{
+			"path": "/home/username/.dub/packages/botan-1.12.9/botan/",
+			"name": "botan",
+			"version": "1.12.9",
+			"description": "A D library for crypto and TLS",
+			"homepage": "",
+			"authors": [
+				"Jack Lloyd",
+				"Etienne Cimon",
+				"See CREDITS.md for more."
+			],
+			"copyright": "",
+			"license": "BSD 2-clause",
+			"dependencies": [
+				"memutils",
+				"botan-math"
+			],
+			"active": false,
+			"configuration": "full",
+			"targetType": "staticLibrary",
+			"targetPath": "build",
+			"targetName": "botan",
+			"targetFileName": "libbotan.a",
+			"workingDirectory": "build",
+			"mainSourceFile": "",
+			"dflags": [],
+			"lflags": [],
+			"libs": [
+				"dl"
+			],
+			"copyFiles": [],
+			"versions": [
+				"Have_botan",
+				"Botan",
+				"CanTest",
+				"SHA2_32",
+				"SHA2_64",
+				"MD4",
+				"MD5",
+				"SHA1",
+				"CRC24",
+				"PBKDF1",
+				"PBKDF2",
+				"CTR_BE",
+				"HMAC",
+				"POLY1305",
+				"EMSA1",
+				"EMSA1_BSI",
+				"EMSA_X931",
+				"EMSA_PKCS1",
+				"EMSA_PSSR",
+				"EMSA_RAW",
+				"EME_OAEP",
+				"EME_PKCS1v15",
+				"PBE_PKCSv20",
+				"Self_Tests",
+				"ECB",
+				"CBC",
+				"XTS",
+				"OFB",
+				"CFB",
+				"AEAD_FILTER",
+				"AEAD_CCM",
+				"AEAD_EAX",
+				"AEAD_OCB",
+				"AEAD_GCM",
+				"AEAD_CHACHA20_POLY1305",
+				"GCM_CLMUL",
+				"AEAD_SIV",
+				"RFC6979",
+				"RSA",
+				"RW",
+				"DLIES",
+				"DSA",
+				"ECDSA",
+				"ElGamal",
+				"GOST_3410",
+				"Curve25519",
+				"Nyberg_Rueppel",
+				"Diffie_Hellman",
+				"ECDH",
+				"AES",
+				"Blowfish",
+				"Camellia",
+				"CAST",
+				"Cascade",
+				"DES",
+				"GOST_28147",
+				"IDEA",
+				"KASUMI",
+				"LION",
+				"MARS",
+				"MISTY1",
+				"NOEKEON",
+				"RC2",
+				"RC5",
+				"RC6",
+				"SAFER",
+				"SEED",
+				"Serpent",
+				"TEA",
+				"Twofish",
+				"Threefish",
+				"XTEA",
+				"Adler32",
+				"CRC32",
+				"GOST_3411",
+				"HAS_160",
+				"Keccak",
+				"MD2",
+				"RIPEMD_128",
+				"RIPEMD_160",
+				"SHA1_x86_64",
+				"Skein_512",
+				"Tiger",
+				"Whirlpool",
+				"ParallelHash",
+				"Comb4P",
+				"CBC_MAC",
+				"CMAC",
+				"SSL3_MAC",
+				"ANSI_X919_MAC",
+				"RC4",
+				"ChaCha",
+				"Salsa20",
+				"AES_NI",
+				"SIMD_SSE2",
+				"AES_SSSE3",
+				"Serpent_SIMD",
+				"SIMD_Scalar",
+				"Noekeon_SIMD",
+				"XTEA_SIMD",
+				"IDEA_SSE2",
+				"SHA1_SSE2",
+				"Engine_ASM",
+				"Engine_AES_ISA",
+				"Engine_SIMD",
+				"Entropy_HRTimer",
+				"Entropy_Rdrand",
+				"Entropy_DevRand",
+				"Entropy_EGD",
+				"Entropy_UnixProc",
+				"Entropy_Win32",
+				"Entropy_ProcWalk",
+				"X931_RNG",
+				"HMAC_DRBG",
+				"KDF1",
+				"KDF2",
+				"SSL_V3_PRF",
+				"TLS_V10_PRF",
+				"TLS_V12_PRF",
+				"X942_PRF",
+				"TLS",
+				"X509",
+				"PUBKEY",
+				"FPE_FE1",
+				"RFC3394",
+				"PassHash9",
+				"BCrypt",
+				"SRP6",
+				"TSS",
+				"CryptoBox",
+				"CryptoBox_PSK",
+				"ZLib"
+			],
+			"debugVersions": [],
+			"importPaths": [
+				"source/"
+			],
+			"stringImportPaths": [],
+			"preGenerateCommands": [
+				"ld -v | grep 'gold' > /dev/null || echo 'Notice: Botan uses many symbols. Look into switching from ld (bfd) to ld (Gold) linker to reduce link times from >15s to <2s'"
+			],
+			"postGenerateCommands": [],
+			"preBuildCommands": [],
+			"postBuildCommands": [],
+			"buildRequirements": [],
+			"options": [],
+			"files": [
+				{
+					"role": "unusedSource",
+					"path": "lib/win-amd64/libeay32.lib"
+				},
+				{
+					"role": "unusedSource",
+					"path": "lib/win-amd64/ssleay32.lib"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/algo_base/buf_comp.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/algo_base/key_spec.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/algo_base/scan_token.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/algo_base/sym_algo.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/algo_base/symkey.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/algo_base/transform.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/algo_factory/algo_cache.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/algo_factory/algo_factory.d"
+				},
+				{
+					"role": "import_",
+					"path": "source/botan/all.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/asn1/alg_id.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/asn1/asn1_alt_name.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/asn1/asn1_attribute.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/asn1/asn1_obj.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/asn1/asn1_oid.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/asn1/asn1_str.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/asn1/asn1_time.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/asn1/ber_dec.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/asn1/der_enc.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/asn1/oids.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/asn1/x509_dn.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/block/aes.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/block/aes_ni.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/block/aes_ssse3.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/block/block_cipher.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/block/blowfish.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/block/camellia.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/block/cascade.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/block/cast128.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/block/cast256.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/block/cast_sboxes.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/block/des.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/block/desx.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/block/gost_28147.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/block/idea.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/block/idea_sse2.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/block/kasumi.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/block/lion.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/block/mars.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/block/misty1.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/block/noekeon.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/block/noekeon_simd.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/block/rc2.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/block/rc5.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/block/rc6.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/block/safer_sk.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/block/seed.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/block/serp_simd.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/block/serp_x86_32.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/block/serpent.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/block/tea.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/block/threefish.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/block/threefish_avx2.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/block/twofish.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/block/xtea.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/block/xtea_simd.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/cert/cvc/cvc_ado.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/cert/cvc/cvc_cert.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/cert/cvc/cvc_gen_cert.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/cert/cvc/cvc_req.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/cert/cvc/cvc_self.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/cert/cvc/eac_asn_obj.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/cert/cvc/eac_obj.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/cert/cvc/ecdsa_sig.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/cert/cvc/signed_obj.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/cert/cvc/test.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/cert/x509/cert_status.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/cert/x509/certstor.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/cert/x509/crl_ent.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/cert/x509/key_constraint.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/cert/x509/ocsp.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/cert/x509/ocsp_types.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/cert/x509/pkcs10.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/cert/x509/test.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/cert/x509/x509_ca.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/cert/x509/x509_crl.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/cert/x509/x509_ext.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/cert/x509/x509_obj.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/cert/x509/x509cert.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/cert/x509/x509path.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/cert/x509/x509self.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/checksum/adler32.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/checksum/crc24.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/checksum/crc32.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/codec/base64.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/codec/hex.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/codec/openpgp.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/codec/pem.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/compression/bzip2.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/compression/bzip2_hd.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/compression/compress.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/compression/compress_utils.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/compression/lzma.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/compression/lzma_hd.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/compression/zlib.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/constants.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/constructs/aont_package.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/constructs/cryptobox.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/constructs/cryptobox_psk.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/constructs/fpe_fe1.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/constructs/pbes2.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/constructs/rfc3394.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/constructs/srp6.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/constructs/srp6_files.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/constructs/tss.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/engine/aes_isa_engine.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/engine/asm_engine.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/engine/core_engine.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/engine/dyn_engine.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/engine/engine.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/engine/openssl_engine.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/engine/simd_engine.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/entropy/dev_random.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/entropy/entropy_src.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/entropy/es_beos.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/entropy/es_capi.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/entropy/es_egd.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/entropy/es_win32.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/entropy/hres_timer.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/entropy/proc_walk.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/entropy/rdrand.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/entropy/unix_procs.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/filters/aead_filt.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/filters/b64_filt.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/filters/basefilt.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/filters/data_src.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/filters/fd_unix.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/filters/filter.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/filters/filters.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/filters/hex_filt.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/filters/key_filt.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/filters/out_buf.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/filters/pipe.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/filters/secqueue.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/filters/transform_filter.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/hash/comb4p.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/hash/gost_3411.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/hash/has160.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/hash/hash.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/hash/keccak.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/hash/md2.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/hash/md4.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/hash/md4_x86_32.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/hash/md5.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/hash/md5_x86_32.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/hash/mdx_hash.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/hash/par_hash.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/hash/rmd128.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/hash/rmd160.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/hash/sha160.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/hash/sha1_sse2.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/hash/sha1_x86_32.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/hash/sha1_x86_64.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/hash/sha2_32.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/hash/sha2_64.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/hash/skein_512.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/hash/tiger.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/hash/whrlpool.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/kdf/kdf.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/kdf/kdf1.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/kdf/kdf2.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/kdf/prf_ssl3.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/kdf/prf_tls.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/kdf/prf_x942.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/libstate/global_state.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/libstate/init.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/libstate/libstate.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/libstate/lookup.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/mac/cbc_mac.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/mac/cmac.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/mac/hmac.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/mac/mac.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/mac/poly1305.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/mac/ssl3_mac.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/mac/x919_mac.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/math/bigint/bigint.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/math/bigint/divide.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/math/bigint/test.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/math/ec_gfp/curve_gfp.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/math/ec_gfp/curve_nistp.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/math/ec_gfp/point_gfp.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/math/ec_gfp/test.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/math/mp/mp_core.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/math/mp/mp_types.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/math/numbertheory/def_powm.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/math/numbertheory/numthry.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/math/numbertheory/pow_mod.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/math/numbertheory/primes.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/math/numbertheory/reducer.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/modes/aead/aead.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/modes/aead/ccm.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/modes/aead/chacha20poly1305.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/modes/aead/eax.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/modes/aead/gcm.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/modes/aead/ocb.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/modes/aead/siv.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/modes/cbc.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/modes/cfb.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/modes/cipher_mode.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/modes/ecb.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/modes/mode_pad.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/modes/xts.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/passhash/bcrypt.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/passhash/passhash9.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pbkdf/pbkdf.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pbkdf/pbkdf1.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pbkdf/pbkdf2.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pk_pad/eme.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pk_pad/eme_pkcs.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pk_pad/emsa.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pk_pad/emsa1.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pk_pad/emsa1_bsi.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pk_pad/emsa_pkcs1.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pk_pad/emsa_raw.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pk_pad/emsa_x931.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pk_pad/factory.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pk_pad/hash_id.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pk_pad/mgf1.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pk_pad/oaep.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pk_pad/pssr.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/prf/hkdf.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pubkey/algo/curve25519.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pubkey/algo/curve25519_donna.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pubkey/algo/dh.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pubkey/algo/dl_algo.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pubkey/algo/dl_group.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pubkey/algo/dlies.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pubkey/algo/dsa.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pubkey/algo/ec_group.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pubkey/algo/ecc_key.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pubkey/algo/ecdh.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pubkey/algo/ecdsa.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pubkey/algo/elgamal.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pubkey/algo/gost_3410.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pubkey/algo/if_algo.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pubkey/algo/keypair.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pubkey/algo/nr.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pubkey/algo/rfc6979.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pubkey/algo/rsa.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pubkey/algo/rw.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pubkey/blinding.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pubkey/pk_algs.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pubkey/pk_keys.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pubkey/pk_ops.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pubkey/pkcs8.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pubkey/pubkey.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pubkey/test.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pubkey/workfactor.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/pubkey/x509_key.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/rng/auto_rng.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/rng/hmac_drbg.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/rng/hmac_rng.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/rng/rng.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/rng/test.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/rng/x931_rng.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/selftest/selftest.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/simd/simd_32.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/simd/simd_altivec.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/simd/simd_scalar.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/simd/simd_sse2.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/stream/chacha.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/stream/ctr.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/stream/ofb.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/stream/rc4.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/stream/salsa20.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/stream/stream_cipher.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/test.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/tls/alert.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/tls/blocking.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/tls/channel.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/tls/ciphersuite.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/tls/client.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/tls/credentials_manager.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/tls/exceptn.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/tls/extensions.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/tls/handshake_hash.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/tls/handshake_io.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/tls/handshake_state.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/tls/heartbeats.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/tls/magic.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/tls/messages.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/tls/policy.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/tls/reader.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/tls/record.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/tls/seq_numbers.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/tls/server.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/tls/server_info.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/tls/session.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/tls/session_key.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/tls/session_manager.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/tls/session_manager_sqlite.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/tls/test.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/tls/version_.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/utils/asm_x86_32/asm_x86_32.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/utils/asm_x86_64/asm_x86_64.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/utils/benchmark.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/utils/bit_ops.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/utils/bswap.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/utils/charset.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/utils/cpuid.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/utils/datastor/datastor.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/utils/donna128.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/utils/dyn_load/dyn_load.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/utils/exceptn.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/utils/get_byte.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/utils/http_util/http_util.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/utils/loadstor.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/utils/mem_ops.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/utils/mul128.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/utils/parsing.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/utils/rotate.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/utils/rounding.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/utils/semaphore.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/utils/simd/altivec.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/utils/simd/emmintrin.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/utils/simd/immintrin.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/utils/simd/tmmintrin.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/utils/simd/wmmintrin.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/utils/simd/xmmintrin.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/utils/sqlite3/sqlite3.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/utils/types.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/utils/version_.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan/utils/xor_buf.d"
+				}
+			]
+		},
+		{
+			"path": "/home/username/.dub/packages/botan-math-1.0.3/botan-math/",
+			"name": "botan-math",
+			"version": "1.0.3",
+			"description": "A D Math Library used for Botan",
+			"homepage": "",
+			"authors": [
+				"Jack Lloyd",
+				"Etienne Cimon",
+				"See CREDITS.md for more."
+			],
+			"copyright": "",
+			"license": "BSD 2-clause",
+			"dependencies": [],
+			"active": false,
+			"configuration": "regular",
+			"targetType": "staticLibrary",
+			"targetPath": "build",
+			"targetName": "botan_math",
+			"targetFileName": "libbotan_math.a",
+			"workingDirectory": "",
+			"mainSourceFile": "",
+			"dflags": [],
+			"lflags": [],
+			"libs": [],
+			"copyFiles": [],
+			"versions": [],
+			"debugVersions": [],
+			"importPaths": [
+				"source/"
+			],
+			"stringImportPaths": [],
+			"preGenerateCommands": [],
+			"postGenerateCommands": [],
+			"preBuildCommands": [],
+			"postBuildCommands": [],
+			"buildRequirements": [],
+			"options": [],
+			"files": [
+				{
+					"role": "source",
+					"path": "source/botan_math/mem_ops.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan_math/mp_bigint.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan_math/mp_comba.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan_math/mp_karatsuba.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan_math/mp_monty.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan_math/mp_types.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan_math/mp_word.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan_math/mul128.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan_math/test.d"
+				},
+				{
+					"role": "source",
+					"path": "source/botan_math/x86_64/mp_comba_mul.d"
+				}
+			]
+		},
+		{
+			"path": "/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/crypto/",
+			"name": "vibe-d:crypto",
+			"version": "0.8.1",
+			"description": "Cryptographic helper routines",
+			"homepage": "",
+			"authors": [],
+			"copyright": "",
+			"license": "",
+			"dependencies": [
+				"vibe-d:core"
+			],
+			"active": true,
+			"configuration": "library",
+			"targetType": "library",
+			"targetPath": "",
+			"targetName": "vibe-d_crypto",
+			"targetFileName": "libvibe-d_crypto.a",
+			"workingDirectory": "",
+			"mainSourceFile": "",
+			"dflags": [],
+			"lflags": [],
+			"libs": [],
+			"copyFiles": [],
+			"versions": [],
+			"debugVersions": [],
+			"importPaths": [
+				"."
+			],
+			"stringImportPaths": [],
+			"preGenerateCommands": [],
+			"postGenerateCommands": [],
+			"preBuildCommands": [],
+			"postBuildCommands": [],
+			"buildRequirements": [],
+			"options": [],
+			"files": [
+				{
+					"role": "source",
+					"path": "vibe/crypto/cryptorand.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/crypto/passwordhash.d"
+				}
+			]
+		},
+		{
+			"path": "/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/inet/",
+			"name": "vibe-d:inet",
+			"version": "0.8.1",
+			"description": "Internet standard functionality",
+			"homepage": "",
+			"authors": [],
+			"copyright": "",
+			"license": "",
+			"dependencies": [
+				"vibe-d:core",
+				"vibe-d:stream",
+				"vibe-d:textfilter"
+			],
+			"active": true,
+			"configuration": "library",
+			"targetType": "library",
+			"targetPath": "",
+			"targetName": "vibe-d_inet",
+			"targetFileName": "libvibe-d_inet.a",
+			"workingDirectory": "",
+			"mainSourceFile": "",
+			"dflags": [],
+			"lflags": [],
+			"libs": [],
+			"copyFiles": [],
+			"versions": [],
+			"debugVersions": [],
+			"importPaths": [
+				"."
+			],
+			"stringImportPaths": [],
+			"preGenerateCommands": [],
+			"postGenerateCommands": [],
+			"preBuildCommands": [],
+			"postBuildCommands": [],
+			"buildRequirements": [],
+			"options": [],
+			"files": [
+				{
+					"role": "source",
+					"path": "vibe/inet/message.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/inet/mimetypes.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/inet/path.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/inet/url.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/inet/urltransfer.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/inet/webform.d"
+				}
+			]
+		},
+		{
+			"path": "/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/textfilter/",
+			"name": "vibe-d:textfilter",
+			"version": "0.8.1",
+			"description": "Text filtering routines",
+			"homepage": "",
+			"authors": [],
+			"copyright": "",
+			"license": "",
+			"dependencies": [
+				"vibe-d:core"
+			],
+			"active": true,
+			"configuration": "library",
+			"targetType": "library",
+			"targetPath": "",
+			"targetName": "vibe-d_textfilter",
+			"targetFileName": "libvibe-d_textfilter.a",
+			"workingDirectory": "",
+			"mainSourceFile": "",
+			"dflags": [],
+			"lflags": [],
+			"libs": [],
+			"copyFiles": [],
+			"versions": [],
+			"debugVersions": [],
+			"importPaths": [
+				"."
+			],
+			"stringImportPaths": [],
+			"preGenerateCommands": [],
+			"postGenerateCommands": [],
+			"preBuildCommands": [],
+			"postBuildCommands": [],
+			"buildRequirements": [],
+			"options": [],
+			"files": [
+				{
+					"role": "source",
+					"path": "vibe/textfilter/html.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/textfilter/markdown.d"
+				},
+				{
+					"role": "source",
+					"path": "vibe/textfilter/urlencode.d"
+				}
+			]
+		},
+		{
+			"path": "/home/username/.dub/packages/diet-ng-1.4.3/diet-ng/",
+			"name": "diet-ng",
+			"version": "1.4.3",
+			"description": "Next generation Diet template compiler.",
+			"homepage": "",
+			"authors": [
+				"Sönke Ludwig"
+			],
+			"copyright": "Copyright © 2018",
+			"license": "MIT",
+			"dependencies": [],
+			"active": true,
+			"configuration": "library",
+			"targetType": "library",
+			"targetPath": "",
+			"targetName": "diet-ng",
+			"targetFileName": "libdiet-ng.a",
+			"workingDirectory": "",
+			"mainSourceFile": "",
+			"dflags": [],
+			"lflags": [],
+			"libs": [],
+			"copyFiles": [],
+			"versions": [],
+			"debugVersions": [],
+			"importPaths": [
+				"source/"
+			],
+			"stringImportPaths": [],
+			"preGenerateCommands": [],
+			"postGenerateCommands": [],
+			"preBuildCommands": [],
+			"postBuildCommands": [],
+			"buildRequirements": [],
+			"options": [],
+			"files": [
+				{
+					"role": "source",
+					"path": "source/diet/defs.d"
+				},
+				{
+					"role": "source",
+					"path": "source/diet/dom.d"
+				},
+				{
+					"role": "source",
+					"path": "source/diet/html.d"
+				},
+				{
+					"role": "source",
+					"path": "source/diet/input.d"
+				},
+				{
+					"role": "source",
+					"path": "source/diet/internal/html.d"
+				},
+				{
+					"role": "source",
+					"path": "source/diet/internal/string.d"
+				},
+				{
+					"role": "source",
+					"path": "source/diet/parser.d"
+				},
+				{
+					"role": "source",
+					"path": "source/diet/traits.d"
+				}
+			]
+		},
+		{
+			"path": "/home/username/.dub/packages/colourfulmoon-1.0.2/colourfulmoon/",
+			"name": "colourfulmoon",
+			"version": "1.0.2",
+			"description": "Paint you terminal!",
+			"homepage": "",
+			"authors": [
+				"Azbuka"
+			],
+			"copyright": "2016",
+			"license": "MIT",
+			"dependencies": [],
+			"active": true,
+			"configuration": "library",
+			"targetType": "library",
+			"targetPath": "",
+			"targetName": "colourfulmoon",
+			"targetFileName": "libcolourfulmoon.a",
+			"workingDirectory": "",
+			"mainSourceFile": "",
+			"dflags": [],
+			"lflags": [],
+			"libs": [],
+			"copyFiles": [],
+			"versions": [],
+			"debugVersions": [],
+			"importPaths": [
+				"source/"
+			],
+			"stringImportPaths": [],
+			"preGenerateCommands": [],
+			"postGenerateCommands": [],
+			"preBuildCommands": [],
+			"postBuildCommands": [],
+			"buildRequirements": [],
+			"options": [],
+			"files": [
+				{
+					"role": "source",
+					"path": "source/ColourfulMoon.d"
+				}
+			]
+		}
+	],
+	"targets": [
+		{
+			"rootPackage": "SuperAwesomeApp",
+			"packages": [
+				"SuperAwesomeApp",
+				"vibe-d:core"
+			],
+			"rootConfiguration": "default",
+			"buildSettings": {
+				"targetType": 2,
+				"targetPath": "/path/to/project/SuperAwesomeApp",
+				"targetName": "SuperAwesomeApp",
+				"workingDirectory": "",
+				"mainSourceFile": "",
+				"dflags": [],
+				"lflags": [],
+				"libs": [
+					"sqlite3",
+					"dl",
+					"anl",
+					"ssl",
+					"crypto"
+				],
+				"linkerFiles": [
+					"/home/username/.dub/packages/colourfulmoon-1.0.2/colourfulmoon/libcolourfulmoon.a",
+					"/home/username/.dub/packages/consoled-1.0.4/consoled/libconsoled.a",
+					"/home/username/.dub/packages/hibernated-0.3.2/hibernated/lib/libhibernated.a",
+					"/home/username/.dub/packages/ddbc-0.3.7/ddbc/lib/libddbc.a",
+					"/home/username/.dub/packages/derelict-pq-2.2.0/derelict-pq/lib/libDerelictPQ.a",
+					"/home/username/.dub/packages/derelict-util-2.0.6/derelict-util/lib/libDerelictUtil.a",
+					"/home/username/.dub/packages/mysql-native-1.1.3/mysql-native/libmysql-native.a",
+					"/home/username/.dub/packages/poodinis-8.0.1/poodinis/libpoodinis.a",
+					"/home/username/.dub/packages/proper-d-0.0.2/libproper-d.a",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/web/libvibe-d_web.a",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/http/libvibe-d_http.a",
+					"/home/username/.dub/packages/diet-ng-1.4.3/diet-ng/libdiet-ng.a",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/crypto/libvibe-d_crypto.a",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/inet/libvibe-d_inet.a",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/textfilter/libvibe-d_textfilter.a",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/tls/libvibe-d_tls.a",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/stream/libvibe-d_stream.a",
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/libvibe_core.a",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/libeventcore.a",
+					"/home/username/.dub/packages/taggedalgebraic-0.10.7/taggedalgebraic/libtaggedalgebraic.a",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/data/libvibe-d_data.a",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils/libvibe-d_utils.a"
+				],
+				"sourceFiles": [
+					"/path/to/project/SuperAwesomeApp/source/app.d",
+					"/path/to/project/SuperAwesomeApp/source/config/context.d",
+					"/path/to/project/SuperAwesomeApp/source/config/database.d",
+					"/path/to/project/SuperAwesomeApp/source/config/logging.d",
+					"/path/to/project/SuperAwesomeApp/source/config/motd.d",
+					"/path/to/project/SuperAwesomeApp/source/config/properties.d",
+					"/path/to/project/SuperAwesomeApp/source/controllers/admincontroller.d",
+					"/path/to/project/SuperAwesomeApp/source/controllers/package.d",
+					"/path/to/project/SuperAwesomeApp/source/controllers/webappcontroller.d",
+					"/path/to/project/SuperAwesomeApp/source/model/blogpost.d",
+					"/path/to/project/SuperAwesomeApp/source/model/comment.d",
+					"/path/to/project/SuperAwesomeApp/source/model/package.d",
+					"/path/to/project/SuperAwesomeApp/source/model/user.d",
+					"/path/to/project/SuperAwesomeApp/source/services/blogservice.d",
+					"/path/to/project/SuperAwesomeApp/source/services/package.d",
+					"/path/to/project/SuperAwesomeApp/source/services/userservice.d",
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/source/vibe/appmain.d"
+				],
+				"copyFiles": [],
+				"versions": [
+					"VibeDefaultMain",
+					"Have_vibe_d_core",
+					"VibeUseOpenSSL11",
+					"PRODUCTION",
+					"USE_MYSQL",
+					"USE_SQLITE",
+					"USE_PGSQL",
+					"EventcoreEpollDriver",
+					"Have_SuperAwesomeApp",
+					"Have_colourfulmoon",
+					"Have_consoled",
+					"Have_hibernated",
+					"Have_ddbc",
+					"Have_derelict_pq",
+					"Have_derelict_util",
+					"Have_mysql_native",
+					"Have_vibe_core",
+					"Have_eventcore",
+					"Have_taggedalgebraic",
+					"Have_vibe_d_data",
+					"Have_vibe_d_utils",
+					"Have_poodinis",
+					"Have_proper_d",
+					"Have_vibe_d_web",
+					"Have_vibe_d_http",
+					"Have_diet_ng",
+					"Have_vibe_d_crypto",
+					"Have_vibe_d_inet",
+					"Have_vibe_d_stream",
+					"Have_vibe_d_textfilter",
+					"Have_vibe_d_tls",
+					"Have_openssl"
+				],
+				"debugVersions": [],
+				"importPaths": [
+					"/path/to/project/SuperAwesomeApp/source/",
+					"/home/username/.dub/packages/colourfulmoon-1.0.2/colourfulmoon/source/",
+					"/home/username/.dub/packages/consoled-1.0.4/consoled/source/",
+					"/home/username/.dub/packages/hibernated-0.3.2/hibernated/source/",
+					"/home/username/.dub/packages/ddbc-0.3.7/ddbc/source/",
+					"/home/username/.dub/packages/derelict-pq-2.2.0/derelict-pq/source/",
+					"/home/username/.dub/packages/derelict-util-2.0.6/derelict-util/source/",
+					"/home/username/.dub/packages/mysql-native-1.1.3/mysql-native/source/",
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/source/",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/source/",
+					"/home/username/.dub/packages/taggedalgebraic-0.10.7/taggedalgebraic/source/",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/data",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils",
+					"/home/username/.dub/packages/poodinis-8.0.1/poodinis/source/",
+					"/home/username/.dub/packages/proper-d-0.0.2/source/",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/web",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/http",
+					"/home/username/.dub/packages/diet-ng-1.4.3/diet-ng/source/",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/crypto",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/inet",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/stream",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/textfilter",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/tls",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl"
+				],
+				"stringImportPaths": [
+					"/path/to/project/SuperAwesomeApp/views",
+					"/path/to/project/SuperAwesomeApp/i18n"
+				],
+				"importFiles": [],
+				"stringImportFiles": [
+					"/path/to/project/SuperAwesomeApp/views/admin_comments.dt",
+					"/path/to/project/SuperAwesomeApp/views/layout.dt",
+					"/path/to/project/SuperAwesomeApp/views/profile.dt",
+					"/path/to/project/SuperAwesomeApp/views/error.dt",
+					"/path/to/project/SuperAwesomeApp/views/admin_users.dt",
+					"/path/to/project/SuperAwesomeApp/views/login.dt",
+					"/path/to/project/SuperAwesomeApp/views/header.dt",
+					"/path/to/project/SuperAwesomeApp/views/index.dt",
+					"/path/to/project/SuperAwesomeApp/i18n/text.en_GB.po",
+					"/path/to/project/SuperAwesomeApp/i18n/text.de_DE.po"
+				],
+				"preGenerateCommands": [
+					"if ! type \"npm\" > /dev/null; then echo -e \"You need to have Node.js and npm installed in order to build this project\nvisit https://nodejs.org for more info\"; exit 1; fi",
+					"if ! type \"yarn\" > /dev/null; then echo -e \"You need to have yarn installed in order to build this project\nvisit https://yarnpkg.com for more info\"; exit 1; fi",
+					"printf \"\\033[94mInstalling front end dependencies with yarn...\\033[0m\n\"",
+					"yarn install",
+					"mkdir -p ./public/js ./public/css ./public/fonts",
+					"rsync -u node_modules/jquery/dist/jquery.slim.min.js ./public/js/jquery.slim.min.js",
+					"rsync -u node_modules/popper.js/dist/popper.min.js ./public/js/popper.min.js",
+					"rsync -u node_modules/bootstrap/dist/css/bootstrap.min.css ./public/css/bootstrap.min.css",
+					"rsync -u node_modules/bootstrap/dist/js/bootstrap.min.js ./public/js/bootstrap.min.js",
+					"rsync -u node_modules/font-awesome/css/font-awesome.min.css ./public/css/font-awesome.min.css",
+					"rsync -u node_modules/font-awesome/fonts/fontawesome-webfont.* ./public/fonts/",
+					"echo client-side dependencies done."
+				],
+				"postGenerateCommands": [],
+				"preBuildCommands": [
+					"printf \"\\033[93mtodo\\033[0m get SASS compiler working as part of build\n\""
+				],
+				"postBuildCommands": [],
+				"requirements": [
+					"allowWarnings",
+					"silenceWarnings"
+				],
+				"options": [
+					"debugMode",
+					"debugInfo"
+				]
+			},
+			"dependencies": [
+				"colourfulmoon",
+				"consoled",
+				"hibernated",
+				"poodinis",
+				"proper-d",
+				"vibe-core",
+				"vibe-d:data",
+				"vibe-d:utils",
+				"vibe-d:web"
+			],
+			"linkDependencies": [
+				"colourfulmoon",
+				"consoled",
+				"hibernated",
+				"ddbc",
+				"derelict-pq",
+				"derelict-util",
+				"mysql-native",
+				"poodinis",
+				"proper-d",
+				"vibe-d:web",
+				"vibe-d:http",
+				"diet-ng",
+				"vibe-d:crypto",
+				"vibe-d:inet",
+				"vibe-d:textfilter",
+				"vibe-d:textfilter",
+				"vibe-d:tls",
+				"vibe-d:stream",
+				"vibe-core",
+				"eventcore",
+				"taggedalgebraic",
+				"vibe-d:data",
+				"vibe-d:utils",
+				"vibe-d:utils"
+			]
+		},
+		{
+			"rootPackage": "colourfulmoon",
+			"packages": [
+				"colourfulmoon"
+			],
+			"rootConfiguration": "library",
+			"buildSettings": {
+				"targetType": 6,
+				"targetPath": "/home/username/.dub/packages/colourfulmoon-1.0.2/colourfulmoon",
+				"targetName": "colourfulmoon",
+				"workingDirectory": "",
+				"mainSourceFile": "",
+				"dflags": [],
+				"lflags": [],
+				"libs": [],
+				"linkerFiles": [],
+				"sourceFiles": [
+					"/home/username/.dub/packages/colourfulmoon-1.0.2/colourfulmoon/source/ColourfulMoon.d"
+				],
+				"copyFiles": [],
+				"versions": [
+					"VibeDefaultMain",
+					"Have_vibe_d_core",
+					"VibeUseOpenSSL11",
+					"PRODUCTION",
+					"USE_MYSQL",
+					"USE_SQLITE",
+					"USE_PGSQL",
+					"EventcoreEpollDriver",
+					"Have_colourfulmoon"
+				],
+				"debugVersions": [],
+				"importPaths": [
+					"/home/username/.dub/packages/colourfulmoon-1.0.2/colourfulmoon/source/"
+				],
+				"stringImportPaths": [],
+				"importFiles": [],
+				"stringImportFiles": [],
+				"preGenerateCommands": [],
+				"postGenerateCommands": [],
+				"preBuildCommands": [],
+				"postBuildCommands": [],
+				"requirements": [],
+				"options": [
+					"debugMode",
+					"debugInfo",
+					"warningsAsErrors"
+				]
+			},
+			"dependencies": [],
+			"linkDependencies": []
+		},
+		{
+			"rootPackage": "consoled",
+			"packages": [
+				"consoled"
+			],
+			"rootConfiguration": "library",
+			"buildSettings": {
+				"targetType": 6,
+				"targetPath": "/home/username/.dub/packages/consoled-1.0.4/consoled",
+				"targetName": "consoled",
+				"workingDirectory": "",
+				"mainSourceFile": "",
+				"dflags": [],
+				"lflags": [],
+				"libs": [],
+				"linkerFiles": [],
+				"sourceFiles": [
+					"/home/username/.dub/packages/consoled-1.0.4/consoled/source/consoled.d",
+					"/home/username/.dub/packages/consoled-1.0.4/consoled/source/terminal.d"
+				],
+				"copyFiles": [],
+				"versions": [
+					"VibeDefaultMain",
+					"Have_vibe_d_core",
+					"VibeUseOpenSSL11",
+					"PRODUCTION",
+					"USE_MYSQL",
+					"USE_SQLITE",
+					"USE_PGSQL",
+					"EventcoreEpollDriver",
+					"Have_consoled"
+				],
+				"debugVersions": [],
+				"importPaths": [
+					"/home/username/.dub/packages/consoled-1.0.4/consoled/source/"
+				],
+				"stringImportPaths": [],
+				"importFiles": [],
+				"stringImportFiles": [],
+				"preGenerateCommands": [],
+				"postGenerateCommands": [],
+				"preBuildCommands": [],
+				"postBuildCommands": [],
+				"requirements": [],
+				"options": [
+					"debugMode",
+					"debugInfo",
+					"warningsAsErrors"
+				]
+			},
+			"dependencies": [],
+			"linkDependencies": []
+		},
+		{
+			"rootPackage": "hibernated",
+			"packages": [
+				"hibernated"
+			],
+			"rootConfiguration": "full",
+			"buildSettings": {
+				"targetType": 6,
+				"targetPath": "/home/username/.dub/packages/hibernated-0.3.2/hibernated/lib",
+				"targetName": "hibernated",
+				"workingDirectory": "",
+				"mainSourceFile": "",
+				"dflags": [],
+				"lflags": [],
+				"libs": [
+					"sqlite3",
+					"dl",
+					"anl"
+				],
+				"linkerFiles": [
+					"/home/username/.dub/packages/ddbc-0.3.7/ddbc/lib/libddbc.a",
+					"/home/username/.dub/packages/derelict-pq-2.2.0/derelict-pq/lib/libDerelictPQ.a",
+					"/home/username/.dub/packages/derelict-util-2.0.6/derelict-util/lib/libDerelictUtil.a",
+					"/home/username/.dub/packages/mysql-native-1.1.3/mysql-native/libmysql-native.a",
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/libvibe_core.a",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/libeventcore.a",
+					"/home/username/.dub/packages/taggedalgebraic-0.10.7/taggedalgebraic/libtaggedalgebraic.a",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/data/libvibe-d_data.a",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils/libvibe-d_utils.a"
+				],
+				"sourceFiles": [
+					"/home/username/.dub/packages/hibernated-0.3.2/hibernated/source/hibernated/annotations.d",
+					"/home/username/.dub/packages/hibernated-0.3.2/hibernated/source/hibernated/core.d",
+					"/home/username/.dub/packages/hibernated-0.3.2/hibernated/source/hibernated/dialect.d",
+					"/home/username/.dub/packages/hibernated-0.3.2/hibernated/source/hibernated/dialects/mysqldialect.d",
+					"/home/username/.dub/packages/hibernated-0.3.2/hibernated/source/hibernated/dialects/pgsqldialect.d",
+					"/home/username/.dub/packages/hibernated-0.3.2/hibernated/source/hibernated/dialects/sqlitedialect.d",
+					"/home/username/.dub/packages/hibernated-0.3.2/hibernated/source/hibernated/metadata.d",
+					"/home/username/.dub/packages/hibernated-0.3.2/hibernated/source/hibernated/query.d",
+					"/home/username/.dub/packages/hibernated-0.3.2/hibernated/source/hibernated/session.d",
+					"/home/username/.dub/packages/hibernated-0.3.2/hibernated/source/hibernated/tests.d",
+					"/home/username/.dub/packages/hibernated-0.3.2/hibernated/source/hibernated/type.d"
+				],
+				"copyFiles": [],
+				"versions": [
+					"USE_MYSQL",
+					"USE_SQLITE",
+					"USE_PGSQL",
+					"EventcoreEpollDriver",
+					"VibeDefaultMain",
+					"Have_vibe_d_core",
+					"VibeUseOpenSSL11",
+					"PRODUCTION",
+					"Have_hibernated",
+					"Have_ddbc",
+					"Have_derelict_pq",
+					"Have_derelict_util",
+					"Have_mysql_native",
+					"Have_vibe_core",
+					"Have_eventcore",
+					"Have_taggedalgebraic",
+					"Have_vibe_d_data",
+					"Have_vibe_d_utils"
+				],
+				"debugVersions": [],
+				"importPaths": [
+					"/home/username/.dub/packages/hibernated-0.3.2/hibernated/source/",
+					"/home/username/.dub/packages/ddbc-0.3.7/ddbc/source/",
+					"/home/username/.dub/packages/derelict-pq-2.2.0/derelict-pq/source/",
+					"/home/username/.dub/packages/derelict-util-2.0.6/derelict-util/source/",
+					"/home/username/.dub/packages/mysql-native-1.1.3/mysql-native/source/",
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/source/",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/source/",
+					"/home/username/.dub/packages/taggedalgebraic-0.10.7/taggedalgebraic/source/",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/data",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils"
+				],
+				"stringImportPaths": [],
+				"importFiles": [],
+				"stringImportFiles": [],
+				"preGenerateCommands": [],
+				"postGenerateCommands": [],
+				"preBuildCommands": [],
+				"postBuildCommands": [],
+				"requirements": [],
+				"options": [
+					"debugMode",
+					"debugInfo",
+					"warningsAsErrors"
+				]
+			},
+			"dependencies": [
+				"ddbc"
+			],
+			"linkDependencies": [
+				"ddbc",
+				"derelict-pq",
+				"derelict-util",
+				"mysql-native",
+				"vibe-core",
+				"eventcore",
+				"taggedalgebraic",
+				"vibe-d:data",
+				"vibe-d:utils",
+				"vibe-d:utils"
+			]
+		},
+		{
+			"rootPackage": "ddbc",
+			"packages": [
+				"ddbc"
+			],
+			"rootConfiguration": "full",
+			"buildSettings": {
+				"targetType": 6,
+				"targetPath": "/home/username/.dub/packages/ddbc-0.3.7/ddbc/lib",
+				"targetName": "ddbc",
+				"workingDirectory": "",
+				"mainSourceFile": "",
+				"dflags": [],
+				"lflags": [],
+				"libs": [
+					"sqlite3",
+					"dl",
+					"anl"
+				],
+				"linkerFiles": [
+					"/home/username/.dub/packages/derelict-pq-2.2.0/derelict-pq/lib/libDerelictPQ.a",
+					"/home/username/.dub/packages/derelict-util-2.0.6/derelict-util/lib/libDerelictUtil.a",
+					"/home/username/.dub/packages/mysql-native-1.1.3/mysql-native/libmysql-native.a",
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/libvibe_core.a",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/libeventcore.a",
+					"/home/username/.dub/packages/taggedalgebraic-0.10.7/taggedalgebraic/libtaggedalgebraic.a",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/data/libvibe-d_data.a",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils/libvibe-d_utils.a"
+				],
+				"sourceFiles": [
+					"/home/username/.dub/packages/ddbc-0.3.7/ddbc/source/ddbc/all.d",
+					"/home/username/.dub/packages/ddbc-0.3.7/ddbc/source/ddbc/common.d",
+					"/home/username/.dub/packages/ddbc-0.3.7/ddbc/source/ddbc/core.d",
+					"/home/username/.dub/packages/ddbc-0.3.7/ddbc/source/ddbc/drivers/mysqlddbc.d",
+					"/home/username/.dub/packages/ddbc-0.3.7/ddbc/source/ddbc/drivers/odbcddbc.d",
+					"/home/username/.dub/packages/ddbc-0.3.7/ddbc/source/ddbc/drivers/pgsqlddbc.d",
+					"/home/username/.dub/packages/ddbc-0.3.7/ddbc/source/ddbc/drivers/sqliteddbc.d",
+					"/home/username/.dub/packages/ddbc-0.3.7/ddbc/source/ddbc/drivers/utils.d",
+					"/home/username/.dub/packages/ddbc-0.3.7/ddbc/source/ddbc/package.d",
+					"/home/username/.dub/packages/ddbc-0.3.7/ddbc/source/ddbc/pods.d"
+				],
+				"copyFiles": [],
+				"versions": [
+					"USE_MYSQL",
+					"USE_SQLITE",
+					"USE_PGSQL",
+					"EventcoreEpollDriver",
+					"VibeDefaultMain",
+					"Have_vibe_d_core",
+					"VibeUseOpenSSL11",
+					"PRODUCTION",
+					"Have_ddbc",
+					"Have_derelict_pq",
+					"Have_derelict_util",
+					"Have_mysql_native",
+					"Have_vibe_core",
+					"Have_eventcore",
+					"Have_taggedalgebraic",
+					"Have_vibe_d_data",
+					"Have_vibe_d_utils"
+				],
+				"debugVersions": [],
+				"importPaths": [
+					"/home/username/.dub/packages/ddbc-0.3.7/ddbc/source/",
+					"/home/username/.dub/packages/derelict-pq-2.2.0/derelict-pq/source/",
+					"/home/username/.dub/packages/derelict-util-2.0.6/derelict-util/source/",
+					"/home/username/.dub/packages/mysql-native-1.1.3/mysql-native/source/",
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/source/",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/source/",
+					"/home/username/.dub/packages/taggedalgebraic-0.10.7/taggedalgebraic/source/",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/data",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils"
+				],
+				"stringImportPaths": [],
+				"importFiles": [],
+				"stringImportFiles": [],
+				"preGenerateCommands": [],
+				"postGenerateCommands": [],
+				"preBuildCommands": [],
+				"postBuildCommands": [],
+				"requirements": [],
+				"options": [
+					"debugMode",
+					"debugInfo",
+					"warningsAsErrors"
+				]
+			},
+			"dependencies": [
+				"derelict-pq",
+				"mysql-native"
+			],
+			"linkDependencies": [
+				"derelict-pq",
+				"derelict-util",
+				"mysql-native",
+				"vibe-core",
+				"eventcore",
+				"taggedalgebraic",
+				"vibe-d:data",
+				"vibe-d:utils",
+				"vibe-d:utils"
+			]
+		},
+		{
+			"rootPackage": "derelict-pq",
+			"packages": [
+				"derelict-pq"
+			],
+			"rootConfiguration": "library",
+			"buildSettings": {
+				"targetType": 6,
+				"targetPath": "/home/username/.dub/packages/derelict-pq-2.2.0/derelict-pq/lib",
+				"targetName": "DerelictPQ",
+				"workingDirectory": "",
+				"mainSourceFile": "",
+				"dflags": [],
+				"lflags": [],
+				"libs": [
+					"dl"
+				],
+				"linkerFiles": [
+					"/home/username/.dub/packages/derelict-util-2.0.6/derelict-util/lib/libDerelictUtil.a"
+				],
+				"sourceFiles": [
+					"/home/username/.dub/packages/derelict-pq-2.2.0/derelict-pq/source/derelict/pq/pq.d"
+				],
+				"copyFiles": [],
+				"versions": [
+					"VibeDefaultMain",
+					"Have_vibe_d_core",
+					"VibeUseOpenSSL11",
+					"PRODUCTION",
+					"USE_MYSQL",
+					"USE_SQLITE",
+					"USE_PGSQL",
+					"EventcoreEpollDriver",
+					"Have_derelict_pq",
+					"Have_derelict_util"
+				],
+				"debugVersions": [],
+				"importPaths": [
+					"/home/username/.dub/packages/derelict-pq-2.2.0/derelict-pq/source/",
+					"/home/username/.dub/packages/derelict-util-2.0.6/derelict-util/source/"
+				],
+				"stringImportPaths": [],
+				"importFiles": [],
+				"stringImportFiles": [],
+				"preGenerateCommands": [],
+				"postGenerateCommands": [],
+				"preBuildCommands": [],
+				"postBuildCommands": [],
+				"requirements": [],
+				"options": [
+					"debugMode",
+					"debugInfo",
+					"warningsAsErrors"
+				]
+			},
+			"dependencies": [
+				"derelict-util"
+			],
+			"linkDependencies": [
+				"derelict-util"
+			]
+		},
+		{
+			"rootPackage": "derelict-util",
+			"packages": [
+				"derelict-util"
+			],
+			"rootConfiguration": "library",
+			"buildSettings": {
+				"targetType": 6,
+				"targetPath": "/home/username/.dub/packages/derelict-util-2.0.6/derelict-util/lib",
+				"targetName": "DerelictUtil",
+				"workingDirectory": "",
+				"mainSourceFile": "",
+				"dflags": [],
+				"lflags": [],
+				"libs": [
+					"dl"
+				],
+				"linkerFiles": [],
+				"sourceFiles": [
+					"/home/username/.dub/packages/derelict-util-2.0.6/derelict-util/source/derelict/util/exception.d",
+					"/home/username/.dub/packages/derelict-util-2.0.6/derelict-util/source/derelict/util/loader.d",
+					"/home/username/.dub/packages/derelict-util-2.0.6/derelict-util/source/derelict/util/sharedlib.d",
+					"/home/username/.dub/packages/derelict-util-2.0.6/derelict-util/source/derelict/util/system.d",
+					"/home/username/.dub/packages/derelict-util-2.0.6/derelict-util/source/derelict/util/wintypes.d",
+					"/home/username/.dub/packages/derelict-util-2.0.6/derelict-util/source/derelict/util/xtypes.d"
+				],
+				"copyFiles": [],
+				"versions": [
+					"VibeDefaultMain",
+					"Have_vibe_d_core",
+					"VibeUseOpenSSL11",
+					"PRODUCTION",
+					"USE_MYSQL",
+					"USE_SQLITE",
+					"USE_PGSQL",
+					"EventcoreEpollDriver",
+					"Have_derelict_util"
+				],
+				"debugVersions": [],
+				"importPaths": [
+					"/home/username/.dub/packages/derelict-util-2.0.6/derelict-util/source/"
+				],
+				"stringImportPaths": [],
+				"importFiles": [],
+				"stringImportFiles": [],
+				"preGenerateCommands": [],
+				"postGenerateCommands": [],
+				"preBuildCommands": [],
+				"postBuildCommands": [],
+				"requirements": [],
+				"options": [
+					"debugMode",
+					"debugInfo",
+					"warningsAsErrors"
+				]
+			},
+			"dependencies": [],
+			"linkDependencies": []
+		},
+		{
+			"rootPackage": "mysql-native",
+			"packages": [
+				"mysql-native",
+				"vibe-d:core"
+			],
+			"rootConfiguration": "library",
+			"buildSettings": {
+				"targetType": 6,
+				"targetPath": "/home/username/.dub/packages/mysql-native-1.1.3/mysql-native",
+				"targetName": "mysql-native",
+				"workingDirectory": "",
+				"mainSourceFile": "",
+				"dflags": [],
+				"lflags": [],
+				"libs": [
+					"anl"
+				],
+				"linkerFiles": [
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/libvibe_core.a",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/libeventcore.a",
+					"/home/username/.dub/packages/taggedalgebraic-0.10.7/taggedalgebraic/libtaggedalgebraic.a",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/data/libvibe-d_data.a",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils/libvibe-d_utils.a"
+				],
+				"sourceFiles": [
+					"/home/username/.dub/packages/mysql-native-1.1.3/mysql-native/source/mysql/commands.d",
+					"/home/username/.dub/packages/mysql-native-1.1.3/mysql-native/source/mysql/connection.d",
+					"/home/username/.dub/packages/mysql-native-1.1.3/mysql-native/source/mysql/db.d",
+					"/home/username/.dub/packages/mysql-native-1.1.3/mysql-native/source/mysql/escape.d",
+					"/home/username/.dub/packages/mysql-native-1.1.3/mysql-native/source/mysql/exceptions.d",
+					"/home/username/.dub/packages/mysql-native-1.1.3/mysql-native/source/mysql/metadata.d",
+					"/home/username/.dub/packages/mysql-native-1.1.3/mysql-native/source/mysql/package.d",
+					"/home/username/.dub/packages/mysql-native-1.1.3/mysql-native/source/mysql/pool.d",
+					"/home/username/.dub/packages/mysql-native-1.1.3/mysql-native/source/mysql/prepared.d",
+					"/home/username/.dub/packages/mysql-native-1.1.3/mysql-native/source/mysql/protocol/constants.d",
+					"/home/username/.dub/packages/mysql-native-1.1.3/mysql-native/source/mysql/protocol/extra_types.d",
+					"/home/username/.dub/packages/mysql-native-1.1.3/mysql-native/source/mysql/protocol/packet_helpers.d",
+					"/home/username/.dub/packages/mysql-native-1.1.3/mysql-native/source/mysql/protocol/packets.d",
+					"/home/username/.dub/packages/mysql-native-1.1.3/mysql-native/source/mysql/protocol/sockets.d",
+					"/home/username/.dub/packages/mysql-native-1.1.3/mysql-native/source/mysql/result.d",
+					"/home/username/.dub/packages/mysql-native-1.1.3/mysql-native/source/mysql/test/common.d",
+					"/home/username/.dub/packages/mysql-native-1.1.3/mysql-native/source/mysql/test/integration.d",
+					"/home/username/.dub/packages/mysql-native-1.1.3/mysql-native/source/mysql/test/regression.d",
+					"/home/username/.dub/packages/mysql-native-1.1.3/mysql-native/source/mysql/types.d"
+				],
+				"copyFiles": [],
+				"versions": [
+					"EventcoreEpollDriver",
+					"VibeDefaultMain",
+					"Have_vibe_d_core",
+					"VibeUseOpenSSL11",
+					"PRODUCTION",
+					"USE_MYSQL",
+					"USE_SQLITE",
+					"USE_PGSQL",
+					"Have_mysql_native",
+					"Have_vibe_core",
+					"Have_eventcore",
+					"Have_taggedalgebraic",
+					"Have_vibe_d_data",
+					"Have_vibe_d_utils"
+				],
+				"debugVersions": [],
+				"importPaths": [
+					"/home/username/.dub/packages/mysql-native-1.1.3/mysql-native/source/",
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/source/",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/source/",
+					"/home/username/.dub/packages/taggedalgebraic-0.10.7/taggedalgebraic/source/",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/data",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils"
+				],
+				"stringImportPaths": [],
+				"importFiles": [],
+				"stringImportFiles": [],
+				"preGenerateCommands": [],
+				"postGenerateCommands": [],
+				"preBuildCommands": [],
+				"postBuildCommands": [],
+				"requirements": [],
+				"options": [
+					"debugMode",
+					"debugInfo",
+					"warningsAsErrors"
+				]
+			},
+			"dependencies": [
+				"vibe-core",
+				"vibe-d:data",
+				"vibe-d:utils"
+			],
+			"linkDependencies": [
+				"vibe-core",
+				"eventcore",
+				"taggedalgebraic",
+				"vibe-d:data",
+				"vibe-d:utils",
+				"vibe-d:utils"
+			]
+		},
+		{
+			"rootPackage": "vibe-core",
+			"packages": [
+				"vibe-core"
+			],
+			"rootConfiguration": "epoll",
+			"buildSettings": {
+				"targetType": 6,
+				"targetPath": "/home/username/.dub/packages/vibe-core-1.2.0/vibe-core",
+				"targetName": "vibe_core",
+				"workingDirectory": "",
+				"mainSourceFile": "/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/source/vibe/appmain.d",
+				"dflags": [],
+				"lflags": [],
+				"libs": [
+					"anl"
+				],
+				"linkerFiles": [
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/libeventcore.a",
+					"/home/username/.dub/packages/taggedalgebraic-0.10.7/taggedalgebraic/libtaggedalgebraic.a"
+				],
+				"sourceFiles": [
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/source/vibe/core/args.d",
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/source/vibe/core/concurrency.d",
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/source/vibe/core/connectionpool.d",
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/source/vibe/core/core.d",
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/source/vibe/core/file.d",
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/source/vibe/core/log.d",
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/source/vibe/core/net.d",
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/source/vibe/core/path.d",
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/source/vibe/core/stream.d",
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/source/vibe/core/sync.d",
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/source/vibe/core/task.d",
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/source/vibe/core/taskpool.d",
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/source/vibe/internal/allocator.d",
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/source/vibe/internal/array.d",
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/source/vibe/internal/async.d",
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/source/vibe/internal/freelistref.d",
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/source/vibe/internal/hashmap.d",
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/source/vibe/internal/interfaceproxy.d",
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/source/vibe/internal/list.d",
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/source/vibe/internal/string.d",
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/source/vibe/internal/traits.d",
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/source/vibe/internal/typetuple.d"
+				],
+				"copyFiles": [],
+				"versions": [
+					"EventcoreEpollDriver",
+					"VibeDefaultMain",
+					"Have_vibe_d_core",
+					"VibeUseOpenSSL11",
+					"PRODUCTION",
+					"USE_MYSQL",
+					"USE_SQLITE",
+					"USE_PGSQL",
+					"Have_vibe_core",
+					"Have_eventcore",
+					"Have_taggedalgebraic"
+				],
+				"debugVersions": [],
+				"importPaths": [
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/source/",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/source/",
+					"/home/username/.dub/packages/taggedalgebraic-0.10.7/taggedalgebraic/source/"
+				],
+				"stringImportPaths": [],
+				"importFiles": [],
+				"stringImportFiles": [],
+				"preGenerateCommands": [],
+				"postGenerateCommands": [],
+				"preBuildCommands": [],
+				"postBuildCommands": [],
+				"requirements": [],
+				"options": [
+					"debugMode",
+					"debugInfo",
+					"warningsAsErrors"
+				]
+			},
+			"dependencies": [
+				"eventcore"
+			],
+			"linkDependencies": [
+				"eventcore",
+				"taggedalgebraic"
+			]
+		},
+		{
+			"rootPackage": "eventcore",
+			"packages": [
+				"eventcore"
+			],
+			"rootConfiguration": "epoll",
+			"buildSettings": {
+				"targetType": 6,
+				"targetPath": "/home/username/.dub/packages/eventcore-0.8.19/eventcore",
+				"targetName": "eventcore",
+				"workingDirectory": "",
+				"mainSourceFile": "",
+				"dflags": [],
+				"lflags": [],
+				"libs": [
+					"anl"
+				],
+				"linkerFiles": [
+					"/home/username/.dub/packages/taggedalgebraic-0.10.7/taggedalgebraic/libtaggedalgebraic.a"
+				],
+				"sourceFiles": [
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/source/eventcore/core.d",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/source/eventcore/driver.d",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/source/eventcore/drivers/libasync.d",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/source/eventcore/drivers/posix/dns.d",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/source/eventcore/drivers/posix/driver.d",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/source/eventcore/drivers/posix/epoll.d",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/source/eventcore/drivers/posix/events.d",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/source/eventcore/drivers/posix/kqueue.d",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/source/eventcore/drivers/posix/select.d",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/source/eventcore/drivers/posix/signals.d",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/source/eventcore/drivers/posix/sockets.d",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/source/eventcore/drivers/posix/watchers.d",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/source/eventcore/drivers/threadedfile.d",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/source/eventcore/drivers/timer.d",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/source/eventcore/drivers/winapi/core.d",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/source/eventcore/drivers/winapi/dns.d",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/source/eventcore/drivers/winapi/driver.d",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/source/eventcore/drivers/winapi/events.d",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/source/eventcore/drivers/winapi/files.d",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/source/eventcore/drivers/winapi/signals.d",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/source/eventcore/drivers/winapi/sockets.d",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/source/eventcore/drivers/winapi/watchers.d",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/source/eventcore/internal/consumablequeue.d",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/source/eventcore/internal/dlist.d",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/source/eventcore/internal/utils.d",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/source/eventcore/internal/win32.d",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/source/eventcore/socket.d"
+				],
+				"copyFiles": [],
+				"versions": [
+					"EventcoreEpollDriver",
+					"VibeDefaultMain",
+					"Have_vibe_d_core",
+					"VibeUseOpenSSL11",
+					"PRODUCTION",
+					"USE_MYSQL",
+					"USE_SQLITE",
+					"USE_PGSQL",
+					"Have_eventcore",
+					"Have_taggedalgebraic"
+				],
+				"debugVersions": [],
+				"importPaths": [
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/source/",
+					"/home/username/.dub/packages/taggedalgebraic-0.10.7/taggedalgebraic/source/"
+				],
+				"stringImportPaths": [],
+				"importFiles": [],
+				"stringImportFiles": [],
+				"preGenerateCommands": [],
+				"postGenerateCommands": [],
+				"preBuildCommands": [],
+				"postBuildCommands": [],
+				"requirements": [],
+				"options": [
+					"debugMode",
+					"debugInfo",
+					"warningsAsErrors"
+				]
+			},
+			"dependencies": [
+				"taggedalgebraic"
+			],
+			"linkDependencies": [
+				"taggedalgebraic"
+			]
+		},
+		{
+			"rootPackage": "taggedalgebraic",
+			"packages": [
+				"taggedalgebraic"
+			],
+			"rootConfiguration": "library",
+			"buildSettings": {
+				"targetType": 6,
+				"targetPath": "/home/username/.dub/packages/taggedalgebraic-0.10.7/taggedalgebraic",
+				"targetName": "taggedalgebraic",
+				"workingDirectory": "",
+				"mainSourceFile": "",
+				"dflags": [],
+				"lflags": [],
+				"libs": [],
+				"linkerFiles": [],
+				"sourceFiles": [
+					"/home/username/.dub/packages/taggedalgebraic-0.10.7/taggedalgebraic/source/taggedalgebraic.d"
+				],
+				"copyFiles": [],
+				"versions": [
+					"VibeDefaultMain",
+					"Have_vibe_d_core",
+					"VibeUseOpenSSL11",
+					"PRODUCTION",
+					"USE_MYSQL",
+					"USE_SQLITE",
+					"USE_PGSQL",
+					"EventcoreEpollDriver",
+					"Have_taggedalgebraic"
+				],
+				"debugVersions": [],
+				"importPaths": [
+					"/home/username/.dub/packages/taggedalgebraic-0.10.7/taggedalgebraic/source/"
+				],
+				"stringImportPaths": [],
+				"importFiles": [],
+				"stringImportFiles": [],
+				"preGenerateCommands": [],
+				"postGenerateCommands": [],
+				"preBuildCommands": [],
+				"postBuildCommands": [],
+				"requirements": [],
+				"options": [
+					"debugMode",
+					"debugInfo",
+					"warningsAsErrors"
+				]
+			},
+			"dependencies": [],
+			"linkDependencies": []
+		},
+		{
+			"rootPackage": "vibe-d:data",
+			"packages": [
+				"vibe-d:data"
+			],
+			"rootConfiguration": "library",
+			"buildSettings": {
+				"targetType": 6,
+				"targetPath": "/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/data",
+				"targetName": "vibe-d_data",
+				"workingDirectory": "",
+				"mainSourceFile": "",
+				"dflags": [],
+				"lflags": [],
+				"libs": [],
+				"linkerFiles": [
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils/libvibe-d_utils.a"
+				],
+				"sourceFiles": [
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/data/vibe/data/bson.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/data/vibe/data/json.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/data/vibe/data/serialization.d"
+				],
+				"copyFiles": [],
+				"versions": [
+					"VibeDefaultMain",
+					"Have_vibe_d_core",
+					"VibeUseOpenSSL11",
+					"PRODUCTION",
+					"USE_MYSQL",
+					"USE_SQLITE",
+					"USE_PGSQL",
+					"EventcoreEpollDriver",
+					"Have_vibe_d_data",
+					"Have_vibe_d_utils"
+				],
+				"debugVersions": [],
+				"importPaths": [
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/data",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils"
+				],
+				"stringImportPaths": [],
+				"importFiles": [],
+				"stringImportFiles": [],
+				"preGenerateCommands": [],
+				"postGenerateCommands": [],
+				"preBuildCommands": [],
+				"postBuildCommands": [],
+				"requirements": [],
+				"options": [
+					"debugMode",
+					"debugInfo",
+					"warningsAsErrors"
+				]
+			},
+			"dependencies": [
+				"vibe-d:utils"
+			],
+			"linkDependencies": [
+				"vibe-d:utils"
+			]
+		},
+		{
+			"rootPackage": "vibe-d:utils",
+			"packages": [
+				"vibe-d:utils"
+			],
+			"rootConfiguration": "library",
+			"buildSettings": {
+				"targetType": 6,
+				"targetPath": "/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils",
+				"targetName": "vibe-d_utils",
+				"workingDirectory": "",
+				"mainSourceFile": "",
+				"dflags": [],
+				"lflags": [],
+				"libs": [],
+				"linkerFiles": [],
+				"sourceFiles": [
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils/vibe/internal/memory_legacy.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils/vibe/internal/meta/all.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils/vibe/internal/meta/codegen.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils/vibe/internal/meta/funcattr.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils/vibe/internal/meta/traits.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils/vibe/internal/meta/typetuple.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils/vibe/internal/meta/uda.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils/vibe/internal/rangeutil.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils/vibe/internal/utilallocator.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils/vibe/internal/win32.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils/vibe/utils/array.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils/vibe/utils/dictionarylist.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils/vibe/utils/hashmap.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils/vibe/utils/memory.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils/vibe/utils/string.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils/vibe/utils/validation.d"
+				],
+				"copyFiles": [],
+				"versions": [
+					"VibeDefaultMain",
+					"Have_vibe_d_core",
+					"VibeUseOpenSSL11",
+					"PRODUCTION",
+					"USE_MYSQL",
+					"USE_SQLITE",
+					"USE_PGSQL",
+					"EventcoreEpollDriver",
+					"Have_vibe_d_utils"
+				],
+				"debugVersions": [],
+				"importPaths": [
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils"
+				],
+				"stringImportPaths": [],
+				"importFiles": [],
+				"stringImportFiles": [],
+				"preGenerateCommands": [],
+				"postGenerateCommands": [],
+				"preBuildCommands": [],
+				"postBuildCommands": [],
+				"requirements": [],
+				"options": [
+					"debugMode",
+					"debugInfo",
+					"warningsAsErrors"
+				]
+			},
+			"dependencies": [],
+			"linkDependencies": []
+		},
+		{
+			"rootPackage": "poodinis",
+			"packages": [
+				"poodinis"
+			],
+			"rootConfiguration": "library",
+			"buildSettings": {
+				"targetType": 6,
+				"targetPath": "/home/username/.dub/packages/poodinis-8.0.1/poodinis",
+				"targetName": "poodinis",
+				"workingDirectory": "",
+				"mainSourceFile": "",
+				"dflags": [],
+				"lflags": [],
+				"libs": [],
+				"linkerFiles": [],
+				"sourceFiles": [
+					"/home/username/.dub/packages/poodinis-8.0.1/poodinis/source/poodinis/autowire.d",
+					"/home/username/.dub/packages/poodinis-8.0.1/poodinis/source/poodinis/container.d",
+					"/home/username/.dub/packages/poodinis-8.0.1/poodinis/source/poodinis/context.d",
+					"/home/username/.dub/packages/poodinis-8.0.1/poodinis/source/poodinis/factory.d",
+					"/home/username/.dub/packages/poodinis-8.0.1/poodinis/source/poodinis/imports.d",
+					"/home/username/.dub/packages/poodinis-8.0.1/poodinis/source/poodinis/package.d",
+					"/home/username/.dub/packages/poodinis-8.0.1/poodinis/source/poodinis/polyfill.d",
+					"/home/username/.dub/packages/poodinis-8.0.1/poodinis/source/poodinis/registration.d",
+					"/home/username/.dub/packages/poodinis-8.0.1/poodinis/source/poodinis/valueinjection.d"
+				],
+				"copyFiles": [],
+				"versions": [
+					"VibeDefaultMain",
+					"Have_vibe_d_core",
+					"VibeUseOpenSSL11",
+					"PRODUCTION",
+					"USE_MYSQL",
+					"USE_SQLITE",
+					"USE_PGSQL",
+					"EventcoreEpollDriver",
+					"Have_poodinis"
+				],
+				"debugVersions": [],
+				"importPaths": [
+					"/home/username/.dub/packages/poodinis-8.0.1/poodinis/source/"
+				],
+				"stringImportPaths": [],
+				"importFiles": [],
+				"stringImportFiles": [],
+				"preGenerateCommands": [],
+				"postGenerateCommands": [],
+				"preBuildCommands": [],
+				"postBuildCommands": [],
+				"requirements": [],
+				"options": [
+					"debugMode",
+					"debugInfo",
+					"warningsAsErrors"
+				]
+			},
+			"dependencies": [],
+			"linkDependencies": []
+		},
+		{
+			"rootPackage": "proper-d",
+			"packages": [
+				"proper-d"
+			],
+			"rootConfiguration": "library",
+			"buildSettings": {
+				"targetType": 6,
+				"targetPath": "/home/username/.dub/packages/proper-d-0.0.2",
+				"targetName": "proper-d",
+				"workingDirectory": "",
+				"mainSourceFile": "",
+				"dflags": [],
+				"lflags": [],
+				"libs": [],
+				"linkerFiles": [],
+				"sourceFiles": [
+					"/home/username/.dub/packages/proper-d-0.0.2/source/properd.d"
+				],
+				"copyFiles": [],
+				"versions": [
+					"VibeDefaultMain",
+					"Have_vibe_d_core",
+					"VibeUseOpenSSL11",
+					"PRODUCTION",
+					"USE_MYSQL",
+					"USE_SQLITE",
+					"USE_PGSQL",
+					"EventcoreEpollDriver",
+					"Have_proper_d"
+				],
+				"debugVersions": [],
+				"importPaths": [
+					"/home/username/.dub/packages/proper-d-0.0.2/source/"
+				],
+				"stringImportPaths": [],
+				"importFiles": [],
+				"stringImportFiles": [],
+				"preGenerateCommands": [],
+				"postGenerateCommands": [],
+				"preBuildCommands": [],
+				"postBuildCommands": [],
+				"requirements": [],
+				"options": [
+					"debugMode",
+					"debugInfo",
+					"warningsAsErrors"
+				]
+			},
+			"dependencies": [],
+			"linkDependencies": []
+		},
+		{
+			"rootPackage": "vibe-d:web",
+			"packages": [
+				"vibe-d:web"
+			],
+			"rootConfiguration": "library",
+			"buildSettings": {
+				"targetType": 6,
+				"targetPath": "/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/web",
+				"targetName": "vibe-d_web",
+				"workingDirectory": "",
+				"mainSourceFile": "",
+				"dflags": [],
+				"lflags": [],
+				"libs": [
+					"anl",
+					"ssl",
+					"crypto"
+				],
+				"linkerFiles": [
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/http/libvibe-d_http.a",
+					"/home/username/.dub/packages/diet-ng-1.4.3/diet-ng/libdiet-ng.a",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/crypto/libvibe-d_crypto.a",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/inet/libvibe-d_inet.a",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/textfilter/libvibe-d_textfilter.a",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/tls/libvibe-d_tls.a",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/stream/libvibe-d_stream.a",
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/libvibe_core.a",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/libeventcore.a",
+					"/home/username/.dub/packages/taggedalgebraic-0.10.7/taggedalgebraic/libtaggedalgebraic.a",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/data/libvibe-d_data.a",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils/libvibe-d_utils.a"
+				],
+				"sourceFiles": [
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/web/vibe/web/auth.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/web/vibe/web/common.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/web/vibe/web/i18n.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/web/vibe/web/internal/rest/common.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/web/vibe/web/internal/rest/jsclient.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/web/vibe/web/rest.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/web/vibe/web/validation.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/web/vibe/web/web.d"
+				],
+				"copyFiles": [],
+				"versions": [
+					"EventcoreEpollDriver",
+					"VibeDefaultMain",
+					"Have_vibe_d_core",
+					"VibeUseOpenSSL11",
+					"PRODUCTION",
+					"USE_MYSQL",
+					"USE_SQLITE",
+					"USE_PGSQL",
+					"Have_vibe_d_web",
+					"Have_vibe_d_http",
+					"Have_diet_ng",
+					"Have_vibe_d_crypto",
+					"Have_vibe_core",
+					"Have_eventcore",
+					"Have_taggedalgebraic",
+					"Have_vibe_d_data",
+					"Have_vibe_d_utils",
+					"Have_vibe_d_inet",
+					"Have_vibe_d_stream",
+					"Have_vibe_d_textfilter",
+					"Have_vibe_d_tls",
+					"Have_openssl"
+				],
+				"debugVersions": [],
+				"importPaths": [
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/web",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/http",
+					"/home/username/.dub/packages/diet-ng-1.4.3/diet-ng/source/",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/crypto",
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/source/",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/source/",
+					"/home/username/.dub/packages/taggedalgebraic-0.10.7/taggedalgebraic/source/",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/data",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/inet",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/stream",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/textfilter",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/tls",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl"
+				],
+				"stringImportPaths": [],
+				"importFiles": [],
+				"stringImportFiles": [],
+				"preGenerateCommands": [],
+				"postGenerateCommands": [],
+				"preBuildCommands": [],
+				"postBuildCommands": [],
+				"requirements": [],
+				"options": [
+					"debugMode",
+					"debugInfo",
+					"warningsAsErrors"
+				]
+			},
+			"dependencies": [
+				"vibe-d:http"
+			],
+			"linkDependencies": [
+				"vibe-d:http",
+				"diet-ng",
+				"vibe-d:crypto",
+				"vibe-d:inet",
+				"vibe-d:textfilter",
+				"vibe-d:textfilter",
+				"vibe-d:tls",
+				"vibe-d:stream",
+				"vibe-core",
+				"eventcore",
+				"taggedalgebraic",
+				"vibe-d:data",
+				"vibe-d:utils",
+				"vibe-d:utils"
+			]
+		},
+		{
+			"rootPackage": "vibe-d:http",
+			"packages": [
+				"vibe-d:http"
+			],
+			"rootConfiguration": "library",
+			"buildSettings": {
+				"targetType": 6,
+				"targetPath": "/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/http",
+				"targetName": "vibe-d_http",
+				"workingDirectory": "",
+				"mainSourceFile": "",
+				"dflags": [],
+				"lflags": [],
+				"libs": [
+					"anl",
+					"ssl",
+					"crypto"
+				],
+				"linkerFiles": [
+					"/home/username/.dub/packages/diet-ng-1.4.3/diet-ng/libdiet-ng.a",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/crypto/libvibe-d_crypto.a",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/inet/libvibe-d_inet.a",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/textfilter/libvibe-d_textfilter.a",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/tls/libvibe-d_tls.a",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/stream/libvibe-d_stream.a",
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/libvibe_core.a",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/libeventcore.a",
+					"/home/username/.dub/packages/taggedalgebraic-0.10.7/taggedalgebraic/libtaggedalgebraic.a",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/data/libvibe-d_data.a",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils/libvibe-d_utils.a"
+				],
+				"sourceFiles": [
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/http/vibe/http/auth/basic_auth.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/http/vibe/http/auth/digest_auth.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/http/vibe/http/client.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/http/vibe/http/common.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/http/vibe/http/dist.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/http/vibe/http/fileserver.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/http/vibe/http/form.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/http/vibe/http/log.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/http/vibe/http/proxy.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/http/vibe/http/router.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/http/vibe/http/server.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/http/vibe/http/session.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/http/vibe/http/status.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/http/vibe/http/websockets.d"
+				],
+				"copyFiles": [],
+				"versions": [
+					"EventcoreEpollDriver",
+					"VibeDefaultMain",
+					"Have_vibe_d_core",
+					"VibeUseOpenSSL11",
+					"PRODUCTION",
+					"USE_MYSQL",
+					"USE_SQLITE",
+					"USE_PGSQL",
+					"Have_vibe_d_http",
+					"Have_diet_ng",
+					"Have_vibe_d_crypto",
+					"Have_vibe_core",
+					"Have_eventcore",
+					"Have_taggedalgebraic",
+					"Have_vibe_d_data",
+					"Have_vibe_d_utils",
+					"Have_vibe_d_inet",
+					"Have_vibe_d_stream",
+					"Have_vibe_d_textfilter",
+					"Have_vibe_d_tls",
+					"Have_openssl"
+				],
+				"debugVersions": [],
+				"importPaths": [
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/http",
+					"/home/username/.dub/packages/diet-ng-1.4.3/diet-ng/source/",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/crypto",
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/source/",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/source/",
+					"/home/username/.dub/packages/taggedalgebraic-0.10.7/taggedalgebraic/source/",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/data",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/inet",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/stream",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/textfilter",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/tls",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl"
+				],
+				"stringImportPaths": [],
+				"importFiles": [],
+				"stringImportFiles": [],
+				"preGenerateCommands": [],
+				"postGenerateCommands": [],
+				"preBuildCommands": [],
+				"postBuildCommands": [],
+				"requirements": [],
+				"options": [
+					"debugMode",
+					"debugInfo",
+					"warningsAsErrors"
+				]
+			},
+			"dependencies": [
+				"diet-ng",
+				"vibe-d:crypto",
+				"vibe-d:inet",
+				"vibe-d:textfilter",
+				"vibe-d:tls"
+			],
+			"linkDependencies": [
+				"diet-ng",
+				"vibe-d:crypto",
+				"vibe-d:inet",
+				"vibe-d:textfilter",
+				"vibe-d:textfilter",
+				"vibe-d:tls",
+				"vibe-d:stream",
+				"vibe-core",
+				"eventcore",
+				"taggedalgebraic",
+				"vibe-d:data",
+				"vibe-d:utils",
+				"vibe-d:utils"
+			]
+		},
+		{
+			"rootPackage": "diet-ng",
+			"packages": [
+				"diet-ng"
+			],
+			"rootConfiguration": "library",
+			"buildSettings": {
+				"targetType": 6,
+				"targetPath": "/home/username/.dub/packages/diet-ng-1.4.3/diet-ng",
+				"targetName": "diet-ng",
+				"workingDirectory": "",
+				"mainSourceFile": "",
+				"dflags": [],
+				"lflags": [],
+				"libs": [],
+				"linkerFiles": [],
+				"sourceFiles": [
+					"/home/username/.dub/packages/diet-ng-1.4.3/diet-ng/source/diet/defs.d",
+					"/home/username/.dub/packages/diet-ng-1.4.3/diet-ng/source/diet/dom.d",
+					"/home/username/.dub/packages/diet-ng-1.4.3/diet-ng/source/diet/html.d",
+					"/home/username/.dub/packages/diet-ng-1.4.3/diet-ng/source/diet/input.d",
+					"/home/username/.dub/packages/diet-ng-1.4.3/diet-ng/source/diet/internal/html.d",
+					"/home/username/.dub/packages/diet-ng-1.4.3/diet-ng/source/diet/internal/string.d",
+					"/home/username/.dub/packages/diet-ng-1.4.3/diet-ng/source/diet/parser.d",
+					"/home/username/.dub/packages/diet-ng-1.4.3/diet-ng/source/diet/traits.d"
+				],
+				"copyFiles": [],
+				"versions": [
+					"VibeDefaultMain",
+					"Have_vibe_d_core",
+					"VibeUseOpenSSL11",
+					"PRODUCTION",
+					"USE_MYSQL",
+					"USE_SQLITE",
+					"USE_PGSQL",
+					"EventcoreEpollDriver",
+					"Have_diet_ng"
+				],
+				"debugVersions": [],
+				"importPaths": [
+					"/home/username/.dub/packages/diet-ng-1.4.3/diet-ng/source/"
+				],
+				"stringImportPaths": [],
+				"importFiles": [],
+				"stringImportFiles": [],
+				"preGenerateCommands": [],
+				"postGenerateCommands": [],
+				"preBuildCommands": [],
+				"postBuildCommands": [],
+				"requirements": [],
+				"options": [
+					"debugMode",
+					"debugInfo",
+					"warningsAsErrors"
+				]
+			},
+			"dependencies": [],
+			"linkDependencies": []
+		},
+		{
+			"rootPackage": "vibe-d:crypto",
+			"packages": [
+				"vibe-d:crypto",
+				"vibe-d:core"
+			],
+			"rootConfiguration": "library",
+			"buildSettings": {
+				"targetType": 6,
+				"targetPath": "/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/crypto",
+				"targetName": "vibe-d_crypto",
+				"workingDirectory": "",
+				"mainSourceFile": "",
+				"dflags": [],
+				"lflags": [],
+				"libs": [
+					"anl"
+				],
+				"linkerFiles": [
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/libvibe_core.a",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/libeventcore.a",
+					"/home/username/.dub/packages/taggedalgebraic-0.10.7/taggedalgebraic/libtaggedalgebraic.a",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/data/libvibe-d_data.a",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils/libvibe-d_utils.a"
+				],
+				"sourceFiles": [
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/crypto/vibe/crypto/cryptorand.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/crypto/vibe/crypto/passwordhash.d"
+				],
+				"copyFiles": [],
+				"versions": [
+					"EventcoreEpollDriver",
+					"VibeDefaultMain",
+					"Have_vibe_d_core",
+					"VibeUseOpenSSL11",
+					"PRODUCTION",
+					"USE_MYSQL",
+					"USE_SQLITE",
+					"USE_PGSQL",
+					"Have_vibe_d_crypto",
+					"Have_vibe_core",
+					"Have_eventcore",
+					"Have_taggedalgebraic",
+					"Have_vibe_d_data",
+					"Have_vibe_d_utils"
+				],
+				"debugVersions": [],
+				"importPaths": [
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/crypto",
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/source/",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/source/",
+					"/home/username/.dub/packages/taggedalgebraic-0.10.7/taggedalgebraic/source/",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/data",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils"
+				],
+				"stringImportPaths": [],
+				"importFiles": [],
+				"stringImportFiles": [],
+				"preGenerateCommands": [],
+				"postGenerateCommands": [],
+				"preBuildCommands": [],
+				"postBuildCommands": [],
+				"requirements": [],
+				"options": [
+					"debugMode",
+					"debugInfo",
+					"warningsAsErrors"
+				]
+			},
+			"dependencies": [
+				"vibe-core",
+				"vibe-d:data",
+				"vibe-d:utils"
+			],
+			"linkDependencies": [
+				"vibe-core",
+				"eventcore",
+				"taggedalgebraic",
+				"vibe-d:data",
+				"vibe-d:utils",
+				"vibe-d:utils"
+			]
+		},
+		{
+			"rootPackage": "vibe-d:inet",
+			"packages": [
+				"vibe-d:inet",
+				"vibe-d:core"
+			],
+			"rootConfiguration": "library",
+			"buildSettings": {
+				"targetType": 6,
+				"targetPath": "/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/inet",
+				"targetName": "vibe-d_inet",
+				"workingDirectory": "",
+				"mainSourceFile": "",
+				"dflags": [],
+				"lflags": [],
+				"libs": [
+					"anl"
+				],
+				"linkerFiles": [
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/stream/libvibe-d_stream.a",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/textfilter/libvibe-d_textfilter.a",
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/libvibe_core.a",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/libeventcore.a",
+					"/home/username/.dub/packages/taggedalgebraic-0.10.7/taggedalgebraic/libtaggedalgebraic.a",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/data/libvibe-d_data.a",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils/libvibe-d_utils.a"
+				],
+				"sourceFiles": [
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/inet/vibe/inet/message.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/inet/vibe/inet/mimetypes.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/inet/vibe/inet/path.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/inet/vibe/inet/url.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/inet/vibe/inet/urltransfer.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/inet/vibe/inet/webform.d"
+				],
+				"copyFiles": [],
+				"versions": [
+					"EventcoreEpollDriver",
+					"VibeDefaultMain",
+					"Have_vibe_d_core",
+					"VibeUseOpenSSL11",
+					"PRODUCTION",
+					"USE_MYSQL",
+					"USE_SQLITE",
+					"USE_PGSQL",
+					"Have_vibe_d_inet",
+					"Have_vibe_core",
+					"Have_eventcore",
+					"Have_taggedalgebraic",
+					"Have_vibe_d_data",
+					"Have_vibe_d_utils",
+					"Have_vibe_d_stream",
+					"Have_vibe_d_textfilter"
+				],
+				"debugVersions": [],
+				"importPaths": [
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/inet",
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/source/",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/source/",
+					"/home/username/.dub/packages/taggedalgebraic-0.10.7/taggedalgebraic/source/",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/data",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/stream",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/textfilter"
+				],
+				"stringImportPaths": [],
+				"importFiles": [],
+				"stringImportFiles": [],
+				"preGenerateCommands": [],
+				"postGenerateCommands": [],
+				"preBuildCommands": [],
+				"postBuildCommands": [],
+				"requirements": [],
+				"options": [
+					"debugMode",
+					"debugInfo",
+					"warningsAsErrors"
+				]
+			},
+			"dependencies": [
+				"vibe-core",
+				"vibe-d:data",
+				"vibe-d:utils",
+				"vibe-d:stream",
+				"vibe-d:textfilter"
+			],
+			"linkDependencies": [
+				"vibe-d:stream",
+				"vibe-d:textfilter",
+				"vibe-core",
+				"eventcore",
+				"taggedalgebraic",
+				"vibe-d:data",
+				"vibe-d:utils",
+				"vibe-d:utils"
+			]
+		},
+		{
+			"rootPackage": "vibe-d:stream",
+			"packages": [
+				"vibe-d:stream",
+				"vibe-d:core"
+			],
+			"rootConfiguration": "library",
+			"buildSettings": {
+				"targetType": 6,
+				"targetPath": "/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/stream",
+				"targetName": "vibe-d_stream",
+				"workingDirectory": "",
+				"mainSourceFile": "",
+				"dflags": [],
+				"lflags": [],
+				"libs": [
+					"anl"
+				],
+				"linkerFiles": [
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/libvibe_core.a",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/libeventcore.a",
+					"/home/username/.dub/packages/taggedalgebraic-0.10.7/taggedalgebraic/libtaggedalgebraic.a",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/data/libvibe-d_data.a",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils/libvibe-d_utils.a"
+				],
+				"sourceFiles": [
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/stream/vibe/stream/base64.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/stream/vibe/stream/counting.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/stream/vibe/stream/memory.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/stream/vibe/stream/multicast.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/stream/vibe/stream/operations.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/stream/vibe/stream/stdio.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/stream/vibe/stream/taskpipe.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/stream/vibe/stream/wrapper.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/stream/vibe/stream/zlib.d"
+				],
+				"copyFiles": [],
+				"versions": [
+					"EventcoreEpollDriver",
+					"VibeDefaultMain",
+					"Have_vibe_d_core",
+					"VibeUseOpenSSL11",
+					"PRODUCTION",
+					"USE_MYSQL",
+					"USE_SQLITE",
+					"USE_PGSQL",
+					"Have_vibe_d_stream",
+					"Have_vibe_core",
+					"Have_eventcore",
+					"Have_taggedalgebraic",
+					"Have_vibe_d_data",
+					"Have_vibe_d_utils"
+				],
+				"debugVersions": [],
+				"importPaths": [
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/stream",
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/source/",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/source/",
+					"/home/username/.dub/packages/taggedalgebraic-0.10.7/taggedalgebraic/source/",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/data",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils"
+				],
+				"stringImportPaths": [],
+				"importFiles": [],
+				"stringImportFiles": [],
+				"preGenerateCommands": [],
+				"postGenerateCommands": [],
+				"preBuildCommands": [],
+				"postBuildCommands": [],
+				"requirements": [],
+				"options": [
+					"debugMode",
+					"debugInfo",
+					"warningsAsErrors"
+				]
+			},
+			"dependencies": [
+				"vibe-core",
+				"vibe-d:data",
+				"vibe-d:utils"
+			],
+			"linkDependencies": [
+				"vibe-core",
+				"eventcore",
+				"taggedalgebraic",
+				"vibe-d:data",
+				"vibe-d:utils",
+				"vibe-d:utils"
+			]
+		},
+		{
+			"rootPackage": "vibe-d:textfilter",
+			"packages": [
+				"vibe-d:textfilter",
+				"vibe-d:core"
+			],
+			"rootConfiguration": "library",
+			"buildSettings": {
+				"targetType": 6,
+				"targetPath": "/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/textfilter",
+				"targetName": "vibe-d_textfilter",
+				"workingDirectory": "",
+				"mainSourceFile": "",
+				"dflags": [],
+				"lflags": [],
+				"libs": [
+					"anl"
+				],
+				"linkerFiles": [
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/libvibe_core.a",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/libeventcore.a",
+					"/home/username/.dub/packages/taggedalgebraic-0.10.7/taggedalgebraic/libtaggedalgebraic.a",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/data/libvibe-d_data.a",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils/libvibe-d_utils.a"
+				],
+				"sourceFiles": [
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/textfilter/vibe/textfilter/html.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/textfilter/vibe/textfilter/markdown.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/textfilter/vibe/textfilter/urlencode.d"
+				],
+				"copyFiles": [],
+				"versions": [
+					"EventcoreEpollDriver",
+					"VibeDefaultMain",
+					"Have_vibe_d_core",
+					"VibeUseOpenSSL11",
+					"PRODUCTION",
+					"USE_MYSQL",
+					"USE_SQLITE",
+					"USE_PGSQL",
+					"Have_vibe_d_textfilter",
+					"Have_vibe_core",
+					"Have_eventcore",
+					"Have_taggedalgebraic",
+					"Have_vibe_d_data",
+					"Have_vibe_d_utils"
+				],
+				"debugVersions": [],
+				"importPaths": [
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/textfilter",
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/source/",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/source/",
+					"/home/username/.dub/packages/taggedalgebraic-0.10.7/taggedalgebraic/source/",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/data",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils"
+				],
+				"stringImportPaths": [],
+				"importFiles": [],
+				"stringImportFiles": [],
+				"preGenerateCommands": [],
+				"postGenerateCommands": [],
+				"preBuildCommands": [],
+				"postBuildCommands": [],
+				"requirements": [],
+				"options": [
+					"debugMode",
+					"debugInfo",
+					"warningsAsErrors"
+				]
+			},
+			"dependencies": [
+				"vibe-core",
+				"vibe-d:data",
+				"vibe-d:utils"
+			],
+			"linkDependencies": [
+				"vibe-core",
+				"eventcore",
+				"taggedalgebraic",
+				"vibe-d:data",
+				"vibe-d:utils",
+				"vibe-d:utils"
+			]
+		},
+		{
+			"rootPackage": "vibe-d:tls",
+			"packages": [
+				"vibe-d:tls",
+				"openssl"
+			],
+			"rootConfiguration": "openssl",
+			"buildSettings": {
+				"targetType": 6,
+				"targetPath": "/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/tls",
+				"targetName": "vibe-d_tls",
+				"workingDirectory": "",
+				"mainSourceFile": "",
+				"dflags": [],
+				"lflags": [],
+				"libs": [
+					"ssl",
+					"crypto",
+					"anl"
+				],
+				"linkerFiles": [
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/stream/libvibe-d_stream.a",
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/libvibe_core.a",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/libeventcore.a",
+					"/home/username/.dub/packages/taggedalgebraic-0.10.7/taggedalgebraic/libtaggedalgebraic.a",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/data/libvibe-d_data.a",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils/libvibe-d_utils.a"
+				],
+				"sourceFiles": [
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/tls/vibe/stream/botan.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/tls/vibe/stream/openssl.d",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/tls/vibe/stream/tls.d"
+				],
+				"copyFiles": [],
+				"versions": [
+					"EventcoreEpollDriver",
+					"VibeDefaultMain",
+					"Have_vibe_d_core",
+					"VibeUseOpenSSL11",
+					"PRODUCTION",
+					"USE_MYSQL",
+					"USE_SQLITE",
+					"USE_PGSQL",
+					"Have_vibe_d_tls",
+					"Have_openssl",
+					"Have_vibe_d_stream",
+					"Have_vibe_core",
+					"Have_eventcore",
+					"Have_taggedalgebraic",
+					"Have_vibe_d_data",
+					"Have_vibe_d_utils"
+				],
+				"debugVersions": [],
+				"importPaths": [
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/tls",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/stream",
+					"/home/username/.dub/packages/vibe-core-1.2.0/vibe-core/source/",
+					"/home/username/.dub/packages/eventcore-0.8.19/eventcore/source/",
+					"/home/username/.dub/packages/taggedalgebraic-0.10.7/taggedalgebraic/source/",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/data",
+					"/home/username/.dub/packages/vibe-d-0.8.1/vibe-d/utils"
+				],
+				"stringImportPaths": [],
+				"importFiles": [
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/_d_util.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/aes.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/asn1.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/asn1_mac.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/asn1t.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/bio.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/blowfish.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/bn.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/buffer.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/camellia.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/cast_.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/cmac.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/cms.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/comp.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/conf.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/conf_api.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/crypto.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/des.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/des_old.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/dh.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/dsa.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/dso.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/dtls1.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/e_os2.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/ebcdic.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/ec.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/ecdh.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/ecdsa.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/engine.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/err.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/evp.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/hmac.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/idea.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/krb5_asn.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/kssl.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/lhash.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/md4.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/md5.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/mdc2.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/modes.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/obj_mac.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/objects.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/ocsp.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/opensslconf.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/opensslv.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/ossl_typ.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/pem.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/pem2.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/pkcs12.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/pkcs7.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/pqueue.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/rand.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/rc2.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/rc4.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/ripemd.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/rsa.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/safestack.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/seed.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/sha.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/srp.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/srtp.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/ssl.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/ssl2.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/ssl23.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/ssl3.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/stack.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/symhacks.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/tls1.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/ts.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/txt_db.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/ui.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/ui_compat.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/whrlpool.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/x509.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/x509_vfy.d",
+					"/home/username/.dub/packages/openssl-1.1.5_1.0.1g/openssl/deimos/openssl/x509v3.d"
+				],
+				"stringImportFiles": [],
+				"preGenerateCommands": [],
+				"postGenerateCommands": [],
+				"preBuildCommands": [],
+				"postBuildCommands": [],
+				"requirements": [],
+				"options": [
+					"debugMode",
+					"debugInfo",
+					"warningsAsErrors"
+				]
+			},
+			"dependencies": [
+				"vibe-d:stream"
+			],
+			"linkDependencies": [
+				"vibe-d:stream",
+				"vibe-core",
+				"eventcore",
+				"taggedalgebraic",
+				"vibe-d:data",
+				"vibe-d:utils",
+				"vibe-d:utils"
+			]
+		}
+	]
+}
