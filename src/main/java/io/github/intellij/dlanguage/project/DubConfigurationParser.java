@@ -13,6 +13,7 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import io.github.intellij.dlanguage.tools.dub.DescribeParser;
 import io.github.intellij.dlanguage.tools.dub.DescribeParserException;
+import io.github.intellij.dlanguage.tools.dub.DescribeParserImpl;
 import io.github.intellij.dlanguage.tools.dub.DubProcessListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -55,7 +56,7 @@ public class DubConfigurationParser {
     public DubConfigurationParser(@NotNull final Project project, final String dubBinaryPath, final boolean silentMode) {
         this.project = project;
         this.dubBinaryPath = dubBinaryPath;
-        this.parser = new DescribeParser();
+        this.parser = new DescribeParserImpl();
 
         if (canUseDub()) {
             parseDubConfiguration(silentMode)

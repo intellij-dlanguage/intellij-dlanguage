@@ -16,14 +16,24 @@ import java.util.*
  * created on 06/02/18
  * @since v1.16.2
  */
-class DescribeParser {
+interface DescribeParser {
+    /**
+     * @param json The 'dub describe' command dumps a load of json to stdout, use that output with this method.
+     * @return A DubProject object which contains much (not all) of the data that was in the json.
+     * @since v1.16.2
+     */
+    @Throws(DescribeParserException::class)
+    fun parse(json: String): DubProject
+}
+
+class DescribeParserImpl : DescribeParser {
 
     // some handy extension functions for Gson:
     private fun JsonObject.asString(key: String): String = get( key )?.asString ?: ""
     private fun JsonObject.asStringArray(key: String): List<String> = get(key)?.asJsonArray?.map { it.asString } ?: emptyList()
 
     @Throws(DescribeParserException::class)
-    fun parse(json: String): DubProject {
+    override fun parse(json: String): DubProject {
         return try {
             JsonParser().parse(json).asJsonObject.let {
                 val rootPackageName = it.asString("rootPackage")

@@ -11,7 +11,7 @@ import java.nio.file.Paths
  */
 class DescribeParserTest : LightPlatformTestCase() {
 
-    var parser = DescribeParser()
+    var parser: DescribeParser = DescribeParserImpl()
 
     @Throws(Exception::class)
     fun `test parsing the json output of dub describe`() {
