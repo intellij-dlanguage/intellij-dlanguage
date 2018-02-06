@@ -135,14 +135,15 @@ public class DubProjectImportBuilder extends ProjectImportBuilder<DubPackage> {
             getParameters().dubBinary,
             false);
 
-        final Optional<DubPackage> dubPackage = dubConfigurationParser.getDubPackage();
+        final Optional<DubProject> dubProject = dubConfigurationParser.getDubProject();
 
-        dubPackage.ifPresent(pkg -> {
+        dubProject.ifPresent(dubPackage -> {
+            final DubPackage pkg = dubPackage.getRootPackage();
             final DlangDubModuleBuilder builder = new DlangDubModuleBuilder();
             builder.setModuleFilePath(pkg.getPath() + pkg.getName() + ".iml");
             builder.setContentEntryPath(pkg.getPath());
             builder.setName(pkg.getName());
-            builder.addSourcePath(Pair.create(pkg.getPath() + pkg.getSourcesDir(), ""));
+            pkg.getSourcesDirs().forEach(dir -> builder.addSourcePath(Pair.create(pkg.getPath() + dir, "")));
 
             try {
                 final Module module = builder.createModule(moduleModel);

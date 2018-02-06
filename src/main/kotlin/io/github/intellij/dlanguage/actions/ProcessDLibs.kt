@@ -193,11 +193,20 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
             }
         }
 
+        // todo: This method needs breaking down. Also, a dub package can have multiple source directories
         private fun getSourcesVirtualFile(dubPackage: DubPackage): VirtualFile? {
+            // for now I'm putting this hideous kludge in which makes it work they way it always has
+            val srcDir = if(dubPackage.sourcesDirs.isNotEmpty()) {
+                if(dubPackage.sourcesDirs.size > 1) {
+                    LOG.warn("it's likely that we're not processing ${dubPackage.name} correctly. ${dubPackage.sourcesDirs.size} source folders found")
+                }
+                dubPackage.sourcesDirs[0]
+            } else "source"
+
             val sourcesPathUrl = if (SystemInfo.isWindows) {
-                VirtualFileManager.constructUrl(LocalFileSystem.PROTOCOL, dubPackage.path + dubPackage.sourcesDir.replace("/", "\\"))
+                VirtualFileManager.constructUrl(LocalFileSystem.PROTOCOL, dubPackage.path + srcDir.replace("/", "\\"))
             } else {
-                VirtualFileManager.constructUrl(LocalFileSystem.PROTOCOL, dubPackage.path + dubPackage.sourcesDir)
+                VirtualFileManager.constructUrl(LocalFileSystem.PROTOCOL, dubPackage.path + srcDir)
             }
 
             val sources = VirtualFileManager.getInstance().refreshAndFindFileByUrl(sourcesPathUrl)

@@ -15,11 +15,15 @@ interface Dependency {
 data class DubPackage(
     val name: String,
     val path: String,
-    val dependencies: List<String>,
-    val sourcesDir: String, // todo: this should prob be String[]
-    val resources: List<String>,
     val version: String,
-    val isRootPackage: Boolean
+    val description: String?,
+    val copyright: String?,
+    val license: String?,
+    val dependencies: List<String>,
+    val sourcesDirs: List<String>, // importPaths
+    val resources: List<String>, // stringImportPaths
+    val sourceFiles: List<String>,
+    val stringImportFiles: List<String>
 ) : Dependency {
     override fun getDisplayName(): String = "$name-$version"
 }
@@ -36,3 +40,23 @@ data class LocalPackage(
 ) : Dependency {
     override fun getDisplayName(): String = name
 }
+
+/**
+ * This object represents the data that is parsed when running 'dub describe'
+ *
+ * Do not remove anything from this file without annotating it as deprected for a few releases
+ *
+ * @author Samael Bate (singingbush)
+ * created on 06/02/18
+ * @since v1.16.2
+ */
+data class DubProject(
+    val rootPackageName: String, // this is "rootPackage" in the json
+    val rootPackage: DubPackage, // this is actually in the packages[] but filter it out and place here
+    val configuration: String,
+    val buildType: String,
+    val compiler: String,
+    val architecture:  List<String>, // eg: [x86_64"],
+    val platform: List<String>, // eg: ["linux","posix"],
+    val packages: List<DubPackage> // after having the "rootPackage" removed
+)

@@ -133,13 +133,16 @@ public class DCDCompletionServer implements ModuleComponent, ToolChangeListener 
         final DubConfigurationParser dubParser = new DubConfigurationParser(module.getProject(),
             ToolKey.DUB_KEY.getPath(), false);
         if (dubParser.canUseDub()) {
-            final List<DubPackage> dependencies = dubParser.getDubPackageDependencies();
-            for (final DubPackage pkg : dependencies) {
-                parametersList.addParametersString("-I");
-                final String pkgSource = String.format("%s%s", pkg.getPath(), pkg.getSourcesDir());
+            dubParser.getDubProject().ifPresent(dubProject -> dubProject.getPackages().forEach(pkg -> {
+                final List<String> sourcesDirs = pkg.getSourcesDirs();
+
                 LOG.debug("adding source for ", pkg.getName());
-                parametersList.addParametersString(pkgSource);
-            }
+
+                for(final String srcDir : sourcesDirs) {
+                    parametersList.addParametersString("-I");
+                    parametersList.addParametersString(String.format("%s%s", pkg.getPath(), srcDir));
+                }
+            }));
         } else {
             LOG.info("not possible to run 'dub describe'");
         }
