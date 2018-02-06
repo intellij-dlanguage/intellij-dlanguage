@@ -4,26 +4,22 @@ import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
-import com.intellij.execution.configurations.ParametersList;
 import com.intellij.execution.process.OSProcessHandler;
-import com.intellij.execution.process.ProcessAdapter;
-import com.intellij.execution.process.ProcessEvent;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
+import io.github.intellij.dlanguage.tools.dub.DubProcessListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
-import java.io.File;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -172,37 +168,22 @@ public class DubConfigurationParser {
 
     private Optional<JsonObject> parseDubConfiguration(final boolean silentMode) {
         try {
-            final String baseDir = project.getBaseDir().getCanonicalPath();
-            final GeneralCommandLine commandLine = new GeneralCommandLine();
-            commandLine.setWorkDirectory(new File(baseDir));
-            commandLine.setExePath(dubBinaryPath);
-            final ParametersList parametersList = commandLine.getParametersList();
-            parametersList.addParametersString("describe");
+            final GeneralCommandLine cmd = new GeneralCommandLine()
+                .withWorkDirectory(project.getBaseDir().getCanonicalPath())
+                .withExePath(dubBinaryPath)
+                .withParameters("describe");
 
-            final String dubCommand = commandLine.getCommandLineString();
-            final OSProcessHandler process = new OSProcessHandler(commandLine.createProcess(), dubCommand);
+            final String dubCommand = cmd.getCommandLineString();
+            final DubProcessListener listener = new DubProcessListener();
 
-            final StringBuilder builder = new StringBuilder();
-            final List<String> errors = new ArrayList<>();
-
-            process.addProcessListener(new ProcessAdapter() {
-                @Override
-                public void onTextAvailable(final ProcessEvent event, final Key outputType) {
-                    switch (outputType.toString()) {
-                        case "stdout":
-                            builder.append(event.getText());
-                            break;
-                        case "stderr":
-                            errors.add(event.getText());
-                            break;
-                    }
-                }
-            });
-
+            final OSProcessHandler process = new OSProcessHandler(cmd.createProcess(), dubCommand);
+            process.addProcessListener(listener);
             process.startNotify();
             process.waitFor();
 
             final Integer exitCode = process.getExitCode();
+
+            final List<String> errors = listener.getErrors();
 
             if (exitCode != null && exitCode == 0) {
                 if (errors.isEmpty()) {
@@ -241,7 +222,7 @@ public class DubConfigurationParser {
                     }
                 }
                 final JsonObject jsonObject = new JsonParser()
-                    .parse(builder.toString())
+                    .parse(listener.getStdOut())
                     .getAsJsonObject();
                 return Optional.of(jsonObject);
             } else {

@@ -2,12 +2,9 @@ package io.github.intellij.dlanguage.highlighting.annotation.external;
 
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
-import com.intellij.execution.configurations.ParametersList;
 import com.intellij.execution.process.OSProcessHandler;
-import com.intellij.execution.process.ProcessAdapter;
-import com.intellij.execution.process.ProcessEvent;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiDocumentManager;
@@ -17,6 +14,7 @@ import io.github.intellij.dlanguage.highlighting.annotation.DAnnotationHolder;
 import io.github.intellij.dlanguage.highlighting.annotation.Problems;
 import io.github.intellij.dlanguage.settings.ToolKey;
 import io.github.intellij.dlanguage.highlighting.annotation.DProblem;
+import io.github.intellij.dlanguage.tools.dub.DubProcessListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -25,7 +23,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CompileCheck {
+    private static final Logger LOG = Logger.getInstance(CompileCheck.class);
 
+    @NotNull
     public Problems checkFileSyntax(@NotNull final PsiFile file) {
         final String dubPath = ToolKey.DUB_KEY.getPath();
         if (dubPath == null) return new Problems();
@@ -34,34 +34,25 @@ public class CompileCheck {
         return findProblems(result, file);
     }
 
+    @NotNull
     private String processFile(final PsiFile file, final String dubPath) {
-        final String workingDirectory = file.getProject().getBasePath();
+        final GeneralCommandLine cmd = new GeneralCommandLine()
+            .withWorkDirectory(file.getProject().getBasePath())
+            .withExePath(dubPath)
+            .withParameters("build", "--combined", "-q");
 
-        final GeneralCommandLine commandLine = new GeneralCommandLine();
-        commandLine.setWorkDirectory(workingDirectory);
-        commandLine.setExePath(dubPath);
-        final ParametersList parametersList = commandLine.getParametersList();
-        parametersList.addParametersString("build");
-        parametersList.addParametersString("--combined");
-        parametersList.addParametersString("-q");
-
-        final StringBuilder builder = new StringBuilder();
         try {
-            final OSProcessHandler process = new OSProcessHandler(commandLine.createProcess(), commandLine.getCommandLineString());
-            process.addProcessListener(new ProcessAdapter() {
-                @Override
-                public void onTextAvailable(final ProcessEvent event, final Key outputType) {
-                    builder.append(event.getText());
-                }
-            });
-
+            final String dubCommand = cmd.getCommandLineString();
+            final DubProcessListener listener = new DubProcessListener();
+            final OSProcessHandler process = new OSProcessHandler(cmd.createProcess(), dubCommand);
+            process.addProcessListener(listener);
             process.startNotify();
             process.waitFor();
-
+            return listener.getOutput();
         } catch (final ExecutionException e) {
-            e.printStackTrace();
+            LOG.warn("There was a problem running 'dub build --combined -q'", e);
         }
-        return builder.toString();
+        return "";
     }
 
 

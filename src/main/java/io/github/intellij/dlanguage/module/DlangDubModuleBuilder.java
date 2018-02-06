@@ -8,6 +8,7 @@ import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.execution.process.ProcessAdapter;
 import com.intellij.execution.process.ProcessEvent;
 import com.intellij.execution.process.ProcessOutputTypes;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.extensions.Extensions;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.Project;
@@ -33,6 +34,8 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class DlangDubModuleBuilder extends DlangModuleBuilder {
+
+    private static final Logger LOG = Logger.getInstance(DlangDubModuleBuilder.class);
 
     private static final String RUN_DUB_CONFIG_NAME = "Run DUB";
 
@@ -91,10 +94,7 @@ public class DlangDubModuleBuilder extends DlangModuleBuilder {
     }
 
     private void createDub(final String workingDirectory) {
-        final GeneralCommandLine commandLine = new GeneralCommandLine();
-        commandLine.setWorkDirectory(workingDirectory);
-        commandLine.setExePath(this.dubBinary);
-        final ParametersList parametersList = commandLine.getParametersList();
+        final ParametersList parametersList = new ParametersList();
         parametersList.addParametersString("init");
         parametersList.addParametersString("-n");
 
@@ -107,44 +107,61 @@ public class DlangDubModuleBuilder extends DlangModuleBuilder {
             parametersList.addParametersString(dubOptions.get("dubParams"));
         }
 
+        final GeneralCommandLine cmd = new GeneralCommandLine()
+            .withWorkDirectory(workingDirectory)
+            .withExePath(this.dubBinary)
+            .withParameters(parametersList.getParameters());
+
         try {
-            final OSProcessHandler process = new OSProcessHandler(commandLine.createProcess(), commandLine.getCommandLineString());
-
-            final StringBuilder builder = new StringBuilder();
-            final AtomicBoolean errors = new AtomicBoolean();
-
-            process.addProcessListener(new ProcessAdapter() {
-                @Override
-                public void onTextAvailable(@NotNull final ProcessEvent event,
-                    @NotNull final Key outputType) {
-                    if (ProcessOutputTypes.STDERR.equals(outputType)) {
-                        errors.set(true);
-                    }
-                    builder.append(LocalTime.now()).append(" [").append(outputType).append("] ").append(event.getText());
-                }
-            });
-
+            final OSProcessHandler process = new OSProcessHandler(cmd.createProcess(), cmd.getCommandLineString());
+            final DubInitListener listener = new DubInitListener();
+            process.addProcessListener(listener);
             process.startNotify();
             process.waitFor();
 
             // write out a log file with the dub init error if dub init doesn't make the project
             // would have been nice to log an event but the new project hasn't been loaded yet so this is the
             // only way I could think to notify the user that dub init failed.
-            if (errors.get()) {
-                final Path dubInitErrorLog = Paths.get(getContentEntryPath() + File.separator + "dub_init_error_log.txt");
-                try {
-                    Files.write(dubInitErrorLog, builder.toString().getBytes());
-                } catch (final IOException e) {
-                    e.printStackTrace();
-                }
+            if (listener.hasErrors()) {
+                writeErrorLog(listener.getOutput(), "dub_init_error_log.txt");
             }
 
         } catch (final ExecutionException e) {
-            e.printStackTrace();
+            LOG.warn("There was a problem running 'dub init'", e);
         }
     }
 
     public void setDubBinary(final String dubBinary) {
         this.dubBinary = dubBinary;
+    }
+
+    private void writeErrorLog(final String content, @NotNull final String fileName) {
+        final Path dubInitErrorLog = Paths.get(getContentEntryPath() + File.separator + fileName);
+        try {
+            Files.write(dubInitErrorLog, content.getBytes());
+        } catch (final IOException e) {
+            LOG.warn("Unable to write to " + fileName);
+        }
+    }
+
+    private class DubInitListener extends ProcessAdapter {
+        private final StringBuilder builder = new StringBuilder();
+        private final AtomicBoolean errors = new AtomicBoolean();
+
+        String getOutput() {
+            return builder.toString();
+        }
+
+        boolean hasErrors() {
+            return errors.get();
+        }
+
+        @Override
+        public void onTextAvailable(@NotNull final ProcessEvent event, @NotNull final Key outputType) {
+            if (ProcessOutputTypes.STDERR.equals(outputType)) {
+                errors.set(true);
+            }
+            builder.append(LocalTime.now()).append(" [").append(outputType).append("] ").append(event.getText());
+        }
     }
 }
