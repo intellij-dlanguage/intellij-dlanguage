@@ -13,9 +13,13 @@ import java.io.File
 import java.io.IOException
 import java.net.URISyntaxException
 
-open class DLightPlatformCodeInsightFixtureTestCase(srcName: String, expectName: String = srcName) : LightPlatformCodeInsightFixtureTestCase() {
-    private var srcPath: String
-    private var expectPath: String
+abstract class DLightPlatformCodeInsightFixtureTestCase(
+    private var srcName: String,
+    private var expectName: String = srcName
+) : LightPlatformCodeInsightFixtureTestCase() {
+
+    private val srcPath: String
+    private val expectPath: String
 
     protected val fileName: String
         get() = "$testName.d"
