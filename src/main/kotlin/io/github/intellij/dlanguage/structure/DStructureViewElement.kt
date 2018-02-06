@@ -10,6 +10,7 @@ import com.intellij.psi.PsiElement
 import io.github.intellij.dlanguage.icons.addVisibilityToIcon
 import io.github.intellij.dlanguage.presentation.*
 import io.github.intellij.dlanguage.utils.*
+import java.util.*
 
 class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement,
     Navigatable by (element as NavigatablePsiElement)
