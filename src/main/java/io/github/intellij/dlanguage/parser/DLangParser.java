@@ -83,7 +83,11 @@ class DLangParser {
 
     @Deprecated
     final int MAX_ERRORS = 200;
-    private final Token.IdType[] stringLiteralsArray = {tok("stringLiteral"), tok("wstringLiteral"), tok("dstringLiteral"), tok("tokenstringLiteral")};
+    //A standard array initializer here was causing issues with java attempting to init a static array before the static initializer?
+    // See issues #350,#348,343
+    private final Token.IdType[] stringLiteralsArray = Arrays
+        .asList(tok("stringLiteral"), tok("wstringLiteral"), tok("dstringLiteral"),
+            tok("tokenstringLiteral")).toArray(new IdType[4]);
     private final Set<Token.IdType> literals = Sets.newHashSet(tok("dstringLiteral"), tok("stringLiteral"), tok("wstringLiteral"), tok("tokenstringLiteral"), tok("characterLiteral"), tok("true"), tok("false"), tok("null"), tok("$"), tok("doubleLiteral"), tok("floatLiteral"), tok("idoubleLiteral"), tok("ifloatLiteral"), tok("intLiteral"), tok("longLiteral"), tok("realLiteral"), tok("irealLiteral"), tok("uintLiteral"), tok("ulongLiteral"), tok("__DATE__"), tok("__TIME__"), tok("__TIMESTAMP__"), tok("__VENDOR__"), tok("__VERSION__"), tok("__FILE__"), tok("__FILE_FULL_PATH__"), tok("__LINE__"), tok("__MODULE__"), tok("__FUNCTION__"), tok("__PRETTY_FUNCTION__"));
     private final Set<Token.IdType> basicTypes = Sets.newHashSet(tok("int"), tok("bool"), tok("byte"), tok("cdouble"), tok("cent"), tok("cfloat"), tok("char"), tok("creal"), tok("dchar"), tok("double"), tok("float"), tok("idouble"), tok("ifloat"), tok("ireal"), tok("long"), tok("real"), tok("short"), tok("ubyte"), tok("ucent"), tok("uint"), tok("ulong"), tok("ushort"), tok("void"), tok("wchar"));
     private final Set<Token.IdType> Protections = Sets.newHashSet(tok("export"), tok("package"),
@@ -8520,9 +8524,31 @@ class DLangParser {
             tokenTypeIndex.put("identifier", new Token.IdType(ID));
             return tokenTypeIndex.get("identifier");
         }
+        //the below if statements exsist to catch cases where the static initializer did not work correctly
+        // See issues #350,#348,343
         if (tok.equals("tokenstringLiteral")) {
             tokenTypeIndex.put("tokenstringLiteral", new Token.IdType(ID));
             return tokenTypeIndex.get("tokenstringLiteral");
+        }
+
+        if (tok.equals("wstringLiteral")) {
+            tokenTypeIndex.put("wstringLiteral", new Token.IdType(ID));
+            return tokenTypeIndex.get("wstringLiteral");
+        }
+
+        if (tok.equals("dstringLiteral")) {
+            tokenTypeIndex.put("dstringLiteral", new Token.IdType(ID));
+            return tokenTypeIndex.get("dstringLiteral");
+        }
+
+        if (tok.equals("scriptLine")) {
+            tokenTypeIndex.put("scriptLine", new Token.IdType(ID));
+            return tokenTypeIndex.get("scriptLine");
+        }
+
+        if (tok.equals("stringLiteral")) {
+            tokenTypeIndex.put("stringLiteral", new Token.IdType(ID));
+            return tokenTypeIndex.get("stringLiteral");
         }
 
         if (matchingTypes.length != 1) {
