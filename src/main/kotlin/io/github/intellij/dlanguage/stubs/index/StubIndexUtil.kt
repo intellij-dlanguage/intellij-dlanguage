@@ -9,7 +9,7 @@ import io.github.intellij.dlanguage.stubs.interfaces.DlangUnittestStub
 /**
  * Created by francis on 8/8/2017.
  */
-fun <S : NamedStubBase<T>, T : io.github.intellij.dlanguage.psi.interfaces.DNamedElement> topLevelDeclaration(stub: S): Boolean {
+fun <S : NamedStubBase<T>, T : DNamedElement> topLevelDeclaration(stub: S): Boolean {
     //stuff within unittests does not count as top level
     //stuff within func declarations does not count as top level b/c not globally accessible todo check if this is true for all declaration types
     //switch the topLevel declaration to a file gist maybe
@@ -25,13 +25,13 @@ fun <S : NamedStubBase<T>, T : io.github.intellij.dlanguage.psi.interfaces.DName
         if (stubParent == null) {
             return true
         }
-        if (stubParent is io.github.intellij.dlanguage.stubs.DlangFunctionDeclarationStub) {
+        if (stubParent is DlangFunctionDeclarationStub) {
             return false
         }
-        if (stubParent is io.github.intellij.dlanguage.stubs.DlangConstructorStub || stubParent is io.github.intellij.dlanguage.stubs.DlangSharedStaticConstructorStub || stubParent is io.github.intellij.dlanguage.stubs.DlangStaticConstructorStub || stubParent is io.github.intellij.dlanguage.stubs.DlangDestructorStub || stubParent is io.github.intellij.dlanguage.stubs.DlangSharedStaticDestructorStub || stubParent is io.github.intellij.dlanguage.stubs.DlangStaticDestructorStub) {
+        if (stubParent is DlangConstructorStub || stubParent is DlangSharedStaticConstructorStub || stubParent is DlangStaticConstructorStub || stubParent is DlangDestructorStub || stubParent is DlangSharedStaticDestructorStub || stubParent is DlangStaticDestructorStub) {
             return false
         }
-        if (stubParent is io.github.intellij.dlanguage.stubs.interfaces.DlangUnittestStub) {
+        if (stubParent is DlangUnittestStub) {
             return false
         }
     }
