@@ -59,6 +59,9 @@ public class DLanguageModuleDeclarationImpl extends DNamedStubbedPsiElementBase<
 
     @Nullable
     public DlangIdentifier getNameIdentifier() {
+        if (getIdentifierChain() == null) {
+            return null;
+        }
         return DUtil.getEndOfIdentifierList(getIdentifierChain());
     }
 
@@ -101,6 +104,9 @@ public class DLanguageModuleDeclarationImpl extends DNamedStubbedPsiElementBase<
 
     public boolean hasAName() {
         try {
+            if (getIdentifierChain() == null) {
+                return false;
+            }
             return getIdentifierChain().getIdentifiers().size() > 0;
         } catch (final NullPointerException e) {
             return false;

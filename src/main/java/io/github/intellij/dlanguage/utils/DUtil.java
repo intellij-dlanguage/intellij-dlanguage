@@ -308,7 +308,8 @@ public class DUtil {
 
     }
 
-    public static DlangIdentifier getEndOfIdentifierList(final DLanguageIdentifierChain chain) {
+    public static DlangIdentifier getEndOfIdentifierList(
+        final @NotNull DLanguageIdentifierChain chain) {
         final List<DlangIdentifier> list = chain.getIdentifiers();
         if (list.get(list.size() - 1) != null)
             return list.get(list.size() - 1);
