@@ -50,6 +50,14 @@ object SpecialCaseResolve {
 //        if(inVersionCondition(e) != null){
 //            return resolveVersion(e)
 //        }
+        if (inPackageAttribute(e)) {
+            val chain = e.parent as IdentifierChain
+            val identifiers = chain.identifiers
+            if (identifiers.last() == e) {
+                return resolveModule(chain)
+            }
+            return resolvePackage(identifiers.subList(0, identifiers.indexOf(e) + 1))
+        }
         if (resolvingLabel(e)) {
             return resolveLabel(e)
         }
@@ -122,7 +130,13 @@ object SpecialCaseResolve {
         if (e !is Identifier) {
             return false
         }
-        return (inModuleDeclaration(e) != null || inSingleImport(e) != null || inImportBind(e) != null) || resolvingLabel(e)
+        return inModuleDeclaration(e) != null || inSingleImport(e) != null || inImportBind(e) != null || resolvingLabel(e) || inPackageAttribute(e)
+    }
+
+    private fun inPackageAttribute(identifier: Identifier): Boolean {
+        val attribute = PsiTreeUtil.getTopmostParentOfType(identifier, Attribute::class.java)
+        return attribute != null
+            && attribute.kW_PACKAGE != null
     }
 
     private fun resolvingLabel(e: Identifier): Boolean {
