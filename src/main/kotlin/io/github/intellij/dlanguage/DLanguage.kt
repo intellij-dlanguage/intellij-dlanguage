@@ -1,5 +1,6 @@
 package io.github.intellij.dlanguage
 
+import com.intellij.codeInsight.daemon.ProjectSdkSetupValidator
 import com.intellij.lang.ASTNode
 import com.intellij.lang.Language
 import com.intellij.lang.ParserDefinition
@@ -7,6 +8,8 @@ import com.intellij.lang.PsiParser
 import com.intellij.lexer.FlexAdapter
 import com.intellij.lexer.Lexer
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.roots.ui.configuration.ProjectSettingsService
+import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.FileViewProvider
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
@@ -23,6 +26,21 @@ import org.jetbrains.annotations.NotNull
 object DLanguage : Language("D")
 
 class DLanguageLexerAdapter : FlexAdapter(DlangLexer())
+
+/**
+ * This class is used to inform users that DMD is not setup for the project
+ */
+class DLangProjectDmdSetupValidator: ProjectSdkSetupValidator {
+
+    override fun isApplicableFor(project: Project, file: VirtualFile): Boolean =
+        DlangFileType.INSTANCE == file.fileType
+
+    override fun doFix(project: Project, file: VirtualFile) =
+        Unit.apply { ProjectSettingsService.getInstance(project).openProjectSettings() }
+
+    override fun getErrorMessage(project: Project, file: VirtualFile): String? =
+        DlangBundle.message("d.ui.dmd.path.not.set")
+}
 
 class DLangParserDefinition : ParserDefinition {
     val WHITE_SPACES: TokenSet = create(TokenType.WHITE_SPACE)

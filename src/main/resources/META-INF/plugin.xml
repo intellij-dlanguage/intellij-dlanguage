@@ -76,7 +76,7 @@
 
         <!-- D Language support -->
         <sdkType implementation="io.github.intellij.dlanguage.DlangSdkType"/>
-        <!--<projectSdkSetupValidator implementation="" />-->
+        <projectSdkSetupValidator implementation="io.github.intellij.dlanguage.DLangProjectDmdSetupValidator" />
         <runConfigurationProducer implementation="io.github.intellij.dlanguage.run.DlangRunDubConfigurationProducer"/>
 
         <!-- project open and import -->
