@@ -262,12 +262,14 @@ public class DUtil {
 //
 //    }
 
-    public static DlangIdentifier getEndOfIdentifierList(final DLanguageIdentifierOrTemplateChain chain) {
+    public static @Nullable
+    DlangIdentifier getEndOfIdentifierList(final DLanguageIdentifierOrTemplateChain chain) {
         final List<DLanguageIdentifierOrTemplateInstance> list = chain.getIdentifierOrTemplateInstances();
         if (list.get(list.size() - 1).getIdentifier() != null)
             return list.get(list.size() - 1).getIdentifier();
-        else
-            throw new IllegalStateException();
+        else {
+            return null;
+        }
 
     }
 
@@ -308,13 +310,15 @@ public class DUtil {
 
     }
 
-    public static DlangIdentifier getEndOfIdentifierList(
+    public static @Nullable
+    DlangIdentifier getEndOfIdentifierList(
         final @NotNull DLanguageIdentifierChain chain) {
         final List<DlangIdentifier> list = chain.getIdentifiers();
         if (list.get(list.size() - 1) != null)
             return list.get(list.size() - 1);
-        else
-            throw new IllegalStateException();
+        else {
+            return null;
+        }
     }
 }
 
