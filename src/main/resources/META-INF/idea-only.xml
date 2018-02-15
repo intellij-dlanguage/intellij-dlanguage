@@ -1,0 +1,13 @@
+<!DOCTYPE idea-plugin PUBLIC "Plugin/DTD" "http://plugins.intellij.net/plugin.dtd">
+<idea-plugin>
+
+    <extensions defaultExtensionNs="com.intellij">
+
+        <moduleBuilder id="DLangModuleBuilder"
+                       builderClass="io.github.intellij.dlanguage.module.DlangModuleBuilder"/>
+        <moduleBuilder id="DLangDubModuleBuilder"
+                       builderClass="io.github.intellij.dlanguage.module.DlangDubModuleBuilder"/>
+
+    </extensions>
+
+</idea-plugin>
