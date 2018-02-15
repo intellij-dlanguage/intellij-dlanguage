@@ -1,0 +1,14 @@
+<!DOCTYPE idea-plugin PUBLIC "Plugin/DTD" "http://plugins.intellij.net/plugin.dtd">
+<idea-plugin>
+
+    <actions>
+        <reference id="DLanguage.NewDLanguageFile">
+            <add-to-group group-id="WindowMenu"/>
+        </reference>
+
+        <reference id="DLanguage.NewDLanguageClass">
+            <add-to-group group-id="WindowMenu"/>
+        </reference>
+    </actions>
+
+</idea-plugin>

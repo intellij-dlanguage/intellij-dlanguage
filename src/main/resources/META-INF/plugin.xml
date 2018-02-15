@@ -41,11 +41,16 @@
     <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
     <idea-version since-build="181" until-build="181.*"/>
 
-    <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
-         on how to target different products -->
-    <!-- uncomment to enable plugin in all products
-    <depends>com.intellij.modules.lang</depends>
+    <!-- We want to support IntelliJ IDEA and CLion
+        see http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
     -->
+    <depends>com.intellij.modules.lang</depends>
+    <depends>com.intellij.modules.platform</depends>
+    <!--<depends>com.intellij.modules.vcs</depends>-->
+    <!--<depends>com.intellij.modules.xml</depends>-->
+    <depends>com.intellij.modules.xdebugger</depends>
+    <depends optional="true" config-file="idea-only.xml">com.intellij.modules.java</depends>
+    <depends optional="true" config-file="clion-only.xml">com.intellij.modules.clion</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <iconProvider id="dlangIconProvider" implementation="io.github.intellij.dlanguage.DlangIconProvider" />
@@ -108,10 +113,6 @@
         <programRunner implementation="io.github.intellij.dlanguage.run.RunAppRunner"/>
 
 
-        <moduleBuilder id="DLangModuleBuilder"
-                       builderClass="io.github.intellij.dlanguage.module.DlangModuleBuilder"/>
-        <moduleBuilder id="DLangDubModuleBuilder"
-                       builderClass="io.github.intellij.dlanguage.module.DlangDubModuleBuilder"/>
         <moduleConfigurationEditorProvider
             implementation="io.github.intellij.dlanguage.module.DlangModuleEditorsProvider"/>
 
