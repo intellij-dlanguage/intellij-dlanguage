@@ -1,6 +1,5 @@
 package io.github.intellij.dlanguage.colors
 
-import com.intellij.ide.highlighter.JavaHighlightingColors
 import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.options.colors.AttributesDescriptor
 
@@ -12,7 +11,7 @@ enum class DColor(humanName: String, val default: TextAttributesKey) {
     LINE_DOC("Line documentation", Default.DOC_COMMENT),
     BLOCK_COMMENT("Block Comment", Default.BLOCK_COMMENT),
     DOC_COMMENT("Ddoc comment", Default.DOC_COMMENT),
-    AT_ATTRIBUTE("Attribute", JavaHighlightingColors.ANNOTATION_NAME_ATTRIBUTES),
+    AT_ATTRIBUTE("Attribute", Default.METADATA),
     CHAR("Char", Default.STRING),
     STRING("String", Default.STRING),
     NUMBER("Number", Default.NUMBER),
@@ -27,7 +26,7 @@ enum class DColor(humanName: String, val default: TextAttributesKey) {
     MODULE_DEFINITION("Module definition", Default.GLOBAL_VARIABLE),
     FUNCTION_DEFINITION("Function definition", Default.GLOBAL_VARIABLE),
     IDENTIFIER("Identifier", Default.IDENTIFIER),
-    TYPE_PARAMETER("Type parameter", JavaHighlightingColors.TYPE_PARAMETER_NAME_ATTRIBUTES),
+    TYPE_PARAMETER("Type parameter", Default.PARAMETER),
     ;
 
     val textAttributesKey = TextAttributesKey.createTextAttributesKey("io.github.intellij.dlanguage.$name", default)
