@@ -262,17 +262,6 @@ public class DUtil {
 //
 //    }
 
-    public static @Nullable
-    DlangIdentifier getEndOfIdentifierList(final DLanguageIdentifierOrTemplateChain chain) {
-        final List<DLanguageIdentifierOrTemplateInstance> list = chain.getIdentifierOrTemplateInstances();
-        if (list.get(list.size() - 1).getIdentifier() != null)
-            return list.get(list.size() - 1).getIdentifier();
-        else {
-            return null;
-        }
-
-    }
-
 
     public static ASTNode getPrevSiblingOfType(@Nullable final ASTNode child, @Nullable final IElementType type) {
         if (child == null)
@@ -310,15 +299,34 @@ public class DUtil {
 
     }
 
-    public static @Nullable
-    DlangIdentifier getEndOfIdentifierList(
+    public static DlangIdentifier getEndOfIdentifierList(
         final @NotNull DLanguageIdentifierChain chain) {
         final List<DlangIdentifier> list = chain.getIdentifiers();
-        if (list.get(list.size() - 1) != null)
-            return list.get(list.size() - 1);
-        else {
+        if (list.get(list.size() - 1) != null) {
+            try {
+                return list.get(list.size() - 1);
+            } catch (final ArrayIndexOutOfBoundsException e) {
+                return null;
+            }
+        } else {
             return null;
         }
+    }
+
+    public static DlangIdentifier getEndOfIdentifierList(
+        final DLanguageIdentifierOrTemplateChain chain) {
+        final List<DLanguageIdentifierOrTemplateInstance> list = chain
+            .getIdentifierOrTemplateInstances();
+        if (list.get(list.size() - 1).getIdentifier() != null) {
+            try {
+                return list.get(list.size() - 1).getIdentifier();
+            } catch (final ArrayIndexOutOfBoundsException e) {
+                return null;
+            }
+        } else {
+            return null;
+        }
+
     }
 }
 

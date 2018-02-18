@@ -8287,11 +8287,15 @@ class DLangParser {
         return moreTokens() && isMemberFunctionAttribute(current().type);
     }
 
-    private boolean parseLeftAssocBinaryExpression(final Ref.BooleanRef operatorWasMatched, final String ExpressionType, final String ExpressionPartType, final Token.IdType... operators) {
+    private boolean parseLeftAssocBinaryExpression(final Ref.BooleanRef operatorWasMatched,
+        final String ExpressionType, final String ExpressionPartType,
+        @NotNull final Token.IdType... operators) {
         return parseLeftAssocBinaryExpression(operatorWasMatched, ExpressionType, ExpressionPartType, false, operators);
     }
 
-    private boolean parseLeftAssocBinaryExpression(final Ref.BooleanRef operatorWasMatched, final String ExpressionType, final String ExpressionPartType, final boolean part, final Token.IdType... operators)//(alias ExpressionType, alias ExpressionPartType, Operators ...)(ExpressionNode part = null)
+    private boolean parseLeftAssocBinaryExpression(final Ref.BooleanRef operatorWasMatched,
+        final String ExpressionType, final String ExpressionPartType, final boolean part,
+        @NotNull final Token.IdType... operators)//(alias ExpressionType, alias ExpressionPartType, Operators ...)(ExpressionNode part = null)
     {
         operatorWasMatched.element = false;
         final boolean node;
@@ -8513,7 +8517,8 @@ class DLangParser {
         return tokens[index - 1];
     }
 
-    private Token.IdType tok(final String tok) {
+    private @NotNull
+    Token.IdType tok(final String tok) {
         if (tokenTypeIndex.get(tok) != null) {
             return tokenTypeIndex.get(tok);
         }
@@ -8554,7 +8559,7 @@ class DLangParser {
         if (matchingTypes.length != 1) {
             throw new IllegalArgumentException("string:" + tok);
         }
-        final Token.IdType result = new Token.IdType(matchingTypes[0]);
+        final @NotNull Token.IdType result = new Token.IdType(matchingTypes[0]);
         tokenTypeIndex.put(tok, result);
         return result;
     }
@@ -8603,13 +8608,13 @@ class DLangParser {
     /**
      * Returns: true if the current token is one of the given types
      */
-    private boolean currentIsOneOf(final Token.IdType... types) {
+    private boolean currentIsOneOf(final @NotNull Token.IdType... types) {
         if (index >= tokens.length) return false;
 
         final Token curr = current();
 
         if(curr != null) {
-            for (final Token.IdType type : types) {
+            for (final @NotNull Token.IdType type : types) {
                 if (type.equals(curr.type)) {
                     return true;
                 }
