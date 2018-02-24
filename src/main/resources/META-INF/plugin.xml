@@ -163,7 +163,9 @@
 
 
         <!--formatter-->
-        <!--&lt;!&ndash;<lang.formatter language="D" implementationClass="io.github.intellij.dlanguage.features.formatter.DFormattingModelBuilder"/>&ndash;&gt;re-enable when formatting with syntax errors improves-->
+        <lang.formatter
+            implementationClass="io.github.intellij.dlanguage.features.formatter.DFormattingModelBuilder"
+            language="D"/>
         <codeStyleSettingsProvider implementation="io.github.intellij.dlanguage.features.formatter.settings.DCodeStyleSettingsProvider"/>
         <langCodeStyleSettingsProvider implementation="io.github.intellij.dlanguage.features.formatter.settings.DLanguageCodeStyleSettingsProvider"/>
 
