@@ -1,9 +1,14 @@
 package io.github.intellij.dlanguage.features.formatter
 
 import com.google.common.collect.Sets.newHashSet
+import com.intellij.configurationStore.NOTIFICATION_GROUP_ID
 import com.intellij.formatting.*
 import com.intellij.formatting.alignment.AlignmentStrategy
+import com.intellij.ide.util.PropertiesComponent
 import com.intellij.lang.ASTNode
+import com.intellij.notification.Notification
+import com.intellij.notification.NotificationType
+import com.intellij.notification.Notifications
 import com.intellij.openapi.util.TextRange
 import com.intellij.openapi.util.UserDataHolderBase
 import com.intellij.psi.PsiElement
@@ -20,6 +25,7 @@ import io.github.intellij.dlanguage.psi.DLanguageDeclarationsAndStatements
 import io.github.intellij.dlanguage.psi.DLanguageStatement
 import io.github.intellij.dlanguage.psi.DlangTypes.*
 import io.github.intellij.dlanguage.psi.named.DLanguageModuleDeclaration
+import io.github.intellij.dlanguage.psi.references.DReference
 import io.github.intellij.dlanguage.utils.DUtil.getPrevSiblingOfType
 import io.github.intellij.dlanguage.utils.DeclarationOrStatement
 import java.util.*
@@ -177,8 +183,12 @@ class DFormattingModelBuilder : FormattingModelBuilder {
         }
 
         override fun getSpacing(child1: Block?, child2: Block): Spacing? {
-            if (PsiTreeUtil.hasErrorElements(myNode.psi))
+            if (PsiTreeUtil.hasErrorElements(myNode.psi)) {
+                if (!PropertiesComponent.getInstance().getBoolean("DISABLE_SYNTAX_ERROR_FORMATTER_WARNING"))
+                    Notifications.Bus.notify(Notification(NOTIFICATION_GROUP_ID,
+                        "Formatter Ignored Code", "The builtin formatter ignored code that contained syntax errors, becuase formatting code with syntax errors is non-trivial. You can disable this notification in File > Settings > Languages & Frameworks > D Tools", NotificationType.INFORMATION))
                 return Spacing.getReadOnlySpacing()
+            }
             if (child1 is DFormattingBlock && child2 is DFormattingBlock) {
                 val n1 = child1.node
                 val n2 = child2.node
