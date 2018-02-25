@@ -1,14 +1,9 @@
-<!DOCTYPE idea-plugin PUBLIC "Plugin/DTD" "http://plugins.intellij.net/plugin.dtd">
+<?xml version="1.0" encoding="utf-8" ?>
+<!--<!DOCTYPE idea-plugin PUBLIC "Plugin/DTD" "http://plugins.intellij.net/plugin.dtd">-->
 <idea-plugin>
 
-    <actions>
-        <reference id="DLanguage.NewDLanguageFile">
-            <add-to-group group-id="WindowMenu"/>
-        </reference>
-
-        <reference id="DLanguage.NewDLanguageClass">
-            <add-to-group group-id="WindowMenu"/>
-        </reference>
-    </actions>
+    <extensions defaultExtensionNs="com.intellij">
+        <directoryProjectGenerator implementation="io.github.intellij.dlanguage.project.DlangProjectGenerator"/>
+    </extensions>
 
 </idea-plugin>
