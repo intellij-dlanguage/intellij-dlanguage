@@ -5,6 +5,11 @@ out/
 /jps-plugin/build/
 /jps-shared/build/
 
+.classpath
+.project
+.settings/
+bin/
+
 # Ignore Intellij IDE specific files
 .idea/
 *.iml
