@@ -1,4 +1,5 @@
-<!DOCTYPE idea-plugin PUBLIC "Plugin/DTD" "http://plugins.intellij.net/plugin.dtd">
+<?xml version="1.0" encoding="utf-8" ?>
+<!--<!DOCTYPE idea-plugin PUBLIC "Plugin/DTD" "http://plugins.intellij.net/plugin.dtd">-->
 <idea-plugin>
     <id>net.masterthought.dlanguage</id>
     <name>D Language</name>
@@ -91,6 +92,8 @@
 
         <configurationType implementation="io.github.intellij.dlanguage.run.DlangRunDubConfigurationType"/>
         <programRunner implementation="io.github.intellij.dlanguage.run.DubBuildRunner"/>
+        <consoleFilterProvider implementation="io.github.intellij.dlanguage.run.DubConsoleFilterProvider"/>
+        <analyzeStacktraceFilter implementation="io.github.intellij.dlanguage.run.DubBuildSourceFileFilter"/>
 
         <configurationType implementation="io.github.intellij.dlanguage.run.DlangRunDmdConfigurationType"/>
         <programRunner implementation="io.github.intellij.dlanguage.run.DmdBuildRunner"/>
