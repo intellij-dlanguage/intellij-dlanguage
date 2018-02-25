@@ -1,4 +1,5 @@
-<!DOCTYPE idea-plugin PUBLIC "Plugin/DTD" "http://plugins.intellij.net/plugin.dtd">
+<?xml version="1.0" encoding="utf-8" ?>
+<!--<!DOCTYPE idea-plugin PUBLIC "Plugin/DTD" "http://plugins.intellij.net/plugin.dtd">-->
 <idea-plugin>
 
     <extensions defaultExtensionNs="com.intellij">
