@@ -2,6 +2,7 @@ package io.github.intellij.dlanguage.icons;
 
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.util.IconLoader;
+import com.intellij.ui.LayeredIcon;
 
 import javax.swing.*;
 
@@ -12,6 +13,10 @@ public class DlangIcons {
     public static final Icon SDK_ADD = FILE;
     public static final Icon RUN = FILE;
     public static final Icon LIBRARY = FILE;
+
+    public static final Icon SRC_FILE = IconLoader.getIcon("/icons/d-file.png");
+    public static final Icon SRC_FILE_RUNNABLE = new LayeredIcon(DlangIcons.SRC_FILE, AllIcons.Nodes.RunnableMark);
+    public static final Icon SRC_FILE_PACKAGE = IconLoader.getIcon("/icons/d-file-package.png");
 
     public static final Icon CLASS = FILE;
 
