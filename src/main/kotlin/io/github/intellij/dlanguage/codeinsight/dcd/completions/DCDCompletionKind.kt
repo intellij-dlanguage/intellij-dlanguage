@@ -1,6 +1,7 @@
-package io.github.intellij.dlanguage.codeinsight.dcd.completions;
+package io.github.intellij.dlanguage.codeinsight.dcd.completions
 
-public enum DCDCompletionKind {
+enum class DCDCompletionKind private constructor(val id: String)
+{
     ClassName("c"),
     InterfaceName("i"),
     StructName("s"),
@@ -17,11 +18,5 @@ public enum DCDCompletionKind {
     AssociativeArray("A"),
     AliasName("l"),
     TemplateName("t"),
-    MixinTemplate("T");
-
-    public final String id;
-
-    DCDCompletionKind(String id) {
-        this.id = id;
-    }
+    MixinTemplate("T")
 }
