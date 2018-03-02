@@ -10,6 +10,7 @@ class DCDModel(var value: String, id: String, type: String? = null)
     {
         kind = fromId(id)
         typeText = type
+
     }
 
     fun fromId(id: String): DCDCompletionKind
