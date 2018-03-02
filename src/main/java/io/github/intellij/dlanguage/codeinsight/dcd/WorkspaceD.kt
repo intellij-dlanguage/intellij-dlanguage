@@ -93,16 +93,17 @@ class WorkspaceD
         this.workingDirectory = lookupWorkingDirectory()
         // Ensure that we are notified of changes to the settings.
         module.project.messageBus.connect().subscribe(SettingsChangeNotifier.DCD_TOPIC, this)
-
-        spawnProcess()
-
     }
 
-    @Synchronized
+
     internal fun exec()
     {
         if (process == null || !process!!.isAlive)
+        {
+            println("Process isn't available anymore, respawn it")
+            kill()
             spawnProcess()
+        }
     }
 
     private fun spawnProcess()
@@ -126,8 +127,10 @@ class WorkspaceD
 
             println("Started Workspace-d root: $workingDirectory source: $rootSourceDir")
 
-            setupDub(workingDirectory)
-            setupDcd(workingDirectory)
+
+            val escapedWD = SimpleJSON.quote(workingDirectory)
+            setupDub(escapedWD)
+            setupDcd(escapedWD)
             startDcd()
             startServer()
             refreshImports()
@@ -147,7 +150,7 @@ class WorkspaceD
 {
 	"cmd": "load",
 	"components": ["dub"],
-	"dir": "$projectRoot"
+	"dir": $projectRoot
 }""")
 
         println("Setup Dub: $response")
@@ -155,14 +158,17 @@ class WorkspaceD
 
     fun setupDcd(projectRoot: String)
     {
+        val dcdClient = SimpleJSON.quote(dcdClientPath)
+        val dcdServer = SimpleJSON.quote(dcdServerPath)
+
         val response = sendCommand("""
 {
 	"cmd": "load",
 	"components": ["dcd"],
-	"dir": "$projectRoot",
+	"dir": $projectRoot,
     "autoStart": false,
-    "clientPath": ${SimpleJSON.quote(dcdClientPath)},
-    "serverPath": ${SimpleJSON.quote(dcdServerPath)}
+    "clientPath": $dcdClient,
+    "serverPath": $dcdServer
 }""")
         println("Setup DCD: $response")
     }
@@ -180,11 +186,13 @@ class WorkspaceD
 
     fun startServer()
     {
+        val imports = compilerSourceDirs.joinToString { SimpleJSON.quote(it) }
+
         val response = sendCommand("""
 {
 	"cmd": "dcd",
 	"subcmd": "start-server",
-    "additionalImports": [ ${compilerSourceDirs.joinToString { SimpleJSON.quote(it) }} ]
+    "additionalImports": [ $imports ]
 }""")
         println("Start Server: $response")
     }
@@ -211,17 +219,18 @@ class WorkspaceD
 
     private fun sendCommand(json: String): String
     {
-        requestNum += 1
+        out?.let {
+            requestNum += 1
 
-        val data = json.toByteArray(charset("UTF-8"))
-        val lengthBuf = ByteBuffer.allocate(4).putInt(data.size + 4).array()
-        val idBuf = ByteBuffer.allocate(4).putInt(requestNum).array()
+            val data = json.toByteArray(charset("UTF-8"))
+            val lengthBuf = ByteBuffer.allocate(4).putInt(data.size + 4).array()
+            val idBuf = ByteBuffer.allocate(4).putInt(requestNum).array()
 
-        out?.write(lengthBuf)
-        out?.write(idBuf)
-        out?.write(data)
-        out?.flush()
-
+            it.write(lengthBuf)
+            it.write(idBuf)
+            it.write(data)
+            it.flush()
+        }
         return response()
     }
 
@@ -247,7 +256,7 @@ class WorkspaceD
     @Synchronized
     private fun kill()
     {
-        process?.destroy()
+        process?.destroyForcibly()
         err?.close()
         input?.close()
         out?.close()
@@ -293,7 +302,8 @@ class WorkspaceD
 
     override fun initComponent()
     {
-        // No need to do anything here.
+        println("Init WorkspaceD")
+        spawnProcess()
     }
 
     // Implemented methods for ModuleComponent.
