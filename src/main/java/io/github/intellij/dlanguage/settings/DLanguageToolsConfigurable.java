@@ -1,5 +1,6 @@
 package io.github.intellij.dlanguage.settings;
 
+import com.intellij.ide.ui.search.SearchableOptionsRegistrar;
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.options.ConfigurationException;
@@ -72,6 +73,14 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
     public DLanguageToolsConfigurable(@NotNull final Project project) {
         this.propertiesComponent = PropertiesComponent.getInstance();
 
+        final SearchableOptionsRegistrar sor = SearchableOptionsRegistrar.getInstance();
+        sor.addOption("dub", null, "dub", D_TOOLS_ID, D_TOOLS_ID);
+        sor.addOption("dscanner", null, "dscanner", D_TOOLS_ID, D_TOOLS_ID);
+        sor.addOption("dcd", null, "dcd", D_TOOLS_ID, D_TOOLS_ID);
+        sor.addOption("dfmt", null, "dfmt", D_TOOLS_ID, D_TOOLS_ID);
+        sor.addOption("dfix", null, "dfix", D_TOOLS_ID, D_TOOLS_ID);
+        sor.addOption("gdb", null, "gdb", D_TOOLS_ID, D_TOOLS_ID);
+
         properties = Arrays.asList(
             new Tool(project, "dub", ToolKey.DUB_KEY, dubPath, dubFlags,
                 dubAutoFind, dubVersion, "--version", Topics.DUB_TOOL_CHANGE),
@@ -113,9 +122,20 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
 
     @Nullable
     @Override
-    public Runnable enableSearch(final String s) {
-        // TODO
-        return null;
+    public Runnable enableSearch(final String option) {
+        return () -> {
+            if(StringUtil.isNotEmpty(option)) {
+                final int tabCount = tabbedPane1.getTabCount();
+
+                for (int i = 0; i < tabCount-1; i++) {
+                    final String title = tabbedPane1.getTitleAt(i);
+                    if(title.toLowerCase().contains(option.toLowerCase())) {
+                        tabbedPane1.setSelectedIndex(i);
+                    }
+                }
+            }
+
+        };
     }
 
     @Nls
