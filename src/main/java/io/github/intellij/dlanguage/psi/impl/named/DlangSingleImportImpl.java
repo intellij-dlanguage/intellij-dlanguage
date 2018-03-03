@@ -99,8 +99,11 @@ public class DlangSingleImportImpl extends DNamedStubbedPsiElementBase<DlangSing
         if (getIdentifierChain() == null) {
             return DReference.Companion.getNAME_NOT_FOUND_STRING();
         }
-        if (getIdentifierChain().getText().equals(""))
-            throw new IllegalStateException();
+        if (getIdentifierChain().getText().equals("")) {
+            Logger.getInstance(getClass())
+                .warn("getIdentifier chain was: \"\". Complete text of symbol: " + getText());
+            return DReference.Companion.getNAME_NOT_FOUND_STRING();
+        }
         return getIdentifierChain().getText();
     }
 
