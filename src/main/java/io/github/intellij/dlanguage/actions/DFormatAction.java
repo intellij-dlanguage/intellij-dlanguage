@@ -5,6 +5,7 @@ import com.intellij.execution.process.CapturingProcessAdapter;
 import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.execution.process.ProcessEvent;
 import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationListener;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
 import com.intellij.openapi.actionSystem.AnAction;
@@ -24,7 +25,9 @@ import io.github.intellij.dlanguage.psi.DlangFile;
 import io.github.intellij.dlanguage.settings.ToolKey;
 import io.github.intellij.dlanguage.utils.DToolsNotificationListener;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.nio.file.Paths;
 import java.util.List;
 
 
@@ -66,13 +69,24 @@ public class DFormatAction extends AnAction implements DumbAware {
             final String stylishFlags = ToolKey.DFORMAT_KEY.getFlags();
             if (stylishPath == null || stylishPath.isEmpty()) {
 
-                Notifications.Bus.notify(
-                    new Notification(NOTIFICATION_GROUPID, NOTIFICATION_TITLE,
-                        "DFormat executable path is empty" +
-                            "<br/><a href='configureDLanguageTools'>Configure</a>",
-                        NotificationType.WARNING, new DToolsNotificationListener(project)), project);
+                showNotification(NOTIFICATION_TITLE,
+                    "DFormat executable path is empty<br/><a href='configureDLanguageTools'>Configure</a>",
+                    NotificationType.WARNING,
+                    new DToolsNotificationListener(project),
+                    project);
                 return;
             }
+
+            if(!Paths.get(stylishPath).toFile().canExecute()) {
+                showNotification(NOTIFICATION_TITLE,
+                    "DFormat executable path is not valid<br/><a href='configureDLanguageTools'>Configure</a>",
+                    NotificationType.WARNING,
+                    new DToolsNotificationListener(project),
+                    project);
+
+                return;
+            }
+
             commandLine.setExePath(stylishPath);
             commandLine.getParametersList().addParametersString(stylishFlags);
 
@@ -99,9 +113,8 @@ public class DFormatAction extends AnAction implements DumbAware {
                             // Error message is on the format:
                             // moduleName: interesting stuff.
                             final String output = firstLine.split(":", 2)[1];
-                            Notifications.Bus.notify(new Notification(NOTIFICATION_GROUPID,
-                                "DFormat error.", output,
-                                NotificationType.ERROR), project);
+
+                            showNotification("DFormat error.", output, NotificationType.ERROR, null, project);
                             return;
                         }
                         return;
@@ -125,14 +138,15 @@ public class DFormatAction extends AnAction implements DumbAware {
                                     }
                                 }, NOTIFICATION_TITLE, "", document);
 
-                                Notifications.Bus.notify(new Notification(NOTIFICATION_GROUPID, NOTIFICATION_TITLE,
+                                showNotification(NOTIFICATION_TITLE,
                                     psiFile.getName() + " formatted with DFormat.",
-                                    NotificationType.INFORMATION), project);
+                                    NotificationType.INFORMATION, null, project);
 
                             } catch (final Exception ex) {
-                                Notifications.Bus.notify(new Notification(NOTIFICATION_GROUPID,
-                                    "Formatting " + psiFile.getName() + "  with DFormat failed.", ExceptionUtil.getUserStackTrace(ex, LOG),
-                                    NotificationType.ERROR), project);
+                                showNotification("Formatting " + psiFile.getName() + "  with DFormat failed.",
+                                    ExceptionUtil.getUserStackTrace(ex, LOG),
+                                    NotificationType.ERROR, null, project);
+
                                 LOG.error(ex);
                             }
                         }
@@ -141,10 +155,21 @@ public class DFormatAction extends AnAction implements DumbAware {
             });
             handler.startNotify();
         } catch (final Exception ex) {
-            Notifications.Bus.notify(new Notification(NOTIFICATION_GROUPID,
-                "Formatting " + psiFile.getName() + " with DFormat failed", ExceptionUtil.getUserStackTrace(ex, LOG),
-                NotificationType.ERROR), project);
+            showNotification("Formatting " + psiFile.getName() + " with DFormat failed",
+                ExceptionUtil.getUserStackTrace(ex, LOG),
+                NotificationType.ERROR, null, project);
+
             LOG.error(ex);
         }
+    }
+
+    private void showNotification(@NotNull final String title,
+                                  @NotNull final String content,
+                                  @NotNull final NotificationType type,
+                                  @Nullable final NotificationListener listener,
+                                  @Nullable final Project project) {
+        Notifications.Bus.notify(
+            new Notification(NOTIFICATION_GROUPID, title, content, type, listener),
+            project);
     }
 }
