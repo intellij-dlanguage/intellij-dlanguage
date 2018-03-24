@@ -16,7 +16,7 @@ before_install:
   - sudo wget http://master.dl.sourceforge.net/project/d-apt/files/d-apt.list -O /etc/apt/sources.list.d/d-apt.list
   - wget -qO - https://dlang.org/d-keyring.gpg | sudo apt-key add -
   - sudo apt-get update -qq
-  - sudo apt-get install -qq --force-yes dmd-bin dub dcd dfix dfmt dscanner
+  - sudo apt-get install -qq --force-yes dmd-bin dub
 
 env:
   global:
@@ -26,8 +26,8 @@ jobs:
   include:
     - stage: Build and Test
       env: ORG_GRADLE_PROJECT_ideaVersion=LATEST-TRUNK-SNAPSHOT
-    - env: ORG_GRADLE_PROJECT_ideaVersion=181.3986.9
-    - env: ORG_GRADLE_PROJECT_ideaVersion=2017.3.4
+    - env: ORG_GRADLE_PROJECT_ideaVersion=181.4203.519
+    - env: ORG_GRADLE_PROJECT_ideaVersion=2017.3.5
     - env: ORG_GRADLE_PROJECT_ideaVersion=2017.3
     - stage: Test Coverage
       script: ./gradlew cobertura coveralls
