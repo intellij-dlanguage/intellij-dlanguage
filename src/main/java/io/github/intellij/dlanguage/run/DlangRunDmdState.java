@@ -18,6 +18,7 @@ import com.intellij.openapi.module.Module;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.util.Key;
+import com.intellij.openapi.util.text.StringUtil;
 import io.github.intellij.dlanguage.run.exception.NoSourcesException;
 import io.github.intellij.dlanguage.DlangSdkType;
 import io.github.intellij.dlanguage.run.exception.ModuleNotFoundException;
@@ -25,6 +26,7 @@ import io.github.intellij.dlanguage.run.exception.NoValidDlangSdkFound;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.charset.Charset;
+import java.nio.file.Paths;
 import java.util.List;
 
 public class DlangRunDmdState extends CommandLineState implements ProcessListener {
@@ -94,10 +96,18 @@ public class DlangRunDmdState extends CommandLineState implements ProcessListene
             final DlangSdkType dlangSdkType = DlangSdkType.class.cast(sdk.getSdkType());
             final List<String> dmdParameters = DlangDmdConfigToArgsConverter.getDmdParameters(config, module);
 
+            final String dmdPath = dlangSdkType.getDmdPath(sdk);
+            if (StringUtil.isEmptyOrSpaces(dmdPath)) {
+                throw new ExecutionException("DMD executable is not specified");
+            }
+            if (!Paths.get(dmdPath).toFile().canExecute()) {
+                throw new ExecutionException("DMD is not configured correctly");
+            }
+
             final GeneralCommandLine cmd = new GeneralCommandLine()
                 .withWorkDirectory(config.getProject().getBasePath())
                 .withCharset(Charset.defaultCharset())
-                .withExePath(dlangSdkType.getDmdPath(sdk))
+                .withExePath(dmdPath)
                 .withParameters(dmdParameters);
 
             LOG.debug(String.format("dmd command: %s", cmd.getCommandLineString()));
