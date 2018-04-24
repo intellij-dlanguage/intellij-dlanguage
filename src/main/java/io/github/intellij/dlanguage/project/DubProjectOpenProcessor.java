@@ -18,7 +18,6 @@ import javax.swing.*;
  * Used when opening a dub project within the IDE
  */
 public class DubProjectOpenProcessor extends ProjectOpenProcessorBase<DubProjectImportBuilder> {
-
     private static final Logger LOG = Logger.getInstance(DubProjectOpenProcessor.class.getName());
 
     public DubProjectOpenProcessor(@NotNull final DubProjectImportBuilder builder) {
@@ -27,7 +26,7 @@ public class DubProjectOpenProcessor extends ProjectOpenProcessorBase<DubProject
 
     @Nullable
     public String[] getSupportedExtensions() {
-        return new String[] {"dub.json","dub.sdl"};
+        return CLionDubProjectOpenProcessor.SUPPORTED_FILES;
     }
 
     @Nullable

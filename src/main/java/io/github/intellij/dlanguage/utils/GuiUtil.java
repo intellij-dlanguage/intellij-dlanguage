@@ -1,11 +1,13 @@
 package io.github.intellij.dlanguage.utils;
 
-import com.intellij.openapi.externalSystem.util.ExternalSystemUiUtil;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.ui.TextAccessor;
 import com.intellij.ui.TextFieldWithHistory;
+import com.intellij.util.ui.GridBag;
+import com.intellij.util.ui.JBUI;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,14 +34,14 @@ public class GuiUtil {
         // Add elements to Panel.
         final JPanel subPanel = new JPanel(new GridBagLayout());
         subPanel.add(new JLabel(tool + " executable path:"));
-        subPanel.add(tf, ExternalSystemUiUtil.getFillLineConstraints(0));
+        subPanel.add(tf, getFillLineConstraints());
         settings.add(subPanel, constraints);
 
         return tf;
     }
 
     public static TextFieldWithBrowseButton createExecutableOption(final JPanel settings, final String tool) {
-        return createExecutableOption(settings, tool, ExternalSystemUiUtil.getFillLineConstraints(0));
+        return createExecutableOption(settings, tool, getFillLineConstraints());
     }
 
     /**
@@ -57,14 +59,14 @@ public class GuiUtil {
         // Add elements to Panel.
         final JPanel subPanel = new JPanel(new GridBagLayout());
         subPanel.add(new JLabel(labelText + ':'));
-        subPanel.add(tf, ExternalSystemUiUtil.getFillLineConstraints(0));
+        subPanel.add(tf, getFillLineConstraints());
         settings.add(subPanel, constraints);
 
         return tf;
     }
 
     public static TextFieldWithHistory createTextfield(final JPanel settings, final String labelText) {
-        return createTextfield(settings, labelText, ExternalSystemUiUtil.getFillLineConstraints(0));
+        return createTextfield(settings, labelText, getFillLineConstraints());
     }
 
     /**
@@ -80,14 +82,14 @@ public class GuiUtil {
         // Add elements to Panel.
         final JPanel subPanel = new JPanel(new GridBagLayout());
         subPanel.add(new JLabel(tool + " version:"));
-        subPanel.add(tf, ExternalSystemUiUtil.getFillLineConstraints(0));
+        subPanel.add(tf, getFillLineConstraints());
         settings.add(subPanel, constraints);
 
         return tf;
     }
 
     public static JLabel createDisplayVersion(final JPanel settings, final String tool) {
-        return createDisplayVersion(settings, tool, ExternalSystemUiUtil.getFillLineConstraints(0));
+        return createDisplayVersion(settings, tool, getFillLineConstraints());
     }
 
     /**
@@ -105,7 +107,7 @@ public class GuiUtil {
     }
 
     public static JCheckBox createCheckBoxOption(final JPanel settings, final String text) {
-        return createCheckBoxOption(settings, text, ExternalSystemUiUtil.getFillLineConstraints(0));
+        return createCheckBoxOption(settings, text, getFillLineConstraints());
     }
 
     public static void addFolderListener(final TextFieldWithBrowseButton textField, final String executable) {
@@ -128,4 +130,14 @@ public class GuiUtil {
         button.addActionListener(createApplyPathAction(textField, executable));
     }
 
+    @NotNull
+    private static GridBag getFillLineConstraints() {
+        final int INSETS = 5;
+        return new GridBag().weightx(1)
+            .coverLine()
+            .fillCellHorizontally()
+            .anchor(GridBagConstraints.WEST)
+            .insets(JBUI.insets(INSETS, INSETS + INSETS, 0, INSETS));
+    }
+    
 }

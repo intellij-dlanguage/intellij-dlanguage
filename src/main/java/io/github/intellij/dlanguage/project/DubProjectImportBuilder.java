@@ -11,8 +11,6 @@ import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.module.ModuleWithNameAlreadyExists;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.projectRoots.Sdk;
-import com.intellij.openapi.projectRoots.impl.SdkConfigurationUtil;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
 import com.intellij.openapi.util.InvalidDataException;
@@ -21,9 +19,9 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.packaging.artifacts.ModifiableArtifactModel;
 import com.intellij.projectImport.ProjectImportBuilder;
-import io.github.intellij.dlanguage.module.DlangDubModuleBuilder;
 import io.github.intellij.dlanguage.DlangSdkType;
 import io.github.intellij.dlanguage.icons.DlangIcons;
+import io.github.intellij.dlanguage.module.DlangDubModuleBuilder;
 import io.github.intellij.dlanguage.utils.DToolsNotificationListener;
 import org.jdom.JDOMException;
 import org.jetbrains.annotations.NotNull;
@@ -32,7 +30,6 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,7 +54,7 @@ public class DubProjectImportBuilder extends ProjectImportBuilder<DubPackage> {
     @NotNull
     @Override
     public String getName() {
-        return "Dub";
+        return CLionDubProjectOpenProcessor.NAME;
     }
 
     @Override
@@ -160,22 +157,7 @@ public class DubProjectImportBuilder extends ProjectImportBuilder<DubPackage> {
     }
 
     private void commitSdk(final Project project) {
-        ProjectRootManager.getInstance(project).setProjectSdk(findOrCreateSdk());
-    }
-
-    private Sdk findOrCreateSdk() {
-        final DlangSdkType sdkType = DlangSdkType.getInstance();
-
-        final Comparator<Sdk> sdkComparator = (sdk1, sdk2) -> {
-            if (sdk1.getSdkType() == sdkType) {
-                return -1;
-            } else if (sdk2.getSdkType() == sdkType) {
-                return 1;
-            } else {
-                return 0;
-            }
-        };
-        return SdkConfigurationUtil.findOrCreateSdk(sdkComparator, sdkType);
+        ProjectRootManager.getInstance(project).setProjectSdk(DlangSdkType.findOrCreateSdk());
     }
 
     public static class Parameters {

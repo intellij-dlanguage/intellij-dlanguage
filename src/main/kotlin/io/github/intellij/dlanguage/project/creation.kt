@@ -6,6 +6,8 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.projectRoots.impl.SdkConfigurationUtil
+import com.intellij.openapi.roots.ProjectRootManager
 import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.wm.impl.welcomeScreen.AbstractActionWithPanel
@@ -16,6 +18,7 @@ import com.intellij.platform.ProjectGeneratorPeer
 import com.intellij.ui.components.JBPanel
 import com.intellij.util.PlatformUtils
 import com.intellij.util.ui.components.BorderLayoutPanel
+import io.github.intellij.dlanguage.DlangSdkType
 import io.github.intellij.dlanguage.icons.DlangIcons
 import io.github.intellij.dlanguage.project.ui.DmdCompilerComboBox
 import io.github.intellij.dlanguage.project.ui.DubInitCheckBox
@@ -74,22 +77,7 @@ class DlangProjectGenerator : DirectoryProjectGeneratorBase<Any>(), CustomStepPr
     }
 
     override fun generateProject(project: Project, baseDir: VirtualFile, settings: Any, module: Module) {
-//        val sdkType = DlangSdkType.getInstance()
-//
-//        val sdkComparator: Comparator<Sdk> = Comparator({ sdk1: Sdk, sdk2: Sdk ->
-//            when (sdkType) {
-//                sdk1.sdkType -> -1
-//                sdk2.sdkType -> 1
-//                else -> 0
-//            }
-//        })
-
-        //SdkConfigurationUtil.configureDirectoryProjectSdk(project, sdkComparator, sdkType)
-//        val dmd: Sdk? = SdkConfigurationUtil.findOrCreateSdk(sdkComparator, sdkType)
-//
-//        ApplicationManager.getApplication().run {
-//            ProjectRootManager.getInstance(project).projectSdk = dmd
-//        }
+        SdkConfigurationUtil.setDirectoryProjectSdk(project, DlangSdkType.findOrCreateSdk())
 
         val platformPrefix = PlatformUtils.getPlatformPrefix()
         when(platformPrefix) {
@@ -100,18 +88,7 @@ class DlangProjectGenerator : DirectoryProjectGeneratorBase<Any>(), CustomStepPr
                 // create a cmake file. The LDC project has a good example of using cmake with D:
                 // https://github.com/ldc-developers/ldc
                 ApplicationManager.getApplication().runWriteAction {
-                    baseDir.createChildDirectory(this, "src")
-                    baseDir.createChildData(this, "src/app.d")
-                    val cmakeList = baseDir.createChildData(this, "CMakeLists.txt")
-                    VfsUtil.saveText(cmakeList, """
-                        |cmake_minimum_required(VERSION 2.8)
-                        |
-                        |project(${project.name})
-                        |
-                        |file(GLOB SOURCES "src/*.d")
-                        |
-                        |add_executable(${project.name} ${"$"}{SOURCES})""".trimMargin()
-                    )
+                    baseDir.createChildDirectory(this, "src").createChildData(this, "app.d")
                 }
             }
             PlatformUtils.RIDER_PREFIX-> log.info("we have Rider")

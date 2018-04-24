@@ -4,6 +4,9 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <directoryProjectGenerator implementation="io.github.intellij.dlanguage.project.DlangProjectGenerator"/>
+
+        <projectOpenProcessor id="DubProjectOpenProcessor"
+                              implementation="io.github.intellij.dlanguage.project.CLionDubProjectOpenProcessor" order="first"/>
     </extensions>
 
 </idea-plugin>

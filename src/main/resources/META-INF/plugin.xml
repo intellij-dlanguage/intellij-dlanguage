@@ -91,11 +91,6 @@
         <projectSdkSetupValidator implementation="io.github.intellij.dlanguage.DLangProjectDmdSetupValidator" />
         <runConfigurationProducer implementation="io.github.intellij.dlanguage.run.DlangRunDubConfigurationProducer"/>
 
-        <!-- project open and import -->
-        <projectImportProvider implementation="io.github.intellij.dlanguage.project.DubProjectImportProvider"/>
-        <projectImportBuilder implementation="io.github.intellij.dlanguage.project.DubProjectImportBuilder"/>
-        <projectOpenProcessor id="DubProjectOpenProcessor" implementation="io.github.intellij.dlanguage.project.DubProjectOpenProcessor"/>
-
         <!-- module -->
         <internalFileTemplate name="D Language Module"/>
         <moduleType id="DLANGUAGE_MODULE" implementationClass="io.github.intellij.dlanguage.module.DlangModuleType"/>

@@ -89,6 +89,13 @@ public class DlangDubModuleBuilder extends DlangModuleBuilder {
         return sourcePaths;
     }
 
+    public void addSourcePath(final Pair<String, String> sourcePathInfo) {
+        if (sourcePaths == null) {
+            sourcePaths = new ArrayList<>();
+        }
+        sourcePaths.add(sourcePathInfo);
+    }
+
     public void setDubOptions(final Map<String, String> options) {
         this.dubOptions = options;
     }
