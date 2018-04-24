@@ -14,7 +14,7 @@
     ]]></description>
 
     <change-notes><![CDATA[
-        <b>v1.16</b><br/>
+        <b>v1.16 - v1.16.2</b><br/>
         <ul>
             <li>Compatibility IntelliJ 2018.1</li>
             <li>Processing D libraries now takes place in the background</li>
