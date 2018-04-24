@@ -27,22 +27,21 @@ jobs:
     - stage: Build and Test
       env: ORG_GRADLE_PROJECT_ideaVersion=LATEST-TRUNK-SNAPSHOT
     - env: ORG_GRADLE_PROJECT_ideaVersion=2018.1.2
-      #- env: ORG_GRADLE_PROJECT_ideaVersion=2018.1.1
-    - env: ORG_GRADLE_PROJECT_ideaVersion=2017.3.5
+    - env: ORG_GRADLE_PROJECT_ideaVersion=2018.1.1
     - stage: Test Coverage
       script: ./gradlew cobertura coveralls
     - stage: Deploy EAP
       script: skip
-      env: ORG_GRADLE_PROJECT_ideaVersion=2017.3
+      env: ORG_GRADLE_PROJECT_ideaVersion=2018.1
       deploy:
         provider: script
         skip_cleanup: true
-        script: ORG_GRADLE_PROJECT_publishChannels=eap ORG_GRADLE_PROJECT_version=1.16.2-eap$TRAVIS_BUILD_NUMBER ./gradlew :publishPlugin
+        script: ORG_GRADLE_PROJECT_publishChannels=eap ORG_GRADLE_PROJECT_version=1.17-eap$TRAVIS_BUILD_NUMBER ./gradlew :publishPlugin
         on:
           branch: develop
     - stage: Deploy new Release
       script: skip
-      env: ORG_GRADLE_PROJECT_ideaVersion=2017.3
+      env: ORG_GRADLE_PROJECT_ideaVersion=2018.1
       deploy:
         provider: script
         skip_cleanup: true
