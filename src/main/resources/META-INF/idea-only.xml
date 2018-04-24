@@ -9,6 +9,9 @@
         <moduleBuilder id="DLangDubModuleBuilder"
                        builderClass="io.github.intellij.dlanguage.module.DlangDubModuleBuilder"/>
 
+        <projectImportProvider implementation="io.github.intellij.dlanguage.project.DubProjectImportProvider"/>
+        <projectImportBuilder implementation="io.github.intellij.dlanguage.project.DubProjectImportBuilder"/>
+        <projectOpenProcessor id="DubProjectOpenProcessor" implementation="io.github.intellij.dlanguage.project.DubProjectOpenProcessor"/>
     </extensions>
 
 </idea-plugin>

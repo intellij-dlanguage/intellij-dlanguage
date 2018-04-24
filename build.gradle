@@ -101,6 +101,8 @@ allprojects {
         pluginName 'intellij-dlanguage'
         version ideaVersion
         updateSinceUntilBuild false
+        // uncomment to test/run/debug the plugin with CLion
+        //alternativeIdePath '<path to>/CLion.app'
 
         publishPlugin {
             username System.getenv('SB_JETBRAINS_USERNAME')
