@@ -71,8 +71,9 @@ public class DlangSdkType extends SdkType {
         } else if (SystemInfo.isMac) {
             DEFAULT_DMD_PATHS = new File[] {
                 new File("/usr/local/opt/dmd"),
-                new File("/usr/local/bin")
-            };
+                new File("/usr/local/bin"),
+                new File("/opt/local/bin")
+                };
             DEFAULT_DOCUMENTATION_PATHS = new File[]{};
             DEFAULT_PHOBOS_PATHS = new File[] {
                 new File("/Library/D/dmd/src/phobos")
@@ -135,12 +136,18 @@ public class DlangSdkType extends SdkType {
     @Nullable
     @Override
     public String suggestHomePath() {
-        for (File f : DEFAULT_DMD_PATHS) {
+        File found = null;
+        for (final File f : DEFAULT_DMD_PATHS) {
             if (f.exists()) {
-                return f.getAbsolutePath();
-            }
+                if (isValidSdkHome(f.getPath())) {
+                  found = f;
+                  break;
+                } else if (found == null) {
+                  found = f;
+                }
+            } 
         }
-        return null;
+        return found == null ? null : found.getAbsolutePath();
     }
 
     /* When user set up DMD SDK path this method checks if specified path contains DMD compiler executable. */
