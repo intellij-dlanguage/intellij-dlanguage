@@ -48,7 +48,11 @@ public class DErrorReporter extends ErrorReportSubmitter {
             Sentry.getContext().addExtra("Additional info:", additionalInfo);
             try {
                 final PluginId pluginId = IdeErrorsDialog.findPluginId(event.getThrowable());
-                Sentry.getContext().addExtra("plugin id", pluginId.getIdString());
+
+                if(pluginId != null) {
+                    Sentry.getContext().addExtra("plugin id", pluginId.getIdString());
+                }
+
                 final GitHubErrorBean errorBean = new GitHubErrorBean(event.getThrowable(), IdeaLogger.ourLastActionId);
                 final LinkedHashMap<String, String> keyValuePairs = IdeaInformationProxy.getKeyValuePairs(errorBean, ApplicationManager.getApplication(),
                     (ApplicationInfoEx) ApplicationInfo.getInstance(),
@@ -56,19 +60,15 @@ public class DErrorReporter extends ErrorReportSubmitter {
                 for (final String key : keyValuePairs.keySet()) {
                     Sentry.getContext().addExtra(key, keyValuePairs.get(key));
                 }
-
             } catch (final Exception e) {
-                Sentry.getContext().addExtra("gettting plugin info failed", e);
+                Sentry.getContext().addExtra("getting plugin info failed", e);
             }
 
-            try {
-                Sentry.capture(event.getThrowable());
-            } catch (final Exception e) {
-                return false;
-            }
+            ApplicationManager
+                .getApplication()
+                .invokeLater(() -> Sentry.capture(event.getThrowable()));
         }
         return true;
-
 
     }
 }
