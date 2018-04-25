@@ -79,19 +79,28 @@ class DlangProjectGenerator : DirectoryProjectGeneratorBase<Any>(), CustomStepPr
     override fun generateProject(project: Project, baseDir: VirtualFile, settings: Any, module: Module) {
         SdkConfigurationUtil.setDirectoryProjectSdk(project, DlangSdkType.findOrCreateSdk())
 
-        val platformPrefix = PlatformUtils.getPlatformPrefix()
-        when(platformPrefix) {
-            PlatformUtils.APPCODE_PREFIX -> log.info("we have AppCode")
-            PlatformUtils.CLION_PREFIX -> {
-                log.info("we have CLion")
+//        val platformPrefix = PlatformUtils.getPlatformPrefix()
+//        when(platformPrefix) {
+//            PlatformUtils.APPCODE_PREFIX -> log.info("we have AppCode")
+//            PlatformUtils.CLION_PREFIX -> log.info("we have CLion")
+//            PlatformUtils.RIDER_PREFIX-> log.info("we have Rider")
+//        }
 
-                // create a cmake file. The LDC project has a good example of using cmake with D:
-                // https://github.com/ldc-developers/ldc
-                ApplicationManager.getApplication().runWriteAction {
-                    baseDir.createChildDirectory(this, "src").createChildData(this, "app.d")
-                }
-            }
-            PlatformUtils.RIDER_PREFIX-> log.info("we have Rider")
+        ApplicationManager.getApplication().runWriteAction {
+            val srcFile = baseDir
+                .createChildDirectory(this, "src")
+                .createChildData(this, "app.d")
+
+            VfsUtil.saveText(srcFile, """
+                        |module ${project.name};
+                        |import std.stdio;
+                        |
+                        |void main(string[] args) {
+                        |    // todo
+                        |}
+                        |
+                        |""".trimMargin()
+            )
         }
     }
 
