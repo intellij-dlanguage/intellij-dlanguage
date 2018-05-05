@@ -31,7 +31,7 @@ class DubBuildSourceFileFilter(val project: Project) : Filter {
 
                 return Filter.Result(entireLength - line.length, (entireLength - line.length) + end,
                     DlangSourceFileHyperlink(virtualFile, project, lineColumn[0] - 1, lineColumn[1]),
-                    TextAttributes(Color(40, 30, 230), null, null, EffectType.BOLD_LINE_UNDERSCORE, Font.ITALIC)
+                    TextAttributes(Color(39, 89, 230), null, null, EffectType.BOLD_LINE_UNDERSCORE, Font.ITALIC)
                 )
             }
         }
