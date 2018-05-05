@@ -129,7 +129,7 @@ public class DlangRunDubState extends CommandLineState {
             if (config.isCbCoverage()) {
                 cmd.addParameter("--coverage");
             }
-            if (config.getTfMainFile() != null) {
+            if (StringUtil.isNotEmpty(config.getTfMainFile())) {
                 cmd.addParameter("--main-file");
                 cmd.addParameter(config.getTfMainFile());
             }
