@@ -14,9 +14,9 @@
     ]]></description>
 
     <change-notes><![CDATA[
-	<b>v1.17</b><br/>
+	    <b>v1.17</b><br/>
         <ul>
-            <li>CLion support</li>
+            <li>added experimental CLion support</li>
         </ul>
         <b>v1.16 - v1.16.2</b><br/>
         <ul>

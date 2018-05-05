@@ -11,7 +11,7 @@ buildscript {
 }
 
 plugins {
-    id 'org.jetbrains.intellij' version '0.2.18'
+    id 'org.jetbrains.intellij' version '0.3.1'
     id 'net.saliman.cobertura' version '2.5.1'
     id 'com.github.kt3k.coveralls' version '2.8.1'
 }
@@ -150,5 +150,6 @@ idea {
 compileKotlin {
     kotlinOptions {
         apiVersion = "1.2"
+        jvmTarget = "1.8"
     }
 }
