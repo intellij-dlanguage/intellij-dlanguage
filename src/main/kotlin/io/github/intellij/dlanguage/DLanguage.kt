@@ -9,6 +9,7 @@ import com.intellij.lexer.FlexAdapter
 import com.intellij.lexer.Lexer
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.project.DumbService
+import com.intellij.openapi.project.IndexNotReadyException
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.roots.ProjectRootManager
 import com.intellij.openapi.roots.ui.configuration.ProjectSettingsService
@@ -44,8 +45,9 @@ class DLangProjectDmdSetupValidator : ProjectSdkSetupValidator {
     override fun isApplicableFor(project: Project, file: VirtualFile): Boolean {
         if (DlangFileType.INSTANCE != file.fileType) return false
         val projectSdk = ProjectRootManager.getInstance(project).projectSdk
-        if (projectSdk == null)
+        if (projectSdk == null) {
             return true
+        }
         val sdkType = projectSdk.sdkType as? DlangSdkType ?: return true
         if (!sdkType.isValidSdkHome(projectSdk.homePath)) {
             return true
@@ -82,12 +84,19 @@ class DLangProjectDmdSetupValidator : ProjectSdkSetupValidator {
         Unit.apply { ProjectSettingsService.getInstance(project).openProjectSettings() }
 
     override fun getErrorMessage(project: Project, file: VirtualFile): String? {
-        if (cannotFindObjectDotD(project)) {
-            return DlangBundle.message("d.ui.dmd.object.path.not.set")
+        try {
+            if (cannotFindObjectDotD(project)) {
+                return DlangBundle.message("d.ui.dmd.object.path.not.set")
+            }
+            if (missingAnyPhobosFiles(project)) {
+                return DlangBundle.message("d.ui.dmd.phobos.path.not.set") + missingPhobosModules(project).foldRight("", { s: String, acc: String -> acc + " " + s })
+            }
+        } catch (e: IndexNotReadyException) {
+            //todo: this try/catch block is a bit of a kludge, at some point we should roll our own EditorNotifications.Provider<EditorNotificationPanel>()
+            // https://github.com/intellij-dlanguage/intellij-dlanguage/issues/402
+            // https://intellij-support.jetbrains.com/hc/en-us/community/posts/360000094950
         }
-        if (missingAnyPhobosFiles(project)) {
-            return DlangBundle.message("d.ui.dmd.phobos.path.not.set") + missingPhobosModules(project).foldRight("", { s: String, acc: String -> acc + " " + s })
-        }
+
         return DlangBundle.message("d.ui.dmd.path.not.set")
     }
 }
