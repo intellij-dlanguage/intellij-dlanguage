@@ -21,10 +21,12 @@ import com.intellij.openapi.progress.Task
 import com.intellij.openapi.progress.impl.BackgroundableProcessIndicator
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.roots.LibraryOrderEntry
 import com.intellij.openapi.roots.ModifiableModelsProvider
 import com.intellij.openapi.roots.ModuleRootModificationUtil
 import com.intellij.openapi.roots.OrderRootType
 import com.intellij.openapi.roots.impl.OrderEntryUtil
+import com.intellij.openapi.roots.libraries.Library
 import com.intellij.openapi.roots.libraries.LibraryTablesRegistrar
 import com.intellij.openapi.ui.popup.JBPopupFactory
 import com.intellij.openapi.util.Key
@@ -33,6 +35,7 @@ import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.vfs.VirtualFileManager
 import com.intellij.ui.components.JBList
+import com.intellij.util.Consumer
 import io.github.intellij.dlanguage.icons.DlangIcons
 import io.github.intellij.dlanguage.module.DlangModuleType
 import io.github.intellij.dlanguage.project.DubConfigurationParser
@@ -99,6 +102,16 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
             //todo needs build/fetch before adding libs, also needs to keep track of libs
 
             // remove all existing libs
+            ModuleRootModificationUtil.updateModel(module, { model ->
+                model.orderEntries
+                    .filterIsInstance<LibraryOrderEntry>()
+                    .forEach({
+                        it.library?.let {
+                            model.moduleLibraryTable.removeLibrary(it)
+                        }
+                        model.removeOrderEntry(it)
+                    })
+            })
             //        removeDLibs(module, project);//this is not necessary since intellij filters out duplicate libraries.
 
             // ask dub for required libs
