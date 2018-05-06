@@ -52,11 +52,15 @@ class DLangProjectDmdSetupValidator : ProjectSdkSetupValidator {
         if (!sdkType.isValidSdkHome(projectSdk.homePath)) {
             return true
         }
-        if (cannotFindObjectDotD(project)) {
-            return true
-        }
-        if (missingAnyPhobosFiles(project))
-            return true
+        try {
+            if (cannotFindObjectDotD(project)) {
+                return true
+            }
+            if (missingAnyPhobosFiles(project)) {
+                return true
+            }
+        } catch (e: IndexNotReadyException) {}
+
         return false
     }
 
