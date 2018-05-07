@@ -103,6 +103,11 @@ allprojects {
         updateSinceUntilBuild false
         // uncomment to test/run/debug the plugin with CLion
         //alternativeIdePath '<path to>/CLion.app'
+        //alternativeIdePath '%HOME%\\AppData\\Local\\JetBrains\\Toolbox\\apps\\CLion\\ch-0\\181.4668.70'
+
+        runIde {
+            jbreVersion null
+        }
 
         publishPlugin {
             username System.getenv('SB_JETBRAINS_USERNAME')
