@@ -322,8 +322,8 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
             this.publisher = topic == null ? null : project.getMessageBus().syncPublisher(topic);
 
             this.propertyFields = Arrays.asList(
-                new PropertyField(key.pathKey, pathField),
-                new PropertyField(key.flagsKey, flagsField));
+                new PropertyField(key.getPathKey(), pathField),
+                new PropertyField(key.getFlagsKey(), flagsField));
 
             GuiUtil.addFolderListener(pathField, command);
             GuiUtil.addApplyPathAction(autoFindButton, pathField, command);

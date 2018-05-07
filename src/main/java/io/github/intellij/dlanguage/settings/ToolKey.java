@@ -1,7 +1,6 @@
 package io.github.intellij.dlanguage.settings;
 
 import com.intellij.ide.util.PropertiesComponent;
-import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,12 +17,20 @@ public class ToolKey {
     public static final ToolKey DFIX_KEY = new ToolKey("dfix");
     public static final ToolKey GDB_KEY = new ToolKey("gdb");
 
-    public final String pathKey;
-    public final String flagsKey;
+    private final String pathKey;
+    private final String flagsKey;
 
-    public ToolKey(final String name) {
+    private ToolKey(@NotNull final String name) {
         this.pathKey = name + "Path";
         this.flagsKey = name + "Flags";
+    }
+
+    public String getPathKey() {
+        return pathKey;
+    }
+
+    public String getFlagsKey() {
+        return flagsKey;
     }
 
     @Nullable
