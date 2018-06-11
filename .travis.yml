@@ -26,7 +26,7 @@ jobs:
   include:
     - stage: Build and Test
       env: ORG_GRADLE_PROJECT_ideaVersion=LATEST-TRUNK-SNAPSHOT
-    - env: ORG_GRADLE_PROJECT_ideaVersion=2018.1.2
+    - env: ORG_GRADLE_PROJECT_ideaVersion=2018.1.4
     - env: ORG_GRADLE_PROJECT_ideaVersion=2018.1.1
     - stage: Test Coverage
       script: ./gradlew cobertura coveralls
