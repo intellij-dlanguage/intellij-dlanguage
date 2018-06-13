@@ -16,7 +16,7 @@
     <change-notes><![CDATA[
 	    <b>v1.17</b><br/>
         <ul>
-            <li>added experimental CLion support</li>
+            <li>added experimental support for AppCode and CLion</li>
         </ul>
         <b>v1.16 - v1.16.2</b><br/>
         <ul>
@@ -50,7 +50,14 @@
     <!--<depends>com.intellij.modules.xml</depends>-->
     <depends>com.intellij.modules.xdebugger</depends>
     <depends optional="true" config-file="idea-only.xml">com.intellij.modules.java</depends>
-    <depends optional="true" config-file="clion-only.xml">com.intellij.modules.clion</depends>
+    <!--<depends optional="true" config-file="idea-ultimate-only.xml">com.intellij.modules.ultimate</depends>-->
+
+    <!-- Both AppCode and CLion use cidr.lang -->
+    <depends optional="true" config-file="clion-only.xml">com.intellij.modules.cidr.lang</depends>
+    <!--<depends optional="true" config-file="clion-only.xml">com.intellij.modules.clion</depends>-->
+    <!--<depends optional="true" config-file="appcode-only.xml">com.intellij.modules.appcode</depends>-->
+    <!--<depends optional="true" config-file="rider-only.xml">com.intellij.modules.rider</depends>-->
+
 
     <extensions defaultExtensionNs="com.intellij">
         <iconProvider id="dlangIconProvider" implementation="io.github.intellij.dlanguage.DlangIconProvider" />
