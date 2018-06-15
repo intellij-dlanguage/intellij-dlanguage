@@ -30,4 +30,14 @@ public class SdkUtil {
     public static boolean isHostOsWindows() {
         return SystemInfo.isWindows;
     }
+
+    public static boolean isWslPath(String posixPath) { return SystemInfo.isWindows && posixPath.startsWith("/mnt/"); }
+
+    public static String translateWslPosixToWindowsPath(String posixPath) {
+        return posixPath.substring(5,6) + ":/" + posixPath.substring(7);
+    }
+
+    public static String translateWslWindowsToPosixPath(String windowsPath) {
+        return "/mnt/" + windowsPath.substring(0,1).toLowerCase() + windowsPath.substring(2).replace("\\", "/");
+    }
 }

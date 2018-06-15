@@ -282,7 +282,9 @@ public class Gdb {
 
 //            String[] goEnv = SdkUtil.getExtendedGoEnv(sdkData, projectDir, "");
 
-            Process process = Runtime.getRuntime().exec(commandLine, new String[]{}, workingDirectoryFile);
+            final ProcessBuilder pb = new ProcessBuilder(commandLine);
+            pb.directory(workingDirectoryFile);
+            final Process process = pb.start();
             InputStream stream = process.getInputStream();
 
             // Save a reference to the process and launch the writer thread

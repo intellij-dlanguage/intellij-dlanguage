@@ -36,6 +36,7 @@ import uk.co.cwspencer.gdb.messages.GdbBreakpoint;
 import uk.co.cwspencer.gdb.messages.GdbErrorEvent;
 import uk.co.cwspencer.gdb.messages.GdbEvent;
 import uk.co.cwspencer.ideagdb.debug.GdbDebugProcess;
+import uk.co.cwspencer.ideagdb.debug.utils.SdkUtil;
 
 import java.util.List;
 
@@ -48,11 +49,13 @@ public class GdbBreakpointHandler extends
         m_breakpoints = new BidirectionalMap<Integer, XLineBreakpoint<GdbBreakpointProperties>>();
     private final Gdb m_gdb;
     private final GdbDebugProcess m_debugProcess;
+    private final boolean m_isWsl;
 
-    public GdbBreakpointHandler(Gdb gdb, GdbDebugProcess debugProcess) {
+    public GdbBreakpointHandler(Gdb gdb, GdbDebugProcess debugProcess, boolean isWsl) {
         super(GdbBreakpointType.class);
         m_gdb = gdb;
         m_debugProcess = debugProcess;
+        m_isWsl = isWsl;
     }
 
     /**
@@ -77,7 +80,12 @@ public class GdbBreakpointHandler extends
                 return;
             }
 
-            String command = "-break-insert -f " + sourcePosition.getFile().getPath() + ":" + (sourcePosition.getLine() + 1);
+            String filePath = sourcePosition.getFile().getPath();
+            if (m_isWsl) {
+                filePath = SdkUtil.translateWslWindowsToPosixPath(filePath);
+            }
+
+            String command = "-break-insert -f " + filePath + ":" + (sourcePosition.getLine() + 1);
             m_gdb.sendCommand(command, new Gdb.GdbEventCallback() {
                 @Override
                 public void onGdbCommandCompleted(GdbEvent event) {

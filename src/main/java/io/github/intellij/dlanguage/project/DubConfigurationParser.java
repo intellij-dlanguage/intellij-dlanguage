@@ -87,7 +87,8 @@ public class DubConfigurationParser {
      * @return true if a path to a dub binary is configured and the project has a dub.sdl or dub.json
      */
     public boolean canUseDub() {
-        final boolean dubPathValid = StringUtil.isNotEmpty(this.dubBinaryPath) && (dubBinaryPath.endsWith("dub") || dubBinaryPath.endsWith("dub.exe"));
+        // For wsl, dub command can have any file name not only dub/dub.exe
+        final boolean dubPathValid = StringUtil.isNotEmpty(this.dubBinaryPath);
 
         final VirtualFile baseDir = project.getBaseDir();
         baseDir.refresh(true, true);

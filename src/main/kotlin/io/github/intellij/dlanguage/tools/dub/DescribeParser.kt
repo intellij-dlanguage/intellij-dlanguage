@@ -77,6 +77,8 @@ class DescribeParserImpl : DescribeParser {
             name = json.asString("name"),
             path = json.asString("path"),
             version = json.asString("version"),
+            targetPath = json.asString("targetPath"),
+            targetFileName = json.asString("targetFileName"),
             description = json.asString("description"),
             copyright = json.asString("copyright"),
             license = json.asString("license"),

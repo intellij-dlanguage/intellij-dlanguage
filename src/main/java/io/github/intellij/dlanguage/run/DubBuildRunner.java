@@ -12,6 +12,11 @@ import com.intellij.execution.ui.RunContentDescriptor;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import io.github.intellij.dlanguage.settings.ToolKey;
+import io.github.intellij.dlanguage.project.DubConfigurationParser;
+import io.github.intellij.dlanguage.project.DubPackage;
+import io.github.intellij.dlanguage.project.DubProject;
+import java.nio.file.Paths;
 
 public class DubBuildRunner extends DefaultProgramRunner {
 
@@ -31,9 +36,20 @@ public class DubBuildRunner extends DefaultProgramRunner {
     protected RunContentDescriptor doExecute(RunProfileState state, ExecutionEnvironment env) throws ExecutionException {
         if (env.getExecutor().getActionName().equals(DefaultDebugExecutor.EXECUTOR_ID)) {
             Project project = env.getProject();
+            String executableFilePath = project.getBasePath().concat("/").concat(project.getName());
+
+            final DubConfigurationParser dubParser = new DubConfigurationParser(project,
+                ToolKey.DUB_KEY.getPath(), false);
+
+            if (dubParser.canUseDub() && dubParser.getDubProject().isPresent()) {
+                final DubProject dubProject = dubParser.getDubProject().get();
+                final DubPackage dubPackage = dubProject.getRootPackage();
+                executableFilePath = Paths.get(
+                    dubPackage.getPath(), dubPackage.getTargetPath(), dubPackage.getTargetFileName()).toString().replace("\\", "/");
+            }
 
             Executor executor = env.getExecutor();
-            return RunUtil.startDebugger(this, state, env, project, executor, project.getBasePath().concat("/").concat(project.getName()));
+            return RunUtil.startDebugger(this, state, env, project, executor, executableFilePath);
         }
         return super.doExecute(state, env);
     }

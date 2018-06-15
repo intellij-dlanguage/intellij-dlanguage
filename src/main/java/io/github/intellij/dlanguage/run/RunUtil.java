@@ -49,16 +49,13 @@ public class RunUtil {
             return null;
         }
 
-        if (SdkUtil.isHostOsWindows()) {
-            execName = execName.concat(".exe");
-        }
-
+        final String executableFilePath = execName;
         final XDebugSession debugSession = XDebuggerManager.getInstance(project).startSession(env,
             new XDebugProcessStarter() {
                 @NotNull
                 @Override
                 public XDebugProcess start(@NotNull XDebugSession session) throws ExecutionException {
-                    return new GdbDebugProcess(project, session, result);
+                    return new GdbDebugProcess(project, session, result, executableFilePath);
                 }
             });
 
@@ -74,8 +71,6 @@ public class RunUtil {
             }
         });
 
-        gdbProcess.sendCommand("file " + execName);
-
         // Send startup commands
         String[] commandsArray = new String[0];//configuration.STARTUP_COMMANDS.split("\\r?\\n");
         for (String command : commandsArray) {
@@ -86,7 +81,7 @@ public class RunUtil {
         }
 
 //        if (configuration.autoStartGdb) {
-        gdbProcess.sendCommand("run");
+        gdbProcess.sendCommand("-exec-run");
 //        }
 
         return debugSession.getRunContentDescriptor();
