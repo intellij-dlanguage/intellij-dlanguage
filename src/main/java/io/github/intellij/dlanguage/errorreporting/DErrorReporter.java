@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
-import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Created by francis on 10/29/2017.
@@ -54,9 +54,13 @@ public class DErrorReporter extends ErrorReportSubmitter {
                 }
 
                 final GitHubErrorBean errorBean = new GitHubErrorBean(event.getThrowable(), IdeaLogger.ourLastActionId);
-                final LinkedHashMap<String, String> keyValuePairs = IdeaInformationProxy.getKeyValuePairs(errorBean, ApplicationManager.getApplication(),
-                    (ApplicationInfoEx) ApplicationInfo.getInstance(),
-                    ApplicationNamesInfo.getInstance(), super.getPluginDescriptor());
+                final Map<String, String> keyValuePairs = IdeaInformationProxy.getKeyValuePairs(
+                                                                                    errorBean,
+                                                                                    ApplicationManager.getApplication(),
+                                                                                    (ApplicationInfoEx) ApplicationInfo.getInstance(),
+                                                                                    ApplicationNamesInfo.getInstance(),
+                                                                                    super.getPluginDescriptor()
+                                                                                );
                 for (final String key : keyValuePairs.keySet()) {
                     Sentry.getContext().addExtra(key, keyValuePairs.get(key));
                 }

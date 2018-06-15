@@ -30,12 +30,13 @@ import com.intellij.openapi.diagnostic.Attachment;
 import com.intellij.openapi.extensions.PluginDescriptor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
-import com.intellij.util.SystemProperties;
+import com.intellij.openapi.util.SystemInfo;
 import io.github.intellij.dlanguage.settings.DLanguageToolsConfigurable;
 import io.github.intellij.dlanguage.settings.ToolKey;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -43,12 +44,22 @@ import java.util.stream.Collectors;
  */
 public class IdeaInformationProxy {
 
-    public static LinkedHashMap<String, String> getKeyValuePairs(final GitHubErrorBean error,
+    /**
+     * To be used by the custom ErrorReportSubmitter to provide anonymised feedback about errors
+     * @param error GitHubErrorBean
+     * @param application Application
+     * @param appInfo ApplicationInfoEx
+     * @param namesInfo ApplicationNamesInfo
+     * @param pluginDescriptor PluginDescriptor
+     * @return a map of info about the IDE and the plugin and the error
+     */
+    @NotNull
+    public static Map<String, String> getKeyValuePairs(final GitHubErrorBean error,
         final Application application,
         final ApplicationInfoEx appInfo,
         final ApplicationNamesInfo namesInfo,
         final PluginDescriptor pluginDescriptor) {
-        final LinkedHashMap<String, String> params = new LinkedHashMap<>(30);
+        final Map<String, String> params = new LinkedHashMap<>(50);
 
         params.put("error.description", error.getDescription());
 
@@ -57,22 +68,50 @@ public class IdeaInformationProxy {
 
         params.put("Plugin Id", pluginDescriptor.getPluginId().getIdString());
 
-        final IdeaPluginDescriptor plugin = PluginManager.getPlugin(pluginDescriptor.getPluginId());
-        if (plugin != null) {
-            params.put("Plugin Name FallBack", plugin.getName());
-            params.put("Plugin Version Fallback", plugin.getVersion());
+        params.putAll(getPluginInfo(appInfo, pluginDescriptor, namesInfo));
+
+        params.put("Last Action", error.getLastAction());
+        params.put("error.message", error.getMessage());
+        params.put("error.stacktrace", error.getStackTrace());
+        params.put("error.hash", error.getExceptionHash());
+
+        for (final Attachment attachment : error.getAttachments()) {
+            params.put("attachment.name", attachment.getName());
+            params.put("attachment.value", attachment.getEncodedBytes());
         }
 
-        params.put("OS Name", SystemProperties.getOsName());
-        params.put("Java version", SystemProperties.getJavaVersion());
-        params.put("Java vm vendor", SystemProperties.getJavaVmVendor());
+        return anonymise(params);
+    }
 
-        params.put("App Name", namesInfo.getProductName());
-        params.put("App Full Name", namesInfo.getFullProductName());
+    /**
+     * @param appInfo an ApplicationInfoEx
+     * @param pluginDescriptor a PluginDescriptor
+     * @param applicationNamesInfo an ApplicationNamesInfo
+     * @return a map of info about the IDE and the plugin that can be used for reporting usage info or errors
+     */
+    @NotNull
+    public static Map<String, String> getPluginInfo(@NotNull final ApplicationInfoEx appInfo,
+                                                    @Nullable final PluginDescriptor pluginDescriptor,
+                                                    @NotNull final ApplicationNamesInfo applicationNamesInfo) {
+        final Map<String, String> params = new HashMap<>();
+
+        params.put("OS Name", SystemInfo.OS_NAME);
+        params.put("Java version", SystemInfo.JAVA_VERSION);
+        params.put("Java vm vendor", SystemInfo.JAVA_VENDOR);
+
+        params.put("App Name", applicationNamesInfo.getProductName());
+        params.put("App Full Name", applicationNamesInfo.getFullProductName());
         params.put("Is EAP", Boolean.toString(appInfo.isEAP()));
         params.put("App Build", appInfo.getBuild().asString());
         params.put("App Version", appInfo.getFullVersion());
-        params.put("Last Action", error.getLastAction());
+
+        if(pluginDescriptor != null) {
+            final IdeaPluginDescriptor plugin = PluginManager.getPlugin(pluginDescriptor.getPluginId());
+            if (plugin != null) {
+                params.put("Plugin Name FallBack", plugin.getName());
+                params.put("Plugin Version Fallback", plugin.getVersion());
+            }
+        }
 
         final String dubPath = ToolKey.DUB_KEY.getPath();
         if (dubPath != null) {
@@ -121,14 +160,11 @@ public class IdeaInformationProxy {
             params.put("DFix Version", DFixVersion);
         }
 
-        params.put("error.message", error.getMessage());
-        params.put("error.stacktrace", error.getStackTrace());
-        params.put("error.hash", error.getExceptionHash());
+        return anonymise(params);
+    }
 
-        for (final Attachment attachment : error.getAttachments()) {
-            params.put("attachment.name", attachment.getName());
-            params.put("attachment.value", attachment.getEncodedBytes());
-        }
+    // remove user name or project name from all values in the map
+    private static Map<String, String> anonymise(@NotNull final Map<String, String> params) {
         final String userName = System.getProperty("user.name");
         final List<String> projects = Arrays.stream(ProjectManager.getInstance().getOpenProjects())
             .map(
@@ -144,7 +180,6 @@ public class IdeaInformationProxy {
                 params.put(key, val);
             }
         }
-
         return params;
     }
 }
