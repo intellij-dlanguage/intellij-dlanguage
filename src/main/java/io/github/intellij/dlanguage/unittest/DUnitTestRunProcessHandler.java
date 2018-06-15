@@ -21,6 +21,7 @@ import com.intellij.openapi.roots.libraries.Library;
 import com.intellij.openapi.roots.libraries.LibraryTable;
 import com.intellij.openapi.roots.libraries.LibraryTablesRegistrar;
 import com.intellij.openapi.util.Key;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VfsUtilCore;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -40,13 +41,7 @@ import io.github.intellij.dlanguage.settings.ToolKey;
 import io.github.intellij.dlanguage.utils.DToolsNotificationListener;
 import java.io.File;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.jetbrains.annotations.NotNull;
@@ -139,10 +134,9 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
         } else {
             // Actually run tests in separate runnable to avoid blocking the GUI
             ApplicationManager.getApplication().executeOnPooledThread(() -> {
-                for (final Object o : testClassToTestMethodNames.entrySet()) {
-                    final Map.Entry pair = (Map.Entry) o;
-                    final String className = (String) pair.getKey();
-                    final Set<String> methodNames = (Set<String>) pair.getValue();
+                for (final Map.Entry<String, Set<String>> pair : testClassToTestMethodNames.entrySet()) {
+                    final String className = pair.getKey();
+                    final Set<String> methodNames = pair.getValue();
 
                     testSuiteStarted(className, methodNames.size());
 
@@ -153,31 +147,31 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
 
                     testSuiteFinished(className, 0);
                 }
-
-                testRunFinished();
             });
         }
 
+        testRunFinished();
     }
 
+    @Nullable
     private String getDUnitPath() {
         final LibraryTable projectLibraryTable = LibraryTablesRegistrar.getInstance().getLibraryTable(project);
 
-        for (final Library lib : projectLibraryTable.getLibraries()) {
-            final String name = lib.getName();
+        final Optional<Library> dunit = Arrays.stream(projectLibraryTable.getLibraries())
+            .filter(lib -> StringUtil.isNotEmpty(lib.getName()) && lib.getName().contains("d-unit-")) // todo: also check for "dunit-" ??
+            .findFirst(); // it's possible for a dependency to be found multiple times
 
-            if (name != null) {
-                if (name.contains("d-unit-")) {
-                    final VirtualFile[] files = lib.getFiles(OrderRootType.CLASSES);
-                    if (files.length > 0) {
-                        return dubImportPath(files[0].getCanonicalPath());
-                    }
-                }
+        if(dunit.isPresent()) {
+            final VirtualFile[] files = dunit.get().getFiles(OrderRootType.CLASSES);
+            if (files.length > 0) {
+                return dubImportPath(files[0].getCanonicalPath());
             }
         }
+
         return null;
     }
 
+    @Nullable
     private String dubImportPath(final String rootPath) {
         final String pathUrl = VirtualFileManager.constructUrl(LocalFileSystem.PROTOCOL, rootPath);
         final VirtualFile file = VirtualFileManager.getInstance().findFileByUrl(pathUrl);
@@ -199,7 +193,7 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
                 return true;
             }
         });
-        return sourcesDir.isEmpty() ? null : rootPath + File.separator + sourcesDir.get(0);
+        return sourcesDir.isEmpty() ? null : rootPath + File.separator + sourcesDir.get(0); // todo: may not need 'File.separator' can prob use / on all platforms
     }
 
 
