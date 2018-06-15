@@ -28,6 +28,7 @@ import com.intellij.icons.AllIcons;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.ui.ColoredTextContainer;
 import com.intellij.ui.SimpleColoredComponent;
 import com.intellij.ui.SimpleTextAttributes;
 import com.intellij.xdebugger.XDebuggerBundle;
@@ -41,6 +42,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import uk.co.cwspencer.gdb.Gdb;
 import uk.co.cwspencer.gdb.messages.*;
+import uk.co.cwspencer.ideagdb.debug.utils.SdkUtil;
 
 import java.io.File;
 
@@ -120,6 +122,11 @@ public class GdbExecutionStackFrame extends XStackFrame {
         }
 
         String path = m_frame.fileAbsolute.replace(File.separatorChar, '/');
+
+        if (SdkUtil.isWslPath(path)) {
+            path = SdkUtil.translateWslPosixToWindowsPath(path);
+        }
+
         VirtualFile file = LocalFileSystem.getInstance().findFileByPath(path);
         if (file == null) {
             return null;
@@ -133,7 +140,7 @@ public class GdbExecutionStackFrame extends XStackFrame {
      *
      * @param component The stack frame visual component.
      */
-    public void customizePresentation(SimpleColoredComponent component) {
+    public void customizePresentation(@NotNull ColoredTextContainer component) {
         if (m_frame.address == null) {
             component.append(XDebuggerBundle.message("invalid.frame"),
                 SimpleTextAttributes.ERROR_ATTRIBUTES);
@@ -172,7 +179,7 @@ public class GdbExecutionStackFrame extends XStackFrame {
         } else {
             String addressStr = "0x" + Long.toHexString(m_frame.address);
             component.append(addressStr, SimpleTextAttributes.GRAY_ITALIC_ATTRIBUTES);
-            component.appendTextPadding(addressStr.length());
+            //component.appendTextPadding(addressStr.length());
         }
         component.setIcon(AllIcons.Debugger.StackFrame);
     }

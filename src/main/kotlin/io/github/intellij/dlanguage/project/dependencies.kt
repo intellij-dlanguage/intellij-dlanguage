@@ -16,6 +16,8 @@ data class DubPackage(
     val name: String,
     val path: String,
     val version: String,
+    val targetPath: String,
+    val targetFileName: String,
     // the following can potentially be empty
     val description: String,
     val copyright: String,

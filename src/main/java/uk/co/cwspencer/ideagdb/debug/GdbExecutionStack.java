@@ -120,6 +120,7 @@ public class GdbExecutionStack extends XExecutionStack {
         if (stackTrace.stack == null || stackTrace.stack.isEmpty()) {
             // No data
             container.addStackFrames(new ArrayList<XStackFrame>(0), true);
+            return;
         }
 
         // Build a list of GdbExecutionStaceFrames

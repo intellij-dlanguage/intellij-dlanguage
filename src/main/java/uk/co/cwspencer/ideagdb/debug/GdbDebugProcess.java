@@ -55,6 +55,7 @@ import uk.co.cwspencer.gdb.gdbmi.GdbMiStreamRecord;
 import uk.co.cwspencer.gdb.messages.*;
 import uk.co.cwspencer.ideagdb.debug.breakpoints.GdbBreakpointHandler;
 import uk.co.cwspencer.ideagdb.debug.breakpoints.GdbBreakpointProperties;
+import uk.co.cwspencer.ideagdb.debug.utils.SdkUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -83,13 +84,13 @@ public class GdbDebugProcess extends XDebugProcess implements GdbListener {
     /**
      * Constructor; launches GDB.
      */
-    public GdbDebugProcess(Project project, XDebugSession session, ExecutionResult result) {
+    public GdbDebugProcess(Project project, XDebugSession session, ExecutionResult result, String execName) {
         super(session);
         m_console = (ConsoleView) result.getExecutionConsole();
-        init(session);
+        init(session, execName);
     }
 
-    private void init(XDebugSession session) {
+    private void init(XDebugSession session, String execName) {
         Project project = session.getProject();
         m_project = project;
         debugSession = session;
@@ -104,8 +105,12 @@ public class GdbDebugProcess extends XDebugProcess implements GdbListener {
         m_gdbConsole.getConsole().print(m_timeFormat.format(new Date()) + " 0> " +
             ToolKey.GDB_KEY.getPath() + " --interpreter=mi2\n", ConsoleViewContentType.USER_INPUT);
 
+        m_gdb.sendCommand("-file-exec-and-symbols " + execName);
+
+        boolean isWsl = SdkUtil.isWslPath(execName);
+
         // Create the breakpoint handler
-        m_breakpointHandler = new GdbBreakpointHandler(m_gdb, this);
+        m_breakpointHandler = new GdbBreakpointHandler(m_gdb, this, isWsl);
 
         // Launch the process
         m_gdb.start();

@@ -79,80 +79,79 @@ public class GdbMiParser2 {
     private static Collection<GdbMiResult> parseFrameLine(String line) {
         Collection<GdbMiResult> result = new ArrayList<GdbMiResult>();
 
-        Pattern p = Pattern.compile("args=\\[");
-        Matcher m = p.matcher(line);
-        Boolean hasArgs = m.find();
-
         String pattern = "\\{" +
-            "(?:level=\"(\\d+)\")?,?" +
-            "(?:addr=\"([^\"]+)\")?,?" +
-            "(?:func=\"([^\"]+)\")?,?";
-
-        if (hasArgs) {
-            pattern += "(?:args=\\[(.*?)\\])?,";
-        }
-
-        pattern += "(?:file=\"([^\"]+)\")?,?" +
-            "(?:fullname=\"([^\"]+)\")?,?" +
-            "(?:line=\"(\\d+)\")?" +
+            "(?:level=\"(?<level>\\d+)\")?,?" +
+            "(?:addr=\"(?<addr>[^\"]+)\")?,?" +
+            "(?:func=\"(?<func>[^\"]+)\")?,?" +
+            "(?:args=(?<args>\\[(.*?)\\]))?,?" +
+            "(?:file=\"(?<file>[^\"]+)\")?,?" +
+            "(?:fullname=\"(?<fullname>[^\"]+)\")?,?" +
+            "(?:line=\"(?<line>\\d+)\")?,?" +
+            "(?:from=\"(?<from>[^\"]+)\")?" +
             "\\}";
 
-        p = Pattern.compile(pattern);
-        m = p.matcher(line);
+        Pattern p = Pattern.compile(pattern);
+        Matcher m = p.matcher(line);
 
         while (m.find()) {
-            Integer matchGroup = 0;
             GdbMiResult subRes = new GdbMiResult("frame");
             GdbMiValue frameVal = new GdbMiValue(GdbMiValue.Type.Tuple);
 
             // level="0"
-            if (m.group(++matchGroup) != null) {
+            if (m.group("level") != null) {
                 GdbMiResult levelVal = new GdbMiResult("level");
                 levelVal.value.type = GdbMiValue.Type.String;
-                levelVal.value.string = m.group(matchGroup);
+                levelVal.value.string = m.group("level");
                 frameVal.tuple.add(levelVal);
             }
 
             // addr="0x0000000000400c57"
-            if (m.group(++matchGroup) != null) {
+            if (m.group("addr") != null) {
                 GdbMiResult addrVal = new GdbMiResult("addr");
                 addrVal.value.type = GdbMiValue.Type.String;
-                addrVal.value.string = m.group(matchGroup);
+                addrVal.value.string = m.group("addr");
                 frameVal.tuple.add(addrVal);
             }
 
             // func="main.main"
-            if (m.group(++matchGroup) != null) {
+            if (m.group("func") != null) {
                 GdbMiResult funcVal = new GdbMiResult("func");
                 funcVal.value.type = GdbMiValue.Type.String;
-                funcVal.value.string = m.group(matchGroup);
+                funcVal.value.string = m.group("func");
                 frameVal.tuple.add(funcVal);
             }
 
-            if (hasArgs && m.group(++matchGroup) != null) {
-                frameVal.tuple.add(parseArgsLine(m.group(matchGroup)));
+            if (m.group("args") != null) {
+                frameVal.tuple.add(parseArgsLine(m.group("args")));
             }
 
-            if (m.group(++matchGroup) != null) {
+            if (m.group("file") != null) {
                 GdbMiResult fileVal = new GdbMiResult("file");
                 fileVal.value.type = GdbMiValue.Type.String;
-                fileVal.value.string = m.group(matchGroup);
+                fileVal.value.string = m.group("file");
                 frameVal.tuple.add(fileVal);
             }
 
-            if (m.group(++matchGroup) != null) {
+            if (m.group("fullname") != null) {
                 GdbMiResult fullnameVal = new GdbMiResult("fullname");
                 fullnameVal.value.type = GdbMiValue.Type.String;
-                fullnameVal.value.string = m.group(matchGroup);
+                fullnameVal.value.string = m.group("fullname");
                 frameVal.tuple.add(fullnameVal);
             }
 
             // line="17"
-            if (m.group(++matchGroup) != null) {
+            if (m.group("line") != null) {
                 GdbMiResult lineVal = new GdbMiResult("line");
                 lineVal.value.type = GdbMiValue.Type.String;
-                lineVal.value.string = m.group(matchGroup);
+                lineVal.value.string = m.group("line");
                 frameVal.tuple.add(lineVal);
+            }
+
+            if (m.group("from") != null) {
+                GdbMiResult fromVal = new GdbMiResult("from");
+                fromVal.value.type = GdbMiValue.Type.String;
+                fromVal.value.string = m.group("from");
+                frameVal.tuple.add(fromVal);
             }
 
             subRes.value = frameVal;
@@ -495,7 +494,8 @@ public class GdbMiParser2 {
             return new String[]{};
         }
 
-        String[] lines = buff.split("\n");
+        // WSL support: GDB on WSL has also \n
+        String[] lines = buff.split("\r?\n");
         List<String> result = new ArrayList<String>();
 
         List<Pattern> p = new ArrayList<Pattern>();
@@ -1230,68 +1230,87 @@ public class GdbMiParser2 {
     private Collection<GdbMiResult> parseVarCreateLine(String line) {
         Collection<GdbMiResult> result = new ArrayList<GdbMiResult>();
 
-        Pattern p = Pattern.compile("(?:thread-id=\"([^\"]+)\"),");
+        boolean hasThreadId = true;
+        boolean hasMore = true;
+
+        String pattern =
+            "(?:name=\"(?<name>[^\"]+)\")," +
+            "(?:numchild=\"(?<numchild>[^\"]+)\")," +
+            "(?:value=\"(?<value>(.*?))\")," +
+            "(?:type=\"(?<type>[^\"]+)\")," +
+            "(?:thread-id=\"(?<threadId>[^\"]+)\")?,?" +
+            "(?:has_more=\"(?<hasMore>[^\"]+)\")";
+
+        Pattern p = Pattern.compile(pattern);
         Matcher m = p.matcher(line);
-        Boolean hasThreadId = m.find();
-
-        String pattern = "(?:name=\"([^\"]+)\")," +
-            "(?:numchild=\"([^\"]+)\")," +
-            "(?:value=\"(.*?)\")," +
-            "(?:type=\"([^\"]+)\"),";
-
-        if (hasThreadId) {
-            pattern += "(?:thread-id=\"([^\"]+)\"),";
-        }
-
-        pattern += "(?:has_more=\"([^\"]+)\")";
-
-        p = Pattern.compile(pattern);
-        m = p.matcher(line);
 
         if (!m.find()) {
-            printUnhandledLine(line);
-            return result;
+            // Alternative pattern for Mago-Mi
+            hasThreadId = false;
+            hasMore = false;
+
+            pattern =
+                "(?:name=\"(?<name>[^\"]+)\")," +
+                "(?:type=\"(?<type>[^\"]+)\")," +
+                "(?:value=\"(?<value>(.*?))\")," +
+                "(?:numchild=\"(?<numchild>[^\"]+)\")";
+
+            p = Pattern.compile(pattern);
+            m = p.matcher(line);
+
+            if (!m.find()) {
+                printUnhandledLine(line);
+                return result;
+            }
         }
 
-        Integer matchGroup = 0;
-
         // name="var1"
-        GdbMiResult nameVal = new GdbMiResult("name");
-        nameVal.value.type = GdbMiValue.Type.String;
-        nameVal.value.string = m.group(++matchGroup);
-        result.add(nameVal);
+        if (m.group("name") != null) {
+            GdbMiResult nameVal = new GdbMiResult("name");
+            nameVal.value.type = GdbMiValue.Type.String;
+            nameVal.value.string = m.group("name");
+            result.add(nameVal);
+        }
 
         // numchild="0"
-        GdbMiResult numChildVal = new GdbMiResult("numchild");
-        numChildVal.value.type = GdbMiValue.Type.String;
-        numChildVal.value.string = m.group(++matchGroup);
-        result.add(numChildVal);
+        if (m.group("numchild") != null) {
+            GdbMiResult numChildVal = new GdbMiResult("numchild");
+            numChildVal.value.type = GdbMiValue.Type.String;
+            numChildVal.value.string = m.group("numchild");
+            result.add(numChildVal);
+        }
 
         // value="false"
-        GdbMiResult valueVal = new GdbMiResult("value");
-        valueVal.value.type = GdbMiValue.Type.String;
-        valueVal.value.string = m.group(++matchGroup);
-        result.add(valueVal);
+        if (m.group("value") != null) {
+            GdbMiResult valueVal = new GdbMiResult("value");
+            valueVal.value.type = GdbMiValue.Type.String;
+            valueVal.value.string = m.group("value");
+            result.add(valueVal);
+        }
 
         // type="bool"
-        GdbMiResult typeVal = new GdbMiResult("type");
-        typeVal.value.type = GdbMiValue.Type.String;
-        typeVal.value.string = m.group(++matchGroup);
-        result.add(typeVal);
+        if (m.group("type") != null) {
+            GdbMiResult typeVal = new GdbMiResult("type");
+            typeVal.value.type = GdbMiValue.Type.String;
+            typeVal.value.string = m.group("type");
+            result.add(typeVal);
+        }
 
-        if (hasThreadId) {
+        if (hasThreadId && m.group("threadId") != null) {
             // thread-id="1"
             GdbMiResult threadIdVal = new GdbMiResult("thread-id");
             threadIdVal.value.type = GdbMiValue.Type.String;
-            threadIdVal.value.string = m.group(++matchGroup);
+            threadIdVal.value.string = m.group("threadId");
             result.add(threadIdVal);
         }
 
         // has_more="0"
-        GdbMiResult hasMoreVal = new GdbMiResult("has_more");
-        hasMoreVal.value.type = GdbMiValue.Type.String;
-        hasMoreVal.value.string = m.group(++matchGroup);
-        result.add(hasMoreVal);
+        if (hasMore && m.group("hasMore") != null) {
+            GdbMiResult hasMoreVal = new GdbMiResult("has_more");
+            hasMoreVal.value.type = GdbMiValue.Type.String;
+            hasMoreVal.value.string = m.group("hasMore");
+            result.add(hasMoreVal);
+        }
 
         return result;
     }
