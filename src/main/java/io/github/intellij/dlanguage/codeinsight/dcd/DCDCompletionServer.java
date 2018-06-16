@@ -181,8 +181,12 @@ public class DCDCompletionServer implements ModuleComponent, ToolChangeListener 
                     final String root = path.replaceAll("bin", "src");
                     compilerSources.add(root + "/phobos");
                     compilerSources.add(root + "/druntime/import");
+                } else if (SystemInfo.isWindows) {
+                    final String root = path.replaceAll("windows/bin", "src");
+                    compilerSources.add(root + "/phobos");
+                    compilerSources.add(root + "/druntime/import");
                 }
-                // add linux and windows here once I know how
+                // add linux here once I know how
             }
         }
         return compilerSources;
