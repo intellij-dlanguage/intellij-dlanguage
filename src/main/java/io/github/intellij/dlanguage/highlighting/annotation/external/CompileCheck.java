@@ -39,6 +39,7 @@ public class CompileCheck {
         final GeneralCommandLine cmd = new GeneralCommandLine()
             .withWorkDirectory(file.getProject().getBasePath())
             .withExePath(dubPath)
+            .withEnvironment("DFLAGS", "-o-")
             .withParameters("build", "--combined", "-q");
 
         try {
