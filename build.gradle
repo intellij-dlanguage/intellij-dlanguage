@@ -11,7 +11,7 @@ buildscript {
 }
 
 plugins {
-    id 'org.jetbrains.intellij' version '0.3.3'
+    id 'org.jetbrains.intellij' version '0.3.4'
     id 'net.saliman.cobertura' version '2.5.1'
     id 'com.github.kt3k.coveralls' version '2.8.1'
 }
@@ -101,11 +101,10 @@ allprojects {
         pluginName 'intellij-dlanguage'
         version ideaVersion
         updateSinceUntilBuild false
-        // uncomment to test/run/debug the plugin with another IDE such as CLion, AppCode, or Rider
+        // uncomment to test/run/debug the plugin with another IDE such as CLion or AppCode
         //alternativeIdePath '<path to>/CLion.app'
         //alternativeIdePath '%HOME%\\AppData\\Local\\JetBrains\\Toolbox\\apps\\CLion\\ch-0\\181.4668.70'
-        //alternativeIdePath '/home/USERNAME/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/181.5281.26/'
-        //alternativeIdePath '/home/USERNAME/.local/share/JetBrains/Toolbox/apps/Rider/ch-0/181.4952.297/'
+        //alternativeIdePath "$System.env.HOME/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/181.5281.33/"
 
         runIde {
             jbreVersion null
