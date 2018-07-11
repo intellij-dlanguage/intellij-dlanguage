@@ -202,6 +202,8 @@ public class DlangRunDubState extends CommandLineState {
             cmd.addParameters(Arrays.asList(config.getAdditionalParams().split("\\s")));
         }
 
+        cmd.withEnvironment(config.getEnvVars());
+
         return cmd;
 
     }
