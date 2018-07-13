@@ -14,7 +14,7 @@
     ]]></description>
 
     <change-notes><![CDATA[
-	    <b>v1.17</b><br/>
+	    <b>v1.17 - v1.17.1</b><br/>
         <ul>
             <li>added experimental support for AppCode and CLion</li>
             <li>performance improvements</li>
