@@ -17,6 +17,8 @@
 	    <b>v1.17</b><br/>
         <ul>
             <li>added experimental support for AppCode and CLion</li>
+            <li>performance improvements</li>
+            <li>various bug fixes</li>
         </ul>
         <b>v1.16 - v1.16.2</b><br/>
         <ul>
