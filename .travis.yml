@@ -30,8 +30,10 @@ jobs:
     - env: ORG_GRADLE_PROJECT_ideaVersion=2018.1.5
     - env: ORG_GRADLE_PROJECT_ideaVersion=2018.1.1
     - stage: Test Coverage
+      if: NOT (branch = master)
       script: ./gradlew cobertura coveralls
     - stage: Deploy EAP
+      if: branch = develop
       script: skip
       env: ORG_GRADLE_PROJECT_ideaVersion=2018.1
       deploy:
@@ -41,6 +43,7 @@ jobs:
         on:
           branch: develop
     - stage: Deploy new Release
+      if: branch = master
       script: skip
       env: ORG_GRADLE_PROJECT_ideaVersion=2018.1
       deploy:
