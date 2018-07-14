@@ -28,6 +28,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import io.github.intellij.dlanguage.utils.DUtil;
 import org.jetbrains.annotations.NotNull;
 
 public class DScanner {
@@ -87,6 +89,12 @@ public class DScanner {
         final ParametersList args = cmd.getParametersList();
         args.addParametersString("-S");
         args.addParametersString(filePath);
+
+        final String flags = ToolKey.DSCANNER_KEY.getFlags();
+
+        if (DUtil.isNotNullOrEmpty(flags)) {
+            args.addAll(flags);
+        }
 
         final List<Problem> problems = new ArrayList<>();
 
