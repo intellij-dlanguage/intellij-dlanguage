@@ -12,13 +12,12 @@ import com.intellij.openapi.module.ModuleComponent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.roots.ModuleRootManager;
+import com.intellij.openapi.roots.OrderRootType;
 import com.intellij.openapi.roots.ProjectRootManager;
-import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
 import io.github.intellij.dlanguage.messagebus.ToolChangeListener;
 import io.github.intellij.dlanguage.messagebus.Topics;
-import io.github.intellij.dlanguage.project.DubPackage;
 import io.github.intellij.dlanguage.settings.ToolKey;
 import io.github.intellij.dlanguage.settings.ToolSettings;
 import io.github.intellij.dlanguage.DlangSdkType;
@@ -123,7 +122,7 @@ public class DCDCompletionServer implements ModuleComponent, ToolChangeListener 
         }
 
         // try to auto add the compiler sources
-        final List<String> compilerSources = getCompilerSourceDirs();
+        final List<String> compilerSources = getCompilerSourcePaths();
         for (final String s : compilerSources) {
             parametersList.addParametersString("-I");
             parametersList.addParametersString(s);
@@ -169,27 +168,19 @@ public class DCDCompletionServer implements ModuleComponent, ToolChangeListener 
         return sourceRoots.isEmpty() ? null : sourceRoots.get(0).getPath();
     }
 
-    private List<String> getCompilerSourceDirs() {
-        final ArrayList<String> compilerSources = new ArrayList<>();
+    private List<String> getCompilerSourcePaths() {
+        final ArrayList<String> compilerSourcePaths = new ArrayList<>();
         final ModuleRootManager moduleRootManager = ModuleRootManager.getInstance(module);
         final Sdk sdk = moduleRootManager.getSdk();
 
         if (sdk != null && (sdk.getSdkType() instanceof DlangSdkType)) {
-            final String path = sdk.getHomePath();
-            if (isNotNullOrEmpty(path)) {
-                if (SystemInfo.isMac) {
-                    final String root = path.replaceAll("bin", "src");
-                    compilerSources.add(root + "/phobos");
-                    compilerSources.add(root + "/druntime/import");
-                } else if (SystemInfo.isWindows) {
-                    final String root = path.replaceAll("windows/bin", "src");
-                    compilerSources.add(root + "/phobos");
-                    compilerSources.add(root + "/druntime/import");
+            for (VirtualFile f: sdk.getSdkModificator().getRoots(OrderRootType.SOURCES)) {
+                if (f.exists() && f.isDirectory()) {
+                    compilerSourcePaths.add(f.getPath());
                 }
-                // add linux here once I know how
             }
         }
-        return compilerSources;
+        return compilerSourcePaths;
     }
 
     @NotNull
