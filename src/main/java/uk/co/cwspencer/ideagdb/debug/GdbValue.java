@@ -139,6 +139,7 @@ public class GdbValue extends XValue {
         if (variables.objects == null || variables.objects.isEmpty()) {
             // No data
             node.addChildren(XValueChildrenList.EMPTY, true);
+            return;
         }
 
         // Build a XValueChildrenList
