@@ -13,12 +13,19 @@ import com.intellij.notification.Notifications;
 import com.intellij.openapi.application.ReadAction;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.module.Module;
+import com.intellij.openapi.projectRoots.Sdk;
+import com.intellij.openapi.roots.ModuleRootManager;
+import com.intellij.openapi.roots.OrderRootType;
+import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.ThrowableRunnable;
+import io.github.intellij.dlanguage.DlangSdkType;
 import io.github.intellij.dlanguage.highlighting.annotation.DAnnotationHolder;
 import io.github.intellij.dlanguage.highlighting.annotation.DProblem;
 import io.github.intellij.dlanguage.highlighting.annotation.Problems;
@@ -28,7 +35,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import io.github.intellij.dlanguage.utils.DUtil;
 import org.jetbrains.annotations.NotNull;
 
@@ -96,6 +102,13 @@ public class DScanner {
             args.addAll(flags);
         }
 
+        // try to auto add the compiler sources
+        final List<String> compilerSources = getCompilerSourcePaths(file);
+        for (final String s : compilerSources) {
+            args.addParametersString("-I");
+            args.addParametersString(s);
+        }
+
         final List<Problem> problems = new ArrayList<>();
 
         try {
@@ -127,6 +140,24 @@ public class DScanner {
             LOG.error("There was a problem running DScanner", e);
         }
         return problems;
+    }
+
+    private List<String> getCompilerSourcePaths(final PsiFile file) {
+
+        Module module = ProjectRootManager.getInstance(file.getProject()).getFileIndex().getModuleForFile(file.getVirtualFile());
+
+        final ArrayList<String> compilerSourcePaths = new ArrayList<>();
+        final ModuleRootManager moduleRootManager = ModuleRootManager.getInstance(module);
+        final Sdk sdk = moduleRootManager.getSdk();
+
+        if (sdk != null && (sdk.getSdkType() instanceof DlangSdkType)) {
+            for (VirtualFile f: sdk.getSdkModificator().getRoots(OrderRootType.SOURCES)) {
+                if (f.exists() && f.isDirectory()) {
+                    compilerSourcePaths.add(f.getPath());
+                }
+            }
+        }
+        return compilerSourcePaths;
     }
 
     private static int getValidLineNumber(int line, final Document document) {
