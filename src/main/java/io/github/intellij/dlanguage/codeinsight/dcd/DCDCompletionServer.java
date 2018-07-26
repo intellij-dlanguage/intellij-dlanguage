@@ -107,11 +107,7 @@ public class DCDCompletionServer implements ModuleComponent, ToolChangeListener 
         final ParametersList parametersList = commandLine.getParametersList();
 
         if (isNotNullOrEmpty(flags)) {
-            final List<String> importList = Arrays.asList(flags.split(","));
-            for (final String item : importList) {
-                parametersList.addParametersString("-I");
-                parametersList.addParametersString(item);
-            }
+            parametersList.addAll(flags);
         }
 
         // try to auto add project files in source root
