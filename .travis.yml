@@ -26,8 +26,8 @@ jobs:
   include:
     - stage: Build and Test
       env: ORG_GRADLE_PROJECT_ideaVersion=LATEST-TRUNK-SNAPSHOT
+    - env: ORG_GRADLE_PROJECT_ideaVersion=2018.2
     - env: ORG_GRADLE_PROJECT_ideaVersion=2018.1.6
-    - env: ORG_GRADLE_PROJECT_ideaVersion=2018.1.5
     - env: ORG_GRADLE_PROJECT_ideaVersion=2018.1.1
     - stage: Test Coverage
       if: NOT (branch = master)
