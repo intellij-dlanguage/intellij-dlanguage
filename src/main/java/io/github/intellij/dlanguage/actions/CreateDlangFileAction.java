@@ -54,7 +54,7 @@ public class CreateDlangFileAction extends CreateFileFromTemplateAction implemen
         for (int i = 0; i < pathParts.size() - 1; ++i) {
             subDir = subDir.createSubdirectory(pathParts.get(i));
         }
-        final String moduleName = pathParts.get(pathParts.size() - 1);
+        final String moduleName = pathParts.get(pathParts.size() - 1) + ".d";
         return createFileFromTemplate(moduleName, template, subDir, getDefaultTemplateProperty());
     }
 
