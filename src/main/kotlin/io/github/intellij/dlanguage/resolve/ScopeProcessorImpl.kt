@@ -466,9 +466,10 @@ object ScopeProcessorImpl {
                             state: ResolveState,
                             lastParent: PsiElement,
                             place: PsiElement): Boolean {
-
-        if (!processParameters(element.parameters!!, processor, state, lastParent, place)) {
-            return false
+        element.parameters?.let {
+            if (!processParameters(it, processor, state, lastParent, place)) {
+                return false
+            }
         }
         if (element.templateParameters != null) {
             if (!processTemplateParameters(element.templateParameters!!, processor, state, lastParent, place)) {
