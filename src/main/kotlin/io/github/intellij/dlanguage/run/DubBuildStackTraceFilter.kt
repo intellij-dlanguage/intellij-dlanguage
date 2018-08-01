@@ -18,8 +18,12 @@ class DubBuildSourceFileFilter(val project: Project) : Filter {
         line?.let {
             if(it.startsWith("source")) {
                 // then it's prob code within the project
-                val end = it.indexOf(":")
-                val txt = it.substring(0, end)
+                val txt = if (it.contains(":")) {
+                    it.substring(0, it.indexOf(":"))
+                } else {
+                    it
+                }
+
                 val filePath = txt.substringBefore("(")
                 val lineColumn = txt.substringAfter("(")
                     .replace(")", "")
@@ -29,7 +33,7 @@ class DubBuildSourceFileFilter(val project: Project) : Filter {
                 val fullFilePath = project.basePath.plus("/").plus(filePath.replace("\\", "/"))
                 val virtualFile = LocalFileSystem.getInstance().findFileByPath(fullFilePath)
 
-                return Filter.Result(entireLength - line.length, (entireLength - line.length) + end,
+                return Filter.Result(entireLength - line.length, (entireLength - line.length) + txt.lastIndex,
                     DlangSourceFileHyperlink(virtualFile, project, lineColumn[0] - 1, lineColumn[1]),
                     TextAttributes(Color(39, 89, 230), null, null, EffectType.BOLD_LINE_UNDERSCORE, Font.ITALIC)
                 )
