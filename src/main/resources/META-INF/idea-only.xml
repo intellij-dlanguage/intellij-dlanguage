@@ -3,6 +3,7 @@
 <idea-plugin>
 
     <extensions defaultExtensionNs="com.intellij">
+        <iconProvider id="dlangIconProvider" implementation="io.github.intellij.dlanguage.DlangIconProvider" />
 
         <moduleBuilder id="DLangModuleBuilder"
                        builderClass="io.github.intellij.dlanguage.module.DlangModuleBuilder"/>

@@ -60,7 +60,6 @@
     <!--<depends optional="true" config-file="appcode-only.xml">com.intellij.modules.appcode</depends>-->
 
     <extensions defaultExtensionNs="com.intellij">
-        <iconProvider id="dlangIconProvider" implementation="io.github.intellij.dlanguage.DlangIconProvider" />
 
         <!-- Add your extensions here -->
         <codeInsight.parameterInfo language="D" implementationClass="io.github.intellij.dlanguage.codeinsight.ParameterInfo"/>
