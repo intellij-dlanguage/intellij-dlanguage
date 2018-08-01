@@ -8608,17 +8608,14 @@ class DLangParser {
     /**
      * Returns: true if the current token is one of the given types
      */
-    private boolean currentIsOneOf(final @NotNull Token.IdType... types) {
+    private boolean currentIsOneOf(final Token.IdType... types) {
         if (index >= tokens.length) return false;
 
         final Token curr = current();
 
-        if(curr != null) {
-            for (final @NotNull Token.IdType type : types) {
-                if (type.equals(curr.type)) {
-                    return true;
-                }
-            }
+        if(curr != null && types != null) {
+            return Arrays.stream(types)
+                .anyMatch(t -> t.equals(curr.type));
         }
 
         return false;
