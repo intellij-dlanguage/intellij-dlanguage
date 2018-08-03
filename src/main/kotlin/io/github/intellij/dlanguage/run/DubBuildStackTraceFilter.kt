@@ -19,14 +19,15 @@ class DubBuildSourceFileFilter(val project: Project) : Filter {
             if(it.startsWith("source")) {
                 // then it's prob code within the project
                 val txt = if (it.contains(":")) {
-                    it.substring(0, it.indexOf(":"))
+                    it.substring(0, it.indexOf(":").plus(1))
                 } else {
                     it
                 }
 
                 val filePath = txt.substringBefore("(")
-                val lineColumn = txt.substringAfter("(")
-                    .replace(")", "")
+                val lineColumn = txt
+                    .substringAfter("(")
+                    .substringBefore(")")
                     .split(",")
                     .map { Integer.parseInt(it) }
 

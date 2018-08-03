@@ -18,4 +18,15 @@ class DubBuildSourceFileFilterTest : LightPlatformTestCase() {
         TestCase.assertEquals(0, resultItem.getHighlightStartOffset())
         TestCase.assertEquals(31, resultItem.getHighlightEndOffset())
     }
+
+    @Throws(Exception::class)
+    fun `test filtering dub output without source file (no colon)`() {
+        val line = "blah blah blah, some kind of output"
+
+        val filter = DubBuildSourceFileFilter(LightPlatformTestCase.getProject())
+
+        val result = filter.applyFilter(line, line.length)
+
+        TestCase.assertNull("shouldn't apply filter if no source found", result)
+    }
 }
