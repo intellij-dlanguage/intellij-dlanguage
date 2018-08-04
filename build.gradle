@@ -103,8 +103,8 @@ allprojects {
         updateSinceUntilBuild false
         // uncomment to test/run/debug the plugin with another IDE such as CLion or AppCode
         //alternativeIdePath '<path to>/CLion.app'
-        //alternativeIdePath '%HOME%\\AppData\\Local\\JetBrains\\Toolbox\\apps\\CLion\\ch-0\\181.4668.70'
-        //alternativeIdePath "$System.env.HOME/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/181.5281.33/"
+        //alternativeIdePath '%HOME%\\AppData\\Local\\JetBrains\\Toolbox\\apps\\CLion\\ch-0\\182.3684.76'
+        //alternativeIdePath "$System.env.HOME/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/182.3684.76"
 
         runIde {
             jbreVersion null
