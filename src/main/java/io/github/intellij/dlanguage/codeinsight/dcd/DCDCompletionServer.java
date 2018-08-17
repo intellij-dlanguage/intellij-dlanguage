@@ -143,6 +143,7 @@ public class DCDCompletionServer implements ModuleComponent, ToolChangeListener 
         }
 
         try {
+            LOG.info("DCD server start parameters " + parametersList.toString());
             process = commandLine.createProcess();
             LOG.info("DCD process started");
         } catch (final ExecutionException e) {
