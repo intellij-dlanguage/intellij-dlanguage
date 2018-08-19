@@ -13,6 +13,7 @@ import com.intellij.ui.TextAccessor;
 import com.intellij.util.messages.Topic;
 import io.github.intellij.dlanguage.messagebus.ToolChangeListener;
 import io.github.intellij.dlanguage.messagebus.Topics;
+import io.github.intellij.dlanguage.tools.DtoolUtils;
 import io.github.intellij.dlanguage.utils.ExecUtil;
 import io.github.intellij.dlanguage.utils.GuiUtil;
 import java.util.Arrays;
@@ -26,6 +27,8 @@ import javax.swing.JTextField;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import static io.github.intellij.dlanguage.tools.DtoolUtils.*;
 
 /**
  * The "D Tools" option in: Settings -> Languages & Frameworks -> D Tools.
@@ -83,19 +86,19 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
 
         properties = Arrays.asList(
             new Tool(project, "dub", ToolKey.DUB_KEY, dubPath, dubFlags,
-                dubAutoFind, dubVersion, "--version", Topics.DUB_TOOL_CHANGE),
+                dubAutoFind, dubVersion, DUB_LATEST, Topics.DUB_TOOL_CHANGE),
             new Tool(project, "dscanner", ToolKey.DSCANNER_KEY, dscannerPath, dscannerFlags,
-                dscannerAutoFind, dscannerVersion, "--version", Topics.DSCANNER_TOOL_CHANGE),
+                dscannerAutoFind, dscannerVersion, DSCANNER_LATEST, Topics.DSCANNER_TOOL_CHANGE),
             new Tool(project, "dcd-server", ToolKey.DCD_SERVER_KEY, dcdPath, dcdFlags,
-                dcdAutoFind, dcdVersion, "--version", Topics.DCD_SERVER_TOOL_CHANGE),
+                dcdAutoFind, dcdVersion, DCD_LATEST, Topics.DCD_SERVER_TOOL_CHANGE),
             new Tool(project, "dcd-client", ToolKey.DCD_CLIENT_KEY, dcdClientPath, dcdClientFlags,
-                dcdClientAutoFind, dcdClientVersion, "--version", Topics.DCD_CLIENT_TOOL_CHANGE),
+                dcdClientAutoFind, dcdClientVersion, DCD_LATEST, Topics.DCD_CLIENT_TOOL_CHANGE),
             new Tool(project, "dfmt", ToolKey.DFORMAT_KEY, dFormatPath, dFormatFlags,
-                dFormatAutoFind, dFormatVersion, "--version", Topics.DFMT_TOOL_CHANGE),
+                dFormatAutoFind, dFormatVersion, DFORMAT_LATEST, Topics.DFMT_TOOL_CHANGE),
             new Tool(project, "dfix", ToolKey.DFIX_KEY, dFixPath, dFixFlags,
-                dFixAutoFind, dFixVersion, "--version", Topics.DFIX_TOOL_CHANGE),
+                dFixAutoFind, dFixVersion, DFIX_LATEST, Topics.DFIX_TOOL_CHANGE),
             new Tool(project, "gdb", ToolKey.GDB_KEY, GDBPath, GDBFlags,
-                GDBAutoFind, GDBVersion, "--version", Topics.GDB_TOOL_CHANGE)
+                GDBAutoFind, GDBVersion, null, Topics.GDB_TOOL_CHANGE)
         );
     }
 
@@ -103,12 +106,12 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
      * Heuristically finds the version number. Current implementation is the identity function since
      * cabal plays nice.
      */
-    public static String getVersion(final String cmd, final String versionFlag) {
-        final @Nullable String versionOutput = ExecUtil.readCommandLine(null, cmd, versionFlag);
+    public static String getVersion(final String cmd) {
+        final @Nullable String versionOutput = ExecUtil.readCommandLine(null, cmd, "--version");
 
         if (StringUtil.isNotEmpty(versionOutput)) {
             final String version = versionOutput.split("\n")[0].trim();
-            LOG.info(String.format("%s [%s]", cmd, version));
+            LOG.debug(String.format("%s [%s]", cmd, version));
             return version;
         }
         return "";
@@ -296,27 +299,28 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
         public final Project project;
         public final String command;
         public final ToolKey key;
-        public final TextFieldWithBrowseButton pathField;
-        public final RawCommandLineEditor flagsField;
-        public final JTextField versionField;
-        public final String versionParam;
-        public final JButton autoFindButton;
-        public final List<PropertyField> propertyFields;
-        public final Topic<ToolChangeListener> topic;
+        final TextFieldWithBrowseButton pathField;
+        final RawCommandLineEditor flagsField;
+        final JTextField versionField;
+        final String latestVersion;
+        final JButton autoFindButton;
+        final List<PropertyField> propertyFields;
+        final Topic<ToolChangeListener> topic;
         private final ToolChangeListener publisher;
 
         Tool(final Project project, final String command, final ToolKey key,
-            final TextFieldWithBrowseButton pathField,
-            final RawCommandLineEditor flagsField, final JButton autoFindButton,
-            final JTextField versionField,
-            final String versionParam, final Topic<ToolChangeListener> topic) {
+             final TextFieldWithBrowseButton pathField,
+             final RawCommandLineEditor flagsField, final JButton autoFindButton,
+             final JTextField versionField,
+             final String latestVersion,
+             final Topic<ToolChangeListener> topic) {
             this.project = project;
             this.command = command;
             this.key = key;
             this.pathField = pathField;
             this.flagsField = flagsField;
             this.versionField = versionField;
-            this.versionParam = versionParam;
+            this.latestVersion = latestVersion;
             this.autoFindButton = autoFindButton;
             this.topic = topic;
             this.publisher = topic == null ? null : project.getMessageBus().syncPublisher(topic);
@@ -333,8 +337,12 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
         public void updateVersion() {
             final String pathText = pathField.getText();
             final String version =
-                StringUtil.isEmpty(pathText) ? "" : getVersion(pathText, versionParam);
+                StringUtil.isEmpty(pathText) ? "" : getVersion(pathText);
             versionField.setText(version);
+
+            if(DtoolUtils.versionPredates(version, this.latestVersion)) {
+                versionField.setToolTipText(String.format("A newer version of %s is available", this.command));
+            }
         }
 
         public boolean isModified() {
@@ -343,8 +351,7 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
 
         public void saveState() {
             if (isModified() && publisher != null) {
-                publisher.onToolSettingsChanged(
-                    new ToolSettings(pathField.getText(), flagsField.getText()));
+                publisher.onToolSettingsChanged(new ToolSettings(pathField.getText(), flagsField.getText()));
             }
             for (final PropertyField propertyField : propertyFields) {
                 propertyField.saveState();
