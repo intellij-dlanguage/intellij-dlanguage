@@ -39,12 +39,14 @@ public class DlangDubModuleBuilder extends DlangModuleBuilder {
 
     private static final String RUN_DUB_CONFIG_NAME = "Run DUB";
 
+    static final String BUILDER_ID = "DLangDubApp";
+
     private List<Pair<String, String>> sourcePaths;
     private Map<String, String> dubOptions = new HashMap<>();
     private String dubBinary;
 
     public DlangDubModuleBuilder() {
-        super("DLangDubApp", DlangBundle.INSTANCE.message("module.dub.title"), DlangBundle.INSTANCE.message("module.dub.description"));
+        super(BUILDER_ID, DlangBundle.INSTANCE.message("module.dub.title"), DlangBundle.INSTANCE.message("module.dub.description"));
     }
 
     @Override
