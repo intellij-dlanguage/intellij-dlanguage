@@ -32,6 +32,10 @@ public class DubConfigFileListener implements VirtualFileListener {
         this.dubConfigFile = dubConfigFile;
         this.project = project;
         this.module = module;
+        ProcessDLibs.processDLibs(project, module, true, false);
+        project.getMessageBus()
+            .syncPublisher(Topics.DUB_FILE_CHANGE)
+            .onDubFileChange(project, module, dubConfigFile);
     }
 
     @Nullable
