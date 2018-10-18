@@ -3,6 +3,8 @@ Intellij D Language
 
 Support for the [D Programming Language](http://dlang.org/) within IntelliJ IDEA
 
+[![JetBrains IntelliJ plugins](https://img.shields.io/jetbrains/plugin/d/8115.svg)](https://plugins.jetbrains.com/plugin/8115)
+
 | Branch | Status |
 | :--- | :--- |
 | Master | [![Build Status](https://travis-ci.org/intellij-dlanguage/intellij-dlanguage.svg?branch=master)](https://travis-ci.org/intellij-dlanguage/intellij-dlanguage) |
