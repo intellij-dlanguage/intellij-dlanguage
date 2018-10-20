@@ -25,7 +25,8 @@ env:
 jobs:
   include:
     - stage: Build and Test
-      env: ORG_GRADLE_PROJECT_ideaVersion=LATEST-TRUNK-SNAPSHOT
+      env: ORG_GRADLE_PROJECT_ideaVersion=191-SNAPSHOT
+    - env: ORG_GRADLE_PROJECT_ideaVersion=183-SNAPSHOT
     - env: ORG_GRADLE_PROJECT_ideaVersion=2018.2.5
     - env: ORG_GRADLE_PROJECT_ideaVersion=2018.2
     - env: ORG_GRADLE_PROJECT_ideaVersion=2018.1.6
@@ -54,4 +55,4 @@ jobs:
         on:
           branch: master
   allow_failures:
-    - env: ORG_GRADLE_PROJECT_ideaVersion=LATEST-TRUNK-SNAPSHOT
+    - env: ORG_GRADLE_PROJECT_ideaVersion=191-SNAPSHOT
