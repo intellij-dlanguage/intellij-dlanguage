@@ -5,23 +5,17 @@ import com.intellij.navigation.ItemPresentation;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
-import io.github.intellij.dlanguage.icons.DlangIcons;
-import io.github.intellij.dlanguage.psi.DLanguageIdentifierChain;
+import io.github.intellij.dlanguage.psi.*;
 import io.github.intellij.dlanguage.psi.named.DLanguageModuleDeclaration;
-import io.github.intellij.dlanguage.psi.DlangFile;
 import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
-import io.github.intellij.dlanguage.psi.DlangTypes;
-import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.psi.impl.DElementFactory;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import io.github.intellij.dlanguage.psi.references.DReference;
 import io.github.intellij.dlanguage.stubs.DlangModuleDeclarationStub;
 import io.github.intellij.dlanguage.utils.DUtil;
-import javax.swing.Icon;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -77,27 +71,11 @@ public class DLanguageModuleDeclarationImpl extends DNamedStubbedPsiElementBase<
 
     @NotNull
     public ItemPresentation getPresentation() {
-        return new ItemPresentation() {
+        return new DlangItemPresentation(getContainingFile()) {
             @NotNull
             @Override
             public String getPresentableText() {
                 return getName();
-            }
-
-            /**
-             * This is needed to decipher between files when resolving multiple references.
-             */
-            @Nullable
-            @Override
-            public String getLocationString() {
-                final PsiFile psiFile = getContainingFile();
-                return psiFile instanceof DlangFile ? ((DlangFile) psiFile).getModuleOrFileName() : null;
-            }
-
-            @Nullable
-            @Override
-            public Icon getIcon(final boolean unused) {
-                return DlangIcons.FILE;
             }
         };
     }

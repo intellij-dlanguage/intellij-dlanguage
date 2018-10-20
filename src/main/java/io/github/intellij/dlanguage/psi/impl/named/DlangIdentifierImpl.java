@@ -7,18 +7,11 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
-import io.github.intellij.dlanguage.icons.DlangIcons;
-import io.github.intellij.dlanguage.psi.DLanguageClassDeclaration;
-import io.github.intellij.dlanguage.psi.DLanguageEponymousTemplateDeclaration;
-import io.github.intellij.dlanguage.psi.DLanguageIfCondition;
-import io.github.intellij.dlanguage.psi.DLanguageInterfaceDeclaration;
-import io.github.intellij.dlanguage.psi.DLanguageLabeledStatement;
-import io.github.intellij.dlanguage.psi.DLanguageTemplateParameter;
+import io.github.intellij.dlanguage.psi.*;
 import io.github.intellij.dlanguage.psi.named.DlangAliasInitializer;
 import io.github.intellij.dlanguage.psi.named.DlangAutoDeclarationPart;
 import io.github.intellij.dlanguage.psi.named.DlangCatch;
@@ -26,7 +19,6 @@ import io.github.intellij.dlanguage.psi.named.DlangConstructor;
 import io.github.intellij.dlanguage.psi.named.DlangDeclarator;
 import io.github.intellij.dlanguage.psi.named.DlangEnumDeclaration;
 import io.github.intellij.dlanguage.psi.named.DlangEnumMember;
-import io.github.intellij.dlanguage.psi.DlangFile;
 import io.github.intellij.dlanguage.psi.named.DlangForeachType;
 import io.github.intellij.dlanguage.psi.named.DlangFunctionDeclaration;
 import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
@@ -34,9 +26,7 @@ import io.github.intellij.dlanguage.psi.named.DlangInterfaceOrClass;
 import io.github.intellij.dlanguage.psi.named.DlangParameter;
 import io.github.intellij.dlanguage.psi.named.DlangStructDeclaration;
 import io.github.intellij.dlanguage.psi.named.DlangTemplateDeclaration;
-import io.github.intellij.dlanguage.psi.DlangTypes;
 import io.github.intellij.dlanguage.psi.named.DlangUnionDeclaration;
-import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.psi.impl.DElementFactory;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import io.github.intellij.dlanguage.psi.references.DReference;
@@ -44,7 +34,6 @@ import io.github.intellij.dlanguage.resolve.DResolveUtil;
 import io.github.intellij.dlanguage.stubs.DlangIdentifierStub;
 import io.github.intellij.dlanguage.utils.DUtil;
 import java.util.Set;
-import javax.swing.Icon;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -98,7 +87,7 @@ public class DlangIdentifierImpl extends DNamedStubbedPsiElementBase<DlangIdenti
 
     @NotNull
     public ItemPresentation getPresentation() {
-        return new ItemPresentation() {
+        return new DlangItemPresentation(getContainingFile()) {
             @NotNull
             @Override
             public String getPresentableText() {
@@ -219,22 +208,6 @@ public class DlangIdentifierImpl extends DNamedStubbedPsiElementBase<DlangIdenti
 
 
                 return getName() + description;
-            }
-
-            /**
-             * This is needed to decipher between files when resolving multiple references.
-             */
-            @Nullable
-            @Override
-            public String getLocationString() {
-                final PsiFile psiFile = getContainingFile();
-                return psiFile instanceof DlangFile ? ((DlangFile) psiFile).getModuleOrFileName() : null;
-            }
-
-            @Nullable
-            @Override
-            public Icon getIcon(final boolean unused) {
-                return DlangIcons.FILE;
             }
         };
     }

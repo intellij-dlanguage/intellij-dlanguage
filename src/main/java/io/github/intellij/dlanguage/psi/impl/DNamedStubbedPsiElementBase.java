@@ -4,11 +4,9 @@ import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.stubs.IStubElementType;
-import io.github.intellij.dlanguage.icons.DlangIcons;
-import io.github.intellij.dlanguage.psi.DlangFile;
+import io.github.intellij.dlanguage.psi.DlangItemPresentation;
 import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
 import io.github.intellij.dlanguage.psi.references.DReference;
@@ -16,7 +14,6 @@ import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributes;
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributesFinder;
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributesFinder.Visibility;
 import io.github.intellij.dlanguage.stubs.DNamedStubBase;
-import javax.swing.Icon;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -56,28 +53,11 @@ public abstract class DNamedStubbedPsiElementBase<T extends DNamedStubBase<?>> e
     }
 
     public ItemPresentation getPresentation() {
-        return new ItemPresentation() {
+        return new DlangItemPresentation(getContainingFile()) {
             @NotNull
             @Override
             public String getPresentableText() {
                 return getName();
-            }
-
-            /**
-             * This is needed to decipher between files when resolving multiple references.
-             */
-            @Nullable
-            @Override
-            public String getLocationString() {
-                final PsiFile psiFile = getContainingFile();
-                return psiFile instanceof DlangFile ? ((DlangFile) psiFile).getModuleOrFileName()
-                    : null;
-            }
-
-            @Nullable
-            @Override
-            public Icon getIcon(final boolean unused) {
-                return DlangIcons.FILE;
             }
         };
     }

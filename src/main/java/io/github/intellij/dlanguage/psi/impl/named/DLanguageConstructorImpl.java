@@ -10,26 +10,18 @@ import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.PsiFile;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
-import io.github.intellij.dlanguage.icons.DlangIcons;
-import io.github.intellij.dlanguage.psi.DLanguageFunctionBody;
-import io.github.intellij.dlanguage.psi.DLanguageMemberFunctionAttribute;
-import io.github.intellij.dlanguage.psi.DLanguageParameters;
-import io.github.intellij.dlanguage.psi.DLanguageTemplateParameters;
+import io.github.intellij.dlanguage.psi.*;
 import io.github.intellij.dlanguage.psi.named.DlangConstructor;
-import io.github.intellij.dlanguage.psi.DlangFile;
 import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
-import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.psi.impl.DLanguageParametersImpl;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import io.github.intellij.dlanguage.stubs.DlangConstructorStub;
 import java.util.List;
-import javax.swing.Icon;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -111,8 +103,8 @@ public class DLanguageConstructorImpl extends
 
     @NotNull
     public ItemPresentation getPresentation() {
-        return new ItemPresentation() {
-            @NotNull
+        return new DlangItemPresentation(getContainingFile()) {
+            @Nullable
             @Override
             public String getPresentableText() {
                 String string = "";
@@ -121,22 +113,6 @@ public class DLanguageConstructorImpl extends
                         string += psiElement.getText();
                 }
                 return getName() + string;
-            }
-
-            /**
-             * This is needed to decipher between files when resolving multiple references.
-             */
-            @Nullable
-            @Override
-            public String getLocationString() {
-                final PsiFile psiFile = getContainingFile();
-                return psiFile instanceof DlangFile ? ((DlangFile) psiFile).getModuleOrFileName() : null;
-            }
-
-            @Nullable
-            @Override
-            public Icon getIcon(final boolean unused) {
-                return DlangIcons.FILE;
             }
         };
     }
