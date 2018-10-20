@@ -8,6 +8,6 @@ public class DlangFileTypeFactory extends FileTypeFactory {
 
     @Override
     public void createFileTypes(@NotNull final FileTypeConsumer fileTypeConsumer) {
-        fileTypeConsumer.consume(DlangFileType.INSTANCE, "d");
+        fileTypeConsumer.consume(DlangFileType.INSTANCE, "d;di");
     }
 }
