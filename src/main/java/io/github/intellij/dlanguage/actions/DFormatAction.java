@@ -105,50 +105,43 @@ public class DFormatAction extends AnAction implements DumbAware {
             handler.addProcessListener(new CapturingProcessAdapter() {
                 @Override
                 public void processTerminated(@NotNull final ProcessEvent event) {
-                    final List<String> errorDetection = getOutput().getStderrLines();
-                    if (!errorDetection.isEmpty()) {
-                        final String firstLine = errorDetection.get(0);
-                        if (firstLine.startsWith("Language.D.DFormat.Parse.parseModule:")) {
-                            // Filter out the left part and keep the interesting stuff.
-                            // Error message is on the format:
-                            // moduleName: interesting stuff.
-                            final String output = firstLine.split(":", 2)[1];
+                    @NotNull final List<String> errors = getOutput().getStderrLines();
 
-                            showNotification("DFormat error.", output, NotificationType.ERROR, null, project);
-                            return;
-                        }
+                    if (!errors.isEmpty()) {
+                        final String[] parts = errors.get(0).split("\\[\\w+]:\\s");
+                        final String output = parts.length == 2 ? parts[1] : errors.get(0);
+                        showNotification("DFormat error.", output, NotificationType.ERROR, null, project);
                         return;
                     }
+
                     final String text = getOutput().getStdout();
-                    ApplicationManager.getApplication().invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                final Document document = PsiDocumentManager.getInstance(project).getDocument(psiFile);
-                                if (document == null) return;
-                                CommandProcessor.getInstance().executeCommand(project, new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        ApplicationManager.getApplication().runWriteAction(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                document.setText(text);
-                                            }
-                                        });
-                                    }
-                                }, NOTIFICATION_TITLE, "", document);
-
-                                showNotification(NOTIFICATION_TITLE,
-                                    psiFile.getName() + " formatted with DFormat.",
-                                    NotificationType.INFORMATION, null, project);
-
-                            } catch (final Exception ex) {
-                                showNotification("Formatting " + psiFile.getName() + "  with DFormat failed.",
-                                    ExceptionUtil.getUserStackTrace(ex, LOG),
-                                    NotificationType.ERROR, null, project);
-
-                                LOG.error(ex);
+                    ApplicationManager.getApplication().invokeLater(() -> {
+                        try {
+                            @Nullable final Document document = PsiDocumentManager.getInstance(project).getDocument(psiFile);
+                            if (document == null) {
+                                return;
                             }
+                            CommandProcessor.getInstance()
+                                .executeCommand(
+                                    project,
+                                    () -> ApplicationManager
+                                        .getApplication()
+                                        .runWriteAction(() -> document.setText(text)),
+                                    NOTIFICATION_TITLE,
+                                    "",
+                                    document
+                                );
+
+                            showNotification(NOTIFICATION_TITLE,
+                                psiFile.getName() + " formatted with DFormat.",
+                                NotificationType.INFORMATION, null, project);
+
+                        } catch (final Exception e) {
+                            showNotification("Formatting " + psiFile.getName() + "  with DFormat failed.",
+                                ExceptionUtil.getUserStackTrace(e, LOG),
+                                NotificationType.ERROR, null, project);
+
+                            //LOG.error(e);
                         }
                     });
                 }
