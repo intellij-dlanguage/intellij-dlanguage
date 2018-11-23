@@ -1,8 +1,9 @@
 <templateSet group="D">
     <template name="if"
               value="if(boolean_expression) { &#10;   /* statement(s) will execute if the boolean expression is true */ &#10;} else { &#10;   /* statement(s) will execute if the boolean expression is false */ &#10;}"
-              toReformat="false" toShortenFQNames="true"/>
-    <context>
-        <option name="OTHER" value="true" />
-    </context>
+              description="" toReformat="false" toShortenFQNames="true">
+        <context>
+            <option name="D" value="true"/>
+        </context>
+    </template>
 </templateSet>

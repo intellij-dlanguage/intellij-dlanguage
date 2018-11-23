@@ -63,7 +63,7 @@
 
         <!-- Surrounders -->
 
-        <lang.surroundDescriptor language="D"
+        <!--<lang.surroundDescriptor language="D"-->
                                  implementationClass="io.github.intellij.dlanguage.template.DlangExpressionSurroundDescriptor"/>
         <!--<lang.surroundDescriptor language="Rust"-->
                                  <!--implementationClass="org.rust.ide.surroundWith.statement.RsStatementsSurroundDescriptor"/>-->
@@ -79,7 +79,7 @@
 
         <defaultLiveTemplatesProvider implementation="io.github.intellij.dlanguage.template.DlangLiveTemplatesProvider"/>
 
-        <!--<liveTemplateContext implementation="org.rust.ide.template.RsContextType$Generic"/>-->
+        <liveTemplateContext implementation="io.github.intellij.dlanguage.template.DlangContext"/>
         <!--<liveTemplateContext implementation="org.rust.ide.template.RsContextType$Statement"/>-->
         <!--<liveTemplateContext implementation="org.rust.ide.template.RsContextType$Item"/>-->
         <!--<liveTemplateContext implementation="org.rust.ide.template.RsContextType$Struct"/>-->

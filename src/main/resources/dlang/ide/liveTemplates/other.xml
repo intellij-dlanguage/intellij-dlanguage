@@ -6,7 +6,7 @@
         <variable name="IDENT" expression="" defaultValue="&quot;foo&quot;" alwaysStopAt="true"/>
         <variable name="TYPE" expression="" defaultValue="&quot;u32&quot;" alwaysStopAt="true"/>
         <context>
-            <option name="RUST_STRUCT" value="true"/>
+            <option name="D" value="true" />
         </context>
     </template>
 </templateSet>
