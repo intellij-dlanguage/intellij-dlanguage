@@ -15,7 +15,7 @@ open class DlangTestBase : LightPlatformCodeInsightFixtureTestCase() {
         myFixture.checkResult(replaceCaretMarker(after))
     }
 
-    inner class InlineFile(private @Language("D") val code: String, val name: String = "main.rs") {
+    inner class InlineFile(private @Language("D") val code: String, val name: String = "main.d") {
         private val hasCaretMarker = "/*caret*/" in code
 
         init {
