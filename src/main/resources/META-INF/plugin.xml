@@ -60,35 +60,6 @@
     <!--<depends optional="true" config-file="appcode-only.xml">com.intellij.modules.appcode</depends>-->
 
     <extensions defaultExtensionNs="com.intellij">
-
-        <!-- Surrounders -->
-
-        <!--<lang.surroundDescriptor language="D"-->
-                                 implementationClass="io.github.intellij.dlanguage.template.DlangExpressionSurroundDescriptor"/>
-        <!--<lang.surroundDescriptor language="Rust"-->
-                                 <!--implementationClass="org.rust.ide.surroundWith.statement.RsStatementsSurroundDescriptor"/>-->
-
-        <!-- Folding -->
-
-        <!--<lang.foldingBuilder language="Rust" implementationClass="org.rust.ide.folding.RsFoldingBuilder"/>-->
-        <!--<codeFoldingOptionsProvider instance="org.rust.ide.folding.RsCodeFoldingOptionsProvider"/>-->
-        <!--<applicationService serviceInterface="org.rust.ide.folding.RsCodeFoldingSettings"-->
-                            <!--serviceImplementation="org.rust.ide.folding.impl.RsCodeFoldingSettingsImpl"/>-->
-
-        <!-- Live Templates -->
-
-        <defaultLiveTemplatesProvider implementation="io.github.intellij.dlanguage.template.DlangLiveTemplatesProvider"/>
-
-        <liveTemplateContext implementation="io.github.intellij.dlanguage.template.DlangContext"/>
-        <!--<liveTemplateContext implementation="org.rust.ide.template.RsContextType$Statement"/>-->
-        <!--<liveTemplateContext implementation="org.rust.ide.template.RsContextType$Item"/>-->
-        <!--<liveTemplateContext implementation="org.rust.ide.template.RsContextType$Struct"/>-->
-        <!--<liveTemplateContext implementation="org.rust.ide.template.RsContextType$Mod"/>-->
-        <!--<liveTemplateContext implementation="org.rust.ide.template.RsContextType$Attribute"/>-->
-
-        <!--<liveTemplateMacro implementation="org.rust.ide.template.macros.RsSuggestIndexNameMacro"/>-->
-        <!--<liveTemplateMacro implementation="org.rust.ide.template.macros.RsCollectionElementNameMacro"/>-->
-
         <!-- Add your extensions here -->
         <codeInsight.parameterInfo language="D" implementationClass="io.github.intellij.dlanguage.codeinsight.ParameterInfo"/>
         <codeInsight.parameterInfo
@@ -202,6 +173,22 @@
         <!--  <completion.contributor language="D"
                                   implementationClass="io.github.intellij.dlanguage.codeinsight.DCompletionContributorImports"/>-->
 
+        <!-- Surrounders -->
+        <!--<lang.surroundDescriptor language="D"
+                                 implementationClass="io.github.intellij.dlanguage.template.DlangExpressionSurroundDescriptor"/>-->
+        <!-- Live Templates -->
+
+        <defaultLiveTemplatesProvider implementation="io.github.intellij.dlanguage.template.DlangLiveTemplatesProvider"/>
+
+        <liveTemplateContext implementation="io.github.intellij.dlanguage.template.DlangContext"/>
+        <!--<liveTemplateContext implementation="org.rust.ide.template.DlangContextType$Statement"/>-->
+        <!--<liveTemplateContext implementation="org.rust.ide.template.DlangContextType$Item"/>-->
+        <!--<liveTemplateContext implementation="org.rust.ide.template.DlangContextType$Struct"/>-->
+        <!--<liveTemplateContext implementation="org.rust.ide.template.DlangContextType$Mod"/>-->
+        <!--<liveTemplateContext implementation="org.rust.ide.template.DlangContextType$Attribute"/>-->
+
+        <!--<liveTemplateMacro implementation="org.rust.ide.template.macros.DlangSuggestIndexNameMacro"/>-->
+        <!--<liveTemplateMacro implementation="org.rust.ide.template.macros.DlangCollectionElementNameMacro"/>-->
 
         <!--formatter-->
         <lang.formatter

@@ -24,10 +24,10 @@ class DlangExpressionSurroundDescriptor : SurroundDescriptor {
     companion object {
         private val SURROUNDERS = arrayOf(
             BlaSurrounder()
-            /*RsWithParenthesesSurrounder(),
-            RsWithNotSurrounder(),
-            RsWithIfExpSurrounder(),
-            RsWithWhileExpSurrounder()*/
+            /*DlangWithParenthesesSurrounder(),
+            DlangWithNotSurrounder(),
+            DlangWithIfExpSurrounder(),
+            DlangWithWhileExpSurrounder()*/
         )
     }
 }
