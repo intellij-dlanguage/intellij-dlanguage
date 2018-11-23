@@ -174,21 +174,22 @@
                                   implementationClass="io.github.intellij.dlanguage.codeinsight.DCompletionContributorImports"/>-->
 
         <!-- Surrounders -->
+        <!-- // a placeholder for later to enable language specific template expansion. -->
         <!--<lang.surroundDescriptor language="D"
                                  implementationClass="io.github.intellij.dlanguage.template.DlangExpressionSurroundDescriptor"/>-->
-        <!-- Live Templates -->
 
+        <!-- Live Templates -->
         <defaultLiveTemplatesProvider implementation="io.github.intellij.dlanguage.template.DlangLiveTemplatesProvider"/>
 
         <liveTemplateContext implementation="io.github.intellij.dlanguage.template.DlangContext"/>
-        <!--<liveTemplateContext implementation="org.rust.ide.template.DlangContextType$Statement"/>-->
-        <!--<liveTemplateContext implementation="org.rust.ide.template.DlangContextType$Item"/>-->
-        <!--<liveTemplateContext implementation="org.rust.ide.template.DlangContextType$Struct"/>-->
-        <!--<liveTemplateContext implementation="org.rust.ide.template.DlangContextType$Mod"/>-->
-        <!--<liveTemplateContext implementation="org.rust.ide.template.DlangContextType$Attribute"/>-->
+        <!--<liveTemplateContext implementation="io.github.intellij.dlanguage.template.DlangContextType$Statement"/>-->
+        <!--<liveTemplateContext implementation="io.github.intellij.dlanguage.template.DlangContextType$Item"/>-->
+        <!--<liveTemplateContext implementation="io.github.intellij.dlanguage.template.DlangContextType$Struct"/>-->
+        <!--<liveTemplateContext implementation="io.github.intellij.dlanguage.template.DlangContextType$Mod"/>-->
+        <!--<liveTemplateContext implementation="io.github.intellij.dlanguage.template.DlangContextType$Attribute"/>-->
 
-        <!--<liveTemplateMacro implementation="org.rust.ide.template.macros.DlangSuggestIndexNameMacro"/>-->
-        <!--<liveTemplateMacro implementation="org.rust.ide.template.macros.DlangCollectionElementNameMacro"/>-->
+        <!--<liveTemplateMacro implementation="io.github.intellij.dlanguage.template.macros.DlangSuggestIndexNameMacro"/>-->
+        <!--<liveTemplateMacro implementation="io.github.intellij.dlanguage.template.macros.DlangCollectionElementNameMacro"/>-->
 
         <!--formatter-->
         <lang.formatter

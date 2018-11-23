@@ -10,6 +10,7 @@ import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 
+// a placeholder for later to enable language specific template expansion.
 class DlangExpressionSurroundDescriptor : SurroundDescriptor {
     override fun getElementsToSurround(file: PsiFile, startOffset: Int, endOffset: Int): Array<out PsiElement> {
         val expr = findExpressionInRange(file, startOffset, endOffset) ?: return emptyArray()
@@ -32,6 +33,7 @@ class DlangExpressionSurroundDescriptor : SurroundDescriptor {
     }
 }
 
+// a placeholder for later to enable language specific template expansion.
 class BlaSurrounder : Surrounder
 {
     override fun getTemplateDescription(): String {
