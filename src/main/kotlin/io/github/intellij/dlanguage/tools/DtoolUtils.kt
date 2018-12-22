@@ -18,7 +18,7 @@ class DtoolUtils {
 
         const val DUB_LATEST: String = "1.12.1"
         const val DSCANNER_LATEST: String = "v0.5.11" // v0.5.0-rc1
-        const val DCD_LATEST: String = "v0.10.0" // v0.9.10, OR v0.9.10-alpha.0
+        const val DCD_LATEST: String = "v0.9.13" // v0.9.10, OR v0.9.10-alpha.0
         const val DFORMAT_LATEST: String = "v0.8.2"
         const val DFIX_LATEST: String = "v0.3.2"
 
@@ -62,8 +62,11 @@ class DtoolUtils {
             return if (this.isNullOrBlank()) false
             else this!!.contains(".") &&
                 this.split(".")
-                    .all { it.replace(Regex("\\D"), "")
-                        .all { it.isDigit() } }
+                    .map {
+                        it.replace(Regex("\\D"), "")
+                    }.filterNot {
+                        isBlank()
+                    }.isNotEmpty()
         }
 
     }
