@@ -25,9 +25,7 @@ env:
 jobs:
   include:
     - stage: Build and Test
-      env: ORG_GRADLE_PROJECT_ideaVersion=191-SNAPSHOT
-    - env: ORG_GRADLE_PROJECT_ideaVersion=2018.3.2
-    - env: ORG_GRADLE_PROJECT_ideaVersion=2018.2.5
+      env: ORG_GRADLE_PROJECT_ideaVersion=2018.2.5
     - env: ORG_GRADLE_PROJECT_ideaVersion=2018.2
     - env: ORG_GRADLE_PROJECT_ideaVersion=2018.1.6
     - env: ORG_GRADLE_PROJECT_ideaVersion=2018.1.3

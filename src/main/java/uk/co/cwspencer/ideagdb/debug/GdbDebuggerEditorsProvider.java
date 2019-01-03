@@ -29,6 +29,7 @@ import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.fileTypes.FileTypes;
 import com.intellij.openapi.project.Project;
+import com.intellij.xdebugger.XExpression;
 import com.intellij.xdebugger.XSourcePosition;
 import com.intellij.xdebugger.evaluation.EvaluationMode;
 import com.intellij.xdebugger.evaluation.XDebuggerEditorsProvider;
@@ -44,10 +45,20 @@ public class GdbDebuggerEditorsProvider extends XDebuggerEditorsProvider {
     }
 
     @NotNull
-    @Override
+    // todo: delete this method once super class has equivalent createDocument method removed
     public Document createDocument(@NotNull Project project, @NotNull String text,
                                    @Nullable XSourcePosition sourcePosition, @NotNull EvaluationMode mode) {
         // TODO: Return a proper value
         return EditorFactory.getInstance().createDocument(text);
+    }
+
+    @NotNull
+    @Override
+    public Document createDocument(@NotNull Project project,
+                                   @NotNull XExpression expression,
+                                   @Nullable XSourcePosition sourcePosition,
+                                   @NotNull EvaluationMode mode) {
+        // TODO: Return a proper value
+        return EditorFactory.getInstance().createDocument(expression.getExpression());
     }
 }
