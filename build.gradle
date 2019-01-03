@@ -157,7 +157,7 @@ idea {
 }
 compileKotlin {
     kotlinOptions {
-        apiVersion = "1.2"
+        apiVersion = "1.3"
         jvmTarget = "1.8"
     }
 }

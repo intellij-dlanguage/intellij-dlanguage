@@ -14,6 +14,10 @@
     ]]></description>
 
     <change-notes><![CDATA[
+        <b>v1.18</b><br/>
+        <ul>
+            <li>Compatibility IntelliJ 2018.3.*</li>
+        </ul>
 	    <b>v1.17 - v1.17.2</b><br/>
         <ul>
             <li>added experimental support for AppCode and CLion</li>
@@ -41,7 +45,7 @@
     </change-notes>
 
     <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
-    <idea-version since-build="181.3" until-build="182.*"/>
+    <idea-version since-build="183" until-build="191.*"/>
 
     <!-- We want to support IntelliJ IDEA and CLion
         see http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
