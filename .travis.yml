@@ -26,7 +26,7 @@ jobs:
   include:
     - stage: Build and Test
       env: ORG_GRADLE_PROJECT_ideaVersion=191-SNAPSHOT
-#    - env: ORG_GRADLE_PROJECT_ideaVersion=191.3375-SNAPSHOT
+    - env: ORG_GRADLE_PROJECT_ideaVersion=191.3375-SNAPSHOT
     - env: ORG_GRADLE_PROJECT_ideaVersion=2018.3.2
     - env: ORG_GRADLE_PROJECT_ideaVersion=2018.3
     - stage: Test Coverage
@@ -39,7 +39,7 @@ jobs:
 #      deploy:
 #        provider: script
 #        skip_cleanup: true
-#        script: ORG_GRADLE_PROJECT_publishChannels=eap ORG_GRADLE_PROJECT_version=1.17.2-eap$TRAVIS_BUILD_NUMBER ./gradlew :publishPlugin
+#        script: ORG_GRADLE_PROJECT_publishChannels=eap ORG_GRADLE_PROJECT_version=1.18-eap$TRAVIS_BUILD_NUMBER ./gradlew :publishPlugin
 #        on:
 #          branch: develop
     - stage: Deploy new Release

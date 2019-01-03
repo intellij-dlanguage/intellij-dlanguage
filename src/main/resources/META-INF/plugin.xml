@@ -8,7 +8,7 @@
 
     <description><![CDATA[
      <img src="https://avatars3.githubusercontent.com/u/565913?v=3&s=60" alt="" />
-     <p>Support for the <a href="http://dlang.org/">D Language</a>.</p>
+     <p>Support for the <a href="https://dlang.org/">D Language</a>.</p>
      <p>Also adds support for using the <a href="https://code.dlang.org/">dub</a> build tool.</p>
      <p>Project available on <a href="https://github.com/intellij-dlanguage/intellij-dlanguage/">Github</a>.</p>
     ]]></description>

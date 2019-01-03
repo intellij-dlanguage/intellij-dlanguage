@@ -14,8 +14,7 @@ Support for the [D Programming Language](http://dlang.org/) within IntelliJ IDEA
 
 | Plugin Version | IntelliJ Versions | release notes |
 | :--- | :--- | :--- |
-| 1.19 | 2019.1.* | support for IntelliJ 2019 |
-| 1.18 | 2018.3 - 2018.3.* | support for IntelliJ 2018.3.* |
+| 1.18 | 2018.3 - 2019.1.* | IntelliJ 2018.3.* fixes |
 | 1.17.2 | 2018.1.3 - 2018.2.* | bug fixes |
 | 1.17.1 | 2018.1.* - 2019.1.* | bug fixes |
 | 1.17 | 2018.1.* - 2019.1.* | bug fixes and experimental support for AppCode and CLion |
