@@ -1,7 +1,8 @@
 package io.github.intellij.dlanguage.run;
 
 import com.intellij.execution.actions.ConfigurationContext;
-import com.intellij.execution.actions.RunConfigurationProducer;
+import com.intellij.execution.actions.LazyRunConfigurationProducer;
+import com.intellij.execution.configurations.ConfigurationFactory;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.util.Ref;
@@ -17,11 +18,12 @@ import org.jetbrains.annotations.Nullable;
 
 import static io.github.intellij.dlanguage.utils.DUtil.isDunitTestFile;
 
-public class DlangRunDubConfigurationProducer extends RunConfigurationProducer<DlangRunDubConfiguration> {
+public class DlangRunDubConfigurationProducer extends LazyRunConfigurationProducer<DlangRunDubConfiguration> {
 
+    private final DlangRunDubConfigurationType runDubConfigurationType;
 
     public DlangRunDubConfigurationProducer() {
-        super(new DlangRunDubConfigurationType());
+        runDubConfigurationType = new DlangRunDubConfigurationType();
     }
 
     @Nullable
@@ -80,4 +82,9 @@ public class DlangRunDubConfigurationProducer extends RunConfigurationProducer<D
     }
 
 
+    @NotNull
+    @Override
+    public ConfigurationFactory getConfigurationFactory() {
+        return runDubConfigurationType.getConfigurationFactories()[0];
+    }
 }

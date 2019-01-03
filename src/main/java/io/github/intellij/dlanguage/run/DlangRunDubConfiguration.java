@@ -20,7 +20,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DlangRunDubConfiguration extends ModuleBasedConfiguration<RunConfigurationModule,Module> {
+public class DlangRunDubConfiguration extends ModuleBasedConfiguration<RunConfigurationModule, Module> {
 
     //General tab
     private int generalDubOptions = 1;
@@ -221,7 +221,7 @@ public class DlangRunDubConfiguration extends ModuleBasedConfiguration<RunConfig
         }
 
         super.writeExternal(element);
-        writeModule(element);
+        writeModule(element); // todo: delete this line before 2020
         XmlSerializer.serializeInto(this, element);
     }
 

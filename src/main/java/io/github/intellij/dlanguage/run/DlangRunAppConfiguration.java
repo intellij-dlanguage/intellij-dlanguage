@@ -42,7 +42,7 @@ public class DlangRunAppConfiguration extends ModuleBasedConfiguration<RunConfig
             this.setModule(modules.iterator().next());
         }
 
-        workDir = PathUtil.getLocalPath(project.getBaseDir());
+        workDir = project.getBasePath();
         envVars = new HashMap<>();
     }
 
@@ -94,7 +94,7 @@ public class DlangRunAppConfiguration extends ModuleBasedConfiguration<RunConfig
         }
 
         super.writeExternal(element);
-        writeModule(element);
+        writeModule(element); // todo: delete this line before 2020
         XmlSerializer.serializeInto(this, element);
     }
 
