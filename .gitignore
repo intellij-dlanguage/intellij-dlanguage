@@ -1,9 +1,7 @@
 out/
 .DS_Store
 .gradle/
-/build/
-/jps-plugin/build/
-/jps-shared/build/
+build/
 
 .classpath
 .project

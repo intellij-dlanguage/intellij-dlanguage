@@ -1,5 +1,6 @@
 package io.github.intellij.dlanguage.utils;
 
+import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
@@ -8,6 +9,7 @@ import com.intellij.ui.TextFieldWithHistory;
 import com.intellij.util.ui.GridBag;
 import com.intellij.util.ui.JBUI;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -110,9 +112,16 @@ public class GuiUtil {
         return createCheckBoxOption(settings, text, getFillLineConstraints());
     }
 
-    public static void addFolderListener(final TextFieldWithBrowseButton textField, final String executable) {
-        textField.addBrowseFolderListener("Select " + executable + " path", "", null,
+    public static void addFolderListener(final TextFieldWithBrowseButton textField, @NotNull final String executable) {
+        textField.addBrowseFolderListener(String.format("Select %s executable", executable), "", null,
             FileChooserDescriptorFactory.createSingleLocalFileDescriptor());
+    }
+
+    public static void addFolderListener(final TextFieldWithBrowseButton textField,
+                                         @NotNull final String executable,
+                                         @Nullable final String description,
+                                         @NotNull final FileChooserDescriptor descriptor) {
+        textField.addBrowseFolderListener(String.format("Select %s executable", executable), description, null, descriptor);
     }
 
     public static ActionListener createApplyPathAction(final TextAccessor textField, final String executable) {

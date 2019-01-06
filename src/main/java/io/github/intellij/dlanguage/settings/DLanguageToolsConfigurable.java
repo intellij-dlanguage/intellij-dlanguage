@@ -3,6 +3,7 @@ package io.github.intellij.dlanguage.settings;
 import com.intellij.ide.ui.search.SearchableOptionsRegistrar;
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SearchableConfigurable;
 import com.intellij.openapi.project.Project;
@@ -18,12 +19,8 @@ import io.github.intellij.dlanguage.utils.ExecUtil;
 import io.github.intellij.dlanguage.utils.GuiUtil;
 import java.util.Arrays;
 import java.util.List;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
+import javax.swing.*;
+
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -149,12 +146,6 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
 
     @Nullable
     @Override
-    public String getHelpTopic() {
-        return null;
-    }
-
-    @Nullable
-    @Override
     public JComponent createComponent() {
         return mainPanel;
     }
@@ -164,9 +155,20 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
      */
     @Override
     public boolean isModified() {
-        for (final Property property : properties) {
-            if (property.isModified()) {
-                return true;
+        for (final Tool t : properties) {
+            if (t.isModified()) {
+                t.setDirty(true);
+
+                if(StringUtil.isNotEmpty(t.pathField.getText()) && !StringUtil.containsIgnoreCase(t.pathField.getText(), t.command)) {
+                    t.versionField.setText(String.format("Not a valid %s binary", t.command));
+                    t.versionField.setDisabledTextColor(UIManager.getColor("Focus.color"));
+                } else {
+                    t.updateVersion();
+                    return true;
+                }
+            } else if (t.isDirty()) {
+                t.updateVersion();
+                t.setDirty(false);
             }
         }
         return
@@ -202,11 +204,7 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
      * Updates the version info fields for all files configured.
      */
     private void updateVersionInfoFields() {
-        for (final Property property : properties) {
-            if (property instanceof Versioned) {
-                ((Versioned) property).updateVersion();
-            }
-        }
+        properties.forEach(Tool::updateVersion);
     }
 
     /**
@@ -263,8 +261,8 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
     class PropertyField implements Property {
 
         public final TextAccessor field;
-        public final String propertyKey;
-        public String oldValue;
+        private final String propertyKey;
+        private String oldValue;
 
         PropertyField(@NotNull final String propertyKey, @NotNull final TextAccessor field) {
             this(propertyKey, field, "");
@@ -292,6 +290,16 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
     }
 
     /**
+     * Ensures that the UI component for selecting a Dub Tool can only be used to select the correct binary
+     */
+    private class DubToolBinaryChooserDescriptor extends FileChooserDescriptor {
+        DubToolBinaryChooserDescriptor(@NotNull final String binaryName) {
+            super(true, false, false, false, false, false);
+            withFileFilter(vf -> vf.getNameWithoutExtension().equalsIgnoreCase(binaryName));
+        }
+    }
+
+    /**
      * Manages the group of fields which reside to a particular tool.
      */
     class Tool implements Property, Versioned {
@@ -307,6 +315,7 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
         final List<PropertyField> propertyFields;
         final Topic<ToolChangeListener> topic;
         private final ToolChangeListener publisher;
+        private boolean dirty = false;
 
         Tool(final Project project, final String command, final ToolKey key,
              final TextFieldWithBrowseButton pathField,
@@ -329,26 +338,40 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
                 new PropertyField(key.getPathKey(), pathField),
                 new PropertyField(key.getFlagsKey(), flagsField));
 
-            GuiUtil.addFolderListener(pathField, command);
+            GuiUtil.addFolderListener(pathField, command, "", new DubToolBinaryChooserDescriptor(command));
             GuiUtil.addApplyPathAction(autoFindButton, pathField, command);
             updateVersion();
         }
 
+        public boolean isDirty() {
+            return dirty;
+        }
+
+        void setDirty(final boolean dirty) {
+            this.dirty = dirty;
+        }
+
+        @Override
         public void updateVersion() {
             final String pathText = pathField.getText();
-            final String version =
-                StringUtil.isEmpty(pathText) ? "" : getVersion(pathText);
+            final String version = StringUtil.isEmpty(pathText) ? "" : getVersion(pathText);
             versionField.setText(version);
 
             if(DtoolUtils.versionPredates(version, this.latestVersion)) {
                 versionField.setToolTipText(String.format("A newer version of %s is available", this.command));
+                versionField.setDisabledTextColor(UIManager.getColor("Focus.color"));
+            } else {
+                versionField.setDisabledTextColor(UIManager.getColor("ComboBox.disabledForeground"));
+                versionField.setToolTipText(null); // turns the tool tip off
             }
         }
 
+        @Override
         public boolean isModified() {
             return propertyFields.parallelStream().anyMatch(PropertyField::isModified);
         }
 
+        @Override
         public void saveState() {
             if (isModified() && publisher != null) {
                 publisher.onToolSettingsChanged(new ToolSettings(pathField.getText(), flagsField.getText()));
@@ -358,6 +381,7 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
             }
         }
 
+        @Override
         public void restoreState() {
             for (final PropertyField propertyField : propertyFields) {
                 propertyField.restoreState();

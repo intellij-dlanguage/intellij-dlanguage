@@ -14,7 +14,8 @@ Support for the [D Programming Language](http://dlang.org/) within IntelliJ IDEA
 
 | Plugin Version | IntelliJ Versions | release notes |
 | :--- | :--- | :--- |
-| 1.17.2 | 2018.1.3 - 2019.1.* | TBE |
+| 1.18 | 2018.3 - 2019.1.* | IntelliJ 2018.3.* fixes |
+| 1.17.2 | 2018.1.3 - 2018.2.* | bug fixes |
 | 1.17.1 | 2018.1.* - 2019.1.* | bug fixes |
 | 1.17 | 2018.1.* - 2019.1.* | bug fixes and experimental support for AppCode and CLion |
 | 1.16.2 | 2017.3.* - 2018.1.* | bug fixes |
@@ -229,6 +230,12 @@ You can also use the plugin to boot up a stand alone instance of IntelliJ with t
 
 ```bash
 ./gradlew runIde
+```
+
+or to run against a specific Intellij version use: 
+
+```bash
+./gradlew runIde -PideaVersion=2018.3
 ```
 
 ### Copyright Notice
