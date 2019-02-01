@@ -44,4 +44,16 @@ class DPsiFileNode(project: Project?, dFilePsi: DlangFile, viewSettings: ViewSet
     }
 
     override fun extractPsiFromValue(): PsiElement? = value
+
+    override fun getTypeSortWeight(sortByType: Boolean): Int {
+        return if (sortByType) {
+            if (value?.virtualFile?.nameWithoutExtension == "package") {
+                1
+            } else {
+                0
+            }
+        } else {
+            super.getTypeSortWeight(sortByType)
+        }
+    }
 }
