@@ -20,14 +20,13 @@ class DPsiFileNode(project: Project?, dFilePsi: DlangFile, viewSettings: ViewSet
         val filePsi: DlangFile? = value
         if (filePsi != null) {
             val fileName = filePsi.virtualFile.nameWithoutExtension
-            val fileExt = filePsi.virtualFile.extension
             if (fileName == "package") {
-                data.addText("package.$fileExt", SimpleTextAttributes.REGULAR_ATTRIBUTES)
+                data.addText("package.${filePsi.virtualFile.extension}", SimpleTextAttributes.REGULAR_ATTRIBUTES)
             } else {
-                val presentableModuleName = filePsi.moduleName?.split(".")?.last() ?: fileName
+                val presentableModuleName = filePsi.unqualifiedModuleName
                 val presentableFileName: String? =
                     if (fileName != presentableModuleName) {
-                        "$fileName.$fileExt"
+                        "$fileName.${filePsi.virtualFile.extension}"
                     } else {
                         null
                     }
