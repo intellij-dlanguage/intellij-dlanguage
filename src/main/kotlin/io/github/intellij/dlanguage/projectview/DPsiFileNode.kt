@@ -16,6 +16,8 @@ import io.github.intellij.dlanguage.psi.DlangFile
 class DPsiFileNode(project: Project?, dFilePsi: DlangFile, viewSettings: ViewSettings) :
     AbstractPsiBasedNode<DlangFile>(project, dFilePsi, viewSettings) {
 
+    override fun getTypeSortKey(): Comparable<*> = TypeSortKey(this)
+
     override fun updateImpl(data: PresentationData) {
         val filePsi: DlangFile? = value
         if (filePsi != null) {
@@ -54,5 +56,12 @@ class DPsiFileNode(project: Project?, dFilePsi: DlangFile, viewSettings: ViewSet
         } else {
             super.getTypeSortWeight(sortByType)
         }
+    }
+
+    private class TypeSortKey(node: DPsiFileNode) : Comparable<TypeSortKey>
+    {
+        private val unqualifiedModuleName = node.value.unqualifiedModuleName
+
+        override fun compareTo(other: TypeSortKey) = unqualifiedModuleName.compareTo(other.unqualifiedModuleName)
     }
 }
