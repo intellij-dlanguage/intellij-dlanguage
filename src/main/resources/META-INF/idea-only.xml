@@ -13,6 +13,10 @@
         <projectImportProvider implementation="io.github.intellij.dlanguage.project.DubProjectImportProvider"/>
         <projectImportBuilder implementation="io.github.intellij.dlanguage.project.DubProjectImportBuilder"/>
         <projectOpenProcessor id="DubProjectOpenProcessor" implementation="io.github.intellij.dlanguage.project.DubProjectOpenProcessor"/>
+
+        <!-- Project Tree View -->
+        <treeStructureProvider implementation="io.github.intellij.dlanguage.projectview.DTreeStructureProvider"/>
+
     </extensions>
 
 </idea-plugin>
