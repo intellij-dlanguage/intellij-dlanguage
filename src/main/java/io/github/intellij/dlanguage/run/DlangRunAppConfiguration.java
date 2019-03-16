@@ -26,7 +26,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DlangRunAppConfiguration extends ModuleBasedConfiguration<RunConfigurationModule, Module> {
+public class DlangRunAppConfiguration extends ModuleBasedConfiguration<RunConfigurationModule> {
 
     private String workDir;
     private String additionalParams;

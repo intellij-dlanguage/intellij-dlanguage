@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class DlangRunDmdConfiguration extends ModuleBasedConfiguration<RunConfigurationModule, Module> {
+public class DlangRunDmdConfiguration extends ModuleBasedConfiguration<RunConfigurationModule> {
 
     //Compiler settings properties
     private boolean release;
