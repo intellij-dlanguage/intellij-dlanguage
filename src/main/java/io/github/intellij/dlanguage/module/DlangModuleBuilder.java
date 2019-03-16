@@ -9,6 +9,7 @@ import com.intellij.execution.configurations.ModuleBasedConfiguration;
 import com.intellij.execution.impl.RunConfigurationBeforeRunProvider;
 import com.intellij.execution.impl.RunManagerImpl;
 import com.intellij.ide.util.projectWizard.ModuleBuilder;
+import com.intellij.openapi.extensions.ExtensionPointName;
 import com.intellij.openapi.extensions.Extensions;
 import com.intellij.openapi.module.ModuleType;
 import com.intellij.openapi.options.ConfigurationException;
@@ -114,9 +115,9 @@ public class DlangModuleBuilder extends ModuleBuilder {
         RunnerAndConfigurationSettings runDmdSettings = runManager.findConfigurationByName(COMPILE_CONFIG_NAME);
         if (runDmdSettings == null) {
             final DlangRunDmdConfigurationType configurationType
-                = Extensions.findExtension(ConfigurationType.CONFIGURATION_TYPE_EP, DlangRunDmdConfigurationType.class);
+                = ConfigurationType.CONFIGURATION_TYPE_EP.findExtensionOrFail(DlangRunDmdConfigurationType.class);
             final ConfigurationFactory factory = configurationType.getConfigurationFactories()[0];
-            runDmdSettings = runManager.createRunConfiguration(COMPILE_CONFIG_NAME, factory);
+            runDmdSettings = runManager.createConfiguration(COMPILE_CONFIG_NAME, factory);
             ((ModuleBasedConfiguration) runDmdSettings.getConfiguration()).setModule(rootModel.getModule());
 
             runManager.addConfiguration(runDmdSettings, false);
@@ -126,9 +127,9 @@ public class DlangModuleBuilder extends ModuleBuilder {
         RunnerAndConfigurationSettings runAppSettings = runManager.findConfigurationByName(RUN_CONFIG_NAME);
         if (runAppSettings == null) {
             final DlangRunAppConfigurationType configurationType
-                = Extensions.findExtension(ConfigurationType.CONFIGURATION_TYPE_EP, DlangRunAppConfigurationType.class);
+                = ConfigurationType.CONFIGURATION_TYPE_EP.findExtensionOrFail(DlangRunAppConfigurationType.class);
             final ConfigurationFactory factory = configurationType.getConfigurationFactories()[0];
-            runAppSettings = runManager.createRunConfiguration(RUN_CONFIG_NAME, factory);
+            runAppSettings = runManager.createConfiguration(RUN_CONFIG_NAME, factory);
             ((ModuleBasedConfiguration) runAppSettings.getConfiguration()).setModule(rootModel.getModule());
 
             runManager.addConfiguration(runAppSettings, false);
@@ -143,7 +144,7 @@ public class DlangModuleBuilder extends ModuleBuilder {
             final BeforeRunTask runDmdTask = provider.createTask(runDmdSettings.getConfiguration());
             final List<BeforeRunTask> beforeRunTasks = new ArrayList<>(1);
             beforeRunTasks.add(runDmdTask);
-            runManager.setBeforeRunTasks(runAppSettings.getConfiguration(), beforeRunTasks, false);
+            runManager.setBeforeRunTasks(runAppSettings.getConfiguration(), beforeRunTasks);
         }
     }
 

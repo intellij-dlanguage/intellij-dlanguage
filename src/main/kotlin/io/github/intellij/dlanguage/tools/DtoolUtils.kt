@@ -60,7 +60,7 @@ class DtoolUtils {
         @JvmStatic
         fun String?.isSemVer(): Boolean {
             return if (this.isNullOrBlank()) false
-            else this!!.contains(".") &&
+            else this.contains(".") &&
                 this.split(".")
                     .map {
                         it.replace(Regex("\\D"), "")

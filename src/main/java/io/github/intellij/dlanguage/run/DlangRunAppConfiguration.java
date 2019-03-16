@@ -16,6 +16,7 @@ import com.intellij.openapi.util.WriteExternalException;
 import com.intellij.openapi.vfs.VfsUtilCore;
 import com.intellij.util.PathUtil;
 import com.intellij.util.xmlb.XmlSerializer;
+import org.bouncycastle.math.raw.Mod;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -26,7 +27,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DlangRunAppConfiguration extends ModuleBasedConfiguration<RunConfigurationModule> {
+public class DlangRunAppConfiguration extends ModuleBasedConfiguration<RunConfigurationModule, Module> {
 
     private String workDir;
     private String additionalParams;

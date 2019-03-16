@@ -7,7 +7,7 @@ import io.github.intellij.dlanguage.icons.DlangIcons;
 public class DUnitTestRunConfigurationType extends ConfigurationTypeBase {
 
     public static DUnitTestRunConfigurationType getInstance() {
-        return Extensions.findExtension(CONFIGURATION_TYPE_EP, DUnitTestRunConfigurationType.class);
+        return CONFIGURATION_TYPE_EP.findExtensionOrFail(DUnitTestRunConfigurationType.class);
     }
 
     protected DUnitTestRunConfigurationType() {
