@@ -26,26 +26,24 @@ env:
 jobs:
   include:
     - stage: Build and Test
-      env: ORG_GRADLE_PROJECT_ideaVersion=2018.3.5
-    - env: ORG_GRADLE_PROJECT_ideaVersion=2018.3.2
-    - env: ORG_GRADLE_PROJECT_ideaVersion=2018.3
+      env: ORG_GRADLE_PROJECT_ideaVersion=LATEST-EAP-SNAPSHOT
     - stage: Test Coverage
       if: NOT (branch = master)
       script: ./gradlew cobertura coveralls
 #    - stage: Deploy EAP
 #      if: branch = develop
 #      script: skip
-#      env: ORG_GRADLE_PROJECT_ideaVersion=2018.3
+#      env: ORG_GRADLE_PROJECT_ideaVersion=2019.1
 #      deploy:
 #        provider: script
 #        skip_cleanup: true
-#        script: ORG_GRADLE_PROJECT_publishChannels=eap ORG_GRADLE_PROJECT_version=1.18.1-eap$TRAVIS_BUILD_NUMBER ./gradlew :publishPlugin
+#        script: ORG_GRADLE_PROJECT_publishChannels=eap ORG_GRADLE_PROJECT_version=1.19.1-eap$TRAVIS_BUILD_NUMBER ./gradlew :publishPlugin
 #        on:
 #          branch: develop
     - stage: Deploy new Release
       if: branch = master
       script: skip
-      env: ORG_GRADLE_PROJECT_ideaVersion=2018.3
+      #env: ORG_GRADLE_PROJECT_ideaVersion=2018.3
       deploy:
         provider: script
         skip_cleanup: true
