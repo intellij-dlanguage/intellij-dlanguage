@@ -14,9 +14,11 @@
     ]]></description>
 
     <change-notes><![CDATA[
-        <b>v1.18</b><br/>
+        <b>v1.18 - v1.18.1</b><br/>
         <ul>
             <li>Compatibility IntelliJ 2018.3.*</li>
+            <li>added custom TreeStructureProvider for project view (IDEA only)</li>
+            <li>various bug fixes</li>
         </ul>
 	    <b>v1.17 - v1.17.2</b><br/>
         <ul>
@@ -45,7 +47,7 @@
     </change-notes>
 
     <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
-    <idea-version since-build="183" until-build="191.*"/>
+    <idea-version since-build="183" until-build="183.*"/>
 
     <!-- We want to support IntelliJ IDEA and CLion
         see http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
