@@ -16,6 +16,7 @@ import com.intellij.openapi.util.WriteExternalException;
 import com.intellij.openapi.vfs.VfsUtilCore;
 import com.intellij.util.PathUtil;
 import com.intellij.util.xmlb.XmlSerializer;
+import org.bouncycastle.math.raw.Mod;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -41,7 +42,7 @@ public class DlangRunAppConfiguration extends ModuleBasedConfiguration<RunConfig
             this.setModule(modules.iterator().next());
         }
 
-        workDir = PathUtil.getLocalPath(project.getBaseDir());
+        workDir = project.getBasePath();
         envVars = new HashMap<>();
     }
 
@@ -93,7 +94,7 @@ public class DlangRunAppConfiguration extends ModuleBasedConfiguration<RunConfig
         }
 
         super.writeExternal(element);
-        writeModule(element);
+        writeModule(element); // todo: delete this line before 2020
         XmlSerializer.serializeInto(this, element);
     }
 

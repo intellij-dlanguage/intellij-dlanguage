@@ -158,7 +158,7 @@ public class DlangRunDmdConfigurationEditor extends SettingsEditor<DlangRunDmdCo
         /* Each time settings are changed "Arguments" tab must be updated.
          * Add listener here. */
         final DlangRunDmdConfigurationType configurationType
-            = Extensions.findExtension(ConfigurationType.CONFIGURATION_TYPE_EP, DlangRunDmdConfigurationType.class);
+            = ConfigurationType.CONFIGURATION_TYPE_EP.findExtensionOrFail(DlangRunDmdConfigurationType.class);
         final ConfigurationFactory factory = configurationType.getConfigurationFactories()[0];
 
         addSettingsEditorListener(editor -> {

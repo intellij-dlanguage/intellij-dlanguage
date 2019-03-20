@@ -27,4 +27,8 @@ gradle-app.setting
 # Ignore Emacs backup files.
 *~
 /desktop.ini
+
+# a directory or putting a local jflex install
+jflex-install/
+
 /dev

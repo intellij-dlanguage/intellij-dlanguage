@@ -102,16 +102,16 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
             //todo needs build/fetch before adding libs, also needs to keep track of libs
 
             // remove all existing libs
-            ModuleRootModificationUtil.updateModel(module, { model ->
+            ModuleRootModificationUtil.updateModel(module) { model ->
                 model.orderEntries
-                    .filterIsInstance<LibraryOrderEntry>()
-                    .forEach({
-                        it.library?.let {
-                            model.moduleLibraryTable.removeLibrary(it)
+                        .filterIsInstance<LibraryOrderEntry>()
+                        .forEach {
+                            it.library?.let {
+                                model.moduleLibraryTable.removeLibrary(it)
+                            }
+                            model.removeOrderEntry(it)
                         }
-                        model.removeOrderEntry(it)
-                    })
-            })
+            }
             //        removeDLibs(module, project);//this is not necessary since intellij filters out duplicate libraries.
 
             // ask dub for required libs
@@ -162,7 +162,7 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
             val popup = JBPopupFactory.getInstance()
                 .createListPopupBuilder(list)
                 .setTitle("Process D libraries for module")
-                .setItemChoosenCallback({ processDLibs(AnAction.getEventProject(e), list.selectedValue as Module) })
+                .setItemChoosenCallback { processDLibs(AnAction.getEventProject(e), list.selectedValue as Module) }
                 .createPopup()
             popup.showCenteredInCurrentWindow(project)
         }

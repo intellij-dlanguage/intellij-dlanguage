@@ -14,22 +14,16 @@ Support for the [D Programming Language](http://dlang.org/) within IntelliJ IDEA
 
 | Plugin Version | IntelliJ Versions | release notes |
 | :--- | :--- | :--- |
-| 1.18 | 2018.3 - 2019.1.* | IntelliJ 2018.3.* fixes |
-| 1.17.2 | 2018.1.3 - 2018.2.* | bug fixes |
-| 1.17.1 | 2018.1.* - 2019.1.* | bug fixes |
-| 1.17 | 2018.1.* - 2019.1.* | bug fixes and experimental support for AppCode and CLion |
-| 1.16.2 | 2017.3.* - 2018.1.* | bug fixes |
-| 1.16 | 2017.3.* - 2018.1.* | support for IntelliJ 2018.1, processing D libs in background, UI changes, and fix various bugs |
+| TBE | 2019.1.* | support for IntelliJ 2019.* |
+| 1.18.* | 2018.3 - 2018.3.* | support for IntelliJ 2018.3.* |
+| 1.17.* | 2018.1.* - 2018.2.* | bug fixes and experimental support for AppCode and CLion |
+| 1.16.* | 2017.3.* - 2018.1.* | support for IntelliJ 2018.1, processing D libs in background, UI changes, and fix various bugs |
 | 1.15.4 | 2017.2.* - 2017.3.* | bug fixes (xmas release) |
 | 1.15.3 | 2017.2.* - 2017.3.* | bug fixes (dropped 2017.1.* support) |
 | 1.15.2 | 2017.1.* - 2017.3.* | added Structure View, code folding, bug fixes |
 | 1.15.1 | 2017.1.* - 2017.3.* | bug fixes |
 | 1.15 | 2017.1.* - 2017.3.* | bug fixes |
 | 1.14 | 2017.1.* - 2017.3.* | added support for debugging via GDB and error reporting via [sentry.io](https://sentry.io) |
-| 1.13.1 | 2017.1.* - 2017.3.* | support for IntelliJ 2017.3 and fix various bugs |
-| 1.13 | 2017.1.* - 2017.2.* | support for IntelliJ 2017.2 and remove the need for DCD |
-| 1.12 | 2017.1 - 2017.1.5 | support for IntelliJ 2017.1 |
-| 1.11 | 2016.3 - 2016.3.* | support for IntelliJ 2016.3 |
 
 JetBrains create downloadable releases with or without a bundled JRE. If you download a release without a bundled JRE you will need to have a JRE installed. Since IntelliJ 16 (the 2016.* versions) JRE 8 is required to run the IDE.
 
@@ -46,7 +40,7 @@ You can help by using the plugin and raising issues for feature requests and bug
 [Download](https://www.jetbrains.com/idea/) and install IntelliJ Community Edition (Free) or Ultimate (Paid)
 From IntelliJ go to Preferences > Plugins > Browse Repositories and search For "D Language" (**you will see 2 plugins, Choose the DLanguage one**) then click install and restart IntelliJ
 
-You can also download the plugin jar to your local disk directly from the [Jetbrains plugin repository](https://plugins.jetbrains.com/plugin/8115?pr=) and then in IntelliJ go to Preferences > Plugins > Install plugin from disk and choose the jar you downloaded
+You can also download the plugin jar to your local disk directly from the [Jetbrains plugin repository](https://plugins.jetbrains.com/plugin/8115) and then in IntelliJ go to Preferences > Plugins > Install plugin from disk and choose the jar you downloaded
 
 ![installation](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/master/.README/install.png)
 
@@ -235,7 +229,7 @@ You can also use the plugin to boot up a stand alone instance of IntelliJ with t
 or to run against a specific Intellij version use: 
 
 ```bash
-./gradlew runIde -PideaVersion=2018.3
+./gradlew runIde -PideaVersion=2018.3.5
 ```
 
 ### Copyright Notice

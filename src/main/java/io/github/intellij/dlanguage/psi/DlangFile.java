@@ -55,6 +55,24 @@ public class DlangFile extends PsiFileBase {
     }
 
     /**
+     * Returns the module name without parent packages, as defined in the file.
+     *
+     * If no module declaration is present, the default D module name is used
+     * (file name without extension).
+     */
+    @NotNull
+    public String getUnqualifiedModuleName() {
+        final String fullModuleName = getModuleName();
+        final String moduleName;
+        if (fullModuleName != null) {
+            moduleName = fullModuleName.substring(fullModuleName.lastIndexOf('.') + 1);
+        } else {
+            moduleName = getVirtualFile().getNameWithoutExtension();
+        }
+        return moduleName;
+    }
+
+    /**
      * Returns the module name if it exists, otherwise returns the file name.
      */
     @NotNull
