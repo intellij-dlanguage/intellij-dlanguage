@@ -26,7 +26,7 @@ env:
 jobs:
   include:
     - stage: Build and Test
-      env: ORG_GRADLE_PROJECT_ideaVersion=LATEST-EAP-SNAPSHOT
+      env: ORG_GRADLE_PROJECT_ideaVersion=2019.1
     - stage: Test Coverage
       if: NOT (branch = master)
       script: ./gradlew cobertura coveralls
