@@ -70,6 +70,7 @@
     <!--<depends optional="true" config-file="appcode-only.xml">com.intellij.modules.appcode</depends>-->
 
     <extensions defaultExtensionNs="com.intellij">
+
         <!-- Add your extensions here -->
         <codeInsight.parameterInfo language="D" implementationClass="io.github.intellij.dlanguage.codeinsight.ParameterInfo"/>
         <codeInsight.parameterInfo
