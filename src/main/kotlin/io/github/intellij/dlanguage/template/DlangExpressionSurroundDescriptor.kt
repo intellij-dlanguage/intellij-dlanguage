@@ -24,7 +24,7 @@ class DlangExpressionSurroundDescriptor : SurroundDescriptor {
 
     companion object {
         private val SURROUNDERS = arrayOf(
-            BlaSurrounder()
+            ExampleSurrounder()
             /*DlangWithParenthesesSurrounder(),
             DlangWithNotSurrounder(),
             DlangWithIfExpSurrounder(),
@@ -34,7 +34,7 @@ class DlangExpressionSurroundDescriptor : SurroundDescriptor {
 }
 
 // a placeholder for later to enable language specific template expansion.
-class BlaSurrounder : Surrounder
+class ExampleSurrounder : Surrounder
 {
     override fun getTemplateDescription(): String {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -47,5 +47,4 @@ class BlaSurrounder : Surrounder
     override fun isApplicable(elements: Array<out PsiElement>): Boolean {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
-
 }
