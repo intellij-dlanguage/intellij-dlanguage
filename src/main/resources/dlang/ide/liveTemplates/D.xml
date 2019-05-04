@@ -40,10 +40,13 @@
         <option name="D" value="true" />
       </context>
     </template>
-    <template name="spn" value="${1:@safe }${2:pure }${3:nothrow }${4:const }${0:@nogc } &#10;" description="@safe pure nothrow const @nogc (spn)" toReformat="false" toShortenFQNames="true">
-      <context>
-        <option name="D" value="true" />
-      </context>
+    <template name="spn" value="$safe$$pure$$nothrow$$const$$nogc$&#10;" description="@safe pure nothrow const @nogc (spn)" toReformat="false" toShortenFQNames="true">
+        <variable name="safe" expression="" defaultValue="&quot;@safe &quot;" alwaysStopAt="true" />
+        <variable name="pure" expression="" defaultValue="&quot;pure &quot;" alwaysStopAt="true" />
+        <variable name="nothrow" expression="" defaultValue="&quot;nothrow &quot;" alwaysStopAt="true" />
+        <variable name="const" expression="" defaultValue="&quot;const &quot;" alwaysStopAt="true" />
+        <variable name="nogc" expression="" defaultValue="&quot;@nogc&quot;" alwaysStopAt="true" />
+        <context />
     </template>
     <template name="cont" value="continue; &#10;" description="continue (cont)" toReformat="false" toShortenFQNames="true">
       <context>
@@ -98,10 +101,9 @@
         <option name="D" value="true" />
       </context>
     </template>
-    <template name="scope" value="scope(${1:exit}`!p snip.rv = complete(t[1], [&amp;quot;exit&amp;quot;, &amp;quot;success&amp;quot;, &amp;quot;failure&amp;quot;])`) &#10;{ &#10; $SELECTION$$END$ &#10;} &#10;" description="scope (scope)" toReformat="false" toShortenFQNames="true">
-      <context>
-        <option name="D" value="true" />
-      </context>
+    <template name="scope" value="scope($exit$) &#10;{ &#10;    $SELECTION$$END$ &#10;} &#10;" description="scope (scope)" toReformat="false" toShortenFQNames="true">
+        <variable name="exit" expression="enum(&quot;exit&quot;, &quot;success&quot;, &quot;failure&quot;)" defaultValue="&quot;exit&quot;" alwaysStopAt="true" />
+        <context />
     </template>
     <template name="with" value="with($CONDITION$) &#10;{ &#10; $SELECTION$$END$ &#10;} &#10;" description="with (with)" toReformat="false" toShortenFQNames="true">
       <variable name="CONDITION" expression="" defaultValue="" alwaysStopAt="true" />
@@ -246,10 +248,14 @@
         <option name="D" value="true" />
       </context>
     </template>
-    <template name="out" value="out${1:(result)} &#10;{ &#10; $END$ &#10;} &#10;body &#10;" description="out contract (out)" toReformat="false" toShortenFQNames="true">
-      <context>
-        <option name="D" value="true" />
-      </context>
+    <template name="out" value="out($result$) &#10;{ &#10;    $END$assert(r &gt; 0, &quot;return must be positive&quot;);&#10;} &#10;do" description="out contract, long (out)" toReformat="false" toShortenFQNames="true">
+        <variable name="result" expression="" defaultValue="&quot;r&quot;" alwaysStopAt="true" />
+        <context />
+    </template>
+    <template name="outs" value="out ($END$r; r &gt; 0, &quot;return must be positive&quot;)" description="out contract, short (outs)" toReformat="false" toShortenFQNames="true">
+        <context>
+            <option name="D" value="true" />
+        </context>
     </template>
     <template name="invar" value="invariant() &#10;{ &#10; $END$ &#10;} &#10;" description="invariant (invar)" toReformat="false" toShortenFQNames="true">
       <context>
@@ -306,22 +312,20 @@
         <option name="D" value="true" />
       </context>
     </template>
-    <template name="set" value="void $NAME1$($TYPE2$ rhs) ${3:@safe pure nothrow @nogc} &#10;{ &#10; ${0:$1_} = rhs; &#10;} &#10;" description="setter property (set)" toReformat="false" toShortenFQNames="true">
-      <variable name="NAME1" expression="" defaultValue="" alwaysStopAt="true" />
-      <variable name="TYPE2" expression="" defaultValue="" alwaysStopAt="true" />
-      <context>
-        <option name="D" value="true" />
-      </context>
+    <template name="set" value="void $SET$$NAME1$($TYPE2$ rhs) @safe pure nothrow @nogc&#10;{ &#10;    $VAR1$ = rhs; &#10;} &#10;" description="setter property (set)" toReformat="false" toShortenFQNames="true">
+        <variable name="SET" expression="" defaultValue="&quot;set&quot;" alwaysStopAt="true" />
+        <variable name="NAME1" expression="" defaultValue="&quot;Value&quot;" alwaysStopAt="true" />
+        <variable name="TYPE2" expression="concat(expressions...)" defaultValue="&quot;int&quot;" alwaysStopAt="true" />
+        <variable name="VAR1" expression="concat(&quot;_&quot;, camelCase(NAME1))" defaultValue="" alwaysStopAt="true" />
+        <context />
     </template>
     <template name="main" value="void main(string[] args) &#10;{ &#10; $SELECTION$$END$ &#10;} &#10;" description="Main" toReformat="false" toShortenFQNames="true">
       <context>
         <option name="D" value="true" />
       </context>
     </template>
-    <template name="toStr" value="string toString()${1: @safe const pure nothrow} &#10;{ &#10; $END$ &#10;} &#10;" description="toString (toStr)" toReformat="false" toShortenFQNames="true">
-      <context>
-        <option name="D" value="true" />
-      </context>
+    <template name="toStr" value="string toString() @safe const pure nothrow &#10;{ &#10; $END$ &#10;} &#10;" description="toString (toStr)" toReformat="false" toShortenFQNames="true">
+        <context />
     </template>
     <template name="try" value="try &#10;{ &#10; $SELECTION$$2$&#10;} &#10;catch($3$Exception e) &#10;{ &#10; $HANDLE_EXCEPTION4$ &#10;} &#10;$END$ &#10;" description="try/catch (try)" toReformat="false" toShortenFQNames="true">
       <variable name="2" expression="" defaultValue="" alwaysStopAt="true" />
@@ -398,12 +402,11 @@
         <option name="D" value="true" />
       </context>
     </template>
-    <template name="smix" value="mixin(q{ &#10;$MIXIN_FORMAT_STRING1$ &#10;}.format($VARS_TO_MIX_IN2$)); &#10;$END$ &#10;" description="string mixin (smix)" toReformat="false" toShortenFQNames="true">
-      <variable name="MIXIN_FORMAT_STRING1" expression="" defaultValue="" alwaysStopAt="true" />
-      <variable name="VARS_TO_MIX_IN2" expression="" defaultValue="" alwaysStopAt="true" />
-      <context>
-        <option name="D" value="true" />
-      </context>
+    <template name="template" value="$mixin$template $NAME2$($PARAMETERS3$) &#10;{ &#10;    $END$ &#10;} &#10;" description="template (template)" toReformat="false" toShortenFQNames="true">
+        <variable name="mixin" expression="" defaultValue="&quot;mixin &quot;" alwaysStopAt="true" />
+        <variable name="NAME2" expression="" defaultValue="&quot;TemplateName&quot;" alwaysStopAt="true" />
+        <variable name="PARAMETERS3" expression="" defaultValue="&quot;alias a&quot;" alwaysStopAt="true" />
+        <context />
     </template>
     <template name="version" value="version($VERSION_NAME1$) &#10;{ &#10; $SELECTION$$END$ &#10;} &#10;" description="version (version)" toReformat="false" toShortenFQNames="true">
       <variable name="VERSION_NAME1" expression="" defaultValue="" alwaysStopAt="true" />
@@ -423,26 +426,26 @@
         <option name="D" value="true" />
       </context>
     </template>
-    <template name="pragma" value="pragma(${1:msg}`!p snip.rv = complete(t[1], [&amp;quot;msg&amp;quot;, &amp;quot;lib&amp;quot;, &amp;quot;startaddress&amp;quot;, &amp;quot;mangle&amp;quot;])`, ${2}); &#10;$END$ &#10;" description="pragma (pragma)" toReformat="false" toShortenFQNames="true">
-      <context>
-        <option name="D" value="true" />
-      </context>
+    <template name="pragma" value="pragma($IDENT$, &quot;$ARG$&quot;); &#10;$END$ &#10;" description="pragma (pragma)" toReformat="false" toShortenFQNames="true">
+        <variable name="IDENT" expression="enum(&quot;msg&quot;, &quot;lib&quot;, &quot;startaddress&quot;, &quot;mangle&quot;, &quot;linkerDirective&quot;)" defaultValue="&quot;msg&quot;" alwaysStopAt="true" />
+        <variable name="ARG" expression="" defaultValue="&quot;Compiling...&quot;" alwaysStopAt="true" />
+        <context />
     </template>
-    <template name="opDis" value="${3:/+3: /// Description+/}`!p &#10;funcDoc(snip, t[3], t[2], &amp;quot;/+2: parameters+/&amp;quot;) &#10;` &#10;${1:auto} opDispatch(string s)(${2}) &#10;{ &#10; $END$ &#10;} &#10;" description="opDispatch (opDis)" toReformat="false" toShortenFQNames="true">
-      <context>
-        <option name="D" value="true" />
-      </context>
+    <template name="opDis" value="$auto$ opDispatch(string $name$, $T$)($T$ $rhs$)&#10;{ &#10;    $END$return mixin(&quot;value.&quot; ~ $name$ ~ &quot; = $rhs$&quot;);&#10;} &#10;" description="opDispatch (opDis)" toReformat="false" toShortenFQNames="true">
+        <variable name="auto" expression="" defaultValue="&quot;auto&quot;" alwaysStopAt="true" />
+        <variable name="name" expression="" defaultValue="&quot;name&quot;" alwaysStopAt="true" />
+        <variable name="T" expression="" defaultValue="&quot;T&quot;" alwaysStopAt="true" />
+        <variable name="rhs" expression="" defaultValue="&quot;rhs&quot;" alwaysStopAt="true" />
+        <context />
     </template>
-    <template name="opCmp" value="int opCmp($TYPE1$ rhs)${2: @safe pure nothrow const} &#10;{ &#10; $END$ &#10;} &#10;" description="opCmp (opCmp)" toReformat="false" toShortenFQNames="true">
-      <variable name="TYPE1" expression="" defaultValue="" alwaysStopAt="true" />
-      <context>
-        <option name="D" value="true" />
-      </context>
+    <template name="opCmp" value="int opCmp($TYPE1$ rhs) @safe pure nothrow const&#10;{ &#10;    $END$ &#10;} &#10;" description="opCmp (opCmp)" toReformat="false" toShortenFQNames="true">
+        <variable name="TYPE1" expression="" defaultValue="&quot;int&quot;" alwaysStopAt="true" />
+        <context />
     </template>
-    <template name="opApply" value="int opApply(int delegate(${1:/+1: type/s+/}) dg) &#10;{ &#10; int result = 0; &#10; ${0:/+ wrap the following in a loop: +/} &#10; result = dg(${2:/+2: arg/s+/}); &#10; if(result) &#10; { &#10;  break; &#10; } &#10; &#10; return result; &#10;} &#10;" description="opApply (opApply)" toReformat="false" toShortenFQNames="true">
-      <context>
-        <option name="D" value="true" />
-      </context>
+    <template name="opApply" value="int opApply(int delegate($Type$) $dg$) &#10;{ &#10;    $END$int result = 0;&#10;    if ($dg$(this))&#10;        result = 1;&#10;    return result;&#10;} &#10;" description="opApply (opApply)" toReformat="false" toShortenFQNames="true">
+        <variable name="Type" expression="className()" defaultValue="&quot;className&quot;" alwaysStopAt="true" />
+        <variable name="dg" expression="" defaultValue="&quot;dg&quot;" alwaysStopAt="true" />
+        <context />
     </template>
     <template name="todo" value="// TODO: $END$. $DATE$ $TIME$ &#10;" description="TODO (todo)" toReformat="false" toShortenFQNames="true">
       <variable name="DATE" expression="date()" defaultValue="" alwaysStopAt="false" />
@@ -451,15 +454,17 @@
         <option name="D" value="true" />
       </context>
     </template>
-    <template name="gpl" value="// This program is free software; you can redistribute it and/or modify &#10;// it under the terms of the GNU General Public License as published by &#10;// the Free Software Foundation; either version 2 of the License, or &#10;// (at your option) any later version. &#10;// &#10;// This program is distributed in the hope that it will be useful, &#10;// but WITHOUT ANY WARRANTY; without even the implied warranty of &#10;// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the &#10;// GNU General Public License for more details. &#10;// &#10;// You should have received a copy of the GNU General Public License &#10;// along with this program; if not, write to the Free Software &#10;// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. &#10;// &#10;// Copyright (C) ${0:Author}, `!v strftime(&amp;quot;%Y&amp;quot;)` &#10;" description="GPL (gpl)" toReformat="false" toShortenFQNames="true">
-      <context>
-        <option name="D" value="true" />
-      </context>
+    <template name="gpl" value="// This program is free software; you can redistribute it and/or modify &#10;// it under the terms of the GNU General Public License as published by &#10;// the Free Software Foundation; either version 2 of the License, or &#10;// (at your option) any later version. &#10;// &#10;// This program is distributed in the hope that it will be useful, &#10;// but WITHOUT ANY WARRANTY; without even the implied warranty of &#10;// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the &#10;// GNU General Public License for more details. &#10;// &#10;// You should have received a copy of the GNU General Public License &#10;// along with this program; if not, write to the Free Software &#10;// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. &#10;// &#10;// Copyright (C) $Author$, $DATE$ $TIME$ &#10;" description="GPL (gpl)" toReformat="false" toShortenFQNames="true">
+        <variable name="Author" expression="user()" defaultValue="&quot;Author&quot;" alwaysStopAt="false" />
+        <variable name="DATE" expression="date()" defaultValue="" alwaysStopAt="false" />
+        <variable name="TIME" expression="time()" defaultValue="" alwaysStopAt="false" />
+        <context />
     </template>
-    <template name="bsl" value="//          Copyright ${0:Author} `!v strftime(&amp;quot;%Y&amp;quot;)`. &#10;// Distributed under the Boost Software License, Version 1.0. &#10;//    (See accompanying file LICENSE_1_0.txt or copy at &#10;//          http://www.boost.org/LICENSE_1_0.txt) &#10;" description="Boost (bsl)" toReformat="false" toShortenFQNames="true">
-      <context>
-        <option name="D" value="true" />
-      </context>
+    <template name="bsl" value="//          Copyright $Author$ $DATE$ $TIME$. &#10;// Distributed under the Boost Software License, Version 1.0. &#10;//    (See accompanying file LICENSE_1_0.txt or copy at &#10;//          http://www.boost.org/LICENSE_1_0.txt) &#10;" description="Boost (bsl)" toReformat="false" toShortenFQNames="true">
+        <variable name="Author" expression="user()" defaultValue="&quot;Author&quot;" alwaysStopAt="false" />
+        <variable name="DATE" expression="date()" defaultValue="" alwaysStopAt="false" />
+        <variable name="TIME" expression="time()" defaultValue="" alwaysStopAt="false" />
+        <context />
     </template>
     <template name="~this" value="~this()&#10;{&#10;    $END$&#10;}" description="destructor (this)" toReformat="false" toShortenFQNames="true">
       <context>
