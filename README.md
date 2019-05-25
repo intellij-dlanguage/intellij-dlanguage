@@ -14,7 +14,7 @@ Support for the [D Programming Language](http://dlang.org/) within IntelliJ IDEA
 
 | Plugin Version | IntelliJ Versions | release notes |
 | :--- | :--- | :--- |
-| TBE | 2019.1.* | support for IntelliJ 2019.* |
+| 1.19 | 2019.1.* | support for IntelliJ 2019.1.* |
 | 1.18.* | 2018.3 - 2018.3.* | support for IntelliJ 2018.3.* |
 | 1.17.* | 2018.1.* - 2018.2.* | bug fixes and experimental support for AppCode and CLion |
 | 1.16.* | 2017.3.* - 2018.1.* | support for IntelliJ 2018.1, processing D libs in background, UI changes, and fix various bugs |
@@ -42,7 +42,7 @@ From IntelliJ go to Preferences > Plugins > Browse Repositories and search For "
 
 You can also download the plugin jar to your local disk directly from the [Jetbrains plugin repository](https://plugins.jetbrains.com/plugin/8115) and then in IntelliJ go to Preferences > Plugins > Install plugin from disk and choose the jar you downloaded
 
-![installation](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/master/.README/install.png)
+![installation](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/develop/.README/dlang_plugin_install.png)
 
 ## Quick Usage
 
@@ -50,7 +50,7 @@ You can also download the plugin jar to your local disk directly from the [Jetbr
 
 If you have an existing dub project you can import it via File > Import Project
 
-![Import](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/master/.README/import-dub-project.png)
+![Import](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/develop/.README/import-dub-project.png)
 
 ### New Project with DUB
 
@@ -68,13 +68,13 @@ There is very basic dub dependency support via Tools > Process D Libraries
 
 It reads the dub dependencies and loads the libraries into the External Libraries
 
-  ![Dub  Dependency](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/master/.README/process-d-libs.png)
+  ![Dub  Dependency](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/develop/.README/process-d-libs.png)
 
 #### Basic D-Unit Test Runner Support
 
 If you add the d-unit dependency to your dub.json [d-unit](http://code.dlang.org/packages/d-unit) and then run Process D Libraries you will be able to run d-unit tests
 
-  ![Test Support](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/master/.README/d-unit-support.png)
+  ![Test Support](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/develop/.README/d-unit-support.png)
 
 ### Configure DTools
 
@@ -127,77 +127,77 @@ Here are some screenshots of progress to date:
 
 Dtools configuration
 
-![improved highlighting](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/master/.README/tool_settings.png)
+![improved highlighting](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/develop/.README/tool_settings.png)
 
 Autocompletion using DCD
 
-![improved highlighting](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/master/.README/autocomplete.png)
+![improved highlighting](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/develop/.README/autocomplete.png)
 
 Compile checking
 
-![improved highlighting](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/master/.README/compile_checking.png)
+![improved highlighting](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/develop/.README/compile_checking.png)
 
 Dscanner Code Linting
 
-![improved highlighting](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/master/.README/dscanner_linting.png)
+![improved highlighting](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/develop/.README/dscanner_linting.png)
 
 Goto Class
 
-![improved highlighting](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/master/.README/goto_class.png)
+![improved highlighting](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/develop/.README/goto_class.png)
 
 Configure Syntax Highlighting
 
-![highlighting settings](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/master/.README/highlighting_settings.png)
+![highlighting settings](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/develop/.README/highlighting_settings.png)
 
 ### Older Screenshots
 
 Improved Syntax Highlighting with Annotator:
 
-![improved highlighting](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/master/.README/improved_syntax_highlighting.png)
+![improved highlighting](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/develop/.README/improved_syntax_highlighting.png)
 
 Syntax Highlighting and PSI Structure:
 
-![highlighting and psi structure](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/master/.README/highlighting_and_psi_structure.png)
+![highlighting and psi structure](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/develop/.README/highlighting_and_psi_structure.png)
 
 Create a new D project:
 
-![create a new d project](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/master/.README/create_new_d_project.png)
+![create a new d project](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/develop/.README/create_new_d_project.png)
 
 Module Settings - add D compiler:
 
-![module settings add d compiler](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/master/.README/module_settings_add_d_compiler.png)
+![module settings add d compiler](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/develop/.README/module_settings_add_d_compiler.png)
 
 Module Settings - set D compiler in project:
 
-![module settings add compiler to project](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/master/.README/module_settings_set_project_d_compiler.png)
+![module settings add compiler to project](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/develop/.README/module_settings_set_project_d_compiler.png)
 
 Add new D file (from right click menu)
 
-![right click add new d file](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/master/.README/right_click_add_new_d_file.png)
+![right click add new d file](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/develop/.README/right_click_add_new_d_file.png)
 
 D file editor:
 
-![d file editor](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/master/.README/d_file_editor.png)
+![d file editor](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/develop/.README/d_file_editor.png)
 
 Run Configuration menus:
 
-![run configuration menus](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/master/.README/run_configuration_menus.png)
+![run configuration menus](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/develop/.README/run_configuration_menus.png)
 
 Run Configuration create box:
 
-![run configuration create box](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/master/.README/run_configuration_create_box.png)
+![run configuration create box](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/develop/.README/run_configuration_create_box.png)
 
 Run Configuration edit:
 
-![run configuration edit](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/master/.README/run_configuration_edit.png)
+![run configuration edit](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/develop/.README/run_configuration_edit.png)
 
 Run Configuration running:
 
-![run configuration running](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/master/.README/run_configuration_running.png)
+![run configuration running](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/develop/.README/run_configuration_running.png)
 
 PSI Tree and Highlighting:
 
-![psi tree and highlighting](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/master/.README/psi_structure.png)
+![psi tree and highlighting](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/develop/.README/psi_structure.png)
 
 
 ## Develop
