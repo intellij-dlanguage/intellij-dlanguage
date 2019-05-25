@@ -39,6 +39,11 @@ public class DFormatterTest extends FormatterTestCase {
 public void testattribute_constraint() throws Exception {
     doTest();
 }
+
+public void testdlanguage_issue_497() throws  Exception{
+        doTest();
+}
+
 //
 //    public void testbreakOnDots() throws Exception {
 //        doTest();
