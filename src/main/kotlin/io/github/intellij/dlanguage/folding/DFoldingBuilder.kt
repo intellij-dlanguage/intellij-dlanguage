@@ -1,5 +1,6 @@
 package io.github.intellij.dlanguage.folding
 
+import com.intellij.application.options.CodeStyle
 import com.intellij.codeInsight.folding.CodeFoldingSettings
 import com.intellij.lang.ASTNode
 import com.intellij.lang.folding.FoldingBuilderEx
@@ -65,7 +66,7 @@ class DFoldingBuilder : FoldingBuilderEx(), DumbAware {
             return emptyArray()
 
         val descriptors: MutableList<FoldingDescriptor> = ArrayList()
-        val rightMargin = CodeStyleSettingsManager.getSettings(root.project).getRightMargin(DLanguage)
+        val rightMargin = CodeStyle.getSettings(root.containingFile).getRightMargin(DLanguage)
         val visitor = FoldingVisitor(descriptors, rightMargin)
         PsiTreeUtil.processElements(root) {
             // required in case the psi element has been deleted

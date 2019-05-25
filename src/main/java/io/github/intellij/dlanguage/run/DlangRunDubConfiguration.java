@@ -221,7 +221,6 @@ public class DlangRunDubConfiguration extends ModuleBasedConfiguration<RunConfig
         }
 
         super.writeExternal(element);
-        writeModule(element); // todo: delete this line before 2020
         XmlSerializer.serializeInto(this, element);
     }
 

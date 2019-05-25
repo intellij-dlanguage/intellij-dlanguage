@@ -38,12 +38,6 @@ public class DlangWritingAccessProvider extends WritingAccessProvider {
         return false;
     }
 
-    @NotNull
-    @Override
-    public Collection<VirtualFile> requestWriting(final VirtualFile... files) {
-        return Collections.emptyList();
-    }
-
     @Override
     public boolean isPotentiallyWritable(@NotNull final VirtualFile file) {
         if (DlangFileType.INSTANCE != file.getFileType()) return true;

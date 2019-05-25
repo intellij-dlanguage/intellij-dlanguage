@@ -106,7 +106,6 @@ public class DlangRunDmdConfiguration extends ModuleBasedConfiguration<RunConfig
     @Override
     public void writeExternal(@NotNull final Element element) throws WriteExternalException {
         super.writeExternal(element);
-        writeModule(element); // todo: delete this line before 2020
         XmlSerializer.serializeInto(this, element);
     }
 
