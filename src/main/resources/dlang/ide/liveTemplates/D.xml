@@ -1,7 +1,7 @@
 <templateSet group="D">
-    <template name="if"
-              value="if(boolean_expression) {&#10;   /* statement(s) will execute if the boolean expression is true */&#10;} else {&#10;   /* statement(s) will execute if the boolean expression is false */&#10;}"
-              description="" toReformat="false" toShortenFQNames="true">
+    <!--for if/else use ife-->
+    <template name="if" value="if($BOOL$) {&#10;   /* statement(s) will execute if the boolean expression is true */&#10;}" description="" toReformat="false" toShortenFQNames="true">
+        <variable name="BOOL" expression="" defaultValue="&quot;true&quot;" alwaysStopAt="true"/>
         <context>
             <option name="D" value="true"/>
         </context>
@@ -23,7 +23,8 @@
       </context>
     </template>
     <template name="al" value="alias $ALIAS$ = $NAME$; &#10;$END$&#10;" description="alias (al)" toReformat="true" toShortenFQNames="true">
-      <variable name="ALIAS" expression="" defaultValue="&quot;alias&quot;" alwaysStopAt="true" />
+      <!--Can't use a default value of alias here, b/c alias is a keyword, which causes syntax errors.-->
+      <variable name="ALIAS" expression="" defaultValue="&quot;alias_&quot;" alwaysStopAt="true" />
       <variable name="NAME" expression="" defaultValue="&quot;definition&quot;" alwaysStopAt="true" />
       <context>
         <option name="D" value="true" />
