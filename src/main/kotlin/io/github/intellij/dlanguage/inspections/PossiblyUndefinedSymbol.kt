@@ -44,7 +44,7 @@ class PossiblyUndefinedSymbol : LocalInspectionTool() {
 
 
         override fun visitIdentifier(identifier: DlangIdentifierImpl) {
-            if (identifier != null) {
+//            if (identifier != null) {
                 val start = System.currentTimeMillis()
                 if (DResolveUtil.getInstance(identifier.project).shouldNotResolveToAnything(identifier)) {
                     return
@@ -72,7 +72,7 @@ class PossiblyUndefinedSymbol : LocalInspectionTool() {
                     DResolveUtil.getInstance(identifier.project).findDefinitionNode(identifier, true)
                 }
             }
-        }
+//        }
     }
 
 
@@ -94,7 +94,7 @@ class SetupSDK(file: PsiFile) : LocalQuickFixOnPsiElement(file),HighPriorityActi
     }
 
     override fun invoke(project: Project, file: PsiFile, startElement: PsiElement, endElement: PsiElement) {
-        val projectJdk = ProjectSettingsService.getInstance(project).chooseAndSetSdk() ?: return
+//        val projectJdk = ProjectSettingsService.getInstance(project).chooseAndSetSdk() ?: return
         ApplicationManager.getApplication().runWriteAction {
             val module = ModuleUtilCore.findModuleForPsiElement(file)
             if (module != null) {

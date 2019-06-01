@@ -45,19 +45,20 @@ public class GdbDebuggerEditorsProvider extends XDebuggerEditorsProvider {
     }
 
     @NotNull
+    @SuppressWarnings({"DeprecatedIsStillUsed", "deprecation"})
     // todo: delete this method once super class has equivalent createDocument method removed
-    public Document createDocument(@NotNull Project project, @NotNull String text,
-                                   @Nullable XSourcePosition sourcePosition, @NotNull EvaluationMode mode) {
+    public Document createDocument(@NotNull final Project project, @NotNull final String text,
+                                   @Nullable final XSourcePosition sourcePosition, @NotNull final EvaluationMode mode) {
         // TODO: Return a proper value
         return EditorFactory.getInstance().createDocument(text);
     }
 
     @NotNull
     @Override
-    public Document createDocument(@NotNull Project project,
-                                   @NotNull XExpression expression,
-                                   @Nullable XSourcePosition sourcePosition,
-                                   @NotNull EvaluationMode mode) {
+    public Document createDocument(@NotNull final Project project,
+                                   @NotNull final XExpression expression,
+                                   @Nullable final XSourcePosition sourcePosition,
+                                   @NotNull final EvaluationMode mode) {
         // TODO: Return a proper value
         return EditorFactory.getInstance().createDocument(expression.getExpression());
     }

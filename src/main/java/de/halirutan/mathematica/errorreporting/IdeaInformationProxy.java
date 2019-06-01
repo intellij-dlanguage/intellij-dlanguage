@@ -32,6 +32,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.util.ExceptionUtil;
 import io.github.intellij.dlanguage.settings.DLanguageToolsConfigurable;
 import io.github.intellij.dlanguage.settings.ToolKey;
 import org.jetbrains.annotations.NotNull;
@@ -55,31 +56,32 @@ public class IdeaInformationProxy {
      * @return a map of info about the IDE and the plugin and the error
      */
     @NotNull
-    public static Map<String, String> getKeyValuePairs(final GitHubErrorBean error,
+    public static Map<String, String> getKeyValuePairs(final Throwable error,
+        final String lastAction,
         final Application application,
         final ApplicationInfoEx appInfo,
         final ApplicationNamesInfo namesInfo,
         final PluginDescriptor pluginDescriptor) {
         final Map<String, String> params = new LinkedHashMap<>(50);
 
-        params.put("error.description", error.getDescription());
+//        params.put("error.description", error.getDescription());
 
-        params.put("Plugin Name", error.getPluginName());
-        params.put("Plugin Version", error.getPluginVersion());
+//        params.put("Plugin Name", error.getPluginName());
+//        params.put("Plugin Version", error.getPluginVersion());
 
         params.put("Plugin Id", pluginDescriptor.getPluginId().getIdString());
 
         params.putAll(getPluginInfo(appInfo, pluginDescriptor, namesInfo));
 
-        params.put("Last Action", error.getLastAction());
+        params.put("Last Action", lastAction);
         params.put("error.message", error.getMessage());
-        params.put("error.stacktrace", error.getStackTrace());
-        params.put("error.hash", error.getExceptionHash());
-
-        for (final Attachment attachment : error.getAttachments()) {
-            params.put("attachment.name", attachment.getName());
-            params.put("attachment.value", attachment.getEncodedBytes());
-        }
+        params.put("error.stacktrace", ExceptionUtil.getThrowableText(error));
+//        params.put("error.hash", error.getExceptionHash());
+//
+//        for (final Attachment attachment : error.getAttachments()) {
+//            params.put("attachment.name", attachment.getName());
+//            params.put("attachment.value", attachment.getEncodedBytes());
+//        }
 
         return anonymise(params);
     }

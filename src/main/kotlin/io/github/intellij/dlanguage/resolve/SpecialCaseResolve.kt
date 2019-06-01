@@ -153,7 +153,7 @@ object SpecialCaseResolve {
         return PsiTreeUtil.getTopmostParentOfType(identifier, ImportBindings::class.java)
     }
 
-    fun tryPackageResolve(e: Identifier, profile: Boolean = false): Set<PsiNamedElement> {
+    fun tryPackageResolve(e: Identifier): Set<PsiNamedElement> {
         fun inIdentifierOrTemplateChain(identifier: Identifier): IdentifierOrTemplateChain? {
             return PsiTreeUtil.getTopmostParentOfType(identifier, IdentifierOrTemplateChain::class.java)
         }

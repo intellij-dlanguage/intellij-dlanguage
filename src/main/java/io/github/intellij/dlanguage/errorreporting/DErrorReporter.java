@@ -11,7 +11,6 @@ import com.intellij.openapi.diagnostic.IdeaLoggingEvent;
 import com.intellij.openapi.diagnostic.SubmittedReportInfo;
 import com.intellij.openapi.extensions.PluginId;
 import com.intellij.util.Consumer;
-import de.halirutan.mathematica.errorreporting.GitHubErrorBean;
 import de.halirutan.mathematica.errorreporting.IdeaInformationProxy;
 import io.sentry.Sentry;
 import org.jetbrains.annotations.NotNull;
@@ -53,9 +52,9 @@ public class DErrorReporter extends ErrorReportSubmitter {
                     Sentry.getContext().addExtra("plugin id", pluginId.getIdString());
                 }
 
-                final GitHubErrorBean errorBean = new GitHubErrorBean(event.getThrowable(), IdeaLogger.ourLastActionId);
                 final Map<String, String> keyValuePairs = IdeaInformationProxy.getKeyValuePairs(
-                                                                                    errorBean,
+                                                                                    event.getThrowable(),
+                                                                                    IdeaLogger.ourLastActionId,
                                                                                     ApplicationManager.getApplication(),
                                                                                     (ApplicationInfoEx) ApplicationInfo.getInstance(),
                                                                                     ApplicationNamesInfo.getInstance(),

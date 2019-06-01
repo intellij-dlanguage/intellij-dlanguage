@@ -44,8 +44,6 @@
  * </p>
  * <p>
  * The information about the running IDEA are collected in {@link de.halirutan.mathematica.errorreporting.IdeaInformationProxy}.
- * The class {@link de.halirutan.mathematica.errorreporting.GitHubErrorBean} extends the standard class and adds the hash
- * of the stack trace. This then used in the map created by {@link de.halirutan.mathematica.errorreporting.IdeaInformationProxy}.
  * Creating a valid GitHub issue and the communication with GitHub is done in {@link de.halirutan.mathematica.errorreporting.AnonymousFeedback}
  * which is run as background task {@link de.halirutan.mathematica.errorreporting.AnonymousFeedbackTask}.
  * The main class that is also registered in the plugin.xml and starts the whole procedure is {@link de.halirutan.mathematica.errorreporting.GitHubErrorReporter}.

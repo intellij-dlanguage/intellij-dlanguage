@@ -61,7 +61,7 @@ class DResolveUtil private constructor(val project: Project) {
                 return constructorsOnly
         }
         if (basicResolveResult.isEmpty())
-            return SpecialCaseResolve.tryPackageResolve(e, profile)
+            return SpecialCaseResolve.tryPackageResolve(e)
         return basicResolveResult
     }
 

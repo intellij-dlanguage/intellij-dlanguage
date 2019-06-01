@@ -23,6 +23,7 @@ import io.github.intellij.dlanguage.DLanguage
 import io.github.intellij.dlanguage.psi.DLanguageDeclaration
 import io.github.intellij.dlanguage.psi.DLanguageDeclarationsAndStatements
 import io.github.intellij.dlanguage.psi.DLanguageStatement
+import io.github.intellij.dlanguage.psi.DlangTokenType
 import io.github.intellij.dlanguage.psi.DlangTypes.*
 import io.github.intellij.dlanguage.psi.named.DLanguageModuleDeclaration
 import io.github.intellij.dlanguage.psi.references.DReference
@@ -35,6 +36,7 @@ class DFormattingModelBuilder : FormattingModelBuilder {
 
     private fun createSpacingBuilder(settings: CodeStyleSettings): SpacingBuilder {
         return SpacingBuilder(settings, DLanguage)
+            .withinPair(KW_CASE, ARGUMENT_LIST).spaces(1)
             .before(COMMA).spaceIf(false)
             .after(COMMA).spaceIf(true)
             .before(SEMICOLON).spaceIf(false)
@@ -53,7 +55,6 @@ class DFormattingModelBuilder : FormattingModelBuilder {
             .after(KW_FOR).spaces(1)
             .after(KW_IF).spaces(1)
             .after(KW_ELSE).spaces(1)
-            .after(KW_CASE).spaces(1)
             .after(KW_SWITCH).spaces(1)
             .after(LINE_COMMENT).lineBreakInCode()
     }
