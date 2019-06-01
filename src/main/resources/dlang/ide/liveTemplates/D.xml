@@ -1,0 +1,499 @@
+<templateSet group="D">
+    <template name="if"
+              value="if(boolean_expression) {&#10;   /* statement(s) will execute if the boolean expression is true */&#10;} else {&#10;   /* statement(s) will execute if the boolean expression is false */&#10;}"
+              description="" toReformat="false" toShortenFQNames="true">
+        <context>
+            <option name="D" value="true"/>
+        </context>
+    </template>
+    <template name="module" value="//          Copyright $AUTHOR2$ $YEAR$. &#10;// Distributed under the Boost Software License, Version 1.0. &#10;//    (See accompanying file LICENSE_1_0.txt or copy at &#10;//          http://www.boost.org/LICENSE_1_0.txt)} &#10; &#10;module $PACKAGE$.$NAME$; &#10; &#10; &#10;$END$ &#10;" description="New module (module)" toReformat="false" toShortenFQNames="true">
+      <variable name="AUTHOR2" expression="user()" defaultValue="" alwaysStopAt="false" />
+      <variable name="YEAR" expression="date(&quot;yyyy&quot;)" defaultValue="" alwaysStopAt="false" />
+      <variable name="PACKAGE" expression="" defaultValue="&quot;package&quot;" alwaysStopAt="true" />
+      <variable name="NAME" expression="fileNameWithoutExtension()" defaultValue="" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="imp" value="import $STD$.$STDIO$; &#10;$END$ &#10;" description="import (imp)" toReformat="false" toShortenFQNames="true">
+      <variable name="STD" expression="" defaultValue="&quot;std&quot;" alwaysStopAt="true" />
+      <variable name="STDIO" expression="" defaultValue="&quot;stdio&quot;" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="al" value="alias $ALIAS$ = $NAME$; &#10;$END$&#10;" description="alias (al)" toReformat="true" toShortenFQNames="true">
+      <variable name="ALIAS" expression="" defaultValue="&quot;alias&quot;" alwaysStopAt="true" />
+      <variable name="NAME" expression="" defaultValue="&quot;definition&quot;" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="st" value="static $END$ &#10;" description="static (st)" toReformat="false" toShortenFQNames="true">
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="new" value="new $TYPE$($END$) &#10;" description="new (new)" toReformat="false" toShortenFQNames="true">
+      <variable name="TYPE" expression="" defaultValue="" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="spn" value="$safe$$pure$$nothrow$$const$$nogc$&#10;" description="@safe pure nothrow const @nogc (spn)" toReformat="false" toShortenFQNames="true">
+        <variable name="safe" expression="" defaultValue="&quot;@safe &quot;" alwaysStopAt="true" />
+        <variable name="pure" expression="" defaultValue="&quot;pure &quot;" alwaysStopAt="true" />
+        <variable name="nothrow" expression="" defaultValue="&quot;nothrow &quot;" alwaysStopAt="true" />
+        <variable name="const" expression="" defaultValue="&quot;const &quot;" alwaysStopAt="true" />
+        <variable name="nogc" expression="" defaultValue="&quot;@nogc&quot;" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="cont" value="continue; &#10;" description="continue (cont)" toReformat="false" toShortenFQNames="true">
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="pub" value="public: &#10; $END$ &#10;" description="public (pub)" toReformat="false" toShortenFQNames="true">
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="priv" value="private: &#10; $END$ &#10;" description="private (priv)" toReformat="false" toShortenFQNames="true">
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="prot" value="protected: &#10; $END$ &#10;" description="protected (prot)" toReformat="false" toShortenFQNames="true">
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="pack" value="package: &#10; $END$ &#10;" description="package (pack)" toReformat="false" toShortenFQNames="true">
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="ret" value="return $END$; &#10;" description="return (ret)" toReformat="false" toShortenFQNames="true">
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="avar" value="auto $VARIABLE1$ = $SELECTION$; &#10;$END$ &#10;" description="auto variable (avar)" toReformat="false" toShortenFQNames="true">
+      <variable name="VARIABLE1" expression="" defaultValue="" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="cvar" value="const $VARIABLE1$ = $SELECTION$; &#10;$END$ &#10;" description="const variable (cvar)" toReformat="false" toShortenFQNames="true">
+      <variable name="VARIABLE1" expression="" defaultValue="" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="ivar" value="immutable $VARIABLE1$ = $SELECTION$; &#10;$END$ &#10;" description="immutable variable (ivar)" toReformat="false" toShortenFQNames="true">
+      <variable name="VARIABLE1" expression="" defaultValue="" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="supe" value="super($END$); &#10;" description="super (supe)" toReformat="false" toShortenFQNames="true">
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="scope" value="scope($exit$) &#10;{ &#10;    $SELECTION$$END$ &#10;} &#10;" description="scope (scope)" toReformat="false" toShortenFQNames="true">
+        <variable name="exit" expression="enum(&quot;exit&quot;, &quot;success&quot;, &quot;failure&quot;)" defaultValue="&quot;exit&quot;" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="with" value="with($CONDITION$) &#10;{ &#10; $SELECTION$$END$ &#10;} &#10;" description="with (with)" toReformat="false" toShortenFQNames="true">
+      <variable name="CONDITION" expression="" defaultValue="" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="tup" value="tuple($FIRST$, $MORE$) &#10;" description="tuple (tup)" toReformat="false" toShortenFQNames="true">
+      <variable name="FIRST" expression="" defaultValue="" alwaysStopAt="true" />
+      <variable name="MORE" expression="" defaultValue="" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="wr" value="writeln($SELECTION$); &#10;$END$ &#10;" description="writeln (wr)" toReformat="false" toShortenFQNames="true">
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="wrf" value="writefln(&quot;$FORMAT_STRING1$&quot;, $SELECTION$); &#10;$END$ &#10;" description="writefln (wrf)" toReformat="false" toShortenFQNames="true">
+      <variable name="FORMAT_STRING1" expression="" defaultValue="" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="enf" value="enforce($CONDITION1$, new $TYPE$Exception(&quot;$MSG$&quot;)); &#10;$END$ &#10;" description="enforce (enf)" toReformat="false" toShortenFQNames="true">
+      <variable name="CONDITION1" expression="" defaultValue="&quot;true&quot;" alwaysStopAt="true" />
+      <variable name="TYPE" expression="" defaultValue="" alwaysStopAt="true" />
+      <variable name="MSG" expression="" defaultValue="&quot;this should not be thrown&quot;" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="format" value="&quot;$FORMAT_STRING1$$END$&quot;.format($VALUES0$)$ENDSEMI$" description="format (format)" toReformat="false" toShortenFQNames="true">
+      <variable name="FORMAT_STRING1" expression="" defaultValue="&quot;%12,3.3f&quot;" alwaysStopAt="true" />
+      <variable name="VALUES0" expression="" defaultValue="&quot;1234.5678&quot;" alwaysStopAt="true" />
+      <variable name="ENDSEMI" expression="" defaultValue="&quot;;&quot;" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="ife" value="if($CONDITION1$) &#10;{ &#10; $CODE2$ &#10;} &#10;else &#10;{ &#10; $ELSE3$ &#10;} &#10;" description="if .. else (ife)" toReformat="false" toShortenFQNames="true">
+      <variable name="CONDITION1" expression="" defaultValue="" alwaysStopAt="true" />
+      <variable name="CODE2" expression="" defaultValue="" alwaysStopAt="true" />
+      <variable name="ELSE3" expression="" defaultValue="" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="else" value="else &#10;{ &#10; $SELECTION$$END$ &#10;} &#10;" description="else (else)" toReformat="false" toShortenFQNames="true">
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="elif" value="else if($CONDITION1$) &#10;{ &#10; $SELECTION$$END$ &#10;} &#10;" description="else if (elif)" toReformat="false" toShortenFQNames="true">
+      <variable name="CONDITION1" expression="" defaultValue="" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="sw" value="switch($VAR1$) &#10;{ &#10; case $VALUE2$: &#10;  $CODE3$ &#10;  break; &#10; case $VALUE4$: &#10;  $CODE5$ &#10;  break; &#10; $more_cases$ &#10; default: &#10;  $assert$ &#10;} &#10;" description="switch (sw)" toReformat="false" toShortenFQNames="true">
+      <variable name="VAR1" expression="" defaultValue="" alwaysStopAt="true" />
+      <variable name="VALUE2" expression="" defaultValue="" alwaysStopAt="true" />
+      <variable name="CODE3" expression="" defaultValue="" alwaysStopAt="true" />
+      <variable name="VALUE4" expression="" defaultValue="" alwaysStopAt="true" />
+      <variable name="CODE5" expression="" defaultValue="" alwaysStopAt="true" />
+      <variable name="more_cases" expression="" defaultValue="" alwaysStopAt="true" />
+      <variable name="assert" expression="" defaultValue="&quot;assert(false);&quot;" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="fsw" value="final switch($VAR1$) &#10;{ &#10; case $VALUE2$: &#10;  $CODE3$ &#10;  break; &#10; case $VALUE4$: &#10;  $CODE5$ &#10;  break; &#10; $MoreCases$ &#10;} &#10;" description="final switch (fsw)" toReformat="false" toShortenFQNames="true">
+      <variable name="VAR1" expression="" defaultValue="" alwaysStopAt="true" />
+      <variable name="VALUE2" expression="" defaultValue="" alwaysStopAt="true" />
+      <variable name="CODE3" expression="" defaultValue="" alwaysStopAt="true" />
+      <variable name="VALUE4" expression="" defaultValue="" alwaysStopAt="true" />
+      <variable name="CODE5" expression="" defaultValue="" alwaysStopAt="true" />
+      <variable name="MoreCases" expression="" defaultValue="" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="case" value="case $VALUE1$: &#10; $VALUE2$&#10; break; &#10;$END$ &#10;" description="case (case)" toReformat="false" toShortenFQNames="true">
+      <variable name="VALUE1" expression="" defaultValue="" alwaysStopAt="true" />
+      <variable name="VALUE2" expression="" defaultValue="" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="do" value="do &#10;{ &#10; $SELECTION$$END$ &#10;} while($CONDITION1$); &#10;" description="do while (do)" toReformat="false" toShortenFQNames="true">
+      <variable name="CONDITION1" expression="" defaultValue="" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="wh" value="while($CONDITION1$) &#10;{ &#10; $SELECTION$$END$ &#10;} &#10;" description="while (wh)" toReformat="false" toShortenFQNames="true">
+      <variable name="CONDITION1" expression="" defaultValue="" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="for" value="for($ITERTYPE$ $ITER$ $ITERINIT$; $ITER$ $RANGE$; $ITER$$ITERINC$) &#10;{ &#10; $SELECTION$$END$ &#10;} &#10;" description="for (for)" toReformat="false" toShortenFQNames="true">
+      <variable name="ITERTYPE" expression="" defaultValue="&quot;int&quot;" alwaysStopAt="true" />
+      <variable name="ITER" expression="" defaultValue="&quot;i&quot;" alwaysStopAt="true" />
+      <variable name="ITERINIT" expression="" defaultValue="&quot;= 0&quot;" alwaysStopAt="true" />
+      <variable name="RANGE" expression="" defaultValue="&quot;&lt; count&quot;" alwaysStopAt="true" />
+      <variable name="ITERINC" expression="" defaultValue="&quot;++&quot;" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="forever" value="for(;;) &#10;{ &#10; $SELECTION$$END$ &#10;} &#10;" description="forever (forever)" toReformat="false" toShortenFQNames="true">
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="fore" value="foreach($item$; $RANGE2$) &#10;{ &#10; $SELECTION$$END$ &#10;} &#10;" description="foreach (fore)" toReformat="false" toShortenFQNames="true">
+      <variable name="item" expression="" defaultValue="&quot;item&quot;" alwaysStopAt="true" />
+      <variable name="RANGE2" expression="" defaultValue="&quot;range&quot;" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="forei" value="foreach(i, $ITEM$; $RANGE2$) &#10;{ &#10; $SELECTION$$END$ &#10;} &#10;" description="foreach with an index (forei)" toReformat="false" toShortenFQNames="true">
+      <variable name="ITEM" expression="" defaultValue="&quot;item&quot;" alwaysStopAt="true" />
+      <variable name="RANGE2" expression="" defaultValue="&quot;range&quot;" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="forif" value="foreach($ITEM$; $RANGE2$) if($CONDITION3$) &#10;{ &#10; $SELECTION$$END$ &#10;} &#10;" description="foreach if (forif)" toReformat="false" toShortenFQNames="true">
+      <variable name="ITEM" expression="" defaultValue="&quot;item&quot;" alwaysStopAt="true" />
+      <variable name="RANGE2" expression="" defaultValue="&quot;range&quot;" alwaysStopAt="true" />
+      <variable name="CONDITION3" expression="" defaultValue="&quot;condition&quot;" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="in" value="in &#10;{ &#10; $END$ &#10;} &#10;body &#10;" description="in contract (in)" toReformat="false" toShortenFQNames="true">
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="out" value="out($result$) &#10;{ &#10;    $END$assert(r &gt; 0, &quot;return must be positive&quot;);&#10;} &#10;do" description="out contract, long (out)" toReformat="false" toShortenFQNames="true">
+        <variable name="result" expression="" defaultValue="&quot;r&quot;" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="outs" value="out ($END$r; r &gt; 0, &quot;return must be positive&quot;)" description="out contract, short (outs)" toReformat="false" toShortenFQNames="true">
+        <context>
+            <option name="D" value="true" />
+        </context>
+    </template>
+    <template name="invar" value="invariant() &#10;{ &#10; $END$ &#10;} &#10;" description="invariant (invar)" toReformat="false" toShortenFQNames="true">
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="as" value="assert($FALSE$, &quot;$TODO$&quot;); &#10;$END$ &#10;" description="assert (as)" toReformat="false" toShortenFQNames="true">
+      <variable name="FALSE" expression="" defaultValue="" alwaysStopAt="true" />
+      <variable name="TODO" expression="" defaultValue="" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="utest" value="unittest &#10;{ &#10; $END$ &#10;} &#10;" description="unittest (utest)" toReformat="false" toShortenFQNames="true">
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="doctest" value="/// &#10;unittest &#10;{ &#10; $END$ &#10;} &#10;" description="documented unittest (doctest)" toReformat="false" toShortenFQNames="true">
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="fun" value="/***********************************&#10; * $BRIEFSUMMARY$ $DNAME$ $BRIEFSUMMARY2$.&#10; *&#10; * $Description$&#10; *&#10; * Params:&#10; *      $DPARAMETER1NAME$ =     is for this&#10; *              and not for that&#10; *&#10; * Returns: $DVOID$.&#10; */&#10;$VOID$ $NAME$($PARAMETER1TYPE$ $PARAMETER1NAME$) $EX$ &#10;{ &#10; $END$&#10;} &#10;" description="function definition (fun)" toReformat="true" toShortenFQNames="true">
+      <variable name="NAME" expression="" defaultValue="&quot;myfunction&quot;" alwaysStopAt="true" />
+      <variable name="PARAMETER1TYPE" expression="" defaultValue="&quot;int&quot;" alwaysStopAt="true" />
+      <variable name="PARAMETER1NAME" expression="" defaultValue="&quot;x&quot;" alwaysStopAt="true" />
+      <variable name="DPARAMETER1NAME" expression="PARAMETER1NAME" defaultValue="" alwaysStopAt="false" />
+      <variable name="VOID" expression="" defaultValue="&quot;void&quot;" alwaysStopAt="true" />
+      <variable name="EX" expression="" defaultValue="&quot;@safe pure nothrow @nogc&quot;" alwaysStopAt="true" />
+      <variable name="BRIEFSUMMARY" expression="" defaultValue="&quot;Brief summary of what&quot;" alwaysStopAt="true" />
+      <variable name="DNAME" expression="NAME" defaultValue="" alwaysStopAt="false" />
+      <variable name="BRIEFSUMMARY2" expression="" defaultValue="&quot;does, forming the summary section&quot;" alwaysStopAt="true" />
+      <variable name="Description" expression="" defaultValue="&quot;First paragraph of synopsis description.&quot;" alwaysStopAt="true" />
+      <variable name="DVOID" expression="VOID" defaultValue="" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="this" value="/// Description &#10;this($PARAMETER1TYPE$ $PARAMETER1NAME$) $EX$&#10;{ &#10;    $END$&#10;}&#10;" description="constructor (this)" toReformat="false" toShortenFQNames="true">
+      <variable name="PARAMETER1TYPE" expression="" defaultValue="&quot;int&quot;" alwaysStopAt="true" />
+      <variable name="PARAMETER1NAME" expression="" defaultValue="&quot;x&quot;" alwaysStopAt="true" />
+      <variable name="EX" expression="" defaultValue="&quot;@safe pure nothrow @nogc&quot;" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="get" value="$TYPE1$ $NAME2$() $ACCESS$ &#10;{ &#10; return $FIELD$; &#10;} &#10;" description="getter property (get)" toReformat="false" toShortenFQNames="true">
+      <variable name="TYPE1" expression="" defaultValue="&quot;int&quot;" alwaysStopAt="true" />
+      <variable name="NAME2" expression="" defaultValue="&quot;getter&quot;" alwaysStopAt="true" />
+      <variable name="ACCESS" expression="" defaultValue="&quot;@safe pure nothrow const @nogc&quot;" alwaysStopAt="true" />
+      <variable name="FIELD" expression="concat(NAME2, &quot;_&quot;)" defaultValue="" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="set" value="void $SET$$NAME1$($TYPE2$ rhs) @safe pure nothrow @nogc&#10;{ &#10;    $VAR1$ = rhs; &#10;} &#10;" description="setter property (set)" toReformat="false" toShortenFQNames="true">
+        <variable name="SET" expression="" defaultValue="&quot;set&quot;" alwaysStopAt="true" />
+        <variable name="NAME1" expression="" defaultValue="&quot;Value&quot;" alwaysStopAt="true" />
+        <variable name="TYPE2" expression="concat(expressions...)" defaultValue="&quot;int&quot;" alwaysStopAt="true" />
+        <variable name="VAR1" expression="concat(&quot;_&quot;, camelCase(NAME1))" defaultValue="" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="main" value="void main(string[] args) &#10;{ &#10; $SELECTION$$END$ &#10;} &#10;" description="Main" toReformat="false" toShortenFQNames="true">
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="toStr" value="string toString() @safe const pure nothrow &#10;{ &#10; $END$ &#10;} &#10;" description="toString (toStr)" toReformat="false" toShortenFQNames="true">
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="try" value="try &#10;{ &#10; $SELECTION$$2$&#10;} &#10;catch($3$Exception e) &#10;{ &#10; $HANDLE_EXCEPTION4$ &#10;} &#10;$END$ &#10;" description="try/catch (try)" toReformat="false" toShortenFQNames="true">
+      <variable name="2" expression="" defaultValue="" alwaysStopAt="true" />
+      <variable name="3" expression="" defaultValue="" alwaysStopAt="true" />
+      <variable name="HANDLE_EXCEPTION4" expression="" defaultValue="" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="tryf" value="try &#10;{ &#10; $SELECTION$$2$ &#10;} &#10;catch($3$Exception e) &#10;{ &#10; $HANDLE_EXCEPTION4$ &#10;} &#10;finally &#10;{ &#10; $CLEANUP5$ &#10;} &#10;" description="try/catch/finally (tryf)" toReformat="false" toShortenFQNames="true">
+      <variable name="2" expression="" defaultValue="" alwaysStopAt="true" />
+      <variable name="3" expression="" defaultValue="" alwaysStopAt="true" />
+      <variable name="HANDLE_EXCEPTION4" expression="" defaultValue="" alwaysStopAt="true" />
+      <variable name="CLEANUP5" expression="" defaultValue="" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="catch" value="catch($EX$ Exception e) &#10;{ &#10; $HANDLETHEEXCEPTION0$ &#10;} &#10;" description="catch (catch)" toReformat="false" toShortenFQNames="true">
+      <variable name="EX" expression="" defaultValue="" alwaysStopAt="true" />
+      <variable name="HANDLETHEEXCEPTION0" expression="" defaultValue="" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="thr" value="throw new $NAME1$Exception($END$); &#10;" description="throw (thr)" toReformat="false" toShortenFQNames="true">
+      <variable name="NAME1" expression="" defaultValue="" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="struct" value="struct $typeName$ &#10;{ &#10; $END$ &#10;} &#10;" description="struct (struct)" toReformat="false" toShortenFQNames="true">
+      <variable name="typeName" expression="" defaultValue="" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="union" value="union $TYPENAME$} &#10;{ &#10; $END$ &#10;} &#10;" description="union (union)" toReformat="false" toShortenFQNames="true">
+      <variable name="TYPENAME" expression="fileNameWithoutExtension()" defaultValue="" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="class" value="class $CLASSNAME$&#10;{ &#10;    this()&#10;    {&#10;        $END$ &#10;    }&#10;&#10;    ~this()&#10;    {&#10;&#10;    }&#10;} &#10;" description="class (class)" toReformat="false" toShortenFQNames="true">
+      <variable name="CLASSNAME" expression="fileNameWithoutExtension()" defaultValue="" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="inter" value="interface $TYPENAME$&#10;{ &#10; $END$ &#10;} &#10;" description="interface (inter)" toReformat="false" toShortenFQNames="true">
+      <variable name="TYPENAME" expression="fileNameWithoutExtension()" defaultValue="&quot;typename&quot;" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="enum" value="enum $BASENAME$} &#10;{ &#10; $END$ &#10;} &#10;" description="enum (enum)" toReformat="false" toShortenFQNames="true">
+      <variable name="BASENAME" expression="" defaultValue="" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="exc" value="/// $DNAME1$ $END$Exception. &#10;class $NAME1$Exception : $Type$Exception &#10;{ &#10; this(string msg, string file = __FILE__, int line = __LINE__) &#10;  @safe pure nothrow &#10; { &#10;  super(msg, file, line); &#10; } &#10;} &#10;" description="exception definition (exc)" toReformat="true" toShortenFQNames="true">
+      <variable name="NAME1" expression="" defaultValue="&quot;My&quot;" alwaysStopAt="true" />
+      <variable name="Type" expression="" defaultValue="" alwaysStopAt="true" />
+      <variable name="DNAME1" expression="NAME1" defaultValue="" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="mix" value="template $DMIXNAME$(string Name, string M1)&#10;{&#10;    const char[] $DMIXNAME$ = $END$&quot;struct &quot; ~ Name ~ &quot;{ int &quot; ~ M1 ~ &quot;; }&quot;;&#10;}&#10;&#10;mixin($MIXNAME$!(&quot;Foo&quot;, &quot;bar&quot;));&#10;" description="mixin (mix)" toReformat="false" toShortenFQNames="true">
+      <variable name="MIXNAME" expression="" defaultValue="&quot;GenStruct&quot;" alwaysStopAt="true" />
+      <variable name="DMIXNAME" expression="MIXNAME" defaultValue="" alwaysStopAt="false" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="template" value="$mixin$template $NAME2$($PARAMETERS3$) &#10;{ &#10;    $END$ &#10;} &#10;" description="template (template)" toReformat="false" toShortenFQNames="true">
+        <variable name="mixin" expression="" defaultValue="&quot;mixin &quot;" alwaysStopAt="true" />
+        <variable name="NAME2" expression="" defaultValue="&quot;TemplateName&quot;" alwaysStopAt="true" />
+        <variable name="PARAMETERS3" expression="" defaultValue="&quot;alias a&quot;" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="version" value="version($VERSION_NAME1$) &#10;{ &#10; $SELECTION$$END$ &#10;} &#10;" description="version (version)" toReformat="false" toShortenFQNames="true">
+      <variable name="VERSION_NAME1" expression="" defaultValue="" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="debug" value="debug &#10;{ &#10; $SELECTION$$END$ &#10;} &#10;" description="debug" toReformat="false" toShortenFQNames="true">
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="template" value="$mixin$template $NAME2$($PARAMETERS3$) &#10;{ &#10;    $END$ &#10;} &#10;" description="template (template)" toReformat="false" toShortenFQNames="true">
+      <variable name="mixin" expression="" defaultValue="&quot;mixin &quot;" alwaysStopAt="true" />
+      <variable name="NAME2" expression="" defaultValue="&quot;TemplateName&quot;" alwaysStopAt="true" />
+      <variable name="PARAMETERS3" expression="" defaultValue="&quot;alias a&quot;" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="pragma" value="pragma($IDENT$, &quot;$ARG$&quot;); &#10;$END$ &#10;" description="pragma (pragma)" toReformat="false" toShortenFQNames="true">
+        <variable name="IDENT" expression="enum(&quot;msg&quot;, &quot;lib&quot;, &quot;startaddress&quot;, &quot;mangle&quot;, &quot;linkerDirective&quot;)" defaultValue="&quot;msg&quot;" alwaysStopAt="true" />
+        <variable name="ARG" expression="" defaultValue="&quot;Compiling...&quot;" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="opDis" value="$auto$ opDispatch(string $name$, $T$)($T$ $rhs$)&#10;{ &#10;    $END$return mixin(&quot;value.&quot; ~ $name$ ~ &quot; = $rhs$&quot;);&#10;} &#10;" description="opDispatch (opDis)" toReformat="false" toShortenFQNames="true">
+        <variable name="auto" expression="" defaultValue="&quot;auto&quot;" alwaysStopAt="true" />
+        <variable name="name" expression="" defaultValue="&quot;name&quot;" alwaysStopAt="true" />
+        <variable name="T" expression="" defaultValue="&quot;T&quot;" alwaysStopAt="true" />
+        <variable name="rhs" expression="" defaultValue="&quot;rhs&quot;" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="opCmp" value="int opCmp($TYPE1$ rhs) @safe pure nothrow const&#10;{ &#10;    $END$ &#10;} &#10;" description="opCmp (opCmp)" toReformat="false" toShortenFQNames="true">
+        <variable name="TYPE1" expression="" defaultValue="&quot;int&quot;" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="opApply" value="int opApply(int delegate($Type$) $dg$) &#10;{ &#10;    $END$int result = 0;&#10;    if ($dg$(this))&#10;        result = 1;&#10;    return result;&#10;} &#10;" description="opApply (opApply)" toReformat="false" toShortenFQNames="true">
+        <variable name="Type" expression="className()" defaultValue="&quot;className&quot;" alwaysStopAt="true" />
+        <variable name="dg" expression="" defaultValue="&quot;dg&quot;" alwaysStopAt="true" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="todo" value="// TODO: $END$. $DATE$ $TIME$ &#10;" description="TODO (todo)" toReformat="false" toShortenFQNames="true">
+      <variable name="DATE" expression="date()" defaultValue="" alwaysStopAt="false" />
+      <variable name="TIME" expression="time()" defaultValue="" alwaysStopAt="false" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="gpl" value="// This program is free software; you can redistribute it and/or modify &#10;// it under the terms of the GNU General Public License as published by &#10;// the Free Software Foundation; either version 2 of the License, or &#10;// (at your option) any later version. &#10;// &#10;// This program is distributed in the hope that it will be useful, &#10;// but WITHOUT ANY WARRANTY; without even the implied warranty of &#10;// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the &#10;// GNU General Public License for more details. &#10;// &#10;// You should have received a copy of the GNU General Public License &#10;// along with this program; if not, write to the Free Software &#10;// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. &#10;// &#10;// Copyright (C) $Author$, $DATE$ $TIME$ &#10;" description="GPL (gpl)" toReformat="false" toShortenFQNames="true">
+        <variable name="Author" expression="user()" defaultValue="&quot;Author&quot;" alwaysStopAt="false" />
+        <variable name="DATE" expression="date()" defaultValue="" alwaysStopAt="false" />
+        <variable name="TIME" expression="time()" defaultValue="" alwaysStopAt="false" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="bsl" value="//          Copyright $Author$ $DATE$ $TIME$. &#10;// Distributed under the Boost Software License, Version 1.0. &#10;//    (See accompanying file LICENSE_1_0.txt or copy at &#10;//          http://www.boost.org/LICENSE_1_0.txt) &#10;" description="Boost (bsl)" toReformat="false" toShortenFQNames="true">
+        <variable name="Author" expression="user()" defaultValue="&quot;Author&quot;" alwaysStopAt="false" />
+        <variable name="DATE" expression="date()" defaultValue="" alwaysStopAt="false" />
+        <variable name="TIME" expression="time()" defaultValue="" alwaysStopAt="false" />
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+    <template name="~this" value="~this()&#10;{&#10;    $END$&#10;}" description="destructor (this)" toReformat="false" toShortenFQNames="true">
+      <context>
+        <option name="D" value="true" />
+      </context>
+    </template>
+</templateSet>

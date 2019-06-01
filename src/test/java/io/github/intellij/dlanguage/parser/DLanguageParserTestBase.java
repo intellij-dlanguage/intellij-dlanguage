@@ -14,7 +14,7 @@ import java.io.IOException;
 
 public abstract class DLanguageParserTestBase extends ParsingTestCase {
 
-    public DLanguageParserTestBase(final String dataPath, final String fileExt, final ParserDefinition... definitions) {
+    DLanguageParserTestBase(final String dataPath, final String fileExt, final ParserDefinition... definitions) {
         super(dataPath, fileExt, definitions);
     }
 
@@ -32,7 +32,7 @@ public abstract class DLanguageParserTestBase extends ParsingTestCase {
      * Perform a test. Add tests that should work but does not work yet with
      * doTestModule(false, false).
      */
-    protected void doTest(final boolean checkResult, final boolean shouldPass) {
+    void doDlangParserTest(final boolean checkResult, final boolean shouldPass) {
 //        String name = getTestName();
 //        try {
 //            String text = loadFile(name + "." + myFileExt);
@@ -49,7 +49,7 @@ public abstract class DLanguageParserTestBase extends ParsingTestCase {
 //                e.printStackTrace();
 //            }
 //        }
-        doTest(checkResult);
+        doTest(checkResult); // todo: after dropping support < 2018.3, update to: super.doTest(checkResult, false);
         if (shouldPass) {
             assertFalse(
                 "PsiFile contains error elements",

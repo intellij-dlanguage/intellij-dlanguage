@@ -295,7 +295,7 @@ public class DlangSdkType extends SdkType {
 //        if (docs != null) {
 //            sdkModificator.addRoot(docs, OrderRootType.DOCUMENTATION);
 //        } else {
-//            final VirtualFile fxDocUrl = VirtualFileManager.getInstance().findFileByUrl("http://dlang.org/spec/spec.html");
+//            final VirtualFile fxDocUrl = VirtualFileManager.getInstance().findFileByUrl("https://dlang.org/spec/spec.html");
 //            if(fxDocUrl == null){
 //                status.setDocumentation(false);
 //                return;

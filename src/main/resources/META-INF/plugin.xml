@@ -8,12 +8,22 @@
 
     <description><![CDATA[
      <img src="https://avatars3.githubusercontent.com/u/565913?v=3&s=60" alt="" />
-     <p>Support for the <a href="http://dlang.org/">D Language</a>.</p>
+     <p>Support for the <a href="https://dlang.org/">D Language</a>.</p>
      <p>Also adds support for using the <a href="https://code.dlang.org/">dub</a> build tool.</p>
      <p>Project available on <a href="https://github.com/intellij-dlanguage/intellij-dlanguage/">Github</a>.</p>
     ]]></description>
 
     <change-notes><![CDATA[
+        <b>v1.19</b><br/>
+        <ul>
+            <li>Compatibility IntelliJ 2019.1.*</li>
+        </ul>
+        <b>v1.18 - v1.18.1</b><br/>
+        <ul>
+            <li>Compatibility IntelliJ 2018.3.*</li>
+            <li>added custom TreeStructureProvider for project view (IDEA only)</li>
+            <li>various bug fixes</li>
+        </ul>
 	    <b>v1.17 - v1.17.2</b><br/>
         <ul>
             <li>added experimental support for AppCode and CLion</li>
@@ -41,7 +51,7 @@
     </change-notes>
 
     <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
-    <idea-version since-build="181.3" until-build="183.*"/>
+    <idea-version since-build="191" until-build="191.*"/>
 
     <!-- We want to support IntelliJ IDEA and CLion
         see http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
@@ -174,6 +184,23 @@
         <!--  <completion.contributor language="D"
                                   implementationClass="io.github.intellij.dlanguage.codeinsight.DCompletionContributorImports"/>-->
 
+        <!-- Surrounders -->
+        <!-- // a placeholder for later to enable language specific template expansion. -->
+        <!--<lang.surroundDescriptor language="D"
+                                 implementationClass="io.github.intellij.dlanguage.template.DlangExpressionSurroundDescriptor"/>-->
+
+        <!-- Live Templates -->
+        <defaultLiveTemplatesProvider implementation="io.github.intellij.dlanguage.template.DlangLiveTemplatesProvider"/>
+
+        <liveTemplateContext implementation="io.github.intellij.dlanguage.template.DlangContext"/>
+        <!--<liveTemplateContext implementation="io.github.intellij.dlanguage.template.DlangContextType$Statement"/>-->
+        <!--<liveTemplateContext implementation="io.github.intellij.dlanguage.template.DlangContextType$Item"/>-->
+        <!--<liveTemplateContext implementation="io.github.intellij.dlanguage.template.DlangContextType$Struct"/>-->
+        <!--<liveTemplateContext implementation="io.github.intellij.dlanguage.template.DlangContextType$Mod"/>-->
+        <!--<liveTemplateContext implementation="io.github.intellij.dlanguage.template.DlangContextType$Attribute"/>-->
+
+        <!--<liveTemplateMacro implementation="io.github.intellij.dlanguage.template.macros.DlangSuggestIndexNameMacro"/>-->
+        <!--<liveTemplateMacro implementation="io.github.intellij.dlanguage.template.macros.DlangCollectionElementNameMacro"/>-->
 
         <!--formatter-->
         <lang.formatter

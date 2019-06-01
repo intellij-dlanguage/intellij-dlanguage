@@ -158,7 +158,7 @@ public class DlangRunDmdConfigurationEditor extends SettingsEditor<DlangRunDmdCo
         /* Each time settings are changed "Arguments" tab must be updated.
          * Add listener here. */
         final DlangRunDmdConfigurationType configurationType
-            = Extensions.findExtension(ConfigurationType.CONFIGURATION_TYPE_EP, DlangRunDmdConfigurationType.class);
+            = ConfigurationType.CONFIGURATION_TYPE_EP.findExtensionOrFail(DlangRunDmdConfigurationType.class);
         final ConfigurationFactory factory = configurationType.getConfigurationFactories()[0];
 
         addSettingsEditorListener(editor -> {
@@ -243,7 +243,7 @@ public class DlangRunDmdConfigurationEditor extends SettingsEditor<DlangRunDmdCo
 
     /* Make "linkDmdDoc" clickable. */
     private void setDocLink() {
-        linkDmdDoc.setText("<html><a href=\"http://dlang.org/dmd-linux.html#switches\">Documentation at dlang.org</a></html>");
+        linkDmdDoc.setText("<html><a href=\"https://dlang.org/dmd-linux.html#switches\">Documentation at dlang.org</a></html>");
         linkDmdDoc.setCursor(new Cursor(Cursor.HAND_CURSOR));
         linkDmdDoc.addMouseListener(new MouseAdapter() {
             @Override
@@ -252,7 +252,7 @@ public class DlangRunDmdConfigurationEditor extends SettingsEditor<DlangRunDmdCo
                     if (Desktop.isDesktopSupported()) {
                         final Desktop desktop = Desktop.getDesktop();
                         try {
-                            final URI uri = new URI("http://dlang.org/dmd-linux.html#switches");
+                            final URI uri = new URI("https://dlang.org/dmd-linux.html#switches");
                             desktop.browse(uri);
                         } catch (final IOException | URISyntaxException ex) {
                             //do nothing

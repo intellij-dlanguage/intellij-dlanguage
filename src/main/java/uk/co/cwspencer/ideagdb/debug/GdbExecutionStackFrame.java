@@ -181,7 +181,7 @@ public class GdbExecutionStackFrame extends XStackFrame {
             component.append(addressStr, SimpleTextAttributes.GRAY_ITALIC_ATTRIBUTES);
             //component.appendTextPadding(addressStr.length());
         }
-        component.setIcon(AllIcons.Debugger.StackFrame);
+        component.setIcon(AllIcons.Debugger.Frame);
     }
 
     /**

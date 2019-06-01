@@ -25,6 +25,7 @@
 package uk.co.cwspencer.ideagdb.debug;
 
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.xdebugger.XExpression;
 import com.intellij.xdebugger.frame.XValueModifier;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -58,22 +59,19 @@ public class GdbValueModifier extends XValueModifier {
         m_variableObject = variableObject;
     }
 
-    /**
-     * Sets the new value.
-     *
-     * @param expression The expression to evaluate to set the value.
-     * @param callback   The callback for when the operation is complete.
-     */
-    @Override
+    // todo: delete this method once XValueModifier has setValue(String, XModificationCallback) removed
     public void setValue(@NotNull String expression, @NotNull final XModificationCallback callback) {
         // TODO: Format the expression properly
         m_gdb.sendCommand("-var-assign " + m_variableObject.name + " " + expression,
-            new Gdb.GdbEventCallback() {
-                @Override
-                public void onGdbCommandCompleted(GdbEvent event) {
-                    onGdbNewValueReady(event, callback);
-                }
-            });
+            event -> onGdbNewValueReady(event, callback));
+    }
+
+    @Override
+    public void setValue(@NotNull XExpression expression, @NotNull XModificationCallback callback) {
+        // TODO: Format the expression properly
+
+        m_gdb.sendCommand("-var-assign " + m_variableObject.name + " " + expression.getExpression(),
+            event -> onGdbNewValueReady(event, callback));
     }
 
     /**

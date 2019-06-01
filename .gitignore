@@ -1,9 +1,7 @@
 out/
 .DS_Store
 .gradle/
-/build/
-/jps-plugin/build/
-/jps-shared/build/
+build/
 
 .classpath
 .project
@@ -29,3 +27,8 @@ gradle-app.setting
 # Ignore Emacs backup files.
 *~
 /desktop.ini
+
+# a directory or putting a local jflex install
+jflex-install/
+
+/dev

@@ -1,6 +1,7 @@
 package io.github.intellij.dlanguage.features.formatter.settings;
 
 import com.intellij.openapi.options.Configurable;
+import com.intellij.psi.codeStyle.CodeStyleConfigurable;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.intellij.psi.codeStyle.CodeStyleSettingsProvider;
 import org.jetbrains.annotations.NotNull;
@@ -14,7 +15,7 @@ public class DCodeStyleSettingsProvider extends CodeStyleSettingsProvider {
 
     @NotNull
     @Override
-    public Configurable createSettingsPage(@NotNull final CodeStyleSettings settings, final CodeStyleSettings originalSettings) {
+    public CodeStyleConfigurable createConfigurable(@NotNull final CodeStyleSettings settings, final @NotNull CodeStyleSettings originalSettings) {
         return new DCodeStyleConfigurable(settings, originalSettings);
     }
 }

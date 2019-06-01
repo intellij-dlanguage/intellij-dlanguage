@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class DlangRunDmdConfiguration extends ModuleBasedConfiguration<RunConfigurationModule> {
+public class DlangRunDmdConfiguration extends ModuleBasedConfiguration<RunConfigurationModule, Module> {
 
     //Compiler settings properties
     private boolean release;
@@ -106,7 +106,7 @@ public class DlangRunDmdConfiguration extends ModuleBasedConfiguration<RunConfig
     @Override
     public void writeExternal(@NotNull final Element element) throws WriteExternalException {
         super.writeExternal(element);
-        writeModule(element);
+        writeModule(element); // todo: delete this line before 2020
         XmlSerializer.serializeInto(this, element);
     }
 

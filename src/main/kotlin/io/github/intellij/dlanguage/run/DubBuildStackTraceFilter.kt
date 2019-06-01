@@ -14,31 +14,29 @@ class DubConsoleFilterProvider : ConsoleFilterProvider {
 }
 
 class DubBuildSourceFileFilter(val project: Project) : Filter {
-    override fun applyFilter(line: String?, entireLength: Int): Filter.Result? {
-        line?.let {
-            if(it.startsWith("source")) {
-                // then it's prob code within the project
-                val txt = if (it.contains(":")) {
-                    it.substring(0, it.indexOf(":").plus(1))
-                } else {
-                    it
-                }
-
-                val filePath = txt.substringBefore("(")
-                val lineColumn = txt
-                    .substringAfter("(")
-                    .substringBefore(")")
-                    .split(",")
-                    .map { Integer.parseInt(it) }
-
-                val fullFilePath = project.basePath.plus("/").plus(filePath.replace("\\", "/"))
-                val virtualFile = LocalFileSystem.getInstance().findFileByPath(fullFilePath)
-
-                return Filter.Result(entireLength - line.length, (entireLength - line.length) + txt.lastIndex,
-                    DlangSourceFileHyperlink(virtualFile, project, lineColumn[0] - 1, lineColumn[1]),
-                    TextAttributes(Color(39, 89, 230), null, null, EffectType.BOLD_LINE_UNDERSCORE, Font.ITALIC)
-                )
+    override fun applyFilter(line: String, entireLength: Int): Filter.Result? {
+        if(line.startsWith("source")) {
+            // then it's prob code within the project
+            val txt = if (line.contains(":")) {
+                line.substring(0, line.indexOf(":").plus(1))
+            } else {
+                line
             }
+
+            val filePath = txt.substringBefore("(")
+            val lineColumn = txt
+                .substringAfter("(")
+                .substringBefore(")")
+                .split(",")
+                .map { Integer.parseInt(it) }
+
+            val fullFilePath = project.basePath.plus("/").plus(filePath.replace("\\", "/"))
+            val virtualFile = LocalFileSystem.getInstance().findFileByPath(fullFilePath)
+
+            return Filter.Result(entireLength - line.length, (entireLength - line.length) + txt.lastIndex,
+                DlangSourceFileHyperlink(virtualFile, project, lineColumn[0] - 1, lineColumn[1]),
+                TextAttributes(Color(39, 89, 230), null, null, EffectType.BOLD_LINE_UNDERSCORE, Font.ITALIC)
+            )
         }
         return null
     }

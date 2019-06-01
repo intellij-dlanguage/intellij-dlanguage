@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<templateSet group="D">
+    <template name="f" description="field" toReformat="true" toShortenFQNames="true"
+              value="$IDENT$: $TYPE$,">
+        <variable name="IDENT" expression="" defaultValue="&quot;foo&quot;" alwaysStopAt="true"/>
+        <variable name="TYPE" expression="" defaultValue="&quot;u32&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="D" value="true" />
+        </context>
+    </template>
+</templateSet>
