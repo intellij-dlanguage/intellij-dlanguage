@@ -21,10 +21,8 @@ class DlangLiveTemplatesTest : DlangTestBase() {
     fun `test if then else expansion`() = expandSnippet("""
         if/*caret*/
     """, """
-        if(boolean_expression) {
+        if(true) {
            /* statement(s) will execute if the boolean expression is true */
-        } else {
-           /* statement(s) will execute if the boolean expression is false */
         }
     """)
 
