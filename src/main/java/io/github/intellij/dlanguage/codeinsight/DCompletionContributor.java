@@ -18,36 +18,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class DCompletionContributor extends CompletionContributor {
-
-    private final DCDCompletionClient dcdCompletionClient = new DCDCompletionClient();
-
+public final class DCompletionContributor extends CompletionContributor {
     public DCompletionContributor() {
         extend(CompletionType.BASIC,
                 PlatformPatterns.psiElement().withLanguage(DLanguage.INSTANCE),
-                new CompletionProvider<CompletionParameters>() {
-                    public void addCompletions(@NotNull final CompletionParameters parameters,
-                                               final ProcessingContext context,
-                                               @NotNull final CompletionResultSet result) {
-                        final int position = parameters.getEditor().getCaretModel().getOffset();
-//                        PsiElement position = parameters.getPosition();
-                        final PsiFile file = parameters.getOriginalFile();
-
-                        List<Completion> completions = null;
-                        try {
-                            completions = dcdCompletionClient.autoComplete(position, file);
-
-                            for (final Completion completion : completions) {
-                                result.addElement(createLookupElement(completion.completionText(),"",completion.completionType()));
-                            }
-                        } catch (final DCDCompletionServer.DCDError dcdError) {
-                            dcdError.printStackTrace();
-                        }
-                    }
-                }
+                new DCompletionProvider()
         );
     }
-
 
     /**
      * Adjust the error message when no lookup is found.

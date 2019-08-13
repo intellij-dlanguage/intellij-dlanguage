@@ -39,7 +39,7 @@ import static io.github.intellij.dlanguage.utils.DUtil.isNotNullOrEmpty;
 /**
  * Process wrapper for DCD Server.  Implements ModuleComponent so destruction of processes coincides with closing projects.
  */
-public class DCDCompletionServer implements ModuleComponent, ToolChangeListener {
+public final class DCDCompletionServer implements ModuleComponent, ToolChangeListener {
 
     private static final Logger LOG = Logger.getInstance(DCDCompletionServer.class);
 
@@ -82,7 +82,7 @@ public class DCDCompletionServer implements ModuleComponent, ToolChangeListener 
         NotificationUtil.displayToolsNotification(NotificationType.ERROR, project, "dcd error", message);
     }
 
-    synchronized void exec() throws DCDError {
+    public synchronized void exec() throws DCDError {
         if (path != null) {
             if (process == null) {
                 spawnProcess();
