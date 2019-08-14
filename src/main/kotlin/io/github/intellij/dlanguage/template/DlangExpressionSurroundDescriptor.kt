@@ -1,6 +1,8 @@
 package io.github.intellij.dlanguage.template
 
 import com.intellij.codeInsight.CodeInsightUtil.findExpressionInRange
+import com.intellij.codeInsight.CodeInsightUtilBase
+import com.intellij.codeInsight.CodeInsightUtilCore
 import com.intellij.featureStatistics.FeatureUsageTracker
 import com.intellij.lang.surroundWith.SurroundDescriptor
 import com.intellij.lang.surroundWith.Surrounder

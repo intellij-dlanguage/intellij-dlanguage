@@ -8,7 +8,7 @@ class DCodeFoldingOptionsProvider :
     CodeFoldingOptionsProvider {
 
     init {
-        val settings = instance
+        val settings = instance!!
         val getter: () -> Boolean = { settings.collapsibleOneLineMethods }
         val setter: (Boolean) -> Unit = { v -> settings.collapsibleOneLineMethods = v }
 
