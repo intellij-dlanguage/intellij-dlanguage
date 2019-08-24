@@ -14,7 +14,7 @@ buildscript {
 
 plugins {
     id 'org.jetbrains.intellij' version '0.4.10'
-    id 'org.jetbrains.kotlin.jvm' version '1.3.41'
+    id 'org.jetbrains.kotlin.jvm' version '1.3.50'
     id 'net.saliman.cobertura' version '2.6.1'
     id 'com.github.kt3k.coveralls' version '2.8.1'
     id 'org.jetbrains.grammarkit' version '2019.2'
@@ -109,19 +109,20 @@ allprojects {
     intellij {
         pluginName 'intellij-dlanguage'
         version ideaVersion
+        //type 'CL' // maybe helpful to change this when trying other IDE. can be 'IC', 'IU', 'JPS', or 'CL'
         updateSinceUntilBuild false
         // uncomment to test/run/debug the plugin with another IDE such as CLion or AppCode
         //alternativeIdePath '<path to>/CLion.app'
-        //alternativeIdePath 'C:\\Users\\USERNAME\\AppData\\Local\\JetBrains\\Toolbox\\apps\\CLion\\ch-0\\182.3911.40'
-        //alternativeIdePath "$System.env.HOME/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/182.3911.40"
+        //alternativeIdePath 'C:\\Users\\USERNAME\\AppData\\Local\\JetBrains\\Toolbox\\apps\\CLion\\ch-0\\192.6262.62'
+        //alternativeIdePath "$System.env.HOME/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/192.6262.62"
+        //alternativeIdePath "$System.env.HOME/.local/share/JetBrains/Toolbox/apps/Rider/ch-0/183.5619.41"
 
         runIde {
             jbrVersion null
         }
 
         publishPlugin {
-            username System.getenv('SB_JETBRAINS_USERNAME')
-            password System.getenv('SB_JETBRAINS_PASSWORD')
+            token System.getenv('JETBRAINS_TOKEN')
             channels publishChannels
         }
     }
