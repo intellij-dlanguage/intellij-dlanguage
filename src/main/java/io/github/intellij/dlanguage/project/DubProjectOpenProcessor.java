@@ -5,6 +5,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.projectImport.ProjectImportBuilder;
 import com.intellij.projectImport.ProjectOpenProcessorBase;
 import io.github.intellij.dlanguage.DlangBundle;
 import io.github.intellij.dlanguage.icons.DlangIcons;
@@ -18,13 +19,11 @@ import javax.swing.*;
  * Used when opening a dub project within the IDE
  */
 public class DubProjectOpenProcessor extends ProjectOpenProcessorBase<DubProjectImportBuilder> {
+
     private static final Logger LOG = Logger.getInstance(DubProjectOpenProcessor.class.getName());
 
-    public DubProjectOpenProcessor(@NotNull final DubProjectImportBuilder builder) {
-        super(builder);
-    }
-
-    @Nullable
+    @NotNull
+    @Override
     public String[] getSupportedExtensions() {
         return CLionDubProjectOpenProcessor.SUPPORTED_FILES;
     }
@@ -35,7 +34,14 @@ public class DubProjectOpenProcessor extends ProjectOpenProcessorBase<DubProject
         return DlangIcons.FILE;
     }
 
-    public boolean doQuickImport(final VirtualFile file, final WizardContext context) {
+    @NotNull
+    @Override
+    protected DubProjectImportBuilder doGetBuilder() {
+        return ProjectImportBuilder.EXTENSIONS_POINT_NAME.findExtensionOrFail(DubProjectImportBuilder.class);
+    }
+
+    @Override
+    public boolean doQuickImport(@NotNull final VirtualFile file, @NotNull final WizardContext context) {
         final DubProjectImportBuilder builder = getBuilder();
         final VirtualFile rootDirectory = file.getParent();
 
