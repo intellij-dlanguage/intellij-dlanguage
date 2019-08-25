@@ -9,7 +9,7 @@ class DubBuildSourceFileFilterTest : LightPlatformTestCase() {
     fun `test filtering dub output for source file`() {
         val line = "source\\config\\database.d(53,31):    blah blah blah, some other stuff"
 
-        val filter = DubBuildSourceFileFilter(LightPlatformTestCase.getProject())
+        val filter = DubBuildSourceFileFilter(getProject())
 
         val result = filter.applyFilter(line, line.length)
 
@@ -23,7 +23,7 @@ class DubBuildSourceFileFilterTest : LightPlatformTestCase() {
     fun `test filtering dub output without source file (no colon)`() {
         val line = "blah blah blah, some kind of output"
 
-        val filter = DubBuildSourceFileFilter(LightPlatformTestCase.getProject())
+        val filter = DubBuildSourceFileFilter(getProject())
 
         val result = filter.applyFilter(line, line.length)
 
