@@ -65,23 +65,20 @@ public class DlangModuleType extends ModuleType<DlangModuleBuilder> {
     public ModuleWizardStep[] createWizardSteps(@NotNull final WizardContext wizardContext,
                                                 @NotNull final DlangModuleBuilder moduleBuilder,
                                                 @NotNull final ModulesProvider modulesProvider) {
-
         final List<ModuleWizardStep> steps = new ArrayList<>();
 
-        final ModuleWizardStep setCompiler = new ProjectJdkForModuleStep(wizardContext, DlangSdkType.getInstance()) {
+        // todo: instead of using ProjectJdkForModuleStep, create a new ModuleWizardStep specific to configuring a D compiler
+        // steps.add(new io.github.intellij.dlanguage.project.ui.DlangCompilerWizardStep(wizardContext, moduleBuilder));
+        steps.add(new ProjectJdkForModuleStep(wizardContext, DlangSdkType.getInstance()) {
             public void updateDataModel() {
                 super.updateDataModel();
                 moduleBuilder.setModuleJdk(getJdk());
             }
-        };
-        final ModuleWizardStep setDubBinary = new DubBinaryForModuleStep(wizardContext);
-        final ModuleWizardStep setDubInit = new DubInitForModuleStep(wizardContext);
-
-        steps.add(setCompiler);
+        });
 
         if((moduleBuilder.getBuilderId() != null && moduleBuilder.getBuilderId().equals("DLangDubApp"))) {
-            steps.add(setDubBinary);
-            steps.add(setDubInit);
+            steps.add(new DubBinaryForModuleStep(wizardContext));
+            steps.add(new DubInitForModuleStep(wizardContext));
         }
 
         return steps.toArray(new ModuleWizardStep[steps.size()]);
