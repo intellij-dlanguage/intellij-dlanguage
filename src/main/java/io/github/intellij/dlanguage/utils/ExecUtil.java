@@ -4,6 +4,7 @@ import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.process.CapturingProcessHandler;
 import com.intellij.execution.process.ProcessOutput;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtilCore;
@@ -15,10 +16,12 @@ import com.intellij.psi.PsiFile;
 import com.intellij.util.containers.ContainerUtil;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.Future;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -75,27 +78,7 @@ public class ExecUtil {
         }
         commandLine.addParameter(command);
 
-        final ProcessOutput output;
-        try {
-            output = new CapturingProcessHandler(commandLine.createProcess(),
-                Charset.defaultCharset(), commandLine.getCommandLineString()).runProcess();
-        } catch (final ExecutionException e) {
-            LOG.info("Failed executing " + command);
-            LOG.info("Message: " + e.getMessage());
-            return null;
-        }
-
-        if (output == null) {
-            LOG.info("No output from " + command);
-            return null;
-        }
-
-        final List<String> lines = output.getStdoutLines();
-        final StringBuilder sb = new StringBuilder(100 * lines.size());
-        for (final String line : lines) {
-            sb.append(line);
-        }
-        return sb.toString();
+        return readCommandLine(commandLine);
     }
 
     /**
@@ -171,47 +154,51 @@ public class ExecUtil {
      * Executes commandLine, optionally piping input to stdin, and return stdout.
      */
     @Nullable
-    public static String readCommandLine(@NotNull final GeneralCommandLine commandLine,
-        @Nullable final String input) {
-        String output = null;
-        try {
+    public static Future<String> readCommandLine(@NotNull final GeneralCommandLine commandLine, @Nullable final String input) {
+        return ApplicationManager.getApplication().executeOnPooledThread(() -> {
             final Process process = commandLine.createProcess();
+
             if (input != null) {
-                final BufferedWriter writer = new BufferedWriter(
-                    new OutputStreamWriter(process.getOutputStream()));
-                writer.write(input);
-                writer.flush();
-                writer.close();
+                try (final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()))) {
+                    writer.write(input);
+                    writer.flush();
+                }
             }
 
-            output = new CapturingProcessHandler(process,
+            return new CapturingProcessHandler(process,
                 Charset.defaultCharset(),
                 commandLine.getCommandLineString()
             ).runProcess().getStdout();
-
-        } catch (final ExecutionException e) {
-            LOG.debug(e);
-        } catch (final IOException e) {
-            LOG.debug(e);
-        }
-        return output;
+        });
     }
 
     @Nullable
     public static String readCommandLine(@NotNull final GeneralCommandLine commandLine) {
-        return readCommandLine(commandLine, null);
+        try {
+            return Objects.requireNonNull(readCommandLine(commandLine, null)).get();
+        } catch (InterruptedException | java.util.concurrent.ExecutionException e) {
+            LOG.error("Could not exec command", e);
+        }
+        return null;
     }
 
     @Nullable
     public static String readCommandLine(@Nullable final String workingDirectory,
-        @NotNull final String command, @NotNull final String[] params,
-        @Nullable final String input) {
+                                         @NotNull final String command,
+                                         @NotNull final String[] params,
+                                         @Nullable final String input) {
         final GeneralCommandLine commandLine = new GeneralCommandLine(command);
         if (workingDirectory != null) {
             commandLine.setWorkDirectory(workingDirectory);
         }
         commandLine.addParameters(params);
-        return readCommandLine(commandLine, input);
+
+        try {
+            return Objects.requireNonNull(readCommandLine(commandLine, input)).get();
+        } catch (InterruptedException | java.util.concurrent.ExecutionException e) {
+            LOG.error("Could not exec command", e);
+        }
+        return null;
     }
 
     @Nullable

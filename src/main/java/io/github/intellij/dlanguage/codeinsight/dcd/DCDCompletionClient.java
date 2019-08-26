@@ -18,6 +18,10 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class DCDCompletionClient {
 
@@ -71,28 +75,34 @@ public class DCDCompletionClient {
                     e.printStackTrace();
                 }
 
-                final String result = ExecUtil.readCommandLine(commandLine, file.getText());
+                try {
+                    final String result = Objects.requireNonNull(ExecUtil.readCommandLine(commandLine, file.getText()))
+                        .get(3, TimeUnit.SECONDS);
 
-                if (result != null && !result.isEmpty()) {
-                    final String[] tokens = result.split("\\n");
-                    final String firstLine = tokens[0];
-                    if (firstLine.contains("identifiers")) {
-                        for (int i = 0; i < tokens.length; i++) {
-                            final String token = tokens[i];
+                    if (result != null && !result.isEmpty()) {
+                        final String[] tokens = result.split("\\n");
+                        final String firstLine = tokens[0];
+                        if (firstLine.contains("identifiers")) {
+                            for (int i = 0; i < tokens.length; i++) {
+                                final String token = tokens[i];
 
-                            if (!token.contains("identifiers")) {
-                                final String[] parts = token.split("\\s");
-                                final String completionType = getCompletionType(parts);
-                                final String completionText = getCompletionText(parts);
-                                final Completion completion = new TextCompletion(completionType, completionText);
-                                completions.add(completion);
+                                if (!token.contains("identifiers")) {
+                                    final String[] parts = token.split("\\s");
+                                    final String completionType = getCompletionType(parts);
+                                    final String completionText = getCompletionText(parts);
+                                    final Completion completion = new TextCompletion(completionType, completionText);
+                                    completions.add(completion);
+                                }
                             }
+                        } else if (firstLine.contains("calltips")) {
+                            //TODO - this goes in a Parameter Info handler (ctrl+p) instead of here - see: ShowParameterInfoHandler.register
+                            System.out.println(tokens);
                         }
-                    } else if (firstLine.contains("calltips")) {
-                        //TODO - this goes in a Parameter Info handler (ctrl+p) instead of here - see: ShowParameterInfoHandler.register
-                        System.out.println(tokens);
                     }
+                } catch (InterruptedException | TimeoutException | ExecutionException e) {
+                    e.printStackTrace();
                 }
+
 //                kill();
             }
         }
