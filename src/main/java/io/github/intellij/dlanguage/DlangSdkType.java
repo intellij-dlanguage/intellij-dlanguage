@@ -476,13 +476,13 @@ public class DlangSdkType extends SdkType {
      */
     @Nullable
     private Future<String> getDmdVersion(final String sdkHome) {
-        if (isValidSdkHome(sdkHome)) {
-            final GeneralCommandLine cmd = new GeneralCommandLine();
-            //cmd.withWorkDirectory(sdkHome.getAbsolutePath());
-            cmd.setExePath(dmdBinary.getAbsolutePath());
-            cmd.addParameter("--version");
+        return ApplicationManager.getApplication().executeOnPooledThread(() -> {
+            if (isValidSdkHome(sdkHome)) {
+                final GeneralCommandLine cmd = new GeneralCommandLine();
+                //cmd.withWorkDirectory(sdkHome.getAbsolutePath());
+                cmd.setExePath(dmdBinary.getAbsolutePath());
+                cmd.addParameter("--version");
 
-            return ApplicationManager.getApplication().executeOnPooledThread(() -> {
                 try {
                     final ProcessOutput output = new CapturingProcessHandler(
                         cmd.createProcess(),
@@ -500,10 +500,9 @@ public class DlangSdkType extends SdkType {
                 } catch (final ExecutionException e) {
                     LOG.error("There was a problem running 'dmd --version'", e);
                 }
-                return null;
-            });
-        }
-        return null;
+            }
+            return null;
+        });
     }
 
     /* Returns full path to DMD compiler executable */
