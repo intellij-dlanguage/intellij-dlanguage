@@ -7,6 +7,7 @@ import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.execution.process.ProcessAdapter;
 import com.intellij.execution.process.ProcessEvent;
 import com.intellij.execution.process.ProcessOutput;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.projectRoots.*;
 import com.intellij.openapi.projectRoots.impl.SdkConfigurationUtil;
@@ -16,6 +17,7 @@ import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.util.Consumer;
 import io.github.intellij.dlanguage.icons.DlangIcons;
 import io.github.intellij.dlanguage.library.LibFileRootType;
 import java.io.IOException;
@@ -28,9 +30,11 @@ import javax.swing.*;
 import java.io.File;
 import java.nio.charset.Charset;
 import java.nio.file.Paths;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -145,7 +149,7 @@ public class DlangSdkType extends SdkType {
                 } else if (found == null) {
                   found = f;
                 }
-            } 
+            }
         }
         return found == null ? null : found.getAbsolutePath();
     }
@@ -177,13 +181,54 @@ public class DlangSdkType extends SdkType {
         return false;
     }
 
+    @NotNull
     @Override
-    public String suggestSdkName(final String currentSdkName, final String sdkHome) {
-        final String version = getDmdVersion(sdkHome);
-        return version != null ? version : SDK_NAME;
+    public String suggestSdkName(@Nullable final String currentSdkName, final String sdkHome) {
+        try {
+            final String version = Objects.requireNonNull(getDmdVersion(sdkHome)).get(2000, TimeUnit.SECONDS);
+
+            return StringUtil.isNotEmpty(version) ? version : SDK_NAME;
+        } catch (InterruptedException | TimeoutException | java.util.concurrent.ExecutionException e) {
+            LOG.error("unable to run dmd --version", e);
+        }
+        return SDK_NAME;
     }
 
-    class SetupStatus{
+    @Nullable
+    @Override
+    public String getDefaultDocumentationUrl(@NotNull Sdk sdk) {
+        return "https://dlang.org/";
+    }
+
+    @Nullable
+    @Override
+    public String getDownloadSdkUrl() {
+        return "https://dlang.org/download.html";
+    }
+
+    @Override
+    public boolean supportsCustomCreateUI() {
+        return false; // if true a call is made to this::showCustomCreateUI()
+    }
+
+//    @Override
+//    public void showCustomCreateUI(@NotNull SdkModel sdkModel,
+//                                   @NotNull JComponent parentComponent,
+//                                   @Nullable Sdk selectedSdk,
+//                                   @NotNull Consumer<Sdk> sdkCreatedCallback) {
+//        LOG.info("attempt to display custom UI for creating D sdk");
+//
+//        SdkConfigurationUtil.selectSdkHome(this, home -> {
+//            final String newSdkName = SdkConfigurationUtil.createUniqueSdkName(this, home, Arrays.asList(sdkModel.getSdks()));
+//
+//            final Sdk sdk = DlangSdkType.findOrCreateSdk();
+//            //final Sdk sdk = new io.github.intellij.dlanguage.settings.DlangCompiler(newSdkName, home, "???");
+//
+//            sdkCreatedCallback.consume(sdk);
+//        });
+//    }
+
+    class SetupStatus {
         private boolean runtime;
         private boolean phobos;
         private boolean documentation;
@@ -385,11 +430,15 @@ public class DlangSdkType extends SdkType {
     @Nullable
     @Override
     public String getVersionString(@NotNull final String sdkHome) {
-        final String version = getDmdVersion(sdkHome);
+        try {
+            final String version = Objects.requireNonNull(getDmdVersion(sdkHome)).get(2000, TimeUnit.SECONDS);
 
-        if (StringUtil.isNotEmpty(version)) {
-            final Matcher m = Pattern.compile("(?:.*v)(.+)").matcher(version);
-            return m.matches() ? m.group(1) : null;
+            if (StringUtil.isNotEmpty(version)) {
+                final Matcher m = Pattern.compile("(?:.*v)(.+)").matcher(version);
+                return m.matches() ? m.group(1) : null;
+            }
+        } catch (InterruptedException | TimeoutException | java.util.concurrent.ExecutionException e) {
+            LOG.error("unable to run dmd --version", e);
         }
 
         return null;
@@ -426,30 +475,33 @@ public class DlangSdkType extends SdkType {
      * @return String containing DMD version or null
      */
     @Nullable
-    private String getDmdVersion(final String sdkHome) {
+    private Future<String> getDmdVersion(final String sdkHome) {
         if (isValidSdkHome(sdkHome)) {
             final GeneralCommandLine cmd = new GeneralCommandLine();
             //cmd.withWorkDirectory(sdkHome.getAbsolutePath());
             cmd.setExePath(dmdBinary.getAbsolutePath());
             cmd.addParameter("--version");
 
-            try {
-                final ProcessOutput output = new CapturingProcessHandler(
-                    cmd.createProcess(),
-                    Charset.defaultCharset(),
-                    cmd.getCommandLineString()
-                ).runProcess();
+            return ApplicationManager.getApplication().executeOnPooledThread(() -> {
+                try {
+                    final ProcessOutput output = new CapturingProcessHandler(
+                        cmd.createProcess(),
+                        Charset.defaultCharset(),
+                        cmd.getCommandLineString()
+                    ).runProcess(2_000 );
 
-                //Parse output of a DMD compiler
-                final List<String> outputLines = output.getStdoutLines();
-                if (!outputLines.isEmpty()) {
-                    final String version = outputLines.get(0).trim();
-                    LOG.debug(String.format("Found version: %s", version));
-                    return version;
+                    //Parse output of a DMD compiler
+                    final List<String> outputLines = output.getStdoutLines();
+                    if (!outputLines.isEmpty()) {
+                        final String version = outputLines.get(0).trim();
+                        LOG.debug(String.format("Found version: %s", version));
+                        return version;
+                    }
+                } catch (final ExecutionException e) {
+                    LOG.error("There was a problem running 'dmd --version'", e);
                 }
-            } catch (final ExecutionException e) {
-                LOG.error("There was a problem running 'dmd --version'", e);
-            }
+                return null;
+            });
         }
         return null;
     }
