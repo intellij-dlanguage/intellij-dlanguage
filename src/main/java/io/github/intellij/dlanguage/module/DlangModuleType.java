@@ -1,7 +1,6 @@
 package io.github.intellij.dlanguage.module;
 
 import com.intellij.ide.util.projectWizard.ModuleWizardStep;
-import com.intellij.ide.util.projectWizard.ProjectJdkForModuleStep;
 import com.intellij.ide.util.projectWizard.WizardContext;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleType;
@@ -10,15 +9,12 @@ import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
 import io.github.intellij.dlanguage.DlangBundle;
-import io.github.intellij.dlanguage.DlangSdkType;
 import io.github.intellij.dlanguage.icons.DlangIcons;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public class DlangModuleType extends ModuleType<DlangModuleBuilder> {
 
@@ -60,27 +56,20 @@ public class DlangModuleType extends ModuleType<DlangModuleBuilder> {
         return DlangIcons.FILE;
     }
 
+    /*
+     * todo: Create some custom UI to be shown as the Custom Options Step in DlangModuleBuilder so that these additional wizard steps are no longer needed
+     */
     @NotNull
     @Override
     public ModuleWizardStep[] createWizardSteps(@NotNull final WizardContext wizardContext,
                                                 @NotNull final DlangModuleBuilder moduleBuilder,
                                                 @NotNull final ModulesProvider modulesProvider) {
-        final List<ModuleWizardStep> steps = new ArrayList<>();
-
-        // todo: instead of using ProjectJdkForModuleStep, create a new ModuleWizardStep specific to configuring a D compiler
-        // steps.add(new io.github.intellij.dlanguage.project.ui.DlangCompilerWizardStep(wizardContext, moduleBuilder));
-        steps.add(new ProjectJdkForModuleStep(wizardContext, DlangSdkType.getInstance()) {
-            public void updateDataModel() {
-                super.updateDataModel();
-                moduleBuilder.setModuleJdk(getJdk());
-            }
-        });
-
         if((moduleBuilder.getBuilderId() != null && moduleBuilder.getBuilderId().equals("DLangDubApp"))) {
-            steps.add(new DubBinaryForModuleStep(wizardContext));
-            steps.add(new DubInitForModuleStep(wizardContext));
+            return new ModuleWizardStep[] {
+                new DubBinaryForModuleStep(wizardContext),
+                new DubInitForModuleStep(wizardContext)
+            };
         }
-
-        return steps.toArray(new ModuleWizardStep[steps.size()]);
+        return ModuleWizardStep.EMPTY_ARRAY;
     }
 }
