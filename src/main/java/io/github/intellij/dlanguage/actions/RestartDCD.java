@@ -9,15 +9,13 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.popup.JBPopup;
-import com.intellij.openapi.ui.popup.JBPopupFactory;
-import com.intellij.ui.components.JBList;
+import com.intellij.ui.popup.PopupFactoryImpl;
 import io.github.intellij.dlanguage.codeinsight.dcd.DCDCompletionServer;
 import io.github.intellij.dlanguage.module.DlangModuleType;
 import io.github.intellij.dlanguage.settings.ToolKey;
 import org.jetbrains.annotations.NotNull;
 
-import javax.swing.*;
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class RestartDCD extends AnAction implements DumbAware {
@@ -33,8 +31,8 @@ public class RestartDCD extends AnAction implements DumbAware {
     private static boolean enabled(@NotNull final AnActionEvent e) {
         final Project project = getEventProject(e);
         if (project == null) return false;
-        final String cdcServerPath = ToolKey.DCD_SERVER_KEY.getPath();
-        return cdcServerPath != null && !cdcServerPath.isEmpty() && DlangModuleType.findModules(project).size() > 0;
+        final String dcdServerPath = ToolKey.DCD_SERVER_KEY.getPath();
+        return dcdServerPath != null && !dcdServerPath.isEmpty() && DlangModuleType.findModules(project).size() > 0;
     }
 
     @Override
@@ -50,13 +48,12 @@ public class RestartDCD extends AnAction implements DumbAware {
     }
 
     private static void showModuleChoicePopup(@NotNull final AnActionEvent e, final Project project, final Collection<Module> modules) {
-        final JList<Module> list = new JBList<>(JBList.createDefaultListModel(modules));
-        final JBPopup popup = JBPopupFactory.getInstance()
-                .createListPopupBuilder(list)
-                .setTitle("Restart dcd-server for module")
-                .setItemChoosenCallback(() -> restartDcdServer(e, (Module) list))
-                .createPopup();
-        popup.showCenteredInCurrentWindow(project);
+        PopupFactoryImpl.getInstance()
+            .createPopupChooserBuilder(new ArrayList<>(modules))
+            .setTitle("Restart dcd-server for module")
+            .setItemChosenCallback(module -> restartDcdServer(e, module))
+            .createPopup()
+            .showCenteredInCurrentWindow(project);
     }
 
     private static void restartDcdServer(@NotNull final AnActionEvent e, @NotNull final Module module) {
