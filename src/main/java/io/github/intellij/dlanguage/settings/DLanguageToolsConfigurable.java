@@ -353,7 +353,7 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
 
         @Override
         public void updateVersion() {
-            final String pathText = pathField.getText();
+            @Nullable final String pathText = StringUtil.trim(pathField.getText());
             final String version = StringUtil.isEmpty(pathText) ? "" : getVersion(pathText);
             versionField.setText(version);
 
@@ -374,7 +374,8 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
         @Override
         public void saveState() {
             if (isModified() && publisher != null) {
-                publisher.onToolSettingsChanged(new ToolSettings(pathField.getText(), flagsField.getText()));
+                @Nullable final String pathText = StringUtil.trim(pathField.getText());
+                publisher.onToolSettingsChanged(new ToolSettings(pathText, flagsField.getText()));
             }
             for (final PropertyField propertyField : propertyFields) {
                 propertyField.saveState();

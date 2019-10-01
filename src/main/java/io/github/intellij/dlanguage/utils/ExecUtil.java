@@ -11,6 +11,7 @@ import com.intellij.openapi.module.ModuleUtilCore;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.util.SystemInfo;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.containers.ContainerUtil;
@@ -107,7 +108,7 @@ public class ExecUtil {
         final String located = locateExecutable(command);
         if (located != null && !located.isEmpty()) {
             // Found it!
-            return located;
+            return StringUtil.trim(located);
         }
 
         final char sep = File.separatorChar;
@@ -122,7 +123,7 @@ public class ExecUtil {
         }
         for (final String path : paths) {
             LOG.info(String.format("Looking for %s in %s", command, path));
-            final String cmd = path + sep + command;
+            final String cmd = StringUtil.trim(path + sep + command);
             //noinspection ObjectAllocationInLoop
             if (new File(cmd).canExecute()) {
                 return cmd;
