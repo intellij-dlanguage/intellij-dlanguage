@@ -10,6 +10,7 @@ import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtilCore;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
+import com.intellij.openapi.project.ProjectUtil;
 import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -50,10 +51,12 @@ public class ExecUtil {
             LOG.info("No open projects so cannot find a valid path. Using '.'.");
             workDir = defaultWorkDir;
         } else {
-            if (projects[0].getBaseDir() == null) {
+            @Nullable final VirtualFile projectDir = ProjectUtil.guessProjectDir(projects[0]);
+
+            if (projectDir == null) {
                 workDir = defaultWorkDir;//getBaseDir returns null for default project
             } else {
-                workDir = projects[0].getBaseDir().getCanonicalPath();
+                workDir = projectDir.getCanonicalPath();
             }
         }
         return exec(workDir == null ? defaultWorkDir : workDir, command);

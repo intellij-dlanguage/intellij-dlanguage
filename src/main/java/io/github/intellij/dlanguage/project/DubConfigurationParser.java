@@ -8,6 +8,7 @@ import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectUtil;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -90,7 +91,12 @@ public class DubConfigurationParser {
         // For wsl, dub command can have any file name not only dub/dub.exe
         final boolean dubPathValid = StringUtil.isNotEmpty(this.dubBinaryPath);
 
-        final VirtualFile baseDir = project.getBaseDir();
+        @Nullable final VirtualFile baseDir = ProjectUtil.guessProjectDir(project);
+
+        if(baseDir == null) {
+            return false; // can't use dub without knowing base path
+        }
+
         baseDir.refresh(true, true);
 
         return dubPathValid && Arrays.stream(baseDir.getChildren())
@@ -127,9 +133,15 @@ public class DubConfigurationParser {
     }
 
     private Optional<DubProject> parseDubConfiguration(final boolean silentMode) {
+        @Nullable final VirtualFile projectDir = ProjectUtil.guessProjectDir(project);
+
+        if(projectDir == null) {
+            return Optional.empty();
+        }
+
         try {
             final GeneralCommandLine cmd = new GeneralCommandLine()
-                .withWorkDirectory(project.getBaseDir().getCanonicalPath())
+                .withWorkDirectory(projectDir.getCanonicalPath())
                 .withExePath(dubBinaryPath)
                 .withParameters("describe");
 

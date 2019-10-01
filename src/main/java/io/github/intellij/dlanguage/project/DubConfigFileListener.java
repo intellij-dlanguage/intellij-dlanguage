@@ -5,6 +5,7 @@ import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileEvent;
 import com.intellij.openapi.vfs.VirtualFileListener;
@@ -40,13 +41,18 @@ public class DubConfigFileListener implements VirtualFileListener {
 
     @Nullable
     static VirtualFile getDubFileFromModule(final Module module) {
-        for (final VirtualFile file : module.getProject().getBaseDir().getChildren()) {
-            if (file.isValid() &&
-                (file.getName().equalsIgnoreCase("dub.json") ||
-                    file.getName().equalsIgnoreCase("dub.sdl"))) {
-                return file;
+        @Nullable final VirtualFile projectDir = ProjectUtil.guessProjectDir(module.getProject());
+
+        if(projectDir != null) {
+            for (final VirtualFile file : projectDir.getChildren()) {
+                if (file.isValid() &&
+                    (file.getName().equalsIgnoreCase("dub.json") ||
+                        file.getName().equalsIgnoreCase("dub.sdl"))) {
+                    return file;
+                }
             }
         }
+
         return null;
     }
 
