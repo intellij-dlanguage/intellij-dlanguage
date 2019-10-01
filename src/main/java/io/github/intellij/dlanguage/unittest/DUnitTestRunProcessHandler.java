@@ -2,7 +2,6 @@ package io.github.intellij.dlanguage.unittest;
 
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
-import com.intellij.execution.configurations.ParametersList;
 import com.intellij.execution.configurations.RuntimeConfigurationError;
 import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.execution.process.ProcessAdapter;
@@ -41,6 +40,7 @@ import io.github.intellij.dlanguage.settings.ToolKey;
 import io.github.intellij.dlanguage.utils.DToolsNotificationListener;
 import java.io.File;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -147,10 +147,10 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
 
                     testSuiteFinished(className, 0);
                 }
+
+                testRunFinished();
             });
         }
-
-        testRunFinished();
     }
 
     @Nullable
@@ -212,29 +212,24 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
             return;
         }
 
-        final GeneralCommandLine commandLine = new GeneralCommandLine();
-        commandLine.setWorkDirectory(workingDirectory);
-        commandLine.setExePath(dubPath);
-        final ParametersList parametersList = commandLine.getParametersList();
-        parametersList.addParametersString("--");
-        parametersList.addParametersString("-v");
-        parametersList.addParametersString("--filter");
-        parametersList.addParametersString(testPath + "$"); //regex to locate exact test
+        final GeneralCommandLine cmd = new GeneralCommandLine()
+            .withWorkDirectory(workingDirectory)
+            .withCharset(Charset.defaultCharset())
+            .withExePath(dubPath)
+            .withParameters("test", "--", "-v", "--filter", testPath + "$");
 
         final StringBuilder builder = new StringBuilder();
         try {
-            final OSProcessHandler process = new OSProcessHandler(commandLine.createProcess(), commandLine.getCommandLineString());
+            final OSProcessHandler process = new OSProcessHandler(cmd.createProcess(), cmd.getCommandLineString());
             process.addProcessListener(new ProcessAdapter() {
                 @Override
-                public void onTextAvailable(final ProcessEvent event, final Key outputType) {
+                public void onTextAvailable(@NotNull final ProcessEvent event, @NotNull final Key outputType) {
                     builder.append(event.getText());
                 }
             });
 
             process.startNotify();
             process.waitFor();
-
-
         } catch (final ExecutionException e) {
             e.printStackTrace();
         }
@@ -256,7 +251,6 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
         } else {
             testFailed(className, testMethodName, 0, "Failed for unknown reasons", result);
         }
-
 
     }
 
