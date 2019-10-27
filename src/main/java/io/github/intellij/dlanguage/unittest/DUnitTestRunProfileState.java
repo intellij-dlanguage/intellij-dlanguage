@@ -20,7 +20,7 @@ public class DUnitTestRunProfileState implements RunProfileState {
 
     private final ExecutionEnvironment environment;
 
-    public DUnitTestRunProfileState(final ExecutionEnvironment environment)
+    DUnitTestRunProfileState(final ExecutionEnvironment environment)
     {
         this.environment = environment;
     }
@@ -28,20 +28,17 @@ public class DUnitTestRunProfileState implements RunProfileState {
     @Nullable
     @Override
     public ExecutionResult execute(final Executor executor, @NotNull final ProgramRunner programRunner) throws ExecutionException {
-        final Project project = environment.getProject();
-        if (project == null) {
-//            handleError("No project found.");
-            return null;
-        }
+        @NotNull final Project project = environment.getProject();
 
-        final RunnerAndConfigurationSettings settings = environment.getRunnerAndConfigurationSettings();
+        @Nullable final RunnerAndConfigurationSettings settings = environment.getRunnerAndConfigurationSettings();
 
         if (settings == null) {
 //            handleError(project, "No runner and configuration settings found.");
             return null;
         }
 
-        final RunConfiguration configuration = settings.getConfiguration();
+        @NotNull final RunConfiguration configuration = settings.getConfiguration();
+
         if (!(configuration instanceof DUnitTestRunConfiguration)) {
 //            handleError(project, "The supplied configuration is not a " + DUnitTestRunConfiguration.class.getSimpleName() + ".");
             return null;
@@ -73,7 +70,7 @@ public class DUnitTestRunProfileState implements RunProfileState {
         // Register an action to re-run failed tests
         final DUnitTestRerunFailedTestsAction rerunFailedTestsAction = new DUnitTestRerunFailedTestsAction(project, consoleView);
         rerunFailedTestsAction.init(consoleView.getProperties());
-        rerunFailedTestsAction.setModelProvider(() -> consoleView.getResultsViewer());
+        rerunFailedTestsAction.setModelProvider(consoleView::getResultsViewer);
 
         final DefaultExecutionResult executionResult = new DefaultExecutionResult(consoleView, processHandler);
         executionResult.setRestartActions(rerunFailedTestsAction);
@@ -81,7 +78,7 @@ public class DUnitTestRunProfileState implements RunProfileState {
         // Start the process handler
         ApplicationManager
             .getApplication()
-            .invokeLater(() -> processHandler.startProcessing());
+            .invokeLater(processHandler::startProcessing);
 
         return executionResult;
     }

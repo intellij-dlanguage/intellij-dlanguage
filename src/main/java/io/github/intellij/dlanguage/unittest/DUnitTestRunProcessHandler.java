@@ -47,7 +47,7 @@ import java.util.regex.Pattern;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class DUnitTestRunProcessHandler extends ProcessHandler {
+public class DUnitTestRunProcessHandler extends ProcessHandler { // consider OSProcessHandler or BaseProcessHandler<Process>
 
     private static final Logger LOG = Logger.getInstance(DUnitTestRunProcessHandler.class);
     private final Map<String, Integer> nodeIdsByFullTestName = new HashMap<>();
@@ -69,7 +69,7 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
 //   testIgnored() when a test method is skipped for any reason
 //   testSuiteFinished() when all methods in a test class finish
 //   testRunFinished() when all tests have completed
-//   testRunCanceled() if the user has canceled the run if you need to clean up anything
+//   testRunCancelled() if the user has canceled the run if you need to clean up anything
 //   testStdOut() to print the output from a test class/method to the console view for review
 //            }
         ApplicationManager.getApplication().runReadAction(() -> {
@@ -131,6 +131,8 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
                 DlangBundle.INSTANCE.message("d.ui.unittest.notification.title.d-unit-missing"),
                 message, NotificationType.ERROR), project);
             LOG.warn(message);
+
+            testRunCancelled();
         } else {
             // Actually run tests in separate runnable to avoid blocking the GUI
             ApplicationManager.getApplication().executeOnPooledThread(() -> {
@@ -139,13 +141,15 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
                     final Set<String> methodNames = pair.getValue();
 
                     testSuiteStarted(className, methodNames.size());
+                    long startTime = System.currentTimeMillis();
 
                     for (final String testMethodName : methodNames) {
                         testStarted(className, testMethodName);
                         executeTest(className, testMethodName, dunitPath);
                     }
 
-                    testSuiteFinished(className, 0);
+                    long duration = (System.currentTimeMillis() - startTime);
+                    testSuiteFinished(className, duration);
                 }
 
                 testRunFinished();
@@ -218,6 +222,8 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
             .withExePath(dubPath)
             .withParameters("test", "--", "-v", "--filter", testPath + "$");
 
+        long startTime = System.currentTimeMillis();
+
         final StringBuilder builder = new StringBuilder();
         try {
             final OSProcessHandler process = new OSProcessHandler(cmd.createProcess(), cmd.getCommandLineString());
@@ -240,41 +246,43 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
         final Pattern successPattern = Pattern.compile(successPatternString);
         final Matcher successMatcher = successPattern.matcher(result);
 
+        long duration = System.currentTimeMillis() - startTime;
+
         if (successMatcher.find()) {
-            testFinished(className, testMethodName, 0);
+            testFinished(className, testMethodName, duration);
             testStdOut(className, testMethodName, result);
         } else if (result.contains("FAILURE:")) {
-            testFailed(className, testMethodName, 0, "Failed", result);
+            testFailed(className, testMethodName, duration, "Failed", result);
         } else if (result.contains("SKIP:")) {
             testIgnored(className, testMethodName);
             testStdOut(className, testMethodName, result);
         } else {
-            testFailed(className, testMethodName, 0, "Failed for unknown reasons", result);
+            testFailed(className, testMethodName, duration, "Failed for unknown reasons", result);
         }
 
     }
 
     private boolean isTestMethod(final DlangFunctionDeclaration fd) {
-        final PsiElement ele = findElementUpstream(fd, DLanguageAtAttribute.class);
+        final DLanguageAtAttribute ele = findElementUpstream(fd, DLanguageAtAttribute.class);
         return (ele != null && ele.getText().contains("@Test"));
     }
 
     private boolean isIgnoreMethod(final DlangFunctionDeclaration fd) {
-        final PsiElement ele = findElementUpstream(fd, DLanguageAtAttribute.class);
-        return (ele != null && ele.getText().contains("@Ignore"));
+        final DLanguageAtAttribute psiElement = findElementUpstream(fd, DLanguageAtAttribute.class);
+        return (psiElement != null && psiElement.getText().contains("@Ignore"));
     }
 
-    private PsiElement findElementUpstream(final PsiElement startingElement, final Class className) {
+    private <T extends PsiElement> T findElementUpstream(final PsiElement startingElement, @NotNull final Class<T> clazz) {
         final PsiElement parent = startingElement.getParent();
         if (parent == null) {
             return null;
         }
-        final PsiElement element = PsiTreeUtil.findChildOfType(parent, className);
-        if (className.isInstance(element)) {
+        final T element = PsiTreeUtil.findChildOfType(parent, clazz);
+        if (clazz.isInstance(element)) {
             return element;
         } else {
             try {
-                return findElementUpstream(parent, className);
+                return findElementUpstream(parent, clazz);
             } catch (final Exception e) {
                 return null;
             }
@@ -300,8 +308,9 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
             .invokeLater(this::destroyProcess);
     }
 
-    private void testRunCanceled() {
-        // TODO: Whatever you’d need to do here
+    private void testRunCancelled() {
+        ApplicationManager.getApplication()
+            .invokeLater(this::destroyProcess);
     }
 
     private void testStdOut(final String testClassName, final String output) {
@@ -420,7 +429,7 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
 
     @Override
     protected void destroyProcessImpl() {
-        testRunCanceled();
+        testRunCancelled();
         notifyProcessTerminated(0);
     }
 
