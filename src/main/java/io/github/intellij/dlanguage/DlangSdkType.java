@@ -185,7 +185,7 @@ public class DlangSdkType extends SdkType {
     @Override
     public String suggestSdkName(@Nullable final String currentSdkName, final String sdkHome) {
         try {
-            final String version = Objects.requireNonNull(getDmdVersion(sdkHome)).get(2000, TimeUnit.SECONDS);
+            final String version = Objects.requireNonNull(getDmdVersion(sdkHome)).get(2L, TimeUnit.SECONDS);
 
             return StringUtil.isNotEmpty(version) ? version : SDK_NAME;
         } catch (InterruptedException | TimeoutException | java.util.concurrent.ExecutionException e) {
