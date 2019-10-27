@@ -6,6 +6,7 @@ import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectUtil;
@@ -23,6 +24,9 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 import java.util.*;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * This class is used to run 'dub describe' which outputs project info in json format. We parse the json
@@ -35,8 +39,7 @@ public class DubConfigurationParser {
     private final DescribeParser parser;
     private final Project project;
     private final String dubBinaryPath;
-
-    private DubProject dubProject;
+    private final boolean silentMode;
 
 
     /**
@@ -57,12 +60,8 @@ public class DubConfigurationParser {
     public DubConfigurationParser(@NotNull final Project project, final String dubBinaryPath, final boolean silentMode) {
         this.project = project;
         this.dubBinaryPath = dubBinaryPath;
+        this.silentMode = silentMode;
         this.parser = new DescribeParserImpl();
-
-        if (canUseDub()) {
-            parseDubConfiguration(silentMode)
-                .ifPresent(p -> this.dubProject = p);
-        }
     }
 
     /**
@@ -72,7 +71,18 @@ public class DubConfigurationParser {
      * @since v1.16.2
      */
     public Optional<DubProject> getDubProject() {
-        return this.dubProject != null? Optional.of(this.dubProject) : Optional.empty();
+        if (canUseDub()) {
+            final Future<Optional<DubProject>> optionalFuture = ApplicationManager.getApplication()
+                .executeOnPooledThread(() -> parseDubConfiguration(this.silentMode));
+
+            try {
+                return optionalFuture.get(4L, TimeUnit.SECONDS); // Yes 'dub describe' will take about 4 seconds on 1st run
+            } catch (final InterruptedException | java.util.concurrent.ExecutionException | TimeoutException e) {
+                LOG.error("Call to dub timed out", e);
+            }
+        }
+
+        return Optional.empty();
     }
 
     /**
@@ -81,7 +91,10 @@ public class DubConfigurationParser {
      */
     @Deprecated
     public Optional<DubPackage> getDubPackage() {
-        return this.dubProject != null? Optional.of(this.dubProject.getRootPackage()) : Optional.empty();
+        LOG.warn("Call to deprecated method getDubPackage()");
+
+        final Optional<DubProject> dubProject = getDubProject();
+        return dubProject.map(DubProject::getRootPackage);
     }
 
     /**
@@ -110,7 +123,8 @@ public class DubConfigurationParser {
      */
     @Deprecated
     public List<DubPackage> getDubPackageDependencies() {
-        return this.dubProject != null? dubProject.getPackages() : Collections.EMPTY_LIST;
+        final Optional<DubProject> dubProject = getDubProject();
+        return dubProject.map(DubProject::getPackages).orElse(Collections.EMPTY_LIST);
     }
 
     /**
@@ -119,7 +133,8 @@ public class DubConfigurationParser {
      */
     @Nullable
     public TreeNode getPackageTree() {
-        return this.dubProject != null ? buildDependencyTree(dubProject.getRootPackage()) : null;
+        final Optional<DubProject> dubProject = getDubProject();
+        return dubProject.map(value -> buildDependencyTree(value.getRootPackage())).orElse(null);
     }
 
     private DefaultMutableTreeNode buildDependencyTree(final DubPackage dubPackage) {
