@@ -263,6 +263,7 @@ public class DUtil {
 //    }
 
 
+    @Nullable
     public static ASTNode getPrevSiblingOfType(@Nullable final ASTNode child, @Nullable final IElementType type) {
         if (child == null)
             return null;
@@ -299,6 +300,7 @@ public class DUtil {
 
     }
 
+    @Nullable
     public static DlangIdentifier getEndOfIdentifierList(
         final @NotNull DLanguageIdentifierChain chain) {
         final List<DlangIdentifier> list = chain.getIdentifiers();
@@ -313,20 +315,22 @@ public class DUtil {
         }
     }
 
-    public static DlangIdentifier getEndOfIdentifierList(
-        final DLanguageIdentifierOrTemplateChain chain) {
-        final List<DLanguageIdentifierOrTemplateInstance> list = chain
-            .getIdentifierOrTemplateInstances();
-        if (list.get(list.size() - 1).getIdentifier() != null) {
-            try {
-                return list.get(list.size() - 1).getIdentifier();
-            } catch (final ArrayIndexOutOfBoundsException e) {
-                return null;
-            }
-        } else {
-            return null;
-        }
+    @Nullable
+    public static DlangIdentifier getEndOfIdentifierList(@Nullable final DLanguageIdentifierOrTemplateChain chain) {
+        if(chain == null) return null;
 
+        @NotNull final List<DLanguageIdentifierOrTemplateInstance> list = chain.getIdentifierOrTemplateInstances();
+
+        return list.size() > 0 ? list.get(list.size() - 1).getIdentifier() : null;
+    }
+
+    /**
+     * D file names should be composed of the ASCII characters lower case letters, digits or _ and should also not be a Keyword.
+     * @param name a filename to check
+     * @return true if filename
+     */
+    public static boolean isValidDlangFileName(@NotNull final String name) {
+        return name.matches("[a-zA-Z_0-9]+(\\.di|\\.d)?");
     }
 }
 
