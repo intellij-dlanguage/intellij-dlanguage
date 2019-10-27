@@ -59,13 +59,6 @@ public class GdbValueModifier extends XValueModifier {
         m_variableObject = variableObject;
     }
 
-    // todo: delete this method once XValueModifier has setValue(String, XModificationCallback) removed
-    public void setValue(@NotNull String expression, @NotNull final XModificationCallback callback) {
-        // TODO: Format the expression properly
-        m_gdb.sendCommand("-var-assign " + m_variableObject.name + " " + expression,
-            event -> onGdbNewValueReady(event, callback));
-    }
-
     @Override
     public void setValue(@NotNull XExpression expression, @NotNull XModificationCallback callback) {
         // TODO: Format the expression properly

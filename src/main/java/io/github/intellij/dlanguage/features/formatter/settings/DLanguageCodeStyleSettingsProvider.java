@@ -37,16 +37,16 @@ public class DLanguageCodeStyleSettingsProvider extends LanguageCodeStyleSetting
     }
 
     @Override
-    public CommonCodeStyleSettings getDefaultCommonSettings() {
-        final CommonCodeStyleSettings defaultSettings = new CommonCodeStyleSettings(getLanguage());
-        final CommonCodeStyleSettings.IndentOptions indentOptions = defaultSettings.initIndentOptions();
+    protected void customizeDefaults(@NotNull CommonCodeStyleSettings commonSettings,
+                                     @NotNull CommonCodeStyleSettings.IndentOptions indentOptions) {
         indentOptions.INDENT_SIZE = 4;
         indentOptions.CONTINUATION_INDENT_SIZE = 4;
         indentOptions.TAB_SIZE = 4;
         indentOptions.USE_TAB_CHARACTER = false;
 
-        defaultSettings.BLOCK_COMMENT_AT_FIRST_COLUMN = false;
-        defaultSettings.LINE_COMMENT_AT_FIRST_COLUMN = false;
-        return defaultSettings;
+        commonSettings.BLOCK_COMMENT_AT_FIRST_COLUMN = false;
+        commonSettings.LINE_COMMENT_AT_FIRST_COLUMN = false;
+
+        super.customizeDefaults(commonSettings, indentOptions);
     }
 }

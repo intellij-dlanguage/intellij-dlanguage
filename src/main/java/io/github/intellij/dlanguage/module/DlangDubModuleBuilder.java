@@ -50,7 +50,7 @@ public class DlangDubModuleBuilder extends DlangModuleBuilder {
     }
 
     @Override
-    public void setupRootModel(final ModifiableRootModel rootModel) throws ConfigurationException {
+    public void setupRootModel(@NotNull final ModifiableRootModel rootModel) throws ConfigurationException {
         super.setupRootModel(rootModel);
 
         final Project project = rootModel.getProject();
@@ -61,15 +61,15 @@ public class DlangDubModuleBuilder extends DlangModuleBuilder {
         }
 
         //Create "Run dub" configuration
-        RunnerAndConfigurationSettings runDubSettings = runManager.findConfigurationByName(RUN_DUB_CONFIG_NAME);
+        final RunnerAndConfigurationSettings runDubSettings = runManager.findConfigurationByName(RUN_DUB_CONFIG_NAME);
         if (runDubSettings == null) {
-            final DlangRunDubConfigurationType configurationType
-                = Extensions.findExtension(ConfigurationType.CONFIGURATION_TYPE_EP, DlangRunDubConfigurationType.class);
-            final ConfigurationFactory factory = configurationType.getConfigurationFactories()[0];
-            runDubSettings = runManager.createRunConfiguration(RUN_DUB_CONFIG_NAME, factory);
-            ((ModuleBasedConfiguration) runDubSettings.getConfiguration()).setModule(rootModel.getModule());
+            @NotNull final DlangRunDubConfigurationType configurationType = ConfigurationType.CONFIGURATION_TYPE_EP.findExtensionOrFail(DlangRunDubConfigurationType.class);
 
-            runManager.addConfiguration(runDubSettings, false);
+            final ConfigurationFactory factory = configurationType.getConfigurationFactories()[0];
+            final RunnerAndConfigurationSettings settings = runManager.createConfiguration(RUN_DUB_CONFIG_NAME, factory);
+            ((ModuleBasedConfiguration) settings.getConfiguration()).setModule(rootModel.getModule());
+
+            runManager.addConfiguration(settings, false);
         }
     }
 
@@ -153,7 +153,7 @@ public class DlangDubModuleBuilder extends DlangModuleBuilder {
         }
     }
 
-    private class DubInitListener extends ProcessAdapter {
+    private static class DubInitListener extends ProcessAdapter {
         private final StringBuilder builder = new StringBuilder();
         private final AtomicBoolean errors = new AtomicBoolean();
 

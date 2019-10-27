@@ -15,11 +15,11 @@ import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
-import com.intellij.util.containers.ContainerUtil;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Future;
@@ -115,7 +115,7 @@ public class ExecUtil {
         }
 
         final char sep = File.separatorChar;
-        final List<String> paths = ContainerUtil.newArrayList();
+        final List<String> paths = new ArrayList<>();
         if (SystemInfo.isWindows) {
             paths.add(sep + "D" + sep + "dmd2" + sep + "windows" + sep + "bin");
         } else {

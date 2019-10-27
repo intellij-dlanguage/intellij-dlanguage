@@ -1,7 +1,8 @@
 package io.github.intellij.dlanguage.unittest;
 
 import com.intellij.execution.actions.ConfigurationContext;
-import com.intellij.execution.actions.RunConfigurationProducer;
+import com.intellij.execution.actions.LazyRunConfigurationProducer;
+import com.intellij.execution.configurations.ConfigurationFactory;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.util.Ref;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -10,24 +11,15 @@ import com.intellij.psi.PsiFile;
 import io.github.intellij.dlanguage.DlangWritingAccessProvider;
 import io.github.intellij.dlanguage.psi.DlangFile;
 import io.github.intellij.dlanguage.utils.DUtil;
-import io.github.intellij.dlanguage.DlangWritingAccessProvider;
-import io.github.intellij.dlanguage.psi.DlangFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static io.github.intellij.dlanguage.utils.DUtil.*;
-
-public class DUnitTestRunConfigurationProducer extends RunConfigurationProducer<DUnitTestRunConfiguration> {
-
-
-    public DUnitTestRunConfigurationProducer() {
-        super(DUnitTestRunConfigurationType.getInstance());
-    }
+public class DUnitTestRunConfigurationProducer extends LazyRunConfigurationProducer<DUnitTestRunConfiguration> {
 
     @Override
-    protected boolean setupConfigurationFromContext(final DUnitTestRunConfiguration configuration,
-                                                    final ConfigurationContext context,
-                                                    final Ref<PsiElement> sourceElement) {
+    protected boolean setupConfigurationFromContext(@NotNull final DUnitTestRunConfiguration configuration,
+                                                    @NotNull final ConfigurationContext context,
+                                                    @NotNull final Ref<PsiElement> sourceElement) {
         final VirtualFile dFile = getRunnableDFileFromContext(context);
         if (dFile != null) {
             configuration.setdFilePath(dFile.getPath());
@@ -41,7 +33,7 @@ public class DUnitTestRunConfigurationProducer extends RunConfigurationProducer<
     }
 
     @Nullable
-    public static VirtualFile getRunnableDFileFromContext(final @NotNull ConfigurationContext context) {
+    private static VirtualFile getRunnableDFileFromContext(final @NotNull ConfigurationContext context) {
         final PsiElement psiLocation = context.getPsiLocation();
         final PsiFile psiFile = psiLocation == null ? null : psiLocation.getContainingFile();
         final VirtualFile virtualFile = getRealVirtualFile(psiFile);
@@ -71,7 +63,7 @@ public class DUnitTestRunConfigurationProducer extends RunConfigurationProducer<
 
     @Nullable
     private static VirtualFile getDFileFromContext(final @NotNull ConfigurationContext context) {
-        final PsiElement psiLocation = context.getPsiLocation();
+        @Nullable final PsiElement psiLocation = context.getPsiLocation();
         final PsiFile psiFile = psiLocation == null ? null : psiLocation.getContainingFile();
         final VirtualFile virtualFile = getRealVirtualFile(psiFile);
         return psiFile instanceof DlangFile && virtualFile != null ? virtualFile : null;
@@ -82,4 +74,9 @@ public class DUnitTestRunConfigurationProducer extends RunConfigurationProducer<
     }
 
 
+    @NotNull
+    @Override
+    public ConfigurationFactory getConfigurationFactory() {
+        return new DUnitTestRunConfigurationFactory(DUnitTestRunConfigurationType.getInstance());
+    }
 }

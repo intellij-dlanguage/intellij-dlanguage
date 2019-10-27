@@ -6,11 +6,11 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.stubs.StubIndex;
 import com.intellij.util.ArrayUtil;
-import com.intellij.util.containers.ContainerUtil;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
 import io.github.intellij.dlanguage.stubs.index.DAllNameIndex;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -28,9 +28,9 @@ public class DChooseByNameContributor implements ChooseByNameContributor {
     @Override
     public NavigationItem[] getItemsByName(final String name, final String pattern,
                                            final Project project, final boolean includeNonProjectItems) {
-        final GlobalSearchScope scope = includeNonProjectItems ? GlobalSearchScope.allScope(project) : GlobalSearchScope.projectScope(project);
+        @NotNull final GlobalSearchScope scope = includeNonProjectItems ? GlobalSearchScope.allScope(project) : GlobalSearchScope.projectScope(project);
         final Collection<DNamedElement> classes = StubIndex.getElements(DAllNameIndex.KEY, name, project, scope, DNamedElement.class);
-        final List<NavigationItem> items = ContainerUtil.newArrayListWithCapacity(classes.size());
+        final List<NavigationItem> items = new ArrayList<>(classes.size());
         items.addAll(classes);
         return items.toArray(new NavigationItem[items.size()]);
     }
