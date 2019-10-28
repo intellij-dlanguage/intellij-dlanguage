@@ -10,6 +10,7 @@ import com.intellij.openapi.options.SettingsEditor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.openapi.util.io.FileUtil;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
@@ -17,13 +18,15 @@ import com.intellij.psi.PsiManager;
 import io.github.intellij.dlanguage.DlangWritingAccessProvider;
 import io.github.intellij.dlanguage.DlangBundle;
 import io.github.intellij.dlanguage.DlangFileType;
-import io.github.intellij.dlanguage.DlangWritingAccessProvider;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.util.Map;
 
 public class DUnitTestRunConfigurationEditor extends SettingsEditor<DUnitTestRunConfiguration> {
+
+    private final Project project;
+
     private JPanel myMainPanel;
     private JLabel myFileLabel;
     private TextFieldWithBrowseButton myFileField;
@@ -31,14 +34,15 @@ public class DUnitTestRunConfigurationEditor extends SettingsEditor<DUnitTestRun
     private EnvironmentVariablesComponent envVariables;
 
     public DUnitTestRunConfigurationEditor(final Project project) {
+        this.project = project;
+
         initDFileTextWithBrowse(project, myFileField);
 
         myWorkingDirectory.addBrowseFolderListener(ExecutionBundle.message("select.working.directory.message"), null, project,
             FileChooserDescriptorFactory.createSingleFolderDescriptor());
-
     }
 
-    public static void initDFileTextWithBrowse(final @NotNull Project project,
+    private static void initDFileTextWithBrowse(final @NotNull Project project,
                                                final @NotNull TextFieldWithBrowseButton textWithBrowse) {
         textWithBrowse.getButton().addActionListener(event -> {
             final String initialPath = FileUtil.toSystemIndependentName(textWithBrowse.getText().trim());
@@ -65,7 +69,14 @@ public class DUnitTestRunConfigurationEditor extends SettingsEditor<DUnitTestRun
 
     @Override
     protected void resetEditorFrom(@NotNull final DUnitTestRunConfiguration config) {
-        myWorkingDirectory.setText(config.getWorkingDir());
+        final String workingDir = config.getWorkingDir();
+
+        if(StringUtil.isNotEmpty(workingDir)) {
+            myWorkingDirectory.setText(workingDir);
+        } else {
+            myWorkingDirectory.setText(this.project.getBasePath());
+        }
+
         myFileField.setText(config.getdFilePath());
 
         final Map<String, String> envVars = config.getEnvVars();
