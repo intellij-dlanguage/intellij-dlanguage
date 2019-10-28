@@ -7,7 +7,7 @@ import com.intellij.openapi.util.io.FileUtil
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.openapi.vfs.CharsetToolkit
 import com.intellij.testFramework.TestDataFile
-import com.intellij.testFramework.fixtures.LightPlatformCodeInsightFixtureTestCase
+import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import org.jetbrains.annotations.NonNls
 import java.io.File
 import java.io.IOException
@@ -16,7 +16,7 @@ import java.net.URISyntaxException
 abstract class DLightPlatformCodeInsightFixtureTestCase(
     private var srcName: String,
     private var expectName: String = srcName
-) : LightPlatformCodeInsightFixtureTestCase() {
+) : BasePlatformTestCase() {
 
     private val srcPath: String
     private val expectPath: String

@@ -1,10 +1,10 @@
 package io.github.intellij.dlanguage.inspections
 
-import com.intellij.testFramework.fixtures.LightPlatformCodeInsightFixtureTestCase
+import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.intellij.util.containers.ContainerUtil
 import junit.framework.TestCase
 
-abstract class DInspectionTestBase : LightPlatformCodeInsightFixtureTestCase() {
+abstract class DInspectionTestBase : BasePlatformTestCase() {
 
     protected fun doTest(quickFixName: String, checkHighlighting: Boolean = false) {
         val testName = getTestName(true)

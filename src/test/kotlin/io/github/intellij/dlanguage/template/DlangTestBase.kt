@@ -1,9 +1,9 @@
 package io.github.intellij.dlanguage.template
 
-import com.intellij.testFramework.fixtures.LightPlatformCodeInsightFixtureTestCase
+import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import org.intellij.lang.annotations.Language
 
-open class DlangTestBase : LightPlatformCodeInsightFixtureTestCase() {
+open class DlangTestBase : BasePlatformTestCase() {
     protected fun replaceCaretMarker(text: String) = text.replace("/*caret*/", "<caret>")
     protected fun checkByText(
         @Language("D") before: String,
