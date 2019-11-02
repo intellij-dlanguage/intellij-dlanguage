@@ -26,6 +26,7 @@ package uk.co.cwspencer.gdb.gdbmi;
 
 import com.intellij.execution.ui.ConsoleView;
 import com.intellij.execution.ui.ConsoleViewContentType;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.UnsupportedEncodingException;
@@ -57,29 +58,27 @@ public class GdbMiParser2 {
         this.rawConsole = rawConsole;
     }
 
-    private static GdbMiResult parseBreakpointHitLineFrameLine(String line) {
-        line = "{" + line + "}";
-        Collection<GdbMiResult> results = parseFrameLine(line);
-        GdbMiResult[] result = results.toArray(new GdbMiResult[results.size()]);
-        return result[0];
+    @Nullable
+    private static GdbMiResult parseBreakpointHitLineFrameLine(final String line) {
+        final List<GdbMiResult> results = parseFrameLine("{" + line + "}");
+        return !results.isEmpty() ? results.get(0) : null;
     }
 
     private static GdbMiResult parseStackListLine(String line) {
-        GdbMiResult subRes = new GdbMiResult("stack");
-        GdbMiValue stackListVal = new GdbMiValue(GdbMiValue.Type.List);
+        final GdbMiValue stackListVal = new GdbMiValue(GdbMiValue.Type.List);
 
-        stackListVal.list.results = new ArrayList<GdbMiResult>();
+        stackListVal.list.results = new ArrayList<>();
         stackListVal.list.type = GdbMiList.Type.Results;
         stackListVal.list.results.addAll(parseFrameLine(line));
 
-        subRes.value = stackListVal;
-        return subRes;
+        return new GdbMiResult("stack", stackListVal);
     }
 
-    private static Collection<GdbMiResult> parseFrameLine(String line) {
-        Collection<GdbMiResult> result = new ArrayList<GdbMiResult>();
+    @NotNull
+    private static List<GdbMiResult> parseFrameLine(final String line) {
+        final List<GdbMiResult> result = new ArrayList<>();
 
-        String pattern = "\\{" +
+        final String pattern = "\\{" +
             "(?:level=\"(?<level>\\d+)\")?,?" +
             "(?:addr=\"(?<addr>[^\"]+)\")?,?" +
             "(?:func=\"(?<func>[^\"]+)\")?,?" +
@@ -90,12 +89,12 @@ public class GdbMiParser2 {
             "(?:from=\"(?<from>[^\"]+)\")?" +
             "\\}";
 
-        Pattern p = Pattern.compile(pattern);
-        Matcher m = p.matcher(line);
+        final Pattern p = Pattern.compile(pattern);
+        final Matcher m = p.matcher(line);
 
         while (m.find()) {
-            GdbMiResult subRes = new GdbMiResult("frame");
-            GdbMiValue frameVal = new GdbMiValue(GdbMiValue.Type.Tuple);
+            final GdbMiResult subRes = new GdbMiResult("frame");
+            final GdbMiValue frameVal = new GdbMiValue(GdbMiValue.Type.Tuple);
 
             // level="0"
             if (m.group("level") != null) {

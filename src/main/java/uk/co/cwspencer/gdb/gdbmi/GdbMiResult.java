@@ -24,6 +24,8 @@
 
 package uk.co.cwspencer.gdb.gdbmi;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Class representing a single result from a GDB/MI result record.
  */
@@ -36,15 +38,21 @@ public class GdbMiResult {
     /**
      * Value of the variable.
      */
-    public GdbMiValue value = new GdbMiValue();
+    public GdbMiValue value;
 
     /**
      * Constructor.
      *
      * @param variable The name of the variable.
      */
-    public GdbMiResult(String variable) {
+    public GdbMiResult(final String variable) {
         this.variable = variable;
+        this.value = new GdbMiValue();
+    }
+
+    public GdbMiResult(final String variable, @NotNull final GdbMiValue value) {
+        this.variable = variable;
+        this.value = value;
     }
 
     /**
@@ -52,6 +60,7 @@ public class GdbMiResult {
      *
      * @return A string containing the name of the variable and its value.
      */
+    @Override
     public String toString() {
         return variable + ": " + value;
     }
