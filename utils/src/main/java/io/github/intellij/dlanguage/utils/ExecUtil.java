@@ -210,4 +210,19 @@ public class ExecUtil {
         @NotNull final String command, @NotNull final String... params) {
         return readCommandLine(workingDirectory, command, params, null);
     }
+
+    /**
+     * Heuristically finds the version number. Current implementation is the identity function since
+     * cabal plays nice.
+     */
+    public static String getVersion(final String cmd) {
+        final @Nullable String versionOutput = readCommandLine(null, cmd, "--version");
+
+        if (StringUtil.isNotEmpty(versionOutput)) {
+            final String version = versionOutput.split("\n")[0].trim();
+            LOG.debug(String.format("%s [%s]", cmd, version));
+            return version;
+        }
+        return "";
+    }
 }
