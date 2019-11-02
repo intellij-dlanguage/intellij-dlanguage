@@ -25,6 +25,8 @@
 package uk.co.cwspencer.gdb.messages;
 
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.util.text.StringUtil;
+import org.jetbrains.annotations.Nullable;
 import uk.co.cwspencer.gdb.gdbmi.GdbMiList;
 import uk.co.cwspencer.gdb.gdbmi.GdbMiResult;
 import uk.co.cwspencer.gdb.gdbmi.GdbMiResultRecord;
@@ -148,15 +150,17 @@ public class GdbMiMessageConverter {
      * @param doneEventAnnotation The annotation on the class.
      * @return The new list of results, or null if it could not be transposed.
      */
-    private static List<GdbMiResult> transposeDoneEvent(GdbMiResultRecord record,
-                                                        GdbMiDoneEvent doneEventAnnotation) {
+    @Nullable
+    private static List<GdbMiResult> transposeDoneEvent(final GdbMiResultRecord record,
+                                                        final GdbMiDoneEvent doneEventAnnotation) {
         // Search for the requested result
-        for (GdbMiResult result : record.results) {
+        for (final GdbMiResult result : record.results) {
             if (result.variable.equals(doneEventAnnotation.transpose())) {
                 // Found it; check it is an appropriate type (it must be a tuple or a list of
                 // results)
                 if (!(result.value.type == GdbMiValue.Type.Tuple ||
                     (result.value.type == GdbMiValue.Type.List &&
+                        result.value.list != null &&
                         (result.value.list.type == GdbMiList.Type.Empty ||
                             result.value.list.type == GdbMiList.Type.Results)))) {
                     return null;
@@ -176,21 +180,23 @@ public class GdbMiMessageConverter {
      * @param results The results from GDB.
      * @return The new object, or null if it could not be created.
      */
-    public static Object processObject(Class<?> clazz, List<GdbMiResult> results) {
+    @Nullable
+    static Object processObject(Class<?> clazz, List<GdbMiResult> results) {
         try {
             Object object = clazz.newInstance();
 
             // Populate the fields with data from the result
-            Field[] fields = clazz.getFields();
-            for (Field field : fields) {
-                GdbMiField fieldAnnotation = field.getAnnotation(GdbMiField.class);
+            final Field[] fields = clazz.getFields();
+
+            for (final Field field : fields) {
+                @Nullable final GdbMiField fieldAnnotation = field.getAnnotation(GdbMiField.class);
                 if (fieldAnnotation == null) {
                     continue;
                 }
 
                 // Find a result with the requested variable name
-                for (GdbMiResult result : results) {
-                    if (!fieldAnnotation.name().equals(result.variable)) {
+                for (final GdbMiResult result : results) {
+                    if (!StringUtil.equals(fieldAnnotation.name(), result.variable)) {
                         continue;
                     }
 
