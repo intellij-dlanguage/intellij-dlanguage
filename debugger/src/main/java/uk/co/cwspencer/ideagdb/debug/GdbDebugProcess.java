@@ -46,7 +46,7 @@ import com.intellij.xdebugger.breakpoints.XBreakpointHandler;
 import com.intellij.xdebugger.evaluation.XDebuggerEditorsProvider;
 import com.intellij.xdebugger.frame.XSuspendContext;
 import com.intellij.xdebugger.ui.XDebugTabLayouter;
-import io.github.intellij.dlanguage.settings.ToolKey;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import uk.co.cwspencer.gdb.Gdb;
 import uk.co.cwspencer.gdb.GdbListener;
@@ -62,8 +62,9 @@ import java.util.Date;
 import java.util.List;
 
 public class GdbDebugProcess extends XDebugProcess implements GdbListener {
-    private static final Logger m_log =
-        Logger.getInstance("#uk.co.cwspencer.ideagdb.debug.GdbDebugProcess");
+
+    private static final Logger m_log = Logger.getInstance(GdbDebugProcess.class);
+
     public ConsoleView m_console;
     // The GDB console
     public GdbConsoleView m_gdbConsole;
@@ -84,26 +85,28 @@ public class GdbDebugProcess extends XDebugProcess implements GdbListener {
     /**
      * Constructor; launches GDB.
      */
-    public GdbDebugProcess(Project project, XDebugSession session, ExecutionResult result, String execName) {
+    public GdbDebugProcess(@NonNls final String gdbPath,
+                           @NonNls final XDebugSession session,
+                           @NonNls final ExecutionResult result,
+                           final String execName) {
         super(session);
         m_console = (ConsoleView) result.getExecutionConsole();
-        init(session, execName);
+        init(gdbPath, session, execName);
     }
 
-    private void init(XDebugSession session, String execName) {
-        Project project = session.getProject();
-        m_project = project;
+    private void init(@NonNls final String gdbPath, @NonNls final XDebugSession session, final String execName) {
+        m_project = session.getProject();
         debugSession = session;
 
         // Prepare GDB
-        m_gdb = new Gdb(ToolKey.GDB_KEY.getPath(), project.getBasePath(), this);
+        m_gdb = new Gdb(gdbPath, m_project.getBasePath(), this);
 
         // Create the GDB console
         m_gdbConsole = new GdbConsoleView(m_gdb, session.getProject());
         m_gdbRawConsole = new ConsoleViewImpl(session.getProject(), true);
 
         m_gdbConsole.getConsole().print(m_timeFormat.format(new Date()) + " 0> " +
-            ToolKey.GDB_KEY.getPath() + " --interpreter=mi2\n", ConsoleViewContentType.USER_INPUT);
+            gdbPath + " --interpreter=mi2\n", ConsoleViewContentType.USER_INPUT);
 
         m_gdb.sendCommand("-file-exec-and-symbols " + execName);
 

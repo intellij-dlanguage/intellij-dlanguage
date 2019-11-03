@@ -2,3 +2,4 @@ rootProject.name = 'DLanguage'
 
 include 'utils'
 include 'errorreporting'
+include 'debugger'

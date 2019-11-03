@@ -11,7 +11,8 @@ repositories {
 //    maven { url 'https://www.jetbrains.com/intellij-repository/releases' }
 }
 
-// todo: Rework the error reporter to just use com.jetbrains.intellij.platform:core and com.jetbrains.intellij.platform:lang
+// todo: Rework the GDB Support to just use generic Intellij dependencies such as:
+// com.jetbrains.intellij.platform:core and com.jetbrains.intellij.platform:lang
 // so that there's no need to use 'org.jetbrains.intellij' plugin in this module
 apply plugin: 'org.jetbrains.intellij'
 intellij {
@@ -19,12 +20,9 @@ intellij {
 }
 
 dependencies {
-    //compileOnly "com.jetbrains.intellij.platform:core:$intellijPlatformVersion"
-    //compileOnly "com.jetbrains.intellij.platform:lang:$intellijPlatformVersion"
+//    compileOnly "com.jetbrains.intellij.platform:core:$intellijPlatformVersion"
+//    compileOnly "com.jetbrains.intellij.platform:lang:$intellijPlatformVersion"
 
-    compile project(':utils')
-
-    compile ('io.sentry:sentry:1.6.1'){
-        exclude group: 'org.slf4j'
-    }
+    //compileOnly "com.jetbrains.intellij.platform:java-debugger:$intellijPlatformVersion"
+    //testCompile group: 'junit', name: 'junit', version: '4.12'
 }
