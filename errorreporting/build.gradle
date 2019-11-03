@@ -2,19 +2,28 @@ plugins {
     id 'java'
 }
 
-//version '1.21.1-SNAPSHOT'
-
-sourceCompatibility = 1.8
-
 repositories {
     mavenCentral()
+//    maven { url 'https://jetbrains.bintray.com/intellij-third-party-dependencies' }
+//    maven { url 'https://jetbrains.bintray.com/pty4j' }
+//    maven { url 'https://www.myget.org/F/rd-snapshots/maven' }
+//    maven { url 'https://www.jetbrains.com/intellij-repository/releases' }
+}
+
+// todo: Rework the error reporter to just use com.jetbrains.intellij.platform:core and com.jetbrains.intellij.platform:lang
+// so that there's no need to use 'org.jetbrains.intellij' plugin in this module
+apply plugin: 'org.jetbrains.intellij'
+intellij {
+    version ideaVersion
 }
 
 dependencies {
+    //compileOnly "com.jetbrains.intellij.platform:core:$intellijPlatformVersion"
+    //compileOnly "com.jetbrains.intellij.platform:lang:$intellijPlatformVersion"
+
     compile project(':utils')
 
     compile ('io.sentry:sentry:1.6.1'){
         exclude group: 'org.slf4j'
     }
-    //testCompile group: 'junit', name: 'junit', version: '4.12'
 }
