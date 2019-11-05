@@ -11,6 +11,8 @@ repositories {
 //    maven { url 'https://www.jetbrains.com/intellij-repository/releases' }
 }
 
+apply plugin: 'kotlin'
+
 // todo: Rework the error reporter to just use com.jetbrains.intellij.platform:core and com.jetbrains.intellij.platform:lang
 // so that there's no need to use 'org.jetbrains.intellij' plugin in this module
 apply plugin: 'org.jetbrains.intellij'
@@ -24,7 +26,7 @@ dependencies {
 
     compile project(':utils')
 
-    compile ('io.sentry:sentry:1.6.1'){
+    compile ('io.sentry:sentry:1.7.27'){
         exclude group: 'org.slf4j'
     }
 }

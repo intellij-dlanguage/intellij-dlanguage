@@ -24,6 +24,10 @@ import java.util.Map;
  */
 public class DErrorReporter extends ErrorReportSubmitter {
 
+    public DErrorReporter() {
+        Sentry.init("https://f948f2ace2c0452a88d3ff2bd6abd4be@sentry.io/1806295", new DlangSentryClientFactory(getPluginDescriptor()));
+    }
+
     /**
      * @return an action text to be used in Error Reporter user interface, e.g. "Report to JetBrains".
      */
@@ -38,11 +42,11 @@ public class DErrorReporter extends ErrorReportSubmitter {
                           @Nullable final String additionalInfo,
                           @NotNull final Component parentComponent,
                           @NotNull final Consumer<SubmittedReportInfo> consumer) {
-        try {
-            Sentry.init("https://f0a6a71038a645db865befe4d197def8:0df5947c823e4c2cab13ce2ace621f21@sentry.io/237092");
-        } catch (final Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Sentry.init("https://f0a6a71038a645db865befe4d197def8:0df5947c823e4c2cab13ce2ace621f21@sentry.io/237092");
+//        } catch (final Exception e) {
+//            e.printStackTrace();
+//        }
         for (final IdeaLoggingEvent event : events) {
             Sentry.getContext().addExtra("Additional info:", additionalInfo);
             try {
