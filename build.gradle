@@ -13,7 +13,7 @@ buildscript {
 }
 
 plugins {
-    id 'org.jetbrains.intellij' version '0.4.10'
+    id 'org.jetbrains.intellij' version '0.4.11'
     id 'org.jetbrains.kotlin.jvm' version '1.3.50'
     id 'net.saliman.cobertura' version '2.6.1'
     id 'com.github.kt3k.coveralls' version '2.8.4'
@@ -105,29 +105,6 @@ allprojects {
         }
     }
 
-    apply plugin: 'org.jetbrains.intellij'
-    intellij {
-        pluginName 'intellij-dlanguage'
-        version ideaVersion
-        //type 'CL' // maybe helpful to change this when trying other IDE. can be 'IC', 'IU', 'JPS', or 'CL'
-        updateSinceUntilBuild false
-        // uncomment to test/run/debug the plugin with another IDE such as CLion or AppCode
-        //alternativeIdePath '<path to>/CLion.app'
-        //alternativeIdePath 'C:\\Users\\USERNAME\\AppData\\Local\\JetBrains\\Toolbox\\apps\\CLion\\ch-0\\192.6262.62'
-        //alternativeIdePath "$System.env.HOME/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/192.6262.62"
-        //alternativeIdePath "$System.env.HOME/.local/share/JetBrains/Toolbox/apps/Rider/ch-0/183.5619.41"
-
-        runIde {
-            jbrVersion null
-        }
-
-        publishPlugin {
-            token System.getenv('JETBRAINS_TOKEN')
-            channels publishChannels
-        }
-    }
-
-
     task testCompilation(type: Test, group: 'Verification', dependsOn: [classes, testClasses]) {
         useJUnit {
             include 'io/github/intellij/dlanguage/build/**'
@@ -140,10 +117,37 @@ allprojects {
 
 }
 
+apply plugin: 'org.jetbrains.intellij'
+intellij {
+    pluginName 'intellij-dlanguage'
+    version ideaVersion
+    //type 'CL' // maybe helpful to change this when trying other IDE. can be 'IC', 'IU', 'JPS', or 'CL'
+    updateSinceUntilBuild false
+    // uncomment to test/run/debug the plugin with another IDE such as CLion or AppCode
+    //alternativeIdePath '<path to>/CLion.app'
+    //alternativeIdePath 'C:\\Users\\USERNAME\\AppData\\Local\\JetBrains\\Toolbox\\apps\\CLion\\ch-0\\192.6262.62'
+    //alternativeIdePath "$System.env.HOME/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/192.6262.62"
+    //alternativeIdePath "$System.env.HOME/.local/share/JetBrains/Toolbox/apps/Rider/ch-0/183.5619.41"
+
+    //runIde {
+    //jbrVersion null
+    //jbrVersion '11_0_4b304.69'
+    //}
+
+    publishPlugin {
+        token System.getenv('JETBRAINS_TOKEN')
+        channels publishChannels
+    }
+}
+
+
 grammarKit {
     // version of IntelliJ patched JFlex (see bintray link below), Default is 1.7.0-1
+    // https://bintray.com/jetbrains/intellij-third-party-dependencies/jflex
     jflexRelease = '1.7.0-1'
 
+    // tag or short commit hash of Grammar-Kit to use (see link below). Default is 2019.1.1
+    grammarKitRelease = '2019.1.1' // needs bumping to 2019.3 soon
 }
 
 task generateSyntaxLexer(type : GenerateLexer) {
@@ -175,10 +179,10 @@ dependencies {
     //compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     //compileOnly "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
-    compile 'org.eclipse.mylyn.github:org.eclipse.egit.github.core:2.1.5'
-    compile ('io.sentry:sentry:1.6.1'){
-        exclude group: 'org.slf4j'
-    }
+    compile project(':utils')
+    compile project(':errorreporting')
+    compile project(':debugger')
+
     testCompile 'io.kotlintest:kotlintest:2+'
 }
 
@@ -201,6 +205,7 @@ compileKotlin {
         suppressWarnings = true
         apiVersion = "1.3"
         languageVersion = "1.3"
-        jvmTarget = "1.8"
+        jvmTarget = javaVersion
+        freeCompilerArgs = [ '-Xjvm-default=enable' ]
     }
 }

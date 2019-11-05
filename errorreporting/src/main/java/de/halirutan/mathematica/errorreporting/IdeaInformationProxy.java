@@ -33,8 +33,7 @@ import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.ExceptionUtil;
-import io.github.intellij.dlanguage.settings.DLanguageToolsConfigurable;
-import io.github.intellij.dlanguage.settings.ToolKey;
+import io.github.intellij.dlanguage.utils.ExecUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -116,45 +115,48 @@ public class IdeaInformationProxy {
             }
         }
 
-        final String dubPath = ToolKey.DUB_KEY.getPath();
-        if (StringUtil.isNotEmpty(dubPath)) {
-            final String dubVersion = DLanguageToolsConfigurable.getVersion(dubPath);
-            params.put("Dub Version", dubVersion);
-        }
+        // todo: Removed temporarily as 'import io.github.intellij.dlanguage.settings.ToolKey' is no longer visible
+        // and I want to rethink this part of the plugin
 
-        final String dcdServerPath = ToolKey.DCD_SERVER_KEY.getPath();
-        if (StringUtil.isNotEmpty(dcdServerPath)) {
-            final String dcdServerVersion = DLanguageToolsConfigurable.getVersion(dcdServerPath);
-            params.put("DCD Server Version", dcdServerVersion);
-        }
-
-        final String dcdClientPath = ToolKey.DCD_CLIENT_KEY.getPath();
-        if (StringUtil.isNotEmpty(dcdClientPath)) {
-            final String dcdClientVersion = DLanguageToolsConfigurable.getVersion(dcdClientPath);
-            params.put("DCD Client Version", dcdClientVersion);
-        }
-
-        final String dscannerPath = ToolKey.DSCANNER_KEY.getPath();
-        if (StringUtil.isNotEmpty(dscannerPath)) {
-            final String DScannerVersion = DLanguageToolsConfigurable.getVersion(dscannerPath);
-            params.put("DScanner Version", DScannerVersion);
-        }
-
-        final String gdbPath = ToolKey.GDB_KEY.getPath();
-        if (StringUtil.isNotEmpty(gdbPath)) {
-            final String GDBVersion = DLanguageToolsConfigurable.getVersion(gdbPath);
-            params.put("GDB Version", GDBVersion);
-        }
-
-        if (StringUtil.isNotEmpty(ToolKey.DFORMAT_KEY.getPath())) {
-            final String DFormatVersion = DLanguageToolsConfigurable.getVersion(ToolKey.DFORMAT_KEY.getPath());
-            params.put("D Format Version", DFormatVersion);
-        }
-
-        if (StringUtil.isNotEmpty(ToolKey.DFIX_KEY.getPath())) {
-            final String DFixVersion = DLanguageToolsConfigurable.getVersion(ToolKey.DFIX_KEY.getPath());
-            params.put("DFix Version", DFixVersion);
-        }
+//        final String dubPath = ToolKey.DUB_KEY.getPath();
+//        if (StringUtil.isNotEmpty(dubPath)) {
+//            final String dubVersion = ExecUtil.getVersion(dubPath);
+//            params.put("Dub Version", dubVersion);
+//        }
+//
+//        final String dcdServerPath = ToolKey.DCD_SERVER_KEY.getPath();
+//        if (StringUtil.isNotEmpty(dcdServerPath)) {
+//            final String dcdServerVersion = ExecUtil.getVersion(dcdServerPath);
+//            params.put("DCD Server Version", dcdServerVersion);
+//        }
+//
+//        final String dcdClientPath = ToolKey.DCD_CLIENT_KEY.getPath();
+//        if (StringUtil.isNotEmpty(dcdClientPath)) {
+//            final String dcdClientVersion = ExecUtil.getVersion(dcdClientPath);
+//            params.put("DCD Client Version", dcdClientVersion);
+//        }
+//
+//        final String dscannerPath = ToolKey.DSCANNER_KEY.getPath();
+//        if (StringUtil.isNotEmpty(dscannerPath)) {
+//            final String DScannerVersion = ExecUtil.getVersion(dscannerPath);
+//            params.put("DScanner Version", DScannerVersion);
+//        }
+//
+//        final String gdbPath = ToolKey.GDB_KEY.getPath();
+//        if (StringUtil.isNotEmpty(gdbPath)) {
+//            final String GDBVersion = ExecUtil.getVersion(gdbPath);
+//            params.put("GDB Version", GDBVersion);
+//        }
+//
+//        if (StringUtil.isNotEmpty(ToolKey.DFORMAT_KEY.getPath())) {
+//            final String DFormatVersion = ExecUtil.getVersion(ToolKey.DFORMAT_KEY.getPath());
+//            params.put("D Format Version", DFormatVersion);
+//        }
+//
+//        if (StringUtil.isNotEmpty(ToolKey.DFIX_KEY.getPath())) {
+//            final String DFixVersion = ExecUtil.getVersion(ToolKey.DFIX_KEY.getPath());
+//            params.put("DFix Version", DFixVersion);
+//        }
 
         return anonymise(params);
     }

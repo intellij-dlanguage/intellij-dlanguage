@@ -39,8 +39,8 @@ import java.awt.event.ActionListener;
  * Console tab for GDB input and output.
  */
 public class GdbConsoleView {
-    private static final Logger m_log =
-        Logger.getInstance("#uk.co.cwspencer.ideagdb.debug.GdbConsoleView");
+
+    private static final Logger m_log = Logger.getInstance(GdbConsoleView.class);
 
     private JPanel m_contentPanel;
     private JTextField m_prompt;

@@ -1,0 +1,6 @@
+*           text=auto
+*.txt		text
+*.d         text eol=lf
+*.sh		text eol=lf
+*.png		-text
+*.jpg		-text

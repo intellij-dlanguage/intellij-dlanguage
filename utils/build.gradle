@@ -1,0 +1,17 @@
+plugins {
+    id 'java'
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'https://jetbrains.bintray.com/intellij-third-party-dependencies' }
+    maven { url 'https://jetbrains.bintray.com/pty4j' }
+    maven { url 'https://www.myget.org/F/rd-snapshots/maven' }
+    maven { url 'https://www.jetbrains.com/intellij-repository/releases' }
+}
+
+dependencies {
+    compileOnly "com.jetbrains.intellij.platform:core:$intellijPlatformVersion"
+    compileOnly "com.jetbrains.intellij.platform:lang:$intellijPlatformVersion"
+    //testCompile group: 'junit', name: 'junit', version: '4.12'
+}

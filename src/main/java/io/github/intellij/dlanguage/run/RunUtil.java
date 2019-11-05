@@ -22,7 +22,6 @@ import org.jetbrains.annotations.Nullable;
 import uk.co.cwspencer.gdb.Gdb;
 import uk.co.cwspencer.gdb.messages.GdbEvent;
 import uk.co.cwspencer.ideagdb.debug.GdbDebugProcess;
-import uk.co.cwspencer.ideagdb.debug.utils.SdkUtil;
 
 public class RunUtil {
 
@@ -38,8 +37,10 @@ public class RunUtil {
 
 //        GdbRunConfiguration configuration = ((GdbExecutionResult) result).m_configuration;
 
+        final String gdbPath = ToolKey.GDB_KEY.getPath();
+
         // check if path to debugger is defined
-        if (ToolKey.GDB_KEY.getPath() == null){
+        if (gdbPath == null){
             Notifications.Bus.notify(
                 new Notification(NOTIFICATION_GROUPID, NOTIFICATION_TITLE,
                     "GDB executable path is empty" +
@@ -55,7 +56,7 @@ public class RunUtil {
                 @NotNull
                 @Override
                 public XDebugProcess start(@NotNull XDebugSession session) throws ExecutionException {
-                    return new GdbDebugProcess(project, session, result, executableFilePath);
+                    return new GdbDebugProcess(gdbPath, session, result, executableFilePath);
                 }
             });
 

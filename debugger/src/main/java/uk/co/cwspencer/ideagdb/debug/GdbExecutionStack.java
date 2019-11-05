@@ -27,7 +27,6 @@ package uk.co.cwspencer.ideagdb.debug;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.xdebugger.frame.XExecutionStack;
 import com.intellij.xdebugger.frame.XStackFrame;
-import io.github.intellij.dlanguage.icons.DlangIcons;
 import org.jetbrains.annotations.Nullable;
 import uk.co.cwspencer.gdb.Gdb;
 import uk.co.cwspencer.gdb.messages.*;
@@ -36,8 +35,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GdbExecutionStack extends XExecutionStack {
-    private static final Logger m_log =
-        Logger.getInstance("#uk.co.cwspencer.ideagdb.debug.GdbExecutionStack");
+
+    private static final Logger m_log = Logger.getInstance(GdbExecutionStack.class);
 
     // The GDB instance
     private final Gdb m_gdb;
@@ -55,7 +54,7 @@ public class GdbExecutionStack extends XExecutionStack {
      * @param thread The thread.
      */
     public GdbExecutionStack(Gdb gdb, GdbThread thread) {
-        super(thread.formatName(), DlangIcons.FILE);
+        super(thread.formatName());
 
         m_gdb = gdb;
         m_thread = thread;
