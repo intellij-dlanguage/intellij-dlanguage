@@ -1,62 +1,20 @@
 package io.github.intellij.dlanguage.unittest;
 
-import com.intellij.icons.AllIcons;
 import com.intellij.ide.fileTemplates.FileTemplateDescriptor;
-import com.intellij.lang.Language;
-import com.intellij.openapi.module.Module;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.testIntegration.TestFramework;
 import com.intellij.util.IncorrectOperationException;
-import io.github.intellij.dlanguage.DLanguage;
 import io.github.intellij.dlanguage.psi.DLanguageAtAttribute;
 import io.github.intellij.dlanguage.psi.DlangFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.swing.*;
 import java.util.Collection;
 
-public class DUnitTestFramework implements TestFramework {
-    @NotNull
-    @Override
-    public String getName() {
-        return DLanguage.INSTANCE.getDisplayName();
-    }
-
-    @NotNull
-    @Override
-    public Icon getIcon() {
-        return AllIcons.RunConfigurations.Junit;
-    }
-
-    @Override
-    public boolean isLibraryAttached(@NotNull final Module module) {
-        return false;
-    }
-
-    @Nullable
-    @Override
-    public String getLibraryPath() {
-        return null;
-    }
-
-    @Nullable
-    @Override
-    public String getDefaultSuperClass() {
-        return null;
-    }
-
-    @Override
-    public boolean isTestClass(@NotNull final PsiElement clazz) {
-//        return new ApexUnitTestFinder().isTest(clazz);
-        return true;
-    }
-
-    @Override
-    public boolean isPotentialTestClass(@NotNull final PsiElement clazz) {
-        return isTestClass(clazz);
-    }
+/**
+ * Provides the support for d-unit
+ */
+public class DUnitTestFramework extends DlangTestFramework {
 
     @Nullable
     @Override
@@ -117,12 +75,5 @@ public class DUnitTestFramework implements TestFramework {
             return false;
         }
     }
-
-    @NotNull
-    @Override
-    public Language getLanguage() {
-        return DLanguage.INSTANCE;
-    }
-
 
 }
