@@ -33,7 +33,7 @@ public class DubBuildRunner extends DefaultProgramRunner {
 
     @Nullable
     @Override
-    protected RunContentDescriptor doExecute(RunProfileState state, ExecutionEnvironment env) throws ExecutionException {
+    protected RunContentDescriptor doExecute(@NotNull final RunProfileState state, @NotNull final ExecutionEnvironment env) throws ExecutionException {
         if (env.getExecutor().getActionName().equals(DefaultDebugExecutor.EXECUTOR_ID)) {
             Project project = env.getProject();
             String executableFilePath = project.getBasePath().concat("/").concat(project.getName());

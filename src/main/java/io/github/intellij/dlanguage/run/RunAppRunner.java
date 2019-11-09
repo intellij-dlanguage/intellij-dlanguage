@@ -31,20 +31,20 @@ public class RunAppRunner extends DefaultProgramRunner {
 
     @Nullable
     @Override
-    protected RunContentDescriptor doExecute(RunProfileState state, ExecutionEnvironment env) throws ExecutionException {
+    protected RunContentDescriptor doExecute(@NotNull final RunProfileState state, final ExecutionEnvironment env) throws ExecutionException {
         if (env.getExecutor().getActionName().equals(DefaultDebugExecutor.EXECUTOR_ID)) {
-            Project project = env.getProject();
+            final Project project = env.getProject();
 
-            Executor executor = env.getExecutor();
-            Logger logger = Logger.getInstance(this.getClass());
+            final Executor executor = env.getExecutor();
+            final Logger log = Logger.getInstance(this.getClass());
             try {
-                return RunUtil.startDebugger(this, state, env, project, executor, ((DlangRunAppState) state).getExecutableCommandLine(((DlangRunAppState) state).getConfig()).getExePath());//todo this is yucky
-            } catch (ModuleNotFoundException e) {
+                final DlangRunAppState dlangRunAppState = (DlangRunAppState) state;
+                return RunUtil.startDebugger(this, state, env, project, executor, dlangRunAppState.getExecutableCommandLine(dlangRunAppState.getConfig()).getExePath());//todo this is yucky
+            } catch (final ModuleNotFoundException e) {
                 e.printStackTrace();
-                logger.error(e.toString());
-            } catch (NoValidDlangSdkFound NoValidDlangSdkFound) {
-                NoValidDlangSdkFound.printStackTrace();
-                logger.error(NoValidDlangSdkFound.toString());
+                log.error(e.toString());
+            } catch (final NoValidDlangSdkFound e) {
+                log.warn("Unable to run with DMD", e);
             }
         }
         return super.doExecute(state, env);
