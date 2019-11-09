@@ -8,6 +8,7 @@ import com.intellij.lang.PsiParser
 import com.intellij.lexer.FlexAdapter
 import com.intellij.lexer.Lexer
 import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.DumbService
 import com.intellij.openapi.project.IndexNotReadyException
 import com.intellij.openapi.project.Project
@@ -40,26 +41,31 @@ class DLanguageLexerAdapter : FlexAdapter(DlangLexer())
  */
 class DLangProjectDmdSetupValidator : ProjectSdkSetupValidator {
 
-    val expectedModules = setOf("std.array", "std.ascii", "std.base64", "std.bigint", "std.bitmanip", "std.compiler", "std.complex", "std.concurrency", "std.conv", "std.csv", "std.demangle", "std.encoding", "std.exception", "std.file", "std.format", "std.functional", "std.getopt", "std.json", "std.math", "std.mathspecial", "std.meta", "std.mmfile", "std.numeric", "std.outbuffer", "std.parallelism", "std.path", "std.process", "std.random", "std.signals", "std.socket", "std.stdint", "std.stdio", "std.string", "std.system", "std.traits", "std.typecons", "std.uni", "std.uri", "std.utf", "std.uuid", "std.variant", "std.xml", "std.zip", "std.zlib")
+    private val log = Logger.getInstance(javaClass);
+    private val expectedModules = setOf("std.array", "std.ascii", "std.base64", "std.bigint", "std.bitmanip", "std.compiler", "std.complex", "std.concurrency", "std.conv", "std.csv", "std.demangle", "std.encoding", "std.exception", "std.file", "std.format", "std.functional", "std.getopt", "std.json", "std.math", "std.mathspecial", "std.meta", "std.mmfile", "std.numeric", "std.outbuffer", "std.parallelism", "std.path", "std.process", "std.random", "std.signals", "std.socket", "std.stdint", "std.stdio", "std.string", "std.system", "std.traits", "std.typecons", "std.uni", "std.uri", "std.utf", "std.uuid", "std.variant", "std.xml", "std.zip", "std.zlib")
 
     override fun isApplicableFor(project: Project, file: VirtualFile): Boolean {
         if (DlangFileType.INSTANCE != file.fileType) return false
-        val projectSdk = ProjectRootManager.getInstance(project).projectSdk
-        if (projectSdk == null) {
-            return true
-        }
+        val projectSdk = ProjectRootManager.getInstance(project).projectSdk ?: return true
         val sdkType = projectSdk.sdkType as? DlangSdkType ?: return true
+
         if (!sdkType.isValidSdkHome(projectSdk.homePath)) {
             return true
         }
-        try {
-            if (cannotFindObjectDotD(project)) {
-                return true
+
+        // Don't check for object.d or phobos unless the index is ready
+        if(!DumbService.isDumb(project)) {
+            try {
+                if (cannotFindObjectDotD(project)) {
+                    return true
+                }
+                if (missingAnyPhobosFiles(project)) {
+                    return true
+                }
+            } catch (e: IndexNotReadyException) {
+                log.warn("Could not check for object.d and phobos as the project index is not ready", e)
             }
-            if (missingAnyPhobosFiles(project)) {
-                return true
-            }
-        } catch (e: IndexNotReadyException) {}
+        }
 
         return false
     }
