@@ -72,6 +72,8 @@ class DlangSentryClientFactory(pluginDescriptor: PluginDescriptor?) : DefaultSen
 
     override fun getEnvironment(dsn: Dsn?): String = namesInfo.productName
 
+    override fun getServerName(dsn: Dsn?): String = "" // override to anonymise the data
+
     //override fun getDist(dsn: Dsn?): String = ""
 
     override fun getTags(dsn: Dsn?): MutableMap<String, String> = mutableMapOf(
