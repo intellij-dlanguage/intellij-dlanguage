@@ -4,14 +4,22 @@ on: [push]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
+    name: Test IDEA ${{ matrix.idea }} with JDK ${{ matrix.jdk }}
+    strategy:
+      matrix:
+        idea: ['2019.2', '2019.2.4', '2019.3']
+        jdk: [ '1.8' ]
+        #os: [ubuntu-latest, windows-latest, macOS-latest]
 
     steps:
     - uses: actions/checkout@v1
-    - name: Set up JDK 1.8
+    - name: Set up JDK ${{ matrix.jdk }}
       uses: actions/setup-java@v1
       with:
-        java-version: 1.8
+        java-version: ${{ matrix.jdk }}
     - name: Build with Gradle
-      run: ./gradlew buildPlugin
+      env: ORG_GRADLE_PROJECT_ideaVersion=${{ matrix.idea }}
+      run: |
+        ./gradlew buildPlugin
+        ./gradlew check
