@@ -1,14 +1,13 @@
 package io.github.intellij.dlanguage.annotator
 
-import io.github.intellij.dlanguage.DLightPlatformCodeInsightFixtureTestCase
+import com.intellij.testFramework.fixtures.BasePlatformTestCase
 
-class DHighlightingAnnotatorTest : DLightPlatformCodeInsightFixtureTestCase(
-    "highlighting/annotator"
-) {
-    private fun doTest() {
-        myFixture.configureByFile(getTestDataPath(fileName))
+class DHighlightingAnnotatorTest : BasePlatformTestCase() {
+
+    override fun getTestDataPath(): String = this.javaClass.classLoader.getResource("gold/highlighting/annotator")!!.path
+
+    fun testTypeParameters() {
+        myFixture.configureByFile("type_parameters.d")
         myFixture.testHighlighting(false, true, false)
     }
-
-    fun testTypeParameters() = doTest()
 }
