@@ -102,12 +102,12 @@ class DFormattingModelBuilder : FormattingModelBuilder {
             if (mySubBlocks == null) {
                 mySubBlocks = buildSubBlocks()
             }
-            return ContainerUtil.newArrayList(mySubBlocks!!)
+            return mySubBlocks.orEmpty()
         }
 
         private fun buildSubBlocks(): List<Block> {
             val strategy: AlignmentStrategy.AlignmentPerTypeStrategy? = null
-            val blocks = ContainerUtil.newArrayList<Block>()
+            val blocks = mutableListOf<Block>()
             var child: ASTNode? = myNode.firstChildNode
             while (child != null) {
                 val childType = child.elementType
@@ -237,13 +237,9 @@ class DFormattingModelBuilder : FormattingModelBuilder {
             return ChildAttributes(childIndent, null)
         }
 
-        override fun isIncomplete(): Boolean {
-            return false//todo implement
-        }
+        override fun isIncomplete(): Boolean = false // todo implement
 
-        override fun isLeaf(): Boolean {
-            return false//todo implement
-        }
+        override fun isLeaf(): Boolean = false // todo implement
 
         companion object {
 
