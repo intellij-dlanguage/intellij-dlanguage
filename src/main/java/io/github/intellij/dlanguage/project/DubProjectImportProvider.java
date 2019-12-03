@@ -15,8 +15,8 @@ import java.util.Arrays;
 
 public class DubProjectImportProvider extends ProjectImportProvider {
 
-    public DubProjectImportProvider(final DubProjectImportBuilder builder) {
-        super(builder);
+    public DubProjectImportProvider() {
+        super(new DubProjectImportBuilder());
     }
 
     @Override
