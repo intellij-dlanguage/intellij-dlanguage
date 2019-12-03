@@ -4,7 +4,7 @@
     <id>net.masterthought.dlanguage</id>
     <name>D Language</name>
     <version>@version@</version>
-    <vendor url="https://intellij-dlanguage.github.io/">IntelliJ D Language</vendor>
+    <vendor url="https://intellij-dlanguage.github.io/">D Language</vendor>
 
     <description><![CDATA[
      <img src="https://avatars3.githubusercontent.com/u/565913?v=3&s=60" alt="" />
