@@ -14,6 +14,9 @@ class DubConsoleFilterProvider : ConsoleFilterProvider {
 }
 
 class DubBuildSourceFileFilter(val project: Project) : Filter {
+
+    private val blue = Color(39, 89, 230)
+
     override fun applyFilter(line: String, entireLength: Int): Filter.Result? {
         if(line.startsWith("source")) {
             // then it's prob code within the project
@@ -33,10 +36,12 @@ class DubBuildSourceFileFilter(val project: Project) : Filter {
             val fullFilePath = project.basePath.plus("/").plus(filePath.replace("\\", "/"))
             val virtualFile = LocalFileSystem.getInstance().findFileByPath(fullFilePath)
 
-            return Filter.Result(entireLength - line.length, (entireLength - line.length) + txt.lastIndex,
-                DlangSourceFileHyperlink(virtualFile, project, lineColumn[0] - 1, lineColumn[1]),
-                TextAttributes(Color(39, 89, 230), null, null, EffectType.BOLD_LINE_UNDERSCORE, Font.ITALIC)
-            )
+            virtualFile?.let {
+                return Filter.Result(entireLength - line.length, (entireLength - line.length) + txt.lastIndex,
+                    DlangSourceFileHyperlink(it, project, lineColumn[0] - 1, lineColumn[1]), // consider OpenFileHyperlinkInfo(project, it, lineColumn[0] - 1, lineColumn[1])
+                    TextAttributes(blue, null, null, EffectType.BOLD_LINE_UNDERSCORE, Font.ITALIC)
+                )
+            }
         }
         return null
     }
