@@ -2,18 +2,14 @@ package io.github.intellij.dlanguage.psi;
 
 import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.openapi.fileTypes.FileType;
-import com.intellij.openapi.util.Key;
 import com.intellij.psi.FileViewProvider;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
-import com.intellij.psi.stubs.StubElement;
 import com.intellij.util.IncorrectOperationException;
 import io.github.intellij.dlanguage.DLanguage;
 import io.github.intellij.dlanguage.DlangFileType;
-import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
 import io.github.intellij.dlanguage.psi.named.DLanguageModuleDeclaration;
-import io.github.intellij.dlanguage.psi.named.DlangFunctionDeclaration;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil;
 import io.github.intellij.dlanguage.stubs.DlangFileStub;
 import org.apache.commons.lang3.ArrayUtils;
@@ -99,9 +95,7 @@ public class DlangFile extends PsiFileBase {
     @Nullable
     @Override
     public DlangFileStub getStub() {
-        final StubElement stub = super.getStub();
-        if (stub == null) return null;
-        return (DlangFileStub) stub;
+        return (DlangFileStub) super.getStub();
     }
 
     @Override
@@ -120,37 +114,6 @@ public class DlangFile extends PsiFileBase {
             }
         }
         return toContinue;
-    }
-
-    public DlangFunctionDeclaration getMainFunction() {
-        final DlangFunctionDeclaration[] res = new DlangFunctionDeclaration[1];
-        PsiScopeProcessor mainFunctionProcessor = new PsiScopeProcessor() {
-
-            @Override
-            public boolean execute(@NotNull PsiElement element, @NotNull ResolveState state) {
-                if (element instanceof DlangFunctionDeclaration) {
-                    if (((DNamedElement) element).getName().equals("main")) {
-                        res[0] = (DlangFunctionDeclaration) element;
-                        return false;
-                    }
-                }
-                return true;
-            }
-
-            @Nullable
-            @Override
-            public <T> T getHint(@NotNull Key<T> hintKey) {
-                return null;
-            }
-
-            @Override
-            public void handleEvent(@NotNull Event event, @Nullable Object associated) {
-
-            }
-        };
-        this.processDeclarations(mainFunctionProcessor, ResolveState.initial(), null, this);
-        return res[0];
-
     }
 
     @NotNull

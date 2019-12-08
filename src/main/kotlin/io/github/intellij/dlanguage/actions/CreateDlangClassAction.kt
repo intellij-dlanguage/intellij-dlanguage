@@ -42,7 +42,7 @@ class CreateDlangClassAction : CreateFileFromTemplateAction(NEW_D_FILE, "", Dlan
 
         val segments = inRequestedDirectory.virtualFile.path.removePrefix(sourceRoot.path).split("/")
             .filter { it.isNotBlank() }
-            .toMutableList();
+            .toMutableList()
         val nameSegments = name.split(".")
         segments.addAll(nameSegments)
 
@@ -50,10 +50,10 @@ class CreateDlangClassAction : CreateFileFromTemplateAction(NEW_D_FILE, "", Dlan
 
         val module = segments.last().toLowerCase()
         val pack = segments.subList(0, segments.size - 1)
-        val aggregate = segments.last();
+        val aggregate = segments.last()
 
         val storeDirectory = CreateFileAction.MkDirs(nameSegments.joinToString(File.separator), inRequestedDirectory)
-            .directory;
+            .directory
 
         val element = FileTemplateUtil.createFromTemplate(
             template,
@@ -65,13 +65,13 @@ class CreateDlangClassAction : CreateFileFromTemplateAction(NEW_D_FILE, "", Dlan
                         { entry -> entry.key.toString() },
                         { it }
                     )))
-                .put("DLANGUAGE_MODULE_NAME", pack.joinToString(".") + if (pack.isNotEmpty()) "." + module else module)
+                .put("DLANGUAGE_MODULE_NAME", pack.joinToString(".") + if (pack.isNotEmpty()) ".$module" else module)
                 .put("DLANGUAGE_CLASS_NAME", aggregate)
                 .build()
                 .toMap(HashMap<String, Any>()),
             storeDirectory,
             null
-        );
+        )
 
         if (element.containingFile.virtualFile != null) {
             FileEditorManager.getInstance(inRequestedDirectory.project)
@@ -82,16 +82,14 @@ class CreateDlangClassAction : CreateFileFromTemplateAction(NEW_D_FILE, "", Dlan
             }
         }
 
-        return element.containingFile;
+        return element.containingFile
     }
 
     private fun findSourceRootOrDefault(inRequestedDirectory: PsiDirectory, defaultSourceRoot: VirtualFile): VirtualFile {
-        val sourceRoot = ProjectRootManager.getInstance(inRequestedDirectory.project)
+        return ProjectRootManager.getInstance(inRequestedDirectory.project)
             .contentSourceRoots
             .find { inRequestedDirectory.virtualFile.path.startsWith(it.path) }
-            ?: defaultSourceRoot;
-
-        return sourceRoot
+            ?: defaultSourceRoot
     }
 
     override fun getActionName(directory: PsiDirectory, newName: String, templateName: String): String {

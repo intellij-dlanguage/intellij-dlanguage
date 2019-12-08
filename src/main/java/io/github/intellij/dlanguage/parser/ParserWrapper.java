@@ -17,7 +17,7 @@ public class ParserWrapper implements LightPsiParser, PsiParser {
 
     @Override
     public void parseLight(final IElementType type, PsiBuilder builder) {
-        boolean result = false;
+        boolean result;
         builder = adapt_builder_(type, builder, this, null);
         final PsiBuilder.Marker marker = enter_section_(builder, 0, _COLLAPSE_, null);
         final DLangParser parser = new DLangParser(builder);
