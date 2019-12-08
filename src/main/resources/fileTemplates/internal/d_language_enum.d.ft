@@ -1,0 +1,6 @@
+module ${DLANGUAGE_MODULE_NAME};
+
+#include("module ${DLANGUAGE_MODULE_NAME};.ft")
+enum ${DLANGUAGE_CLASS_NAME} {
+
+}

@@ -16,9 +16,12 @@ import io.github.intellij.dlanguage.psi.named.DLanguageModuleDeclaration;
 import io.github.intellij.dlanguage.psi.named.DlangFunctionDeclaration;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil;
 import io.github.intellij.dlanguage.stubs.DlangFileStub;
-import javax.swing.Icon;
+import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import javax.swing.*;
+import java.util.Optional;
 
 public class DlangFile extends PsiFileBase {
 
@@ -48,10 +51,19 @@ public class DlangFile extends PsiFileBase {
     @Nullable
     public String getModuleName() {
         final DLanguageModuleDeclaration module = findChildByClass(DLanguageModuleDeclaration.class);
+
         if (module == null) {
             return null;
         }
-        return module.getText().replaceAll(";", "").replaceAll("^module\\s+", "");
+
+        String[] segments = module.getText()
+                            .substring(6, module.getTextLength() - 1)
+                            .split("\\.");
+
+        return Optional.of(segments)
+                       .filter(ArrayUtils::isEmpty)
+                       .map(sc -> sc[segments.length - 1])
+                       .orElse(null);
     }
 
     /**

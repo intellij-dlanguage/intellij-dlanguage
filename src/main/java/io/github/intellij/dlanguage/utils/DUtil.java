@@ -6,25 +6,17 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.util.PsiTreeUtil;
-import io.github.intellij.dlanguage.psi.DLanguageClassDeclaration;
-import io.github.intellij.dlanguage.psi.DLanguageIdentifierChain;
-import io.github.intellij.dlanguage.psi.DLanguageIdentifierOrTemplateChain;
-import io.github.intellij.dlanguage.psi.DLanguageIdentifierOrTemplateInstance;
-import io.github.intellij.dlanguage.psi.DLanguageTemplateMixinExpression;
-import io.github.intellij.dlanguage.psi.named.DlangFunctionDeclaration;
-import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
-import io.github.intellij.dlanguage.psi.named.DlangInterfaceOrClass;
-import io.github.intellij.dlanguage.psi.named.DlangStructDeclaration;
-import io.github.intellij.dlanguage.psi.named.DlangTemplateDeclaration;
-import io.github.intellij.dlanguage.psi.named.DlangUnionDeclaration;
+import io.github.intellij.dlanguage.psi.*;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
 import io.github.intellij.dlanguage.psi.interfaces.Declaration;
+import io.github.intellij.dlanguage.psi.named.*;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * General util class. Provides methods for finding named nodes in the Psi tree.
@@ -301,18 +293,13 @@ public class DUtil {
     }
 
     @Nullable
-    public static DlangIdentifier getEndOfIdentifierList(
-        final @NotNull DLanguageIdentifierChain chain) {
+    public static DlangIdentifier getEndOfIdentifierList(final @NotNull DLanguageIdentifierChain chain) {
         final List<DlangIdentifier> list = chain.getIdentifiers();
-        if (list.get(list.size() - 1) != null) {
-            try {
-                return list.get(list.size() - 1);
-            } catch (final ArrayIndexOutOfBoundsException e) {
-                return null;
-            }
-        } else {
+        if (list.isEmpty()) {
             return null;
         }
+
+        return list.get(list.size() - 1);
     }
 
     @Nullable

@@ -9,7 +9,6 @@ import io.github.intellij.dlanguage.psi.DlangTypes;
 import org.jetbrains.annotations.NotNull;
 
 import static com.intellij.lang.parser.GeneratedParserUtilBase.*;
-import static io.github.intellij.dlanguage.psi.DlangTypes.*;
 
 /**
  * Created by francis on 7/2/2017.
@@ -17,403 +16,403 @@ import static io.github.intellij.dlanguage.psi.DlangTypes.*;
 public class ParserWrapper implements LightPsiParser, PsiParser {
 
     @Override
-    public void parseLight(final IElementType t, PsiBuilder b) {
-        boolean r = false;
-        b = adapt_builder_(t, b, this, null);
-        final PsiBuilder.Marker m = enter_section_(b, 0, _COLLAPSE_, null);
-        final DLangParser parser = new DLangParser(b);
-        if (t == DlangTypes.FUNCTION_DECLARATION) {
-            r = parser.parseFunctionDeclaration();
-        } else if (t == DlangTypes.INTERFACE_OR_CLASS) {
-            r = parser.parseInterfaceOrClass();
-        } else if (t == DlangTypes.TEMPLATE_DECLARATION) {
-            r = parser.parseTemplateDeclaration();
-        } else if (t == DlangTypes.CONSTRUCTOR) {
-            r = parser.parseConstructor();
-        } else if (t == DlangTypes.DESTRUCTOR) {
-            r = parser.parseDestructor();
-        } else if (t == DlangTypes.STRUCT_DECLARATION) {
-            r = parser.parseStructDeclaration();
-        } else if (t == DlangTypes.ALIAS_INITIALIZER) {
-            r = parser.parseAliasInitializer();
-        } else if (t == DlangTypes.MODULE_DECLARATION) {
-            r = parser.parseModuleDeclaration();
-        } else if (t == DlangTypes.DECLARATOR) {
-            r = parser.parseDeclarator();
-        } else if (t == DlangTypes.LABELED_STATEMENT) {
-            r = parser.parseLabeledStatement();
-        } else if (t == DlangTypes.SHARED_STATIC_CONSTRUCTOR) {
-            r = parser.parseSharedStaticConstructor();
-        } else if (t == DlangTypes.SHARED_STATIC_DESTRUCTOR) {
-            r = parser.parseSharedStaticDestructor();
-        } else if (t == DlangTypes.STATIC_CONSTRUCTOR) {
-            r = parser.parseStaticConstructor();
-        } else if (t == DlangTypes.STATIC_DESTRUCTOR) {
-            r = parser.parseStaticDestructor();
-        } else if (t == DlangTypes.AUTO_DECLARATION_PART) {
-            r = parser.parseAutoDeclarationPart();
-        } else if (t == DlangTypes.ENUM_DECLARATION) {
-            r = parser.parseEnumDeclaration();
-        } else if (t == DlangTypes.UNION_DECLARATION) {
-            r = parser.parseUnionDeclaration();
-        } else if (t == DlangTypes.SINGLE_IMPORT) {
-            r = parser.parseSingleImport();
-        } else if (t == DlangTypes.UNITTEST) {
-            r = parser.parseUnittest();
-        } else if (t == DlangTypes.CATCH) {
-            r = parser.parseCatch();
-        } else if (t == DlangTypes.IF_CONDITION) {
-            r = false;
-        } else if (t == DlangTypes.FOREACH_TYPE) {
-            r = parser.parseForeachType();
-        } else if (t == DlangTypes.PARAMETER) {
-            r = parser.parseParameter();
-        } else if (t == DlangTypes.TEMPLATE_PARAMETER) {
-            r = parser.parseTemplateParameter();
-        } else if (t == DlangTypes.EPONYMOUS_TEMPLATE_DECLARATION) {
-            r = parser.parseEponymousTemplateDeclaration();
-        } else if (t == DlangTypes.ENUM_MEMBER) {
-            r = parser.parseEnumMember();
-        } else if (t == DlangTypes.ALIAS_DECLARATION) {
-            r = parser.parseAliasDeclaration();
-        } else if (t == DlangTypes.ALIAS_THIS_DECLARATION) {
-            r = parser.parseAliasThisDeclaration();
-        } else if (t == DlangTypes.ALIGN_ATTRIBUTE) {
-            r = parser.parseAlignAttribute();
-        } else if (t == DlangTypes.AND_AND_EXPRESSION) {
-            r = parser.parseAndAndExpression();
-        } else if (t == DlangTypes.AND_EXPRESSION) {
-            r = parser.parseAndExpression();
-        } else if (t == DlangTypes.ANONYMOUS_ENUM_DECLARATION) {
-            r = parser.parseAnonymousEnumDeclaration();
-        } else if (t == DlangTypes.ARGUMENT_LIST) {
-            r = false;
-        } else if (t == DlangTypes.ARGUMENTS) {
-            r = parser.parseArguments();
-        } else if (t == DlangTypes.ARRAY_INITIALIZER) {
-            r = parser.parseArrayInitializer();
-        } else if (t == DlangTypes.ARRAY_LITERAL) {
-            r = parser.parseArrayLiteral();
-        } else if (t == DlangTypes.ARRAY_MEMBER_INITIALIZATION) {
-            r = parser.parseArrayMemberInitialization();
-        } else if (t == DlangTypes.ASM_ADD_EXP) {
-            r = parser.parseAsmAddExp();
-        } else if (t == DlangTypes.ASM_AND_EXP) {
-            r = parser.parseAsmAndExp();
-        } else if (t == DlangTypes.ASM_BR_EXP) {
-            r = parser.parseAsmBrExp();
-        } else if (t == DlangTypes.ASM_EQUAL_EXP) {
-            r = parser.parseAsmEqualExp();
-        } else if (t == DlangTypes.ASM_EXP) {
-            r = parser.parseAsmExp();
-        } else if (t == DlangTypes.ASM_INSTRUCTION) {
-            r = parser.parseAsmInstruction();
-        } else if (t == DlangTypes.ASM_LOG_AND_EXP) {
-            r = parser.parseAsmLogAndExp();
-        } else if (t == DlangTypes.ASM_LOG_OR_EXP) {
-            r = parser.parseAsmLogOrExp();
-        } else if (t == DlangTypes.ASM_MUL_EXP) {
-            r = parser.parseAsmMulExp();
-        } else if (t == DlangTypes.ASM_OR_EXP) {
-            r = parser.parseAsmOrExp();
-        } else if (t == DlangTypes.ASM_PRIMARY_EXP) {
-            r = parser.parseAsmPrimaryExp();
-        } else if (t == DlangTypes.ASM_REL_EXP) {
-            r = parser.parseAsmRelExp();
-        } else if (t == DlangTypes.ASM_SHIFT_EXP) {
-            r = parser.parseAsmShiftExp();
-        } else if (t == DlangTypes.ASM_STATEMENT) {
-            r = parser.parseAsmStatement();
-        } else if (t == DlangTypes.ASM_TYPE_PREFIX) {
-            r = parser.parseAsmTypePrefix();
-        } else if (t == DlangTypes.ASM_UNA_EXP) {
-            r = parser.parseAsmUnaExp();
-        } else if (t == DlangTypes.ASM_XOR_EXP) {
-            r = parser.parseAsmXorExp();
-        } else if (t == DlangTypes.ASSERT_EXPRESSION) {
-            r = parser.parseAssertExpression();
-        } else if (t == DlangTypes.ASSIGN_EXPRESSION) {
-            r = parser.parseAssignExpression();
-        } else if (t == DlangTypes.ASSOC_ARRAY_LITERAL) {
-            r = parser.parseAssocArrayLiteral();
-        } else if (t == DlangTypes.AT_ATTRIBUTE) {
-            r = parser.parseAtAttribute();
-        } else if (t == DlangTypes.ATTRIBUTE) {
-            r = parser.parseAttribute();
-        } else if (t == DlangTypes.ATTRIBUTE_DECLARATION) {
-            r = parser.parseAttributeDeclaration();
-        } else if (t == DlangTypes.AUTO_DECLARATION) {
-            r = parser.parseAutoDeclaration();
-        } else if (t == DlangTypes.BASE_CLASS) {
-            r = parser.parseBaseClass();
-        } else if (t == DlangTypes.BASE_CLASS_LIST) {
-            r = parser.parseBaseClassList();
-        } else if (t == DlangTypes.BLOCK_STATEMENT) {
-            r = parser.parseBlockStatement();
-        } else if (t == DlangTypes.BODY_STATEMENT) {
-            r = parser.parseBodyStatement();
-        } else if (t == DlangTypes.BREAK_STATEMENT) {
-            r = parser.parseBreakStatement();
-        } else if (t == DlangTypes.CASE_RANGE_STATEMENT) {
-            r = parser.parseCaseRangeStatement();
-        } else if (t == DlangTypes.CASE_STATEMENT) {
-            r = parser.parseCaseStatement();
-        } else if (t == DlangTypes.CAST_EXPRESSION) {
-            r = parser.parseCastExpression();
-        } else if (t == DlangTypes.CAST_QUALIFIER) {
-            r = parser.parseCastQualifier();
-        } else if (t == DlangTypes.CATCHES) {
-            r = parser.parseCatches();
-        } else if (t == DlangTypes.CMP_EXPRESSION) {
-            r = parser.parseCmpExpression();
-        } else if (t == DlangTypes.COMPILE_CONDITION) {
-            r = parser.parseCompileCondition();
-        } else if (t == DlangTypes.CONDITIONAL_DECLARATION) {
-            r = false;
-        } else if (t == DlangTypes.CONDITIONAL_STATEMENT) {
-            r = parser.parseConditionalStatement();
-        } else if (t == DlangTypes.CONSTRAINT) {
-            r = parser.parseConstraint();
-        } else if (t == DlangTypes.CONTINUE_STATEMENT) {
-            r = parser.parseContinueStatement();
-        } else if (t == DlangTypes.CLASS_DECLARATION) {
-            r = parser.parseClassDeclaration();
-        } else if (t == DlangTypes.DEBUG_CONDITION) {
-            r = parser.parseDebugCondition();
-        } else if (t == DlangTypes.DEBUG_SPECIFICATION) {
-            r = parser.parseDebugSpecification();
-        } else if (t == DlangTypes.DECLARATION) {
-            r = parser.parseDeclaration();
-        } else if (t == DlangTypes.DECLARATION_OR_STATEMENT) {
-            r = parser.parseDeclarationOrStatement();
-        } else if (t == DlangTypes.DECLARATIONS_AND_STATEMENTS) {
-            r = false;
-        } else if (t == DlangTypes.DEFAULT_STATEMENT) {
-            r = parser.parseDefaultStatement();
-        } else if (t == DlangTypes.DELETE_EXPRESSION) {
-            r = parser.parseDeleteExpression();
-        } else if (t == DlangTypes.DEPRECATED) {
-            r = parser.parseDeprecated();
-        } else if (t == DlangTypes.DO_STATEMENT) {
-            r = parser.parseDoStatement();
-        } else if (t == DlangTypes.ENUM_BODY) {
-            r = parser.parseEnumBody();
-        } else if (t == DlangTypes.EQUAL_EXPRESSION) {
-            r = parser.parseEqualExpression();
-        } else if (t == DlangTypes.EXPRESSION) {
-            r = parser.parseExpression();
-        } else if (t == DlangTypes.EXPRESSION_STATEMENT) {
-            r = false;
-        } else if (t == DlangTypes.FINAL_SWITCH_STATEMENT) {
-            r = parser.parseFinalSwitchStatement();
-        } else if (t == DlangTypes.FINALLY) {
-            r = parser.parseFinally();
-        } else if (t == DlangTypes.FOR_STATEMENT) {
-            r = parser.parseForStatement();
-        } else if (t == DlangTypes.FOREACH_STATEMENT) {
-            r = parser.parseForeachStatement();
-        } else if (t == DlangTypes.FOREACH_TYPE_LIST) {
-            r = false;
-        } else if (t == DlangTypes.FUNCTION_ATTRIBUTE) {
-            r = false;
-        } else if (t == DlangTypes.FUNCTION_BODY) {
-            r = parser.parseFunctionBody();
-        } else if (t == DlangTypes.FUNCTION_CALL_EXPRESSION) {
-            r = parser.parseFunctionCallExpression();
-        } else if (t == DlangTypes.FUNCTION_LITERAL_EXPRESSION) {
-            r = parser.parseFunctionLiteralExpression();
-        } else if (t == DlangTypes.GOTO_STATEMENT) {
-            r = parser.parseGotoStatement();
-        } else if (t == DlangTypes.IDENTIFIER_CHAIN) {
-            r = parser.parseIdentifierChain();
-        } else if (t == DlangTypes.IDENTIFIER_LIST) {
-            r = parser.parseIdentifierList();
-        } else if (t == DlangTypes.IDENTIFIER_OR_TEMPLATE_CHAIN) {
-            r = parser.parseIdentifierOrTemplateChain();
-        } else if (t == DlangTypes.IDENTIFIER_OR_TEMPLATE_INSTANCE) {
-            r = parser.parseIdentifierOrTemplateInstance();
-        } else if (t == DlangTypes.IDENTITY_EXPRESSION) {
-            r = parser.parseIdentityExpression();
-        } else if (t == DlangTypes.IF_STATEMENT) {
-            r = parser.parseIfStatement();
-        } else if (t == DlangTypes.IMPORT_BIND) {
-            r = parser.parseImportBind();
-        } else if (t == DlangTypes.IMPORT_BINDINGS) {
-            r = false;
-        } else if (t == DlangTypes.IMPORT_DECLARATION) {
-            r = parser.parseImportDeclaration();
-        } else if (t == DlangTypes.IMPORT_EXPRESSION) {
-            r = parser.parseImportExpression();
-        } else if (t == DlangTypes.IN_EXPRESSION) {
-            r = parser.parseInExpression();
-        } else if (t == DlangTypes.IN_STATEMENT) {
-            r = parser.parseInStatement();
-        } else if (t == DlangTypes.INDEX) {
-            r = parser.parseIndex();
-        } else if (t == DlangTypes.INDEX_EXPRESSION) {
-            r = parser.parseIndexExpression();
-        } else if (t == DlangTypes.INITIALIZER) {
-            r = parser.parseInitializer();
-        } else if (t == DlangTypes.INTERFACE_DECLARATION) {
-            r = parser.parseInterfaceDeclaration();
-        } else if (t == DlangTypes.INVARIANT) {
-            r = parser.parseInvariant();
-        } else if (t == DlangTypes.IS_EXPRESSION) {
-            r = parser.parseIsExpression();
-        } else if (t == DlangTypes.KEY_VALUE_PAIR) {
-            r = parser.parseKeyValuePair();
-        } else if (t == DlangTypes.KEY_VALUE_PAIRS) {
-            r = parser.parseKeyValuePairs();
-        } else if (t == DlangTypes.LAST_CATCH) {
-            r = parser.parseLastCatch();
-        } else if (t == DlangTypes.LINKAGE_ATTRIBUTE) {
-            r = parser.parseLinkageAttribute();
-        } else if (t == DlangTypes.MEMBER_FUNCTION_ATTRIBUTE) {
-            r = parser.parseMemberFunctionAttribute();
-        } else if (t == DlangTypes.MIXIN_DECLARATION) {
-            r = parser.parseMixinDeclaration();
-        } else if (t == DlangTypes.MIXIN_EXPRESSION) {
-            r = parser.parseMixinExpression();
-        } else if (t == DlangTypes.MIXIN_TEMPLATE_DECLARATION) {
-            r = parser.parseMixinTemplateDeclaration();
-        } else if (t == DlangTypes.MIXIN_TEMPLATE_NAME) {
-            r = parser.parseMixinTemplateName();
-        } else if (t == DlangTypes.MUL_EXPRESSION) {
-            r = parser.parseMulExpression();
-        } else if (t == DlangTypes.NEW_ANON_CLASS_EXPRESSION) {
-            r = parser.parseNewAnonClassExpression();
-        } else if (t == DlangTypes.NEW_EXPRESSION) {
-            r = parser.parseNewExpression();
-        } else if (t == DlangTypes.NON_VOID_INITIALIZER) {
-            r = parser.parseNonVoidInitializer();
-        } else if (t == DlangTypes.OPERANDS) {
-            r = parser.parseOperands();
-        } else if (t == DlangTypes.OR_EXPRESSION) {
-            r = parser.parseOrExpression();
-        } else if (t == DlangTypes.OR_OR_EXPRESSION) {
-            r = parser.parseOrOrExpression();
-        } else if (t == DlangTypes.OUT_STATEMENT) {
-            r = parser.parseOutStatement();
-        } else if (t == DlangTypes.PARAMETERS) {
-            r = parser.parseParameters();
-        } else if (t == DlangTypes.POSTBLIT) {
-            r = parser.parsePostblit();
-        } else if (t == DlangTypes.POW_EXPRESSION) {
-            r = parser.parsePowExpression();
-        } else if (t == DlangTypes.PRAGMA_DECLARATION) {
-            r = parser.parsePragmaDeclaration();
-        } else if (t == DlangTypes.PRAGMA_EXPRESSION) {
-            r = parser.parsePragmaExpression();
-        } else if (t == DlangTypes.PRIMARY_EXPRESSION) {
-            r = parser.parsePrimaryExpression();
-        } else if (t == DlangTypes.REGISTER) {
-            r = parser.parseRegister();
-        } else if (t == DlangTypes.REL_EXPRESSION) {
-            r = parser.parseRelExpression();
-        } else if (t == DlangTypes.RETURN_STATEMENT) {
-            r = parser.parseReturnStatement();
-        } else if (t == DlangTypes.SCOPE_GUARD_STATEMENT) {
-            r = parser.parseScopeGuardStatement();
-        } else if (t == DlangTypes.SHIFT_EXPRESSION) {
-            r = parser.parseShiftExpression();
-        } else if (t == DlangTypes.STATEMENT) {
-            r = parser.parseStatement();
-        } else if (t == DlangTypes.STATEMENT_NO_CASE_NO_DEFAULT) {
-            r = parser.parseStatementNoCaseNoDefault();
-        } else if (t == DlangTypes.STATIC_ASSERT_DECLARATION) {
-            r = parser.parseStaticAssertDeclaration();
-        } else if (t == DlangTypes.STATIC_ASSERT_STATEMENT) {
-            r = parser.parseStaticAssertStatement();
-        } else if (t == DlangTypes.STATIC_IF_CONDITION) {
-            r = parser.parseStaticIfCondition();
-        } else if (t == DlangTypes.STORAGE_CLASS) {
-            r = parser.parseStorageClass();
-        } else if (t == DlangTypes.STRUCT_BODY) {
-            r = parser.parseStructBody();
-        } else if (t == DlangTypes.STRUCT_INITIALIZER) {
-            r = parser.parseStructInitializer();
-        } else if (t == DlangTypes.STRUCT_MEMBER_INITIALIZER) {
-            r = parser.parseStructMemberInitializer();
-        } else if (t == DlangTypes.STRUCT_MEMBER_INITIALIZERS) {
-            r = parser.parseStructMemberInitializers();
-        } else if (t == DlangTypes.STRING_LIT) {
-            r = false;
-        } else if (t == DlangTypes.SWITCH_STATEMENT) {
-            r = parser.parseSwitchStatement();
-        } else if (t == DlangTypes.SYMBOL) {
-            r = parser.parseSymbol();
-        } else if (t == DlangTypes.SYNCHRONIZED_STATEMENT) {
-            r = parser.parseSynchronizedStatement();
-        } else if (t == DlangTypes.TEMPLATE_ALIAS_PARAMETER) {
-            r = parser.parseTemplateAliasParameter();
-        } else if (t == DlangTypes.TEMPLATE_ARGUMENT) {
-            r = parser.parseTemplateArgument();
-        } else if (t == DlangTypes.TEMPLATE_ARGUMENT_LIST) {
-            r = parser.parseTemplateArgumentList();
-        } else if (t == DlangTypes.TEMPLATE_ARGUMENTS) {
-            r = parser.parseTemplateArguments();
-        } else if (t == DlangTypes.TEMPLATE_INSTANCE) {
-            r = parser.parseTemplateInstance();
-        } else if (t == DlangTypes.TEMPLATE_MIXIN_EXPRESSION) {
-            r = parser.parseTemplateMixinExpression();
-        } else if (t == DlangTypes.TEMPLATE_PARAMETER_LIST) {
-            r = parser.parseTemplateParameterList();
-        } else if (t == DlangTypes.TEMPLATE_PARAMETERS) {
-            r = parser.parseTemplateParameters();
-        } else if (t == DlangTypes.TEMPLATE_SINGLE_ARGUMENT) {
-            r = parser.parseTemplateSingleArgument();
-        } else if (t == DlangTypes.TEMPLATE_THIS_PARAMETER) {
-            r = parser.parseTemplateThisParameter();
-        } else if (t == DlangTypes.TEMPLATE_TUPLE_PARAMETER) {
-            r = parser.parseTemplateTupleParameter();
-        } else if (t == DlangTypes.TEMPLATE_TYPE_PARAMETER) {
-            r = parser.parseTemplateTypeParameter();
-        } else if (t == DlangTypes.TEMPLATE_VALUE_PARAMETER) {
-            r = parser.parseTemplateValueParameter();
-        } else if (t == DlangTypes.TEMPLATE_VALUE_PARAMETER_DEFAULT) {
-            r = parser.parseTemplateValueParameterDefault();
-        } else if (t == DlangTypes.TERNARY_EXPRESSION) {
-            r = parser.parseTernaryExpression();
-        } else if (t == DlangTypes.THROW_STATEMENT) {
-            r = parser.parseThrowStatement();
-        } else if (t == DlangTypes.TRAITS_EXPRESSION) {
-            r = parser.parseTraitsExpression();
-        } else if (t == DlangTypes.TRY_STATEMENT) {
-            r = parser.parseTryStatement();
-        } else if (t == DlangTypes.TYPE) {
-            r = false;
-        } else if (t == DlangTypes.TYPE_2) {
-            r = parser.parseType2();
-        } else if (t == DlangTypes.TYPE_SPECIALIZATION) {
-            r = parser.parseTypeSpecialization();
-        } else if (t == DlangTypes.TYPE_SUFFIX) {
-            r = parser.parseTypeSuffix();
-        } else if (t == DlangTypes.TYPEID_EXPRESSION) {
-            r = parser.parseTypeidExpression();
-        } else if (t == DlangTypes.TYPEOF_EXPRESSION) {
-            r = parser.parseTypeofExpression();
-        } else if (t == DlangTypes.UNARY_EXPRESSION) {
-            r = parser.parseUnaryExpression();
-        } else if (t == DlangTypes.VARIABLE_DECLARATION) {
-            r = parser.parseVariableDeclaration();
-        } else if (t == DlangTypes.VECTOR) {
-            r = parser.parseVector();
-        } else if (t == DlangTypes.VERSION_CONDITION) {
-            r = parser.parseVersionCondition();
-        } else if (t == DlangTypes.VERSION_SPECIFICATION) {
-            r = parser.parseVersionSpecification();
-        } else if (t == DlangTypes.WHILE_STATEMENT) {
-            r = parser.parseWhileStatement();
-        } else if (t == DlangTypes.WITH_STATEMENT) {
-            r = parser.parseWithStatement();
-        } else if (t == DlangTypes.XOR_EXPRESSION) {
-            r = parser.parseXorExpression();
-        } else if (t == DlangTypes.ADD_EXPRESSION) {
-            r = parser.parseAddExpression();
+    public void parseLight(final IElementType type, PsiBuilder builder) {
+        boolean result = false;
+        builder = adapt_builder_(type, builder, this, null);
+        final PsiBuilder.Marker marker = enter_section_(builder, 0, _COLLAPSE_, null);
+        final DLangParser parser = new DLangParser(builder);
+        if (type == DlangTypes.FUNCTION_DECLARATION) {
+            result = parser.parseFunctionDeclaration();
+        } else if (type == DlangTypes.INTERFACE_OR_CLASS) {
+            result = parser.parseInterfaceOrClass();
+        } else if (type == DlangTypes.TEMPLATE_DECLARATION) {
+            result = parser.parseTemplateDeclaration();
+        } else if (type == DlangTypes.CONSTRUCTOR) {
+            result = parser.parseConstructor();
+        } else if (type == DlangTypes.DESTRUCTOR) {
+            result = parser.parseDestructor();
+        } else if (type == DlangTypes.STRUCT_DECLARATION) {
+            result = parser.parseStructDeclaration();
+        } else if (type == DlangTypes.ALIAS_INITIALIZER) {
+            result = parser.parseAliasInitializer();
+        } else if (type == DlangTypes.MODULE_DECLARATION) {
+            result = parser.parseModuleDeclaration();
+        } else if (type == DlangTypes.DECLARATOR) {
+            result = parser.parseDeclarator();
+        } else if (type == DlangTypes.LABELED_STATEMENT) {
+            result = parser.parseLabeledStatement();
+        } else if (type == DlangTypes.SHARED_STATIC_CONSTRUCTOR) {
+            result = parser.parseSharedStaticConstructor();
+        } else if (type == DlangTypes.SHARED_STATIC_DESTRUCTOR) {
+            result = parser.parseSharedStaticDestructor();
+        } else if (type == DlangTypes.STATIC_CONSTRUCTOR) {
+            result = parser.parseStaticConstructor();
+        } else if (type == DlangTypes.STATIC_DESTRUCTOR) {
+            result = parser.parseStaticDestructor();
+        } else if (type == DlangTypes.AUTO_DECLARATION_PART) {
+            result = parser.parseAutoDeclarationPart();
+        } else if (type == DlangTypes.ENUM_DECLARATION) {
+            result = parser.parseEnumDeclaration();
+        } else if (type == DlangTypes.UNION_DECLARATION) {
+            result = parser.parseUnionDeclaration();
+        } else if (type == DlangTypes.SINGLE_IMPORT) {
+            result = parser.parseSingleImport();
+        } else if (type == DlangTypes.UNITTEST) {
+            result = parser.parseUnittest();
+        } else if (type == DlangTypes.CATCH) {
+            result = parser.parseCatch();
+        } else if (type == DlangTypes.IF_CONDITION) {
+            result = false;
+        } else if (type == DlangTypes.FOREACH_TYPE) {
+            result = parser.parseForeachType();
+        } else if (type == DlangTypes.PARAMETER) {
+            result = parser.parseParameter();
+        } else if (type == DlangTypes.TEMPLATE_PARAMETER) {
+            result = parser.parseTemplateParameter();
+        } else if (type == DlangTypes.EPONYMOUS_TEMPLATE_DECLARATION) {
+            result = parser.parseEponymousTemplateDeclaration();
+        } else if (type == DlangTypes.ENUM_MEMBER) {
+            result = parser.parseEnumMember();
+        } else if (type == DlangTypes.ALIAS_DECLARATION) {
+            result = parser.parseAliasDeclaration();
+        } else if (type == DlangTypes.ALIAS_THIS_DECLARATION) {
+            result = parser.parseAliasThisDeclaration();
+        } else if (type == DlangTypes.ALIGN_ATTRIBUTE) {
+            result = parser.parseAlignAttribute();
+        } else if (type == DlangTypes.AND_AND_EXPRESSION) {
+            result = parser.parseAndAndExpression();
+        } else if (type == DlangTypes.AND_EXPRESSION) {
+            result = parser.parseAndExpression();
+        } else if (type == DlangTypes.ANONYMOUS_ENUM_DECLARATION) {
+            result = parser.parseAnonymousEnumDeclaration();
+        } else if (type == DlangTypes.ARGUMENT_LIST) {
+            result = false;
+        } else if (type == DlangTypes.ARGUMENTS) {
+            result = parser.parseArguments();
+        } else if (type == DlangTypes.ARRAY_INITIALIZER) {
+            result = parser.parseArrayInitializer();
+        } else if (type == DlangTypes.ARRAY_LITERAL) {
+            result = parser.parseArrayLiteral();
+        } else if (type == DlangTypes.ARRAY_MEMBER_INITIALIZATION) {
+            result = parser.parseArrayMemberInitialization();
+        } else if (type == DlangTypes.ASM_ADD_EXP) {
+            result = parser.parseAsmAddExp();
+        } else if (type == DlangTypes.ASM_AND_EXP) {
+            result = parser.parseAsmAndExp();
+        } else if (type == DlangTypes.ASM_BR_EXP) {
+            result = parser.parseAsmBrExp();
+        } else if (type == DlangTypes.ASM_EQUAL_EXP) {
+            result = parser.parseAsmEqualExp();
+        } else if (type == DlangTypes.ASM_EXP) {
+            result = parser.parseAsmExp();
+        } else if (type == DlangTypes.ASM_INSTRUCTION) {
+            result = parser.parseAsmInstruction();
+        } else if (type == DlangTypes.ASM_LOG_AND_EXP) {
+            result = parser.parseAsmLogAndExp();
+        } else if (type == DlangTypes.ASM_LOG_OR_EXP) {
+            result = parser.parseAsmLogOrExp();
+        } else if (type == DlangTypes.ASM_MUL_EXP) {
+            result = parser.parseAsmMulExp();
+        } else if (type == DlangTypes.ASM_OR_EXP) {
+            result = parser.parseAsmOrExp();
+        } else if (type == DlangTypes.ASM_PRIMARY_EXP) {
+            result = parser.parseAsmPrimaryExp();
+        } else if (type == DlangTypes.ASM_REL_EXP) {
+            result = parser.parseAsmRelExp();
+        } else if (type == DlangTypes.ASM_SHIFT_EXP) {
+            result = parser.parseAsmShiftExp();
+        } else if (type == DlangTypes.ASM_STATEMENT) {
+            result = parser.parseAsmStatement();
+        } else if (type == DlangTypes.ASM_TYPE_PREFIX) {
+            result = parser.parseAsmTypePrefix();
+        } else if (type == DlangTypes.ASM_UNA_EXP) {
+            result = parser.parseAsmUnaExp();
+        } else if (type == DlangTypes.ASM_XOR_EXP) {
+            result = parser.parseAsmXorExp();
+        } else if (type == DlangTypes.ASSERT_EXPRESSION) {
+            result = parser.parseAssertExpression();
+        } else if (type == DlangTypes.ASSIGN_EXPRESSION) {
+            result = parser.parseAssignExpression();
+        } else if (type == DlangTypes.ASSOC_ARRAY_LITERAL) {
+            result = parser.parseAssocArrayLiteral();
+        } else if (type == DlangTypes.AT_ATTRIBUTE) {
+            result = parser.parseAtAttribute();
+        } else if (type == DlangTypes.ATTRIBUTE) {
+            result = parser.parseAttribute();
+        } else if (type == DlangTypes.ATTRIBUTE_DECLARATION) {
+            result = parser.parseAttributeDeclaration();
+        } else if (type == DlangTypes.AUTO_DECLARATION) {
+            result = parser.parseAutoDeclaration();
+        } else if (type == DlangTypes.BASE_CLASS) {
+            result = parser.parseBaseClass();
+        } else if (type == DlangTypes.BASE_CLASS_LIST) {
+            result = parser.parseBaseClassList();
+        } else if (type == DlangTypes.BLOCK_STATEMENT) {
+            result = parser.parseBlockStatement();
+        } else if (type == DlangTypes.BODY_STATEMENT) {
+            result = parser.parseBodyStatement();
+        } else if (type == DlangTypes.BREAK_STATEMENT) {
+            result = parser.parseBreakStatement();
+        } else if (type == DlangTypes.CASE_RANGE_STATEMENT) {
+            result = parser.parseCaseRangeStatement();
+        } else if (type == DlangTypes.CASE_STATEMENT) {
+            result = parser.parseCaseStatement();
+        } else if (type == DlangTypes.CAST_EXPRESSION) {
+            result = parser.parseCastExpression();
+        } else if (type == DlangTypes.CAST_QUALIFIER) {
+            result = parser.parseCastQualifier();
+        } else if (type == DlangTypes.CATCHES) {
+            result = parser.parseCatches();
+        } else if (type == DlangTypes.CMP_EXPRESSION) {
+            result = parser.parseCmpExpression();
+        } else if (type == DlangTypes.COMPILE_CONDITION) {
+            result = parser.parseCompileCondition();
+        } else if (type == DlangTypes.CONDITIONAL_DECLARATION) {
+            result = false;
+        } else if (type == DlangTypes.CONDITIONAL_STATEMENT) {
+            result = parser.parseConditionalStatement();
+        } else if (type == DlangTypes.CONSTRAINT) {
+            result = parser.parseConstraint();
+        } else if (type == DlangTypes.CONTINUE_STATEMENT) {
+            result = parser.parseContinueStatement();
+        } else if (type == DlangTypes.CLASS_DECLARATION) {
+            result = parser.parseClassDeclaration();
+        } else if (type == DlangTypes.DEBUG_CONDITION) {
+            result = parser.parseDebugCondition();
+        } else if (type == DlangTypes.DEBUG_SPECIFICATION) {
+            result = parser.parseDebugSpecification();
+        } else if (type == DlangTypes.DECLARATION) {
+            result = parser.parseDeclaration();
+        } else if (type == DlangTypes.DECLARATION_OR_STATEMENT) {
+            result = parser.parseDeclarationOrStatement();
+        } else if (type == DlangTypes.DECLARATIONS_AND_STATEMENTS) {
+            result = false;
+        } else if (type == DlangTypes.DEFAULT_STATEMENT) {
+            result = parser.parseDefaultStatement();
+        } else if (type == DlangTypes.DELETE_EXPRESSION) {
+            result = parser.parseDeleteExpression();
+        } else if (type == DlangTypes.DEPRECATED) {
+            result = parser.parseDeprecated();
+        } else if (type == DlangTypes.DO_STATEMENT) {
+            result = parser.parseDoStatement();
+        } else if (type == DlangTypes.ENUM_BODY) {
+            result = parser.parseEnumBody();
+        } else if (type == DlangTypes.EQUAL_EXPRESSION) {
+            result = parser.parseEqualExpression();
+        } else if (type == DlangTypes.EXPRESSION) {
+            result = parser.parseExpression();
+        } else if (type == DlangTypes.EXPRESSION_STATEMENT) {
+            result = false;
+        } else if (type == DlangTypes.FINAL_SWITCH_STATEMENT) {
+            result = parser.parseFinalSwitchStatement();
+        } else if (type == DlangTypes.FINALLY) {
+            result = parser.parseFinally();
+        } else if (type == DlangTypes.FOR_STATEMENT) {
+            result = parser.parseForStatement();
+        } else if (type == DlangTypes.FOREACH_STATEMENT) {
+            result = parser.parseForeachStatement();
+        } else if (type == DlangTypes.FOREACH_TYPE_LIST) {
+            result = false;
+        } else if (type == DlangTypes.FUNCTION_ATTRIBUTE) {
+            result = false;
+        } else if (type == DlangTypes.FUNCTION_BODY) {
+            result = parser.parseFunctionBody();
+        } else if (type == DlangTypes.FUNCTION_CALL_EXPRESSION) {
+            result = parser.parseFunctionCallExpression();
+        } else if (type == DlangTypes.FUNCTION_LITERAL_EXPRESSION) {
+            result = parser.parseFunctionLiteralExpression();
+        } else if (type == DlangTypes.GOTO_STATEMENT) {
+            result = parser.parseGotoStatement();
+        } else if (type == DlangTypes.IDENTIFIER_CHAIN) {
+            result = parser.parseIdentifierChain();
+        } else if (type == DlangTypes.IDENTIFIER_LIST) {
+            result = parser.parseIdentifierList();
+        } else if (type == DlangTypes.IDENTIFIER_OR_TEMPLATE_CHAIN) {
+            result = parser.parseIdentifierOrTemplateChain();
+        } else if (type == DlangTypes.IDENTIFIER_OR_TEMPLATE_INSTANCE) {
+            result = parser.parseIdentifierOrTemplateInstance();
+        } else if (type == DlangTypes.IDENTITY_EXPRESSION) {
+            result = parser.parseIdentityExpression();
+        } else if (type == DlangTypes.IF_STATEMENT) {
+            result = parser.parseIfStatement();
+        } else if (type == DlangTypes.IMPORT_BIND) {
+            result = parser.parseImportBind();
+        } else if (type == DlangTypes.IMPORT_BINDINGS) {
+            result = false;
+        } else if (type == DlangTypes.IMPORT_DECLARATION) {
+            result = parser.parseImportDeclaration();
+        } else if (type == DlangTypes.IMPORT_EXPRESSION) {
+            result = parser.parseImportExpression();
+        } else if (type == DlangTypes.IN_EXPRESSION) {
+            result = parser.parseInExpression();
+        } else if (type == DlangTypes.IN_STATEMENT) {
+            result = parser.parseInStatement();
+        } else if (type == DlangTypes.INDEX) {
+            result = parser.parseIndex();
+        } else if (type == DlangTypes.INDEX_EXPRESSION) {
+            result = parser.parseIndexExpression();
+        } else if (type == DlangTypes.INITIALIZER) {
+            result = parser.parseInitializer();
+        } else if (type == DlangTypes.INTERFACE_DECLARATION) {
+            result = parser.parseInterfaceDeclaration();
+        } else if (type == DlangTypes.INVARIANT) {
+            result = parser.parseInvariant();
+        } else if (type == DlangTypes.IS_EXPRESSION) {
+            result = parser.parseIsExpression();
+        } else if (type == DlangTypes.KEY_VALUE_PAIR) {
+            result = parser.parseKeyValuePair();
+        } else if (type == DlangTypes.KEY_VALUE_PAIRS) {
+            result = parser.parseKeyValuePairs();
+        } else if (type == DlangTypes.LAST_CATCH) {
+            result = parser.parseLastCatch();
+        } else if (type == DlangTypes.LINKAGE_ATTRIBUTE) {
+            result = parser.parseLinkageAttribute();
+        } else if (type == DlangTypes.MEMBER_FUNCTION_ATTRIBUTE) {
+            result = parser.parseMemberFunctionAttribute();
+        } else if (type == DlangTypes.MIXIN_DECLARATION) {
+            result = parser.parseMixinDeclaration();
+        } else if (type == DlangTypes.MIXIN_EXPRESSION) {
+            result = parser.parseMixinExpression();
+        } else if (type == DlangTypes.MIXIN_TEMPLATE_DECLARATION) {
+            result = parser.parseMixinTemplateDeclaration();
+        } else if (type == DlangTypes.MIXIN_TEMPLATE_NAME) {
+            result = parser.parseMixinTemplateName();
+        } else if (type == DlangTypes.MUL_EXPRESSION) {
+            result = parser.parseMulExpression();
+        } else if (type == DlangTypes.NEW_ANON_CLASS_EXPRESSION) {
+            result = parser.parseNewAnonClassExpression();
+        } else if (type == DlangTypes.NEW_EXPRESSION) {
+            result = parser.parseNewExpression();
+        } else if (type == DlangTypes.NON_VOID_INITIALIZER) {
+            result = parser.parseNonVoidInitializer();
+        } else if (type == DlangTypes.OPERANDS) {
+            result = parser.parseOperands();
+        } else if (type == DlangTypes.OR_EXPRESSION) {
+            result = parser.parseOrExpression();
+        } else if (type == DlangTypes.OR_OR_EXPRESSION) {
+            result = parser.parseOrOrExpression();
+        } else if (type == DlangTypes.OUT_STATEMENT) {
+            result = parser.parseOutStatement();
+        } else if (type == DlangTypes.PARAMETERS) {
+            result = parser.parseParameters();
+        } else if (type == DlangTypes.POSTBLIT) {
+            result = parser.parsePostblit();
+        } else if (type == DlangTypes.POW_EXPRESSION) {
+            result = parser.parsePowExpression();
+        } else if (type == DlangTypes.PRAGMA_DECLARATION) {
+            result = parser.parsePragmaDeclaration();
+        } else if (type == DlangTypes.PRAGMA_EXPRESSION) {
+            result = parser.parsePragmaExpression();
+        } else if (type == DlangTypes.PRIMARY_EXPRESSION) {
+            result = parser.parsePrimaryExpression();
+        } else if (type == DlangTypes.REGISTER) {
+            result = parser.parseRegister();
+        } else if (type == DlangTypes.REL_EXPRESSION) {
+            result = parser.parseRelExpression();
+        } else if (type == DlangTypes.RETURN_STATEMENT) {
+            result = parser.parseReturnStatement();
+        } else if (type == DlangTypes.SCOPE_GUARD_STATEMENT) {
+            result = parser.parseScopeGuardStatement();
+        } else if (type == DlangTypes.SHIFT_EXPRESSION) {
+            result = parser.parseShiftExpression();
+        } else if (type == DlangTypes.STATEMENT) {
+            result = parser.parseStatement();
+        } else if (type == DlangTypes.STATEMENT_NO_CASE_NO_DEFAULT) {
+            result = parser.parseStatementNoCaseNoDefault();
+        } else if (type == DlangTypes.STATIC_ASSERT_DECLARATION) {
+            result = parser.parseStaticAssertDeclaration();
+        } else if (type == DlangTypes.STATIC_ASSERT_STATEMENT) {
+            result = parser.parseStaticAssertStatement();
+        } else if (type == DlangTypes.STATIC_IF_CONDITION) {
+            result = parser.parseStaticIfCondition();
+        } else if (type == DlangTypes.STORAGE_CLASS) {
+            result = parser.parseStorageClass();
+        } else if (type == DlangTypes.STRUCT_BODY) {
+            result = parser.parseStructBody();
+        } else if (type == DlangTypes.STRUCT_INITIALIZER) {
+            result = parser.parseStructInitializer();
+        } else if (type == DlangTypes.STRUCT_MEMBER_INITIALIZER) {
+            result = parser.parseStructMemberInitializer();
+        } else if (type == DlangTypes.STRUCT_MEMBER_INITIALIZERS) {
+            result = parser.parseStructMemberInitializers();
+        } else if (type == DlangTypes.STRING_LIT) {
+            result = false;
+        } else if (type == DlangTypes.SWITCH_STATEMENT) {
+            result = parser.parseSwitchStatement();
+        } else if (type == DlangTypes.SYMBOL) {
+            result = parser.parseSymbol();
+        } else if (type == DlangTypes.SYNCHRONIZED_STATEMENT) {
+            result = parser.parseSynchronizedStatement();
+        } else if (type == DlangTypes.TEMPLATE_ALIAS_PARAMETER) {
+            result = parser.parseTemplateAliasParameter();
+        } else if (type == DlangTypes.TEMPLATE_ARGUMENT) {
+            result = parser.parseTemplateArgument();
+        } else if (type == DlangTypes.TEMPLATE_ARGUMENT_LIST) {
+            result = parser.parseTemplateArgumentList();
+        } else if (type == DlangTypes.TEMPLATE_ARGUMENTS) {
+            result = parser.parseTemplateArguments();
+        } else if (type == DlangTypes.TEMPLATE_INSTANCE) {
+            result = parser.parseTemplateInstance();
+        } else if (type == DlangTypes.TEMPLATE_MIXIN_EXPRESSION) {
+            result = parser.parseTemplateMixinExpression();
+        } else if (type == DlangTypes.TEMPLATE_PARAMETER_LIST) {
+            result = parser.parseTemplateParameterList();
+        } else if (type == DlangTypes.TEMPLATE_PARAMETERS) {
+            result = parser.parseTemplateParameters();
+        } else if (type == DlangTypes.TEMPLATE_SINGLE_ARGUMENT) {
+            result = parser.parseTemplateSingleArgument();
+        } else if (type == DlangTypes.TEMPLATE_THIS_PARAMETER) {
+            result = parser.parseTemplateThisParameter();
+        } else if (type == DlangTypes.TEMPLATE_TUPLE_PARAMETER) {
+            result = parser.parseTemplateTupleParameter();
+        } else if (type == DlangTypes.TEMPLATE_TYPE_PARAMETER) {
+            result = parser.parseTemplateTypeParameter();
+        } else if (type == DlangTypes.TEMPLATE_VALUE_PARAMETER) {
+            result = parser.parseTemplateValueParameter();
+        } else if (type == DlangTypes.TEMPLATE_VALUE_PARAMETER_DEFAULT) {
+            result = parser.parseTemplateValueParameterDefault();
+        } else if (type == DlangTypes.TERNARY_EXPRESSION) {
+            result = parser.parseTernaryExpression();
+        } else if (type == DlangTypes.THROW_STATEMENT) {
+            result = parser.parseThrowStatement();
+        } else if (type == DlangTypes.TRAITS_EXPRESSION) {
+            result = parser.parseTraitsExpression();
+        } else if (type == DlangTypes.TRY_STATEMENT) {
+            result = parser.parseTryStatement();
+        } else if (type == DlangTypes.TYPE) {
+            result = false;
+        } else if (type == DlangTypes.TYPE_2) {
+            result = parser.parseType2();
+        } else if (type == DlangTypes.TYPE_SPECIALIZATION) {
+            result = parser.parseTypeSpecialization();
+        } else if (type == DlangTypes.TYPE_SUFFIX) {
+            result = parser.parseTypeSuffix();
+        } else if (type == DlangTypes.TYPEID_EXPRESSION) {
+            result = parser.parseTypeidExpression();
+        } else if (type == DlangTypes.TYPEOF_EXPRESSION) {
+            result = parser.parseTypeofExpression();
+        } else if (type == DlangTypes.UNARY_EXPRESSION) {
+            result = parser.parseUnaryExpression();
+        } else if (type == DlangTypes.VARIABLE_DECLARATION) {
+            result = parser.parseVariableDeclaration();
+        } else if (type == DlangTypes.VECTOR) {
+            result = parser.parseVector();
+        } else if (type == DlangTypes.VERSION_CONDITION) {
+            result = parser.parseVersionCondition();
+        } else if (type == DlangTypes.VERSION_SPECIFICATION) {
+            result = parser.parseVersionSpecification();
+        } else if (type == DlangTypes.WHILE_STATEMENT) {
+            result = parser.parseWhileStatement();
+        } else if (type == DlangTypes.WITH_STATEMENT) {
+            result = parser.parseWithStatement();
+        } else if (type == DlangTypes.XOR_EXPRESSION) {
+            result = parser.parseXorExpression();
+        } else if (type == DlangTypes.ADD_EXPRESSION) {
+            result = parser.parseAddExpression();
         } else {
-            r = parser.parseModule();
+            result = parser.parseModule();
         }
-        exit_section_(b, 0, m, t, r, true, TRUE_CONDITION);
+        exit_section_(builder, 0, marker, type, result, true, TRUE_CONDITION);
     }
 
 
