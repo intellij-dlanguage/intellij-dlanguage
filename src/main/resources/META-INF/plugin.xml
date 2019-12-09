@@ -232,52 +232,52 @@
         <!--<analyzeStacktraceFilter implementation="io.github.intellij.dlanguage.unittest.DStackTraceFilter"/>-->
 
         <!--inspections-->
-        <localInspection language="D" shortName="PossiblyUndefinedSymbol" bundle="messages.dlang-messages"
+        <localInspection language="D" shortName="PossiblyUndefinedSymbol" bundle="i18n"
                          enabledByDefault="true" level="WARNING"
                          implementationClass="io.github.intellij.dlanguage.inspections.PossiblyUndefinedSymbol"
-                         groupKey="messages.d.inspection.group.general"
-                         key="messages.d.inspection.possibly_undefined_symbol.name"/>
-        <localInspection bundle="messages.dlang-messages" enabledByDefault="true"
+                         groupKey="d.inspections.groupname"
+                         key="d.inspections.symbol.possiblyundefinedsymbol.displayname"/>
+        <localInspection bundle="i18n" enabledByDefault="true"
                          implementationClass="io.github.intellij.dlanguage.inspections.ImplicitlyConcatenatedStrings"
                          language="D" level="WARNING"
-                         key="messages.d.inspection.implicitly_concatenated_strings.name"
-                         groupKey="messages.d.inspection.group.general"
+                         key="d.inspections.symbol.implicitlyconcatenatedstrings.displayname"
+                         groupKey="d.inspections.groupname"
                          shortName="ImplicitlyConcatenatedStrings"/>
-        <localInspection bundle="messages.dlang-messages" enabledByDefault="true"
+        <localInspection bundle="i18n" enabledByDefault="true"
                          implementationClass="io.github.intellij.dlanguage.inspections.OldAliasSyntax"
                          language="D" level="WARNING"
-                         key="messages.d.inspection.old_alias_syntax.name"
-                         groupKey="messages.d.inspection.group.general"
+                         key="d.inspections.symbol.oldaliassyntax.displayname"
+                         groupKey="d.inspections.groupname"
                          shortName="OldAliasSyntax"/>
-        <localInspection bundle="messages.dlang-messages" enabledByDefault="true"
+        <localInspection bundle="i18n" enabledByDefault="true"
                          implementationClass="io.github.intellij.dlanguage.inspections.EmptyStatement"
                          language="D" level="WARNING"
-                         key="messages.d.inspection.empty_statement.name"
-                         groupKey="messages.d.inspection.group.general"
+                         key="d.inspections.symbol.emptystatement.displayname"
+                         groupKey="d.inspections.groupname"
                          shortName="EmptyStatement"/>
-        <localInspection bundle="messages.dlang-messages" enabledByDefault="true"
+        <localInspection bundle="i18n" enabledByDefault="true"
                          implementationClass="io.github.intellij.dlanguage.inspections.DeleteStatementsAreDeprecated"
                          language="D" level="WARNING"
-                         key="messages.d.inspection.delete_statements_are_deprecated.name"
-                         groupKey="messages.d.inspection.group.general"
+                         key="d.inspections.symbol.deletestatementsaredeprecated.displayname"
+                         groupKey="d.inspections.groupname"
                          shortName="DeleteStatementsAreDeprecated"/>
-        <localInspection bundle="messages.dlang-messages" enabledByDefault="true"
+        <localInspection bundle="i18n" enabledByDefault="true"
                          implementationClass="io.github.intellij.dlanguage.inspections.FunctionShouldBeConst"
                          language="D" level="WARNING"
-                         key="messages.d.inspection.function_should_be_const.name"
-                         groupKey="messages.d.inspection.group.general"
+                         key="d.inspections.symbol.functionshouldbeconst.displayname"
+                         groupKey="d.inspections.groupname"
                          shortName="FunctionShouldBeConst"/>
-        <localInspection bundle="messages.dlang-messages" enabledByDefault="true"
+        <localInspection bundle="i18n" enabledByDefault="true"
                          implementationClass="io.github.intellij.dlanguage.inspections.AutoFunctionWithoutReturn"
                          language="D" level="WARNING"
-                         key="messages.d.inspection.auto_function_without_return.name"
-                         groupKey="messages.d.inspection.group.general"
+                         key="d.inspections.symbol.autofunctionwithoutreturn.displayname"
+                         groupKey="d.inspections.groupname"
                          shortName="AutoFunctionWithoutReturn"/>
-        <localInspection bundle="messages.dlang-messages" enabledByDefault="true"
+        <localInspection bundle="i18n" enabledByDefault="true"
                          implementationClass="io.github.intellij.dlanguage.inspections.BuiltinPropertyName"
                          language="D" level="WARNING"
-                         key="messages.d.inspection.builtin_property_name.name"
-                         groupKey="messages.d.inspection.group.general"
+                         key="d.inspections.symbol.builtinpropertyname.displayname"
+                         groupKey="d.inspections.groupname"
                          shortName="BuiltinPropertyName"/>
 
         <!--debugger-->

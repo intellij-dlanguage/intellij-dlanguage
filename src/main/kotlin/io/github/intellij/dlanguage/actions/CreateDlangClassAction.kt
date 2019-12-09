@@ -8,6 +8,8 @@ import com.intellij.ide.fileTemplates.FileTemplate
 import com.intellij.ide.fileTemplates.FileTemplateManager
 import com.intellij.ide.fileTemplates.FileTemplateUtil
 import com.intellij.ide.util.PropertiesComponent
+import com.intellij.openapi.actionSystem.CommonDataKeys
+import com.intellij.openapi.actionSystem.DataContext
 import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
@@ -85,15 +87,29 @@ class CreateDlangClassAction : CreateFileFromTemplateAction(NEW_D_FILE, "", Dlan
         return element.containingFile
     }
 
+    override fun getActionName(directory: PsiDirectory, newName: String, templateName: String): String {
+        return NEW_D_FILE
+    }
+
+    override fun isAvailable(dataContext: DataContext): Boolean {
+        if (super.isAvailable(dataContext)) {
+            val project = CommonDataKeys.PROJECT.getData(dataContext);
+            val dirContext = CommonDataKeys.VIRTUAL_FILE.getData(dataContext);
+
+            project ?: return false;
+            dirContext ?: return false;
+
+            return ProjectRootManager.getInstance(project).contentSourceRoots.find { dirContext.path.startsWith(it.path) } != null;
+        }
+
+        return false;
+    }
+
     private fun findSourceRootOrDefault(inRequestedDirectory: PsiDirectory, defaultSourceRoot: VirtualFile): VirtualFile {
         return ProjectRootManager.getInstance(inRequestedDirectory.project)
             .contentSourceRoots
             .find { inRequestedDirectory.virtualFile.path.startsWith(it.path) }
             ?: defaultSourceRoot
-    }
-
-    override fun getActionName(directory: PsiDirectory, newName: String, templateName: String): String {
-        return NEW_D_FILE
     }
 
     inner class ClassNameValidator : InputValidatorEx {

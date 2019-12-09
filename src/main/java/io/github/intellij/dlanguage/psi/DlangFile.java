@@ -12,12 +12,14 @@ import io.github.intellij.dlanguage.DlangFileType;
 import io.github.intellij.dlanguage.psi.named.DLanguageModuleDeclaration;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil;
 import io.github.intellij.dlanguage.stubs.DlangFileStub;
-import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.util.Optional;
+
+import static org.apache.commons.lang3.StringUtils.removeEnd;
 
 public class DlangFile extends PsiFileBase {
 
@@ -45,20 +47,12 @@ public class DlangFile extends PsiFileBase {
      * Returns the module name defined in the file or null if it doesn't exist.
      */
     @Nullable
-    public String getModuleName() {
-        final DLanguageModuleDeclaration module = findChildByClass(DLanguageModuleDeclaration.class);
-
-        if (module == null) {
-            return null;
-        }
-
-        String[] segments = module.getText()
-                            .substring(6, module.getTextLength() - 1)
-                            .split("\\.");
-
-        return Optional.of(segments)
-                       .filter(ArrayUtils::isEmpty)
-                       .map(sc -> sc[segments.length - 1])
+    public String getFullyQualifiedModuleName() {
+        return Optional.ofNullable(findChildByClass(DLanguageModuleDeclaration.class))
+                       .map(DLanguageModuleDeclaration::getIdentifierChain)
+                       .map(DLanguageIdentifierChain::getIdentifiers)
+                       .map(identifiers -> identifiers.get(identifiers.size() - 1))
+                       .map(PsiElement::getText)
                        .orElse(null);
     }
 
@@ -69,15 +63,14 @@ public class DlangFile extends PsiFileBase {
      * (file name without extension).
      */
     @NotNull
-    public String getUnqualifiedModuleName() {
-        final String fullModuleName = getModuleName();
-        final String moduleName;
-        if (fullModuleName != null) {
-            moduleName = fullModuleName.substring(fullModuleName.lastIndexOf('.') + 1);
-        } else {
-            moduleName = getVirtualFile().getNameWithoutExtension();
-        }
-        return moduleName;
+    public String getModuleName() {
+        return Optional.ofNullable(findChildByClass(DLanguageModuleDeclaration.class))
+                       .map(DLanguageModuleDeclaration::getIdentifierChain)
+                       .map(DLanguageIdentifierChain::getIdentifiers)
+                       .filter(list -> !list.isEmpty())
+                       .map(identifiers -> identifiers.get(identifiers.size() - 1))
+                       .map(PsiElement::getText)
+                       .orElseGet(() -> StringUtils.removeEnd(this.getName(), ".d"));
     }
 
     /**
@@ -85,8 +78,8 @@ public class DlangFile extends PsiFileBase {
      */
     @NotNull
     public String getModuleOrFileName() {
-        final String moduleName = getModuleName();
-        return moduleName == null ? super.getName() : moduleName;
+        return Optional.ofNullable(this.getFullyQualifiedModuleName())
+                       .orElseGet(this::getName);
     }
 
     /**
@@ -116,26 +109,15 @@ public class DlangFile extends PsiFileBase {
         return toContinue;
     }
 
-    @NotNull
-    @Override
-    public String getName() {
-        return getModuleOrFileName();
-    }
-
     @Override
     public PsiElement setName(@NotNull final String name) throws IncorrectOperationException {
-        final DLanguageModuleDeclaration module = findChildByClass(
-            DLanguageModuleDeclaration.class);
-        final String nameWithoutDotD;
-        if (name.endsWith(".d")) {
-            nameWithoutDotD = name.substring(0, name.length() - 2);
-        } else {
-            nameWithoutDotD = name;
-        }
+        final DLanguageModuleDeclaration module = findChildByClass(DLanguageModuleDeclaration.class);
+        final String extensionLessName = removeEnd(name, ".d");
+
         if (module != null) {
-            module.setName(nameWithoutDotD);
+            module.setName(extensionLessName);
         }
-        return super.setName(nameWithoutDotD + ".d");
+        return super.setName(extensionLessName + ".d");
 
     }
 }

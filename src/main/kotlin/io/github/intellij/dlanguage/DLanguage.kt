@@ -4,10 +4,8 @@ import com.intellij.codeInsight.daemon.ProjectSdkSetupValidator
 import com.intellij.lang.ASTNode
 import com.intellij.lang.Language
 import com.intellij.lang.ParserDefinition
-import com.intellij.lang.PsiParser
 import com.intellij.lexer.FlexAdapter
 import com.intellij.lexer.Lexer
-import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.DumbService
 import com.intellij.openapi.project.IndexNotReadyException
@@ -20,7 +18,7 @@ import com.intellij.psi.FileViewProvider
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.TokenType
-import com.intellij.psi.search.GlobalSearchScope.*
+import com.intellij.psi.search.GlobalSearchScope.allScope
 import com.intellij.psi.tree.TokenSet
 import com.intellij.psi.tree.TokenSet.create
 import io.github.intellij.dlanguage.dlanguage.DlangLexer
@@ -116,7 +114,7 @@ class DLangParserDefinition : ParserDefinition {
     val COMMENTS: TokenSet = create(DlangTypes.LINE_COMMENT, DlangTypes.BLOCK_COMMENT, DlangTypes.NESTING_BLOCK_COMMENT)
 
     @NotNull
-    override fun createParser(project: Project?): PsiParser = ParserWrapper()
+    override fun createParser(project: Project?): ParserWrapper = ParserWrapper()
 
     override fun createFile(viewProvider: FileViewProvider): PsiFile? = DlangFile(viewProvider)
 

@@ -96,7 +96,7 @@ public class DModuleIndex extends ScalarIndexExtension<String> {
             final PsiFile psiFile = inputData.getPsiFile();
             String moduleName;
             if (psiFile instanceof DlangFile) {
-                moduleName = ((DlangFile) psiFile).getModuleName();
+                moduleName = ((DlangFile) psiFile).getFullyQualifiedModuleName();
                 if (moduleName == null)
                     moduleName = psiFile.getName().replace(".d", "");
             } else {
