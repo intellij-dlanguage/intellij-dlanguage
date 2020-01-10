@@ -12,12 +12,16 @@ import io.github.intellij.dlanguage.DlangFileType;
 import io.github.intellij.dlanguage.psi.named.DLanguageModuleDeclaration;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil;
 import io.github.intellij.dlanguage.stubs.DlangFileStub;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.util.Collection;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.apache.commons.lang3.StringUtils.removeEnd;
 
@@ -51,9 +55,11 @@ public class DlangFile extends PsiFileBase {
         return Optional.ofNullable(findChildByClass(DLanguageModuleDeclaration.class))
                        .map(DLanguageModuleDeclaration::getIdentifierChain)
                        .map(DLanguageIdentifierChain::getIdentifiers)
-                       .map(identifiers -> identifiers.get(identifiers.size() - 1))
+                       .filter(CollectionUtils::isNotEmpty)
+                       .map(Collection::stream)
+                       .orElse(Stream.empty())
                        .map(PsiElement::getText)
-                       .orElse(null);
+                       .collect(Collectors.joining("."));
     }
 
     /**
@@ -117,7 +123,7 @@ public class DlangFile extends PsiFileBase {
         if (module != null) {
             module.setName(extensionLessName);
         }
-        return super.setName(extensionLessName + ".d");
 
+        return super.setName(extensionLessName + ".d");
     }
 }
