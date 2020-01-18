@@ -2,23 +2,28 @@ package io.github.intellij.dlanguage.psi;
 
 import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.openapi.fileTypes.FileType;
-import com.intellij.openapi.util.Key;
 import com.intellij.psi.FileViewProvider;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
-import com.intellij.psi.stubs.StubElement;
 import com.intellij.util.IncorrectOperationException;
 import io.github.intellij.dlanguage.DLanguage;
 import io.github.intellij.dlanguage.DlangFileType;
-import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
 import io.github.intellij.dlanguage.psi.named.DLanguageModuleDeclaration;
-import io.github.intellij.dlanguage.psi.named.DlangFunctionDeclaration;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil;
 import io.github.intellij.dlanguage.stubs.DlangFileStub;
-import javax.swing.Icon;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import javax.swing.*;
+import java.util.Collection;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static org.apache.commons.lang3.StringUtils.removeEnd;
 
 public class DlangFile extends PsiFileBase {
 
@@ -46,12 +51,15 @@ public class DlangFile extends PsiFileBase {
      * Returns the module name defined in the file or null if it doesn't exist.
      */
     @Nullable
-    public String getModuleName() {
-        final DLanguageModuleDeclaration module = findChildByClass(DLanguageModuleDeclaration.class);
-        if (module == null) {
-            return null;
-        }
-        return module.getText().replaceAll(";", "").replaceAll("^module\\s+", "");
+    public String getFullyQualifiedModuleName() {
+        return Optional.ofNullable(findChildByClass(DLanguageModuleDeclaration.class))
+                       .map(DLanguageModuleDeclaration::getIdentifierChain)
+                       .map(DLanguageIdentifierChain::getIdentifiers)
+                       .filter(CollectionUtils::isNotEmpty)
+                       .map(Collection::stream)
+                       .orElse(Stream.empty())
+                       .map(PsiElement::getText)
+                       .collect(Collectors.joining("."));
     }
 
     /**
@@ -61,15 +69,14 @@ public class DlangFile extends PsiFileBase {
      * (file name without extension).
      */
     @NotNull
-    public String getUnqualifiedModuleName() {
-        final String fullModuleName = getModuleName();
-        final String moduleName;
-        if (fullModuleName != null) {
-            moduleName = fullModuleName.substring(fullModuleName.lastIndexOf('.') + 1);
-        } else {
-            moduleName = getVirtualFile().getNameWithoutExtension();
-        }
-        return moduleName;
+    public String getModuleName() {
+        return Optional.ofNullable(findChildByClass(DLanguageModuleDeclaration.class))
+                       .map(DLanguageModuleDeclaration::getIdentifierChain)
+                       .map(DLanguageIdentifierChain::getIdentifiers)
+                       .filter(list -> !list.isEmpty())
+                       .map(identifiers -> identifiers.get(identifiers.size() - 1))
+                       .map(PsiElement::getText)
+                       .orElseGet(() -> StringUtils.removeEnd(this.getName(), ".d"));
     }
 
     /**
@@ -77,8 +84,8 @@ public class DlangFile extends PsiFileBase {
      */
     @NotNull
     public String getModuleOrFileName() {
-        final String moduleName = getModuleName();
-        return moduleName == null ? super.getName() : moduleName;
+        return Optional.ofNullable(this.getFullyQualifiedModuleName())
+                       .orElseGet(this::getName);
     }
 
     /**
@@ -87,9 +94,7 @@ public class DlangFile extends PsiFileBase {
     @Nullable
     @Override
     public DlangFileStub getStub() {
-        final StubElement stub = super.getStub();
-        if (stub == null) return null;
-        return (DlangFileStub) stub;
+        return (DlangFileStub) super.getStub();
     }
 
     @Override
@@ -110,57 +115,15 @@ public class DlangFile extends PsiFileBase {
         return toContinue;
     }
 
-    public DlangFunctionDeclaration getMainFunction() {
-        final DlangFunctionDeclaration[] res = new DlangFunctionDeclaration[1];
-        PsiScopeProcessor mainFunctionProcessor = new PsiScopeProcessor() {
-
-            @Override
-            public boolean execute(@NotNull PsiElement element, @NotNull ResolveState state) {
-                if (element instanceof DlangFunctionDeclaration) {
-                    if (((DNamedElement) element).getName().equals("main")) {
-                        res[0] = (DlangFunctionDeclaration) element;
-                        return false;
-                    }
-                }
-                return true;
-            }
-
-            @Nullable
-            @Override
-            public <T> T getHint(@NotNull Key<T> hintKey) {
-                return null;
-            }
-
-            @Override
-            public void handleEvent(@NotNull Event event, @Nullable Object associated) {
-
-            }
-        };
-        this.processDeclarations(mainFunctionProcessor, ResolveState.initial(), null, this);
-        return res[0];
-
-    }
-
-    @NotNull
-    @Override
-    public String getName() {
-        return getModuleOrFileName();
-    }
-
     @Override
     public PsiElement setName(@NotNull final String name) throws IncorrectOperationException {
-        final DLanguageModuleDeclaration module = findChildByClass(
-            DLanguageModuleDeclaration.class);
-        final String nameWithoutDotD;
-        if (name.endsWith(".d")) {
-            nameWithoutDotD = name.substring(0, name.length() - 2);
-        } else {
-            nameWithoutDotD = name;
-        }
-        if (module != null) {
-            module.setName(nameWithoutDotD);
-        }
-        return super.setName(nameWithoutDotD + ".d");
+        final DLanguageModuleDeclaration module = findChildByClass(DLanguageModuleDeclaration.class);
+        final String extensionLessName = removeEnd(name, ".d");
 
+        if (module != null) {
+            module.setName(extensionLessName);
+        }
+
+        return super.setName(extensionLessName + ".d");
     }
 }

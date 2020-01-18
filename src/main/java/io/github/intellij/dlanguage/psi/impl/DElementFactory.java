@@ -1,12 +1,9 @@
 package io.github.intellij.dlanguage.psi.impl;
 
-import static com.intellij.psi.util.PsiTreeUtil.findChildOfType;
-
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiFileFactory;
-import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.DLanguage;
 import io.github.intellij.dlanguage.psi.DLanguageAliasDeclaration;
 import io.github.intellij.dlanguage.psi.DLanguageImportDeclaration;
@@ -15,6 +12,8 @@ import io.github.intellij.dlanguage.psi.named.DLanguageModuleDeclaration;
 import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import static com.intellij.psi.util.PsiTreeUtil.findChildOfType;
 
 /**
  * Performs creation of element types.
@@ -51,7 +50,7 @@ public class DElementFactory {
      */
     @NotNull
     private static DlangFile createFileFromText(@NotNull final Project project,
-        @NotNull final String text) {
+                                                @NotNull final String text) {
         return (DlangFile) PsiFileFactory.getInstance(project)
             .createFileFromText("A.hs", DLanguage.INSTANCE, text);
     }
@@ -79,8 +78,8 @@ public class DElementFactory {
     public static DLanguageAliasDeclaration createAliasDeclarationFromText(final Project project,
         final String text) {
         final PsiFile fileFromText = PsiFileFactory.getInstance(project)
-            .createFileFromText("A.d", DLanguage.INSTANCE, text);
-        return PsiTreeUtil.findChildOfType(fileFromText, DLanguageAliasDeclaration.class);
+                                                   .createFileFromText("A.d", DLanguage.INSTANCE, text);
+        return findChildOfType(fileFromText, DLanguageAliasDeclaration.class);
     }
 }
 

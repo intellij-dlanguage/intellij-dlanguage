@@ -1,0 +1,5 @@
+module ${DLANGUAGE_MODULE_NAME};
+
+class ${DLANGUAGE_CLASS_NAME} {
+
+}

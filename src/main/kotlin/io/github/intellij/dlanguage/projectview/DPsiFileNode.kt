@@ -25,7 +25,7 @@ class DPsiFileNode(project: Project?, dFilePsi: DlangFile, viewSettings: ViewSet
             if (fileName == "package") {
                 data.addText("package.${filePsi.virtualFile.extension}", SimpleTextAttributes.REGULAR_ATTRIBUTES)
             } else {
-                val presentableModuleName = filePsi.unqualifiedModuleName
+                val presentableModuleName = filePsi.moduleName
                 val presentableFileName: String? =
                     if (fileName != presentableModuleName) {
                         "$fileName.${filePsi.virtualFile.extension}"
@@ -60,7 +60,7 @@ class DPsiFileNode(project: Project?, dFilePsi: DlangFile, viewSettings: ViewSet
 
     private class TypeSortKey(node: DPsiFileNode) : Comparable<TypeSortKey>
     {
-        private val unqualifiedModuleName = node.value.unqualifiedModuleName
+        private val unqualifiedModuleName = node.value.moduleName
 
         override fun compareTo(other: TypeSortKey) = unqualifiedModuleName.compareTo(other.unqualifiedModuleName)
     }

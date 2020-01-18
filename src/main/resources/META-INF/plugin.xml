@@ -119,7 +119,7 @@
 
         <!-- D Language support -->
         <sdkType implementation="io.github.intellij.dlanguage.DlangSdkType"/>
-        <projectSdkSetupValidator implementation="io.github.intellij.dlanguage.DLangProjectDmdSetupValidator" />
+        <projectSdkSetupValidator implementation="io.github.intellij.dlanguage.DLangProjectDmdSetupValidator"/>
         <runConfigurationProducer implementation="io.github.intellij.dlanguage.run.DlangRunDubConfigurationProducer"/>
 
         <!-- module -->
@@ -232,37 +232,53 @@
         <!--<analyzeStacktraceFilter implementation="io.github.intellij.dlanguage.unittest.DStackTraceFilter"/>-->
 
         <!--inspections-->
-        <localInspection language="D" shortName="PossiblyUndefinedSymbol" bundle="messages.PropertiesBundle"
+        <localInspection language="D" shortName="PossiblyUndefinedSymbol" bundle="i18n"
                          enabledByDefault="true" level="WARNING"
-                         implementationClass="io.github.intellij.dlanguage.inspections.PossiblyUndefinedSymbol"/>
-        <localInspection bundle="messages.PropertiesBundle" enabledByDefault="true"
-            implementationClass="io.github.intellij.dlanguage.inspections.ImplicitlyConcatenatedStrings"
-            language="D" level="WARNING"
-            shortName="ImplicitlyConcatenatedStrings"/>
-        <localInspection bundle="messages.PropertiesBundle" enabledByDefault="true"
-            implementationClass="io.github.intellij.dlanguage.inspections.OldAliasSyntax"
-            language="D" level="WARNING"
-            shortName="OldAliasSyntax"/>
-        <localInspection bundle="messages.PropertiesBundle" enabledByDefault="true"
-            implementationClass="io.github.intellij.dlanguage.inspections.EmptyStatement"
-            language="D" level="WARNING"
-            shortName="EmptyStatement"/>
-        <localInspection bundle="messages.PropertiesBundle" enabledByDefault="true"
-            implementationClass="io.github.intellij.dlanguage.inspections.DeleteStatementsAreDeprecated"
-            language="D" level="WARNING"
-            shortName="DeleteStatementsAreDeprecated"/>
-        <localInspection bundle="messages.PropertiesBundle" enabledByDefault="true"
-            implementationClass="io.github.intellij.dlanguage.inspections.FunctionShouldBeConst"
-            language="D" level="WARNING"
-            shortName="FunctionShouldBeConst"/>
-        <localInspection bundle="messages.PropertiesBundle" enabledByDefault="true"
-            implementationClass="io.github.intellij.dlanguage.inspections.AutoFunctionWithoutReturn"
-            language="D" level="WARNING"
-            shortName="AutoFunctionWithoutReturn"/>
-        <localInspection bundle="messages.PropertiesBundle" enabledByDefault="true"
-            implementationClass="io.github.intellij.dlanguage.inspections.BuiltinPropertyName"
-            language="D" level="WARNING"
-            shortName="BuiltinPropertyName"/>
+                         implementationClass="io.github.intellij.dlanguage.inspections.PossiblyUndefinedSymbol"
+                         groupKey="d.inspections.groupname"
+                         key="d.inspections.symbol.possiblyundefinedsymbol.displayname"/>
+        <localInspection bundle="i18n" enabledByDefault="true"
+                         implementationClass="io.github.intellij.dlanguage.inspections.ImplicitlyConcatenatedStrings"
+                         language="D" level="WARNING"
+                         key="d.inspections.symbol.implicitlyconcatenatedstrings.displayname"
+                         groupKey="d.inspections.groupname"
+                         shortName="ImplicitlyConcatenatedStrings"/>
+        <localInspection bundle="i18n" enabledByDefault="true"
+                         implementationClass="io.github.intellij.dlanguage.inspections.OldAliasSyntax"
+                         language="D" level="WARNING"
+                         key="d.inspections.symbol.oldaliassyntax.displayname"
+                         groupKey="d.inspections.groupname"
+                         shortName="OldAliasSyntax"/>
+        <localInspection bundle="i18n" enabledByDefault="true"
+                         implementationClass="io.github.intellij.dlanguage.inspections.EmptyStatement"
+                         language="D" level="WARNING"
+                         key="d.inspections.symbol.emptystatement.displayname"
+                         groupKey="d.inspections.groupname"
+                         shortName="EmptyStatement"/>
+        <localInspection bundle="i18n" enabledByDefault="true"
+                         implementationClass="io.github.intellij.dlanguage.inspections.DeleteStatementsAreDeprecated"
+                         language="D" level="WARNING"
+                         key="d.inspections.symbol.deletestatementsaredeprecated.displayname"
+                         groupKey="d.inspections.groupname"
+                         shortName="DeleteStatementsAreDeprecated"/>
+        <localInspection bundle="i18n" enabledByDefault="true"
+                         implementationClass="io.github.intellij.dlanguage.inspections.FunctionShouldBeConst"
+                         language="D" level="WARNING"
+                         key="d.inspections.symbol.functionshouldbeconst.displayname"
+                         groupKey="d.inspections.groupname"
+                         shortName="FunctionShouldBeConst"/>
+        <localInspection bundle="i18n" enabledByDefault="true"
+                         implementationClass="io.github.intellij.dlanguage.inspections.AutoFunctionWithoutReturn"
+                         language="D" level="WARNING"
+                         key="d.inspections.symbol.autofunctionwithoutreturn.displayname"
+                         groupKey="d.inspections.groupname"
+                         shortName="AutoFunctionWithoutReturn"/>
+        <localInspection bundle="i18n" enabledByDefault="true"
+                         implementationClass="io.github.intellij.dlanguage.inspections.BuiltinPropertyName"
+                         language="D" level="WARNING"
+                         key="d.inspections.symbol.builtinpropertyname.displayname"
+                         groupKey="d.inspections.groupname"
+                         shortName="BuiltinPropertyName"/>
 
         <!--debugger-->
         <!--<configurationType implementation="uk.co.cwspencer.ideagdb.run.GoGdbRunConfigurationType"/>-->
@@ -286,28 +302,24 @@
                 text="D Class" description="Create new D Class">
             <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFile"/>
         </action>
-        <action id="DLanguage.NewDLanguageFile" class="io.github.intellij.dlanguage.actions.CreateDlangFileAction"
-                text="D File" description="Create new D file">
-            <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFile"/>
-        </action>
         <action id="DLanguage.DFormat"
                 class="io.github.intellij.dlanguage.actions.DFormatAction"
-                text="Reformat code with DFormat"
+                text="Reformat Code with DFormat"
                 description="Format current file with DFormat formatter">
             <add-to-group group-id="CodeFormatGroup" anchor="last"/>
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt K"/>
         </action>
         <action id="DLanguage.DFix"
                 class="io.github.intellij.dlanguage.actions.DFixAction"
-                text="Fix D code with DFix"
+                text="Fix D Code with DFix"
                 description="Fix current file with DFix">
             <add-to-group group-id="CodeFormatGroup" anchor="last"/>
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt M"/>
         </action>
         <action id="io.github.intellij.dlanguage.RestartDCD" class="io.github.intellij.dlanguage.actions.RestartDCD"
-                   text="Restart DCD Server" description="Restarts the DCD server">
-             <add-to-group group-id="ToolsMenu" anchor="last"/>
-           </action>
+                text="Restart DCD Server" description="Restarts the DCD server">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
         <action id="io.github.intellij.dlanguage.ProcessDLibs" class="io.github.intellij.dlanguage.actions.ProcessDLibs"
                 text="Process D Libraries" description="Processes the D Libraries">
             <add-to-group group-id="ToolsMenu" anchor="last"/>
@@ -317,7 +329,6 @@
     <module-components>
         <component>
             <implementation-class>io.github.intellij.dlanguage.codeinsight.dcd.DCDCompletionServer</implementation-class>
-            <interface-class>io.github.intellij.dlanguage.codeinsight.dcd.DCDCompletionServer</interface-class>
         </component>
     </module-components>
 
