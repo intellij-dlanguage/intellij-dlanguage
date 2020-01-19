@@ -1,7 +1,7 @@
 package io.github.intellij.dlanguage.jps.model;
 
 
-import com.intellij.util.xmlb.SkipDefaultsSerializationFilter;
+import com.intellij.util.xmlb.SkipDefaultValuesSerializationFilters;
 import com.intellij.util.xmlb.XmlSerializer;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
@@ -76,7 +76,7 @@ public class JpsDLanguageModelSerializerExtension extends JpsModelSerializerExte
 
             @Override
             protected void saveExtension(final JpsDLanguageModuleExtension extension, final Element facetConfigurationTag, final JpsModule module) {
-                XmlSerializer.serializeInto(extension.getProperties(), facetConfigurationTag, new SkipDefaultsSerializationFilter()); // todo: don't use SkipDefaultsSerializationFilter either
+                XmlSerializer.serializeInto(extension.getProperties(), facetConfigurationTag, new SkipDefaultValuesSerializationFilters());
             }
         });
     }
