@@ -41,7 +41,7 @@ class SentryErrorHandler : ErrorReportSubmitter() {
     override fun submit(events: Array<out IdeaLoggingEvent>, additionalInfo: String?, parentComponent: Component, consumer: Consumer<SubmittedReportInfo>): Boolean {
         events.forEach { e ->
             IdeaInformationProxy.getKeyValuePairs(
-                e.throwable,
+                e.throwable?.cause ?: e.throwable,
                 IdeaLogger.ourLastActionId,
                 ApplicationManager.getApplication(),
                 ApplicationInfo.getInstance() as ApplicationInfoEx,
