@@ -123,7 +123,6 @@
         <runConfigurationProducer implementation="io.github.intellij.dlanguage.run.DlangRunDubConfigurationProducer"/>
 
         <!-- module -->
-        <internalFileTemplate name="D Language Module"/>
         <moduleType id="DLANGUAGE_MODULE" implementationClass="io.github.intellij.dlanguage.module.DlangModuleType"/>
 
 
