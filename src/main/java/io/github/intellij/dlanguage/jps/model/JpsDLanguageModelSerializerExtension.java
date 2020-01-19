@@ -1,7 +1,7 @@
 package io.github.intellij.dlanguage.jps.model;
 
 
-import com.intellij.util.xmlb.SkipDefaultValuesSerializationFilters;
+import com.intellij.util.xmlb.SkipDefaultsSerializationFilter;
 import com.intellij.util.xmlb.XmlSerializer;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
@@ -70,13 +70,13 @@ public class JpsDLanguageModelSerializerExtension extends JpsModelSerializerExte
         return Collections.singletonList(new JpsFacetConfigurationSerializer<JpsDLanguageModuleExtension>(JpsDLanguageModuleExtension.ROLE, DLanguageFacetConstants.ID, DLanguageFacetConstants.NAME) {
             @Override
             protected JpsDLanguageModuleExtension loadExtension(@NotNull final Element facetConfigurationElement, final String name, final JpsElement parent, final JpsModule module) {
-                final DLanguageModuleExtensionProperties props = XmlSerializer.deserialize(facetConfigurationElement, DLanguageModuleExtensionProperties.class);
-                return new JpsDLanguageModuleExtension(props == null ? new DLanguageModuleExtensionProperties() : props);
+                @NotNull final DLanguageModuleExtensionProperties props = XmlSerializer.deserialize(facetConfigurationElement, DLanguageModuleExtensionProperties.class);
+                return new JpsDLanguageModuleExtension(props);
             }
 
             @Override
             protected void saveExtension(final JpsDLanguageModuleExtension extension, final Element facetConfigurationTag, final JpsModule module) {
-                XmlSerializer.serializeInto(extension.getProperties(), facetConfigurationTag, new SkipDefaultValuesSerializationFilters());
+                XmlSerializer.serializeInto(extension.getProperties(), facetConfigurationTag, new SkipDefaultsSerializationFilter()); // todo: don't use SkipDefaultsSerializationFilter either
             }
         });
     }
