@@ -125,9 +125,9 @@ intellij {
     updateSinceUntilBuild false
     // uncomment to test/run/debug the plugin with another IDE such as CLion or AppCode
     //alternativeIdePath '<path to>/CLion.app'
-    //alternativeIdePath 'C:\\Users\\USERNAME\\AppData\\Local\\JetBrains\\Toolbox\\apps\\CLion\\ch-0\\192.6262.62'
-    //alternativeIdePath "$System.env.HOME/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/192.6262.62"
-    //alternativeIdePath "$System.env.HOME/.local/share/JetBrains/Toolbox/apps/Rider/ch-0/183.5619.41"
+    //alternativeIdePath 'C:\\Users\\USERNAME\\AppData\\Local\\JetBrains\\Toolbox\\apps\\CLion\\ch-0\\193.5662.56'
+    //alternativeIdePath "$System.env.HOME/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/193.5662.56"
+    //alternativeIdePath "$System.env.HOME/.local/share/JetBrains/Toolbox/apps/Rider/ch-0/193.5662.14"
 
     //runIde {
     //jbrVersion null
