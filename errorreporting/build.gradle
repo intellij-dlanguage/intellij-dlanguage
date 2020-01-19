@@ -2,6 +2,11 @@ plugins {
     id 'java'
 }
 
+compileJava   {
+  sourceCompatibility = '1.8'
+  targetCompatibility = '1.8'
+}
+
 repositories {
     mavenCentral()
 //    maven { url 'https://jetbrains.bintray.com/intellij-third-party-dependencies' }
