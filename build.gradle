@@ -141,15 +141,6 @@ intellij {
 }
 
 
-grammarKit {
-    // version of IntelliJ patched JFlex (see bintray link below), Default is 1.7.0-1
-    // https://bintray.com/jetbrains/intellij-third-party-dependencies/jflex
-    jflexRelease = '1.7.0-1'
-
-    // tag or short commit hash of Grammar-Kit to use (see link below). Default is 2019.1.1
-    grammarKitRelease = '2019.1.1' // needs bumping to 2019.3 soon
-}
-
 task generateSyntaxLexer(type : GenerateLexer) {
     // source flex file
     source 'src/main/jflex/io/github/intellij/dlanguage/lexer/DLanguageLexer.flex'
