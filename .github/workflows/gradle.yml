@@ -5,11 +5,12 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: Test IDEA ${{ matrix.idea }} with JDK ${{ matrix.jdk }}
+    name: IDEA ${{ matrix.idea }} & JDK ${{ matrix.jdk }}
     strategy:
+      fail-fast: false
       matrix:
         idea: ['2019.3', '2019.3.1']
-        jdk: [ '1.8', '11' ]
+        jdk: [ '1.8' ]
         #os: [ubuntu-latest, windows-latest, macOS-latest]
 
     steps:
@@ -18,9 +19,13 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: ${{ matrix.jdk }}
-    - name: Build with Gradle
+
+    - name: build & check
       env:
         ORG_GRADLE_PROJECT_ideaVersion: ${{ matrix.idea }}
-      run: |
-        ./gradlew buildPlugin
-        ./gradlew build check
+      run: ./gradlew build check
+
+    - name: buildPlugin
+      env:
+        ORG_GRADLE_PROJECT_ideaVersion: ${{ matrix.idea }}
+      run: ./gradlew buildPlugin
