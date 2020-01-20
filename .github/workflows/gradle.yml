@@ -8,8 +8,8 @@ jobs:
     name: Test IDEA ${{ matrix.idea }} with JDK ${{ matrix.jdk }}
     strategy:
       matrix:
-        idea: ['2019.2', '2019.2.4', '2019.3']
-        jdk: [ '1.8' ]
+        idea: ['2019.3', '2019.3.1']
+        jdk: [ '1.8', '11' ]
         #os: [ubuntu-latest, windows-latest, macOS-latest]
 
     steps:
@@ -23,4 +23,4 @@ jobs:
         ORG_GRADLE_PROJECT_ideaVersion: ${{ matrix.idea }}
       run: |
         ./gradlew buildPlugin
-        ./gradlew check
+        ./gradlew build check
