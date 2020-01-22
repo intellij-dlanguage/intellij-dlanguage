@@ -65,10 +65,11 @@ class SentryErrorHandler : ErrorReportSubmitter() {
 class DlangSentryClientFactory(pluginDescriptor: PluginDescriptor?) : DefaultSentryClientFactory() {
 
     private val plugin = PluginManager.getPlugin(pluginDescriptor?.pluginId)
+    private val version = plugin?.version ?: ""
     private val appInfo = ApplicationInfo.getInstance() as ApplicationInfoEx
     private val namesInfo = ApplicationNamesInfo.getInstance()
 
-    override fun getRelease(dsn: Dsn?): String = plugin?.version ?: ""
+    override fun getRelease(dsn: Dsn?): String = version
 
     override fun getEnvironment(dsn: Dsn?): String = namesInfo.productName
 
@@ -77,6 +78,7 @@ class DlangSentryClientFactory(pluginDescriptor: PluginDescriptor?) : DefaultSen
     //override fun getDist(dsn: Dsn?): String = ""
 
     override fun getTags(dsn: Dsn?): MutableMap<String, String> = mutableMapOf(
+        "Version" to version,
         "OS Name" to SystemInfo.OS_NAME,
         "Java version" to SystemInfo.JAVA_VERSION,
         "Java vendor" to SystemInfo.JAVA_VENDOR,
