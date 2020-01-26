@@ -8598,7 +8598,7 @@ class DLangParser {
     /**
      * Returns: the _previous token
      */
-    Token previous() {
+    private Token previous() {
         return tokens[index - 1];
     }
 
