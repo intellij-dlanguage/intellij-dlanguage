@@ -7,7 +7,6 @@ import com.intellij.psi.tree.IElementType;
 import io.github.intellij.dlanguage.parser.Token.IdType;
 import kotlin.jvm.internal.Ref;
 import io.github.intellij.dlanguage.psi.DlangTokenType;
-import io.github.intellij.dlanguage.psi.DlangTokenType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -39,76 +38,162 @@ class DLangParser {
         "YMM1", "YMM10", "YMM11", "YMM12", "YMM13", "YMM14", "YMM15", "YMM2",
         "YMM3", "YMM4", "YMM5", "YMM6", "YMM7", "YMM8", "YMM9"
     };
-    private static final HashMap<String, Token.IdType> tokenTypeIndex = new HashMap<String, Token.IdType>();
 
+    private static final Token.IdType SHEBANG_TYPE = new Token.IdType(SHEBANG);
+    private static final Token.IdType ID_TYPE = new Token.IdType(ID);
+    private static final Token.IdType KW___DATE___TYPE = new Token.IdType(KW___DATE__);
+    private static final Token.IdType KW___EOF___TYPE = new Token.IdType(KW___EOF__);
+    private static final Token.IdType KW___FILE___TYPE = new Token.IdType(KW___FILE__);
+    private static final Token.IdType KW___FILE_FULL_PATH___TYPE = new Token.IdType(KW___FILE_FULL_PATH__);
+    private static final Token.IdType KW___FUNCTION___TYPE = new Token.IdType(KW___FUNCTION__);
+    private static final Token.IdType KW___GSHARED_TYPE = new Token.IdType(KW___GSHARED);
+    private static final Token.IdType KW___LINE___TYPE = new Token.IdType(KW___LINE__);
+    private static final Token.IdType KW___MODULE___TYPE = new Token.IdType(KW___MODULE__);
+    private static final Token.IdType KW___PARAMETERS_TYPE = new Token.IdType(KW___PARAMETERS);
+    private static final Token.IdType KW___PRETTY_FUNCTION___TYPE = new Token.IdType(KW___PRETTY_FUNCTION__);
+    private static final Token.IdType KW___TIME___TYPE = new Token.IdType(KW___TIME__);
+    private static final Token.IdType KW___TIMESTAMP___TYPE = new Token.IdType(KW___TIMESTAMP__);
+    private static final Token.IdType KW___TRAITS_TYPE = new Token.IdType(KW___TRAITS);
+    private static final Token.IdType KW___VECTOR_TYPE = new Token.IdType(KW___VECTOR);
+    private static final Token.IdType KW___VENDOR___TYPE = new Token.IdType(KW___VENDOR__);
+    private static final Token.IdType KW___VERSION___TYPE = new Token.IdType(KW___VERSION__);
+    private static final Token.IdType SPECIAL_EMPTY_TOKEN_TYPE = new Token.IdType(SPECIAL_EMPTY_TOKEN);
+    private static final Token.IdType FLOAT_LITERAL_TYPE = new Token.IdType(FLOAT_LITERAL);
+    private static final Token.IdType INTEGER_LITERAL_TYPE = new Token.IdType(INTEGER_LITERAL);
+    private static final Token.IdType CHARACTER_LITERAL_TYPE = new Token.IdType(CHARACTER_LITERAL);
+    private static final Token.IdType DOUBLE_QUOTED_STRING_TYPE = new Token.IdType(DOUBLE_QUOTED_STRING);
+    private static final Token.IdType ALTERNATE_WYSIWYG_STRING_TYPE = new Token.IdType(ALTERNATE_WYSIWYG_STRING);
+    private static final Token.IdType WYSIWYG_STRING_TYPE = new Token.IdType(WYSIWYG_STRING);
+    private static final Token.IdType TOKEN_STRING_TYPE = new Token.IdType(TOKEN_STRING);
+
+    private static final HashMap<String, Token.IdType> tokenTypeIndex;
     static {
-        tokenTypeIndex.put("scriptLine", new Token.IdType(SHEBANG));
-        tokenTypeIndex.put("identifier", new Token.IdType(ID));
-        tokenTypeIndex.put("__DATE__", new Token.IdType(KW___DATE__));//todo
-        tokenTypeIndex.put("__EOF__", new Token.IdType(KW___EOF__));
-        tokenTypeIndex.put("__FILE__", new Token.IdType(KW___FILE__));
-        tokenTypeIndex.put("__FILE_FULL_PATH__", new Token.IdType(KW___FILE_FULL_PATH__));
-        tokenTypeIndex.put("__FUNCTION__", new Token.IdType(KW___FUNCTION__));
-        tokenTypeIndex.put("__gshared", new Token.IdType(KW___GSHARED));
-        tokenTypeIndex.put("__LINE__", new Token.IdType(KW___LINE__));
-        tokenTypeIndex.put("__MODULE__", new Token.IdType(KW___MODULE__));
-        tokenTypeIndex.put("__parameters", new Token.IdType(KW___PARAMETERS));
-        tokenTypeIndex.put("__PRETTY_FUNCTION__", new Token.IdType(KW___PRETTY_FUNCTION__));
-        tokenTypeIndex.put("__TIME__", new Token.IdType(KW___TIME__));
-        tokenTypeIndex.put("__TIMESTAMP__", new Token.IdType(KW___TIMESTAMP__));
-        tokenTypeIndex.put("__traits", new Token.IdType(KW___TRAITS));
-        tokenTypeIndex.put("__vector", new Token.IdType(KW___VECTOR));
-        tokenTypeIndex.put("__VENDOR__", new Token.IdType(KW___VENDOR__));
-        tokenTypeIndex.put("__VERSION__", new Token.IdType(KW___VERSION__));
-        tokenTypeIndex.put("", new Token.IdType(SPECIAL_EMPTY_TOKEN));
-        tokenTypeIndex.put("floatLiteral", new Token.IdType(FLOAT_LITERAL));
-        tokenTypeIndex.put("doubleLiteral", new Token.IdType(FLOAT_LITERAL));//todo
-        tokenTypeIndex.put("idoubleLiteral", new Token.IdType(FLOAT_LITERAL));//todo
-        tokenTypeIndex.put("ifloatLiteral", new Token.IdType(FLOAT_LITERAL));//todo
-        tokenTypeIndex.put("realLiteral", new Token.IdType(FLOAT_LITERAL));//todo
-        tokenTypeIndex.put("irealLiteral", new Token.IdType(FLOAT_LITERAL));//todo
-        tokenTypeIndex.put("intLiteral", new Token.IdType(INTEGER_LITERAL));
-        tokenTypeIndex.put("uintLiteral", new Token.IdType(INTEGER_LITERAL));
-        tokenTypeIndex.put("longLiteral", new Token.IdType(INTEGER_LITERAL));
-        tokenTypeIndex.put("ulongLiteral", new Token.IdType(INTEGER_LITERAL));
-        tokenTypeIndex.put("characterLiteral", new Token.IdType(CHARACTER_LITERAL));
-        tokenTypeIndex.put("stringLiteral", new Token.IdType(DOUBLE_QUOTED_STRING));
-        tokenTypeIndex.put("dstringLiteral", new Token.IdType(ALTERNATE_WYSIWYG_STRING));//todo create an actual lexer entry for this
-        tokenTypeIndex.put("wstringLiteral", new Token.IdType(WYSIWYG_STRING));//todo create an actual lexer entry for this
-        tokenTypeIndex.put("tokenstringLiteral", new Token.IdType(TOKEN_STRING));//note has a special rule in advance to make up for the shortcomings of jflex. improve this todo
-        tokenTypeIndex.put("typedef", new Token.IdType(ID));//todo create an actual lexer entry for this, could be the source of bugs
+        tokenTypeIndex = new HashMap<>();
+        tokenTypeIndex.put("scriptLine", SHEBANG_TYPE);
+        tokenTypeIndex.put("identifier", ID_TYPE);
+        tokenTypeIndex.put("__DATE__", KW___DATE___TYPE); // todo
+        tokenTypeIndex.put("__EOF__", KW___EOF___TYPE);
+        tokenTypeIndex.put("__FILE__", KW___FILE___TYPE);
+        tokenTypeIndex.put("__FILE_FULL_PATH__", KW___FILE_FULL_PATH___TYPE);
+        tokenTypeIndex.put("__FUNCTION__", KW___FUNCTION___TYPE);
+        tokenTypeIndex.put("__gshared", KW___GSHARED_TYPE);
+        tokenTypeIndex.put("__LINE__", KW___LINE___TYPE);
+        tokenTypeIndex.put("__MODULE__", KW___MODULE___TYPE);
+        tokenTypeIndex.put("__parameters", KW___PARAMETERS_TYPE);
+        tokenTypeIndex.put("__PRETTY_FUNCTION__", KW___PRETTY_FUNCTION___TYPE);
+        tokenTypeIndex.put("__TIME__", KW___TIME___TYPE);
+        tokenTypeIndex.put("__TIMESTAMP__", KW___TIMESTAMP___TYPE);
+        tokenTypeIndex.put("__traits", KW___TRAITS_TYPE);
+        tokenTypeIndex.put("__vector", KW___VECTOR_TYPE);
+        tokenTypeIndex.put("__VENDOR__", KW___VENDOR___TYPE);
+        tokenTypeIndex.put("__VERSION__", KW___VERSION___TYPE);
+        tokenTypeIndex.put("", SPECIAL_EMPTY_TOKEN_TYPE);
+        tokenTypeIndex.put("floatLiteral", FLOAT_LITERAL_TYPE);
+        tokenTypeIndex.put("doubleLiteral", FLOAT_LITERAL_TYPE); // todo
+        tokenTypeIndex.put("idoubleLiteral", FLOAT_LITERAL_TYPE); // todo
+        tokenTypeIndex.put("ifloatLiteral", FLOAT_LITERAL_TYPE); // todo
+        tokenTypeIndex.put("realLiteral", FLOAT_LITERAL_TYPE); // todo
+        tokenTypeIndex.put("irealLiteral", FLOAT_LITERAL_TYPE); // todo
+        tokenTypeIndex.put("intLiteral", INTEGER_LITERAL_TYPE);
+        tokenTypeIndex.put("uintLiteral", INTEGER_LITERAL_TYPE);
+        tokenTypeIndex.put("longLiteral", INTEGER_LITERAL_TYPE);
+        tokenTypeIndex.put("ulongLiteral", INTEGER_LITERAL_TYPE);
+        tokenTypeIndex.put("characterLiteral", CHARACTER_LITERAL_TYPE);
+        tokenTypeIndex.put("stringLiteral", DOUBLE_QUOTED_STRING_TYPE);
+        tokenTypeIndex.put("dstringLiteral", ALTERNATE_WYSIWYG_STRING_TYPE); // todo: create an actual lexer entry for this
+        tokenTypeIndex.put("wstringLiteral", WYSIWYG_STRING_TYPE); // todo: create an actual lexer entry for this
+        tokenTypeIndex.put("tokenstringLiteral", TOKEN_STRING_TYPE); // note has a special rule in advance to make up for the shortcomings of jflex. improve this todo
+        tokenTypeIndex.put("typedef", ID_TYPE); // todo: create an actual lexer entry for this, could be the source of bugs
     }
 
-//    final Set<Token.IdType> stringLiteralsSet = Sets.newHashSet(tok("stringLiteral"), tok("wstringLiteral"), tok("dstringLiteral"), tok("tokenstringLiteral"));
 
     @Deprecated
     final int MAX_ERRORS = 200;
-    //A standard array initializer here was causing issues with java attempting to init a static array before the static initializer?
-    // See issues #350,#348,343
-    private final Token.IdType[] stringLiteralsArray = Arrays
-        .asList(tok("stringLiteral"), tok("wstringLiteral"), tok("dstringLiteral"),
-            tok("tokenstringLiteral")).toArray(new IdType[4]);
-    private final Set<Token.IdType> literals = Sets.newHashSet(tok("dstringLiteral"), tok("stringLiteral"), tok("wstringLiteral"), tok("tokenstringLiteral"), tok("characterLiteral"), tok("true"), tok("false"), tok("null"), tok("$"), tok("doubleLiteral"), tok("floatLiteral"), tok("idoubleLiteral"), tok("ifloatLiteral"), tok("intLiteral"), tok("longLiteral"), tok("realLiteral"), tok("irealLiteral"), tok("uintLiteral"), tok("ulongLiteral"), tok("__DATE__"), tok("__TIME__"), tok("__TIMESTAMP__"), tok("__VENDOR__"), tok("__VERSION__"), tok("__FILE__"), tok("__FILE_FULL_PATH__"), tok("__LINE__"), tok("__MODULE__"), tok("__FUNCTION__"), tok("__PRETTY_FUNCTION__"));
-    private final Set<Token.IdType> basicTypes = Sets.newHashSet(tok("int"), tok("bool"), tok("byte"), tok("cdouble"), tok("cent"), tok("cfloat"), tok("char"), tok("creal"), tok("dchar"), tok("double"), tok("float"), tok("idouble"), tok("ifloat"), tok("ireal"), tok("long"), tok("real"), tok("short"), tok("ubyte"), tok("ucent"), tok("uint"), tok("ulong"), tok("ushort"), tok("void"), tok("wchar"));
-    private final Set<Token.IdType> Protections = Sets.newHashSet(tok("export"), tok("package"),
-        tok("private"), tok("public"), tok("protected"));
+
+    private static final Token.IdType[] stringLiteralsArray = new IdType[] {
+        DOUBLE_QUOTED_STRING_TYPE,
+        ALTERNATE_WYSIWYG_STRING_TYPE,
+        WYSIWYG_STRING_TYPE,
+        TOKEN_STRING_TYPE
+    };
+
+    private final Set<Token.IdType> literals = Sets.newHashSet(
+        ALTERNATE_WYSIWYG_STRING_TYPE,
+        DOUBLE_QUOTED_STRING_TYPE,
+        WYSIWYG_STRING_TYPE,
+        TOKEN_STRING_TYPE,
+        CHARACTER_LITERAL_TYPE,
+        tok("true"),
+        tok("false"),
+        tok("null"),
+        tok("$"),
+        tok("doubleLiteral"),
+        tok("floatLiteral"),
+        tok("idoubleLiteral"),
+        tok("ifloatLiteral"),
+        tok("intLiteral"),
+        tok("longLiteral"),
+        tok("realLiteral"),
+        tok("irealLiteral"),
+        tok("uintLiteral"),
+        tok("ulongLiteral"),
+        KW___DATE___TYPE,
+        KW___TIME___TYPE,
+        KW___TIMESTAMP___TYPE,
+        KW___VENDOR___TYPE,
+        KW___VERSION___TYPE,
+        KW___FILE___TYPE,
+        KW___FILE_FULL_PATH___TYPE,
+        KW___LINE___TYPE,
+        KW___MODULE___TYPE,
+        KW___FUNCTION___TYPE,
+        KW___PRETTY_FUNCTION___TYPE
+    );
+
+    private final Set<Token.IdType> basicTypes = Sets.newHashSet(
+        tok("int"),
+        tok("bool"),
+        tok("byte"),
+        tok("cdouble"),
+        tok("cent"),
+        tok("cfloat"),
+        tok("char"),
+        tok("creal"),
+        tok("dchar"),
+        tok("double"),
+        tok("float"),
+        tok("idouble"),
+        tok("ifloat"),
+        tok("ireal"),
+        tok("long"),
+        tok("real"),
+        tok("short"),
+        tok("ubyte"),
+        tok("ucent"),
+        tok("uint"),
+        tok("ulong"),
+        tok("ushort"),
+        tok("void"),
+        tok("wchar")
+    );
+
+    private final Set<Token.IdType> Protections = Sets.newHashSet(
+        tok("export"),
+        tok("package"),
+        tok("private"),
+        tok("public"),
+        tok("protected")
+    );
+
     @NotNull
-    private final
-    PsiBuilder builder;
+    private final PsiBuilder builder;
     private final Map<Integer, Boolean> cachedAAChecks = new HashMap<>();
-    ////    private final HashMap<Marker, Integer> beginnings = new HashMap<>();//todo this maybe useful in the future but commented out for now
-    Bookmark debugBookmark = null;//used to be able to eval expressions while debugging and then rollback side effects
-    /**
-     * Current error count
-     */
+
+    // private final HashMap<Marker, Integer> beginnings = new HashMap<>();//todo this maybe useful in the future but commented out for now
+    // private Bookmark debugBookmark = null;//used to be able to eval expressions while debugging and then rollback side effects
+
     private int errorCount;
-    /**
-     * Current warning count
-     */
     private int warningCount;
-    /**
-     * Tokens to parse
-     */
     private Token[] tokens;
     private int suppressedErrorCount;
     private int suppressMessages;
@@ -408,25 +493,25 @@ class DLangParser {
 
     private final IdType tokenstringLiteralTok = tok("tokenstringLiteral");
 
-    private Token[] getTokens(final PsiBuilder builder) {
+    private Token[] getTokens(@NotNull final PsiBuilder builder) {
         final Marker tokenRollBackMark = builder.mark();
         final ArrayList<IElementType> tokens = new ArrayList<>();
-        while (true) {
-            if (builder.eof()) {
-                break;
-            }
-            tokens.add(builder.getTokenType());
-            builder.advanceLexer();
-        }
-        tokenRollBackMark.rollbackTo();
-        final Token[] tokenArray = new Token[tokens.size()];
-        int i = 0;
-        for (final IElementType token : tokens) {
-            tokenArray[i] = new Token(new Token.IdType(token));
-            i++;
-        }
 
-        return tokenArray;
+        do {
+            @Nullable final IElementType tokenType = builder.getTokenType();
+
+            if(tokenType != null) {
+                tokens.add(tokenType);
+            }
+
+            builder.advanceLexer();
+        } while (!builder.eof());
+
+        tokenRollBackMark.rollbackTo();
+
+        return tokens.stream()
+            .map(elementType -> new Token(new IdType(elementType)))
+            .toArray(Token[]::new);
     }
 
     private void cleanup(@NotNull final Marker marker, final IElementType element) {
@@ -8517,44 +8602,15 @@ class DLangParser {
         return tokens[index - 1];
     }
 
-    private @NotNull
-    Token.IdType tok(final String tok) {
+    @NotNull
+    private Token.IdType tok(@NotNull final String tok) {
         if (tokenTypeIndex.get(tok) != null) {
             return tokenTypeIndex.get(tok);
         }
+
         final IElementType[] matchingTypes = IElementType.enumerate(
-            (IElementType type) -> type instanceof DlangTokenType && ((DlangTokenType) type)
-                .getDebugName().equals(tok));
-        if (tok.equals("identifier")) {
-            tokenTypeIndex.put("identifier", new Token.IdType(ID));
-            return tokenTypeIndex.get("identifier");
-        }
-        //the below if statements exsist to catch cases where the static initializer did not work correctly
-        // See issues #350,#348,343
-        if (tok.equals("tokenstringLiteral")) {
-            tokenTypeIndex.put("tokenstringLiteral", new Token.IdType(ID));
-            return tokenTypeIndex.get("tokenstringLiteral");
-        }
-
-        if (tok.equals("wstringLiteral")) {
-            tokenTypeIndex.put("wstringLiteral", new Token.IdType(ID));
-            return tokenTypeIndex.get("wstringLiteral");
-        }
-
-        if (tok.equals("dstringLiteral")) {
-            tokenTypeIndex.put("dstringLiteral", new Token.IdType(ID));
-            return tokenTypeIndex.get("dstringLiteral");
-        }
-
-        if (tok.equals("scriptLine")) {
-            tokenTypeIndex.put("scriptLine", new Token.IdType(ID));
-            return tokenTypeIndex.get("scriptLine");
-        }
-
-        if (tok.equals("stringLiteral")) {
-            tokenTypeIndex.put("stringLiteral", new Token.IdType(ID));
-            return tokenTypeIndex.get("stringLiteral");
-        }
+            (IElementType type) -> type instanceof DlangTokenType && ((DlangTokenType) type).getDebugName().equals(tok)
+        );
 
         if (matchingTypes.length != 1) {
             throw new IllegalArgumentException("string:" + tok);
@@ -8568,8 +8624,13 @@ class DLangParser {
      * Advances to the next token and returns the current token
      */
     private Token advance() {
-        if (!builder.getTokenType().equals(tokens[index].type.type)) {
-            throw new AssertionError();
+        if (builder.getTokenType() != null && !builder.getTokenType().equals(tokens[index].type.type)) {
+            throw new AssertionError(
+                String.format("token type '%s' does not match %s",
+                    builder.getTokenType(),
+                    tokens[index].type.type
+                )
+            );
         }
         Marker identifierMarker = null;
         Marker tokenStringMarker = null;
