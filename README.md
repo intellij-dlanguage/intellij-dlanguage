@@ -8,7 +8,7 @@ Support for the [D Programming Language](http://dlang.org/) within IntelliJ IDEA
 | Branch | Status |
 | :--- | :--- |
 | Master | [![Build Status](https://travis-ci.org/intellij-dlanguage/intellij-dlanguage.svg?branch=master)](https://travis-ci.org/intellij-dlanguage/intellij-dlanguage) |
-| Develop | [![Build Status](https://travis-ci.org/intellij-dlanguage/intellij-dlanguage.svg?branch=develop)](https://travis-ci.org/intellij-dlanguage/intellij-dlanguage) |
+| Develop | ![Java CI](https://github.com/intellij-dlanguage/intellij-dlanguage/workflows/Java%20CI/badge.svg?branch=develop) [![Build Status](https://travis-ci.org/intellij-dlanguage/intellij-dlanguage.svg?branch=develop)](https://travis-ci.org/intellij-dlanguage/intellij-dlanguage) |
 
 ## Supported versions of IntelliJ
 
