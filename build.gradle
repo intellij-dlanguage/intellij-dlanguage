@@ -45,6 +45,11 @@ cobertura.coverageEncoding = 'UTF-8'
 cobertura.coverageExcludes = [ '.*de.halirutan.mathematica.*', '.*uk.co.cwspencer.*' ]
 
 
+java {
+    disableAutoTargetJvm()
+//    sourceCompatibility = JavaVersion.VERSION_1_8
+//    targetCompatibility = JavaVersion.VERSION_1_8
+}
 
 allprojects {
     sourceCompatibility = javaVersion

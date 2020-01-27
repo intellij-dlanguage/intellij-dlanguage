@@ -19,6 +19,10 @@ cache:
 #  - sudo apt-get update --allow-insecure-repositories && sudo apt-get -y --allow-unauthenticated install --reinstall d-apt-keyring
 #  - sudo apt-get update && sudo apt-get install dmd-compiler dub
 
+script:
+  - ./gradlew buildPlugin
+  - ./gradlew check
+
 env:
   global:
   - ORG_GRADLE_PROJECT_downloadIdeaSources=false
@@ -42,6 +46,14 @@ jobs:
 #        script: ORG_GRADLE_PROJECT_publishChannels=eap ORG_GRADLE_PROJECT_version=1.19.1-eap$TRAVIS_BUILD_NUMBER ./gradlew :publishPlugin
 #        on:
 #          branch: develop
+    # Use Ubuntu Bionic for the more recent Java versions (OpenJDK)
+    - stage: Test with JDK 11
+      jdk: openjdk11
+      dist: bionic
+      env: ORG_GRADLE_PROJECT_ideaVersion=2019.3.2
+    - jdk: openjdk11
+      dist: bionic
+      env: ORG_GRADLE_PROJECT_ideaVersion=2019.3
     - stage: Deploy new Release
       if: branch = master
       script: skip
@@ -53,4 +65,5 @@ jobs:
         on:
           branch: master
   allow_failures:
+    - stage: Test with JDK 11
     - env: ORG_GRADLE_PROJECT_ideaVersion=LATEST-EAP-SNAPSHOT
