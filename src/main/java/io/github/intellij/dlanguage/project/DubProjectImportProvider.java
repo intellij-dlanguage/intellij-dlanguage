@@ -6,13 +6,14 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.projectImport.ProjectImportProvider;
 import io.github.intellij.dlanguage.module.DubBinaryForModuleStep;
-import io.github.intellij.dlanguage.module.DubBinaryForModuleStep;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 
-
+/**
+ * IDEA only
+ */
 public class DubProjectImportProvider extends ProjectImportProvider {
 
     public DubProjectImportProvider() {
