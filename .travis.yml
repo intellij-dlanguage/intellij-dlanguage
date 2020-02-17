@@ -27,6 +27,7 @@ jobs:
   include:
     - stage: Build and Test
       env: ORG_GRADLE_PROJECT_ideaVersion=LATEST-EAP-SNAPSHOT
+    - env: ORG_GRADLE_PROJECT_ideaVersion=2019.3.3
     - env: ORG_GRADLE_PROJECT_ideaVersion=2019.3.2
     - env: ORG_GRADLE_PROJECT_ideaVersion=2019.3
 #    - stage: Test Coverage
