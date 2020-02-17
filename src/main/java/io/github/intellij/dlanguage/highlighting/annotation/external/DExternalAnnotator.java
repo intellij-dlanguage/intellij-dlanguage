@@ -2,10 +2,12 @@ package io.github.intellij.dlanguage.highlighting.annotation.external;
 
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.ExternalAnnotator;
+import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
+import com.intellij.openapi.progress.ProcessCanceledException;
 import com.intellij.psi.PsiFile;
 import io.github.intellij.dlanguage.highlighting.annotation.DAnnotationHolder;
 import io.github.intellij.dlanguage.highlighting.annotation.DProblem;
@@ -41,15 +43,24 @@ public class DExternalAnnotator extends ExternalAnnotator<PsiFile, DExternalAnno
     @Override
     public State doAnnotate(@NotNull final PsiFile file) {
         // Force all files to save to ensure annotations are in sync with the file system.
-        if (FileDocumentManager.getInstance().getUnsavedDocuments().length != 0)
-            ApplicationManager
-                .getApplication()
-                .invokeAndWait(() -> FileDocumentManager.getInstance().saveAllDocuments(), ApplicationManager.getApplication().getDefaultModalityState());
+        final FileDocumentManager fileDocumentManager = FileDocumentManager.getInstance();
+        final Application application = ApplicationManager.getApplication();
 
-        final State state = new State();
-        state.dScannerProblems = new DScanner().checkFileSyntax(file);
-        state.syntaxProblems = new CompileCheck().checkFileSyntax(file);
-        return state;
+        if (fileDocumentManager.getUnsavedDocuments().length > 0) {
+            try {
+                application.invokeAndWait(
+                    fileDocumentManager::saveAllDocuments,
+                    application.getDefaultModalityState()
+                );
+            } catch (final ProcessCanceledException e) {
+                LOG.warn("problem saving files", e);
+            }
+        }
+
+        return new State(
+            new DScanner().checkFileSyntax(file),
+            new CompileCheck().checkFileSyntax(file)
+        );
     }
 
     /**
@@ -61,8 +72,8 @@ public class DExternalAnnotator extends ExternalAnnotator<PsiFile, DExternalAnno
     }
 
     public static void apply(@NotNull final PsiFile file, final State state, @NotNull final DAnnotationHolder holder) {
-        createAnnotations(file, state.syntaxProblems, holder);
-        createAnnotations(file, state.dScannerProblems, holder);
+        createAnnotations(file, state.getSyntaxProblems(), holder);
+        createAnnotations(file, state.getdScannerProblems(), holder);
     }
 
     public static void createAnnotations(@NotNull final PsiFile file, @Nullable final Problems problems,
@@ -74,7 +85,20 @@ public class DExternalAnnotator extends ExternalAnnotator<PsiFile, DExternalAnno
     }
 
     public static class State {
-        Problems syntaxProblems;
-        Problems dScannerProblems;
+        private final Problems syntaxProblems;
+        private final Problems dScannerProblems;
+
+        public State(final Problems syntaxProblems, final Problems dScannerProblems) {
+            this.syntaxProblems = syntaxProblems;
+            this.dScannerProblems = dScannerProblems;
+        }
+
+        public Problems getSyntaxProblems() {
+            return syntaxProblems;
+        }
+
+        public Problems getdScannerProblems() {
+            return dScannerProblems;
+        }
     }
 }

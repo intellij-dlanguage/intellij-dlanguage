@@ -53,7 +53,7 @@ public class DScanner {
 
     Problems checkFileSyntax(@NotNull final PsiFile file) {
         final String dscannerPath = ToolKey.DSCANNER_KEY.getPath();
-        if (dscannerPath == null) return new Problems();
+        if (StringUtil.isEmpty(dscannerPath)) return new Problems();
 
         final Problems problems = new Problems();
         problems.addAllNotNull(processFile(file, dscannerPath));
@@ -62,16 +62,16 @@ public class DScanner {
 
     private static int getOffsetStart(final PsiFile file, final int startLine, final int startColumn) {
         final int[] retVal = {-1};
-        final ThrowableRunnable getOffset = new ThrowableRunnable() {
-            public void run() {
-                final Document document = PsiDocumentManager.getInstance(file.getProject())
-                    .getDocument(file);
-                final int line = getValidLineNumber(startLine, document);
-                final int offset = StringUtil
-                    .lineColToOffset(file.getText(), line, startColumn - 1);
-                retVal[0] = offset <= 1 ? 1 : offset;
-            }
+
+        final ThrowableRunnable<RuntimeException> getOffset = () -> {
+            final Document document = PsiDocumentManager.getInstance(file.getProject())
+                .getDocument(file);
+            final int line = getValidLineNumber(startLine, document);
+            final int offset = StringUtil
+                .lineColToOffset(file.getText(), line, startColumn - 1);
+            retVal[0] = Math.max(offset, 1);
         };
+
         ReadAction.run(getOffset);
         return retVal[0];
     }
@@ -88,9 +88,9 @@ public class DScanner {
         final String filePath = file.getVirtualFile().getCanonicalPath();
         final String workingDirectory = file.getProject().getBasePath();
 
-        final GeneralCommandLine cmd = new GeneralCommandLine();
-        cmd.setWorkDirectory(workingDirectory);
-        cmd.setExePath(dscannerPath);
+        final GeneralCommandLine cmd = new GeneralCommandLine()
+            .withWorkDirectory(workingDirectory)
+            .withExePath(dscannerPath);
 
         final ParametersList args = cmd.getParametersList();
         args.addParametersString("-S");
@@ -112,10 +112,12 @@ public class DScanner {
         final List<Problem> problems = new ArrayList<>();
 
         try {
+            LOG.debug("Starting DScanner process");
+
             final OSProcessHandler process = new OSProcessHandler(cmd.createProcess(), cmd.getCommandLineString());
             process.addProcessListener(new ProcessAdapter() {
                 @Override
-                public void onTextAvailable(final ProcessEvent event, final Key outputType) {
+                public void onTextAvailable(@NotNull final ProcessEvent event, @NotNull final Key outputType) {
                     // we don't care about "system" or "stderr"
                     if(ProcessOutputTypes.STDOUT.equals(outputType)) {
                         parseProblem(event.getText(), file)
