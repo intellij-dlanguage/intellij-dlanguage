@@ -14,6 +14,10 @@
     ]]></description>
 
     <change-notes><![CDATA[
+        <b>v1.24</b><br/>
+        <ul>
+            <li>Compatibility IntelliJ 2019.3.* - 2020.1.*</li>
+        </ul>
         <b>v1.23</b><br/>
         <ul>
             <li>Compatibility IntelliJ 2019.3.*</li>
@@ -68,7 +72,7 @@
     </change-notes>
 
     <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
-    <idea-version since-build="193" until-build="193.*"/>
+    <idea-version since-build="193" until-build="201.*"/>
 
     <!-- We want to support IntelliJ IDEA and CLion
         see http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
