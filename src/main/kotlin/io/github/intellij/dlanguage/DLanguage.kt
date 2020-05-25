@@ -40,7 +40,7 @@ class DLanguageLexerAdapter : FlexAdapter(DlangLexer())
 class DLangProjectDmdSetupValidator : ProjectSdkSetupValidator {
 
     private val log = Logger.getInstance(javaClass);
-    private val expectedModules = setOf("std.array", "std.ascii", "std.base64", "std.bigint", "std.bitmanip", "std.compiler", "std.complex", "std.concurrency", "std.conv", "std.csv", "std.demangle", "std.encoding", "std.exception", "std.file", "std.format", "std.functional", "std.getopt", "std.json", "std.math", "std.mathspecial", "std.meta", "std.mmfile", "std.numeric", "std.outbuffer", "std.parallelism", "std.path", "std.process", "std.random", "std.signals", "std.socket", "std.stdint", "std.stdio", "std.string", "std.system", "std.traits", "std.typecons", "std.uni", "std.uri", "std.utf", "std.uuid", "std.variant", "std.xml", "std.zip", "std.zlib")
+    private val expectedModules = setOf("std.array", "std.ascii", "std.base64", "std.bigint", "std.bitmanip", "std.compiler", "std.complex", "std.concurrency", "std.conv", "std.csv", "std.demangle", "std.encoding", "std.exception", "std.file", "std.format", "std.functional", "std.getopt", "std.json", "std.math", "std.mathspecial", "std.meta", "std.mmfile", "std.numeric", "std.outbuffer", "std.parallelism", "std.path", "std.process", "std.random", "std.signals", "std.socket", "std.stdint", "std.stdio", "std.string", "std.system", "std.traits", "std.typecons", "std.uni", "std.uri", "std.utf", "std.uuid", "std.variant", "std.zip", "std.zlib")
 
     override fun isApplicableFor(project: Project, file: VirtualFile): Boolean {
         if (DlangFileType.INSTANCE != file.fileType) return false
