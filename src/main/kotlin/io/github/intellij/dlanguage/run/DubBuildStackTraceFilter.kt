@@ -13,12 +13,25 @@ class DubConsoleFilterProvider : ConsoleFilterProvider {
     override fun getDefaultFilters(project: Project): Array<Filter> = arrayOf(DubBuildSourceFileFilter(project))
 }
 
+/**
+ * Will get a match on output that contains a path to a D source file and make the filepath a clickable link.
+ * The filter checks for the line to start with "source" as it's more likely to be a project source file.
+ */
 class DubBuildSourceFileFilter(val project: Project) : Filter {
 
-    private val blue = Color(39, 89, 230)
+    private companion object {
+        // This regex will get a match on any of the following:
+        //     source\package\app.d Some Log output
+        //     source\package\app.d(53,31) Some Log output
+        //     source\package\app.di(53,31): Some Log output
+        //     source\package\app.di Some Log output
+        val D_SOURCE_PATH_FORMAT = Regex("^(.*\\.di?)(\\(\\d+,\\d+\\))?(:)?.*\$")
+
+        private val BLUE = Color(39, 89, 230)
+    }
 
     override fun applyFilter(line: String, entireLength: Int): Filter.Result? {
-        if(line.startsWith("source")) {
+        if(line.startsWith("source") && line.matches(D_SOURCE_PATH_FORMAT)) {
             // then it's prob code within the project
             val txt = if (line.contains(":")) {
                 line.substring(0, line.indexOf(":").plus(1))
@@ -39,7 +52,7 @@ class DubBuildSourceFileFilter(val project: Project) : Filter {
             virtualFile?.let {
                 return Filter.Result(entireLength - line.length, (entireLength - line.length) + txt.lastIndex,
                     DlangSourceFileHyperlink(it, project, lineColumn[0] - 1, lineColumn[1]), // consider OpenFileHyperlinkInfo(project, it, lineColumn[0] - 1, lineColumn[1])
-                    TextAttributes(blue, null, null, EffectType.BOLD_LINE_UNDERSCORE, Font.ITALIC)
+                    TextAttributes(BLUE, null, null, EffectType.BOLD_LINE_UNDERSCORE, Font.ITALIC)
                 )
             }
         }
