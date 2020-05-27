@@ -228,8 +228,8 @@ public class DlangDmdConfigToArgsConverter {
 
         //Build list of *.D source files
         final List<String> sources = visitor.getDlangSources();
-        if (sources.isEmpty()) {
-            throw new NoSourcesException(sourcesRoot.getCanonicalPath());
+        if (sources == null || sources.isEmpty()) {
+            throw new NoSourcesException(sourcesRoot);
         }
         return sources;
     }
