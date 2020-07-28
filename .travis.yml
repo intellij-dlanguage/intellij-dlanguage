@@ -27,17 +27,16 @@ jobs:
   include:
     - stage: Build and Test
       env: ORG_GRADLE_PROJECT_ideaVersion=LATEST-EAP-SNAPSHOT
-    - env: ORG_GRADLE_PROJECT_ideaVersion=202.6397-EAP-CANDIDATE-SNAPSHOT
     - env: ORG_GRADLE_PROJECT_ideaVersion=2020.1.4
     - env: ORG_GRADLE_PROJECT_ideaVersion=2020.1.1
-    - env: ORG_GRADLE_PROJECT_ideaVersion=2020.1
+    - env: ORG_GRADLE_PROJECT_ideaVersion=2019.3
 #    - stage: Test Coverage
 #      if: NOT (branch = master)
 #      script: ./gradlew cobertura coveralls
 #    - stage: Deploy EAP
 #      if: branch = develop
 #      script: skip
-#      env: ORG_GRADLE_PROJECT_ideaVersion=2020.1
+#      env: ORG_GRADLE_PROJECT_ideaVersion=2019.3
 #      deploy:
 #        provider: script
 #        skip_cleanup: true
@@ -47,7 +46,7 @@ jobs:
     - stage: Deploy new Release
       if: branch = master
       script: skip
-      #env: ORG_GRADLE_PROJECT_ideaVersion=2020.1
+      #env: ORG_GRADLE_PROJECT_ideaVersion=2019.3
       deploy:
         provider: script
         skip_cleanup: true
