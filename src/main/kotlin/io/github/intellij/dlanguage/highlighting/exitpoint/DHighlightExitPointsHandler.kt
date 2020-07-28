@@ -17,11 +17,11 @@ class DHighlightExitPointsHandler(
 
     override fun getTargets() = listOf(target)
 
-    override fun selectTargets(targets: List<PsiElement>, selectionConsumer: Consumer<List<PsiElement>>) {
+    override fun selectTargets(targets: MutableList<out PsiElement>, selectionConsumer: Consumer<in MutableList<out PsiElement>>) {
         selectionConsumer.consume(targets)
     }
 
-    override fun computeUsages(targets: MutableList<PsiElement>?) {
+    override fun computeUsages(targets: MutableList<out PsiElement>) {
         val sink: (ExitPoint) -> Unit = { exitPoint ->
             when (exitPoint) {
                 is ExitPoint.Return -> addOccurrence(exitPoint.e)
