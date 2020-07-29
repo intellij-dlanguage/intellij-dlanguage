@@ -1,11 +1,9 @@
 package io.github.intellij.dlanguage.errorreporting;
 
 import com.intellij.diagnostic.IdeErrorsDialog;
+import com.intellij.diagnostic.IdeaReportingEvent;
 import com.intellij.idea.IdeaLogger;
-import com.intellij.openapi.application.ApplicationInfo;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.application.ApplicationNamesInfo;
-import com.intellij.openapi.application.ex.ApplicationInfoEx;
 import com.intellij.openapi.diagnostic.ErrorReportSubmitter;
 import com.intellij.openapi.diagnostic.IdeaLoggingEvent;
 import com.intellij.openapi.diagnostic.SubmittedReportInfo;
@@ -19,7 +17,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
-import java.util.Map;
 
 /**
  * Created by francis on 10/29/2017.
@@ -57,7 +54,10 @@ public class DErrorReporter extends ErrorReportSubmitter {
             for (final IdeaLoggingEvent event : events) {
                 ctx.addExtra("Additional info:", additionalInfo);
 
-                final Throwable error = event.getThrowable();
+                final Throwable error = IdeaReportingEvent.class.isAssignableFrom(event.getClass()) ?
+                    ((IdeaReportingEvent) event).getData().getThrowable() :
+                    event.getThrowable();
+
                 try {
                     final PluginId pluginId = IdeErrorsDialog.findPluginId(event.getThrowable());
 

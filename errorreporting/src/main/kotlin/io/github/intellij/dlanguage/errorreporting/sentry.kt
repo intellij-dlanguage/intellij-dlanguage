@@ -64,7 +64,7 @@ class SentryErrorHandler : ErrorReportSubmitter() {
  */
 class DlangSentryClientFactory(pluginDescriptor: PluginDescriptor?) : DefaultSentryClientFactory() {
 
-    private val plugin = PluginManager.getPlugin(pluginDescriptor?.pluginId)
+    private val plugin = PluginManager.getPlugin(pluginDescriptor?.pluginId) // todo: remove this after 2020.2
     private val version = plugin?.version ?: ""
     private val appInfo = ApplicationInfo.getInstance() as ApplicationInfoEx
     private val namesInfo = ApplicationNamesInfo.getInstance()
@@ -73,7 +73,7 @@ class DlangSentryClientFactory(pluginDescriptor: PluginDescriptor?) : DefaultSen
 
     override fun getEnvironment(dsn: Dsn?): String = namesInfo.productName
 
-    override fun getServerName(dsn: Dsn?): String = "" // override to anonymise the data
+    override fun getServerName(dsn: Dsn?): String = "" // override to anonymise the data. Also scrubbed in Security & Privacy settings on sentry.io
 
     //override fun getDist(dsn: Dsn?): String = ""
 
