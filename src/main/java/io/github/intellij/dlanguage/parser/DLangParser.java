@@ -8613,7 +8613,10 @@ class DLangParser {
         );
 
         if (matchingTypes.length != 1) {
-            throw new IllegalArgumentException("string:" + tok);
+            throw new IllegalArgumentException(
+                String.format("Could not find single match for token: '%s'. %d matches found",
+                    tok, matchingTypes.length)
+            );
         }
         final @NotNull Token.IdType result = new Token.IdType(matchingTypes[0]);
         tokenTypeIndex.put(tok, result);
