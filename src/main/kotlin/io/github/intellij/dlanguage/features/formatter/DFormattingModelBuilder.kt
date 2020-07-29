@@ -162,7 +162,7 @@ class DFormattingModelBuilder : FormattingModelBuilder {
             if (type == OP_BRACES_RIGHT || type == OP_BRACES_LEFT) {
                 return Indent.getNoneIndent()
             }
-            if (getPrevSiblingOfType(child, newHashSet(OP_BRACES_LEFT), newHashSet(/*OP_BRACES_RIGHT,*/ KW_ELSE)) != null) {
+            if (getPrevSiblingOfType(child, OP_BRACES_LEFT, newHashSet(/*OP_BRACES_RIGHT,*/ KW_ELSE)) != null) {
                 return Indent.getNormalIndent()
             }
 //            if(type == TEMPLATE_PARAMETERS){
