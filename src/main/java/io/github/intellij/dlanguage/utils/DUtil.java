@@ -70,7 +70,8 @@ public class DUtil {
     }
 
     @Nullable
-    public static ASTNode getPrevSiblingOfType(@Nullable final ASTNode child, @Nullable final IElementType type) {
+    public static ASTNode getPrevSiblingOfType(@Nullable final ASTNode child,
+                                               @Nullable final IElementType type) {
         if (child == null)
             return null;
         if (child.getElementType() == type) {
@@ -80,16 +81,33 @@ public class DUtil {
     }
 
     @Nullable
-    public static ASTNode getPrevSiblingOfType(@Nullable final ASTNode child, @NotNull final HashSet<IElementType> newHashSet, @NotNull final HashSet<IElementType> excluded) {
+    public static ASTNode getPrevSiblingOfType(@Nullable final ASTNode child,
+                                               @NotNull final IElementType type,
+                                               @Nullable final HashSet<IElementType> excluded) {
+        if (child == null)
+            return null;
+        if (child.getElementType() == type) {
+            return child;
+        }
+        if(excluded != null && excluded.contains(child.getElementType())) {
+            return null;
+        }
+        return getPrevSiblingOfType(child.getTreePrev(), type, excluded);
+    }
+
+    @Nullable
+    public static ASTNode getPrevSiblingOfTypes(@Nullable final ASTNode child,
+                                               @NotNull final HashSet<IElementType> newHashSet,
+                                               @Nullable final HashSet<IElementType> excluded) {
         if (child == null)
             return null;
         if (newHashSet.contains(child.getElementType())) {
             return child;
         }
-        if(excluded.contains(child.getElementType())){
+        if(excluded != null && excluded.contains(child.getElementType())) {
             return null;
         }
-        return getPrevSiblingOfType(child.getTreePrev(), newHashSet,excluded);
+        return getPrevSiblingOfTypes(child.getTreePrev(), newHashSet, excluded);
     }
 
     @SuppressWarnings("unchecked")
