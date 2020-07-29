@@ -8592,7 +8592,7 @@ class DLangParser {
      */
     @Nullable
     private Token current() {
-        return tokens[index];
+        return index >= 0 && index < tokens.length ? tokens[index] : null;
     }
 
     /**
