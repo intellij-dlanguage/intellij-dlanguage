@@ -1,55 +1,38 @@
 Intellij D Language
 ===================
 
-Support for the [D Programming Language](http://dlang.org/) within IntelliJ IDEA
+Support for the [D Programming Language](http://dlang.org/) within IntelliJ IDEA and CLion (Clion support is experimental. See [CLion issues](https://github.com/intellij-dlanguage/intellij-dlanguage/labels/Clion))
 
 [![JetBrains IntelliJ plugins](https://img.shields.io/jetbrains/plugin/d/8115.svg)](https://plugins.jetbrains.com/plugin/8115)
 
 | Branch | Status |
 | :--- | :--- |
-| Master | ![Java CI](https://github.com/intellij-dlanguage/intellij-dlanguage/workflows/Java%20CI/badge.svg?branch=master) [![Build Status](https://travis-ci.org/intellij-dlanguage/intellij-dlanguage.svg?branch=master)](https://travis-ci.org/intellij-dlanguage/intellij-dlanguage) |
-| Develop | ![Java CI](https://github.com/intellij-dlanguage/intellij-dlanguage/workflows/Java%20CI/badge.svg?branch=develop) [![Build Status](https://travis-ci.org/intellij-dlanguage/intellij-dlanguage.svg?branch=develop)](https://travis-ci.org/intellij-dlanguage/intellij-dlanguage) |
+| Master | ![Java CI](https://github.com/intellij-dlanguage/intellij-dlanguage/workflows/Java%20CI/badge.svg?branch=master) [![Build Status](https://travis-ci.org/intellij-dlanguage/intellij-dlanguage.svg?branch=master)](https://travis-ci.org/intellij-dlanguage/intellij-dlanguage) [![Coverage Status](https://coveralls.io/repos/github/intellij-dlanguage/intellij-dlanguage/badge.svg?branch=master)](https://coveralls.io/github/intellij-dlanguage/intellij-dlanguage?branch=master) |
+| Develop | ![Java CI](https://github.com/intellij-dlanguage/intellij-dlanguage/workflows/Java%20CI/badge.svg?branch=develop) [![Build Status](https://travis-ci.org/intellij-dlanguage/intellij-dlanguage.svg?branch=develop)](https://travis-ci.org/intellij-dlanguage/intellij-dlanguage) [![Coverage Status](https://coveralls.io/repos/github/intellij-dlanguage/intellij-dlanguage/badge.svg?branch=develop)](https://coveralls.io/github/intellij-dlanguage/intellij-dlanguage?branch=develop) |
 
-## Supported versions of IntelliJ
+## Supported IntelliJ based IDEs:
 
-| Plugin Version | IntelliJ Versions | release notes |
-| :--- | :--- | :--- |
-| 1.25.* | 2020.2.* | support for IntelliJ 2020.2 |
-| 1.24.* | 2019.3.* - 2020.1.* | support for IntelliJ 2020.1 |
-| 1.23 | 2019.3.* | bug fixes, new project logo and additional options when creating new D source files |
-| 1.22 | 2019.2.* - 2019.3 | support for IntelliJ 2019.3 |
-| 1.21 | 2019.2.* | Bug Fixes |
-| 1.20.1 | 2019.2.* | support for IntelliJ 2019.2.* (fixes some major bugs) |
-| 1.20 | 2019.2.* | support for IntelliJ 2019.2.* (PLEASE DO NOT USE THIS BUILD) |
-| 1.19 | 2019.1.* | support for IntelliJ 2019.1.* |
-| 1.18.* | 2018.3 - 2018.3.* | support for IntelliJ 2018.3.* |
-| 1.17.* | 2018.1.* - 2018.2.* | bug fixes and experimental support for AppCode and CLion |
-| 1.16.* | 2017.3.* - 2018.1.* | support for IntelliJ 2018.1, processing D libs in background, UI changes, and fix various bugs |
-| 1.15.4 | 2017.2.* - 2017.3.* | bug fixes (xmas release) |
-| 1.15.3 | 2017.2.* - 2017.3.* | bug fixes (dropped 2017.1.* support) |
-| 1.15.2 | 2017.1.* - 2017.3.* | added Structure View, code folding, bug fixes |
-| 1.15.1 | 2017.1.* - 2017.3.* | bug fixes |
-| 1.15 | 2017.1.* - 2017.3.* | bug fixes |
-| 1.14 | 2017.1.* - 2017.3.* | added support for debugging via GDB and error reporting via [sentry.io](https://sentry.io) |
+The primary focus for the project is to support Intellij IDEA (both IC and IU) and CLion. It may work on other IDEs such as AppCode, Android Studio, PyCharm, etc but this is not tested by the dev team.
 
-JetBrains create downloadable releases with or without a bundled JRE. If you download a release without a bundled JRE you will need to have a JRE installed. Since IntelliJ 16 (the 2016.* versions) JRE 8 is required to run the IDE.
+We are currently targeting *Intellij 2020.2* with the latest plugin release being version *1.25*.
 
-## A few caveats, etc.
-
-This plugin is being developed by a small team of volunteers in their spare time. Currently we only support IntelliJ IDEA however we intend to support other Jetbrains IDE's in the future, especially CLion (help with #57 would be appreciated). The feature set is continually evolving.
-
-As the project relies on the good will of its contributors, progress can sometimes take a while. It is a project that will span years not weeks. 
-
-You can help by using the plugin and raising issues for feature requests and bugs. Even better get involved and submit pull requests.
+For a list of older releases and their supported IDE versions see our [Compatibility Matrix](https://github.com/intellij-dlanguage/intellij-dlanguage/wiki/Compatibility-Matrix).
 
 ## Installation
 
-[Download](https://www.jetbrains.com/idea/) and install IntelliJ Community Edition (Free) or Ultimate (Paid)
-From IntelliJ go to Preferences > Plugins > Browse Repositories and search For "D Language" (**you will see 2 plugins, Choose the DLanguage one**) then click install and restart IntelliJ
+Assuming you have IntelliJ IDEA, CLion, or another Intellij based IDE installed. You can simply install the plugin via the IDE.
+
+Go to *Settings* (Preferences on Mac) > *Plugins* > Browse Repositories and search For "D Language" (**you may see 2 plugins, Choose the DLanguage one**) then click install and restart IntelliJ
+
+![installation](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/develop/.README/dlang_install_plugin.png)
 
 You can also download the plugin jar to your local disk directly from the [Jetbrains plugin repository](https://plugins.jetbrains.com/plugin/8115) and then in IntelliJ go to Preferences > Plugins > Install plugin from disk and choose the jar you downloaded
 
-![installation](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/develop/.README/dlang_plugin_install.png)
+**After the plugin has been installed you will need to set dmd up as project SDK and configure dub**
+
+## A word on support, etc.
+
+This plugin is maintained by a very small team of volunteers in their spare time. There are [issues that need to be resolved](https://github.com/intellij-dlanguage/intellij-dlanguage/issues) both to add new features and simply keep the plugin compatible with new versions of Intellij. As the project relies on the good will of its contributors, progress can sometimes take a while. Please consider this when creating new issues. You can help by using the plugin and raising issues for feature requests and bugs. Even better **get involved and submit pull requests**.
 
 ## Quick Usage
 
@@ -63,9 +46,8 @@ If you have an existing dub project you can import it via File > Import Project
 
 When you select this to create a new project with dub, if dub is on your path, it will attempt to use _dub init_ to create a new dub project for you. If dub is not on your path it will create a source directory and you will have to create your sdl/json dub file manually or rename/delete the source folder and then use _dub init_ to recreate it. Alternatively you can open an existing dub project by doing: File -> Open
 
-Once a dub project is loaded there is right click menu option to run with dub, or you can use the run config
+Once a dub project is loaded, there is right click menu option to run with dub, or you can use the run config
 – run with Dub.
-
 
 Before running go and configure the DTools in _Settings_ -> _Languages &amp; Frameworks_ -> _D Tools_.
 
