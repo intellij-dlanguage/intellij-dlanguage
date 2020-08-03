@@ -29,8 +29,10 @@ jarSearchableOptions.enabled = false
 patchPluginXml.enabled = false
 prepareSandbox.enabled = false
 prepareTestingSandbox.enabled = false
+prepareUiTestingSandbox.enabled = false
 publishPlugin.enabled = false
 runIde.enabled = false
+runIdeForUiTests.enabled = false
 verifyPlugin.enabled = false
 
 intellij {
