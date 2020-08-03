@@ -24,7 +24,7 @@ Assuming you have IntelliJ IDEA, CLion, or another Intellij based IDE installed.
 
 Go to *Settings* (Preferences on Mac) > *Plugins* > Browse Repositories and search For "D Language" (**you may see 2 plugins, Choose the DLanguage one**) then click install and restart IntelliJ
 
-![installation](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/develop/.README/dlang_install_plugin.png)
+![installation](https://github.com/intellij-dlanguage/intellij-dlanguage/raw/develop/.README/dlang-install-plugin.png)
 
 You can also download the plugin jar to your local disk directly from the [Jetbrains plugin repository](https://plugins.jetbrains.com/plugin/8115) and then in IntelliJ go to Preferences > Plugins > Install plugin from disk and choose the jar you downloaded
 
