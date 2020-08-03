@@ -39,15 +39,17 @@ jobs:
 #        script: ORG_GRADLE_PROJECT_publishChannels=eap ORG_GRADLE_PROJECT_version=1.19.1-eap$TRAVIS_BUILD_NUMBER ./gradlew :publishPlugin
 #        on:
 #          branch: develop
-    - stage: Deploy new Release
-      if: branch = master
-      script: skip
-      #env: ORG_GRADLE_PROJECT_ideaVersion=2020.2
-      deploy:
-        provider: script
-        skip_cleanup: true
-        script: ./gradlew publishPlugin
-        on:
-          branch: master
+
+#    - stage: Deploy new Release
+#      if: branch = master
+#      script: skip
+#      #env: ORG_GRADLE_PROJECT_ideaVersion=2020.2
+#      deploy:
+#        provider: script
+#        skip_cleanup: true
+#        script: ./gradlew publishPlugin
+#        on:
+#          branch: master
+
   allow_failures:
     - env: ORG_GRADLE_PROJECT_ideaVersion=LATEST-EAP-SNAPSHOT

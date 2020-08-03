@@ -1,0 +1,25 @@
+name: Publish plugin to the Jetbrains Marketplace
+
+##
+## Run publishPlugin task when a tag is created
+##
+
+on:
+    release:
+        types: [created]
+
+jobs:
+    publish:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v2
+            - name: Set up Java
+              uses: actions/setup-java@v1
+              with:
+                  java-version: 1.8
+
+            - name: Publish Plugin
+              run: ./gradlew publishPlugin
+              env:
+                  JETBRAINS_TOKEN: ${{ secrets.JETBRAINS_TOKEN }}
