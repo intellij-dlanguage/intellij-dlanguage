@@ -13,8 +13,7 @@ import org.jetbrains.annotations.Nullable;
 @State(
     name = JpsDLanguageBuildOptionsSerializer.DLANGUAGE_BUILD_OPTIONS_COMPONENT_NAME,
     storages = {
-        @Storage(file = StoragePathMacros.MODULE_FILE),
-        @Storage(value = "/compiler.xml")
+        @Storage(value = "/dlang.build.xml", roamingType = RoamingType.DISABLED)
     }
 )
 public class DLanguageBuildSettings implements PersistentStateComponent<DLanguageBuildOptions> {
