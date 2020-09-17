@@ -11,25 +11,23 @@ import io.github.intellij.dlanguage.utils.DUtil;
 import io.github.intellij.dlanguage.utils.ExecUtil;
 import io.github.intellij.dlanguage.codeinsight.dcd.completions.Completion;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public final class DCDCompletionClient {
-    private static final List<Completion> dummyCompletions = new ArrayList<>();
+
     private static final Map<String, String> completionTypeMap = getCompletionTypeMap();
 
     public List<Completion> autoComplete(final int position, final PsiFile file, final String fileContent) throws DCDError {
         final String path = lookupPath();
         if (path == null) {
-            return dummyCompletions;
+            return Collections.emptyList();
         }
 
         final String workingDirectory = file.getProject().getBasePath();
@@ -64,39 +62,38 @@ public final class DCDCompletionClient {
             throw new DCDError(e);
         }
 
-        final String result;
         try {
-            result = Objects.requireNonNull(ExecUtil.readCommandLine(commandLine, file.getText()))
+            final String result = Objects.requireNonNull(ExecUtil.readCommandLine(commandLine, file.getText()))
                 .get(3, TimeUnit.SECONDS);
+            return processDcdOutput(result);
         } catch (InterruptedException | java.util.concurrent.ExecutionException | TimeoutException e) {
             throw new DCDError(e);
         }
+    }
 
-        if (result.isEmpty()) {
-            return dummyCompletions;
-        }
+    List<Completion> processDcdOutput(@NotNull final String output) {
+        if (!output.isEmpty()) {
+            final String[] lines = output.split("\\n");
 
-        final String[] tokens = result.split("\\n");
-        final String firstLine = tokens[0];
-        final List<Completion> completions = new ArrayList<>();
-        if (firstLine.contains("identifiers")) {
-            for (int i = 0; i < tokens.length; i++) {
-                final String token = tokens[i];
+            if (lines.length > 1 && lines[0].contains("identifiers")) {
+                final List<Completion> completions = new ArrayList<>();
+                for (int i = 1; i < lines.length; i++) {
+                    final String line = lines[i];
 
-                if (!token.contains("identifiers")) {
-                    final String[] parts = token.split("\\s");
-                    final String completionType = getCompletionType(parts);
-                    final String completionText = getCompletionText(parts);
-                    final Completion completion = new TextCompletion(completionType, completionText);
-                    completions.add(completion);
+                    final String[] tokens = line.split("\\s");
+                    final String completionType = getCompletionType(tokens);
+                    final String completionText = getCompletionText(tokens);
+                    completions.add(new TextCompletion(completionType, completionText));
                 }
+                return completions;
             }
-        } else if (firstLine.contains("calltips")) {
-            //TODO - this goes in a Parameter Info handler (ctrl+p) instead of here - see: ShowParameterInfoHandler.register
-            System.out.println(tokens);
+//            else if (lines[0].contains("calltips")) {
+//                //TODO - this goes in a Parameter Info handler (ctrl+p) instead of here - see: ShowParameterInfoHandler.register
+//                System.out.println(tokens);
+//            }
         }
 
-        return completions;
+        return Collections.emptyList();
     }
 
     @Nullable
@@ -131,18 +128,20 @@ public final class DCDCompletionClient {
         map.put("s", "Struct");
         map.put("u", "Union");
         map.put("v", "Variable");
-        map.put("m", "Variable");
+        map.put("m", "Variable"); // Member Variable
         map.put("k", "Keyword");
         map.put("f", "Function");
-        map.put("g", "Enum");
-        map.put("e", "Enum");
+        map.put("g", "Enum"); // enum name
+        map.put("e", "Enum"); // enum member
         map.put("P", "Package");
         map.put("M", "Module");
         map.put("a", "Array");
-        map.put("A", "Map");
+        map.put("A", "Map"); // associative array
         map.put("l", "Alias");
         map.put("t", "Template");
         map.put("T", "Mixin");
+        map.put("h", "Type Param"); // template type parameter (when no colon constraint)
+        map.put("p", "Variadic Param"); // template variadic parameter
         map.put("U", "Unknown");
         return map;
     }
