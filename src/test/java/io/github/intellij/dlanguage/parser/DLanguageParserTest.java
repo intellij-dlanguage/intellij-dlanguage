@@ -8,7 +8,10 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
         super("parser", "d", new DLangParserDefinition());
     }
 
-    // shebang
+    /**
+     * Checks the shebang.d file in /parser directory. File content is:
+     * '#!/usr/bin/env rdmd -unittest -Isrc'
+     */
     public void testshebang() {
         doDlangParserTest(true, true);
     }
@@ -47,6 +50,9 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
         doDlangParserTest(true, true);
     }
 
+    /**
+     * Checks the declaration_alias2.d file in /parser directory.
+     */
     public void testdeclaration_alias2() {
         doDlangParserTest(true, true);
     }
@@ -63,6 +69,9 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
         doDlangParserTest(true, true);
     }
 
+    /**
+     * Checks the declaration_alias3.d file in /parser directory.
+     */
     public void testdeclaration_alias3() {
         doDlangParserTest(true, true);
     }

@@ -49,7 +49,7 @@ public abstract class DLanguageParserTestBase extends ParsingTestCase {
 //                e.printStackTrace();
 //            }
 //        }
-        doTest(checkResult); // todo: after dropping support < 2018.3, update to: super.doTest(checkResult, false);
+        doTest(checkResult, shouldPass);
         if (shouldPass) {
             assertFalse(
                 "PsiFile contains error elements",
