@@ -4,6 +4,7 @@ import com.intellij.codeInsight.completion.CompletionParameters;
 import com.intellij.codeInsight.completion.CompletionProvider;
 import com.intellij.codeInsight.completion.CompletionResultSet;
 import com.intellij.openapi.application.ex.ApplicationUtil;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtilCore;
 import com.intellij.openapi.progress.ProgressManager;
@@ -19,11 +20,13 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.function.Function;
 
 import static io.github.intellij.dlanguage.codeinsight.DCompletionContributor.createLookupElement;
 
 final class DCompletionProvider extends CompletionProvider<CompletionParameters> {
+
+    private static final Logger log = Logger.getInstance(DCompletionProvider.class);
+
     private final Executor executor = Executors.newSingleThreadExecutor();
 
     @Override
@@ -38,14 +41,16 @@ final class DCompletionProvider extends CompletionProvider<CompletionParameters>
             final DCDCompletionServer dcdCompletionServer = module.getComponent(DCDCompletionServer.class);
             try {
                 dcdCompletionServer.exec();
-            } catch (DCDCompletionServer.DCDError dcdError) {
-                throw new RuntimeException(dcdError);
+            } catch (DCDCompletionServer.DCDError e) {
+                log.warn("There was a problem starting dcd server", e);
+                throw new RuntimeException(e);
             }
         }, executor).thenApplyAsync(aVoid -> {
             try {
                 return new DCDCompletionClient().autoComplete(position, file, fileContent);
-            } catch (DCDCompletionClient.DCDError dcdError) {
-                throw new RuntimeException(dcdError);
+            } catch (DCDCompletionClient.DCDError e) {
+                log.warn("There was a problem using dcd client", e);
+                throw new RuntimeException(e);
             }
         });
 
