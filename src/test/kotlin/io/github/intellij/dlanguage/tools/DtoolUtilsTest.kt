@@ -38,6 +38,7 @@ class DtoolUtilsTest {
     fun testToSemVer() {
         assertNull(null.toSemVer())
         assertNull("".toSemVer())
+        assertNull(".".toSemVer())
         assertNull("5135".toSemVer())
 
         assertEquals("Should handle version string returned by DUB",
@@ -47,6 +48,7 @@ class DtoolUtilsTest {
 
         //assertEquals(SemVer("v2", 2, 0, 0), "v2".toSemVer())
         assertEquals(SemVer("1.5", 1, 5, 0), "1.5".toSemVer())
+        assertEquals(SemVer("1.6.", 1, 6, 0), "1.6.".toSemVer())
         assertEquals(SemVer("0.1.0", 0, 1, 0), "0.1.0".toSemVer())
         assertEquals(SemVer("v0.1.0", 0, 1, 0), "v0.1.0".toSemVer())
         assertEquals(SemVer("v0.1.1-alpha.0", 0, 1, 1), "v0.1.1-alpha.0".toSemVer())
@@ -58,6 +60,10 @@ class DtoolUtilsTest {
     fun testIsSemVer() {
         assertFalse(null.isSemVer())
         assertFalse("".isSemVer())
+        assertFalse("   ".isSemVer())
+        assertFalse(".".isSemVer())
+        assertFalse(" . ".isSemVer())
+        assertFalse("random.words".isSemVer())
 
         assertTrue("0.1.0".isSemVer())
         assertTrue("v0.1.0".isSemVer())

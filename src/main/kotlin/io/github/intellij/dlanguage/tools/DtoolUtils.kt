@@ -43,9 +43,13 @@ class DtoolUtils {
         fun String?.toSemVer(): SemVer? {
             return if (this.isSemVer()) {
                 val parts = this!!.split(".")
+                    .filterNot { s -> s.isEmpty() }
                     .map {
-                        it.split(Regex("\\D")).filterNot { s -> s.isBlank() } [0]
-                    }.map {
+                        it.split(Regex("\\D"))
+                            .filterNot { s -> s.isEmpty() }
+                            .first()
+                    }
+                    .map {
                         it.toInt()
                     }
 
@@ -60,12 +64,12 @@ class DtoolUtils {
         @JvmStatic
         fun String?.isSemVer(): Boolean {
             return if (this.isNullOrBlank()) false
-            else this!!.contains(".") &&
+            else this.contains(".") &&
                 this.split(".")
                     .map {
                         it.replace(Regex("\\D"), "")
                     }.filterNot {
-                        isBlank()
+                        it.isBlank()
                     }.isNotEmpty()
         }
 
