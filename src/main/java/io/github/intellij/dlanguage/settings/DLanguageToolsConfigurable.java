@@ -17,6 +17,11 @@ import io.github.intellij.dlanguage.messagebus.Topics;
 import io.github.intellij.dlanguage.tools.DtoolUtils;
 import io.github.intellij.dlanguage.utils.ExecUtil;
 import io.github.intellij.dlanguage.utils.GuiUtil;
+
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
@@ -104,6 +109,10 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
      * cabal plays nice.
      */
     public static String getVersion(final String cmd) {
+        if (cmd == null || cmd.isEmpty() || !Files.isExecutable(Paths.get(cmd))) {
+            LOG.warn(String.format("unable to get version info for path: '%s'", cmd));
+            return "";
+        }
         final @Nullable String versionOutput = ExecUtil.readCommandLine(null, cmd, "--version");
 
         if (StringUtil.isNotEmpty(versionOutput)) {
@@ -159,10 +168,27 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
             if (t.isModified()) {
                 t.setDirty(true);
 
-                if(StringUtil.isNotEmpty(t.pathField.getText()) && !StringUtil.containsIgnoreCase(t.pathField.getText(), t.command)) {
-                    t.versionField.setText(String.format("Not a valid %s binary", t.command));
-                    t.versionField.setDisabledTextColor(UIManager.getColor("Focus.color"));
+                final String exePath = StringUtil.trim(t.pathField.getText());
+
+                if(StringUtil.isNotEmpty(exePath)) {
+                    final Path path = Paths.get(exePath);
+
+                    if (!Files.exists(path, LinkOption.NOFOLLOW_LINKS)) {
+                        t.versionField.setText("Path does not exist");
+                        t.versionField.setDisabledTextColor(UIManager.getColor("Focus.color"));
+                    } else if(!Files.isExecutable(path)) {
+                        t.versionField.setText("Path is not executable");
+                        t.versionField.setDisabledTextColor(UIManager.getColor("Focus.color"));
+                    } else if(!StringUtil.containsIgnoreCase(exePath, t.command)) {
+                        t.versionField.setText(String.format("Not a valid %s binary", t.command));
+                        t.versionField.setDisabledTextColor(UIManager.getColor("Focus.color"));
+                    } else {
+                        // then it's a valid path to the tool
+                        t.updateVersion();
+                        return true;
+                    }
                 } else {
+                    // allow it to be set to a blank value
                     t.updateVersion();
                     return true;
                 }
