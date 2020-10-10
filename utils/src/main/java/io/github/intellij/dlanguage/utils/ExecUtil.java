@@ -123,6 +123,7 @@ public class ExecUtil {
             paths.add(sep + "usr" + sep + "local" + sep + "bin");
             paths.add(sep + "usr" + sep + "bin");
             paths.add(homeDir + sep + "bin");
+            paths.add(sep + "snap" + sep + command + sep + "current"); // #575 support snaps
         }
         for (final String path : paths) {
             LOG.info(String.format("Looking for %s in %s", command, path));
