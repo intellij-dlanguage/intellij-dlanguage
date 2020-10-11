@@ -49,17 +49,19 @@ public class DlangSdkType extends SdkType {
     private static final String SDK_TYPE_ID = "DMD2 SDK";
     private static final String SDK_NAME = "DMD v2 SDK";
 
-    @Nullable
+    @NotNull
     private static final File[] DEFAULT_DMD_PATHS;
-    @Nullable
+    @NotNull
     private static final File[] DEFAULT_DOCUMENTATION_PATHS;
-    @Nullable
+    @NotNull
     private static final File[] DEFAULT_PHOBOS_PATHS;
-    @Nullable
+    @NotNull
     private static final File[] DEFAULT_DRUNTIME_PATHS;
 
     static {
         if (SystemInfo.isWindows) {
+            // This covers the default paths used by the Windows installer and therefore
+            // https://chocolatey.org/packages/dmd is also covered (as it uses same process).
             DEFAULT_DMD_PATHS = new File[] {
                 new File("C:/D/dmd2/windows/bin/dmd.exe")
             };
@@ -73,37 +75,42 @@ public class DlangSdkType extends SdkType {
                 new File("C:/D/dmd2/src/druntime/import")
             };
         } else if (SystemInfo.isMac) {
+            // I use Homebrew on Mac. These paths may differ from what the .dmg does.
             DEFAULT_DMD_PATHS = new File[] {
-                new File("/usr/local/opt/dmd"),
-                new File("/usr/local/bin"),
+                new File("/usr/local/opt/dmd"), // installed via Homebrew
+                new File("/usr/local/bin"), // dmg install
                 new File("/opt/local/bin")
                 };
             DEFAULT_DOCUMENTATION_PATHS = new File[]{};
             DEFAULT_PHOBOS_PATHS = new File[] {
-                new File("/Library/D/dmd/src/phobos")
+                new File("/Library/D/dmd/src/phobos") // installed via Homebrew
             };
             DEFAULT_DRUNTIME_PATHS = new File[] {
-                new File("/Library/D/dmd/src/druntime/import")
+                new File("/Library/D/dmd/src/druntime/import") // installed via Homebrew
             };
         } else if (SystemInfo.isUnix) {
+            // The official .rpm and .deb installers are the priority
             DEFAULT_DMD_PATHS = new File[] {
-                new File("/usr/local/bin/dmd"),
-                new File("/usr/bin/dmd")
+                new File("/usr/bin/dmd"), // Fedora (official .rpm)
+                new File("/usr/local/bin/dmd"), // Ubuntu
+                new File("/snap/dmd/current/bin/dmd") // snapcraft.io
             };
             DEFAULT_DOCUMENTATION_PATHS = new File[] {
-                new File("/usr/local/share/dmd/html/d"),
-                new File("/usr/share/dmd/html/d"),
+                new File("/usr/share/dmd/html/d"), // Fedora (official .rpm)
+                new File("/usr/local/share/dmd/html/d"), // Ubuntu
                 new File("/usr/share/d/html/d")
             };
             DEFAULT_PHOBOS_PATHS = new File[] {
-                new File("/usr/local/include/dmd/phobos"),
-                new File("/usr/include/dmd/phobos"),
-                new File("/usr/include/dlang/dmd")
+                new File("/usr/include/dmd/phobos"), // Fedora (official .rpm)
+                new File("/usr/local/include/dmd/phobos"), // Ubuntu (should it be src/phobos?)
+                new File("/usr/include/dlang/dmd"), // Arch Linux (see:#457 should this have /phobos on end?)
+                new File("/snap/phobos/current/import/phobos") // snapcraft.io
             };
             DEFAULT_DRUNTIME_PATHS = new File[] {
-                new File("/usr/local/include/dmd/druntime/import"),
-                new File("/usr/include/dmd/druntime/import"),
-                new File("/usr/include/dlang/dmd")
+                new File("/usr/include/dmd/druntime/import"), // Fedora (official .rpm)
+                new File("/usr/local/include/dmd/druntime/import"), // Ubuntu (should it be src/druntime/import?)
+                new File("/usr/include/dlang/dmd"), // Arch Linux (see:#457 should this have /druntime/import on end?)
+                new File("/snap/druntime/current/import/druntime") // snapcraft.io
             };
         } else {
             LOG.warn(String.format("We didn't cater for %s", SystemInfo.getOsNameAndVersion()));
@@ -228,7 +235,7 @@ public class DlangSdkType extends SdkType {
 //        });
 //    }
 
-    class SetupStatus {
+    static class SetupStatus {
         private boolean runtime;
         private boolean phobos;
         private boolean documentation;
@@ -277,7 +284,7 @@ public class DlangSdkType extends SdkType {
     public void setupSdkPaths(@NotNull final Sdk sdk) {
         final SdkModificator sdkModificator = sdk.getSdkModificator();
 
-        SetupStatus status = new SetupStatus(false,false,false);
+        SetupStatus status = new SetupStatus(false, false, false);
 
         if (SystemInfo.isWindows) {
             status = setupSDKPathsFromWindowsConfigFile(sdk,sdkModificator);
@@ -373,20 +380,21 @@ public class DlangSdkType extends SdkType {
             handler.waitFor();
             final String configFile = configFileArray[0];
             if (configFile == null) {
-                return new SetupStatus(false,false,false);
+                return new SetupStatus(false, false, false);
             }
             final File file = new File(configFile);
             if (!file.exists()) {
-                return new SetupStatus(false,false,false);
+                return new SetupStatus(false, false, false);
             }
             //DFLAGS="-I%@P%\..\..\src\phobos" "-I%@P%\..\..\src\druntime\import"
             final String[] phobos = new String[1];
             final Pattern phobosPattern = Pattern
                 .compile("\"-I%@P%([\\.\\\\A-Za-z]+phobos[\\.\\\\A-Za-z]*)\"");
+
             final String[] druntime = new String[1];
             final Pattern druntimePattern = Pattern
                 .compile("\"-I%@P%([\\.\\\\A-Za-z]+druntime\\\\import[\\.\\\\A-Za-z]*)\"");
-            ;
+
             Files.lines(file.toPath()).forEach(line -> {
                 if (line.contains("DFLAGS=")) {
                     final Matcher phobosMatcher = phobosPattern.matcher(line);
@@ -406,17 +414,17 @@ public class DlangSdkType extends SdkType {
             if (phobosFile.exists() && druntimeFile.exists()) {
                 final VirtualFile phobosVirtualFile = LocalFileSystem.getInstance().findFileByPath(phobosFile.getAbsolutePath());
                 final VirtualFile druntimeVirtualFile = LocalFileSystem.getInstance().findFileByPath(druntimeFile.getAbsolutePath());
-                if(phobosVirtualFile == null || druntimeVirtualFile == null) return new SetupStatus(false, false,false);
+                if(phobosVirtualFile == null || druntimeVirtualFile == null) return new SetupStatus(false, false, false);
                 sdkModificator.addRoot(phobosVirtualFile, OrderRootType.SOURCES);
                 sdkModificator.addRoot(druntimeVirtualFile, OrderRootType.SOURCES);
-                return new SetupStatus(true,true,false);
+                return new SetupStatus(true, true, false);
             } else {
-                return new SetupStatus(false, false,false);
+                return new SetupStatus(false, false, false);
             }
 
         } catch (final ExecutionException | IOException e) {
             Logger.getInstance(DlangSdkType.class).error(e);
-            return new SetupStatus(false, false,false);
+            return new SetupStatus(false, false, false);
         }
     }
 
@@ -446,9 +454,10 @@ public class DlangSdkType extends SdkType {
 
     @Nullable
     @Override
-    public AdditionalDataConfigurable createAdditionalDataConfigurable(@NotNull final SdkModel sdkModel,
-        @NotNull final SdkModificator sdkModificator) {
-        return null;
+    public AdditionalDataConfigurable createAdditionalDataConfigurable(
+                                            @NotNull final SdkModel sdkModel,
+                                            @NotNull final SdkModificator sdkModificator) {
+        return null; // it's ok to return null but would be good to see what we could do with this
     }
 
     @NotNull
@@ -474,7 +483,7 @@ public class DlangSdkType extends SdkType {
      * @param sdkHome path to dmd home directory
      * @return String containing DMD version or null
      */
-    @Nullable
+    @NotNull
     private Future<String> getDmdVersion(final String sdkHome) {
         return ApplicationManager.getApplication().executeOnPooledThread(() -> {
             if (isValidSdkHome(sdkHome)) {
