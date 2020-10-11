@@ -11,10 +11,19 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 
 public class DlangRunDubConfigurationType implements ConfigurationType {
+
+    private static final String NAME = "Build with DUB";
+
     private final DLanguageFactory myConfigurationFactory;
 
     public DlangRunDubConfigurationType() {
         myConfigurationFactory = new DLanguageFactory(this);
+    }
+
+    @NotNull
+    @Override
+    public String getId() {
+        return "DlangRunDubConfiguration";
     }
 
     @Override
@@ -32,33 +41,20 @@ public class DlangRunDubConfigurationType implements ConfigurationType {
         return DlangIcons.FILE;
     }
 
-    @NotNull
-    @Override
-    public String getId() {
-        return "DlangRunDubConfiguration";
-    }
-
     @Override
     public ConfigurationFactory[] getConfigurationFactories() {
         return new ConfigurationFactory[]{myConfigurationFactory};
     }
 
-    private static class DLanguageFactory extends ConfigurationFactory {
-
-        private static final String NAME = "Build with DUB";
+    private static class DLanguageFactory extends DlangRunConfigurationFactory {
 
         public DLanguageFactory(final ConfigurationType type) {
             super(type);
         }
 
-        public RunConfiguration createTemplateConfiguration(final Project project) {
-            return new DlangRunDubConfiguration(NAME, project, this);
-        }
-
         @NotNull
-        @Override
-        public String getName() {
-            return NAME;
+        public RunConfiguration createTemplateConfiguration(@NotNull final Project project) {
+            return new DlangRunDubConfiguration(NAME, project, this);
         }
     }
 }

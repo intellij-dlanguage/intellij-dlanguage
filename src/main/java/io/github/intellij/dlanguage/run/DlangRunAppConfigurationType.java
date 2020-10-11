@@ -18,6 +18,12 @@ public class DlangRunAppConfigurationType implements ConfigurationType {
         myConfigurationFactory = new DLanguageFactory(this);
     }
 
+    @NotNull
+    @Override
+    public String getId() {
+        return "DlangRunAppConfiguration";
+    }
+
     @Override
     public String getDisplayName() {
         return DlangBundle.INSTANCE.message("run.app.text");
@@ -33,23 +39,18 @@ public class DlangRunAppConfigurationType implements ConfigurationType {
         return DlangIcons.FILE;
     }
 
-    @NotNull
-    @Override
-    public String getId() {
-        return "DlangRunAppConfiguration";
-    }
-
     @Override
     public ConfigurationFactory[] getConfigurationFactories() {
         return new ConfigurationFactory[]{myConfigurationFactory};
     }
 
-    private static class DLanguageFactory extends ConfigurationFactory {
+    private static class DLanguageFactory extends DlangRunConfigurationFactory {
         public DLanguageFactory(final ConfigurationType type) {
             super(type);
         }
 
-        public RunConfiguration createTemplateConfiguration(final Project project) {
+        @NotNull
+        public RunConfiguration createTemplateConfiguration(@NotNull final Project project) {
             return new DlangRunAppConfiguration("Run D App", project, this);
         }
     }

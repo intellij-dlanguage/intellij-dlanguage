@@ -11,10 +11,17 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 
 public class DlangRunDmdConfigurationType implements ConfigurationType {
+
     private final DLanguageFactory myConfigurationFactory;
 
     public DlangRunDmdConfigurationType() {
         myConfigurationFactory = new DLanguageFactory(this);
+    }
+
+    @NotNull
+    @Override
+    public String getId() {
+        return "DlangRunDmdConfiguration";
     }
 
     @Override
@@ -32,23 +39,18 @@ public class DlangRunDmdConfigurationType implements ConfigurationType {
         return DlangIcons.FILE;
     }
 
-    @NotNull
-    @Override
-    public String getId() {
-        return "DlangRunDmdConfiguration";
-    }
-
     @Override
     public ConfigurationFactory[] getConfigurationFactories() {
         return new ConfigurationFactory[]{myConfigurationFactory};
     }
 
-    private static class DLanguageFactory extends ConfigurationFactory {
+    private static class DLanguageFactory extends DlangRunConfigurationFactory {
         public DLanguageFactory(final ConfigurationType type) {
             super(type);
         }
 
-        public RunConfiguration createTemplateConfiguration(final Project project) {
+        @NotNull
+        public RunConfiguration createTemplateConfiguration(@NotNull final Project project) {
             return new DlangRunDmdConfiguration("Compile with DMD", project, this);
         }
     }
