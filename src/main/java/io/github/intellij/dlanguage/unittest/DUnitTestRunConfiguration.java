@@ -2,10 +2,7 @@ package io.github.intellij.dlanguage.unittest;
 
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.Executor;
-import com.intellij.execution.configurations.LocatableConfigurationBase;
-import com.intellij.execution.configurations.RunProfileState;
-import com.intellij.execution.configurations.RuntimeConfigurationError;
-import com.intellij.execution.configurations.RuntimeConfigurationException;
+import com.intellij.execution.configurations.*;
 import com.intellij.execution.runners.ExecutionEnvironment;
 import com.intellij.openapi.options.SettingsEditor;
 import com.intellij.openapi.project.Project;
@@ -57,20 +54,23 @@ public class DUnitTestRunConfiguration extends LocatableConfigurationBase {
     private String workingDir;
     private Map<String, String> envVars;
 
-    public DUnitTestRunConfiguration(final Project project) {
-        super(project, new DUnitTestRunConfigurationFactory(DUnitTestRunConfigurationType.getInstance()), DLanguage.INSTANCE.getDisplayName());
+    public DUnitTestRunConfiguration(@NotNull final Project project) {
+        this(DLanguage.INSTANCE.getDisplayName(), project);
+    }
+
+    public DUnitTestRunConfiguration(@Nullable String name, @NotNull Project project) {
+        super(project, new DUnitTestRunConfigurationFactory(DUnitTestRunConfigurationType.getInstance()), name);
         envVars = new HashMap<>();
     }
 
-
     @Override
-    public void readExternal(final Element element) throws InvalidDataException {
+    public void readExternal(final @NotNull Element element) throws InvalidDataException {
         super.readExternal(element);
         XmlSerializer.deserializeInto(this, element);
     }
 
     @Override
-    public void writeExternal(final Element element) throws WriteExternalException {
+    public void writeExternal(final @NotNull Element element) throws WriteExternalException {
         super.writeExternal(element);
         XmlSerializer.serializeInto(this, element);
     }

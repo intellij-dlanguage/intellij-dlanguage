@@ -1,47 +1,21 @@
 package io.github.intellij.dlanguage.run;
 
-import com.intellij.execution.configurations.ConfigurationFactory;
 import com.intellij.execution.configurations.ConfigurationType;
+import com.intellij.execution.configurations.ConfigurationTypeBase;
 import com.intellij.execution.configurations.RunConfiguration;
 import com.intellij.openapi.project.Project;
 import io.github.intellij.dlanguage.DlangBundle;
 import io.github.intellij.dlanguage.icons.DlangIcons;
 import org.jetbrains.annotations.NotNull;
 
-import javax.swing.*;
-
-public class DlangRunAppConfigurationType implements ConfigurationType {
-
-    private final DLanguageFactory myConfigurationFactory;
+public class DlangRunAppConfigurationType extends ConfigurationTypeBase {
 
     public DlangRunAppConfigurationType() {
-        myConfigurationFactory = new DLanguageFactory(this);
-    }
-
-    @NotNull
-    @Override
-    public String getId() {
-        return "DlangRunAppConfiguration";
-    }
-
-    @Override
-    public String getDisplayName() {
-        return DlangBundle.INSTANCE.message("run.app.text");
-    }
-
-    @Override
-    public String getConfigurationTypeDescription() {
-        return DlangBundle.INSTANCE.message("run.app.descr");
-    }
-
-    @Override
-    public Icon getIcon() {
-        return DlangIcons.FILE;
-    }
-
-    @Override
-    public ConfigurationFactory[] getConfigurationFactories() {
-        return new ConfigurationFactory[]{myConfigurationFactory};
+        super("DlangRunAppConfigType",
+            DlangBundle.INSTANCE.message("run.app.text"),
+            DlangBundle.INSTANCE.message("run.app.descr"),
+            DlangIcons.RUN);
+        addFactory(new DLanguageFactory(this));
     }
 
     private static class DLanguageFactory extends DlangRunConfigurationFactory {
@@ -51,7 +25,7 @@ public class DlangRunAppConfigurationType implements ConfigurationType {
 
         @NotNull
         public RunConfiguration createTemplateConfiguration(@NotNull final Project project) {
-            return new DlangRunAppConfiguration("Run D App", project, this);
+            return new DlangRunAppConfiguration("DlangRunAppConfig", project, this);
         }
     }
 }

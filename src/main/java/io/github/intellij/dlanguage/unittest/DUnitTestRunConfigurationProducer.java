@@ -16,6 +16,12 @@ import org.jetbrains.annotations.Nullable;
 
 public class DUnitTestRunConfigurationProducer extends LazyRunConfigurationProducer<DUnitTestRunConfiguration> {
 
+    private final DUnitTestRunConfigurationType configurationType;
+
+    public DUnitTestRunConfigurationProducer() {
+        this.configurationType = new DUnitTestRunConfigurationType();
+    }
+
     @Override
     protected boolean setupConfigurationFromContext(@NotNull final DUnitTestRunConfiguration configuration,
                                                     @NotNull final ConfigurationContext context,
@@ -77,6 +83,6 @@ public class DUnitTestRunConfigurationProducer extends LazyRunConfigurationProdu
     @NotNull
     @Override
     public ConfigurationFactory getConfigurationFactory() {
-        return new DUnitTestRunConfigurationFactory(DUnitTestRunConfigurationType.getInstance());
+        return this.configurationType.getConfigurationFactories()[0];
     }
 }

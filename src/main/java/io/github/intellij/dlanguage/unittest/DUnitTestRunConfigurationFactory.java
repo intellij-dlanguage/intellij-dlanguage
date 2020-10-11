@@ -15,6 +15,6 @@ public class DUnitTestRunConfigurationFactory extends DlangRunConfigurationFacto
     @NotNull
     @Override
     public RunConfiguration createTemplateConfiguration(@NotNull final Project project) {
-        return new DUnitTestRunConfiguration(project);
+        return new DUnitTestRunConfiguration("DlangTestConfig", project);
     }
 }
