@@ -26,10 +26,11 @@ package uk.co.cwspencer.gdb.gdbmi;
 
 import com.intellij.execution.ui.ConsoleView;
 import com.intellij.execution.ui.ConsoleViewContentType;
+import com.intellij.openapi.util.text.StringUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -41,8 +42,10 @@ import java.util.regex.Pattern;
  */
 public class GdbMiParser2 {
 
-    private static final Set<String> START_TOKENS = new HashSet<String>(Arrays.asList(
+    private static final Set<String> START_TOKENS = new HashSet<>(Arrays.asList(
         "*", "+", "=", "~", "@", "&"));
+
+    private final List<Pattern> patterns = new ArrayList<>();
 
     // Partially processed record
     private GdbMiResultRecord m_resultRecord;
@@ -51,11 +54,18 @@ public class GdbMiParser2 {
     private final ConsoleView rawConsole;
 
     // List of unprocessed records
-    private final List<GdbMiRecord> m_records = new ArrayList<GdbMiRecord>();
+    private final List<GdbMiRecord> m_records = new ArrayList<>();
     private Long currentToken;
 
     public GdbMiParser2(@Nullable ConsoleView rawConsole) {
         this.rawConsole = rawConsole;
+
+        this.patterns.add(Pattern.compile("(~\"\\[(?:.*?)\\]\\\\n\")$"));
+        this.patterns.add(Pattern.compile("(=breakpoint\\-modified(?:.*))$"));
+        this.patterns.add(Pattern.compile("(=thread\\-exited(?:.*))$"));
+        this.patterns.add(Pattern.compile("(=thread\\-created(?:.*))$"));
+        this.patterns.add(Pattern.compile("(\\*stopped(?:.*))$"));
+        this.patterns.add(Pattern.compile("(\\*running(?:.*))$"));
     }
 
     @Nullable
@@ -231,7 +241,7 @@ public class GdbMiParser2 {
         return result;
     }
 
-    private static void parseChangelistLineReal(String line, GdbMiResult result, Boolean includeValue) {
+    private static void parseChangelistLineReal(String line, GdbMiResult result, boolean includeValue) {
         String regex = "(?:\\{name=\"([^\"]+)\",";
 
         if (includeValue) {
@@ -341,7 +351,7 @@ public class GdbMiParser2 {
 
         Pattern p = Pattern.compile("thread-id");
         Matcher m = p.matcher(line);
-        Boolean hasThreadId = m.find();
+        boolean hasThreadId = m.find();
 
         String pattern = "(?:child=\\{" +
             "(?:name=\"([^\"]+)\")," +
@@ -454,6 +464,7 @@ public class GdbMiParser2 {
      *
      * @return A list of unprocessed records.
      */
+    @NotNull
     public List<GdbMiRecord> getRecords() {
         return m_records;
     }
@@ -463,7 +474,7 @@ public class GdbMiParser2 {
      *
      * @param data Data read from the GDB process.
      */
-    public void process(byte[] data) {
+    public void process(@NotNull final byte[] data) {
         process(data, data.length);
     }
 
@@ -473,13 +484,12 @@ public class GdbMiParser2 {
      * @param data   Data read from the GDB process.
      * @param length Number of bytes from data to process.
      */
-    public void process(byte[] data, int length) {
+    public void process(@NotNull final byte[] data, int length) {
         // Run the data through the lexer first
-        String[] buffer = convertOutput(data);
+        final String[] buffer = convertOutput(data);
 
-        for (String line : buffer) {
-            if (line.isEmpty() ||
-                line.matches("@\u0000*")) {
+        for (final String line : buffer) {
+            if (StringUtil.isEmptyOrSpaces(line) || line.matches("@\u0000*")) {
                 continue;
             }
 
@@ -493,27 +503,19 @@ public class GdbMiParser2 {
     }
 
     private String[] convertOutput(byte[] data) {
-        String buff;
+        final String buff = new String(data, StandardCharsets.UTF_8);
 
-        try {
-            buff = new String(data, "UTF-8");
-        } catch (UnsupportedEncodingException ignored) {
-            return new String[]{};
+        if(StringUtil.isEmptyOrSpaces(buff)) {
+            return new String[] {};
         }
 
         // WSL support: GDB on WSL has also \n
-        String[] lines = buff.split("\r?\n");
-        List<String> result = new ArrayList<String>();
+        final String[] lines = buff.split("\r?\n");
+        final List<String> result = new ArrayList<String>();
 
-        List<Pattern> p = new ArrayList<Pattern>();
-        p.add(Pattern.compile("(~\"\\[(?:.*?)\\]\\\\n\")$"));
-        p.add(Pattern.compile("(=breakpoint\\-modified(?:.*))$"));
-        p.add(Pattern.compile("(=thread\\-exited(?:.*))$"));
-        p.add(Pattern.compile("(=thread\\-created(?:.*))$"));
-        p.add(Pattern.compile("(\\*stopped(?:.*))$"));
-        p.add(Pattern.compile("(\\*running(?:.*))$"));
         Matcher m;
-        Boolean additionalLineFound = false;
+        boolean additionalLineFound = false;
+
         for (String line : lines) {
             if (isGdbMiLine(line)) {
                 result.add(line);
@@ -522,10 +524,10 @@ public class GdbMiParser2 {
 
             line = "@" + line;
 
-            for (Pattern aP : p) {
-                m = aP.matcher(line);
+            for (final Pattern p : this.patterns) {
+                m = p.matcher(line);
                 if (m.find()) {
-                    result.add(line.replaceAll(aP.pattern(), ""));
+                    result.add(line.replaceAll(p.pattern(), ""));
                     result.add(m.group(1));
                     additionalLineFound = true;
                     break;
@@ -540,9 +542,11 @@ public class GdbMiParser2 {
         return result.toArray(new String[result.size()]);
     }
 
-    private Boolean isGdbMiLine(String line) {
-        if (line.length() == 0)
+    private boolean isGdbMiLine(final String line) {
+        if (StringUtil.isEmptyOrSpaces(line)) {
             return false;
+        }
+
         if (START_TOKENS.contains(line.substring(0, 1))) {
             return true;
         }
@@ -783,7 +787,7 @@ public class GdbMiParser2 {
 
         p = Pattern.compile("thread-groups=");
         m = p.matcher(line);
-        Boolean hasThreadGroups = m.find();
+        boolean hasThreadGroups = m.find();
 
         String pattern = "(?:number=\"([^\"]+)\")," +
             "(?:type=\"([^\"]+)\")," +
@@ -974,11 +978,11 @@ public class GdbMiParser2 {
     }
 
     private GdbMiResult parseMultipleBreakpointLine(String line) {
-        GdbMiResult subRes = new GdbMiResult("bkpt");
+        final GdbMiResult subRes = new GdbMiResult("bkpt");
         subRes.value.type = GdbMiValue.Type.List;
         subRes.value.list = new GdbMiList();
         subRes.value.list.type = GdbMiList.Type.Results;
-        subRes.value.list.results = new ArrayList<GdbMiResult>();
+        subRes.value.list.results = new ArrayList<>();
 
         String pattern = "(?:number=\"(\\d+)\")," +
             "(?:type=\"([^\"]+)\")," +
@@ -988,15 +992,14 @@ public class GdbMiParser2 {
             "(?:times=\"(\\d+)\")," +
             "(?:original-location=\"([^\"]+)\")";
 
-        Pattern p = Pattern.compile(pattern);
-        Matcher m = p.matcher(line);
+        Matcher m = Pattern.compile(pattern).matcher(line);
 
         if (!m.find()) {
             printUnhandledLine(line);
             return subRes;
         }
 
-        Integer matchGroup = 0;
+        int matchGroup = 0;
 
         GdbMiValue bkptVal = new GdbMiValue(GdbMiValue.Type.Tuple);
 
@@ -1056,9 +1059,9 @@ public class GdbMiParser2 {
 
         line = line.substring(line.indexOf("},{") + 2);
 
-        p = Pattern.compile("thread-groups=");
-        m = p.matcher(line);
-        Boolean hasThreadGroups = m.find();
+        m = Pattern.compile("thread-groups=").matcher(line);
+
+        boolean hasThreadGroups = m.find();
 
         pattern = "\\{(?:number=\"([^\"]+)\")," +
             "(?:enabled=\"([^\"]+)\")," +
@@ -1074,8 +1077,7 @@ public class GdbMiParser2 {
 
         pattern += "\\}";
 
-        p = Pattern.compile(pattern);
-        m = p.matcher(line);
+        m = Pattern.compile(pattern).matcher(line);
 
         if (!m.find()) {
             printUnhandledLine(line);
@@ -1167,7 +1169,7 @@ public class GdbMiParser2 {
 
         Pattern p = Pattern.compile("(?:core=\"(\\d+)\")");
         Matcher m = p.matcher(line);
-        Boolean hasCore = m.find();
+        boolean hasCore = m.find();
 
         String pattern = "(?:reason=\"([^\"]+)\")," +
             "(?:disp=\"([^\"]+)\")," +
@@ -1327,7 +1329,7 @@ public class GdbMiParser2 {
 
         Pattern p = Pattern.compile("(?:core=\"(\\d+)\")");
         Matcher m = p.matcher(line);
-        Boolean hasCore = m.find();
+        boolean hasCore = m.find();
         String pattern = "(?:reason=\"([^\"]+)\")," +
             "(?:frame=\\{([^\\}].+)\\})," +
             "(?:thread-id=\"([^\"]+)\")," +
