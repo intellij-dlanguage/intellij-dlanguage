@@ -24,6 +24,7 @@
 
 package uk.co.cwspencer.gdb;
 
+import com.intellij.execution.Platform;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
@@ -32,28 +33,30 @@ import uk.co.cwspencer.gdb.messages.*;
 import uk.co.cwspencer.ideagdb.debug.GdbDebugProcess;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
  * Class for interacting with GDB.
  */
 public class Gdb {
-    private static final Logger m_log = Logger.getInstance("#uk.co.cwspencer.gdb.Gdb");
+    private static final Logger m_log = Logger.getInstance(Gdb.class);
+
+    private static final Platform CURRENT_PLATFORM = Platform.current();
 
     // Size in KB for the buffer
     private static final Integer BUFFER_SIZE = 256 * 1024;
     // Handle to the ASCII character set
-    private static final Charset m_ascii = Charset.forName("US-ASCII");
+    private static final Charset CHARSET_ASCII = StandardCharsets.US_ASCII;
     // Commands that have been sent to GDB and are awaiting a response
     private final Map<Long, CommandData> m_pendingCommands = new HashMap<Long, CommandData>();
     // GDB variable objects
-    private final Map<String, GdbVariableObject> m_variableObjectsByExpression =
-        new HashMap<String, GdbVariableObject>();
-    private final Map<String, GdbVariableObject> m_variableObjectsByName =
-        new HashMap<String, GdbVariableObject>();
+    private final Map<String, GdbVariableObject> m_variableObjectsByExpression = new HashMap<String, GdbVariableObject>();
+    private final Map<String, GdbVariableObject> m_variableObjectsByName = new HashMap<String, GdbVariableObject>();
     // The listener
     private final GdbListener m_listener;
     // Handle for the GDB process
@@ -249,7 +252,7 @@ public class Gdb {
      * @param gdbPath          Path to the GDB executable.
      * @param workingDirectory Working directory to launch the GDB process in. May be null.
      */
-    private void runGdb(String gdbPath, String workingDirectory) {
+    private void runGdb(@NotNull final String gdbPath, String workingDirectory) {
         try {
             // Launch the process
             final String[] commandLine = {
@@ -281,6 +284,18 @@ public class Gdb {
             }
 
 //            String[] goEnv = SdkUtil.getExtendedGoEnv(sdkData, projectDir, "");
+
+            // This entire Gdb class is a bit of a mess and doesn't really work with the Intellij API
+            // It should be making use of GeneralCommandLine with some kind of ProcessHandler:
+//            final GeneralCommandLine cmd = new GeneralCommandLine()
+//                .withWorkDirectory(workingDirectory)
+//                .withCharset(CHARSET_ASCII)
+//                .withExePath(gdbPath)
+//                .withParameters("--interpreter=mi2");
+//
+//            // with one of these two options:
+//            final KillableColoredProcessHandler processHandler = new KillableColoredProcessHandler(cmd.createProcess(), cmd.getPreparedCommandLine());
+//            final OSProcessHandler processHandler = new OSProcessHandler(cmd.createProcess(), cmd.getPreparedCommandLine());
 
             final ProcessBuilder pb = new ProcessBuilder(commandLine);
             pb.directory(workingDirectoryFile);
@@ -332,8 +347,9 @@ public class Gdb {
      * Thread function for processing the write queue.
      */
     private void processWriteQueue() {
+        OutputStream stream = null;
+
         try {
-            OutputStream stream;
             List<CommandData> queuedCommands = new ArrayList<CommandData>();
             while (true) {
                 synchronized (this) {
@@ -364,26 +380,35 @@ public class Gdb {
 
                 // Send the queued commands to GDB
                 StringBuilder sb = new StringBuilder();
-                for (CommandData command : queuedCommands) {
+                for (final CommandData command : queuedCommands) {
                     // Construct the message
                     long token = m_token++;
                     m_listener.onGdbCommandSent(command.command, token);
 
                     sb.append(token);
                     sb.append(command.command);
-                    sb.append("\r\n");
+                    sb.append(Platform.WINDOWS.equals(CURRENT_PLATFORM) ? "\r\n" : "\n");
                 }
                 queuedCommands.clear();
 
                 // Send the messages
-                byte[] message = sb.toString().getBytes(m_ascii);
+                byte[] message = sb.toString().getBytes(CHARSET_ASCII);
                 stream.write(message);
                 stream.flush();
             }
-        } catch (InterruptedException ex) {
+        } catch (final InterruptedException e) {
             // We are exiting
-        } catch (Throwable ex) {
-            m_listener.onGdbError(ex);
+        } catch (final Throwable e) {
+            m_listener.onGdbError(e);
+        } finally {
+            if(stream != null) {
+                try {
+                    stream.close();
+                    stream = null;
+                } catch (final IOException e) {
+                    m_log.warn("Could not close output stream from GDB", e);
+                }
+            }
         }
     }
 
