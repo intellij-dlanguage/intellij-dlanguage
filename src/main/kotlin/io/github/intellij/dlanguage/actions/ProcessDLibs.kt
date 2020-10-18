@@ -195,8 +195,7 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
                         ApplicationManager.getApplication().runWriteAction {
                             libraryModel.commit()
                             projectLibraryModel.commit()
-                            for (projectModule in ModuleManager.getInstance(project)
-                                .modules) {
+                            for (projectModule in ModuleManager.getInstance(project).modules) {
                                 ModuleRootModificationUtil.addDependency(projectModule, library)
                             }
 
@@ -235,6 +234,8 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
                 commandLine.exePath = dubBinaryPath
                 val parametersList = commandLine.parametersList
                 parametersList.addParametersString("fetch")
+                // todo: add some logic here to choose between "dub fetch <package> --version=x.y.z" and "dub fetch <package>@x.y.z"
+                // see: https://github.com/dlang/dub/issues/2028
                 parametersList.addParametersString(dubPackage.name)
                 parametersList.addParametersString("--version=" + dubPackage.version)
 
@@ -265,7 +266,7 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
                 LOG.debug("output from fetching package:" + builder.toString())
 
                 for (error in errors) {
-                    LOG.error("error while fetching:" + error)
+                    LOG.error(String.format("Error when running '%s' : %s", dubCommand, error));
                 }
 
                 val exitCode = process.exitCode
