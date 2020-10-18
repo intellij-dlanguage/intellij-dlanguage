@@ -4,7 +4,9 @@ import com.intellij.ide.util.projectWizard.ModuleBuilder;
 import com.intellij.ide.util.projectWizard.ModuleWizardStep;
 import com.intellij.ide.util.projectWizard.ProjectBuilder;
 import com.intellij.ide.util.projectWizard.WizardContext;
+import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.options.ConfigurationException;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.projectImport.ProjectFormatPanel;
@@ -13,7 +15,7 @@ import io.github.intellij.dlanguage.icons.DlangIcons;
 import io.github.intellij.dlanguage.project.DubProjectImportBuilder;
 import io.github.intellij.dlanguage.settings.DLanguageToolsConfigurable;
 import io.github.intellij.dlanguage.settings.ToolKey;
-import io.github.intellij.dlanguage.utils.GuiUtil;
+import io.github.intellij.dlanguage.utils.ExecUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -44,8 +46,20 @@ public class DubBinaryForModuleStep extends ModuleWizardStep {
         final JLabel dubFormatLabel = new JLabel(DlangBundle.INSTANCE.message("d.ui.dub.config.label.dubbinarylocation"));
         dubFormatLabel.setLabelFor(dubBinary);
 
-        GuiUtil.addFolderListener(dubBinary, "dub");
-        GuiUtil.addApplyPathAction(autoFindButton, dubBinary, "dub");
+        dubBinary.addBrowseFolderListener(
+            String.format("Select %s executable", "dub"),
+            "",
+            null,
+            FileChooserDescriptorFactory.createSingleLocalFileDescriptor());
+
+        autoFindButton.addActionListener(event -> {
+            final String path = ExecUtil.locateExecutableByGuessing("dub");
+            if (StringUtil.isNotEmpty(path)) {
+                dubBinary.setText(path);
+            } else {
+                Messages.showErrorDialog("Could not find 'dub'.", "DLanguage");
+            }
+        });
 
 
         this.myPanel.add(dubFormatLabel, new GridBagConstraints(0, -1, 1, 1, 0.0D, 0.0D, 17, 0, new Insets(0, 0, 5, 4), 0, 0));

@@ -1,16 +1,11 @@
 package io.github.intellij.dlanguage.utils;
 
-import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
-import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.ui.TextAccessor;
 import com.intellij.ui.TextFieldWithHistory;
 import com.intellij.util.ui.GridBag;
 import com.intellij.util.ui.JBUI;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,6 +14,7 @@ import java.awt.*;
  * Various helpers for creating GUI elements.
  */
 public class GuiUtil {
+
     /**
      * Creates a label and path selector and adds them to the configuration
      * window.
@@ -110,31 +106,6 @@ public class GuiUtil {
 
     public static JCheckBox createCheckBoxOption(final JPanel settings, final String text) {
         return createCheckBoxOption(settings, text, getFillLineConstraints());
-    }
-
-    public static void addFolderListener(final TextFieldWithBrowseButton textField, @NotNull final String executable) {
-        textField.addBrowseFolderListener(String.format("Select %s executable", executable), "", null,
-            FileChooserDescriptorFactory.createSingleLocalFileDescriptor());
-    }
-
-    public static void addFolderListener(final TextFieldWithBrowseButton textField,
-                                         @NotNull final String executable,
-                                         @Nullable final String description,
-                                         @NotNull final FileChooserDescriptor descriptor) {
-        textField.addBrowseFolderListener(String.format("Select %s executable", executable), description, null, descriptor);
-    }
-
-    public static void addApplyPathAction(@NotNull final AbstractButton button,
-                                          @NotNull final TextAccessor textField,
-                                          @NotNull final String executable) {
-        button.addActionListener(event -> {
-            final String path = ExecUtil.locateExecutableByGuessing(executable);
-            if (StringUtil.isNotEmpty(path)) {
-                textField.setText(path);
-            } else {
-                Messages.showErrorDialog("Could not find '" + executable + "'.", "DLanguage");
-            }
-        });
     }
 
     @NotNull

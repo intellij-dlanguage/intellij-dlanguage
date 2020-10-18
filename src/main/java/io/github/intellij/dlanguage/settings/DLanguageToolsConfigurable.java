@@ -4,9 +4,9 @@ import com.intellij.ide.ui.search.SearchableOptionsRegistrar;
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
-import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SearchableConfigurable;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.ui.RawCommandLineEditor;
@@ -16,7 +16,6 @@ import io.github.intellij.dlanguage.messagebus.ToolChangeListener;
 import io.github.intellij.dlanguage.messagebus.Topics;
 import io.github.intellij.dlanguage.tools.DtoolUtils;
 import io.github.intellij.dlanguage.utils.ExecUtil;
-import io.github.intellij.dlanguage.utils.GuiUtil;
 
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
@@ -364,8 +363,22 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
                 new PropertyField(key.getPathKey(), pathField),
                 new PropertyField(key.getFlagsKey(), flagsField));
 
-            GuiUtil.addFolderListener(pathField, command, "", new DubToolBinaryChooserDescriptor(command));
-            GuiUtil.addApplyPathAction(autoFindButton, pathField, command);
+            pathField.addBrowseFolderListener(
+                String.format("Select %s executable", command),
+                "",
+                null,
+                new DubToolBinaryChooserDescriptor(command)
+            );
+
+            autoFindButton.addActionListener(event -> {
+                final String path = ExecUtil.locateExecutableByGuessing(command);
+                if (StringUtil.isNotEmpty(path)) {
+                    pathField.setText(path);
+                } else {
+                    Messages.showErrorDialog(String.format("Could not find '%s'.", command), "DLanguage");
+                }
+            });
+
             updateVersion();
         }
 
