@@ -4,23 +4,35 @@ import com.intellij.ide.util.projectWizard.ModuleBuilder;
 import com.intellij.ide.util.projectWizard.ModuleWizardStep;
 import com.intellij.ide.util.projectWizard.ProjectBuilder;
 import com.intellij.ide.util.projectWizard.WizardContext;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
+import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.projectImport.ProjectFormatPanel;
+import com.intellij.util.concurrency.AppExecutorUtil;
 import io.github.intellij.dlanguage.DlangBundle;
 import io.github.intellij.dlanguage.icons.DlangIcons;
 import io.github.intellij.dlanguage.project.DubProjectImportBuilder;
 import io.github.intellij.dlanguage.settings.DLanguageToolsConfigurable;
 import io.github.intellij.dlanguage.settings.ToolKey;
 import io.github.intellij.dlanguage.utils.ExecUtil;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.Optional;
 
 public class DubBinaryForModuleStep extends ModuleWizardStep {
+
+    private final static Logger log = Logger.getInstance(DubBinaryForModuleStep.class);
 
     private final WizardContext myWizardContext;
     private final JPanel myPanel;
@@ -52,14 +64,7 @@ public class DubBinaryForModuleStep extends ModuleWizardStep {
             null,
             FileChooserDescriptorFactory.createSingleLocalFileDescriptor());
 
-        autoFindButton.addActionListener(event -> {
-            final String path = ExecUtil.locateExecutableByGuessing("dub");
-            if (StringUtil.isNotEmpty(path)) {
-                dubBinary.setText(path);
-            } else {
-                Messages.showErrorDialog("Could not find 'dub'.", "DLanguage");
-            }
-        });
+        autoFindButton.addActionListener(this::autoFindDubBinary);
 
 
         this.myPanel.add(dubFormatLabel, new GridBagConstraints(0, -1, 1, 1, 0.0D, 0.0D, 17, 0, new Insets(0, 0, 5, 4), 0, 0));
@@ -131,4 +136,46 @@ public class DubBinaryForModuleStep extends ModuleWizardStep {
         return this.myWizardContext.getStepIcon();
     }
 
+    private void autoFindDubBinary(final ActionEvent event) {
+        @Nullable final Optional<Path> optionalPath = Arrays.stream(STANDARD_DUB_EXE_PATHS)
+            .filter(p -> Files.exists(p) && Files.isExecutable(p))
+            .findFirst();
+
+        if(optionalPath.isPresent()) {
+            dubBinary.setText(optionalPath.get().toString());
+        } else {
+            AppExecutorUtil.getAppExecutorService().submit(() -> {
+                @Nullable final String foundPath = ExecUtil.locateExecutable("dub");
+                if (StringUtil.isNotEmpty(foundPath)) {
+                    dubBinary.setText(foundPath);
+                } else {
+                    Messages.showErrorDialog("Could not find 'dub'.", "DLanguage");
+                }
+            });
+        }
+    }
+
+    private static final Path[] STANDARD_DUB_EXE_PATHS;
+
+    static {
+        if (SystemInfo.isWindows) {
+            STANDARD_DUB_EXE_PATHS = new Path[] {
+                Paths.get("\\D\\dmd2\\windows\\bin\\dub.exe")
+            };
+        } else if (SystemInfo.isMac) {
+            STANDARD_DUB_EXE_PATHS = new Path[] {
+                Paths.get("/usr/local/opt/dub") // homebrew
+            };
+        } else if (SystemInfo.isUnix) {
+            STANDARD_DUB_EXE_PATHS = new Path[] {
+                Paths.get("/usr/local/bin/dub"),
+                Paths.get("/usr/bin/dub"),
+                Paths.get("/snap/bin/dub"), // #575 support snaps
+                Paths.get(System.getProperty("user.home") + "/bin/dub")
+            };
+        } else {
+            log.warn(String.format("D language plugin does not support %s", SystemInfo.getOsNameAndVersion()));
+            STANDARD_DUB_EXE_PATHS = new Path[]{};
+        }
+    }
 }
