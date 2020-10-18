@@ -76,7 +76,7 @@ public class DubConfigurationParser {
                 .executeOnPooledThread(() -> parseDubConfiguration(this.silentMode));
 
             try {
-                return optionalFuture.get(4L, TimeUnit.SECONDS); // Yes 'dub describe' will take about 4 seconds on 1st run
+                return optionalFuture.get(5L, TimeUnit.SECONDS); // Yes 'dub describe' will take about 4 seconds on 1st run
             } catch (final InterruptedException | java.util.concurrent.ExecutionException | TimeoutException e) {
                 LOG.error("Call to dub timed out", e);
             }
@@ -124,7 +124,7 @@ public class DubConfigurationParser {
     @Deprecated
     public List<DubPackage> getDubPackageDependencies() {
         final Optional<DubProject> dubProject = getDubProject();
-        return dubProject.map(DubProject::getPackages).orElse(Collections.EMPTY_LIST);
+        return dubProject.map(DubProject::getPackages).orElse(Collections.emptyList());
     }
 
     /**
