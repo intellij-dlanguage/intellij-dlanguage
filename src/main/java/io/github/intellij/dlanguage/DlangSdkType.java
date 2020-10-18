@@ -93,7 +93,7 @@ public class DlangSdkType extends SdkType {
             DEFAULT_DMD_PATHS = new File[] {
                 new File("/usr/bin/dmd"), // Fedora (official .rpm)
                 new File("/usr/local/bin/dmd"), // Ubuntu
-                new File("/snap/dmd/current/bin/dmd") // snapcraft.io
+                new File("/snap/bin/dmd") // snapcraft.io (symlink to /snap/dmd/current/bin/dmd)
             };
             DEFAULT_DOCUMENTATION_PATHS = new File[] {
                 new File("/usr/share/dmd/html/d"), // Fedora (official .rpm)
