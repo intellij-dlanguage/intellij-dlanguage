@@ -4,6 +4,7 @@ import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.ui.TextAccessor;
 import com.intellij.ui.TextFieldWithHistory;
 import com.intellij.util.ui.GridBag;
@@ -13,7 +14,6 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 
 /**
  * Various helpers for creating GUI elements.
@@ -124,19 +124,17 @@ public class GuiUtil {
         textField.addBrowseFolderListener(String.format("Select %s executable", executable), description, null, descriptor);
     }
 
-    public static ActionListener createApplyPathAction(final TextAccessor textField, final String executable) {
-        return e -> {
+    public static void addApplyPathAction(@NotNull final AbstractButton button,
+                                          @NotNull final TextAccessor textField,
+                                          @NotNull final String executable) {
+        button.addActionListener(event -> {
             final String path = ExecUtil.locateExecutableByGuessing(executable);
-            if (path != null) {
+            if (StringUtil.isNotEmpty(path)) {
                 textField.setText(path);
             } else {
                 Messages.showErrorDialog("Could not find '" + executable + "'.", "DLanguage");
             }
-        };
-    }
-
-    public static void addApplyPathAction(final AbstractButton button, final TextAccessor textField, final String executable) {
-        button.addActionListener(createApplyPathAction(textField, executable));
+        });
     }
 
     @NotNull
@@ -148,5 +146,5 @@ public class GuiUtil {
             .anchor(GridBagConstraints.WEST)
             .insets(JBUI.insets(INSETS, INSETS + INSETS, 0, INSETS));
     }
-    
+
 }
