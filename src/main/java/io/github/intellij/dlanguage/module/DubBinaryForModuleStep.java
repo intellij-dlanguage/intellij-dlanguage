@@ -13,6 +13,7 @@ import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.projectImport.ProjectFormatPanel;
 import com.intellij.util.concurrency.AppExecutorUtil;
+import com.intellij.util.ui.JBUI;
 import io.github.intellij.dlanguage.DlangBundle;
 import io.github.intellij.dlanguage.icons.DlangIcons;
 import io.github.intellij.dlanguage.project.DubProjectImportBuilder;
@@ -46,7 +47,7 @@ public class DubBinaryForModuleStep extends ModuleWizardStep {
 
         // Title label
         final JLabel titletextLabel = new JLabel(DlangBundle.INSTANCE.message("d.ui.dub.config.label.choosedublocation"));
-        this.myPanel.add(titletextLabel, new GridBagConstraints(0, -1, 1, 1, 1.0D, 0.0D, 18, 2, new Insets(8, 10, 8, 10), 0, 0));
+        this.myPanel.add(titletextLabel, new GridBagConstraints(0, -1, 1, 1, 1.0D, 0.0D, 18, 2, JBUI.insets(8, 10), 0, 0));
 
         this.dubBinary = new TextFieldWithBrowseButton();
         if(StringUtil.isNotEmpty(ToolKey.DUB_KEY.getPath())) {
@@ -67,9 +68,9 @@ public class DubBinaryForModuleStep extends ModuleWizardStep {
         autoFindButton.addActionListener(this::autoFindDubBinary);
 
 
-        this.myPanel.add(dubFormatLabel, new GridBagConstraints(0, -1, 1, 1, 0.0D, 0.0D, 17, 0, new Insets(0, 0, 5, 4), 0, 0));
-        this.myPanel.add(dubBinary, new GridBagConstraints(0, -1, 1, 1, 1.0D, 0.0D, 18, 2, new Insets(10, 0, 20, 0), 0, 0));
-        this.myPanel.add(autoFindButton, new GridBagConstraints(0, -1, 1, 1, 1.0D, 0.0D, 18, 2, new Insets(10, 0, 20, 0), 0, 0));
+        this.myPanel.add(dubFormatLabel, new GridBagConstraints(0, -1, 1, 1, 0.0D, 0.0D, 17, 0, JBUI.insets(0, 0, 5, 4), 0, 0));
+        this.myPanel.add(dubBinary, new GridBagConstraints(0, -1, 1, 1, 1.0D, 0.0D, 18, 2, JBUI.insets(10, 0, 20, 0), 0, 0));
+        this.myPanel.add(autoFindButton, new GridBagConstraints(0, -1, 1, 1, 1.0D, 0.0D, 18, 2, JBUI.insets(10, 0, 20, 0), 0, 0));
 
     }
 
@@ -88,6 +89,9 @@ public class DubBinaryForModuleStep extends ModuleWizardStep {
         return this.myWizardContext.getProject() == null;
     }
 
+    /**
+     * Commits data from UI into ModuleBuilder and WizardContext
+     */
     @Override
     public void updateDataModel() {
         final ProjectBuilder moduleBuilder = this.myWizardContext.getProjectBuilder();
@@ -115,14 +119,35 @@ public class DubBinaryForModuleStep extends ModuleWizardStep {
         this.myFormatPanel.updateData(this.myWizardContext);
     }
 
+    /**
+     * Update UI from ModuleBuilder and WizardContext
+     */
+    @Override
+    public void updateStep() {
+        super.updateStep();
+    }
+
+    /**
+     * Validates user input before {@link #updateDataModel()} is called.
+     *
+     * @return {@code true} if input is valid, {@code false} otherwise
+     * @throws ConfigurationException if input is not valid and needs user attention. Exception message will be displayed to user
+     */
     @Override
     public boolean validate() throws ConfigurationException {
-        if(StringUtil.isEmpty(this.dubBinary.getText())) {
+        final String dubBinaryPath = StringUtil.trim(this.dubBinary.getText());
+
+        if(StringUtil.isEmpty(dubBinaryPath)) {
             throw new ConfigurationException(
                 DlangBundle.INSTANCE.message("d.ui.dub.config.error.path-not-set"),
                 DlangBundle.INSTANCE.message("d.ui.dub.config.error.title")
             );
-        } else if(StringUtil.isEmpty(DLanguageToolsConfigurable.getVersion(this.dubBinary.getText()))) {
+        } else if(!Files.isExecutable(Paths.get(dubBinaryPath))) {
+            throw new ConfigurationException(
+                DlangBundle.INSTANCE.message("d.ui.dub.config.error.path-not-executable"),
+                DlangBundle.INSTANCE.message("d.ui.dub.config.error.title")
+            );
+        } else if(StringUtil.isEmpty(DLanguageToolsConfigurable.getVersion(dubBinaryPath))) {
             throw new ConfigurationException(
                 DlangBundle.INSTANCE.message("d.ui.dub.config.error.path-not-valid"),
                 DlangBundle.INSTANCE.message("d.ui.dub.config.error.title")
@@ -146,10 +171,13 @@ public class DubBinaryForModuleStep extends ModuleWizardStep {
         } else {
             AppExecutorUtil.getAppExecutorService().submit(() -> {
                 @Nullable final String foundPath = ExecUtil.locateExecutable("dub");
-                if (StringUtil.isNotEmpty(foundPath)) {
-                    dubBinary.setText(foundPath);
-                } else {
+
+                if (StringUtil.isEmpty(foundPath)) {
                     Messages.showErrorDialog("Could not find 'dub'.", "DLanguage");
+                } else if(!Files.isExecutable(Paths.get(foundPath))) {
+                    Messages.showErrorDialog(foundPath + " is not executable.", "DLanguage");
+                } else {
+                    dubBinary.setText(foundPath);
                 }
             });
         }
