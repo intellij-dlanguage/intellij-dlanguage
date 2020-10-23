@@ -46,7 +46,7 @@ public class DlangSdkType extends SdkType {
 
     private static final Logger LOG = Logger.getInstance(DlangSdkType.class);
 
-    private static final String SDK_TYPE_ID = "DMD2 SDK";
+    public static final String SDK_TYPE_ID = "DMD2 SDK";
     private static final String SDK_NAME = "DMD v2 SDK";
 
     @NotNull
@@ -104,13 +104,13 @@ public class DlangSdkType extends SdkType {
                 new File("/usr/include/dmd/phobos"), // Fedora (official .rpm)
                 new File("/usr/local/include/dmd/phobos"), // Ubuntu (should it be src/phobos?)
                 new File("/usr/include/dlang/dmd"), // Arch Linux (see:#457 should this have /phobos on end?)
-                new File("/snap/phobos/current/import/phobos") // snapcraft.io
+                new File("/snap/dmd/current/import/phobos") // snapcraft.io
             };
             DEFAULT_DRUNTIME_PATHS = new File[] {
                 new File("/usr/include/dmd/druntime/import"), // Fedora (official .rpm)
                 new File("/usr/local/include/dmd/druntime/import"), // Ubuntu (should it be src/druntime/import?)
                 new File("/usr/include/dlang/dmd"), // Arch Linux (see:#457 should this have /druntime/import on end?)
-                new File("/snap/druntime/current/import/druntime") // snapcraft.io
+                new File("/snap/dmd/current/import/druntime") // snapcraft.io
             };
         } else {
             LOG.warn(String.format("We didn't cater for %s", SystemInfo.getOsNameAndVersion()));
