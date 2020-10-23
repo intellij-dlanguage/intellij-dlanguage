@@ -3,14 +3,24 @@ package io.github.intellij.dlanguage.run;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.RunProfile;
 import com.intellij.execution.configurations.RunProfileState;
+import com.intellij.execution.configurations.RunnerSettings;
 import com.intellij.execution.executors.DefaultRunExecutor;
-import com.intellij.execution.runners.DefaultProgramRunner;
 import com.intellij.execution.runners.ExecutionEnvironment;
+import com.intellij.execution.runners.GenericProgramRunner;
 import com.intellij.execution.ui.RunContentDescriptor;
+import com.intellij.openapi.util.InvalidDataException;
+import com.intellij.openapi.util.WriteExternalException;
+import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class DmdBuildRunner extends DefaultProgramRunner {
+/**
+ * Since DefaultProgramRunner is deprecated this class was updated to use GenericProgramRunner.
+ * It may be worth investigating the use of AsyncProgramRunner or perhaps simply the implementing
+ * the ProgramRunner<Settings extends RunnerSettings> interface
+ */
+public class DmdBuildRunner extends GenericProgramRunner<DmdBuildRunner.DmdBuildSettings> {
+
     @NotNull
     @Override
     public String getRunnerId() {
@@ -33,5 +43,17 @@ public class DmdBuildRunner extends DefaultProgramRunner {
             return RunUtil.startDebugger(this, state, env, project, executor);
         }*/
         return super.doExecute(state, env);
+    }
+
+    public static class DmdBuildSettings implements RunnerSettings {
+        @Override
+        public void readExternal(Element element) throws InvalidDataException {
+
+        }
+
+        @Override
+        public void writeExternal(Element element) throws WriteExternalException {
+
+        }
     }
 }

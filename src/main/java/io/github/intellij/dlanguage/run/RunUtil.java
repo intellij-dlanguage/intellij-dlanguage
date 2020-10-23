@@ -4,8 +4,8 @@ import com.intellij.execution.ExecutionException;
 import com.intellij.execution.ExecutionResult;
 import com.intellij.execution.Executor;
 import com.intellij.execution.configurations.RunProfileState;
-import com.intellij.execution.runners.DefaultProgramRunner;
 import com.intellij.execution.runners.ExecutionEnvironment;
+import com.intellij.execution.runners.ProgramRunner;
 import com.intellij.execution.ui.RunContentDescriptor;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
@@ -29,7 +29,7 @@ public class RunUtil {
     private static final String NOTIFICATION_TITLE = "Debugging Error";
 
     @Nullable
-    static RunContentDescriptor startDebugger(DefaultProgramRunner buildRunner, RunProfileState state, ExecutionEnvironment env, Project project, Executor executor, String execName) throws ExecutionException {
+    static RunContentDescriptor startDebugger(ProgramRunner<?> buildRunner, RunProfileState state, ExecutionEnvironment env, Project project, Executor executor, String execName) throws ExecutionException {
         final ExecutionResult result = state.execute(executor, buildRunner);
         if (result == null) {
             return null;

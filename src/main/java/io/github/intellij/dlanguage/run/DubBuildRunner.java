@@ -4,12 +4,16 @@ import com.intellij.execution.ExecutionException;
 import com.intellij.execution.Executor;
 import com.intellij.execution.configurations.RunProfile;
 import com.intellij.execution.configurations.RunProfileState;
+import com.intellij.execution.configurations.RunnerSettings;
 import com.intellij.execution.executors.DefaultDebugExecutor;
 import com.intellij.execution.executors.DefaultRunExecutor;
-import com.intellij.execution.runners.DefaultProgramRunner;
 import com.intellij.execution.runners.ExecutionEnvironment;
+import com.intellij.execution.runners.GenericProgramRunner;
 import com.intellij.execution.ui.RunContentDescriptor;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.InvalidDataException;
+import com.intellij.openapi.util.WriteExternalException;
+import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import io.github.intellij.dlanguage.settings.ToolKey;
@@ -18,7 +22,12 @@ import io.github.intellij.dlanguage.project.DubPackage;
 import io.github.intellij.dlanguage.project.DubProject;
 import java.nio.file.Paths;
 
-public class DubBuildRunner extends DefaultProgramRunner {
+/**
+ * Since {@link com.intellij.execution.runners.DefaultProgramRunner} is now deprecated this class was updated to use GenericProgramRunner.
+ * It may be worth investigating the use of AsyncProgramRunner or perhaps simply the implementing
+ * the ProgramRunner<Settings extends RunnerSettings> interface
+ */
+public class DubBuildRunner extends GenericProgramRunner<DubBuildRunner.DubBuildSettings> {
 
     @NotNull
     @Override
@@ -52,6 +61,18 @@ public class DubBuildRunner extends DefaultProgramRunner {
             return RunUtil.startDebugger(this, state, env, project, executor, executableFilePath);
         }
         return super.doExecute(state, env);
+    }
+
+    public static class DubBuildSettings implements RunnerSettings {
+        @Override
+        public void readExternal(Element element) throws InvalidDataException {
+
+        }
+
+        @Override
+        public void writeExternal(Element element) throws WriteExternalException {
+
+        }
     }
 
 }
