@@ -115,7 +115,7 @@ public class DlangModuleBuilder extends ModuleBuilder {
         final RunManagerImpl runManager = RunManagerImpl.getInstanceImpl(project);
 
         //Create "Compile with DMD" configuration
-        RunnerAndConfigurationSettings runDmdSettings = runManager.findConfigurationByName(COMPILE_CONFIG_NAME);
+        @Nullable RunnerAndConfigurationSettings runDmdSettings = runManager.findConfigurationByName(COMPILE_CONFIG_NAME);
         if (runDmdSettings == null) {
             final DlangRunDmdConfigurationType configurationType
                 = ConfigurationType.CONFIGURATION_TYPE_EP.findExtensionOrFail(DlangRunDmdConfigurationType.class);
@@ -123,11 +123,12 @@ public class DlangModuleBuilder extends ModuleBuilder {
             runDmdSettings = runManager.createConfiguration(COMPILE_CONFIG_NAME, factory);
             ((ModuleBasedConfiguration) runDmdSettings.getConfiguration()).setModule(rootModel.getModule());
 
-            runManager.addConfiguration(runDmdSettings, false);
+            runDmdSettings.storeInLocalWorkspace();
+            runManager.addConfiguration(runDmdSettings);
         }
 
         //Create "Run D App" configuration
-        RunnerAndConfigurationSettings runAppSettings = runManager.findConfigurationByName(RUN_CONFIG_NAME);
+        @Nullable RunnerAndConfigurationSettings runAppSettings = runManager.findConfigurationByName(RUN_CONFIG_NAME);
         if (runAppSettings == null) {
             final DlangRunAppConfigurationType configurationType
                 = ConfigurationType.CONFIGURATION_TYPE_EP.findExtensionOrFail(DlangRunAppConfigurationType.class);
@@ -135,17 +136,18 @@ public class DlangModuleBuilder extends ModuleBuilder {
             runAppSettings = runManager.createConfiguration(RUN_CONFIG_NAME, factory);
             ((ModuleBasedConfiguration) runAppSettings.getConfiguration()).setModule(rootModel.getModule());
 
-            runManager.addConfiguration(runAppSettings, false);
-
+            runAppSettings.storeInLocalWorkspace();
+            runManager.addConfiguration(runAppSettings);
         }
 
         //Add dependency to exec "runDmdSettings" before running "runAppSettings".
         //XXX: next code doesn't add BeforeRunTask. I don't know why.
-        final BeforeRunTaskProvider provider = RunConfigurationBeforeRunProvider.getProvider(project, RunConfigurationBeforeRunProvider.ID);
+        @Nullable final BeforeRunTaskProvider<RunConfigurationBeforeRunProvider.RunConfigurableBeforeRunTask> provider =
+            RunConfigurationBeforeRunProvider.getProvider(project, RunConfigurationBeforeRunProvider.ID);
 
         if(provider != null) {
-            final BeforeRunTask runDmdTask = provider.createTask(runDmdSettings.getConfiguration());
-            final List<BeforeRunTask> beforeRunTasks = new ArrayList<>(1);
+            final RunConfigurationBeforeRunProvider.RunConfigurableBeforeRunTask runDmdTask = provider.createTask(runDmdSettings.getConfiguration());
+            final List<RunConfigurationBeforeRunProvider.RunConfigurableBeforeRunTask> beforeRunTasks = new ArrayList<>(1);
             beforeRunTasks.add(runDmdTask);
             runManager.setBeforeRunTasks(runAppSettings.getConfiguration(), beforeRunTasks);
         }
@@ -170,7 +172,7 @@ public class DlangModuleBuilder extends ModuleBuilder {
     }
 
     @Override
-    public ModuleType getModuleType() {
+    public ModuleType<DlangModuleBuilder> getModuleType() {
         return DlangModuleType.getInstance();
     }
 

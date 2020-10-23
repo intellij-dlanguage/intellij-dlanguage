@@ -9,7 +9,6 @@ import com.intellij.execution.process.ProcessAdapter;
 import com.intellij.execution.process.ProcessEvent;
 import com.intellij.execution.process.ProcessOutputTypes;
 import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.extensions.Extensions;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ModifiableRootModel;
@@ -20,6 +19,7 @@ import io.github.intellij.dlanguage.run.DlangRunDubConfigurationType;
 import io.github.intellij.dlanguage.settings.ToolKey;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -61,7 +61,7 @@ public class DlangDubModuleBuilder extends DlangModuleBuilder {
         }
 
         //Create "Run dub" configuration
-        final RunnerAndConfigurationSettings runDubSettings = runManager.findConfigurationByName(RUN_DUB_CONFIG_NAME);
+        @Nullable final RunnerAndConfigurationSettings runDubSettings = runManager.findConfigurationByName(RUN_DUB_CONFIG_NAME);
         if (runDubSettings == null) {
             @NotNull final DlangRunDubConfigurationType configurationType = ConfigurationType.CONFIGURATION_TYPE_EP.findExtensionOrFail(DlangRunDubConfigurationType.class);
 
@@ -69,7 +69,8 @@ public class DlangDubModuleBuilder extends DlangModuleBuilder {
             final RunnerAndConfigurationSettings settings = runManager.createConfiguration(RUN_DUB_CONFIG_NAME, factory);
             ((ModuleBasedConfiguration) settings.getConfiguration()).setModule(rootModel.getModule());
 
-            runManager.addConfiguration(settings, false);
+            settings.storeInLocalWorkspace();
+            runManager.addConfiguration(settings);
         }
     }
 
