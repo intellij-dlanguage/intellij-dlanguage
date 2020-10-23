@@ -1,6 +1,6 @@
 package io.github.intellij.dlanguage
 
-import com.intellij.CommonBundle
+import com.intellij.AbstractBundle
 import com.intellij.openapi.diagnostic.Logger
 import org.jetbrains.annotations.NonNls
 import org.jetbrains.annotations.PropertyKey
@@ -17,14 +17,14 @@ object DlangBundle {
     @NonNls private const val BUNDLE_ID: String = "i18n"
 
     init {
-        val locale = Locale.getDefault()
-        log.info("initialising D Language Bundle for locale: ${locale.toLanguageTag()}")
+        // For testing alternative languages just use JVM args, such as: "-Duser.language=fr -Duser.country=FR"
+        log.info("initialising D Language Bundle for locale: ${Locale.getDefault()}")
     }
 
     fun message(@PropertyKey(resourceBundle = BUNDLE_ID) key: String, vararg params: Any): String {
         log.debug("Getting message: {}, {}", key, params)
 
-        return CommonBundle.message(getBundle(), key, params)
+        return AbstractBundle.message(getBundle(), key, params)
     }
 
     private fun getBundle(): ResourceBundle {
