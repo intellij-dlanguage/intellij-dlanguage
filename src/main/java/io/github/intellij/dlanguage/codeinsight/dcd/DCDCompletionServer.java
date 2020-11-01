@@ -14,6 +14,7 @@ import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.roots.OrderRootType;
 import com.intellij.openapi.roots.ProjectRootManager;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
 import io.github.intellij.dlanguage.messagebus.ToolChangeListener;
@@ -22,7 +23,6 @@ import io.github.intellij.dlanguage.settings.ToolKey;
 import io.github.intellij.dlanguage.settings.ToolSettings;
 import io.github.intellij.dlanguage.DlangSdkType;
 import io.github.intellij.dlanguage.project.DubConfigurationParser;
-import io.github.intellij.dlanguage.utils.ExecUtil;
 import io.github.intellij.dlanguage.utils.NotificationUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -182,7 +182,11 @@ public final class DCDCompletionServer implements ModuleComponent, ToolChangeLis
 
     @NotNull
     private String lookupWorkingDirectory() {
-        return ExecUtil.guessWorkDir(module);
+        final VirtualFile moduleFile = module.getModuleFile();
+        final VirtualFile moduleDir = moduleFile == null ? null : moduleFile.getParent();
+        return moduleDir == null ?
+            StringUtil.defaultIfEmpty(module.getProject().getBasePath(), "") :
+            moduleDir.getPath();
     }
 
     @Nullable
