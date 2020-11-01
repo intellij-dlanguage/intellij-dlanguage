@@ -1,13 +1,18 @@
 package io.github.intellij.dlanguage.settings;
 
+import com.intellij.execution.ExecutionException;
+import com.intellij.execution.configurations.GeneralCommandLine;
+import com.intellij.execution.process.CapturingProcessHandler;
 import com.intellij.ide.ui.search.SearchableOptionsRegistrar;
 import com.intellij.ide.util.PropertiesComponent;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.options.SearchableConfigurable;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
+import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.ui.RawCommandLineEditor;
 import com.intellij.ui.TextAccessor;
@@ -17,15 +22,23 @@ import io.github.intellij.dlanguage.messagebus.Topics;
 import io.github.intellij.dlanguage.tools.DtoolUtils;
 import io.github.intellij.dlanguage.utils.ExecUtil;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import javax.swing.*;
 
 import org.jetbrains.annotations.Nls;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -370,14 +383,7 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
                 new DubToolBinaryChooserDescriptor(command)
             );
 
-            autoFindButton.addActionListener(event -> {
-                final String path = ExecUtil.locateExecutableByGuessing(command);
-                if (StringUtil.isNotEmpty(path)) {
-                    pathField.setText(path);
-                } else {
-                    Messages.showErrorDialog(String.format("Could not find '%s'.", command), "DLanguage");
-                }
-            });
+            autoFindButton.addActionListener(new LocateToolListener(pathField, command));
 
             updateVersion();
         }
@@ -426,6 +432,101 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
             for (final PropertyField propertyField : propertyFields) {
                 propertyField.restoreState();
             }
+        }
+    }
+
+    private static class LocateToolListener implements ActionListener {
+        private final TextFieldWithBrowseButton pathField;
+        private final String command;
+
+        public LocateToolListener(@NonNls final TextFieldWithBrowseButton pathField, @NonNls final String command) {
+            this.pathField = pathField;
+            this.command = command;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            @Nullable final String path = this.lookInStandardDirectories().orElseGet(this::locateViaCommandline);
+
+            if (StringUtil.isNotEmpty(path)) {
+                pathField.setText(StringUtil.trim(path));
+            } else {
+                Messages.showErrorDialog(String.format("Could not find '%s'.", command), "DLanguage");
+            }
+        }
+
+        /**
+         * Tries to get the absolute path for a command by trying standard installation directories (for dub).
+         * This is mostly useful for dub, especially on Mac/Linux where various installation methods can differ
+         */
+        private Optional<String> lookInStandardDirectories() {
+            final List<String> paths = new ArrayList<>();
+            if (SystemInfo.isWindows) {
+                paths.add("\\D\\dmd2\\windows\\bin");
+            } else {
+                paths.add("/usr/local/bin");
+                paths.add("/usr/bin"); // Fedora RPM will put dub in /usr/bin
+                paths.add("/snap/bin"); // #575 support snaps
+
+                final String homeDir = System.getProperty("user.home");
+                if(StringUtil.isNotEmpty(homeDir)) {
+                    paths.add(homeDir + "/bin");
+                }
+            }
+            for (final String path : paths) {
+                LOG.info(String.format("Looking for %s in %s", command, path));
+                final String cmd = StringUtil.trim(path + File.separatorChar + command);
+                //noinspection ObjectAllocationInLoop
+                if (new File(cmd).canExecute()) {
+                    return Optional.of(cmd);
+                }
+            }
+            return Optional.empty();
+        }
+
+        /**
+         * Attempt to find the D Tool by looking on the PATH
+         *
+         * @return either the found tool path or null
+         */
+        @Nullable
+        private String locateViaCommandline() {
+            final GeneralCommandLine cmd = new GeneralCommandLine()
+                .withExePath(SystemInfo.isWindows ? "cmd" : "/bin/sh")
+                .withParameters(
+                    SystemInfo.isWindows ? "/c" : "-c",
+                    SystemInfo.isWindows ? "where" : "which",
+                    command)
+                ;
+
+            try {
+                final String path = ApplicationManager.getApplication().executeOnPooledThread(() -> {
+                        try {
+                            return new CapturingProcessHandler(
+                                cmd.createProcess(),
+                                cmd.getCharset(),
+                                cmd.getCommandLineString()
+                            )
+                                .runProcess()
+                                .getStdout();
+                        } catch (final ExecutionException e) {
+                            LOG.warn(String.format("Failed to run '%s'.", command), e);
+                        }
+                        return null;
+                    })
+                    .get(500, TimeUnit.MILLISECONDS);
+
+                if (path != null && SystemInfo.isWindows && path.contains("C:\\")) {
+                    // not sure if this is actually needed. Was moved over from ExecUtil
+                    final String[] split = path.split("(?=C:\\\\)");
+                    LOG.info("Multiple paths found for " + command);
+                    return split[0]; // if there are multiple results default to first one.
+                }
+                return path;
+            } catch (final InterruptedException | java.util.concurrent.ExecutionException | TimeoutException e) {
+                LOG.warn(String.format("Failed to run '%s'.", command), e);
+            }
+            return null;
         }
     }
 }
