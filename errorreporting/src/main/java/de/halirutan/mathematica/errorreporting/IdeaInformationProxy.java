@@ -22,7 +22,7 @@
 package de.halirutan.mathematica.errorreporting;
 
 import com.intellij.ide.plugins.IdeaPluginDescriptor;
-import com.intellij.ide.plugins.PluginManager;
+import com.intellij.ide.plugins.PluginManagerCore;
 import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationNamesInfo;
 import com.intellij.openapi.application.ex.ApplicationInfoEx;
@@ -108,7 +108,7 @@ public class IdeaInformationProxy {
         params.put("App Version", appInfo.getFullVersion());
 
         if(pluginDescriptor != null) {
-            final IdeaPluginDescriptor plugin = PluginManager.getPlugin(pluginDescriptor.getPluginId());
+            final IdeaPluginDescriptor plugin = PluginManagerCore.getPlugin(pluginDescriptor.getPluginId());
             if (plugin != null) {
                 params.put("Plugin Name FallBack", plugin.getName());
                 params.put("Plugin Version Fallback", plugin.getVersion());

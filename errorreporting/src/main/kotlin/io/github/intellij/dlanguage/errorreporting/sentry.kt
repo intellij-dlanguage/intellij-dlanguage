@@ -1,6 +1,6 @@
 package io.github.intellij.dlanguage.errorreporting
 
-import com.intellij.ide.plugins.PluginManager
+import com.intellij.ide.plugins.PluginManagerCore
 import com.intellij.idea.IdeaLogger
 import com.intellij.openapi.application.ApplicationInfo
 import com.intellij.openapi.application.ApplicationManager
@@ -64,7 +64,7 @@ class SentryErrorHandler : ErrorReportSubmitter() {
  */
 class DlangSentryClientFactory(pluginDescriptor: PluginDescriptor?) : DefaultSentryClientFactory() {
 
-    private val plugin = PluginManager.getPlugin(pluginDescriptor?.pluginId) // todo: remove this after 2020.2
+    private val plugin = PluginManagerCore.getPlugin(pluginDescriptor?.pluginId)
     private val version = plugin?.version ?: ""
     private val appInfo = ApplicationInfo.getInstance() as ApplicationInfoEx
     private val namesInfo = ApplicationNamesInfo.getInstance()
