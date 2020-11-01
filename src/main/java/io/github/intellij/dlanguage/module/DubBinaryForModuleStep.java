@@ -1,9 +1,13 @@
 package io.github.intellij.dlanguage.module;
 
+import com.intellij.execution.ExecutionException;
+import com.intellij.execution.configurations.GeneralCommandLine;
+import com.intellij.execution.process.CapturingProcessHandler;
 import com.intellij.ide.util.projectWizard.ModuleBuilder;
 import com.intellij.ide.util.projectWizard.ModuleWizardStep;
 import com.intellij.ide.util.projectWizard.ProjectBuilder;
 import com.intellij.ide.util.projectWizard.WizardContext;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.options.ConfigurationException;
@@ -12,14 +16,12 @@ import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.projectImport.ProjectFormatPanel;
-import com.intellij.util.concurrency.AppExecutorUtil;
 import com.intellij.util.ui.JBUI;
 import io.github.intellij.dlanguage.DlangBundle;
 import io.github.intellij.dlanguage.icons.DlangIcons;
 import io.github.intellij.dlanguage.project.DubProjectImportBuilder;
 import io.github.intellij.dlanguage.settings.DLanguageToolsConfigurable;
 import io.github.intellij.dlanguage.settings.ToolKey;
-import io.github.intellij.dlanguage.utils.ExecUtil;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -30,6 +32,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class DubBinaryForModuleStep extends ModuleWizardStep {
 
@@ -169,18 +173,61 @@ public class DubBinaryForModuleStep extends ModuleWizardStep {
         if(optionalPath.isPresent()) {
             dubBinary.setText(optionalPath.get().toString());
         } else {
-            AppExecutorUtil.getAppExecutorService().submit(() -> {
-                @Nullable final String foundPath = ExecUtil.locateExecutable("dub");
+            @Nullable final String foundPath = this.locateViaCommandline();
 
-                if (StringUtil.isEmpty(foundPath)) {
-                    Messages.showErrorDialog("Could not find 'dub'.", "DLanguage");
-                } else if(!Files.isExecutable(Paths.get(foundPath))) {
-                    Messages.showErrorDialog(foundPath + " is not executable.", "DLanguage");
-                } else {
-                    dubBinary.setText(foundPath);
-                }
-            });
+            if (StringUtil.isEmpty(foundPath)) {
+                Messages.showErrorDialog("Could not find 'dub'.", "DLanguage");
+            } else if(!Files.isExecutable(Paths.get(foundPath))) {
+                Messages.showErrorDialog(foundPath + " is not executable.", "DLanguage");
+            } else {
+                dubBinary.setText(StringUtil.trim(foundPath));
+            }
         }
+    }
+
+    /**
+     * Attempt to find the D Tool by looking on the PATH
+     *
+     * @return either the found tool path or null
+     */
+    @Nullable
+    private String locateViaCommandline() {
+        final GeneralCommandLine cmd = new GeneralCommandLine()
+            .withExePath(SystemInfo.isWindows ? "cmd" : "/bin/sh")
+            .withParameters(
+                SystemInfo.isWindows ? "/c" : "-c",
+                SystemInfo.isWindows ? "where" : "which",
+                "dub")
+            ;
+
+        try {
+            final String path = ApplicationManager.getApplication().executeOnPooledThread(() -> {
+                try {
+                    return new CapturingProcessHandler(
+                        cmd.createProcess(),
+                        cmd.getCharset(),
+                        cmd.getCommandLineString()
+                    )
+                        .runProcess()
+                        .getStdout();
+                } catch (final ExecutionException e) {
+                    log.warn(String.format("Failed to run '%s'.", "dub"), e);
+                }
+                return null;
+            })
+                .get(500, TimeUnit.MILLISECONDS);
+
+            if (path != null && SystemInfo.isWindows && path.contains("C:\\")) {
+                // not sure if this is actually needed. Was moved over from ExecUtil
+                final String[] split = path.split("(?=C:\\\\)");
+                log.info("Multiple paths found for " + "dub");
+                return split[0]; // if there are multiple results default to first one.
+            }
+            return path;
+        } catch (final InterruptedException | java.util.concurrent.ExecutionException | TimeoutException e) {
+            log.warn(String.format("Failed to run '%s'.", "dub"), e);
+        }
+        return null;
     }
 
     private static final Path[] STANDARD_DUB_EXE_PATHS;

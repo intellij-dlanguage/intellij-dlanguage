@@ -20,19 +20,17 @@ import com.intellij.util.messages.Topic;
 import io.github.intellij.dlanguage.messagebus.ToolChangeListener;
 import io.github.intellij.dlanguage.messagebus.Topics;
 import io.github.intellij.dlanguage.tools.DtoolUtils;
-import io.github.intellij.dlanguage.utils.ExecUtil;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import javax.swing.*;
@@ -125,12 +123,26 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
             LOG.warn(String.format("unable to get version info for path: '%s'", cmd));
             return "";
         }
-        final @Nullable String versionOutput = ExecUtil.readCommandLine(null, cmd, "--version");
+        final GeneralCommandLine commandLine = new GeneralCommandLine(cmd, "--version");
 
-        if (StringUtil.isNotEmpty(versionOutput)) {
-            final String version = versionOutput.split("\n")[0].trim();
-            LOG.debug(String.format("%s [%s]", cmd, version));
-            return version;
+        final Future<String> future = ApplicationManager
+            .getApplication()
+            .executeOnPooledThread(() -> new CapturingProcessHandler(
+                commandLine.createProcess(),
+                commandLine.getCharset(),
+                commandLine.getCommandLineString()
+            ).runProcess().getStdout());
+
+        try {
+            final @Nullable String versionOutput = future.get(500, TimeUnit.MILLISECONDS);
+
+            if (StringUtil.isNotEmpty(versionOutput)) {
+                final String version = versionOutput.split("\n")[0].trim();
+                LOG.debug(String.format("%s [%s]", cmd, version));
+                return version;
+            }
+        } catch (final InterruptedException | java.util.concurrent.ExecutionException | TimeoutException e) {
+            LOG.error("Could not run: " + commandLine.getCommandLineString(), e);
         }
         return "";
     }
@@ -460,28 +472,39 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
          * This is mostly useful for dub, especially on Mac/Linux where various installation methods can differ
          */
         private Optional<String> lookInStandardDirectories() {
-            final List<String> paths = new ArrayList<>();
-            if (SystemInfo.isWindows) {
-                paths.add("\\D\\dmd2\\windows\\bin");
-            } else {
-                paths.add("/usr/local/bin");
-                paths.add("/usr/bin"); // Fedora RPM will put dub in /usr/bin
-                paths.add("/snap/bin"); // #575 support snaps
-
-                final String homeDir = System.getProperty("user.home");
-                if(StringUtil.isNotEmpty(homeDir)) {
-                    paths.add(homeDir + "/bin");
-                }
-            }
-            for (final String path : paths) {
-                LOG.info(String.format("Looking for %s in %s", command, path));
-                final String cmd = StringUtil.trim(path + File.separatorChar + command);
+            for (final Path path : STANDARD_TOOL_PATHS) {
+                LOG.info(String.format("Looking for %s in %s", command, path.toString()));
                 //noinspection ObjectAllocationInLoop
-                if (new File(cmd).canExecute()) {
-                    return Optional.of(cmd);
+                final Path toolPath = path.resolve(command);
+                if (Files.exists(toolPath) && Files.isExecutable(toolPath)) {
+                    return Optional.of(toolPath.toAbsolutePath().toString());
                 }
             }
             return Optional.empty();
+        }
+
+        private static final Path[] STANDARD_TOOL_PATHS;
+
+        static {
+            if (SystemInfo.isWindows) {
+                STANDARD_TOOL_PATHS = new Path[] {
+                    Paths.get("\\D\\dmd2\\windows\\bin")
+                };
+            } else if (SystemInfo.isMac) {
+                STANDARD_TOOL_PATHS = new Path[] {
+                    Paths.get("/usr/local/opt") // homebrew
+                };
+            } else if (SystemInfo.isUnix) {
+                STANDARD_TOOL_PATHS = new Path[] {
+                    Paths.get("/usr/local/bin"),
+                    Paths.get("/usr/bin"),
+                    Paths.get("/snap/bin"), // #575 support snaps
+                    Paths.get(System.getProperty("user.home") + "/bin")
+                };
+            } else {
+                LOG.warn(String.format("D language plugin does not support %s", SystemInfo.getOsNameAndVersion()));
+                STANDARD_TOOL_PATHS = new Path[]{};
+            }
         }
 
         /**
