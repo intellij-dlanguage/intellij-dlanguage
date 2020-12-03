@@ -19,6 +19,10 @@ cache:
 #  - sudo apt-get update --allow-insecure-repositories && sudo apt-get -y --allow-unauthenticated install --reinstall d-apt-keyring
 #  - sudo apt-get update && sudo apt-get install dmd-compiler dub
 
+script:
+    - ./gradlew buildPlugin
+    - ./gradlew verifyPlugin
+
 env:
   global:
   - ORG_GRADLE_PROJECT_downloadIdeaSources=false
@@ -26,9 +30,8 @@ env:
 jobs:
   include:
     - stage: Build and Test
-      env: ORG_GRADLE_PROJECT_ideaVersion=LATEST-EAP-SNAPSHOT
-    - env: ORG_GRADLE_PROJECT_ideaVersion=2020.3
-    - env: ORG_GRADLE_PROJECT_ideaVersion=2020.2.4
+      #env: ORG_GRADLE_PROJECT_ideaVersion=LATEST-EAP-SNAPSHOT
+      env: ORG_GRADLE_PROJECT_ideaVersion=2020.2.4
     - env: ORG_GRADLE_PROJECT_ideaVersion=2020.2
 
 #    - stage: Deploy EAP
@@ -41,6 +44,12 @@ jobs:
 #        script: ORG_GRADLE_PROJECT_publishChannels=eap ORG_GRADLE_PROJECT_version=1.19.1-eap$TRAVIS_BUILD_NUMBER ./gradlew :publishPlugin
 #        on:
 #          branch: develop
+
+    # IDEA 2020.3 uses JDK 11. Use Ubuntu Bionic for OpenJDK 11
+    - stage: Test with JDK 11
+      jdk: openjdk11
+      dist: bionic
+      env: ORG_GRADLE_PROJECT_ideaVersion=2020.3
 
 #    - stage: Deploy new Release
 #      if: branch = master

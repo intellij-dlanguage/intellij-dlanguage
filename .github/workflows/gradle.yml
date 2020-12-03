@@ -9,7 +9,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        idea: ['2020.2', '2020.2.4', '2020.3']
+        idea: ['2020.2', '2020.2.4']
         jdk: [ '1.8' ]
         #os: [ubuntu-latest, windows-latest, macOS-latest]
 
