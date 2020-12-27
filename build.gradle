@@ -49,6 +49,10 @@ cobertura.coverageExcludes = [ '.*de.halirutan.mathematica.*', '.*uk.co.cwspence
 allprojects {
     sourceCompatibility = javaVersion
     targetCompatibility = javaVersion
+    
+    java {
+        disableAutoTargetJvm()
+    }
 
     tasks.withType(JavaCompile) {
         sourceCompatibility = JavaVersion.VERSION_1_8
