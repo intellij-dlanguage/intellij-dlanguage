@@ -38,7 +38,7 @@ class SentryErrorHandler : ErrorReportSubmitter() {
 
     override fun getPrivacyNoticeText(): String = "All data is anonymised prior to being transferred to <a href=\"https://sentry.io\">sentry.io</a> for use by the dev team."
 
-    override fun submit(events: Array<out IdeaLoggingEvent>, additionalInfo: String?, parentComponent: Component, consumer: Consumer<SubmittedReportInfo>): Boolean {
+    override fun submit(events: Array<out IdeaLoggingEvent>, additionalInfo: String?, parentComponent: Component, consumer: Consumer<? super SubmittedReportInfo>): Boolean {
         events.forEach { e ->
             IdeaInformationProxy.getKeyValuePairs(
                 e.throwable?.cause ?: e.throwable,
