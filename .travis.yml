@@ -46,10 +46,10 @@ jobs:
 #          branch: develop
 
     # IDEA 2020.3 uses JDK 11. Use Ubuntu Bionic for OpenJDK 11
-    - stage: Test with JDK 11
-      jdk: openjdk11
-      dist: bionic
-      env: ORG_GRADLE_PROJECT_ideaVersion=2020.3
+#    - stage: Test with JDK 11
+#      jdk: openjdk11
+#      dist: bionic
+#      env: ORG_GRADLE_PROJECT_ideaVersion=2020.3
 
 #    - stage: Deploy new Release
 #      if: branch = master
