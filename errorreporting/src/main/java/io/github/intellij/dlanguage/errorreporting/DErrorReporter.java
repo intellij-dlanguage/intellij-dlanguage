@@ -42,10 +42,10 @@ public class DErrorReporter extends ErrorReportSubmitter {
      * @return {@code true} if reporting was started, {@code false} if a report can't be sent at the moment.
      */
     @Override
-    public boolean submit(@NotNull final IdeaLoggingEvent[] events,
+    public boolean submit(final IdeaLoggingEvent @NotNull [] events,
                           @Nullable final String additionalInfo,
                           @NotNull final Component parentComponent,
-                          @NotNull final Consumer<SubmittedReportInfo> consumer) {
+                          final @NotNull Consumer<? super SubmittedReportInfo> consumer) {
         try {
             final SentryClient sentry = Sentry.init("https://f948f2ace2c0452a88d3ff2bd6abd4be@sentry.io/1806295", new DlangSentryClientFactory(getPluginDescriptor()));
 
