@@ -38,8 +38,13 @@ class SentryErrorHandler : ErrorReportSubmitter() {
 
     override fun getPrivacyNoticeText(): String = "All data is anonymised prior to being transferred to <a href=\"https://sentry.io\">sentry.io</a> for use by the dev team."
 
-    override fun submit(events: Array<out IdeaLoggingEvent>, additionalInfo: String?, parentComponent: Component, consumer: Consumer<? super SubmittedReportInfo>): Boolean {
-        events.forEach { e ->
+    override fun submit(
+        events: Array<out IdeaLoggingEvent>?,
+        additionalInfo: String?,
+        parentComponent: Component,
+        consumer: Consumer<in SubmittedReportInfo>
+    ): Boolean {
+        events?.forEach { e ->
             IdeaInformationProxy.getKeyValuePairs(
                 e.throwable?.cause ?: e.throwable,
                 IdeaLogger.ourLastActionId,
@@ -56,6 +61,7 @@ class SentryErrorHandler : ErrorReportSubmitter() {
 
         return true // return true to indicate that a process has begun to send data async
     }
+
 }
 
 /**

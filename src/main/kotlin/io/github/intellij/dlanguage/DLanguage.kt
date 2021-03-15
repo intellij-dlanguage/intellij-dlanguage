@@ -47,7 +47,7 @@ class DLangProjectDmdSetupValidator : ProjectSdkSetupValidator {
         val projectSdk = ProjectRootManager.getInstance(project).projectSdk ?: return true
         val sdkType = projectSdk.sdkType as? DlangSdkType ?: return true
 
-        if (!sdkType.isValidSdkHome(projectSdk.homePath)) {
+        if (!sdkType.isValidSdkHome(projectSdk.homePath.toString())) {
             return true
         }
 
@@ -116,9 +116,9 @@ class DLangParserDefinition : ParserDefinition {
     @NotNull
     override fun createParser(project: Project?): ParserWrapper = ParserWrapper()
 
-    override fun createFile(viewProvider: FileViewProvider): PsiFile? = DlangFile(viewProvider)
+    override fun createFile(viewProvider: FileViewProvider): PsiFile = DlangFile(viewProvider)
 
-    override fun spaceExistanceTypeBetweenTokens(left: ASTNode?, right: ASTNode?): ParserDefinition.SpaceRequirements? = ParserDefinition.SpaceRequirements.MAY
+    override fun spaceExistanceTypeBetweenTokens(left: ASTNode?, right: ASTNode?): ParserDefinition.SpaceRequirements = ParserDefinition.SpaceRequirements.MAY
 
     @NotNull
     override fun getStringLiteralElements(): TokenSet = TokenSet.EMPTY
