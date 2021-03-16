@@ -43,7 +43,7 @@ dependencies {
     //compileOnly "com.jetbrains.intellij.platform:core:$intellijPlatformVersion"
     //compileOnly "com.jetbrains.intellij.platform:lang:$intellijPlatformVersion"
 
-    compile project(':utils')
+    //compile project(':utils')
 
     compile ('io.sentry:sentry:1.7.27'){
         exclude group: 'org.slf4j'

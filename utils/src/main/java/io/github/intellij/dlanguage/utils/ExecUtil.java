@@ -1,9 +1,7 @@
 package io.github.intellij.dlanguage.utils;
 
-import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.process.CapturingProcessHandler;
-import com.intellij.execution.process.ProcessOutput;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.module.Module;
@@ -30,6 +28,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Helper class to perform execution related tasks, including locating programs.
  */
+@Deprecated
 public class ExecUtil {
 
     // Messages go to the log available in Help -> Show log in finder.

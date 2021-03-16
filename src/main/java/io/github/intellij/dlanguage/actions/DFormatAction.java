@@ -65,9 +65,9 @@ public class DFormatAction extends AnAction implements DumbAware {
         //final String groupId = e.getPresentation().getText();
         try {
             final GeneralCommandLine commandLine = new GeneralCommandLine();
-            final String stylishPath = ToolKey.DFORMAT_KEY.getPath();
-            final String stylishFlags = ToolKey.DFORMAT_KEY.getFlags();
-            if (stylishPath == null || stylishPath.isEmpty()) {
+            final String dfmtPath = ToolKey.DFORMAT_KEY.getPath();
+            final String dfmtFlags = ToolKey.DFORMAT_KEY.getFlags();
+            if (dfmtPath == null || dfmtPath.isEmpty()) {
 
                 showNotification(NOTIFICATION_TITLE,
                     "DFormat executable path is empty<br/><a href='configureDLanguageTools'>Configure</a>",
@@ -77,7 +77,7 @@ public class DFormatAction extends AnAction implements DumbAware {
                 return;
             }
 
-            if(!Paths.get(stylishPath).toFile().canExecute()) {
+            if(!Paths.get(dfmtPath).toFile().canExecute()) {
                 showNotification(NOTIFICATION_TITLE,
                     "DFormat executable path is not valid<br/><a href='configureDLanguageTools'>Configure</a>",
                     NotificationType.WARNING,
@@ -87,15 +87,15 @@ public class DFormatAction extends AnAction implements DumbAware {
                 return;
             }
 
-            commandLine.setExePath(stylishPath);
-            commandLine.getParametersList().addParametersString(stylishFlags);
+            commandLine.setExePath(dfmtPath);
+            commandLine.getParametersList().addParametersString(dfmtFlags);
 
             final VirtualFile backingFile = psiFile.getVirtualFile();
             if (backingFile == null) return;
             final String backingFilePath = backingFile.getCanonicalPath();
             if (backingFilePath == null) return;
             commandLine.addParameter(backingFilePath);
-            // Set the work dir so stylish can pick up the user config, if it exists.
+            // Set the work dir so dfmt can pick up the user config, if it exists.
             commandLine.setWorkDirectory(backingFile.getParent().getCanonicalPath());
 
             ApplicationManager.getApplication().saveAll();

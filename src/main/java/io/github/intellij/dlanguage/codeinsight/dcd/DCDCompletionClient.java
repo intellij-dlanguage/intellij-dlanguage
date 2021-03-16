@@ -4,29 +4,43 @@ import com.google.common.collect.Maps;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.configurations.ParametersList;
+import com.intellij.execution.process.CapturingProcessHandler;
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiFile;
 import io.github.intellij.dlanguage.codeinsight.dcd.completions.TextCompletion;
 import io.github.intellij.dlanguage.settings.ToolKey;
 import io.github.intellij.dlanguage.utils.DUtil;
-import io.github.intellij.dlanguage.utils.ExecUtil;
 import io.github.intellij.dlanguage.codeinsight.dcd.completions.Completion;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
 import java.util.*;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public final class DCDCompletionClient {
 
+    private final static Logger LOG = Logger.getInstance(DCDCompletionClient.class);
     private static final Map<String, String> completionTypeMap = getCompletionTypeMap();
 
     public List<Completion> autoComplete(final int position, final PsiFile file, final String fileContent) throws DCDError {
         final String path = lookupPath();
-        if (path == null) {
+        if (StringUtil.isEmptyOrSpaces(path)) {
+            LOG.debug("Attempted auto completion via DCD but path was blank");
+            return Collections.emptyList();
+        }
+
+        final File dcdPath = new File(path);
+        if(!dcdPath.canExecute()) {
+            LOG.warn(String.format("Attempted auto completion via DCD but path '%s' not executable", path));
             return Collections.emptyList();
         }
 
@@ -63,12 +77,33 @@ public final class DCDCompletionClient {
         }
 
         try {
-            final String result = Objects.requireNonNull(ExecUtil.readCommandLine(commandLine, file.getText()))
-                .get(3, TimeUnit.SECONDS);
+            final String result = this.readCommandLine(commandLine, file.getText()).get(3L, TimeUnit.SECONDS);
             return processDcdOutput(result);
         } catch (InterruptedException | java.util.concurrent.ExecutionException | TimeoutException e) {
             throw new DCDError(e);
         }
+    }
+
+    /**
+     * Executes commandLine, optionally piping input to stdin, and return stdout.
+     * This method was taken from {@link io.github.intellij.dlanguage.utils.ExecUtil} as it's likely going to be deleted
+     */
+    private Future<String> readCommandLine(@NotNull final GeneralCommandLine commandLine, @Nullable final String input) {
+        return ApplicationManager.getApplication().executeOnPooledThread(() -> {
+            final Process process = commandLine.createProcess();
+
+            if (input != null) {
+                try (final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()))) {
+                    writer.write(input);
+                    writer.flush();
+                }
+            }
+
+            return new CapturingProcessHandler(process,
+                Charset.defaultCharset(),
+                commandLine.getCommandLineString()
+            ).runProcess().getStdout();
+        });
     }
 
     List<Completion> processDcdOutput(@NotNull final String output) {

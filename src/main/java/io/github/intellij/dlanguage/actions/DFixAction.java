@@ -20,9 +20,11 @@ import io.github.intellij.dlanguage.psi.DlangFile;
 import io.github.intellij.dlanguage.settings.ToolKey;
 import io.github.intellij.dlanguage.utils.DToolsNotificationListener;
 
+import java.nio.file.Paths;
+
 
 /**
- * Action that calls Dfmt on the buffer it is invoked for.
+ * Action that calls DFix on the buffer it is invoked for.
  */
 public class DFixAction extends AnAction implements DumbAware {
     private static final String NOTIFICATION_GROUPID = "DFix";
@@ -56,9 +58,9 @@ public class DFixAction extends AnAction implements DumbAware {
         //final String groupId = e.getPresentation().getText();
         try {
             final GeneralCommandLine commandLine = new GeneralCommandLine();
-            final String stylishPath = ToolKey.DFIX_KEY.getPath();
-            final String stylishFlags = ToolKey.DFIX_KEY.getFlags();
-            if (stylishPath == null || stylishPath.isEmpty()) {
+            final String dfixPath = ToolKey.DFIX_KEY.getPath();
+            final String dfixFlags = ToolKey.DFIX_KEY.getFlags();
+            if (dfixPath == null || dfixPath.isEmpty()) {
                 Notifications.Bus.notify(
                     new Notification(NOTIFICATION_GROUPID, NOTIFICATION_TITLE,
                         "DFix executable path is empty" +
@@ -66,15 +68,24 @@ public class DFixAction extends AnAction implements DumbAware {
                         NotificationType.WARNING, new DToolsNotificationListener(project)), project);
                 return;
             }
-            commandLine.setExePath(stylishPath);
-            commandLine.getParametersList().addParametersString(stylishFlags);
+
+            if(!Paths.get(dfixPath).toFile().canExecute()) {
+                Notifications.Bus.notify(
+                    new Notification(NOTIFICATION_GROUPID, NOTIFICATION_TITLE,
+                        "DFix executable path is not valid<br/><a href='configureDLanguageTools'>Configure</a>",
+                        NotificationType.WARNING, new DToolsNotificationListener(project)), project);
+                return;
+            }
+
+            commandLine.setExePath(dfixPath);
+            commandLine.getParametersList().addParametersString(dfixFlags);
 
             final VirtualFile backingFile = psiFile.getVirtualFile();
             if (backingFile == null) return;
             final String backingFilePath = backingFile.getCanonicalPath();
             if (backingFilePath == null) return;
             commandLine.addParameter(backingFilePath);
-            // Set the work dir so stylish can pick up the user config, if it exists.
+            // Set the work dir so dfix can pick up the user config, if it exists.
             commandLine.setWorkDirectory(backingFile.getParent().getCanonicalPath());
 
             ApplicationManager.getApplication().saveAll();
