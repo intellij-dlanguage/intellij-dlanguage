@@ -1,9 +1,11 @@
 package io.github.intellij.dlanguage.highlighting.annotation;
 
+//import com.intellij.lang.annotation.AnnotationBuilder;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;
-import com.intellij.openapi.editor.colors.EditorColorsManager;
-import com.intellij.openapi.editor.colors.TextAttributesKey;
+//import com.intellij.lang.annotation.HighlightSeverity;
+//import com.intellij.openapi.editor.colors.EditorColorsManager;
+//import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.psi.PsiElement;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
@@ -15,12 +17,20 @@ import org.jetbrains.annotations.NotNull;
 */
 public class DAnnotator implements Annotator {
 
-    private static void setHighlighting(@NotNull final PsiElement element,
-                                        @NotNull final AnnotationHolder holder,
-                                        @NotNull final TextAttributesKey key) {
-        holder.createInfoAnnotation(element, null).setEnforcedTextAttributes(
-            EditorColorsManager.getInstance().getGlobalScheme().getAttributes(key));
-    }
+//    private static void setHighlighting(@NotNull final PsiElement element,
+//                                        @NotNull final AnnotationHolder holder,
+//                                        @NotNull final TextAttributesKey key) {
+//        // following deprecated code:
+//        holder.createInfoAnnotation(element, null)
+//            .setEnforcedTextAttributes(EditorColorsManager.getInstance().getGlobalScheme().getAttributes(key));
+//
+//        // should probably now be:
+//        holder
+//            .newAnnotation(HighlightSeverity.INFORMATION, null)
+//            .range(element)
+//            .enforcedTextAttributes(EditorColorsManager.getInstance().getGlobalScheme().getAttributes(key))
+//            .create();
+//    }
 
     @Override
     public void annotate(@NotNull final PsiElement element, @NotNull final AnnotationHolder holder) {

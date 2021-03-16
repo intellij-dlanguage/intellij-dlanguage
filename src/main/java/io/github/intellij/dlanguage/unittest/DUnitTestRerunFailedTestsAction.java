@@ -13,7 +13,6 @@ import com.intellij.openapi.ui.ComponentContainer;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.util.containers.ContainerUtil;
-import com.intellij.util.containers.LinkedMultiMap;
 import com.intellij.util.containers.MultiMap;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -45,7 +44,7 @@ public class DUnitTestRerunFailedTestsAction extends AbstractRerunFailedTestsAct
             return null;
         }
 
-        final MultiMap<Module, String> moduleToFailedTestNames = new LinkedMultiMap<>();
+        final MultiMap<Module, String> moduleToFailedTestNames = MultiMap.createLinked();
         final GlobalSearchScope searchScope = GlobalSearchScope.projectScope(project);
 
         for (final AbstractTestProxy failedTest : failedTests) {
