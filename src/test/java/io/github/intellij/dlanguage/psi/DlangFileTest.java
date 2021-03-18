@@ -1,18 +1,12 @@
 package io.github.intellij.dlanguage.psi;
 
-import com.intellij.mock.MockPsiManager;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.FileViewProvider;
-import com.intellij.psi.SingleRootFileViewProvider;
-import com.intellij.testFramework.LightPlatformTestCase;
-import com.intellij.testFramework.LightVirtualFile;
-import io.github.intellij.dlanguage.DLanguage;
+import io.github.intellij.dlanguage.LightDlangTestCase;
 
 /**
  * @author Samael Bate (singingbush)
  * created on 20/10/18
  */
-public class DlangFileTest extends LightPlatformTestCase {
+public class DlangFileTest extends LightDlangTestCase {
 
     /**
      * D module names are, by default, the file name with the path and extension stripped off.
@@ -92,19 +86,4 @@ public class DlangFileTest extends LightPlatformTestCase {
         // todo: assertEquals("foo-bar", dlangFile.getFullyQualifiedModuleName());
     }
 
-    /**
-     * Use this method to help simplify the creation of test data for these unit tests
-     *
-     * @param filename the filename, including extension, of a D source file
-     * @param content the file content (source code)
-     * @return a Dlang Psi File from a single LightVirtualFile (In-memory implementation of {@link VirtualFile})
-     */
-    private DlangFile lightDlangPsiFile(final String filename, final String content) {
-        final FileViewProvider provider = new SingleRootFileViewProvider(
-            new MockPsiManager(getProject()),
-            new LightVirtualFile(filename, DLanguage.INSTANCE, content)
-        );
-
-        return new DlangFile(provider);
-    }
 }
