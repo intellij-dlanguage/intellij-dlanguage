@@ -20,12 +20,25 @@ class DlangDmdConfigToArgsConverterTest : LightDlangTestCase() {
     @Throws(Exception::class)
     fun `test Get DMD Parameters Should output valid args by default`() {
         addFileToModuleSource("myapp.d")
+        addFileToModuleSource("othersource.d")
 
         val dmdConfig = mock(DlangRunDmdConfiguration::class.java)
 
         val dmdParameters = DlangDmdConfigToArgsConverter.getDmdParameters(dmdConfig, module)
 
-        TestCase.assertEquals(mutableListOf(outputDirArg, outputFileArg, "/src/myapp.d"), dmdParameters)
+        TestCase.assertEquals(mutableListOf(outputDirArg, outputFileArg, "/src/myapp.d", "/src/othersource.d"), dmdParameters)
+    }
+
+    @Throws(Exception::class)
+    fun `test Get DMD Parameters building a library`() {
+        addFileToModuleSource("myapp.d")
+
+        val dmdConfig = mock(DlangRunDmdConfiguration::class.java)
+        `when`(dmdConfig.isLibrary).thenReturn(true)
+
+        val dmdParameters = DlangDmdConfigToArgsConverter.getDmdParameters(dmdConfig, module)
+
+        TestCase.assertEquals(mutableListOf("-lib", outputDirArg, "-of${File.separatorChar}light_idea_test_case.lib", "/src/myapp.d"), dmdParameters)
     }
 
     @Throws(Exception::class)
