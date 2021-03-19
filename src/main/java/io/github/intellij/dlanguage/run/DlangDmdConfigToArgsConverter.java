@@ -13,6 +13,7 @@ import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class DlangDmdConfigToArgsConverter {
 
@@ -34,6 +35,7 @@ public class DlangDmdConfigToArgsConverter {
         return dmdParameters;
     }
 
+    @Nullable
     private static VirtualFile[] getExcludedRoots(final Module module) {
         if (module != null) {
             return ModuleRootManager.getInstance(module).getExcludeRoots();
@@ -55,8 +57,7 @@ public class DlangDmdConfigToArgsConverter {
     }
 
     @NotNull
-    private static String getOutputFilePath(final Module module,
-        final DlangRunDmdConfiguration config) {
+    private static String getOutputFilePath(final Module module, final DlangRunDmdConfiguration config) {
         String filename = module.getName();
         if (config.isLibrary()) {
             filename += ".lib";
@@ -74,6 +75,7 @@ public class DlangDmdConfigToArgsConverter {
     }
 
 
+    @NotNull
     private static List<String> configToParameters(final DlangRunDmdConfiguration config) {
         final LinkedList<String> result = new LinkedList<>();
         buildCompilerParameters(config, result);
@@ -83,8 +85,10 @@ public class DlangDmdConfigToArgsConverter {
         return result;
     }
 
-    private static void buildCompilerParameters(final DlangRunDmdConfiguration config,
-        final List<String> parameters) {
+    private static void buildCompilerParameters(final DlangRunDmdConfiguration config, final List<String> parameters) {
+        if (config.isBetterC()) {
+            parameters.add("-betterC");
+        }
         if (config.isRelease()) {
             parameters.add("-release");
         }
