@@ -26,7 +26,6 @@ import com.intellij.openapi.roots.ModifiableModelsProvider
 import com.intellij.openapi.roots.ModuleRootModificationUtil
 import com.intellij.openapi.roots.OrderRootType
 import com.intellij.openapi.roots.impl.OrderEntryUtil
-import com.intellij.openapi.roots.libraries.Library
 import com.intellij.openapi.roots.libraries.LibraryTablesRegistrar
 import com.intellij.openapi.ui.popup.JBPopupFactory
 import com.intellij.openapi.util.Key
@@ -35,13 +34,13 @@ import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.vfs.VirtualFileManager
 import com.intellij.ui.components.JBList
-import com.intellij.util.Consumer
 import io.github.intellij.dlanguage.icons.DlangIcons
 import io.github.intellij.dlanguage.module.DlangModuleType
 import io.github.intellij.dlanguage.project.DubConfigurationParser
 import io.github.intellij.dlanguage.project.DubPackage
 import io.github.intellij.dlanguage.settings.ToolKey
 import io.github.intellij.dlanguage.utils.DToolsNotificationListener
+import org.jetbrains.annotations.NotNull
 import java.util.*
 
 /**
@@ -221,63 +220,67 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
                 VirtualFileManager.constructUrl(LocalFileSystem.PROTOCOL, dubPackage.path + srcDir)
             }
 
-            val sources = VirtualFileManager.getInstance().refreshAndFindFileByUrl(sourcesPathUrl)
+            return VirtualFileManager.getInstance()
+                .refreshAndFindFileByUrl(sourcesPathUrl) ?: return this.dubFetch(dubPackage, sourcesPathUrl)
+        }
 
-            if (sources == null) {
-                LOG.info("sources not found, fetching them")
-                val commandLine = GeneralCommandLine()
-                val dubBinaryPath = ToolKey.DUB_KEY.path
-                if (dubBinaryPath == null) {
-                    LOG.error("dub executable should be configured")
-                    return null
-                }
-                commandLine.exePath = dubBinaryPath
-                val parametersList = commandLine.parametersList
-                parametersList.addParametersString("fetch")
-                // todo: add some logic here to choose between "dub fetch <package> --version=x.y.z" and "dub fetch <package>@x.y.z"
-                // see: https://github.com/dlang/dub/issues/2028
-                parametersList.addParametersString(dubPackage.name)
-                parametersList.addParametersString("--version=" + dubPackage.version)
-
-                val dubCommand = commandLine.commandLineString
-                val process: OSProcessHandler
-                try {
-                    process = OSProcessHandler(commandLine.createProcess(), dubCommand)
-                } catch (e: ExecutionException) {
-                    LOG.error(e)
-                    return null
-                }
-
-                val builder = StringBuilder()
-                val errors = ArrayList<String>()
-
-                process.addProcessListener(object : ProcessAdapter() {
-                    override fun onTextAvailable(event: ProcessEvent, outputType: Key<*>) {
-                        when (outputType.toString()) {
-                            "stdout" -> builder.append(event.text)
-                            "stderr" -> errors.add(event.text)
-                        }
-                    }
-                })
-
-                process.startNotify()
-                process.waitFor()
-
-                LOG.debug("output from fetching package:" + builder.toString())
-
-                for (error in errors) {
-                    LOG.error(String.format("Error when running '%s' : %s", dubCommand, error));
-                }
-
-                val exitCode = process.exitCode
-                if (exitCode != null && exitCode == 0) {
-                    //try loading again
-                    return VirtualFileManager.getInstance().refreshAndFindFileByUrl(sourcesPathUrl)
-                } else {
-                    LOG.error("exitcode was no zero for fetching package")
-                }
+        private fun dubFetch(dubPackage: DubPackage, sourcesPathUrl: @NotNull String): VirtualFile? {
+            LOG.info("sources not found, fetching them")
+            val commandLine = GeneralCommandLine()
+            val dubBinaryPath = ToolKey.DUB_KEY.path
+            if (dubBinaryPath == null) {
+                LOG.error("dub executable should be configured")
+                return null
             }
-            return sources
+            commandLine.exePath = dubBinaryPath
+            val parametersList = commandLine.parametersList
+            parametersList.addParametersString("fetch")
+            // todo: add some logic here to choose between "dub fetch <package> --version=x.y.z" and "dub fetch <package>@x.y.z"
+            // see: https://github.com/dlang/dub/issues/2028
+            // if dub is version 1.23 or over:
+            parametersList.addParametersString("${dubPackage.name}@${dubPackage.version}")
+            // else use old syntax:
+            // parametersList.addParametersString(dubPackage.name)
+            // parametersList.addParametersString("--version=${dubPackage.version}")
+
+            val dubCommand = commandLine.commandLineString
+            val process: OSProcessHandler
+            try {
+                process = OSProcessHandler(commandLine.createProcess(), dubCommand)
+            } catch (e: ExecutionException) {
+                LOG.error(e)
+                return null
+            }
+
+            val builder = StringBuilder()
+            val errors = ArrayList<String>()
+
+            process.addProcessListener(object : ProcessAdapter() {
+                override fun onTextAvailable(event: ProcessEvent, outputType: Key<*>) {
+                    when (outputType.toString()) {
+                        "stdout" -> builder.append(event.text)
+                        "stderr" -> errors.add(event.text)
+                    }
+                }
+            })
+
+            process.startNotify()
+            process.waitFor()
+
+            LOG.debug("output from fetching package:" + builder.toString())
+
+            for (error in errors) {
+                LOG.error(String.format("Error when running '%s' : %s", dubCommand, error));
+            }
+
+            val exitCode = process.exitCode
+            if (exitCode != null && exitCode == 0) {
+                //try loading again
+                return VirtualFileManager.getInstance().refreshAndFindFileByUrl(sourcesPathUrl)
+            } else {
+                LOG.error("exitcode was no zero for fetching package")
+            }
+            return null
         }
 
 //    private fun removeDLibs(module: Module, project: Project) {
