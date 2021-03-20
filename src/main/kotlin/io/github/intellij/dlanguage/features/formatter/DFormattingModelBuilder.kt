@@ -59,7 +59,10 @@ class DFormattingModelBuilder : FormattingModelBuilder {
             .after(LINE_COMMENT).lineBreakInCode()
     }
 
-    override fun createModel(element: PsiElement, settings: CodeStyleSettings): FormattingModel {
+    override fun createModel(formattingContext: FormattingContext): FormattingModel {
+        val element = formattingContext.psiElement
+        val settings = formattingContext.codeStyleSettings
+
         val block = DFormattingBlock(element.node, null, Indent.getNoneIndent(), null, settings, createSpacingBuilder(settings))
         return FormattingModelProvider.createFormattingModelForPsiFile(element.containingFile, block, settings)
     }
