@@ -3,7 +3,6 @@ package io.github.intellij.dlanguage.codeinsight.dcd;
 import com.google.common.collect.Maps;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
-import com.intellij.execution.configurations.ParametersList;
 import com.intellij.execution.process.CapturingProcessHandler;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
@@ -44,28 +43,11 @@ public final class DCDCompletionClient {
             return Collections.emptyList();
         }
 
-        final String workingDirectory = file.getProject().getBasePath();
-
-        final GeneralCommandLine commandLine = new GeneralCommandLine();
-        commandLine.setWorkDirectory(workingDirectory);
-        commandLine.setExePath(path);
-        final ParametersList parametersList = commandLine.getParametersList();
-        parametersList.addParametersString("-c");
-        parametersList.addParametersString(String.valueOf(position));
-
-        final String flags = ToolKey.DCD_CLIENT_KEY.getFlags();
-
-        if (DUtil.isNotNullOrEmpty(flags)) {
-            final String[] importList = flags.split(",");
-            for (int i = 0; i < importList.length; i++) {
-                parametersList.addParametersString("-I");
-                parametersList.addParametersString(importList[i]);
-            }
-        }
+        final GeneralCommandLine dcdClientCommandLine = this.buildDcdCommand(path, position, file);
 
         final Process process;
         try {
-            process = commandLine.createProcess();
+            process = dcdClientCommandLine.createProcess();
         } catch (ExecutionException e) {
             throw new DCDError(e);
         }
@@ -77,11 +59,29 @@ public final class DCDCompletionClient {
         }
 
         try {
-            final String result = this.readCommandLine(commandLine, file.getText()).get(3L, TimeUnit.SECONDS);
+            final String result = this.readCommandLine(dcdClientCommandLine, file.getText()).get(3L, TimeUnit.SECONDS);
             return processDcdOutput(result);
         } catch (InterruptedException | java.util.concurrent.ExecutionException | TimeoutException e) {
             throw new DCDError(e);
         }
+    }
+
+    // is package private for unit testing
+    GeneralCommandLine buildDcdCommand(final String dcdClientPath, int position, PsiFile file) {
+        final String workingDirectory = file.getProject().getBasePath();
+
+        final GeneralCommandLine commandLine = new GeneralCommandLine()
+            .withWorkDirectory(workingDirectory)
+            .withExePath(dcdClientPath)
+            .withParameters("-c", String.valueOf(position));
+
+        final String flags = ToolKey.DCD_CLIENT_KEY.getFlags();
+
+        if (DUtil.isNotNullOrEmpty(flags)) {
+            Arrays.stream(flags.split(","))
+                .forEach(i -> commandLine.addParameters("-I", i));
+        }
+        return commandLine;
     }
 
     /**
