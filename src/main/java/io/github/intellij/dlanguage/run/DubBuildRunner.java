@@ -10,6 +10,7 @@ import com.intellij.execution.executors.DefaultRunExecutor;
 import com.intellij.execution.runners.ExecutionEnvironment;
 import com.intellij.execution.runners.GenericProgramRunner;
 import com.intellij.execution.ui.RunContentDescriptor;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.WriteExternalException;
@@ -29,6 +30,8 @@ import java.nio.file.Paths;
  */
 public class DubBuildRunner extends GenericProgramRunner<DubBuildRunner.DubBuildSettings> {
 
+    private static final Logger log = Logger.getInstance(DubBuildRunner.class);
+
     @NotNull
     @Override
     public String getRunnerId() {
@@ -43,21 +46,25 @@ public class DubBuildRunner extends GenericProgramRunner<DubBuildRunner.DubBuild
     @Nullable
     @Override
     protected RunContentDescriptor doExecute(@NotNull final RunProfileState state, @NotNull final ExecutionEnvironment env) throws ExecutionException {
-        if (env.getExecutor().getActionName().equals(DefaultDebugExecutor.EXECUTOR_ID)) {
-            Project project = env.getProject();
+        final Executor executor = env.getExecutor();
+        if (DefaultDebugExecutor.EXECUTOR_ID.equals(executor.getActionName())) {
+            final Project project = env.getProject();
             String executableFilePath = project.getBasePath().concat("/").concat(project.getName());
 
-            final DubConfigurationParser dubParser = new DubConfigurationParser(project,
-                ToolKey.DUB_KEY.getPath(), false);
+            final DubConfigurationParser dubParser = new DubConfigurationParser(project, ToolKey.DUB_KEY.getPath(), false);
 
             if (dubParser.canUseDub() && dubParser.getDubProject().isPresent()) {
-                final DubProject dubProject = dubParser.getDubProject().get();
-                final DubPackage dubPackage = dubProject.getRootPackage();
+                final DubPackage rootPackage = dubParser.getDubProject().get().getRootPackage();
+
                 executableFilePath = Paths.get(
-                    dubPackage.getPath(), dubPackage.getTargetPath(), dubPackage.getTargetFileName()).toString().replace("\\", "/");
+                    rootPackage.getPath(),
+                    rootPackage.getTargetPath(),
+                    rootPackage.getTargetFileName()
+                ).toString().replace("\\", "/");
+
+                log.debug("Using root package of dub project for executable path: ", executableFilePath);
             }
 
-            Executor executor = env.getExecutor();
             return RunUtil.startDebugger(this, state, env, project, executor, executableFilePath);
         }
         return super.doExecute(state, env);

@@ -1,7 +1,6 @@
 package io.github.intellij.dlanguage.run;
 
 import com.intellij.execution.ExecutionException;
-import com.intellij.execution.Executor;
 import com.intellij.execution.configurations.RunProfile;
 import com.intellij.execution.configurations.RunProfileState;
 import com.intellij.execution.configurations.RunnerSettings;
@@ -11,7 +10,6 @@ import com.intellij.execution.runners.ExecutionEnvironment;
 import com.intellij.execution.runners.GenericProgramRunner;
 import com.intellij.execution.ui.RunContentDescriptor;
 import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.WriteExternalException;
 import io.github.intellij.dlanguage.run.exception.ModuleNotFoundException;
@@ -26,6 +24,8 @@ import org.jetbrains.annotations.Nullable;
  * the ProgramRunner<Settings extends RunnerSettings> interface
  */
 public class RunAppRunner extends GenericProgramRunner<RunAppRunner.DubAppSettings> {
+
+    private static final Logger log = Logger.getInstance(RunAppRunner.class);
 
     @NotNull
     @Override
@@ -42,14 +42,14 @@ public class RunAppRunner extends GenericProgramRunner<RunAppRunner.DubAppSettin
     @Nullable
     @Override
     protected RunContentDescriptor doExecute(@NotNull final RunProfileState state, final ExecutionEnvironment env) throws ExecutionException {
-        if (env.getExecutor().getActionName().equals(DefaultDebugExecutor.EXECUTOR_ID)) {
-            final Project project = env.getProject();
-
-            final Executor executor = env.getExecutor();
-            final Logger log = Logger.getInstance(this.getClass());
+        if (DefaultDebugExecutor.EXECUTOR_ID.equals(env.getExecutor().getActionName())) {
             try {
                 final DlangRunAppState dlangRunAppState = (DlangRunAppState) state;
-                return RunUtil.startDebugger(this, state, env, project, executor, dlangRunAppState.getExecutableCommandLine(dlangRunAppState.getConfig()).getExePath());//todo this is yucky
+                final String executableFilePath = dlangRunAppState.getExecutableCommandLine(dlangRunAppState.getConfig())
+                    .getExePath()
+                    .replace("\\", "/");
+
+                return RunUtil.startDebugger(this, state, env, env.getProject(), env.getExecutor(), executableFilePath);
             } catch (final ModuleNotFoundException e) {
                 e.printStackTrace();
                 log.error(e.toString());
