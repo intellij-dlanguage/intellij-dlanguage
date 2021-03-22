@@ -26,6 +26,7 @@ import io.github.intellij.dlanguage.utils.DUtil;
 import io.github.intellij.dlanguage.settings.ToolKey;
 import io.github.intellij.dlanguage.utils.DToolsNotificationListener;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -208,8 +209,9 @@ public class DlangRunDubState extends CommandLineState {
 
     }
 
-    private VirtualFile getSourceRoot(final Module module) {
-        if (module != null) {
+    @Nullable
+    private VirtualFile getSourceRoot(@Nullable final Module module) {
+        if (module != null && !module.isDisposed()) {
             final VirtualFile[] sourcesRoots = ModuleRootManager.getInstance(module).getSourceRoots();
             if (sourcesRoots.length >= 1) {
                 return sourcesRoots[0];

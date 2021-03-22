@@ -17,9 +17,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class DlangDmdConfigToArgsConverter {
 
-    public static List<String> getDmdParameters(@NotNull final DlangRunDmdConfiguration config,
-        @NotNull final Module module)
-        throws NoSourcesException, ExecutionException {
+    public static List<String> getDmdParameters(@NotNull final DlangRunDmdConfiguration config, @NotNull final Module module)
+                                                                throws NoSourcesException, ExecutionException {
         final VirtualFile[] sourcesRoots = ModuleRootManager.getInstance(module).getSourceRoots();
         final VirtualFile[] excludedRoots = getExcludedRoots(module);
         final List<String> dmdParameters = new LinkedList<>();
@@ -36,8 +35,8 @@ public class DlangDmdConfigToArgsConverter {
     }
 
     @Nullable
-    private static VirtualFile[] getExcludedRoots(final Module module) {
-        if (module != null) {
+    private static VirtualFile[] getExcludedRoots(@Nullable final Module module) {
+        if (module != null && !module.isDisposed()) {
             return ModuleRootManager.getInstance(module).getExcludeRoots();
         }
         return null;
@@ -51,13 +50,12 @@ public class DlangDmdConfigToArgsConverter {
     }
 
     @NotNull
-    private static String getOutputFileArgument(final Module module,
-        final DlangRunDmdConfiguration config) {
+    private static String getOutputFileArgument(@NotNull final Module module, @NotNull final DlangRunDmdConfiguration config) {
         return "-of" + getOutputFilePath(module, config);
     }
 
     @NotNull
-    private static String getOutputFilePath(final Module module, final DlangRunDmdConfiguration config) {
+    private static String getOutputFilePath(@NotNull final Module module, @NotNull final DlangRunDmdConfiguration config) {
         String filename = module.getName();
         if (config.isLibrary()) {
             filename += ".lib";
@@ -69,9 +67,11 @@ public class DlangDmdConfigToArgsConverter {
         return outputFile.getPath();
     }
 
+    @Nullable
     private static String getOutputDir(final Module module) {
         return ModuleRootManager.getInstance(module)
-            .getModuleExtension(CompilerModuleExtension.class).getCompilerOutputUrl();
+            .getModuleExtension(CompilerModuleExtension.class)
+            .getCompilerOutputUrl();
     }
 
 

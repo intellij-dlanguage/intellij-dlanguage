@@ -4,14 +4,16 @@ import com.intellij.openapi.module.Module;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.roots.ModuleRootManager;
 import io.github.intellij.dlanguage.DlangSdkType;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class DMDRunner {
 
-    public boolean isValidModule(@NotNull final Module module) {
-        final ModuleRootManager moduleRootManager = ModuleRootManager.getInstance(module);
-        final Sdk sdk = moduleRootManager.getSdk();
-        return sdk!=null && (sdk.getSdkType() instanceof DlangSdkType);
+    public boolean isValidModule(@Nullable final Module module) {
+        if(module == null || module.isDisposed()) {
+            return false;
+        }
+        @Nullable final Sdk sdk = ModuleRootManager.getInstance(module).getSdk();
+        return sdk != null && (sdk.getSdkType() instanceof DlangSdkType);
     }
 
 //    public boolean ensureRunnerConfigured(@Nullable final Module module,

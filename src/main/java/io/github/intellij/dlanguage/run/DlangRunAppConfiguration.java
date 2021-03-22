@@ -47,10 +47,12 @@ public class DlangRunAppConfiguration extends ModuleBasedConfiguration<RunConfig
     }
 
     public String getExecutablePath() {
-        final Module module = getConfigurationModule().getModule();
-        if (module != null) {
-            final ModuleRootManager moduleRootManager = ModuleRootManager.getInstance(module);
-            final String outputPath = moduleRootManager.getModuleExtension(CompilerModuleExtension.class).getCompilerOutputUrl();
+        @Nullable final Module module = getConfigurationModule().getModule();
+        if (module != null && !module.isDisposed()) {
+            final String outputPath = ModuleRootManager.getInstance(module)
+                                                        .getModuleExtension(CompilerModuleExtension.class)
+                                                        .getCompilerOutputUrl();
+
             String filename = module.getName();
             if (SystemInfo.isWindows) {
                 filename += ".exe";

@@ -24,6 +24,7 @@ import io.github.intellij.dlanguage.DlangSdkType;
 import io.github.intellij.dlanguage.run.exception.ModuleNotFoundException;
 import io.github.intellij.dlanguage.run.exception.NoValidDlangSdkFound;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.nio.charset.Charset;
 import java.nio.file.Paths;
@@ -84,9 +85,14 @@ public class DlangRunDmdState extends CommandLineState implements ProcessListene
      */
     private GeneralCommandLine getDmdCommandLine(final DlangRunDmdConfiguration config)
         throws ModuleNotFoundException, NoValidDlangSdkFound, NoSourcesException, ExecutionException {
-        final Module module = config.getConfigurationModule().getModule();
+        @Nullable final Module module = config.getConfigurationModule().getModule();
         if (module == null) {
             throw new ModuleNotFoundException();
+        }
+
+        if (module.isDisposed()) {
+            LOG.warn("should not run dmd as module is disposed");
+            throw new ModuleNotFoundException("module is disposed");
         }
 
         final ModuleRootManager moduleRootManager = ModuleRootManager.getInstance(module);

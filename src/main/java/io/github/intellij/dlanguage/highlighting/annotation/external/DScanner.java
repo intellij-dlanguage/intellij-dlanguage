@@ -37,6 +37,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import io.github.intellij.dlanguage.utils.DUtil;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class DScanner {
 
@@ -145,20 +146,24 @@ public class DScanner {
     }
 
     private List<String> getCompilerSourcePaths(final PsiFile file) {
-
-        Module module = ProjectRootManager.getInstance(file.getProject()).getFileIndex().getModuleForFile(file.getVirtualFile());
+        @Nullable final Module module = ProjectRootManager.getInstance(file.getProject())
+                                                            .getFileIndex()
+                                                            .getModuleForFile(file.getVirtualFile());
 
         final ArrayList<String> compilerSourcePaths = new ArrayList<>();
-        final ModuleRootManager moduleRootManager = ModuleRootManager.getInstance(module);
-        final Sdk sdk = moduleRootManager.getSdk();
 
-        if (sdk != null && (sdk.getSdkType() instanceof DlangSdkType)) {
-            for (VirtualFile f: sdk.getSdkModificator().getRoots(OrderRootType.SOURCES)) {
-                if (f.exists() && f.isDirectory()) {
-                    compilerSourcePaths.add(f.getPath());
+        if(module != null && !module.isDisposed()) {
+            @Nullable final Sdk sdk = ModuleRootManager.getInstance(module).getSdk();
+
+            if (sdk != null && (sdk.getSdkType() instanceof DlangSdkType)) {
+                for (VirtualFile f: sdk.getSdkModificator().getRoots(OrderRootType.SOURCES)) {
+                    if (f.exists() && f.isDirectory()) {
+                        compilerSourcePaths.add(f.getPath());
+                    }
                 }
             }
         }
+
         return compilerSourcePaths;
     }
 

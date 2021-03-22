@@ -147,8 +147,11 @@ public class DlangRunAppState extends CommandLineState {
         return outputFile.getPath();
     }
 
-    private String getOutputDir(final Module module) {
-        return ModuleRootManager.getInstance(module).getModuleExtension(CompilerModuleExtension.class).getCompilerOutputUrl();
+    @Nullable
+    private String getOutputDir(@NotNull final Module module) {
+        return ModuleRootManager.getInstance(module)
+                        .getModuleExtension(CompilerModuleExtension.class)
+                        .getCompilerOutputUrl();
     }
 
     public DlangRunAppConfiguration getConfig() {
