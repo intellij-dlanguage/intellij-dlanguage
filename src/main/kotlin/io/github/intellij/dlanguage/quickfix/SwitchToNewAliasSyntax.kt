@@ -19,7 +19,7 @@ class SwitchToNewAliasSyntax(elem: DLanguageAliasDeclaration) : LocalQuickFixOnP
         val restStartIndex = aliasDecl.type!!.textRange.endOffset
         val restEndIndex = aliasDecl.textRange.endOffset
         val restText = aliasDecl.text.substring(restStartIndex - aliasStartIndex, restEndIndex - aliasStartIndex)
-        val newAliasString = "alias " + restText.replace(";", "") + " = " + type!!.text + ";"
+        val newAliasString = "alias " + restText.replace(";", "").trim() + " = " + type!!.text + ";"
         aliasDecl.replace(DElementFactory.createAliasDeclarationFromText(project, newAliasString))
     }
 
