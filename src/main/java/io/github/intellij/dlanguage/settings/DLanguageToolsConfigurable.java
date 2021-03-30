@@ -83,7 +83,6 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
     private JTextField GDBVersion;
     private JTabbedPane tabbedPane1;
     private JCheckBox chkNativeCodeCompletion;
-    private JCheckBox disableFormatterSyntaxErrorCheckBox;
 
     public DLanguageToolsConfigurable(@NotNull final Project project) {
         this.propertiesComponent = PropertiesComponent.getInstance();
@@ -221,11 +220,8 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
                 t.setDirty(false);
             }
         }
-        return
-            propertiesComponent.getBoolean("USE_NATIVE_CODE_COMPLETION") != chkNativeCodeCompletion
-                .isSelected()
-                || propertiesComponent.getBoolean("DISABLE_SYNTAX_ERROR_FORMATTER_WARNING")
-                != disableFormatterSyntaxErrorCheckBox.isSelected();
+        return propertiesComponent.getBoolean("USE_NATIVE_CODE_COMPLETION") != chkNativeCodeCompletion
+            .isSelected();
     }
 
     /**
@@ -267,8 +263,6 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
         }
         propertiesComponent
             .setValue("USE_NATIVE_CODE_COMPLETION", chkNativeCodeCompletion.isSelected());
-        propertiesComponent.setValue("DISABLE_SYNTAX_ERROR_FORMATTER_WARNING",
-            disableFormatterSyntaxErrorCheckBox.isSelected());
     }
 
     /**
@@ -282,13 +276,8 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
         if (!propertiesComponent.isValueSet("USE_NATIVE_CODE_COMPLETION")) {
             propertiesComponent.setValue("USE_NATIVE_CODE_COMPLETION", false);
         }
-        if (!propertiesComponent.isValueSet("DISABLE_SYNTAX_ERROR_FORMATTER_WARNING")) {
-            propertiesComponent.setValue("DISABLE_SYNTAX_ERROR_FORMATTER_WARNING", false);
-        }
         chkNativeCodeCompletion
             .setSelected(propertiesComponent.getBoolean("USE_NATIVE_CODE_COMPLETION"));
-        disableFormatterSyntaxErrorCheckBox
-            .setSelected(propertiesComponent.getBoolean("DISABLE_SYNTAX_ERROR_FORMATTER_WARNING"));
     }
 
     interface Property {
