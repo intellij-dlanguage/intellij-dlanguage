@@ -27,7 +27,7 @@ class DFormattingModelBuilder : FormattingModelBuilder {
 
     private fun createSpacingBuilder(settings: CodeStyleSettings): SpacingBuilder {
         return SpacingBuilder(settings, DLanguage)
-            .withinPair(KW_CASE, ARGUMENT_LIST).spaces(1)
+            .between(KW_CASE, ARGUMENT_LIST).spaces(1)
             .before(COMMA).spaceIf(false)
             .after(COMMA).spaceIf(true)
             .before(SEMICOLON).spaceIf(false)
