@@ -1,12 +1,9 @@
 package io.github.intellij.dlanguage.formatting;
 
-
 import com.intellij.psi.formatter.FormatterTestCase;
 import io.github.intellij.dlanguage.DlangFileType;
 import org.jetbrains.annotations.NotNull;
-import org.junit.Ignore;
 
-@Ignore
 public class DFormatterTest extends FormatterTestCase {
     @NotNull
     @Override
@@ -35,14 +32,14 @@ public class DFormatterTest extends FormatterTestCase {
     public void testDeclSpacing() throws Exception {
         doTest();
     }
-//
-public void testattribute_constraint() throws Exception {
-    doTest();
-}
 
-public void testdlanguage_issue_497() throws  Exception{
+    public void testattribute_constraint() throws Exception {
         doTest();
-}
+    }
+
+    public void testdlanguage_issue_497() throws Exception {
+        doTest();
+    }
 
 //
 //    public void testbreakOnDots() throws Exception {

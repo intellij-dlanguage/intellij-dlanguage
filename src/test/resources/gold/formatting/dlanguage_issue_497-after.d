@@ -1,7 +1,7 @@
 import std.stdio;
 
 void main(string[] args){
-    switch(i){
+    switch (i){
         case 1: writeln(i);
     }
 }
