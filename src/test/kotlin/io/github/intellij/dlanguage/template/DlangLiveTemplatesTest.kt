@@ -13,7 +13,7 @@ class DlangLiveTemplatesTest : DlangTestBase() {
         }
     """, """
         struct S {
-            foo: u32,
+            int foo;
         }
     """)
 
