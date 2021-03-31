@@ -497,4 +497,11 @@
         <option name="D" value="true" />
       </context>
     </template>
+    <template name="f" description="field" toReformat="true" toShortenFQNames="true" value="$TYPE$ $IDENT$;">
+        <variable name="IDENT" expression="" defaultValue="&quot;foo&quot;" alwaysStopAt="true"/>
+        <variable name="TYPE" expression="" defaultValue="&quot;int&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="D" value="true" />
+        </context>
+    </template>
 </templateSet>
