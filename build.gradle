@@ -42,7 +42,7 @@ apply plugin: 'org.jetbrains.grammarkit'
 cobertura.coverageFormats = ['html', 'xml'] // coveralls plugin depends on xml format report
 cobertura.coverageSourceDirs = [sourceSets.main.java.srcDirs, sourceSets.main.kotlin.srcDirs, 'gen']
 cobertura.coverageEncoding = 'UTF-8'
-cobertura.coverageExcludes = [ '.*de.halirutan.mathematica.*', '.*uk.co.cwspencer.*' ]
+cobertura.coverageExcludes = [ '.*uk.co.cwspencer.*' ]
 
 
 

@@ -1,22 +1,26 @@
 package io.github.intellij.dlanguage.errorreporting;
 
-import com.intellij.diagnostic.IdeErrorsDialog;
 import com.intellij.diagnostic.IdeaReportingEvent;
+import com.intellij.ide.plugins.IdeaPluginDescriptor;
+import com.intellij.ide.plugins.PluginManagerCore;
 import com.intellij.idea.IdeaLogger;
+import com.intellij.openapi.application.ApplicationInfo;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.application.ApplicationNamesInfo;
+import com.intellij.openapi.application.ex.ApplicationInfoEx;
 import com.intellij.openapi.diagnostic.ErrorReportSubmitter;
 import com.intellij.openapi.diagnostic.IdeaLoggingEvent;
 import com.intellij.openapi.diagnostic.SubmittedReportInfo;
-import com.intellij.openapi.extensions.PluginId;
+import com.intellij.openapi.util.SystemInfo;
 import com.intellij.util.Consumer;
-import com.intellij.util.ExceptionUtil;
 import io.sentry.Sentry;
-import io.sentry.SentryClient;
-import io.sentry.context.Context;
+import io.sentry.SentryEvent;
+import io.sentry.SentryOptions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
+import java.util.Optional;
 
 /**
  * Created by francis on 10/29/2017.
@@ -24,12 +28,20 @@ import java.awt.*;
 public class DErrorReporter extends ErrorReportSubmitter {
 
     /**
-     * @return an action text to be used in Error Reporter user interface, e.g. "Report to JetBrains".
+     * @return text that is used on the Error Reporter's submit button, e.g. "Report to JetBrains".
      */
     @NotNull
     @Override
     public String getReportActionText() {
-        return "Report to Plugin Developers";
+        return "Report to D Language Plugin Development Team";
+    }
+
+    /**
+     * @return the text to display in the UI in T&C of privacy policy (under the stack trace)
+     */
+    @Override
+    public String getPrivacyNoticeText() {
+        return "Please provide a brief description to explain how the error occurred. By submitting this bug report you are agreeing for the displayed stacktrace to be shared with the developers via <a href=\"https://sentry.io\">sentry.io</a>. Please also consider raising a bug directly on our <a href=\"https://github.com/intellij-dlanguage/intellij-dlanguage\">Github</a>.";
     }
 
     /**
@@ -47,52 +59,52 @@ public class DErrorReporter extends ErrorReportSubmitter {
                           @NotNull final Component parentComponent,
                           final @NotNull Consumer<? super SubmittedReportInfo> consumer) {
         try {
-            final SentryClient sentry = Sentry.init("https://f948f2ace2c0452a88d3ff2bd6abd4be@sentry.io/1806295", new DlangSentryClientFactory(getPluginDescriptor()));
-
-            final Context ctx = sentry.getContext();
+            Sentry.init(this::sentryOptions, false);
 
             for (final IdeaLoggingEvent event : events) {
-                ctx.addExtra("Additional info:", additionalInfo);
-
                 final Throwable error = IdeaReportingEvent.class.isAssignableFrom(event.getClass()) ?
                     ((IdeaReportingEvent) event).getData().getThrowable() :
                     event.getThrowable();
 
-                try {
-                    final PluginId pluginId = IdeErrorsDialog.findPluginId(event.getThrowable());
+                final SentryEvent sentryEvent = new SentryEvent(error);
 
-                    if(pluginId != null) {
-                        ctx.addExtra("plugin id", pluginId.getIdString());
-                    }
+                sentryEvent.setExtra("User Comments", additionalInfo);
 
-                    ctx.addExtra("Last Action", IdeaLogger.ourLastActionId);
-
-                    ctx.addExtra("error.message", error.getMessage());
-                    ctx.addExtra("error.stacktrace", ExceptionUtil.getThrowableText(error));
-
-//                    final Map<String, String> keyValuePairs = IdeaInformationProxy.getKeyValuePairs(
-//                        error,
-//                        IdeaLogger.ourLastActionId,
-//                        ApplicationManager.getApplication(),
-//                        (ApplicationInfoEx) ApplicationInfo.getInstance(),
-//                        ApplicationNamesInfo.getInstance(),
-//                        super.getPluginDescriptor()
-//                    );
-//                    for (final String key : keyValuePairs.keySet()) {
-//                        ctx.addExtra(key, keyValuePairs.get(key));
-//                    }
-                } catch (final Exception e) {
-                    ctx.addExtra("getting plugin info failed", e);
-                }
+                Optional.ofNullable(IdeaLogger.ourLastActionId)
+                    .ifPresent(actionId -> sentryEvent.setExtra("Last Action", actionId));
 
                 ApplicationManager
                     .getApplication()
-                    .invokeLater(() -> Sentry.capture(error));
+                    .invokeLater(() -> Sentry.captureEvent(sentryEvent));
             }
             return true;
         } catch (final Exception e) {
             e.printStackTrace();
         }
         return false;
+    }
+
+    private void sentryOptions(@NotNull SentryOptions options) {
+        options.setDsn("https://f948f2ace2c0452a88d3ff2bd6abd4be@sentry.io/1806295");
+        options.setAttachStacktrace(true);
+        options.setAttachServerName(false);
+
+        options.setTag("OS Name", SystemInfo.OS_NAME);
+        options.setTag("Java version", SystemInfo.JAVA_VERSION);
+        options.setTag("Java vendor", SystemInfo.JAVA_VENDOR);
+
+        options.setTag("IDE Name", ApplicationNamesInfo.getInstance().getProductName());
+        options.setTag("IDE Full Name", ApplicationNamesInfo.getInstance().getFullProductNameWithEdition());
+        options.setTag("IDE Version", ApplicationInfo.getInstance().getFullVersion());
+        options.setTag("IDE Build", ApplicationInfo.getInstance().getBuild().asString());
+        options.setTag("Is EAP", Boolean.toString( ((ApplicationInfoEx) ApplicationInfo.getInstance()).isEAP() )); // perhaps remove
+
+        if(super.getPluginDescriptor() != null) {
+            final IdeaPluginDescriptor plugin = PluginManagerCore.getPlugin(super.getPluginDescriptor().getPluginId());
+            if (plugin != null) {
+                options.setTag("Plugin", plugin.getName());
+                options.setTag("Version", plugin.getVersion());
+            }
+        }
     }
 }

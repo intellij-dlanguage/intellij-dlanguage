@@ -53,7 +53,10 @@
         <codeInsight.parameterInfo
             implementationClass="io.github.intellij.dlanguage.codeinsight.TemplateParameterInfo"
             language="D"/>
-        <errorHandler implementation="io.github.intellij.dlanguage.errorreporting.DErrorReporter"/>
+
+<!--        <errorHandler implementation="io.github.intellij.dlanguage.errorreporting.DErrorReporter"/>-->
+        <errorHandler implementation="io.github.intellij.dlanguage.errorreporting.SentryErrorHandler"/>
+
         <stubElementTypeHolder class="io.github.intellij.dlanguage.psi.DlangTypes"/>
 
         <fileTypeFactory implementation="io.github.intellij.dlanguage.DlangFileTypeFactory"/>

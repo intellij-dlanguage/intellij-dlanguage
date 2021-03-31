@@ -1,5 +1,6 @@
 package io.github.intellij.dlanguage.errorreporting
 
+import com.intellij.diagnostic.IdeaReportingEvent
 import com.intellij.ide.plugins.PluginManagerCore
 import com.intellij.idea.IdeaLogger
 import com.intellij.openapi.application.ApplicationInfo
@@ -10,33 +11,28 @@ import com.intellij.openapi.diagnostic.ErrorReportSubmitter
 import com.intellij.openapi.diagnostic.IdeaLoggingEvent
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.diagnostic.SubmittedReportInfo
-import com.intellij.openapi.extensions.PluginDescriptor
 import com.intellij.openapi.util.SystemInfo
+import com.intellij.openapi.util.text.StringUtil
 import com.intellij.util.Consumer
-import de.halirutan.mathematica.errorreporting.IdeaInformationProxy
-import io.sentry.DefaultSentryClientFactory
-import io.sentry.Sentry
-import io.sentry.dsn.Dsn
+import io.sentry.*
 import java.awt.Component
 
 /**
- * A re-implementation of the original DErrorReporter that was written by francis (pirocks) on 10/29/2017
- *
- * This version uses a custom SentryClientFactory which helps simplify this class
- *
  * @author Samael (singingbush)
  */
 class SentryErrorHandler : ErrorReportSubmitter() {
 
     private val log: Logger = Logger.getInstance(javaClass)
 
-    init {
-        Sentry.init("https://f948f2ace2c0452a88d3ff2bd6abd4be@sentry.io/1806295", DlangSentryClientFactory(pluginDescriptor))
-    }
+    /*
+     * @return text that is used on the Error Reporter's submit button, e.g. "Report to JetBrains".
+     */
+    override fun getReportActionText(): String = "Report to D Language Plugin Development Team"
 
-    override fun getReportActionText(): String = "Report to the D Language developers"
-
-    override fun getPrivacyNoticeText(): String = "All data is anonymised prior to being transferred to <a href=\"https://sentry.io\">sentry.io</a> for use by the dev team."
+    /*
+     * @return the text to display in the UI in T&C of privacy policy (under the stack trace)
+     */
+    override fun getPrivacyNoticeText(): String = "Please provide a brief description to explain how the error occurred. By submitting this bug report you are agreeing for the displayed stacktrace to be shared with the developers via <a href=\"https://sentry.io\">sentry.io</a>. Please also consider raising a bug directly on our <a href=\"https://github.com/intellij-dlanguage/intellij-dlanguage\">Github</a>."
 
     override fun submit(
         events: Array<out IdeaLoggingEvent>?,
@@ -44,74 +40,51 @@ class SentryErrorHandler : ErrorReportSubmitter() {
         parentComponent: Component,
         consumer: Consumer<in SubmittedReportInfo>
     ): Boolean {
-        events?.forEach { e ->
-            IdeaInformationProxy.getKeyValuePairs(
-                e.throwable?.cause ?: e.throwable,
-                IdeaLogger.ourLastActionId,
-                ApplicationManager.getApplication(),
-                ApplicationInfo.getInstance() as ApplicationInfoEx,
-                ApplicationNamesInfo.getInstance(),
-                super.getPluginDescriptor()
-            ).forEach {
-                Sentry.getContext().addExtra(it.key, it.value)
+        Sentry.init { options ->
+            options.dsn = "https://f948f2ace2c0452a88d3ff2bd6abd4be@sentry.io/1806295"
+            options.isAttachStacktrace = true
+            options.isAttachServerName = false
+
+            options.setTag("OS Name", SystemInfo.OS_NAME)
+            options.setTag("Java version", SystemInfo.JAVA_VERSION)
+            options.setTag("Java vendor", SystemInfo.JAVA_VENDOR)
+            options.setTag("IDE Name", ApplicationNamesInfo.getInstance().productName)
+            options.setTag("IDE Full Name", ApplicationNamesInfo.getInstance().fullProductNameWithEdition)
+            options.setTag("IDE Version", ApplicationInfo.getInstance().fullVersion)
+            options.setTag("IDE Build", ApplicationInfo.getInstance().build.asString())
+            options.setTag("Is EAP", "${(ApplicationInfo.getInstance() as ApplicationInfoEx).isEAP}")
+
+            if (super.getPluginDescriptor() != null) {
+                val plugin = PluginManagerCore.getPlugin(super.getPluginDescriptor().pluginId)
+                if (plugin != null) {
+                    options.setTag("Plugin", plugin.name)
+                    options.setTag("Version", plugin.version)
+                }
             }
-            ApplicationManager.getApplication().invokeLater { Sentry.capture(e.throwable) }
-            log.info("The error has been submitted to Sentry.io")
+
+            // todo: Consider setting transport factory by creating implementation of io.sentry.transport.ITransport
+            // which may be needed if cannot submit errors when on a proxy
+        }
+
+        events?.forEach { e ->
+            val error = if (IdeaReportingEvent::class.java.isAssignableFrom(e.javaClass)) (e as IdeaReportingEvent).data.throwable else e.throwable
+
+            val sentryEvent = SentryEvent(error)
+
+            sentryEvent.setExtra("User Comments", additionalInfo)
+
+            if(StringUtil.isNotEmpty(IdeaLogger.ourLastActionId)) {
+                sentryEvent.setExtra("Last Action", IdeaLogger.ourLastActionId)
+            }
+
+            ApplicationManager
+                .getApplication()
+                .invokeLater { Sentry.captureEvent(sentryEvent) }
+
+            log.debug("The error has been submitted to Sentry.io")
         }
 
         return true // return true to indicate that a process has begun to send data async
     }
-
-}
-
-/**
- * By creating our own SentryClientFactory we can ensure that all requests to sentry.io contain the same basic info.
- * Also, it means we can get the sentry client to use the proxy settings of the IDE (in case user is behind a proxy).
- */
-class DlangSentryClientFactory(pluginDescriptor: PluginDescriptor?) : DefaultSentryClientFactory() {
-
-    private val plugin = PluginManagerCore.getPlugin(pluginDescriptor?.pluginId)
-    private val version = plugin?.version ?: ""
-    private val appInfo = ApplicationInfo.getInstance() as ApplicationInfoEx
-    private val namesInfo = ApplicationNamesInfo.getInstance()
-
-    override fun getRelease(dsn: Dsn?): String = version
-
-    override fun getEnvironment(dsn: Dsn?): String = namesInfo.productName
-
-    override fun getServerName(dsn: Dsn?): String = "" // override to anonymise the data. Also scrubbed in Security & Privacy settings on sentry.io
-
-    //override fun getDist(dsn: Dsn?): String = ""
-
-    override fun getTags(dsn: Dsn?): MutableMap<String, String> = mutableMapOf(
-        "Version" to version,
-        "OS Name" to SystemInfo.OS_NAME,
-        "Java version" to SystemInfo.JAVA_VERSION,
-        "Java vendor" to SystemInfo.JAVA_VENDOR,
-        "IDE Name" to namesInfo.productName,
-        "IDE Full Name" to namesInfo.fullProductNameWithEdition,
-        "IDE Version" to appInfo.fullVersion,
-        "IDE Build" to appInfo.build.asString(),
-        "Is EAP" to appInfo.isEAP.toString()
-    )
-
-    override fun getInAppFrames(dsn: Dsn?): MutableCollection<String> = mutableSetOf("io.github.intellij.dlanguage")
-
-    // todo: Get Intellij System settings for proxy and use them if configured
-//    override fun getProxyHost(dsn: Dsn?): String {
-//        return super.getProxyHost(dsn)
-//    }
-//
-//    override fun getProxyPort(dsn: Dsn?): Int {
-//        return super.getProxyPort(dsn)
-//    }
-//
-//    override fun getProxyUser(dsn: Dsn?): String {
-//        return super.getProxyUser(dsn)
-//    }
-//
-//    override fun getProxyPass(dsn: Dsn?): String {
-//        return super.getProxyPass(dsn)
-//    }
 
 }
