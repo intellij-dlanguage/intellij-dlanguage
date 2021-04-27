@@ -96,13 +96,13 @@ public class DlangRunDmdState extends CommandLineState implements ProcessListene
         }
 
         final ModuleRootManager moduleRootManager = ModuleRootManager.getInstance(module);
-        final Sdk sdk = moduleRootManager.getSdk();
+        @Nullable final Sdk sdk = moduleRootManager.getSdk();
 
         if(sdk != null && DlangSdkType.class.isAssignableFrom(sdk.getSdkType().getClass())) {
-            final DlangSdkType dlangSdkType = DlangSdkType.class.cast(sdk.getSdkType());
-            final List<String> dmdParameters = DlangDmdConfigToArgsConverter.getDmdParameters(config, module);
+            final DlangSdkType dlangSdkType = (DlangSdkType) sdk.getSdkType();
 
             final String dmdPath = dlangSdkType.getDmdPath(sdk);
+
             if (StringUtil.isEmptyOrSpaces(dmdPath)) {
                 throw new ExecutionException("DMD executable is not specified");
             }
@@ -110,11 +110,13 @@ public class DlangRunDmdState extends CommandLineState implements ProcessListene
                 throw new ExecutionException("DMD is not configured correctly");
             }
 
+            final List<String> dmdParams = DlangDmdConfigToArgsConverter.getDmdParameters(config, module);
+
             final GeneralCommandLine cmd = new GeneralCommandLine()
                 .withWorkDirectory(config.getProject().getBasePath())
                 .withCharset(Charset.defaultCharset())
                 .withExePath(dmdPath)
-                .withParameters(dmdParameters);
+                .withParameters(dmdParams);
 
             LOG.debug(String.format("dmd command: %s", cmd.getCommandLineString()));
             return cmd;

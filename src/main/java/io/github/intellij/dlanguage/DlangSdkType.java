@@ -161,7 +161,16 @@ public class DlangSdkType extends SdkType {
         return found == null ? null : found.getAbsolutePath();
     }
 
-    /* When user set up DMD SDK path this method checks if specified path contains DMD compiler executable. */
+    /**
+     * When user set up DMD SDK path this method checks if specified path contains DMD compiler executable.
+     *
+     * This method determines if it can run the dmd executable based on a home path that's passed in. So in the case
+     * that the sdk home is "C:\D\dmd2\" then this method would return true if "C:\D\dmd2\windows\bin\dmd.exe" exists
+     * and is executable.
+     *
+     * @param sdkHome path to the root directory of a dmd installation
+     * @return true if the sdk home contains a executable dmd compiler
+     */
     @Override
     public boolean isValidSdkHome(final String sdkHome) {
         final String executableName = SystemInfo.isWindows ? "dmd.exe" : "dmd";
@@ -514,13 +523,20 @@ public class DlangSdkType extends SdkType {
         });
     }
 
-    /* Returns full path to DMD compiler executable */
+    /**
+     * Returns full path to DMD compiler executable for the given Sdk (based on the home path).
+     * If the Sdk doesn't have a valid value then this method will simply return "dmd" in the hope that it's on the PATH
+     * @param sdk an Sdk of {@link DlangSdkType}
+     * @return Either the absolute path to the dmd compiler or simply "dmd"
+     */
     public String getDmdPath(@NotNull final Sdk sdk) {
         final String homePath = sdk.getHomePath();
 
         if (isValidSdkHome(homePath)) {
             return dmdBinary.getAbsolutePath();
         }
+
+        LOG.warn(String.format("Home path '%s' for dlang sdk was not valid. Falling back to 'dmd'", homePath));
 
         return "dmd"; // it may just be on the PATH
     }
