@@ -9,9 +9,6 @@ compileJava   {
 
 repositories {
     mavenCentral()
-    maven { url 'https://jetbrains.bintray.com/intellij-third-party-dependencies' }
-    maven { url 'https://jetbrains.bintray.com/pty4j' }
-    maven { url 'https://www.myget.org/F/rd-snapshots/maven' }
     maven { url 'https://www.jetbrains.com/intellij-repository/releases' }
 }
 
