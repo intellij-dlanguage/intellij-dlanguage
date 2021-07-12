@@ -5,9 +5,9 @@ import com.intellij.openapi.editor.markup.EffectType
 import com.intellij.openapi.editor.markup.TextAttributes
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.LocalFileSystem
-import com.intellij.openapi.vfs.VirtualFile
 import java.awt.Color
 import java.awt.Font
+import java.lang.NumberFormatException
 
 class DubConsoleFilterProvider : ConsoleFilterProvider {
     override fun getDefaultFilters(project: Project): Array<Filter> = arrayOf(DubBuildSourceFileFilter(project))
@@ -19,39 +19,36 @@ class DubConsoleFilterProvider : ConsoleFilterProvider {
  */
 class DubBuildSourceFileFilter(val project: Project) : Filter {
 
-    private companion object {
+    internal companion object {
         // This regex will get a match on any of the following:
         //     source\package\app.d Some Log output
         //     source\package\app.d(53,31) Some Log output
         //     source\package\app.di(53,31): Some Log output
         //     source\package\app.di Some Log output
-        val D_SOURCE_PATH_FORMAT = Regex("^(.*\\.di?)(\\(\\d+,\\d+\\))?(:)?.*\$")
+        //     source\path\app.d:21 Some text output
+        val D_SOURCE_PATH_FORMAT = Regex("^(.*\\.di?):?(\\(\\d+,\\d+\\)|\\d+)?:?\\s+(.*)\$")
 
         private val BLUE = Color(39, 89, 230)
     }
 
     override fun applyFilter(line: String, entireLength: Int): Filter.Result? {
-        if(line.startsWith("source") && line.matches(D_SOURCE_PATH_FORMAT)) {
-            // then it's prob code within the project
-            val txt = if (line.contains(":")) {
-                line.substring(0, line.indexOf(":").plus(1))
-            } else {
-                line
-            }
+        if((line.startsWith("source") || line.startsWith("src")) && line.matches(D_SOURCE_PATH_FORMAT)) {
+            // then it's fairly certain we can get a hyperlink to the source file and possibly the line number
+            val groups = line.lineSequence()
+                .flatMap { D_SOURCE_PATH_FORMAT.find(it)?.groupValues ?: emptyList() }
+                .drop(1) // the first one will be entire string
+                .toList()
 
-            val filePath = txt.substringBefore("(")
-            val lineColumn = txt
-                .substringAfter("(")
-                .substringBefore(")")
-                .split(",")
-                .map { Integer.parseInt(it) }
+            val file = LocalFileSystem
+                .getInstance()
+                .findFileByPath(project.basePath.plus("/").plus(groups[0].replace("\\", "/")))
 
-            val fullFilePath = project.basePath.plus("/").plus(filePath.replace("\\", "/"))
-            val virtualFile = LocalFileSystem.getInstance().findFileByPath(fullFilePath)
+            // negate 1 from the line number as IDEA does line numbers starting from
+            val lineNumber = if(groups[1].isNotBlank()) groups[1].parseLineNumber() -1 else 0
 
-            virtualFile?.let {
-                return Filter.Result(entireLength - line.length, (entireLength - line.length) + txt.lastIndex,
-                    DlangSourceFileHyperlink(it, project, lineColumn[0] - 1, lineColumn[1]), // consider OpenFileHyperlinkInfo(project, it, lineColumn[0] - 1, lineColumn[1])
+            file?.let {
+                return Filter.Result(0, groups[0].length,
+                    OpenFileHyperlinkInfo(project, it, lineNumber),
                     TextAttributes(BLUE, null, null, EffectType.BOLD_LINE_UNDERSCORE, Font.ITALIC)
                 )
             }
@@ -60,7 +57,19 @@ class DubBuildSourceFileFilter(val project: Project) : Filter {
     }
 }
 
+private fun String.parseLineNumber(): Int {
+    val number = if(this.startsWith("("))
+        this.substringAfter("(")
+            .substringBefore(")")
+            .split(",").
+            first() // when the test is "(23:25)" it's line number followed by column. We don't need the column
+    else
+        this
 
-class DlangSourceFileHyperlink(override val virtualFile: VirtualFile?,
-                         project: Project, lineNumber: Int, column: Int)
-    : FileHyperlinkInfoBase(project, lineNumber, column)
+    return try {
+        Integer.parseInt(number)
+    } catch (e: NumberFormatException) {
+        0 // zero is fine as a default line number, it'll just mean linking to the source file rather than exact line
+    }
+}
+
