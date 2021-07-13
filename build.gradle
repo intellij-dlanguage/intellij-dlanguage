@@ -130,10 +130,11 @@ intellij {
     //alternativeIdePath "$System.env.HOME/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/211.7628.27"
     //alternativeIdePath "$System.env.HOME/.local/share/JetBrains/Toolbox/apps/Rider/ch-0/202.7660.16"
 
-    //runIde {
-    //jbrVersion null
-    //jbrVersion '11_0_4b304.69'
-    //}
+    runIde {
+        jvmArgs = ['--add-exports', 'java.base/jdk.internal.vm=ALL-UNNAMED']
+        // jbrVersion = null
+        // jbrVersion = '11_0_4b304.69'
+    }
 
     publishPlugin {
         token = provider {
