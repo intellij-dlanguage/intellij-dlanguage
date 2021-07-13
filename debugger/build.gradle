@@ -35,7 +35,7 @@ runIdeForUiTests.enabled = false
 verifyPlugin.enabled = false
 
 intellij {
-    version ideaVersion
+    version = ideaVersion
 }
 
 dependencies {
