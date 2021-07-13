@@ -7,8 +7,8 @@ Support for the [D Programming Language](http://dlang.org/) within IntelliJ IDEA
 
 | Branch | Status |
 | :--- | :--- |
-| Master | ![Java CI](https://github.com/intellij-dlanguage/intellij-dlanguage/workflows/Java%20CI/badge.svg?branch=master) [![Build Status](https://travis-ci.org/intellij-dlanguage/intellij-dlanguage.svg?branch=master)](https://travis-ci.org/intellij-dlanguage/intellij-dlanguage) [![Coverage Status](https://coveralls.io/repos/github/intellij-dlanguage/intellij-dlanguage/badge.svg?branch=master)](https://coveralls.io/github/intellij-dlanguage/intellij-dlanguage?branch=master) |
-| Develop | ![Java CI](https://github.com/intellij-dlanguage/intellij-dlanguage/workflows/Java%20CI/badge.svg?branch=develop) [![Build Status](https://travis-ci.org/intellij-dlanguage/intellij-dlanguage.svg?branch=develop)](https://travis-ci.org/intellij-dlanguage/intellij-dlanguage) [![Coverage Status](https://coveralls.io/repos/github/intellij-dlanguage/intellij-dlanguage/badge.svg?branch=develop)](https://coveralls.io/github/intellij-dlanguage/intellij-dlanguage?branch=develop) |
+| Master | [![Build & Verify](https://github.com/intellij-dlanguage/intellij-dlanguage/actions/workflows/gradle.yml/badge.svg?branch=master)](https://github.com/intellij-dlanguage/intellij-dlanguage/actions/workflows/gradle.yml) [![Coverage Status](https://coveralls.io/repos/github/intellij-dlanguage/intellij-dlanguage/badge.svg?branch=master)](https://coveralls.io/github/intellij-dlanguage/intellij-dlanguage?branch=master) |
+| Develop | [![Build & Verify](https://github.com/intellij-dlanguage/intellij-dlanguage/actions/workflows/gradle.yml/badge.svg?branch=develop)](https://github.com/intellij-dlanguage/intellij-dlanguage/actions/workflows/gradle.yml) [![Coverage Status](https://coveralls.io/repos/github/intellij-dlanguage/intellij-dlanguage/badge.svg?branch=develop)](https://coveralls.io/github/intellij-dlanguage/intellij-dlanguage?branch=develop) |
 
 ## Supported IntelliJ based IDEs:
 
