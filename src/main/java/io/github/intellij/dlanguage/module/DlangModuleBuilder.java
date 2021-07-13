@@ -13,13 +13,13 @@ import com.intellij.ide.util.projectWizard.ModuleWizardStep;
 import com.intellij.ide.util.projectWizard.ProjectJdkForModuleStep;
 import com.intellij.ide.util.projectWizard.WizardContext;
 import com.intellij.openapi.Disposable;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.module.ModuleType;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.projectRoots.SdkTypeId;
 import com.intellij.openapi.roots.ContentEntry;
 import com.intellij.openapi.roots.ModifiableRootModel;
-import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -35,9 +35,12 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class DlangModuleBuilder extends ModuleBuilder {
+
+    private static final Logger LOG = Logger.getInstance(DlangModuleBuilder.class);
 
     private static final String DLANG_GROUP_NAME = "D Language";
     private static final String RUN_CONFIG_NAME = "Run D App";
@@ -47,7 +50,7 @@ public class DlangModuleBuilder extends ModuleBuilder {
     private final String myPresentableName;
     private final String myDescription;
 
-    private List<Pair<String, String>> sourcePaths;
+    private List<String> sourcePaths;
 
     public DlangModuleBuilder() {
         this("DLangDmdApp", DlangBundle.INSTANCE.message("module.title"), DlangBundle.INSTANCE.message("module.description"));
@@ -101,12 +104,12 @@ public class DlangModuleBuilder extends ModuleBuilder {
 
         final ContentEntry contentEntry = doAddContentEntry(rootModel);
         if (contentEntry != null) {
-            for (final Pair<String, String> sourcePath : getSourcePaths()) {
-                final String path = sourcePath.first;
-                final VirtualFile sourceRoot
-                    = LocalFileSystem.getInstance().refreshAndFindFileByPath(FileUtil.toSystemIndependentName(path));
+            for (final String sourcePath : getSourcePaths()) {
+                final VirtualFile sourceRoot = LocalFileSystem.getInstance()
+                            .refreshAndFindFileByPath(FileUtil.toSystemIndependentName(sourcePath));
+
                 if (sourceRoot != null) {
-                    contentEntry.addSourceFolder(sourceRoot, false, sourcePath.second);
+                    contentEntry.addSourceFolder(sourceRoot, false);
                 }
             }
         }
@@ -155,13 +158,17 @@ public class DlangModuleBuilder extends ModuleBuilder {
 
     /* By default sources are located in {WORKING_DIR}/source folder. */
     @NotNull
-    public List<Pair<String, String>> getSourcePaths() {
+    public List<String> getSourcePaths() {
         if (sourcePaths == null) {
-            final List<Pair<String, String>> paths = new ArrayList<>();
             @NonNls final String path = getContentEntryPath() + File.separator + "source";
-            new File(path).mkdirs();
-            paths.add(Pair.create(path, ""));
-            sourcePaths = paths;
+
+            if(new File(path).mkdirs()) {
+                LOG.info("Create source folder: " + path);
+            } else {
+                LOG.warn("Failed to create source folder: " + path);
+            }
+
+            sourcePaths = Collections.singletonList(path);
         }
         return sourcePaths;
     }

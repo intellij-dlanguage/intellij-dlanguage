@@ -140,7 +140,7 @@ public class DubProjectImportBuilder extends ProjectImportBuilder<DubPackage> {
             builder.setModuleFilePath(pkg.getPath() + pkg.getName() + ".iml");
             builder.setContentEntryPath(pkg.getPath());
             builder.setName(pkg.getName());
-            pkg.getSourcesDirs().forEach(dir -> builder.addSourcePath(Pair.create(pkg.getPath() + dir, "")));
+            pkg.getSourcesDirs().forEach(dir -> builder.addSourcePath(pkg.getPath() + dir));
 
             try {
                 final Module module = builder.createModule(moduleModel);

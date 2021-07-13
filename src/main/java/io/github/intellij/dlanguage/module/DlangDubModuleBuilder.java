@@ -27,10 +27,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class DlangDubModuleBuilder extends DlangModuleBuilder {
@@ -41,7 +38,7 @@ public class DlangDubModuleBuilder extends DlangModuleBuilder {
 
     static final String BUILDER_ID = "DLangDubApp";
 
-    private List<Pair<String, String>> sourcePaths;
+    private List<String> sourcePaths;
     private Map<String, String> dubOptions = new HashMap<>();
     private String dubBinary;
 
@@ -74,25 +71,34 @@ public class DlangDubModuleBuilder extends DlangModuleBuilder {
         }
     }
 
-    /* By default sources are located in {WORKING_DIR}/source folder. */
+    /*
+     * By default dub init will create a directory named "source" so this method presumptuously
+     * returns "{WORKING_DIR}/source" as the source path. This could result in errors if dub
+     * where to start creating files using an alternative directory name.
+     */
     @NotNull
     @Override
-    public List<Pair<String, String>> getSourcePaths() {
+    public List<String> getSourcePaths() {
         if (sourcePaths == null) {
-            final List<Pair<String, String>> paths = new ArrayList<>();
             @NonNls final String path = getContentEntryPath() + File.separator + "source";
+
             try {
-                createDub(getContentEntryPath());
+                createDubProjectUsingDubInit(getContentEntryPath());
             } catch (final Exception e) {
-                new File(path).mkdirs();
+                // todo: revisit this behavior. If 'dub init' fails, why continue to create the project at all
+                if(new File(path).mkdirs()) {
+                    LOG.warn("dub init failed. fallen back to manually creating source folder: " + path);
+                } else {
+                    LOG.warn("dub init failed and also failed to manually create source folder: " + path);
+                }
             }
-            paths.add(Pair.create(path, ""));
-            sourcePaths = paths;
+
+            sourcePaths = Collections.singletonList(path);
         }
         return sourcePaths;
     }
 
-    public void addSourcePath(final Pair<String, String> sourcePathInfo) {
+    public void addSourcePath(final String sourcePathInfo) {
         if (sourcePaths == null) {
             sourcePaths = new ArrayList<>();
         }
@@ -103,7 +109,7 @@ public class DlangDubModuleBuilder extends DlangModuleBuilder {
         this.dubOptions = options;
     }
 
-    private void createDub(final String workingDirectory) {
+    private void createDubProjectUsingDubInit(final String workingDirectory) {
         final ParametersList parametersList = new ParametersList();
         parametersList.addParametersString("init");
         parametersList.addParametersString("-n");
