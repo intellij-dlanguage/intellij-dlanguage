@@ -24,6 +24,7 @@ apply plugin: 'org.jetbrains.intellij'
 // Disable all Gradle Tasks for the gradle-intellij-plugin as we only use the plugin for the dependencies
 buildPlugin.enabled = false
 buildSearchableOptions.enabled = false
+downloadRobotServerPlugin.enabled = false
 jarSearchableOptions.enabled = false
 patchPluginXml.enabled = false
 prepareSandbox.enabled = false
@@ -32,6 +33,8 @@ prepareUiTestingSandbox.enabled = false
 publishPlugin.enabled = false
 runIde.enabled = false
 runIdeForUiTests.enabled = false
+runPluginVerifier.enabled = false
+signPlugin.enabled = false
 verifyPlugin.enabled = false
 
 intellij {
