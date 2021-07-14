@@ -93,7 +93,8 @@ public class DlangDubModuleBuilder extends DlangModuleBuilder {
                 }
             }
 
-            sourcePaths = Collections.singletonList(path);
+            //noinspection ArraysAsListWithZeroOrOneArgument
+            sourcePaths = Arrays.asList(path); // may need to add additional source paths later
         }
         return sourcePaths;
     }
