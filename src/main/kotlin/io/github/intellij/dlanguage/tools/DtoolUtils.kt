@@ -16,7 +16,7 @@ class DtoolUtils {
 
         const val SERVE_D_LATEST: String = "0.6.0"
 
-        const val DUB_LATEST: String = "1.23.0"
+        const val DUB_LATEST: String = "1.25.0"
         const val DSCANNER_LATEST: String = "v0.11.0" // v0.5.0-rc1
         const val DCD_LATEST: String = "v0.13.1" // v0.9.10, OR v0.9.10-alpha.0
         const val DFORMAT_LATEST: String = "v0.13.2"
