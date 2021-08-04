@@ -71,7 +71,9 @@ class SentryErrorHandler : ErrorReportSubmitter() {
 
             val sentryEvent = SentryEvent(error)
 
-            sentryEvent.setExtra("User Comments", additionalInfo)
+            additionalInfo?.let {
+                sentryEvent.setExtra("User Comments", it)
+            }
 
             if(StringUtil.isNotEmpty(IdeaLogger.ourLastActionId)) {
                 sentryEvent.setExtra("Last Action", IdeaLogger.ourLastActionId)
