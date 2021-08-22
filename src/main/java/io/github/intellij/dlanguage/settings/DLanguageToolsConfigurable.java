@@ -118,7 +118,7 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
      * cabal plays nice.
      */
     public static String getVersion(final String cmd) {
-        if (cmd == null || cmd.isEmpty() || !Files.isExecutable(Paths.get(cmd))) {
+        if (StringUtil.isEmptyOrSpaces(cmd) || !Files.isExecutable(Paths.get(cmd))) {
             LOG.warn(String.format("unable to get version info for path: '%s'", cmd));
             return "";
         }
