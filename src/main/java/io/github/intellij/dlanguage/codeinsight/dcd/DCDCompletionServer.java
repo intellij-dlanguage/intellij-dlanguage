@@ -9,14 +9,14 @@ import com.intellij.notification.Notifications;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleComponent;
+import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectUtil;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.roots.OrderRootType;
-import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.containers.ContainerUtil;
 import io.github.intellij.dlanguage.messagebus.ToolChangeListener;
 import io.github.intellij.dlanguage.messagebus.Topics;
 import io.github.intellij.dlanguage.settings.ToolKey;
@@ -73,7 +73,8 @@ public final class DCDCompletionServer implements ModuleComponent, ToolChangeLis
         this.module = module;
         this.path = lookupPath();
         this.flags = lookupFlags();
-        this.workingDirectory = lookupWorkingDirectory();
+        this.workingDirectory = ModuleUtil.getModuleDirPath(module);
+
         // Ensure that we are notified of changes to the settings.
         module.getProject().getMessageBus().connect().subscribe(Topics.DCD_SERVER_TOOL_CHANGE, this);
     }
@@ -97,10 +98,29 @@ public final class DCDCompletionServer implements ModuleComponent, ToolChangeLis
     }
 
     private void spawnProcess() {
-        if(path == null || path.isEmpty()) {
+        if(StringUtil.isEmptyOrSpaces(this.path)) {
             LOG.warn("request made to spawn process for DCD Server but path is not set");
             return;
         }
+        final GeneralCommandLine cmd = buildDcdCommand(this.path);
+
+        try {
+            LOG.info("DCD server starting...\n" + cmd.getCommandLineString());
+            process = cmd.createProcess();
+            LOG.info("DCD process started");
+        } catch (final ExecutionException e) {
+            Notifications.Bus.notify(new Notification("DCDNotification", "DCD Error",
+                "Unable to start a dcd server. Make sure that you have specified the path to the dcd-server and dcd-client executables correctly. You can specify executable paths under File > Settings > Languages & Frameworks > D Tools",
+                NotificationType.ERROR), module.getProject());
+            LOG.error("Error spawning DCD process", e);
+//            throw new InitError(e.toString());
+        }
+        input = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        output = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
+    }
+
+    // package privat for unit testing
+    GeneralCommandLine buildDcdCommand(@NotNull final String path) {
         final GeneralCommandLine commandLine = new GeneralCommandLine(path);
         commandLine.setWorkDirectory(workingDirectory);
         commandLine.setRedirectErrorStream(true);
@@ -111,11 +131,11 @@ public final class DCDCompletionServer implements ModuleComponent, ToolChangeLis
         }
 
         // try to auto add project files in source root
-        final String sources = getRootSourceDir();
-        if (isNotNullOrEmpty(sources)) {
-            parametersList.addParametersString("-I");
-            parametersList.addParametersString(sources);
-        }
+        Arrays.stream(ProjectUtil.getRootManager(module).getSourceRoots(false))
+            .forEach(root -> {
+                parametersList.addParametersString("-I");
+                parametersList.addParametersString(root.getCanonicalPath());
+            });
 
         // try to auto add the compiler sources
         final List<String> compilerSources = getCompilerSourcePaths();
@@ -141,28 +161,7 @@ public final class DCDCompletionServer implements ModuleComponent, ToolChangeLis
         } else {
             LOG.info("not possible to run 'dub describe'");
         }
-
-        try {
-            LOG.info("DCD server start parameters " + parametersList.toString());
-            process = commandLine.createProcess();
-            LOG.info("DCD process started");
-        } catch (final ExecutionException e) {
-            Notifications.Bus.notify(new Notification("DCDNotification", "DCD Error",
-                "Unable to start a dcd server. Make sure that you have specified the path to the dcd-server and dcd-client executables correctly. You can specify executable paths under File > Settings > Languages & Frameworks > D Tools",
-                NotificationType.ERROR), module.getProject());
-            LOG.error("Error spawning DCD process", e);
-//            throw new InitError(e.toString());
-        }
-        input = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        output = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
-    }
-
-    private String getRootSourceDir() {
-        final Project myProject = module.getProject();
-        final List<VirtualFile> sourceRoots = new ArrayList<>();
-        final ProjectRootManager projectRootManager = ProjectRootManager.getInstance(myProject);
-        ContainerUtil.addAll(sourceRoots, projectRootManager.getContentSourceRoots());
-        return sourceRoots.isEmpty() ? null : sourceRoots.get(0).getPath();
+        return commandLine;
     }
 
     private List<String> getCompilerSourcePaths() {
@@ -178,15 +177,6 @@ public final class DCDCompletionServer implements ModuleComponent, ToolChangeLis
             }
         }
         return compilerSourcePaths;
-    }
-
-    @NotNull
-    private String lookupWorkingDirectory() {
-        final VirtualFile moduleFile = module.getModuleFile();
-        final VirtualFile moduleDir = moduleFile == null ? null : moduleFile.getParent();
-        return moduleDir == null ?
-            StringUtil.defaultIfEmpty(module.getProject().getBasePath(), "") :
-            moduleDir.getPath();
     }
 
     @Nullable
