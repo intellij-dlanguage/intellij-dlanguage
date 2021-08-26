@@ -1,5 +1,6 @@
 package io.github.intellij.dlanguage.utils;
 
+import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.process.CapturingProcessHandler;
 import com.intellij.openapi.application.ApplicationManager;
@@ -15,18 +16,29 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Helper class to perform execution related tasks, including locating programs.
+ *
+ * much of this class has been around since 2015 and is in need of an overhaul. some methods are now
+ * deprecated as ideally parts of the code that need to use command line processes need to make use of
+ * {@link com.intellij.openapi.application.ReadAction} and {@link com.intellij.openapi.application.WriteAction} or
+ * simply running on a pooled thread depending on the context of what needs to be done, so this general purpose
+ * utility class is causing more problems these days than it solves.
+ * See: https://github.com/intellij-dlanguage/intellij-dlanguage/issues/550
+ * and https://github.com/intellij-dlanguage/intellij-dlanguage/issues/591
  */
 @Deprecated
 public class ExecUtil {
@@ -36,6 +48,10 @@ public class ExecUtil {
 
     /**
      * Execute a command using the default shell.
+     * @param command the command to be run
+     * @return the output of the command to be run or null
+     * @deprecated only used by GuiUtil calling to locateExecutableByGuessing() so no need fo all these layers of
+     * abstraction. Can probably push everything up to the class that actually needs to locate D Tool binaries
      */
     @Nullable
     public static String exec(@NotNull final String command) {
@@ -67,21 +83,68 @@ public class ExecUtil {
     @Nullable
     public static String exec(@NotNull final String workDir, @NotNull final String command) {
         // Setup shell and the GeneralCommandLine.
-        final GeneralCommandLine commandLine = new GeneralCommandLine();
-        commandLine.setWorkDirectory(workDir);
-        commandLine.withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE);
+        final GeneralCommandLine cmd = new GeneralCommandLine()
+            .withWorkDirectory(workDir)
+            .withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE);
 
         if (SystemInfo.isWindows) {
-            commandLine.setExePath("cmd");
-            commandLine.addParameter("/c");
+            cmd.setExePath("cmd");
+            cmd.addParameter("/c");
         } else {
             // Default to UNIX if not Windows.
-            commandLine.setExePath("/bin/sh");
-            commandLine.addParameter("-c");
+            cmd.setExePath("/bin/sh");
+            cmd.addParameter("-c");
         }
-        commandLine.addParameter(command);
+        cmd.addParameter(command);
 
-        return readCommandLine(commandLine);
+        return readCommandLine(cmd);
+    }
+
+    /**
+     * This should not be here long term. It's mostly here just so that it's clear that calls will to whichever
+     * command line tool are being made have not been done in a way that makes use of the various Intellij platforms
+     * methods of dealing with external tool.
+     *
+     * Calls to external command line calls should be making use of actions such as:
+     *     ReadAction.compute()
+     *     ReadAction.nonBlocking()
+     *     WriteAction.compute()
+     *     WriteAction.computeAndWait()
+     * or creating a background task with
+     *     Task.Backgroundable task = new Task.Backgroundable()
+     *
+     * Further refactoring will be needed to make this possible. It's probably worth having this done on a
+     * case by case basis in the various classes that need to run a commandline process and remove ExecUtil alltogether.
+     *
+     * This method is called in various places such as running 'dub --version' etc.
+     * @param commandLine The command to be run
+     * @param input potential args that are required
+     * @return the output of the command as a string or null
+     */
+    @Deprecated
+    @Nullable
+    public static String blocking(@NotNull final GeneralCommandLine commandLine, @Nullable final String input) {
+        try {
+            final Process process = commandLine.createProcess();
+
+            if (StringUtil.isNotEmpty(input)) {
+                try (final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()))) {
+                    writer.write(input);
+                    writer.flush();
+                }
+            }
+
+            final Future<String> future = ApplicationManager
+                .getApplication()
+                .executeOnPooledThread(() -> new CapturingProcessHandler(process, Charset.defaultCharset(), commandLine.getCommandLineString())
+                    .runProcess()
+                    .getStdout());
+
+            return future.get(2L, TimeUnit.SECONDS);
+        } catch (final IOException | ExecutionException | InterruptedException | java.util.concurrent.ExecutionException | TimeoutException e) {
+            LOG.error(e);
+        }
+        return null;
     }
 
     /**

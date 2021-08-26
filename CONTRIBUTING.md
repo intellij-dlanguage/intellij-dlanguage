@@ -21,6 +21,10 @@ The IntelliJ API can feel pretty horrible at times and [their documentation](htt
  - [go-lang-idea-plugin](https://github.com/go-lang-plugin-org/go-lang-idea-plugin)
  - [intellij-rust](https://github.com/intellij-rust/intellij-rust)
 
+Jetbrains have recently provided the [Intellij Platform Explorer](https://plugins.jetbrains.com/intellij-platform-explorer) which allows plugin developers to search the plugin repo for plugins that make use of particular extension points. This helps when looking for examples of how to implement a particular feature. The platform explorer is available here:
+
+https://plugins.jetbrains.com/intellij-platform-explorer
+
 Any problems with the Intellij SDK should be reported to Jetbrains: https://youtrack.jetbrains.com/issue/IJSDK
 
 # Tour of our code base
