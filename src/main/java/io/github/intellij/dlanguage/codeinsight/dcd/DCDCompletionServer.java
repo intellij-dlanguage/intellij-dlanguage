@@ -170,7 +170,7 @@ public final class DCDCompletionServer implements ModuleComponent, ToolChangeLis
         final Sdk sdk = moduleRootManager.getSdk();
 
         if (sdk != null && (sdk.getSdkType() instanceof DlangSdkType)) {
-            for (VirtualFile f: sdk.getSdkModificator().getRoots(OrderRootType.SOURCES)) {
+            for (VirtualFile f: sdk.getRootProvider().getFiles(OrderRootType.SOURCES)) {
                 if (f.exists() && f.isDirectory()) {
                     compilerSourcePaths.add(f.getPath());
                 }
