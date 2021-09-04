@@ -1,6 +1,7 @@
 package io.github.intellij.dlanguage.settings;
 
 import com.intellij.ide.util.PropertiesComponent;
+import com.intellij.openapi.util.text.StringUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -36,18 +37,18 @@ public class ToolKey {
     @Nullable
     public String getPath() {
         final String path = PropertiesComponent.getInstance().getValue(pathKey);
-        return path == null || path.isEmpty() ? null : path;
+        return path == null || path.isEmpty() ? null : StringUtil.trim(path);
     }
 
     @NotNull
     public void setPath(final String newValue) {
-        PropertiesComponent.getInstance().setValue(pathKey, newValue);
+        PropertiesComponent.getInstance().setValue(pathKey, StringUtil.trim(newValue));
     }
 
     @NotNull
     public String getFlags() {
         final String flags = PropertiesComponent.getInstance().getValue(flagsKey);
-        return flags == null ? "" : flags;
+        return flags == null ? "" : StringUtil.trim(flags);
     }
 }
 
