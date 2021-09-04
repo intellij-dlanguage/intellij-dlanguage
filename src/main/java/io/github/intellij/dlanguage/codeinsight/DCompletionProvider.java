@@ -38,7 +38,7 @@ final class DCompletionProvider extends CompletionProvider<CompletionParameters>
             final DCDCompletionServer dcdCompletionServer = module.getComponent(DCDCompletionServer.class);
             try {
                 dcdCompletionServer.exec();
-            } catch (DCDCompletionServer.DCDError e) {
+            } catch (final Exception e) {
                 log.warn("There was a problem starting dcd server", e);
                 throw new RuntimeException(e);
             }

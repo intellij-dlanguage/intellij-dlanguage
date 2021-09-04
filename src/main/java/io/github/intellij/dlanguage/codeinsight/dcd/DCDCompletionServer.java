@@ -3,31 +3,34 @@ package io.github.intellij.dlanguage.codeinsight.dcd;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.configurations.ParametersList;
+import com.intellij.execution.process.KillableProcessHandler;
+import com.intellij.execution.process.ProcessAdapter;
+import com.intellij.execution.process.ProcessEvent;
+import com.intellij.execution.process.ProcessOutputType;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
+import com.intellij.openapi.Disposable;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleComponent;
 import com.intellij.openapi.module.ModuleUtil;
-import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectUtil;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.roots.OrderRootType;
+import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.util.io.BaseOutputReader;
 import io.github.intellij.dlanguage.messagebus.ToolChangeListener;
 import io.github.intellij.dlanguage.messagebus.Topics;
 import io.github.intellij.dlanguage.settings.ToolKey;
 import io.github.intellij.dlanguage.settings.ToolSettings;
 import io.github.intellij.dlanguage.DlangSdkType;
 import io.github.intellij.dlanguage.project.DubConfigurationParser;
-import io.github.intellij.dlanguage.utils.NotificationUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -39,7 +42,7 @@ import static io.github.intellij.dlanguage.utils.DUtil.isNotNullOrEmpty;
 /**
  * Process wrapper for DCD Server.  Implements ModuleComponent so destruction of processes coincides with closing projects.
  */
-public final class DCDCompletionServer implements ModuleComponent, ToolChangeListener {
+public final class DCDCompletionServer implements ModuleComponent, ToolChangeListener, Disposable {
 
     private static final Logger LOG = Logger.getInstance(DCDCompletionServer.class);
 
@@ -56,20 +59,14 @@ public final class DCDCompletionServer implements ModuleComponent, ToolChangeLis
     public String flags;
 
     @Nullable
-    private Process process;
-
-    @Nullable
-    private BufferedReader input;
-
-    @Nullable
-    private BufferedWriter output;
+    private KillableProcessHandler processHandler;
 
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     /**
-     * Private constructor used during module component initialization.
+     * Package Private constructor used during module component initialization.
      */
-    public DCDCompletionServer(@NotNull final Module module) {
+    DCDCompletionServer(@NotNull final Module module) {
         this.module = module;
         this.path = lookupPath();
         this.flags = lookupFlags();
@@ -79,20 +76,10 @@ public final class DCDCompletionServer implements ModuleComponent, ToolChangeLis
         module.getProject().getMessageBus().connect().subscribe(Topics.DCD_SERVER_TOOL_CHANGE, this);
     }
 
-    private static void displayError(@NotNull final Project project, @NotNull final String message) {
-        NotificationUtil.displayToolsNotification(NotificationType.ERROR, project, "dcd error", message);
-    }
-
-    public synchronized void exec() throws DCDError {
+    public synchronized void exec() {
         if (path != null) {
-            if (process == null) {
+            if (processHandler == null) {
                 spawnProcess();
-            }
-            if (output == null) {
-                throw new InitError("Output stream was unexpectedly null.");
-            }
-            if (input == null) {
-                throw new InitError("Input stream was unexpectedly null.");
             }
         }
     }
@@ -106,20 +93,35 @@ public final class DCDCompletionServer implements ModuleComponent, ToolChangeLis
 
         try {
             LOG.info("DCD server starting...\n" + cmd.getCommandLineString());
-            process = cmd.createProcess();
+
+            this.processHandler = new DCDServerProcessHandler(cmd);
+
+            this.processHandler.addProcessListener(new ProcessAdapter() {
+                @Override
+                public void onTextAvailable(@NotNull ProcessEvent event, @NotNull Key outputType) {
+                    if(ProcessOutputType.isStdout(outputType)) {
+                        if(StringUtil.contains(event.getText(), "[warning]")) {
+                            LOG.warn(StringUtil.trimTrailing(event.getText()));
+                        } else {
+                            LOG.info(StringUtil.trimTrailing(event.getText()));
+                        }
+                    } else if(ProcessOutputType.isStderr(outputType)) {
+                        LOG.error(StringUtil.trimTrailing(event.getText()));
+                    }
+                }
+            });
+            this.processHandler.startNotify();
+
             LOG.info("DCD process started");
         } catch (final ExecutionException e) {
             Notifications.Bus.notify(new Notification("DCDNotification", "DCD Error",
                 "Unable to start a dcd server. Make sure that you have specified the path to the dcd-server and dcd-client executables correctly. You can specify executable paths under File > Settings > Languages & Frameworks > D Tools",
                 NotificationType.ERROR), module.getProject());
             LOG.error("Error spawning DCD process", e);
-//            throw new InitError(e.toString());
         }
-        input = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        output = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
     }
 
-    // package privat for unit testing
+    // package private for unit testing
     GeneralCommandLine buildDcdCommand(@NotNull final String path) {
         final GeneralCommandLine commandLine = new GeneralCommandLine(path);
         commandLine.setWorkDirectory(workingDirectory);
@@ -139,10 +141,15 @@ public final class DCDCompletionServer implements ModuleComponent, ToolChangeLis
 
         // try to auto add the compiler sources
         final List<String> compilerSources = getCompilerSourcePaths();
-        for (final String s : compilerSources) {
+
+        if(compilerSources.isEmpty()) {
+            LOG.warn("compiler sources not passed to DCD Server. Has a D compiler been setup for this project?");
+        }
+
+        compilerSources.forEach(s -> {
             parametersList.addParametersString("-I");
             parametersList.addParametersString(s);
-        }
+        });
 
         // try to auto add dub dependencies
         final DubConfigurationParser dubParser = new DubConfigurationParser(module.getProject(),
@@ -170,11 +177,12 @@ public final class DCDCompletionServer implements ModuleComponent, ToolChangeLis
         final Sdk sdk = moduleRootManager.getSdk();
 
         if (sdk != null && (sdk.getSdkType() instanceof DlangSdkType)) {
-            for (VirtualFile f: sdk.getRootProvider().getFiles(OrderRootType.SOURCES)) {
-                if (f.exists() && f.isDirectory()) {
-                    compilerSourcePaths.add(f.getPath());
-                }
-            }
+            Arrays.stream(sdk.getRootProvider().getFiles(OrderRootType.SOURCES))
+                .forEach(f -> {
+                    if (f.exists() && f.isDirectory()) {
+                        compilerSourcePaths.add(f.getPath());
+                    }
+                });
         }
         return compilerSourcePaths;
     }
@@ -193,16 +201,12 @@ public final class DCDCompletionServer implements ModuleComponent, ToolChangeLis
      * Kills the existing process and closes input and output if they exist.
      */
     private synchronized void kill() {
-        if (process != null) process.destroy();
-        process = null;
-        try {
-            if (input != null) input.close();
-        } catch (final IOException e) { /* Ignored */ }
-        input = null;
-        try {
-            if (output != null) output.close();
-        } catch (final IOException e) { /* Ignored */ }
-        output = null;
+        if (processHandler != null) {
+            LOG.info("Shutting down DCD Server...");
+            processHandler.destroyProcess();
+            processHandler.killProcess();
+        }
+        processHandler = null;
     }
 
     /**
@@ -214,34 +218,34 @@ public final class DCDCompletionServer implements ModuleComponent, ToolChangeLis
             try {
                 Thread.sleep(1500);
                 spawnProcess();
-            } /*catch (final DCDError e) {
-                displayError(e.message);
-            }*/ catch (final InterruptedException e) {
+            } catch (final InterruptedException e) {
                 LOG.error(e);
             }
         }
     }
 
-    private void displayError(@NotNull final String message) {
-        displayError(module.getProject(), message);
-    }
-
     @Override
     public void moduleAdded() {
-// No need to do anything here.
+        LOG.debug("moduleAdded()");
+        if(StringUtil.isNotEmpty(this.path)) {
+            try {
+                this.exec();
+            } catch (final Exception e) {
+                LOG.warn("Failed to start DCD Server during component initialisation", e);
+            }
+        }
     }
 
     @Override
     public void initComponent() {
-// No need to do anything here.
+        // tried starting DCD Server during component initialisation but the source roots aren't available this early
     }
 
     // Implemented methods for ModuleComponent.
 
     @Override
     public void disposeComponent() {
-        executorService.shutdownNow();
-        kill();
+        // this isn't called anymore, so I've used Disposable::dispose()
     }
 
     @NotNull
@@ -261,27 +265,24 @@ public final class DCDCompletionServer implements ModuleComponent, ToolChangeLis
         }
     }
 
-    // Custom Exceptions
-    public static abstract class DCDError extends Exception {
-        // Using error to index errors since message might have extra information.
-        final
-        @NotNull
-        String error;
-        final
-        @NotNull
-        String message;
-        final boolean killProcess;
-
-        DCDError(@NotNull final String error, @NotNull final String message, final boolean killProcess) {
-            this.error = error;
-            this.message = message;
-            this.killProcess = killProcess;
-        }
+    @Override
+    public void dispose() {
+        LOG.debug("Disposing DCD Completion Server component");
+        executorService.shutdownNow();
+        kill();
     }
 
-    public static class InitError extends DCDError {
-        InitError(@NotNull final String error) {
-            super(error, "Initializing dcd server failed with error: " + error, true);
+    /**
+     * Extending KillableProcessHandler so that we can override readerOptions()
+     */
+    private static class DCDServerProcessHandler extends KillableProcessHandler {
+        public DCDServerProcessHandler(@NotNull GeneralCommandLine commandLine) throws ExecutionException {
+            super(commandLine);
+        }
+
+        @Override
+        protected BaseOutputReader.@NotNull Options readerOptions() {
+            return BaseOutputReader.Options.forMostlySilentProcess();
         }
     }
 }
