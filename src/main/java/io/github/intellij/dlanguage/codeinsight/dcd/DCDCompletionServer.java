@@ -14,13 +14,14 @@ import com.intellij.openapi.Disposable;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleComponent;
-import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.project.ProjectUtil;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.roots.OrderRootType;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.util.PathUtil;
 import com.intellij.util.io.BaseOutputReader;
 import io.github.intellij.dlanguage.messagebus.ToolChangeListener;
 import io.github.intellij.dlanguage.messagebus.Topics;
@@ -49,9 +50,6 @@ public final class DCDCompletionServer implements ModuleComponent, ToolChangeLis
     @NotNull
     public final Module module;
 
-    @NotNull
-    private final String workingDirectory;
-
     @Nullable
     public String path;
 
@@ -70,7 +68,6 @@ public final class DCDCompletionServer implements ModuleComponent, ToolChangeLis
         this.module = module;
         this.path = lookupPath();
         this.flags = lookupFlags();
-        this.workingDirectory = ModuleUtil.getModuleDirPath(module);
 
         // Ensure that we are notified of changes to the settings.
         module.getProject().getMessageBus().connect().subscribe(Topics.DCD_SERVER_TOOL_CHANGE, this);
@@ -123,9 +120,17 @@ public final class DCDCompletionServer implements ModuleComponent, ToolChangeLis
 
     // package private for unit testing
     GeneralCommandLine buildDcdCommand(@NotNull final String path) {
-        final GeneralCommandLine commandLine = new GeneralCommandLine(path);
-        commandLine.setWorkDirectory(workingDirectory);
-        commandLine.setRedirectErrorStream(true);
+        @Nullable final VirtualFile projectRoot = ProjectUtil.guessProjectDir(this.module.getProject());
+
+        @Nullable final String rootDirPath = projectRoot != null && projectRoot.exists() ?
+            projectRoot.getCanonicalPath() :
+            this.module.getProject().getBasePath();
+
+        final GeneralCommandLine commandLine = new GeneralCommandLine(path)
+            .withWorkDirectory(PathUtil.toSystemDependentName(rootDirPath))
+            .withRedirectErrorStream(true)
+            .withParameters("--ignoreConfig", "--logLevel", "all");
+
         final ParametersList parametersList = commandLine.getParametersList();
 
         if (isNotNullOrEmpty(flags)) {
@@ -135,8 +140,9 @@ public final class DCDCompletionServer implements ModuleComponent, ToolChangeLis
         // try to auto add project files in source root
         Arrays.stream(ProjectUtil.getRootManager(module).getSourceRoots(false))
             .forEach(root -> {
-                parametersList.addParametersString("-I");
-                parametersList.addParametersString(root.getCanonicalPath());
+                if(StringUtil.isNotEmpty(root.getCanonicalPath())) {
+                    parametersList.add("-I", PathUtil.toSystemDependentName(root.getCanonicalPath()));
+                }
             });
 
         // try to auto add the compiler sources
@@ -146,14 +152,14 @@ public final class DCDCompletionServer implements ModuleComponent, ToolChangeLis
             LOG.warn("compiler sources not passed to DCD Server. Has a D compiler been setup for this project?");
         }
 
-        compilerSources.forEach(s -> {
-            parametersList.addParametersString("-I");
-            parametersList.addParametersString(s);
+        compilerSources.forEach(src -> {
+            parametersList.add("-I", PathUtil.toSystemDependentName(src));
         });
 
         // try to auto add dub dependencies
         final DubConfigurationParser dubParser = new DubConfigurationParser(module.getProject(),
             ToolKey.DUB_KEY.getPath(), false);
+
         if (dubParser.canUseDub()) {
             dubParser.getDubProject().ifPresent(dubProject -> dubProject.getPackages().forEach(pkg -> {
                 final List<String> sourcesDirs = pkg.getSourcesDirs();
@@ -161,13 +167,13 @@ public final class DCDCompletionServer implements ModuleComponent, ToolChangeLis
                 LOG.debug("adding source for ", pkg.getName());
 
                 for(final String srcDir : sourcesDirs) {
-                    parametersList.addParametersString("-I");
-                    parametersList.addParametersString(String.format("%s%s", pkg.getPath(), srcDir));
+                    parametersList.add("-I", PathUtil.toSystemDependentName(pkg.getPath() + srcDir));
                 }
             }));
         } else {
             LOG.info("not possible to run 'dub describe'");
         }
+
         return commandLine;
     }
 
