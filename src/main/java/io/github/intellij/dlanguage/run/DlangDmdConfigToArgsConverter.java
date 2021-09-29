@@ -46,7 +46,7 @@ public class DlangDmdConfigToArgsConverter {
     private static String getOutputPathArgument(final Module module) {
         final String outputDirUrl = getOutputDir(module);
         final File outputDir = new File(VfsUtilCore.urlToPath(outputDirUrl), "obj");
-        return "-od" + outputDir.getPath();
+        return "-od" + outputDir.getAbsolutePath();
     }
 
     @NotNull
@@ -64,14 +64,20 @@ public class DlangDmdConfigToArgsConverter {
         }
         final String outputDirUrl = getOutputDir(module);
         final File outputFile = new File(VfsUtilCore.urlToPath(outputDirUrl), filename);
-        return outputFile.getPath();
+        return outputFile.getAbsolutePath();
     }
 
+    /*
+    * Will attempt to get a build directory (such as "out") in the project's root or alternatively just fall back
+    * to the project root path
+    */
     @Nullable
-    private static String getOutputDir(final Module module) {
-        return ModuleRootManager.getInstance(module)
+    private static String getOutputDir(@NotNull final Module module) {
+        return StringUtil.defaultIfEmpty(ModuleRootManager.getInstance(module)
             .getModuleExtension(CompilerModuleExtension.class)
-            .getCompilerOutputUrl();
+            .getCompilerOutputUrl(),
+            module.getProject().getBasePath()
+        );
     }
 
 

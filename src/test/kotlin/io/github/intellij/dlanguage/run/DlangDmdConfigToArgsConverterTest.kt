@@ -13,9 +13,18 @@ import java.io.File
  */
 class DlangDmdConfigToArgsConverterTest : LightDlangTestCase() {
 
-    private val outputDirArg: String = "-od${File.separatorChar}obj"
-    private val outputFile = "light_idea_test_case" + if (SystemInfo.isWindows) ".exe" else ""
-    private val outputFileArg: String = "-of${File.separatorChar}$outputFile"
+    private lateinit var outputDirArg: String
+    private lateinit var outputFile: String
+    private lateinit var outputFileArg: String
+
+    override fun setUp() {
+        super.setUp()
+
+        // these need to be set within setUp so that the project basePath is not null
+        this.outputDirArg = "-od" + File(project.basePath, "obj").absolutePath
+        this.outputFile = "light_idea_test_case" + if (SystemInfo.isWindows) ".exe" else ""
+        this.outputFileArg = "-of" + File(project.basePath, "$outputFile").absolutePath
+    }
 
     @Throws(Exception::class)
     fun `test Get DMD Parameters Should output valid args by default`() {
@@ -38,7 +47,7 @@ class DlangDmdConfigToArgsConverterTest : LightDlangTestCase() {
 
         val dmdParameters = DlangDmdConfigToArgsConverter.getDmdParameters(dmdConfig, module)
 
-        TestCase.assertEquals(mutableListOf("-lib", outputDirArg, "-of${File.separatorChar}light_idea_test_case.lib", "/src/myapp.d"), dmdParameters)
+        TestCase.assertEquals(mutableListOf("-lib", outputDirArg, outputFileArg.replaceAfterLast('.', "lib"), "/src/myapp.d"), dmdParameters)
     }
 
     @Throws(Exception::class)
