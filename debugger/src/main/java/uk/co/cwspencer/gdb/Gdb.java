@@ -27,7 +27,10 @@ package uk.co.cwspencer.gdb;
 import com.intellij.execution.Platform;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.util.PathUtil;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import uk.co.cwspencer.gdb.gdbmi.*;
 import uk.co.cwspencer.gdb.messages.*;
 import uk.co.cwspencer.ideagdb.debug.GdbDebugProcess;
@@ -85,18 +88,13 @@ public class Gdb {
     public Gdb(@NotNull final String gdbPath, final String workingDirectory, GdbListener listener) {
         // Prepare GDB
         m_listener = listener;
-        m_readThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                runGdb(gdbPath, workingDirectory);
-            }
-        });
+        m_readThread = new Thread(() -> runGdb(gdbPath, workingDirectory));
     }
 
     private static String formatVarName(String varName) {
         varName = GdbMiUtil.formatGdbString(varName, false);
 
-        if (varName.substring(0, 1).equals("&")) {
+        if (varName.charAt(0) == '&') {
             varName = String.format("`%s`", varName);
         }
 
@@ -199,8 +197,10 @@ public class Gdb {
     public void getVariablesForFrame(final int thread, final int frame,
                                      final GdbEventCallback callback) {
         // Get a list of local variables
-        String command = "-stack-list-variables --thread " + thread + " --frame " + frame +
-            " --no-values";
+        final String command = "-stack-list-variables --thread " + thread + " --frame " + frame + " --no-values";
+
+        m_log.debug("Sending GDB command: " + command);
+
         sendCommand(command, new GdbEventCallback() {
             @Override
             public void onGdbCommandCompleted(GdbEvent event) {
@@ -217,15 +217,16 @@ public class Gdb {
      * @param expression The expression to evaluate.
      * @param callback   The callback function.
      */
-    public void evaluateExpression(int thread, int frame, final String expression,
-                                   final GdbEventCallback callback) {
+    public void evaluateExpression(int thread, int frame, final String expression, final GdbEventCallback callback) {
         // TODO: Make this more efficient
 
         // Create a new variable object if necessary
         GdbVariableObject variableObject = m_variableObjectsByExpression.get(expression);
         if (variableObject == null) {
-            String command = "-var-create --thread " + thread + " --frame " + frame + " - @ " +
-                formatVarName(expression);
+            final String command = "-var-create --thread " + thread + " --frame " + frame + " - @ " + formatVarName(expression);
+
+            m_log.debug("Sending GDB command: " + command);
+
             sendCommand(command, new GdbEventCallback() {
                 @Override
                 public void onGdbCommandCompleted(GdbEvent event) {
@@ -235,7 +236,10 @@ public class Gdb {
         }
 
         // Update existing variable objects
-        sendCommand("-var-update --thread " + thread + " --frame " + frame + " --all-values *",
+        final String variableUpdateCommand = "-var-update --thread " + thread + " --frame " + frame + " --all-values *";
+        m_log.debug("Sending GDB command: " + variableUpdateCommand);
+
+        sendCommand(variableUpdateCommand,
             new GdbEventCallback() {
                 @Override
                 public void onGdbCommandCompleted(GdbEvent event) {
@@ -250,20 +254,17 @@ public class Gdb {
      * Launches the GDB process and starts listening for data.
      *
      * @param gdbPath          Path to the GDB executable.
-     * @param workingDirectory Working directory to launch the GDB process in. May be null.
+     * @param workingDirectoryPath Working directory to launch the GDB process in. May be null.
      */
-    private void runGdb(@NotNull final String gdbPath, String workingDirectory) {
+    private void runGdb(@NotNull final String gdbPath, String workingDirectoryPath) {
         try {
-            // Launch the process
-            final String[] commandLine = {
-                gdbPath,
-                "--interpreter=mi2",
-            };
-
-            File workingDirectoryFile = null;
-            if (workingDirectory != null) {
-                workingDirectoryFile = new File(workingDirectory);
+            if (StringUtil.isEmptyOrSpaces(gdbPath)) {
+                return;
             }
+
+            @Nullable final File workingDir = StringUtil.isNotEmpty(workingDirectoryPath) ?
+                new File(workingDirectoryPath) : null;
+
 
             Project project = ((GdbDebugProcess) m_listener).m_project;
 
@@ -297,26 +298,27 @@ public class Gdb {
 //            final KillableColoredProcessHandler processHandler = new KillableColoredProcessHandler(cmd.createProcess(), cmd.getPreparedCommandLine());
 //            final OSProcessHandler processHandler = new OSProcessHandler(cmd.createProcess(), cmd.getPreparedCommandLine());
 
+            final String[] commandLine = {
+                PathUtil.toSystemDependentName(gdbPath),
+                "--interpreter=mi2",
+            };
+
             final ProcessBuilder pb = new ProcessBuilder(commandLine);
-            pb.directory(workingDirectoryFile);
+            pb.directory(workingDir);
+
             final Process process = pb.start();
-            InputStream stream = process.getInputStream();
+            final InputStream stream = process.getInputStream();
 
             // Save a reference to the process and launch the writer thread
             synchronized (this) {
                 m_process = process;
-                m_writeThread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        processWriteQueue();
-                    }
-                });
+                m_writeThread = new Thread(() -> processWriteQueue());
                 m_writeThread.start();
             }
 
             // Start listening for data
             //GdbMiParser parser = new GdbMiParser();
-            GdbMiParser2 parser = new GdbMiParser2(((GdbDebugProcess) m_listener).m_gdbRawConsole);
+            final GdbMiParser2 parser = new GdbMiParser2(((GdbDebugProcess) m_listener).m_gdbRawConsole);
             byte[] buffer = new byte[BUFFER_SIZE];
             int bytes;
             while ((bytes = stream.read(buffer)) != -1) {
@@ -332,8 +334,8 @@ public class Gdb {
                 }
 
                 // Handle the records
-                List<GdbMiRecord> records = parser.getRecords();
-                for (GdbMiRecord record : records) {
+                final List<GdbMiRecord> records = parser.getRecords();
+                for (final GdbMiRecord record : records) {
                     handleRecord(record);
                 }
                 records.clear();

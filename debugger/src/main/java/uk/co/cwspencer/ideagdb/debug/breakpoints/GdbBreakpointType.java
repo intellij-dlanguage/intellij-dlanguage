@@ -32,8 +32,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class GdbBreakpointType extends XLineBreakpointType<GdbBreakpointProperties> {
-    private static final Logger m_log =
-        Logger.getInstance("#uk.co.cwspencer.ideagdb.debug.breakpoints.GdbBreakpointType");
+
+    //private static final Logger log = Logger.getInstance(GdbBreakpointType.class);
 
     public GdbBreakpointType() {
         super("gdb", "GDB Breakpoints");
@@ -47,7 +47,7 @@ public class GdbBreakpointType extends XLineBreakpointType<GdbBreakpointProperti
     @Nullable
     @Override
     public GdbBreakpointProperties createBreakpointProperties(@NotNull VirtualFile file, int line) {
-        m_log.warn("createBreakpointProperties: stub");
+        //m_log.debug("createBreakpointProperties: stub");
         return null;
     }
 
