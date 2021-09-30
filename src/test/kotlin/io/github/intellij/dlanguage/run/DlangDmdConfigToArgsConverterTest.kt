@@ -47,7 +47,7 @@ class DlangDmdConfigToArgsConverterTest : LightDlangTestCase() {
 
         val dmdParameters = DlangDmdConfigToArgsConverter.getDmdParameters(dmdConfig, module)
 
-        TestCase.assertEquals(mutableListOf("-lib", outputDirArg, outputFileArg.replaceAfterLast('.', "lib"), "/src/myapp.d"), dmdParameters)
+        TestCase.assertEquals(mutableListOf("-lib", outputDirArg, outputFileArg.removeSuffix(".exe").plus(".lib"), "/src/myapp.d"), dmdParameters)
     }
 
     @Throws(Exception::class)
