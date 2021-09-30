@@ -47,7 +47,7 @@ final class DCompletionProvider extends CompletionProvider<CompletionParameters>
                 .runReadAction((Computable<Integer>) () -> parameters.getEditor().getCaretModel().getOffset());
 
             try {
-                return new DCDCompletionClient().autoComplete(position, file, file.getText());
+                return DCDCompletionClient.autoComplete(position, file, file.getText());
             } catch (DCDCompletionClient.DCDError e) {
                 log.warn(String.format("There was a problem using dcd-client on file %s at position %s",
                     file.getVirtualFile().getName(),
