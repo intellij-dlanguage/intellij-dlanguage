@@ -63,51 +63,51 @@ public class GdbUtil {
         return editingSupport.get(goType);
     }
 
-    public static Boolean isKnownGdb(String path) {
-        try {
-            GeneralCommandLine command = new GeneralCommandLine();
-            command.setExePath(path);
-            command.addParameter("--version");
-
-            ProcessOutput output = new CapturingProcessHandler(
-                command.createProcess(),
-                Charset.defaultCharset(),
-                command.getCommandLineString()).runProcess();
-
-            if (output.getExitCode() != 0) {
-                LOG.error("gdb exited with invalid exit code: " + output.getExitCode());
-                return false;
-            }
-
-            String cmdOutput = output.getStdout();
-            return cmdOutput.contains("(GDB) 7.6") || cmdOutput.contains("(GDB) 7.4");
-        } catch (Exception e) {
-            LOG.error("Exception while executing the process:", e);
-            return false;
-        }
-    }
-
-    public static Boolean isValidGdbPath(String path) {
-        try {
-            GeneralCommandLine command = new GeneralCommandLine();
-            command.setExePath(path);
-            command.addParameter("--version");
-
-            ProcessOutput output = new CapturingProcessHandler(
-                command.createProcess(),
-                Charset.defaultCharset(),
-                command.getCommandLineString()).runProcess();
-
-            if (output.getExitCode() != 0) {
-                LOG.error("gdb exited with invalid exit code: " + output.getExitCode());
-                return false;
-            }
-
-            // TODO maybe we should warn the user that his GDB version is not the latest at time of writing (7.6.2)
-            return output.getStdout().contains("GDB");
-        } catch (Exception e) {
+//    public static Boolean isKnownGdb(String path) {
+//        try {
+//            final GeneralCommandLine command = new GeneralCommandLine()
+//                .withExePath(path)
+//                .withParameters("--version");
+//
+//            final ProcessOutput output = new CapturingProcessHandler(
+//                command.createProcess(),
+//                Charset.defaultCharset(),
+//                command.getCommandLineString()).runProcess();
+//
+//            if (output.getExitCode() != 0) {
+//                LOG.error("gdb exited with invalid exit code: " + output.getExitCode());
+//                return false;
+//            }
+//
+//            String cmdOutput = output.getStdout();
+//            return cmdOutput.contains("(GDB) 7.6") || cmdOutput.contains("(GDB) 7.4");
+//        } catch (Exception e) {
 //            LOG.error("Exception while executing the process:", e);
-            return false;
-        }
-    }
+//            return false;
+//        }
+//    }
+//
+//    public static Boolean isValidGdbPath(String path) {
+//        try {
+//            final GeneralCommandLine command = new GeneralCommandLine()
+//                .withExePath(path)
+//                .withParameters("--version");
+//
+//            final ProcessOutput output = new CapturingProcessHandler(
+//                command.createProcess(),
+//                Charset.defaultCharset(),
+//                command.getCommandLineString()).runProcess();
+//
+//            if (output.getExitCode() != 0) {
+//                LOG.error("gdb exited with invalid exit code: " + output.getExitCode());
+//                return false;
+//            }
+//
+//            // TODO maybe we should warn the user that his GDB version is not the latest at time of writing (7.6.2)
+//            return output.getStdout().contains("GDB");
+//        } catch (Exception e) {
+////            LOG.error("Exception while executing the process:", e);
+//            return false;
+//        }
+//    }
 }

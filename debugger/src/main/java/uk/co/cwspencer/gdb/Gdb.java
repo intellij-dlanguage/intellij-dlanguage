@@ -312,7 +312,7 @@ public class Gdb {
             // Save a reference to the process and launch the writer thread
             synchronized (this) {
                 m_process = process;
-                m_writeThread = new Thread(() -> processWriteQueue());
+                m_writeThread = new Thread(this::processWriteQueue);
                 m_writeThread.start();
             }
 
@@ -349,10 +349,11 @@ public class Gdb {
      * Thread function for processing the write queue.
      */
     private void processWriteQueue() {
-        OutputStream stream = null;
+        @Nullable OutputStream stream = null;
 
         try {
             List<CommandData> queuedCommands = new ArrayList<CommandData>();
+
             while (true) {
                 synchronized (this) {
                     // Wait for some data to process
@@ -380,26 +381,31 @@ public class Gdb {
                     m_queuedCommands = tmp;
                 }
 
-                // Send the queued commands to GDB
-                StringBuilder sb = new StringBuilder();
-                for (final CommandData command : queuedCommands) {
-                    // Construct the message
-                    long token = m_token++;
-                    m_listener.onGdbCommandSent(command.command, token);
+                if(stream != null) {
+                    // Send the queued commands to GDB
+                    final StringBuilder sb = new StringBuilder();
 
-                    sb.append(token);
-                    sb.append(command.command);
-                    sb.append(Platform.WINDOWS.equals(CURRENT_PLATFORM) ? "\r\n" : "\n");
+                    for (final CommandData command : queuedCommands) {
+                        // Construct the message
+                        long token = m_token++;
+                        m_listener.onGdbCommandSent(command.command, token);
+
+                        sb.append(token)
+                            .append(command.command)
+                            .append(Platform.WINDOWS.equals(CURRENT_PLATFORM) ? "\r\n" : "\n");
+                    }
+                    queuedCommands.clear();
+
+                    // Send the messages
+                    byte[] message = sb.toString().getBytes(CHARSET_ASCII);
+                    stream.write(message);
+                    stream.flush();
                 }
-                queuedCommands.clear();
 
-                // Send the messages
-                byte[] message = sb.toString().getBytes(CHARSET_ASCII);
-                stream.write(message);
-                stream.flush();
             }
-        } catch (final InterruptedException e) {
+        } catch (final InterruptedException | IOException e) {
             // We are exiting
+            m_log.debug("Could not communicate with GDB", e);
         } catch (final Throwable e) {
             m_listener.onGdbError(e);
         } finally {
