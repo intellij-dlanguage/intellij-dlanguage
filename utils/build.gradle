@@ -12,6 +12,8 @@ repositories {
     maven { url 'https://www.jetbrains.com/intellij-repository/releases' }
 }
 
+apply plugin: 'kotlin'
+
 dependencies {
     compileOnly "com.jetbrains.intellij.platform:core:$intellijPlatformVersion"
     compileOnly "com.jetbrains.intellij.platform:lang:$intellijPlatformVersion"
