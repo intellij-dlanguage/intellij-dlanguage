@@ -150,14 +150,14 @@ public class DubConfigurationParser {
     private Optional<DubProject> parseDubConfiguration(final boolean silentMode) {
         @Nullable final VirtualFile projectDir = ProjectUtil.guessProjectDir(project);
 
-        if(projectDir == null) {
+        if(projectDir == null || StringUtil.isEmptyOrSpaces(dubBinaryPath)) {
             return Optional.empty();
         }
 
         try {
             final GeneralCommandLine cmd = new GeneralCommandLine()
                 .withWorkDirectory(projectDir.getCanonicalPath())
-                .withExePath(dubBinaryPath)
+                .withExePath(StringUtil.trim(dubBinaryPath))
                 .withParameters("describe");
 
             final String dubCommand = cmd.getCommandLineString();

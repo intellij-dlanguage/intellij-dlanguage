@@ -55,6 +55,10 @@ public class ExecUtil {
      */
     @Nullable
     public static String exec(@NotNull final String command) {
+        if(StringUtil.isEmptyOrSpaces(command)) {
+            return null;
+        }
+
         // Find some valid working directory, doesn't matter which one.
         final ProjectManager pm = ProjectManager.getInstance();
         final Project[] projects = pm == null ? null : pm.getOpenProjects();
@@ -82,9 +86,13 @@ public class ExecUtil {
      */
     @Nullable
     public static String exec(@NotNull final String workDir, @NotNull final String command) {
+        if(StringUtil.isEmptyOrSpaces(command)) {
+            return null;
+        }
+
         // Setup shell and the GeneralCommandLine.
         final GeneralCommandLine cmd = new GeneralCommandLine()
-            .withWorkDirectory(workDir)
+            .withWorkDirectory(StringUtil.trim(workDir))
             .withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE);
 
         if (SystemInfo.isWindows) {
@@ -95,7 +103,7 @@ public class ExecUtil {
             cmd.setExePath("/bin/sh");
             cmd.addParameter("-c");
         }
-        cmd.addParameter(command);
+        cmd.addParameter(command.trim());
 
         return readCommandLine(cmd);
     }
@@ -152,7 +160,11 @@ public class ExecUtil {
      */
     @Nullable
     public static String locateExecutable(@NotNull final String command) {
-        final String whereCmd = (SystemInfo.isWindows ? "where" : "which") + ' ' + command;
+        if(StringUtil.isEmptyOrSpaces(command)) {
+            return null;
+        }
+
+        final String whereCmd = (SystemInfo.isWindows ? "where" : "which") + ' ' + command.trim();
         String res = exec(whereCmd);
         if (res != null && SystemInfo.isWindows && res.contains("C:\\")) {
             final String[] split = res.split("(?=C:\\\\)");
@@ -170,7 +182,11 @@ public class ExecUtil {
      */
     @Nullable
     public static String locateExecutableByGuessing(@NotNull final String command) {
-        final String located = locateExecutable(command);
+        if(StringUtil.isEmptyOrSpaces(command)) {
+            return null;
+        }
+
+        final String located = locateExecutable(command.trim());
         if (located != null && !located.isEmpty()) {
             // Found it!
             return StringUtil.trim(located);
@@ -254,8 +270,12 @@ public class ExecUtil {
                                          @NotNull final String command,
                                          @NotNull final String[] params,
                                          @Nullable final String input) {
-        final GeneralCommandLine commandLine = new GeneralCommandLine(command);
-        if (workingDirectory != null) {
+        if(StringUtil.isEmptyOrSpaces(command)) {
+            return null;
+        }
+
+        final GeneralCommandLine commandLine = new GeneralCommandLine(command.trim());
+        if (StringUtil.isNotEmpty(workingDirectory)) {
             commandLine.setWorkDirectory(workingDirectory);
         }
         commandLine.addParameters(params);
