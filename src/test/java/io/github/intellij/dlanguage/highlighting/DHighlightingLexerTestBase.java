@@ -91,7 +91,7 @@ public abstract class DHighlightingLexerTestBase extends LexerTestCase {
         }
         try {
             final String expectedText = doLoadFile(fullPath, targetDataName);
-            if (!Comparing.equal(expectedText, text)) {
+            if (!Comparing.strEqual(expectedText, text)) {
                 throw new FileComparisonFailure(targetDataName, expectedText, text, expectedFileName);
             }
         } catch (URISyntaxException | IOException e) {

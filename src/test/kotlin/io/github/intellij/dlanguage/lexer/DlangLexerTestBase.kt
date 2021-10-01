@@ -71,7 +71,7 @@ abstract class DlangLexerTestBase(expectPath: String) : LexerTestCase() {
         }
         try {
             val expectedText = doLoadFile(fullPath, targetDataName)
-            if (!Comparing.equal(expectedText, theText)) {
+            if (!Comparing.strEqual(expectedText, theText)) {
                 throw FileComparisonFailure(targetDataName, expectedText, theText, expectedFileName)
             }
         } catch (e: Exception) {
