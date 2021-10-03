@@ -11,6 +11,10 @@ import java.util.regex.Pattern;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/*
+* This class probably needs revisiting. No idea why it doesn't simply implement the AnnotationHolder interface but I
+* suspect that's what it should do.
+ */
 public class DAnnotationHolder {
     public final AnnotationHolder holder;
 

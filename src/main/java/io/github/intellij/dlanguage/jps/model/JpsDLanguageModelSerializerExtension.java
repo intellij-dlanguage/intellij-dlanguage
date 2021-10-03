@@ -42,7 +42,7 @@ public class JpsDLanguageModelSerializerExtension extends JpsModelSerializerExte
                 return JpsElementFactory.getInstance().createDummyElement();
             }
 
-            @Override
+            //@Override // todo: remove this when it no longer overrides parent class method
             public void saveProperties(@NotNull final JpsDummyElement properties, @NotNull final Element componentElement) {
             }
         });
@@ -58,7 +58,7 @@ public class JpsDLanguageModelSerializerExtension extends JpsModelSerializerExte
                 return JpsElementFactory.getInstance().createDummyElement();
             }
 
-            @Override
+            //@Override // todo: remove this when it no longer overrides parent class method
             public void saveProperties(@NotNull final JpsDummyElement properties, @NotNull final Element element) {
             }
         });
@@ -74,7 +74,7 @@ public class JpsDLanguageModelSerializerExtension extends JpsModelSerializerExte
                 return new JpsDLanguageModuleExtension(props);
             }
 
-            @Override
+            //@Override // todo: remove this when it no longer overrides parent class method
             protected void saveExtension(final JpsDLanguageModuleExtension extension, final Element facetConfigurationTag, final JpsModule module) {
                 XmlSerializer.serializeInto(extension.getProperties(), facetConfigurationTag, new SkipDefaultValuesSerializationFilters());
             }
