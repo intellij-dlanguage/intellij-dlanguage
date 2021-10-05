@@ -18,11 +18,16 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class RestartDCD extends AnAction implements DumbAware {
+public class RestartDCD extends AnAction implements DumbAware { // todo: consider implementing LightEditCompatible
+
     private static final Logger LOG = Logger.getInstance(RestartDCD.class);
+
+    // DO NOT CHANGE THE ID WITHOUT ALSO MAKING SURE THAT THE SAME STRING IS USED IN plugin.xml
+    public static final String ID = "io.github.intellij.dlanguage.actions.RestartDCD";
 
     public static final String MENU_PATH = "Tools > Restart DCD Server";
 
+    // called frequently so needs to be fast! Can be x2 times per second
     @Override
     public void update(@NotNull final AnActionEvent e) {
         e.getPresentation().setEnabled(enabled(e));

@@ -47,6 +47,8 @@ public final class DCDCompletionServer implements ModuleComponent, ToolChangeLis
 
     private static final Logger LOG = Logger.getInstance(DCDCompletionServer.class);
 
+    private static DCDCompletionServer instance;
+
     @NotNull
     public final Module module;
 
@@ -65,12 +67,25 @@ public final class DCDCompletionServer implements ModuleComponent, ToolChangeLis
      * Package Private constructor used during module component initialization.
      */
     DCDCompletionServer(@NotNull final Module module) {
+        synchronized (this) {
+            instance = this;
+        }
+
         this.module = module;
         this.path = lookupPath();
         this.flags = lookupFlags();
 
         // Ensure that we are notified of changes to the settings.
         module.getProject().getMessageBus().connect().subscribe(Topics.DCD_SERVER_TOOL_CHANGE, this);
+    }
+
+    @Nullable
+    public static DCDCompletionServer getInstance() {
+        return instance;
+    }
+
+    public boolean isRunning() {
+        return StringUtil.isNotEmpty(path) && processHandler != null && processHandler.getProcess().isAlive();
     }
 
     public synchronized void exec() {

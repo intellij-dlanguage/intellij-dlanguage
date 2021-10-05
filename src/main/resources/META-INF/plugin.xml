@@ -254,6 +254,8 @@
         <!-- Structure View -->
         <lang.psiStructureViewFactory language="D" implementationClass="io.github.intellij.dlanguage.structure.DStructureViewFactory"/>
 
+        <!-- Show a widget in the status bar to indicate whether DCD Server is running or not -->
+        <statusBarWidgetFactory order="first" implementation="io.github.intellij.dlanguage.dcd.server.DCDServerStatusBarWidgetFactory" />
 
         <postStartupActivity
             implementation="io.github.intellij.dlanguage.project.DubListenerComponent"/>
@@ -282,8 +284,11 @@
             <add-to-group group-id="CodeFormatGroup" anchor="last"/>
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt M"/>
         </action>
-        <action id="io.github.intellij.dlanguage.RestartDCD" class="io.github.intellij.dlanguage.actions.RestartDCD"
-                text="Restart DCD Server" description="Restarts the DCD server">
+        <action id="io.github.intellij.dlanguage.actions.RestartDCD"
+                class="io.github.intellij.dlanguage.actions.RestartDCD"
+                text="Restart DCD Server"
+                description="Restarts the DCD server"
+                icon="AllIcons.Actions.Restart">
             <add-to-group group-id="ToolsMenu" anchor="last"/>
         </action>
         <action id="io.github.intellij.dlanguage.ProcessDLibs" class="io.github.intellij.dlanguage.actions.ProcessDLibs"
