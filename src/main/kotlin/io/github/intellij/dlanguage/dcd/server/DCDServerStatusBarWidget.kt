@@ -47,17 +47,20 @@ class DCDServerStatusBarWidget(project: Project) : EditorBasedStatusBarPopup(pro
 
         val state: WidgetState = when(dcdServer) {
             null -> WidgetState.HIDDEN
-            else -> return when(dcdServer.isRunning) {
-                true -> {
-                    val state = WidgetState("DCD Server running", "DCD Server", false)
-                    state.icon = AllIcons.Debugger.ThreadStates.Socket
-                    state
+            else -> return when(dcdServer.isExecutable) {
+                true -> return when(dcdServer.isRunning) {
+                    true -> {
+                        val state = WidgetState("DCD Server running", "DCD Server", false)
+                        state.icon = AllIcons.Debugger.ThreadStates.Socket
+                        state
+                    }
+                    false -> {
+                        val state = WidgetState("Restart DCD Server", "DCD Server", true)
+                        state.icon = AnimatedIcon.Blinking(AllIcons.General.Warning) // AllIcons.Ide.FatalError
+                        state
+                    }
                 }
-                false -> {
-                    val state = WidgetState("Restart DCD Server", "DCD Server", true)
-                    state.icon = AnimatedIcon.Blinking(AllIcons.General.Warning) // AllIcons.Ide.FatalError
-                    state
-                }
+                false -> WidgetState.HIDDEN // DCD is not configured
             }
         }
 

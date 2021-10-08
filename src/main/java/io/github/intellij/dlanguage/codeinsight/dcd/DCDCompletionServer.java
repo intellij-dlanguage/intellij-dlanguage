@@ -84,6 +84,10 @@ public final class DCDCompletionServer implements ModuleComponent, ToolChangeLis
         return instance;
     }
 
+    public boolean isExecutable() {
+        return StringUtil.isNotEmpty(path);
+    }
+
     public boolean isRunning() {
         return StringUtil.isNotEmpty(path) && processHandler != null && processHandler.getProcess().isAlive();
     }
