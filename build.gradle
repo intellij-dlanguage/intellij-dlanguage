@@ -13,7 +13,7 @@ buildscript {
 
 plugins {
     id 'org.jetbrains.intellij' version '1.2.0'
-    id 'org.jetbrains.kotlin.jvm' version '1.5.10'
+    id 'org.jetbrains.kotlin.jvm' version '1.4.10' // This should match the Kotlin version in gradle.properties. (update to '1.5.31' when bump min Intellij)
     id 'net.saliman.cobertura' version '4.0.0'
     id 'com.github.kt3k.coveralls' version '2.10.2'
     id 'org.jetbrains.grammarkit' version '2021.1.3'
@@ -131,11 +131,63 @@ intellij {
     //alternativeIdePath "$System.env.HOME/.local/share/JetBrains/Toolbox/apps/Rider/ch-0/202.7660.16"
 
     buildSearchableOptions {
+        // workaround for https://youtrack.jetbrains.com/issue/IDEA-210683
+        jvmArgs = [
+            '--illegal-access=warn',
+            '--add-opens=java.base/java.lang=ALL-UNNAMED',
+            '--add-opens=java.base/sun.nio.ch=ALL-UNNAMED',
+            '--add-opens=java.base/jdk.internal.vm=ALL-UNNAMED',
+            '--add-opens=java.desktop/sun.awt=ALL-UNNAMED',
+            '--add-opens=java.desktop/sun.awt.image=ALL-UNNAMED',
+            '--add-opens=java.desktop/sun.awt.X11=ALL-UNNAMED', // Linux only
+            '--add-opens=java.desktop/sun.font=ALL-UNNAMED',
+            '--add-opens=java.desktop/sun.swing=ALL-UNNAMED',
+            '--add-opens=java.desktop/java.awt=ALL-UNNAMED',
+            '--add-opens=java.desktop/java.awt.peer=ALL-UNNAMED',
+            '--add-opens=java.desktop/java.awt.event=ALL-UNNAMED',
+            '--add-opens=java.desktop/java.awt.X11=ALL-UNNAMED', // Linux only
+            '--add-opens=java.desktop/javax.swing=ALL-UNNAMED',
+            '--add-opens=java.desktop/javax.swing.text.html=ALL-UNNAMED',
+            '--add-opens=java.desktop/javax.swing.plaf.basic=ALL-UNNAMED',
+            '--add-opens=java.desktop/com.apple.eawt.event=ALL-UNNAMED',  // Mac OSX only
+            '--add-opens=javafx.graphics/com.sun.javafx.application=ALL-UNNAMED'
+        ]
         enabled = false // workaround for https://youtrack.jetbrains.com/issue/KT-42837
     }
 
     runIde {
-        jvmArgs = ['--add-exports', 'java.base/jdk.internal.vm=ALL-UNNAMED']
+        jvmArgs = [
+            '--illegal-access=warn',
+            '--add-opens=java.base/java.lang=ALL-UNNAMED',
+            '--add-opens=java.base/sun.nio.ch=ALL-UNNAMED',
+            '--add-opens=java.base/jdk.internal.vm=ALL-UNNAMED',
+            '--add-opens=java.desktop/sun.awt=ALL-UNNAMED',
+            '--add-opens=java.desktop/sun.awt.image=ALL-UNNAMED',
+            '--add-opens=java.desktop/sun.awt.X11=ALL-UNNAMED', // Linux only
+            '--add-opens=java.desktop/sun.font=ALL-UNNAMED',
+            '--add-opens=java.desktop/sun.swing=ALL-UNNAMED',
+            '--add-opens=java.desktop/sun.java2d=ALL-UNNAMED',
+            '--add-opens=java.desktop/java.awt=ALL-UNNAMED',
+            '--add-opens=java.desktop/java.awt.peer=ALL-UNNAMED',
+            '--add-opens=java.desktop/java.awt.event=ALL-UNNAMED',
+            '--add-opens=java.desktop/java.awt.X11=ALL-UNNAMED', // Linux only
+            '--add-opens=java.desktop/javax.swing=ALL-UNNAMED',
+            '--add-opens=java.desktop/javax.swing.text.html=ALL-UNNAMED',
+            '--add-opens=java.desktop/javax.swing.plaf.basic=ALL-UNNAMED',
+            '--add-opens=java.desktop/com.sun.java.swing.plaf.gtk=ALL-UNNAMED', // Linux only
+            '--add-opens=java.desktop/com.apple.eawt.event=ALL-UNNAMED',  // Mac OSX only
+            '--add-opens=javafx.graphics/com.sun.javafx.application=ALL-UNNAMED'
+        ]
+
+        systemProperties['idea.debug.mode'] = 'true'
+        // The package names have to be prefixed with a #
+        systemProperties['idea.log.debug.categories'] = '#io.github.intellij.dlanguage'
+        //systemProperties['idea.log.trace.categories'] = '#io.github.intellij.dlanguage'
+
+        // Set these properties to test alternative languages
+        // systemProperties["user.language"] = "de"
+        // systemProperties["user.country"] = "DE"
+
         // jbrVersion = null
         // jbrVersion = '11_0_4b304.69'
     }
@@ -174,7 +226,9 @@ repositories {
 
 dependencies {
     // According to https://www.jetbrains.org/intellij/sdk/docs/tutorials/kotlin.html
-    // we should not include kotlin-runtime and kotlin-stdlib jars with your plugin
+    // we should not need to include kotlin-runtime and kotlin-stdlib jars with a plugin
+    // as it's bundled with Intellij, however if we support multiple Intellij versions (which
+    // we do) then it may be worth bundling our own kotlin jars
     //compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     //compileOnly "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
@@ -183,7 +237,7 @@ dependencies {
     compile project(':debugger')
 
     testCompile 'io.kotlintest:kotlintest:2+'
-    testImplementation 'net.bytebuddy:byte-buddy:1.10.20' // workaround for failing to mock inline mocks
+    testImplementation 'net.bytebuddy:byte-buddy:1.11.18' // workaround for failing to mock inline mocks
 }
 
 apply plugin: 'idea'
