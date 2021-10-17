@@ -14,12 +14,11 @@
     ]]></description>
 
     <change-notes><![CDATA[
-        <b>v1.26.*</b><br/>
+        <b>v1.26.2</b><br/>
         <ul>
             <li>Compatibility IntelliJ 2020.3.* - 2021.2.*</li>
-            <li>Fix path passed to gdb on Windows</li>
-            <li>Use new syntax for dub fetch</li>
-            <li>Fix for null pointer when retrieving ModuleRootManager</li>
+            <li>Numerous bug fixes</li>
+            <li>status widget for DCD Server</li>
         </ul>
     ]]>
     </change-notes>
