@@ -9,6 +9,11 @@ import org.jetbrains.jps.model.library.sdk.JpsSdkType;
 
 import java.io.File;
 
+/**
+ * This appears to be dead code. Dlang SDK is registered as DlangSdkType
+ * @see io.github.intellij.dlanguage.DlangSdkType
+ * todo: investigate JpsSdkType vs SdkType and ensure we're using the right base classes
+*/
 public class JpsDLanguageSdkType extends JpsSdkType<JpsDummyElement> implements JpsElementTypeWithDefaultProperties<JpsDummyElement> {
     public static final JpsDLanguageSdkType INSTANCE = new JpsDLanguageSdkType();
 
