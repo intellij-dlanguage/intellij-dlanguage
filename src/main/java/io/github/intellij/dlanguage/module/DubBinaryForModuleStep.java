@@ -17,8 +17,8 @@ import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.projectImport.ProjectFormatPanel;
 import com.intellij.util.ui.JBUI;
+import io.github.intellij.dlanguage.DLanguage;
 import io.github.intellij.dlanguage.DlangBundle;
-import io.github.intellij.dlanguage.icons.DlangIcons;
 import io.github.intellij.dlanguage.project.DubProjectImportBuilder;
 import io.github.intellij.dlanguage.settings.DLanguageToolsConfigurable;
 import io.github.intellij.dlanguage.settings.ToolKey;
@@ -58,7 +58,7 @@ public class DubBinaryForModuleStep extends ModuleWizardStep {
             this.dubBinary.setText(ToolKey.DUB_KEY.getPath());
         }
 
-        final JButton autoFindButton = new JButton(DlangBundle.INSTANCE.message("d.ui.dub.config.label.autofind"), DlangIcons.SDK);
+        final JButton autoFindButton = new JButton(DlangBundle.INSTANCE.message("d.ui.dub.config.label.autofind"), DLanguage.Icons.SDK);
 
         final JLabel dubFormatLabel = new JLabel(DlangBundle.INSTANCE.message("d.ui.dub.config.label.dubbinarylocation"));
         dubFormatLabel.setLabelFor(dubBinary);

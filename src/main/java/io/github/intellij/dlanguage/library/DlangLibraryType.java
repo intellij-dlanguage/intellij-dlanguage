@@ -9,7 +9,7 @@ import com.intellij.openapi.roots.libraries.ui.LibraryPropertiesEditor;
 import com.intellij.openapi.roots.libraries.ui.LibraryRootsComponentDescriptor;
 import com.intellij.openapi.roots.ui.configuration.FacetsProvider;
 import com.intellij.openapi.vfs.VirtualFile;
-import io.github.intellij.dlanguage.icons.DlangIcons;
+import io.github.intellij.dlanguage.DLanguage;
 import io.github.intellij.dlanguage.module.DlangModuleType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -68,6 +68,6 @@ public class DlangLibraryType extends LibraryType<DummyLibraryProperties> {
 
     @Override
     public Icon getIcon(@Nullable final DummyLibraryProperties properties) {
-        return DlangIcons.FILE;
+        return DLanguage.Icons.FILE;
     }
 }

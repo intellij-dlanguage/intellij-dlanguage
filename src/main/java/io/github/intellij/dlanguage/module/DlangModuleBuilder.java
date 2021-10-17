@@ -23,9 +23,9 @@ import com.intellij.openapi.roots.ModifiableRootModel;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
+import io.github.intellij.dlanguage.DLanguage;
 import io.github.intellij.dlanguage.DlangBundle;
 import io.github.intellij.dlanguage.DlangSdkType;
-import io.github.intellij.dlanguage.icons.DlangIcons;
 import io.github.intellij.dlanguage.run.DlangRunAppConfigurationType;
 import io.github.intellij.dlanguage.run.DlangRunDmdConfigurationType;
 import org.jetbrains.annotations.NonNls;
@@ -71,7 +71,7 @@ public class DlangModuleBuilder extends ModuleBuilder {
 
     @Override
     public Icon getNodeIcon() {
-        return DlangIcons.FILE;
+        return DLanguage.Icons.FILE;
     }
 
     @Override

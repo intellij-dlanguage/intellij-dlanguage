@@ -2,7 +2,6 @@ package io.github.intellij.dlanguage
 
 import com.intellij.ide.IconProvider
 import com.intellij.psi.PsiElement
-import io.github.intellij.dlanguage.icons.DlangIcons
 import javax.swing.Icon
 
 /**
@@ -13,9 +12,9 @@ class DlangIconProvider : IconProvider() {
         if(DLanguage.`is`(element.language)) {
             element.containingFile?.virtualFile?.let {
                 return when(it.name) {
-                    "app.d" -> DlangIcons.SRC_FILE_RUNNABLE // common to have main entry point in app.d
-                    "package.d" -> DlangIcons.SRC_FILE_PACKAGE
-                    else -> DlangIcons.SRC_FILE
+                    "app.d" -> DLanguage.Icons.SRC_FILE_RUNNABLE // common to have main entry point in app.d
+                    "package.d" -> DLanguage.Icons.SRC_FILE_PACKAGE
+                    else -> DLanguage.Icons.SRC_FILE
                 }
             }
 

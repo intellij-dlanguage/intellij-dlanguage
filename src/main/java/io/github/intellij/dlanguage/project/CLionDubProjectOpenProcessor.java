@@ -10,8 +10,8 @@ import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.projectImport.ProjectOpenProcessor;
 import com.intellij.util.ArrayUtil;
+import io.github.intellij.dlanguage.DLanguage;
 import io.github.intellij.dlanguage.DlangSdkType;
-import io.github.intellij.dlanguage.icons.DlangIcons;
 import io.github.intellij.dlanguage.module.DlangModuleBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -28,7 +28,7 @@ public class CLionDubProjectOpenProcessor extends ProjectOpenProcessor {
   @Nullable
   @Override
   public Icon getIcon() {
-    return DlangIcons.FILE;
+    return DLanguage.Icons.FILE;
   }
 
   @Override

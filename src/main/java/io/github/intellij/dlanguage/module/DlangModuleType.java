@@ -8,8 +8,8 @@ import com.intellij.openapi.module.ModuleTypeManager;
 import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
+import io.github.intellij.dlanguage.DLanguage;
 import io.github.intellij.dlanguage.DlangBundle;
-import io.github.intellij.dlanguage.icons.DlangIcons;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
@@ -53,12 +53,12 @@ public class DlangModuleType extends ModuleType<DlangModuleBuilder> {
 
     @Override
     public @NotNull Icon getIcon() {
-        return DlangIcons.FILE;
+        return DLanguage.Icons.FILE;
     }
 
     //@Override // todo: remove this overidden getter when it's removed from Intellij platform
     public Icon getNodeIcon(@Deprecated final boolean b) {
-        return DlangIcons.FILE;
+        return DLanguage.Icons.FILE;
     }
 
     /*

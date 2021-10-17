@@ -4,7 +4,6 @@ import com.intellij.openapi.options.colors.ColorDescriptor
 import com.intellij.openapi.options.colors.ColorSettingsPage
 import io.github.intellij.dlanguage.DLanguage
 import io.github.intellij.dlanguage.highlighting.DHighlighter
-import io.github.intellij.dlanguage.icons.DlangIcons
 
 class DColorSettingsPage : ColorSettingsPage {
     private val attributes = DColor.values().map { it.attributesDescriptor }.toTypedArray()
@@ -16,7 +15,7 @@ class DColorSettingsPage : ColorSettingsPage {
         .readText()
 
     override fun getDisplayName() = DLanguage.id
-    override fun getIcon() = DlangIcons.FILE
+    override fun getIcon() = DLanguage.Icons.FILE
     override fun getAttributeDescriptors() = attributes
     override fun getColorDescriptors(): Array<ColorDescriptor> = ColorDescriptor.EMPTY_ARRAY
     override fun getHighlighter() = DHighlighter()

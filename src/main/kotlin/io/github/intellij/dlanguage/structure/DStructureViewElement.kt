@@ -7,10 +7,12 @@ import com.intellij.navigation.ItemPresentation
 import com.intellij.pom.Navigatable
 import com.intellij.psi.NavigatablePsiElement
 import com.intellij.psi.PsiElement
-import io.github.intellij.dlanguage.icons.addVisibilityToIcon
+import com.intellij.ui.RowIcon
+import com.intellij.util.PlatformIcons
 import io.github.intellij.dlanguage.presentation.*
 import io.github.intellij.dlanguage.utils.*
 import java.util.*
+import javax.swing.Icon
 
 class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement,
     Navigatable by (element as NavigatablePsiElement)
@@ -168,4 +170,13 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement,
     }
 
     override fun getValue(): Any = element
+
+    private fun addVisibilityToIcon(icon: Icon, visibility: Visibility) : RowIcon =
+        RowIcon(icon, when (visibility) {
+            Visibility.PUBLIC -> PlatformIcons.PUBLIC_ICON
+            Visibility.PRIVATE -> PlatformIcons.PRIVATE_ICON
+            Visibility.PROTECTED -> PlatformIcons.PROTECTED_ICON
+            Visibility.PACKAGE -> PlatformIcons.PACKAGE_LOCAL_ICON
+            Visibility.NONE -> PlatformIcons.PUBLIC_ICON
+        })
 }
