@@ -2,7 +2,6 @@ package io.github.intellij.dlanguage
 
 import com.intellij.codeInsight.daemon.ProjectSdkSetupValidator
 import com.intellij.lang.ASTNode
-import com.intellij.lang.Language
 import com.intellij.lang.ParserDefinition
 import com.intellij.lexer.FlexAdapter
 import com.intellij.lexer.Lexer
@@ -29,8 +28,6 @@ import io.github.intellij.dlanguage.psi.DlangTypes
 import io.github.intellij.dlanguage.resolve.processors.basic.BasicResolve
 import io.github.intellij.dlanguage.stubs.types.DFileStubElementType
 import org.jetbrains.annotations.NotNull
-
-object DLanguage : Language("D")
 
 class DLanguageLexerAdapter : FlexAdapter(DlangLexer())
 

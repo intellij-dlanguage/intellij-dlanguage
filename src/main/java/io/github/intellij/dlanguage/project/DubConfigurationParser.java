@@ -76,7 +76,7 @@ public class DubConfigurationParser {
                 .executeOnPooledThread(() -> parseDubConfiguration(this.silentMode));
 
             try {
-                return optionalFuture.get(7L, TimeUnit.SECONDS); // Yes 'dub describe' is slow, especially on 1st run
+                return optionalFuture.get(10L, TimeUnit.SECONDS); // Yes 'dub describe' is slow, especially on 1st run
             } catch (final InterruptedException | java.util.concurrent.ExecutionException | TimeoutException e) {
                 LOG.error("Call to dub timed out", e);
             }
@@ -189,7 +189,7 @@ public class DubConfigurationParser {
                         LOG.warn(
                             String.format("%s exited with %s errors", dubCommand, errors.size()));
                     } else {
-                        LOG.info(
+                        LOG.debug(
                             String.format("%s exited with %s errors", dubCommand, errors.size()));
                     }
                     // potential error messages are things like:

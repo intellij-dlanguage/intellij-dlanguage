@@ -18,12 +18,18 @@ public class ToolKey {
     public static final ToolKey DFIX_KEY = new ToolKey("dfix");
     public static final ToolKey GDB_KEY = new ToolKey("gdb");
 
+    private final String name;
     private final String pathKey;
     private final String flagsKey;
 
     private ToolKey(@NotNull final String name) {
+        this.name = name;
         this.pathKey = name + "Path";
         this.flagsKey = name + "Flags";
+    }
+
+    public String getName() {
+        return name;
     }
 
     public String getPathKey() {
