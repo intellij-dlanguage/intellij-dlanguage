@@ -12,22 +12,19 @@ import com.intellij.openapi.roots.libraries.ui.RootDetector
 import com.intellij.openapi.roots.ui.configuration.libraryEditor.DefaultLibraryRootsComponentDescriptor
 import com.intellij.openapi.roots.ui.configuration.libraryEditor.LibraryEditor
 import com.intellij.openapi.vfs.VirtualFile
+import io.github.intellij.dlanguage.DLanguage
 import io.github.intellij.dlanguage.DlangBundle
-import io.github.intellij.dlanguage.icons.DlangIcons
-import io.github.intellij.dlanguage.icons.DlangIcons.FILE
 import io.github.intellij.dlanguage.library.LibFileRootType.getInstance
-import java.util.*
 import java.util.Arrays.asList
 import javax.swing.JComponent
-
 
 class DLanguageLibraryRootsComponentDescriptor : LibraryRootsComponentDescriptor() {
 
     override fun getRootTypePresentation(type: OrderRootType): OrderRootTypePresentation? {
-        if (type == getInstance()) {
-            return OrderRootTypePresentation("Lib File", FILE)
+        return if(type == getInstance()) {
+            OrderRootTypePresentation("Lib File", DLanguage.Icons.FILE)
         } else {
-            return DefaultLibraryRootsComponentDescriptor.getDefaultPresentation(type)
+            DefaultLibraryRootsComponentDescriptor.getDefaultPresentation(type)
         }
     }
 

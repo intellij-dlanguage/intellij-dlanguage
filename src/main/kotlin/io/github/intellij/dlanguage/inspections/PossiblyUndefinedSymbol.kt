@@ -6,9 +6,7 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.module.ModuleUtilCore
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.projectRoots.ProjectJdkTable
 import com.intellij.openapi.roots.ModuleRootModificationUtil
-import com.intellij.openapi.roots.ui.configuration.ProjectSettingsService
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.PsiFile
@@ -17,7 +15,6 @@ import io.github.intellij.dlanguage.DlangBundle
 import io.github.intellij.dlanguage.psi.DlangVisitor
 import io.github.intellij.dlanguage.psi.impl.named.DlangIdentifierImpl
 import io.github.intellij.dlanguage.resolve.DResolveUtil
-import io.github.intellij.dlanguage.resolve.SpecialCaseResolve
 import io.github.intellij.dlanguage.utils.Identifier
 import io.github.intellij.dlanguage.utils.ModuleDeclaration
 import io.github.intellij.dlanguage.utils.VersionCondition

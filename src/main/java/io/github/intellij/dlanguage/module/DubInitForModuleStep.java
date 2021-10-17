@@ -7,7 +7,6 @@ import com.intellij.ide.util.projectWizard.WizardContext;
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.projectImport.ProjectFormatPanel;
 import io.github.intellij.dlanguage.DlangBundle;
-import io.github.intellij.dlanguage.DlangBundle;
 
 import javax.swing.*;
 import java.awt.*;

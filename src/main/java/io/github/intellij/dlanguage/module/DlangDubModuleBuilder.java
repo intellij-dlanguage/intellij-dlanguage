@@ -13,7 +13,6 @@ import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ModifiableRootModel;
 import com.intellij.openapi.util.Key;
-import com.intellij.openapi.util.Pair;
 import io.github.intellij.dlanguage.DlangBundle;
 import io.github.intellij.dlanguage.run.DlangRunDubConfigurationType;
 import io.github.intellij.dlanguage.settings.ToolKey;

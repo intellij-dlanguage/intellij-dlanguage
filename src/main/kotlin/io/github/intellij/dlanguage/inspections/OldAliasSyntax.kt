@@ -6,7 +6,6 @@ import com.intellij.psi.PsiElementVisitor
 import io.github.intellij.dlanguage.DlangBundle
 import io.github.intellij.dlanguage.psi.DlangVisitor
 import io.github.intellij.dlanguage.psi.impl.DLanguageAliasDeclarationImpl
-import io.github.intellij.dlanguage.psi.impl.named.DLanguageAliasInitializerImpl
 import io.github.intellij.dlanguage.quickfix.SwitchToNewAliasSyntax
 
 /**

@@ -2,10 +2,8 @@ package io.github.intellij.dlanguage.inspections
 
 import com.intellij.codeInspection.*
 import com.intellij.psi.PsiElementVisitor
-import com.intellij.psi.util.PsiTreeUtil
 import io.github.intellij.dlanguage.DlangBundle
 import io.github.intellij.dlanguage.psi.DlangVisitor
-import io.github.intellij.dlanguage.psi.impl.DLanguageAliasDeclarationImpl
 import io.github.intellij.dlanguage.psi.impl.DLanguagePrimaryExpressionImpl
 import io.github.intellij.dlanguage.quickfix.ExplicitlyConcatenateStrings
 
@@ -18,8 +16,7 @@ class ImplicitlyConcatenatedStrings : LocalInspectionTool() {
 
     override fun getDescriptionFileName(): String = "ImplicitlyConcatenatedStrings.html"
 
-    override fun getDisplayName(): String =
-        "Implicitly Concatenated Strings"//todo needs internationalization
+    override fun getDisplayName(): String = "Implicitly Concatenated Strings"//todo needs internationalization
 
     override fun getGroupDisplayName(): String = DlangBundle.message("d.inspections.groupname")
 }

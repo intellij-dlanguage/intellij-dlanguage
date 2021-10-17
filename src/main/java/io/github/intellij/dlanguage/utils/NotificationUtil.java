@@ -14,6 +14,8 @@ public class NotificationUtil {
         Notifications.Bus.notify(new Notification(
             title, title,
             message.replace("\n", "<br/>") + "<br/><a href='configureDTools'>Configure</a>",
-            type, new DToolsNotificationListener(project)), project);
+            type)
+            .setListener(new DToolsNotificationListener(project)),
+            project);
     }
 }
