@@ -65,7 +65,9 @@ public class DFixAction extends AnAction implements DumbAware {
                     new Notification(NOTIFICATION_GROUPID, NOTIFICATION_TITLE,
                         "DFix executable path is empty" +
                             "<br/><a href='configureDLanguageTools'>Configure</a>",
-                        NotificationType.WARNING, new DToolsNotificationListener(project)), project);
+                        NotificationType.WARNING)
+                        .setListener(new DToolsNotificationListener(project)),
+                    project);
                 return;
             }
 
@@ -73,7 +75,9 @@ public class DFixAction extends AnAction implements DumbAware {
                 Notifications.Bus.notify(
                     new Notification(NOTIFICATION_GROUPID, NOTIFICATION_TITLE,
                         "DFix executable path is not valid<br/><a href='configureDLanguageTools'>Configure</a>",
-                        NotificationType.WARNING, new DToolsNotificationListener(project)), project);
+                        NotificationType.WARNING)
+                        .setListener(new DToolsNotificationListener(project)),
+                    project);
                 return;
             }
 

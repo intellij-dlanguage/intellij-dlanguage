@@ -23,9 +23,9 @@ import com.intellij.platform.GeneratorPeerImpl
 import com.intellij.platform.ProjectGeneratorPeer
 import com.intellij.ui.components.JBPanel
 import com.intellij.util.ui.components.BorderLayoutPanel
+import io.github.intellij.dlanguage.DLanguage
 import io.github.intellij.dlanguage.DlangBundle.message
 import io.github.intellij.dlanguage.DlangSdkType
-import io.github.intellij.dlanguage.icons.DlangIcons
 import io.github.intellij.dlanguage.project.ui.DubInitCheckBox
 import java.awt.Color
 import java.util.function.Predicate
@@ -56,7 +56,7 @@ class DlangProjectGenerator : DirectoryProjectGeneratorBase<DlangProjectSettings
 
     override fun getHelpId(): String? = null
 
-    override fun getLogo(): Icon? = DlangIcons.SDK
+    override fun getLogo(): Icon? = DLanguage.Icons.SDK
 
     /**
      * Called when the project creation window is first used. Calls to createLazyPeer() will call this method

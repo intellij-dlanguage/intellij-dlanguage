@@ -18,7 +18,6 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.Consumer;
-import io.github.intellij.dlanguage.icons.DlangIcons;
 import io.github.intellij.dlanguage.library.LibFileRootType;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -135,13 +134,13 @@ public class DlangSdkType extends SdkType {
     @NotNull
     @Override
     public Icon getIconForAddAction() {
-        return DlangIcons.FILE;
+        return DLanguage.Icons.FILE;
     }
 
     @NotNull
     @Override
     public Icon getIcon() {
-        return DlangIcons.FILE;
+        return DLanguage.Icons.FILE;
     }
 
     @Nullable

@@ -70,7 +70,9 @@ public class DlangRunDubState extends CommandLineState {
                     new Notification("DUB run configuration", "DUB settings",
                         "DUB executable is " + (isEmpty ? "not specified" : "not specified correctly") +
                             "<br/><a href='configureDLanguageTools'>Configure</a> executable",
-                        NotificationType.ERROR, new DToolsNotificationListener(project)), project);
+                        NotificationType.ERROR)
+                        .setListener(new DToolsNotificationListener(project)),
+                    project);
             }
             throw e;
         }

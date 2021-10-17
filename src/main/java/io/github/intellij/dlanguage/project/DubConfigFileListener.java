@@ -82,8 +82,9 @@ public class DubConfigFileListener implements VirtualFileListener {
         if (event.getFile().equals(dubConfigFile)) {
             Notifications.Bus.notify(
                 new Notification("Dub", "Dub",
-                    "dub.json or dub.sdl file deleted. ",
-                    NotificationType.WARNING, new DToolsNotificationListener(project)),
+                    "dub.json or dub.sdl file deleted.",
+                    NotificationType.WARNING)
+                    .setListener(new DToolsNotificationListener(project)),
                 project);
         }
     }

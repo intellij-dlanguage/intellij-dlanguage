@@ -40,12 +40,13 @@ public class RunUtil {
         final String gdbPath = ToolKey.GDB_KEY.getPath();
 
         // check if path to debugger is defined
-        if (gdbPath == null){
+        if (gdbPath == null) {
             Notifications.Bus.notify(
                 new Notification(NOTIFICATION_GROUPID, NOTIFICATION_TITLE,
-                    "GDB executable path is empty" +
-                        "<br/><a href='configureDLanguageTools'>Configure</a>",
-                    NotificationType.ERROR, new DToolsNotificationListener(project)), project);
+                    "GDB executable path is empty<br/><a href='configureDLanguageTools'>Configure</a>",
+                    NotificationType.ERROR)
+                    .setListener(new DToolsNotificationListener(project)),
+                project);
 
             return null;
         }

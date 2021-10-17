@@ -1,7 +1,7 @@
 package io.github.intellij.dlanguage.unittest;
 
 import com.intellij.execution.configurations.ConfigurationTypeBase;
-import io.github.intellij.dlanguage.icons.DlangIcons;
+import io.github.intellij.dlanguage.DLanguage;
 
 public class DUnitTestRunConfigurationType extends ConfigurationTypeBase {
 
@@ -13,7 +13,7 @@ public class DUnitTestRunConfigurationType extends ConfigurationTypeBase {
         super("DlangTestConfigType",
                 "dUnit Unit Tests",
                 "dUnit unit tests run configuration",
-                DlangIcons.RUN);
+            DLanguage.Icons.RUN);
         addFactory(new DUnitTestRunConfigurationFactory(this));
     }
 }

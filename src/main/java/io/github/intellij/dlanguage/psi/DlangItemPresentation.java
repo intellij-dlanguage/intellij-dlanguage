@@ -2,7 +2,7 @@ package io.github.intellij.dlanguage.psi;
 
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiFile;
-import io.github.intellij.dlanguage.icons.DlangIcons;
+import io.github.intellij.dlanguage.DLanguage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -29,6 +29,6 @@ public abstract class DlangItemPresentation implements ItemPresentation {
     @NotNull
     @Override
     public Icon getIcon(boolean unused) {
-        return DlangIcons.FILE;
+        return DLanguage.Icons.FILE;
     }
 }

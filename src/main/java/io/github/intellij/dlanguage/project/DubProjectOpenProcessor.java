@@ -7,8 +7,8 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.projectImport.ProjectImportBuilder;
 import com.intellij.projectImport.ProjectOpenProcessorBase;
+import io.github.intellij.dlanguage.DLanguage;
 import io.github.intellij.dlanguage.DlangBundle;
-import io.github.intellij.dlanguage.icons.DlangIcons;
 import io.github.intellij.dlanguage.settings.ToolKey;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -31,7 +31,7 @@ public class DubProjectOpenProcessor extends ProjectOpenProcessorBase<DubProject
     @Nullable
     @Override
     public Icon getIcon() {
-        return DlangIcons.FILE;
+        return DLanguage.Icons.FILE;
     }
 
     @NotNull

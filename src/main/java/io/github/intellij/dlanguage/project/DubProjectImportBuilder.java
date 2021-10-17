@@ -19,8 +19,8 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.packaging.artifacts.ModifiableArtifactModel;
 import com.intellij.projectImport.ProjectImportBuilder;
+import io.github.intellij.dlanguage.DLanguage;
 import io.github.intellij.dlanguage.DlangSdkType;
-import io.github.intellij.dlanguage.icons.DlangIcons;
 import io.github.intellij.dlanguage.module.DlangDubModuleBuilder;
 import io.github.intellij.dlanguage.utils.DToolsNotificationListener;
 import org.jdom.JDOMException;
@@ -59,7 +59,7 @@ public class DubProjectImportBuilder extends ProjectImportBuilder<DubPackage> {
 
     @Override
     public Icon getIcon() {
-        return DlangIcons.MODULE;
+        return DLanguage.Icons.MODULE;
     }
 
     @Override
@@ -112,7 +112,8 @@ public class DubProjectImportBuilder extends ProjectImportBuilder<DubPackage> {
         Notifications.Bus.notify(
             new Notification("Dub Import", "Dub Import",
                 "Dub project does not seem to contain dub.json or dub.sdl.",
-                NotificationType.WARNING, new DToolsNotificationListener(module.getProject())),
+                NotificationType.WARNING)
+                .setListener(new DToolsNotificationListener(module.getProject())),
             module.getProject());
         return null;
     }
@@ -125,7 +126,8 @@ public class DubProjectImportBuilder extends ProjectImportBuilder<DubPackage> {
             Notifications.Bus.notify(
                 new Notification("Dub Import", "Dub Import",
                     "DUB executable path is empty<br/><a href='configureDLanguageTools'>Configure</a>",
-                    NotificationType.WARNING, new DToolsNotificationListener(project)),
+                    NotificationType.WARNING)
+                    .setListener(new DToolsNotificationListener(project)),
                 project);
         }
         final DubConfigurationParser dubConfigurationParser = new DubConfigurationParser(project,

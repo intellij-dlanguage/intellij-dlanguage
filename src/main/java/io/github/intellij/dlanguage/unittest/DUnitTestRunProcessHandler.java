@@ -212,7 +212,9 @@ public class DUnitTestRunProcessHandler extends ProcessHandler { // consider OSP
                 new Notification("Dunit Test Runner",
                     DlangBundle.INSTANCE.message("d.ui.unittest.notification.title.dub-path-missing"),
                     DlangBundle.INSTANCE.message("d.ui.unittest.notification.content.dub-path-missing"),
-                    NotificationType.WARNING, new DToolsNotificationListener(project)), project);
+                    NotificationType.WARNING)
+                    .setListener(new DToolsNotificationListener(project)),
+                project);
             return;
         }
 

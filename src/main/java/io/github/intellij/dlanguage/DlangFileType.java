@@ -1,7 +1,6 @@
 package io.github.intellij.dlanguage;
 
 import com.intellij.openapi.fileTypes.LanguageFileType;
-import io.github.intellij.dlanguage.icons.DlangIcons;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -37,7 +36,7 @@ public class DlangFileType extends LanguageFileType {
     @Nullable
     @Override
     public Icon getIcon() {
-        return DlangIcons.FILE;
+        return DLanguage.Icons.FILE;
     }
 
 }

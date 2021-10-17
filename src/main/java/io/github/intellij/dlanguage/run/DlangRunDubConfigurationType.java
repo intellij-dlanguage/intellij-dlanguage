@@ -5,8 +5,8 @@ import com.intellij.execution.configurations.ConfigurationTypeBase;
 import com.intellij.execution.configurations.RunConfiguration;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.io.FileUtil;
+import io.github.intellij.dlanguage.DLanguage;
 import io.github.intellij.dlanguage.DlangBundle;
-import io.github.intellij.dlanguage.icons.DlangIcons;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -16,7 +16,7 @@ public class DlangRunDubConfigurationType extends ConfigurationTypeBase {
         super("DlangRunDubConfigType",
             DlangBundle.INSTANCE.message("run.dub.text"),
             DlangBundle.INSTANCE.message("run.dub.descr"),
-            DlangIcons.RUN);
+            DLanguage.Icons.RUN);
         addFactory(new DLanguageFactory(this));
     }
 
