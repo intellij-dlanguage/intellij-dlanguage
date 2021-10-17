@@ -39,6 +39,9 @@ import org.jetbrains.annotations.Nullable;
  * utility class is causing more problems these days than it solves.
  * See: https://github.com/intellij-dlanguage/intellij-dlanguage/issues/550
  * and https://github.com/intellij-dlanguage/intellij-dlanguage/issues/591
+ *
+ * Also note that Jetbrains already have an ExecUtil class:
+ * @see com.intellij.execution.util.ExecUtil
  */
 @Deprecated
 public class ExecUtil {
