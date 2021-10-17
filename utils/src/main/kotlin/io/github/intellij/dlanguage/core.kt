@@ -8,6 +8,8 @@ import javax.swing.Icon
 
 object DLanguage : Language("D") {
 
+    const val MODULE_TYPE_ID = "DLANGUAGE_MODULE"
+
     class Icons {
         companion object {
             @JvmField val FILE = IconLoader.getIcon("/icons/d.png", DLanguage::class.java)

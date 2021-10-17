@@ -19,7 +19,7 @@ import java.util.Collection;
 public class DlangModuleType extends ModuleType<DlangModuleBuilder> {
 
     @NonNls
-    private static final String ID = "DLANGUAGE_MODULE";
+    private static final String ID = DLanguage.MODULE_TYPE_ID;
 
     public DlangModuleType() {
         super(ID);
@@ -29,6 +29,7 @@ public class DlangModuleType extends ModuleType<DlangModuleBuilder> {
         return (DlangModuleType) ModuleTypeManager.getInstance().findByID(ID);
     }
 
+    @Deprecated // use ModuleUtil.getModulesOfType(project, ModuleTypeManager.getInstance().findByID(DLanguage.MODULE_TYPE_ID));
     public static Collection<Module> findModules(final Project project) {
         return ModuleUtil.getModulesOfType(project, DlangModuleType.getInstance());
     }

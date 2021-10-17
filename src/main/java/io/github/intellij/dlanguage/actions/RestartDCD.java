@@ -7,11 +7,13 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.module.Module;
+import com.intellij.openapi.module.ModuleTypeManager;
+import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
 import com.intellij.ui.popup.PopupFactoryImpl;
+import io.github.intellij.dlanguage.DLanguage;
 import io.github.intellij.dlanguage.codeinsight.dcd.DCDCompletionServer;
-import io.github.intellij.dlanguage.module.DlangModuleType;
 import io.github.intellij.dlanguage.settings.ToolKey;
 import org.jetbrains.annotations.NotNull;
 
@@ -37,7 +39,9 @@ public class RestartDCD extends AnAction implements DumbAware { // todo: conside
         final Project project = getEventProject(e);
         if (project == null) return false;
         final String dcdServerPath = ToolKey.DCD_SERVER_KEY.getPath();
-        return dcdServerPath != null && !dcdServerPath.isEmpty() && DlangModuleType.findModules(project).size() > 0;
+        return dcdServerPath != null && !dcdServerPath.isEmpty() &&
+            ModuleUtil.getModulesOfType(project, ModuleTypeManager.getInstance().findByID(DLanguage.MODULE_TYPE_ID))
+                .size() > 0;
     }
 
     @Override
@@ -45,7 +49,8 @@ public class RestartDCD extends AnAction implements DumbAware { // todo: conside
         final String prefix = "Unable to restart dcd-server - ";
         final Project project = e.getProject();
         if (project == null) { displayError(e, prefix + "No active project."); return; }
-        final Collection<Module> modules = DlangModuleType.findModules(project);
+
+        final Collection<Module> modules = ModuleUtil.getModulesOfType(project, ModuleTypeManager.getInstance().findByID(DLanguage.MODULE_TYPE_ID));
         final int size = modules.size();
         if (size == 0) displayError(e, prefix + "No DLanguage modules are used in this project.");
         else if (size == 1) restartDcdServer(e, modules.iterator().next());
