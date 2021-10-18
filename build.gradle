@@ -122,13 +122,18 @@ apply plugin: 'org.jetbrains.intellij'
 intellij {
     pluginName = 'intellij-dlanguage'
     version = ideaVersion
-    //type 'CL' // maybe helpful to change this when trying other IDE. can be 'IC', 'IU', 'JPS', or 'CL'
+    //type = 'CL' // maybe helpful to change this when trying other IDE. can be 'IC', 'IU', 'JPS', or 'CL'
     updateSinceUntilBuild = false
+    plugins = ['java']
+    //plugins = [ 'org.intellij.intelliLang', 'com.intellij.java', 'com.intellij.java.ide' ] // IDEA only (plugin was previously 'java')
+    //plugins = [ 'org.intellij.intelliLang', 'com.intellij.cidr.base', 'com.intellij.cidr.lang' ] // CLion & AppCode
+    //plugins = [ 'org.intellij.intelliLang', 'com.intellij.clion', 'com.intellij.cidr.base', 'com.intellij.cidr.lang' ] // CLion only
+
     // uncomment to test/run/debug the plugin with another IDE such as CLion or AppCode
-    //alternativeIdePath '<path to>/CLion.app'
-    //alternativeIdePath 'C:\\Users\\USERNAME\\AppData\\Local\\JetBrains\\Toolbox\\apps\\CLion\\ch-0\\211.7628.27'
-    //alternativeIdePath "$System.env.HOME/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/211.7628.27"
-    //alternativeIdePath "$System.env.HOME/.local/share/JetBrains/Toolbox/apps/Rider/ch-0/202.7660.16"
+    //localPath = '<path to>/CLion.app'
+    //localPath = 'C:\\Users\\USERNAME\\AppData\\Local\\JetBrains\\Toolbox\\apps\\CLion\\ch-0\\212.5457.51'
+    //localPath = "$System.env.HOME/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/212.5457.51"
+    //localPath = "$System.env.HOME/.local/share/JetBrains/Toolbox/apps/Rider/ch-0/202.7660.16"
 
     buildSearchableOptions {
         // workaround for https://youtrack.jetbrains.com/issue/IDEA-210683
@@ -241,9 +246,6 @@ dependencies {
 }
 
 apply plugin: 'idea'
-intellij {
-    plugins = ['java']
-}
 
 idea {
     project {
