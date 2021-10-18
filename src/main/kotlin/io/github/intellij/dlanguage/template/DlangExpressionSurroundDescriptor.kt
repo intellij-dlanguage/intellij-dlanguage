@@ -1,9 +1,5 @@
 package io.github.intellij.dlanguage.template
 
-import com.intellij.codeInsight.CodeInsightUtil.findExpressionInRange
-import com.intellij.codeInsight.CodeInsightUtilBase
-import com.intellij.codeInsight.CodeInsightUtilCore
-import com.intellij.featureStatistics.FeatureUsageTracker
 import com.intellij.lang.surroundWith.SurroundDescriptor
 import com.intellij.lang.surroundWith.Surrounder
 import com.intellij.openapi.editor.Editor
@@ -12,12 +8,19 @@ import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 
-// a placeholder for later to enable language specific template expansion.
+// A placeholder for later to enable language specific template expansion.
+// todo: revisit this code and do something useful with it
 class DlangExpressionSurroundDescriptor : SurroundDescriptor {
+
     override fun getElementsToSurround(file: PsiFile, startOffset: Int, endOffset: Int): Array<out PsiElement> {
-        val expr = findExpressionInRange(file, startOffset, endOffset) ?: return emptyArray()
-        FeatureUsageTracker.getInstance().triggerFeatureUsed("codeassists.surroundwith.expression")
-        return arrayOf(expr)
+        return emptyArray()
+
+        // because com.intellij.codeInsight.CodeInsightUtil.findExpressionInRange isn't available in CLion and this class
+        // is currently dead code anyway, I've commented it out for now
+
+//        val expr = findExpressionInRange(file, startOffset, endOffset) ?: return emptyArray()
+//        FeatureUsageTracker.getInstance().triggerFeatureUsed("codeassists.surroundwith.expression")
+//        return arrayOf(expr)
     }
 
     override fun getSurrounders(): Array<out Surrounder> = SURROUNDERS
