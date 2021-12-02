@@ -8,6 +8,7 @@ package io.github.intellij.dlanguage.resolve;
  * - Insert "<resolved>" right before the element you wish for the reference to resolve to.
  */
 public class DResolveTest extends DResolveTestCase {
+
     public void testClassUsageToClassDefinition() {
         doTest();
     }
@@ -20,10 +21,10 @@ public class DResolveTest extends DResolveTestCase {
 //        doTest();
 //    }
 
-    //test dos not pass for reasons not clear to me. The feature in question does work thought. todo
-//    public void testClassConstructorToConstructorDefinition() {
-//        doTest();
-//    }
+    //test dos not pass for reasons not clear to me. The feature in question does work though. todo
+    public void testClassConstructorToConstructorDefinition() {
+        doTest();
+    }
 
     public void testPublicImports() {
         doTest();

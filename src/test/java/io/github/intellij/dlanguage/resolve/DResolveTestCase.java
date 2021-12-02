@@ -88,20 +88,25 @@ public abstract class DResolveTestCase extends DLightPlatformCodeInsightFixtureT
             fail("Could not find resolved element.");
         }
         if (succeed) {
+            final PsiElement element = referencedElement.resolve();
             //function,class,constructor
             /*if (resolvedElement instanceof DlangInterfaceOrClass ) {
                 assertEquals("Could not resolve expected reference.", resolvedElement, referencedElement.resolve().getParent());
             }*//* else if (resolvedElement instanceof DLanguageConstructor) {
                 assertTrue(referencedElement.resolve() instanceof DLanguageConstructor);
             }*/ /*else*/
-            if (resolvedElement instanceof DlangConstructor)
-                assertEquals("Could not resolve expected reference.", resolvedElement, referencedElement.resolve());
-            else if (super.getTestName(true).equals("scopedImportsMembers")) {
+            if (resolvedElement instanceof DlangConstructor) {
+                assertEquals("Could not resolve expected reference.", resolvedElement, element);
+            } else if (super.getTestName(true).equals("scopedImportsMembers")) {
+                assertNotNull("Could not resolve expected reference.", element);
+
                 assertEquals("Could not resolve expected reference.", "struct_member",
-                    ((DlangFunctionDeclaration) referencedElement.resolve().getParent()).getName());
-            } else
-                assertEquals("Could not resolve expected reference.", resolvedElement,
-                    referencedElement.resolve().getParent());
+                    ((DlangFunctionDeclaration) element.getParent()).getName());
+            } else {
+                assertNotNull("Could not resolve expected reference.", element);
+
+                assertEquals("Could not resolve expected reference.", resolvedElement, element.getParent());
+            }
         } else {
             assertFalse("Resolved unexpected reference.", resolvedElement.equals(referencedElement.resolve()));
         }
