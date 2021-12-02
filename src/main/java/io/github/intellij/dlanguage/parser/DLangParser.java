@@ -8602,10 +8602,11 @@ class DLangParser {
         return tokens[index - 1];
     }
 
-    @NotNull
+    //@NotNull
     private Token.IdType tok(@NotNull final String tok) {
-        if (tokenTypeIndex.get(tok) != null) {
-            return tokenTypeIndex.get(tok);
+        final IdType tt = tokenTypeIndex.get(tok);
+        if (tt != null) {
+            return tt;
         }
 
         final IElementType[] matchingTypes = IElementType.enumerate(
