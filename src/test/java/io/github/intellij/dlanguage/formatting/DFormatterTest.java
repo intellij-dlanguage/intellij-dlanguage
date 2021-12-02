@@ -5,6 +5,7 @@ import io.github.intellij.dlanguage.DlangFileType;
 import org.jetbrains.annotations.NotNull;
 
 public class DFormatterTest extends FormatterTestCase {
+
     @NotNull
     @Override
     protected String getBasePath() {
@@ -24,6 +25,23 @@ public class DFormatterTest extends FormatterTestCase {
         final String testName = getTestName(false);
         doTest(testName + "." + getFileExtension(), testName + "-after." + getFileExtension(), resultNumber);
     }
+
+//    public void testFormattingFunctionOpeningBrace() {
+//        doTextTest("void main(){\n}", "void main() {\n}");
+//    }
+
+    public void testFormattingFunctionClosingBrace() {
+        doTextTest("void main() {\n  }", "void main() {\n}");
+    }
+
+    public void testFormattingLinesWithinFunction() {
+        doTextTest("void main() {\n    foo();\n  bar();\n}", "void main() {\n    foo();\n    bar();\n}");
+    }
+
+    // todo: fix this in DFormattingModelBuilder
+//    public void testFormattingImport() {
+//        doTextTest("import std.stdio:stderr,writeln;", "import std.stdio : stderr, writeln;");
+//    }
 
     public void testhello() throws Exception {
         doTest();
