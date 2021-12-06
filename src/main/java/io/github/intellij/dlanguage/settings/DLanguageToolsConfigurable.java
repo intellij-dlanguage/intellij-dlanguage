@@ -3,6 +3,10 @@ package io.github.intellij.dlanguage.settings;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.process.CapturingProcessHandler;
+import com.intellij.execution.process.OSProcessHandler;
+import com.intellij.execution.process.ProcessAdapter;
+import com.intellij.execution.process.ProcessEvent;
+import com.intellij.execution.process.ProcessOutputTypes;
 import com.intellij.ide.ui.search.SearchableOptionsRegistrar;
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.application.ApplicationManager;
@@ -12,6 +16,7 @@ import com.intellij.openapi.options.SearchableConfigurable;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
+import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.ui.RawCommandLineEditor;
@@ -23,6 +28,7 @@ import io.github.intellij.dlanguage.tools.DtoolUtils;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
@@ -117,6 +123,7 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
      * Heuristically finds the version number. Current implementation is the identity function since
      * cabal plays nice.
      */
+    @Deprecated
     public static String getVersion(final String cmd) {
         if (StringUtil.isEmptyOrSpaces(cmd) || !Files.isExecutable(Paths.get(cmd))) {
             LOG.warn(String.format("unable to get version info for path: '%s'", cmd));
@@ -133,7 +140,7 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
             ).runProcess().getStdout());
 
         try {
-            final @Nullable String versionOutput = future.get(500, TimeUnit.MILLISECONDS);
+            final @Nullable String versionOutput = future.get(800, TimeUnit.MILLISECONDS);
 
             if (StringUtil.isNotEmpty(versionOutput)) {
                 final String version = versionOutput.split("\n")[0].trim();
@@ -399,17 +406,7 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
 
         @Override
         public void updateVersion() {
-            @Nullable final String pathText = StringUtil.trim(pathField.getText());
-            final String version = StringUtil.isEmpty(pathText) ? "" : getVersion(pathText);
-            versionField.setText(version);
-
-            if(DtoolUtils.versionPredates(version, this.latestVersion)) {
-                versionField.setToolTipText(String.format("A newer version of %s is available", this.command));
-                versionField.setDisabledTextColor(UIManager.getColor("Focus.color"));
-            } else {
-                versionField.setDisabledTextColor(UIManager.getColor("ComboBox.disabledForeground"));
-                versionField.setToolTipText(null); // turns the tool tip off
-            }
+            updateVersionField(this);
         }
 
         @Override
@@ -433,6 +430,31 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
             for (final PropertyField propertyField : propertyFields) {
                 propertyField.restoreState();
             }
+        }
+    }
+
+    private void updateVersionField(@NotNull final Tool tool) {
+        @Nullable final String pathText = StringUtil.trim(tool.pathField.getText());
+
+        if(StringUtil.isEmptyOrSpaces(pathText) || !Files.isExecutable(Paths.get(pathText))) {
+            LOG.debug(String.format("unable to get %s version info for path: '%s'", tool.command, pathText));
+            tool.versionField.setText("");
+            tool.versionField.setDisabledTextColor(UIManager.getColor("ComboBox.disabledForeground"));
+            tool.versionField.setToolTipText(null); // turns the tool tip off
+        } else {
+            final GeneralCommandLine cmd = new GeneralCommandLine(pathText)
+                .withCharset(StandardCharsets.UTF_8)
+                .withParameters("--version");
+
+            ApplicationManager.getApplication()
+                .invokeLater(() -> {
+                    try {
+                        new DlangToolVersionProcessAdapter(tool, cmd)
+                            .startNotify();
+                    } catch (final ExecutionException e) {
+                        LOG.error("Could not run: " + cmd.getCommandLineString(), e);
+                    }
+                });
         }
     }
 
@@ -526,7 +548,7 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
                         }
                         return null;
                     })
-                    .get(500, TimeUnit.MILLISECONDS);
+                    .get(800, TimeUnit.MILLISECONDS);
 
                 if (path != null && SystemInfo.isWindows && path.contains("C:\\")) {
                     // not sure if this is actually needed. Was moved over from ExecUtil
@@ -539,6 +561,38 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
                 LOG.warn(String.format("Failed to run '%s'.", command), e);
             }
             return null;
+        }
+    }
+
+    // A process handler for assign version output from D Tools to the appropriate fields
+    private class DlangToolVersionProcessAdapter extends OSProcessHandler {
+
+        private boolean complete;
+
+        public DlangToolVersionProcessAdapter(@NotNull final Tool tool,
+                                              @NotNull GeneralCommandLine commandLine) throws ExecutionException {
+            super(commandLine);
+
+            this.complete = false;
+
+            this.addProcessListener(new ProcessAdapter() {
+                @Override
+                public void onTextAvailable(@NotNull ProcessEvent event, @NotNull Key outputType) {
+                    if(!complete && ProcessOutputTypes.STDOUT.equals(outputType)) {
+                        final String version = StringUtil.replace(event.getText(), "\n", "");
+                        tool.versionField.setText(version);
+
+                        if(DtoolUtils.versionPredates(version, tool.latestVersion)) {
+                            tool.versionField.setToolTipText(String.format("A newer version of %s is available", tool.command));
+                            tool.versionField.setDisabledTextColor(UIManager.getColor("Focus.color"));
+                        } else {
+                            tool.versionField.setDisabledTextColor(UIManager.getColor("ComboBox.disabledForeground"));
+                            tool.versionField.setToolTipText(null); // turns the tool tip off
+                        }
+                        complete = true;
+                    }
+                }
+            });
         }
     }
 }
