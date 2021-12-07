@@ -117,7 +117,7 @@ public final class DCDCompletionClient {
         return ApplicationManager.getApplication().executeOnPooledThread(() -> {
             try {
                 final String output = new DCDClientProcessHandler(commandLine, input)
-                    .runProcess(1_000, true)
+                    .runProcess(1_200, true)
                     .getStdout();
 
                 if(StringUtil.isEmptyOrSpaces(output)) {
@@ -251,10 +251,14 @@ public final class DCDCompletionClient {
             this.addProcessListener(new ProcessAdapter() {
                 @Override
                 public void onTextAvailable(@NotNull ProcessEvent event, @NotNull Key outputType) {
+                    final String text = StringUtil.endsWithLineBreak(event.getText()) ?
+                        StringUtil.replace(event.getText(), "\n", "")
+                        : event.getText();
+
                     if(ProcessOutputType.isStdout(outputType)) {
-                        LOG.info(event.getText());
+                        LOG.info(text);
                     } else if(ProcessOutputType.isStderr(outputType)) {
-                        LOG.warn(event.getText());
+                        LOG.warn(text);
                     }
                 }
             });

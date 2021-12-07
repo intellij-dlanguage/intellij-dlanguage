@@ -23,17 +23,22 @@ import java.util.concurrent.*;
 
 import static io.github.intellij.dlanguage.codeinsight.DCompletionContributor.createLookupElement;
 
+// should be renamed to DCDCompletionProvider
 final class DCompletionProvider extends CompletionProvider<CompletionParameters> {
 
     private static final Logger log = Logger.getInstance(DCompletionProvider.class);
 
     private final Executor executor = Executors.newSingleThreadExecutor();
 
+    public DCompletionProvider() {
+        log.info("Creating DCD completion provider");
+    }
+
     @Override
     protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context, @NotNull CompletionResultSet result) {
         final PsiFile file = parameters.getOriginalFile();
 
-        final CompletableFuture<List<Completion>> completionsFuture = CompletableFuture.runAsync(() -> {
+        final CompletableFuture<Void> completionsFuture = CompletableFuture.runAsync(() -> {
             final Module module = ModuleUtilCore.findModuleForPsiElement(file);
             final DCDCompletionServer dcdCompletionServer = module.getComponent(DCDCompletionServer.class);
             try {
@@ -42,33 +47,23 @@ final class DCompletionProvider extends CompletionProvider<CompletionParameters>
                 log.warn("There was a problem starting dcd server", e);
                 throw new RuntimeException(e);
             }
-        }, executor).thenApplyAsync(aVoid -> {
+        }, executor)
+        .thenRunAsync(() -> {
             final int position = ApplicationManager.getApplication()
                 .runReadAction((Computable<Integer>) () -> parameters.getEditor().getCaretModel().getOffset());
 
-            try {
-                return DCDCompletionClient.autoComplete(position, file, file.getText());
-            } catch (DCDCompletionClient.DCDError e) {
-                log.warn(String.format("There was a problem using dcd-client on file %s at position %s",
-                    file.getVirtualFile().getName(),
-                    position), e);
-                throw new RuntimeException(e);
-            }
-        });
-
-        final Future<Void> completionsHandlerFuture = completionsFuture.thenAccept(completions -> {
-            for (final Completion completion : completions) {
-                result.addElement(PrioritizedLookupElement
-                    .withPriority(
-                        createLookupElement(completion.completionText(), "", completion.completionType()),
-                        prioritise(completion)
+            DCDCompletionClient.autoComplete(position, file, results -> {
+                results.forEach(c -> result.addElement(PrioritizedLookupElement
+                    .withPriority( //todo: consider using withGrouping instead
+                        createLookupElement(c.completionText(), "", c.completionType()),
+                        prioritise(c)
                     )
-                );
-            }
+                ));
+            });
         });
 
         try {
-            ApplicationUtil.runWithCheckCanceled(completionsHandlerFuture, ProgressManager.getInstance().getProgressIndicator());
+            ApplicationUtil.runWithCheckCanceled(completionsFuture, ProgressManager.getInstance().getProgressIndicator());
         } catch (ExecutionException e) {
             log.warn("D completions failed : " + e.getMessage(), e);
         } catch (final Exception e) {
