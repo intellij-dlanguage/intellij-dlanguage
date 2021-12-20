@@ -224,7 +224,7 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
                 .refreshAndFindFileByUrl(sourcesPathUrl) ?: return this.dubFetch(dubPackage, sourcesPathUrl)
         }
 
-        private fun dubFetch(dubPackage: DubPackage, sourcesPathUrl: @NotNull String): VirtualFile? {
+        private fun dubFetch(dubPackage: DubPackage, sourcesPathUrl: String): VirtualFile? {
             LOG.info("sources not found, fetching them")
             val commandLine = GeneralCommandLine()
             val dubBinaryPath = ToolKey.DUB_KEY.path
