@@ -21,11 +21,7 @@ import com.intellij.openapi.progress.Task
 import com.intellij.openapi.progress.impl.BackgroundableProcessIndicator
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.roots.LibraryOrderEntry
-import com.intellij.openapi.roots.ModifiableModelsProvider
-import com.intellij.openapi.roots.ModuleRootModificationUtil
-import com.intellij.openapi.roots.OrderRootType
-import com.intellij.openapi.roots.impl.OrderEntryUtil
+import com.intellij.openapi.roots.*
 import com.intellij.openapi.roots.libraries.LibraryTablesRegistrar
 import com.intellij.openapi.ui.popup.JBPopupFactory
 import com.intellij.openapi.util.Key
@@ -35,6 +31,7 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.vfs.VirtualFileManager
 import com.intellij.ui.components.JBList
 import io.github.intellij.dlanguage.icons.DlangIcons
+import io.github.intellij.dlanguage.library.DlangLibraryType
 import io.github.intellij.dlanguage.module.DlangModuleType
 import io.github.intellij.dlanguage.project.DubConfigurationParser
 import io.github.intellij.dlanguage.project.DubPackage
@@ -84,6 +81,20 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
          */
         @JvmStatic
         fun processDLibs(project: Project, module: Module, mostlySilentMode: Boolean, buildBefore: Boolean) {
+            ApplicationManager.getApplication().runWriteAction {
+                // remove all existing libs from module (removing from module doesn't remove from project):
+                removeAllLibrariesFromModule(module)
+
+                removeAllLibrariesFromProject(project)
+
+                // todo: perhaps we can use the custom library tables. Need to find out how they work
+                // val libs = LibraryTablesRegistrar.getInstance().customLibraryTables
+                // LibraryTablesRegistrar.getInstance().customLibraryTables.clear()
+
+                // used to use the removeDLibs method
+                // removeDLibs(module, project); // this is not necessary since intellij filters out duplicate libraries.
+            }
+
             ApplicationManager.getApplication().invokeAndWait({
                 val task = object : Task.Backgroundable(project,
                     "Updating Dub Libraries") {
@@ -99,19 +110,6 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
         private fun processDLibsImpl(project: Project, module: Module,
                                      mostlySilentMode: Boolean, buildBefore: Boolean) {
             //todo needs build/fetch before adding libs, also needs to keep track of libs
-
-            // remove all existing libs
-            ModuleRootModificationUtil.updateModel(module) { model ->
-                model.orderEntries
-                        .filterIsInstance<LibraryOrderEntry>()
-                        .forEach {
-                            it.library?.let {
-                                model.moduleLibraryTable.removeLibrary(it)
-                            }
-                            model.removeOrderEntry(it)
-                        }
-            }
-            //        removeDLibs(module, project);//this is not necessary since intellij filters out duplicate libraries.
 
             // ask dub for required libs
             val dubPath = ToolKey.DUB_KEY.path
@@ -177,17 +175,17 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
 
         private fun createLibraryDependency(module: Module, project: Project,
                                             libraryName: String, dubPackage: DubPackage) {
-            val sources = getSourcesVirtualFile(dubPackage)
-            val projectLibraryTable = LibraryTablesRegistrar.getInstance()
-                .getLibraryTable(project)
-            val projectLibraryModel = projectLibraryTable
-                .modifiableModel
+            getSourcesVirtualFile(dubPackage)?.let { sources ->
+                val projectLibraryTable = LibraryTablesRegistrar.getInstance().getLibraryTable(project)
+                val projectLibraryModel = projectLibraryTable.modifiableModel
 
-            val library = projectLibraryModel.createLibrary(libraryName)
-            val libraryModel = library.modifiableModel
+                //val uniqueLibName = LibraryEditingUtil.suggestNewLibraryName(projectLibraryModel, libraryName) // not needed as we remove clashes
+                val library = projectLibraryModel.createLibrary(libraryName, DlangLibraryType.DLANG_LIBRARY) // todo: use the ProjectModelExternalSource arg
 
-            if (sources != null) {
-                libraryModel.addRoot(sources, OrderRootType.CLASSES)
+                val libraryModel = library.modifiableModel
+
+                libraryModel.addRoot(sources, OrderRootType.CLASSES) // todo: Use our own OrderRootType, such as LibFileRootType.getInstance()
+
                 //todo add binary libs/dub.json as well
                 ApplicationManager.getApplication()
                     .invokeAndWait {
@@ -195,7 +193,9 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
                             libraryModel.commit()
                             projectLibraryModel.commit()
                             for (projectModule in ModuleManager.getInstance(project).modules) {
+                                // todo: should we be doing ModuleRootModificationUtil.addModuleLibrary()
                                 ModuleRootModificationUtil.addDependency(projectModule, library)
+                                LOG.debug("added dependency ${library.presentableName} to module '${projectModule.name}'")
                             }
 
                         }
@@ -283,6 +283,35 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
             return null
         }
 
+        private fun removeAllLibrariesFromModule(module: Module) {
+            ApplicationManager.getApplication().assertWriteAccessAllowed()
+
+            LOG.debug("Clearing libraries from module '${module.name}'")
+
+            ModuleRootModificationUtil.updateModel(module) { model ->
+                model.orderEntries
+                    .filterIsInstance<LibraryOrderEntry>()
+                    .forEach { lib ->
+                        model.removeOrderEntry(lib)
+                        LOG.debug("removed ${lib.presentableName} from from module '${module.name}'")
+                    }
+            }
+        }
+
+        private fun removeAllLibrariesFromProject(project: Project) {
+            ApplicationManager.getApplication().assertWriteAccessAllowed()
+
+            LOG.debug("Clearing libraries from project '${project.name}'")
+
+            LibraryTablesRegistrar.getInstance()
+                .getLibraryTableByLevel(LibraryTablesRegistrar.PROJECT_LEVEL, project)?.let { libraryTable ->
+                    libraryTable.modifiableModel.libraries.iterator().forEach { lib ->
+                        libraryTable.removeLibrary(lib)
+                        LOG.debug("removed ${lib.presentableName} from from project '${project.name}'")
+                    }
+                }
+        }
+
 //    private fun removeDLibs(module: Module, project: Project) {
 //        val projectLibraryTable = LibraryTablesRegistrar.getInstance()
 //            .getLibraryTable(project)
@@ -291,32 +320,32 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
 //        }
 //    }
 
-        private fun removeLibraryIfNeeded(module: Module, libraryName: String?) {
-            ApplicationManager.getApplication().assertIsDispatchThread()
-
-            val modelsProvider = ModifiableModelsProvider.SERVICE.getInstance()
-            val model = modelsProvider.getModuleModifiableModel(module)
-            val dLibraryEntry = OrderEntryUtil.findLibraryOrderEntry(model, libraryName!!)
-
-            if (dLibraryEntry != null) {
-                ApplicationManager.getApplication().runWriteAction {
-                    val library = dLibraryEntry.library
-                    if (library != null) {
-                        val table = library.table
-                        if (table != null) {
-                            table.removeLibrary(library)
-                            model.removeOrderEntry(dLibraryEntry)
-                            modelsProvider.commitModuleModifiableModel(model)
-                        }
-                    } else {
-                        modelsProvider.disposeModuleModifiableModel(model)
-                    }
-                }
-            } else {
-                ApplicationManager.getApplication()
-                    .runWriteAction { modelsProvider.disposeModuleModifiableModel(model) }
-            }
-        }
+//        private fun removeLibraryIfNeeded(module: Module, libraryName: String?) {
+//            ApplicationManager.getApplication().assertIsDispatchThread()
+//
+//            val modelsProvider = ModifiableModelsProvider.SERVICE.getInstance()
+//            val model = modelsProvider.getModuleModifiableModel(module)
+//            val dLibraryEntry = OrderEntryUtil.findLibraryOrderEntry(model, libraryName!!)
+//
+//            if (dLibraryEntry != null) {
+//                ApplicationManager.getApplication().runWriteAction {
+//                    val library = dLibraryEntry.library
+//                    if (library != null) {
+//                        val table = library.table
+//                        if (table != null) {
+//                            table.removeLibrary(library)
+//                            model.removeOrderEntry(dLibraryEntry)
+//                            modelsProvider.commitModuleModifiableModel(model)
+//                        }
+//                    } else {
+//                        modelsProvider.disposeModuleModifiableModel(model)
+//                    }
+//                }
+//            } else {
+//                ApplicationManager.getApplication()
+//                    .runWriteAction { modelsProvider.disposeModuleModifiableModel(model) }
+//            }
+//        }
 
         private fun displayError(e: AnActionEvent, message: String) {
             displayError(AnAction.getEventProject(e), message)
