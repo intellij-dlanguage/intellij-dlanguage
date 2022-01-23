@@ -7,7 +7,8 @@ import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.execution.process.ProcessAdapter;
 import com.intellij.execution.process.ProcessEvent;
 import com.intellij.execution.process.ProcessOutputTypes;
-import com.intellij.ide.ui.search.SearchableOptionsRegistrar;
+import com.intellij.ide.ui.search.SearchableOptionContributor;
+import com.intellij.ide.ui.search.SearchableOptionProcessor;
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
@@ -54,6 +55,8 @@ import static io.github.intellij.dlanguage.tools.DtoolUtils.*;
 public class DLanguageToolsConfigurable implements SearchableConfigurable {
 
     public static final String D_TOOLS_ID = "D Tools";
+    public static final String D_TOOLS_DISPLAY_NAME = D_TOOLS_ID;
+
     private static final Logger LOG = Logger.getInstance(DLanguageToolsConfigurable.class);
     private final PropertiesComponent propertiesComponent;
     private final List<Tool> properties;
@@ -90,16 +93,20 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
     private JTabbedPane tabbedPane1;
     private JCheckBox chkNativeCodeCompletion;
 
+    public static class SearchableDlangTools extends SearchableOptionContributor {
+        @Override
+        public void processOptions(@NotNull SearchableOptionProcessor processor) {
+            processor.addOptions("dub", null, "dub", D_TOOLS_ID, D_TOOLS_DISPLAY_NAME, false);
+            processor.addOptions("dscanner", null, "dscanner", D_TOOLS_ID, D_TOOLS_DISPLAY_NAME, true);
+            processor.addOptions("dcd", "dcd", "dcd", D_TOOLS_ID, D_TOOLS_DISPLAY_NAME, false);
+            processor.addOptions("dfmt", null, "dfmt", D_TOOLS_ID, D_TOOLS_DISPLAY_NAME, false);
+            processor.addOptions("dfix", null, "dfix", D_TOOLS_ID, D_TOOLS_DISPLAY_NAME, false);
+            processor.addOptions("gdb", null, "gdb", D_TOOLS_ID, D_TOOLS_DISPLAY_NAME, false);
+        }
+    }
+
     public DLanguageToolsConfigurable(@NotNull final Project project) {
         this.propertiesComponent = PropertiesComponent.getInstance();
-
-        final SearchableOptionsRegistrar sor = SearchableOptionsRegistrar.getInstance();
-        sor.addOption("dub", null, "dub", D_TOOLS_ID, D_TOOLS_ID);
-        sor.addOption("dscanner", null, "dscanner", D_TOOLS_ID, D_TOOLS_ID);
-        sor.addOption("dcd", null, "dcd", D_TOOLS_ID, D_TOOLS_ID);
-        sor.addOption("dfmt", null, "dfmt", D_TOOLS_ID, D_TOOLS_ID);
-        sor.addOption("dfix", null, "dfix", D_TOOLS_ID, D_TOOLS_ID);
-        sor.addOption("gdb", null, "gdb", D_TOOLS_ID, D_TOOLS_ID);
 
         properties = Arrays.asList(
             new Tool(project, "dub", ToolKey.DUB_KEY, dubPath, dubFlags,
@@ -180,7 +187,7 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
     @Nls
     @Override
     public String getDisplayName() {
-        return D_TOOLS_ID;
+        return D_TOOLS_DISPLAY_NAME;
     }
 
     @Nullable
@@ -570,7 +577,7 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
         private boolean complete;
 
         public DlangToolVersionProcessAdapter(@NotNull final Tool tool,
-                                              @NotNull GeneralCommandLine commandLine) throws ExecutionException {
+                                              @NotNull final GeneralCommandLine commandLine) throws ExecutionException {
             super(commandLine);
 
             this.complete = false;

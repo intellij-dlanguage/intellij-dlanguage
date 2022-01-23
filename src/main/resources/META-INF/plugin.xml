@@ -137,8 +137,10 @@
         <projectService serviceImplementation="io.github.intellij.dlanguage.settings.DLanguageBuildSettings"/>
 
         <!-- plugin settings are now in: Settings -> Languages &amp; Frameworks -> D Tools -->
-        <projectConfigurable id="DToolSettings" groupId="language" order="first" displayName="D Tools"
+        <projectConfigurable groupId="language" order="first"
                              instance="io.github.intellij.dlanguage.settings.DLanguageToolsConfigurable"/>
+
+        <search.optionContributor implementation="io.github.intellij.dlanguage.settings.DLanguageToolsConfigurable$SearchableDlangTools" />
 
         <!-- File -> Project Structure dialogue. -->
         <!--<moduleConfigurationEditorProvider implementation="io.github.intellij.dlanguage.settings.DLanguageModuleConfigurationEditor" order="first"/>-->
