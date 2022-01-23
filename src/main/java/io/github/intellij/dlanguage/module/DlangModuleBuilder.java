@@ -95,11 +95,9 @@ public class DlangModuleBuilder extends ModuleBuilder {
 
     @Override
     public void setupRootModel(@NotNull final ModifiableRootModel rootModel) throws ConfigurationException {
-        if (myJdk != null) {
-            rootModel.setSdk(myJdk);
-        } else {
-            rootModel.inheritSdk();
-        }
+        rootModel.setSdk(myJdk);
+        rootModel.inheritSdk(); // all modules should use the same dmd as the project
+        LOG.debug(String.format("Dlang project SDK set as: %s", myJdk));
 
         final ContentEntry contentEntry = doAddContentEntry(rootModel);
         if (contentEntry != null) {
@@ -153,6 +151,8 @@ public class DlangModuleBuilder extends ModuleBuilder {
             beforeRunTasks.add(runDmdTask);
             runManager.setBeforeRunTasks(runAppSettings.getConfiguration(), beforeRunTasks);
         }
+
+        LOG.debug("Dlang project root configured");
     }
 
     /* By default sources are located in {WORKING_DIR}/source folder. */
