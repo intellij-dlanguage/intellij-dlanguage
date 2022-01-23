@@ -323,7 +323,10 @@ public class DlangRunDmdConfigurationEditor extends SettingsEditor<DlangRunDmdCo
         try {
             final java.util.List<String> args = DlangDmdConfigToArgsConverter.getDmdParameters(config, module);
             textArgsPane.setText(StringUtils.join(args, "\n"));
-        } catch (NoSourcesException | ExecutionException e) {
+        } catch (final NoSourcesException e) {
+            LOG.warn("Cannot correctly populate textArgsPane in DMD config page: " + e.getMessage());
+            textArgsPane.setText(e.getMessage());
+        } catch (final ExecutionException e) {
             LOG.error("There was a problem filling the textArgsPane in DMD config page", e);
             textArgsPane.setText("*Exception*:\n" + e.getMessage());
         }

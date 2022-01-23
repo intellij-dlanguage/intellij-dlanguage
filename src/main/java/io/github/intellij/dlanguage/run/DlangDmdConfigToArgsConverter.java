@@ -1,6 +1,7 @@
 package io.github.intellij.dlanguage.run;
 
 import com.intellij.execution.ExecutionException;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.roots.CompilerModuleExtension;
 import com.intellij.openapi.roots.ModuleRootManager;
@@ -16,6 +17,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class DlangDmdConfigToArgsConverter {
+
+    private static final Logger log = Logger.getInstance(DlangDmdConfigToArgsConverter.class);
 
     public static List<String> getDmdParameters(@NotNull final DlangRunDmdConfiguration config, @NotNull final Module module)
                                                                 throws NoSourcesException, ExecutionException {
@@ -230,15 +233,15 @@ public class DlangDmdConfigToArgsConverter {
     }
 
     @NotNull
-    private static List<String> getAllDLangSources(@NotNull final VirtualFile sourcesRoot,
-        final VirtualFile[] excludedRoots)
-        throws NoSourcesException {
+    private static List<String> getAllDLangSources(@NotNull final VirtualFile sourcesRoot, final VirtualFile[] excludedRoots) throws NoSourcesException {
         final DlangVirtualFileVisitor visitor = new DlangVirtualFileVisitor(excludedRoots);
         VfsUtilCore.visitChildrenRecursively(sourcesRoot, visitor);
 
         //Build list of *.D source files
         final List<String> sources = visitor.getDlangSources();
-        if (sources == null || sources.isEmpty()) {
+
+        if (sources.isEmpty()) {
+            log.warn("No sources found");
             throw new NoSourcesException(sourcesRoot);
         }
         return sources;
