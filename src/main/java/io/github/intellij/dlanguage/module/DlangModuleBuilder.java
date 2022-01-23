@@ -33,7 +33,6 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -94,6 +93,12 @@ public class DlangModuleBuilder extends ModuleBuilder {
     }
 
     @Override
+    public @Nullable Project createProject(String name, String path) {
+        LOG.debug(String.format("Creating Dlang project '%s' in '%s'", name, path));
+        return super.createProject(name, path);
+    }
+
+    @Override
     public void setupRootModel(@NotNull final ModifiableRootModel rootModel) throws ConfigurationException {
         rootModel.setSdk(myJdk);
         rootModel.inheritSdk(); // all modules should use the same dmd as the project
@@ -125,6 +130,7 @@ public class DlangModuleBuilder extends ModuleBuilder {
 
             runDmdSettings.storeInLocalWorkspace();
             runManager.addConfiguration(runDmdSettings);
+            LOG.debug(String.format("Run Configuration added for '%s'", COMPILE_CONFIG_NAME));
         }
 
         //Create "Run D App" configuration
@@ -138,6 +144,7 @@ public class DlangModuleBuilder extends ModuleBuilder {
 
             runAppSettings.storeInLocalWorkspace();
             runManager.addConfiguration(runAppSettings);
+            LOG.debug(String.format("Run Configuration added for '%s'", RUN_CONFIG_NAME));
         }
 
         //Add dependency to exec "runDmdSettings" before running "runAppSettings".
@@ -147,8 +154,9 @@ public class DlangModuleBuilder extends ModuleBuilder {
 
         if(provider != null) {
             final RunConfigurationBeforeRunProvider.RunConfigurableBeforeRunTask runDmdTask = provider.createTask(runDmdSettings.getConfiguration());
-            final List<RunConfigurationBeforeRunProvider.RunConfigurableBeforeRunTask> beforeRunTasks = new ArrayList<>(1);
-            beforeRunTasks.add(runDmdTask);
+
+            final List<RunConfigurationBeforeRunProvider.RunConfigurableBeforeRunTask> beforeRunTasks = Collections.singletonList(runDmdTask);
+
             runManager.setBeforeRunTasks(runAppSettings.getConfiguration(), beforeRunTasks);
         }
 

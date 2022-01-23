@@ -8,23 +8,29 @@ import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.execution.process.ProcessAdapter;
 import com.intellij.execution.process.ProcessEvent;
 import com.intellij.execution.process.ProcessOutputTypes;
+import com.intellij.notification.NotificationGroupManager;
+import com.intellij.notification.NotificationType;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.module.ModifiableModuleModel;
+import com.intellij.openapi.module.Module;
+import com.intellij.openapi.module.ModuleWithNameAlreadyExists;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ModifiableRootModel;
+import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.Key;
+import com.intellij.openapi.util.text.StringUtil;
 import io.github.intellij.dlanguage.DlangBundle;
 import io.github.intellij.dlanguage.run.DlangRunDubConfigurationType;
 import io.github.intellij.dlanguage.settings.ToolKey;
+import org.jdom.JDOMException;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalTime;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -45,16 +51,45 @@ public class DlangDubModuleBuilder extends DlangModuleBuilder {
         super(BUILDER_ID, DlangBundle.INSTANCE.message("module.dub.title"), DlangBundle.INSTANCE.message("module.dub.description"));
     }
 
+    /*
+    * When creating a project the following are called in order:
+    *   createProject()
+    *   commitModule()
+    *   createAndCommitIfNeeded()
+    *   setupRootModel()
+    *   getSourcePaths()
+    *
+    * The code for running "dub init" has been moved here so that it has access to the Project and the "source"
+    * directory should be created prior to the call to getSourcePaths().
+    */
+    @Override
+    public @NotNull Module createAndCommitIfNeeded(@NotNull Project project, @Nullable ModifiableModuleModel model, boolean runFromProjectWizard) throws InvalidDataException, ConfigurationException, IOException, JDOMException, ModuleWithNameAlreadyExists {
+        if (StringUtil.isNotEmpty(dubBinary)) {
+            ToolKey.DUB_KEY.setPath(dubBinary);
+        }
+
+        if(!this.dubOptions.isEmpty()) {
+            try {
+                final GeneralCommandLine cmd = createDubInitCommand(project.getBasePath());
+
+                ApplicationManager.getApplication()
+                    .executeOnPooledThread(() -> this.runDubCommand(project, cmd));
+            } catch (final Exception e) {
+                LOG.error("dub init failed!", e);
+            }
+        }
+
+        return super.createAndCommitIfNeeded(project, model, runFromProjectWizard);
+    }
+
     @Override
     public void setupRootModel(@NotNull final ModifiableRootModel rootModel) throws ConfigurationException {
         super.setupRootModel(rootModel);
 
+        LOG.debug("Setting up dub-specific root model for Dlang project");
+
         final Project project = rootModel.getProject();
         final RunManagerImpl runManager = RunManagerImpl.getInstanceImpl(project);
-
-        if (dubBinary != null) {
-            ToolKey.DUB_KEY.setPath(dubBinary);
-        }
 
         //Create "Run dub" configuration
         @Nullable final RunnerAndConfigurationSettings runDubSettings = runManager.findConfigurationByName(RUN_DUB_CONFIG_NAME);
@@ -67,6 +102,7 @@ public class DlangDubModuleBuilder extends DlangModuleBuilder {
 
             settings.storeInLocalWorkspace();
             runManager.addConfiguration(settings);
+            LOG.debug(String.format("Run Configuration added for '%s'", RUN_DUB_CONFIG_NAME));
         }
     }
 
@@ -78,19 +114,8 @@ public class DlangDubModuleBuilder extends DlangModuleBuilder {
     @NotNull
     @Override
     public List<String> getSourcePaths() {
-        if (sourcePaths == null) {
+        if (sourcePaths == null || sourcePaths.isEmpty()) {
             @NonNls final String path = getContentEntryPath() + File.separator + "source";
-
-            try {
-                createDubProjectUsingDubInit(getContentEntryPath());
-            } catch (final Exception e) {
-                // todo: revisit this behavior. If 'dub init' fails, why continue to create the project at all
-                if(new File(path).mkdirs()) {
-                    LOG.warn("dub init failed. fallen back to manually creating source folder: " + path);
-                } else {
-                    LOG.warn("dub init failed and also failed to manually create source folder: " + path);
-                }
-            }
 
             //noinspection ArraysAsListWithZeroOrOneArgument
             sourcePaths = Arrays.asList(path); // may need to add additional source paths later
@@ -109,24 +134,34 @@ public class DlangDubModuleBuilder extends DlangModuleBuilder {
         this.dubOptions = options;
     }
 
-    private void createDubProjectUsingDubInit(final String workingDirectory) {
-        final ParametersList parametersList = new ParametersList();
-        parametersList.addParametersString("init");
-        parametersList.addParametersString("-n");
+    /*
+    * Build up the "dub init" command based on the parameters defined during project creation
+    */
+    private GeneralCommandLine createDubInitCommand(final String workingDirectory) {
+        final ParametersList params = new ParametersList();
+        params.addParametersString("init");
+        params.addParametersString("-n");
 
         if (dubOptions.getOrDefault("dubParams", "").isEmpty()) {
-            parametersList.addParametersString("--format");
-            parametersList.addParametersString(dubOptions.getOrDefault("dubFormat", "json"));
-            parametersList.addParametersString("--type");
-            parametersList.addParametersString(dubOptions.getOrDefault("dubType", "minimal"));
+            params.addParametersString("--format");
+            params.addParametersString(dubOptions.getOrDefault("dubFormat", "json"));
+            params.addParametersString("--type");
+            params.addParametersString(dubOptions.getOrDefault("dubType", "minimal"));
         } else {
-            parametersList.addParametersString(dubOptions.get("dubParams"));
+            params.addParametersString(dubOptions.get("dubParams"));
         }
 
-        final GeneralCommandLine cmd = new GeneralCommandLine()
+        return new GeneralCommandLine()
             .withWorkDirectory(workingDirectory)
             .withExePath(this.dubBinary)
-            .withParameters(parametersList.getParameters());
+            .withParameters(params.getParameters());
+    }
+
+    /*
+    * Must not be run within the EDT
+    */
+    private void runDubCommand(final Project project, final GeneralCommandLine cmd) {
+        LOG.debug(cmd.getCommandLineString());
 
         try {
             final OSProcessHandler process = new OSProcessHandler(cmd.createProcess(), cmd.getCommandLineString());
@@ -135,30 +170,27 @@ public class DlangDubModuleBuilder extends DlangModuleBuilder {
             process.startNotify();
             process.waitFor();
 
-            // write out a log file with the dub init error if dub init doesn't make the project
-            // would have been nice to log an event but the new project hasn't been loaded yet so this is the
-            // only way I could think to notify the user that dub init failed.
-            if (listener.hasErrors()) {
-                writeErrorLog(listener.getOutput(), "dub_init_error_log.txt");
-            }
+            // new way to send a notification (since 2020.3) via notification group defined in plugin.xml
+            NotificationGroupManager.getInstance().getNotificationGroup("DLANG_POPUP")
+                .createNotification(
+                    "Dub init output",
+                    listener.getOutput(),
+                    listener.hasErrors() ? NotificationType.WARNING : NotificationType.INFORMATION
+                )
+                .notify(project);
 
+            if (listener.hasErrors()) {
+                LOG.warn(listener.getOutput());
+            }
         } catch (final ExecutionException e) {
             LOG.warn("There was a problem running 'dub init'", e);
         }
     }
 
     public void setDubBinary(final String dubBinary) {
-        this.dubBinary = dubBinary;
+        this.dubBinary = StringUtil.trim(dubBinary);
     }
 
-    private void writeErrorLog(final String content, @NotNull final String fileName) {
-        final Path dubInitErrorLog = Paths.get(getContentEntryPath() + File.separator + fileName);
-        try {
-            Files.write(dubInitErrorLog, content.getBytes());
-        } catch (final IOException e) {
-            LOG.warn("Unable to write to " + fileName);
-        }
-    }
 
     private static class DubInitListener extends ProcessAdapter {
         private final StringBuilder builder = new StringBuilder();
