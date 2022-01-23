@@ -48,5 +48,5 @@ dependencies {
 
     //compile project(':utils')
 
-    implementation 'io.sentry:sentry:5.2.+'
+    implementation 'io.sentry:sentry:5.5.+'
 }
