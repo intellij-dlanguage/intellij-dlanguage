@@ -23,6 +23,8 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -151,6 +153,11 @@ public class DubConfigurationParser {
         @Nullable final VirtualFile projectDir = ProjectUtil.guessProjectDir(project);
 
         if(projectDir == null || StringUtil.isEmptyOrSpaces(dubBinaryPath)) {
+            return Optional.empty();
+        }
+
+        if(!Files.isExecutable(Paths.get(StringUtil.trim(dubBinaryPath)))) {
+            LOG.warn("Cannot run dub as path is not executable");
             return Optional.empty();
         }
 

@@ -212,13 +212,13 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
 
                     if (!Files.exists(path, LinkOption.NOFOLLOW_LINKS)) {
                         t.versionField.setText("Path does not exist");
-                        t.versionField.setDisabledTextColor(UIManager.getColor("Focus.color"));
+                        t.versionField.setDisabledTextColor(UIManager.getColor("Component.warningFocusColor"));
                     } else if(!Files.isExecutable(path)) {
                         t.versionField.setText("Path is not executable");
-                        t.versionField.setDisabledTextColor(UIManager.getColor("Focus.color"));
+                        t.versionField.setDisabledTextColor(UIManager.getColor("Component.warningFocusColor"));
                     } else if(!StringUtil.containsIgnoreCase(exePath, t.command)) {
                         t.versionField.setText(String.format("Not a valid %s binary", t.command));
-                        t.versionField.setDisabledTextColor(UIManager.getColor("Focus.color"));
+                        t.versionField.setDisabledTextColor(UIManager.getColor("Component.warningFocusColor"));
                     } else {
                         // then it's a valid path to the tool
                         t.updateVersion();
@@ -443,10 +443,15 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
     private void updateVersionField(@NotNull final Tool tool) {
         @Nullable final String pathText = StringUtil.trim(tool.pathField.getText());
 
-        if(StringUtil.isEmptyOrSpaces(pathText) || !Files.isExecutable(Paths.get(pathText))) {
-            LOG.debug(String.format("unable to get %s version info for path: '%s'", tool.command, pathText));
+        if(StringUtil.isEmptyOrSpaces(pathText)) {
+            LOG.trace(String.format("unable to get %s version info as path is empty", tool.command));
             tool.versionField.setText("");
             tool.versionField.setDisabledTextColor(UIManager.getColor("ComboBox.disabledForeground"));
+            tool.versionField.setToolTipText(null); // turns the tool tip off
+        } else if(!Files.isExecutable(Paths.get(pathText))) {
+            LOG.warn(String.format("unable to get %s version info for path: '%s'", tool.command, pathText));
+            tool.versionField.setText(String.format("Path '%s' is not executable", pathText));
+            tool.versionField.setDisabledTextColor(UIManager.getColor("Component.warningFocusColor"));
             tool.versionField.setToolTipText(null); // turns the tool tip off
         } else {
             final GeneralCommandLine cmd = new GeneralCommandLine(pathText)
@@ -591,7 +596,7 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
 
                         if(DtoolUtils.versionPredates(version, tool.latestVersion)) {
                             tool.versionField.setToolTipText(String.format("A newer version of %s is available", tool.command));
-                            tool.versionField.setDisabledTextColor(UIManager.getColor("Focus.color"));
+                            tool.versionField.setDisabledTextColor(UIManager.getColor("Component.warningFocusColor"));
                         } else {
                             tool.versionField.setDisabledTextColor(UIManager.getColor("ComboBox.disabledForeground"));
                             tool.versionField.setToolTipText(null); // turns the tool tip off
