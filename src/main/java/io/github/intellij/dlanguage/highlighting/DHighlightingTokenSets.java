@@ -3,38 +3,36 @@ package io.github.intellij.dlanguage.highlighting;
 import com.intellij.psi.tree.TokenSet;
 import io.github.intellij.dlanguage.psi.DlangTypes;
 
+/**
+ * This class defines which DlangTypes can be used for syntax highlighting. Valid types are ones that are
+ * used by the highlighting lexer.
+ * @see DHighlightingLexer
+ */
 public class DHighlightingTokenSets {
 
-
+    //public static final TokenSet SHEBANG = TokenSet.create(DlangTypes.SHEBANG); // todo: get highlighting lexer working with SHEBANG
     public static final TokenSet KEYWORD = TokenSet.create(DlangTypes.KEYWORD);
     public static final TokenSet NUMBER = TokenSet.create(DlangTypes.NUMBER);
-    public static final TokenSet STRING = TokenSet.create(DlangTypes.STRING);
+    public static final TokenSet STRING_LITERAL = TokenSet.create(DlangTypes.STRING); // todo: get highlighting lexer between a double quoted string and the x2 variations of wysiwyg string
+//    public static final TokenSet DOUBLE_QUOTED_STRING = TokenSet.create(DlangTypes.DOUBLE_QUOTED_STRING);
+//    public static final TokenSet WYSIWYG_STRING = TokenSet.create(DlangTypes.WYSIWYG_STRING, DlangTypes.ALTERNATE_WYSIWYG_STRING);
     public static final TokenSet CHAR = TokenSet.create(DlangTypes.CHARACTER_LITERAL);
     public static final TokenSet OPERATOR = TokenSet.create(DlangTypes.OPERATOR);
-    public static final TokenSet PARENTHESES_LEFT = TokenSet.create(DlangTypes.PARENTHESES_LEFT);
-    public static final TokenSet PARENTHESES_RIGHT = TokenSet.create(DlangTypes.PARENTHESES_RIGHT);
-    public static final TokenSet BRACES_LEFT = TokenSet.create(DlangTypes.BRACES_LEFT);
-    public static final TokenSet BRACES_RTGHT = TokenSet.create(DlangTypes.BRACES_RIGHT);
-    public static final TokenSet BRACKETS_LEFT = TokenSet.create(DlangTypes.BRACKETS_LEFT);
-    public static final TokenSet BRACKETS_RIGHT = TokenSet.create(DlangTypes.BRACKETS_RIGHT);
+    public static final TokenSet PARENTHESES = TokenSet.create(DlangTypes.PARENTHESES_LEFT, DlangTypes.PARENTHESES_RIGHT);
+    public static final TokenSet BRACES = TokenSet.create(DlangTypes.BRACES_LEFT, DlangTypes.BRACES_RIGHT);
+    public static final TokenSet BRACKETS = TokenSet.create(DlangTypes.BRACKETS_LEFT, DlangTypes.BRACKETS_RIGHT);
     public static final TokenSet COMMA = TokenSet.create(DlangTypes.COMMA);
     public static final TokenSet SEMICOLON = TokenSet.create(DlangTypes.SEMICOLON);
     public static final TokenSet DOT = TokenSet.create(DlangTypes.DOT);
     public static final TokenSet LINE_COMMENT = TokenSet.create(DlangTypes.LINE_COMMENT);
-    public static final TokenSet LINE_DOC = TokenSet.create(DlangTypes.LINE_DOC);
-    //    public static final TokenSet BLOCK_COMMENT = TokenSet.create(DlangTypes.BLOCK_COMMENT);
-//    public static final TokenSet DOC_COMMENT = TokenSet.create(DlangTypes.DOC_COMMENT);
+    public static final TokenSet LINE_DOCUMENTATION = TokenSet.create(DlangTypes.LINE_DOC);
+    public static final TokenSet BLOCK_COMMENT = TokenSet.create(DlangTypes.BLOCK_COMMENT, DlangTypes.NESTING_BLOCK_COMMENT);
+//    public static final TokenSet BLOCK_DOCUMENTATION = TokenSet.create(DlangTypes.DOC_COMMENT); // todo: get highlighting lexer working with multiline documentation comments
     public static final TokenSet MODULE_DEFINITION = TokenSet.create(DlangTypes.MODULE_DEFINITION);
-    public static final TokenSet FUNCTION_DEFINITION = TokenSet.create(DlangTypes.FUNCTION_DEFINITION);
+    //public static final TokenSet IMPORT_DEFINITION = TokenSet.create(DlangTypes.IMPORT_BIND, DlangTypes.IMPORT_BIND); // todo: get highlighting lexer working with imports
+    //public static final TokenSet FUNCTION_DEFINITION = TokenSet.create(DlangTypes.FUNCTION_DEFINITION); // todo: get highlighting lexer working with function definition
     public static final TokenSet AT_ATTRIBUTE = TokenSet.create(DlangTypes.AT_ATTRIBUTE);
 
-//    public static final TokenSet WHITESPACES = TokenSet.create(TokenType.WHITE_SPACE);
-//
-//    public static final TokenSet LINE_COMMENTS = TokenSet.create(DlangTypes.LINE_COMMENT);
-//
-public static final TokenSet BLOCK_COMMENT = TokenSet
-    .create(DlangTypes.BLOCK_COMMENT, DlangTypes.NESTING_BLOCK_COMMENT);
-//
 //    public static final TokenSet STRING_LITERALS = TokenSet.create(DlangTypes.DOUBLE_QUOTED_STRING,
 //            DlangTypes.KW_CHAR,
 //            DlangTypes.KW_DCHAR,

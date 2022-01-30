@@ -5,15 +5,20 @@ import com.intellij.openapi.options.colors.AttributesDescriptor
 
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors as Default
 
+/**
+ * The enum entries here are mapped in DHighlighter based on the DlangTypes supported by the highlighting lexer.
+ * @see io.github.intellij.dlanguage.highlighting.DHighlightingTokenSets
+ * @see io.github.intellij.dlanguage.psi.DlangTypes
+ */
 enum class DColor(humanName: String, val default: TextAttributesKey) {
     ILLEGAL("Illegal character", Default.INVALID_STRING_ESCAPE),
     LINE_COMMENT("Line Comment", Default.LINE_COMMENT),
-    LINE_DOC("Line documentation", Default.DOC_COMMENT),
+    LINE_DOCUMENTATION("Line Documentation", Default.DOC_COMMENT),
     BLOCK_COMMENT("Block Comment", Default.BLOCK_COMMENT),
-    DOC_COMMENT("Ddoc comment", Default.DOC_COMMENT),
+    //BLOCK_DOCUMENTATION("Ddoc comment", Default.DOC_COMMENT),
     AT_ATTRIBUTE("Attribute", Default.METADATA),
     CHAR("Char", Default.STRING),
-    STRING("String", Default.STRING),
+    STRING_LITERAL("String Literal", Default.STRING),
     NUMBER("Number", Default.NUMBER),
     KEYWORD("Keyword", Default.KEYWORD),
     PARENTHESES("Parenthesis", Default.PARENTHESES),
@@ -23,10 +28,10 @@ enum class DColor(humanName: String, val default: TextAttributesKey) {
     DOT("Dot", Default.DOT),
     SEMICOLON("Semicolon", Default.SEMICOLON),
     COMMA("Comma", Default.COMMA),
-    MODULE_DEFINITION("Module definition", Default.GLOBAL_VARIABLE),
-    FUNCTION_DEFINITION("Function definition", Default.GLOBAL_VARIABLE),
-    IDENTIFIER("Identifier", Default.IDENTIFIER),
-    TYPE_PARAMETER("Type parameter", Default.PARAMETER),
+    MODULE_DEFINITION("Module Definition", Default.GLOBAL_VARIABLE),
+    //FUNCTION_DEFINITION("Function Definition", Default.FUNCTION_DECLARATION),
+    //IDENTIFIER("Identifier", Default.IDENTIFIER),
+    TYPE_PARAMETER("Type Parameter", Default.PARAMETER),
     ;
 
     val textAttributesKey = TextAttributesKey.createTextAttributesKey("io.github.intellij.dlanguage.$name", default)

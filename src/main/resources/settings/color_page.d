@@ -7,18 +7,28 @@
  + Nesting comment
  +/
 
-// Line comment
+/// A single line documentation comment
 module net.masterthought.cucumber.report_information;
 
 import std.algorithm;
 import std.array;
+import std.conv : to; // line comment about this import
 
 import jsonizer.tojson;
 import net.masterthought.cucumber.report_parser;
 
+/**
+ * A documentation comment
+ */
 class ReportInformation {
-    string runId;
+
+    deprecated string originalId = "Some text\twith a gap";
+
+    string runId = `Some Text`;
+
     Feature[] features;
+
+    private auto symbol = '£';
 
     private string m_name;
     @property string name() { return m_name; }
