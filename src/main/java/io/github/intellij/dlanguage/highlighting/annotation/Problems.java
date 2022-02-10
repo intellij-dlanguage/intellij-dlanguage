@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+@Deprecated
 public class Problems extends ArrayList<DProblem> {
     public Problems() {
         super();

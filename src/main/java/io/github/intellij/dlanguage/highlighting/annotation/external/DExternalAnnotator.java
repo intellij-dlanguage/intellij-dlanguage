@@ -9,9 +9,7 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.progress.ProcessCanceledException;
 import com.intellij.psi.PsiFile;
-import io.github.intellij.dlanguage.highlighting.annotation.DAnnotationHolder;
 import io.github.intellij.dlanguage.highlighting.annotation.DProblem;
-import io.github.intellij.dlanguage.highlighting.annotation.Problems;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -39,6 +37,14 @@ public class DExternalAnnotator extends ExternalAnnotator<PsiFile, DExternalAnno
         return file;
     }
 
+    /**
+     * Collects full information required for annotation. This method is intended for long-running activities
+     * and will be called outside a read action; implementations should either avoid accessing indices and PSI or
+     * perform needed checks and locks themselves.
+     *
+     * @param file initial information gathered by {@link ExternalAnnotator#collectInformation}
+     * @return annotations to pass to {@link DExternalAnnotator#apply(PsiFile, State, AnnotationHolder)}
+     */
     @Nullable
     @Override
     public State doAnnotate(@NotNull final PsiFile file) {
@@ -58,46 +64,49 @@ public class DExternalAnnotator extends ExternalAnnotator<PsiFile, DExternalAnno
         }
 
         return new State(
-            new DScanner().checkFileSyntax(file),
-            new CompileCheck().checkFileSyntax(file)
+            new CompileCheck().checkFileSyntax(file),
+            new DScanner().checkFileSyntax(file)
         );
     }
 
     /**
-     * Wrapper to simplify adding annotations to an AnnotationHolder.
+     * Applies collected annotations (state) to the given AnnotationHolder. This method is called within a read action.
+     *
+     * @param file             a file to annotate
+     * @param state annotations collected in {@link DExternalAnnotator#doAnnotate(PsiFile)}
+     * @param holder           a container for receiving annotations
      */
     @Override
     public void apply(@NotNull final PsiFile file, final State state, @NotNull final AnnotationHolder holder) {
-        apply(file, state, new DAnnotationHolder(holder));
-    }
-
-    public static void apply(@NotNull final PsiFile file, final State state, @NotNull final DAnnotationHolder holder) {
         createAnnotations(file, state.getSyntaxProblems(), holder);
         createAnnotations(file, state.getdScannerProblems(), holder);
     }
 
-    public static void createAnnotations(@NotNull final PsiFile file, @Nullable final Problems problems,
-                                         @NotNull final DAnnotationHolder holder) {
-        if (problems == null || problems.isEmpty() || !file.isValid()) return;
+    private void createAnnotations(@NotNull final PsiFile file,
+                                   @Nullable final DProblem[] problems,
+                                   @NotNull final AnnotationHolder holder) {
+        if (problems == null || problems.length == 0 || !file.isValid()) return;
         for (final DProblem problem : problems) {
-            problem.createAnnotations(file, holder);
+            if(problem != null) {
+                problem.createAnnotations(file, holder);
+            }
         }
     }
 
     public static class State {
-        private final Problems syntaxProblems;
-        private final Problems dScannerProblems;
+        private final DProblem[] syntaxProblems;
+        private final DProblem[] dScannerProblems;
 
-        public State(final Problems syntaxProblems, final Problems dScannerProblems) {
+        public State(final DProblem[] syntaxProblems, final DProblem[] dScannerProblems) {
             this.syntaxProblems = syntaxProblems;
             this.dScannerProblems = dScannerProblems;
         }
 
-        public Problems getSyntaxProblems() {
+        public DProblem[] getSyntaxProblems() {
             return syntaxProblems;
         }
 
-        public Problems getdScannerProblems() {
+        public DProblem[] getdScannerProblems() {
             return dScannerProblems;
         }
     }

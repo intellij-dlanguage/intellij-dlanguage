@@ -15,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 * Annotator that:
 * adds extra syntax highlighting
 */
+@Deprecated // this should just go
 public class DAnnotator implements Annotator {
 
 //    private static void setHighlighting(@NotNull final PsiElement element,

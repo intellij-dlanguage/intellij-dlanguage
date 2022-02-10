@@ -7,6 +7,8 @@ import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.execution.process.ProcessAdapter;
 import com.intellij.execution.process.ProcessEvent;
 import com.intellij.execution.process.ProcessOutputTypes;
+import com.intellij.lang.annotation.AnnotationHolder;
+import com.intellij.lang.annotation.HighlightSeverity;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
@@ -26,20 +28,20 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
 import io.github.intellij.dlanguage.DlangSdkType;
-import io.github.intellij.dlanguage.highlighting.annotation.DAnnotationHolder;
 import io.github.intellij.dlanguage.highlighting.annotation.DProblem;
-import io.github.intellij.dlanguage.highlighting.annotation.Problems;
 import io.github.intellij.dlanguage.settings.ToolKey;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import io.github.intellij.dlanguage.utils.DUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class DScanner {
+public class DScanner implements DlangLinter {
 
     private static final Logger LOG = Logger.getInstance(DScanner.class);
 
@@ -52,13 +54,18 @@ public class DScanner {
         }
     }
 
-    Problems checkFileSyntax(@NotNull final PsiFile file) {
+    @NotNull
+    public DProblem[] checkFileSyntax(@NotNull final PsiFile file) {
         final String dscannerPath = ToolKey.DSCANNER_KEY.getPath();
-        if (StringUtil.isEmpty(dscannerPath)) return new Problems();
+        if (StringUtil.isEmpty(dscannerPath)) return new DProblem[] {};
 
-        final Problems problems = new Problems();
-        problems.addAllNotNull(processFile(file, dscannerPath));
-        return problems;
+        final GeneralCommandLine cmd = buildDscannerCommand(file, dscannerPath);
+        try {
+            return runDscannerCommand(file, cmd).toArray(new DProblem[] {});
+        } catch (java.util.concurrent.ExecutionException | TimeoutException | InterruptedException e) {
+            LOG.warn("Problem running DScanner", e);
+        }
+        return new DProblem[] {};
     }
 
     private static int getOffsetStart(final PsiFile file, final int startLine, final int startColumn) {
@@ -84,7 +91,7 @@ public class DScanner {
         }
     }
 
-    private List<Problem> processFile(final PsiFile file, final String dscannerPath) {
+    private GeneralCommandLine buildDscannerCommand(final PsiFile file, final String dscannerPath) {
         final String filePath = file.getVirtualFile().getCanonicalPath();
         final String workingDirectory = file.getProject().getBasePath();
 
@@ -109,39 +116,45 @@ public class DScanner {
             args.addParametersString(s);
         }
 
-        final List<Problem> problems = new ArrayList<>();
+        return cmd;
+    }
 
-        try {
-            LOG.debug("Starting DScanner process");
+    private List<Problem> runDscannerCommand(final PsiFile file, final GeneralCommandLine cmd) throws java.util.concurrent.ExecutionException, InterruptedException, TimeoutException {
+        return ApplicationManager.getApplication().executeOnPooledThread(() -> {
+            final List<Problem> problems = new ArrayList<>();
 
-            final OSProcessHandler process = new OSProcessHandler(cmd.createProcess(), cmd.getCommandLineString());
-            process.addProcessListener(new ProcessAdapter() {
-                @Override
-                public void onTextAvailable(@NotNull final ProcessEvent event, @NotNull final Key outputType) {
-                    // we don't care about "system" or "stderr"
-                    if(ProcessOutputTypes.STDOUT.equals(outputType)) {
-                        parseProblem(event.getText(), file)
-                            .ifPresent(problems::add);
-                    } else if(ProcessOutputTypes.STDERR.equals(outputType)) {
-                        LOG.warn(event.getText());
-                        final Notification notification = new Notification("DScanner Error", "DScanner Error", event.getText(), NotificationType.ERROR);
-                        Notifications.Bus.notify(notification, file.getProject());
+            try {
+                LOG.trace("Starting DScanner process");
+
+                final OSProcessHandler process = new OSProcessHandler(cmd.createProcess(), cmd.getCommandLineString());
+                process.addProcessListener(new ProcessAdapter() {
+                    @Override
+                    public void onTextAvailable(@NotNull final ProcessEvent event, @NotNull final Key outputType) {
+                        // we don't care about "system" or "stderr"
+                        if(ProcessOutputTypes.STDOUT.equals(outputType)) {
+                            parseProblem(event.getText(), file)
+                                .ifPresent(problems::add);
+                        } else if(ProcessOutputTypes.STDERR.equals(outputType)) {
+                            LOG.warn(event.getText());
+                            final Notification notification = new Notification("DScanner Error", "DScanner Error", event.getText(), NotificationType.ERROR);
+                            Notifications.Bus.notify(notification, file.getProject());
+                        }
                     }
+                });
+
+                process.startNotify();
+                process.waitFor(); // fails here if on wrong thread
+
+                final Integer exitCode = process.getExitCode(); // 0 or 1 depending on whether DScanner found problems
+
+                if(Integer.valueOf(1).equals(exitCode)) {
+                    LOG.debug(String.format("DScanner found %s lint problems", problems.size()));
                 }
-            });
-
-            process.startNotify();
-            process.waitFor();
-
-            final Integer exitCode = process.getExitCode(); // 0 or 1 depending on whether DScanner found problems
-
-            if(Integer.valueOf(1).equals(exitCode)) {
-                LOG.debug("DScanner found lint problems");
+            } catch (final ExecutionException e) {
+                LOG.error("There was a problem running DScanner", e);
             }
-        } catch (final ExecutionException e) {
-            LOG.error("There was a problem running DScanner", e);
-        }
-        return problems;
+            return problems;
+        }).get(3, TimeUnit.SECONDS);
     }
 
     private List<String> getCompilerSourcePaths(final PsiFile file) {
@@ -185,7 +198,7 @@ public class DScanner {
 
     private static int getOffsetEnd(final PsiFile file, final int offsetStart, final int line) {
         try {
-            final String fileText = file.getText();
+            final String fileText = file.getText(); // Read access is allowed from inside read-action (or EDT)
             int width = 0;
             while (offsetStart + width < fileText.length()) {
                 final char c = fileText.charAt(offsetStart + width);
@@ -206,8 +219,12 @@ public class DScanner {
         return new TextRange(startOffset, endOffset);
     }
 
+    // Example output from DScanner:
     // hello.d(1:7)[error]: Expected identifier instead of ;
+    // ddbc/source/ddbc/drivers/mysqlddbc.d(1273:35)[warn]: Line is longer than 120 characters
     private Optional<Problem> parseProblem(final String lint, final PsiFile file) {
+        LOG.debug(lint);
+
         final Pattern p = Pattern.compile("\\w+\\.d\\((\\d+):(\\d+)\\)\\[(\\w+)\\]:(.+)");
         final Matcher m = p.matcher(lint);
 
@@ -236,13 +253,13 @@ public class DScanner {
         }
 
         @Override
-        public void createAnnotations(@NotNull final PsiFile file, @NotNull final DAnnotationHolder holder) {
+        public void createAnnotations(@NotNull final PsiFile file, @NotNull final AnnotationHolder holder) {
             if ("error".equals(severity)) {
-                holder.createErrorAnnotation(range, message);
+                holder.newAnnotation(HighlightSeverity.ERROR, message).range(range).create();
             } else if (message.contains("undocumented")) {
-                holder.createInfoAnnotation(range, message);
+                holder.newAnnotation(HighlightSeverity.INFORMATION, message).range(range).create();
             } else {
-                holder.createWarningAnnotation(range, message);
+                holder.newAnnotation(HighlightSeverity.WARNING, message).range(range).create();
             }
         }
 

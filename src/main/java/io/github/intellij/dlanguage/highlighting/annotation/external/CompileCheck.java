@@ -3,35 +3,44 @@ package io.github.intellij.dlanguage.highlighting.annotation.external;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.process.OSProcessHandler;
+import com.intellij.lang.annotation.AnnotationHolder;
+import com.intellij.lang.annotation.HighlightSeverity;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.util.TextRange;
+import com.intellij.openapi.util.UnfairTextRange;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.containers.ContainerUtil;
-import io.github.intellij.dlanguage.highlighting.annotation.DAnnotationHolder;
-import io.github.intellij.dlanguage.highlighting.annotation.Problems;
 import io.github.intellij.dlanguage.settings.ToolKey;
 import io.github.intellij.dlanguage.highlighting.annotation.DProblem;
 import io.github.intellij.dlanguage.tools.dub.DubProcessListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CompileCheck {
+/**
+ * Uses dub (with the default compiler) to check for compile errors periodically
+ */
+public class CompileCheck implements DlangLinter {
     private static final Logger LOG = Logger.getInstance(CompileCheck.class);
 
     @NotNull
-    public Problems checkFileSyntax(@NotNull final PsiFile file) {
+    public DProblem[] checkFileSyntax(@NotNull final PsiFile file) {
         final String dubPath = ToolKey.DUB_KEY.getPath();
-        if (dubPath == null) return new Problems();
+        if (StringUtil.isEmpty(dubPath)) return new DProblem[] {};
 
         final String result = processFile(file, dubPath);
-        return findProblems(result, file);
+
+        if(StringUtil.isNotEmpty(result)) {
+            return findProblems(result, file).toArray(new DProblem[] {});
+        }
+        return new DProblem[] {};
     }
 
     @NotNull
@@ -43,9 +52,8 @@ public class CompileCheck {
             .withParameters("build", "--combined", "-q");
 
         try {
-            final String dubCommand = cmd.getCommandLineString();
             final DubProcessListener listener = new DubProcessListener();
-            final OSProcessHandler process = new OSProcessHandler(cmd.createProcess(), dubCommand);
+            final OSProcessHandler process = new OSProcessHandler(cmd.createProcess(), cmd.getCommandLineString());
             process.addProcessListener(listener);
             process.startNotify();
             process.waitFor();
@@ -58,9 +66,11 @@ public class CompileCheck {
 
 
     @NotNull
-    private Problems findProblems(final String stdout, final PsiFile file) {
+    private List<DProblem> findProblems(final String stdout, final PsiFile file) {
         final List<String> lints = StringUtil.split(stdout, "\n");
-        final Problems problems = new Problems();
+
+        final List<DProblem> problems = new ArrayList<>();
+
         for (final String lint : lints) {
             ContainerUtil.addIfNotNull(problems, parseProblem(lint, file));
         }
@@ -115,16 +125,12 @@ public class CompileCheck {
         return getLineEndOffset(document, line);
     }
 
+    @Nullable
     private TextRange calculateTextRange(final PsiFile file, final int line, final int column) {
         final int startOffset = getOffsetStart(file, line, column);
         final int endOffset = getOffsetEnd(file, line);
         try {
-            class IgnoresInvalidTextRange extends TextRange {
-                private IgnoresInvalidTextRange(final int startOffset, final int endOffset) {
-                    super(startOffset, endOffset, false);
-                }
-            }
-            return new IgnoresInvalidTextRange(startOffset, endOffset);
+            return new UnfairTextRange(startOffset, endOffset); // the UnfairTextRange won't check the text
         } catch (final Throwable e) {
             if (e.getMessage().contains("Invalid range")) {
                 //do nothing.
@@ -134,7 +140,9 @@ public class CompileCheck {
     }
 
     @Nullable
-    private Problem parseProblem(final String lint, final PsiFile file) {
+    private CompilerProblem parseProblem(final String lint, final PsiFile file) {
+        LOG.debug(lint);
+
         // Example DUB error:
         // src/hello.d(3,1): Error: only one main allowed
         final Pattern p = Pattern.compile("([\\w\\\\/]+\\.d)\\((\\d+),(\\d+)\\):\\s(\\w+):(.+)");
@@ -158,10 +166,11 @@ public class CompileCheck {
 
         if (hasMatch && isSameFile(file, sourceFile)) {
             final TextRange range = calculateTextRange(file, line, column);
-            return new Problem(range, message, severity);
-        } else {
-            return null;
+            if(range != null) {
+                return new CompilerProblem(range, message, severity);
+            }
         }
+        return null;
     }
 
     private boolean isSameFile(final PsiFile file, final String relativeOtherFilePath) {
@@ -170,23 +179,23 @@ public class CompileCheck {
         return filePath.endsWith(unixRelativeOtherFilePath);
     }
 
-    public static class Problem extends DProblem {
+    public static class CompilerProblem extends DProblem {
         public final String severity;
         public final TextRange range;
         public final String message;
 
-        public Problem(final TextRange range, final String message, final String severity) {
+        public CompilerProblem(@NotNull final TextRange range, @NotNull final String message, @NotNull final String severity) {
             this.range = range;
             this.severity = severity;
             this.message = message;
         }
 
         @Override
-        public void createAnnotations(@NotNull final PsiFile file, @NotNull final DAnnotationHolder holder) {
+        public void createAnnotations(@NotNull final PsiFile file, @NotNull final AnnotationHolder holder) {
             if (severity.equals("Error")) {
-                holder.createErrorAnnotation(range, message);
+                holder.newAnnotation(HighlightSeverity.ERROR, message).range(range).create();
             } else {
-                holder.createWarningAnnotation(range, message);
+                holder.newAnnotation(HighlightSeverity.WARNING, message).range(range).create();
             }
         }
     }
