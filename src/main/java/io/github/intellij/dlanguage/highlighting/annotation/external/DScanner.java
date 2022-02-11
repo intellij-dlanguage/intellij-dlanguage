@@ -148,7 +148,7 @@ public class DScanner implements DlangLinter {
                 final Integer exitCode = process.getExitCode(); // 0 or 1 depending on whether DScanner found problems
 
                 if(Integer.valueOf(1).equals(exitCode)) {
-                    LOG.debug(String.format("DScanner found %s lint problems", problems.size()));
+                    LOG.info(String.format("DScanner found %s lint problems in %s", problems.size(), file.getName()));
                 }
             } catch (final ExecutionException e) {
                 LOG.error("There was a problem running DScanner", e);

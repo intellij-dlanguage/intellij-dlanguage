@@ -267,10 +267,10 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
             process.startNotify()
             process.waitFor()
 
-            LOG.debug("output from fetching package:" + builder.toString())
+            LOG.debug("output from fetching package: $builder")
 
-            for (error in errors) {
-                LOG.error(String.format("Error when running '%s' : %s", dubCommand, error));
+            errors.forEach {
+                LOG.warn("Error when running '${dubCommand}' : $it")
             }
 
             val exitCode = process.exitCode
@@ -278,7 +278,7 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
                 //try loading again
                 return VirtualFileManager.getInstance().refreshAndFindFileByUrl(sourcesPathUrl)
             } else {
-                LOG.error("exitcode was no zero for fetching package")
+                LOG.error("exitcode was no zero for fetching package '${dubPackage.name}' version '${dubPackage.version}'")
             }
             return null
         }
