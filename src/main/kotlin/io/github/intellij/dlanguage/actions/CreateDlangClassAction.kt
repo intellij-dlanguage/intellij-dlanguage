@@ -18,7 +18,7 @@ import com.intellij.openapi.ui.InputValidatorEx
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiFile
-import io.github.intellij.dlanguage.icons.DlangIcons
+import io.github.intellij.dlanguage.DLanguage
 import java.io.File
 import java.util.regex.Pattern
 import javax.swing.Icon
@@ -27,7 +27,8 @@ import javax.swing.Icon
  * Created by pirocks on 9/21/16.
  * mostly copy-pasted from "CreateDlangFileAction.java"
  */
-class CreateDlangClassAction : CreateFileFromTemplateAction(NEW_D_FILE, "", DlangIcons.CLASS), DumbAware {
+open class CreateDlangClassAction : CreateFileFromTemplateAction(NEW_D_FILE, "", DLanguage.Icons.CLASS), DumbAware {
+
     override fun buildDialog(project: Project, directory: PsiDirectory, builder: CreateFileFromTemplateDialog.Builder) {
         for (template in Template.values()) {
             with(template) {
@@ -133,15 +134,15 @@ class CreateDlangClassAction : CreateFileFromTemplateAction(NEW_D_FILE, "", Dlan
     }
 
     companion object {
-        private const val NEW_D_FILE = "New D File"
+        const val NEW_D_FILE = "New D File"
 
         enum class Template(val id: String, val readableName: String, val icon: Icon) {
-            MODULE("d_language_module", "module", DlangIcons.MODULE),
-            CLASS("d_language_class", "class", DlangIcons.NODE_CLASS),
-            INTERFACE("d_language_class", "interface", DlangIcons.NODE_INTERFACE),
-            STRUCT("d_language_class", "struct", DlangIcons.NODE_STRUCT),
-            UNION("d_language_union", "union", DlangIcons.NODE_UNION),
-            ENUM("d_language_enum", "enum", DlangIcons.NODE_ENUM)
+            MODULE("d_language_module", "module", DLanguage.Icons.MODULE),
+            CLASS("d_language_class", "class", DLanguage.Icons.NODE_CLASS),
+            INTERFACE("d_language_class", "interface", DLanguage.Icons.NODE_INTERFACE),
+            STRUCT("d_language_class", "struct", DLanguage.Icons.NODE_STRUCT),
+            UNION("d_language_union", "union", DLanguage.Icons.NODE_UNION),
+            ENUM("d_language_enum", "enum", DLanguage.Icons.NODE_ENUM)
         }
     }
 }
