@@ -13,9 +13,25 @@ public class DlangFileTest extends LightDlangTestCase {
      * https://dlang.org/spec/module.html
      */
     public void testGetModuleName_shouldBeFilenameWithoutExtension() {
-        final DlangFile dlangFile = lightDlangPsiFile("myapp.d", "// no module defined in source");
+        final DlangFile dlangFile = virtualDlangPsiFile("myapp.d", "// no module defined in source");
 
+        assertEquals("myapp.d", dlangFile.getName()); // should be the filename
         assertEquals("myapp", dlangFile.getModuleName());
+        assertEquals("myapp", dlangFile.getFullyQualifiedModuleName());
+        assertNull(dlangFile.getPackageName());
+    }
+
+    /**
+     * D module names are, by default, the file name with the path and extension stripped off.
+     * https://dlang.org/spec/module.html
+     */
+    public void testGetModuleName_shouldBeFilenameWithoutExtension_IncludingPath() {
+        final DlangFile dlangFile = virtualDlangPsiFile("awesome/app.d", "// no module defined in source");
+
+        assertEquals("app.d", dlangFile.getName()); // should be the filename
+        assertEquals("app", dlangFile.getModuleName());
+        assertEquals("awesome.app", dlangFile.getFullyQualifiedModuleName());
+        assertEquals("awesome", dlangFile.getPackageName());
     }
 
     /**
@@ -23,49 +39,73 @@ public class DlangFileTest extends LightDlangTestCase {
      * https://dlang.org/spec/module.html
      */
     public void testGetModuleName_HonoursTheNameDefinedInSource() {
-        final DlangFile dlangFile = lightDlangPsiFile("myapp.d", "module realname;");
+        final DlangFile dlangFile = virtualDlangPsiFile("myapp.d", "module realname;");
 
+        assertEquals("myapp.d", dlangFile.getName()); // should be the filename
         assertEquals("realname", dlangFile.getModuleName());
+        assertEquals("realname", dlangFile.getFullyQualifiedModuleName());
+        assertNull(dlangFile.getPackageName());
+    }
+
+    /**
+     * D module names are, by default, the file name with the path and extension stripped off.
+     * https://dlang.org/spec/module.html
+     */
+    public void testGetModuleName_HonoursTheNameDefinedInSource_Multipart() {
+        final DlangFile dlangFile = virtualDlangPsiFile("myapp.d", "module my.app.realname;");
+
+        assertEquals("myapp.d", dlangFile.getName());
+        assertEquals("realname", dlangFile.getModuleName());
+        assertEquals("my.app.realname", dlangFile.getFullyQualifiedModuleName());
+        assertEquals("my.app", dlangFile.getPackageName());
     }
 
     /**
      * https://dlang.org/spec/module.html
      */
     public void testGetModuleName_ReturnsProperModuleName_stdio() {
-        final DlangFile dlangFile = lightDlangPsiFile(
-            "stdio.d",
+        final DlangFile dlangFile = virtualDlangPsiFile(
+            "c/stdio.d",
             "module c.stdio; // module stdio in the c package"
         );
 
+        assertEquals("stdio.d", dlangFile.getName());
         assertEquals("stdio", dlangFile.getModuleName()); // is this right?
 
         final String fullyQualifiedModuleName = dlangFile.getFullyQualifiedModuleName();
         assertNotNull(fullyQualifiedModuleName);
         assertEquals("c.stdio", fullyQualifiedModuleName);
+        assertEquals("c", dlangFile.getPackageName());
     }
 
     // https://dlang.org/spec/module.html
     public void testGetModuleName_ReturnsProperModuleName_foo_bar() {
-        final DlangFile dlangFile = lightDlangPsiFile("foo-bar.d", "module foo_bar;");
+        final DlangFile dlangFile = virtualDlangPsiFile("foo-bar.d", "module foo_bar;");
 
+        assertEquals("foo-bar.d", dlangFile.getName());
         assertEquals("foo_bar", dlangFile.getModuleName());
         assertEquals("foo_bar", dlangFile.getFullyQualifiedModuleName());
+        assertNull(dlangFile.getPackageName());
     }
 
     // https://dlang.org/spec/module.html
     public void testGetModuleName_ReturnsProperModuleName_deprecated_foo() {
-        final DlangFile dlangFile = lightDlangPsiFile("foo-bar.d", "deprecated module foo;");
+        final DlangFile dlangFile = virtualDlangPsiFile("foo-bar.d", "deprecated module foo;");
 
+        assertEquals("foo-bar.d", dlangFile.getName());
         assertEquals("foo", dlangFile.getModuleName());
         assertEquals("foo", dlangFile.getFullyQualifiedModuleName());
+        assertNull(dlangFile.getPackageName());
     }
 
     // https://dlang.org/spec/module.html
     public void testGetModuleName_ReturnsProperModuleName_deprecated_foo_with_message() {
-        final DlangFile dlangFile = lightDlangPsiFile("foo-bar.d", "deprecated(\"Please use foo2 instead.\") module foo;");
+        final DlangFile dlangFile = virtualDlangPsiFile("foo-bar.d", "deprecated(\"Please use foo2 instead.\") module foo;");
 
+        assertEquals("foo-bar.d", dlangFile.getName());
         assertEquals("foo", dlangFile.getModuleName());
         assertEquals("foo", dlangFile.getFullyQualifiedModuleName());
+        assertNull(dlangFile.getPackageName());
     }
 
     /**
@@ -76,14 +116,16 @@ public class DlangFileTest extends LightDlangTestCase {
      * https://dlang.org/spec/module.html
      */
     public void testGetModuleName_HandlesInvalidModuleName() {
-        final DlangFile dlangFile = lightDlangPsiFile("foo-bar.d", "");
+        final DlangFile dlangFile = virtualDlangPsiFile("foo-bar.d", "");
 
+        assertEquals("foo-bar.d", dlangFile.getName());
         assertNotNull("Should return file name without extension", dlangFile.getModuleName());
         assertEquals("foo-bar", dlangFile.getModuleName());
 
         // todo: would probably be worth having a way for DlangFile to indicate if the package/module name is valid or not
 
-        // todo: assertEquals("foo-bar", dlangFile.getFullyQualifiedModuleName());
+        assertEquals("foo-bar", dlangFile.getFullyQualifiedModuleName());
+        assertNull(dlangFile.getPackageName());
     }
 
 }

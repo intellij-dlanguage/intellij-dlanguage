@@ -2,9 +2,8 @@ package io.github.intellij.dlanguage.psi;
 
 import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.openapi.fileTypes.FileType;
-import com.intellij.psi.FileViewProvider;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.ResolveState;
+import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.psi.*;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.util.IncorrectOperationException;
 import io.github.intellij.dlanguage.DLanguage;
@@ -12,20 +11,21 @@ import io.github.intellij.dlanguage.DlangFileType;
 import io.github.intellij.dlanguage.psi.named.DLanguageModuleDeclaration;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil;
 import io.github.intellij.dlanguage.stubs.DlangFileStub;
+import javax.swing.Icon;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.swing.*;
-import java.util.Collection;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.apache.commons.lang3.StringUtils.removeEnd;
 
-public class DlangFile extends PsiFileBase {
+// todo: consider making this class abstract so that there can be x2 classes that inherit from it.
+// One for .di files (interfaces) and another for regular .d source files
+public class DlangFile extends PsiFileBase implements DlangPsiFile {
 
     public DlangFile(@NotNull final FileViewProvider viewProvider) {
         super(viewProvider, DLanguage.INSTANCE);
@@ -47,45 +47,81 @@ public class DlangFile extends PsiFileBase {
         return super.getIcon(flags);
     }
 
-    /**
-     * Returns the module name defined in the file or null if it doesn't exist.
-     */
-    @Nullable
-    public String getFullyQualifiedModuleName() {
+    private Optional<String> findModuleDeclaration() {
         return Optional.ofNullable(findChildByClass(DLanguageModuleDeclaration.class))
-                       .map(DLanguageModuleDeclaration::getIdentifierChain)
-                       .map(DLanguageIdentifierChain::getIdentifiers)
-                       .filter(CollectionUtils::isNotEmpty)
-                       .map(Collection::stream)
-                       .orElse(Stream.empty())
-                       .map(PsiElement::getText)
-                       .collect(Collectors.joining("."));
+            .map(DLanguageModuleDeclaration::getIdentifierChain)
+            .map(DLanguageIdentifierChain::getIdentifiers)
+            .filter(CollectionUtils::isNotEmpty)
+            .map(identifiers -> identifiers.stream()
+                .map(PsiElement::getText)
+                .collect(Collectors.joining("."))
+            );
     }
 
     /**
-     * Returns the module name without parent packages, as defined in the file.
+     * A fully qualified module name is the package (if defined) followed by the module name.
+     * Both should be lowercase ASCII characters (letters, digits, underscore). Packages correspond
+     * to directory names in the source file path. Package and module names cannot be Keywords.
      *
-     * If no module declaration is present, the default D module name is used
-     * (file name without extension).
+     * An example of such would be "c.stdio", where the stdio module is in the c package.
+     *
+     * If the module name is not defined within the file then the filename (without extension) is used as the module name.
      */
     @NotNull
-    public String getModuleName() {
-        return Optional.ofNullable(findChildByClass(DLanguageModuleDeclaration.class))
-                       .map(DLanguageModuleDeclaration::getIdentifierChain)
-                       .map(DLanguageIdentifierChain::getIdentifiers)
-                       .filter(list -> !list.isEmpty())
-                       .map(identifiers -> identifiers.get(identifiers.size() - 1))
-                       .map(PsiElement::getText)
-                       .orElseGet(() -> StringUtils.removeEnd(this.getName(), ".d"));
+    @Override
+    public String getFullyQualifiedModuleName() {
+        final Optional<String> moduleDeclaration = findModuleDeclaration();
+
+        return moduleDeclaration
+            .orElseGet(() -> {
+                    final String fullNameIncExt = Optional.ofNullable(getVirtualFile() != null ? getVirtualFile().getCanonicalPath() : null)
+                        .map(path -> Arrays.stream(path.split("/|\\\\"))
+                            .filter(StringUtil::isNotEmpty)
+                            .skip(1) // hacky way to skip the 'source' (or 'src') directory
+                            .collect(Collectors.joining("."))
+                        ).orElse(super.getName());
+
+                    return fullNameIncExt.substring(0, fullNameIncExt.lastIndexOf('.'));
+                }
+            );
     }
 
     /**
-     * Returns the module name if it exists, otherwise returns the file name.
+     * D module names are, by default, the file name with the path and extension stripped off.
+     * They can be set explicitly with the module declaration.
+     * This method attempts to find an explicitly defined module declaration first and then return the filename (without extension)
+     * if no module declaration is found.
      */
     @NotNull
+    @Override
+    public String getModuleName() {
+        final Optional<String> moduleDeclaration = findModuleDeclaration();
+
+        return moduleDeclaration
+            .filter(StringUtil::isNotEmpty)
+            .map(fullDeclaration -> {
+                final String[] identifiers = fullDeclaration.split("\\.");
+                return identifiers[identifiers.length - 1];
+            })
+            .orElseGet(() -> StringUtil.trimExtensions(super.getName()));
+    }
+
+    @Nullable
+    @Override
+    public String getPackageName() {
+        return StringUtils.trimToNull(StringUtil.trimEnd(
+            StringUtil.trimEnd(getFullyQualifiedModuleName(), this.getModuleName()),
+            "."
+        ));
+    }
+
+    /**
+     * Returns the module name as defined in declaration within file (if it exists) or otherwise returns the file name without extension.
+     */
+    @NotNull
+    @Deprecated // no need for this to exist as getModuleName should do exactly this behavior
     public String getModuleOrFileName() {
-        return Optional.ofNullable(this.getFullyQualifiedModuleName())
-                       .orElseGet(this::getName);
+        return this.getModuleName();
     }
 
     /**
@@ -115,6 +151,22 @@ public class DlangFile extends PsiFileBase {
         return toContinue;
     }
 
+    /**
+     * @return the filename including the extension
+     */
+    @NotNull
+    @Override
+    public String getName() {
+        return super.getName();
+    }
+
+    /**
+     * Called when a D source file is renamed
+     * @param name filename of the source file being renamed
+     * @return the new element after the file has been replaced
+     * @throws IncorrectOperationException if the user attempts to rename the file in an illegal way. Eg:
+     * D file names should be composed of the ASCII characters lower case letters, digits or _ and should also not be a Keyword.
+     */
     @Override
     public PsiElement setName(@NotNull final String name) throws IncorrectOperationException {
         final DLanguageModuleDeclaration module = findChildByClass(DLanguageModuleDeclaration.class);

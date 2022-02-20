@@ -39,6 +39,14 @@ abstract class LightDlangTestCase : LightPlatformTestCase() {
         return VfsTestUtil.createFile(sourcesRoot, filename, content)
     }
 
+    fun virtualDlangPsiFile(filename: String, content: String): DlangFile {
+        val provider: FileViewProvider = SingleRootFileViewProvider(
+            MockPsiManager(project),
+            addFileToModuleSource(filename, content)
+        )
+        return DlangFile(provider)
+    }
+
     /**
      * Use this method to help simplify the creation of test data for these unit tests
      *
