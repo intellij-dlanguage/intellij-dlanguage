@@ -1,16 +1,14 @@
 package io.github.intellij.dlanguage.psi.impl;
 
-import com.intellij.psi.PsiElement;
+import com.intellij.lang.ASTNode;
+import com.intellij.psi.tree.TokenSet;
 import com.intellij.testFramework.LightPlatform4TestCase;
 import io.github.intellij.dlanguage.DLanguage;
 import io.github.intellij.dlanguage.psi.DLanguageAliasDeclaration;
-import io.github.intellij.dlanguage.psi.DLanguageImportDeclaration;
-import io.github.intellij.dlanguage.psi.impl.named.DLanguageModuleDeclarationImpl;
 import io.github.intellij.dlanguage.psi.named.DLanguageModuleDeclaration;
 import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
 
 /**
  * @author Samael Bate (singingbush)
@@ -72,22 +70,18 @@ public class DElementFactoryTest extends LightPlatform4TestCase {
 
     @Test // alias myint = abc.Foo.bar;
     public void createAliasDeclarationFromText_1() {
-        // alias myint = abc.Foo.bar;
-        // alias fp = i => 1;
-        // alias fp = (i) { return 1; };
-        //
-        // aliasing can also be done using std.meta.Alias and std.meta.AliasSeq
-        // https://dlang.org/library/std/meta/alias.html
-        //
-        // alias b = Alias!4; // need to use std.meta.Alias to create alias of a literal
-        // alias TL = AliasSeq!(int, double); // in previous versions of Phobos, this was known as TypeTuple.
-
         final DLanguageAliasDeclaration result = DElementFactory.createAliasDeclarationFromText(getProject(), "alias myint = abc.Foo.bar;");
 
         assertEquals("alias myint = abc.Foo.bar;", result.getText());
         assertEquals(result.getOriginalElement(), result.getNavigationElement());
         assertEquals(DLanguage.INSTANCE, result.getLanguage());
-        assertEquals("ALIAS_DECLARATION", result.getNavigationElement().getNode().getElementType().getDebugName());
+        assertEquals("ALIAS_DECLARATION", result.getNode().getElementType().getDebugName());
+
+        final ASTNode[] children = result.getNode().getChildren(TokenSet.ANY);
+        assertEquals("alias", children[0].getElementType().getDebugName());
+        assertEquals("WHITE_SPACE", children[1].getElementType().getDebugName());
+        assertEquals("ALIAS_INITIALIZER", children[2].getElementType().getDebugName());
+        assertEquals(";", children[3].getElementType().getDebugName());
     }
 
     @Test // alias fp = i => 1;
@@ -97,7 +91,13 @@ public class DElementFactoryTest extends LightPlatform4TestCase {
         assertEquals("alias fp = i => 1;", result.getText());
         assertEquals(result.getOriginalElement(), result.getNavigationElement());
         assertEquals(DLanguage.INSTANCE, result.getLanguage());
-        assertEquals("ALIAS_DECLARATION", result.getNavigationElement().getNode().getElementType().getDebugName());
+        assertEquals("ALIAS_DECLARATION", result.getNode().getElementType().getDebugName());
+
+        final ASTNode[] children = result.getNode().getChildren(TokenSet.ANY);
+        assertEquals("alias", children[0].getElementType().getDebugName());
+        assertEquals("WHITE_SPACE", children[1].getElementType().getDebugName());
+        assertEquals("ALIAS_INITIALIZER", children[2].getElementType().getDebugName());
+        assertEquals(";", children[3].getElementType().getDebugName());
     }
 
     @Test // alias fp = (i) { return 1; };
@@ -107,7 +107,13 @@ public class DElementFactoryTest extends LightPlatform4TestCase {
         assertEquals("alias fp = (i) { return 1; };", result.getText());
         assertEquals(result.getOriginalElement(), result.getNavigationElement());
         assertEquals(DLanguage.INSTANCE, result.getLanguage());
-        assertEquals("ALIAS_DECLARATION", result.getNavigationElement().getNode().getElementType().getDebugName());
+        assertEquals("ALIAS_DECLARATION", result.getNode().getElementType().getDebugName());
+
+        final ASTNode[] children = result.getNode().getChildren(TokenSet.ANY);
+        assertEquals("alias", children[0].getElementType().getDebugName());
+        assertEquals("WHITE_SPACE", children[1].getElementType().getDebugName());
+        assertEquals("ALIAS_INITIALIZER", children[2].getElementType().getDebugName());
+        assertEquals(";", children[3].getElementType().getDebugName());
     }
 
     @Test // alias b = Alias!4;
@@ -117,7 +123,29 @@ public class DElementFactoryTest extends LightPlatform4TestCase {
         assertEquals("alias b = Alias!4;", result.getText());
         assertEquals(result.getOriginalElement(), result.getNavigationElement());
         assertEquals(DLanguage.INSTANCE, result.getLanguage());
-        assertEquals("ALIAS_DECLARATION", result.getNavigationElement().getNode().getElementType().getDebugName());
+        assertEquals("ALIAS_DECLARATION", result.getNode().getElementType().getDebugName());
+
+        final ASTNode[] children = result.getNode().getChildren(TokenSet.ANY);
+        assertEquals("alias", children[0].getElementType().getDebugName());
+        assertEquals("WHITE_SPACE", children[1].getElementType().getDebugName());
+        assertEquals("ALIAS_INITIALIZER", children[2].getElementType().getDebugName());
+        assertEquals(";", children[3].getElementType().getDebugName());
+    }
+
+    @Test // alias TL = AliasSeq!(int, double); // in previous versions of Phobos, this was known as TypeTuple
+    public void createAliasDeclarationFromText_5() {
+        final DLanguageAliasDeclaration result = DElementFactory.createAliasDeclarationFromText(getProject(), "alias TL = AliasSeq!(int, double);");
+
+        assertEquals("alias TL = AliasSeq!(int, double);", result.getText());
+        assertEquals(result.getOriginalElement(), result.getNavigationElement());
+        assertEquals(DLanguage.INSTANCE, result.getLanguage());
+        assertEquals("ALIAS_DECLARATION", result.getNode().getElementType().getDebugName());
+
+        final ASTNode[] children = result.getNode().getChildren(TokenSet.ANY);
+        assertEquals("alias", children[0].getElementType().getDebugName());
+        assertEquals("WHITE_SPACE", children[1].getElementType().getDebugName());
+        assertEquals("ALIAS_INITIALIZER", children[2].getElementType().getDebugName());
+        assertEquals(";", children[3].getElementType().getDebugName());
     }
 
     @Test
