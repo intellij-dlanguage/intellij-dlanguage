@@ -14,9 +14,9 @@
     ]]></description>
 
     <change-notes><![CDATA[
-        <b>v1.27.*</b><br/>
+        <b>v1.27.2</b><br/>
         <ul>
-            <li>Compatibility IntelliJ 2021.2 - 2021.3.*</li>
+            <li>Compatibility IntelliJ 2021.2 - 2022.1.*</li>
         </ul>
     ]]>
     </change-notes>
