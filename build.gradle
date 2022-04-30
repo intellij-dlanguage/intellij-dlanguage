@@ -223,12 +223,25 @@ task generateSyntaxLexer(type : GenerateLexer) {
     targetClass 'DlangLexer'
 }
 
+task generateSyntaxHighlightingLexer(type : GenerateLexer) {
+    // source flex file
+    source 'src/main/java/io/github/intellij/dlanguage/lexer/DSyntaxHighlightingLexer.flex'
+
+    // target directory for lexer
+    targetDir 'gen/io/github/intellij/dlanguage/'
+
+    // target classname, target file will be targetDir/targetClass.java
+    targetClass 'DHighlightingLexer'
+}
+
 compileJava{
     dependsOn generateSyntaxLexer
+    dependsOn generateSyntaxHighlightingLexer
 }
 
 compileKotlin{
     dependsOn generateSyntaxLexer
+    dependsOn generateSyntaxHighlightingLexer
 }
 
 repositories {
