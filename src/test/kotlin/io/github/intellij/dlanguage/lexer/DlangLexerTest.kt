@@ -196,4 +196,7 @@ class DlangLexerTest : DlangLexerTestBase("lexer") {
 
     //issue 77
     fun testissue77() = doTest()
+
+    //issue 365
+    fun testissue365() = doTest()
 }

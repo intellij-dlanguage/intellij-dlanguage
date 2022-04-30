@@ -188,4 +188,5 @@ public class DlangHighlightingLexerTest extends DHighlightingLexerTestBase {
     public void testtokens_xor() { doTest(true, true); }
     public void testtokens_xor_assign() { doTest(true, true); }
     public void testissue77() {doTest(true,true);}
+    public void testissue365() {doTest(true,true);}
 }
