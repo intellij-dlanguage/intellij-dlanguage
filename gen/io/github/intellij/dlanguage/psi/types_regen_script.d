@@ -59,7 +59,7 @@ static this() {
     types_children["AutoDeclaration"] = ["StorageClass*","OP_COMMA*","OP_SCOLON","AutoDeclarationPart*"];
     //named_children["AutoDeclarationPart"] = ["Identifier","TemplateParameters","OP_EQ","Initializer"];
     types_children["BlockStatement"] = ["DeclarationsAndStatements","OP_BRACES_RIGHT","OP_BRACES_LEFT"];
-    types_children["BodyStatement"] = ["KW_BODY",  "BlockStatement"];
+    types_children["BodyStatement"] = ["BlockStatement"];
     types_children["BreakStatement"] = ["KW_BREAK","Identifier","OP_SCOLON"];
     types_children["BaseClass"] = ["TypeofExpression","OP_DOT","IdentifierOrTemplateChain"];
     types_children["BaseClassList"] = ["BaseClass*","OP_COMMA*"];

@@ -58,7 +58,6 @@ public class DHighlightingTokenSets {
 //            DlangTypes.KW_ASM,
 //            DlangTypes.KW_ASSERT,
 //            DlangTypes.KW_AUTO,
-//            DlangTypes.KW_BODY,
 //            DlangTypes.KW_BOOL,
 //            DlangTypes.KW_BREAK,
 //            DlangTypes.KW_BYTE,
