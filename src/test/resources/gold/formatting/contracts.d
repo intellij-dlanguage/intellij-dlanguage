@@ -7,7 +7,7 @@ int a; int b;
         in {
             assert(q);
         } out (result) {}
-        body
+        do
         {
 writeln(q);
         }}}

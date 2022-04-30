@@ -8,4 +8,4 @@ in
 {
 assert (stuff);
 }
-body{}
+do{}

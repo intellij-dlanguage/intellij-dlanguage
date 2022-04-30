@@ -5,7 +5,7 @@ unittest
 		in
 		{
 		}
-		body
+		do
 		{
 		}
 
@@ -16,6 +16,6 @@ public Vector!(T) opBinary(string op, string file = __FILE__, size_t line = __LI
 in
 {
 }
-body
+do
 {
 }

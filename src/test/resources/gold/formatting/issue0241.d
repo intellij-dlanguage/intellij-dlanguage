@@ -1,4 +1,4 @@
 void round()
-body
+do
 {
 }

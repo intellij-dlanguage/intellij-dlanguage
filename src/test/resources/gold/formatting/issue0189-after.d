@@ -13,5 +13,5 @@ void aFunction(ParamType param)
 in {
     assert(stuff);
 }
-body {
+do {
 }

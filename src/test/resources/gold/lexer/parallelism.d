@@ -1152,7 +1152,7 @@ private:
             assert(returned.prev is null);
         }
     }
-    body
+    do
     {
         if (isSingleTask) return null;
 
@@ -1194,7 +1194,7 @@ private:
             assert(tail.prev.next is tail, text(tail.prev, '\t', tail.next));
         }
     }
-    body
+    do
     {
         // Not using enforce() to save on function call overhead since this
         // is a performance critical function.
@@ -2007,7 +2007,7 @@ public:
                 {
                     assert(nextBufTask.prev is null);
                     assert(nextBufTask.next is null);
-                } body
+                } do
                 {
                     // Hack to reuse the task object.
 
@@ -2193,7 +2193,7 @@ public:
             {
                 assert(nextBufTask.prev is null);
                 assert(nextBufTask.next is null);
-            } body
+            } do
             {
                 // Hack to reuse the task object.
 
@@ -3848,7 +3848,7 @@ private struct RoundRobinBuffer(C1, C2)
     {
         assert(!empty);
     }
-    body
+    do
     {
         scope(success) primed = true;
         nextDel(bufs[index]);
@@ -3860,7 +3860,7 @@ private struct RoundRobinBuffer(C1, C2)
     {
         assert(!empty);
     }
-    body
+    do
     {
         if (!primed) prime();
         return bufs[index];

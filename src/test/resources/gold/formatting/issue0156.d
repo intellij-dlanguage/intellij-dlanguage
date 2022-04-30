@@ -4,7 +4,7 @@ class C
 	out (bar)
 	{
 	}
-	body
+	do
 	{
 	}
 }

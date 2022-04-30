@@ -31,7 +31,6 @@ public class DlangHighlightingLexerTest extends DHighlightingLexerTestBase {
     public void testkeyword_align() { doTest(true, true); }
     public void testkeyword_asm() { doTest(true, true); }
     public void testkeyword_assert() { doTest(true, true); }
-    public void testkeyword_body() { doTest(true, true); }
     public void testkeyword_break() { doTest(true, true); }
     public void testkeyword_case() { doTest(true, true); }
     public void testkeyword_cast() { doTest(true, true); }

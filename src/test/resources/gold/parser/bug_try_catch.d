@@ -3,7 +3,7 @@ in
 {
     assert(all!"a !is null"(testListeners));
 }
-body
+do
 {
     bool tryRun(string phase, void delegate() action)
     {
