@@ -8,7 +8,7 @@ import io.github.intellij.dlanguage.DLanguage;
 import io.github.intellij.dlanguage.psi.DLanguageAliasDeclaration;
 import io.github.intellij.dlanguage.psi.DLanguageImportDeclaration;
 import io.github.intellij.dlanguage.psi.DlangFile;
-import io.github.intellij.dlanguage.psi.named.DLanguageModuleDeclaration;
+import io.github.intellij.dlanguage.psi.named.DlangModuleDeclaration;
 import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -57,8 +57,8 @@ public class DElementFactory {
 
     public static PsiElement createDLanguageModuleFromText(final Project project,
         final String name) {
-        final DLanguageModuleDeclaration e = findChildOfType(
-            createFileFromText(project, "module " + name + ";"), DLanguageModuleDeclaration.class);
+        final DlangModuleDeclaration e = findChildOfType(
+            createFileFromText(project, "module " + name + ";"), DlangModuleDeclaration.class);
         if (e != null) {
             return e;
         }

@@ -198,11 +198,11 @@ import io.github.intellij.dlanguage.psi.impl.named.DLanguageForeachTypeImpl;
 import io.github.intellij.dlanguage.psi.impl.named.DLanguageFunctionDeclarationImpl;
 import io.github.intellij.dlanguage.psi.impl.named.DLanguageIfConditionImpl;
 import io.github.intellij.dlanguage.psi.impl.named.DLanguageLabeledStatementImpl;
-import io.github.intellij.dlanguage.psi.impl.named.DLanguageModuleDeclarationImpl;
+import io.github.intellij.dlanguage.psi.impl.named.DlangModuleDeclarationImpl;
 import io.github.intellij.dlanguage.psi.impl.named.DLanguageNamedImportBindImpl;
 import io.github.intellij.dlanguage.psi.impl.named.DLanguageParameterImpl;
 import io.github.intellij.dlanguage.psi.impl.named.DLanguageTemplateParameterImpl;
-import io.github.intellij.dlanguage.psi.impl.named.DLanguageVersionSpecificationImpl;
+import io.github.intellij.dlanguage.psi.impl.named.DlangVersionSpecificationImpl;
 import io.github.intellij.dlanguage.psi.impl.named.DlangEnumDeclarationImpl;
 import io.github.intellij.dlanguage.psi.impl.named.DlangIdentifierImpl;
 import io.github.intellij.dlanguage.psi.impl.named.DlangInterfaceOrClassImpl;
@@ -674,7 +674,7 @@ public class DlangVisitor extends PsiElementVisitor {
 //        visitPsiElement(o);
 //    }
 
-    public void visitModuleDeclaration(@NotNull final DLanguageModuleDeclarationImpl o) {
+    public void visitModuleDeclaration(@NotNull final DlangModuleDeclarationImpl o) {
         visitPsiElement(o);
     }
 
@@ -931,7 +931,7 @@ public class DlangVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
-    public void visitVersionSpecification(@NotNull final DLanguageVersionSpecificationImpl o) {
+    public void visitVersionSpecification(@NotNull final DlangVersionSpecificationImpl o) {
         visitPsiElement(o);
     }
 

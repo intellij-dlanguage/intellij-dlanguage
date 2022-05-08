@@ -30,7 +30,7 @@ class PhobosStyleGuidelinesVisitor(val holder: ProblemsHolder) : DlangVisitor() 
             holder.registerProblem(elem, type + " name '" + name + "' does not match style guidelines.")
     }
 
-    override fun visitModuleDeclaration(o: DLanguageModuleDeclarationImpl) {
+    override fun visitModuleDeclaration(o: DlangModuleDeclarationImpl) {
         for (identifier in o.identifierChain!!.identifiers) {
             checkName("Module", identifier.name, identifier, moduleNameRegex)
         }

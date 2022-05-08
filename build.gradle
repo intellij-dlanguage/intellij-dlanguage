@@ -234,14 +234,27 @@ task generateSyntaxHighlightingLexer(type : GenerateLexer) {
     targetClass 'DHighlightingLexer'
 }
 
+task copyGenScript(type: Copy) {
+    from 'src/main/resources/types_regen_script.d'
+    into 'gen/io/github/intellij/dlanguage/psi/'
+}
+
+task generatePsi(type: Exec) {
+    dependsOn copyGenScript
+    workingDir 'gen/io/github/intellij/dlanguage/psi/'
+    commandLine 'rdmd', 'types_regen_script.d'
+}
+
 compileJava{
     dependsOn generateSyntaxLexer
     dependsOn generateSyntaxHighlightingLexer
+    dependsOn generatePsi
 }
 
 compileKotlin{
     dependsOn generateSyntaxLexer
     dependsOn generateSyntaxHighlightingLexer
+    dependsOn generatePsi
 }
 
 repositories {

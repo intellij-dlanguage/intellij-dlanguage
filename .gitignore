@@ -32,3 +32,6 @@ gradle-app.setting
 jflex-install/
 
 /dev
+
+# Ignore generated files
+gen/
