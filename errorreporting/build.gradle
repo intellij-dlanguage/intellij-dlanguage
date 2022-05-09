@@ -46,7 +46,7 @@ dependencies {
     //compileOnly "com.jetbrains.intellij.platform:core:$intellijPlatformVersion"
     //compileOnly "com.jetbrains.intellij.platform:lang:$intellijPlatformVersion"
 
-    //compile project(':utils')
+    compile project(':utils')
 
     implementation 'io.sentry:sentry:5.7.+'
 }

@@ -1,6 +1,9 @@
 package io.github.intellij.dlanguage.errorreporting;
 
 import com.intellij.diagnostic.IdeaReportingEvent;
+import com.intellij.execution.ExecutionException;
+import com.intellij.execution.configurations.GeneralCommandLine;
+import com.intellij.execution.process.CapturingProcessHandler;
 import com.intellij.ide.plugins.IdeaPluginDescriptor;
 import com.intellij.ide.plugins.PluginManagerCore;
 import com.intellij.idea.IdeaLogger;
@@ -12,7 +15,9 @@ import com.intellij.openapi.diagnostic.ErrorReportSubmitter;
 import com.intellij.openapi.diagnostic.IdeaLoggingEvent;
 import com.intellij.openapi.diagnostic.SubmittedReportInfo;
 import com.intellij.openapi.util.SystemInfo;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.Consumer;
+import io.github.intellij.dlanguage.settings.ToolKey;
 import io.sentry.Sentry;
 import io.sentry.SentryEvent;
 import io.sentry.SentryOptions;
@@ -20,6 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 /**
@@ -68,14 +74,25 @@ public class DErrorReporter extends ErrorReportSubmitter {
 
                 final SentryEvent sentryEvent = new SentryEvent(error);
 
-                sentryEvent.setExtra("User Comments", additionalInfo);
+                if(StringUtil.isNotEmpty(additionalInfo)) {
+                    sentryEvent.setExtra("User Comments", additionalInfo);
+                }
 
                 Optional.ofNullable(IdeaLogger.ourLastActionId)
                     .ifPresent(actionId -> sentryEvent.setExtra("Last Action", actionId));
 
                 ApplicationManager
                     .getApplication()
-                    .invokeLater(() -> Sentry.captureEvent(sentryEvent));
+                    .invokeLater(() -> {
+                        addBinaryVersion(ToolKey.DUB_KEY, sentryEvent);
+                        addBinaryVersion(ToolKey.DCD_CLIENT_KEY, sentryEvent);
+                        addBinaryVersion(ToolKey.DCD_CLIENT_KEY, sentryEvent);
+                        addBinaryVersion(ToolKey.DSCANNER_KEY, sentryEvent);
+                        addBinaryVersion(ToolKey.DFIX_KEY, sentryEvent);
+                        addBinaryVersion(ToolKey.DFORMAT_KEY, sentryEvent);
+                        addBinaryVersion(ToolKey.GDB_KEY, sentryEvent);
+                        Sentry.captureEvent(sentryEvent);
+                    });
             }
             return true;
         } catch (final Exception e) {
@@ -105,6 +122,97 @@ public class DErrorReporter extends ErrorReportSubmitter {
                 options.setTag("Plugin", plugin.getName());
                 options.setTag("Version", plugin.getVersion());
             }
+        }
+
+//        this.addBinaryVersion(ToolKey.DUB_KEY, options);
+//
+//        this.addBinaryVersion(ToolKey.DCD_SERVER_KEY, options);
+//
+//        this.addBinaryVersion(ToolKey.DCD_CLIENT_KEY, options);
+//
+//        this.addBinaryVersion(ToolKey.DSCANNER_KEY, options);
+//
+//        this.addBinaryVersion(ToolKey.DFORMAT_KEY, options);
+//
+//        this.addBinaryVersion(ToolKey.DFIX_KEY, options);
+//
+//        this.addBinaryVersion(ToolKey.GDB_KEY, options);
+    }
+
+    private void addBinaryVersion(@NotNull final ToolKey toolKey, @NotNull final SentryOptions options) {
+        @Nullable final String toolPath = toolKey.getPath();
+
+        if(!StringUtil.isEmptyOrSpaces(toolPath)) {
+            final GeneralCommandLine cmd = new GeneralCommandLine(toolPath, "--version")
+                .withCharset(StandardCharsets.US_ASCII)
+                .withRedirectErrorStream(true);
+
+            ApplicationManager
+                .getApplication()
+                .executeOnPooledThread(() -> {
+                    try {
+                        final String stdout = new CapturingProcessHandler(
+                            cmd.createProcess(),
+                            cmd.getCharset(),
+                            cmd.getCommandLineString()
+                        ).runProcess().getStdout();
+
+                        if (StringUtil.isNotEmpty(stdout)) {
+                            final String version = stdout.split("\n")[0].trim();
+                            options.setTag(toolKey.getName(), version);
+                        }
+                    } catch (ExecutionException e) {
+                        options.setTag(toolKey.getName(), "ERROR");
+                    }
+                });
+        }
+    }
+
+    private void addBinaryVersion(@NotNull final ToolKey toolKey, @NotNull final SentryEvent event) {
+        @Nullable final String toolPath = toolKey.getPath();
+
+        if(!StringUtil.isEmptyOrSpaces(toolPath)) {
+            final GeneralCommandLine cmd = new GeneralCommandLine(toolPath, "--version")
+                .withCharset(StandardCharsets.US_ASCII)
+                .withRedirectErrorStream(true);
+
+            try {
+                final String stdout = new CapturingProcessHandler(
+                    cmd.createProcess(),
+                    cmd.getCharset(),
+                    cmd.getCommandLineString()
+                ).runProcess().getStdout();
+
+                if (StringUtil.isNotEmpty(stdout)) {
+                    final String version = stdout.split("\n")[0].trim();
+                    event.setExtra(toolKey.getName(), version);
+                    //event.setTag(toolKey.getName(), version);
+                }
+            } catch (ExecutionException e) {
+                event.setExtra(toolKey.getName(), "ERROR");
+//                        event.setTag(toolKey.getName(), "ERROR");
+            }
+
+//            ApplicationManager
+//                .getApplication()
+//                .executeOnPooledThread(() -> {
+//                    try {
+//                        final String stdout = new CapturingProcessHandler(
+//                            cmd.createProcess(),
+//                            cmd.getCharset(),
+//                            cmd.getCommandLineString()
+//                        ).runProcess().getStdout();
+//
+//                        if (StringUtil.isNotEmpty(stdout)) {
+//                            final String version = stdout.split("\n")[0].trim();
+//                            event.setExtra(toolKey.getName(), version);
+//                            //event.setTag(toolKey.getName(), version);
+//                        }
+//                    } catch (ExecutionException e) {
+//                        event.setExtra(toolKey.getName(), "ERROR");
+////                        event.setTag(toolKey.getName(), "ERROR");
+//                    }
+//                });
         }
     }
 }
