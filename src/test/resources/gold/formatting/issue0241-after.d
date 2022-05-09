@@ -1,3 +1,3 @@
 void round()
-body {
+do {
 }

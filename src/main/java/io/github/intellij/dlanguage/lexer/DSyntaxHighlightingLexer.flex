@@ -234,7 +234,6 @@ KEYWORD = ({BASIC_TYPES} |
            debug |
            mixin |
            invariant |
-           body |
            template |
            lazy |
            out |

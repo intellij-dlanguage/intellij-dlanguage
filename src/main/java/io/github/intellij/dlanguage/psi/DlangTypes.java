@@ -240,7 +240,6 @@ public interface DlangTypes {
     DlangTokenType KW_ASM = new DlangTokenType("asm");
     DlangTokenType KW_ASSERT = new DlangTokenType("assert");
     DlangTokenType KW_AUTO = new DlangTokenType("auto");
-    DlangTokenType KW_BODY = new DlangTokenType("body");
     DlangTokenType KW_BOOL = new DlangTokenType("bool");
     DlangTokenType KW_BREAK = new DlangTokenType("break");
     DlangTokenType KW_BYTE = new DlangTokenType("byte");

@@ -2871,7 +2871,7 @@ D Language File
                             PsiElement(DlangTokenType.;)(';')
                   PsiElement(DlangTokenType.})('}')
               DLanguageBodyStatementImpl(BODY_STATEMENT)
-                PsiElement(DlangTokenType.body)('body')
+                PsiElement(DlangTokenType.do)('do')
                 DLanguageBodyStatementImpl(BODY_STATEMENT)
                   DLanguageBlockStatementImpl(BLOCK_STATEMENT)
                     PsiElement(DlangTokenType.{)('{')

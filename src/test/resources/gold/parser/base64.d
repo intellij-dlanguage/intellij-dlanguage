@@ -211,7 +211,7 @@ template Base64Impl(char Map62th, char Map63th, char Padding = '=')
     {
         assert(result.length == encodeLength(source.length), "The length of result is different from Base64");
     }
-    body
+    do
     {
         immutable srcLen = source.length;
         if (srcLen == 0)
@@ -294,7 +294,7 @@ template Base64Impl(char Map62th, char Map63th, char Padding = '=')
         // @@@BUG@@@ D's DbC can't caputre an argument of function and store the result of precondition.
         //assert(result.length == encodeLength(source.length), "The length of result is different from Base64");
     }
-    body
+    do
     {
         immutable srcLen = source.length;
         if (srcLen == 0)
@@ -381,7 +381,7 @@ template Base64Impl(char Map62th, char Map63th, char Padding = '=')
     {
         assert(result == encodeLength(source.length), "The number of put is different from the length of Base64");
     }
-    body
+    do
     {
         immutable srcLen = source.length;
         if (srcLen == 0)
@@ -470,7 +470,7 @@ template Base64Impl(char Map62th, char Map63th, char Padding = '=')
         // @@@BUG@@@ Workaround for DbC problem.
         //assert(result == encodeLength(source.length), "The number of put is different from the length of Base64");
     }
-    body
+    do
     {
         immutable srcLen = source.length;
         if (srcLen == 0)
@@ -989,7 +989,7 @@ template Base64Impl(char Map62th, char Map63th, char Padding = '=')
         immutable expect = realDecodeLength(source);
         assert(result.length == expect, "The length of result is different from the expected length");
     }
-    body
+    do
     {
         immutable srcLen = source.length;
         if (srcLen == 0)
@@ -1075,7 +1075,7 @@ template Base64Impl(char Map62th, char Map63th, char Padding = '=')
         //immutable expect = decodeLength(source.length) - 2;
         //assert(result.length >= expect, "The length of result is smaller than expected length");
     }
-    body
+    do
     {
         immutable srcLen = source.length;
         if (srcLen == 0)
@@ -1166,7 +1166,7 @@ template Base64Impl(char Map62th, char Map63th, char Padding = '=')
         immutable expect = realDecodeLength(source);
         assert(result == expect, "The result of decode is different from the expected");
     }
-    body
+    do
     {
         immutable srcLen = source.length;
         if (srcLen == 0)
@@ -1255,7 +1255,7 @@ template Base64Impl(char Map62th, char Map63th, char Padding = '=')
         //immutable expect = decodeLength(source.length) - 2;
         //assert(result >= expect, "The length of result is smaller than expected length");
     }
-    body
+    do
     {
         immutable srcLen = source.length;
         if (srcLen == 0)

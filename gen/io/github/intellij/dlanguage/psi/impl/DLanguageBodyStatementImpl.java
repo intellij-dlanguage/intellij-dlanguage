@@ -1,7 +1,5 @@
 package io.github.intellij.dlanguage.psi.impl;
 
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_BODY;
-
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
@@ -31,11 +29,6 @@ public class DLanguageBodyStatementImpl extends ASTWrapperPsiElement implements
         } else {
             super.accept(visitor);
         }
-    }
-
-    @Nullable
-    public PsiElement getKW_BODY() {
-        return findChildByType(KW_BODY);
     }
 
     @Nullable

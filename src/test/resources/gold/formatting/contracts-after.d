@@ -9,7 +9,7 @@ void main(string[] args) {
         }
         out (result) {
         }
-        body {
+        do {
             writeln(q);
         }
     }

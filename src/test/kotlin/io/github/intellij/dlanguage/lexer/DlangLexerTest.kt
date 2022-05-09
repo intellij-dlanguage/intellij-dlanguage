@@ -25,7 +25,6 @@ class DlangLexerTest : DlangLexerTestBase("lexer") {
     fun testkeyword_align()               = doTest()
     fun testkeyword_asm()                 = doTest()
     fun testkeyword_assert()              = doTest()
-    fun testkeyword_body()                = doTest()
     fun testkeyword_break()               = doTest()
     fun testkeyword_case()                = doTest()
     fun testkeyword_cast()                = doTest()
@@ -197,4 +196,7 @@ class DlangLexerTest : DlangLexerTestBase("lexer") {
 
     //issue 77
     fun testissue77() = doTest()
+
+    //issue 365
+    fun testissue365() = doTest()
 }

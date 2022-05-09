@@ -314,7 +314,6 @@ HEX_EXPONENT = [pP][\+\-]? [0-9]+
 <YYINITIAL> "debug"                    { return KW_DEBUG; }
 <YYINITIAL> "mixin"                    { return KW_MIXIN; }
 <YYINITIAL> "invariant"                { return KW_INVARIANT; }
-<YYINITIAL> "body"                     { return KW_BODY; }
 <YYINITIAL> "template"                 { return KW_TEMPLATE; }
 <YYINITIAL> "lazy"                     { return KW_LAZY; }
 <YYINITIAL> "out"                      { return KW_OUT; }

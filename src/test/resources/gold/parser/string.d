@@ -276,7 +276,7 @@ out (result)
         assert(result[0 .. slen] == s[0 .. slen]);
     }
 }
-body
+do
 {
     import std.exception : assumeUnique;
     /+ Unfortunately, this isn't reliable.
@@ -5057,7 +5057,7 @@ in
 {
     assert(transTable.length == 256);
 }
-body
+do
 {
     bool[256] remTable = false;
 
@@ -5126,7 +5126,7 @@ in
     foreach (char c; to)
         assert(isASCII(c));
 }
-body
+do
 {
     char[256] result = void;
 
@@ -5196,7 +5196,7 @@ in
 {
     assert(transTable.length == 256);
 }
-body
+do
 {
     bool[256] remTable = false;
 
@@ -6259,7 +6259,7 @@ out (result)
             assert(c >= '0' && c <= '6');
     }
 }
-body
+do
 {
     char[4] result = soundexer(str);
     if (result[0] == 0)

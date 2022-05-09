@@ -136,7 +136,6 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
         result.add("asm")
         result.add("assert")
         result.add("auto")
-        result.add("body")
         result.add("bool")
         result.add("break")
         result.add("byte")

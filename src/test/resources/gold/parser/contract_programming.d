@@ -9,7 +9,7 @@ in
 out (result)
 {
 }
-body
+do
 {
 }
 
@@ -22,7 +22,7 @@ out (result)
 {
     assert((result * result) <= x && (result+1) * (result+1) > x);
 }
-body
+do
 {
     return cast(long)std.math.sqrt(cast(real)x);
 }
@@ -31,7 +31,7 @@ void func()
 out
 {
 }
-body
+do
 {
 }
 

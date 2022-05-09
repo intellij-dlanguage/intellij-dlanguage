@@ -1941,12 +1941,12 @@ class DLangParser {
      * Parses a BodyStatement
      * <p>
      * $(GRAMMAR $(RULEDEF bodyStatement):
-     * $(LITERAL 'body') $(RULE blockStatement)
+     * $(RULE blockStatement)
      * ;)
      */
     boolean parseBodyStatement() {
         final Marker m = enter_section_modified(builder);
-        if (currentIs(tok("body")) || currentIs(tok("do"))) {
+        if (currentIs(tok("do"))) {
             advance();
         }
         final boolean result = simpleParse("BodyStatement", "blockStatement|parseBlockStatement");
@@ -3947,7 +3947,7 @@ class DLangParser {
                 cleanup(m, FUNCTION_BODY);
                 return false;
             }
-        } else if (currentIsOneOf(tok("in"), tok("out"), tok("body"), tok("do"))) {
+        } else if (currentIsOneOf(tok("in"), tok("out"), tok("do"))) {
             if (currentIs(tok("in"))) {
                 if (!parseInStatement()) {
                     cleanup(m, FUNCTION_BODY);
@@ -3971,13 +3971,13 @@ class DLangParser {
             }
             // Allow function bodies without body statements because this is
             // valid inside of interfaces.
-            if (currentIs(tok("body")) || currentIs(tok("do")))
+            if (currentIs(tok("do")))
                 if (!parseBodyStatement()) {
                     cleanup(m, FUNCTION_BODY);
                     return false;
                 }
         } else {
-            error("'in', 'out', 'body', 'do' , or block statement expected");
+            error("'in', 'out', 'do' , or block statement expected");
             exit_section_modified(builder, m, FUNCTION_BODY, true);
             return false;
         }
@@ -4147,7 +4147,7 @@ class DLangParser {
         final Marker m = enter_section_modified(builder);
         if (currentIsOneOf(tok("function"), tok("delegate"))) {
             advance();
-            if (!currentIsOneOf(tok("("), tok("in"), tok("body"), tok("do"),
+            if (!currentIsOneOf(tok("("), tok("in"), tok("do"),
                 tok("out"), tok("{"), tok("=>")))
                 if (!parseType().first) {
                     cleanup(m, FUNCTION_LITERAL_EXPRESSION);
@@ -5797,7 +5797,7 @@ class DLangParser {
                     return false;
                 }
         } else if (i.equals(tok("function")) || i.equals(tok("delegate")) || i.equals(tok("{")) || i
-            .equals(tok("in")) || i.equals(tok("out")) || i.equals(tok("body")) || i
+            .equals(tok("in")) || i.equals(tok("out")) || i
             .equals(tok("do"))) {
             if (!parseFunctionLiteralExpression()) {
                 cleanup(m, PRIMARY_EXPRESSION);
@@ -8744,7 +8744,7 @@ class DLangParser {
         if (!tokenCheck(")")) {
             return false;
         }
-        while (moreTokens() && !currentIsOneOf(tok("{"), tok("in"), tok("out"), tok("body"),
+        while (moreTokens() && !currentIsOneOf(tok("{"), tok("in"), tok("out"),
             tok("do"), tok(";"))) {
             if (!(parseMemberFunctionAttribute())) {
                 return false;

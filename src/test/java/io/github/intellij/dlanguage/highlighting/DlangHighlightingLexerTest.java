@@ -31,7 +31,6 @@ public class DlangHighlightingLexerTest extends DHighlightingLexerTestBase {
     public void testkeyword_align() { doTest(true, true); }
     public void testkeyword_asm() { doTest(true, true); }
     public void testkeyword_assert() { doTest(true, true); }
-    public void testkeyword_body() { doTest(true, true); }
     public void testkeyword_break() { doTest(true, true); }
     public void testkeyword_case() { doTest(true, true); }
     public void testkeyword_cast() { doTest(true, true); }
@@ -189,4 +188,5 @@ public class DlangHighlightingLexerTest extends DHighlightingLexerTestBase {
     public void testtokens_xor() { doTest(true, true); }
     public void testtokens_xor_assign() { doTest(true, true); }
     public void testissue77() {doTest(true,true);}
+    public void testissue365() {doTest(true,true);}
 }

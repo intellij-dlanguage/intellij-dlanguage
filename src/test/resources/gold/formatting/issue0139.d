@@ -3,7 +3,7 @@ out
 {
 	assert(true);
 }
-body
+do
 {
 }
 
@@ -15,7 +15,7 @@ out
 {
 	assert(true);
 }
-body
+do
 {
 }
 
@@ -27,6 +27,6 @@ out (result)
 {
 	assert(true);
 }
-body
+do
 {
 }

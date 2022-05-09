@@ -42,7 +42,7 @@ abstract class DlangLexerTestBase(expectPath: String) : LexerTestCase() {
         super.setUp()
     }
 
-    override fun createLexer(): Lexer = FlexAdapter(io.github.intellij.dlanguage.dlanguage.DlangLexer(null))
+    override fun createLexer(): Lexer = FlexAdapter(io.github.intellij.dlanguage.DlangLexer(null))
 
     override fun getDirPath(): String = "gold"
 
