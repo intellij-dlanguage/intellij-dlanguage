@@ -7,6 +7,7 @@ import com.intellij.openapi.roots.*;
 import io.github.intellij.dlanguage.DlangSdkType;
 import io.github.intellij.dlanguage.LightDlangTestCase;
 
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class DlangModuleBuilderTest extends LightDlangTestCase {
 
         assertNotNull(sourcePaths);
         assertEquals(1, sourcePaths.size());
-        assertEquals("null/source", sourcePaths.get(0)); // todo: 'null/source' should probably not be the result
+        assertEquals(Paths.get("null", "source").toString(), sourcePaths.get(0)); // todo: 'null/source' should probably not be the result
     }
 
     public void testIsSuitableSdkType() {
