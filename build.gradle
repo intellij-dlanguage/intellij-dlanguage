@@ -256,11 +256,11 @@ dependencies {
     //compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     //compileOnly "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
-    compile project(':utils')
-    compile project(':errorreporting')
-    compile project(':debugger')
+    implementation project(':utils')
+    implementation project(':errorreporting')
+    implementation project(':debugger')
 
-    testCompile 'io.kotlintest:kotlintest:2+'
+    testImplementation 'io.kotlintest:kotlintest:2+'
     testImplementation 'net.bytebuddy:byte-buddy:1.11.18' // workaround for failing to mock inline mocks
 }
 

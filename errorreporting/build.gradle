@@ -3,8 +3,8 @@ plugins {
 }
 
 compileJava   {
-  sourceCompatibility = '1.8'
-  targetCompatibility = '1.8'
+  sourceCompatibility = JavaVersion.VERSION_11
+  targetCompatibility = JavaVersion.VERSION_11
 }
 
 repositories {
@@ -46,7 +46,7 @@ dependencies {
     //compileOnly "com.jetbrains.intellij.platform:core:$intellijPlatformVersion"
     //compileOnly "com.jetbrains.intellij.platform:lang:$intellijPlatformVersion"
 
-    //compile project(':utils')
+    //implementation project(':utils')
 
     implementation 'io.sentry:sentry:5.7.+'
 }
