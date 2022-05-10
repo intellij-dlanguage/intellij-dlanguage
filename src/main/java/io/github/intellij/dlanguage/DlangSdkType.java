@@ -2,11 +2,7 @@ package io.github.intellij.dlanguage;
 
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
-import com.intellij.execution.process.CapturingProcessHandler;
-import com.intellij.execution.process.OSProcessHandler;
-import com.intellij.execution.process.ProcessAdapter;
-import com.intellij.execution.process.ProcessEvent;
-import com.intellij.execution.process.ProcessOutput;
+import com.intellij.execution.process.*;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.projectRoots.*;
@@ -346,8 +342,7 @@ public class DlangSdkType extends SdkType {
         }
     }
 
-    private void setupDocumentationPath(@NotNull final Sdk sdk, final SdkModificator sdkModificator,
-        final SetupStatus status) {
+    private void setupDocumentationPath(@NotNull final Sdk sdk, final SdkModificator sdkModificator, final SetupStatus status) {
 //        final File docDir = DEFAULT_DOCUMENTATION_PATH;//Paths.get(getDmdPath(sdk), "html", "d").toFile();
 //        final VirtualFile docs = docDir != null && docDir.isDirectory() ? LocalFileSystem.getInstance().findFileByPath(docDir.getAbsolutePath()) : null;
 //        if (docs != null) {
@@ -365,30 +360,28 @@ public class DlangSdkType extends SdkType {
     }
 
     @NotNull
-    private SetupStatus setupSDKPathsFromWindowsConfigFile(final Sdk sdk,
-        final SdkModificator sdkModificator) {
-        final GeneralCommandLine commandLine = new GeneralCommandLine(getDmdPath(sdk));
+    private SetupStatus setupSDKPathsFromWindowsConfigFile(final Sdk sdk, final SdkModificator sdkModificator) {
+        final GeneralCommandLine cmd = new GeneralCommandLine(getDmdPath(sdk));
+
         try {
-            //this array works around some of the limitations of java
-            final String[] configFileArray = {null};
-            final OSProcessHandler handler = new OSProcessHandler(commandLine);
-            handler.addProcessListener(new ProcessAdapter() {
-                @Override
-                public void onTextAvailable(@NotNull final ProcessEvent event,
-                    @NotNull final Key outputType) {
-                    if (event.getText().contains("Config file: ")) {
-                        configFileArray[0] = event.getText().replace("Config file:", "");
-                        configFileArray[0] = configFileArray[0].trim();
-                    }
-                }
-            });
-            handler.startNotify();
-            handler.waitFor();
-            final String configFile = configFileArray[0];
-            if (configFile == null) {
+            final ProcessOutput output = ApplicationManager.getApplication()
+                .executeOnPooledThread(() -> new CapturingProcessHandler(
+                    cmd.createProcess(),
+                    Charset.defaultCharset(),
+                    cmd.getCommandLineString()
+                ).runProcess(6_000))
+                .get();
+
+            final Optional<String> configFile = output
+                .getStdoutLines().stream()
+                .filter(line -> line.contains("Config file: "))
+                .map(line -> line.replace("Config file:", "").trim())
+                .findFirst();
+
+            if (configFile.isEmpty()) {
                 return new SetupStatus(false, false, false);
             }
-            final File file = new File(configFile);
+            final File file = new File(configFile.get());
             if (!file.exists()) {
                 return new SetupStatus(false, false, false);
             }
@@ -428,7 +421,7 @@ public class DlangSdkType extends SdkType {
                 return new SetupStatus(false, false, false);
             }
 
-        } catch (final ExecutionException | IOException e) {
+        } catch (final IOException | InterruptedException | java.util.concurrent.ExecutionException e) {
             Logger.getInstance(DlangSdkType.class).error(e);
             return new SetupStatus(false, false, false);
         }
