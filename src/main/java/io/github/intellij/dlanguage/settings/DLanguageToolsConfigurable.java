@@ -448,7 +448,7 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
             tool.versionField.setText("");
             tool.versionField.setDisabledTextColor(UIManager.getColor("ComboBox.disabledForeground"));
             tool.versionField.setToolTipText(null); // turns the tool tip off
-        } else if(!Files.isExecutable(Paths.get(pathText))) {
+        } else if(!Paths.get(pathText).toFile().canExecute()) {
             LOG.warn(String.format("unable to get %s version info for path: '%s'", tool.command, pathText));
             tool.versionField.setText(String.format("Path '%s' is not executable", pathText));
             tool.versionField.setDisabledTextColor(UIManager.getColor("Component.warningFocusColor"));
