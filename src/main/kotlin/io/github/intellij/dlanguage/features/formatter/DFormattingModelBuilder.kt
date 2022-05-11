@@ -204,13 +204,13 @@ class DFormattingModelBuilder : FormattingModelBuilder {
                 if (n1.elementType === OP_BRACES_LEFT && psi2 is DLanguageStatement) {
                     return lineBreak()
                 }
-                //
-                //                 if (isTopLevelDeclaration(psi2) && (isTopLevelDeclaration(psi1) || n1.getElementType() == SEMICOLON)) {
-                //                     Different declarations should be separated by blank line
-                //                    boolean sameKind = psi1.getClass().equals(psi2.getClass())
-                //                        || psi1 instanceof DLanguageDeclDefs && psi2 instanceof DLanguageDeclDefs;
-                //                    return sameKind ? lineBreak() : lineBreak(1, true);
-                //                }
+//
+//                 if (isTopLevelDeclaration(psi2) && (isTopLevelDeclaration(psi1) || n1.getElementType() == SEMICOLON)) {
+//                     Different declarations should be separated by blank line
+//                    boolean sameKind = psi1.getClass().equals(psi2.getClass())
+//                        || psi1 instanceof DLanguageDeclDefs && psi2 instanceof DLanguageDeclDefs;
+//                    return sameKind ? lineBreak() : lineBreak(1, true);
+//                }
             }
             return mySpacingBuilder.getSpacing(this, child1, child2)
         }
@@ -233,12 +233,12 @@ class DFormattingModelBuilder : FormattingModelBuilder {
 
         companion object {
 
-            //        private static final TokenSet BLOCKS_TOKEN_SET = TokenSet.create(
-            //            BLOCK_STATEMENT,
-            //            STRUCT_DECLARATION,
-            //            INTERFACE_DECLARATION,
-            //            EXPRESSION_STATEMENT
-            //        );
+//            private val TokenSet BLOCKS_TOKEN_SET = TokenSet.create(
+//                BLOCK_STATEMENT,
+//                STRUCT_DECLARATION,
+//                INTERFACE_DECLARATION,
+//                EXPRESSION_STATEMENT
+//        )
 
             private val BRACES_TOKEN_SET = TokenSet.create(
                 OP_BRACES_LEFT,
