@@ -6,6 +6,7 @@ import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase
 import com.intellij.psi.TokenType
 import com.intellij.psi.tree.IElementType
+import io.github.intellij.dlanguage.DHighlightingLexer
 import io.github.intellij.dlanguage.colors.DColor
 import io.github.intellij.dlanguage.highlighting.DHighlightingTokenSets as TokenSets
 

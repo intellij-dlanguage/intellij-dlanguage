@@ -6,7 +6,7 @@ import io.github.intellij.dlanguage.psi.DlangTypes;
 /**
  * This class defines which DlangTypes can be used for syntax highlighting. Valid types are ones that are
  * used by the highlighting lexer.
- * @see DHighlightingLexer
+ * @see io.github.intellij.dlanguage.DHighlightingLexer
  */
 public class DHighlightingTokenSets {
 
