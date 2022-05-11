@@ -36,6 +36,8 @@ class CreateDlangClassActionTest : LightPlatform4TestCase() {
         assertTrue(validator.checkInput("my_class"))
         assertTrue(validator.checkInput("my-class"))
         assertTrue(validator.checkInput("  spaces around words  "))
+        assertTrue(validator.checkInput("test123"))
+        assertTrue(validator.checkInput("test123.d"))
     }
 
     @Test
@@ -48,8 +50,12 @@ class CreateDlangClassActionTest : LightPlatform4TestCase() {
         assertTrue(validator.canClose("my.class"))
         assertTrue(validator.canClose("MyClass"))
         assertTrue(validator.canClose("my_class"))
+        assertTrue(validator.checkInput("test123"))
+        assertTrue(validator.checkInput("test123.d"))
 
         assertFalse(validator.canClose("my-class"))
+        assertFalse(validator.canClose(".myclass"))
+        assertFalse(validator.canClose("1myclass"))
         //assertTrue(validator.canClose("  spaces around words  ")) // todo: check if this should be handled (currently breaks)
     }
 
