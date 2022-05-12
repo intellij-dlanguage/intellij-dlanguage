@@ -40,6 +40,21 @@ class DFormatterTest : FormatterTestCase() {
 //    }
 
     @Throws(Exception::class)
+    fun testMultilineArrays() {
+        doTest();
+    }
+
+    @Throws(Exception::class)
+    fun testMultilineFuncArgs() {
+        doTest();
+    }
+
+    @Throws(Exception::class)
+    fun testCallChaining() {
+        doTest();
+    }
+
+    @Throws(Exception::class)
     fun testhello() {
         doTest()
     }
