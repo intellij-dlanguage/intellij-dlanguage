@@ -10,6 +10,7 @@ import com.intellij.rt.execution.junit.FileComparisonFailure;
 import com.intellij.testFramework.LexerTestCase;
 import com.intellij.testFramework.TestDataFile;
 import com.intellij.testFramework.VfsTestUtil;
+import io.github.intellij.dlanguage.DHighlightingLexer;
 import org.jetbrains.annotations.NonNls;
 
 import java.io.File;
