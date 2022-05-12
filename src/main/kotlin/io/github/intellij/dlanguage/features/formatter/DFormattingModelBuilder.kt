@@ -161,6 +161,12 @@ class DFormattingModelBuilder : FormattingModelBuilder {
             if (getPrevSiblingOfType(child, OP_BRACES_LEFT, newHashSet(/*OP_BRACES_RIGHT,*/ KW_ELSE)) != null) {
                 return Indent.getNormalIndent()
             }
+            if (getPrevSiblingOfType(child, OP_BRACKET_LEFT, newHashSet(OP_BRACKET_RIGHT)) != null) {
+                return Indent.getNormalIndent()
+            }
+            if (getPrevSiblingOfType(child, OP_PAR_LEFT, newHashSet(OP_PAR_RIGHT)) != null) {
+                return Indent.getNormalIndent()
+            }
 //            if(type == TEMPLATE_PARAMETERS){
 //                return Indent.getContinuationIndent()
 //            }
