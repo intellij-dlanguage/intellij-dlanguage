@@ -9,11 +9,10 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
-import io.github.intellij.dlanguage.psi.DLanguageAssignExpression;
+import io.github.intellij.dlanguage.psi.DLanguageArgumentList;
 import io.github.intellij.dlanguage.psi.DLanguageMixinExpression;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 
 public class DLanguageMixinExpressionImpl extends ASTWrapperPsiElement implements
@@ -35,22 +34,22 @@ public class DLanguageMixinExpressionImpl extends ASTWrapperPsiElement implement
         }
     }
 
-    @Nullable
-    public DLanguageAssignExpression getAssignExpression() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageAssignExpression.class);
+    @NotNull
+    public DLanguageArgumentList getArgumentList() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageArgumentList.class);
     }
 
-    @Nullable
+    @NotNull
     public PsiElement getOP_PAR_RIGHT() {
         return findChildByType(OP_PAR_RIGHT);
     }
 
-    @Nullable
+    @NotNull
     public PsiElement getOP_PAR_LEFT() {
         return findChildByType(OP_PAR_LEFT);
     }
 
-    @Nullable
+    @NotNull
     public PsiElement getKW_MIXIN() {
         return findChildByType(KW_MIXIN);
     }

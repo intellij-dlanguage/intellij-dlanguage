@@ -1,21 +1,21 @@
 package io.github.intellij.dlanguage.psi;
 
 import com.intellij.psi.PsiElement;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 
 public interface DLanguageMixinExpression extends PsiElement {
 
-    @Nullable
-    DLanguageAssignExpression getAssignExpression();
+    @NotNull
+    DLanguageArgumentList getArgumentList();
 
-    @Nullable
+    @NotNull
     PsiElement getOP_PAR_RIGHT();
 
-    @Nullable
+    @NotNull
     PsiElement getOP_PAR_LEFT();
 
-    @Nullable
+    @NotNull
     PsiElement getKW_MIXIN();
 
 }
