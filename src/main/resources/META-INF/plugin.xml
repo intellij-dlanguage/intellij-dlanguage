@@ -56,8 +56,7 @@
 
         <stubElementTypeHolder class="io.github.intellij.dlanguage.psi.DlangTypes"/>
 
-        <fileTypeFactory implementation="io.github.intellij.dlanguage.DlangFileTypeFactory"/>
-        <!--   todo: replace fileTypeFactory with something like: <fileType name="D file" extensions="d;di" implementationClass="io.github.intellij.dlanguage.DlangFileType" language="D"/> -->
+        <fileType name="D file" language="D" extensions="d;di" implementationClass="io.github.intellij.dlanguage.DlangFileType" />
 
 
         <!-- All notification group id's should be defined here. See #654 -->
