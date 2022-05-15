@@ -5081,14 +5081,14 @@ class DLangParser {
      * Parses a MixinExpression
      * <p>
      * $(GRAMMAR $(RULEDEF mixinExpression):
-     * $(LITERAL 'mixin') $(LITERAL '$(LPAREN)') $(RULE assignExpression) $(LITERAL '$(RPAREN)')
+     * $(LITERAL 'mixin') $(LITERAL '$(LPAREN)') $(RULE argumentList) $(LITERAL '$(RPAREN)')
      * ;)
      */
     boolean parseMixinExpression() {
         final Marker m = enter_section_modified(builder);
         expect(tok("mixin"));
         expect(tok("("));
-        if (!parseAssignExpression()) {
+        if (!parseArgumentList().first) {
             cleanup(m, MIXIN_EXPRESSION);
             return false;
         }
