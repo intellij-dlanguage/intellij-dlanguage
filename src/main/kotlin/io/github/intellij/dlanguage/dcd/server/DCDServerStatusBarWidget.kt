@@ -14,6 +14,7 @@ import com.intellij.openapi.wm.StatusBarWidget
 import com.intellij.openapi.wm.impl.status.EditorBasedStatusBarPopup
 import com.intellij.ui.AnimatedIcon
 import com.intellij.util.concurrency.EdtExecutorService
+import io.github.intellij.dlanguage.DlangFileType
 import io.github.intellij.dlanguage.actions.RestartDCD
 import io.github.intellij.dlanguage.codeinsight.dcd.DCDCompletionServer
 import java.util.concurrent.ScheduledFuture
@@ -43,6 +44,8 @@ class DCDServerStatusBarWidget(project: Project) : EditorBasedStatusBarPopup(pro
 
     // called on initial creation and whenever it's clicked
     override fun getWidgetState(file: VirtualFile?): WidgetState {
+        if (file?.fileType !is DlangFileType) return WidgetState.HIDDEN
+
         val dcdServer: DCDCompletionServer? = DCDCompletionServer.getInstance() // can't use project.getComponent(DCDCompletionServer::class.java)
 
         val state: WidgetState = when(dcdServer) {
@@ -67,16 +70,23 @@ class DCDServerStatusBarWidget(project: Project) : EditorBasedStatusBarPopup(pro
         return state
     }
 
+    /*
+    * todo: Register to topics such as DCD_SERVER_TOOL_CHANGE and take appropriate action
+    */
     override fun registerCustomListeners() {
-        // do nothing
+//        val connection = ApplicationManager.getApplication().messageBus.connect(this)
+//
+//        connection.subscribe(DCD_SERVER_TOOL_CHANGE)
     }
 
-    override fun createInstance(project: Project): StatusBarWidget = DCDServerStatusBarWidget(project!!)
+    override fun createInstance(project: Project): StatusBarWidget = DCDServerStatusBarWidget(project)
 
     override fun createPopup(context: DataContext?): ListPopup? {
         val group = DefaultActionGroup.createPopupGroupWithEmptyText()
 
         group.add(ActionManager.getInstance().getAction(RestartDCD.ID))
+        // group.add(ActionManager.getInstance().getAction(EnableDCD.ID)) todo: #678
+        // group.add(ActionManager.getInstance().getAction(DisableDCD.ID))
 
         return JBPopupFactory.getInstance()
             .createActionGroupPopup("DCD Actions", group, context!!, JBPopupFactory.ActionSelectionAid.SPEEDSEARCH, true)
