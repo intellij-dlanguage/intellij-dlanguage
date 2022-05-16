@@ -23,7 +23,7 @@ public abstract class DlangItemPresentation implements ItemPresentation {
     @Nullable
     @Override
     public String getLocationString() {
-        return psiFile instanceof DlangFile ? ((DlangFile) psiFile).getModuleOrFileName() : null;
+        return psiFile instanceof DlangFile ? ((DlangFile) psiFile).getModuleName() : null;
     }
 
     @NotNull

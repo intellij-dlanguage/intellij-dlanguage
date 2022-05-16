@@ -58,7 +58,7 @@ public class DlangModuleType extends ModuleType<DlangModuleBuilder> {
     }
 
     //@Override // todo: remove this overidden getter when it's removed from Intellij platform
-    public Icon getNodeIcon(@Deprecated final boolean b) {
+    public @NotNull Icon getNodeIcon(@Deprecated final boolean b) {
         return DLanguage.Icons.FILE;
     }
 

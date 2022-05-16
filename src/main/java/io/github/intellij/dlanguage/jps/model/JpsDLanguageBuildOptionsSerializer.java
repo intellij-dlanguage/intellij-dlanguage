@@ -15,14 +15,8 @@ public class JpsDLanguageBuildOptionsSerializer extends JpsProjectExtensionSeria
 
     @Override
     public void loadExtension(@NotNull final JpsProject project, @NotNull final Element componentTag) {
-        final JpsDLanguageBuildOptionsExtension extension = JpsDLanguageBuildOptionsExtension.getOrCreateExtension(project);
-        final DLanguageBuildOptions options = XmlSerializer.deserialize(componentTag, DLanguageBuildOptions.class);
-        if (options != null) {
-            extension.setOptions(options);
-        }
-    }
-
-    @Override
-    public void saveExtension(@NotNull final JpsProject project, @NotNull final Element componentTag) {
+        @NotNull final JpsDLanguageBuildOptionsExtension extension = JpsDLanguageBuildOptionsExtension.getOrCreateExtension(project);
+        @NotNull final DLanguageBuildOptions options = XmlSerializer.deserialize(componentTag, DLanguageBuildOptions.class);
+        extension.setOptions(options);
     }
 }

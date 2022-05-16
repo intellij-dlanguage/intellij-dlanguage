@@ -41,10 +41,6 @@ public class JpsDLanguageModelSerializerExtension extends JpsModelSerializerExte
             public JpsDummyElement loadProperties(@Nullable final Element componentElement) {
                 return JpsElementFactory.getInstance().createDummyElement();
             }
-
-            //@Override // todo: remove this when it no longer overrides parent class method
-            public void saveProperties(@NotNull final JpsDummyElement properties, @NotNull final Element componentElement) {
-            }
         });
     }
 
@@ -56,10 +52,6 @@ public class JpsDLanguageModelSerializerExtension extends JpsModelSerializerExte
             @Override
             public JpsDummyElement loadProperties(@Nullable final Element propertiesElement) {
                 return JpsElementFactory.getInstance().createDummyElement();
-            }
-
-            //@Override // todo: remove this when it no longer overrides parent class method
-            public void saveProperties(@NotNull final JpsDummyElement properties, @NotNull final Element element) {
             }
         });
     }

@@ -24,7 +24,7 @@ public class DLanguageBuildSettings implements PersistentStateComponent<DLanguag
 
     @NotNull
     public static DLanguageBuildSettings getInstance(@NotNull final Project project) {
-        final DLanguageBuildSettings persisted = ServiceManager.getService(project, DLanguageBuildSettings.class);
+        final DLanguageBuildSettings persisted = project.getService(DLanguageBuildSettings.class);
         return persisted != null ? persisted : new DLanguageBuildSettings();
     }
 

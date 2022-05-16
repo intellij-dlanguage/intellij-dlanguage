@@ -127,12 +127,6 @@ public class DlangSdkType extends SdkType {
 
     @NotNull
     @Override
-    public Icon getIconForAddAction() {
-        return DLanguage.Icons.FILE;
-    }
-
-    @NotNull
-    @Override
     public Icon getIcon() {
         return DLanguage.Icons.FILE;
     }

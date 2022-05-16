@@ -7,7 +7,6 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.patterns.PlatformPatterns;
 import com.intellij.util.Function;
 import io.github.intellij.dlanguage.DLanguage;
-import io.github.intellij.dlanguage.icons.DlangIcons;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -35,7 +34,7 @@ public final class DCompletionContributor extends CompletionContributor {
                                                     @Nullable final String module,
                                                     @NotNull final String type) {
         final Icon icon = "Function".equals(type) ? AllIcons.Nodes.Function // should perhaps use DlangIcons.NODE_FUNCTION
-                            : "Variable".equals(type) ? AllIcons.Nodes.Variable :DlangIcons.FILE;
+                            : "Variable".equals(type) ? AllIcons.Nodes.Variable : DLanguage.Icons.FILE;
 
         return LookupElementBuilder.create(name)
             .withItemTextItalic("Keyword".equals(type))
@@ -50,6 +49,6 @@ public final class DCompletionContributor extends CompletionContributor {
 
     public static final Function<String, LookupElement> stringToLookupElement = s -> LookupElementBuilder
         .create(s)
-        .withIcon(DlangIcons.FILE);
+        .withIcon(DLanguage.Icons.FILE);
 
 }

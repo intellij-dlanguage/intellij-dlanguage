@@ -64,7 +64,7 @@ public class CLionDubProjectOpenProcessor extends ProjectOpenProcessor {
     if (projectToClose != null && !forceOpenInNewFrame) {
       final int exitCode = ProjectUtil.confirmOpenNewProject(false);
       if (exitCode == GeneralSettings.OPEN_PROJECT_SAME_WINDOW) {
-        if (!ProjectUtil.closeAndDispose(projectToClose)) {
+        if (!ProjectManagerEx.getInstanceEx().closeAndDispose(projectToClose)) {
           return null;
         }
       } else if (exitCode != GeneralSettings.OPEN_PROJECT_NEW_WINDOW) {
@@ -74,8 +74,10 @@ public class CLionDubProjectOpenProcessor extends ProjectOpenProcessor {
     }
 
     final VirtualFile baseDir = virtualFile.isDirectory() ? virtualFile : virtualFile.getParent();
+
     final Project project = ProjectManagerEx.getInstanceEx()
         .newProject(baseDir.getName(), baseDir.getPath(), true, false);
+
     if (project != null) {
       WriteAction.run(() -> {
         final Sdk sdk = DlangSdkType.findOrCreateSdk();
