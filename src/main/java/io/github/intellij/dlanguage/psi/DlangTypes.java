@@ -221,7 +221,7 @@ public interface DlangTypes {
     DlangElementType XOR_EXPRESSION = new DlangElementType("XOR_EXPRESSION");
     DlangElementType ADD_EXPRESSION = new DlangElementType("ADD_EXPRESSION");
     DlangElementType BUILTIN_TYPE = new DlangElementType("BUILTIN_TYPE");
-    DlangElementType STATIC_FOREACH_STATEMENT = new DlangElementType("BUILTIN_TYPE");
+    DlangElementType STATIC_FOREACH_STATEMENT = new DlangElementType("STATIC_FOREACH_STATEMENT");
 
 //    IElementType DOC_COMMENT = new DlangTokenType("DOC_COMMENT");
     DlangTokenType LINE_DOC = new DlangTokenType("LINE_DOC");
