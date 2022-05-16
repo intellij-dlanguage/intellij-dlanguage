@@ -23,7 +23,7 @@ plugins {
 sourceSets {
     main {
         java.srcDirs 'src/main/java', 'src/main/kotlin', 'gen' , 'src/main/jflex'
-        resources.srcDirs 'src/main/resources'
+        // resources.srcDirs 'src/main/resources' // specifying the default causes a problem with processResources on Gradle 7
     }
     test {
         java.srcDirs 'src/test/java', 'src/test/kotlin'
