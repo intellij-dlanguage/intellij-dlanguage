@@ -124,6 +124,10 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
         doDlangParserTest(true, true);
     }
 
+    public void testdeclaration_static_foreach() {
+        doDlangParserTest(true, true);
+    }
+
     //  types
     public void testtype_arithmetic_conversion() {
         doDlangParserTest(true, true);
@@ -848,6 +852,10 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
     }
 
     public void testtemplates_alias() {
+        doDlangParserTest(true, true);
+    }
+
+    public void testtemplates_alias_assign() {
         doDlangParserTest(true, true);
     }
 

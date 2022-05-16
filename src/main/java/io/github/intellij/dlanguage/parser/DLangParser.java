@@ -486,6 +486,10 @@ class DLangParser {
                 return VECTOR;
             case "StaticForeachStatement":
                 return STATIC_FOREACH_STATEMENT;
+            case "StaticForeachDeclaration":
+                return STATIC_FOREACH_DECLARATION;
+            case "AliasAssign":
+                return ALIAS_ASSIGN;
             default:
                 throw new IllegalArgumentException("unrecognized thing to parse:" + nodeType);
         }
@@ -647,12 +651,42 @@ class DLangParser {
         return true;
     }
 
+    /**
+     * Parses an AliasAssign.
+     * <p>
+     * $(GRAMMAR $(RULEDEF aliasAssign):
+     *   $(LITERAL Identifier) $(LITERAL '=') $(RULE type)
+     */
+    boolean parseAliasAssign()
+    {
+        final Marker m = enter_section_modified(builder);
+        //mixin(traceEnterAndExit!(__FUNCTION__));
+        if (!tokenCheck("identifier")) {
+            cleanup(m, ALIAS_ASSIGN);
+            return false;
+        }
+        if (!tokenCheck("=")) {
+            cleanup(m, ALIAS_ASSIGN);
+            return false;
+        }
+        if (!parseType().first) {
+            cleanup(m, ALIAS_ASSIGN);
+            return false;
+        }
+        final Token semi = expect(tok(";"));
+        if (semi == null) {
+            cleanup(m, ALIAS_ASSIGN);
+            return false;
+        }
+        exit_section_modified(builder, m, ALIAS_ASSIGN, true);
+        return true;
+    }
 
     /**
      * Parses an AliasInitializer.
      * <p>
      * $(GRAMMAR $(RULEDEF aliasInitializer):
-     * $(LITERAL Identifier) $(RULE templateParameters)? $(LITERAL '=') $(RULE storageClass)* $(RULE type)
+     *   $(LITERAL Identifier) $(RULE templateParameters)? $(LITERAL '=') $(RULE storageClass)* $(RULE type)
      * | $(LITERAL Identifier) $(RULE templateParameters)? $(LITERAL '=') $(RULE functionLiteralExpression)
      * ;)
      */
@@ -2391,7 +2425,7 @@ class DLangParser {
      * Parses a ConditionalDeclaration
      * <p>
      * $(GRAMMAR $(RULEDEF conditionalDeclaration):
-     * $(RULE compileCondition) $(RULE declaration)
+     *   $(RULE compileCondition) $(RULE declaration)
      * | $(RULE compileCondition) $(LITERAL '{') $(RULE declaration)* $(LITERAL '}')
      * | $(RULE compileCondition) $(LITERAL ':') $(RULE declaration)+
      * | $(RULE compileCondition) $(RULE declaration) $(LITERAL 'else') $(LITERAL ':') $(RULE declaration)*
@@ -2405,7 +2439,7 @@ class DLangParser {
      * | $(RULE compileCondition) $(LITERAL ':') $(RULE declaration)+ $(LITERAL 'else') $(LITERAL ':') $(RULE declaration)*
      * ;)
      */
-    boolean parseConditionalDeclaration(final boolean strict) {
+    boolean parseConditionalDeclaration(final boolean strict, boolean inTemplateDeclaration) {
         final Marker m = enter_section_modified(builder);
         if (!parseCompileCondition()) {
             cleanup(m, CONDITIONAL_DECLARATION);
@@ -2416,7 +2450,7 @@ class DLangParser {
             while (moreTokens() && !currentIs(tok("}")) && !currentIs(tok("else"))) {
                 final Bookmark b = setBookmark();
 //                    c = allocator.setCheckpoint();
-                if (parseDeclaration(strict, true)) {
+                if (parseDeclaration(strict, true, inTemplateDeclaration)) {
                     abandonBookmark(b);
                 } else {
                     goToBookmark(b);
@@ -2430,7 +2464,7 @@ class DLangParser {
                     cleanup(m, CONDITIONAL_DECLARATION);
                     return false;
                 }
-        } else if (!parseDeclaration(strict, true)) {
+        } else if (!parseDeclaration(strict, true, inTemplateDeclaration)) {
             cleanup(m, CONDITIONAL_DECLARATION);
             return false;
         }
@@ -2444,7 +2478,7 @@ class DLangParser {
             final boolean brace = currentIs(tok("{"));
             advance();
             while (moreTokens() && !currentIs(tok("}")))
-                if (!parseDeclaration(strict, true)) {
+                if (!parseDeclaration(strict, true, inTemplateDeclaration)) {
                     cleanup(m, CONDITIONAL_DECLARATION);
                     return false;
                 }
@@ -2454,7 +2488,7 @@ class DLangParser {
                     return false;
                 }
         } else {
-            if (!parseDeclaration(strict, true)) {
+            if (!parseDeclaration(strict, true, inTemplateDeclaration)) {
                 cleanup(m, CONDITIONAL_DECLARATION);
                 return false;
             }
@@ -2667,20 +2701,23 @@ class DLangParser {
     /**
      * Parses a Declaration
      * <p>
-     * Params: strict = if true, do not return partial AST nodes on errors.
+     * Params:
+     *   strict = if true, do not return partial AST nodes on errors.
+     *   mustBeDeclaration = do not parse as a declaration if it could be parsed as a function call
+     *   inTemplateDeclaration = if this function is called from a templated context
      * <p>
      * $(GRAMMAR $(RULEDEF declaration):
-     * $(RULE attribute)* $(RULE declaration2)
+     *   $(RULE attribute)* $(RULE declaration2)
      * | $(RULE attribute)+ $(LITERAL '{') $(RULE declaration)* $(LITERAL '}')
      * ;
      * $(RULEDEF declaration2):
-     * $(RULE aliasDeclaration)
+     *   $(RULE aliasDeclaration)
      * | $(RULE aliasThisDeclaration)
      * | $(RULE anonymousEnumDeclaration)
      * | $(RULE attributeDeclaration)
      * | $(RULE classDeclaration)
      * | $(RULE conditionalDeclaration)
-     * | $(RULE ructor)
+     * | $(RULE constructor)
      * | $(RULE debugSpecification)
      * | $(RULE destructor)
      * | $(RULE enumDeclaration)
@@ -2695,6 +2732,7 @@ class DLangParser {
      * | $(RULE sharedStaticConstructor)
      * | $(RULE sharedStaticDestructor)
      * | $(RULE staticAssertDeclaration)
+     * | $(RULE staticForeachDeclaration)
      * | $(RULE staticConstructor)
      * | $(RULE staticDestructor)
      * | $(RULE structDeclaration)
@@ -2706,14 +2744,18 @@ class DLangParser {
      * ;)
      */
     boolean parseDeclaration() {
-        return parseDeclaration(false, false);
+        return parseDeclaration(false, false, false);
     }
 
     boolean parseDeclaration(final boolean strict) {
-        return parseDeclaration(strict, false);
+        return parseDeclaration(strict, false, false);
     }
 
     boolean parseDeclaration(final boolean strict, final boolean mustBeDeclaration) {
+        return parseDeclaration(strict, mustBeDeclaration, false);
+    }
+
+    boolean parseDeclaration(final boolean strict, final boolean mustBeDeclaration, boolean inTemplateDeclaration) {
         final Marker m = enter_section_modified(builder);
         if (!moreTokens()) {
             error("declaration expected instead of EOF");
@@ -2786,7 +2828,7 @@ class DLangParser {
                 advance();
                 while (moreTokens() && !currentIs(tok("}"))) {
 //                        auto c = allocator.setCheckpoint();
-                    if (!parseDeclaration(strict)) {
+                    if (!parseDeclaration(strict, false, inTemplateDeclaration)) {
 //                            allocator.rollback(c);
                         cleanup(m, DECLARATION);
                         return false;
@@ -2960,12 +3002,17 @@ class DLangParser {
                         return false;
                     }
                 } else if (peekIs(tok("if"))) {
-                    if (!parseConditionalDeclaration(strict)) {
+                    if (!parseConditionalDeclaration(strict, inTemplateDeclaration)) {
                         cleanup(m, DECLARATION);
                         return false;
                     }
                 } else if (peekIs(tok("assert"))) {
                     if (!parseStaticAssertDeclaration()) {
+                        cleanup(m, DECLARATION);
+                        return false;
+                    }
+                } else if (peekIs(tok("foreach")) || peekIs(tok("foreach_reverse"))) {
+                    if (!parseStaticForeachDeclaration(inTemplateDeclaration)) {
                         cleanup(m, DECLARATION);
                         return false;
                     }
@@ -3001,14 +3048,19 @@ class DLangParser {
                     cleanup(m, DECLARATION);
                     return false;
                 }
-            } else if (idType.equals(tok("identifier")) || idType.equals(tok(".")) || idType.equals(tok("const")) || idType.equals(tok("immutable")) || idType.equals(tok("inout")) || idType.equals(tok("scope")) || idType.equals(tok("typeof")) || idType.equals(tok("__vector")) || idType.equals(tok("int")) || idType.equals(tok("bool")) || idType.equals(tok("byte")) || idType.equals(tok("cdouble")) || idType.equals(tok("cent")) || idType.equals(tok("cfloat")) || idType.equals(tok("char")) || idType.equals(tok("creal")) || idType.equals(tok("dchar")) || idType.equals(tok("double")) || idType.equals(tok("float")) || idType.equals(tok("idouble")) || idType.equals(tok("ifloat")) || idType.equals(tok("ireal")) || idType.equals(tok("long")) || idType.equals(tok("real")) || idType.equals(tok("short")) || idType.equals(tok("ubyte")) || idType.equals(tok("ucent")) || idType.equals(tok("uint")) || idType.equals(tok("ulong")) || idType.equals(tok("ushort")) || idType.equals(tok("void")) || idType.equals(tok("wchar"))) {
+            } else if (idType.equals(tok("identifier")) && inTemplateDeclaration && peekIs(tok("="))) {
+                if (!parseAliasAssign()) {
+                    cleanup(m, DECLARATION);
+                    return false;
+                }
+            } else if (idType.equals(tok("identifier")) || idType.equals(tok(".")) || idType.equals(tok("const")) || idType.equals(tok("immutable")) || idType.equals(tok("inout")) || idType.equals(tok("scope")) || idType.equals(tok("typeof")) || idType.equals(tok("__vector")) || idType.equals(tok("__traits")) || idType.equals(tok("int")) || idType.equals(tok("bool")) || idType.equals(tok("byte")) || idType.equals(tok("cdouble")) || idType.equals(tok("cent")) || idType.equals(tok("cfloat")) || idType.equals(tok("char")) || idType.equals(tok("creal")) || idType.equals(tok("dchar")) || idType.equals(tok("double")) || idType.equals(tok("float")) || idType.equals(tok("idouble")) || idType.equals(tok("ifloat")) || idType.equals(tok("ireal")) || idType.equals(tok("long")) || idType.equals(tok("real")) || idType.equals(tok("short")) || idType.equals(tok("ubyte")) || idType.equals(tok("ucent")) || idType.equals(tok("uint")) || idType.equals(tok("ulong")) || idType.equals(tok("ushort")) || idType.equals(tok("void")) || idType.equals(tok("wchar"))) {
                 if (!type(m)) {
 //                    cleanup(m);
                     return false;//no cleanup needed already done in type
                 }
             } else if (idType.equals(tok("version"))) {
                 if (peekIs(tok("("))) {
-                    if (!parseConditionalDeclaration(strict)) {
+                    if (!parseConditionalDeclaration(strict, inTemplateDeclaration)) {
                         cleanup(m, DECLARATION);
                         return false;
                     }
@@ -3028,7 +3080,7 @@ class DLangParser {
                         cleanup(m, DECLARATION);
                         return false;
                     }
-                } else if (!parseConditionalDeclaration(strict)) {
+                } else if (!parseConditionalDeclaration(strict, inTemplateDeclaration)) {
                     cleanup(m, DECLARATION);
                     return false;
                 }
@@ -3766,6 +3818,31 @@ class DLangParser {
         return true;
     }
 
+
+    /**
+     * Parses a StaticForeachDeclaration
+     *
+     * $(GRAMMAR $(RULEDEF staticForeachDeclaration):
+     *       $(LITERAL 'static') ($(LITERAL 'foreach') | $(LITERAL 'foreach_reverse')) $(LITERAL '$(LPAREN)') $(RULE foreachTypeList) $(LITERAL ';') $(RULE expression) $(LITERAL '$(RPAREN)') ($(RULE declaration) | $(LITERAL '{') $(RULE declaration)* $(LITERAL '}'))
+     *     | $(LITERAL 'static') ($(LITERAL 'foreach') | $(LITERAL 'foreach_reverse')) $(LITERAL '$(LPAREN)') $(RULE foreachType) $(LITERAL ';') $(RULE expression) $(LITERAL '..') $(RULE expression) $(LITERAL '$(RPAREN)') ($(RULE declaration) | $(LITERAL '{') $(RULE declaration)* $(LITERAL '}'))
+     *     ;)
+     */
+    boolean parseStaticForeachDeclaration(final boolean inTemplateDeclaration)
+    {
+        //mixin(traceEnterAndExit!(__FUNCTION__));
+        final Marker m = enter_section_modified(builder);
+        if (!tokenCheck("static")) {
+            cleanup(m, STATIC_FOREACH_DECLARATION);
+            return false;
+        }
+        if (!parseForeach(STATIC_FOREACH_DECLARATION, true, inTemplateDeclaration)) {
+            cleanup(m, STATIC_FOREACH_DECLARATION);
+            return false;
+        }
+        exit_section_modified(builder, m, STATIC_FOREACH_DECLARATION, true);
+        return true;
+    }
+
     /**
      * Parses a ForeachStatement
      * <p>
@@ -3775,67 +3852,104 @@ class DLangParser {
      * ;)
      */
     boolean parseForeachStatement() {
+        //mixin(traceEnterAndExit!(__FUNCTION__));
+        return parseForeach(FOREACH_STATEMENT, false);
+    }
+
+    boolean parseStaticForeachStatement() {
+        return simpleParse("StaticForeachStatement", tok("static"),
+            "foreachStatement|parseForeachStatement");
+    }
+
+    boolean parseForeach(IElementType elementType, final boolean declOnly) {
+        return parseForeach(elementType, declOnly, false);
+    }
+
+    boolean parseForeach(IElementType elementType, boolean declOnly, boolean inTemplateDeclaration) {
 //            ForeachStatement node = allocator.make!ForeachStatement;
         final Marker m = enter_section_modified(builder);
         if (currentIsOneOf(tok("foreach"), tok("foreach_reverse"))) {
             advance();
         } else {
             error("\"foreach\" or \"foreach_reverse\" expected");
-            exit_section_modified(builder, m, FOREACH_STATEMENT, true);
+            cleanup(m, elementType);
             return false;
         }
         if (!tokenCheck("(")) {
-            cleanup(m, FOREACH_STATEMENT);
+            cleanup(m, elementType);
             return false;
         }
         final Pair<Boolean, Integer> booleanLengthPair = parseForeachTypeList();
         final boolean feType = booleanLengthPair.first;
         if (!feType) {
-            cleanup(m, FOREACH_STATEMENT);
+            cleanup(m, elementType);
             return false;
         }
         final boolean canBeRange = booleanLengthPair.second == 1;
         if (!tokenCheck(";")) {
-            cleanup(m, FOREACH_STATEMENT);
+            cleanup(m, elementType);
             return false;
         }
         if (!parseExpression()) {
-            cleanup(m, FOREACH_STATEMENT);
+            cleanup(m, elementType);
             return false;
         }
         if (currentIs(tok(".."))) {
             if (!canBeRange) {
                 error("Cannot have more than one foreach variable for a foreach range statement");
-                exit_section_modified(builder, m, FOREACH_STATEMENT, true);
+                cleanup(m, elementType);
                 return false;
 
             }
             advance();
             if (!parseExpression()) {
-                cleanup(m, FOREACH_STATEMENT);
+                cleanup(m, elementType);
                 return false;
             }
         }
         if (!tokenCheck(")")) {
-            cleanup(m, FOREACH_STATEMENT);
+            cleanup(m, elementType);
             return false;
         }
         if (currentIs(tok("}"))) {
             error("Statement expected"/*, false*/);
-            exit_section_modified(builder, m, FOREACH_STATEMENT, true);
+            cleanup(m, elementType);
             return true; // this line makes DCD better
         }
-        if (!parseDeclarationOrStatement()) {
-            cleanup(m, FOREACH_STATEMENT);
-            return false;
+        if (declOnly) {
+            //node.style = currentIs(tok("{")) ? DeclarationListStyle.block : DeclarationListStyle.single;
+            if (currentIs(tok("{"))) {
+                advance();
+                while (moreTokens() && !currentIs(tok("}"))) {
+                    Bookmark b = setBookmark();
+                    //immutable c = allocator.setCheckpoint();
+                    if (parseDeclaration(true, true, inTemplateDeclaration)) {
+                        abandonBookmark(b);
+                    } else {
+                        goToBookmark(b);
+                        cleanup(m, elementType);
+                        //allocator.rollback(c);
+                        return false;
+                    }
+                }
+                if (!tokenCheck("}")) {
+                    cleanup(m, elementType);
+                    return false;
+                }
+            }
+            else if (!parseDeclaration(true, true, inTemplateDeclaration)) {
+                cleanup(m, elementType);
+                return false;
+            }
         }
-        exit_section_modified(builder, m, FOREACH_STATEMENT, true);
+        else {
+            if (!parseDeclarationOrStatement()) {
+                cleanup(m, elementType);
+                return false;
+            }
+        }
+        exit_section_modified(builder, m, elementType, true);
         return true;
-    }
-
-    boolean parseStaticForeachStatement() {
-        return simpleParse("StaticForeachStatement", tok("static"),
-            "foreachStatement|parseForeachStatement");
     }
 
     /**
@@ -6890,7 +7004,7 @@ class DLangParser {
 //            if (!parseDeclaration(true, true)) {
 //                advance();
 //            }
-            parseDeclaration(true, true);
+            parseDeclaration(true, true, true);
 //                    allocator.rollback(c);
         }
         final Token end = expect(tok("}"));
@@ -8291,6 +8405,8 @@ class DLangParser {
         if (i.equals(tok("static"))) {
             if (peekIs(tok("if")))
                 return false;
+            if (peekIs(tok("foreach")) || peekIs(tok("foreach_reverse")))
+                return isDeclarationDefault();
             return !peekIs(tok("("));
         }
         if (i.equals(tok("scope"))) {
@@ -8343,7 +8459,7 @@ class DLangParser {
         if (i.equals(tok("const")) || i.equals(tok("immutable")) || i.equals(tok("inout")) || i.equals(tok("scope"))) {
             return !peekIs(tok("("));
         } else if (i.equals(tok("static"))) {
-            return !peekIsOneOf(tok("assert"), tok("this"), tok("if"), tok("~"));
+            return !peekIsOneOf(tok("assert"), tok("this"), tok("if"), tok("~"), tok("foreach"), tok("foreach_reverse"));
         } else if (i.equals(tok("shared"))) {
             return !(startsWith(tok("shared"), tok("static"), tok("this")) || startsWith(tok("shared"), tok("static"), tok("~")) || peekIs(tok("(")));
         } else if (i.equals(tok("pragma"))) {

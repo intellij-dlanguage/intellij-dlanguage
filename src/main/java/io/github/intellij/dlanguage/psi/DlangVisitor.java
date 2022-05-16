@@ -1079,4 +1079,12 @@ public class DlangVisitor extends PsiElementVisitor {
         DLangStaticForeachStatementImpl dLangStaticForeachStatement) {
         visitPsiElement(dLangStaticForeachStatement);
     }
+
+    public void visitStaticForeachDeclaration(DLanguageStaticForeachDeclaration dLanguageStaticForeachDeclaration) {
+        visitPsiElement(dLanguageStaticForeachDeclaration);
+    }
+
+    public void visitAliasAssign(DLanguageAliasAssign dLanguageAliasAssign) {
+        visitPsiElement(dLanguageAliasAssign);
+    }
 }

@@ -158,6 +158,7 @@ typealias Statement = io.github.intellij.dlanguage.psi.DLanguageStatement
 typealias StatementNoCaseNoDefault = io.github.intellij.dlanguage.psi.DLanguageStatementNoCaseNoDefault
 typealias StaticAssertDeclaration = io.github.intellij.dlanguage.psi.DLanguageStaticAssertDeclaration
 typealias StaticAssertStatement = io.github.intellij.dlanguage.psi.DLanguageStaticAssertStatement
+typealias StaticForeachDeclaration = io.github.intellij.dlanguage.psi.DLanguageStaticForeachDeclaration
 typealias StaticIfCondition = io.github.intellij.dlanguage.psi.DLanguageStaticIfCondition
 typealias StorageClass = io.github.intellij.dlanguage.psi.DLanguageStorageClass
 typealias StructBody = io.github.intellij.dlanguage.psi.DLanguageStructBody
