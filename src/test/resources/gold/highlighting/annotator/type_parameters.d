@@ -1,27 +1,27 @@
-class Foo(<info>T</info>) {
-    <info>T</info>[] bar;
+class Foo(<info descr="">T</info>) {
+    <info descr="">T</info>[] bar;
 
-    void test(<info>T</info> item, <info>T</info> a, <info>T</info> b) {
+    void test(<info descr="">T</info> item, <info descr="">T</info> a, <info descr="">T</info> b) {
         if (item > 0) {
-            <info>T</info> a = b;
+            <info descr="">T</info> a = b;
         } else {
-            <info>T</info> b = a;
+            <info descr="">T</info> b = a;
         }
 
-        static if (hasIndirections!<info>T</info>) {
-            bar[0 .. last + 1] = <info>T</info>.init;
+        static if (hasIndirections!<info descr="">T</info>) {
+            bar[0 .. last + 1] = <info descr="">T</info>.init;
         }
     }
 }
 
-interface Addable(<info>T</info>) {
-    final auto add(<info>T</info> t) {
+interface Addable(<info descr="">T</info>) {
+    final auto add(<info descr="">T</info> t) {
         return this;
     }
 }
 
-class List(<info>T</info>) : Addable!<info>T</info> {
-    List remove(<info>T</info> t) {
+class List(<info descr="">T</info>) : Addable!<info descr="">T</info> {
+    List remove(<info descr="">T</info> t) {
         return this;
     }
 }
@@ -30,33 +30,33 @@ void main() {
     auto list = new List!int;
 }
 
-Vector!(<info>T</info>, <info>n</info>) optVecValue(<info>T</info>, int <info>n</info>, <info>E</info> : Exception)(
+Vector!(<info descr="">T</info>, <info descr="">n</info>) optVecValue(<info descr="">T</info>, <info descr="">int n</info>, <info descr="">E : Exception</info>)(
     in string path,
-    Vector!(<info>T</info>, <info>n</info>) defaultVal = Vector!(<info>T</info>, <info>n</info>).init
+    Vector!(<info descr="">T</info>, <info descr="">n</info>) defaultVal = Vector!(<info descr="">T</info>, <info descr="">n</info>).init
 ) {
     Node node = findNodeByPath(path, getRootNode());
 
     if (node is null)
         return defaultVal;
 
-    return getVecValueFromNode!(<info>T</info>, <info>n</info>, <info>E</info>)(node);
+    return getVecValueFromNode!(<info descr="">T</info>, <info descr="">n</info>, <info descr="">E</info>)(node);
 }
 
-mixin template MyMixin(<info>T</info>, <info>N</info>) {
-    <info>T</info> foo;
-    <info>N</info> bar;
+mixin template MyMixin(<info descr="">T</info>, <info descr="">N</info>) {
+    <info descr="">T</info> foo;
+    <info descr="">N</info> bar;
 }
 
-template myTemplate(<info>T</info>, alias <info>b</info>) {
+template myTemplate(<info descr="">T</info>, <info descr="">alias b</info>) {
 }
 
 struct S {
-    const void foo(this <info>T</info>)(int i) {
-        writeln(typeid(<info>T</info>));
+    const void foo(<info descr="">this T</info>)(int i) {
+        writeln(typeid(<info descr="">T</info>));
     }
 }
 
-void logError(<info>C</info>, <info>T...</info>)(in <info>C</info>[] fmt, <info>T</info> args) {
+void logError(<info descr="">C</info>, <info descr="">T...</info>)(in <info descr="">C</info>[] fmt, <info descr="">T</info> args) {
     auto app = Application.getInstance();
     debug app.logError(fmt, args);
 }
