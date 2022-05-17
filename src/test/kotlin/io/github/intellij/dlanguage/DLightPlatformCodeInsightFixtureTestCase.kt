@@ -30,7 +30,7 @@ abstract class DLightPlatformCodeInsightFixtureTestCase(
     protected fun camelOrWordsToSnake(name: String): String {
         if (' ' in name) return name.replace(" ", "_")
 
-        return name.split("(?=[A-Z])".toRegex()).joinToString("_", transform = String::toLowerCase)
+        return name.split("(?=[A-Z])".toRegex()).joinToString("_", transform = String::lowercase)
     }
 
     /**
