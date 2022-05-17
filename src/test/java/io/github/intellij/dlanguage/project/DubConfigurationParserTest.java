@@ -1,6 +1,7 @@
 package io.github.intellij.dlanguage.project;
 
 import com.intellij.testFramework.LightPlatformTestCase;
+import org.junit.Ignore;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
@@ -20,6 +21,7 @@ import java.util.stream.Stream;
 /**
  * @author singingbush
  */
+@Ignore
 public class DubConfigurationParserTest { // extends LightPlatformTestCase {
 
 //    todo: come back and rethink how we test dub
