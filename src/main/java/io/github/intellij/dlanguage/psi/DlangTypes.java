@@ -53,6 +53,7 @@ public interface DlangTypes {
     IElementType NAMED_IMPORT_BIND = DElementTypeFactory.factory("NAMED_IMPORT_BIND");
     IElementType VERSION_SPECIFICATION = DElementTypeFactory.factory("VERSION_SPECIFICATION");
 
+    DlangElementType ALIAS_ASSIGN = new DlangElementType("ALIAS_ASSIGN");
     DlangElementType ALIAS_DECLARATION = new DlangElementType("ALIAS_DECLARATION");
     DlangElementType ALIAS_THIS_DECLARATION = new DlangElementType("ALIAS_THIS_DECLARATION");
     DlangElementType ALIGN_ATTRIBUTE = new DlangElementType("ALIGN_ATTRIBUTE");
@@ -221,7 +222,8 @@ public interface DlangTypes {
     DlangElementType XOR_EXPRESSION = new DlangElementType("XOR_EXPRESSION");
     DlangElementType ADD_EXPRESSION = new DlangElementType("ADD_EXPRESSION");
     DlangElementType BUILTIN_TYPE = new DlangElementType("BUILTIN_TYPE");
-    DlangElementType STATIC_FOREACH_STATEMENT = new DlangElementType("BUILTIN_TYPE");
+    DlangElementType STATIC_FOREACH_DECLARATION = new DlangElementType("STATIC_FOREACH_DECLARATION");
+    DlangElementType STATIC_FOREACH_STATEMENT = new DlangElementType("STATIC_FOREACH_STATEMENT");
 
 //    IElementType DOC_COMMENT = new DlangTokenType("DOC_COMMENT");
     DlangTokenType LINE_DOC = new DlangTokenType("LINE_DOC");
@@ -817,6 +819,10 @@ public interface DlangTypes {
                 return new DLanguageNamedImportBindImpl(node);
             } else if (type == STATIC_FOREACH_STATEMENT) {
                 return new DLangStaticForeachStatementImpl(node);
+            } else if (type == STATIC_FOREACH_DECLARATION) {
+                return new DLanguageStaticForeachDeclarationImpl(node);
+            } else if (type == ALIAS_ASSIGN) {
+                return new DLanguageAliasAssignImpl(node);
             }
 
 

@@ -271,6 +271,29 @@ object ScopeProcessorImpl {
     }
 
     @Suppress("UNUSED_PARAMETER")
+    fun processDeclarations(element: StaticForeachDeclaration,
+                            processor: PsiScopeProcessor,
+                            state: ResolveState,
+                            lastParent: PsiElement,
+                            place: PsiElement): Boolean {
+        //todo handle place
+        var shouldContinue = true
+        if (element.foreachType != null) {
+            if (!processor.execute(element.foreachType!!, state)) {
+                shouldContinue = false
+            }
+        }
+        if (element.foreachTypeList?.foreachTypes != null) {
+            for (foreachType in element.foreachTypeList!!.foreachTypes) {
+                if (!processor.execute(foreachType, state)) {
+                    shouldContinue = false
+                }
+            }
+        }
+        return shouldContinue
+    }
+
+    @Suppress("UNUSED_PARAMETER")
     fun processDeclarations(element: ForeachStatement,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
