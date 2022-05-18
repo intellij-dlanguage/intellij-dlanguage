@@ -1,6 +1,7 @@
 package io.github.intellij.dlanguage.psi.impl.named;
 
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
@@ -13,6 +14,8 @@ import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import io.github.intellij.dlanguage.stubs.DlangForeachTypeStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import static io.github.intellij.dlanguage.psi.DlangTypes.*;
 
 public class DLanguageForeachTypeImpl extends
     DNamedStubbedPsiElementBase<DlangForeachTypeStub> implements DlangForeachType {
@@ -45,6 +48,24 @@ public class DLanguageForeachTypeImpl extends
     @Override
     public DLanguageTypeConstructors getTypeConstructors() {
         return PsiTreeUtil.getChildOfType(this, DLanguageTypeConstructors.class);
+    }
+
+    @Override
+    @Nullable
+    public PsiElement getKW_REF() {
+        return findChildByType(KW_REF);
+    }
+
+    @Override
+    @Nullable
+    public PsiElement getKW_ALIAS() {
+        return findChildByType(KW_ALIAS);
+    }
+
+    @Override
+    @Nullable
+    public PsiElement getKW_ENUM() {
+        return findChildByType(KW_ENUM);
     }
 
     @Override

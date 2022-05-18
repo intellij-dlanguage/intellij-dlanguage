@@ -28,6 +28,9 @@ public interface DLanguageTypeSpecialization extends PsiElement {
     public PsiElement getKW_ENUM();
 
     @Nullable
+    public PsiElement getKW___VECTOR();
+
+    @Nullable
     public PsiElement getKW_FUNCTION();
 
     @Nullable
@@ -50,5 +53,11 @@ public interface DLanguageTypeSpecialization extends PsiElement {
 
     @Nullable
     public PsiElement getKW_RETURN();
+
+    @Nullable
+    public PsiElement getKW_MODULE();
+
+    @Nullable
+    public PsiElement getKW_PACKAGE();
 
 }

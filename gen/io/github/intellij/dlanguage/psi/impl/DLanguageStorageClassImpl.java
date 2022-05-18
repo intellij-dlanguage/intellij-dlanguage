@@ -1,22 +1,5 @@
 package io.github.intellij.dlanguage.psi.impl;
 
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_ABSTRACT;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_AUTO;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_CONST;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_ENUM;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_EXTERN;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_FINAL;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_IMMUTABLE;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_INOUT;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_NOTHROW;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_OVERRIDE;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_PURE;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_REF;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_SCOPE;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_STATIC;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_SYNCHRONIZED;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW___GSHARED;
-
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
@@ -31,6 +14,8 @@ import io.github.intellij.dlanguage.psi.DLanguageTypeConstructor;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import static io.github.intellij.dlanguage.psi.DlangTypes.*;
 
 
 public class DLanguageStorageClassImpl extends ASTWrapperPsiElement implements
@@ -155,6 +140,11 @@ public class DLanguageStorageClassImpl extends ASTWrapperPsiElement implements
     @Nullable
     public PsiElement getKW_STATIC() {
         return findChildByType(KW_STATIC);
+    }
+
+    @Nullable
+    public PsiElement getKW_THROW() {
+        return findChildByType(KW_THROW);
     }
 
 }

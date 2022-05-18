@@ -69,4 +69,7 @@ public interface DLanguageStorageClass extends PsiElement {
     @Nullable
     PsiElement getKW_STATIC();
 
+    @Nullable
+    PsiElement getKW_THROW();
+
 }

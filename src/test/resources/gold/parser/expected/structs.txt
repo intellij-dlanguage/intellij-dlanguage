@@ -11,11 +11,10 @@ D Language File
                 DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
                   DLanguageTypeImpl(TYPE)
                     DLanguageType_2Impl(TYPE_2)
-                      DLanguageSymbolImpl(SYMBOL)
-                        DLanguageIdentifierOrTemplateChainImpl(IDENTIFIER_OR_TEMPLATE_CHAIN)
-                          DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
-                            IDENTIFIER
-                              PsiElement(DlangTokenType.ID)('ABC')
+                      DLanguageTypeIdentifierPartImpl(TYPE_IDENTIFIER_PART)
+                        DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
+                          IDENTIFIER
+                            PsiElement(DlangTokenType.ID)('ABC')
                   DECLARATOR
                     IDENTIFIER
                       PsiElement(DlangTokenType.ID)('x')
@@ -64,11 +63,10 @@ D Language File
                 DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
                   DLanguageTypeImpl(TYPE)
                     DLanguageType_2Impl(TYPE_2)
-                      DLanguageSymbolImpl(SYMBOL)
-                        DLanguageIdentifierOrTemplateChainImpl(IDENTIFIER_OR_TEMPLATE_CHAIN)
-                          DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
-                            IDENTIFIER
-                              PsiElement(DlangTokenType.ID)('S')
+                      DLanguageTypeIdentifierPartImpl(TYPE_IDENTIFIER_PART)
+                        DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
+                          IDENTIFIER
+                            PsiElement(DlangTokenType.ID)('S')
                   DECLARATOR
                     IDENTIFIER
                       PsiElement(DlangTokenType.ID)('s')
@@ -79,11 +77,10 @@ D Language File
                 DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
                   DLanguageTypeImpl(TYPE)
                     DLanguageType_2Impl(TYPE_2)
-                      DLanguageSymbolImpl(SYMBOL)
-                        DLanguageIdentifierOrTemplateChainImpl(IDENTIFIER_OR_TEMPLATE_CHAIN)
-                          DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
-                            IDENTIFIER
-                              PsiElement(DlangTokenType.ID)('S')
+                      DLanguageTypeIdentifierPartImpl(TYPE_IDENTIFIER_PART)
+                        DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
+                          IDENTIFIER
+                            PsiElement(DlangTokenType.ID)('S')
                     DLanguageTypeSuffixImpl(TYPE_SUFFIX)
                       PsiElement(DlangTokenType.*)('*')
                   DECLARATOR

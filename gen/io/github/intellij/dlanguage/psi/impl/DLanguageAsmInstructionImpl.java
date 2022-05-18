@@ -1,9 +1,5 @@
 package io.github.intellij.dlanguage.psi.impl;
 
-import static io.github.intellij.dlanguage.psi.DlangTypes.INTEGER_LITERAL;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_ALIGN;
-import static io.github.intellij.dlanguage.psi.DlangTypes.OP_COLON;
-
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
@@ -15,6 +11,8 @@ import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import static io.github.intellij.dlanguage.psi.DlangTypes.*;
 
 
 public class DLanguageAsmInstructionImpl extends ASTWrapperPsiElement implements
@@ -64,6 +62,11 @@ public class DLanguageAsmInstructionImpl extends ASTWrapperPsiElement implements
     @Nullable
     public PsiElement getOP_COLON() {
         return findChildByType(OP_COLON);
+    }
+
+    @Nullable
+    public PsiElement getSEMICOLON() {
+        return findChildByType(SEMICOLON);
     }
 
 }

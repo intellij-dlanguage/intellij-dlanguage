@@ -73,6 +73,8 @@ public class ParserWrapper implements LightPsiParser, PsiParser {
             result = parser.parseEponymousTemplateDeclaration();
         } else if (type == DlangTypes.ENUM_MEMBER) {
             result = parser.parseEnumMember();
+        } else if (type == DlangTypes.ENUM_MEMBER_ATTRIBUTE) {
+            result = parser.parseEnumMemberAttribute();
         } else if (type == DlangTypes.ALIAS_DECLARATION) {
             result = parser.parseAliasDeclaration();
         } else if (type == DlangTypes.ALIAS_THIS_DECLARATION) {
@@ -129,6 +131,8 @@ public class ParserWrapper implements LightPsiParser, PsiParser {
             result = parser.parseAsmUnaExp();
         } else if (type == DlangTypes.ASM_XOR_EXP) {
             result = parser.parseAsmXorExp();
+        } else if (type == DlangTypes.ASSERT_ARGUMENTS) {
+            result = parser.parseAssertArguments();
         } else if (type == DlangTypes.ASSERT_EXPRESSION) {
             result = parser.parseAssertExpression();
         } else if (type == DlangTypes.ASSIGN_EXPRESSION) {
@@ -149,8 +153,6 @@ public class ParserWrapper implements LightPsiParser, PsiParser {
             result = parser.parseBaseClassList();
         } else if (type == DlangTypes.BLOCK_STATEMENT) {
             result = parser.parseBlockStatement();
-        } else if (type == DlangTypes.BODY_STATEMENT) {
-            result = parser.parseBodyStatement();
         } else if (type == DlangTypes.BREAK_STATEMENT) {
             result = parser.parseBreakStatement();
         } else if (type == DlangTypes.CASE_RANGE_STATEMENT) {
@@ -187,6 +189,8 @@ public class ParserWrapper implements LightPsiParser, PsiParser {
             result = parser.parseDeclarationOrStatement();
         } else if (type == DlangTypes.DECLARATIONS_AND_STATEMENTS) {
             result = false;
+        } else if (type == DlangTypes.DECLARATOR_IDENTIFIER_LIST) {
+            result = parser.parseDeclaratorIdentifierList();
         } else if (type == DlangTypes.DEFAULT_STATEMENT) {
             result = parser.parseDefaultStatement();
         } else if (type == DlangTypes.DELETE_EXPRESSION) {
@@ -219,14 +223,14 @@ public class ParserWrapper implements LightPsiParser, PsiParser {
             result = parser.parseFunctionBody();
         } else if (type == DlangTypes.FUNCTION_CALL_EXPRESSION) {
             result = parser.parseFunctionCallExpression();
+        } else if (type == DlangTypes.FUNCTION_CONTRACT) {
+            result = parser.parseFunctionContract();
         } else if (type == DlangTypes.FUNCTION_LITERAL_EXPRESSION) {
             result = parser.parseFunctionLiteralExpression();
         } else if (type == DlangTypes.GOTO_STATEMENT) {
             result = parser.parseGotoStatement();
         } else if (type == DlangTypes.IDENTIFIER_CHAIN) {
             result = parser.parseIdentifierChain();
-        } else if (type == DlangTypes.IDENTIFIER_LIST) {
-            result = parser.parseIdentifierList();
         } else if (type == DlangTypes.IDENTIFIER_OR_TEMPLATE_CHAIN) {
             result = parser.parseIdentifierOrTemplateChain();
         } else if (type == DlangTypes.IDENTIFIER_OR_TEMPLATE_INSTANCE) {
@@ -243,8 +247,14 @@ public class ParserWrapper implements LightPsiParser, PsiParser {
             result = parser.parseImportDeclaration();
         } else if (type == DlangTypes.IMPORT_EXPRESSION) {
             result = parser.parseImportExpression();
+        } else if (type == DlangTypes.IN_CONTRACT_EXPRESSION) {
+            result = parser.parseInContractExpression();
         } else if (type == DlangTypes.IN_EXPRESSION) {
             result = parser.parseInExpression();
+        } else if (type == DlangTypes.IN_OUT_CONTRACT_EXPRESSION) {
+            result = parser.parseInOutContractExpression();
+        } else if (type == DlangTypes.IN_OUT_STATEMENT) {
+            result = parser.parseInOutStatement();
         } else if (type == DlangTypes.IN_STATEMENT) {
             result = parser.parseInStatement();
         } else if (type == DlangTypes.INDEX) {
@@ -273,12 +283,16 @@ public class ParserWrapper implements LightPsiParser, PsiParser {
             result = parser.parseMixinDeclaration();
         } else if (type == DlangTypes.MIXIN_EXPRESSION) {
             result = parser.parseMixinExpression();
+        } else if (type == DlangTypes.MISSING_FUNCTION_BODY) {
+            result = parser.parseMissingFunctionBody();
         } else if (type == DlangTypes.MIXIN_TEMPLATE_DECLARATION) {
             result = parser.parseMixinTemplateDeclaration();
         } else if (type == DlangTypes.MIXIN_TEMPLATE_NAME) {
             result = parser.parseMixinTemplateName();
         } else if (type == DlangTypes.MUL_EXPRESSION) {
             result = parser.parseMulExpression();
+        } else if (type == DlangTypes.NAMESPACE_LIST) {
+            result = parser.parseNamespaceList();
         } else if (type == DlangTypes.NEW_ANON_CLASS_EXPRESSION) {
             result = parser.parseNewAnonClassExpression();
         } else if (type == DlangTypes.NEW_EXPRESSION) {
@@ -291,6 +305,8 @@ public class ParserWrapper implements LightPsiParser, PsiParser {
             result = parser.parseOrExpression();
         } else if (type == DlangTypes.OR_OR_EXPRESSION) {
             result = parser.parseOrOrExpression();
+        } else if (type == DlangTypes.OUT_CONTRACT_EXPRESSION) {
+            result = parser.parseOutContractExpression();
         } else if (type == DlangTypes.OUT_STATEMENT) {
             result = parser.parseOutStatement();
         } else if (type == DlangTypes.PARAMETERS) {
@@ -303,6 +319,8 @@ public class ParserWrapper implements LightPsiParser, PsiParser {
             result = parser.parsePragmaDeclaration();
         } else if (type == DlangTypes.PRAGMA_EXPRESSION) {
             result = parser.parsePragmaExpression();
+        } else if (type == DlangTypes.PRAGMA_STATEMENT) {
+            result = parser.parsePragmaStatement();
         } else if (type == DlangTypes.PRIMARY_EXPRESSION) {
             result = parser.parsePrimaryExpression();
         } else if (type == DlangTypes.REGISTER) {
@@ -315,6 +333,10 @@ public class ParserWrapper implements LightPsiParser, PsiParser {
             result = parser.parseScopeGuardStatement();
         } else if (type == DlangTypes.SHIFT_EXPRESSION) {
             result = parser.parseShiftExpression();
+        } else if (type == DlangTypes.SHORTENED_FUNCTION_BODY) {
+            result = parser.parseShortenedFunctionBody();
+        } else if (type == DlangTypes.SPECIFIED_FUNCTION_BODY) {
+            result = parser.parseSpecifiedFunctionBody();
         } else if (type == DlangTypes.STATEMENT) {
             result = parser.parseStatement();
         } else if (type == DlangTypes.STATEMENT_NO_CASE_NO_DEFAULT) {
@@ -373,8 +395,8 @@ public class ParserWrapper implements LightPsiParser, PsiParser {
             result = parser.parseTemplateValueParameterDefault();
         } else if (type == DlangTypes.TERNARY_EXPRESSION) {
             result = parser.parseTernaryExpression();
-        } else if (type == DlangTypes.THROW_STATEMENT) {
-            result = parser.parseThrowStatement();
+        } else if (type == DlangTypes.THROW_EXPRESSION) {
+            result = parser.parseThrowExpression();
         } else if (type == DlangTypes.TRAITS_EXPRESSION) {
             result = parser.parseTraitsExpression();
         } else if (type == DlangTypes.TRY_STATEMENT) {
@@ -383,6 +405,8 @@ public class ParserWrapper implements LightPsiParser, PsiParser {
             result = false;
         } else if (type == DlangTypes.TYPE_2) {
             result = parser.parseType2();
+        } else if (type == DlangTypes.TYPE_IDENTIFIER_PART) {
+            result = parser.parseTypeIdentifierPart();
         } else if (type == DlangTypes.TYPE_SPECIALIZATION) {
             result = parser.parseTypeSpecialization();
         } else if (type == DlangTypes.TYPE_SUFFIX) {
@@ -395,6 +419,10 @@ public class ParserWrapper implements LightPsiParser, PsiParser {
             result = parser.parseUnaryExpression();
         } else if (type == DlangTypes.VARIABLE_DECLARATION) {
             result = parser.parseVariableDeclaration();
+        } else if (type == DlangTypes.VARIADIC_ARGUMENTS_ATTRIBUTE) {
+            result = parser.parseVariadicArgumentsAttribute();
+        } else if (type == DlangTypes.VARIADIC_ARGUMENTS_ATTRIBUTES) {
+            result = parser.parseVariadicArgumentsAttributes();
         } else if (type == DlangTypes.VECTOR) {
             result = parser.parseVector();
         } else if (type == DlangTypes.VERSION_CONDITION) {

@@ -1,5 +1,5 @@
-void foo()<fold text=' { '> {
-    </fold>writeln("Hello World");<fold text=' }'>
+void foo() <fold text='{...}'>{
+    writeln("Hello World");
 }</fold>
 
 void bar()
@@ -14,9 +14,9 @@ void bar() <fold text='{...}'>{
     writeln("Hello World");
 }</fold>
 
-void bar()<fold text=' { '>
-{
-    </fold>writeln("Hello World");<fold text=' }'>
+void bar()
+<fold text='{...}'>{
+    writeln("Hello World");
 }</fold>
 
 void longFn() <fold text='{...}'>{

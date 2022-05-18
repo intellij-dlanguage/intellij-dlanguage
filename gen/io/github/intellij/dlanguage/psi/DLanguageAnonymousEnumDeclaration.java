@@ -15,8 +15,14 @@ public interface DLanguageAnonymousEnumDeclaration extends PsiElement {
     @Nullable
     PsiElement getOP_COLON();
 
-    @Nullable
+    @NotNull
     PsiElement getKW_ENUM();
+
+    @NotNull
+    PsiElement getOP_PAR_LEFT();
+
+    @NotNull
+    PsiElement getOP_PAR_RIGHT();
 
     @Nullable
     DLanguageType getType();

@@ -1,9 +1,5 @@
 package io.github.intellij.dlanguage.psi.impl;
 
-import static io.github.intellij.dlanguage.psi.DlangTypes.FLOAT_LITERAL;
-import static io.github.intellij.dlanguage.psi.DlangTypes.INTEGER_LITERAL;
-import static io.github.intellij.dlanguage.psi.DlangTypes.OP_DOLLAR;
-
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
@@ -16,6 +12,8 @@ import io.github.intellij.dlanguage.psi.DLanguageRegister;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import static io.github.intellij.dlanguage.psi.DlangTypes.*;
 
 
 public class DLanguageAsmPrimaryExpImpl extends ASTWrapperPsiElement implements
@@ -65,6 +63,11 @@ public class DLanguageAsmPrimaryExpImpl extends ASTWrapperPsiElement implements
     @Nullable
     public PsiElement getOP_DOLLAR() {
         return findChildByType(OP_DOLLAR);
+    }
+
+    @Nullable
+    public PsiElement getKW_THIS() {
+        return findChildByType(KW_THIS);
     }
 
 }

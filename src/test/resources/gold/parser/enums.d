@@ -55,4 +55,11 @@ unittest
     enum long l = 3; // l is 3 of type long
 
     enum size = __traits(classInstanceSize, Foo);  // evaluated at compile-time
+
+    enum EA
+    {
+        @disable member,
+        @A @B deprecated("meep") member,
+        deprecated("meep") member
+    }
 }

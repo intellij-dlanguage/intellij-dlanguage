@@ -13,6 +13,9 @@ public interface DLanguageUnaryExpression extends PsiElement {
     DLanguageFunctionCallExpression getFunctionCallExpression();
 
     @Nullable
+    DLanguageThrowExpression getThrowExpression();
+
+    @Nullable
     DLanguageUnaryExpression getUnaryExpression();
 
     @Nullable

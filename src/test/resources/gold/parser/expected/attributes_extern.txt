@@ -20,7 +20,9 @@ D Language File
       DLanguageParametersImpl(PARAMETERS)
         PsiElement(DlangTokenType.()('(')
         PsiElement(DlangTokenType.))(')')
-      PsiElement(DlangTokenType.;)(';')
+      DLanguageFunctionBodyImpl(FUNCTION_BODY)
+        DLanguageMissingFunctionBodyImpl(MISSING_FUNCTION_BODY)
+          PsiElement(DlangTokenType.;)(';')
   PsiComment(DlangTokenType.LINE_COMMENT)('// call foo() with C conventions')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageAttributeImpl(ATTRIBUTE)
@@ -88,4 +90,6 @@ D Language File
           IDENTIFIER
             PsiElement(DlangTokenType.ID)('flProtect')
         PsiElement(DlangTokenType.))(')')
-      PsiElement(DlangTokenType.;)(';')
+      DLanguageFunctionBodyImpl(FUNCTION_BODY)
+        DLanguageMissingFunctionBodyImpl(MISSING_FUNCTION_BODY)
+          PsiElement(DlangTokenType.;)(';')

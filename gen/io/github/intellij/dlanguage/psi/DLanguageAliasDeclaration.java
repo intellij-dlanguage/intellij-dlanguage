@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 public interface DLanguageAliasDeclaration extends PsiElement {
 
     @Nullable
-    DLanguageIdentifierList getIdentifierList();
+    DLanguageDeclaratorIdentifierList getDeclaratorIdentifierList();
 
     @Nullable
     PsiElement getOP_COMMA();

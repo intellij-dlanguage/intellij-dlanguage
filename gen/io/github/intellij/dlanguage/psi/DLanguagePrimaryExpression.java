@@ -72,6 +72,9 @@ public interface DLanguagePrimaryExpression extends PsiElement {
     public PsiElement getKW_FALSE();
 
     @Nullable
+    public PsiElement getKW_REF();
+
+    @Nullable
     public PsiElement getKW___DATE__();
 
     @Nullable

@@ -10,7 +10,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.DLanguageAliasDeclaration;
-import io.github.intellij.dlanguage.psi.DLanguageIdentifierList;
+import io.github.intellij.dlanguage.psi.DLanguageDeclaratorIdentifierList;
 import io.github.intellij.dlanguage.psi.DLanguageStorageClass;
 import io.github.intellij.dlanguage.psi.DLanguageType;
 import io.github.intellij.dlanguage.psi.named.DlangAliasInitializer;
@@ -40,8 +40,8 @@ public class DLanguageAliasDeclarationImpl extends ASTWrapperPsiElement implemen
     }
 
     @Nullable
-    public DLanguageIdentifierList getIdentifierList() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageIdentifierList.class);
+    public DLanguageDeclaratorIdentifierList getDeclaratorIdentifierList() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageDeclaratorIdentifierList.class);
     }
 
     @Nullable

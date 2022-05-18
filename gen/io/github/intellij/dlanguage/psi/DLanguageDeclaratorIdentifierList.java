@@ -6,7 +6,7 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
 
-public interface DLanguageIdentifierList extends PsiElement {
+public interface DLanguageDeclaratorIdentifierList extends PsiElement {
 
     @NotNull
     List<DlangIdentifier> getIdentifiers();

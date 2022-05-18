@@ -15,7 +15,6 @@ import io.github.intellij.dlanguage.psi.DlangTypes;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import io.github.intellij.dlanguage.stubs.DlangParameterStub;
-import io.github.intellij.dlanguage.utils.DUtil;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -94,17 +93,8 @@ public class DLanguageParameterImpl extends
         }
         if (getType() != null) {
             if (getType().getType_2() != null) {
-                if (getType().getType_2().getIdentifierOrTemplateChain() != null) {
-                    return DUtil
-                        .getEndOfIdentifierList(
-                            getType().getType_2().getIdentifierOrTemplateChain());
-                }
-                if (getType().getType_2().getSymbol() != null) {
-                    if (getType().getType_2().getSymbol().getIdentifierOrTemplateChain() != null) {
-                        return DUtil
-                            .getEndOfIdentifierList(
-                                getType().getType_2().getSymbol().getIdentifierOrTemplateChain());
-                    }
+                if (getType().getType_2().getTypeIdentifierPart() != null) {
+                    return getType().getType_2().getTypeIdentifierPart().getIdentifierOrTemplateInstance().getIdentifier();
                 }
             }
         }

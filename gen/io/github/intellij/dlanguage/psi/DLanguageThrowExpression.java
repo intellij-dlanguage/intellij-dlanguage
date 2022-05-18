@@ -4,13 +4,13 @@ import com.intellij.psi.PsiElement;
 import org.jetbrains.annotations.Nullable;
 
 
-public interface DLanguageThrowStatement extends PsiElement {
+public interface DLanguageThrowExpression extends PsiElement {
 
     @Nullable
     public PsiElement getKW_THROW();
 
     @Nullable
-    public DLanguageExpression getExpression();
+    public DLanguageAssignExpression getAssignExpression();
 
     @Nullable
     public PsiElement getOP_SCOLON();

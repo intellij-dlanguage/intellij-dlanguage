@@ -24,4 +24,7 @@ public interface DLanguageAsmPrimaryExp extends PsiElement {
     @Nullable
     public PsiElement getOP_DOLLAR();
 
+    @Nullable
+    public PsiElement getKW_THIS();
+
 }

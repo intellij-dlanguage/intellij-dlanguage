@@ -1,8 +1,5 @@
 package io.github.intellij.dlanguage.psi.impl;
 
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_DELEGATE;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_FUNCTION;
-
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
@@ -10,17 +7,14 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.util.PsiTreeUtil;
-import io.github.intellij.dlanguage.psi.DLanguageFunctionAttribute;
-import io.github.intellij.dlanguage.psi.DLanguageFunctionBody;
-import io.github.intellij.dlanguage.psi.DLanguageFunctionLiteralExpression;
-import io.github.intellij.dlanguage.psi.DLanguageParameters;
-import io.github.intellij.dlanguage.psi.DLanguageType;
+import io.github.intellij.dlanguage.psi.*;
 import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
-import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import static io.github.intellij.dlanguage.psi.DlangTypes.*;
 
 
 public class DLanguageFunctionLiteralExpressionImpl extends ASTWrapperPsiElement implements
@@ -58,6 +52,11 @@ public class DLanguageFunctionLiteralExpressionImpl extends ASTWrapperPsiElement
     }
 
     @Nullable
+    public PsiElement getKW_REF() {
+        return findChildByType(KW_REF);
+    }
+
+    @Nullable
     public DLanguageParameters getParameters() {
         return PsiTreeUtil.getChildOfType(this, DLanguageParameters.class);
     }
@@ -68,8 +67,8 @@ public class DLanguageFunctionLiteralExpressionImpl extends ASTWrapperPsiElement
     }
 
     @Nullable
-    public DLanguageFunctionBody getFunctionBody() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageFunctionBody.class);
+    public DLanguageSpecifiedFunctionBody getSpecifiedFunctionBody() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageSpecifiedFunctionBody.class);
     }
 
     @Nullable

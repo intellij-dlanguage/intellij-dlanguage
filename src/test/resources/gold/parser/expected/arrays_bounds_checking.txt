@@ -97,11 +97,10 @@ D Language File
                         PsiElement(DlangTokenType.()('(')
                         DLanguageTypeImpl(TYPE)
                           DLanguageType_2Impl(TYPE_2)
-                            DLanguageSymbolImpl(SYMBOL)
-                              DLanguageIdentifierOrTemplateChainImpl(IDENTIFIER_OR_TEMPLATE_CHAIN)
-                                DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
-                                  IDENTIFIER
-                                    PsiElement(DlangTokenType.ID)('RangeError')
+                            DLanguageTypeIdentifierPartImpl(TYPE_IDENTIFIER_PART)
+                              DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
+                                IDENTIFIER
+                                  PsiElement(DlangTokenType.ID)('RangeError')
                         PsiElement(DlangTokenType.))(')')
                         DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
                           DLanguageStatementImpl(STATEMENT)
