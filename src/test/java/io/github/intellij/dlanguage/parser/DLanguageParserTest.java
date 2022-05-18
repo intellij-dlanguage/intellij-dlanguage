@@ -582,6 +582,10 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
         doDlangParserTest(true, true);
     }
 
+    public void testassocarrays_literal() {
+        doDlangParserTest(true, true);
+    }
+
     public void testassocarrays_classes() {
         doDlangParserTest(true, true);
     }

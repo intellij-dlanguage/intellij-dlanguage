@@ -809,7 +809,7 @@ class DLangParser {
      * Parses an AndAndExpression.
      * <p>
      * $(GRAMMAR $(RULEDEF andAndExpression):
-     * $(RULE orExpression)
+     *   $(RULE orExpression)
      * | $(RULE andAndExpression) $(LITERAL '&&') $(RULE orExpression)
      * ;)
      */
@@ -831,7 +831,7 @@ class DLangParser {
      * Parses an AndExpression.
      * <p>
      * $(GRAMMAR $(RULEDEF andExpression):
-     * $(RULE cmpExpression)
+     *   $(RULE cmpExpression)
      * | $(RULE andExpression) $(LITERAL '&') $(RULE cmpExpression)
      * ;)
      */
@@ -903,7 +903,7 @@ class DLangParser {
      * Parses an ArrayInitializer.
      * <p>
      * $(GRAMMAR $(RULEDEF arrayInitializer):
-     * $(LITERAL '[') $(LITERAL ']')
+     *   $(LITERAL '[') $(LITERAL ']')
      * | $(LITERAL '[') $(RULE arrayMemberInitialization) ($(LITERAL ',') $(RULE arrayMemberInitialization)?)* $(LITERAL ']')
      * ;)
      */
@@ -979,6 +979,7 @@ class DLangParser {
             final Bookmark b = setBookmark();
             skipBrackets();
             if (currentIs(tok(":"))) {
+                goToBookmark(b);
                 if (!parseAssignExpression()) {
                     abandonBookmark(b);
                     cleanup(m, ARRAY_MEMBER_INITIALIZATION);
@@ -5448,7 +5449,7 @@ class DLangParser {
      * Parses a NonVoidInitializer
      * <p>
      * $(GRAMMAR $(RULEDEF nonVoidInitializer):
-     * $(RULE assignExpression)
+     *   $(RULE assignExpression)
      * | $(RULE arrayInitializer)
      * | $(RULE structInitializer)
      * ;)
@@ -5483,8 +5484,17 @@ class DLangParser {
                 }
             }
         } else if (currentIs(tok("["))) {
+            boolean isAA = false;
+            Bookmark bk = setBookmark();
+            advance();
+            if (currentIs(tok("["))) {
+                advance();
+                Token c =peekPastBrackets();
+                isAA = c != null && c.type == tok(":");
+            }
+            goToBookmark(bk);
             final Token b = peekPastBrackets();
-            if (b != null && (b.type.equals(tok(","))
+            if (!isAA && b != null && (b.type.equals(tok(","))
                 || b.type.equals(tok(")"))
                 || b.type.equals(tok("]"))
                 || b.type.equals(tok("}"))
