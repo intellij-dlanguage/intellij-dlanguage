@@ -2,6 +2,7 @@ package io.github.intellij.dlanguage.annotator
 
 import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.lang.annotation.Annotator
+import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
 import io.github.intellij.dlanguage.colors.DColor
@@ -17,7 +18,7 @@ class DHighlightingAnnotator : Annotator {
             else -> null
         } ?: return
 
-        holder.createInfoAnnotation(partToHighlight, null).textAttributes = color.textAttributesKey
+        holder.newAnnotation(HighlightSeverity.INFORMATION, "").textAttributes(color.textAttributesKey).create()
     }
 
     private fun highlightReference(element: PsiElement): Pair<TextRange, DColor>? {

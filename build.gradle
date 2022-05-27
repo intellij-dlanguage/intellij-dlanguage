@@ -57,9 +57,9 @@ allprojects {
     }
 
     tasks.withType(Test) {
-        useJUnit {
-            include '**/**/*Test.*' // any Java or Kotlin class that ends with 'Test'
-        }
+        // workaround for test cases not found https://youtrack.jetbrains.com/issue/IDEA-278926
+        scanForTestClasses false
+        include '**/**/*Test.class'
 
         testLogging {
             beforeSuite { suite ->

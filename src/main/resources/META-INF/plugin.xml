@@ -56,7 +56,8 @@
 
         <stubElementTypeHolder class="io.github.intellij.dlanguage.psi.DlangTypes"/>
 
-        <fileType name="D file" language="D" extensions="d;di" implementationClass="io.github.intellij.dlanguage.DlangFileType" />
+        <fileType name="D file" language="D" extensions="d;di" fieldName="INSTANCE"
+                  implementationClass="io.github.intellij.dlanguage.DlangFileType" />
 
 
         <!-- All notification group id's should be defined here. See #654 -->
