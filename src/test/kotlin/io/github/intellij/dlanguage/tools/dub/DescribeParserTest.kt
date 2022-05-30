@@ -14,9 +14,9 @@ class DescribeParserTest : LightPlatformTestCase() {
     var parser: DescribeParser = DescribeParserImpl()
 
     @Throws(Exception::class)
-    fun `test parsing the json output of dub describe`() {
+    fun `test parsing the json output of dub describe With Unix paths`() {
         val json = String(Files.readAllBytes(
-            Paths.get(javaClass.classLoader.getResource("dub/dubDescribeOutput.json")!!.toURI())
+            Paths.get(javaClass.classLoader.getResource("dub/dubDescribeOutput-Unix.json")!!.toURI())
         ))
 
         val dubProject = parser.parse(json)
@@ -27,6 +27,8 @@ class DescribeParserTest : LightPlatformTestCase() {
         assertEquals("dmd", dubProject.compiler)
         assertEquals(1, dubProject.architecture.size)
         assertEquals(2, dubProject.platform.size)
+        assertEquals("linux", dubProject.platform[0])
+        assertEquals("posix", dubProject.platform[1])
 
         assertDubPackageValid("root package", dubProject.rootPackage)
 
@@ -37,7 +39,45 @@ class DescribeParserTest : LightPlatformTestCase() {
 
         assertEquals(29, dubProject.packages.size)
 
-        dubProject.packages.forEach { assertDubPackageValid(it.name, it) }
+        dubProject.packages.forEach {
+            assertDubPackageValid(it.name, it)
+            it.path.contains("/home/username/.dub/packages/.*")
+            assertNotEmpty(it.sourcesDirs)
+        }
+    }
+
+    @Throws(Exception::class)
+    fun `test parsing the json output of dub describe With Windows paths`() {
+        val json = String(Files.readAllBytes(
+            Paths.get(javaClass.classLoader.getResource("dub/dubDescribeOutput-Windows.json")!!.toURI())
+        ))
+
+        val dubProject = parser.parse(json)
+
+        assertEquals("testapp", dubProject.rootPackageName)
+        assertEquals("default", dubProject.configuration)
+        assertEquals("debug", dubProject.buildType)
+        assertEquals("dmd", dubProject.compiler)
+        assertEquals(1, dubProject.architecture.size)
+        assertEquals(1, dubProject.platform.size)
+        assertEquals("windows", dubProject.platform[0])
+
+        assertDubPackageValid("root package", dubProject.rootPackage)
+
+        assertFalse(
+            "The Root package should not be included in the dependencies",
+            dubProject.packages.contains(dubProject.rootPackage)
+        )
+
+        assertEquals(38, dubProject.packages.size)
+
+        dubProject.packages.forEach {
+            assertDubPackageValid(it.name, it)
+            it.path.contains("C:\\Users\\TestUser\\AppData\\Local\\dub\\packages\\.*")
+
+            // vibe-d:core doesn't specify importPaths
+            if("vibe-d:core" == it.name) assertEmpty(it.sourcesDirs) else assertNotEmpty(it.sourcesDirs)
+        }
     }
 
     private fun assertDubPackageValid(name: String, pkg: DubPackage) {
@@ -51,7 +91,6 @@ class DescribeParserTest : LightPlatformTestCase() {
 
         assertNotNull("$name Should have dependencies", pkg.dependencies)
         assertNotNull("$name Should have sourcesDirs", pkg.sourcesDirs)
-        assertNotEmpty(pkg.sourcesDirs)
         assertNotNull("$name Should have resources", pkg.resources)
         assertNotNull("$name Should have sourceFiles", pkg.sourceFiles)
         assertNotNull("$name Should have stringImportFiles", pkg.stringImportFiles)
