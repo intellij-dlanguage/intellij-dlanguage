@@ -21,7 +21,10 @@ import com.intellij.openapi.progress.Task
 import com.intellij.openapi.progress.impl.BackgroundableProcessIndicator
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.roots.*
+import com.intellij.openapi.project.guessProjectDir
+import com.intellij.openapi.roots.LibraryOrderEntry
+import com.intellij.openapi.roots.ModuleRootModificationUtil
+import com.intellij.openapi.roots.OrderRootType
 import com.intellij.openapi.roots.libraries.LibraryTablesRegistrar
 import com.intellij.openapi.ui.popup.JBPopupFactory
 import com.intellij.openapi.util.Key
@@ -30,15 +33,13 @@ import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.vfs.VirtualFileManager
 import com.intellij.ui.components.JBList
-import io.github.intellij.dlanguage.icons.DlangIcons
+import io.github.intellij.dlanguage.DLanguage
 import io.github.intellij.dlanguage.library.DlangLibraryType
 import io.github.intellij.dlanguage.module.DlangModuleType
 import io.github.intellij.dlanguage.project.DubConfigurationParser
 import io.github.intellij.dlanguage.project.DubPackage
 import io.github.intellij.dlanguage.settings.ToolKey
 import io.github.intellij.dlanguage.utils.DToolsNotificationListener
-import org.jetbrains.annotations.NotNull
-import java.util.*
 
 /**
  * ported from Java on 06/02/18
@@ -48,7 +49,7 @@ import java.util.*
  * a project (The same way that the Maven/Gradle integration works) and when not using dub we should just
  * detect when the user adds/removes a library.
  */
-class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries", DlangIcons.SDK), DumbAware {
+class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries", DLanguage.Icons.SDK), DumbAware {
 
     override fun actionPerformed(e: AnActionEvent) {
         val project = e.project
@@ -57,16 +58,19 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
             return
         }
         val modules = DlangModuleType.findModules(project)
-        val size = modules.size
-        when (size) {
-            0 -> displayError(e, "Unable to process D libraries - No DLanguage modules are used in this project.")
+
+        when (modules.size) {
+            //0 -> displayError(e, "Unable to process D libraries - No DLanguage modules are used in this project.")
             1 -> processDLibs(project, modules.iterator().next())
             else -> showModuleChoicePopup(e, project, modules)
         }
     }
 
+    /*
+    * This method is called repeatedly in UI thread and needs to complete fast. Don't perform any long-running code!
+    */
     override fun update(e: AnActionEvent) {
-        e.presentation.isEnabled = enabled(e)
+        e.presentation.isEnabled = canRunDub(e)
     }
 
     companion object {
@@ -117,11 +121,14 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
             //final String groupId = e.getPresentation().getText();
             if (dubPath == null) {
                 if (!this.dubPathAlreadWarned) {
-                    Notifications.Bus.notify(
-                        Notification(NOTIFICATION_GROUPID, "Process D Libraries",
-                            "DUB executable path is empty<br/><a href='configureDLanguageTools'>Configure</a>",
-                            NotificationType.WARNING, DToolsNotificationListener(project)),
-                        project)
+                    val notification = Notification(
+                        NOTIFICATION_GROUPID, "Process D Libraries",
+                        "DUB executable path is empty<br/><a href='configureDLanguageTools'>Configure</a>",
+                        NotificationType.WARNING
+                    )
+                    notification.setListener(DToolsNotificationListener(project))
+
+                    Notifications.Bus.notify(notification, project)
                     this.dubPathAlreadWarned = true
                 }
                 return
@@ -140,18 +147,28 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
             }
 
             if (!mostlySilentMode) {
-                Notifications.Bus.notify(
-                    Notification(NOTIFICATION_GROUPID, "Process D Libraries",
-                        "Added your dub dependency libraries",
-                        NotificationType.INFORMATION, DToolsNotificationListener(project)),
-                    project)
+                val notification = Notification(
+                    NOTIFICATION_GROUPID, "Process D Libraries",
+                    "Added your dub dependency libraries",
+                    NotificationType.INFORMATION
+                )
+                notification.setListener(DToolsNotificationListener(project))
+
+                Notifications.Bus.notify(notification, project)
             }
         }
 
-        private fun enabled(e: AnActionEvent): Boolean {
+        /*
+        * perform some basic checks to see if dub can be run. There should be an active project that contains either
+        * a dub.json or dub.sdl file and the path should be set for the dub binary.
+        */
+        private fun canRunDub(e: AnActionEvent): Boolean {
             val project = AnAction.getEventProject(e) ?: return false
-            val dubPath = ToolKey.DUB_KEY.path ?: return false
-            return dubPath.isNotEmpty() && DlangModuleType.findModules(project).isNotEmpty()
+            ToolKey.DUB_KEY.path?.isNotBlank() ?: return false
+            val virtualRoot = project.guessProjectDir() ?: return false
+            return virtualRoot.findChild("dub.json")?.exists() ?:
+                            virtualRoot.findChild("dub.sdl")?.exists() ?:
+                            false
         }
 
         private fun showModuleChoicePopup(e: AnActionEvent, project: Project, modules: Collection<Module>) {

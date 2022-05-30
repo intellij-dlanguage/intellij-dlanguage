@@ -30,7 +30,8 @@ public class DlangModuleType extends ModuleType<DlangModuleBuilder> {
     }
 
     @Deprecated // use ModuleUtil.getModulesOfType(project, ModuleTypeManager.getInstance().findByID(DLanguage.MODULE_TYPE_ID));
-    public static Collection<Module> findModules(final Project project) {
+    @NotNull
+    public static Collection<Module> findModules(@NotNull final Project project) {
         return ModuleUtil.getModulesOfType(project, DlangModuleType.getInstance());
     }
 
