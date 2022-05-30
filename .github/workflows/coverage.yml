@@ -9,8 +9,9 @@ on:
     # but only for the master and develop branches
     push:
         branches:
-            - master
-            - develop
+            - dont_run
+#            - master
+#            - develop  ## disable coverage on develop branch until cobertura supports Gradle 7: https://github.com/stevesaliman/gradle-cobertura-plugin/pull/178
 
 jobs:
     build:
