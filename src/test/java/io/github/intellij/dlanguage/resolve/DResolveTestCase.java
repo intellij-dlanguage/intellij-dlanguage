@@ -12,6 +12,8 @@ import io.github.intellij.dlanguage.psi.DLanguageClassDeclaration;
 import io.github.intellij.dlanguage.psi.named.DlangConstructor;
 import io.github.intellij.dlanguage.psi.named.DlangFunctionDeclaration;
 import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 
 public abstract class DResolveTestCase extends DLightPlatformCodeInsightFixtureTestCase {
@@ -23,7 +25,7 @@ public abstract class DResolveTestCase extends DLightPlatformCodeInsightFixtureT
     }
 
     @Override
-    protected String getTestDataPath() {
+    protected @NotNull String getTestDataPath() {
         return this.getClass().getClassLoader().getResource("gold/resolve/" + getTestDirectoryName()).getPath();
     }
 
