@@ -76,6 +76,10 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
         doDlangParserTest(true, true);
     }
 
+    public void testdeclaration_alias4() {
+        doDlangParserTest(true, true);
+    }
+
     public void testdeclaration_extern() {
         doDlangParserTest(true, true);
     }
@@ -575,6 +579,10 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
 
     // associative arrays
     public void testassocarrays() {
+        doDlangParserTest(true, true);
+    }
+
+    public void testassocarrays_literal() {
         doDlangParserTest(true, true);
     }
 

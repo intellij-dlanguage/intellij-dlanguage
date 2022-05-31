@@ -528,7 +528,7 @@ class DLangParser {
      * Parses an AddExpression.
      * converted
      * $(GRAMMAR $(RULEDEF addExpression):
-     * $(RULE mulExpression)
+     *  $(RULE mulExpression)
      * | $(RULE addExpression) $(LPAREN)$(LITERAL '+') | $(LITERAL'-') | $(LITERAL'~')$(RPAREN) $(RULE mulExpression)
      * ;)
      */
@@ -550,7 +550,7 @@ class DLangParser {
      * Parses an AliasDeclaration.
      * converted
      * $(GRAMMAR $(RULEDEF aliasDeclaration):
-     * $(LITERAL 'alias') $(RULE aliasInitializer) $(LPAREN)$(LITERAL ',') $(RULE aliasInitializer)$(RPAREN)* $(LITERAL ';')
+     *   $(LITERAL 'alias') $(RULE aliasInitializer) $(LPAREN)$(LITERAL ',') $(RULE aliasInitializer)$(RPAREN)* $(LITERAL ';')
      * | $(LITERAL 'alias') $(RULE storageClass)* $(RULE type) $(RULE identifierList) $(LITERAL ';')
      * | $(LITERAL 'alias') $(RULE storageClass)* $(RULE type) $(RULE identifier) $(LITERAL '(') $(RULE parameters) $(LITERAL ')') $(memberFunctionAttribute)* $(LITERAL ';')
      * ;)
@@ -615,13 +615,21 @@ class DLangParser {
             return true;
         if (startsWith(tok("identifier"), tok("=>")))
             return true;
-        if (currentIs(tok("("))) {
+        Bookmark b = setBookmark();
+        if (currentIs(tok("(")) || currentIs(tok("ref")) && peekIs(tok("("))) {
+            if (currentIs(tok("ref")))
+                advance();
             final Token t = peekPastParens();
             if (t != null) {
-                return t.type.equals(tok("=>")) || t.type.equals(tok("{"))
-                    || isMemberFunctionAttribute(t.type);
+                if (t.type.equals(tok("=>")) || t.type.equals(tok("{"))
+                    || isMemberFunctionAttribute(t.type)) {
+                    goToBookmark(b);
+                    return true;
+                }
+
             }
         }
+        goToBookmark(b);
         return false;
     }
 
@@ -687,6 +695,7 @@ class DLangParser {
      * <p>
      * $(GRAMMAR $(RULEDEF aliasInitializer):
      *   $(LITERAL Identifier) $(RULE templateParameters)? $(LITERAL '=') $(RULE storageClass)* $(RULE type)
+     * | $(LITERAL Identifier) $(RULE templateParameters)? $(LITERAL '=') $(RULE storageClass)* $(RULE type) $(RULE parameters) $(RULE memberFunctionAttribute)*
      * | $(LITERAL Identifier) $(RULE templateParameters)? $(LITERAL '=') $(RULE functionLiteralExpression)
      * ;)
      */
@@ -721,6 +730,17 @@ class DLangParser {
             if (!parseType().first) {
                 cleanup(m, ALIAS_INITIALIZER);
                 return false;
+            }
+            if (currentIs(tok("("))) {
+                if (!parseParameters()) {
+                    cleanup(m, ALIAS_INITIALIZER);
+                    return false;
+                }
+                while (moreTokens() && currentIsMemberFunctionAttribute())
+                    if (!parseMemberFunctionAttribute()) {
+                        cleanup(m, ALIAS_INITIALIZER);
+                        return false;
+                    }
             }
         }
         exit_section_modified(builder, m, ALIAS_INITIALIZER, true);
@@ -789,7 +809,7 @@ class DLangParser {
      * Parses an AndAndExpression.
      * <p>
      * $(GRAMMAR $(RULEDEF andAndExpression):
-     * $(RULE orExpression)
+     *   $(RULE orExpression)
      * | $(RULE andAndExpression) $(LITERAL '&&') $(RULE orExpression)
      * ;)
      */
@@ -811,7 +831,7 @@ class DLangParser {
      * Parses an AndExpression.
      * <p>
      * $(GRAMMAR $(RULEDEF andExpression):
-     * $(RULE cmpExpression)
+     *   $(RULE cmpExpression)
      * | $(RULE andExpression) $(LITERAL '&') $(RULE cmpExpression)
      * ;)
      */
@@ -883,7 +903,7 @@ class DLangParser {
      * Parses an ArrayInitializer.
      * <p>
      * $(GRAMMAR $(RULEDEF arrayInitializer):
-     * $(LITERAL '[') $(LITERAL ']')
+     *   $(LITERAL '[') $(LITERAL ']')
      * | $(LITERAL '[') $(RULE arrayMemberInitialization) ($(LITERAL ',') $(RULE arrayMemberInitialization)?)* $(LITERAL ']')
      * ;)
      */
@@ -959,6 +979,7 @@ class DLangParser {
             final Bookmark b = setBookmark();
             skipBrackets();
             if (currentIs(tok(":"))) {
+                goToBookmark(b);
                 if (!parseAssignExpression()) {
                     abandonBookmark(b);
                     cleanup(m, ARRAY_MEMBER_INITIALIZATION);
@@ -5428,7 +5449,7 @@ class DLangParser {
      * Parses a NonVoidInitializer
      * <p>
      * $(GRAMMAR $(RULEDEF nonVoidInitializer):
-     * $(RULE assignExpression)
+     *   $(RULE assignExpression)
      * | $(RULE arrayInitializer)
      * | $(RULE structInitializer)
      * ;)
@@ -5463,8 +5484,17 @@ class DLangParser {
                 }
             }
         } else if (currentIs(tok("["))) {
+            boolean isAA = false;
+            Bookmark bk = setBookmark();
+            advance();
+            if (currentIs(tok("["))) {
+                advance();
+                Token c =peekPastBrackets();
+                isAA = c != null && c.type == tok(":");
+            }
+            goToBookmark(bk);
             final Token b = peekPastBrackets();
-            if (b != null && (b.type.equals(tok(","))
+            if (!isAA && b != null && (b.type.equals(tok(","))
                 || b.type.equals(tok(")"))
                 || b.type.equals(tok("]"))
                 || b.type.equals(tok("}"))
