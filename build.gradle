@@ -249,12 +249,12 @@ repositories {
 }
 
 dependencies {
-    // According to https://www.jetbrains.org/intellij/sdk/docs/tutorials/kotlin.html
-    // we should not need to include kotlin-runtime and kotlin-stdlib jars with a plugin
-    // as it's bundled with Intellij, however if we support multiple Intellij versions (which
-    // we do) then it may be worth bundling our own kotlin jars
-    //compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    //compileOnly "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    // According to https://www.jetbrains.org/intellij/sdk/docs/tutorials/kotlin.html we
+    // should not need to include kotlin-runtime and kotlin-stdlib jars with a plugin
+    // as it's bundled with Intellij. However if we support multiple Intellij versions (which
+    // we do) then it's worth bundling our own kotlin jars so that there aren't version conflicts.
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
     implementation project(':utils')
     implementation project(':errorreporting')
