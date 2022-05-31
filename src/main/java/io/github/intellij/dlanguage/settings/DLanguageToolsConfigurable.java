@@ -459,7 +459,7 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
                 .withParameters("--version");
 
             ApplicationManager.getApplication()
-                .invokeLater(() -> {
+                .executeOnPooledThread(() -> {
                     try {
                         new DlangToolVersionProcessAdapter(tool, cmd)
                             .startNotify();
