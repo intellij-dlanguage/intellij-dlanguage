@@ -4,7 +4,9 @@ import com.intellij.codeInsight.documentation.DocumentationManager
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 
 class DDocumentationProviderTest : BasePlatformTestCase() {
+
     private var provider: DDocumentationProvider? = null
+
     @Throws(Exception::class)
     public override fun setUp() {
         super.setUp()
@@ -13,6 +15,28 @@ class DDocumentationProviderTest : BasePlatformTestCase() {
 
     override fun getTestDataPath(): String {
         return this.javaClass.classLoader.getResource("gold/documentation")!!.path
+    }
+
+    fun testGetUrlForHandlesSingleImport() {
+        myFixture.configureByText("example.d", "import std.typecons;")
+
+        val elementAndContext = DocumentationManager.getInstance(project)
+            .findTargetElementAndContext(myFixture.editor, 13, myFixture.file)!!
+
+        val result = provider!!.getUrlFor(elementAndContext.first, elementAndContext.second)
+        assertEquals("https://dlang.org/phobos/std_typecons.html", result[0])
+    }
+
+    fun testGetUrlForHandlesNullAndNonImportStatement() {
+        myFixture.configureByText("example.d", "class User { int id; string name;}")
+
+        val elementAndContext = DocumentationManager.getInstance(project)
+            .findTargetElementAndContext(myFixture.editor, 17, myFixture.file)!!
+
+        assertEmpty("Should return empty list rather than throwing exception", provider!!.getUrlFor(null, null))
+        assertEmpty("Should return empty list rather than throwing exception", provider!!.getUrlFor(elementAndContext.first, null))
+        assertEmpty("Should return empty list rather than throwing exception", provider!!.getUrlFor(null, elementAndContext.second))
+        assertEmpty("Should return empty list rather than throwing exception", provider!!.getUrlFor(elementAndContext.first, elementAndContext.second))
     }
 
     fun testGenerateDocHandlesNull() {

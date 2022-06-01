@@ -6,7 +6,10 @@ import com.intellij.lang.documentation.DocumentationProvider
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiManager
+import com.intellij.psi.util.PsiTreeUtil
+import io.github.intellij.dlanguage.psi.impl.named.DlangSingleImportImpl
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
+import io.github.intellij.dlanguage.psi.named.DlangSingleImport
 import io.github.intellij.dlanguage.psi.references.DReference
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributesFinder
 
@@ -27,11 +30,28 @@ class DDocumentationProvider : AbstractDocumentationProvider(), DocumentationPro
 
     /*
     * Returns the list of possible URLs to show as external documentation for the specified element.
-    * todo: add some logic to actually return useful results from dlang.org if possible
+    * The URL's are shown in UI by clicking on 'View' -> 'ExternalDocumentation', or by using Ctrl+F1
+    *
+    * This is different to the documentation that is displayed on hover.
+    *
+    * todo: Add further logic to actually return other useful results from dlang.org (phobos or language spec)
     *  https://dlang.org/spec/spec.html
     *  https://dlang.org/phobos/index.html
     */
-    override fun getUrlFor(element: PsiElement?, originalElement: PsiElement?): List<String> = ArrayList()
+    override fun getUrlFor(element: PsiElement?, originalElement: PsiElement?): List<String> {
+        originalElement?.let {
+            val singleImport = PsiTreeUtil.findFirstParent(it, true) { t -> t is DlangSingleImport }
+
+            val moduleName = (singleImport as DlangSingleImportImpl?)?.importedModuleName
+
+            return if (moduleName?.startsWith("std.") == true)
+                arrayListOf("https://dlang.org/phobos/${moduleName.replace('.', '_')}.html")
+            else
+                emptyList()
+        }
+
+        return emptyList()
+    }
 
     /**
      *
