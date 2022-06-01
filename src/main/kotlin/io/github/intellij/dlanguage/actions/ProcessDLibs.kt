@@ -305,13 +305,18 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
 
             LOG.debug("Clearing libraries from module '${module.name}'")
 
-            ModuleRootModificationUtil.updateModel(module) { model ->
-                model.orderEntries
-                    .filterIsInstance<LibraryOrderEntry>()
-                    .forEach { lib ->
-                        model.removeOrderEntry(lib)
-                        LOG.debug("removed ${lib.presentableName} from from module '${module.name}'")
-                    }
+            if(module.isDisposed) {
+                LOG.warn("Module '${module.name}' is already disposed")
+                return
+            } else {
+                ModuleRootModificationUtil.updateModel(module) { model ->
+                    model.orderEntries
+                        .filterIsInstance<LibraryOrderEntry>()
+                        .forEach { lib ->
+                            model.removeOrderEntry(lib)
+                            LOG.debug("removed ${lib.presentableName} from from module '${module.name}'")
+                        }
+                }
             }
         }
 
