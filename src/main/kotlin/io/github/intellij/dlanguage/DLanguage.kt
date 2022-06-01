@@ -6,6 +6,7 @@ import com.intellij.lang.ParserDefinition
 import com.intellij.lexer.FlexAdapter
 import com.intellij.lexer.Lexer
 import com.intellij.openapi.diagnostic.Logger
+import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.DumbService
 import com.intellij.openapi.project.IndexNotReadyException
 import com.intellij.openapi.project.Project
@@ -20,7 +21,7 @@ import com.intellij.psi.TokenType
 import com.intellij.psi.search.GlobalSearchScope.allScope
 import com.intellij.psi.tree.TokenSet
 import com.intellij.psi.tree.TokenSet.create
-import io.github.intellij.dlanguage.DlangLexer
+import com.intellij.ui.EditorNotificationPanel
 import io.github.intellij.dlanguage.index.DModuleIndex.getFilesByModuleName
 import io.github.intellij.dlanguage.parser.ParserWrapper
 import io.github.intellij.dlanguage.psi.DlangFile
@@ -28,6 +29,7 @@ import io.github.intellij.dlanguage.psi.DlangTypes
 import io.github.intellij.dlanguage.resolve.processors.basic.BasicResolve
 import io.github.intellij.dlanguage.stubs.types.DFileStubElementType
 import org.jetbrains.annotations.NotNull
+import javax.swing.event.HyperlinkEvent
 
 class DLanguageLexerAdapter : FlexAdapter(DlangLexer())
 
@@ -66,27 +68,53 @@ class DLangProjectDmdSetupValidator : ProjectSdkSetupValidator {
     }
 
     private fun missingAnyPhobosFiles(project: Project): Boolean =
-        !missingPhobosModules(project).isEmpty()
+        missingPhobosModules(project).isNotEmpty()
 
     private fun missingPhobosModules(project: Project): List<String> {
-        val resolveFilesComputable = Computable({
+        val resolveFilesComputable = Computable {
             expectedModules.filter {
                 getFilesByModuleName(project, it, allScope(project)).isEmpty()
             }
         }
-        )
         return DumbService.getInstance(project).runReadActionInSmartMode(resolveFilesComputable)
     }
 
     private fun cannotFindObjectDotD(project: Project): Boolean {
-        val resolveObjectDotD: Computable<Boolean> = Computable({
+        val resolveObjectDotD: Computable<Boolean> = Computable {
             BasicResolve.getInstance(project, profile = false).`object` == null
-        })
+        }
         return DumbService.getInstance(project).runReadActionInSmartMode(resolveObjectDotD)
     }
 
-    override fun doFix(project: Project, file: VirtualFile) =
-        Unit.apply { ProjectSettingsService.getInstance(project).openProjectSettings() }
+    /*
+    * This function replaces the previously used doFix()
+    * It was changed when working on https://github.com/intellij-dlanguage/intellij-dlanguage/issues/679
+    */
+    override fun getFixHandler(project: Project, file: VirtualFile): EditorNotificationPanel.ActionHandler {
+        return object : EditorNotificationPanel.ActionHandler {
+
+            // This entrypoint is when the user chooses to fix the issue by clicking on the panel over the editor pane
+            override fun handlePanelActionClick(panel: EditorNotificationPanel, event: HyperlinkEvent) = configureSdkForProject()
+
+            // This entrypoint is when the user does Alt+Enter and chooses to fix the issue via context menu
+            override fun handleQuickFixClick(editor: Editor, psiFile: PsiFile) = configureSdkForProject()
+
+            fun configureSdkForProject() {
+                if(!project.isDisposed) {
+                    ProjectSettingsService.getInstance(project).openProjectSettings()
+                }
+            }
+
+//            fun configureSdkForCurrentModule() {
+//                ModuleUtilCore.findModuleForFile(file, project)?.let { module ->
+//                    if(!module.isDisposed) {
+//                        ProjectSettingsService.getInstance(project)
+//                            .showModuleConfigurationDialog(module.name, ClasspathEditor.getName())
+//                    }
+//                }
+//            }
+        }
+    }
 
     override fun getErrorMessage(project: Project, file: VirtualFile): String? {
         try {
