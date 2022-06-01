@@ -14,6 +14,7 @@ import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributesFin
  * Created by francis on 7/18/2017.
  */
 class DDocumentationProvider : AbstractDocumentationProvider(), DocumentationProvider {
+
     /**
      * Returns the text to show in the Ctrl-hover popup for the specified element.
      *
@@ -22,13 +23,15 @@ class DDocumentationProvider : AbstractDocumentationProvider(), DocumentationPro
      * @param originalElement the element under the mouse cursor
      * @return the documentation to show, or null if the provider can't provide any documentation for this element.
      */
-    override fun getQuickNavigateInfo(element: PsiElement, originalElement: PsiElement): String? {
-        return null
-    }
+    override fun getQuickNavigateInfo(element: PsiElement?, originalElement: PsiElement?): String? = null
 
-    override fun getUrlFor(element: PsiElement, originalElement: PsiElement): List<String> {
-        return ArrayList()
-    }
+    /*
+    * Returns the list of possible URLs to show as external documentation for the specified element.
+    * todo: add some logic to actually return useful results from dlang.org if possible
+    *  https://dlang.org/spec/spec.html
+    *  https://dlang.org/phobos/index.html
+    */
+    override fun getUrlFor(element: PsiElement?, originalElement: PsiElement?): List<String> = ArrayList()
 
     /**
      *
