@@ -3151,7 +3151,18 @@ class DLangParser {
             cleanup(m, DECLARATION);
             return false;
         }
-        if (peekIs(tok("("))) {
+        Bookmark b = setBookmark();
+        b.m.done(DECLARATION); // must `done()` marker here to keep be able to allow use t.second.precede()
+        if (!parseVariableDeclaration(t.second, false)) {
+            goToBookmark(b);
+            if (!parseFunctionDeclaration(t.second, false)) {
+                cleanup(m, DECLARATION);
+                return false;
+            }
+        } else {
+            abandonBookmark(b);
+        }
+        /*if (peekIs(tok("("))) {
            if (!parseFunctionDeclaration(t.second, false)) {
                cleanup(m, DECLARATION);
                return false;
@@ -3159,7 +3170,7 @@ class DLangParser {
         } else if (!parseVariableDeclaration(t.second, false)) {
                 cleanup(m, DECLARATION);
                 return false;
-        }
+        }*/
         return true;
     }
 
@@ -8627,7 +8638,10 @@ class DLangParser {
         }
         if (isAuto) {
             if (!parseAutoDeclaration()) {
-                cleanup(m, VARIABLE_DECLARATION);
+                if (type != null)
+                    m.drop();
+                else
+                    cleanup(m, VARIABLE_DECLARATION);
                 return false;
             }
             exit_section_modified(builder, m, VARIABLE_DECLARATION, true);
@@ -8635,7 +8649,10 @@ class DLangParser {
         }
         while (isStorageClass())
             if (!parseStorageClass()) {
-                cleanup(m, VARIABLE_DECLARATION);
+                if (type != null)
+                    m.drop();
+                else
+                    cleanup(m, VARIABLE_DECLARATION);
                 return false;
             }
         if (type == null) {
@@ -8646,7 +8663,10 @@ class DLangParser {
         while (true) {
             final boolean declarator = parseDeclarator();
             if (!declarator) {
-                cleanup(m, VARIABLE_DECLARATION);
+                if (type != null)
+                    m.drop();
+                else
+                    cleanup(m, VARIABLE_DECLARATION);
                 return false;
             }
             if (moreTokens() && currentIs(tok(","))) {
@@ -8656,7 +8676,10 @@ class DLangParser {
         }
         final Token semicolon = expect(tok(";"));
         if (semicolon == null) {
-            cleanup(m, VARIABLE_DECLARATION);
+            if (type != null)
+                m.drop();
+            else
+                cleanup(m, VARIABLE_DECLARATION);
             return false;
         }
         exit_section_modified(builder, m, VARIABLE_DECLARATION, true);

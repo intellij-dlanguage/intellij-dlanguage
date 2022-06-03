@@ -951,6 +951,10 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
         doDlangParserTest(true, true);
     }
 
+    public void testtemplates_variable_declaration() {
+        doDlangParserTest(true, true);
+    }
+
     // contract programming
     public void testcontract_programming() {
         doDlangParserTest(true, true);
