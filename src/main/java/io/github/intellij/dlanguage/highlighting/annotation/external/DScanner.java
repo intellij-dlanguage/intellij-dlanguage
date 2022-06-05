@@ -47,10 +47,9 @@ public class DScanner implements DlangLinter {
 
     private static int getDocumentLineCount(final Document document) {
         try {
-            final int lineCount = document.getLineCount();
-            return lineCount == 0 ? 1 : lineCount;
+            return document.getLineCount();
         } catch (final Exception e) {
-            return 1;
+            return 0;
         }
     }
 
@@ -182,8 +181,8 @@ public class DScanner implements DlangLinter {
     private static int getValidLineNumber(int line, final Document document) {
         final int lineCount = getDocumentLineCount(document);
         line = line - 1;
-        if (line <= 0) {
-            line = 1;
+        if (line < 0) {
+            line = 0;
         } else if (line >= lineCount) {
             line = lineCount - 1;
         }
@@ -229,8 +228,8 @@ public class DScanner implements DlangLinter {
         final Matcher m = p.matcher(lint);
 
         if (m.find()) {
-            final int line = Integer.valueOf(m.group(1));
-            final int column = Integer.valueOf(m.group(2));
+            final int line = Integer.parseInt(m.group(1));
+            final int column = Integer.parseInt(m.group(2));
             final TextRange range = calculateTextRange(file, line, column);
             final String severity = m.group(3);
             final String message = StringUtil.trim(m.group(4));
