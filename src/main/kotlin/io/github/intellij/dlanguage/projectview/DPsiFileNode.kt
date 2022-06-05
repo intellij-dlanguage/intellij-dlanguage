@@ -2,10 +2,11 @@ package io.github.intellij.dlanguage.projectview
 
 import com.intellij.ide.projectView.PresentationData
 import com.intellij.ide.projectView.ViewSettings
-import com.intellij.ide.projectView.impl.nodes.AbstractPsiBasedNode
+import com.intellij.ide.projectView.impl.nodes.BasePsiNode
 import com.intellij.ide.util.treeView.AbstractTreeNode
 import com.intellij.openapi.project.Project
-import com.intellij.psi.PsiElement
+import com.intellij.openapi.util.io.FileUtil
+import com.intellij.psi.PsiFile
 import com.intellij.ui.SimpleTextAttributes
 import io.github.intellij.dlanguage.psi.DlangFile
 
@@ -14,13 +15,25 @@ import io.github.intellij.dlanguage.psi.DlangFile
  * in the project view.
  */
 class DPsiFileNode(project: Project?, dFilePsi: DlangFile, viewSettings: ViewSettings) :
-    AbstractPsiBasedNode<DlangFile>(project, dFilePsi, viewSettings) {
+    BasePsiNode<DlangFile>(project, dFilePsi, viewSettings) {
 
     override fun getTypeSortKey(): Comparable<*> = TypeSortKey(this)
+
+    override fun getTitle(): String? {
+        return if (virtualFile != null) FileUtil.getLocationRelativeToUserHome(virtualFile!!.presentableUrl) else super.getTitle()
+    }
+
+    override fun canRepresent(element: Any?): Boolean {
+        if (super.canRepresent(element)) return true
+
+        val value: DlangFile? = value
+        return value != null && element != null && element == value.virtualFile
+    }
 
     override fun updateImpl(data: PresentationData) {
         val filePsi: DlangFile? = value
         if (filePsi != null) {
+            data.presentableText = value.getModuleName()
             val fileName = filePsi.virtualFile.nameWithoutExtension
             if (fileName == "package") {
                 data.addText("package.${filePsi.virtualFile.extension}", SimpleTextAttributes.REGULAR_ATTRIBUTES)
@@ -43,8 +56,6 @@ class DPsiFileNode(project: Project?, dFilePsi: DlangFile, viewSettings: ViewSet
         // TODO: Eventually the plugin could support the "Show Members" feature of the project view.
         return emptyList()
     }
-
-    override fun extractPsiFromValue(): PsiElement? = value
 
     override fun getTypeSortWeight(sortByType: Boolean): Int {
         return if (sortByType) {
