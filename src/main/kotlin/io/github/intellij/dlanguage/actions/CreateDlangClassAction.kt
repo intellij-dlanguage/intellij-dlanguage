@@ -20,8 +20,10 @@ import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiFile
 import io.github.intellij.dlanguage.DLanguage
 import java.io.File
+import java.util.*
 import java.util.regex.Pattern
 import javax.swing.Icon
+import kotlin.collections.HashMap
 
 /**
  * Created by pirocks on 9/21/16.
@@ -51,13 +53,13 @@ open class CreateDlangClassAction : CreateFileFromTemplateAction(NEW_D_FILE, "",
 
         assert(segments.isNotEmpty())
 
-        val module = segments.last().toLowerCase()
+        val module = segments.last().lowercase(Locale.getDefault())
         val pack = segments.subList(0, segments.size - 1)
         val aggregate = segments.last()
 
         val storeDirectory = CreateFileAction.MkDirs(nameSegments.joinToString(File.separator), inRequestedDirectory)
             .directory
-
+        val dlangModuleName = pack.joinToString(".") + if (pack.isNotEmpty()) (if (module == "package") "" else ".$module") else module
         val element = FileTemplateUtil.createFromTemplate(
             template,
             module,
@@ -68,7 +70,7 @@ open class CreateDlangClassAction : CreateFileFromTemplateAction(NEW_D_FILE, "",
                         { entry -> entry.key.toString() },
                         { it }
                     )))
-                .put("DLANGUAGE_MODULE_NAME", pack.joinToString(".") + if (pack.isNotEmpty()) ".$module" else module)
+                .put("DLANGUAGE_MODULE_NAME", dlangModuleName)
                 .put("DLANGUAGE_CLASS_NAME", aggregate)
                 .build()
                 .toMap(HashMap<String, Any>()),
@@ -94,16 +96,16 @@ open class CreateDlangClassAction : CreateFileFromTemplateAction(NEW_D_FILE, "",
 
     override fun isAvailable(dataContext: DataContext): Boolean {
         if (super.isAvailable(dataContext)) {
-            val project = CommonDataKeys.PROJECT.getData(dataContext);
-            val dirContext = CommonDataKeys.VIRTUAL_FILE.getData(dataContext);
+            val project = CommonDataKeys.PROJECT.getData(dataContext)
+            val dirContext = CommonDataKeys.VIRTUAL_FILE.getData(dataContext)
 
-            project ?: return false;
-            dirContext ?: return false;
+            project ?: return false
+            dirContext ?: return false
 
-            return ProjectRootManager.getInstance(project).contentSourceRoots.find { dirContext.path.startsWith(it.path) } != null;
+            return ProjectRootManager.getInstance(project).contentSourceRoots.find { dirContext.path.startsWith(it.path) } != null
         }
 
-        return false;
+        return false
     }
 
     private fun findSourceRootOrDefault(inRequestedDirectory: PsiDirectory, defaultSourceRoot: VirtualFile): VirtualFile {
