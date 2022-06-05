@@ -56,7 +56,7 @@ class CreateDlangClassActionTest : LightPlatform4TestCase() {
         assertFalse(validator.canClose("my-class"))
         assertFalse(validator.canClose(".myclass"))
         assertFalse(validator.canClose("1myclass"))
-        //assertTrue(validator.canClose("  spaces around words  ")) // todo: check if this should be handled (currently breaks)
+        assertFalse(validator.canClose("  spaces around words  "))
     }
 
     @Test
