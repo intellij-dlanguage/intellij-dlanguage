@@ -4,6 +4,7 @@ import com.intellij.ide.projectView.TreeStructureProvider
 import com.intellij.ide.projectView.ViewSettings
 import com.intellij.ide.projectView.impl.nodes.PsiFileNode
 import com.intellij.ide.util.treeView.AbstractTreeNode
+import com.intellij.openapi.project.DumbAware
 
 /**
  * Modifies the Project View tree to better fit the D workflow and to take
@@ -14,7 +15,7 @@ import com.intellij.ide.util.treeView.AbstractTreeNode
  * Based on the Kotlin plugin's Project TreeStructureProvider:
  * [https://github.com/JetBrains/kotlin/blob/26413acf33a86375e1c63b9dae9fdefbe75b0561/idea/src/org/jetbrains/kotlin/idea/projectView/projectViewProviders.kt]
  */
-class DTreeStructureProvider : TreeStructureProvider {
+class DTreeStructureProvider : TreeStructureProvider, DumbAware {
     override fun modify(parent: AbstractTreeNode<*>,
                         children: MutableCollection<AbstractTreeNode<*>>,
                         settings: ViewSettings): Collection<AbstractTreeNode<*>> {
