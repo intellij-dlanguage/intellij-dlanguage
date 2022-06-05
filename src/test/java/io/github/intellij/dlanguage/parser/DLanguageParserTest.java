@@ -161,6 +161,10 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
         doDlangParserTest(true, true);
     }
 
+    public void testtype_expression_with_array_indexing() {
+        doDlangParserTest(true, true);
+    }
+
     //  properties
     public void testproperties_init() {
         doDlangParserTest(true, true);
@@ -361,6 +365,10 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
         doDlangParserTest(true, true);
     }
 
+    public void testexpressions_throw() {
+        doDlangParserTest(true, true);
+    }
+
     public void testexpressions_type_info() {
         doDlangParserTest(true, true);
     }
@@ -467,6 +475,10 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
         doDlangParserTest(true, true);
     }
 
+    public void teststatements_pragma() {
+        doDlangParserTest(true, true);
+    }
+
     public void teststatements_return() {
         doDlangParserTest(true, true);
     }
@@ -476,10 +488,6 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
     }
 
     public void teststatements_synchronised() {
-        doDlangParserTest(true, true);
-    }
-
-    public void teststatements_throw() {
         doDlangParserTest(true, true);
     }
 
@@ -825,6 +833,10 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
         doDlangParserTest(true, true);
     }
 
+    public void testfunctions_shortened_body() {
+        doDlangParserTest(true, true);
+    }
+
     public void testfunctions_string_mixin() {
         doDlangParserTest(true, true);
     }
@@ -939,6 +951,9 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
         doDlangParserTest(true, true);
     }
 
+    public void testtemplates_variable_declaration() {
+        doDlangParserTest(true, true);
+    }
 
     // contract programming
     public void testcontract_programming() {

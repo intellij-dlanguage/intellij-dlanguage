@@ -8,12 +8,15 @@ D Language File
           PsiElement(DlangTokenType.ID)('C')
         PsiElement(DlangTokenType.++)('++')
         PsiElement(DlangTokenType.,)(',')
-        DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('N')
+        DLanguageTypeIdentifierPartImpl(TYPE_IDENTIFIER_PART)
+          DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
+            IDENTIFIER
+              PsiElement(DlangTokenType.ID)('N')
           PsiElement(DlangTokenType..)('.')
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('M')
+          DLanguageTypeIdentifierPartImpl(TYPE_IDENTIFIER_PART)
+            DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
+              IDENTIFIER
+                PsiElement(DlangTokenType.ID)('M')
         PsiElement(DlangTokenType.))(')')
     PsiElement(DlangTokenType.{)('{')
     DLanguageDeclarationImpl(DECLARATION)
@@ -35,9 +38,10 @@ D Language File
               PsiElement(DlangTokenType.ID)('C')
             PsiElement(DlangTokenType.++)('++')
             PsiElement(DlangTokenType.,)(',')
-            DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('R')
+            DLanguageTypeIdentifierPartImpl(TYPE_IDENTIFIER_PART)
+              DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
+                IDENTIFIER
+                  PsiElement(DlangTokenType.ID)('R')
             PsiElement(DlangTokenType.))(')')
         PsiElement(DlangTokenType.{)('{')
         DLanguageDeclarationImpl(DECLARATION)
@@ -51,7 +55,9 @@ D Language File
             DLanguageParametersImpl(PARAMETERS)
               PsiElement(DlangTokenType.()('(')
               PsiElement(DlangTokenType.))(')')
-            PsiElement(DlangTokenType.;)(';')
+            DLanguageFunctionBodyImpl(FUNCTION_BODY)
+              DLanguageMissingFunctionBodyImpl(MISSING_FUNCTION_BODY)
+                PsiElement(DlangTokenType.;)(';')
         PsiElement(DlangTokenType.})('}')
       PsiElement(DlangTokenType.})('}')
     PsiElement(DlangTokenType.})('}')

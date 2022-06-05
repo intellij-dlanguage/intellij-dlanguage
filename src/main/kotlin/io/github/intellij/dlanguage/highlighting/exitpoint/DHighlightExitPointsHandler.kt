@@ -1,6 +1,7 @@
 package io.github.intellij.dlanguage.highlighting.exitpoint
 
 import com.intellij.codeInsight.highlighting.HighlightUsagesHandlerBase
+import com.intellij.featureStatistics.ProductivityFeatureNames
 import com.intellij.openapi.editor.Editor
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
@@ -16,6 +17,8 @@ class DHighlightExitPointsHandler(
 ) : HighlightUsagesHandlerBase<PsiElement>(editor, file) {
 
     override fun getTargets() = listOf(target)
+
+    override fun getFeatureId(): String = ProductivityFeatureNames.CODEASSISTS_HIGHLIGHT_RETURN
 
     override fun selectTargets(targets: MutableList<out PsiElement>, selectionConsumer: Consumer<in MutableList<out PsiElement>>) {
         selectionConsumer.consume(targets)

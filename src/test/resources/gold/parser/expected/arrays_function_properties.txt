@@ -41,7 +41,9 @@ D Language File
           IDENTIFIER
             PsiElement(DlangTokenType.ID)('x')
         PsiElement(DlangTokenType.))(')')
-      PsiElement(DlangTokenType.;)(';')
+      DLanguageFunctionBodyImpl(FUNCTION_BODY)
+        DLanguageMissingFunctionBodyImpl(MISSING_FUNCTION_BODY)
+          PsiElement(DlangTokenType.;)(';')
   DLanguageDeclarationImpl(DECLARATION)
     UNITTEST
       UNITTEST

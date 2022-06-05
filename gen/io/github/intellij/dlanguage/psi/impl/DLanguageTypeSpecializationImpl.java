@@ -1,20 +1,5 @@
 package io.github.intellij.dlanguage.psi.impl;
 
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_CLASS;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_CONST;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_DELEGATE;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_ENUM;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_FUNCTION;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_IMMUTABLE;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_INOUT;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_INTERFACE;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_RETURN;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_SHARED;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_STRUCT;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_SUPER;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_UNION;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW___PARAMETERS;
-
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
@@ -25,6 +10,8 @@ import io.github.intellij.dlanguage.psi.DLanguageTypeSpecialization;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import static io.github.intellij.dlanguage.psi.DlangTypes.*;
 
 
 public class DLanguageTypeSpecializationImpl extends ASTWrapperPsiElement implements
@@ -82,6 +69,11 @@ public class DLanguageTypeSpecializationImpl extends ASTWrapperPsiElement implem
     }
 
     @Nullable
+    public PsiElement getKW___VECTOR() {
+        return findChildByType(KW___VECTOR);
+    }
+
+    @Nullable
     public PsiElement getKW_FUNCTION() {
         return findChildByType(KW_FUNCTION);
     }
@@ -119,6 +111,16 @@ public class DLanguageTypeSpecializationImpl extends ASTWrapperPsiElement implem
     @Nullable
     public PsiElement getKW_RETURN() {
         return findChildByType(KW_RETURN);
+    }
+
+    @Nullable
+    public PsiElement getKW_MODULE() {
+        return findChildByType(KW_MODULE);
+    }
+
+    @Nullable
+    public PsiElement getKW_PACKAGE() {
+        return findChildByType(KW_PACKAGE);
     }
 
 }

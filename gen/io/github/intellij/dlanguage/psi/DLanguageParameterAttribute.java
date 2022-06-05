@@ -29,4 +29,7 @@ public interface DLanguageParameterAttribute extends PsiElement {
 
     @Nullable
     public DLanguageTypeConstructor getTypeConstructor();
+
+    @Nullable
+    public DLanguageAtAttribute getAtAttribute();
 }

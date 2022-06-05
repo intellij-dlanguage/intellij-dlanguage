@@ -57,10 +57,10 @@ public interface DLanguageStatementNoCaseNoDefault extends PsiElement {
     DLanguageTryStatement getTryStatement();
 
     @Nullable
-    DLanguageThrowStatement getThrowStatement();
+    DLanguageScopeGuardStatement getScopeGuardStatement();
 
     @Nullable
-    DLanguageScopeGuardStatement getScopeGuardStatement();
+    DLanguagePragmaStatement getPragmaStatement();
 
     @Nullable
     DLanguageAsmStatement getAsmStatement();

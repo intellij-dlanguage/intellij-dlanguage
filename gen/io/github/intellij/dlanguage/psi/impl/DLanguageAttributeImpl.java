@@ -1,26 +1,5 @@
 package io.github.intellij.dlanguage.psi.impl;
 
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_ABSTRACT;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_AUTO;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_CONST;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_ENUM;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_EXPORT;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_EXTERN;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_FINAL;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_INOUT;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_NOTHROW;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_OVERRIDE;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_PACKAGE;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_PRIVATE;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_PROTECTED;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_PUBLIC;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_PURE;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_REF;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_SCOPE;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_STATIC;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_SYNCHRONIZED;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW___GSHARED;
-
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
@@ -36,6 +15,8 @@ import io.github.intellij.dlanguage.psi.DLanguagePragmaExpression;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import static io.github.intellij.dlanguage.psi.DlangTypes.*;
 
 
 public class DLanguageAttributeImpl extends ASTWrapperPsiElement implements DLanguageAttribute {
@@ -99,6 +80,11 @@ public class DLanguageAttributeImpl extends ASTWrapperPsiElement implements DLan
     @Nullable
     public PsiElement getKW_NOTHROW() {
         return findChildByType(KW_NOTHROW);
+    }
+
+    @Nullable
+    public PsiElement getKW_THROW() {
+        return findChildByType(KW_THROW);
     }
 
     @Nullable

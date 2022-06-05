@@ -19,7 +19,10 @@ int main()
         writeln("catch %s", e.msg);
     }
     writeln("done");
-    return 0;
+
+    foo(throw someThrowable, bar);
+
+    return foo ? bar : throw new Exception("Hello, World!");
 }
 
 

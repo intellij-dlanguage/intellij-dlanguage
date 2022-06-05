@@ -19,6 +19,8 @@ import io.github.intellij.dlanguage.utils.DUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 public class DLanguageModuleDeclarationImpl extends DNamedStubbedPsiElementBase<DlangModuleDeclarationStub> implements DLanguageModuleDeclaration {
 
     public DLanguageModuleDeclarationImpl(final DlangModuleDeclarationStub stub, final IStubElementType type) {
@@ -89,6 +91,17 @@ public class DLanguageModuleDeclarationImpl extends DNamedStubbedPsiElementBase<
         } catch (final NullPointerException e) {
             return false;
         }
+    }
+
+    @Nullable
+    @Override
+    public List<DLanguageAtAttribute> getAtAttributes() {
+        return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageAtAttribute.class);
+    }
+    @Nullable
+    @Override
+    public DLanguageDeprecated getDeprecated() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageDeprecated.class);
     }
 
     @Nullable

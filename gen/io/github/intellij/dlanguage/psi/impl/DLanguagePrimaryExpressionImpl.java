@@ -1,34 +1,5 @@
 package io.github.intellij.dlanguage.psi.impl;
 
-import static io.github.intellij.dlanguage.psi.DlangTypes.CHARACTER_LITERAL;
-import static io.github.intellij.dlanguage.psi.DlangTypes.DOUBLE_QUOTED_STRING;
-import static io.github.intellij.dlanguage.psi.DlangTypes.FLOAT_LITERAL;
-import static io.github.intellij.dlanguage.psi.DlangTypes.INTEGER_LITERAL;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_FALSE;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_SUPER;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_THIS;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_TRUE;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW___DATE__;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW___EOF__;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW___FILE_FULL_PATH__;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW___FILE__;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW___FUNCTION__;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW___GSHARED;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW___LINE__;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW___MODULE__;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW___PARAMETERS;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW___PRETTY_FUNCTION__;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW___TIMESTAMP__;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW___TIME__;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW___TRAITS;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW___VECTOR;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW___VENDOR__;
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW___VERSION__;
-import static io.github.intellij.dlanguage.psi.DlangTypes.OP_DOLLAR;
-import static io.github.intellij.dlanguage.psi.DlangTypes.OP_DOT;
-import static io.github.intellij.dlanguage.psi.DlangTypes.OP_PAR_LEFT;
-import static io.github.intellij.dlanguage.psi.DlangTypes.OP_PAR_RIGHT;
-
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
@@ -55,6 +26,8 @@ import io.github.intellij.dlanguage.psi.DlangVisitor;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import static io.github.intellij.dlanguage.psi.DlangTypes.*;
 
 
 public class DLanguagePrimaryExpressionImpl extends ASTWrapperPsiElement implements
@@ -179,6 +152,11 @@ public class DLanguagePrimaryExpressionImpl extends ASTWrapperPsiElement impleme
     @Nullable
     public PsiElement getKW_FALSE() {
         return findChildByType(KW_FALSE);
+    }
+
+    @Nullable
+    public PsiElement getKW_REF() {
+        return findChildByType(KW_REF);
     }
 
     @Nullable

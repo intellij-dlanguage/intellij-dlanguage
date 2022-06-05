@@ -8,22 +8,23 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
+import io.github.intellij.dlanguage.psi.DLanguageAssignExpression;
 import io.github.intellij.dlanguage.psi.DLanguageExpression;
-import io.github.intellij.dlanguage.psi.DLanguageThrowStatement;
+import io.github.intellij.dlanguage.psi.DLanguageThrowExpression;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 
-public class DLanguageThrowStatementImpl extends ASTWrapperPsiElement implements
-    DLanguageThrowStatement {
+public class DLanguageThrowExpressionImpl extends ASTWrapperPsiElement implements
+    DLanguageThrowExpression {
 
-    public DLanguageThrowStatementImpl(ASTNode node) {
+    public DLanguageThrowExpressionImpl(ASTNode node) {
         super(node);
     }
 
     public void accept(@NotNull DlangVisitor visitor) {
-        visitor.visitThrowStatement(this);
+        visitor.visitThrowExpression(this);
     }
 
     public void accept(@NotNull PsiElementVisitor visitor) {
@@ -40,8 +41,8 @@ public class DLanguageThrowStatementImpl extends ASTWrapperPsiElement implements
     }
 
     @Nullable
-    public DLanguageExpression getExpression() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageExpression.class);
+    public DLanguageAssignExpression getAssignExpression() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageAssignExpression.class);
     }
 
     @Nullable

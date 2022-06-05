@@ -34,6 +34,9 @@ public interface DLanguageAttribute extends PsiElement {
     public PsiElement getKW_NOTHROW();
 
     @Nullable
+    public PsiElement getKW_THROW();
+
+    @Nullable
     public PsiElement getKW_OVERRIDE();
 
     @Nullable

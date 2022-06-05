@@ -14,6 +14,15 @@ public interface DlangForeachType extends PsiElement, DNamedElement,
     StubBasedPsiElement<DlangForeachTypeStub> {
 
     @Nullable
+    PsiElement getKW_REF();
+
+    @Nullable
+    PsiElement getKW_ALIAS();
+
+    @Nullable
+    PsiElement getKW_ENUM();
+
+    @Nullable
     DLanguageType getType();
 
     @Nullable

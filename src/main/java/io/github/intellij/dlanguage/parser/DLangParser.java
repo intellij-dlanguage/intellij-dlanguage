@@ -18,7 +18,7 @@ import static io.github.intellij.dlanguage.psi.DlangTypes.*;
 
 /**
  * This parser is very closely based on libdparse, so that we can get bug fixes and new features from libdparse.
- * This means that some of the code can be a little bit messy becuase of this.
+ * This means that some of the code can be a little bit messy because of this.
  */
 class DLangParser {
 
@@ -195,16 +195,19 @@ class DLangParser {
     private int errorCount;
     private int warningCount;
     private Token[] tokens;
-    private int suppressedErrorCount;
-    private int suppressMessages;
+    private ArrayList<Integer> suppressMessages;
     private int index;
+
+
+    private int suppressedErrorCount() {
+        return suppressMessages.isEmpty() ? 0 : suppressMessages.get(suppressMessages.size()-1);
+    }
 
     DLangParser(@NotNull final PsiBuilder builder) {
         this.errorCount = 0;
         this.warningCount = 0;
         this.tokens = getTokens(builder);
-        this.suppressedErrorCount = 0;
-        this.suppressMessages = 0;
+        this.suppressMessages = new ArrayList<>();
         this.index = 0;
         this.builder = builder;
     }
@@ -265,6 +268,8 @@ class DLangParser {
                 return DECLARATION;
             case "Declarator":
                 return DECLARATOR;
+            case "DeclaratorIdentifierList":
+                return DECLARATOR_IDENTIFIER_LIST;
             case "DefaultStatement":
                 return DEFAULT_STATEMENT;
             case "Destructor":
@@ -295,8 +300,6 @@ class DLangParser {
                 return FUNCTION_BODY;
             case "GotoStatement":
                 return GOTO_STATEMENT;
-            case "IdentifierList":
-                return IDENTIFIER_LIST;
             case "IfStatement":
                 return IF_STATEMENT;
             case "ImportBind":
@@ -401,12 +404,14 @@ class DLangParser {
                 return TEMPLATE_TYPE_PARAMETER;
             case "TemplateValueParameter":
                 return TEMPLATE_VALUE_PARAMETER;
-            case "ThrowStatement":
-                return THROW_STATEMENT;
+            case "ThrowExpression":
+                return THROW_EXPRESSION;
             case "TryStatement":
                 return TRY_STATEMENT;
             case "Type":
                 return TYPE;
+            case "TypeIdentifierPart":
+                return TYPE_IDENTIFIER_PART;
             case "TypeSpecialization":
                 return TYPE_SPECIALIZATION;
             case "UnionDeclaration":
@@ -528,7 +533,7 @@ class DLangParser {
      * Parses an AddExpression.
      * converted
      * $(GRAMMAR $(RULEDEF addExpression):
-     *  $(RULE mulExpression)
+     *   $(RULE mulExpression)
      * | $(RULE addExpression) $(LPAREN)$(LITERAL '+') | $(LITERAL'-') | $(LITERAL'~')$(RPAREN) $(RULE mulExpression)
      * ;)
      */
@@ -551,7 +556,7 @@ class DLangParser {
      * converted
      * $(GRAMMAR $(RULEDEF aliasDeclaration):
      *   $(LITERAL 'alias') $(RULE aliasInitializer) $(LPAREN)$(LITERAL ',') $(RULE aliasInitializer)$(RPAREN)* $(LITERAL ';')
-     * | $(LITERAL 'alias') $(RULE storageClass)* $(RULE type) $(RULE identifierList) $(LITERAL ';')
+     * | $(LITERAL 'alias') $(RULE storageClass)* $(RULE type) $(RULE declaratorIdentifierList) $(LITERAL ';')
      * | $(LITERAL 'alias') $(RULE storageClass)* $(RULE type) $(RULE identifier) $(LITERAL '(') $(RULE parameters) $(LITERAL ')') $(memberFunctionAttribute)* $(LITERAL ';')
      * ;)
      */
@@ -585,7 +590,7 @@ class DLangParser {
                 cleanup(m, ALIAS_DECLARATION);
                 return false;
             }
-            if (!parseIdentifierListAliasDeclaration()) {
+            if (!parseDeclaratorIdentifierList()) {
                 cleanup(m, ALIAS_DECLARATION);
                 return false;
             }
@@ -631,32 +636,6 @@ class DLangParser {
         }
         goToBookmark(b);
         return false;
-    }
-
-    private boolean parseIdentifierListAliasDeclaration() {
-//        Marker m = enter_section_modified(builder);
-        while (moreTokens()) {
-            final Marker fakeAliasInitializer = enter_section_modified(builder);
-            //so let's explain whats going on here
-            // there  are two ways of creating an alias in d:
-            // alias x = int;
-            // alias int x;//designed to sorta look like a typedef
-            //the first way is covered by the alias initializer named element.
-            //libdparse does not however parse the second way with an alias initializer which leads to no named element
-            //therefore this modified version also needs to include an alias initializer.
-            final Token ident = expect(tok("identifier"));
-            exit_section_modified(builder, fakeAliasInitializer, ALIAS_INITIALIZER, true);
-            if (ident == null) {
-//                cleanup(m, IDENTIFIER_LIST);
-                return false;
-            }
-            if (currentIs(tok(","))) {
-                advance();
-            } else
-                break;
-        }
-//        exit_section_modified(builder, m, IDENTIFIER_LIST, true);
-        return true;
     }
 
     /**
@@ -864,13 +843,13 @@ class DLangParser {
         final Marker argumentList = enter_section_modified(builder);
         final Ref.IntRef length = new Ref.IntRef();
         length.element = 0;
-        final boolean node = parseCommaSeparatedRule(length, "ArgumentList", "AssignExpression");
+        final boolean node = parseCommaSeparatedRule(length, "ArgumentList", "AssignExpression", true);
         if (!node) {
             cleanup(argumentList, ARGUMENT_LIST);
             return new Pair<>(false, -1);
         }
         exit_section_modified(builder, argumentList, ARGUMENT_LIST, true);
-        return new Pair<Boolean, Integer>(true, length.element);
+        return new Pair<>(true, length.element);
     }
 
     /**
@@ -1028,7 +1007,7 @@ class DLangParser {
      * Parses an AsmAddExp
      * <p>
      * $(GRAMMAR $(RULEDEF asmAddExp):
-     * $(RULE asmMulExp)
+     *   $(RULE asmMulExp)
      * | $(RULE asmAddExp) ($(LITERAL '+') | $(LITERAL '-')) $(RULE asmMulExp)
      * ;)
      */
@@ -1051,7 +1030,7 @@ class DLangParser {
      * Parses an AsmAndExp
      * <p>
      * $(GRAMMAR $(RULEDEF asmAndExp):
-     * $(RULE asmEqualExp)
+     *   $(RULE asmEqualExp)
      * | $(RULE asmAndExp) $(LITERAL '&') $(RULE asmEqualExp)
      * ;)
      */
@@ -1074,13 +1053,19 @@ class DLangParser {
      * Parses an AsmBrExp
      * <p>
      * $(GRAMMAR $(RULEDEF asmBrExp):
-     * $(RULE asmUnaExp)
+     *   $(RULE asmUnaExp)
      * | $(RULE asmBrExp)? $(LITERAL '[') $(RULE asmExp) $(LITERAL ']')
      * ;)
      */
     boolean parseAsmBrExp() {
 //            AsmBrExp node = allocator.make!AsmBrExp();
         final Marker m = enter_section_modified(builder);
+        if (!moreTokens())
+        {
+            error("Found end-of-file when expecting an AsmBrExp"/*, false*/);
+            cleanup(m, ASM_BR_EXP);
+            return false;
+        }
         if (currentIs(tok("["))) {
             advance(); // [
             if (!parseAsmExp()) {
@@ -1129,7 +1114,7 @@ class DLangParser {
      * Parses an AsmEqualExp
      * <p>
      * $(GRAMMAR $(RULEDEF asmEqualExp):
-     * $(RULE asmRelExp)
+     *   $(RULE asmRelExp)
      * | $(RULE asmEqualExp) ('==' | '!=') $(RULE asmRelExp)
      * ;)
      */
@@ -1184,7 +1169,7 @@ class DLangParser {
      * Parses an AsmInstruction
      * <p>
      * $(GRAMMAR $(RULEDEF asmInstruction):
-     * $(LITERAL Identifier)
+     *   $(LITERAL Identifier)
      * | $(LITERAL 'align') $(LITERAL IntegerLiteral)
      * | $(LITERAL 'align') $(LITERAL Identifier)
      * | $(LITERAL Identifier) $(LITERAL ':') $(RULE asmInstruction)
@@ -1192,24 +1177,42 @@ class DLangParser {
      * | $(LITERAL 'in') $(RULE operands)
      * | $(LITERAL 'out') $(RULE operands)
      * | $(LITERAL 'int') $(RULE operands)
+     * | $(LITERAL ';')
      * ;)
      */
     boolean parseAsmInstruction() {
 //            mixin (traceEnterAndExit!(__FUNCTION__));
 //            AsmInstruction node = allocator.make!AsmInstruction;
         final Marker m = enter_section_modified(builder);
+        if (currentIs(tok(";"))) {
+            warn("Empty asm instruction");
+            exit_section_modified(builder, m, ASM_INSTRUCTION, true);
+            return true;
+        }
         if (currentIs(tok("align"))) {
             advance(); // align
             if (currentIsOneOf(tok("intLiteral"), tok("identifier"))) {
-                advance();
+                if (!currentIs(tok(";")))
+                {
+                    error("`;` expected.");
+                    if (moreTokens())
+                        advance();
+                    cleanup(m, ASM_INSTRUCTION);
+                    return false;
+                }
             } else {
                 error("Identifier or integer literal expected.");
-                //exits normally
+                cleanup(m, ASM_INSTRUCTION);
+                return false;
             }
         } else if (currentIsOneOf(tok("identifier"), tok("in"), tok("out"), tok("int"))) {
             final Token t = advance();
             if (t.type.equals(tok("identifier")) && currentIs(tok(":"))) {
                 advance(); // :
+                if (currentIs(tok(";"))) {
+                    exit_section_modified(builder, m, ASM_INSTRUCTION, true);
+                    return true;
+                }
                 if (!parseAsmInstruction()) {
                     cleanup(m, ASM_INSTRUCTION);
                     return false;
@@ -1228,8 +1231,8 @@ class DLangParser {
      * Parses an AsmLogAndExp
      * <p>
      * $(GRAMMAR $(RULEDEF asmLogAndExp):
-     * $(RULE asmOrExp)
-     * $(RULE asmLogAndExp) $(LITERAL '&&') $(RULE asmOrExp)
+     *   $(RULE asmOrExp)
+     * | $(RULE asmLogAndExp) $(LITERAL '&&') $(RULE asmOrExp)
      * ;)
      */
     boolean parseAsmLogAndExp() {
@@ -1251,7 +1254,7 @@ class DLangParser {
      * Parses an AsmLogOrExp
      * <p>
      * $(GRAMMAR $(RULEDEF asmLogOrExp):
-     * $(RULE asmLogAndExp)
+     *   $(RULE asmLogAndExp)
      * | $(RULE asmLogOrExp) '||' $(RULE asmLogAndExp)
      * ;)
      */
@@ -1273,7 +1276,7 @@ class DLangParser {
      * Parses an AsmMulExp
      * <p>
      * $(GRAMMAR $(RULEDEF asmMulExp):
-     * $(RULE asmBrExp)
+     *   $(RULE asmBrExp)
      * | $(RULE asmMulExp) ($(LITERAL '*') | $(LITERAL '/') | $(LITERAL '%')) $(RULE asmBrExp)
      * ;)
      */
@@ -1295,7 +1298,7 @@ class DLangParser {
      * Parses an AsmOrExp
      * <p>
      * $(GRAMMAR $(RULEDEF asmOrExp):
-     * $(RULE asmXorExp)
+     *   $(RULE asmXorExp)
      * | $(RULE asmOrExp) $(LITERAL '|') $(RULE asmXorExp)
      * ;)
      */
@@ -1318,13 +1321,15 @@ class DLangParser {
      * Parses an AsmPrimaryExp
      * <p>
      * $(GRAMMAR $(RULEDEF asmPrimaryExp):
-     * $(LITERAL IntegerLiteral)
+     *   $(LITERAL IntegerLiteral)
      * | $(LITERAL FloatLiteral)
      * | $(LITERAL StringLiteral)
      * | $(RULE register)
      * | $(RULE register : AsmExp)
      * | $(RULE identifierChain)
      * | $(LITERAL '$')
+     * | $(LITERAL 'this')
+     * | $(LITERAL '__LOCAL_SIZE')
      * ;)
      */
     boolean parseAsmPrimaryExp() {
@@ -1332,7 +1337,7 @@ class DLangParser {
 //            AsmPrimaryExp node = allocator.make!AsmPrimaryExp();
         final Marker m = enter_section_modified(builder);
         final Token.IdType i = current().type;
-        if (i.equals(tok("doubleLiteral")) || i.equals(tok("floatLiteral")) || i.equals(tok("intLiteral")) || i.equals(tok("longLiteral")) || i.equals(tok("stringLiteral")) || i.equals(tok("$"))) {
+        if (i.equals(tok("doubleLiteral")) || i.equals(tok("floatLiteral")) || i.equals(tok("intLiteral")) || i.equals(tok("longLiteral")) || i.equals(tok("stringLiteral")) || i.equals(tok("$")) || i.equals(tok("this"))) {
             advance();
         } else if (i.equals(tok("identifier"))) {
             if ((Sets.newHashSet(Arrays.asList(REGISTER_NAMES))).contains(current().text)) {
@@ -1355,7 +1360,7 @@ class DLangParser {
                 }
             }
         } else {
-            error("Float literal, integer literal, $, or identifier expected.");
+            error("Float literal, integer literal, `$`, `this` or identifier expected.");
             cleanup(m, ASM_PRIMARY_EXP);
             return false;
         }
@@ -1428,9 +1433,12 @@ class DLangParser {
                 return false;
             }
         }
-        advance(); // {
+        expect(tok("{"));
         while (moreTokens() && !currentIs(tok("}"))) {
             if (!parseAsmInstruction()) {
+                // TODO: here libdparse handle gcc asm instructions
+                cleanup(m, ASM_STATEMENT);
+                return false;
             } else {
                 expect(tok(";"));
             }
@@ -1448,7 +1456,7 @@ class DLangParser {
      * be "ptr".
      * <p>
      * $(GRAMMAR $(RULEDEF asmTypePrefix):
-     * $(LITERAL Identifier) $(LITERAL Identifier)?
+     *   $(LITERAL Identifier) $(LITERAL Identifier)?
      * | $(LITERAL 'byte') $(LITERAL Identifier)?
      * | $(LITERAL 'short') $(LITERAL Identifier)?
      * | $(LITERAL 'int') $(LITERAL Identifier)?
@@ -1495,7 +1503,7 @@ class DLangParser {
      * Parses an AsmUnaExp
      * <p>
      * $(GRAMMAR $(RULEDEF asmUnaExp):
-     * $(RULE asmTypePrefix) $(RULE asmExp)
+     *   $(RULE asmTypePrefix) $(RULE asmExp)
      * | $(LITERAL Identifier) $(RULE asmExp)
      * | $(LITERAL '+') $(RULE asmUnaExp)
      * | $(LITERAL '-') $(RULE asmUnaExp)
@@ -1593,10 +1601,41 @@ class DLangParser {
     }
 
     /**
+     * Parses an AssertArguments
+     *
+     * $(GRAMMAR $(RULEDEF assertArguments):
+     *     $(RULE assignExpression) ($(LITERAL ',') $(RULE assignExpression))? $(LITERAL ',')?
+     *     ;)
+     */
+    public boolean parseAssertArguments() {
+        final Marker m = enter_section_modified(builder);
+        if (!parseAssignExpression()) {
+            cleanup(m, ASSERT_ARGUMENTS);
+            return false;
+        }
+        if (currentIs(tok(","))) {
+            advance();
+        }
+        if (currentIs(tok(")"))) {
+            exit_section_modified(builder, m, ASSERT_ARGUMENTS, true);
+            return true;
+        }
+        if (!parseAssignExpression()) {
+            cleanup(m, ASSERT_ARGUMENTS);
+            return false;
+        }
+        if (currentIs(tok(","))) {
+            advance();
+        }
+        exit_section_modified(builder, m, ASSERT_ARGUMENTS, true);
+        return true;
+    }
+
+    /**
      * Parses an AssertExpression
      * <p>
      * $(GRAMMAR $(RULEDEF assertExpression):
-     * $(LITERAL 'assert') $(LITERAL '$(LPAREN)') $(RULE assignExpression) ($(LITERAL ',') $(RULE assignExpression))? $(LITERAL ',')? $(LITERAL '$(RPAREN)')
+     * $(LITERAL 'assert') $(LITERAL '$(LPAREN)') $(RULE assertArguments) ($(LITERAL ',') $(RULE assignExpression))? $(LITERAL ',')? $(LITERAL '$(RPAREN)')
      * ;)
      */
     boolean parseAssertExpression() {
@@ -1607,24 +1646,10 @@ class DLangParser {
             cleanup(m, ASSERT_EXPRESSION);
             return false;
         }
-        if (!parseAssignExpression()) {
+        if (!parseAssertArguments()) {
             cleanup(m, ASSERT_EXPRESSION);
             return false;
         }
-        if (currentIs(tok(","))) {
-            advance();
-            if (currentIs(tok(")"))) {
-                advance();
-                exit_section_modified(builder, m, ASSERT_EXPRESSION, true);
-                return true;
-            }
-            if (!parseAssignExpression()) {
-                cleanup(m, ASSERT_EXPRESSION);
-                return false;
-            }
-        }
-        if (currentIs(tok(",")))
-            advance();
         if (!tokenCheck(")")) {
             cleanup(m, ASSERT_EXPRESSION);
             return false;
@@ -1740,7 +1765,7 @@ class DLangParser {
      * Parses an AtAttribute
      * <p>
      * $(GRAMMAR $(RULEDEF atAttribute):
-     * $(LITERAL '@') $(LITERAL Identifier)
+     *   $(LITERAL '@') $(LITERAL Identifier)
      * | $(LITERAL '@') $(LITERAL Identifier) $(LITERAL '$(LPAREN)') $(RULE argumentList)? $(LITERAL '$(RPAREN)')
      * | $(LITERAL '@') $(LITERAL '$(LPAREN)') $(RULE argumentList) $(LITERAL '$(RPAREN)')
      * | $(LITERAL '@') $(RULE TemplateInstance)
@@ -1754,7 +1779,7 @@ class DLangParser {
             return false;
         }
         if (!moreTokens()) {
-            error("\"(\", or identifier expected");
+            error("`(`, or identifier expected");
             exit_section_modified(builder, m, AT_ATTRIBUTE, true);
             return false;
         }
@@ -1785,7 +1810,7 @@ class DLangParser {
             }
             expect(tok(")"));
         } else {
-            error("\"(\", or identifier expected");
+            error("`(`, or identifier expected");
             exit_section_modified(builder, m, AT_ATTRIBUTE, true);
             return false;
         }
@@ -1797,7 +1822,7 @@ class DLangParser {
      * Parses an Attribute
      * <p>
      * $(GRAMMAR $(RULEDEF attribute):
-     * | $(RULE pragmaExpression)
+     *   $(RULE pragmaExpression)
      * | $(RULE alignAttribute)
      * | $(RULE deprecated)
      * | $(RULE atAttribute)
@@ -1815,14 +1840,15 @@ class DLangParser {
      * | $(LITERAL 'synchronized')
      * | $(LITERAL 'auto')
      * | $(LITERAL 'scope')
-     * | $(LITERAL '')
+     * | $(LITERAL 'const')
      * | $(LITERAL 'immutable')
      * | $(LITERAL 'inout')
      * | $(LITERAL 'shared')
      * | $(LITERAL '__gshared')
-     * | $(LITERAL '')
-     * | $(LITERAL '')
+     * | $(LITERAL 'nothrow')
+     * | $(LITERAL 'pure')
      * | $(LITERAL 'ref')
+     * | $(LITERAL 'throw')
      * ;)
      */
     boolean parseAttribute() {
@@ -1864,11 +1890,9 @@ class DLangParser {
                     cleanup(m, ATTRIBUTE);
                     return false;
                 }
-                exit_section_modified(builder, m, ATTRIBUTE, true);
-                return true;
             } else
                 advance();
-        } else if (i.equals(tok("private")) || i.equals(tok("protected")) || i.equals(tok("public")) || i.equals(tok("export")) || i.equals(tok("static")) || i.equals(tok("abstract")) || i.equals(tok("final")) || i.equals(tok("override")) || i.equals(tok("synchronized")) || i.equals(tok("auto")) || i.equals(tok("scope")) || i.equals(tok("const")) || i.equals(tok("immutable")) || i.equals(tok("inout")) || i.equals(tok("shared")) || i.equals(tok("__gshared")) || i.equals(tok("nothrow")) || i.equals(tok("pure")) || i.equals(tok("ref"))) {
+        } else if (i.equals(tok("private")) || i.equals(tok("protected")) || i.equals(tok("public")) || i.equals(tok("export")) || i.equals(tok("static")) || i.equals(tok("abstract")) || i.equals(tok("final")) || i.equals(tok("override")) || i.equals(tok("synchronized")) || i.equals(tok("auto")) || i.equals(tok("scope")) || i.equals(tok("const")) || i.equals(tok("immutable")) || i.equals(tok("inout")) || i.equals(tok("shared")) || i.equals(tok("__gshared")) || i.equals(tok("nothrow")) || i.equals(tok("pure")) || i.equals(tok("ref")) || i.equals(tok("throw"))) {
             advance();
         } else {
             cleanup(m, ATTRIBUTE);
@@ -1993,23 +2017,6 @@ class DLangParser {
     }
 
     /**
-     * Parses a BodyStatement
-     * <p>
-     * $(GRAMMAR $(RULEDEF bodyStatement):
-     * $(RULE blockStatement)
-     * ;)
-     */
-    boolean parseBodyStatement() {
-        final Marker m = enter_section_modified(builder);
-        if (currentIs(tok("do"))) {
-            advance();
-        }
-        final boolean result = simpleParse("BodyStatement", "blockStatement|parseBlockStatement");
-        exit_section_modified(builder, m, BODY_STATEMENT, result);
-        return result;
-    }
-
-    /**
      * Parses a BreakStatement
      * <p>
      * $(GRAMMAR $(RULEDEF breakStatement):
@@ -2019,6 +2026,10 @@ class DLangParser {
     boolean parseBreakStatement() {
         final Marker m = enter_section_modified(builder);
         expect(tok("break"));
+        if (!moreTokens()) {
+            cleanup(m, BREAK_STATEMENT);
+            return false;
+        }
         final Token.IdType i = current().type;
         if (i.equals(tok("identifier"))) {
             advance();
@@ -2029,7 +2040,7 @@ class DLangParser {
         } else if (i.equals(tok(";"))) {
             advance();
         } else {
-            error("Identifier or semicolon expected following \"break\"");
+            error("Identifier or semicolon expected following `break`");
             exit_section_modified(builder, m, BREAK_STATEMENT, true);
             return false;
         }
@@ -2050,8 +2061,12 @@ class DLangParser {
      */
     boolean parseBaseClass() {
         final Marker m = enter_section_modified(builder);
+        if (!moreTokens()) {
+            cleanup(m, BASE_CLASS);
+            return false;
+        }
         if (isProtection(current().type)) {
-            warn("Use of base class protection == deprecated.");
+            warn("Use of base class protection is deprecated.");
             advance();
         }
         if (!parseType2()) {
@@ -2080,7 +2095,7 @@ class DLangParser {
      * Parses an BuiltinType
      * <p>
      * $(GRAMMAR $(RULEDEF builtinType):
-     * $(LITERAL 'boolean')
+     *   $(LITERAL 'bool')
      * | $(LITERAL 'byte')
      * | $(LITERAL 'ubyte')
      * | $(LITERAL 'short')
@@ -2217,17 +2232,20 @@ class DLangParser {
      * Parses a CastQualifier
      * <p>
      * $(GRAMMAR $(RULEDEF castQualifier):
-     * $(LITERAL '')
-     * | $(LITERAL '') $(LITERAL 'shared')
+     *   $(LITERAL 'const')
+     * | $(LITERAL 'const') $(LITERAL 'shared')
      * | $(LITERAL 'immutable')
      * | $(LITERAL 'inout')
      * | $(LITERAL 'inout') $(LITERAL 'shared')
      * | $(LITERAL 'shared')
-     * | $(LITERAL 'shared') $(LITERAL '')
+     * | $(LITERAL 'shared') $(LITERAL 'const')
      * | $(LITERAL 'shared') $(LITERAL 'inout')
      * ;)
      */
     boolean parseCastQualifier() {
+        if (!moreTokens()) {
+            return false;
+        }
         final Marker marker = enter_section_(builder);
         final Token.IdType i = current().type;
         if (i.equals(tok("inout")) || i.equals(tok("const"))) {
@@ -2241,7 +2259,7 @@ class DLangParser {
         } else if (i.equals(tok("immutable"))) {
             advance();
         } else {
-            error("Const, immutable, inout, or shared expected");
+            error("`const`, `immutable`, `inout`, or `shared` expected");
             return false;
         }
         exit_section_modified(builder, marker, CAST_QUALIFIER, true);
@@ -2315,10 +2333,10 @@ class DLangParser {
      * Parses a ClassDeclaration
      * <p>
      * $(GRAMMAR $(RULEDEF classDeclaration):
-     * $(LITERAL 'class') $(LITERAL Identifier) $(LITERAL ';')
+     *   $(LITERAL 'class') $(LITERAL Identifier) $(LITERAL ';')
      * | $(LITERAL 'class') $(LITERAL Identifier) ($(LITERAL ':') $(RULE baseClassList))? $(RULE structBody)
-     * | $(LITERAL 'class') $(LITERAL Identifier) $(RULE templateParameters) $(RULE raint)? ($(RULE structBody) | $(LITERAL ';'))
-     * | $(LITERAL 'class') $(LITERAL Identifier) $(RULE templateParameters) $(RULE raint)? ($(LITERAL ':') $(RULE baseClassList))? $(RULE structBody)
+     * | $(LITERAL 'class') $(LITERAL Identifier) $(RULE templateParameters) $(RULE consraint)? ($(RULE structBody) | $(LITERAL ';'))
+     * | $(LITERAL 'class') $(LITERAL Identifier) $(RULE templateParameters) $(RULE consraint)? ($(LITERAL ':') $(RULE baseClassList))? $(RULE structBody)
      * | $(LITERAL 'class') $(LITERAL Identifier) $(RULE templateParameters) ($(LITERAL ':') $(RULE baseClassList))? $(RULE raint)? $(RULE structBody)
      * ;)
      */
@@ -2334,7 +2352,7 @@ class DLangParser {
      * Parses a CmpExpression
      * <p>
      * $(GRAMMAR $(RULEDEF cmpExpression):
-     * $(RULE shiftExpression)
+     *   $(RULE shiftExpression)
      * | $(RULE equalExpression)
      * | $(RULE identityExpression)
      * | $(RULE relExpression)
@@ -2410,13 +2428,17 @@ class DLangParser {
      * Parses a CompileCondition
      * <p>
      * $(GRAMMAR $(RULEDEF compileCondition):
-     * $(RULE versionCondition)
+     *   $(RULE versionCondition)
      * | $(RULE debugCondition)
      * | $(RULE staticIfCondition)
      * ;)
      */
     boolean parseCompileCondition() {
         final Marker m = enter_section_modified(builder);
+        if (!moreTokens()) {
+            cleanup(m, COMPILE_CONDITION);
+            return false;
+        }
         final Token.IdType i = current().type;
         if (i.equals(tok("version"))) {
             if (!parseVersionCondition()) {
@@ -2434,7 +2456,7 @@ class DLangParser {
                 return false;
             }
         } else {
-            error("\"version\", \"debug\", or \"static\" expected");
+            error("`version`, `debug`, or `static` expected");
             exit_section_modified(builder, m, COMPILE_CONDITION, true);
             return false;
         }
@@ -2580,7 +2602,7 @@ class DLangParser {
      * Parses a Constructor
      * <p>
      * $(GRAMMAR $(RULEDEF ructor):
-     * $(LITERAL 'this') $(RULE templateParameters)? $(RULE parameters) $(RULE memberFunctionAttribute)* $(RULE raint)? ($(RULE functionBody) | $(LITERAL ';'))
+     * $(LITERAL 'this') $(RULE templateParameters)? $(RULE parameters) $(RULE memberFunctionAttribute)* $(RULE constraint)? ($(RULE functionBody) | $(LITERAL ';'))
      * ;)
      */
     boolean parseConstructor() {
@@ -2816,20 +2838,22 @@ class DLangParser {
             return false;
         }
 
-        if (isAuto == DecType.autoVar) {
-            if (!parseVariableDeclaration(null, true)) {
-                cleanup(m, DECLARATION);
-                return false;
+        if (!currentIs(tok("enum"))) {  // #165: handle enums separatly b/c of EponymousTemplateDeclaration
+            if (isAuto == DecType.autoVar) {
+                if (!parseVariableDeclaration(null, true)) {
+                    cleanup(m, DECLARATION);
+                    return false;
+                }
+                exit_section_modified(builder, m, DECLARATION, true);
+                return true;
+            } else if (isAuto == DecType.autoFun) {
+                if (!parseFunctionDeclaration(null, true)) {
+                    cleanup(m, DECLARATION);
+                    return false;
+                }
+                exit_section_modified(builder, m, DECLARATION, true);
+                return true;
             }
-            exit_section_modified(builder, m, DECLARATION, true);
-            return true;
-        } else if (isAuto == DecType.autoFun) {
-            if (!parseFunctionDeclaration(null, true)) {
-                cleanup(m, DECLARATION);
-                return false;
-            }
-            exit_section_modified(builder, m, DECLARATION, true);
-            return true;
         }
 
         final Token.IdType idType = current().type;
@@ -2842,7 +2866,7 @@ class DLangParser {
                 advance();
             } else if (idType.equals(tok("{"))) {
                 if (!nodeAttributes) {
-                    error("declaration expected instead of '{'");
+                    error("declaration expected instead of `{`");
                     exit_section_modified(builder, m, DECLARATION, true);
                     return false;
                 }
@@ -3091,7 +3115,7 @@ class DLangParser {
                         return false;
                     }
                 } else {
-                    error("\"=\" or \"(\" expected following \"version\"");
+                    error("`=` or `(` expected following `version`");
                     exit_section_modified(builder, m, DECLARATION, true);
                     return false;
                 }
@@ -3122,18 +3146,31 @@ class DLangParser {
     private boolean type(@NotNull final Marker m) {
         final Pair<Boolean, Marker> t = parseType();
         if ((!t.first) || !currentIs(tok("identifier"))) {
+            if (t.first)
+                error("no identifier for declarator");
             cleanup(m, DECLARATION);
             return false;
         }
-        if (peekIs(tok("("))) {
+        Bookmark b = setBookmark();
+        b.m.done(DECLARATION); // must `done()` marker here to keep be able to allow use t.second.precede()
+        if (!parseVariableDeclaration(t.second, false)) {
+            goToBookmark(b);
             if (!parseFunctionDeclaration(t.second, false)) {
                 cleanup(m, DECLARATION);
                 return false;
             }
-        } else if (!parseVariableDeclaration(t.second, false)) {
-            cleanup(m, DECLARATION);
-            return false;
+        } else {
+            abandonBookmark(b);
         }
+        /*if (peekIs(tok("("))) {
+           if (!parseFunctionDeclaration(t.second, false)) {
+               cleanup(m, DECLARATION);
+               return false;
+           }
+        } else if (!parseVariableDeclaration(t.second, false)) {
+                cleanup(m, DECLARATION);
+                return false;
+        }*/
         return true;
     }
 
@@ -3146,7 +3183,7 @@ class DLangParser {
      */
     boolean parseDeclarationsAndStatements(final boolean includeCases) {
         final Marker m = enter_section_modified(builder);
-        while (!currentIsOneOf(tok("}"), tok("else")) && moreTokens() && suppressedErrorCount <= MAX_ERRORS) {
+        while (!currentIsOneOf(tok("}"), tok("else")) && moreTokens() && suppressedErrorCount() <= MAX_ERRORS) {
             if (currentIs(tok("case")) && !includeCases) {
                 break;
             }
@@ -3166,8 +3203,8 @@ class DLangParser {
 //                c = allocator.setCheckpoint();
             if (!parseDeclarationOrStatement()) {
 //                    allocator.rollback(c);
-//                advance();
-                if (suppressMessages > 0) {
+
+                if (!suppressMessages.isEmpty()) {
                     cleanup(m, DECLARATIONS_AND_STATEMENTS);
                     return false;
                 }
@@ -3188,7 +3225,7 @@ class DLangParser {
      * Parses a DeclarationOrStatement
      * <p>
      * $(GRAMMAR $(RULEDEF declarationOrStatement):
-     * $(RULE declaration)
+     *   $(RULE declaration)
      * | $(RULE statement)
      * ;)
      */
@@ -3223,7 +3260,7 @@ class DLangParser {
      * Parses a Declarator
      * <p>
      * $(GRAMMAR $(RULEDEF declarator):
-     * $(LITERAL Identifier)
+     *   $(LITERAL Identifier)
      * | $(LITERAL Identifier) $(LITERAL '=') $(RULE initializer)
      * | $(LITERAL Identifier) $(RULE templateParameters) $(LITERAL '=') $(RULE initializer)
      * ;)
@@ -3265,6 +3302,30 @@ class DLangParser {
             }
         }
         exit_section_modified(builder, m, DECLARATOR, true);
+        return true;
+    }
+
+    /**
+     * Parses a DeclaratorIdentifierList
+     *
+     * $(GRAMMAR $(RULEDEF declaratorIdentifierList):
+     *     $(LITERAL Identifier) ($(LITERAL ',') $(LITERAL Identifier))*
+     *     ;)
+     */
+    boolean parseDeclaratorIdentifierList() {
+        Marker m = enter_section_modified(builder);
+        while (moreTokens()) {
+            final Token ident = expect(tok("identifier"));
+            if (ident == null) {
+                cleanup(m, DECLARATOR_IDENTIFIER_LIST);
+                return false;
+            }
+            if (currentIs(tok(","))) {
+                advance();
+            } else
+                break;
+        }
+        exit_section_modified(builder, m, DECLARATOR_IDENTIFIER_LIST, true);
         return true;
     }
 
@@ -3357,7 +3418,7 @@ class DLangParser {
             return false;
         }
         if (!moreTokens()) {
-            error("'this' expected");
+            error("`this` expected");
             exit_section_modified(builder, m, DESTRUCTOR, true);
             return false;
         }
@@ -3400,6 +3461,10 @@ class DLangParser {
     boolean parseDoStatement() {
         final Marker m = enter_section_modified(builder);
         if (!tokenCheck("do")) {
+            cleanup(m, DO_STATEMENT);
+            return false;
+        }
+        if (!moreTokens()) {
             cleanup(m, DO_STATEMENT);
             return false;
         }
@@ -3447,7 +3512,7 @@ class DLangParser {
             return false;
         }
         while (moreTokens()) {
-            if (currentIs(tok("identifier"))) {
+            if (currentIsOneOf(tok("identifier"), tok("@"), tok("deprecated"))) {
 //                    auto c = allocator.setCheckpoint();
                 final boolean e = parseEnumMember();
 //                    if (!e)
@@ -3462,7 +3527,7 @@ class DLangParser {
                 if (currentIs(tok("}"))) {
                     break;
                 } else {
-                    error("',' or '}' expected");
+                    error("`,` or `}` expected");
                     if (currentIs(tok("}")))
                         break;
                 }
@@ -3480,7 +3545,7 @@ class DLangParser {
 
     /**
      * $(GRAMMAR $(RULEDEF anonymousEnumMember):
-     * $(RULE type) $(LITERAL identifier) $(LITERAL '=') $(RULE assignExpression)
+     *   $(RULE type) $(LITERAL identifier) $(LITERAL '=') $(RULE assignExpression)
      * | $(LITERAL identifier) $(LITERAL '=') $(RULE assignExpression)
      * | $(LITERAL identifier)
      * ;)
@@ -3580,7 +3645,7 @@ class DLangParser {
      * Parses an EnumDeclaration
      * <p>
      * $(GRAMMAR $(RULEDEF enumDeclaration):
-     * $(LITERAL 'enum') $(LITERAL Identifier) ($(LITERAL ':') $(RULE type))? $(LITERAL ';')
+     *   $(LITERAL 'enum') $(LITERAL Identifier) ($(LITERAL ':') $(RULE type))? $(LITERAL ';')
      * | $(LITERAL 'enum') $(LITERAL Identifier) ($(LITERAL ':') $(RULE type))? $(RULE enumBody)
      * ;)
      */
@@ -3594,17 +3659,17 @@ class DLangParser {
             cleanup(m, ENUM_DECLARATION);
             return false;
         }
-        if (currentIs(tok(";"))) {
-            advance();
-            exit_section_(builder, m, ENUM_DECLARATION, true);
-            return true;
-        }
         if (currentIs(tok(":"))) {
             advance(); // skip ':'
             if (!parseType().first) {
                 cleanup(m, ENUM_DECLARATION);
                 return false;
             }
+        }
+        if (currentIs(tok(";"))) {
+            advance();
+            exit_section_(builder, m, ENUM_DECLARATION, true);
+            return true;
         }
         if (!parseEnumBody()) {
             cleanup(m, ENUM_DECLARATION);
@@ -3615,15 +3680,47 @@ class DLangParser {
     }
 
     /**
+     * Parses an EnumMemberAttribute
+     *
+     * $(GRAMMAR $(RULEDEF enumMemberAttribute):
+     *       $(RULE atAttribute)
+     *     | $(RULE deprecated)
+     *     ;)
+     */
+    public boolean parseEnumMemberAttribute() {
+        final Marker m = enter_section_modified(builder);
+        if (currentIs(tok("@"))) {
+            if (!parseAtAttribute()) {
+                cleanup(m, ENUM_MEMBER_ATTRIBUTE);
+                return false;
+            }
+        } else if (currentIs(tok("deprecated"))) {
+            if (!parseDeprecated()) {
+                cleanup(m, ENUM_MEMBER_ATTRIBUTE);
+                return false;
+            }
+        } else {
+            m.drop(); // drop instead of cleanup otherwise an empty EnumMemberAttribute will be created
+            return false;
+        }
+        exit_section_modified(builder, m, ENUM_MEMBER_ATTRIBUTE, true);
+        return true;
+    }
+
+    /**
      * Parses an EnumMember
      * <p>
      * $(GRAMMAR $(RULEDEF enumMember):
-     * $(LITERAL Identifier)
-     * | $(LITERAL Identifier) $(LITERAL '=') $(RULE assignExpression)
+     * ($(RULE enumMemberAttribute))* $(LITERAL Identifier) $(LITERAL '=') $(RULE assignExpression)
      * ;)
      */
     boolean parseEnumMember() {
         final Marker m = enter_section_modified(builder);
+        while (moreTokens()) {
+            if (!parseEnumMemberAttribute()) {
+                break;
+            }
+        }
         if (!tokenCheck("identifier")) {
             cleanup(m, ENUM_MEMBER);
             return false;
@@ -3709,7 +3806,7 @@ class DLangParser {
      */
     boolean parseExpression() {
         final Marker m = enter_section_modified(builder);
-        if (suppressedErrorCount > MAX_ERRORS) {
+        if (suppressedErrorCount() > MAX_ERRORS) {
             cleanup(m, EXPRESSION);
             return false;
         }
@@ -3718,7 +3815,7 @@ class DLangParser {
             exit_section_modified(builder, m, EXPRESSION, true);
             return false;
         }
-        final boolean result = parseCommaSeparatedRule("Expression", "AssignExpression");
+        final boolean result = parseCommaSeparatedRule("Expression", "AssignExpression", true);
         exit_section_modified(builder, m, EXPRESSION, result);
         return result;
     }
@@ -3892,7 +3989,7 @@ class DLangParser {
         if (currentIsOneOf(tok("foreach"), tok("foreach_reverse"))) {
             advance();
         } else {
-            error("\"foreach\" or \"foreach_reverse\" expected");
+            error("`foreach` or `foreach_reverse` expected");
             cleanup(m, elementType);
             return false;
         }
@@ -3977,25 +4074,25 @@ class DLangParser {
      * Parses a ForeachType
      * <p>
      * $(GRAMMAR $(RULEDEF foreachType):
-     * $(LITERAL 'ref')? $(RULE typeConstructors)? $(RULE type)? $(LITERAL Identifier)
-     * | $(RULE typeConstructors)? $(LITERAL 'ref')? $(RULE type)? $(LITERAL Identifier)
+     * ($(LITERAL 'ref') | $(LITERAL 'alias') | $(LITERAL 'enum') | $(RULE typeConstructor))* $(RULE type)? $(LITERAL Identifier)
      * ;)
      */
     boolean parseForeachType() {
         final Marker m = enter_section_modified(builder);
-        if (currentIs(tok("ref"))) {
-            advance();
-        }
-        if (currentIsOneOf(tok("const"), tok("immutable"),
-            tok("inout"), tok("shared")) && !peekIs(tok("("))) {
-//            trace("\033[01;36mType constructor");
-            if (parseTypeConstructors() == null) {
-                cleanup(m, FOREACH_TYPE);
-                return false;
+        while (moreTokens()) {
+            if (currentIs(tok("ref"))) {
+                advance();
             }
-        }
-        if (currentIs(tok("ref"))) {
-            advance();
+            else if (currentIs(tok("alias"))) {
+                advance();
+            } else if (currentIs(tok("enum"))) {
+                advance();
+            }
+            else if (!tok("").equals(parseTypeConstructor(false))) {
+                //trace ("\033[01;36mType constructor");
+            } else {
+                break;
+            }
         }
         if (currentIs(tok("identifier")) && peekIsOneOf(tok(","), tok(";"))) {
             advance();
@@ -4035,9 +4132,9 @@ class DLangParser {
      * Parses a FunctionAttribute
      * <p>
      * $(GRAMMAR $(RULEDEF functionAttribute):
-     * $(RULE atAttribute)
-     * | $(LITERAL '')
-     * | $(LITERAL '')
+     *   $(RULE atAttribute)
+     * | $(LITERAL 'pure')
+     * | $(LITERAL 'nothrow')
      * ;)
      */
     boolean parseFunctionAttribute(final boolean validate) {
@@ -4052,7 +4149,7 @@ class DLangParser {
             advance();
         } else {
             if (validate) {
-                error("@attribute, \"pure\", or \"nothrow\" expected");
+                error("@attribute, `pure`, or `nothrow` expected");
                 exit_section_modified(builder, m, FUNCTION_ATTRIBUTE, true);
                 return false;
             }
@@ -4067,54 +4164,28 @@ class DLangParser {
      * Parses a FunctionBody
      * <p>
      * $(GRAMMAR $(RULEDEF functionBody):
-     * $(RULE blockStatement)
-     * | ($(RULE inStatement) | $(RULE outStatement) | $(RULE outStatement) $(RULE inStatement) | $(RULE inStatement) $(RULE outStatement))? $(RULE bodyStatement)?
+     *   $(RULE specifiedFunctionBody)
+     * | $(RULE missingFunctionBody)
+     * | $(RULE shortenedFunctionBody)
      * ;)
      */
     boolean parseFunctionBody() {
         final Marker m = enter_section_modified(builder);
-        if (currentIs(tok(";"))) {
-            advance();
-            exit_section_modified(builder, m, FUNCTION_BODY, true);
-            return true;
-        } else if (currentIs(tok("{"))) {
-            if (!parseBlockStatement()) {
-                cleanup(m, FUNCTION_BODY);
-                return false;
-            }
-        } else if (currentIsOneOf(tok("in"), tok("out"), tok("do"))) {
-            if (currentIs(tok("in"))) {
-                if (!parseInStatement()) {
-                    cleanup(m, FUNCTION_BODY);
-                    return false;
-                }
-                if (currentIs(tok("out")))
-                    if (!parseOutStatement()) {
-                        cleanup(m, FUNCTION_BODY);
-                        return false;
-                    }
-            } else if (currentIs(tok("out"))) {
-                if (!parseOutStatement()) {
-                    cleanup(m, FUNCTION_BODY);
-                    return false;
-                }
-                if (currentIs(tok("in")))
-                    if (!parseInStatement()) {
-                        cleanup(m, FUNCTION_BODY);
-                        return false;
-                    }
-            }
-            // Allow function bodies without body statements because this is
-            // valid inside of interfaces.
-            if (currentIs(tok("do")))
-                if (!parseBodyStatement()) {
-                    cleanup(m, FUNCTION_BODY);
-                    return false;
-                }
+        Bookmark b = setBookmark();
+        if (parseMissingFunctionBody()) {
+            abandonBookmark(b);
         } else {
-            error("'in', 'out', 'do' , or block statement expected");
-            exit_section_modified(builder, m, FUNCTION_BODY, true);
-            return false;
+            goToBookmark(b);
+            b = setBookmark();
+            if (parseShortenedFunctionBody()) {
+                abandonBookmark(b);
+            } else {
+                goToBookmark(b);
+                if (!parseSpecifiedFunctionBody()) {
+                    cleanup(m, FUNCTION_BODY);
+                    return false;
+                }
+            }
         }
         exit_section_modified(builder, m, FUNCTION_BODY, true);
         return true;
@@ -4129,7 +4200,7 @@ class DLangParser {
      * Parses a FunctionCallExpression
      * <p>
      * $(GRAMMAR $(RULEDEF functionCallExpression):
-     * $(RULE symbol) $(RULE arguments)
+     *   $(RULE symbol) $(RULE arguments)
      * | $(RULE unaryExpression) $(RULE arguments)
      * | $(RULE type) $(RULE arguments)
      * ;)
@@ -4173,6 +4244,42 @@ class DLangParser {
         return new Pair<>(true, m);
     }
 
+
+    boolean parseFunctionContract() {
+        return parseFunctionContract(true);
+    }
+
+    /**
+     * Parses a FunctionContract
+     *
+     * $(GRAMMAR $(RULEDEF functionContract):
+     *       $(RULE inOutContractExpression)
+     *     | $(RULE inOutStatement)
+     *     ;)
+     */
+    boolean parseFunctionContract(boolean allowStatement) {
+        final Marker m = enter_section_modified(builder);
+        if (allowStatement && (peekIs(tok("{")) || (currentIs(tok("out")) && peekAre(tok("("), tok("identifier"), tok(")"))))) {
+            if (!parseInOutStatement()) {
+                cleanup(m, FUNCTION_CONTRACT);
+                return false;
+            }
+        } else if (peekIs(tok("("))) {
+            if (!parseInOutContractExpression()) {
+                cleanup(m, FUNCTION_CONTRACT);
+                return false;
+            }
+        } else {
+            error(allowStatement
+                ? "`{` or `(` expected"
+                : "`(` expected");
+            cleanup(m, FUNCTION_CONTRACT);
+            return false;
+        }
+        exit_section_modified(builder, m, FUNCTION_CONTRACT, true);
+        return true;
+    }
+
     boolean parseFunctionDeclaration() {
         return parseFunctionDeclaration(null, false);
     }
@@ -4181,8 +4288,8 @@ class DLangParser {
      * Parses a FunctionDeclaration
      * <p>
      * $(GRAMMAR $(RULEDEF functionDeclaration):
-     * ($(RULE storageClass)+ | $(RULE _type)) $(LITERAL Identifier) $(RULE parameters) $(RULE memberFunctionAttribute)* ($(RULE functionBody) | $(LITERAL ';'))
-     * | ($(RULE storageClass)+ | $(RULE _type)) $(LITERAL Identifier) $(RULE templateParameters) $(RULE parameters) $(RULE memberFunctionAttribute)* $(RULE raint)? ($(RULE functionBody) | $(LITERAL ';'))
+     *   ($(RULE storageClass)+ | $(RULE _type)) $(LITERAL Identifier) $(RULE parameters) $(RULE memberFunctionAttribute)* ($(RULE functionBody) | $(LITERAL ';'))
+     * | ($(RULE storageClass)+ | $(RULE _type)) $(LITERAL Identifier) $(RULE templateParameters) $(RULE parameters) $(RULE memberFunctionAttribute)* $(RULE constraint)? ($(RULE functionBody) | $(LITERAL ';'))
      * ;)
      */
     boolean parseFunctionDeclaration(final Marker type, final boolean isAuto)//(Type type = null,Attribute[] attributes = null)
@@ -4225,7 +4332,7 @@ class DLangParser {
             return false;
         }
         if (!currentIs(tok("("))) {
-            error("'(' expected");
+            error("`(` expected");
             exit_section_modified(builder, m, FUNCTION_DECLARATION, true);
             return false;
         }
@@ -4252,13 +4359,9 @@ class DLangParser {
                 return false;
             }
         }
-        if (currentIs(tok(";")))
-            advance();
-        else {
-            if (!parseFunctionBody()) {
-                cleanup(m, FUNCTION_DECLARATION);
-                return false;
-            }
+        if (!parseFunctionBody()) {
+            cleanup(m, FUNCTION_DECLARATION);
+            return false;
         }
         exit_section_modified(builder, m, FUNCTION_DECLARATION, true);
         return true;
@@ -4268,20 +4371,23 @@ class DLangParser {
      * Parses a FunctionLiteralExpression
      * <p>
      * $(GRAMMAR $(RULEDEF functionLiteralExpression):
-     * | $(LITERAL 'delegate') $(RULE type)? ($(RULE parameters) $(RULE functionAttribute)*)? $(RULE functionBody)
-     * | $(LITERAL 'function') $(RULE type)? ($(RULE parameters) $(RULE functionAttribute)*)? $(RULE functionBody)
-     * | $(RULE parameters) $(RULE functionAttribute)* $(RULE functionBody)
-     * | $(RULE functionBody)
+     * | $(LITERAL 'delegate') $(LITERAL 'ref')? $(RULE type)? ($(RULE parameters) $(RULE functionAttribute)*)? $(RULE specifiedFunctionBody)
+     * | $(LITERAL 'function') $(LITERAL 'ref')? $(RULE type)? ($(RULE parameters) $(RULE functionAttribute)*)? $(RULE specifiedFunctionBody)
+     * | $(LITERAL 'ref')? $(RULE parameters) $(RULE functionAttribute)* $(RULE specifiedFunctionBody)
+     * | $(RULE specifiedFunctionBody)
      * | $(LITERAL Identifier) $(LITERAL '=>') $(RULE assignExpression)
-     * | $(LITERAL 'function') $(RULE type)? $(RULE parameters) $(RULE functionAttribute)* $(LITERAL '=>') $(RULE assignExpression)
-     * | $(LITERAL 'delegate') $(RULE type)? $(RULE parameters) $(RULE functionAttribute)* $(LITERAL '=>') $(RULE assignExpression)
-     * | $(RULE parameters) $(RULE functionAttribute)* $(LITERAL '=>') $(RULE assignExpression)
+     * | $(LITERAL 'function') $(LITERAL 'ref')? $(RULE type)? $(RULE parameters) $(RULE functionAttribute)* $(LITERAL '=>') $(RULE assignExpression)
+     * | $(LITERAL 'delegate') $(LITERAL 'ref')? $(RULE type)? $(RULE parameters) $(RULE functionAttribute)* $(LITERAL '=>') $(RULE assignExpression)
+     * | $(LITERAL 'ref')? $(RULE parameters) $(RULE functionAttribute)* $(LITERAL '=>') $(RULE assignExpression)
      * ;)
      */
     boolean parseFunctionLiteralExpression() {
         final Marker m = enter_section_modified(builder);
         if (currentIsOneOf(tok("function"), tok("delegate"))) {
             advance();
+            if (currentIs(tok("ref"))) {
+                advance();
+            }
             if (!currentIsOneOf(tok("("), tok("in"), tok("do"),
                 tok("out"), tok("{"), tok("=>")))
                 if (!parseType().first) {
@@ -4298,7 +4404,10 @@ class DLangParser {
             }
             exit_section_modified(builder, m, FUNCTION_LITERAL_EXPRESSION, true);
             return true;
-        } else if (currentIs(tok("("))) {
+        } else if (currentIs(tok("(")) || currentIs(tok("ref")) && peekIs(tok("("))) {
+            if (currentIs(tok("ref"))) {
+                advance();
+            }
             if (!parseParameters()) {
                 cleanup(m, FUNCTION_LITERAL_EXPRESSION);
                 return false;
@@ -4317,7 +4426,7 @@ class DLangParser {
                 cleanup(m, FUNCTION_LITERAL_EXPRESSION);
                 return false;
             }
-        } else if (!parseFunctionBody()) {
+        } else if (!parseSpecifiedFunctionBody()) {
             cleanup(m, FUNCTION_LITERAL_EXPRESSION);
             return false;
         }
@@ -4354,7 +4463,7 @@ class DLangParser {
                     return false;
                 }
         } else {
-            error("Identifier, \"default\", or \"case\" expected");
+            error("Identifier, `default`, or `case` expected");
             exit_section_modified(builder, m, GOTO_STATEMENT, true);
             return false;
         }
@@ -4391,28 +4500,63 @@ class DLangParser {
     }
 
     /**
-     * Parses an IdentifierList
-     * <p>
-     * $(GRAMMAR $(RULEDEF identifierList):
-     * $(LITERAL Identifier) ($(LITERAL ',') $(LITERAL Identifier))*
-     * ;)
+     * Parses a TypeIdentifierPart.
+     *
+     * $(GRAMMAR $(RULEDEF typeIdentifierPart):
+     *       $(RULE identifierOrTemplateInstance)
+     *     | $(RULE identifierOrTemplateInstance) $(LITERAL '.') $(RULE typeIdentifierPart)
+     *     | $(RULE identifierOrTemplateInstance) $(LITERAL '[') $(RULE assignExpression) $(LITERAL ']')
+     *     | $(RULE identifierOrTemplateInstance) $(LITERAL '[') $(RULE assignExpression) $(LITERAL ']') $(LITERAL '.') $(RULE typeIdentifierPart)
+     *     ;)
      */
-    boolean parseIdentifierList() {
+    public boolean parseTypeIdentifierPart() {
         final Marker m = enter_section_modified(builder);
-        while (moreTokens()) {
-            final Token ident = expect(tok("identifier"));
-            if (ident == null) {
-                cleanup(m, IDENTIFIER_LIST);
+        if (currentIs(tok("."))) {
+            advance();
+        }
+        if (!parseIdentifierOrTemplateInstance()) {
+            cleanup(m, TYPE_IDENTIFIER_PART);
+            return false;
+        }
+        if (currentIs(tok("["))) {
+            // dyn arrays -> type suffixes
+            if (peekIs(tok("]"))) {
+                exit_section_modified(builder, m, TYPE_IDENTIFIER_PART, true);
+                return true;
+            }
+            Bookmark b = setBookmark();
+            advance();
+            // here we can have a type (AA key)
+            if (!parseAssignExpression()) {
+                goToBookmark(b);
+                exit_section_modified(builder, m, TYPE_IDENTIFIER_PART, true);
+                return true;
+            }
+            // indexer followed by ".." -> sliceExp -> type suffix
+            else if (currentIs(tok(".."))) {
+                goToBookmark(b);
+                exit_section_modified(builder, m, TYPE_IDENTIFIER_PART, true);
+                return true;
+            }
+            // otherwise either the index of a type list or a dim
+            abandonBookmark(b);
+            expect(tok("]"));
+            if (!currentIs(tok("."))) {
+                exit_section_modified(builder, m, TYPE_IDENTIFIER_PART, true);
+                return true;
+            }
+        }
+        if (currentIs(tok("."))) {
+            advance();
+            if (!parseTypeIdentifierPart()) {
+                cleanup(m, TYPE_IDENTIFIER_PART);
                 return false;
             }
-            if (currentIs(tok(","))) {
-                advance();
-            } else
-                break;
         }
-        exit_section_modified(builder, m, IDENTIFIER_LIST, true);
+        exit_section_modified(builder, m, TYPE_IDENTIFIER_PART, true);
         return true;
     }
+
 
     /**
      * Parses an IdentifierOrTemplateChain
@@ -4426,6 +4570,7 @@ class DLangParser {
         int identifiersOrTemplateInstancesLength = 0;
         while (moreTokens()) {
             if (!parseIdentifierOrTemplateInstance()) {
+                // TODO handle
                 identifiersOrTemplateInstancesLength++;
                 if (identifiersOrTemplateInstancesLength == 0) {
                     cleanup(m, IDENTIFIER_OR_TEMPLATE_CHAIN);
@@ -4446,7 +4591,7 @@ class DLangParser {
      * Parses an IdentifierOrTemplateInstance
      * <p>
      * $(GRAMMAR $(RULEDEF identifierOrTemplateInstance):
-     * $(LITERAL Identifier)
+     *   $(LITERAL Identifier)
      * | $(RULE templateInstance)
      * ;)
      */
@@ -4509,7 +4654,7 @@ class DLangParser {
      * $(GRAMMAR $(RULEDEF ifStatement):
      * $(LITERAL 'if') $(LITERAL '$(LPAREN)') $(RULE ifCondition) $(LITERAL '$(RPAREN)') $(RULE declarationOrStatement) ($(LITERAL 'else') $(RULE declarationOrStatement))?
      * $(RULEDEF ifCondition):
-     * $(LITERAL 'auto') $(LITERAL Identifier) $(LITERAL '=') $(RULE expression)
+     *   $(LITERAL 'auto') $(LITERAL Identifier) $(LITERAL '=') $(RULE expression)
      * | $(RULE typeConstructors) $(LITERAL Identifier) $(LITERAL '=') $(RULE expression)
      * | $(RULE type) $(LITERAL Identifier) $(LITERAL '=') $(RULE expression)
      * | $(RULE expression)
@@ -4832,8 +4977,40 @@ class DLangParser {
             else
                 break;
         }
-        advance(); // ]
+        if (!tokenCheck("]")) {
+            cleanup(m, INDEX_EXPRESSION);
+            return false;
+        }
         exit_section_modified(builder, m, INDEX_EXPRESSION, true);
+        return true;
+    }
+
+    /**
+     * Parses an InContractExpression
+     *
+     * $(GRAMMAR $(RULEDEF inContractExpression):
+     *     $(LITERAL 'in') $(LITERAL '$(LPAREN)') $(RULE assertArguments) $(LITERAL '$(RPAREN)')
+     *     ;)
+     */
+    public boolean parseInContractExpression() {
+        final Marker m = enter_section_modified(builder);
+        if (expect(tok("in")) == null) {
+            cleanup(m, IN_CONTRACT_EXPRESSION);
+            return false;
+        }
+        if (expect(tok("(")) == null) {
+            cleanup(m, IN_CONTRACT_EXPRESSION);
+            return false;
+        }
+        if (!parseAssertArguments()) {
+            cleanup(m, IN_CONTRACT_EXPRESSION);
+            return false;
+        }
+        if (expect(tok(")")) == null) {
+            cleanup(m, IN_CONTRACT_EXPRESSION);
+            return false;
+        }
+        exit_section_modified(builder, m, IN_CONTRACT_EXPRESSION, true);
         return true;
     }
 
@@ -4873,6 +5050,60 @@ class DLangParser {
     }
 
     /**
+     * Parses an InOutContractExpression
+     *
+     * $(GRAMMAR $(RULEDEF inOutContractExpression):
+     *       $(RULE inContractExpression)
+     *     | $(RULE outContractExpression)
+     *     ;)
+     */
+    public boolean parseInOutContractExpression() {
+        final Marker m = enter_section_modified(builder);
+        if (currentIs(tok("in"))) {
+            if (!parseInContractExpression()) {
+                cleanup(m, IN_OUT_CONTRACT_EXPRESSION);
+                return false;
+            }
+        } else if (!parseOutContractExpression()) {
+            cleanup(m, IN_OUT_CONTRACT_EXPRESSION);
+            return false;
+        } else {
+            cleanup(m, IN_OUT_CONTRACT_EXPRESSION);
+            return false;
+        }
+        exit_section_modified(builder, m, IN_OUT_CONTRACT_EXPRESSION, true);
+        return true;
+    }
+
+    /**
+     * Parses an InOutStatement
+     *
+     * $(GRAMMAR $(RULEDEF inOutStatement):
+     *       $(RULE inStatement)
+     *     | $(RULE outStatement)
+     *     ;)
+     */
+    public boolean parseInOutStatement() {
+        final Marker m = enter_section_modified(builder);
+        if (currentIs(tok("in"))) {
+            if (!parseInStatement()) {
+                cleanup(m, IN_OUT_STATEMENT);
+                return false;
+            }
+        } else if (currentIs(tok("out"))) {
+            if (!parseOutStatement()) {
+                cleanup(m, IN_OUT_STATEMENT);
+                return false;
+            }
+        } else {
+            cleanup(m, IN_OUT_STATEMENT);
+            return false;
+        }
+        exit_section_modified(builder, m, IN_OUT_STATEMENT, true);
+        return true;
+    }
+
+    /**
      * Parses an InStatement
      * <p>
      * $(GRAMMAR $(RULEDEF inStatement):
@@ -4898,7 +5129,7 @@ class DLangParser {
      * Parses an Initializer
      * <p>
      * $(GRAMMAR $(RULEDEF initializer):
-     * $(LITERAL 'void')
+     *   $(LITERAL 'void')
      * | $(RULE nonVoidInitializer)
      * ;)
      */
@@ -4918,7 +5149,7 @@ class DLangParser {
      * Parses an InterfaceDeclaration
      * <p>
      * $(GRAMMAR $(RULEDEF interfaceDeclaration):
-     * $(LITERAL 'interface') $(LITERAL Identifier) $(LITERAL ';')
+     *   $(LITERAL 'interface') $(LITERAL Identifier) $(LITERAL ';')
      * | $(LITERAL 'interface') $(LITERAL Identifier) ($(LITERAL ':') $(RULE baseClassList))? $(RULE structBody)
      * | $(LITERAL 'interface') $(LITERAL Identifier) $(RULE templateParameters) $(RULE raint)? ($(LITERAL ':') $(RULE baseClassList))? $(RULE structBody)
      * | $(LITERAL 'interface') $(LITERAL Identifier) $(RULE templateParameters) ($(LITERAL ':') $(RULE baseClassList))? $(RULE raint)? $(RULE structBody)
@@ -4936,23 +5167,49 @@ class DLangParser {
      * Parses an Invariant
      * <p>
      * $(GRAMMAR $(RULEDEF invariant):
-     * $(LITERAL 'invariant') ($(LITERAL '$(LPAREN)') $(LITERAL '$(RPAREN)'))? $(RULE blockStatement)
+     *   $(LITERAL 'invariant') ($(LITERAL '$(LPAREN)') $(LITERAL '$(RPAREN)'))? $(RULE blockStatement)
+     * | $(LITERAL 'invariant') $(LITERAL '$(LPAREN)') $(RULE assertArguments) $(LITERAL '$(RPAREN)') $(LITERAL ';')
      * ;)
      */
     boolean parseInvariant() {
         final Marker m = enter_section_modified(builder);
+        boolean mustHaveBlock = false;
         if (!tokenCheck("invariant")) {
             cleanup(m, INVARIANT);
             return false;
         }
-        if (currentIs(tok("("))) {
+        if (currentIs(tok("(")) && peekIs(tok(")"))) {
+            mustHaveBlock = true;
             advance();
+            advance();
+        }
+        if (currentIs(tok("{"))) {
+            if (currentIs(tok("("))) {
+                advance();
+                if (!tokenCheck(")")) {
+                    cleanup(m, INVARIANT);
+                    return false;
+                }
+            }
+            if (!parseBlockStatement()) {
+                cleanup(m, INVARIANT);
+                return false;
+            }
+        } else if (!mustHaveBlock && currentIs(tok("("))) {
+            advance();
+            if (!parseAssertArguments()) {
+                cleanup(m, INVARIANT);
+                return false;
+            }
             if (!tokenCheck(")")) {
                 cleanup(m, INVARIANT);
                 return false;
             }
-        }
-        if (!parseBlockStatement()) {
+            if (!tokenCheck(";")) {
+                cleanup(m, INVARIANT);
+                return false;
+            }
+        } else {
             cleanup(m, INVARIANT);
             return false;
         }
@@ -4964,11 +5221,11 @@ class DLangParser {
      * Parses an IsExpression
      * <p>
      * $(GRAMMAR $(RULEDEF isExpression):
-     * $(LITERAL'is') $(LITERAL '$(LPAREN)') $(RULE type) $(LITERAL identifier)? $(LITERAL '$(RPAREN)')
-     * $(LITERAL'is') $(LITERAL '$(LPAREN)') $(RULE type) $(LITERAL identifier)? $(LITERAL ':') $(RULE typeSpecialization) $(LITERAL '$(RPAREN)')
-     * $(LITERAL'is') $(LITERAL '$(LPAREN)') $(RULE type) $(LITERAL identifier)? $(LITERAL '=') $(RULE typeSpecialization) $(LITERAL '$(RPAREN)')
-     * $(LITERAL'is') $(LITERAL '$(LPAREN)') $(RULE type) $(LITERAL identifier)? $(LITERAL ':') $(RULE typeSpecialization) $(LITERAL ',') $(RULE templateParameterList) $(LITERAL '$(RPAREN)')
-     * $(LITERAL'is') $(LITERAL '$(LPAREN)') $(RULE type) $(LITERAL identifier)? $(LITERAL '=') $(RULE typeSpecialization) $(LITERAL ',') $(RULE templateParameterList) $(LITERAL '$(RPAREN)')
+     *   $(LITERAL'is') $(LITERAL '$(LPAREN)') $(RULE type) $(LITERAL identifier)? $(LITERAL '$(RPAREN)')
+     * | $(LITERAL'is') $(LITERAL '$(LPAREN)') $(RULE type) $(LITERAL identifier)? $(LITERAL ':') $(RULE typeSpecialization) $(LITERAL '$(RPAREN)')
+     * | $(LITERAL'is') $(LITERAL '$(LPAREN)') $(RULE type) $(LITERAL identifier)? $(LITERAL '=') $(RULE typeSpecialization) $(LITERAL '$(RPAREN)')
+     * | $(LITERAL'is') $(LITERAL '$(LPAREN)') $(RULE type) $(LITERAL identifier)? $(LITERAL ':') $(RULE typeSpecialization) $(LITERAL ',') $(RULE templateParameterList) $(LITERAL '$(RPAREN)')
+     * | $(LITERAL'is') $(LITERAL '$(LPAREN)') $(RULE type) $(LITERAL identifier)? $(LITERAL '=') $(RULE typeSpecialization) $(LITERAL ',') $(RULE templateParameterList) $(LITERAL '$(RPAREN)')
      * ;)
      */
     boolean parseIsExpression() {
@@ -5109,9 +5366,9 @@ class DLangParser {
      * Parses a LinkageAttribute
      * <p>
      * $(GRAMMAR $(RULEDEF linkageAttribute):
-     * $(LITERAL 'extern') $(LITERAL '$(LPAREN)') $(LITERAL Identifier) $(LITERAL '$(RPAREN)')
-     * $(LITERAL 'extern') $(LITERAL '$(LPAREN)') $(LITERAL Identifier) $(LITERAL '-') $(LITERAL Identifier) $(LITERAL '$(RPAREN)')
-     * | $(LITERAL 'extern') $(LITERAL '$(LPAREN)') $(LITERAL Identifier) $(LITERAL '++') ($(LITERAL ',') $(RULE identifierChain) | $(LITERAL 'struct') | $(LITERAL 'class'))? $(LITERAL '$(RPAREN)')
+     *   $(LITERAL 'extern') $(LITERAL '$(LPAREN)') $(LITERAL Identifier) $(LITERAL '$(RPAREN)')
+     * | $(LITERAL 'extern') $(LITERAL '$(LPAREN)') $(LITERAL Identifier) $(LITERAL '-') $(LITERAL Identifier) $(LITERAL '$(RPAREN)')
+     * | $(LITERAL 'extern') $(LITERAL '$(LPAREN)') $(LITERAL Identifier) $(LITERAL '++') ($(LITERAL ',') $(RULE typeIdentifierPart) | $(RULE namespaceList) | $(LITERAL 'struct') | $(LITERAL 'class'))? $(LITERAL '$(RPAREN)')
      * ;)
      */
     boolean parseLinkageAttribute() {
@@ -5135,9 +5392,16 @@ class DLangParser {
                 advance();
                 if (currentIsOneOf(tok("struct"), tok("class")))
                     advance();
-                else if (!parseIdentifierChain()) {
-                    cleanup(m, LINKAGE_ATTRIBUTE);
-                    return false;
+                else if (currentIs(tok("identifier"))) {
+                    if (!parseTypeIdentifierPart()) {
+                        cleanup(m, LINKAGE_ATTRIBUTE);
+                        return false;
+                    }
+                } else {
+                    if (!parseNamespaceList()) {
+                        cleanup(m, LINKAGE_ATTRIBUTE);
+                        return false;
+                    }
                 }
             }
         } else if (currentIs(tok("-"))) {
@@ -5160,20 +5424,25 @@ class DLangParser {
      * | $(LITERAL 'immutable')
      * | $(LITERAL 'inout')
      * | $(LITERAL 'shared')
-     * | $(LITERAL '')
+     * | $(LITERAL 'const')
      * | $(LITERAL 'return')
      * | $(LITERAL 'scope')
+     * | $(LITERAL 'throw')
      * ;)
      */
     boolean parseMemberFunctionAttribute() {
         final Marker m = enter_section_modified(builder);
+        if (!moreTokens()) {
+            cleanup(m, MEMBER_FUNCTION_ATTRIBUTE);
+            return false;
+        }
         final Token.IdType i = current().type;
         if (i.equals(tok("@"))) {
             if (!parseAtAttribute()) {
                 cleanup(m, MEMBER_FUNCTION_ATTRIBUTE);
                 return false;
             }
-        } else if (i.equals(tok("immutable")) || i.equals(tok("inout")) || i.equals(tok("shared")) || i.equals(tok("const")) || i.equals(tok("pure")) || i.equals(tok("nothrow")) || i.equals(tok("return")) || i.equals(tok("scope"))) {
+        } else if (i.equals(tok("immutable")) || i.equals(tok("inout")) || i.equals(tok("shared")) || i.equals(tok("const")) || i.equals(tok("pure")) || i.equals(tok("nothrow")) || i.equals(tok("return")) || i.equals(tok("scope")) || i.equals(tok("throw"))) {
             advance();
         } else {
             error("Member function attribute expected");
@@ -5183,10 +5452,38 @@ class DLangParser {
     }
 
     /**
+     * Parses a MissingFunctionBody
+     *
+     * $(GRAMMAR $(RULEDEF missingFunctionBody):
+     *       $(LITERAL ';')
+     *     | $(RULE functionContract)* $(LITERAL ';')
+     *     ;)
+     */
+    public boolean parseMissingFunctionBody() {
+        final Marker m = enter_section_modified(builder);
+        boolean haveContract = false;
+        while (currentIsOneOf(tok("in"), tok("out"))) {
+            if (parseFunctionContract())
+                haveContract = true;
+        }
+        if (!haveContract) {
+            if (expect(tok(";")) == null) {
+                cleanup(m, MISSING_FUNCTION_BODY);
+                return false;
+            }
+        } else if (moreTokens() && currentIsOneOf(tok("do"), tok("=>"))) {
+            cleanup(m, MISSING_FUNCTION_BODY);
+            return false;
+        }
+        exit_section_modified(builder, m, MISSING_FUNCTION_BODY, true);
+        return true;
+    }
+
+    /**
      * Parses a MixinDeclaration
      * <p>
      * $(GRAMMAR $(RULEDEF mixinDeclaration):
-     * $(RULE mixinExpression) $(LITERAL ';')
+     *   $(RULE mixinExpression) $(LITERAL ';')
      * | $(RULE templateMixinExpression) $(LITERAL ';')
      * ;)
      */
@@ -5203,7 +5500,7 @@ class DLangParser {
                 return false;
             }
         } else {
-            error("\" (\" or identifier expected");
+            error("`(` or identifier expected");
             exit_section_modified(builder, m, MIXIN_DECLARATION, true);
             return false;
         }
@@ -5293,24 +5590,19 @@ class DLangParser {
             advance();
         }
         boolean isDeprecatedModule = false;
-        if (currentIs(tok("deprecated"))) {
-            final Bookmark b = setBookmark();
-            advance();
-            if (currentIs(tok("(")))
-                skipParens();
-            isDeprecatedModule = currentIs(tok("module"));
-            goToBookmark(b);
+        final Bookmark b = setBookmark();
+        while (currentIs(tok("@")) || currentIs(tok("deprecated"))) {
+            parseAttribute();
         }
-        if (currentIs(tok("module")) || isDeprecatedModule) {
+        boolean isModule = currentIs(tok("module"));
+        goToBookmark(b);
+        if (isModule) {
 //                c = allocator.setCheckpoint();
             parseModuleDeclaration();
 //                allocator.rollback(c);
         }
         while (moreTokens()) {
 //                c = allocator.setCheckpoint();
-//            if(!parseDeclaration(true, true)){
-//                advance();
-//            }
             parseDeclaration(true, true);
 //                    allocator.rollback(c);
         }
@@ -5321,16 +5613,22 @@ class DLangParser {
      * Parses a ModuleDeclaration
      * <p>
      * $(GRAMMAR $(RULEDEF moduleDeclaration):
-     * $(RULE deprecated)? $(LITERAL 'module') $(RULE identifierChain) $(LITERAL ';')
+     * $(RULE atAttribute)* $(RULE deprecated)? $(RULE atAttribute)* $(LITERAL 'module') $(RULE identifierChain) $(LITERAL ';')
      * ;)
      */
     boolean parseModuleDeclaration() {
         final Marker m = enter_section_modified(builder);
+        while (currentIs(tok("@"))) {
+            parseAttribute();
+        }
         if (currentIs(tok("deprecated")))
             if (!parseDeprecated()) {
                 cleanup(m, MODULE_DECLARATION);
                 return false;
             }
+        while (currentIs(tok("@"))) {
+            parseAttribute();
+        }
         final Token start = expect(tok("module"));
         if (start == null) {
             cleanup(m, MODULE_DECLARATION);
@@ -5349,7 +5647,7 @@ class DLangParser {
      * Parses a MulExpression.
      * <p>
      * $(GRAMMAR $(RULEDEF mulExpression):
-     * $(RULE powExpression)
+     *   $(RULE powExpression)
      * | $(RULE mulExpression) ($(LITERAL '*') | $(LITERAL '/') | $(LITERAL '%')) $(RULE powExpression)
      * ;)
      */
@@ -5365,6 +5663,20 @@ class DLangParser {
             return b;
         }
         exit_section_modified(builder, marker, MUL_EXPRESSION, b);
+        return b;
+    }
+
+    /**
+     * Parses a NamespaceList.
+     *
+     * $(GRAMMAR $(RULEDEF namespaceList):
+     *     $(RULE ternaryExpression) ($(LITERAL ',') $(RULE ternaryExpression)?)* $(LITERAL ',')?
+     *     ;)
+     */
+    public boolean parseNamespaceList() {
+        final Marker marker = enter_section_modified(builder);
+        final boolean b = parseCommaSeparatedRule("NamespaceList", "TernaryExpression", true);
+        exit_section_modified(builder, marker, NAMESPACE_LIST, b);
         return b;
     }
 
@@ -5489,7 +5801,7 @@ class DLangParser {
             advance();
             if (currentIs(tok("["))) {
                 advance();
-                Token c =peekPastBrackets();
+                Token c = peekPastBrackets();
                 isAA = c != null && c.type == tok(":");
             }
             goToBookmark(bk);
@@ -5528,7 +5840,7 @@ class DLangParser {
      * Parses Operands
      * <p>
      * $(GRAMMAR $(RULEDEF operands):
-     * $(RULE asmExp)
+     *   $(RULE asmExp)
      * | $(RULE asmExp) $(LITERAL ',') $(RULE operands)
      * ;)
      */
@@ -5552,7 +5864,7 @@ class DLangParser {
      * Parses an OrExpression
      * <p>
      * $(GRAMMAR $(RULEDEF orExpression):
-     * $(RULE xorExpression)
+     *   $(RULE xorExpression)
      * | $(RULE orExpression) $(LITERAL '|') $(RULE xorExpression)
      * ;)
      */
@@ -5575,7 +5887,7 @@ class DLangParser {
      * Parses an OrOrExpression
      * <p>
      * $(GRAMMAR $(RULEDEF orOrExpression):
-     * $(RULE andAndExpression)
+     *   $(RULE andAndExpression)
      * | $(RULE orOrExpression) $(LITERAL '||') $(RULE andAndExpression)
      * ;)
      */
@@ -5597,6 +5909,43 @@ class DLangParser {
         }
         exit_section_modified(builder, marker, type, b);
         return b;
+    }
+
+    /**
+     * Parses an OutContractExpression
+     *
+     * $(GRAMMAR $(RULEDEF outContractExpression):
+     *     $(LITERAL 'out') $(LITERAL '$(LPAREN)') $(LITERAL Identifier)? $(LITERAL ';') $(RULE assertArguments) $(LITERAL '$(RPAREN)')
+     *     ;)
+     */
+    public boolean parseOutContractExpression() {
+        final Marker m = enter_section_modified(builder);
+        final Token o = expect(tok("out"));
+        if (o == null) {
+            cleanup(m, OUT_CONTRACT_EXPRESSION);
+            return false;
+        }
+        if (!tokenCheck("(")) {
+            cleanup(m, OUT_CONTRACT_EXPRESSION);
+            return false;
+        }
+        if (currentIs(tok("identifier"))) {
+            advance();
+        }
+        if (!tokenCheck(";")) {
+            cleanup(m, OUT_CONTRACT_EXPRESSION);
+            return false;
+        }
+        if (!parseAssertArguments()) {
+            cleanup(m, OUT_CONTRACT_EXPRESSION);
+            return false;
+        }
+        if (!tokenCheck(")")) {
+            cleanup(m, OUT_CONTRACT_EXPRESSION);
+            return false;
+        }
+        exit_section_modified(builder, m, OUT_CONTRACT_EXPRESSION, true);
+        return true;
     }
 
     /**
@@ -5634,9 +5983,9 @@ class DLangParser {
      * Parses a Parameter
      * <p>
      * $(GRAMMAR $(RULEDEF parameter):
-     * $(RULE parameterAttribute)* $(RULE type)
-     * $(RULE parameterAttribute)* $(RULE type) $(LITERAL Identifier)? $(LITERAL '...')
-     * $(RULE parameterAttribute)* $(RULE type) $(LITERAL Identifier)? ($(LITERAL '=') $(RULE assignExpression))?
+     *   $(RULE parameterAttribute)* $(RULE type)
+     * | $(RULE parameterAttribute)* $(RULE type) $(LITERAL Identifier)? $(LITERAL '...')
+     * | $(RULE parameterAttribute)* $(RULE type) $(LITERAL Identifier)? ($(LITERAL '=') $(RULE assignExpression))?
      * ;)
      */
     boolean parseParameter() {
@@ -5646,6 +5995,13 @@ class DLangParser {
             if (type.equals(tok("")))
                 break;
         }
+        // Parsed the attributes of the variadic attributes.
+        // Abort and defer to parseVariadicArgumentsAttributes
+        if (currentIs(tok("..."))) {
+            cleanup(m, PARAMETER);
+            return false;
+        }
+
         if (!parseType().first) {
             cleanup(m, PARAMETER);
             return false;
@@ -5659,6 +6015,9 @@ class DLangParser {
                 if (!parseAssignExpression()) {
                     cleanup(m, PARAMETER);
                     return false;
+                }
+                if (currentIs(tok("..."))) {
+                    advance();
                 }
             } else if (currentIs(tok("["))) {
                 while (moreTokens() && currentIs(tok("[")))
@@ -5688,7 +6047,8 @@ class DLangParser {
      * Parses a ParameterAttribute
      * <p>
      * $(GRAMMAR $(RULEDEF parameterAttribute):
-     * $(RULE typeConstructor)
+     *   $(RULE atAttribute)
+     * | $(RULE typeConstructor)
      * | $(LITERAL 'final')
      * | $(LITERAL 'in')
      * | $(LITERAL 'lazy')
@@ -5701,7 +6061,13 @@ class DLangParser {
      */
     Token.IdType parseParameterAttribute(final boolean validate) {
         final Token.IdType i = current().type;
-        if (i.equals(tok("immutable")) || i.equals(tok("shared")) || i.equals(tok("const")) || i.equals(tok("inout"))) {
+        if (i.equals(tok("@"))) {
+            if (!parseAtAttribute()) {
+                error("Parameter attribute expected");
+                return tok("");
+            }
+            return current().type; // Hack because libdparse return the aa node
+        } else if (i.equals(tok("immutable")) || i.equals(tok("shared")) || i.equals(tok("const")) || i.equals(tok("inout"))) {
             if (peekIs(tok("(")))
                 return tok("");
             else
@@ -5720,7 +6086,7 @@ class DLangParser {
      * Parses Parameters
      * <p>
      * $(GRAMMAR $(RULEDEF parameters):
-     * $(LITERAL '$(LPAREN)') $(RULE parameter) ($(LITERAL ',') $(RULE parameter))* ($(LITERAL ',') $(LITERAL '...'))? $(LITERAL '$(RPAREN)')
+     *   $(LITERAL '$(LPAREN)') $(RULE parameter) ($(LITERAL ',') $(RULE parameter))* ($(LITERAL ',') $(LITERAL '...'))? $(LITERAL '$(RPAREN)')
      * | $(LITERAL '$(LPAREN)') $(LITERAL '...') $(LITERAL '$(RPAREN)')
      * | $(LITERAL '$(LPAREN)') $(LITERAL '$(RPAREN)')
      * ;)
@@ -5753,9 +6119,28 @@ class DLangParser {
             }
             if (currentIs(tok(")")))
                 break;
+            // Save starting point to deal with attributed variadics, e.g.
+            // int printf(in char* format, scope const ...);
+            Bookmark b = setBookmark();
             if (!(parseParameter())) {
-                cleanup(m, PARAMETERS);
-                return false;
+                // parseParameter fails for C-style variadics, they are parsed below
+                if (!currentIs(tok("..."))) {
+                    abandonBookmark(b);
+                    cleanup(m, PARAMETERS);
+                    return false;
+                }
+                // Reset to the beginning of the current parameters
+                goToBookmark(b);
+                if (!parseVariadicArgumentsAttributes()) {
+                    cleanup(m, PARAMETERS);
+                    return false;
+                }
+                if (!tokenCheck("...")) {
+                    cleanup(m, PARAMETERS);
+                    return false;
+                }
+            } else {
+                abandonBookmark(b);
             }
             if (currentIs(tok(",")))
                 advance();
@@ -5767,6 +6152,48 @@ class DLangParser {
             return false;
         }
         exit_section_modified(builder, m, PARAMETERS, true);
+        return true;
+    }
+
+    /**
+     * Parses attributes of C-style variadic parameters.
+     *
+     * $(GRAMMAR $(RULEDEF variadicArgumentsAttributes):
+     *       $(RULE variadicArgumentsAttribute)+
+     *     ;)
+     */
+    public boolean parseVariadicArgumentsAttributes() {
+        final Marker m = enter_section_modified(builder);
+        while (moreTokens() && !currentIs(tok("..."))) {
+            if (!parseVariadicArgumentsAttribute()) {
+                cleanup(m, VARIADIC_ARGUMENTS_ATTRIBUTES);
+                return false;
+            }
+        }
+        exit_section_modified(builder, m, VARIADIC_ARGUMENTS_ATTRIBUTES, true);
+        return true;
+    }
+
+    /**
+     * Parses an attribute of C-style variadic parameters.
+     *
+     * $(GRAMMAR $(RULEDEF variadicArgumentsAttribute):
+     *       $(LITERAL 'const')
+     *     | $(LITERAL 'immutable')
+     *     | $(LITERAL 'scope')
+     *     | $(LITERAL 'shared')
+     *     | $(LITERAL 'return')
+     *     ;)
+     */
+    public boolean parseVariadicArgumentsAttribute() {
+        final Marker m = enter_section_modified(builder);
+        if (!currentIsOneOf(tok("const"), tok("immutable"), tok("shared"), tok("scope"), tok("return"))) {
+            error("`const`, `immutable`, `shared`, `scope` or `return` expected");
+            cleanup(m, VARIADIC_ARGUMENTS_ATTRIBUTE);
+            return false;
+        }
+        advance();
+        exit_section_modified(builder, m, VARIADIC_ARGUMENTS_ATTRIBUTE, true);
         return true;
     }
 
@@ -5862,6 +6289,38 @@ class DLangParser {
         }
         expect(tok(")"));
         exit_section_modified(builder, m, PRAGMA_EXPRESSION, true);
+        return true;
+    }
+
+    /**
+     * Parses a PragmaStatement
+     *
+     * $(GRAMMAR $(RULEDEF pragmaStatement):
+     *       $(RULE pragmaExpression) $(RULE statement)
+     *     | $(RULE pragmaExpression) $(RULE blockStatement)
+     *     | $(RULE pragmaExpression) $(LITERAL ';')
+     *     ;)
+     */
+    public boolean parsePragmaStatement() {
+        final Marker m = enter_section_modified(builder);
+        if (!parsePragmaExpression()) {
+            cleanup(m, PRAGMA_STATEMENT);
+            return false;
+        }
+        if (current().equals(tok("{"))) {
+            if (!parseBlockStatement()) {
+                cleanup(m, PRAGMA_STATEMENT);
+                return false;
+            }
+        } else if (current().equals(tok(";"))) {
+            advance();
+        } else {
+            if (!parseStatement()) {
+                cleanup(m, PRAGMA_STATEMENT);
+                return false;
+            }
+        }
+        exit_section_modified(builder, m, PRAGMA_STATEMENT, true);
         return true;
     }
 
@@ -5970,6 +6429,18 @@ class DLangParser {
                 }
             } else if (!parseArrayLiteral()) {
                 cleanup(m, PRIMARY_EXPRESSION);
+                return false;
+            }
+        } else if (i.equals(tok("ref"))) {
+            if (peekIs(tok("("))) {
+                if (!parseFunctionLiteralExpression()) {
+                    cleanup(m, PRIMARY_EXPRESSION);
+                    return false;
+                }
+            } else {
+                // goto default
+                error("Primary expression expected");
+                exit_section_modified(builder, m, PRIMARY_EXPRESSION, true);
                 return false;
             }
         } else if (i.equals(tok("("))) {
@@ -6273,6 +6744,71 @@ class DLangParser {
     }
 
     /**
+     * Parses a ShortenedFunctionBody
+     *
+     * $(GRAMMAR $(RULEDEF shortenedFunctionBody):
+     *      $(RULE inOutContractExpression)* $(LITERAL '=>') $(RULE expression) $(LITERAL ';')
+     *     ;)
+     */
+    public boolean parseShortenedFunctionBody() {
+        final Marker m = enter_section_modified(builder);
+        boolean contract = false;
+        while (currentIsOneOf(tok("in"), tok("out"))) {
+            if (parseFunctionContract(false)) {
+                contract = true;
+            }
+        }
+        if (!tokenCheck("=>")) {
+            cleanup(m, SHORTENED_FUNCTION_BODY);
+            return false;
+        }
+        if (!parseExpression()) {
+            cleanup(m, SHORTENED_FUNCTION_BODY);
+            return false;
+        }
+        if (!tokenCheck(";")) {
+            cleanup(m, SHORTENED_FUNCTION_BODY);
+            return false;
+        }
+        exit_section_modified(builder, m, SHORTENED_FUNCTION_BODY, true);
+        return true;
+    }
+
+    /**
+     * Parses a SpecifiedFunctionBody
+     *
+     * $(GRAMMAR $(RULEDEF specifiedFunctionBody):
+     *       $(LITERAL 'do')? $(RULE blockStatement)
+     *     | $(RULE functionContract)* $(RULE inOutContractExpression) $(LITERAL 'do')? $(RULE blockStatement)
+     *     | $(RULE functionContract)* $(RULE inOutStatement) $(LITERAL 'do') $(RULE blockStatement)
+     *     ;)
+     */
+    public boolean parseSpecifiedFunctionBody() {
+        final Marker m = enter_section_modified(builder);
+        boolean requireDo = false;
+        while (currentIsOneOf(tok("in"), tok("out"))) {
+            if (parseFunctionContract()) {
+                requireDo = true;
+            }
+        }
+        if (currentIs(tok("do")) || currentIs(tok("identifier"))) {
+            advance();
+            requireDo = false;
+        }
+        if (requireDo) {
+            error("`do` expected after InStatement or OutStatement");
+            cleanup(m, SPECIFIED_FUNCTION_BODY);
+            return false;
+        }
+        if (!parseBlockStatement()) {
+            cleanup(m, SPECIFIED_FUNCTION_BODY);
+            return false;
+        }
+        exit_section_modified(builder, m, SPECIFIED_FUNCTION_BODY, true);
+        return true;
+    }
+
+    /**
      * Parses a Statement
      * <p>
      * $(GRAMMAR $(RULEDEF statement):
@@ -6321,7 +6857,7 @@ class DLangParser {
      * Parses a StatementNoCaseNoDefault
      * <p>
      * $(GRAMMAR $(RULEDEF statementNoCaseNoDefault):
-     * $(RULE labeledStatement)
+     *   $(RULE labeledStatement)
      * | $(RULE blockStatement)
      * | $(RULE ifStatement)
      * | $(RULE whileStatement)
@@ -6337,8 +6873,8 @@ class DLangParser {
      * | $(RULE withStatement)
      * | $(RULE synchronizedStatement)
      * | $(RULE tryStatement)
-     * | $(RULE throwStatement)
      * | $(RULE scopeGuardStatement)
+     * | $(RULE pragmaStatement)
      * | $(RULE asmStatement)
      * | $(RULE conditionalStatement)
      * | $(RULE staticAssertStatement)
@@ -6420,11 +6956,6 @@ class DLangParser {
                 cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
                 return false;
             }
-        } else if (i.equals(tok("throw"))) {
-            if (!parseThrowStatement()) {
-                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
-                return false;
-            }
         } else if (i.equals(tok("scope"))) {
             if (!parseScopeGuardStatement()) {
                 cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
@@ -6432,6 +6963,11 @@ class DLangParser {
             }
         } else if (i.equals(tok("asm"))) {
             if (!parseAsmStatement()) {
+                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
+                return false;
+            }
+        } else if (i.equals(tok("pragma"))) {
+            if (!parsePragmaStatement()) {
                 cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
                 return false;
             }
@@ -6445,7 +6981,7 @@ class DLangParser {
                 exit_section_modified(builder, m, STATEMENT_NO_CASE_NO_DEFAULT, true);
                 return true;
             } else {
-                error("\"switch\" expected");
+                error("`switch` expected");
                 exit_section_modified(builder, m, STATEMENT_NO_CASE_NO_DEFAULT, true);
                 return false;
             }
@@ -6623,6 +7159,7 @@ class DLangParser {
      * | $(LITERAL 'scope')
      * | $(LITERAL 'static')
      * | $(LITERAL 'synchronized')
+     * | $(LITERAL 'throw')
      * ;)
      */
     boolean parseStorageClass() {
@@ -6653,7 +7190,7 @@ class DLangParser {
                 return true;
             } else
                 advance();
-        } else if (i.equals(tok("const")) || i.equals(tok("immutable")) || i.equals(tok("inout")) || i.equals(tok("shared")) || i.equals(tok("abstract")) || i.equals(tok("auto")) || i.equals(tok("enum")) || i.equals(tok("final")) || i.equals(tok("nothrow")) || i.equals(tok("override")) || i.equals(tok("pure")) || i.equals(tok("ref")) || i.equals(tok("__gshared")) || i.equals(tok("scope")) || i.equals(tok("static")) || i.equals(tok("synchronized"))) {
+        } else if (i.equals(tok("const")) || i.equals(tok("immutable")) || i.equals(tok("inout")) || i.equals(tok("shared")) || i.equals(tok("abstract")) || i.equals(tok("auto")) || i.equals(tok("enum")) || i.equals(tok("final")) || i.equals(tok("nothrow")) || i.equals(tok("override")) || i.equals(tok("pure")) || i.equals(tok("ref")) || i.equals(tok("__gshared")) || i.equals(tok("scope")) || i.equals(tok("static")) || i.equals(tok("synchronized")) || i.equals(tok("throw"))) {
             advance();
         } else {
             error("Storage class expected");
@@ -6704,11 +7241,8 @@ class DLangParser {
                     cleanup(m, STRUCT_DECLARATION);
                     return false;
                 }
-            if (!parseStructBody()) {
-                cleanup(m, STRUCT_DECLARATION);
-                return false;
-            }
-        } else if (currentIs(tok("{"))) {
+        }
+        if (currentIs(tok("{"))) {
             if (!parseStructBody()) {
                 cleanup(m, STRUCT_DECLARATION);
                 return false;
@@ -6932,14 +7466,11 @@ class DLangParser {
      * Parses a TemplateArgument
      * <p>
      * $(GRAMMAR $(RULEDEF templateArgument):
-     * $(RULE type)
+     *   $(RULE type)
      * | $(RULE assignExpression)
      * ;)
      */
     boolean parseTemplateArgument() {
-        if (suppressedErrorCount > MAX_ERRORS) {
-            return false;
-        }
         final Marker m = enter_section_modified(builder);
         final Bookmark b = setBookmark();
         final boolean t = parseType().first;
@@ -6965,7 +7496,7 @@ class DLangParser {
      */
     boolean parseTemplateArgumentList() {
         final Marker marker = enter_section_modified(builder);
-        final boolean b = parseCommaSeparatedRule("TemplateArgumentList", "TemplateArgument");
+        final boolean b = parseCommaSeparatedRule("TemplateArgumentList", "TemplateArgument", true);
         exit_section_modified(builder, marker, TEMPLATE_ARGUMENT_LIST, b);
         return b;
     }
@@ -6978,7 +7509,6 @@ class DLangParser {
      * ;)
      */
     boolean parseTemplateArguments() {
-        if (suppressedErrorCount > MAX_ERRORS) return false;
         final Marker m = enter_section_modified(builder);
         expect(tok("!"));
         if (currentIs(tok("("))) {
@@ -7031,9 +7561,6 @@ class DLangParser {
         }
         while (moreTokens() && !currentIs(tok("}"))) {
 //                c = allocator.setCheckpoint();
-//            if (!parseDeclaration(true, true)) {
-//                advance();
-//            }
             parseDeclaration(true, true, true);
 //                    allocator.rollback(c);
         }
@@ -7050,7 +7577,6 @@ class DLangParser {
      * ;)
      */
     boolean parseTemplateInstance() {
-        if (suppressedErrorCount > MAX_ERRORS) return false;
         final Marker m = enter_section_modified(builder);
         final Token ident = expect(tok("identifier"));
         if (ident == null) {
@@ -7097,7 +7623,7 @@ class DLangParser {
      * Parses a TemplateParameter
      * <p>
      * $(GRAMMAR $(RULEDEF templateParameter):
-     * $(RULE templateTypeParameter)
+     *   $(RULE templateTypeParameter)
      * | $(RULE templateValueParameter)
      * | $(RULE templateAliasParameter)
      * | $(RULE templateTupleParameter)
@@ -7151,7 +7677,7 @@ class DLangParser {
      */
     boolean parseTemplateParameterList() {
         final Marker marker = enter_section_modified(builder);
-        final boolean b = parseCommaSeparatedRule("TemplateParameterList", "TemplateParameter");
+        final boolean b = parseCommaSeparatedRule("TemplateParameterList", "TemplateParameter", true);
         exit_section_modified(builder, marker, TEMPLATE_PARAMETER_LIST, b);
         return b;
     }
@@ -7186,7 +7712,7 @@ class DLangParser {
      * Parses a TemplateSingleArgument
      * <p>
      * $(GRAMMAR $(RULEDEF templateSingleArgument):
-     * $(RULE builtinType)
+     *   $(RULE builtinType)
      * | $(LITERAL Identifier)
      * | $(LITERAL CharacterLiteral)
      * | $(LITERAL StringLiteral)
@@ -7197,15 +7723,16 @@ class DLangParser {
      * | $(LITERAL '_null')
      * | $(LITERAL 'this')
      * | $(LITERAL '___DATE__')
+     * | $(LITERAL '___FILE__')
+     * | $(LITERAL '___FILE_FULL_PATH__')
+     * | $(LITERAL '___FUNCTION__')
+     * | $(LITERAL '___LINE__')
+     * | $(LITERAL '___MODULE__')
+     * | $(LITERAL '___PRETTY_FUNCTION__')
      * | $(LITERAL '___TIME__')
      * | $(LITERAL '___TIMESTAMP__')
      * | $(LITERAL '___VENDOR__')
      * | $(LITERAL '___VERSION__')
-     * | $(LITERAL '___FILE__')
-     * | $(LITERAL '___LINE__')
-     * | $(LITERAL '___MODULE__')
-     * | $(LITERAL '___FUNCTION__')
-     * | $(LITERAL '___PRETTY_FUNCTION__')
      * ;)
      */
     boolean parseTemplateSingleArgument() {
@@ -7336,14 +7863,25 @@ class DLangParser {
      * Parses a TemplateValueParameterDefault
      * <p>
      * $(GRAMMAR $(RULEDEF templateValueParameterDefault):
-     * $(LITERAL '=') ($(LITERAL '___FILE__') | $(LITERAL '___MODULE__') | $(LITERAL '___LINE__') | $(LITERAL '___FUNCTION__') | $(LITERAL '___PRETTY_FUNCTION__') | $(RULE assignExpression))
+     *   $(LITERAL '=') $(LITERAL '___DATE__')
+     * | $(LITERAL '=') $(LITERAL '___FILE__')
+     * | $(LITERAL '=') $(LITERAL '___FILE_FULL_PATH__')
+     * | $(LITERAL '=') $(LITERAL '___FUNCTION__')
+     * | $(LITERAL '=') $(LITERAL '___LINE__')
+     * | $(LITERAL '=') $(LITERAL '___MODULE__')
+     * | $(LITERAL '=') $(LITERAL '___PRETTY_FUNCTION__')
+     * | $(LITERAL '=') $(LITERAL '___TIME__')
+     * | $(LITERAL '=') $(LITERAL '___TIMESTAMP__')
+     * | $(LITERAL '=') $(LITERAL '___VENDOR__')
+     * | $(LITERAL '=') $(LITERAL '___VERSION__')
+     * | $(LITERAL '=') $(RULE assignExpression))
      * ;)
      */
     boolean parseTemplateValueParameterDefault() {
         final Marker m = enter_section_modified(builder);
         expect(tok("="));
         final Token.IdType i = current().type;
-        if (i.equals(tok("__FILE__")) || i.equals(tok("__MODULE__")) || i.equals(tok("__LINE__")) || i.equals(tok("__FUNCTION__")) || i.equals(tok("__PRETTY_FUNCTION__"))) {
+        if (i.equals(tok("__FILE__")) || i.equals(tok("__FILE_FULL_PATH__")) || i.equals(tok("__MODULE__")) || i.equals(tok("__LINE__")) || i.equals(tok("__FUNCTION__")) || i.equals(tok("__PRETTY_FUNCTION__"))) {
             advance();
         } else {
             if (!parseAssignExpression()) {
@@ -7391,21 +7929,20 @@ class DLangParser {
     }
 
     /**
-     * Parses a ThrowStatement
+     * Parses a ThrowExpression
      * <p>
-     * $(GRAMMAR $(RULEDEF throwStatement):
-     * $(LITERAL 'throw') $(RULE expression) $(LITERAL ';')
+     * $(GRAMMAR $(RULEDEF throwExpression):
+     * $(LITERAL 'throw') $(RULE assignExpression)
      * ;)
      */
-    boolean parseThrowStatement() {
+    boolean parseThrowExpression() {
         final Marker m = enter_section_modified(builder);
         expect(tok("throw"));
-        if (!parseExpression()) {
-            cleanup(m, THROW_STATEMENT);
+        if (!parseAssignExpression()) {
+            cleanup(m, THROW_EXPRESSION);
             return false;
         }
-        expect(tok(";"));
-        exit_section_modified(builder, m, THROW_STATEMENT, true);
+        exit_section_modified(builder, m, THROW_EXPRESSION, true);
         return true;
     }
 
@@ -7502,7 +8039,11 @@ class DLangParser {
         }
         while (moreTokens()) {
             final Token.IdType i1 = current().type;
+
             if (i1.equals(tok("["))) {
+                // Allow this to fail because of the madness that is the
+                // newExpression rule. Something starting with '[' may be arguments
+                // to the newExpression instead of part of the type
                 final Bookmark newBookmark = setBookmark();
                 if (parseTypeSuffix())
                     abandonBookmark(newBookmark);
@@ -7528,13 +8069,15 @@ class DLangParser {
      * Parses a Type2
      * <p>
      * $(GRAMMAR $(RULEDEF type2):
-     * $(RULE builtinType)
-     * | $(RULE symbol)
-     * | $(LITERAL 'super') $(LITERAL '.') $(RULE identifierOrTemplateChain)
-     * | $(LITERAL 'this') $(LITERAL '.') $(RULE identifierOrTemplateChain)
-     * | $(RULE typeofExpression) ($(LITERAL '.') $(RULE identifierOrTemplateChain))?
+     *   $(RULE builtinType)
+     * | $(RULE typeIdentifierPart)
+     * | $(LITERAL 'super') $(LITERAL '.') $(RULE typeIdentifierPart)
+     * | $(LITERAL 'this') $(LITERAL '.') $(RULE typeIdentifierPart)
+     * | $(RULE typeofExpression) ($(LITERAL '.') $(RULE typeIdentifierPart))?
      * | $(RULE typeConstructor) $(LITERAL '$(LPAREN)') $(RULE type) $(LITERAL '$(RPAREN)')
+     * | $(RULE traitsExpression)
      * | $(RULE vector)
+     * | $(RULE mixinExpression)
      * ;)
      */
     boolean parseType2() {
@@ -7546,19 +8089,24 @@ class DLangParser {
         }
         final Token.IdType i = current().type;
         if (i.equals(tok("identifier")) || i.equals(tok("."))) {
-            if (!parseSymbol()) {
+            if (!parseTypeIdentifierPart()) {
                 cleanup(m, TYPE_2);
                 return false;
             }
         } else if (isBasicType(i)) {
             parseBuiltinType();
         } else if (i.equals(tok("super")) || i.equals(tok("this"))) {
+            // note: super can be removed but `this` can be an alias to an instance.
             advance();
-            if (!tokenCheck(".")) {
-                cleanup(m, TYPE_2);
-                return false;
+            if (tokenCheck(".")) {
+                advance();
+                if (!parseTypeIdentifierPart()) {
+                    cleanup(m, TYPE_2);
+                    return false;
+                }
             }
-            if (!parseIdentifierOrTemplateChain()) {
+        } else if (i.equals(tok("__traits"))) {
+            if (!parseTraitsExpression()) {
                 cleanup(m, TYPE_2);
                 return false;
             }
@@ -7569,10 +8117,15 @@ class DLangParser {
             }
             if (currentIs(tok("."))) {
                 advance();
-                if (!parseIdentifierOrTemplateChain()) {
+                if (!parseTypeIdentifierPart()) {
                     cleanup(m, TYPE_2);
                     return false;
                 }
+            }
+        } else if (i.equals(tok("mixin"))) {
+            if (!parseMixinExpression()) {
+                cleanup(m, TYPE_2);
+                return false;
             }
         } else if (i.equals(tok("const")) || i.equals(tok("immutable")) || i.equals(tok("inout")) || i.equals(tok("shared"))) {
             advance();
@@ -7594,7 +8147,7 @@ class DLangParser {
                 return false;
             }
         } else {
-            error("Basic type, type constructor, symbol, or typeof expected");
+            error("Basic type, type constructor, symbol, `typeof`, `__traits`, `__vector` or `mixin` expected");
             exit_section_modified(builder, m, TYPE_2, true);
             return false;
         }
@@ -7610,7 +8163,7 @@ class DLangParser {
      * Parses a TypeConstructor
      * <p>
      * $(GRAMMAR $(RULEDEF typeConstructor):
-     * $(LITERAL '')
+     *   $(LITERAL 'const')
      * | $(LITERAL 'immutable')
      * | $(LITERAL 'inout')
      * | $(LITERAL 'shared')
@@ -7622,12 +8175,12 @@ class DLangParser {
             if (!peekIs(tok("(")))
                 return advance().type;
             if (validate) {
-                error("\"\", \"immutable\", \"inout\", or \"shared\" expected");
+                error("`const`, `immutable`, `inout`, or `shared` expected");
             }
             return tok("");
         } else {
             if (validate) {
-                error("\"\", \"immutable\", \"inout\", or \"shared\" expected");
+                error("`const`, `immutable`, `inout`, or `shared` expected");
             }
             return tok("");
         }
@@ -7649,6 +8202,8 @@ class DLangParser {
             else
                 r.add(type);
         }
+        if (r.isEmpty())
+            return null;
         final Token.IdType[] res = new Token.IdType[r.size()];
         r.toArray(res);
         return res;
@@ -7658,28 +8213,31 @@ class DLangParser {
      * Parses a TypeSpecialization
      * <p>
      * $(GRAMMAR $(RULEDEF typeSpecialization):
-     * $(RULE type)
+     *   $(RULE type)
      * | $(LITERAL 'struct')
      * | $(LITERAL 'union')
      * | $(LITERAL 'class')
      * | $(LITERAL 'interface')
      * | $(LITERAL 'enum')
+     * | $(LITERAL '__vector')
      * | $(LITERAL 'function')
      * | $(LITERAL 'delegate')
      * | $(LITERAL 'super')
-     * | $(LITERAL '')
+     * | $(LITERAL 'const')
      * | $(LITERAL 'immutable')
      * | $(LITERAL 'inout')
      * | $(LITERAL 'shared')
      * | $(LITERAL 'return')
      * | $(LITERAL 'typedef')
-     * | $(LITERAL '___parameters')
+     * | $(LITERAL '__parameters')
+     * | $(LITERAL 'module')
+     * | $(LITERAL 'package')
      * ;)
      */
     boolean parseTypeSpecialization() {
         final Marker m = enter_section_modified(builder);
         final Token.IdType i = current().type;
-        if (i.equals(tok("struct")) || i.equals(tok("union")) || i.equals(tok("class")) || i.equals(tok("interface")) || i.equals(tok("enum")) || i.equals(tok("function")) || i.equals(tok("delegate")) || i.equals(tok("super")) || i.equals(tok("return")) || i.equals(tok("typedef")) || i.equals(tok("__parameters")) || i.equals(tok("const")) || i.equals(tok("immutable")) || i.equals(tok("inout")) || i.equals(tok("shared"))) {
+        if (i.equals(tok("struct")) || i.equals(tok("union")) || i.equals(tok("class")) || i.equals(tok("interface")) || i.equals(tok("__vector")) || i.equals(tok("enum")) || i.equals(tok("function")) || i.equals(tok("delegate")) || i.equals(tok("super")) || i.equals(tok("const")) || i.equals(tok("immutable")) || i.equals(tok("inout")) || i.equals(tok("shared")) || i.equals(tok("return")) || i.equals(tok("__parameters")) || i.equals(tok("module")) || i.equals(tok("package"))) {
             if (peekIsOneOf(tok(")"), tok(","))) {
                 advance();
                 exit_section_modified(builder, m, TYPE_SPECIALIZATION, true);
@@ -7701,7 +8259,7 @@ class DLangParser {
      * Parses a TypeSuffix
      * <p>
      * $(GRAMMAR $(RULEDEF typeSuffix):
-     * $(LITERAL '*')
+     *   $(LITERAL '*')
      * | $(LITERAL '[') $(RULE type)? $(LITERAL ']')
      * | $(LITERAL '[') $(RULE assignExpression) $(LITERAL ']')
      * | $(LITERAL '[') $(RULE assignExpression) $(LITERAL '..')  $(RULE assignExpression) $(LITERAL ']')
@@ -7760,7 +8318,7 @@ class DLangParser {
             exit_section_modified(builder, m, TYPE_SUFFIX, true);
             return true;
         } else {
-            error("\"*\", \"[\", \"delegate\", or \"function\" expected.");
+            error("`*`, `[`, `delegate`, or `function` expected.");
             exit_section_modified(builder, m, TYPE_SUFFIX, true);
             return false;
         }
@@ -7827,7 +8385,7 @@ class DLangParser {
      * Parses a UnaryExpression
      * <p>
      * $(GRAMMAR $(RULEDEF unaryExpression):
-     * $(RULE primaryExpression)
+     *   $(RULE primaryExpression)
      * | $(LITERAL '&') $(RULE unaryExpression)
      * | $(LITERAL '!') $(RULE unaryExpression)
      * | $(LITERAL '*') $(RULE unaryExpression)
@@ -7840,6 +8398,7 @@ class DLangParser {
      * | $(RULE deleteExpression)
      * | $(RULE castExpression)
      * | $(RULE assertExpression)
+     * | $(RULE throwExpression)
      * | $(RULE functionCallExpression)
      * | $(RULE indexExpression)
      * | $(LITERAL '$(LPAREN)') $(RULE type) $(LITERAL '$(RPAREN)') $(LITERAL '.') $(RULE identifierOrTemplateInstance)
@@ -7869,8 +8428,8 @@ class DLangParser {
                     fallThrough = false;
                 }
             }
-            goToBookmark(b);
             if (fallThrough) {
+                goToBookmark(b);
                 if (!parseFunctionCallExpression()) {
                     cleanup(m, UNARY_EXPRESSION);
                     return false;
@@ -7907,13 +8466,17 @@ class DLangParser {
                 cleanup(m, UNARY_EXPRESSION);
                 return false;
             }
+        } else if (i.equals(tok("throw"))) {
+            if (!parseThrowExpression()) {
+                cleanup(m, UNARY_EXPRESSION);
+                return false;
+            }
         } else if (i.equals(tok("("))) {
             final Bookmark b = setBookmark();
             skipParens();
             if (startsWith(tok("."), tok("identifier"))) {
                 // go back to the (
                 goToBookmark(b);
-//                b = setBookmark();
                 final Bookmark b2 = setBookmark();
                 advance();
                 final boolean t = parseType().first;
@@ -7925,7 +8488,6 @@ class DLangParser {
                     }
                 } else {
                     abandonBookmark(b2);
-//                    abandonBookmark(b);
                     advance(); // )
                     advance(); // .
                     if (!parseIdentifierOrTemplateInstance()) {
@@ -8001,8 +8563,7 @@ class DLangParser {
      * Parses an UnionDeclaration
      * <p>
      * $(GRAMMAR $(RULEDEF unionDeclaration):
-     * $(LITERAL 'union') $(LITERAL Identifier) $(RULE templateParameters) $(RULE raint)? $(RULE structBody)
-     * | $(LITERAL 'union') $(LITERAL Identifier) ($(RULE structBody) | $(LITERAL ';'))
+     *   $(LITERAL 'union') $(LITERAL Identifier) ($(RULE templateParameters) $(RULE constraint)?)? ($(RULE structBody) | $(LITERAL ';'))
      * | $(LITERAL 'union') $(RULE structBody)
      * ;)
      */
@@ -8021,17 +8582,12 @@ class DLangParser {
                         cleanup(m, UNION_DECLARATION);
                         return false;
                     }
-                if (!parseStructBody()) {
-                    cleanup(m, UNION_DECLARATION);
-                    return false;
-                }
-            } else {
-                if (currentIs(tok(";")))
-                    advance();
-                else if (!parseStructBody()) {
-                    cleanup(m, UNION_DECLARATION);
-                    return false;
-                }
+            }
+            if (currentIs(tok(";")))
+                advance();
+            else if (!parseStructBody()) {
+                cleanup(m, UNION_DECLARATION);
+                return false;
             }
         } else {
             if (currentIs(tok(";")))
@@ -8067,8 +8623,7 @@ class DLangParser {
      * Parses a VariableDeclaration
      * <p>
      * $(GRAMMAR $(RULEDEF variableDeclaration):
-     * $(RULE storageClass)* $(RULE type) $(RULE declarator) ($(LITERAL ',') $(RULE declarator))* $(LITERAL ';')
-     * | $(RULE storageClass)* $(RULE type) $(LITERAL identifier) $(LITERAL '=') $(RULE functionBody) $(LITERAL ';')
+     *   $(RULE storageClass)* $(RULE type) $(RULE declarator) ($(LITERAL ',') $(RULE declarator))* $(LITERAL ';')
      * | $(RULE autoDeclaration)
      * ;)
      */
@@ -8083,7 +8638,10 @@ class DLangParser {
         }
         if (isAuto) {
             if (!parseAutoDeclaration()) {
-                cleanup(m, VARIABLE_DECLARATION);
+                if (type != null)
+                    m.drop();
+                else
+                    cleanup(m, VARIABLE_DECLARATION);
                 return false;
             }
             exit_section_modified(builder, m, VARIABLE_DECLARATION, true);
@@ -8091,7 +8649,10 @@ class DLangParser {
         }
         while (isStorageClass())
             if (!parseStorageClass()) {
-                cleanup(m, VARIABLE_DECLARATION);
+                if (type != null)
+                    m.drop();
+                else
+                    cleanup(m, VARIABLE_DECLARATION);
                 return false;
             }
         if (type == null) {
@@ -8102,7 +8663,10 @@ class DLangParser {
         while (true) {
             final boolean declarator = parseDeclarator();
             if (!declarator) {
-                cleanup(m, VARIABLE_DECLARATION);
+                if (type != null)
+                    m.drop();
+                else
+                    cleanup(m, VARIABLE_DECLARATION);
                 return false;
             }
             if (moreTokens() && currentIs(tok(","))) {
@@ -8112,7 +8676,10 @@ class DLangParser {
         }
         final Token semicolon = expect(tok(";"));
         if (semicolon == null) {
-            cleanup(m, VARIABLE_DECLARATION);
+            if (type != null)
+                m.drop();
+            else
+                cleanup(m, VARIABLE_DECLARATION);
             return false;
         }
         exit_section_modified(builder, m, VARIABLE_DECLARATION, true);
@@ -8154,7 +8721,7 @@ class DLangParser {
         if (currentIsOneOf(tok("intLiteral"), tok("identifier"), tok("unittest"), tok("assert")))
             advance();
         else {
-            error("Expected an integer literal, an identifier, \"assert\", or \"unittest\"");
+            error("Expected an integer literal, an identifier, `assert`, or `unittest`");
             exit_section_modified(builder, m, VERSION_CONDITION, true);
             return false;
         }
@@ -8233,12 +8800,12 @@ class DLangParser {
      * Parses a WithStatement
      * <p>
      * $(GRAMMAR $(RULEDEF withStatement):
-     * $(LITERAL 'with') $(LITERAL '$(LPAREN)') $(RULE expression) $(LITERAL '$(RPAREN)') $(RULE statementNoCaseNoDefault)
+     * $(LITERAL 'with') $(LITERAL '$(LPAREN)') $(RULE expression) $(LITERAL '$(RPAREN)') $(RULE declarationOrStatement)
      * ;)
      */
     boolean parseWithStatement() {
         final Marker marker = enter_section_modified(builder);
-        final boolean b = simpleParse("WithStatement", tok("with"), tok("("), "expression|parseExpression", tok(")"), "statementNoCaseNoDefault|parseStatementNoCaseNoDefault");
+        final boolean b = simpleParse("WithStatement", tok("with"), tok("("), "expression|parseExpression", tok(")"), "declarationOrStatement|parseDeclarationOrStatement");
         exit_section_modified(builder, marker, WITH_STATEMENT, b);
         return b;
     }
@@ -8547,11 +9114,18 @@ class DLangParser {
     }
 
     private boolean parseCommaSeparatedRule(final String listType, final String itemType) {
-        return parseCommaSeparatedRule(new Ref.IntRef(), listType, itemType);
+        return parseCommaSeparatedRule(listType, itemType, false);
     }
 
+    private boolean parseCommaSeparatedRule(final String listType, final String itemType, boolean allowTrailingComma) {
+        return parseCommaSeparatedRule(new Ref.IntRef(), listType, itemType, allowTrailingComma);
+    }
 
-    private boolean parseCommaSeparatedRule(final Ref.IntRef foreachTypeRefLength, final String listType, final String itemType)//(alias ListType, alias ItemType,)
+    private boolean parseCommaSeparatedRule(final Ref.IntRef foreachTypeRefLength, final String listType, final String itemType) {
+        return parseCommaSeparatedRule(foreachTypeRefLength, listType, itemType, false);
+    }
+
+    private boolean parseCommaSeparatedRule(final Ref.IntRef foreachTypeRefLength, final String listType, final String itemType, boolean allowTrailingComma)//(alias ListType, alias ItemType,)
     {
 //            final boolean setLineAndColumn = false;
 //        Marker m = enter_section_(builder);
@@ -8562,7 +9136,6 @@ class DLangParser {
 ////                node.column = current().column;
 //            }
 //            final Marker m = enter_section_(builder);
-        //todo allow trailing comma
         foreachTypeRefLength.element = 0;
         while (moreTokens()) {
             if (!parseName(itemType)) {
@@ -8572,8 +9145,10 @@ class DLangParser {
             foreachTypeRefLength.element++;
             if (currentIs(tok(","))) {
                 advance();
-                if (currentIsOneOf(tok(")"), tok("}"), tok("]")))
+                if (allowTrailingComma && currentIsOneOf(tok(")"), tok("}"), tok("]")))
                     break;
+                else
+                    continue;
             } else
                 break;
         }
@@ -8582,7 +9157,7 @@ class DLangParser {
     }
 
     private void warn(final String message) {
-        if (suppressMessages > 0)
+        if (!suppressMessages.isEmpty())
             return;
         ++warningCount;
         //do nothing, potential add as an error.
@@ -8595,7 +9170,7 @@ class DLangParser {
     }
 
     private void error(final String message) {
-        if (suppressMessages == 0) {
+        if (suppressMessages.isEmpty()) {
             ++errorCount;
 //                auto column = index < tokens.length ? tokens[index].column : tokens[$ - 1].column;
 //                auto line = index < tokens.length ? tokens[index].line : tokens[$ - 1].line;
@@ -8605,7 +9180,7 @@ class DLangParser {
 //                messageFunction(fileName, line, column, message, true);
             builder.error(message);
         } else
-            ++suppressedErrorCount;
+            suppressMessages.set(suppressMessages.size() - 1, suppressMessages.get(suppressMessages.size() - 1) + 1);
         while (moreTokens()) {
             if (currentIsOneOf(tok(";"), tok("}"),
                 tok(")"), tok("]"))) {
@@ -8686,10 +9261,40 @@ class DLangParser {
         return peekPast(tok("{"), tok("}"));
     }
 
+    /**
+     * Returns: `true` if there is a next token and that token has the type `t`.
+     */
     private boolean peekIs(final Token.IdType t) {
-        return index + 1 < tokens.length && tokens[index + 1].type.equals(t);
+        return peekNIs(t, 1);
     }
 
+    /**
+     * Returns: `true` if the token `offset` tokens ahead exists and is of type `t`.
+     */
+    private boolean peekNIs(final IdType t, int offset)
+    {
+        return index + offset < tokens.length && tokens[index + offset].type.equals(t);
+    }
+
+    /**
+     * Returns: `true` if there are at least `types.length` tokens following the
+     * current one and they have types matching the corresponding elements of
+     * `types`.
+     */
+    private boolean peekAre(final Token.IdType... types) {
+        int i = 0;
+        for (IdType type : types) {
+            if (!peekNIs(type, i + 1))
+                return false;
+            i++;
+        }
+        return true;
+    }
+
+    /**
+     * Returns: `true` if there is a next token and its type is one of the given
+     * `types`.
+     */
     private boolean peekIsOneOf(final Token.IdType... types) {
         if (index + 1 >= tokens.length) return false;
         final Token.IdType needle = tokens[index + 1].type;
@@ -8845,15 +9450,14 @@ class DLangParser {
     }
 
     private Bookmark setBookmark() {
-        ++suppressMessages;
+        suppressMessages.add(suppressedErrorCount());
         final Marker m = enter_section_modified(builder);
         return new Bookmark(index, m);
     }
 
     private void abandonBookmark(final Bookmark bookmark) {
-        --suppressMessages;
-        if (suppressMessages == 0)
-            suppressedErrorCount = 0;
+        if (!suppressMessages.isEmpty())
+            suppressMessages.remove(suppressMessages.size() - 1);
         if (!bookmark.dropped) {
             bookmark.m.drop();
             bookmark.dropped = true;
@@ -8861,9 +9465,8 @@ class DLangParser {
     }
 
     private void goToBookmark(final Bookmark bookmark) {
-        --suppressMessages;
-        if (suppressMessages == 0)
-            suppressedErrorCount = 0;
+        if (!suppressMessages.isEmpty())
+            suppressMessages.remove(suppressMessages.size() - 1);
         index = bookmark.num;
 //        assert !bookmark.dropped;
         bookmark.m.rollbackTo();
@@ -9032,8 +9635,6 @@ class DLangParser {
                 return parseAutoDeclarationPart();
             case "BlockStatement":
                 return parseBlockStatement();
-            case "BodyStatement":
-                return parseBodyStatement();
             case "BreakStatement":
                 return parseBreakStatement();
             case "BaseClass":
@@ -9072,6 +9673,8 @@ class DLangParser {
                 return parseDeclarationOrStatement();
             case "Declarator":
                 return parseDeclarator();
+            case "DeclaratorIdentifierList":
+                return parseDeclaratorIdentifierList();
             case "DefaultStatement":
                 return parseDefaultStatement();
             case "Deprecated":
@@ -9110,8 +9713,6 @@ class DLangParser {
                 return parseGotoStatement();
             case "IdentifierChain":
                 return parseIdentifierChain();
-            case "IdentifierList":
-                return parseIdentifierList();
             case "IdentifierOrTemplateChain":
                 return parseIdentifierOrTemplateChain();
             case "IdentifierOrTemplateInstance":
@@ -9240,14 +9841,16 @@ class DLangParser {
                 return parseTemplateValueParameter();
             case "TemplateValueParameterDefault":
                 return parseTemplateValueParameterDefault();
-            case "ThrowStatement":
-                return parseThrowStatement();
+            case "ThrowExpression":
+                return parseThrowExpression();
             case "TryStatement":
                 return parseTryStatement();
             case "Type":
                 return parseType().first;
             case "Type2":
                 return parseType2();
+            case "TypeIdentifierChain":
+                return parseIdentifierChain();
             case "TypeSpecialization":
                 return parseTypeSpecialization();
             case "TypeSuffix":

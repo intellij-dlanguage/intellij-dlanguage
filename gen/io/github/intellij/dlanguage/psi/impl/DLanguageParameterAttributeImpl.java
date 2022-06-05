@@ -13,6 +13,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
+import io.github.intellij.dlanguage.psi.DLanguageAtAttribute;
 import io.github.intellij.dlanguage.psi.DLanguageParameterAttribute;
 import io.github.intellij.dlanguage.psi.DLanguageTypeConstructor;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
@@ -77,5 +78,10 @@ public class DLanguageParameterAttributeImpl extends ASTWrapperPsiElement implem
     @Nullable
     public DLanguageTypeConstructor getTypeConstructor() {
         return PsiTreeUtil.getChildOfType(this, DLanguageTypeConstructor.class);
+    }
+
+    @Nullable
+    public DLanguageAtAttribute getAtAttribute() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageAtAttribute.class);
     }
 }

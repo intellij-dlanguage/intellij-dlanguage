@@ -4,12 +4,7 @@ import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
-import io.github.intellij.dlanguage.psi.DLanguageBlockStatement;
-import io.github.intellij.dlanguage.psi.DLanguageBodyStatement;
-import io.github.intellij.dlanguage.psi.DLanguageFunctionBody;
-import io.github.intellij.dlanguage.psi.DLanguageInStatement;
-import io.github.intellij.dlanguage.psi.DLanguageOutStatement;
-import io.github.intellij.dlanguage.psi.DlangVisitor;
+import io.github.intellij.dlanguage.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -34,22 +29,17 @@ public class DLanguageFunctionBodyImpl extends ASTWrapperPsiElement implements
     }
 
     @Nullable
-    public DLanguageBlockStatement getBlockStatement() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageBlockStatement.class);
+    public DLanguageSpecifiedFunctionBody getSpecifiedFunctionBody() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageSpecifiedFunctionBody.class);
     }
 
     @Nullable
-    public DLanguageInStatement getInStatement() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageInStatement.class);
+    public DLanguageMissingFunctionBody getMissingFunctionBody() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageMissingFunctionBody.class);
     }
 
     @Nullable
-    public DLanguageOutStatement getOutStatement() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageOutStatement.class);
-    }
-
-    @Nullable
-    public DLanguageBodyStatement getBodyStatement() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageBodyStatement.class);
+    public DLanguageShortenedFunctionBody getShortenedFunctionBody() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageShortenedFunctionBody.class);
     }
 }

@@ -17,18 +17,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
-import io.github.intellij.dlanguage.psi.DLanguageAssertExpression;
-import io.github.intellij.dlanguage.psi.DLanguageCastExpression;
-import io.github.intellij.dlanguage.psi.DLanguageDeleteExpression;
-import io.github.intellij.dlanguage.psi.DLanguageFunctionCallExpression;
-import io.github.intellij.dlanguage.psi.DLanguageIdentifierOrTemplateInstance;
-import io.github.intellij.dlanguage.psi.DLanguageIndexExpression;
-import io.github.intellij.dlanguage.psi.DLanguageNewExpression;
-import io.github.intellij.dlanguage.psi.DLanguagePrimaryExpression;
-import io.github.intellij.dlanguage.psi.DLanguageSliceExpression;
-import io.github.intellij.dlanguage.psi.DLanguageType;
-import io.github.intellij.dlanguage.psi.DLanguageUnaryExpression;
-import io.github.intellij.dlanguage.psi.DlangVisitor;
+import io.github.intellij.dlanguage.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -60,6 +49,11 @@ public class DLanguageUnaryExpressionImpl extends ASTWrapperPsiElement implement
     @Nullable
     public DLanguageFunctionCallExpression getFunctionCallExpression() {
         return PsiTreeUtil.getChildOfType(this, DLanguageFunctionCallExpression.class);
+    }
+
+    @Nullable
+    public DLanguageThrowExpression getThrowExpression() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageThrowExpression.class);
     }
 
     @Nullable

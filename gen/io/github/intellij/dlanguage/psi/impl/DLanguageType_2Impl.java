@@ -9,14 +9,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
-import io.github.intellij.dlanguage.psi.DLanguageIdentifierOrTemplateChain;
-import io.github.intellij.dlanguage.psi.DLanguageSymbol;
-import io.github.intellij.dlanguage.psi.DLanguageType;
-import io.github.intellij.dlanguage.psi.DLanguageTypeConstructor;
-import io.github.intellij.dlanguage.psi.DLanguageType_2;
-import io.github.intellij.dlanguage.psi.DLanguageTypeofExpression;
-import io.github.intellij.dlanguage.psi.DLanguageVector;
-import io.github.intellij.dlanguage.psi.DlangVisitor;
+import io.github.intellij.dlanguage.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -40,11 +33,6 @@ public class DLanguageType_2Impl extends ASTWrapperPsiElement implements DLangua
     }
 
     @Nullable
-    public DLanguageSymbol getSymbol() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageSymbol.class);
-    }
-
-    @Nullable
     public DLanguageTypeofExpression getTypeofExpression() {
         return PsiTreeUtil.getChildOfType(this, DLanguageTypeofExpression.class);
     }
@@ -52,6 +40,16 @@ public class DLanguageType_2Impl extends ASTWrapperPsiElement implements DLangua
     @Nullable
     public DLanguageTypeConstructor getTypeConstructor() {
         return PsiTreeUtil.getChildOfType(this, DLanguageTypeConstructor.class);
+    }
+
+    @Nullable
+    public DLanguageTraitsExpression getTraitsExpression() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageTraitsExpression.class);
+    }
+
+    @Nullable
+    public DLanguageMixinExpression getMixinExpression() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageMixinExpression.class);
     }
 
     @Nullable
@@ -67,6 +65,11 @@ public class DLanguageType_2Impl extends ASTWrapperPsiElement implements DLangua
     @Nullable
     public DLanguageIdentifierOrTemplateChain getIdentifierOrTemplateChain() {
         return PsiTreeUtil.getChildOfType(this, DLanguageIdentifierOrTemplateChain.class);
+    }
+
+    @Nullable
+    public DLanguageTypeIdentifierPart getTypeIdentifierPart() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageTypeIdentifierPart.class);
     }
 
     @Nullable

@@ -19,13 +19,16 @@ public interface DLanguageFunctionLiteralExpression extends PsiElement {
     public PsiElement getKW_DELEGATE();
 
     @Nullable
+    public PsiElement getKW_REF();
+
+    @Nullable
     public DLanguageParameters getParameters();
 
     @NotNull
     public List<DLanguageFunctionAttribute> getFunctionAttributes();
 
     @Nullable
-    public DLanguageFunctionBody getFunctionBody();
+    public DLanguageSpecifiedFunctionBody getSpecifiedFunctionBody();
 
     @Nullable
     public DlangIdentifier getIdentifier();

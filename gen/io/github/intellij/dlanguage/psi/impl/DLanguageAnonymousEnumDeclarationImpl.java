@@ -1,8 +1,5 @@
 package io.github.intellij.dlanguage.psi.impl;
 
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_ENUM;
-import static io.github.intellij.dlanguage.psi.DlangTypes.OP_COLON;
-
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
@@ -16,6 +13,8 @@ import io.github.intellij.dlanguage.psi.DlangVisitor;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import static io.github.intellij.dlanguage.psi.DlangTypes.*;
 
 
 public class DLanguageAnonymousEnumDeclarationImpl extends ASTWrapperPsiElement implements
@@ -47,9 +46,19 @@ public class DLanguageAnonymousEnumDeclarationImpl extends ASTWrapperPsiElement 
         return findChildByType(OP_COLON);
     }
 
-    @Nullable
+    @NotNull
     public PsiElement getKW_ENUM() {
         return findChildByType(KW_ENUM);
+    }
+
+    @NotNull
+    public PsiElement getOP_PAR_LEFT() {
+        return findChildByType(OP_PAR_LEFT);
+    }
+
+    @NotNull
+    public PsiElement getOP_PAR_RIGHT() {
+        return findChildByType(OP_PAR_RIGHT);
     }
 
     @Nullable
