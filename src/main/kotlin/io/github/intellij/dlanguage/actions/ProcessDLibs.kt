@@ -108,7 +108,7 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
                 }
                 ProgressManager.getInstance()
                     .runProcessWithProgressAsynchronously(task, BackgroundableProcessIndicator(task))
-            }, ModalityState.defaultModalityState())
+            }, ModalityState.current())
         }
 
         private fun processDLibsImpl(project: Project, module: Module,
@@ -187,7 +187,7 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
                 //displayError(project, "Unable to process D libraries - No active D project.");
                 return
             }
-            processDLibs(project, module, false, false)
+            processDLibs(project, module, mostlySilentMode = false, buildBefore = false)
         }
 
         private fun createLibraryDependency(module: Module, project: Project,

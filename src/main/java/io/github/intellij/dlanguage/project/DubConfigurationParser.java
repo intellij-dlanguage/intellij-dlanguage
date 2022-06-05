@@ -218,10 +218,12 @@ public class DubConfigurationParser {
                 return Optional.of(parser.parse(listener.getStdOut()));
             } else {
                 errors.forEach(LOG::warn);
-                LOG.warn(String.format("%s exited with %s", dubCommand, exitCode));
+
+                final String message = String.format("%s exited with %s:\n%s", dubCommand, exitCode, errors.get(0));
+
+                LOG.warn(message);
                 if (!silentMode) {
-                    SwingUtilities.invokeLater(() -> Messages.showErrorDialog(project,
-                        String.format("%s exited with %s", dubCommand, exitCode), "Dub Import"));
+                    SwingUtilities.invokeLater(() -> Messages.showErrorDialog(project, message, "Dub Import"));
                 }
             }
         } catch (ExecutionException | DescribeParserException e) {

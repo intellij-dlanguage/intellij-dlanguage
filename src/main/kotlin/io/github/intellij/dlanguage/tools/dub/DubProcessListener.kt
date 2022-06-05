@@ -18,7 +18,7 @@ class DubProcessListener : ProcessAdapter() {
     override fun onTextAvailable(event: ProcessEvent, outputType: Key<*>) {
         when (outputType) {
             ProcessOutputTypes.STDOUT -> stdout.append(event.text)
-            ProcessOutputTypes.STDERR -> errors.add(event.text)
+            ProcessOutputTypes.STDERR -> errors.add(event.text.removeSuffix("\n"))
             //ProcessOutputTypes.SYSTEM
         }
         output.append(event.text) // everything gets add to the general output
