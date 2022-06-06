@@ -17,7 +17,7 @@ public class DlangModuleEditorsProvider implements ModuleConfigurationEditorProv
 
     @Override
     public ModuleConfigurationEditor[] createEditors(final ModuleConfigurationState state) {
-        final Module module = state.getRootModel().getModule();
+        final Module module = state.getModifiableRootModel().getModule();
         if (ModuleType.get(module) != DlangModuleType.getInstance()) {
             return ModuleConfigurationEditor.EMPTY;
         }
