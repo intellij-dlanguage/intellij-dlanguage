@@ -9,7 +9,7 @@ import com.intellij.openapi.roots.libraries.ui.AttachRootButtonDescriptor
 import com.intellij.openapi.roots.libraries.ui.LibraryRootsComponentDescriptor
 import com.intellij.openapi.roots.libraries.ui.OrderRootTypePresentation
 import com.intellij.openapi.roots.libraries.ui.RootDetector
-import com.intellij.openapi.roots.ui.configuration.libraryEditor.DefaultLibraryRootsComponentDescriptor
+import com.intellij.openapi.roots.ui.OrderRootTypeUIFactory
 import com.intellij.openapi.roots.ui.configuration.libraryEditor.LibraryEditor
 import com.intellij.openapi.vfs.VirtualFile
 import io.github.intellij.dlanguage.DLanguage
@@ -24,7 +24,11 @@ class DLanguageLibraryRootsComponentDescriptor : LibraryRootsComponentDescriptor
         return if(type == getInstance()) {
             OrderRootTypePresentation("Lib File", DLanguage.Icons.FILE)
         } else {
-            DefaultLibraryRootsComponentDescriptor.getDefaultPresentation(type)
+            // following copied from:
+            // com.intellij.openapi.roots.ui.configuration.libraryEditor.DefaultLibraryRootsComponentDescriptor
+            // as it's not available across all IDEs
+            val factory = OrderRootTypeUIFactory.FACTORY.getByKey(type)
+            OrderRootTypePresentation(factory.nodeText, factory.icon)
         }
     }
 
@@ -42,7 +46,6 @@ class DLanguageLibraryRootsComponentDescriptor : LibraryRootsComponentDescriptor
             JavadocOrderRootType.getInstance(),
             ProjectBundle.message("module.libraries.javadoc.url.button")
     ) {
-
         override fun selectFiles(parent: JComponent,
                                  initialSelection: VirtualFile?,
                                  contextModule: Module?,

@@ -5,7 +5,7 @@ import com.intellij.ide.util.projectWizard.ModuleWizardStep;
 import com.intellij.ide.util.projectWizard.ProjectBuilder;
 import com.intellij.ide.util.projectWizard.WizardContext;
 import com.intellij.openapi.ui.ComboBox;
-import com.intellij.projectImport.ProjectFormatPanel;
+import com.intellij.util.ui.JBUI;
 import io.github.intellij.dlanguage.DlangBundle;
 
 import javax.swing.*;
@@ -17,9 +17,9 @@ public class DubInitForModuleStep extends ModuleWizardStep {
 
     protected final WizardContext myWizardContext;
     private final JPanel myPanel;
-    private final ProjectFormatPanel myFormatPanel = new ProjectFormatPanel();
-    private final ComboBox dubFormat;
-    private final ComboBox dubType;
+    private final DlangProjectFormatPanel myFormatPanel = new DlangProjectFormatPanel();
+    private final ComboBox<String> dubFormat;
+    private final ComboBox<String> dubType;
     private final JTextField dubParams;
 
     public DubInitForModuleStep(final WizardContext wizardContext) {
@@ -29,7 +29,7 @@ public class DubInitForModuleStep extends ModuleWizardStep {
 
         // Title label
         final JLabel titletextLabel = new JLabel(DlangBundle.INSTANCE.message("d.ui.dub.config.label.choosedubinitoptions"));
-        this.myPanel.add(titletextLabel, new GridBagConstraints(0, -1, 1, 1, 1.0D, 0.0D, 18, 2, new Insets(8, 10, 8, 10), 0, 0));
+        this.myPanel.add(titletextLabel, new GridBagConstraints(0, -1, 1, 1, 1.0D, 0.0D, 18, 2, JBUI.insets(8, 10, 8, 10), 0, 0));
 
         // add combo to choose --format sdl/json for init
         this.dubFormat = new ComboBox<>(new String[] {"sdl", "json"});
@@ -38,8 +38,8 @@ public class DubInitForModuleStep extends ModuleWizardStep {
         final JLabel dubFormatLabel = new JLabel(DlangBundle.INSTANCE.message("d.ui.dub.config.label.dubformat"));
         dubFormatLabel.setLabelFor(dubFormat);
 
-        this.myPanel.add(dubFormatLabel, new GridBagConstraints(0, -1, 1, 1, 0.0D, 0.0D, 17, 0, new Insets(0, 0, 5, 4), 0, 0));
-        this.myPanel.add(dubFormat, new GridBagConstraints(0, -1, 1, 1, 1.0D, 0.0D, 18, 2, new Insets(10, 0, 20, 0), 0, 0));
+        this.myPanel.add(dubFormatLabel, new GridBagConstraints(0, -1, 1, 1, 0.0D, 0.0D, 17, 0, JBUI.insets(0, 0, 5, 4), 0, 0));
+        this.myPanel.add(dubFormat, new GridBagConstraints(0, -1, 1, 1, 1.0D, 0.0D, 18, 2, JBUI.insets(10, 0, 20, 0), 0, 0));
 
         // add combo to choose --type minimal, vibe.d, deimos
         this.dubType = new ComboBox<>(new String[] {"minimal", "vibe.d", "deimos"});
@@ -48,15 +48,15 @@ public class DubInitForModuleStep extends ModuleWizardStep {
         final JLabel dubTypeLabel = new JLabel(DlangBundle.INSTANCE.message("d.ui.dub.config.label.dubprojecttype"));
         dubTypeLabel.setLabelFor(dubType);
 
-        this.myPanel.add(dubTypeLabel, new GridBagConstraints(0, -1, 1, 1, 0.0D, 0.0D, 17, 0, new Insets(0, 0, 5, 4), 0, 0));
-        this.myPanel.add(dubType, new GridBagConstraints(0, -1, 1, 1, 1.0D, 0.0D, 18, 2, new Insets(10, 0, 20, 0), 0, 0));
+        this.myPanel.add(dubTypeLabel, new GridBagConstraints(0, -1, 1, 1, 0.0D, 0.0D, 17, 0, JBUI.insets(0, 0, 5, 4), 0, 0));
+        this.myPanel.add(dubType, new GridBagConstraints(0, -1, 1, 1, 1.0D, 0.0D, 18, 2, JBUI.insets(10, 0, 20, 0), 0, 0));
 
         // add text field to add params instead of using combo boxes as fallback
         this.dubParams = new JTextField();
         final JLabel dubParamsLabel = new JLabel(DlangBundle.INSTANCE.message("d.ui.dub.config.label.dubparamsoverride"));
         dubParamsLabel.setLabelFor(dubParams);
-        this.myPanel.add(dubParamsLabel, new GridBagConstraints(0, -1, 1, 1, 1.0D, 0.0D, 18, 2, new Insets(10, 0, 20, 0), 0, 0));
-        this.myPanel.add(dubParams, new GridBagConstraints(0, -1, 1, 1, 1.0D, 0.0D, 18, 2, new Insets(10, 0, 20, 0), 0, 0));
+        this.myPanel.add(dubParamsLabel, new GridBagConstraints(0, -1, 1, 1, 1.0D, 0.0D, 18, 2, JBUI.insets(10, 0, 20, 0), 0, 0));
+        this.myPanel.add(dubParams, new GridBagConstraints(0, -1, 1, 1, 1.0D, 0.0D, 18, 2, JBUI.insets(10, 0, 20, 0), 0, 0));
 
     }
 
