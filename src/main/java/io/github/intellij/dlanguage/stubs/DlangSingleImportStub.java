@@ -4,6 +4,7 @@ import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.util.io.StringRef;
 import io.github.intellij.dlanguage.psi.named.DlangSingleImport;
+import io.github.intellij.dlanguage.psi.references.DReference;
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributes;
 import java.util.HashSet;
 import java.util.Set;
@@ -34,9 +35,7 @@ public class DlangSingleImportStub extends DNamedStubBase<DlangSingleImport> {
             this.binds.add(bind.getString());
         }
         this.importedModule = importedModule;
-        if ("".equals(importedModule)) {
-            throw new IllegalStateException("importedModule should not be blank");
-        }
+        assert !DReference.Companion.getNAME_NOT_FOUND_STRING().equals(importedModule) : "importedModule should not be blank";
         this.hasName = hasName;
         this.importName = importName;
     }
