@@ -960,7 +960,7 @@ D Language File
                                       DLanguageCmpExpressionImpl(CMP_EXPRESSION)
                                         DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                                           DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
-                                            PsiElement(DlangTokenType.FLOAT_LITERAL)('1L')
+                                            PsiElement(DlangTokenType.INTEGER_LITERAL)('1L')
                                   PsiElement(DlangTokenType.))(')')
                       PsiElement(DlangTokenType.;)(';')
             PsiComment(DlangTokenType.LINE_COMMENT)('// calls F.func')
