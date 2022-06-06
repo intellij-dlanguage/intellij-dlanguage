@@ -7,6 +7,7 @@ import com.intellij.psi.stubs.StubOutputStream;
 import com.intellij.util.io.StringRef;
 import io.github.intellij.dlanguage.psi.named.DlangSingleImport;
 import io.github.intellij.dlanguage.psi.impl.named.DlangSingleImportImpl;
+import io.github.intellij.dlanguage.psi.references.DReference;
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributes;
 import io.github.intellij.dlanguage.stubs.DlangSingleImportStub;
 import java.io.IOException;
@@ -76,6 +77,6 @@ public class SingleImportStubElementType extends DNamedStubElementType<DlangSing
 
     @Override
     public boolean shouldCreateStub(final ASTNode node) {
-        return true;
+        return !((DlangSingleImport) node.getPsi()).getImportedModuleName().equals(DReference.Companion.getNAME_NOT_FOUND_STRING());
     }
 }
