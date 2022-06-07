@@ -106,7 +106,7 @@ object SpecialCaseResolve {
 
 
     private fun resolveModule(path: IdentifierChain): Set<PsiNamedElement> {
-        return newHashSet(DModuleIndex.getFilesByModuleName(path.project, path.text, GlobalSearchScope.allScope(path.project)))
+        return newHashSet(DModuleIndex.getFilesByModuleName(path.project, path.importText, GlobalSearchScope.allScope(path.project)))
     }
 
     private fun resolveScopedSymbol(import: SingleImport, scope: String, project: Project): Set<PsiNamedElement> {

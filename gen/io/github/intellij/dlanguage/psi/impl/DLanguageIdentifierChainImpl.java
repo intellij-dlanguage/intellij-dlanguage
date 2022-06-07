@@ -11,6 +11,8 @@ import io.github.intellij.dlanguage.psi.DLanguageIdentifierChain;
 import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.jetbrains.annotations.NotNull;
 
 
@@ -41,6 +43,11 @@ public class DLanguageIdentifierChainImpl extends ASTWrapperPsiElement implement
     @NotNull
     public List<PsiElement> getOP_DOTs() {
         return findChildrenByType(OP_DOT);
+    }
+
+    @Override
+    public String getImportText() {
+        return getIdentifiers().stream().map(f -> f.getText()).collect(Collectors.joining("."));
     }
 
 }
