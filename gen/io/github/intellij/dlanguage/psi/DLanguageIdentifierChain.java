@@ -14,4 +14,12 @@ public interface DLanguageIdentifierChain extends PsiElement {
     @NotNull
     List<PsiElement> getOP_DOTs();
 
+    /**
+     * Returns a String containing only the import text without spaces or comments.
+     * This can be used by resolver
+     * @return The cleaned identifierChain
+     */
+    @NotNull
+    String getImportText();
+
 }

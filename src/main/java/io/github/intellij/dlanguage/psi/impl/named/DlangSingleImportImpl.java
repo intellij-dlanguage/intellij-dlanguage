@@ -104,7 +104,8 @@ public class DlangSingleImportImpl extends DNamedStubbedPsiElementBase<DlangSing
                 .warn("getIdentifier chain was: \"\". Complete text of symbol: " + getText());
             return DReference.Companion.getNAME_NOT_FOUND_STRING();
         }
-        return getIdentifierChain().getText();
+
+        return getIdentifierChain().getImportText();
     }
 
     @Nullable
