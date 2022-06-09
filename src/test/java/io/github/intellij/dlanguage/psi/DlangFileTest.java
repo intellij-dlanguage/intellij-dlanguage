@@ -30,8 +30,8 @@ public class DlangFileTest extends LightDlangTestCase {
 
         assertEquals("app.d", dlangFile.getName()); // should be the filename
         assertEquals("app", dlangFile.getModuleName());
-        assertEquals("awesome.app", dlangFile.getFullyQualifiedModuleName());
-        assertEquals("awesome", dlangFile.getPackageName());
+        assertEquals("app", dlangFile.getFullyQualifiedModuleName());
+        assertNull(dlangFile.getPackageName());
     }
 
     /**
