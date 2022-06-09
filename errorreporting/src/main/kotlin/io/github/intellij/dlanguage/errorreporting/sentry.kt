@@ -35,7 +35,7 @@ class SentryErrorHandler : ErrorReportSubmitter() {
     override fun getPrivacyNoticeText(): String = "Please provide a brief description to explain how the error occurred. By submitting this bug report you are agreeing for the displayed stacktrace to be shared with the developers via <a href=\"https://sentry.io\">sentry.io</a>. Please also consider raising a bug directly on our <a href=\"https://github.com/intellij-dlanguage/intellij-dlanguage\">Github</a>."
 
     override fun submit(
-        events: Array<out IdeaLoggingEvent>?,
+        events: Array<out IdeaLoggingEvent>,
         additionalInfo: String?,
         parentComponent: Component,
         consumer: Consumer<in SubmittedReportInfo>
