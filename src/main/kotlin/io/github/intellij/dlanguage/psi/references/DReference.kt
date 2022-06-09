@@ -112,7 +112,7 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
     }
 
     private fun addSymbolsFromImports(project: Project, result: MutableList<String>) {
-        val decls = StubIndex.getElements(DTopLevelDeclarationsByModule.KEY, (element.containingFile as DlangFile).moduleOrFileName, project, GlobalSearchScope.fileScope(element.containingFile), DNamedElement::class.java)
+        val decls = StubIndex.getElements(DTopLevelDeclarationsByModule.KEY, (element.containingFile as DlangFile).getFullyQualifiedModuleName(), project, GlobalSearchScope.fileScope(element.containingFile), DNamedElement::class.java)
         for (decl in decls) {
             if (decl is FunctionDeclaration) {
                 result.add(decl.name + "(" + ")")
@@ -245,7 +245,7 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
     private fun addDRuntimeSymbols(project: Project, result: MutableList<String>) {
         val objectDotD = BasicResolve.getInstance(project).`object`
         if (objectDotD != null) {
-            result.addAll(StubIndex.getElements(DTopLevelDeclarationsByModule.KEY, objectDotD.moduleOrFileName, project, GlobalSearchScope.fileScope(objectDotD), DNamedElement::class.java).map { it.name })
+            result.addAll(StubIndex.getElements(DTopLevelDeclarationsByModule.KEY, objectDotD.getFullyQualifiedModuleName(), project, GlobalSearchScope.fileScope(objectDotD), DNamedElement::class.java).map { it.name })
         }
     }
 
