@@ -20,7 +20,6 @@ import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.roots.OrderRootType;
 import com.intellij.openapi.roots.ProjectRootManager;
-import com.intellij.openapi.util.Computable;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
@@ -45,14 +44,6 @@ public class DScanner implements DlangLinter {
 
     private static final Logger LOG = Logger.getInstance(DScanner.class);
 
-    private static int getDocumentLineCount(final Document document) {
-        try {
-            return document.getLineCount();
-        } catch (final Exception e) {
-            return 0;
-        }
-    }
-
     @NotNull
     public DProblem[] checkFileSyntax(@NotNull final PsiFile file) {
         final String dscannerPath = ToolKey.DSCANNER_KEY.getPath();
@@ -65,29 +56,6 @@ public class DScanner implements DlangLinter {
             LOG.warn("Problem running DScanner", e);
         }
         return new DProblem[] {};
-    }
-
-    private static int getOffsetStart(final PsiFile file, final int startLine, final int startColumn) {
-        if(file.getProject().isDisposed()) {
-            return -1;
-        }
-
-        return ApplicationManager.getApplication().runReadAction((Computable<Integer>) () -> {
-            final Document document = PsiDocumentManager
-                .getInstance(file.getProject())
-                .getDocument(file);
-            final int line = getValidLineNumber(startLine, document);
-            final int offset = StringUtil.lineColToOffset(file.getText(), line, startColumn - 1);
-            return Math.max(offset, 1);
-        });
-    }
-
-    private static int getLineEndOffset(final Document document, final int line) {
-        try {
-            return document.getLineEndOffset(line);
-        } catch (final Exception e) {
-            return 1;
-        }
     }
 
     private GeneralCommandLine buildDscannerCommand(final PsiFile file, final String dscannerPath) {
@@ -178,46 +146,6 @@ public class DScanner implements DlangLinter {
         return compilerSourcePaths;
     }
 
-    private static int getValidLineNumber(int line, final Document document) {
-        final int lineCount = getDocumentLineCount(document);
-        line = line - 1;
-        if (line < 0) {
-            line = 0;
-        } else if (line >= lineCount) {
-            line = lineCount - 1;
-        }
-        return line;
-    }
-
-    private static int getOffsetEndFallback(final PsiFile file, int line) {
-        final Document document = PsiDocumentManager.getInstance(file.getProject()).getDocument(file);
-        line = getValidLineNumber(line, document);
-        return getLineEndOffset(document, line);
-    }
-
-    private static int getOffsetEnd(final PsiFile file, final int offsetStart, final int line) {
-        try {
-            final String fileText = file.getText(); // Read access is allowed from inside read-action (or EDT)
-            int width = 0;
-            while (offsetStart + width < fileText.length()) {
-                final char c = fileText.charAt(offsetStart + width);
-                if (StringUtil.isLineBreak(c)) {
-                    break;
-                }
-                ++width;
-            }
-            return offsetStart + width;
-        } catch (final Exception e) {
-            return getOffsetEndFallback(file, line);
-        }
-    }
-
-    private static TextRange calculateTextRange(final PsiFile file, final int line, final int column) {
-        final int startOffset = getOffsetStart(file, line, column);
-        final int endOffset = getOffsetEnd(file, startOffset, line);
-        return new TextRange(startOffset, endOffset);
-    }
-
     // Example output from DScanner:
     // hello.d(1:7)[error]: Expected identifier instead of ;
     // ddbc/source/ddbc/drivers/mysqlddbc.d(1273:35)[warn]: Line is longer than 120 characters
@@ -230,7 +158,11 @@ public class DScanner implements DlangLinter {
         if (m.find()) {
             final int line = Integer.parseInt(m.group(1));
             final int column = Integer.parseInt(m.group(2));
-            final TextRange range = calculateTextRange(file, line, column);
+            final TextRange range = LinterHelper.calculateTextRange(file, line, column);
+            if (range == null) {
+                LOG.warn("Unable to calculate text range for lint problem: " + lint);
+                return Optional.empty();
+            }
             final String severity = m.group(3);
             final String message = StringUtil.trim(m.group(4));
 
@@ -240,7 +172,7 @@ public class DScanner implements DlangLinter {
         return Optional.empty();
     }
 
-    public static class Problem extends DProblem {
+    public static class Problem implements DProblem {
         private final String severity;
         private final TextRange range;
         private final String message;

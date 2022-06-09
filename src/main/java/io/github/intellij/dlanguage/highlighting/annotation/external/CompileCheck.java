@@ -6,11 +6,8 @@ import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.HighlightSeverity;
 import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.util.TextRange;
-import com.intellij.openapi.util.UnfairTextRange;
 import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.containers.ContainerUtil;
 import io.github.intellij.dlanguage.settings.ToolKey;
@@ -77,68 +74,6 @@ public class CompileCheck implements DlangLinter {
         return problems;
     }
 
-    private int getDocumentLineCount(final Document document) {
-        try {
-            final int lineCount = document.getLineCount();
-            return lineCount == 0 ? 1 : lineCount;
-        } catch (final NullPointerException e) {
-            return 1;
-        }
-    }
-
-    private int getLineStartOffset(final Document document, final int line) {
-        try {
-            return document.getLineStartOffset(line);
-        } catch (final Exception e) {
-            return 1;
-        }
-    }
-
-    private int getLineEndOffset(final Document document, final int line) {
-        try {
-            return document.getLineEndOffset(line);
-        } catch (final Exception e) {
-            return 1;
-        }
-    }
-
-    private int getValidLineNumber(int line, final Document document) {
-        final int lineCount = getDocumentLineCount(document);
-        line = line - 1;
-        if (line <= 0) {
-            line = 1;
-        } else if (line >= lineCount) {
-            line = lineCount - 1;
-        }
-        return line;
-    }
-
-    private int getOffsetStart(final PsiFile file, int line, final int column) {
-        final Document document = PsiDocumentManager.getInstance(file.getProject()).getDocument(file);
-        line = getValidLineNumber(line, document);
-        return getLineStartOffset(document, line) + column;
-    }
-
-    private int getOffsetEnd(final PsiFile file, int line) {
-        final Document document = PsiDocumentManager.getInstance(file.getProject()).getDocument(file);
-        line = getValidLineNumber(line, document);
-        return getLineEndOffset(document, line);
-    }
-
-    @Nullable
-    private TextRange calculateTextRange(final PsiFile file, final int line, final int column) {
-        final int startOffset = getOffsetStart(file, line, column);
-        final int endOffset = getOffsetEnd(file, line);
-        try {
-            return new UnfairTextRange(startOffset, endOffset); // the UnfairTextRange won't check the text
-        } catch (final Throwable e) {
-            if (e.getMessage().contains("Invalid range")) {
-                //do nothing.
-                return null;
-            } else throw e;
-        }
-    }
-
     @Nullable
     private CompilerProblem parseProblem(final String lint, final PsiFile file) {
         LOG.debug(lint);
@@ -158,14 +93,14 @@ public class CompileCheck implements DlangLinter {
         while (m.find()) {
             hasMatch = true;
             sourceFile = m.group(1);
-            line = Integer.valueOf(m.group(2));
-            column = Integer.valueOf(m.group(3)) - 1;
+            line = Integer.parseInt(m.group(2));
+            column = Integer.parseInt(m.group(3));
             severity = m.group(4);
             message = m.group(5);
         }
 
         if (hasMatch && isSameFile(file, sourceFile)) {
-            final TextRange range = calculateTextRange(file, line, column);
+            final TextRange range = LinterHelper.calculateTextRange(file, line, column);
             if(range != null) {
                 return new CompilerProblem(range, message, severity);
             }
@@ -179,7 +114,7 @@ public class CompileCheck implements DlangLinter {
         return filePath.endsWith(unixRelativeOtherFilePath);
     }
 
-    public static class CompilerProblem extends DProblem {
+    public static class CompilerProblem implements DProblem {
         public final String severity;
         public final TextRange range;
         public final String message;
