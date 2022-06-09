@@ -7,5 +7,4 @@ import org.jetbrains.annotations.NotNull;
 public interface DlangLinter {
 
     DProblem[] checkFileSyntax(@NotNull final PsiFile file);
-
 }
