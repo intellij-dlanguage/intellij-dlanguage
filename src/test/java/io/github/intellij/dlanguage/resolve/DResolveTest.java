@@ -61,5 +61,9 @@ public class DResolveTest extends DResolveTestCase {
     public void testImportWithSpacesAndComments() {
         doTest();
     }
+
+    public void testImportFromPackage() {
+        doTest();
+    }
 }
 
