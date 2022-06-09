@@ -44,3 +44,10 @@ dependencies {
 
     //testImplementation group: 'junit', name: 'junit', version: '4.12'
 }
+
+test {
+    jvmArgs = [
+        '--illegal-access=warn',
+        '--add-opens=java.base/java.io=ALL-UNNAMED'
+    ]
+}

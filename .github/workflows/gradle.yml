@@ -14,6 +14,7 @@ jobs:
         kotlin: ['1.5.10']
         #os: [ubuntu-latest, windows-latest, macOS-latest]
         include:
+          - { idea: '2022.1.2', jdk: '11', kotlin: '1.6.20' }
           - { idea: 'LATEST-EAP-SNAPSHOT', jdk: '17', kotlin: '1.6.20' } # 2022.2 requires Java 17
 
     steps:
