@@ -80,7 +80,7 @@
                                     implementationClass="io.github.intellij.dlanguage.features.DDocumentationProvider"/>
         <!-- Refactoring -->
 
-        <renameFileActionProvider implementation="io.github.intellij.dlanguage.refactoring.DlangRenameFileActionProvider"/>
+        <renameFileActionProvider implementation="io.github.intellij.dlanguage.refactoring.rename.DlangRenameFileActionProvider"/>
 
         <lang.refactoringSupport language="D"
                                  implementationClass="io.github.intellij.dlanguage.refactoring.DRefactoringSupportProvider"/>
