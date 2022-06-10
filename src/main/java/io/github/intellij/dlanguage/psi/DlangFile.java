@@ -104,15 +104,6 @@ public class DlangFile extends PsiFileBase implements DlangPsiFile {
     }
 
     /**
-     * Returns the module name as defined in declaration within file (if it exists) or otherwise returns the file name without extension.
-     */
-    @NotNull
-    @Deprecated // no need for this to exist as getModuleName should do exactly this behavior
-    public String getModuleOrFileName() {
-        return this.getModuleName();
-    }
-
-    /**
      * Generates a stub for the current file, particularly so we can index names.
      */
     @Nullable

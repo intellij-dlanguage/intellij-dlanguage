@@ -25,7 +25,7 @@ class DTopLevelDeclarationsByModule : StringStubIndexExtension<DNamedElement>() 
         val VERSION = 3
         fun <S : NamedStubBase<T>, T : DNamedElement> indexTopLevelDeclarationsByModule(stub: S, sink: IndexSink) {
             if (stub !is io.github.intellij.dlanguage.stubs.DlangIdentifierStub && topLevelDeclaration(stub)) {
-                val fileName = (stub.psi.containingFile as DlangFile).moduleOrFileName
+                val fileName = (stub.psi.containingFile as DlangFile).getFullyQualifiedModuleName()
                 sink.occurrence(DTopLevelDeclarationsByModule.KEY, fileName)
             }
         }
