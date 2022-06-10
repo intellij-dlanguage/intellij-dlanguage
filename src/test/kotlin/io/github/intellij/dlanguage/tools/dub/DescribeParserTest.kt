@@ -52,7 +52,7 @@ class DescribeParserTest : LightPlatformTestCase() {
             Paths.get(javaClass.classLoader.getResource("dub/dubDescribeOutput-Windows.json")!!.toURI())
         ))
 
-        val dubProject = parser.parse(json)
+        val dubProject = parser.parse(json.byteInputStream().bufferedReader())
 
         assertEquals("testapp", dubProject.rootPackageName)
         assertEquals("default", dubProject.configuration)

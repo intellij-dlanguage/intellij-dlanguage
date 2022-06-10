@@ -6,6 +6,7 @@ import com.google.gson.JsonParser
 import com.google.gson.JsonSyntaxException
 import io.github.intellij.dlanguage.project.DubPackage
 import io.github.intellij.dlanguage.project.DubProject
+import java.io.Reader
 import java.util.*
 
 /**
@@ -17,6 +18,15 @@ import java.util.*
  * @since v1.16.2
  */
 interface DescribeParser {
+
+    /**
+     * @param reader The 'dub describe' command dumps a load of json to stdout, allocate a Reader for the stdout and pass it in.
+     * @return A DubProject object which contains much (not all) of the data that was in the json.
+     * @since v1.28.1
+     */
+    @Throws(DescribeParserException::class)
+    fun parse(reader: Reader): DubProject
+
     /**
      * @param json The 'dub describe' command dumps a load of json to stdout, use that output with this method.
      * @return A DubProject object which contains much (not all) of the data that was in the json.
@@ -33,26 +43,41 @@ class DescribeParserImpl : DescribeParser {
     private fun JsonObject.asStringArray(key: String): List<String> = get(key)?.asJsonArray?.map { it.asString } ?: emptyList()
 
     @Throws(DescribeParserException::class)
-    override fun parse(json: String): DubProject {
+    override fun parse(reader: Reader): DubProject {
         return try {
-            JsonParser().parse(json).asJsonObject.let {
-                val rootPackageName = it.asString("rootPackage")
-                val allPackages = parsePackages(rootPackageName, it.get("packages").asJsonArray)
-
-                DubProject(
-                    rootPackageName,
-                    allPackages.first,
-                    it.asString("configuration"),
-                    it.asString("buildType"),
-                    it.asString("compiler"),
-                    it.asStringArray("architecture"),
-                    it.asStringArray("platform"),
-                    allPackages.second
-                )
+            JsonParser.parseReader(reader).asJsonObject.let {
+                processJsonObject(it)
             }
         } catch (e: JsonSyntaxException) {
             throw DescribeParserException("There was a problem parsing the result of dub describe", e)
         }
+    }
+
+    @Throws(DescribeParserException::class)
+    override fun parse(json: String): DubProject {
+        return try {
+            JsonParser.parseString(json).asJsonObject.let {
+                processJsonObject(it)
+            }
+        } catch (e: JsonSyntaxException) {
+            throw DescribeParserException("There was a problem parsing the result of dub describe", e)
+        }
+    }
+
+    private fun processJsonObject(jsonData: JsonObject): DubProject {
+        val rootPackageName = jsonData.asString("rootPackage")
+        val allPackages = parsePackages(rootPackageName, jsonData.get("packages").asJsonArray)
+
+        return DubProject(
+            rootPackageName,
+            allPackages.first,
+            jsonData.asString("configuration"),
+            jsonData.asString("buildType"),
+            jsonData.asString("compiler"),
+            jsonData.asStringArray("architecture"),
+            jsonData.asStringArray("platform"),
+            allPackages.second
+        )
     }
 
     private fun parsePackages(rootPackageName: String, packages: JsonArray): Pair<DubPackage, List<DubPackage>> {

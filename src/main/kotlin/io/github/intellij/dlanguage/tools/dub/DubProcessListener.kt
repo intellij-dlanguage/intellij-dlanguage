@@ -26,5 +26,6 @@ class DubProcessListener : ProcessAdapter() {
 
     fun getOutput() = output.toString()
     fun getStdOut() = stdout.toString()
+    fun getStdOutReader() = getStdOut().byteInputStream().bufferedReader()
     fun getErrors(): List<String> = errors
 }
