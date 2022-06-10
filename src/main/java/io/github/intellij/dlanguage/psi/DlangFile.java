@@ -17,7 +17,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -72,18 +71,7 @@ public class DlangFile extends PsiFileBase implements DlangPsiFile {
     public String getFullyQualifiedModuleName() {
         final Optional<String> moduleDeclaration = findModuleDeclaration();
 
-        return moduleDeclaration
-            .orElseGet(() -> {
-                    final String fullNameIncExt = Optional.ofNullable(getVirtualFile() != null ? getVirtualFile().getCanonicalPath() : null)
-                        .map(path -> Arrays.stream(path.split("/|\\\\"))
-                            .filter(StringUtil::isNotEmpty)
-                            .skip(1) // hacky way to skip the 'source' (or 'src') directory
-                            .collect(Collectors.joining("."))
-                        ).orElse(super.getName());
-
-                    return fullNameIncExt.substring(0, fullNameIncExt.lastIndexOf('.'));
-                }
-            );
+        return moduleDeclaration.orElseGet(this::getModuleName);
     }
 
     /**
