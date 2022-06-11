@@ -26,8 +26,12 @@ public class DElementFactory {
     @Nullable
     public static DlangIdentifier createDLanguageIdentifierFromText(@NotNull final Project project,
         @NotNull final String name) {
-        final DlangIdentifier e = findChildOfType(createExpressionFromText(project, name),
-            DlangIdentifier.class);
+        PsiElement element = createExpressionFromText(project, name);
+        final DlangIdentifier e;
+        if (element instanceof DlangIdentifier)
+            e = (DlangIdentifier) element;
+        else
+            e = findChildOfType(createExpressionFromText(project, name), DlangIdentifier.class);
         if (e != null && e.getName().equals(name)) {
             return e;
         }
