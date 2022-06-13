@@ -78,6 +78,9 @@ class DescribeParserTest : LightPlatformTestCase() {
             // vibe-d:core doesn't specify importPaths
             if("vibe-d:core" == it.name) assertEmpty(it.sourcesDirs) else assertNotEmpty(it.sourcesDirs)
         }
+
+//        val targets = dubProject.targets
+//        assertTrue(targets.isNotEmpty())
     }
 
     private fun assertDubPackageValid(name: String, pkg: DubPackage) {
@@ -94,6 +97,26 @@ class DescribeParserTest : LightPlatformTestCase() {
         assertNotNull("$name Should have resources", pkg.resources)
         assertNotNull("$name Should have sourceFiles", pkg.sourceFiles)
         assertNotNull("$name Should have stringImportFiles", pkg.stringImportFiles)
+
+        //assertTrue(pkg.active)
+        assertNotNull(pkg.workingDirectory)
+        assertNotNull(pkg.mainSourceFile)
+
+        assertNotNull(pkg.libs)
+        assertNotNull(pkg.copyFiles)
+        assertNotNull(pkg.extraDependencyFiles)
+        assertNotNull(pkg.versions)
+        assertNotNull(pkg.debugVersions)
+        assertNotNull(pkg.preGenerateCommands)
+        assertNotNull(pkg.postGenerateCommands)
+        assertNotNull(pkg.preBuildCommands)
+        assertNotNull(pkg.postBuildCommands)
+        assertNotNull(pkg.preRunCommands)
+        assertNotNull(pkg.postRunCommands)
+
+        ////val dflags
+        ////val lflags
+        //assertTrue(pkg.files.isNotEmpty())
     }
 
     private fun assertNotBlank(message: String, value: String) {

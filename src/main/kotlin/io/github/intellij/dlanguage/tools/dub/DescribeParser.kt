@@ -4,8 +4,10 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.google.gson.JsonSyntaxException
+import io.github.intellij.dlanguage.project.BuildSettings
 import io.github.intellij.dlanguage.project.DubPackage
 import io.github.intellij.dlanguage.project.DubProject
+import io.github.intellij.dlanguage.project.DubTarget
 import java.io.Reader
 import java.util.*
 
@@ -76,7 +78,8 @@ class DescribeParserImpl : DescribeParser {
             jsonData.asString("compiler"),
             jsonData.asStringArray("architecture"),
             jsonData.asStringArray("platform"),
-            allPackages.second
+            allPackages.second,
+            //parseTargets(jsonData.get("targets").asJsonArray)
         )
     }
 
@@ -97,6 +100,17 @@ class DescribeParserImpl : DescribeParser {
         return rootPackage?.let { Pair<DubPackage, List<DubPackage>>(it, packageList) } ?: throw DescribeParserException("Could not establish root package")
     }
 
+//    private fun parseTargets(jsonArray: JsonArray): List<DubTarget> {
+//        return jsonArray
+//            .map { it as JsonObject }
+//            .map { DubTarget(
+//                it.asString("rootPackage"),
+//                it.asStringArray("packages"),
+//                it.asString("rootConfiguration"),
+//                BuildSettings() //it.asString("buildSettings")
+//            ) }
+//    }
+
     private fun jsonToDubPackage(json: JsonObject): DubPackage {
         return DubPackage(
             name = json.asString("name"),
@@ -111,7 +125,30 @@ class DescribeParserImpl : DescribeParser {
             sourcesDirs = json.asStringArray("importPaths"), // importPaths, eg: "source",
             resources = json.asStringArray("stringImportPaths"), // stringImportPaths, eg: "views",
             sourceFiles = json.asStringArray("sourceFiles"),
-            stringImportFiles = json.asStringArray("stringImportFiles"))
+            stringImportFiles = json.asStringArray("stringImportFiles"),
+            libs = json.asStringArray("libs"),
+            copyFiles = json.asStringArray("copyFiles"),
+            extraDependencyFiles = json.asStringArray("extraDependencyFiles"),
+            versions = json.asStringArray("versions"),
+            debugVersions = json.asStringArray("debugVersions"),
+            preGenerateCommands = json.asStringArray("preGenerateCommands"),
+            postGenerateCommands = json.asStringArray("postGenerateCommands"),
+            preBuildCommands = json.asStringArray("preBuildCommands"),
+            postBuildCommands = json.asStringArray("postBuildCommands"),
+            preRunCommands = json.asStringArray("preRunCommands"),
+            postRunCommands = json.asStringArray("postRunCommands"),
+            //environments = json.asStringArray("environments"),
+            //buildEnvironments = json.asStringArray("buildEnvironments"),
+            //runEnvironments = json.asStringArray("runEnvironments"),
+            //preGenerateEnvironments = json.asStringArray("preGenerateEnvironments"),
+            //postGenerateEnvironments = json.asStringArray("postGenerateEnvironments"),
+            //preBuildEnvironments = json.asStringArray("preBuildEnvironments"),
+            //postBuildEnvironments = json.asStringArray("postBuildEnvironments"),
+            //preRunEnvironments = json.asStringArray("preRunEnvironments"),
+            //postRunEnvironments = json.asStringArray("postRunEnvironments"),
+            options = json.asStringArray("options"),
+            //files = json.asJsonArray("files")
+        )
     }
 }
 
