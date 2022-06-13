@@ -284,3 +284,8 @@ compileKotlin {
         freeCompilerArgs = [ '-Xjvm-default=enable' ]
     }
 }
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = javaVersion
+    }
+}

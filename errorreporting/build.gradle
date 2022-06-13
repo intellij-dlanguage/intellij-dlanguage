@@ -49,7 +49,7 @@ dependencies {
     //implementation project(':utils')
 
     // use our own bundled Kotlin stdlib
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    //implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     //implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
     implementation 'io.sentry:sentry:5.7.+'
@@ -58,8 +58,8 @@ dependencies {
 compileKotlin {
     kotlinOptions {
         suppressWarnings = true
-        apiVersion = "1.5"
-        languageVersion = "1.5"
+        apiVersion = "1.6"
+        languageVersion = "1.6"
         jvmTarget = javaVersion
         freeCompilerArgs = [ '-Xjvm-default=enable' ]
     }
