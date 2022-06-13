@@ -49,6 +49,7 @@ test {
     jvmArgs = [
         '--illegal-access=warn',
         '--add-opens=java.base/java.io=ALL-UNNAMED',
-        '--add-opens=java.desktop/sun.awt=ALL-UNNAMED'
+        '--add-opens=java.desktop/sun.awt=ALL-UNNAMED',
+        '--add-opens=java.desktop/java.awt=ALL-UNNAMED'
     ]
 }
