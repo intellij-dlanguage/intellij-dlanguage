@@ -4,10 +4,7 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.google.gson.JsonSyntaxException
-import io.github.intellij.dlanguage.project.BuildSettings
-import io.github.intellij.dlanguage.project.DubPackage
-import io.github.intellij.dlanguage.project.DubProject
-import io.github.intellij.dlanguage.project.DubTarget
+import io.github.intellij.dlanguage.project.*
 import java.io.Reader
 import java.util.*
 
@@ -79,7 +76,7 @@ class DescribeParserImpl : DescribeParser {
             jsonData.asStringArray("architecture"),
             jsonData.asStringArray("platform"),
             allPackages.second,
-            //parseTargets(jsonData.get("targets").asJsonArray)
+            parseTargets(jsonData.get("targets").asJsonArray)
         )
     }
 
@@ -100,18 +97,24 @@ class DescribeParserImpl : DescribeParser {
         return rootPackage?.let { Pair<DubPackage, List<DubPackage>>(it, packageList) } ?: throw DescribeParserException("Could not establish root package")
     }
 
-//    private fun parseTargets(jsonArray: JsonArray): List<DubTarget> {
-//        return jsonArray
-//            .map { it as JsonObject }
-//            .map { DubTarget(
-//                it.asString("rootPackage"),
-//                it.asStringArray("packages"),
-//                it.asString("rootConfiguration"),
-//                BuildSettings() //it.asString("buildSettings")
-//            ) }
-//    }
+    private fun parseTargets(jsonArray: JsonArray): List<DubTarget> {
+        return jsonArray
+            .map { it as JsonObject }
+            .map { DubTarget(
+                it.asString("rootPackage"),
+                it.asStringArray("packages"),
+                it.asString("rootConfiguration"),
+                null // todo: BuildSettings() //it.asString("buildSettings")
+            ) }
+    }
 
     private fun jsonToDubPackage(json: JsonObject): DubPackage {
+        val files = json.get("files").asJsonArray?.map { f ->
+            f.asJsonObject
+        }?.map { obj ->
+            DubPackageFile(obj.asString("role"), obj.asString("path"))
+        }?: emptyList()
+        
         return DubPackage(
             name = json.asString("name"),
             path = json.asString("path"),
@@ -147,7 +150,7 @@ class DescribeParserImpl : DescribeParser {
             //preRunEnvironments = json.asStringArray("preRunEnvironments"),
             //postRunEnvironments = json.asStringArray("postRunEnvironments"),
             options = json.asStringArray("options"),
-            //files = json.asJsonArray("files")
+            files = files
         )
     }
 }

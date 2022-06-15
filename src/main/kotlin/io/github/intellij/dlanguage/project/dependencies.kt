@@ -116,7 +116,7 @@ data class DubTarget(
     val rootPackage: String,
     val packages: List<String> = emptyList(),
     val rootConfiguration: String,
-    val buildSettings: BuildSettings
+    val buildSettings: BuildSettings?
 )
 
 /**

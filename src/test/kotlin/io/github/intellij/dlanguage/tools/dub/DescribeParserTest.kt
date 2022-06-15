@@ -2,6 +2,7 @@ package io.github.intellij.dlanguage.tools.dub
 
 import com.intellij.testFramework.LightPlatformTestCase
 import io.github.intellij.dlanguage.project.DubPackage
+import junit.framework.TestCase
 import java.nio.file.Files
 import java.nio.file.Paths
 
@@ -76,11 +77,34 @@ class DescribeParserTest : LightPlatformTestCase() {
             it.path.contains("C:\\Users\\TestUser\\AppData\\Local\\dub\\packages\\.*")
 
             // vibe-d:core doesn't specify importPaths
-            if("vibe-d:core" == it.name) assertEmpty(it.sourcesDirs) else assertNotEmpty(it.sourcesDirs)
+            if("vibe-d:core" == it.name) {
+                // vibe-d:core is basically a package that pulls in "vibe-d:data", "vibe-d:utils", "vibe-core"
+                //assertEquals("none", it.targetType)
+                assertEmpty(it.sourcesDirs)
+                assertContainsElements(it.dependencies, "vibe-d:data", "vibe-d:utils", "vibe-core")
+                assertEquals("Compatibility forwarding package for vibe-core", it.description)
+                assertEmpty(it.resources)
+                assertEmpty(it.stringImportFiles)
+                assertEmpty(it.files)
+            } else if("vibe-d:data" == it.name) {
+                assertEquals("Data format and serialization support", it.description)
+                assertNotEmpty(it.sourcesDirs)
+                assertContainsElements(it.dependencies, "vibe-d:utils")
+                assertContainsElements(it.sourcesDirs, ".")
+                assertEmpty(it.resources)
+                assertEmpty(it.stringImportFiles)
+                assertEquals(3, it.files.size)
+            } else {
+                assertNotEmpty(it.files)
+            }
         }
 
-//        val targets = dubProject.targets
-//        assertTrue(targets.isNotEmpty())
+        assertNotEmpty(dubProject.targets)
+        dubProject.targets.forEach {
+            assertNotBlank("rootPackage should not be blank", it.rootPackage)
+            assertNotBlank("rootConfiguration should not be blank", it.rootConfiguration)
+            assertNotEmpty(it.packages)
+        }
     }
 
     private fun assertDubPackageValid(name: String, pkg: DubPackage) {
