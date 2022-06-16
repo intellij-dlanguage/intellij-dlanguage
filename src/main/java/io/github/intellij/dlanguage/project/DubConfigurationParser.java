@@ -2,6 +2,7 @@ package io.github.intellij.dlanguage.project;
 
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
+import com.intellij.execution.process.CapturingProcessHandler;
 import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
@@ -64,6 +65,25 @@ public class DubConfigurationParser {
         this.dubBinaryPath = dubBinaryPath;
         this.silentMode = silentMode;
         this.parser = new DescribeParserImpl();
+    }
+
+    /**
+     * Runs <pre>dub describe --import-paths --vquiet</pre> to get import paths.
+     * @return Source paths for the current project and any included dub dependencies
+     * @since v1.28.1
+     */
+    public List<String> getDubProjectImportPaths() {
+        if (canUseDub()) {
+            final Future<List<String>> optionalFuture = ApplicationManager.getApplication()
+                .executeOnPooledThread(() -> this.importPaths(project.getBasePath(), dubBinaryPath));
+
+            try {
+                return optionalFuture.get();
+            } catch (final InterruptedException | java.util.concurrent.ExecutionException e) {
+                LOG.error("There was a problem running 'dub describe --import-paths --vquiet'", e);
+            }
+        }
+        throw new RuntimeException(String.format("dub binary '%s' is not usable", this.dubBinaryPath));
     }
 
     /**
@@ -147,6 +167,19 @@ public class DubConfigurationParser {
             .forEach(dependency -> treeNode.add(buildDependencyTree(dependency)));
 
         return treeNode;
+    }
+
+    /*
+     * dub describe --import-paths --vquiet
+     */
+    private List<String> importPaths(final String workingDirectory, final String dubBinaryPath) throws ExecutionException {
+        final GeneralCommandLine cmd = new GeneralCommandLine()
+            .withWorkDirectory(workingDirectory)
+            .withExePath(dubBinaryPath)
+            .withParameters("describe", "--import-paths", "--vquiet");
+
+        final CapturingProcessHandler processHandler = new CapturingProcessHandler(cmd);
+        return processHandler.runProcess().getStdoutLines(true);
     }
 
     private Optional<DubProject> parseDubConfiguration(final boolean silentMode) {
