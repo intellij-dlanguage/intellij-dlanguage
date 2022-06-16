@@ -161,9 +161,12 @@ public class DFormatAction extends AnAction implements DumbAware {
                                   @NotNull final NotificationType type,
                                   @Nullable final NotificationListener listener,
                                   @Nullable final Project project) {
-        Notifications.Bus.notify(
-            new Notification(NOTIFICATION_GROUPID, title, content, type)
-                .setListener(listener),
-            project);
+        final Notification notification = new Notification(NOTIFICATION_GROUPID, title, content, type);
+
+        if(listener != null) {
+            notification.setListener(listener);
+        }
+
+        Notifications.Bus.notify(notification, project);
     }
 }
