@@ -33,7 +33,7 @@ class DubExecutableRunLineMarkerContributor : RunLineMarkerContributor() {
         if (!(funcDecl.parameters == null || funcDecl.parameters!!.parameters.size < 2))
             return false
 
-        val param = funcDecl.parameters!!.parameters.getOrNull(1) ?: return true
-        return param.type?.type_2?.text == "string" && param.type?.typeSuffixs?.size == 1 && param.type?.typeSuffixs?.get(1)?.text == "[]"
+        val param = funcDecl.parameters!!.parameters.getOrNull(0) ?: return true
+        return param.type?.type_2?.text == "string" && param.type?.typeSuffixs?.size == 1 && param.type?.typeSuffixs?.get(0)?.text == "[]"
     }
 }

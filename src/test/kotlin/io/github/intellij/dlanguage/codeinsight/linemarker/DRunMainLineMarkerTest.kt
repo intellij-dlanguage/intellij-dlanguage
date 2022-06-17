@@ -45,7 +45,7 @@ class DRunMainLineMarkerTest : DLightPlatformCodeInsightFixtureTestCase("codeins
         doTest("""
             module test;
 
-            void main(String[] args) {}
+            void main(string[] args) {}
         """, true)
     }
 
@@ -54,7 +54,7 @@ class DRunMainLineMarkerTest : DLightPlatformCodeInsightFixtureTestCase("codeins
        doTest("""
             module test;
 
-            auto main(String[] args) {}
+            auto main(string[] args) {}
         """, true)
     }
 
@@ -101,6 +101,37 @@ class DRunMainLineMarkerTest : DLightPlatformCodeInsightFixtureTestCase("codeins
             module test;
 
             void Main() {}
+        """, false)
+    }
+
+    @Test
+    fun `test should not find inner main method`() {
+        doTest("""
+            module test;
+
+            class A {
+                void main(string args) {}
+            }
+        """, false)
+    }
+
+    @Test
+    fun `test should not find inner main method 2`() {
+        doTest("""
+            module test;
+
+            fun A() {
+                void main(string args) {}
+            }
+        """, false)
+    }
+
+    @Test
+    fun `test should not find invalid main argument type`() {
+        doTest("""
+            module test;
+
+            void main(string args) {}
         """, false)
     }
 }
