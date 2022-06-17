@@ -91,6 +91,10 @@
         <projectSdkSetupValidator implementation="io.github.intellij.dlanguage.DLangProjectDmdSetupValidator"/>
         <runConfigurationProducer implementation="io.github.intellij.dlanguage.run.DlangRunDubConfigurationProducer"/>
 
+        <!-- Line Marker Providers -->
+        <runLineMarkerContributor language="D"
+                                  implementationClass="io.github.intellij.dlanguage.codeinsight.linemarker.DubExecutableRunLineMarkerContributor"/>
+
         <!-- module -->
         <moduleType id="DLANGUAGE_MODULE" implementationClass="io.github.intellij.dlanguage.module.DlangModuleType"/>
 
