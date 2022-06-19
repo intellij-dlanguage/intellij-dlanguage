@@ -84,7 +84,7 @@ D Language File
                 DLanguageFunctionBodyImpl(FUNCTION_BODY)
                   DLanguageMissingFunctionBodyImpl(MISSING_FUNCTION_BODY)
                     PsiElement(DlangTokenType.;)(';')
-            PsiComment(DlangTokenType.LINE_COMMENT)('// error, no bar(char) in Foo')
+              PsiComment(DlangTokenType.LINE_COMMENT)('// error, no bar(char) in Foo')
             DLanguageDeclarationImpl(DECLARATION)
               FUNCTION_DECLARATION
                 DLanguageTypeImpl(TYPE)
@@ -106,6 +106,6 @@ D Language File
                 DLanguageFunctionBodyImpl(FUNCTION_BODY)
                   DLanguageMissingFunctionBodyImpl(MISSING_FUNCTION_BODY)
                     PsiElement(DlangTokenType.;)(';')
-            PsiComment(DlangTokenType.LINE_COMMENT)('// ok')
+              PsiComment(DlangTokenType.LINE_COMMENT)('// ok')
             PsiElement(DlangTokenType.})('}')
           PsiElement(DlangTokenType.})('}')

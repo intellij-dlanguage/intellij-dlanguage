@@ -26,7 +26,7 @@ D Language File
                     IDENTIFIER
                       PsiElement(DlangTokenType.ID)('a')
                   PsiElement(DlangTokenType.;)(';')
-            PsiComment(DlangTokenType.LINE_COMMENT)('// index type is string, value type is double')
+                PsiComment(DlangTokenType.LINE_COMMENT)('// index type is string, value type is double')
             DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
               DLanguageStatementImpl(STATEMENT)
                 DLanguageStatementNoCaseNoDefaultImpl(STATEMENT_NO_CASE_NO_DEFAULT)

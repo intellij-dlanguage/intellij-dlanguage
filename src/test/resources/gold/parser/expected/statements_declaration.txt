@@ -9,7 +9,7 @@ D Language File
         IDENTIFIER
           PsiElement(DlangTokenType.ID)('a')
       PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// declare a as type int and initialize it to 0')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// declare a as type int and initialize it to 0')
   DLanguageDeclarationImpl(DECLARATION)
     STRUCT_DECLARATION
       PsiElement(DlangTokenType.struct)('struct')
@@ -18,7 +18,7 @@ D Language File
       DLanguageStructBodyImpl(STRUCT_BODY)
         PsiElement(DlangTokenType.{)('{')
         PsiElement(DlangTokenType.})('}')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// declare struct s')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// declare struct s')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
       PsiElement(DlangTokenType.alias)('alias')

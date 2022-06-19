@@ -76,7 +76,7 @@ D Language File
                     IDENTIFIER
                       PsiElement(DlangTokenType.ID)('y')
                   PsiElement(DlangTokenType.;)(';')
-            PsiComment(DlangTokenType.LINE_COMMENT)('// error, Y undefined')
+                PsiComment(DlangTokenType.LINE_COMMENT)('// error, Y undefined')
             DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
               DLanguageStatementImpl(STATEMENT)
                 DLanguageStatementNoCaseNoDefaultImpl(STATEMENT_NO_CASE_NO_DEFAULT)
@@ -112,7 +112,7 @@ D Language File
                                         IDENTIFIER
                                           PsiElement(DlangTokenType.ID)('y')
                                       PsiElement(DlangTokenType.;)(';')
-                              PsiComment(DlangTokenType.LINE_COMMENT)('// same as Foo.Y y;')
+                                    PsiComment(DlangTokenType.LINE_COMMENT)('// same as Foo.Y y;')
                               PsiElement(DlangTokenType.})('}')
             DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
               DLanguageDeclarationImpl(DECLARATION)

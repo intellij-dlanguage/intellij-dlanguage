@@ -142,7 +142,7 @@ D Language File
                                       IDENTIFIER
                                         PsiElement(DlangTokenType.ID)('s')
                     PsiElement(DlangTokenType.;)(';')
-              PsiComment(DlangTokenType.LINE_COMMENT)('// i == -7')
+                  PsiComment(DlangTokenType.LINE_COMMENT)('// i == -7')
               DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
                 DLanguageStatementImpl(STATEMENT)
                   DLanguageStatementNoCaseNoDefaultImpl(STATEMENT_NO_CASE_NO_DEFAULT)
@@ -410,7 +410,7 @@ D Language File
                                   IDENTIFIER
                                     PsiElement(DlangTokenType.ID)('baz')
                     PsiElement(DlangTokenType.;)(';')
-              PsiComment(DlangTokenType.LINE_COMMENT)('// i == 4')
+                  PsiComment(DlangTokenType.LINE_COMMENT)('// i == 4')
               DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
                 DLanguageStatementImpl(STATEMENT)
                   DLanguageStatementNoCaseNoDefaultImpl(STATEMENT_NO_CASE_NO_DEFAULT)
@@ -582,5 +582,5 @@ D Language File
                                     IDENTIFIER
                                       PsiElement(DlangTokenType.ID)('s')
                     PsiElement(DlangTokenType.;)(';')
-            PsiComment(DlangTokenType.LINE_COMMENT)('// i == 4')
+                  PsiComment(DlangTokenType.LINE_COMMENT)('// i == 4')
             PsiElement(DlangTokenType.})('}')

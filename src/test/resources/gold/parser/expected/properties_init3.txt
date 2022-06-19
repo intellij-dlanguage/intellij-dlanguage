@@ -164,7 +164,7 @@ D Language File
                                   IDENTIFIER
                                     PsiElement(DlangTokenType.ID)('init')
                     PsiElement(DlangTokenType.;)(';')
-              PsiComment(DlangTokenType.LINE_COMMENT)('// Bad. s3.a == 0, and it violates the invariant of S.')
+                  PsiComment(DlangTokenType.LINE_COMMENT)('// Bad. s3.a == 0, and it violates the invariant of S.')
               DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
                 DLanguageStatementImpl(STATEMENT)
                   DLanguageStatementNoCaseNoDefaultImpl(STATEMENT_NO_CASE_NO_DEFAULT)

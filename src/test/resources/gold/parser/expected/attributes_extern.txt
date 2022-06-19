@@ -23,7 +23,7 @@ D Language File
       DLanguageFunctionBodyImpl(FUNCTION_BODY)
         DLanguageMissingFunctionBodyImpl(MISSING_FUNCTION_BODY)
           PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// call foo() with C conventions')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// call foo() with C conventions')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageAttributeImpl(ATTRIBUTE)
       DLanguageLinkageAttributeImpl(LINKAGE_ATTRIBUTE)

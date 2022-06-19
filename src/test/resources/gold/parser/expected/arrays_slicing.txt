@@ -25,7 +25,7 @@ D Language File
                     IDENTIFIER
                       PsiElement(DlangTokenType.ID)('a')
                   PsiElement(DlangTokenType.;)(';')
-            PsiComment(DlangTokenType.LINE_COMMENT)('// declare array of 10 ints')
+                PsiComment(DlangTokenType.LINE_COMMENT)('// declare array of 10 ints')
             DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
               DLanguageDeclarationImpl(DECLARATION)
                 DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)

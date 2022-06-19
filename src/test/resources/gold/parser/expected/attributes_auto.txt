@@ -16,4 +16,4 @@ D Language File
                     DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                       PsiElement(DlangTokenType.FLOAT_LITERAL)('6.8')
         PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// declare i as a double')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// declare i as a double')

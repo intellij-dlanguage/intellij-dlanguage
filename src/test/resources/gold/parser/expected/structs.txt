@@ -71,7 +71,7 @@ D Language File
                     IDENTIFIER
                       PsiElement(DlangTokenType.ID)('s')
                   PsiElement(DlangTokenType.;)(';')
-            PsiComment(DlangTokenType.LINE_COMMENT)('// error, cannot initialize unknown contents')
+                PsiComment(DlangTokenType.LINE_COMMENT)('// error, cannot initialize unknown contents')
             DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
               DLanguageDeclarationImpl(DECLARATION)
                 DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
@@ -87,5 +87,5 @@ D Language File
                     IDENTIFIER
                       PsiElement(DlangTokenType.ID)('p')
                   PsiElement(DlangTokenType.;)(';')
-          PsiComment(DlangTokenType.LINE_COMMENT)('// ok, knowledge of members is not necessary')
+                PsiComment(DlangTokenType.LINE_COMMENT)('// ok, knowledge of members is not necessary')
           PsiElement(DlangTokenType.})('}')

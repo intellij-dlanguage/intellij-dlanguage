@@ -87,7 +87,7 @@ D Language File
                                               PsiElement(DlangTokenType.INTEGER_LITERAL)('3')
                                     PsiElement(DlangTokenType.))(')')
                     PsiElement(DlangTokenType.;)(';')
-              PsiComment(DlangTokenType.LINE_COMMENT)('// initializes s.a to 3')
+                  PsiComment(DlangTokenType.LINE_COMMENT)('// initializes s.a to 3')
               DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
                 DLanguageDeclarationImpl(DECLARATION)
                   DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
@@ -101,7 +101,7 @@ D Language File
                       IDENTIFIER
                         PsiElement(DlangTokenType.ID)('t')
                     PsiElement(DlangTokenType.;)(';')
-              PsiComment(DlangTokenType.LINE_COMMENT)('// initializes t.a to 0')
+                  PsiComment(DlangTokenType.LINE_COMMENT)('// initializes t.a to 0')
               DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
                 DLanguageStatementImpl(STATEMENT)
                   DLanguageStatementNoCaseNoDefaultImpl(STATEMENT_NO_CASE_NO_DEFAULT)

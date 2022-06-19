@@ -196,7 +196,7 @@ D Language File
                                         PsiElement(DlangTokenType.))(')')
                             PsiElement(DlangTokenType.))(')')
                           PsiElement(DlangTokenType.;)(';')
-              PsiComment(DlangTokenType.LINE_COMMENT)('// N.B.: *not* ref(int);')
+                  PsiComment(DlangTokenType.LINE_COMMENT)('// N.B.: *not* ref(int);')
               PsiComment(DlangTokenType.LINE_COMMENT)('// there is no such type as ref(int).')
               DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
                 DLanguageStatementImpl(STATEMENT)

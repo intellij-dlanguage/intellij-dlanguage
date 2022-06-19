@@ -15,6 +15,8 @@ public class DTokenSets {
 
     public static final TokenSet BLOCK_DOCS = TokenSet.create(DlangTypes.BLOCK_DOC, DlangTypes.NESTING_BLOCK_DOC);
 
+    public static final TokenSet DOCS = TokenSet.orSet(LINE_DOCS, BLOCK_DOCS);
+
     public static final TokenSet STRING_LITERALS = TokenSet.create(DlangTypes.DOUBLE_QUOTED_STRING,
         DlangTypes.KW_CHAR,
         DlangTypes.KW_DCHAR,

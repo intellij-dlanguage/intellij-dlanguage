@@ -14,7 +14,7 @@ D Language File
         IDENTIFIER
           PsiElement(DlangTokenType.ID)('x')
       PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// typeof(x) == immutable(int)')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// typeof(x) == immutable(int)')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
       DLanguageTypeImpl(TYPE)
@@ -33,7 +33,7 @@ D Language File
         IDENTIFIER
           PsiElement(DlangTokenType.ID)('y')
       PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// typeof(y) == immutable(int)[]')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// typeof(y) == immutable(int)[]')
   PsiComment(DlangTokenType.LINE_COMMENT)('// typeof(y[0]) == immutable(int)')
   PsiComment(DlangTokenType.LINE_COMMENT)('// Type constructors create new types that can be aliased:')
   DLanguageDeclarationImpl(DECLARATION)
@@ -65,4 +65,4 @@ D Language File
         IDENTIFIER
           PsiElement(DlangTokenType.ID)('z')
       PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// typeof(z) == immutable(int)')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// typeof(z) == immutable(int)')

@@ -40,7 +40,7 @@ D Language File
                                   PsiElement(DlangTokenType.INTEGER_LITERAL)('3')
                       PsiElement(DlangTokenType.;)(';')
             PsiElement(DlangTokenType.})('}')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// inferred to be int')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// inferred to be int')
   DLanguageDeclarationImpl(DECLARATION)
     FUNCTION_DECLARATION
       DLanguageStorageClassImpl(STORAGE_CLASS)
@@ -89,4 +89,4 @@ D Language File
                                 PsiElement(DlangTokenType.FLOAT_LITERAL)('2.5')
                       PsiElement(DlangTokenType.;)(';')
             PsiElement(DlangTokenType.})('}')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// inferred to be double')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// inferred to be double')

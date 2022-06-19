@@ -174,7 +174,7 @@ D Language File
                                     PsiElement(DlangTokenType.()('(')
                                     PsiElement(DlangTokenType.))(')')
                     PsiElement(DlangTokenType.;)(';')
-            PsiComment(DlangTokenType.LINE_COMMENT)('// i is set to 10')
+                  PsiComment(DlangTokenType.LINE_COMMENT)('// i is set to 10')
             PsiElement(DlangTokenType.})('}')
   DLanguageDeclarationImpl(DECLARATION)
     FUNCTION_DECLARATION
@@ -454,7 +454,7 @@ D Language File
                                     PsiElement(DlangTokenType.()('(')
                                     PsiElement(DlangTokenType.))(')')
                     PsiElement(DlangTokenType.;)(';')
-            PsiComment(DlangTokenType.LINE_COMMENT)('// i is set to 10')
+                  PsiComment(DlangTokenType.LINE_COMMENT)('// i is set to 10')
             PsiElement(DlangTokenType.})('}')
   DLanguageDeclarationImpl(DECLARATION)
     FUNCTION_DECLARATION
@@ -529,7 +529,7 @@ D Language File
                                     PsiElement(DlangTokenType.()('(')
                                     PsiElement(DlangTokenType.))(')')
                     PsiElement(DlangTokenType.;)(';')
-              PsiComment(DlangTokenType.LINE_COMMENT)('// ok, test.a is in a closure and still exists')
+                  PsiComment(DlangTokenType.LINE_COMMENT)('// ok, test.a is in a closure and still exists')
               DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
                 DLanguageStatementImpl(STATEMENT)
                   DLanguageStatementNoCaseNoDefaultImpl(STATEMENT_NO_CASE_NO_DEFAULT)

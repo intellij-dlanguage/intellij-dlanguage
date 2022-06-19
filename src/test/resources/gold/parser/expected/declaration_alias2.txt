@@ -133,7 +133,7 @@ D Language File
         IDENTIFIER
           PsiElement(DlangTokenType.ID)('v1')
       PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// v1 is type int')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// v1 is type int')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
       DLanguageTypeImpl(TYPE)
@@ -146,7 +146,7 @@ D Language File
         IDENTIFIER
           PsiElement(DlangTokenType.ID)('v2')
       PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// v2 is type int')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// v2 is type int')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
       DLanguageTypeImpl(TYPE)
@@ -159,7 +159,7 @@ D Language File
         IDENTIFIER
           PsiElement(DlangTokenType.ID)('v3')
       PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// v3 is type int')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// v3 is type int')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
       DLanguageTypeImpl(TYPE)
@@ -172,4 +172,4 @@ D Language File
         IDENTIFIER
           PsiElement(DlangTokenType.ID)('v4')
       PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// v4 is type int')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// v4 is type int')

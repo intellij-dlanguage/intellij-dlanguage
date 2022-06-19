@@ -32,7 +32,7 @@ D Language File
                                 IDENTIFIER
                                   PsiElement(DlangTokenType.ID)('dup')
                   PsiElement(DlangTokenType.;)(';')
-            PsiComment(DlangTokenType.LINE_COMMENT)('// \u2260 encoded as 3 UTF-8 bytes')
+                PsiComment(DlangTokenType.LINE_COMMENT)('// \u2260 encoded as 3 UTF-8 bytes')
             DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
               DLanguageStatementImpl(STATEMENT)
                 DLanguageStatementNoCaseNoDefaultImpl(STATEMENT_NO_CASE_NO_DEFAULT)

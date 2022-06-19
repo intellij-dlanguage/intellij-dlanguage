@@ -60,7 +60,7 @@ D Language File
                 IDENTIFIER
                   PsiElement(DlangTokenType.ID)('fn')
               PsiElement(DlangTokenType.;)(';')
-          PsiComment(DlangTokenType.LINE_COMMENT)('// not a GC managed pointer')
+            PsiComment(DlangTokenType.LINE_COMMENT)('// not a GC managed pointer')
           PsiElement(DlangTokenType.})('}')
   DLanguageDeclarationImpl(DECLARATION)
     STRUCT_DECLARATION
@@ -118,7 +118,7 @@ D Language File
               IDENTIFIER
                 PsiElement(DlangTokenType.ID)('arr')
             PsiElement(DlangTokenType.;)(';')
-        PsiComment(DlangTokenType.LINE_COMMENT)('// { length, ptr }')
+          PsiComment(DlangTokenType.LINE_COMMENT)('// { length, ptr }')
         DLanguageDeclarationImpl(DECLARATION)
           DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
             DLanguageTypeImpl(TYPE)
@@ -134,7 +134,7 @@ D Language File
               IDENTIFIER
                 PsiElement(DlangTokenType.ID)('dg')
             PsiElement(DlangTokenType.;)(';')
-        PsiComment(DlangTokenType.LINE_COMMENT)('// { context, func }')
+          PsiComment(DlangTokenType.LINE_COMMENT)('// { context, func }')
         PsiElement(DlangTokenType.})('}')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageStaticAssertDeclarationImpl(STATIC_ASSERT_DECLARATION)

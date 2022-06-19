@@ -98,7 +98,7 @@ D Language File
                               PsiElement(DlangTokenType.int)('int')
                     PsiElement(DlangTokenType.))(')')
       PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// error: func not defined in module a')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// error: func not defined in module a')
   DLanguageDeclarationImpl(DECLARATION)
     TEMPLATE_DECLARATION
       PsiElement(DlangTokenType.template)('template')

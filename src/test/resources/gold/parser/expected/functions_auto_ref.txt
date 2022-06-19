@@ -37,7 +37,7 @@ D Language File
                                     PsiElement(DlangTokenType.ID)('x')
                       PsiElement(DlangTokenType.;)(';')
             PsiElement(DlangTokenType.})('}')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// value return')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// value return')
   DLanguageDeclarationImpl(DECLARATION)
     FUNCTION_DECLARATION
       DLanguageStorageClassImpl(STORAGE_CLASS)
@@ -67,7 +67,7 @@ D Language File
                                 PsiElement(DlangTokenType.INTEGER_LITERAL)('3')
                       PsiElement(DlangTokenType.;)(';')
             PsiElement(DlangTokenType.})('}')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// value return')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// value return')
   DLanguageDeclarationImpl(DECLARATION)
     FUNCTION_DECLARATION
       DLanguageStorageClassImpl(STORAGE_CLASS)
@@ -107,7 +107,7 @@ D Language File
                                     PsiElement(DlangTokenType.ID)('x')
                       PsiElement(DlangTokenType.;)(';')
             PsiElement(DlangTokenType.})('}')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// ref return')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// ref return')
   DLanguageDeclarationImpl(DECLARATION)
     FUNCTION_DECLARATION
       DLanguageStorageClassImpl(STORAGE_CLASS)
@@ -147,7 +147,7 @@ D Language File
                                     PsiElement(DlangTokenType.ID)('x')
                       PsiElement(DlangTokenType.;)(';')
             PsiElement(DlangTokenType.})('}')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// ref return')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// ref return')
   DLanguageDeclarationImpl(DECLARATION)
     FUNCTION_DECLARATION
       DLanguageStorageClassImpl(STORAGE_CLASS)
@@ -192,7 +192,7 @@ D Language File
                                     PsiElement(DlangTokenType.ID)('x')
                       PsiElement(DlangTokenType.;)(';')
             PsiElement(DlangTokenType.})('}')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// ref return')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// ref return')
   DLanguageDeclarationImpl(DECLARATION)
     FUNCTION_DECLARATION
       DLanguageStorageClassImpl(STORAGE_CLASS)
@@ -244,7 +244,7 @@ D Language File
                                     PsiElement(DlangTokenType.ID)('x')
                       PsiElement(DlangTokenType.;)(';')
             PsiElement(DlangTokenType.})('}')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// ok, value return')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// ok, value return')
   DLanguageDeclarationImpl(DECLARATION)
     FUNCTION_DECLARATION
       DLanguageStorageClassImpl(STORAGE_CLASS)
@@ -296,7 +296,7 @@ D Language File
                                 PsiElement(DlangTokenType.INTEGER_LITERAL)('3')
                       PsiElement(DlangTokenType.;)(';')
             PsiElement(DlangTokenType.})('}')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// ok, value return')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// ok, value return')
   DLanguageDeclarationImpl(DECLARATION)
     FUNCTION_DECLARATION
       DLanguageStorageClassImpl(STORAGE_CLASS)
@@ -404,7 +404,7 @@ D Language File
                                     PsiElement(DlangTokenType.ID)('x')
                       PsiElement(DlangTokenType.;)(';')
             PsiElement(DlangTokenType.})('}')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// ok, ref return')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// ok, ref return')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageAttributeImpl(ATTRIBUTE)
       PsiElement(DlangTokenType.auto)('auto')
@@ -447,4 +447,4 @@ D Language File
                                     PsiElement(DlangTokenType.ID)('x')
                       PsiElement(DlangTokenType.;)(';')
             PsiElement(DlangTokenType.})('}')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// error, cannot convert double to int')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// error, cannot convert double to int')

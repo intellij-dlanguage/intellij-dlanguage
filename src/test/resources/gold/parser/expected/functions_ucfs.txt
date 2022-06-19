@@ -372,7 +372,7 @@ D Language File
                         IDENTIFIER
                           PsiElement(DlangTokenType.ID)('baz')
                     PsiElement(DlangTokenType.;)(';')
-              PsiComment(DlangTokenType.LINE_COMMENT)('// void baz(X);')
+                  PsiComment(DlangTokenType.LINE_COMMENT)('// void baz(X);')
               DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
                 DLanguageDeclarationImpl(DECLARATION)
                   DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
@@ -547,7 +547,7 @@ D Language File
                   IDENTIFIER
                     PsiElement(DlangTokenType.ID)('baz')
               PsiElement(DlangTokenType.;)(';')
-          PsiComment(DlangTokenType.LINE_COMMENT)('// void baz(X);')
+            PsiComment(DlangTokenType.LINE_COMMENT)('// void baz(X);')
           DLanguageDeclarationImpl(DECLARATION)
             FUNCTION_DECLARATION
               DLanguageTypeImpl(TYPE)
@@ -740,7 +740,7 @@ D Language File
                                       PsiElement(DlangTokenType.()('(')
                                       PsiElement(DlangTokenType.))(')')
                       PsiElement(DlangTokenType.;)(';')
-              PsiComment(DlangTokenType.LINE_COMMENT)('// call .front by UFCS')
+                  PsiComment(DlangTokenType.LINE_COMMENT)('// call .front by UFCS')
               DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
                 DLanguageDeclarationImpl(DECLARATION)
                   DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
@@ -761,7 +761,7 @@ D Language File
                                       IDENTIFIER
                                         PsiElement(DlangTokenType.ID)('x')
                       PsiElement(DlangTokenType.;)(';')
-              PsiComment(DlangTokenType.LINE_COMMENT)('// front is now a variable')
+                  PsiComment(DlangTokenType.LINE_COMMENT)('// front is now a variable')
               DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
                 DLanguageDeclarationImpl(DECLARATION)
                   DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
@@ -791,7 +791,7 @@ D Language File
                                       PsiElement(DlangTokenType.()('(')
                                       PsiElement(DlangTokenType.))(')')
                       PsiElement(DlangTokenType.;)(';')
-            PsiComment(DlangTokenType.LINE_COMMENT)('// Error, front is not a function')
+                  PsiComment(DlangTokenType.LINE_COMMENT)('// Error, front is not a function')
             PsiElement(DlangTokenType.})('}')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageClassDeclarationImpl(CLASS_DECLARATION)

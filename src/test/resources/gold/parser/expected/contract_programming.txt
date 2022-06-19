@@ -598,7 +598,7 @@ D Language File
                         PsiElement(DlangTokenType.()('(')
                         PsiElement(DlangTokenType.))(')')
         PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('//class')
+    PsiComment(DlangTokenType.LINE_COMMENT)('//class')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
       DLanguageAutoDeclarationImpl(AUTO_DECLARATION)
@@ -623,7 +623,7 @@ D Language File
                         PsiElement(DlangTokenType.()('(')
                         PsiElement(DlangTokenType.))(')')
         PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('//struct')
+    PsiComment(DlangTokenType.LINE_COMMENT)('//struct')
   DLanguageDeclarationImpl(DECLARATION)
     UNITTEST
       UNITTEST

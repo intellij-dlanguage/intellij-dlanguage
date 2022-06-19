@@ -18,7 +18,7 @@ D Language File
                 PsiElement(DlangTokenType.int)('int')
         PsiElement(DlangTokenType.))(')')
       PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// func is a alias to a function type')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// func is a alias to a function type')
   DLanguageDeclarationImpl(DECLARATION)
     FUNCTION_DECLARATION
       DLanguageTypeImpl(TYPE)
@@ -840,7 +840,7 @@ D Language File
                               IDENTIFIER
                                 PsiElement(DlangTokenType.ID)('T')
                     PsiElement(DlangTokenType.;)(';')
-              PsiComment(DlangTokenType.LINE_COMMENT)('// error, T is not defined')
+                  PsiComment(DlangTokenType.LINE_COMMENT)('// error, T is not defined')
               DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
                 DLanguageDeclarationImpl(DECLARATION)
                   DLanguageConditionalDeclarationImpl(CONDITIONAL_DECLARATION)
@@ -883,7 +883,7 @@ D Language File
                           IDENTIFIER
                             PsiElement(DlangTokenType.ID)('v')
                         PsiElement(DlangTokenType.;)(';')
-            PsiComment(DlangTokenType.LINE_COMMENT)('// v is declared to be a byte')
+                      PsiComment(DlangTokenType.LINE_COMMENT)('// v is declared to be a byte')
             PsiElement(DlangTokenType.})('}')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageImportDeclarationImpl(IMPORT_DECLARATION)

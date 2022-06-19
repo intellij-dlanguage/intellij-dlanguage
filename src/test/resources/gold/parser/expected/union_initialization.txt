@@ -58,4 +58,4 @@ D Language File
                             PsiElement(DlangTokenType.FLOAT_LITERAL)('5.0')
               PsiElement(DlangTokenType.})('}')
       PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// u.b = 5.0')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// u.b = 5.0')

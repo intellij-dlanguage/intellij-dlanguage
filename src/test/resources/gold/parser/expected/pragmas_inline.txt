@@ -119,7 +119,7 @@ D Language File
                                   PsiElement(DlangTokenType.false)('false')
                         PsiElement(DlangTokenType.))(')')
                       PsiElement(DlangTokenType.;)(';')
-              PsiComment(DlangTokenType.LINE_COMMENT)('// supercedes the others')
+                  PsiComment(DlangTokenType.LINE_COMMENT)('// supercedes the others')
               DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
                 DLanguageStatementImpl(STATEMENT)
                   DLanguageStatementNoCaseNoDefaultImpl(STATEMENT_NO_CASE_NO_DEFAULT)

@@ -3217,6 +3217,10 @@ class DLangParser {
     private void exit_section_modified(final PsiBuilder builder, final Marker m, final IElementType type, final boolean b) {
         //there is no incorrect parsing aka, markers should only be dropped in case of bookmarks
 //        beginnings.remove(m);
+        if (type.equals(DECLARATION) || type.equals(MODULE_DECLARATION)) {
+            // Attach documentations to their declarations
+            m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
+        }
         exit_section_(builder, m, type, true);
 
     }

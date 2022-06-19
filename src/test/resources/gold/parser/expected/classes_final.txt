@@ -27,4 +27,4 @@ D Language File
         DLanguageStructBodyImpl(STRUCT_BODY)
           PsiElement(DlangTokenType.{)('{')
           PsiElement(DlangTokenType.})('}')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// error, class A is final')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// error, class A is final')

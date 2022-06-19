@@ -52,7 +52,7 @@ D Language File
                                         DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
                                           PsiElement(DlangTokenType.int)('int')
                       PsiElement(DlangTokenType.;)(';')
-              PsiComment(DlangTokenType.LINE_COMMENT)('// error, operator new allocates')
+                  PsiComment(DlangTokenType.LINE_COMMENT)('// error, operator new allocates')
               DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
                 DLanguageStatementImpl(STATEMENT)
                   DLanguageStatementNoCaseNoDefaultImpl(STATEMENT_NO_CASE_NO_DEFAULT)
@@ -144,7 +144,7 @@ D Language File
         IDENTIFIER
           PsiElement(DlangTokenType.ID)('gp')
       PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// pointer to @nogc function')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// pointer to @nogc function')
   DLanguageDeclarationImpl(DECLARATION)
     FUNCTION_DECLARATION
       DLanguageTypeImpl(TYPE)

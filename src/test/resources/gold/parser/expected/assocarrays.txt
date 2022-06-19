@@ -26,7 +26,7 @@ D Language File
                     IDENTIFIER
                       PsiElement(DlangTokenType.ID)('aa')
                   PsiElement(DlangTokenType.;)(';')
-            PsiComment(DlangTokenType.LINE_COMMENT)('// Associative array of ints that are')
+                PsiComment(DlangTokenType.LINE_COMMENT)('// Associative array of ints that are')
             PsiComment(DlangTokenType.LINE_COMMENT)('// indexed by string keys.')
             PsiComment(DlangTokenType.LINE_COMMENT)('// The KeyType is string.')
             DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
@@ -88,7 +88,7 @@ D Language File
                                           PsiElement(DlangTokenType.DOUBLE_QUOTED_STRING)('"hello"')
                                 PsiElement(DlangTokenType.])(']')
                   PsiElement(DlangTokenType.;)(';')
-            PsiComment(DlangTokenType.LINE_COMMENT)('// lookup value from a key')
+                PsiComment(DlangTokenType.LINE_COMMENT)('// lookup value from a key')
             DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
               DLanguageStatementImpl(STATEMENT)
                 DLanguageStatementNoCaseNoDefaultImpl(STATEMENT_NO_CASE_NO_DEFAULT)

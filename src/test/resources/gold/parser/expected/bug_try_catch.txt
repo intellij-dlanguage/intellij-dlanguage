@@ -489,7 +489,7 @@ D Language File
                                                             DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                                                               PsiElement(DlangTokenType.true)('true')
                                                 PsiElement(DlangTokenType.;)(';')
-                                          PsiComment(DlangTokenType.LINE_COMMENT)('// not yet failed')
+                                              PsiComment(DlangTokenType.LINE_COMMENT)('// not yet failed')
                                           PsiComment(DlangTokenType.LINE_COMMENT)('// run each @Test of the class')
                                           DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
                                             DLanguageStatementImpl(STATEMENT)
